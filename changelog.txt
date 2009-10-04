@@ -1,0 +1,139 @@
+Changelog 
+.::NOTE::.
+ONLY BUGS THAT ARE REPORTED IN THE MANTIS BT BUG TRACKER ON THE PROJECT PAGE WILL BE FIXED OR ASSIGNED TO A RELEASE.
+PLEASE REPORT ANY BUGS OR FEATURES THAT YOU FIND SO THAT WE CAN FIX'EM!
+To view more details on these issues, please visit https://apps.sourceforge.net/mantisbt/myitcrm/view_all_bug_page.php
+
+==============
+V 0.2.7 : May 21st 2009.
+
+- 0000073: [FEATURE] IE7 issue - Unable to add gift certificates (Geevpc) - resolved.
+- 0000070: [misc] Change Google Maps to employee's address (Geevpc) - resolved.
+- 0000002: [invoice] PDF invoicing (Geevpc) - resolved.
+- 0000079: [FEATURE] Add new Language files (Geevpc) - resolved.
+- 0000077: [invoice] Cant see the discount on the Invoice view. (Geevpc) - resolved.
+- 0000048: [company] Company Message Escapes Characters (Geevpc) - resolved.
+- 0000082: [workorders] Unable to close an unscheduled work order. (Geevpc) - resolved.
+- 0000056: [schedule] Setting business hours (Geevpc) - resolved.
+- 0000017: [FEATURE] Wildcard searching of Customers (Geevpc) - resolved.
+- 0000078: [customers] Add customer edit button for easier access. (Geevpc) - resolved.
+- 0000083: [menus] Admin menu items available to non-Admins (Geevpc) - resolved.
+- 0000066: [schedule] Technician Level can modify other schedules. (Geevpc) - resolved.
+- 0000084: [misc] Image/Logo rendering issue (Geevpc) - resolved.
+- 0000060: [FEATURE] Twitter / Bug Reporting / Etc - Move (Geevpc) - resolved.
+- 0000027: [FEATURE] Design Overhaul - New layout, Menu Systems, etc (Geevpc) - resolved.
+- 0000050: [invoice] 100% discount causes invoice to be put into limbo (Geevpc) - resolved.
+- 0000074: [schedule] Unable to schedule a work order. (Geevpc) - resolved.
+- 0000067: [invoice] Cheque payment receiveing (Geevpc) - resolved.
+- 0000068: [installation] After upgrade to 0.2.6 I get stuck in error loop "Could not get Page ACL" (Geevpc) - resolved.
+- 0000069: [labour] Customer Setup: Discount maxes out at 9.99% (Geevpc) - resolved.
+
+20 of 20 issue(s) resolved. Progress (100%).
+
+
+==============
+V 0.2.6 : April 5th 2009.
+
+- 0000057: [labour] Labor Rate update causes database error. (Geevpc) - resolved.
+- 0000059: [misc] Google Maps API editing (Geevpc) - resolved.
+- 0000054: [workorders] Missing table when scheduling a work order (Geevpc) - resolved.
+- 0000055: [installation] Link to the MyIT CRM page at the last page of installation (Geevpc) - resolved.
+- 0000044: [invoice] coding issue, and possible confusion for customers (Geevpc) - resolved.
+
+
+==============
+V 0.2.5 : March 31st 2009.
+
+- 0000047: [installation] Root MySQL info needed to install (Geevpc) - resolved.
+- 0000005: [company] Office Hours - A Bit Misleading (Geevpc) - resolved.
+- 0000018: [FEATURE] Custom Logo's (Geevpc) - resolved.
+- 0000035: [misc] Gift Certificates don't get entered into the database (Geevpc) - resolved.
+- 0000042: [workorders] Typos, missing info. (Geevpc) - resolved.
+- 0000043: [other] Edit Details update breaks all printing. (Geevpc) - resolved.
+- 0000045: [invoice] Coding issue on printing Invoice (Geevpc) - resolved.
+- 0000041: [other] Office Stats page (Geevpc) - resolved.
+- 0000040: [menus] Forums link doesn't go to forums (Geevpc) - resolved.
+- 0000031: [invoice] close workorder [ IE7 issue ] (Geevpc) - resolved.
+- 0000038: [misc] Another Typo - The admin menu this time... (Geevpc) - resolved.
+- 0000037: [misc] Typo on Web Traffic page. (Geevpc) - resolved.
+- 0000039: [menus] Report a bug option link. (Geevpc) - resolved.
+- 0000036: [schedule] Cannot assign a work order to another tech. (Geevpc) - resolved.
+- 0000026: [FEATURE] Add Google Map/Directions popup to Customer Details Screen (Geevpc) - resolved.
+- 0000024: [invoice] Partial Payments not closing out properly + other small bugs (Geevpc) - resolved.
+- 0000023: [FEATURE] Create option to "Upgrade existing version" or "New Installation" when installing. (Geevpc) - resolved.
+
+To view more details on these issues, please visit https://apps.sourceforge.net/mantisbt/myitcrm/view_all_bug_page.php
+
+
+==============
+v.0.2.4 : Mar 2, 2009
+	- 0000007: [FEATURE] Part ordering..? (Geevpc) - Parts can be added to an existing invoice.
+	- 0000011: [FEATURE] When printing / exporting invoices...  - Added Invoice Status to printed invoice.eg; "Awaiting Payment", "Closed", etc
+	- 0000010: [FEATURE] Close invoice option from Invoicing view. - Added button to close Work Order if not done when invoice is generated.
+	- 0000021: [menus] General Menu issues and functions  - As Below
+	- 0000019: [other] Header Tiddy-It-Up Modifications  - Cleaned up menu system. Also fix IE7 rendering issue.
+	- 0000008: [FEATURE] Invoicing - printing layout.. - Invoice layout has changed to incoperate customer details in billing window for sending in windowed envolopes.
+	- 0000006: [menus] Import/Export Links Issues - Removed until feature can be re-implemented.
+	- 0000013: [FEATURE] Schedule page addition - View Work Order from Schedule edit page
+	- 0000004: [misc] Calendar "Stack Overflow 15" error - reverted Calendar back to prevoius version
+
+==============
+v.0.2.3 : Feb 24, 2009
+  * Fixed the invoice date issue formatting to dd/mm/yyyy. 
+      - Sourceforge Bug/Request ID - 2623983
+  * Updated the calendar source code (JSCalendar) from version 0.9.8 to version 1.0 (Latest and final)
+  * Updated some formatting typos (SCHEDULE to schedule)
+
+
+
+==============
+v.0.2.2 : Feb 23, 2009
+  * Can now close out Work Orders without invoicing them. 
+      - Sourceforge Bug/Request ID - 2619383
+
+
+
+==============
+v.0.2.1 : Feb 23, 2009
+  * Changed typo from "LOABOR" to "LABOR". 
+      - Modified : Lns 160,766 - /install/sql.php
+      - Modified : Lns 16,39 - /modules/control/edit_rate.php
+      - Modified : Ln 42 - /templates/control/edit_rate.tpl
+      - Modified : Ln 50 - /templates/invoice/new.tpl      
+  * Changed typo from "SCHEDUAL" to "schedule" in all files and SQL file""
+      - Modified : to many to list here.      
+  * Changed the date format to dd/mm/yyyy instead of mm/dd/yyyy
+      - Modified : to many to list here.
+      - Delete/Edit Schedule working again after date format change.
+      - Shedule "start and stop time" conflict fixed after date format change.
+      - When schedule entered/confirmed, returned to wrong date page. This is now fixed.
+  * Updated changelog.txt.  Changed version to v.0.2.2.
+      - Modified : /changelog.txt
+      - Modified : /version.php
+  * Added Company ABN details for Australian Business
+      
+None Bugs/issues to fix:
+
+Feature Request:
+  * Install google maps popup for client addresses
+  * Change parts ordering to plain parts list maintained by end users or admin.
+  * Incorperate aTicket (formerly eTicket) into CRM package.
+  * Rewrite all coding.      
+     
+      
+      
+==============
+v.0.2.001 : May 02, 2008
+  * Changed contact email address.  Changed wording of second sentence. 
+      - Modified : /README
+  * Numerous spelling errors and some grammar errors. 
+      - Modified : /install/index.php
+  * Fixed Start Time and End Time the same by putting double quotes 
+    around 00 value of $secs. 
+	  - Modified : /modules/schedual/include.php
+  * Added changelog.txt.  Changed version to v.0.2.001.
+      - Added : /changelog.txt
+      - Modified : /version.php
+
+  
+ 
