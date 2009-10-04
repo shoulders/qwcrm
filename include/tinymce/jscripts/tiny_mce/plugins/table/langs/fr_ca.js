@@ -1,0 +1,30 @@
+// Canadian French lang variables by Virtuelcom
+
+tinyMCELang['lang_table_desc'] = 'Insérer un nouveau tableau';
+tinyMCELang['lang_table_insert_row_before_desc'] = 'Insérer une line avant';
+tinyMCELang['lang_table_insert_row_after_desc'] = 'Insérer une line aprés';
+tinyMCELang['lang_table_delete_row_desc'] = 'Supprimer la line';
+tinyMCELang['lang_table_insert_col_before_desc'] = 'Insérer une colonne avant';
+tinyMCELang['lang_table_insert_col_after_desc'] = 'Insérer une colonne aprés';
+tinyMCELang['lang_table_delete_col_desc'] = 'Supprimer la colonne';
+tinyMCELang['lang_insert_table_title'] = 'Insérer/Modifier le tableau';
+tinyMCELang['lang_insert_table_width'] = 'width';
+tinyMCELang['lang_insert_table_height'] = 'Hauteur';
+tinyMCELang['lang_insert_table_cols'] = 'Colonnes';
+tinyMCELang['lang_insert_table_rows'] = 'lines';
+tinyMCELang['lang_insert_table_cellspacing'] = 'Cellspacing';
+tinyMCELang['lang_insert_table_cellpadding'] = 'Cellpadding';
+tinyMCELang['lang_insert_table_border'] = 'Bordure';
+tinyMCELang['lang_insert_table_align'] = 'Alinement';
+tinyMCELang['lang_insert_table_align_default'] = 'Défaut';
+tinyMCELang['lang_insert_table_align_left'] = 'Gauche';
+tinyMCELang['lang_insert_table_align_right'] = 'Droit';
+tinyMCELang['lang_insert_table_align_middle'] = 'Milieu';
+tinyMCELang['lang_insert_table_class'] = 'Classe CSS';
+tinyMCELang['lang_table_row_title'] = 'Propriétés de line';
+tinyMCELang['lang_table_cell_title'] = 'Propriétés de cellule';
+tinyMCELang['lang_table_row_desc'] = 'Propriétés de line';
+tinyMCELang['lang_table_cell_desc'] = 'Propriétés de cellule';
+tinyMCELang['lang_insert_table_valign'] = 'Alinement vertical';
+tinyMCELang['lang_insert_table_align_top'] = 'Haut';
+tinyMCELang['lang_insert_table_align_bottom'] = 'Bas';
