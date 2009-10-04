@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+	<translate>
+		<core_log_off>Log Off</core_log_off>
+		<core_loged_in>Currently Logged in as </core_loged_in>
+		<core_schedule>Schedule</core_schedule>
+		<core_menu>Main Menu</core_menu>
+		<core_office_stats>Office Status</core_office_stats>
+		<core_work_order_stats>Work Order Status</core_work_order_stats>
+		<core_open_workorders>Open Work Orders.</core_open_workorders>
+		<core_assigned_workorders>Assigned Work Orders.</core_assigned_workorders>
+		<core_waiting_payment>Unpaid</core_waiting_payment>
+		<core_closed>Closed Work Orders</core_closed>
+		<core_myit_crm>MYIT CRM</core_myit_crm>
+		<core_version>Software Version:</core_version>
+		<core_update_status>Update Status:</core_update_status>
+		<core_links>Links</core_links>
+		<core_control>Control Center</core_control>
+		<core_documentation>Documentation</core_documentation>
+		<core_report_bug>Report a bug</core_report_bug>
+		<core_click_scheudle>Click on day to view schedule</core_click_scheudle>
+		<core_admin>Admin</core_admin>
+	
+		<error_404_request>The requested page,</error_404_request>
+		<error_404_request_2>was not found on our system.</error_404_request_2>
+		<error_404_request_3>An email has been sent to the system</error_404_request_3>
+		
+		<menu_new>New</menu_new>
+		<menu_search>Search</menu_search>
+		<menu_edit>Edit</menu_edit>
+		<menu_delete>Delete</menu_delete>
+		<menu_close>Close</menu_close>
+		<menu_print>Print</menu_print>
+		<menu_edit>Edit</menu_edit>
+		<menu_home>Home</menu_home>
+		<menu_log_out>Log Out</menu_log_out>
+		
+		<menu_customers>Customers</menu_customers>
+		<menu_customer_search>Customer Search</menu_customer_search>
+		<menu_add_new_customer>Add New Customer</menu_add_new_customer>
+		<menu_edit_customer>Edit Customer</menu_edit_customer>
+		<menu_new_gift>New Gift Certificate</menu_new_gift>
+		<menu_gift_cert>Gift Certificate</menu_gift_cert>
+		<menu_delete_customer>Delete Customer</menu_delete_customer>
+		
+		<menu_work_orders>Work Orders</menu_work_orders>
+		<menu_open_work_orders>Open Work Orders</menu_open_work_orders>
+		<menu_closed_work_orders>Closed Work Orders</menu_closed_work_orders>
+		<menu_new_note>New Note</menu_new_note>
+		<menu_recieved_parts>Received Parts</menu_recieved_parts>
+		<menu_order_parts>Order Parts</menu_order_parts>
+		<menu_close_work_order>Close Work Order ID</menu_close_work_order>
+		
+		<menu_employees_view>View Employees</menu_employees_view>
+		<menu_employees_new>New Employee</menu_employees_new>
+		<menu_employees>Employees</menu_employees>
+		
+		<menu_invoice>Invoice</menu_invoice>
+		<menu_paid>Paid</menu_paid>
+		<menu_paid_2>Paid Invoices</menu_paid_2>
+		<menu_un_paid>Unpaid</menu_un_paid>
+		<menu_un_paid_2>Un-Paid Invoices</menu_un_paid_2>
+		<menu_open_orders>Open Orders</menu_open_orders>
+		<menu_closed_orders>Closed Orders</menu_closed_orders>
+		
+		<main_heading>Welcome to your Online Office</main_heading>
+		<main_company_notes>Company Notes</main_company_notes>
+		<main_workorder_stats>Work Order Stats</main_workorder_stats>
+		<main_new>New</main_new>
+		<main_assigned>Assigned</main_assigned>
+		<main_waiting>Waiting For Parts</main_waiting>
+		<main_payment>Awaiting Payment</main_payment>
+		<main_closed>Closed</main_closed>
+		<main_unpaid>Unpaid</main_unpaid>
+		<main_balance>Balance</main_balance>
+		<main_partial_paid>Partial Paid</main_partial_paid>
+		<main_out>Total Out</main_out>
+		<main_paid>Paid In Full</main_paid>
+		<current_total>Current Total</current_total>
+		<actual_total>Actual Total</actual_total>
+		<main_total>Total</main_total>
+		<main_invoice_stats>Invoice Stats</main_invoice_stats>
+		<main_customer_stats>Customer Stats</main_customer_stats>
+		<main_new_customers>New This Month</main_new_customers>
+		<main_new_year_customers>New This Year</main_new_year_customers>
+				
+	</translate>
+	

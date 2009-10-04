@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<translate>
+
+	<parts_order>Order Parts</parts_order>
+	<part_order_num>Parts Order ID</part_order_num>
+			
+	<parts_msg_1>In order to use this features you must complete a free registration with In-Cite CRM and we must have a valid credit card on file in order to bill for the parts purchased from us. All parts are shipped via UPS and are shipped from one of our 11 Wharehouses across the country to your business location. You do not have to worry about keeping up a web site with inventory. All the parts you see listed here are feed by our application server. And with over 9000 parts in stock we should have what your are looking for.</parts_msg_1>
+	
+	<parts_msg_2>Each part purchased will seamlessly integrate into your Work Orders and invoicing go ahead and give it try. And you can view detailed reports of all purchases made. You can also adjust the price by adding markup to all products from the controll center. For more information please visit www.incitecrm.com.</parts_msg_2>
+	
+	<parts_msg_3>This service is only available to 48 continental States. We currently will not ship out side the US but this will change in the future.</parts_msg_3>
+	
+	<parts_msg_4>The small profit we make off parts purchased is what funds the Open Source Cite CRM and helps us to provide this free software. This feature is not required to use Cite CRM. You can always add your own parts at Invoice creation Time or add your own parts database.</parts_msg_4>
+	
+	<parts_msg_5>Once you click Check Out your order will be processed and your credit card on file will be charged the amount:</parts_msg_5>
+	
+	<parts_msg_6>You are using</parts_msg_6>
+	
+	<parts_msg_7>for your shipping method. Parts will be shipped from</parts_msg_7>
+	
+	<parts_msg_8>This can be changed in the Control Center.</parts_msg_8>
+	
+	<parts_msg_9>Our Parts Pricing are updated daily at 6:30 AM Pacific Time. Once you click Check Out do not refresh the page or click the back button.</parts_msg_9>
+	
+	<parts_msg_10>Please Print this invoice and keep it in a safe place.</parts_msg_10>
+	
+	<parts_msg_11>Thank you for your purchase. If you need assistance or RMA please contact 1-866-471-1343. You can always view your Invoice here. Your order will be processed and shipped within 24 hours. You chose UPS Ground so your package should arrive in 3 to 7 days and is being shipped from our Portland Warehouse.</parts_msg_11>
+	
+	<parts_id>ID</parts_id>
+	<parts_amount>Amount</parts_amount>
+	<parts_sku>SKU</parts_sku>
+	<parts_item_id>Item ID</parts_item_id>
+	<parts_description>Description</parts_description>
+	<parts_vendor>Vendor</parts_vendor>
+	<parts_weight>Weight</parts_weight>
+	<parts_price>Price</parts_price>
+	<parts_add>Add</parts_add>
+	<parts_each>Each</parts_each>
+	<parts_total>Total</parts_total>
+	<parts_shipping>Shipping</parts_shipping>
+	<parts_sub_total>Sub Total</parts_sub_total>
+	<parts_checkout>Check Out</parts_checkout>
+	<parts_total_charges>Total Charges</parts_total_charges>
+	<parts_created>Created</parts_created>
+	<parts_invoice>Invoice</parts_invoice>
+	<parts_wo>Work Order</parts_wo>
+	<parts_update>Updated</parts_update>
+	<parts_tracking>Tracking</parts_tracking>
+	<parts_status>Status</parts_status>
+	<parts_set_recv>Set Received</parts_set_recv>
+	<parts_rcv>Received</parts_rcv>
+	<parts_order_details>Order Details for</parts_order_details>
+	<parts_count>Count</parts_count>
+	<parts_tax>Tax</parts_tax>
+	<parts_print>Print</parts_print>
+	<parts_tracking>Tracking</parts_tracking>
+	<parts_get_tracking>Get Tracking Number</parts_get_tracking>
+	
+	<parts_select>Select Part Type</parts_select>
+	<parts_select_cat>Select Category</parts_select_cat>
+	<parts_search>Search</parts_search>
+	
+	<parts_cart>Shopping Cart</parts_cart>
+	<parts_total_items>Total Items In Cart</parts_total_items>
+	<parts_remove>Remove</parts_remove>
+	<parts_sku>SKU</parts_sku>
+	<parts_update>Update</parts_update>
+	<parts_cart_total>Cart Total</parts_cart_total>
+	<parts_view>View</parts_view>
+	
+	<parts_inc_inv>Cite CRM Invoice ID</parts_inc_inv>
+	<parts_page>Page</parts_page>
+	<parts_of>Of</parts_of>
+	<parts_records_found>records found.</parts_records_found>
+	
+	<parts_wo_id>Work Order ID</parts_wo_id>
+	<parts_shipping_method>Shipping Method</parts_shipping_method>
+	<parts_ware>Warehouse Location</parts_ware>
+	
+	<parts_order_complete>Your Order Has Been Completed</parts_order_complete>
+	<parts_crm_order_id>Cite CRM Order ID</parts_crm_order_id>
+	<parts_date>Invoice Date</parts_date>
+	<parts_total_items>Total Items</parts_total_items>
+	<parts_weight>Weight</parts_weight>
+	<parts_ship_to>Ship To</parts_ship_to>
+	<parts_tech>Tech</parts_tech>
+	<parts_cap_invoice>INVOICE</parts_cap_invoice>
+	
+</translate>	

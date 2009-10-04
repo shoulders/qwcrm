@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<translate>
+	<core_log_off>Fermeture de session</core_log_off> 
+	<core_loged_in>Entr&#x00E8; As</core_loged_in> 
+	<core_schedule>Programme</core_schedule> 
+	<core_office_stats>Statut De Bureau</core_office_stats> 
+	<core_work_order_stats>Statut D'Ordre d'entretien</core_work_order_stats> 
+	<core_open_workorders>Ouvrez Les Ordres d'entretien.</core_open_workorders> 
+	<core_assigned_workorders>Ordres d'entretien Assign&#x00E8;s.</core_assigned_workorders> 
+	<core_waiting_payment>Paiement D'Attente</core_waiting_payment> 
+	<core_myit_crm>MyIT CRM</core_myit_crm> 
+	<core_version>Version de CRM :</core_version> 
+	<core_update_status>Statut De Mise &#x00C0; jour :</core_update_status> 
+	<core_links>Liens</core_links> 
+	<core_control>Centre De Commande</core_control> 
+	<core_documentation>Documentation</core_documentation> 
+	<core_report_bug>Rapportez un bogue</core_report_bug> 
+	<core_click_scheudle>Clic le jour pour regarder le programme</core_click_scheudle> 
+	<core_admin>Admin</core_admin> 
+	<error_404_request>La page demand&#x00E8;e,</error_404_request> 
+	<error_404_request_2>n'a pas &#x00E8;t&#x00E8; trouv&#x00E8; sur notre syst&#x00E9;me.</error_404_request_2> 
+	<error_404_request_3>Un email a &#x00E8;t&#x00E8; envoy&#x00E8; au syst&#x00E9;me</error_404_request_3> 
+	<menu_new>Nouveau</menu_new> 
+	<menu_search>Recherche</menu_search> 
+	<menu_edit>&#x00E8;ditez</menu_edit> 
+	<menu_delete>Effacement</menu_delete> 
+	<menu_close>Fin</menu_close> 
+	<menu_print>Copie</menu_print> 
+	<menu_edit>&#x00E8;ditez</menu_edit> 
+	<menu_home>&#x00C0; la maison</menu_home> 
+	<menu_log_out>D&#x00E8;connectez</menu_log_out> 
+	<menu_customers>Clients</menu_customers> 
+	<menu_customer_search>Recherche De Client</menu_customer_search> 
+	<menu_add_new_customer>Ajoutez Le Nouveau Client</menu_add_new_customer> 
+	<menu_edit_customer>&#x00E8;ditez L'Information De Client</menu_edit_customer> 
+	<menu_new_gift>Nouveau Certificat-prime</menu_new_gift> 
+	<menu_gift_cert>Certificat-prime</menu_gift_cert> 
+	<menu_delete_customer>Client D'Effacement</menu_delete_customer> 
+	<menu_work_orders>Ordres d'entretien</menu_work_orders> 
+	<menu_open_work_orders>Ouvrez Les Ordres d'entretien</menu_open_work_orders> 
+	<menu_closed_work_orders>Ordres d'entretien Ferm&#x00E8;s</menu_closed_work_orders> 
+	<menu_new_note>Nouvelle Note</menu_new_note> 
+	<menu_recieved_parts>Pi&#x00E9;ces Re&#x00E7;ues</menu_recieved_parts> 
+	<menu_order_parts>Pi&#x00E9;ces D'Ordre</menu_order_parts> 
+	<menu_close_work_order>Identification &#x00E8;troite D'Ordre d'entretien</menu_close_work_order> 
+	<menu_employees>Employ&#x00E8;s</menu_employees> 
+	<menu_invoice>Facture</menu_invoice> 
+	<menu_paid>Pay&#x00E8;</menu_paid> 
+	<menu_paid_2>Factures Pay&#x00E8;es</menu_paid_2> 
+	<menu_un_paid>Impay&#x00E8;</menu_un_paid> 
+	<menu_un_paid_2>Factures Impay&#x00E8;es</menu_un_paid_2> 
+	<menu_open_orders>Ouvrez Les Ordres</menu_open_orders> 
+	<menu_closed_orders>Ordres Ferm&#x00E8;s</menu_closed_orders> 
+	<main_heading>Bienvenue &#x00C0; votre bureau en line</main_heading> 
+	<main_company_notes>Notes De Compagnie</main_company_notes> 
+	<main_workorder_stats>Stat D'Ordre d'entretien</main_workorder_stats> 
+	<main_new>Nouveau</main_new> 
+	<main_assigned>Assign&#x00E8;</main_assigned> 
+	<main_waiting>Pi&#x00E9;ces D'Attente</main_waiting> 
+	<main_payment>Attente Du Paiement</main_payment> 
+	<main_closed>Ferm&#x00E8;</main_closed> 
+	<main_unpaid>Impay&#x00E8;</main_unpaid> 
+	<main_balance>&#x00E8;quilibre</main_balance> 
+	<main_partial_paid>Pay&#x00E8; Partiel</main_partial_paid> 
+	<main_out>Total Dehors</main_out> 
+	<main_paid>Pay&#x00E8; Enti&#x00E9;rement</main_paid> 
+	<main_total>Total</main_total> 
+	<main_invoice_stats>Stat De Facture</main_invoice_stats> 
+	<main_customer_stats>Stat De Client</main_customer_stats> 
+	<main_new_customers>Nouveau Ce Mois</main_new_customers> 
+	<main_new_year_customers>Nouveau Cette Ann&#x00E8;e</main_new_year_customers> 
+</translate>

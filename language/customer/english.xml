@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+	<translate>
+		<main_title>Customer Search</main_title>
+		<display>Display Name</display>
+		<first>First</first>
+		<last>Last</last>
+		<primary>Primary</primary>
+		<secondary>Secondary</secondary>
+		<phone>Phone</phone>
+		<type>Type</type>
+		<email>Email</email>
+		<action>Action</action>
+		<customer_name>Customer Name</customer_name>
+		<page>Page</page>
+		<of>of</of>
+		<records_found>records found</records_found>
+		<work>Work</work>
+		<mobile>Mobile</mobile>
+		<contact>Contact</contact>
+		
+		<customer_view_wo>View The Work Order</customer_view_wo>
+		
+		<customer_details>Customer Details For</customer_details>
+		<customer_contact>Customer Contact Information</customer_contact>
+		<customer_contact_2>Contact</customer_contact_2>
+		<customer_address>Address</customer_address>
+		<customer_home>Primary Phone</customer_home>
+		<customer_work>Secondary Phone</customer_work>
+		<customer_mobile>Mobile</customer_mobile>
+		<customer_city>City</customer_city>
+		<customer_state>State</customer_state>
+		<customer_zip>Zip</customer_zip>
+		<customer_type>Type</customer_type>
+		<customer_residential>Residential</customer_residential>
+		<customer_comercial>Commercial</customer_comercial>
+		<customer_discount>Discount</customer_discount>
+		<customer_created>Created</customer_created>
+		<customer_last>Last Activity</customer_last>
+		
+		<customer_open_work_orders>Open Work Orders</customer_open_work_orders>
+                <customer_closed_work_orders>Closed Work Orders</customer_closed_work_orders>
+		<customer_wo_id>WO ID</customer_wo_id>
+		<customer_date_open>Date Opened</customer_date_open>
+		<customer>Customer</customer>
+		<customer_scope>Scope</customer_scope>
+		<customer_status>Status</customer_status>
+		<customer_tech>Tech</customer_tech>
+		<customer_action>Action</customer_action>
+		<customer_work_order_id>Work Order ID</customer_work_order_id>
+		
+		<customer_gift_cert>Gift Certificates</customer_gift_cert>
+		<customer_id>ID</customer_id>
+		<customer_created>Created</customer_created>
+		<customer_expire>Expire</customer_expire>
+		<customer_amount>Amount</customer_amount>
+		<customer_active>Active</customer_active>
+		<customer_redeemed>Date Redemed</customer_redeemed>
+		<customer_invoice>Invoice</customer_invoice>
+		
+		<customer_unpaid_invoice>Unpaid Invoices</customer_unpaid_invoice>
+		<customer_inv_id>INV ID</customer_inv_id>
+		<customer_date>Date</customer_date>
+		<customer_paid>Paid</customer_paid>
+		<customer_balance>Balance</customer_balance>
+		<customer_date_paid>Date Paid</customer_date_paid>
+		<customer_employee>Employee</customer_employee>
+		
+		<customer_paid_invoice>Paid Invoices</customer_paid_invoice>
+		
+		<customer_print>Print HTML</customer_print>
+                <customer_print_pdf>Print PDF</customer_print_pdf>
+		<customer_view>View</customer_view>
+		<customer_delete>Delete</customer_delete>
+		
+		<customer_edit>Edit Customer</customer_edit>
+		<customer_add>Add New Customer</customer_add>
+		
+		<customer_type_1>Residential</customer_type_1>
+		<customer_type_2>Commercial</customer_type_2>
+		<customer_type_3></customer_type_3>
+		<customer_type_4></customer_type_4>
+	</translate>

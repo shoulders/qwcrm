@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+ <translate>
+  <main_title>Recherche De Client</main_title> 
+  <display>Affichage</display> 
+  <first>D'abord</first> 
+  <last>Bout</last> 
+  <phone>T&#x00E9;l&#x00E9;phone</phone> 
+  <type>Type</type> 
+  <email>Email</email> 
+  <action>Action</action> 
+  <customer_name>Nom De Client</customer_name> 
+  <page>Page</page> 
+  <of>de</of> 
+  <records_found>disques trouv&#x00E9;s</records_found> 
+  <work>Travail</work> 
+  <mobile>Mobile</mobile> 
+  <contact>Contact</contact> 
+  <customer_view_wo>Regardez L'Ordre d'entretien</customer_view_wo> 
+  <customer_details>Petits groupes De Client Pour</customer_details> 
+  <customer_contact>L'Information De Contact De Client</customer_contact> 
+  <customer_contact_2>Contact</customer_contact_2> 
+  <customer_address>Adresse</customer_address> 
+  <customer_home>&#x00C0; la maison</customer_home> 
+  <customer_work>Travail</customer_work> 
+  <customer_mobile>Mobile</customer_mobile> 
+  <customer_city>Ville</customer_city> 
+  <customer_state>&#x00E9;tat</customer_state> 
+  <customer_zip>Code postal</customer_zip> 
+  <customer_type>Type</customer_type> 
+  <customer_residential>R&#x00E9;sidentiel</customer_residential> 
+  <customer_comercial>Commercial</customer_comercial> 
+  <customer_discount>Escompte</customer_discount> 
+  <customer_created>Cr&#x00E9;&#x00E9;</customer_created> 
+  <customer_last>Derni&#x00E8;re Activit&#x00E9;</customer_last> 
+  <customer_open_work_orders>Ouvrez Les Ordres d'entretien</customer_open_work_orders> 
+  <customer_wo_id>WO ID</customer_wo_id> 
+  <customer_date_open>La Date S'est ouverte</customer_date_open> 
+  <customer>Client</customer> 
+  <customer_scope>Port&#x00E9;e</customer_scope> 
+  <customer_status>Statut</customer_status> 
+  <customer_tech>Tech</customer_tech> 
+  <customer_action>Action</customer_action> 
+  <customer_work_order_id>Identification D'Ordre d'entretien</customer_work_order_id> 
+  <customer_gift_cert>Certificat-primes</customer_gift_cert> 
+  <customer_id>ID</customer_id> 
+  <customer_created>Cr&#x00E9;&#x00E9;</customer_created> 
+  <customer_expire>Expirez</customer_expire> 
+  <customer_amount>Quantit&#x00E9;</customer_amount> 
+  <customer_active>Actif</customer_active> 
+  <customer_redeemed>La Date A rachet&#x00E9;</customer_redeemed> 
+  <customer_invoice>Facture</customer_invoice> 
+  <customer_unpaid_invoice>Factures Impay&#x00E9;es</customer_unpaid_invoice> 
+  <customer_inv_id>ID De Facture</customer_inv_id> 
+  <customer_date>Date</customer_date> 
+  <customer_paid>Pay&#x00E9;</customer_paid> 
+  <customer_balance>&#x00E9;quilibre</customer_balance> 
+  <customer_date_paid>Date Pay&#x00E9;e</customer_date_paid> 
+  <customer_employee>Employ&#x00E9;</customer_employee> 
+  <customer_paid_invoice>Factures Pay&#x00E9;es</customer_paid_invoice> 
+  <customer_print>Copie</customer_print> 
+  <customer_view>Vue</customer_view> 
+  <customer_delete>Effacement</customer_delete> 
+  <customer_edit>&#x00E9;ditez Le Client</customer_edit> 
+  </translate>

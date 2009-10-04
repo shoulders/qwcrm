@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+ <translate>
+  <core_log_off>Maschinenbordbuch Weg</core_log_off> 
+  <core_loged_in>Innen Geloggt Wie</core_loged_in> 
+  <core_schedule>Zeitplan</core_schedule> 
+  <core_office_stats>B&#x00FC;ro-Status</core_office_stats> 
+  <core_work_order_stats>Arbeitsauftrag-Status</core_work_order_stats> 
+  <core_open_workorders>&#x00D6;ffnen Sie Arbeitsauftr&#x00E4;ge.</core_open_workorders> 
+  <core_assigned_workorders>Zugewiesene Arbeitsauftr&#x00E4;ge.</core_assigned_workorders> 
+  <core_waiting_payment>Wartezahlung</core_waiting_payment> 
+  <core_myit_crm>MyIT CRM</core_myit_crm> 
+  <core_version>CRM Version:</core_version> 
+  <core_update_status>Update-Status:</core_update_status> 
+  <core_links>Verbindungen</core_links> 
+  <core_control>Steuermitte</core_control> 
+  <core_documentation>Unterlagen</core_documentation> 
+  <core_report_bug>Berichten Sie &#x00FC;ber eine Wanze</core_report_bug> 
+  <core_click_scheudle>Klicken Sie an Tag, um Zeitplan anzusehen</core_click_scheudle> 
+  <core_admin>Admin</core_admin> 
+  <error_404_request>Die erbetene Seite,</error_404_request> 
+  <error_404_request_2>wurde nicht auf unserem System gefunden.</error_404_request_2> 
+  <error_404_request_3>Ein email ist zum System geschickt worden</error_404_request_3> 
+  <menu_new>Neu</menu_new> 
+  <menu_search>Suche</menu_search> 
+  <menu_edit>Redigieren Sie</menu_edit> 
+  <menu_delete>L&#x00F6;schung</menu_delete> 
+  <menu_close>Ende</menu_close> 
+  <menu_print>Druck</menu_print> 
+  <menu_edit>Redigieren Sie</menu_edit> 
+  <menu_home>Haupt</menu_home> 
+  <menu_log_out>Maschinenbordbuch Heraus</menu_log_out> 
+  <menu_customers>Kunden</menu_customers> 
+  <menu_customer_search>Kunde Suche</menu_customer_search> 
+  <menu_add_new_customer>Addieren Sie Neuen Kunden</menu_add_new_customer> 
+  <menu_edit_customer>Redigieren Sie Kunde Informationen</menu_edit_customer> 
+  <menu_new_gift>Neue Geschenk-Bescheinigung</menu_new_gift> 
+  <menu_gift_cert>Geschenk-Bescheinigung</menu_gift_cert> 
+  <menu_delete_customer>L&#x00F6;schung-Kunde</menu_delete_customer> 
+  <menu_work_orders>Arbeitsauftr&#x00E4;ge</menu_work_orders> 
+  <menu_open_work_orders>&#x00D6;ffnen Sie Arbeitsauftr&#x00E4;ge</menu_open_work_orders> 
+  <menu_closed_work_orders>Geschlossene Arbeitsauftr&#x00E4;ge</menu_closed_work_orders> 
+  <menu_new_note>Neue Anmerkung</menu_new_note> 
+  <menu_recieved_parts>Empfangene Teile</menu_recieved_parts> 
+  <menu_order_parts>Auftrag Teile</menu_order_parts> 
+  <menu_close_work_order>Naher Arbeitsauftrag Identifikation</menu_close_work_order> 
+  <menu_employees>Angestellte</menu_employees> 
+  <menu_invoice>Rechnung</menu_invoice> 
+  <menu_paid>Zahlend</menu_paid> 
+  <menu_paid_2>Zahlende Rechnungen</menu_paid_2> 
+  <menu_un_paid>Unbezahlt</menu_un_paid> 
+  <menu_un_paid_2>Unbezahlte Rechnungen</menu_un_paid_2> 
+  <menu_open_orders>&#x00D6;ffnen Sie Auftr&#x00E4;ge</menu_open_orders> 
+  <menu_closed_orders>Geschlossene Auftr&#x00E4;ge</menu_closed_orders> 
+  <main_heading>Willkommen zu Ihrem on-line-B&#x00FC;ro</main_heading> 
+  <main_company_notes>Firma-Anmerkungen</main_company_notes> 
+  <main_workorder_stats>Arbeitsauftrag-Notfall</main_workorder_stats> 
+  <main_new>Neu</main_new> 
+  <main_assigned>Zugewiesen</main_assigned> 
+  <main_waiting>WartecTeile</main_waiting> 
+  <main_payment>Erwarten Von von Zahlung</main_payment> 
+  <main_closed>Geschlossen</main_closed> 
+  <main_unpaid>Unbezahlt</main_unpaid> 
+  <main_balance>Balance</main_balance> 
+  <main_partial_paid>Teilweises Zahlendes</main_partial_paid> 
+  <main_out>Gesamtmenge Heraus</main_out> 
+  <main_paid>Vollst&#x00E4;ndig Gezahlt</main_paid> 
+  <main_total>Gesamtmenge</main_total> 
+  <main_invoice_stats>Rechnung Notfall</main_invoice_stats> 
+  <main_customer_stats>Kunde Notfall</main_customer_stats> 
+  <main_new_customers>Neu Dieser Monat</main_new_customers> 
+  <main_new_year_customers>Neu Dieses Jahr</main_new_year_customers> 
+  </translate>

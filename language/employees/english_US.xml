@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+	<translate>
+		<employee_add_new_employee>Add New Employee</employee_add_new_employee>
+		<employee_display_name>Display Name</employee_display_name>
+		<employee_display_name_criteria>NO special characters like !@#$%^*()</employee_display_name_criteria>
+		<employee_first_name>First Name</employee_first_name>
+		<employee_last_name>Last Name</employee_last_name>
+		<employee_password>Password</employee_password>
+		<employee_password_confirm>Confirm</employee_password_confirm>
+		<employee_phone_numbers>Phone Numbers</employee_phone_numbers>
+		<employee_home_phone_number>Home Phone Number</employee_home_phone_number>
+		<employee_work_phone_number>Work Phone Number</employee_work_phone_number>
+		<employee_mobile_phone_number>Mobile Phone Number</employee_mobile_phone_number>
+		<employee_address>Address</employee_address>
+		<employee_city>City</employee_city>
+		<employee_state>State</employee_state>
+		<employee_zip>Zip</employee_zip>
+		<employee_type>Employee Type</employee_type>
+		<employee_manager>Manager</employee_manager>
+		<employee_supervisor>Supervisor</employee_supervisor>
+		<employee_technician>Technician</employee_technician>
+		<employee_email_address>Email Address</employee_email_address>
+		<employee_submit>Submit</employee_submit>
+		<employee_search>Employee Search</employee_search>
+		<employee_employee_name>Employee Name</employee_employee_name>
+		<employee_view>View</employee_view>
+		<employee_records_found>records found</employee_records_found>
+		<employee_display>Display</employee_display>
+		<employee_first>First</employee_first>
+		<employee_last>Last</employee_last>
+		<employee_work_phone>Work</employee_work_phone>
+		<employee_type>Type</employee_type>
+		<employee_email>Email</employee_email>
+		<employee_action>Action</employee_action>
+		<employee_view_employee_details>View Employee Details</employee_view_employee_details>
+		<employee_home>Home</employee_home>
+		<employee_mobile>Mobile</employee_mobile>
+		<employee_page>Page</employee_page>
+		<employee_of>Of</employee_of>
+		<employee_details_for>Employee Details For</employee_details_for>
+		<employee_contact_information>Employee Contact Information</employee_contact_information>
+		<employee_assigned_work_orders>Assigned Work Orders</employee_assigned_work_orders>
+		<employee_id>ID</employee_id>
+		<employee_edit>Edit</employee_edit>
+		<employee_login>Login</employee_login>
+                <employee_login_id>Login ID</employee_login_id>
+		<employee_wo_id>WO ID</employee_wo_id>
+		<employee_date_open>Date Opened</employee_date_open>
+		<employee_customer>Customer</employee_customer>
+		<employee_scope>Scope</employee_scope>
+		<employee_status>Status</employee_status>
+		<employee_action>Action</employee_action>
+		<employee_work_order_id>Work Order ID</employee_work_order_id>
+		<employee_position>Position</employee_position>
+		<employee_based>Employee works from </employee_based>
+		<employee_b_home>Home</employee_b_home>
+		<employee_b_office>Office</employee_b_office>
+	</translate>

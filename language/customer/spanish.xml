@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+	<translate>
+		<main_title>Cliente Serach</main_title>
+		<display>Despliegue</display>
+		<first>Nombre</first>
+		<last>Nombre Pasado</last>
+		<phone>Teléfono</phone>
+		<type>Tipo</type>
+		<email>Email</email>
+		<action>Acción</action>
+		<customer_name>Nombre Del Cliente</customer_name>
+		<page>Página</page>
+		<of>de</of>
+		<records_found>expedientes encontrados</records_found>
+		<work>Trabajo</work>
+		<mobile>Móvil</mobile>
+	</translate>
