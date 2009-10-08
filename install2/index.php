@@ -1291,12 +1291,12 @@ include('version.php');
 @define('DB_NAME','".$_POST['db_name']."');
 
 // MySQL Database Settings
-\$DB_HOST = ".$_POST['db_host']." ;
-\$DB_USER = ".$_POST['db_user']." ;
-\$DB_PASS = ".$_POST['db_password']." ;
-\$DB_NAME = ".$_POST['db_name']." ;
+\$DB_HOST = \"".$_POST['db_host']."\" ;
+\$DB_USER = \"".$_POST['db_user']."\" ;
+\$DB_PASS = \"".$_POST['db_password']."\" ;
+\$DB_NAME = \"".$_POST['db_name']."\" ;
 
-//\$link = mysql_connect( \$DB_HOST, \$DB_USER, \$DB_PASS );
+\$link = mysql_connect( \$DB_HOST, \$DB_USER, \$DB_PASS );
 
 // Local Currency Details
 \$currency_code = '".$_POST['currency']."' ;
