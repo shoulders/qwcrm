@@ -8,7 +8,7 @@ window.location="?page=customer:delete&customer_id={/literal}{$customer_details[
 }
 {/literal} 
 </script>
-<!-- TODO - Testing out tabbed menu in customers details -->
+<!-- TODO - Testing out tabbed menu in customers details in IE678 -->
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/tabs.js"></script>
 <br>
@@ -39,7 +39,7 @@ window.location="?page=customer:delete&customer_id={/literal}{$customer_details[
                                 <td class="menuhead2" width="80%">
                                     &nbsp;{$translate_customer_details} {$customer_details[i].CUSTOMER_DISPLAY_NAME}</td>
                                 <td class="menuhead2" width="20%" align="right" valign="middle">
-                                    <a href="?page=customer:edit&customer_id={$customer_details[i].CUSTOMER_ID}&page_title=Edit%20Customer%20Information" target="new"><img src="images/icons/edit.gif" height="16" border="0"> Edit</a>
+                                    <a href="?page=customer:edit&customer_id={$customer_details[i].CUSTOMER_ID}&page_title=Edit%20Customer%20Information" target="new"><img src="images/icons/edit.gif"  alt="" height="16" border="0"> Edit</a>
                                 </td>
                             </tr>
                             <tr>
@@ -209,12 +209,12 @@ window.location="?page=customer:delete&customer_id={/literal}{$customer_details[
                                                     <img src="images/icons/16x16/stop.gif" border="0" alt="" onMouseOver="ddrivetip('{$translate_customer_delete}')" onMouseOut="hideddrivetip()"></a> {else} Not Active {/if}</td>
                                         </tr> {/section}
                                     </table>
-
+                                </td>
+                            </tr>
                         </table>
-            </table>
-            </td>
-            </tr>
-            </table>
+                    </td>
+                </tr>
+            </table>            
         </div>
 
         <!-- Tab 2 Contents -->
