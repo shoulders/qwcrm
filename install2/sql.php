@@ -866,7 +866,7 @@ function create_labor_rate($db) {
 			return false;
 		} else {
 		
-			$q="REPLACE INTO `".PRFX."TABLE_LABOR_RATE` VALUES (1,'Basic Labor',45,0,1),(2,'Commercial',55,0,1),(3,'Virus Removal',65,0,1),(4,'PC Clean',35,15,1)";
+			$q="REPLACE INTO `".PRFX."TABLE_LABOR_RATE` VALUES (1,'Basic Labor',45,0,1,'Service',''),(2,'Commercial',55,0,1,'Service',''),(3,'Virus Removal',65,0,1,'Service',''),(4,'Hard Drive',130,115,1,'Parts','Maxtor')";
 			
 			if(!$rs = $db->Execute($q)) {
 				return false;
