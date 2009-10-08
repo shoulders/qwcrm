@@ -1263,7 +1263,6 @@ $content = "<?php
 #############################################################
 # MyIT CRM 
 # index.php																
-# Version 3
 # PLEASE DON'T CHANGE ANY OF THESE VALUES UNLESS YOU KNOW
 # WHAT YOU ARE DOING....
 #############################################################
@@ -1329,7 +1328,7 @@ global \$smarty;
 \$db = &ADONewConnection('mysql');
 \$db->Connect(DB_HOST,DB_USER,DB_PASS,DB_NAME);
 
-
+?>
 \n";
 				
 	if (is_writable($filename)){
