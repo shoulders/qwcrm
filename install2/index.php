@@ -200,8 +200,8 @@ if($error_flag == true) {
 				<br><br>
 				The Admin login is: ".$login ." and the password you supplied in the previous page.<br><br>
 				Where to find help:<br>
-				The user Documentation is at <a href=\"http://myitcrm.wiki.sourceforge.net/\">www.myitcrm.wiki.sourceforge.net</a><br>
-				Bug Reporting is at <a href=\"https://apps.sourceforge.net/mantisbt/myitcrm/view_all_bug_page.php\">Mantis Bug Tracker</a><br>
+				The user Documentation is at <a href=\"http://trac.myitcrm.com/wiki/\">http://trac.myitcrm.com/wiki/</a><br>
+				Bug/Feature Reporting is at <a href=\"http://trac.myitcrm.com/newticket\">TRAC Bug Tracker</a><br>
 
 				</td>\n</tr>\n");
 }
@@ -1086,8 +1086,7 @@ echo ("
 																		<table width=\"100%\"  cellpadding=\"5\" cellspacing=\"0\" border=\"0\">
 																			<tr>
 																				<td>
-																					NOTE: To use the google Maps feature you will need to obtain a *free* api key for your site (only if installed on public websites/domains). Visit http://code.google.com/apis/maps/signup.html.<br>
-                                          This is your Company's contact information as it will show up on invoices and billing.</td>
+																				This is your Company's contact information as it will show up on invoices and billing.</td>
 																				</td>
 																			</tr>
 																		</table>	
