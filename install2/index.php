@@ -1327,7 +1327,7 @@ global \$smarty;
 \$db = &ADONewConnection('mysql');
 \$db->Connect(DB_HOST,DB_USER,DB_PASS,DB_NAME);
 
-?>
+
 \n";
 				
 	if (is_writable($filename)){
