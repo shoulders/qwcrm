@@ -30,7 +30,6 @@ window.location="?page=customer:delete&customer_id={/literal}{$customer_details[
 
         <!-- Tab 1 Contents -->
         <div id="tab_1_contents" class="tab_contents tab_contents_active">
-            {section name=i loop=$customer_details}
             <table width="100%" border="0" cellpadding="5" cellspacing="5">
                 <tr>
                     <td>
@@ -50,14 +49,19 @@ window.location="?page=customer:delete&customer_id={/literal}{$customer_details[
                                                 <br> {include file="core/error.tpl"}
                                                 <br> {/if}
                                                 <!-- Content -->
+                                                {section name=i loop=$customer_details}
                                                 <table class="olotable" border="0" cellpadding="5" cellspacing="5" width="100%" summary="Customer Contact">
                                                     <tr>
                                                         <td class="olohead" colspan="4">
                                                             <table width="100%" cellpadding="0" cellspacing="0" border="0">
                                                                 <tr>
                                                                     <td class="menuhead2">
-                                                                        &nbsp;{$translate_customer_contact}</td>
-                                                            </table></td>
+                                                                        &nbsp;{$translate_customer_contact}
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+
+                                                        </td>
                                                     </tr>
                                                     <tr>
                                                         <td class="menutd">
@@ -71,12 +75,12 @@ window.location="?page=customer:delete&customer_id={/literal}{$customer_details[
                                                     </tr>
                                                     <tr class="row2">
                                                         <td class="menutd" colspan="4">
-                                                            &nbsp;</td>
+                                                        </td>
                                                     </tr>
                                                     <tr>
                                                         <td class="menutd">
-                                                            <b>{$translate_customer_address}</b></td>
-                                                        <td class="menutd"></td>
+                                                            <b>{$translate_customer_address}</b>
+                                                        </td>
                                                         <td class="menutd">
                                                             <b>{$translate_customer_home}</b></td>
                                                         <td class="menutd">
@@ -104,7 +108,7 @@ window.location="?page=customer:delete&customer_id={/literal}{$customer_details[
                                                     </tr>
                                                     <tr class="row2">
                                                         <td class="menutd" colspan="4">
-                                                            &nbsp;</td>
+                                                        </td>
                                                     </tr>
                                                     <tr>
                                                         <td class="menutd">
@@ -117,7 +121,7 @@ window.location="?page=customer:delete&customer_id={/literal}{$customer_details[
                                                     </tr>
                                                     <tr class="row2">
                                                         <td class="menutd" colspan="4">
-                                                            &nbsp;</td>
+                                                        </td>
                                                     </tr>
                                                     <tr>
                                                         <td class="menutd">
@@ -129,92 +133,19 @@ window.location="?page=customer:delete&customer_id={/literal}{$customer_details[
                                                         <td class="menutd">
                                                             {$customer_details[i].LAST_ACTIVE|date_format:"%d-%m-%y"}</td>
                                                     </tr>
-                                                </table> {assign var="customer_id" value=$customer_details[i].CUSTOMER_ID} {assign var="customer_name" value=$customer_details[i].CUSTOMER_DISPLAY_NAME}
-                                                {/section}
-                                                <table class="olotable" width="100%" border="0" cellpadding="4" cellspacing="0">
-                                                    <tr>
-                                                        <td class="olohead">
-                                                            Memo</td>
-                                                    </tr> {section name=m loop=$memo}
-                                                    <tr>
-                                                        <td class="olotd4">
-                                                            <table width="100%">
-                                                                <tr>
-                                                                    <td>
-                                                                        <b>Date</b>
-                                                                        {$memo[m].DATE|date_format:"%d-%m-%y"}</td>
-                                                                    <td align="right">
-                                                                        <a href="?page=customer:memo&action=delete&note_id={$memo[m].ID}&customer_name={$customer_name}&customer_id={$customer_id}">Delete</a></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td colspan="2">
-                                                                        {$memo[m].NOTE}
-                                                                    </td>
-                                                                </tr>
-                                                            </table>
-                                                    </tr>
-                                                </table>
+                                                     {/section}
+                                                     {assign var="customer_id" value=$customer_details[i].CUSTOMER_ID} {assign var="customer_name" value=$customer_details[i].CUSTOMER_DISPLAY_NAME}
+                                                </table>                                       
+                                            {/section}
                                             </td>
-                                        </tr> {/section}
-                                        <tr>
-                                            <td class="olotd4">
-                                                <a href="?page=customer:memo&customer_id={$customer_id}&page_title=New Memo&customer_name={$customer_name}">New Memo</a></td>
-                                        </tr>
+                                        </tr> 
                                     </table>
-                                    <p>
-                                        &nbsp;
-                                    </p>
-                                    <b>{$translate_customer_gift_cert}</b>
-                                    <table class="olotable" width="100%" border="0" cellpadding="3" cellspacing="0">
-                                        <tr>
-                                            <td class="olohead">
-                                                {$translate_customer_id}</td>
-                                            <td class="olohead">
-                                                {$translate_customer_created}</td>
-                                            <td class="olohead">
-                                                {$translate_customer_expire}</td>
-                                            <td class="olohead">
-                                                {$translate_customer_amount}</td>
-                                            <td class="olohead">
-                                                {$translate_customer_active}</td>
-                                            <td class="olohead">
-                                                {$translate_customer_redeemed}</td>
-                                            <td class="olohead">
-                                                {$translate_customer_invoice}</td>
-                                            <td class="olohead">
-                                                {$translate_customer_action}</td>
-                                        </tr> {section name=g loop=$gift}
-                                        <tr onmouseover="this.className='row2'" onmouseout="this.className='row1'">
-                                            <td class="olotd4">
-                                                {$gift[g].GIFT_ID}</td>
-                                            <td class="olotd4">
-                                                {$gift[g].DATE_CREATE|date_format:"%d/%m/%y"}</td>
-                                            <td class="olotd4">
-                                                {$gift[g].EXPIRE|date_format:"%d/%m/%y"}</td>
-                                            <td class="olotd4">
-                                                ${$gift[g].AMOUNT}</td>
-                                            <td class="olotd4">
-                                                {if $gift[g].ACTIVE == 1} Yes {else} No{/if}</td>
-                                            <td class="olotd4">
-                                                {if $gift[g].DATE_REDEMED == 0}None {else} {$gift[g].DATE_REDEMED|date_format:"%d/%m/%y"}{/if}</td>
-                                            <td class="olotd4">
-                                                {if $gift[g].INVOICE_ID == 0}None{else}
-                                                <a href="">{$gift[g].INVOICE_ID}</a>
-                                                {/if}</td>
-                                            <td class="olotd4"> {if $gift[g].ACTIVE == 1}
-                                                <a href="?page=billing:new_gift&gift_id={$gift[g].GIFT_ID}&customer_id={$gift[g].CUSTOMER_ID}&action=print&submit=1&escape=1" target="new" >
-                                                    <img src="images/icons/16x16/fileprint.gif" border="0" alt="" onMouseOver="ddrivetip('{$translate_customer_print}')" onMouseOut="hideddrivetip()"></a>
-                                                &nbsp;
-                                                <a href="?page=billing:new_gift&gift_id={$gift[g].GIFT_ID}&customer_id={$gift[g].CUSTOMER_ID}&action=delete&submit=1">
-                                                    <img src="images/icons/16x16/stop.gif" border="0" alt="" onMouseOver="ddrivetip('{$translate_customer_delete}')" onMouseOut="hideddrivetip()"></a> {else} Not Active {/if}</td>
-                                        </tr> {/section}
-                                    </table>
-                                </td>
+                              </td>
                             </tr>
                         </table>
                     </td>
                 </tr>
-            </table>            
+            </table>
         </div>
 
         <!-- Tab 2 Contents -->
@@ -262,13 +193,13 @@ window.location="?page=customer:delete&customer_id={/literal}{$customer_details[
                         {$open_work_orders[a].CONFIG_WORK_ORDER_STATUS}</td>
                     <td class="olotd4"> {if $open_work_orders[a].EMPLOYEE_ID != ''}
                         <img src="images/icons/16x16/view+.gif" border="0" alt="" onMouseOver="ddrivetip('<center><b>{$translate_contact}</b></center><hr>
-                                  <b>{$translate_work} </b>
-                                  {$open_work_orders[a].EMPLOYEE_WORK_PHONE}
-                                  <br>
-                                  <b>{$translate_mobile} </b>
-                                  {$open_work_orders[a].EMPLOYEE_MOBILE_PHONE}
-                                  <br>
-                                  <b>{$translate_home} </b> {$open_work_orders[a].EMPLOYEE_HOME_PHONE}')" onMouseOut="hideddrivetip()">
+                                <b>{$translate_work} </b>
+                                {$open_work_orders[a].EMPLOYEE_WORK_PHONE}
+                                <br>
+                                <b>{$translate_mobile} </b>
+                                {$open_work_orders[a].EMPLOYEE_MOBILE_PHONE}
+                                <br>
+                                <b>{$translate_home} </b> {$open_work_orders[a].EMPLOYEE_HOME_PHONE}')" onMouseOut="hideddrivetip()">
                         <a class="link1" href="?page=employees:employee_details&employee_id={$open_work_orders[a].EMPLOYEE_ID}&page_title={$open_work_orders[a].EMPLOYEE_DISPLAY_NAME}">{$open_work_orders[a].EMPLOYEE_DISPLAY_NAME}</a> { else } Not Assigned {/if}</td>
                     <td class="olotd4" align="center">
                         <a href="?page=workorder:print&wo_id={$open_work_orders[a].WORK_ORDER_ID}&customer_id={$open_work_orders[a].CUSTOMER_ID}&escape=1" target="new">
@@ -309,13 +240,13 @@ window.location="?page=customer:delete&customer_id={/literal}{$customer_details[
                         {$closed_work_orders[b].CONFIG_WORK_ORDER_STATUS}</td>
                     <td class="olotd4"> {if $closed_work_orders[a].EMPLOYEE_ID != ''}
                         <img src="images/icons/16x16/view+.gif" border="0" alt="" onMouseOver="ddrivetip('<center><b>{$translate_contact}</b></center><hr>
-                                  <b>{$translate_work} </b>
-                                  {$open_work_orders[a].EMPLOYEE_WORK_PHONE}
-                                  <br>
-                                  <b>{$translate_mobile} </b>
-                                  {$open_work_orders[a].EMPLOYEE_MOBILE_PHONE}
-                                  <br>
-                                  <b>{$translate_home} </b> {$closed_work_orders[a].EMPLOYEE_HOME_PHONE}')" onMouseOut="hideddrivetip()">
+                                <b>{$translate_work} </b>
+                                {$open_work_orders[a].EMPLOYEE_WORK_PHONE}
+                                <br>
+                                <b>{$translate_mobile} </b>
+                                {$open_work_orders[a].EMPLOYEE_MOBILE_PHONE}
+                                <br>
+                                <b>{$translate_home} </b> {$closed_work_orders[a].EMPLOYEE_HOME_PHONE}')" onMouseOut="hideddrivetip()">
                         <a class="link1" href="?page=employees:employee_details&employee_id={$closed_work_orders[b].EMPLOYEE_ID}&page_title={$closed_work_orders[b].EMPLOYEE_DISPLAY_NAME}">{$closed_work_orders[b].EMPLOYEE_DISPLAY_NAME}</a> { else } Not Assigned {/if}</td>
                     <td class="olotd4" align="center">
                         <a href="?page=workorder:print&wo_id={$closed_work_orders[b].WORK_ORDER_ID}&customer_id={$closed_work_orders[b].CUSTOMER_ID}&escape=1" target="new">
@@ -431,3 +362,7 @@ window.location="?page=customer:delete&customer_id={/literal}{$customer_details[
 
 
 </div>
+
+</td>
+</tr>
+</table>
