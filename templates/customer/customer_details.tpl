@@ -80,8 +80,10 @@ window.location="?page=customer:delete&customer_id={/literal}{$customer_details[
                                                     <tr>
                                                         <td class="menutd">
                                                             <b>{$translate_customer_address}</b>
+                                                            <td class="menutd" >
+                                                            </td>
                                                         </td>
-                                                        <td class="menutd">
+                                                        <td class="menutd" >
                                                             <b>{$translate_customer_home}</b></td>
                                                         <td class="menutd">
                                                             {$customer_details[i].CUSTOMER_PHONE}</td>
@@ -303,7 +305,7 @@ window.location="?page=customer:delete&customer_id={/literal}{$customer_details[
                             <img src="images/icons/16x16/fileprint.gif" alt="" border="0" onMouseOver="ddrivetip('{$translate_customer_print}')" onMouseOut="hideddrivetip()"></a>
                         <a href="?page=workorder:view&wo_id={$unpaid_invoices[w].WORK_ORDER_ID}&customer_id={$unpaid_invoices[w].CUSTOMER_ID}">
                             <img src="images/icons/16x16/viewmag.gif" alt="" border="0" onMouseOver="ddrivetip('{$translate_customer_view}')" onMouseOut="hideddrivetip()"></a></td>
-                </tr> {/section}
+                </tr>{/section}
             </table>
             <br>
             <br>
@@ -356,12 +358,8 @@ window.location="?page=customer:delete&customer_id={/literal}{$customer_details[
                 </tr> {/section}
             </table>
         </div>
-
     </div>
-
-
 </div>
-
 </td>
 </tr>
 </table>
