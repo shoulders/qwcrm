@@ -133,7 +133,6 @@ window.location="?page=customer:delete&customer_id={/literal}{$customer_details[
                                                         <td class="menutd">
                                                             {$customer_details[i].LAST_ACTIVE|date_format:"%d-%m-%y"}</td>
                                                     </tr>
-                                                     {/section}
                                                      {assign var="customer_id" value=$customer_details[i].CUSTOMER_ID} {assign var="customer_name" value=$customer_details[i].CUSTOMER_DISPLAY_NAME}
                                                 </table>                                       
                                             {/section}
