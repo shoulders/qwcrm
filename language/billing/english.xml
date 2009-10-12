@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+	<translate>
+		<billing_invoice_id>Invoice ID</billing_invoice_id>
+		<billing_pp_invoice_id>PayPal Transaction/receipt #</billing_pp_invoice_id>
+		<billing_title>Billing For  Work Order ID #</billing_title>
+		<billing_date>Date</billing_date>
+		<billing_due_date>Invoice Due Date</billing_due_date>
+		<billing_amount>Amount:</billing_amount>
+		<billing_wo_id>Workorder ID</billing_wo_id>
+		<billing_balance>Balance</billing_balance>
+		<billing_email>Email:</billing_email>
+		<billing_phone>Phone:</billing_phone>
+		<billing_trans_log>Transaction Log</billing_trans_log>
+		<billing_trans>Trans Id</billing_trans>
+		<billing_type>Type</billing_type>
+		<billing_credit_card>Credit Card</billing_credit_card>
+		<billing_check>Cheque</billing_check>
+                <billing_deposit>Direct Deposit</billing_deposit>
+                <billing_deposit_id>Direct Deposit ID#</billing_deposit_id>
+                <billing_deposit_payment>Submit Direct Deposit Payment</billing_deposit_payment>
+		<billing_cash>Cash</billing_cash>
+		<billing_gift>Gift Certificate</billing_gift>
+		<billing_paypal>Pay Pal</billing_paypal>
+		<billing_memo>Memo:</billing_memo>
+		<billing_cc_num>Card Number</billing_cc_num>
+		<billing_type>Type</billing_type>
+		<billing_ccv>CCV</billing_ccv>
+		<billing_exp>Expiration</billing_exp>
+		<billing_cheque_no>Document #</billing_cheque_no>
+		<billing_gift_code>Gift Code</billing_gift_code>
+		<billing_gift_code_2>Enter the 16 digit code</billing_gift_code_2>
+		<billing_gift_code_3>Redemption Code:</billing_gift_code_3>
+		<billing_created>Created:</billing_created>
+		<billing_expires>Expires:</billing_expires>
+		<billing_cancel>Cancel</billing_cancel>
+		<billing_gift_note_1>Redeem this on your next repair to save</billing_gift_note_1>
+		<billing_gift_note_2>on parts and service.</billing_gift_note_2>
+		<billing_gift_note_3>Create a new gift certificate for</billing_gift_note_3>
+		<billing_gift_note_4>This can be redeemed later towards parts purchases or services.</billing_gift_note_4>
+		<billing_new_gift>New Gift Certificate for</billing_new_gift>
+		<billing_back>Back To Customer</billing_back>
+		<billing_customer_name>Customer Name:</billing_customer_name>
+		
+		<billing_print_title>Print Gift Certificate</billing_print_title>
+		<billing_results>Billing Results</billing_results>
+		<billing_paypal_note>Your browser will redirect to the secure PayPal website. Once the billing is complete fill in the form below to finish billing.</billing_paypal_note>
+		<billing_error_date>Please enter the  Gift Certificate Expiration Date</billing_error_date>
+		<billing_error_gift_amount>Please enter the  Gift Certificate Amount</billing_error_gift_amount>
+		<billing_error_invalid>Invalid information entered.</billing_error_invalid>
+		<billing_error_fix>Please correct these fields.</billing_error_fix>
+	</translate>
