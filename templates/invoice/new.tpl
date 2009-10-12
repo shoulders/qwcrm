@@ -499,7 +499,7 @@
                                             </tr>
                                         </table>
                                         <br>
-                                        <table width="100%"  celpadding="3" cellspacing="0" border="0">
+                                        <table width="100%"  cellpadding="3" cellspacing="0" border="0">
                                             <tr>
                                                 <td align="left" valign="top" width="25%">
                                                     <input type="hidden" name="chkValidateOnKeyPress" value="checked">
