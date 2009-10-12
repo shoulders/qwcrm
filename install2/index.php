@@ -1272,9 +1272,6 @@ include('version.php');
 @define('WWW_ROOT','".$_POST['default_site_name']."');
 @define('IMG_URL',WWW_ROOT.'images');
 @define('INCLUDE_URL',FILE_ROOT.'include'.SEP);
-// TODO remove these if it does not break anything
-//@define('SQL_URL',FILE_ROOT.'sql');
-//@define('CALENDAR_PATH',FILE_ROOT.'DateTime');
 @define('SMARTY_URL',INCLUDE_URL.'SMARTY'.SEP);
 @define('ACCESS_LOG',FILE_ROOT.'log'.SEP.'access.log');
 @define('LANG','".$_POST['language']."');
