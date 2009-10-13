@@ -1,8 +1,32 @@
 Changelog 
 .::NOTE::.
-ONLY BUGS THAT ARE REPORTED IN THE MANTIS BT BUG TRACKER ON THE PROJECT PAGE WILL BE FIXED OR ASSIGNED TO A RELEASE.
+ONLY BUGS THAT ARE REPORTED IN THE TRAC BUG TRACKER ON THE PROJECT PAGE WILL BE FIXED OR ASSIGNED TO A RELEASE.
 PLEASE REPORT ANY BUGS OR FEATURES THAT YOU FIND SO THAT WE CAN FIX'EM!
-To view more details on these issues, please visit https://apps.sourceforge.net/mantisbt/myitcrm/view_all_bug_page.php
+To view more details on these issues, please visit http://trac.myitcrm.com/
+
+====== v0.2.8.0 : 15th October 2009 =======
+
+0000108: Installer fails to encapsulate strings on conf.php
+0000091: Google Maps API Error
+0000090: MySQL Connection issue - conf.php issue
+0000099: Click on calendar enrty fails to open WO
+0000109: Customer specified discount not being applied in invoice area
+0000076: Can i use or create more Company Parts Suppliers
+0000092: Company's phone number shows up as secondary on work orders
+0000101: Undesirable client name being used on PDF invoices
+0000087: "Home" page "Invoice stats"
+0000093: Bug when viewing paid invoices page
+0000105: Bug when viewing un-paid invoices page
+0000098: Ability to delete work orders
+0000112: Manually enter login names for employee's
+0000089: Internet Explorer 8 is reporting errors
+0000065: Manually adding parts on an invoice...what about manufacturers?
+0000088: Icon are broken
+0000102: Billing name/address format on PDF invoices
+0000103: "Comments" font size increase on PDF invoices
+0000096: Viewing customer details page
+0000119: when printing PDF invoices it should open in a new window
+
 
 ==============
 V 0.2.7 : May 21st 2009.
