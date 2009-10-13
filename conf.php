@@ -32,9 +32,9 @@ include('version.php');
 $DB_HOST = "localhost" ;
 $DB_USER = "root" ;
 $DB_PASS = "myitcrm" ;
-$DB_NAME = 'myitcrm028' ;
+$DB_NAME = "myitcrm028" ;
 
-//$link = mysql_connect( "DB_HOST", "DB_USER", "DB_PASS" );
+//$link = mysql_connect( $DB_HOST, $DB_USER, $DB_PASS );
 
 // Currency
 $currency_code = 'AUD';

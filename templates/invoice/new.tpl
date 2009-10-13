@@ -359,7 +359,8 @@
 					 {if $wo_status == '9'}
                                             <button type="button" name="print"  OnClick=location.href="?page=invoice:print&amp;wo_id={$invoice.WORKORDER_ID}&customer_id={$invoice.CUSTOMER_ID}&invoice_id={$invoice.INVOICE_ID}&escape=1">{$translate_invoice_print}</button>
                                             <!-- <a <input type=button value="PDF Email Invoice" OnClick=location.href="?page=invoice:epdf&wo_id={$invoice.WORKORDER_ID}&customer_id={$invoice.CUSTOMER_ID}&invoice_id={$invoice.INVOICE_ID}&escape=1"></a> -->
-                                            <button type="button" name="pdf" OnClick=location.href="?page=invoice:pdf&wo_id={$invoice.WORKORDER_ID}&customer_id={$invoice.CUSTOMER_ID}&invoice_id={$invoice.INVOICE_ID}&escape=1"><img src="images/icons/pdf_small.png"  height="14" alt="pdf"> {$translate_invoice_pdf}</button>
+                                            <button type="button" name="pdf" OnClick=location.href="?page=invoice:pdf&wo_id={$invoice.WORKORDER_ID}&customer_id={$invoice.CUSTOMER_ID}&invoice_id={$invoice.INVOICE_ID}&escape=1"><img src="images/icons/pdf_small
+                                            .png"  height="14" alt="pdf"> {$translate_invoice_pdf}</button>
                                             <button type="button" name="Receive Payment" OnClick=location.href="?page=billing:new&wo_id={$invoice.WORKORDER_ID}&customer_id={$invoice.CUSTOMER_ID}&invoice_id={$invoice.INVOICE_ID}&page_title=Receiving%20Payment%20for%20{$invoice.INVOICE_ID}">{$translate_invoice_bill_customer}</button>
                                             {else}
                                             <button type="button" name="Close Work Order" OnClick=location.href="?page=workorder:close&amp;wo_id={$invoice.WORKORDER_ID}&amp;page_title=Closing%20Work%20Order{$invoice.WORKORDER_ID}">{$translate_invoice_close_wo}</button>

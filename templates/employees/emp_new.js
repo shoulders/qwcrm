@@ -22,7 +22,7 @@ function validate_new_employee(frm) {
   }
 
   value = frm.elements['password'].value;
-  if (value != '' && value.length > 50 && !errFlag['password']) {
+  if (value != '' && value.length > 12 && !errFlag['password']) {
     errFlag['password'] = true;
     _qfMsg = _qfMsg + '\n - Password cannot be more than 12 characters';
 	frm.elements['password'].className = 'error';
@@ -41,6 +41,13 @@ function validate_new_employee(frm) {
     errFlag['confirmPass'] = true;
     _qfMsg = _qfMsg + '\n - Please confirm password';
 	frm.elements['confirmPass'].className = 'error';
+  }
+
+  value = frm.elements['login_id'].value;
+  if (value == '' && !errFlag['login_id']) {
+    errFlag['login_id'] = true;
+    _qfMsg = _qfMsg + '\n - Please enter employees username for login';
+    frm.elements['login_id'].className = 'error';
   }
 
   value = frm.elements['displayName'].value;
