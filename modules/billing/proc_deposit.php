@@ -3,11 +3,11 @@ require('include.php');
 
 /* get vars */
 $deposit_amount	= $_POST['deposit_amount'];
-$deposit_memo		= $_POST['deposit_memo'];
-$deposit_recieved	= $_POST['deposit_recieved'];
-$customer_id	= $_POST['customer_id'];
-$invoice_id		= $VAR['invoice_id'];
-$workorder_id	= $_POST['workorder_id'];
+$deposit_memo = $_POST['deposit_memo'];
+$deposit_recieved = $_POST['deposit_recieved'];
+$customer_id = $_POST['customer_id'];
+$invoice_id = $_POST['invoice_id'];
+$workorder_id = $_POST['workorder_id'];
 
 
 /* validation */
@@ -15,7 +15,7 @@ if(empty($deposit_amount)) {
 	force_page("billing", "new&error_msg=Please Fill in the Deposit amount.&wo_id=$workorder_id&customer_id=$customer_id&invoice_id=$invoice_id&page_title=Billing");
 }
 
-if(empty($cheque_recieved)) {
+if(empty($deposit_recieved)) {
 	force_page("billing", "new&error_msg=Please Fill in the Deposit ID Number.&wo_id=$workorder_id&customer_id=$customer_id&invoice_id=$invoice_id&page_title=Billing");
 }
 
@@ -48,7 +48,7 @@ if($invoice_details['INVOICE_AMOUNT'] > $deposit_amount){
 
 	$q = "INSERT INTO ".PRFX."TABLE_TRANSACTION SET
 		  DATE 			= ".$db->qstr(time()).",
-		  TYPE 			= '2',
+		  TYPE 			= '6',
 		  INVOICE_ID 	= ".$db->qstr($invoice_id).",
 		  WORKORDER_ID 	= ".$db->qstr($workorder_id).",
 		  CUSTOMER_ID 	= ".$db->qstr($customer_id).",
@@ -72,7 +72,7 @@ if($invoice_details['INVOICE_AMOUNT'] > $deposit_amount){
 		  	PAID_DATE  	= ".$db->qstr(time()).",
 		  	INVOICE_PAID	= ".$db->qstr($flag).",
 		  	PAID_AMOUNT 	= ".$db->qstr($paid_amount).",
-		  	balance 		= ".$db->qstr($balance)." WHERE INVOICE_ID = ".$db->qstr($invoice_id);
+		  	BALANCE 		= ".$db->qstr($balance)." WHERE INVOICE_ID = ".$db->qstr($invoice_id);
 	}
 		  
 	if(!$rs = $db->execute($q)) {
@@ -118,7 +118,7 @@ if($invoice_details['INVOICE_AMOUNT'] > $deposit_amount){
 	
 		$q = "INSERT INTO ".PRFX."TABLE_TRANSACTION SET
 			DATE 			= ".$db->qstr(time()).",
-			TYPE 			= '2',
+			TYPE 			= '6',
 			INVOICE_ID 	= ".$db->qstr($invoice_id).",
 			WORKORDER_ID 	= ".$db->qstr($workorder_id).",
 			CUSTOMER_ID 	= ".$db->qstr($customer_id).",
@@ -134,7 +134,7 @@ if($invoice_details['INVOICE_AMOUNT'] > $deposit_amount){
 			PAID_DATE  			= ".$db->qstr(time()).", 
 			PAID_AMOUNT 			= ".$db->qstr($deposit_amount).",
 			INVOICE_PAID			= '1',
-			balance 				= ".$db->qstr(0.00)."
+			BALANCE 				= ".$db->qstr(0.00)."
 			WHERE INVOICE_ID 	= ".$db->qstr($invoice_id);
 			
 		if(!$rs = $db->execute($q)) {
