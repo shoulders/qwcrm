@@ -1,0 +1,1 @@
+ALTER table TABLE_INVOICE auto_increment = 100; 
