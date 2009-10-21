@@ -188,8 +188,8 @@
                                             </tr>
                                         </table>
                                         <p>
-                                            <input type="text" name="customer_id"  value="{$customer_id}">
-                                            <input type="text" name="invoice_id"   value="{$invoice_id}">
+                                            <input type="hidden" name="customer_id"  value="{$customer_id}">
+                                            <input type="hidden" name="invoice_id"   value="{$invoice_id}">
                                             <input type="hidden" name="workorder_id" value="{$workorder_id}">
                                             <input type="hidden" name="page"         value="billing:proc_deposit">
                                             <input type="submit" name="submit" value="{$translate_billing_deposit_payment}">
