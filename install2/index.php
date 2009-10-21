@@ -397,7 +397,7 @@ echo ("
 																				</tr><tr>
 																					<td width=\"140\">Currency</td>
 																					<td>
-																						<select name=\"currecny\" size=\"1\" >
+																						<select name=\"currency\" size=\"1\" >
 																							<option value=\"AFN\">Afghanistan, Afghanis</option>
                                                                                                                                                                                         <option value=\"ALL\">Albania, Leke</option>
                                                                                                                                                                                         <option value=\"DZD\">Algeria, Dinars</option>
