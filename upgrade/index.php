@@ -89,7 +89,7 @@ switch ($mode) {
         if($error_flag == true) {
 	/* error can not complete the install */
             echo("<tr>\n
-				<td colspan=\"2\">There where errors during the upgrade process. MyIT CRM has not been upgraded. If the errors continue please submit a bug report at.</td>\n
+				<td colspan=\"2\">There where errors during the upgrade process. MyIT CRM has not been upgraded. If the errors continue please submit a bug report at http://trac.myitcrm.com</td>\n
 			</tr>\n");
         } else {
 		/* create lock file */
