@@ -1,11 +1,13 @@
 <?php
 require_once ('include.php');
+header('Content-type: text/html; charset=utf-8');
 if(!xml2php("invoice")) {
 	$smarty->assign('error_msg',"Error in language file");
 }
 
 $invoice_id  = $VAR['invoice_id'];
 $customer_id = $VAR['customer_id'];
+//$currency_sym = $VAR['currency_sym'];
 //$workorder_id = $VAR['workorder_id';
 //$amountpaid = $payments.AMOUNT;
 
@@ -184,6 +186,7 @@ $paidamntinv = $invoice3['PAID_AMOUNT'];
 $discinv = $invoice3['DISCOUNT'];
 $amntinv = $invoice3['INVOICE_AMOUNT'];
 $shipinv = $invoice3['SHIPPING'];
+$currency_sym = utf8_decode($currency_sym);
 
 if ($invoice3['INVOICE_PAID'] = 1){
 	$balinv = $invoice3['BALANCE'];}
@@ -719,13 +722,13 @@ while($row = mysql_fetch_array($result))
 							, 1, 0, 'R', 0);
 	$pdf->SetY($y_axis_initial +($row_height * $max + 1));
 	$pdf->SetX(170);
-	$pdf->MultiCell(30, 6, "$$totalinv\n" .
-							"$$taxinv\n" .
-							"$$shipinv\n" .
-							"$$discinv\n" .
-							"$$amntinv\n" .
-							"$$paidamntinv\n" .
-							"$balinv\n"
+	$pdf->MultiCell(30, 6, "$currency_sym $totalinv\n" .
+							"$currency_sym $taxinv\n" .
+							"$currency_sym $shipinv\n" .
+							"$currency_sym $discinv\n" .
+							"$currency_sym $amntinv\n" .
+							"$currency_sym $paidamntinv\n" .
+							"$currency_sym $balinv\n"
 							, 1, 0, 'R', 2);
  //Payment Instructions
  $pdf->SetY($y_axis_initial +($row_height * $max + 1));
