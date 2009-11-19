@@ -1,4 +1,6 @@
 <?php
+// Added to eliminate special characters
+header('Content-type: text/html; charset=utf-8');
 /* check if lock file exists if not we need to install */
 session_start();
 require('conf.php');
