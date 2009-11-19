@@ -245,6 +245,7 @@ if($html_print == 1) {
 	$smarty->assign('company',$company);
 	$smarty->assign('company2',$company2);
 	$smarty->assign('currency_code',$currency_code);
+        $smarty->assign('currency_sym',$currency_sym);
          $smarty->assign('country',$country);
         $smarty->assign('pamount',$pamount);
 	$smarty->display('invoice'.SEP.'print.tpl');

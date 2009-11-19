@@ -86,8 +86,8 @@
             <tr>
                 <td class="olotd4" width="40">{$labor[q].INVOICE_LABOR_UNIT}</td>
                 <td class="olotd4" >{$labor[q].INVOICE_LABOR_DESCRIPTION}</td>
-                <td class="olotd4" width="40" align="right">${$labor[q].INVOICE_LABOR_RATE|string_format:"%.2f"}</td>
-                <td class="olotd4" width="80" align="right">${$labor[q].INVOICE_LABOR_SUBTOTAL|string_format:"%.2f"}</td>
+                <td class="olotd4" width="40" align="right">{$currency_sym}{$labor[q].INVOICE_LABOR_RATE|string_format:"%.2f"}</td>
+                <td class="olotd4" width="80" align="right">{$currency_sym}{$labor[q].INVOICE_LABOR_SUBTOTAL|string_format:"%.2f"}</td>
             </tr>
 	{/section}
         </table>
@@ -96,8 +96,8 @@
             <tr class="olotd4">
                 <td width="40" class="olotd4">{$parts[w].INVOICE_PARTS_COUNT}</td>
                 <td class="olotd4">{$parts[w].INVOICE_PARTS_DESCRIPTION}</td>
-                <td width="50" class="olotd4" align="right">${$parts[w].INVOICE_PARTS_AMOUNT|string_format:"%.2f"}</td>
-                <td width="80" class="olotd4" align="right">${$parts[w].INVOICE_PARTS_SUBTOTAL|string_format:"%.2f"}</td>
+                <td width="50" class="olotd4" align="right">{$currency_sym}{$parts[w].INVOICE_PARTS_AMOUNT|string_format:"%.2f"}</td>
+                <td width="80" class="olotd4" align="right">{$currency_sym}{$parts[w].INVOICE_PARTS_SUBTOTAL|string_format:"%.2f"}</td>
             </tr>
 	{/section}
         </table>
@@ -148,28 +148,28 @@
     <table width="200" border="1" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
         <tr>
             <td class="olotd4" align="left"><b>Sub Total</b></td>
-            <td class="olotd4" width="80" align="right">${$invoice.SUB_TOTAL|string_format:"%.2f"}</td>
+            <td class="olotd4" width="80" align="right">{$currency_sym} {$invoice.SUB_TOTAL|string_format:"%.2f"}</td>
         </tr><tr>
             <td class="olotd4"><b>Tax</b></td>
-            <td class="olotd4" width="80" align="right">${$invoice.TAX|string_format:"%.2f"}</td>
+            <td class="olotd4" width="80" align="right">{$currency_sym} {$invoice.TAX|string_format:"%.2f"}</td>
         </tr><tr>
             <td class="olotd4"><b>Shipping</b></td>
-            <td class="olotd4" width="80" align="right">${$invoice.SHIPPING|string_format:"%.2f"}</td>
+            <td class="olotd4" width="80" align="right">{$currency_sym}{$invoice.SHIPPING|string_format:"%.2f"}</td>
         </tr><tr>
             <td class="olotd4"><b>Discount</b></td>
-            <td class="olotd4" width="80" align="right">- ${$invoice.DISCOUNT|string_format:"%.2f"}</td>
+            <td class="olotd4" width="80" align="right">- {$currency_sym} {$invoice.DISCOUNT|string_format:"%.2f"}</td>
         </tr><tr>
             <td class="olotd4"><b>Invoice Total</b></td>
-            <td class="olotd4" width="80" align="right"><b>${$invoice.INVOICE_AMOUNT|string_format:"%.2f"}</b></td>
+            <td class="olotd4" width="80" align="right"><b>{$currency_sym} {$invoice.INVOICE_AMOUNT|string_format:"%.2f"}</b></td>
         </tr><tr>
             <td class="olotd4"><b>Payments Made</b></td>
-            <td class="olotd4" width="80" align="right">${$payments.AMOUNT|string_format:"%.2f"}</td>
+            <td class="olotd4" width="80" align="right">{$currency_sym} {$payments.AMOUNT|string_format:"%.2f"}</td>
         </tr><tr>
             <td class="olotd4"><b>Invoice Balance</b></td>
 						{if $invoice.PAID_AMOUNT == 0}
-            <td class="olotd4" width="80" align="right"><b><font color="#CC0000">${$invoice.INVOICE_AMOUNT-$payments.AMOUNT|string_format:"%.2f"}</font></b></td>
+            <td class="olotd4" width="80" align="right"><b><font color="#CC0000">{$currency_sym} {$invoice.INVOICE_AMOUNT-$payments.AMOUNT|string_format:"%.2f"}</font></b></td>
 				    {else}
-            <td class="olotd4" width="80" align="right"><b><font color="#CC0000">${$invoice.INVOICE_AMOUNT-$payments.AMOUNT|string_format:"%.2f"}</font></b></td>
+            <td class="olotd4" width="80" align="right"><b><font color="#CC0000">{$currency_sym} {$invoice.INVOICE_AMOUNT-$payments.AMOUNT|string_format:"%.2f"}</font></b></td>
 				    {/if}
         </tr>
     </table>
