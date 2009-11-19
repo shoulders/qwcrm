@@ -11,7 +11,6 @@
     <link rel="stylesheet" href="css/default.css" type="text/css" />
     <link rel="stylesheet" href="css/sdmenu.css" type="text/css" />
     <script type="text/javascript" src="js/sdmenu.js"></script>
-    <!-- TODO - Testing out tabbed menu in customers details in IE678 -->
     <script type="text/javascript" src="js/jquery.min.js"></script>
     <script type="text/javascript" src="js/tabs.js"></script>
      {literal}
