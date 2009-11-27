@@ -512,17 +512,19 @@ function lineVert( $tab )
     }
     return $maxSize;
 }
-function addRemark($cthankyou)
+//TODO - Tagged for code deletion of addRemark
+/*function addRemark($cthankyou)
 {
     $this->SetFont( "Helvetica", "", 7);
     $length = $this->GetStringWidth( $cthankyou );
-    $r1  = 25;
+    $r1  = 20;
     $r2  = $r1 + $length;
     $y1  = $this->h - 40;
     $y2  = $y1+5;
-    $this->SetXY( $r1 , $y1 );
-    $this->Cell($length,4, $cthankyou ,0,0,'C');
-}
+    $this->SetXY( 20 , 250 );
+    //$this->Cell($length,4, $cthankyou ,0,0,'C');
+    $this->MultiCell(0,5, $cthankyou ,0,0,'L',0);
+} */
 // Now lets write some HTML links for PayPal on the PDF invoice and insert button
 
 var $B;
@@ -804,7 +806,11 @@ $invdue=(date('d M Y',($invoice[INVOICE_DUE])));
 							, 0, 0, 'L', 0);							
 	
 
-$pdf->addremark($cthankyou);
+//$pdf->addremark($cthankyou);
+$pdf->SetY($y_axis_initial +($row_height * $max + 60));
+ $pdf->SetX(10);
+ $pdf->SetFont('Arial', 'B', 6);
+ $pdf->MultiCell(0, 4, $cthankyou , 0 ,'J', FALSE);
 //$pdf->Output("cache/INV#".$invoice[INVOICE_ID].".pdf", 'F' );
 $pdf->Output("INV#".$invoice[INVOICE_ID].".pdf",'I');
 //TODO - Get pdf file uploaded into database for storage
