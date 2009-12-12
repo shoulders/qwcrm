@@ -2,7 +2,12 @@ Changelog
 .::NOTE::.
 ONLY BUGS THAT ARE REPORTED IN THE TRAC BUG TRACKER ON THE PROJECT PAGE WILL BE FIXED OR ASSIGNED TO A RELEASE.
 PLEASE REPORT ANY BUGS OR FEATURES THAT YOU FIND SO THAT WE CAN FIX'EM!
-To view more details on these issues, please visit http://trac.myitcrm.com/
+To view more details on these issues, please visit http://team.myitcrm.com/
+
+===v0.2.8.1 : 4th November 2009===
+
+#70 Install and Upgrade process
+
 
 ====== v0.2.8.0 : 15th October 2009 =======
 
