@@ -200,8 +200,8 @@ if($error_flag == true) {
 				<br><br>
 				The Admin login is: ".$login ." and the password you supplied in the previous page.<br><br>
 				Where to find help:<br>
-				The user Documentation is at <a href=\"http://trac.myitcrm.com/wiki/\">http://trac.myitcrm.com/wiki/</a><br>
-				Bug/Feature Reporting is at <a href=\"http://trac.myitcrm.com/newticket\">TRAC Bug Tracker</a><br>
+				The user Documentation is at <a href=\"http://team.myitcrm.com/projects/show/main/\">http://team.myitcrm.com</a><br>
+				Bug/Feature Reporting is at <a href=\"http://team.myitcrm.com/projects/main/issues/new\">Bug Tracker</a><br>
 
 				</td>\n</tr>\n");
 }
@@ -392,6 +392,17 @@ echo ("
 																							<option value=\"english.xml\">English-UK
 																							<option value=\"english_US.xml\">English-US
 																																													
+																						</select>
+																					</td>
+																				</tr>tr>
+																					<td width=\"140\">Currency Symbol</td>
+																					<td>
+																						<select name=\"currency_sym\" size=\"1\" >
+																							<option	value=\"\" SELECTED>Choose One
+																							<option value=\"$\">$ - Dollars
+																							<option value=\"£\">£ - Pounds
+                                                                                                                                                                                        <option value=\"€\">€ - Euros
+
 																						</select>
 																					</td>
 																				</tr><tr>
@@ -1295,7 +1306,7 @@ include('version.php');
 
 // Local Currency Details
 \$currency_code = '".$_POST['currency']."' ;
-\$currency_sym = '$' ;
+\$currency_sym = '".$_POST['currency_sym']."' ;
 
 /* Load required Includes */
 require(INCLUDE_URL.'session.php');
