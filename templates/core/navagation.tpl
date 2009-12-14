@@ -84,11 +84,11 @@
 		{/if}
 		<div>
         <span>MyIT CRM Project</span>
-            <a href="http://myitcrm.com"><img src="images/icons/web.png" alt="" border="0" height="14" width="14" /> Website</a>
-            <a href="http://trac.myitcrm.com/newticket"><img src="images/icons/bug.png" alt=""border="0" height="14" width="14" /> Bug Tracker</a>
-            <a href="http://myitcrm.com/forum/"><img src="images/icons/comment.png" alt="" border="0" height="14" width="14" /> Forum</a>
-            <a href="https://sourceforge.net/projects/myitcrm/"><img src="images/icons/sf.ico" alt="" border="0" height="14" width="14" /> SF Page</a>
-            <a href="https://sourceforge.net/export/rss2_projfiles.php?group_id=254082"><img src="images/icons/bookmark.png" alt="" border="0" height="14" width="14" /> Latest Release</a>
+            <a href="http://team.myitcrm.com" target="_blank"><img src="images/icons/web.png" alt="" border="0" height="14" width="14" /> Website</a>
+            <a href="http://team.myitcrm.com/projects/main/issues/new" target="_blank"><img src="images/icons/bug.png" alt=""border="0" height="14" width="14" /> Bug Tracker</a>
+            <a href="http://team.myitcrm.com/projects/main/boards" target="_blank"><img src="images/icons/comment.png" alt="" border="0" height="14" width="14" /> Forum</a>
+            <a href="https://sourceforge.net/projects/myitcrm/" target="_blank"><img src="images/icons/sf.ico" alt="" border="0" height="14" width="14" /> SF Page</a>
+            <a href="https://sourceforge.net/export/rss2_projfiles.php?group_id=254082" target="_blank"><img src="images/icons/bookmark.png" alt="" border="0" height="14" width="14" /> Latest Release</a>
         </div>
     </div>
   </tr>
