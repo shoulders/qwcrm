@@ -8,6 +8,7 @@ $wo_id = $VAR['wo_id'];
 $customer_id = $VAR['customer_id'];
 $id = $login_id;
 $smarty->assign('id', $id);
+$smarty->assign('currency_sym', $currency_sym);
 
 if(!is_file('cache/lock') ) {
 	echo("
