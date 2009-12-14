@@ -107,25 +107,25 @@
                                                 <a href="?page=invoice:view_unpaid&amp;page_title=Un-Paid%20Invoices">{$in_unpaid_count}</a>
                                             </td>
                                             <td>
-                                                <font color="#cc0000">${$in_unpaid_bal|string_format:"%.2f"}</font>
+                                                <font color="#cc0000">{$currency_sym}{$in_unpaid_bal|string_format:"%.2f"}</font>
                                             </td>
                                             <td>
                                                 <a href="?page=invoice:view_unpaid&amp;page_title=Un-Paid%20Invoices">{$in_part_count}</a>
                                             </td>
                                             <td>
-                                                <font color="#cc0000">${$in_part_bal|string_format:"%.2f"}</font>
+                                                <font color="#cc0000">{$currency_sym}{$in_part_bal|string_format:"%.2f"}</font>
                                             </td>
                                             <td>
-                                                <font color="#cc0000">${$in_out_bal|string_format:"%.2f"}</font>
+                                                <font color="#cc0000">{$currency_sym}{$in_out_bal|string_format:"%.2f"}</font>
                                             </td>
                                             <td>
                                                 <a href="?page=invoice:view_paid&amp;page_title=Paid%20Invoices">{$in_paid_count}</a>
                                             </td>
                                             <td>
-                                                <font color="green">${$in_total_bal|string_format:"%.2f"}</font>
+                                                <font color="green">{$currency_sym}{$in_total_bal|string_format:"%.2f"}</font>
                                             </td>
                                             <td>
-                                                <font color="green">${$in_total2|string_format:"%.2f"}</font>
+                                                <font color="green">{$currency_sym}{$in_total2|string_format:"%.2f"}</font>
                                             </td>
                                         </tr>
                                     </table>
