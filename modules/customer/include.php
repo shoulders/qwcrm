@@ -264,9 +264,13 @@ function check_customer_ex($db, $displayName) {
 
 function insert_new_customer($db,$VAR) {
 
+//Added to strip slashes
+$string= $VAR['address'];
+$string2=stripslashes($string);
+
 	$sql = "INSERT INTO ".PRFX."TABLE_CUSTOMER SET
 			CUSTOMER_DISPLAY_NAME	= ". $db->qstr( $VAR["displayName"]  ).",
-			CUSTOMER_ADDRESS		= ". $db->qstr( $VAR["address"]      ).", 
+			CUSTOMER_ADDRESS		= ". $db->qstr( $string2      ).",
 			CUSTOMER_CITY			= ". $db->qstr( $VAR["city"]         ).", 
 			CUSTOMER_STATE			= ". $db->qstr( $VAR["state"]        ).", 
 			CUSTOMER_ZIP				= ". $db->qstr( $VAR["zip"]          ).",
@@ -312,10 +316,13 @@ function edit_info($db, $customer_id){
 #####################################
 
 function update_customer($db,$VAR) {
+    //Added to strip slashes
+$string= $VAR['address'];
+$string2=stripslashes($string);
 
 	$sql = "UPDATE ".PRFX."TABLE_CUSTOMER SET
 			CUSTOMER_DISPLAY_NAME	= ". $db->qstr( $VAR["displayName"]	).",
-			CUSTOMER_ADDRESS		= ". $db->qstr( $VAR["address"]		).", 
+			CUSTOMER_ADDRESS		= ". $db->qstr( $string2		).",
 			CUSTOMER_CITY			= ". $db->qstr( $VAR["city"]			).", 
 			CUSTOMER_STATE			= ". $db->qstr( $VAR["state"]			).", 
 			CUSTOMER_ZIP				= ". $db->qstr( $VAR["zip"]				).",

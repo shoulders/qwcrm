@@ -7,7 +7,7 @@
 				<tr>
 					<td class="menuhead2" width="80%">{$translate_customer_add}</td>
 					<td class="menuhead2" width="20%" align="right" valign="middle">
-							<a href="http://www.citecrm.com/docs/#Customers" target="new"><img src="images/icons/16x16/help.gif" border="0"
+							<a><img src="images/icons/16x16/help.gif" alt="" border="0"
 							onMouseOver="ddrivetip('<b>{$translate_customer_add}</b><hr><p><i>Display Name:</i>This is the customers display name. It will show up on all pertaining pages. This can be a company name or the customers Fist name and last name.<br><br> <i>First Name:</i>This is the customers first name or if this is a bussiness this is the main contacts first name for the bussiness.<br></p>')" 
 							onMouseOut="hideddrivetip()"
 							onClick="window.location"></a>
@@ -73,7 +73,7 @@
 															<tbody align="left">
 																<tr>
 																	<td><span style="color: #ff0000">*</span><b>{$translate_customer_address}</b></td>
-																	<td colspan="3"><input class="olotd5" size="54" name="address" type="text" /></td>
+																	<td colspan="3"><input class="olotd5" size="80" name="address" type="text" value="405 Example Street" /></td>
 																</tr><tr>
 																	<td><span style="color: #ff0000">*</span><b>{$translate_customer_city}</b></td>
 																	<td><input class="olotd5" name="city" type="text" value="{$company_city}"/></td>
@@ -90,7 +90,7 @@
 														</tr><tr>
 															<td class="menuhead" colspan="2"><br></td>
 														</tr><tr>
-															<td><span style="color: #ff0000"></span><b>{$translate_email}</b> <input class="olotd5" name="email" type="text" /></td>
+															<td><span style="color: #ff0000"></span><b>{$translate_email}</b> <input class="olotd5" name="email" type="text" size="50"/></td>
 															<td><span style="color: #ff0000">*</span><b>{$translate_customer_type}</b>
 																	<select class="olotd5" name="customerType">
 																		<option value="1">{$translate_customer_type_1}</option>
@@ -101,8 +101,7 @@
 																<input type="hidden" name="page" value="customer:new">
 															</td>
 														</tr><tr>
-															<td><b>{$translate_customer_discount}</b></td>
-															<td><input type="text" name="discount" value="" class="olotd5"></td>
+                                                                                                                        <td><b>{$translate_customer_discount}</b><a><input type="text" size="4" name="discount" value="" class="olotd5"><b>%</b></a></td>
 														</tr>
 															<td colspan="2"><input class="olotd5" name="submit" value="submit" type="submit" /></td>
 														</tr>

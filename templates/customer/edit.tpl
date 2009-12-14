@@ -70,7 +70,7 @@
 													<tr>
 														<td><span style="color: #ff0000">*</span>
 															<strong>{$translate_customer_address}</strong></td>
-														<td colspan="3"><input class="olotd5" size="54" value="{$customer[q].CUSTOMER_ADDRESS}" name="address" type="text" /></td>
+														<td colspan="3"><input class="olotd5" size="80" value="{$customer[q].CUSTOMER_ADDRESS}" name="address" type="text" /></td>
 													</tr><tr>
 														<td><span style="color: #ff0000">*</span>
 															<strong>{$translate_customer_city}</strong></td>
@@ -90,7 +90,7 @@
 										</tr><tr>
 											<td>
 												<span style="color: #ff0000">*</span>
-												<strong>{$translate_email}</strong> <input class="olotd5" value="{$customer[q].CUSTOMER_EMAIL}" name="email" type="text" />
+												<strong>{$translate_email}</strong> <input class="olotd5" value="{$customer[q].CUSTOMER_EMAIL}" name="email" size="50" type="text" />
 											</td>
 											<td><span style="color: #ff0000">*</span>
 												<strong>{$translate_type}</strong>
@@ -103,8 +103,7 @@
 												<input type="hidden" name="page" value="customer:edit">
 											</td>
 										</tr><tr>
-											<td><b>{$translate_customer_discount}</b></td>
-											<td><input class="olotd5" type="text" size="6" name="discount" value="{$customer[q].DISCOUNT}">%</td>
+                                                                                        <td><b>{$translate_customer_discount}</b><a><input class="olotd5" type="text" size="4" name="discount" value="{$customer[q].DISCOUNT}"></a><b>%</b></td>
 										</tr>
 											<td colspan="2"><input type="submit" name="submit" value="submit"></td>
 										</tr>
