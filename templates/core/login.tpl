@@ -20,10 +20,40 @@
           </td>
         </tr>
         <tr>
-          <td align="center">
-            <p>
+            <td>
+                <p>
                &nbsp;
             </p>
+            </td>
+          <td align="center">
+              <!-- Start of new dashboard front page 
+              <table class="olotable" width="75%" align="left" border ="1" cellpadding="5" cellspacing="5" >
+                  <tr>
+                      <td class="olohead" colspan="2">
+                          Dashboard
+                      </td>
+                  </tr>
+                  <tr>
+                      <td class="olotd">
+                          <table class="olotable" width="100%" align="center" border ="1"  >
+                             <tr>
+                              <td valign="top" colspan="2" >
+                                  <img src="images/request.png" alt="Submit Request" align="middle" hspace="3"><a href="#" ><font size="+1">Submit a New Support Request</font></a>
+                                  <br> This is were you can submit your support request through of Helpdesk system
+                                  <br>
+                                  <br>
+                              </td>                              
+                            <td>                             
+                          <td valign="middle" colspan="2" >
+                              <img src="images/news.png" alt="News" align="middle" hspace="3"><a><font size="+1">Latest News</font></a>
+                              <br> This is were you can submit your support request through of Helpdesk system
+                          </td>
+                          </table>
+                            </td>
+                            </tr>
+                          </table>
+                  -->
+            
             <table class="olotable"  border="0" align="center">
               <tr>
                 <td class="olohead">
