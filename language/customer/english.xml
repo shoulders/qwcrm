@@ -79,4 +79,16 @@
 		<customer_type_2>Commercial</customer_type_2>
 		<customer_type_3></customer_type_3>
 		<customer_type_4></customer_type_4>
+
+                <customer_asset_tab>Assets/Licenses</customer_asset_tab>
+                <customer_asset>Customer Assets</customer_asset>
+                <customer_asset_id>ID</customer_asset_id>
+                <customer_asset_type>Type</customer_asset_type>
+                <customer_asset_name>Name</customer_asset_name>
+                <customer_asset_number>Number/Serial</customer_asset_number>
+                <customer_asset_start>Started</customer_asset_start>
+                <customer_asset_end>Expiry Date</customer_asset_end>
+                <customer_asset_support_length>Support Length</customer_asset_support_length>
+                <customer_asset_active>Active</customer_asset_active>
+                <customer_asset_notes>Notes</customer_asset_notes>
 	</translate>
