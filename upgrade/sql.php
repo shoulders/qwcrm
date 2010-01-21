@@ -155,12 +155,12 @@ function create_setup($db) {
 	if(!$rs) {
 
 $q = "ALTER TABLE `".PRFX."SETUP`,
-  ADD `CHECK_PAYABLE` varchar(30) collate latin1_general_ci default NULL,
-  ADD `DD_NAME` varchar(50) collate latin1_general_ci default NULL,
-  ADD `DD_BANK` varchar(50) collate latin1_general_ci default NULL,
-  ADD `DD_BSB` varchar(15) collate latin1_general_ci default NULL,
-  ADD `DD_ACC` varchar(50) collate latin1_general_ci default NULL,
-  ADD `DD_INS` varchar(200) collate latin1_general_ci default NULL,
+  ADD `CHECK_PAYABLE` varchar(30) default NULL,
+  ADD `DD_NAME` varchar(50) default NULL,
+  ADD `DD_BANK` varchar(50) default NULL,
+  ADD `DD_BSB` varchar(15) default NULL,
+  ADD `DD_ACC` varchar(50) default NULL,
+  ADD `DD_INS` varchar(200) default NULL,
   CHANGE `INVOICE_TAX` `INVOICE_TAX` decimal(3,1) NOT NULL default '0.00';";
     	$rs = $db->Execute($q);
 return TRUE;
@@ -181,6 +181,16 @@ function create_acl($db) {
 			}
 
 }
+function update_assets($db) {
+  $q = "ALTER TABLE `".PRFX."TABLE_ASSET` CHANGE `ASSEST_NUMBER` `ASSET_NUMBER`,
+  ;";
+$rs = $db->Execute($q);
+		if(!$rs) {
+			return false;
+		} else {
+			return true;
+		}
 
+}
 ?>
 

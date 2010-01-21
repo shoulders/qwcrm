@@ -1,15 +1,4 @@
 <?php
-
-####################################################
-# IN 			#	
-#	 				#
-#  				#
-#  This program is distributed under the terms and 	#
-#  conditions of the GPL										#
-#  Close Work Order											#
-#  Version 0.0.1	Sat Nov 26 20:46:40 PST 2005		#
-#																	#
-####################################################
 if(!xml2php("workorder")) {
 	$smarty->assign('error_msg',"Error in language file");
 }

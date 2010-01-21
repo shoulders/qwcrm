@@ -199,7 +199,7 @@
                             </table>
                         </form>
 					{/if}
-                                        {if $billing_options.check_billing == '1'}
+                                        {if $billing_options.cheque_billing == '1'}
                         <form method="POST" action="">
                             <br>
                             <table width="100%" cellpadding="4" cellspacing="0" border="0" >
