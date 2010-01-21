@@ -62,8 +62,8 @@ if ($invoice_details[1]['INVOICE_AMOUNT'] <= 0) {
 	exit;
 }
 
-if($invoice_details[1]['balance'] > 0){
-		$q ="SELECT * FROM ".PRFX."TABLE_TRANSACTION WHERE INVOICE_ID =".$db->qstr($invoice_details[1]['INVOICE_ID']);
+if($invoice_details[1]['INVOICE_AMOUNT'] > 0 ){
+		$q ="SELECT * FROM ".PRFX."TABLE_TRANSACTION WHERE INVOICE_ID =".$db->qstr($invoice_id);
 		$rs = $db->execute($q);
 		$trans = $rs->GetArray();
 		$smarty->assign('trans', $trans);
