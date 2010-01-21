@@ -19,6 +19,7 @@
                     <li><a href="#" rel="#tab_2_contents" class="tab">Works Orders</a></li>
                     <li><a href="#" rel="#tab_3_contents" class="tab">Invoices</a></li>
                     <li><a href="#" rel="#tab_4_contents" class="tab">Directions</a></li>
+                    <li><a href="#" rel="#tab_5_contents" class="tab">{$translate_customer_asset_tab}</a></li>
                 </ul>
 
                 <!-- This is used so the contents don't appear to the
@@ -359,6 +360,110 @@
                                     <iframe src="{$src}" width="100%" height="800" scrolling="auto" frameborder = "0"</iframe>
                                 </td>
                             </tr>
+                        </table>
+                    </div>
+                    <div id="tab_5_contents" class="tab_contents">
+                        <br>
+                        <b>{$translate_customer_asset}</b>
+                        <table class="olotable" width="100%" border="0" cellpadding="1" cellspacing="0">
+                            <tr>
+
+                                <!-- TODO: remove these Asset Tags when completed
+                                <customer_asset_number>Number/Serial</customer_asset_number>
+                                <customer_asset_start>Started</customer_asset_start>
+                                <customer_asset_end>Expiry Date</customer_asset_end>
+                                <customer_asset_support_length>Support Length</customer_asset_support_length>
+                                <customer_asset_active>Active</customer_asset_active>
+                                <customer_asset_notes>Notes</customer_asset_notes>
+                                -->
+                                <td class="olohead">
+                                    {$translate_customer_asset_id}</td>
+                                <td class="olohead">
+                                    {$translate_customer_asset_type}</td>
+                                <td class="olohead">
+                                    {$translate_customer_asset_name}</td>
+                                <td class="olohead">
+                                    {$translate_customer_asset_number}</td>
+                                <td class="olohead">
+                                    {$translate_customer_asset_start}</td>
+                                <td class="olohead">
+                                    {$translate_customer_asset_end}</td>
+                                <td class="olohead">
+                                    {$translate_customer_asset_support_length}</td>
+                                <td class="olohead">
+                                    {$translate_customer_asset_active}</td>
+                                <td class="olohead">
+                                    {$translate_customer_asset_notes}</td>
+                            </tr> {section name=w loop=$unpaid_invoices}
+                            <tr onmouseover="this.className='row2'" onmouseout="this.className='row1'" onDblClick="window.location='?page=invoice:new&wo_id={$unpaid_invoices[w].WORKORDER_ID}&customer_id={$unpaid_invoices[w].CUSTOMER_ID}&page_title={$translate_customer_invoice}'">
+                                <td class="olotd4">
+                                    <a href="?page=invoice:new&wo_id={$unpaid_invoices[w].WORKORDER_ID}&customer_id={$unpaid_invoices[w].CUSTOMER_ID}&page_title={$translate_customer_invoice}">{$unpaid_invoices[w].INVOICE_ID}</a></td>
+                                <td class="olotd4">
+                                    <a href="?page=workorder:view&wo_id={$unpaid_invoices[w].WORKORDER_ID}&page_title={$translate_customer_work_order_id} {$unpaid_invoices[w].WORKORDER_ID}">{$unpaid_invoices[w].WORKORDER_ID}</a></td>
+                                <td class="olotd4">
+                                    {$unpaid_invoices[w].INVOICE_DATE|date_format:"%d-%m-%y"}</td>
+                                <td class="olotd4">
+                                    ${$unpaid_invoices[w].INVOICE_AMOUNT|string_format:"%.2f"}</td>
+                                <td class="olotd4">
+                                    ${$unpaid_invoices[w].PAID_AMOUNT|string_format:"%.2f"}</td>
+                                <td class="olotd4">
+                                    ${$unpaid_invoices[w].balance|string_format:"%.2f"}</td>
+                                <td class="olotd4">
+                                    {$unpaid_invoices[w].PAID_DATE|date_format:"%d-%m-%y"}</td>
+                                <td class="olotd4">
+                                    {$unpaid_invoices[w].EMPLOYEE_DISPLAY_NAME}</td>
+                                <td class="olotd4" align="center">
+                                    <a href="?page=invoice:pdf&invoice_id={$unpaid_invoices[w].INVOICE_ID}&customer_id={$unpaid_invoices[w].CUSTOMER_ID}&escape=1" target="new" ><img src="images/icons/16x16/pdf_small.gif" alt="" border="0" onMouseOver="ddrivetip('{$translate_customer_print_pdf}')" onMouseOut="hideddrivetip()"></a>
+                                    <a href="?page=invoice:print&invoice_id={$unpaid_invoices[w].INVOICE_ID}&customer_id={$unpaid_invoices[w].CUSTOMER_ID}&escape=1" target="new" ><img src="images/icons/16x16/fileprint.gif" alt="" border="0" onMouseOver="ddrivetip('{$translate_customer_print}')" onMouseOut="hideddrivetip()"></a>
+                                    <a href="?page=workorder:view&wo_id={$unpaid_invoices[w].WORK_ORDER_ID}&customer_id={$unpaid_invoices[w].CUSTOMER_ID}"><img src="images/icons/16x16/viewmag.gif" alt="" border="0" onMouseOver="ddrivetip('{$translate_customer_view}')" onMouseOut="hideddrivetip()"></a></td>
+                            </tr>{/section}
+                        </table>
+                        <br>
+                        <br>
+                        <b>Software Licenses</b>
+                        <table class="olotable" width="100%" border="0" cellpadding="3" cellspacing="0" >
+                            <tr>
+                                <td class="olohead">
+                                    {$translate_customer_inv_id}</td>
+                                <td class="olohead">
+                                    {$translate_customer_wo_id}</td>
+                                <td class="olohead">
+                                    {$translate_customer_date}</td>
+                                <td class="olohead">
+                                    {$translate_customer_amount}</td>
+                                <td class="olohead">
+                                    {$translate_customer_paid}</td>
+                                <td class="olohead">
+                                    {$translate_customer_balance}</td>
+                                <td class="olohead">
+                                    {$translate_customer_paid}</td>
+                                <td class="olohead">
+                                    {$translate_customer_employee}</td>
+                                <td class="olohead">
+                                    {$translate_customer_action}</td>
+                            </tr> {section name=w loop=$paid_invoices}
+                            <tr onmouseover="this.className='row2'" onmouseout="this.className='row1'" onDblClick="window.location='?page=invoice:view&customer_id={$paid_invoices[w].CUSTOMER_ID}&invoice_id={$paid_invoices[w].INVOICE_ID}&page_title={$translate_customer_invoice}'">
+                                <td class="olotd4">
+                                    <a href="?page=invoice:view&customer_id={$paid_invoices[w].CUSTOMER_ID}&invoice_id={$paid_invoices[w].INVOICE_ID}&page_title={$translate_customer_invoice}">{$paid_invoices[w].INVOICE_ID}</a></td>
+                                <td class="olotd4">
+                                    <a href="?page=workorder:view&wo_id={$paid_invoices[w].WORKORDER_ID}&page_title={$translate_customer_work_order_id} {$paid_invoices[w].WORKORDER_ID}">{$paid_invoices[w].WORKORDER_ID}</a></td>
+                                <td class="olotd4">
+                                    {$paid_invoices[w].INVOICE_DATE|date_format:"%d-%m-%y"}</td>
+                                <td class="olotd4">
+                                    ${$paid_invoices[w].INVOICE_AMOUNT|string_format:"%.2f"}</td>
+                                <td class="olotd4">
+                                    ${$paid_invoices[w].PAID_AMOUNT|string_format:"%.2f"}</td>
+                                <td class="olotd4">
+                                    ${$paid_invoices[w].balance|string_format:"%.2f"}</td>
+                                <td class="olotd4">
+                                    {$paid_invoices[w].PAID_DATE|date_format:"%d-%m-%y"}</td>
+                                <td class="olotd4">
+                                    {$paid_invoices[w].EMPLOYEE_DISPLAY_NAME}</td>
+                                <td class="olotd4" align="center">
+                                    <a href="?page=invoice:pdf&invoice_id={$paid_invoices[w].INVOICE_ID}&customer_id={$paid_invoices[w].CUSTOMER_ID}&escape=1" target="new" ><img src="images/icons/16x16/pdf_small.gif" alt="" border="0" onMouseOver="ddrivetip('{$translate_customer_print_pdf}')" onMouseOut="hideddrivetip()"></a>
+                                    <a href="?page=invoice:print&invoice_id={$paid_invoices[w].INVOICE_ID}&customer_id={$paid_invoices[w].CUSTOMER_ID}&escape=1" target="new" ><img src="images/icons/16x16/fileprint.gif" alt="" border="0" onMouseOver="ddrivetip('{$translate_customer_print}')" onMouseOut="hideddrivetip()"></a>
+                                    <a href="?page=invoice:view&customer_id={$paid_invoices[w].CUSTOMER_ID}&invoice_id={$paid_invoices[w].INVOICE_ID}&page_title={$translate_customer_invoice}"><img src="images/icons/16x16/viewmag.gif"  alt="" border="0" onMouseOver="ddrivetip('{$translate_customer_view}')" onMouseOut="hideddrivetip()"></a></td>
+                            </tr> {/section}
                         </table>
                     </div>
                 </div>
