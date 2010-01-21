@@ -852,12 +852,12 @@ function create_labor_rate($db) {
 
 	$q="CREATE TABLE IF NOT EXISTS `".PRFX."TABLE_LABOR_RATE` (
 		`LABOR_RATE_ID` int(11) NOT NULL auto_increment,
-                  `LABOR_RATE_NAME` varchar(32) collate latin1_general_ci NOT NULL default '',
+                  `LABOR_RATE_NAME` varchar(32) NOT NULL default '',
                   `LABOR_RATE_AMOUNT` decimal(10,2) NOT NULL default '0.00',
                   `LABOR_RATE_COST` decimal(10,2) NOT NULL default '0.00',
                   `LABOR_RATE_ACTIVE` int(1) NOT NULL default '1',
-                  `LABOR_TYPE` varchar(20) collate latin1_general_ci default NULL,
-                  `LABOR_MANUF` varchar(30) collate latin1_general_ci default NULL,
+                  `LABOR_TYPE` varchar(20)default NULL,
+                  `LABOR_MANUF` varchar(30) default NULL,
                   PRIMARY KEY  (`LABOR_RATE_ID`)
                 ) ENGINE=MyISAM ";
 
@@ -945,7 +945,7 @@ function create_table_asset($db) {
   `ASSET_ID` int(11) NOT NULL auto_increment,
   `ASSER_TYPE` varchar(32) NOT NULL default '',
   `ASSET_NAME` varchar(32) NOT NULL default '',
-  `ASSEST_NUMBER` varchar(32) NOT NULL default '',
+  `ASSET_NUMBER` varchar(32) NOT NULL default '',
   `ASSET_START` int(20) NOT NULL default '0',
   `ASSET_END` int(20) NOT NULL default '0',
   `ASSET_SUPPORT_LENGTH` int(5) NOT NULL default '0',
@@ -1102,31 +1102,31 @@ function create_setup($db) {
 	$q = "CREATE TABLE IF NOT EXISTS `".PRFX."SETUP` (
   `OFFICE_HOUR_START` int(2) NOT NULL default '0',
   `OFFICE_HOUR_END` int(2) NOT NULL default '0',
-  `AN_LOGIN_ID` varchar(255) collate latin1_general_ci NOT NULL default '',
-  `AN_PASSWORD` varchar(255) collate latin1_general_ci NOT NULL default '',
-  `AN_TRANS_KEY` varchar(255) collate latin1_general_ci NOT NULL default '',
-  `PP_ID` varchar(255) collate latin1_general_ci NOT NULL default '',
+  `AN_LOGIN_ID` varchar(255)NOT NULL default '',
+  `AN_PASSWORD` varchar(255) NOT NULL default '',
+  `AN_TRANS_KEY` varchar(255) NOT NULL default '',
+  `PP_ID` varchar(255) NOT NULL default '',
   `HTML_PRINT` int(1) NOT NULL default '0',
   `PDF_PRINT` int(1) NOT NULL default '0',
   `INVOICE_TAX` decimal(3,1) NOT NULL default '0.0',
-  `INV_THANK_YOU` varchar(255) collate latin1_general_ci NOT NULL default '',
-  `WELCOME_NOTE` varchar(255) collate latin1_general_ci NOT NULL default '',
-  `PARTS_LO` varchar(10) collate latin1_general_ci NOT NULL default '',
-  `PARTS_LOGIN` varchar(60) collate latin1_general_ci NOT NULL default '',
-  `PARTS_PASSWORD` varchar(60) collate latin1_general_ci NOT NULL default '',
-  `SERVICE_CODE` varchar(10) collate latin1_general_ci NOT NULL default '',
+  `INV_THANK_YOU` varchar(255) NOT NULL default '',
+  `WELCOME_NOTE` varchar(255) NOT NULL default '',
+  `PARTS_LO` varchar(10) NOT NULL default '',
+  `PARTS_LOGIN` varchar(60) NOT NULL default '',
+  `PARTS_PASSWORD` varchar(60) NOT NULL default '',
+  `SERVICE_CODE` varchar(10) NOT NULL default '',
   `PARTS_MARKUP` decimal(2,2) NOT NULL default '0.00',
-  `UPS_LOGIN` varchar(50) collate latin1_general_ci NOT NULL,
-  `UPS_PASSWORD` varchar(50) collate latin1_general_ci NOT NULL,
-  `UPS_ACCESS_KEY` varchar(50) collate latin1_general_ci NOT NULL,
-  `CHECK_PAYABLE` varchar(30) collate latin1_general_ci default NULL,
-  `DD_NAME` varchar(50) collate latin1_general_ci default NULL,
-  `DD_BANK` varchar(50) collate latin1_general_ci default NULL,
-  `DD_BSB` varchar(15) collate latin1_general_ci default NULL,
-  `DD_ACC` varchar(50) collate latin1_general_ci default NULL,
-  `DD_INS` varchar(200) collate latin1_general_ci default NULL,
+  `UPS_LOGIN` varchar(50) NOT NULL,
+  `UPS_PASSWORD` varchar(50) NOT NULL,
+  `UPS_ACCESS_KEY` varchar(50) NOT NULL,
+  `CHECK_PAYABLE` varchar(30) default NULL,
+  `DD_NAME` varchar(50) default NULL,
+  `DD_BANK` varchar(50) default NULL,
+  `DD_BSB` varchar(15) default NULL,
+  `DD_ACC` varchar(50) default NULL,
+  `DD_INS` varchar(200) default NULL,
   KEY `OFFICE_HOUR_START` (`OFFICE_HOUR_START`,`OFFICE_HOUR_END`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci";
+) ENGINE=MyISAM ";
 	$rs = $db->Execute($q);
 		if(!$rs) {
 			return false;
