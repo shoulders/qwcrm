@@ -835,7 +835,7 @@ function create_table_invoice_parts($db)
   `INVOICE_PARTS_AMOUNT` decimal(10,2) NOT NULL default '0.00',
   `INVOICE_PARTS_SUBTOTAL` decimal(10,2) NOT NULL default '0.00',
   `SHIPPING` decimal(10,2) NOT NULL default '0.00',
-  `INVOICE_PARTS_COUNT` decimal(10,2) NOT NULL default '0.00',,
+  `INVOICE_PARTS_COUNT` decimal(10,2) NOT NULL default '0.00',
   PRIMARY KEY  (`INVOICE_PARTS_ID`),
   KEY `INVOICE_ID` (`INVOICE_ID`)
 ) TYPE=MyISAM ";
