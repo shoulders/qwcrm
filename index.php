@@ -4,6 +4,8 @@ header('Content-type: text/html; charset=utf-8');
 /* check if lock file exists if not we need to install */
 session_start();
 require('conf.php');
+require_once INCLUDE_URL.SEP.'swift/lib/swift_required.php';
+
 $wo_id = $VAR['wo_id'];
 $customer_id = $VAR['customer_id'];
 $id = $login_id;
