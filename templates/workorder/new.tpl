@@ -132,11 +132,10 @@ return true;
 <td class="olohead">{$translate_workorder_tech}</td>							
 </tr>
 <tr>								
-<td class="olotd4">									{$smarty.now|date_format:"%d/%m/%Y"} 									
+<td class="olotd4">{$smarty.now|date_format:"%d/%m/%Y"} 									
 <input type="hidden" name="date"  id="date" value="{$smarty.now|date_format:"%m/%d/%Y"}"/>								</td>								
 <td class="olotd4">{$customer_details[i].CUSTOMER_DISPLAY_NAME}</td>								
 <td class="olotd4">
-</div>
 <input class="olotd4" size="30" name="scope" type="text"></td>
 <td class="olotd4">{$translate_workorder_created}</td>								
 <td class="olotd4">{$display_login}</td>								 							
@@ -154,7 +153,8 @@ return true;
 </tr>						
 </table>						
 <br>						
-<input type="submit" name="submit" value="{$translate_workorder_submit}"/>            
+<input type="submit" name="submit" value="{$translate_workorder_submit}"/>
+<!--<input type="submit" name="email" value="Email"/> -->
 <br>            
 <br>						
 <table class="olotable" width="100%" border="0" summary="Work order display">							
@@ -181,7 +181,8 @@ return true;
 </tr>						
 </table>						
 <br>						
-<input type="submit" name="submit" value="{$translate_workorder_submit}"/>	 						
+<input type="submit" name="submit" value="{$translate_workorder_submit}"/>
+
 </form>						{/section}	 						
 <br>					</td>				
 </tr>			

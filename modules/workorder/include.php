@@ -216,6 +216,7 @@ function insert_new_workorder($db,$VAR){
 		}
 				
 		$smarty->assign('wo_id', $wo_id);
+                $smarty->assign('customer_id', $customer_id);
 		$smarty->display("workorder/new_results.tpl");
 
 	
@@ -442,6 +443,87 @@ function update_last_active($db,$wo_id) {
 	force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
 		exit;
 	}
+}
+
+function email_new_workorder($db,$VAR) {
+    global $smarty;
+	
+	$sql = "INSERT INTO ".PRFX."TABLE_WORK_ORDER  SET 
+			CUSTOMER_ID					=".$db->qstr($VAR["customer_ID"]).", 
+			WORK_ORDER_OPEN_DATE		=".$db->qstr(strtotime( $VAR["date"] )).", 
+			WORK_ORDER_STATUS			=".$db->qstr(10).",
+			WORK_ORDER_CURRENT_STATUS	=".$db->qstr(1).",
+			WORK_ORDER_CREATE_BY		=".$db->qstr($VAR["create_by"]).",
+			WORK_ORDER_SCOPE			=".$db->qstr($VAR["scope"]).", 
+			WORK_ORDER_DESCRIPTION		=".$db->qstr($VAR["work_order_discription"]).",
+			LAST_ACTIVE					=".$db->qstr(time()).",
+			WORK_ORDER_COMMENT			=".$db->qstr($VAR["work_order_comments"]);
+	   
+	if(!$result = $db->Execute($sql)) {
+		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+		exit;
+	}
+	
+		$wo_id = $db->Insert_ID();
+		$VAR['wo_id'] = $wo_id;
+		$VAR['work_order_status_notes'] = "Work Order Created";
+		
+		insert_new_status($db,$VAR);
+		insert_new_note($db,$VAR);
+
+		if(!empty($VAR['SCHEDULE_notes'])){
+			insert_new_note($db,$VAR);
+		}
+				
+		$smarty->assign('wo_id', $wo_id);
+                $smarty->assign('customer_id', $customer_id);
+		$smarty->display("workorder/new_results.tpl");
+
+    //Create the Transport
+    // TODO _add variable from db for SMTP setup and option to use sendmail
+$transport = Swift_SmtpTransport::newInstance('smtp.gmail.com', 465, 'ssl')
+  ->setUsername('???????@gmail.com')
+  ->setPassword('?????????');
+ 
+
+//You could alternatively use a different transport such as Sendmail or Mail:
+
+//Sendmail
+//$transport = Swift_SendmailTransport::newInstance('/usr/sbin/sendmail -bs');
+
+//Mail
+//$transport = Swift_MailTransport::newInstance();
+
+
+//Create the Mailer using your created Transport
+$mailer = Swift_Mailer::newInstance($transport);
+
+   //Create the message
+$message = Swift_Message::newInstance()
+
+  //Give the message a subject
+  ->setSubject('New Work Order created for '.$db->qstr($VAR["customer_ID"]))
+
+  //Set the From address with an associative array
+  ->setFrom(array('myitcrm@gmail.com' => 'MyIt CRM Swift Tester'))
+
+  //Set the To addresses with an associative array
+  ->setTo(array('geevpc@gmail.com', 'geevpc@gmail.com' => 'MyIT CRM Test'))
+
+  //Give it a body
+  ->setBody('Here is the message itself')
+
+  //And optionally an alternative body
+  ->addPart('<q>Here is the message itself</q>', 'text/html');
+
+  //Send the message
+$result = $mailer->send($message);
+
+  //Optionally add any attachments
+  //->attach(Swift_Attachment::fromPath('my-document.pdf'))
+
+
+
 }
 
 ?>

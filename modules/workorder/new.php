@@ -5,6 +5,7 @@ if(!xml2php("workorder")) {
 require_once ("include.php");
 
 $submit      = $VAR['submit'];
+$email      = $VAR['email'];
 $customer_id = $VAR['customer_id'];
 
 if (isset($VAR['submit'])) {
@@ -23,7 +24,11 @@ if (isset($VAR['submit'])) {
 
     $smarty->display('workorder'.SEP.'new.tpl');
 }
-
+if (isset($VAR['email'])) {
+    if (!email_new_workorder($db,$VAR)) {
+        $smarty->display('workorder'.SEP.'new.tpl');
+    }
+}
 
 
 ?>
