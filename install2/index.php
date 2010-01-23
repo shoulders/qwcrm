@@ -388,8 +388,7 @@ echo ("
 																					<td width=\"140\">Preferred Language</td>
 																					<td>
 																						<select name=\"language\" size=\"1\" >
-																							<option	value=\"\" SELECTED>Choose One 
-																							<option value=\"english.xml\">English-UK
+																							<option value=\"english.xml\" SELECTED>English-UK
 																							<option value=\"english_US.xml\">English-US
 																																													
 																						</select>
