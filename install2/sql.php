@@ -784,7 +784,7 @@ function create_table_invoice($db)
   `PAID_DATE` int(20) NOT NULL default '0',
   `PAID_AMOUNT` decimal(10,2) NOT NULL default '0.00',
   `BALANCE` decimal(10,2) NOT NULL default '0.00',
-  `TAX` decimal(3,2) NOT NULL default '0.00',
+  `TAX` decimal(6,2) NOT NULL default '0.00',
   `SHIPPING` decimal(10,2) NOT NULL default '0.00',
   `DISCOUNT` decimal(10,2) NOT NULL default '0.00',
   `SUB_TOTAL` decimal(6,2) NOT NULL default '0.00',
