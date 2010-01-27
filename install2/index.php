@@ -150,16 +150,17 @@ echo ("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http:/
 ##################################
 # Add Company Information				#
 ##################################
+                $cname = stripslashes($_POST['COMPANY_NAME']);
 		$q = "REPLACE INTO ".PRFX."TABLE_COMPANY SET
-				COMPANY_NAME			=". $db->qstr( $_POST['COMPANY_NAME']      ).",
+				COMPANY_NAME		=". $db->qstr( $cname      ).",
 				COMPANY_ADDRESS		=". $db->qstr( $_POST['COMPANY_ADDRESS']   ).", 
-				COMPANY_CITY			=". $db->qstr( $_POST['COMPANY_CITY']      ).", 
+				COMPANY_CITY		=". $db->qstr( $_POST['COMPANY_CITY']      ).", 
 				COMPANY_STATE		=". $db->qstr( $_POST['COMPANY_STATE']     ).",
-				COMPANY_ZIP 			=". $db->qstr( $_POST['COMPANY_ZIP']       ).",
-				COMPANY_COUNTRY 	=". $db->qstr( $_POST['COMPANY_COUNTRY']		).",
+				COMPANY_ZIP 		=". $db->qstr( $_POST['COMPANY_ZIP']       ).",
+				COMPANY_COUNTRY 	=". $db->qstr( $_POST['COMPANY_COUNTRY']   ).",
 				COMPANY_PHONE		=". $db->qstr( $_POST['COMPANY_PHONE']     ).",
 				COMPANY_MOBILE		=". $db->qstr( $_POST['COMPANY_MOBILE']    ).",
-				COMPANY_EMAIL		=". $db->qstr( $_POST['COMPANY_EMAIL']		).",
+				COMPANY_EMAIL		=". $db->qstr( $_POST['COMPANY_EMAIL']     ).",
 				COMPANY_TOLL_FREE	=". $db->qstr( $_POST['COMPANY_TOLL_FREE'] );
 
 		if(!$rs = $db->Execute($q)) {
@@ -1295,7 +1296,7 @@ include('version.php');
 @define('LANG','".$_POST['language']."');
 @define('INSTALL_DATE','".$install_date."');
 @define('debug', 'no');
-\$date_format = '".$_POST['dat_format']."' ;
+\$date_format = '".$_POST['date_format']."' ;
 
 /* Database Settings */
 @define('PRFX',	'".$_POST['db_prefix']."');
