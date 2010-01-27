@@ -1,6 +1,5 @@
 <?php
 require_once ('include.php');
-//require_once ('phpMyEdit.class.php');
 
 if(!xml2php("invoice")) {
 	$smarty->assign('error_msg',"Error in language file");
@@ -60,12 +59,12 @@ if(isset($submit)){
         if($date_format == '%d/%m/%Y'){
          $date_part = explode("/",$VAR['date']);
          $timestamp = mktime(0,0,0,$date_part[1],$date_part[0],$date_part[2]);
-         $datef = ($timestamp);
+         $datef = $timestamp;
 
          //Invoice Due Date
          $date_part2 = explode("/",$VAR['due_date']);
          $timestamp2 = mktime(0,0,0,$date_part2[1],$date_part2[0],$date_part2[2]);
-         $datef2 = ($timestamp2);
+         $datef2 = $timestamp2;
         }
         if($date_format == '%m/%d/%Y'){
          //$date_part = explode("/",$VAR['date']);
@@ -168,14 +167,14 @@ if(isset($submit)){
 	
 	/* update database */
 		$q = "UPDATE ".PRFX."TABLE_INVOICE SET
-			INVOICE_DATE		=". $db->qstr( $date													).",
-			CUSTOMER_ID		=". $db->qstr( $customer_id											).",
-			EMPLOYEE_ID		=". $db->qstr( $_SESSION['login_id']								).",
-			DISCOUNT			=". $db->qstr( number_format($discount_amount, 2,'.', '')	).",
-			SUB_TOTAL 		=". $db->qstr( number_format($sub_total, 2,'.', '')			).",
-			INVOICE_AMOUNT	=". $db->qstr( number_format($invoice_total, 2,'.', '')		).",
-			TAX 				=". $db->qstr( number_format($tax_amount, 2,'.', '')			).",
-			INVOICE_DUE		=". $db->qstr( $due_date												)." 
+			INVOICE_DATE		=". $db->qstr( $date).",
+			CUSTOMER_ID		=". $db->qstr( $customer_id).",
+			EMPLOYEE_ID		=". $db->qstr( $_SESSION['login_id']).",
+			DISCOUNT		=". $db->qstr( number_format($discount_amount, 2,'.', '')).",
+			SUB_TOTAL 		=". $db->qstr( number_format($sub_total, 2,'.', '')).",
+			INVOICE_AMOUNT	        =". $db->qstr( number_format($invoice_total, 2,'.', '')).",
+			TAX 			=". $db->qstr( number_format($tax_amount, 2,'.', '')).",
+			INVOICE_DUE		=". $db->qstr( $due_date)." 
 			WHERE INVOICE_ID=".$db->qstr( $VAR['invoice_id']);
 
 	if(!$rs = $db->Execute($q)){
@@ -184,9 +183,9 @@ if(isset($submit)){
 	}
 	if( $VAR['discount'] >= 100){
 	$q = "UPDATE ".PRFX."TABLE_WORK_ORDER SET
-			WORK_ORDER_STATUS			= '6',
+			WORK_ORDER_STATUS       	= '6',
 			WORK_ORDER_CURRENT_STATUS 	= '8'
-			WHERE WORK_ORDER_ID 		=	".$db->qstr($wo_id);
+			WHERE WORK_ORDER_ID 		=".$db->qstr($wo_id);
 			if(!$rs = $db->execute($q)) {
 			force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
 			exit;
@@ -221,12 +220,12 @@ if(isset($submit)){
 	if($count == 0) {
 	
 		$q = "INSERT INTO ".PRFX."TABLE_INVOICE SET
-				INVOICE_DATE 	=".$db->qstr(time()).",
+				INVOICE_DATE            =".$db->qstr(time()).",
 				CUSTOMER_ID		=".$db->qstr($customer_id).", 
 				WORKORDER_ID		=".$db->qstr($wo_id ).",
 				EMPLOYEE_ID		=".$db->qstr($_SESSION['login_id']).", 
-				INVOICE_PAID	='0', 
-				INVOICE_AMOUNT	='0.00'";
+				INVOICE_PAID            ='0',
+				INVOICE_AMOUNT          ='0.00'";
 			
 		if(!$rs = $db->Execute($q)) {
 			force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
@@ -238,8 +237,8 @@ if(isset($submit)){
 		$msg = "Invoice Created ID: ".$invoice_id;
 		
 		$sql = "INSERT INTO ".PRFX."TABLE_WORK_ORDER_STATUS SET
-				WORK_ORDER_ID					=".$db->qstr($wo_id).",
-				WORK_ORDER_STATUS_DATE			=".$db->qstr(time()).",
+				WORK_ORDER_ID			=".$db->qstr($wo_id).",
+				WORK_ORDER_STATUS_DATE		=".$db->qstr(time()).",
 				WORK_ORDER_STATUS_NOTES		=".$db->qstr($msg).",
 				WORK_ORDER_STATUS_ENTER_BY 	=".$db->qstr($_SESSION['login_id']);	
 		if(!$result = $db->Execute($sql)) {
@@ -313,9 +312,9 @@ if(isset($submit)){
 				
 	if( $VAR['discount'] >= 100){
 	$q = "UPDATE ".PRFX."TABLE_WORK_ORDER SET
-			WORK_ORDER_STATUS			= '6',
+			WORK_ORDER_STATUS		= '6',
 			WORK_ORDER_CURRENT_STATUS 	= '8'
-			WHERE WORK_ORDER_ID 		=	".$db->qstr($wo_id);
+			WHERE WORK_ORDER_ID 		=".$db->qstr($wo_id);
 			if(!$rs = $db->execute($q)) {
 			force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
 			exit;
@@ -324,9 +323,9 @@ if(isset($submit)){
 	if( $VAR['discount'] >= 100){
 	/* update the invoice */	
 		$q = "UPDATE ".PRFX."TABLE_INVOICE SET
-			PAID_DATE  			= ".$db->qstr(time()).", 
-			PAID_AMOUNT 			= '0',
-			INVOICE_PAID			= '1'
+			PAID_DATE  		= ".$db->qstr(time()).", 
+			PAID_AMOUNT 		= '0',
+			INVOICE_PAID		= '1'
 			WHERE INVOICE_ID 	= ".$db->qstr( $VAR['invoice_id']);
 			
 		if(!$rs = $db->execute($q)) {
@@ -340,9 +339,9 @@ if(isset($submit)){
 ##################################
 if(isset($submit2)){
 	$q = "UPDATE ".PRFX."TABLE_WORK_ORDER SET
-			WORK_ORDER_STATUS			= '6',
+			WORK_ORDER_STATUS		= '6',
 			WORK_ORDER_CURRENT_STATUS 	= '8'
-			WHERE WORK_ORDER_ID 		=	".$db->qstr($wo_id);
+			WHERE WORK_ORDER_ID 		=".$db->qstr($wo_id);
 			if(!$rs = $db->execute($q)) {
 			force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
 			exit;

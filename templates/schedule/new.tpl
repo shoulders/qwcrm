@@ -114,7 +114,7 @@
 																Calendar.setup(
 																	{
 																		inputField  : "SCHEDULE_date",
-																		ifFormat    : "%d/%m/%Y",
+																		ifFormat    : "{/literal}{$date_format}{literal}",
 																		button      : "trigger_SCHEDULE_date"
 																	}
 																);
@@ -133,7 +133,7 @@
 																Calendar.setup(
 																	{
 																		inputField  : "end_SCHEDULE_date",
-																		ifFormat    : "%d/%m/%Y",
+																		ifFormat    : "{/literal}{$date_format}{literal}",
 																		button      : "trigger_end_SCHEDULE_date"
 																	}
 																);

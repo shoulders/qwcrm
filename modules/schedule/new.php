@@ -10,7 +10,10 @@ if(!xml2php("workorder")) {
 //Schedule Due Date
 $date_part2 = explode("/",$VAR['day']);
 //$timestamp2 = mktime(0,0,0,$date_part2[1],$date_part2[0],$date_part2[2]);
-$cur_date = $d."/".$m."/".$Y;
+if($date_format == '%d/%m/%Y'){
+$cur_date = $d."/".$m."/".$Y;}
+if($date_format == '%m/%d/%Y'){
+$cur_date = $m."/".$d."/".$Y;};
 $smarty->assign('Y',$Y);
 $smarty->assign('m',$m);
 $smarty->assign('d',$d);

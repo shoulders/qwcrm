@@ -55,7 +55,11 @@ if(isset($wo_id)) {
 $y = $VAR['y'] ;
 $m = $VAR['m'];
 $d = $VAR['d'];
-$cur_date = $d."/".$m."/".$y;
+if($date_format == '%d/%m/%Y'){
+$cur_date = $d."/".$m."/".$y;}
+if($date_format == '%m/%d/%Y'){
+$cur_date = $m."/".$d."/".$y;}
+
 
 
 
