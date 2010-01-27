@@ -132,8 +132,8 @@ return true;
 <td class="olohead">{$translate_workorder_tech}</td>							
 </tr>
 <tr>								
-<td class="olotd4">{$smarty.now|date_format:"%d/%m/%Y"} 									
-<input type="hidden" name="date"  id="date" value="{$smarty.now|date_format:"%m/%d/%Y"}"/>								</td>								
+<td class="olotd4">{$smarty.now|date_format:"$date_format"}</td>
+<input type="hidden" name="date"  id="date" value="{$smarty.now|date_format:"$date_format"}"/>								</td>
 <td class="olotd4">{$customer_details[i].CUSTOMER_DISPLAY_NAME}</td>								
 <td class="olotd4">
 <input class="olotd4" size="30" name="scope" type="text"></td>

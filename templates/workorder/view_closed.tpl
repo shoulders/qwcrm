@@ -74,7 +74,7 @@
 														<tr onmouseover="this.className='row2'" onmouseout="this.className='row1'" onDblClick="window.location='?page=workorder:view&wo_id={$work_order.WORK_ORDER_ID}&customer_id={$work_order.CUSTOMER_ID}&page_title={$translate_workorder_page_title} {$work_order.WORK_ORDER_ID}';" class="row1">
 															<td class="olotd4"><a href="?page=workorder:view&wo_id={$work_order.WORK_ORDER_ID}&customer_id={$work_order.CUSTOMER_ID}&page_title={$translate_workorder_page_title} {$work_order.WORK_ORDER_ID}">{$work_order.WORK_ORDER_ID}</a></td>
 															<td class="olotd4"> {$work_order.WORK_ORDER_OPEN_DATE|date_format:"%d-%m-%y"}</td>
-															<td class="olotd4">{$work_order.WORK_ORDER_CLOSE_DATE|date_format:"%d/%m/%y"}</td>
+															<td class="olotd4">{$work_order.WORK_ORDER_CLOSE_DATE|date_format:"$date_format"}</td>
 														
 															<td class="olotd4" nowrap>
 																<img src="images/icons/16x16/view+.gif" alt="" border="0" onMouseOver="ddrivetip('<b><center>Contact Info</b></center><hr><b>Phone: </b>{$work_order.CUSTOMER_PHONE}<br> <b>Work: </b>{$work_order.CUSTOMER_WORK_PHONE}<br><b>Moile: </b>{$work_order.CUSTOMER_MOBILE_PHONE}<br><br>{$work_order.CUSTOMER_ADDRESS}<br>{$work_order.CUSTOMER_CITY}, {$work_order.CUSTOMER_STATE}<br>{$work_order.CUSTOMER_ZIP}')" onMouseOut="hideddrivetip()">

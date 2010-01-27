@@ -31,7 +31,7 @@
 			<table width="205" border="1" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
 				<tr>
 					<td class="olotd5"><b>{$translate_parts_crm_order_id}</b> {$invoice_details.ORDER_ID}<br>
-							<b>{$translate_parts_date}</b> {$invoice_details.DATE|date_format:"%d/%m/%y"}<br>
+							<b>{$translate_parts_date}</b> {$invoice_details.DATE|date_format:"$date_format"}<br>
 							<b>{$translate_parts_total}</b> ${$invoice_details.TOTAL|string_format:"%.2f"}<br>
 							<b>{$translate_parts_total_items}</b> {$invoice_details.TOTAL_ITEMS}<br>
 							<b>{$translate_parts_weight}</b> {$invoice_details.WEIGHT} lbs

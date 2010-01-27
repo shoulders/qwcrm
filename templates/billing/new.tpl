@@ -24,8 +24,8 @@
                             </tr><tr class="olotd4">
 						{foreach item=item from=$invoice_details}
                                 <td>{$item.INVOICE_ID}</td>
-                                <td>{$item.INVOICE_DATE|date_format:"%d/%m/%y"}</td>
-                                <td>{$item.INVOICE_DUE|date_format:"%d/%m/%y"}</td>
+                                <td>{$item.INVOICE_DATE|date_format:"$date_format"}</td>
+                                <td>{$item.INVOICE_DUE|date_format:"$date_format"}</td>
                                 <td>${$item.INVOICE_AMOUNT|string_format:"%.2f"}</td>
                                 <td>{$item.WORKORDER_ID}</td>
                                 <td>

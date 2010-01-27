@@ -57,15 +57,26 @@ if(isset($submit)){
 	}
      /* This formats the two dates from dd/mm/yyyy to proper sql string time*/
      // Invoice Date
-     $date_part = explode("/",$VAR['date']);
-     $timestamp = mktime(0,0,0,$date_part[1],$date_part[0],$date_part[2]);
-     $datef = ($timestamp);
-     
-     //Invoice Due Date
-     $date_part2 = explode("/",$VAR['due_date']);
-     $timestamp2 = mktime(0,0,0,$date_part2[1],$date_part2[0],$date_part2[2]);
-     $datef2 = ($timestamp2);
+        if($date_format == '%d/%m/%Y'){
+         $date_part = explode("/",$VAR['date']);
+         $timestamp = mktime(0,0,0,$date_part[1],$date_part[0],$date_part[2]);
+         $datef = ($timestamp);
 
+         //Invoice Due Date
+         $date_part2 = explode("/",$VAR['due_date']);
+         $timestamp2 = mktime(0,0,0,$date_part2[1],$date_part2[0],$date_part2[2]);
+         $datef2 = ($timestamp2);
+        }
+        if($date_format == '%m/%d/%Y'){
+         //$date_part = explode("/",$VAR['date']);
+         //$timestamp = mktime(0,0,0,$date_part[1],$date_part[0],$date_part[2]);
+         $datef = (strtotime($VAR['date']));
+
+         //Invoice Due Date
+         //$date_part2 = explode("/",$VAR['due_date']);
+         //$timestamp2 = mktime(0,0,0,$date_part2[1],$date_part2[0],$date_part2[2]);
+         $datef2 = (strtotime($VAR['due_date']));
+        }
 	
 	$date				= $datef;
 	$due_date			= $datef2;

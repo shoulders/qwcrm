@@ -228,14 +228,14 @@
 
                                                 <td>{$invoice.INVOICE_ID}</td>
                                                 <td>
-                                                    <input size="10" name="date" type="text" id="date" value="{$invoice.INVOICE_DATE|date_format:"%d/%m/%Y"}" class="olotd4"/>
+                                                    <input size="10" name="date" type="text" id="date" value="{$invoice.INVOICE_DATE|date_format:"$date_format"}" class="olotd4"/>
                                                            <input type="button" id="trigger_date" value="+">
 											 {literal}
                                                     <script type="text/javascript">
                                                         Calendar.setup(
                                                         {
                                                             inputField  : "date",
-                                                            ifFormat    : "%d/%m/%Y",
+                                                            ifFormat    : "{/literal}{$date_format}{literal}",
                                                             button      : "trigger_date"
                                                         }
                                                     );
@@ -243,14 +243,14 @@
 											{/literal}
                                                 </td>
                                                 <td>{$item.INVOICE_DUE}
-                                                    <input size="10" name="due_date" type="text" id="due_date" value="{$invoice.INVOICE_DUE|date_format:"%d/%m/%Y"}" class="olotd4"/>
+                                                    <input size="10" name="due_date" type="text" id="due_date" value="{$invoice.INVOICE_DUE|date_format:"$date_format"}" class="olotd4"/>
                                                            <input type="button" id="trigger_due_date" value="+">
 											 {literal}
                                                     <script type="text/javascript">
                                                         Calendar.setup(
                                                         {
                                                             inputField  : "due_date",
-                                                            ifFormat    : "%d/%m/%Y",
+                                                            ifFormat    : "{/literal}{$date_format}{literal}",
                                                             button      : "trigger_due_date"
                                                         }
                                                     );
@@ -325,7 +325,7 @@
 												{section name=r loop=$trans}
                                                         <tr class="olotd4">
                                                             <td>{$trans[r].TRANSACTION_ID}</td>
-                                                            <td>{$trans[r].DATE|date_format:"%d/%m/%y %r"}</td>
+                                                            <td>{$trans[r].DATE|date_format:"$date_format %r"}</td>
                                                             <td><b>$</b>{$trans[r].AMOUNT|string_format:"%.2f"}</td>
                                                             <td>
 													{if $trans[r].TYPE == 1}

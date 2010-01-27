@@ -43,8 +43,8 @@
                             <td>
                                 <b>Invoice #</b>  {$invoice.INVOICE_ID}<br>
                                 <b>Invoice Status -  {$stats2.CONFIG_WORK_ORDER_STATUS}</b><br>
-                                <b>Invoice Date -</b>  {$invoice.INVOICE_DATE|date_format:"%d %b %Y"} <br>
-                                <b>Due Date -</b>  {$invoice.INVOICE_DUE|date_format:"%d %b %Y"}<br>
+                                <b>Invoice Date -</b>  {$invoice.INVOICE_DATE|date_format:"$date_format"} <br>
+                                <b>Due Date -</b>  {$invoice.INVOICE_DUE|date_format:"$date_format"}<br>
                                 <br>
                                 <b>Work Order #</b>  {$invoice.WORKORDER_ID}<br>
                                 <b>Tech</b>  {$invoice.EMPLOYEE_DISPLAY_NAME}<br>

@@ -36,8 +36,8 @@
 														</tr><tr>
 															<td class="olotd4"><a href="?page=parts:view&ORDER_ID={$order[p].ORDER_ID}&page_title=Order%20Details%20for%20{$order[p].ORDER_ID}">{$order[p].ORDER_ID}</a></td>
 															<td class="olotd4">{$order[p].INVOICE_ID}</td>
-															<td class="olotd4">{$order[p].DATE_CREATE|date_format:"%d-%m-%y"}</td>
-															<td class="olotd4">{$order[p].DATE_LAST|date_format:"%d-%m-%y"}</td>
+															<td class="olotd4">{$order[p].DATE_CREATE|date_format:"$date_format"}</td>
+															<td class="olotd4">{$order[p].DATE_LAST|date_format:"$date_format"}</td>
 															<td class="olotd4">${$order[p].SUB_TOTAL}</td>
 															<td class="olotd4">${$order[p].SHIPPING}</td>
 															<td class="olotd4">${$order[p].TOTAL}</td>

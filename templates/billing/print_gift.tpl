@@ -47,10 +47,10 @@
 																	<td>{$gift[g].GIFT_CODE}</td>
 																</tr><tr>
 																	<td><b>{$translate_billing_created}</b></td>
-																	<td>{$gift[g].DATE_CREATE|date_format:"%d/%m/%y"}</td>
+																	<td>{$gift[g].DATE_CREATE|date_format:"$date_format"}</td>
 																</tr><tr>
 																	<td><b>{$translate_billing_expires}</b></td>
-																	<td>{$gift[g].EXPIRE|date_format:"%d/%m/%y"}</td>
+																	<td>{$gift[g].EXPIRE|date_format:"$date_format"}</td>
 																</tr>
 															</table>	
 														<td>

@@ -86,7 +86,7 @@
 							<p><b>Service Notes</b>
 					<br>{$work_order_notes[b].WORK_ORDER_NOTES_DESCRIPTION}<br><br>
 					<b>Entered By: </b>{$work_order_notes[b].EMPLOYEE_DISPLAY_NAME}  
-							<br><b>Date: </b> {$work_order_notes[b].WORK_ORDER_NOTES_DATE|date_format:"%d-%m-%y"}<br>
+							<br><b>Date: </b> {$work_order_notes[b].WORK_ORDER_NOTES_DATE|date_format:"$date_format"}<br>
 							</p>
 						{/section}
 					</td>
@@ -99,8 +99,8 @@
 				</tr><tr>
 					<td>
 						{section name=e loop=$work_order_sched}
-							<b>Scheduled Start </b> {$work_order_sched[e].SCHEDULE_START|date_format:"%d-%m-%y %I:%M  %p"}<br>
-              <b>Scheduled End</b> {$work_order_sched[e].SCHEDULE_END|date_format:"%d-%m-%y %I:%M  %p "} <br>
+							<b>Scheduled Start </b> {$work_order_sched[e].SCHEDULE_START|date_format:"$date_format %I:%M  %p"}<br>
+              <b>Scheduled End</b> {$work_order_sched[e].SCHEDULE_END|date_format:"$date_format %I:%M  %p "} <br>
 							<b>Schedule Notes</b><br>
 								{$work_order_sched[e].SCHEDULE_NOTES}
 						{sectionelse}
@@ -115,7 +115,7 @@
 					<td><b>Resolution:</b><br>
 					{section name=r loop=$work_order_res}
 						{if $work_order_res[r].EMPLOYEE_DISPLAY_NAME != ''}
-							<b>Closed By:</b> {$work_order_res[r].EMPLOYEE_DISPLAY_NAME} <b>Date:</b>  {$work_order_res[r].WORK_ORDER_CLOSE_DATE|date_format:"%d-%m-%y"}
+							<b>Closed By:</b> {$work_order_res[r].EMPLOYEE_DISPLAY_NAME} <b>Date:</b>  {$work_order_res[r].WORK_ORDER_CLOSE_DATE|date_format:"$date_format"}
 							{$work_order_res[r].WORK_ORDER_RESOLUTION}
 						{/if}
 					{/section}
@@ -132,7 +132,7 @@
 					<td valign="top">{$single_workorder_array[i].WORK_ORDER_SCOPE}</td>
 				</tr><tr>
 					<td valign="top" nowrap><b>Date Opened:</b></td>
-					<td valign="top">{$single_workorder_array[i].WORK_ORDER_OPEN_DATE|date_format:"%d-%m-%y"}</td>
+					<td valign="top">{$single_workorder_array[i].WORK_ORDER_OPEN_DATE|date_format:"$date_format"}</td>
 				</tr><tr>
 					<td valign="top"><b>Status:</b></td>
 					<td valign="top">{if $single_workorder_array[i].WORK_ORDER_CURRENT_STATUS == "1"}
@@ -161,7 +161,7 @@
 					</td>
 				</tr><tr>
 					<td><b>Last Changed:</b></td>
-					<td>{$single_workorder_array[i].LAST_ACTIVE|date_format:"%d-%m-%y"}</td>
+					<td>{$single_workorder_array[i].LAST_ACTIVE|date_format:"$date_format"}</td>
 				</tr>
 			</table>
 			<hr>

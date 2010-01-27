@@ -77,7 +77,7 @@
 							{section name=a loop=$open_work_orders}
 							<tr onmouseover="this.className='row2'" onmouseout="this.className='row1'" onDblClick="window.location='?page=workorder:view&wo_id={$open_work_orders[a].WORK_ORDER_ID}&customer_id={$open_work_orders[a].CUSTOMER_ID}&page_title={$translate_employee_work_order_id}{$open_work_orders[a].WORK_ORDER_ID},';" class="row1">
 								<td class="olotd4">{$open_work_orders[a].WORK_ORDER_ID}</td>
-								<td class="olotd4">{$open_work_orders[a].WORK_ORDER_OPEN_DATE|date_format:"%d/%m/%y"}</td>
+								<td class="olotd4">{$open_work_orders[a].WORK_ORDER_OPEN_DATE|date_format:"$date_format"}</td>
 								<td class="olotd4">
 									<img src="images/icons/16x16/view+.gif" border="0" onMouseOver="ddrivetip('<center><b>Customer Contact</b><hr></center><b>Home: </b>{$open_work_orders[a].CUSTOMER_PHONE}<br><b>Work: </b>{$open_work_orders[a].CUSTOMER_WORK_PHONE}<br><b>Mobile: </b>{$open_work_orders[a].CUSTOMER_MOBILE_PHONE}')"
 										onMouseOut="hideddrivetip()">{$open_work_orders[a].CUSTOMER_DISPLAY_NAME}

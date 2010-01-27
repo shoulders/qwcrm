@@ -13,7 +13,7 @@
 		{/if}
 	</tr><tr>
 		<td class="olotd4">{$single_workorder_array[i].WORK_ORDER_ID}</td>
-		<td class="olotd4">{$single_workorder_array[i].WORK_ORDER_OPEN_DATE|date_format:"%d-%m-%Y"}</td>
+		<td class="olotd4">{$single_workorder_array[i].WORK_ORDER_OPEN_DATE|date_format:"$date_format"}</td>
 		<td class="olotd4">
 			{if $single_workorder_array[i].WORK_ORDER_STATUS == "10"}
 				{$translate_workorder_open}
@@ -50,7 +50,7 @@
 		{/if}
 			
 		</td>
-		<td class="olotd4">{$single_workorder_array[i].LAST_ACTIVE|date_format:"%d-%m-%Y"}</td>
+		<td class="olotd4">{$single_workorder_array[i].LAST_ACTIVE|date_format:"$date_format"}</td>
 		{if $single_workorder_array[i].WORK_ORDER_CURRENT_STATUS == "1" || $single_workorder_array[i].WORK_ORDER_CURRENT_STATUS == "10"}
 				<td class="olotd4">
 					<form method="POST">

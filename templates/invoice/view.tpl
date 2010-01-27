@@ -35,12 +35,12 @@
                                             <td class="row2"><b>{$translate_invoice_balance}</b></td>
                                         </tr><tr class="olotd4">
                                             <td>{$invoice.INVOICE_ID}</td>
-                                            <td>{$invoice.INVOICE_DATE|date_format:"%d/%m/%y"}</td>
-                                            <td>{$invoice.INVOICE_DUE|date_format:"%d/%m/%y"}</td>
+                                            <td>{$invoice.INVOICE_DATE|date_format:"$date_format"}</td>
+                                            <td>{$invoice.INVOICE_DUE|date_format:"$date_format"}</td>
                                             <td>${$invoice.INVOICE_AMOUNT|string_format:"%.2f"}</td>
                                             <td>{$invoice.EMPLOYEE_DISPLAY_NAME}</td>
                                             <td><a href="?page=workorder:view&amp;wo_id={$invoice.WORKORDER_ID}&amp;page_title={$translate_invoice_wo_id}&amp;{$invoice.WORKORDER_ID}">{$invoice.WORKORDER_ID}</a></td>
-                                            <td>{$invoice.PAID_DATE|date_format:"%d/%m/%y"}</td>
+                                            <td>{$invoice.PAID_DATE|date_format:"$date_format"}</td>
                                             <td>${$invoice.PAID_AMOUNT|string_format:"%.2f"}</td>
                                             <td>{if $invoice.BALANCE > 0}
                                                 <font color="#CC0000">${$invoice.INVOICE_AMOUNT-$invoice.PAID_AMOUNT|string_format:"%.2f"}</font>

@@ -42,7 +42,7 @@
 									<br>
 									
 									{if $single_workorder_array[i].WORK_ORDER_CLOSE_BY != "" }
-										{include file="workorder/resolution.tpl}
+										{include file="workorder/resolution.tpl"}
 									{/if}
 								</td>
 							</tr>

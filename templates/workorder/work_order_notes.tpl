@@ -27,7 +27,7 @@
 										<tr>
 											<td>
 												{section name=b loop=$work_order_notes}
-													<b>{$translate_workorder_enter_by} </b>{$work_order_notes[b].EMPLOYEE_DISPLAY_NAME}  <b>{$translate_workorder_date} </b> {$work_order_notes[b].WORK_ORDER_NOTES_DATE|date_format:"%d-%m-%y"}<br>
+													<b>{$translate_workorder_enter_by} </b>{$work_order_notes[b].EMPLOYEE_DISPLAY_NAME}  <b>{$translate_workorder_date} </b> {$work_order_notes[b].WORK_ORDER_NOTES_DATE|date_format:"$date_format"}<br>
 													{$work_order_notes[b].WORK_ORDER_NOTES_DESCRIPTION}
 													</p>
 												{/section}

@@ -19,7 +19,7 @@
 										<tr>
 											<td>
 												<b>{$translate_workorder_enter_by} </b><a href="?page=employees:employee_details&employee_id={$work_order_status[c].WORK_ORDER_STATUS_ENTER_BY}&page_title={$translate_workorder_employee} {$work_order_status[c].EMPLOYEE_DISPLAY_NAME}">{$work_order_status[c].EMPLOYEE_DISPLAY_NAME}</a> 
-												<b>{$translate_workorder_date} </b>{$work_order_status[c].WORK_ORDER_STATUS_DATE|date_format:"%d-%m-%y %r"}<br>
+												<b>{$translate_workorder_date} </b>{$work_order_status[c].WORK_ORDER_STATUS_DATE|date_format:"$date_format %r"}<br>
 												{$work_order_status[c].WORK_ORDER_STATUS_NOTES}</p>
 											</td>
 										</tr>

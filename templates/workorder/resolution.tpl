@@ -21,7 +21,7 @@
 					<td>
 						{section name=v loop=$resolution}
 							<p><b>Closed By: </b>{$resolution[v].EMPLOYEE_DISPLAY_NAME}  <b>Date: </b>
-							{$resolution[v].WORK_ORDER_CLOSE_DATE|date_format:"%d-%m-%y"} <br>
+							{$resolution[v].WORK_ORDER_CLOSE_DATE|date_format:"$date_format"} <br>
 							{$resolution[v].WORK_ORDER_RESOLUTION}
 							</p>
 						{/section}

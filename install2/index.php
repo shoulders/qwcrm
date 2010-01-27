@@ -364,9 +364,8 @@ echo ("
 															<table  class=\"olotable\" cellpadding=\"5\" cellspacing=\"0\" border=\"0\" >
 																<tr>
 																	<td valign=\"top\" width=\"60%\" align=\"left\">
-																		<table >
-																			<tr>
-																				<td width=\"140\">Database User:</td>
+																		<table>
+																			<tr><td width=\"140\">Database User:</td>
 																				<td ><input type=\"text\" size=\"20\" name=\"db_user\" value=\"username\" class=\"olotd5\"></td>
 																			</tr><tr>
 																				<td width=\"140\">Database Password:</td>
@@ -393,7 +392,17 @@ echo ("
 																																													
 																						</select>
 																					</td>
-																				</tr>tr>
+																				</tr>
+                                                                                                                                                                <tr>
+																					<td width=\"140\">Date Format</td>
+																					<td>
+																						<select name=\"date_format\" size=\"1\" >
+																							<option value=\"%d/%m/%Y\" SELECTED>d/m/Y
+																							<option value=\"%m/%d/%Y\">m/d/Y
+																																													
+																						</select>
+																					</td>
+																				</tr><tr>
 																					<td width=\"140\">Currency Symbol</td>
 																					<td>
 																						<select name=\"currency_sym\" size=\"1\" >
@@ -1286,6 +1295,7 @@ include('version.php');
 @define('LANG','".$_POST['language']."');
 @define('INSTALL_DATE','".$install_date."');
 @define('debug', 'no');
+\$date_format = '".$_POST['dat_format']."' ;
 
 /* Database Settings */
 @define('PRFX',	'".$_POST['db_prefix']."');
