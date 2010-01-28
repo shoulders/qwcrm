@@ -43,7 +43,7 @@ if($invoice_id == "" || $invoice_id == "0") {
 }
 
 /* check if invoice is already paid or there is at least an amount to bill */
-$q = "SELECT count(*) as count, INVOICE_AMOUNT, INVOICE_DATE, INVOICE_DUE,INVOICE_ID, BALANCE, WORKORDER_ID  FROM ".PRFX."TABLE_INVOICE WHERE INVOICE_PAID='0' AND INVOICE_ID=".$db->qstr($invoice_id)." GROUP BY INVOICE_ID";
+$q = "SELECT count(*) as count, INVOICE_AMOUNT, INVOICE_DATE, INVOICE_DUE,INVOICE_ID, PAID_AMOUNT, BALANCE, WORKORDER_ID  FROM ".PRFX."TABLE_INVOICE WHERE INVOICE_PAID='0' AND INVOICE_ID=".$db->qstr($invoice_id)." GROUP BY INVOICE_ID";
 
 if(!$rs = $db->execute($q)) {
 	force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');

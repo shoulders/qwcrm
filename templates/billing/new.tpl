@@ -30,7 +30,7 @@
                                 <td>{$item.WORKORDER_ID}</td>
                                 <td>
 								{if $item.BALANCE > 0}
-                                    <font color="#CC0000"><b>${$item.BALANCE|string_format:"%.2f"}</b></font>
+                                    <font color="#CC0000"><b>${$item.INVOICE_AMOUNT-$item.PAID_AMOUNT|string_format:"%.2f"}</b></font>
 								{else}
                                     <font color="#CC0000"><b>${$item.INVOICE_AMOUNT|string_format:"%.2f"}</b></font>
 								{/if}
@@ -178,7 +178,7 @@
                                                 <td></td>
                                                 <td><input type="text" name="deposit_recieved" size="20" class="olotd4"></td>
                                                 <td>$<input type="text" name="deposit_amount" size="8"
-                                                            {if $balance > 1} value="{$balance|string_format:"%.2f"}"
+                                                            {if $balance > 0 } value="{$balance|string_format:"%.2f"}"
                                                             {else}
                                                             value="{$invoice_amount|string_format:"%.2f"}"
                                                             {/if} class="olotd4"></td>

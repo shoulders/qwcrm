@@ -21,8 +21,7 @@ $invoice_details = $rs->FetchRow();
 //Echo $invoice_details['INVOICE_AMOUNT'];
 if($invoice_details['INVOICE_AMOUNT'] > $cash_amount){
 	if($invoice_details['BALANCE'] > 0 ) {
-		$balance = $invoice_details['BALANCE'] - $invoice_details['PAID_AMOUNT'] - $cash_amount;		
-	} else {
+		
 		$balance = $invoice_details['INVOICE_AMOUNT'] - $invoice_details['PAID_AMOUNT'];
 		
 	}	
