@@ -102,7 +102,8 @@
 															</td>
 														</tr><tr>
                                                                                                                         <td><b>{$translate_customer_discount}</b><a><input type="text" size="4" name="discount" value="" class="olotd5"><b>%</b></a></td>
-														</tr>
+                                                                                                                </tr>
+                                                                                                                <tr>
 															<td colspan="2"><input class="olotd5" name="submit" value="submit" type="submit" /></td>
 														</tr>
 													</table>

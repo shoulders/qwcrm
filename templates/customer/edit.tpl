@@ -52,11 +52,11 @@
 															<strong>{$translate_primary}</strong></td>
 														<td><input class="olotd5" value="{$customer[q].CUSTOMER_PHONE}" name="homePhone" type="text" /></td>
 													</tr><tr>
-														<td><span style="color: #ff0000">*</span>
+														<td><span style="color: #ff0000"></span>
 															<strong>{$translate_secondary}</strong></td>
 														<td><input class="olotd5" value="{$customer[q].CUSTOMER_WORK_PHONE}" name="workPhone" type="text" /></td>
 													</tr><tr>
-														<td><span style="color: #ff0000">*</span>
+														<td><span style="color: #ff0000"></span>
 															<strong>{$translate_mobile}</strong></td>
 														<td><input class="olotd5" value="{$customer[q].CUSTOMER_MOBILE_PHONE}" name="mobilePhone" type="text" /></td>
 													</tr>
@@ -105,6 +105,7 @@
 										</tr><tr>
                                                                                         <td><b>{$translate_customer_discount}</b><a><input class="olotd5" type="text" size="4" name="discount" value="{$customer[q].DISCOUNT}"></a><b>%</b></td>
 										</tr>
+                                                                                <tr>
 											<td colspan="2"><input type="submit" name="submit" value="submit"></td>
 										</tr>
 									</table>
