@@ -1066,7 +1066,6 @@ echo ("
 													  														<option value=\"UA\"  >Ukraine</option>
 													  														<option value=\"AE\"  >United Arab Emirates</option>
 													  														<option value=\"UK\"  >United Kingdom</option>
-													  														<option value=\"GB\"  >Great Britain</option>
 													  														<option value=\"US\"  >United States</option>
 													  														<option value=\"UM\"  >United States Minor Outlying Isl</option>
 													  														<option value=\"UY\"  >Uruguay</option>
