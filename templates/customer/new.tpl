@@ -97,6 +97,13 @@
 																		<option value="2">{$translate_customer_type_2}</option>
 																		<option value="3">{$translate_customer_type_3}</option>
 																		<option value="4">{$translate_customer_type_4}</option>
+                                                                                                                                                <option value="5">{$translate_customer_type_5}</option>
+                                                                                                                                                <option value="6">{$translate_customer_type_6}</option>
+                                                                                                                                                <option value="7">{$translate_customer_type_7}</option>
+                                                                                                                                                <option value="8">{$translate_customer_type_8}</option>
+                                                                                                                                                <option value="9">{$translate_customer_type_9}</option>
+                                                                                                                                                <option value="10">{$translate_customer_type_10}</option>
+
 																	</select>
 																<input type="hidden" name="page" value="customer:new">
 															</td>

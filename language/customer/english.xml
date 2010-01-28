@@ -77,8 +77,14 @@
 		
 		<customer_type_1>Residential</customer_type_1>
 		<customer_type_2>Commercial</customer_type_2>
-		<customer_type_3></customer_type_3>
-		<customer_type_4></customer_type_4>
+		<customer_type_3>Charity</customer_type_3>
+		<customer_type_4>Educational</customer_type_4>
+                <customer_type_5>Governmental</customer_type_5>
+                <customer_type_6>-</customer_type_6>
+                <customer_type_7>-</customer_type_7>
+                <customer_type_8>-</customer_type_8>
+                <customer_type_9>-</customer_type_9>
+                <customer_type_10>-</customer_type_10>
 
                 <customer_asset_tab>Assets/Licenses</customer_asset_tab>
                 <customer_asset>Customer Assets</customer_asset>

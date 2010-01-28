@@ -99,6 +99,12 @@
 													<option value="2"   {if $customer[q].CUSTOMER_TYPE == 2}   selected{/if}>{$translate_customer_type_2}</option>
 													<option value="3"   {if $customer[q].CUSTOMER_TYPE == 3}   selected{/if}>{$translate_customer_type_3}</option>
 													<option value="4"   {if $customer[q].CUSTOMER_TYPE == 4}   selected{/if}>{$translate_customer_type_4}</option>
+                                                                                                        <option value="5"   {if $customer[q].CUSTOMER_TYPE == 5}   selected{/if}>{$translate_customer_type_5}</option>
+                                                                                                        <option value="6"   {if $customer[q].CUSTOMER_TYPE == 6}   selected{/if}>{$translate_customer_type_6}</option>
+                                                                                                        <option value="7"   {if $customer[q].CUSTOMER_TYPE == 7}   selected{/if}>{$translate_customer_type_7}</option>
+                                                                                                        <option value="8"   {if $customer[q].CUSTOMER_TYPE == 8}   selected{/if}>{$translate_customer_type_8}</option>
+                                                                                                        <option value="9"   {if $customer[q].CUSTOMER_TYPE == 9}   selected{/if}>{$translate_customer_type_9}</option>
+                                                                                                        <option value="10"   {if $customer[q].CUSTOMER_TYPE == 10}   selected{/if}>{$translate_customer_type_10}</option>
 												</select>
 												<input type="hidden" name="page" value="customer:edit">
 											</td>
