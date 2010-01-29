@@ -30,6 +30,7 @@
         el.setAttribute('id', 'hour['+ iteration+']');
         el.setAttribute('size', '4');
         el.setAttribute('class', 'olotd4');
+        el.setAttribute('value', '1');
         cellRight.appendChild(el);
   
         // right cell
@@ -422,7 +423,7 @@
                                         </table>
 
                                         <br>
-                                        <table width="100%" cellpadding="4" cellspacing="0" border="0" >
+                                        <!--<table width="100%" cellpadding="4" cellspacing="0" border="0" >
                                             <tr>
                                                 <td class="menuhead2">&nbsp;{$translate_invoice_parts}</td>
                                             </tr><tr>
@@ -436,7 +437,7 @@
                                                             <td class="row2"><b>{$translate_invoice_man}</b></td>
                                                             <td class="row2"><b>{$translate_invoice_price}</b></td>
                                                             <td class="row2"><b>{$translate_invoice_total}</b></td>
-                                                            <!-- <td class="row2"><b>Remove</b></td> -->
+                                                            <!-- <td class="row2"><b>Remove</b></td> 
                                                         </tr>
 												{section name=w loop=$parts}
                                                         <tr class="olotd4">
@@ -470,7 +471,7 @@
                                                     </p>
                                                 </td>
                                             </tr>
-                                        </table>
+                                        </table> -->
                                         <br>
                                         <table width="100%" cellpadding="4" cellspacing="0" border="0" >
                                             <tr>
