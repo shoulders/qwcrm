@@ -29,8 +29,14 @@
 	<workorder_type>Type</workorder_type>
 	<workorder_type_1>Residential</workorder_type_1>
 	<workorder_type_2>Commercial</workorder_type_2>
-	<workorder_type_3></workorder_type_3>
-	<workorder_type_4></workorder_type_4>
+	<workorder_type_3>Charity</workorder_type_3>
+        <workorder_type_4>Educational</workorder_type_4>
+        <workorder_type_5>Governmental</workorder_type_5>
+        <workorder_type_6>-</workorder_type_6>
+        <workorder_type_7>-</workorder_type_7>
+        <workorder_type_8>-</workorder_type_8>
+        <workorder_type_9>-</workorder_type_9>
+        <workorder_type_10>-</workorder_type_10>
 	<workorder_customer_first>First Name</workorder_customer_first>
 	<workorder_customer_last>Last Name</workorder_customer_last>
 			
