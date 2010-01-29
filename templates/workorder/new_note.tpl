@@ -1,9 +1,10 @@
 <!-- Add New Note tpl -->
-{literal}
+
 <script language="javascript" type="text/javascript" src="include/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
+{literal}
 <script language="javascript" type="text/javascript">
 	tinyMCE.init({
-		mode : "specific_textareas",
+		mode : "textareas",                
 		theme : "advanced",
 		plugins : "advlink,iespell,insertdatetime,preview",
 		theme_advanced_buttons2_add : "separator,insertdate,inserttime,preview,separator,forecolor,backcolor",
@@ -45,7 +46,7 @@
 										<tr>
 											<td class="olohead"> Work Order Notes </td>
 										</tr><tr>
-											<td class="olotd"><textarea class="olotd4" rows="15" cols="70" mce_editable="true" name="work_order_notes"></textarea></td>
+											<td class="olotd"><textarea class="olotd4" rows="15" cols="70" name="work_order_notes"></textarea></td>
 										</tr>
 									</table>
 									<br>
