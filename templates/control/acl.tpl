@@ -25,7 +25,7 @@
 												</tr>
 												{section name=q loop=$acl}
 												<tr onmouseover="this.className='row2'" onmouseout="this.className='row1'" class="row1">
-													<td class="olotd4"><b>{$acl[q].page}<b></td>
+													<td class="olotd4"><b>{$acl[q].page}</b></td>
 													<td class="olotd4">
 														<select name="{$acl[q].page}[Manager]">
 															<option value="1" {if $acl[q].Manager == '1'}selected{/if}>Yes</option>
