@@ -8,9 +8,9 @@
 												<table cellpadding="2" cellspacing="2" border="0">
 												<tr> 
 													<td width="33%" align="right" >
-														{if $single_workorder_array[i].WORK_ORDER_STATUS != 6}
+														
 														<a href="?page=workorder:new_note&wo_id={$single_workorder_array[i].WORK_ORDER_ID}&page_title={$translate_workorder_new_note_title}"><img src="images/icons/16x16/small_new_work_order.gif" border="0" onMouseOver="ddrivetip('New Note')" onMouseOut="hideddrivetip()"></a>
-														{/if}
+													
 													</td>
 												</tr>
 												</table>
