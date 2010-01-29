@@ -19,7 +19,7 @@
                     <li><a href="#" rel="#tab_2_contents" class="tab">Works Orders</a></li>
                     <li><a href="#" rel="#tab_3_contents" class="tab">Invoices</a></li>
                     <li><a href="#" rel="#tab_4_contents" class="tab">Directions</a></li>
-                    <li><a href="#" rel="#tab_5_contents" class="tab">{$translate_customer_asset_tab}</a></li>
+                    <!-- TODO: <li><a href="#" rel="#tab_5_contents" class="tab">{$translate_customer_asset_tab}</a></li> -->
                 </ul>
 
                 <!-- This is used so the contents don't appear to the
