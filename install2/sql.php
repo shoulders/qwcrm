@@ -1116,9 +1116,9 @@ function create_setup($db) {
   `PARTS_PASSWORD` varchar(60) NOT NULL default '',
   `SERVICE_CODE` varchar(10) NOT NULL default '',
   `PARTS_MARKUP` decimal(2,2) NOT NULL default '0.00',
-  `UPS_LOGIN` varchar(50) NOT NULL,
-  `UPS_PASSWORD` varchar(50) NOT NULL,
-  `UPS_ACCESS_KEY` varchar(50) NOT NULL,
+  `PAYMATE_LOGIN` varchar(50) NOT NULL,
+  `PAYMATE_PASSWORD` varchar(50) NOT NULL,
+  `PAYMATE_FEES` decimal(2,1) NOT NULL default '1.5',
   `CHECK_PAYABLE` varchar(30) default NULL,
   `DD_NAME` varchar(50) default NULL,
   `DD_BANK` varchar(50) default NULL,
@@ -1131,7 +1131,7 @@ function create_setup($db) {
 		if(!$rs) {
 			return false;
 		} else {
-			$q = "REPLACE INTO `".PRFX."SETUP` VALUES (7, 19, '', '', '', '', 1, 0,'','','','','','','03','0.00','','','','','','','','','Please use invoice number as transactions details. This helps us to determine who has paid in a timely manner.')";
+			$q = "REPLACE INTO `".PRFX."SETUP` VALUES (7, 19, '', '', '', '', 1, 0,'','','','','','','03','0.00','','','1.5','','','','','','Please use invoice number as transactions details. This helps us to determine who has paid in a timely manner.')";
 		
 			if(!$rs = $db->Execute($q)) {
 				return false;

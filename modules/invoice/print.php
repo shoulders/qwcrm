@@ -27,7 +27,7 @@ if($customer_id == "" || $customer_id == "0"){
 		exit;
 	}
 
-	$customer_details = $rs->GetAssoc();
+	$customer_details = $rs->GetAssoc();        
 	if(empty($customer_details)){
 		force_page('core', 'error&error_msg=No Customer details found for Customer ID '.$customer_id.'.&menu=1');
 		exit;
@@ -93,7 +93,7 @@ if($customer_id == "" || $customer_id == "0"){
 			
 
 /* get printing options */
-$q = "SELECT  HTML_PRINT, PDF_PRINT, INV_THANK_YOU, PP_ID, CHECK_PAYABLE, DD_NAME, DD_BANK, DD_BSB, DD_ACC, DD_INS  FROM ".PRFX."SETUP";
+$q = "SELECT * FROM ".PRFX."SETUP";
 $rs = $db->execute($q);
 $html_print = $rs->fields['HTML_PRINT'];
 $pdf_print  = $rs->fields['PDF_PRINT'];
@@ -105,6 +105,8 @@ $DD_BSB  =  $rs->fields['DD_BSB'];
 $DD_ACC  =  $rs->fields['DD_ACC'];
 $DD_INS  =  $rs->fields['DD_INS'];
 $PP_ID  =  $rs->fields['PP_ID'];
+$PAYMATE_LOGIN  =  $rs->fields['PAYMATE_LOGIN'];
+$PAYMATE_FEES  =  $rs->fields['PAYMATE_FEES'];
 
 /* Assign company information */
 $q = 'SELECT * FROM '.PRFX.'TABLE_COMPANY';
@@ -175,23 +177,19 @@ $cusemail = $customer1['CUSTOMER_EMAIL'];
 //invoice details
 $totalinv = $invoice3['SUB_TOTAL'];
 $taxinv = $invoice3['TAX'];
-//$balinv = $invoice3['BALANCE'];
+$balinv = $invoice3['INVOICE_AMOUNT']-$invoice3['PAID_AMOUNT'];
 $paidamntinv = $invoice3['PAID_AMOUNT'];
 $discinv = $invoice3['DISCOUNT'];
 $amntinv = $invoice3['INVOICE_AMOUNT'];
 $shipinv = $invoice3['SHIPPING'];
-
-if ($invoice3['INVOICE_PAID'] = 1){
-	$balinv = $invoice3['BALANCE'];}
-
-if ($invoice3['BALANCE'] < 1){
-	$balinv = ($amntinv-$paidamntinv);
-	}
 $balinv = sprintf( "%.2f",$balinv);
+
 
 //PayPal Amount with 1.5% Surcharge Applied
   $pamount= ($balinv)* 1.015;
   $pamount = sprintf( "%.2f",$pamount);
+  $paymate_amt= ($balinv)* ((($setup1['PAYMATE_FEES'])/100)+1);
+  $paymate_amt = sprintf( "%.2f",$paymate_amt);
 
 
 if($html_print == 1) {
@@ -234,6 +232,7 @@ if($html_print == 1) {
 	$smarty->assign('trans',$trans);
 	$smarty->assign('paid',$paid);
 	$smarty->assign('customer_details',$customer_details);
+        $smarty->assign('customer1',$customer1);
 	$smarty->assign('invoice',$invoice);
 	$smarty->assign('PP_ID', $PP_ID);
         $smarty->assign('DD_NAME', $DD_NAME);
@@ -242,12 +241,15 @@ if($html_print == 1) {
         $smarty->assign('DD_INS', $DD_INS);
         $smarty->assign('DD_BANK', $DD_BANK);
         $smarty->assign('CHECK_PAYABLE',$CHECK_PAYABLE);
+        $smarty->assign('PAYMATE_LOGIN',$PAYMATE_LOGIN);
 	$smarty->assign('company',$company);
 	$smarty->assign('company2',$company2);
 	$smarty->assign('currency_code',$currency_code);
         $smarty->assign('currency_sym',$currency_sym);
          $smarty->assign('country',$country);
         $smarty->assign('pamount',$pamount);
+        $smarty->assign('paymate_amt',$paymate_amt);
+        $smarty->assign('PAYMATE_FEES',$PAYMATE_FEES);
 	$smarty->display('invoice'.SEP.'print.tpl');
 	
 

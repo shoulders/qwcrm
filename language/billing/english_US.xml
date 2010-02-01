@@ -18,6 +18,9 @@
                 <billing_deposit>Direct Deposit</billing_deposit>
                 <billing_deposit_id>Direct Deposit ID#</billing_deposit_id>
                 <billing_deposit_payment>Submit Direct Deposit Payment</billing_deposit_payment>
+                <billing_paymate>Paymate</billing_paymate>
+                <billing_paymate_trans>Paymate Transaction ID#</billing_paymate_trans>
+                <billing_paymate_submit>Submit Paymate Payment</billing_paymate_submit>
 		<billing_cash>Cash</billing_cash>
 		<billing_gift>Gift Certificate</billing_gift>
 		<billing_paypal>Pay Pal</billing_paypal>

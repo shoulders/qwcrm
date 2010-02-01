@@ -7,7 +7,12 @@ if(isset($VAR['submit'])) {
                                 DD_BANK	=". $db->qstr( $VAR['DD_BANK']).",
                                 DD_BSB	=". $db->qstr( $VAR['DD_BSB']).",
                                 DD_ACC	=". $db->qstr( $VAR['DD_ACC']).",
-                                DD_INS	=". $db->qstr( $VAR['DD_INS']);
+                                DD_INS	=". $db->qstr( $VAR['DD_INS']).",
+                                PAYMATE_LOGIN	=". $db->qstr( $VAR['PAYMATE_LOGIN']).",
+                                PAYMATE_PASSWORD	=". $db->qstr( $VAR['PAYMATE_PASSWORD']).",
+                                PAYMATE_FEES	=". $db->qstr( $VAR['PAYMATE_FEES']);
+
+
 		if(!$rs = $db->execute($q)) {
 			echo $db->ErrorMsg();
                 }
@@ -21,7 +26,7 @@ if(isset($VAR['submit'])) {
 		$enc_passwd = encrypt ($VAR['AN_PASSWORD'], $strKey);
 
 		$q = "UPDATE ".PRFX."SETUP SET 
-				AN_LOGIN_ID	=". $db->qstr( $VAR['an_login'] 		).",
+				AN_LOGIN_ID	=". $db->qstr( $VAR['AN_LOGIN_ID'] 		).",
 				AN_PASSWORD	=". $db->qstr( $VAR['AN_PASSWORD']				).",
 				AN_TRANS_KEY	=". $db->qstr( $VAR['AN_TRANS_KEY']	);
 		if(!$rs = $db->execute($q)) {
@@ -76,6 +81,14 @@ if(isset($VAR['submit'])) {
 		$rs = $db->execute($q);
         }
 
+        if($VAR['paymate_billing'] == 1 ) {
+		$q = "UPDATE ".PRFX."CONFIG_BILLING_OPTIONS SET ACTIVE=1 WHERE  BILLING_OPTION='paymate_billing'";
+		$rs = $db->execute($q);
+	} else {
+		$q = "UPDATE ".PRFX."CONFIG_BILLING_OPTIONS SET ACTIVE=0 WHERE  BILLING_OPTION='paymate_billing'";
+		$rs = $db->execute($q);
+	}
+
 	force_page('control', 'payment_options&msg=Billing Options Updated.');
 	exit;	
 
@@ -89,7 +102,7 @@ if(isset($VAR['submit'])) {
 	$arr = $rs->GetArray();
 
 	/* load setup configuration for billing options */
-	$q = "SELECT AN_LOGIN_ID,AN_TRANS_KEY,AN_PASSWORD,PP_ID,CHECK_PAYABLE,DD_NAME,DD_BANK,DD_BSB,DD_ACC,DD_INS FROM ".PRFX."SETUP";
+	$q = "SELECT * FROM ".PRFX."SETUP";
 	if(!$rs = $db->execute($q)) {
 		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
 		exit;
@@ -109,6 +122,10 @@ if(isset($VAR['submit'])) {
         $smarty->assign( 'DD_BSB', $DD_BSB );
         $smarty->assign( 'DD_ACC', $DD_ACC );
         $smarty->assign( 'DD_INS', $DD_INS );
+        $smarty->assign( 'PAYMATE_LOGIN', $PAYMATE_LOGIN );
+        $smarty->assign( 'PAYMATE_PASSWORD', $PAYMATE_PASSWORD );
+        $smarty->assign( 'PAYMATE_FEES', $PAYMATE_FEES );
+        $smarty->assign( 'AN_LOGIN_ID', $AN_LOGIN_ID );
         //$smarty->assign( 'epass', $epass );
 
 	$smarty->display('control'.SEP.'payment_options.tpl');

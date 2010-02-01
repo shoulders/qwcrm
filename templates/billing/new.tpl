@@ -346,6 +346,43 @@
 
                         </form>
 					{/if}
+                                        {if $billing_options.paymate_billing == '1'}
+                        <form method="POST" action="">
+                            <br>
+                            <table width="100%" cellpadding="4" cellspacing="0" border="0" >
+                                <tr>
+                                    <td class="menuhead2">&nbsp;{$translate_billing_paymate}</td>
+                                </tr><tr>
+                                    <td class="menutd2">
+                                        <table width="100%" cellpadding="4" cellspacing="0" border="0" width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
+                                            <tr class="olotd4">
+                                                <td class="row2"></td>
+                                                <td class="row2"><b>{$translate_billing_paymate_trans}</b></td>
+                                                <td class="row2"><b>{$translate_billing_amount}</b></td>
+                                            </tr><tr class="olotd4">
+                                                <td></td>
+                                                <td><input type="text" name="paymate_recieved" size="20" class="olotd4"></td>
+                                                <td>$<input type="text" name="paymate_amount" size="8"
+                                                            {if $balance > 0 } value="{$balance|string_format:"%.2f"}"
+                                                            {else}
+                                                            value="{$invoice_amount|string_format:"%.2f"}"
+                                                            {/if} class="olotd4"></td>
+                                            </tr><tr>
+                                                <td valign="top"><b>{$translate_billing_memo}</b></td>
+                                                <td colspan="2" ><textarea name="paymate_memo" cols="60" rows="4" class="olotd4"></textarea></td>
+                                            </tr>
+                                        </table>
+                                        <p>
+                                            <input type="hidden" name="customer_id"  value="{$customer_id}">
+                                            <input type="hidden" name="invoice_id"   value="{$invoice_id}">
+                                            <input type="hidden" name="workorder_id" value="{$workorder_id}">
+                                            <input type="hidden" name="page"         value="billing:proc_paymate">
+                                            <input type="submit" name="submit" value="{$translate_billing_paymate_submit}">
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </form>{/if}
 
 
                     </td>

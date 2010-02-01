@@ -133,7 +133,7 @@ function create_labor_rate($db) {
 		$rs = $db->Execute($q);
 
 		if(!$rs) {
-	$q="ALTER TABLE `".PRFX."TABLE_LABOR_RATE` ADD `LABOR_TYPE` varchar(20) collate latin1_general_ci default NULL, ADD `LABOR_MANUF` varchar(30) collate latin1_general_ci default NULL ;";
+	$q="ALTER TABLE `".PRFX."TABLE_LABOR_RATE` ADD `LABOR_TYPE` varchar(20) default NULL, ADD `LABOR_MANUF` varchar(30) default NULL ;";
 
 		$rs = $db->Execute($q);
 	 
@@ -148,7 +148,16 @@ function create_labor_rate($db) {
 }
 
 function create_setup($db) {
-  $q = "ALTER TABLE `".PRFX."SETUP` DROP COLUMN `CHECK_PAYABLE` ,DROP COLUMN `DD_NAME`, DROP COLUMN `DD_BANK`, DROP COLUMN `DD_BSB` , DROP COLUMN `DD_ACC` , DROP COLUMN `DD_INS`,
+  $q = "ALTER TABLE `".PRFX."SETUP`
+      DROP COLUMN `CHECK_PAYABLE` ,
+      DROP COLUMN `DD_NAME`,
+      DROP COLUMN `DD_BANK`,
+      DROP COLUMN `DD_BSB` ,
+      DROP COLUMN `DD_ACC` ,
+      DROP COLUMN `DD_INS`,
+      DROP COLUMN `UPS_LOGIN`,
+      DROP COLUMN `UPS_PASSWORD`,
+      DROP COLUMN `UPS_ACCESS_KEY`,
   ;";
 
     	$rs = $db->Execute($q);
@@ -161,6 +170,9 @@ $q = "ALTER TABLE `".PRFX."SETUP`,
   ADD `DD_BSB` varchar(15) default NULL,
   ADD `DD_ACC` varchar(50) default NULL,
   ADD `DD_INS` varchar(200) default NULL,
+  ADD `PAYMATE_LOGIN` varchar(50) default NULL,
+  ADD `PAYMATE_PASSWORD` varchar(50) default NULL,
+  ADD `PAYMATE_FEES` decimal(2,1) NOT NULL default '1.5',
   CHANGE `INVOICE_TAX` `INVOICE_TAX` decimal(3,1) NOT NULL default '0.00';";
     	$rs = $db->Execute($q);
 return TRUE;
@@ -179,6 +191,14 @@ function create_acl($db) {
 			} else {
 				return true;
 			}
+        $q = "INSERT IGNORE INTO `".PRFX."ACL` VALUES (67, 'billing:proc_paymate', 1, 1, 1, 1, 0)";
+
+                                $rs = $db->Execute($q);
+                                if(!$rs) {
+                                        return false;
+                                } else {
+                                        return true;
+                                }
 
 }
 function update_assets($db) {

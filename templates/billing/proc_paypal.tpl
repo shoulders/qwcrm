@@ -28,7 +28,7 @@
 																<input type="hidden" name="wo_id" value="{$wo_id}">
 																<input type="submit" name="submit" value="Success">
 																<input type="submit" name="submit2" value="Failed">
-														</select> 
+														
 															</form>
 														</td>
 													</tr>

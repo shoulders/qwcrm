@@ -131,12 +131,20 @@
                         {if $PP_ID <> ""}
                         <tr>
                             <td>
-                                <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business={$PP_ID}&item_name=Payment%20for%20invoice%20{$invoice.INVOICE_ID}&item_number={$invoice.INVOICE_ID}&description=Invoice%20for%20{$invoice.INVOICE_ID}&amount={$pamount}&no_note=Thankyou%20for%20your%20buisness.&currency_code={$currency_code}&lc='.$country." target="_blank" ><img src="images/paypal/pay_now.gif" height="40"  alt="PayPal - The safer, easier way to pay online"><br>Click on "Pay Now" to pay this invoice via PayPal using a valid Credit Card.<BR>
-                                    <I><B>NOTE:- A 1.5% surcharge applies to this type of payment.</B></I><BR></a>
+                                <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business={$PP_ID}&item_name=Payment%20for%20invoice%20{$invoice.INVOICE_ID}&item_number={$invoice.INVOICE_ID}&description=Invoice%20for%20{$invoice.INVOICE_ID}&amount={$pamount}&no_note=Thankyou%20for%20your%20buisness.&currency_code={$currency_code}&lc='.$country." target="_blank" ><img src="images/paypal/pay_now.gif" height="20"  alt="PayPal - The safer, easier way to pay online">&nbsp;<< Click on "Pay Now" to pay this invoice via PayPal using a valid Credit Card.<BR>
+                                    <I><B><font size="-0.5">* A 1.5% surcharge applies.</font></B></I><BR></a>
                             </td>
                         </tr>
                         {/if}
-                        {if $PP_ID == "" & $CHECK_PAYABLE == "" & $DD_NAME == ""}
+                        {if $PAYMATE_LOGIN <> ""}
+                        <tr valign="top">
+                            <td>
+                                <a href="https://www.paymate.com/PayMate/ExpressPayment?mid={$PAYMATE_LOGIN}&amt={$paymate_amt}&ref=Payment%20for%20invoice%20{$invoice.INVOICE_ID}&currency={$currency_code}&amt_editable=N&pmt_sender_email={$customer1.CUSTOMER_EMAIL}&pmt_contact_firstname={$customer1.CUSTOMER_FIRST_NAME}&pmt_contact_surname={$customer1.CUSTOMER_LAST_NAME}&pmt_contact_phone={$customer1.CUSTOMER_PHONE}&regindi_state={$customer1.CUSTOMER_STATE}&regindi_address1={$customer1.CUSTOMER_ADDRESS}&regindi_sub={$customer1.CUSTOMER_CITY}&regindi_pcode={$customer1.CUSTOMER_ZIP}" target="_blank" ><img src="images/paymate/paymate_cc.gif" height="20"  alt="Paymate provides secure, reliable and innovative Internet-based payment services to buyers in 57 countries around the world and sellers in Australia, New Zealand and the USA.">&nbsp;<< Click to pay this invoice via Paymate using a valid Credit Card.<br>
+                                    <I><B><font size="-0.5">* A {$PAYMATE_FEES}% surcharge applies.</font></B></I><BR></a>
+                            </td>
+                        </tr>
+                        {/if}
+                        {if $PP_ID == "" & $CHECK_PAYABLE == "" & $DD_NAME == "" & $PAYMATE_LOGIN ==""}
                         <tr>
                             <td>Please call us to discuss payment options</td>
                         </tr>

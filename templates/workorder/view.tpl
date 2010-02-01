@@ -15,7 +15,7 @@
         extended_valid_elements : "a[name|href|target|title|onclick],img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name],hr[class|width|size|noshade],font[face|size|color|style],span[class|align|style]",
         width : "100%"
     });
-</script>
+</script>{/literal}
 {section name=i loop=$single_workorder_array}
 {if $error_msg != ""}
 	{include file="core/error.tpl"}
