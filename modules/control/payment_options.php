@@ -22,7 +22,7 @@ if(isset($VAR['submit'])) {
 
 		$q = "UPDATE ".PRFX."SETUP SET 
 				AN_LOGIN_ID	=". $db->qstr( $VAR['an_login'] 		).",
-				AN_PASSWORD	=". $db->qstr( $enc_passwd				).",
+				AN_PASSWORD	=". $db->qstr( $VAR['AN_PASSWORD']				).",
 				AN_TRANS_KEY	=". $db->qstr( $VAR['AN_TRANS_KEY']	);
 		if(!$rs = $db->execute($q)) {
 			echo $db->ErrorMsg();
@@ -89,7 +89,7 @@ if(isset($VAR['submit'])) {
 	$arr = $rs->GetArray();
 
 	/* load setup configuration for billing options */
-	$q = "SELECT AN_LOGIN_ID,AN_TRANS_KEY,PP_ID,CHECK_PAYABLE,DD_NAME,DD_BANK,DD_BSB,DD_ACC,DD_INS FROM ".PRFX."SETUP";
+	$q = "SELECT AN_LOGIN_ID,AN_TRANS_KEY,AN_PASSWORD,PP_ID,CHECK_PAYABLE,DD_NAME,DD_BANK,DD_BSB,DD_ACC,DD_INS FROM ".PRFX."SETUP";
 	if(!$rs = $db->execute($q)) {
 		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
 		exit;

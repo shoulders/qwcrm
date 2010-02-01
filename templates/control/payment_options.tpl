@@ -15,7 +15,7 @@
 								<form method="POST" action="?page=control:payment_options">
 								
 									<table>
-										<!--{section name=q loop=$arr}-->
+										<!-- {section name=q loop=$arr} -->
 										<tr>
 											<td><b>{$arr[q].BILLING_NAME}</b></td>
 											<td>Active: <input type="checkbox" name="{$arr[q].BILLING_OPTION}" {if $arr[q].ACTIVE == 1} checked {/if} value=1 class="olotd5"></td>
@@ -24,24 +24,21 @@
 									</table>
 									<br>
 									<br>
-                                                                        <b><font color="red" size="+1" >CREDIT CARD PROCESSING VIA AUTHORIZE.NET HAS TEMPORARILY BEEN DISBALED</font></b><br>
-                                                                        <!--
+                                                                        <!--<b><font color="red" size="+1" >CREDIT CARD PROCESSING VIA AUTHORIZE.NET HAS TEMPORARILY BEEN DISBALED</font></b><br> -->
                                                                         <b>Authorize.Net information</b><br>
-									If you are enabling credit card billing you must have an Authorize.Net account set up and enbaled. To set up an Authorize.Net account click here. You account information will encrypted before being stored in the database. No credit Card information is stored in the MYIT CRM system. For more information on billing profiles and setup please contact Authorize.Net. If you re-install MYIT CRM you will need to enter your Authorize.Net account settings as a random encyption key is generated at install time. 
-
-                                                                        <{section name=w loop=$opts}
+									If you are enabling credit card billing you must have an Authorize.Net account set up and enbaled. To set up an Authorize.Net account click here. You account information will encrypted before being stored in the database. No credit Card information is stored in the MYIT CRM system. For more information on billing profiles and setup please contact Authorize.Net. If you re-install MYIT CRM you will need to enter your Authorize.Net account settings as a random encyption key is generated at install time. <!-- {section name=w loop=$opts} -->
 									<table >
 										<tr>
 											<td><b>Login:</b></td>
 											<td><input type="text" name="an_login" value="{$opts[w].AN_LOGIN_ID}" class="olotd5"></td>
 										</tr><tr>
 											<td><b>Password:</b></td>
-											<td><input type="password" name="AN_PASSWORD" value="{$epass}" class="olotd5"> </td>
+											<td><input type="text" name="AN_PASSWORD" value="{$opts[w].AN_PASSWORD}" class="olotd5"> </td>
 										</tr><tr>
 											<td><b>Transaction Key:</b></td>
 											<td><input type="text" name="AN_TRANS_KEY" value="{$opts[w].AN_TRANS_KEY}" size="50" class="olotd5"></td>
 										</tr>
-									</table> -->
+									</table>
 									<br>
 									<br>
 									<b>Paypal Information</b><br>

@@ -25,7 +25,7 @@ function validate_cc( $ccNum, $card_type, $card_type_accepted_arr ){
 	$v_ccNum = false;
 	if ($card_type == "visa" || !$card_type) {
 		// VISA
-		if ( ereg("^([0-9]{4}[- ]){3}[0-9]{4}|[0-9]{16}$", $ccNum) ) {
+		if ( ereg('^4(.{12}|.{15})$', $ccNum) ) {
 			$v_ccNum = true;
 			$c_type  = 'visa';
 		}
@@ -145,19 +145,22 @@ function hex2bin($data) {
 } // End of hex2bin
 
 
-function charge_an($fields) {
+function charge_an($post_string) {
 
-	$ch = curl_init("https://test.authorize.net/gateway/transact.dll"); // URL of gateway for cURL to post to
+	/*$ch = curl_init("https://test.authorize.net/gateway/transact.dll"); // URL of gateway for cURL to post to
 	curl_setopt($ch, CURLOPT_HEADER, 0); // set to 0 to eliminate header info from response
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); // Returns response data instead of TRUE(1)
-	curl_setopt($ch, CURLOPT_POSTFIELDS, rtrim( $fields, "& " )); // use HTTP POST to send form data
+	curl_setopt($ch, CURLOPT_POSTFIELDS, $fields); // use HTTP POST to send form data
 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE); // uncomment this line if you get no gateway response. ###
 	$resp = curl_exec($ch); //execute post and get results
-	curl_close ($ch);
-	
-	/* debug only code */
+	curl_close ($ch); */
 
-	$debug =1;
+    
+
+	
+	/* debug only code 
+
+	$debug =0;
 	if($debug ==1) {
 			$text = $resp;
 			$tok = strtok($text,"|");
@@ -168,6 +171,6 @@ function charge_an($fields) {
 			}
 	}
 
-	return $resp;
+	return $resp;*/
 }
 ?>

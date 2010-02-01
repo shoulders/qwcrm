@@ -80,7 +80,7 @@ $smarty->assign('invoice_details',$invoice_details);
 	$billing_options = $rs->GetAssoc();	
 
 	if(empty($billing_options)) {
-		force_page('core', 'error&error_msg=No Billing Methodes Available. Please select billing options in the configuration&menu=1');
+		force_page('core', 'error&error_msg=No Billing Methods Available. Please select billing options in the configuration&menu=1');
 		exit;
 	}
 	
