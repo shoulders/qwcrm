@@ -1224,7 +1224,8 @@ function create_acl($db) {
 (63, 'customer:directions', 1, 1, 1, 1, 0),
 (64, 'invoice:epdf', 1, 1, 1, 1, 0),
 (65, 'invoice:pdf', 1, 1, 1, 1, 0),
-(66, 'billing:proc_deposit', 1, 1, 1, 1, 0)";
+(66, 'billing:proc_deposit', 1, 1, 1, 1, 0)
+(67, 'billing:paymate_deposit', 1, 1, 1, 1, 0)";
 
 			$rs = $db->Execute($q);
 			if(!$rs) {
