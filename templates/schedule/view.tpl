@@ -12,9 +12,9 @@
 						<table class="olotable" width="100%" border="0" cellpadding="5" cellspacing="0">
 							<tr>
 								<td class="menutd">
-									<table width="100%" celpadding="5" cellspacing="5">
+									<table width="100%" cellpadding="5" cellspacing="5">
 										<tr>
-											<td >
+											<td>
 											<b>{$translate_schedule_start} </b>{$arr[a].SCHEDULE_START|date_format:"%H:%M %p"} <br><b>{$translate_schedule_end} </b>{$arr[a].SCHEDULE_END|date_format:"%H:%M %p"}<br>
 											{$arr[a].SCHEDULE_NOTES}<br>
 											<b>{$translate_schedule_tech}</b> {$arr[a].EMPLOYEE_DISPLAY_NAME}
