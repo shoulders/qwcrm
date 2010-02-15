@@ -171,13 +171,13 @@
             <td class="olotd4" width="80" align="right"><b>{$currency_sym} {$invoice.INVOICE_AMOUNT|string_format:"%.2f"}</b></td>
         </tr><tr>
             <td class="olotd4"><b>Payments Made</b></td>
-            <td class="olotd4" width="80" align="right">{$currency_sym} {$payments.AMOUNT|string_format:"%.2f"}</td>
+            <td class="olotd4" width="80" align="right">{$currency_sym} {$invoice.PAID_AMOUNT|string_format:"%.2f"}</td>
         </tr><tr>
             <td class="olotd4"><b>Invoice Balance</b></td>
-						{if $invoice.PAID_AMOUNT == 0}
-            <td class="olotd4" width="80" align="right"><b><font color="#CC0000">{$currency_sym} {$invoice.INVOICE_AMOUNT-$payments.AMOUNT|string_format:"%.2f"}</font></b></td>
+						{if $invoice.BALANCE == 0}
+            <td class="olotd4" width="80" align="right"><b><font color="#CC0000">{$currency_sym} {$invoice.BALANCE|string_format:"%.2f"}</font></b></td>
 				    {else}
-            <td class="olotd4" width="80" align="right"><b><font color="#CC0000">{$currency_sym} {$invoice.INVOICE_AMOUNT-$payments.AMOUNT|string_format:"%.2f"}</font></b></td>
+            <td class="olotd4" width="80" align="right"><b><font color="#CC0000">{$currency_sym} {$invoice.BALANCE|string_format:"%.2f"}</font></b></td>
 				    {/if}
         </tr>
     </table>

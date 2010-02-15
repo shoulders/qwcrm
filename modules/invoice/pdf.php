@@ -95,7 +95,7 @@ if($customer_id == "" || $customer_id == "0"){
 			
 
 /* get printing options */
-$q = "SELECT  HTML_PRINT, PDF_PRINT, INV_THANK_YOU, PP_ID, CHECK_PAYABLE, DD_NAME, DD_BANK, DD_BSB, DD_ACC, DD_INS  FROM ".PRFX."SETUP";
+$q = "SELECT * FROM ".PRFX."SETUP";
 $rs = $db->execute($q);
 $html_print = $rs->fields['HTML_PRINT'];
 $pdf_print  = $rs->fields['PDF_PRINT'];
@@ -107,6 +107,8 @@ $DD_BSB  =  $rs->fields['DD_BSB'];
 $DD_ACC  =  $rs->fields['DD_ACC'];
 $DD_INS  =  $rs->fields['DD_INS'];
 $PP_ID  =  $rs->fields['PP_ID'];
+$PAYMATE_LOGIN  =  $rs->fields['PAYMATE_LOGIN'];
+$PAYMATE_FEES  =  $rs->fields['PAYMATE_FEES'];
 
 /* Assign company information */
 $q = 'SELECT * FROM '.PRFX.'TABLE_COMPANY';
@@ -188,17 +190,15 @@ $amntinv = $invoice3['INVOICE_AMOUNT'];
 $shipinv = $invoice3['SHIPPING'];
 $currency_sym = utf8_decode($currency_sym);
 
-if ($invoice3['INVOICE_PAID'] = 1){
-	$balinv = $invoice3['BALANCE'];}
-	
-if ($invoice3['BALANCE'] < 1){
-	$balinv = ($amntinv-$paidamntinv);
-	}
-$balinv = sprintf( "%.2f",$balinv);
+$balinv = sprintf( "%.2f",$invoice3['BALANCE']);
 
 //PayPal Amount with 1.5% Surcharge Applied
   $pamount= ($balinv)* 1.015;
   $pamount = sprintf( "%.2f",$pamount);
+
+//Paymate Amount with Surcharge Applied
+  $paymate_amt= ($balinv)* ((($setup1['PAYMATE_FEES'])/100)+1);
+  $paymate_amt = sprintf( "%.2f",$paymate_amt);
 
 
 // Xavier Nicolay 2004
@@ -295,11 +295,11 @@ function addCompany( $nom, $address )
     $test2 = $invoice['invoice_id'];
     //Position from bottom
     $this->SetXY( $x1, $y1 );
-    $this->SetFont('Arial','B',12);
+    $this->SetFont('Arial','B',8);
     $length = $this->GetStringWidth( $nom );
     $this->Cell( $length, 2, $nom);
     $this->SetXY( $x1, $y1 + 4 );
-    $this->SetFont('Arial','',10);
+    $this->SetFont('Arial','',8);
     $length = $this->GetStringWidth( $address );
     //Coordonn�es de la soci�t�
     //$lines = $this->sizeOfText( $address, $length) ;
@@ -512,19 +512,6 @@ function lineVert( $tab )
     }
     return $maxSize;
 }
-//TODO - Tagged for code deletion of addRemark
-/*function addRemark($cthankyou)
-{
-    $this->SetFont( "Helvetica", "", 7);
-    $length = $this->GetStringWidth( $cthankyou );
-    $r1  = 20;
-    $r2  = $r1 + $length;
-    $y1  = $this->h - 40;
-    $y2  = $y1+5;
-    $this->SetXY( 20 , 250 );
-    //$this->Cell($length,4, $cthankyou ,0,0,'C');
-    $this->MultiCell(0,5, $cthankyou ,0,0,'L',0);
-} */
 // Now lets write some HTML links for PayPal on the PDF invoice and insert button
 
 var $B;
@@ -619,8 +606,10 @@ function PutLink($URL,$txt)
     $this->SetTextColor(0);
 }
 }
-$html='Click on "Pay Now" to pay this invoice via PayPal using a valid Credit Card.<BR>
-<I><B>NOTE:- A 1.5% surcharge applies to this type of payment.</B></I><BR>';
+$html='<< Click to pay this invoice via PayPal using a valid Credit Card.<BR>
+<I><B>NOTE:- A small surcharge applies to this type of payment.</B></I><BR>';
+$html2='<< Click to pay this invoice via Paymate using a valid Credit Card.<BR>
+<I><B>NOTE:- A small surcharge applies to this type of payment.</B></I><BR>';
 
 //Start of labour table insert
 $link = mysql_connect( "$DB_HOST", "$DB_USER", "$DB_PASS" );
@@ -778,8 +767,21 @@ $pdf->SetLeftMargin(20);
 //$pdf->SetFontSize(14);
 $pdf->WriteHTML($html);
 }
- if($PP_ID == "" & $CHECK_PAYABLE == "" & $DD_NAME == ""){
-     //If no payment options are supplied
+if($PAYMATE_LOGIN <> "" ){
+                        $pdf->SetY($y_axis_initial +($row_height * $max + 45));
+                        $pdf->SetX(20);
+                         $pdf->SetFont('Arial', 'B', 8);
+                        $pdf->MultiCell(100, 3, "\n" .
+                            "\n" .
+                        "Paymate Processing:-", 0 ,'L', FALSE);
+
+$pdf->SetLink($link);
+$pdf->Image('images/paymate/paymate_cc.gif',5,242,15,0,'','https://www.paymate.com/PayMate/ExpressPayment?mid='.$PAYMATE_LOGIN.'&amt='.$paymate_amt.'&ref=Payment%20for%20invoice%20'.$invoice_id.'&currency='.$currency_code.'&amt_editable=N&pmt_sender_email='.$cusemail.'&pmt_contact_firstname='.$cusnamef.'&pmt_contact_surname='.$cusnamel.'&pmt_contact_phone='.$cusphone.'&regindi_state='.$cusstate.'&regindi_address1='.$cusaddress.'&regindi_sub='.$cuscity.'&regindi_pcode='.$cuszip.'');
+$pdf->SetLeftMargin(20);
+//$pdf->SetFontSize(14);
+$pdf->WriteHTML($html2);
+}
+ if($PP_ID == "" & $CHECK_PAYABLE == "" & $DD_NAME == "" & $PAYMATE_LOGIN == ""){
  $pdf->SetY($y_axis_initial +($row_height * $max + 6));
  $pdf->SetX(20);
  $pdf->SetFont('Arial', 'B', 8);
