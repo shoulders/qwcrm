@@ -1,4 +1,5 @@
 <!--Billing Contents -->
+
 <table width="700" border="0" cellpadding="20" cellspacing="5">
     <tr>
         <td>
@@ -36,6 +37,7 @@
 								{/if}
                                 </td>
 							{assign var="invoice_amount" value=$item.INVOICE_AMOUNT}
+                                                        {assign var="invoice_paid_amount" value=$item.PAID_AMOUNT}
 							{assign var="invoice_id"     value=$item.INVOICE_ID}
 							{assign var="workorder_id"   value=$item.WORKORDER_ID}
 							{assign var="balance"       value=$item.BALANCE}
@@ -141,7 +143,7 @@
                                                 <td>{html_select_date prefix="StartDate" time=$time month_format="%m"
 												end_year="+7" display_days=false}
                                                 </td>
-                                                <td>$<input type="text" name="cc_amount" {if $balance > 0} value="{$balance}" {else} value="{$invoice_amount|string_format:"%.2f"}" {/if} size="6">
+                                                <td>$<input type="text" name="cc_amount" {if $balance > 0} value="{$invoice_amount-$invoice_paid_amount|string_format:"%.2f"}" {else} value="{$invoice_amount|string_format:"%.2f"}" {/if} size="6">
 
                                                 </td>
                                             </tr>
@@ -178,7 +180,7 @@
                                                 <td></td>
                                                 <td><input type="text" name="deposit_recieved" size="20" class="olotd4"></td>
                                                 <td>$<input type="text" name="deposit_amount" size="8"
-                                                            {if $balance > 0 } value="{$balance|string_format:"%.2f"}"
+                                                            {if $balance > 0 } value="{$invoice_amount-$invoice_paid_amount|string_format:"%.2f"}"
                                                             {else}
                                                             value="{$invoice_amount|string_format:"%.2f"}"
                                                             {/if} class="olotd4"></td>
@@ -216,7 +218,7 @@
                                                 <td></td>
                                                 <td><input type="text" name="cheque_recieved" size="8" class="olotd4"></td>
                                                 <td>$<input type="text" name="cheque_amount" size="8"
-                                                            {if $balance > 1} value="{$balance|string_format:"%.2f"}"
+                                                            {if $balance > 0} value="{$invoice_amount-$invoice_paid_amount|string_format:"%.2f"}"
                                                             {else}
                                                             value="{$invoice_amount|string_format:"%.2f"}"
                                                             {/if} class="olotd4"></td>
@@ -255,8 +257,8 @@
                                                 <td></td>
                                                 <td>
 													$<input type="text" name="cash_amount" size="8" 
-                                                            {if $balance > 1 }
-                                                            value="{$balance}"
+                                                            {if $balance > 0 }
+                                                            value="{$invoice_amount-$invoice_paid_amount|string_format:"%.2f"}"
                                                             {else}
                                                             value="{$invoice_amount|string_format:"%.2f"}"
                                                             {/if}
@@ -295,7 +297,7 @@
                                                 <td class="row2"><b>{$translate_billing_gift_code}</b></td>
                                             </tr><tr class="olotd4">
                                                 <td></td>
-                                                <td><input type="text" name="gift_amount" size="8" {if $balance > 0} value="{$balance|string_format:"%.2f"}" {else} value="{$invoice_amount|string_format:"%.2f"}" {/if} class="olotd4"></td>
+                                                <td><input type="text" name="gift_amount" size="8" {if $balance > 0} value="{$invoice_amount-$invoice_paid_amount|string_format:"%.2f"}" {else} value="{$invoice_amount|string_format:"%.2f"}" {/if} class="olotd4"></td>
                                                 <td><input type="text" name="gift_code" size="16" class="olotd4"><br>
 													{$translate_billing_gift_code_2}</td>
                                             </tr>
@@ -329,7 +331,7 @@
                                                 <td class="row2"></td>
                                             </tr><tr class="olotd4">
                                                 <td></td>
-                                                <td><input type="text" name="paypal_amount" size="8" {if $balance > 0} value="{$balance|string_format:"%.2f"}" {else} value="{$invoice_amount|string_format:"%.2f"}" {/if}class="olotd4"></td>
+                                                <td><input type="text" name="paypal_amount" size="8" {if $balance > 0} value="{$invoice_amount-$invoice_paid_amount|string_format:"%.2f"}" {else} value="{$invoice_amount|string_format:"%.2f"}" {/if}class="olotd4"></td>
                                                 <td></td>
                                             </tr>
                                         </table>
@@ -363,7 +365,7 @@
                                                 <td></td>
                                                 <td><input type="text" name="paymate_recieved" size="20" class="olotd4"></td>
                                                 <td>$<input type="text" name="paymate_amount" size="8"
-                                                            {if $balance > 0 } value="{$balance|string_format:"%.2f"}"
+                                                            {if $balance > 0 } value="{$invoice_amount-$invoice_paid_amount|string_format:"%.2f"}"
                                                             {else}
                                                             value="{$invoice_amount|string_format:"%.2f"}"
                                                             {/if} class="olotd4"></td>

@@ -10,7 +10,6 @@ $tech        = $_SESSION['login_id'];
 $invoice_id	 = $VAR['invoice_id'];
 
 
-
 /* Generic error control */
 if($wo_id == "" || $wo_id == "0") {
 	force_page('core', 'error&error_msg=No Work Order ID&menu=1');
@@ -70,6 +69,7 @@ if($invoice_details[1]['INVOICE_AMOUNT'] > 0 ){
 	}
 	
 $smarty->assign('invoice_details',$invoice_details);
+
 
 	/* get billing settings from db */
 	$q = "SELECT BILLING_OPTION, ACTIVE FROM ".PRFX."CONFIG_BILLING_OPTIONS WHERE  ACTIVE='1'";

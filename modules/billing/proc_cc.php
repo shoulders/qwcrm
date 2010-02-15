@@ -28,6 +28,11 @@ $q = "SELECT CARD_TYPE, CARD_NAME FROM ".PRFX."CONFIG_CC_CARDS WHERE ACTIVE='1'"
 $card_type_accepted_arr = $rs->GetArray();
 
 /* validation */
+//Check to see if we are processing more then required
+if($invoice_details['BALANCE'] < $cc_amount){
+		force_page('billing', 'new&wo_id='.$workorder_id.'&customer_id='.$customer_id.'	&invoice_id='.$invoice_id.'&error_msg= You can not bill more than the amount of the invoice.');
+			exit;
+	}
 if(!validate_cc( $cc_number, $card_type, $card_type_accepted_arr )){
 	force_page("billing", "new&error_msg=Card number is invalid.&wo_id=$workorder_id&customer_id=$customer_id&invoice_id=$invoice_id&page_title=Billing");
 	exit;
@@ -156,6 +161,7 @@ if($result[0] == "1") {
 			$balance = $invoice_details['INVOICE_AMOUNT'] - $cc_amount; 
 		}	
 		$paid_amount = $cc_amount + $invoice_details['PAID_AMOUNT'];
+                $balance = sprintf("%01.2f", $balance);
 
 		if($balance == 0 ) {
 			$flag  = 1;

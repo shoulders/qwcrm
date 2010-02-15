@@ -173,6 +173,7 @@ if(isset($submit)){
 			DISCOUNT		=". $db->qstr( number_format($discount_amount, 2,'.', '')).",
 			SUB_TOTAL 		=". $db->qstr( number_format($sub_total, 2,'.', '')).",
 			INVOICE_AMOUNT	        =". $db->qstr( number_format($invoice_total, 2,'.', '')).",
+                        BALANCE 	        =". $db->qstr( number_format($invoice_total, 2,'.', '')).",
 			TAX 			=". $db->qstr( number_format($tax_amount, 2,'.', '')).",
 			INVOICE_DUE		=". $db->qstr( $due_date)." 
 			WHERE INVOICE_ID=".$db->qstr( $VAR['invoice_id']);

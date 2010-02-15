@@ -27,6 +27,11 @@ if(!$rs = $db->execute($q)) {
 }
 
 $invoice_details = $rs->FetchRow();
+//Check to see if we are processing more then required
+if($invoice_details['BALANCE'] < $paymate_amount){
+		force_page('billing', 'new&wo_id='.$workorder_id.'&customer_id='.$customer_id.'	&invoice_id='.$invoice_id.'&error_msg= You can not bill more than the amount of the invoice.');
+			exit;
+	}
 
 /* check if this is a partial payment */
 if($invoice_details['INVOICE_AMOUNT'] > $paymate_amount){
@@ -36,6 +41,7 @@ if($invoice_details['INVOICE_AMOUNT'] > $paymate_amount){
 			$balance = $invoice_details['INVOICE_AMOUNT'] - $paymate_amount;
 		}	
 		$paid_amount = $paymate_amount + $invoice_details['PAID_AMOUNT'];
+                $balance = sprintf("%01.2f", $balance);
 
 		if($balance == 0 ) {
 			$flag  = 1;

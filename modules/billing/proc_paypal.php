@@ -3,6 +3,9 @@ if(!xml2php("billing")) {
 	$smarty->assign('error_msg',"Error in language file");
 }
 $pp2 = $VAR['paypal_amount'];
+$customer_id		= $VAR['customer_id'];
+$invoice_id		= $VAR['invoice_id'];
+$workorder_id	= $VAR['workorder_id'];
 $smarty->assign('pp2', $pp2);
 
 /* get company Info */
@@ -15,7 +18,13 @@ $company			= $rs->fields['COMPANY_NAME'];
 $country			= $rs->fields['COMPANY_COUNTRY'];
 
 // Need to add in variable from setup to allow user defined currency
-$curency_code	= 'AUD';
+// TODO : Delete if not rerquired as it is now located in conf.php
+//$curency_code	= 'AUD';
+//Check to see if we are processing more then required
+if($invoice_details['BALANCE'] < $pp2){
+		force_page('billing', 'new&wo_id='.$workorder_id.'&customer_id='.$customer_id.'	&invoice_id='.$invoice_id.'&error_msg= You can not bill more than the amount of the invoice.');
+			exit;
+	}
 
 /* get pay pal login */
 $q = "SELECT PP_ID FROM ".PRFX."SETUP";
@@ -41,7 +50,7 @@ $myPaypal = new Paypal();
 $myPaypal->addField('business', $pay_pal_email);
 
 // Specify the currency
-$myPaypal->addField('currency_code', $curency_code);
+$myPaypal->addField('currency_code', $currency_code);
 
 // Specify the url where paypal will send the user on success/failure
 $myPaypal->addField('return', 'payments/paypal_success.php');
