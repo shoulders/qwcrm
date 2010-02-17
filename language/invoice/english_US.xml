@@ -29,7 +29,7 @@
 		<invoice_print>Print HTML</invoice_print>
 		<invoice_pdf>Print PDF</invoice_pdf>
 		<invoice_bill_customer>Receive Payment</invoice_bill_customer>
-                <invoice_close_wo>Close Works Order</invoice_close_wo>
+                <invoice_close_wo>Close Work Order</invoice_close_wo>
 		<invoice_msg>Can not Invoice/Receive Payment until work order is closed.</invoice_msg>
 		
 		<invoice_labor>Labor</invoice_labor>
