@@ -127,11 +127,11 @@
 								
 							<tr onmouseover="this.className='row2'" onmouseout="this.className='row1'" onDblClick="window.location='index.php?page=customer:customer_details&customer_id={$customer_search_result[i].CUSTOMER_ID}&page_title={$customer_search_result[i].CUSTOMER_DISPLAY_NAME}';" class="row1">
 								<td class="olotd4" nowrap>
-									<a href="?page=customer:customer_details&customer_id={$customer_search_result[i].CUSTOMER_ID}&page_title={$customer_search_result[i].CUSTOMER_DISPLAY_NAME}"><img src="images/icons/16x16/viewmag.gif"  border="0" onMouseOver="ddrivetip('View Customer Details')" onMouseOut="hideddrivetip()"></a>&nbsp;<a href="?page=workorder:new&customer_id={$customer_search_result[i].CUSTOMER_ID}&page_title=New Work Order"><img src="images/icons/16x16/small_new_work_order.gif" border="0" onMouseOver="ddrivetip('New Work Order')" onMouseOut="hideddrivetip()"></a>
+                                                                    <a href="?page=customer:customer_details&customer_id={$customer_search_result[i].CUSTOMER_ID}&page_title={$customer_search_result[i].CUSTOMER_DISPLAY_NAME}"><img src="images/icons/16x16/viewmag.gif"  border="0" onMouseOver="ddrivetip('View Customer Details')" onMouseOut="hideddrivetip()"></a>&nbsp;<a href="?page=workorder:new&customer_id={$customer_search_result[i].CUSTOMER_ID}&page_title=New Work Order"><img src="images/icons/16x16/small_new_work_order.gif" border="0" onMouseOver="ddrivetip('New Work Order')" onMouseOut="hideddrivetip()"></a>&nbsp;<a href="?page=customer:email&customer_id={$customer_search_result[i].CUSTOMER_ID}&page_title=Email Customer"><img src="images/icons/16x16/email.jpg"  border="0" onMouseOver="ddrivetip('Send an Email to this Customer')" onMouseOut="hideddrivetip()"></a>
 								</td>
-                <td class="olotd4" nowrap>
+                                                                <td class="olotd4" nowrap>
 									<img src="images/icons/16x16/view+.gif" border="0" onMouseOver="ddrivetip('{$customer_search_result[i].CUSTOMER_ADDRESS}<br>{$customer_search_result[i].CUSTOMER_CITY}, {$customer_search_result[i].CUSTOMER_STATE}  {$customer_search_result[i].CUSTOMER_ZIP}')" onMouseOut="hideddrivetip()">{$customer_search_result[i].CUSTOMER_DISPLAY_NAME}
-								</td>
+								</td>                                                                
 								<td class="olotd4" nowrap>{$customer_search_result[i].CUSTOMER_FIRST_NAME}</td>
 								<td class="olotd4" nowrap>{$customer_search_result[i].CUSTOMER_LAST_NAME}</td>
 								<td class="olotd4" nowrap><img src="images/icons/16x16/view+.gif" border="0"
@@ -153,7 +153,7 @@
 													{$translate_customer_type_4}
 												{/if}
 								</td>
-								<td class="olotd4" nowrap><a href="mailto: {$customer_search_result[i].CUSTOMER_EMAIL}"><font class="blueLink">{$customer_search_result[i].CUSTOMER_EMAIL}</font></a></td>
+								<td class="olotd4" nowrap><a href="mailto:{$customer_search_result[i].CUSTOMER_EMAIL}"><font class="blueLink">{$customer_search_result[i].CUSTOMER_EMAIL}</font></a></td>
 								<td class="olotd4" nowrap><a href="index.php?page=customer:customer_details&customer_id={$customer_search_result[i].CUSTOMER_ID}&page_title={$customer_search_result[i].CUSTOMER_DISPLAY_NAME}">{$customer_search_result[i].CUSTOMER_ID}</a></td>
 								
 							</tr>

@@ -10,7 +10,7 @@
 </script>
 {/literal}
 <br>
-<table width="100%"
+<table width="100%">
        <tr>
         <td>
             <div id="tabs_container">
@@ -139,11 +139,11 @@
                                                                     <td class="menutd">
                                                                         <b>{$translate_customer_created}</b></td>
                                                                     <td class="menutd">
-                                                                        {$customer_details[i].CREATE_DATE|date_format:"%d-%m-%y"}</td>
+                                                                        {$customer_details[i].CREATE_DATE|date_format:$date_format}</td>
                                                                     <td class="menutd">
                                                                         <b>{$translate_customer_last}</b></td>
                                                                     <td class="menutd">
-                                                                        {$customer_details[i].LAST_ACTIVE|date_format:"%d-%m-%y"}</td>
+                                                                        {$customer_details[i].LAST_ACTIVE|date_format:$date_format}</td>
                                                                 </tr>
                                                                 {assign var="customer_id" value=$customer_details[i].CUSTOMER_ID} {assign var="customer_name" value=$customer_details[i].CUSTOMER_DISPLAY_NAME}
                                                             </table>
@@ -231,7 +231,7 @@
                                 <td class="olotd4">
                                     <a href="?page=workorder:view&wo_id={$closed_work_orders[b].WORK_ORDER_ID}&customer_id={$closed_work_orders[b].CUSTOMER_ID}&page_title={$translate_customer_work_order_id} {$closed_work_orders[b].WORK_ORDER_ID}">{$closed_work_orders[b].WORK_ORDER_ID}</a></td>
                                 <td class="olotd4">
-                                    {$closed_work_orders[b].WORK_ORDER_OPEN_DATE|date_format:"%d-%m-%y"}</td>
+                                    {$closed_work_orders[b].WORK_ORDER_OPEN_DATE|date_format:$date_format}</td>
                                 <td class="olotd4">
                                     {section name=i loop=$customer_details}{$customer_details[i].CUSTOMER_DISPLAY_NAME}{/section}</td>
                                 <td class="olotd4">
@@ -239,14 +239,14 @@
                                 <td class="olotd4">
                                     {$closed_work_orders[b].CONFIG_WORK_ORDER_STATUS}</td>
                                 <td class="olotd4"> {if $closed_work_orders[a].EMPLOYEE_ID != ''}
-                                    <img src="images/icons/16x16/view+.gif" border="0" alt="" onMouseOver="ddrivetip('<center><b>{$translate_contact}</b></center><hr>
+                                    <img src="images/icons/16x16/view+.gif" border="0" alt="" {literal}onMouseOver="ddrivetip('<center><b>{$translate_contact}</b></center><hr>
                                             <b>{$translate_work} </b>
                                             {$open_work_orders[a].EMPLOYEE_WORK_PHONE}
                                             <br>
                                             <b>{$translate_mobile} </b>
                                             {$open_work_orders[a].EMPLOYEE_MOBILE_PHONE}
                                             <br>
-                                            <b>{$translate_home} </b> {$closed_work_orders[a].EMPLOYEE_HOME_PHONE}')" onMouseOut="hideddrivetip()">
+                                            <b>{$translate_home} </b> {literal}{$closed_work_orders[a].EMPLOYEE_HOME_PHONE}')" onMouseOut="hideddrivetip()">{/literal}
                                     <a class="link1" href="?page=employees:employee_details&employee_id={$closed_work_orders[b].EMPLOYEE_ID}&page_title={$closed_work_orders[b].EMPLOYEE_DISPLAY_NAME}">{$closed_work_orders[b].EMPLOYEE_DISPLAY_NAME}</a> { else } Not Assigned {/if}</td>
                                 <td class="olotd4" align="center">
                                     <a href="?page=workorder:print&wo_id={$closed_work_orders[b].WORK_ORDER_ID}&customer_id={$closed_work_orders[b].CUSTOMER_ID}&escape=1" target="new">
