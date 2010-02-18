@@ -1,20 +1,20 @@
 <!-- work_order_head.tpl -->
-<table class="olotable" width="100%" border="0" cellpadding="4" cellspacing="0">
+<table class="olotable" width="100%" border="0" cellpadding="2" cellspacing="0" >
 	<tr>
-		<td class="olohead">{$translate_workorder_id}</td>
-		<td class="olohead">{$translate_workorder_opened}</td>
-		<td class="olohead">{$translate_workorder_state}</td>
-		<td class="olohead">{$translate_workorder_scope}</td>
-		<td class="olohead">{$translate_workorder_status}</td>
-		<td class="olohead">{$translate_workorder_tech}</td>
-		<td class="olohead">{$translate_workorder_last_change}</td>
+		<td class="olohead" align="center">{$translate_workorder_id}</td>
+		<td class="olohead" align="center">{$translate_workorder_opened}</td>
+		<td class="olohead" align="center">{$translate_workorder_state}</td>
+		<td class="olohead" align="center">{$translate_workorder_scope}</td>
+		<td class="olohead" align="center">{$translate_workorder_status}</td>
+		<td class="olohead" align="center">{$translate_workorder_assign}</td>
+		<td class="olohead" align="center">{$translate_workorder_last_change}</td>
 		{if $single_workorder_array[i].WORK_ORDER_CURRENT_STATUS == "1" || $single_workorder_array[i].WORK_ORDER_CURRENT_STATUS == "10"}
-		<td class="olohead">{$translate_workorder_delete}</td>
+		<td class="olohead" align="center">{$translate_workorder_delete}</td>
 		{/if}
 	</tr><tr>
-		<td class="olotd4">{$single_workorder_array[i].WORK_ORDER_ID}</td>
-		<td class="olotd4">{$single_workorder_array[i].WORK_ORDER_OPEN_DATE|date_format:"$date_format"}</td>
-		<td class="olotd4">
+		<td class="olotd4" align="center">{$single_workorder_array[i].WORK_ORDER_ID}</td>
+		<td class="olotd4" align="center">{$single_workorder_array[i].WORK_ORDER_OPEN_DATE|date_format:"$date_format"}</td>
+		<td class="olotd4" align="center">
 			{if $single_workorder_array[i].WORK_ORDER_STATUS == "10"}
 				{$translate_workorder_open}
 			{elseif $single_workorder_array[i].WORK_ORDER_STATUS == "9"}	
@@ -24,8 +24,8 @@
 			{/if}
 			
 		</td>
-		<td class="olotd4">{$single_workorder_array[i].WORK_ORDER_SCOPE}</td>
-		<td class="olotd4">
+		<td class="olotd4" align="center">{$single_workorder_array[i].WORK_ORDER_SCOPE}</td>
+		<td class="olotd4" align="center">
 		{if $single_workorder_array[i].WORK_ORDER_CURRENT_STATUS == "1"}
 			{$translate_workorder_created}
 		{elseif $single_workorder_array[i].WORK_ORDER_CURRENT_STATUS == "2"}
@@ -41,25 +41,35 @@
 		{elseif $single_workorder_array[i].WORK_ORDER_CURRENT_STATUS == "9"}	
 				{$translate_workorder_pending}	
 		{/if}</td>
-		<td class="olotd4">
+		<td class="olotd4" align="center">
 		{if $single_workorder_array[i].EMPLOYEE_DISPLAY_NAME ==""}
-				{$translate_workorder_not_assigned}
+				
+                                <form method="POST" action="">
+                                    {$tech}<input type="submit" name="assign" value="Update"</>
+                                </form>
 		{else}
-			<img src="images/icons/16x16/view+.gif" border="0" onMouseOver="ddrivetip('<center><b>Contact</b></center><hr><b>Work: </b>{$single_workorder_array[i].EMPLOYEE_WORK_PHONE}<br><b>Mobile: </b>{$single_workorder_array[i].EMPLOYEE_MOBILE_PHONE}<br><b>Home: </b>{$single_workorder_array[i].EMPLOYEE_HOME_PHONE}')" onMouseOut="hideddrivetip()"> 
-			<a class="link1" href="?page=employees:employee_details&employee_id={$single_workorder_array[i].EMPLOYEE_ID}&page_title={$single_workorder_array[i].EMPLOYEE_DISPLAY_NAME}">{$single_workorder_array[i].EMPLOYEE_DISPLAY_NAME}</a>
-		{/if}
+                        {if $single_workorder_array[i].EMPLOYEE_DISPLAY_NAME =="$login"}
+
+                                <form method="POST" action="">
+                                    {$tech}<input type="submit" name="assign" value="Update"</>
+                                </form>
+                         {else}
+
+                               <img src="images/icons/16x16/view+.gif" alt="" border="0" onMouseOver="ddrivetip('<center><b>Contact</b></center><hr><b>Work: </b>{$single_workorder_array[i].EMPLOYEE_WORK_PHONE}<br><b>Mobile: </b>{$single_workorder_array[i].EMPLOYEE_MOBILE_PHONE}<br><b>Home: </b>{$single_workorder_array[i].EMPLOYEE_HOME_PHONE}')" onMouseOut="hideddrivetip()">
+                                <a class="link1" href="?page=employees:employee_details&employee_id={$single_workorder_array[i].EMPLOYEE_ID}&page_title={$single_workorder_array[i].EMPLOYEE_DISPLAY_NAME}">{$single_workorder_array[i].EMPLOYEE_DISPLAY_NAME}</a>
+              {/if}
+                {/if}
 			
 		</td>
-		<td class="olotd4">{$single_workorder_array[i].LAST_ACTIVE|date_format:"$date_format"}</td>
+		<td class="olotd4" align="center">{$single_workorder_array[i].LAST_ACTIVE|date_format:"$date_format"}</td>
 		{if $single_workorder_array[i].WORK_ORDER_CURRENT_STATUS == "1" || $single_workorder_array[i].WORK_ORDER_CURRENT_STATUS == "10"}
-				<td class="olotd4">
-					<form method="POST">
+				<td class="olotd4" align="center">
+					<form method="POST" action="">
 						<input type="submit" name="submit" value="{$translate_workorder_delete}"/>
 					</form>
 				</td>
 		{/if}
-
-	</tr>
+                </tr>
 </table>
 	
 

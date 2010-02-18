@@ -31,7 +31,9 @@
 		<td >
 			<table  cellpadding="2" cellspacing="2">
 				<tr>
+                                    <td>
 		    		{include file="core/tool_bar.tpl"}
+                                    </td>
 				</tr>
 			</table>
 		</td>
@@ -108,7 +110,7 @@
 														</td>
 													</tr><tr>
 														<td>
-															<b>schedule Notes:</b><br>
+															<b>Schedule Notes:</b><br>
 															<textarea name="SCHEDULE_notes" rows="15" cols="70" mce_editable="true">
 																{$cur_schedule[i].SCHEDULE_NOTES}
 															</textarea>

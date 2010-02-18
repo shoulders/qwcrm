@@ -80,14 +80,14 @@
                                                 <form method="POST"  action="index.php?page=workorder:new" name="new_workorder" id="new_workorder" onsubmit="try { var myValidator = validate_new_workorder; } catch(e) { return true; } return myValidator(this);">								{/literal}
                                                     <input type="hidden" name="customer_ID" value="{$customer_details[i].CUSTOMER_ID}">
                                                     <input type="hidden" name="page" value="workorder:new">
-                                                    <input type="hidden" name="create_by" value="{$login_id}">
+                                                    <!--<input type="hidden" name="create_by" value="{$login_id}"> -->
                                                     <table class="olotable" width="100%" border="0"  cellpadding="4" cellspacing="0" summary="Work order display">
                                                         <tr>
                                                             <td class="olohead">{$translate_workorder_opened}</td>
                                                             <td class="olohead">{$translate_workorder_customer}</td>
                                                             <td class="olohead">{$translate_workorder_scope}</td>
                                                             <td class="olohead">{$translate_workorder_status}</td>
-                                                            <td class="olohead">{$translate_workorder_tech}</td>
+                                                            <td class="olohead">{$translate_workorder_assign}</td>
                                                         </tr>
                                                         <tr>
                                                             <td class="olotd4">{$smarty.now|date_format:"$date_format"}
@@ -95,7 +95,10 @@
                                                             <td class="olotd4">{$customer_details[i].CUSTOMER_DISPLAY_NAME}</td>
                                                             <td class="olotd4"><input class="olotd4" size="30" name="scope" type="text"></td>
                                                             <td class="olotd4">{$translate_workorder_created}</td>
-                                                            <td class="olotd4">{$display_login}</td>
+                                                            <td class="olotd4">
+                                                                {$tech}
+                                                                
+                                                            </td>
                                                         </tr>
                                                     </table>
                                                     <br>

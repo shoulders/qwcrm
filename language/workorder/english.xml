@@ -46,6 +46,7 @@
 	<workorder_scope>Scope</workorder_scope>
 	<workorder_status>Status</workorder_status>
 	<workorder_tech>Tech</workorder_tech>
+        <workorder_assign>Assigned To</workorder_assign>
 	<workorder_action>Action</workorder_action>
 	<workorder_state>State</workorder_state>
 	<workorder_last_change>Last Change</workorder_last_change>
