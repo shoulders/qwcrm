@@ -30,13 +30,13 @@
 		{if $unassigned > 0 }
 		<a href="?page=workorder:main&amp;page_title={$translate_menu_work_orders}"><img src="images/icons/warning.gif" alt="" border="0" height="14" width="14" /> Unassigned <b><font color="RED">{if $unassigned > 0} ({$unassigned}){/if}{if $unassigned < 1}{/if}</font></b></a>
 		{/if}
-        <a href="?page=workorder:main&amp;page_title={$translate_menu_work_orders}"><img src="images/tick.png" alt="" border="0" height="14" width="14" /> Opened <b><font color="RED">{if $open_count > 0} ({$open_count}){/if}{if $open_count < 1}{/if}</font></b></a>
+                <a href="?page=workorder:main&amp;page_title={$translate_menu_work_orders}"><img src="images/tick.png" alt="" border="0" height="14" width="14" /> Opened <b><font color="RED">{if $open_count > 0} ({$open_count}){/if}{if $open_count < 1}{/if}</font></b></a>
 		<a href="?page=workorder:view_closed&amp;page_title={$translate_menu_closed_work_orders}"><img src="images/icons/close.gif" alt="" border="0" height="14" width="14" /> Closed <b><font color="RED">{if $closed > 0 } ({$closed}){/if} {if $closed < 1 }{/if} </font></b></a>
-		{if $wo_id >= "1"}
+                    {if $wo_id >= "1"}
 			{if $status2.WORK_ORDER_STATUS == "10" }
 			<a href="?page=workorder:close&amp;wo_id={$wo_id}&amp;page_title={$translate_menu_close}"><img src="images/icons/close.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_close}</a>
 			<a href="?page=workorder:new_note&amp;wo_id={$wo_id}&amp;page_title={$translate_menu_new_note}"><img src="images/icons/note.png" alt="" border="0" height="14" width="14" /> {$translate_menu_new_note}</a>
-			{/if}
+		    {/if}
                         <a href="?page=workorder:print&amp;wo_id={$wo_id}&amp;page_title={$translate_menu_print}&amp;escape=1" target="_new"><img src="images/icons/print.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_print} - WO #{$wo_id}</a>
 		
                     {if $cust_id > 0 }

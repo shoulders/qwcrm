@@ -32,27 +32,26 @@
 </script>
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
       <tr>
-        <td>
-          {$translate_core_loged_in} <a href="?page=employees:employee_details&amp;employee_id={$login_id}">{$login}</a>
-          <br>
-          <a>My IP is {$ip}</a>
-        </td>
+        
         <td class="menutd" align="right">
           {if $error_msg != ""}<br />
           {include file="core/error_header.tpl"}<br />
           {/if}
         </td>
-        <td align="right">
-            <img src="images/logo.jpg" alt="" height="55" />
-        </td>
+        
       </tr>
     </table>
     <table width="100%" border="0" cellspacing="0" cellpadding="0" >
-      <tr class="text4" >
+      <tr class="text4" width="100%" >
         <td>
-          <span class="text4">{$today}</span>
+          <span class="text4"></span>
         </td>
-        <td width="100%">
+        <td width="100%" class="text4" align="center">
+            {$msg} on IP {$ip} - It's {$today} {if $mine != 0 || $mine2 != 0 || $mine3 != 0 || $mine4 != 0}and {$translate_main_you_have} {/if}
+            {if $mine != 0}&rArr;{$mine} {$translate_core_open_workorders}{/if}
+            {if $mine2 != 0}& &rArr;{$mine2} {$translate_core_assigned_workorders}{/if}
+            {if $mine3 != 0}& &rArr;{$mine3} {$translate_main_payment}{/if}
+             {if $mine4 != 0}& &rArr;{$mine4} {$translate_core_waiting_payment}{/if}
         </td>
       </tr>
       <tr>
