@@ -9,6 +9,7 @@ $assign = $VAR['assign'];
 $assign_val = $VAR['assign_val'];
 $wo_id = $VAR['wo_id'];
 $tech = $VAR['tech'];
+$login_id = $VAR['login_id'];
 
 /* check for open part Orders */
 $q = "SELECT count(*) as count  FROM ".PRFX."ORDERS WHERE WO_ID=".$db->qstr($wo_id);

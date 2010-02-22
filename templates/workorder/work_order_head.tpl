@@ -42,13 +42,8 @@
 				{$translate_workorder_pending}	
 		{/if}</td>
 		<td class="olotd4" align="center">
-		{if $single_workorder_array[i].EMPLOYEE_DISPLAY_NAME ==""}
-				
-                                <form method="POST" action="">
-                                    {$tech}<input type="submit" name="assign" value="Update"</>
-                                </form>
-		{else}
-                        {if $single_workorder_array[i].EMPLOYEE_DISPLAY_NAME =="$login"}
+		
+                        {if $single_workorder_array[i].EMPLOYEE_ID == "$login_id"}
 
                                 <form method="POST" action="">
                                     {$tech}<input type="submit" name="assign" value="Update"</>
@@ -57,7 +52,7 @@
 
                                <img src="images/icons/16x16/view+.gif" alt="" border="0" onMouseOver="ddrivetip('<center><b>Contact</b></center><hr><b>Work: </b>{$single_workorder_array[i].EMPLOYEE_WORK_PHONE}<br><b>Mobile: </b>{$single_workorder_array[i].EMPLOYEE_MOBILE_PHONE}<br><b>Home: </b>{$single_workorder_array[i].EMPLOYEE_HOME_PHONE}')" onMouseOut="hideddrivetip()">
                                 <a class="link1" href="?page=employees:employee_details&employee_id={$single_workorder_array[i].EMPLOYEE_ID}&page_title={$single_workorder_array[i].EMPLOYEE_DISPLAY_NAME}">{$single_workorder_array[i].EMPLOYEE_DISPLAY_NAME}</a>
-              {/if}
+              
                 {/if}
 			
 		</td>
