@@ -31,7 +31,7 @@
         value = frm.elements['scope'].value;
         if (value != '' && value.length > 40 && !errFlag['scope']) {
             errFlag['scope'] = true;
-            _qfMsg = _qfMsg + '\n - The Work Order Scope cannot be more than 20 characters';
+            _qfMsg = _qfMsg + '\n - The Work Order Scope cannot be more than 40 characters';
             frm.elements['scope'].className = 'error';
         }
         if (_qfMsg != '') {
@@ -87,18 +87,14 @@
                                                             <td class="olohead">{$translate_workorder_customer}</td>
                                                             <td class="olohead">{$translate_workorder_scope}</td>
                                                             <td class="olohead">{$translate_workorder_status}</td>
-                                                            <td class="olohead">{$translate_workorder_assign}</td>
+                                                            <td class="olohead">{$translate_workorder_enter_by}</td>
                                                         </tr>
                                                         <tr>
-                                                            <td class="olotd4">{$smarty.now|date_format:"$date_format"}
-                                                                <input type="hidden" name="date"  id="date" value="{$smarty.now|date_format:"$date_format"}/"/></td>
+                                                            <td class="olotd4">{$smarty.now|date_format:"$date_format"}</td>
                                                             <td class="olotd4">{$customer_details[i].CUSTOMER_DISPLAY_NAME}</td>
-                                                            <td class="olotd4"><input class="olotd4" size="30" name="scope" type="text"></td>
+                                                            <td class="olotd4"><input class="olotd4" size="40" name="scope" type="text"></td>
                                                             <td class="olotd4">{$translate_workorder_created}</td>
-                                                            <td class="olotd4">
-                                                                {$tech}
-                                                                
-                                                            </td>
+                                                            <td class="olotd4">{$login}</td>
                                                         </tr>
                                                     </table>
                                                     <br>
