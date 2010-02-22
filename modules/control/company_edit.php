@@ -1,13 +1,4 @@
 <?php
-/*###########################################################
-# This program is distributed under the terms and 			#
-# conditions of the GPL	and is free to use or modify		#
-# 				                  							#
-# company_edit.php											#
-# Version 0.1.1	10:31 PM Thursday, 2 April 2009 			#
-# Edited last by : Glen Vanderhel							#
-###########################################################*/
-
 if(isset($VAR['submit'])) {
 
 
@@ -39,13 +30,9 @@ if($VAR['ups_password'] != '') {
 			PDF_PRINT				= '. $db->qstr( $pdf_print           	) .',
 			INVOICE_TAX 			= '. $db->qstr( $VAR['inv_tax']      	) .',
 			INV_THANK_YOU 		= '. $db->qstr( $string6  	) .',
-			WELCOME_NOTE			= '. $db->qstr( $string4      	).',
-			PARTS_LO				= '. $db->qstr( $VAR['parts_lo']			).',
-			SERVICE_CODE			= '. $db->qstr( $VAR['service_code']		).',
-			PARTS_MARKUP			= '. $db->qstr( $VAR['parts_markup'] 	).',
-			PARTS_LOGIN			= '. $db->qstr( $VAR['parts_login']		).',
-			UPS_LOGIN 			= '. $db->qstr( $VAR['ups_login']			).',
-			UPS_ACCESS_KEY		= '. $db->qstr( $VAR['ups_access_key']	);
+			WELCOME_NOTE			= '. $db->qstr( $string4      	)
+                        ;
+			
 
 	if(!$rs = $db->execute($q)) {
 		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
@@ -70,7 +57,12 @@ $string2=stripslashes($string);
 			COMPANY_PHONE		= '. $db->qstr( $VAR['phone']			) .',
 			COMPANY_MOBILE		= '. $db->qstr( $VAR['mobile_phone']	) .', 
 			COMPANY_TOLL_FREE	= '. $db->qstr( $VAR['toll_free']		) .',
-			GMAPS_API_KEY		= '. $db->qstr( $VAR['gmaps_api']		);
+                        COMPANY_CURRENCY_SYMBOL	= '. $db->qstr( $VAR['currency_sym']		) .',
+                        COMPANY_CURRENCY_CODE	= '. $db->qstr( $VAR['currency_code']		) .',
+                        COMPANY_DATE_FORMAT	= '. $db->qstr( $VAR['date_format']		) .',
+                        COMPANY_EMAIL_FROM	= '. $db->qstr( $VAR['email_from']		) .',
+                        COMPANY_EMAIL_SERVER	= '. $db->qstr( $VAR['email_server']		) .',
+                        COMPANY_EMAIL_PORT	= '. $db->qstr( $VAR['email_port']		);
 		
 
 	

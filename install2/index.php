@@ -161,7 +161,9 @@ echo ("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http:/
 				COMPANY_PHONE		=". $db->qstr( $_POST['COMPANY_PHONE']     ).",
 				COMPANY_MOBILE		=". $db->qstr( $_POST['COMPANY_MOBILE']    ).",
 				COMPANY_EMAIL		=". $db->qstr( $_POST['COMPANY_EMAIL']     ).",
-				COMPANY_TOLL_FREE	=". $db->qstr( $_POST['COMPANY_TOLL_FREE'] );
+				COMPANY_TOLL_FREE	=". $db->qstr( $_POST['COMPANY_TOLL_FREE'] )
+
+                        ;
 
 		if(!$rs = $db->Execute($q)) {
 			echo("<tr>\n

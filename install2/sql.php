@@ -1,13 +1,4 @@
 <?php
-/*###########################################################
-# This program is distributed under the terms and 			#
-# conditions of the GPL	and is free to use or modify		#
-# 				                  							#
-# sql.php													#
-# Version 0.2.2	8:48am Tuesday 12th, May 2009   			#
-# Edited last by : Glen Vanderhel							#
-###########################################################*/
-
 ##################################
 # create_billing_options				#
 ##################################
@@ -673,7 +664,12 @@ function create_table_company($db)
   `COMPANY_MOBILE` varchar(20) NOT NULL default '',
   `COMPANY_TOLL_FREE` varchar(20) NOT NULL default '',
   `COMPANY_EMAIL` varchar(100) NOT NULL default '',
-  `GMAPS_API_KEY` varchar(100) default NULL,
+  `COMPANY_CURRENCY_SYMBOL` varchar(30) default NULL,
+  `COMPANY_CURRENCY_CODE` varchar(30) default NULL,
+  `COMPANY_DATE_FORMAT` varchar(10) default NULL,
+  `COMPANY_EMAIL_FROM` varchar(50) default NULL,
+  `COMPANY_EMAIL_SERVER` varchar(50) default NULL,
+  `COMPANY_EMAIL_PORT` varchar(10) default NULL,
   PRIMARY KEY  (`COMPANY_NAME`)
 ) TYPE=MyISAM;";
 
@@ -1224,8 +1220,10 @@ function create_acl($db) {
 (63, 'customer:directions', 1, 1, 1, 1, 0),
 (64, 'invoice:epdf', 1, 1, 1, 1, 0),
 (65, 'invoice:pdf', 1, 1, 1, 1, 0),
-(66, 'billing:proc_deposit', 1, 1, 1, 1, 0)
-(67, 'billing:paymate_deposit', 1, 1, 1, 1, 0)";
+(66, 'billing:proc_deposit', 1, 1, 1, 1, 0),
+(67, 'billing:paymate_deposit', 1, 1, 1, 1, 0),
+(68, 'control:backup', 0, 0, 0, 1, 0),
+(69, 'customer:email', 1, 1, 1, 1, 0)";
 
 			$rs = $db->Execute($q);
 			if(!$rs) {

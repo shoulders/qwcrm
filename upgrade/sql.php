@@ -104,14 +104,26 @@ function create_billing_options($db) {
 
 function create_table_company($db)
 {
-	$q="ALTER TABLE `".PRFX."TABLE_COMPANY` CHANGE `COMPANY_ADDRESS` `COMPANY_ADDRESS` varchar(100) NOT NULL default '';";
+	$q="ALTER TABLE `".PRFX."TABLE_COMPANY`
+            CHANGE `COMPANY_ADDRESS` `COMPANY_ADDRESS` varchar(100),
+            ADD `COMPANY_CURRENCY_SYMBOL` varchar(30) default NULL,
+            ADD `COMPANY_CURRENCY_CODE` varchar(30) default NULL,
+            ADD `COMPANY_DATE_FORMAT` varchar(10) default NULL,
+            ADD `COMPANY_EMAIL_FROM` varchar(50) default NULL,
+            ADD `COMPANY_EMAIL_SERVER` varchar(50) default NULL,
+            ADD `COMPANY_EMAIL_PORT` varchar(10) default NULL,
+            DROP COLUMN `GMAPS_API_KEY`
+;";
 
 	$rs = $db->Execute($q);
 		if(!$rs) {
+                        print_r ($q) ;
 			return false;
 		} else {
+                    print_r ($q) ;
 			return true;
 		}
+        
 }
 function create_table_customer($db){
 
@@ -158,6 +170,7 @@ function create_setup($db) {
       DROP COLUMN `UPS_LOGIN`,
       DROP COLUMN `UPS_PASSWORD`,
       DROP COLUMN `UPS_ACCESS_KEY`,
+      DROP COLUMN `UPS_ACCESS_KEY`,
   ;";
 
     	$rs = $db->Execute($q);
@@ -199,7 +212,22 @@ function create_acl($db) {
                                 } else {
                                         return true;
                                 }
+        $q = "INSERT IGNORE INTO `".PRFX."ACL` VALUES (68, 'control:backup', 0, 0, 0, 1, 0)";
 
+                                $rs = $db->Execute($q);
+                                if(!$rs) {
+                                        return false;
+                                } else {
+                                        return true;
+                                }
+        $q = "INSERT IGNORE INTO `".PRFX."ACL` VALUES (69, 'customer:email', 1, 1, 1, 1, 0)";
+
+                                $rs = $db->Execute($q);
+                                if(!$rs) {
+                                        return false;
+                                } else {
+                                        return true;
+                                }
 }
 function update_assets($db) {
   $q = "ALTER TABLE `".PRFX."TABLE_ASSET` CHANGE `ASSEST_NUMBER` `ASSET_NUMBER`,
