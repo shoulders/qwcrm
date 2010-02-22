@@ -43,7 +43,7 @@
 		{/if}</td>
 		<td class="olotd4" align="center">
 		
-                        {if $single_workorder_array[i].EMPLOYEE_ID == "$login_id"}
+                        {if $single_workorder_array[i].EMPLOYEE_ID == "$login_id" || $single_workorder_array[i].EMPLOYEE_ID == ""}
 
                                 <form method="POST" action="">
                                     {$tech}<input type="submit" name="assign" value="Update"</>
