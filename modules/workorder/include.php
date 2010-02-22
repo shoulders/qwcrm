@@ -190,11 +190,10 @@ function insert_new_workorder($db,$VAR){
 	
 	$sql = "INSERT INTO ".PRFX."TABLE_WORK_ORDER  SET 
 			CUSTOMER_ID					=".$db->qstr($VAR["customer_ID"]).", 
-			WORK_ORDER_OPEN_DATE		=".$db->qstr(strtotime( $VAR["date"] )).", 
+			WORK_ORDER_OPEN_DATE		=".$db->qstr(time()).", 
 			WORK_ORDER_STATUS			=".$db->qstr(10).",
 			WORK_ORDER_CURRENT_STATUS	=".$db->qstr(1).",
-			WORK_ORDER_CREATE_BY		=".$db->qstr($VAR["created_by"]).",
-                        WORK_ORDER_ASSIGN_TO		=".$db->qstr($VAR["created_by"]).",
+			WORK_ORDER_CREATE_BY		=".$db->qstr($VAR["created_by"]).",                        
 			WORK_ORDER_SCOPE			=".$db->qstr($VAR["scope"]).", 
 			WORK_ORDER_DESCRIPTION		=".$db->qstr($VAR["work_order_discription"]).",
 			LAST_ACTIVE					=".$db->qstr(time()).",
