@@ -1296,7 +1296,7 @@ include('version.php');
 @define('LANG','".$_POST['language']."');
 @define('INSTALL_DATE','".$install_date."');
 @define('debug', 'no');
-\$date_format = '".$_POST['date_format']."' ;
+
 
 /* Database Settings */
 @define('PRFX',	'".$_POST['db_prefix']."');
@@ -1312,10 +1312,6 @@ include('version.php');
 \$DB_NAME = \"".$_POST['db_name']."\" ;
 
 \$link = mysql_connect( \$DB_HOST, \$DB_USER, \$DB_PASS );
-
-// Local Currency Details
-\$currency_code = '".$_POST['currency']."' ;
-\$currency_sym = '".$_POST['currency_sym']."' ;
 
 /* Load required Includes */
 require(INCLUDE_URL.'session.php');

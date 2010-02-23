@@ -6,7 +6,11 @@ if(!xml2php("customer")) {
 	$smarty->assign('error_msg',"Error in language file");
 }
 // Lets grab some variables we need
+$email_server = $VAR['email_server2'];
+$email_server_port = $VAR['email_server_port2'];
 $customer_id = $VAR['customer_id'];
+$c2 = $VAR['c2'];
+$download_id = $VAR['download_id'];
 $submit		 = $VAR['submit'];
 $email_to = $VAR['email_to'];
 $email_from = $VAR['email_from'];
@@ -14,16 +18,34 @@ $email_subject = $VAR['email_subject'];
 $message_body = $VAR['message_body'];
 $attachment = $VAR['attachment'];
 $rr_email = $VAR['rr'];
-//Get Employee Info
-$q = "SELECT * FROM ".PRFX."TABLE_EMPLOYEE WHERE EMPLOYEE_DISPLAY_NAME ='".$login."'" ;
+$cus_name = $customer_details['CUSTOMER_DISPLAY_NAME'];
+
+//Get All customer Emails
+$q = "SELECT * FROM ".PRFX."TABLE_CUSTOMER_EMAILS WHERE CUSTOMER_ID ='".$customer_id."' ORDER BY CUSTOMER_EMAIL_ID DESC" ;
 $rs = $db->Execute($q);
-$employee_details = $rs->FetchRow();
-$smarty->assign('employee_details', $employee_details);
+$customer_emails = $rs->GetArray();
+$smarty->assign('customer_emails', $customer_emails);
 //Get Customer Info
 $q = "SELECT * FROM ".PRFX."TABLE_CUSTOMER WHERE CUSTOMER_ID ='".$customer_id."'" ;
 $rs = $db->Execute($q);
 $customer_details = $rs->FetchRow();
 $smarty->assign('customer_details', $customer_details);
+/*Get Employee Info */
+$q = "SELECT * FROM ".PRFX."TABLE_EMPLOYEE WHERE EMPLOYEE_DISPLAY_NAME ='".$login."'" ;
+$rs = $db->Execute($q);
+$employee_details = $rs->FetchRow();
+$smarty->assign('employee_details', $employee_details);
+// assign the arrays
+$smarty->assign('open_work_orders',	display_open_workorders($db, $customer_id));
+$smarty->assign('closed_work_orders',	display_closed_workorders($db, $customer_id));
+$smarty->assign('customer_details',	display_customer_info($db, $customer_id));
+$smarty->assign('unpaid_invoices', display_unpaid_invoices($db,$customer_id));
+$smarty->assign('paid_invoices', display_paid_invoices($db,$customer_id));
+$smarty->assign('memo',	display_memo($db,$customer_id));
+$smarty->assign('gift',	display_gift($db, $customer_id));
+$smarty->assign('company_details',display_company_info($db, $company_id));
+
+/*
 //Get Company Info
 $q = "SELECT * FROM ".PRFX."TABLE_COMPANY";
 $rs = $db->Execute($q);
@@ -39,25 +61,53 @@ $caddress2 = $company_details2['COMPANY_ADDRESS'];
 $ccity2 = $company_details2['COMPANY_CITY'];
 $czip2 = $company_details2['COMPANY_ZIP'];
 }
-//Employee Details for parsing to Google Maps URL
-$smarty->assign('caddress2',$caddress2);
-$smarty->assign('ccity2',$ccity2);
-$smarty->assign('czip2',$czip2);
-//Customer Address for parsing to google maps URL
-$cusaddress3 = $customer_details['CUSTOMER_ADDRESS'];
-$cuscity3 = $customer_details['CUSTOMER_CITY'];
-$cuszip3 = $customer_details['CUSTOMER_ZIP'];
-//Assign these to Smarty
-$smarty->assign('cusaddress3',$cusaddress3);
-$smarty->assign('cuscity3',$cuscity3);
-$smarty->assign('cuszip3',$cuszip3);
-//Google Maps URL for IFrame in customer_details.tpl
-$src= "http://maps.google.com.au/maps?f=d&source=s_d&hl=en&geocode=&saddr=$caddress2,$ccity2,$czip2&daddr=$cusaddress3,$cuscity3,$cuszip3";
-$smarty->assign('src',$src);
+*/
+//Lets Get the file downloaded to have a look at it from the database
+if(isset ($download_id)){
+ /*Get All customer Emails */
+$q = "SELECT CUSTOMER_EMAIL_ATT_NAME1, CUSTOMER_EMAIL_ATT_TYPE1, CUSTOMER_EMAIL_ATT_SIZE1, CUSTOMER_EMAIL_ATT_FILE1,  FROM ".PRFX."TABLE_CUSTOMER_EMAILS WHERE CUSTOMER_EMAIL_ID ='".$download_id."'" ;
+$rs = $db->Execute($q);
+//header("Content-length: $rs->fields['CUSTOMER_EMAIL_ATT_SIZE1']");
+//header("Content-type: $rs->fields['CUSTOMER_EMAIL_ATT_TYPE1']");
+//header("Content-Disposition: attachment; filename=$rs->fields['CUSTOMER_EMAIL_ATT_NAME1']");
+$file_download= $rs->fields['CUSTOMER_EMAIL_ATT_FILE1'];
+$smarty->assign('file_download', $file_download);
+Print $CUSTOMER_EMAIL_ATT_NAME1;
+
+ exit;
+    //print "Hello" ;
+
+}
 // BOF Email Message details
 //Mail
 if(isset ($submit)){
-$transport = Swift_smtpTransport::newInstance('127.0.0.1', 25)
+    if($_FILES['attachment1']['size'] >  0 ){
+    $fp      = fopen($_FILES['attachment1']['tmp_name'], 'r');
+    $content1 = fread($fp, filesize($_FILES['attachment1']['tmp_name']));
+    $content1 = addslashes($content1);
+    fclose($fp);
+    }
+    $sql = "INSERT INTO ".PRFX."TABLE_CUSTOMER_EMAILS SET
+			CUSTOMER_ID             = ". $db->qstr($VAR["c2"]).",
+			CUSTOMER_EMAIL_ADDRESS	= ". $db->qstr( $VAR["email_to"]).",
+			CUSTOMER_FROM_EMAIL_ADDRESS = ". $db->qstr( $VAR["email_from"]).",
+			CUSTOMER_EMAIL_SENT_BY		= ". $db->qstr( $login ).", 
+			CUSTOMER_EMAIL_SENT_ON		= ". $db->qstr( time()).",
+			CUSTOMER_EMAIL_SUBJECT		= ". $db->qstr( $VAR["email_subject"]).",
+			CUSTOMER_EMAIL_BODY	= ". $db->qstr( $VAR["message_body"]).",
+			CUSTOMER_EMAIL_ATT_NAME1	= ". $db->qstr( $_FILES['attachment1']['name']).",
+			CUSTOMER_EMAIL_ATT_TYPE1		= ". $db->qstr( $_FILES['attachment1']['type']).",
+			CUSTOMER_EMAIL_ATT_SIZE1		= ". $db->qstr( $_FILES['attachment1']['size']).",
+			CUSTOMER_EMAIL_ATT_FILE1	= ". $db->qstr( $content1 ); 
+			
+			
+			
+	if(!$result = $db->Execute($sql)) {
+		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+		exit;
+    }
+//print $sql ;
+$transport = Swift_smtpTransport::newInstance( "$email_server" , $email_server_port )
         ->setUsername('root')
         ->setPassword('root');
 if($rr < 1 ){
@@ -66,12 +116,12 @@ if($rr < 1 ){
      $rr_email = $email_from ;
     }
 //Do we have an attachment to include and upload?
-if($_FILES['attachment']['size'] >  0 ){
+if($_FILES['attachment1']['size'] >  0 ){
 $target_path = "upload/";
-$target_path = $target_path . basename( $_FILES['attachment']['name']);
+$target_path = $target_path . basename( $_FILES['attachment1']['name']);
 
-        if(move_uploaded_file($_FILES['attachment']['tmp_name'], $target_path)){
-            echo "The file ".  basename( $_FILES['attachment']['name']).
+        if(move_uploaded_file($_FILES['attachment1']['tmp_name'], $target_path)){
+            echo "The file ".  basename( $_FILES['attachment1']['name']).
             " has been uploaded";
         } else {
             echo "There was an error uploading the file, please try again!";
@@ -80,8 +130,8 @@ $fname2 = FILE_ROOT.$target_path ;
 $mailer = Swift_Mailer::newInstance($transport);
 //Create a message
 $message = Swift_Message::newInstance($email_subject)
-  ->setFrom($email_from)
-  ->setTo($email_to)
+  ->setFrom(array($email_from => $employee_details['EMPLOYEE_FIRST_NAME']))
+  ->setTo(array($email_to => $cus_name))
   ->setBody($message_body , 'text/html' )
   ->addPart($message_body, 'text/plain')
   ->attach(Swift_Attachment::fromPath($target_path))
@@ -97,7 +147,7 @@ $smarty->assign('email_subject',$email_subject);
 $smarty->assign('email_from',$email_from);
 $smarty->assign('email_to',$email_to);
 $smarty->assign('message_body',$message_body);
-$smarty->assign('attachment',$attachment);
+$smarty->assign('attachment1',$attachment1);
 // EOF Email Message details
 force_page('customer' ,"view&page_title=Customers");
 //Delete uploaded files
@@ -109,8 +159,8 @@ unlink($target_path);*/
 $mailer = Swift_Mailer::newInstance($transport);
 //Create a message
 $message = Swift_Message::newInstance($email_subject)
-  ->setFrom($email_from)
-  ->setTo($email_to)
+  ->setFrom(array($email_from => $employee_details['EMPLOYEE_FIRST_NAME']))
+  ->setTo(array($email_to => $cus_name))
   ->setBody($message_body, 'text/html')
   ->addPart($message_body, 'text/plain')
   ;
@@ -120,25 +170,19 @@ $numSent = $mailer->send($message);
 printf("Sent %d messages\n", $numSent);
 //Show what file was uploaded
 //printf("File Location", $fname2);
+
+//
 //Assign the variables with smarty
 $smarty->assign('email_subject',$email_subject);
 $smarty->assign('email_from',$email_from);
 $smarty->assign('email_to',$email_to);
 $smarty->assign('message_body',$message_body);
 $smarty->assign('rr',$rr);
+$smarty->assign('file_download',$file_download);
 // EOF Email Message details
 force_page('customer' ,"view&page_title=Customers");
 }
 }
-// assign the arrays
-$smarty->assign('open_work_orders',	display_open_workorders($db, $customer_id));
-$smarty->assign('closed_work_orders',	display_closed_workorders($db, $customer_id));
-$smarty->assign('customer_details',	display_customer_info($db, $customer_id));
-$smarty->assign('unpaid_invoices', display_unpaid_invoices($db,$customer_id));
-$smarty->assign('paid_invoices', display_paid_invoices($db,$customer_id));
-$smarty->assign('memo',	display_memo($db,$customer_id));
-$smarty->assign('gift',	display_gift($db, $customer_id));
-$smarty->assign('company_details',display_company_info($db, $company_id));
 //Display the template we will use
 $smarty->display('customer'.SEP.'email.tpl');
 

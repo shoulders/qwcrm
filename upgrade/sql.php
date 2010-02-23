@@ -88,7 +88,22 @@ echo("<tr>\n
 				<td>UPDATED TABLE ".PRFX."ACL</td>\n
 				<td><font color=\"green\"><b>OK</b></font></td>\n
 			</tr>\n");
-}	
+}
+##################################
+# create_acl								#
+##################################
+if(!create_customer_emails($db) ) {
+echo("<tr>\n
+			<td>CREATED TABLE ".PRFX."TABLE_CUSTOMER_EMAILS</td>\n
+			<td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
+		</tr>\n");
+	$error_flag = true;
+} else {
+	echo("<tr>\n
+				<td>CREATED TABLE ".PRFX."TABLE_CUSTOMER_EMAILS</td>\n
+				<td><font color=\"green\"><b>OK</b></font></td>\n
+			</tr>\n");
+}
 /* START SQL STUFF FOR UPGRADE */
 
 function create_billing_options($db) {
@@ -105,23 +120,30 @@ function create_billing_options($db) {
 function create_table_company($db)
 {
 	$q="ALTER TABLE `".PRFX."TABLE_COMPANY`
+            DROP `COMPANY_CURRENCY_SYMBOL`,
+            DROP `COMPANY_CURRENCY_CODE` ,
+            DROP `COMPANY_DATE_FORMAT` ,
+            DROP `COMPANY_EMAIL_FROM` ,
+            DROP `COMPANY_EMAIL_SERVER` ,
+            DROP `COMPANY_EMAIL_PORT`
+;";
+
+	$rs = $db->Execute($q);
+		if(!$rs) {
+                     $q="ALTER TABLE `".PRFX."TABLE_COMPANY`
             CHANGE `COMPANY_ADDRESS` `COMPANY_ADDRESS` varchar(100),
             ADD `COMPANY_CURRENCY_SYMBOL` varchar(30) default NULL,
             ADD `COMPANY_CURRENCY_CODE` varchar(30) default NULL,
             ADD `COMPANY_DATE_FORMAT` varchar(10) default NULL,
             ADD `COMPANY_EMAIL_FROM` varchar(50) default NULL,
             ADD `COMPANY_EMAIL_SERVER` varchar(50) default NULL,
-            ADD `COMPANY_EMAIL_PORT` varchar(10) default NULL,
-            DROP COLUMN `GMAPS_API_KEY`
+            ADD `COMPANY_EMAIL_PORT` varchar(10) default NULL
 ;";
-
-	$rs = $db->Execute($q);
-		if(!$rs) {
-                        print_r ($q) ;
-			return false;
-		} else {
-                    print_r ($q) ;
+                     $rs = $db->Execute($q);
 			return true;
+		} else {
+            
+			return false;
 		}
         
 }
@@ -239,6 +261,38 @@ $rs = $db->Execute($q);
 			return true;
 		}
 
+}
+function create_customer_emails($db) {
+	$q="CREATE TABLE IF NOT EXISTS `".PRFX."TABLE_CUSTOMER_EMAILS` (
+	`CUSTOMER_EMAIL_ID` int(20) NOT NULL auto_increment,
+	`CUSTOMER_ID` int(20) NOT NULL default '0',
+        `CUSTOMER_EMAIL_ADDRESS` varchar(60) NOT NULL default '',
+        `CUSTOMER_FROM_EMAIL_ADDRESS` varchar(60) NOT NULL default '',
+        `CUSTOMER_EMAIL_BCC` varchar(60) NOT NULL default '',
+        `CUSTOMER_EMAIL_SENT_BY` varchar(60) NOT NULL default '',
+	`CUSTOMER_EMAIL_SENT_ON` int(20) NOT NULL default '0',
+        `CUSTOMER_EMAIL_SUBJECT` varchar(60) NOT NULL default '',
+        `CUSTOMER_EMAIL_BODY` text NOT NULL,
+        `CUSTOMER_EMAIL_READ_RECIEPT` int(4) NOT NULL default '0',
+        `CUSTOMER_EMAIL_ATT_NAME1` varchar(60) NOT NULL ,
+        `CUSTOMER_EMAIL_ATT_TYPE1` varchar(60) NOT NULL ,
+        `CUSTOMER_EMAIL_ATT_SIZE1` int NOT NULL ,
+        `CUSTOMER_EMAIL_ATT_FILE1` MEDIUMBLOB NOT NULL,
+        `CUSTOMER_EMAIL_ATT_NAME2` varchar(60) NOT NULL ,
+        `CUSTOMER_EMAIL_ATT_TYPE2` varchar(60) NOT NULL ,
+        `CUSTOMER_EMAIL_ATT_SIZE2` int NOT NULL ,
+        `CUSTOMER_EMAIL_ATT_FILE2` MEDIUMBLOB NOT NULL,
+        `CUSTOMER_EMAIL_ATT_NAME3` varchar(60) NOT NULL ,
+        `CUSTOMER_EMAIL_ATT_TYPE3` varchar(60) NOT NULL ,
+        `CUSTOMER_EMAIL_ATT_SIZE3` int NOT NULL ,
+        `CUSTOMER_EMAIL_ATT_FILE3` MEDIUMBLOB NOT NULL,
+	PRIMARY KEY  (`CUSTOMER_EMAIL_ID`)
+	) TYPE=MyISAM ";
+	if(!$rs = $db->execute($q)) {
+			return false;
+	} else {
+		return true;
+	}
 }
 ?>
 
