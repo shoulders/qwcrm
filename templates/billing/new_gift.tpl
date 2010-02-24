@@ -87,6 +87,7 @@ if (_qfMsg != '') {
 												<td>
 													<input class="olotd5" size="10" name="expire" type="text" id="due_date" value="" class="olotd4"/>
 													<input type="button" id="trigger_due_date" value="+">
+                                                                                                        {if $date_format == "%d/%m/%Y" || $date_format == "%d/%m/%y"}
 													{literal}
 														<script type="text/javascript">
 														Calendar.setup(
@@ -98,6 +99,20 @@ if (_qfMsg != '') {
 														);
 														</script>
 													{/literal}
+                                                                                                        {/if}
+                                                                                                        {if $date_format == "%m/%d/%Y" || $date_format == "%m/%d/%y"}
+													{literal}
+														<script type="text/javascript">
+														Calendar.setup(
+														{
+															inputField  : "due_date",
+															ifFormat    : "%m/%d/%y",
+															button      : "trigger_due_date"
+														}
+														);
+														</script>
+													{/literal}
+                                                                                                        {/if}
 												</td>
 											</tr><tr>
 												<td><b>{$translate_billing_amount}</b></td>
