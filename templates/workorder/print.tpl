@@ -1,9 +1,54 @@
 <!-- Print Work Order -->
+{literal}
+<script type="text/javascript">
+function data_copy()
+{
+
+if(document.form1.copy[0].checked){
+document.form1.tt1.value=document.form1.t1.value;
+document.form1.ddt1.value=document.form1.dt1.value;
+document.form1.tt2.value=document.form1.t2.value;
+document.form1.ddt2.value=document.form1.dt2.value;
+document.form1.tt3.value=document.form1.t3.value;
+document.form1.ddt3.value=document.form1.dt3.value;
+document.form1.tt4.value=document.form1.t4.value;
+document.form1.ddt4.value=document.form1.dt4.value;
+document.form1.tt5.value=document.form1.t5.value;
+document.form1.ddt5.value=document.form1.dt5.value;
+document.form1.tt6.value=document.form1.t6.value;
+document.form1.ddt6.value=document.form1.dt6.value;
+document.form1.tt7.value=document.form1.t7.value;
+document.form1.ddt7.value=document.form1.dt7.value;
+document.form1.bk2.value=document.form1.bk1.value;
+
+}else{
+document.form1.tt1.value="";
+document.form1.ddt1.value="";
+document.form1.tt2.value="";
+document.form1.ddt2.value="";
+document.form1.tt3.value="";
+document.form1.ddt3.value="";
+document.form1.tt4.value="";
+document.form1.ddt4.value="";
+document.form1.tt5.value="";
+document.form1.ddt5.value="";
+document.form1.tt6.value="";
+document.form1.ddt6.value="";
+document.form1.tt7.value="";
+document.form1.ddt7.value="";
+document.form1.bk2.value="";
+
+}
+
+}
+
+</script>
+{/literal}
 {section name=i loop=$single_workorder_array}
-<table  width="900" border="1" cellpadding="2" cellspacing="0" style="border-collapse: collapse;">
+<table  width="100%" border="1" cellpadding="2" cellspacing="0" style="border-collapse: collapse;">
 	<tr>		
 		<!-- right column -->
-		<td valign="top" align="center" ><img src="images/logo.jpg" height="50"></td>
+		<td valign="top" align="center" ><img src="images/logo.jpg" alt="" height="50"></td>
 		<!-- middle column -->
 		<td valign="top" align="center" width="200">
 			<font size="+3">TECHNICIAN COPY</font><br>
@@ -64,8 +109,9 @@
 			</table>	
 			
 			<hr>
-			<p><center><b>Thank You &nbsp</b>{$single_workorder_array[i].CUSTOMER_FIRST_NAME} {$single_workorder_array[i].CUSTOMER_LAST_NAME}<br><br>Thank you for using our service. Your
- 			 business is greatly appreciated!</center></p>
+			<b>Thank You &nbsp</b>{$single_workorder_array[i].CUSTOMER_FIRST_NAME} {$single_workorder_array[i].CUSTOMER_LAST_NAME}<br><br>
+                            Thank you for using our service. Your
+ 			 business is greatly appreciated!
 
 		</td>
 		<!-- Center Column -->
@@ -175,6 +221,10 @@
 					<td><b>Departed</b></td>
 					<td>___/____/____ __:__</td>
 				</tr>
+                                <tr>
+					<td><b>Travel</b></td>
+					<td>_________KM/Miles</td>
+				</tr>
 			</table>
 			<hr>
 			<table width="100%" border="0" cellpadding="4" cellspacing="0">
@@ -194,17 +244,18 @@
         </tr>
         <tr>
 				<td align="center"><b>Your rating is &nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;3&nbsp;&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;5</b></td>
+        </tr><tr>
+					<td>
+                                            Comments:<br>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+                                          <br>
+                                          <br>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+                                          <br>
+                                          <br>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+                                          <br>
+                                          <br>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+                                          <br>
+                                          </td>
 				</tr>
-					<td>Comments:<br>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
-          <br>
-          <br>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
-          <br>
-          <br>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
-          <br>
-          <br>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
-          <br>
-          </td>
-				
 			</table>
 			<hr>
 			<table width="100%" border="0" cellpadding="4" cellspacing="0">
@@ -228,9 +279,218 @@
 			</td></tr>
 </table>
 <br>
-<table width="900" border="0" cellpadding="4" cellspacing="0">
-				<tr>
-					<td align="center" ><b>This Work Order is confidential and contains privileged information.</b></td>
-				</tr>
+{/section}
+<h2 align="center" >Please select which hardware/peripherials have been received.</h2>
+<form name=form1 method=post action=''>
+<table id="test" width="600" align="center" border="0" cellpadding="2" cellspacing="0" style="border-collapse: collapse;">
+    <tr>
+        <td colspan="1" align="right" valign="top" >
+            <input type="text" value="PC Tower/Laptop:" align="right" readonly><br><br>
+            <input type="text" value="Power Cords/Supply:" readonly><br><br>
+            <input type="text" value="Software/Discs:" readonly><br><br>
+            <input type="text" value="Mice:" readonly><br><br>
+            <input type="text" value="Modem/Router:" readonly><br><br>
+            <input type="text" value="Printer(s):" readonly><br><br>
+            <input type="text" value="Other(s):" readonly><br><br>
+        </td>
+        <td colspan="2" align="left" valign="top" >
+            Qty:<input type="text" size="3" name="t1">&nbsp;&nbsp;Make/Model:<input type="text" size="40" name="dt1"><br><br>
+            Qty:<input type="text" size="3" name="t2">&nbsp;&nbsp;Description(s):<input type="text" size="40" name="dt2"><br><br>
+            Qty:<input type="text" size="3" name="t3">&nbsp;&nbsp;Description(s):<input type="text" size="40" name="dt3"><br><br>
+            Qty:<input type="text" size="3" name="t4">&nbsp;&nbsp;Make/Model:<input type="text" size="40" name="dt4"> <br><br>
+            Qty:<input type="text" size="3" name="t5">&nbsp;&nbsp;Make/Model:<input type="text" size="40" name="dt5"><br><br>
+            Qty:<input type="text" size="3" name="t6">&nbsp;&nbsp;Make/Model:<input type="text" size="40" name="dt6"><br><br>
+            Qty:<input type="text" size="3" name="t7">&nbsp;&nbsp;Description:<input type="text" size="40" name="dt7"><br>
+            <br><input type=radio name=copy value='yes' onclick="data_copy()";>Copy Data to Customers Copy
+            <br><input type=hidden name=copy value='no' onclick="data_copy()";>
+            
+        </td>
+    </tr>
+
+</table>
+<table align="center" width="600">
+
+    <tr>
+        <td>
+            <font><b>If backup required, Backup was done to__________________________________ </b></font>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Data Backup required?<select name="bk1">
+                <option value="Yes">Yes</option>
+                <option value="No" selected>No</option>
+            </select><br><br>
+            
+        </td>
+    </tr>
+</table>
+<hr align="center" noshade>
+<!-- Work Order Customers Copy -->
+{section name=i loop=$single_workorder_array}
+<table  width="600" border="1" cellpadding="2" cellspacing="0" style="border-collapse: collapse;">
+    <tr>
+        <!-- right column -->
+        <td valign="top" align="center" ><img src="images/logo.jpg" alt="" height="50"></td>
+        <!-- middle column -->
+        <td valign="top" align="center" width="200">
+            <font size="+3">Customer Workorder Slip</font><br>
+			Work Order ID# {$single_workorder_array[i].WORK_ORDER_ID}
+        </td>
+    </tr><tr>
+        <!-- left Column -->
+        <td valign="top" align="center" nowrap><b>Customer Details</b></td>
+        <!-- Center Column -->
+        <td valign="top" align="center" nowrap><b>Service Details</b></td>
+        <!-- right column -->
+
+    </tr><tr>
+        <!-- left Column -->
+        <td valign="top" width="20%">
+            <table width="100%" cellpadding="4" cellspacing="0" border="0">
+                <tr>
+                    <td>{$single_workorder_array[i].CUSTOMER_FIRST_NAME} {$single_workorder_array[i].CUSTOMER_LAST_NAME}
+                        <br>{$single_workorder_array[i].CUSTOMER_ADDRESS}<br>
+							{$single_workorder_array[i].CUSTOMER_CITY}, {$single_workorder_array[i].CUSTOMER_STATE} {$single_workorder_array[i].CUSTOMER_ZIP}
+                    </td>
+                </tr><tr>
+                    <td><b>Home:</b> {$single_workorder_array[i].CUSTOMER_PHONE}<br>
+                        <b>Work:</b> {$single_workorder_array[i].CUSTOMER_WORK_PHONE}<br>
+                        <b>Mobile:</b> {$single_workorder_array[i].CUSTOMER_MOBILE_PHONE}
+                    </td>
+                </tr><tr>
+                    <td><b>Email:</b> {$single_workorder_array[i].CUSTOMER_EMAIL}<br>
+                </tr>
+            </table>
+        </td>
+        <!-- Center Column -->
+        <td valign="top" width="60%">
+            <table border="0" cellpadding="4" cellspacing="0">
+                <tr>
+                    <td valign="top" nowrap><b>Scope:&nbsp;</b>{$single_workorder_array[i].WORK_ORDER_SCOPE}</td>
+                </tr>
+                <tr>
+                    <td><b>Description:</b></td>
+                </tr>
+                <tr>
+                    <td>{$single_workorder_array[i].WORK_ORDER_DESCRIPTION }</td>
+                </tr>
+                {if $single_workorder_array[i].WORK_ORDER_COMMENT != ""}
+                <tr>
+                    <td><b>Comments:</b></td>
+                </tr>
+                <tr>
+                    <td>{$single_workorder_array[i].WORK_ORDER_COMMENT}</td>
+                </tr>{/if}
+                <tr>
+                    <td valign="top" nowrap>This Work Order was created on the &nbsp;{$single_workorder_array[i].WORK_ORDER_OPEN_DATE|date_format:"$date_format"}
+                        &nbsp;and has the status of{if $single_workorder_array[i].WORK_ORDER_CURRENT_STATUS == "1"}
+							Created
+						{elseif $single_workorder_array[i].WORK_ORDER_CURRENT_STATUS == "2"}
+							Assigned
+						{elseif $single_workorder_array[i].WORK_ORDER_CURRENT_STATUS == "3"}
+							Waiting For Parts
+						{elseif $single_workorder_array[i].WORK_ORDER_CURRENT_STATUS == "6"}
+							Closed
+						{elseif $single_workorder_array[i].WORK_ORDER_CURRENT_STATUS == "7"}
+							Waiting For Payment
+						{elseif $single_workorder_array[i].WORK_ORDER_CURRENT_STATUS == "8"}
+							Payment Made
+						{elseif $single_workorder_array[i].WORK_ORDER_CURRENT_STATUS == "9"}
+							Pending
+						{/if}
+                        .&nbsp;This work order has been assigned to {if $single_workorder_array[i].EMPLOYEE_DISPLAY_NAME ==""}
+							our next available technician
+						{else}
+							{$single_workorder_array[i].EMPLOYEE_DISPLAY_NAME}
+						{/if}
+
+
+
+                    </td>
+                </tr>
+    {if $single_workorder_array[i].WORK_ORDER_NOTES_DESCRIPTION != ""}
+    <tr>
+        <td>{section name=b loop=$work_order_notes}
+            <p><b>Service Notes</b>
+                <br>{$work_order_notes[b].WORK_ORDER_NOTES_DESCRIPTION}<br><br>
+    </tr>{/section}{/if}
+
+
+            </table>
+</td>
+</tr>
+
+
+
 </table>
 {/section}
+<h2 align="center" >Please select which hardware/peripherials have been received.</h2>
+<table width="650" align="center" border="0" cellpadding="2" cellspacing="0" style="border-collapse: collapse;">
+    <tr>
+        <td colspan="1" align="right" valign="top" >
+            <input type="text" value="PC Tower/Laptop:" align="right" readonly><br><br>
+            <input type="text" value="Power Cords/Supply:" readonly><br><br>
+            <input type="text" value="Software/Discs:" readonly><br><br>
+            <input type="text" value="Mice:" readonly><br><br>
+            <input type="text" value="Modem/Router:" readonly><br><br>
+            <input type="text" value="Printer(s):" readonly><br><br>
+            <input type="text" value="Other(s):" readonly><br><br>
+        </td>
+        <td colspan="2" valign="top" >
+            Qty:<input type="text" size="3" name="tt1" readonly>&nbsp;&nbsp;Make/Model:<input type="text" size="40" name="ddt1" readonly><br><br>
+            Qty:<input type="text" size="3" name="tt2" readonly>&nbsp;&nbsp;Description(s):<input type="text" size="40" name="ddt2" readonly><br><br>
+            Qty:<input type="text" size="3" name="tt3" readonly>&nbsp;&nbsp;Description(s):<input type="text" size="40" name="ddt3" readonly><br><br>
+            Qty:<input type="text" size="3" name="tt4" readonly>&nbsp;&nbsp;Make/Model:<input type="text" size="40" name="ddt4" readonly> <br><br>
+            Qty:<input type="text" size="3" name="tt5" readonly>&nbsp;&nbsp;Make/Model:<input type="text" size="40" name="ddt5" readonly><br><br>
+            Qty:<input type="text" size="3" name="tt6" readonly>&nbsp;&nbsp;Make/Model:<input type="text" size="40" name="ddt6" readonly><br><br>
+            Qty:<input type="text" size="3" name="tt7" readonly>&nbsp;&nbsp;Description:<input type="text" size="40" name="ddt7" readonly><br>
+
+        </td>
+    </tr>
+
+</table>
+
+<br>
+<table align="center" width="600">
+
+    <tr>
+        <td>
+            <font><b>NOTE: We have a duty of care to preserve you computers data whilst we are servicing it however, it is the customers responsibilty to ensure that this data is reliably backed up should data loss occur. </b></font>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Data Backup required?<input type="text" size="3" name="bk2" readonly><br><br>
+        </td>
+    </tr>
+
+    <tr>
+        <td><h3>Important Notes</h3>
+    <ul>
+        <li>Please hold onto this receipt as proof of service request</li>
+        <li>This document (copies will not be accepted) MUST be produce this at time of pickup. If this can't be provided then photo identification is required.</li>
+
+
+    </ul>
+
+        </td>
+    </tr>
+</table>
+</form>
+<table width="600" align="center">
+     <tr>{section name=d loop=$company}
+         <td><font size="-2"<b>{$company[d].COMPANY_NAME} -</b>{$company[d].COMPANY_ADDRESS} ,{$company[d].COMPANY_CITY}, {$company[d].COMPANY_STATE} {$company[d].COMPANY_ZIP}
+                <b>PH:</b>&nbsp;{$company[d].COMPANY_PHONE}
+                {if $company[d].COMPANY_TOLL_FREE !=""}
+                <b>Toll Free:</b>&nbsp;{$company[d].COMPANY_TOLL_FREE}
+                {/if}
+                {if $company[d].COMPANY_MOBILE !=""}
+                <b>Mobile:</b>&nbsp;{$company[d].COMPANY_MOBILE}
+                    {/if}
+             </font></td>
+                    </tr>
+
+				{/section}
+
+</table>
