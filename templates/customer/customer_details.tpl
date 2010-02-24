@@ -15,10 +15,10 @@
         <td>
             <div id="tabs_container">
                 <ul class="tabs">
-                    <li class="active"><a href="#" rel="#tab_1_contents" class="tab">Customer Details</a></li>
-                    <li><a href="#" rel="#tab_2_contents" class="tab">Works Orders</a></li>
-                    <li><a href="#" rel="#tab_3_contents" class="tab">Invoices</a></li>
-                    <li><a href="#" rel="#tab_4_contents" class="tab">Directions</a></li>
+                    <li class="active"><a href="#" rel="#tab_1_contents" class="tab"><img src="images/icons/customers.gif" alt="" border="0" height="14" width="14" />&nbsp;Customer Details</a></li>
+                    <li><a href="#" rel="#tab_2_contents" class="tab"><img src="images/icons/workorders.gif" alt="" border="0" height="14" width="14" />&nbsp;Works Orders</a></li>
+                    <li><a href="#" rel="#tab_3_contents" class="tab"><img src="images/icons/invoice.png" alt="" border="0" height="14" width="14" />&nbsp;Invoices</a></li>
+                    <li><a href="#" rel="#tab_4_contents" class="tab"><img src="images/icons/map.png" alt="" border="0" height="14" width="14" />&nbsp;Directions</a></li>
                     <!-- TODO: <li><a href="#" rel="#tab_5_contents" class="tab">{$translate_customer_asset_tab}</a></li> -->
                 </ul>
 
@@ -139,11 +139,11 @@
                                                                     <td class="menutd">
                                                                         <b>{$translate_customer_created}</b></td>
                                                                     <td class="menutd">
-                                                                        {$customer_details[i].CREATE_DATE|date_format:$date_format}</td>
+                                                                        {$customer_details[i].CREATE_DATE|date_format:"$date_format"}</td>
                                                                     <td class="menutd">
                                                                         <b>{$translate_customer_last}</b></td>
                                                                     <td class="menutd">
-                                                                        {$customer_details[i].LAST_ACTIVE|date_format:$date_format}</td>
+                                                                        {$customer_details[i].LAST_ACTIVE|date_format:"$date_format"}</td>
                                                                 </tr>
                                                                 {assign var="customer_id" value=$customer_details[i].CUSTOMER_ID} {assign var="customer_name" value=$customer_details[i].CUSTOMER_DISPLAY_NAME}
                                                             </table>
@@ -184,7 +184,7 @@
                                 <td class="olotd4">
                                     <a href="?page=workorder:view&wo_id={$open_work_orders[a].WORK_ORDER_ID}&customer_id={$open_work_orders[a].CUSTOMER_ID}&page_title={$translate_customer_work_order_id} {$open_work_orders[a].WORK_ORDER_ID}">{$open_work_orders[a].WORK_ORDER_ID}</a></td>
                                 <td class="olotd4">
-                                    {$open_work_orders[a].WORK_ORDER_OPEN_DATE|date_format:"%d-%m-%y"}</td>
+                                    {$open_work_orders[a].WORK_ORDER_OPEN_DATE|date_format:"$date_format"}</td>
                                 <td class="olotd4">
                                     {section name=i loop=$customer_details}{$customer_details[i].CUSTOMER_DISPLAY_NAME}{/section}</td>
                                 <td class="olotd4">
@@ -231,7 +231,7 @@
                                 <td class="olotd4">
                                     <a href="?page=workorder:view&wo_id={$closed_work_orders[b].WORK_ORDER_ID}&customer_id={$closed_work_orders[b].CUSTOMER_ID}&page_title={$translate_customer_work_order_id} {$closed_work_orders[b].WORK_ORDER_ID}">{$closed_work_orders[b].WORK_ORDER_ID}</a></td>
                                 <td class="olotd4">
-                                    {$closed_work_orders[b].WORK_ORDER_OPEN_DATE|date_format:$date_format}</td>
+                                    {$closed_work_orders[b].WORK_ORDER_OPEN_DATE|date_format:"$date_format"}</td>
                                 <td class="olotd4">
                                     {section name=i loop=$customer_details}{$customer_details[i].CUSTOMER_DISPLAY_NAME}{/section}</td>
                                 <td class="olotd4">
@@ -288,7 +288,7 @@
                                 <td class="olotd4">
                                     <a href="?page=workorder:view&wo_id={$unpaid_invoices[w].WORKORDER_ID}&page_title={$translate_customer_work_order_id} {$unpaid_invoices[w].WORKORDER_ID}">{$unpaid_invoices[w].WORKORDER_ID}</a></td>
                                 <td class="olotd4">
-                                    {$unpaid_invoices[w].INVOICE_DATE|date_format:"%d-%m-%y"}</td>
+                                    {$unpaid_invoices[w].INVOICE_DATE|date_format:"$date_format"}</td>
                                 <td class="olotd4">
                                     ${$unpaid_invoices[w].INVOICE_AMOUNT|string_format:"%.2f"}</td>
                                 <td class="olotd4">
@@ -296,7 +296,7 @@
                                 <td class="olotd4">
                                     ${$unpaid_invoices[w].balance|string_format:"%.2f"}</td>
                                 <td class="olotd4">
-                                    {$unpaid_invoices[w].PAID_DATE|date_format:"%d-%m-%y"}</td>
+                                    {$unpaid_invoices[w].PAID_DATE|date_format:"$date_format"}</td>
                                 <td class="olotd4">
                                     {$unpaid_invoices[w].EMPLOYEE_DISPLAY_NAME}</td>
                                 <td class="olotd4" align="center">
@@ -335,7 +335,7 @@
                                 <td class="olotd4">
                                     <a href="?page=workorder:view&wo_id={$paid_invoices[w].WORKORDER_ID}&page_title={$translate_customer_work_order_id} {$paid_invoices[w].WORKORDER_ID}">{$paid_invoices[w].WORKORDER_ID}</a></td>
                                 <td class="olotd4">
-                                    {$paid_invoices[w].INVOICE_DATE|date_format:"%d-%m-%y"}</td>
+                                    {$paid_invoices[w].INVOICE_DATE|date_format:"$date_format"}</td>
                                 <td class="olotd4">
                                     ${$paid_invoices[w].INVOICE_AMOUNT|string_format:"%.2f"}</td>
                                 <td class="olotd4">
@@ -343,7 +343,7 @@
                                 <td class="olotd4">
                                     ${$paid_invoices[w].balance|string_format:"%.2f"}</td>
                                 <td class="olotd4">
-                                    {$paid_invoices[w].PAID_DATE|date_format:"%d-%m-%y"}</td>
+                                    {$paid_invoices[w].PAID_DATE|date_format:"$date_format"}</td>
                                 <td class="olotd4">
                                     {$paid_invoices[w].EMPLOYEE_DISPLAY_NAME}</td>
                                 <td class="olotd4" align="center">
@@ -401,7 +401,7 @@
                                 <td class="olotd4">
                                     <a href="?page=workorder:view&wo_id={$unpaid_invoices[w].WORKORDER_ID}&page_title={$translate_customer_work_order_id} {$unpaid_invoices[w].WORKORDER_ID}">{$unpaid_invoices[w].WORKORDER_ID}</a></td>
                                 <td class="olotd4">
-                                    {$unpaid_invoices[w].INVOICE_DATE|date_format:"%d-%m-%y"}</td>
+                                    {$unpaid_invoices[w].INVOICE_DATE|date_format:"$date_format"}</td>
                                 <td class="olotd4">
                                     ${$unpaid_invoices[w].INVOICE_AMOUNT|string_format:"%.2f"}</td>
                                 <td class="olotd4">
@@ -409,7 +409,7 @@
                                 <td class="olotd4">
                                     ${$unpaid_invoices[w].balance|string_format:"%.2f"}</td>
                                 <td class="olotd4">
-                                    {$unpaid_invoices[w].PAID_DATE|date_format:"%d-%m-%y"}</td>
+                                    {$unpaid_invoices[w].PAID_DATE|date_format:"$date_format"}</td>
                                 <td class="olotd4">
                                     {$unpaid_invoices[w].EMPLOYEE_DISPLAY_NAME}</td>
                                 <td class="olotd4" align="center">
@@ -448,7 +448,7 @@
                                 <td class="olotd4">
                                     <a href="?page=workorder:view&wo_id={$paid_invoices[w].WORKORDER_ID}&page_title={$translate_customer_work_order_id} {$paid_invoices[w].WORKORDER_ID}">{$paid_invoices[w].WORKORDER_ID}</a></td>
                                 <td class="olotd4">
-                                    {$paid_invoices[w].INVOICE_DATE|date_format:"%d-%m-%y"}</td>
+                                    {$paid_invoices[w].INVOICE_DATE|date_format:"$date_format"}</td>
                                 <td class="olotd4">
                                     ${$paid_invoices[w].INVOICE_AMOUNT|string_format:"%.2f"}</td>
                                 <td class="olotd4">
@@ -456,7 +456,7 @@
                                 <td class="olotd4">
                                     ${$paid_invoices[w].balance|string_format:"%.2f"}</td>
                                 <td class="olotd4">
-                                    {$paid_invoices[w].PAID_DATE|date_format:"%d-%m-%y"}</td>
+                                    {$paid_invoices[w].PAID_DATE|date_format:"$date_format"}</td>
                                 <td class="olotd4">
                                     {$paid_invoices[w].EMPLOYEE_DISPLAY_NAME}</td>
                                 <td class="olotd4" align="center">
