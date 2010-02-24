@@ -49,7 +49,11 @@ if(isset($VAR['submit'])) {
 	
 		$amount 	= $VAR['amount'];
 		$date_expire = explode("/",$VAR['expire']);
-    $expire = mktime(0,0,0,$date_expire[1],$date_expire[0],$date_expire[2]);
+                if ($date_format == "%d/%m/%Y" || $date_format == "%d/%m/%Y") {
+                $expire = mktime(0,0,0,$date_expire[1],$date_expire[0],$date_expire[2]);
+                } else {
+                $expire = mktime(0,0,0,$date_expire[0],$date_expire[1],$date_expire[2]);
+                }
 		$memo		= $VAR['memo'];
 
 		/* insert the cert into the database */
