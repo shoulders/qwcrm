@@ -25,7 +25,7 @@
 											<td class="menutd">&nbsp;<b>{$translate_workorder_contact}</b></td>
 											<td class="menutd"><a href="?page=customer:customer_details&customer_id={$single_workorder_array[i].CUSTOMER_ID}&page_title={$single_workorder_array[i].CUSTOMER_FIRST_NAME} {$single_workorder_array[i].CUSTOMER_LAST_NAME} ">{$single_workorder_array[i].CUSTOMER_FIRST_NAME} {$single_workorder_array[i].CUSTOMER_LAST_NAME}</a> </td>
 											<td class="menutd"><b>{$translate_workorder_email}</b></td>
-											<td class="menutd"> {$single_workorder_array[i].CUSTOMER_EMAIL}</td>
+											<td class="menutd"> <a href="?page=customer:email&customer_id={$single_workorder_array[i].CUSTOMER_ID}&page_title=Email%20Customer"> {$single_workorder_array[i].CUSTOMER_EMAIL}</a></td>
 										</tr><tr class="row2">
 											<td class="menutd" colspan="4">&nbsp;</td>
 										</tr><tr>
