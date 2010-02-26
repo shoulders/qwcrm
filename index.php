@@ -72,6 +72,8 @@ $smarty->assign('date_format',$rs->fields['COMPANY_DATE_FORMAT']);
 $smarty->assign('company_email_from',$rs->fields['COMPANY_EMAIL_FROM']);
 $smarty->assign('email_server',$rs->fields['COMPANY_EMAIL_SERVER']);
 $smarty->assign('email_server_port',$rs->fields['COMPANY_EMAIL_PORT']);
+$smarty->assign('email_username',$rs->fields['COMPANY_SMTP_USERNAME']);
+$smarty->assign('email_password',$rs->fields['COMPANY_SMTP_PASSWORD']);
 
 
 #############################################################
