@@ -62,6 +62,8 @@ $string2=stripslashes($string);
                         COMPANY_DATE_FORMAT	= '. $db->qstr( $VAR['date_format']		) .',
                         COMPANY_EMAIL_FROM	= '. $db->qstr( $VAR['email_from']		) .',
                         COMPANY_EMAIL_SERVER	= '. $db->qstr( $VAR['email_server']		) .',
+                        COMPANY_SMTP_USERNAME	= '. $db->qstr( $VAR['email_login']		) .',
+                        COMPANY_SMTP_PASSWORD	= '. $db->qstr( $VAR['email_password']		) .',
                         COMPANY_EMAIL_PORT	= '. $db->qstr( $VAR['email_port']		);
 		
 
