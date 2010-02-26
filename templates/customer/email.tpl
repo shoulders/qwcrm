@@ -1,17 +1,42 @@
-<!-- Customer Details TPL -->
+<!-- Customer Email TPL -->
 {literal}
 <script language="javascript" type="text/javascript" src="include/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
 <script language="javascript" type="text/javascript">
     tinyMCE.init({
         mode : "textareas",
         theme : "advanced",
-        plugins : "advlink,iespell,preview",
-        theme_advanced_buttons2_add : "separator,preview,separator,forecolor,backcolor",
-        theme_advanced_buttons2_add_before: "cut,copy,paste",
-        theme_advanced_toolbar_location : "bottom",
-        theme_advanced_toolbar_align : "center",
-        extended_valid_elements : "a[name|href|target|title|onclick],img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name],hr[class|width|size|noshade],font[face|size|color|style],span[class|align|style]",
-        width : "100%"
+        plugins : "style,spellchecker,layer,table,save,advhr,advimage,advlink,emotions,iespell,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras",
+
+	// Theme options
+	theme_advanced_buttons1 : "mybutton,|,save,newdocument,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,spellchecker",
+	theme_advanced_buttons2 : "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,|,undo,redo",
+	theme_advanced_buttons3 : "emotions,iespell,media,advhr,|,print,preview,|,link,unlink,anchor,image,cleanup,code,|,insertdate,inserttime",
+	//theme_advanced_buttons4 : "spellchecker,|,cite,abbr,acronym,del,ins,attribs,|,visualchars,nonbreaking,template,pagebreak",
+	theme_advanced_toolbar_location : "top",
+	theme_advanced_toolbar_align : "left",
+	//theme_advanced_statusbar_location : "bottom",
+	theme_advanced_resizing : true,
+       // plugins : "advlink,iespell,preview,inlinepopups",
+        //theme_advanced_buttons1 : "mybutton",
+        //theme_advanced_buttons2_add : "separator,preview,separator,forecolor,backcolor",
+        //theme_advanced_buttons2_add_before: "cut,copy,paste",
+        //theme_advanced_toolbar_location : "bottom",
+        //theme_advanced_toolbar_align : "center",
+        //extended_valid_elements : "a[name|href|target|title|onclick],img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name],hr[class|width|size|noshade],font[face|size|color|style],span[class|align|style]",
+        //width : "100%",
+        setup : function(ed) {
+        // Add a custom button
+        ed.addButton('mybutton', {
+            title : 'Insert Customer Name',
+            //name : 'Customer Name',
+            image : 'images/icons/customers.gif',
+            onclick : function() {
+				// Add you own code to execute something on click
+				ed.focus();
+                ed.selection.setContent('{name}');
+            }
+        });
+    }
     });
 </script>
 {/literal}
@@ -59,18 +84,21 @@
                                                                             <b>From:</b>
                                                                         </td>
                                                                         <td class="menutd" colspan="2">
-                                                                            <input type="text" name="email_from" value="{$employee_details.EMPLOYEE_EMAIL}" size="60" readonly>
+                                                                            <input type="text" name="" value="{$employee_details.EMPLOYEE_FIRST_NAME} {$employee_details.EMPLOYEE_LAST_NAME}  <{$employee_details.EMPLOYEE_EMAIL}>" size="60" readonly>
+                                                                            <input type="hidden" name="email_from" value="{$employee_details.EMPLOYEE_EMAIL}" size="60" readonly>
                                                                             <input type="hidden" name="email_server2" value="{$email_server}" size="60" readonly>
                                                                             <input type="hidden" name="email_server_port2" value="{$email_server_port}" size="60" readonly>
                                                                             <input type="hidden" name="c2" value="{$customer_details[i].CUSTOMER_ID}" size="3" readonly>
-                                                                        </td>
+                                                                            <input type="hidden" name="cus_name" value="{$customer_details[i].CUSTOMER_DISPLAY_NAME}" size="3" readonly>
+                                                                            </td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td class="menutd" align="right">
                                                                             <b>To:</b>
                                                                         </td>
                                                                         <td class="menutd" colspan="2">
-                                                                            <input type="text" name="email_to" value="{$customer_details[i].CUSTOMER_EMAIL}" size="60" readonly>
+                                                                            <input type="text" name="" value="{$customer_details[i].CUSTOMER_FIRST_NAME} {$customer_details[i].CUSTOMER_LAST_NAME}  <{$customer_details[i].CUSTOMER_EMAIL}>" size="60" readonly>
+                                                                            <input type="hidden" name="email_to" value="{$customer_details[i].CUSTOMER_EMAIL}" size="60" readonly>
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
@@ -81,6 +109,7 @@
                                                                             <input type="text" name="email_subject" value="" size="60">
                                                                         </td>
                                                                     </tr>
+
                                                                     <tr>
                                                                         <td class="menutd" align="right">
                                                                             <p></p>
@@ -91,7 +120,7 @@
                                                                             <b>Message:</b>
                                                                         </td>
                                                                         <td class="menutd" colspan="2">
-                                                                            <textarea name="message_body" rows="15" cols="70" >
+                                                                            <textarea name="message_body" rows="15" cols="60" dir="ltr" >
                                                                             </textarea>
                                                                         </td>
                                                                     </tr>
