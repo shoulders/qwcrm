@@ -137,7 +137,10 @@ function create_table_company($db)
             ADD `COMPANY_DATE_FORMAT` varchar(10) default NULL,
             ADD `COMPANY_EMAIL_FROM` varchar(50) default NULL,
             ADD `COMPANY_EMAIL_SERVER` varchar(50) default NULL,
-            ADD `COMPANY_EMAIL_PORT` varchar(10) default NULL
+            ADD `COMPANY_EMAIL_PORT` varchar(10) default NULL,
+            ADD `COMPANY_SMTP_USERNAME` varchar(10) default NULL,
+            ADD `COMPANY_SMTP_PASSWORD` varchar(10) default NULL,
+            ADD `COMPANY_EMAIL_MSG_INVOICE` varchar(255) default NULL,
 ;";
                      $rs = $db->Execute($q);
 			return true;
@@ -208,6 +211,31 @@ $q = "ALTER TABLE `".PRFX."SETUP`,
   ADD `PAYMATE_LOGIN` varchar(50) default NULL,
   ADD `PAYMATE_PASSWORD` varchar(50) default NULL,
   ADD `PAYMATE_FEES` decimal(2,1) NOT NULL default '1.5',
+  ADD `EMAIL_MSG_NEW_INVOICE` BLOB default NULL,
+  ADD `EMAIL_MSG_NEW_INVOICE_ACTIVE` INT(2) default '0',
+  ADD `EMAIL_MSG_INVOICE_REMINDER` BLOB default NULL,
+  ADD `EMAIL_MSG_PAYMENT_RECEIVED` BLOB default NULL,
+  ADD `EMAIL_MSG_WO_CREATED` BLOB default NULL,
+  ADD `EMAIL_MSG_WO_SCHEDULED` BLOB default NULL,
+  ADD `EMAIL_MSG_WO_UPDATED` BLOB default NULL,
+  ADD `EMAIL_MSG_WO_COMPLETED` BLOB default NULL,
+  ADD `EMAIL_MSG_WO_REMINDER` BLOB default NULL,
+  ADD `EMAIL_MSG_WO_REMINDER_HOURS` int(3) default '60',
+  ADD `EMAIL_MSG_SOFTWARE_UPDATE` BLOB default NULL,
+  ADD `EMAIL_MSG_SOFTWARE_NEW` BLOB default NULL,
+  ADD `EMAIL_MSG_SOFTWARE_RENEWAL_ALERT` BLOB default NULL,
+  ADD `EMAIL_MSG_SOFTWARE_RENEWAL_REMINDER_DAYS` int(3) default '7',
+  ADD `EMAIL_MSG_SOFTWARE_RENEWAL` BLOB default NULL,
+  ADD `EMAIL_MSG_INVOICE_REMINDER_ACTIVE` INT(2) default '0',
+  ADD `EMAIL_MSG_PAYMENT_RECEIVED_ACTIVE` INT(2) default '0',
+  ADD `EMAIL_MSG_WO_CREATED_ACTIVE` INT(2) default '0',
+  ADD `EMAIL_MSG_WO_SCHEDULED_ACTIVE` INT(2) default '0',
+  ADD `EMAIL_MSG_WO_UPDATED_ACTIVE` INT(2) default '0',
+  ADD `EMAIL_MSG_WO_COMPLETED_ACTIVE` INT(2) default '0',
+  ADD `EMAIL_MSG_WO_REMINDER_ACTIVE` INT(2) default '0',
+  ADD `EMAIL_MSG_SOFTWARE_UPDATE_ACTIVE` INT(2) default '0',
+  ADD `EMAIL_MSG_SOFTWARE_NEW_ACTIVE` INT(2) default '0',
+  ADD `EMAIL_MSG_SOFTWARE_RENEWAL_ALERT_ACTIVE` INT(2) default '0',
   CHANGE `INVOICE_TAX` `INVOICE_TAX` decimal(3,1) NOT NULL default '0.00';";
     	$rs = $db->Execute($q);
 return TRUE;
