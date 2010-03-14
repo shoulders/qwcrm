@@ -210,7 +210,7 @@
                         <table width="100%"  border="0" cellspacing="0" cellpadding="0">
                             <tr>
                                 <td align="center" >
-                                    <span class="text3"><a href="http://www.myitcrm.com"><b>MyIT CRM Version - {$VERSION}</b></a><br><a href="http://www.myitcrm.com"><b>The Best Open Source IT CRM program available!</b></a><br><a>This software is distributed under the GNU General Public License V3</a><br></span>
+                                    <span class="text3"><a href="http://team.myitcrm.com"><b>MyIT CRM Version - {$VERSION}</b></a><br><a href="http://team.myitcrm.com"><b>The Best Open Source IT CRM program available!</b></a><br><a>This software is distributed under the GNU General Public License V3</a><br></span>
                                 </td>
                             </tr>
                         </table>
