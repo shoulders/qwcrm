@@ -41,8 +41,7 @@
 					<td class="menuhead2" width="80%">&nbsp;{$translate_schedule_new}
 					
 					</td>
-					<td class="menuhead2" size="10%" align="right"><a href="http://myitcrm.wiki.sourceforge.net/" target="new"><img src="images/icons/16x16/help.gif" border="0"
-						onMouseOver="ddrivetip('<b>Set Schedule</b>')" onMouseOut="hideddrivetip()"></a>
+					<td class="menuhead2" width="10%" align="right">
 					</td>
 			</tr><tr>
 					<td class="menutd2" colspan="2">
@@ -99,7 +98,10 @@
 										</tr><tr>
 											<td class="olotd">
 												<table width="100%" cellpadding="5" cellspacing="5">
-												<tr><input type="hidden" name="wo_id" value="{$wo_id}">
+												<tr>
+                                                                                                    <td>
+                                                                                                        <input type="hidden" name="wo_id" value="{$wo_id}">
+                                                                                                    </td>
 												</tr>
 													<tr>
 														<td><b>{$translate_schedule_start}</b></td>

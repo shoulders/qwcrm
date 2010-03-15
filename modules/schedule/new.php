@@ -10,9 +10,9 @@ if(!xml2php("workorder")) {
 //Schedule Due Date
 $date_part2 = explode("/",$VAR['day']);
 //$timestamp2 = mktime(0,0,0,$date_part2[1],$date_part2[0],$date_part2[2]);
-if($date_format == '%d/%m/%Y'){
+if($date_format == "%d/%m/%Y"){
 $cur_date = $d."/".$m."/".$Y;}
-if($date_format == '%m/%d/%Y'){
+if($date_format == "%m/%d/%Y"){
 $cur_date = $m."/".$d."/".$Y;};
 $smarty->assign('Y',$Y);
 $smarty->assign('m',$m);
@@ -50,7 +50,7 @@ if(isset($VAR['submit'])){
 				$smarty->display("schedule/new.tpl");
 				//force_page('schedule','main&y='.$s_year.'&d='.$s_month.'&m='.$s_day.'&wo_id='.$VAR['wo_id'].'&page_title=schedule&tech='.$VAR['tech']);
 			} else {
-				/*list($s_day, $s_month, $s_year) = split('[/.-]', $VAR['start']['SCHEDULE_date']); */
+				//list($s_day, $s_month, $s_year) = split('[/.-]', $VAR['start']['SCHEDULE_date']);
 				list($s_month, $s_day, $s_year) = split('[/.-]', $VAR['start']['SCHEDULE_date']);
 				force_page('schedule','main&y='.$s_year.'&d='.$s_month.'&m='.$s_day.'&wo_id='.$VAR['wo_id'].'&page_title=schedule&tech='.$VAR['tech']);
 			}

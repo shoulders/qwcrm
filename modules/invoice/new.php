@@ -10,6 +10,25 @@ $wo_id       = $VAR['wo_id'];
 $customer_id = $VAR['customer_id'];
 $submit		 = $VAR['submit'];
 $desc = $VAR['desc'];
+/* get Date Formatting value from database and assign it to $format*/
+$q = 'SELECT * FROM '.PRFX.'TABLE_COMPANY';
+	if(!$rs = $db->execute($q)) {
+		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+		exit;
+	} else {
+		$format = $rs->fields['COMPANY_DATE_FORMAT'];
+	}
+// Stripping out the percentage signs so php can render it correctly
+$literals = "%";
+$Dformat = str_replace($literals, "", $format);
+//Now lets display the right date format
+if($Dformat == 'd/m/Y' || $Dformat == 'd/m/y'  ){
+$cur_date = $d."/".$m."/".$y;}
+elseif($Dformat == 'm/d/Y' || $Dformat == 'm/d/y' ){
+$cur_date = $m."/".$d."/".$y;}
+//Assign it to Smarty
+$smarty->assign('cur_date', $cur_date);
+$smarty->assign('format', $format);
 
 /* Generic error control */
 if(!$wo_id) {
@@ -56,7 +75,7 @@ if(isset($submit)){
 	}
      /* This formats the two dates from dd/mm/yyyy to proper sql string time*/
      // Invoice Date
-        if($date_format == '%d/%m/%Y'){
+        if($format == "%d/%m/%Y"){
          $date_part = explode("/",$VAR['date']);
          $timestamp = mktime(0,0,0,$date_part[1],$date_part[0],$date_part[2]);
          $datef = $timestamp;
@@ -66,15 +85,15 @@ if(isset($submit)){
          $timestamp2 = mktime(0,0,0,$date_part2[1],$date_part2[0],$date_part2[2]);
          $datef2 = $timestamp2;
         }
-        if($date_format == '%m/%d/%Y'){
-         //$date_part = explode("/",$VAR['date']);
-         //$timestamp = mktime(0,0,0,$date_part[1],$date_part[0],$date_part[2]);
-         $datef = (strtotime($VAR['date']));
+        if($format == "%m/%d/%Y"){
+         $date_part = explode("/",$VAR['date']);
+         $timestamp = mktime(0,0,0,$date_part[0],$date_part[1],$date_part[2]);
+         $datef = $timestamp;
 
          //Invoice Due Date
-         //$date_part2 = explode("/",$VAR['due_date']);
-         //$timestamp2 = mktime(0,0,0,$date_part2[1],$date_part2[0],$date_part2[2]);
-         $datef2 = (strtotime($VAR['due_date']));
+         $date_part2 = explode("/",$VAR['due_date']);
+         $timestamp2 = mktime(0,0,0,$date_part2[0],$date_part2[1],$date_part2[2]);
+         $datef2 = $timestamp2;
         }
 	
 	$date				= $datef;
@@ -85,15 +104,7 @@ if(isset($submit)){
 	$sub_total     = number_format($VAR['sub_total'], 2,'.', '');
 	$shipping      = number_format($VAR['shipping'], 2,'.', '');
 
-  //Get Description from DB
-  //$sql = "SELECT * FROM ".PRFX."TABLE_labor_rate WHERE LABOR_RATE_ID=".$db->qstr($VAR['description'][$i]).
-	//$rs = $db->Execute($q);
-	//$desc2 = $rs->GetArray();
-	//print $desc2['LABOR_RATE_NAME'];
-  //$smarty->assign('desc2', $desc2);
-	
-	
-	/* insert Labor into database */
+ 	/* insert Labor into database */
 	if($VAR['hour'] > 0 ) {
 		$i = 1;
 		$sql = "INSERT INTO ".PRFX."TABLE_INVOICE_LABOR (INVOICE_ID, EMPLOYEE_ID, INVOICE_LABOR_DESCRIPTION, INVOICE_LABOR_RATE, INVOICE_LABOR_UNIT, INVOICE_LABOR_SUBTOTAL) VALUES ";

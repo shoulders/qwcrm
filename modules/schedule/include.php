@@ -20,12 +20,22 @@ $smarty->assign('wo_id',$wo_id);
 		
 		$secs   = "00";
 		//$date1 = $VAR['date']
-
+                /* get Date Formatting value from database and assign it to $format*/
+$q = 'SELECT * FROM '.PRFX.'TABLE_COMPANY';
+	if(!$rs = $db->execute($q)) {
+		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+		exit;
+	} else {
+		$date_format = $rs->fields['COMPANY_DATE_FORMAT'];
+	}
+                if($date_format == "%d/%m/%Y" || $date_format == "%d/%m/%y"){
 		$start_time = strtotime("$s_day/$s_month/$s_year $s_hour:$s_min:$secs $s_med");
 		$end_time   = strtotime("$e_day/$e_month/$e_year $e_hour:$e_min:$secs $e_med");
+                } else if ($date_format == "%m/%d/%Y" || $date_format == "%m/%d/%y"){
+                 $start_time = strtotime("$s_month/$s_day/$s_year $s_hour:$s_min:$secs $s_med");
+		$end_time   = strtotime("$e_month/$e_day/$e_year $e_hour:$e_min:$secs $e_med"); 
+                }
 		
-		//$start_time = strtotime("$s_month/$s_day/$s_year $s_hour:$s_min:$secs $s_med");
-		//$end_time   = strtotime("$e_month/$e_day/$e_year $e_hour:$e_min:$secs $e_med"); 
 		
 		/* check for stupid*/
 		if($start_time > $end_time) {

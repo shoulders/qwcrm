@@ -194,7 +194,7 @@
         <td>
             <table width="700" cellpadding="4" cellspacing="0" border="0" >
                 <tr>
-                    <td class="menuhead2" width="80%">&nbsp;{$translate_invoice_for}{$wo_id} {$date} {$due_date}</td>
+                    <td class="menuhead2" width="80%">&nbsp;{$translate_invoice_for}{$wo_id} {$date_format}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
                         <a <img src="images/icons/16x16/help.gif" alt="" border="0"></a>
                     </td>
@@ -229,7 +229,7 @@
 
                                                 <td>{$invoice.INVOICE_ID}</td>
                                                 <td>
-                                                    <input size="10" name="date" type="text" id="date" value="{$invoice.INVOICE_DATE|date_format:"$date_format"}" class="olotd4"/>
+                                                    <input size="10" name="date" type="text" id="date" value="{$invoice.INVOICE_DATE|date_format:$date_format}" class="olotd4"/>
                                                            <input type="button" id="trigger_date" value="+">
 											 {literal}
                                                     <script type="text/javascript">
@@ -244,7 +244,7 @@
 											{/literal}
                                                 </td>
                                                 <td>{$item.INVOICE_DUE}
-                                                    <input size="10" name="due_date" type="text" id="due_date" value="{$invoice.INVOICE_DUE|date_format:"$date_format"}" class="olotd4"/>
+                                                    <input size="10" name="due_date" type="text" id="due_date" value="{$invoice.INVOICE_DUE|date_format:$date_format}" class="olotd4"/>
                                                            <input type="button" id="trigger_due_date" value="+">
 											 {literal}
                                                     <script type="text/javascript">

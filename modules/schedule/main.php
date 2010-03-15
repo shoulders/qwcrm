@@ -28,6 +28,7 @@ $smarty->assign('cred',$cred);
 /* load the date format from the js calendar */
 $wo_id = $_GET['wo_id'];
 
+
 /* check if work order closed we don't want to reschedule a work order if it's closed */
 if(isset($wo_id)) {
 	$q = "SELECT WORK_ORDER_CURRENT_STATUS FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_ID=".$db->qstr($wo_id);
@@ -52,15 +53,27 @@ if(isset($wo_id)) {
 }
 
 
-$y = $VAR['y'] ;
+$y = $VAR['y'];
 $m = $VAR['m'];
 $d = $VAR['d'];
-if($date_format == '%d/%m/%Y'){
+/* get Date Formatting value from database and assign it to $format*/
+$q = 'SELECT * FROM '.PRFX.'TABLE_COMPANY';
+	if(!$rs = $db->execute($q)) {
+		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+		exit;
+	} else {
+		$format = $rs->fields['COMPANY_DATE_FORMAT'];
+	}
+// Stripping out the percentage signs so php can render it correctly
+$literals = "%";
+$Dformat = str_replace($literals, "", $format);
+//Now lets display the right date format
+if($Dformat == 'd/m/Y' || $Dformat == 'd/m/y'  ){
 $cur_date = $d."/".$m."/".$y;}
-if($date_format == '%m/%d/%Y'){
+elseif($Dformat == 'm/d/Y' || $Dformat == 'm/d/y' ){
 $cur_date = $m."/".$d."/".$y;}
-
-
+//Assign it to Smarty
+$smarty->assign('cur_date', $cur_date);
 
 
 $date_array = array('y'=>$y, 'd'=>$d, 'm'=>$m, 'wo_id'=>$wo_id);
@@ -213,7 +226,6 @@ while($start <= $business_end){
 $calendar .= "\n</table>";
 /* feed smarty */
 $smarty->assign('calendar', $calendar);
-$smarty->assign('cur_date', $cur_date);
 $smarty->display('schedule'.SEP.'main.tpl');
 
 

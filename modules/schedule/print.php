@@ -33,8 +33,24 @@ if(isset($wo_id)) {
 $y = $VAR['y'] ;
 $m = $VAR['m'];
 $d = $VAR['d'];
-//$cur_date = $m."/".$d."/".$y; 
-$cur_date = $d."/".$m."/".$y;
+/* get Date Formatting value from database and assign it to $format*/
+$q = 'SELECT * FROM '.PRFX.'TABLE_COMPANY';
+	if(!$rs = $db->execute($q)) {
+		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+		exit;
+	} else {
+		$format = $rs->fields['COMPANY_DATE_FORMAT'];
+	}
+// Stripping out the percentage signs so php can render it correctly
+$literals = "%";
+$Dformat = str_replace($literals, "", $format);
+//Now lets display the right date format
+if($Dformat == 'd/m/Y' || $Dformat == 'd/m/y'  ){
+$cur_date = $d."/".$m."/".$y;}
+elseif($Dformat == 'm/d/Y' || $Dformat == 'm/d/y' ){
+$cur_date = $m."/".$d."/".$y;}
+//Assign it to Smarty
+$smarty->assign('cur_date', $cur_date);
 
 $date_array = array('y'=>$y, 'm'=>$m, 'd'=>$d, 'wo_id'=>$wo_id);
 $smarty->assign('date_array',$date_array);

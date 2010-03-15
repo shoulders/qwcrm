@@ -169,6 +169,7 @@ $cphone = $company1['COMPANY_PHONE'];
 $cemail = $company1['COMPANY_EMAIL'];
 $cabn = $company1['COMPANY_ABN'];
 $cthankyou = $setup1['INV_THANK_YOU'];
+$currency_sym = utf8_decode($company1['COMPANY_CURRENCY_SYMBOL']);
 
 //Customer Details
 $cusnamef = $customer1['CUSTOMER_FIRST_NAME'];
@@ -199,7 +200,22 @@ $balinv = sprintf( "%.2f",$invoice3['BALANCE']);
 //Paymate Amount with Surcharge Applied
   $paymate_amt= ($balinv)* ((($setup1['PAYMATE_FEES'])/100)+1);
   $paymate_amt = sprintf( "%.2f",$paymate_amt);
-
+/* get Date Formatting value from database and assign it to $format*/
+$q = 'SELECT * FROM '.PRFX.'TABLE_COMPANY';
+	if(!$rs = $db->execute($q)) {
+		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+		exit;
+	} else {
+		$format = $rs->fields['COMPANY_DATE_FORMAT'];
+	}
+// Stripping out the percentage signs so php can render it correctly
+$literals = "%";
+$Dformat = str_replace($literals, "", $format);
+//Now lets display the right date format
+if($Dformat == 'd/m/Y' || $Dformat == 'd/m/y'  ){
+$date_format = "d/m/Y";}
+elseif($Dformat == 'm/d/Y' || $Dformat == 'm/d/y' ){
+$date_format = "m/d/Y";}
 
 // Xavier Nicolay 2004
 // Version 1.01
@@ -428,7 +444,7 @@ function addReglement( $mode )
     $this->SetFont( "Helvetica", "B", 10);
     $this->Cell(10,4, "Terms", 0, 0, "C");
     $this->SetXY( $r1 + ($r2-$r1)/2 -5 , $y1 + 5 );
-    $this->SetFont( "Helvetica", "", 10);
+    $this->SetFont( "Helvetica", "", 8);
     $this->Cell(10,5,$mode, 0,0, "C");
 }
 
@@ -657,10 +673,10 @@ $pdf->Cell(195, 10, 'Invoice Details', 2, 1, 'C', 0);
 $pdf->SetY($y_axis_initial);
 $pdf->SetX($distx);
 $pdf->SetFont( "ARIAL", "B", 8);
-$pdf->Cell(30, 6, 'Qty', 1, 0, 'L', 1);
-$pdf->Cell(105, 6, 'Description', 1, 0, 'L', 1);
-$pdf->Cell(30, 6, 'Cost per', 1, 0, 'R', 1);
-$pdf->Cell(30, 6, 'Sub Total', 1, 0, 'R', 1);
+$pdf->Cell(15, 6, 'Qty', 1, 0, 'L', 1);
+$pdf->Cell(140, 6, 'Description', 1, 0, 'L', 1);
+$pdf->Cell(20, 6, 'Cost per', 1, 0, 'R', 1);
+$pdf->Cell(20, 6, 'Sub Total', 1, 0, 'R', 1);
 
 $y_axis = $y_axis + $row_height;
 
@@ -690,10 +706,10 @@ while($row = mysql_fetch_array($result))
 	
     $pdf->SetY($y_axis + $y_axis_initial + $row_height);
     $pdf->SetX($distx);
-    $pdf->Cell(30, 6, $code, 1, 0, 'L', 0);
-    $pdf->Cell(105, 6, $name, 1, 0, 'L', 0);
-    $pdf->Cell(30, 6, $price, 1, 0, 'R', 0);
-	$pdf->Cell(30, 6, $subtotal, 1, 0, 'R', 1);
+    $pdf->Cell(15, 6, $code, 1, 0, 'L', 0);
+    $pdf->Cell(140, 6, $name, 1, 0, 'L', 0);
+    $pdf->Cell(20, 6, $price, 1, 0, 'R', 0);
+    $pdf->Cell(20, 6, $subtotal, 1, 0, 'R', 1);
 
     //Go to next row
     $y_axis = $y_axis + $row_height;
@@ -701,9 +717,10 @@ while($row = mysql_fetch_array($result))
 	
 }
 //Add Totals Box
-	$pdf->SetY($y_axis_initial +($row_height * $max + 1));
-	$pdf->SetX(140);
-	$pdf->MultiCell(30, 6, "SUBTOTAL\n" .
+        $pdf->SetY($y_axis_initial +($row_height * $max + 1));
+	//$pdf->SetY($y_axis_initial +($row_height * count($i))+ ($row_height * 2));
+	$pdf->SetX(160);
+	$pdf->MultiCell(20, 6, "SUBTOTAL\n" .
 							"TAX\n" .
 							"SHIPPING\n" .
 							"DISCOUNT\n" .
@@ -712,8 +729,9 @@ while($row = mysql_fetch_array($result))
 							"BALANCE\n"
 							, 1, 0, 'R', 0);
 	$pdf->SetY($y_axis_initial +($row_height * $max + 1));
-	$pdf->SetX(170);
-	$pdf->MultiCell(30, 6, "$currency_sym $totalinv\n" .
+	//$pdf->SetY($y_axis_initial +($row_height * count($i)) + ($row_height * 2));
+        $pdf->SetX(180);
+	$pdf->MultiCell(20, 6, "$currency_sym $totalinv\n" .
 							"$currency_sym $taxinv\n" .
 							"$currency_sym $shipinv\n" .
 							"$currency_sym $discinv\n" .
@@ -723,14 +741,14 @@ while($row = mysql_fetch_array($result))
 							, 1, 0, 'R', 2);
  //Payment Instructions
  $pdf->SetY($y_axis_initial +($row_height * $max + 1));
- $pdf->SetX(20);
- $pdf->SetFont('Arial', 'B', 12);
+ $pdf->SetX(5);
+ $pdf->SetFont('Arial', 'B', 8);
  $pdf->Cell(100,3,"We accept the following payment types.",0,'C', FALSE);
   //If Cheques are your payment option
  if($CHECK_PAYABLE <> "" ){
  $pdf->SetY($y_axis_initial +($row_height * $max + 2));
  $pdf->SetX(20);
- $pdf->SetFont('Arial', 'B', 8);
+ $pdf->SetFont('Arial', 'B', 6);
  $pdf->MultiCell(100, 3, "\n" .
                         $pdf->Image('images/icons/cheque.jpeg',10,194,0,5,JPG) .
                         "Cheque\Money Orders:-\n" .
@@ -741,7 +759,7 @@ while($row = mysql_fetch_array($result))
  if($DD_NAME <> ""){
                         $pdf->SetY($y_axis_initial +($row_height * $max + 12));
                         $pdf->SetX(20);
-                         $pdf->SetFont('Arial', 'B', 8);
+                         $pdf->SetFont('Arial', 'B', 6);
                         $pdf->MultiCell(100, 3, "\n" .
                         $pdf->Image('images/icons/deposit.jpeg',3,205,0,5,JPG) .
                         "Direct Deposit:-\n" .
@@ -756,7 +774,7 @@ while($row = mysql_fetch_array($result))
 if($PP_ID <> "" ){
                         $pdf->SetY($y_axis_initial +($row_height * $max + 35));
                         $pdf->SetX(20);
-                         $pdf->SetFont('Arial', 'B', 8);
+                         $pdf->SetFont('Arial', 'B', 6);
                         $pdf->MultiCell(100, 3, "\n" .
                             "\n" .
                         "PayPal Credit Card Processing:-", 0 ,'L', FALSE);
@@ -770,7 +788,7 @@ $pdf->WriteHTML($html);
 if($PAYMATE_LOGIN <> "" ){
                         $pdf->SetY($y_axis_initial +($row_height * $max + 45));
                         $pdf->SetX(20);
-                         $pdf->SetFont('Arial', 'B', 8);
+                         $pdf->SetFont('Arial', 'B', 6);
                         $pdf->MultiCell(100, 3, "\n" .
                             "\n" .
                         "Paymate Processing:-", 0 ,'L', FALSE);
@@ -784,13 +802,13 @@ $pdf->WriteHTML($html2);
  if($PP_ID == "" & $CHECK_PAYABLE == "" & $DD_NAME == "" & $PAYMATE_LOGIN == ""){
  $pdf->SetY($y_axis_initial +($row_height * $max + 6));
  $pdf->SetX(20);
- $pdf->SetFont('Arial', 'B', 8);
+ $pdf->SetFont('Arial', 'B', 6);
  $pdf->MultiCell(100, 3, "Please call us to discuss payment options.\n" , 0 ,'L', FALSE);
  }
 
 //Add Totals Box
-$invdate=(date('d M Y',($invoice[INVOICE_DATE])));
-$invdue=(date('d M Y',($invoice[INVOICE_DUE])));
+$invdate=(date($date_format ,($invoice[INVOICE_DATE])));
+$invdue=(date($date_format ,($invoice[INVOICE_DUE])));
 
 	$pdf->SetY(25);
 	$pdf->SetX(140);
