@@ -5,6 +5,16 @@
         <link href="css/default.css" rel="stylesheet" type="text/css">
     </head>
     <body>
+        {literal}
+<script language="javascript" type="text/javascript" src="include/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
+<script language="javascript" type="text/javascript">
+    tinyMCE.init({
+        mode : "textareas",
+        theme : "simple"
+});
+</script>
+{/literal}
+ {include file="../js/submit.js"}
         <center>
             <table width="100%"  border="0" cellspacing="0" cellpadding="0">
                 <tr>
@@ -39,8 +49,9 @@
                                     <b>Please tell us about your issue by filling out the form below and one our our Technicians will be in contact with you shortly.</b>
                                     <br>
                                     <br>
-                                   <form action="submit.php" method="post" >
-                                       <!-- Let get some info from the customer if this is there first time using this service -->
+                                    {literal}
+                                   <form action="submit.php" method="post" onsubmit="try { var myValidator = validate_submit; } catch(e) { return true; } return myValidator(this);" >
+                                    {/literal}   <!-- Let get some info from the customer if this is there first time using this service -->
                                         <table width="100%" class="olotd" cellpadding="4" cellspacing="2">
                                             <tr>
                                                 <td colspan="3">
@@ -74,6 +85,7 @@
                                             </tr>
                                     </table>
                                        <!-- Now lets get the details of the issue -->
+                                      
                                         <table>
                                             <tr>
                                                 <td colspan="3">
@@ -87,7 +99,7 @@
                                                     Your Email Address:
                                                 </td>
                                                 <td colspan="2">
-                                                    <input name="email_id" type="text" title="Your Email Address" size="50" >
+                                                    <input name="from"  type="text" size="50" >
                                                 </td>
                                             </tr>
                                             <tr>
@@ -104,7 +116,7 @@
                                                     Issue Details:
                                                 </td>
                                                 <td colspan="2">
-                                                    <textarea cols="80" rows="10" name="description"></textarea>
+                                                    <textarea cols="75" rows="20" name="description"></textarea>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -147,8 +159,8 @@
                                                 </td>
                                             </tr>
                                             <tr>                                                                                          
-                                                <td colspan="2" align="left">
-                                                    <br><b><font color="RED" >Please verify your information is correct before pressing this button>></font></b><input type="submit" name="submit_request" value="Submit">
+                                                <td colspan="2" align="center">
+                                                    <br><input type="submit" name="submit_request" value="Proceed" style="font-size: 14pt; color: RED">
                                                 </td>
                                             </tr>
                                         </table>
