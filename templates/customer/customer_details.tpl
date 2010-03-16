@@ -38,7 +38,7 @@
                                             <td class="menuhead2" width="80%">
                                                 &nbsp;{$translate_customer_details} {$customer_details[i].CUSTOMER_DISPLAY_NAME}</td>
                                             <td class="menuhead2" width="20%" align="right" valign="middle">
-                                                <a href="?page=customer:edit&customer_id={$customer_details[i].CUSTOMER_ID}&page_title=Edit%20Customer%20Information" target="new"><img src="images/icons/edit.gif"  alt="" height="16" border="0"> Edit</a>
+                                                <a href="?page=customer:edit&customer_id={$customer_details[i].CUSTOMER_ID}&page_title=Edit%20Customer%20Information" ><img src="images/icons/edit.gif"  alt="" height="16" border="0"> Edit</a>
                                             </td>
                                         </tr>
                                         <tr>
