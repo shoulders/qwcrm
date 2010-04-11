@@ -676,7 +676,7 @@ function create_table_company($db)
   `COMPANY_COUNTRY` char(3) NOT NULL default '',
   `COMPANY_PHONE` varchar(20) NOT NULL default '',
   `COMPANY_MOBILE` varchar(20) NOT NULL default '',
-  `COMPANY_TOLL_FREE` varchar(20) NOT NULL default '',
+  `COMPANY_FAX` varchar(20) NOT NULL default '',
   `COMPANY_EMAIL` varchar(100) NOT NULL default '',
   `COMPANY_CURRENCY_SYMBOL` varchar(30) default NULL,
   `COMPANY_CURRENCY_CODE` varchar(30) default NULL,

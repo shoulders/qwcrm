@@ -161,7 +161,7 @@ echo ("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http:/
 				COMPANY_PHONE		=". $db->qstr( $_POST['COMPANY_PHONE']     ).",
 				COMPANY_MOBILE		=". $db->qstr( $_POST['COMPANY_MOBILE']    ).",
 				COMPANY_EMAIL		=". $db->qstr( $_POST['COMPANY_EMAIL']     ).",
-				COMPANY_TOLL_FREE	=". $db->qstr( $_POST['COMPANY_TOLL_FREE'] )
+				COMPANY_FAX	=". $db->qstr( $_POST['COMPANY_FAX'] )
 
                         ;
 
@@ -1093,8 +1093,8 @@ echo ("
 																				<td width=\"140\">Company Mobile:</td>
 																				<td><input type=\"text\" size=\"20\" name=\"COMPANY_MOBILE\" class=\"olotd5\"></td>
 																			</tr><tr>
-																				<td width=\"140\">Company Toll Free:</td>
-																				<td><input type=\"text\" size=\"20\" name=\"COMPANY_TOLL_FREE\" class=\"olotd5\"></td>
+																				<td width=\"140\">Company Fax:</td>
+																				<td><input type=\"text\" size=\"20\" name=\"COMPANY_FAX\" class=\"olotd5\"></td>
 																			</tr><tr>
 																				<td width=\"140\">Company Email:</td>
 																				<td><input type=\"text\" size=\"20\" name=\"COMPANY_EMAIL\" class=\"olotd5\"></td>

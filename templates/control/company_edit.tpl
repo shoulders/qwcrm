@@ -68,8 +68,8 @@
 												<td align="right"><b>Mobile Phone:</b></td>
 												<td><input class="olotd5" type="text" name="mobile_phone" value="{$company[q].COMPANY_MOBILE}"></td>
 											</tr><tr>
-												<td align="right"><b>Toll Free:</b></td>
-												<td><input class="olotd5" type="text" name="toll_free" value="{$company[q].COMPANY_TOLL_FREE}"></td>
+												<td align="right"><b>Fax:</b></td>
+												<td><input class="olotd5" type="text" name="fax" value="{$company[q].COMPANY_FAX}"></td>
 											</tr>
                                                                                         {section name=w loop=$setup}
 											<!-- <tr>

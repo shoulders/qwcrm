@@ -120,6 +120,7 @@ function create_billing_options($db) {
 function create_table_company($db)
 {
 	$q="ALTER TABLE `".PRFX."TABLE_COMPANY`
+            DROP `COMPANY_TOLL_FREE`,
             DROP `COMPANY_CURRENCY_SYMBOL`,
             DROP `COMPANY_CURRENCY_CODE` ,
             DROP `COMPANY_DATE_FORMAT` ,
@@ -132,6 +133,7 @@ function create_table_company($db)
 		if(!$rs) {
                      $q="ALTER TABLE `".PRFX."TABLE_COMPANY`
             CHANGE `COMPANY_ADDRESS` `COMPANY_ADDRESS` varchar(100),
+            ADD `COMPANY_FAX` varchar(30) default NULL,
             ADD `COMPANY_CURRENCY_SYMBOL` varchar(30) default NULL,
             ADD `COMPANY_CURRENCY_CODE` varchar(30) default NULL,
             ADD `COMPANY_DATE_FORMAT` varchar(10) default NULL,

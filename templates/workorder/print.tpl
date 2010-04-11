@@ -101,7 +101,7 @@ document.form1.bk2.value="";
 					</tr><tr>
 						<td><b>Phone Numbers<br>
                   Primary:</b>&nbsp {$company[d].COMPANY_PHONE}<br>                  
-						    <b>Toll Free:</b>&nbsp {$company[d].COMPANY_TOLL_FREE}<br>
+						    <b>Fax:</b>&nbsp {$company[d].COMPANY_FAX}<br>
                 <b>Mobile #:</b>&nbsp {$company[d].COMPANY_MOBILE}<br>
 							</td>
 					</tr>
