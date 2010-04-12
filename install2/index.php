@@ -153,17 +153,18 @@ echo ("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http:/
                 $cname = stripslashes($_POST['COMPANY_NAME']);
 		$q = "REPLACE INTO ".PRFX."TABLE_COMPANY SET
 				COMPANY_NAME		=". $db->qstr( $cname      ).",
-				COMPANY_ADDRESS		=". $db->qstr( $_POST['COMPANY_ADDRESS']   ).", 
-				COMPANY_CITY		=". $db->qstr( $_POST['COMPANY_CITY']      ).", 
-				COMPANY_STATE		=". $db->qstr( $_POST['COMPANY_STATE']     ).",
-				COMPANY_ZIP 		=". $db->qstr( $_POST['COMPANY_ZIP']       ).",
-				COMPANY_COUNTRY 	=". $db->qstr( $_POST['COMPANY_COUNTRY']   ).",
-				COMPANY_PHONE		=". $db->qstr( $_POST['COMPANY_PHONE']     ).",
-				COMPANY_MOBILE		=". $db->qstr( $_POST['COMPANY_MOBILE']    ).",
-				COMPANY_EMAIL		=". $db->qstr( $_POST['COMPANY_EMAIL']     ).",
-				COMPANY_FAX	=". $db->qstr( $_POST['COMPANY_FAX'] )
-
-                        ;
+				COMPANY_ADDRESS		=". $db->qstr( $_POST['COMPANY_ADDRESS']).", 
+				COMPANY_CITY		=". $db->qstr( $_POST['COMPANY_CITY']).", 
+				COMPANY_STATE		=". $db->qstr( $_POST['COMPANY_STATE']).",
+				COMPANY_ZIP 		=". $db->qstr( $_POST['COMPANY_ZIP']).",
+				COMPANY_COUNTRY 	=". $db->qstr( $_POST['COMPANY_COUNTRY']).",
+				COMPANY_PHONE		=". $db->qstr( $_POST['COMPANY_PHONE']).",
+				COMPANY_MOBILE		=". $db->qstr( $_POST['COMPANY_MOBILE']).",
+				COMPANY_EMAIL		=". $db->qstr( $_POST['COMPANY_EMAIL']).",
+                                COMPANY_CURRENCY_CODE	=". $db->qstr( $_POST['COMPANY_CURRENCY_CODE']).",
+                                COMPANY_CURRENCY_SYMBOL	=". $db->qstr( $_POST['COMPANY_CURRENCY_SYMBOL']).",
+                                COMPANY_DATE_FORMAT	=". $db->qstr( $_POST['DATE_FORMAT']).",
+				COMPANY_FAX	=". $db->qstr( $_POST['COMPANY_FAX']) ;
 
 		if(!$rs = $db->Execute($q)) {
 			echo("<tr>\n
@@ -204,7 +205,7 @@ if($error_flag == true) {
 				The Admin login is: ".$login ." and the password you supplied in the previous page.<br><br>
 				Where to find help:<br>
 				The user Documentation is at <a href=\"http://team.myitcrm.com/projects/show/main/\">http://team.myitcrm.com</a><br>
-				Bug/Feature Reporting is at <a href=\"http://team.myitcrm.com/projects/main/issues/new\">Bug Tracker</a><br>
+				Bug/Feature Reporting is at <a href=\"http://myitcrm.com/forum/\">Forum Bug/Feature Requests</a><br>
 
 				</td>\n</tr>\n");
 }
@@ -408,9 +409,8 @@ echo ("
 																				</tr><tr>
 																					<td width=\"140\">Currency Symbol</td>
 																					<td>
-																						<select name=\"currency_sym\" size=\"1\" >
-																							<option	value=\"\" SELECTED>Choose One
-																							<option value=\"$\">$ - Dollars
+																						<select name=\"currency_sym\" size=\"1\" >																							
+																							<option value=\"$\" SELECTED>$ - Dollars
 																							<option value=\"£\">£ - Pounds
                                                                                                                                                                                         <option value=\"€\">€ - Euros
 
@@ -819,6 +819,11 @@ echo ("
 																				<td width=\"140\">Company Name:</td>
 																				<td><input type=\"text\" size=\"20\" name=\"COMPANY_NAME\" class=\"olotd5\"></td>
 																			</tr><tr>
+                                                                                                                                                            <td>
+                                                                                                                                                                <br><input type=radio name=copy value=\"yes\" onclick=\"data_copy()\";>Copy Administrator data to Business data?
+                                                                                                                                                                <br><input type=hidden name=copy value=\"no\" onclick=\"data_copy()\";>
+                                                                                                                                                            </td>
+                                                                                                                                                        </tr><tr>
 																				<td width=\"140\">Company Address:</td>
 																				<td><input type=\"text\" size=\"20\" name=\"COMPANY_ADDRESS\" class=\"olotd5\"></td>
 																			</tr><tr>
@@ -1287,7 +1292,7 @@ $content = "<?php
 \n
 include('version.php');
 @define('SEP','/');
-@define('FILE_ROOT','".$_POST['default_path']."'.SEP);
+@define('FILE_ROOT',dirname(__FILE__).SEP);
 @define('WWW_ROOT','".$_POST['default_site_name']."');
 @define('IMG_URL',WWW_ROOT.'images');
 @define('INCLUDE_URL',FILE_ROOT.'include'.SEP);

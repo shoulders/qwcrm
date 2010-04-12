@@ -685,7 +685,7 @@ function create_table_company($db)
   `COMPANY_EMAIL_SERVER` varchar(50) default NULL,
   `COMPANY_EMAIL_PORT` varchar(10) default NULL,
   `COMPANY_SMTP_USERNAME` varchar(50) default NULL,
-  `COMPANY_SMTP_PASSWORD` varchar(50) default NULL
+  `COMPANY_SMTP_PASSWORD` varchar(50) default NULL,
   PRIMARY KEY  (`COMPANY_NAME`)
 ) TYPE=MyISAM;";
 
@@ -1168,7 +1168,7 @@ function create_setup($db) {
 		if(!$rs) {
 			return false;
 		} else {
-			$q = "REPLACE INTO `".PRFX."SETUP` VALUES (7, 19, '', '', '', '', 1, 0,'','','','','','','03','0.00','','','1.5','','','','','','Please use invoice number as transactions details. This helps us to determine who has paid in a timely manner.')";
+			$q = "REPLACE INTO `".PRFX."SETUP` VALUES (7, 19, '', '', '', '', 1, 0,'','','','','','','03','0.00','','','1.5','','','','','','Please use invoice number as transactions details. This helps us to determine who has paid in a timely manner.','','','','','','','','','','','','','','','','','','','','','','','','','')";
 		
 			if(!$rs = $db->Execute($q)) {
 				return false;
@@ -1300,8 +1300,8 @@ function create_customer_emails($db) {
         `CUSTOMER_EMAIL_ATT_TYPE3` varchar(60) NOT NULL ,
         `CUSTOMER_EMAIL_ATT_SIZE3` int NOT NULL ,
         `CUSTOMER_EMAIL_ATT_FILE3` MEDIUMBLOB NOT NULL,
-	PRIMARY KEY  (`CUSTOMER_EMAIL_ID`),
-	) TYPE=MyISAM ";
+	PRIMARY KEY  (`CUSTOMER_EMAIL_ID`)
+	) TYPE=MyISAM";
 	if(!$rs = $db->execute($q)) {
 			return false;
 	} else {

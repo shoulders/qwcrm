@@ -1,5 +1,21 @@
 <script type="text/javascript">
 //<![CDATA[
+function data_copy()
+{
+
+if(document.install.copy[0].checked){
+document.install.COMPANY_ADDRESS.value=document.install.address.value;
+document.install.COMPANY_CITY.value=document.install.city.value;
+document.install.COMPANY_STATE.value=document.install.state.value;
+document.install.COMPANY_ZIP.value=document.install.zip.value;
+}else{
+document.install.COMPANY_ADDRESS.value="";
+document.install.COMPANY_CITY.value="";
+document.install.COMPANY_STATE.value="";
+document.install.COMPANY_ZIP.value="";
+}
+
+}
 function validate_install(frm) {
   var value = '';
   var errFlag = new Array();
