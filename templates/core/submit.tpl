@@ -3,9 +3,11 @@
         <title>Submit a Support Request</title>
         <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
         <link href="css/default.css" rel="stylesheet" type="text/css">
+        
     </head>
     <body>
         {literal}
+<script type="text/javascript" src="js/jquery.min.js"></script>
 <script language="javascript" type="text/javascript" src="include/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
 <script language="javascript" type="text/javascript">
     tinyMCE.init({
@@ -46,20 +48,31 @@
                             <tr>
                                 <td class="olotd5">
                                     <img src="images/request.png" alt="Submit Request" align="middle" hspace="3">
-                                    <b>Please tell us about your issue by filling out the form below and one our our Technicians will be in contact with you shortly.</b>
+                                    <b>Please tell us about your issue by filling out the form below and one of our Technicians will be in contact with you shortly.</b>
                                     <br>
                                     <br>
                                     {literal}
                                    <form action="submit.php" method="post" onsubmit="try { var myValidator = validate_submit; } catch(e) { return true; } return myValidator(this);" >
                                     {/literal}   <!-- Let get some info from the customer if this is there first time using this service -->
-                                        <table width="100%" class="olotd" cellpadding="4" cellspacing="2">
+                                     {literal}<script type="text/javascript">
+ $(function(){
+     $("#newuser").click(function(event) {
+     event.preventDefault();
+     $("#newuserform").slideToggle();
+ });
+ $("#newuserform a").click(function(event) {
+     event.preventDefault();
+     $("#newuserform").slideUp();
+ });
+ });
+ </script>
+ 
+  <a href="#" id="newuser">First time using our service? Click Here</a>
+ <div id="newuserform">
+
+
+                                    <table width="100%" class="olotd" cellpadding="4" cellspacing="2">
                                             <tr>
-                                                <td colspan="3">
-                                                    <b><font color="RED" size="+1"> First time using our service? Please provide us some details about yourself here.</font></b>
-                                    
-                                                </td>
-                                            </tr>
-                                        <tr>
                                                 <td  colspan="1" width="100" align="right">
                                                     Full Name:
                                                 </td>
@@ -84,6 +97,7 @@
                                                 </td>
                                             </tr>
                                     </table>
+ </div>{/literal}
                                        <!-- Now lets get the details of the issue -->
                                       
                                         <table>
@@ -116,7 +130,7 @@
                                                     Issue Details:
                                                 </td>
                                                 <td colspan="2">
-                                                    <textarea cols="75" rows="20" name="description"></textarea>
+                                                    <textarea cols="75" rows="20" id="description" name="description"></textarea>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -211,6 +225,11 @@
                                                             </td>
                                                         </tr>
 							{ /if}
+                                                        <tr align="center">
+                                                            <td colspan="2" class="error">
+                                                                <a href="password.php"> Forgotton your password?</a>
+                                                            </td>
+                                                        </tr>
                                                     </table>
                                                 </form>
                                             </td>
