@@ -1,6 +1,9 @@
 body {
 	margin: 0px;
 	padding: 0px;
+        font-family: Verdana, Arial, Helvetica, sans-serif;
+        font-size: 11px;
+        color: #666666;
 }
 
 body, th, td {
@@ -551,3 +554,23 @@ div.tab_contents_active {
 div.clear {
 	clear: both;
 }
+/* Used for slider on email from submittion for additional user info */
+
+ #newuserform {
+     width:90%;
+     display: none;
+     padding:5px;
+     border:2px solid #FADDA9;
+     background-color:#FDF4E1;
+
+ }
+ #newuser{
+     display:block;
+     width:90%;
+     padding:5px;
+     border:2px solid #D0E8F4;
+     background-color:#ECF8FD;
+     color:RED;
+     text-decoration:blink;
+     font-weight:bolder;
+     font-size: 16px;}
