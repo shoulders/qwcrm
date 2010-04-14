@@ -146,15 +146,7 @@ if(isset($submit)){
 	
 	/* Update Invoice */
 	
-	/* calculate Tax */
-	$q = "SELECT INVOICE_TAX FROM ".PRFX."SETUP";
-	$rs = $db->execute($q);
-	$tax = $rs->fields['INVOICE_TAX'];
-
 	
-	$tax = $tax * .01;
-	$tax_amount = $sub_total * 	$tax;
-	$invoice_total = $sub_total + $shipping + $tax_amount;
 
 	
 	
@@ -175,6 +167,17 @@ if(isset($submit)){
 	$discount = $discount * .01;
 	$discount_amount = $sub_total * $discount;
 	$invoice_total = $invoice_total - $discount_amount;
+
+        /* calculate Tax */
+	$q = "SELECT INVOICE_TAX FROM ".PRFX."SETUP";
+	$rs = $db->execute($q);
+	$tax = $rs->fields['INVOICE_TAX'];
+
+
+	$tax = $tax * .01;
+        $sub_total_after_discount = $sub_total - $discount_amount;
+	$tax_amount = $sub_total_after_discount * $tax;
+	$invoice_total = $sub_total + $shipping + $tax_amount;
 	
 	/* update database */
 		$q = "UPDATE ".PRFX."TABLE_INVOICE SET
