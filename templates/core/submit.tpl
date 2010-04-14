@@ -39,7 +39,7 @@
                     </td>
                     <td align="center">
                         <!-- Start of new dashboard front page -->
-                        <table class="olotable" width="75%" align="left" border ="1" cellpadding="5" cellspacing="5" >
+                        <table class="olotable" width="60%" align="left" border ="1" cellpadding="5" cellspacing="5" >
                             <tr>
                                 <td class="olohead" colspan="2">
                                     Submit your support request form
@@ -226,7 +226,7 @@
                                                         </tr>
 							{ /if}
                                                         <tr align="center">
-                                                            <td colspan="2" class="error">
+                                                            <td colspan="2">
                                                                 <a href="password.php"> Forgotton your password?</a>
                                                             </td>
                                                         </tr>
