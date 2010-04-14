@@ -6,8 +6,10 @@
         <link href="css/default.css" rel="stylesheet" type="text/css">
     </head>
     <body>
+        {include file="../js/password.js"}
         <center>
             <table width="100%"  border="0" cellspacing="0" cellpadding="0">
+                
                 <tr>
                     <td>
                         <img src="images/logo.jpg" alt="" height="114">
@@ -42,7 +44,7 @@
                                     <table  cellspacing="5" border="0" cellpadding="5" align="center">
                                         <tr>
                                             <td>
-                                                <form method="POST" action="password.php" >
+                                                <form method="POST" action="password.php" {literal} onsubmit="try  { var myValidator = validate_submit; } catch(e) { return true; } return myValidator(this);"{/literal} >
                                                     <table width="25%" cellspacing="0" border="0" cellpadding="5" align="center">
                                                         <tr>
                                                             <td align="right">
@@ -52,6 +54,12 @@
                                                                 <input type="text" name="employee_email" size="25" class="olotd5" alt="Email">
                                                             </td>
                                                         </tr>                                                        
+                                                       
+                                                        <tr>
+                                                            <td colspan="2" align="right">
+                                                                <b><font color="RED" >There's</font></b><b><font color="RED" ><input type="text" name="human" id="human" size ="2"> months in a Year. (AntiSpam Test)</font></b>
+                                                            </td>
+                                                        </tr>
                                                         <tr align="center">
                                                             <td colspan="2">
                                                                 <input class="olotd5" type="submit" name="submit"  value="Reset Password">
@@ -63,7 +71,8 @@
                                                                 {$error_msg}
                                                             </td>
                                                         </tr>
-							{ /if}                                                        
+							{ /if}
+
                                                     </table>
                                                 </form>
                                             </td>
@@ -76,5 +85,6 @@
                 </tr>
             </table>
         </center>
+        
     </body>
 </html>
