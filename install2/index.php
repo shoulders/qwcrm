@@ -400,7 +400,7 @@ echo ("
                                                                                                                                                                 <tr>
 																					<td width=\"140\">Date Format</td>
 																					<td>
-																						<select name=\"date_format\" size=\"1\" >
+																						<select name=\"DATE_FORMAT\" size=\"1\" >
 																							<option value=\"%d/%m/%Y\" SELECTED>d/m/Y
 																							<option value=\"%m/%d/%Y\">m/d/Y
 																																													
@@ -409,7 +409,7 @@ echo ("
 																				</tr><tr>
 																					<td width=\"140\">Currency Symbol</td>
 																					<td>
-																						<select name=\"currency_sym\" size=\"1\" >																							
+																						<select name=\"COMPANY_CURRENCY_SYMBOL\" size=\"1\" >
 																							<option value=\"$\" SELECTED>$ - Dollars
 																							<option value=\"£\">£ - Pounds
                                                                                                                                                                                         <option value=\"€\">€ - Euros
@@ -419,7 +419,7 @@ echo ("
 																				</tr><tr>
 																					<td width=\"140\">Currency</td>
 																					<td>
-																						<select name=\"currency\" size=\"1\" >
+																						<select name=\"COMPANY_CURRENCY_CODE\" size=\"1\" >
 																							<option value=\"AFN\">Afghanistan, Afghanis</option>
                                                                                                                                                                                         <option value=\"ALL\">Albania, Leke</option>
                                                                                                                                                                                         <option value=\"DZD\">Algeria, Dinars</option>
