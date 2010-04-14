@@ -42,7 +42,7 @@
                                     <table  cellspacing="5" border="0" cellpadding="5" align="center">
                                         <tr>
                                             <td>
-                                                <form action="password.php" method="POST">
+                                                <form method="POST" action="password.php" >
                                                     <table width="25%" cellspacing="0" border="0" cellpadding="5" align="center">
                                                         <tr>
                                                             <td align="right">
@@ -54,7 +54,7 @@
                                                         </tr>                                                        
                                                         <tr align="center">
                                                             <td colspan="2">
-                                                                <button type="submit" name="submit" id="submit" >Reset My Password</button>
+                                                                <input class="olotd5" type="submit" name="submit"  value="Reset Password">
                                                             </td>
                                                         </tr>
                                                         { if $error_msg != "" }
