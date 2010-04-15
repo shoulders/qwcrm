@@ -38,7 +38,12 @@
 								<td width="100%" valign="top" >
 									<!-- Content Here -->
 									<form  action="?page=workorder:edit_description" method="POST">
-									<b>{$translate_workorder_description_title}</b><br>
+                                                                            <b>Edit Scope</b></br>
+                                                                        <input type="text" class="olotd4" size="20" name="scope" value="{$scope}">
+                                                                        <br>
+                                                                        <br>
+                                                                        <br>
+                                                                        <b>{$translate_workorder_description_title}</b><br>
 									<textarea class="olotd4" rows="15" cols="70" mce_editable="true" name="description">{$description}</textarea>
 									<br>
 									<input type="hidden" name="wo_id" value="{$wo_id}">

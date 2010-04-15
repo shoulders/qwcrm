@@ -1,14 +1,4 @@
 <?php
-####################################################
-# IN 			#	
-#	 				#
-#  				#
-#  This program is distributed under the terms and 	#
-#  conditions of the GPL										#
-#  Edit edit_description										#
-#  Version 0.0.1	Sat Nov 26 20:46:40 PST 2005		#
-#																	#
-####################################################
 if(!xml2php("workorder")) {
 	$smarty->assign('error_msg',"Error in language file");
 }
@@ -23,6 +13,7 @@ force_page('core', 'error&error_msg=No Work Order ID');
 if(isset($VAR['submit'])) {
 
 	$q = "UPDATE ".PRFX."TABLE_WORK_ORDER SET
+                        WORK_ORDER_SCOPE		=".$db->qstr( $VAR['scope']).",
 			WORK_ORDER_DESCRIPTION		=".$db->qstr( $VAR['description']).",
 			LAST_ACTIVE				=".$db->qstr( time() )."
 			WHERE  WORK_ORDER_ID=".$db->qstr( $wo_id );
@@ -50,15 +41,17 @@ if(isset($VAR['submit'])) {
 	
 } else {
 
-	$q = "SELECT WORK_ORDER_DESCRIPTION FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_ID=".$db->qstr( $wo_id );
+	$q = "SELECT WORK_ORDER_DESCRIPTION, WORK_ORDER_SCOPE FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_ID=".$db->qstr( $wo_id );
 		if(!$rs = $db->execute($q)) {
 			force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
 			exit;
 		}
 
 	$description = $rs->fields['WORK_ORDER_DESCRIPTION'];
+        $scope = $rs->fields['WORK_ORDER_SCOPE'];
 
 	$smarty->assign('description', $description);
+        $smarty->assign('scope', $scope);
 	$smarty->display('workorder'.SEP.'edit_description.tpl');
 	
 }
