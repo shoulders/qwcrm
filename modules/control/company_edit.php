@@ -47,24 +47,25 @@ $string2=stripslashes($string);
 
 	/* update company information */
 	$q = 'UPDATE '.PRFX.'TABLE_COMPANY SET
-		  	COMPANY_NAME			= '. $db->qstr( $string2          	).',
-		  	COMPANY_ABN			= '. $db->qstr( $VAR['company_abn']	) .',
-		  	COMPANY_ADDRESS 	= '. $db->qstr( $VAR['address']		) .',
-			COMPANY_CITY 		= '. $db->qstr( $VAR['city']			) .',
-			COMPANY_STATE		= '. $db->qstr( $VAR['state']			) .',
-			COMPANY_ZIP 			= '. $db->qstr( $VAR['zip']				) .',
+		  	COMPANY_NAME			= '. $db->qstr( $string2 ).',
+		  	COMPANY_ABN			= '. $db->qstr( $VAR['company_abn']) .',
+		  	COMPANY_ADDRESS 	= '. $db->qstr( $VAR['address']) .',
+			COMPANY_CITY 		= '. $db->qstr( $VAR['city']) .',
+			COMPANY_STATE		= '. $db->qstr( $VAR['state']) .',
+			COMPANY_ZIP 			= '. $db->qstr( $VAR['zip']) .',
 			COMPANY_COUNTRY		= '. $db->qstr( $VAR['country']).',
-			COMPANY_PHONE		= '. $db->qstr( $VAR['phone']			) .',
-			COMPANY_MOBILE		= '. $db->qstr( $VAR['mobile_phone']	) .', 
-			COMPANY_FAX	= '. $db->qstr( $VAR['fax']		) .',
-                        COMPANY_CURRENCY_SYMBOL	= '. $db->qstr( $VAR['currency_sym']		) .',
-                        COMPANY_CURRENCY_CODE	= '. $db->qstr( $VAR['currency_code']		) .',
-                        COMPANY_DATE_FORMAT	= '. $db->qstr( $VAR['date_format']		) .',
-                        COMPANY_EMAIL_FROM	= '. $db->qstr( $VAR['email_from']		) .',
-                        COMPANY_EMAIL_SERVER	= '. $db->qstr( $VAR['email_server']		) .',
-                        COMPANY_SMTP_USERNAME	= '. $db->qstr( $VAR['email_login']		) .',
-                        COMPANY_SMTP_PASSWORD	= '. $db->qstr( $VAR['email_password']		) .',
-                        COMPANY_EMAIL_PORT	= '. $db->qstr( $VAR['email_port']		);
+			COMPANY_PHONE		= '. $db->qstr( $VAR['phone']) .',
+			COMPANY_MOBILE		= '. $db->qstr( $VAR['mobile_phone']) .', 
+			COMPANY_FAX	= '. $db->qstr( $VAR['fax']) .',
+                        COMPANY_CURRENCY_SYMBOL	= '. $db->qstr( $VAR['currency_sym']) .',
+                        COMPANY_CURRENCY_CODE	= '. $db->qstr( $VAR['currency_code']) .',
+                        COMPANY_DATE_FORMAT	= '. $db->qstr( $VAR['date_format']) .',
+                        COMPANY_EMAIL_FROM	= '. $db->qstr( $VAR['email_from']) .',
+                        COMPANY_EMAIL_SERVER	= '. $db->qstr( $VAR['email_server']) .',
+                        COMPANY_EMAIL_CONNECTION_TYPE	= '. $db->qstr( $VAR['conn_type']) .',
+                        COMPANY_SMTP_USERNAME	= '. $db->qstr( $VAR['email_login']) .',
+                        COMPANY_SMTP_PASSWORD	= '. $db->qstr( $VAR['email_password']) .',
+                        COMPANY_EMAIL_PORT	= '. $db->qstr( $VAR['email_port']);
 		
 
 	

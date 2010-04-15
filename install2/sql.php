@@ -684,6 +684,7 @@ function create_table_company($db)
   `COMPANY_EMAIL_FROM` varchar(50) default NULL,
   `COMPANY_EMAIL_SERVER` varchar(50) default NULL,
   `COMPANY_EMAIL_PORT` varchar(10) default NULL,
+  `COMPANY_EMAIL_CONNECTION_TYPE` varchar(5) default NULL,
   `COMPANY_SMTP_USERNAME` varchar(50) default NULL,
   `COMPANY_SMTP_PASSWORD` varchar(50) default NULL,
   PRIMARY KEY  (`COMPANY_NAME`)

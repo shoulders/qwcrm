@@ -6,6 +6,21 @@ function validate_submit(frm) {
   var errFlag = new Array();
   var _qfGroups = {};
   _qfMsg = '';
+
+  value = frm.elements['employee_email'].value;
+  var regex = /^((\"[^\"\f\n\r\t\v\b]+\")|([\w\!\#\$\%\&'\*\+\-\~\/\^\`\|\{\}]+(\.[\w\!\#\$\%\&'\*\+\-\~\/\^\`\|\{\}]+)*))@((\[(((25[0-5])|(2[0-4][0-9])|([0-1]?[0-9]?[0-9]))\.((25[0-5])|(2[0-4][0-9])|([0-1]?[0-9]?[0-9]))\.((25[0-5])|(2[0-4][0-9])|([0-1]?[0-9]?[0-9]))\.((25[0-5])|(2[0-4][0-9])|([0-1]?[0-9]?[0-9])))\])|(((25[0-5])|(2[0-4][0-9])|([0-1]?[0-9]?[0-9]))\.((25[0-5])|(2[0-4][0-9])|([0-1]?[0-9]?[0-9]))\.((25[0-5])|(2[0-4][0-9])|([0-1]?[0-9]?[0-9]))\.((25[0-5])|(2[0-4][0-9])|([0-1]?[0-9]?[0-9])))|((([A-Za-z0-9\-])+\.)+[A-Za-z\-]+))$/;
+  if (value != '0' && !regex.test(value) && !errFlag['employee_email']) {
+    errFlag['employee_email'] = true;
+    _qfMsg = _qfMsg + '\n - Please enter a valid email address';
+	frm.elements['employee_email'].className = 'error';
+  }
+
+  value = frm.elements['employee_email'].value;
+  if (value != '' && value.length > 50 && !errFlag['employee_email']) {
+    errFlag['employee_email'] = true;
+    _qfMsg = _qfMsg + '\n - Email cannot be more than 50 characters';
+	frm.elements['employee_email'].className = 'error';
+  }
   
   value = frm.elements['human'].value;
   if (value !='12' && !errFlag['human']) {

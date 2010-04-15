@@ -182,6 +182,14 @@
 												<td><input class="olotd5" type="text" size="5" name="email_port" value="{$company[q].COMPANY_EMAIL_PORT}"></td>
 											</tr>
                                                                                         <tr>
+												<td align="right"><b>Connection Type:</b></td>
+                                                                                                <td><select class="olotd5" name="conn_type">
+                                                                                                        <option value="SSL" { if $company[q].COMPANY_EMAIL_CONNECTION_TYPE == 'SSL' } SELECTED {/if}>SSL</option>
+                                                                                                        <option value="" { if $company[q].COMPANY_EMAIL_CONNECTION_TYPE != 'SSL' } SELECTED {/if}>None</option>
+                                                                                                    </select>
+                                                                                                    <!-- <input class="olotd5" type="text" size="5" name="conn_type" value="{$company[q].COMPANY_EMAIL_CONNECTION_TYPE}"></td> -->
+											</tr>
+                                                                                        <tr>
 												<td align="right"><b>SMTP Login Name:</b></td>
 												<td><input class="olotd5" type="text" size="50" name="email_login" value="{$company[q].COMPANY_SMTP_USERNAME}"><font color="RED">*</font>Only required if authentication is needed</td>
 											</tr>

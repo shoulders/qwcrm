@@ -51,7 +51,7 @@
                                                                 Email Address
                                                             </td>
                                                             <td>
-                                                                <input type="text" name="employee_email" size="25" class="olotd5" alt="Email">
+                                                                <input type="text" name="employee_email" id="employee_email" size="50">
                                                             </td>
                                                         </tr>                                                        
                                                        
