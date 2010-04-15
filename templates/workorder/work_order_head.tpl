@@ -24,7 +24,7 @@
 			{/if}
 			
 		</td>
-		<td class="olotd4" align="center">{$single_workorder_array[i].WORK_ORDER_SCOPE}</td>
+                <td class="olotd4" align="center">{$single_workorder_array[i].WORK_ORDER_SCOPE}&nbsp;<a href="?page=workorder:edit_description&wo_id=2&page_title=Edit%20Description"><img alt="Edit" src="images/icons/16x16/small_edit.gif" align="center"></a></td>
 		<td class="olotd4" align="center">
 		{if $single_workorder_array[i].WORK_ORDER_CURRENT_STATUS == "1"}
 			{$translate_workorder_created}
