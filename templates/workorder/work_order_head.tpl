@@ -4,7 +4,7 @@
 		<td class="olohead" align="center">{$translate_workorder_id}</td>
 		<td class="olohead" align="center">{$translate_workorder_opened}</td>
 		<td class="olohead" align="center">{$translate_workorder_state}</td>
-		<td class="olohead" align="center">{$translate_workorder_scope}</td>
+		<td class="olohead" align="center">{$translate_workorder_scope}</td>                
 		<td class="olohead" align="center">{$translate_workorder_status}</td>
 		<td class="olohead" align="center">{$translate_workorder_assign}</td>
 		<td class="olohead" align="center">{$translate_workorder_last_change}</td>
@@ -24,7 +24,7 @@
 			{/if}
 			
 		</td>
-                <td class="olotd4" align="center">{$single_workorder_array[i].WORK_ORDER_SCOPE}&nbsp;<a href="?page=workorder:edit_description&wo_id=2&page_title=Edit%20Description"><img alt="Edit" src="images/icons/16x16/small_edit.gif" align="center"></a></td>
+                <td class="olotd4" valign="middle" align="center"><a href="?page=workorder:edit_description&wo_id=2&page_title=Edit%20Description" onMouseOver="ddrivetip('Click to Edit')" onMouseOut="hideddrivetip()">&rArr;&nbsp;{$single_workorder_array[i].WORK_ORDER_SCOPE}</a></td>
 		<td class="olotd4" align="center">
 		{if $single_workorder_array[i].WORK_ORDER_CURRENT_STATUS == "1"}
 			{$translate_workorder_created}
