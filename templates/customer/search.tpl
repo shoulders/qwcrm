@@ -1,6 +1,6 @@
 <!-- Customer Search TPL -->
 {literal}
-<script language="JavaScript">
+<script type="text/javascript">
         function go()
         {
                 box = document.forms[1].page_no;
@@ -42,7 +42,7 @@
 				<tr>
 					<td class="menuhead2" width="80%">&nbsp;&nbsp;{$translate_main_title}</td>
 					<td class="menuhead2" width="20%" align="right" valign="middle">
-						<a href="http://www.citecrm.com/docs/#Customers" target="new"><img src="images/icons/16x16/help.gif" border="0"
+                                            <a ><img src="images/icons/16x16/help.gif" border="0" alt=""
 						onMouseOver="ddrivetip('<b>Customer Search</b><hr><p>You can search by the customers full display name or just their first name. If you wish to see all the customers for just one letter like A Click the letter A.</p> <p>To find customers whos name starts with Ja enter just ja. The system will intelegently look for the corect customers that match. To view all customers leave the name field blank and click view.</p>')" 
 						onMouseOut="hideddrivetip()"></a>
 					</td>
@@ -63,24 +63,20 @@
 									<table border="0">
 									
 										<tr>
-											<font color="RED">{$translate_employee_display_name_criteria}</font>
-											<td align="right" valign="top"><b>{$translate_display}</b></td>
-											<td valign="top" align="left"><input class="olotd4" name="name" type="text" /></td>
-										</tr>
-									
-										<tr>
-											<td align="right" valign="top"><b></b></td>
-											<td valign="top" align="left"><input class="olotd4" name="submit" value="Search" type="submit" /></td>
-										</tr>
+                                                                                    <td><font color="RED">{$translate_employee_display_name_criteria}</font></td>
+                                                                                </tr>
+                                                                                <tr>
+											<td align="left" valign="top"><b>{$translate_display}</b><input class="olotd4" name="name" type="text" /><input class="olotd4" name="submit" value="Search" type="submit" /></td>
+										</tr>									
 									</table>
 									</div>
 									</form>
 								</td>
 								<td valign="top" nowrap>
 								<form id="1">
-									<a href="?page=customer%3Aview&name={$name}&submit=submit&page_no=1"><img src="images/rewnd_24.gif" border="0"></a>&nbsp;
+									<a href="?page=customer%3Aview&name={$name}&submit=submit&page_no=1"><img src="images/rewnd_24.gif" border="0" alt=""></a>&nbsp;
 									{if $previous != ''}
-										<a href="?page=customer%3Aview&name={$name}&submit=submit&page_no={$previous}"><img src="images/back_24.gif" border="0"></a>&nbsp;
+										<a href="?page=customer%3Aview&name={$name}&submit=submit&page_no={$previous}"><img src="images/back_24.gif" border="0" alt=""></a>&nbsp;
 									{/if}
 									
                                 		<select name="page_no" onChange="go()">
@@ -95,10 +91,10 @@
 										</select>
 									
 									{if $next != ''}
-									<a href="?page=customer%3Aview&name={$name}&submit=submit&page_no={$next}"><img src="images/forwd_24.gif" border="0"></a>
+									<a href="?page=customer%3Aview&name={$name}&submit=submit&page_no={$next}"><img src="images/forwd_24.gif" border="0" alt=""></a>
 									{/if}
 									
-									<a href="?page=customer%3Aview&name={$name}&submit=submit&page_no={$total_pages}"><img src="images/fastf_24.gif" border="0"></a>
+									<a href="?page=customer%3Aview&name={$name}&submit=submit&page_no={$total_pages}"><img src="images/fastf_24.gif" border="0" alt=""></a>
 									<br>
 									{$total_results} {$translate_records_found}.
 									</form>
@@ -127,14 +123,14 @@
 								
 							<tr onmouseover="this.className='row2'" onmouseout="this.className='row1'" onDblClick="window.location='index.php?page=customer:customer_details&customer_id={$customer_search_result[i].CUSTOMER_ID}&page_title={$customer_search_result[i].CUSTOMER_DISPLAY_NAME}';" class="row1">
 								<td class="olotd4" nowrap>
-                                                                    <a href="?page=customer:customer_details&customer_id={$customer_search_result[i].CUSTOMER_ID}&page_title={$customer_search_result[i].CUSTOMER_DISPLAY_NAME}"><img src="images/icons/16x16/viewmag.gif"  border="0" onMouseOver="ddrivetip('View Customer Details')" onMouseOut="hideddrivetip()"></a>&nbsp;<a href="?page=workorder:new&customer_id={$customer_search_result[i].CUSTOMER_ID}&page_title=New Work Order"><img src="images/icons/16x16/small_new_work_order.gif" border="0" onMouseOver="ddrivetip('New Work Order')" onMouseOut="hideddrivetip()"></a>&nbsp;<a href="?page=customer:email&customer_id={$customer_search_result[i].CUSTOMER_ID}&page_title=Email Customer"><img src="images/icons/16x16/email.jpg"  border="0" onMouseOver="ddrivetip('Send an Email to this Customer')" onMouseOut="hideddrivetip()"></a>
+                                                                    <a href="?page=customer:customer_details&customer_id={$customer_search_result[i].CUSTOMER_ID}&page_title={$customer_search_result[i].CUSTOMER_DISPLAY_NAME}"><img src="images/icons/16x16/viewmag.gif" alt="" border="0" onMouseOver="ddrivetip('View Customer Details')" onMouseOut="hideddrivetip()"></a>&nbsp;<a href="?page=workorder:new&customer_id={$customer_search_result[i].CUSTOMER_ID}&page_title=New Work Order"><img src="images/icons/16x16/small_new_work_order.gif" alt="" border="0" onMouseOver="ddrivetip('New Work Order')" onMouseOut="hideddrivetip()" alt=""></a>&nbsp;<a href="?page=customer:email&customer_id={$customer_search_result[i].CUSTOMER_ID}&page_title=Email Customer"><img src="images/icons/16x16/email.jpg" alt=""  border="0" onMouseOver="ddrivetip('Send an Email to this Customer')" onMouseOut="hideddrivetip()"></a>
 								</td>
                                                                 <td class="olotd4" nowrap>
-									<img src="images/icons/16x16/view+.gif" border="0" onMouseOver="ddrivetip('{$customer_search_result[i].CUSTOMER_ADDRESS}<br>{$customer_search_result[i].CUSTOMER_CITY}, {$customer_search_result[i].CUSTOMER_STATE}  {$customer_search_result[i].CUSTOMER_ZIP}')" onMouseOut="hideddrivetip()">{$customer_search_result[i].CUSTOMER_DISPLAY_NAME}
+									<img src="images/icons/16x16/view+.gif" alt="" border="0" onMouseOver="ddrivetip('{$customer_search_result[i].CUSTOMER_ADDRESS}<br>{$customer_search_result[i].CUSTOMER_CITY}, {$customer_search_result[i].CUSTOMER_STATE}  {$customer_search_result[i].CUSTOMER_ZIP}')" onMouseOut="hideddrivetip()">&nbsp;{$customer_search_result[i].CUSTOMER_DISPLAY_NAME}
 								</td>                                                                
 								<td class="olotd4" nowrap>{$customer_search_result[i].CUSTOMER_FIRST_NAME}</td>
 								<td class="olotd4" nowrap>{$customer_search_result[i].CUSTOMER_LAST_NAME}</td>
-								<td class="olotd4" nowrap><img src="images/icons/16x16/view+.gif" border="0"
+								<td class="olotd4" nowrap><img src="images/icons/16x16/view+.gif" border="0" alt=""
 									onMouseOver="ddrivetip('<b>Work: </b>{$customer_search_result[i].CUSTOMER_WORK_PHONE}<br><b>Mobile:</b>{$customer_search_result[i].CUSTOMER_MOBILE_PHONE}')" 
 									onMouseOut="hideddrivetip()">
 									{$customer_search_result[i].CUSTOMER_PHONE}

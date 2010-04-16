@@ -267,9 +267,14 @@ function insert_new_customer($db,$VAR) {
 //Added to strip slashes
 $string= $VAR['address'];
 $string2=stripslashes($string);
+if ($VAR["displayName"] ==""){
+ $displayname = $VAR["lastName"].", ".$VAR["firstName"] ;
+} else {
+$displayname =$VAR["displayName"] ;
+}
 
 	$sql = "INSERT INTO ".PRFX."TABLE_CUSTOMER SET
-			CUSTOMER_DISPLAY_NAME	= ". $db->qstr( $VAR["displayName"]  ).",
+			CUSTOMER_DISPLAY_NAME	= ". $db->qstr( $displayname  ).",
 			CUSTOMER_ADDRESS		= ". $db->qstr( $string2      ).",
 			CUSTOMER_CITY			= ". $db->qstr( $VAR["city"]         ).", 
 			CUSTOMER_STATE			= ". $db->qstr( $VAR["state"]        ).", 

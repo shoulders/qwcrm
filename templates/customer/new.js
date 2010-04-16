@@ -6,21 +6,7 @@ function validate_new_customer(frm) {
   var errFlag = new Array();
   var _qfGroups = {};
   _qfMsg = '';
-
-  value = frm.elements['displayName'].value;
-  if (value == '' && !errFlag['displayName']) {
-    errFlag['displayName'] = true;
-    _qfMsg = _qfMsg + '\n - Please enter the  customers Display Name';
-	frm.elements['displayName'].className = 'error';
-  }
-
-  value = frm.elements['displayName'].value;
-  if (value != '' && value.length > 80 && !errFlag['displayName']) {
-    errFlag['displayName'] = true;
-    _qfMsg = _qfMsg + '\n - The Customers Display  Name cannot be more than 80 characters';
-	frm.elements['displayName'].className = 'error';
-  }
-
+  
   value = frm.elements['firstName'].value;
   if (value == '' && !errFlag['firstName']) {
     errFlag['firstName'] = true;

@@ -28,17 +28,39 @@
 												<table>
 												<tbody align="left">
 													<tr>
-														<td><span style="color: #ff0000">*</span>
-														 	<strong>{$translate_display}</strong></td>
+														<td align="right"><strong>{$translate_display}</strong><span style="color: #ff0000">*</span></td>
 														<td colspan="3"><input class="olotd5" size="60" value="{$customer[q].CUSTOMER_DISPLAY_NAME}" name="displayName" type="text" /></td>
 													</tr><tr>
-														<td><span style="color: #ff0000">*</span>
-															<strong>{$translate_first}</strong></td>
+														<td align="right"><strong>{$translate_first}</strong><span style="color: #ff0000">*</span></td>
 														<td><input class="olotd5" value="{$customer[q].CUSTOMER_FIRST_NAME}" name="firstName" type="text" /></td>
-														<td><span style="color: #ff0000">*</span>
-															<strong>{$translate_last}</strong></td>
-														<td><input class="olotd5" value="{$customer[q].CUSTOMER_LAST_NAME}" name="lastName" type="text" /></td>
-													</tr>
+														
+                                                                                                        <tr>
+                                                                                                            <td align="right"><strong>{$translate_last}</strong><span style="color: #ff0000">*</span></td>
+                                                                                                            <td><input class="olotd5" value="{$customer[q].CUSTOMER_LAST_NAME}" name="lastName" type="text" /></td>
+													</tr><tr>
+                                                                                                                <td align="right"><strong>{$translate_email}</strong></td>
+                                                                                                                <td><input class="olotd5" value="{$customer[q].CUSTOMER_EMAIL}" name="email" size="50" type="text" /></td>
+                                                                                                        <tr>
+                                                                                                                <td align="right"><strong>{$translate_type}</strong><span style="color: #ff0000">*</span></td>
+                                                                                                                <td>
+                                                                                                                        <select class="olotd5" name="customerType">
+                                                                                                                                <option value="1" {if $customer[q].CUSTOMER_TYPE == 1} selected{/if}>{$translate_customer_type_1}</option>
+                                                                                                                                <option value="2"   {if $customer[q].CUSTOMER_TYPE == 2}   selected{/if}>{$translate_customer_type_2}</option>
+                                                                                                                                <option value="3"   {if $customer[q].CUSTOMER_TYPE == 3}   selected{/if}>{$translate_customer_type_3}</option>
+                                                                                                                                <option value="4"   {if $customer[q].CUSTOMER_TYPE == 4}   selected{/if}>{$translate_customer_type_4}</option>
+                                                                                                                                <option value="5"   {if $customer[q].CUSTOMER_TYPE == 5}   selected{/if}>{$translate_customer_type_5}</option>
+                                                                                                                                <option value="6"   {if $customer[q].CUSTOMER_TYPE == 6}   selected{/if}>{$translate_customer_type_6}</option>
+                                                                                                                                <option value="7"   {if $customer[q].CUSTOMER_TYPE == 7}   selected{/if}>{$translate_customer_type_7}</option>
+                                                                                                                                <option value="8"   {if $customer[q].CUSTOMER_TYPE == 8}   selected{/if}>{$translate_customer_type_8}</option>
+                                                                                                                                <option value="9"   {if $customer[q].CUSTOMER_TYPE == 9}   selected{/if}>{$translate_customer_type_9}</option>
+                                                                                                                                <option value="10"   {if $customer[q].CUSTOMER_TYPE == 10}   selected{/if}>{$translate_customer_type_10}</option>
+                                                                                                                        </select>
+                                                                                                                        <input type="hidden" name="page" value="customer:edit">
+                                                                                                                </td>
+                                                                                                        </tr><tr>
+                                                                                                                <td align="right"><b>{$translate_customer_discount}</b></td>
+                                                                                                                <td><a><input class="olotd5" type="text" size="4" name="discount" value="{$customer[q].DISCOUNT}"></a><b>%</b></td>
+                                                                                                        </tr>
 												</tbody>
 												</table>	
 											</td>
@@ -48,16 +70,13 @@
 											<td colspan="2">
 												<table>
 													<tr>
-														<td><span style="color: #ff0000">*</span>
-															<strong>{$translate_primary}</strong></td>
+														<td align="right"><strong>{$translate_customer_home}</strong><span style="color: #ff0000">*</span></td>
 														<td><input class="olotd5" value="{$customer[q].CUSTOMER_PHONE}" name="homePhone" type="text" /></td>
 													</tr><tr>
-														<td><span style="color: #ff0000"></span>
-															<strong>{$translate_secondary}</strong></td>
+														<td align="right"><strong>{$translate_customer_work}</strong><span style="color: #ff0000"></span></td>
 														<td><input class="olotd5" value="{$customer[q].CUSTOMER_WORK_PHONE}" name="workPhone" type="text" /></td>
 													</tr><tr>
-														<td><span style="color: #ff0000"></span>
-															<strong>{$translate_mobile}</strong></td>
+														<td align="right"><strong>{$translate_customer_mobile}</strong><span style="color: #ff0000"></span></td>
 														<td><input class="olotd5" value="{$customer[q].CUSTOMER_MOBILE_PHONE}" name="mobilePhone" type="text" /></td>
 													</tr>
 												</table>
@@ -68,51 +87,25 @@
 											<td colspan="2">
 												<table>
 													<tr>
-														<td><span style="color: #ff0000">*</span>
-															<strong>{$translate_customer_address}</strong></td>
+														<td align="right"><strong>{$translate_customer_address}</strong><span style="color: #ff0000">*</span></td>
 														<td colspan="3"><input class="olotd5" size="80" value="{$customer[q].CUSTOMER_ADDRESS}" name="address" type="text" /></td>
 													</tr><tr>
-														<td><span style="color: #ff0000">*</span>
-															<strong>{$translate_customer_city}</strong></td>
+														<td align="right"><strong>{$translate_customer_city}</strong><span style="color: #ff0000">*</span></td>
 														<td><input class="olotd5" value="{$customer[q].CUSTOMER_CITY}" name="city" type="text" /></td>
-														<td><span style="color: #ff0000">*</span>
-															<strong>{$translate_customer_state}</strong></td>
+                                                                                                        </tr><tr>
+														<td align="right"><strong>{$translate_customer_state}</strong><span style="color: #ff0000">*</span></td>
 														<td><input class="olotd5" value="{$customer[q].CUSTOMER_STATE}" name="state" type="text" /></td>
 													</tr><tr>
-														<td><span style="color: #ff0000">*</span>
-															<strong>{$translate_customer_zip}</strong></td>
+														<td align="right"><strong>{$translate_customer_zip}</strong><span style="color: #ff0000">*</span></td>
 														<td colspan="2"><input class="olotd5" value="{$customer[q].CUSTOMER_ZIP}" name="zip" type="text" /></td>
 													</tr>
 												</table>	
 											</td>
 										</tr><tr>
 											<td class="menuhead" colspan="2"><br></td>
-										</tr><tr>
-											<td>
-												<span style="color: #ff0000">*</span>
-												<strong>{$translate_email}</strong> <input class="olotd5" value="{$customer[q].CUSTOMER_EMAIL}" name="email" size="50" type="text" />
-											</td>
-											<td><span style="color: #ff0000">*</span>
-												<strong>{$translate_type}</strong>
-												<select class="SignupData" name="customerType">
-													<option value="1" {if $customer[q].CUSTOMER_TYPE == 1} selected{/if}>{$translate_customer_type_1}</option>
-													<option value="2"   {if $customer[q].CUSTOMER_TYPE == 2}   selected{/if}>{$translate_customer_type_2}</option>
-													<option value="3"   {if $customer[q].CUSTOMER_TYPE == 3}   selected{/if}>{$translate_customer_type_3}</option>
-													<option value="4"   {if $customer[q].CUSTOMER_TYPE == 4}   selected{/if}>{$translate_customer_type_4}</option>
-                                                                                                        <option value="5"   {if $customer[q].CUSTOMER_TYPE == 5}   selected{/if}>{$translate_customer_type_5}</option>
-                                                                                                        <option value="6"   {if $customer[q].CUSTOMER_TYPE == 6}   selected{/if}>{$translate_customer_type_6}</option>
-                                                                                                        <option value="7"   {if $customer[q].CUSTOMER_TYPE == 7}   selected{/if}>{$translate_customer_type_7}</option>
-                                                                                                        <option value="8"   {if $customer[q].CUSTOMER_TYPE == 8}   selected{/if}>{$translate_customer_type_8}</option>
-                                                                                                        <option value="9"   {if $customer[q].CUSTOMER_TYPE == 9}   selected{/if}>{$translate_customer_type_9}</option>
-                                                                                                        <option value="10"   {if $customer[q].CUSTOMER_TYPE == 10}   selected{/if}>{$translate_customer_type_10}</option>
-												</select>
-												<input type="hidden" name="page" value="customer:edit">
-											</td>
-										</tr><tr>
-                                                                                        <td><b>{$translate_customer_discount}</b><a><input class="olotd5" type="text" size="4" name="discount" value="{$customer[q].DISCOUNT}"></a><b>%</b></td>
 										</tr>
                                                                                 <tr>
-											<td colspan="2"><input type="submit" name="submit" value="submit"></td>
+											<td colspan="2"><input type="submit" name="submit" value="Update"></td>
 										</tr>
 									</table>
 									{/section}

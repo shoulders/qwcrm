@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 	<translate>
 		<main_title>Customer Search</main_title>
-		<display>Display Name</display>
+		<display>Sort/Business Name</display>
 		<first>First</first>
 		<last>Last</last>
 		<primary>Primary</primary>
@@ -25,7 +25,7 @@
 		<customer_contact_2>Contact</customer_contact_2>
 		<customer_address>Address</customer_address>
 		<customer_home>Primary Phone</customer_home>
-		<customer_work>Secondary Phone</customer_work>
+		<customer_work>Work/Fax Phone</customer_work>
 		<customer_mobile>Mobile</customer_mobile>
 		<customer_city>City</customer_city>
 		<customer_state>State</customer_state>
