@@ -181,7 +181,7 @@ function insert_new_employee($db,$VAR){
 }
 
 ##################################
-# Get Employee Type					#
+# Get Employee Type  		#
 ##################################
 function employee_type($db) {
 	$q = "SELECT * FROM ".PRFX."CONFIG_EMPLOYEE_TYPE";

@@ -12,7 +12,7 @@ if(isset($VAR['submit']) ) {
 	}
 
 	/* if we are changing password update */
-	if($VAR['password'] != '') {
+	if($VAR['password'] != '' || $VAR['login_id'] != '') {
 		$update = "SET EMPLOYEE_PASSWD  		=". $db->qstr( md5($VAR['password']) ).",
 							EMPLOYEE_EMAIL			=". $db->qstr( $VAR['email']         ).", 
 							EMPLOYEE_FIRST_NAME		=". $db->qstr( $VAR['firstName']     ).",
@@ -35,8 +35,7 @@ if(isset($VAR['submit']) ) {
 							EMPLOYEE_EMAIL			=". $db->qstr( $VAR['email']         ).",
 							EMPLOYEE_FIRST_NAME		=". $db->qstr( $VAR['firstName']     ).",
 							EMPLOYEE_LAST_NAME		=". $db->qstr( $VAR['lastName']      ).",
-							EMPLOYEE_DISPLAY_NAME =". $db->qstr( $VAR['displayName']   ).",
-                                                        EMPLOYEE_LOGIN =". $db->qstr( $VAR['login_id']   ).",
+							EMPLOYEE_DISPLAY_NAME =". $db->qstr( $VAR['displayName']   ).",                                                        
 							EMPLOYEE_SSN				=". $db->qstr( $VAR['']              ).",
 							EMPLOYEE_ADDRESS		=". $db->qstr( $VAR['address']       ).",
 							EMPLOYEE_CITY			=". $db->qstr( $VAR['city']          ).",
