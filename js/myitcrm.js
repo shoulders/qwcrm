@@ -15,7 +15,7 @@
         
 	  if (_qfMsg != '') {
     _qfMsg = 'No File to uplaod has selected.' + _qfMsg;
-    _qfMsg = _qfMsg + '\nPlease select a file to uplaod again.';
+    _qfMsg = _qfMsg + '\n Please select a file to uplaod again.';
     alert(_qfMsg);
     return false;
   }
