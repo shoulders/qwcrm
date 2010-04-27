@@ -8,7 +8,8 @@
                     <li class="active"><a href="#" rel="#tab_1_contents" class="tab"><img src="images/icons/key.png" alt="" border="0" height="14" width="14" />&nbsp;Company Details</a></li>
                     <li><a href="#" rel="#tab_2_contents" class="tab"><img src="images/icons/money.png" alt="" border="0" height="14" width="14" />&nbsp;Currency Setup</a></li>
                     <li><a href="#" rel="#tab_3_contents" class="tab"><img src="images/icons/16x16/email.jpg" alt="" border="0" height="14" width="14" />&nbsp;Email Setup</a></li>
-                    
+                    <li><a href="#" rel="#tab_4_contents" class="tab"><img src="images/icons/16x16/email.jpg" alt="" border="0" height="14" width="14" />&nbsp;Email Messages</a></li>
+
                 </ul>
 
                 <!-- This is used so the contents don't appear to the
@@ -210,6 +211,53 @@
 
 										</table>
 								
+								{/section}
+								<!-- End Content -->
+							</td>
+
+					</table>
+				</tr>
+			</table>
+                    </div>
+                                        <!-- Tab 4 Contents -->
+                    <div id="tab_4_contents" class="tab_contents">
+                        <table width="100%" cellpadding="5" cellspacing="0" border="0" >
+				<tr>
+					<td class="menuhead2" width="80%">&nbsp;Edit Email Messaging functions</td>
+				</tr><tr>
+					<td class="menutd2">
+					<table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0" >
+						<tr>
+							<td width="100%" valign="top" >
+								<!-- Content Here -->
+								{section name=e loop=$setup}
+
+										<table  cellpadding="5" cellspacing="0">
+
+                                                                                        <tr>
+												<td align="left"><b>New Invoice Message:</b></td>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                                <td align="left"><b>Enabled:</b>
+                                                                                                    <select id="new_invoice_enabled">
+                                                                                                        <option value="1" { if $setup[e].EMAIL_MSG_NEW_INVOICE_ACTIVE == '1' } SELECTED {/if}>Yes</option>
+                                                                                                        <option value="0" { if $setup[e].EMAIL_MSG_NEW_INVOICE_ACTIVE == '0' } SELECTED {/if}>No</option>
+                                                                                                    </select>
+                                                                                                </td>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <td><textarea cols="80" rows="15" class="olotd5" name="new_invoice" >{$setup[e].EMAIL_MSG_NEW_INVOICE}</textarea></td>
+
+                                                                                        </tr>
+
+											{section name=w loop=$setup}
+											 <tr>
+                                                                                        <td colspan="2"> <input class="olotd5" type="submit" name="submit"  value="Update"></td>
+                                                                                        </tr>
+											{/section}
+
+										</table>
+
 								{/section}
 								<!-- End Content -->
 							</td>
