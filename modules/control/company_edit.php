@@ -19,30 +19,20 @@ $string3= $VAR['welcome'];
 $string4=stripslashes($string3);
 $string5= $VAR['inv_thank_you'];
 $string6=stripslashes($string5);
+$string= $VAR['company_name'];
+$string2=stripslashes($string);
 
 $q = 'UPDATE '.PRFX.'SETUP SET
 		INVOICE_TAX = '. $db->qstr( $VAR['inv_tax']) .',
                 INVOICE_NUMBER_START = '. $db->qstr( $VAR['inv_number']).',
 		INV_THANK_YOU = '. $db->qstr( $string6 	) .',
 		WELCOME_NOTE = '. $db->qstr( $string4  	);
-			
-
-	if(!$rs = $db->execute($q)) {
+    if(!$rs = $db->execute($q)) {
 		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-		exit;
-	}else {
-		force_page('control', 'company_edit&msg=The Company information was updated');
 		exit;
 	}
 
-unset($q);
-
-/* Removes / from messages parsed to database */
-$string= $VAR['company_name'];
-$string2=stripslashes($string);
-
-	/* update company information */
-	$q = 'UPDATE '.PRFX.'TABLE_COMPANY SET
+                $q = 'UPDATE '.PRFX.'TABLE_COMPANY SET
 		  	COMPANY_NAME			= '. $db->qstr( $string2 ).',
 		  	COMPANY_ABN			= '. $db->qstr( $VAR['company_abn']) .',
 		  	COMPANY_ADDRESS 	= '. $db->qstr( $VAR['address']) .',
@@ -51,7 +41,7 @@ $string2=stripslashes($string);
 			COMPANY_ZIP 			= '. $db->qstr( $VAR['zip']) .',
 			COMPANY_COUNTRY		= '. $db->qstr( $VAR['country']).',
 			COMPANY_PHONE		= '. $db->qstr( $VAR['phone']) .',
-			COMPANY_MOBILE		= '. $db->qstr( $VAR['mobile_phone']) .', 
+			COMPANY_MOBILE		= '. $db->qstr( $VAR['mobile_phone']) .',
 			COMPANY_FAX	= '. $db->qstr( $VAR['fax']) .',
                         COMPANY_CURRENCY_SYMBOL	= '. $db->qstr( $VAR['currency_sym']) .',
                         COMPANY_CURRENCY_CODE	= '. $db->qstr( $VAR['currency_code']) .',
@@ -62,16 +52,16 @@ $string2=stripslashes($string);
                         COMPANY_SMTP_USERNAME	= '. $db->qstr( $VAR['email_login']) .',
                         COMPANY_SMTP_PASSWORD	= '. $db->qstr( $VAR['email_password']) .',
                         COMPANY_EMAIL_PORT	= '. $db->qstr( $VAR['email_port']);
-		
-
-	
+;
 	if(!$rs = $db->execute($q)) {
 		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
 		exit;
-	} else {
+	}else {
 		force_page('control', 'company_edit&msg=The Company information was updated');
 		exit;
 	}
+
+
 
 } else {
 
