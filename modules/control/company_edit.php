@@ -1,41 +1,37 @@
 <?php
+$inv_increment = $VAR['inv_number'];
+
 if(isset($VAR['submit'])) {
+        //Start Invoice Numbers from a specific point - eg 2000 will start invoice numbering from 2000 and up
+        if($VAR['inv_number'] != '' || $VAR['inv_number'] > '0' ) {
+                $q = "ALTER TABLE ".PRFX."TABLE_INVOICE auto_increment =".$inv_increment ;
 
+                if(!$rs = $db->execute($q)) {
+		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+		exit;
 
-	/* get pdf printing option */
-	if($VAR['pdf_print'] == 1) {
-		$html_print = 0;
-		$pdf_print  = 1;
-	} else {
-		$html_print = 1;
-		$pdf_print  = 0;
-	}
+                }
+                
+        }
 
-$q = 'UPDATE '.PRFX.'SETUP SET ';
-
-if($VAR['parts_password'] !='') {
-	$q .= 'PARTS_PASSWORD		= '. $db->qstr( md5($VAR['parts_password'])).', ';	
-}
 /* Removes / from messages parsed to database */
 $string3= $VAR['welcome'];
 $string4=stripslashes($string3);
 $string5= $VAR['inv_thank_you'];
 $string6=stripslashes($string5);
 
-if($VAR['ups_password'] != '') {
-	$q .= 'UPS_PASSWORD		= '. $db->qstr( $VAR['ups_password']		) .', ';
-}
-		$q .= '
-			HTML_PRINT 			= '. $db->qstr( $html_print          	) .',
-			PDF_PRINT				= '. $db->qstr( $pdf_print           	) .',
-			INVOICE_TAX 			= '. $db->qstr( $VAR['inv_tax']      	) .',
-			INV_THANK_YOU 		= '. $db->qstr( $string6  	) .',
-			WELCOME_NOTE			= '. $db->qstr( $string4      	)
-                        ;
+$q = 'UPDATE '.PRFX.'SETUP SET
+		INVOICE_TAX = '. $db->qstr( $VAR['inv_tax']) .',
+                INVOICE_NUMBER_START = '. $db->qstr( $VAR['inv_number']).',
+		INV_THANK_YOU = '. $db->qstr( $string6 	) .',
+		WELCOME_NOTE = '. $db->qstr( $string4  	);
 			
 
 	if(!$rs = $db->execute($q)) {
 		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+		exit;
+	}else {
+		force_page('control', 'company_edit&msg=The Company information was updated');
 		exit;
 	}
 

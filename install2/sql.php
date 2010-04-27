@@ -1138,6 +1138,7 @@ function create_setup($db) {
   `DD_BSB` varchar(15) default NULL,
   `DD_ACC` varchar(50) default NULL,
   `DD_INS` varchar(200) default NULL,
+  `INVOICE_NUMBER_START` varchar(10) default NULL,
   `EMAIL_MSG_NEW_INVOICE` BLOB default NULL,
   `EMAIL_MSG_NEW_INVOICE_ACTIVE` INT(2) default '0',
   `EMAIL_MSG_INVOICE_REMINDER` BLOB default NULL,

@@ -81,6 +81,11 @@
 												<td align="right"><b>Tax Amount:</b></td>
 												<td><input type="text" size="6" name="inv_tax" value="{$setup[w].INVOICE_TAX}" class="olotd5">%</td>
 											</tr><tr>
+												<td align="right"><b>Invoice Starting Number:</b></td>
+                                                                                                <td><input class="olotd5" type="text" name="inv_number" value="{$setup[w].INVOICE_NUMBER_START}"></td>
+                                                                                        </tr><tr>
+                                                                                            <td colspan="3" align="center"><b>eg: 2000 - this will start invoice increments from 2000 onwards</b><br></td>
+											</tr><tr>
 												<td colspan="2"><b>Invoice Thank You Note:</b> 255 max characters. Displays at the bottom of each invoice.</td>
 											</tr><tr>
 												<td colspan="2"><textarea class="olotd5" cols="80" rows="5" name="inv_thank_you">{$setup[w].INV_THANK_YOU}</textarea></td>
@@ -128,7 +133,7 @@
                                                                                          </tr>
                                                                                         <tr>
 												<td align="right"><b>Date Formatting:</b></td>
-                                                                                                <td><select name="date_format">
+                                                                                                <td><select name="date_format" class="olotd5">
                                                                                                         <option value="%d/%m/%Y" { if $company[q].COMPANY_DATE_FORMAT == '%d/%m/%Y' } SELECTED {/if}>dd/mm/yyyy</option>
                                                                                                         <option value="%m/%d/%Y" { if $company[q].COMPANY_DATE_FORMAT == '%m/%d/%Y' } SELECTED {/if}>mm/dd/yyyy</option>
                                                                                                         <option value="%d/%m/%y" { if $company[q].COMPANY_DATE_FORMAT == '%d/%m/%y' } SELECTED {/if}>dd/mm/yy</option>

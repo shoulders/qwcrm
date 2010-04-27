@@ -198,6 +198,7 @@ function create_setup($db) {
       DROP COLUMN `UPS_PASSWORD`,
       DROP COLUMN `UPS_ACCESS_KEY`,
       DROP COLUMN `UPS_ACCESS_KEY`,
+      DROP COLUMN `INVOICE_NUMBER_START`,
   ;";
 
     	$rs = $db->Execute($q);
@@ -210,6 +211,7 @@ $q = "ALTER TABLE `".PRFX."SETUP`,
   ADD `DD_BSB` varchar(15) default NULL,
   ADD `DD_ACC` varchar(50) default NULL,
   ADD `DD_INS` varchar(200) default NULL,
+  ADD `INVOICE_NUMBER_START` varchar(10) default NULL,
   ADD `PAYMATE_LOGIN` varchar(50) default NULL,
   ADD `PAYMATE_PASSWORD` varchar(50) default NULL,
   ADD `PAYMATE_FEES` decimal(2,1) NOT NULL default '1.5',

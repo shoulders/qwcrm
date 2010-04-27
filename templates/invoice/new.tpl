@@ -194,7 +194,7 @@
         <td>
             <table width="700" cellpadding="4" cellspacing="0" border="0" >
                 <tr>
-                    <td class="menuhead2" width="80%">&nbsp;{$translate_invoice_for}{$wo_id} {$date_format}</td>
+                    <td class="menuhead2" width="80%">&nbsp;{$translate_invoice_for}{$wo_id}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
                         <a <img src="images/icons/16x16/help.gif" alt="" border="0"></a>
                     </td>
