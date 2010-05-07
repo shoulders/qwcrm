@@ -257,6 +257,31 @@
 											{/section}
 
 										</table>
+                                                                                <table  cellpadding="5" cellspacing="0">
+
+                                                                                        <tr>
+												<td align="left"><b>New Work Order Created Message:</b></td>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                                <td align="left"><b>Enabled:</b>
+                                                                                                    <select id="new_wo_enabled">
+                                                                                                        <option value="1" { if $setup[e].EMAIL_MSG_WO_CREATED_ACTIVE == '1' } SELECTED {/if}>Yes</option>
+                                                                                                        <option value="0" { if $setup[e].EMAIL_MSG_WO_CREATED_ACTIVE == '0' } SELECTED {/if}>No</option>
+                                                                                                    </select>
+                                                                                                </td>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <td><textarea cols="80" rows="15" class="olotd5" name="new_wo" >{$setup[e].EMAIL_MSG_WO_CREATED}</textarea></td>
+
+                                                                                        </tr>
+
+											{section name=w loop=$setup}
+											 <tr>
+                                                                                        <td colspan="2"> <input class="olotd5" type="submit" name="submit"  value="Update"></td>
+                                                                                        </tr>
+											{/section}
+
+										</table>
 
 								{/section}
 								<!-- End Content -->

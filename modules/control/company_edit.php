@@ -26,23 +26,25 @@ $q = 'UPDATE '.PRFX.'SETUP SET
 		INVOICE_TAX = '. $db->qstr( $VAR['inv_tax']) .',
                 INVOICE_NUMBER_START = '. $db->qstr( $VAR['inv_number']).',
 		INV_THANK_YOU = '. $db->qstr( $string6 	) .',
-		WELCOME_NOTE = '. $db->qstr( $string4  	);
+		WELCOME_NOTE = '. $db->qstr( $string4  	).',
+                EMAIL_MSG_WO_CREATED_ACTIVE    = '.$db->qstr( $VAR['new_wo_enabled']).',
+                EMAIL_MSG_WO_CREATED    = '.$db->qstr( $VAR['new_wo']);
     if(!$rs = $db->execute($q)) {
 		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
 		exit;
 	}
 
                 $q = 'UPDATE '.PRFX.'TABLE_COMPANY SET
-		  	COMPANY_NAME			= '. $db->qstr( $string2 ).',
-		  	COMPANY_ABN			= '. $db->qstr( $VAR['company_abn']) .',
+		  	COMPANY_NAME		= '. $db->qstr( $string2 ).',
+		  	COMPANY_ABN		= '. $db->qstr( $VAR['company_abn']) .',
 		  	COMPANY_ADDRESS 	= '. $db->qstr( $VAR['address']) .',
 			COMPANY_CITY 		= '. $db->qstr( $VAR['city']) .',
 			COMPANY_STATE		= '. $db->qstr( $VAR['state']) .',
-			COMPANY_ZIP 			= '. $db->qstr( $VAR['zip']) .',
+			COMPANY_ZIP		= '. $db->qstr( $VAR['zip']) .',
 			COMPANY_COUNTRY		= '. $db->qstr( $VAR['country']).',
 			COMPANY_PHONE		= '. $db->qstr( $VAR['phone']) .',
 			COMPANY_MOBILE		= '. $db->qstr( $VAR['mobile_phone']) .',
-			COMPANY_FAX	= '. $db->qstr( $VAR['fax']) .',
+			COMPANY_FAX             = '. $db->qstr( $VAR['fax']) .',
                         COMPANY_CURRENCY_SYMBOL	= '. $db->qstr( $VAR['currency_sym']) .',
                         COMPANY_CURRENCY_CODE	= '. $db->qstr( $VAR['currency_code']) .',
                         COMPANY_DATE_FORMAT	= '. $db->qstr( $VAR['date_format']) .',
@@ -51,8 +53,7 @@ $q = 'UPDATE '.PRFX.'SETUP SET
                         COMPANY_EMAIL_CONNECTION_TYPE	= '. $db->qstr( $VAR['conn_type']) .',
                         COMPANY_SMTP_USERNAME	= '. $db->qstr( $VAR['email_login']) .',
                         COMPANY_SMTP_PASSWORD	= '. $db->qstr( $VAR['email_password']) .',
-                        COMPANY_EMAIL_PORT	= '. $db->qstr( $VAR['email_port']);
-;
+                        COMPANY_EMAIL_PORT	= '. $db->qstr( $VAR['email_port']) ;
 	if(!$rs = $db->execute($q)) {
 		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
 		exit;

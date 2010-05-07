@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 	<translate>
+                // Globally used words
+                <priority>Priority</priority>
+                <low>Low</low>
+                <normal>Normal</normal>
+                <high>High</high>
+                <critical>Critical</critical>
+                <footer1>The Best Open Source IT CRM program available!</footer1>
+                <footer_license>This software is distributed under the GNU General Public License V3</footer_license>
+
+
                 //Assets Templates
 		<main_title>Customer's Assets</main_title>
 		<display>Display Name</display>
@@ -150,6 +160,25 @@
                 <main_you_have>You have</main_you_have>
                 <invoice_rates_add_file>Upload a csv file into rates table</invoice_rates_add_file>
                 <invoice_rates_example>CSV File example</invoice_rates_example>
+                <submit_page_title>Submit a Support Request</submit_page_title>
+                <submit_form_description>Please tell us about your issue by filling out the form below and one of our Technicians will be in contact with you shortly.</submit_form_description>
+                <submit_new_account>First time using our service? Click Here</submit_new_account>
+                <submit_full_name>Full Name</submit_full_name>
+                <submit_form_heading>Now, please tell us some information about you problem.</submit_form_heading>
+                <submit_form_description2>Brief Description</submit_form_description2>
+                <submit_subject_example>eg: Computer Won't Boot</submit_subject_example>
+                <submit_name_example>eg: Smith, John</submit_name_example>
+                <submit_issue_details>Issue Details</submit_issue_details>
+                <submit_time_to_call>Best time to call</submit_time_to_call>
+                <submit_time_option1>Morning</submit_time_option1>
+                <submit_time_option2>Afternoon</submit_time_option2>
+                <submit_time_option3>Evening</submit_time_option3>
+                <submit_time_option4>Anytimne</submit_time_option4>
+                <spam_part1>There are </spam_part1>
+                <spam_part2> months in a Year. Human Test (Prevents Spamming)</spam_part2>
+                <reset_password>Forgotton your password?</reset_password>
+
+
 
                 //Customer Templates
                 <main_title>Customer Search</main_title>
@@ -349,7 +378,7 @@
 		<invoice_gift>Gift Certificate</invoice_gift>
 		<invoice_paypal>Pay Pal</invoice_paypal>
 		<invoice_memo>Memo</invoice_memo>
-		<invoice_phone>Phone:</invoice_phone>
+		<invoice_phone>Phone</invoice_phone>
 		<invoice_work>Work:</invoice_work>
 		<invoice_mobile>Mobile</invoice_mobile>
 		<invoice_add>Add</invoice_add>
@@ -361,7 +390,7 @@
                 //Parts templates
                 <parts_order>Order Parts</parts_order>
                 <part_order_num>Parts Order ID</part_order_num>
-                <parts_msg_1>In order to use this features you must complete a free registration with In-Cite CRM and we must have a valid credit card on file in order to bill for the parts purchased from us. All parts are shipped via UPS and are shipped from one of our 11 Wharehouses across the country to your business location. You do not have to worry about keeping up a web site with inventory. All the parts you see listed here are feed by our application server. And with over 9000 parts in stock we should have what your are looking for.</parts_msg_1>
+                <parts_msg_1>In order to use this features you must complete a free registration with ***** and we must have a valid credit card on file in order to bill for the parts purchased from us. All parts are shipped via UPS and are shipped from one of our 11 Wharehouses across the country to your business location. You do not have to worry about keeping up a web site with inventory. All the parts you see listed here are feed by our application server. And with over 9000 parts in stock we should have what your are looking for.</parts_msg_1>
                 <parts_msg_2>Each part purchased will seamlessly integrate into your Work Orders and invoicing go ahead and give it try. And you can view detailed reports of all purchases made. You can also adjust the price by adding markup to all products from the controll center. For more information please visit www.incitecrm.com.</parts_msg_2>
                 <parts_msg_3>This service is only available to 48 continental States. We currently will not ship out side the US but this will change in the future.</parts_msg_3>
                 <parts_msg_4>The small profit we make off parts purchased is what funds the Open Source Cite CRM and helps us to provide this free software. This feature is not required to use Cite CRM. You can always add your own parts at Invoice creation Time or add your own parts database.</parts_msg_4>

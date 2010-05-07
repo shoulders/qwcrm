@@ -24,7 +24,7 @@
 			{/if}
 			
 		</td>
-                <td class="olotd4" valign="middle" align="center"><a href="?page=workorder:edit_description&wo_id=2&page_title=Edit%20Description" onMouseOver="ddrivetip('Click to Edit')" onMouseOut="hideddrivetip()">&rArr;&nbsp;{$single_workorder_array[i].WORK_ORDER_SCOPE}</a></td>
+                <td class="olotd4" valign="middle" align="center"><a href="?page=workorder:edit_description&wo_id={$wo_id}&page_title=Edit%20Description" onMouseOver="ddrivetip('Click to Edit')" onMouseOut="hideddrivetip()">&rArr;&nbsp;{$single_workorder_array[i].WORK_ORDER_SCOPE}</a></td>
 		<td class="olotd4" align="center">
 		{if $single_workorder_array[i].WORK_ORDER_CURRENT_STATUS == "1"}
 			{$translate_workorder_created}

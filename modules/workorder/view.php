@@ -66,7 +66,7 @@ if (isset($VAR['submit'])) {
 	echo("
 		<script type=\"text/javascript\">
 			<!--
-			window.location = \"index.php\"
+			window.location = \"index.php?page=workorder:main&page_title=Work Orders\"
 			//-->
 		</script>");
   } ELSE {
