@@ -14,15 +14,16 @@
 		</div>
       <div>
         <span>{$translate_menu_customers}</span>
-        <a href="?page=customer:view&amp;page_title={$translate_menu_customers}"><img src="images/icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_view}</a>
-		{if $cust_id > 0 }
+
+                <a href="?page=customer:new&amp;page_title={$translate_menu_add_new_customer}"><img src="images/icons/16x16/view+.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_add_new}</a>
+		<a href="?page=customer:view&amp;page_title={$translate_menu_customers}"><img src="images/icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_view}</a>
+                {if $cust_id > 0 }
 		<a href="?page=customer:edit&amp;customer_id={$cust_id}&amp;page_title={$translate_menu_edit_customer}"><img src="images/icons/edit_employees.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_edit_customer}</a>
                 <a href="?page=billing:new_gift&amp;customer_id={$cust_id}&amp;page_title={$translate_menu_new_gift}&amp;customer_name={$customer_details[i].CUSTOMER_DISPLAY_NAME}"><img src="images/icons/gift.png" alt="" border="0" height="14" width="14" /> {$translate_menu_new_gift}</a>
 		<a href="?page=customer:delete&amp;customer_id={$cust_id}&amp;page_title={$translate_menu_delete_customer}"><img src="images/icons/delete_employees.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_delete_customer}</a>
 		<a href="?page=customer:email&amp;customer_id={$cust_id}&amp;page_title=Email Customer"><img src="images/icons/16x16/email.jpg" alt="" border="0" height="14" width="14" /> {$translate_menu_email_customer}</a>
-
                 {/if}
-		<a href="?page=customer:new&amp;page_title={$translate_menu_add_new_customer}"><img src="images/icons/16x16/view+.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_add_new}</a>
+		
       </div>
       <div class="collapsed">
         <span>{$translate_menu_work_orders}</span>
@@ -59,7 +60,7 @@
         <!-- Menu limited to Managers or Supervisors -->
         {if $cred.EMPLOYEE_TYPE == 1 ||  $cred.EMPLOYEE_TYPE == 2 }
             <a href="?page=employees:new&amp;page_title=New"><img src="images/icons/16x16/view+.gif" alt="" border="0" height="14" width="14" /> New Employee</a>
-            <a href="?page=stats:main&amp;page_title=Stats"><img src="images/icons/reports.png" alt="" border="0" height="14" width="14" /> Reports</a>
+            <a href="?page=stats:main&amp;page_title=Stats"><img src="images/icons/reports.png" alt="" border="0" height="14" width="14" /> Reports</a>		
         {/if}
         <!-- Menu limited to Managers and Admins -->
         {if $cred.EMPLOYEE_TYPE == 1 || $cred.EMPLOYEE_TYPE == 4 }
@@ -70,10 +71,51 @@
             <a href="?page=control:edit_rate"><img src="images/icons/money.png" alt="" border="0" height="14" width="14" /> Invoice Rates</a>
             <a href="?page=control:acl"><img src="images/icons/encrypted.png" alt="" border="0" height="14" width="14" /> Edit Permissions</a>
             <a href="?page=stats:main&amp;page_title=Stats"><img src="images/icons/reports.png" alt="" border="0" height="14" width="14" /> Reports</a>
+	{/if}
+          </div>
+        <!-- General Ledger -->
+        <!-- Menu limited to Managers and Admins -->
+        {if $cred.EMPLOYEE_TYPE == 1 || $cred.EMPLOYEE_TYPE == 4 }
+            <div>
+                <span>{$translate_general_ledger_nav_title}</span>
+
+                <!-- Expenses -->
+                <a href="?page=expense:new&amp;page_title={$translate_expense_new_title}"><img src="images/icons/new.gif" alt="" border="0" height="14" width="14" />{$translate_expense_nav_new}</a>
+                <a href="?page=expense:search&amp;page_title={$translate_expense_search_title}"><img src="images/icons/view.gif" alt="" border="0" height="14" width="14" />{$translate_expense_nav_view}</a>
+                {if $expenseID > 0 }
+                <a href="?page=expense:expense_details&amp;expenseID={$expenseID}&amp;page_title={$translate_expense_details_title}"><img src="images/icons/view.gif" alt="" border="0" height="14" width="14" /> {$translate_expense_nav_details}</a>
+                <a href="?page=expense:edit&amp;expenseID={$expenseID}&amp;page_title={$translate_expense_edit_title}"><img src="images/icons/edit.gif" alt="" border="0" height="14" width="14" /> {$translate_expense_nav_edit}</a>
+                <a href="?page=expense:search&amp;page_title={$translate_expense_search_title}" onclick="confirmDelete({$expenseID});"><img src="images/icons/delete.gif" alt="" border="0" height="14" width="14" /> {$translate_expense_nav_delete}</a>
+                {/if}
+                
+                <!-- Refunds -->
+                <a href="?page=refund:new&amp;page_title={$translate_refund_new_title}"><img src="images/icons/new.gif" alt="" border="0" height="14" width="14" />{$translate_refund_nav_new}</a>
+                <a href="?page=refund:search&amp;page_title={$translate_refund_search_title}"><img src="images/icons/view.gif" alt="" border="0" height="14" width="14" />{$translate_refund_nav_view}</a>
+                {if $refundID > 0 }
+                <a href="?page=refund:refund_details&amp;refundID={$refundID}&amp;page_title={$translate_refund_details_title}"><img src="images/icons/view.gif" alt="" border="0" height="14" width="14" /> {$translate_refund_nav_details}</a>
+                <a href="?page=refund:edit&amp;refundID={$refundID}&amp;page_title={$translate_refund_edit_title}"><img src="images/icons/edit.gif" alt="" border="0" height="14" width="14" /> {$translate_refund_nav_edit}</a>
+                <a href="?page=refund:search&amp;page_title={$translate_refund_search_title}" onclick="confirmDelete({$refundID});"><img src="images/icons/delete.gif" alt="" border="0" height="14" width="14" /> {$translate_refund_nav_delete}</a>
+                {/if}
+                
+            </div>
         {/if}
-				
-		</div>
-		{if $cred.EMPLOYEE_TYPE == 4 }
+         <!-- Supplier Section -->
+        <!-- Menu limited to Managers and Admins -->
+        {if $cred.EMPLOYEE_TYPE == 1 || $cred.EMPLOYEE_TYPE == 4 }
+            <div>
+                <span>{$translate_supplier_nav_title}</span>
+ 
+                <a href="?page=supplier:new&amp;page_title={$translate_supplier_new_title}"><img src="images/icons/new.gif" alt="" border="0" height="14" width="14" />{$translate_supplier_nav_new}</a>
+                <a href="?page=supplier:search&amp;page_title={$translate_supplier_search_title}"><img src="images/icons/view.gif" alt="" border="0" height="14" width="14" />{$translate_supplier_nav_view}</a>
+                {if $supplierID > 0 }
+                <a href="?page=supplier:supplier_details&amp;supplierID={$supplierID}&amp;page_title={$translate_supplier_details_title}"><img src="images/icons/view.gif" alt="" border="0" height="14" width="14" /> {$translate_supplier_nav_details}</a>
+                <a href="?page=supplier:edit&amp;supplierID={$supplierID}&amp;page_title={$translate_supplier_edit_title}"><img src="images/icons/edit.gif" alt="" border="0" height="14" width="14" /> {$translate_supplier_nav_edit}</a>
+                <a href="?page=supplier:search&amp;page_title={$translate_supplier_search_title}" onclick="confirmDelete({$supplierID});"><img src="images/icons/delete.gif" alt="" border="0" height="14" width="14" /> {$translate_supplier_nav_delete}</a>
+                {/if}
+            </div>
+        {/if}
+
+            {if $cred.EMPLOYEE_TYPE == 4 }
 		<div>
                     <span>{$translate_menu_setup}</span>
                         <a href="?page=control:company_edit"><img src="images/icons/key.png" alt="" border="0" height="14" width="14" /> Business Setup</a>

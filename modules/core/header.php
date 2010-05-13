@@ -8,6 +8,9 @@ $id = $login_id;
 $login = $_SESSION['login'];
 $wo_id = $VAR['wo_id'];
 $cus_id = $VAR['customer_id'];
+$expenseID = $VAR['expenseID'];
+$refundID = $VAR['refundID'];
+$supplierID = $VAR['supplierID'];
 $employee_id = $VAR['employee_id'];
 $today = (Date("l, j F Y")); 
 $smarty->assign('today',$today);
@@ -21,6 +24,9 @@ if(!$login)
 	$smarty->assign('login_id', $_SESSION['login_id']);
 	$smarty->assign('wo_id', $wo_id);
 	$smarty->assign('cust_id',$cus_id);
+        $smarty->assign('expenseID', $expenseID);
+        $smarty->assign('refundID', $refundID);
+        $smarty->assign('supplierID', $supplierID);
 	$smarty->assign('ip',$ip);
 	$smarty->assign('employee_id',$employee_id);
 }
