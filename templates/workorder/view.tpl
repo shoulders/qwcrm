@@ -66,9 +66,9 @@
                                                             {include file="workorder/work_order_description.tpl"}
                                                             <!-- Display Comment -->
                                                             {include file="workorder/work_order_comments.tpl"}
-                                                            {if $single_workorder_array[i].WORK_ORDER_CLOSE_BY != "" }
-                                                            {include file="workorder/resolution.tpl"}
-                                                            {/if}
+                                                            <br>
+                                                            <!-- Display Resolution -->
+                                                            {include file="workorder/resolution.tpl"}                                                            
                                                             <br>
                                                         </td>
                                                     </tr>

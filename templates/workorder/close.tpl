@@ -47,13 +47,14 @@
 									<!-- Content Here -->
 									<form  action="index.php?page=workorder:close" method="POST" name="close_work_order" id="close_work_order">
 									<b>{$translate_workorder_resolution}</b><br>
-									<textarea class="olotd4" rows="15" cols="70" mce_editable="true" name="resolution"></textarea>
+									<textarea class="olotd4" rows="15" cols="70" mce_editable="true" name="resolution">{$close}</textarea>
 									<br>
 									<input type="hidden" name="page" value="workorder:close">
 									<input type="hidden" name="create_by" value="{$display_login}">
 									<input type="hidden" name="wo_id" value="{$wo_id}">
-									<input type="submit" name="submit1" value="{$translate_workorder_submit}">
-									<input type="submit" name="submit2" value="{$translate_workorder_close}">
+									<input type="submit" name="submitchangesonly" value="{$translate_workorder_submit_changes_only}">
+									<input type="submit" name="closewithoutinvoice" value="{$translate_workorder_close_without_invoice}">
+                                                                        <input type="submit" name="closewithinvoice" value="{$translate_workorder_close_with_invoice}">
 									</form>
 									<br>
 								</td>

@@ -814,5 +814,8 @@
 		<workorder_submit>Submit</workorder_submit>
 		<workorder_close>Close without Invoicing</workorder_close>
 		<workorder_details>Work Order Details</workorder_details>
+                <workorder_submit_changes_only>Submit Changes Only</workorder_submit_changes_only>
+                <workorder_close_without_invoice>Close Without Invoice</workorder_close_without_invoice>
+                <workorder_close_with_invoice>Close with Invoice</workorder_close_with_invoice>
 		
 	</translate>
