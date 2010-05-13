@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 	<translate>
+<<<<<<< .mine
+
+		// Assets Templates
+=======
                 // Globally used words
                 <priority>Priority</priority>
                 <low>Low</low>
@@ -11,13 +15,14 @@
 
 
                 //Assets Templates
+>>>>>>> .r202
 		<main_title>Customer's Assets</main_title>
 		<display>Display Name</display>
 		<first>First</first>
 		<last>Last</last>
 
-                //Billing Templates
-                <billing_invoice_id>Invoice ID</billing_invoice_id>
+		// Billing Templates
+		<billing_invoice_id>Invoice ID</billing_invoice_id>
 		<billing_pp_invoice_id>PayPal Transaction/receipt #</billing_pp_invoice_id>
 		<billing_title>Billing For  Work Order ID #</billing_title>
 		<billing_date>Date</billing_date>
@@ -32,12 +37,12 @@
 		<billing_type>Type</billing_type>
 		<billing_credit_card>Credit Card</billing_credit_card>
 		<billing_check>Cheque</billing_check>
-                <billing_deposit>Direct Deposit</billing_deposit>
-                <billing_deposit_id>Direct Deposit ID#</billing_deposit_id>
-                <billing_deposit_payment>Submit Direct Deposit Payment</billing_deposit_payment>
-                <billing_paymate>Paymate</billing_paymate>
-                <billing_paymate_trans>Paymate Transaction ID#</billing_paymate_trans>
-                <billing_paymate_submit>Submit Paymate Payment</billing_paymate_submit>
+		<billing_deposit>Direct Deposit</billing_deposit>
+		<billing_deposit_id>Direct Deposit ID#</billing_deposit_id>
+		<billing_deposit_payment>Submit Direct Deposit Payment</billing_deposit_payment>
+		<billing_paymate>Paymate</billing_paymate>
+		<billing_paymate_trans>Paymate Transaction ID#</billing_paymate_trans>
+		<billing_paymate_submit>Submit Paymate Payment</billing_paymate_submit>
 		<billing_cash>Cash</billing_cash>
 		<billing_gift>Gift Certificate</billing_gift>
 		<billing_paypal>Pay Pal</billing_paypal>
@@ -68,12 +73,8 @@
 		<billing_error_invalid>Invalid information entered.</billing_error_invalid>
 		<billing_error_fix>Please correct these fields.</billing_error_fix>
 
-                //Setup Module
-                <setup_cheque>Cheque</setup_cheque>
-                <setup_cheque_payable_to>Cheque</setup_cheque_payable_to>
-
-                //Core Templates
-                <core_log_off>Log Off</core_log_off>
+		// Core Templates
+		<core_log_off>Log Off</core_log_off>
 		<core_loged_in>Currently Logged in as </core_loged_in>
 		<core_schedule>Schedule</core_schedule>
 		<core_menu>Main Menu</core_menu>
@@ -96,23 +97,23 @@
 		<error_404_request_2>was not found on our system.</error_404_request_2>
 		<error_404_request_3>An email has been sent to the system</error_404_request_3>
 		<menu_new>New</menu_new>
-                <menu_add_new>Add New</menu_add_new>
-                <menu_view>View</menu_view>
+		<menu_add_new>Add New</menu_add_new>
+		<menu_view>View</menu_view>
 		<menu_search>Search</menu_search>
 		<menu_delete>Delete</menu_delete>
 		<menu_close>Close</menu_close>
-                <menu_closed>Closed</menu_closed>
+		<menu_closed>Closed</menu_closed>
 		<menu_print>Print</menu_print>		
 		<menu_home>Home</menu_home>
-                <menu_unassigned>Unassigned</menu_unassigned>
+		<menu_unassigned>Unassigned</menu_unassigned>
 		<menu_log_out>Log Out</menu_log_out>
-                <menu_open>Open</menu_open>
-                <menu_accounts>Accounts</menu_accounts>
-                <menu_administration>Administration</menu_administration>
-                <menu_setup>Business Setup</menu_setup>
-                <menu_project>MyIT CRM Info</menu_project>
+		<menu_open>Open</menu_open>
+		<menu_accounts>Accounts</menu_accounts>
+		<menu_administration>Administration</menu_administration>
+		<menu_setup>Business Setup</menu_setup>
+		<menu_project>MyIT CRM Info</menu_project>
 		<menu_customers>Customers</menu_customers>
-                <menu_email_customer>Email Customer</menu_email_customer>
+		<menu_email_customer>Email Customer</menu_email_customer>
 		<menu_customer_search>Customer Search</menu_customer_search>
 		<menu_add_new_customer>Add New Customer</menu_add_new_customer>
 		<menu_edit_customer>Edit Customer</menu_edit_customer>
@@ -136,7 +137,7 @@
 		<menu_un_paid_2>Un-Paid Invoices</menu_un_paid_2>
 		<menu_open_orders>Open Orders</menu_open_orders>
 		<menu_closed_orders>Closed Orders</menu_closed_orders>
-                <menu_calendar>Calendar</menu_calendar>
+		<menu_calendar>Calendar</menu_calendar>
 		<main_heading>Welcome to your Online Office</main_heading>
 		<main_company_notes>Company Notes</main_company_notes>
 		<main_workorder_stats>Work Order Stats</main_workorder_stats>
@@ -157,9 +158,9 @@
 		<main_customer_stats>Customer Stats</main_customer_stats>
 		<main_new_customers>New This Month</main_new_customers>
 		<main_new_year_customers>New This Year</main_new_year_customers>
-                <main_you_have>You have</main_you_have>
-                <invoice_rates_add_file>Upload a csv file into rates table</invoice_rates_add_file>
-                <invoice_rates_example>CSV File example</invoice_rates_example>
+		<main_you_have>You have</main_you_have>
+		<invoice_rates_add_file>Upload a csv file into rates table</invoice_rates_add_file>
+		<invoice_rates_example>CSV File example</invoice_rates_example>
                 <submit_page_title>Submit a Support Request</submit_page_title>
                 <submit_form_description>Please tell us about your issue by filling out the form below and one of our Technicians will be in contact with you shortly.</submit_form_description>
                 <submit_new_account>First time using our service? Click Here</submit_new_account>
@@ -178,10 +179,15 @@
                 <spam_part2> months in a Year. Human Test (Prevents Spamming)</spam_part2>
                 <reset_password>Forgotton your password?</reset_password>
 
+<<<<<<< .mine
+		// Customer Templates
+		<main_title>Customer Search</main_title>
+=======
 
 
                 //Customer Templates
                 <main_title>Customer Search</main_title>
+>>>>>>> .r202
 		<display>Sort/Business Name</display>
 		<first>First</first>
 		<last>Last</last>
@@ -216,7 +222,7 @@
 		<customer_created>Created</customer_created>
 		<customer_last>Last Activity</customer_last>
 		<customer_open_work_orders>Open Work Orders</customer_open_work_orders>
-                <customer_closed_work_orders>Closed Work Orders</customer_closed_work_orders>
+		<customer_closed_work_orders>Closed Work Orders</customer_closed_work_orders>
 		<customer_wo_id>WO ID</customer_wo_id>
 		<customer_date_open>Date Opened</customer_date_open>
 		<customer>Customer</customer>
@@ -242,7 +248,7 @@
 		<customer_employee>Employee</customer_employee>
 		<customer_paid_invoice>Paid Invoices</customer_paid_invoice>
 		<customer_print>Print HTML</customer_print>
-                <customer_print_pdf>Print PDF</customer_print_pdf>
+		<customer_print_pdf>Print PDF</customer_print_pdf>
 		<customer_view>View</customer_view>
 		<customer_delete>Delete</customer_delete>
 		<customer_edit>Edit Customer</customer_edit>
@@ -251,26 +257,26 @@
 		<customer_type_2>Commercial</customer_type_2>
 		<customer_type_3>Charity</customer_type_3>
 		<customer_type_4>Educational</customer_type_4>
-                <customer_type_5>Governmental</customer_type_5>
-                <customer_type_6>-</customer_type_6>
-                <customer_type_7>-</customer_type_7>
-                <customer_type_8>-</customer_type_8>
-                <customer_type_9>-</customer_type_9>
-                <customer_type_10>-</customer_type_10>
-                <customer_asset_tab>Assets/Licenses</customer_asset_tab>
-                <customer_asset>Customer Assets</customer_asset>
-                <customer_asset_id>ID</customer_asset_id>
-                <customer_asset_type>Type</customer_asset_type>
-                <customer_asset_name>Name</customer_asset_name>
-                <customer_asset_number>Number/Serial</customer_asset_number>
-                <customer_asset_start>Started</customer_asset_start>
-                <customer_asset_end>Expiry Date</customer_asset_end>
-                <customer_asset_support_length>Support Length</customer_asset_support_length>
-                <customer_asset_active>Active</customer_asset_active>
-                <customer_asset_notes>Notes</customer_asset_notes>
+		<customer_type_5>Governmental</customer_type_5>
+		<customer_type_6>-</customer_type_6>
+		<customer_type_7>-</customer_type_7>
+		<customer_type_8>-</customer_type_8>
+		<customer_type_9>-</customer_type_9>
+		<customer_type_10>-</customer_type_10>
+		<customer_asset_tab>Assets/Licenses</customer_asset_tab>
+		<customer_asset>Customer Assets</customer_asset>
+		<customer_asset_id>ID</customer_asset_id>
+		<customer_asset_type>Type</customer_asset_type>
+		<customer_asset_name>Name</customer_asset_name>
+		<customer_asset_number>Number/Serial</customer_asset_number>
+		<customer_asset_start>Started</customer_asset_start>
+		<customer_asset_end>Expiry Date</customer_asset_end>
+		<customer_asset_support_length>Support Length</customer_asset_support_length>
+		<customer_asset_active>Active</customer_asset_active>
+		<customer_asset_notes>Notes</customer_asset_notes>
 
-                //Employee Templates
-                <employee_add_new_employee>Add New Employee</employee_add_new_employee>
+		// Employee Templates
+		<employee_add_new_employee>Add New Employee</employee_add_new_employee>
 		<employee_display_name>Display Name</employee_display_name>
 		<employee_display_name_criteria>NO special characters like !@#$%^*()</employee_display_name_criteria>
 		<employee_first_name>First Name</employee_first_name>
@@ -313,7 +319,7 @@
 		<employee_id>ID</employee_id>
 		<employee_edit>Edit</employee_edit>
 		<employee_login>Login</employee_login>
-                <employee_login_id>Login ID</employee_login_id>
+		<employee_login_id>Login ID</employee_login_id>
 		<employee_wo_id>WO ID</employee_wo_id>
 		<employee_date_open>Date Opened</employee_date_open>
 		<employee_customer>Customer</employee_customer>
@@ -325,9 +331,115 @@
 		<employee_based>Employee works from </employee_based>
 		<employee_b_home>Home</employee_b_home>
 		<employee_b_office>Office</employee_b_office>
+                
+                // Expense Templates
+                // -- Global
+                <expense_id>Expense ID</expense_id>
+                <expense_payee>Payee</expense_payee>
+                <expense_date>Date</expense_date>
 
-                //Invoice Templates
-                <incvoice_view_paid>Paid Invoices</incvoice_view_paid>
+                <expense_type>Expense Type</expense_type>
+                <expense_type_1>Advertising</expense_type_1>
+                <expense_type_2>Bank Charges</expense_type_2>
+                <expense_type_3>Broadband</expense_type_3>
+                <expense_type_4>Credit</expense_type_4>
+                <expense_type_5>Customer Full Refund</expense_type_5>
+                <expense_type_6>Cutomer Partial Refund</expense_type_6>
+                <expense_type_7>Equipment</expense_type_7>
+                <expense_type_8>Gift Certificate</expense_type_8>
+                <expense_type_9>Landline</expense_type_9>
+                <expense_type_10>Mobile Phone</expense_type_10>
+                <expense_type_11>Office Supplies</expense_type_11>
+                <expense_type_12>Parts</expense_type_12>
+                <expense_type_13>Petrol</expense_type_13>
+                <expense_type_14>Postage</expense_type_14>
+                <expense_type_15>Rates</expense_type_15>
+                <expense_type_16>Rent</expense_type_16>
+                <expense_type_17>Transport</expense_type_17>
+                <expense_type_18>Utilities</expense_type_18>
+                <expense_type_19>Voucher</expense_type_19>
+                <expense_type_20>Wages</expense_type_20>
+                <expense_type_21>Other</expense_type_21>
+
+                <expense_payment_method>Payment Method</expense_payment_method>
+                <expense_payment_method_1>Bank Transfer</expense_payment_method_1>
+                <expense_payment_method_2>Card</expense_payment_method_2>
+                <expense_payment_method_3>Cash</expense_payment_method_3>
+                <expense_payment_method_4>Cheque</expense_payment_method_4>
+                <expense_payment_method_5>Credit</expense_payment_method_5>
+                <expense_payment_method_6>Direct Debit</expense_payment_method_6>
+                <expense_payment_method_7>Gift Certificate</expense_payment_method_7>
+                <expense_payment_method_8>Google Checkout</expense_payment_method_8>
+                <expense_payment_method_9>Paypal</expense_payment_method_9>
+                <expense_payment_method_10>Voucher</expense_payment_method_10>                
+                <expense_payment_method_11>Other</expense_payment_method_11>
+
+                <expense_net_amount>NET Amount</expense_net_amount>
+                <expense_tax_rate>TAX Rate</expense_tax_rate>
+                <expense_tax_amount>TAX Amount</expense_tax_amount>
+                <expense_gross_amount>Gross Amount</expense_gross_amount>
+                <expense_ref_invoice>REF Invoice</expense_ref_invoice>
+                <expense_notes>Notes</expense_notes>
+                <expense_items>Item(s)</expense_items>
+
+                <expense_search>Search</expense_search>
+                <expense_for>For</expense_for>
+                <expense_search_criteria_warning>NO special characters like !@#$%^*()</expense_search_criteria_warning>
+                <expense_search_button>Search</expense_search_button>
+                <expense_reset_button>Reset</expense_reset_button>
+                <expense_submit_button>Submit</expense_submit_button>
+                <expense_update_button>Update</expense_update_button>
+                <expense_submit_and_new_button>Submit, Then New Record</expense_submit_and_new_button>
+                // -- Navigation
+                <expense_nav_new>New Expense</expense_nav_new>
+                <expense_nav_view>Search Expenses</expense_nav_view>
+                <expense_nav_details>Expense Details</expense_nav_details>
+                <expense_nav_edit>Edit Expense</expense_nav_edit>
+                <expense_nav_delete>Delete Expense</expense_nav_delete>
+                // -- New Page
+                <expense_new_title>New Expense Page</expense_new_title>
+                <expense_new_help_title>New Expense Help</expense_new_help_title>
+                <expense_new_help_content>This page is used to add a new Expense Record for your company.&lt;br /&gt;&lt;br /&gt;When you have entered your data if you click on the &lt;b&gt;Submit&lt;/b&gt; button the details will be sent to the database and then the details page of the New Expense Record will be shown for you to check.&lt;br /&gt;&lt;br /&gt;However if you click on the &lt;b&gt;Submit, Then New Record&lt;/b&gt; button the record will be sent to the database and this page reloaded ready for another entry.</expense_new_help_content>
+                // -- Search page
+                <expense_search_title>Expense Search Page</expense_search_title>
+                <expense_search_help_title>Expense Search Help</expense_search_help_title>
+                <expense_search_help_content>You can search by any category by using the dropdown box. Apart from Expense Type and Payment Method you can search by partial name.&lt;br /&gt;&lt;br /&gt;The reset button will wipe your search so you can start again.&lt;br /&lt;br /&gt;The arrows in the navigation section on the right are a simple method of changing pages, however you can also go directely to a specific page.&lt;br /&gt;&lt;br /&gt; If you double click on a row the appropiate Expense Record Details Page will load.&lt;br /&gt;&lt;br /&gt;The Notes and Item(s) are not directely displayed but if you hover over the Magnifying Glass they will then be displayed similiar to this Tooltip.&lt;br /&gt;&lt;br /&gt;On the right of each Record Row there are icons for viewing, editing and deleting the record.</expense_search_help_content>
+                <expense_search_goto_page_button>Goto Page</expense_search_goto_page_button>
+                <expense_search_details>View Expense Details</expense_search_details>
+                <expense_search_edit_details>Edit Expense Details</expense_search_edit_details>
+                <expense_search_delete_record>Delete Expense Record</expense_search_delete_record>
+                // -- Details Page
+                <expense_details_title>Expense Details Page</expense_details_title>
+                <expense_details_edit>Edit details</expense_details_edit>
+                <expense_details_help_title>Expense Details Help</expense_details_help_title>
+                <expense_details_help_content>This page allows you to view an Expense Record without having to edit it.&lt;br /&gt;&lt;br /&gt; To edit this record you can click on the &lt;b&gt;Edit Details&lt;/b&gt; next to this Tooltip or on the Edit link in the Main Nav Menu on the left.</expense_details_help_content>
+                // -- Edit Page
+                <expense_edit_title>Expense Edit Page</expense_edit_title>
+                <expense_edit_help_title>Expense Edit Help</expense_edit_help_title>
+                <expense_edit_help_content>This page allows you to edit an Expense Record. Once you have made your changes, click on the &lt;b&gt;Update&lt;/b&gt; Button and the changes will be submitted to the databse.</expense_edit_help_content>
+                 // Validators
+                <expense_val_payee_notpresent>Please enter the Payee</expense_val_payee_notpresent>
+                <expense_val_payee_size>The Payee name cannot be more than 80 characters</expense_val_payee_size>
+                <expense_val_date_notpresent>Please enter the Date</expense_val_date_notpresent>
+                <expense_val_netamount_size>NET Amount cannot be more than 12 numbers</expense_val_netamount_size>
+                <expense_val_taxrate_size>TAX Rate cannot be more than 4 numbers</expense_val_taxrate_size>
+                <expense_val_taxamount_size>TAX Amount cannot be more than 12 numbers</expense_val_taxamount_size>
+                <expense_val_grossamount_notpresent>Please enter the Gross Amount</expense_val_grossamount_notpresent>
+                <expense_val_grossamount_size>The Gross Amount cannot be more than 12 numbers</expense_val_grossamount_size>
+                <expense_val_items_notpresent>Please enter the Item(s) or Service(s) purchased</expense_val_items_notpresent>
+                <expense_val_pageno_notpresent>Please enter a page number</expense_val_pageno_notpresent>
+                <expense_val_pageno_size>Please enter a valid page number</expense_val_pageno_size>
+                <expense_val_mes_invalidinformation>Invalid information entered.</expense_val_mes_invalidinformation>
+                <expense_val_mes_pleasecorrect>Please correct these fields.</expense_val_mes_pleasecorrect>
+                <expense_delete_mes_confirmation>Are you Sure you want to delete this Expense Record ? This will permanently remove the record from the database.</expense_delete_mes_confirmation>
+                <expense_delete_mes_recorddeleted>Record Deleted</expense_delete_mes_recorddeleted>
+                <expense_delete_mes_recordnotdeleted>Record Not Deleted</expense_delete_mes_recordnotdeleted>
+
+                // General Ledger Menu
+                <general_ledger_nav_title>General Ledger</general_ledger_nav_title>
+
+		// Invoice Templates
+		<incvoice_view_paid>Paid Invoices</incvoice_view_paid>
 		<incvoice_view_un_paid>Un-Paid Invoices</incvoice_view_un_paid>
 		<invoice_for>Invoice For Work Order ID #</invoice_for>
 		<invoice_invoice>Invoice</invoice_invoice>
@@ -347,13 +459,13 @@
 		<invoice_date_paid>Date Paid</invoice_date_paid>
 		<invoice_amount_paid>Amount Paid</invoice_amount_paid>
 		<invoice_balance>Balance</invoice_balance>
-                <invoice_cheque>Cheques</invoice_cheque>
+		<invoice_cheque>Cheques</invoice_cheque>
 		<invoice_bill>Bill</invoice_bill>
 		<invoice_pay>Pay To</invoice_pay>
 		<invoice_print>Print HTML</invoice_print>
 		<invoice_pdf>Print PDF</invoice_pdf>
 		<invoice_bill_customer>Receive Payment</invoice_bill_customer>
-                <invoice_close_wo>Close Work Order</invoice_close_wo>
+		<invoice_close_wo>Close Work Order</invoice_close_wo>
 		<invoice_msg>Work Order must be closed before paymnet can be received.</invoice_msg>
 		<invoice_labor>Labor</invoice_labor>
 		<invoice_no>No</invoice_no>
@@ -387,6 +499,76 @@
 		<invoice_submit2>Close Invoice</invoice_submit2>
 		<invoice_wo_id>Work%20Order%20ID%20</invoice_wo_id>
 
+<<<<<<< .mine
+		// Parts templates
+		<parts_order>Order Parts</parts_order>
+		<part_order_num>Parts Order ID</part_order_num>
+		<parts_msg_1>In order to use this features you must complete a free registration with In-Cite CRM and we must have a valid credit card on file in order to bill for the parts purchased from us. All parts are shipped via UPS and are shipped from one of our 11 Wharehouses across the country to your business location. You do not have to worry about keeping up a web site with inventory. All the parts you see listed here are feed by our application server. And with over 9000 parts in stock we should have what your are looking for.</parts_msg_1>
+		<parts_msg_2>Each part purchased will seamlessly integrate into your Work Orders and invoicing go ahead and give it try. And you can view detailed reports of all purchases made. You can also adjust the price by adding markup to all products from the controll center. For more information please visit www.incitecrm.com.</parts_msg_2>
+		<parts_msg_3>This service is only available to 48 continental States. We currently will not ship out side the US but this will change in the future.</parts_msg_3>
+		<parts_msg_4>The small profit we make off parts purchased is what funds the Open Source Cite CRM and helps us to provide this free software. This feature is not required to use Cite CRM. You can always add your own parts at Invoice creation Time or add your own parts database.</parts_msg_4>
+		<parts_msg_5>Once you click Check Out your order will be processed and your credit card on file will be charged the amount:</parts_msg_5>
+		<parts_msg_6>You are using</parts_msg_6>
+		<parts_msg_7>for your shipping method. Parts will be shipped from</parts_msg_7>
+		<parts_msg_8>This can be changed in the Control Center.</parts_msg_8>
+		<parts_msg_9>Our Parts Pricing are updated daily at 6:30 AM Pacific Time. Once you click Check Out do not refresh the page or click the back button.</parts_msg_9>
+		<parts_msg_10>Please Print this invoice and keep it in a safe place.</parts_msg_10>
+		<parts_msg_11>Thank you for your purchase. If you need assistance or RMA please contact 1-866-471-1343. You can always view your Invoice here. Your order will be processed and shipped within 24 hours. You chose UPS Ground so your package should arrive in 3 to 7 days and is being shipped from our Portland Warehouse.</parts_msg_11>
+		<parts_id>ID</parts_id>
+		<parts_amount>Amount</parts_amount>
+		<parts_sku>SKU</parts_sku>
+		<parts_item_id>Item ID</parts_item_id>
+		<parts_description>Description</parts_description>
+		<parts_vendor>Vendor</parts_vendor>
+		<parts_weight>Weight</parts_weight>
+		<parts_price>Price</parts_price>
+		<parts_add>Add</parts_add>
+		<parts_each>Each</parts_each>
+		<parts_total>Total</parts_total>
+		<parts_shipping>Shipping</parts_shipping>
+		<parts_sub_total>Sub Total</parts_sub_total>
+		<parts_checkout>Check Out</parts_checkout>
+		<parts_total_charges>Total Charges</parts_total_charges>
+		<parts_created>Created</parts_created>
+		<parts_invoice>Invoice</parts_invoice>
+		<parts_wo>Work Order</parts_wo>
+		<parts_update>Updated</parts_update>
+		<parts_tracking>Tracking</parts_tracking>
+		<parts_status>Status</parts_status>
+		<parts_set_recv>Set Received</parts_set_recv>
+		<parts_rcv>Received</parts_rcv>
+		<parts_order_details>Order Details for</parts_order_details>
+		<parts_count>Count</parts_count>
+		<parts_tax>Tax</parts_tax>
+		<parts_print>Print</parts_print>
+		<parts_tracking>Tracking</parts_tracking>
+		<parts_get_tracking>Get Tracking Number</parts_get_tracking>
+		<parts_select>Select Part Type</parts_select>
+		<parts_select_cat>Select Category</parts_select_cat>
+		<parts_search>Search</parts_search>
+		<parts_cart>Shopping Cart</parts_cart>
+		<parts_total_items>Total Items In Cart</parts_total_items>
+		<parts_remove>Remove</parts_remove>
+		<parts_sku>SKU</parts_sku>
+		<parts_update>Update</parts_update>
+		<parts_cart_total>Cart Total</parts_cart_total>
+		<parts_view>View</parts_view>
+		<parts_inc_inv>Cite CRM Invoice ID</parts_inc_inv>
+		<parts_page>Page</parts_page>
+		<parts_of>Of</parts_of>
+		<parts_records_found>records found.</parts_records_found>
+		<parts_wo_id>Work Order ID</parts_wo_id>
+		<parts_shipping_method>Shipping Method</parts_shipping_method>
+		<parts_ware>Warehouse Location</parts_ware>
+		<parts_order_complete>Your Order Has Been Completed</parts_order_complete>
+		<parts_crm_order_id>Cite CRM Order ID</parts_crm_order_id>
+		<parts_date>Invoice Date</parts_date>
+		<parts_total_items>Total Items</parts_total_items>
+		<parts_weight>Weight</parts_weight>
+		<parts_ship_to>Ship To</parts_ship_to>
+		<parts_tech>Tech</parts_tech>
+		<parts_cap_invoice>INVOICE</parts_cap_invoice>
+=======
                 //Parts templates
                 <parts_order>Order Parts</parts_order>
                 <part_order_num>Parts Order ID</part_order_num>
@@ -455,108 +637,291 @@
                 <parts_ship_to>Ship To</parts_ship_to>
                 <parts_tech>Tech</parts_tech>
                 <parts_cap_invoice>INVOICE</parts_cap_invoice>
+>>>>>>> .r202
 
-                //Schedule Templates
-                <schedule_new>New schedule event</schedule_new>
-                <schedule_wo>Setting schedule for Work Order</schedule_wo>
-                <schedule_error>There is no Works Order number to schedule here. Please select the works order from the below list.</schedule_error>
-                <schedule_info>Info</schedule_info>
-                <schedule_info2>ERROR</schedule_info2>
-                <schedule_set>Set schedule</schedule_set>
-                <schedule_start>Start time</schedule_start>
-                <schedule_end>End time</schedule_end>
-                <schedule_notes>Schedule Notes</schedule_notes>
-                <schedule_submit>Submit</schedule_submit>
-                <schedule_view>Viewing  schedule for</schedule_view>
-                <schedule_print>Print Schedule</schedule_print>
-                <schedule_tech>Employee</schedule_tech>
-                <schedule_edit>Edit</schedule_edit>
-                <schedule_delete>Delete</schedule_delete>
-                <schedule_woview>View Work Order</schedule_woview>
-                <schedule_msg_1>Setting schedule for work order</schedule_msg_1>
-                <schedule_msg_2></schedule_msg_2>
-                <schedule_msg_3>Switch to another techs schedule</schedule_msg_3>
-                <schedule_msg_4>'s schedule for</schedule_msg_4>
+                // Refund Templates
+                // -- Global
+                <refund_id>Refund ID</refund_id>
+                <refund_payee>Payee</refund_payee>
+                <refund_date>Date</refund_date>
 
-                //Workorder Templates
-                <workorder_title>Work Orders</workorder_title>
-                <workorder_page_title>Work Order ID</workorder_page_title>
-                <workorder_print_title>Print Work Order ID</workorder_print_title>
-                <workorder_new_title>New</workorder_new_title>
-                <workorder_assigned_title>Assigned</workorder_assigned_title>
-                <workorder_waiting_parts_title> Awaiting Parts</workorder_waiting_parts_title>
-                <workorder_unpaid_title>Unpaid</workorder_unpaid_title>
-                <workorder_description_title>Description</workorder_description_title>
-                <workorder_edit_title>Edit Description</workorder_edit_title>
-                <workorder_comments_title>Comments</workorder_comments_title>
-                <workorder_edit_comments>Edit Comment</workorder_edit_comments>
-                <workorder_cutomer_contact_title>Customer Contact</workorder_cutomer_contact_title>
-                <workorder_schedule_title>Schedule</workorder_schedule_title>
-                <workorder_new_note_title>New Note</workorder_new_note_title>
-                <workorder_employee>Employee</workorder_employee>
-                <workorder_history_title>History</workorder_history_title>
-                <workorder_view_closed>Closed Work Orders</workorder_view_closed>
-                <workorder_new_title>New Work Order</workorder_new_title>
-                <workorder_parts>Parts Ordered</workorder_parts>
-                <workorder_contact>Contact</workorder_contact>
-                <workorder_email>Email</workorder_email>
-                <workorder_address>Address</workorder_address>
-                <workorder_phone_1>Primary Phone</workorder_phone_1>
-                <workorder_phone_2>Secondary Phone</workorder_phone_2>
-                <workorder_phone_3>Mobile</workorder_phone_3>
-                <workorder_type>Type</workorder_type>
-                <workorder_type_1>Residential</workorder_type_1>
-                <workorder_type_2>Commercial</workorder_type_2>
-                <workorder_type_3>Charity</workorder_type_3>
-                <workorder_type_4>Educational</workorder_type_4>
-                <workorder_type_5>Governmental</workorder_type_5>
-                <workorder_type_6>-</workorder_type_6>
-                <workorder_type_7>-</workorder_type_7>
-                <workorder_type_8>-</workorder_type_8>
-                <workorder_type_9>-</workorder_type_9>
-                <workorder_type_10>-</workorder_type_10>
-                <workorder_customer_first>First Name</workorder_customer_first>
-                <workorder_customer_last>Last Name</workorder_customer_last>
-                <workorder_id>ID</workorder_id>
-                <workorder_opened>Opened</workorder_opened>
-                <workorder_customer>Customer</workorder_customer>
-                <workorder_scope>Scope</workorder_scope>
-                <workorder_status>Status</workorder_status>
-                <workorder_tech>Tech</workorder_tech>
-                <workorder_assign>Assigned To</workorder_assign>
-                <workorder_action>Action</workorder_action>
-                <workorder_state>State</workorder_state>
-                <workorder_last_change>Last Change</workorder_last_change>
-                <workorder_start>Start</workorder_start>
-                <workorder_end>End</workorder_end>
-                <workorder_notes>Notes</workorder_notes>
-                <workorder_warning>Warning</workorder_warning>
-                <workorder_enter_by>Entered By</workorder_enter_by>
-                <workorder_date>Date</workorder_date>
-                <workorder_edit_descrp>Edit Description</workorder_edit_descrp>
-                <work_order_close_title>Close Work Order</work_order_close_title>
-                <workorder_open>Open</workorder_open>
-                <workorder_delete>Delete</workorder_delete>
-                <workorder_pending>Pending</workorder_pending>
-                <workorder_closed>Closed</workorder_closed>
-                <workorder_created>Created</workorder_created>
-                <workorder_assigned>Assigned</workorder_assigned>
-                <workorder_waiting_for_parts>Waiting For Parts</workorder_waiting_for_parts>
-                <workorder_waiting_for_payment>Waiting For Payment</workorder_waiting_for_payment>
-                <workorder_payment_made>Payment Made</workorder_payment_made>
-                <workorder_not_assigned>Not Assigned</workorder_not_assigned>
-                <workorder_page>Page</workorder_page>
-                <workorder_of>Of</workorder_of>
-                <workorder_records>Records Found</workorder_records>
-                <workorder_resolution>Work Order Resolution</workorder_resolution>
-                <workorder_msg_1>There are No new Work Orders</workorder_msg_1>
-                <workorder_msg_2>There are No Assigned Work Orders</workorder_msg_2>
-                <workorder_msg_3>There are No Unpaid Work Orders</workorder_msg_3>
-                <workorder_msg_4>There are No Work Orders Waiting for Parts</workorder_msg_4>
-                <workorder_msg_5>No schedule has been set. Click the day on the calendar you wish to set the schedule.</workorder_msg_5>
-                <workorder_msg_6>There are no closed work orders</workorder_msg_6>
-                <workorder_submit>Submit</workorder_submit>
-                <workorder_close>Close without Invoicing</workorder_close>
-                <workorder_details>Work Order Details</workorder_details>
+                <refund_type>Refund Type</refund_type>
+                <refund_type_1>Credit Note</refund_type_1>
+                <refund_type_2>Proxy Invoice</refund_type_2>
+                <refund_type_3>Returned Goods</refund_type_3>
+                <refund_type_4>Returned Services</refund_type_4>
+                <refund_type_5>Other</refund_type_5>
+
+                <refund_payment_method>Payment Method</refund_payment_method>
+                <refund_payment_method_1>Bank Transfer</refund_payment_method_1>
+                <refund_payment_method_2>Card</refund_payment_method_2>
+                <refund_payment_method_3>Cash</refund_payment_method_3>
+                <refund_payment_method_4>Cheque</refund_payment_method_4>
+                <refund_payment_method_5>Credit</refund_payment_method_5>
+                <refund_payment_method_6>Direct Debit</refund_payment_method_6>
+                <refund_payment_method_7>Gift Certificate</refund_payment_method_7>
+                <refund_payment_method_8>Google Checkout</refund_payment_method_8>
+                <refund_payment_method_9>Paypal</refund_payment_method_9>
+                <refund_payment_method_10>Voucher</refund_payment_method_10>
+                <refund_payment_method_11>Other</refund_payment_method_11>
+
+                <refund_net_amount>NET Amount</refund_net_amount>
+                <refund_tax_rate>TAX Rate</refund_tax_rate>
+                <refund_tax_amount>TAX Amount</refund_tax_amount>
+                <refund_gross_amount>Gross Amount</refund_gross_amount>
+                <refund_ref_invoice>REF Invoice</refund_ref_invoice>
+                <refund_notes>Notes</refund_notes>
+                <refund_items>Item(s)</refund_items>
+
+                <refund_search>Search</refund_search>
+                <refund_for>For</refund_for>
+                <refund_search_criteria_warning>NO special characters like !@#$%^*()</refund_search_criteria_warning>
+                <refund_search_button>Search</refund_search_button>
+                <refund_reset_button>Reset</refund_reset_button>
+                <refund_submit_button>Submit</refund_submit_button>
+                <refund_update_button>Update</refund_update_button>
+                <refund_submit_and_new_button>Submit, Then New Record</refund_submit_and_new_button>
+                // -- Navigation
+                <refund_nav_new>New Refund</refund_nav_new>
+                <refund_nav_view>Search Refunds</refund_nav_view>
+                <refund_nav_details>Refund Details</refund_nav_details>
+                <refund_nav_edit>Edit Refund</refund_nav_edit>
+                <refund_nav_delete>Delete Refund</refund_nav_delete>
+                // -- New Page
+                <refund_new_title>New Refund Page</refund_new_title>
+                <refund_new_help_title>New Refund Help</refund_new_help_title>
+                <refund_new_help_content>This page is used to add a new Refund Record for your company.&lt;br /&gt;&lt;br /&gt;When you have entered your data if you click on the &lt;b&gt;Submit&lt;/b&gt; button the details will be sent to the database and then the details page of the New Refund Record will be shown for you to check.&lt;br /&gt;&lt;br /&gt;However if you click on the &lt;b&gt;Submit, Then New Record&lt;/b&gt; button the record will be sent to the database and this page reloaded ready for another entry.</refund_new_help_content>
+                // -- Search page
+                <refund_search_title>Refund Search Page</refund_search_title>
+                <refund_search_help_title>Refund Search Help</refund_search_help_title>
+                <refund_search_help_content>You can search by any category by using the dropdown box. Apart from Refund Type and Payment Method you can search by partial name.&lt;br /&gt;&lt;br /&gt;The reset button will wipe your search so you can start again.&lt;br /&lt;br /&gt;The arrows in the navigation section on the right are a simple method of changing pages, however you can also go directely to a specific page.&lt;br /&gt;&lt;br /&gt; If you double click on a row the appropiate Refund Record Details Page will load.&lt;br /&gt;&lt;br /&gt;The Notes and Item(s) are not directely displayed but if you hover over the Magnifying Glass they will then be displayed similiar to this Tooltip.&lt;br /&gt;&lt;br /&gt;On the right of each Record Row there are icons for viewing, editing and deleting the record.</refund_search_help_content>
+                <refund_search_goto_page_button>Goto Page</refund_search_goto_page_button>
+                <refund_search_details>View Refund Details</refund_search_details>
+                <refund_search_edit_details>Edit Refund Details</refund_search_edit_details>
+                <refund_search_delete_record>Delete Refund Record</refund_search_delete_record>
+                 // -- Details Page
+                <refund_details_title>Refund Details Page</refund_details_title>
+                <refund_details_edit>Edit Refund Details</refund_details_edit>
+                <refund_details_help_title>Refund Details Help</refund_details_help_title>
+                <refund_details_help_content>This page allows you to view an Refund Record without having to edit it.&lt;br /&gt;&lt;br /&gt; To edit this record you can click on the &lt;b&gt;Edit Details&lt;/b&gt; next to this Tooltip or on the Edit link in the Main Nav Menu on the left.</refund_details_help_content>
+                // -- Edit Page
+                <refund_edit_title>Refund Edit Page</refund_edit_title>
+                <refund_edit_help_title>Refund Edit Help</refund_edit_help_title>
+                <refund_edit_help_content>This page allows you to edit an Refund Record. Once you have made your changes, click on the &lt;b&gt;Update&lt;/b&gt; Button and the changes will be submitted to the databse.</refund_edit_help_content>
+                // Validators
+                <refund_val_payee_notpresent>Please enter the Payee</refund_val_payee_notpresent>
+                <refund_val_payee_size>The Payee name cannot be more than 80 characters</refund_val_payee_size>
+                <refund_val_date_notpresent>Please enter the Date</refund_val_date_notpresent>
+                <refund_val_netamount_size>NET Amount cannot be more than 12 numbers</refund_val_netamount_size>
+                <refund_val_taxrate_size>TAX Rate cannot be more than 4 numbers</refund_val_taxrate_size>
+                <refund_val_taxamount_size>TAX Amount cannot be more than 12 numbers</refund_val_taxamount_size>
+                <refund_val_grossamount_notpresent>Please enter the Gross Amount</refund_val_grossamount_notpresent>
+                <refund_val_grossamount_size>The Gross Amount cannot be more than 12 numbers</refund_val_grossamount_size>
+                <refund_val_items_notpresent>Please enter the Item(s) or Service(s) tha have been Refunded</refund_val_items_notpresent>
+                <refund_val_pageno_notpresent>Please enter a page number</refund_val_pageno_notpresent>
+                <refund_val_pageno_size>Please enter a valid page number</refund_val_pageno_size>
+                <refund_val_mes_invalidinformation>Invalid information entered.</refund_val_mes_invalidinformation>
+                <refund_val_mes_pleasecorrect>Please correct these fields.</refund_val_mes_pleasecorrect>
+                <refund_delete_mes_confirmation>Are you Sure you want to delete this Refund Record ? This will permanently remove the record from the database.</refund_delete_mes_confirmation>
+                <refund_delete_mes_recorddeleted>Record Deleted</refund_delete_mes_recorddeleted>
+                <refund_delete_mes_recordnotdeleted>Record Not Deleted</refund_delete_mes_recordnotdeleted>
+		
+		// Setup Module
+		<setup_cheque>Cheque</setup_cheque>
+		<setup_cheque_payable_to>Cheque</setup_cheque_payable_to>
+
+		// Schedule Templates
+		<schedule_new>New schedule event</schedule_new>
+		<schedule_wo>Setting schedule for Work Order</schedule_wo>
+		<schedule_error>There is no Works Order number to schedule here. Please select the works order from the below list.</schedule_error>
+		<schedule_info>Info</schedule_info>
+		<schedule_info2>ERROR</schedule_info2>
+		<schedule_set>Set schedule</schedule_set>
+		<schedule_start>Start time</schedule_start>
+		<schedule_end>End time</schedule_end>
+		<schedule_notes>Schedule Notes</schedule_notes>
+		<schedule_submit>Submit</schedule_submit>
+		<schedule_view>Viewing  schedule for</schedule_view>
+		<schedule_print>Print Schedule</schedule_print>
+		<schedule_tech>Employee</schedule_tech>
+		<schedule_edit>Edit</schedule_edit>
+		<schedule_delete>Delete</schedule_delete>
+		<schedule_woview>View Work Order</schedule_woview>
+		<schedule_msg_1>Setting schedule for work order</schedule_msg_1>
+		<schedule_msg_2></schedule_msg_2>
+		<schedule_msg_3>Switch to another techs schedule</schedule_msg_3>
+		<schedule_msg_4>'s schedule for</schedule_msg_4>
+
+                // Supplier Templates
+                // -- Global
+                <supplier_id>Supplier ID</supplier_id>
+                <supplier_name>Supplier Name</supplier_name>
+                <supplier_contact>Supplier Contact</supplier_contact>
+
+                <supplier_type>Supplier Type</supplier_type>
+                <supplier_type_1>Affiliate Marketing</supplier_type_1>
+                <supplier_type_2>Advertising</supplier_type_2>
+                <supplier_type_3>Drop Shipping</supplier_type_3>
+                <supplier_type_4>Courier</supplier_type_4>
+                <supplier_type_5>General</supplier_type_5>
+                <supplier_type_6>Parts</supplier_type_6>
+                <supplier_type_7>Services</supplier_type_7>
+                <supplier_type_8>Software</supplier_type_8>
+                <supplier_type_9>Wholesale</supplier_type_9>
+                <supplier_type_10>Web</supplier_type_10>
+                <supplier_type_11>Other</supplier_type_11>
+
+                <supplier_phone>Phone Number</supplier_phone>
+                <supplier_fax>FAX Number</supplier_fax>
+                <supplier_mobile>Mobile Number</supplier_mobile>
+                <supplier_www>Website</supplier_www>
+                <supplier_email>Email Address</supplier_email>
+                <supplier_address>Address</supplier_address>
+                <supplier_city>City</supplier_city>
+                <supplier_state>State</supplier_state>
+                <supplier_zip>Zip</supplier_zip>
+                <supplier_notes>Notes</supplier_notes>
+                <supplier_description>Description</supplier_description>
+
+                <supplier_search>Search</supplier_search>
+                <supplier_for>For</supplier_for>
+                <supplier_search_criteria_warning>NO special characters like !@#$%^*()</supplier_search_criteria_warning>
+                <supplier_search_button>Search</supplier_search_button>
+                <supplier_reset_button>Reset</supplier_reset_button>
+                <supplier_submit_button>Submit</supplier_submit_button>
+                <supplier_update_button>Update</supplier_update_button>
+                <supplier_submit_and_new_button>Submit, Then New Record</supplier_submit_and_new_button>
+                // -- Navigation
+                <supplier_nav_title>Suppliers</supplier_nav_title>
+                <supplier_nav_new>New Supplier</supplier_nav_new>
+                <supplier_nav_view>Search Suppliers</supplier_nav_view>
+                <supplier_nav_details>Supplier Details</supplier_nav_details>
+                <supplier_nav_edit>Edit Supplier</supplier_nav_edit>
+                <supplier_nav_delete>Delete Supplier</supplier_nav_delete>
+                // -- New Page
+                <supplier_new_title>New Supplier Page</supplier_new_title>
+                <supplier_new_help_title>New Supplier Help</supplier_new_help_title>
+                <supplier_new_help_content>This page is used to add a New Supplier Record for your company.&lt;br /&gt;&lt;br /&gt;When you have entered your data if you click on the &lt;b&gt;Submit&lt;/b&gt; button the details will be sent to the database and then the details page of the new Supplier Record will be shown for you to check.&lt;br /&gt;&lt;br /&gt;However if you click on the &lt;b&gt;Submit, Then New Record&lt;/b&gt; button the record will be sent to the database and this page reloaded ready for another entry.</supplier_new_help_content>
+                 // -- Search page
+                <supplier_search_title>Supplier Search Page</supplier_search_title>
+                <supplier_search_help_title>Supplier Search Help</supplier_search_help_title>
+                <supplier_search_help_content>You can search by any category by using the dropdown box. Apart from Supplier Type you can search by partial name.&lt;br /&gt;&lt;br /&gt;The reset button will wipe your search so you can start again.&lt;br /&lt;br /&gt;The arrows in the navigation section on the right are a simple method of changing pages, however you can also go directely to a specific page.&lt;br /&gt;&lt;br /&gt; If you double click on a row the appropiate Supplier Record Details Page will load.&lt;br /&gt;&lt;br /&gt;The Notes are not directely displayed but if you hover over the Magnifying Glass they will then be displayed similiar to this Tooltip.&lt;br /&gt;&lt;br /&gt;On the right of each Record Row there are icons for viewing, editing and deleting the record.</supplier_search_help_content>
+                <supplier_search_goto_page_button>Goto Page</supplier_search_goto_page_button>
+                <supplier_search_details>View Supplier Details</supplier_search_details>
+                <supplier_search_edit_details>Edit Supplier Details</supplier_search_edit_details>
+                <supplier_search_delete_record>Delete Supplier Record</supplier_search_delete_record>
+                 // -- Details Page
+                <supplier_details_title>Supplier Details Page</supplier_details_title>
+                <supplier_details_edit>Edit Supplier Details</supplier_details_edit>
+                <supplier_details_help_title>Supplier Details Help</supplier_details_help_title>
+                <supplier_details_help_content>This page allows you to view an Supplier Record without having to edit it.&lt;br /&gt;&lt;br /&gt; To edit this record you can click on the &lt;b&gt;Edit Details&lt;/b&gt; next to this Tooltip or on the Edit link in the Main Nav Menu on the left.</supplier_details_help_content>
+                // -- Edit Page
+                <supplier_edit_title>Supplier Edit Page</supplier_edit_title>
+                <supplier_edit_help_title>Supplier Edit Help</supplier_edit_help_title>
+                <supplier_edit_help_content>This page allows you to edit an Supplier Record. Once you have made your changes, click on the &lt;b&gt;Update&lt;/b&gt; Button and the changes will be submitted to the databse.</supplier_edit_help_content>
+                 // Validators
+                <supplier_val_name_notpresent>Please enter the suppliers name</supplier_val_name_notpresent>
+                <supplier_val_name_size>The Supplier s name cannot be more than 80 characters</supplier_val_name_size>
+                <supplier_val_contact_notpresent>Please enter the contacts details</supplier_val_contact_notpresent>
+                <supplier_val_contact_size>Contact cannot be more than 80 characters</supplier_val_contact_size>
+                <supplier_val_phone_size>Phone cannot be more than 20 numbers</supplier_val_phone_size>
+                <supplier_val_fax_size>FAX cannot be more than 20 numbers</supplier_val_fax_size>
+                <supplier_val_mobile_size>Mobile cannot be more than 20 numbers</supplier_val_mobile_size>
+                <supplier_val_www_format>Website not correct format</supplier_val_www_format>
+                <supplier_val_www_size>Website cannot be more than 80 characters</supplier_val_www_size>
+                <supplier_val_email_size>Email cannot be more than 80 characters</supplier_val_email_size>
+                <supplier_val_email_format>Email not valid format</supplier_val_email_format>
+                <supplier_val_city_size>City cannot be more than 20 numbers</supplier_val_city_size>
+                <supplier_val_state_size>State cannot be more than 20 numbers</supplier_val_state_size>
+                <supplier_val_zip_size>Zip cannot be more than 13 numbers</supplier_val_zip_size>
+                <supplier_val_description_notpresent>Please enter a description of this supplier</supplier_val_description_notpresent>
+                <supplier_val_pageno_notpresent>Please enter a page number</supplier_val_pageno_notpresent>
+                <supplier_val_pageno_size>Please enter a valid page number</supplier_val_pageno_size>
+                <supplier_val_mes_invalidinformation>Invalid information entered.</supplier_val_mes_invalidinformation>
+                <supplier_val_mes_pleasecorrect>Please correct these fields.</supplier_val_mes_pleasecorrect>
+                <supplier_delete_mes_confirmation>Are you Sure you want to delete this Supplier Record ? This will permanently remove the record from the database.</supplier_delete_mes_confirmation>
+                <supplier_delete_mes_recorddeleted>Record Deleted</supplier_delete_mes_recorddeleted>
+                <supplier_delete_mes_recordnotdeleted>Record Not Deleted</supplier_delete_mes_recordnotdeleted>
+
+		// Workorder Templates
+		<workorder_title>Work Orders</workorder_title>
+		<workorder_page_title>Work Order ID</workorder_page_title>
+		<workorder_print_title>Print Work Order ID</workorder_print_title>
+		<workorder_new_title>New</workorder_new_title>
+		<workorder_assigned_title>Assigned</workorder_assigned_title>
+		<workorder_waiting_parts_title> Awaiting Parts</workorder_waiting_parts_title>
+		<workorder_unpaid_title>Unpaid</workorder_unpaid_title>
+		<workorder_description_title>Description</workorder_description_title>
+		<workorder_edit_title>Edit Description</workorder_edit_title>
+		<workorder_comments_title>Comments</workorder_comments_title>
+		<workorder_edit_comments>Edit Comment</workorder_edit_comments>
+		<workorder_cutomer_contact_title>Customer Contact</workorder_cutomer_contact_title>
+		<workorder_schedule_title>Schedule</workorder_schedule_title>
+		<workorder_new_note_title>New Note</workorder_new_note_title>
+		<workorder_employee>Employee</workorder_employee>
+		<workorder_history_title>History</workorder_history_title>
+		<workorder_view_closed>Closed Work Orders</workorder_view_closed>
+		<workorder_new_title>New Work Order</workorder_new_title>
+		<workorder_parts>Parts Ordered</workorder_parts>
+		<workorder_contact>Contact</workorder_contact>
+		<workorder_email>Email</workorder_email>
+		<workorder_address>Address</workorder_address>
+		<workorder_phone_1>Primary Phone</workorder_phone_1>
+		<workorder_phone_2>Secondary Phone</workorder_phone_2>
+		<workorder_phone_3>Mobile</workorder_phone_3>
+		<workorder_type>Type</workorder_type>
+		<workorder_type_1>Residential</workorder_type_1>
+		<workorder_type_2>Commercial</workorder_type_2>
+		<workorder_type_3>Charity</workorder_type_3>
+		<workorder_type_4>Educational</workorder_type_4>
+		<workorder_type_5>Governmental</workorder_type_5>
+		<workorder_type_6>-</workorder_type_6>
+		<workorder_type_7>-</workorder_type_7>
+		<workorder_type_8>-</workorder_type_8>
+		<workorder_type_9>-</workorder_type_9>
+		<workorder_type_10>-</workorder_type_10>
+		<workorder_customer_first>First Name</workorder_customer_first>
+		<workorder_customer_last>Last Name</workorder_customer_last>
+		<workorder_id>ID</workorder_id>
+		<workorder_opened>Opened</workorder_opened>
+		<workorder_customer>Customer</workorder_customer>
+		<workorder_scope>Scope</workorder_scope>
+		<workorder_status>Status</workorder_status>
+		<workorder_tech>Tech</workorder_tech>
+		<workorder_assign>Assigned To</workorder_assign>
+		<workorder_action>Action</workorder_action>
+		<workorder_state>State</workorder_state>
+		<workorder_last_change>Last Change</workorder_last_change>
+		<workorder_start>Start</workorder_start>
+		<workorder_end>End</workorder_end>
+		<workorder_notes>Notes</workorder_notes>
+		<workorder_warning>Warning</workorder_warning>
+		<workorder_enter_by>Entered By</workorder_enter_by>
+		<workorder_date>Date</workorder_date>
+		<workorder_edit_descrp>Edit Description</workorder_edit_descrp>
+		<work_order_close_title>Close Work Order</work_order_close_title>
+		<workorder_open>Open</workorder_open>
+		<workorder_delete>Delete</workorder_delete>
+		<workorder_pending>Pending</workorder_pending>
+		<workorder_closed>Closed</workorder_closed>
+		<workorder_created>Created</workorder_created>
+		<workorder_assigned>Assigned</workorder_assigned>
+		<workorder_waiting_for_parts>Waiting For Parts</workorder_waiting_for_parts>
+		<workorder_waiting_for_payment>Waiting For Payment</workorder_waiting_for_payment>
+		<workorder_payment_made>Payment Made</workorder_payment_made>
+		<workorder_not_assigned>Not Assigned</workorder_not_assigned>
+		<workorder_page>Page</workorder_page>
+		<workorder_of>Of</workorder_of>
+		<workorder_records>Records Found</workorder_records>
+		<workorder_resolution>Work Order Resolution</workorder_resolution>
+		<workorder_msg_1>There are No new Work Orders</workorder_msg_1>
+		<workorder_msg_2>There are No Assigned Work Orders</workorder_msg_2>
+		<workorder_msg_3>There are No Unpaid Work Orders</workorder_msg_3>
+		<workorder_msg_4>There are No Work Orders Waiting for Parts</workorder_msg_4>
+		<workorder_msg_5>No schedule has been set. Click the day on the calendar you wish to set the schedule.</workorder_msg_5>
+		<workorder_msg_6>There are no closed work orders</workorder_msg_6>
+		<workorder_submit>Submit</workorder_submit>
+		<workorder_close>Close without Invoicing</workorder_close>
+		<workorder_details>Work Order Details</workorder_details>
 		
 	</translate>
