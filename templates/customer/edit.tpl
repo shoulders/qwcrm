@@ -87,8 +87,8 @@
 											<td colspan="2">
 												<table>
 													<tr>
-														<td align="right"><strong>{$translate_customer_address}</strong><span style="color: #ff0000">*</span></td>
-														<td colspan="3"><input class="olotd5" size="80" value="{$customer[q].CUSTOMER_ADDRESS}" name="address" type="text" /></td>
+														<td align="right"><strong>{$translate_customer_address}</strong><span style="color: #ff0000">*</span></td>														
+                                                                                                                <td colspan="3"><textarea class="olotd5" cols="30" rows="3"  name="address" >{$customer[q].CUSTOMER_ADDRESS}</textarea></td>
 													</tr><tr>
 														<td align="right"><strong>{$translate_customer_city}</strong><span style="color: #ff0000">*</span></td>
 														<td><input class="olotd5" value="{$customer[q].CUSTOMER_CITY}" name="city" type="text" /></td>

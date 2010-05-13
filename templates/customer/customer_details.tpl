@@ -99,7 +99,7 @@
                                                                         {$customer_details[i].CUSTOMER_DISPLAY_NAME}
                                                                     </td>
                                                                     <td class="menutd">
-                                                                        {$customer_details[i].CUSTOMER_ADDRESS}
+                                                                        {$customer_details[i].CUSTOMER_ADDRESS|nl2br|regex_replace:"/[\r\t\n]/":""}<br>{$customer_details[i].CUSTOMER_CITY}<br>{$customer_details[i].CUSTOMER_STATE}<br>{$customer_details[i].CUSTOMER_ZIP}
                                                                     </td>
                                                                     <td class="menutd">
                                                                         <b>{$translate_customer_work}</b>
@@ -109,14 +109,10 @@
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td class="menutd">
-                                                                        {$customer_details[i].CUSTOMER_CITY}</td>
-                                                                    <td class="menutd">
-                                                                        {$customer_details[i].CUSTOMER_STATE} {$customer_details[i].CUSTOMER_ZIP}</td>
-                                                                    <td class="menutd">
-                                                                        <b>{$translate_customer_mobile}</b></td>
-                                                                    <td class="menutd">
-                                                                        {$customer_details[i].CUSTOMER_MOBILE_PHONE}</td>
+                                                                    <td class="menutd"></td>
+                                                                    <td class="menutd"></td>
+                                                                    <td class="menutd"><b>{$translate_customer_mobile}</b></td>
+                                                                    <td class="menutd">{$customer_details[i].CUSTOMER_MOBILE_PHONE}</td>
                                                                 </tr>
                                                                 <tr class="row2">
                                                                     <td class="menutd" colspan="4">

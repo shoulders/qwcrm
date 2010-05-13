@@ -48,7 +48,10 @@ $smarty->assign('cuscity3',$cuscity3);
 $smarty->assign('cuszip3',$cuszip3);
 
 //Google Maps URL for IFrame in customer_details.tpl
-$src= "http://maps.google.com.au/maps?f=d&source=s_d&hl=en&geocode=&saddr=$caddress2,$ccity2,$czip2&daddr=$cusaddress3,$cuscity3,$cuszip3";
+$f_caddress2 = preg_replace('/(\r|\n|\r\n){2,}/', ', ', $caddress2);
+$f_cusaddress3 = preg_replace('/(\r|\n|\r\n){2,}/', ', ', $cusaddress3);
+
+$src= "http://maps.google.com.au/maps?f=d&source=s_d&hl=en&geocode=&saddr=$f_caddress2,$ccity2,$czip2&daddr=$f_cusaddress3,$cuscity3,$cuszip3";
 $smarty->assign('src',$src);
 
 // assign the arrays

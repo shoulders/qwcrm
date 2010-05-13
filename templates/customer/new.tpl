@@ -101,7 +101,7 @@
                                                                     <tbody align="left">
                                                                         <tr>
                                                                             <td align="right"><span style="color: #ff0000">*</span><b>{$translate_customer_address}</b></td>
-                                                                            <td colspan="3"><input class="olotd5" size="80" name="address" type="text" value="405 Example Street" /></td>
+                                                                            <td colspan="3"><textarea class="olotd5" cols="30" rows="3"  name="address" >405 example street</textarea></td>
                                                                         </tr><tr>
                                                                             <td align="right"><span style="color: #ff0000">*</span><b>{$translate_customer_city}</b></td>
                                                                             <td><input class="olotd5" name="city" type="text" value="{$company_city}"/></td>
