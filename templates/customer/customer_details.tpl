@@ -60,53 +60,34 @@
                                                                                 </td>
                                                                             </tr>
                                                                         </table>
-
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td class="menutd">
-                                                                        <b>{$translate_customer_contact_2}</b>
-                                                                    </td>
-                                                                    <td class="menutd">
-                                                                        {$customer_details[i].CUSTOMER_FIRST_NAME} {$customer_details[i].CUSTOMER_LAST_NAME}
-                                                                    </td>
-                                                                    <td class="menutd">
-                                                                        <b>{$translate_email}</b>
-                                                                    </td>
-                                                                    <td class="menutd">
-                                                                        {$customer_details[i].CUSTOMER_EMAIL}
-                                                                    </td>
+                                                                    <td class="menutd"><b>{$translate_customer_contact_2}</b></td>
+                                                                    <td class="menutd">{$customer_details[i].CUSTOMER_FIRST_NAME} {$customer_details[i].CUSTOMER_LAST_NAME}</td>
+                                                                    <td class="menutd"><b>{$translate_customer_www}</b></td>
+                                                                    <td class="menutd">{$customer_details[i].CUSTOMER_WWW}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td class="menutd"><b>{$translate_email}</b></td>
+                                                                    <td class="menutd">{$customer_details[i].CUSTOMER_EMAIL}</td>
                                                                 </tr>
                                                                 <tr class="row2">
-                                                                    <td class="menutd" colspan="4">
-                                                                    </td>
+                                                                    <td class="menutd" colspan="4"></td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td class="menutd">
-                                                                        <b>{$translate_customer_address}</b>
-                                                                    </td>
-                                                                    <td class="menutd" >
-                                                                    </td>
-                                                                    <td class="menutd" >
-                                                                        <b>{$translate_customer_home}</b>
-                                                                    </td>
-                                                                    <td class="menutd">
-                                                                        {$customer_details[i].CUSTOMER_PHONE}
-                                                                    </td>
+                                                                    <td class="menutd"> <b>{$translate_customer_address}</b></td>
+                                                                    <td class="menutd"></td>
+                                                                    <td class="menutd"><b>{$translate_customer_home}</b></td>
+                                                                    <td class="menutd">{$customer_details[i].CUSTOMER_PHONE}</td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td class="menutd">
-                                                                        {$customer_details[i].CUSTOMER_DISPLAY_NAME}
-                                                                    </td>
-                                                                    <td class="menutd">
-                                                                        {$customer_details[i].CUSTOMER_ADDRESS|nl2br|regex_replace:"/[\r\t\n]/":""}<br>{$customer_details[i].CUSTOMER_CITY}<br>{$customer_details[i].CUSTOMER_STATE}<br>{$customer_details[i].CUSTOMER_ZIP}
-                                                                    </td>
-                                                                    <td class="menutd">
-                                                                        <b>{$translate_customer_work}</b>
-                                                                    </td>
-                                                                    <td class="menutd">
-                                                                        {$customer_details[i].CUSTOMER_WORK_PHONE}
-                                                                    </td>
+                                                                    <td class="menutd">{$customer_details[i].CUSTOMER_DISPLAY_NAME}</td>
+                                                                    <td class="menutd">{$customer_details[i].CUSTOMER_ADDRESS|nl2br|regex_replace:"/[\r\t\n]/":""}<br>{$customer_details[i].CUSTOMER_CITY}<br>{$customer_details[i].CUSTOMER_STATE}<br>{$customer_details[i].CUSTOMER_ZIP}</td>
+                                                                    <td class="menutd"><b>{$translate_customer_work}</b></td>
+                                                                    <td class="menutd">{$customer_details[i].CUSTOMER_WORK_PHONE}</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td class="menutd"></td>
@@ -115,31 +96,29 @@
                                                                     <td class="menutd">{$customer_details[i].CUSTOMER_MOBILE_PHONE}</td>
                                                                 </tr>
                                                                 <tr class="row2">
-                                                                    <td class="menutd" colspan="4">
-                                                                    </td>
+                                                                    <td class="menutd" colspan="4"></td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td class="menutd">
-                                                                        <b>{$translate_customer_type}</b></td>
+                                                                    <td class="menutd"><b>{$translate_customer_type}</b></td>
                                                                     <td class="menutd"> {if $customer_details[i].CUSTOMER_TYPE ==1} {$translate_customer_type_1} {/if} {if $customer_details[i].CUSTOMER_TYPE ==2} {$translate_customer_type_2} {/if} {if $customer_details[i].CUSTOMER_TYPE ==3} {$translate_customer_type_3} {/if} {if $customer_details[i].CUSTOMER_TYPE ==4} {$translate_customer_type_4} {/if}</td>
-                                                                    <td class="menutd">
-                                                                        <b>{$translate_customer_discount}</b></td>
-                                                                    <td class="menutd">
-                                                                        {$customer_details[i].DISCOUNT}%</td>
+                                                                    <td class="menutd"><b>{$translate_customer_discount}</b></td>
+                                                                    <td class="menutd">{$customer_details[i].DISCOUNT}%</td>
                                                                 </tr>
                                                                 <tr class="row2">
-                                                                    <td class="menutd" colspan="4">
-                                                                    </td>
+                                                                    <td class="menutd" colspan="4"></td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td class="menutd">
-                                                                        <b>{$translate_customer_created}</b></td>
-                                                                    <td class="menutd">
-                                                                        {$customer_details[i].CREATE_DATE|date_format:"$date_format"}</td>
-                                                                    <td class="menutd">
-                                                                        <b>{$translate_customer_last}</b></td>
-                                                                    <td class="menutd">
-                                                                        {$customer_details[i].LAST_ACTIVE|date_format:"$date_format"}</td>
+                                                                    <td class="menutd"><b>{$translate_customer_created}</b></td>
+                                                                    <td class="menutd">{$customer_details[i].CREATE_DATE|date_format:"$date_format"}</td>
+                                                                    <td class="menutd"><b>{$translate_customer_last}</b></td>
+                                                                    <td class="menutd">{$customer_details[i].LAST_ACTIVE|date_format:"$date_format"}</td>
+                                                                </tr>
+                                                                <tr class="row2">
+                                                                    <td class="menutd" colspan="4"></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="menutd"><b>{$translate_customer_notes}</b></td>
+                                                                    <td class="menutd" colspan="3">{$customer_details[i].CUSTOMER_NOTES|nl2br}</td>
                                                                 </tr>
                                                                 {assign var="customer_id" value=$customer_details[i].CUSTOMER_ID} {assign var="customer_name" value=$customer_details[i].CUSTOMER_DISPLAY_NAME}
                                                             </table>

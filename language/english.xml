@@ -150,9 +150,9 @@
 
 		// Customer Templates
 		<main_title>Customer Search</main_title>
-		<display>Sort/Business Name</display>
-		<first>First</first>
-		<last>Last</last>
+		<display>Client</display>
+		<first>Contact First</first>
+		<last>Contact Last</last>
 		<primary>Primary</primary>
 		<secondary>Secondary</secondary>
 		<phone>Phone</phone>
@@ -177,7 +177,9 @@
 		<customer_city>City</customer_city>
 		<customer_state>State</customer_state>
 		<customer_zip>Zip</customer_zip>
+                <customer_notes>Notes</customer_notes>
 		<customer_type>Type</customer_type>
+                <customer_www>Website</customer_www>
 		<customer_residential>Residential</customer_residential>
 		<customer_comercial>Commercial</customer_comercial>
 		<customer_discount>Discount</customer_discount>

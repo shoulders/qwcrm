@@ -68,6 +68,10 @@
                                                                             <td><a><input type="text" size="4" name="discount" value="" class="olotd5"><b>%</b></a></td>
                                                                         </tr>
                                                                         <tr>
+                                                                            <td align="right"><span style="color: #ff0000"></span><b>{$translate_customer_www}</b></td>
+                                                                            <td><input class="olotd5" name="customerWww" type="text" size="50"/></td>
+                                                                        </tr>
+                                                                        <tr>
                                                                             <td align="right"><span style="color: #ff0000"></span><b>{$translate_email}</b></td>
                                                                             <td><input class="olotd5" name="email" type="text" size="50"/></td>
                                                                         </tr>
@@ -101,21 +105,29 @@
                                                                     <tbody align="left">
                                                                         <tr>
                                                                             <td align="right"><span style="color: #ff0000">*</span><b>{$translate_customer_address}</b></td>
-                                                                            <td colspan="3"><textarea class="olotd5" cols="30" rows="3"  name="address" >405 example street</textarea></td>
+                                                                            <td colspan="3"><textarea class="olotd5" cols="30" rows="3"  name="address" ></textarea></td>
                                                                         </tr><tr>
                                                                             <td align="right"><span style="color: #ff0000">*</span><b>{$translate_customer_city}</b></td>
-                                                                            <td><input class="olotd5" name="city" type="text" value="{$company_city}"/></td>
+                                                                            <td><input class="olotd5" name="city" type="text" /></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><span style="color: #ff0000">*</span><b>{$translate_customer_state}</b></td>
-                                                                            <td><input class="olotd5" name="state" type="text" value="{$company_state}"/></td>
-                                                                        </tr><tr>
-                                                                            <td align="right"><span style="color: #ff0000">*</span><b>{$translate_customer_zip}</b></td>
-                                                                            <td colspan="2"><input class="olotd5" name="zip" type="text" value="{$company_zip}"/></td>
-                                                                        </tr>                                                                        
-
+                                                                            <td><input class="olotd5" name="state" type="text" /></td>
+                                                                        </tr>
                                                                         <tr>
-                                                                            <td colspan="2"><input class="olotd5" name="submit" value="Submit" type="submit" /></td>
+                                                                            <td align="right"><span style="color: #ff0000">*</span><b>{$translate_customer_zip}</b></td>
+                                                                            <td colspan="2"><input class="olotd5" name="zip" type="text" /></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="menuhead"><b>{$translate_customer_notes}</b></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td></td>                                                                            
+                                                                            <td colspan="2"><textarea class="olotd5" name="customerNotes" cols="50" rows="10"></textarea></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td></td>
+                                                                            <td><input class="olotd5" name="submit" value="Submit" type="submit" /></td>
                                                                         </tr>
                                                                     </tbody>
                                                                 </table>	

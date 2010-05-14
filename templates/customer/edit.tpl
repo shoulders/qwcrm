@@ -37,7 +37,12 @@
                                                                                                         <tr>
                                                                                                             <td align="right"><strong>{$translate_last}</strong><span style="color: #ff0000">*</span></td>
                                                                                                             <td><input class="olotd5" value="{$customer[q].CUSTOMER_LAST_NAME}" name="lastName" type="text" /></td>
-													</tr><tr>
+													</tr>
+                                                                                                        <tr>
+                                                                                                            <td align="right"><span style="color: #ff0000"></span><b>{$translate_customer_www}</b></td>
+                                                                                                            <td><input class="olotd5" value="{$customer[q].CUSTOMER_WWW}" name="customerWww" type="text" size="50"/></td>
+                                                                                                        </tr>
+                                                                                                        <tr>
                                                                                                                 <td align="right"><strong>{$translate_email}</strong></td>
                                                                                                                 <td><input class="olotd5" value="{$customer[q].CUSTOMER_EMAIL}" name="email" size="50" type="text" /></td>
                                                                                                         <tr>
@@ -99,15 +104,21 @@
 														<td align="right"><strong>{$translate_customer_zip}</strong><span style="color: #ff0000">*</span></td>
 														<td colspan="2"><input class="olotd5" value="{$customer[q].CUSTOMER_ZIP}" name="zip" type="text" /></td>
 													</tr>
+                                                                                                        <tr>
+                                                                                                            <td class="menuhead"><b>{$translate_customer_notes}</b></td>
+                                                                                                        </tr>
+                                                                                                        <tr>
+                                                                                                            <td></td>
+                                                                                                            <td colspan="2"><textarea class="olotd5" name="customerNotes" cols="50" rows="10">{$customer[q].CUSTOMER_NOTES}</textarea></td>
+                                                                                                        </tr>
 												</table>	
 											</td>
-										</tr><tr>
-											<td class="menuhead" colspan="2"><br></td>
-										</tr>
-                                                                                <tr>
-											<td colspan="2"><input type="submit" name="submit" value="Update"></td>
-										</tr>
-									</table>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td></td>
+                                                                                        <td><input class="olotd5" type="submit" name="submit" value="Update"></td>
+                                                                                    </tr>
+                                                                            </table>
 									{/section}
 									</form>
 								</td>

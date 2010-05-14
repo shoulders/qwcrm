@@ -274,21 +274,23 @@ $displayname =$VAR["displayName"] ;
 }
 
 	$sql = "INSERT INTO ".PRFX."TABLE_CUSTOMER SET
-			CUSTOMER_DISPLAY_NAME	= ". $db->qstr( $displayname  ).",
-			CUSTOMER_ADDRESS		= ". $db->qstr( $string2      ).",
+			CUSTOMER_DISPLAY_NAME           = ". $db->qstr( $displayname         ).",
+			CUSTOMER_ADDRESS		= ". $db->qstr( $string2             ).",
 			CUSTOMER_CITY			= ". $db->qstr( $VAR["city"]         ).", 
 			CUSTOMER_STATE			= ". $db->qstr( $VAR["state"]        ).", 
-			CUSTOMER_ZIP				= ". $db->qstr( $VAR["zip"]          ).",
+			CUSTOMER_ZIP			= ". $db->qstr( $VAR["zip"]          ).",
 			CUSTOMER_PHONE			= ". $db->qstr( $VAR["homePhone"]    ).",
-			CUSTOMER_WORK_PHONE	= ". $db->qstr( $VAR["workPhone"]    ).",
-			CUSTOMER_MOBILE_PHONE	= ". $db->qstr( $VAR["mobilePhone"]  ).",
+			CUSTOMER_WORK_PHONE             = ". $db->qstr( $VAR["workPhone"]    ).",
+			CUSTOMER_MOBILE_PHONE           = ". $db->qstr( $VAR["mobilePhone"]  ).",
 			CUSTOMER_EMAIL			= ". $db->qstr( $VAR["email"]        ).", 
 			CUSTOMER_TYPE			= ". $db->qstr( $VAR["customerType"] ).", 
-			CREATE_DATE				= ". $db->qstr( time()                      ).",
-			LAST_ACTIVE				= ". $db->qstr( time()                      ).",
+			CREATE_DATE			= ". $db->qstr( time()               ).",
+			LAST_ACTIVE			= ". $db->qstr( time()               ).",
 			CUSTOMER_FIRST_NAME		= ". $db->qstr( $VAR["firstName"]    ).", 
-			DISCOUNT 					= ". $db->qstr( $VAR['discount']		).", 
-			CUSTOMER_LAST_NAME		= ". $db->qstr( $VAR["lastName"]     ); 
+			DISCOUNT 			= ". $db->qstr( $VAR['discount']     ).",
+			CUSTOMER_LAST_NAME		= ". $db->qstr( $VAR['lastName']     ).",
+                        CUSTOMER_WWW                    = ". $db->qstr( $VAR['customerWww']  ).",
+                        CUSTOMER_NOTES                  = ". $db->qstr( $VAR['customerNotes']);
 			
 	if(!$result = $db->Execute($sql)) {
 		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
@@ -326,19 +328,21 @@ $string= $VAR['address'];
 $string2=stripslashes($string);
 
 	$sql = "UPDATE ".PRFX."TABLE_CUSTOMER SET
-			CUSTOMER_DISPLAY_NAME	= ". $db->qstr( $VAR["displayName"]	).",
+			CUSTOMER_DISPLAY_NAME           = ". $db->qstr( $VAR["displayName"]	).",
 			CUSTOMER_ADDRESS		= ". $db->qstr( $string2		).",
-			CUSTOMER_CITY			= ". $db->qstr( $VAR["city"]			).", 
-			CUSTOMER_STATE			= ". $db->qstr( $VAR["state"]			).", 
-			CUSTOMER_ZIP				= ". $db->qstr( $VAR["zip"]				).",
-			CUSTOMER_PHONE			= ". $db->qstr( $VAR["homePhone"]		).",
-			CUSTOMER_WORK_PHONE	= ". $db->qstr( $VAR["workPhone"]		).",
-			CUSTOMER_MOBILE_PHONE	= ". $db->qstr( $VAR["mobilePhone"]	).",
-			CUSTOMER_EMAIL			= ". $db->qstr( $VAR["email"]			).", 
+			CUSTOMER_CITY			= ". $db->qstr( $VAR["city"]		).", 
+			CUSTOMER_STATE			= ". $db->qstr( $VAR["state"]		).", 
+			CUSTOMER_ZIP			= ". $db->qstr( $VAR["zip"]		).",
+			CUSTOMER_PHONE			= ". $db->qstr( $VAR["homePhone"]	).",
+			CUSTOMER_WORK_PHONE             = ". $db->qstr( $VAR["workPhone"]	).",
+			CUSTOMER_MOBILE_PHONE           = ". $db->qstr( $VAR["mobilePhone"]	).",
+			CUSTOMER_EMAIL			= ". $db->qstr( $VAR["email"]		).", 
 			CUSTOMER_TYPE			= ". $db->qstr( $VAR["customerType"]	).", 
-			CUSTOMER_FIRST_NAME		= ". $db->qstr( $VAR["firstName"]		).", 
-			CUSTOMER_LAST_NAME		= ". $db->qstr( $VAR["lastName"]		).",
-			DISCOUNT 					= ". $db->qstr( $VAR['discount']		)."
+			CUSTOMER_FIRST_NAME		= ". $db->qstr( $VAR["firstName"]	).", 
+			CUSTOMER_LAST_NAME		= ". $db->qstr( $VAR["lastName"]	).",
+			DISCOUNT                        = ". $db->qstr( $VAR['discount']	).",
+                        CUSTOMER_WWW                    = ". $db->qstr( $VAR['customerWww']     ).",
+                        CUSTOMER_NOTES                  = ". $db->qstr( $VAR['customerNotes']   )."
 			WHERE CUSTOMER_ID		= ". $db->qstr( $VAR['customer_id']	);
 			
 	if(!$result = $db->Execute($sql)) {
