@@ -6,6 +6,7 @@ if(!xml2php("invoice")) {
 }
 
 $invoice_id  = $VAR['invoice_id'];
+$invoice_id  = $VAR['invoice_id'];
 $customer_id = $VAR['customer_id'];
 //$currency_sym = $VAR['currency_sym'];
 //$workorder_id = $VAR['workorder_id';
@@ -172,6 +173,7 @@ $cthankyou = $setup1['INV_THANK_YOU'];
 $currency_sym = utf8_decode($company1['COMPANY_CURRENCY_SYMBOL']);
 
 //Customer Details
+$cusdisplay = $customer1['CUSTOMER_DISPLAY_NAME'];
 $cusnamef = $customer1['CUSTOMER_FIRST_NAME'];
 $cusnamel = $customer1['CUSTOMER_LAST_NAME'];
 $cusaddress = $customer1['CUSTOMER_ADDRESS'];
@@ -658,7 +660,7 @@ $pdf->temporary($company1['COMPANY_NAME'] );
 $pdf->addPageNumber("$page");
 $pdf->SetFont('Arial', 'B', 10);
 $pdf->addClientAddress( "Bill To:\n" .
-                        "$cusnamef $cusnamel\n" .
+                        "$cusdisplay\n" .
                         "$cusaddress\n" .
                         "$cuscity, $cusstate, $cuszip\n");                      
 //$pdf->addReglement("NETT 7 Days");
