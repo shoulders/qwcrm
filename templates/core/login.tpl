@@ -26,7 +26,7 @@
             </p>
             </td>
           <td align="center">
-              <!-- Start of new dashboard front page -->
+              <!-- Start of new dashboard front page 
               <table class="olotable" width="800" align="left" border ="1" cellpadding="5" cellspacing="5" >
                   <tr>
                       <td class="olohead" colspan="2">
@@ -57,7 +57,7 @@
                           </table>
                             </td>
                             </tr>
-                          </table>
+                          </table> -->
                   
             
             <table class="olotable"  border="0" align="center">
