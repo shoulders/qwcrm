@@ -1123,7 +1123,7 @@ function creat_workorder_status($db)
 } 	
 
 function create_table_tracker($db) {
-	$q="CREATE TABLE IF NOT EXISTS `".PRFX."tracker` (
+	$q="CREATE TABLE IF NOT EXISTS `".PRFX."TRACKER` (
 		`id` int(20) NOT NULL auto_increment,
 		`date` int(20) NOT NULL default '0',
 		`ip` varchar(32) NOT NULL default '',
