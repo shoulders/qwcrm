@@ -136,7 +136,7 @@
                                     </table>
 
                                     <br>
-                                    <!--<table width="100%" cellpadding="4" cellspacing="0" border="0" >
+                                    <table width="100%" cellpadding="4" cellspacing="0" border="0" >
                                         <tr>
                                             <td class="menuhead2">&nbsp;{$translate_invoice_parts}</td>
                                         </tr><tr>
@@ -162,7 +162,7 @@
                                                     </tr>
 												{/section}
                                                 </table>
-										{/if}-->
+										{/if}
                                             </td>
                                         </tr>
                                     </table>
