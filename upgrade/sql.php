@@ -43,6 +43,21 @@ if(!create_table_customer($db)) {
 		</tr>\n");
 }
 ###############################
+# UPDATE EMPLOYEE TABLE				#
+###############################
+if(!update_employee_address($db)) {
+	echo("<tr>\n
+			<td>UPDATED TABLE ".PRFX."TABLE_EMPLOYEE</td>\n
+			<td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
+		</tr>\n");
+	$error_flag = true;
+} else {
+	echo("<tr>\n
+			<td>UPDATED TABLE ".PRFX."TABLE_EMPLOYEE</td>
+			<td><font color=\"green\"><b>OK</b></font></td>\n
+		</tr>\n");
+}
+###############################
 # create_labor_rate				#
 ###############################
 if(!create_labor_rate($db)) {
@@ -197,7 +212,7 @@ function create_table_company($db)
 }
 function create_table_customer($db){
 
-	$q="ALTER TABLE `".PRFX."TABLE_CUSTOMER` CHANGE `DISCOUNT` `DISCOUNT`  decimal(10,2) NOT NULL default '0.00';" ;
+	$q="ALTER TABLE `".PRFX."TABLE_CUSTOMER` CHANGE `DISCOUNT` `DISCOUNT`  decimal(10,2) NOT NULL default '0.00', CHANGE `CUSTOMER_ADDRESS` `CUSTOMER_ADDRESS` TEXT`;" ;
 
 	$rs = $db->Execute($q);
 		if(!$rs) {
@@ -376,6 +391,16 @@ function create_acl($db) {
 }
 function update_assets($db) {
   $q = "ALTER TABLE `".PRFX."TABLE_ASSET` CHANGE `ASSEST_NUMBER` `ASSET_NUMBER`,
+  ;";
+$rs = $db->Execute($q);
+		if(!$rs) {
+			return false;
+		} else {
+			return true;
+		}
+
+function update_employee_address($db) {
+  $q = "ALTER TABLE `".PRFX."TABLE_EMPLOYEE` CHANGE `EMPLOYEE_ADDRESS` `EMPLOYEE_ADDRESS` TEXT`,
   ;";
 $rs = $db->Execute($q);
 		if(!$rs) {
