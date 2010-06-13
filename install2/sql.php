@@ -530,6 +530,51 @@ echo("<tr>\n
 				<td><font color=\"green\"><b>OK</b></font></td>\n
 			</tr>\n");
 }
+##################################
+# create_TABLE_EXPENSE				#
+##################################
+if(!create_expense($db)) {
+echo("<tr>\n
+				<td>CREATE TABLE IF NOT EXISTS ".PRFX."TABLE_EXPENSE</td>\n
+				<td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
+			</tr>\n");
+	$error_flag = true;
+} else {
+	echo("<tr>\n
+				<td>CREATE TABLE IF NOT EXISTS ".PRFX."TABLE_EXPENSE</td>\n
+				<td><font color=\"green\"><b>OK</b></font></td>\n
+			</tr>\n");
+}
+##################################
+# create_refund				#
+##################################
+if(!create_refund($db)) {
+echo("<tr>\n
+				<td>CREATE TABLE IF NOT EXISTS ".PRFX."TABLE_REFUND</td>\n
+				<td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
+			</tr>\n");
+	$error_flag = true;
+} else {
+	echo("<tr>\n
+				<td>CREATE TABLE IF NOT EXISTS ".PRFX."TABLE_REFUND</td>\n
+				<td><font color=\"green\"><b>OK</b></font></td>\n
+			</tr>\n");
+}
+##################################
+# create_supplier				#
+##################################
+if(!create_supplier($db)) {
+echo("<tr>\n
+				<td>CREATE TABLE IF NOT EXISTS ".PRFX."TABLE_SUPPLIER</td>\n
+				<td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
+			</tr>\n");
+	$error_flag = true;
+} else {
+	echo("<tr>\n
+				<td>CREATE TABLE IF NOT EXISTS ".PRFX."TABLE_SUPPLIER</td>\n
+				<td><font color=\"green\"><b>OK</b></font></td>\n
+			</tr>\n");
+}
 
 ##################################
 # Functions								#
@@ -1140,7 +1185,7 @@ function create_setup($db) {
   `DD_INS` varchar(200) default NULL,
   `INVOICE_NUMBER_START` varchar(10) default NULL,
   `EMAIL_MSG_NEW_INVOICE` BLOB default NULL,
-  `EMAIL_MSG_NEW_INVOICE_ACTIVE` INT(2) default '0',
+  `EMAIL_MSG_NEW_INVOICE_ACTIVE` INT(1) default '0',
   `EMAIL_MSG_INVOICE_REMINDER` BLOB default NULL,
   `EMAIL_MSG_PAYMENT_RECEIVED` BLOB default NULL,
   `EMAIL_MSG_WO_CREATED` BLOB default NULL,
@@ -1166,12 +1211,12 @@ function create_setup($db) {
   `EMAIL_MSG_SOFTWARE_RENEWAL_ALERT_ACTIVE` INT(2) default '0',
   KEY `OFFICE_HOUR_START` (`OFFICE_HOUR_START`,`OFFICE_HOUR_END`)
 ) ENGINE=MyISAM ";
-	$rs = $db->Execute($q);
-		if(!$rs) {
-			return false;
-		} else {
-			$q = "REPLACE INTO `".PRFX."SETUP` VALUES (7, 19, '', '', '', '', 1, 0,'','','','','','','03','0.00','','','1.5','','','','','','Please use invoice number as transactions details. This helps us to determine who has paid in a timely manner.','','','','','','','','','','','','','','','','','','','','','','','','','')";
-		
+    $rs = $db->Execute($q);
+        if(!$rs) {
+            return false;
+        } else {
+            $q = "REPLACE INTO `".PRFX."SETUP` VALUES (7, 19, '', '', '', '', 1, 0,'0.0','','','','','','03','0.00','','','1.5','','','','','','Please use invoice number as transactions details. This helps us to determine who has paid in a timely manner.','','','0','','','','','','','','60','','','','7','','0','0','0','0','0','0','0','0','0','0')";
+        
 			if(!$rs = $db->Execute($q)) {
 				return false;
 			} else {
@@ -1266,9 +1311,14 @@ function create_acl($db) {
 (66, 'billing:proc_deposit', 1, 1, 1, 1, 0),
 (67, 'billing:paymate_deposit', 1, 1, 1, 1, 0),
 (68, 'control:backup', 0, 0, 0, 1, 0),
-(69, 'customer:email', 1, 1, 1, 1, 0)";
-
-			$rs = $db->Execute($q);
+(69, 'customer:email', 1, 1, 1, 1, 0),
+(70, 'expense:new', 1, 1, 1, 1, 0),
+(71, 'expense:search', 1, 1, 1, 1, 0),
+(72, 'refund:new', 1, 1, 1, 1, 0),
+(73, 'refund:search', 1, 1, 1, 1, 0),
+(74, 'supplier:new', 1, 1, 1, 1, 0),
+(75, 'supplier:search', 1, 1, 1, 1, 0)";
+                        $rs = $db->Execute($q);
 			if(!$rs) {
 				return false;
 			} else {
@@ -1654,6 +1704,74 @@ if(!$rs = $db->Execute($q)) {
 				return true;
 			}
 	}
+}
+
+function create_expense($db) {
+   $q = "CREATE TABLE IF NOT EXISTS ".PRFX."TABLE_EXPENSE` (
+  `EXPENSE_ID` int(10) NOT NULL AUTO_INCREMENT,
+  `EXPENSE_PAYEE` varchar(80) DEFAULT NULL,
+  `EXPENSE_DATE` int(20) DEFAULT NULL,
+  `EXPENSE_TYPE` varchar(20) DEFAULT NULL,
+  `EXPENSE_PAYMENT_METHOD` varchar(20) DEFAULT NULL,
+  `EXPENSE_NET_AMOUNT` decimal(10,2) DEFAULT '0.00',
+  `EXPENSE_TAX_RATE` decimal(3,1) DEFAULT '0.0',
+  `EXPENSE_TAX_AMOUNT` decimal(10,2) DEFAULT '0.00',
+  `EXPENSE_GROSS_AMOUNT` decimal(10,2) DEFAULT '0.00',
+  `EXPENSE_NOTES` text,
+  `EXPENSE_ITEMS` text,
+  PRIMARY KEY (`EXPENSE_ID`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1" ;
+if(!$rs = $db->Execute($q)) {
+				return false;
+			} else {
+				return true;
+			}
+}
+function create_refund($db) {
+   $q = "CREATE TABLE IF NOT EXISTS ".PRFX."TABLE_REFUND` (
+  `REFUND_ID` int(10) NOT NULL AUTO_INCREMENT,
+  `REFUND_PAYEE` varchar(80) DEFAULT NULL,
+  `REFUND_DATE` int(20) DEFAULT NULL,
+  `REFUND_TYPE` varchar(20) DEFAULT NULL,
+  `REFUND_PAYMENT_METHOD` varchar(20) DEFAULT NULL,
+  `REFUND_NET_AMOUNT` decimal(10,2) DEFAULT '0.00',
+  `REFUND_TAX_RATE` decimal(3,1) DEFAULT '0.0',
+  `REFUND_TAX_AMOUNT` decimal(10,2) DEFAULT '0.00',
+  `REFUND_GROSS_AMOUNT` decimal(10,2) DEFAULT '0.00',
+  `REFUND_NOTES` text,
+  `REFUND_ITEMS` text,
+  PRIMARY KEY (`REFUND_ID`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1" ;
+if(!$rs = $db->Execute($q)) {
+				return false;
+			} else {
+				return true;
+			}
+}
+function create_supplier($db) {
+   $q = "CREATE TABLE IF NOT EXISTS ".PRFX."TABLE_SUPPLIER` (
+  `SUPPLIER_ID` int(10) NOT NULL AUTO_INCREMENT,
+  `SUPPLIER_NAME` varchar(80) DEFAULT NULL,
+  `SUPPLIER_CONTACT` varchar(80) DEFAULT NULL,
+  `SUPPLIER_TYPE` varchar(20) DEFAULT NULL,
+  `SUPPLIER_PHONE` varchar(20) DEFAULT NULL,
+  `SUPPLIER_FAX` varchar(20) DEFAULT NULL,
+  `SUPPLIER_MOBILE` varchar(20) DEFAULT NULL,
+  `SUPPLIER_WWW` varchar(80) DEFAULT NULL,
+  `SUPPLIER_EMAIL` varchar(80) DEFAULT NULL,
+  `SUPPLIER_ADDRESS` text,
+  `SUPPLIER_CITY` varchar(40) DEFAULT NULL,
+  `SUPPLIER_STATE` varchar(40) DEFAULT NULL,
+  `SUPPLIER_ZIP` varchar(20) DEFAULT NULL,
+  `SUPPLIER_NOTES` text,
+  `SUPPLIER_DESCRIPTION` text,
+  PRIMARY KEY (`SUPPLIER_ID`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 " ;
+if(!$rs = $db->Execute($q)) {
+				return false;
+			} else {
+				return true;
+			}
 }
 
 function create_country($db){
