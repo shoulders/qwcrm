@@ -683,9 +683,16 @@ $pdf->Cell(20, 6, 'Sub Total', 1, 0, 'R', 1);
 $y_axis = $y_axis + $row_height;
 
 //Select the Products we want to show in your PDF file
+
+//Labour Lookup
 mysql_select_db( $DB_NAME , $link );
 $query=mysql_query('select INVOICE_LABOR_UNIT, INVOICE_LABOR_DESCRIPTION, INVOICE_LABOR_RATE from '.PRFX.'TABLE_INVOICE_LABOR WHERE INVOICE_ID='.$db->qstr($invoice['INVOICE_ID']),$link);
-$result = $query or die(mysql_error() . '<br />'. $query);
+$labour_result = $query or die(mysql_error() . '<br />'. $query);
+
+//Parts Lookup
+mysql_select_db( $DB_NAME , $link );
+$query=mysql_query('select INVOICE_PARTS_COUNT, INVOICE_PARTS_DESCRIPTION, INVOICE_PARTS_AMOUNT from '.PRFX.'TABLE_INVOICE_PARTS WHERE INVOICE_ID='.$db->qstr($invoice['INVOICE_ID']),$link);
+$parts_result = $query or die(mysql_error() . '<br />'. $query);
 
 //initialize counter
 $i = 0;
@@ -696,27 +703,46 @@ $max = 15;
 //Set Row Height
 $row_height = 6;
 
-while($row = mysql_fetch_array($result))
+// display Labour on invoice
+while($labour_row = mysql_fetch_array($labour_result))
 {
     //If the current row is the last one, create new page and print column title
     
-    $code = $row['INVOICE_LABOR_UNIT'];
-    $price = sprintf( "%.2f", $row['INVOICE_LABOR_RATE']);
-    $name = $row['INVOICE_LABOR_DESCRIPTION'];
-	$subtotal = sprintf( "%.2f", ($row['INVOICE_LABOR_UNIT'] *  $row['INVOICE_LABOR_RATE']));
-	
+    $labour_code = $labour_row['INVOICE_LABOR_UNIT'];
+    $labour_price = sprintf( "%.2f", $labour_row['INVOICE_LABOR_RATE']);
+    $labour_name = $labour_row['INVOICE_LABOR_DESCRIPTION'];
+    $labour_subtotal = sprintf( "%.2f", ($labour_row['INVOICE_LABOR_UNIT'] *  $labour_row['INVOICE_LABOR_RATE']));	
 	
     $pdf->SetY($y_axis + $y_axis_initial + $row_height);
     $pdf->SetX($distx);
-    $pdf->Cell(15, 6, $code, 1, 0, 'L', 0);
-    $pdf->Cell(140, 6, $name, 1, 0, 'L', 0);
-    $pdf->Cell(20, 6, $price, 1, 0, 'R', 0);
-    $pdf->Cell(20, 6, $subtotal, 1, 0, 'R', 1);
+    $pdf->Cell(15, 6, $labour_code, 1, 0, 'L', 0);
+    $pdf->Cell(140, 6, $labour_name, 1, 0, 'L', 0);
+    $pdf->Cell(20, 6, $labour_price, 1, 0, 'R', 0);
+    $pdf->Cell(20, 6, $labour_subtotal, 1, 0, 'R', 1);
 
     //Go to next row
     $y_axis = $y_axis + $row_height;
     $i = $i + 1;
-	
+}
+
+ // display parts on invoice
+while($parts_row = mysql_fetch_array($parts_result))
+{   
+    $parts_code = $parts_row['INVOICE_PARTS_COUNT'];
+    $parts_price = sprintf( "%.2f", $parts_row['INVOICE_PARTS_AMOUNT']);
+    $parts_name = $parts_row['INVOICE_PARTS_DESCRIPTION'];
+    $parts_subtotal = sprintf( "%.2f", ($parts_row['INVOICE_PARTS_COUNT'] *  $parts_row['INVOICE_PARTS_AMOUNT']));
+
+    $pdf->SetY($y_axis + $y_axis_initial + $row_height);
+    $pdf->SetX($distx);
+    $pdf->Cell(15, 6, $parts_code, 1, 0, 'L', 0);
+    $pdf->Cell(140, 6, $parts_name, 1, 0, 'L', 0);
+    $pdf->Cell(20, 6, $parts_price, 1, 0, 'R', 0);
+    $pdf->Cell(20, 6, $parts_subtotal, 1, 0, 'R', 1);
+
+    //Go to next row
+    $y_axis = $y_axis + $row_height;
+    $i = $i + 1;
 }
 //Add Totals Box
         $pdf->SetY($y_axis_initial +($row_height * $max + 1));
