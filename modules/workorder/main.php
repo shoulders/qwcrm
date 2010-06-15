@@ -15,11 +15,11 @@ if(!xml2php("workorder")) {
 $where = "WHERE ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_CURRENT_STATUS= ".$db->qstr(1);
 $smarty->assign('new', display_workorders($db, $page_no, $where));
 
-/* display new Workorders */	
+/* display assigned Workorders */	
 $where = "WHERE ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_CURRENT_STATUS= ".$db->qstr(2);
 $smarty->assign('assigned', display_workorders($db, $page_no, $where));
 
-/* display new Workorders */	
+/* display Workorders awaiting parts  */	
 $where = "WHERE ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_CURRENT_STATUS= ".$db->qstr(3);
 $smarty->assign('awaiting', display_workorders($db, $page_no, $where));
 
