@@ -57,6 +57,7 @@ function display_company_info($db, $customer_id){
 
 function display_customer_search($db, $name, $page_no, $smarty) {
 	global $smarty;
+        $safe_name = strip_tags($name);
 	
 	// Define the number of results per page
 	$max_results = 10;
@@ -65,7 +66,7 @@ function display_customer_search($db, $name, $page_no, $smarty) {
 	// on the current page number.
 	$from = (($page_no * $max_results) - $max_results);  
 	
-	$sql = "SELECT * FROM ".PRFX."TABLE_CUSTOMER WHERE CUSTOMER_DISPLAY_NAME LIKE '%$name%' ORDER BY CUSTOMER_DISPLAY_NAME LIMIT $from, $max_results";
+	$sql = "SELECT * FROM ".PRFX."TABLE_CUSTOMER WHERE CUSTOMER_DISPLAY_NAME LIKE '%$safe_name%' ORDER BY CUSTOMER_DISPLAY_NAME LIMIT $from, $max_results";
 	
 	//print $sql;
 	
@@ -81,7 +82,7 @@ function display_customer_search($db, $name, $page_no, $smarty) {
 	}
 	
 	// Figure out the total number of results in DB: 
-	$results = $db->Execute("SELECT COUNT(*) as Num FROM ".PRFX."TABLE_CUSTOMER WHERE CUSTOMER_DISPLAY_NAME LIKE ".$db->qstr("$name%") );
+	$results = $db->Execute("SELECT COUNT(*) as Num FROM ".PRFX."TABLE_CUSTOMER WHERE CUSTOMER_DISPLAY_NAME LIKE ".$db->qstr("$safe_name%") );
 	
 	if(!$total_results = $results->FetchRow()) {
 		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');

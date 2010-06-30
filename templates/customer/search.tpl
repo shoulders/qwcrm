@@ -12,7 +12,7 @@
 		<script type="text/javascript">
 		//<![CDATA[
 		function validate_customer_search(frm) {
-		var value = '';
+		var value =  '';
 		var errFlag = new Array();
 		var _qfGroups = {};
 		_qfMsg = '';
@@ -74,27 +74,27 @@
 								</td>
 								<td valign="top" nowrap>
 								<form id="1">
-									<a href="?page=customer%3Aview&name={$name}&submit=submit&page_no=1"><img src="images/rewnd_24.gif" border="0" alt=""></a>&nbsp;
+									<a href="?page=customer%3Aview&name={$name|escape}&submit=submit&page_no=1"><img src="images/rewnd_24.gif" border="0" alt=""></a>&nbsp;
 									{if $previous != ''}
-										<a href="?page=customer%3Aview&name={$name}&submit=submit&page_no={$previous}"><img src="images/back_24.gif" border="0" alt=""></a>&nbsp;
+										<a href="?page=customer%3Aview&name={$name|escape}&submit=submit&page_no={$previous}"><img src="images/back_24.gif" border="0" alt=""></a>&nbsp;
 									{/if}
 									
                                 		<select name="page_no" onChange="go()">
 											{section name=page loop=$total_pages start=1}
-												<option value="?page=customer%3Aview&name={$name}&submit=submit&page_no={$smarty.section.page.index}" {if $page_no == $smarty.section.page.index } Selected {/if}>
+												<option value="?page=customer%3Aview&name={$name|escape}&submit=submit&page_no={$smarty.section.page.index}" {if $page_no == $smarty.section.page.index } Selected {/if}>
 													{$translate_page} {$smarty.section.page.index} {$translate_of} {$total_pages} 
 												</option>
 											{/section}
-												<option value="?page=customer%3Aview&name={$name}&submit=submit&page_no={$total_pages}" {if $page_no == $total_pages} selected {/if}>
+												<option value="?page=customer%3Aview&name={$name|escape}&submit=submit&page_no={$total_pages}" {if $page_no == $total_pages} selected {/if}>
 													{$translate_page} {$total_pages} {$translate_of} {$total_pages}
 												</option>
 										</select>
 									
 									{if $next != ''}
-									<a href="?page=customer%3Aview&name={$name}&submit=submit&page_no={$next}"><img src="images/forwd_24.gif" border="0" alt=""></a>
+									<a href="?page=customer%3Aview&name={$name|escape}&submit=submit&page_no={$next}"><img src="images/forwd_24.gif" border="0" alt=""></a>
 									{/if}
 									
-									<a href="?page=customer%3Aview&name={$name}&submit=submit&page_no={$total_pages}"><img src="images/fastf_24.gif" border="0" alt=""></a>
+									<a href="?page=customer%3Aview&name={$name|escape}&submit=submit&page_no={$total_pages}"><img src="images/fastf_24.gif" border="0" alt=""></a>
 									<br>
 									{$total_results} {$translate_records_found}.
 									</form>
