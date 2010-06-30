@@ -756,6 +756,8 @@ function create_table_customer($db){
 		`CUSTOMER_WORK_PHONE` varchar(13) NOT NULL default '',
 		`CUSTOMER_MOBILE_PHONE` varchar(13) NOT NULL default '',
 		`CUSTOMER_EMAIL` varchar(30) default NULL,
+                `CUSTOMER_WWW` varchar(80) default NULL,
+                `CUSTOMER_NOTES` text default NULL,
 		`CUSTOMER_TYPE` varchar(20) default NULL,
 		`CUSTOMER_FIRST_NAME` varchar(20) default NULL,
 		`CUSTOMER_LAST_NAME` varchar(20) default NULL,
@@ -1707,7 +1709,7 @@ if(!$rs = $db->Execute($q)) {
 }
 
 function create_expense($db) {
-   $q = "CREATE TABLE IF NOT EXISTS ".PRFX."TABLE_EXPENSE` (
+   $q = "CREATE TABLE IF NOT EXISTS `".PRFX."TABLE_EXPENSE` (
   `EXPENSE_ID` int(10) NOT NULL AUTO_INCREMENT,
   `EXPENSE_PAYEE` varchar(80) DEFAULT NULL,
   `EXPENSE_DATE` int(20) DEFAULT NULL,
@@ -1728,7 +1730,7 @@ if(!$rs = $db->Execute($q)) {
 			}
 }
 function create_refund($db) {
-   $q = "CREATE TABLE IF NOT EXISTS ".PRFX."TABLE_REFUND` (
+   $q = "CREATE TABLE IF NOT EXISTS `".PRFX."TABLE_REFUND` (
   `REFUND_ID` int(10) NOT NULL AUTO_INCREMENT,
   `REFUND_PAYEE` varchar(80) DEFAULT NULL,
   `REFUND_DATE` int(20) DEFAULT NULL,
@@ -1749,7 +1751,7 @@ if(!$rs = $db->Execute($q)) {
 			}
 }
 function create_supplier($db) {
-   $q = "CREATE TABLE IF NOT EXISTS ".PRFX."TABLE_SUPPLIER` (
+   $q = "CREATE TABLE IF NOT EXISTS `".PRFX."TABLE_SUPPLIER` (
   `SUPPLIER_ID` int(10) NOT NULL AUTO_INCREMENT,
   `SUPPLIER_NAME` varchar(80) DEFAULT NULL,
   `SUPPLIER_CONTACT` varchar(80) DEFAULT NULL,

@@ -205,7 +205,7 @@ if($error_flag == true) {
 				The Admin login is: ".$login ." and the password you supplied in the previous page.<br><br>
 				Where to find help:<br>
 				The user Documentation is at <a href=\"http://team.myitcrm.com/projects/show/main/\">http://team.myitcrm.com</a><br>
-				Bug/Feature Reporting is at <a href=\"http://myitcrm.com/forum/\">Forum Bug/Feature Requests</a><br>
+				Bug/Feature Reporting is at <a href=\"http://forum.myitcrm.com\">Forum Bug/Feature Requests</a><br>
 
 				</td>\n</tr>\n");
 }
@@ -393,6 +393,7 @@ echo ("
 																						<select name=\"language\" size=\"1\" >
 																							<option value=\"english.xml\" SELECTED>English-UK
 																							<option value=\"english_US.xml\">English-US
+                                                                                                                                                                                        <option value=\"portuguese.xml\">Portuguese
 																																													
 																						</select>
 																					</td>

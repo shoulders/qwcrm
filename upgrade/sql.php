@@ -133,7 +133,8 @@ echo("<tr>\n
 				<td>CREATED TABLE ".PRFX."TABLE_EXPENSE</td>\n
 				<td><font color=\"green\"><b>OK</b></font></td>\n
 			</tr>\n");
-}##################################
+}
+##################################
 # create refund								#
 ##################################
 if(!create_refund($db) ) {
@@ -147,7 +148,8 @@ echo("<tr>\n
 				<td>CREATED TABLE ".PRFX."TABLE_REFUND</td>\n
 				<td><font color=\"green\"><b>OK</b></font></td>\n
 			</tr>\n");
-}##################################
+}
+##################################
 # create_supplier							#
 ##################################
 if(!create_supplier($db) ) {
@@ -212,7 +214,11 @@ function create_table_company($db)
 }
 function create_table_customer($db){
 
-	$q="ALTER TABLE `".PRFX."TABLE_CUSTOMER` CHANGE `DISCOUNT` `DISCOUNT`  decimal(10,2) NOT NULL default '0.00', CHANGE `CUSTOMER_ADDRESS` `CUSTOMER_ADDRESS` TEXT`;" ;
+	$q="ALTER TABLE `".PRFX."TABLE_CUSTOMER`
+            CHANGE `DISCOUNT` `DISCOUNT`  decimal(10,2) NOT NULL default '0.00',
+            CHANGE `CUSTOMER_ADDRESS` `CUSTOMER_ADDRESS` text default NULL,
+            ADD `CUSTOMER_WWW` varchar(80) default NULL,
+            ADD `CUSTOMER_NOTES` text default NULL, ;" ;
 
 	$rs = $db->Execute($q);
 		if(!$rs) {
@@ -238,11 +244,8 @@ function create_labor_rate($db) {
 		} else {
 			return FALSE;
 		}
-			
-			
-		
 
-}
+                }
 
 function create_setup($db) {
   $q = "ALTER TABLE `".PRFX."SETUP`
@@ -398,7 +401,7 @@ $rs = $db->Execute($q);
 		} else {
 			return true;
 		}
-
+}
 function update_employee_address($db) {
   $q = "ALTER TABLE `".PRFX."TABLE_EMPLOYEE` CHANGE `EMPLOYEE_ADDRESS` `EMPLOYEE_ADDRESS` TEXT`,
   ;";
@@ -443,7 +446,7 @@ function create_customer_emails($db) {
 	}
 }
 function create_expense($db) {
-   $q = "CREATE TABLE IF NOT EXISTS ".PRFX."TABLE_EXPENSE` (
+   $q = "CREATE TABLE IF NOT EXISTS `".PRFX."TABLE_EXPENSE` (
   `EXPENSE_ID` int(10) NOT NULL AUTO_INCREMENT,
   `EXPENSE_PAYEE` varchar(80) DEFAULT NULL,
   `EXPENSE_DATE` int(20) DEFAULT NULL,
@@ -456,7 +459,7 @@ function create_expense($db) {
   `EXPENSE_NOTES` text,
   `EXPENSE_ITEMS` text,
   PRIMARY KEY (`EXPENSE_ID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1" ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ";
 if(!$rs = $db->Execute($q)) {
 				return false;
 			} else {
@@ -464,7 +467,7 @@ if(!$rs = $db->Execute($q)) {
 			}
 }
 function create_refund($db) {
-   $q = "CREATE TABLE IF NOT EXISTS ".PRFX."TABLE_REFUND` (
+   $q = "CREATE TABLE IF NOT EXISTS `".PRFX."TABLE_REFUND` (
   `REFUND_ID` int(10) NOT NULL AUTO_INCREMENT,
   `REFUND_PAYEE` varchar(80) DEFAULT NULL,
   `REFUND_DATE` int(20) DEFAULT NULL,
@@ -477,7 +480,7 @@ function create_refund($db) {
   `REFUND_NOTES` text,
   `REFUND_ITEMS` text,
   PRIMARY KEY (`REFUND_ID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1" ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ";
 if(!$rs = $db->Execute($q)) {
 				return false;
 			} else {
@@ -485,7 +488,7 @@ if(!$rs = $db->Execute($q)) {
 			}
 }
 function create_supplier($db) {
-   $q = "CREATE TABLE IF NOT EXISTS ".PRFX."TABLE_SUPPLIER` (
+   $q = "CREATE TABLE IF NOT EXISTS `".PRFX."TABLE_SUPPLIER` (
   `SUPPLIER_ID` int(10) NOT NULL AUTO_INCREMENT,
   `SUPPLIER_NAME` varchar(80) DEFAULT NULL,
   `SUPPLIER_CONTACT` varchar(80) DEFAULT NULL,
@@ -509,5 +512,6 @@ if(!$rs = $db->Execute($q)) {
 				return true;
 			}
 }
+
 ?>
 
