@@ -101,11 +101,11 @@
                               </td>
                             </tr>
 							{ /if}
-                            <tr align="center">
+                            <!--<tr align="center">
                                 <td colspan="2">
                                     <a href="password.php"> Forgotton your password?</a>
                                 </td>
-                            </tr>
+                            </tr> -->
                           </table>
                         </form>
                       </td>
