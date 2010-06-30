@@ -45,6 +45,9 @@
                                 <b>Invoice Status -  {$stats2.CONFIG_WORK_ORDER_STATUS}</b><br>
                                 <b>Invoice Date -</b>  {$invoice.INVOICE_DATE|date_format:"$date_format"} <br>
                                 <b>Due Date -</b>  {$invoice.INVOICE_DUE|date_format:"$date_format"}<br>
+                                {foreach item=item from=$customer_details}
+                                <b>Credit Terms -</b>  {$item.CREDIT_TERMS}<br>
+                                {/foreach}
                                 <br>
                                 <b>Work Order #</b>  {$invoice.WORKORDER_ID}<br>
                                 <b>Tech</b>  {$invoice.EMPLOYEE_DISPLAY_NAME}<br>

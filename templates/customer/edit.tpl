@@ -45,6 +45,12 @@
                                                                                                         <tr>
                                                                                                                 <td align="right"><strong>{$translate_email}</strong></td>
                                                                                                                 <td><input class="olotd5" value="{$customer[q].CUSTOMER_EMAIL}" name="email" size="50" type="text" /></td>
+                                                                                                        </tr>
+                                                                                                        <tr>
+                                                                                                                <td align="right"><strong>{$translate_credit_terms}</strong></td>
+                                                                                                                <td><input class="olotd5" value="{$customer[q].CREDIT_TERMS}" name="creditterms" size="50" type="text" /></td>
+                                                                                                        </tr>
+
                                                                                                         <tr>
                                                                                                                 <td align="right"><strong>{$translate_type}</strong><span style="color: #ff0000">*</span></td>
                                                                                                                 <td>

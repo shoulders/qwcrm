@@ -290,6 +290,7 @@ $displayname =$VAR["displayName"] ;
 			CUSTOMER_FIRST_NAME		= ". $db->qstr( $VAR["firstName"]    ).", 
 			DISCOUNT 			= ". $db->qstr( $VAR['discount']     ).",
 			CUSTOMER_LAST_NAME		= ". $db->qstr( $VAR['lastName']     ).",
+			CREDIT_TERMS                    = ". $db->qstr( $VAR['creditterms']  ).",
                         CUSTOMER_WWW                    = ". $db->qstr( $VAR['customerWww']  ).",
                         CUSTOMER_NOTES                  = ". $db->qstr( $VAR['customerNotes']);
 			
@@ -342,6 +343,7 @@ $string2=stripslashes($string);
 			CUSTOMER_FIRST_NAME		= ". $db->qstr( $VAR["firstName"]	).", 
 			CUSTOMER_LAST_NAME		= ". $db->qstr( $VAR["lastName"]	).",
 			DISCOUNT                        = ". $db->qstr( $VAR['discount']	).",
+                        CREDIT_TERMS                    = ". $db->qstr( $VAR['creditterms']  ).",
                         CUSTOMER_WWW                    = ". $db->qstr( $VAR['customerWww']     ).",
                         CUSTOMER_NOTES                  = ". $db->qstr( $VAR['customerNotes']   )."
 			WHERE CUSTOMER_ID		= ". $db->qstr( $VAR['customer_id']	);

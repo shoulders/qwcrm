@@ -276,6 +276,8 @@
 														{$item.CUSTOMER_CITY}, {$item.CUSTOMER_STATE} {$item.CUSTOMER_ZIP}<br>
 														{$item.CUSTOMER_PHONE}<br>
 														{$item.CUSTOMER_EMAIL}<br>
+														<br>
+														TERMS: <FONT color="red" size="+1">{$item.CREDIT_TERMS}</FONT><br><br><br>
 														Current customer discount rate is : 
                                                                 <input type="hidden" name="customer_id"   value="{$item.CUSTOMER_ID}">
                                                                 <input type="text" class="olotd4" size="4" name="discount" value="{$item.DISCOUNT}"> % <br>

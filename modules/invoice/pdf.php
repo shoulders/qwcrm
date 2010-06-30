@@ -182,6 +182,7 @@ $cuszip = $customer1['CUSTOMER_ZIP'];
 $cusstate = $customer1['CUSTOMER_STATE'];
 $cusphone = $customer1['CUSTOMER_PHONE'];
 $cusemail = $customer1['CUSTOMER_EMAIL'];
+$custerms = $customer1['CREDIT_TERMS'];
 
 //invoice details
 $totalinv = $invoice3['SUB_TOTAL'];
@@ -843,14 +844,16 @@ $invdue=(date($date_format ,($invoice[INVOICE_DUE])));
         $pdf->SetFont('Arial', 'B', 10);
 	$pdf->MultiCell(30, 6, "Invoice ID #\n" .
 							"Invoice Date\n" .
-							"Invoice Due\n" 
+							"Invoice Due\n" .
+							"CREDIT TERMS\n"
 														
 							, 0, 0, 'R', 0);
 	$pdf->SetY(25);
 	$pdf->SetX(170);
 	$pdf->MultiCell(30, 6, "$invoice[INVOICE_ID]\n" .
 							"$invdate\n" .
-							"$invdue\n"							 
+							"$invdue\n".
+                                                        "$custerms\n"
 							, 0, 0, 'L', 0);							
 	
 

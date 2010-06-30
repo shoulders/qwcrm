@@ -75,6 +75,10 @@
                                                                             <td align="right"><span style="color: #ff0000"></span><b>{$translate_email}</b></td>
                                                                             <td><input class="olotd5" name="email" type="text" size="50"/></td>
                                                                         </tr>
+                                                                        <tr>
+                                                                            <td align="right"><span style="color: #ff0000"></span><b>{$translate_credit_terms}</b></td>
+                                                                            <td><input class="olotd5" name="creditterms" type="text" size="50"/></td>
+                                                                        </tr>
                                                                     </tbody>
                                                                 </table>
                                                             </td>

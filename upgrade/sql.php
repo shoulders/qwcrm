@@ -217,6 +217,7 @@ function create_table_customer($db){
 	$q="ALTER TABLE `".PRFX."TABLE_CUSTOMER`
             CHANGE `DISCOUNT` `DISCOUNT`  decimal(10,2) NOT NULL default '0.00',
             CHANGE `CUSTOMER_ADDRESS` `CUSTOMER_ADDRESS` text default NULL,
+            ADD `CREDIT_TERMS` varchar(80) default NULL,
             ADD `CUSTOMER_WWW` varchar(80) default NULL,
             ADD `CUSTOMER_NOTES` text default NULL, ;" ;
 

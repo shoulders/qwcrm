@@ -72,7 +72,11 @@
                                                                     <td></td>
                                                                     <td></td>
                                                                     <td class="menutd"><b>{$translate_email}</b></td>
-                                                                    <td class="menutd">{$customer_details[i].CUSTOMER_EMAIL}</td>
+                                                                    <td class="menutd">{$customer_details[i].CUSTOMER_EMAIL}</td>                                                                    
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="menutd"><b>{$translate_credit_terms}</b></td>
+                                                                    <td class="menutd">{$customer_details[i].CREDIT_TERMS}</td>
                                                                 </tr>
                                                                 <tr class="row2">
                                                                     <td class="menutd" colspan="4"></td>
