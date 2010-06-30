@@ -713,7 +713,7 @@ function create_table_company($db)
 {
 	$q="CREATE TABLE IF NOT EXISTS `".PRFX."TABLE_COMPANY` (
   `COMPANY_NAME` varchar(60) NOT NULL default '',
-  `COMPANY_ADDRESS` varchar(60) NOT NULL default '',
+  `COMPANY_ADDRESS` text default NULL,
   `COMPANY_ABN` varchar(60) NOT NULL default '',
   `COMPANY_CITY` varchar(60) NOT NULL default '',
   `COMPANY_STATE` varchar(60) NOT NULL default '',
@@ -804,7 +804,7 @@ function create_table_employee($db) {
 		`EMPLOYEE_LAST_NAME` varchar(40) NOT NULL default '',
 		`EMPLOYEE_DISPLAY_NAME` varchar(80) NOT NULL default '',
 		`EMPLOYEE_SSN` int(9) NOT NULL default '0',
-		`EMPLOYEE_ADDRESS` varchar(40) NOT NULL default '',
+		`EMPLOYEE_ADDRESS` text default NULL,
 		`EMPLOYEE_CITY` varchar(40) NOT NULL default '',
 		`EMPLOYEE_STATE` char(60) NOT NULL default '',
 		`EMPLOYEE_ZIP` varchar(11) NOT NULL ,

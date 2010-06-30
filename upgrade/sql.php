@@ -192,7 +192,7 @@ function create_table_company($db)
 	$rs = $db->Execute($q);
 		if(!$rs) {
                      $q="ALTER TABLE `".PRFX."TABLE_COMPANY`
-            CHANGE `COMPANY_ADDRESS` `COMPANY_ADDRESS` varchar(100),
+            CHANGE `COMPANY_ADDRESS` `COMPANY_ADDRESS` text default NULL,
             ADD `COMPANY_FAX` varchar(30) default NULL,
             ADD `COMPANY_CURRENCY_SYMBOL` varchar(30) default NULL,
             ADD `COMPANY_CURRENCY_CODE` varchar(30) default NULL,

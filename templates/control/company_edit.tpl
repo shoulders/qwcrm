@@ -6,9 +6,9 @@
 		<td><div id="tabs_container">
                 <ul class="tabs">
                     <li class="active"><a href="#" rel="#tab_1_contents" class="tab"><img src="images/icons/key.png" alt="" border="0" height="14" width="14" />&nbsp;Company Details</a></li>
-                    <li><a href="#" rel="#tab_2_contents" class="tab"><img src="images/icons/money.png" alt="" border="0" height="14" width="14" />&nbsp;Currency Setup</a></li>
-                    <li><a href="#" rel="#tab_3_contents" class="tab"><img src="images/icons/16x16/email.jpg" alt="" border="0" height="14" width="14" />&nbsp;Email Setup</a></li>
-                    <li><a href="#" rel="#tab_4_contents" class="tab"><img src="images/icons/16x16/email.jpg" alt="" border="0" height="14" width="14" />&nbsp;Email Messages</a></li>
+                    <li><a href="#" rel="#tab_2_contents" class="tab"><img src="images/icons/money.png" alt="" border="0" height="14" width="14" />&nbsp;Localisation Setup</a></li>
+                   <!-- <li><a href="#" rel="#tab_3_contents" class="tab"><img src="images/icons/16x16/email.jpg" alt="" border="0" height="14" width="14" />&nbsp;Email Setup</a></li>
+                    <li><a href="#" rel="#tab_4_contents" class="tab"><img src="images/icons/16x16/email.jpg" alt="" border="0" height="14" width="14" />&nbsp;Email Messages</a></li> -->
 
                 </ul>
 
@@ -41,7 +41,7 @@
 												<td><input class="olotd5" type="text" name="company_abn" value="{$company[q].COMPANY_ABN}"></td>
 											</tr><tr>
 												<td align="right"><b>Address:</b></td>
-												<td><input class="olotd5" type="text" name="address" value="{$company[q].COMPANY_ADDRESS}"></td>
+                                                                                                <td><textarea class="olotd5" cols="30" rows="3"  name="address" >{$company[q].COMPANY_ADDRESS}</textarea></td>
 											</tr><tr>
 												<td align="right"><b>City:</b></td>
 												<td><input class="olotd5" type="text" name="city" value="{$company[q].COMPANY_CITY}"></td>
@@ -159,7 +159,7 @@
 				</tr>
 			</table>
                     </div>
-                                        <!-- Tab 3 Contents -->
+                                        <!-- Tab 3 Contents 
                     <div id="tab_3_contents" class="tab_contents">                        
                         <table width="100%" cellpadding="5" cellspacing="0" border="0" >
 				<tr>
@@ -169,7 +169,7 @@
 					<table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0" >
 						<tr>
 							<td width="100%" valign="top" >
-								<!-- Content Here -->
+								
 								{section name=q loop=$company}
 									
 										<table  cellpadding="5" cellspacing="0">
@@ -193,7 +193,6 @@
                                                                                                         <option value="SSL" { if $company[q].COMPANY_EMAIL_CONNECTION_TYPE == 'SSL' } SELECTED {/if}>SSL</option>
                                                                                                         <option value="" { if $company[q].COMPANY_EMAIL_CONNECTION_TYPE != 'SSL' } SELECTED {/if}>None</option>
                                                                                                     </select>
-                                                                                                    <!-- <input class="olotd5" type="text" size="5" name="conn_type" value="{$company[q].COMPANY_EMAIL_CONNECTION_TYPE}"></td> -->
 											</tr>
                                                                                         <tr>
 												<td align="right"><b>SMTP Login Name:</b></td>
@@ -212,14 +211,12 @@
 										</table>
 								
 								{/section}
-								<!-- End Content -->
 							</td>
 
 					</table>
 				</tr>
 			</table>
                     </div>
-                                        <!-- Tab 4 Contents -->
                     <div id="tab_4_contents" class="tab_contents">
                         <table width="100%" cellpadding="5" cellspacing="0" border="0" >
 				<tr>
@@ -229,7 +226,6 @@
 					<table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0" >
 						<tr>
 							<td width="100%" valign="top" >
-								<!-- Content Here -->
 								{section name=e loop=$setup}
 
 										<table  cellpadding="5" cellspacing="0">
@@ -284,13 +280,12 @@
 										</table>
 
 								{/section}
-								<!-- End Content -->
 							</td>
 
 					</table>
 				</tr>
 			</table>
-                    </div>
+                    </div> -->
                     </div>
                     </div>
 		</td>
