@@ -18,9 +18,9 @@
 		_qfMsg = '';
 		
 		value = frm.elements['name'].value;
-		if (value != '' && value.length > 50 && !errFlag['name']) {
+		if (value != '' && value.length > 10 && !errFlag['name']) {
 			errFlag['name'] = true;
-			_qfMsg = _qfMsg + '\n - Customers Name cannot be more than 50 characters';
+			_qfMsg = _qfMsg + '\n - Customers Name cannot be more than 10 characters';
 		}
 		
 		if (_qfMsg != '') {
