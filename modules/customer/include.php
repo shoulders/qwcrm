@@ -60,13 +60,13 @@ function display_customer_search($db, $name, $page_no, $smarty) {
         $safe_name = strip_tags($name);
 	
 	// Define the number of results per page
-	$max_results = 10;
+	$max_results = 50;
 	
 	// Figure out the limit for the Execute based
 	// on the current page number.
-	$from = (($page_no * $max_results) - $max_results);  
+	$from = (($page_no * $max_results) - $max_results);
 	
-	$sql = "SELECT * FROM ".PRFX."TABLE_CUSTOMER WHERE CUSTOMER_DISPLAY_NAME LIKE '%$safe_name%' ORDER BY CUSTOMER_DISPLAY_NAME LIMIT $from, $max_results";
+	$sql = "SELECT * FROM ".PRFX."TABLE_CUSTOMER WHERE CUSTOMER_DISPLAY_NAME LIKE '%$safe_name%' ORDER BY CUSTOMER_DISPLAY_NAME";
 	
 	//print $sql;
 	
@@ -82,18 +82,18 @@ function display_customer_search($db, $name, $page_no, $smarty) {
 	}
 	
 	// Figure out the total number of results in DB: 
-	$results = $db->Execute("SELECT COUNT(*) as Num FROM ".PRFX."TABLE_CUSTOMER WHERE CUSTOMER_DISPLAY_NAME LIKE ".$db->qstr("$safe_name%") );
+	$results = $db->Execute("SELECT COUNT(*) as Num FROM ".PRFX."TABLE_CUSTOMER WHERE CUSTOMER_DISPLAY_NAME LIKE ".$db->qstr("%$safe_name%") );
 	
 	if(!$total_results = $results->FetchRow()) {
 		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
 		exit;
 	} else {
-		$smarty->assign('total_results', $total_results['Num']);
+		$smarty->assign('total_results', strip_tags($total_results['Num']));
 	}
 		
 	// Figure out the total number of pages. Always round up using ceil()
 	$total_pages = ceil($total_results["Num"] / $max_results); 
-	$smarty->assign('total_pages', $total_pages);
+	$smarty->assign('total_pages', strip_tags($total_pages));
 	
 	// Assign the first page
 	if($page_no > 1) {
@@ -105,10 +105,10 @@ function display_customer_search($db, $name, $page_no, $smarty) {
     	$next = ($page_no + 1); 
 	}
 	
-	$smarty->assign('name', $name);
-	$smarty->assign('page_no', $page_no);
-	$smarty->assign("previous", $prev);	
-	$smarty->assign("next", $next);
+	$smarty->assign('name', strip_tags($name));
+	$smarty->assign('page_no', strip_tags($page_no));
+	$smarty->assign("previous", strip_tags($prev));
+	$smarty->assign("next", strip_tags($next));
 	
 	return $customer_search_result;
 }
