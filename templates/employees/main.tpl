@@ -8,6 +8,30 @@
                 if (destination) location.href = destination;
         }
         </script>
+<script type="text/javascript">
+		//<![CDATA[
+		function validate_employee_search(frm) {
+		var value =  '';
+		var errFlag = new Array();
+		var _qfGroups = {};
+		_qfMsg = '';
+
+		value = frm.elements['name'].value;
+		if (value != '' && value.length > 10 && !errFlag['name']) {
+			errFlag['name'] = true;
+			_qfMsg = _qfMsg + '\n - Employees Name cannot be more than 10 characters';
+		}
+
+		if (_qfMsg != '') {
+			_qfMsg = 'Invalid information entered.' + _qfMsg;
+			_qfMsg = _qfMsg + '\nPlease correct these fields.';
+			alert(_qfMsg);
+			return false;
+		}
+		return true;
+		}
+		//]]>
+</script>
 {/literal}
 
 <table width="100%" border="0" cellpadding="20" cellspacing="5">
@@ -33,9 +57,10 @@
 						<table class="menutable" width="100%" border="0" cellpadding="5" cellspacing="0">
 							<tr>
 								<td>
-									
-									<form method="POST" action="?page=employees:main">
-									<table border="0">
+									{literal}
+									<form method="GET" action="?page=employees:main" onsubmit="try { var myValidator = validate_employee_search; } catch(e) { return true; } return myValidator(this);">
+									{/literal}
+                                                                        <table border="0">
 									
 										<tr>
 											<font color="RED">{$translate_employee_display_name_criteria}</font>
