@@ -36,10 +36,12 @@ function display_employee_info($db, $employee_id) {
 #####################################
 
 function display_employee_search($db, $name, $page_no) {
+
+    $safe_name = strip_tags($name);
 	
 	global $smarty;
 	// Define the number of results per page
-	$max_results = 10;
+	$max_results = 50;
 	// Figure out the limit for the query based
 	// on the current page number.
 	$from = (($page_no * $max_results) - $max_results);
@@ -47,7 +49,7 @@ function display_employee_search($db, $name, $page_no) {
 	
 	$q = "SELECT ".PRFX."TABLE_EMPLOYEE.*,".PRFX."CONFIG_EMPLOYEE_TYPE.TYPE_NAME FROM ".PRFX."TABLE_EMPLOYEE 
 			LEFT JOIN ".PRFX."CONFIG_EMPLOYEE_TYPE ON (".PRFX."TABLE_EMPLOYEE. EMPLOYEE_TYPE = ".PRFX."CONFIG_EMPLOYEE_TYPE.TYPE_ID)	
-			WHERE EMPLOYEE_DISPLAY_NAME LIKE '%$name%' ORDER BY EMPLOYEE_DISPLAY_NAME LIMIT $from, $max_results ";
+			WHERE EMPLOYEE_DISPLAY_NAME LIKE '%$safe_name%' ORDER BY EMPLOYEE_DISPLAY_NAME";
 	
 	if(!$rs = $db->Execute($q)) {
 		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
@@ -58,14 +60,14 @@ function display_employee_search($db, $name, $page_no) {
 	
 
 	// Figure out the total number of results in DB: 
-	$q = "SELECT COUNT(*) as Num FROM ".PRFX."TABLE_EMPLOYEE WHERE EMPLOYEE_DISPLAY_NAME LIKE '$name%'";
+	$q = "SELECT COUNT(*) as Num FROM ".PRFX."TABLE_EMPLOYEE WHERE EMPLOYEE_DISPLAY_NAME LIKE '$safe_name%'";
 	
 	if(!$results = $db->Execute($q)) {
 		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
 		exit;
 	} else {
 		$total_results = $results->FetchRow();
-		$smarty->assign('total_results', $total_results['Num']);
+		$smarty->assign('total_results', strip_tags($total_results['Num']));
 	}
 	
 	// Figure out the total number of pages. Always round up using ceil()
@@ -73,7 +75,7 @@ function display_employee_search($db, $name, $page_no) {
 	
 	// Figure out the total number of pages. Always round up using ceil()
 	$total_pages = ceil($total_results["Num"] / $max_results); 
-	$smarty->assign('total_pages', $total_pages);
+	$smarty->assign('total_pages', strip_tags($total_pages));
 	
 	// Assign the first page
 	if($page_no > 1) {
@@ -86,10 +88,10 @@ function display_employee_search($db, $name, $page_no) {
     	$next = ($page_no + 1); 
 	}
 	
-	$smarty->assign('name', $name);
-	$smarty->assign('page_no', $page_no);
-	$smarty->assign("previous", $prev);	
-	$smarty->assign("next", $next);
+	$smarty->assign('name', strip_tags($name));
+	$smarty->assign('page_no', strip_tags($page_no));
+	$smarty->assign("previous", strip_tags($prev));
+	$smarty->assign("next", strip_tags($next));
 
 	return $employee_search_result;
 }
