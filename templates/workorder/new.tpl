@@ -1,20 +1,69 @@
-<!-- Add New Work Order tpl -->{literal}
-<script language="javascript" type="text/javascript" src="include/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
-<script language="javascript" type="text/javascript">
-    tinyMCE.init({
-        mode : "textareas",
-        theme : "advanced",
-        plugins : "advlink,iespell,insertdatetime,preview",
-        theme_advanced_buttons2_add : "separator,insertdate,inserttime,preview,separator,forecolor,backcolor",
-        theme_advanced_buttons2_add_before: "cut,copy,paste",
-        theme_advanced_toolbar_location : "bottom",
-        theme_advanced_toolbar_align : "center",
-        plugin_insertdate_dateFormat : "%Y-%m-%d",
-        plugin_insertdate_timeFormat : "%H:%M:%S",
-        extended_valid_elements : "a[name|href|target|title|onclick],img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name],hr[class|width|size|noshade],font[face|size|color|style],span[class|align|style]",
-        width : "100%"
-    });
+<!-- Add New Work Order tpl -->
+<script type="text/javascript" src="js/jquery-1.2.1.pack.js"></script>
+{literal}
+<script type="text/javascript">
+	function lookup(scope) {
+		if(scope.length == 0) {
+			// Hide the suggestion box.
+			$('#suggestions').hide();
+		} else {
+			$.post("modules/workorder/autosuggest.php", {queryString: ""+scope+""}, function(data){
+				if(data.length >0) {
+					$('#suggestions').show();
+					$('#autoSuggestionsList').html(data);
+				}
+			});
+		}
+	} // lookup
+
+	function fill(thisValue) {
+		$('#scope').val(thisValue);
+		setTimeout("$('#suggestions').hide();", 200);
+	}
 </script>
+
+<style type="text/css">
+	body {
+		font-family: Helvetica;
+		font-size: 11px;
+		color: #000;
+	}
+
+	h3 {
+		margin: 0px;
+		padding: 0px;
+	}
+
+	.suggestionsBox {
+		position: relative;
+		left: 30px;
+		margin: 10px 0px 0px 0px;
+		width: 200px;
+		background-color: #212427;
+		-moz-border-radius: 7px;
+		-webkit-border-radius: 7px;
+		border: 2px solid #000;
+		color: #fff;
+	}
+
+	.suggestionList {
+		margin: 0px;
+		padding: 0px;
+	}
+
+	.suggestionList li {
+
+		margin: 0px 0px 3px 0px;
+		padding: 3px;
+		cursor: pointer;
+	}
+
+	.suggestionList li:hover {
+		background-color: #659CD8;
+	}
+</style>
+
+
 <script type="text/javascript">
     //<![CDATA[
     function validate_new_workorder(frm) {
@@ -92,11 +141,18 @@
                                                         <tr>
                                                             <td class="olotd4">{$smarty.now|date_format:"$date_format"}</td>
                                                             <td class="olotd4">{$customer_details[i].CUSTOMER_DISPLAY_NAME}</td>
-                                                            <td class="olotd4"><input class="olotd4" size="40" name="scope" type="text"></td>
+                                                            <td class="olotd4"><input size="40" id="scope" name="scope" type="text" value="" onkeyup="lookup(this.value);" onblur="fill();">
+                                                                <div class="suggestionsBox" id="suggestions" style="display: none;">
+                                                            <img src="images/upArrow.png" style="position: relative; top: -12px; left: 1px;" alt="upArrow" />
+                                                            <div class="suggestionList" id="autoSuggestionsList">
+                                                                &nbsp;
+                                                            </div>
+                                                    </div></td>
                                                             <td class="olotd4">{$translate_workorder_created}</td>
                                                             <td class="olotd4">{$login}</td>
                                                         </tr>
                                                     </table>
+                                                    
                                                     <br>
                                                     <!-- Display Work Order Discription -->
                                                     <table class="olotable" width="100%" border="0" summary="Work order display">
