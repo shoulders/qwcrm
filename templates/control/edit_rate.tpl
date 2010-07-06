@@ -48,7 +48,7 @@
                                                             <td class="olotd4" nowrap>
                                                                 <input type="hidden" name="id" value="{$rate[q].LABOR_RATE_ID}">
                                                                 <input type="submit" name="submit" value="Delete">
-                                                                <input type="submit" name="submit" value="Edit">
+                                                                <input type="submit" name="submit" value="Update">
                                                             </td>
                                                         </tr>
                                                    </form>
@@ -76,7 +76,7 @@
                                                                         <option value="Service" SELECTED>Service</option>
                                                                     </select></td>
                                                                 <td class="olotd4" nowrap><input class="olotd5" type="text" name="manufacturer" value="{$rate[q].LABOR_MANUF}" size="15"></td>
-                                                                <td class="olotd4"><input type="submit" name="submit" value="New"></td>
+                                                                <td class="olotd4"><input type="submit" name="submit" value="Add"></td>
                                                             </tr>
                                                     </table>
                                                  </form>
