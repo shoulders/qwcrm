@@ -31,6 +31,32 @@
 		}
 		return true;
 		}
+                // Allow only numbers and letters including space, delete, enter , comma, backslash, apostrophe and minus
+function OnlyAlphaNumeric(e)
+{
+var key;
+var keychar;
+
+if (window.event)
+   key = window.event.keyCode;
+else if (e)
+   key = e.which;
+else
+   return true;
+keychar = String.fromCharCode(key);
+keychar = keychar.toLowerCase();
+
+// control keys
+if ((key==null) || (key==0) || (key==8) ||
+    (key==9) || (key==13) || (key==27) || (key==32) )
+   return true;
+
+// alphas and numbers
+else if ((("abcdefghijklmnopqrstuvwxyz0123456789,/-'").indexOf(keychar) > -1))
+   return true;
+else
+   return false;
+}
 		//]]>
 </script>
 
@@ -66,7 +92,7 @@
                                                                                     <td><font color="RED">{$translate_employee_display_name_criteria}</font></td>
                                                                                 </tr>
                                                                                 <tr>
-											<td align="left" valign="top"><b>{$translate_display}</b><input class="olotd4" name="name" type="text" /><input class="olotd4" name="submit" value="Search" type="submit" /></td>
+											<td align="left" valign="top"><b>{$translate_display}</b><input class="olotd4" name="name" type="text" onkeypress="return OnlyAlphaNumeric();" /><input class="olotd4" name="submit" value="Search" type="submit" /></td>
 										</tr>									
 									</table>
 									</div>
