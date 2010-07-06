@@ -1,8 +1,57 @@
 Changelog 
 .::NOTE::.
-ONLY BUGS THAT ARE REPORTED IN THE TRAC BUG TRACKER ON THE PROJECT PAGE WILL BE FIXED OR ASSIGNED TO A RELEASE.
 PLEASE REPORT ANY BUGS OR FEATURES THAT YOU FIND SO THAT WE CAN FIX'EM!
 To view more details on these issues, please visit http://team.myitcrm.com/
+
+===v0.2.9.0 : 12th July 2010===
+
+Bug #35: Partial Payment and Discounts: Closed   ( geevpc )
+Bug #38: add percent sign on discount box on new customer: Closed   ( geevpc )
+Bug #43: The address filed is not long enough for my addresses: Closed   ( geevpc )
+Bug #71: Payment balance not calculated properly: Closed   ( geevpc )
+Bug #74: PDF invoicing: Closed   ( geevpc )
+Bug #76: Print PDF Invoice not printing Parts: Closed   ( shoulders )
+Bug #77: Parts Count rounding up: Closed   ( )
+Bug #79: Tax adding correctly, but not showing correctly : Closed   ( sunh3 )
+Bug #98: partial payment calculation bug: Closed   ( geevpc )
+Bug #107: Default UTF-8 database character sets - MySQL: Closed   ( sunh3 )
+Bug #108: british pounds listed twice: Closed   ( geevpc )
+Bug #109: conuntry selection duplicate entery: Closed   ( geevpc )
+Bug #114: Remove Info text of redundant information: Closed   ( geevpc )
+Bug #115: Update footer link to team.myitcrm.com: Closed   ( geevpc )
+Bug #117: Discount Tax: Closed   ( geevpc )
+Bug #121: Rename Secondary Number to FAX: Closed   ( geevpc )
+Bug #122: Default Language selection during setup: Closed   ( geevpc )
+Bug #131: incorrect tracker table name: Closed   ( geevpc )
+Bug #132: svn installer issue: Closed   ( geevpc )
+Bug #133: customer and employee address database type changing: Closed   ( geevpc )
+Feature #26: Add to setup currency symbol: Closed   ( geevpc )
+Feature #27: The Work Resolution Box should be on the Work Order page: Closed   ( shoulders )
+Feature #28: Print WO summary to give to client upon receipt of goods: Closed   ( geevpc )
+Feature #29: When printing invoice by PDF no parts are shown: Closed   ( shoulders )
+Feature #30: Be able to assign a work order without scheduling it: Closed   ( )
+Feature #31: Paymate Intergration: Closed   ( geevpc )
+Feature #33: Be able assign a works order to another tech.: Closed   ( )
+Feature #34: Open MyIT CRM Project links in a new window: Closed   ( geevpc )
+Feature #36: Scope should be a drop down menu: Closed   ( geevpc )
+Feature #37: Scope should be editable: Closed   ( geevpc )
+Feature #46: Customer type list should be editable in admin: Closed   ( geevpc )
+Feature #55: Billing Rates Page - Making Changes...: Closed   ( geevpc )
+Feature #56: Date formatting setup: Closed   ( geevpc )
+Feature #61: Create Payment terms for customers: Closed   ( geevpc )
+Feature #62: Payment: Closed   ( geevpc )
+Feature #72: Date formatting: Closed   ( geevpc )
+Feature #80: add a second address line and house name on to customers details page: Closed   ( geevpc )
+Feature #81: add new customer and edit customer are not the same: Closed   ( geevpc )
+Feature #83: on WO page, history could be on another tab: Closed   ( geevpc )
+Feature #87: Expenses and Refund Section: Closed   ( geevpc )
+Feature #89: Forgot Password Reset Link: Closed   ( geevpc )
+Feature #100: when adding parts or labour the default qty should be populated with 1: Closed   ( geevpc )
+Feature #110: Button to copy details from administrator to company details: Closed   ( geevpc )
+Feature #124: Change display name to contact: Closed   ( geevpc )
+Feature #129: additional fields on customer: Closed   ( geevpc )
+
+
 
 ===v0.2.8.1 : 4th November 2009===
 
