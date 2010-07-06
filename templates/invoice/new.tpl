@@ -141,17 +141,9 @@
         //el.onkeypress = keyPressTestLabor;
         cellRight.appendChild(el);
   
-        // Manufacture
-        var cellRightSel = row.insertCell(3);
-        var sel = document.createElement('select');
-        sel.setAttribute('name', 'manufacture[' + iteration +']');
-        sel.options[0] = new Option('None', 'None');
-        sel.options[1] = new Option('text one', 'value1');
-        sel.setAttribute('class', 'olotd4');
-        cellRightSel.appendChild(sel);
-  
+         
         // Price
-        var cellRight = row.insertCell(4);
+        var cellRight = row.insertCell(3);
         var el = document.createElement('input');
         el.setAttribute('type', 'text');
         el.setAttribute('name', 'parts_price['+iteration+']');
@@ -432,20 +424,16 @@
                                                             <td class="row2"><b>{$translate_invoice_no}</b></td>
                                                             <td class="row2"><b>{$translate_invoice_count}</b></td>
                                                             <td class="row2"><b>{$translate_invoice_description}</b></td>
-                                                            <td class="row2"><b>{$translate_invoice_man}</b></td>
                                                             <td class="row2"><b>{$translate_invoice_price}</b></td>
-                                                            <td class="row2"><b>{$translate_invoice_total}</b></td>
-                                                            <td class="row2"><b>Remove</b></td> 
+                                                            <td class="row2"><b>{$translate_invoice_total}</b></td> 
                                                         </tr>
 												{section name=w loop=$parts}
                                                         <tr class="olotd4">
                                                             <td>{$smarty.section.w.index+1}</td>
                                                             <td>{$parts[w].INVOICE_PARTS_COUNT}</td>
                                                             <td>{$parts[w].INVOICE_PARTS_DESCRIPTION}</td>
-                                                            <td>{$parts[w].INVOICE_PARTS_MANUF}</td>
                                                             <td>${$parts[w].INVOICE_PARTS_AMOUNT|string_format:"%.2f"}</td>
                                                             <td>${$parts[w].INVOICE_PARTS_SUBTOTAL|string_format:"%.2f"}</td>
-                                                            <td><input type="hidden" name="part_id" value="{$parts[w].INVOICE_PARTS_ID}"><button value="Delete" onclick=""</button></td>
 
                                                         </tr>
 												{/section}
@@ -458,7 +446,6 @@
                                                             <td class="row2"><b>{$translate_invoice_no}</b></td>
                                                             <td class="row2"><b>{$translate_invoice_count}</b></td>
                                                             <td class="row2"><b>{$translate_invoice_description}</b></td>
-                                                            <td class="row2"><b>{$translate_invoice_man}</b></td>
                                                             <td class="row2"><b>{$translate_invoice_price}</b></td>
                                                         </tr>
 

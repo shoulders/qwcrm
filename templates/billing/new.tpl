@@ -88,7 +88,7 @@
 												{section name=r loop=$trans}
                                         <tr class="olotd4">
                                             <td>{$trans[r].TRANSACTION_ID}</td>
-                                            <td>{$trans[r].DATE|date_format:"%d/%m/%y %r"}</td>
+                                            <td>{$trans[r].DATE|date_format:"$date_format %r"}</td>
                                             <td><b>$</b>{$trans[r].AMOUNT|string_format:"%.2f"}</td>
                                             <td>
 													{if $trans[r].TYPE == 1}

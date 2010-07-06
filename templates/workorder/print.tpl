@@ -46,11 +46,11 @@ document.form1.bk2.value="";
 {/literal}
 {section name=i loop=$single_workorder_array}
 <table  width="100%" border="1" cellpadding="2" cellspacing="0" style="border-collapse: collapse;">
-	<tr>		
+    <tr align="center">
 		<!-- right column -->
 		<td valign="top" align="center" ><img src="images/logo.jpg" alt="" height="50"></td>
 		<!-- middle column -->
-		<td valign="top" align="center" width="200">
+		<td valign="top" align="center" width="80%">
 			<font size="+3">TECHNICIAN COPY</font><br>
 			Work Order ID# {$single_workorder_array[i].WORK_ORDER_ID}
 		</td>
@@ -282,7 +282,7 @@ document.form1.bk2.value="";
 {/section}
 <h2 align="center" >Please select which hardware/peripherials have been received.</h2>
 <form name=form1 method=post action=''>
-<table id="test" width="600" align="center" border="0" cellpadding="2" cellspacing="0" style="border-collapse: collapse;">
+<table id="test" width="650" align="center" border="0" cellpadding="2" cellspacing="0" style="border-collapse: collapse;">
     <tr>
         <td colspan="1" align="right" valign="top" >
             <input type="text" value="PC Tower/Laptop:" align="right" readonly><br><br>

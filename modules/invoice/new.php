@@ -177,7 +177,7 @@ if(isset($submit)){
 	$tax = $tax * .01;
         $sub_total_after_discount = $sub_total - $discount_amount;
 	$tax_amount = $sub_total_after_discount * $tax;
-	$invoice_total = $sub_total + $shipping + $tax_amount;
+	$invoice_total = $sub_total_after_discount + $shipping + $tax_amount;
 	
 	/* update database */
 		$q = "UPDATE ".PRFX."TABLE_INVOICE SET

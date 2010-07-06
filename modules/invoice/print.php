@@ -163,6 +163,7 @@ $cphone = $company1['COMPANY_PHONE'];
 $cemail = $company1['COMPANY_EMAIL'];
 $cabn = $company1['COMPANY_ABN'];
 $cthankyou = $setup1['INV_THANK_YOU'];
+$currency_sym = $company1['COMPANY_CURRENCY_SYMBOL'];
 
 //Customer Details
 $cusnamef = $customer1['CUSTOMER_FIRST_NAME'];
@@ -245,7 +246,7 @@ if($html_print == 1) {
 	$smarty->assign('company',$company);
 	$smarty->assign('company2',$company2);
 	$smarty->assign('currency_code',$currency_code);
-        $smarty->assign('currency_sym',$currency_sym);
+        //$smarty->assign('currency_sym',$currency_sym);
          $smarty->assign('country',$country);
         $smarty->assign('pamount',$pamount);
         $smarty->assign('paymate_amt',$paymate_amt);

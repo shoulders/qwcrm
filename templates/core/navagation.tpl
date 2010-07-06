@@ -38,10 +38,10 @@
 			<a href="?page=workorder:close&amp;wo_id={$wo_id}&amp;page_title={$translate_menu_close}"><img src="images/icons/close.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_close}</a>
 			<a href="?page=workorder:new_note&amp;wo_id={$wo_id}&amp;page_title={$translate_menu_new_note}"><img src="images/icons/note.png" alt="" border="0" height="14" width="14" /> {$translate_menu_new_note}</a>
 		    {/if}
-                        <a href="?page=workorder:print&amp;wo_id={$wo_id}&amp;page_title={$translate_menu_print}&amp;escape=1" target="_new"><img src="images/icons/print.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_print} - WO #{$wo_id}</a>
+                    <a href="?page=workorder:print&amp;wo_id={$wo_id}&amp;page_title={$translate_menu_print}&amp;escape=1" target="_blank"><img src="images/icons/print.gif" alt="" border="0" height="14" width="14" />&nbsp;{$translate_menu_print} WO </a>
 		
                     {if $cust_id > 0 }
-                    <a href="?page=invoice:new&amp;wo_id={$wo_id}&amp;page_title={$translate_menu_invoice}&amp;customer_id={$cust_id}"><img src="images/icons/invoice.png" alt="" border="0" height="14" width="14" /> {$translate_menu_invoice} - WO #{$wo_id}</a>
+                    <a href="?page=invoice:new&amp;wo_id={$wo_id}&amp;page_title={$translate_menu_invoice}&amp;customer_id={$cust_id}"><img src="images/icons/invoice.png" alt="" border="0" height="14" width="14" /> {$translate_menu_invoice} - WO </a>
                     {/if}
                 {/if}
 	  </div>

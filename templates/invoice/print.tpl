@@ -92,14 +92,12 @@
                 <td class="olotd4" width="40" align="right">{$currency_sym}{$labor[q].INVOICE_LABOR_RATE|string_format:"%.2f"}</td>
                 <td class="olotd4" width="80" align="right">{$currency_sym}{$labor[q].INVOICE_LABOR_SUBTOTAL|string_format:"%.2f"}</td>
             </tr>
-	{/section}
-        </table>
-        <table width="700" border="0" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
+	{/section}        
 	{section name=w loop=$parts}		
             <tr class="olotd4">
                 <td width="40" class="olotd4">{$parts[w].INVOICE_PARTS_COUNT}</td>
                 <td class="olotd4">{$parts[w].INVOICE_PARTS_DESCRIPTION}</td>
-                <td width="50" class="olotd4" align="right">{$currency_sym}{$parts[w].INVOICE_PARTS_AMOUNT|string_format:"%.2f"}</td>
+                <td width="40" class="olotd4" align="right">{$currency_sym}{$parts[w].INVOICE_PARTS_AMOUNT|string_format:"%.2f"}</td>
                 <td width="80" class="olotd4" align="right">{$currency_sym}{$parts[w].INVOICE_PARTS_SUBTOTAL|string_format:"%.2f"}</td>
             </tr>
 	{/section}
@@ -165,7 +163,7 @@
             <td class="olotd4" width="80" align="right">{$currency_sym} {$invoice.TAX|string_format:"%.2f"}</td>
         </tr><tr>
             <td class="olotd4"><b>Shipping</b></td>
-            <td class="olotd4" width="80" align="right">{$currency_sym}{$invoice.SHIPPING|string_format:"%.2f"}</td>
+            <td class="olotd4" width="80" align="right">{$currency_sym} {$invoice.SHIPPING|string_format:"%.2f"}</td>
         </tr><tr>
             <td class="olotd4"><b>Discount</b></td>
             <td class="olotd4" width="80" align="right">- {$currency_sym} {$invoice.DISCOUNT|string_format:"%.2f"}</td>

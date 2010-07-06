@@ -29,7 +29,7 @@
 												<table width="205" border_details="1" cellpadding="3" cellspacing="0" class="olotd5">
 													<tr>
 														<td><b>{$translate_parts_crm_order_id}</b> {$order[q].INVOICE_ID}<br>
-															<b>{$translate_parts_date}</b> {$order[q].DATE_CREATE|date_format:"%d-%m-%y"}<br>
+															<b>{$translate_parts_date}</b> {$order[q].DATE_CREATE|date_format:"$date_format"}<br>
 															<b>{$translate_parts_total}</b> ${$order[q].TOTAL}<br>
 															<b>{$translate_parts_total_items}</b> {$order[q].ITEMS}<br>
 															<b>{$translate_parts_weight}</b> {$order[q].WEIGHT} lbs<br>

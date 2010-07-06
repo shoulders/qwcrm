@@ -76,7 +76,7 @@
 														<td>
 															
 															<b>Start Time: </b> 
-															<input size="10" name="start[SCHEDULE_date]" type="text" id="SCHEDULE_date" value="{$cur_schedule[i].SCHEDULE_START|date_format:"%d-%m-%y"}"/>
+															<input size="10" name="start[SCHEDULE_date]" type="text" id="SCHEDULE_date" value="{$cur_schedule[i].SCHEDULE_START|date_format:"$date_format"}"/>
 															<input type="button" id="trigger_SCHEDULE_date" value="+">
 															{literal}
 															<script type="text/javascript">
@@ -92,7 +92,7 @@
 															{html_select_time use_24_hours=false display_seconds=false minute_interval=15 field_array=start time=$cur_schedule[i].SCHEDULE_START}
 															&nbsp;&nbsp; 
 															<b>End Time: </b>
-															<input size="10" name="end[SCHEDULE_date]" type="text" id="end_SCHEDULE_date" value="{$cur_schedule[i].SCHEDULE_END|date_format:"%d-%m-%y"}" />
+															<input size="10" name="end[SCHEDULE_date]" type="text" id="end_SCHEDULE_date" value="{$cur_schedule[i].SCHEDULE_END|date_format:"$date_format"}" />
 															<input type="button" id="trigger_end_SCHEDULE_date" value="+">
 															{literal}
 															<script type="text/javascript">

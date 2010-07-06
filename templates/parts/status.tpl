@@ -95,13 +95,13 @@
 							<tr onmouseover="this.className='row2'" onmouseout="this.className='row1'" onDblClick="window.location='index.php?page=parts:view&ORDER_ID={$order[i].ORDER_ID}&page_title={$translate_parts_order_details} {$order[i].ORDER_ID}';" class="row1">
 								<td class="olotd4"><a href="index.php?page=parts:view&ORDER_ID={$order[i].ORDER_ID}&page_title={$translate_parts_order_details} {$order[i].ORDER_ID}">{$order[i].ORDER_ID}</a>
 								</td>
-								<td class="olotd4">{$order[i].DATE_CREATE|date_format:"%d-%m-%y"}</td>
+								<td class="olotd4">{$order[i].DATE_CREATE|date_format:"$date_format"}</td>
 								<td class="olotd4">{$order[i].INVOICE_ID}</td>
                                                                 <td class="olotd4"><a href ="?page=workorder:view&wo_id={$order[i].WO_ID}&page_title={$translate_parts_wo_id} {$order[i].WO_ID}">{$order[i].WO_ID}</a></td>
 								<td class="olotd4">${$order[i].SUB_TOTAL|string_format:"%.2f"}</td>
 								<td class="olotd4">${$order[i].SHIPPING|string_format:"%.2f"}</td>
 								<td class="olotd4">${$order[i].TOTAL|string_format:"%.2f"}</td>
-								<td class="olotd4">{$order[i].DATE_LAST|date_format:"%d-%m-%y"}</td>
+								<td class="olotd4">{$order[i].DATE_LAST|date_format:"$date_format"}</td>
 								<td class="olotd4">{if $order[i].TRACKING_NO == '0'}
 															<a href="?page=parts:tracking&invoice_id={$order[i].INVOICE_ID}&order_id={$order[i].ORDER_ID}">Get Tracking</a>{else}
 															{$order[i].TRACKING_NO}

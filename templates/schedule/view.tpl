@@ -5,7 +5,7 @@
 			{section name=a loop=$arr}
 			<table width="700" cellpadding="4" cellspacing="0" border="0" >
 				<tr>
-					<td class="menuhead2" width="80%">&nbsp;Scheduled range from the {$arr[a].SCHEDULE_START|date_format:"%d-%m-%Y %r"} to {$arr[a].SCHEDULE_END|date_format:"%d-%m-%Y %r"}
+					<td class="menuhead2" width="80%">&nbsp;Scheduled range from the {$arr[a].SCHEDULE_START|date_format:"$date_format %r"} to {$arr[a].SCHEDULE_END|date_format:"$date_format %r"}
 					</td>
 				</tr><tr>
 					<td class="menutd2">

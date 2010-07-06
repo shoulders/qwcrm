@@ -101,7 +101,7 @@
 					<p><b>Notes:</b><br />
 					{section name=b loop=$work_order_notes}
 					<b>Technician: </b>{$work_order_notes[b].EMPLOYEE_DISPLAY_NAME}  
-					<br><b>Date: </b> {$work_order_notes[b].WORK_ORDER_NOTES_DATE|date_format:"%m-%d-%Y"}
+					<br><b>Date: </b> {$work_order_notes[b].WORK_ORDER_NOTES_DATE|date_format:"$date_format"}
 					<br>{$work_order_notes[b].WORK_ORDER_NOTES_DESCRIPTION}<br>
 					</p>
 						{/section}
@@ -114,7 +114,7 @@
 					<td><b>Resolution:</b><br>
 					{section name=r loop=$work_order_res}
 						{if $work_order_res[r].EMPLOYEE_DISPLAY_NAME != ''}
-							<b>Closed By:</b> {$work_order_res[r].EMPLOYEE_DISPLAY_NAME}<br /> <b>Date:</b>  {$work_order_res[r].WORK_ORDER_CLOSE_DATE|date_format:"%m-%d-%Y"}
+							<b>Closed By:</b> {$work_order_res[r].EMPLOYEE_DISPLAY_NAME}<br /> <b>Date:</b>  {$work_order_res[r].WORK_ORDER_CLOSE_DATE|date_format:"$date_format"}
 							{$work_order_res[r].WORK_ORDER_RESOLUTION}
 						{/if}
 					{/section}
@@ -135,13 +135,13 @@
 				</tr>
 				<tr>
 					<td valign="top" nowrap><b>Opened:</b></td>
-					<td valign="top">{$single_workorder_array[i].WORK_ORDER_OPEN_DATE|date_format:"%m-%d-%Y %I:%M %p"}</td>
+					<td valign="top">{$single_workorder_array[i].WORK_ORDER_OPEN_DATE|date_format:"$date_format %I:%M %p"}</td>
 				</tr>
 				<tr>
 					<td valign="top"><b>Scheduled:</b></td>
 					<td>
 						{section name=e loop=$work_order_sched}
-							{$work_order_sched[e].SCHEDUAL_START|date_format:"%m-%d-%Y %I:%M  %p"}
+							{$work_order_sched[e].SCHEDUAL_START|date_format:"$date_format %I:%M  %p"}
 						{/section}
 					</td>
 				<tr>
@@ -170,7 +170,7 @@
 				</tr>
 				<!-- <tr>
 					<td><b>Last Change:</b></td>
-					<td>{$single_workorder_array[i].LAST_ACTIVE|date_format:"%m-%d-%y"}</td>
+					<td>{$single_workorder_array[i].LAST_ACTIVE|date_format:"$date_format"}</td>
 				</tr> -->
 			</table>
 			<hr>
@@ -209,8 +209,8 @@
 				</tr><tr>
 					<td>
 						{section name=e loop=$work_order_sched}
-							<b>Start</b> {$work_order_sched[e].SCHEDUAL_START|date_format:"%m-%d-%Y %I:%M  %p"}<br>
-							<b>End</b> {$work_order_sched[e].SCHEDUAL_END|date_format:"%m-%d-%Y %I:%M  %p "} <br>
+							<b>Start</b> {$work_order_sched[e].SCHEDUAL_START|date_format:"$date_format %I:%M  %p"}<br>
+							<b>End</b> {$work_order_sched[e].SCHEDUAL_END|date_format:"$date_format %I:%M  %p "} <br>
 							<b>Schedule Notes</b><br>
 								{$work_order_sched[e].SCHEDUAL_NOTES}
 						{sectionelse}
