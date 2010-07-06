@@ -757,6 +757,7 @@ function create_table_customer($db){
 		`CUSTOMER_MOBILE_PHONE` varchar(13) NOT NULL default '',
 		`CUSTOMER_EMAIL` varchar(30) default NULL,
                 `CUSTOMER_WWW` varchar(80) default NULL,
+                `CREDIT_TERMS` varchar(80) default NULL,
                 `CUSTOMER_NOTES` text default NULL,
 		`CUSTOMER_TYPE` varchar(20) default NULL,
 		`CUSTOMER_FIRST_NAME` varchar(20) default NULL,
