@@ -20,7 +20,7 @@ if(!create_table_company($db)){
 				<td>UPDATED TABLE ".PRFX."TABLE_COMPANY</td>\n
 				<td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
 			</tr>");
-	$error_flag = true;	
+	$error_flag = true;
 } else {
 	echo("<tr>\n
 				<td>UPDATED TABLE ".PRFX."TABLE_COMPANY</td>\n
@@ -169,7 +169,7 @@ echo("<tr>\n
 function create_billing_options($db) {
 
 		$q = "INSERT IGNORE INTO `".PRFX."CONFIG_BILLING_OPTIONS` VALUES (6,'deposit_billing','Direct Deposit',0)";
-	
+
 		if(!$rs = $db->execute($q) ) {
 			return false;
 		} else {
@@ -207,10 +207,10 @@ function create_table_company($db)
                      $rs = $db->Execute($q);
 			return true;
 		} else {
-            
+
 			return false;
 		}
-        
+
 }
 function create_table_customer($db){
 
@@ -219,7 +219,7 @@ function create_table_customer($db){
             CHANGE `CUSTOMER_ADDRESS` `CUSTOMER_ADDRESS` text default NULL,
             ADD `CREDIT_TERMS` varchar(80) default NULL,
             ADD `CUSTOMER_WWW` varchar(80) default NULL,
-            ADD `CUSTOMER_NOTES` text default NULL, ;" ;
+            ADD `CUSTOMER_NOTES` text default NULL ;" ;
 
 	$rs = $db->Execute($q);
 		if(!$rs) {
@@ -240,7 +240,7 @@ function create_labor_rate($db) {
 	$q="ALTER TABLE `".PRFX."TABLE_LABOR_RATE` ADD `LABOR_TYPE` varchar(20) default NULL, ADD `LABOR_MANUF` varchar(30) default NULL ;";
 
 		$rs = $db->Execute($q);
-	 
+
 			return TRUE;
 		} else {
 			return FALSE;
@@ -404,8 +404,7 @@ $rs = $db->Execute($q);
 		}
 }
 function update_employee_address($db) {
-  $q = "ALTER TABLE `".PRFX."TABLE_EMPLOYEE` CHANGE `EMPLOYEE_ADDRESS` `EMPLOYEE_ADDRESS` TEXT`,
-  ;";
+  $q = "ALTER TABLE `".PRFX."TABLE_EMPLOYEE` CHANGE `EMPLOYEE_ADDRESS` `EMPLOYEE_ADDRESS` TEXT  ;";
 $rs = $db->Execute($q);
 		if(!$rs) {
 			return false;
@@ -438,8 +437,7 @@ function create_customer_emails($db) {
         `CUSTOMER_EMAIL_ATT_TYPE3` varchar(60) NOT NULL ,
         `CUSTOMER_EMAIL_ATT_SIZE3` int NOT NULL ,
         `CUSTOMER_EMAIL_ATT_FILE3` MEDIUMBLOB NOT NULL,
-	PRIMARY KEY  (`CUSTOMER_EMAIL_ID`)
-	) TYPE=MyISAM ";
+	PRIMARY KEY  (`CUSTOMER_EMAIL_ID`)) TYPE=MyISAM ";
 	if(!$rs = $db->execute($q)) {
 			return false;
 	} else {
