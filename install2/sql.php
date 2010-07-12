@@ -1183,7 +1183,7 @@ function create_setup($db) {
   `CHECK_PAYABLE` varchar(30) default NULL,
   `DD_NAME` varchar(50) default NULL,
   `DD_BANK` varchar(50) default NULL,
-  `DD_BSB` varchar(15) default NULL,
+  `DD_BSB` varchar(50) default NULL,
   `DD_ACC` varchar(50) default NULL,
   `DD_INS` varchar(200) default NULL,
   `INVOICE_NUMBER_START` varchar(10) default NULL,
