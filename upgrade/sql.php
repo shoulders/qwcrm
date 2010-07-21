@@ -57,6 +57,22 @@ if(!update_employee_address($db)) {
 			<td><font color=\"green\"><b>OK</b></font></td>\n
 		</tr>\n");
 }
+
+###############################
+# RENAME tracker TABLE				#
+###############################
+if(!rename_tracker_table($db)) {
+	echo("<tr>\n
+			<td>UPDATED TABLE ".PRFX."tracker</td>\n
+			<td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
+		</tr>\n");
+	$error_flag = true;
+} else {
+	echo("<tr>\n
+			<td>UPDATED TABLE ".PRFX."tracker</td>
+			<td><font color=\"green\"><b>OK</b></font></td>\n
+		</tr>\n");
+}
 ###############################
 # create_labor_rate				#
 ###############################
@@ -405,6 +421,16 @@ $rs = $db->Execute($q);
 }
 function update_employee_address($db) {
   $q = "ALTER TABLE `".PRFX."TABLE_EMPLOYEE` CHANGE `EMPLOYEE_ADDRESS` `EMPLOYEE_ADDRESS` TEXT  ;";
+$rs = $db->Execute($q);
+		if(!$rs) {
+			return false;
+		} else {
+			return true;
+		}
+
+}
+function rename_tracker_table($db) {
+  $q = "RENAME TABLE `".PRFX."tracker` TO `".PRFX."TRACKER` ;";
 $rs = $db->Execute($q);
 		if(!$rs) {
 			return false;
