@@ -63,7 +63,7 @@ if(!update_employee_address($db)) {
 ###############################
 if(!rename_tracker_table($db)) {
 	echo("<tr>\n
-			<td>UPDATED TABLE ".PRFX."tracker</td>\n
+			<td>RENAMED TABLE ".PRFX."tracker TO ".PRFX."TRACKER</td>\n
 			<td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
 		</tr>\n");
 	$error_flag = true;
