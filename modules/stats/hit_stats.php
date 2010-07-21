@@ -27,7 +27,7 @@ foreach($filter_ips as $ip) {
 //print $where;
 
 /* total Hits for the day */
-$q= "SELECT count(*) as count FROM ".PRFX."tracker WHERE date >= '$today_start' AND date <= '$today_end' ".$where;
+$q= "SELECT count(*) as count FROM ".PRFX."TRACKER WHERE date >= '$today_start' AND date <= '$today_end' ".$where;
 if(!$rs = $db->Execute($q)) {
 	echo 'Error: '. $db->ErrorMsg();
 }
@@ -35,7 +35,7 @@ $count = $rs->fields['count'];
 $smarty->assign('daily_total', $count);
 
 /* load all stats for the day */
-$q = "SELECT   date, uagent, count(*) as count, ip FROM ".PRFX."tracker WHERE date >= '$today_start' AND date <= '$today_end' ".$where." GROUP BY ip ORDER BY date  ";
+$q = "SELECT   date, uagent, count(*) as count, ip FROM ".PRFX."TRACKER WHERE date >= '$today_start' AND date <= '$today_end' ".$where." GROUP BY ip ORDER BY date  ";
 if(!$rs = $db->Execute($q)){
 	echo 'Error: '. $db->ErrorMsg();
 	die;
@@ -45,7 +45,7 @@ $smarty->assign('hit', $arr);
 
 
 /* load stats for the month */
-$q= "SELECT count(*) as count FROM ".PRFX."tracker WHERE date >= '$month_start' AND date <= '$month_end' ".$where;
+$q= "SELECT count(*) as count FROM ".PRFX."TRACKER WHERE date >= '$month_start' AND date <= '$month_end' ".$where;
 if(!$rs = $db->Execute($q)) {
 	echo 'Error: '. $db->ErrorMsg();
 }

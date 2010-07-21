@@ -197,7 +197,7 @@ function getIP() {
 
 
 $logtime = time();
-$q = 'INSERT into '.PRFX.'tracker SET
+$q = 'INSERT into '.PRFX.'TRACKER SET
    date						='. $db->qstr( $logtime						).',
    ip							='. $db->qstr( getIP()						).',
    uagent						='. $db->qstr( getenv(HTTP_USER_AGENT)	).',
