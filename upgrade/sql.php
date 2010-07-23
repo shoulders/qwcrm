@@ -58,21 +58,7 @@ if(!update_employee_address($db)) {
 		</tr>\n");
 }
 
-###############################
-# RENAME tracker TABLE				#
-###############################
-if(!rename_tracker_table($db)) {
-	echo("<tr>\n
-			<td>RENAMED TABLE ".PRFX."tracker TO ".PRFX."TRACKER</td>\n
-			<td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
-		</tr>\n");
-	$error_flag = true;
-} else {
-	echo("<tr>\n
-			<td>UPDATED TABLE ".PRFX."tracker</td>
-			<td><font color=\"green\"><b>OK</b></font></td>\n
-		</tr>\n");
-}
+
 ###############################
 # create_labor_rate				#
 ###############################
@@ -429,16 +415,7 @@ $rs = $db->Execute($q);
 		}
 
 }
-function rename_tracker_table($db) {
-  $q = "RENAME TABLE `".PRFX."tracker` TO `".PRFX."TRACKER` ;";
-$rs = $db->Execute($q);
-		if(!$rs) {
-			return false;
-		} else {
-			return true;
-		}
 
-}
 function create_customer_emails($db) {
 	$q="CREATE TABLE IF NOT EXISTS `".PRFX."TABLE_CUSTOMER_EMAILS` (
 	`CUSTOMER_EMAIL_ID` int(20) NOT NULL auto_increment,
