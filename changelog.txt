@@ -3,7 +3,7 @@ Changelog
 PLEASE REPORT ANY BUGS OR FEATURES THAT YOU FIND SO THAT WE CAN FIX'EM!
 To view more details on these issues, please visit http://team.myitcrm.com/
 
-===v0.2.9.0 : 12th July 2010===
+===v0.2.9.0 : 22th July 2010 svn r243===
 
 Bug #35: Partial Payment and Discounts: Closed   ( geevpc )
 Bug #38: add percent sign on discount box on new customer: Closed   ( geevpc )
