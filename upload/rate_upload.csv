@@ -1,0 +1,12 @@
+1,Basic Labor,45,0,1,Service,Internal
+2,Commercial,55,0,1,Service,Internal
+3,Virus Removal,65,0,1,Service,Internal
+4,PC Clean,100,15,1,Service,Internal
+5,3.0ghz 8400 CPU Intel,540,500,1,Part,Intel
+6,test 2,6000,150,1,Part,Symantec
+7,Server,2566,2100,1,Part,MyIT CRM
+8,Bolt,1,1,1,Part,MyIT CRM
+9,Nut,2,1,1,Part,MyIT CRM
+10,Washer,2,1,1,Part,MyIT CRM
+11,RAM,78,55,1,Part,MyIT CRM
+12,Hard Drive,99,55,1,Part,MyIT CRM
