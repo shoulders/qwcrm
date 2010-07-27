@@ -48,7 +48,7 @@
                                                             <td class="olotd4" nowrap>
                                                                 <input type="hidden" name="id" value="{$rate[q].LABOR_RATE_ID}">
                                                                 <input type="submit" name="submit" value="Delete">
-                                                                <input type="submit" name="submit" value="Update">
+                                                                <input type="submit" name="submit" value="Edit">
                                                             </td>
                                                         </tr>
                                                    </form>
