@@ -14,21 +14,21 @@ switch ($mode) {
 <html>\n
 <head>\n
 	<title>MyIT Upgrader</title>\n
-	<meta http-equiv=\"Content-Type\" content=\"text/html; charset=iso-8859-1\">\n
-	<link href=\"../css/default.css\" rel=\"stylesheet\" type=\"text/css\">\n
+	<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n
+	<link type=\"text/css\" href=\"../../css/default.css\" rel=\"stylesheet\" >\n
 
 </head>\n
 <body>\n
 <center>\n
 <table width=\"100%\"  border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n
 	<tr>\n
-		<td><img src=\"../images/logo.jpg\" alt=\"\" width=\"490\" height=\"114\"></td>\n
+		<td><img src=\"../../images/logo.jpg\" alt=\"\" width=\"490\" height=\"114\"></td>\n
 	</tr>\n
 </table>\n
 			
 <table width=\"100%\"  border=\"0\" cellspacing=\"0\" cellpadding=\"2\">\n
 	<tr>\n
-		<td colspan=\"3\" background=\"../images/index03.gif\"><img src=\"../images/index03.gif\" alt=\"\" width=\"100%\" height=\"40\"></td>\n
+		<td colspan=\"3\" background=\"../../images/index03.gif\"><img src=\"../../images/index03.gif\" alt=\"\" width=\"100%\" height=\"40\"></td>\n
 	</tr><tr>\n
 		<td align=\"center\">\n
 
@@ -52,7 +52,7 @@ switch ($mode) {
         
 		/* Load our new configs */
 
-        require("../include/ADODB/adodb.inc.php");
+        require("../../include/ADODB/adodb.inc.php");
 
 		/* Create ADODB Connection */
         $db = &ADONewConnection('mysql');
@@ -69,7 +69,7 @@ switch ($mode) {
         # Create New Connection				#
         ##################################
         $db->close();
-        include("../conf.php");
+        include("../../conf.php");
 
         if( $db->errorMsg() != '' ) {
             echo "There Was an error connecting to the database: ".$db->errorMsg();
@@ -93,7 +93,7 @@ switch ($mode) {
 			</tr>\n");
         } else {
 		/* create lock file */
-            if(!touch("../cache/lock")) {
+            if(!touch("../../cache/lock")) {
                 echo("<tr><td colspan=\"2\"><font color=\"red\">Failed to create lock file. Please create a file name lock and put it in the cache folder !!</font></td></tr>");
             }
 
@@ -127,9 +127,9 @@ switch ($mode) {
 </table>\n
 			<table width=\"100%\"  border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n
 				<tr>
-					<td height=\"51\" align=\"center\" background=\"../images/index41.gif\"></td>\n
+					<td height=\"51\" align=\"center\" background=\"../../images/index41.gif\"></td>\n
 				</tr><tr>\n
-					<td height=\"48\" align=\"center\" background=\"../images/index42.gif\"><span class=\"text3\"></a>
+					<td height=\"48\" align=\"center\" background=\"../../images/index42.gif\"><span class=\"text3\"></a>
 								All rights reserved.</span></td>\n
 				</tr><tr>\n
 					<td>&nbsp;</td>\n
@@ -156,8 +156,8 @@ switch ($mode) {
 <head>
 	<title>MYIT CRM Upgrader</title>
 	<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">
-	<link href=\"../css/default.css\" rel=\"stylesheet\" type=\"text/css\">");
-        include('validate.js');
+	<link type=\"text/css\" href=\"../../css/default.css\" rel=\"stylesheet\">");
+        include('../validate.js');
         echo ("
 </head>
 <body>
@@ -165,13 +165,13 @@ switch ($mode) {
 <center>
 <table width=\"100%\"  border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
 	<tr>
-		<td><img src=\"../images/logo.jpg\" alt=\"\" width=\"490\" height=\"114\"></td>
+		<td><img src=\"../../images/logo.jpg\" alt=\"\" width=\"490\" height=\"114\"></td>
 	</tr>
 </table>
 			
 <table width=\"100%\"  border=\"0\" cellspacing=\"0\" cellpadding=\"2\">
 	<tr>
-		<td colspan=\"3\" background=\"../images/index03.gif\"><img src=\"../images/index03.gif\" alt=\"\" width=\"100%\" height=\"40\"></td>
+		<td colspan=\"3\" background=\"../../images/index03.gif\"><img src=\"../../images/index03.gif\" alt=\"\" width=\"100%\" height=\"40\"></td>
 	</tr><tr>
 		<td align=\"center\">
 		<br><br>
@@ -183,7 +183,7 @@ switch ($mode) {
 			<!-- Begin Page -->
 			<table width=\"800\" cellpadding=\"5\" cellspacing=\"0\" border=\"0\" >
 				<tr>
-					<td class=\"menuhead2\" width=\"80%\">&nbsp;MyIT CRM Upgrader from versions 0.2.7.3, 0.2.8.x</td>
+					<td class=\"menuhead2\" width=\"80%\">&nbsp;MyIT CRM Upgrader from versions 0.2.8.2, 0.2.9.0</td>
 					</td>
 				</tr><tr>
 					<td class=\"menutd2\" colspan=\"2\">
@@ -208,7 +208,7 @@ switch ($mode) {
 																
 																	<td width=\"140\">Cache Folder</td>
 																	<td>");
-        if(!check_write ('../cache')) {
+        if(!check_write ('../../cache')) {
             echo("<font color=\"red\">../cache is not writable stopping.</font>");
             $errors[] = array('../cache'=>'Not Writable');
         } else {
@@ -220,9 +220,9 @@ switch ($mode) {
 																
 																	<td width=\"140\">Access Log</td>
 																	<td>");
-        if(!check_write ('../log/access.log')) {
-            echo("<font color=\"red\">../log/access.log is not writable stopping.</font>");
-            $errors[] = array('../log/access.log'=>'Not Writable');
+        if(!check_write ('../../log/access.log')) {
+            echo("<font color=\"red\">../../log/access.log is not writable stopping.</font>");
+            $errors[] = array('../../log/access.log'=>'Not Writable');
         } else {
             echo("<font color=\"green\"><b>OK</b>");
         }
@@ -329,9 +329,9 @@ switch ($mode) {
 			<br><br>
 			<table width=\"100%\"  border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
 				<tr>
-					<td height=\"51\" align=\"center\" background=\"../images/index41.gif\"></td>
+					<td height=\"51\" align=\"center\" background=\"../../images/index41.gif\"></td>
 				</tr><tr>
-					<td height=\"48\" align=\"center\" background=\"../images/index42.gif\"><span class=\"text3\"><a> This software is distrubuted under the GNU General Public License</span></t
+					<td height=\"48\" align=\"center\" background=\"../../images/index42.gif\"><span class=\"text3\"><a> This software is distrubuted under the GNU General Public License</span></t
 				</tr><tr>
 					<td>&nbsp;</td>
 				</tr>
@@ -373,7 +373,7 @@ function get_server_name() {
 #		Check Lock					#
 #####################################
 function check_lock_file() {
-    $lock_file = "../cache/lock";
+    $lock_file = "../../cache/lock";
     if (file_exists($lock_file)) {
         return true;
     } else {

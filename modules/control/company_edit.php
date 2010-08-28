@@ -26,9 +26,7 @@ $q = 'UPDATE '.PRFX.'SETUP SET
 		INVOICE_TAX = '. $db->qstr( $VAR['inv_tax']) .',
                 INVOICE_NUMBER_START = '. $db->qstr( $VAR['inv_number']).',
 		INV_THANK_YOU = '. $db->qstr( $string6 	) .',
-		WELCOME_NOTE = '. $db->qstr( $string4  	).',
-                EMAIL_MSG_WO_CREATED_ACTIVE    = '.$db->qstr( $VAR['new_wo_enabled']).',
-                EMAIL_MSG_WO_CREATED    = '.$db->qstr( $VAR['new_wo']);
+		WELCOME_NOTE = '. $db->qstr( $string4  	) ;
     if(!$rs = $db->execute($q)) {
 		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
 		exit;
@@ -47,13 +45,7 @@ $q = 'UPDATE '.PRFX.'SETUP SET
 			COMPANY_FAX             = '. $db->qstr( $VAR['fax']) .',
                         COMPANY_CURRENCY_SYMBOL	= '. $db->qstr( $VAR['currency_sym']) .',
                         COMPANY_CURRENCY_CODE	= '. $db->qstr( $VAR['currency_code']) .',
-                        COMPANY_DATE_FORMAT	= '. $db->qstr( $VAR['date_format']) .',
-                        COMPANY_EMAIL_FROM	= '. $db->qstr( $VAR['email_from']) .',
-                        COMPANY_EMAIL_SERVER	= '. $db->qstr( $VAR['email_server']) .',
-                        COMPANY_EMAIL_CONNECTION_TYPE	= '. $db->qstr( $VAR['conn_type']) .',
-                        COMPANY_SMTP_USERNAME	= '. $db->qstr( $VAR['email_login']) .',
-                        COMPANY_SMTP_PASSWORD	= '. $db->qstr( $VAR['email_password']) .',
-                        COMPANY_EMAIL_PORT	= '. $db->qstr( $VAR['email_port']) ;
+                        COMPANY_DATE_FORMAT	= '. $db->qstr( $VAR['date_format']) ;
 	if(!$rs = $db->execute($q)) {
 		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
 		exit;

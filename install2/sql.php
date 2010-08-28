@@ -726,12 +726,6 @@ function create_table_company($db)
   `COMPANY_CURRENCY_SYMBOL` varchar(30) default NULL,
   `COMPANY_CURRENCY_CODE` varchar(30) default NULL,
   `COMPANY_DATE_FORMAT` varchar(10) default NULL,
-  `COMPANY_EMAIL_FROM` varchar(50) default NULL,
-  `COMPANY_EMAIL_SERVER` varchar(50) default NULL,
-  `COMPANY_EMAIL_PORT` varchar(10) default NULL,
-  `COMPANY_EMAIL_CONNECTION_TYPE` varchar(5) default NULL,
-  `COMPANY_SMTP_USERNAME` varchar(50) default NULL,
-  `COMPANY_SMTP_PASSWORD` varchar(50) default NULL,
   PRIMARY KEY  (`COMPANY_NAME`)
 ) TYPE=MyISAM;";
 
@@ -755,7 +749,7 @@ function create_table_customer($db){
 		`CUSTOMER_PHONE` varchar(13) default NULL,
 		`CUSTOMER_WORK_PHONE` varchar(13) NOT NULL default '',
 		`CUSTOMER_MOBILE_PHONE` varchar(13) NOT NULL default '',
-		`CUSTOMER_EMAIL` varchar(30) default NULL,
+		`CUSTOMER_EMAIL` varchar(80) default NULL,
                 `CUSTOMER_WWW` varchar(80) default NULL,
                 `CREDIT_TERMS` varchar(80) default NULL,
                 `CUSTOMER_NOTES` text default NULL,
@@ -1185,40 +1179,15 @@ function create_setup($db) {
   `DD_BANK` varchar(50) default NULL,
   `DD_BSB` varchar(50) default NULL,
   `DD_ACC` varchar(50) default NULL,
-  `DD_INS` varchar(200) default NULL,
+  `DD_INS` text default NULL,
   `INVOICE_NUMBER_START` varchar(10) default NULL,
-  `EMAIL_MSG_NEW_INVOICE` BLOB default NULL,
-  `EMAIL_MSG_NEW_INVOICE_ACTIVE` INT(1) default '0',
-  `EMAIL_MSG_INVOICE_REMINDER` BLOB default NULL,
-  `EMAIL_MSG_PAYMENT_RECEIVED` BLOB default NULL,
-  `EMAIL_MSG_WO_CREATED` BLOB default NULL,
-  `EMAIL_MSG_WO_SCHEDULED` BLOB default NULL,
-  `EMAIL_MSG_WO_UPDATED` BLOB default NULL,
-  `EMAIL_MSG_WO_COMPLETED` BLOB default NULL,
-  `EMAIL_MSG_WO_REMINDER` BLOB default NULL,
-  `EMAIL_MSG_WO_REMINDER_HOURS` int(3) default '60',
-  `EMAIL_MSG_SOFTWARE_UPDATE` BLOB default NULL,
-  `EMAIL_MSG_SOFTWARE_NEW` BLOB default NULL,
-  `EMAIL_MSG_SOFTWARE_RENEWAL_ALERT` BLOB default NULL,
-  `EMAIL_MSG_SOFTWARE_RENEWAL_REMINDER_DAYS` int(3) default '7',
-  `EMAIL_MSG_SOFTWARE_RENEWAL` BLOB default NULL,
-  `EMAIL_MSG_INVOICE_REMINDER_ACTIVE` INT(2) default '0',
-  `EMAIL_MSG_PAYMENT_RECEIVED_ACTIVE` INT(2) default '0',
-  `EMAIL_MSG_WO_CREATED_ACTIVE` INT(2) default '0',
-  `EMAIL_MSG_WO_SCHEDULED_ACTIVE` INT(2) default '0',
-  `EMAIL_MSG_WO_UPDATED_ACTIVE` INT(2) default '0',
-  `EMAIL_MSG_WO_COMPLETED_ACTIVE` INT(2) default '0',
-  `EMAIL_MSG_WO_REMINDER_ACTIVE` INT(2) default '0',
-  `EMAIL_MSG_SOFTWARE_UPDATE_ACTIVE` INT(2) default '0',
-  `EMAIL_MSG_SOFTWARE_NEW_ACTIVE` INT(2) default '0',
-  `EMAIL_MSG_SOFTWARE_RENEWAL_ALERT_ACTIVE` INT(2) default '0',
   KEY `OFFICE_HOUR_START` (`OFFICE_HOUR_START`,`OFFICE_HOUR_END`)
 ) ENGINE=MyISAM ";
     $rs = $db->Execute($q);
         if(!$rs) {
             return false;
         } else {
-            $q = "REPLACE INTO `".PRFX."SETUP` VALUES (7, 19, '', '', '', '', 1, 0,'0.0','','','','','','03','0.00','','','1.5','','','','','','Please use invoice number as transactions details. This helps us to determine who has paid in a timely manner.','','','0','','','','','','','','60','','','','7','','0','0','0','0','0','0','0','0','0','0')";
+            $q = "REPLACE INTO `".PRFX."SETUP` VALUES (7, 19, '', '', '', '', 1, 0,'0.0','','','','','','03','0.00','','','1.5','','','','','','Please use invoice number as transactions details. This helps us to determine who has paid in a timely manner.','')";
         
 			if(!$rs = $db->Execute($q)) {
 				return false;
@@ -1330,38 +1299,6 @@ function create_acl($db) {
 
 		}
 
-}
-function create_customer_emails($db) {
-	$q="CREATE TABLE IF NOT EXISTS `".PRFX."TABLE_CUSTOMER_EMAILS` (
-	`CUSTOMER_EMAIL_ID` int(20) NOT NULL auto_increment,
-	`CUSTOMER_ID` int(20) NOT NULL default '0',
-        `CUSTOMER_EMAIL_ADDRESS` varchar(60) NOT NULL default '',
-        `CUSTOMER_FROM_EMAIL_ADDRESS` varchar(60) NOT NULL default '',
-        `CUSTOMER_EMAIL_BCC` varchar(60) NOT NULL default '',
-        `CUSTOMER_EMAIL_SENT_BY` varchar(60) NOT NULL default '',
-	`CUSTOMER_EMAIL_SENT_ON` int(20) NOT NULL default '0',
-        `CUSTOMER_EMAIL_SUBJECT` varchar(60) NOT NULL default '',
-        `CUSTOMER_EMAIL_BODY` text NOT NULL,
-        `CUSTOMER_EMAIL_READ_RECIEPT` int(4) NOT NULL default '0',
-        `CUSTOMER_EMAIL_ATT_NAME1` varchar(60) NOT NULL ,
-        `CUSTOMER_EMAIL_ATT_TYPE1` varchar(60) NOT NULL ,
-        `CUSTOMER_EMAIL_ATT_SIZE1` int NOT NULL ,
-        `CUSTOMER_EMAIL_ATT_FILE1` MEDIUMBLOB NOT NULL,
-        `CUSTOMER_EMAIL_ATT_NAME2` varchar(60) NOT NULL ,
-        `CUSTOMER_EMAIL_ATT_TYPE2` varchar(60) NOT NULL ,
-        `CUSTOMER_EMAIL_ATT_SIZE2` int NOT NULL ,
-        `CUSTOMER_EMAIL_ATT_FILE2` MEDIUMBLOB NOT NULL,
-        `CUSTOMER_EMAIL_ATT_NAME3` varchar(60) NOT NULL ,
-        `CUSTOMER_EMAIL_ATT_TYPE3` varchar(60) NOT NULL ,
-        `CUSTOMER_EMAIL_ATT_SIZE3` int NOT NULL ,
-        `CUSTOMER_EMAIL_ATT_FILE3` MEDIUMBLOB NOT NULL,
-	PRIMARY KEY  (`CUSTOMER_EMAIL_ID`)
-	) TYPE=MyISAM";
-	if(!$rs = $db->execute($q)) {
-			return false;
-	} else {
-		return true;
-	}
 }
 
 function create_cart($db) {

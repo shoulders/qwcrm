@@ -21,7 +21,7 @@
 		<a href="?page=customer:edit&amp;customer_id={$cust_id}&amp;page_title={$translate_menu_edit_customer}"><img src="images/icons/edit_employees.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_edit_customer}</a>
                 <a href="?page=billing:new_gift&amp;customer_id={$cust_id}&amp;page_title={$translate_menu_new_gift}&amp;customer_name={$customer_details[i].CUSTOMER_DISPLAY_NAME}"><img src="images/icons/gift.png" alt="" border="0" height="14" width="14" /> {$translate_menu_new_gift}</a>
 		<a href="?page=customer:delete&amp;customer_id={$cust_id}&amp;page_title={$translate_menu_delete_customer}"><img src="images/icons/delete_employees.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_delete_customer}</a>
-		<a href="?page=customer:email&amp;customer_id={$cust_id}&amp;page_title=Email Customer"><img src="images/icons/16x16/email.jpg" alt="" border="0" height="14" width="14" /> {$translate_menu_email_customer}</a>
+		<!--<a href="?page=customer:email&amp;customer_id={$cust_id}&amp;page_title=Email Customer"><img src="images/icons/16x16/email.jpg" alt="" border="0" height="14" width="14" /> {$translate_menu_email_customer}</a>-->
                 {/if}
 		
       </div>
@@ -85,7 +85,7 @@
                 {if $expenseID > 0 }
                 <a href="?page=expense:expense_details&amp;expenseID={$expenseID}&amp;page_title={$translate_expense_details_title}"><img src="images/icons/view.gif" alt="" border="0" height="14" width="14" /> {$translate_expense_nav_details}</a>
                 <a href="?page=expense:edit&amp;expenseID={$expenseID}&amp;page_title={$translate_expense_edit_title}"><img src="images/icons/edit.gif" alt="" border="0" height="14" width="14" /> {$translate_expense_nav_edit}</a>
-                <a href="?page=expense:search&amp;page_title={$translate_expense_search_title}" onclick="confirmDelete({$expenseID});"><img src="images/icons/delete.gif" alt="" border="0" height="14" width="14" /> {$translate_expense_nav_delete}</a>
+                <a href="?page=expense:search&amp;page_title={$translate_expense_search_title} onclick="confirmDelete({$expenseID});"><img src="images/icons/delete.gif" alt="" border="0" height="14" width="14" /> {$translate_expense_nav_delete}</a>
                 {/if}
                 
                 <!-- Refunds -->
@@ -94,7 +94,7 @@
                 {if $refundID > 0 }
                 <a href="?page=refund:refund_details&amp;refundID={$refundID}&amp;page_title={$translate_refund_details_title}"><img src="images/icons/view.gif" alt="" border="0" height="14" width="14" /> {$translate_refund_nav_details}</a>
                 <a href="?page=refund:edit&amp;refundID={$refundID}&amp;page_title={$translate_refund_edit_title}"><img src="images/icons/edit.gif" alt="" border="0" height="14" width="14" /> {$translate_refund_nav_edit}</a>
-                <a href="?page=refund:search&amp;page_title={$translate_refund_search_title}" onclick="confirmDelete({$refundID});"><img src="images/icons/delete.gif" alt="" border="0" height="14" width="14" /> {$translate_refund_nav_delete}</a>
+                <a href="?page=refund:search&amp;page_title={$translate_refund_search_title} onclick="confirmDelete({$refundID});"><img src="images/icons/delete.gif" alt="" border="0" height="14" width="14" /> {$translate_refund_nav_delete}</a>
                 {/if}
                 
             </div>
@@ -110,7 +110,7 @@
                 {if $supplierID > 0 }
                 <a href="?page=supplier:supplier_details&amp;supplierID={$supplierID}&amp;page_title={$translate_supplier_details_title}"><img src="images/icons/view.gif" alt="" border="0" height="14" width="14" /> {$translate_supplier_nav_details}</a>
                 <a href="?page=supplier:edit&amp;supplierID={$supplierID}&amp;page_title={$translate_supplier_edit_title}"><img src="images/icons/edit.gif" alt="" border="0" height="14" width="14" /> {$translate_supplier_nav_edit}</a>
-                <a href="?page=supplier:search&amp;page_title={$translate_supplier_search_title}" onclick="confirmDelete({$supplierID});"><img src="images/icons/delete.gif" alt="" border="0" height="14" width="14" /> {$translate_supplier_nav_delete}</a>
+                <a href="?page=supplier:search&amp;page_title={$translate_supplier_search_title} onclick="confirmDelete({$supplierID});"><img src="images/icons/delete.gif" alt="" border="0" height="14" width="14" /> {$translate_supplier_nav_delete}</a>
                 {/if}
             </div>
         {/if}
@@ -122,7 +122,7 @@
                         <a href="?page=control:hours_edit"><img src="images/icons/clock.gif" alt="" border="0" height="14" width="14" /> Business Hours</a>
                         <a href="?page=control:payment_options"><img src="images/icons/money.png" alt="" border="0" height="14" width="14" /> Payment Options</a>
                         <a href="?page=control:backup"><img src="images/icons/db_restore.png" alt="" border="0" height="14" width="14" /> Restore Database</a>
-                        <a href="modules/core/backup.php"><img src="images/icons/db_save.png" alt="" border="0" height="14" width="14" /> Backup Database</a>
+                        <!--<a href="modules/core/backup.php"><img src="images/icons/db_save.png" alt="" border="0" height="14" width="14" /> Backup Database</a>-->
                         <a href="include/phpinfo.php"><img src="images/icons/php.png" alt="" border="0" height="14" width="14" /> PHP Info</a>
 		</div>
 		{/if}
@@ -131,7 +131,7 @@
             <a href="http://team.myitcrm.com" target="_blank"><img src="images/icons/web.png" alt="" border="0" height="14" width="14" /> Website</a>
             <a href="http://team.myitcrm.com/projects/main/issues" target="_blank"><img src="images/icons/bug.png" alt=""border="0" height="14" width="14" /> Bug Tracker</a>
             <a href="http://myitcrm.com/forum/index.php" target="_blank"><img src="images/icons/comment.png" alt="" border="0" height="14" width="14" /> Forum</a>
-            <a href="http://sourceforge.net/donate/index.php?group_id=254082"><img src="images/icons/money.png" alt="" border="0" height="14" width="14" /> Make a Donation.</a>
+            <a href="https://www.paymate.com/PayMate/ExpressPayment?mid=geevpc&ref=Project Support Donation"><img src="images/icons/money.png" alt="" border="0" height="14" width="14" /> Make a Donation.</a>
             <a href="https://sourceforge.net/projects/myitcrm/" target="_blank"><img src="images/icons/sf.ico" alt="" border="0" height="14" width="14" /> SF Page</a>
             <a href="https://sourceforge.net/export/rss2_projfiles.php?group_id=254082" target="_blank"><img src="images/icons/bookmark.png" alt="" border="0" height="14" width="14" /> Latest Release</a>
         </div>

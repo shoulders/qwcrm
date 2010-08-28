@@ -107,21 +107,6 @@ echo("<tr>\n
 			</tr>\n");
 }
 ##################################
-# create_customer emails								#
-##################################
-if(!create_customer_emails($db) ) {
-echo("<tr>\n
-			<td>CREATED TABLE ".PRFX."TABLE_CUSTOMER_EMAILS</td>\n
-			<td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
-		</tr>\n");
-	$error_flag = true;
-} else {
-	echo("<tr>\n
-				<td>CREATED TABLE ".PRFX."TABLE_CUSTOMER_EMAILS</td>\n
-				<td><font color=\"green\"><b>OK</b></font></td>\n
-			</tr>\n");
-}
-##################################
 # create expense					#
 ##################################
 if(!create_expense($db) ) {
@@ -185,11 +170,7 @@ function create_table_company($db)
             DROP `COMPANY_TOLL_FREE`,
             DROP `COMPANY_CURRENCY_SYMBOL`,
             DROP `COMPANY_CURRENCY_CODE` ,
-            DROP `COMPANY_DATE_FORMAT` ,
-            DROP `COMPANY_EMAIL_FROM` ,
-            DROP `COMPANY_EMAIL_SERVER` ,
-            DROP `COMPANY_EMAIL_PORT`
-;";
+            DROP `COMPANY_DATE_FORMAT` ;";
 
 	$rs = $db->Execute($q);
 		if(!$rs) {
@@ -198,14 +179,7 @@ function create_table_company($db)
             ADD `COMPANY_FAX` varchar(30) default NULL,
             ADD `COMPANY_CURRENCY_SYMBOL` varchar(30) default NULL,
             ADD `COMPANY_CURRENCY_CODE` varchar(30) default NULL,
-            ADD `COMPANY_DATE_FORMAT` varchar(10) default NULL,
-            ADD `COMPANY_EMAIL_FROM` varchar(50) default NULL,
-            ADD `COMPANY_EMAIL_SERVER` varchar(50) default NULL,
-            ADD `COMPANY_EMAIL_PORT` varchar(10) default NULL,
-            ADD `COMPANY_SMTP_USERNAME` varchar(10) default NULL,
-            ADD `COMPANY_SMTP_PASSWORD` varchar(10) default NULL,
-            ADD `COMPANY_EMAIL_MSG_INVOICE` varchar(255) default NULL,
-;";
+            ADD `COMPANY_DATE_FORMAT` varchar(10) default NULL ;" ;
                      $rs = $db->Execute($q);
 			return true;
 		} else {
@@ -233,8 +207,7 @@ function create_table_customer($db){
 
 function create_labor_rate($db) {
 
-	$q="ALTER TABLE `".PRFX."TABLE_LABOR_RATE` DROP COLUMN `LABOR_TYPE`, DROP COLUMN `LABOR_MANUF`,
-	;";
+	$q="ALTER TABLE `".PRFX."TABLE_LABOR_RATE` DROP COLUMN `LABOR_TYPE`, DROP COLUMN `LABOR_MANUF` ;";
 
 		$rs = $db->Execute($q);
 
@@ -274,37 +247,12 @@ $q = "ALTER TABLE `".PRFX."SETUP`,
   ADD `DD_BANK` varchar(50) default NULL,
   ADD `DD_BSB` varchar(50) default NULL,
   ADD `DD_ACC` varchar(50) default NULL,
-  ADD `DD_INS` varchar(200) default NULL,
+  ADD `DD_INS` text default NULL,
   ADD `INVOICE_NUMBER_START` varchar(10) default NULL,
   ADD `PAYMATE_LOGIN` varchar(50) default NULL,
   ADD `PAYMATE_PASSWORD` varchar(50) default NULL,
-  ADD `PAYMATE_FEES` decimal(2,1) NOT NULL default '1.5',
-  ADD `EMAIL_MSG_NEW_INVOICE` BLOB default NULL,
-  ADD `EMAIL_MSG_NEW_INVOICE_ACTIVE` INT(2) default '0',
-  ADD `EMAIL_MSG_INVOICE_REMINDER` BLOB default NULL,
-  ADD `EMAIL_MSG_PAYMENT_RECEIVED` BLOB default NULL,
-  ADD `EMAIL_MSG_WO_CREATED` BLOB default NULL,
-  ADD `EMAIL_MSG_WO_SCHEDULED` BLOB default NULL,
-  ADD `EMAIL_MSG_WO_UPDATED` BLOB default NULL,
-  ADD `EMAIL_MSG_WO_COMPLETED` BLOB default NULL,
-  ADD `EMAIL_MSG_WO_REMINDER` BLOB default NULL,
-  ADD `EMAIL_MSG_WO_REMINDER_HOURS` int(3) default '60',
-  ADD `EMAIL_MSG_SOFTWARE_UPDATE` BLOB default NULL,
-  ADD `EMAIL_MSG_SOFTWARE_NEW` BLOB default NULL,
-  ADD `EMAIL_MSG_SOFTWARE_RENEWAL_ALERT` BLOB default NULL,
-  ADD `EMAIL_MSG_SOFTWARE_RENEWAL_REMINDER_DAYS` int(3) default '7',
-  ADD `EMAIL_MSG_SOFTWARE_RENEWAL` BLOB default NULL,
-  ADD `EMAIL_MSG_INVOICE_REMINDER_ACTIVE` INT(2) default '0',
-  ADD `EMAIL_MSG_PAYMENT_RECEIVED_ACTIVE` INT(2) default '0',
-  ADD `EMAIL_MSG_WO_CREATED_ACTIVE` INT(2) default '0',
-  ADD `EMAIL_MSG_WO_SCHEDULED_ACTIVE` INT(2) default '0',
-  ADD `EMAIL_MSG_WO_UPDATED_ACTIVE` INT(2) default '0',
-  ADD `EMAIL_MSG_WO_COMPLETED_ACTIVE` INT(2) default '0',
-  ADD `EMAIL_MSG_WO_REMINDER_ACTIVE` INT(2) default '0',
-  ADD `EMAIL_MSG_SOFTWARE_UPDATE_ACTIVE` INT(2) default '0',
-  ADD `EMAIL_MSG_SOFTWARE_NEW_ACTIVE` INT(2) default '0',
-  ADD `EMAIL_MSG_SOFTWARE_RENEWAL_ALERT_ACTIVE` INT(2) default '0',
-  CHANGE `INVOICE_TAX` `INVOICE_TAX` decimal(3,1) NOT NULL default '0.00';";
+  ADD `PAYMATE_FEES` decimal(10,2) NOT NULL default '1.5',
+  CHANGE `INVOICE_TAX` `INVOICE_TAX` decimal(10,2) NOT NULL default '0.00';";
     	$rs = $db->Execute($q);
 return TRUE;
 		} else {
@@ -416,37 +364,7 @@ $rs = $db->Execute($q);
 
 }
 
-function create_customer_emails($db) {
-	$q="CREATE TABLE IF NOT EXISTS `".PRFX."TABLE_CUSTOMER_EMAILS` (
-	`CUSTOMER_EMAIL_ID` int(20) NOT NULL auto_increment,
-	`CUSTOMER_ID` int(20) NOT NULL default '0',
-        `CUSTOMER_EMAIL_ADDRESS` varchar(60) NOT NULL default '',
-        `CUSTOMER_FROM_EMAIL_ADDRESS` varchar(60) NOT NULL default '',
-        `CUSTOMER_EMAIL_BCC` varchar(60) NOT NULL default '',
-        `CUSTOMER_EMAIL_SENT_BY` varchar(60) NOT NULL default '',
-	`CUSTOMER_EMAIL_SENT_ON` int(20) NOT NULL default '0',
-        `CUSTOMER_EMAIL_SUBJECT` varchar(60) NOT NULL default '',
-        `CUSTOMER_EMAIL_BODY` text NOT NULL,
-        `CUSTOMER_EMAIL_READ_RECIEPT` int(4) NOT NULL default '0',
-        `CUSTOMER_EMAIL_ATT_NAME1` varchar(60) NOT NULL ,
-        `CUSTOMER_EMAIL_ATT_TYPE1` varchar(60) NOT NULL ,
-        `CUSTOMER_EMAIL_ATT_SIZE1` int NOT NULL ,
-        `CUSTOMER_EMAIL_ATT_FILE1` MEDIUMBLOB NOT NULL,
-        `CUSTOMER_EMAIL_ATT_NAME2` varchar(60) NOT NULL ,
-        `CUSTOMER_EMAIL_ATT_TYPE2` varchar(60) NOT NULL ,
-        `CUSTOMER_EMAIL_ATT_SIZE2` int NOT NULL ,
-        `CUSTOMER_EMAIL_ATT_FILE2` MEDIUMBLOB NOT NULL,
-        `CUSTOMER_EMAIL_ATT_NAME3` varchar(60) NOT NULL ,
-        `CUSTOMER_EMAIL_ATT_TYPE3` varchar(60) NOT NULL ,
-        `CUSTOMER_EMAIL_ATT_SIZE3` int NOT NULL ,
-        `CUSTOMER_EMAIL_ATT_FILE3` MEDIUMBLOB NOT NULL,
-	PRIMARY KEY  (`CUSTOMER_EMAIL_ID`)) TYPE=MyISAM ";
-	if(!$rs = $db->execute($q)) {
-			return false;
-	} else {
-		return true;
-	}
-}
+
 function create_expense($db) {
    $q = "CREATE TABLE IF NOT EXISTS `".PRFX."TABLE_EXPENSE` (
   `EXPENSE_ID` int(10) NOT NULL AUTO_INCREMENT,
