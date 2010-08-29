@@ -37,7 +37,7 @@ echo ("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http:/
 			
 <table width=\"100%\"  border=\"0\" cellspacing=\"0\" cellpadding=\"2\">\n
 	<tr>\n
-		<td colspan=\"3\" background=\"../images/index03.gif\"><img src=\"../images/index03.gif\" alt=\"\" width=\"100%\" height=\"40\"></td>\n
+		<td  background=\"../images/index03.gif\"><img src=\"../images/index03.gif\" alt=\"\" width=\"100%\" height=\"40\"></td>\n
 	</tr><tr>\n
 		<td align=\"center\">\n
 
@@ -48,7 +48,7 @@ echo ("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http:/
 						<!-- Begin Page -->\n
 						<table width=\"800\" cellpadding=\"5\" cellspacing=\"0\" border=\"0\" >\n
 							<tr>\n
-								<td class=\"menuhead2\" width=\"80%\">&nbsp;MYIT CRM Installer</td>\n
+								<td class=\"menuhead2\" width=\"100%\">&nbsp;MYIT CRM Installer</td>\n
 							</tr><tr>\n
 								<td class=\"menutd2\" colspan=\"2\">\n
 
@@ -280,7 +280,7 @@ echo ("
 			<!-- Begin Page -->
 			<table width=\"800\" cellpadding=\"5\" cellspacing=\"0\" border=\"0\" >
 				<tr>
-					<td class=\"menuhead2\" width=\"80%\">&nbsp;MyIT CRM Installer</td>
+					<td class=\"menuhead2\" width=\"100%\">&nbsp;MyIT CRM Installer</td>
 					</td>
 				</tr><tr>
 					<td class=\"menutd2\" colspan=\"2\">
@@ -302,16 +302,13 @@ echo ("
 
 															<table class=\"olotable\" cellpadding=\"5\" cellspacing=\"0\" border=\"0\" >
 																<tr>
-																	<td colspan=\"2\" >
+																	<td align=\"left\">
 																		You need to set the config file conf.php to be writable by your webserver for the install after that you must make them read only by your webserver.
 																		The file log/access.log needs to be writable by the web server. The cache directory needs to be writable by the server.
 																	</td>
 																</tr><tr>
-																	<td colspan=\"2\">&nbsp;</td>
-																</tr><tr>
 																
-																	<td width=\"140\">Main Config Writable </td>
-																	<td>");
+																	<td align=\"left\">Main Config Writable ");
 																		if(!check_write ('../conf.php')) {
 																			echo("<font color=\"red\">../conf.php is not writable stopping</font>");
 																			$errors[] = array('../conf.php'=>'Not Writable');
@@ -319,11 +316,9 @@ echo ("
 																			echo("<font color=\"green\"><b>OK</b>");
 																		}
 																	echo("</td>
-																	
 																</tr><tr>
 																
-																	<td width=\"140\">Cache Folder</td>
-																	<td>");
+																	<td align=\"left\">Cache Folder ");
 																		if(!check_write ('../cache')) {
 																			echo("<font color=\"red\">../cache is not writable stopping.</font>");
 																			$errors[] = array('../cache'=>'Not Writable');
@@ -334,23 +329,17 @@ echo ("
 																
 																</tr><tr>
 																
-																	<td width=\"140\">Access Log</td>
-																	<td>");
+																	<td align=\"left\">Access Log ");
 																		if(!check_write ('../log/access.log')) {
 																			echo("<font color=\"red\">../log/access.log is not writable stopping.</font>");
 																			$errors[] = array('../log/access.log'=>'Not Writable');
 																		} else {
 																			echo("<font color=\"green\"><b>OK</b>");
 																		}
-																	echo("<td>
+																	echo("</td>
 																	
-																</tr><tr>
-															<!-- End of File Checks -->
-																	<td colspan=\"2\">&nbsp;</td>
-																</tr><tr>
-																	<td colspan=\"2\"></td>
-																		
 																</tr>
+															<!-- End of File Checks -->
 															</table>");
 														if(is_array($errors)) {
 																	echo("Set up can not continue until the following errors are fixed:<br>");
@@ -363,33 +352,37 @@ echo ("
 																		}	
 														} else {
 															echo ("
+															
 															<br>
 															<b>Database Information:</b>
-															<table  class=\"olotable\" cellpadding=\"5\" cellspacing=\"0\" border=\"0\" >
+															<table class=\"olotable\" cellpadding=\"5\" cellspacing=\"0\" border=\"0\" >
 																<tr>
-																	<td valign=\"top\" width=\"60%\" align=\"left\">
+																	<td valign=\"top\" width=\"60%\">
+
 																		<table>
-																			<tr><td width=\"140\">Database User:</td>
-																				<td ><input type=\"text\" size=\"20\" name=\"db_user\" value=\"username\" class=\"olotd5\"></td>
+																			<tr>
+
+																			<td align=\"right\" width=\"140\">Database User:</td>
+																			<td align=\"left\"><input type=\"text\" size=\"20\" name=\"db_user\" value=\"username\" class=\"olotd5\"></td>
 																			</tr><tr>
-																				<td width=\"140\">Database Password:</td>
-																				<td><input type=\"password\" size=\"20\" name=\"db_password\" class=\"olotd5\"></td>
+																				<td align=\"right\" width=\"140\">Database Password:</td>
+																				<td align=\"left\"><input type=\"password\" size=\"20\" name=\"db_password\" class=\"olotd5\"></td>
 																			</tr><tr>
-																				<td width=\"140\">Database Host:</td>
-																				<td><input type=\"text\" size=\"20\" name=\"db_host\" value=\"localhost\" class=\"olotd5\"></td>
+																				<td align=\"right\" width=\"140\">Database Host:</td>
+																				<td align=\"left\"><input type=\"text\" size=\"20\" name=\"db_host\" value=\"localhost\" class=\"olotd5\"></td>
 																			</tr><tr>
-																				<td width=\"140\">Database Name:</td>
-																				<td>
-																					<input type=\"text\" size=\"30\" name=\"db_name\" value=\"myitcrm\" class=\"olotd5\">
+																				<td align=\"right\" width=\"140\">Database Name:</td>
+																				<td align=\"left\">
+																					<input type=\"text\" size=\"30\" name=\"db_name\" value=\"\" class=\"olotd5\">
 																				</td>
 																			</tr><tr>
-																					<td width=\"140\">Table Prefix</td>
-																					<td>
+																					<td align=\"right\" width=\"140\">Table Prefix</td>
+																					<td align=\"left\">
 																						<input type=\"text\" size=\"30\" name=\"db_prefix\" value=\"MYIT_\" class=\"olotd5\">
 																					</td>
 																				</tr><tr>
-																					<td width=\"140\">Preferred Language</td>
-																					<td>
+																					<td align=\"right\" width=\"140\">Preferred Language</td>
+																					<td align=\"left\">
 																						<select name=\"language\" size=\"1\" >
 																							<option value=\"english.xml\" SELECTED>English-UK
 																							<option value=\"english_US.xml\">English-US
@@ -399,8 +392,8 @@ echo ("
 																					</td>
 																				</tr>
                                                                                                                                                                 <tr>
-																					<td width=\"140\">Date Format</td>
-																					<td>
+																					<td align=\"right\" width=\"140\">Date Format</td>
+																					<td align=\"left\">
 																						<select name=\"DATE_FORMAT\" size=\"1\" >
 																							<option value=\"%d/%m/%Y\" SELECTED>d/m/Y
 																							<option value=\"%m/%d/%Y\">m/d/Y
@@ -408,9 +401,9 @@ echo ("
 																						</select>
 																					</td>
 																				</tr><tr>
-																					<td width=\"140\">Currency Symbol</td>
-																					<td>
-																						<select name=\"COMPANY_CURRENCY_SYMBOL\" size=\"1\" >
+																					<td align=\"right\" width=\"140\">Currency Symbol</td>
+																					<td align=\"left\">
+																						<select name=\"COMPANY_CURRENCY_SYMBOL\" >
 																							<option value=\"$\" SELECTED>$ - Dollars
 																							<option value=\"£\">£ - Pounds
                                                                                                                                                                                         <option value=\"€\">€ - Euros
@@ -418,8 +411,8 @@ echo ("
 																						</select>
 																					</td>
 																				</tr><tr>
-																					<td width=\"140\">Currency</td>
-																					<td>
+																					<td align=\"right\" width=\"140\">Currency</td>
+																					<td align=\"left\" size=\"30\">
 																						<select name=\"COMPANY_CURRENCY_CODE\" size=\"1\" >
 																							<option value=\"AFN\">Afghanistan, Afghanis</option>
                                                                                                                                                                                         <option value=\"ALL\">Albania, Leke</option>
@@ -731,18 +724,7 @@ echo ("
 																				</tr>
 																			</table>
 																	</td>
-																	<td valign=\"top\">
-
-																		<table width=\"100%\"  cellpadding=\"5\" cellspacing=\"0\" border=\"0\">
-																			<tr>
-																				<td colspan=\"2\">Please ensure that you have created this database prior to installtion. You can change table prefix to suit your needs.
-																				The pre set examples will work fine for most installs.<br><br>
-																				Next you need to add a user and password for the database to run as. We do not suggest using the root Mysql User for this.
-																				</td>
-																			</tr>
-																		</table>
-
-																	</td>
+																	
 																</tr>
 															</table>
 															<br>
@@ -755,44 +737,45 @@ echo ("
 
 																		<table>
 																			<tr>
-																				<td width=\"140\">Password:</td>
-																				<td><input type=\"password\" size=\"20\" name=\"default_password\" class=\"olotd5\"></td>
+																				<td align=\"right\" width=\"140\">First Name:</td>
+																				<td align=\"left\"><input type=\"text\" size=\"20\" name=\"first_name\" class=\"olotd5\"></td>
 																			</tr><tr>
-																				<td width=\"140\">Re-enter Password:</td>
-																				<td><input type=\"password\" size=\"20\" name=\"default_password2\" class=\"olotd5\"></td>
+																				<td align=\"right\" width=\"140\">Last Name:</td>
+																				<td align=\"left\"><input type=\"text\" size=\"20\" name=\"last_name\" class=\"olotd5\"></td>
 																			</tr><tr>
-																				<td width=\"140\">First Name:</td>
-																				<td><input type=\"text\" size=\"20\" name=\"first_name\" class=\"olotd5\"></td>
-																			</tr><tr>
-																				<td width=\"140\">Last Name:</td>
-																				<td><input type=\"text\" size=\"20\" name=\"last_name\" class=\"olotd5\"></td>
-																			</tr><tr>
-																				<td width=\"140\">Login Name:</td>
-																				<td><input type=\"text\" size=\"20\" name=\"display_name\" class=\"olotd5\"></td>
-																			</tr><tr>
-																				<td width=\"140\">Address:</td>
-																				<td><input type=\"text\" size=\"20\" name=\"address\" class=\"olotd5\"></td>
-																			</tr><tr>
-																				<td width=\"140\">City:</td>
-																				<td><input type=\"text\" size=\"20\" name=\"city\" class=\"olotd5\"></td>
-																			</tr><tr>
-																				<td width=\"140\">State:</td>
-																				<td><input type=\"text\" size=\"20\" name=\"state\" class=\"olotd5\"></td>
-																			</tr><tr>
-																				<td width=\"140\">Zip:</td>
-																				<td><input type=\"text\" size=\"20\" name=\"zip\" class=\"olotd5\"></td>
-																			</tr><tr>
-																				<td width=\"140\">Home Phone:</td>
-																				<td><input type=\"text\" size=\"20\" name=\"home_phone\" class=\"olotd5\"></td>
-																			</tr><tr>
-																				<td width=\"140\">Work Phone:</td>
-																				<td><input type=\"text\" size=\"20\" name=\"work_phone\" class=\"olotd5\"></td>
-																			</tr><tr>
-																				<td width=\"140\">Mobile Phone:</td>
-																				<td><input type=\"text\" size=\"20\" name=\"mobile_phone\" class=\"olotd5\"></td>
+																				<td align=\"right\" width=\"140\">Login Name:</td>
+																				<td align=\"left\"><input type=\"text\" size=\"20\" name=\"display_name\" class=\"olotd5\"></td>
 																			</tr>
-																				<td width=\"140\">Email:</td>
-																				<td><input type=\"text\" size=\"20\" name=\"default_email\" class=\"olotd5\"></td>
+                                                                                                                                                        <tr>
+																				<td align=\"right\" width=\"140\">Password:</td>
+																				<td align=\"left\"><input type=\"password\" size=\"20\" name=\"default_password\" class=\"olotd5\"></td>
+																			</tr><tr>
+																				<td align=\"right\" width=\"140\">Re-enter Password:</td>
+																				<td align=\"left\"><input type=\"password\" size=\"20\" name=\"default_password2\" class=\"olotd5\"></td>
+																			</tr><tr>
+																				<td align=\"right\" width=\"140\">Address:</td>
+																				<td align=\"left\"><input type=\"text\" size=\"20\" name=\"address\" class=\"olotd5\"></td>
+																			</tr><tr>
+																				<td align=\"right\" width=\"140\">City:</td>
+																				<td align=\"left\"><input type=\"text\" size=\"20\" name=\"city\" class=\"olotd5\"></td>
+																			</tr><tr>
+																				<td align=\"right\" width=\"140\">State:</td>
+																				<td align=\"left\"><input type=\"text\" size=\"20\" name=\"state\" class=\"olotd5\"></td>
+																			</tr><tr>
+																				<td align=\"right\" width=\"140\">Zip:</td>
+																				<td align=\"left\"><input type=\"text\" size=\"20\" name=\"zip\" class=\"olotd5\"></td>
+																			</tr><tr>
+																				<td align=\"right\" width=\"140\">Home Phone:</td>
+																				<td align=\"left\"><input type=\"text\" size=\"20\" name=\"home_phone\" class=\"olotd5\"></td>
+																			</tr><tr>
+																				<td align=\"right\" width=\"140\">Work Phone:</td>
+																				<td align=\"left\"><input type=\"text\" size=\"20\" name=\"work_phone\" class=\"olotd5\"></td>
+																			</tr><tr>
+																				<td align=\"right\" width=\"140\">Mobile Phone:</td>
+																				<td align=\"left\"><input type=\"text\" size=\"20\" name=\"mobile_phone\" class=\"olotd5\"></td>
+																			</tr>
+																				<td align=\"right\" width=\"140\">Email:</td>
+																				<td align=\"left\"><input type=\"text\" size=\"40\" name=\"default_email\" class=\"olotd5\"></td>
 																			</tr>
 																		</table>
 																	</td>
@@ -817,28 +800,29 @@ echo ("
 																	<td valign=\"top\" width=\"60%\">
 																		<table>
 																			<tr>
-																				<td width=\"140\">Company Name:</td>
-																				<td><input type=\"text\" size=\"20\" name=\"COMPANY_NAME\" class=\"olotd5\"></td>
+																				<td align=\"right\" width=\"140\">Company Name:</td>
+																				<td align=\"left\"><input type=\"text\" size=\"20\" name=\"COMPANY_NAME\" class=\"olotd5\"></td>
 																			</tr><tr>
-                                                                                                                                                            <td>
+                                                                                                                                                        <td></td>
+                                                                                                                                                            <td align=\"left\">
                                                                                                                                                                 <br><input type=radio name=copy value=\"yes\" onclick=\"data_copy()\";>Copy Administrator data to Business data?
                                                                                                                                                                 <br><input type=hidden name=copy value=\"no\" onclick=\"data_copy()\";>
                                                                                                                                                             </td>
                                                                                                                                                         </tr><tr>
-																				<td width=\"140\">Company Address:</td>
-																				<td><input type=\"text\" size=\"20\" name=\"COMPANY_ADDRESS\" class=\"olotd5\"></td>
+																				<td align=\"right\" width=\"140\">Company Address:</td>
+																				<td align=\"left\"><input type=\"text\" size=\"20\" name=\"COMPANY_ADDRESS\" class=\"olotd5\"></td>
 																			</tr><tr>
-																				<td width=\"140\">Company City:</td>
-																				<td><input type=\"text\" size=\"20\" name=\"COMPANY_CITY\" class=\"olotd5\"></td>
+																				<td align=\"right\" width=\"140\">Company City:</td>
+																				<td align=\"left\"><input type=\"text\" size=\"20\" name=\"COMPANY_CITY\" class=\"olotd5\"></td>
 																			</tr><tr>
-																				<td width=\"140\">Company State:</td>
-																				<td><input type=\"text\" size=\"20\" name=\"COMPANY_STATE\" class=\"olotd5\"></td>
+																				<td align=\"right\" width=\"140\">Company State:</td>
+																				<td align=\"left\"><input type=\"text\" size=\"20\" name=\"COMPANY_STATE\" class=\"olotd5\"></td>
 																			</tr><tr>
-																				<td width=\"140\">Company Zip:</td>
-																				<td><input type=\"text\" size=\"20\" name=\"COMPANY_ZIP\" class=\"olotd5\"></td>
+																				<td align=\"right\" width=\"140\">Company Zip:</td>
+																				<td align=\"left\"><input type=\"text\" size=\"20\" name=\"COMPANY_ZIP\" class=\"olotd5\"></td>
 																			</tr><tr>
-																				<td width=\"140\">Company Country:</td>
-																				<td><select name=\"COMPANY_COUNTRY\" class=\"olotd5\">
+																				<td align=\"right\" width=\"140\">Company Country:</td>
+																				<td align=\"left\"><select name=\"COMPANY_COUNTRY\" class=\"olotd5\">
 																				                <option value=\"00\"  selected  >--Select--</option> 
 													  														<option value=\"AF\"  >Afghanistan</option>
 													  														<option value=\"AL\"  >Albania</option>
@@ -1093,17 +1077,17 @@ echo ("
 																										</select>
 																			</td>
 																			</tr>
-																				<td width=\"140\">Company Phone:</td>
-																				<td><input type=\"text\" size=\"20\" name=\"COMPANY_PHONE\" class=\"olotd5\"></td>
+																				<td align=\"right\" width=\"140\">Company Phone:</td>
+																				<td align=\"left\"><input type=\"text\" size=\"20\" name=\"COMPANY_PHONE\" class=\"olotd5\"></td>
 																			</tr><tr>
-																				<td width=\"140\">Company Mobile:</td>
-																				<td><input type=\"text\" size=\"20\" name=\"COMPANY_MOBILE\" class=\"olotd5\"></td>
+																				<td align=\"right\" width=\"140\">Company Mobile:</td>
+																				<td align=\"left\"><input type=\"text\" size=\"20\" name=\"COMPANY_MOBILE\" class=\"olotd5\"></td>
 																			</tr><tr>
-																				<td width=\"140\">Company Fax:</td>
-																				<td><input type=\"text\" size=\"20\" name=\"COMPANY_FAX\" class=\"olotd5\"></td>
+																				<td align=\"right\" width=\"140\">Company Fax:</td>
+																				<td align=\"left\"><input type=\"text\" size=\"20\" name=\"COMPANY_FAX\" class=\"olotd5\"></td>
 																			</tr><tr>
-																				<td width=\"140\">Company Email:</td>
-																				<td><input type=\"text\" size=\"20\" name=\"COMPANY_EMAIL\" class=\"olotd5\"></td>
+																				<td align=\"right\" width=\"140\">Company Email:</td>
+																				<td align=\"left\"><input type=\"text\" size=\"20\" name=\"COMPANY_EMAIL\" class=\"olotd5\"></td>
 																			</tr>
 																		</table>
 																	</td>
@@ -1128,10 +1112,10 @@ echo ("
 																		<table>
 																			<tr>
 																				<td width=\"140\">Full Path:</td>
-																				<td><input type=\"text\" size=\"40\" name=\"default_path\" value=\"".$default_path."/myitcrm\"class=\"olotd5\"></td>
+																				<td><input type=\"text\" size=\"40\" name=\"default_path\" value=\"".$default_path."/\"class=\"olotd5\"></td>
 																			</tr>
 																				<td width=\"140\">Site Name</td>
-																				<td><input type=\"text\" size=\"40\" name=\"default_site_name\" value=\"http://".$default_server."/myitcrm\" class=\"olotd5\"></td>
+																				<td><input type=\"text\" size=\"40\" name=\"default_site_name\" value=\"http://".$default_server."/\" class=\"olotd5\"></td>
 																			</tr>
 																		</table>
 																	</td>

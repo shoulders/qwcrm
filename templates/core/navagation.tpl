@@ -122,7 +122,7 @@
                         <a href="?page=control:hours_edit"><img src="images/icons/clock.gif" alt="" border="0" height="14" width="14" /> Business Hours</a>
                         <a href="?page=control:payment_options"><img src="images/icons/money.png" alt="" border="0" height="14" width="14" /> Payment Options</a>
                         <a href="?page=control:backup"><img src="images/icons/db_restore.png" alt="" border="0" height="14" width="14" /> Restore Database</a>
-                        <!--<a href="modules/core/backup.php"><img src="images/icons/db_save.png" alt="" border="0" height="14" width="14" /> Backup Database</a>-->
+                        <a href="modules/core/backup.php"><img src="images/icons/db_save.png" alt="" border="0" height="14" width="14" /> Backup Database</a>
                         <a href="include/phpinfo.php"><img src="images/icons/php.png" alt="" border="0" height="14" width="14" /> PHP Info</a>
 		</div>
 		{/if}
@@ -133,7 +133,6 @@
             <a href="http://myitcrm.com/forum/index.php" target="_blank"><img src="images/icons/comment.png" alt="" border="0" height="14" width="14" /> Forum</a>
             <a href="https://www.paymate.com/PayMate/ExpressPayment?mid=geevpc&ref=Project Support Donation"><img src="images/icons/money.png" alt="" border="0" height="14" width="14" /> Make a Donation.</a>
             <a href="https://sourceforge.net/projects/myitcrm/" target="_blank"><img src="images/icons/sf.ico" alt="" border="0" height="14" width="14" /> SF Page</a>
-            <a href="https://sourceforge.net/export/rss2_projfiles.php?group_id=254082" target="_blank"><img src="images/icons/bookmark.png" alt="" border="0" height="14" width="14" /> Latest Release</a>
         </div>
     </div>
   </tr>

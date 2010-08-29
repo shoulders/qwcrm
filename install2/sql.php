@@ -516,21 +516,6 @@ echo("<tr>\n
 			</tr>\n");
 }
 ##################################
-# create_email_details				#
-##################################
-if(!create_customer_emails($db)) {
-echo("<tr>\n
-				<td>CREATE TABLE IF NOT EXISTS ".PRFX."TABLE_CUSTOMER_EMAILS</td>\n
-				<td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
-			</tr>\n");
-	$error_flag = true;
-} else {
-	echo("<tr>\n
-				<td>CREATE TABLE IF NOT EXISTS ".PRFX."TABLE_CUSTOMER_EMAILS</td>\n
-				<td><font color=\"green\"><b>OK</b></font></td>\n
-			</tr>\n");
-}
-##################################
 # create_TABLE_EXPENSE				#
 ##################################
 if(!create_expense($db)) {
@@ -742,20 +727,20 @@ function create_table_customer($db){
 	$q="CREATE TABLE IF NOT EXISTS `".PRFX."TABLE_CUSTOMER` (
 		`CUSTOMER_ID` int(11) NOT NULL auto_increment,
 		`CUSTOMER_DISPLAY_NAME` varchar(80) NOT NULL default '',
-		`CUSTOMER_ADDRESS` varchar(30) default NULL,
-		`CUSTOMER_CITY` varchar(20) default NULL,
-		`CUSTOMER_STATE` varchar(60) default NULL,
-		`CUSTOMER_ZIP` varchar(8) default NULL,
-		`CUSTOMER_PHONE` varchar(13) default NULL,
-		`CUSTOMER_WORK_PHONE` varchar(13) NOT NULL default '',
-		`CUSTOMER_MOBILE_PHONE` varchar(13) NOT NULL default '',
+		`CUSTOMER_ADDRESS` text default NULL,
+		`CUSTOMER_CITY` varchar(40) default NULL,
+		`CUSTOMER_STATE` varchar(40) default NULL,
+		`CUSTOMER_ZIP` varchar(20) default NULL,
+		`CUSTOMER_PHONE` varchar(20) default NULL,
+		`CUSTOMER_WORK_PHONE` varchar(20) NOT NULL default '',
+		`CUSTOMER_MOBILE_PHONE` varchar(20) NOT NULL default '',
 		`CUSTOMER_EMAIL` varchar(80) default NULL,
                 `CUSTOMER_WWW` varchar(80) default NULL,
-                `CREDIT_TERMS` varchar(80) default NULL,
+                `CREDIT_TERMS` text default NULL,
                 `CUSTOMER_NOTES` text default NULL,
 		`CUSTOMER_TYPE` varchar(20) default NULL,
-		`CUSTOMER_FIRST_NAME` varchar(20) default NULL,
-		`CUSTOMER_LAST_NAME` varchar(20) default NULL,
+		`CUSTOMER_FIRST_NAME` varchar(39) default NULL,
+		`CUSTOMER_LAST_NAME` varchar(39) default NULL,
 		`CREATE_DATE` int(20) NOT NULL default '0',
 		`LAST_ACTIVE` int(20) NOT NULL default '0',
 		`DISCOUNT`  decimal(10,2) NOT NULL default '0.00',
@@ -794,7 +779,7 @@ function create_table_employee($db) {
 		`EMPLOYEE_ID` int(11) NOT NULL auto_increment,
 		`EMPLOYEE_LOGIN` varchar(50) NOT NULL default '',
 		`EMPLOYEE_PASSWD` varchar(50) NOT NULL default '',
-		`EMPLOYEE_EMAIL` varchar(50) NOT NULL default '',
+		`EMPLOYEE_EMAIL` varchar(80) NOT NULL default '',
 		`EMPLOYEE_FIRST_NAME` varchar(40) NOT NULL default '',
 		`EMPLOYEE_LAST_NAME` varchar(40) NOT NULL default '',
 		`EMPLOYEE_DISPLAY_NAME` varchar(80) NOT NULL default '',
@@ -839,10 +824,10 @@ function create_table_invoice($db)
   `PAID_DATE` int(20) NOT NULL default '0',
   `PAID_AMOUNT` decimal(10,2) NOT NULL default '0.00',
   `BALANCE` decimal(10,2) NOT NULL default '0.00',
-  `TAX` decimal(6,2) NOT NULL default '0.00',
+  `TAX` decimal(10,2) NOT NULL default '0.00',
   `SHIPPING` decimal(10,2) NOT NULL default '0.00',
   `DISCOUNT` decimal(10,2) NOT NULL default '0.00',
-  `SUB_TOTAL` decimal(6,2) NOT NULL default '0.00',
+  `SUB_TOTAL` decimal(10,2) NOT NULL default '0.00',
   PRIMARY KEY  (`INVOICE_ID`),
   KEY `EMPLOYEE_ID` (`EMPLOYEE_ID`),
   KEY `WORKORDER_ID` (`WORKORDER_ID`)

@@ -1,17 +1,17 @@
-//<?php
+<?php
 ////	require_once('Mail.php');
 ////	require_once('Mail/mime.php');
-//        require_once('../../conf.php');
+        require_once('../../conf.php');
 //
 //	// location of your temp directory
-//	$tmpDir = "../../backup/";
+	$tmpDir = "../../backup/";
 //
 //	/* email settings... */
 ////	$to = "myitcrm@gmail.com";
 ////	$from = "admin@localhost";
 ////	$subject = "db - backup";
-//	$sqlFile = $tmpDir.PRFX.date('Y_m_d').".sql";
-//	$attachment = $tmpDir.PRFX.date('Y_m_d').".tgz";
+	$sqlFile = $tmpDir.PRFX.date('Y_m_d').".sql";
+	$attachment = $tmpDir.PRFX.date('Y_m_d').".tgz";
 //
 //
 //        // TODO - Comment out when publishing live F:\M\MyITCRM Dev\xampp\mysql\bin\mysqldump.exe
@@ -21,10 +21,10 @@
 //
 //
 //        //The below line is used in LIVE sites - Please uncomment
-////        $creatBackup = "mysqldump -u ".DB_USER." --password=".DB_PASS." ".DB_NAME." > ".$sqlFile;
-//	$createZip = "tar cvzf $attachment $sqlFile";
-//	exec($creatBackup);
-//	exec($createZip);
+        $creatBackup = "mysqldump -u ".DB_USER." --password=".DB_PASS." ".DB_NAME." > ".$sqlFile;
+	$createZip = "tar cvzf $attachment $sqlFile";
+	exec($creatBackup);
+	exec($createZip);
 //
 ////	$headers = array('From'    => $from, 'Subject' => $subject);
 ////	$textMessage = $attachment;
@@ -42,4 +42,11 @@
 ////	unlink($sqlFile);
 ////	unlink($attachment);
 //
-//?>
+ $referer = $_SERVER['HTTP_REFERER'];
+   if (!$referer == '') {
+      echo '<p><a href="' . $referer . '" title="Return to the previous page">&laquo; Go back</a></p>';
+   } else {
+      echo '<p><a href="javascript:history.go(-1)" title="Return to the previous page">&laquo; Go back</a></p>';
+   }
+
+?>
