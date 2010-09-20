@@ -280,9 +280,9 @@ document.form1.bk2.value="";
 </table>
 <br>
 {/section}
-<h2 align="center" >Please select which hardware/peripherials have been received.</h2>
+<h2 align="center" style="page-break-after: always;" >Please select which hardware/peripherials have been received.</h2>
 <form name=form1 method=post action=''>
-<table id="test" width="650" align="center" border="0" cellpadding="2" cellspacing="0" style="border-collapse: collapse;">
+<table id="test" width="100%" align="center" border="0" cellpadding="2" cellspacing="0" style="border-collapse: collapse;">
     <tr>
         <td colspan="1" align="right" valign="top" >
             <input type="text" value="PC Tower/Laptop:" align="right" readonly><br><br>
@@ -308,7 +308,7 @@ document.form1.bk2.value="";
     </tr>
 
 </table>
-<table align="center" width="600">
+<table align="center" width="100%">
 
     <tr>
         <td>
@@ -325,15 +325,15 @@ document.form1.bk2.value="";
         </td>
     </tr>
 </table>
-<hr align="center" noshade>
+<hr align="center" noshade style="page-break-after: always;">
 <!-- Work Order Customers Copy -->
 {section name=i loop=$single_workorder_array}
-<table  width="600" border="1" cellpadding="2" cellspacing="0" style="border-collapse: collapse;">
+<table  width="100%" border="1" cellpadding="2" cellspacing="0" style="border-collapse: collapse;">
     <tr>
         <!-- right column -->
         <td valign="top" align="center" ><img src="images/logo.jpg" alt="" height="50"></td>
         <!-- middle column -->
-        <td valign="top" align="center" width="200">
+        <td valign="top" align="center">
             <font size="+3">Customer Workorder Slip</font><br>
 			Work Order ID# {$single_workorder_array[i].WORK_ORDER_ID}
         </td>
@@ -364,7 +364,7 @@ document.form1.bk2.value="";
             </table>
         </td>
         <!-- Center Column -->
-        <td valign="top" width="60%">
+        <td valign="top" width="100%">
             <table border="0" cellpadding="4" cellspacing="0">
                 <tr>
                     <td valign="top" nowrap><b>Scope:&nbsp;</b>{$single_workorder_array[i].WORK_ORDER_SCOPE}</td>
@@ -399,7 +399,7 @@ document.form1.bk2.value="";
 						{elseif $single_workorder_array[i].WORK_ORDER_CURRENT_STATUS == "9"}
 							Pending
 						{/if}
-                        .&nbsp;This work order has been assigned to {if $single_workorder_array[i].EMPLOYEE_DISPLAY_NAME ==""}
+                        .&nbsp;<br>This work order has been assigned to {if $single_workorder_array[i].EMPLOYEE_DISPLAY_NAME ==""}
 							our next available technician
 						{else}
 							{$single_workorder_array[i].EMPLOYEE_DISPLAY_NAME}
@@ -426,7 +426,7 @@ document.form1.bk2.value="";
 </table>
 {/section}
 <h2 align="center" >Please select which hardware/peripherials have been received.</h2>
-<table width="650" align="center" border="0" cellpadding="2" cellspacing="0" style="border-collapse: collapse;">
+<table width="100%" align="center" border="0" cellpadding="2" cellspacing="0" style="border-collapse: collapse;">
     <tr>
         <td colspan="1" align="right" valign="top" >
             <input type="text" value="PC Tower/Laptop:" align="right" readonly><br><br>
@@ -452,7 +452,7 @@ document.form1.bk2.value="";
 </table>
 
 <br>
-<table align="center" width="600">
+<table align="center" width="100%">
 
     <tr>
         <td>
