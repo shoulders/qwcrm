@@ -1274,7 +1274,9 @@ function create_acl($db) {
 (72, 'refund:new', 1, 1, 1, 1, 0),
 (73, 'refund:search', 1, 1, 1, 1, 0),
 (74, 'supplier:new', 1, 1, 1, 1, 0),
-(75, 'supplier:search', 1, 1, 1, 1, 0)";
+(75, 'supplier:search', 1, 1, 1, 1, 0),
+(76, 'supplier:supplier_details', 1, 1, 1, 1, 0),
+(77, 'expense:expense_details', 1, 1, 1, 1, 0)";
                         $rs = $db->Execute($q);
 			if(!$rs) {
 				return false;
