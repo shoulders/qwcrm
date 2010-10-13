@@ -171,6 +171,7 @@ $cemail = $company1['COMPANY_EMAIL'];
 $cabn = $company1['COMPANY_ABN'];
 $cthankyou = $setup1['INV_THANK_YOU'];
 $currency_sym = utf8_decode($company1['COMPANY_CURRENCY_SYMBOL']);
+$currency_code = $company1['COMPANY_CURRENCY_CODE'];
 
 //Customer Details
 $cusdisplay = $customer1['CUSTOMER_DISPLAY_NAME'];
