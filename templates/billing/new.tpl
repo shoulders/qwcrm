@@ -256,7 +256,7 @@
                                             </tr><tr class="olotd4">
                                                 <td></td>
                                                 <td>
-													$<input type="text" name="cash_amount" size="8" 
+							$<input type="text" name="cash_amount" size="8" 
                                                             {if $balance > 0 }
                                                             value="{$invoice_amount-$invoice_paid_amount|string_format:"%.2f"}"
                                                             {else}
@@ -331,14 +331,22 @@
                                                 <td class="row2"></td>
                                             </tr><tr class="olotd4">
                                                 <td></td>
-                                                <td><input type="text" name="paypal_amount" size="8" {if $balance > 0} value="{$invoice_amount-$invoice_paid_amount|string_format:"%.2f"}" {else} value="{$invoice_amount|string_format:"%.2f"}" {/if}class="olotd4"></td>
-                                                <td></td>
+                                                <td>
+							$<input type="text" name="paypal_amount" size="8"
+                                                            {if $balance > 0 }
+                                                            value="{$invoice_amount-$invoice_paid_amount|string_format:"%.2f"}"
+                                                            {else}
+                                                            value="{$invoice_amount|string_format:"%.2f"}"
+                                                            {/if}
+                                                            class="olotd4">
+                                                </td>
                                             </tr>
                                         </table>
                                         <p>
                                             <input type="hidden" name="customer_id"  value="{$customer_id}">
                                             <input type="hidden" name="invoice_id"   value="{$invoice_id}">
                                             <input type="hidden" name="workorder_id" value="{$workorder_id}">
+                                            
                                             <input type="submit" name="submit" value="Submit PayPal Payment">
                                         </p>
                                     </td>

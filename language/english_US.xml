@@ -53,7 +53,7 @@
 		<billing_customer_name>Customer Name:</billing_customer_name>
 		<billing_print_title>Print Gift Certificate</billing_print_title>
 		<billing_results>Billing Results</billing_results>
-		<billing_paypal_note>Your browser will redirect to the secure PayPal website. Once the billing is complete fill in the form below to finish billing.</billing_paypal_note>
+		<billing_paypal_note>Once the paypal payment has been confirmed, fill in the form below to finish billing.</billing_paypal_note>
 		<billing_error_date>Please enter the  Gift Certificate Expiration Date</billing_error_date>
 		<billing_error_gift_amount>Please enter the  Gift Certificate Amount</billing_error_gift_amount>
 		<billing_error_invalid>Invalid information entered.</billing_error_invalid>
