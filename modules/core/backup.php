@@ -11,7 +11,7 @@
 ////	$from = "admin@localhost";
 ////	$subject = "db - backup";
 	$sqlFile = $tmpDir.PRFX.date('Y_m_d').".sql";
-	$attachment = $tmpDir.PRFX.date('Y_m_d').".tgz";
+//	$attachment = $tmpDir.PRFX.date('Y_m_d').".tgz";
 //
 //
 //        // TODO - Comment out when publishing live F:\M\MyITCRM Dev\xampp\mysql\bin\mysqldump.exe
@@ -22,9 +22,9 @@
 //
 //        //The below line is used in LIVE sites - Please uncomment
         $creatBackup = "mysqldump -u ".DB_USER." --password=".DB_PASS." ".DB_NAME." > ".$sqlFile;
-	$createZip = "tar cvzf $attachment $sqlFile";
+//	$createZip = "tar cvzf $attachment $sqlFile";
 	exec($creatBackup);
-	exec($createZip);
+//	exec($createZip);
 //
 ////	$headers = array('From'    => $from, 'Subject' => $subject);
 ////	$textMessage = $attachment;

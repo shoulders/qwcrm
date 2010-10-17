@@ -183,7 +183,7 @@ switch ($mode) {
 			<!-- Begin Page -->
 			<table width=\"800\" cellpadding=\"5\" cellspacing=\"0\" border=\"0\" >
 				<tr>
-					<td class=\"menuhead2\" width=\"80%\">&nbsp;MyIT CRM Upgrader from versions 0.2.8.2, 0.2.9.0</td>
+					<td class=\"menuhead2\" width=\"80%\">&nbsp;MyIT CRM Upgrader from versions 0.2.9.0, 0.2.9.1</td>
 					</td>
 				</tr><tr>
 					<td class=\"menutd2\" colspan=\"2\">
@@ -212,9 +212,9 @@ switch ($mode) {
 																</tr><tr>
 
 																	<td align=\"left\">Main Config Writable ");
-        if(!check_write ('../conf.php')) {
-            echo("<font color=\"red\">../conf.php is not writable stopping</font>");
-            $errors[] = array('../conf.php'=>'Not Writable');
+        if(!check_write ('../../conf.php')) {
+            echo("<font color=\"red\">../../conf.php is not writable stopping</font>");
+            $errors[] = array('../../conf.php'=>'Not Writable');
         } else {
             echo("<font color=\"green\"><b>OK</b>");
         }
@@ -222,9 +222,9 @@ switch ($mode) {
 																</tr><tr>
 
 																	<td align=\"left\">Cache Folder ");
-        if(!check_write ('../cache')) {
-            echo("<font color=\"red\">../cache is not writable stopping.</font>");
-            $errors[] = array('../cache'=>'Not Writable');
+        if(!check_write ('../../cache')) {
+            echo("<font color=\"red\">../../cache is not writable stopping.</font>");
+            $errors[] = array('../../cache'=>'Not Writable');
         } else {
             echo("<font color=\"green\"><b>OK</b>");
         }
@@ -233,9 +233,9 @@ switch ($mode) {
 																</tr><tr>
 
 																	<td align=\"left\">Access Log ");
-        if(!check_write ('../log/access.log')) {
-            echo("<font color=\"red\">../log/access.log is not writable stopping.</font>");
-            $errors[] = array('../log/access.log'=>'Not Writable');
+        if(!check_write ('../../log/access.log')) {
+            echo("<font color=\"red\">../../log/access.log is not writable stopping.</font>");
+            $errors[] = array('../../log/access.log'=>'Not Writable');
         } else {
             echo("<font color=\"green\"><b>OK</b>");
         }
