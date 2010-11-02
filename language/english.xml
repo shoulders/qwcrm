@@ -177,7 +177,7 @@
 		<credit_terms>Credit terms</credit_terms>
 		<customer_city>City</customer_city>
 		<customer_state>State</customer_state>
-		<customer_zip>Zip</customer_zip>
+		<customer_zip>Postcode</customer_zip>
                 <customer_notes>Notes</customer_notes>
 		<customer_type>Type</customer_type>
                 <customer_www>Website</customer_www>
@@ -255,7 +255,7 @@
 		<employee_address>Address</employee_address>
 		<employee_city>City</employee_city>
 		<employee_state>State</employee_state>
-		<employee_zip>Zip</employee_zip>
+		<employee_zip>Postcode</employee_zip>
 		<employee_type>Employee Type</employee_type>
 		<employee_manager>Manager</employee_manager>
 		<employee_supervisor>Supervisor</employee_supervisor>
@@ -673,7 +673,7 @@
                 <supplier_address>Address</supplier_address>
                 <supplier_city>City</supplier_city>
                 <supplier_state>State</supplier_state>
-                <supplier_zip>Zip</supplier_zip>
+                <supplier_zip>Postcode</supplier_zip>
                 <supplier_notes>Notes</supplier_notes>
                 <supplier_description>Description</supplier_description>
 
