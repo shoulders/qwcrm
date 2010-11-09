@@ -87,13 +87,22 @@ if(!$rs = $db->Execute($q)){
 $paid_invoices = $rs->fields['count'];
 $smarty->assign('paid_invoices' , $paid_invoices);
 
-/* Sum Invoices */
+// Sum Costs Invoices
+$q = "SELECT SUM(DISCOUNT) AS DISCOUNT FROM ".PRFX."TABLE_INVOICE WHERE INVOICE_DUE  >= '$month_start' AND INVOICE_DUE  <= '$month_end'";
+if(!$rs = $db->Execute($q)){
+	echo 'Error: '. $db->ErrorMsg();
+	die;
+}
+$discounts = $rs->fields['DISCOUNT'];
+
+//Sum Invoices
 $q = "SELECT SUM(SUB_TOTAL) AS sum FROM ".PRFX."TABLE_INVOICE WHERE INVOICE_DUE  >= '$month_start' AND INVOICE_DUE  <= '$month_end'";
 if(!$rs = $db->Execute($q)){
 	echo 'Error: '. $db->ErrorMsg();
 	die;
 }
-$rev_invoices = $rs->fields['sum'];
+$sum_invoices = $rs->fields['sum'];
+$rev_invoices = $sum_invoices - $discounts;
 $smarty->assign('rev_invoices', $rev_invoices);
 
 /* Sum Costs Invoices 
