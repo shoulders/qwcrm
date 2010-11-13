@@ -63,6 +63,30 @@ if(!$rs = $db->execute($q)){
 	$wo_closed_count = $rs->fields['count'];
 	$smarty->assign('wo_closed_count',$wo_closed_count);
 }
+// Sum unpaid Discounts on Invoices
+$q = "SELECT SUM(DISCOUNT) AS DISCOUNT FROM ".PRFX."TABLE_INVOICE WHERE INVOICE_PAID=".$db->qstr(0)." AND  balance=".$db->qstr(0);
+if(!$rs = $db->Execute($q)){
+	echo 'Error: '. $db->ErrorMsg();
+	die;
+}
+$unpaid_discounts = $rs->fields['DISCOUNT'];
+
+
+// Sum Paid Discounts on Invoices
+$q = "SELECT SUM(DISCOUNT) AS DISCOUNT FROM ".PRFX."TABLE_INVOICE";
+if(!$rs = $db->Execute($q)){
+	echo 'Error: '. $db->ErrorMsg();
+	die;
+}
+$all_discounts = $rs->fields['DISCOUNT'];
+
+// Sum partial Discounts on Invoices
+$q = "SELECT SUM(DISCOUNT) AS DISCOUNT FROM ".PRFX."TABLE_INVOICE WHERE INVOICE_PAID=".$db->qstr(0)." AND  balance >".$db->qstr(0);
+if(!$rs = $db->Execute($q)){
+	echo 'Error: '. $db->ErrorMsg();
+	die;
+}
+$part_discounts = $rs->fields['DISCOUNT'];
 
 /* total */
 $q = 'SELECT count(*) as count FROM '.PRFX.'TABLE_WORK_ORDER';
@@ -90,7 +114,7 @@ if(!$rs = $db->execute($q)){
 	force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
 	exit;
 } else {
-	$in_unpaid_bal = $rs->fields['sum'];
+	$in_unpaid_bal = $rs->fields['sum'] - $unpaid_discounts ;
 	$smarty->assign('in_unpaid_bal',$in_unpaid_bal);
 }
 
@@ -110,7 +134,7 @@ if(!$rs = $db->execute($q)){
 	force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
 	exit;
 } else {
-	$in_part_bal = $rs->fields['sum'];
+	$in_part_bal = $rs->fields['sum'] - $part_discounts;
 	$smarty->assign('in_part_bal',$in_part_bal);
 }
 
@@ -133,9 +157,9 @@ if(!$rs = $db->execute($q)){
 	force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
 	exit;
 } else {
-	$in_total = $rs->fields['sum'];
+	$in_total = $rs->fields['sum']- $all_discounts;
 	$in_total_bal = $in_total - $in_out_bal; 
-	$in_total2 = $in_total + $in_out_bal;
+	$in_total2 = $in_total + $in_out_bal ;
 	$smarty->assign('in_total_bal',$in_total_bal);
 	$smarty->assign('in_total2',$in_total2);
 }
