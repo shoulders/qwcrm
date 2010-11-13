@@ -3,6 +3,18 @@ Changelog
 PLEASE REPORT ANY BUGS OR FEATURES THAT YOU FIND SO THAT WE CAN FIX'EM!
 To view more details on these issues, please visit http://team.myitcrm.com/
 
+
+===v0.2.9.1 : 14th November 2010 from svn r259===
+
+Bug #136: Can't edit "Billing Rates" Directly
+Bug #137: Upgrade Process Issues
+Bug #138: Backup process sends email to fixed address and not user defined
+Bug #142: Currency Code not being Set for Online payment processing
+Bug #143: Paypal not accepting payment.
+Feature #139: customer database upgrades
+
+
+
 ===v0.2.9.0 : 22th July 2010 svn r243===
 
 Bug #35: Partial Payment and Discounts: Closed   ( geevpc )
