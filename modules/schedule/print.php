@@ -90,7 +90,7 @@ $business_end = mktime($E,0,0,$m,$d,$y);
 
 
 /* look in the database for a scheduleed event and build the calander */	
-	$q = "SELECT * FROM ".PRFX."TABLE_schedule WHERE SCHEDULE_START >= " . $business_start. " AND SCHEDULE_START  <= " .$business_end. "
+	$q = "SELECT * FROM ".PRFX."TABLE_SCHEDULE WHERE SCHEDULE_START >= " . $business_start. " AND SCHEDULE_START  <= " .$business_end. "
 			AND  EMPLOYEE_ID ='".$tech."' ORDER BY SCHEDULE_START ASC";
 	if(!$rs = $db->Execute($q)) {
 		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
