@@ -1,14 +1,20 @@
 <?php
+
+// BOF shared variables for invoicing
+
 require_once ('include.php');
+header('Content-type: text/html; charset=utf-8');
 if(!xml2php("invoice")) {
 	$smarty->assign('error_msg',"Error in language file");
 }
 
 $invoice_id  = $VAR['invoice_id'];
+$invoice_id  = $VAR['invoice_id'];
 $customer_id = $VAR['customer_id'];
+$print_type = $VAR['print_type'];
+//$currency_sym = $VAR['currency_sym'];
 //$workorder_id = $VAR['workorder_id';
 //$amountpaid = $payments.AMOUNT;
-
 
 /* Generic error control */
 if(empty($invoice_id)) {
@@ -27,17 +33,15 @@ if($customer_id == "" || $customer_id == "0"){
 		exit;
 	}
 
-	$customer_details = $rs->GetAssoc();        
+	$customer_details = $rs->GetAssoc();
 	if(empty($customer_details)){
 		force_page('core', 'error&error_msg=No Customer details found for Customer ID '.$customer_id.'.&menu=1');
 		exit;
 	}
-	
-	
 }
 
 	/* get invoice details */
-	$q = "SELECT  ".PRFX."TABLE_INVOICE.*, ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_DISPLAY_NAME FROM  ".PRFX."TABLE_INVOICE 
+	$q = "SELECT  ".PRFX."TABLE_INVOICE.*, ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_DISPLAY_NAME FROM  ".PRFX."TABLE_INVOICE
 			LEFT JOIN ".PRFX."TABLE_EMPLOYEE ON (".PRFX."TABLE_INVOICE.EMPLOYEE_ID = ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_ID)
 			WHERE INVOICE_ID=".$db->qstr($invoice_id);
 	if(!$rs = $db->execute($q)) {
@@ -46,25 +50,25 @@ if($customer_id == "" || $customer_id == "0"){
 	}
 	$invoice = $rs->FetchRow();
 	//print($invoice);
-	
+
 /* get workorder status */
 	 $q = "SELECT * FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_ID=".$db->qstr($invoice['WORKORDER_ID']);
-	
+
 	if(!$rs = $db->Execute($q)) {
 		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
 		exit;
 	}
 		$stats = $rs->FetchRow();
-		
+
 /* get workorder status description */
 	 $q = "SELECT * FROM ".PRFX."CONFIG_WORK_ORDER_STATUS WHERE CONFIG_WORK_ORDER_STATUS_ID=".$db->qstr($stats['WORK_ORDER_STATUS']);
-	
+
 	if(!$rs = $db->Execute($q)) {
 		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
 		exit;
 	}
-		$stats2 = $rs->FetchRow();	
-    	
+		$stats2 = $rs->FetchRow();
+
 	/* get any labor details */
 	$q = "SELECT * FROM ".PRFX."TABLE_INVOICE_LABOR WHERE INVOICE_ID=".$db->qstr($invoice['INVOICE_ID']);
 	if(!$rs = $db->execute($q)) {
@@ -80,23 +84,21 @@ if($customer_id == "" || $customer_id == "0"){
 		exit;
 	}
 	$parts = $rs->GetArray();
-	
+
 /* get payment history */
 	 $q = "SELECT * FROM ".PRFX."TABLE_TRANSACTION WHERE WORKORDER_ID=".$db->qstr($invoice['WORKORDER_ID']);
-	
+
 	if(!$rs = $db->Execute($q)) {
 		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
 		exit;
 	}
 		$payments = $rs->FetchRow();
-		
-			
 
 /* get printing options */
 $q = "SELECT * FROM ".PRFX."SETUP";
 $rs = $db->execute($q);
-$html_print = $rs->fields['HTML_PRINT'];
-$pdf_print  = $rs->fields['PDF_PRINT'];
+//$html_print = $rs->fields['HTML_PRINT'];
+//$pdf_print  = $rs->fields['PDF_PRINT'];
 $thank_you  =  $rs->fields['INV_THANK_YOU'];
 $CHECK_PAYABLE  =  $rs->fields['CHECK_PAYABLE'];
 $DD_NAME  =  $rs->fields['DD_NAME'];
@@ -125,7 +127,6 @@ if(!$rs = $db->Execute($q)) {
 	}
 		$setup1 = $rs->FetchRow();
 
-
 $q = "SELECT * FROM ".PRFX."TABLE_COMPANY;";
 if(!$rs = $db->Execute($q)) {
 		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
@@ -153,7 +154,6 @@ if(!$rs = $db->Execute($q)) {
 	}
 	$invoice3 = $rs->FetchRow();
 
-
 //Company Details
 $cname = $company1['COMPANY_NAME'];
 $caddress = $company1['COMPANY_ADDRESS'];
@@ -163,10 +163,11 @@ $cphone = $company1['COMPANY_PHONE'];
 $cemail = $company1['COMPANY_EMAIL'];
 $cabn = $company1['COMPANY_ABN'];
 $cthankyou = $setup1['INV_THANK_YOU'];
-$currency_sym = $company1['COMPANY_CURRENCY_SYMBOL'];
+$currency_sym = utf8_decode($company1['COMPANY_CURRENCY_SYMBOL']);
 $currency_code = $company1['COMPANY_CURRENCY_CODE'];
 
 //Customer Details
+$cusdisplay = $customer1['CUSTOMER_DISPLAY_NAME'];
 $cusnamef = $customer1['CUSTOMER_FIRST_NAME'];
 $cusnamel = $customer1['CUSTOMER_LAST_NAME'];
 $cusaddress = $customer1['CUSTOMER_ADDRESS'];
@@ -175,61 +176,63 @@ $cuszip = $customer1['CUSTOMER_ZIP'];
 $cusstate = $customer1['CUSTOMER_STATE'];
 $cusphone = $customer1['CUSTOMER_PHONE'];
 $cusemail = $customer1['CUSTOMER_EMAIL'];
+$custerms = $customer1['CREDIT_TERMS'];
 
 //invoice details
 $totalinv = $invoice3['SUB_TOTAL'];
 $taxinv = $invoice3['TAX'];
-$balinv = $invoice3['INVOICE_AMOUNT']-$invoice3['PAID_AMOUNT'];
+//$balinv = $invoice3['BALANCE'];
+//$balinv = $invoice3['INVOICE_AMOUNT']-$invoice3['PAID_AMOUNT'];
 $paidamntinv = $invoice3['PAID_AMOUNT'];
 $discinv = $invoice3['DISCOUNT'];
 $amntinv = $invoice3['INVOICE_AMOUNT'];
 $shipinv = $invoice3['SHIPPING'];
-$balinv = sprintf( "%.2f",$balinv);
+$currency_sym = utf8_decode($currency_sym);
 
+//$balinv = sprintf( "%.2f",$balinv);
+$balinv = sprintf( "%.2f",$invoice3['BALANCE']);
 
 //PayPal Amount with 1.5% Surcharge Applied
   $pamount= ($balinv)* 1.015;
   $pamount = sprintf( "%.2f",$pamount);
+
+//Paymate Amount with Surcharge Applied
   $paymate_amt= ($balinv)* ((($setup1['PAYMATE_FEES'])/100)+1);
   $paymate_amt = sprintf( "%.2f",$paymate_amt);
 
+/* get Date Formatting value from database and assign it to $format*/
+$q = 'SELECT * FROM '.PRFX.'TABLE_COMPANY';
+	if(!$rs = $db->execute($q)) {
+		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+		exit;
+	} else {
+		$format = $rs->fields['COMPANY_DATE_FORMAT'];
+	}
 
-if($html_print == 1) {
-/* html Print out */
-	if(empty($labor)){
-		$smarty->assign('labor', 0);
-	} else {
-		$smarty->assign('labor', $labor);
-	}
-	
-	if(empty($parts)){
-		$smarty->assign('parts', 0);
-	} else {
-		$smarty->assign('parts', $parts);
-	}
-	if(empty($stats)){
-		$smarty->assign('stats', 0);
-	} else {
-		$smarty->assign('stats', $stats);
-	}
-	if(empty($stats2)){
-		$smarty->assign('stats2', 0);
-	} else {
-		$smarty->assign('stats2', $stats2);
-	}
-	if(empty($payments)){
-		$smarty->assign('payments', 0);
-	} else {
-		$smarty->assign('payments', $payments);
-	}
-	if(empty($paid)){
-		$smarty->assign('paid', 0);
-	} else {
-		$smarty->assign('paid', $paid);
-	}
-	
-	//$ppamount = $invoice.INVOICE_AMOUNT-$payments.AMOUNT ;
-	
+// Stripping out the percentage signs so php can render it correctly
+$literals = "%";
+$Dformat = str_replace($literals, "", $format);
+//Now lets display the right date format
+if($Dformat == 'd/m/Y' || $Dformat == 'd/m/y'  ){
+$date_format = "d/m/Y";}
+elseif($Dformat == 'm/d/Y' || $Dformat == 'm/d/y' ){
+$date_format = "m/d/Y";}
+
+// EOF shared variables for invoicing
+
+// BOF HTML Printing Section
+
+if($print_type == 'html') {
+
+    /* html Print out */
+
+	if(empty($labor)){$smarty->assign('labor', 0);} else {$smarty->assign('labor', $labor);}
+	if(empty($parts)){$smarty->assign('parts', 0);} else {$smarty->assign('parts', $parts);}
+	if(empty($stats)){$smarty->assign('stats', 0);} else {$smarty->assign('stats', $stats);}
+	if(empty($stats2)){$smarty->assign('stats2', 0);} else {$smarty->assign('stats2', $stats2);}
+	if(empty($payments)){$smarty->assign('payments', 0);} else {$smarty->assign('payments', $payments);}
+	if(empty($paid)){$smarty->assign('paid', 0);} else {$smarty->assign('paid', $paid);}
+
 	$smarty->assign('thank_you',$thank_you);
 	$smarty->assign('trans',$trans);
 	$smarty->assign('paid',$paid);
@@ -248,14 +251,28 @@ if($html_print == 1) {
 	$smarty->assign('company2',$company2);
 	$smarty->assign('CURRENCY_CODE',$CURRENCY_CODE);
         //$smarty->assign('currency_sym',$currency_sym);
-         $smarty->assign('country',$country);
+        $smarty->assign('country',$country);
         $smarty->assign('pamount',$pamount);
         $smarty->assign('paymate_amt',$paymate_amt);
         $smarty->assign('PAYMATE_FEES',$PAYMATE_FEES);
-	$smarty->display('invoice'.SEP.'print.tpl');
-	
+	$smarty->display('invoice'.SEP.'print_html.tpl');
 
 }	 else {
-	force_page('core', "error&menu=1&error_msg=No Printing Options set. Please set up printing options in the Control Center.&type=error");
-	exit;
-}?>
+
+// EOF HTML Printing Section
+
+// BOF PDF Printing Section
+
+if($print_type == 'pdf') {
+
+    require_once FILE_ROOT.'templates/invoice/print_pdf_tpl.php'; //This loads the PDF template file
+
+        }	 else {
+            
+                        force_page('core', "error&menu=1&error_msg=No Printing Options set. Please set up printing options in the Control Center.&type=error");
+                        exit;
+}
+}
+// EOF PDF Printing Section
+
+?>

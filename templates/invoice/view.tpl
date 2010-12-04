@@ -92,15 +92,11 @@
                                     <br>
                                     
                                     <form action="">
-                                        <input type="button" value="{$translate_invoice_print}" onClick="window.open('index.php?page=invoice:print&amp;wo_id={$invoice.WORKORDER_ID}&amp;customer_id={$invoice.CUSTOMER_ID}&amp;invoice_id={$invoice.INVOICE_ID}&amp;escape=1')"/>
-                                        <input type="button" value="{$translate_invoice_pdf}" onClick="window.open('index.php?page=invoice:pdf&amp;wo_id={$invoice.WORKORDER_ID}&amp;customer_id={$invoice.CUSTOMER_ID}&amp;invoice_id={$invoice.INVOICE_ID}&amp;escape=1')"/>
+                                        <button type="button" name="{$translate_invoice_print}" onClick=window.open('?page=invoice:print&amp;print_type=html&amp;wo_id={$invoice.WORKORDER_ID}&amp;customer_id={$invoice.CUSTOMER_ID}&amp;invoice_id={$invoice.INVOICE_ID}&amp;escape=1')>{$translate_invoice_print}</button>
+                                        <button type="button" name="{$translate_invoice_pdf}" OnClick=window.open('?page=invoice:print&amp;print_type=pdf&amp;wo_id={$invoice.WORKORDER_ID}&customer_id={$invoice.CUSTOMER_ID}&invoice_id={$invoice.INVOICE_ID}&escape=1')><img src="images/icons/pdf_small.png"  height="14" alt="pdf">&nbsp;{$translate_invoice_pdf}</button>
                                     </form>
-                                    <!-- <button type="button" name="{$translate_invoice_print}" OnClick=location.href="?page=invoice:print&amp;wo_id={$invoice.WORKORDER_ID}&amp;customer_id={$invoice.CUSTOMER_ID}&amp;invoice_id={$invoice.INVOICE_ID}&amp;escape=1" >{$translate_invoice_print} </button>
-				  <button type="button" name="pdf" OnClick=location.href="?page=invoice:pdf&amp;wo_id={$invoice.WORKORDER_ID}&amp;customer_id={$invoice.CUSTOMER_ID}&amp;invoice_id={$invoice.INVOICE_ID}&amp;escape=1"><img src="images/icons/pdf_small.png"  height="14" alt="pdf" /> {$translate_invoice_pdf}</button>
-					-->
-                                    
                                     {if $invoice.INVOICE_AMOUNT-$invoice.PAID_AMOUNT > 0 }
-                                        <button type="button" name="Receive Payment" OnClick=location.href="?page=billing:new&wo_id={$invoice.WORKORDER_ID}&customer_id={$invoice.CUSTOMER_ID}&invoice_id={$invoice.INVOICE_ID}&page_title=Receiving%20Payment%20for%20{$invoice.INVOICE_ID}">{$translate_invoice_bill_customer}</button>
+                                        <button type="button" name="{$translate_invoice_bill_customer}" OnClick=location.href='?page=billing:new&wo_id={$invoice.WORKORDER_ID}&customer_id={$invoice.CUSTOMER_ID}&invoice_id={$invoice.INVOICE_ID}&page_title=Receiving%20Payment%20for%20{$invoice.INVOICE_ID}'>{$translate_invoice_bill_customer}</button>
                                     {/if}
                                     
                                     
