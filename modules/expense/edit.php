@@ -1,5 +1,9 @@
 <?php
-require_once ('include.php');
+
+// Load the Expense Functions
+require_once('include.php');
+
+// Load the Translations for this Module
 if(!xml2php('expense')) {
 	$smarty->assign('error_msg',"Error in language file");
 }

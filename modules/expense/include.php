@@ -1,8 +1,4 @@
 <?php
-// load translation for this module
-if(!xml2php('expense')) {
-	$smarty->assign('error_msg',"Error in language file");
-}
 
 ##########################################
 #      MyITCRM TAX Rate Call             #

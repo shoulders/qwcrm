@@ -1,10 +1,9 @@
 <?php
 
-// Load the Expense classes
+// Load the Expense Functions
 require_once('include.php');
 
-//
-// Load translation for this module
+// Load the Translations for this Module
 if(!xml2php('expense')) {
 	$smarty->assign('error_msg',"Error in language file");
 }

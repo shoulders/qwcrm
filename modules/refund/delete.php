@@ -1,5 +1,13 @@
 <?php
-require('include.php');
+
+// Load the Refund Functions
+require_once('include.php');
+
+// Load the Translation for this Module
+if(!xml2php('refund')) {
+	$smarty->assign('error_msg',"Error in language file");
+}
+
 $refundID = $VAR['refundID'];
 
 // Make sure we got an Refund ID number
