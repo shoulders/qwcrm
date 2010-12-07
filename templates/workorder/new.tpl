@@ -1,6 +1,27 @@
 <!-- Add New Work Order tpl -->
 <script type="text/javascript" src="js/jquery-1.2.1.pack.js"></script>
 {literal}
+<script language="javascript" type="text/javascript" src="include/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
+<script language="javascript" type="text/javascript">
+	tinyMCE.init({
+		mode : "specific_textareas",
+		theme : "advanced",
+		plugins : "advlink,iespell,insertdatetime,preview",
+		theme_advanced_buttons2_add : "separator,insertdate,inserttime,preview,separator,forecolor,backcolor",
+		theme_advanced_buttons2_add_before: "cut,copy,paste",
+		theme_advanced_toolbar_location : "bottom",
+		theme_advanced_toolbar_align : "center",
+		content_css : "themes/default/style.css",
+	    plugin_insertdate_dateFormat : "%Y-%m-%d",
+	    plugin_insertdate_timeFormat : "%H:%M:%S",
+		extended_valid_elements : "a[name|href|target|title|onclick],img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name],hr[class|width|size|noshade],font[face|size|color|style],span[class|align|style]",
+		external_link_list_url : "example_link_list.js",
+		external_image_list_url : "example_image_list.js",
+		flash_external_list_url : "example_flash_list.js",
+		file_browser_callback : "fileBrowserCallBack",
+		width : "100%"
+	});
+</script>
 <script type="text/javascript">
 	function lookup(scope) {
 		if(scope.length == 0) {
@@ -161,7 +182,7 @@
                                                         </tr>
                                                         <tr>
                                                             <td class="olotd">
-                                                                <textarea  class="olotd4" rows="15" cols="70" name="work_order_discription"></textarea></td>
+                                                                <textarea  class="olotd4" rows="15" cols="70" mce_editable="true" name="work_order_discription"></textarea></td>
                                                         </tr>
                                                     </table>
                                                     <br>
@@ -175,7 +196,7 @@
                                                         </tr>
                                                         <tr>
                                                             <td class="olotd">
-                                                                <textarea class="olotd4" rows="15" cols="70" name="work_order_comments"></textarea></td>
+                                                                <textarea class="olotd4" rows="15" cols="70" mce_editable="true" name="work_order_comments"></textarea></td>
                                                         </tr>
                                                     </table>
                                                     <br>
@@ -189,7 +210,7 @@
                                                         </tr>
                                                         <tr>
                                                             <td class="olotd">
-                                                                <textarea class="olotd4" rows="15" cols="70" name="work_order_notes"></textarea></td>
+                                                                <textarea class="olotd4" rows="15" cols="70" mce_editable="true" name="work_order_notes"></textarea></td>
                                                         </tr>
                                                     </table>
                                                     <br>
