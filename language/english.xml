@@ -860,5 +860,7 @@
                 <workorder_submit_changes_only>Submit Changes Only</workorder_submit_changes_only>
                 <workorder_close_without_invoice>Close Without Invoice</workorder_close_without_invoice>
                 <workorder_close_with_invoice>Close with Invoice</workorder_close_with_invoice>
+                //- Navigation
+                <workorder_nav_new>Create New WO</workorder_nav_new>
 		
 	</translate>

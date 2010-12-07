@@ -27,7 +27,9 @@
       </div>
       <div class="collapsed">
         <span>{$translate_menu_work_orders}</span>
-		<a href="?page=customer:view&amp;page_title={$translate_menu_customers}"><img src="images/icons/16x16/view+.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_new}</a>
+                {if $cust_id > 0 }
+		<a href="?page=workorder:new&amp;customer_id={$cust_id}&amp;page_title={$translate_workorder_new_title}"><img src="images/icons/16x16/view+.gif" alt="" border="0" height="14" width="14" /> {$translate_workorder_nav_new}</a>
+                {/if}
 		{if $unassigned > 0 }
 		<a href="?page=workorder:main&amp;page_title={$translate_menu_work_orders}"><img src="images/icons/warning.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_unassigned} <b><font color="RED">{if $unassigned > 0} ({$unassigned}){/if}{if $unassigned < 1}{/if}</font></b></a>
 		{/if}
