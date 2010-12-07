@@ -250,10 +250,10 @@
                                                     </script>
 											{/literal}
                                                 </td>
-                                                <td>${$invoice.INVOICE_AMOUNT|string_format:"%.2f"}</td>
+                                                <td>{$currency_sym}{$invoice.INVOICE_AMOUNT|string_format:"%.2f"}</td>
                                                 <td>{$invoice.EMPLOYEE_DISPLAY_NAME}</td>
                                                 <td><a href="?page=workorder:view&wo_id={$invoice.WORKORDER_ID}&page_title={$translate_invoice_wo_id} {$invoice.WORKORDER_ID}">{$invoice.WORKORDER_ID}</a></td>
-                                                <td><font color="#CC0000">${$invoice.BALANCE|string_format:"%.2f"}</font>
+                                                <td><font color="#CC0000">{$currency_sym}{$invoice.BALANCE|string_format:"%.2f"}</font>
                                                 </td>
 
                                             </tr><tr>
@@ -316,7 +316,7 @@
 												{section name=r loop=$trans}
                                                         <tr class="olotd4">
                                                             <td>{$trans[r].TRANSACTION_ID}</td>
-                                                            <td>{$trans[r].DATE|date_format:"$date_format %r"}</td>
+                                                            <td>{$trans[r].DATE|date_format:"$date_format"}</td>
                                                             <td><b>$</b>{$trans[r].AMOUNT|string_format:"%.2f"}</td>
                                                             <td>
 													{if $trans[r].TYPE == 1}
@@ -383,8 +383,8 @@
                                                             <td>{$smarty.section.q.index+1}</td>
                                                             <td>{$labor[q].INVOICE_LABOR_UNIT}</td>
                                                             <td>{$labor[q].INVOICE_LABOR_DESCRIPTION}</td>
-                                                            <td>${$labor[q].INVOICE_LABOR_RATE|string_format:"%.2f"}</td>
-                                                            <td>${$labor[q].INVOICE_LABOR_SUBTOTAL|string_format:"%.2f"}</td>
+                                                            <td>{$currency_sym}{$labor[q].INVOICE_LABOR_RATE|string_format:"%.2f"}</td>
+                                                            <td>{$currency_sym}{$labor[q].INVOICE_LABOR_SUBTOTAL|string_format:"%.2f"}</td>
                                                             
                                                         </tr>
 												{/section}
@@ -430,8 +430,8 @@
                                                             <td>{$smarty.section.w.index+1}</td>
                                                             <td>{$parts[w].INVOICE_PARTS_COUNT}</td>
                                                             <td>{$parts[w].INVOICE_PARTS_DESCRIPTION}</td>
-                                                            <td>${$parts[w].INVOICE_PARTS_AMOUNT|string_format:"%.2f"}</td>
-                                                            <td>${$parts[w].INVOICE_PARTS_SUBTOTAL|string_format:"%.2f"}</td>
+                                                            <td>{$currency_sym}{$parts[w].INVOICE_PARTS_AMOUNT|string_format:"%.2f"}</td>
+                                                            <td>{$currency_sym}{$parts[w].INVOICE_PARTS_SUBTOTAL|string_format:"%.2f"}</td>
 
                                                         </tr>
 												{/section}
@@ -464,20 +464,20 @@
                                                     <table width="100%" border="1"  cellpadding="3" cellspacing="0" class="olotable">
                                                         <tr>
                                                             <td class="olotd4" width="80%" align="right"><b>{$translate_invoice_sub_total}</b></td>
-                                                            <td class="olotd4" width="20%" align="right">${$invoice.SUB_TOTAL}</td>
+                                                            <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice.SUB_TOTAL}</td>
                                                         </tr><tr>
                                                             <td class="olotd4" width="80%" align="right"><b>{$translate_invoice_shipping}</b></td>
-                                                            <td class="olotd4" width="20%" align="right">${$invoice.SHIPPING}
+                                                            <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice.SHIPPING}
                                                                 <input type="hidden" name="shipping"  value="{$invoice.SHIPPING|string_format:"%.2f"}"></td>
                                                         </tr><tr>
                                                             <td class="olotd4" width="80%" align="right"><b>{$translate_invoice_tax}</b></td>
-                                                            <td class="olotd4" width="20%" align="right">${$invoice.TAX}</td>
+                                                            <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice.TAX}</td>
                                                         </tr><tr>
                                                             <td class="olotd4" width="80%" align="right"><b>{$translate_invoice_discount}</b></td>
-                                                            <td class="olotd4" width="20%" align="right">- ${$invoice.DISCOUNT|string_format:"%.2f"}</td>
+                                                            <td class="olotd4" width="20%" align="right">- {$currency_sym}{$invoice.DISCOUNT|string_format:"%.2f"}</td>
                                                         </tr><tr>
                                                             <td class="olotd4" width="80%" align="right"><b>{$translate_invoice_total}</b></td>
-                                                            <td class="olotd4" width="20%" align="right">${$invoice.INVOICE_AMOUNT}</td>
+                                                            <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice.INVOICE_AMOUNT}</td>
                                                         </tr>
                                                     </table>
                                                 </td>
