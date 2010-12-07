@@ -274,7 +274,7 @@ function gateway_xml2php($module) {
 }
 
 ######################################################
-#                REFUND GATEWAY                     #
+#                REFUND GATEWAY                      #
 #      Manipulates search data for server submission #
 ######################################################
 
