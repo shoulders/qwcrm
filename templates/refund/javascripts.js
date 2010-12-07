@@ -91,7 +91,7 @@ function validate_refund(frm) {
   return true;
 }
 
-// Validate Search Date Refund View PAge
+// Validate Search Date Refund View Page
 function validate_refund_goto_page(frm){
 
       var value = '';
