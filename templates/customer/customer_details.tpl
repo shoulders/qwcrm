@@ -269,11 +269,11 @@
                                 <td class="olotd4">
                                     {$unpaid_invoices[w].INVOICE_DATE|date_format:"$date_format"}</td>
                                 <td class="olotd4">
-                                    ${$unpaid_invoices[w].INVOICE_AMOUNT|string_format:"%.2f"}</td>
+                                    {$currency_sym}{$unpaid_invoices[w].INVOICE_AMOUNT|string_format:"%.2f"}</td>
                                 <td class="olotd4">
-                                    ${$unpaid_invoices[w].PAID_AMOUNT|string_format:"%.2f"}</td>
+                                    {$currency_sym}{$unpaid_invoices[w].PAID_AMOUNT|string_format:"%.2f"}</td>
                                 <td class="olotd4">
-                                    ${$unpaid_invoices[w].balance|string_format:"%.2f"}</td>
+                                    {$currency_sym}{$unpaid_invoices[w].balance|string_format:"%.2f"}</td>
                                 <td class="olotd4">
                                     {$unpaid_invoices[w].PAID_DATE|date_format:"$date_format"}</td>
                                 <td class="olotd4">
@@ -316,11 +316,11 @@
                                 <td class="olotd4">
                                     {$paid_invoices[w].INVOICE_DATE|date_format:"$date_format"}</td>
                                 <td class="olotd4">
-                                    ${$paid_invoices[w].INVOICE_AMOUNT|string_format:"%.2f"}</td>
+                                    {$currency_sym}{$paid_invoices[w].INVOICE_AMOUNT|string_format:"%.2f"}</td>
                                 <td class="olotd4">
-                                    ${$paid_invoices[w].PAID_AMOUNT|string_format:"%.2f"}</td>
+                                    {$currency_sym}{$paid_invoices[w].PAID_AMOUNT|string_format:"%.2f"}</td>
                                 <td class="olotd4">
-                                    ${$paid_invoices[w].balance|string_format:"%.2f"}</td>
+                                    {$currency_sym}{$paid_invoices[w].balance|string_format:"%.2f"}</td>
                                 <td class="olotd4">
                                     {$paid_invoices[w].PAID_DATE|date_format:"$date_format"}</td>
                                 <td class="olotd4">

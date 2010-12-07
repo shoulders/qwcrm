@@ -81,10 +81,10 @@
                                                 <td class="olotd4" nowrap><img src="images/icons/16x16/view+.gif" alt="" border="0" onMouseOver="ddrivetip('<b>{$translate_invoice_phone} </b>{$invoice[q].CUSTOMER_PHONE}<br><b>Work: </b>{$invoice[q].CUSTOMER_WORK_PHONE}<br><b>Moile: </b>{$invoice[q].CUSTOMER_MOBILE_PHONE}<br><br>{$invoice[q].CUSTOMER_ADDRESS}<br>{$invoice[q].CUSTOMER_CITY}, {$invoice[q].CUSTOMER_STATE}<br>{$invoice[q].CUSTOMER_ZIP}')" onMouseOut="hideddrivetip()"><a href="{$invoice[q].CUSTOMER_ID}">{$invoice[q].CUSTOMER_DISPLAY_NAME}</a></td>
                                                 <td class="olotd4" nowrap><a href="index.php?page=workorder:view&wo_id={$invoice[q].WORKORDER_ID}&wo_id={$wo_id}&page_title={$translate_invoice_wo_id}{$invoice[q].WORKORDER_ID}">{$invoice[q].WORKORDER_ID}</a></td>
                                                 <td class="olotd4" nowrap><img src="images/icons/16x16/view+.gif" alt="" border="0" onMouseOver="ddrivetip('<b>Work: </b>{$invoice[q].EMPLOYEE_WORK_PHONE}<br><b>Mobile: </b>{$invoice[q].EMPLOYEE_MOBILE_PHONE}<br><b>Home: </b>{$invoice[q].EMPLOYEE_HOME_PHONE}')" onMouseOut="hideddrivetip()"><a  href="?page=employees:employee_details&employee_id={$invoice[q].EMPLOYEE_ID}&page_title={$invoice[q].EMPLOYEE_DISPLAY_NAME}">{$invoice[q].EMPLOYEE_DISPLAY_NAME}</a></td>
-                                                <td class="olotd4" nowrap>${$invoice[q].SUB_TOTAL|string_format:"%.2f"}</td>
-                                                <td class="olotd4" nowrap>${$invoice[q].TAX|string_format:"%.2f"}</td>
-                                                <td class="olotd4" nowrap>${$invoice[q].DISCOUNT|string_format:"%.2f"}</td>
-                                                <td class="olotd4" nowrap>${$invoice[q].PAID_AMOUNT|string_format:"%.2f"}</td>
+                                                <td class="olotd4" nowrap>{$currency_sym}{$invoice[q].SUB_TOTAL|string_format:"%.2f"}</td>
+                                                <td class="olotd4" nowrap>{$currency_sym}{$invoice[q].TAX|string_format:"%.2f"}</td>
+                                                <td class="olotd4" nowrap>{$currency_sym}{$invoice[q].DISCOUNT|string_format:"%.2f"}</td>
+                                                <td class="olotd4" nowrap>{$currency_sym}{$invoice[q].PAID_AMOUNT|string_format:"%.2f"}</td>
 
                                             </tr>
 															{/section}
