@@ -646,6 +646,46 @@
 		<schedule_msg_3>Switch to another techs schedule</schedule_msg_3>
 		<schedule_msg_4>'s schedule for</schedule_msg_4>
 
+                // Stats Templates
+                // -- Global
+                <stats_report_from>Report Date From</stats_report_from>
+                <stats_report_to>Report Date To</stats_report_to>
+                <stats_submit>Submit</stats_submit>
+                <stats_new>New</stats_new>
+                <stats_opened>Opened</stats_opened>
+                <stats_closed>Closed</stats_closed>
+                <stats_paid>Paid</stats_paid>
+                <stats_total_invoiced>Total Invoiced</stats_total_invoiced>
+                <stats_total_expenses>Total Expenses</stats_total_expenses>
+                <stats_total_refunds>Total Refunds</stats_total_refunds>
+                <stats_taxable_profit>Taxable Profit</stats_taxable_profit>
+                <stats_items>Items</stats_items>
+                <stats_qty>Qty</stats_qty>
+                <stats_sub>Sub</stats_sub>
+                <stats_net>Net</stats_net>
+                <stats_tax>Tax</stats_tax>
+                <stats_gross>Gross</stats_gross>
+                <stats_discount>Discount</stats_discount>
+                <stats_shipping>Shipping</stats_shipping>
+
+                <stats_basic_statistics>Basic Statisitics</stats_basic_statistics>
+                <stats_customers>Customers</stats_customers>
+                <stats_work_orders>Work Orders</stats_work_orders>
+                <stats_invoices>Invoices</stats_invoices>
+                <stats_revenue_gross>Revenue (Gross)</stats_revenue_gross>
+
+                <stats_advanced_statistics>Advanced Statistics</stats_advanced_statistics>
+                <stats_parts>Parts</stats_parts>
+                <stats_labour>Labour</stats_labour>
+                <stats_expenses>Expenses</stats_expenses>
+                <stats_refunds>Refunds</stats_refunds>
+                //-- Help
+                <stats_basic_statistics_help_title>Basic Statistics Help</stats_basic_statistics_help_title>
+                <stats_basic_statistics_help_content>These statistics are ideal for an overview or a short Tax Return</stats_basic_statistics_help_content>
+                <stats_advanced_statistics_help_title>Advanced Statistics Help</stats_advanced_statistics_help_title>
+                <stats_advanced_statistics__help_content>These statistics include the Net and Gross figures and are reuired if your business applies extra Taxes such as VAT</stats_advanced_statistics__help_content>
+                //-- Navigation
+                <stats_nav_report>Report</stats_nav_report>
                 // Supplier Templates
                 // -- Global
                 <supplier_id>Supplier ID</supplier_id>

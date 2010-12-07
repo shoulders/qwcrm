@@ -60,7 +60,7 @@
         <!-- Menu limited to Managers or Supervisors -->
         {if $cred.EMPLOYEE_TYPE == 1 ||  $cred.EMPLOYEE_TYPE == 2 }
             <a href="?page=employees:new&amp;page_title=New"><img src="images/icons/16x16/view+.gif" alt="" border="0" height="14" width="14" /> New Employee</a>
-            <a href="?page=stats:main&amp;page_title=Stats"><img src="images/icons/reports.png" alt="" border="0" height="14" width="14" /> Reports</a>		
+            <a href="?page=stats:main&amp;page_title=Stats"><img src="images/icons/reports.png" alt="" border="0" height="14" width="14" /> {$translate_stats_nav_report}</a>
         {/if}
         <!-- Menu limited to Managers and Admins -->
         {if $cred.EMPLOYEE_TYPE == 1 || $cred.EMPLOYEE_TYPE == 4 }
@@ -70,7 +70,7 @@
         {/if}
             <a href="?page=control:edit_rate"><img src="images/icons/money.png" alt="" border="0" height="14" width="14" /> Invoice Rates</a>
             <a href="?page=control:acl"><img src="images/icons/encrypted.png" alt="" border="0" height="14" width="14" /> Edit Permissions</a>
-            <a href="?page=stats:main&amp;page_title=Stats"><img src="images/icons/reports.png" alt="" border="0" height="14" width="14" /> Reports</a>
+            <a href="?page=stats:main&amp;page_title=Stats"><img src="images/icons/reports.png" alt="" border="0" height="14" width="14" /> {$translate_stats_nav_report}</a>
 	{/if}
           </div>
         <!-- General Ledger -->
