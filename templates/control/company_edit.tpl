@@ -129,7 +129,7 @@
 											</tr>
                                                                                          <tr>
 												<td align="right"><b>Currency Code:</b></td>
-												<td><input class="olotd5" type="text" size="5" name="currency_code" value="{$company[q].COMPANY_CURRENCY_CODE}">eg: "USD" = US Dollars, "AUD" = Australian Dollars.</td>
+												<td><input class="olotd5" type="text" size="5" name="currency_code" value="{$company[q].COMPANY_CURRENCY_CODE}">eg: "USD" = US Dollars, "AUD" = Australian Dollars, "GBP" = British Pound.</td>
                                                                                                 
                                                                                          </tr>
                                                                                         <tr>
