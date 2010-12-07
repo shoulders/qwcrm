@@ -467,7 +467,7 @@
 		// Parts templates
 		<parts_order>Order Parts</parts_order>
 		<part_order_num>Parts Order ID</part_order_num>
-		<parts_msg_1></parts_msg_1>
+		<parts_msg_1>In order to use this features you must complete a free registration with In-Cite CRM and we must have a valid credit card on file in order to bill for the parts purchased from us. All parts are shipped via UPS and are shipped from one of our 11 Wharehouses across the country to your business location. You do not have to worry about keeping up a web site with inventory. All the parts you see listed here are feed by our application server. And with over 9000 parts in stock we should have what your are looking for.</parts_msg_1>
 		<parts_msg_2>Each part purchased will seamlessly integrate into your Work Orders and invoicing go ahead and give it try. And you can view detailed reports of all purchases made. You can also adjust the price by adding markup to all products from the controll center. For more information please visit www.incitecrm.com.</parts_msg_2>
 		<parts_msg_3>This service is only available to 48 continental States. We currently will not ship out side the US but this will change in the future.</parts_msg_3>
 		<parts_msg_4>The small profit we make off parts purchased is what funds the Open Source Cite CRM and helps us to provide this free software. This feature is not required to use Cite CRM. You can always add your own parts at Invoice creation Time or add your own parts database.</parts_msg_4>
@@ -646,6 +646,46 @@
 		<schedule_msg_3>Switch to another techs schedule</schedule_msg_3>
 		<schedule_msg_4>'s schedule for</schedule_msg_4>
 
+                // Stats Templates
+                // -- Global
+                <stats_report_from>Report Date From</stats_report_from>
+                <stats_report_to>Report Date To</stats_report_to>
+                <stats_submit>Submit</stats_submit>
+                <stats_new>New</stats_new>
+                <stats_opened>Opened</stats_opened>
+                <stats_closed>Closed</stats_closed>
+                <stats_paid>Paid</stats_paid>
+                <stats_total_invoiced>Total Invoiced</stats_total_invoiced>
+                <stats_total_expenses>Total Expenses</stats_total_expenses>
+                <stats_total_refunds>Total Refunds</stats_total_refunds>
+                <stats_taxable_profit>Taxable Profit</stats_taxable_profit>
+                <stats_items>Items</stats_items>
+                <stats_qty>Qty</stats_qty>
+                <stats_sub>Sub</stats_sub>
+                <stats_net>Net</stats_net>
+                <stats_tax>Tax</stats_tax>
+                <stats_gross>Gross</stats_gross>
+                <stats_discount>Discount</stats_discount>
+                <stats_shipping>Shipping</stats_shipping>
+
+                <stats_basic_statistics>Basic Statisitics</stats_basic_statistics>
+                <stats_customers>Customers</stats_customers>
+                <stats_work_orders>Work Orders</stats_work_orders>
+                <stats_invoices>Invoices</stats_invoices>
+                <stats_revenue_gross>Revenue (Gross)</stats_revenue_gross>
+
+                <stats_advanced_statistics>Advanced Statistics</stats_advanced_statistics>
+                <stats_parts>Parts</stats_parts>
+                <stats_labour>Labour</stats_labour>
+                <stats_expenses>Expenses</stats_expenses>
+                <stats_refunds>Refunds</stats_refunds>
+                //-- Help
+                <stats_basic_statistics_help_title>Basic Statistics Help</stats_basic_statistics_help_title>
+                <stats_basic_statistics_help_content>These statistics are ideal for an overview or a short Tax Return</stats_basic_statistics_help_content>
+                <stats_advanced_statistics_help_title>Advanced Statistics Help</stats_advanced_statistics_help_title>
+                <stats_advanced_statistics__help_content>These statistics include the Net and Gross figures and are reuired if your business applies extra Taxes such as VAT</stats_advanced_statistics__help_content>
+                //-- Navigation
+                <stats_nav_report>Report</stats_nav_report>
                 // Supplier Templates
                 // -- Global
                 <supplier_id>Supplier ID</supplier_id>
