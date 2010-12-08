@@ -683,7 +683,7 @@
                 <stats_basic_statistics_help_title>Basic Statistics Help</stats_basic_statistics_help_title>
                 <stats_basic_statistics_help_content>These statistics are ideal for an overview or a short Tax Return</stats_basic_statistics_help_content>
                 <stats_advanced_statistics_help_title>Advanced Statistics Help</stats_advanced_statistics_help_title>
-                <stats_advanced_statistics__help_content>These statistics include the Net and Gross figures and are reuired if your business applies extra Taxes such as VAT</stats_advanced_statistics__help_content>
+                <stats_advanced_statistics__help_content>These statistics include the Net and Gross figures. They might be required if your business applies extra Taxes such as VAT</stats_advanced_statistics__help_content>
                 //-- Navigation
                 <stats_nav_report>Report</stats_nav_report>
                 // Supplier Templates
