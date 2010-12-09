@@ -45,7 +45,7 @@
                                             <td>{if $invoice.BALANCE > 0}
                                                 <font color="#CC0000">{$currency_sym}{$invoice.INVOICE_AMOUNT-$invoice.PAID_AMOUNT|string_format:"%.2f"}</font>
 											{else}
-												${$invoice.BALANCE|string_format:"%.2f"}
+												{$currency_sym}{$invoice.BALANCE|string_format:"%.2f"}
 											{/if}
                                             </td>
                                         </tr><tr>
