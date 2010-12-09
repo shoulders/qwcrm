@@ -92,7 +92,7 @@ if(isset($VAR['submit'])){
                         $parts_items_sum = $rs->fields['parts_items_sum'];
                         $smarty->assign('parts_items_sum', $parts_items_sum);
 
-                        /* Sum Parts Sub Total - this does not work, */
+                        /* Sum Parts Sub Total */
                         $q = "SELECT SUM(INVOICE_PARTS_SUBTOTAL) AS parts_sub_total_sum FROM ".PRFX."TABLE_INVOICE_PARTS INNER JOIN ".PRFX."TABLE_INVOICE ON ".PRFX."TABLE_INVOICE.INVOICE_ID = ".PRFX."TABLE_INVOICE_PARTS.INVOICE_ID WHERE ".PRFX."TABLE_INVOICE.INVOICE_DATE >= '$start_date' AND ".PRFX."TABLE_INVOICE.INVOICE_DATE <= '$end_date'";
                         if(!$rs = $db->Execute($q)){
                                 echo 'Error: '. $db->ErrorMsg();
@@ -121,7 +121,7 @@ if(isset($VAR['submit'])){
                         $labour_items_sum = $rs->fields['labour_items_sum'];
                         $smarty->assign('labour_items_sum', $labour_items_sum);
 
-                        /* Sum Labour Sub Totals - this does not work, i need to multiple by the number of parts then add**/
+                        /* Sum Labour Sub Totals */
                         $q = "SELECT SUM(INVOICE_LABOR_SUBTOTAL) AS labour_sub_total_sum FROM ".PRFX."TABLE_INVOICE_LABOR INNER JOIN ".PRFX."TABLE_INVOICE ON ".PRFX."TABLE_INVOICE.INVOICE_ID = ".PRFX."TABLE_INVOICE_LABOR.INVOICE_ID WHERE ".PRFX."TABLE_INVOICE.INVOICE_DATE >= '$start_date' AND ".PRFX."TABLE_INVOICE.INVOICE_DATE <= '$end_date'";
                         if(!$rs = $db->Execute($q)){
                                 echo 'Error: '. $db->ErrorMsg();
