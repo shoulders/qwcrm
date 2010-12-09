@@ -482,7 +482,7 @@
                 <invoice_prn_parts_items>Parts Items</invoice_prn_parts_items>
                 <invoice_prn_qty>Qty</invoice_prn_qty>
                 <invoice_prn_labour_items>Labour Items</invoice_prn_labour_items>
-                <invoice_prn_parts_items>Part Items</invoice_prn_parts_items>
+                <invoice_prn_parts_items>Parts Items</invoice_prn_parts_items>
                 <invoice_prn_unit_price>Unit Price</invoice_prn_unit_price>
                 <invoice_prn_labour_total>Labour Total</invoice_prn_labour_total>
                 <invoice_prn_parts_total>Parts Total</invoice_prn_parts_total>
