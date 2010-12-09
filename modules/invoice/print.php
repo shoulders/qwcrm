@@ -8,19 +8,20 @@ if(!xml2php("invoice")) {
 	$smarty->assign('error_msg',"Error in language file");
 }
 
-$invoice_id  = $VAR['invoice_id'];
+// Load PHP Language Translations
+$langvals = gateway_xml2php('invoice');
+
 $invoice_id  = $VAR['invoice_id'];
 $customer_id = $VAR['customer_id'];
 $print_type = $VAR['print_type'];
-//$currency_sym = $VAR['currency_sym'];
-//$workorder_id = $VAR['workorder_id';
-//$amountpaid = $payments.AMOUNT;
 
 /* Generic error control */
 if(empty($invoice_id)) {
 	/* If no work order ID then we dont belong here */
 	force_page('core', 'error&error_msg=Invoice Not found: Invoice ID: '.$invoice_id.'&menu=1');
 }
+
+// Customer Section
 
 /* check if we have a customer id and if so get details */
 if($customer_id == "" || $customer_id == "0"){
@@ -40,6 +41,8 @@ if($customer_id == "" || $customer_id == "0"){
 	}
 }
 
+// Invoice Section
+
 	/* get invoice details */
 	$q = "SELECT  ".PRFX."TABLE_INVOICE.*, ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_DISPLAY_NAME FROM  ".PRFX."TABLE_INVOICE
 			LEFT JOIN ".PRFX."TABLE_EMPLOYEE ON (".PRFX."TABLE_INVOICE.EMPLOYEE_ID = ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_ID)
@@ -51,7 +54,9 @@ if($customer_id == "" || $customer_id == "0"){
 	$invoice = $rs->FetchRow();
 	//print($invoice);
 
-/* get workorder status */
+// Work Order Section
+
+        /* get specific workorder details from database */
 	 $q = "SELECT * FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_ID=".$db->qstr($invoice['WORKORDER_ID']);
 
 	if(!$rs = $db->Execute($q)) {
@@ -60,7 +65,7 @@ if($customer_id == "" || $customer_id == "0"){
 	}
 		$stats = $rs->FetchRow();
 
-/* get workorder status description */
+        /* get workorder status  */
 	 $q = "SELECT * FROM ".PRFX."CONFIG_WORK_ORDER_STATUS WHERE CONFIG_WORK_ORDER_STATUS_ID=".$db->qstr($stats['WORK_ORDER_STATUS']);
 
 	if(!$rs = $db->Execute($q)) {
@@ -69,15 +74,32 @@ if($customer_id == "" || $customer_id == "0"){
 	}
 		$stats2 = $rs->FetchRow();
 
-	/* get any labor details */
+// Labour Section
+
+	/* get any labour database rows */
 	$q = "SELECT * FROM ".PRFX."TABLE_INVOICE_LABOR WHERE INVOICE_ID=".$db->qstr($invoice['INVOICE_ID']);
 	if(!$rs = $db->execute($q)) {
 		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
 		exit;
 	}
 	$labor = $rs->GetArray();
+        
+        /* Sum Labour Sub Totals */
+        $q = "SELECT SUM(INVOICE_LABOR_SUBTOTAL) AS labour_sub_total_sum FROM ".PRFX."TABLE_INVOICE_LABOR WHERE INVOICE_ID=".$invoice['INVOICE_ID'];
+        if(!$rs = $db->Execute($q)){
+                echo 'Error: '. $db->ErrorMsg();
+                die;
+        }
+        $labour_sub_total_sum = $rs->fields['labour_sub_total_sum'];
 
-	/* get any parts */
+
+        //Labour Lookup for PDF - uses a mysql query rather than an arrray
+        $query=mysql_query('select INVOICE_LABOR_UNIT, INVOICE_LABOR_DESCRIPTION, INVOICE_LABOR_RATE, INVOICE_LABOR_SUBTOTAL from '.PRFX.'TABLE_INVOICE_LABOR WHERE INVOICE_ID='.$db->qstr($invoice['INVOICE_ID']));
+        $labour_row_pdf = $query or die(mysql_error() . '<br />'. $query);
+
+// Parts Section
+
+	/* get any parts database rows */
 	$q = "SELECT * FROM ".PRFX."TABLE_INVOICE_PARTS WHERE INVOICE_ID=".$db->qstr($invoice['INVOICE_ID']);
 	if(!$rs = $db->execute($q)) {
 		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
@@ -85,7 +107,23 @@ if($customer_id == "" || $customer_id == "0"){
 	}
 	$parts = $rs->GetArray();
 
-/* get payment history */
+        /* Sum Parts Sub Total */
+        $q = "SELECT SUM(INVOICE_PARTS_SUBTOTAL) AS parts_sub_total_sum FROM ".PRFX."TABLE_INVOICE_PARTS WHERE INVOICE_ID=".$db->qstr($invoice['INVOICE_ID']);
+        if(!$rs = $db->Execute($q)){
+                echo 'Error: '. $db->ErrorMsg();
+                die;
+        }
+        $parts_sub_total_sum = $rs->fields['parts_sub_total_sum'];
+
+        //Parts Lookup for PDF - uses a mysql query rather than an arrray
+        // mysql_select_db( $DB_NAME , $link );
+        // $query=mysql_query('select INVOICE_PARTS_COUNT, INVOICE_PARTS_DESCRIPTION, INVOICE_PARTS_AMOUNT from '.PRFX.'TABLE_INVOICE_PARTS WHERE INVOICE_ID='.$db->qstr($invoice['INVOICE_ID']),$link);
+        $query=mysql_query('select INVOICE_PARTS_COUNT, INVOICE_PARTS_DESCRIPTION, INVOICE_PARTS_AMOUNT, INVOICE_PARTS_SUBTOTAL from '.PRFX.'TABLE_INVOICE_PARTS WHERE INVOICE_ID='.$db->qstr($invoice['INVOICE_ID']));
+        $parts_row_pdf = $query or die(mysql_error() . '<br />'. $query);
+
+// Misc Section
+
+        /* get payment history */
 	 $q = "SELECT * FROM ".PRFX."TABLE_TRANSACTION WHERE WORKORDER_ID=".$db->qstr($invoice['WORKORDER_ID']);
 
 	if(!$rs = $db->Execute($q)) {
@@ -164,7 +202,6 @@ $cemail = $company1['COMPANY_EMAIL'];
 $cabn = $company1['COMPANY_ABN'];
 $cthankyou = $setup1['INV_THANK_YOU'];
 $currency_sym = utf8_decode($company1['COMPANY_CURRENCY_SYMBOL']);
-$currency_code = $company1['COMPANY_CURRENCY_CODE'];
 
 //Customer Details
 $cusdisplay = $customer1['CUSTOMER_DISPLAY_NAME'];
@@ -178,27 +215,30 @@ $cusphone = $customer1['CUSTOMER_PHONE'];
 $cusemail = $customer1['CUSTOMER_EMAIL'];
 $custerms = $customer1['CREDIT_TERMS'];
 
+// work Order Details
+$wo_description = $stats['WORK_ORDER_DESCRIPTION'];
+$wo_resolution = $stats['WORK_ORDER_RESOLUTION'];
+
 //invoice details
 $totalinv = $invoice3['SUB_TOTAL'];
-$taxinv = $invoice3['TAX'];
-//$balinv = $invoice3['BALANCE'];
-//$balinv = $invoice3['INVOICE_AMOUNT']-$invoice3['PAID_AMOUNT'];
-$paidamntinv = $invoice3['PAID_AMOUNT'];
 $discinv = $invoice3['DISCOUNT'];
-$amntinv = $invoice3['INVOICE_AMOUNT'];
 $shipinv = $invoice3['SHIPPING'];
-$currency_sym = utf8_decode($currency_sym);
+$taxinv = $invoice3['TAX'];
+$paidamntinv = $invoice3['PAID_AMOUNT'];
+
+$amntinv = $invoice3['INVOICE_AMOUNT'];
+
 
 //$balinv = sprintf( "%.2f",$balinv);
 $balinv = sprintf( "%.2f",$invoice3['BALANCE']);
 
 //PayPal Amount with 1.5% Surcharge Applied
-  $pamount= ($balinv)* 1.015;
-  $pamount = sprintf( "%.2f",$pamount);
+$pamount= ($balinv)* 1.015;
+$pamount = sprintf( "%.2f",$pamount);
 
 //Paymate Amount with Surcharge Applied
-  $paymate_amt= ($balinv)* ((($setup1['PAYMATE_FEES'])/100)+1);
-  $paymate_amt = sprintf( "%.2f",$paymate_amt);
+$paymate_amt= ($balinv)* ((($setup1['PAYMATE_FEES'])/100)+1);
+$paymate_amt = sprintf( "%.2f",$paymate_amt);
 
 /* get Date Formatting value from database and assign it to $format*/
 $q = 'SELECT * FROM '.PRFX.'TABLE_COMPANY';
@@ -249,12 +289,15 @@ if($print_type == 'html') {
         $smarty->assign('PAYMATE_LOGIN',$PAYMATE_LOGIN);
 	$smarty->assign('company',$company);
 	$smarty->assign('company2',$company2);
-	$smarty->assign('CURRENCY_CODE',$CURRENCY_CODE);
+	//$smarty->assign('CURRENCY_CODE',$CURRENCY_CODE);
         //$smarty->assign('currency_sym',$currency_sym);
         $smarty->assign('country',$country);
         $smarty->assign('pamount',$pamount);
         $smarty->assign('paymate_amt',$paymate_amt);
         $smarty->assign('PAYMATE_FEES',$PAYMATE_FEES);
+        $smarty->assign('parts_sub_total_sum', $parts_sub_total_sum);
+        $smarty->assign('labour_sub_total_sum', $labour_sub_total_sum);
+
 	$smarty->display('invoice'.SEP.'print_html.tpl');
 
 }	 else {

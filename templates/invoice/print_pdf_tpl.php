@@ -414,13 +414,16 @@ function PutLink($URL,$txt)
     $this->SetTextColor(0);
 }
 }
-$html='<< Click to pay this invoice via PayPal using a valid Credit Card.<BR>
-<I><B>NOTE:- A small surcharge applies to this type of payment.</B></I><BR>';
-$html2='<< Click to pay this invoice via Paymate using a valid Credit Card.<BR>
-<I><B>NOTE:- A small surcharge applies to this type of payment.</B></I><BR>';
+$html='<BR /> Click to pay this invoice via PayPal using a valid Credit Card.<BR />
+<I><B>NOTE:- A small surcharge applies to this type of payment.</B></I><BR />';
+$html2='<BR /> Click to pay this invoice via Paymate using a valid Credit Card.<BR />
+<I><B>NOTE:- A small surcharge applies to this type of payment.</B></I><BR />';
 
-//Start of labour table insert
-$link = mysql_connect( "$DB_HOST", "$DB_USER", "$DB_PASS" );
+//This MySQL connection is not required
+//$link = mysql_connect( "$DB_HOST", "$DB_USER", "$DB_PASS" );
+
+// Start of template itself
+
 //Setting distance down from top
 $disty = 250;
 //Setting distance in from left
@@ -428,10 +431,11 @@ $distx = 5;
 //set initial y axis position per page
 $y_axis_initial = 100;
 
-
 //Instanciation of inherited class
 define('FPDF_FONTPATH','font/');
 //require('invoice.php');
+
+// Company Details - Top Left
 $pdf = new PDF( 'P', 'mm', 'A4' );
 $pdf->AliasNbPages();
 $pdf->Open();
@@ -442,126 +446,189 @@ $pdf->addCompany( "$cname",
                   "P: $cphone\n" .
                   "E: $cemail\n" .
                   "ABN: $cabn\n");
-$pdf->fact_dev( "INVOICE" ,'');
+
+// Invoice Title - Top Right
+// $pdf->fact_dev( "INVOICE" ,'');
+$pdf->fact_dev($langvals['invoice_prn_invoice_title'],'');
+
+// Logo
 $pdf->Image('images/logo.jpg',60,5,0,15,JPG);
 $pdf->temporary($company1['COMPANY_NAME'] );
 //$pdf->addDate(date('d M Y',($invoice[INVOICE_DATE])));
 //$pdf->addClient($invoice[CUSTOMER_ID]);
+
+// Add Page Numbers
 $pdf->addPageNumber("$page");
+
+// Customer Address
 $pdf->SetFont('Arial', 'B', 10);
 $pdf->addClientAddress( "Bill To:\n" .
                         "$cusdisplay\n" .
                         "$cusaddress\n" .
                         "$cuscity, $cusstate, $cuszip\n");
+
+// Invoice Details - Above Main Table
 //$pdf->addReglement("NETT 7 Days");
 //$pdf->InvoiceDue(date('d M Y',($invoice[INVOICE_DUE])));
 $pdf->SetFont('Arial', 'B', 12);
 $pdf->SetY($y_axis_initial-10);
 $pdf->SetX($distx);
-$pdf->Cell(195, 10, 'Invoice Details', 2, 1, 'C', 0);
+$pdf->Cell(195, 10, $langvals['invoice_prn_invoice_details'], 2, 1, 'C', 0);
 //print column titles for the actual page
 //$pdf->SetFillColor(232, 232, 232);
 
+//Add Invoice Totals Box - With credit terms top right
+$invdate=(date($date_format ,($invoice[INVOICE_DATE])));
+$invdue=(date($date_format ,($invoice[INVOICE_DUE])));
+
+	$pdf->SetY(25);
+	$pdf->SetX(140);
+        $pdf->SetFont('Arial', 'B', 10);
+	$pdf->MultiCell(30, 6, $langvals['invoice_prn_invoice_id']."\n" .
+							$langvals['invoice_prn_invoice_date']."\n" .
+							$langvals['invoice_prn_invoice_due_date']."\n" .
+							$langvals['invoice_prn_credit_terms']."\n"
+
+							, 0, 0, 'R', 0);
+	$pdf->SetY(25);
+	$pdf->SetX(170);
+	$pdf->MultiCell(30, 6, "$invoice[INVOICE_ID]\n" .
+							"$invdate\n" .
+							"$invdue\n".
+                                                        "$custerms\n"
+							, 0, 0, 'L', 0);
+
+
+// Create Labour Table Headings
 $pdf->SetY($y_axis_initial);
 $pdf->SetX($distx);
 $pdf->SetFont( "ARIAL", "B", 8);
-$pdf->Cell(15, 6, 'Qty', 1, 0, 'L', 1);
-$pdf->Cell(140, 6, 'Description', 1, 0, 'L', 1);
-$pdf->Cell(20, 6, 'Cost per', 1, 0, 'R', 1);
-$pdf->Cell(20, 6, 'Sub Total', 1, 0, 'R', 1);
+$pdf->Cell(15, 6, $langvals['invoice_prn_qty'], 1, 0, 'L', 1);
+$pdf->Cell(140, 6, $langvals['invoice_prn_labour_items'], 1, 0, 'L', 1);
+$pdf->Cell(20, 6, $langvals['invoice_prn_unit_price'], 1, 0, 'R', 1);
+$pdf->Cell(20, 6, $langvals['invoice_prn_subtotal'], 1, 0, 'R', 1);
 
 $y_axis = $y_axis + $row_height;
-
-//Select the Products we want to show in your PDF file
-
-//Labour Lookup
-mysql_select_db( $DB_NAME , $link );
-$query=mysql_query('select INVOICE_LABOR_UNIT, INVOICE_LABOR_DESCRIPTION, INVOICE_LABOR_RATE from '.PRFX.'TABLE_INVOICE_LABOR WHERE INVOICE_ID='.$db->qstr($invoice['INVOICE_ID']),$link);
-$labour_result = $query or die(mysql_error() . '<br />'. $query);
-
-//Parts Lookup
-mysql_select_db( $DB_NAME , $link );
-$query=mysql_query('select INVOICE_PARTS_COUNT, INVOICE_PARTS_DESCRIPTION, INVOICE_PARTS_AMOUNT from '.PRFX.'TABLE_INVOICE_PARTS WHERE INVOICE_ID='.$db->qstr($invoice['INVOICE_ID']),$link);
-$parts_result = $query or die(mysql_error() . '<br />'. $query);
 
 //initialize counter
 $i = 0;
 
 //Set maximum rows per page
-$max = 15;
+$max = 18;
 
 //Set Row Height
 $row_height = 6;
 
-// display Labour on invoice
-while($labour_row = mysql_fetch_array($labour_result))
+// Display Labour on invoice
+while($labour_row = mysql_fetch_array($labour_row_pdf))
 {
     //If the current row is the last one, create new page and print column title
 
     $labour_code = $labour_row['INVOICE_LABOR_UNIT'];
     $labour_price = sprintf( "%.2f", $labour_row['INVOICE_LABOR_RATE']);
     $labour_name = $labour_row['INVOICE_LABOR_DESCRIPTION'];
-    $labour_subtotal = sprintf( "%.2f", ($labour_row['INVOICE_LABOR_UNIT'] *  $labour_row['INVOICE_LABOR_RATE']));
+    //$labour_subtotal = sprintf( "%.2f", ($labour_row['INVOICE_LABOR_UNIT'] *  $labour_row['INVOICE_LABOR_RATE']));
+    $labour_subtotal = $labour_row['INVOICE_LABOR_SUBTOTAL'];
 
     $pdf->SetY($y_axis + $y_axis_initial + $row_height);
     $pdf->SetX($distx);
     $pdf->Cell(15, 6, $labour_code, 1, 0, 'L', 0);
     $pdf->Cell(140, 6, $labour_name, 1, 0, 'L', 0);
-    $pdf->Cell(20, 6, $labour_price, 1, 0, 'R', 0);
-    $pdf->Cell(20, 6, $labour_subtotal, 1, 0, 'R', 1);
+    $pdf->Cell(20, 6, $currency_sym.$labour_price, 1, 0, 'R', 0);
+    $pdf->Cell(20, 6, $currency_sym.$labour_subtotal, 1, 0, 'R', 1);
 
     //Go to next row
     $y_axis = $y_axis + $row_height;
     $i = $i + 1;
 }
 
- // display parts on invoice
-while($parts_row = mysql_fetch_array($parts_result))
+// Adds Labour Sub Total
+    $pdf->SetY($y_axis + $y_axis_initial + $row_height);
+    $pdf->SetX($distx);
+    $pdf->Cell(155, 6, '', 0, 0, 'R', 0);
+    $pdf->Cell(20, 6, $langvals['invoice_prn_labour_total'], 1, 0, 'R', 0);
+    $pdf->Cell(20, 6, $currency_sym.$labour_sub_total_sum, 1, 0, 'R', 1);
+    $y_axis = $y_axis + $row_height;
+    $i = $i + 1;
+
+// This puts a space inbetween the tables
+    $pdf->SetY($y_axis + $y_axis_initial + $row_height);
+    $pdf->SetX($distx);
+    
+    $y_axis = $y_axis + $row_height/2;
+    $i = $i + 1;
+
+// This creates Parts Headings
+    $pdf->SetY($y_axis + $y_axis_initial + $row_height);
+    $pdf->SetX($distx);
+    $pdf->Cell(15, 6, $langvals['invoice_prn_qty'], 1, 0, 'L', 1);
+    $pdf->Cell(140, 6, $langvals['invoice_prn_parts_items'], 1, 0, 'L', 1);
+    $pdf->Cell(20, 6, $langvals['invoice_prn_unit_price'], 1, 0, 'R', 1);
+    $pdf->Cell(20, 6, $langvals['invoice_prn_subtotal'], 1, 0, 'R', 1);
+
+    $y_axis = $y_axis + $row_height;
+    $i = $i + 1;
+
+ // Display parts on invoice
+while($parts_row = mysql_fetch_array($parts_row_pdf))
 {
     $parts_code = $parts_row['INVOICE_PARTS_COUNT'];
     $parts_price = sprintf( "%.2f", $parts_row['INVOICE_PARTS_AMOUNT']);
     $parts_name = $parts_row['INVOICE_PARTS_DESCRIPTION'];
-    $parts_subtotal = sprintf( "%.2f", ($parts_row['INVOICE_PARTS_COUNT'] *  $parts_row['INVOICE_PARTS_AMOUNT']));
+    //$parts_subtotal = sprintf( "%.2f", ($parts_row['INVOICE_PARTS_COUNT'] *  $parts_row['INVOICE_PARTS_AMOUNT']));
+    $parts_subtotal = $parts_row['INVOICE_PARTS_SUBTOTAL'];
 
     $pdf->SetY($y_axis + $y_axis_initial + $row_height);
     $pdf->SetX($distx);
     $pdf->Cell(15, 6, $parts_code, 1, 0, 'L', 0);
     $pdf->Cell(140, 6, $parts_name, 1, 0, 'L', 0);
-    $pdf->Cell(20, 6, $parts_price, 1, 0, 'R', 0);
-    $pdf->Cell(20, 6, $parts_subtotal, 1, 0, 'R', 1);
+    $pdf->Cell(20, 6, $currency_sym.$parts_price, 1, 0, 'R', 0);
+    $pdf->Cell(20, 6, $currency_sym.$parts_subtotal, 1, 0, 'R', 1);
 
     //Go to next row
     $y_axis = $y_axis + $row_height;
     $i = $i + 1;
 }
+
+// Adds Parts Sub Total    
+    $pdf->SetY($y_axis + $y_axis_initial + $row_height);
+    $pdf->SetX($distx);
+    $pdf->Cell(155, 6, '', 0, 0, 'R', 0);
+    $pdf->Cell(20, 6, $langvals['invoice_prn_parts_total'], 1, 0, 'R', 0);
+    $pdf->Cell(20, 6, $currency_sym.$parts_sub_total_sum, 1, 0, 'R', 1);
+    $i = $i + 1;
+
 //Add Totals Box
         $pdf->SetY($y_axis_initial +($row_height * $max + 1));
 	//$pdf->SetY($y_axis_initial +($row_height * count($i))+ ($row_height * 2));
 	$pdf->SetX(160);
-	$pdf->MultiCell(20, 6, "SUBTOTAL\n" .
-							"TAX\n" .
-							"SHIPPING\n" .
-							"DISCOUNT\n" .
-							"TOTAL\n" .
-							"PAID\n" .
-							"BALANCE\n"
+	$pdf->MultiCell(20, 6, $langvals['invoice_prn_subtotal']."\n" .
+  							$langvals['invoice_prn_discount']."\n" .
+                                                        $langvals['invoice_prn_shipping']."\n" .
+							$langvals['invoice_prn_tax']."\n" .
+							$langvals['invoice_prn_invoice_total']."\n" .
+							$langvals['invoice_prn_paid']."\n" .
+							$langvals['invoice_prn_balance']."\n"
 							, 1, 0, 'R', 0);
 	$pdf->SetY($y_axis_initial +($row_height * $max + 1));
 	//$pdf->SetY($y_axis_initial +($row_height * count($i)) + ($row_height * 2));
         $pdf->SetX(180);
 	$pdf->MultiCell(20, 6, "$currency_sym $totalinv\n" .
-							"$currency_sym $taxinv\n" .
+ 							"$currency_sym $discinv\n" .
 							"$currency_sym $shipinv\n" .
-							"$currency_sym $discinv\n" .
+       							"$currency_sym $taxinv\n" .
 							"$currency_sym $amntinv\n" .
 							"$currency_sym $paidamntinv\n" .
 							"$currency_sym $balinv\n"
 							, 1, 0, 'R', 2);
- //Payment Instructions
+
+// This section not fully translated
+
+//Payment Instructions
  $pdf->SetY($y_axis_initial +($row_height * $max + 1));
  $pdf->SetX(5);
  $pdf->SetFont('Arial', 'B', 8);
- $pdf->Cell(100,3,"We accept the following payment types.",0,'C', FALSE);
+ $pdf->Cell(100,3,$langvals['invoice_prn_accepted_payments'],0,'C', FALSE);
   //If Cheques are your payment option
  if($CHECK_PAYABLE <> "" ){
  $pdf->SetY($y_axis_initial +($row_height * $max + 2));
@@ -600,7 +667,7 @@ if($PP_ID <> "" ){
                         "PayPal Credit Card Processing:-", 0 ,'L', FALSE);
 
 $pdf->SetLink($link);
-$pdf->Image('images/paypal/pay_now.gif',5,230,15,0,'','https://www.paypal.com/cmd=_xclick&business='.$PP_ID.'&item_name=Payment%20for%20invoice%20'.$invoice_id.'&item_number='.$invoice_id.'&description=Invoice%20for%20'.$invoice_id.'&amount='.$pamount.'&no_note=Thankyou%20for%20your%20buisness.&currency_code='.$currency_code.'&lc='.$country.'&bn=PP-BuyNowBF');
+$pdf->Image('images/paypal/pay_now.gif',5,230,15,0,'','https://www.paypal.com/cmd=_xclick&business='.$PP_ID.'&item_name=Payment%20for%20invoice%20'.$invoice_id.'&item_number='.$invoice_id.'&description=Invoice%20for%20'.$invoice_id.'&amount='.$pamount.'&no_note=Thankyou%20for%20your%20buisness.&currency_sym='.$currency_sym.'&lc='.$country.'&bn=PP-BuyNowBF');
 $pdf->SetLeftMargin(20);
 //$pdf->SetFontSize(14);
 $pdf->WriteHTML($html);
@@ -614,7 +681,7 @@ if($PAYMATE_LOGIN <> "" ){
                         "Paymate Processing:-", 0 ,'L', FALSE);
 
 $pdf->SetLink($link);
-$pdf->Image('images/paymate/paymate_cc.gif',5,242,15,0,'','https://www.paymate.com/PayMate/ExpressPayment?mid='.$PAYMATE_LOGIN.'&amt='.$paymate_amt.'&ref=Payment%20for%20invoice%20'.$invoice_id.'&currency='.$currency_code.'&amt_editable=N&pmt_sender_email='.$cusemail.'&pmt_contact_firstname='.$cusnamef.'&pmt_contact_surname='.$cusnamel.'&pmt_contact_phone='.$cusphone.'&regindi_state='.$cusstate.'&regindi_address1='.$cusaddress.'&regindi_sub='.$cuscity.'&regindi_pcode='.$cuszip.'');
+$pdf->Image('images/paymate/paymate_cc.gif',5,242,15,0,'','https://www.paymate.com/PayMate/ExpressPayment?mid='.$PAYMATE_LOGIN.'&amt='.$paymate_amt.'&ref=Payment%20for%20invoice%20'.$invoice_id.'&currency='.$currency_sym.'&amt_editable=N&pmt_sender_email='.$cusemail.'&pmt_contact_firstname='.$cusnamef.'&pmt_contact_surname='.$cusnamel.'&pmt_contact_phone='.$cusphone.'&regindi_state='.$cusstate.'&regindi_address1='.$cusaddress.'&regindi_sub='.$cuscity.'&regindi_pcode='.$cuszip.'');
 $pdf->SetLeftMargin(20);
 //$pdf->SetFontSize(14);
 $pdf->WriteHTML($html2);
@@ -623,30 +690,8 @@ $pdf->WriteHTML($html2);
  $pdf->SetY($y_axis_initial +($row_height * $max + 6));
  $pdf->SetX(20);
  $pdf->SetFont('Arial', 'B', 6);
- $pdf->MultiCell(100, 3, "Please call us to discuss payment options.\n" , 0 ,'L', FALSE);
+ $pdf->MultiCell(100, 3, $langvals['invoice_prn_discuss_payments']."\n" , 0 ,'L', FALSE);
  }
-
-//Add Totals Box
-$invdate=(date($date_format ,($invoice[INVOICE_DATE])));
-$invdue=(date($date_format ,($invoice[INVOICE_DUE])));
-
-	$pdf->SetY(25);
-	$pdf->SetX(140);
-        $pdf->SetFont('Arial', 'B', 10);
-	$pdf->MultiCell(30, 6, "Invoice ID #\n" .
-							"Invoice Date\n" .
-							"Invoice Due\n" .
-							"CREDIT TERMS\n"
-
-							, 0, 0, 'R', 0);
-	$pdf->SetY(25);
-	$pdf->SetX(170);
-	$pdf->MultiCell(30, 6, "$invoice[INVOICE_ID]\n" .
-							"$invdate\n" .
-							"$invdue\n".
-                                                        "$custerms\n"
-							, 0, 0, 'L', 0);
-
 
 //$pdf->addremark($cthankyou);
 $pdf->SetY($y_axis_initial +($row_height * $max + 60));
@@ -668,6 +713,7 @@ $pdf->Output("INV#".$invoice[INVOICE_ID].".pdf",'I');
 //                $msg = 'Success: image uploaded';
 //
 //        }
+
 mysql_close($link);
 
 ?>

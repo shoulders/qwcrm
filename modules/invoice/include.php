@@ -67,7 +67,7 @@ global $smarty;
 }
 
 ########################################
-# Paid Invocies	#
+# Paid Invoices	                       #
 ########################################
 function display_paid_invoice($db,$page_no,$smarty) {
 	
@@ -130,6 +130,42 @@ global $smarty;
 	$smarty->assign("previous", $prev);	
 	$smarty->assign("next", $next);
 	return $invoice_arr;
+}
+
+##########################################
+#          xml2php Gateway               #
+# Loads language file up as a php array  #
+##########################################
+
+function gateway_xml2php($module) {
+	global $smarty;
+
+	//$file = FILE_ROOT."language".SEP.$module.SEP.LANG ;
+        $file = FILE_ROOT."language".SEP.LANG ;
+
+   $xml_parser = xml_parser_create();
+   if (!($fp = fopen($file, 'r'))) {
+       die('unable to open XML');
+   }
+   $contents = fread($fp, filesize($file));
+   fclose($fp);
+   xml_parse_into_struct($xml_parser, $contents, $arr_vals);
+   xml_parser_free($xml_parser);
+
+   $xmlarray = array();
+
+  foreach($arr_vals as $things){
+		if($things['tag'] != 'TRANSLATE' && $things['value'] != "" ){
+
+                    $ttag = strtolower($things['tag']);
+                    $tvalue = $things['value'];
+
+                    $xmlarray[$ttag]= $tvalue;
+
+		}
+	}
+
+	return $xmlarray;
 }
 
 ?>
