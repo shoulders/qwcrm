@@ -46,8 +46,7 @@
                         </tr>
                         <tr>
                             <td style="text-align:center"><font size="+0"><b>{$item.COMPANY_NAME}</b></font></td>
-                            </tr>
-                        <tr>
+                        </tr>
                     </table>
                 </td>
 
