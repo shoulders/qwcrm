@@ -5,84 +5,128 @@
         <link href="css/default.css" rel="stylesheet" type="text/css">
     </head>
     <body>
-        <!-- Left Column -->
-        <table  width="697" border="0" cellpadding="6" cellspacing="0" style="border-collapse: collapse;">
-            <tr>
-                <!-- LOGO -->
-                <td valign="center" align="center" width="10%">
-                    <table  width="10%" border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
-                        <tr>
-                            <td>
-                                <a><img src="images/logo.jpg" alt="" height="40" border="0"></a>
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-                <td valign="top" align="right" width="90%">
 
-                    <!-- COMPANY DETAILS -->
-                    {foreach item=item from=$company}
-                    <font size="+0">{$item.COMPANY_NAME}</font><br>
-                    <b>{$translate_invoice_prn_address}: </b> {$item.COMPANY_ADDRESS}<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$item.COMPANY_CITY}, {$item.COMPANY_STATE} {$item.COMPANY_ZIP}<br>
-                    <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$translate_invoice_prn_phone}: </b> {$item.COMPANY_PHONE}<br>
-                    <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$translate_invoice_prn_abn}: </b> {$item.COMPANY_ABN}<br>
-                    <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$translate_invoice_prn_email}: </b> {$item.COMPANY_EMAIL}<br>
-			{/foreach}
-                </td>
-            </tr>
-        </table>
-        <!-- Invoice details -->
-        <table width="697" border="0" width="30%" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
+<!-- BOF Top Row Section -->
+        <table  width="700" height="125" border="0" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
             <tr>
-                <td valign="top" width="90%" align="right">
-                </td>
-                <td align="top" class="olotd5" width="200" >
-                    <table width="180" border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
+                <!-- COMPANY DETAILS -->
+                <td valign="top" align="left" width="35%">
+                    {foreach item=item from=$company}
+                    <table border="0" cellpadding="0" cellspacing="0">
+                        <!--<tr>
+                            <td colspan="2"><b>{$item.COMPANY_NAME}</b></td>
+                            </tr>-->
                         <tr>
-                            <td>
-                                <b>{$translate_invoice_prn_invoice_id} - </b>{$invoice.INVOICE_ID}<br>
-                                <b>{$translate_invoice_prn_invoice_status} - </b>{$stats2.CONFIG_WORK_ORDER_STATUS}<br>
-                                <b>{$translate_invoice_prn_invoice_date} - </b>  {$invoice.INVOICE_DATE|date_format:"$date_format"} <br>
-                                <b>{$translate_invoice_prn_invoice_due_date} - </b>  {$invoice.INVOICE_DUE|date_format:"$date_format"}<br>
-                                {foreach item=item from=$customer_details}
-                                <b>{$translate_invoice_prn_credit_terms} - </b>{$item.CREDIT_TERMS}<br>
-                                {/foreach}
-                                <br>
-                                <b>{$translate_invoice_prn_work_order} - </b>{$invoice.WORKORDER_ID}<br>
-                                <b>{$translate_invoice_prn_tech} - </b>{$invoice.EMPLOYEE_DISPLAY_NAME}<br>
+                            <td valign="top"><b>{$translate_invoice_prn_address} :&nbsp;</b></td>
+                            <td>{$item.COMPANY_ADDRESS|nl2br|regex_replace:"/[\r\t\n]/":" "}<br />{$item.COMPANY_CITY},<br />{$item.COMPANY_STATE},<br />{$item.COMPANY_ZIP}</td>
+                        </tr>
+                        <tr>
+                            <td><b>{$translate_invoice_prn_phone} :&nbsp;</b></td>
+                            <td>{$item.COMPANY_PHONE}</td>
+                        </tr>
+                        <tr>
+                            <td><b>{$translate_invoice_prn_email} :&nbsp;</b></td>
+                            <td>{$item.COMPANY_EMAIL}</td>
+                        </tr>
+                        <tr>
+                            <td><b>{$translate_invoice_prn_abn} :&nbsp;</b></td>
+                            <td>{$item.COMPANY_ABN}</td>
+                        </tr>
+                    </table>
+                    {/foreach}
+		</td>
+
+                <!-- LOGO and Company Name-->
+                <td valign="top" align="center" width="30%">
+                    <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
+                        <tr>
+                            <td width="100%">
+                                <a><img src="images/logo.jpg" alt="" border="0"></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center"><font size="+0"><b>{$item.COMPANY_NAME}</b></font></td>
+                            </tr>
+                        <tr>
+                    </table>
+                </td>
+
+                <!-- Invoice details -->
+                <td valign="top" align="right" width="35%">
+                    <table border="0" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
+                        <tr>
+                            <td valign="top" width="90%" align="right">
+                            </td>
+                            <td align="top" class="olotd5" width="200" >
+                                <table width="180" border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
+                                    <tr>
+                                        <td>
+                                            <b>{$translate_invoice_prn_invoice_id} - </b>{$invoice.INVOICE_ID}<br>
+                                            <b>{$translate_invoice_prn_invoice_status} - </b>{$stats2.CONFIG_WORK_ORDER_STATUS}<br>
+                                            <b>{$translate_invoice_prn_invoice_date} - </b>  {$invoice.INVOICE_DATE|date_format:"$date_format"} <br>
+                                            <b>{$translate_invoice_prn_invoice_due_date} - </b>  {$invoice.INVOICE_DUE|date_format:"$date_format"}<br>
+                                            <b>{$translate_invoice_prn_work_order} - </b>{$invoice.WORKORDER_ID}<br>
+                                            <b>{$translate_invoice_prn_technician} - </b>{$invoice.EMPLOYEE_DISPLAY_NAME}<br>
+                                            {foreach item=item from=$customer_details}
+                                            <b>{$translate_invoice_prn_credit_terms} - </b>{$item.CREDIT_TERMS}<br>
+                                            {/foreach}
+                                        </td>
+                                    </tr>
+                                </table>
                             </td>
                         </tr>
                     </table>
                 </td>
             </tr>
         </table>
+<!-- EOF Top Row Section - NB This table ends exactly where the envelope window starts-->
+    <br />
+<!-- BOF Address Row
         <table  width="700" border="0" cellpadding="3" cellspacing="0" >
             <tr>
-                <td valign="top" width="30%" align="left">
-                    <font size="-1"><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$translate_invoice_prn_bill_to}:</b></font><br>
-
+                <td valign="top" width="10%" align="left"></td>
+                <td>
+                    <!- - <font size="-1"><b>{$translate_invoice_prn_bill_to} :</b></font><br /> - - >
 			{foreach item=item from=$customer_details}
-                    <font size="+0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$item.CUSTOMER_DISPLAY_NAME}</font><br>
-                    <font size="+0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$item.CUSTOMER_ADDRESS}</font><br>
-                    <font size="+0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$item.CUSTOMER_CITY}, {$item.CUSTOMER_STATE} {$item.CUSTOMER_ZIP}</font><br>
+                    <font size="+0">{$item.CUSTOMER_DISPLAY_NAME}</font><br />
+                    <font size="+0">{$item.CUSTOMER_ADDRESS|nl2br|regex_replace:"/[\r\t\n]/":" "}</font><br />
+                    <font size="+0">{$item.CUSTOMER_CITY},</font><br />
+                    <font size="+0">{$item.CUSTOMER_STATE} {$item.CUSTOMER_ZIP}</font>
 			{/foreach}
                 </td>
             </tr>
         </table>
-        <br>
-        <table width="700" border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
+<!-- EOF Address Row -->
+
+<!-- BOF Work Order Row -->
+        <table  width="700" border="0" cellpadding="3" cellspacing="0" >
             <tr>
-                <td align="center" class="olotd5" ><font size="+2">{$translate_invoice_prn_invoice_details}</font></td>
+                <td><b>{$translate_invoice_prn_work_order}</b></td>
+                <td><b>{$translate_invoice_prn_work_order_resolution}</b></td>
+            </tr>
+            <tr>
+                <td width="50%" valign="top">{$wo_description}</td>
+                <td width="50%" valign="top" style="border-left: 1px solid;">{$wo_resolution}</td>
             </tr>
         </table>
-        <br>        
+<!-- EOF Work Order Row -->
+        <br />
+<!-- BOF Invoice Details Row -->
+        <table width="700" border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
+            <tr>
+                <td align="center" class="olotd5" ><font size="+2">{$translate_invoice_prn_invoice_details} {$item.CUSTOMER_DISPLAY_NAME}</font></td>
+            </tr>
+        </table>
+<!-- EOF Invoice Details Row -->
+        <br />
+<!-- BOF Items Table Section -->
+        <!-- Labour Table -->
         <table width="700" border="1" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
             <tr>
                 <td width="40" class="olohead"><b>{$translate_invoice_prn_qty}</b></td>
                 <td class="olohead"><b>{$translate_invoice_prn_labour_items}</b></td>
-                <td class="olohead" width="60"><b>{$translate_invoice_prn_unit_price}</b></td>
-                <td class="olohead" width="80"><b>{$translate_invoice_prn_subtotal}</b></td>
+                <td class="olohead" width="60" align="right"><b>{$translate_invoice_prn_unit_price}</b></td>
+                <td class="olohead" width="80" align="right"><b>{$translate_invoice_prn_subtotal}</b></td>
             </tr>
 	{section name=q loop=$labor}
             <tr>
@@ -97,13 +141,15 @@
                 <td class="olotd4" width="80" align="right">{$currency_sym}{$labour_sub_total_sum}</td>
             </tr>
         </table>
-         <br>        
+        <br />
+
+         <!-- Parts Table -->
         <table width="700" border="1" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
             <tr>
                 <td width="40" class="olohead"><b>{$translate_invoice_prn_qty}</b></td>
                 <td class="olohead"><b>{$translate_invoice_prn_parts_items}</b></td>
-                <td class="olohead" width="60"><b>{$translate_invoice_prn_unit_price}</b></td>
-                <td class="olohead" width="80"><b>{$translate_invoice_prn_subtotal}</b></td>
+                <td class="olohead" width="60" align="right"><b>{$translate_invoice_prn_unit_price}</b></td>
+                <td class="olohead" width="80" align="right"><b>{$translate_invoice_prn_subtotal}</b></td>
             </tr>
 	{section name=w loop=$parts}		
             <tr class="olotd4">
@@ -118,7 +164,9 @@
                 <td class="olotd4" width="80" align="right">{$currency_sym}{$parts_sub_total_sum}</td>
             </tr>
         </table>
-        <BR>
+<!-- BOF Items Table Section -->
+         <br />
+<!-- BOF Totals Box and Payments Section Row -->
         <table width="700" border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
             <tr>
                 <td colspan="1" valign="TOP">
@@ -208,8 +256,9 @@
 </td>
 </tr>
 </table>
-<br>
-<br>
+<!-- EOF Totals Box and Payments Row -->
+<br />
+<br />
 {if $thank_you > ''}
 <table width="700" border="0" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
     <tr>
@@ -217,6 +266,6 @@
     </tr>
 </table>
 {/if}
-<br>
+<br />
 </body>
 </html>

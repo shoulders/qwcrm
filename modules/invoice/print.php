@@ -298,6 +298,9 @@ if($print_type == 'html') {
         $smarty->assign('parts_sub_total_sum', $parts_sub_total_sum);
         $smarty->assign('labour_sub_total_sum', $labour_sub_total_sum);
 
+        $smarty->assign('wo_description', $wo_description);
+        $smarty->assign('wo_resolution', $wo_resolution);
+
 	$smarty->display('invoice'.SEP.'print_html.tpl');
 
 }	 else {

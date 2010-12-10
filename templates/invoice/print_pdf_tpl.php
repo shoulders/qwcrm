@@ -109,7 +109,7 @@ function addCompany( $nom, $address )
     $this->SetXY( $x1, $y1 + 4 );
     $this->SetFont('Arial','',8);
     $length = $this->GetStringWidth( $address );
-    //Coordonn�es de la soci�t�
+    //Coordonnes de la societe
     //$lines = $this->sizeOfText( $address, $length) ;
     $this->MultiCell(40, 4, $address);
 }
@@ -216,7 +216,7 @@ function addClientAddress( $address )
 {
     $r1     = $this->w - 175;
     $r2     = $r1 + 68;
-    $y1     = 68;
+    $y1     = 55;
     $this->SetXY( $r1, $y1);
     $this->SetFont("ARIAL", "B", 10);
     $this->MultiCell( 60, 4, $address);
@@ -447,15 +447,40 @@ $pdf->addCompany( "$cname",
                   "E: $cemail\n" .
                   "ABN: $cabn\n");
 
-// Invoice Title - Top Right
-// $pdf->fact_dev( "INVOICE" ,'');
-$pdf->fact_dev($langvals['invoice_prn_invoice_title'],'');
-
 // Logo
 $pdf->Image('images/logo.jpg',60,5,0,15,JPG);
 $pdf->temporary($company1['COMPANY_NAME'] );
 //$pdf->addDate(date('d M Y',($invoice[INVOICE_DATE])));
 //$pdf->addClient($invoice[CUSTOMER_ID]);
+//
+// Invoice Title - Top Right
+// $pdf->fact_dev( "INVOICE" ,'');
+$pdf->fact_dev($langvals['invoice_prn_invoice_title'],'');
+
+//Add Invoice Totals Box - With credit terms top right
+$invdate=(date($date_format ,($invoice[INVOICE_DATE])));
+$invdue=(date($date_format ,($invoice[INVOICE_DUE])));
+
+	$pdf->SetY(20);
+	$pdf->SetX(140);
+        $pdf->SetFont('Arial', 'B', 8);
+	$pdf->MultiCell(30, 4, $langvals['invoice_prn_invoice_id']."\n" .
+							$langvals['invoice_prn_invoice_date']."\n" .
+							$langvals['invoice_prn_invoice_due_date']."\n" .
+							$langvals['invoice_prn_work_order']."\n" .
+							$langvals['invoice_prn_technician']."\n" .
+							$langvals['invoice_prn_credit_terms']."\n"
+
+							, 0, 0, 'R', 0);
+	$pdf->SetY(20);
+	$pdf->SetX(170);
+	$pdf->MultiCell(30, 4, "$invoice[INVOICE_ID]\n" .
+							$invdate."\n" .
+							$invdue."\n" .
+                                                        $invoice['WORKORDER_ID']."\n" .
+                                                        $invoice['EMPLOYEE_DISPLAY_NAME']."\n" .
+                                                        $custerms."\n"
+							, 0, 0, 'L', 0);
 
 // Add Page Numbers
 $pdf->addPageNumber("$page");
@@ -467,37 +492,29 @@ $pdf->addClientAddress( "Bill To:\n" .
                         "$cusaddress\n" .
                         "$cuscity, $cusstate, $cuszip\n");
 
+/* These require HTML Parsing so do not currently work
+// Work Order
+$pdf->SetFont('Arial', 'B', 8);
+$pdf->SetY(45);
+$pdf->SetX($distx);
+$pdf->Cell(100, 50, $stats['WORK_ORDER_DESCRIPTION'], 2, 1, 'L', 0);
+
+// Work Order Resolution
+$pdf->SetFont('Arial', 'B', 8);
+$pdf->SetY(45);
+$pdf->SetX($distx + 105);
+$pdf->Cell(100, 50, $stats['WORK_ORDER_RESOLUTION'], 2, 1, 'L', 0);
+  */
+
 // Invoice Details - Above Main Table
 //$pdf->addReglement("NETT 7 Days");
 //$pdf->InvoiceDue(date('d M Y',($invoice[INVOICE_DUE])));
 $pdf->SetFont('Arial', 'B', 12);
 $pdf->SetY($y_axis_initial-10);
 $pdf->SetX($distx);
-$pdf->Cell(195, 10, $langvals['invoice_prn_invoice_details'], 2, 1, 'C', 0);
+$pdf->Cell(195, 10, $langvals['invoice_prn_invoice_details'].$cusdisplay, 2, 1, 'C', 0);
 //print column titles for the actual page
 //$pdf->SetFillColor(232, 232, 232);
-
-//Add Invoice Totals Box - With credit terms top right
-$invdate=(date($date_format ,($invoice[INVOICE_DATE])));
-$invdue=(date($date_format ,($invoice[INVOICE_DUE])));
-
-	$pdf->SetY(25);
-	$pdf->SetX(140);
-        $pdf->SetFont('Arial', 'B', 10);
-	$pdf->MultiCell(30, 6, $langvals['invoice_prn_invoice_id']."\n" .
-							$langvals['invoice_prn_invoice_date']."\n" .
-							$langvals['invoice_prn_invoice_due_date']."\n" .
-							$langvals['invoice_prn_credit_terms']."\n"
-
-							, 0, 0, 'R', 0);
-	$pdf->SetY(25);
-	$pdf->SetX(170);
-	$pdf->MultiCell(30, 6, "$invoice[INVOICE_ID]\n" .
-							"$invdate\n" .
-							"$invdue\n".
-                                                        "$custerms\n"
-							, 0, 0, 'L', 0);
-
 
 // Create Labour Table Headings
 $pdf->SetY($y_axis_initial);
@@ -694,12 +711,12 @@ $pdf->WriteHTML($html2);
  }
 
 //$pdf->addremark($cthankyou);
-$pdf->SetY($y_axis_initial +($row_height * $max + 60));
+$pdf->SetY($y_axis_initial +($row_height * $max + 50));
  $pdf->SetX(10);
  $pdf->SetFont('Arial', 'B', 6);
  $pdf->MultiCell(0, 4, $cthankyou , 0 ,'J', FALSE);
 //$pdf->Output("cache/INV#".$invoice[INVOICE_ID].".pdf", 'F' );
-$pdf->Output("INV#".$invoice[INVOICE_ID].".pdf",'I');
+$pdf->Output("INV#".$invoice['INVOICE_ID'].".pdf",'I');
 //TODO - Get pdf file uploaded into database for storage
 //$fname = "cache/INV#".$invoice[INVOICE_ID].".pdf" ;
 //$fname2 = "INV#".$invoice[INVOICE_ID].".pdf";
