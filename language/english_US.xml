@@ -474,7 +474,8 @@
                 <invoice_prn_invoice_due_date>Due Date</invoice_prn_invoice_due_date>
                 <invoice_prn_credit_terms>Credit Terms</invoice_prn_credit_terms>
                 <invoice_prn_work_order>Work Order</invoice_prn_work_order>
-                <invoice_prn_tech>Tech</invoice_prn_tech>
+                <invoice_prn_work_order_resolution>Work Order Resolution</invoice_prn_work_order_resolution>
+                <invoice_prn_technician>Technician</invoice_prn_technician>
                 <invoice_prn_bill_to>Bill To</invoice_prn_bill_to>
                 <invoice_prn_invoice_title>Invoice</invoice_prn_invoice_title>
                 <invoice_prn_invoice_details>Invoice Details</invoice_prn_invoice_details>
