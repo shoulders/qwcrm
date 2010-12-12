@@ -11,7 +11,7 @@
 <script type="text/javascript" src="include/dhtmlxcombo/dhtmlxcommon.js"></script>
 <script type="text/javascript" src="include/dhtmlxcombo/dhtmlxcombo.js"></script>
 <link rel="STYLESHEET" type="text/css" href="include/dhtmlxcombo/dhtmlxcombo.css">
-<script>window.dhx_globalImgPath="include/dhtmlxcombo/images/";</script>
+<script>window.dhx_globalImgPath="include/dhtmlxcombo/imgs/";</script>
 
 <script type="text/javascript">
    
@@ -46,7 +46,7 @@
         var sel = document.createElement('select');
         sel.setAttribute('name', 'description['+ iteration+']');
         sel.setAttribute('id', 'description['+ iteration+']');
-  
+        sel.setAttribute('width', '300');
         {/literal}
         {section loop=$rate name=i}
         sel.options[{$smarty.section.i.index}] = new Option('{$rate[i].LABOR_RATE_NAME}', '{$rate[i].LABOR_RATE_NAME}');
