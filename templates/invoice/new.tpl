@@ -52,7 +52,7 @@
         sel.options[{$smarty.section.i.index}] = new Option('{$rate[i].LABOR_RATE_NAME}', '{$rate[i].LABOR_RATE_NAME}');
         {/section}
         {literal}
-        sel.setAttribute('class', 'olotd4');        
+        //sel.setAttribute('class', 'olotd4');
         cellRight.appendChild(sel);
 
         // This Call Transforms the select Select Element by ID
@@ -60,14 +60,14 @@
 
         // Rate cell
         var cellRightSel = row.insertCell(3);
-        //cellRightSel.setAttribute('width', '400');
+       // cellRightSel.setAttribute('width', '40');
         
         // Creates Select Box
         var sel = document.createElement('select');
         // Sets Variables for sel - sel is the select box - each row gets its own id on the end
         sel.setAttribute('name', 'rate['+ iteration+']');
         sel.setAttribute('id', 'rate['+ iteration+']');
-        //sel.setAttribute('class', 'olotd4');
+        sel.setAttribute('class', 'olotd4');
         {/literal}
         {section loop=$rate name=i}
         sel.options[{$smarty.section.i.index}] = new Option('{$rate[i].LABOR_RATE_AMOUNT}', '{$rate[i].LABOR_RATE_AMOUNT}');
