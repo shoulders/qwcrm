@@ -6,8 +6,9 @@ if(!xml2php("employees")) {
 
 $smarty->assign('id', $id);
 $smarty->assign('employee_details', $employee_details);
+
 #####################################
-#	Display							#
+#	Display                     #
 #####################################
 
 function display_customer_info($db, $customer_id){
@@ -29,7 +30,7 @@ function display_customer_info($db, $customer_id){
 }
 
 #####################################
-#	Display	Company Info						#
+#	Display	Company Info        #
 #####################################
 
 function display_company_info($db, $customer_id){
@@ -52,7 +53,7 @@ function display_company_info($db, $customer_id){
 
 
 #####################################
-#	Search							#
+#	Search                      #
 #####################################
 
 function display_customer_search($db, $name, $page_no, $smarty) {
@@ -113,9 +114,9 @@ function display_customer_search($db, $name, $page_no, $smarty) {
 	return $customer_search_result;
 }
 
-###############################
-#	Open Work Orders				#
-##############################
+#################################
+#	Open Work Orders        #
+#################################
 
 function display_open_workorders($db, $customer_id){
 
@@ -143,7 +144,10 @@ $sql = "SELECT ".PRFX."TABLE_WORK_ORDER.*,
 	return $open_work_orders_array;
 	
 }
-// Display closed worksorders for customer
+############################################
+# Display closed works orders for customer #
+############################################
+
 function display_closed_workorders($db, $customer_id){
 
 $sql = "SELECT ".PRFX."TABLE_WORK_ORDER.*,
@@ -190,7 +194,7 @@ function display_unpaid_invoices($db,$customer_id){
 }
 
 ###################################
-#   Paid Invoices	                #
+#   Paid Invoices	          #
 ###################################
 
 function display_paid_invoices($db,$customer_id){
@@ -239,7 +243,7 @@ function checkZip($zip){
 }
 
 #####################################
-#	Duplicate						#
+#	Duplicate		    #
 #####################################
 	
 function check_customer_ex($db, $displayName) {
@@ -260,7 +264,7 @@ function check_customer_ex($db, $displayName) {
 }
 
 #####################################
-#	Add								#
+#	Add                         #
 #####################################
 
 function insert_new_customer($db,$VAR) {
@@ -305,7 +309,7 @@ $displayname =$VAR["displayName"] ;
 } 
 
 #####################################
-#	Edit							#
+#	Edit			    #
 #####################################
 
 function edit_info($db, $customer_id){
@@ -321,7 +325,7 @@ function edit_info($db, $customer_id){
 }
 
 #####################################
-#	Update							#
+#	Update			    #
 #####################################
 
 function update_customer($db,$VAR) {
@@ -358,7 +362,7 @@ $string2=stripslashes($string);
 } 
 
 #####################################
-#	Delete							#
+#	Delete			    #
 #####################################
 
 function delete_customer($db,$customer_id){
@@ -372,8 +376,15 @@ function delete_customer($db,$customer_id){
 	}	
 }
 
-/* The select array we will change this to database options later */
-	$customer_type = array('Residential'=>'Residential', 'Comercial'=>'Comercial');
+##################################################################
+# The select array we will change this to database options later #
+##################################################################
+
+    $customer_type = array('Residential'=>'Residential', 'Comercial'=>'Comercial');
+
+#####################################
+#	          		    #
+#####################################
 
 function display_gift($db, $customer_id) {
 	$q = "SELECT * FROM ".PRFX."GIFT_CERT WHERE CUSTOMER_ID=".$db->qstr( $customer_id );
@@ -385,6 +396,10 @@ function display_gift($db, $customer_id) {
 	$arr = $rs->GetArray();
 	return $arr;
 }
+
+#####################################
+#	       		            #
+#####################################
 
 function display_memo($db,$customer_id) {
 	$q = "SELECT * FROM ".PRFX."CUSTOMER_NOTES WHERE CUSTOMER_ID=".$db->qstr( $customer_id );

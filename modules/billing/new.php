@@ -7,7 +7,7 @@ if(!xml2php("billing")) {
 $wo_id       = $VAR['wo_id'];
 $customer_id = $VAR['customer_id'];
 $tech        = $_SESSION['login_id'];
-$invoice_id	 = $VAR['invoice_id'];
+$invoice_id     = $VAR['invoice_id'];
 
 
 /* Generic error control */

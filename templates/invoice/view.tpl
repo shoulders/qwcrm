@@ -6,7 +6,9 @@
                 <tr>
                     <td class="menuhead2" width="80%">&nbsp;{$translate_invoice_for} {$wo_id}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
-                        <a href="http://myitcrm.com" target="new"><img src="images/icons/16x16/help.gif" alt="" border="0"></a>
+                        <a><img src="images/icons/16x16/help.gif" border="0" alt=""
+                                    onMouseOver="ddrivetip('<b>{$translate_invoice_view_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_invoice_view_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>')"
+                                    onMouseOut="hideddrivetip()"></a>
                     </td>
                 </tr><tr>
                     <td class="menutd2" colspan="2">
@@ -124,7 +126,11 @@
                                                         <td>{$currency_sym}{$labor[q].INVOICE_LABOR_RATE|string_format:"%.2f"}</td>
                                                         <td>{$currency_sym}{$labor[q].INVOICE_LABOR_SUBTOTAL|string_format:"%.2f"}</td>
                                                     </tr>
-												{/section}
+                                                        {/section}
+                                                    <tr>
+                                                        <td colspan="4" style="text-align:right;"><b>{$translate_invoice_labour_total}</b></td>
+                                                        <td style="text-align:left;">{$currency_sym}{$labour_sub_total_sum}</td>
+                                                    </tr>
                                                 </table>
 										{/if}
                                             </td>
@@ -157,6 +163,10 @@
                                                         <td>{$currency_sym}{$parts[w].INVOICE_PARTS_SUBTOTAL|string_format:"%.2f"}</td>
                                                     </tr>
 												{/section}
+                                                        <tr>
+                                                            <td colspan="4" style="text-align:right;"><b>{$translate_invoice_parts_total}</b></td>
+                                                            <td style="text-align:left;"">{$currency_sym}{$parts_sub_total_sum}</td>
+                                                        </tr>
                                                 </table>
 										{/if}
                                             </td>
@@ -172,16 +182,20 @@
                                                     <tr>
                                                         <td class="olotd4" width="80%" align="right"><b>{$translate_invoice_sub_total}</b></td>
                                                         <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice.SUB_TOTAL}</td>
-                                                    </tr><tr>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="olotd4" width="80%" align="right"><b>{$translate_invoice_discount}</b></td>
+                                                        <td class="olotd4" width="20%" align="right">- {$currency_sym}{$invoice.DISCOUNT}</td>
+                                                    </tr>
+                                                    <tr>
                                                         <td class="olotd4" width="80%" align="right"><b>{$translate_invoice_shipping}</b></td>
                                                         <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice.SHIPPING}</td>
-                                                    </tr><tr>
+                                                    </tr>
+                                                    <tr>
                                                         <td class="olotd4" width="80%" align="right"><b>{$translate_invoice_tax}</b></td>
                                                         <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice.TAX}</td>
-                                                    </tr><tr>
-                                                        <td class="olotd4" width="80%" align="right"><b>{$translate_invoice_discount}</b></td>
-                                                        <td class="olotd4" width="20%" align="right">- {$currency_sym}{$invoice.DISCOUNT|default:"0.00"}</td>
-                                                    </tr><tr>
+                                                    </tr>
+                                                    <tr>
                                                         <td class="olotd4" width="80%" align="right"><b>{$translate_invoice_total}</b></td>
                                                         <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice.INVOICE_AMOUNT}</td>
                                                     </tr>
@@ -190,7 +204,7 @@
                                         </tr>
                                     </table>
                                     <br>
-                                    <!-- Trans action log -->
+                                    <!-- Transaction log -->
                                     <table width="100%" cellpadding="4" cellspacing="0" border="0" >
                                         <tr>
                                             <td class="menuhead2">&nbsp;{$translate_invoice_trans_log}</td>

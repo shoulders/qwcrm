@@ -57,8 +57,7 @@ if($customer_id == '' || $customer_id == '0'){
 	$invoice = $rs->FetchRow();
 	$smarty->assign('invoice',$invoice);
 	$smarty->assign('wo_id', $invoice['WORKORDER_ID']);
-        //$smarty->assign('wo_id', $wo_id);
-
+        
 	/* get any labor details */
 	$q = 'SELECT * FROM '.PRFX.'TABLE_INVOICE_LABOR WHERE INVOICE_ID='.$db->qstr($invoice['INVOICE_ID']);
 	if(!$rs = $db->execute($q)) {
@@ -96,6 +95,12 @@ if($customer_id == '' || $customer_id == '0'){
 	$trans = $rs->GetArray();
 
 	$smarty->assign('trans',$trans);
+
+        // Sub_total results
+        $labour_sub_total_sum = labour_sub_total_sum($db, $VAR['invoice_id']);
+        $parts_sub_total_sum = parts_sub_total_sum($db, $VAR['invoice_id']);
+        $smarty->assign('labour_sub_total_sum', $labour_sub_total_sum);
+        $smarty->assign('parts_sub_total_sum', $parts_sub_total_sum);
 	 
 	$smarty->display('invoice'.SEP.'view.tpl');
 ?>

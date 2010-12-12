@@ -137,7 +137,7 @@
 	{/section}
             <tr>
                 <td colspan="3" style="text-align:right;">{$translate_invoice_prn_labour_total}</td>
-                <td class="olotd4" width="80" align="right">{$currency_sym}{$labour_sub_total_sum}</td>
+                <td class="olotd4" width="80" align="right">{$currency_sym}{$labour_sub_total_sum|default:"0.00"}</td>
             </tr>
         </table>
         <br />
@@ -160,7 +160,7 @@
 	{/section}
             <tr>           
                 <td colspan="3" style="text-align:right;">{$translate_invoice_prn_parts_total}</td>
-                <td class="olotd4" width="80" align="right">{$currency_sym}{$parts_sub_total_sum}</td>
+                <td class="olotd4" width="80" align="right">{$currency_sym}{$parts_sub_total_sum|default:"0.00"}</td>
             </tr>
         </table>
 <!-- BOF Items Table Section -->

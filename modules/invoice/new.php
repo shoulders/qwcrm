@@ -1,4 +1,5 @@
 <?php
+
 require_once ('include.php');
 
 if(!xml2php("invoice")) {
@@ -8,8 +9,12 @@ if(!xml2php("invoice")) {
 // Grab customers Information
 $wo_id       = $VAR['wo_id'];
 $customer_id = $VAR['customer_id'];
-$submit		 = $VAR['submit'];
-$desc = $VAR['desc'];
+$submit     = $VAR['submit'];
+$desc       = $VAR['desc'];
+$smarty->assign('customer_id', $VAR['customer_id']);
+
+//$smarty->assign('invoice_id', $VAR['invoice_id']);
+
 /* get Date Formatting value from database and assign it to $format*/
 $q = 'SELECT * FROM '.PRFX.'TABLE_COMPANY';
 	if(!$rs = $db->execute($q)) {
@@ -66,15 +71,16 @@ if($customer_id == "" || $customer_id == "0"){
 
 
 ##################################
-# If We have a Submit 				#
+# If We have a Submit 		 #
 ##################################
+
 if(isset($submit)){
 	
 	if($VAR['invoice_id'] == ''){
 		force_page('core', 'error&error_msg=No Invoice ID');
 	}
      /* This formats the two dates from dd/mm/yyyy to proper sql string time*/
-     // Invoice Date
+        // Invoice Date
         if($format == "%d/%m/%Y"){
          $date_part = explode("/",$VAR['date']);
          $timestamp = mktime(0,0,0,$date_part[1],$date_part[0],$date_part[2]);
@@ -96,13 +102,11 @@ if(isset($submit)){
          $datef2 = $timestamp2;
         }
 	
-	$date				= $datef;
-	$due_date			= $datef2;
+	$date = $datef;
+	$due_date = $datef2;
 	$test = $desc2['LABOR_RATE_NAME'];
-	$create_by		= $VAR['create_by'];
-	$wo_id				= $VAR['wo_id'];
-	$sub_total     = number_format($VAR['sub_total'], 2,'.', '');
-	$shipping      = number_format($VAR['shipping'], 2,'.', '');
+	$create_by = $VAR['create_by'];
+	$wo_id = $VAR['wo_id'];
 
  	/* insert Labor into database */
 	if($VAR['hour'] > 0 ) {
@@ -112,8 +116,9 @@ if(isset($submit)){
 		foreach($VAR['hour'] as $key=>$val) {
 			$sql .="(".$db->qstr($VAR['invoice_id']).", '1', ".$db->qstr($VAR['description'][$i]).", ".$db->qstr($VAR['rate'][$i]).", ".$db->qstr($val).", ".$db->qstr($val * $VAR['rate'][$i])."),"; 
 			$ss = $val * $VAR['rate'][$i];
-			$sub_total = $sub_total + $ss;
-			$sub_total = $sub_total;
+                        $temp_sub_total = $temp_sub_total + $ss;
+			//$sub_total = $sub_total + $ss;
+			//$sub_total = $sub_total;
 			$i++;
 		}
 		
@@ -133,7 +138,8 @@ if(isset($submit)){
 		foreach($VAR['count'] as $key=>$val) {
 			$sql .="(".$db->qstr($VAR['invoice_id']).",".$db->qstr($VAR['manufacture'][$i]).",'',".$db->qstr($VAR['parts_description'][$i]).",'',".$db->qstr($VAR['parts_price'][$i]).",".$db->qstr($val).", ".$db->qstr($val * $VAR['parts_price'][$i])."),";
 			$ss =  $val * $VAR['parts_price'][$i];
-			$sub_total = $sub_total + $ss;
+			//$sub_total = $sub_total + $ss;
+                        $temp_sub_total = $temp_sub_total + $ss;
 			$i++;
 		}
 		$sql = substr($sql ,0,-1);
@@ -143,42 +149,54 @@ if(isset($submit)){
 		}
 	}
 	
-	
-	/* Update Invoice */
-	
-	
 
-	
-	
-	/* get customer discount */
+                ###########################################
+                #	Update and calculate Invoice      #
+                ###########################################
+
+        // Calculate sub_total
+        $labour_sub_total_sum = labour_sub_total_sum ($db, $VAR['invoice_id']);
+        $parts_sub_total_sum = parts_sub_total_sum ($db, $VAR['invoice_id']);
+        $sub_total = $labour_sub_total_sum + $parts_sub_total_sum;
+        
+       	// Calculate Discount
 	if(empty($VAR['discount'])) {
 		$q = "SELECT DISCOUNT FROM ".PRFX."TABLE_CUSTOMER WHERE CUSTOMER_ID =$customer_id";
 		$rs = $db->execute($q);
 		$discount = $rs->fields['DISCOUNT'];
 	} else {
-		$discount = $VAR['discount'];
+		$discount_rate = $VAR['discount'];
 	}
 	if(($VAR['discount']) == 0) {
-		$discount = 0.0;
+		$discount_rate = 0.0;
 	} else {
-		$discount = $VAR['discount'];
+		$discount_rate = $VAR['discount'];
 	}
-		
-	$discount = $discount * .01;
-	$discount_amount = $sub_total * $discount;
-	$invoice_total = $invoice_total - $discount_amount;
 
-        /* calculate Tax */
+	$discount_rate = $discount_rate * .01; // turns 17.5 in to 0.175
+	$discount_amount = ($sub_total + $temp_sub_total) * $discount_rate;
+
+        // Calculate Shipping
+        $shipping = $VAR['shipping'];
+	
+        // Calculate Tax
 	$q = "SELECT INVOICE_TAX FROM ".PRFX."SETUP";
 	$rs = $db->execute($q);
 	$tax = $rs->fields['INVOICE_TAX'];
+	$tax_rate = $tax * .01; // turns 17.5 in to 0.175
+        $tax_amount = ($sub_total - $discount_amount + $shipping) * $tax_rate;
 
+        // Calculate Totals
+         $invoice_total = $sub_total - $discount_amount + $shipping + $tax_amount;
 
-	$tax = $tax * .01;
-        $sub_total_after_discount = $sub_total - $discount_amount;
-	$tax_amount = $sub_total_after_discount * $tax;
-	$invoice_total = $sub_total_after_discount + $shipping + $tax_amount;
-	
+        // Calculate Balance - Prevents resubmissions balance errors
+        if (!isset ($paid_amount)) {
+		$q = "SELECT PAID_AMOUNT FROM ".PRFX."TABLE_INVOICE WHERE INVOICE_ID =".$VAR['invoice_id'];
+		$rs = $db->execute($q);
+		$paid_amount = $rs->fields['PAID_AMOUNT'];
+        }
+        $invoice_balance = $invoice_total - $paid_amount;
+        
 	/* update database */
 		$q = "UPDATE ".PRFX."TABLE_INVOICE SET
 			INVOICE_DATE		=". $db->qstr( $date).",
@@ -187,7 +205,7 @@ if(isset($submit)){
 			DISCOUNT		=". $db->qstr( number_format($discount_amount, 2,'.', '')).",
 			SUB_TOTAL 		=". $db->qstr( number_format($sub_total, 2,'.', '')).",
 			INVOICE_AMOUNT	        =". $db->qstr( number_format($invoice_total, 2,'.', '')).",
-                        BALANCE 	        =". $db->qstr( number_format($invoice_total, 2,'.', '')).",
+                        BALANCE 	        =". $db->qstr( number_format($invoice_balance, 2,'.', '')).",
 			TAX 			=". $db->qstr( number_format($tax_amount, 2,'.', '')).",
 			INVOICE_DUE		=". $db->qstr( $due_date)." 
 			WHERE INVOICE_ID=".$db->qstr( $VAR['invoice_id']);
@@ -219,12 +237,14 @@ if(isset($submit)){
 			exit;
 		}
 	}
-	/* send back to the invoice page */
-	force_page('invoice', 'new&wo_id='.$wo_id.'&customer_id='.$customer_id);	
 
-##################################
-# Create New Invoice 					#
-##################################
+        /* send back to the invoice page - this loads the page with no POST variables */
+	force_page('invoice', 'new&wo_id='.$wo_id.'&customer_id='.$customer_id);               
+        
+############################################
+# Create New Invoice or load from database #
+############################################
+
 } else {
 
 	/* check if invoice has been created else create a new invoice for this workorder */
@@ -280,7 +300,6 @@ if(isset($submit)){
 			exit;	
 	}
 
-
 			/* get any labor details */
 				$q = "SELECT * FROM ".PRFX."TABLE_INVOICE_LABOR WHERE INVOICE_ID=".$db->qstr($invoice['INVOICE_ID']);
 				$rs = $db->execute($q);
@@ -316,14 +335,21 @@ if(isset($submit)){
 				$rate = $rs->GetArray();
 				$smarty->assign('rate', $rate); 
 				
-					/* Assign company information */
-					$q = "SELECT * FROM ".PRFX."TABLE_COMPANY";
-					$rs = $db->Execute($q);
-					$company = $rs->GetArray();
-					$smarty->assign('company', $company);
+        /* Assign company information */
+        $q = "SELECT * FROM ".PRFX."TABLE_COMPANY";
+        $rs = $db->Execute($q);
+        $company = $rs->GetArray();
+        $smarty->assign('company', $company);
+        $smarty->assign('invoice',$invoice);
 
-				$smarty->assign('invoice',$invoice);
-				$smarty->display('invoice'.SEP.'new.tpl');
+        // Sub_total results
+        $labour_sub_total_sum = labour_sub_total_sum($db, $invoice['INVOICE_ID']);
+        $parts_sub_total_sum = parts_sub_total_sum($db, $invoice['INVOICE_ID']);        
+        $smarty->assign('labour_sub_total_sum', $labour_sub_total_sum);
+        $smarty->assign('parts_sub_total_sum', $parts_sub_total_sum);
+
+        
+        $smarty->display('invoice'.SEP.'new.tpl');
 				
 	if( $VAR['discount'] >= 100){
 	$q = "UPDATE ".PRFX."TABLE_WORK_ORDER SET
@@ -348,9 +374,10 @@ if(isset($submit)){
 			exit;
 		}
 	}
-} 
+}
+
 ##################################
-# If We have a Submit2 				#
+# If We have a Submit2 		 #
 ##################################
 if(isset($submit2)){
 	$q = "UPDATE ".PRFX."TABLE_WORK_ORDER SET
@@ -362,4 +389,3 @@ if(isset($submit2)){
 			exit;
 			}
 }
-?>

@@ -85,13 +85,8 @@ if($customer_id == "" || $customer_id == "0"){
 	$labor = $rs->GetArray();
         
         /* Sum Labour Sub Totals */
-        $q = "SELECT SUM(INVOICE_LABOR_SUBTOTAL) AS labour_sub_total_sum FROM ".PRFX."TABLE_INVOICE_LABOR WHERE INVOICE_ID=".$invoice['INVOICE_ID'];
-        if(!$rs = $db->Execute($q)){
-                echo 'Error: '. $db->ErrorMsg();
-                die;
-        }
-        $labour_sub_total_sum = $rs->fields['labour_sub_total_sum'];
 
+        $labour_sub_total_sum = labour_sub_total_sum($db, $invoice_id);
 
         //Labour Lookup for PDF - uses a mysql query rather than an arrray
         $query=mysql_query('select INVOICE_LABOR_UNIT, INVOICE_LABOR_DESCRIPTION, INVOICE_LABOR_RATE, INVOICE_LABOR_SUBTOTAL from '.PRFX.'TABLE_INVOICE_LABOR WHERE INVOICE_ID='.$db->qstr($invoice['INVOICE_ID']));
@@ -108,12 +103,8 @@ if($customer_id == "" || $customer_id == "0"){
 	$parts = $rs->GetArray();
 
         /* Sum Parts Sub Total */
-        $q = "SELECT SUM(INVOICE_PARTS_SUBTOTAL) AS parts_sub_total_sum FROM ".PRFX."TABLE_INVOICE_PARTS WHERE INVOICE_ID=".$db->qstr($invoice['INVOICE_ID']);
-        if(!$rs = $db->Execute($q)){
-                echo 'Error: '. $db->ErrorMsg();
-                die;
-        }
-        $parts_sub_total_sum = $rs->fields['parts_sub_total_sum'];
+
+        $parts_sub_total_sum = parts_sub_total_sum($db, $invoice_id);
 
         //Parts Lookup for PDF - uses a mysql query rather than an arrray
         // mysql_select_db( $DB_NAME , $link );
@@ -297,7 +288,6 @@ if($print_type == 'html') {
         $smarty->assign('PAYMATE_FEES',$PAYMATE_FEES);
         $smarty->assign('parts_sub_total_sum', $parts_sub_total_sum);
         $smarty->assign('labour_sub_total_sum', $labour_sub_total_sum);
-
         $smarty->assign('wo_description', $wo_description);
         $smarty->assign('wo_resolution', $wo_resolution);
 

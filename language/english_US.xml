@@ -460,9 +460,18 @@
 		<invoice_mobile>Mobile</invoice_mobile>
 		<invoice_add>Add</invoice_add>
 		<invoice_remove>Remove</invoice_remove>
-		<invoice_submit>Submit</invoice_submit>
+		<invoice_submit>Submit / Recalculate</invoice_submit>
 		<invoice_submit2>Close Invoice</invoice_submit2>
 		<invoice_wo_id>Work%20Order%20ID%20</invoice_wo_id>
+                <invoice_actions>Actions</invoice_actions>
+                <invoice_labour_total>Labour Total</invoice_labour_total>
+                <invoice_parts_total>Parts Total</invoice_parts_total>
+                // -- New Page
+                <invoice_new_help_title >New Invoice Help</invoice_new_help_title>
+                <invoice_new_help_content>This page allows you to create invoices for your clients.&lt;br /&gt;&lt;br /&gt;Whenever you change the date, add or remove an item you must press the &lt;b&gt;Submit / Recalculate&lt;/b&gt; &lt;/b&gt;&lt;/b&gt;button to apply those changes before you print the invoice otherwise you will get an incorrect invoice and the changes will also not be applied to the database.</invoice_new_help_content>
+                // -- View Page
+                <invoice_view_help_title >View Invoice Help</invoice_view_help_title>
+                <invoice_view_help_content>This page simply allows you to view and print paid invoice</invoice_view_help_content>
                 // -- Printable Invoice Templates
                 <invoice_prn_address>Address</invoice_prn_address>
                 <invoice_prn_phone>Phone</invoice_prn_phone>
@@ -499,6 +508,13 @@
                 <invoice_prn_payment_instructions>Payment Instructions</invoice_prn_payment_instructions>
                 <invoice_prn_accepted_payments>We accept the following payment types</invoice_prn_accepted_payments>
                 <invoice_prn_discuss_payments>Please call us to discuss payment options</invoice_prn_discuss_payments>
+                // -- Validators
+                <invoice_delete_labour_record>Delete Labour Record</invoice_delete_labour_record>
+                <invoice_delete_parts_record>Delete Parts Record</invoice_delete_parts_record>
+                <invoice_labour_delete_mes_confirmation>Are you Sure you want to delete this Labour Record ? This will permanently remove the record from the database.</invoice_labour_delete_mes_confirmation>
+                <invoice_parts_delete_mes_confirmation>Are you Sure you want to delete this Parts Record ? This will permanently remove the record from the database.</invoice_parts_delete_mes_confirmation>
+                <invoice_delete_mes_recorddeleted>Record Deleted</invoice_delete_mes_recorddeleted>
+                <invoice_delete_mes_recordnotdeleted>Record Not Deleted</invoice_delete_mes_recordnotdeleted>
 
 		// Parts templates
 		<parts_order>Order Parts</parts_order>

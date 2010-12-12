@@ -1,6 +1,6 @@
 <?php
 #########################################
-# 	Dipslay Open Invoice		#
+# 	Display Open Invoice		#
 #########################################
 
 function display_open_invoice($db,$page_no,$smarty) {
@@ -69,6 +69,7 @@ global $smarty;
 ########################################
 # Paid Invoices	                       #
 ########################################
+
 function display_paid_invoice($db,$page_no,$smarty) {
 	
 global $smarty;
@@ -167,5 +168,65 @@ function gateway_xml2php($module) {
 
 	return $xmlarray;
 }
+
+#####################################
+#   Delete Labour Record            #
+#####################################
+
+$labourID = $VAR['labourID'];
+
+function delete_labour_record($db, $labourID){
+	$sql = "DELETE FROM ".PRFX."TABLE_INVOICE_LABOR WHERE INVOICE_LABOR_ID=".$db->qstr($labourID);
+
+	if(!$rs = $db->Execute($sql)) {
+		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+		exit;
+	} else {
+		return true;
+	}
+}
+
+#####################################
+#   Delete Parts Record             #
+#####################################
+
+function delete_parts_record($db, $partsID){
+	$sql = "DELETE FROM ".PRFX."TABLE_INVOICE_PARTS WHERE INVOICE_PARTS_ID=".$db->qstr($partsID);
+
+	if(!$rs = $db->Execute($sql)) {
+		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+		exit;
+	} else {
+		return true;
+	}
+}
+
+#####################################
+#   Sum Labour Sub Totals           #
+#####################################
+
+function labour_sub_total_sum ($db, $invoiceID){
+        $q = "SELECT SUM(INVOICE_LABOR_SUBTOTAL) AS labour_sub_total_sum FROM ".PRFX."TABLE_INVOICE_LABOR WHERE INVOICE_ID=".$db->qstr($invoiceID);
+        if(!$rs = $db->Execute($q)){
+                echo 'Error: '. $db->ErrorMsg();
+                die;
+        }
+        $labour_sub_total_sum = $rs->fields['labour_sub_total_sum'];
+        return $labour_sub_total_sum;
+      }
+
+#####################################
+#   Sum Parts Sub Total             #
+#####################################
+
+      function parts_sub_total_sum ($db, $invoiceID){
+        $q = "SELECT SUM(INVOICE_PARTS_SUBTOTAL) AS parts_sub_total_sum FROM ".PRFX."TABLE_INVOICE_PARTS WHERE INVOICE_ID=".$db->qstr($invoiceID);
+        if(!$rs = $db->Execute($q)){
+                echo 'Error: '. $db->ErrorMsg();
+                die;
+        }
+        $parts_sub_total_sum = $rs->fields['parts_sub_total_sum'];
+        return $parts_sub_total_sum;
+      }
 
 ?>
