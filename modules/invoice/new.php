@@ -151,10 +151,11 @@ if(isset($submit)){
 	
 
                 ###########################################
-                #	Update and calculate Invoice      #
+                #	Update and Calculate Invoice      #
                 ###########################################
 
-        // Calculate sub_total
+        // Calculate Sub Total
+        //$temp_sub_total seems to be the same as $subtotal below
         $labour_sub_total_sum = labour_sub_total_sum ($db, $VAR['invoice_id']);
         $parts_sub_total_sum = parts_sub_total_sum ($db, $VAR['invoice_id']);
         $sub_total = $labour_sub_total_sum + $parts_sub_total_sum;
@@ -174,7 +175,7 @@ if(isset($submit)){
 	}
 
 	$discount_rate = $discount_rate * .01; // turns 17.5 in to 0.175
-	$discount_amount = ($sub_total + $temp_sub_total) * $discount_rate;
+	$discount_amount = $sub_total * $discount_rate;
 
         // Calculate Shipping
         $shipping = $VAR['shipping'];
@@ -187,7 +188,7 @@ if(isset($submit)){
         $tax_amount = ($sub_total - $discount_amount + $shipping) * $tax_rate;
 
         // Calculate Totals
-         $invoice_total = $sub_total - $discount_amount + $shipping + $tax_amount;
+        $invoice_total = $sub_total - $discount_amount + $shipping + $tax_amount;
 
         // Calculate Balance - Prevents resubmissions balance errors
         if (!isset ($paid_amount)) {
@@ -196,6 +197,7 @@ if(isset($submit)){
 		$paid_amount = $rs->fields['PAID_AMOUNT'];
         }
         $invoice_balance = $invoice_total - $paid_amount;
+       
         
 	/* update database */
 		$q = "UPDATE ".PRFX."TABLE_INVOICE SET
@@ -347,10 +349,10 @@ if(isset($submit)){
         $parts_sub_total_sum = parts_sub_total_sum($db, $invoice['INVOICE_ID']);        
         $smarty->assign('labour_sub_total_sum', $labour_sub_total_sum);
         $smarty->assign('parts_sub_total_sum', $parts_sub_total_sum);
-
         
         $smarty->display('invoice'.SEP.'new.tpl');
-				
+
+        // If discount is greate than 100% then these close WO and mark the invoice as paid
 	if( $VAR['discount'] >= 100){
 	$q = "UPDATE ".PRFX."TABLE_WORK_ORDER SET
 			WORK_ORDER_STATUS		= '6',
@@ -379,6 +381,7 @@ if(isset($submit)){
 ##################################
 # If We have a Submit2 		 #
 ##################################
+
 if(isset($submit2)){
 	$q = "UPDATE ".PRFX."TABLE_WORK_ORDER SET
 			WORK_ORDER_STATUS		= '6',
