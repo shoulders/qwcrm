@@ -174,7 +174,7 @@
 		<customer_home>Primary Phone</customer_home>
 		<customer_work>Work/Fax Phone</customer_work>
 		<customer_mobile>Mobile</customer_mobile>
-                <credit_terms>Credit terms</credit_terms>
+		<credit_terms>Credit Terms</credit_terms>
 		<customer_city>City</customer_city>
 		<customer_state>State</customer_state>
 		<customer_zip>Zip</customer_zip>
@@ -404,8 +404,8 @@
                 <general_ledger_nav_title>General Ledger</general_ledger_nav_title>
 
 		// Invoice Templates
-		<incvoice_view_paid>Paid Invoices</incvoice_view_paid>
-		<incvoice_view_un_paid>Un-Paid Invoices</incvoice_view_un_paid>
+		<invoice_view_paid>Paid Invoices</invoice_view_paid>
+		<invoice_view_un_paid>Un-Paid Invoices</invoice_view_un_paid>
 		<invoice_for>Invoice For Work Order ID #</invoice_for>
 		<invoice_invoice>Invoice</invoice_invoice>
 		<invoice_page>Page</invoice_page>
@@ -487,7 +487,7 @@
                 <invoice_prn_technician>Technician</invoice_prn_technician>
                 <invoice_prn_bill_to>Bill To</invoice_prn_bill_to>
                 <invoice_prn_invoice_title>Invoice</invoice_prn_invoice_title>
-                <invoice_prn_invoice_details>Invoice Details</invoice_prn_invoice_details>
+                <invoice_prn_invoice_details>Invoice - </invoice_prn_invoice_details>
                 <invoice_prn_labour_items>Labour Items</invoice_prn_labour_items>
                 <invoice_prn_parts_items>Parts Items</invoice_prn_parts_items>
                 <invoice_prn_qty>Qty</invoice_prn_qty>
@@ -637,7 +637,7 @@
                 <refund_new_title>New Refund Page</refund_new_title>
                 <refund_new_help_title>New Refund Help</refund_new_help_title>
                 <refund_new_help_content>This page is used to add a new Refund Record for your company.&lt;br /&gt;&lt;br /&gt;When you have entered your data if you click on the &lt;b&gt;Submit&lt;/b&gt; button the details will be sent to the database and then the details page of the New Refund Record will be shown for you to check.&lt;br /&gt;&lt;br /&gt;However if you click on the &lt;b&gt;Submit, Then New Record&lt;/b&gt; button the record will be sent to the database and this page reloaded ready for another entry.</refund_new_help_content>
-                // -- Search page
+                // -- Search Page
                 <refund_search_title>Refund Search Page</refund_search_title>
                 <refund_search_help_title>Refund Search Help</refund_search_help_title>
                 <refund_search_help_content>You can search by any category by using the dropdown box. Apart from Refund Type and Payment Method you can search by partial name.&lt;br /&gt;&lt;br /&gt;The reset button will wipe your search so you can start again.&lt;br /&lt;br /&gt;The arrows in the navigation section on the right are a simple method of changing pages, however you can also go directely to a specific page.&lt;br /&gt;&lt;br /&gt; If you double click on a row the appropiate Refund Record Details Page will load.&lt;br /&gt;&lt;br /&gt;The Notes and Item(s) are not directely displayed but if you hover over the Magnifying Glass they will then be displayed similiar to this Tooltip.&lt;br /&gt;&lt;br /&gt;On the right of each Record Row there are icons for viewing, editing and deleting the record.</refund_search_help_content>
@@ -654,7 +654,7 @@
                 <refund_edit_title>Refund Edit Page</refund_edit_title>
                 <refund_edit_help_title>Refund Edit Help</refund_edit_help_title>
                 <refund_edit_help_content>This page allows you to edit an Refund Record. Once you have made your changes, click on the &lt;b&gt;Update&lt;/b&gt; Button and the changes will be submitted to the databse.</refund_edit_help_content>
-                // Validators
+                // -- Validators
                 <refund_val_payee_notpresent>Please enter the Payee</refund_val_payee_notpresent>
                 <refund_val_payee_size>The Payee name cannot be more than 80 characters</refund_val_payee_size>
                 <refund_val_date_notpresent>Please enter the Date</refund_val_date_notpresent>

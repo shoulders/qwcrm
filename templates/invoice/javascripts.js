@@ -13,7 +13,7 @@ function GotoPageNumber() {
         var answer = confirm ("{/literal}{$translate_invoice_labour_delete_mes_confirmation}{literal}")
         if (answer){
             window.location='?page=invoice:delete&deleteType=labourRecord&labourID=' + labourID + '&wo_id=' + wo_id + '&customer_id=' + customer_id
-            alert("{/literal}LABOUR LABOUR{$translate_invoice_delete_mes_recorddeleted}{literal}")
+            alert("{/literal}{$translate_invoice_delete_mes_recorddeleted}{literal}")
     }
     else{
         alert("{/literal}{$translate_invoice_delete_mes_recordnotdeleted}{literal}")
@@ -26,7 +26,7 @@ function GotoPageNumber() {
         var answer = confirm ("{/literal}{$translate_invoice_parts_delete_mes_confirmation}{literal}")
         if (answer){
             window.location='?page=invoice:delete&deleteType=partsRecord&partsID=' + partsID + '&wo_id=' + wo_id + '&customer_id=' + customer_id 
-            alert("{/literal}PARTS PARTS{$translate_invoice_delete_mes_recorddeleted}{literal}")
+            alert("{/literal}{$translate_invoice_delete_mes_recorddeleted}{literal}")
     }
     else{
         alert("{/literal}{$translate_invoice_delete_mes_recordnotdeleted}{literal}")
