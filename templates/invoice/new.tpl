@@ -14,7 +14,7 @@
 <script>window.dhx_globalImgPath="include/dhtmlxcombo/imgs/";</script>
 
 <script type="text/javascript">
-   
+
     {literal}
     // Additional Labour Table - add Row
     function addRowToTableLabor(){
@@ -23,14 +23,14 @@
         // if there's no header row in the table, then iteration = lastRow + 1
         var iteration = lastRow;
         var row = tbl.insertRow(lastRow);
-  
-        // Number Cell
+
+        // Number Cell //
         var cellLeft = row.insertCell(0);
         var textNode = document.createTextNode(iteration);
         row.setAttribute('class', 'olotd4')
         cellLeft.appendChild(textNode);
-  
-        // Qty Cell
+
+        // Qty Cell //
         var cellRight = row.insertCell(1);
         var el = document.createElement('input');
         el.setAttribute('type', 'text');
@@ -40,47 +40,43 @@
         el.setAttribute('class', 'olotd4');
         el.setAttribute('value', '1');
         cellRight.appendChild(el);
-  
-        // Description Cell
+
+        // Description Cell //
         var cellRight = row.insertCell(2);
         var sel = document.createElement('select');
         sel.setAttribute('name', 'description['+ iteration+']');
         sel.setAttribute('id', 'description['+ iteration+']');
         sel.setAttribute('width', '300');
+        sel.setAttribute('class', 'olotd4');
         {/literal}
         {section loop=$rate name=i}
         sel.options[{$smarty.section.i.index}] = new Option('{$rate[i].LABOR_RATE_NAME}', '{$rate[i].LABOR_RATE_NAME}');
         {/section}
         {literal}
-        //sel.setAttribute('class', 'olotd4');
         cellRight.appendChild(sel);
-
-        // This Call Transforms the select Select Element by ID
+        // This Call Transforms the Select Element by ID to a real Combo Box
         var combo = dhtmlXComboFromSelect('description['+ iteration+']');
 
-        // Rate cell
+        // Rate cell //
         var cellRightSel = row.insertCell(3);
-       // cellRightSel.setAttribute('width', '40');
-        
         // Creates Select Box
         var sel = document.createElement('select');
         // Sets Variables for sel - sel is the select box - each row gets its own id on the end
         sel.setAttribute('name', 'rate['+ iteration+']');
         sel.setAttribute('id', 'rate['+ iteration+']');
         sel.setAttribute('class', 'olotd4');
+        //cellRightSel.setAttribute('width', '40');
         {/literal}
         {section loop=$rate name=i}
         sel.options[{$smarty.section.i.index}] = new Option('{$rate[i].LABOR_RATE_AMOUNT}', '{$rate[i].LABOR_RATE_AMOUNT}');
         {/section}
-        {literal}        
+        {literal}
         cellRightSel.appendChild(sel);
         {/literal}
-        // Add some html
+        // Add some html to allow the placement of the Currency Symbol
         cellRightSel.innerHTML = '<div style="float:left;"><b>{$currency_sym}&nbsp;</b></div><div>' + cellRightSel.innerHTML + '</div>'
         {literal}
-
-
-
+        // This Call Transforms the Select Element by ID to a real Combo Box
         var combo = dhtmlXComboFromSelect('rate['+ iteration+']');
     }
 
@@ -111,7 +107,6 @@
         if (lastRow > 1) tbl.deleteRow(lastRow - 1);
     }
 
-
     function validateRowLabor(frm){
         var chkb = document.getElementById('chkValidate');
         if (chkb.checked) {
@@ -137,13 +132,13 @@
         // if there's no header row in the table, then iteration = lastRow + 1
         var iteration = lastRow;
         var row = tbl.insertRow(lastRow);
-  
+
         // Number
         var cellLeft = row.insertCell(0);
         var textNode = document.createTextNode(iteration);
         row.setAttribute('class', 'olotd4')
         cellLeft.appendChild(textNode);
-  
+
         // Count
         var cellRight = row.insertCell(1);
         var el = document.createElement('input');
@@ -154,7 +149,7 @@
         el.setAttribute('class', 'olotd4');
         el.setAttribute('value', '1');
         cellRight.appendChild(el);
-  
+
         // Parts Description
         var cellRight = row.insertCell(2);
         row.setAttribute('class', 'olotd4');
@@ -166,8 +161,7 @@
         el.setAttribute('class', 'olotd4');
         //el.onkeypress = keyPressTestLabor;
         cellRight.appendChild(el);
-  
-         
+
         // Price
         var cellRight = row.insertCell(3);
         var el = document.createElement('input');
@@ -181,7 +175,7 @@
     }
 
     function keyPressTestParts(e, obj){
-  
+
     }
 
     function removeRowFromTableParts(){
@@ -297,14 +291,14 @@
 														{$item.CUSTOMER_EMAIL}<br>
 														<br>
 														TERMS: <FONT color="red" size="+1">{$item.CREDIT_TERMS}</FONT><br><br><br>
-														Current customer discount rate is : 
+														Current customer discount rate is :
                                                                 <input type="hidden" name="customer_id"   value="{$item.CUSTOMER_ID}">
                                                                 <input type="text" class="olotd4" size="4" name="discount" value="{$item.DISCOUNT}"> % <br>
                                                                 <b>**Change this if you want to temporarily override the discount rate for this invoice ONLY **</b>
                                                             </td>
                                                         </tr>
                                                     </table>
-											{/foreach}		
+											{/foreach}
                                                 </td>
                                                 <td colspan="4" valign="top" >
                                                     <b>{$translate_invoice_pay}</b>
@@ -393,7 +387,7 @@
                                                 <td class="menuhead2">&nbsp;{$translate_invoice_labor}</td>
                                             </tr><tr>
                                                 <td class="menutd2">
-										{if $labor != '0'}	
+										{if $labor != '0'}
 
                                                     <table width="100%" cellpadding="3" cellspacing="0" border="0" class="olotable">
                                                         <tr  class="olotd4">
@@ -403,9 +397,9 @@
                                                             <td class="row2"><b>{$translate_invoice_rate}</b></td>
                                                             <td class="row2"><b>{$translate_invoice_total}</b></td>
                                                             <td class="row2"><b>{$translate_invoice_actions}</b></td>
-                                                            
+
                                                         </tr>
-                                                        
+
 												{section name=q loop=$labor}
                                                         <tr class="olotd4">
                                                             <td>{$smarty.section.q.index+1}</td>
@@ -418,7 +412,7 @@
                                                                     <img src="images/icons/delete.gif" alt="" border="0" height="14" width="14"
                                                                     onMouseOver="ddrivetip('<b>{$translate_invoice_delete_labour_record|nl2br|regex_replace:"/[\r\t\n]/":" "}</b>')"
                                                                     onMouseOut="hideddrivetip()"></a>
-                                                            </td>                                                            
+                                                            </td>
                                                         </tr>
                                                         {/section}
                                                         <tr>
@@ -480,7 +474,7 @@
                                                         <tr>
                                                             <td colspan="5" style="text-align:right;"><b>{$translate_invoice_parts_total}</b></td>
                                                             <td style="text-align:left;"">{$currency_sym}{$parts_sub_total_sum}</td>
-                                                        </tr>                                                       
+                                                        </tr>
                                                     </table>
 
 										{/if}
