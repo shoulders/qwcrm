@@ -1,20 +1,44 @@
 <?php
-if(isset($VAR['upload'])&& $_FILES['userfile']['size'] >  0 ){
-$target_path = "upload/";
+//if(isset($VAR['upload'])&& $_FILES['userfile']['size'] >  0 ){
+//$target_path = "upload/";
+//
+//$target_path = $target_path . basename( $_FILES['userfile']['name']);
+//
+//if(move_uploaded_file($_FILES['userfile']['tmp_name'], $target_path))
+//$fname = WWW_ROOT.SEP.$target_path ;
+//$handle = fopen ($fname , 'r');
+////TODO check file size before uploading to avoid errors on no file loaded
+//		while (($data = fgetcsv($handle, 1000, ',', '"')) !== FALSE)
+//		{
+//			$query = "REPLACE INTO ".PRFX."TABLE_LABOR_RATE VALUES ('". implode("','", $data)
+//."')";
+// 			$query = @mysql_query($query);
+//		}
+//fclose($handle);
+//}
+if(isset($VAR['upload'])&& $_FILES['userfile']['size'] > 0 ){
 
-$target_path = $target_path . basename( $_FILES['userfile']['name']);
+//check extension for csv
+$fname = $_FILES['userfile']['name'];
+$chk_ext = explode(".",$fname);
+if(strtolower($chk_ext[1]) == "csv"){}
+else{force_page('core', 'error&error_msg=Error: Only CSV files accepted');
+exit;}
 
-if(move_uploaded_file($_FILES['userfile']['tmp_name'], $target_path))
-$fname = WWW_ROOT.SEP.$target_path ;
-$handle = fopen ($fname , 'r');
-//TODO check file size before uploading to avoid errors on no file loaded
-		while (($data = fgetcsv($handle, 1000, ',', '"')) !== FALSE)
-		{
-			$query = "REPLACE INTO ".PRFX."TABLE_LABOR_RATE VALUES ('". implode("','", $data)
-."')";
- 			$query = @mysql_query($query);
-		}
+$filename = $_FILES['userfile']['tmp_name'];
+$handle = fopen($filename, "r");
+
+while (($data = fgetcsv($handle, 1000, ",")) !== FALSE)
+{
+
+$query = "INSERT INTO ".PRFX."TABLE_LABOR_RATE(LABOR_RATE_NAME,LABOR_RATE_AMOUNT,LABOR_RATE_COST,LABOR_RATE_ACTIVE,LABOR_TYPE,LABOR_MANUF) VALUES ('$data[1]','$data[2]','$data[3]','$data[4]','$data[5]','$data[6]')";
+
+if(!$rs = $db->execute($query)) {
+force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+exit;}
+}
 fclose($handle);
+
 }
 //Now if we edit/add a new item
 if(isset($VAR['submit'])) {
