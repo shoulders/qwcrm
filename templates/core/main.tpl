@@ -72,9 +72,22 @@
                                         </tr>
                                     </table>
                                     <br>
-				  {if $cred2.EMPLOYEE_TYPE < 3 || $cred2.EMPLOYEE_TYPE > 3 }
-                                    <b>{$translate_main_invoice_stats}</b>
-                                    <br>
+{literal}<script type="text/javascript">
+ $(function(){
+     $("#hidden_stats").click(function(event) {
+     event.preventDefault();
+     $("#hide_stats").slideToggle();
+ });
+ $("#hide_stats a").click(function(event) {
+     event.preventDefault();
+     $("#hide_stats").slideUp();
+ });
+ });
+ </script>
+ {/literal}
+  <a href="#" id="hidden_stats">{$translate_main_invoice_stats}</a>
+ <div id="hide_stats">
+				  {if $cred.EMPLOYEE_TYPE == 1 || $cred.EMPLOYEE_TYPE == 4 }
                                     <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
                                         <tr class="olotd4">
                                             <td class="row2">
@@ -130,6 +143,8 @@
                                         </tr>
                                     </table>
                                     <br>{/if}
+                                    </div>
+                                    <br />
                                     <b>{$translate_main_customer_stats}</b>
                                     <br>
                                     <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">

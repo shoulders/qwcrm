@@ -594,3 +594,17 @@ div.clear {
     font-weight:bolder;
     font-size: 12px;
 }
+/* Main Page Hide Invoice Stats CSS */
+#hide_stats {
+    
+    display: none;
+    
+    
+}
+#hidden_stats{
+    display:block;
+    font-weight: bold;
+    
+    
+
+}
