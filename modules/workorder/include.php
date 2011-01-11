@@ -100,7 +100,7 @@ function display_workorders($db, $page_no, $where){
 			LEFT JOIN ".PRFX."TABLE_CUSTOMER ON ".PRFX."TABLE_WORK_ORDER.CUSTOMER_ID 				= ".PRFX."TABLE_CUSTOMER.CUSTOMER_ID
 			LEFT JOIN ".PRFX."TABLE_EMPLOYEE ON ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_ASSIGN_TO 	= ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_ID
 			LEFT JOIN ".PRFX."CONFIG_WORK_ORDER_STATUS ON ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_CURRENT_STATUS = ".PRFX."CONFIG_WORK_ORDER_STATUS.CONFIG_WORK_ORDER_STATUS_ID
-			".$where." GROUP BY ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_ID";
+			".$where." GROUP BY ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_ID ORDER BY ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_ID DESC";
 	 
 	if(!$result = $db->Execute($sql)) {
 		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
@@ -505,10 +505,10 @@ $message = Swift_Message::newInstance()
   ->setSubject('New Work Order created for '.$db->qstr($VAR["customer_ID"]))
 
   //Set the From address with an associative array
-  ->setFrom(array('myitcrm@gmail.com' => 'MyIt CRM Swift Tester'))
+  ->setFrom(array('???????@gmail.com' => 'MyIt CRM Swift Tester'))
 
   //Set the To addresses with an associative array
-  ->setTo(array('geevpc@gmail.com', 'geevpc@gmail.com' => 'MyIT CRM Test'))
+  ->setTo(array('?????????????@gmail.com', '???????????@gmail.com' => 'MyIT CRM Test'))
 
   //Give it a body
   ->setBody('Here is the message itself')
