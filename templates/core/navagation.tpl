@@ -133,7 +133,13 @@
             <a href="http://team.myitcrm.com" target="_blank"><img src="images/icons/web.png" alt="" border="0" height="14" width="14" /> Website</a>
             <a href="http://team.myitcrm.com/projects/main/issues" target="_blank"><img src="images/icons/bug.png" alt=""border="0" height="14" width="14" /> Bug Tracker</a>
             <a href="http://myitcrm.com/forum/index.php" target="_blank"><img src="images/icons/comment.png" alt="" border="0" height="14" width="14" /> Forum</a>
-            <a href="https://www.paymate.com/PayMate/ExpressPayment?mid=geevpc&ref=Project Support Donation"><img src="images/icons/money.png" alt="" border="0" height="14" width="14" /> Make a Donation.</a>
+            <a>Support this Software!<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="hidden" name="hosted_button_id" value="UPRUT8UBPERVQ">
+<input type="image" src="https://www.paypal.com/en_AU/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online.">
+<img alt="" border="0" src="https://www.paypal.com/en_AU/i/scr/pixel.gif" width="1" height="1">
+</form>
+</a>
             <a href="https://sourceforge.net/projects/myitcrm/" target="_blank"><img src="images/icons/sf.ico" alt="" border="0" height="14" width="14" /> SF Page</a>
         </div>
     </div>
