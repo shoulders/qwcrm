@@ -17,7 +17,9 @@ echo("<tr>\n
 
 function create_acl($db) {
         
-        $q = "INSERT INTO `".PRFX."ACL` VALUES (77, 'invoice:delete', 1, 1, 1, 1, 0)";
+        $q = "INSERT INTO `".PRFX."ACL` VALUES 
+            (78, 'invoice:delete', 1, 1, 1, 1, 0),
+            (79, 'refund:refund_details', 1, 1, 1, 1, 0)";
 
                                 $rs = $db->Execute($q);
                                 if(!$rs) {

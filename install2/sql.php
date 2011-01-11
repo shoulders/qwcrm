@@ -1276,7 +1276,9 @@ function create_acl($db) {
 (74, 'supplier:new', 1, 1, 1, 1, 0),
 (75, 'supplier:search', 1, 1, 1, 1, 0),
 (76, 'supplier:supplier_details', 1, 1, 1, 1, 0),
-(77, 'expense:expense_details', 1, 1, 1, 1, 0)";
+(77, 'expense:expense_details', 1, 1, 1, 1, 0),
+(78, 'invoice:delete', 1, 1, 1, 1, 0),
+(79, 'refund:refund_details', 1, 1, 1, 1, 0)";
                         $rs = $db->Execute($q);
 			if(!$rs) {
 				return false;
