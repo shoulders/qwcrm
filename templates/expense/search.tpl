@@ -264,12 +264,12 @@
 
                                                                                             <!-- Notes Column -->
                                                                                             <td class="olotd4" nowrap>{if !$expense_search_result[i].EXPENSE_NOTES == ""}
-                                                                                                <img src="images/icons/16x16/view+.gif" border="0" alt=""
+                                                                                                <img src="images/icons/16x16/view.gif" border="0" alt=""
                                                                                                     onMouseOver="ddrivetip('<b>{$translate_expense_notes}</b><hr><p>{$expense_search_result[i].EXPENSE_NOTES|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>')"
                                                                                                     onMouseOut="hideddrivetip()">{/if}</td>
 
                                                                                             <!-- Items Column  -->
-                                                                                            <td class="olotd4" nowrap><img src="images/icons/16x16/view+.gif" border="0" alt=""
+                                                                                            <td class="olotd4" nowrap><img src="images/icons/16x16/view.gif" border="0" alt=""
                                                                                                     onMouseOver="ddrivetip('<b>{$translate_expense_items}</b><hr><p>{$expense_search_result[i].EXPENSE_ITEMS|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>')"
                                                                                                     onMouseOut="hideddrivetip()"></td>
 

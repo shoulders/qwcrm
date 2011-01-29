@@ -15,7 +15,7 @@
       <div>
         <span>{$translate_menu_customers}</span>
 
-                <a href="?page=customer:new&amp;page_title={$translate_menu_add_new_customer}"><img src="images/icons/16x16/view+.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_add_new}</a>
+                <a href="?page=customer:new&amp;page_title={$translate_menu_add_new_customer}"><img src="images/icons/16x16/view.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_add_new}</a>
 		<a href="?page=customer:view&amp;page_title={$translate_menu_customers}"><img src="images/icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_view}</a>
                 {if $cust_id > 0 }
 		<a href="?page=customer:edit&amp;customer_id={$cust_id}&amp;page_title={$translate_menu_edit_customer}"><img src="images/icons/edit_employees.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_edit_customer}</a>
@@ -28,7 +28,7 @@
       <div class="collapsed">
         <span>{$translate_menu_work_orders}</span>
                 {if $cust_id > 0 }
-		<a href="?page=workorder:new&amp;customer_id={$cust_id}&amp;page_title={$translate_workorder_new_title}"><img src="images/icons/16x16/view+.gif" alt="" border="0" height="14" width="14" /> {$translate_workorder_nav_new}</a>
+		<a href="?page=workorder:new&amp;customer_id={$cust_id}&amp;page_title={$translate_workorder_new_title}"><img src="images/icons/16x16/view.gif" alt="" border="0" height="14" width="14" /> {$translate_workorder_nav_new}</a>
                 {/if}
 		{if $unassigned > 0 }
 		<a href="?page=workorder:main&amp;page_title={$translate_menu_work_orders}"><img src="images/icons/warning.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_unassigned} <b><font color="RED">{if $unassigned > 0} ({$unassigned}){/if}{if $unassigned < 1}{/if}</font></b></a>
@@ -61,12 +61,12 @@
             <a href="?page=employees:main&amp;page_title={$translate_menu_employees_view}" ><img src="images/icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_employees_view}</a>
         <!-- Menu limited to Managers or Supervisors -->
         {if $cred.EMPLOYEE_TYPE == 1 ||  $cred.EMPLOYEE_TYPE == 2 }
-            <a href="?page=employees:new&amp;page_title=New"><img src="images/icons/16x16/view+.gif" alt="" border="0" height="14" width="14" /> New Employee</a>
+            <a href="?page=employees:new&amp;page_title=New"><img src="images/icons/16x16/view.gif" alt="" border="0" height="14" width="14" /> New Employee</a>
             <a href="?page=stats:main&amp;page_title=Stats"><img src="images/icons/reports.png" alt="" border="0" height="14" width="14" /> {$translate_stats_nav_report}</a>
         {/if}
         <!-- Menu limited to Managers and Admins -->
         {if $cred.EMPLOYEE_TYPE == 1 || $cred.EMPLOYEE_TYPE == 4 }
-            <a href="?page=employees:new&amp;page_title=New"><img src="images/icons/16x16/view+.gif" alt="" border="0" height="14" width="14" /> New Employee</a>
+            <a href="?page=employees:new&amp;page_title=New"><img src="images/icons/16x16/view.gif" alt="" border="0" height="14" width="14" /> New Employee</a>
         {if $employee_id > '' || $employee_id > 0 }
             <a href="?page=employees:edit&amp;employee_id={$employee_id}&amp;page_title={$translate_menu_edit}"><img src="images/icons/edit_employees.gif" alt="" border="0" height="14" width="14" /> Edit Employee</a>
         {/if}

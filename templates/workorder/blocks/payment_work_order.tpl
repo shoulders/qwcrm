@@ -17,7 +17,7 @@
 					<td class="olotd4"><a href="?page=workorder:view&wo_id={$payment.WORK_ORDER_ID}&customer_id={$payment.CUSTOMER_ID}&page_title={$translate_workorder_page_title}  {$payment.WORK_ORDER_ID}">{$payment.WORK_ORDER_ID}<a/></td>
 					<td class="olotd4"> {$payment.WORK_ORDER_OPEN_DATE|date_format:"$date_format"}</td>
 					<td class="olotd4" nowrap>
-						<img src="images/icons/16x16/view+.gif" border="0" onMouseOver="ddrivetip('<b><center>Contact Info</b></center><hr><b>Phone: </b>{$payment.CUSTOMER_PHONE}<br> <b>Work: </b>{$payment.CUSTOMER_WORK_PHONE}<br><b>Moile: </b>{$payment.CUSTOMER_MOBILE_PHONE}<br><br>{$payment.CUSTOMER_ADDRESS}<br>{$payment.CUSTOMER_CITY}, {$payment.CUSTOMER_STATE}<br>{$payment.CUSTOMER_ZIP}')" onMouseOut="hideddrivetip()">
+						<img src="images/icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<b><center>Contact Info</b></center><hr><b>Phone: </b>{$payment.CUSTOMER_PHONE}<br> <b>Work: </b>{$payment.CUSTOMER_WORK_PHONE}<br><b>Moile: </b>{$payment.CUSTOMER_MOBILE_PHONE}<br><br>{$payment.CUSTOMER_ADDRESS}<br>{$payment.CUSTOMER_CITY}, {$payment.CUSTOMER_STATE}<br>{$payment.CUSTOMER_ZIP}')" onMouseOut="hideddrivetip()">
 						<a class="link1" href="?page=customer:customer_details&customer_id={$payment.CUSTOMER_ID}&page_title={$payment.CUSTOMER_DISPLAY_NAME}">{$payment.CUSTOMER_DISPLAY_NAME}</a>
 					</td>
 					<td class="olotd4" nowrap>
@@ -27,7 +27,7 @@
 					{if $payment.EMPLOYEE_DISPLAY_NAME == ""}
 						{$translate_workorder_not_assigned}
 					{else}
-						<img src="images/icons/16x16/view+.gif" border="0" onMouseOver="ddrivetip('<center><b>Contact</b></center><hr><b>Work: </b>{$payment.EMPLOYEE_WORK_PHONE}<br><b>Mobile: </b>{$payment.EMPLOYEE_MOBILE_PHONE}<br><b>Home: </b>{$payment.EMPLOYEE_HOME_PHONE}')" onMouseOut="hideddrivetip()"> 
+						<img src="images/icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<center><b>Contact</b></center><hr><b>Work: </b>{$payment.EMPLOYEE_WORK_PHONE}<br><b>Mobile: </b>{$payment.EMPLOYEE_MOBILE_PHONE}<br><b>Home: </b>{$payment.EMPLOYEE_HOME_PHONE}')" onMouseOut="hideddrivetip()"> 
 						<a class="link1" href="?page=employees:employee_details&employee_id={$payment.EMPLOYEE_ID}&page_title={$payment.EMPLOYEE_DISPLAY_NAME}">{$payment.EMPLOYEE_DISPLAY_NAME}</a>
 					{/if}
 					</td>

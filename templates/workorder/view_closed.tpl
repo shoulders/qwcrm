@@ -77,14 +77,14 @@
 															<td class="olotd4">{$work_order.WORK_ORDER_CLOSE_DATE|date_format:"$date_format"}</td>
 														
 															<td class="olotd4" nowrap>
-																<img src="images/icons/16x16/view+.gif" alt="" border="0" onMouseOver="ddrivetip('<b><center>Contact Info</b></center><hr><b>Phone: </b>{$work_order.CUSTOMER_PHONE}<br> <b>Work: </b>{$work_order.CUSTOMER_WORK_PHONE}<br><b>Moile: </b>{$work_order.CUSTOMER_MOBILE_PHONE}<br><br>{$work_order.CUSTOMER_ADDRESS}<br>{$work_order.CUSTOMER_CITY}, {$work_order.CUSTOMER_STATE}<br>{$work_order.CUSTOMER_ZIP}')" onMouseOut="hideddrivetip()">
+																<img src="images/icons/16x16/view.gif" alt="" border="0" onMouseOver="ddrivetip('<b><center>Contact Info</b></center><hr><b>Phone: </b>{$work_order.CUSTOMER_PHONE}<br> <b>Work: </b>{$work_order.CUSTOMER_WORK_PHONE}<br><b>Moile: </b>{$work_order.CUSTOMER_MOBILE_PHONE}<br><br>{$work_order.CUSTOMER_ADDRESS}<br>{$work_order.CUSTOMER_CITY}, {$work_order.CUSTOMER_STATE}<br>{$work_order.CUSTOMER_ZIP}')" onMouseOut="hideddrivetip()">
 																<a class="link1" href="?page=customer:customer_details&customer_id={$work_order.CUSTOMER_ID}&page_title={$work_order.CUSTOMER_DISPLAY_NAME}">{$work_order.CUSTOMER_DISPLAY_NAME}</a>
 															</td>
 															<td class="olotd4" nowrap>
 															{$work_order.WORK_ORDER_SCOPE}</td>
 															<td class="olotd4">{$work_order.CONFIG_WORK_ORDER_STATUS}</td>
 															<td class="olotd4" nowrap>
-																<img src="images/icons/16x16/view+.gif" alt="" border="0" onMouseOver="ddrivetip('<center><b>Contact</b></center><hr><b>Work: </b>{$work_order.EMPLOYEE_WORK_PHONE}<br><b>Mobile: </b>{$work_order.EMPLOYEE_MOBILE_PHONE}<br><b>Home: </b>{$work_order.EMPLOYEE_HOME_PHONE}')" onMouseOut="hideddrivetip()">
+																<img src="images/icons/16x16/view.gif" alt="" border="0" onMouseOver="ddrivetip('<center><b>Contact</b></center><hr><b>Work: </b>{$work_order.EMPLOYEE_WORK_PHONE}<br><b>Mobile: </b>{$work_order.EMPLOYEE_MOBILE_PHONE}<br><b>Home: </b>{$work_order.EMPLOYEE_HOME_PHONE}')" onMouseOut="hideddrivetip()">
 																<a class="link1" href="?page=employees:employee_details&employee_id={$work_order.EMPLOYEE_ID}&page_title={$work_order.EMPLOYEE_DISPLAY_NAME}">{$work_order.EMPLOYEE_DISPLAY_NAME}</a>
 															</td>
 															

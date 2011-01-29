@@ -152,11 +152,11 @@ else
                                                                     <a href="?page=customer:customer_details&customer_id={$customer_search_result[i].CUSTOMER_ID}&page_title={$customer_search_result[i].CUSTOMER_DISPLAY_NAME}"><img src="images/icons/16x16/viewmag.gif" alt="" border="0" onMouseOver="ddrivetip('View Customer Details')" onMouseOut="hideddrivetip()"></a>&nbsp;<a href="?page=workorder:new&customer_id={$customer_search_result[i].CUSTOMER_ID}&page_title=New Work Order"><img src="images/icons/16x16/small_new_work_order.gif" alt="" border="0" onMouseOver="ddrivetip('New Work Order')" onMouseOut="hideddrivetip()" alt=""></a>&nbsp;
 								</td>
                                                                 <td class="olotd4" nowrap>
-									<img src="images/icons/16x16/view+.gif" alt="" border="0" onMouseOver="ddrivetip('{$customer_search_result[i].CUSTOMER_ADDRESS}<br>{$customer_search_result[i].CUSTOMER_CITY}, {$customer_search_result[i].CUSTOMER_STATE}  {$customer_search_result[i].CUSTOMER_ZIP}')" onMouseOut="hideddrivetip()">&nbsp;{$customer_search_result[i].CUSTOMER_DISPLAY_NAME}
+									<img src="images/icons/16x16/view.gif" alt="" border="0" onMouseOver="ddrivetip('{$customer_search_result[i].CUSTOMER_ADDRESS}<br>{$customer_search_result[i].CUSTOMER_CITY}, {$customer_search_result[i].CUSTOMER_STATE}  {$customer_search_result[i].CUSTOMER_ZIP}')" onMouseOut="hideddrivetip()">&nbsp;{$customer_search_result[i].CUSTOMER_DISPLAY_NAME}
 								</td>                                                                
 								<td class="olotd4" nowrap>{$customer_search_result[i].CUSTOMER_FIRST_NAME}</td>
 								<td class="olotd4" nowrap>{$customer_search_result[i].CUSTOMER_LAST_NAME}</td>
-								<td class="olotd4" nowrap><img src="images/icons/16x16/view+.gif" border="0" alt=""
+								<td class="olotd4" nowrap><img src="images/icons/16x16/view.gif" border="0" alt=""
 									onMouseOver="ddrivetip('<b>Work: </b>{$customer_search_result[i].CUSTOMER_WORK_PHONE}<br><b>Mobile:</b>{$customer_search_result[i].CUSTOMER_MOBILE_PHONE}')" 
 									onMouseOut="hideddrivetip()">
 									{$customer_search_result[i].CUSTOMER_PHONE}

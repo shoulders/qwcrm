@@ -171,7 +171,7 @@
                                 <td class="olotd4">
                                     {$open_work_orders[a].CONFIG_WORK_ORDER_STATUS}</td>
                                 <td class="olotd4"> {if $open_work_orders[a].EMPLOYEE_ID != ''}
-                                    <img src="images/icons/16x16/view+.gif" border="0" alt="" {literal}onMouseOver="ddrivetip('<center><b>{/literal}{$translate_contact}{literal}</b></center><hr>
+                                    <img src="images/icons/16x16/view.gif" border="0" alt="" {literal}onMouseOver="ddrivetip('<center><b>{/literal}{$translate_contact}{literal}</b></center><hr>
                                     <b>{/literal}{$translate_work}{literal} </b>
                                     {/literal}{$open_work_orders[a].EMPLOYEE_WORK_PHONE}{literal}
                                     <br>
@@ -218,7 +218,7 @@
                                 <td class="olotd4">
                                     {$closed_work_orders[b].CONFIG_WORK_ORDER_STATUS}</td>
                                 <td class="olotd4"> {if $closed_work_orders[a].EMPLOYEE_ID != ''}
-                                    <img src="images/icons/16x16/view+.gif" border="0" alt="" {literal}onMouseOver="ddrivetip('<center><b>{$translate_contact}</b></center><hr>
+                                    <img src="images/icons/16x16/view.gif" border="0" alt="" {literal}onMouseOver="ddrivetip('<center><b>{$translate_contact}</b></center><hr>
                                             <b>{$translate_work} </b>
                                             {$open_work_orders[a].EMPLOYEE_WORK_PHONE}
                                             <br>

@@ -151,13 +151,13 @@ else
 							<tr onmouseover="this.className='row2'" onmouseout="this.className='row1'" onDblClick="window.location='index.php?page=employees:employee_details&employee_id={$employee_search_result[i].EMPLOYEE_ID}&page_title={$translate_employee_details_for} {$employee_search_result[i].EMPLOYEE_DISPLAY_NAME}';" class="row1">
 								<td class="olotd4"><a href="?page=employees:employee_details&employee_id={$employee_search_result[i].EMPLOYEE_ID}&page_title={$translate_employee_details_for} {$employee_search_result[i].EMPLOYEE_DISPLAY_NAME}">{$employee_search_result[i].EMPLOYEE_ID}</a></td>
 								<td class="olotd4">
-									<img src="images/icons/16x16/view+.gif" border="0" onMouseOver="ddrivetip('{$employee_search_result[i].EMPLOYEE_ADDRESS}<br>{$employee_search_result[i].EMPLOYEE_CITY}, {$employee_search_result[i].EMPLOYEE_SATE}  {$employee_search_result[i].EMPLOYEE_ZIP}')" onMouseOut="hideddrivetip()">
+									<img src="images/icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('{$employee_search_result[i].EMPLOYEE_ADDRESS}<br>{$employee_search_result[i].EMPLOYEE_CITY}, {$employee_search_result[i].EMPLOYEE_SATE}  {$employee_search_result[i].EMPLOYEE_ZIP}')" onMouseOut="hideddrivetip()">
 									{$employee_search_result[i].EMPLOYEE_DISPLAY_NAME}
 								</td>
 								<td class="olotd4">{$employee_search_result[i].EMPLOYEE_FIRST_NAME}</td>
 								<td class="olotd4">{$employee_search_result[i].EMPLOYEE_LAST_NAME}</td>
 								<td class="olotd4">
-									<img src="images/icons/16x16/view+.gif" border="0"
+									<img src="images/icons/16x16/view.gif" border="0"
 										onMouseOver="ddrivetip('<b>{$translate_employee_home} </b>{$employee_search_result[i].EMPLOYEE_HOME_PHONE}<br><b>{$translate_employee_mobile} </b>{$employee_search_result[i].EMPLOYEE_MOBILE_PHONE}')" 
 										onMouseOut="hideddrivetip()">
 									{$employee_search_result[i].EMPLOYEE_WORK_PHONE}

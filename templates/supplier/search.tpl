@@ -175,12 +175,12 @@
 
                                                                                             <!-- Notes Column -->
                                                                                             <td class="olotd4" nowrap>{if !$supplier_search_result[i].SUPPLIER_NOTES == ""}
-                                                                                                <img src="images/icons/16x16/view+.gif" border="0" alt=""
+                                                                                                <img src="images/icons/16x16/view.gif" border="0" alt=""
                                                                                                     onMouseOver="ddrivetip('<b>{$translate_supplier_notes}</b><hr><p>{$supplier_search_result[i].SUPPLIER_NOTES|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>')"
                                                                                                     onMouseOut="hideddrivetip()">{/if}</td>
 
                                                                                             <!-- Description Column  -->
-                                                                                            <td class="olotd4" nowrap><img src="images/icons/16x16/view+.gif" border="0" alt=""
+                                                                                            <td class="olotd4" nowrap><img src="images/icons/16x16/view.gif" border="0" alt=""
                                                                                                     onMouseOver="ddrivetip('<b>{$translate_supplier_description}</b><hr><p>{$supplier_search_result[i].SUPPLIER_DESCRIPTION|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>')"
                                                                                                     onMouseOut="hideddrivetip()"></td>
 

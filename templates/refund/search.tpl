@@ -216,12 +216,12 @@
 
                                                                                             <!-- Notes Column -->
                                                                                             <td class="olotd4" nowrap>{if !$refund_search_result[i].REFUND_NOTES == ""}
-                                                                                                <img src="images/icons/16x16/view+.gif" border="0" alt=""
+                                                                                                <img src="images/icons/16x16/view.gif" border="0" alt=""
                                                                                                     onMouseOver="ddrivetip('<b>{$translate_refund_notes}</b><hr><p>{$refund_search_result[i].REFUND_NOTES|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>')"
                                                                                                     onMouseOut="hideddrivetip()">{/if}</td>
 
                                                                                             <!-- Items Column  -->
-                                                                                            <td class="olotd4" nowrap><img src="images/icons/16x16/view+.gif" border="0" alt=""
+                                                                                            <td class="olotd4" nowrap><img src="images/icons/16x16/view.gif" border="0" alt=""
                                                                                                     onMouseOver="ddrivetip('<b>{$translate_refund_items}</b><hr><p>{$refund_search_result[i].REFUND_ITEMS|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>')"
                                                                                                     onMouseOut="hideddrivetip()"></td>
 
