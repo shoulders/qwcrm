@@ -174,7 +174,7 @@
                                     <img src="images/icons/16x16/view.gif" border="0" alt="" {literal}onMouseOver="ddrivetip('<center><b>{/literal}{$translate_contact}{literal}</b></center><hr>
                                     <b>{/literal}{$translate_work}{literal} </b>
                                     {/literal}{$open_work_orders[a].EMPLOYEE_WORK_PHONE}{literal}
-                                    <br>
+                                    <br/>
                                     <b>{/literal}{$translate_mobile} {literal}</b>
                                     {/literal}{$open_work_orders[a].EMPLOYEE_MOBILE_PHONE}{literal}
                                     <br>
@@ -281,7 +281,7 @@
                                 <td class="olotd4" align="center">
                                     <a href="?page=invoice:pdf&invoice_id={$unpaid_invoices[w].INVOICE_ID}&customer_id={$unpaid_invoices[w].CUSTOMER_ID}&escape=1" target="new" ><img src="images/icons/16x16/pdf_small.gif" alt="" border="0" onMouseOver="ddrivetip('{$translate_customer_print_pdf}')" onMouseOut="hideddrivetip()"></a>
                                     <a href="?page=invoice:print&invoice_id={$unpaid_invoices[w].INVOICE_ID}&customer_id={$unpaid_invoices[w].CUSTOMER_ID}&escape=1" target="new" ><img src="images/icons/16x16/fileprint.gif" alt="" border="0" onMouseOver="ddrivetip('{$translate_customer_print}')" onMouseOut="hideddrivetip()"></a>
-                                    <a href="?page=workorder:view&wo_id={$unpaid_invoices[w].WORK_ORDER_ID}&customer_id={$unpaid_invoices[w].CUSTOMER_ID}"><img src="images/icons/16x16/viewmag.gif" alt="" border="0" onMouseOver="ddrivetip('{$translate_customer_view}')" onMouseOut="hideddrivetip()"></a></td>
+                                    <a href="?page=workorder:view&wo_id={$unpaid_invoices[w].WORKORDER_ID}&customer_id={$unpaid_invoices[w].CUSTOMER_ID}"><img src="images/icons/16x16/viewmag.gif" alt="" border="0" onMouseOver="ddrivetip('{$translate_customer_view}')" onMouseOut="hideddrivetip()"></a></td>
                             </tr>{/section}
                         </table>
                         <br>
