@@ -130,7 +130,7 @@
 		{/if}
 		<div>
         <span>{$translate_menu_project}</span>
-            <a href="http://team.myitcrm.com" target="_blank"><img src="images/icons/web.png" alt="" border="0" height="14" width="14" /> Website</a>
+            <a href="http://myitcrm.com" target="_blank"><img src="images/icons/web.png" alt="" border="0" height="14" width="14" /> Website</a>
             <a href="http://team.myitcrm.com/projects/main/issues" target="_blank"><img src="images/icons/bug.png" alt=""border="0" height="14" width="14" /> Bug Tracker</a>
             <a href="http://myitcrm.com/forum/index.php" target="_blank"><img src="images/icons/comment.png" alt="" border="0" height="14" width="14" /> Forum</a>
             <a>Support this Software!<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
