@@ -479,13 +479,13 @@ function display_expense_search($db, $expense_search_category, $expense_search_t
 	global $smarty;
 
 	// Define the number of results per page
-	$max_results = 10;
+	$max_results = 25;
 
 	// Figure out the limit for the Execute based
 	// on the current page number.
 	$from = (($page_no * $max_results) - $max_results);
 
-	$sql = "SELECT * FROM ".PRFX."TABLE_EXPENSE WHERE EXPENSE_$expense_search_category LIKE '$expense_search_term' ORDER BY EXPENSE_ID LIMIT $from, $max_results";
+	$sql = "SELECT * FROM ".PRFX."TABLE_EXPENSE WHERE EXPENSE_$expense_search_category LIKE '$expense_search_term' ORDER BY EXPENSE_ID DESC LIMIT $from, $max_results";
 
 	//print $sql;
 

@@ -365,7 +365,7 @@ function display_supplier_search($db, $supplier_search_category, $supplier_searc
 	global $smarty;
 
 	// Define the number of results per page
-	$max_results = 10;
+	$max_results = 25;
 
 	// Figure out the limit for the Execute based
 	// on the current page number.

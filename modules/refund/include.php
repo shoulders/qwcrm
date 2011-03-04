@@ -399,13 +399,13 @@ function display_refund_search($db, $refund_search_category, $refund_search_term
 	global $smarty;
 
 	// Define the number of results per page
-	$max_results = 10;
+	$max_results = 25;
 
 	// Figure out the limit for the Execute based
 	// on the current page number.
 	$from = (($page_no * $max_results) - $max_results);
 
-	$sql = "SELECT * FROM ".PRFX."TABLE_REFUND WHERE REFUND_$refund_search_category LIKE '$refund_search_term' ORDER BY REFUND_ID LIMIT $from, $max_results";
+	$sql = "SELECT * FROM ".PRFX."TABLE_REFUND WHERE REFUND_$refund_search_category LIKE '$refund_search_term' ORDER BY REFUND_ID DESC LIMIT $from, $max_results";
 
 	//print $sql;
 
