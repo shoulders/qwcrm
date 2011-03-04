@@ -8,7 +8,7 @@ function display_open_invoice($db,$page_no,$smarty) {
 global $smarty;
 	
 	// Define the number of results per page
-	$max_results = 20;
+	$max_results = 25;
 	
 	// Figure out the limit for the Execute based
 	// on the current page number.
@@ -20,7 +20,7 @@ global $smarty;
 			FROM ".PRFX."TABLE_INVOICE 
 				LEFT JOIN ".PRFX."TABLE_CUSTOMER ON (".PRFX."TABLE_INVOICE.CUSTOMER_ID = ".PRFX."TABLE_CUSTOMER.CUSTOMER_ID)
 				LEFT JOIN ".PRFX."TABLE_EMPLOYEE ON (".PRFX."TABLE_INVOICE.EMPLOYEE_ID = ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_ID)
-			WHERE INVOICE_PAID=".$db->qstr(0)." ORDER BY INVOICE_ID LIMIT $from, $max_results";
+			WHERE INVOICE_PAID=".$db->qstr(0)." ORDER BY INVOICE_ID DESC LIMIT $from, $max_results";
 
 	if(!$rs = $db->Execute($sql)) {
 		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
@@ -75,7 +75,7 @@ function display_paid_invoice($db,$page_no,$smarty) {
 global $smarty;
 	
 	// Define the number of results per page
-	$max_results = 20;
+	$max_results = 25;
 	
 	// Figure out the limit for the Execute based
 	// on the current page number.
@@ -87,7 +87,7 @@ global $smarty;
 			FROM ".PRFX."TABLE_INVOICE 
 				LEFT JOIN ".PRFX."TABLE_CUSTOMER ON (".PRFX."TABLE_INVOICE.CUSTOMER_ID = ".PRFX."TABLE_CUSTOMER.CUSTOMER_ID)
 				LEFT JOIN ".PRFX."TABLE_EMPLOYEE ON (".PRFX."TABLE_INVOICE.EMPLOYEE_ID = ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_ID)
-			WHERE INVOICE_PAID=".$db->qstr(1)." ORDER BY INVOICE_ID LIMIT $from, $max_results";
+			WHERE INVOICE_PAID=".$db->qstr(1)." ORDER BY INVOICE_ID DESC LIMIT $from, $max_results";
 
 	if(!$rs = $db->Execute($sql)) {
 		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
