@@ -12,7 +12,7 @@ $expenseID = $VAR['expenseID'];
 $refundID = $VAR['refundID'];
 $supplierID = $VAR['supplierID'];
 $employee_id = $VAR['employee_id'];
-$today = (Date("l, j F Y")); 
+$today = (Date("l, j F Y"));
 $smarty->assign('today',$today);
 
 if(!$login)
