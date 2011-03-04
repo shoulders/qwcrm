@@ -1,4 +1,28 @@
 <!-- Add New Supplier tpl -->
+{literal}
+<script language="javascript" type="text/javascript" src="include/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
+<script language="javascript" type="text/javascript">
+	tinyMCE.init({
+		mode : "exact",
+        elements : "editor, editor2, editor3",
+		theme : "advanced",
+		plugins : "advlink,iespell,insertdatetime,preview",
+		theme_advanced_buttons2_add : "separator,insertdate,inserttime,preview,separator,forecolor,backcolor",
+		theme_advanced_buttons2_add_before: "cut,copy,paste",
+		theme_advanced_toolbar_location : "bottom",
+		theme_advanced_toolbar_align : "center",
+
+	    plugin_insertdate_dateFormat : "%Y-%m-%d",
+	    plugin_insertdate_timeFormat : "%H:%M:%S",
+		extended_valid_elements : "a[name|href|target|title|onclick],img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name],hr[class|width|size|noshade],font[face|size|color|style],span[class|align|style]",
+		external_link_list_url : "example_link_list.js",
+		external_image_list_url : "example_image_list.js",
+		flash_external_list_url : "example_flash_list.js",
+		file_browser_callback : "fileBrowserCallBack",
+		width : "100%"
+	});
+</script>
+{/literal}
 
         <link rel="stylesheet" type="text/css" media="all" href="include/jscalendar/calendar-blue.css" title="win2k-1" />
         <script type="text/javascript" src="include/jscalendar/calendar_stripped.js"></script>
@@ -97,7 +121,7 @@
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><strong>{$translate_supplier_address}</strong></td>
-                                                                            <td><textarea class="olotd5" cols="30" rows="3"  name="supplierAddress" >{$employee_details[a].EMPLOYEE_ADDRESS}</textarea></td>
+                                                                            <td><textarea class="olotd5" cols="30" rows="3"  name="supplierAddress"  >{$employee_details[a].EMPLOYEE_ADDRESS}</textarea></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><strong>{$translate_supplier_city}</strong></td>
@@ -124,11 +148,11 @@
                                                                     <tbody align="left">
                                                                         <tr>
                                                                             <td align="right"><b>{$translate_supplier_notes}</b></td>
-                                                                            <td><textarea class="olotd5" name="supplierNotes" cols="50" rows="10"></textarea></td>
+                                                                            <td><textarea class="olotd5" name="supplierNotes" cols="50" rows="15" id="editor2"></textarea></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{$translate_supplier_description}</b><span style="color: #ff0000"> *</span></td>
-                                                                            <td><textarea class="olotd5" name="supplierDescription" cols="50" rows="10"></textarea></td>
+                                                                            <td><textarea class="olotd5" name="supplierDescription" cols="50" rows="15" id="editor3"></textarea></td>
                                                                         </tr>
                                                                     </tbody>
                                                                         <tr>
