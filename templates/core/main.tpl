@@ -102,9 +102,7 @@
                                             <td class="row2">
                                                 <b>{$translate_main_balance}</b>
                                             </td>
-                                            <td class="row2">
-                                                <b>{$translate_main_out}</b>
-                                            </td>
+                                            
                                             <td class="row2">
                                                 <b>{$translate_main_paid}</b>
                                             </td>
@@ -127,9 +125,6 @@
                                             </td>
                                             <td>
                                                 <font color="#cc0000">{$currency_sym}{$in_part_bal|string_format:"%.2f"}</font>
-                                            </td>
-                                            <td>
-                                                <font color="#cc0000">{$currency_sym}{$in_out_bal|string_format:"%.2f"}</font>
                                             </td>
                                             <td>
                                                 <a href="?page=invoice:view_paid&amp;page_title=Paid%20Invoices">{$in_paid_count}</a>

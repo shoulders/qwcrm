@@ -100,7 +100,7 @@ if(!$rs = $db->execute($q)){
 
 /* invoice stats */
 /* unpaid Invoices */
-$q = 'SELECT count(*) as count FROM '.PRFX.'TABLE_INVOICE WHERE INVOICE_PAID='.$db->qstr(0).' AND  balance='.$db->qstr(0);
+$q = 'SELECT count(*) as count FROM '.PRFX.'TABLE_INVOICE WHERE INVOICE_PAID='.$db->qstr(0).' AND  balance >'.$db->qstr(0);
 if(!$rs = $db->execute($q)){
 	force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
 	exit;
@@ -109,17 +109,17 @@ if(!$rs = $db->execute($q)){
 	$smarty->assign('in_unpaid_count',$in_unpaid_count);
 }
 /* sum of unpaid */
-$q = 'SELECT SUM(INVOICE_AMOUNT) as sum FROM '.PRFX.'TABLE_INVOICE WHERE INVOICE_PAID='.$db->qstr(0).' AND  balance='.$db->qstr(0);
+$q = 'SELECT SUM(balance) as sum FROM '.PRFX.'TABLE_INVOICE WHERE INVOICE_PAID='.$db->qstr(0).' AND  balance >'.$db->qstr(0);
 if(!$rs = $db->execute($q)){
 	force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
 	exit;
 } else {
-	$in_unpaid_bal = $rs->fields['sum'] - $unpaid_discounts ;
+	$in_unpaid_bal = $rs->fields['sum'] ;
 	$smarty->assign('in_unpaid_bal',$in_unpaid_bal);
 }
 
 /* Partial*/
-$q = 'SELECT count(*) as count FROM '.PRFX.'TABLE_INVOICE WHERE INVOICE_PAID='.$db->qstr(0).' AND  balance > '.$db->qstr(0);
+$q = 'SELECT count(*) as count FROM '.PRFX.'TABLE_INVOICE WHERE INVOICE_PAID='.$db->qstr(0).' AND  balance <> INVOICE_AMOUNT';
 if(!$rs = $db->execute($q)){
 	force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
 	exit;
@@ -129,16 +129,16 @@ if(!$rs = $db->execute($q)){
 }
 
 /* sum */
-$q = 'SELECT SUM(balance) as sum FROM '.PRFX.'TABLE_INVOICE WHERE INVOICE_PAID='.$db->qstr(0).' AND  balance >'.$db->qstr(0);
+$q = 'SELECT SUM(balance) as sum FROM '.PRFX.'TABLE_INVOICE WHERE INVOICE_PAID='.$db->qstr(0).' AND  balance <> INVOICE_AMOUNT';
 if(!$rs = $db->execute($q)){
 	force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
 	exit;
 } else {
-	$in_part_bal = $rs->fields['sum'] - $part_discounts;
+	$in_part_bal = $rs->fields['sum'] ;
 	$smarty->assign('in_part_bal',$in_part_bal);
 }
 
-$in_out_bal = $in_unpaid_bal + $in_part_bal;
+$in_out_bal = $in_unpaid_bal ;
 $smarty->assign('in_out_bal',$in_out_bal);
 
 /* paid */
@@ -157,9 +157,9 @@ if(!$rs = $db->execute($q)){
 	force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
 	exit;
 } else {
-	$in_total = $rs->fields['sum']- $all_discounts;
-	$in_total_bal = $in_total - $in_out_bal; 
-	$in_total2 = $in_total + $in_out_bal ;
+	$in_total = $rs->fields['sum'];
+	$in_total_bal = $in_total - $in_out_bal;
+	$in_total2 = $in_total ;
 	$smarty->assign('in_total_bal',$in_total_bal);
 	$smarty->assign('in_total2',$in_total2);
 }
