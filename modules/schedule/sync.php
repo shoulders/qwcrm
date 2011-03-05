@@ -29,5 +29,5 @@ PRIORITY:<? print "3" . "\n";?>
 SEQUENCE:<? print "0" . "\n";?>
 UID:<? print time() . "\n"; ?>
 <? print "END:VEVENT"  . "\n"; ?>
-<? } ?>
+<?php } ?>
 END:VCALENDAR 
