@@ -48,7 +48,7 @@ class Auth {
     $password 	= mysql_real_escape_string($password);
   
     // Query to count number of users with this combination
-    $sql = "SELECT COUNT(*) AS num_users FROM ".PRFX."TABLE_EMPLOYEE WHERE EMPLOYEE_LOGIN=".$this->db->qstr($login) ." AND EMPLOYEE_PASSWD=".$this->db->qstr($password);
+    $sql = "SELECT COUNT(*) AS num_users FROM ".PRFX."TABLE_EMPLOYEE WHERE EMPLOYEE_STATUS = '1' AND EMPLOYEE_LOGIN=".$this->db->qstr($login) ." AND EMPLOYEE_PASSWD=".$this->db->qstr($password);
 	 $result = $this->db->Execute($sql);
     $row = $result->FetchRow();
 
@@ -59,7 +59,7 @@ class Auth {
     // Else is a valid user; set the session variables
     } else {
 		/* grab their login ID for tracking purposes */
-		$sql = "SELECT EMPLOYEE_ID  FROM ".PRFX."TABLE_EMPLOYEE WHERE EMPLOYEE_LOGIN='$login'";
+		$sql = "SELECT EMPLOYEE_ID  FROM ".PRFX."TABLE_EMPLOYEE WHERE EMPLOYEE_STATUS = '1' AND EMPLOYEE_LOGIN='$login'";
 		$result = $this->db->Execute($sql);
     	$row = $result->FetchRow();
 		
