@@ -24,7 +24,7 @@ $string2=stripslashes($string);
 
 $q = 'UPDATE '.PRFX.'SETUP SET
 		INVOICE_TAX = '. $db->qstr( $VAR['inv_tax']) .',
-                INVOICE_NUMBER_START = '. $db->qstr( $VAR['inv_number']).',
+        INVOICE_NUMBER_START = '. $db->qstr( $VAR['inv_number']).',
 		INV_THANK_YOU = '. $db->qstr( $string6 	) .',
 		WELCOME_NOTE = '. $db->qstr( $string4  	) ;
     if(!$rs = $db->execute($q)) {

@@ -174,7 +174,7 @@ if(isset($submit)){
 		$discount_rate = $VAR['discount'];
 	}
 
-	$discount_rate = $discount_rate * .01; // turns 17.5 in to 0.175
+	$discount_rate = $discount_rate / 100; // turns 17.5 in to 0.175
 	$discount_amount = $sub_total * $discount_rate;
 
         // Calculate Shipping
@@ -184,9 +184,11 @@ if(isset($submit)){
 	$q = "SELECT INVOICE_TAX FROM ".PRFX."SETUP";
 	$rs = $db->execute($q);
 	$tax = $rs->fields['INVOICE_TAX'];
-	$tax_rate = $tax * .01; // turns 17.5 in to 0.175
-        $tax_amount = ($sub_total - $discount_amount + $shipping) * $tax_rate;
+	$tax_rate = $tax / 100; // turns 17.5 in to 0.175
+    $tax_amount = ($sub_total - $discount_amount + $shipping) * $tax_rate;
 
+$smarty->assign('tax_rate', $tax);
+$smarty->assign('discount_rate', $discount_rate);
         // Calculate Totals
         $invoice_total = $sub_total - $discount_amount + $shipping + $tax_amount;
 
@@ -207,7 +209,9 @@ if(isset($submit)){
 			DISCOUNT		=". $db->qstr( number_format($discount_amount, 2,'.', '')).",
 			SUB_TOTAL 		=". $db->qstr( number_format($sub_total, 2,'.', '')).",
 			INVOICE_AMOUNT	        =". $db->qstr( number_format($invoice_total, 2,'.', '')).",
-                        BALANCE 	        =". $db->qstr( number_format($invoice_balance, 2,'.', '')).",
+            TAX_RATE 	        =". $db->qstr( number_format($tax, 3,'.', '')).",
+            DISCOUNT_APPLIED 	        =". $db->qstr( number_format($discount_rate * 100, 2,'.', '')).",
+            BALANCE 	        =". $db->qstr( number_format($invoice_balance, 2,'.', '')).",
 			TAX 			=". $db->qstr( number_format($tax_amount, 2,'.', '')).",
 			INVOICE_DUE		=". $db->qstr( $due_date)." 
 			WHERE INVOICE_ID=".$db->qstr( $VAR['invoice_id']);
@@ -349,7 +353,8 @@ if(isset($submit)){
         $parts_sub_total_sum = parts_sub_total_sum($db, $invoice['INVOICE_ID']);        
         $smarty->assign('labour_sub_total_sum', $labour_sub_total_sum);
         $smarty->assign('parts_sub_total_sum', $parts_sub_total_sum);
-        
+
+
         $smarty->display('invoice'.SEP.'new.tpl');
 
         // If discount is greate than 100% then these close WO and mark the invoice as paid
