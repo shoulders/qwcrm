@@ -1,0 +1,10 @@
+<IfModule mod_rewrite.c>
+
+# URL rewriting module activation
+RewriteEngine on
+
+## SSL enforcement for MyITCRM
+RewriteCond %{HTTPS} !=on
+RewriteRule ^.* https://%{SERVER_NAME}%{REQUEST_URI} [R,L]
+
+</IfModule>
