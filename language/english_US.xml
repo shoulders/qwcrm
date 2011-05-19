@@ -82,6 +82,7 @@
 		<error_404_request>The requested page,</error_404_request>
 		<error_404_request_2>was not found on our system.</error_404_request_2>
 		<error_404_request_3>An email has been sent to the system</error_404_request_3>
+                
 		<menu_new>New</menu_new>
 		<menu_add_new>Add New</menu_add_new>
 		<menu_view>View</menu_view>
@@ -89,7 +90,8 @@
 		<menu_delete>Delete</menu_delete>
 		<menu_close>Close</menu_close>
 		<menu_closed>Closed</menu_closed>
-		<menu_print>Print</menu_print>		
+		<menu_print>Print</menu_print>
+                <menu_print_wo>Print WO</menu_print_wo>
 		<menu_home>Home</menu_home>
 		<menu_unassigned>Unassigned</menu_unassigned>
 		<menu_log_out>Log Out</menu_log_out>
@@ -117,6 +119,7 @@
 		<menu_employees_new>New Employee</menu_employees_new>
 		<menu_employees>Employees</menu_employees>
 		<menu_invoice>Invoice</menu_invoice>
+                <menu_invoice_only>Invoice Only</menu_invoice_only>
 		<menu_paid>Paid</menu_paid>
 		<menu_paid_2>Paid Invoices</menu_paid_2>
 		<menu_un_paid>Unpaid</menu_un_paid>
@@ -124,6 +127,7 @@
 		<menu_open_orders>Open Orders</menu_open_orders>
 		<menu_closed_orders>Closed Orders</menu_closed_orders>
 		<menu_calendar>Calendar</menu_calendar>
+
 		<main_heading>Welcome to your Online Office</main_heading>
 		<main_company_notes>Company Notes</main_company_notes>
 		<main_workorder_stats>Work Order Stats</main_workorder_stats>
@@ -144,9 +148,7 @@
 		<main_customer_stats>Customer Stats</main_customer_stats>
 		<main_new_customers>New This Month</main_new_customers>
 		<main_new_year_customers>New This Year</main_new_year_customers>
-		<main_you_have>You have</main_you_have>
-		<invoice_rates_add_file>Upload a csv file into rates table</invoice_rates_add_file>
-		<invoice_rates_example>CSV File example</invoice_rates_example>
+		<main_you_have>You have</main_you_have>		
 
 		// Customer Templates
 		<main_title>Customer Search</main_title>
@@ -466,6 +468,8 @@
                 <invoice_actions>Actions</invoice_actions>
                 <invoice_labour_total>Labour Total</invoice_labour_total>
                 <invoice_parts_total>Parts Total</invoice_parts_total>
+                <invoice_rates_add_file>Upload a csv file into rates table</invoice_rates_add_file>
+		<invoice_rates_example>CSV File example</invoice_rates_example>
                 // -- New Page
                 <invoice_new_help_title >New Invoice Help</invoice_new_help_title>
                 <invoice_new_help_content>This page allows you to create invoices for your clients.&lt;br /&gt;&lt;br /&gt;Whenever you change the date, add or remove an item you must press the &lt;b&gt;Submit / Recalculate&lt;/b&gt; &lt;/b&gt;&lt;/b&gt;button to apply those changes before you print the invoice otherwise you will get an incorrect invoice and the changes will also not be applied to the database.</invoice_new_help_content>
