@@ -184,7 +184,7 @@ if($VAR['escape'] != 1 ) {
 	require('modules'.SEP.'core'.SEP.'footer.php');
 }
 
-/* tracker code */
+/* Tracker code */
 function getIP() {
 	$ip;
 	if (getenv("HTTP_CLIENT_IP")) $ip = getenv("HTTP_CLIENT_IP");
@@ -197,14 +197,14 @@ function getIP() {
 
 
 $logtime = time();
-$q = 'INSERT into '.PRFX.'tracker SET
-   date						='. $db->qstr( $logtime						).',
-   ip							='. $db->qstr( getIP()						).',
-   uagent						='. $db->qstr( getenv(HTTP_USER_AGENT)	).',
-   full_page					='. $db->qstr( $the_page						).',
-   module					='. $db->qstr( $module						).',
-   page						='. $db->qstr( $page							).',
-   referer					='. $db->qstr( getenv(HTTP_REFERER)		);
+$q = 'INSERT into '.PRFX.'TRACKER SET
+   date			='. $db->qstr( $logtime	).',
+   ip			='. $db->qstr( getIP() ).',
+   uagent		='. $db->qstr( getenv(HTTP_USER_AGENT) ).',
+   full_page		='. $db->qstr( $the_page ).',
+   module		='. $db->qstr( $module ).',
+   page			='. $db->qstr( $page ).',
+   referer		='. $db->qstr( getenv(HTTP_REFERER) );
 
    if(!$rs = $db->Execute($q)) {
       echo 'Error inserting tracker :'. $db->ErrorMsg();
