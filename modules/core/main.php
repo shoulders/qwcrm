@@ -99,7 +99,8 @@ if(!$rs = $db->execute($q)){
 }
 
 /* invoice stats */
-/* unpaid Invoices */
+
+/* No. of Invoices with an outstanding balance */
 $q = 'SELECT count(*) as count FROM '.PRFX.'TABLE_INVOICE WHERE INVOICE_PAID='.$db->qstr(0).' AND  balance >'.$db->qstr(0);
 if(!$rs = $db->execute($q)){
 	force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
@@ -108,7 +109,7 @@ if(!$rs = $db->execute($q)){
 	$in_unpaid_count = $rs->fields['count'];
 	$smarty->assign('in_unpaid_count',$in_unpaid_count);
 }
-/* sum of unpaid */
+/* Sum of balances of Invoices with an outstanding balance */
 $q = 'SELECT SUM(balance) as sum FROM '.PRFX.'TABLE_INVOICE WHERE INVOICE_PAID='.$db->qstr(0).' AND  balance >'.$db->qstr(0);
 if(!$rs = $db->execute($q)){
 	force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
@@ -118,7 +119,7 @@ if(!$rs = $db->execute($q)){
 	$smarty->assign('in_unpaid_bal',$in_unpaid_bal);
 }
 
-/* Partial*/
+/* No. of invoices with a partialy paid balance */
 $q = 'SELECT count(*) as count FROM '.PRFX.'TABLE_INVOICE WHERE INVOICE_PAID='.$db->qstr(0).' AND  balance <> INVOICE_AMOUNT';
 if(!$rs = $db->execute($q)){
 	force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
@@ -128,7 +129,7 @@ if(!$rs = $db->execute($q)){
 	$smarty->assign('in_part_count',$in_part_count);
 }
 
-/* sum */
+/* Sum of balances of invoices with a partialy paid balance */
 $q = 'SELECT SUM(balance) as sum FROM '.PRFX.'TABLE_INVOICE WHERE INVOICE_PAID='.$db->qstr(0).' AND  balance <> INVOICE_AMOUNT';
 if(!$rs = $db->execute($q)){
 	force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
@@ -141,7 +142,7 @@ if(!$rs = $db->execute($q)){
 $in_out_bal = $in_unpaid_bal ;
 $smarty->assign('in_out_bal',$in_out_bal);
 
-/* paid */
+/* No. of paid invoices (of all time) */
 $q = 'SELECT count(*) as count FROM '.PRFX.'TABLE_INVOICE WHERE INVOICE_PAID='.$db->qstr(1);
 if(!$rs = $db->execute($q)){
 	force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
@@ -151,7 +152,7 @@ if(!$rs = $db->execute($q)){
 	$smarty->assign('in_paid_count',$in_paid_count);
 }
 
-/* total */
+/* total amount of Paid invoices (of all time) */
 $q = 'SELECT SUM(INVOICE_AMOUNT) as sum FROM '.PRFX.'TABLE_INVOICE WHERE INVOICE_PAID='.$db->qstr(1);
 if(!$rs = $db->execute($q)){
 	force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
