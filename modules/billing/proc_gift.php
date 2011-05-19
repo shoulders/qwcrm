@@ -3,7 +3,7 @@ $amount			= $VAR['gift_amount'];
 $gift_code		= $VAR['gift_code'];
 $customer_id		= $VAR['customer_id'];
 $invoice_id		= $VAR['invoice_id'];
-$workorder_id	= $VAR['workorder_id'];
+$workorder_id           = $VAR['workorder_id'];
 $date = time();
 
 /* check for valid code */
@@ -70,15 +70,15 @@ if($invoice_details['INVOICE_AMOUNT'] > $gift_amount){
 
 	/* insert Transaction */
 	$gift_amount = number_format($gift_amount, 2,'.', '');
-	$balance		= number_format($balance, 2,'.', '');
-	$memo = "Partial Gift Certificate Payment Made of $$gift_amount Balance due: $$balance,  ID: $gift_code";
+	$balance    = number_format($balance, 2,'.', '');
+	$memo       = "Partial Gift Certificate Payment Made of $currency_sym$gift_amount, Balance due: $currency_sym$balance, ID: $gift_code";
 
 	$q = "INSERT INTO ".PRFX."TABLE_TRANSACTION SET
 		  DATE 			= ".$db->qstr(time()).",
 		  TYPE 			= '3',
-		  INVOICE_ID 	= ".$db->qstr($invoice_id).",
-		  WORKORDER_ID 	= ".$db->qstr($workorder_id).",
-		  CUSTOMER_ID 	= ".$db->qstr($customer_id).",
+		  INVOICE_ID            = ".$db->qstr($invoice_id).",
+		  WORKORDER_ID          = ".$db->qstr($workorder_id).",
+		  CUSTOMER_ID           = ".$db->qstr($customer_id).",
 		  MEMO 			= ".$db->qstr($memo).",
 		  AMOUNT		= ".$db->qstr($gift_amount);
 	if(!$rs = $db->execute($q)) {
@@ -109,10 +109,10 @@ if($invoice_details['INVOICE_AMOUNT'] > $gift_amount){
 	
 	/* update work order */
 	$q = "INSERT INTO ".PRFX."TABLE_WORK_ORDER_STATUS SET
-		  WORK_ORDER_ID					= ".$db->qstr($workorder_id).",
+		  WORK_ORDER_ID				= ".$db->qstr($workorder_id).",
 		  WORK_ORDER_STATUS_DATE 		= ".$db->qstr(time()).",
 		  WORK_ORDER_STATUS_NOTES 		= ".$db->qstr($memo).",
-		  WORK_ORDER_STATUS_ENTER_BY	= ".$db->qstr($_SESSION['login_id']);
+		  WORK_ORDER_STATUS_ENTER_BY            = ".$db->qstr($_SESSION['login_id']);
 	
 	if(!$rs = $db->execute($q)) {
 		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
@@ -156,9 +156,9 @@ if($invoice_details['INVOICE_AMOUNT'] > $gift_amount){
 		$q = "INSERT INTO ".PRFX."TABLE_TRANSACTION SET
 			DATE 			= ".$db->qstr(time()).",
 			TYPE 			= '3',
-			INVOICE_ID 	= ".$db->qstr($invoice_id).",
-			WORKORDER_ID = ".$db->qstr($workorder_id).",
-			CUSTOMER_ID 	= ".$db->qstr($customer_id).",
+			INVOICE_ID              = ".$db->qstr($invoice_id).",
+			WORKORDER_ID            = ".$db->qstr($workorder_id).",
+			CUSTOMER_ID             = ".$db->qstr($customer_id).",
 			MEMO 			= ".$db->qstr($memo).",
 			AMOUNT			= ".$db->qstr($gift_amount);
 		if(!$rs = $db->execute($q)) {
@@ -171,8 +171,8 @@ if($invoice_details['INVOICE_AMOUNT'] > $gift_amount){
 			PAID_DATE  			= ".$db->qstr(time()).", 
 			PAID_AMOUNT 			= ".$db->qstr($gift_amount).",
 			INVOICE_PAID			= '1',
-			balance 				= ".$db->qstr(0.00)."
-			WHERE INVOICE_ID 	= ".$db->qstr($invoice_id);
+			balance 			= ".$db->qstr(0.00)."
+			WHERE INVOICE_ID                = ".$db->qstr($invoice_id);
 			
 		if(!$rs = $db->execute($q)) {
 			force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
@@ -181,9 +181,9 @@ if($invoice_details['INVOICE_AMOUNT'] > $gift_amount){
 		
 		/* update work order */
 		$q = "INSERT INTO ".PRFX."TABLE_WORK_ORDER_STATUS SET
-			WORK_ORDER_ID					= ".$db->qstr($workorder_id).",
+			WORK_ORDER_ID			= ".$db->qstr($workorder_id).",
 			WORK_ORDER_STATUS_DATE 		= ".$db->qstr(time()).",
-			WORK_ORDER_STATUS_NOTES 		= ".$db->qstr($memo).",
+			WORK_ORDER_STATUS_NOTES 	= ".$db->qstr($memo).",
 			WORK_ORDER_STATUS_ENTER_BY	= ".$db->qstr($_SESSION['login_id']);
 		
 		if(!$rs = $db->execute($q)) {
@@ -192,9 +192,9 @@ if($invoice_details['INVOICE_AMOUNT'] > $gift_amount){
 		}
 		
 		$q = "UPDATE ".PRFX."TABLE_WORK_ORDER SET
-			WORK_ORDER_STATUS			= '6',
+			WORK_ORDER_STATUS		= '6',
 			WORK_ORDER_CURRENT_STATUS 	= '8'
-			WHERE WORK_ORDER_ID 		=	".$db->qstr($workorder_id);
+			WHERE WORK_ORDER_ID 		=".$db->qstr($workorder_id);
 		if(!$rs = $db->execute($q)) {
 			force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
 			exit;
@@ -219,12 +219,6 @@ if($flag != 1) {
 	}
 
 force_page('invoice', "view&invoice_id=$invoice_id&customer_id=$customer_id");
-
-
-
-
-
-
 
 
 

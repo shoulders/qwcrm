@@ -5,7 +5,7 @@ $cash_amount		= $VAR['cash_amount'];
 $cash_memo		= $VAR['cash_memo'];
 $customer_id		= $VAR['customer_id'];
 $invoice_id		= $VAR['invoice_id'];
-$workorder_id	= $VAR['workorder_id'];
+$workorder_id           = $VAR['workorder_id'];
 /* validation */
 if(empty($cash_amount)) {
 	force_page("billing", "new&error_msg=Please Fill in the cash amount.&wo_id=$workorder_id&customer_id=$customer_id&invoice_id=$invoice_id&page_title=Billing");
@@ -47,12 +47,12 @@ if($invoice_details['INVOICE_AMOUNT'] > $cash_amount) {
 		$flag = 0;
 	}
 	/* insert Transaction */
-	$memo = "Cash Payment Made of $$cash_amount Balance due: $$OS,  Memo: $cash_memo";
+	$memo = "Cash Payment Made of $currency_sym$cash_amount, Balance due: $currency_sym$OS, Memo: $cash_memo";
 	$q = "INSERT INTO ".PRFX."TABLE_TRANSACTION SET
-		  DATE 			= ".$db->qstr(time()).",
-		  TYPE 			= '3',
-		  INVOICE_ID 	= ".$db->qstr($invoice_id).",
-		  WORKORDER_ID 	= ".$db->qstr($workorder_id).",
+		  DATE 		= ".$db->qstr(time()).",
+		  TYPE 		= '3',
+		  INVOICE_ID    = ".$db->qstr($invoice_id).",
+		  WORKORDER_ID  = ".$db->qstr($workorder_id).",
 		  CUSTOMER_ID 	= ".$db->qstr($customer_id).",
 		  MEMO 		= ".$db->qstr($memo).",
 		  AMOUNT	= ".$db->qstr($cash_amount);

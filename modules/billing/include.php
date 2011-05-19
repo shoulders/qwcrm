@@ -132,7 +132,7 @@ function validate_cc( $ccNum, $card_type, $card_type_accepted_arr ){
 }
 
 #########################################
-# Hex to bin coverter					#
+# Hex to bin coverter			#
 #########################################
 
 function hex2bin($data) {
@@ -173,4 +173,17 @@ function charge_an($post_string) {
 
 	return $resp;
 }
+
+#####################################
+#   Currency Symbol Lookup          #
+#####################################
+
+/* get company info for defaults */
+$q = 'SELECT COMPANY_CURRENCY_SYMBOL FROM '.PRFX.'TABLE_COMPANY';
+	if(!$rs = $db->execute($q)) {
+		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+		exit;
+	}
+// $smarty->assign('currency_sym',$rs->fields['COMPANY_CURRENCY_SYMBOL']);
+        $currency_sym = $rs->fields['COMPANY_CURRENCY_SYMBOL'];
 ?>

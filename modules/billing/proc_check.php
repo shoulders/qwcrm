@@ -51,16 +51,16 @@ if($invoice_details['INVOICE_AMOUNT'] > $cheque_amount){
 		}
 
 	/* insert Transaction */
-	$memo = "Partial Cheque Payment Made of $$cheque_amount Balance due:  $$balance, Cheque Number: $cheque_recieved  Cheque Memo: $cheque_memo";
+	$memo = "Partial Cheque Payment Made of $currency_sym$cheque_amount, Balance due: $currency_sym$balance, Cheque Number: $cheque_recieved, Cheque Memo: $cheque_memo";
 
 	$q = "INSERT INTO ".PRFX."TABLE_TRANSACTION SET
 		  DATE 			= ".$db->qstr(time()).",
 		  TYPE 			= '2',
-		  INVOICE_ID 	= ".$db->qstr($invoice_id).",
-		  WORKORDER_ID 	= ".$db->qstr($workorder_id).",
-		  CUSTOMER_ID 	= ".$db->qstr($customer_id).",
+		  INVOICE_ID            = ".$db->qstr($invoice_id).",
+		  WORKORDER_ID          = ".$db->qstr($workorder_id).",
+		  CUSTOMER_ID           = ".$db->qstr($customer_id).",
 		  MEMO 			= ".$db->qstr($memo).",
-		  AMOUNT			= ".$db->qstr($cheque_amount);
+		  AMOUNT		= ".$db->qstr($cheque_amount);
 	if(!$rs = $db->execute($q)) {
 		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
 		exit;
@@ -89,8 +89,8 @@ if($invoice_details['INVOICE_AMOUNT'] > $cheque_amount){
 	
 	/* update work order */
 	$q = "INSERT INTO ".PRFX."TABLE_WORK_ORDER_STATUS SET
-		  WORK_ORDER_ID						= ".$db->qstr($workorder_id).",
-		  WORK_ORDER_STATUS_DATE 			= ".$db->qstr(time()).",
+		  WORK_ORDER_ID				= ".$db->qstr($workorder_id).",
+		  WORK_ORDER_STATUS_DATE 		= ".$db->qstr(time()).",
 		  WORK_ORDER_STATUS_NOTES 		= ".$db->qstr($memo).",
 		  WORK_ORDER_STATUS_ENTER_BY		= ".$db->qstr($employee);
 	
@@ -121,14 +121,14 @@ if($invoice_details['INVOICE_AMOUNT'] > $cheque_amount){
 		} 
 	if($invoice_details['INVOICE_AMOUNT'] == $cheque_amount){	
 		/* insert Transaction */
-		$memo = "Full Check Payment Made of $$cheque_amount, Check Number: $cheque_recieved  Check Memo: $cheque_memo";
+		$memo = "Full Check Payment Made of $currency_sym$cheque_amount, Check Number: $cheque_recieved, Check Memo: $cheque_memo";
 	
 		$q = "INSERT INTO ".PRFX."TABLE_TRANSACTION SET
 			DATE 			= ".$db->qstr(time()).",
 			TYPE 			= '2',
-			INVOICE_ID 	= ".$db->qstr($invoice_id).",
-			WORKORDER_ID 	= ".$db->qstr($workorder_id).",
-			CUSTOMER_ID 	= ".$db->qstr($customer_id).",
+			INVOICE_ID              = ".$db->qstr($invoice_id).",
+			WORKORDER_ID            = ".$db->qstr($workorder_id).",
+			CUSTOMER_ID             = ".$db->qstr($customer_id).",
 			MEMO 			= ".$db->qstr($memo).",
 			AMOUNT			= ".$db->qstr($cheque_amount);
 		if(!$rs = $db->execute($q)) {
@@ -138,10 +138,10 @@ if($invoice_details['INVOICE_AMOUNT'] > $cheque_amount){
 		
 		/* update the invoice */	
 		$q = "UPDATE ".PRFX."TABLE_INVOICE SET
-			PAID_DATE  			= ".$db->qstr(time()).", 
-			PAID_AMOUNT 			= ".$db->qstr($cheque_amount).",
-			INVOICE_PAID			= '1',
-			balance 				= ".$db->qstr(0.00)."
+			PAID_DATE  		= ".$db->qstr(time()).", 
+			PAID_AMOUNT 		= ".$db->qstr($cheque_amount).",
+			INVOICE_PAID		= '1',
+			balance 		= ".$db->qstr(0.00)."
 			WHERE INVOICE_ID 	= ".$db->qstr($invoice_id);
 			
 		if(!$rs = $db->execute($q)) {
@@ -151,9 +151,9 @@ if($invoice_details['INVOICE_AMOUNT'] > $cheque_amount){
 		
 		/* update work order */
 		$q = "INSERT INTO ".PRFX."TABLE_WORK_ORDER_STATUS SET
-			WORK_ORDER_ID					= ".$db->qstr($workorder_id).",
+			WORK_ORDER_ID			= ".$db->qstr($workorder_id).",
 			WORK_ORDER_STATUS_DATE 		= ".$db->qstr(time()).",
-			WORK_ORDER_STATUS_NOTES 		= ".$db->qstr($memo).",
+			WORK_ORDER_STATUS_NOTES 	= ".$db->qstr($memo).",
 			WORK_ORDER_STATUS_ENTER_BY	= ".$db->qstr($_SESSION['login_id']);
 		
 		if(!$rs = $db->execute($q)) {
@@ -162,9 +162,9 @@ if($invoice_details['INVOICE_AMOUNT'] > $cheque_amount){
 		}
 		
 		$q = "UPDATE ".PRFX."TABLE_WORK_ORDER SET
-			WORK_ORDER_STATUS			= '6',
+			WORK_ORDER_STATUS		= '6',
 			WORK_ORDER_CURRENT_STATUS 	= '8'
-			WHERE WORK_ORDER_ID 		=	".$db->qstr($workorder_id);
+			WHERE WORK_ORDER_ID 		=".$db->qstr($workorder_id);
 		if(!$rs = $db->execute($q)) {
 			force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
 			exit;

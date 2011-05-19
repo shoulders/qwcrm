@@ -182,7 +182,7 @@ $sql = "SELECT ".PRFX."TABLE_WORK_ORDER.*,
 function display_unpaid_invoices($db,$customer_id){
 	$q = "SELECT ".PRFX."TABLE_INVOICE.*, ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_DISPLAY_NAME 
 			FROM ".PRFX."TABLE_INVOICE
-			LEFT JOIN ".PRFX."TABLE_EMPLOYEE ON (".PRFX."TABLE_INVOICE.EMPLOYEE_ID = ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_ID) WHERE CUSTOMER_ID=".$db->qstr($customer_id)." AND INVOICE_PAID='0' ";
+			LEFT JOIN ".PRFX."TABLE_EMPLOYEE ON (".PRFX."TABLE_INVOICE.EMPLOYEE_ID = ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_ID) WHERE CUSTOMER_ID=".$db->qstr($customer_id)." AND INVOICE_PAID='0' ORDER BY ".PRFX."TABLE_INVOICE.INVOICE_ID DESC";
 	
 	if(!$rs = $db->execute($q)){
 		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
@@ -202,7 +202,7 @@ function display_paid_invoices($db,$customer_id){
 	$q = "SELECT ".PRFX."TABLE_INVOICE.*, ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_DISPLAY_NAME 
 			FROM ".PRFX."TABLE_INVOICE
 			LEFT JOIN ".PRFX."TABLE_EMPLOYEE ON (".PRFX."TABLE_INVOICE.EMPLOYEE_ID = ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_ID)
-			WHERE CUSTOMER_ID=".$db->qstr($customer_id)." AND INVOICE_PAID='1' ";
+			WHERE CUSTOMER_ID=".$db->qstr($customer_id)." AND INVOICE_PAID='1' ORDER BY ".PRFX."TABLE_INVOICE.INVOICE_ID DESC";
 	
 	if(!$rs = $db->execute($q)){
 		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');

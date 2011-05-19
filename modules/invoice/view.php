@@ -86,7 +86,7 @@ if($customer_id == '' || $customer_id == '0'){
 		$smarty->assign('parts', $parts);
 	}
 	
-	/* Get trans action information */
+	/* Get transaction information */
 	$q = 'SELECT * FROM '.PRFX.'TABLE_TRANSACTION WHERE INVOICE_ID ='.$db->qstr($invoice['INVOICE_ID']);
 	if(!$rs = $db->execute($q)) {
 		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');

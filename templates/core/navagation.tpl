@@ -22,8 +22,7 @@
                 <a href="?page=billing:new_gift&amp;customer_id={$cust_id}&amp;page_title={$translate_menu_new_gift}&amp;customer_name={$customer_details[i].CUSTOMER_DISPLAY_NAME}"><img src="images/icons/gift.png" alt="" border="0" height="14" width="14" /> {$translate_menu_new_gift}</a>
 		<a href="?page=customer:delete&amp;customer_id={$cust_id}&amp;page_title={$translate_menu_delete_customer}"><img src="images/icons/delete_employees.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_delete_customer}</a>
 		<!--<a href="?page=customer:email&amp;customer_id={$cust_id}&amp;page_title=Email Customer"><img src="images/icons/16x16/email.jpg" alt="" border="0" height="14" width="14" /> {$translate_menu_email_customer}</a>-->
-                {/if}
-		
+                {/if}		
       </div>
       <div class="collapsed">
         <span>{$translate_menu_work_orders}</span>
@@ -35,16 +34,15 @@
 		{/if}
                 <a href="?page=workorder:main&amp;page_title={$translate_menu_work_orders}"><img src="images/tick.png" alt="" border="0" height="14" width="14" /> {$translate_menu_open} <b><font color="RED">{if $open_count > 0} ({$open_count}){/if}{if $open_count < 1}{/if}</font></b></a>
 		<a href="?page=workorder:view_closed&amp;page_title={$translate_menu_closed_work_orders}"><img src="images/icons/close.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_closed} <b><font color="RED">{if $closed > 0 } ({$closed}){/if} {if $closed < 1 }{/if} </font></b></a>
-                    {if $wo_id >= "1"}
-			{if $status2.WORK_ORDER_STATUS == "10" }
-			<a href="?page=workorder:close&amp;wo_id={$wo_id}&amp;page_title={$translate_menu_close}"><img src="images/icons/close.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_close}</a>
-			<a href="?page=workorder:new_note&amp;wo_id={$wo_id}&amp;page_title={$translate_menu_new_note}"><img src="images/icons/note.png" alt="" border="0" height="14" width="14" /> {$translate_menu_new_note}</a>
-		    {/if}
-                    <a href="?page=workorder:print&amp;wo_id={$wo_id}&amp;page_title={$translate_menu_print}&amp;escape=1" target="_blank"><img src="images/icons/print.gif" alt="" border="0" height="14" width="14" />&nbsp;{$translate_menu_print} WO </a>
-		
-                    {if $cust_id > 0 }
-                    <a href="?page=invoice:new&amp;wo_id={$wo_id}&amp;page_title={$translate_menu_invoice}&amp;customer_id={$cust_id}"><img src="images/icons/invoice.png" alt="" border="0" height="14" width="14" /> {$translate_menu_invoice} - WO </a>
+                {if $wo_id >= "1"}
+                    {if $status2.WORK_ORDER_STATUS == "10" }
+                    <a href="?page=workorder:close&amp;wo_id={$wo_id}&amp;page_title={$translate_menu_close}"><img src="images/icons/close.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_close}</a>
+                    <a href="?page=workorder:new_note&amp;wo_id={$wo_id}&amp;page_title={$translate_menu_new_note}"><img src="images/icons/note.png" alt="" border="0" height="14" width="14" /> {$translate_menu_new_note}</a>
                     {/if}
+                    <a href="?page=workorder:print&amp;wo_id={$wo_id}&amp;page_title={$translate_menu_print}&amp;escape=1" target="_blank"><img src="images/icons/print.gif" alt="" border="0" height="14" width="14" />&nbsp;{$translate_menu_print} WO </a>
+                {/if}
+                {if $cust_id > 0 }
+                <a href="?page=invoice:new&amp;invoice_type=invoice-only&amp;wo_id=0&amp;page_title={$translate_menu_invoice}&amp;customer_id={$cust_id}"><img src="images/icons/invoice.png" alt="" border="0" height="14" width="14" /> {$translate_menu_invoice} Only </a>
                 {/if}
 	  </div>
       <div>

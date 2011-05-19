@@ -30,9 +30,7 @@
 									<!-- Content -->
 										<table class="menutable" width="100%" border="0" cellpadding="5" cellspacing="0">
 											<tr>
-												<td valign="top">
-													
-												</td>
+												<td valign="top"></td>
 												<td valign="top" nowrap align="right">
 												<form id="1">
 													<a href="?page=invoice:view_unpaid&name={$name}&submit=submit&page_no=1"><img src="images/rewnd_24.gif" border="0"></a>&nbsp;
@@ -59,7 +57,8 @@
 													{$total_results} {$translate_invoice_records}
 													</form>
 												</td>
-											</tr><tr>
+											</tr>
+                                                                                        <tr>
 												<td valign="top" colspan="2">
 														<table class="olotable" width="100%" border="0" cellpadding="5" cellspacing="0">
 															<tr>
@@ -76,7 +75,7 @@
 															</tr>
 															{section name=q loop=$invoice}
 															<tr onmouseover="this.className='row2'" onmouseout="this.className='row1'" onDblClick="window.location='index.php?page=invoice:new&wo_id={$invoice[q].WORKORDER_ID}&page_title={$translate_invoice_invoice}&customer_id={$invoice[q].CUSTOMER_ID}';" class="row1">
-																<td class="olotd4" nowrap><a href="index.php?page=invoice:new&wo_id={$invoice[q].WORKORDER_ID}&page_title={$translate_invoice_invoice}&customer_id={$invoice[q].CUSTOMER_ID}">{$invoice[q].INVOICE_ID}</a></td>
+																<td class="olotd4" nowrap><a href="index.php?page=invoice:new&invoice_id={$invoice[q].INVOICE_ID}&wo_id={$invoice[q].WORKORDER_ID}&page_title={$translate_invoice_invoice}&customer_id={$invoice[q].CUSTOMER_ID}">{$invoice[q].INVOICE_ID}</a></td>
 																<td class="olotd4" nowrap>{$invoice[q].INVOICE_DATE|date_format:"$date_format"}</td>
 																<td class="olotd4" nowrap>{$invoice[q].INVOICE_DUE|date_format:"$date_format"}</td>
 																<td class="olotd4" nowrap><img src="images/icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<b><center>Contact Info</b></center><hr><b>Phone: </b>{$invoice[q].CUSTOMER_PHONE}<br> <b>Work: </b>{$invoice[q].CUSTOMER_WORK_PHONE}<br><b>Moile: </b>{$invoice[q].CUSTOMER_MOBILE_PHONE}<br><br>{$invoice[q].CUSTOMER_ADDRESS}<br>{$invoice[q].CUSTOMER_CITY}, {$invoice[q].CUSTOMER_STATE}<br>{$invoice[q].CUSTOMER_ZIP}')" onMouseOut="hideddrivetip()"><a href="?page=customer:customer_details&customer_id={$invoice[q].CUSTOMER_ID}&page_title={$invoice[q].CUSTOMER_DISPLAY_NAME}"> {$invoice[q].CUSTOMER_DISPLAY_NAME}</a></td>
@@ -85,8 +84,7 @@
 																<td class="olotd4" nowrap>{$currency_sym}{$invoice[q].SUB_TOTAL}</td>
 																<td class="olotd4" nowrap>{$currency_sym}{$invoice[q].TAX}</td>
 																<td class="olotd4" nowrap>{$currency_sym}{$invoice[q].DISCOUNT}</td>
-																<td class="olotd4" nowrap>{$currency_sym}{$invoice[q].INVOICE_AMOUNT}</td>
-																	
+																<td class="olotd4" nowrap>{$currency_sym}{$invoice[q].INVOICE_AMOUNT}</td>																	
 															</tr>
 															{/section}
 														</table>

@@ -5,11 +5,11 @@ require('include.php');
 $card_type		= $_POST['card_type'];
 $cc_number		= $_POST['cc_number'];
 $cc_ccv			= $_POST['cc_ccv'];
-$cc_expr_month	= $_POST['StartDateMonth'];
-$cc_expr_year	= $_POST['StartDateYear'];
+$cc_expr_month          = $_POST['StartDateMonth'];
+$cc_expr_year           = $_POST['StartDateYear'];
 $customer_id		= $_POST['customer_id'];
 $invoice_id		= $_POST['invoice_id'];
-$workorder_id	= $_POST['workorder_id'];
+$workorder_id           = $_POST['workorder_id'];
 $cc_amount		= $_POST['cc_amount'];
 
 $cc_enc   = encrypt($cc_number, $strKey); 
@@ -51,14 +51,14 @@ $q = "SELECT CUSTOMER_ID,CUSTOMER_DISPLAY_NAME,CUSTOMER_FIRST_NAME,CUSTOMER_LAST
 		exit;
 	}
 
-$cust_id		= $rs->fields['CUSTOMER_ID'];
+$cust_id	= $rs->fields['CUSTOMER_ID'];
 $first_name 	= $rs->fields['CUSTOMER_FIRST_NAME'];
 $last_name 	= $rs->fields['CUSTOMER_LAST_NAME'];
 $display_name	= $rs->fields['CUSTOMER_DISPLAY_NAME'];
-$address		= $rs->fields['CUSTOMER_ADDRESS'];
-$city			= $rs->fields['CUSTOMER_CITY'];
+$address	= $rs->fields['CUSTOMER_ADDRESS'];
+$city		= $rs->fields['CUSTOMER_CITY'];
 $state		= $rs->fields['CUSTOMER_STATE'];
-$zip			= $rs->fields['CUSTOMER_ZIP'];
+$zip		= $rs->fields['CUSTOMER_ZIP'];
 $cust_email	= $rs->fields['CUSTOMER_EMAIL'];
 $cust_phone	= $rs->fields['CUSTOMER_PHONE'];
 /* get cc Plug in information */
@@ -68,9 +68,9 @@ $q = "SELECT AN_LOGIN_ID,AN_PASSWORD,AN_TRANS_KEY FROM ".PRFX."SETUP";
 		exit;
 	}
 
-$an_login 		= $rs->fields['AN_LOGIN_ID'];
+$an_login 	= $rs->fields['AN_LOGIN_ID'];
 $an_password 	= ($rs->fields['AN_PASSWORD']);
-$an_key 			= $rs->fields['AN_TRANS_KEY'];
+$an_key 	= $rs->fields['AN_TRANS_KEY'];
 
 /* get company Display Name for bill */
 $q = "SELECT *	 FROM ".PRFX."TABLE_COMPANY";
@@ -170,15 +170,15 @@ if($result[0] == "1") {
 		}
 
 		/* insert Transaction */
-		$memo = "APPROVED: ".$result[3]." Partial Credit Card Payment Made of $$cc_amount Balance Due $: $balance, Card Number: $cc_num TRANS ID: ".$result[37]." AUTH CODE: ".$result[4];
+		$memo = "APPROVED: ".$result[3]." Partial Credit Card Payment Made of $currency_sym$cc_amount, Balance Due: $currency_sym$balance, Card Number: $cc_num TRANS ID: ".$result[37]." AUTH CODE: ".$result[4];
 	
 		$q = "INSERT INTO ".PRFX."TABLE_TRANSACTION SET
-			DATE 			= ".$db->qstr(time()).",
-			TYPE 			= '1',
+			DATE 		= ".$db->qstr(time()).",
+			TYPE 		= '1',
 			INVOICE_ID 	= ".$db->qstr($invoice_id).",
 			WORKORDER_ID 	= ".$db->qstr($workorder_id).",
 			CUSTOMER_ID 	= ".$db->qstr($customer_id).",
-			MEMO 			= ".$db->qstr($memo).",
+			MEMO 		= ".$db->qstr($memo).",
 			AMOUNT		= ".$db->qstr($cc_amount);
 		if(!$rs = $db->execute($q)) {
 			force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
@@ -191,14 +191,14 @@ if($result[0] == "1") {
 		  	PAID_DATE  	= ".$db->qstr(time()).",
 		  	INVOICE_PAID	= ".$db->qstr($flag).",
 		  	PAID_AMOUNT 	= ".$db->qstr($paid_amount).",
-		  	balance 		= ".$db->qstr($balance).",
+		  	balance 	= ".$db->qstr($balance).",
 			INVOICE_PAID	='1' WHERE INVOICE_ID = ".$db->qstr($invoice_id);
 	} else {
 		$q = "UPDATE ".PRFX."TABLE_INVOICE SET 
 		  	PAID_DATE  	= ".$db->qstr(time()).",
 		  	INVOICE_PAID	= ".$db->qstr($flag).",
 		  	PAID_AMOUNT 	= ".$db->qstr($paid_amount).",
-		  	balance 		= ".$db->qstr($balance)." WHERE INVOICE_ID = ".$db->qstr($invoice_id);
+		  	balance 	= ".$db->qstr($balance)." WHERE INVOICE_ID = ".$db->qstr($invoice_id);
 	}
 			
 		if(!$rs = $db->execute($q)) {
@@ -208,9 +208,9 @@ if($result[0] == "1") {
 		
 		/* update work order */
 		$q = "INSERT INTO ".PRFX."TABLE_WORK_ORDER_STATUS SET
-			WORK_ORDER_ID					= ".$db->qstr($workorder_id).",
+			WORK_ORDER_ID			= ".$db->qstr($workorder_id).",
 			WORK_ORDER_STATUS_DATE 		= ".$db->qstr(time()).",
-			WORK_ORDER_STATUS_NOTES 		= ".$db->qstr($memo).",
+			WORK_ORDER_STATUS_NOTES 	= ".$db->qstr($memo).",
 			WORK_ORDER_STATUS_ENTER_BY	= ".$db->qstr($_SESSION['login_id']);
 		
 		if(!$rs = $db->execute($q)) {
@@ -221,9 +221,9 @@ if($result[0] == "1") {
 		/* update if balance = 0 */
 		if($balance == 0 ) {
 			$q = "UPDATE ".PRFX."TABLE_WORK_ORDER SET
-			WORK_ORDER_STATUS			= '6',
+			WORK_ORDER_STATUS		= '6',
 			WORK_ORDER_CURRENT_STATUS 	= '8'
-			WHERE WORK_ORDER_ID 		=	".$db->qstr($workorder_id);
+			WHERE WORK_ORDER_ID 		=".$db->qstr($workorder_id);
 			if(!$rs = $db->execute($q)) {
 			force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
 			exit;
@@ -238,14 +238,14 @@ if($result[0] == "1") {
 		
 		if($invoice_details['INVOICE_AMOUNT'] == $cc_amount){	
 			/* insert Transaction */
-			$memo = "APPROVED: ".$result[3]." Amount:  $$cc_amount, Card Number: $cc_num TRANS ID: ".$result[37]."AUTH CODE ".$result[4];
+			$memo = "APPROVED: ".$result[3]." Amount: $currency_sym$cc_amount, Card Number: $cc_num TRANS ID: ".$result[37]."AUTH CODE ".$result[4];
 		
 			$q = "INSERT INTO ".PRFX."TABLE_TRANSACTION SET
 				DATE 			= ".$db->qstr(time()).",
 				TYPE 			= '1',
-				INVOICE_ID 	= ".$db->qstr($invoice_id).",
-				WORKORDER_ID 	= ".$db->qstr($workorder_id).",
-				CUSTOMER_ID 	= ".$db->qstr($customer_id).",
+				INVOICE_ID              = ".$db->qstr($invoice_id).",
+				WORKORDER_ID            = ".$db->qstr($workorder_id).",
+				CUSTOMER_ID             = ".$db->qstr($customer_id).",
 				MEMO 			= ".$db->qstr($memo).",
 				AMOUNT			= ".$db->qstr($cc_amount);
 			if(!$rs = $db->execute($q)) {
@@ -268,9 +268,9 @@ if($result[0] == "1") {
 			
 			/* update work order */
 			$q = "INSERT INTO ".PRFX."TABLE_WORK_ORDER_STATUS SET
-				WORK_ORDER_ID					= ".$db->qstr($workorder_id).",
+				WORK_ORDER_ID			= ".$db->qstr($workorder_id).",
 				WORK_ORDER_STATUS_DATE 		= ".$db->qstr(time()).",
-				WORK_ORDER_STATUS_NOTES 		= ".$db->qstr($memo).",
+				WORK_ORDER_STATUS_NOTES 	= ".$db->qstr($memo).",
 				WORK_ORDER_STATUS_ENTER_BY	= ".$db->qstr($_SESSION['login_id']);
 			
 			if(!$rs = $db->execute($q)) {
@@ -279,9 +279,9 @@ if($result[0] == "1") {
 			}
 			
 			$q = "UPDATE ".PRFX."TABLE_WORK_ORDER SET
-				WORK_ORDER_STATUS			= '6',
+				WORK_ORDER_STATUS		= '6',
 				WORK_ORDER_CURRENT_STATUS 	= '8'
-				WHERE WORK_ORDER_ID 		=	".$db->qstr($workorder_id);
+				WHERE WORK_ORDER_ID 		=".$db->qstr($workorder_id);
 			if(!$rs = $db->execute($q)) {
 				force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
 				exit;
@@ -297,11 +297,11 @@ if($result[0] == "1") {
 		$q = "INSERT INTO ".PRFX."TABLE_TRANSACTION SET
 			DATE 			= ".$db->qstr(time()).",
 			TYPE 			= '1',
-			INVOICE_ID 	= ".$db->qstr($invoice_id).",
-			WORKORDER_ID = ".$db->qstr($workorder_id).",
-			CUSTOMER_ID 	= ".$db->qstr($customer_id).",
+			INVOICE_ID              = ".$db->qstr($invoice_id).",
+			WORKORDER_ID            = ".$db->qstr($workorder_id).",
+			CUSTOMER_ID             = ".$db->qstr($customer_id).",
 			MEMO 			= ".$db->qstr($memo).",
-			AMOUNT		= ".$db->qstr($cc_amount);
+			AMOUNT                  = ".$db->qstr($cc_amount);
 		if(!$rs = $db->execute($q)) {
 			force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
 			exit;
@@ -315,13 +315,13 @@ if($result[0] == "1") {
 		$memo = "ERROR: ".$result[3]." Card Number: $cc_num TRANS ID: ".$result[37];
 	
 		$q = "INSERT INTO ".PRFX."TABLE_TRANSACTION SET
-			DATE 				= ".$db->qstr(time()).",
-			TYPE 				= '1',
+			DATE 			= ".$db->qstr(time()).",
+			TYPE 			= '1',
 			INVOICE_ID 		= ".$db->qstr($invoice_id).",
-			WORKORDER_ID 	= ".$db->qstr($workorder_id).",
+			WORKORDER_ID            = ".$db->qstr($workorder_id).",
 			CUSTOMER_ID 		= ".$db->qstr($customer_id).",
-			MEMO 				= ".$db->qstr($memo).",
-			AMOUNT				= ".$db->qstr($cc_amount);
+			MEMO 			= ".$db->qstr($memo).",
+			AMOUNT			= ".$db->qstr($cc_amount);
 		if(!$rs = $db->execute($q)) {
 			force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
 			exit;
@@ -335,13 +335,13 @@ if($result[0] == "1") {
 		$memo = "ERROR: ".$result[3]." Card Number: $cc_num TRANS ID: ".$result[37];
 	
 		$q = "INSERT INTO ".PRFX."TABLE_TRANSACTION SET
-			DATE 				= ".$db->qstr(time()).",
-			TYPE 				= '1',
+			DATE 			= ".$db->qstr(time()).",
+			TYPE 			= '1',
 			INVOICE_ID 		= ".$db->qstr($invoice_id).",
-			WORKORDER_ID 	= ".$db->qstr($workorder_id).",
+			WORKORDER_ID            = ".$db->qstr($workorder_id).",
 			CUSTOMER_ID 		= ".$db->qstr($customer_id).",
-			MEMO 				= ".$db->qstr($memo).",
-			AMOUNT				= ".$db->qstr($cc_amount);
+			MEMO 			= ".$db->qstr($memo).",
+			AMOUNT			= ".$db->qstr($cc_amount);
 		if(!$rs = $db->execute($q)) {
 			force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
 			exit;

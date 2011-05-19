@@ -16,11 +16,11 @@
                             <tr>
                                 <td class="menutd">
 
-									{if $error_msg != ""}
+                                    {if $error_msg != ""}
                                     <br>
-										{include file="core/error.tpl"}
+                                    {include file="core/error.tpl"}
                                     <br>
-									{/if}
+                                    {/if}
                                     <!-- Content -->
 
 
@@ -46,9 +46,9 @@
                                             <td>{$currency_sym}{$invoice.PAID_AMOUNT|string_format:"%.2f"}</td>
                                             <td>{if $invoice.BALANCE > 0}
                                                 <font color="#CC0000">{$currency_sym}{$invoice.INVOICE_AMOUNT-$invoice.PAID_AMOUNT|string_format:"%.2f"}</font>
-											{else}
-												{$currency_sym}{$invoice.BALANCE|string_format:"%.2f"}
-											{/if}
+                                                {else}
+                                                    {$currency_sym}{$invoice.BALANCE|string_format:"%.2f"}
+                                                {/if}
                                             </td>
                                         </tr><tr>
                                             <td colspan="3" valign="top">
@@ -58,14 +58,14 @@
                                                     <tr>
                                                         <td valign="top">
                                                             <a href="?page=customer:customer_details&amp;customer_id={$item.CUSTOMER_ID}&amp;page_title={$item.CUSTOMER_DISPLAY_NAME}">{$item.CUSTOMER_DISPLAY_NAME}</a><br>
-														{$item.CUSTOMER_PHONE}<br>
-														{$item.CUSTOMER_ADDRESS}<br>
-														{$item.CUSTOMER_CITY}, {$item.CUSTOMER_STATE} {$item.CUSTOMER_ZIP}<br>
-														{$item.CUSTOMER_EMAIL}
+                                                            {$item.CUSTOMER_PHONE}<br>
+                                                            {$item.CUSTOMER_ADDRESS}<br>
+                                                            {$item.CUSTOMER_CITY}, {$item.CUSTOMER_STATE} {$item.CUSTOMER_ZIP}<br>
+                                                            {$item.CUSTOMER_EMAIL}
                                                         </td>
                                                     </tr>
                                                 </table>
-											{/foreach}		
+                                            {/foreach}
                                             </td>
 
                                             <td colspan="6" valign="top"  align="right">
@@ -76,12 +76,12 @@
                                                             <table cellpadding="0" cellspacing="0" width="100%">
                                                                 <tr>
                                                                     <td valign="top">
-																	{section name=x loop=$company}
-																		{$company[x].COMPANY_NAME} <br>
-																		{$company[x].COMPANY_ADDRESS}<br>
-																		{$company[x].COMPANY_CITY}, {$company[x].COMPANY_STATE} {$company[x].COMPANY_ZIP}<br>
-																		{$company[x].COMPANY_PHONE}<br>
-																	{/section}
+                                                                    {section name=x loop=$company}
+                                                                            {$company[x].COMPANY_NAME} <br>
+                                                                            {$company[x].COMPANY_ADDRESS}<br>
+                                                                            {$company[x].COMPANY_CITY}, {$company[x].COMPANY_STATE} {$company[x].COMPANY_ZIP}<br>
+                                                                            {$company[x].COMPANY_PHONE}<br>
+                                                                    {/section}
                                                                     </td>
                                                                 </tr>
                                                             </table>
@@ -143,7 +143,7 @@
                                             <td class="menuhead2">&nbsp;{$translate_invoice_parts}</td>
                                         </tr><tr>
                                             <td class="menutd2">
-										{if $parts != '0'}
+                                                        {if $parts != '0'}
                                                 <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
                                                     <tr class="olotd4">
                                                         <td class="row2"><b>{$translate_invoice_no}</b></td>
@@ -153,7 +153,7 @@
                                                         <td class="row2"><b>{$translate_invoice_price}</b></td>
                                                         <td class="row2"><b>{$translate_invoice_total}</b></td>
                                                     </tr>
-												{section name=w loop=$parts}
+                                                        {section name=w loop=$parts}
                                                     <tr class="olotd4">
                                                         <td>{$smarty.section.w.index+1}</td>
                                                         <td>{$parts[w].INVOICE_PARTS_COUNT}</td>
@@ -162,13 +162,13 @@
                                                         <td>{$currency_sym}{$parts[w].INVOICE_PARTS_AMOUNT|string_format:"%.2f"}</td>
                                                         <td>{$currency_sym}{$parts[w].INVOICE_PARTS_SUBTOTAL|string_format:"%.2f"}</td>
                                                     </tr>
-												{/section}
+                                                        {/section}
                                                         <tr>
                                                             <td colspan="4" style="text-align:right;"><b>{$translate_invoice_parts_total}</b></td>
                                                             <td style="text-align:left;"">{$currency_sym}{$parts_sub_total_sum}</td>
                                                         </tr>
                                                 </table>
-										{/if}
+                                                {/if}
                                             </td>
                                         </tr>
                                     </table>
@@ -223,23 +223,23 @@
                                                         <td>{$trans[r].DATE|date_format:"$date_format"}</td>
                                                         <td><b>{$currency_sym}</b>{$trans[r].AMOUNT}</td>
                                                         <td>
-													{if $trans[r].TYPE == 1}
-														{$translate_invoice_cc}
-													{elseif $trans[r].TYPE == 2}
-														{$translate_invoice_check}
-													{elseif $trans[r].TYPE == 3}
-														{$translate_invoice_cash}
-													{elseif $trans[r].TYPE == 4}
-														{$translate_invoice_gift}
-													{elseif $trans[r].TYPE == 5}
-														{$translate_invoice_paypal}
-													{/if}
+                                                            {if $trans[r].TYPE == 1}
+                                                                    {$translate_invoice_cc}
+                                                            {elseif $trans[r].TYPE == 2}
+                                                                    {$translate_invoice_check}
+                                                            {elseif $trans[r].TYPE == 3}
+                                                                    {$translate_invoice_cash}
+                                                            {elseif $trans[r].TYPE == 4}
+                                                                    {$translate_invoice_gift}
+                                                            {elseif $trans[r].TYPE == 5}
+                                                                    {$translate_invoice_paypal}
+                                                            {/if}
                                                         </td>
                                                     </tr><tr class="olotd4">
                                                         <td><b>{$translate_invoice_memo}</b></td>
                                                         <td colspan="3">{$trans[r].MEMO}</td>
                                                     </tr>
-												{/section}
+                                                    {/section}
                                                 </table>
                                             </td>
                                         </tr>

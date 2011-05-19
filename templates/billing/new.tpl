@@ -85,29 +85,30 @@
                                             <td class="row2"><b>{$translate_billing_amount}</b></td>
                                             <td class="row2"><b>{$translate_billing_type}</b></td>
                                         </tr>
-												{section name=r loop=$trans}
+                                        {section name=r loop=$trans}
                                         <tr class="olotd4">
                                             <td>{$trans[r].TRANSACTION_ID}</td>
                                             <td>{$trans[r].DATE|date_format:"$date_format"}</td>
                                             <td><b>{$currency_sym}</b>{$trans[r].AMOUNT|string_format:"%.2f"}</td>
                                             <td>
-													{if $trans[r].TYPE == 1}
-														{$translate_billing_credit_card}
-													{elseif $trans[r].TYPE == 2}
-														{$translate_billing_check}
-													{elseif $trans[r].TYPE == 3}
-														{$translate_billing_cash}
-													{elseif $trans[r].TYPE == 4}
-														{$translate_billing_gift}
-													{elseif $trans[r].TYPE == 5}
-														{$translate_billing_paypal}
-													{/if}
+                                                {if $trans[r].TYPE == 1}
+                                                        {$translate_billing_credit_card}
+                                                {elseif $trans[r].TYPE == 2}
+                                                        {$translate_billing_check}
+                                                {elseif $trans[r].TYPE == 3}
+                                                        {$translate_billing_cash}
+                                                {elseif $trans[r].TYPE == 4}
+                                                        {$translate_billing_gift}
+                                                {elseif $trans[r].TYPE == 5}
+                                                        {$translate_billing_paypal}
+                                                {/if}
                                             </td>
-                                        </tr><tr class="olotd4">
+                                        </tr>
+                                        <tr class="olotd4">
                                             <td><b>{$translate_billing_memo}</b></td>
                                             <td colspan="3">{$trans[r].MEMO}</td>
                                         </tr>
-												{/section}
+                                        {/section}
                                     </table>
                                 </td>
                             </tr>
@@ -299,7 +300,7 @@
                                                 <td></td>
                                                 <td><input type="text" name="gift_amount" size="8" {if $balance > 0} value="{$invoice_amount-$invoice_paid_amount|string_format:"%.2f"}" {else} value="{$invoice_amount|string_format:"%.2f"}" {/if} class="olotd4"></td>
                                                 <td><input type="text" name="gift_code" size="16" class="olotd4"><br>
-													{$translate_billing_gift_code_2}</td>
+                                                {$translate_billing_gift_code_2}</td>
                                             </tr>
                                         </table>
                                         <p>
