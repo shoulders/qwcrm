@@ -253,7 +253,7 @@
                                         <table width="100%" cellpadding="4" cellspacing="0" border="0" width="100%"  class="olotable">
                                             <tr class="olotd4">
                                                 <td class="row2"><b>{$translate_billing_cash}</b></td>
-                                                <td class="row2"><b>${$translate_billing_amount}</b></td>
+                                                <td class="row2"><b>{$translate_billing_amount}</b></td>
                                             </tr><tr class="olotd4">
                                                 <td></td>
                                                 <td>
