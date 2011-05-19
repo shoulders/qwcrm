@@ -42,7 +42,7 @@
                     <a href="?page=workorder:print&amp;wo_id={$wo_id}&amp;page_title={$translate_menu_print_wo}&amp;escape=1" target="_blank"><img src="images/icons/print.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_print_wo}</a>
                 {/if}
                 {if $cust_id > 0 }
-                <a href="?page=invoice:new&amp;invoice_type=invoice-only&amp;wo_id=0&amp;page_title={$translate_menu_invoice_only}&amp;customer_id={$cust_id}"><img src="images/icons/invoice.png" alt="" border="0" height="14" width="14" /> {$translate_menu_invoice_only}</a>
+                <a href="?page=invoice:new&amp;invoice_type=invoice-only&amp;wo_id=0&amp;customer_id={$cust_id}&amp;page_title={$translate_menu_invoice_only}"><img src="images/icons/invoice.png" alt="" border="0" height="14" width="14" /> {$translate_menu_invoice_only}</a>
                 {/if}
 	  </div>
       <div>
