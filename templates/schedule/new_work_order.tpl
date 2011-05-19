@@ -35,7 +35,7 @@
 					{/if}
 					</td>
 					<td class="olotd4" align="center" nowrap>
-						<a href="?page=workorder:view&wo_id={$assigned.WORK_ORDER_ID}&customer_id={$assigned.CUSTOMER_ID}&page_title={$translate_workorder_page_title} {$assigned.WORK_ORDER_ID}"><img src="images/icons/16x16/Calendar.gif" width="16" height="16" border="0" onMouseOver="ddrivetip('Schedule this Works Order')" onMouseOut="hideddrivetip()"></a>
+						<a href="?page=workorder:view&wo_id={$new.WORK_ORDER_ID}&customer_id={$new.WORK_ORDER_ID}&page_title={$translate_workorder_page_title} {$new.WORK_ORDER_ID}"><img src="images/icons/16x16/Calendar.gif" width="16" height="16" border="0" onMouseOver="ddrivetip('Schedule this Works Order')" onMouseOut="hideddrivetip()"></a>
 						<a href="?page=workorder:print&wo_id={$new.WORK_ORDER_ID}&customer_id={$new.CUSTOMER_ID}&page_title={$translate_workorder_print_title} {$new.WORK_ORDER_ID}&escape=1"><img src="images/icons/16x16/fileprint.gif" border="0" onMouseOver="ddrivetip('Print The Work Order')" onMouseOut="hideddrivetip()"></a>
 						<a href="?page=workorder:view&wo_id={$new.WORK_ORDER_ID}&customer_id={$new.CUSTOMER_ID}&page_title={$translate_workorder_page_title} {$new.WORK_ORDER_ID}"><img src="images/icons/16x16/viewmag.gif"  border="0" onMouseOver="ddrivetip('View The Work Order')" onMouseOut="hideddrivetip()"></a>											
 					</td>
