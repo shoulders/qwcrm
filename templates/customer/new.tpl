@@ -17,7 +17,7 @@
 					{if $error_msg != ""}
 						{include file="core/error.tpl"}
 					{/if}
-					{include file="customer/new.js"}
+					{include file="customer/javascripts.js"}
                         <table class="olotable" width="100%" border="0" cellpadding="5" cellspacing="0">
                             <tr>
                                 <td class="menutd">
@@ -27,7 +27,7 @@
                                             <td>
                                                 <!-- New Customer Form -->
 												{literal}
-                                                <form  action="index.php?page=customer:new" method="POST" name="new_customer" id="new_customer" onsubmit="try { var myValidator = validate_new_customer; } catch(e) { return true; } return myValidator(this);">
+                                                <form  action="index.php?page=customer:new" method="POST" name="new_customer" id="new_customer" onsubmit="try { var myValidator = validate_customer; } catch(e) { return true; } return myValidator(this);">
 												{/literal}
                                                     <table width="100%" cellpadding="3" cellspacing="0" border="0">
                                                         <tr>
@@ -36,13 +36,13 @@
                                                                     <tbody align="left">
                                                                         <tr>
                                                                             <td align="right"><b>{$translate_display}</b></td>
-                                                                            <td colspan="3"><input class="olotd5" size="60" name="displayName" type="text" /></td>
+                                                                            <td colspan="3"><input class="olotd5" size="60" name="displayName" type="text" onkeypress="return OnlyAlphaNumeric();" /></td>
                                                                         </tr><tr>
                                                                             <td align="right"><b>{$translate_first}</b><span style="color: #ff0000">*</span></td>
-                                                                            <td><input class="olotd5" name="firstName" type="text" /></td>
+                                                                            <td><input class="olotd5" name="firstName" type="text" onkeypress="return OnlyAlphaNumeric();" /></td>
                                                                         </tr><tr>
                                                                             <td align="right"><b>{$translate_last}</b><span style="color: #ff0000">*</span></td>
-                                                                            <td><input class="olotd5" name="lastName" type="text" /></td>
+                                                                            <td><input class="olotd5" name="lastName" type="text" onkeypress="return OnlyAlphaNumeric();" /></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{$translate_customer_type}</b><span style="color: #ff0000">*</span></td>
@@ -65,7 +65,7 @@
 
                                                                         </tr><tr>
                                                                             <td align="right"><b>{$translate_customer_discount}</b></td>
-                                                                            <td><a><input type="text" size="4" name="discount" value="" class="olotd5"><b>%</b></a></td>
+                                                                            <td><a><input type="text" size="4" name="discount" value="" class="olotd5" onkeypress="return onlyNumbersPeriods();" ><b>%</b></a></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><span style="color: #ff0000"></span><b>{$translate_customer_www}</b></td>
@@ -77,7 +77,7 @@
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><span style="color: #ff0000"></span><b>{$translate_credit_terms}</b></td>
-                                                                            <td><input class="olotd5" name="creditterms" type="text" size="50"/></td>
+                                                                            <td><input class="olotd5" name="creditterms" type="text" size="50" onkeypress="return OnlyAlphaNumeric();" /></td>
                                                                         </tr>
                                                                     </tbody>
                                                                 </table>
@@ -90,13 +90,13 @@
                                                                 <table>
                                                                     <tr>
                                                                         <td align="right"><b>{$translate_customer_home}</b><span style="color: #ff0000">*</span></td>
-                                                                        <td><input class="olotd5" name="homePhone" type="text" /></td>
+                                                                        <td><input class="olotd5" name="homePhone" type="text" onkeypress="return onlyPhoneNumbers();" /></td>
                                                                     </tr><tr>
                                                                         <td align="right"><b>{$translate_customer_work}</b></td>
-                                                                        <td><input class="olotd5" name="workPhone" type="text" /></td>
+                                                                        <td><input class="olotd5" name="workPhone" type="text" onkeypress="return onlyPhoneNumbers();" /></td>
                                                                     </tr><tr>
                                                                         <td align="right"><b>{$translate_customer_mobile}</b></td>
-                                                                        <td><input class="olotd5" name="mobilePhone" type="text" /></td>
+                                                                        <td><input class="olotd5" name="mobilePhone" type="text" onkeypress="return onlyPhoneNumbers();" /></td>
                                                                     </tr>
                                                                 </table>
                                                             </td>

@@ -101,15 +101,15 @@
                                                                         </tr>                                                                                                                                                                                
                                                                         <tr>
                                                                             <td align="right"><b>{$translate_supplier_phone}</b></td>
-                                                                            <td><a><input type="text" size="20" name="supplierPhone" value="" class="olotd5" onkeypress="return onlyPhoneNumbers();"></b></a></td>
+                                                                            <td><a><input type="text" size="20" name="supplierPhone" value="" class="olotd5" onkeypress="return onlyPhoneNumbers();" /></b></a></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><span style="color: #ff0000"></span><b>{$translate_supplier_fax}</td>
-                                                                            <td><input class="olotd5" name="supplierFax" type="text" size="20" value="" onkeypress="return onlyPhoneNumbers();"/></td>
+                                                                            <td><input class="olotd5" name="supplierFax" type="text" size="20" value="" onkeypress="return onlyPhoneNumbers();" /></td>
                                                                         </tr>
                                                                         <tr>
                                                                         <td align="right"><b>{$translate_supplier_mobile}</b></td>
-                                                                        <td><input class="olotd5" name="supplierMobile" type="text" size="20" onkeypress="return OnlyPhoneNumbers();"/></td>
+                                                                        <td><input class="olotd5" name="supplierMobile" type="text" size="20" onkeypress="return OnlyPhoneNumbers();" /></td>
                                                                         </tr>
                                                                         <tr>
                                                                         <td align="right"><b>{$translate_supplier_www}</b></td>

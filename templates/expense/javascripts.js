@@ -9,7 +9,7 @@ function validate_expense(frm) {
       var _qfGroups = {};
       _qfMsg = '';
 
-    // Is payee is present
+    // Is payee present
     value = frm.elements['expensePayee'].value;
     if (value == '' && !errFlag['expensePayee']) {
     errFlag['expensePayee'] = true;
@@ -91,7 +91,7 @@ function validate_expense(frm) {
   return true;
 }
 
-// Validate Search Date Expense View PAge
+// Validate Search Date Expense View Page
 function validate_expense_goto_page(frm){
 
       var value = '';

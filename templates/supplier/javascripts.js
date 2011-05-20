@@ -57,15 +57,14 @@ function validate_supplier(frm) {
     frm.elements['supplierMobile'].className = 'error';
     }
 
-    // Is Email correct format use {&translate_supplier_val_email_format}
-
-    // Is Email less than 80 characters long
-    value = frm.elements['supplierEmail'].value;
-    if (value != '' && value.length > 80 && !errFlag['supplierEmail']) {
-    errFlag['supplierWww'] = true;
-    _qfMsg = _qfMsg + '\n - {/literal}{$translate_supplier_val_email_size}{literal}';
-    frm.elements['supplierEmail'].className = 'error';
-    }
+    // Is website correct format us 
+	value = frm.elements['supplierWww'].value;
+	var regex = /^((http|https|ftp):\/\/(www\.)?|www\.)[a-zA-Z0-9\_\-]+\.([a-zA-Z]{2,4}|[a-zA-Z]{2}\.[a-zA-Z]{2})(\/[a-zA-Z0-9\-\._\?\&=,'\+%\$#~]*)*$/;
+	if (value != '' && !regex.test(value) && !errFlag['supplierWww']) {
+	errFlag['supplierWww'] = true;
+	_qfMsg = _qfMsg + '\n - {/literal}{$translate_supplier_val_www_format}{literal}';
+		frm.elements['supplierWww'].className = 'error';
+	}
 
     // Is Website less than 80 characters long
     value = frm.elements['supplierWww'].value;
@@ -74,8 +73,23 @@ function validate_supplier(frm) {
     _qfMsg = _qfMsg + '\n - {/literal}{$translate_supplier_val_www_size}{literal}';
     frm.elements['supplierWww'].className = 'error';
     }
+	
+    // Is Email correct format 
+	value = frm.elements['supplierEmail'].value;
+	var regex = /^((\"[^\"\f\n\r\t\v\b]+\")|([\w\!\#\$\%\&'\*\+\-\~\/\^\`\|\{\}]+(\.[\w\!\#\$\%\&'\*\+\-\~\/\^\`\|\{\}]+)*))@((\[(((25[0-5])|(2[0-4][0-9])|([0-1]?[0-9]?[0-9]))\.((25[0-5])|(2[0-4][0-9])|([0-1]?[0-9]?[0-9]))\.((25[0-5])|(2[0-4][0-9])|([0-1]?[0-9]?[0-9]))\.((25[0-5])|(2[0-4][0-9])|([0-1]?[0-9]?[0-9])))\])|(((25[0-5])|(2[0-4][0-9])|([0-1]?[0-9]?[0-9]))\.((25[0-5])|(2[0-4][0-9])|([0-1]?[0-9]?[0-9]))\.((25[0-5])|(2[0-4][0-9])|([0-1]?[0-9]?[0-9]))\.((25[0-5])|(2[0-4][0-9])|([0-1]?[0-9]?[0-9])))|((([A-Za-z0-9\-])+\.)+[A-Za-z\-]+))$/;
+	if (value != '' && !regex.test(value) && !errFlag['supplierEmail']) {
+	errFlag['supplierEmail'] = true;
+	_qfMsg = _qfMsg + '\n - {/literal}{$translate_supplier_val_email_format}{literal}';
+    frm.elements['supplierEmail'].className = 'error';
+	}	
 
-    // Is website correct format us {$translate_supplier_val_www_format}
+    // Is Email less than 80 characters long
+    value = frm.elements['supplierEmail'].value;
+    if (value != '' && value.length > 80 && !errFlag['supplierEmail']) {
+    errFlag['supplierWww'] = true;
+    _qfMsg = _qfMsg + '\n - {/literal}{$translate_supplier_val_email_size}{literal}';
+    frm.elements['supplierEmail'].className = 'error';
+    }
     
     // Is City less than 40 characters long
     value = frm.elements['supplierCity'].value;
@@ -119,7 +133,7 @@ function validate_supplier(frm) {
   return true;
 }
 
-// Validate Search Date Supplier View PAge
+// Validate Search Date Supplier View Page
 function validate_supplier_goto_page(frm){
 
       var value = '';
