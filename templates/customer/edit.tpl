@@ -33,11 +33,11 @@
 														<td colspan="3"><input class="olotd5" size="60" value="{$customer[q].CUSTOMER_DISPLAY_NAME}" name="displayName" type="text" onkeypress="return OnlyAlphaNumeric();" /></td>
 													</tr>
                                                                                                         <tr>
-														<td align="right"><strong>{$translate_first}</strong><span style="color: #ff0000">*</span></td>
+														<td align="right"><strong>{$translate_first}</strong></td>
 														<td><input class="olotd5" value="{$customer[q].CUSTOMER_FIRST_NAME}" name="firstName" type="text" onkeypress="return OnlyAlphaNumeric();" /></td>
 														
                                                                                                         <tr>
-                                                                                                            <td align="right"><strong>{$translate_last}</strong><span style="color: #ff0000">*</span></td>
+                                                                                                            <td align="right"><strong>{$translate_last}</strong></td>
                                                                                                             <td><input class="olotd5" value="{$customer[q].CUSTOMER_LAST_NAME}" name="lastName" type="text" onkeypress="return OnlyAlphaNumeric();" /></td>
 													</tr>
                                                                                                         <tr>
@@ -84,13 +84,13 @@
 											<td colspan="2">
 												<table>
 													<tr>
-														<td align="right"><strong>{$translate_customer_home}</strong><span style="color: #ff0000">*</span></td>
+														<td align="right"><strong>{$translate_customer_home}</strong></td>
 														<td><input class="olotd5" value="{$customer[q].CUSTOMER_PHONE}" name="homePhone" type="text" onkeypress="return onlyPhoneNumbers();" /></td>
 													</tr><tr>
-														<td align="right"><strong>{$translate_customer_work}</strong><span style="color: #ff0000"></span></td>
+														<td align="right"><strong>{$translate_customer_work}</strong></td>
 														<td><input class="olotd5" value="{$customer[q].CUSTOMER_WORK_PHONE}" name="workPhone" type="text" onkeypress="return onlyPhoneNumbers();" /></td>
 													</tr><tr>
-														<td align="right"><strong>{$translate_customer_mobile}</strong><span style="color: #ff0000"></span></td>
+														<td align="right"><strong>{$translate_customer_mobile}</strong></td>
 														<td><input class="olotd5" value="{$customer[q].CUSTOMER_MOBILE_PHONE}" name="mobilePhone" type="text" onkeypress="return onlyPhoneNumbers();" /></td>
 													</tr>
 												</table>
@@ -101,16 +101,16 @@
 											<td colspan="2">
 												<table>
 													<tr>
-														<td align="right"><strong>{$translate_customer_address}</strong><span style="color: #ff0000">*</span></td>														
+														<td align="right"><strong>{$translate_customer_address}</strong></td>														
                                                                                                                 <td colspan="3"><textarea class="olotd5" cols="30" rows="3"  name="address" >{$customer[q].CUSTOMER_ADDRESS}</textarea></td>
 													</tr><tr>
-														<td align="right"><strong>{$translate_customer_city}</strong><span style="color: #ff0000">*</span></td>
+														<td align="right"><strong>{$translate_customer_city}</strong></td>
 														<td><input class="olotd5" value="{$customer[q].CUSTOMER_CITY}" name="city" type="text" /></td>
                                                                                                         </tr><tr>
-														<td align="right"><strong>{$translate_customer_state}</strong><span style="color: #ff0000">*</span></td>
+														<td align="right"><strong>{$translate_customer_state}</strong></td>
 														<td><input class="olotd5" value="{$customer[q].CUSTOMER_STATE}" name="state" type="text" /></td>
 													</tr><tr>
-														<td align="right"><strong>{$translate_customer_zip}</strong><span style="color: #ff0000">*</span></td>
+														<td align="right"><strong>{$translate_customer_zip}</strong></td>
 														<td colspan="2"><input class="olotd5" value="{$customer[q].CUSTOMER_ZIP}" name="zip" type="text" /></td>
 													</tr>
                                                                                                         <tr>

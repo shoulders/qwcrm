@@ -1,6 +1,7 @@
 {literal}
 <script type="text/javascript">
 
+//cdata
 
 // Validate Customer Data - New and Update pages
 function validate_customer(frm) {
@@ -9,27 +10,36 @@ function validate_customer(frm) {
   var _qfGroups = {};
   _qfMsg = '';
 
-// Is either display name, first or last name present
-valuedisplayName = frm.elements['displayName'].value;
-valuefirstName = frm.elements['firstName'].value;
-valuelastName = frm.elements['lastName'].value;
-if ((valuedisplayName == '' && !errFlag['displayName']) && (valuefirstName == '' && !errFlag['firstName']) && (valuelastName == '' && !errFlag['lastName']) ) {
-errFlag['displayName'] = true;
-errFlag['firstName'] = true;
-errFlag['lastName'] = true;
-_qfMsg = _qfMsg + '\n - Please enter either customers Display Name or their first and last name';
-    frm.elements['displayName'].className = 'error';
-    frm.elements['firstName'].className = 'error';
-    frm.elements['lastName'].className = 'error';
+// This only runs on New Customer
+if(document.URL.match(/.*index\.php\?page\=customer\:new.*/)){
+
+        // Is either display name, first or last name present
+        valuedisplayName = frm.elements['displayName'].value;
+        valuefirstName = frm.elements['firstName'].value;
+        valuelastName = frm.elements['lastName'].value;
+        if ((valuedisplayName == '' && !errFlag['displayName']) && (valuefirstName == '' && !errFlag['firstName']) && (valuelastName == '' && !errFlag['lastName']) ) {
+        errFlag['displayName'] = true;
+        errFlag['firstName'] = true;
+        errFlag['lastName'] = true;
+        _qfMsg = _qfMsg + '\n - Please enter either customers Display Name or their first and last name';
+            frm.elements['displayName'].className = 'error';
+            frm.elements['firstName'].className = 'error';
+            frm.elements['lastName'].className = 'error';
+        }
 }
 
-/*// Is display name present
-value = frm.elements['displayName'].value;
-if (value == '' && !errFlag['displayName']) {
-errFlag['displayName'] = true;
-_qfMsg = _qfMsg + '\n - Please enter the  customers Display Name';
-    frm.elements['displayName'].className = 'error';
-}*/
+// This only runs on Edit Customer
+if(document.URL.match(/.*index.php\?page\=customer\:edit.*/)){
+
+        // Is display name present
+        value = frm.elements['displayName'].value;
+        if (value == '' && !errFlag['displayName']) {
+        errFlag['displayName'] = true;
+        _qfMsg = _qfMsg + '\n - Please enter the customers Display Name';
+            frm.elements['displayName'].className = 'error';
+        }
+}
+
 
 // is display name less than 80 characters long
 value = frm.elements['displayName'].value;
@@ -268,6 +278,7 @@ else
    return false;
 }
 
-//]]>
+//cdata
+
 </script>
 {/literal}

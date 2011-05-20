@@ -35,13 +35,13 @@
                                                                 <table>
                                                                     <tbody align="left">
                                                                         <tr>
-                                                                            <td align="right"><b>{$translate_display}</b></td>
+                                                                            <td align="right"><b>{$translate_display}</b><span style="color: #ff0000">*</span></td>
                                                                             <td colspan="3"><input class="olotd5" size="60" name="displayName" type="text" onkeypress="return OnlyAlphaNumeric();" /></td>
                                                                         </tr><tr>
-                                                                            <td align="right"><b>{$translate_first}</b><span style="color: #ff0000">*</span></td>
+                                                                            <td align="right"><b>{$translate_first}</b></td>
                                                                             <td><input class="olotd5" name="firstName" type="text" onkeypress="return OnlyAlphaNumeric();" /></td>
                                                                         </tr><tr>
-                                                                            <td align="right"><b>{$translate_last}</b><span style="color: #ff0000">*</span></td>
+                                                                            <td align="right"><b>{$translate_last}</b></td>
                                                                             <td><input class="olotd5" name="lastName" type="text" onkeypress="return OnlyAlphaNumeric();" /></td>
                                                                         </tr>
                                                                         <tr>
@@ -89,7 +89,7 @@
 
                                                                 <table>
                                                                     <tr>
-                                                                        <td align="right"><b>{$translate_customer_home}</b><span style="color: #ff0000">*</span></td>
+                                                                        <td align="right"><b>{$translate_customer_home}</b></td>
                                                                         <td><input class="olotd5" name="homePhone" type="text" onkeypress="return onlyPhoneNumbers();" /></td>
                                                                     </tr><tr>
                                                                         <td align="right"><b>{$translate_customer_work}</b></td>
@@ -108,18 +108,18 @@
                                                                 <table>
                                                                     <tbody align="left">
                                                                         <tr>
-                                                                            <td align="right"><span style="color: #ff0000">*</span><b>{$translate_customer_address}</b></td>
+                                                                            <td align="right"><b>{$translate_customer_address}</b></td>
                                                                             <td colspan="3"><textarea class="olotd5" cols="30" rows="3"  name="address" ></textarea></td>
                                                                         </tr><tr>
-                                                                            <td align="right"><span style="color: #ff0000">*</span><b>{$translate_customer_city}</b></td>
+                                                                            <td align="right"><b>{$translate_customer_city}</b></td>
                                                                             <td><input class="olotd5" name="city" type="text" /></td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td align="right"><span style="color: #ff0000">*</span><b>{$translate_customer_state}</b></td>
+                                                                            <td align="right"><b>{$translate_customer_state}</b></td>
                                                                             <td><input class="olotd5" name="state" type="text" /></td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td align="right"><span style="color: #ff0000">*</span><b>{$translate_customer_zip}</b></td>
+                                                                            <td align="right"><b>{$translate_customer_zip}</b></td>
                                                                             <td colspan="2"><input class="olotd5" name="zip" type="text" /></td>
                                                                         </tr>
                                                                         <tr>
