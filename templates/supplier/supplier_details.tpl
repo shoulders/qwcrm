@@ -99,9 +99,9 @@
                                                     <!-- website/email row -->
                                                     <tr>
                                                         <td class="menutd"><b>{$translate_supplier_www}</b></td>
-                                                        <td class="menutd">{$supplier_details[i].SUPPLIER_WWW}</td>
+                                                        <td class="menutd"><a href="http://{$supplier_details[i].SUPPLIER_WWW}" target="_blank">{$supplier_details[i].SUPPLIER_WWW}</a></td>
                                                         <td class="menutd"><b>{$translate_supplier_email}</b></td>
-                                                        <td class="menutd">{$supplier_details[i].SUPPLIER_EMAIL}</td>
+                                                        <td class="menutd"><a href="mailto: {$supplier_details[i].SUPPLIER_EMAIL}">{$supplier_details[i].SUPPLIER_EMAIL}</a></td>
                                                     </tr>
                                                     <tr class="row2">
                                                         <td class="menutd" colspan="4"></td>
