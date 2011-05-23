@@ -20,7 +20,7 @@ if(!$rs = $db->execute($q)) {
 $invoice_details = $rs->FetchRow();
 //Check to see if we are processing more then required
 if($invoice_details['BALANCE'] < $cash_amount){
-		force_page('billing', 'new&wo_id='.$workorder_id.'&customer_id='.$customer_id.'	&invoice_id='.$invoice_id.'&error_msg= You can not bill more than the amount of the invoice.');
+		force_page('billing', 'new&wo_id='.$workorder_id.'&customer_id='.$customer_id.'&invoice_id='.$invoice_id.'&error_msg= You can not bill more than the amount of the invoice.');
 			exit;
 	}
 /* check if this is a partial payment */
@@ -108,12 +108,12 @@ if($invoice_details['INVOICE_AMOUNT'] > $cash_amount) {
 } else {
 	/* full payment made */
 	if($invoice_details['INVOICE_AMOUNT']< $cash_amount || $invoice_details['BALANCE'] < $cash_amount){
-		force_page('billing', 'new&wo_id='.$workorder_id.'&customer_id='.$customer_id.'	&invoice_id='.$invoice_id.'&error_msg= You can not bill more than the amount of the invoice.');
+		force_page('billing', 'new&wo_id='.$workorder_id.'&customer_id='.$customer_id.'&invoice_id='.$invoice_id.'&error_msg= You can not bill more than the amount of the invoice.');
 			exit;
 	} 
 	if($invoice_details['INVOICE_AMOUNT'] == $cash_amount){
 		/* insert Transaction */
-		$memo = "Cash Payment Made of $$cash_amount Memo: $cash_memo";
+		$memo = "Cash Payment Made of $currency_sym$cash_amount Memo: $cash_memo";
 	
 		$q = "INSERT INTO ".PRFX."TABLE_TRANSACTION SET
 			DATE 		= ".$db->qstr(time()).",

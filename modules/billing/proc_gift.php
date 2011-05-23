@@ -20,7 +20,7 @@ if($rs->fields['GIFT_ID'] == '') {
 $gift_expire		= $rs->fields['EXPIRE'];
 $gift_amount		= $rs->fields['AMOUNT'];
 $gift_active		= $rs->fields['ACTIVE'];
-$gift_id			= $rs->fields['GIFT_ID'];
+$gift_id		= $rs->fields['GIFT_ID'];
 
 /* do some checks to see if it is a valid gift certificate */
 
@@ -92,14 +92,14 @@ if($invoice_details['INVOICE_AMOUNT'] > $gift_amount){
 		  	PAID_DATE  	= ".$db->qstr(time()).",
 		  	INVOICE_PAID	= ".$db->qstr($flag).",
 		  	PAID_AMOUNT 	= ".$db->qstr($paid_amount).",
-		  	balance 		= ".$db->qstr($balance).",
+		  	balance 	= ".$db->qstr($balance).",
 			INVOICE_PAID	='1' WHERE INVOICE_ID = ".$db->qstr($invoice_id);
 	} else {
 		$q = "UPDATE ".PRFX."TABLE_INVOICE SET 
 		  	PAID_DATE  	= ".$db->qstr(time()).",
 		  	INVOICE_PAID	= ".$db->qstr($flag).",
 		  	PAID_AMOUNT 	= ".$db->qstr($paid_amount).",
-		  	balance 		= ".$db->qstr($balance)." WHERE INVOICE_ID = ".$db->qstr($invoice_id);
+		  	balance 	= ".$db->qstr($balance)." WHERE INVOICE_ID = ".$db->qstr($invoice_id);
 	}
 
 	if(!$rs = $db->execute($q)) {
@@ -122,9 +122,9 @@ if($invoice_details['INVOICE_AMOUNT'] > $gift_amount){
 	/* update if balance = 0 */
 		if($balance == 0 ) {
 			$q = "UPDATE ".PRFX."TABLE_WORK_ORDER SET
-			WORK_ORDER_STATUS			= '6',
+			WORK_ORDER_STATUS		= '6',
 			WORK_ORDER_CURRENT_STATUS 	= '8'
-			WHERE WORK_ORDER_ID 		=	".$db->qstr($workorder_id);
+			WHERE WORK_ORDER_ID 		=".$db->qstr($workorder_id);
 			if(!$rs = $db->execute($q)) {
 			force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
 			exit;
@@ -151,7 +151,7 @@ if($invoice_details['INVOICE_AMOUNT'] > $gift_amount){
 		/* insert Transaction */
 		$gift_amount = number_format($gift_amount, 2,'.', '');
 
-		$memo = "Full Gift Certificate Payment Made of $$gift_amount, ID: $gift_code";
+		$memo = "Full Gift Certificate Payment Made of $currency_sym$gift_amount, ID: $gift_code";
 	
 		$q = "INSERT INTO ".PRFX."TABLE_TRANSACTION SET
 			DATE 			= ".$db->qstr(time()).",
@@ -206,11 +206,11 @@ if($invoice_details['INVOICE_AMOUNT'] > $gift_amount){
 /* update gift certificate */
 $q = "UPDATE ".PRFX."GIFT_CERT SET";
 if($flag != 1) {
-	$q .= "ACTIVE			=". $db->qstr( 0				).",";
+	$q .= "ACTIVE		=". $db->qstr( 0 ).",";
 } else {
-	$q .= "DATE_REDEMED	=". $db->qstr( time()			).",
-			INVOICE_ID	=". $db->qstr( $invoice_id	)."
-			WHERE GIFT_ID=".$db->qstr( $gift_id		);
+	$q .= "DATE_REDEMED	=". $db->qstr( time() ).",
+		INVOICE_ID	=". $db->qstr( $invoice_id )."
+		WHERE GIFT_ID=".$db->qstr( $gift_id );
 }
 
 	if(!$rs = $db->execute($q)) {
@@ -219,7 +219,5 @@ if($flag != 1) {
 	}
 
 force_page('invoice', "view&invoice_id=$invoice_id&customer_id=$customer_id");
-
-
 
 ?>
