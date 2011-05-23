@@ -13,7 +13,7 @@
 		<td>
 			<table width="700" cellpadding="4" cellspacing="0" border="0" >
 				<tr>
-					<td class="menuhead2" width="80%">&nbsp;{$translate_incvoice_view_un_paid}</td>
+					<td class="menuhead2" width="80%">&nbsp;{$translate_invoice_view_un_paid}</td>
 					<td class="menuhead2" width="20%" align="right" valign="middle">
 						<img src="images/icons/16x16/help.gif" border="0">
 					</td>
@@ -76,7 +76,7 @@
                                                                                                                                 <td class="olohead" nowarp>{$translate_invoice_balance}</td>
 															</tr>
 															{section name=q loop=$invoice}
-															<tr onmouseover="this.className='row2'" onmouseout="this.className='row1'" onDblClick="window.location='index.php?page=invoice:new&wo_id={$invoice[q].WORKORDER_ID}&page_title={$translate_invoice_invoice}&customer_id={$invoice[q].CUSTOMER_ID}';" class="row1">
+															<tr onmouseover="this.className='row2'" onmouseout="this.className='row1'" onDblClick="window.location='index.php?page=invoice:new&invoice_id={$invoice[q].INVOICE_ID}&wo_id={$invoice[q].WORKORDER_ID}&page_title={$translate_invoice_invoice}&customer_id={$invoice[q].CUSTOMER_ID}';" class="row1">
 																<td class="olotd4" nowrap><a href="index.php?page=invoice:new&invoice_id={$invoice[q].INVOICE_ID}&wo_id={$invoice[q].WORKORDER_ID}&page_title={$translate_invoice_invoice}&customer_id={$invoice[q].CUSTOMER_ID}">{$invoice[q].INVOICE_ID}</a></td>
 																<td class="olotd4" nowrap>{$invoice[q].INVOICE_DATE|date_format:"$date_format"}</td>
 																<td class="olotd4" nowrap>{$invoice[q].INVOICE_DUE|date_format:"$date_format"}</td>
