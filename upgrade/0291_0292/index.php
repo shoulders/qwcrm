@@ -1,15 +1,17 @@
 <?php
+// Required to grab DB defaults from conf.php file
+require('../../conf.php');
 ###############################
 #		Switch 						#
 ###############################
 $mode = $_POST['mode'];
 switch ($mode) {
 
-############################
-#		Install 					#
-############################
+    ############################
+    #		Install 					#
+    ############################
     case "install":
-    /* display page header and start graphics */
+        /* display page header and start graphics */
         echo ("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">\n
 <html>\n
 <head>\n
@@ -19,13 +21,6 @@ switch ($mode) {
 
 </head>\n
 <body>\n
-<center>\n
-<table width=\"100%\"  border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n
-	<tr>\n
-		<td><img src=\"../../images/logo.jpg\" alt=\"\" width=\"490\" height=\"114\"></td>\n
-	</tr>\n
-</table>\n
-			
 <table width=\"100%\"  border=\"0\" cellspacing=\"0\" cellpadding=\"2\">\n
 	<tr>\n
 		<td colspan=\"3\" background=\"../../images/index03.gif\"><img src=\"../../images/index03.gif\" alt=\"\" width=\"100%\" height=\"40\"></td>\n
@@ -47,7 +42,7 @@ switch ($mode) {
 										<tr>
 											<td>
 												<table width=\"100%\"  class=\"menutd\" cellpadding=\"5\" cellspacing=\"0\" border=\"0\" >\n
-									");	
+									");
 
 
         /* Load our new configs */
@@ -57,12 +52,11 @@ switch ($mode) {
         /* Create ADODB Connection */
         $db = &ADONewConnection('mysql');
 
-        $db->Connect($_POST['db_host'] ,$_POST['db_user'], $_POST['db_password']);
-        if( $db->errorMsg() != '' ) {
-            echo "There was an error connecting to the database: ".$db->errorMsg();
+        $db->Connect($_POST['db_host'], $_POST['db_user'], $_POST['db_password']);
+        if ($db->errorMsg() != '') {
+            echo "There was an error connecting to the database: " . $db->errorMsg();
             die;
         }
-
 
 
         ##################################
@@ -71,8 +65,8 @@ switch ($mode) {
         $db->close();
         include("../../conf.php");
 
-        if( $db->errorMsg() != '' ) {
-            echo "There Was an error connecting to the database: ".$db->errorMsg();
+        if ($db->errorMsg() != '') {
+            echo "There Was an error connecting to the database: " . $db->errorMsg();
             die;
         }
 
@@ -86,28 +80,28 @@ switch ($mode) {
         include("sql.php");
 
 
-        if($error_flag == true) {
+        if ($error_flag == true) {
             /* error can not complete the install */
             echo("<tr>\n
 				<td colspan=\"2\">There where errors during the upgrade process. MyIT CRM has not been upgraded. If the errors continue please submit a bug report at http://team.myitcrm.com</td>\n
 			</tr>\n");
         } else {
             /* create lock file */
-            if(!touch("../../cache/lock")) {
+            if (!touch("../../cache/lock")) {
                 echo("<tr><td colspan=\"2\"><font color=\"red\">Failed to create lock file. Please create a file name lock and put it in the cache folder !!</font></td></tr>");
             }
 
             /* done */
 
-            echo("<tr>\n<td colspan=\"2\"><font size=\+2 color=\"red\">Your Upgrade was successful to v0.2.9.1.</font>
+            echo("<tr>\n<td colspan=\"2\"><font size=\+2 color=\"red\">Your Upgrade was successful to v0.2.9.2.</font>
 				<br><br>
 				There are still a few steps that need to be completed.<br>
 				1. You need to move or rename the upgrade directory. We recommend deleting this folder.<br>
-                                2. You then need to login as an administrator and setup the additional infomration under the Business Setup>>Business Setup Menu option.<br>
+                                2. You then need to login as an administrator and setup the additional information under the Business Setup>>Business Setup Menu option.<br>
 				3. You can now resume your normal operation mode.
 				<br><br>
 				Where to find help:<br>
-				The user Documentation is at <a href=\"http://team.myitcrm.com/wiki/main\">http://team.myitcrm.com/wiki/main</a><br>
+				The user Documentation is at <a href=\"http://wiki.myitcrm.com\">http://wiki.myitcrm.com/</a><br>
 				Bug/Feature Reporting is at <a href=\"http://team.myitcrm.com/projects/main/issues/new\">Bug Tracker</a><br>
 
 				</td>\n</tr>\n");
@@ -161,14 +155,6 @@ switch ($mode) {
         echo ("
 </head>
 <body>
-<p>&nbsp;</p>
-<center>
-<table width=\"100%\"  border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
-	<tr>
-		<td><img src=\"../../images/logo.jpg\" alt=\"\" width=\"490\" height=\"114\"></td>
-	</tr>
-</table>
-			
 <table width=\"100%\"  border=\"0\" cellspacing=\"0\" cellpadding=\"2\">
 	<tr>
 		<td colspan=\"3\" background=\"../../images/index03.gif\"><img src=\"../../images/index03.gif\" alt=\"\" width=\"100%\" height=\"40\"></td>
@@ -183,7 +169,7 @@ switch ($mode) {
 			<!-- Begin Page -->
 			<table width=\"800\" cellpadding=\"5\" cellspacing=\"0\" border=\"0\" >
 				<tr>
-					<td class=\"menuhead2\" width=\"80%\">&nbsp;MyIT CRM Upgrader from versions 0.2.9.0, 0.2.9.1</td>
+					<td class=\"menuhead2\" width=\"80%\">&nbsp;MyIT CRM Upgrader from versions 0.2.9.x</td>
 					</td>
 				</tr><tr>
 					<td class=\"menutd2\" colspan=\"2\">
@@ -212,9 +198,9 @@ switch ($mode) {
 																</tr><tr>
 
 																	<td align=\"left\">Main Config Writable ");
-        if(!check_write ('../../conf.php')) {
+        if (!check_write('../../conf.php')) {
             echo("<font color=\"red\">../../conf.php is not writable stopping</font>");
-            $errors[] = array('../../conf.php'=>'Not Writable');
+            $errors[] = array('../../conf.php' => 'Not Writable');
         } else {
             echo("<font color=\"green\"><b>OK</b>");
         }
@@ -222,20 +208,20 @@ switch ($mode) {
 																</tr><tr>
 
 																	<td align=\"left\">Cache Folder ");
-        if(!check_write ('../../cache')) {
+        if (!check_write('../../cache')) {
             echo("<font color=\"red\">../../cache is not writable stopping.</font>");
-            $errors[] = array('../../cache'=>'Not Writable');
+            $errors[] = array('../../cache' => 'Not Writable');
         } else {
             echo("<font color=\"green\"><b>OK</b>");
         }
-        echo( "</td>
+        echo("</td>
 
 																</tr><tr>
 
 																	<td align=\"left\">Access Log ");
-        if(!check_write ('../../log/access.log')) {
+        if (!check_write('../../log/access.log')) {
             echo("<font color=\"red\">../../log/access.log is not writable stopping.</font>");
-            $errors[] = array('../../log/access.log'=>'Not Writable');
+            $errors[] = array('../../log/access.log' => 'Not Writable');
         } else {
             echo("<font color=\"green\"><b>OK</b>");
         }
@@ -244,11 +230,11 @@ switch ($mode) {
 																</tr>
 															<!-- End of File Checks -->
 															</table>");
-        if(is_array($errors)) {
+        if (is_array($errors)) {
             echo("Set up can not continue until the following errors are fixed:<br>");
-            foreach($errors as $key=>$val) {
+            foreach ($errors as $key => $val) {
                 echo("<font color=\"red\">Error $key: ");
-                foreach($val as $k=>$v) {
+                foreach ($val as $k => $v) {
                     echo("$k $v");
                 }
                 echo("</font><br>");
@@ -263,17 +249,17 @@ switch ($mode) {
 																		<table >
 																			<tr>
 																				<td align=\"right\" width=\"140\">Database User:</td>
-																				<td align=\"left\" ><input type=\"text\" size=\"20\" name=\"db_user\" value=\"username\" class=\"olotd5\"></td>
+																				<td align=\"left\" ><input type=\"text\" size=\"20\" name=\"db_user\" value=\"$DB_USER\" class=\"olotd5\"></td>
 																			</tr><tr>
 																				<td align=\"right\" width=\"140\">Database Password:</td>
-																				<td align=\"left\"><input type=\"password\" size=\"20\" name=\"db_password\" class=\"olotd5\"></td>
+																				<td align=\"left\"><input type=\"password\" size=\"20\" name=\"db_password\" value=\"$DB_PASS\" class=\"olotd5\"></td>
 																			</tr><tr>
 																				<td align=\"right\" width=\"140\">Database Host:</td>
-																				<td align=\"left\"><input type=\"text\" size=\"20\" name=\"db_host\" value=\"localhost\" class=\"olotd5\"></td>
+																				<td align=\"left\"><input type=\"text\" size=\"20\" name=\"db_host\" value=\"$DB_HOST\" class=\"olotd5\"></td>
 																			</tr><tr>
 																				<td align=\"right\" width=\"140\">Database Name:</td>
 																				<td align=\"left\">
-																					<input type=\"text\" size=\"30\" name=\"db_name\" value=\"myitcrm\" class=\"olotd5\">
+																					<input type=\"text\" size=\"30\" name=\"db_name\" value=\"$DB_NAME\" class=\"olotd5\">
 																				</td>
 																			</tr><tr>
 																					<td align=\"right\" width=\"140\">Table Prefix</td>
@@ -291,11 +277,11 @@ switch ($mode) {
 															<table>
 																<tr>
 																	<td>");
-            if(is_array($errors)) {
+            if (is_array($errors)) {
                 echo("Set up can not continue until the following errors are fixed:<br>");
-                foreach($errors as $key=>$val) {
+                foreach ($errors as $key => $val) {
                     echo("<font color=\"red\">Error $key: ");
-                    foreach($val as $k=>$v) {
+                    foreach ($val as $k => $v) {
                         echo("$k $v");
                     }
                     echo("</font><br>");
@@ -328,8 +314,8 @@ switch ($mode) {
 				<tr>
 					<td height=\"51\" align=\"center\" background=\"../../images/index41.gif\"></td>
 				</tr><tr>
-					<td height=\"48\" align=\"center\" background=\"../../images/index42.gif\"><span class=\"text3\"><a> This software is distrubuted under the GNU General Public License</span></t
-				</tr><tr>
+					<td height=\"48\" align=\"center\" background=\"../../images/index42.gif\"><span class=\"text3\"><a> This software is distrubuted under the GNU General Public License</span></td>
+									</tr><tr>
 					<td>&nbsp;</td>
 				</tr>
 			</table>
@@ -343,15 +329,16 @@ switch ($mode) {
         }
 }
 
-function resolveDocumentRoot() {
+function resolveDocumentRoot()
+{
     $current_script = dirname($_SERVER['SCRIPT_NAME']);
-    $current_path  = dirname($_SERVER['SCRIPT_FILENAME']);
+    $current_path = dirname($_SERVER['SCRIPT_FILENAME']);
 
     /* work out how many folders we are away from document_root
        by working out how many folders deep we are from the url.
        this isn't fool proof */
     $adjust = explode("/", $current_script);
-    $adjust = count($adjust)-1;
+    $adjust = count($adjust) - 1;
 
     /* move up the path with ../ */
     $traverse = str_repeat("../", $adjust);
@@ -361,15 +348,18 @@ function resolveDocumentRoot() {
     return realpath($adjusted_path);
 }
 
-function get_server_name() {
+function get_server_name()
+{
     $default_server = $_SERVER['SERVER_NAME'];
     return $default_server;
 
 }
+
 #####################################
 #		Check Lock					#
 #####################################
-function check_lock_file() {
+function check_lock_file()
+{
     $lock_file = "../../cache/lock";
     if (file_exists($lock_file)) {
         return true;
@@ -379,11 +369,11 @@ function check_lock_file() {
 }
 
 
-
 #####################################
 #		Check If File Exists		#
 #####################################
-function file_exists_incpath ($file) {
+function file_exists_incpath($file)
+{
     $paths = explode(PATH_SEPARATOR, get_include_path());
 
     foreach ($paths as $path) {
@@ -403,8 +393,9 @@ function file_exists_incpath ($file) {
 #####################################
 #		Check If File writes		#
 #####################################
-function check_write ($file) {
-    if(is_writable($file)) {
+function check_write($file)
+{
+    if (is_writable($file)) {
         return true;
     } else {
         return false;
@@ -415,7 +406,8 @@ function check_write ($file) {
 #####################################
 #		Generic error checking		#
 #####################################
-function error_check($error) {
+function error_check($error)
+{
     echo("<font color=\"red\"><b>Error: </b></font>$error</br>");
     exit;
 }
@@ -423,15 +415,17 @@ function error_check($error) {
 #####################################
 #		Generic error checking		#
 #####################################
-function validate($data) {
-//print_r($data);
+function validate($data)
+{
+    //print_r($data);
 
     /* check for Null all values are required */
-    foreach($data as $key => $val) {
-        if($val == "") {
+    foreach ($data as $key => $val) {
+        if ($val == "") {
             error_check("Missing field $key.<br>");
         }
     }
 
 }
+
 ?>

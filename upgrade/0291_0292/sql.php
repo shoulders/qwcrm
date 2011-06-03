@@ -105,6 +105,31 @@ ADD `DISCOUNT_APPLIED` DECIMAL( 10, 3 ) NOT NULL AFTER `TAX_RATE`";
                                 }
 
 }
+if(!rename_tracker($db) ) {
+echo("<tr>\n
+			<td>RENAMED TABLE ".PRFX."tracker TO TRACKER</td>\n
+			<td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
+		</tr>\n");
+	$error_flag = true;
+} else {
+	echo("<tr>\n
+				<td>RENAMED TABLE ".PRFX."tracker TO TRACKER</td>\n
+				<td><font color=\"green\"><b>OK</b></font></td>\n
+			</tr>\n");
+}
+
+function rename_tracker($db) {
+
+        $q = "RENAME TABLE `".PRFX."tracker` TO `".PRFX."TRACKER_NEW`,
+                            `".PRFX."TRACKER_NEW` TO `".PRFX."TRACKER`";
+                                $rs = $db->Execute($q);
+                                if(!$rs) {
+                                        return false;
+                                } else {
+                                        return true;
+                                }
+
+}
 
 ?>
 
