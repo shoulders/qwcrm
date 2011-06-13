@@ -1174,7 +1174,7 @@ echo ("
 				<tr>
 					<td height=\"51\" align=\"center\" background=\"../images/index41.gif\"></td>
 				</tr><tr>
-					<td height=\"48\" align=\"center\" background=\"../images/index42.gif\"><span class=\"text3\"><a> This software is distrubuted under the GNU General Public License</span></t
+					<td height=\"48\" align=\"center\" background=\"../images/index42.gif\"><span class=\"text3\"><a> This software is distributed under the GNU General Public License</span></td>
 				</tr><tr>
 					<td>&nbsp;</td>
 				</tr>
