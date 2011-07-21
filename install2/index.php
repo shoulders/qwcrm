@@ -77,25 +77,25 @@ echo ("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http:/
 			echo "There was an error connecting to the database: ".$db->errorMsg();
 			die;
 		}
-		
-
-##################################
-# Create Database						#
-##################################
-		$q = "CREATE DATABASE IF NOT EXISTS ".$_POST['db_name'];
-		if(!$rs = $db->Execute($q)) {
-			echo("<tr>\n
-					<td>Create Database ". $_POST['db_name'] ." </td>\n
-					<td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg(). " </td>\n
-				</tr>\n");
-			die;
-		} else {
-			echo("<tr>\n
-						<td>Create Database ".$_POST['db_name']."</td>\n
-						<td><font color=\"green\"><b>OK</b></font></td>\n
-					</tr>\n");
-		}
-		
+//
+//OBSOLETE CODE - REMOVED BY GEEVPC ON THE 21/7/11
+//##################################
+//# Create Database						#
+//##################################
+//		$q = "CREATE DATABASE IF NOT EXISTS ".$_POST['db_name'];
+//		if(!$rs = $db->Execute($q)) {
+//			echo("<tr>\n
+//					<td>Create Database ". $_POST['db_name'] ." </td>\n
+//					<td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg(). " </td>\n
+//				</tr>\n");
+//			die;
+//		} else {
+//			echo("<tr>\n
+//						<td>Create Database ".$_POST['db_name']."</td>\n
+//						<td><font color=\"green\"><b>OK</b></font></td>\n
+//					</tr>\n");
+//		}
+//
 ##################################
 # Create New Connection				#
 ##################################
