@@ -141,8 +141,8 @@
 		<main_partial_paid>Partial Paid</main_partial_paid>
 		<main_out>Total Out</main_out>
 		<main_paid>Paid In Full</main_paid>
-		<current_total>Current Total</current_total>
-		<actual_total>Actual Total</actual_total>
+		<current_total>Received Monies Total</current_total>
+		<actual_total>Invoiced Total</actual_total>
 		<main_total>Total</main_total>
 		<main_invoice_stats>Invoice Stats</main_invoice_stats>
 		<main_customer_stats>Customer Stats</main_customer_stats>

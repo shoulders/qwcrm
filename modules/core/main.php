@@ -12,8 +12,18 @@ $status = 10;
 // Load the required includes
 require_once ('.'.SEP.'modules'.SEP.'workorder'.SEP.'include.php');
 
+/* display welcome note */
+$q = 'SELECT WELCOME_NOTE FROM '.PRFX.'SETUP';
+if(!$rs = $db->execute($q)){
+	force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
+	exit;
+} else {
+	$smarty->assign('welcome',$rs->fields['WELCOME_NOTE']);
+}
 
-/* stats */
+
+/* work order stats */
+
 /* New Work Order Counts */
 $q = 'SELECT count(*) as count FROM '.PRFX.'TABLE_WORK_ORDER WHERE  WORK_ORDER_CURRENT_STATUS='.$db->qstr(1);
 if(!$rs = $db->execute($q)){
@@ -63,6 +73,23 @@ if(!$rs = $db->execute($q)){
 	$wo_closed_count = $rs->fields['count'];
 	$smarty->assign('wo_closed_count',$wo_closed_count);
 }
+
+/* WO total count */
+$q = 'SELECT count(*) as count FROM '.PRFX.'TABLE_WORK_ORDER';
+if(!$rs = $db->execute($q)){
+	force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
+	exit;
+} else {
+	$wo_total_count = $rs->fields['count'];
+	$smarty->assign('wo_total_count',$wo_total_count);
+}
+
+
+
+
+
+
+/* Discount stats */
 // Sum unpaid Discounts on Invoices
 $q = "SELECT SUM(DISCOUNT) AS DISCOUNT FROM ".PRFX."TABLE_INVOICE WHERE INVOICE_PAID=".$db->qstr(0)." AND  balance=".$db->qstr(0);
 if(!$rs = $db->Execute($q)){
@@ -88,20 +115,15 @@ if(!$rs = $db->Execute($q)){
 }
 $part_discounts = $rs->fields['DISCOUNT'];
 
-/* total */
-$q = 'SELECT count(*) as count FROM '.PRFX.'TABLE_WORK_ORDER';
-if(!$rs = $db->execute($q)){
-	force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
-	exit;
-} else {
-	$wo_total_count = $rs->fields['count'];
-	$smarty->assign('wo_total_count',$wo_total_count);
-}
+
+
+
+
 
 /* invoice stats */
 
 /* No. of Invoices with an outstanding balance */
-$q = 'SELECT count(*) as count FROM '.PRFX.'TABLE_INVOICE WHERE INVOICE_PAID='.$db->qstr(0).' AND  balance >'.$db->qstr(0);
+$q = 'SELECT count(*) as count FROM '.PRFX.'TABLE_INVOICE WHERE INVOICE_PAID='.$db->qstr(0);
 if(!$rs = $db->execute($q)){
 	force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
 	exit;
@@ -139,6 +161,7 @@ if(!$rs = $db->execute($q)){
 	$smarty->assign('in_part_bal',$in_part_bal);
 }
 
+// unknown use
 $in_out_bal = $in_unpaid_bal ;
 $smarty->assign('in_out_bal',$in_out_bal);
 
@@ -152,7 +175,7 @@ if(!$rs = $db->execute($q)){
 	$smarty->assign('in_paid_count',$in_paid_count);
 }
 
-/* total amount of Paid invoices (of all time) */
+/* All Time Invoice Totals */
 $q = 'SELECT SUM(INVOICE_AMOUNT) as sum FROM '.PRFX.'TABLE_INVOICE WHERE INVOICE_PAID='.$db->qstr(1);
 if(!$rs = $db->execute($q)){
 	force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
@@ -161,11 +184,20 @@ if(!$rs = $db->execute($q)){
 	$in_total = $rs->fields['sum'];
 	$in_total_bal = $in_total - $in_out_bal;
 	$in_total2 = $in_total ;
+
+        // Total Invoice Monies Recieved
 	$smarty->assign('in_total_bal',$in_total_bal);
+
+        // Total Monies Invoiced
 	$smarty->assign('in_total2',$in_total2);
 }
 
+
+
+
+
 /* customer stats */
+
 /*new this month */
 $month = mktime(0,0,0,date('m'),0,date('Y'));
 
@@ -200,18 +232,13 @@ if(!$rs = $db->execute($q)){
 	$smarty->assign('cu_total_count',$cu_total_count);
 }
 
-/* display welcome note */
-$q = 'SELECT WELCOME_NOTE FROM '.PRFX.'SETUP';
-if(!$rs = $db->execute($q)){
-	force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
-	exit;
-} else {
-	$smarty->assign('welcome',$rs->fields['WELCOME_NOTE']);
-}
+
+
 /* Get employee credentials */
 $q = "SELECT * FROM ".PRFX."TABLE_EMPLOYEE WHERE EMPLOYEE_DISPLAY_NAME ='".$login."'" ;
 $rs = $db->Execute($q);
 $cred2 = $rs->FetchRow();
+
 
 $smarty->display('core'.SEP.'main.tpl');
 
