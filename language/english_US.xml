@@ -471,6 +471,7 @@
                 <invoice_rates_add_file>Upload a csv file into rates table</invoice_rates_add_file>
 		<invoice_rates_example>CSV File example</invoice_rates_example>
                 // -- New Page
+                <invoice_delete>Delete Invoice</invoice_delete>
                 <invoice_new_help_title >New Invoice Help</invoice_new_help_title>
                 <invoice_new_help_content>This page allows you to create invoices for your clients.&lt;br /&gt;&lt;br /&gt;Whenever you change the date, add or remove an item you must press the &lt;b&gt;Submit / Recalculate&lt;/b&gt; &lt;/b&gt;&lt;/b&gt;button to apply those changes before you print the invoice otherwise you will get an incorrect invoice and the changes will also not be applied to the database.</invoice_new_help_content>
                 // -- View Page

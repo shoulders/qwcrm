@@ -193,14 +193,46 @@ function delete_labour_record($db, $labourID){
 function delete_parts_record($db, $partsID){
 	$sql = "DELETE FROM ".PRFX."TABLE_INVOICE_PARTS WHERE INVOICE_PARTS_ID=".$db->qstr($partsID);
 
+
 	if(!$rs = $db->Execute($sql)) {
 		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
 		exit;
 	} else {
 		return true;
 	}
+
+
 }
 
+#####################################
+#   Delete Invoice                  #
+#####################################
+
+function delete_invoice($db, $invoice_id, $customer_id, $login){
+    //Add comment to Transaction Table for Deletion
+    $q = "INSERT INTO ".PRFX."TABLE_TRANSACTION SET
+			DATE 			= ".$db->qstr(time()).",
+			TYPE 			= '6',
+			INVOICE_ID              = ".$db->qstr($invoice_id).",
+			WORKORDER_ID            = '0',
+			CUSTOMER_ID             = ".$db->qstr($customer_id).",
+			MEMO 			= 'Invoice Deleted by ".$db->qstr($login).",
+			AMOUNT			= '0'";
+		if(!$rs = $db->execute($q)) {
+			force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
+			exit;
+		}
+    //Actual Deletion Function from Invoice Table
+	$sql = "DELETE FROM ".PRFX."TABLE_INVOICE WHERE INVOICE_ID=".$db->qstr($invoice_id);
+
+	if(!$rs = $db->Execute($sql)) {
+		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+		exit;
+	} else {
+		return true;
+	}
+
+}
 #####################################
 #   Sum Labour Sub Totals           #
 #####################################
