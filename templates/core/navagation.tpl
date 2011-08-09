@@ -24,7 +24,7 @@
 		<!--<a href="?page=customer:email&amp;customer_id={$cust_id}&amp;page_title=Email Customer"><img src="images/icons/16x16/email.jpg" alt="" border="0" height="14" width="14" /> {$translate_menu_email_customer}</a>-->
                 {/if}		
       </div>
-      <div class="collapsed">
+      <div>
         <span>{$translate_menu_work_orders}</span>
                 {if $cust_id > 0 }
 		<a href="?page=workorder:new&amp;customer_id={$cust_id}&amp;page_title={$translate_workorder_new_title}"><img src="images/icons/16x16/view.gif" alt="" border="0" height="14" width="14" /> {$translate_workorder_nav_new}</a>
