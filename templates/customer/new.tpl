@@ -1,4 +1,28 @@
 <!-- Add New Customer tpl -->
+{literal}
+<script language="javascript" type="text/javascript" src="include/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
+<script language="javascript" type="text/javascript">
+	tinyMCE.init({
+		mode : "exact",
+		theme : "advanced",
+        elements : "customerNotes",
+		plugins : "advlink,iespell,insertdatetime,preview",
+		theme_advanced_buttons2_add : "separator,insertdate,inserttime,preview,separator,forecolor,backcolor",
+		theme_advanced_buttons2_add_before: "cut,copy,paste",
+		theme_advanced_toolbar_location : "bottom",
+		theme_advanced_toolbar_align : "center",
+
+	    plugin_insertdate_dateFormat : "%Y-%m-%d",
+	    plugin_insertdate_timeFormat : "%H:%M:%S",
+		extended_valid_elements : "a[name|href|target|title|onclick],img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name],hr[class|width|size|noshade],font[face|size|color|style],span[class|align|style]",
+		external_link_list_url : "example_link_list.js",
+		external_image_list_url : "example_image_list.js",
+		flash_external_list_url : "example_flash_list.js",
+		file_browser_callback : "fileBrowserCallBack",
+		width : "100%"
+	});
+</script>
+{/literal}
 <table width="100%"   border="0" cellpadding="20" cellspacing="5">
     <tr>
         <td>
@@ -109,7 +133,7 @@
                                                                     <tbody align="left">
                                                                         <tr>
                                                                             <td align="right"><b>{$translate_customer_address}</b></td>
-                                                                            <td colspan="3"><textarea class="olotd5" cols="30" rows="3"  name="address" ></textarea></td>
+                                                                            <td colspan="3"><textarea class="olotd5" cols="30" rows="3" name="address" ></textarea></td>
                                                                         </tr><tr>
                                                                             <td align="right"><b>{$translate_customer_city}</b></td>
                                                                             <td><input class="olotd5" name="city" type="text" /></td>
@@ -127,7 +151,7 @@
                                                                         </tr>
                                                                         <tr>
                                                                             <td></td>                                                                            
-                                                                            <td colspan="2"><textarea class="olotd5" name="customerNotes" cols="50" rows="10"></textarea></td>
+                                                                            <td colspan="2"><textarea class="olotd5" name="customerNotes" cols="50" rows="20"></textarea></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td></td>
