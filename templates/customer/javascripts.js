@@ -83,7 +83,7 @@ _qfMsg = _qfMsg + '\n - The customers Last name cannot be more than 50 character
 
 // if domain entered make sure it is a valid url format
 value = frm.elements['customerWww'].value;
-var regex = /^((http|https|ftp):\/\/(www\.)?|www\.)[a-zA-Z0-9\_\-]+\.([a-zA-Z]{2,4}|[a-zA-Z]{2}\.[a-zA-Z]{2})(\/[a-zA-Z0-9\-\._\?\&=,'\+%\$#~]*)*$/;
+var regex = /^((http|https|ftp):\/\/[a-zA-Z0-9\_\-]+\.([a-zA-Z]{2,4}|[a-zA-Z]{2}\.[a-zA-Z]{2})(\/[a-zA-Z0-9\-\._\?\&=,'\+%\$#~]*)*$/;
 if (value != '' && !regex.test(value) && !errFlag['customerWww']) {
 errFlag['customerWww'] = true;
 _qfMsg = _qfMsg + '\n - Please enter a valid domain address';
@@ -103,7 +103,7 @@ _qfMsg = _qfMsg + '\n - Please enter a valid email address';
 value = frm.elements['email'].value;
 if (value != '' && value.length > 80 && !errFlag['email']) {
 errFlag['email'] = true;
-_qfMsg = _qfMsg + '\n - Email cannot be more than 50 characters';
+_qfMsg = _qfMsg + '\n - Email cannot be more than 80 characters';
     frm.elements['email'].className = 'error';
 }
 

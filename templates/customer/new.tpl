@@ -93,7 +93,7 @@
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><span style="color: #ff0000"></span><b>{$translate_customer_www}</b></td>
-                                                                            <td><input class="olotd5" name="customerWww" type="text" size="50"/></td>
+                                                                            <td><input class="olotd5" name="customerWww" type="text" size="50" /></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><span style="color: #ff0000"></span><b>{$translate_email}</b></td>
