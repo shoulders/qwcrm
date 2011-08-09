@@ -1,7 +1,5 @@
 <?php
-##################################
-# update_acl                     #
-##################################
+///Additions to ACL table required.
 if(!create_acl($db) ) {
 echo("<tr>\n
 			<td>UPDATED TABLE ".PRFX."ACL</td>\n
@@ -30,6 +28,8 @@ function create_acl($db) {
                                 }       
 
 }
+
+// Fixing up tax rates decimals
 if(!update_invoice_tax($db) ) {
 echo("<tr>\n
 			<td>UPDATED TABLE ".PRFX."TABLE_INVOICE</td>\n
@@ -105,6 +105,8 @@ ADD `DISCOUNT_APPLIED` DECIMAL( 10, 3 ) NOT NULL AFTER `TAX_RATE`";
                                 }
 
 }
+
+// Rename Tracker as this was broken before and displaying errors
 if(!rename_tracker($db) ) {
 echo("<tr>\n
 			<td>RENAMED TABLE ".PRFX."tracker TO TRACKER</td>\n
@@ -122,6 +124,88 @@ function rename_tracker($db) {
 
         $q = "RENAME TABLE `".PRFX."tracker` TO `".PRFX."TRACKER_NEW`,
                             `".PRFX."TRACKER_NEW` TO `".PRFX."TRACKER`";
+                                $rs = $db->Execute($q);
+                                if(!$rs) {
+                                        return false;
+                                } else {
+                                        return true;
+                                }
+
+}
+// Update Customers Phone Numbers to hold more then 20 characters.
+// Customers Phone
+if(!update_customer_phone($db) ) {
+echo("<tr>\n
+			<td>UPDATED TABLE ".PRFX."TABLE_CUSTOMER_PHONE</td>\n
+			<td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
+		</tr>\n");
+	$error_flag = true;
+} else {
+	echo("<tr>\n
+				<td>UPDATED TABLE ".PRFX."TABLE_CUSTOMER_PHONE</td>\n
+				<td><font color=\"green\"><b>OK</b></font></td>\n
+			</tr>\n");
+}
+
+
+function update_customer_phone($db) {
+
+        $q = "ALTER TABLE `".PRFX."TABLE_CUSTOMER` CHANGE `CUSTOMER_PHONE` `CUSTOMER_PHONE` VARCHAR(40)";
+
+                                $rs = $db->Execute($q);
+                                if(!$rs) {
+                                        return false;
+                                } else {
+                                        return true;
+                                }
+
+}
+// Customers Work Phone
+if(!update_customer_work_phone($db) ) {
+echo("<tr>\n
+			<td>UPDATED TABLE ".PRFX."TABLE_CUSTOMER_WORK_PHONE</td>\n
+			<td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
+		</tr>\n");
+	$error_flag = true;
+} else {
+	echo("<tr>\n
+				<td>UPDATED TABLE ".PRFX."TABLE_CUSTOMER_WORK_PHONE</td>\n
+				<td><font color=\"green\"><b>OK</b></font></td>\n
+			</tr>\n");
+}
+
+
+function update_customer_work_phone($db) {
+
+        $q = "ALTER TABLE `".PRFX."TABLE_CUSTOMER` CHANGE `CUSTOMER_WORK_PHONE` `CUSTOMER_WORK_PHONE` VARCHAR(40)";
+
+                                $rs = $db->Execute($q);
+                                if(!$rs) {
+                                        return false;
+                                } else {
+                                        return true;
+                                }
+
+}
+// Customers Mobile Phone
+if(!update_customer_mobile_phone($db) ) {
+echo("<tr>\n
+			<td>UPDATED TABLE ".PRFX."TABLE_CUSTOMER_MOBILE_PHONE</td>\n
+			<td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
+		</tr>\n");
+	$error_flag = true;
+} else {
+	echo("<tr>\n
+				<td>UPDATED TABLE ".PRFX."TABLE_CUSTOMER_MOBILE_PHONE</td>\n
+				<td><font color=\"green\"><b>OK</b></font></td>\n
+			</tr>\n");
+}
+
+
+function update_customer_mobile_phone($db) {
+
+        $q = "ALTER TABLE `".PRFX."TABLE_CUSTOMER` CHANGE `CUSTOMER_MOBILE_PHONE` `CUSTOMER_MOBILE_PHONE` VARCHAR(40)";
+
                                 $rs = $db->Execute($q);
                                 if(!$rs) {
                                         return false;
