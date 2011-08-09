@@ -89,7 +89,7 @@ else
 									<table border="0">
 									
 										<tr>
-                                                                                    <td><font color="RED">{$translate_employee_display_name_criteria}</font></td>
+                                                                                    <td style ="color:RED;">{$translate_employee_display_name_criteria}</td>
                                                                                 </tr>
                                                                                 <tr>
 											<td align="left" valign="top"><b>{$translate_display}</b><input class="olotd4" name="name" type="text" onkeypress="return OnlyAlphaNumeric();" /><input class="olotd4" name="submit" value="Search" type="submit" /></td>

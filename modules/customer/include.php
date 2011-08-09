@@ -61,13 +61,13 @@ function display_customer_search($db, $name, $page_no, $smarty) {
         $safe_name = strip_tags($name);
 	
 	// Define the number of results per page
-	$max_results = 50;
+	$max_results = 25;
 	
 	// Figure out the limit for the Execute based
 	// on the current page number.
 	$from = (($page_no * $max_results) - $max_results);
 	
-	$sql = "SELECT * FROM ".PRFX."TABLE_CUSTOMER WHERE CUSTOMER_DISPLAY_NAME LIKE '%$safe_name%' ORDER BY CUSTOMER_DISPLAY_NAME";
+	$sql = "SELECT * FROM ".PRFX."TABLE_CUSTOMER WHERE CUSTOMER_DISPLAY_NAME LIKE '%$safe_name%' ORDER BY CUSTOMER_DISPLAY_NAME LIMIT $from, $max_results";
 	
 	//print $sql;
 	
