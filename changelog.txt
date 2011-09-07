@@ -4,6 +4,84 @@ PLEASE REPORT ANY BUGS OR FEATURES THAT YOU FIND SO THAT WE CAN FIX'EM!
 To view more details on these issues, please visit http://team.myitcrm.com/
 
 
+===v0.2.9.2 : 15th September 2011 from svn rxxx===
+Over 40 Bug Fixes and over 30 New features added
+
+•Bug #144: Database error on printing schedule.
+•Bug #145: Invoice stats on Welcome screen not calculating correctly.
+•Bug #149: cannot delete print.tpl
+•Bug #150: correct use of currency symbol
+•Bug #151: fix and upgrade reports page
+•Bug #154: clicking on company name does not work
+•Bug #156: required database alterations
+•Bug #162: add WO number to PDF or remove
+•Bug #164: invoice create financial logic and misc
+•Bug #165: make the number of items displayed more in these sections
+•Bug #169: fix some double smarty language file calls
+•Bug #170: new workorder doesn't have tinyMCE applied
+•Bug #173: add invoice tax and discount rate in the database
+•Bug #174: sub totals on invoice pages
+•Bug #176: invoices should only use stored values
+•Bug #178: credit terms is not defined properly for printing
+•Bug #179: fix invoice pages tooltips
+•Bug #180: invoicing labour freetype added
+•Bug #181: invoice functionality update
+•Bug #184: customer section invoice list printing does not work
+•Bug #187: work order nav menu keeps collapsing
+•Bug #188: TRACKER not found
+•Bug #189: Tax Should not Round up.
+•Bug #193: Inactive employee can still log in
+•Bug #196: customer section/ invoice tab print pdf does not work
+•Bug #197: a non existent css file is being called by tinymce
+•Bug #198: Refund details not accessible " Permission Denied"
+•Bug #205: view+.gif not rendering on some server installations
+•Bug #209: "View" link error in Customer Section under Unpaid Invoices tab
+•Bug #212: weired date display issue
+•Bug #213: remove some mandatory stuff on create/editing a customer
+•Bug #215: correction of invoice stats on home page
+•Bug #217: reopen Bug #188
+•Bug #222: billing procedures had dollar hard coded
+•Bug #223: customer invoice page balances not working
+•Bug #235: should invoices with £0.00 be counted as unpaid
+•Bug #237: on customer search page limit number of displayed customers
+•Bug #238: Phone number fields should be greater than 20
+•Bug #239: webaddress validator needs www
+•Bug #242: Database creation on New Install errors out when hyphen used in DB name.
+•Bug #246: GMAPS fails to load in IFrames now.
+•Feature #40: Change the order of things displayed on the WO page
+•Feature #75: Work order resolution on invoice
+•Feature #85: option to force SSL
+•Feature #88: Ability to sell parts only
+•Feature #92: Ability to add and remove parts from a WO
+•Feature #93: be able to add and remove labour from the WO page
+•Feature #96: WO Schedule on another Tab and summary to replace it
+•Feature #99: removal of parts or labour button should remove selected item(s) via a check box not just the last item
+•Feature #102: On schedule I would display the following as the title
+•Feature #103: on invoice page separate sub totals for parts and labour
+•Feature #118: Separate labor and parts in reports.
+•Feature #148: print invoice logic updated
+•Feature #155: create work order in main nav section
+•Feature #160: add GBP to company setup description
+•Feature #161: Applied TAX Rate
+•Feature #167: add printing type to business setup or remove tables in company setup
+•Feature #168: turn on hits stats section?
+•Feature #182: descending closed and open work orders
+•Feature #183: make appropriate lists descending
+•Feature #185: Paypal Donation link in MyITCRM
+•Feature #194: suppliers, expenses, refunds make notes and description use tinymce
+•Feature #195: create htaccess file with caching
+•Feature #199: Minimise Invoice Stats on Main Page
+•Feature #214: create invoice without Work Order
+•Feature #219: invoice lookups now use invoice number no WO id
+•Feature #220: customer detail list now descend
+•Feature #221: customer invoice balance not working
+•Feature #224: add version number to conf.php
+•Feature #226: non english translations as downloads
+•Feature #232: supplier section
+•Feature #233: combine customers edit.js and new.js
+•Feature #240: add tinymce in to notes in customer section
+•Feature #245: Invoice Deletion Function
+
 ===v0.2.9.1 : 14th November 2010 from svn r259===
 
 Bug #136: Can't edit "Billing Rates" Directly
