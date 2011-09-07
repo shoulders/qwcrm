@@ -1,12 +1,18 @@
 <!-- Customer Details TPL -->
 {literal}
 <script type="text/javascript">
+function open_directions()
+{
+window.open({/literal}$src{literal}, menubar=0)
+}
+
     function confirmSubmit(){
 
         var answer = confirm ("Are you Sure you want to delete customer {/literal}{$customer_details[i].CUSTOMER_DISPLAY_NAME}{literal}? This will remove all work order history and invoices. You might want to just set customer to Inactive.")
         if (answer)
             window.location="?page=customer:delete&customer_id={/literal}{$customer_details[i].CUSTOMER_ID}{literal}"
     }
+
 </script>
 {/literal}
 <br>
@@ -18,7 +24,6 @@
                     <li class="active"><a href="#" rel="#tab_1_contents" class="tab"><img src="images/icons/customers.gif" alt="" border="0" height="14" width="14" />&nbsp;Customer Details</a></li>
                     <li><a href="#" rel="#tab_2_contents" class="tab"><img src="images/icons/workorders.gif" alt="" border="0" height="14" width="14" />&nbsp;Works Orders</a></li>
                     <li><a href="#" rel="#tab_3_contents" class="tab"><img src="images/icons/invoice.png" alt="" border="0" height="14" width="14" />&nbsp;Invoices</a></li>
-                    <li><a href="#" rel="#tab_4_contents" class="tab"><img src="images/icons/map.png" alt="" border="0" height="14" width="14" />&nbsp;Directions</a></li>
                     <!-- TODO: <li><a href="#" rel="#tab_5_contents" class="tab">{$translate_customer_asset_tab}</a></li> -->
                 </ul>
 
@@ -83,7 +88,7 @@
                                                                     <td class="menutd" colspan="4"></td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td class="menutd"> <b>{$translate_customer_address}</b></td>
+                                                                    <td class="menutd"> <b>{$translate_customer_address}</b> <a style="color:red" href="{$src}" target="_blank" ><img src="images/icons/map.png" alt="" border="0" height="14" width="14" />[{$translate_get_directions}]</a></td>
                                                                     <td class="menutd"></td>
                                                                     <td class="menutd"><b>{$translate_customer_home}</b></td>
                                                                     <td class="menutd">{$customer_details[i].CUSTOMER_PHONE}</td>
@@ -295,7 +300,7 @@
                         <table width="100%">
                             <tr>
                                 <td>
-                                    <iframe src="{$src}" width="100%" height="800" scrolling="auto" frameborder = "0"</iframe>
+
                                 </td>
                             </tr>
                         </table>

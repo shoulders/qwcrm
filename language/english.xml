@@ -919,5 +919,7 @@
                 <workorder_close_with_invoice>Close with Invoice</workorder_close_with_invoice>
                 //- Navigation
                 <workorder_nav_new>Create New WO</workorder_nav_new>
+
+    <get_directions>Get Directions</get_directions>
 		
 	</translate>
