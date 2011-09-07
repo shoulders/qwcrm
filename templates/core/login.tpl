@@ -1,6 +1,9 @@
 <!-- Begin Login.tpl--><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html>
   <head>
     <title>Login</title>
+    <meta name="">
+    <meta name="description" content="MyIT CRM - The Best Open Source Repairs Business CRM program available!" />
+    <meta name="keywords" content="CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment Processing" />
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <link href="css/default.css" rel="stylesheet" type="text/css">
   </head>
@@ -117,7 +120,7 @@
             <table width="100%"  border="0" cellspacing="0" cellpadding="0">
               <tr>
                 <td align="center" >
-                  <span class="text3"><a href="http://myitcrm.com"><b>MyIT CRM Version - {$VERSION}</b></a><br><a href="http://myitcrm.com"><b>The Best Open Source IT CRM program available!</b></a><br><a>This software is distributed under the GNU General Public License V3</a><br></span>
+                  <span class="text3"><a href="http://myitcrm.com"><b>MyIT CRM - The Best Open Source Repairs Business CRM program available!</b></a><br><a>This software is distributed under the GNU General Public License V3</a><br></span>
                 </td>
               </tr>              
             </table>

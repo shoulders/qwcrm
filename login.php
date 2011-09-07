@@ -32,7 +32,7 @@ if(isset($_GET["error_msg"]))
 #	Display the pages				#
 #####################################
 /* CRM Version */
-$smarty->assign('VERSION', MYIT_CRM_VERSION);
+$smarty->assign('VERSION', VERSION_NAME);
 $smarty->display('core'.SEP.'login.tpl');
 
 ?>
