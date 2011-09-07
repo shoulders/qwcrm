@@ -1,7 +1,7 @@
 <?php
 
 $smarty->display('core'.SEP.'footer.tpl');
-$smarty->assign('VERSION', MYIT_CRM_VERSION);
+//$smarty->assign('VERSION', MYIT_CRM_VERSION);
 if(debug == 'yes')	{
 	echo 'PHP script executed in: ' . (getMicroTime() - $start .' secs<br>');
        	

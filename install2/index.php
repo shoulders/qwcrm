@@ -1275,7 +1275,6 @@ $content = "<?php
 # WHAT YOU ARE DOING....
 #############################################################
 \n
-include('version.php');
 @define('SEP','/');
 @define('FILE_ROOT',dirname(__FILE__).SEP);
 @define('WWW_ROOT','".$_POST['default_site_name']."');

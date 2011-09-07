@@ -21,7 +21,7 @@ if(!is_file('cache/lock') ) {
 			//-->
 		</script>");
 } else if(is_dir('install') ) { 
-	echo("<font color=\"red\">The install Directory Exists!! Please Rename or remove the install directory.</font>");
+	echo("<a style=\"color:red;\">The install Directory Exists!! Please Rename or remove the install directory.</a>");
 	die;
 } 
 	
@@ -56,6 +56,14 @@ $q = 'SELECT * FROM '.PRFX.'TABLE_COMPANY';
 		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
 		exit;
 	}
+
+/* get company info for defaults */
+$q = 'SELECT * FROM '.PRFX.'VERSION';
+	if(!$rs = $db->execute($q)) {
+		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+		exit;
+	}
+$smarty->assign('version', $rs->fields['VERSION_NAME']);
 $smarty->assign('company_name', $rs->fields['COMPANY_NAME']);
 $smarty->assign('company_address', $rs->fields['COMPANY_ADDRESS']);
 $smarty->assign('company_city', $rs->fields['COMPANY_CITY']);

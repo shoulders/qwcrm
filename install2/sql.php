@@ -1,5 +1,21 @@
 <?php
 ##################################
+# create_version table				#
+##################################
+if(!create_version($db)) {
+	echo("<tr>\n
+					<td>CREATE TABLE IF NOT EXISTS ".PRFX."VERSION</td>\n
+					<td><font color=\"red\"><b>Failed </b> </font> ".$db->ErrorMsg() ."</td>\n
+			</tr>\n");
+			$error_flag = true;
+} else {
+	echo("<tr>\n
+					<td>CREATE TABLE IF NOT EXISTS ".PRFX."VERSION</td>\n
+					<td><font color=\"green\"><b>OK</b></font></td>\n
+			<tr>\n");
+}
+
+##################################
 # create_billing_options				#
 ##################################
 if(!create_billing_options($db)) {
@@ -585,7 +601,26 @@ function create_gift($db) {
 		return true;
 	}
 }
+// ADDING VERSION NUMBER TO DATABASE
+function create_version($db) {
+    $q = "CREATE TABLE IF NOT EXISTS `".prfx."VERSION` (
+    `VERSION_ID` INT NOT NULL ,
+    `VERSION_NAME` VARCHAR( 10 ) NOT NULL ,
+    `VERSION_INSTALLED` TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL
+    ) TYPE=MYISAM ";
+    if(!$rs = $db->execute($q)) {
+			return false;
+	} else {
+        //Insert New Records for version table
+        $q = "INSERT INTO `".PRFX."VERSION` (`VERSION_ID`, `VERSION_NAME`, `VERSION_INSTALLED`) VALUES ('292', '0.2.9.2', '')";
 
+    if(!$rs = $db->execute($q) ) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+}
 
 function create_billing_options($db) {
 
