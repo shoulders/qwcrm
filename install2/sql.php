@@ -594,7 +594,7 @@ function create_gift($db) {
 	`INVOICE_ID` int(20) NOT NULL default '0',
 	PRIMARY KEY  (`GIFT_ID`),
 	KEY `GIFT_CODE` (`GIFT_CODE`,`CUSTOMER_ID`,`ACTIVE`)
-	) TYPE=MyISAM ";
+	) ENGINE=MyISAM ";
 	if(!$rs = $db->execute($q)) {
 			return false;
 	} else {
@@ -606,7 +606,7 @@ function create_version($db) {
     $q="CREATE TABLE IF NOT EXISTS `".PRFX."VERSION` (
     `VERSION_ID` INT NOT NULL ,
     `VERSION_NAME` VARCHAR( 10 ) NOT NULL ,
-    `VERSION_INSTALLED` TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
+    `VERSION_INSTALLED` TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL
     ) ENGINE=MyISAM ";
     if(!$rs = $db->execute($q)) {
 			return false;

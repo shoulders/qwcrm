@@ -204,7 +204,7 @@ if($error_flag == true) {
 				<br><br>
 				The Admin login is: ".$login ." and the password you supplied in the previous page.<br><br>
 				Where to find help:<br>
-				The user Documentation is at <a href=\"http://team.myitcrm.com/projects/show/main/\">http://team.myitcrm.com</a><br>
+				The user Documentation is at <a href=\"http://wiki.myitcrm.com\">http://wiki.myitcrm.com</a><br>
 				Bug/Feature Reporting is at <a href=\"http://forum.myitcrm.com\">Forum Bug/Feature Requests</a><br>
 
 				</td>\n</tr>\n");
