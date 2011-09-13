@@ -1,17 +1,18 @@
 <?php
+/*Used to suppress Notices*/
+//error_reporting(E_ALL & ~E_NOTICE);
+error_reporting(E_ERROR);
 // Added to eliminate special characters
 header('Content-type: text/html; charset=utf-8');
 /* check if lock file exists if not we need to install */
 session_start();
 require('conf.php');
-require_once INCLUDE_URL.SEP.'swift/lib/swift_required.php';
 
+$VAR = array_merge($_GET,$_POST);
 $wo_id = $VAR['wo_id'];
 $customer_id = $VAR['customer_id'];
 $id = $login_id;
 $smarty->assign('id', $id);
-$smarty->assign('currency_sym', $currency_sym);
-$smarty->assign('date_format', $date_format);
 
 if(!is_file('cache/lock') ) {
 	echo("
@@ -25,10 +26,10 @@ if(!is_file('cache/lock') ) {
 	die;
 } 
 	
-$VAR = array_merge($_GET,$_POST);
+
 $page_title = $VAR['page_title'];
 
-$auth = &new Auth($db, 'login.php', 'secret');
+$auth = new Auth($db, 'login.php', 'secret');
 require(INCLUDE_URL.SEP.'acl.php');
 
 require('modules/core/translate.php');
@@ -51,18 +52,13 @@ if (isset($VAR['action']) && $VAR['action'] == 'logout') {
 }
 
 /* get company info for defaults */
-$q = 'SELECT * FROM '.PRFX.'TABLE_COMPANY';
+$q = 'SELECT * FROM '.PRFX.'TABLE_COMPANY, '.PRFX.'VERSION';
 	if(!$rs = $db->execute($q)) {
 		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
 		exit;
 	}
 
-/* get company info for defaults */
-$q = 'SELECT * FROM '.PRFX.'VERSION';
-	if(!$rs = $db->execute($q)) {
-		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-		exit;
-	}
+
 $smarty->assign('version', $rs->fields['VERSION_NAME']);
 $smarty->assign('company_name', $rs->fields['COMPANY_NAME']);
 $smarty->assign('company_address', $rs->fields['COMPANY_ADDRESS']);
@@ -194,7 +190,7 @@ if($VAR['escape'] != 1 ) {
 
 /* Tracker code */
 function getIP() {
-	$ip;
+//	$ip;
 	if (getenv("HTTP_CLIENT_IP")) $ip = getenv("HTTP_CLIENT_IP");
 	else if(getenv("HTTP_X_FORWARDED_FOR")) $ip = getenv("HTTP_X_FORWARDED_FOR");
 	else if(getenv("REMOTE_ADDR")) $ip = getenv("REMOTE_ADDR");

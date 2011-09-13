@@ -25,8 +25,5 @@ $closed = $rs->fields['CLOSED'];
 $smarty->assign('closed', $closed);
 
 
-/* CRM Version */
-$smarty->assign('VERSION', MYIT_CRM_VERSION);
-
 $smarty->display('core'.SEP.'company.tpl');
 ?>

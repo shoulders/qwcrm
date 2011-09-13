@@ -14,7 +14,7 @@
         <td>
             <table width="700" cellpadding="4" cellspacing="0" border="0" >
                 <tr>
-                    <td class="menuhead2" width="80%" align="center">&nbsp;{$translate_schedule_view} {$cur_date}</td>
+                    <td class="menuhead2" width="100%" align="center">&nbsp;{$translate_schedule_view} {$cur_date}</td>
                     </td>
                 </tr><tr>
                     <td class="menutd2" colspan="3">

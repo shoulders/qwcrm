@@ -54,7 +54,7 @@
         <td class="olotd">
             <table width="100%" cellpadding="4" cellspacing="0" border="0" >
                 <tr>
-                    <td class="menuhead2" width="80%">&nbsp;{$translate_stats_basic_statistics}
+                    <td class="menuhead2" width="100%">&nbsp;{$translate_stats_basic_statistics}
                             <a style="float:right;"><img src="images/icons/16x16/help.gif" border="0" alt=""
                             onMouseOver="ddrivetip('<b>{$translate_stats_basic_statistics_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_stats_basic_statistics_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>')"
                             onMouseOut="hideddrivetip()"></a>
@@ -137,7 +137,7 @@
         <td class="olotd">
             <table width="100%" cellpadding="4" cellspacing="0" border="0" >
                 <tr>
-                    <td class="menuhead2" width="80%">&nbsp;{$translate_stats_advanced_statistics}
+                    <td class="menuhead2" width="100%">&nbsp;{$translate_stats_advanced_statistics}
                             <a style="float:right;"><img src="images/icons/16x16/help.gif" border="0" alt=""
                             onMouseOver="ddrivetip('<b>{$translate_stats_advanced_statistics_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_stats_advanced_statistics__help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>')"
                             onMouseOut="hideddrivetip()"></a>

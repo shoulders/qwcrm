@@ -49,10 +49,7 @@
         <span>{$translate_menu_accounts}</span>
         <a href="?page=invoice:view_paid&amp;page_title=Paid%20Invoices"><img src="images/icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_paid_2} <b><font color="RED">{if $paid > 0} ({$paid}){/if}{if $paid < 1}{/if}</font></b></a>
         <a href="?page=invoice:view_unpaid&amp;page_title={$translate_menu_un_paid_2}"><img src="images/icons/warning.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_un_paid_2} <b><font color="RED">{if $unpaid > 0} ({$unpaid}){/if}{if $unpaid < 1}{/if}</font></b></a>
-        <!-- //TODO -  Fix parts ordering systems then reinstate these options
-        <a href="?page=parts:status&amp;status=1&amp;page_title={$translate_menu_open_orders}"><img src="images/tick.png" alt="" border="0" height="14" width="14" /> {$translate_menu_open_orders}</a>
-        <a href="?page=parts:status&amp;status=0&amp;page_title=Closed%20Orders"><img src="images/icons/close.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_closed_orders}</a>
-      	-->
+
       </div>
 	  <div>
         <span>{$translate_menu_administration}</span>
@@ -121,9 +118,9 @@
                         <a href="?page=control:company_edit"><img src="images/icons/key.png" alt="" border="0" height="14" width="14" /> Business Setup</a>
                         <a href="?page=control:hours_edit"><img src="images/icons/clock.gif" alt="" border="0" height="14" width="14" /> Business Hours</a>
                         <a href="?page=control:payment_options"><img src="images/icons/money.png" alt="" border="0" height="14" width="14" /> Payment Options</a>
-                        <a href="?page=control:backup"><img src="images/icons/db_restore.png" alt="" border="0" height="14" width="14" /> Restore Database</a>
+                        {*<a href="?page=control:backup"><img src="images/icons/db_restore.png" alt="" border="0" height="14" width="14" /> Restore Database</a>
                         <a href="modules/core/backup.php"><img src="images/icons/db_save.png" alt="" border="0" height="14" width="14" /> Backup Database</a>
-                        <a href="include/phpinfo.php"><img src="images/icons/php.png" alt="" border="0" height="14" width="14" /> PHP Info</a>
+                        <a href="#"><img src="images/icons/php.png" alt="" border="0" height="14" width="14" /> PHP Info</a>*}
 		</div>
 		{/if}
 		<div>

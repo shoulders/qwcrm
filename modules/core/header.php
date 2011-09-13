@@ -1,5 +1,4 @@
 <?php
-$smarty->assign('VERSION', MYIT_CRM_VERSION);
 if(!xml2php("core")) {
 	$smarty->assign('error_msg',"Error in language file");
 }
@@ -12,7 +11,7 @@ $expenseID = $VAR['expenseID'];
 $refundID = $VAR['refundID'];
 $supplierID = $VAR['supplierID'];
 $employee_id = $VAR['employee_id'];
-$today = (Date("l, j F Y"));
+$today = (Date('l, j F Y'));
 $smarty->assign('today',$today);
 
 if(!$login)
@@ -66,7 +65,7 @@ $friday = "Get ready for the weekend! $login. ";
 //No need to edit any further
 
 //Get the current hour
-$current_time = date(H);
+$current_time = date('H');
 //Get the current day
 $current_day = date('l');
 

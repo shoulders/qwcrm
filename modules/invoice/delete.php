@@ -45,7 +45,7 @@ if(isset($VAR['deleteType']) && $VAR['deleteType'] == "partsRecord") {
 }
 // Delete Invoice
 if(!delete_invoice($db, $invoice_id, $customer_id, $login)) {
-    force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+     force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
     exit;
 } else {
     force_page('invoice' , 'view_paid&page_title=Paid%20Invoices');

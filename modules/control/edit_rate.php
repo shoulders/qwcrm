@@ -1,21 +1,4 @@
 <?php
-//if(isset($VAR['upload'])&& $_FILES['userfile']['size'] >  0 ){
-//$target_path = "upload/";
-//
-//$target_path = $target_path . basename( $_FILES['userfile']['name']);
-//
-//if(move_uploaded_file($_FILES['userfile']['tmp_name'], $target_path))
-//$fname = WWW_ROOT.SEP.$target_path ;
-//$handle = fopen ($fname , 'r');
-////TODO check file size before uploading to avoid errors on no file loaded
-//		while (($data = fgetcsv($handle, 1000, ',', '"')) !== FALSE)
-//		{
-//			$query = "REPLACE INTO ".PRFX."TABLE_LABOR_RATE VALUES ('". implode("','", $data)
-//."')";
-// 			$query = @mysql_query($query);
-//		}
-//fclose($handle);
-//}
 if(isset($VAR['upload'])&& $_FILES['userfile']['size'] > 0 ){
 
 //check extension for csv

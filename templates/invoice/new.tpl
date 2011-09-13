@@ -373,7 +373,7 @@
                                             <button type="button" name="{$translate_invoice_pdf}" OnClick=window.open('?page=invoice:print&amp;print_type=pdf&amp;wo_id={$invoice.WORKORDER_ID}&customer_id={$invoice.CUSTOMER_ID}&invoice_id={$invoice.INVOICE_ID}&escape=1')><img src="images/icons/pdf_small.png"  height="14" alt="pdf">&nbsp;{$translate_invoice_pdf}</button>
                                             <button type="button" name="{$translate_invoice_bill_customer}" OnClick=location.href='?page=billing:new&wo_id={$invoice.WORKORDER_ID}&customer_id={$invoice.CUSTOMER_ID}&invoice_id={$invoice.INVOICE_ID}&page_title=Receiving%20Payment%20for%20{$invoice.INVOICE_ID}'>{$translate_invoice_bill_customer}</button>
                          {if $invoice.INVOICE_AMOUNT == 0 || "" }
-                             <button type="button" name="{$translate_invoice_delete}" OnClick=location.href='?page=invoice:delete&customer_id={$invoice.CUSTOMER_ID}&invoice_id={$invoice.INVOICE_ID}&page_title=Deleting%20Invoice%20-{$invoice.INVOICE_ID}'>{$translate_invoice_delete}</button>
+                                            <button type="button" name="{$translate_invoice_delete}" OnClick=location.href='?page=invoice:delete&amp;customer_id={$invoice.CUSTOMER_ID}&amp;invoice_id={$invoice.INVOICE_ID}&amp;page_title=Deleting&nbsp;Invoice&nbsp;-{$invoice.INVOICE_ID}'>{$translate_invoice_delete}</button>
                          {/if}
                                                {else}
                                             <button type="button" name="Close Work Order" OnClick=location.href='?page=workorder:close&amp;wo_id={$invoice.WORKORDER_ID}&amp;page_title=Closing%20Work%20Order{$invoice.WORKORDER_ID}'>{$translate_invoice_close_wo}</button>

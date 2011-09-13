@@ -30,7 +30,7 @@
                     <li><a href="#" rel="#tab_2_contents" class="tab"><img src="images/icons/customers.gif" alt="" border="0" height="14" width="14" />&nbsp;{$translate_workorder_cutomer_contact_title}</a></li>
                     <li><a href="#" rel="#tab_3_contents" class="tab"><img src="images/icons/16x16/Calendar.gif" alt="" border="0" height="14" width="14" />&nbsp;{$translate_workorder_schedule_title}</a></li>
                     <li><a href="#" rel="#tab_4_contents" class="tab"><img src="images/icons/note.png" alt="" border="0" height="14" width="14" /> &nbsp;{$translate_workorder_notes}</a></li>
-                    <li><a href="#" rel="#tab_5_contents" class="tab"><img src="images/icons/status.gif" alt="" border="0" height="14" width="14" />&nbsp;{$translate_workorder_parts}</a></li>
+                    {*<li><a href="#" rel="#tab_5_contents" class="tab"><img src="images/icons/status.gif" alt="" border="0" height="14" width="14" />&nbsp;{$translate_workorder_parts}</a></li>*}
                     <li><a href="#" rel="#tab_6_contents" class="tab"><img src="images/icons/clock.gif" alt="" border="0" height="14" width="14" />&nbsp;{$translate_workorder_history_title}</a></li>
                 </ul>
 
@@ -161,7 +161,7 @@
 
                                             <td class="menuhead2" width="20%" align="right" valign="middle">
                                                 <a href="" target="new"><img src="images/icons/16x16/help.gif" border="0" alt=""
-                                                                             onMouseOver="ddrivetip('<b>Work Orders</b><hr><p>You can edit the Work order commments, notes, and set schedule by clicking the icon on the right of each window<br><br>You can navigate to the customer by clicking their name. Hover over the Magnifing glass by the customer name to view Quick Contact Information. <br><br>If you need to edit the Customers Contact Information click the Edit Icon by their contact details.<br><br>Click on the Employee name to go to the employees details. Hover over the Magnifing glass to view the employees Quick Contact Information.<br><br>Click the Print link on the Quick Bar to generate a printable PDF of this work order. Click the Close link on the Quick Bar to complete the order and start the invoicing processes</p>')" onMouseOut="hideddrivetip()"></a>
+                                                                             onMouseOver="ddrivetip('<b>Work Orders</b><hr><p>You can edit the Work order comments, notes, and set schedule by clicking the icon on the right of each window<br><br>You can navigate to the customer by clicking their name. Hover over the Magnifing glass by the customer name to view Quick Contact Information. <br><br>If you need to edit the Customers Contact Information click the Edit Icon by their contact details.<br><br>Click on the Employee name to go to the employees details. Hover over the Magnifing glass to view the employees Quick Contact Information.<br><br>Click the Print link on the Quick Bar to generate a printable PDF of this work order. Click the Close link on the Quick Bar to complete the order and start the invoicing processes</p>')" onMouseOut="hideddrivetip()"></a>
                                             </td>
                                         </tr><tr>
                                             <td class="menutd2" colspan="2">
@@ -183,7 +183,7 @@
                         </table>
 
                     </div>
-                    <div id="tab_5_contents" class="tab_contents">
+                    {*<div id="tab_5_contents" class="tab_contents">
                         <table width="100%" border="0" cellpadding="20" cellspacing="0">
                             <tr>
                                 <td><!-- Begin Page -->
@@ -193,7 +193,7 @@
 
                                             <td class="menuhead2" width="20%" align="right" valign="middle">
                                                 <a href="" target="new"><img src="images/icons/16x16/help.gif" border="0" alt=""
-                                                                             onMouseOver="ddrivetip('<b>Work Orders</b><hr><p>You can edit the Work order commments, notes, and set schedule by clicking the icon on the right of each window<br><br>You can navigate to the customer by clicking their name. Hover over the Magnifing glass by the customer name to view Quick Contact Information. <br><br>If you need to edit the Customers Contact Information click the Edit Icon by their contact details.<br><br>Click on the Employee name to go to the employees details. Hover over the Magnifing glass to view the employees Quick Contact Information.<br><br>Click the Print link on the Quick Bar to generate a printable PDF of this work order. Click the Close link on the Quick Bar to complete the order and start the invoicing processes</p>')" onMouseOut="hideddrivetip()"></a>
+                                                                             onMouseOver="ddrivetip('<b>Work Orders</b><hr><p>You can edit the Work order comments, notes, and set schedule by clicking the icon on the right of each window<br><br>You can navigate to the customer by clicking their name. Hover over the Magnifing glass by the customer name to view Quick Contact Information. <br><br>If you need to edit the Customers Contact Information click the Edit Icon by their contact details.<br><br>Click on the Employee name to go to the employees details. Hover over the Magnifing glass to view the employees Quick Contact Information.<br><br>Click the Print link on the Quick Bar to generate a printable PDF of this work order. Click the Close link on the Quick Bar to complete the order and start the invoicing processes</p>')" onMouseOut="hideddrivetip()"></a>
                                             </td>
                                         </tr><tr>
                                             <td class="menutd2" colspan="2">
@@ -215,7 +215,7 @@
                         </table>
 
 
-                    </div>
+                    </div>*}
                     <div id="tab_6_contents" class="tab_contents">
                         <table width="100%" border="0" cellpadding="20" cellspacing="0">
                             <tr>

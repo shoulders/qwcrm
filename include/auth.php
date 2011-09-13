@@ -17,7 +17,7 @@ class Auth {
     $this->redirect = $redirect;
     $this->hashKey  = $hashKey;
     $this->md5      = $md5;
-    $this->session  = &new Session();
+    $this->session  = new Session();
     $this->login();
   }
    
