@@ -17,6 +17,8 @@ function create_acl($db)
 {
 
     $q = "INSERT INTO `".PRFX."ACL` VALUES
+            (78, 'invoice:delete', 1, 1, 1, 1, 0),
+            (79, 'refund:refund_details', 1, 1, 1, 1, 0),
             (80, 'refund:edit', 1, 1, 1, 1, 0),
             (81, 'expense:edit', 1, 1, 1, 1, 0),
             (82, 'supplier:edit', 1, 1, 1, 1, 0)";
@@ -60,13 +62,13 @@ function update_invoice_tax($db)
 
 if (!update_invoice_tax_setup($db)) {
     echo("<tr>\n
-			<td>UPDATED TABLE ".PRFX."TABLE_SETUP</td>\n
+			<td>UPDATED TABLE ".PRFX."SETUP</td>\n
 			<td><font color=\"red\"><b>Failed:</b></font> " . $db->ErrorMsg() . "</td>\n
 		</tr>\n");
     $error_flag = true;
 } else {
     echo("<tr>\n
-				<td>UPDATED TABLE ".PRFX."TABLE_SETUP</td>\n
+				<td>UPDATED TABLE ".PRFX."SETUP</td>\n
 				<td><font color=\"green\"><b>OK</b></font></td>\n
 			</tr>\n");
 }
@@ -74,7 +76,7 @@ if (!update_invoice_tax_setup($db)) {
 function update_invoice_tax_setup($db)
 {
 
-    $q = "ALTER TABLE `".PRFX."TABLE_SETUP` CHANGE `INVOICE_TAX` `INVOICE_TAX` DECIMAL( 10, 3 ) NOT NULL DEFAULT '0.000'";
+    $q = "ALTER TABLE `".PRFX."SETUP` CHANGE `INVOICE_TAX` `INVOICE_TAX` DECIMAL( 10, 3 ) NOT NULL DEFAULT '0.000'";
 
     $rs = $db->Execute($q);
     if (!$rs) {
@@ -243,24 +245,37 @@ if (!create_version_table($db)) {
 }
 
 
-// ADDING VERSION NUMBER TO DATABASE
+// CREATING VERSION NUMBER TABLE
 function create_version_table($db)
 {
-    $q = "CREATE TABLE IF NOT EXISTS `".PRFX."VERSION` (
-    `VERSION_ID` INT NOT NULL ,
-    `VERSION_NAME` VARCHAR( 10 ) NOT NULL ,
-    `VERSION_INSTALLED` TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL
-    ) ENGINE=MYISAM ";
+    $q = "CREATE TABLE `".PRFX."VERSION` (`VERSION_ID` INT NOT NULL ,`VERSION_NAME` VARCHAR( 10 ) NOT NULL ,`VERSION_INSTALLED` TIMESTAMP ) ENGINE=MyISAM ";
     if (!$rs = $db->execute($q)) {
         return false;
     } else {
         return true;
     }
+
+}
+
+if (!insert_version_values($db)) {
+    echo("<tr>\n
+			<td>UPDATED TABLE ".PRFX."VERSION</td>\n
+			<td><font color=\"red\"><b>Failed:</b></font> " . $db->ErrorMsg() . "</td>\n
+		</tr>\n");
+    $error_flag = true;
+} else {
+    echo("<tr>\n
+				<td>UPDATED TABLE ".PRFX."VERSION</td>\n
+				<td><font color=\"green\"><b>OK</b></font></td>\n
+			</tr>\n");
+}
+// ADDING VERSION NUMBER TO DATABASE
+function insert_version_values($db)
+{
     //Insert New Records for version table
     $q = "INSERT INTO `".PRFX."VERSION` (`VERSION_ID`, `VERSION_NAME`, `VERSION_INSTALLED`) VALUES ('292', '0.2.9.2', '')";
 
-    $rs = $db->Execute($q);
-    if (!$rs) {
+    if (!$rs = $db->Execute($q)) {
         return false;
     } else {
         return true;
