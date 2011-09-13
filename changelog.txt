@@ -4,7 +4,8 @@ PLEASE REPORT ANY BUGS OR FEATURES THAT YOU FIND SO THAT WE CAN FIX'EM!
 To view more details on these issues, please visit http://team.myitcrm.com/
 
 
-===v0.2.9.2 : 15th September 2011 from svn rxxx===
+===v0.2.9.2 : 15th September 2011 from svn r371===
+
 Over 40 Bug Fixes and over 30 New features added
 
 •Bug #144: Database error on printing schedule.
