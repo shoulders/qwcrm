@@ -440,12 +440,22 @@ $pdf = new PDF( 'P', 'mm', 'A4' );
 $pdf->AliasNbPages();
 $pdf->Open();
 $pdf->AddPage();
-$pdf->addCompany( "$cname",
+if($cabn <> ""){
+    $pdf->addCompany( "$cname",
                   "$caddress\n" .
                   "$ccity , $cstate\n" .
                   "P: $cphone\n" .
                   "E: $cemail\n" .
                   "ABN: $cabn\n");
+}
+if($cabn == ""){
+    $pdf->addCompany( "$cname",
+                  "$caddress\n" .
+                  "$ccity , $cstate\n" .
+                  "P: $cphone\n" .
+                  "E: $cemail\n");
+}
+
 
 // Logo
 $pdf->Image('images/logo.jpg',60,5,0,15,JPG);
