@@ -9,7 +9,7 @@ if(!isset($customer_id) || $customer_id =="") {
 	die;
 }	
 
-$q = "SELECT count(*) as count FROM ".PRFX."TABLE_WORK_ORDER WHERE CUSTOMER_ID=".$db->qstr($customer_id);
+$q = "SELECT count(*) as count FROM `".PRFX."TABLE_WORK_ORDER` LEFT JOIN ".PRFX."TABLE_INVOICE ON ".PRFX."TABLE_WORK_ORDER.CUSTOMER_ID = ".PRFX."TABLE_INVOICE.CUSTOMER_ID WHERE ".PRFX."TABLE_WORK_ORDER.CUSTOMER_ID=".$db->qstr($customer_id);
 	if(!$rs = $db->execute($q)) {
 		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
 		exit;
