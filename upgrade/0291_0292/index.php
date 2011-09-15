@@ -1,4 +1,8 @@
 <?php
+/*Used to suppress Notices*/
+//error_reporting(E_ALL & ~E_NOTICE); //Development Mode
+error_reporting(E_ERROR); //Production Mode
+
 // Required to grab DB defaults from conf.php file
 require('../../conf.php');
 ###############################
@@ -32,16 +36,16 @@ switch ($mode) {
 					<td class=\"olotd\" align=\"center\">\n
 						
 						<!-- Begin Page -->\n
-						<table width=\"800\" cellpadding=\"5\" cellspacing=\"0\" border=\"0\" >\n
+						<table width=\"55%\" cellpadding=\"5\" cellspacing=\"0\" border=\"0\" >\n
 							<tr>\n
-								<td class=\"menuhead2\" width=\"80%\">&nbsp;MYIT CRM Upgrader</td>\n
+								<td class=\"menuhead2\" width=\"100%\">&nbsp;MYIT CRM Upgrader</td>\n
 							</tr><tr>\n
 								<td class=\"menutd2\" colspan=\"2\">\n
 
 									<table width=\"100%\"  class=\"olotable\" cellpadding=\"5\" cellspacing=\"0\" border=\"0\" >\n
 										<tr>
 											<td>
-												<table width=\"100%\"  class=\"menutd\" cellpadding=\"5\" cellspacing=\"0\" border=\"0\" >\n
+												<table width=\"100%\"  class=\"menutd\" cellpadding=\"5\" cellspacing=\"0\" border=\"0\" style=\"text-align:left;\" >\n
 									");
 
 
@@ -62,8 +66,8 @@ switch ($mode) {
         ##################################
         # Create New Connection				#
         ##################################
-        $db->close();
-        include("../../conf.php");
+
+//        include("../../conf.php");
 
         if ($db->errorMsg() != '') {
             echo "There Was an error connecting to the database: " . $db->errorMsg();
@@ -78,6 +82,7 @@ switch ($mode) {
         ##################################
         /*include sql.php */
         include("sql.php");
+        $db->close();
 
 
         if ($error_flag == true) {
@@ -162,14 +167,14 @@ switch ($mode) {
 		<td align=\"center\">
 		<br><br>
 
-<table width=\"100%\" border=\"0\" cellpadding=\"20\" cellspacing=\"0\">
+<table width=\"55%\" border=\"0\" cellpadding=\"20\" cellspacing=\"0\">
 	<tr>
 		<td class=\"olotd\" align=\"center\">
 			
 			<!-- Begin Page -->
-			<table width=\"800\" cellpadding=\"5\" cellspacing=\"0\" border=\"0\" >
+			<table width=\"100%\" cellpadding=\"5\" cellspacing=\"0\" border=\"0\" >
 				<tr>
-					<td class=\"menuhead2\" width=\"80%\">&nbsp;MyIT CRM Upgrader from versions 0.2.9.x</td>
+					<td class=\"menuhead2\" width=\"100%\">&nbsp;MyIT CRM Upgrader from versions 0.2.9.x</td>
 					</td>
 				</tr><tr>
 					<td class=\"menutd2\" colspan=\"2\">
