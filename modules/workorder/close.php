@@ -34,13 +34,19 @@ if($rs->fields['WORK_ORDER_STATUS'] == 9) {
     $close = $rs->fields['WORK_ORDER_RESOLUTION'];
     $smarty->assign('close', $close);
 
+
+
 // Update Work Resolution Only
     if(isset($VAR['submitchangesonly'])) {
 
+    //Remove Extra Slashes caused by Magic Quotes
+    $resolution_string = $VAR['resolution'];
+    $resolution_string = stripslashes($resolution_string);
+
             $q = "UPDATE ".PRFX."TABLE_WORK_ORDER SET
-                            WORK_ORDER_RESOLUTION                   =".$db->qstr( $VAR['resolution']).",
-                            LAST_ACTIVE				=".$db->qstr( time() )."
-                            WHERE  WORK_ORDER_ID                    =".$db->qstr( $wo_id );
+                            WORK_ORDER_RESOLUTION   =".$db->qstr( $resolution_string    ).",
+                            LAST_ACTIVE             =".$db->qstr( time()                )."
+                            WHERE  WORK_ORDER_ID    =".$db->qstr( $wo_id                );
 
             if(!$rs = $db->execute($q)) {
                     force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
@@ -49,10 +55,10 @@ if($rs->fields['WORK_ORDER_STATUS'] == 9) {
 
             $msg = 'Resolution has been Updated';
             $sql = "INSERT INTO ".PRFX."TABLE_WORK_ORDER_STATUS SET
-                              WORK_ORDER_ID				=". $db->qstr( $wo_id).",
-                              WORK_ORDER_STATUS_DATE		=". $db->qstr( time()).",
-                              WORK_ORDER_STATUS_NOTES		=". $db->qstr( $msg ).",
-                              WORK_ORDER_STATUS_ENTER_BY =". $db->qstr( $_SESSION['login_id']);
+                              WORK_ORDER_ID                 =". $db->qstr( $wo_id                   ).",
+                              WORK_ORDER_STATUS_DATE        =". $db->qstr( time()                   ).",
+                              WORK_ORDER_STATUS_NOTES       =". $db->qstr( $msg                     ).",
+                              WORK_ORDER_STATUS_ENTER_BY    =". $db->qstr( $_SESSION['login_id']    );
 
             if(!$result = $db->Execute($sql)) {
                     force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
@@ -63,6 +69,7 @@ if($rs->fields['WORK_ORDER_STATUS'] == 9) {
             exit;
 
                         }
+
 
 // Close without invoice
     if(isset($VAR["closewithoutinvoice"])){

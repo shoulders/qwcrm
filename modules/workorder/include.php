@@ -1,6 +1,6 @@
 <?php
 #####################################
-# Display a single open work order	#
+# Display a single open work order  #
 #####################################
 
 function display_single_open_workorder($db, $wo_id){
@@ -47,7 +47,7 @@ function display_single_open_workorder($db, $wo_id){
 }
 
 #####################################
-# Display all open Work orders to 	#
+# Display all open Work orders to   #
 #####################################
 
 function display_workorders($db, $page_no, $where){
@@ -116,7 +116,7 @@ function display_workorders($db, $page_no, $where){
 }
 
 #############################
-# Display Work Order Notes	#
+# Display Work Order Notes  #
 #############################
 function display_workorder_notes($db, $wo_id){
 	$sql = "SELECT ".PRFX."TABLE_WORK_ORDER_NOTES.*, ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_DISPLAY_NAME FROM ".PRFX."TABLE_WORK_ORDER_NOTES, ".PRFX."TABLE_EMPLOYEE WHERE WORK_ORDER_ID=".$db->qstr($wo_id)." AND ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_ID = ".PRFX."TABLE_WORK_ORDER_NOTES.WORK_ORDER_NOTES_ENTER_BY ";
@@ -130,7 +130,7 @@ function display_workorder_notes($db, $wo_id){
 }
 
 #############################
-# Display Work Order Status	#
+# Display Work Order Status #
 #############################
 function display_workorder_status($db, $wo_id){
 	$sql = "SELECT ".PRFX."TABLE_WORK_ORDER_STATUS.*, ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_DISPLAY_NAME 
@@ -148,6 +148,7 @@ function display_workorder_status($db, $wo_id){
 	
 }
 $smarty->assign('wo_stat', display_workorder_status($db, $wo_id));
+
 #########################################
 # Display Customer Contact Information	#
 #########################################
@@ -163,7 +164,7 @@ function display_customer_info($db, $customer_id){
 }
 
 #############################################################
-# Display all open Work orders to 							#
+# Display all open Work orders to                           #
 #############################################################
 function display_tech($db){
 	$sql = "SELECT  EMPLOYEE_ID, EMPLOYEE_LOGIN FROM ".PRFX."TABLE_EMPLOYEE"; 
@@ -183,21 +184,21 @@ function display_tech($db){
 }
 
 #############################################################
-# Display all open Work orders to 							#
+# Display all open Work orders to                           #
 #############################################################
 function insert_new_workorder($db,$VAR){
 	global $smarty;
 	
 	$sql = "INSERT INTO ".PRFX."TABLE_WORK_ORDER  SET 
-			CUSTOMER_ID					=".$db->qstr($VAR["customer_ID"]).", 
+			CUSTOMER_ID			=".$db->qstr($VAR["customer_ID"]).", 
 			WORK_ORDER_OPEN_DATE		=".$db->qstr(time()).", 
-			WORK_ORDER_STATUS			=".$db->qstr(10).",
+			WORK_ORDER_STATUS		=".$db->qstr(10).",
 			WORK_ORDER_CURRENT_STATUS	=".$db->qstr(1).",
 			WORK_ORDER_CREATE_BY		=".$db->qstr($VAR["created_by"]).",                        
-			WORK_ORDER_SCOPE			=".$db->qstr($VAR["scope"]).", 
+			WORK_ORDER_SCOPE		=".$db->qstr($VAR["scope"]).", 
 			WORK_ORDER_DESCRIPTION		=".$db->qstr($VAR["work_order_discription"]).",
-			LAST_ACTIVE					=".$db->qstr(time()).",
-			WORK_ORDER_COMMENT			=".$db->qstr($VAR["work_order_comments"]);
+			LAST_ACTIVE			=".$db->qstr(time()).",
+			WORK_ORDER_COMMENT		=".$db->qstr($VAR["work_order_comments"]);
 	   
 	if(!$result = $db->Execute($sql)) {
 		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
@@ -228,10 +229,10 @@ function insert_new_workorder($db,$VAR){
 
 function insert_new_status($db,$VAR){
 	$sql = "INSERT INTO ".PRFX."TABLE_WORK_ORDER_STATUS SET
-			  WORK_ORDER_ID					=". $db->qstr( $VAR["wo_id"]).",
+			  WORK_ORDER_ID				=". $db->qstr( $VAR["wo_id"]).",
 			  WORK_ORDER_STATUS_DATE		=". $db->qstr( time()).",
 			  WORK_ORDER_STATUS_NOTES		=". $db->qstr( $VAR["work_order_status_notes"]).",
-			  WORK_ORDER_STATUS_ENTER_BY =". $db->qstr( $_SESSION['login_id']);
+			  WORK_ORDER_STATUS_ENTER_BY            =". $db->qstr( $_SESSION['login_id']);
 		
 	if(!$result = $db->Execute($sql)) {
 		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
@@ -250,8 +251,8 @@ function update_status($db,$VAR){
 
 	$sql = "UPDATE ".PRFX."TABLE_WORK_ORDER SET
 			  WORK_ORDER_CURRENT_STATUS	=". $db->qstr( $VAR["status"] ).",
-			  LAST_ACTIVE					=". $db->qstr(time())."
-	  		  WHERE WORK_ORDER_ID			=". $db->qstr($VAR["wo_id"]);
+			  LAST_ACTIVE			=". $db->qstr(time())."
+	  		  WHERE WORK_ORDER_ID           =". $db->qstr($VAR["wo_id"]);
 
 	if(!$result = $db->Execute($sql)) {
 			force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
@@ -326,7 +327,7 @@ function display_resolution($db,$wo_id) {
 				  ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_RESOLUTION, 
 				  ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_CLOSE_DATE,
 				  ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_ID, 
-			     ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_DISPLAY_NAME 
+                                  ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_DISPLAY_NAME
 		FROM ".PRFX."TABLE_WORK_ORDER
 		LEFT JOIN ".PRFX."TABLE_EMPLOYEE ON (".PRFX."TABLE_WORK_ORDER.WORK_ORDER_CLOSE_BY = ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_ID)
 		WHERE ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_ID=".$db->qstr($wo_id);
@@ -345,10 +346,10 @@ function display_resolution($db,$wo_id) {
 function insert_new_note($db,$VAR){
 
 	$sql = "INSERT INTO ".PRFX."TABLE_WORK_ORDER_NOTES SET 
-		     WORK_ORDER_ID						=". $db->qstr( $VAR["wo_id"]					).", 
-		     WORK_ORDER_NOTES_DESCRIPTION	=". $db->qstr( $VAR["work_order_notes"]		).", 
-		     WORK_ORDER_NOTES_ENTER_BY		=". $db->qstr( $_SESSION["login_id"]			).",
-		     WORK_ORDER_NOTES_DATE			=". $db->qstr( time()								);
+		     WORK_ORDER_ID			=". $db->qstr( $VAR["wo_id"]            ).",
+		     WORK_ORDER_NOTES_DESCRIPTION	=". $db->qstr( $VAR["work_order_notes"]	).", 
+		     WORK_ORDER_NOTES_ENTER_BY		=". $db->qstr( $_SESSION["login_id"]	).",
+		     WORK_ORDER_NOTES_DATE              =". $db->qstr( time()			);
 		 
 	if(!$result = $db->Execute($sql)) {
 		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
@@ -365,15 +366,19 @@ function insert_new_note($db,$VAR){
 ########################################
 function close_work_order($db,$VAR){
 
+//Remove Extra Slashes caused by Magic Quotes
+$resolution_string = $VAR['resolution'];
+$resolution_string = stripslashes($resolution_string);
+
 	/* Insert resolution and close information */
 	$sql = "UPDATE ".PRFX."TABLE_WORK_ORDER SET
-			 WORK_ORDER_STATUS        ='9',
-			 WORK_ORDER_CLOSE_DATE    = ". $db->qstr( time()											).", 
-			 WORK_ORDER_RESOLUTION    = ". $db->qstr( $VAR['resolution']	).", 
-			 WORK_ORDER_CLOSE_BY      = ". $db->qstr( $_SESSION['login_id']						).",
-			 WORK_ORDER_ASSIGN_TO      = ". $db->qstr( $_SESSION['login_id']	).",			 
-			 WORK_ORDER_CURRENT_STATUS ='7' 
-			 WHERE WORK_ORDER_ID      = ". $db->qstr( $VAR['wo_id']						);
+			 WORK_ORDER_STATUS          ='9',
+			 WORK_ORDER_CLOSE_DATE      = ". $db->qstr( time()                  ).",
+			 WORK_ORDER_RESOLUTION      = ". $db->qstr( $resolution_string      ).",
+			 WORK_ORDER_CLOSE_BY        = ". $db->qstr( $_SESSION['login_id']   ).",
+			 WORK_ORDER_ASSIGN_TO       = ". $db->qstr( $_SESSION['login_id']   ).",
+			 WORK_ORDER_CURRENT_STATUS  ='7'
+			 WHERE WORK_ORDER_ID        = ". $db->qstr( $VAR['wo_id']           );
 	
 	if(!$result = $db->Execute($sql)) {
 		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
@@ -394,15 +399,19 @@ function close_work_order($db,$VAR){
 ########################################
 function close_work_order_no_invoice($db,$VAR){
 
+//Remove Extra Slashes caused by Magic Quotes
+$resolution_string = $VAR['resolution'];
+$resolution_string = stripslashes($resolution_string);
+
 	/* Insert resolution and close information */
 	$sql = "UPDATE ".PRFX."TABLE_WORK_ORDER SET
 			 WORK_ORDER_STATUS        ='6',
-			 WORK_ORDER_CLOSE_DATE    = ". $db->qstr( time() ).", 
-			 WORK_ORDER_RESOLUTION    = ". $db->qstr( $VAR['resolution']).", 
-			 WORK_ORDER_CLOSE_BY      = ". $db->qstr( $_SESSION['login_id']	).",
-			 WORK_ORDER_ASSIGN_TO      = ". $db->qstr( $_SESSION['login_id']	).",			 
+			 WORK_ORDER_CLOSE_DATE    = ". $db->qstr( time()                    ).",
+			 WORK_ORDER_RESOLUTION    = ". $db->qstr( $resolution_string        ).",
+			 WORK_ORDER_CLOSE_BY      = ". $db->qstr( $_SESSION['login_id']     ).",
+			 WORK_ORDER_ASSIGN_TO      = ". $db->qstr( $_SESSION['login_id']    ).",
 			 WORK_ORDER_CURRENT_STATUS ='6' 
-			 WHERE WORK_ORDER_ID      = ". $db->qstr( $VAR['wo_id']	);
+			 WHERE WORK_ORDER_ID      = ". $db->qstr( $VAR['wo_id']             );
 	
 	if(!$result = $db->Execute($sql)) {
 		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
@@ -417,9 +426,8 @@ function close_work_order_no_invoice($db,$VAR){
 
 }
 
-
 ###############################
-#	Get Work Order schedule		#
+# Get Work Order schedule     #
 ###############################
 function get_work_order_schedule ($db,$wo_id){
 	$sql = "SELECT * FROM ".PRFX."TABLE_SCHEDULE WHERE WORK_ORDER_ID=".$db->qstr($wo_id); 

@@ -144,7 +144,7 @@
                                                         <td class="menutd" colspan="3"></td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="menutd" colspan="3">{$supplier_details[i].SUPPLIER_NOTES|nl2br}</td>
+                                                        <td class="menutd" colspan="3">{$supplier_details[i].SUPPLIER_NOTES}</td>
                                                         <td class="menutd"></td>
                                                     </tr>
                                                     <tr class="row2">
@@ -158,7 +158,7 @@
                                                      </tr>
 
                                                     <tr>
-                                                        <td class="menutd" colspan="3">{$supplier_details[i].SUPPLIER_DESCRIPTION|nl2br}</td>
+                                                        <td class="menutd" colspan="3">{$supplier_details[i].SUPPLIER_DESCRIPTION}</td>
                                                         <td class="menutd"></td>
                                                     </tr>
                                                     {assign var="supplierID" value=$supplier_details[i].SUPPLIER_ID}

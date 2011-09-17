@@ -179,7 +179,7 @@
                                                         <td class="menutd" colspan="3"></td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="menutd" colspan="3">{$expense_details[i].EXPENSE_NOTES|nl2br}</td>
+                                                        <td class="menutd" colspan="3">{$expense_details[i].EXPENSE_NOTES}</td>
                                                         <td class="menutd"></td>
                                                     </tr>
                                                     <tr class="row2">
@@ -193,7 +193,7 @@
                                                      </tr>
 
                                                     <tr>
-                                                        <td class="menutd" colspan="3">{$expense_details[i].EXPENSE_ITEMS|nl2br}</td>
+                                                        <td class="menutd" colspan="3">{$expense_details[i].EXPENSE_ITEMS}</td>
                                                         <td class="menutd"></td>
                                                     </tr>
                                                     {assign var="expenseID" value=$expense_details[i].EXPENSE_ID}

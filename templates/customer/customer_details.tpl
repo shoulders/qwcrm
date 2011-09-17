@@ -95,7 +95,7 @@ window.open({/literal}$src{literal}, menubar=0)
                                                                 </tr>
                                                                 <tr>
                                                                     <td class="menutd">{$customer_details[i].CUSTOMER_DISPLAY_NAME}</td>
-                                                                    <td class="menutd">{$customer_details[i].CUSTOMER_ADDRESS|nl2br|regex_replace:"/[\r\t\n]/":""}<br>{$customer_details[i].CUSTOMER_CITY}<br>{$customer_details[i].CUSTOMER_STATE}<br>{$customer_details[i].CUSTOMER_ZIP}</td>
+                                                                    <td class="menutd">{$customer_details[i].CUSTOMER_ADDRESS|nl2br}<br>{$customer_details[i].CUSTOMER_CITY}<br>{$customer_details[i].CUSTOMER_STATE}<br>{$customer_details[i].CUSTOMER_ZIP}</td>
                                                                     <td class="menutd"><b>{$translate_customer_work}</b></td>
                                                                     <td class="menutd">{$customer_details[i].CUSTOMER_WORK_PHONE}</td>
                                                                 </tr>
@@ -128,7 +128,7 @@ window.open({/literal}$src{literal}, menubar=0)
                                                                 </tr>
                                                                 <tr>
                                                                     <td class="menutd"><b>{$translate_customer_notes}</b></td>
-                                                                    <td class="menutd" colspan="3">{$customer_details[i].CUSTOMER_NOTES|nl2br}</td>
+                                                                    <td class="menutd" colspan="3">{$customer_details[i].CUSTOMER_NOTES}</td>
                                                                 </tr>
                                                                 {assign var="customer_id" value=$customer_details[i].CUSTOMER_ID} {assign var="customer_name" value=$customer_details[i].CUSTOMER_DISPLAY_NAME}
                                                             </table>

@@ -130,7 +130,7 @@
                                                         <td class="menutd" colspan="3"></td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="menutd" colspan="3">{$refund_details[i].REFUND_NOTES|nl2br}</td>
+                                                        <td class="menutd" colspan="3">{$refund_details[i].REFUND_NOTES}</td>
                                                         <td class="menutd"></td>
                                                     </tr>
                                                     <tr class="row2">
@@ -144,7 +144,7 @@
                                                      </tr>
 
                                                     <tr>
-                                                        <td class="menutd" colspan="3">{$refund_details[i].REFUND_ITEMS|nl2br}</td>
+                                                        <td class="menutd" colspan="3">{$refund_details[i].REFUND_ITEMS}</td>
                                                         <td class="menutd"></td>
                                                     </tr>
                                                     {assign var="refundID" value=$refund_details[i].REFUND_ID}
