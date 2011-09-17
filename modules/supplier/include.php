@@ -123,7 +123,12 @@ function timestamp_to_date($db, $timestamp){
 
 function insert_new_supplier($db,$VAR) {
 
-    
+//Remove Extra Slashes caused by Magic Quotes
+$supplierNotes_string = $VAR['supplierNotes'];
+$supplierNotes_string = stripslashes($supplierNotes_string);
+
+$supplierItems_string = $VAR['supplierItems'];
+$supplierItems_string = stripslashes($supplierItems_string);
 
 	$sql = "INSERT INTO ".PRFX."TABLE_SUPPLIER SET
 
@@ -140,8 +145,8 @@ function insert_new_supplier($db,$VAR) {
                         SUPPLIER_CITY                   = ". $db->qstr( $VAR['supplierCity']        ).",
                         SUPPLIER_STATE                  = ". $db->qstr( $VAR['supplierState']       ).",
                         SUPPLIER_ZIP                    = ". $db->qstr( $VAR['supplierZip']         ).",
-                        SUPPLIER_NOTES                  = ". $db->qstr( $VAR['supplierNotes']       ).",
-                        SUPPLIER_DESCRIPTION            = ". $db->qstr( $VAR['supplierDescription'] );
+                        SUPPLIER_NOTES                  = ". $db->qstr( $supplierNotes_string       ).",
+                        SUPPLIER_DESCRIPTION            = ". $db->qstr( $supplierDescription_string );
 
 	if(!$result = $db->Execute($sql)) {
 		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
@@ -176,6 +181,16 @@ function update_supplier($db,$VAR) {
 
         $checked_date = date_to_timestamp($db, $VAR['supplierDate']);
 
+//Remove Extra Slashes caused by Magic Quotes
+$supplierAddress_string = $VAR['supplierAddress'];
+$supplierAddress_string = stripslashes($supplierAddress_string);
+
+$supplierNotes_string = $VAR['supplierNotes'];
+$supplierNotes_string = stripslashes($supplierNotes_string);
+
+$supplierDescription_string = $VAR['supplierDescription'];
+$supplierDescription_string = stripslashes($supplierDescription_string);
+
 	$sql = "UPDATE ".PRFX."TABLE_SUPPLIER SET
 
 			SUPPLIER_NAME			= ". $db->qstr( $VAR['supplierName']        ).",
@@ -186,12 +201,12 @@ function update_supplier($db,$VAR) {
                         SUPPLIER_MOBILE                 = ". $db->qstr( $VAR['supplierMobile']      ).",
                         SUPPLIER_WWW                    = ". $db->qstr( $VAR['supplierWww']         ).",
                         SUPPLIER_EMAIL                  = ". $db->qstr( $VAR['supplierEmail']       ).",
-                        SUPPLIER_ADDRESS                = ". $db->qstr( $VAR['supplierAddress']     ).",
+                        SUPPLIER_ADDRESS                = ". $db->qstr( $supplierAddress_string     ).",
                         SUPPLIER_CITY                   = ". $db->qstr( $VAR['supplierCity']        ).",
                         SUPPLIER_STATE                  = ". $db->qstr( $VAR['supplierState']       ).",
                         SUPPLIER_ZIP                    = ". $db->qstr( $VAR['supplierZip']         ).",
-                        SUPPLIER_NOTES                  = ". $db->qstr( $VAR['supplierNotes']       ).",
-                        SUPPLIER_DESCRIPTION            = ". $db->qstr( $VAR['supplierDescription'] )."
+                        SUPPLIER_NOTES                  = ". $db->qstr( $supplierNotes_string       ).",
+                        SUPPLIER_DESCRIPTION            = ". $db->qstr( $supplierDescription_string )."
                         WHERE SUPPLIER_ID		= ". $db->qstr( $VAR['supplierID']          );                        
 			
 	if(!$result = $db->Execute($sql)) {

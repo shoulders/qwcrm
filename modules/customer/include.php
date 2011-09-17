@@ -216,7 +216,7 @@ function display_paid_invoices($db,$customer_id){
 }
 
 #####################################
-#	Validation						#
+#	Validation		    #
 #####################################
 
 function checkPhone($phone){
@@ -269,9 +269,14 @@ function check_customer_ex($db, $displayName) {
 
 function insert_new_customer($db,$VAR) {
 
-//Added to strip slashes
-$string= $VAR['address'];
-$string2=stripslashes($string);
+//Remove Extra Slashes caused by Magic Quotes
+$address_string = $VAR['address'];
+$address_string = stripslashes($address_string);
+
+$customerNotes_string = $VAR['customerNotes'];
+$customerNotes_string = stripslashes($customerNotes_string);
+
+//Display Name Logic
 if ($VAR["displayName"] ==""){
  $displayname = $VAR["lastName"].", ".$VAR["firstName"] ;
 } else {
@@ -280,7 +285,7 @@ $displayname =$VAR["displayName"] ;
 
 	$sql = "INSERT INTO ".PRFX."TABLE_CUSTOMER SET
 			CUSTOMER_DISPLAY_NAME           = ". $db->qstr( $displayname         ).",
-			CUSTOMER_ADDRESS		= ". $db->qstr( $string2             ).",
+			CUSTOMER_ADDRESS		= ". $db->qstr( $address_string      ).",
 			CUSTOMER_CITY			= ". $db->qstr( $VAR["city"]         ).", 
 			CUSTOMER_STATE			= ". $db->qstr( $VAR["state"]        ).", 
 			CUSTOMER_ZIP			= ". $db->qstr( $VAR["zip"]          ).",
@@ -296,7 +301,7 @@ $displayname =$VAR["displayName"] ;
 			CUSTOMER_LAST_NAME		= ". $db->qstr( $VAR['lastName']     ).",
 			CREDIT_TERMS                    = ". $db->qstr( $VAR['creditterms']  ).",
                         CUSTOMER_WWW                    = ". $db->qstr( $VAR['customerWww']  ).",
-                        CUSTOMER_NOTES                  = ". $db->qstr( $VAR['customerNotes']);
+                        CUSTOMER_NOTES                  = ". $db->qstr( $customerNotes_string);
 			
 	if(!$result = $db->Execute($sql)) {
 		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
@@ -329,13 +334,17 @@ function edit_info($db, $customer_id){
 #####################################
 
 function update_customer($db,$VAR) {
-    //Added to strip slashes
-$string= $VAR['address'];
-$string2=stripslashes($string);
+
+//Remove Extra Slashes caused by Magic Quotes
+$address_string = $VAR['address'];
+$address_string = stripslashes($address_string);
+
+$customerNotes_string = $VAR['customerNotes'];
+$customerNotes_string = stripslashes($customerNotes_string);
 
 	$sql = "UPDATE ".PRFX."TABLE_CUSTOMER SET
 			CUSTOMER_DISPLAY_NAME           = ". $db->qstr( $VAR["displayName"]	).",
-			CUSTOMER_ADDRESS		= ". $db->qstr( $string2		).",
+			CUSTOMER_ADDRESS		= ". $db->qstr( $address_string		).",
 			CUSTOMER_CITY			= ". $db->qstr( $VAR["city"]		).", 
 			CUSTOMER_STATE			= ". $db->qstr( $VAR["state"]		).", 
 			CUSTOMER_ZIP			= ". $db->qstr( $VAR["zip"]		).",
@@ -347,9 +356,9 @@ $string2=stripslashes($string);
 			CUSTOMER_FIRST_NAME		= ". $db->qstr( $VAR["firstName"]	).", 
 			CUSTOMER_LAST_NAME		= ". $db->qstr( $VAR["lastName"]	).",
 			DISCOUNT                        = ". $db->qstr( $VAR['discount']	).",
-                        CREDIT_TERMS                    = ". $db->qstr( $VAR['creditterms']  ).",
+                        CREDIT_TERMS                    = ". $db->qstr( $VAR['creditterms']     ).",
                         CUSTOMER_WWW                    = ". $db->qstr( $VAR['customerWww']     ).",
-                        CUSTOMER_NOTES                  = ". $db->qstr( $VAR['customerNotes']   )."
+                        CUSTOMER_NOTES                  = ". $db->qstr( $customerNotes_string   )."
 			WHERE CUSTOMER_ID		= ". $db->qstr( $VAR['customer_id']	);
 			
 	if(!$result = $db->Execute($sql)) {

@@ -125,6 +125,13 @@ function insert_new_expense($db,$VAR) {
 
     $checked_date = date_to_timestamp($db, $VAR['expenseDate']);
 
+//Remove Extra Slashes caused by Magic Quotes
+$expenseNotes_string = $VAR['expenseNotes'];
+$expenseNotes_string = stripslashes($expenseNotes_string);
+
+$expenseItems_string = $VAR['expenseItems'];
+$expenseItems_string = stripslashes($expenseItems_string);
+
 	$sql = "INSERT INTO ".PRFX."TABLE_EXPENSE SET
 
 			EXPENSE_ID			= ". $db->qstr( $VAR['expenseID']           ).",
@@ -136,8 +143,8 @@ function insert_new_expense($db,$VAR) {
                         EXPENSE_TAX_RATE                = ". $db->qstr( $VAR['expenseTaxRate']      ).",
                         EXPENSE_TAX_AMOUNT              = ". $db->qstr( $VAR['expenseTaxAmount']    ).",
                         EXPENSE_GROSS_AMOUNT            = ". $db->qstr( $VAR['expenseGrossAmount']  ).",
-                        EXPENSE_NOTES                   = ". $db->qstr( $VAR['expenseNotes']        ).",
-                        EXPENSE_ITEMS                   = ". $db->qstr( $VAR['expenseItems']        );
+                        EXPENSE_NOTES                   = ". $db->qstr( $expenseNotes_string        ).",
+                        EXPENSE_ITEMS                   = ". $db->qstr( $expenseItems_string        );
 
 	if(!$result = $db->Execute($sql)) {
 		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
@@ -172,6 +179,13 @@ function update_expense($db,$VAR) {
 
         $checked_date = date_to_timestamp($db, $VAR['expenseDate']);
 
+//Remove Extra Slashes caused by Magic Quotes
+$expenseNotes_string = $VAR['expenseNotes'];
+$expenseNotes_string = stripslashes($expenseNotes_string);
+
+$expenseItems_string = $VAR['expenseItems'];
+$expenseItems_string = stripslashes($expenseItems_string);
+
 	$sql = "UPDATE ".PRFX."TABLE_EXPENSE SET
 
 			EXPENSE_PAYEE			= ". $db->qstr( $VAR['expensePayee']        ).",
@@ -182,8 +196,8 @@ function update_expense($db,$VAR) {
                         EXPENSE_TAX_RATE                = ". $db->qstr( $VAR['expenseTaxRate']      ).",
                         EXPENSE_TAX_AMOUNT              = ". $db->qstr( $VAR['expenseTaxAmount']    ).",
                         EXPENSE_GROSS_AMOUNT            = ". $db->qstr( $VAR['expenseGrossAmount']  ).",
-                        EXPENSE_NOTES                   = ". $db->qstr( $VAR['expenseNotes']        ).",
-                        EXPENSE_ITEMS                   = ". $db->qstr( $VAR['expenseItems']        )."
+                        EXPENSE_NOTES                   = ". $db->qstr( $expenseNotes_string        ).",
+                        EXPENSE_ITEMS                   = ". $db->qstr( $expenseItems_string        )."
                         WHERE EXPENSE_ID		= ". $db->qstr( $VAR['expenseID']           );
                         
 			

@@ -125,6 +125,13 @@ function insert_new_refund($db,$VAR) {
 
     $checked_date = date_to_timestamp($db, $VAR['refundDate']);
 
+//Remove Extra Slashes caused by Magic Quotes
+$refundNotes_string = $VAR['refundNotes'];
+$refundNotes_string = stripslashes($refundNotes_string);
+
+$refundItems_string = $VAR['refundItems'];
+$refundItems_string = stripslashes($refundItems_string);
+
 	$sql = "INSERT INTO ".PRFX."TABLE_REFUND SET
 
 			REFUND_ID			= ". $db->qstr( $VAR['refundID']           ).",
@@ -136,8 +143,8 @@ function insert_new_refund($db,$VAR) {
                         REFUND_TAX_RATE                = ". $db->qstr( $VAR['refundTaxRate']      ).",
                         REFUND_TAX_AMOUNT              = ". $db->qstr( $VAR['refundTaxAmount']    ).",
                         REFUND_GROSS_AMOUNT            = ". $db->qstr( $VAR['refundGrossAmount']  ).",
-                        REFUND_NOTES                   = ". $db->qstr( $VAR['refundNotes']        ).",
-                        REFUND_ITEMS                   = ". $db->qstr( $VAR['refundItems']        );
+                        REFUND_NOTES                   = ". $db->qstr( $refundNotes_string        ).",
+                        REFUND_ITEMS                   = ". $db->qstr( $refundItems_string        );
 
 	if(!$result = $db->Execute($sql)) {
 		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
@@ -172,6 +179,13 @@ function update_refund($db,$VAR) {
 
         $checked_date = date_to_timestamp($db, $VAR['refundDate']);
 
+//Remove Extra Slashes caused by Magic Quotes
+$refundNotes_string = $VAR['refundNotes'];
+$refundNotes_string = stripslashes($refundNotes_string);
+
+$refundItems_string = $VAR['refundItems'];
+$refundItems_string = stripslashes($refundItems_string);
+
 	$sql = "UPDATE ".PRFX."TABLE_REFUND SET
 
 			REFUND_PAYEE			= ". $db->qstr( $VAR['refundPayee']        ).",
@@ -182,8 +196,8 @@ function update_refund($db,$VAR) {
                         REFUND_TAX_RATE                = ". $db->qstr( $VAR['refundTaxRate']      ).",
                         REFUND_TAX_AMOUNT              = ". $db->qstr( $VAR['refundTaxAmount']    ).",
                         REFUND_GROSS_AMOUNT            = ". $db->qstr( $VAR['refundGrossAmount']  ).",
-                        REFUND_NOTES                   = ". $db->qstr( $VAR['refundNotes']        ).",
-                        REFUND_ITEMS                   = ". $db->qstr( $VAR['refundItems']        )."
+                        REFUND_NOTES                   = ". $db->qstr( $refundNotes_string        ).",
+                        REFUND_ITEMS                   = ". $db->qstr( $refundItems_string        )."
                         WHERE REFUND_ID		= ". $db->qstr( $VAR['refundID']           );
                         
 			
