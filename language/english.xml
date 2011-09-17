@@ -856,9 +856,15 @@
 		<workorder_parts>Parts Ordered</workorder_parts>
 		<workorder_contact>Contact</workorder_contact>
 		<workorder_email>Email</workorder_email>
+                <workorder_credit_terms>Credit Terms</workorder_credit_terms>
+                <workorder_www>Website</workorder_www>
+                <workorder_discount>Discount</workorder_discount>
+                <workorder_created>Created</workorder_created>
+                <workorder_last_activity>Last Activity</workorder_last_activity>
+                <workorder_notes>Notes</workorder_notes>
 		<workorder_address>Address</workorder_address>
 		<workorder_phone_1>Primary Phone</workorder_phone_1>
-		<workorder_phone_2>Secondary Phone</workorder_phone_2>
+		<workorder_phone_2>Work/Fax Phone</workorder_phone_2>
 		<workorder_phone_3>Mobile</workorder_phone_3>
 		<workorder_type>Type</workorder_type>
 		<workorder_type_1>Residential</workorder_type_1>
