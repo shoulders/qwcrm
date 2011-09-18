@@ -123,7 +123,7 @@ function validate_supplier(frm) {
     frm.elements['supplierDescription'].className = 'error';
     }*/
 
-    // Is decription present using TinyMCE
+    // Is description present using TinyMCE
     value = tinyMCE.get('editor2').getContent();
     if (value == '' && !errFlag['supplierDescription']) {
     errFlag['supplierDescription'] = true;
