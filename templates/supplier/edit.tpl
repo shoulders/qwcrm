@@ -4,7 +4,7 @@
 <script language="javascript" type="text/javascript">
 	tinyMCE.init({
 		mode : "exact",
-        elements : "editor, editor2, editor3",
+        elements : "editor1, editor2, editor3",
 		theme : "advanced",
 		plugins : "advlink,iespell,insertdatetime,preview",
 		theme_advanced_buttons2_add : "separator,insertdate,inserttime,preview,separator,forecolor,backcolor",
@@ -132,11 +132,11 @@
                                                                         </tr>
                                                                             <tr>
                                                                                 <td align="right"><b>{$translate_supplier_notes}</b></td>
-                                                                                <td><textarea class="olotd5" name="supplierNotes" cols="50" rows="15" id="editor2">{$supplier_details[q].SUPPLIER_NOTES}</textarea></td>
+                                                                                <td><textarea class="olotd5" name="supplierNotes" cols="50" rows="15" id="editor1">{$supplier_details[q].SUPPLIER_NOTES}</textarea></td>
                                                                             </tr>
                                                                             <tr>
                                                                                 <td align="right"><b>{$translate_supplier_description}</b><span style="color: #ff0000"> *</span></td>
-                                                                                <td><textarea class="olotd5" name="supplierDescription" cols="50" rows="15" id="editor">{$supplier_details[q].SUPPLIER_DESCRIPTION}</textarea></td>
+                                                                                <td><textarea class="olotd5" name="supplierDescription" cols="50" rows="15" id="editor2">{$supplier_details[q].SUPPLIER_DESCRIPTION}</textarea></td>
                                                                             </tr>
                                                                             <tr>
                                                                                 <td></td>

@@ -73,8 +73,16 @@ function validate_refund(frm) {
     frm.elements['refundGrossAmount'].className = 'error';
   }
 
-    // Have items been present
+    /* Are items been present
     value = frm.elements['refundItems'].value;
+    if (value == '' && !errFlag['refundItems']) {
+    errFlag['refundItems'] = true;
+    _qfMsg = _qfMsg + '\n - {/literal}{$translate_refund_val_items_notpresent}{literal}';
+    frm.elements['refundItems'].className = 'error';
+  }*/
+
+    // Are items been present
+    value = tinyMCE.get('editor2').getContent();
     if (value == '' && !errFlag['refundItems']) {
     errFlag['refundItems'] = true;
     _qfMsg = _qfMsg + '\n - {/literal}{$translate_refund_val_items_notpresent}{literal}';

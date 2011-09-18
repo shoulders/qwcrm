@@ -73,13 +73,21 @@ function validate_expense(frm) {
     frm.elements['expenseGrossAmount'].className = 'error';
   }
 
-    // Have items been present
+    /* Are items been present
     value = frm.elements['expenseItems'].value;
     if (value == '' && !errFlag['expenseItems']) {
     errFlag['expenseItems'] = true;
     _qfMsg = _qfMsg + '\n - {/literal}{$translate_expense_val_items_notpresent}{literal}';
     frm.elements['expenseItems'].className = 'error';
-  }
+  }*/
+
+    // Are items been present when using TinyMCE
+    value = tinyMCE.get('editor2').getContent();
+    if (value == '' && !errFlag['expenseItems']) {
+    errFlag['expenseItems'] = true;
+    _qfMsg = _qfMsg + '\n - {/literal}{$translate_expense_val_items_notpresent}{literal}';
+    frm.elements['expenseItems'].className = 'error';
+    }
 
     // This builds the final message
     if (_qfMsg != '') {

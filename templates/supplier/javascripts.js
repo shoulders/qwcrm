@@ -81,7 +81,7 @@ function validate_supplier(frm) {
     errFlag['supplierEmail'] = true;
     _qfMsg = _qfMsg + '\n - {/literal}{$translate_supplier_val_email_format}{literal}';
     frm.elements['supplierEmail'].className = 'error';
-	}	
+    }
 
     // Is Email less than 80 characters long
     value = frm.elements['supplierEmail'].value;
@@ -115,13 +115,21 @@ function validate_supplier(frm) {
     frm.elements['supplierZip'].className = 'error';
     }
 
-    // Is decription present
+    /* Is decription present
     value = frm.elements['supplierDescription'].value;
     if (value == '' && !errFlag['supplierDescription']) {
     errFlag['supplierDescription'] = true;
     _qfMsg = _qfMsg + '\n - {/literal}{$translate_supplier_val_description_notpresent}{literal}';
     frm.elements['supplierDescription'].className = 'error';
-  }
+    }*/
+
+    // Is decription present using TinyMCE
+    value = tinyMCE.get('editor2').getContent();
+    if (value == '' && !errFlag['supplierDescription']) {
+    errFlag['supplierDescription'] = true;
+    _qfMsg = _qfMsg + '\n - {/literal}{$translate_supplier_val_description_notpresent}{literal}';
+    frm.elements['supplierDescription'].className = 'error';
+    }
 
     // This builds the final message
     if (_qfMsg != '') {

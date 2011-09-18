@@ -4,7 +4,7 @@
 <script language="javascript" type="text/javascript">
 	tinyMCE.init({
 		mode : "exact",
-        elements : "editor, editor2, editor3",
+        elements : "editor1, editor2, editor3",
 		theme : "advanced",
 		plugins : "advlink,iespell,insertdatetime,preview",
 		theme_advanced_buttons2_add : "separator,insertdate,inserttime,preview,separator,forecolor,backcolor",

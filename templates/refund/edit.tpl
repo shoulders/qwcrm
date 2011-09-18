@@ -4,7 +4,7 @@
 <script language="javascript" type="text/javascript">
 	tinyMCE.init({
 		mode : "exact",
-        elements : "editor, editor2, editor3",
+        elements : "editor1, editor2, editor3",
 		theme : "advanced",
 		plugins : "advlink,iespell,insertdatetime,preview",
 		theme_advanced_buttons2_add : "separator,insertdate,inserttime,preview,separator,forecolor,backcolor",
@@ -136,7 +136,7 @@
                                                                             </tr>
                                                                             <tr>
                                                                                 <td align="right"><b>{$translate_refund_notes}</b></td>
-                                                                                <td><textarea class="olotd5" name="refundNotes" cols="50" rows="15" id="editor">{$refund_details[q].REFUND_NOTES}</textarea></td>
+                                                                                <td><textarea class="olotd5" name="refundNotes" cols="50" rows="15" id="editor1">{$refund_details[q].REFUND_NOTES}</textarea></td>
                                                                             </tr>
                                                                             <tr>
                                                                                 <td align="right"><b>{$translate_refund_items}</b><span style="color: #ff0000"> *</span></td>
