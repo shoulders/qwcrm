@@ -57,14 +57,14 @@ function validate_supplier(frm) {
     frm.elements['supplierMobile'].className = 'error';
     }
 
-    // Is website correct format us 
-	value = frm.elements['supplierWww'].value;
-	var regex = /^((http|https|ftp):\/\/(www\.)?|www\.)[a-zA-Z0-9\_\-]+\.([a-zA-Z]{2,4}|[a-zA-Z]{2}\.[a-zA-Z]{2})(\/[a-zA-Z0-9\-\._\?\&=,'\+%\$#~]*)*$/;
-	if (value != '' && !regex.test(value) && !errFlag['supplierWww']) {
-	errFlag['supplierWww'] = true;
-	_qfMsg = _qfMsg + '\n - {/literal}{$translate_supplier_val_www_format}{literal}';
-		frm.elements['supplierWww'].className = 'error';
-	}
+    // Is website correct format
+    value = frm.elements['supplierWww'].value;
+    var regex = /^((https?|ftp):\/\/)?([a-zA-Z0-9]+([\.+_-][a-zA-Z0-9]+)*)(\.)(([a-zA-Z0-9]+((\.|[-]{1,2})[a-zA-Z0-9]+)*)\.[a-zA-Z]{2,6})$/;
+    if (value != '' && !regex.test(value) && !errFlag['supplierWww']) {
+    errFlag['supplierWww'] = true;
+    _qfMsg = _qfMsg + '\n - {/literal}{$translate_supplier_val_www_format}{literal}';
+            frm.elements['supplierWww'].className = 'error';
+    }
 
     // Is Website less than 80 characters long
     value = frm.elements['supplierWww'].value;
@@ -75,11 +75,11 @@ function validate_supplier(frm) {
     }
 	
     // Is Email correct format 
-	value = frm.elements['supplierEmail'].value;
-	var regex = /^([a-zA-Z0-9]+([\.+_-][a-zA-Z0-9]+)*)@(([a-zA-Z0-9]+((\.|[-]{1,2})[a-zA-Z0-9]+)*)\.[a-zA-Z]{2,6})$/;
-	if (value != '' && !regex.test(value) && !errFlag['supplierEmail']) {
-	errFlag['supplierEmail'] = true;
-	_qfMsg = _qfMsg + '\n - {/literal}{$translate_supplier_val_email_format}{literal}';
+    value = frm.elements['supplierEmail'].value;
+    var regex = /^([a-zA-Z0-9]+([\.+_-][a-zA-Z0-9]+)*)@(([a-zA-Z0-9]+((\.|[-]{1,2})[a-zA-Z0-9]+)*)\.[a-zA-Z]{2,6})$/;
+    if (value != '' && !regex.test(value) && !errFlag['supplierEmail']) {
+    errFlag['supplierEmail'] = true;
+    _qfMsg = _qfMsg + '\n - {/literal}{$translate_supplier_val_email_format}{literal}';
     frm.elements['supplierEmail'].className = 'error';
 	}	
 
