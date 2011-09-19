@@ -273,7 +273,7 @@ if (!insert_version_values($db)) {
 function insert_version_values($db)
 {
     //Insert New Records for version table
-    $q = "INSERT INTO `".PRFX."VERSION` (`VERSION_ID`, `VERSION_NAME`, `VERSION_INSTALLED`) VALUES ('292', '0.2.9.2', '')";
+    $q = "INSERT INTO `".PRFX."VERSION` (`VERSION_ID`, `VERSION_NAME`, `VERSION_INSTALLED`) VALUES ('292', '0.2.9.2', ".date("Y-m-d H:i:s").")";
 
     if (!$rs = $db->Execute($q)) {
         return false;
