@@ -248,7 +248,7 @@ if (!create_version_table($db)) {
 // CREATING VERSION NUMBER TABLE
 function create_version_table($db)
 {
-    $q = "CREATE TABLE `".PRFX."VERSION` (`VERSION_ID` INT NOT NULL ,`VERSION_NAME` VARCHAR( 10 ) NOT NULL ,`VERSION_INSTALLED` TIMESTAMP ) ENGINE=MyISAM ";
+    $q = "CREATE TABLE `".PRFX."VERSION` (`VERSION_ID` INT NOT NULL ,`VERSION_NAME` VARCHAR( 10 ) NOT NULL ,`VERSION_INSTALLED` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP ) ENGINE=MyISAM ";
     if (!$rs = $db->execute($q)) {
         return false;
     } else {
@@ -273,7 +273,7 @@ if (!insert_version_values($db)) {
 function insert_version_values($db)
 {
     //Insert New Records for version table
-    $q = "INSERT INTO `".PRFX."VERSION` (`VERSION_ID`, `VERSION_NAME`, `VERSION_INSTALLED`) VALUES ('292', '0.2.9.2', ".date("Y-m-d H:i:s").")";
+    $q = "INSERT INTO `".PRFX."VERSION` (`VERSION_ID`, `VERSION_NAME`) VALUES ('292', '0.2.9.2')";
 
     if (!$rs = $db->Execute($q)) {
         return false;
