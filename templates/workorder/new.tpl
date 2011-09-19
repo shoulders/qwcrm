@@ -182,7 +182,7 @@
                                                         </tr>
                                                         <tr>
                                                             <td class="olotd">
-                                                                <textarea  class="olotd4" rows="15" cols="70" mce_editable="true" name="work_order_discription"></textarea></td>
+                                                                <textarea  class="olotd4" rows="15" cols="70" mce_editable="true" name="work_order_description"></textarea></td>
                                                         </tr>
                                                     </table>
                                                     <br>

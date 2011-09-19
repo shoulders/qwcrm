@@ -189,21 +189,29 @@ function display_tech($db){
 }
 
 #############################################################
-# Display all open Work orders to                           #
+# Insert New Work Order                                     #
 #############################################################
 function insert_new_workorder($db,$VAR){
 	global $smarty;
-	
+
+//Remove Extra Slashes caused by Magic Quotes
+$work_order_description_description_string = $VAR['work_order_description'];
+$work_order_description_description_string = stripslashes($work_order_description_string);
+
+$work_order_comments_string = $VAR['work_order_comments'];
+$work_order_comments_string = stripslashes($work_order_comments_string);
+
+
 	$sql = "INSERT INTO ".PRFX."TABLE_WORK_ORDER  SET 
-			CUSTOMER_ID			=".$db->qstr($VAR["customer_ID"]).", 
-			WORK_ORDER_OPEN_DATE		=".$db->qstr(time()).", 
-			WORK_ORDER_STATUS		=".$db->qstr(10).",
-			WORK_ORDER_CURRENT_STATUS	=".$db->qstr(1).",
-			WORK_ORDER_CREATE_BY		=".$db->qstr($VAR["created_by"]).",                        
-			WORK_ORDER_SCOPE		=".$db->qstr($VAR["scope"]).", 
-			WORK_ORDER_DESCRIPTION		=".$db->qstr($VAR["work_order_discription"]).",
-			LAST_ACTIVE			=".$db->qstr(time()).",
-			WORK_ORDER_COMMENT		=".$db->qstr($VAR["work_order_comments"]);
+			CUSTOMER_ID			=".$db->qstr($VAR["customer_ID"]            ).",
+			WORK_ORDER_OPEN_DATE		=".$db->qstr(time()                         ).",
+			WORK_ORDER_STATUS		=".$db->qstr(10                             ).",
+			WORK_ORDER_CURRENT_STATUS	=".$db->qstr(1                              ).",
+			WORK_ORDER_CREATE_BY		=".$db->qstr($VAR["created_by"]             ).",
+			WORK_ORDER_SCOPE		=".$db->qstr($VAR["scope"]                  ).",
+			WORK_ORDER_DESCRIPTION		=".$db->qstr($work_order_description_string ).",
+			LAST_ACTIVE			=".$db->qstr(time()                         ).",
+			WORK_ORDER_COMMENT		=".$db->qstr($work_order_comments_string    );
 	   
 	if(!$result = $db->Execute($sql)) {
 		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
@@ -229,15 +237,15 @@ function insert_new_workorder($db,$VAR){
 }
 
 #############################################################
-# Insert Status	note			 							#
+# Insert Status	note                                        #
 #############################################################
 
 function insert_new_status($db,$VAR){
 	$sql = "INSERT INTO ".PRFX."TABLE_WORK_ORDER_STATUS SET
-			  WORK_ORDER_ID				=". $db->qstr( $VAR["wo_id"]).",
-			  WORK_ORDER_STATUS_DATE		=". $db->qstr( time()).",
-			  WORK_ORDER_STATUS_NOTES		=". $db->qstr( $VAR["work_order_status_notes"]).",
-			  WORK_ORDER_STATUS_ENTER_BY            =". $db->qstr( $_SESSION['login_id']);
+			  WORK_ORDER_ID				=". $db->qstr( $VAR["wo_id"]                    ).",
+			  WORK_ORDER_STATUS_DATE		=". $db->qstr( time()                           ).",
+			  WORK_ORDER_STATUS_NOTES		=". $db->qstr( $VAR["work_order_status_notes"]  ).",
+			  WORK_ORDER_STATUS_ENTER_BY            =". $db->qstr( $_SESSION['login_id']            );
 		
 	if(!$result = $db->Execute($sql)) {
 		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
@@ -249,7 +257,7 @@ function insert_new_status($db,$VAR){
 }
 
 ####################################################
-# Update Work Order Satus		 							#
+# Update Work Order Satus                          #
 ####################################################
 
 function update_status($db,$VAR){
@@ -290,7 +298,7 @@ function update_status($db,$VAR){
 }
 
 ########################################
-# Display Status								#
+# Display Status                       #
 ########################################
 
 function display_status($db){
@@ -311,7 +319,7 @@ function display_status($db){
 }
 
 #########################################
-# Display Parts									#
+# Display Parts				#
 #########################################
 function display_parts($db,$wo_id) {
 	$q = "SELECT * FROM ".PRFX."ORDERS WHERE  WO_ID=".$db->qstr( $wo_id );
@@ -325,7 +333,7 @@ function display_parts($db,$wo_id) {
 }
 
 ##################################
-# Display resolution					#
+# Display resolution		 #
 ##################################
 function display_resolution($db,$wo_id) {
 	$q="SELECT ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_CLOSE_BY, 
@@ -348,11 +356,16 @@ function display_resolution($db,$wo_id) {
 ########################################
 # Add New Note                         #
 ########################################
+
 function insert_new_note($db,$VAR){
+
+//Remove Extra Slashes caused by Magic Quotes
+$work_order_notes_string = $VAR['work_order_notes'];
+$work_order_notes_string = stripslashes($work_order_notes_string);
 
 	$sql = "INSERT INTO ".PRFX."TABLE_WORK_ORDER_NOTES SET 
 		     WORK_ORDER_ID			=". $db->qstr( $VAR["wo_id"]            ).",
-		     WORK_ORDER_NOTES_DESCRIPTION	=". $db->qstr( $VAR["work_order_notes"]	).", 
+		     WORK_ORDER_NOTES_DESCRIPTION	=". $db->qstr( $work_order_notes_string	).",
 		     WORK_ORDER_NOTES_ENTER_BY		=". $db->qstr( $_SESSION["login_id"]	).",
 		     WORK_ORDER_NOTES_DATE              =". $db->qstr( time()			);
 		 
@@ -367,7 +380,7 @@ function insert_new_note($db,$VAR){
 }
 
 ########################################
-# Close Work Order								#
+# Close Work Order                     #
 ########################################
 function close_work_order($db,$VAR){
 
@@ -400,7 +413,7 @@ $resolution_string = stripslashes($resolution_string);
 
 
 ########################################
-# Close Work Order with no invoice  	#
+# Close Work Order with no invoice     #
 ########################################
 function close_work_order_no_invoice($db,$VAR){
 
@@ -446,7 +459,7 @@ function get_work_order_schedule ($db,$wo_id){
 }
 
 #################################
-#	Update Last Active			#
+#	Update Last Active	#
 #################################
 
 function update_last_active($db,$wo_id) {
