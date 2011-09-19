@@ -49,7 +49,7 @@
             <span class="text4"></span>
         </td>
         <td width="100%" class="text4" align="center">
-        {$msg} on IP {$ip} - It's {$today} {if $mine != 0 || $mine2 != 0 || $mine3 != 0 || $mine4 != 0}
+        >IP {$ip}<|>{$today}<|>{if $mine != 0 || $mine2 != 0 || $mine3 != 0 || $mine4 != 0}
             and {$translate_main_you_have} {/if}
             {if $mine != 0}&rArr;{$mine} {$translate_core_open_workorders}{/if}
         {if $mine2 != 0}& &rArr;{$mine2} {$translate_core_assigned_workorders}{/if}
