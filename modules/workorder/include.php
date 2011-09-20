@@ -195,8 +195,8 @@ function insert_new_workorder($db,$VAR){
 	global $smarty;
 
 //Remove Extra Slashes caused by Magic Quotes
-$work_order_description_description_string = $VAR['work_order_description'];
-$work_order_description_description_string = stripslashes($work_order_description_string);
+$work_order_description_string = $VAR['work_order_description'];
+$work_order_description_string = stripslashes($work_order_description_string);
 
 $work_order_comments_string = $VAR['work_order_comments'];
 $work_order_comments_string = stripslashes($work_order_comments_string);
