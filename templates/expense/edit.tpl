@@ -152,7 +152,7 @@
                                                                             </tr>
                                                                             <tr>
                                                                                 <td align="right"><b>{$translate_expense_notes}</b></td>
-                                                                                <td><textarea class="olotd5" name="expenseNotes" cols="50" rows="15" id="editor">{$expense_details[q].EXPENSE_NOTES}</textarea></td>
+                                                                                <td><textarea class="olotd5" name="expenseNotes" cols="50" rows="15" id="editor1">{$expense_details[q].EXPENSE_NOTES}</textarea></td>
                                                                             </tr>
                                                                             <tr>
                                                                                 <td align="right"><b>{$translate_expense_items}</b><span style="color: #ff0000"> *</span></td>
