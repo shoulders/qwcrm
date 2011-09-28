@@ -414,10 +414,10 @@ function PutLink($URL,$txt)
     $this->SetTextColor(0);
 }
 }
-$html='<BR /> Click to pay this invoice via PayPal using a valid Credit Card.<BR />
-<I><B>NOTE:- A small surcharge applies to this type of payment.</B></I><BR />';
-$html2='<BR /> Click to pay this invoice via Paymate using a valid Credit Card.<BR />
-<I><B>NOTE:- A small surcharge applies to this type of payment.</B></I><BR />';
+$html='Click to pay this invoice via PayPal using a valid Credit Card.
+<I>NOTE:- A small surcharge applies to this type of payment.</I><BR />';
+$html2='Click to pay this invoice via Paymate using a valid Credit Card.
+<I>NOTE:- A small surcharge applies to this type of payment.</I><BR />';
 
 //This MySQL connection is not required
 //$link = mysql_connect( "$DB_HOST", "$DB_USER", "$DB_PASS" );
@@ -453,7 +453,8 @@ if($cabn == ""){
                   "$caddress\n" .
                   "$ccity , $cstate\n" .
                   "P: $cphone\n" .
-                  "E: $cemail\n");
+                  "E: $cemail\n" .
+                  "");
 }
 
 
@@ -541,7 +542,7 @@ $y_axis = $y_axis + $row_height;
 $i = 0;
 
 //Set maximum rows per page
-$max = 18;
+$max = 15;
 
 //Set Row Height
 $row_height = 6;
@@ -721,9 +722,9 @@ $pdf->WriteHTML($html2);
  }
 
 //$pdf->addremark($cthankyou);
-$pdf->SetY($y_axis_initial +($row_height * $max + 50));
+$pdf->SetY($y_axis_initial +($row_height * $max + 60));
  $pdf->SetX(10);
- $pdf->SetFont('Arial', 'B', 6);
+ $pdf->SetFont('Arial', 'BI', 6);
  $pdf->MultiCell(0, 4, $cthankyou , 0 ,'J', FALSE);
 //$pdf->Output("cache/INV#".$invoice[INVOICE_ID].".pdf", 'F' );
 $pdf->Output("INV#".$invoice['INVOICE_ID'].".pdf",'I');
