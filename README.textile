@@ -1,1 +1,25 @@
 !http://myitcrm.com/images/logo.png(MyITCRM)!:http://myitcrm.com
+
+MyITCRM - Free and Opensource CRM Software.
+
+MyIT CRM is designed for the needs of the Service and Repairs Business Industry.
+
+MyITCRM provides your business the tools to maintain and track your customers information and work orders, payments made, invoicing, employees and jobs.
+
+Whilst MyIT CRM was originally designed for the Computer Repairs Industry, it can easily be used for any type of repiars related business
+
+    # Electrical Device Repairs and Servicing;
+    # Small/Large Plant Maintenance and  Servicing;
+    # Motorcycles, Cars, Lawn Equipment Servicing and Repairs.
+
+We also strong community input via the forum:http://myitcrm.com/forum/. With new features and bugs being actively reported and resolved. It’s also a great way to get personal involvement from all our end users to help build on this software.
+Some of MyIT CRM’s Features:
+
+    # Customer details including Google maps directions ;
+    # Work Order (Jobs/Tasks) Management ;
+    # Work Order scheduling via calendar per employee ;
+    # Billing and Invoicing ;
+    # Accept payments via Credit Cards via either Paymate, Paypal , Cheques, Cash or Gift Certificates ;
+    and much more!
+
+So now give the demo a try or download your free copy and start optimizing your business with this easy to use and feature packed CRM Program.
