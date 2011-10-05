@@ -1,5 +1,3 @@
-Changelog 
-.::NOTE::.
 PLEASE REPORT ANY BUGS OR FEATURES THAT YOU FIND SO THAT WE CAN FIX'EM!
 To view more details on these issues, please visit http://team.myitcrm.com/
 
