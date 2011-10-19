@@ -695,7 +695,7 @@ if($PP_ID <> "" ){
                         "PayPal Credit Card Processing:-", 0 ,'L', FALSE);
 
 $pdf->SetLink($link);
-$pdf->Image('images/paypal/pay_now.gif',5,230,15,0,'','https://www.paypal.com/cmd=_xclick&business='.$PP_ID.'&item_name=Payment%20for%20invoice%20'.$invoice_id.'&item_number='.$invoice_id.'&description=Invoice%20for%20'.$invoice_id.'&amount='.$pamount.'&no_note=Thankyou%20for%20your%20buisness.&currency_sym='.$currency_sym.'&lc='.$country.'&bn=PP-BuyNowBF');
+$pdf->Image('images/paypal/pay_now.gif',5,230,15,0,'','https://www.paypal.com/cmd=_xclick&business='.$PP_ID.'&item_name=Payment%20for%20invoice%20'.$invoice_id.'&item_number='.$invoice_id.'&description=Invoice%20for%20'.$invoice_id.'&amount='.$pamount.'&no_note=Thankyou%20for%20your%20buisness.&currency_code='.$currency_code.'&lc='.$country.'&bn=PP-BuyNowBF');
 $pdf->SetLeftMargin(20);
 //$pdf->SetFontSize(14);
 $pdf->WriteHTML($html);
@@ -709,7 +709,7 @@ if($PAYMATE_LOGIN <> "" ){
                         "Paymate Processing:-", 0 ,'L', FALSE);
 
 $pdf->SetLink($link);
-$pdf->Image('images/paymate/paymate_cc.gif',5,242,15,0,'','https://www.paymate.com/PayMate/ExpressPayment?mid='.$PAYMATE_LOGIN.'&amt='.$paymate_amt.'&ref=Payment%20for%20invoice%20'.$invoice_id.'&currency='.$currency_sym.'&amt_editable=N&pmt_sender_email='.$cusemail.'&pmt_contact_firstname='.$cusnamef.'&pmt_contact_surname='.$cusnamel.'&pmt_contact_phone='.$cusphone.'&regindi_state='.$cusstate.'&regindi_address1='.$cusaddress.'&regindi_sub='.$cuscity.'&regindi_pcode='.$cuszip.'');
+$pdf->Image('images/paymate/paymate_cc.gif',5,242,15,0,'','https://www.paymate.com/PayMate/ExpressPayment?mid='.$PAYMATE_LOGIN.'&amt='.$paymate_amt.'&ref=Payment%20for%20invoice%20'.$invoice_id.'&currency='.$currency_code.'&amt_editable=N&pmt_sender_email='.$cusemail.'&pmt_contact_firstname='.$cusnamef.'&pmt_contact_surname='.$cusnamel.'&pmt_contact_phone='.$cusphone.'&regindi_state='.$cusstate.'&regindi_address1='.$cusaddress.'&regindi_sub='.$cuscity.'&regindi_pcode='.$cuszip.'');
 $pdf->SetLeftMargin(20);
 //$pdf->SetFontSize(14);
 $pdf->WriteHTML($html2);
