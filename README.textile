@@ -2,7 +2,6 @@
 
 # Requirements: - "MyITCRM Installation Requirements":http://wiki.myitcrm.com/MyIT_CRM_1_(PHP)/10_Installation/1_Requirements
 
-
 "MyITCRM":http://myitcrm.com - Free and Opensource CRM Software.
 
 "MyITCRM":http://myitcrm.com is designed for the needs of the Service and Repairs Business Industry.
