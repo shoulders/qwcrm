@@ -4,7 +4,6 @@ To view more details on these issues, please visit http://team.myitcrm.com/
 
 ===v0.2.9.2 : 30th September 2011 from svn r392===
 
-
 Over 40 Bug Fixes and over 30 New features added
 
 •Bug #144: Database error on printing schedule.
