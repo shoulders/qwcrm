@@ -3,8 +3,6 @@
 //error_reporting(E_ALL & ~E_NOTICE); //Development Mode
 error_reporting(E_ERROR); //Production Mode
 
-// Required to grab DB defaults from conf.php file
-require('../../conf.php');
 ###############################
 #		Switch 						#
 ###############################
@@ -49,26 +47,10 @@ switch ($mode) {
 									");
 
 
-        /* Load our new configs */
+        /* Load our configs */
 
-        require("../../include/ADODB/adodb.inc.php");
-
-        /* Create ADODB Connection */
-        $db = &ADONewConnection('mysql');
-
-        $db->Connect($_POST['db_host'], $_POST['db_user'], $_POST['db_password']);
-        if ($db->errorMsg() != '') {
-            echo "There was an error connecting to the database: " . $db->errorMsg();
-            die;
-        }
-
-
-        ##################################
-        # Create New Connection				#
-        ##################################
-
-//        include("../../conf.php");
-
+        // Required to grab DB defaults from conf.php file
+        require('../../conf.php');
         if ($db->errorMsg() != '') {
             echo "There Was an error connecting to the database: " . $db->errorMsg();
             die;
@@ -156,7 +138,6 @@ switch ($mode) {
 	<title>MYIT CRM Upgrader</title>
 	<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">
 	<link type=\"text/css\" href=\"../../css/default.css\" rel=\"stylesheet\">");
-        include('../validate.js');
         echo ("
 </head>
 <body>
@@ -247,37 +228,7 @@ switch ($mode) {
         } else {
             echo ("
 															<br>
-															<b>Database Information:</b>
-															<table  class=\"olotable\" cellpadding=\"5\" cellspacing=\"0\" border=\"0\" >
-																<tr>
-																	<td valign=\"top\" width=\"60%\" align=\"left\">
-																		<table >
-																			<tr>
-																				<td align=\"right\" width=\"140\">Database User:</td>
-																				<td align=\"left\" ><input type=\"text\" size=\"20\" name=\"db_user\" value=\"$DB_USER\" class=\"olotd5\"></td>
-																			</tr><tr>
-																				<td align=\"right\" width=\"140\">Database Password:</td>
-																				<td align=\"left\"><input type=\"password\" size=\"20\" name=\"db_password\" value=\"$DB_PASS\" class=\"olotd5\"></td>
-																			</tr><tr>
-																				<td align=\"right\" width=\"140\">Database Host:</td>
-																				<td align=\"left\"><input type=\"text\" size=\"20\" name=\"db_host\" value=\"$DB_HOST\" class=\"olotd5\"></td>
-																			</tr><tr>
-																				<td align=\"right\" width=\"140\">Database Name:</td>
-																				<td align=\"left\">
-																					<input type=\"text\" size=\"30\" name=\"db_name\" value=\"$DB_NAME\" class=\"olotd5\">
-																				</td>
-																			</tr><tr>
-																					<td align=\"right\" width=\"140\">Table Prefix</td>
-																					<td align=\"left\">
-																						<input type=\"text\" size=\"30\" name=\"db_prefix\" value=\"MYIT_\" class=\"olotd5\">
-																					</td>
-																				</tr>
-
-																			</table>
-																	</td>
-				
-																</tr>
-															</table>
+															
 															<br>																							
 															<table>
 																<tr>

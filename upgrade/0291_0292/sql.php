@@ -16,7 +16,7 @@ if (!create_acl($db)) {
 function create_acl($db)
 {
 
-    $q = "INSERT INTO `".PRFX."ACL` VALUES
+    $q = "REPLACE INTO `".PRFX."ACL` VALUES
             (78, 'invoice:delete', 1, 1, 1, 1, 0),
             (79, 'refund:refund_details', 1, 1, 1, 1, 0),
             (80, 'refund:edit', 1, 1, 1, 1, 0),
@@ -102,12 +102,12 @@ if (!add_tax_and_discounted_rates_to_invoice_table($db)) {
 
 function add_tax_and_discounted_rates_to_invoice_table($db)
 {
-
-    $q = "ALTER TABLE `".PRFX."TABLE_INVOICE` ADD `TAX_RATE` DECIMAL( 10, 3 ) NOT NULL DEFAULT '0.000' AFTER `BALANCE` ,
-ADD `DISCOUNT_APPLIED` DECIMAL( 10, 3 ) NOT NULL AFTER `TAX_RATE`";
+    
+    $q = "ALTER TABLE `".PRFX."TABLE_INVOICE` ADD `TAX_RATE` DECIMAL( 10, 3 ) NOT NULL DEFAULT '0.000' ,
+            ADD `DISCOUNT_APPLIED` DECIMAL( 10, 3 ) NOT NULL";
     $rs = $db->Execute($q);
     if (!$rs) {
-        return false;
+        return true;
     } else {
         return true;
     }
@@ -132,7 +132,7 @@ function rename_tracker($db)
 {
 
     $q = "RENAME TABLE `".PRFX."tracker` TO `".PRFX."TRACKER_NEW`,
-                            `".PRFX."TRACKER_NEW` TO `".PRFX."TRACKER`";
+        `".PRFX."TRACKER_NEW` TO `".PRFX."TRACKER`";
     $rs = $db->Execute($q);
     if (!$rs) {
         return false;
@@ -248,7 +248,7 @@ if (!create_version_table($db)) {
 // CREATING VERSION NUMBER TABLE
 function create_version_table($db)
 {
-    $q = "CREATE TABLE `".PRFX."VERSION` (`VERSION_ID` INT NOT NULL ,`VERSION_NAME` VARCHAR( 10 ) NOT NULL ,`VERSION_INSTALLED` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP ) ENGINE=MyISAM ";
+    $q = "CREATE TABLE IF NOT EXISTS `".PRFX."VERSION` (`VERSION_ID` INT NOT NULL ,`VERSION_NAME` VARCHAR( 10 ) NOT NULL ,`VERSION_INSTALLED` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP ) ENGINE=MyISAM ";
     if (!$rs = $db->execute($q)) {
         return false;
     } else {
