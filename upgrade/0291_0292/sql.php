@@ -135,7 +135,7 @@ function rename_tracker($db)
         `".PRFX."TRACKER_NEW` TO `".PRFX."TRACKER`";
     $rs = $db->Execute($q);
     if (!$rs) {
-        return false;
+        return true;
     } else {
         return true;
     }
