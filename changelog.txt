@@ -1,6 +1,13 @@
 PLEASE REPORT ANY BUGS OR FEATURES THAT YOU FIND SO THAT WE CAN FIX'EM!
 To view more details on these issues, please visit http://team.myitcrm.com/
 
+===v0.2.9.3 : 13th January 2012 ===
+Minor Bug fixes and Security fix.
+
+•Bug #252: client name not display on customer tab
+•Bug #259: Currency code not used in Paypal invoices - Defaults to USD
+•Bug #260: Upgrade Process and files review - sanitize data
+
 
 ===v0.2.9.2 : 30th September 2011 from svn r392===
 
