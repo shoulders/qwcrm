@@ -50,7 +50,7 @@
         sel.setAttribute('class', 'olotd4');
         {/literal}
         {section loop=$rate name=i}
-        sel.options[{$smarty.section.i.index}] = new Option('{$rate[i].LABOR_RATE_NAME}', '{$rate[i].LABOR_RATE_NAME}');
+        sel.options[{$smarty.section.i.index}] = new Option('{$rate[i].LABOR_RATE_NAME} - {$currency_sym}{$rate[i].LABOR_RATE_AMOUNT}', '{$rate[i].LABOR_RATE_NAME}');
         {/section}
         {literal}
         cellRight.appendChild(sel);
@@ -68,7 +68,7 @@
         //cellRightSel.setAttribute('width', '40');
         {/literal}
         {section loop=$rate name=i}
-        sel.options[{$smarty.section.i.index}] = new Option('{$rate[i].LABOR_RATE_AMOUNT}', '{$rate[i].LABOR_RATE_AMOUNT}');
+        sel.options[{$smarty.section.i.index}] = new Option('${$rate[i].LABOR_RATE_AMOUNT}', '{$rate[i].LABOR_RATE_AMOUNT}');
         {/section}
         {literal}
         cellRightSel.appendChild(sel);

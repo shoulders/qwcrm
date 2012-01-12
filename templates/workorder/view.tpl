@@ -54,7 +54,8 @@
                                                 <a href="" target="new"><img src="images/icons/16x16/help.gif" border="0" alt=""
                                                  onMouseOver="ddrivetip('<b>Work Orders</b><hr><p>You can edit the Work order commments, notes, and set schedule by clicking the icon on the right of each window<br><br>You can navigate to the customer by clicking their name. Hover over the Magnifing glass by the customer name to view Quick Contact Information. <br><br>If you need to edit the Customers Contact Information click the Edit Icon by their contact details.<br><br>Click on the Employee name to go to the employees details. Hover over the Magnifing glass to view the employees Quick Contact Information.<br><br>Click the Print link on the Quick Bar to generate a printable PDF of this work order. Click the Close link on the Quick Bar to complete the order and start the invoicing processes</p>')" onMouseOut="hideddrivetip()"></a>
                                             </td>
-                                        </tr><tr>
+                                        </tr>
+                                        <tr>
                                             <td class="menutd2" colspan="2">
                                                 <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0" >
                                                     <tr>
@@ -89,17 +90,16 @@
                                 <td><!-- Begin Page -->
                                     <table width="700" cellpadding="5" cellspacing="0" border="0" >
                                         <tr>
-                                            <td class="menuhead2" width="80%">&nbsp;{$translate_workorder_page_title} {$single_workorder_array[i].WORK_ORDER_ID}
-
+                                            <td class="menuhead2" width="80%">&nbsp;{$translate_workorder_page_title} {$single_workorder_array[i].WORK_ORDER_ID}</td>
                                             <td class="menuhead2" width="20%" align="right" valign="middle">
-                                                <a href="" target="new"><img src="images/icons/16x16/help.gif" border="0" alt=""
-                                                                             onMouseOver="ddrivetip('<b>Work Orders</b><hr><p>You can edit the Work order commments, notes, and set schedule by clicking the icon on the right of each window<br><br>You can navigate to the customer by clicking their name. Hover over the Magnifing glass by the customer name to view Quick Contact Information. <br><br>If you need to edit the Customers Contact Information click the Edit Icon by their contact details.<br><br>Click on the Employee name to go to the employees details. Hover over the Magnifing glass to view the employees Quick Contact Information.<br><br>Click the Print link on the Quick Bar to generate a printable PDF of this work order. Click the Close link on the Quick Bar to complete the order and start the invoicing processes</p>')" onMouseOut="hideddrivetip()"></a>
+                                                <a href="" target="new"><img src="images/icons/16x16/help.gif" border="0" alt="" onMouseOver="ddrivetip('<b>Work Orders</b><hr><p>You can edit the Work order commments, notes, and set schedule by clicking the icon on the right of each window<br><br>You can navigate to the customer by clicking their name. Hover over the Magnifing glass by the customer name to view Quick Contact Information. <br><br>If you need to edit the Customers Contact Information click the Edit Icon by their contact details.<br><br>Click on the Employee name to go to the employees details. Hover over the Magnifing glass to view the employees Quick Contact Information.<br><br>Click the Print link on the Quick Bar to generate a printable PDF of this work order. Click the Close link on the Quick Bar to complete the order and start the invoicing processes</p>')" onMouseOut="hideddrivetip()"></a>
                                             </td>
-                                        </tr><tr>
+                                        </tr>
+                                        <tr>
                                             <td class="menutd2" colspan="2">
                                                 <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0" >
                                                     <tr>
-                                                        <td width="100%" valign="top" >
+                                                        <td width="700" valign="top" >
                                                             <!-- Inside Content -->
 
                                                             {include file="workorder/work_order_customer_contact.tpl"}
@@ -113,7 +113,6 @@
                                 </td>
                             </tr>
                         </table>
-
                     </div>
 
                     <!-- Tab 3 Contents -->
@@ -123,13 +122,13 @@
                                 <td><!-- Begin Page -->
                                     <table width="700" cellpadding="5" cellspacing="0" border="0" >
                                         <tr>
-                                            <td class="menuhead2" width="80%">&nbsp;{$translate_workorder_page_title} {$single_workorder_array[i].WORK_ORDER_ID}
-
+                                            <td class="menuhead2" width="80%">&nbsp;{$translate_workorder_page_title} {$single_workorder_array[i].WORK_ORDER_ID}</td>
                                             <td class="menuhead2" width="20%" align="right" valign="middle">
                                                 <a href="" target="new"><img src="images/icons/16x16/help.gif" border="0" alt=""
                                                                              onMouseOver="ddrivetip('<b>Work Orders</b><hr><p>You can edit the Work order commments, notes, and set schedule by clicking the icon on the right of each window<br><br>You can navigate to the customer by clicking their name. Hover over the Magnifing glass by the customer name to view Quick Contact Information. <br><br>If you need to edit the Customers Contact Information click the Edit Icon by their contact details.<br><br>Click on the Employee name to go to the employees details. Hover over the Magnifing glass to view the employees Quick Contact Information.<br><br>Click the Print link on the Quick Bar to generate a printable PDF of this work order. Click the Close link on the Quick Bar to complete the order and start the invoicing processes</p>')" onMouseOut="hideddrivetip()"></a>
                                             </td>
-                                        </tr><tr>
+                                        </tr>
+                                        <tr>
                                             <td class="menutd2" colspan="2">
                                                 <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0" >
                                                     <tr>
@@ -137,7 +136,6 @@
                                                             <!-- Inside Content -->
                                                             <!-- Display schedule -->
                                                             {include file="workorder/work_order_schedule.tpl"}
-                                                            <br>
                                                             <br>
                                                         </td>
                                                     </tr>
@@ -148,8 +146,6 @@
                                 </td>
                             </tr>
                         </table>
-
-
                     </div>
                     <div id="tab_4_contents" class="tab_contents">
                         <table width="100%" border="0" cellpadding="20" cellspacing="0">
@@ -183,39 +179,7 @@
                         </table>
 
                     </div>
-                    {*<div id="tab_5_contents" class="tab_contents">
-                        <table width="100%" border="0" cellpadding="20" cellspacing="0">
-                            <tr>
-                                <td><!-- Begin Page -->
-                                    <table width="700" cellpadding="5" cellspacing="0" border="0" >
-                                        <tr>
-                                            <td class="menuhead2" width="80%">&nbsp;{$translate_workorder_page_title} {$single_workorder_array[i].WORK_ORDER_ID}
 
-                                            <td class="menuhead2" width="20%" align="right" valign="middle">
-                                                <a href="" target="new"><img src="images/icons/16x16/help.gif" border="0" alt=""
-                                                                             onMouseOver="ddrivetip('<b>Work Orders</b><hr><p>You can edit the Work order comments, notes, and set schedule by clicking the icon on the right of each window<br><br>You can navigate to the customer by clicking their name. Hover over the Magnifing glass by the customer name to view Quick Contact Information. <br><br>If you need to edit the Customers Contact Information click the Edit Icon by their contact details.<br><br>Click on the Employee name to go to the employees details. Hover over the Magnifing glass to view the employees Quick Contact Information.<br><br>Click the Print link on the Quick Bar to generate a printable PDF of this work order. Click the Close link on the Quick Bar to complete the order and start the invoicing processes</p>')" onMouseOut="hideddrivetip()"></a>
-                                            </td>
-                                        </tr><tr>
-                                            <td class="menutd2" colspan="2">
-                                                <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0" >
-                                                    <tr>
-                                                        <td width="100%" valign="top" >
-                                                            <!-- Inside Content -->
-                                                            <!-- Parts On Order -->
-                                                            {include file="workorder/work_order_parts.tpl"}
-                                                            <br>
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </td>
-                            </tr>
-                        </table>
-
-
-                    </div>*}
                     <div id="tab_6_contents" class="tab_contents">
                         <table width="100%" border="0" cellpadding="20" cellspacing="0">
                             <tr>
