@@ -42,7 +42,7 @@ window.open({/literal}$src{literal}, menubar=0)
                                     <table width="100%" cellpadding="4" cellspacing="0" border="0" >
                                         <tr>{section name=i loop=$customer_details}
                                             <td class="menuhead2" width="80%">
-                                                &nbsp;{$translate_customer_details} {$customer_details[i].CUSTOMER_DISPLAY_NAME}</td>
+                                                &nbsp;{$translate_customer_details} {$customer_details[i].CUSTOMER_FIRST_NAME}&nbsp;{$customer_details[i].CUSTOMER_LAST_NAME}</td>
                                             <td class="menuhead2" width="20%" align="right" valign="middle">
                                                 <a href="?page=customer:edit&customer_id={$customer_details[i].CUSTOMER_ID}&page_title=Edit%20Customer%20Information" ><img src="images/icons/edit.gif"  alt="" height="16" border="0"> Edit</a>
                                             </td>
@@ -94,7 +94,7 @@ window.open({/literal}$src{literal}, menubar=0)
                                                                     <td class="menutd">{$customer_details[i].CUSTOMER_PHONE}</td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td class="menutd">{$customer_details[i].CUSTOMER_DISPLAY_NAME}</td>
+                                                                    <td class="menutd"></td>
                                                                     <td class="menutd">{$customer_details[i].CUSTOMER_ADDRESS|nl2br}<br>{$customer_details[i].CUSTOMER_CITY}<br>{$customer_details[i].CUSTOMER_STATE}<br>{$customer_details[i].CUSTOMER_ZIP}</td>
                                                                     <td class="menutd"><b>{$translate_customer_work}</b></td>
                                                                     <td class="menutd">{$customer_details[i].CUSTOMER_WORK_PHONE}</td>
