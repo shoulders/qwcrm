@@ -52,7 +52,7 @@ if (isset($VAR['action']) && $VAR['action'] == 'logout') {
 }
 
 /* get company info for defaults */
-$q = 'SELECT * FROM '.PRFX.'TABLE_COMPANY, '.PRFX.'VERSION';
+$q = 'SELECT * FROM '.PRFX.'TABLE_COMPANY, '.PRFX.'VERSION ORDER BY  '.PRFX.'VERSION.`VERSION_INSTALLED` DESC LIMIT 1';
 	if(!$rs = $db->execute($q)) {
 		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
 		exit;
