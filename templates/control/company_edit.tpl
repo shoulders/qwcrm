@@ -1,4 +1,4 @@
-<!-- template name -->
+<!-- template name testing github edit -->
  <form method="POST" action="?page=control:company_edit">
 <table width="100%" border="0" cellpadding="20" cellspacing="0">
 
