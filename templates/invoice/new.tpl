@@ -411,7 +411,7 @@
                                                             <td>{$currency_sym}{$labor[q].INVOICE_LABOR_RATE|string_format:"%.2f"}</td>
                                                             <td>{$currency_sym}{$labor[q].INVOICE_LABOR_SUBTOTAL|string_format:"%.2f"}</td>
                                                             <td>
-                                                                <a href="?page=invoice:new&invoice_id={$invoice.INVOICE_ID}&wo_id={$wo_id}&page_title={$translate_invoice_invoice}&customer_id={$customer_id}" onclick="confirmLabourDelete({$labor[q].INVOICE_LABOR_ID}, {$invoice.INVOICE_ID}, {$wo_id}, {$customer_id});">
+                                                                <a href="javascript:void(0)" onclick="confirmLabourDelete({$labor[q].INVOICE_LABOR_ID}, {$invoice.INVOICE_ID}, {$wo_id}, {$customer_id});">
                                                                     <img src="images/icons/delete.gif" alt="" border="0" height="14" width="14"
                                                                     onMouseOver="ddrivetip('<b>{$translate_invoice_delete_labour_record|nl2br|regex_replace:"/[\r\t\n]/":" "}</b>')"
                                                                     onMouseOut="hideddrivetip()"></a>
@@ -467,7 +467,7 @@
                                                             <td>{$currency_sym}{$parts[w].INVOICE_PARTS_AMOUNT|string_format:"%.2f"}</td>
                                                             <td>{$currency_sym}{$parts[w].INVOICE_PARTS_SUBTOTAL|string_format:"%.2f"}</td>
                                                             <td>
-                                                                <a href="?page=invoice:new&invoice_id={$invoice.INVOICE_ID}&wo_id={$wo_id}&page_title={$translate_invoice_invoice}&customer_id={$customer_id}" onclick="confirmPartsDelete({$parts[w].INVOICE_PARTS_ID}, {$invoice.INVOICE_ID}, {$wo_id}, {$customer_id});">
+                                                                <a href="javascript:void(0)" onclick="confirmPartsDelete({$parts[w].INVOICE_PARTS_ID}, {$invoice.INVOICE_ID}, {$wo_id}, {$customer_id});">
                                                                     <img src="images/icons/delete.gif" alt="" border="0" height="14" width="14"
                                                                     onMouseOver="ddrivetip('<b>{$translate_invoice_delete_parts_record|nl2br|regex_replace:"/[\r\t\n]/":" "}</b>')"
                                                                     onMouseOut="hideddrivetip()"></a>
