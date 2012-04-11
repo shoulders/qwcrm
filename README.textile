@@ -27,3 +27,7 @@ Some of "MyITCRM's":http://myitcrm.com Features:
     and much more!
 
 So now give the "demo":http://demo.myitcrm.com a try or download your free copy and start optimizing your business with this easy to use and feature packed CRM Program.
+
+h2. Special Thanks
+
+A big thnaks goes out to those how have "contributed":https://github.com/myitcrm/myitcrm1/contributors to MyITCRM
