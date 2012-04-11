@@ -1,6 +1,6 @@
 !http://myitcrm.com/images/logo.png(MyITCRM)!:http://myitcrm.com
 
-h3. Requirements: - "MyITCRM Installation Requirements":http://wiki.myitcrm.com/MyIT_CRM_1_(PHP)/10_Installation/1_Requirements
+h3. Requirements: - "MyITCRM Installation Requirements":https://github.com/myitcrm/myitcrm1/wiki/Installation-on-Web-Host
 
 h1. What is MtyITCRM?
 
