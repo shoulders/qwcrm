@@ -30,4 +30,4 @@ So now give the "demo":http://demo.myitcrm.com a try or download your free copy 
 
 h2. Special Thanks
 
-A big thnaks goes out to those how have "contributed":https://github.com/myitcrm/myitcrm1/contributors to MyITCRM
+A big thanks goes out to those how have "contributed":https://github.com/myitcrm/myitcrm1/contributors to MyITCRM
