@@ -1,4 +1,6 @@
 <?php
+// Only show php errors
+error_reporting(E_ERROR);
 ###############################
 #		Lock Check					#
 ###############################
