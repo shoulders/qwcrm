@@ -612,7 +612,7 @@ function create_version($db) {
 			return false;
 	} else {
         //Insert New Records for version table
-        $q = "INSERT INTO `".PRFX."VERSION` (`VERSION_ID`, `VERSION_NAME`) VALUES ('292', '0.2.9.2')";
+        $q = "INSERT INTO `".PRFX."VERSION` (`VERSION_ID`, `VERSION_NAME`) VALUES ('293', '0.2.9.3')";
 
     if(!$rs = $db->execute($q) ) {
 			return false;
