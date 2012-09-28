@@ -1262,17 +1262,17 @@ function check_write ($file) {
 #####################################
 #		Set Path					#
 #####################################
-function set_path($_POST) 
+function set_path()
 {
-	
+
 	$install_date = date("M d Y h:i:s A" ,time());
 	$filename = '../conf.php';
 	$path2 = 'default_site_name';
 	//rename(".$filename.'../install, '.$install_date.");
 $content = "<?php
 #############################################################
-# MyIT CRM 
-# index.php																
+# MyIT CRM
+# index.php
 # PLEASE DON'T CHANGE ANY OF THESE VALUES UNLESS YOU KNOW
 # WHAT YOU ARE DOING....
 #############################################################
@@ -1333,12 +1333,12 @@ global \$smarty;
 
 
 \n";
-				
+
 	if (is_writable($filename)){
 		if (!$handle = fopen($filename, 'w')){
 			error_check("Cannot open file: $filename");
 		}
-		
+
 		if (fwrite($handle, $content) === FALSE) {
 			error_check("Cannot write to file: $filename");
 		}
@@ -1346,7 +1346,7 @@ global \$smarty;
 	} else {
 		error_check("The file $filename is not writable");
 	}
-	
+
 }
 
 #####################################
@@ -1364,17 +1364,17 @@ function error_check($error)
 function validate($data)
 {
 	//print_r($data);
-	
+
 	/* check for Null all values are required */
 	foreach($data as $key => $val) {
 		if($val == "") {
 			error_check("Missing field $key.<br>");
 		}
 	}
-	
+
 	/* Check that passwords match for administrator */
 	if($data['default_password'] != $data['default_password2']) {
-		error_check("Administrators Passwords do not match.</br>");	
+		error_check("Administrators Passwords do not match.</br>");
 	}
 }
 ?>
