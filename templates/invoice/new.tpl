@@ -285,7 +285,7 @@
                                                         <tr>
                                                             <td valign="top">
                                                                 <a href="?page=customer:customer_details&customer_id={$item.CUSTOMER_ID}&page_title={$item.CUSTOMER_DISPLAY_NAME}">{$item.CUSTOMER_DISPLAY_NAME}</a><br>
-														{$item.CUSTOMER_ADDRESS}<br>
+														{$item.CUSTOMER_ADDRESS|nl2br}<br>
 														{$item.CUSTOMER_CITY}, {$item.CUSTOMER_STATE} {$item.CUSTOMER_ZIP}<br>
 														{$item.CUSTOMER_PHONE}<br>
 														{$item.CUSTOMER_EMAIL}<br>
