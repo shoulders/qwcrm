@@ -264,7 +264,7 @@
                                 <td class="menutd">{$customer_details[i].CUSTOMER_PHONE}</td>
                             </tr>
                             <tr>
-                                <td class="menutd" colspan="2">{$customer_details[i].CUSTOMER_ADDRESS}</td>
+                                <td class="menutd" colspan="2">{$customer_details[i].CUSTOMER_ADDRESS|nl2br}</td>
                                 <td class="menutd"><b>{$translate_workorder_phone_2}</b></td>
                                 <td class="menutd"> {$customer_details[i].CUSTOMER_WORK_PHONE}</td>
                             </tr>
