@@ -72,7 +72,7 @@ window.open({/literal}$src{literal}, menubar=0)
                                                                     <td class="menutd"><b>{$translate_customer_contact_2}</b></td>
                                                                     <td class="menutd">{$customer_details[i].CUSTOMER_FIRST_NAME} {$customer_details[i].CUSTOMER_LAST_NAME}</td>
                                                                     <td class="menutd"><b>{$translate_customer_www}</b></td>
-                                                                    <td class="menutd"><a href="http://{$customer_details[i].CUSTOMER_WWW}"</a>{$customer_details[i].CUSTOMER_WWW}</td>
+                                                                    <td class="menutd"><a href="{$customer_details[i].CUSTOMER_WWW}"</a>{$customer_details[i].CUSTOMER_WWW}</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td></td>
