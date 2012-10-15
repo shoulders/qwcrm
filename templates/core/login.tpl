@@ -11,10 +11,8 @@
     <center>
       <table width="100%"  border="0" cellspacing="0" cellpadding="0">
         <tr>
-          <td>
-            <img src="images/logo.jpg" alt="" height="114">
-          </td>
-        </tr>
+          <td align="center">
+            <img src="{$company_logo}" alt="" height="114">
       </table>
       <table width="100%"  border="0" cellspacing="0" cellpadding="2">
         <tr>

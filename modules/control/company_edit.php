@@ -1,6 +1,5 @@
 <?php
 $inv_increment = $VAR['inv_number'];
-
 if(isset($VAR['submit'])) {
         //Start Invoice Numbers from a specific point - eg 2000 will start invoice numbering from 2000 and up
         if($VAR['inv_number'] != '' || $VAR['inv_number'] > '0' ) {
@@ -21,6 +20,39 @@ $string5= $VAR['inv_thank_you'];
 $string6=stripslashes($string5);
 $string= $VAR['company_name'];
 $string2=stripslashes($string);
+    // File Uploader Start
+    $allowedExts = array("jpg", "jpeg", "gif", "png");
+    $extension = end(explode(".", $_FILES["file"]["name"]));
+    if ((($_FILES["file"]["type"] == "image/gif")
+        || ($_FILES["file"]["type"] == "image/jpeg")
+        || ($_FILES["file"]["type"] == "image/png")
+        || ($_FILES["file"]["type"] == "image/pjpeg"))
+        && ($_FILES["file"]["size"] < 2048000)
+        && in_array($extension, $allowedExts))
+    {
+        if ($_FILES["file"]["error"] > 0)
+        {
+            echo "Return Code: " . $_FILES["file"]["error"] . "<br />";
+        }
+        else
+        {
+//            echo "Upload: " . $_FILES["file"]["name"] . "<br />";
+//            echo "Type: " . $_FILES["file"]["type"] . "<br />";
+//            echo "Size: " . ($_FILES["file"]["size"] / 1024) . " Kb<br />";
+//            echo "Temp file: " . $_FILES["file"]["tmp_name"] . "<br />";
+
+
+            move_uploaded_file($_FILES["file"]["tmp_name"],
+                "upload/" . $_FILES["file"]["name"]);
+//            echo "Stored in: " . "upload/" . $_FILES["file"]["name"];
+        }
+    }
+    else
+    {
+        force_page('core', 'error&error_msg=Invalid File');
+    }
+
+    // File Uploader End
 
 $q = 'UPDATE '.PRFX.'SETUP SET
 		INVOICE_TAX = '. $db->qstr( $VAR['inv_tax']) .',
@@ -45,6 +77,7 @@ $q = 'UPDATE '.PRFX.'SETUP SET
 			COMPANY_FAX             = '. $db->qstr( $VAR['fax']) .',
                         COMPANY_CURRENCY_SYMBOL	= '. $db->qstr( $VAR['currency_sym']) .',
                         COMPANY_CURRENCY_CODE	= '. $db->qstr( $VAR['currency_code']) .',
+                        COMPANY_LOGO = '. $db->qstr('upload/'. $_FILES["file"]["name"]).',
                         COMPANY_DATE_FORMAT	= '. $db->qstr( $VAR['date_format']) ;
 	if(!$rs = $db->execute($q)) {
 		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
@@ -91,4 +124,6 @@ $q = 'UPDATE '.PRFX.'SETUP SET
 	$smarty->assign('company', $arr);
 	$smarty->display('control/company_edit.tpl');
 }
+
+
 ?>

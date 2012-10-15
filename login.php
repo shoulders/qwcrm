@@ -12,6 +12,14 @@
 #####################################
 require("conf.php");
 
+/* get company logo */
+$q = 'SELECT COMPANY_LOGO FROM '.PRFX.'TABLE_COMPANY LIMIT 1';
+if(!$rs = $db->execute($q)) {
+    force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+    exit;
+}
+
+$smarty->assign('company_logo',$rs->fields['COMPANY_LOGO']);
 #####################################
 #	Initial Authorization				#
 #####################################

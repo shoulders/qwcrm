@@ -7,12 +7,15 @@ header('Content-type: text/html; charset=utf-8');
 /* check if lock file exists if not we need to install */
 session_start();
 require('conf.php');
+//http_redirect("install2", array("name" => "value"), true, HTTP_REDIRECT_PERM);
 
 $VAR = array_merge($_GET,$_POST);
 $wo_id = $VAR['wo_id'];
 $customer_id = $VAR['customer_id'];
 $id = $login_id;
 $smarty->assign('id', $id);
+
+
 
 if(!is_file('cache/lock') ) {
 	echo("
@@ -21,11 +24,11 @@ if(!is_file('cache/lock') ) {
 			window.location = \"install\"
 			//-->
 		</script>");
-} else if(is_dir('install') ) { 
+} else if(is_dir('install') ) {
 	echo("<a style=\"color:red;\">The install Directory Exists!! Please Rename or remove the install directory.</a>");
 	die;
-} 
-	
+}
+
 
 $page_title = $VAR['page_title'];
 
@@ -67,9 +70,10 @@ $smarty->assign('company_state', $rs->fields['COMPANY_STATE']);
 $smarty->assign('company_zip', $rs->fields['COMPANY_ZIP']);
 $smarty->assign('company_country', $rs->fields['COMPANY_COUNTRY']);
 $smarty->assign('company_phone',$rs->fields['COMPANY_PHONE']);
-$smarty->assign('company_email',$rs->fields['COMPANY_EMAIL']); 
-$smarty->assign('company_toll_free',$rs->fields['COMPANY_TOLL_FREE']);
+$smarty->assign('company_email',$rs->fields['COMPANY_EMAIL']);
 $smarty->assign('company_mobile',$rs->fields['COMPANY_MOBILE']);
+$smarty->assign('company_toll_free',$rs->fields['COMPANY_TOLL_FREE']);
+$smarty->assign('company_logo',$rs->fields['COMPANY_LOGO']);
 $smarty->assign('currency_sym',$rs->fields['COMPANY_CURRENCY_SYMBOL']);
 $smarty->assign('currency_code',$rs->fields['COMPANY_CURRENCY_CODE']);
 $smarty->assign('date_format',$rs->fields['COMPANY_DATE_FORMAT']);
