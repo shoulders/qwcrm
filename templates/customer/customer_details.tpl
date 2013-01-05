@@ -206,7 +206,7 @@ window.open({/literal}$src{literal}, menubar=0)
                                 <td class="olotd4">{section name=i loop=$customer_details}{$customer_details[i].CUSTOMER_DISPLAY_NAME}{/section}</td>
                                 <td class="olotd4">{$closed_work_orders[b].WORK_ORDER_SCOPE}</td>
                                 <td class="olotd4">{$closed_work_orders[b].CONFIG_WORK_ORDER_STATUS}</td>
-                                <td class="olotd4"> {if $closed_work_orders[a].EMPLOYEE_ID != ''}
+                                <td class="olotd4"> {if $closed_work_orders[b].EMPLOYEE_ID != ''}
                                     <img src="images/icons/16x16/view.gif" border="0" alt="" {literal}onMouseOver="ddrivetip('<center><b>{$translate_contact}</b></center><hr>
                                             <b>{$translate_work} </b>
                                             {$open_work_orders[a].EMPLOYEE_WORK_PHONE}
