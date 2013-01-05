@@ -13,7 +13,7 @@
         <td>
             <table width="700" cellpadding="4" cellspacing="0" border="0" >
                 <tr>
-                    <td class="menuhead2" width="80%">&nbsp;{$translate_incvoice_view_paid} - {$total_results} {$translate_invoice_records}</td>
+                    <td class="menuhead2" width="80%">&nbsp;{$translate_invoice_view_paid} - {$total_results} {$translate_invoice_records}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
                         <img src="images/icons/16x16/help.gif" alt="" border="0">
                     </td>
