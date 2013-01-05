@@ -91,7 +91,7 @@
 		<menu_close>Close</menu_close>
 		<menu_closed>Closed</menu_closed>
 		<menu_print>Print</menu_print>
-                <menu_print_wo>Print WO</menu_print_wo>
+        <menu_print_wo>Print WO</menu_print_wo>
 		<menu_home>Home</menu_home>
 		<menu_unassigned>Unassigned</menu_unassigned>
 		<menu_log_out>Log Out</menu_log_out>
@@ -119,7 +119,7 @@
 		<menu_employees_new>New Employee</menu_employees_new>
 		<menu_employees>Employees</menu_employees>
 		<menu_invoice>Invoice</menu_invoice>
-                <menu_invoice_only>Invoice Only</menu_invoice_only>
+        <menu_invoice_only>Invoice Only</menu_invoice_only>
 		<menu_paid>Paid</menu_paid>
 		<menu_paid_2>Paid Invoices</menu_paid_2>
 		<menu_un_paid>Unpaid</menu_un_paid>
@@ -127,6 +127,7 @@
 		<menu_open_orders>Open Orders</menu_open_orders>
 		<menu_closed_orders>Closed Orders</menu_closed_orders>
 		<menu_calendar>Calendar</menu_calendar>
+        <menu_invoices>Invoices</menu_invoices>
                 
 		<main_heading>Welcome to your Online Office</main_heading>
 		<main_company_notes>Company Notes</main_company_notes>

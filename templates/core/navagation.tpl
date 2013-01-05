@@ -46,7 +46,7 @@
                 {/if}
 	  </div>
       <div>
-        <span>{$translate_menu_accounts}</span>
+        <span>{$translate_menu_invoices}</span>
         <a href="?page=invoice:view_paid&amp;page_title=Paid%20Invoices"><img src="images/icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_paid_2} <b><font color="RED">{if $paid > 0} ({$paid}){/if}{if $paid < 1}{/if}</font></b></a>
         <a href="?page=invoice:view_unpaid&amp;page_title={$translate_menu_un_paid_2}"><img src="images/icons/warning.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_un_paid_2} <b><font color="RED">{if $unpaid > 0} ({$unpaid}){/if}{if $unpaid < 1}{/if}</font></b></a>
 
