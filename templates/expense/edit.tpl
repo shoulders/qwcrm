@@ -91,7 +91,7 @@
                                                                             <tr>
                                                                                 <td align="right"><b>{$translate_expense_type}</b><span style="color: #ff0000"> *</span></td>
                                                                                 <td>
-                                                                                    <select class="olotd5" id="expenseType" name="expenseType" col="30" style="width: 150px" value="{$expense_details[q].EXPENSE_TYPE}"/>
+                                                                                    <select class="olotd5" id="expenseType" name="expenseType" col="30" style="width: 150px; visibility: visible;" value="{$expense_details[q].EXPENSE_TYPE}"/>
                                                                                         <option value="1">{$translate_expense_type_1}</option>
                                                                                         <option value="2">{$translate_expense_type_2}</option>
                                                                                         <option value="3">{$translate_expense_type_3}</option>
@@ -119,7 +119,7 @@
                                                                             <tr>
                                                                                 <td align="right"><b>{$translate_expense_payment_method}</b><span style="color: #ff0000"> *</span></td>
                                                                                 <td>
-                                                                                    <select class="olotd5" id="expensePaymentMethod" name="expensePaymentMethod" style="width: 150px" value="{$expense_details[q].EXPENSE_PAYMENT_METHOD}"/>
+                                                                                    <select class="olotd5" id="expensePaymentMethod" name="expensePaymentMethod" style="width: 150px; visibility: visible;" value="{$expense_details[q].EXPENSE_PAYMENT_METHOD}"/>
                                                                                         <option value="1">{$translate_expense_payment_method_1}</option>
                                                                                         <option value="2">{$translate_expense_payment_method_2}</option>
                                                                                         <option value="3">{$translate_expense_payment_method_3}</option>
