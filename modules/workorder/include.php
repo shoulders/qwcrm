@@ -23,7 +23,6 @@ function display_single_open_workorder($db, $wo_id){
                         ".PRFX."TABLE_CUSTOMER.CREDIT_TERMS,
                         ".PRFX."TABLE_CUSTOMER.CUSTOMER_NOTES,
                         ".PRFX."TABLE_CUSTOMER.CREATE_DATE,
-                        ".PRFX."TABLE_CUSTOMER.LAST_ACTIVE,
 			".PRFX."TABLE_EMPLOYEE.EMPLOYEE_ID,
 			".PRFX."TABLE_EMPLOYEE.EMPLOYEE_DISPLAY_NAME,
 			".PRFX."TABLE_EMPLOYEE.EMPLOYEE_WORK_PHONE,
