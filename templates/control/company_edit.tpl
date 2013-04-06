@@ -120,6 +120,15 @@ right of the tabs -->
                                             from 2000 onwards</b><br></td>
                                     </tr>
                                     <tr>
+                                        <td align="right"><b>Work Order Starting Number:</b></td>
+                                        <td><input class="olotd5" type="text" name="wo_number"
+                                                   value="{$setup[w].WO_NUMBER_START}"></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3" align="center"><b>eg: 259 - this will start work order increments
+                                            from 259 onwards</b><br></td>
+                                    </tr>
+                                    <tr>
                                         <td colspan="2"><b>Invoice Thank You Note:</b> 255 max characters. Displays at
                                             the bottom of each invoice.
                                         </td>

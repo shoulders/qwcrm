@@ -12,7 +12,18 @@ if(isset($VAR['submit'])) {
                 }
                 
         }
+    $wo_increment = $VAR['wo_number'];
+        //Start Work Orders Numbers from a specific point - eg 2000 will start works order numbering from 2000 and up
+        if($VAR['wo_number'] != '' || $VAR['wo_number'] > '0' ) {
+            $q = "ALTER TABLE ".PRFX."TABLE_WORK_ORDER auto_increment =".$wo_increment ;
 
+            if(!$rs = $db->execute($q)) {
+                force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+                exit;
+
+            }
+
+        }
 /* Removes / from messages parsed to database */
 $string3= $VAR['welcome'];
 $string4=stripslashes($string3);
@@ -21,6 +32,7 @@ $string6=stripslashes($string5);
 $string= $VAR['company_name'];
 $string2=stripslashes($string);
     // File Uploader Start
+    if(isset($VAR['COMPANY_LOGO'])){
     $allowedExts = array("jpg", "jpeg", "gif", "png");
     $extension = end(explode(".", $_FILES["file"]["name"]));
     if ((($_FILES["file"]["type"] == "image/gif")
@@ -30,12 +42,13 @@ $string2=stripslashes($string);
         && ($_FILES["file"]["size"] < 2048000)
         && in_array($extension, $allowedExts))
     {
-        if ($_FILES["file"]["error"] > 0)
+        if ($_FILES["file"]["error"] > 0 )
         {
             echo "Return Code: " . $_FILES["file"]["error"] . "<br />";
         }
         else
         {
+
 //            echo "Upload: " . $_FILES["file"]["name"] . "<br />";
 //            echo "Type: " . $_FILES["file"]["type"] . "<br />";
 //            echo "Size: " . ($_FILES["file"]["size"] / 1024) . " Kb<br />";
@@ -45,18 +58,19 @@ $string2=stripslashes($string);
             move_uploaded_file($_FILES["file"]["tmp_name"],
                 "upload/" . $_FILES["file"]["name"]);
 //            echo "Stored in: " . "upload/" . $_FILES["file"]["name"];
+            }
         }
-    }
     else
     {
         force_page('core', 'error&error_msg=Invalid File');
     }
-
+    }
     // File Uploader End
 
 $q = 'UPDATE '.PRFX.'SETUP SET
 		INVOICE_TAX = '. $db->qstr( $VAR['inv_tax']) .',
         INVOICE_NUMBER_START = '. $db->qstr( $VAR['inv_number']).',
+        WO_NUMBER_START = '. $db->qstr( $VAR['wo_number']).',
 		INV_THANK_YOU = '. $db->qstr( $string6 	) .',
 		WELCOME_NOTE = '. $db->qstr( $string4  	) ;
     if(!$rs = $db->execute($q)) {
