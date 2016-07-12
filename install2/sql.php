@@ -1,605 +1,605 @@
 <?php
 ##################################
-# create_version table           #
+# create_version table				#
 ##################################
 if(!create_version($db)) {
-    echo("<tr>\n
-                    <td>CREATE TABLE IF NOT EXISTS ".PRFX."VERSION</td>\n
-                    <td><font color=\"red\"><b>Failed </b> </font> ".$db->ErrorMsg() ."</td>\n
-            </tr>\n");
-            $error_flag = true;
+	echo("<tr>\n
+					<td>CREATE TABLE IF NOT EXISTS ".PRFX."VERSION</td>\n
+					<td><font color=\"red\"><b>Failed </b> </font> ".$db->ErrorMsg() ."</td>\n
+			</tr>\n");
+			$error_flag = true;
 } else {
-    echo("<tr>\n
-                    <td>CREATE TABLE IF NOT EXISTS ".PRFX."VERSION</td>\n
-                    <td><font color=\"green\"><b>OK</b></font></td>\n
-            <tr>\n");
+	echo("<tr>\n
+					<td>CREATE TABLE IF NOT EXISTS ".PRFX."VERSION</td>\n
+					<td><font color=\"green\"><b>OK</b></font></td>\n
+			<tr>\n");
 }
 
 ##################################
-# create_billing_options         #
+# create_billing_options				#
 ##################################
 if(!create_billing_options($db)) {
-    echo("<tr>\n
-                    <td>CREATE TABLE IF NOT EXISTS ".PRFX."BILLING_OPTIONS</td>\n
-                    <td><font color=\"red\"><b>Failed </b> </font> ".$db->ErrorMsg() ."</td>\n
-            </tr>\n");
-            $error_flag = true;
+	echo("<tr>\n
+					<td>CREATE TABLE IF NOT EXISTS ".PRFX."BILLING_OPTIONS</td>\n
+					<td><font color=\"red\"><b>Failed </b> </font> ".$db->ErrorMsg() ."</td>\n
+			</tr>\n");
+			$error_flag = true;
 } else {
-    echo("<tr>\n
-                    <td>CREATE TABLE IF NOT EXISTS ".PRFX."BILLING_OPTIONS</td>\n
-                    <td><font color=\"green\"><b>OK</b></font></td>\n
-            <tr>\n");
+	echo("<tr>\n
+					<td>CREATE TABLE IF NOT EXISTS ".PRFX."BILLING_OPTIONS</td>\n
+					<td><font color=\"green\"><b>OK</b></font></td>\n
+			<tr>\n");
 }
 
 ##################################
-# create_config_cc_cards         #
+# create_config_cc_cards				#
 ##################################
 if(!create_config_cc_cards($db)) {
-    echo("<tr>\n
-                <td>CREATE TABLE IF NOT EXISTS ".PRFX."CONFIG_CC_CARDS</td>\n
-                <td><font color=\"red\"><b>Failed</b></font> ". $db->ErrorMsg() ."</td>\n
-            </tr>\n");
-            $error_flag = true;
+	echo("<tr>\n
+				<td>CREATE TABLE IF NOT EXISTS ".PRFX."CONFIG_CC_CARDS</td>\n
+				<td><font color=\"red\"><b>Failed</b></font> ". $db->ErrorMsg() ."</td>\n
+			</tr>\n");
+			$error_flag = true;
 } else {
-    echo("<tr>\n
-            <td>CREATE TABLE IF NOT EXISTS ".PRFX."CONFIG_CC_CARDS</td>\n
-            <td><font color=\"green\"><b>OK</b></font></td>\n
-        </tr>\n");
-}
-
-###################################
-# create_config_work_order_status #
-###################################
-if(!create_config_work_order_status($db)) {
-    echo("<tr>\n
-                <td>CREATE TABLE IF NOT EXISTS ".PRFX."CONFIG_WORK_ORDER_STATUS</td>\n
-                <td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
-            </tr>");
-            $error_flag = true;
-} else {
-    echo("<tr>\n
-                <td>CREATE TABLE IF NOT EXISTS ".PRFX."CONFIG_WORK_ORDER_STATUS</td>\n
-                <td><font color=\"green\"><b>OK</b></font></td>\n
-            </tr>\n");
+	echo("<tr>\n
+			<td>CREATE TABLE IF NOT EXISTS ".PRFX."CONFIG_CC_CARDS</td>\n
+			<td><font color=\"green\"><b>OK</b></font></td>\n
+		</tr>\n");
 }
 
 ##################################
-# insert_workorder_status        #
+# create_config_work_order_status	#
+##################################
+if(!create_config_work_order_status($db)) {
+	echo("<tr>\n
+				<td>CREATE TABLE IF NOT EXISTS ".PRFX."CONFIG_WORK_ORDER_STATUS</td>\n
+				<td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
+			</tr>");
+			$error_flag = true;
+} else {
+	echo("<tr>\n
+				<td>CREATE TABLE IF NOT EXISTS ".PRFX."CONFIG_WORK_ORDER_STATUS</td>\n
+				<td><font color=\"green\"><b>OK</b></font></td>\n
+			</tr>\n");
+}
+
+##################################
+# insert_workorder_status			#
 ##################################
 if(!insert_workorder_status($db)){
-    echo("<tr>\n
-                <td>Insert values for ".PRFX."CONFIG_WORK_ORDER_STATUS</td>\n
-                <td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
-            </tr>");
-    $error_flag = true;
+	echo("<tr>\n
+				<td>Insert values for ".PRFX."CONFIG_WORK_ORDER_STATUS</td>\n
+				<td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
+			</tr>");
+	$error_flag = true;
 }else {
-    echo("<tr>\n
-                <td>Insert values for ".PRFX."CONFIG_WORK_ORDER_STATUS</td>\n
-                <td><font color=\"green\"><b>OK</b></font></td>\n
-            <tr>\n");
+	echo("<tr>\n
+				<td>Insert values for ".PRFX."CONFIG_WORK_ORDER_STATUS</td>\n
+				<td><font color=\"green\"><b>OK</b></font></td>\n
+			<tr>\n");
 }
 ##################################
-# drop_table_company             #
+# drop_table_company				#
 ##################################
 if(!drop_table_company($db)){
-    echo("<tr>\n
-                <td>DELETED TABLE ".PRFX."TABLE_COMPANY TO REPLACE WITH NEW DATA</td>\n
-                <td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
-            </tr>");
-    $error_flag = true;    
+	echo("<tr>\n
+				<td>DELETED TABLE ".PRFX."TABLE_COMPANY TO REPLACE WITH NEW DATA</td>\n
+				<td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
+			</tr>");
+	$error_flag = true;	
 } else {
-    echo("<tr>\n
-                <td>DELETED TABLE ".PRFX."TABLE_COMPANY TO REPLACE WITH NEW DATA</td>\n
-                <td><font color=\"green\"><b>OK</b></font></td>\n
-            </tr>\n");
+	echo("<tr>\n
+				<td>DELETED TABLE ".PRFX."TABLE_COMPANY TO REPLACE WITH NEW DATA</td>\n
+				<td><font color=\"green\"><b>OK</b></font></td>\n
+			</tr>\n");
 }
 
 ##################################
-# create_table_company           #
+# create_table_company				#
 ##################################
 if(!create_table_company($db)){
-    echo("<tr>\n
-                <td>CREATE TABLE IF NOT EXISTS ".PRFX."TABLE_COMPANY</td>\n
-                <td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
-            </tr>");
-    $error_flag = true;    
+	echo("<tr>\n
+				<td>CREATE TABLE IF NOT EXISTS ".PRFX."TABLE_COMPANY</td>\n
+				<td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
+			</tr>");
+	$error_flag = true;	
 } else {
-    echo("<tr>\n
-                <td>CREATE TABLE IF NOT EXISTS ".PRFX."TABLE_COMPANY</td>\n
-                <td><font color=\"green\"><b>OK</b></font></td>\n
-            </tr>\n");
+	echo("<tr>\n
+				<td>CREATE TABLE IF NOT EXISTS ".PRFX."TABLE_COMPANY</td>\n
+				<td><font color=\"green\"><b>OK</b></font></td>\n
+			</tr>\n");
 }
 
 ##################################
-# create_table_customer          #
+# create_table_customer				#
 ##################################
 if(!create_table_customer($db)){
-    echo("<tr>\n
-            <td>CREATE TABLE IF NOT EXISTS ".PRFX."TABLE_CUSTOMER</td>
-            <td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
-        </tr>");
-    $error_flag = true;
+	echo("<tr>\n
+			<td>CREATE TABLE IF NOT EXISTS ".PRFX."TABLE_CUSTOMER</td>
+			<td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
+		</tr>");
+	$error_flag = true;
 } else {
-    echo("<tr>\n
-                <td>CREATE TABLE IF NOT EXISTS ".PRFX."TABLE_CUSTOMER</td>\n
-                <td><font color=\"green\"><b>OK</b></font></td>\n
-            </tr>\n");
+	echo("<tr>\n
+				<td>CREATE TABLE IF NOT EXISTS ".PRFX."TABLE_CUSTOMER</td>\n
+				<td><font color=\"green\"><b>OK</b></font></td>\n
+			</tr>\n");
 }
 
 if(!create_table_customer_memo($db)){
-    echo("<tr>\n
-            <td>CREATE TABLE IF NOT EXISTS ".PRFX."CUSTOMER_MEMO</td>
-            <td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
-        </tr>");
-    $error_flag = true;
+	echo("<tr>\n
+			<td>CREATE TABLE IF NOT EXISTS ".PRFX."CUSTOMER_MEMO</td>
+			<td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
+		</tr>");
+	$error_flag = true;
 } else {
-    echo("<tr>\n
-                <td>CREATE TABLE IF NOT EXISTS ".PRFX."CUSTOMER_MEMO</td>\n
-                <td><font color=\"green\"><b>OK</b></font></td>\n
-            </tr>\n");
+	echo("<tr>\n
+				<td>CREATE TABLE IF NOT EXISTS ".PRFX."CUSTOMER_MEMO</td>\n
+				<td><font color=\"green\"><b>OK</b></font></td>\n
+			</tr>\n");
 }
 
 
 ##################################
-# create_table_employee          #
+# create_table_employee				#
 ##################################
 if(!create_table_employee($db)){
-    echo("<tr>\n
-                <td>CREATE TABLE IF NOT EXISTS ".PRFX."TABLE_CUSTOMER</td>\n
-                <td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
-            </tr>");
-    $error_flag = true;
+	echo("<tr>\n
+				<td>CREATE TABLE IF NOT EXISTS ".PRFX."TABLE_CUSTOMER</td>\n
+				<td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
+			</tr>");
+	$error_flag = true;
 }else {
-    echo("<tr>\n
-                <td>CREATE TABLE IF NOT EXISTS ".PRFX."TABLE_CUSTOMER</td>\n
-                <td><font color=\"green\"><b>OK</b></font></td>\n
-            </tr>\n");
+	echo("<tr>\n
+				<td>CREATE TABLE IF NOT EXISTS ".PRFX."TABLE_CUSTOMER</td>\n
+				<td><font color=\"green\"><b>OK</b></font></td>\n
+			</tr>\n");
 }
 
 ###############################
-# create_table_invoice        #
+# create_table_invoice			#
 ###############################
 if(!create_table_invoice($db)){
-    echo("<tr>\n
-                <td>CREATE TABLE IF NOT EXISTS ".PRFX."INVOICE</td>\n
-                <td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
-            </tr>\n");
-    $error_flag = true;
+	echo("<tr>\n
+				<td>CREATE TABLE IF NOT EXISTS ".PRFX."INVOICE</td>\n
+				<td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
+			</tr>\n");
+	$error_flag = true;
 }else {
-    echo("<tr>\n
-            <td>CREATE TABLE IF NOT EXISTS ".PRFX."INVOICE</td>\n
-            <td><font color=\"green\"><b>OK</b></font></td>\n
-        </tr>\n");
+	echo("<tr>\n
+			<td>CREATE TABLE IF NOT EXISTS ".PRFX."INVOICE</td>\n
+			<td><font color=\"green\"><b>OK</b></font></td>\n
+		</tr>\n");
 }
 
 ##################################
-# create_table_invoice_labor     #
+# create_table_invoice_labor		#
 ##################################
 if(!create_table_invoice_labor($db)){
-    echo("<tr>\n
-            <td>CREATE TABLE IF NOT EXISTS ".PRFX."INVOICE_LABOR</td>\n
-            <td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
-        </tr>");
-    $error_flag = true;
+	echo("<tr>\n
+			<td>CREATE TABLE IF NOT EXISTS ".PRFX."INVOICE_LABOR</td>\n
+			<td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
+		</tr>");
+	$error_flag = true;
 }else {
-    echo("<tr>\n
-                <td>CREATE TABLE IF NOT EXISTS ".PRFX."INVOICE_LABOR</td>\n
-                <td><font color=\"green\"><b>OK</b></font></td>\n
-            </tr>\n");
+	echo("<tr>\n
+				<td>CREATE TABLE IF NOT EXISTS ".PRFX."INVOICE_LABOR</td>\n
+				<td><font color=\"green\"><b>OK</b></font></td>\n
+			</tr>\n");
 }
 
 ##################################
-# create_table_invoice_parts     #
+# create_table_invoice_parts		#
 ##################################
 if(!create_table_invoice_parts($db)){
-    echo("<tr>\n
-                <td>CREATE TABLE IF NOT EXISTS ".PRFX."INVOICE_PARTS</td>\n
-                <td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
-            </tr>\n");
-    $error_flag = true;
+	echo("<tr>\n
+				<td>CREATE TABLE IF NOT EXISTS ".PRFX."INVOICE_PARTS</td>\n
+				<td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
+			</tr>\n");
+	$error_flag = true;
 }else {
-    echo("<tr>\n
-                <td>CREATE TABLE IF NOT EXISTS ".PRFX."INVOICE_PARTS</td>\n
-                <td><font color=\"green\"><b>OK</b></font></td>\n
-            </tr>");
+	echo("<tr>\n
+				<td>CREATE TABLE IF NOT EXISTS ".PRFX."INVOICE_PARTS</td>\n
+				<td><font color=\"green\"><b>OK</b></font></td>\n
+			</tr>");
 }
 
 ###############################
-# create_labor_rate           #
+# create_labor_rate				#
 ###############################
 if(!create_labor_rate($db)) {
-    echo("<tr>\n
-            <td>CREATE TABLE IF NOT EXISTS ".PRFX."LABOR_RATE</td>\n
-            <td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
-        </tr>\n");
-    $error_flag = true;
+	echo("<tr>\n
+			<td>CREATE TABLE IF NOT EXISTS ".PRFX."LABOR_RATE</td>\n
+			<td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
+		</tr>\n");
+	$error_flag = true;
 } else {
-    echo("<tr>\n
-            <td>CREATE TABLE IF NOT EXISTS ".PRFX."LABOR_RATE</td>
-            <td><font color=\"green\"><b>OK</b></font></td>\n
-        </tr>\n");
+	echo("<tr>\n
+			<td>CREATE TABLE IF NOT EXISTS ".PRFX."LABOR_RATE</td>
+			<td><font color=\"green\"><b>OK</b></font></td>\n
+		</tr>\n");
 }
 
 ##################################
-# create_table_schedule          #
+# create_table_schedule				#
 ##################################
 if(!rename_table_schedule($db)){
-    echo("<tr>\n
-                <td>RENEAMED TABLE ".PRFX."schedule TO ".PRFX."SCHEDULE</td>\n
-                <td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
-            </tr>");
-    $error_flag = true;
+	echo("<tr>\n
+				<td>RENEAMED TABLE ".PRFX."schedule TO ".PRFX."SCHEDULE</td>\n
+				<td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
+			</tr>");
+	$error_flag = true;
 }else {
-    echo("<tr>\n
-            <td>RENEAMED TABLE ".PRFX."schedule TO ".PRFX."SCHEDULE</td>\n
-            <td><font color=\"green\"><b>OK</b></font></td>\n
-        </tr>\n");
+	echo("<tr>\n
+			<td>RENEAMED TABLE ".PRFX."schedule TO ".PRFX."SCHEDULE</td>\n
+			<td><font color=\"green\"><b>OK</b></font></td>\n
+		</tr>\n");
 }
 
 
 ##################################
-# create_table_schedule          #
+# create_table_schedule				#
 ##################################
 if(!create_table_schedule($db)){
-    echo("<tr>\n
-                <td>CREATE TABLE IF NOT EXISTS ".PRFX."SCHEDULE</td>\n
-                <td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
-            </tr>");
-    $error_flag = true;
+	echo("<tr>\n
+				<td>CREATE TABLE IF NOT EXISTS ".PRFX."SCHEDULE</td>\n
+				<td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
+			</tr>");
+	$error_flag = true;
 }else {
-    echo("<tr>\n
-            <td>CREATE TABLE IF NOT EXISTS ".PRFX."SCHEDULE</td>\n
-            <td><font color=\"green\"><b>OK</b></font></td>\n
-        </tr>\n");
+	echo("<tr>\n
+			<td>CREATE TABLE IF NOT EXISTS ".PRFX."SCHEDULE</td>\n
+			<td><font color=\"green\"><b>OK</b></font></td>\n
+		</tr>\n");
 }
 
 ##################################
-# create_table_software          #
+# create_table_software				#
 ##################################
 if(!create_table_software($db)){
-    echo("<tr>\n
-                <td>CREATE TABLE IF NOT EXISTS ".PRFX."SOFTWARE</td>\n
-                <td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
-            </tr>");
-    $error_flag = true;
+	echo("<tr>\n
+				<td>CREATE TABLE IF NOT EXISTS ".PRFX."SOFTWARE</td>\n
+				<td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
+			</tr>");
+	$error_flag = true;
 }else {
-    echo("<tr>\n
-            <td>CREATE TABLE IF NOT EXISTS ".PRFX."SOFTWARE</td>\n
-            <td><font color=\"green\"><b>OK</b></font></td>\n
-        </tr>\n");
+	echo("<tr>\n
+			<td>CREATE TABLE IF NOT EXISTS ".PRFX."SOFTWARE</td>\n
+			<td><font color=\"green\"><b>OK</b></font></td>\n
+		</tr>\n");
 }
 
 ##################################
-# create_table_assets            #
+# create_table_assets				#
 ##################################
 if(!create_table_asset($db)){
-    echo("<tr>\n
-                <td>CREATE TABLE IF NOT EXISTS ".PRFX."ASSET</td>\n
-                <td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
-            </tr>");
-    $error_flag = true;
+	echo("<tr>\n
+				<td>CREATE TABLE IF NOT EXISTS ".PRFX."ASSET</td>\n
+				<td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
+			</tr>");
+	$error_flag = true;
 }else {
-    echo("<tr>\n
-            <td>CREATE TABLE IF NOT EXISTS ".PRFX."ASSET</td>\n
-            <td><font color=\"green\"><b>OK</b></font></td>\n
-        </tr>\n");
+	echo("<tr>\n
+			<td>CREATE TABLE IF NOT EXISTS ".PRFX."ASSET</td>\n
+			<td><font color=\"green\"><b>OK</b></font></td>\n
+		</tr>\n");
 }
 ##################################
-# create_table_transactions      #
+# create_table_transactions			#
 ##################################
 if(!create_table_transactions($db)) {
-    echo("<tr>\n
-                <td>CREATE TABLE IF NOT EXISTS ".PRFX."TRANSACTIONS</td>\n
-                <td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
-            </tr>\n");
-    $error_flag = true;
+	echo("<tr>\n
+				<td>CREATE TABLE IF NOT EXISTS ".PRFX."TRANSACTIONS</td>\n
+				<td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
+			</tr>\n");
+	$error_flag = true;
 } else {
-    echo("<tr>\n
-                <td>CREATE TABLE IF NOT EXISTS ".PRFX."TRANSACTIONS</td>\n
-                <td><font color=\"green\"><b>OK</b></font></td>\n
-            </tr>\n");
+	echo("<tr>\n
+				<td>CREATE TABLE IF NOT EXISTS ".PRFX."TRANSACTIONS</td>\n
+				<td><font color=\"green\"><b>OK</b></font></td>\n
+			</tr>\n");
 }
 
 ##################################
-# create_table_workorder         #
+# create_table_workorder				#
 ##################################
 if(!create_table_workorder($db)){
-    echo("<tr>
-                <td>CREATE TABLE IF NOT EXISTS ".PRFX."WORKORDER</td>\n
-                <td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
-        </tr>\n");
-    $error_flag = true;
+	echo("<tr>
+				<td>CREATE TABLE IF NOT EXISTS ".PRFX."WORKORDER</td>\n
+				<td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
+		</tr>\n");
+	$error_flag = true;
 }else {
-    echo("<tr>
-            <td>CREATE TABLE IF NOT EXISTS ".PRFX."WORKORDER</td>\n
-            <td><font color=\"green\"><b>OK</b></font></td>\n
-        </tr>\n");
+	echo("<tr>
+			<td>CREATE TABLE IF NOT EXISTS ".PRFX."WORKORDER</td>\n
+			<td><font color=\"green\"><b>OK</b></font></td>\n
+		</tr>\n");
 }
 
 ##################################
-# create_workorder_notes         #
+# create_workorder_notes				#
 ##################################
 if(!create_workorder_notes($db)){
-    echo("<tr>\n
-                <td>CREATE TABLE IF NOT EXISTS ".PRFX."WORK_ORDER_NOTES</td>\n
-                <td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
-            </tr>\n");
-    $error_flag = true;
+	echo("<tr>\n
+				<td>CREATE TABLE IF NOT EXISTS ".PRFX."WORK_ORDER_NOTES</td>\n
+				<td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
+			</tr>\n");
+	$error_flag = true;
 }else {
-    echo("<tr>\n
-            <td>CREATE TABLE IF NOT EXISTS ".PRFX."WORK_ORDER_NOTES</td>\n
-            <td><font color=\"green\"><b>OK</b></font></td>\n
-        </tr>\n");
+	echo("<tr>\n
+			<td>CREATE TABLE IF NOT EXISTS ".PRFX."WORK_ORDER_NOTES</td>\n
+			<td><font color=\"green\"><b>OK</b></font></td>\n
+		</tr>\n");
 }
 
 ##################################
-# creat_workorder_status         #
+# creat_workorder_status				#
 ##################################
 if(!creat_workorder_status($db)){
-    echo("<tr>\n
-                <td>CREATE TABLE IF NOT EXISTS ".PRFX."WORKORDER_STATUS</td>\n
-                <td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
-            </tr>\n");
-    $error_flag = true;
+	echo("<tr>\n
+				<td>CREATE TABLE IF NOT EXISTS ".PRFX."WORKORDER_STATUS</td>\n
+				<td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
+			</tr>\n");
+	$error_flag = true;
 }else {
-    echo("<tr>\n
-                <td>CREATE TABLE IF NOT EXISTS ".PRFX."WORKORDER_STATUS</td>\n
-                <td><font color=\"green\"><b>OK</b></font></td>\n
-            </tr>\n");
+	echo("<tr>\n
+				<td>CREATE TABLE IF NOT EXISTS ".PRFX."WORKORDER_STATUS</td>\n
+				<td><font color=\"green\"><b>OK</b></font></td>\n
+			</tr>\n");
 }
 
 ##################################
-# create_table_tracker           #
+# create_table_tracker				#
 ##################################
 if(!create_table_tracker($db)) {
-    echo("<tr>\n
-                <td>CREATE TABLE IF NOT EXISTS ".PRFX."TRACKER</td>\n
-                <td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
-        </tr>\n");
-    $error_flag = true;
+	echo("<tr>\n
+				<td>CREATE TABLE IF NOT EXISTS ".PRFX."TRACKER</td>\n
+				<td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
+		</tr>\n");
+	$error_flag = true;
 } else {
-    echo("<tr>\n
-                <td>CREATE TABLE IF NOT EXISTS ".PRFX."TRACKER</td>\n
-                <td><font color=\"green\"><b>OK</b></font></td>\n
-            </tr>\n");
+	echo("<tr>\n
+				<td>CREATE TABLE IF NOT EXISTS ".PRFX."TRACKER</td>\n
+				<td><font color=\"green\"><b>OK</b></font></td>\n
+			</tr>\n");
 }
 ##################################
-# drop_setup                     #
+# drop_setup          			 #
 ##################################
 if(!drop_setup($db)){
-    echo("<tr>\n
-                <td>DELETED TABLE ".PRFX."SETUP TO REPLACE WITH NEW DATA</td>\n
-                <td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
-            </tr>");
-    $error_flag = true;    
+	echo("<tr>\n
+				<td>DELETED TABLE ".PRFX."SETUP TO REPLACE WITH NEW DATA</td>\n
+				<td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
+			</tr>");
+	$error_flag = true;	
 } else {
-    echo("<tr>\n
-                <td>DELETED TABLE ".PRFX."SETUP TO REPLACE WITH NEW DATA</td>\n
-                <td><font color=\"green\"><b>OK</b></font></td>\n
-            </tr>\n");
+	echo("<tr>\n
+				<td>DELETED TABLE ".PRFX."SETUP TO REPLACE WITH NEW DATA</td>\n
+				<td><font color=\"green\"><b>OK</b></font></td>\n
+			</tr>\n");
 }
 ##################################
-# create_setup                   #
+# create_setup							#
 ##################################
 if(!create_setup($db) ) {
 echo("<tr>\n
-            <td>CREATE TABLE IF NOT EXISTS ".PRFX."SETUP</td>\n
-            <td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
-        </tr>\n");
-    $error_flag = true;
+			<td>CREATE TABLE IF NOT EXISTS ".PRFX."SETUP</td>\n
+			<td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
+		</tr>\n");
+	$error_flag = true;
 } else {
-    echo("<tr>\n
-                <td>CREATE TABLE IF NOT EXISTS ".PRFX."SETUP</td>\n
-                <td><font color=\"green\"><b>OK</b></font></td>\n
-            </tr>\n");
+	echo("<tr>\n
+				<td>CREATE TABLE IF NOT EXISTS ".PRFX."SETUP</td>\n
+				<td><font color=\"green\"><b>OK</b></font></td>\n
+			</tr>\n");
 }
 
 
 ##################################
-# create_acl                     #
+# create_acl								#
 ##################################
 if(!create_acl($db) ) {
 echo("<tr>\n
-            <td>CREATE TABLE IF NOT EXISTS ".PRFX."ACL</td>\n
-            <td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
-        </tr>\n");
-    $error_flag = true;
+			<td>CREATE TABLE IF NOT EXISTS ".PRFX."ACL</td>\n
+			<td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
+		</tr>\n");
+	$error_flag = true;
 } else {
-    echo("<tr>\n
-                <td>CREATE TABLE IF NOT EXISTS ".PRFX."ACL</td>\n
-                <td><font color=\"green\"><b>OK</b></font></td>\n
-            </tr>\n");
-}    
+	echo("<tr>\n
+				<td>CREATE TABLE IF NOT EXISTS ".PRFX."ACL</td>\n
+				<td><font color=\"green\"><b>OK</b></font></td>\n
+			</tr>\n");
+}	
 
 ##################################
-# create_employee_type           #
+# create_employee_type				#
 ##################################
 if(!create_employee_type($db) ) {
-    echo("<tr>\n
-                <td>CREATE TABLE IF NOT EXISTS ".PRFX."EMPLOYEE_TYPE</td>\n
-                <td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
-            </tr>\n");
-    $error_flag = true;
+	echo("<tr>\n
+				<td>CREATE TABLE IF NOT EXISTS ".PRFX."EMPLOYEE_TYPE</td>\n
+				<td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
+			</tr>\n");
+	$error_flag = true;
 } else {
-    echo("<tr>\n
-                <td>CREATE TABLE IF NOT EXISTS ".PRFX."EMPLOYEE_TYPE</td>\n
-                <td><font color=\"green\"><b>OK</b></font></td>\n
-            </tr>\n");
+	echo("<tr>\n
+				<td>CREATE TABLE IF NOT EXISTS ".PRFX."EMPLOYEE_TYPE</td>\n
+				<td><font color=\"green\"><b>OK</b></font></td>\n
+			</tr>\n");
 }
 
 ##################################
-# create_cart                    #
+# create_cart							#
 ##################################
 if(!create_cart($db)) {
 echo("<tr>\n
-                <td>CREATE TABLE IF NOT EXISTS ".PRFX."CART</td>\n
-                <td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
-            </tr>\n");
-    $error_flag = true;
+				<td>CREATE TABLE IF NOT EXISTS ".PRFX."CART</td>\n
+				<td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
+			</tr>\n");
+	$error_flag = true;
 } else {
-    echo("<tr>\n
-                <td>CREATE TABLE IF NOT EXISTS ".PRFX."CART</td>\n
-                <td><font color=\"green\"><b>OK</b></font></td>\n
-            </tr>\n");
+	echo("<tr>\n
+				<td>CREATE TABLE IF NOT EXISTS ".PRFX."CART</td>\n
+				<td><font color=\"green\"><b>OK</b></font></td>\n
+			</tr>\n");
 }
 
 ##################################
-# create_cat                     #
+# create_cat								#
 ##################################
 if(!create_cat($db)) {
 echo("<tr>\n
-                <td>CREATE TABLE IF NOT EXISTS ".PRFX."CAT</td>\n
-                <td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
-            </tr>\n");
-    $error_flag = true;
+				<td>CREATE TABLE IF NOT EXISTS ".PRFX."CAT</td>\n
+				<td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
+			</tr>\n");
+	$error_flag = true;
 } else {
-    echo("<tr>\n
-                <td>CREATE TABLE IF NOT EXISTS ".PRFX."CAT</td>\n
-                <td><font color=\"green\"><b>OK</b></font></td>\n
-            </tr>\n");
+	echo("<tr>\n
+				<td>CREATE TABLE IF NOT EXISTS ".PRFX."CAT</td>\n
+				<td><font color=\"green\"><b>OK</b></font></td>\n
+			</tr>\n");
 }
 
 ##################################
-# create_orders                  #
+# create_orders							#
 ##################################
 if(!create_orders($db)) {
 echo("<tr>\n
-                <td>CREATE TABLE IF NOT EXISTS ".PRFX."ORDERS</td>\n
-                <td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
-            </tr>\n");
-    $error_flag = true;
+				<td>CREATE TABLE IF NOT EXISTS ".PRFX."ORDERS</td>\n
+				<td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
+			</tr>\n");
+	$error_flag = true;
 } else {
-    echo("<tr>\n
-                <td>CREATE TABLE IF NOT EXISTS ".PRFX."ORDERS</td>\n
-                <td><font color=\"green\"><b>OK</b></font></td>\n
-            </tr>\n");
+	echo("<tr>\n
+				<td>CREATE TABLE IF NOT EXISTS ".PRFX."ORDERS</td>\n
+				<td><font color=\"green\"><b>OK</b></font></td>\n
+			</tr>\n");
 }
 
 ##################################
-# create_order_details           #
+# create_order_details				#
 ##################################
 if(!create_order_details($db)) {
 echo("<tr>\n
-                <td>CREATE TABLE IF NOT EXISTS ".PRFX."ORDERS_DETAILS</td>\n
-                <td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
-            </tr>\n");
-    $error_flag = true;
+				<td>CREATE TABLE IF NOT EXISTS ".PRFX."ORDERS_DETAILS</td>\n
+				<td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
+			</tr>\n");
+	$error_flag = true;
 } else {
-    echo("<tr>\n
-                <td>CREATE TABLE IF NOT EXISTS ".PRFX."ORDERS_DETAILS</td>\n
-                <td><font color=\"green\"><b>OK</b></font></td>\n
-            </tr>\n");
+	echo("<tr>\n
+				<td>CREATE TABLE IF NOT EXISTS ".PRFX."ORDERS_DETAILS</td>\n
+				<td><font color=\"green\"><b>OK</b></font></td>\n
+			</tr>\n");
 }
 
 ##################################
-# create_sub_cat                 #
+# create_sub_cat						#
 ##################################
 if(!create_sub_cat($db)) {
 echo("<tr>\n
-                <td>CREATE TABLE IF NOT EXISTS ".PRFX."SUB_CAT</td>\n
-                <td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
-            </tr>\n");
-    $error_flag = true;
+				<td>CREATE TABLE IF NOT EXISTS ".PRFX."SUB_CAT</td>\n
+				<td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
+			</tr>\n");
+	$error_flag = true;
 } else {
-    echo("<tr>\n
-                <td>CREATE TABLE IF NOT EXISTS ".PRFX."SUB_CAT</td>\n
-                <td><font color=\"green\"><b>OK</b></font></td>\n
-            </tr>\n");
+	echo("<tr>\n
+				<td>CREATE TABLE IF NOT EXISTS ".PRFX."SUB_CAT</td>\n
+				<td><font color=\"green\"><b>OK</b></font></td>\n
+			</tr>\n");
 }
 
 if(!create_country($db)) {
 echo("<tr>\n
-                <td>CREATE TABLE IF NOT EXISTS ".PRFX."COUNTRY</td>\n
-                <td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
-            </tr>\n");
-    $error_flag = true;
+				<td>CREATE TABLE IF NOT EXISTS ".PRFX."COUNTRY</td>\n
+				<td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
+			</tr>\n");
+	$error_flag = true;
 } else {
-    echo("<tr>\n
-                <td>CREATE TABLE IF NOT EXISTS ".PRFX."COUNTRY</td>\n
-                <td><font color=\"green\"><b>OK</b></font></td>\n
-            </tr>\n");
+	echo("<tr>\n
+				<td>CREATE TABLE IF NOT EXISTS ".PRFX."COUNTRY</td>\n
+				<td><font color=\"green\"><b>OK</b></font></td>\n
+			</tr>\n");
 }
 if(!create_gift($db)) {
 echo("<tr>\n
-                <td>CREATE TABLE IF NOT EXISTS ".PRFX."GIFT_CERT</td>\n
-                <td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
-            </tr>\n");
-    $error_flag = true;
+				<td>CREATE TABLE IF NOT EXISTS ".PRFX."GIFT_CERT</td>\n
+				<td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
+			</tr>\n");
+	$error_flag = true;
 } else {
-    echo("<tr>\n
-                <td>CREATE TABLE IF NOT EXISTS ".PRFX."GIFT_CERT</td>\n
-                <td><font color=\"green\"><b>OK</b></font></td>\n
-            </tr>\n");
+	echo("<tr>\n
+				<td>CREATE TABLE IF NOT EXISTS ".PRFX."GIFT_CERT</td>\n
+				<td><font color=\"green\"><b>OK</b></font></td>\n
+			</tr>\n");
 }
 ##################################
-# create_TABLE_EXPENSE           #
+# create_TABLE_EXPENSE				#
 ##################################
 if(!create_expense($db)) {
 echo("<tr>\n
-                <td>CREATE TABLE IF NOT EXISTS ".PRFX."TABLE_EXPENSE</td>\n
-                <td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
-            </tr>\n");
-    $error_flag = true;
+				<td>CREATE TABLE IF NOT EXISTS ".PRFX."TABLE_EXPENSE</td>\n
+				<td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
+			</tr>\n");
+	$error_flag = true;
 } else {
-    echo("<tr>\n
-                <td>CREATE TABLE IF NOT EXISTS ".PRFX."TABLE_EXPENSE</td>\n
-                <td><font color=\"green\"><b>OK</b></font></td>\n
-            </tr>\n");
+	echo("<tr>\n
+				<td>CREATE TABLE IF NOT EXISTS ".PRFX."TABLE_EXPENSE</td>\n
+				<td><font color=\"green\"><b>OK</b></font></td>\n
+			</tr>\n");
 }
 ##################################
-# create_refund                  #
+# create_refund				#
 ##################################
 if(!create_refund($db)) {
 echo("<tr>\n
-                <td>CREATE TABLE IF NOT EXISTS ".PRFX."TABLE_REFUND</td>\n
-                <td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
-            </tr>\n");
-    $error_flag = true;
+				<td>CREATE TABLE IF NOT EXISTS ".PRFX."TABLE_REFUND</td>\n
+				<td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
+			</tr>\n");
+	$error_flag = true;
 } else {
-    echo("<tr>\n
-                <td>CREATE TABLE IF NOT EXISTS ".PRFX."TABLE_REFUND</td>\n
-                <td><font color=\"green\"><b>OK</b></font></td>\n
-            </tr>\n");
+	echo("<tr>\n
+				<td>CREATE TABLE IF NOT EXISTS ".PRFX."TABLE_REFUND</td>\n
+				<td><font color=\"green\"><b>OK</b></font></td>\n
+			</tr>\n");
 }
 ##################################
-# create_supplier                #
+# create_supplier				#
 ##################################
 if(!create_supplier($db)) {
 echo("<tr>\n
-                <td>CREATE TABLE IF NOT EXISTS ".PRFX."TABLE_SUPPLIER</td>\n
-                <td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
-            </tr>\n");
-    $error_flag = true;
+				<td>CREATE TABLE IF NOT EXISTS ".PRFX."TABLE_SUPPLIER</td>\n
+				<td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
+			</tr>\n");
+	$error_flag = true;
 } else {
-    echo("<tr>\n
-                <td>CREATE TABLE IF NOT EXISTS ".PRFX."TABLE_SUPPLIER</td>\n
-                <td><font color=\"green\"><b>OK</b></font></td>\n
-            </tr>\n");
+	echo("<tr>\n
+				<td>CREATE TABLE IF NOT EXISTS ".PRFX."TABLE_SUPPLIER</td>\n
+				<td><font color=\"green\"><b>OK</b></font></td>\n
+			</tr>\n");
 }
 
 ##################################
-# Functions                      #
+# Functions								#
 ##################################
 function create_gift($db) {
-    $q="CREATE TABLE IF NOT EXISTS `".PRFX."GIFT_CERT` (
-    `GIFT_ID` int(20) NOT NULL auto_increment,
-    `MEMO` text NOT NULL,
-    `DATE_CREATE` int(20) NOT NULL default '0',
-    `EXPIRE` int(20) NOT NULL default '0',
-    `GIFT_CODE` varchar(32) NOT NULL default '',
-    `CUSTOMER_ID` int(20) NOT NULL default '0',
-    `AMOUNT` decimal(6,2) NOT NULL default '0.00',
-    `ACTIVE` int(4) NOT NULL default '0',
-    `DATE_REDEMED` int(20) NOT NULL default '0',
-    `INVOICE_ID` int(20) NOT NULL default '0',
-    PRIMARY KEY  (`GIFT_ID`),
-    KEY `GIFT_CODE` (`GIFT_CODE`,`CUSTOMER_ID`,`ACTIVE`)
-    ) ENGINE=MyISAM ";
-    if(!$rs = $db->execute($q)) {
-            return false;
-    } else {
-        return true;
-    }
+	$q="CREATE TABLE IF NOT EXISTS `".PRFX."GIFT_CERT` (
+	`GIFT_ID` int(20) NOT NULL auto_increment,
+	`MEMO` text NOT NULL,
+	`DATE_CREATE` int(20) NOT NULL default '0',
+	`EXPIRE` int(20) NOT NULL default '0',
+	`GIFT_CODE` varchar(32) NOT NULL default '',
+	`CUSTOMER_ID` int(20) NOT NULL default '0',
+	`AMOUNT` decimal(6,2) NOT NULL default '0.00',
+	`ACTIVE` int(4) NOT NULL default '0',
+	`DATE_REDEMED` int(20) NOT NULL default '0',
+	`INVOICE_ID` int(20) NOT NULL default '0',
+	PRIMARY KEY  (`GIFT_ID`),
+	KEY `GIFT_CODE` (`GIFT_CODE`,`CUSTOMER_ID`,`ACTIVE`)
+	) ENGINE=MyISAM ";
+	if(!$rs = $db->execute($q)) {
+			return false;
+	} else {
+		return true;
+	}
 }
 // ADDING VERSION NUMBER TO DATABASE
 function create_version($db) {
@@ -609,129 +609,129 @@ function create_version($db) {
     `VERSION_INSTALLED` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     ) ENGINE=MyISAM ";
     if(!$rs = $db->execute($q)) {
-            return false;
-    } else {
+			return false;
+	} else {
         //Insert New Records for version table
         $q = "INSERT INTO `".PRFX."VERSION` (`VERSION_ID`, `VERSION_NAME`) VALUES ('293', '0.2.9.3')";
 
     if(!$rs = $db->execute($q) ) {
-            return false;
-        } else {
-            return true;
-        }
-    }
+			return false;
+		} else {
+			return true;
+		}
+	}
 }
 
 function create_billing_options($db) {
 
 $q = "CREATE TABLE IF NOT EXISTS `".PRFX."CONFIG_BILLING_OPTIONS` (
-        `ID` int(11) NOT NULL auto_increment,
-        `BILLING_OPTION` varchar(64) NOT NULL default '',
-        `BILLING_NAME` varchar(64) NOT NULL default '',
-        `ACTIVE` int(1) NOT NULL default '1',
-        PRIMARY KEY  (`ID`)
-    ) ENGINE=MyISAM ";
-    
-    if(!$rs = $db->execute($q)) {
-        return false;
-    } else {
-    
-        $q = "INSERT IGNORE INTO `".PRFX."CONFIG_BILLING_OPTIONS` VALUES (1,'cc_billing','Credit Card',0),(2,'cheque_billing','Cheque',1),(3,'cash_billing','Cash',1),(4,'gift_billing','Gift Certificate',0),(5,'paypal_billing','Pay Pal',0),(6,'deposit_billing','Direct Deposit',0)";
-    
-        if(!$rs = $db->execute($q) ) {
-            return false;
-        } else {
-            return true;
-        }
-    }
+		`ID` int(11) NOT NULL auto_increment,
+		`BILLING_OPTION` varchar(64) NOT NULL default '',
+		`BILLING_NAME` varchar(64) NOT NULL default '',
+		`ACTIVE` int(1) NOT NULL default '1',
+		PRIMARY KEY  (`ID`)
+	) ENGINE=MyISAM ";
+	
+	if(!$rs = $db->execute($q)) {
+		return false;
+	} else {
+	
+		$q = "INSERT IGNORE INTO `".PRFX."CONFIG_BILLING_OPTIONS` VALUES (1,'cc_billing','Credit Card',0),(2,'cheque_billing','Cheque',1),(3,'cash_billing','Cash',1),(4,'gift_billing','Gift Certificate',0),(5,'paypal_billing','Pay Pal',0),(6,'deposit_billing','Direct Deposit',0)";
+	
+		if(!$rs = $db->execute($q) ) {
+			return false;
+		} else {
+			return true;
+		}
+	}
 }
 
 function create_config_cc_cards($db){
 
-    $q="CREATE TABLE IF NOT EXISTS `".PRFX."CONFIG_CC_CARDS` (
-        `ID` int(11) NOT NULL auto_increment,
-        `CARD_TYPE` varchar(64) NOT NULL default '',
-        `CARD_NAME` varchar(64) NOT NULL default '',
-        `ACTIVE` int(1) NOT NULL default '0',
-        PRIMARY KEY  (`ID`)
-        ) ENGINE=MyISAM ";
-        
-    if(!$rs = $db->execute($q)) {
-        return false;
-    } else { 
-        $q="REPLACE INTO `".PRFX."CONFIG_CC_CARDS` VALUES (1,'visa','Visa',1),(2,'mc','Master Card',1),(3,'amex','Amex',0),(4,'discover','Discover',1),(5,'delta','Delta',0),(6,'solo','Solo',0),(7,'switch','Switch',0),(8,'jcb','JCB',0),(9,'diners','Diners',0),(10,'carteblanche','Carta Blanche',0),(11,'enroute','Enroute',0)";
-        if(!$rs=$db->execute($q)) {
-            return false;
-        } else {
-            return true;
-        }    
-    }
+	$q="CREATE TABLE IF NOT EXISTS `".PRFX."CONFIG_CC_CARDS` (
+		`ID` int(11) NOT NULL auto_increment,
+		`CARD_TYPE` varchar(64) NOT NULL default '',
+		`CARD_NAME` varchar(64) NOT NULL default '',
+		`ACTIVE` int(1) NOT NULL default '0',
+		PRIMARY KEY  (`ID`)
+		) ENGINE=MyISAM ";
+		
+	if(!$rs = $db->execute($q)) {
+		return false;
+	} else { 
+		$q="REPLACE INTO `".PRFX."CONFIG_CC_CARDS` VALUES (1,'visa','Visa',1),(2,'mc','Master Card',1),(3,'amex','Amex',0),(4,'discover','Discover',1),(5,'delta','Delta',0),(6,'solo','Solo',0),(7,'switch','Switch',0),(8,'jcb','JCB',0),(9,'diners','Diners',0),(10,'carteblanche','Carta Blanche',0),(11,'enroute','Enroute',0)";
+		if(!$rs=$db->execute($q)) {
+			return false;
+		} else {
+			return true;
+		}	
+	}
 
 }
 
 function create_config_work_order_status($db)
 {
-    $q="CREATE TABLE IF NOT EXISTS `".PRFX."CONFIG_WORK_ORDER_STATUS` (
-        `CONFIG_WORK_ORDER_STATUS_ID` int(11) NOT NULL auto_increment,
-        `CONFIG_WORK_ORDER_STATUS` varchar(64) NOT NULL default '',
-        `DISPLAY` int(1) NOT NULL default '0',
-        PRIMARY KEY  (`CONFIG_WORK_ORDER_STATUS_ID`)
-        ) ENGINE=MyISAM ";
-    $rs = $db->Execute($q);
-        if(!$rs) {
-            return false;
-        } else {
-            return true;
-        }
+	$q="CREATE TABLE IF NOT EXISTS `".PRFX."CONFIG_WORK_ORDER_STATUS` (
+		`CONFIG_WORK_ORDER_STATUS_ID` int(11) NOT NULL auto_increment,
+		`CONFIG_WORK_ORDER_STATUS` varchar(64) NOT NULL default '',
+		`DISPLAY` int(1) NOT NULL default '0',
+		PRIMARY KEY  (`CONFIG_WORK_ORDER_STATUS_ID`)
+		) ENGINE=MyISAM ";
+	$rs = $db->Execute($q);
+		if(!$rs) {
+			return false;
+		} else {
+			return true;
+		}
 }
 
 function create_employee_type($db) {
-    $q = "CREATE TABLE IF NOT EXISTS `".PRFX."CONFIG_EMPLOYEE_TYPE` (
-    `TYPE_ID` int(11) NOT NULL auto_increment,
-    `TYPE_NAME` varchar(255) NOT NULL default '',
-    PRIMARY KEY  (`TYPE_ID`),
-    KEY `TYPE_NAME` (`TYPE_NAME`)
-    ) ENGINE=MyISAM ";
-    if(!$rs = $db->Execute($q)) {
-        return false;
-    } else {
-        $q = "REPLACE INTO `".PRFX."CONFIG_EMPLOYEE_TYPE` VALUES (1, 'Manager'),(2, 'Supervisor'),(3, 'Technician'),(4, 'Admin')";
-        if(!$rs = $db->execute($q)) {
-            return false;
-        } else {
-            return true;
-        }
-    }
+	$q = "CREATE TABLE IF NOT EXISTS `".PRFX."CONFIG_EMPLOYEE_TYPE` (
+	`TYPE_ID` int(11) NOT NULL auto_increment,
+	`TYPE_NAME` varchar(255) NOT NULL default '',
+	PRIMARY KEY  (`TYPE_ID`),
+	KEY `TYPE_NAME` (`TYPE_NAME`)
+	) ENGINE=MyISAM ";
+	if(!$rs = $db->Execute($q)) {
+		return false;
+	} else {
+		$q = "REPLACE INTO `".PRFX."CONFIG_EMPLOYEE_TYPE` VALUES (1, 'Manager'),(2, 'Supervisor'),(3, 'Technician'),(4, 'Admin')";
+		if(!$rs = $db->execute($q)) {
+			return false;
+		} else {
+			return true;
+		}
+	}
 
 }
 
 function insert_workorder_status($db) 
 {
-    $q="
-        REPLACE INTO `".PRFX."CONFIG_WORK_ORDER_STATUS` VALUES (1,'Created',0),(2,'Assigned',1),(3,'Waiting For Parts',1),(6,'Closed',0),(7,'Awaiting Payment',0),(8,'Payment Made',0),(9,'Pending',0),(10,'Open',0)";
-    $rs = $db->Execute($q);
-        if(!$rs) {
-            return false;
-        } else {
-            return true;
-        }
+	$q="
+		REPLACE INTO `".PRFX."CONFIG_WORK_ORDER_STATUS` VALUES (1,'Created',0),(2,'Assigned',1),(3,'Waiting For Parts',1),(6,'Closed',0),(7,'Awaiting Payment',0),(8,'Payment Made',0),(9,'Pending',0),(10,'Open',0)";
+	$rs = $db->Execute($q);
+		if(!$rs) {
+			return false;
+		} else {
+			return true;
+		}
 }
 
 function drop_table_company($db)
 {
-    $q="DROP TABLE IF EXISTS`".PRFX."TABLE_COMPANY`";
+	$q="DROP TABLE IF EXISTS`".PRFX."TABLE_COMPANY`";
 
-    $rs = $db->Execute($q);
-        if(!$rs) {
-            return false;
-        } else {
-            return true;
-        }
+	$rs = $db->Execute($q);
+		if(!$rs) {
+			return false;
+		} else {
+			return true;
+		}
 }
 
 function create_table_company($db)
 {
-    $q="CREATE TABLE IF NOT EXISTS `".PRFX."TABLE_COMPANY` (
+	$q="CREATE TABLE IF NOT EXISTS `".PRFX."TABLE_COMPANY` (
   `COMPANY_NAME` varchar(60) NOT NULL default '',
   `COMPANY_ADDRESS` text default NULL,
   `COMPANY_ABN` varchar(60) NOT NULL default '',
@@ -746,109 +746,108 @@ function create_table_company($db)
   `COMPANY_CURRENCY_SYMBOL` varchar(30) default NULL,
   `COMPANY_CURRENCY_CODE` varchar(30) default NULL,
   `COMPANY_DATE_FORMAT` varchar(10) default NULL,
-  `COMPANY_NAME` varchar(60) NOT NULL default '',
   PRIMARY KEY  (`COMPANY_NAME`)
 ) ENGINE=MyISAM;";
 
-    $rs = $db->Execute($q);
-        if(!$rs) {
-            return false;
-        } else {
-            return true;
-        }
+	$rs = $db->Execute($q);
+		if(!$rs) {
+			return false;
+		} else {
+			return true;
+		}
 }
 // Changes made for version 0.2.8
 function create_table_customer($db){
 
-    $q="CREATE TABLE IF NOT EXISTS `".PRFX."TABLE_CUSTOMER` (
-        `CUSTOMER_ID` int(11) NOT NULL auto_increment,
-        `CUSTOMER_DISPLAY_NAME` varchar(80) NOT NULL default '',
-        `CUSTOMER_ADDRESS` text default NULL,
-        `CUSTOMER_CITY` varchar(40) default NULL,
-        `CUSTOMER_STATE` varchar(40) default NULL,
-        `CUSTOMER_ZIP` varchar(20) default NULL,
-        `CUSTOMER_PHONE` varchar(40) default NULL,
-        `CUSTOMER_WORK_PHONE` varchar(40) NOT NULL default '',
-        `CUSTOMER_MOBILE_PHONE` varchar(40) NOT NULL default '',
-        `CUSTOMER_EMAIL` varchar(80) default NULL,
+	$q="CREATE TABLE IF NOT EXISTS `".PRFX."TABLE_CUSTOMER` (
+		`CUSTOMER_ID` int(11) NOT NULL auto_increment,
+		`CUSTOMER_DISPLAY_NAME` varchar(80) NOT NULL default '',
+		`CUSTOMER_ADDRESS` text default NULL,
+		`CUSTOMER_CITY` varchar(40) default NULL,
+		`CUSTOMER_STATE` varchar(40) default NULL,
+		`CUSTOMER_ZIP` varchar(20) default NULL,
+		`CUSTOMER_PHONE` varchar(40) default NULL,
+		`CUSTOMER_WORK_PHONE` varchar(40) NOT NULL default '',
+		`CUSTOMER_MOBILE_PHONE` varchar(40) NOT NULL default '',
+		`CUSTOMER_EMAIL` varchar(80) default NULL,
         `CUSTOMER_WWW` varchar(80) default NULL,
         `CREDIT_TERMS` text default NULL,
         `CUSTOMER_NOTES` text default NULL,
-        `CUSTOMER_TYPE` varchar(20) default NULL,
-        `CUSTOMER_FIRST_NAME` varchar(39) default NULL,
-        `CUSTOMER_LAST_NAME` varchar(39) default NULL,
-        `CREATE_DATE` int(20) NOT NULL default '0',
-        `LAST_ACTIVE` int(20) NOT NULL default '0',
-        `DISCOUNT`  decimal(10,2) NOT NULL default '0.00',
-        PRIMARY KEY  (`CUSTOMER_ID`)
-        ) ENGINE=MyISAM " ;
+		`CUSTOMER_TYPE` varchar(20) default NULL,
+		`CUSTOMER_FIRST_NAME` varchar(39) default NULL,
+		`CUSTOMER_LAST_NAME` varchar(39) default NULL,
+		`CREATE_DATE` int(20) NOT NULL default '0',
+		`LAST_ACTIVE` int(20) NOT NULL default '0',
+		`DISCOUNT`  decimal(10,2) NOT NULL default '0.00',
+		PRIMARY KEY  (`CUSTOMER_ID`)
+		) ENGINE=MyISAM " ;
 
-    $rs = $db->Execute($q);
-        if(!$rs) {
-            return false;
-        } else {
-            return true;
-        }
+	$rs = $db->Execute($q);
+		if(!$rs) {
+			return false;
+		} else {
+			return true;
+		}
 }
 
 function create_table_customer_memo($db) {
-    $q="CREATE TABLE IF NOT EXISTS `".PRFX."CUSTOMER_NOTES` (
-    `ID` INT( 20 ) NOT NULL AUTO_INCREMENT ,
-    `CUSTOMER_ID` INT( 20 ) NOT NULL ,
-    `DATE` INT( 20 ) NOT NULL ,
-    `NOTE` TEXT NOT NULL ,
-    PRIMARY KEY ( `ID` ) ,
-    INDEX ( `CUSTOMER_ID` )
-    ) ENGINE=MyISAM ";
-    $rs = $db->Execute($q);
-        if(!$rs) {
-            return false;
-        } else {
-            return true;
-        }
+	$q="CREATE TABLE IF NOT EXISTS `".PRFX."CUSTOMER_NOTES` (
+	`ID` INT( 20 ) NOT NULL AUTO_INCREMENT ,
+	`CUSTOMER_ID` INT( 20 ) NOT NULL ,
+	`DATE` INT( 20 ) NOT NULL ,
+	`NOTE` TEXT NOT NULL ,
+	PRIMARY KEY ( `ID` ) ,
+	INDEX ( `CUSTOMER_ID` )
+	) ENGINE=MyISAM ";
+	$rs = $db->Execute($q);
+		if(!$rs) {
+			return false;
+		} else {
+			return true;
+		}
 
 }
 
 function create_table_employee($db) {
 
-    $q="CREATE TABLE IF NOT EXISTS `".PRFX."TABLE_EMPLOYEE` (
-        `EMPLOYEE_ID` int(11) NOT NULL auto_increment,
-        `EMPLOYEE_LOGIN` varchar(50) NOT NULL default '',
-        `EMPLOYEE_PASSWD` varchar(50) NOT NULL default '',
-        `EMPLOYEE_EMAIL` varchar(80) NOT NULL default '',
-        `EMPLOYEE_FIRST_NAME` varchar(40) NOT NULL default '',
-        `EMPLOYEE_LAST_NAME` varchar(40) NOT NULL default '',
-        `EMPLOYEE_DISPLAY_NAME` varchar(80) NOT NULL default '',
-        `EMPLOYEE_SSN` int(9) NOT NULL default '0',
-        `EMPLOYEE_ADDRESS` text default NULL,
-        `EMPLOYEE_CITY` varchar(40) NOT NULL default '',
-        `EMPLOYEE_STATE` char(60) NOT NULL default '',
-        `EMPLOYEE_ZIP` varchar(11) NOT NULL ,
-        `EMPLOYEE_TYPE` varchar(60) NOT NULL default '',
-        `EMPLOYEE_WORK_PHONE` varchar(13) NOT NULL default '',
-        `EMPLOYEE_HOME_PHONE` varchar(13) NOT NULL default '',
-        `EMPLOYEE_MOBILE_PHONE` varchar(13) NOT NULL default '',
-        `EMPLOYEE_START_TIME` int(20) NOT NULL default '0',
-        `EMPLOYEE_END_TIME` int(20) NOT NULL default '0',
-        `EMPLOYEE_BASED` varchar(10) NOT NULL default '1' ,
-        `EMPLOYEE_ACL` int(11) NOT NULL default '0',
-        `EMPLOYEE_STATUS` varchar(20) NOT NULL default '',
-        PRIMARY KEY  (`EMPLOYEE_ID`),
-        UNIQUE KEY `EMPLOYEE_LOGIN` (`EMPLOYEE_LOGIN`)
-        ) ENGINE=MyISAM " ;
+	$q="CREATE TABLE IF NOT EXISTS `".PRFX."TABLE_EMPLOYEE` (
+		`EMPLOYEE_ID` int(11) NOT NULL auto_increment,
+		`EMPLOYEE_LOGIN` varchar(50) NOT NULL default '',
+		`EMPLOYEE_PASSWD` varchar(50) NOT NULL default '',
+		`EMPLOYEE_EMAIL` varchar(80) NOT NULL default '',
+		`EMPLOYEE_FIRST_NAME` varchar(40) NOT NULL default '',
+		`EMPLOYEE_LAST_NAME` varchar(40) NOT NULL default '',
+		`EMPLOYEE_DISPLAY_NAME` varchar(80) NOT NULL default '',
+		`EMPLOYEE_SSN` int(9) NOT NULL default '0',
+		`EMPLOYEE_ADDRESS` text default NULL,
+		`EMPLOYEE_CITY` varchar(40) NOT NULL default '',
+		`EMPLOYEE_STATE` char(60) NOT NULL default '',
+		`EMPLOYEE_ZIP` varchar(11) NOT NULL ,
+		`EMPLOYEE_TYPE` varchar(60) NOT NULL default '',
+		`EMPLOYEE_WORK_PHONE` varchar(13) NOT NULL default '',
+		`EMPLOYEE_HOME_PHONE` varchar(13) NOT NULL default '',
+		`EMPLOYEE_MOBILE_PHONE` varchar(13) NOT NULL default '',
+		`EMPLOYEE_START_TIME` int(20) NOT NULL default '0',
+		`EMPLOYEE_END_TIME` int(20) NOT NULL default '0',
+		`EMPLOYEE_BASED` varchar(10) NOT NULL default '1' ,
+		`EMPLOYEE_ACL` int(11) NOT NULL default '0',
+		`EMPLOYEE_STATUS` varchar(20) NOT NULL default '',
+		PRIMARY KEY  (`EMPLOYEE_ID`),
+		UNIQUE KEY `EMPLOYEE_LOGIN` (`EMPLOYEE_LOGIN`)
+		) ENGINE=MyISAM " ;
 
-    
-    $rs = $db->Execute($q);
-        if(!$rs) {
-            return false;
-        } else {
-            return true;
-        }
+	
+	$rs = $db->Execute($q);
+		if(!$rs) {
+			return false;
+		} else {
+			return true;
+		}
 } 
 
 function create_table_invoice($db)
 {
-    $q="CREATE TABLE IF NOT EXISTS `".PRFX."TABLE_INVOICE` (
+	$q="CREATE TABLE IF NOT EXISTS `".PRFX."TABLE_INVOICE` (
   `INVOICE_ID` int(11) NOT NULL auto_increment,
   `INVOICE_DATE` varchar(30) default NULL,
   `CUSTOMER_ID` int(11) NOT NULL default '0',
@@ -870,40 +869,40 @@ function create_table_invoice($db)
   KEY `EMPLOYEE_ID` (`EMPLOYEE_ID`),
   KEY `WORKORDER_ID` (`WORKORDER_ID`)
 ) ENGINE=MyISAM";
-    
-    $rs = $db->Execute($q);
-        if(!$rs) {
-            return false;
-        } else {
-            return true;
-        }
+	
+	$rs = $db->Execute($q);
+		if(!$rs) {
+			return false;
+		} else {
+			return true;
+		}
 } 
 
 function create_table_invoice_labor($db)
 {
-    $q="CREATE TABLE IF NOT EXISTS `".PRFX."TABLE_INVOICE_LABOR` (
-        `INVOICE_LABOR_ID` int(11) NOT NULL auto_increment,
-        `INVOICE_ID` int(11) NOT NULL default '0',
-        `EMPLOYEE_ID` int(11) NOT NULL default '0',
-        `INVOICE_LABOR_DESCRIPTION` text,
-        `INVOICE_LABOR_RATE` decimal(10,2) NOT NULL default '0.00',
-        `INVOICE_LABOR_UNIT` varchar(4) NOT NULL default '',
-        `INVOICE_LABOR_SUBTOTAL` decimal(10,2) NOT NULL default '0.00',
-        PRIMARY KEY  (`INVOICE_LABOR_ID`),
-        KEY `INVOICE_ID` (`INVOICE_ID`)
-        ) ENGINE=MyISAM ";
-    
-    $rs = $db->Execute($q);
-        if(!$rs) {
-            return false;
-        } else {
-            return true;
-        }
+	$q="CREATE TABLE IF NOT EXISTS `".PRFX."TABLE_INVOICE_LABOR` (
+		`INVOICE_LABOR_ID` int(11) NOT NULL auto_increment,
+		`INVOICE_ID` int(11) NOT NULL default '0',
+		`EMPLOYEE_ID` int(11) NOT NULL default '0',
+		`INVOICE_LABOR_DESCRIPTION` text,
+		`INVOICE_LABOR_RATE` decimal(10,2) NOT NULL default '0.00',
+		`INVOICE_LABOR_UNIT` varchar(4) NOT NULL default '',
+		`INVOICE_LABOR_SUBTOTAL` decimal(10,2) NOT NULL default '0.00',
+		PRIMARY KEY  (`INVOICE_LABOR_ID`),
+		KEY `INVOICE_ID` (`INVOICE_ID`)
+		) ENGINE=MyISAM ";
+	
+	$rs = $db->Execute($q);
+		if(!$rs) {
+			return false;
+		} else {
+			return true;
+		}
 } 
 
 function create_table_invoice_parts($db)
 {
-    $q="CREATE TABLE IF NOT EXISTS `".PRFX."TABLE_INVOICE_PARTS` (
+	$q="CREATE TABLE IF NOT EXISTS `".PRFX."TABLE_INVOICE_PARTS` (
   `INVOICE_PARTS_ID` int(11) NOT NULL auto_increment,
   `INVOICE_ID` int(11) NOT NULL default '0',
   `INVOICE_PARTS_MANUF` varchar(60) NOT NULL default '',
@@ -918,18 +917,18 @@ function create_table_invoice_parts($db)
   KEY `INVOICE_ID` (`INVOICE_ID`)
 ) ENGINE=MyISAM ";
 
-    $rs = $db->Execute($q);
-        if(!$rs) {
-            return false;
-        } else {
-            return true;
-        }
+	$rs = $db->Execute($q);
+		if(!$rs) {
+			return false;
+		} else {
+			return true;
+		}
 } 
 
 function create_labor_rate($db) {
 
-    $q="CREATE TABLE IF NOT EXISTS `".PRFX."TABLE_LABOR_RATE` (
-        `LABOR_RATE_ID` int(11) NOT NULL auto_increment,
+	$q="CREATE TABLE IF NOT EXISTS `".PRFX."TABLE_LABOR_RATE` (
+		`LABOR_RATE_ID` int(11) NOT NULL auto_increment,
                   `LABOR_RATE_NAME` varchar(32) NOT NULL default '',
                   `LABOR_RATE_AMOUNT` decimal(10,2) NOT NULL default '0.00',
                   `LABOR_RATE_COST` decimal(10,2) NOT NULL default '0.00',
@@ -939,40 +938,40 @@ function create_labor_rate($db) {
                   PRIMARY KEY  (`LABOR_RATE_ID`)
                 ) ENGINE=MyISAM ";
 
-        
-     if(!$rs = $db->Execute($q)) {
-            return false;
-        } else {
-        
-            $q="REPLACE INTO `".PRFX."TABLE_LABOR_RATE` VALUES (1,'Basic Labor',45,0,1,'Service',''),(2,'Commercial',55,0,1,'Service',''),(3,'Virus Removal',65,0,1,'Service',''),(4,'Hard Drive',130,115,1,'Parts','Maxtor')";
-            
-            if(!$rs = $db->Execute($q)) {
-                return false;
-            } else {
-                return true;
-            }    
-        }
-        
-        
+		
+	 if(!$rs = $db->Execute($q)) {
+			return false;
+		} else {
+		
+			$q="REPLACE INTO `".PRFX."TABLE_LABOR_RATE` VALUES (1,'Basic Labor',45,0,1,'Service',''),(2,'Commercial',55,0,1,'Service',''),(3,'Virus Removal',65,0,1,'Service',''),(4,'Hard Drive',130,115,1,'Parts','Maxtor')";
+			
+			if(!$rs = $db->Execute($q)) {
+				return false;
+			} else {
+				return true;
+			}	
+		}
+		
+		
 }
 ##########################################
 # RENAME TABLE IF EXISTS                 #
 ##########################################
 function rename_table_schedule($db) {
-    $q="ALTER TABLE `".PRFX."TABLE_schedule` RENAME TO `".PRFX."TABLE_SCHEDULE`";
-    
-    $rs = $db->Execute($q);
-        if(!$rs) {
-            return true;
-        } else {
-            return true;
-        }
-}     
+	$q="ALTER TABLE `".PRFX."TABLE_schedule` RENAME TO `".PRFX."TABLE_SCHEDULE`";
+	
+	$rs = $db->Execute($q);
+		if(!$rs) {
+			return true;
+		} else {
+			return true;
+		}
+} 	
 
 
 
 function create_table_schedule($db) {
-    $q="CREATE TABLE IF NOT EXISTS `".PRFX."TABLE_SCHEDULE` (
+	$q="CREATE TABLE IF NOT EXISTS `".PRFX."TABLE_SCHEDULE` (
   `SCHEDULE_ID` int(11) NOT NULL auto_increment,
   `SCHEDULE_START` int(20) NOT NULL default '0',
   `SCHEDULE_END` int(20) NOT NULL default '0',
@@ -984,17 +983,17 @@ function create_table_schedule($db) {
   PRIMARY KEY  (`SCHEDULE_ID`),
   KEY `WORK_ORDER_ID` (`WORK_ORDER_ID`,`EMPLOYEE_ID`)
 ) ENGINE=MyISAM";
-    
-    $rs = $db->Execute($q);
-        if(!$rs) {
-            return false;
-        } else {
-            return true;
-        }
+	
+	$rs = $db->Execute($q);
+		if(!$rs) {
+			return false;
+		} else {
+			return true;
+		}
 } 
 
 function create_table_software($db) {
-    $q="CREATE TABLE IF NOT EXISTS `".PRFX."TABLE_SOFTWARE` (
+	$q="CREATE TABLE IF NOT EXISTS `".PRFX."TABLE_SOFTWARE` (
   `SOFTWARE_ID` int(11) NOT NULL auto_increment,
   `SOFTWARE_TYPE` varchar(32) NOT NULL default '',
   `SOFTWARE_NAME` varchar(32) NOT NULL default '',
@@ -1009,17 +1008,17 @@ function create_table_software($db) {
   `SOFTWARE_NOTES` text NOT NULL,
   PRIMARY KEY  (`SOFTWARE_ID`)
 ) ENGINE=MyISAM";
-    
-    $rs = $db->Execute($q);
-        if(!$rs) {
-            return false;
-        } else {
-            return true;
-        }
+	
+	$rs = $db->Execute($q);
+		if(!$rs) {
+			return false;
+		} else {
+			return true;
+		}
 } 
 
 function create_table_asset($db) {
-    $q="CREATE TABLE IF NOT EXISTS `".PRFX."TABLE_ASSET` (
+	$q="CREATE TABLE IF NOT EXISTS `".PRFX."TABLE_ASSET` (
   `ASSET_ID` int(11) NOT NULL auto_increment,
   `ASSER_TYPE` varchar(32) NOT NULL default '',
   `ASSET_NAME` varchar(32) NOT NULL default '',
@@ -1031,17 +1030,17 @@ function create_table_asset($db) {
   `ASSET_NOTES` text NOT NULL,
   PRIMARY KEY  (`ASSET_ID`)
 ) ENGINE=MyISAM";
-    
-    $rs = $db->Execute($q);
-        if(!$rs) {
-            return false;
-        } else {
-            return true;
-        }
-}                 
-    
+	
+	$rs = $db->Execute($q);
+		if(!$rs) {
+			return false;
+		} else {
+			return true;
+		}
+} 				
+	
 function create_table_transactions($db) {
-    $q="CREATE TABLE IF NOT EXISTS `".PRFX."TABLE_TRANSACTION` (
+	$q="CREATE TABLE IF NOT EXISTS `".PRFX."TABLE_TRANSACTION` (
   `TRANSACTION_ID` int(11) NOT NULL auto_increment,
   `DATE` int(20) NOT NULL default '0',
   `TYPE` int(1) NOT NULL default '0',
@@ -1056,18 +1055,18 @@ function create_table_transactions($db) {
   KEY `TYPE` (`TYPE`),
   FULLTEXT KEY `MEMO` (`MEMO`)
 ) ENGINE=MyISAM";
-    $rs = $db->Execute($q);
-        if(!$rs) {
-            return false;
-        } else {
-            return true;
-        }
+	$rs = $db->Execute($q);
+		if(!$rs) {
+			return false;
+		} else {
+			return true;
+		}
 
 }
 
 function create_table_workorder($db)
 {
-    $q="CREATE TABLE IF NOT EXISTS `".PRFX."TABLE_WORK_ORDER` (
+	$q="CREATE TABLE IF NOT EXISTS `".PRFX."TABLE_WORK_ORDER` (
   `WORK_ORDER_ID` int(4) NOT NULL auto_increment,
   `CUSTOMER_ID` int(4) NOT NULL default '0',
   `WORK_ORDER_OPEN_DATE` int(20) NOT NULL default '0',
@@ -1090,94 +1089,94 @@ function create_table_workorder($db)
   KEY `WORK_ORDER_CLOSE_BY` (`WORK_ORDER_CLOSE_BY`),
   KEY `CUSTOMER_ID` (`CUSTOMER_ID`)
 ) ENGINE=MyISAM";
-    
-    $rs = $db->Execute($q);
-        if(!$rs) {
-            return false;
-        } else {
-            return true;
-        }
-}     
-    
+	
+	$rs = $db->Execute($q);
+		if(!$rs) {
+			return false;
+		} else {
+			return true;
+		}
+} 	
+	
 
 function create_workorder_notes($db)
 {
-    $q="CREATE TABLE IF NOT EXISTS `".PRFX."TABLE_WORK_ORDER_NOTES` (
-        `WORK_ORDER_NOTES_ID` int(11) NOT NULL auto_increment,
-        `WORK_ORDER_ID` int(11) NOT NULL default '0',
-        `WORK_ORDER_NOTES_DESCRIPTION` text NOT NULL,
-        `WORK_ORDER_NOTES_ENTER_BY` varchar(128) NOT NULL default '',
-        `WORK_ORDER_NOTES_DATE` varchar(255) NOT NULL default '',
-        PRIMARY KEY  (`WORK_ORDER_NOTES_ID`),
-        KEY `WORK_ORDER_ID` (`WORK_ORDER_ID`),
-        KEY `WORK_ORDER_NOTES_ENTER_BY` (`WORK_ORDER_NOTES_ENTER_BY`)
-        ) ENGINE=MyISAM ";
-    
-    $rs = $db->Execute($q);
-        if(!$rs) {
-            return false;
-        } else {
-            return true;
-        }
-}     
+	$q="CREATE TABLE IF NOT EXISTS `".PRFX."TABLE_WORK_ORDER_NOTES` (
+		`WORK_ORDER_NOTES_ID` int(11) NOT NULL auto_increment,
+		`WORK_ORDER_ID` int(11) NOT NULL default '0',
+		`WORK_ORDER_NOTES_DESCRIPTION` text NOT NULL,
+		`WORK_ORDER_NOTES_ENTER_BY` varchar(128) NOT NULL default '',
+		`WORK_ORDER_NOTES_DATE` varchar(255) NOT NULL default '',
+		PRIMARY KEY  (`WORK_ORDER_NOTES_ID`),
+		KEY `WORK_ORDER_ID` (`WORK_ORDER_ID`),
+		KEY `WORK_ORDER_NOTES_ENTER_BY` (`WORK_ORDER_NOTES_ENTER_BY`)
+		) ENGINE=MyISAM ";
+	
+	$rs = $db->Execute($q);
+		if(!$rs) {
+			return false;
+		} else {
+			return true;
+		}
+} 	
 
 function creat_workorder_status($db)
 {
-    $q="CREATE TABLE IF NOT EXISTS `".PRFX."TABLE_WORK_ORDER_STATUS` (
-        `WORK_ORDER_STATUS_ID` int(11) NOT NULL auto_increment,
-        `WORK_ORDER_ID` int(11) NOT NULL default '0',
-        `WORK_ORDER_STATUS_DATE` varchar(30) NOT NULL default '',
-        `WORK_ORDER_STATUS_NOTES` text NOT NULL,
-        `WORK_ORDER_STATUS_ENTER_BY` varchar(32) NOT NULL default '',
-        PRIMARY KEY  (`WORK_ORDER_STATUS_ID`),
-        KEY `WORK_ORDER_ID` (`WORK_ORDER_ID`),
-        KEY `WORK_ORDER_STATUS_ENTER_BY` (`WORK_ORDER_STATUS_ENTER_BY`)
-        ) ENGINE=MyISAM ";
-    
-    $rs = $db->Execute($q);
-        if(!$rs) {
-            return false;
-        } else {
-            return true;
-        }
-}     
+	$q="CREATE TABLE IF NOT EXISTS `".PRFX."TABLE_WORK_ORDER_STATUS` (
+		`WORK_ORDER_STATUS_ID` int(11) NOT NULL auto_increment,
+		`WORK_ORDER_ID` int(11) NOT NULL default '0',
+		`WORK_ORDER_STATUS_DATE` varchar(30) NOT NULL default '',
+		`WORK_ORDER_STATUS_NOTES` text NOT NULL,
+		`WORK_ORDER_STATUS_ENTER_BY` varchar(32) NOT NULL default '',
+		PRIMARY KEY  (`WORK_ORDER_STATUS_ID`),
+		KEY `WORK_ORDER_ID` (`WORK_ORDER_ID`),
+		KEY `WORK_ORDER_STATUS_ENTER_BY` (`WORK_ORDER_STATUS_ENTER_BY`)
+		) ENGINE=MyISAM ";
+	
+	$rs = $db->Execute($q);
+		if(!$rs) {
+			return false;
+		} else {
+			return true;
+		}
+} 	
 
 function create_table_tracker($db) {
-    $q="CREATE TABLE IF NOT EXISTS `".PRFX."TRACKER` (
-        `id` int(20) NOT NULL auto_increment,
-        `date` int(20) NOT NULL default '0',
-        `ip` varchar(32) NOT NULL default '',
-        `uagent` varchar(255) NOT NULL default '',
-        `page` varchar(255) NOT NULL default '',
-        `module` varchar(64) NOT NULL default '',
-        `full_page` varchar(64) NOT NULL default '',
-        `referer` varchar(64) NOT NULL default '',
-        PRIMARY KEY  (`id`),
-        KEY `date` (`date`,`ip`,`page`),
-        KEY `module` (`module`,`full_page`)
-        ) ENGINE=MyISAM ";
-    $rs = $db->Execute($q);
-        if(!$rs) {
-            return false;
-        } else {
-            return true;
-        }
-    
+	$q="CREATE TABLE IF NOT EXISTS `".PRFX."TRACKER` (
+		`id` int(20) NOT NULL auto_increment,
+		`date` int(20) NOT NULL default '0',
+		`ip` varchar(32) NOT NULL default '',
+		`uagent` varchar(255) NOT NULL default '',
+		`page` varchar(255) NOT NULL default '',
+		`module` varchar(64) NOT NULL default '',
+		`full_page` varchar(64) NOT NULL default '',
+		`referer` varchar(64) NOT NULL default '',
+		PRIMARY KEY  (`id`),
+		KEY `date` (`date`,`ip`,`page`),
+		KEY `module` (`module`,`full_page`)
+		) ENGINE=MyISAM ";
+	$rs = $db->Execute($q);
+		if(!$rs) {
+			return false;
+		} else {
+			return true;
+		}
+	
 }
 function drop_setup($db)
 {
-    $q="DROP TABLE IF EXISTS`".PRFX."SETUP`";
+	$q="DROP TABLE IF EXISTS`".PRFX."SETUP`";
 
-    $rs = $db->Execute($q);
-        if(!$rs) {
-            return false;
-        } else {
-            return true;
-        }
+	$rs = $db->Execute($q);
+		if(!$rs) {
+			return false;
+		} else {
+			return true;
+		}
 }
 
 function create_setup($db) {
-    $q = "CREATE TABLE IF NOT EXISTS `".PRFX."SETUP` (
+	$q = "CREATE TABLE IF NOT EXISTS `".PRFX."SETUP` (
   `OFFICE_HOUR_START` int(2) NOT NULL default '0',
   `OFFICE_HOUR_END` int(2) NOT NULL default '0',
   `AN_LOGIN_ID` varchar(255)NOT NULL default '',
@@ -1212,19 +1211,19 @@ function create_setup($db) {
         } else {
             $q = "REPLACE INTO `".PRFX."SETUP` VALUES (7, 19, '', '', '', '', 1, 0,'0.0','','','','','','03','0.00','','','1.5','','','','','','Please use invoice number as transactions details. This helps us to determine who has paid in a timely manner.','')";
         
-            if(!$rs = $db->Execute($q)) {
-                return false;
-            } else {
-                return true;
-           }
-        }
+			if(!$rs = $db->Execute($q)) {
+				return false;
+			} else {
+				return true;
+		   }
+		}
 
-}    
+}	
 
 function create_acl($db) {
-    $q="CREATE TABLE IF NOT EXISTS `".PRFX."ACL` (
-          `ACL_ID` int(20) NOT NULL auto_increment,
-          `page` varchar(100),
+	$q="CREATE TABLE IF NOT EXISTS `".PRFX."ACL` (
+ 		 `ACL_ID` int(20) NOT NULL auto_increment,
+  		`page` varchar(100),
   `Manager` int(2) NOT NULL default '1',
   `Supervisor` int(2) NOT NULL default '1',
   `Technician` int(2) NOT NULL default '1',
@@ -1234,11 +1233,11 @@ function create_acl($db) {
    KEY `page` (`page`)
    ) ENGINE=MyISAM";
 
-    $rs = $db->Execute($q);
-        if(!$rs) {
-            return false;
-        } else {
-            $q = "REPLACE INTO `".PRFX."ACL` VALUES 
+	$rs = $db->Execute($q);
+		if(!$rs) {
+			return false;
+		} else {
+			$q = "REPLACE INTO `".PRFX."ACL` VALUES 
 (1, 'core:main', 1, 1, 1, 1, 0),
 (2, 'customer:view', 1, 1, 1, 1, 0),
 (3, 'customer:customer_details', 1, 1, 1, 1, 0),
@@ -1321,98 +1320,98 @@ function create_acl($db) {
 (81, 'expense:edit', 1, 1, 1, 1, 0),
 (82, 'supplier:edit', 1, 1, 1, 1, 0)";
         $rs = $db->Execute($q);
-            if(!$rs) {
-                return false;
-            } else {
-                return true;
-            }
+			if(!$rs) {
+				return false;
+			} else {
+				return true;
+			}
 
-        }
+		}
 
 }
 
 function create_cart($db) {
-    $q="CREATE TABLE IF NOT EXISTS `".PRFX."CART` (
-        `ID` int(20) NOT NULL auto_increment,
-        `SKU` varchar(20) NOT NULL default '',
-        `AMOUNT` int(5) NOT NULL default '0',
-        `DESCRIPTION` varchar(255) NOT NULL default '',
-        `VENDOR` varchar(255) NOT NULL default '',
-        `ITEMID` varchar(100) NOT NULL default '',
-        `PRICE` decimal(6,2) NOT NULL default '0.00',
-        `Weight` varchar(20) NOT NULL default '',
-        `SUB_TOTAL` double(6,2) NOT NULL default '0.00',
-        `LAST` int(20) NOT NULL default '0',
-        `ZIP` varchar(15) NOT NULL default '',
-        `WO_ID` int(11) NOT NULL default '0',
-        PRIMARY KEY  (`ID`),
-        KEY `SKU` (`SKU`)
-        ) ENGINE=MyISAM";
-    if(!$rs = $db->Execute($q)) {
-        return false;
-    } else {
-        return true;
-    }
+	$q="CREATE TABLE IF NOT EXISTS `".PRFX."CART` (
+		`ID` int(20) NOT NULL auto_increment,
+		`SKU` varchar(20) NOT NULL default '',
+		`AMOUNT` int(5) NOT NULL default '0',
+		`DESCRIPTION` varchar(255) NOT NULL default '',
+		`VENDOR` varchar(255) NOT NULL default '',
+		`ITEMID` varchar(100) NOT NULL default '',
+		`PRICE` decimal(6,2) NOT NULL default '0.00',
+		`Weight` varchar(20) NOT NULL default '',
+		`SUB_TOTAL` double(6,2) NOT NULL default '0.00',
+		`LAST` int(20) NOT NULL default '0',
+		`ZIP` varchar(15) NOT NULL default '',
+		`WO_ID` int(11) NOT NULL default '0',
+		PRIMARY KEY  (`ID`),
+		KEY `SKU` (`SKU`)
+		) ENGINE=MyISAM";
+	if(!$rs = $db->Execute($q)) {
+		return false;
+	} else {
+		return true;
+	}
 }
 
 function create_cat($db) {
-    $q="CREATE TABLE IF NOT EXISTS `".PRFX."CAT` (
-    `ID` varchar(10) NOT NULL default '',
-    `DESCRIPTION` varchar(100) NOT NULL default '',
-    PRIMARY KEY  (`ID`),
-    KEY `DESCRIPTION` (`DESCRIPTION`)
-    ) ENGINE=MyISAM";
-    if(!$rs = $db->Execute($q)) {
-        return false;
-    } else {
-        $q="INSERT IGNORE INTO ".PRFX."CAT VALUES
-            ('AC', 'Accessories'),
-            ('CB', 'Cables'),
-            ('CC', 'ControllerCards'),
-            ('CM', 'Cameras'),
-            ('CP', 'CPUs'),
-            ('CS', 'Cases'),
-            ('FD', 'FloppyDrives'),
-            ('FN', 'Fans'),
-            ('GP', 'GPS'),
-            ('HD', 'HardDrives'),
-            ('KB', 'Keyboards'),
-            ('MB', 'Motherboards'),
-            ('MC', 'Mice'),
-            ('MD', 'Modem'),
-            ('ME', 'Memory'),
-            ('MF', 'MemoryDevice'),
-            ('MM', 'Multimedia/MP3'),
-            ('MN', 'Monitors/LCD'),
-            ('NB', 'Notebooks/PDA'),
-            ('NT', 'Networking'),
-            ('OD', 'OpticalDrive'),
-            ('OM', 'OpticalMedia'),
-            ('PO', 'POSEquipment'),
-            ('PJ', 'Projector'),
-            ('PR', 'Printers'),
-            ('PS', 'PowerSupply'),
-            ('RD', 'RemovableDriveBay'),
-            ('RM', 'RemovableMedia'),
-            ('SC', 'Scanners'),
-            ('SF', 'Software'),
-            ('SO', 'SoundCards'),
-            ('SP', 'Speakers'),
-            ('SY', 'BareboneSystems'),
-            ('TB', 'TapeBack-up'),
-            ('UP', 'UPS'),
-            ('VC', 'VGACards'),
-            ('ZP', 'ZipDrive')";
-            if(!$rs = $db->Execute($q)) {
-                return false;
-            } else {
-            return true;
-            }
-    }
+	$q="CREATE TABLE IF NOT EXISTS `".PRFX."CAT` (
+	`ID` varchar(10) NOT NULL default '',
+	`DESCRIPTION` varchar(100) NOT NULL default '',
+	PRIMARY KEY  (`ID`),
+	KEY `DESCRIPTION` (`DESCRIPTION`)
+	) ENGINE=MyISAM";
+	if(!$rs = $db->Execute($q)) {
+		return false;
+	} else {
+		$q="INSERT IGNORE INTO ".PRFX."CAT VALUES
+			('AC', 'Accessories'),
+			('CB', 'Cables'),
+			('CC', 'ControllerCards'),
+			('CM', 'Cameras'),
+			('CP', 'CPUs'),
+			('CS', 'Cases'),
+			('FD', 'FloppyDrives'),
+			('FN', 'Fans'),
+			('GP', 'GPS'),
+			('HD', 'HardDrives'),
+			('KB', 'Keyboards'),
+			('MB', 'Motherboards'),
+			('MC', 'Mice'),
+			('MD', 'Modem'),
+			('ME', 'Memory'),
+			('MF', 'MemoryDevice'),
+			('MM', 'Multimedia/MP3'),
+			('MN', 'Monitors/LCD'),
+			('NB', 'Notebooks/PDA'),
+			('NT', 'Networking'),
+			('OD', 'OpticalDrive'),
+			('OM', 'OpticalMedia'),
+			('PO', 'POSEquipment'),
+			('PJ', 'Projector'),
+			('PR', 'Printers'),
+			('PS', 'PowerSupply'),
+			('RD', 'RemovableDriveBay'),
+			('RM', 'RemovableMedia'),
+			('SC', 'Scanners'),
+			('SF', 'Software'),
+			('SO', 'SoundCards'),
+			('SP', 'Speakers'),
+			('SY', 'BareboneSystems'),
+			('TB', 'TapeBack-up'),
+			('UP', 'UPS'),
+			('VC', 'VGACards'),
+			('ZP', 'ZipDrive')";
+			if(!$rs = $db->Execute($q)) {
+				return false;
+			} else {
+			return true;
+			}
+	}
 }
 
 function create_orders($db) {
-    $q="CREATE TABLE IF NOT EXISTS `".PRFX."ORDERS` (
+	$q="CREATE TABLE IF NOT EXISTS `".PRFX."ORDERS` (
   `ORDER_ID` int(20) NOT NULL auto_increment,
   `INVOICE_ID` int(20) NOT NULL default '0',
   `WO_ID` int(20) NOT NULL default '0',
@@ -1428,35 +1427,35 @@ function create_orders($db) {
   PRIMARY KEY  (`ORDER_ID`),
   KEY `INVOICE_ID` (`INVOICE_ID`,`WO_ID`,`STATUS`)
 ) ENGINE=MyISAM";
-    if(!$rs = $db->Execute($q)) {
-        return false;
-    } else {
-        return true;
-    }
+	if(!$rs = $db->Execute($q)) {
+		return false;
+	} else {
+		return true;
+	}
 }
 
 function create_order_details($db) {
-    $q="CREATE TABLE IF NOT EXISTS `".PRFX."ORDERS_DETAILS` (
+	$q="CREATE TABLE IF NOT EXISTS `".PRFX."ORDERS_DETAILS` (
   `DETAILS_ID` int(20) NOT NULL auto_increment,
   `ORDER_ID` int(20) NOT NULL default '0',
   `SKU` varchar(40) NOT NULL default '',
-    `DESCRIPTION` VARCHAR( 255 ) NOT NULL,
-    `VENDOR` VARCHAR( 100 ) NOT NULL,
+	`DESCRIPTION` VARCHAR( 255 ) NOT NULL,
+	`VENDOR` VARCHAR( 100 ) NOT NULL,
   `COUNT` int(4) NOT NULL default '0',
   `PRICE` decimal(6,2) NOT NULL default '0.00',
   `SUB_TOTAL` decimal(6,2) NOT NULL default '0.00',
   PRIMARY KEY  (`DETAILS_ID`),
   KEY `ORDER_ID` (`ORDER_ID`,`SKU`)
 ) ENGINE=MyISAM";
-    if(!$rs = $db->Execute($q)) {
-        return false;
-    } else {
-        return true;
-    }
+	if(!$rs = $db->Execute($q)) {
+		return false;
+	} else {
+		return true;
+	}
 }
 
 function create_sub_cat($db) {
-    $q="CREATE TABLE IF NOT EXISTS `".PRFX."SUB_CAT` (
+	$q="CREATE TABLE IF NOT EXISTS `".PRFX."SUB_CAT` (
   `ID` int(20) NOT NULL auto_increment,
   `CAT` varchar(10) NOT NULL default '',
   `DESCRIPTION` varchar(100) NOT NULL default '',
@@ -1465,9 +1464,9 @@ function create_sub_cat($db) {
   KEY `CAT` (`CAT`),
   KEY `SUB_CATEGORY` (`SUB_CATEGORY`)
 ) ENGINE=MyISAM";
-    if(!$rs = $db->Execute($q)) {
-        return false;
-    } else {
+	if(!$rs = $db->Execute($q)) {
+		return false;
+	} else {
 
 $q="INSERT IGNORE INTO ".PRFX."SUB_CAT VALUES
 (1, 'AC', 'PDADevice', 'PDA'),
@@ -1669,11 +1668,11 @@ $q="INSERT IGNORE INTO ".PRFX."SUB_CAT VALUES
 (197, 'VC', 'TVTunerCard', 'TVT'),
 (198, 'ZP', 'IDEZipDrive', 'ZPI')";
 if(!$rs = $db->Execute($q)) {
-                return false;
-            } else {
-                return true;
-            }
-    }
+				return false;
+			} else {
+				return true;
+			}
+	}
 }
 
 function create_expense($db) {
@@ -1692,10 +1691,10 @@ function create_expense($db) {
   PRIMARY KEY (`EXPENSE_ID`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1" ;
 if(!$rs = $db->Execute($q)) {
-                return false;
-            } else {
-                return true;
-            }
+				return false;
+			} else {
+				return true;
+			}
 }
 function create_refund($db) {
    $q = "CREATE TABLE IF NOT EXISTS `".PRFX."TABLE_REFUND` (
@@ -1713,10 +1712,10 @@ function create_refund($db) {
   PRIMARY KEY (`REFUND_ID`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1" ;
 if(!$rs = $db->Execute($q)) {
-                return false;
-            } else {
-                return true;
-            }
+				return false;
+			} else {
+				return true;
+			}
 }
 function create_supplier($db) {
    $q = "CREATE TABLE IF NOT EXISTS `".PRFX."TABLE_SUPPLIER` (
@@ -1738,280 +1737,280 @@ function create_supplier($db) {
   PRIMARY KEY (`SUPPLIER_ID`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 " ;
 if(!$rs = $db->Execute($q)) {
-                return false;
-            } else {
-                return true;
-            }
+				return false;
+			} else {
+				return true;
+			}
 }
 
 function create_country($db){
-    $q = "CREATE TABLE IF NOT EXISTS `".PRFX."COUNTRY` (
-    `code` char(3) NOT NULL default '',
-    `name` varchar(80) NOT NULL default '',
-    PRIMARY KEY  (`code`)
-    ) ENGINE=MyISAM";
-    if(!$rs = $db->Execute($q)) {
-        return false;
-    } else {
-        $q="REPLACE INTO `".PRFX."COUNTRY` VALUES
-        ('AF', 'Afghanistan'),
-        ('AL', 'Albania'),
-        ('DZ', 'Algeria'),
-        ('AS', 'American Samoa'),
-        ('AD', 'Andorra'),
-        ('AO', 'Angola'),
-        ('AI', 'Anguilla'),
-        ('AQ', 'Antarctica'),
-        ('AG', 'Antigua and Barbuda'),
-        ('AR', 'Argentina'),
-        ('AM', 'Armenia'),
-        ('AW', 'Aruba'),
-        ('AU', 'Australia'),
-        ('AT', 'Austria'),
-        ('AZ', 'Azerbaijan'), 
-        ('AP', 'Azores'), 
-        ('BS', 'Bahamas'), 
-        ('BH', 'Bahrain'), 
-        ('BD', 'Bangladesh'), 
-        ('BB', 'Barbados'), 
-        ('BY', 'Belarus'), 
-        ('BE', 'Belgium'), 
-        ('BZ', 'Belize'), 
-        ('BJ', 'Benin'), 
-        ('BM', 'Bermuda'), 
-        ('BT', 'Bhutan'), 
-        ('BO', 'Bolivia'), 
-        ('BA', 'Bosnia And Herzegowina'), 
-        ('XB', 'Bosnia-Herzegovina'), 
-        ('BW', 'Botswana'), 
-        ('BV', 'Bouvet Island'), 
-        ('BR', 'Brazil'), 
-        ('IO', 'British Indian Ocean Territory'), 
-        ('VG', 'British Virgin Islands'), 
-        ('BN', 'Brunei Darussalam'), 
-        ('BG', 'Bulgaria'), 
-        ('BF', 'Burkina Faso'), 
-        ('BI', 'Burundi'), 
-        ('KH', 'Cambodia'), 
-        ('CM', 'Cameroon'), 
-        ('CA', 'Canada'), 
-        ('CV', 'Cape Verde'), 
-        ('KY', 'Cayman Islands'), 
-        ('CF', 'Central African Republic'), 
-        ('TD', 'Chad'), 
-        ('CL', 'Chile'), 
-        ('CN', 'China'), 
-        ('CX', 'Christmas Island'), 
-        ('CC', 'Cocos (Keeling) Islands'), 
-        ('CO', 'Colombia'), 
-        ('KM', 'Comoros'), 
-        ('CG', 'Congo'), 
-        ('CD', 'Congo, The Democratic Republic O'), 
-        ('CK', 'Cook Islands'), 
-        ('XE', 'Corsica'), 
-        ('CR', 'Costa Rica'), 
-        ('CI', 'Cote d` Ivoire (Ivory Coast)'), 
-        ('HR', 'Croatia'), 
-        ('CU', 'Cuba'), 
-        ('CY', 'Cyprus'), 
-        ('CZ', 'Czech Republic'), 
-        ('DK', 'Denmark'), 
-        ('DJ', 'Djibouti'), 
-        ('DM', 'Dominica'), 
-        ('DO', 'Dominican Republic'), 
-        ('TP', 'East Timor'), 
-        ('EC', 'Ecuador'), 
-        ('EG', 'Egypt'), 
-        ('SV', 'El Salvador'), 
-        ('GQ', 'Equatorial Guinea'), 
-        ('ER', 'Eritrea'), 
-        ('EE', 'Estonia'), 
-        ('ET', 'Ethiopia'), 
-        ('FK', 'Falkland Islands (Malvinas)'), 
-        ('FO', 'Faroe Islands'), 
-        ('FJ', 'Fiji'), 
-        ('FI', 'Finland'), 
-        ('FR', 'France (Includes Monaco)'), 
-        ('FX', 'France, Metropolitan'), 
-        ('GF', 'French Guiana'), 
-        ('PF', 'French Polynesia'), 
-        ('TA', 'French Polynesia (Tahiti)'), 
-        ('TF', 'French Southern Territories'), 
-        ('GA', 'Gabon'), 
-        ('GM', 'Gambia'), 
-        ('GE', 'Georgia'), 
-        ('DE', 'Germany'), 
-        ('GH', 'Ghana'), 
-        ('GI', 'Gibraltar'), 
-        ('GR', 'Greece'), 
-        ('GL', 'Greenland'), 
-        ('GD', 'Grenada'), 
-        ('GP', 'Guadeloupe'), 
-        ('GU', 'Guam'), 
-        ('GT', 'Guatemala'), 
-        ('GN', 'Guinea'), 
-        ('GW', 'Guinea-Bissau'), 
-        ('GY', 'Guyana'), 
-        ('HT', 'Haiti'), 
-        ('HM', 'Heard And Mc Donald Islands'), 
-        ('VA', 'Holy See (Vatican City State)'), 
-        ('HN', 'Honduras'), 
-        ('HK', 'Hong Kong'), 
-        ('HU', 'Hungary'), 
-        ('IS', 'Iceland'), 
-        ('IN', 'India'), 
-        ('ID', 'Indonesia'), 
-        ('IR', 'Iran'), 
-        ('IQ', 'Iraq'), 
-        ('IE', 'Ireland'), 
-        ('EI', 'Ireland (Eire)'), 
-        ('IL', 'Israel'), 
-        ('IT', 'Italy'), 
-        ('JM', 'Jamaica'), 
-        ('JP', 'Japan'), 
-        ('JO', 'Jordan'), 
-        ('KZ', 'Kazakhstan'), 
-        ('KE', 'Kenya'), 
-        ('KI', 'Kiribati'), 
-        ('KP', 'Korea, Democratic People''S Repub'), 
-        ('KW', 'Kuwait'), 
-        ('KG', 'Kyrgyzstan'), 
-        ('LA', 'Laos'), 
-        ('LV', 'Latvia'), 
-        ('LB', 'Lebanon'), 
-        ('LS', 'Lesotho'), 
-        ('LR', 'Liberia'), 
-        ('LY', 'Libya'), 
-        ('LI', 'Liechtenstein'), 
-        ('LT', 'Lithuania'), 
-        ('LU', 'Luxembourg'), 
-        ('MO', 'Macao'), 
-        ('MK', 'Macedonia'), 
-        ('MG', 'Madagascar'), 
-        ('ME', 'Madeira Islands'), 
-        ('MW', 'Malawi'), 
-        ('MY', 'Malaysia'), 
-        ('MV', 'Maldives'), 
-        ('ML', 'Mali'), 
-        ('MT', 'Malta'), 
-        ('MH', 'Marshall Islands'), 
-        ('MQ', 'Martinique'), 
-        ('MR', 'Mauritania'), 
-        ('MU', 'Mauritius'), 
-        ('YT', 'Mayotte'), 
-        ('MX', 'Mexico'), 
-        ('FM', 'Micronesia, Federated States Of'), 
-        ('MD', 'Moldova, Republic Of'), 
-        ('MC', 'Monaco'), 
-        ('MN', 'Mongolia'), 
-        ('MS', 'Montserrat'), 
-        ('MA', 'Morocco'), 
-        ('MZ', 'Mozambique'), 
-        ('MM', 'Myanmar (Burma)'), 
-        ('NA', 'Namibia'), 
-        ('NR', 'Nauru'), 
-        ('NP', 'Nepal'), 
-        ('NL', 'Netherlands'), 
-        ('AN', 'Netherlands Antilles'), 
-        ('NC', 'New Caledonia'), 
-        ('NZ', 'New Zealand'), 
-        ('NI', 'Nicaragua'), 
-        ('NE', 'Niger'), 
-        ('NG', 'Nigeria'), 
-        ('NU', 'Niue'), 
-        ('NF', 'Norfolk Island'), 
-        ('MP', 'Northern Mariana Islands'), 
-        ('NO', 'Norway'), 
-        ('OM', 'Oman'), 
-        ('PK', 'Pakistan'), 
-        ('PW', 'Palau'), 
-        ('PS', 'Palestinian Territory, Occupied'), 
-        ('PA', 'Panama'), 
-        ('PG', 'Papua New Guinea'), 
-        ('PY', 'Paraguay'), 
-        ('PE', 'Peru'), 
-        ('PH', 'Philippines'), 
-        ('PN', 'Pitcairn'), 
-        ('PL', 'Poland'), 
-        ('PT', 'Portugal'), 
-        ('PR', 'Puerto Rico'), 
-        ('QA', 'Qatar'), 
-        ('RE', 'Reunion'), 
-        ('RO', 'Romania'), 
-        ('RU', 'Russian Federation'), 
-        ('RW', 'Rwanda'), 
-        ('KN', 'Saint Kitts And Nevis'), 
-        ('SM', 'San Marino'), 
-        ('ST', 'Sao Tome and Principe'), 
-        ('SA', 'Saudi Arabia'), 
-        ('SN', 'Senegal'), 
-        ('XS', 'Serbia-Montenegro'), 
-        ('SC', 'Seychelles'), 
-        ('SL', 'Sierra Leone'), 
-        ('SG', 'Singapore'), 
-        ('SK', 'Slovak Republic'), 
-        ('SI', 'Slovenia'), 
-        ('SB', 'Solomon Islands'), 
-        ('SO', 'Somalia'), 
-        ('ZA', 'South Africa'), 
-        ('GS', 'South Georgia And The South Sand'), 
-        ('KR', 'South Korea'), 
-        ('ES', 'Spain'), 
-        ('LK', 'Sri Lanka'), 
-        ('NV', 'St. Christopher and Nevis'), 
-        ('SH', 'St. Helena'), 
-        ('LC', 'St. Lucia'), 
-        ('PM', 'St. Pierre and Miquelon'), 
-        ('VC', 'St. Vincent and the Grenadines'), 
-        ('SD', 'Sudan'), 
-        ('SR', 'Suriname'), 
-        ('SJ', 'Svalbard And Jan Mayen Islands'), 
-        ('SZ', 'Swaziland'), 
-        ('SE', 'Sweden'), 
-        ('CH', 'Switzerland'), 
-        ('SY', 'Syrian Arab Republic'), 
-        ('TW', 'Taiwan'), 
-        ('TJ', 'Tajikistan'), 
-        ('TZ', 'Tanzania'), 
-        ('TH', 'Thailand'), 
-        ('TG', 'Togo'), 
-        ('TK', 'Tokelau'), 
-        ('TO', 'Tonga'), 
-        ('TT', 'Trinidad and Tobago'), 
-        ('XU', 'Tristan da Cunha'), 
-        ('TN', 'Tunisia'), 
-        ('TR', 'Turkey'), 
-        ('TM', 'Turkmenistan'), 
-        ('TC', 'Turks and Caicos Islands'), 
-        ('TV', 'Tuvalu'), 
-        ('UG', 'Uganda'), 
-        ('UA', 'Ukraine'), 
-        ('AE', 'United Arab Emirates'), 
-        ('UK', 'United Kingdom'), 
-        ('GB', 'Great Britain'), 
-        ('US', 'United States'), 
-        ('UM', 'United States Minor Outlying Isl'), 
-        ('UY', 'Uruguay'), 
-        ('UZ', 'Uzbekistan'), 
-        ('VU', 'Vanuatu'), 
-        ('XV', 'Vatican City'), 
-        ('VE', 'Venezuela'), 
-        ('VN', 'Vietnam'), 
-        ('VI', 'Virgin Islands (U.S.)'), 
-        ('WF', 'Wallis and Furuna Islands'), 
-        ('EH', 'Western Sahara'), 
-        ('WS', 'Western Samoa'), 
-        ('YE', 'Yemen'), 
-        ('YU', 'Yugoslavia'), 
-        ('ZR', 'Zaire'), 
-        ('ZM', 'Zambia'), 
-        ('ZW', 'Zimbabwe')";
-        if(!$rs = $db->Execute($q)) {
-            return false;
-        } else {
-            return true;
-        }
-    }
+	$q = "CREATE TABLE IF NOT EXISTS `".PRFX."COUNTRY` (
+	`code` char(3) NOT NULL default '',
+	`name` varchar(80) NOT NULL default '',
+	PRIMARY KEY  (`code`)
+	) ENGINE=MyISAM";
+	if(!$rs = $db->Execute($q)) {
+		return false;
+	} else {
+		$q="REPLACE INTO `".PRFX."COUNTRY` VALUES
+		('AF', 'Afghanistan'),
+		('AL', 'Albania'),
+		('DZ', 'Algeria'),
+		('AS', 'American Samoa'),
+		('AD', 'Andorra'),
+		('AO', 'Angola'),
+		('AI', 'Anguilla'),
+		('AQ', 'Antarctica'),
+		('AG', 'Antigua and Barbuda'),
+		('AR', 'Argentina'),
+		('AM', 'Armenia'),
+		('AW', 'Aruba'),
+		('AU', 'Australia'),
+		('AT', 'Austria'),
+		('AZ', 'Azerbaijan'), 
+		('AP', 'Azores'), 
+		('BS', 'Bahamas'), 
+		('BH', 'Bahrain'), 
+		('BD', 'Bangladesh'), 
+		('BB', 'Barbados'), 
+		('BY', 'Belarus'), 
+		('BE', 'Belgium'), 
+		('BZ', 'Belize'), 
+		('BJ', 'Benin'), 
+		('BM', 'Bermuda'), 
+		('BT', 'Bhutan'), 
+		('BO', 'Bolivia'), 
+		('BA', 'Bosnia And Herzegowina'), 
+		('XB', 'Bosnia-Herzegovina'), 
+		('BW', 'Botswana'), 
+		('BV', 'Bouvet Island'), 
+		('BR', 'Brazil'), 
+		('IO', 'British Indian Ocean Territory'), 
+		('VG', 'British Virgin Islands'), 
+		('BN', 'Brunei Darussalam'), 
+		('BG', 'Bulgaria'), 
+		('BF', 'Burkina Faso'), 
+		('BI', 'Burundi'), 
+		('KH', 'Cambodia'), 
+		('CM', 'Cameroon'), 
+		('CA', 'Canada'), 
+		('CV', 'Cape Verde'), 
+		('KY', 'Cayman Islands'), 
+		('CF', 'Central African Republic'), 
+		('TD', 'Chad'), 
+		('CL', 'Chile'), 
+		('CN', 'China'), 
+		('CX', 'Christmas Island'), 
+		('CC', 'Cocos (Keeling) Islands'), 
+		('CO', 'Colombia'), 
+		('KM', 'Comoros'), 
+		('CG', 'Congo'), 
+		('CD', 'Congo, The Democratic Republic O'), 
+		('CK', 'Cook Islands'), 
+		('XE', 'Corsica'), 
+		('CR', 'Costa Rica'), 
+		('CI', 'Cote d` Ivoire (Ivory Coast)'), 
+		('HR', 'Croatia'), 
+		('CU', 'Cuba'), 
+		('CY', 'Cyprus'), 
+		('CZ', 'Czech Republic'), 
+		('DK', 'Denmark'), 
+		('DJ', 'Djibouti'), 
+		('DM', 'Dominica'), 
+		('DO', 'Dominican Republic'), 
+		('TP', 'East Timor'), 
+		('EC', 'Ecuador'), 
+		('EG', 'Egypt'), 
+		('SV', 'El Salvador'), 
+		('GQ', 'Equatorial Guinea'), 
+		('ER', 'Eritrea'), 
+		('EE', 'Estonia'), 
+		('ET', 'Ethiopia'), 
+		('FK', 'Falkland Islands (Malvinas)'), 
+		('FO', 'Faroe Islands'), 
+		('FJ', 'Fiji'), 
+		('FI', 'Finland'), 
+		('FR', 'France (Includes Monaco)'), 
+		('FX', 'France, Metropolitan'), 
+		('GF', 'French Guiana'), 
+		('PF', 'French Polynesia'), 
+		('TA', 'French Polynesia (Tahiti)'), 
+		('TF', 'French Southern Territories'), 
+		('GA', 'Gabon'), 
+		('GM', 'Gambia'), 
+		('GE', 'Georgia'), 
+		('DE', 'Germany'), 
+		('GH', 'Ghana'), 
+		('GI', 'Gibraltar'), 
+		('GR', 'Greece'), 
+		('GL', 'Greenland'), 
+		('GD', 'Grenada'), 
+		('GP', 'Guadeloupe'), 
+		('GU', 'Guam'), 
+		('GT', 'Guatemala'), 
+		('GN', 'Guinea'), 
+		('GW', 'Guinea-Bissau'), 
+		('GY', 'Guyana'), 
+		('HT', 'Haiti'), 
+		('HM', 'Heard And Mc Donald Islands'), 
+		('VA', 'Holy See (Vatican City State)'), 
+		('HN', 'Honduras'), 
+		('HK', 'Hong Kong'), 
+		('HU', 'Hungary'), 
+		('IS', 'Iceland'), 
+		('IN', 'India'), 
+		('ID', 'Indonesia'), 
+		('IR', 'Iran'), 
+		('IQ', 'Iraq'), 
+		('IE', 'Ireland'), 
+		('EI', 'Ireland (Eire)'), 
+		('IL', 'Israel'), 
+		('IT', 'Italy'), 
+		('JM', 'Jamaica'), 
+		('JP', 'Japan'), 
+		('JO', 'Jordan'), 
+		('KZ', 'Kazakhstan'), 
+		('KE', 'Kenya'), 
+		('KI', 'Kiribati'), 
+		('KP', 'Korea, Democratic People''S Repub'), 
+		('KW', 'Kuwait'), 
+		('KG', 'Kyrgyzstan'), 
+		('LA', 'Laos'), 
+		('LV', 'Latvia'), 
+		('LB', 'Lebanon'), 
+		('LS', 'Lesotho'), 
+		('LR', 'Liberia'), 
+		('LY', 'Libya'), 
+		('LI', 'Liechtenstein'), 
+		('LT', 'Lithuania'), 
+		('LU', 'Luxembourg'), 
+		('MO', 'Macao'), 
+		('MK', 'Macedonia'), 
+		('MG', 'Madagascar'), 
+		('ME', 'Madeira Islands'), 
+		('MW', 'Malawi'), 
+		('MY', 'Malaysia'), 
+		('MV', 'Maldives'), 
+		('ML', 'Mali'), 
+		('MT', 'Malta'), 
+		('MH', 'Marshall Islands'), 
+		('MQ', 'Martinique'), 
+		('MR', 'Mauritania'), 
+		('MU', 'Mauritius'), 
+		('YT', 'Mayotte'), 
+		('MX', 'Mexico'), 
+		('FM', 'Micronesia, Federated States Of'), 
+		('MD', 'Moldova, Republic Of'), 
+		('MC', 'Monaco'), 
+		('MN', 'Mongolia'), 
+		('MS', 'Montserrat'), 
+		('MA', 'Morocco'), 
+		('MZ', 'Mozambique'), 
+		('MM', 'Myanmar (Burma)'), 
+		('NA', 'Namibia'), 
+		('NR', 'Nauru'), 
+		('NP', 'Nepal'), 
+		('NL', 'Netherlands'), 
+		('AN', 'Netherlands Antilles'), 
+		('NC', 'New Caledonia'), 
+		('NZ', 'New Zealand'), 
+		('NI', 'Nicaragua'), 
+		('NE', 'Niger'), 
+		('NG', 'Nigeria'), 
+		('NU', 'Niue'), 
+		('NF', 'Norfolk Island'), 
+		('MP', 'Northern Mariana Islands'), 
+		('NO', 'Norway'), 
+		('OM', 'Oman'), 
+		('PK', 'Pakistan'), 
+		('PW', 'Palau'), 
+		('PS', 'Palestinian Territory, Occupied'), 
+		('PA', 'Panama'), 
+		('PG', 'Papua New Guinea'), 
+		('PY', 'Paraguay'), 
+		('PE', 'Peru'), 
+		('PH', 'Philippines'), 
+		('PN', 'Pitcairn'), 
+		('PL', 'Poland'), 
+		('PT', 'Portugal'), 
+		('PR', 'Puerto Rico'), 
+		('QA', 'Qatar'), 
+		('RE', 'Reunion'), 
+		('RO', 'Romania'), 
+		('RU', 'Russian Federation'), 
+		('RW', 'Rwanda'), 
+		('KN', 'Saint Kitts And Nevis'), 
+		('SM', 'San Marino'), 
+		('ST', 'Sao Tome and Principe'), 
+		('SA', 'Saudi Arabia'), 
+		('SN', 'Senegal'), 
+		('XS', 'Serbia-Montenegro'), 
+		('SC', 'Seychelles'), 
+		('SL', 'Sierra Leone'), 
+		('SG', 'Singapore'), 
+		('SK', 'Slovak Republic'), 
+		('SI', 'Slovenia'), 
+		('SB', 'Solomon Islands'), 
+		('SO', 'Somalia'), 
+		('ZA', 'South Africa'), 
+		('GS', 'South Georgia And The South Sand'), 
+		('KR', 'South Korea'), 
+		('ES', 'Spain'), 
+		('LK', 'Sri Lanka'), 
+		('NV', 'St. Christopher and Nevis'), 
+		('SH', 'St. Helena'), 
+		('LC', 'St. Lucia'), 
+		('PM', 'St. Pierre and Miquelon'), 
+		('VC', 'St. Vincent and the Grenadines'), 
+		('SD', 'Sudan'), 
+		('SR', 'Suriname'), 
+		('SJ', 'Svalbard And Jan Mayen Islands'), 
+		('SZ', 'Swaziland'), 
+		('SE', 'Sweden'), 
+		('CH', 'Switzerland'), 
+		('SY', 'Syrian Arab Republic'), 
+		('TW', 'Taiwan'), 
+		('TJ', 'Tajikistan'), 
+		('TZ', 'Tanzania'), 
+		('TH', 'Thailand'), 
+		('TG', 'Togo'), 
+		('TK', 'Tokelau'), 
+		('TO', 'Tonga'), 
+		('TT', 'Trinidad and Tobago'), 
+		('XU', 'Tristan da Cunha'), 
+		('TN', 'Tunisia'), 
+		('TR', 'Turkey'), 
+		('TM', 'Turkmenistan'), 
+		('TC', 'Turks and Caicos Islands'), 
+		('TV', 'Tuvalu'), 
+		('UG', 'Uganda'), 
+		('UA', 'Ukraine'), 
+		('AE', 'United Arab Emirates'), 
+		('UK', 'United Kingdom'), 
+		('GB', 'Great Britain'), 
+		('US', 'United States'), 
+		('UM', 'United States Minor Outlying Isl'), 
+		('UY', 'Uruguay'), 
+		('UZ', 'Uzbekistan'), 
+		('VU', 'Vanuatu'), 
+		('XV', 'Vatican City'), 
+		('VE', 'Venezuela'), 
+		('VN', 'Vietnam'), 
+		('VI', 'Virgin Islands (U.S.)'), 
+		('WF', 'Wallis and Furuna Islands'), 
+		('EH', 'Western Sahara'), 
+		('WS', 'Western Samoa'), 
+		('YE', 'Yemen'), 
+		('YU', 'Yugoslavia'), 
+		('ZR', 'Zaire'), 
+		('ZM', 'Zambia'), 
+		('ZW', 'Zimbabwe')";
+		if(!$rs = $db->Execute($q)) {
+			return false;
+		} else {
+			return true;
+		}
+	}
 
 }
 ?>
