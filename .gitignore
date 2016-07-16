@@ -1,4 +1,5 @@
 /cache/
 /log/
+/log/access.log
 /nbproject/
 /conf.php
