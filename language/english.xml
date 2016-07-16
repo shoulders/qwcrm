@@ -10,7 +10,7 @@
         // Billing Templates
         <billing_invoice_id>Invoice ID</billing_invoice_id>
         <billing_pp_invoice_id>PayPal Transaction/receipt #</billing_pp_invoice_id>
-        <billing_title>Billing For  Work Order ID #</billing_title>
+        <billing_title>Billing For Work Order ID #</billing_title>
         <billing_date>Date</billing_date>
         <billing_due_date>Invoice Due Date</billing_due_date>
         <billing_amount>Amount:</billing_amount>
