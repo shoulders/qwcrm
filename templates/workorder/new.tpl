@@ -3,85 +3,85 @@
 {literal}
 <script language="javascript" type="text/javascript" src="include/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
 <script language="javascript" type="text/javascript">
-	tinyMCE.init({
-		mode : "specific_textareas",
-		theme : "advanced",
-		plugins : "advlink,iespell,insertdatetime,preview",
-		theme_advanced_buttons2_add : "separator,insertdate,inserttime,preview,separator,forecolor,backcolor",
-		theme_advanced_buttons2_add_before: "cut,copy,paste",
-		theme_advanced_toolbar_location : "bottom",
-		theme_advanced_toolbar_align : "center",
-		
-	    plugin_insertdate_dateFormat : "%Y-%m-%d",
-	    plugin_insertdate_timeFormat : "%H:%M:%S",
-		extended_valid_elements : "a[name|href|target|title|onclick],img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name],hr[class|width|size|noshade],font[face|size|color|style],span[class|align|style]",
-		external_link_list_url : "example_link_list.js",
-		external_image_list_url : "example_image_list.js",
-		flash_external_list_url : "example_flash_list.js",
-		file_browser_callback : "fileBrowserCallBack",
-		width : "100%"
-	});
+    tinyMCE.init({
+        mode : "specific_textareas",
+        theme : "advanced",
+        plugins : "advlink,iespell,insertdatetime,preview",
+        theme_advanced_buttons2_add : "separator,insertdate,inserttime,preview,separator,forecolor,backcolor",
+        theme_advanced_buttons2_add_before: "cut,copy,paste",
+        theme_advanced_toolbar_location : "bottom",
+        theme_advanced_toolbar_align : "center",
+        
+        plugin_insertdate_dateFormat : "%Y-%m-%d",
+        plugin_insertdate_timeFormat : "%H:%M:%S",
+        extended_valid_elements : "a[name|href|target|title|onclick],img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name],hr[class|width|size|noshade],font[face|size|color|style],span[class|align|style]",
+        external_link_list_url : "example_link_list.js",
+        external_image_list_url : "example_image_list.js",
+        flash_external_list_url : "example_flash_list.js",
+        file_browser_callback : "fileBrowserCallBack",
+        width : "100%"
+    });
 </script>
 <script type="text/javascript">
-	function lookup(scope) {
-		if(scope.length == 0) {
-			// Hide the suggestion box.
-			$('#suggestions').hide();
-		} else {
-			$.post("modules/workorder/autosuggest.php", {queryString: ""+scope+""}, function(data){
-				if(data.length >0) {
-					$('#suggestions').show();
-					$('#autoSuggestionsList').html(data);
-				}
-			});
-		}
-	} // lookup
+    function lookup(scope) {
+        if(scope.length == 0) {
+            // Hide the suggestion box.
+            $('#suggestions').hide();
+        } else {
+            $.post("modules/workorder/autosuggest.php", {queryString: ""+scope+""}, function(data){
+                if(data.length >0) {
+                    $('#suggestions').show();
+                    $('#autoSuggestionsList').html(data);
+                }
+            });
+        }
+    } // lookup
 
-	function fill(thisValue) {
-		$('#scope').val(thisValue);
-		setTimeout("$('#suggestions').hide();", 200);
-	}
+    function fill(thisValue) {
+        $('#scope').val(thisValue);
+        setTimeout("$('#suggestions').hide();", 200);
+    }
 </script>
 
 <style type="text/css">
-	body {
-		font-family: Helvetica;
-		font-size: 11px;
-		color: #000;
-	}
+    body {
+        font-family: Helvetica;
+        font-size: 11px;
+        color: #000;
+    }
 
-	h3 {
-		margin: 0px;
-		padding: 0px;
-	}
+    h3 {
+        margin: 0px;
+        padding: 0px;
+    }
 
-	.suggestionsBox {
-		position: relative;
-		left: 30px;
-		margin: 10px 0px 0px 0px;
-		width: 200px;
-		background-color: #212427;
-		-moz-border-radius: 7px;
-		-webkit-border-radius: 7px;
-		border: 2px solid #000;
-		color: #fff;
-	}
+    .suggestionsBox {
+        position: relative;
+        left: 30px;
+        margin: 10px 0px 0px 0px;
+        width: 200px;
+        background-color: #212427;
+        -moz-border-radius: 7px;
+        -webkit-border-radius: 7px;
+        border: 2px solid #000;
+        color: #fff;
+    }
 
-	.suggestionList {
-		margin: 0px;
-		padding: 0px;
-	}
+    .suggestionList {
+        margin: 0px;
+        padding: 0px;
+    }
 
-	.suggestionList li {
+    .suggestionList li {
 
-		margin: 0px 0px 3px 0px;
-		padding: 3px;
-		cursor: pointer;
-	}
+        margin: 0px 0px 3px 0px;
+        padding: 3px;
+        cursor: pointer;
+    }
 
-	.suggestionList li:hover {
-		background-color: #659CD8;
-	}
+    .suggestionList li:hover {
+        background-color: #659CD8;
+    }
 </style>
 
 
@@ -146,8 +146,8 @@
                                         <tr>
                                             <td width="100%" valign="top" >                                               
                                             {$form.javascript}
-                                                <!-- New Work Order Form -->								{literal}
-                                                <form method="POST"  action="index.php?page=workorder:new" name="new_workorder" id="new_workorder" onsubmit="try { var myValidator = validate_new_workorder; } catch(e) { return true; } return myValidator(this);">								{/literal}
+                                                <!-- New Work Order Form -->                                {literal}
+                                                <form method="POST"  action="index.php?page=workorder:new" name="new_workorder" id="new_workorder" onsubmit="try { var myValidator = validate_new_workorder; } catch(e) { return true; } return myValidator(this);">                                {/literal}
                                                     <input type="hidden" name="customer_ID" value="{$customer_details[i].CUSTOMER_ID}">
                                                     <input type="hidden" name="page" value="workorder:new">
                                                     <!--<input type="hidden" name="create_by" value="{$login_id}"> -->
@@ -238,9 +238,9 @@
                                         <tr>
                                             <td class="menuhead2" width="80%">{$translate_workorder_cutomer_contact_title}</td>
                                             <td class="menuhead2" width="20%" align="right">
-                                                <a href="?page=customer:edit&amp;customer_id={$customer_details[i].CUSTOMER_ID}"<img src="images/icons/16x16/small_edit.gif" border="0" alt="" /></a>													</td>
+                                                <a href="?page=customer:edit&amp;customer_id={$customer_details[i].CUSTOMER_ID}"<img src="images/icons/16x16/small_edit.gif" border="0" alt="" /></a>                                                    </td>
                                         </tr>
-                                    </table>										</td>
+                                    </table>                                        </td>
                             </tr>
                             <tr>
                                 <td class="menutd"><b>{$translate_workorder_contact}</b></td>
@@ -305,4 +305,4 @@
     </tr>
 </table>
 
-																													
+                                                                                                                    

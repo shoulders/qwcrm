@@ -224,7 +224,7 @@
                                                                 {$error_msg}
                                                             </td>
                                                         </tr>
-							{ /if}
+                            { /if}
                                                         <tr align="center">
                                                             <td colspan="2">
                                                                 <a href="password.php"> {$translate_reset_password}</a>

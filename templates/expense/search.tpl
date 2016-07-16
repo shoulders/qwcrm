@@ -3,10 +3,10 @@
 {include file="expense/javascripts.js"}
 
 <table width="100%" border="0" cellpadding="20" cellspacing="5">
-	<tr>
-		<td>
-			<table width="700" cellpadding="4" cellspacing="0" border="0" >
-				<tr>
+    <tr>
+        <td>
+            <table width="700" cellpadding="4" cellspacing="0" border="0" >
+                <tr>
                                     <td class="menuhead2" width="80%">&nbsp;&nbsp;{$translate_expense_search_title}</td>
                                     <td class="menuhead2" width="20%" align="right" valign="middle">
                                         <a><img src="images/icons/16x16/help.gif" border="0" alt=""
@@ -288,7 +288,7 @@
                                                                                                 <a href="?page=expense:search&amp;page_title={$translate_expense_search_title}" onclick="confirmDelete({$expense_search_result[i].EXPENSE_ID});">
                                                                                                     <img src="images/icons/delete.gif" alt="" border="0" height="14" width="14"
                                                                                                          onMouseOver="ddrivetip('<b>{$translate_expense_search_delete_record|nl2br|regex_replace:"/[\r\t\n]/":" "}</b>')"
-                                                                                                         onMouseOut="hideddrivetip()"></a>																										 
+                                                                                                         onMouseOut="hideddrivetip()"></a>                                                                                                         
 
                                                                                         </tr>
                                                                                         {/section}

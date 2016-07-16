@@ -1,6 +1,6 @@
 <!-- Display Work Order Resolution With Edit Button If Open -->
 <table class="olotable" border="0" width="100%" cellpadding="0" cellspacing="0" >
-	<tr>
+    <tr>
             <td class="olohead">
                 <table width="100%" cellpadding="0" cellspacing="0" border="0">
                         <tr>
@@ -15,23 +15,23 @@
                         </tr>
                 </table>
             </td>
-	</tr>
+    </tr>
         <tr>
             <td class="menutd">
-		<table width="100%" cellpadding="4" cellspacing="0" border="0">
+        <table width="100%" cellpadding="4" cellspacing="0" border="0">
                     <tr>
-			<td>
+            <td>
                             {section name=v loop=$resolution}
-                        	{if $single_workorder_array[i].WORK_ORDER_CLOSE_BY != "" }
+                            {if $single_workorder_array[i].WORK_ORDER_CLOSE_BY != "" }
                                 <p><b>Closed By: </b>{$resolution[v].EMPLOYEE_DISPLAY_NAME}  <b>Date: </b>
                                 {$resolution[v].WORK_ORDER_CLOSE_DATE|date_format:"$date_format"} <br>
                                 {/if}
                                 {$resolution[v].WORK_ORDER_RESOLUTION}
                                 </p>
                             {/section}
-			</td>
-                    </tr>
-		</table>
             </td>
-	</tr>
+                    </tr>
+        </table>
+            </td>
+    </tr>
 </table>

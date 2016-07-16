@@ -76,13 +76,13 @@
                     {if $single_workorder_array[i].CUSTOMER_TYPE ==1}
                         {$translate_workorder_type_1}
                     {/if}
-												{if $single_workorder_array[i].CUSTOMER_TYPE ==2}
+                                                {if $single_workorder_array[i].CUSTOMER_TYPE ==2}
                     {$translate_workorder_type_2}
                 {/if}
-												{if $single_workorder_array[i].CUSTOMER_TYPE ==3}
+                                                {if $single_workorder_array[i].CUSTOMER_TYPE ==3}
                     {$translate_workorder_type_3}
                 {/if}
-												{if $single_workorder_array[i].CUSTOMER_TYPE ==4}
+                                                {if $single_workorder_array[i].CUSTOMER_TYPE ==4}
                     {$translate_workorder_type_4}
                 {/if}
                 </td>

@@ -13,9 +13,9 @@
                             <tr>
                                 <td width="100%" valign="top" >
                                     <!-- Content Here -->
-								{literal}
+                                {literal}
                                     <form  action="?page=employees:edit" method="POST" name="new_employee" id="new_employee" onsubmit="try { var myValidator = validate_new_employee; } catch(e) { return true; } return myValidator(this);">
-					{/literal}
+                    {/literal}
                                         <table class="menutable" width="100%" border="0" cellpadding="0" cellspacing="0" >
                                             <tr>
                                                 <td class="menutd">
@@ -24,7 +24,7 @@
                                                     <table width="100%" cellpadding="2" cellspacing="2" border="0" class="menutd2">
                                                         <tr>
                                                             <td>
-												{section name="a" loop=$employee_details}
+                                                {section name="a" loop=$employee_details}
                                                                 {include file="employees/emp_edit.js"}
                                                                 <input type="hidden" name="employee_id" value="{$employee_details[a].EMPLOYEE_ID}">
                                                                 <table width="100%" cellpadding="5" cellspacing="0" border="0" class="olotable">
@@ -146,7 +146,7 @@
                                                                     </tr>
                                                                     </tbody>
                                                                 </table>
-														{/section}
+                                                        {/section}
 
                                                             </td>
                                                     </table>

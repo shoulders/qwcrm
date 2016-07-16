@@ -12,9 +12,9 @@
                     </td>
                 </tr><tr>
                     <td class="olotd5" colspan="2">
-					{literal}
+                    {literal}
                         <form  action="index.php?page=employee:new" method="POST" name="new_employee" id="new_employee" onsubmit="try { var myValidator = validate_new_employee; } catch(e) { return true; } return myValidator(this);" >
-					{/literal}
+                    {/literal}
                             <table class="menutable" width="100%" border="0" cellpadding="0" cellspacing="0" >
                                 <tr>
                                     <td class="menutd">
@@ -92,7 +92,7 @@
                                                                             <td><input name="state" type="text" class="olotd5" value="{$company_state}"/></td>
                                                                         </tr><tr>
                                                                             <td><span style="color: #ff0000">*</span>
-                                                                                <strong>{$translate_employee_zip}</strong></td>						<td colspan="2"><input name="zip" type="text" class="olotd5" value="{$company_zip}"/></td>
+                                                                                <strong>{$translate_employee_zip}</strong></td>                        <td colspan="2"><input name="zip" type="text" class="olotd5" value="{$company_zip}"/></td>
                                                                         </tr><tr>
                                                                             <td><span style="color: #ff0000">*</span>
                                                                                 <strong>{$translate_employee_based}&nbsp&nbsp</strong>

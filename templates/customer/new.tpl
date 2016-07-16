@@ -2,25 +2,25 @@
 {literal}
 <script language="javascript" type="text/javascript" src="include/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
 <script language="javascript" type="text/javascript">
-	tinyMCE.init({
-		mode : "exact",
-		theme : "advanced",
+    tinyMCE.init({
+        mode : "exact",
+        theme : "advanced",
         elements : "customerNotes",
-		plugins : "advlink,iespell,insertdatetime,preview",
-		theme_advanced_buttons2_add : "separator,insertdate,inserttime,preview,separator,forecolor,backcolor",
-		theme_advanced_buttons2_add_before: "cut,copy,paste",
-		theme_advanced_toolbar_location : "bottom",
-		theme_advanced_toolbar_align : "center",
+        plugins : "advlink,iespell,insertdatetime,preview",
+        theme_advanced_buttons2_add : "separator,insertdate,inserttime,preview,separator,forecolor,backcolor",
+        theme_advanced_buttons2_add_before: "cut,copy,paste",
+        theme_advanced_toolbar_location : "bottom",
+        theme_advanced_toolbar_align : "center",
 
-	    plugin_insertdate_dateFormat : "%Y-%m-%d",
-	    plugin_insertdate_timeFormat : "%H:%M:%S",
-		extended_valid_elements : "a[name|href|target|title|onclick],img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name],hr[class|width|size|noshade],font[face|size|color|style],span[class|align|style]",
-		external_link_list_url : "example_link_list.js",
-		external_image_list_url : "example_image_list.js",
-		flash_external_list_url : "example_flash_list.js",
-		file_browser_callback : "fileBrowserCallBack",
-		width : "100%"
-	});
+        plugin_insertdate_dateFormat : "%Y-%m-%d",
+        plugin_insertdate_timeFormat : "%H:%M:%S",
+        extended_valid_elements : "a[name|href|target|title|onclick],img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name],hr[class|width|size|noshade],font[face|size|color|style],span[class|align|style]",
+        external_link_list_url : "example_link_list.js",
+        external_image_list_url : "example_image_list.js",
+        flash_external_list_url : "example_flash_list.js",
+        file_browser_callback : "fileBrowserCallBack",
+        width : "100%"
+    });
 </script>
 {/literal}
 <table width="100%"   border="0" cellpadding="20" cellspacing="5">
@@ -38,10 +38,10 @@
                     </td>
                 </tr><tr>
                     <td class="menutd2" colspan="2">
-					{if $error_msg != ""}
-						{include file="core/error.tpl"}
-					{/if}
-					{include file="customer/javascripts.js"}
+                    {if $error_msg != ""}
+                        {include file="core/error.tpl"}
+                    {/if}
+                    {include file="customer/javascripts.js"}
                         <table class="olotable" width="100%" border="0" cellpadding="5" cellspacing="0">
                             <tr>
                                 <td class="menutd">
@@ -50,9 +50,9 @@
                                         <tr>
                                             <td>
                                                 <!-- New Customer Form -->
-												{literal}
+                                                {literal}
                                                 <form  action="index.php?page=customer:new" method="POST" name="new_customer" id="new_customer" onsubmit="try { var myValidator = validate_customer; } catch(e) { return true; } return myValidator(this);">
-												{/literal}
+                                                {/literal}
                                                     <table width="100%" cellpadding="3" cellspacing="0" border="0">
                                                         <tr>
                                                             <td colspan="2" align="left">
@@ -158,7 +158,7 @@
                                                                             <td><input class="olotd5" name="submit" value="Submit" type="submit" /></td>
                                                                         </tr>
                                                                     </tbody>
-                                                                </table>	
+                                                                </table>    
 
                                                             </td>
                                                         </tr>

@@ -2,25 +2,25 @@
 {literal}
 <script language="javascript" type="text/javascript" src="include/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
 <script language="javascript" type="text/javascript">
-	tinyMCE.init({
-		mode : "exact",
+    tinyMCE.init({
+        mode : "exact",
         elements : "editor1, editor2, editor3",
-		theme : "advanced",
-		plugins : "advlink,iespell,insertdatetime,preview",
-		theme_advanced_buttons2_add : "separator,insertdate,inserttime,preview,separator,forecolor,backcolor",
-		theme_advanced_buttons2_add_before: "cut,copy,paste",
-		theme_advanced_toolbar_location : "bottom",
-		theme_advanced_toolbar_align : "center",
+        theme : "advanced",
+        plugins : "advlink,iespell,insertdatetime,preview",
+        theme_advanced_buttons2_add : "separator,insertdate,inserttime,preview,separator,forecolor,backcolor",
+        theme_advanced_buttons2_add_before: "cut,copy,paste",
+        theme_advanced_toolbar_location : "bottom",
+        theme_advanced_toolbar_align : "center",
 
-	    plugin_insertdate_dateFormat : "%Y-%m-%d",
-	    plugin_insertdate_timeFormat : "%H:%M:%S",
-		extended_valid_elements : "a[name|href|target|title|onclick],img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name],hr[class|width|size|noshade],font[face|size|color|style],span[class|align|style]",
-		external_link_list_url : "example_link_list.js",
-		external_image_list_url : "example_image_list.js",
-		flash_external_list_url : "example_flash_list.js",
-		file_browser_callback : "fileBrowserCallBack",
-		width : "100%"
-	});
+        plugin_insertdate_dateFormat : "%Y-%m-%d",
+        plugin_insertdate_timeFormat : "%H:%M:%S",
+        extended_valid_elements : "a[name|href|target|title|onclick],img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name],hr[class|width|size|noshade],font[face|size|color|style],span[class|align|style]",
+        external_link_list_url : "example_link_list.js",
+        external_image_list_url : "example_image_list.js",
+        flash_external_list_url : "example_flash_list.js",
+        file_browser_callback : "fileBrowserCallBack",
+        width : "100%"
+    });
 </script>
 {/literal}
 
@@ -31,10 +31,10 @@
 {include file="refund/javascripts.js"}
 
 <table width="100%" border="0" cellpadding="20" cellspacing="0">
-	<tr>
-		<td >
-			<table width="700" cellpadding="5" cellspacing="0" border="0" >
-				<tr>
+    <tr>
+        <td >
+            <table width="700" cellpadding="5" cellspacing="0" border="0" >
+                <tr>
                                     <td class="menuhead2" width="80%">&nbsp;{$translate_refund_edit_title}</td>
                                     <td class="menuhead2" width="20%" align="right" valign="middle">
                         <a><img src="images/icons/16x16/help.gif" alt="" border="0"
@@ -42,7 +42,7 @@
                                 onMouseOut="hideddrivetip()"
                                 onClick="window.location"></a>
                                     </td>
-				</tr>
+                </tr>
                                 <tr>
                                     <td class="menutd2" colspan="2">
                                         <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0" >

@@ -2,25 +2,25 @@
 {literal}
 <script language="javascript" type="text/javascript" src="include/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
 <script language="javascript" type="text/javascript">
-	tinyMCE.init({
-		mode : "exact",
+    tinyMCE.init({
+        mode : "exact",
         elements : "editor1, editor2, editor3",
-		theme : "advanced",
-		plugins : "advlink,iespell,insertdatetime,preview",
-		theme_advanced_buttons2_add : "separator,insertdate,inserttime,preview,separator,forecolor,backcolor",
-		theme_advanced_buttons2_add_before: "cut,copy,paste",
-		theme_advanced_toolbar_location : "bottom",
-		theme_advanced_toolbar_align : "center",
+        theme : "advanced",
+        plugins : "advlink,iespell,insertdatetime,preview",
+        theme_advanced_buttons2_add : "separator,insertdate,inserttime,preview,separator,forecolor,backcolor",
+        theme_advanced_buttons2_add_before: "cut,copy,paste",
+        theme_advanced_toolbar_location : "bottom",
+        theme_advanced_toolbar_align : "center",
 
-	    plugin_insertdate_dateFormat : "%Y-%m-%d",
-	    plugin_insertdate_timeFormat : "%H:%M:%S",
-		extended_valid_elements : "a[name|href|target|title|onclick],img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name],hr[class|width|size|noshade],font[face|size|color|style],span[class|align|style]",
-		external_link_list_url : "example_link_list.js",
-		external_image_list_url : "example_image_list.js",
-		flash_external_list_url : "example_flash_list.js",
-		file_browser_callback : "fileBrowserCallBack",
-		width : "100%"
-	});
+        plugin_insertdate_dateFormat : "%Y-%m-%d",
+        plugin_insertdate_timeFormat : "%H:%M:%S",
+        extended_valid_elements : "a[name|href|target|title|onclick],img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name],hr[class|width|size|noshade],font[face|size|color|style],span[class|align|style]",
+        external_link_list_url : "example_link_list.js",
+        external_image_list_url : "example_image_list.js",
+        flash_external_list_url : "example_flash_list.js",
+        file_browser_callback : "fileBrowserCallBack",
+        width : "100%"
+    });
 </script>
 {/literal}
 
@@ -59,9 +59,9 @@
                                         <tr>
                                             <td>                                                
                                                 <input type="hidden" name="page" value="supplier:edit">
-						{literal}
+                        {literal}
                                                 <form  action="index.php?page=supplier:new" method="POST" name="new_supplier" id="new_supplier" autocomplete="off" onsubmit="try { var myValidator = validate_supplier; } catch(e) { return true; } return myValidator(this);">
-						{/literal}
+                        {/literal}
                                                     <table width="100%" cellpadding="3" cellspacing="0" border="0">
                                                         <tr>
                                                             <td colspan="2" align="left">

@@ -73,7 +73,7 @@ function validate_supplier(frm) {
     _qfMsg = _qfMsg + '\n - {/literal}{$translate_supplier_val_www_size}{literal}';
     frm.elements['supplierWww'].className = 'error';
     }
-	
+    
     // Is Email correct format 
     value = frm.elements['supplierEmail'].value;
     var regex = /^([a-zA-Z0-9]+([\.+_-][a-zA-Z0-9]+)*)@(([a-zA-Z0-9]+((\.|[-]{1,2})[a-zA-Z0-9]+)*)\.[a-zA-Z]{2,6})$/;

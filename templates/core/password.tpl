@@ -71,7 +71,7 @@
                                                                 {$error_msg}
                                                             </td>
                                                         </tr>
-							{ /if}
+                            { /if}
 
                                                     </table>
                                                 </form>

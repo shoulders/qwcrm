@@ -52,7 +52,7 @@
                                                             </td>
                                                         </tr>
                                                     </form>
-						{/section}    </table>
+                        {/section}    </table>
 
 
 

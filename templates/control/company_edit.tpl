@@ -229,76 +229,76 @@ right of the tabs -->
 <!-- Tab 3 Contents
                     <div id="tab_3_contents" class="tab_contents">                        
                         <table width="100%" cellpadding="5" cellspacing="0" border="0" >
-				<tr>
-					<td class="menuhead2" width="80%">&nbsp;Edit your Companies Email Settings</td>
-				</tr><tr>
-					<td class="menutd2">
-					<table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0" >
-						<tr>
-							<td width="100%" valign="top" >
-								
-								{section name=q loop=$company}
-									
-										<table  cellpadding="5" cellspacing="0">
+                <tr>
+                    <td class="menuhead2" width="80%">&nbsp;Edit your Companies Email Settings</td>
+                </tr><tr>
+                    <td class="menutd2">
+                    <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0" >
+                        <tr>
+                            <td width="100%" valign="top" >
+                                
+                                {section name=q loop=$company}
+                                    
+                                        <table  cellpadding="5" cellspacing="0">
 
                                                                                         <tr>
-												<td align="right"><b>Default No-Reply Email:</b></td>
-												<td><input class="olotd5" type="text" size="50" name="email_from" value="{$company[q].COMPANY_EMAIL_FROM}"></td>
-											</tr>
+                                                <td align="right"><b>Default No-Reply Email:</b></td>
+                                                <td><input class="olotd5" type="text" size="50" name="email_from" value="{$company[q].COMPANY_EMAIL_FROM}"></td>
+                                            </tr>
                                                                                         <tr>
-												<td align="right"><b>Email SMTP Server:</b></td>
-												<td><input class="olotd5" type="text" size="50" name="email_server" value="{$company[q].COMPANY_EMAIL_SERVER}"></td>
-											</tr>
+                                                <td align="right"><b>Email SMTP Server:</b></td>
+                                                <td><input class="olotd5" type="text" size="50" name="email_server" value="{$company[q].COMPANY_EMAIL_SERVER}"></td>
+                                            </tr>
 
                                                                                         <tr>
-												<td align="right"><b>Email Port:</b></td>
-												<td><input class="olotd5" type="text" size="5" name="email_port" value="{$company[q].COMPANY_EMAIL_PORT}"></td>
-											</tr>
+                                                <td align="right"><b>Email Port:</b></td>
+                                                <td><input class="olotd5" type="text" size="5" name="email_port" value="{$company[q].COMPANY_EMAIL_PORT}"></td>
+                                            </tr>
                                                                                         <tr>
-												<td align="right"><b>Connection Type:</b></td>
+                                                <td align="right"><b>Connection Type:</b></td>
                                                                                                 <td><select class="olotd5" name="conn_type">
                                                                                                         <option value="SSL" { if $company[q].COMPANY_EMAIL_CONNECTION_TYPE == 'SSL' } SELECTED {/if}>SSL</option>
                                                                                                         <option value="" { if $company[q].COMPANY_EMAIL_CONNECTION_TYPE != 'SSL' } SELECTED {/if}>None</option>
                                                                                                     </select>
-											</tr>
+                                            </tr>
                                                                                         <tr>
-												<td align="right"><b>SMTP Login Name:</b></td>
-												<td><input class="olotd5" type="text" size="50" name="email_login" value="{$company[q].COMPANY_SMTP_USERNAME}"><font color="RED">*</font>Only required if authentication is needed</td>
-											</tr>
+                                                <td align="right"><b>SMTP Login Name:</b></td>
+                                                <td><input class="olotd5" type="text" size="50" name="email_login" value="{$company[q].COMPANY_SMTP_USERNAME}"><font color="RED">*</font>Only required if authentication is needed</td>
+                                            </tr>
                                                                                         <tr>
-												<td align="right"><b>SMTP Server Password:</b></td>
-												<td><input class="olotd5" size="50" type="password" name="email_password" value="{$company[q].COMPANY_SMTP_PASSWORD}"><font color="RED">*</font>Only required if authentication is needed</td>
-											</tr>
-											{section name=w loop=$setup}
-											 <tr>
+                                                <td align="right"><b>SMTP Server Password:</b></td>
+                                                <td><input class="olotd5" size="50" type="password" name="email_password" value="{$company[q].COMPANY_SMTP_PASSWORD}"><font color="RED">*</font>Only required if authentication is needed</td>
+                                            </tr>
+                                            {section name=w loop=$setup}
+                                             <tr>
                                                                                         <td colspan="2"> <input class="olotd5" type="submit" name="submit"  value="Update"></td>
                                                                                         </tr>
-											{/section}
+                                            {/section}
 
-										</table>
-								
-								{/section}
-							</td>
+                                        </table>
+                                
+                                {/section}
+                            </td>
 
-					</table>
-				</tr>
-			</table>
+                    </table>
+                </tr>
+            </table>
                     </div>
                     <div id="tab_4_contents" class="tab_contents">
                         <table width="100%" cellpadding="5" cellspacing="0" border="0" >
-				<tr>
-					<td class="menuhead2" width="80%">&nbsp;Edit Email Messaging functions</td>
-				</tr><tr>
-					<td class="menutd2">
-					<table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0" >
-						<tr>
-							<td width="100%" valign="top" >
-								{section name=e loop=$setup}
+                <tr>
+                    <td class="menuhead2" width="80%">&nbsp;Edit Email Messaging functions</td>
+                </tr><tr>
+                    <td class="menutd2">
+                    <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0" >
+                        <tr>
+                            <td width="100%" valign="top" >
+                                {section name=e loop=$setup}
 
-										<table  cellpadding="5" cellspacing="0">
+                                        <table  cellpadding="5" cellspacing="0">
 
                                                                                         <tr>
-												<td align="left"><b>New Invoice Message:</b></td>
+                                                <td align="left"><b>New Invoice Message:</b></td>
                                                                                         </tr>
                                                                                         <tr>
                                                                                                 <td align="left"><b>Enabled:</b>
@@ -313,17 +313,17 @@ right of the tabs -->
 
                                                                                         </tr>
 
-											{section name=w loop=$setup}
-											 <tr>
+                                            {section name=w loop=$setup}
+                                             <tr>
                                                                                         <td colspan="2"> <input class="olotd5" type="submit" name="submit"  value="Update"></td>
                                                                                         </tr>
-											{/section}
+                                            {/section}
 
-										</table>
+                                        </table>
                                                                                 <table  cellpadding="5" cellspacing="0">
 
                                                                                         <tr>
-												<td align="left"><b>New Work Order Created Message:</b></td>
+                                                <td align="left"><b>New Work Order Created Message:</b></td>
                                                                                         </tr>
                                                                                         <tr>
                                                                                                 <td align="left"><b>Enabled:</b>
@@ -338,20 +338,20 @@ right of the tabs -->
 
                                                                                         </tr>
 
-											{section name=w loop=$setup}
-											 <tr>
+                                            {section name=w loop=$setup}
+                                             <tr>
                                                                                         <td colspan="2"> <input class="olotd5" type="submit" name="submit"  value="Update"></td>
                                                                                         </tr>
-											{/section}
+                                            {/section}
 
-										</table>
+                                        </table>
 
-								{/section}
-							</td>
+                                {/section}
+                            </td>
 
-					</table>
-				</tr>
-			</table>
+                    </table>
+                </tr>
+            </table>
                     </div> -->
 </div>
 </div>
@@ -360,4 +360,4 @@ right of the tabs -->
 </table>
 </form>
 
-	
+    

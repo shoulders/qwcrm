@@ -11,21 +11,21 @@ function validate_new_workorder(frm) {
   if (value == '' && !errFlag['date']) {
     errFlag['date'] = true;
     _qfMsg = _qfMsg + '\n - Please enter the Date the Work Order Is created';
-	frm.elements['date'].className = 'error';
+    frm.elements['date'].className = 'error';
   }
 
   value = frm.elements['scope'].value;
   if (value == '' && !errFlag['scope']) {
     errFlag['scope'] = true;
     _qfMsg = _qfMsg + '\n - Please enter the  Work Order Scope';
-	frm.elements['scope'].className = 'error';
+    frm.elements['scope'].className = 'error';
   }
 
   value = frm.elements['scope'].value;
   if (value != '' && value.length > 40 && !errFlag['scope']) {
     errFlag['scope'] = true;
     _qfMsg = _qfMsg + '\n - The Work Order Scope cannot be more than 20 characters';
-	frm.elements['scope'].className = 'error';
+    frm.elements['scope'].className = 'error';
   }
 
   if (_qfMsg != '') {
@@ -38,4 +38,4 @@ function validate_new_workorder(frm) {
 }
 //]]>
 </script>
-{/literal}	
+{/literal}    

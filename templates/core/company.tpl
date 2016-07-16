@@ -1,5 +1,5 @@
-<!-- Company.tpl -->	
-		
-		<br>
-		</td>
-		<td class="olotd" valign="top" width="300">
+<!-- Company.tpl -->    
+        
+        <br>
+        </td>
+        <td class="olotd" valign="top" width="300">

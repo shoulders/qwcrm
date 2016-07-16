@@ -21,9 +21,9 @@
                         <table class="olotable" width="100%" border="0" cellpadding="5" cellspacing="0">
                             <tr>
                                 <td class="menutd">
-						{if $error_msg != ""}
+                        {if $error_msg != ""}
                                     <br>
-							{include file="core/error.tpl"}
+                            {include file="core/error.tpl"}
                                     <br>
                                     <table width="100%" border="0" cellpadding="10" cellspacing="0">
                                         <tr>
@@ -32,8 +32,8 @@
                                             <td><a name="assigned"></a>{include file="schedule/assigned_work_order.tpl"}</td>
                                         </tr>
                                     </table>
-						{/if}
-						{if $wo_id != '0'}
+                        {/if}
+                        {if $wo_id != '0'}
                                     <table class="olotablered" width="100%" border="0" cellpadding="5" cellspacing="0">
                                         <tr>
                                             <td>
@@ -42,7 +42,7 @@
                                         </tr>
                                     </table>
                                     <br>
-					{/if}
+                    {/if}
                                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                         <tr>
                                             <td height="81"  align="center" >
@@ -52,7 +52,7 @@
                                         <script type="text/javascript" src="include/jscalendar/lang/calendar-english.js"></script>
                                         <script type="text/javascript" src="include/jscalendar/calendar-setup_stripped.js"></script>
 
-							{literal}
+                            {literal}
                                         <script type="text/javascript">
                                             function dateChanged(calendar) {
                                                 // Beware that this function is called even if the end-user only
@@ -76,7 +76,7 @@
                                             }
                                         );
                                         </script>
-							{/literal}
+                            {/literal}
                                 </td>
                             </tr>
                         </table>
@@ -85,25 +85,25 @@
                             <tr>
                                 <td><button type="submit" name="{$translate_schedule_print}" OnClick=location.href="?page=schedule:print&amp;y={$y}&amp;m={$m}&amp;d={$d}&amp;escape=1" >{$translate_schedule_print}</button> </td>
                                 <td valign="top" align="right" valign="middle">
-								{if $cred.EMPLOYEE_TYPE <> 3 }
+                                {if $cred.EMPLOYEE_TYPE <> 3 }
                                     <form>
                                         <select name="page_no" onChange="go()">
-										{section name=i loop=$tech}
+                                        {section name=i loop=$tech}
                                             <option value="?page=schedule:main&amp;tech={$tech[i].EMPLOYEE_ID}
-												{foreach from=$date_array key=key item=item}
-													&{$key}={$item}
-												{/foreach}
-												&page_title=schedule" {if $selected == $tech[i].EMPLOYEE_ID} Selected {/if}>
-											{$tech[i].EMPLOYEE_LOGIN}
+                                                {foreach from=$date_array key=key item=item}
+                                                    &{$key}={$item}
+                                                {/foreach}
+                                                &page_title=schedule" {if $selected == $tech[i].EMPLOYEE_ID} Selected {/if}>
+                                            {$tech[i].EMPLOYEE_LOGIN}
                                         </option>
-										{/section}
+                                        {/section}
                                     </select>
                                 </form>
-								{/if}
+                                {/if}
                             </td>
                         </tr>
                     </table>
-						{$calendar}
+                        {$calendar}
                     <br>
                 </td>
             </tr>

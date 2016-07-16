@@ -18,7 +18,7 @@
 </script>{/literal}
 {section name=i loop=$single_workorder_array}
 {if $error_msg|escape != ""}
-	{include file="core/error.tpl"}
+    {include file="core/error.tpl"}
 {/if}
 <br>
 <table width="100%">

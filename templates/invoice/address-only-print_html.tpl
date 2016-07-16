@@ -34,7 +34,7 @@
                         </tr>
                     </table>
                     {/foreach}
-		</td>
+        </td>
 
                 <!-- LOGO and Company Name-->
                 <td valign="top" align="center" width="30%">
@@ -86,12 +86,12 @@
                 <td valign="top" width="10%" align="left"></td>
                 <td>
                     <!--<font size="-1"><b>{$translate_invoice_prn_bill_to} :</b></font><br />-->
-			{foreach item=item from=$customer_details}
+            {foreach item=item from=$customer_details}
                     <font size="+0">{$item.CUSTOMER_DISPLAY_NAME}</font><br />
                     <font size="+0">{$item.CUSTOMER_ADDRESS|nl2br|regex_replace:"/[\r\t\n]/":" "}</font><br />
                     <font size="+0">{$item.CUSTOMER_CITY},</font><br />
                     <font size="+0">{$item.CUSTOMER_STATE} {$item.CUSTOMER_ZIP}</font>
-			{/foreach}
+            {/foreach}
                 </td>
             </tr>
         </table>
@@ -114,14 +114,14 @@
                 <td class="olohead" width="60" align="right"><b>{$translate_invoice_prn_unit_price}</b></td>
                 <td class="olohead" width="80" align="right"><b>{$translate_invoice_prn_subtotal}</b></td>
             </tr>
-	{section name=q loop=$labor}
+    {section name=q loop=$labor}
             <tr>
                 <td class="olotd4" width="40">{$labor[q].INVOICE_LABOR_UNIT}</td>
                 <td class="olotd4" >{$labor[q].INVOICE_LABOR_DESCRIPTION}</td>
                 <td class="olotd4" width="60" align="right">{$currency_sym}{$labor[q].INVOICE_LABOR_RATE|string_format:"%.2f"}</td>
                 <td class="olotd4" width="80" align="right">{$currency_sym}{$labor[q].INVOICE_LABOR_SUBTOTAL|string_format:"%.2f"}</td>
             </tr>
-	{/section}
+    {/section}
             <tr>
                 <td colspan="3" style="text-align:right;">{$translate_invoice_prn_labour_total}</td>
                 <td class="olotd4" width="80" align="right">{$currency_sym}{$labour_sub_total_sum|default:"0.00"}</td>
@@ -137,14 +137,14 @@
                 <td class="olohead" width="60" align="right"><b>{$translate_invoice_prn_unit_price}</b></td>
                 <td class="olohead" width="80" align="right"><b>{$translate_invoice_prn_subtotal}</b></td>
             </tr>
-	{section name=w loop=$parts}		
+    {section name=w loop=$parts}        
             <tr class="olotd4">
                 <td width="40" class="olotd4">{$parts[w].INVOICE_PARTS_COUNT}</td>
                 <td class="olotd4">{$parts[w].INVOICE_PARTS_DESCRIPTION}</td>
                 <td width="60" class="olotd4" align="right">{$currency_sym}{$parts[w].INVOICE_PARTS_AMOUNT|string_format:"%.2f"}</td>
                 <td width="80" class="olotd4" align="right">{$currency_sym}{$parts[w].INVOICE_PARTS_SUBTOTAL|string_format:"%.2f"}</td>
             </tr>
-	{/section}
+    {/section}
             <tr>           
                 <td colspan="3" style="text-align:right;">{$translate_invoice_prn_parts_total}</td>
                 <td class="olotd4" width="80" align="right">{$currency_sym}{$parts_sub_total_sum|default:"0.00"}</td>
@@ -232,11 +232,11 @@
         </tr>
         <tr>
             <td class="olotd4"><b>{$translate_invoice_prn_balance}</b></td>
-						{if $invoice.BALANCE == 0}
+                        {if $invoice.BALANCE == 0}
             <td class="olotd4" width="80" align="right"><b><font color="#CC0000">{$currency_sym} {$invoice.BALANCE|string_format:"%.2f"}</font></b></td>
-				    {else}
+                    {else}
             <td class="olotd4" width="80" align="right"><b><font color="#CC0000">{$currency_sym} {$invoice.BALANCE|string_format:"%.2f"}</font></b></td>
-				    {/if}
+                    {/if}
         </tr>
     </table>
 </td>

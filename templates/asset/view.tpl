@@ -17,10 +17,10 @@
                                         <tr>
                                             <td class="menutd">
                                                 <!-- Edit Customer Form -->
-									{literal}
+                                    {literal}
                                                 <form  action="index.php?page=customer:edit" method="POST" name="edit_customer" id="edit_customer" onsubmit="try { var myValidator = validate_edit_customer; } catch(e) { return true; } return myValidator(this);">
-									{/literal}
-									{section name=q loop=$customer}
+                                    {/literal}
+                                    {section name=q loop=$customer}
                                                     <input type="hidden" name="customer_id" value="{$customer[q].CUSTOMER_ID}">
                                                     <table width="100%" cellpadding="2" cellspacing="2" border="0">
                                                         <tr>
@@ -44,7 +44,7 @@
                                                             </td>
                                                         </tr>
                                                     </table>
-									{/section}
+                                    {/section}
                                                 </form>
                                             </td>
                                         </tr>

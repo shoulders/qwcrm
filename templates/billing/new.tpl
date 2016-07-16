@@ -23,28 +23,28 @@
                                 <td class="row2"><b>{$translate_billing_wo_id}</b></td>
                                 <td class="row2"><b>{$translate_billing_balance}</b></td>
                             </tr><tr class="olotd4">
-						{foreach item=item from=$invoice_details}
+                        {foreach item=item from=$invoice_details}
                                 <td>{$item.INVOICE_ID}</td>
                                 <td>{$item.INVOICE_DATE|date_format:"$date_format"}</td>
                                 <td>{$item.INVOICE_DUE|date_format:"$date_format"}</td>
                                 <td>{$currency_sym}{$item.INVOICE_AMOUNT|string_format:"%.2f"}</td>
                                 <td>{$item.WORKORDER_ID}</td>
                                 <td>
-								{if $item.BALANCE > 0}
+                                {if $item.BALANCE > 0}
                                     <font color="#CC0000"><b>{$currency_sym}{$item.INVOICE_AMOUNT-$item.PAID_AMOUNT|string_format:"%.2f"}</b></font>
-								{else}
+                                {else}
                                     <font color="#CC0000"><b>{$currency_sym}{$item.INVOICE_AMOUNT|string_format:"%.2f"}</b></font>
-								{/if}
+                                {/if}
                                 </td>
-							{assign var="invoice_amount" value=$item.INVOICE_AMOUNT}
+                            {assign var="invoice_amount" value=$item.INVOICE_AMOUNT}
                                                         {assign var="invoice_paid_amount" value=$item.PAID_AMOUNT}
-							{assign var="invoice_id"     value=$item.INVOICE_ID}
-							{assign var="workorder_id"   value=$item.WORKORDER_ID}
-							{assign var="balance"       value=$item.BALANCE}
-						{/foreach}
+                            {assign var="invoice_id"     value=$item.INVOICE_ID}
+                            {assign var="workorder_id"   value=$item.WORKORDER_ID}
+                            {assign var="balance"       value=$item.BALANCE}
+                        {/foreach}
                             </tr><tr>
                                 <td colspan="6" valign="top">
-							 {foreach item=item from=$customer_details}
+                             {foreach item=item from=$customer_details}
                                     <table cellpadding="0" cellspacing="0">
                                         <tr>
                                             <td valign="top">
@@ -63,15 +63,15 @@
                                         </tr><tr>
                                             <td><b>{$translate_billing_phone}</b> {$item.CUSTOMER_PHONE}
                                     </table>
-							{assign var="customer_id" value=$item.CUSTOMER_ID}
-							{/foreach}		
+                            {assign var="customer_id" value=$item.CUSTOMER_ID}
+                            {/foreach}        
                                 </td>
 
                             </tr>
                         </table>
 
                         <br>
-					{if $balance > 0 }
+                    {if $balance > 0 }
 
                         <table width="100%" cellpadding="4" cellspacing="0" border="0" >
                             <tr>
@@ -114,9 +114,9 @@
                             </tr>
                         </table>
                         <br>
-					{/if}
+                    {/if}
                         <!-- Content -->
-					{if $billing_options.cc_billing == '1'}
+                    {if $billing_options.cc_billing == '1'}
                         <form method="POST" action="">
                             <table width="100%" cellpadding="4" cellspacing="0" border="0" >
                                 <tr>
@@ -134,15 +134,15 @@
                                             </tr><tr class="olotd4">
                                                 <td></td>
                                                 <td><select name="card_type" class="olotd4">
-													{foreach key=key item=item from=$cc_cards}
+                                                    {foreach key=key item=item from=$cc_cards}
                                                         <option value="{$key}">{$item}</option>
-													{/foreach}
+                                                    {/foreach}
                                                     </select>
                                                 </td>
                                                 <td><input type="text" name="cc_number" size="20" class="olotd4"></td>
                                                 <td><input type="text" name="cc_ccv" size="4" class="olotd4" ></td>
                                                 <td>{html_select_date prefix="StartDate" time=$time month_format="%m"
-												end_year="+7" display_days=false}
+                                                end_year="+7" display_days=false}
                                                 </td>
                                                 <td>{$currency_sym}<input type="text" name="cc_amount" {if $balance > 0} value="{$invoice_amount-$invoice_paid_amount|string_format:"%.2f"}" {else} value="{$invoice_amount|string_format:"%.2f"}" {/if} size="6">
 
@@ -162,9 +162,9 @@
                             </table>
                         </form>
 
-					{/if}
+                    {/if}
 
-					{if $billing_options.deposit_billing == '1'}
+                    {if $billing_options.deposit_billing == '1'}
                         <form method="POST" action="">
                             <br>
                             <table width="100%" cellpadding="4" cellspacing="0" border="0" >
@@ -201,7 +201,7 @@
                                 </tr>
                             </table>
                         </form>
-					{/if}
+                    {/if}
                                         {if $billing_options.cheque_billing == '1'}
                         <form method="POST" action="">
                             <br>
@@ -239,9 +239,9 @@
                                 </tr>
                             </table>
                         </form>
-					{/if}
+                    {/if}
 
-					{if $billing_options.cash_billing == '1'}
+                    {if $billing_options.cash_billing == '1'}
                         <form method="POST" action="">
                             <br>
 
@@ -257,7 +257,7 @@
                                             </tr><tr class="olotd4">
                                                 <td></td>
                                                 <td>
-							{$currency_sym}<input type="text" name="cash_amount" size="8"
+                            {$currency_sym}<input type="text" name="cash_amount" size="8"
                                                             {if $balance > 0 }
                                                             value="{$invoice_amount-$invoice_paid_amount|string_format:"%.2f"}"
                                                             {else}
@@ -281,9 +281,9 @@
                                 </tr>
                             </table>
                         </form>
-					{/if}
+                    {/if}
 
-					{if $billing_options.gift_billing == '1'}
+                    {if $billing_options.gift_billing == '1'}
                         <form method="POST" action="">
                             <br>
                             <table width="100%" cellpadding="4" cellspacing="0" border="0" >
@@ -315,9 +315,9 @@
 
                             </table>
                         </form>
-					{/if}
+                    {/if}
 
-					{if $billing_options.paypal_billing == '1'}
+                    {if $billing_options.paypal_billing == '1'}
                         <br>
                         <form method="POST" action="?page=billing:proc_paypal">
                             <table width="100%" cellpadding="4" cellspacing="0" border="0" >
@@ -333,7 +333,7 @@
                                             </tr><tr class="olotd4">
                                                 <td></td>
                                                 <td>
-							$<input type="text" name="paypal_amount" size="8"
+                            $<input type="text" name="paypal_amount" size="8"
                                                             {if $balance > 0 }
                                                             value="{$invoice_amount-$invoice_paid_amount|string_format:"%.2f"}"
                                                             {else}
@@ -355,7 +355,7 @@
                             </table>
 
                         </form>
-					{/if}
+                    {/if}
                                         {if $billing_options.paymate_billing == '1'}
                         <form method="POST" action="">
                             <br>

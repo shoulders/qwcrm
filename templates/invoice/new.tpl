@@ -216,19 +216,19 @@
                         <table class="olotable" width="100%" border="0" cellpadding="5" cellspacing="0">
                             <tr>
                                 <td class="menutd">
-									{if $error_msg != ""}
+                                    {if $error_msg != ""}
                                     <br>
-										{include file="core/error.tpl"}
+                                        {include file="core/error.tpl"}
                                     <br>
-									{/if}
+                                    {/if}
                                     <!-- Content -->
 
 
 
 
-								{literal}
+                                {literal}
                                     <form  action="index.php?page=invoice:new" method="POST" name="new_invoice" id="new_invoice" onsubmit="try { var myValidator = validate_new_invoice; } catch(e) { return true; } return myValidator(this);">
-								{/literal}
+                                {/literal}
                                         <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
                                             <tr class="olotd4">
                                                 <td class="row2"><b>{$translate_invoice_id}</b></td>
@@ -244,7 +244,7 @@
                                                 <td>
                                                     <input size="10" name="date" type="text" id="date" value="{$invoice.INVOICE_DATE|date_format:$date_format}" class="olotd4"/>
                                                            <input type="button" id="trigger_date" value="+">
-											 {literal}
+                                             {literal}
                                                     <script type="text/javascript">
                                                         Calendar.setup(
                                                         {
@@ -254,12 +254,12 @@
                                                         }
                                                     );
                                                     </script>
-											{/literal}
+                                            {/literal}
                                                 </td>
                                                 <td>{$item.INVOICE_DUE}
                                                     <input size="10" name="due_date" type="text" id="due_date" value="{$invoice.INVOICE_DUE|date_format:$date_format}" class="olotd4"/>
                                                            <input type="button" id="trigger_due_date" value="+">
-											 {literal}
+                                             {literal}
                                                     <script type="text/javascript">
                                                         Calendar.setup(
                                                         {
@@ -269,7 +269,7 @@
                                                         }
                                                     );
                                                     </script>
-											{/literal}
+                                            {/literal}
                                                 </td>
                                                 <td>{$currency_sym}{$invoice.INVOICE_AMOUNT|string_format:"%.2f"}</td>
                                                 <td>{$invoice.EMPLOYEE_DISPLAY_NAME}</td>
@@ -280,38 +280,38 @@
                                             </tr><tr>
                                                 <td colspan="3" valign="top" align="left">
                                                     <b>{$translate_invoice_bill}</b>
-										{foreach item=item from=$customer_details}
+                                        {foreach item=item from=$customer_details}
                                                     <table cellpadding="0" cellspacing="0">
                                                         <tr>
                                                             <td valign="top">
                                                                 <a href="?page=customer:customer_details&customer_id={$item.CUSTOMER_ID}&page_title={$item.CUSTOMER_DISPLAY_NAME}">{$item.CUSTOMER_DISPLAY_NAME}</a><br>
-														{$item.CUSTOMER_ADDRESS|nl2br}<br>
-														{$item.CUSTOMER_CITY}, {$item.CUSTOMER_STATE} {$item.CUSTOMER_ZIP}<br>
-														{$item.CUSTOMER_PHONE}<br>
-														{$item.CUSTOMER_EMAIL}<br>
-														<br>
-														TERMS: <FONT color="red" size="+1">{$item.CREDIT_TERMS}</FONT><br><br><br>
-														Current customer discount rate is :
+                                                        {$item.CUSTOMER_ADDRESS|nl2br}<br>
+                                                        {$item.CUSTOMER_CITY}, {$item.CUSTOMER_STATE} {$item.CUSTOMER_ZIP}<br>
+                                                        {$item.CUSTOMER_PHONE}<br>
+                                                        {$item.CUSTOMER_EMAIL}<br>
+                                                        <br>
+                                                        TERMS: <FONT color="red" size="+1">{$item.CREDIT_TERMS}</FONT><br><br><br>
+                                                        Current customer discount rate is :
                                                                 <input type="hidden" name="customer_id"   value="{$item.CUSTOMER_ID}">
                                                                 <input type="text" class="olotd4" size="4" name="discount" value="{$item.DISCOUNT}"> % <br>
                                                                 <b>**Change this if you want to temporarily override the discount rate for this invoice ONLY **</b>
                                                             </td>
                                                         </tr>
                                                     </table>
-											{/foreach}
+                                            {/foreach}
                                                 </td>
                                                 <td colspan="4" valign="top" >
                                                     <b>{$translate_invoice_pay}</b>
                                                     <table cellpadding="0" cellspacing="0" width="100%">
                                                         <tr>
                                                             <td valign="top">
-														{section name=x loop=$company}
-															{$company[x].COMPANY_NAME} <br>
-															{$company[x].COMPANY_ADDRESS}<br>
-															{$company[x].COMPANY_CITY}, {$company[x].COMPANY_STATE} {$company[x].COMPANY_ZIP}<br>
-															{$company[x].COMPANY_PHONE}<br>
+                                                        {section name=x loop=$company}
+                                                            {$company[x].COMPANY_NAME} <br>
+                                                            {$company[x].COMPANY_ADDRESS}<br>
+                                                            {$company[x].COMPANY_CITY}, {$company[x].COMPANY_STATE} {$company[x].COMPANY_ZIP}<br>
+                                                            {$company[x].COMPANY_PHONE}<br>
 
-														{/section}
+                                                        {/section}
                                                             </td>
                                                         </tr>
                                                     </table>
@@ -320,7 +320,7 @@
                                         </table>
 
                                         <br>
-								{if $invoice.balance > 0}
+                                {if $invoice.balance > 0}
                                         <!-- Trans Log -->
                                         <table width="100%" cellpadding="4" cellspacing="0" border="0" id="trans_log">
                                             <tr>
@@ -334,41 +334,41 @@
                                                             <td class="row2"><b>{$translate_invoice_amount}</b></td>
                                                             <td class="row2"><b>{$translate_invoice_type}</b></td>
                                                         </tr>
-												{section name=r loop=$trans}
+                                                {section name=r loop=$trans}
                                                         <tr class="olotd4">
                                                             <td>{$trans[r].TRANSACTION_ID}</td>
                                                             <td>{$trans[r].DATE|date_format:"$date_format"}</td>
                                                             <td><b>$</b>{$trans[r].AMOUNT|string_format:"%.2f"}</td>
                                                             <td>
-													{if $trans[r].TYPE == 1}
-														{$translate_invoice_cc}
-													{elseif $trans[r].TYPE == 2}
-														{$translate_invoice_check}
-													{elseif $trans[r].TYPE == 3}
-														{$translate_invoice_cash}
-													{elseif $trans[r].TYPE == 4}
-														{$translate_invoice_gift}
-													{elseif $trans[r].TYPE == 5}
-														{$translate_invoice_paypal}
-													{/if}
+                                                    {if $trans[r].TYPE == 1}
+                                                        {$translate_invoice_cc}
+                                                    {elseif $trans[r].TYPE == 2}
+                                                        {$translate_invoice_check}
+                                                    {elseif $trans[r].TYPE == 3}
+                                                        {$translate_invoice_cash}
+                                                    {elseif $trans[r].TYPE == 4}
+                                                        {$translate_invoice_gift}
+                                                    {elseif $trans[r].TYPE == 5}
+                                                        {$translate_invoice_paypal}
+                                                    {/if}
                                                             </td>
                                                         </tr><tr class="olotd4">
                                                             <td><b>{$translate_invoice_memo}</b></td>
                                                             <td colspan="3">{$trans[r].MEMO}</td>
                                                         </tr>
-												{/section}
+                                                {/section}
                                                     </table>
                                                 </td>
                                             </tr>
                                         </table>
-								{/if}
+                                {/if}
 
-								{if $invoice.INVOICE_AMOUNT > '' }
+                                {if $invoice.INVOICE_AMOUNT > '' }
                                         <p>
-					 {if $wo_status == '6'}
+                     {if $wo_status == '6'}
                                             <button type="button" name="pdf" OnClick=window.open('?page=invoice:pdf&wo_id={$invoice.WORKORDER_ID}&customer_id={$invoice.CUSTOMER_ID}&invoice_id={$invoice.INVOICE_ID}&escape=1')><img src="images/icons/pdf_small.png"  height="14" alt="pdf"> {$translate_invoice_pdf}</button>
-					 {/if}
-					 {if $wo_status == '9' || $wo_id == '0'}
+                     {/if}
+                     {if $wo_status == '9' || $wo_id == '0'}
                                             <button type="button" name="{$translate_invoice_print}" onClick=window.open('?page=invoice:print&amp;print_type=html&amp;wo_id={$invoice.WORKORDER_ID}&amp;customer_id={$invoice.CUSTOMER_ID}&amp;invoice_id={$invoice.INVOICE_ID}&amp;escape=1')>{$translate_invoice_print}</button>
                                             <button type="button" name="{$translate_invoice_pdf}" OnClick=window.open('?page=invoice:print&amp;print_type=pdf&amp;wo_id={$invoice.WORKORDER_ID}&customer_id={$invoice.CUSTOMER_ID}&invoice_id={$invoice.INVOICE_ID}&escape=1')><img src="images/icons/pdf_small.png"  height="14" alt="pdf">&nbsp;{$translate_invoice_pdf}</button>
                                             <button type="button" name="{$translate_invoice_bill_customer}" OnClick=location.href='?page=billing:new&wo_id={$invoice.WORKORDER_ID}&customer_id={$invoice.CUSTOMER_ID}&invoice_id={$invoice.INVOICE_ID}&page_title=Receiving%20Payment%20for%20{$invoice.INVOICE_ID}'>{$translate_invoice_bill_customer}</button>
@@ -382,7 +382,7 @@
 
 
                                         </p>
-								{/if}
+                                {/if}
 
                                         <br>
                                         <table width="100%" cellpadding="4" cellspacing="0" border="0" >
@@ -390,7 +390,7 @@
                                                 <td class="menuhead2">&nbsp;{$translate_invoice_labor}</td>
                                             </tr><tr>
                                                 <td class="menutd2">
-										{if $labor != '0'}
+                                        {if $labor != '0'}
 
                                                     <table width="100%" cellpadding="3" cellspacing="0" border="0" class="olotable">
                                                         <tr  class="olotd4">
@@ -403,7 +403,7 @@
 
                                                         </tr>
 
-												{section name=q loop=$labor}
+                                                {section name=q loop=$labor}
                                                         <tr class="olotd4">
                                                             <td>{$smarty.section.q.index+1}</td>
                                                             <td>{$labor[q].INVOICE_LABOR_UNIT}</td>
@@ -423,7 +423,7 @@
                                                             <td style="text-align:left;">{$currency_sym}{$labour_sub_total_sum}</td>
                                                         </tr>
                                                     </table>
-									{/if}
+                                    {/if}
                                                     <br>
                                                     <!-- Additional Javascript Labour Table -->
                                                     <table width="100%" cellpadding="3" cellspacing="0" border="0" class="olotable" id="labor">
@@ -449,7 +449,7 @@
                                                 <td class="menuhead2">&nbsp;{$translate_invoice_parts}</td>
                                             </tr><tr>
                                                 <td class="menutd2">
-										{if $parts != '0'}
+                                        {if $parts != '0'}
                                                     <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
                                                         <tr class="olotd4">
                                                             <td class="row2"><b>{$translate_invoice_no}</b></td>
@@ -459,7 +459,7 @@
                                                             <td class="row2"><b>{$translate_invoice_total}</b></td>
                                                             <td class="row2"><b>{$translate_invoice_actions}</b></td>
                                                         </tr>
-												{section name=w loop=$parts}
+                                                {section name=w loop=$parts}
                                                         <tr class="olotd4">
                                                             <td>{$smarty.section.w.index+1}</td>
                                                             <td>{$parts[w].INVOICE_PARTS_COUNT}</td>
@@ -480,7 +480,7 @@
                                                         </tr>
                                                     </table>
 
-										{/if}
+                                        {/if}
                                                     <br>
                                                     <!-- Additional Javascript Parts Table -->
                                                     <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable" id="parts">

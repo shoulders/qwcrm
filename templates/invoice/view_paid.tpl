@@ -38,13 +38,13 @@
                                                     <a href="?page=invoice:view_paid&submit=submit&page_no={$previous}"><img src="images/back_24.gif" alt="" border="0"></a>&nbsp;
                                                     {/if}
                                                     <select name="page_no" onChange="go()">
-							{section name=page loop=$total_pages start=1}
+                            {section name=page loop=$total_pages start=1}
                                                         <option value="?page=invoice:view_paid&submit=submit&page_no={$smarty.section.page.index}" {if $page_no == $smarty.section.page.index } Selected {/if}>
-							{$translate_invoice_page} {$smarty.section.page.index} {$translate_invoice_of} {$total_pages} 
+                            {$translate_invoice_page} {$smarty.section.page.index} {$translate_invoice_of} {$total_pages} 
                                                     </option>
-							{/section}
+                            {/section}
                                                     <option value="?page=invoice:view_paid&submit=submit&page_no={$total_pages}" {if $page_no == $total_pages} selected {/if}>
-							{$translate_invoice_page}  {$total_pages} {$translate_invoice_of} {$total_pages}
+                            {$translate_invoice_page}  {$total_pages} {$translate_invoice_of} {$total_pages}
                                                 </option>
                                             </select>
 

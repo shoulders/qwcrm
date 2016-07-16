@@ -53,7 +53,7 @@
                                         </tr><tr>
                                             <td colspan="3" valign="top">
                                                 <b>{$translate_invoice_bill}</b>
-										{foreach item=item from=$customer_details}
+                                        {foreach item=item from=$customer_details}
                                                 <table width="100%" cellpadding="0" cellspacing="0">
                                                     <tr>
                                                         <td valign="top">
@@ -108,7 +108,7 @@
                                             <td class="menuhead2">&nbsp;{$translate_invoice_labor}</td>
                                         </tr><tr>
                                             <td class="menutd2">
-										{if $labor != '0'}	
+                                        {if $labor != '0'}    
 
                                                 <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
                                                     <tr  class="olotd4">
@@ -118,7 +118,7 @@
                                                         <td class="row2"><b>{$translate_invoice_rate}</b></td>
                                                         <td class="row2"><b>{$translate_invoice_total}</b></td>
                                                     </tr>
-												{section name=q loop=$labor}
+                                                {section name=q loop=$labor}
                                                     <tr class="olotd4">
                                                         <td>{$smarty.section.q.index+1}</td>
                                                         <td>{$labor[q].INVOICE_LABOR_UNIT}</td>
@@ -132,7 +132,7 @@
                                                         <td style="text-align:left;">{$currency_sym}{$labour_sub_total_sum}</td>
                                                     </tr>
                                                 </table>
-										{/if}
+                                        {/if}
                                             </td>
                                         </tr>
                                     </table>
@@ -217,7 +217,7 @@
                                                         <td class="row2"><b>{$translate_invoice_amount}</b></td>
                                                         <td class="row2"><b>{$translate_invoice_type}</b></td>
                                                     </tr>
-												{section name=r loop=$trans}
+                                                {section name=r loop=$trans}
                                                     <tr class="olotd4">
                                                         <td>{$trans[r].TRANSACTION_ID}</td>
                                                         <td>{$trans[r].DATE|date_format:"$date_format"}</td>

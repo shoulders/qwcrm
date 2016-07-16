@@ -201,7 +201,7 @@ function addPageNumber( $page )
     $mid = $y1 + ($y2 / 2);
     //$this->RoundedRect($r1, $y1, ($r2 - $r1), $y2, 3.5, 'D');
     //$this->Line( $r1, $mid, $r2, $mid);
-	$this->SetXY(  $r1 + ($r2-$r1)/2 - 5, $y1+3 );
+    $this->SetXY(  $r1 + ($r2-$r1)/2 - 5, $y1+3 );
     $this->SetFont( "ARIAL", "B", 6);
     $this->Cell(13,5, "PAGE", 0, 0, "C");
     $this->SetXY( $r1 + ($r2-$r1)/2 - 5, $y1 + 9);
@@ -261,7 +261,7 @@ function InvoiceDue( $date )
 function addSKU($inv1)
 {
     $inv1 = "Invoice Details";
-	$this->SetFont( "Helvetica", "", 10);
+    $this->SetFont( "Helvetica", "", 10);
     $length = $this->GetStringWidth( $inv1 );
     $r1  = 10;
     $r2  = $r1 + $length;
@@ -472,26 +472,26 @@ $pdf->fact_dev($langvals['invoice_prn_invoice_title'],'');
 $invdate=(date($date_format ,($invoice[INVOICE_DATE])));
 $invdue=(date($date_format ,($invoice[INVOICE_DUE])));
 
-	$pdf->SetY(20);
-	$pdf->SetX(140);
+    $pdf->SetY(20);
+    $pdf->SetX(140);
         $pdf->SetFont('Arial', 'B', 8);
-	$pdf->MultiCell(30, 4, $langvals['invoice_prn_invoice_id']."\n" .
-							$langvals['invoice_prn_invoice_date']."\n" .
-							$langvals['invoice_prn_invoice_due_date']."\n" .
-							$langvals['invoice_prn_work_order']."\n" .
-							$langvals['invoice_prn_technician']."\n" .
-							$langvals['invoice_prn_credit_terms']."\n"
+    $pdf->MultiCell(30, 4, $langvals['invoice_prn_invoice_id']."\n" .
+                            $langvals['invoice_prn_invoice_date']."\n" .
+                            $langvals['invoice_prn_invoice_due_date']."\n" .
+                            $langvals['invoice_prn_work_order']."\n" .
+                            $langvals['invoice_prn_technician']."\n" .
+                            $langvals['invoice_prn_credit_terms']."\n"
 
-							, 0, 0, 'R', 0);
-	$pdf->SetY(20);
-	$pdf->SetX(170);
-	$pdf->MultiCell(30, 4, "$invoice[INVOICE_ID]\n" .
-							$invdate."\n" .
-							$invdue."\n" .
+                            , 0, 0, 'R', 0);
+    $pdf->SetY(20);
+    $pdf->SetX(170);
+    $pdf->MultiCell(30, 4, "$invoice[INVOICE_ID]\n" .
+                            $invdate."\n" .
+                            $invdue."\n" .
                                                         $invoice['WORKORDER_ID']."\n" .
                                                         $invoice['EMPLOYEE_DISPLAY_NAME']."\n" .
                                                         $custerms."\n"
-							, 0, 0, 'L', 0);
+                            , 0, 0, 'L', 0);
 
 // Add Page Numbers
 $pdf->addPageNumber("$page");
@@ -628,27 +628,27 @@ while($parts_row = mysql_fetch_array($parts_row_pdf))
 
 //Add Totals Box
         $pdf->SetY($y_axis_initial +($row_height * $max + 1));
-	//$pdf->SetY($y_axis_initial +($row_height * count($i))+ ($row_height * 2));
-	$pdf->SetX(160);
-	$pdf->MultiCell(20, 6, $langvals['invoice_prn_subtotal']."\n" .
-  							$langvals['invoice_prn_discount']."\n" .
+    //$pdf->SetY($y_axis_initial +($row_height * count($i))+ ($row_height * 2));
+    $pdf->SetX(160);
+    $pdf->MultiCell(20, 6, $langvals['invoice_prn_subtotal']."\n" .
+                              $langvals['invoice_prn_discount']."\n" .
                                                         $langvals['invoice_prn_shipping']."\n" .
-							$langvals['invoice_prn_tax']."\n" .
-							$langvals['invoice_prn_invoice_total']."\n" .
-							$langvals['invoice_prn_paid']."\n" .
-							$langvals['invoice_prn_balance']."\n"
-							, 1, 0, 'R', 0);
-	$pdf->SetY($y_axis_initial +($row_height * $max + 1));
-	//$pdf->SetY($y_axis_initial +($row_height * count($i)) + ($row_height * 2));
+                            $langvals['invoice_prn_tax']."\n" .
+                            $langvals['invoice_prn_invoice_total']."\n" .
+                            $langvals['invoice_prn_paid']."\n" .
+                            $langvals['invoice_prn_balance']."\n"
+                            , 1, 0, 'R', 0);
+    $pdf->SetY($y_axis_initial +($row_height * $max + 1));
+    //$pdf->SetY($y_axis_initial +($row_height * count($i)) + ($row_height * 2));
         $pdf->SetX(180);
-	$pdf->MultiCell(20, 6, "$currency_sym $totalinv\n" .
- 							"$currency_sym $discinv\n" .
-							"$currency_sym $shipinv\n" .
-       							"$currency_sym $taxinv\n" .
-							"$currency_sym $amntinv\n" .
-							"$currency_sym $paidamntinv\n" .
-							"$currency_sym $balinv\n"
-							, 1, 0, 'R', 2);
+    $pdf->MultiCell(20, 6, "$currency_sym $totalinv\n" .
+                             "$currency_sym $discinv\n" .
+                            "$currency_sym $shipinv\n" .
+                                   "$currency_sym $taxinv\n" .
+                            "$currency_sym $amntinv\n" .
+                            "$currency_sym $paidamntinv\n" .
+                            "$currency_sym $balinv\n"
+                            , 1, 0, 'R', 2);
 
 // This section not fully translated
 
