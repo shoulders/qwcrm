@@ -1,10 +1,10 @@
 {literal}
-	<script type="text/javascript">
-	//<![CDATA[
-	function validate_rate_upload(frm) {
-	var value = '';
-	var errFlag = new Array();
-	_qfMsg = '';
+    <script type="text/javascript">
+    //<![CDATA[
+    function validate_rate_upload(frm) {
+    var value = '';
+    var errFlag = new Array();
+    _qfMsg = '';
 
         value = frm.elements['userfile'].value;
   if (value == '' && !errFlag['userfile']) {
@@ -13,7 +13,7 @@
     frm.elements['userfile'].className = 'error';
   }
         
-	  if (_qfMsg != '') {
+      if (_qfMsg != '') {
     _qfMsg = 'No File to uplaod has selected.' + _qfMsg;
     _qfMsg = _qfMsg + '\n Please select a file to uplaod again.';
     alert(_qfMsg);

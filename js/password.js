@@ -12,21 +12,21 @@ function validate_submit(frm) {
   if (value != '0' && !regex.test(value) && !errFlag['employee_email']) {
     errFlag['employee_email'] = true;
     _qfMsg = _qfMsg + '\n - Please enter a valid email address';
-	frm.elements['employee_email'].className = 'error';
+    frm.elements['employee_email'].className = 'error';
   }
 
   value = frm.elements['employee_email'].value;
   if (value != '' && value.length > 50 && !errFlag['employee_email']) {
     errFlag['employee_email'] = true;
     _qfMsg = _qfMsg + '\n - Email cannot be more than 50 characters';
-	frm.elements['employee_email'].className = 'error';
+    frm.elements['employee_email'].className = 'error';
   }
   
   value = frm.elements['human'].value;
   if (value !='12' && !errFlag['human']) {
     errFlag['human'] = true;
     _qfMsg = _qfMsg + '\n - You have not answered our antispam question correctly';
-	frm.elements['human'].className = 'error';
+    frm.elements['human'].className = 'error';
   }
 
   if (_qfMsg != '') {
