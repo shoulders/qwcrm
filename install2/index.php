@@ -1302,7 +1302,7 @@ $content = "<?php
 \$DB_PASS = \"".$_POST['db_password']."\" ;
 \$DB_NAME = \"".$_POST['db_name']."\" ;
 
-\$link = mysql_connect( \$DB_HOST, \$DB_USER, \$DB_PASS );
+\$link = mysqli_connect( \$DB_HOST, \$DB_USER, \$DB_PASS );
 
 /* Load required Includes */
 require(INCLUDE_URL.'session.php');
