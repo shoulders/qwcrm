@@ -1,304 +1,304 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
-	<translate>
+    <translate>
 
-		// Assets Templates
-		<main_title>Customer's Assets</main_title>
-		<display>Display Name</display>
-		<first>First</first>
-		<last>Last</last>
+        // Assets Templates
+        <main_title>Customer's Assets</main_title>
+        <display>Display Name</display>
+        <first>First</first>
+        <last>Last</last>
 
-		// Billing Templates
-		<billing_invoice_id>Invoice ID</billing_invoice_id>
-		<billing_pp_invoice_id>PayPal Transaction/receipt #</billing_pp_invoice_id>
-		<billing_title>Billing For  Work Order ID #</billing_title>
-		<billing_date>Date</billing_date>
-		<billing_due_date>Invoice Due Date</billing_due_date>
-		<billing_amount>Amount:</billing_amount>
-		<billing_wo_id>Workorder ID</billing_wo_id>
-		<billing_balance>Balance</billing_balance>
-		<billing_email>Email:</billing_email>
-		<billing_phone>Phone:</billing_phone>
-		<billing_trans_log>Transaction Log</billing_trans_log>
-		<billing_trans>Trans Id</billing_trans>
-		<billing_type>Type</billing_type>
-		<billing_credit_card>Credit Card</billing_credit_card>
-		<billing_check>Cheque</billing_check>
-		<billing_deposit>Direct Deposit</billing_deposit>
-		<billing_deposit_id>Direct Deposit ID#</billing_deposit_id>
-		<billing_deposit_payment>Submit Direct Deposit Payment</billing_deposit_payment>
-		<billing_paymate>Paymate</billing_paymate>
-		<billing_paymate_trans>Paymate Transaction ID#</billing_paymate_trans>
-		<billing_paymate_submit>Submit Paymate Payment</billing_paymate_submit>
-		<billing_cash>Cash</billing_cash>
-		<billing_gift>Gift Certificate</billing_gift>
-		<billing_paypal>Pay Pal</billing_paypal>
-		<billing_memo>Memo:</billing_memo>
-		<billing_cc_num>Card Number</billing_cc_num>
-		<billing_type>Type</billing_type>
-		<billing_ccv>CCV</billing_ccv>
-		<billing_exp>Expiration</billing_exp>
-		<billing_cheque_no>Document #</billing_cheque_no>
-		<billing_gift_code>Gift Code</billing_gift_code>
-		<billing_gift_code_2>Enter the 16 digit code</billing_gift_code_2>
-		<billing_gift_code_3>Redemption Code:</billing_gift_code_3>
-		<billing_created>Created:</billing_created>
-		<billing_expires>Expires:</billing_expires>
-		<billing_cancel>Cancel</billing_cancel>
-		<billing_gift_note_1>Redeem this on your next repair to save</billing_gift_note_1>
-		<billing_gift_note_2>on parts and service.</billing_gift_note_2>
-		<billing_gift_note_3>Create a new gift certificate for</billing_gift_note_3>
-		<billing_gift_note_4>This can be redeemed later towards parts purchases or services.</billing_gift_note_4>
-		<billing_new_gift>New Gift Certificate for</billing_new_gift>
-		<billing_back>Back To Customer</billing_back>
-		<billing_customer_name>Customer Name:</billing_customer_name>
-		<billing_print_title>Print Gift Certificate</billing_print_title>
-		<billing_results>Billing Results</billing_results>
-		<billing_paypal_note>Once the paypal payment has been confirmed, fill in the form below to finish billing.</billing_paypal_note>
-		<billing_error_date>Please enter the  Gift Certificate Expiration Date</billing_error_date>
-		<billing_error_gift_amount>Please enter the  Gift Certificate Amount</billing_error_gift_amount>
-		<billing_error_invalid>Invalid information entered.</billing_error_invalid>
-		<billing_error_fix>Please correct these fields.</billing_error_fix>
+        // Billing Templates
+        <billing_invoice_id>Invoice ID</billing_invoice_id>
+        <billing_pp_invoice_id>PayPal Transaction/receipt #</billing_pp_invoice_id>
+        <billing_title>Billing For  Work Order ID #</billing_title>
+        <billing_date>Date</billing_date>
+        <billing_due_date>Invoice Due Date</billing_due_date>
+        <billing_amount>Amount:</billing_amount>
+        <billing_wo_id>Workorder ID</billing_wo_id>
+        <billing_balance>Balance</billing_balance>
+        <billing_email>Email:</billing_email>
+        <billing_phone>Phone:</billing_phone>
+        <billing_trans_log>Transaction Log</billing_trans_log>
+        <billing_trans>Trans Id</billing_trans>
+        <billing_type>Type</billing_type>
+        <billing_credit_card>Credit Card</billing_credit_card>
+        <billing_check>Cheque</billing_check>
+        <billing_deposit>Direct Deposit</billing_deposit>
+        <billing_deposit_id>Direct Deposit ID#</billing_deposit_id>
+        <billing_deposit_payment>Submit Direct Deposit Payment</billing_deposit_payment>
+        <billing_paymate>Paymate</billing_paymate>
+        <billing_paymate_trans>Paymate Transaction ID#</billing_paymate_trans>
+        <billing_paymate_submit>Submit Paymate Payment</billing_paymate_submit>
+        <billing_cash>Cash</billing_cash>
+        <billing_gift>Gift Certificate</billing_gift>
+        <billing_paypal>Pay Pal</billing_paypal>
+        <billing_memo>Memo:</billing_memo>
+        <billing_cc_num>Card Number</billing_cc_num>
+        <billing_type>Type</billing_type>
+        <billing_ccv>CCV</billing_ccv>
+        <billing_exp>Expiration</billing_exp>
+        <billing_cheque_no>Document #</billing_cheque_no>
+        <billing_gift_code>Gift Code</billing_gift_code>
+        <billing_gift_code_2>Enter the 16 digit code</billing_gift_code_2>
+        <billing_gift_code_3>Redemption Code:</billing_gift_code_3>
+        <billing_created>Created:</billing_created>
+        <billing_expires>Expires:</billing_expires>
+        <billing_cancel>Cancel</billing_cancel>
+        <billing_gift_note_1>Redeem this on your next repair to save</billing_gift_note_1>
+        <billing_gift_note_2>on parts and service.</billing_gift_note_2>
+        <billing_gift_note_3>Create a new gift certificate for</billing_gift_note_3>
+        <billing_gift_note_4>This can be redeemed later towards parts purchases or services.</billing_gift_note_4>
+        <billing_new_gift>New Gift Certificate for</billing_new_gift>
+        <billing_back>Back To Customer</billing_back>
+        <billing_customer_name>Customer Name:</billing_customer_name>
+        <billing_print_title>Print Gift Certificate</billing_print_title>
+        <billing_results>Billing Results</billing_results>
+        <billing_paypal_note>Once the paypal payment has been confirmed, fill in the form below to finish billing.</billing_paypal_note>
+        <billing_error_date>Please enter the  Gift Certificate Expiration Date</billing_error_date>
+        <billing_error_gift_amount>Please enter the  Gift Certificate Amount</billing_error_gift_amount>
+        <billing_error_invalid>Invalid information entered.</billing_error_invalid>
+        <billing_error_fix>Please correct these fields.</billing_error_fix>
 
-		// Core Templates
-		<core_log_off>Log Off</core_log_off>
-		<core_loged_in>Currently Logged in as </core_loged_in>
-		<core_schedule>Schedule</core_schedule>
-		<core_menu>Main Menu</core_menu>
-		<core_office_stats>Office Status</core_office_stats>
-		<core_work_order_stats>Work Order Status</core_work_order_stats>
-		<core_open_workorders>Open Work Orders.</core_open_workorders>
-		<core_assigned_workorders>Assigned Work Orders.</core_assigned_workorders>
-		<core_waiting_payment>Unpaid</core_waiting_payment>
-		<core_closed>Closed Work Orders</core_closed>
-		<core_myit_crm>MYIT CRM</core_myit_crm>
-		<core_version>Software Version:</core_version>
-		<core_update_status>Update Status:</core_update_status>
-		<core_links>Links</core_links>
-		<core_control>Control Center</core_control>
-		<core_documentation>Documentation</core_documentation>
-		<core_report_bug>Report a bug</core_report_bug>
-		<core_click_scheudle>Click on day to view schedule</core_click_scheudle>
-		<core_admin>Admin</core_admin>
-		<error_404_request>The requested page,</error_404_request>
-		<error_404_request_2>was not found on our system.</error_404_request_2>
-		<error_404_request_3>An email has been sent to the system</error_404_request_3>
+        // Core Templates
+        <core_log_off>Log Off</core_log_off>
+        <core_loged_in>Currently Logged in as </core_loged_in>
+        <core_schedule>Schedule</core_schedule>
+        <core_menu>Main Menu</core_menu>
+        <core_office_stats>Office Status</core_office_stats>
+        <core_work_order_stats>Work Order Status</core_work_order_stats>
+        <core_open_workorders>Open Work Orders.</core_open_workorders>
+        <core_assigned_workorders>Assigned Work Orders.</core_assigned_workorders>
+        <core_waiting_payment>Unpaid</core_waiting_payment>
+        <core_closed>Closed Work Orders</core_closed>
+        <core_myit_crm>MYIT CRM</core_myit_crm>
+        <core_version>Software Version:</core_version>
+        <core_update_status>Update Status:</core_update_status>
+        <core_links>Links</core_links>
+        <core_control>Control Center</core_control>
+        <core_documentation>Documentation</core_documentation>
+        <core_report_bug>Report a bug</core_report_bug>
+        <core_click_scheudle>Click on day to view schedule</core_click_scheudle>
+        <core_admin>Admin</core_admin>
+        <error_404_request>The requested page,</error_404_request>
+        <error_404_request_2>was not found on our system.</error_404_request_2>
+        <error_404_request_3>An email has been sent to the system</error_404_request_3>
 
-		<menu_new>New</menu_new>
-		<menu_add_new>Add New</menu_add_new>
-		<menu_view>View</menu_view>
-		<menu_search>Search</menu_search>
-		<menu_delete>Delete</menu_delete>
-		<menu_close>Close</menu_close>
-		<menu_closed>Closed</menu_closed>
-		<menu_print>Print</menu_print>
+        <menu_new>New</menu_new>
+        <menu_add_new>Add New</menu_add_new>
+        <menu_view>View</menu_view>
+        <menu_search>Search</menu_search>
+        <menu_delete>Delete</menu_delete>
+        <menu_close>Close</menu_close>
+        <menu_closed>Closed</menu_closed>
+        <menu_print>Print</menu_print>
         <menu_print_wo>Print WO</menu_print_wo>
-		<menu_home>Home</menu_home>
-		<menu_unassigned>Unassigned</menu_unassigned>
-		<menu_log_out>Log Out</menu_log_out>
-		<menu_open>Open</menu_open>
-		<menu_accounts>Accounts</menu_accounts>
-		<menu_administration>Administration</menu_administration>
-		<menu_setup>Business Setup</menu_setup>
-		<menu_project>MyIT CRM Info</menu_project>
-		<menu_customers>Customers</menu_customers>
-		<menu_email_customer>Email Customer</menu_email_customer>
-		<menu_customer_search>Customer Search</menu_customer_search>
-		<menu_add_new_customer>Add New Customer</menu_add_new_customer>
-		<menu_edit_customer>Edit Customer</menu_edit_customer>
-		<menu_new_gift>New Gift Certificate</menu_new_gift>
-		<menu_gift_cert>Gift Certificate</menu_gift_cert>
-		<menu_delete_customer>Delete Customer</menu_delete_customer>
-		<menu_work_orders>Work Orders</menu_work_orders>
-		<menu_open_work_orders>Open Work Orders</menu_open_work_orders>
-		<menu_closed_work_orders>Closed Work Orders</menu_closed_work_orders>
-		<menu_new_note>New Note</menu_new_note>
-		<menu_recieved_parts>Received Parts</menu_recieved_parts>
-		<menu_order_parts>Order Parts</menu_order_parts>
-		<menu_close_work_order>Close Work Order ID</menu_close_work_order>
-		<menu_employees_view>View Employees</menu_employees_view>
-		<menu_employees_new>New Employee</menu_employees_new>
-		<menu_employees>Employees</menu_employees>
-		<menu_invoice>Invoice</menu_invoice>
+        <menu_home>Home</menu_home>
+        <menu_unassigned>Unassigned</menu_unassigned>
+        <menu_log_out>Log Out</menu_log_out>
+        <menu_open>Open</menu_open>
+        <menu_accounts>Accounts</menu_accounts>
+        <menu_administration>Administration</menu_administration>
+        <menu_setup>Business Setup</menu_setup>
+        <menu_project>MyIT CRM Info</menu_project>
+        <menu_customers>Customers</menu_customers>
+        <menu_email_customer>Email Customer</menu_email_customer>
+        <menu_customer_search>Customer Search</menu_customer_search>
+        <menu_add_new_customer>Add New Customer</menu_add_new_customer>
+        <menu_edit_customer>Edit Customer</menu_edit_customer>
+        <menu_new_gift>New Gift Certificate</menu_new_gift>
+        <menu_gift_cert>Gift Certificate</menu_gift_cert>
+        <menu_delete_customer>Delete Customer</menu_delete_customer>
+        <menu_work_orders>Work Orders</menu_work_orders>
+        <menu_open_work_orders>Open Work Orders</menu_open_work_orders>
+        <menu_closed_work_orders>Closed Work Orders</menu_closed_work_orders>
+        <menu_new_note>New Note</menu_new_note>
+        <menu_recieved_parts>Received Parts</menu_recieved_parts>
+        <menu_order_parts>Order Parts</menu_order_parts>
+        <menu_close_work_order>Close Work Order ID</menu_close_work_order>
+        <menu_employees_view>View Employees</menu_employees_view>
+        <menu_employees_new>New Employee</menu_employees_new>
+        <menu_employees>Employees</menu_employees>
+        <menu_invoice>Invoice</menu_invoice>
         <menu_invoice_only>Invoice Only</menu_invoice_only>
-		<menu_paid>Paid</menu_paid>
-		<menu_paid_2>Paid Invoices</menu_paid_2>
-		<menu_un_paid>Unpaid</menu_un_paid>
-		<menu_un_paid_2>Un-Paid Invoices</menu_un_paid_2>
-		<menu_open_orders>Open Orders</menu_open_orders>
-		<menu_closed_orders>Closed Orders</menu_closed_orders>
-		<menu_calendar>Calendar</menu_calendar>
+        <menu_paid>Paid</menu_paid>
+        <menu_paid_2>Paid Invoices</menu_paid_2>
+        <menu_un_paid>Unpaid</menu_un_paid>
+        <menu_un_paid_2>Un-Paid Invoices</menu_un_paid_2>
+        <menu_open_orders>Open Orders</menu_open_orders>
+        <menu_closed_orders>Closed Orders</menu_closed_orders>
+        <menu_calendar>Calendar</menu_calendar>
         <menu_invoices>Invoices</menu_invoices>
                 
-		<main_heading>Welcome to your Online Office</main_heading>
-		<main_company_notes>Company Notes</main_company_notes>
-		<main_workorder_stats>Work Order Stats</main_workorder_stats>
-		<main_new>New</main_new>
-		<main_assigned>Assigned</main_assigned>
-		<main_waiting>Waiting For Parts</main_waiting>
-		<main_payment>Awaiting Payment</main_payment>
-		<main_closed>Closed</main_closed>
-		<main_unpaid>Unpaid</main_unpaid>
-		<main_balance>Balance</main_balance>
-		<main_partial_paid>Partial Paid</main_partial_paid>
-		<main_out>Total Out</main_out>
-		<main_paid>Paid In Full</main_paid>
-		<current_total>Received Monies Total</current_total>
-		<actual_total>Invoiced Total</actual_total>
-		<main_total>Total</main_total>
-		<main_invoice_stats>Invoice Stats</main_invoice_stats>
-		<main_customer_stats>Customer Stats</main_customer_stats>
-		<main_new_customers>New This Month</main_new_customers>
-		<main_new_year_customers>New This Year</main_new_year_customers>
-		<main_you_have>You have</main_you_have>		
+        <main_heading>Welcome to your Online Office</main_heading>
+        <main_company_notes>Company Notes</main_company_notes>
+        <main_workorder_stats>Work Order Stats</main_workorder_stats>
+        <main_new>New</main_new>
+        <main_assigned>Assigned</main_assigned>
+        <main_waiting>Waiting For Parts</main_waiting>
+        <main_payment>Awaiting Payment</main_payment>
+        <main_closed>Closed</main_closed>
+        <main_unpaid>Unpaid</main_unpaid>
+        <main_balance>Balance</main_balance>
+        <main_partial_paid>Partial Paid</main_partial_paid>
+        <main_out>Total Out</main_out>
+        <main_paid>Paid In Full</main_paid>
+        <current_total>Received Monies Total</current_total>
+        <actual_total>Invoiced Total</actual_total>
+        <main_total>Total</main_total>
+        <main_invoice_stats>Invoice Stats</main_invoice_stats>
+        <main_customer_stats>Customer Stats</main_customer_stats>
+        <main_new_customers>New This Month</main_new_customers>
+        <main_new_year_customers>New This Year</main_new_year_customers>
+        <main_you_have>You have</main_you_have>        
 
-		// Customer Templates
-		<main_title>Customer Search</main_title>
-		<display>Client</display>
-		<first>Contact First</first>
-		<last>Contact Last</last>
-		<primary>Primary</primary>
-		<secondary>Secondary</secondary>
-		<phone>Phone</phone>
-		<type>Type</type>
-		<email>Email</email>
-		<action>Action</action>
-		<customer_name>Customer Name</customer_name>
-		<page>Page</page>
-		<of>of</of>
-		<records_found>records found</records_found>
-		<work>Work</work>
-		<mobile>Mobile</mobile>
-		<contact>Contact</contact>
-		<customer_view_wo>View The Work Order</customer_view_wo>
-		<customer_details>Customer Details For</customer_details>
-		<customer_contact>Customer Contact Information</customer_contact>
-		<customer_contact_2>Contact</customer_contact_2>
-		<customer_address>Address</customer_address>
-		<customer_home>Primary Phone</customer_home>
-		<customer_work>Work/Fax Phone</customer_work>
-		<customer_mobile>Mobile</customer_mobile>
-		<credit_terms>Credit Terms</credit_terms>
-		<customer_city>City</customer_city>
-		<customer_state>State</customer_state>
-		<customer_zip>Postcode</customer_zip>
+        // Customer Templates
+        <main_title>Customer Search</main_title>
+        <display>Client</display>
+        <first>Contact First</first>
+        <last>Contact Last</last>
+        <primary>Primary</primary>
+        <secondary>Secondary</secondary>
+        <phone>Phone</phone>
+        <type>Type</type>
+        <email>Email</email>
+        <action>Action</action>
+        <customer_name>Customer Name</customer_name>
+        <page>Page</page>
+        <of>of</of>
+        <records_found>records found</records_found>
+        <work>Work</work>
+        <mobile>Mobile</mobile>
+        <contact>Contact</contact>
+        <customer_view_wo>View The Work Order</customer_view_wo>
+        <customer_details>Customer Details For</customer_details>
+        <customer_contact>Customer Contact Information</customer_contact>
+        <customer_contact_2>Contact</customer_contact_2>
+        <customer_address>Address</customer_address>
+        <customer_home>Primary Phone</customer_home>
+        <customer_work>Work/Fax Phone</customer_work>
+        <customer_mobile>Mobile</customer_mobile>
+        <credit_terms>Credit Terms</credit_terms>
+        <customer_city>City</customer_city>
+        <customer_state>State</customer_state>
+        <customer_zip>Postcode</customer_zip>
                 <customer_notes>Notes</customer_notes>
-		<customer_type>Type</customer_type>
+        <customer_type>Type</customer_type>
                 <customer_www>Website</customer_www>
-		<customer_residential>Residential</customer_residential>
-		<customer_comercial>Commercial</customer_comercial>
-		<customer_discount>Discount</customer_discount>
-		<customer_created>Created</customer_created>
-		<customer_last>Last Activity</customer_last>
-		<customer_open_work_orders>Open Work Orders</customer_open_work_orders>
-		<customer_closed_work_orders>Closed Work Orders</customer_closed_work_orders>
-		<customer_wo_id>WO ID</customer_wo_id>
-		<customer_date_open>Date Opened</customer_date_open>
-		<customer>Customer</customer>
-		<customer_scope>Scope</customer_scope>
-		<customer_status>Status</customer_status>
-		<customer_tech>Tech</customer_tech>
-		<customer_action>Action</customer_action>
-		<customer_work_order_id>Work Order ID</customer_work_order_id>
-		<customer_gift_cert>Gift Certificates</customer_gift_cert>
-		<customer_id>ID</customer_id>
-		<customer_created>Created</customer_created>
-		<customer_expire>Expire</customer_expire>
-		<customer_amount>Amount</customer_amount>
-		<customer_active>Active</customer_active>
-		<customer_redeemed>Date Redemed</customer_redeemed>
-		<customer_invoice>Invoice</customer_invoice>
-		<customer_unpaid_invoice>Unpaid Invoices</customer_unpaid_invoice>
-		<customer_inv_id>INV ID</customer_inv_id>
-		<customer_date>Date</customer_date>
-		<customer_paid>Paid</customer_paid>
-		<customer_balance>Balance</customer_balance>
-		<customer_date_paid>Date Paid</customer_date_paid>
-		<customer_employee>Employee</customer_employee>
-		<customer_paid_invoice>Paid Invoices</customer_paid_invoice>
-		<customer_print>Print HTML</customer_print>
-		<customer_print_pdf>Print PDF</customer_print_pdf>
-		<customer_view>View</customer_view>
-		<customer_delete>Delete</customer_delete>
-		<customer_edit>Edit Customer</customer_edit>
-		<customer_add>Add New Customer</customer_add>
-		<customer_type_1>Residential</customer_type_1>
-		<customer_type_2>Commercial</customer_type_2>
-		<customer_type_3>Charity</customer_type_3>
-		<customer_type_4>Educational</customer_type_4>
-		<customer_type_5>Governmental</customer_type_5>
-		<customer_type_6>-</customer_type_6>
-		<customer_type_7>-</customer_type_7>
-		<customer_type_8>-</customer_type_8>
-		<customer_type_9>-</customer_type_9>
-		<customer_type_10>-</customer_type_10>
-		<customer_asset_tab>Assets/Licenses</customer_asset_tab>
-		<customer_asset>Customer Assets</customer_asset>
-		<customer_asset_id>ID</customer_asset_id>
-		<customer_asset_type>Type</customer_asset_type>
-		<customer_asset_name>Name</customer_asset_name>
-		<customer_asset_number>Number/Serial</customer_asset_number>
-		<customer_asset_start>Started</customer_asset_start>
-		<customer_asset_end>Expiry Date</customer_asset_end>
-		<customer_asset_support_length>Support Length</customer_asset_support_length>
-		<customer_asset_active>Active</customer_asset_active>
-		<customer_asset_notes>Notes</customer_asset_notes>
+        <customer_residential>Residential</customer_residential>
+        <customer_comercial>Commercial</customer_comercial>
+        <customer_discount>Discount</customer_discount>
+        <customer_created>Created</customer_created>
+        <customer_last>Last Activity</customer_last>
+        <customer_open_work_orders>Open Work Orders</customer_open_work_orders>
+        <customer_closed_work_orders>Closed Work Orders</customer_closed_work_orders>
+        <customer_wo_id>WO ID</customer_wo_id>
+        <customer_date_open>Date Opened</customer_date_open>
+        <customer>Customer</customer>
+        <customer_scope>Scope</customer_scope>
+        <customer_status>Status</customer_status>
+        <customer_tech>Tech</customer_tech>
+        <customer_action>Action</customer_action>
+        <customer_work_order_id>Work Order ID</customer_work_order_id>
+        <customer_gift_cert>Gift Certificates</customer_gift_cert>
+        <customer_id>ID</customer_id>
+        <customer_created>Created</customer_created>
+        <customer_expire>Expire</customer_expire>
+        <customer_amount>Amount</customer_amount>
+        <customer_active>Active</customer_active>
+        <customer_redeemed>Date Redemed</customer_redeemed>
+        <customer_invoice>Invoice</customer_invoice>
+        <customer_unpaid_invoice>Unpaid Invoices</customer_unpaid_invoice>
+        <customer_inv_id>INV ID</customer_inv_id>
+        <customer_date>Date</customer_date>
+        <customer_paid>Paid</customer_paid>
+        <customer_balance>Balance</customer_balance>
+        <customer_date_paid>Date Paid</customer_date_paid>
+        <customer_employee>Employee</customer_employee>
+        <customer_paid_invoice>Paid Invoices</customer_paid_invoice>
+        <customer_print>Print HTML</customer_print>
+        <customer_print_pdf>Print PDF</customer_print_pdf>
+        <customer_view>View</customer_view>
+        <customer_delete>Delete</customer_delete>
+        <customer_edit>Edit Customer</customer_edit>
+        <customer_add>Add New Customer</customer_add>
+        <customer_type_1>Residential</customer_type_1>
+        <customer_type_2>Commercial</customer_type_2>
+        <customer_type_3>Charity</customer_type_3>
+        <customer_type_4>Educational</customer_type_4>
+        <customer_type_5>Governmental</customer_type_5>
+        <customer_type_6>-</customer_type_6>
+        <customer_type_7>-</customer_type_7>
+        <customer_type_8>-</customer_type_8>
+        <customer_type_9>-</customer_type_9>
+        <customer_type_10>-</customer_type_10>
+        <customer_asset_tab>Assets/Licenses</customer_asset_tab>
+        <customer_asset>Customer Assets</customer_asset>
+        <customer_asset_id>ID</customer_asset_id>
+        <customer_asset_type>Type</customer_asset_type>
+        <customer_asset_name>Name</customer_asset_name>
+        <customer_asset_number>Number/Serial</customer_asset_number>
+        <customer_asset_start>Started</customer_asset_start>
+        <customer_asset_end>Expiry Date</customer_asset_end>
+        <customer_asset_support_length>Support Length</customer_asset_support_length>
+        <customer_asset_active>Active</customer_asset_active>
+        <customer_asset_notes>Notes</customer_asset_notes>
 
-		// Employee Templates
-		<employee_add_new_employee>Add New Employee</employee_add_new_employee>
-		<employee_display_name>Display Name</employee_display_name>
-		<employee_display_name_criteria>NO special characters like !@#$%^*()</employee_display_name_criteria>
-		<employee_first_name>First Name</employee_first_name>
-		<employee_last_name>Last Name</employee_last_name>
-		<employee_password>Password</employee_password>
-		<employee_password_confirm>Confirm</employee_password_confirm>
-		<employee_phone_numbers>Phone Numbers</employee_phone_numbers>
-		<employee_home_phone_number>Home Phone Number</employee_home_phone_number>
-		<employee_work_phone_number>Work Phone Number</employee_work_phone_number>
-		<employee_mobile_phone_number>Mobile Phone Number</employee_mobile_phone_number>
-		<employee_address>Address</employee_address>
-		<employee_city>City</employee_city>
-		<employee_state>State</employee_state>
-		<employee_zip>Postcode</employee_zip>
-		<employee_type>Employee Type</employee_type>
-		<employee_manager>Manager</employee_manager>
-		<employee_supervisor>Supervisor</employee_supervisor>
-		<employee_technician>Technician</employee_technician>
-		<employee_email_address>Email Address</employee_email_address>
-		<employee_submit>Submit</employee_submit>
-		<employee_search>Employee Search</employee_search>
-		<employee_employee_name>Employee Name</employee_employee_name>
-		<employee_view>View</employee_view>
-		<employee_records_found>records found</employee_records_found>
-		<employee_display>Display</employee_display>
-		<employee_first>First</employee_first>
-		<employee_last>Last</employee_last>
-		<employee_work_phone>Work</employee_work_phone>
-		<employee_type>Type</employee_type>
-		<employee_email>Email</employee_email>
-		<employee_action>Action</employee_action>
-		<employee_view_employee_details>View Employee Details</employee_view_employee_details>
-		<employee_home>Home</employee_home>
-		<employee_mobile>Mobile</employee_mobile>
-		<employee_page>Page</employee_page>
-		<employee_of>Of</employee_of>
-		<employee_details_for>Employee Details For</employee_details_for>
-		<employee_contact_information>Employee Contact Information</employee_contact_information>
-		<employee_assigned_work_orders>Assigned Work Orders</employee_assigned_work_orders>
-		<employee_id>ID</employee_id>
-		<employee_edit>Edit</employee_edit>
-		<employee_login>Login</employee_login>
-		<employee_login_id>Login ID</employee_login_id>
-		<employee_wo_id>WO ID</employee_wo_id>
-		<employee_date_open>Date Opened</employee_date_open>
-		<employee_customer>Customer</employee_customer>
-		<employee_scope>Scope</employee_scope>
-		<employee_status>Status</employee_status>
-		<employee_action>Action</employee_action>
-		<employee_work_order_id>Work Order ID</employee_work_order_id>
-		<employee_position>Position</employee_position>
-		<employee_based>Employee works from </employee_based>
-		<employee_b_home>Home</employee_b_home>
-		<employee_b_office>Office</employee_b_office>
+        // Employee Templates
+        <employee_add_new_employee>Add New Employee</employee_add_new_employee>
+        <employee_display_name>Display Name</employee_display_name>
+        <employee_display_name_criteria>NO special characters like !@#$%^*()</employee_display_name_criteria>
+        <employee_first_name>First Name</employee_first_name>
+        <employee_last_name>Last Name</employee_last_name>
+        <employee_password>Password</employee_password>
+        <employee_password_confirm>Confirm</employee_password_confirm>
+        <employee_phone_numbers>Phone Numbers</employee_phone_numbers>
+        <employee_home_phone_number>Home Phone Number</employee_home_phone_number>
+        <employee_work_phone_number>Work Phone Number</employee_work_phone_number>
+        <employee_mobile_phone_number>Mobile Phone Number</employee_mobile_phone_number>
+        <employee_address>Address</employee_address>
+        <employee_city>City</employee_city>
+        <employee_state>State</employee_state>
+        <employee_zip>Postcode</employee_zip>
+        <employee_type>Employee Type</employee_type>
+        <employee_manager>Manager</employee_manager>
+        <employee_supervisor>Supervisor</employee_supervisor>
+        <employee_technician>Technician</employee_technician>
+        <employee_email_address>Email Address</employee_email_address>
+        <employee_submit>Submit</employee_submit>
+        <employee_search>Employee Search</employee_search>
+        <employee_employee_name>Employee Name</employee_employee_name>
+        <employee_view>View</employee_view>
+        <employee_records_found>records found</employee_records_found>
+        <employee_display>Display</employee_display>
+        <employee_first>First</employee_first>
+        <employee_last>Last</employee_last>
+        <employee_work_phone>Work</employee_work_phone>
+        <employee_type>Type</employee_type>
+        <employee_email>Email</employee_email>
+        <employee_action>Action</employee_action>
+        <employee_view_employee_details>View Employee Details</employee_view_employee_details>
+        <employee_home>Home</employee_home>
+        <employee_mobile>Mobile</employee_mobile>
+        <employee_page>Page</employee_page>
+        <employee_of>Of</employee_of>
+        <employee_details_for>Employee Details For</employee_details_for>
+        <employee_contact_information>Employee Contact Information</employee_contact_information>
+        <employee_assigned_work_orders>Assigned Work Orders</employee_assigned_work_orders>
+        <employee_id>ID</employee_id>
+        <employee_edit>Edit</employee_edit>
+        <employee_login>Login</employee_login>
+        <employee_login_id>Login ID</employee_login_id>
+        <employee_wo_id>WO ID</employee_wo_id>
+        <employee_date_open>Date Opened</employee_date_open>
+        <employee_customer>Customer</employee_customer>
+        <employee_scope>Scope</employee_scope>
+        <employee_status>Status</employee_status>
+        <employee_action>Action</employee_action>
+        <employee_work_order_id>Work Order ID</employee_work_order_id>
+        <employee_position>Position</employee_position>
+        <employee_based>Employee works from </employee_based>
+        <employee_b_home>Home</employee_b_home>
+        <employee_b_office>Office</employee_b_office>
                 
                 // Expense Templates
                 // -- Global
@@ -406,71 +406,71 @@
                 // General Ledger Menu
                 <general_ledger_nav_title>General Ledger</general_ledger_nav_title>
 
-		// Invoice Templates
-		<invoice_view_paid>Paid Invoices</invoice_view_paid>
-		<invoice_view_un_paid>Un-Paid Invoices</invoice_view_un_paid>
-		<invoice_for>Invoice For Work Order ID #</invoice_for>
-		<invoice_invoice>Invoice</invoice_invoice>
-		<invoice_page>Page</invoice_page>
-		<invoice_of>Of</invoice_of>
-		<invoice_records>Records Found.</invoice_records>
-		<invoice_id>ID</invoice_id>
-		<invoice_date>Date</invoice_date>
-		<invoice_due>Due</invoice_due>
-		<invoice_customer>Customer</invoice_customer>
-		<invoice_work_order>WO</invoice_work_order>
-		<invoice_employee>Employee</invoice_employee>
-		<invoice_tax>Tax</invoice_tax>
-		<invoice_discount>Discount</invoice_discount>
-		<invoice_amount>Amount</invoice_amount>
-		<invoice_tech>Tech</invoice_tech>
-		<invoice_date_paid>Date Paid</invoice_date_paid>
-		<invoice_amount_paid>Amount Paid</invoice_amount_paid>
-		<invoice_balance>Balance</invoice_balance>
-		<invoice_cheque>Cheques</invoice_cheque>
-		<invoice_bill>Bill</invoice_bill>
-		<invoice_pay>Pay To</invoice_pay>
-		<invoice_print>Print HTML</invoice_print>
-		<invoice_pdf>Print PDF</invoice_pdf>
-		<invoice_bill_customer>Receive Payment</invoice_bill_customer>
-		<invoice_close_wo>Close Work Order</invoice_close_wo>
-		<invoice_msg>Work Order must be closed before payment can be received.</invoice_msg>
-		<invoice_labor>Labor</invoice_labor>
-		<invoice_no>No</invoice_no>
-		<invoice_hours>QTY</invoice_hours>
-		<invoice_description>Description</invoice_description>
-		<invoice_rate>Rate</invoice_rate>
-		<invoice_total>Total</invoice_total>
-		<invoice_parts>Parts</invoice_parts>
-		<invoice_count>Count</invoice_count>
-		<invoice_man>Manufacturer</invoice_man>
-		<invoice_price>Price</invoice_price>
-		<invoice_sub_total>Sub Total</invoice_sub_total>
-		<invoice_shipping>Shipping</invoice_shipping>
-		<invoice_tax>Tax</invoice_tax>
-		<invoice_discount>Discount</invoice_discount>
-		<invoice_trans_log>Transaction Log</invoice_trans_log>
-		<invoice_trans_id>Trans Id</invoice_trans_id>
-		<invoice_type>Type</invoice_type>
-		<invoice_cc>Credit Card</invoice_cc>
-		<invoice_check>Cheque</invoice_check>
-		<invoice_cash>Cash</invoice_cash>
-		<invoice_gift>Gift Certificate</invoice_gift>
-		<invoice_paypal>Pay Pal</invoice_paypal>
-		<invoice_memo>Memo</invoice_memo>
-		<invoice_phone>Phone:</invoice_phone>
-		<invoice_work>Work:</invoice_work>
-		<invoice_mobile>Mobile</invoice_mobile>
-		<invoice_add>Add</invoice_add>
-		<invoice_remove>Remove</invoice_remove>
-		<invoice_submit>Submit / Recalculate</invoice_submit>
-		<invoice_submit2>Close Invoice</invoice_submit2>
-		<invoice_wo_id>Work%20Order%20ID%20</invoice_wo_id>
+        // Invoice Templates
+        <invoice_view_paid>Paid Invoices</invoice_view_paid>
+        <invoice_view_un_paid>Un-Paid Invoices</invoice_view_un_paid>
+        <invoice_for>Invoice For Work Order ID #</invoice_for>
+        <invoice_invoice>Invoice</invoice_invoice>
+        <invoice_page>Page</invoice_page>
+        <invoice_of>Of</invoice_of>
+        <invoice_records>Records Found.</invoice_records>
+        <invoice_id>ID</invoice_id>
+        <invoice_date>Date</invoice_date>
+        <invoice_due>Due</invoice_due>
+        <invoice_customer>Customer</invoice_customer>
+        <invoice_work_order>WO</invoice_work_order>
+        <invoice_employee>Employee</invoice_employee>
+        <invoice_tax>Tax</invoice_tax>
+        <invoice_discount>Discount</invoice_discount>
+        <invoice_amount>Amount</invoice_amount>
+        <invoice_tech>Tech</invoice_tech>
+        <invoice_date_paid>Date Paid</invoice_date_paid>
+        <invoice_amount_paid>Amount Paid</invoice_amount_paid>
+        <invoice_balance>Balance</invoice_balance>
+        <invoice_cheque>Cheques</invoice_cheque>
+        <invoice_bill>Bill</invoice_bill>
+        <invoice_pay>Pay To</invoice_pay>
+        <invoice_print>Print HTML</invoice_print>
+        <invoice_pdf>Print PDF</invoice_pdf>
+        <invoice_bill_customer>Receive Payment</invoice_bill_customer>
+        <invoice_close_wo>Close Work Order</invoice_close_wo>
+        <invoice_msg>Work Order must be closed before payment can be received.</invoice_msg>
+        <invoice_labor>Labor</invoice_labor>
+        <invoice_no>No</invoice_no>
+        <invoice_hours>QTY</invoice_hours>
+        <invoice_description>Description</invoice_description>
+        <invoice_rate>Rate</invoice_rate>
+        <invoice_total>Total</invoice_total>
+        <invoice_parts>Parts</invoice_parts>
+        <invoice_count>Count</invoice_count>
+        <invoice_man>Manufacturer</invoice_man>
+        <invoice_price>Price</invoice_price>
+        <invoice_sub_total>Sub Total</invoice_sub_total>
+        <invoice_shipping>Shipping</invoice_shipping>
+        <invoice_tax>Tax</invoice_tax>
+        <invoice_discount>Discount</invoice_discount>
+        <invoice_trans_log>Transaction Log</invoice_trans_log>
+        <invoice_trans_id>Trans Id</invoice_trans_id>
+        <invoice_type>Type</invoice_type>
+        <invoice_cc>Credit Card</invoice_cc>
+        <invoice_check>Cheque</invoice_check>
+        <invoice_cash>Cash</invoice_cash>
+        <invoice_gift>Gift Certificate</invoice_gift>
+        <invoice_paypal>Pay Pal</invoice_paypal>
+        <invoice_memo>Memo</invoice_memo>
+        <invoice_phone>Phone:</invoice_phone>
+        <invoice_work>Work:</invoice_work>
+        <invoice_mobile>Mobile</invoice_mobile>
+        <invoice_add>Add</invoice_add>
+        <invoice_remove>Remove</invoice_remove>
+        <invoice_submit>Submit / Recalculate</invoice_submit>
+        <invoice_submit2>Close Invoice</invoice_submit2>
+        <invoice_wo_id>Work%20Order%20ID%20</invoice_wo_id>
                 <invoice_actions>Actions</invoice_actions>
                 <invoice_labour_total>Labour Total</invoice_labour_total>
                 <invoice_parts_total>Parts Total</invoice_parts_total>
                 <invoice_rates_add_file>Upload a csv file into rates table</invoice_rates_add_file>
-		<invoice_rates_example>CSV File example</invoice_rates_example>
+        <invoice_rates_example>CSV File example</invoice_rates_example>
                 // -- New Page
                 <invoice_delete>Delete Invoice</invoice_delete>
                 <invoice_new_help_title >New Invoice Help</invoice_new_help_title>
@@ -522,74 +522,74 @@
                 <invoice_delete_mes_recorddeleted>Record Deleted</invoice_delete_mes_recorddeleted>
                 <invoice_delete_mes_recordnotdeleted>Record Not Deleted</invoice_delete_mes_recordnotdeleted>
 
-		// Parts templates
-		<parts_order>Order Parts</parts_order>
-		<part_order_num>Parts Order ID</part_order_num>
-		<parts_msg_1>In order to use this features you must complete a free registration with In-Cite CRM and we must have a valid credit card on file in order to bill for the parts purchased from us. All parts are shipped via UPS and are shipped from one of our 11 Wharehouses across the country to your business location. You do not have to worry about keeping up a web site with inventory. All the parts you see listed here are feed by our application server. And with over 9000 parts in stock we should have what your are looking for.</parts_msg_1>
-		<parts_msg_2>Each part purchased will seamlessly integrate into your Work Orders and invoicing go ahead and give it try. And you can view detailed reports of all purchases made. You can also adjust the price by adding markup to all products from the controll center. For more information please visit www.incitecrm.com.</parts_msg_2>
-		<parts_msg_3>This service is only available to 48 continental States. We currently will not ship out side the US but this will change in the future.</parts_msg_3>
-		<parts_msg_4>The small profit we make off parts purchased is what funds the Open Source Cite CRM and helps us to provide this free software. This feature is not required to use Cite CRM. You can always add your own parts at Invoice creation Time or add your own parts database.</parts_msg_4>
-		<parts_msg_5>Once you click Check Out your order will be processed and your credit card on file will be charged the amount:</parts_msg_5>
-		<parts_msg_6>You are using</parts_msg_6>
-		<parts_msg_7>for your shipping method. Parts will be shipped from</parts_msg_7>
-		<parts_msg_8>This can be changed in the Control Center.</parts_msg_8>
-		<parts_msg_9>Our Parts Pricing are updated daily at 6:30 AM Pacific Time. Once you click Check Out do not refresh the page or click the back button.</parts_msg_9>
-		<parts_msg_10>Please Print this invoice and keep it in a safe place.</parts_msg_10>
-		<parts_msg_11>Thank you for your purchase. If you need assistance or RMA please contact 1-866-471-1343. You can always view your Invoice here. Your order will be processed and shipped within 24 hours. You chose UPS Ground so your package should arrive in 3 to 7 days and is being shipped from our Portland Warehouse.</parts_msg_11>
-		<parts_id>ID</parts_id>
-		<parts_amount>Amount</parts_amount>
-		<parts_sku>SKU</parts_sku>
-		<parts_item_id>Item ID</parts_item_id>
-		<parts_description>Description</parts_description>
-		<parts_vendor>Vendor</parts_vendor>
-		<parts_weight>Weight</parts_weight>
-		<parts_price>Price</parts_price>
-		<parts_add>Add</parts_add>
-		<parts_each>Each</parts_each>
-		<parts_total>Total</parts_total>
-		<parts_shipping>Shipping</parts_shipping>
-		<parts_sub_total>Sub Total</parts_sub_total>
-		<parts_checkout>Check Out</parts_checkout>
-		<parts_total_charges>Total Charges</parts_total_charges>
-		<parts_created>Created</parts_created>
-		<parts_invoice>Invoice</parts_invoice>
-		<parts_wo>Work Order</parts_wo>
-		<parts_update>Updated</parts_update>
-		<parts_tracking>Tracking</parts_tracking>
-		<parts_status>Status</parts_status>
-		<parts_set_recv>Set Received</parts_set_recv>
-		<parts_rcv>Received</parts_rcv>
-		<parts_order_details>Order Details for</parts_order_details>
-		<parts_count>Count</parts_count>
-		<parts_tax>Tax</parts_tax>
-		<parts_print>Print</parts_print>
-		<parts_tracking>Tracking</parts_tracking>
-		<parts_get_tracking>Get Tracking Number</parts_get_tracking>
-		<parts_select>Select Part Type</parts_select>
-		<parts_select_cat>Select Category</parts_select_cat>
-		<parts_search>Search</parts_search>
-		<parts_cart>Shopping Cart</parts_cart>
-		<parts_total_items>Total Items In Cart</parts_total_items>
-		<parts_remove>Remove</parts_remove>
-		<parts_sku>SKU</parts_sku>
-		<parts_update>Update</parts_update>
-		<parts_cart_total>Cart Total</parts_cart_total>
-		<parts_view>View</parts_view>
-		<parts_inc_inv>Cite CRM Invoice ID</parts_inc_inv>
-		<parts_page>Page</parts_page>
-		<parts_of>Of</parts_of>
-		<parts_records_found>records found.</parts_records_found>
-		<parts_wo_id>Work Order ID</parts_wo_id>
-		<parts_shipping_method>Shipping Method</parts_shipping_method>
-		<parts_ware>Warehouse Location</parts_ware>
-		<parts_order_complete>Your Order Has Been Completed</parts_order_complete>
-		<parts_crm_order_id>Cite CRM Order ID</parts_crm_order_id>
-		<parts_date>Invoice Date</parts_date>
-		<parts_total_items>Total Items</parts_total_items>
-		<parts_weight>Weight</parts_weight>
-		<parts_ship_to>Ship To</parts_ship_to>
-		<parts_tech>Tech</parts_tech>
-		<parts_cap_invoice>INVOICE</parts_cap_invoice>
+        // Parts templates
+        <parts_order>Order Parts</parts_order>
+        <part_order_num>Parts Order ID</part_order_num>
+        <parts_msg_1>In order to use this features you must complete a free registration with In-Cite CRM and we must have a valid credit card on file in order to bill for the parts purchased from us. All parts are shipped via UPS and are shipped from one of our 11 Wharehouses across the country to your business location. You do not have to worry about keeping up a web site with inventory. All the parts you see listed here are feed by our application server. And with over 9000 parts in stock we should have what your are looking for.</parts_msg_1>
+        <parts_msg_2>Each part purchased will seamlessly integrate into your Work Orders and invoicing go ahead and give it try. And you can view detailed reports of all purchases made. You can also adjust the price by adding markup to all products from the controll center. For more information please visit www.incitecrm.com.</parts_msg_2>
+        <parts_msg_3>This service is only available to 48 continental States. We currently will not ship out side the US but this will change in the future.</parts_msg_3>
+        <parts_msg_4>The small profit we make off parts purchased is what funds the Open Source Cite CRM and helps us to provide this free software. This feature is not required to use Cite CRM. You can always add your own parts at Invoice creation Time or add your own parts database.</parts_msg_4>
+        <parts_msg_5>Once you click Check Out your order will be processed and your credit card on file will be charged the amount:</parts_msg_5>
+        <parts_msg_6>You are using</parts_msg_6>
+        <parts_msg_7>for your shipping method. Parts will be shipped from</parts_msg_7>
+        <parts_msg_8>This can be changed in the Control Center.</parts_msg_8>
+        <parts_msg_9>Our Parts Pricing are updated daily at 6:30 AM Pacific Time. Once you click Check Out do not refresh the page or click the back button.</parts_msg_9>
+        <parts_msg_10>Please Print this invoice and keep it in a safe place.</parts_msg_10>
+        <parts_msg_11>Thank you for your purchase. If you need assistance or RMA please contact 1-866-471-1343. You can always view your Invoice here. Your order will be processed and shipped within 24 hours. You chose UPS Ground so your package should arrive in 3 to 7 days and is being shipped from our Portland Warehouse.</parts_msg_11>
+        <parts_id>ID</parts_id>
+        <parts_amount>Amount</parts_amount>
+        <parts_sku>SKU</parts_sku>
+        <parts_item_id>Item ID</parts_item_id>
+        <parts_description>Description</parts_description>
+        <parts_vendor>Vendor</parts_vendor>
+        <parts_weight>Weight</parts_weight>
+        <parts_price>Price</parts_price>
+        <parts_add>Add</parts_add>
+        <parts_each>Each</parts_each>
+        <parts_total>Total</parts_total>
+        <parts_shipping>Shipping</parts_shipping>
+        <parts_sub_total>Sub Total</parts_sub_total>
+        <parts_checkout>Check Out</parts_checkout>
+        <parts_total_charges>Total Charges</parts_total_charges>
+        <parts_created>Created</parts_created>
+        <parts_invoice>Invoice</parts_invoice>
+        <parts_wo>Work Order</parts_wo>
+        <parts_update>Updated</parts_update>
+        <parts_tracking>Tracking</parts_tracking>
+        <parts_status>Status</parts_status>
+        <parts_set_recv>Set Received</parts_set_recv>
+        <parts_rcv>Received</parts_rcv>
+        <parts_order_details>Order Details for</parts_order_details>
+        <parts_count>Count</parts_count>
+        <parts_tax>Tax</parts_tax>
+        <parts_print>Print</parts_print>
+        <parts_tracking>Tracking</parts_tracking>
+        <parts_get_tracking>Get Tracking Number</parts_get_tracking>
+        <parts_select>Select Part Type</parts_select>
+        <parts_select_cat>Select Category</parts_select_cat>
+        <parts_search>Search</parts_search>
+        <parts_cart>Shopping Cart</parts_cart>
+        <parts_total_items>Total Items In Cart</parts_total_items>
+        <parts_remove>Remove</parts_remove>
+        <parts_sku>SKU</parts_sku>
+        <parts_update>Update</parts_update>
+        <parts_cart_total>Cart Total</parts_cart_total>
+        <parts_view>View</parts_view>
+        <parts_inc_inv>Cite CRM Invoice ID</parts_inc_inv>
+        <parts_page>Page</parts_page>
+        <parts_of>Of</parts_of>
+        <parts_records_found>records found.</parts_records_found>
+        <parts_wo_id>Work Order ID</parts_wo_id>
+        <parts_shipping_method>Shipping Method</parts_shipping_method>
+        <parts_ware>Warehouse Location</parts_ware>
+        <parts_order_complete>Your Order Has Been Completed</parts_order_complete>
+        <parts_crm_order_id>Cite CRM Order ID</parts_crm_order_id>
+        <parts_date>Invoice Date</parts_date>
+        <parts_total_items>Total Items</parts_total_items>
+        <parts_weight>Weight</parts_weight>
+        <parts_ship_to>Ship To</parts_ship_to>
+        <parts_tech>Tech</parts_tech>
+        <parts_cap_invoice>INVOICE</parts_cap_invoice>
 
                 // Refund Templates
                 // -- Global
@@ -677,32 +677,32 @@
                 <refund_delete_mes_confirmation>Are you Sure you want to delete this Refund Record ? This will permanently remove the record from the database.</refund_delete_mes_confirmation>
                 <refund_delete_mes_recorddeleted>Record Deleted</refund_delete_mes_recorddeleted>
                 <refund_delete_mes_recordnotdeleted>Record Not Deleted</refund_delete_mes_recordnotdeleted>
-		
-		// Setup Module
-		<setup_cheque>Cheque</setup_cheque>
-		<setup_cheque_payable_to>Cheque</setup_cheque_payable_to>
+        
+        // Setup Module
+        <setup_cheque>Cheque</setup_cheque>
+        <setup_cheque_payable_to>Cheque</setup_cheque_payable_to>
 
-		// Schedule Templates
-		<schedule_new>New schedule event</schedule_new>
-		<schedule_wo>Setting schedule for Work Order</schedule_wo>
-		<schedule_error>There is no Works Order number to schedule here. Please select the works order from the below list.</schedule_error>
-		<schedule_info>Info</schedule_info>
-		<schedule_info2>ERROR</schedule_info2>
-		<schedule_set>Set schedule</schedule_set>
-		<schedule_start>Start time</schedule_start>
-		<schedule_end>End time</schedule_end>
-		<schedule_notes>Schedule Notes</schedule_notes>
-		<schedule_submit>Submit</schedule_submit>
-		<schedule_view>Viewing  schedule for</schedule_view>
-		<schedule_print>Print Schedule</schedule_print>
-		<schedule_tech>Employee</schedule_tech>
-		<schedule_edit>Edit</schedule_edit>
-		<schedule_delete>Delete</schedule_delete>
-		<schedule_woview>View Work Order</schedule_woview>
-		<schedule_msg_1>Setting schedule for work order</schedule_msg_1>
-		<schedule_msg_2></schedule_msg_2>
-		<schedule_msg_3>Switch to another techs schedule</schedule_msg_3>
-		<schedule_msg_4>'s schedule for</schedule_msg_4>
+        // Schedule Templates
+        <schedule_new>New schedule event</schedule_new>
+        <schedule_wo>Setting schedule for Work Order</schedule_wo>
+        <schedule_error>There is no Works Order number to schedule here. Please select the works order from the below list.</schedule_error>
+        <schedule_info>Info</schedule_info>
+        <schedule_info2>ERROR</schedule_info2>
+        <schedule_set>Set schedule</schedule_set>
+        <schedule_start>Start time</schedule_start>
+        <schedule_end>End time</schedule_end>
+        <schedule_notes>Schedule Notes</schedule_notes>
+        <schedule_submit>Submit</schedule_submit>
+        <schedule_view>Viewing  schedule for</schedule_view>
+        <schedule_print>Print Schedule</schedule_print>
+        <schedule_tech>Employee</schedule_tech>
+        <schedule_edit>Edit</schedule_edit>
+        <schedule_delete>Delete</schedule_delete>
+        <schedule_woview>View Work Order</schedule_woview>
+        <schedule_msg_1>Setting schedule for work order</schedule_msg_1>
+        <schedule_msg_2></schedule_msg_2>
+        <schedule_msg_3>Switch to another techs schedule</schedule_msg_3>
+        <schedule_msg_4>'s schedule for</schedule_msg_4>
 
                 // Stats Templates
                 // -- Global
@@ -835,92 +835,92 @@
                 <supplier_delete_mes_recorddeleted>Record Deleted</supplier_delete_mes_recorddeleted>
                 <supplier_delete_mes_recordnotdeleted>Record Not Deleted</supplier_delete_mes_recordnotdeleted>
 
-		// Workorder Templates
-		<workorder_title>Work Orders</workorder_title>
-		<workorder_page_title>Work Order ID</workorder_page_title>
-		<workorder_print_title>Print Work Order ID</workorder_print_title>
-		<workorder_new_title>New</workorder_new_title>
-		<workorder_assigned_title>Assigned</workorder_assigned_title>
-		<workorder_waiting_parts_title> Awaiting Parts</workorder_waiting_parts_title>
-		<workorder_unpaid_title>Unpaid</workorder_unpaid_title>
-		<workorder_description_title>Description</workorder_description_title>
-		<workorder_edit_title>Edit Description</workorder_edit_title>
-		<workorder_comments_title>Comments</workorder_comments_title>
-		<workorder_edit_comments>Edit Comment</workorder_edit_comments>
-		<workorder_cutomer_contact_title>Customer Contact</workorder_cutomer_contact_title>
-		<workorder_schedule_title>Schedule</workorder_schedule_title>
-		<workorder_new_note_title>New Note</workorder_new_note_title>
-		<workorder_employee>Employee</workorder_employee>
-		<workorder_history_title>History</workorder_history_title>
-		<workorder_view_closed>Closed Work Orders</workorder_view_closed>
-		<workorder_new_title>New Work Order</workorder_new_title>
-		<workorder_parts>Parts Ordered</workorder_parts>
-		<workorder_contact>Contact</workorder_contact>
-		<workorder_email>Email</workorder_email>
+        // Workorder Templates
+        <workorder_title>Work Orders</workorder_title>
+        <workorder_page_title>Work Order ID</workorder_page_title>
+        <workorder_print_title>Print Work Order ID</workorder_print_title>
+        <workorder_new_title>New</workorder_new_title>
+        <workorder_assigned_title>Assigned</workorder_assigned_title>
+        <workorder_waiting_parts_title> Awaiting Parts</workorder_waiting_parts_title>
+        <workorder_unpaid_title>Unpaid</workorder_unpaid_title>
+        <workorder_description_title>Description</workorder_description_title>
+        <workorder_edit_title>Edit Description</workorder_edit_title>
+        <workorder_comments_title>Comments</workorder_comments_title>
+        <workorder_edit_comments>Edit Comment</workorder_edit_comments>
+        <workorder_cutomer_contact_title>Customer Contact</workorder_cutomer_contact_title>
+        <workorder_schedule_title>Schedule</workorder_schedule_title>
+        <workorder_new_note_title>New Note</workorder_new_note_title>
+        <workorder_employee>Employee</workorder_employee>
+        <workorder_history_title>History</workorder_history_title>
+        <workorder_view_closed>Closed Work Orders</workorder_view_closed>
+        <workorder_new_title>New Work Order</workorder_new_title>
+        <workorder_parts>Parts Ordered</workorder_parts>
+        <workorder_contact>Contact</workorder_contact>
+        <workorder_email>Email</workorder_email>
                 <workorder_credit_terms>Credit Terms</workorder_credit_terms>
                 <workorder_www>Website</workorder_www>
                 <workorder_discount>Discount</workorder_discount>
                 <workorder_created>Created</workorder_created>
                 <workorder_last_activity>Last Activity</workorder_last_activity>
                 <workorder_notes>Notes</workorder_notes>
-		<workorder_address>Address</workorder_address>
-		<workorder_phone_1>Primary Phone</workorder_phone_1>
-		<workorder_phone_2>Work/Fax Phone</workorder_phone_2>
-		<workorder_phone_3>Mobile</workorder_phone_3>
-		<workorder_type>Type</workorder_type>
-		<workorder_type_1>Residential</workorder_type_1>
-		<workorder_type_2>Commercial</workorder_type_2>
-		<workorder_type_3>Charity</workorder_type_3>
-		<workorder_type_4>Educational</workorder_type_4>
-		<workorder_type_5>Governmental</workorder_type_5>
-		<workorder_type_6>-</workorder_type_6>
-		<workorder_type_7>-</workorder_type_7>
-		<workorder_type_8>-</workorder_type_8>
-		<workorder_type_9>-</workorder_type_9>
-		<workorder_type_10>-</workorder_type_10>
-		<workorder_customer_first>First Name</workorder_customer_first>
-		<workorder_customer_last>Last Name</workorder_customer_last>
-		<workorder_id>ID</workorder_id>
-		<workorder_opened>Opened</workorder_opened>
-		<workorder_customer>Customer</workorder_customer>
-		<workorder_scope>Scope</workorder_scope>
-		<workorder_status>Status</workorder_status>
-		<workorder_tech>Tech</workorder_tech>
-		<workorder_assign>Assigned To</workorder_assign>
-		<workorder_action>Action</workorder_action>
-		<workorder_state>State</workorder_state>
-		<workorder_last_change>Last Change</workorder_last_change>
-		<workorder_start>Start</workorder_start>
-		<workorder_end>End</workorder_end>
-		<workorder_notes>Notes</workorder_notes>
-		<workorder_warning>Warning</workorder_warning>
-		<workorder_enter_by>Entered By</workorder_enter_by>
-		<workorder_date>Date</workorder_date>
-		<workorder_edit_descrp>Edit Description</workorder_edit_descrp>
-		<work_order_close_title>Close Work Order</work_order_close_title>
-		<workorder_open>Open</workorder_open>
-		<workorder_delete>Delete</workorder_delete>
-		<workorder_pending>Pending</workorder_pending>
-		<workorder_closed>Closed</workorder_closed>
-		<workorder_created>Created</workorder_created>
-		<workorder_assigned>Assigned</workorder_assigned>
-		<workorder_waiting_for_parts>Waiting For Parts</workorder_waiting_for_parts>
-		<workorder_waiting_for_payment>Waiting For Payment</workorder_waiting_for_payment>
-		<workorder_payment_made>Payment Made</workorder_payment_made>
-		<workorder_not_assigned>Not Assigned</workorder_not_assigned>
-		<workorder_page>Page</workorder_page>
-		<workorder_of>Of</workorder_of>
-		<workorder_records>Records Found</workorder_records>
-		<workorder_resolution>Work Order Resolution</workorder_resolution>
-		<workorder_msg_1>There are No new Work Orders</workorder_msg_1>
-		<workorder_msg_2>There are No Assigned Work Orders</workorder_msg_2>
-		<workorder_msg_3>There are No Unpaid Work Orders</workorder_msg_3>
-		<workorder_msg_4>There are No Work Orders Waiting for Parts</workorder_msg_4>
-		<workorder_msg_5>No schedule has been set. Click the day on the calendar you wish to set the schedule.</workorder_msg_5>
-		<workorder_msg_6>There are no closed work orders</workorder_msg_6>
-		<workorder_submit>Submit</workorder_submit>
-		<workorder_close>Close without Invoicing</workorder_close>
-		<workorder_details>Work Order Details</workorder_details>
+        <workorder_address>Address</workorder_address>
+        <workorder_phone_1>Primary Phone</workorder_phone_1>
+        <workorder_phone_2>Work/Fax Phone</workorder_phone_2>
+        <workorder_phone_3>Mobile</workorder_phone_3>
+        <workorder_type>Type</workorder_type>
+        <workorder_type_1>Residential</workorder_type_1>
+        <workorder_type_2>Commercial</workorder_type_2>
+        <workorder_type_3>Charity</workorder_type_3>
+        <workorder_type_4>Educational</workorder_type_4>
+        <workorder_type_5>Governmental</workorder_type_5>
+        <workorder_type_6>-</workorder_type_6>
+        <workorder_type_7>-</workorder_type_7>
+        <workorder_type_8>-</workorder_type_8>
+        <workorder_type_9>-</workorder_type_9>
+        <workorder_type_10>-</workorder_type_10>
+        <workorder_customer_first>First Name</workorder_customer_first>
+        <workorder_customer_last>Last Name</workorder_customer_last>
+        <workorder_id>ID</workorder_id>
+        <workorder_opened>Opened</workorder_opened>
+        <workorder_customer>Customer</workorder_customer>
+        <workorder_scope>Scope</workorder_scope>
+        <workorder_status>Status</workorder_status>
+        <workorder_tech>Tech</workorder_tech>
+        <workorder_assign>Assigned To</workorder_assign>
+        <workorder_action>Action</workorder_action>
+        <workorder_state>State</workorder_state>
+        <workorder_last_change>Last Change</workorder_last_change>
+        <workorder_start>Start</workorder_start>
+        <workorder_end>End</workorder_end>
+        <workorder_notes>Notes</workorder_notes>
+        <workorder_warning>Warning</workorder_warning>
+        <workorder_enter_by>Entered By</workorder_enter_by>
+        <workorder_date>Date</workorder_date>
+        <workorder_edit_descrp>Edit Description</workorder_edit_descrp>
+        <work_order_close_title>Close Work Order</work_order_close_title>
+        <workorder_open>Open</workorder_open>
+        <workorder_delete>Delete</workorder_delete>
+        <workorder_pending>Pending</workorder_pending>
+        <workorder_closed>Closed</workorder_closed>
+        <workorder_created>Created</workorder_created>
+        <workorder_assigned>Assigned</workorder_assigned>
+        <workorder_waiting_for_parts>Waiting For Parts</workorder_waiting_for_parts>
+        <workorder_waiting_for_payment>Waiting For Payment</workorder_waiting_for_payment>
+        <workorder_payment_made>Payment Made</workorder_payment_made>
+        <workorder_not_assigned>Not Assigned</workorder_not_assigned>
+        <workorder_page>Page</workorder_page>
+        <workorder_of>Of</workorder_of>
+        <workorder_records>Records Found</workorder_records>
+        <workorder_resolution>Work Order Resolution</workorder_resolution>
+        <workorder_msg_1>There are No new Work Orders</workorder_msg_1>
+        <workorder_msg_2>There are No Assigned Work Orders</workorder_msg_2>
+        <workorder_msg_3>There are No Unpaid Work Orders</workorder_msg_3>
+        <workorder_msg_4>There are No Work Orders Waiting for Parts</workorder_msg_4>
+        <workorder_msg_5>No schedule has been set. Click the day on the calendar you wish to set the schedule.</workorder_msg_5>
+        <workorder_msg_6>There are no closed work orders</workorder_msg_6>
+        <workorder_submit>Submit</workorder_submit>
+        <workorder_close>Close without Invoicing</workorder_close>
+        <workorder_details>Work Order Details</workorder_details>
                 <workorder_submit_changes_only>Submit Changes Only</workorder_submit_changes_only>
                 <workorder_close_without_invoice>Close Without Invoice</workorder_close_without_invoice>
                 <workorder_close_with_invoice>Close with Invoice</workorder_close_with_invoice>
@@ -928,5 +928,5 @@
                 <workorder_nav_new>Create New WO</workorder_nav_new>
 
     <get_directions>Get Directions</get_directions>
-		
-	</translate>
+        
+    </translate>
