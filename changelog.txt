@@ -241,15 +241,15 @@ To view more details on these issues, please visit https://apps.sourceforge.net/
 
 ==============
 v.0.2.4 : Mar 2, 2009
-	- 0000007: [FEATURE] Part ordering..? (Geevpc) - Parts can be added to an existing invoice.
-	- 0000011: [FEATURE] When printing / exporting invoices...  - Added Invoice Status to printed invoice.eg; "Awaiting Payment", "Closed", etc
-	- 0000010: [FEATURE] Close invoice option from Invoicing view. - Added button to close Work Order if not done when invoice is generated.
-	- 0000021: [menus] General Menu issues and functions  - As Below
-	- 0000019: [other] Header Tiddy-It-Up Modifications  - Cleaned up menu system. Also fix IE7 rendering issue.
-	- 0000008: [FEATURE] Invoicing - printing layout.. - Invoice layout has changed to incoperate customer details in billing window for sending in windowed envolopes.
-	- 0000006: [menus] Import/Export Links Issues - Removed until feature can be re-implemented.
-	- 0000013: [FEATURE] Schedule page addition - View Work Order from Schedule edit page
-	- 0000004: [misc] Calendar "Stack Overflow 15" error - reverted Calendar back to prevoius version
+    - 0000007: [FEATURE] Part ordering..? (Geevpc) - Parts can be added to an existing invoice.
+    - 0000011: [FEATURE] When printing / exporting invoices...  - Added Invoice Status to printed invoice.eg; "Awaiting Payment", "Closed", etc
+    - 0000010: [FEATURE] Close invoice option from Invoicing view. - Added button to close Work Order if not done when invoice is generated.
+    - 0000021: [menus] General Menu issues and functions  - As Below
+    - 0000019: [other] Header Tiddy-It-Up Modifications  - Cleaned up menu system. Also fix IE7 rendering issue.
+    - 0000008: [FEATURE] Invoicing - printing layout.. - Invoice layout has changed to incoperate customer details in billing window for sending in windowed envolopes.
+    - 0000006: [menus] Import/Export Links Issues - Removed until feature can be re-implemented.
+    - 0000013: [FEATURE] Schedule page addition - View Work Order from Schedule edit page
+    - 0000004: [misc] Calendar "Stack Overflow 15" error - reverted Calendar back to prevoius version
 
 ==============
 v.0.2.3 : Feb 24, 2009
@@ -304,7 +304,7 @@ v.0.2.001 : May 02, 2008
       - Modified : /install/index.php
   * Fixed Start Time and End Time the same by putting double quotes 
     around 00 value of $secs. 
-	  - Modified : /modules/schedual/include.php
+      - Modified : /modules/schedual/include.php
   * Added changelog.txt.  Changed version to v.0.2.001.
       - Added : /changelog.txt
       - Modified : /version.php
