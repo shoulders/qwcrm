@@ -72,7 +72,7 @@ echo ("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http:/
         require("../include/ADODB/adodb.inc.php");
         
         /* Create ADODB Connection */
-        $db = &ADONewConnection('mysql');
+        $db = &ADONewConnection('mysqli');
 
         $db->Connect($_POST['db_host'] ,$_POST['db_user'], $_POST['db_password']);
         if( $db->errorMsg() != '' ) {
@@ -1328,7 +1328,7 @@ global \$smarty;
 \$strKey = 'kcmp7n2permbtr0dqebme6mpejhn3ki';
 
 /* create adodb database connection */
-\$db = &ADONewConnection('mysql');
+\$db = &ADONewConnection('mysqli');
 \$db->Connect(DB_HOST,DB_USER,DB_PASS,DB_NAME);
 
 

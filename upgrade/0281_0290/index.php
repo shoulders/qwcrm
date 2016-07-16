@@ -55,7 +55,7 @@ switch ($mode) {
         require("../../include/ADODB/adodb.inc.php");
 
         /* Create ADODB Connection */
-        $db = &ADONewConnection('mysql');
+        $db = &ADONewConnection('mysqli');
 
         $db->Connect($_POST['db_host'] ,$_POST['db_user'], $_POST['db_password']);
         if( $db->errorMsg() != '' ) {
