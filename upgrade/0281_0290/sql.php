@@ -1,157 +1,157 @@
 <?php
 ##################################
-# create_table_company				#
+# create_table_company                #
 ##################################
 if(!create_table_company($db)){
-	echo("<tr>\n
-				<td>UPDATED TABLE ".PRFX."TABLE_COMPANY</td>\n
-				<td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
-			</tr>");
-	$error_flag = true;
+    echo("<tr>\n
+                <td>UPDATED TABLE ".PRFX."TABLE_COMPANY</td>\n
+                <td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
+            </tr>");
+    $error_flag = true;
 } else {
-	echo("<tr>\n
-				<td>UPDATED TABLE ".PRFX."TABLE_COMPANY</td>\n
-				<td><font color=\"green\"><b>OK</b></font></td>\n
-			</tr>\n");
+    echo("<tr>\n
+                <td>UPDATED TABLE ".PRFX."TABLE_COMPANY</td>\n
+                <td><font color=\"green\"><b>OK</b></font></td>\n
+            </tr>\n");
 }
 ###############################
-# UPDATE CUSTOMER TABLE				#
+# UPDATE CUSTOMER TABLE                #
 ###############################
 if(!create_table_customer($db)) {
-	echo("<tr>\n
-			<td>UPDATED TABLE ".PRFX."TABLE_CUSTOMER</td>\n
-			<td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
-		</tr>\n");
-	$error_flag = true;
+    echo("<tr>\n
+            <td>UPDATED TABLE ".PRFX."TABLE_CUSTOMER</td>\n
+            <td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
+        </tr>\n");
+    $error_flag = true;
 } else {
-	echo("<tr>\n
-			<td>UPDATED TABLE ".PRFX."TABLE_CUSTOMER</td>
-			<td><font color=\"green\"><b>OK</b></font></td>\n
-		</tr>\n");
+    echo("<tr>\n
+            <td>UPDATED TABLE ".PRFX."TABLE_CUSTOMER</td>
+            <td><font color=\"green\"><b>OK</b></font></td>\n
+        </tr>\n");
 }
 ###############################
-# UPDATE EMPLOYEE TABLE				#
+# UPDATE EMPLOYEE TABLE                #
 ###############################
 if(!update_employee_address($db)) {
-	echo("<tr>\n
-			<td>UPDATED TABLE ".PRFX."TABLE_EMPLOYEE</td>\n
-			<td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
-		</tr>\n");
-	$error_flag = true;
+    echo("<tr>\n
+            <td>UPDATED TABLE ".PRFX."TABLE_EMPLOYEE</td>\n
+            <td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
+        </tr>\n");
+    $error_flag = true;
 } else {
-	echo("<tr>\n
-			<td>UPDATED TABLE ".PRFX."TABLE_EMPLOYEE</td>
-			<td><font color=\"green\"><b>OK</b></font></td>\n
-		</tr>\n");
+    echo("<tr>\n
+            <td>UPDATED TABLE ".PRFX."TABLE_EMPLOYEE</td>
+            <td><font color=\"green\"><b>OK</b></font></td>\n
+        </tr>\n");
 }
 
 
 ##################################
-# create_setup							#
+# create_setup                            #
 ##################################
 if(!create_setup($db) ) {
 echo("<tr>\n
-			<td>UPDATED TABLE ".PRFX."SETUP</td>\n
-			<td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
-		</tr>\n");
-	$error_flag = true;
+            <td>UPDATED TABLE ".PRFX."SETUP</td>\n
+            <td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
+        </tr>\n");
+    $error_flag = true;
 } else {
-	echo("<tr>\n
-				<td>UPDATED TABLE ".PRFX."SETUP</td>\n
-				<td><font color=\"green\"><b>OK</b></font></td>\n
-			</tr>\n");
+    echo("<tr>\n
+                <td>UPDATED TABLE ".PRFX."SETUP</td>\n
+                <td><font color=\"green\"><b>OK</b></font></td>\n
+            </tr>\n");
 }
 
 
 ##################################
-# create_acl								#
+# create_acl                                #
 ##################################
 if(!create_acl($db) ) {
 echo("<tr>\n
-			<td>UPDATED TABLE ".PRFX."ACL</td>\n
-			<td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
-		</tr>\n");
-	$error_flag = true;
+            <td>UPDATED TABLE ".PRFX."ACL</td>\n
+            <td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
+        </tr>\n");
+    $error_flag = true;
 } else {
-	echo("<tr>\n
-				<td>UPDATED TABLE ".PRFX."ACL</td>\n
-				<td><font color=\"green\"><b>OK</b></font></td>\n
-			</tr>\n");
+    echo("<tr>\n
+                <td>UPDATED TABLE ".PRFX."ACL</td>\n
+                <td><font color=\"green\"><b>OK</b></font></td>\n
+            </tr>\n");
 }
 ##################################
-# create expense					#
+# create expense                    #
 ##################################
 if(!create_expense($db) ) {
 echo("<tr>\n
-			<td>CREATED TABLE ".PRFX."TABLE_EXPENSE</td>\n
-			<td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
-		</tr>\n");
-	$error_flag = true;
+            <td>CREATED TABLE ".PRFX."TABLE_EXPENSE</td>\n
+            <td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
+        </tr>\n");
+    $error_flag = true;
 } else {
-	echo("<tr>\n
-				<td>CREATED TABLE ".PRFX."TABLE_EXPENSE</td>\n
-				<td><font color=\"green\"><b>OK</b></font></td>\n
-			</tr>\n");
+    echo("<tr>\n
+                <td>CREATED TABLE ".PRFX."TABLE_EXPENSE</td>\n
+                <td><font color=\"green\"><b>OK</b></font></td>\n
+            </tr>\n");
 }
 ##################################
-# create refund								#
+# create refund                                #
 ##################################
 if(!create_refund($db) ) {
 echo("<tr>\n
-			<td>CREATED TABLE ".PRFX."TABLE_REFUND</td>\n
-			<td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
-		</tr>\n");
-	$error_flag = true;
+            <td>CREATED TABLE ".PRFX."TABLE_REFUND</td>\n
+            <td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
+        </tr>\n");
+    $error_flag = true;
 } else {
-	echo("<tr>\n
-				<td>CREATED TABLE ".PRFX."TABLE_REFUND</td>\n
-				<td><font color=\"green\"><b>OK</b></font></td>\n
-			</tr>\n");
+    echo("<tr>\n
+                <td>CREATED TABLE ".PRFX."TABLE_REFUND</td>\n
+                <td><font color=\"green\"><b>OK</b></font></td>\n
+            </tr>\n");
 }
 ##################################
-# create_supplier							#
+# create_supplier                            #
 ##################################
 if(!create_supplier($db) ) {
 echo("<tr>\n
-			<td>CREATED TABLE ".PRFX."TABLE_SUPPLIER</td>\n
-			<td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
-		</tr>\n");
-	$error_flag = true;
+            <td>CREATED TABLE ".PRFX."TABLE_SUPPLIER</td>\n
+            <td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
+        </tr>\n");
+    $error_flag = true;
 } else {
-	echo("<tr>\n
-				<td>CREATED TABLE ".PRFX."TABLE_SUPPLIER</td>\n
-				<td><font color=\"green\"><b>OK</b></font></td>\n
-			</tr>\n");
+    echo("<tr>\n
+                <td>CREATED TABLE ".PRFX."TABLE_SUPPLIER</td>\n
+                <td><font color=\"green\"><b>OK</b></font></td>\n
+            </tr>\n");
 }
 /* START SQL STUFF FOR UPGRADE */
 
 function create_table_company($db){
-	   $q="ALTER TABLE `".PRFX."TABLE_COMPANY`
+       $q="ALTER TABLE `".PRFX."TABLE_COMPANY`
             CHANGE `COMPANY_ADDRESS` `COMPANY_ADDRESS` text default NULL,
             ADD `COMPANY_FAX` varchar(30) default NULL,
             ADD `COMPANY_CURRENCY_SYMBOL` varchar(30) default NULL,
             ADD `COMPANY_CURRENCY_CODE` varchar(30) default NULL,
             ADD `COMPANY_DATE_FORMAT` varchar(10) default NULL ;" ;
             $rs = $db->Execute($q);
-			if(!$rs) {
-				return false;
-			} else {
-				return true;
-			}
+            if(!$rs) {
+                return false;
+            } else {
+                return true;
+            }
 }
 function create_table_customer($db){
-	$q="ALTER TABLE `".PRFX."TABLE_CUSTOMER`
+    $q="ALTER TABLE `".PRFX."TABLE_CUSTOMER`
             CHANGE `CUSTOMER_ADDRESS` `CUSTOMER_ADDRESS` text default NULL,
             ADD `CREDIT_TERMS` varchar(80) default NULL,
             ADD `CUSTOMER_WWW` varchar(80) default NULL,
             ADD `CUSTOMER_NOTES` text default NULL ;" ;
 
-	$rs = $db->Execute($q);
-		if(!$rs) {
-			return false;
-		} else {
-			return true;
-		}
+    $rs = $db->Execute($q);
+        if(!$rs) {
+            return false;
+        } else {
+            return true;
+        }
 }
 
 function create_setup($db) {
@@ -161,12 +161,12 @@ function create_setup($db) {
   ADD `PAYMATE_PASSWORD` varchar(50) default NULL,
   ADD `PAYMATE_FEES` decimal(10,2) NOT NULL default '1.5',
   CHANGE `INVOICE_TAX` `INVOICE_TAX` decimal(10,2) NOT NULL default '0.00';";
-    	$rs = $db->Execute($q);
-			if(!$rs) {
-				return false;
-			} else {
-				return true;
-			}
+        $rs = $db->Execute($q);
+            if(!$rs) {
+                return false;
+            } else {
+                return true;
+            }
 }
 
 function create_acl($db) {
@@ -247,20 +247,20 @@ function update_assets($db) {
   $q = "ALTER TABLE `".PRFX."TABLE_ASSET` CHANGE `ASSEST_NUMBER` `ASSET_NUMBER`,
   ;";
 $rs = $db->Execute($q);
-		if(!$rs) {
-			return false;
-		} else {
-			return true;
-		}
+        if(!$rs) {
+            return false;
+        } else {
+            return true;
+        }
 }
 function update_employee_address($db) {
   $q = "ALTER TABLE `".PRFX."TABLE_EMPLOYEE` CHANGE `EMPLOYEE_ADDRESS` `EMPLOYEE_ADDRESS` TEXT  ;";
 $rs = $db->Execute($q);
-		if(!$rs) {
-			return false;
-		} else {
-			return true;
-		}
+        if(!$rs) {
+            return false;
+        } else {
+            return true;
+        }
 
 }
 
@@ -281,10 +281,10 @@ function create_expense($db) {
   PRIMARY KEY (`EXPENSE_ID`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ";
 if(!$rs = $db->Execute($q)) {
-				return false;
-			} else {
-				return true;
-			}
+                return false;
+            } else {
+                return true;
+            }
 }
 function create_refund($db) {
    $q = "CREATE TABLE IF NOT EXISTS `".PRFX."TABLE_REFUND` (
@@ -302,10 +302,10 @@ function create_refund($db) {
   PRIMARY KEY (`REFUND_ID`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ";
 if(!$rs = $db->Execute($q)) {
-				return false;
-			} else {
-				return true;
-			}
+                return false;
+            } else {
+                return true;
+            }
 }
 function create_supplier($db) {
    $q = "CREATE TABLE IF NOT EXISTS `".PRFX."TABLE_SUPPLIER` (
@@ -327,10 +327,10 @@ function create_supplier($db) {
   PRIMARY KEY (`SUPPLIER_ID`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 " ;
 if(!$rs = $db->Execute($q)) {
-				return false;
-			} else {
-				return true;
-			}
+                return false;
+            } else {
+                return true;
+            }
 }
 
 ?>

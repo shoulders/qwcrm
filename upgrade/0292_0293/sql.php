@@ -3,15 +3,15 @@
 // Adding Version Number to Database
 if (!insert_version_values($db)) {
     echo("<tr>\n
-			<td>UPDATED TABLE ".PRFX."VERSION</td>\n
-			<td><font color=\"red\"><b>Failed:</b></font> " . $db->ErrorMsg() . "</td>\n
-		</tr>\n");
+            <td>UPDATED TABLE ".PRFX."VERSION</td>\n
+            <td><font color=\"red\"><b>Failed:</b></font> " . $db->ErrorMsg() . "</td>\n
+        </tr>\n");
     $error_flag = true;
 } else {
     echo("<tr>\n
-				<td>UPDATED TABLE ".PRFX."VERSION</td>\n
-				<td><font color=\"green\"><b>OK</b></font></td>\n
-			</tr>\n");
+                <td>UPDATED TABLE ".PRFX."VERSION</td>\n
+                <td><font color=\"green\"><b>OK</b></font></td>\n
+            </tr>\n");
 }
 // ADDING VERSION NUMBER TO DATABASE
 function insert_version_values($db)

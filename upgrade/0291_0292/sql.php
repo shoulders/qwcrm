@@ -2,15 +2,15 @@
 ///Additions to ACL table required.
 if (!create_acl($db)) {
     echo("<tr>\n
-			<td>UPDATED TABLE ".PRFX."ACL</td>\n
-			<td><font color=\"red\"><b>Failed:</b></font> " . $db->ErrorMsg() . "</td>\n
-		</tr>\n");
+            <td>UPDATED TABLE ".PRFX."ACL</td>\n
+            <td><font color=\"red\"><b>Failed:</b></font> " . $db->ErrorMsg() . "</td>\n
+        </tr>\n");
     $error_flag = true;
 } else {
     echo("<tr>\n
-				<td>UPDATED TABLE ".PRFX."ACL</td>\n
-				<td><font color=\"green\"><b>OK</b></font></td>\n
-			</tr>\n");
+                <td>UPDATED TABLE ".PRFX."ACL</td>\n
+                <td><font color=\"green\"><b>OK</b></font></td>\n
+            </tr>\n");
 }
 
 function create_acl($db)
@@ -35,15 +35,15 @@ function create_acl($db)
 // Fixing up tax rates decimals
 if (!update_invoice_tax($db)) {
     echo("<tr>\n
-			<td>UPDATED TABLE ".PRFX."TABLE_INVOICE</td>\n
-			<td><font color=\"red\"><b>Failed:</b></font> " . $db->ErrorMsg() . "</td>\n
-		</tr>\n");
+            <td>UPDATED TABLE ".PRFX."TABLE_INVOICE</td>\n
+            <td><font color=\"red\"><b>Failed:</b></font> " . $db->ErrorMsg() . "</td>\n
+        </tr>\n");
     $error_flag = true;
 } else {
     echo("<tr>\n
-				<td>UPDATED TABLE ".PRFX."TABLE_INVOICE</td>\n
-				<td><font color=\"green\"><b>OK</b></font></td>\n
-			</tr>\n");
+                <td>UPDATED TABLE ".PRFX."TABLE_INVOICE</td>\n
+                <td><font color=\"green\"><b>OK</b></font></td>\n
+            </tr>\n");
 }
 
 function update_invoice_tax($db)
@@ -62,15 +62,15 @@ function update_invoice_tax($db)
 
 if (!update_invoice_tax_setup($db)) {
     echo("<tr>\n
-			<td>UPDATED TABLE ".PRFX."SETUP</td>\n
-			<td><font color=\"red\"><b>Failed:</b></font> " . $db->ErrorMsg() . "</td>\n
-		</tr>\n");
+            <td>UPDATED TABLE ".PRFX."SETUP</td>\n
+            <td><font color=\"red\"><b>Failed:</b></font> " . $db->ErrorMsg() . "</td>\n
+        </tr>\n");
     $error_flag = true;
 } else {
     echo("<tr>\n
-				<td>UPDATED TABLE ".PRFX."SETUP</td>\n
-				<td><font color=\"green\"><b>OK</b></font></td>\n
-			</tr>\n");
+                <td>UPDATED TABLE ".PRFX."SETUP</td>\n
+                <td><font color=\"green\"><b>OK</b></font></td>\n
+            </tr>\n");
 }
 
 function update_invoice_tax_setup($db)
@@ -89,15 +89,15 @@ function update_invoice_tax_setup($db)
 
 if (!add_tax_and_discounted_rates_to_invoice_table($db)) {
     echo("<tr>\n
-			<td>UPDATED TABLE ".PRFX."TABLE_INVOICE</td>\n
-			<td><font color=\"red\"><b>Failed:</b></font> " . $db->ErrorMsg() . "</td>\n
-		</tr>\n");
+            <td>UPDATED TABLE ".PRFX."TABLE_INVOICE</td>\n
+            <td><font color=\"red\"><b>Failed:</b></font> " . $db->ErrorMsg() . "</td>\n
+        </tr>\n");
     $error_flag = true;
 } else {
     echo("<tr>\n
-				<td>UPDATED TABLE ".PRFX."TABLE_INVOICE</td>\n
-				<td><font color=\"green\"><b>OK</b></font></td>\n
-			</tr>\n");
+                <td>UPDATED TABLE ".PRFX."TABLE_INVOICE</td>\n
+                <td><font color=\"green\"><b>OK</b></font></td>\n
+            </tr>\n");
 }
 
 function add_tax_and_discounted_rates_to_invoice_table($db)
@@ -117,15 +117,15 @@ function add_tax_and_discounted_rates_to_invoice_table($db)
 // Rename Tracker as this was broken before and displaying errors
 if (!rename_tracker($db)) {
     echo("<tr>\n
-			<td>RENAMED TABLE ".PRFX."tracker TO TRACKER</td>\n
-			<td><font color=\"red\"><b>Failed:</b></font> " . $db->ErrorMsg() . "</td>\n
-		</tr>\n");
+            <td>RENAMED TABLE ".PRFX."tracker TO TRACKER</td>\n
+            <td><font color=\"red\"><b>Failed:</b></font> " . $db->ErrorMsg() . "</td>\n
+        </tr>\n");
     $error_flag = true;
 } else {
     echo("<tr>\n
-				<td>RENAMED TABLE ".PRFX."tracker TO TRACKER</td>\n
-				<td><font color=\"green\"><b>OK</b></font></td>\n
-			</tr>\n");
+                <td>RENAMED TABLE ".PRFX."tracker TO TRACKER</td>\n
+                <td><font color=\"green\"><b>OK</b></font></td>\n
+            </tr>\n");
 }
 
 function rename_tracker($db)
@@ -146,15 +146,15 @@ function rename_tracker($db)
 // Customers Phone
 if (!update_customer_phone($db)) {
     echo("<tr>\n
-			<td>UPDATED TABLE ".PRFX."TABLE_CUSTOMER_PHONE</td>\n
-			<td><font color=\"red\"><b>Failed:</b></font> " . $db->ErrorMsg() . "</td>\n
-		</tr>\n");
+            <td>UPDATED TABLE ".PRFX."TABLE_CUSTOMER_PHONE</td>\n
+            <td><font color=\"red\"><b>Failed:</b></font> " . $db->ErrorMsg() . "</td>\n
+        </tr>\n");
     $error_flag = true;
 } else {
     echo("<tr>\n
-				<td>UPDATED TABLE ".PRFX."TABLE_CUSTOMER_PHONE</td>\n
-				<td><font color=\"green\"><b>OK</b></font></td>\n
-			</tr>\n");
+                <td>UPDATED TABLE ".PRFX."TABLE_CUSTOMER_PHONE</td>\n
+                <td><font color=\"green\"><b>OK</b></font></td>\n
+            </tr>\n");
 }
 
 
@@ -175,15 +175,15 @@ function update_customer_phone($db)
 // Customers Work Phone
 if (!update_customer_work_phone($db)) {
     echo("<tr>\n
-			<td>UPDATED TABLE ".PRFX."TABLE_CUSTOMER_WORK_PHONE</td>\n
-			<td><font color=\"red\"><b>Failed:</b></font> " . $db->ErrorMsg() . "</td>\n
-		</tr>\n");
+            <td>UPDATED TABLE ".PRFX."TABLE_CUSTOMER_WORK_PHONE</td>\n
+            <td><font color=\"red\"><b>Failed:</b></font> " . $db->ErrorMsg() . "</td>\n
+        </tr>\n");
     $error_flag = true;
 } else {
     echo("<tr>\n
-				<td>UPDATED TABLE ".PRFX."TABLE_CUSTOMER_WORK_PHONE</td>\n
-				<td><font color=\"green\"><b>OK</b></font></td>\n
-			</tr>\n");
+                <td>UPDATED TABLE ".PRFX."TABLE_CUSTOMER_WORK_PHONE</td>\n
+                <td><font color=\"green\"><b>OK</b></font></td>\n
+            </tr>\n");
 }
 
 
@@ -204,15 +204,15 @@ function update_customer_work_phone($db)
 // Customers Mobile Phone
 if (!update_customer_mobile_phone($db)) {
     echo("<tr>\n
-			<td>UPDATED TABLE ".PRFX."TABLE_CUSTOMER_MOBILE_PHONE</td>\n
-			<td><font color=\"red\"><b>Failed:</b></font> " . $db->ErrorMsg() . "</td>\n
-		</tr>\n");
+            <td>UPDATED TABLE ".PRFX."TABLE_CUSTOMER_MOBILE_PHONE</td>\n
+            <td><font color=\"red\"><b>Failed:</b></font> " . $db->ErrorMsg() . "</td>\n
+        </tr>\n");
     $error_flag = true;
 } else {
     echo("<tr>\n
-				<td>UPDATED TABLE ".PRFX."TABLE_CUSTOMER_MOBILE_PHONE</td>\n
-				<td><font color=\"green\"><b>OK</b></font></td>\n
-			</tr>\n");
+                <td>UPDATED TABLE ".PRFX."TABLE_CUSTOMER_MOBILE_PHONE</td>\n
+                <td><font color=\"green\"><b>OK</b></font></td>\n
+            </tr>\n");
 }
 
 
@@ -233,15 +233,15 @@ function update_customer_mobile_phone($db)
 // Adding Version Number to Database
 if (!create_version_table($db)) {
     echo("<tr>\n
-			<td>CREATED TABLE ".PRFX."VERSION</td>\n
-			<td><font color=\"red\"><b>Failed:</b></font> " . $db->ErrorMsg() . "</td>\n
-		</tr>\n");
+            <td>CREATED TABLE ".PRFX."VERSION</td>\n
+            <td><font color=\"red\"><b>Failed:</b></font> " . $db->ErrorMsg() . "</td>\n
+        </tr>\n");
     $error_flag = true;
 } else {
     echo("<tr>\n
-				<td>CREATED TABLE ".PRFX."VERSION</td>\n
-				<td><font color=\"green\"><b>OK</b></font></td>\n
-			</tr>\n");
+                <td>CREATED TABLE ".PRFX."VERSION</td>\n
+                <td><font color=\"green\"><b>OK</b></font></td>\n
+            </tr>\n");
 }
 
 
@@ -259,15 +259,15 @@ function create_version_table($db)
 
 if (!insert_version_values($db)) {
     echo("<tr>\n
-			<td>UPDATED TABLE ".PRFX."VERSION</td>\n
-			<td><font color=\"red\"><b>Failed:</b></font> " . $db->ErrorMsg() . "</td>\n
-		</tr>\n");
+            <td>UPDATED TABLE ".PRFX."VERSION</td>\n
+            <td><font color=\"red\"><b>Failed:</b></font> " . $db->ErrorMsg() . "</td>\n
+        </tr>\n");
     $error_flag = true;
 } else {
     echo("<tr>\n
-				<td>UPDATED TABLE ".PRFX."VERSION</td>\n
-				<td><font color=\"green\"><b>OK</b></font></td>\n
-			</tr>\n");
+                <td>UPDATED TABLE ".PRFX."VERSION</td>\n
+                <td><font color=\"green\"><b>OK</b></font></td>\n
+            </tr>\n");
 }
 // ADDING VERSION NUMBER TO DATABASE
 function insert_version_values($db)
