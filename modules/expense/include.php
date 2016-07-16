@@ -7,11 +7,11 @@
 function tax_rate($db){
 
 $q = 'SELECT * FROM '.PRFX.'SETUP';
-	if(!$rs = $db->execute($q)) {
-		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-		exit;
-	} else {
-		$tax_rate = $rs->fields['INVOICE_TAX'];
+    if(!$rs = $db->execute($q)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
+    } else {
+        $tax_rate = $rs->fields['INVOICE_TAX'];
                 return $tax_rate;
         }
 }
@@ -23,11 +23,11 @@ $q = 'SELECT * FROM '.PRFX.'SETUP';
 function date_format_call($db){
 
 $q = 'SELECT * FROM '.PRFX.'TABLE_COMPANY';
-	if(!$rs = $db->execute($q)) {
-		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-		exit;
-	} else {
-		$date_format = $rs->fields['COMPANY_DATE_FORMAT'];
+    if(!$rs = $db->execute($q)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
+    } else {
+        $date_format = $rs->fields['COMPANY_DATE_FORMAT'];
                 return $date_format;
         }
 }
@@ -39,11 +39,11 @@ $q = 'SELECT * FROM '.PRFX.'TABLE_COMPANY';
 function last_record_id_lookup($db){
 
 $q = 'SELECT * FROM '.PRFX.'TABLE_EXPENSE ORDER BY EXPENSE_ID DESC LIMIT 1';
-	if(!$rs = $db->execute($q)) {
-		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-		exit;
-	} else {
-		$last_record_id = $rs->fields['EXPENSE_ID'];
+    if(!$rs = $db->execute($q)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
+    } else {
+        $last_record_id = $rs->fields['EXPENSE_ID'];
                 return $last_record_id;
         }
 }
@@ -132,27 +132,27 @@ $expenseNotes_string = stripslashes($expenseNotes_string);
 $expenseItems_string = $VAR['expenseItems'];
 $expenseItems_string = stripslashes($expenseItems_string);
 
-	$sql = "INSERT INTO ".PRFX."TABLE_EXPENSE SET
+    $sql = "INSERT INTO ".PRFX."TABLE_EXPENSE SET
 
-			EXPENSE_ID			= ". $db->qstr( $VAR['expenseID']           ).",
-			EXPENSE_PAYEE			= ". $db->qstr( $VAR['expensePayee']        ).",
-			EXPENSE_DATE			= ". $db->qstr( $checked_date               ).",
-			EXPENSE_TYPE			= ". $db->qstr( $VAR['expenseType']         ).",
-			EXPENSE_PAYMENT_METHOD          = ". $db->qstr( $VAR['expensePaymentMethod']).",
-			EXPENSE_NET_AMOUNT		= ". $db->qstr( $VAR['expenseNetAmount']    ).",
+            EXPENSE_ID            = ". $db->qstr( $VAR['expenseID']           ).",
+            EXPENSE_PAYEE            = ". $db->qstr( $VAR['expensePayee']        ).",
+            EXPENSE_DATE            = ". $db->qstr( $checked_date               ).",
+            EXPENSE_TYPE            = ". $db->qstr( $VAR['expenseType']         ).",
+            EXPENSE_PAYMENT_METHOD          = ". $db->qstr( $VAR['expensePaymentMethod']).",
+            EXPENSE_NET_AMOUNT        = ". $db->qstr( $VAR['expenseNetAmount']    ).",
                         EXPENSE_TAX_RATE                = ". $db->qstr( $VAR['expenseTaxRate']      ).",
                         EXPENSE_TAX_AMOUNT              = ". $db->qstr( $VAR['expenseTaxAmount']    ).",
                         EXPENSE_GROSS_AMOUNT            = ". $db->qstr( $VAR['expenseGrossAmount']  ).",
                         EXPENSE_NOTES                   = ". $db->qstr( $expenseNotes_string        ).",
                         EXPENSE_ITEMS                   = ". $db->qstr( $expenseItems_string        );
 
-	if(!$result = $db->Execute($sql)) {
-		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-		exit;
+    if(!$result = $db->Execute($sql)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
     } /*else {
-		return true;
+        return true;
     } */
-	
+    
 } 
 
 #####################################
@@ -160,19 +160,19 @@ $expenseItems_string = stripslashes($expenseItems_string);
 #####################################
 
 function edit_info($db, $expenseID){
-	$sql = "SELECT * FROM ".PRFX."TABLE_EXPENSE WHERE EXPENSE_ID=".$db->qstr($expenseID);
-	
-	if(!$result = $db->Execute($sql)) {
-		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-		exit;
-	} else {
-		$row = $result->FetchRow();
-		return $row;
-	}
+    $sql = "SELECT * FROM ".PRFX."TABLE_EXPENSE WHERE EXPENSE_ID=".$db->qstr($expenseID);
+    
+    if(!$result = $db->Execute($sql)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
+    } else {
+        $row = $result->FetchRow();
+        return $row;
+    }
 }
 
 #####################################
-#	 Update Record              #
+#     Update Record              #
 #####################################
 
 function update_expense($db,$VAR) {
@@ -186,43 +186,43 @@ $expenseNotes_string = stripslashes($expenseNotes_string);
 $expenseItems_string = $VAR['expenseItems'];
 $expenseItems_string = stripslashes($expenseItems_string);
 
-	$sql = "UPDATE ".PRFX."TABLE_EXPENSE SET
+    $sql = "UPDATE ".PRFX."TABLE_EXPENSE SET
 
-			EXPENSE_PAYEE			= ". $db->qstr( $VAR['expensePayee']        ).",
-			EXPENSE_DATE			= ". $db->qstr( $checked_date               ).",
-			EXPENSE_TYPE			= ". $db->qstr( $VAR['expenseType']         ).",
-			EXPENSE_PAYMENT_METHOD          = ". $db->qstr( $VAR['expensePaymentMethod']).",
-			EXPENSE_NET_AMOUNT		= ". $db->qstr( $VAR['expenseNetAmount']    ).",
+            EXPENSE_PAYEE            = ". $db->qstr( $VAR['expensePayee']        ).",
+            EXPENSE_DATE            = ". $db->qstr( $checked_date               ).",
+            EXPENSE_TYPE            = ". $db->qstr( $VAR['expenseType']         ).",
+            EXPENSE_PAYMENT_METHOD          = ". $db->qstr( $VAR['expensePaymentMethod']).",
+            EXPENSE_NET_AMOUNT        = ". $db->qstr( $VAR['expenseNetAmount']    ).",
                         EXPENSE_TAX_RATE                = ". $db->qstr( $VAR['expenseTaxRate']      ).",
                         EXPENSE_TAX_AMOUNT              = ". $db->qstr( $VAR['expenseTaxAmount']    ).",
                         EXPENSE_GROSS_AMOUNT            = ". $db->qstr( $VAR['expenseGrossAmount']  ).",
                         EXPENSE_NOTES                   = ". $db->qstr( $expenseNotes_string        ).",
                         EXPENSE_ITEMS                   = ". $db->qstr( $expenseItems_string        )."
-                        WHERE EXPENSE_ID		= ". $db->qstr( $VAR['expenseID']           );
+                        WHERE EXPENSE_ID        = ". $db->qstr( $VAR['expenseID']           );
                         
-			
-	if(!$result = $db->Execute($sql)) {
-		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-		exit;
+            
+    if(!$result = $db->Execute($sql)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
     } else {
       return true;
     }
-	
+    
 } 
 
 #####################################
-#	Delete Record               #
+#    Delete Record               #
 #####################################
 
 function delete_expense($db, $expenseID){
-	$sql = "DELETE FROM ".PRFX."TABLE_EXPENSE WHERE EXPENSE_ID=".$db->qstr($expenseID);
-	
-	if(!$rs = $db->Execute($sql)) {
-		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-		exit;	
-	} else {
-		return true;
-	}	
+    $sql = "DELETE FROM ".PRFX."TABLE_EXPENSE WHERE EXPENSE_ID=".$db->qstr($expenseID);
+    
+    if(!$rs = $db->Execute($sql)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;    
+    } else {
+        return true;
+    }    
 }
 
 #####################################
@@ -231,20 +231,20 @@ function delete_expense($db, $expenseID){
 
 function display_expense_info($db, $expenseID){
 
-	$sql = "SELECT * FROM ".PRFX."TABLE_EXPENSE WHERE EXPENSE_ID=".$db->qstr($expenseID);
+    $sql = "SELECT * FROM ".PRFX."TABLE_EXPENSE WHERE EXPENSE_ID=".$db->qstr($expenseID);
 
-	if(!$result = $db->Execute($sql)) {
-		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-		exit;
-	} else {
-		$expense_array = array();
-	}
+    if(!$result = $db->Execute($sql)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
+    } else {
+        $expense_array = array();
+    }
 
-	while($row = $result->FetchRow()){
-		 array_push($expense_array, $row);
-	}
+    while($row = $result->FetchRow()){
+         array_push($expense_array, $row);
+    }
 
-	return $expense_array;
+    return $expense_array;
 }
 
 ##########################################
@@ -253,9 +253,9 @@ function display_expense_info($db, $expenseID){
 ##########################################
 
 function gateway_xml2php($module) {
-	global $smarty;
+    global $smarty;
 
-	//$file = FILE_ROOT."language".SEP.$module.SEP.LANG ;
+    //$file = FILE_ROOT."language".SEP.$module.SEP.LANG ;
         $file = FILE_ROOT."language".SEP.LANG ;
 
    $xml_parser = xml_parser_create();
@@ -270,17 +270,17 @@ function gateway_xml2php($module) {
    $xmlarray = array();
 
   foreach($arr_vals as $things){
-		if($things['tag'] != 'TRANSLATE' && $things['value'] != "" ){
+        if($things['tag'] != 'TRANSLATE' && $things['value'] != "" ){
 
                     $ttag = strtolower($things['tag']);
                     $tvalue = $things['value'];
 
                     $xmlarray[$ttag]= $tvalue;
                       
-		}
-	}
+        }
+    }
  
-	return $xmlarray;
+    return $xmlarray;
 }
 
 ######################################################
@@ -289,7 +289,7 @@ function gateway_xml2php($module) {
 ######################################################
 
 function expense_search_gateway($db, $expense_search_category, $expense_search_term) {
-	// global $smarty;
+    // global $smarty;
 
            $langvals = gateway_xml2php('expense');
 
@@ -490,62 +490,62 @@ function expense_search_gateway($db, $expense_search_category, $expense_search_t
 ######################################################
 
 function display_expense_search($db, $expense_search_category, $expense_search_term, $page_no, $smarty) {
-	global $smarty;
+    global $smarty;
 
-	// Define the number of results per page
-	$max_results = 25;
+    // Define the number of results per page
+    $max_results = 25;
 
-	// Figure out the limit for the Execute based
-	// on the current page number.
-	$from = (($page_no * $max_results) - $max_results);
+    // Figure out the limit for the Execute based
+    // on the current page number.
+    $from = (($page_no * $max_results) - $max_results);
 
-	$sql = "SELECT * FROM ".PRFX."TABLE_EXPENSE WHERE EXPENSE_$expense_search_category LIKE '$expense_search_term' ORDER BY EXPENSE_ID DESC LIMIT $from, $max_results";
+    $sql = "SELECT * FROM ".PRFX."TABLE_EXPENSE WHERE EXPENSE_$expense_search_category LIKE '$expense_search_term' ORDER BY EXPENSE_ID DESC LIMIT $from, $max_results";
 
-	//print $sql;
+    //print $sql;
 
-	if(!$result = $db->Execute($sql)) {
-		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-		exit;
-	} else {
-		$expense_search_result = array();
-	}
+    if(!$result = $db->Execute($sql)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
+    } else {
+        $expense_search_result = array();
+    }
 
-	while($row = $result->FetchRow()){
-		 array_push($expense_search_result, $row);
-	}
+    while($row = $result->FetchRow()){
+         array_push($expense_search_result, $row);
+    }
 
-	// Figure out the total number of results in DB:
-	$results = $db->Execute("SELECT COUNT(*) as Num FROM ".PRFX."TABLE_EXPENSE WHERE EXPENSE_$expense_search_category LIKE ".$db->qstr("$expense_search_term") );
+    // Figure out the total number of results in DB:
+    $results = $db->Execute("SELECT COUNT(*) as Num FROM ".PRFX."TABLE_EXPENSE WHERE EXPENSE_$expense_search_category LIKE ".$db->qstr("$expense_search_term") );
 
-	if(!$total_results = $results->FetchRow()) {
-		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-		exit;
-	} else {
-		$smarty->assign('total_results', $total_results['Num']);
-	}
+    if(!$total_results = $results->FetchRow()) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
+    } else {
+        $smarty->assign('total_results', $total_results['Num']);
+    }
 
-	// Figure out the total number of pages. Always round up using ceil()
-	$total_pages = ceil($total_results["Num"] / $max_results);
-	$smarty->assign('total_pages', $total_pages);
+    // Figure out the total number of pages. Always round up using ceil()
+    $total_pages = ceil($total_results["Num"] / $max_results);
+    $smarty->assign('total_pages', $total_pages);
 
-	// Assign the first page
-	if($page_no > 1) {
-    	$prev = ($page_no - 1);
-	}
+    // Assign the first page
+    if($page_no > 1) {
+        $prev = ($page_no - 1);
+    }
 
-	// Build Next Link
-	if($page_no < $total_pages){
-    	$next = ($page_no + 1);
-	}
+    // Build Next Link
+    if($page_no < $total_pages){
+        $next = ($page_no + 1);
+    }
 
-	$smarty->assign('items', $items);
-	$smarty->assign('page_no', $page_no);
-	$smarty->assign('previous', $prev);
-	$smarty->assign('next', $next);
+    $smarty->assign('items', $items);
+    $smarty->assign('page_no', $page_no);
+    $smarty->assign('previous', $prev);
+    $smarty->assign('next', $next);
         $smarty->assign('expense_search_category', $expense_search_category);
         $smarty->assign('expense_search_term', $expense_search_term);
 
-	return $expense_search_result;
+    return $expense_search_result;
 }
 
 ?>

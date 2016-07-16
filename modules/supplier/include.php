@@ -7,11 +7,11 @@
 function tax_rate($db){
 
 $q = 'SELECT * FROM '.PRFX.'SETUP';
-	if(!$rs = $db->execute($q)) {
-		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-		exit;
-	} else {
-		$tax_rate = $rs->fields['INVOICE_TAX'];
+    if(!$rs = $db->execute($q)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
+    } else {
+        $tax_rate = $rs->fields['INVOICE_TAX'];
                 return $tax_rate;
         }
 }
@@ -23,11 +23,11 @@ $q = 'SELECT * FROM '.PRFX.'SETUP';
 function date_format_call($db){
 
 $q = 'SELECT * FROM '.PRFX.'TABLE_COMPANY';
-	if(!$rs = $db->execute($q)) {
-		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-		exit;
-	} else {
-		$date_format = $rs->fields['COMPANY_DATE_FORMAT'];
+    if(!$rs = $db->execute($q)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
+    } else {
+        $date_format = $rs->fields['COMPANY_DATE_FORMAT'];
                 return $date_format;
         }
 }
@@ -39,11 +39,11 @@ $q = 'SELECT * FROM '.PRFX.'TABLE_COMPANY';
 function last_record_id_lookup($db){
 
 $q = 'SELECT * FROM '.PRFX.'TABLE_SUPPLIER ORDER BY SUPPLIER_ID DESC LIMIT 1';
-	if(!$rs = $db->execute($q)) {
-		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-		exit;
-	} else {
-		$last_record_id = $rs->fields['SUPPLIER_ID'];
+    if(!$rs = $db->execute($q)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
+    } else {
+        $last_record_id = $rs->fields['SUPPLIER_ID'];
                 return $last_record_id;
         }
 }
@@ -130,14 +130,14 @@ $supplierNotes_string = stripslashes($supplierNotes_string);
 $supplierItems_string = $VAR['supplierItems'];
 $supplierItems_string = stripslashes($supplierItems_string);
 
-	$sql = "INSERT INTO ".PRFX."TABLE_SUPPLIER SET
+    $sql = "INSERT INTO ".PRFX."TABLE_SUPPLIER SET
 
-			SUPPLIER_ID			= ". $db->qstr( $VAR['supplierID']          ).",
-			SUPPLIER_NAME			= ". $db->qstr( $VAR['supplierName']        ).",
-			SUPPLIER_CONTACT		= ". $db->qstr( $VAR['supplierContact']     ).",
-			SUPPLIER_TYPE			= ". $db->qstr( $VAR['supplierType']        ).",
-			SUPPLIER_PHONE                  = ". $db->qstr( $VAR['supplierPhone']       ).",
-			SUPPLIER_FAX                    = ". $db->qstr( $VAR['supplierFax']         ).",
+            SUPPLIER_ID            = ". $db->qstr( $VAR['supplierID']          ).",
+            SUPPLIER_NAME            = ". $db->qstr( $VAR['supplierName']        ).",
+            SUPPLIER_CONTACT        = ". $db->qstr( $VAR['supplierContact']     ).",
+            SUPPLIER_TYPE            = ". $db->qstr( $VAR['supplierType']        ).",
+            SUPPLIER_PHONE                  = ". $db->qstr( $VAR['supplierPhone']       ).",
+            SUPPLIER_FAX                    = ". $db->qstr( $VAR['supplierFax']         ).",
                         SUPPLIER_MOBILE                 = ". $db->qstr( $VAR['supplierMobile']      ).",
                         SUPPLIER_WWW                    = ". $db->qstr( $VAR['supplierWww']         ).",
                         SUPPLIER_EMAIL                  = ". $db->qstr( $VAR['supplierEmail']       ).",
@@ -148,13 +148,13 @@ $supplierItems_string = stripslashes($supplierItems_string);
                         SUPPLIER_NOTES                  = ". $db->qstr( $supplierNotes_string       ).",
                         SUPPLIER_DESCRIPTION            = ". $db->qstr( $supplierDescription_string );
 
-	if(!$result = $db->Execute($sql)) {
-		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-		exit;
+    if(!$result = $db->Execute($sql)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
     } /*else {
-		return true;
+        return true;
     } */
-	
+    
 } 
 
 #####################################
@@ -162,19 +162,19 @@ $supplierItems_string = stripslashes($supplierItems_string);
 #####################################
 
 function edit_info($db, $supplierID){
-	$sql = "SELECT * FROM ".PRFX."TABLE_SUPPLIER WHERE SUPPLIER_ID=".$db->qstr($supplierID);
-	
-	if(!$result = $db->Execute($sql)) {
-		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-		exit;
-	} else {
-		$row = $result->FetchRow();
-		return $row;
-	}
+    $sql = "SELECT * FROM ".PRFX."TABLE_SUPPLIER WHERE SUPPLIER_ID=".$db->qstr($supplierID);
+    
+    if(!$result = $db->Execute($sql)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
+    } else {
+        $row = $result->FetchRow();
+        return $row;
+    }
 }
 
 #####################################
-#	 Update Record              #
+#     Update Record              #
 #####################################
 
 function update_supplier($db,$VAR) {
@@ -191,13 +191,13 @@ $supplierNotes_string = stripslashes($supplierNotes_string);
 $supplierDescription_string = $VAR['supplierDescription'];
 $supplierDescription_string = stripslashes($supplierDescription_string);
 
-	$sql = "UPDATE ".PRFX."TABLE_SUPPLIER SET
+    $sql = "UPDATE ".PRFX."TABLE_SUPPLIER SET
 
-			SUPPLIER_NAME			= ". $db->qstr( $VAR['supplierName']        ).",
-			SUPPLIER_CONTACT		= ". $db->qstr( $VAR['supplierContact']     ).",
-			SUPPLIER_TYPE			= ". $db->qstr( $VAR['supplierType']        ).",
-			SUPPLIER_PHONE                  = ". $db->qstr( $VAR['supplierPhone']       ).",
-			SUPPLIER_FAX                    = ". $db->qstr( $VAR['supplierFax']         ).",
+            SUPPLIER_NAME            = ". $db->qstr( $VAR['supplierName']        ).",
+            SUPPLIER_CONTACT        = ". $db->qstr( $VAR['supplierContact']     ).",
+            SUPPLIER_TYPE            = ". $db->qstr( $VAR['supplierType']        ).",
+            SUPPLIER_PHONE                  = ". $db->qstr( $VAR['supplierPhone']       ).",
+            SUPPLIER_FAX                    = ". $db->qstr( $VAR['supplierFax']         ).",
                         SUPPLIER_MOBILE                 = ". $db->qstr( $VAR['supplierMobile']      ).",
                         SUPPLIER_WWW                    = ". $db->qstr( $VAR['supplierWww']         ).",
                         SUPPLIER_EMAIL                  = ". $db->qstr( $VAR['supplierEmail']       ).",
@@ -207,30 +207,30 @@ $supplierDescription_string = stripslashes($supplierDescription_string);
                         SUPPLIER_ZIP                    = ". $db->qstr( $VAR['supplierZip']         ).",
                         SUPPLIER_NOTES                  = ". $db->qstr( $supplierNotes_string       ).",
                         SUPPLIER_DESCRIPTION            = ". $db->qstr( $supplierDescription_string )."
-                        WHERE SUPPLIER_ID		= ". $db->qstr( $VAR['supplierID']          );                        
-			
-	if(!$result = $db->Execute($sql)) {
-		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-		exit;
+                        WHERE SUPPLIER_ID        = ". $db->qstr( $VAR['supplierID']          );                        
+            
+    if(!$result = $db->Execute($sql)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
     } else {
       return true;
     }
-	
+    
 } 
 
 #####################################
-#	Delete Record               #
+#    Delete Record               #
 #####################################
 
 function delete_supplier($db, $supplierID){
-	$sql = "DELETE FROM ".PRFX."TABLE_SUPPLIER WHERE SUPPLIER_ID=".$db->qstr($supplierID);
-	
-	if(!$rs = $db->Execute($sql)) {
-		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-		exit;	
-	} else {
-		return true;
-	}	
+    $sql = "DELETE FROM ".PRFX."TABLE_SUPPLIER WHERE SUPPLIER_ID=".$db->qstr($supplierID);
+    
+    if(!$rs = $db->Execute($sql)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;    
+    } else {
+        return true;
+    }    
 }
 
 #####################################
@@ -239,20 +239,20 @@ function delete_supplier($db, $supplierID){
 
 function display_supplier_info($db, $supplierID){
 
-	$sql = "SELECT * FROM ".PRFX."TABLE_SUPPLIER WHERE SUPPLIER_ID=".$db->qstr($supplierID);
+    $sql = "SELECT * FROM ".PRFX."TABLE_SUPPLIER WHERE SUPPLIER_ID=".$db->qstr($supplierID);
 
-	if(!$result = $db->Execute($sql)) {
-		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-		exit;
-	} else {
-		$supplier_array = array();
-	}
+    if(!$result = $db->Execute($sql)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
+    } else {
+        $supplier_array = array();
+    }
 
-	while($row = $result->FetchRow()){
-		 array_push($supplier_array, $row);
-	}
+    while($row = $result->FetchRow()){
+         array_push($supplier_array, $row);
+    }
 
-	return $supplier_array;
+    return $supplier_array;
 }
 
 ##########################################
@@ -261,9 +261,9 @@ function display_supplier_info($db, $supplierID){
 ##########################################
 
 function gateway_xml2php($module) {
-	global $smarty;
+    global $smarty;
 
-	//$file = FILE_ROOT."language".SEP.$module.SEP.LANG ;
+    //$file = FILE_ROOT."language".SEP.$module.SEP.LANG ;
         $file = FILE_ROOT."language".SEP.LANG ;
 
    $xml_parser = xml_parser_create();
@@ -278,17 +278,17 @@ function gateway_xml2php($module) {
    $xmlarray = array();
 
   foreach($arr_vals as $things){
-		if($things['tag'] != 'TRANSLATE' && $things['value'] != "" ){
+        if($things['tag'] != 'TRANSLATE' && $things['value'] != "" ){
 
                     $ttag = strtolower($things['tag']);
                     $tvalue = $things['value'];
 
                     $xmlarray[$ttag]= $tvalue;
                       
-		}
-	}
+        }
+    }
  
-	return $xmlarray;
+    return $xmlarray;
 }
 
 ######################################################
@@ -297,7 +297,7 @@ function gateway_xml2php($module) {
 ######################################################
 
 function supplier_search_gateway($db, $supplier_search_category, $supplier_search_term) {
-	// global $smarty;
+    // global $smarty;
 
            $langvals = gateway_xml2php('supplier');
 
@@ -377,62 +377,62 @@ function supplier_search_gateway($db, $supplier_search_category, $supplier_searc
 ######################################################
 
 function display_supplier_search($db, $supplier_search_category, $supplier_search_term, $page_no, $smarty) {
-	global $smarty;
+    global $smarty;
 
-	// Define the number of results per page
-	$max_results = 25;
+    // Define the number of results per page
+    $max_results = 25;
 
-	// Figure out the limit for the Execute based
-	// on the current page number.
-	$from = (($page_no * $max_results) - $max_results);
+    // Figure out the limit for the Execute based
+    // on the current page number.
+    $from = (($page_no * $max_results) - $max_results);
 
-	$sql = "SELECT * FROM ".PRFX."TABLE_SUPPLIER WHERE SUPPLIER_$supplier_search_category LIKE '$supplier_search_term' ORDER BY SUPPLIER_ID LIMIT $from, $max_results";
+    $sql = "SELECT * FROM ".PRFX."TABLE_SUPPLIER WHERE SUPPLIER_$supplier_search_category LIKE '$supplier_search_term' ORDER BY SUPPLIER_ID LIMIT $from, $max_results";
 
-	//print $sql;
+    //print $sql;
 
-	if(!$result = $db->Execute($sql)) {
-		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-		exit;
-	} else {
-		$supplier_search_result = array();
-	}
+    if(!$result = $db->Execute($sql)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
+    } else {
+        $supplier_search_result = array();
+    }
 
-	while($row = $result->FetchRow()){
-		 array_push($supplier_search_result, $row);
-	}
+    while($row = $result->FetchRow()){
+         array_push($supplier_search_result, $row);
+    }
 
-	// Figure out the total number of results in DB:
-	$results = $db->Execute("SELECT COUNT(*) as Num FROM ".PRFX."TABLE_SUPPLIER WHERE SUPPLIER_$supplier_search_category LIKE ".$db->qstr("$supplier_search_term") );
+    // Figure out the total number of results in DB:
+    $results = $db->Execute("SELECT COUNT(*) as Num FROM ".PRFX."TABLE_SUPPLIER WHERE SUPPLIER_$supplier_search_category LIKE ".$db->qstr("$supplier_search_term") );
 
-	if(!$total_results = $results->FetchRow()) {
-		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-		exit;
-	} else {
-		$smarty->assign('total_results', $total_results['Num']);
-	}
+    if(!$total_results = $results->FetchRow()) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
+    } else {
+        $smarty->assign('total_results', $total_results['Num']);
+    }
 
-	// Figure out the total number of pages. Always round up using ceil()
-	$total_pages = ceil($total_results["Num"] / $max_results);
-	$smarty->assign('total_pages', $total_pages);
+    // Figure out the total number of pages. Always round up using ceil()
+    $total_pages = ceil($total_results["Num"] / $max_results);
+    $smarty->assign('total_pages', $total_pages);
 
-	// Assign the first page
-	if($page_no > 1) {
-    	$prev = ($page_no - 1);
-	}
+    // Assign the first page
+    if($page_no > 1) {
+        $prev = ($page_no - 1);
+    }
 
-	// Build Next Link
-	if($page_no < $total_pages){
-    	$next = ($page_no + 1);
-	}
+    // Build Next Link
+    if($page_no < $total_pages){
+        $next = ($page_no + 1);
+    }
 
-	$smarty->assign('items', $items);
-	$smarty->assign('page_no', $page_no);
-	$smarty->assign('previous', $prev);
-	$smarty->assign('next', $next);
+    $smarty->assign('items', $items);
+    $smarty->assign('page_no', $page_no);
+    $smarty->assign('previous', $prev);
+    $smarty->assign('next', $next);
         $smarty->assign('supplier_search_category', $supplier_search_category);
         $smarty->assign('supplier_search_term', $supplier_search_term);
 
-	return $supplier_search_result;
+    return $supplier_search_result;
 }
 
 ?>

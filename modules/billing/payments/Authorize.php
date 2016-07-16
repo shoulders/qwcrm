@@ -8,7 +8,7 @@
  * proceed. Also, remember to read the readme file for this class.
  *
  * @package     Payment Gateway
- * @category	Library
+ * @category    Library
  * @author      Md Emran Hasan <phpfour@gmail.com>
  * @link        http://www.phpfour.com
  */
@@ -32,24 +32,24 @@ class Authorize extends PaymentGateway
     public $secret;
 
     /**
-	 * Initialize the Authorize.net gateway
-	 *
-	 * @param none
-	 * @return void
-	 */
-	public function __construct()
-	{
+     * Initialize the Authorize.net gateway
+     *
+     * @param none
+     * @return void
+     */
+    public function __construct()
+    {
         parent::__construct();
 
         // Some default values of the class
-		$this->gatewayUrl = 'https://secure.authorize.net/gateway/transact.dll';
-		$this->ipnLogFile = 'authorize.ipn_results.log';
+        $this->gatewayUrl = 'https://secure.authorize.net/gateway/transact.dll';
+        $this->ipnLogFile = 'authorize.ipn_results.log';
 
-		// Populate $fields array with a few default
-		$this->addField('x_Version',        '3.0');
+        // Populate $fields array with a few default
+        $this->addField('x_Version',        '3.0');
         $this->addField('x_Show_Form',      'PAYMENT_FORM');
-		$this->addField('x_Relay_Response', 'TRUE');
-	}
+        $this->addField('x_Relay_Response', 'TRUE');
+    }
 
     /**
      * Enables the test mode
@@ -98,17 +98,17 @@ class Authorize extends PaymentGateway
     }
 
     /**
-	 * Validate the IPN notification
-	 *
-	 * @param none
-	 * @return boolean
-	 */
-	public function validateIpn()
-	{
-	    foreach ($_POST as $field=>$value)
-		{
-			$this->ipnData["$field"] = $value;
-		}
+     * Validate the IPN notification
+     *
+     * @param none
+     * @return boolean
+     */
+    public function validateIpn()
+    {
+        foreach ($_POST as $field=>$value)
+        {
+            $this->ipnData["$field"] = $value;
+        }
 
         $invoice    = intval($this->ipnData['x_invoice_num']);
         $pnref      = $this->ipnData['x_trans_id'];
@@ -119,25 +119,25 @@ class Authorize extends PaymentGateway
         $md5source  = $this->secret . $this->login . $this->ipnData['x_trans_id'] . $this->ipnData['x_amount'];
         $md5        = md5($md5source);
 
-		if ($result == '1')
-		{
-		 	// Valid IPN transaction.
-		 	$this->logResults(true);
-		 	return true;
-		}
-		else if ($result != '1')
-		{
-		 	$this->lastError = $respmsg;
-			$this->logResults(false);
-			return false;
-		}
+        if ($result == '1')
+        {
+             // Valid IPN transaction.
+             $this->logResults(true);
+             return true;
+        }
+        else if ($result != '1')
+        {
+             $this->lastError = $respmsg;
+            $this->logResults(false);
+            return false;
+        }
         else if (strtoupper($md5) != $this->ipnData['x_MD5_Hash'])
         {
             $this->lastError = 'MD5 mismatch';
             $this->logResults(false);
             return false;
         }
-	}
+    }
 
     /**
      * RFC 2104 HMAC implementation for php.

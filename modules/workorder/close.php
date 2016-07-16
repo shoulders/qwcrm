@@ -1,26 +1,26 @@
 <?php
 if(!xml2php("workorder")) {
-	$smarty->assign('error_msg',"Error in language file");
+    $smarty->assign('error_msg',"Error in language file");
 }
 require_once ("include.php");
 
 if(empty($VAR['wo_id'])){
-	force_page('core', 'error&error_msg=No Work Order ID');
-	exit;
+    force_page('core', 'error&error_msg=No Work Order ID');
+    exit;
 }
 $wo_id = $VAR['wo_id'];
 
 /* Check if work Order Is already Closed*/
 $q = "SELECT WORK_ORDER_STATUS,WORK_ORDER_CURRENT_STATUS FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_ID=".$db->qstr($wo_id);
 if(!$rs = $db->execute($q)) {
-	force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-	exit;
+    force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+    exit;
 }
 
 if($rs->fields['WORK_ORDER_STATUS'] == 9) {
-	force_page('workorder', "view&wo_id=$wo_id&error_msg=Work Order Is already Closed. Please Create an Invoice.&page_title=Work Order ID $wo_id&type=info");
+    force_page('workorder', "view&wo_id=$wo_id&error_msg=Work Order Is already Closed. Please Create an Invoice.&page_title=Work Order ID $wo_id&type=info");
 } elseif ($rs->fields['WORK_ORDER_CURRENT_STATUS'] == 3) {
-	force_page('workorder', "view&wo_id=$wo_id&error_msg=Can not close a work order if it is Waiting For Parts. Please Adjust the status.&page_title=Work Order ID $wo_id&type=warning");
+    force_page('workorder', "view&wo_id=$wo_id&error_msg=Can not close a work order if it is Waiting For Parts. Please Adjust the status.&page_title=Work Order ID $wo_id&type=warning");
 }
 
 // loads resolution if it exists from the database
@@ -110,8 +110,8 @@ if($rs->fields['WORK_ORDER_STATUS'] == 9) {
 
 // If nothing else it loads the work order resolution page
 else {
-		$smarty->assign('wo_id', $VAR['wo_id']);
-		$smarty->display('workorder'.SEP.'close.tpl');
+        $smarty->assign('wo_id', $VAR['wo_id']);
+        $smarty->display('workorder'.SEP.'close.tpl');
      }
-	
+    
 ?>

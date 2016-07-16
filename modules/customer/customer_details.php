@@ -1,7 +1,7 @@
 <?php
 require_once("include.php");
 if(!xml2php("customer")) {
-	$smarty->assign('error_msg',"Error in language file");
+    $smarty->assign('error_msg',"Error in language file");
 }
 // Get the customers id from the url
 $customer_id = $VAR['customer_id'];
@@ -55,13 +55,13 @@ $src= "http://maps.google.com/maps?f=d&source=s_d&hl=en&geocode=&saddr=$f_caddre
 $smarty->assign('src',$src);
 
 // assign the arrays
-$smarty->assign('open_work_orders',	display_open_workorders($db, $customer_id));
-$smarty->assign('closed_work_orders',	display_closed_workorders($db, $customer_id));
-$smarty->assign('customer_details',	display_customer_info($db, $customer_id));
+$smarty->assign('open_work_orders',    display_open_workorders($db, $customer_id));
+$smarty->assign('closed_work_orders',    display_closed_workorders($db, $customer_id));
+$smarty->assign('customer_details',    display_customer_info($db, $customer_id));
 $smarty->assign('unpaid_invoices', display_unpaid_invoices($db,$customer_id));
 $smarty->assign('paid_invoices', display_paid_invoices($db,$customer_id));
-$smarty->assign('memo',	display_memo($db,$customer_id));
-$smarty->assign('gift',	display_gift($db, $customer_id));
+$smarty->assign('memo',    display_memo($db,$customer_id));
+$smarty->assign('gift',    display_gift($db, $customer_id));
 $smarty->assign('company_details',display_company_info($db, $company_id));
 
 

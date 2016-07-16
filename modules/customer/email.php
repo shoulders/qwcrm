@@ -3,7 +3,7 @@ require_once("include.php");
 //Required for swift mailer
 require_once (INCLUDE_URL.'/swift/lib/swift_required.php');
 if(!xml2php("customer")) {
-	$smarty->assign('error_msg',"Error in language file");
+    $smarty->assign('error_msg',"Error in language file");
 }
 // Lets grab some variables we need
 $email_username = $VAR['email_username'];
@@ -13,7 +13,7 @@ $email_server_port = $VAR['email_server_port2'];
 $customer_id = $VAR['customer_id'];
 $c2 = $VAR['c2'];
 $download_id = $VAR['download_id'];
-$submit		 = $VAR['submit'];
+$submit         = $VAR['submit'];
 $email_to = $VAR['email_to'];
 $email_from = $VAR['email_from'];
 $email_subject = $VAR['email_subject'];
@@ -39,14 +39,14 @@ $rs = $db->Execute($q);
 $employee_details = $rs->FetchRow();
 $smarty->assign('employee_details', $employee_details);
 // assign the arrays
-$smarty->assign('open_work_orders',	display_open_workorders($db, $customer_id));
-$smarty->assign('closed_work_orders',	display_closed_workorders($db, $customer_id));
-//$smarty->assign('customer_details',	display_customer_info($db, $customer_id));
+$smarty->assign('open_work_orders',    display_open_workorders($db, $customer_id));
+$smarty->assign('closed_work_orders',    display_closed_workorders($db, $customer_id));
+//$smarty->assign('customer_details',    display_customer_info($db, $customer_id));
 $smarty->assign('customer_details',$customer_details);
 $smarty->assign('unpaid_invoices', display_unpaid_invoices($db,$customer_id));
 $smarty->assign('paid_invoices', display_paid_invoices($db,$customer_id));
-$smarty->assign('memo',	display_memo($db,$customer_id));
-$smarty->assign('gift',	display_gift($db, $customer_id));
+$smarty->assign('memo',    display_memo($db,$customer_id));
+$smarty->assign('gift',    display_gift($db, $customer_id));
 $smarty->assign('company_details',display_company_info($db, $company_id));
 //Lets Get the file downloaded to have a look at it from the database
 if(isset ($download_id)){
@@ -72,23 +72,23 @@ if(isset ($submit)){
     fclose($fp);
     }
     $sql = "INSERT INTO ".PRFX."TABLE_CUSTOMER_EMAILS SET
-			CUSTOMER_ID             = ". $db->qstr($VAR["c2"]).",
-			CUSTOMER_EMAIL_ADDRESS	= ". $db->qstr( $VAR["email_to"]).",
-			CUSTOMER_FROM_EMAIL_ADDRESS = ". $db->qstr( $VAR["email_from"]).",
-			CUSTOMER_EMAIL_SENT_BY		= ". $db->qstr( $login ).", 
-			CUSTOMER_EMAIL_SENT_ON		= ". $db->qstr( time()).",
-			CUSTOMER_EMAIL_SUBJECT		= ". $db->qstr( $VAR["email_subject"]).",
-			CUSTOMER_EMAIL_BODY	= ". $db->qstr( $VAR["message_body"]).",
-			CUSTOMER_EMAIL_ATT_NAME1	= ". $db->qstr( $_FILES['attachment1']['name']).",
-			CUSTOMER_EMAIL_ATT_TYPE1		= ". $db->qstr( $_FILES['attachment1']['type']).",
-			CUSTOMER_EMAIL_ATT_SIZE1		= ". $db->qstr( $_FILES['attachment1']['size']).",
-			CUSTOMER_EMAIL_ATT_FILE1	= ". $db->qstr( $content1 ); 
-			
-			
-			
-	if(!$result = $db->Execute($sql)) {
-		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-		exit;
+            CUSTOMER_ID             = ". $db->qstr($VAR["c2"]).",
+            CUSTOMER_EMAIL_ADDRESS    = ". $db->qstr( $VAR["email_to"]).",
+            CUSTOMER_FROM_EMAIL_ADDRESS = ". $db->qstr( $VAR["email_from"]).",
+            CUSTOMER_EMAIL_SENT_BY        = ". $db->qstr( $login ).", 
+            CUSTOMER_EMAIL_SENT_ON        = ". $db->qstr( time()).",
+            CUSTOMER_EMAIL_SUBJECT        = ". $db->qstr( $VAR["email_subject"]).",
+            CUSTOMER_EMAIL_BODY    = ". $db->qstr( $VAR["message_body"]).",
+            CUSTOMER_EMAIL_ATT_NAME1    = ". $db->qstr( $_FILES['attachment1']['name']).",
+            CUSTOMER_EMAIL_ATT_TYPE1        = ". $db->qstr( $_FILES['attachment1']['type']).",
+            CUSTOMER_EMAIL_ATT_SIZE1        = ". $db->qstr( $_FILES['attachment1']['size']).",
+            CUSTOMER_EMAIL_ATT_FILE1    = ". $db->qstr( $content1 ); 
+            
+            
+            
+    if(!$result = $db->Execute($sql)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
     }
 //print $sql ;
 $transport = Swift_smtpTransport::newInstance( "$email_server" , $email_server_port );

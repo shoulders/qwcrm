@@ -5,7 +5,7 @@ require_once('include.php');
 
 // Load the Translations for this Module
 if(!xml2php('expense')) {
-	$smarty->assign('error_msg',"Error in language file");
+    $smarty->assign('error_msg',"Error in language file");
 }
 
 // This sets page to number. goto_page-->page--> sets as 1 if no value

@@ -1,6 +1,6 @@
 <?php
 if(!xml2php("core")) {
-	$smarty->assign('error_msg',"Error in language file");
+    $smarty->assign('error_msg',"Error in language file");
 }
 $ip = $_SERVER['REMOTE_ADDR'];
 $id = $login_id;
@@ -16,18 +16,18 @@ $smarty->assign('today',$today);
 
 if(!$login)
 {
-	$smarty->assign('login', '');
+    $smarty->assign('login', '');
 } else {
-	$smarty->assign('login', $login);
-	$smarty->assign('display_login', $login);
-	$smarty->assign('login_id', $_SESSION['login_id']);
-	$smarty->assign('wo_id', $wo_id);
-	$smarty->assign('cust_id',$cus_id);
+    $smarty->assign('login', $login);
+    $smarty->assign('display_login', $login);
+    $smarty->assign('login_id', $_SESSION['login_id']);
+    $smarty->assign('wo_id', $wo_id);
+    $smarty->assign('cust_id',$cus_id);
         $smarty->assign('expenseID', $expenseID);
         $smarty->assign('refundID', $refundID);
         $smarty->assign('supplierID', $supplierID);
-	$smarty->assign('ip',$ip);
-	$smarty->assign('employee_id',$employee_id);
+    $smarty->assign('ip',$ip);
+    $smarty->assign('employee_id',$employee_id);
 }
 
 /* Stats */

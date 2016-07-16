@@ -3,7 +3,7 @@
 require_once ('include.php');
 
 if(!xml2php("invoice")) {
-	$smarty->assign('error_msg',"Error in language file");
+    $smarty->assign('error_msg',"Error in language file");
 }
 
 // Grab customers Information
@@ -18,12 +18,12 @@ $smarty->assign('customer_id', $VAR['customer_id']);
 
 /* get Date Formatting value from database and assign it to $format*/
 $q = 'SELECT * FROM '.PRFX.'TABLE_COMPANY';
-	if(!$rs = $db->execute($q)) {
-		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-		exit;
-	} else {
-		$format = $rs->fields['COMPANY_DATE_FORMAT'];
-	}
+    if(!$rs = $db->execute($q)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
+    } else {
+        $format = $rs->fields['COMPANY_DATE_FORMAT'];
+    }
 
 
 // Stripping out the percentage signs so php can render it correctly
@@ -41,8 +41,8 @@ $smarty->assign('format', $format);
 
 /* Generic error control */
 if($wo_id == '' && $wo_id != "0") {
-	/* If no work order ID then we dont belong here */
-	force_page('core', 'error&error_msg=No Work Order ID');
+    /* If no work order ID then we dont belong here */
+    force_page('core', 'error&error_msg=No Work Order ID');
 
         } else {
                 $q = "SELECT WORK_ORDER_STATUS  FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_ID=".$db->qstr($wo_id);
@@ -53,11 +53,11 @@ if($wo_id == '' && $wo_id != "0") {
                 $smarty->assign('wo_status', $rs->fields['WORK_ORDER_STATUS']);
                 $smarty->assign('wo_id', $wo_id);
                 }
-	
+    
 /* check if we have a customer id and if so get details */
 if($customer_id == "" || $customer_id == "0"){
-		force_page('core', 'error&error_msg=No Customer ID&menu=1');
-		exit;
+        force_page('core', 'error&error_msg=No Customer ID&menu=1');
+        exit;
 
         } else {
                 $q = "SELECT * FROM ".PRFX."TABLE_CUSTOMER WHERE CUSTOMER_ID=".$db->qstr($customer_id);
@@ -77,14 +77,14 @@ if($customer_id == "" || $customer_id == "0"){
                 }
 
 ##################################
-# If We have a Submit 		 #
+# If We have a Submit          #
 ##################################
 
 if(isset($submit)){
-	
-	if($VAR['invoice_id'] == ''){
-		force_page('core', 'error&error_msg=No Invoice ID');
-	}
+    
+    if($VAR['invoice_id'] == ''){
+        force_page('core', 'error&error_msg=No Invoice ID');
+    }
      /* This formats the two dates from dd/mm/yyyy to proper sql string time*/
         // Invoice Date
         if($format == "%d/%m/%Y"){
@@ -107,25 +107,25 @@ if(isset($submit)){
          $timestamp2 = mktime(0,0,0,$date_part2[0],$date_part2[1],$date_part2[2]);
          $datef2 = $timestamp2;
         }
-	
-	$date = $datef;
-	$due_date = $datef2;
-	$test = $desc2['LABOR_RATE_NAME'];
-	$create_by = $VAR['create_by'];
-	$wo_id = $VAR['wo_id'];
+    
+    $date = $datef;
+    $due_date = $datef2;
+    $test = $desc2['LABOR_RATE_NAME'];
+    $create_by = $VAR['create_by'];
+    $wo_id = $VAR['wo_id'];
 
- 	/* insert Labor into database */
-	if($VAR['hour'] > 0 ) {
-		$i = 1;
-		$sql = "INSERT INTO ".PRFX."TABLE_INVOICE_LABOR (INVOICE_ID, EMPLOYEE_ID, INVOICE_LABOR_DESCRIPTION, INVOICE_LABOR_RATE, INVOICE_LABOR_UNIT, INVOICE_LABOR_SUBTOTAL) VALUES ";
-		
-		foreach($VAR['hour'] as $key=>$val) {
-			$sql .="(".$db->qstr($VAR['invoice_id']).", '1', ".$db->qstr($VAR['description'][$i]).", ".$db->qstr($VAR['rate'][$i]).", ".$db->qstr($val).", ".$db->qstr($val * $VAR['rate'][$i])."),"; 
-			$ss = $val * $VAR['rate'][$i];
+     /* insert Labor into database */
+    if($VAR['hour'] > 0 ) {
+        $i = 1;
+        $sql = "INSERT INTO ".PRFX."TABLE_INVOICE_LABOR (INVOICE_ID, EMPLOYEE_ID, INVOICE_LABOR_DESCRIPTION, INVOICE_LABOR_RATE, INVOICE_LABOR_UNIT, INVOICE_LABOR_SUBTOTAL) VALUES ";
+        
+        foreach($VAR['hour'] as $key=>$val) {
+            $sql .="(".$db->qstr($VAR['invoice_id']).", '1', ".$db->qstr($VAR['description'][$i]).", ".$db->qstr($VAR['rate'][$i]).", ".$db->qstr($val).", ".$db->qstr($val * $VAR['rate'][$i])."),"; 
+            $ss = $val * $VAR['rate'][$i];
                         $temp_sub_total = $temp_sub_total + $ss;
-			//$sub_total = $sub_total + $ss;
-			//$sub_total = $sub_total;
-			$i++;
+            //$sub_total = $sub_total + $ss;
+            //$sub_total = $sub_total;
+            $i++;
                         }
                         /* Strip off last , */
                         $sql = substr($sql ,0,-1);
@@ -134,27 +134,27 @@ if(isset($submit)){
                                 exit;
                                 }
             }
-	
-	/* insert Parts if set */
-	if($VAR['count'] > 0 ) {
-		$i = 1;
-		$sql = "INSERT INTO ".PRFX."TABLE_INVOICE_PARTS (INVOICE_ID,INVOICE_PARTS_MANUF,INVOICE_PARTS_MFID,INVOICE_PARTS_DESCRIPTION,INVOICE_PARTS_WARRANTY,INVOICE_PARTS_AMOUNT,INVOICE_PARTS_COUNT,INVOICE_PARTS_SUBTOTAL) VALUES ";
-		foreach($VAR['count'] as $key=>$val) {
-			$sql .="(".$db->qstr($VAR['invoice_id']).",".$db->qstr($VAR['manufacture'][$i]).",'',".$db->qstr($VAR['parts_description'][$i]).",'',".$db->qstr($VAR['parts_price'][$i]).",".$db->qstr($val).", ".$db->qstr($val * $VAR['parts_price'][$i])."),";
-			$ss =  $val * $VAR['parts_price'][$i];
-			//$sub_total = $sub_total + $ss;
+    
+    /* insert Parts if set */
+    if($VAR['count'] > 0 ) {
+        $i = 1;
+        $sql = "INSERT INTO ".PRFX."TABLE_INVOICE_PARTS (INVOICE_ID,INVOICE_PARTS_MANUF,INVOICE_PARTS_MFID,INVOICE_PARTS_DESCRIPTION,INVOICE_PARTS_WARRANTY,INVOICE_PARTS_AMOUNT,INVOICE_PARTS_COUNT,INVOICE_PARTS_SUBTOTAL) VALUES ";
+        foreach($VAR['count'] as $key=>$val) {
+            $sql .="(".$db->qstr($VAR['invoice_id']).",".$db->qstr($VAR['manufacture'][$i]).",'',".$db->qstr($VAR['parts_description'][$i]).",'',".$db->qstr($VAR['parts_price'][$i]).",".$db->qstr($val).", ".$db->qstr($val * $VAR['parts_price'][$i])."),";
+            $ss =  $val * $VAR['parts_price'][$i];
+            //$sub_total = $sub_total + $ss;
                         $temp_sub_total = $temp_sub_total + $ss;
-			$i++;
-		}
-		$sql = substr($sql ,0,-1);
-		if(!$rs = $db->Execute($sql)) {
-			force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
-			exit;
+            $i++;
+        }
+        $sql = substr($sql ,0,-1);
+        if(!$rs = $db->Execute($sql)) {
+            force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
+            exit;
                         }
-	}	
+    }    
 
 ###########################################
-#	Update and Calculate Invoice      #
+#    Update and Calculate Invoice      #
 ###########################################
 
         // Calculate Sub Total
@@ -163,31 +163,31 @@ if(isset($submit)){
         $parts_sub_total_sum = parts_sub_total_sum ($db, $VAR['invoice_id']);
         $sub_total = $labour_sub_total_sum + $parts_sub_total_sum;
         
-       	// Calculate Discount
-	if(empty($VAR['discount'])) {
-		$q = "SELECT DISCOUNT FROM ".PRFX."TABLE_CUSTOMER WHERE CUSTOMER_ID =$customer_id";
-		$rs = $db->execute($q);
-		$discount = $rs->fields['DISCOUNT'];
-	} else {
-		$discount_rate = $VAR['discount'];
+           // Calculate Discount
+    if(empty($VAR['discount'])) {
+        $q = "SELECT DISCOUNT FROM ".PRFX."TABLE_CUSTOMER WHERE CUSTOMER_ID =$customer_id";
+        $rs = $db->execute($q);
+        $discount = $rs->fields['DISCOUNT'];
+    } else {
+        $discount_rate = $VAR['discount'];
                 }
-	if(($VAR['discount']) == 0) {
-		$discount_rate = 0.0;
-	} else {
-		$discount_rate = $VAR['discount'];
+    if(($VAR['discount']) == 0) {
+        $discount_rate = 0.0;
+    } else {
+        $discount_rate = $VAR['discount'];
                 }
 
-	$discount_rate = $discount_rate / 100; // turns 17.5 in to 0.175
-	$discount_amount = $sub_total * $discount_rate;
+    $discount_rate = $discount_rate / 100; // turns 17.5 in to 0.175
+    $discount_amount = $sub_total * $discount_rate;
 
         // Calculate Shipping
         $shipping = $VAR['shipping'];
-	
+    
         // Calculate Tax
-	$q = "SELECT INVOICE_TAX FROM ".PRFX."SETUP";
-	$rs = $db->execute($q);
-	$tax = $rs->fields['INVOICE_TAX'];
-	$tax_rate = $tax / 100; // turns 17.5 in to 0.175
+    $q = "SELECT INVOICE_TAX FROM ".PRFX."SETUP";
+    $rs = $db->execute($q);
+    $tax = $rs->fields['INVOICE_TAX'];
+    $tax_rate = $tax / 100; // turns 17.5 in to 0.175
         $tax_amount = ($sub_total - $discount_amount + $shipping) * $tax_rate;
 
         $smarty->assign('tax_rate', $tax);
@@ -198,58 +198,58 @@ if(isset($submit)){
 
         // Calculate Balance - Prevents resubmissions balance errors
         if (!isset ($paid_amount)) {
-		$q = "SELECT PAID_AMOUNT FROM ".PRFX."TABLE_INVOICE WHERE INVOICE_ID =".$VAR['invoice_id'];
-		$rs = $db->execute($q);
-		$paid_amount = $rs->fields['PAID_AMOUNT'];
+        $q = "SELECT PAID_AMOUNT FROM ".PRFX."TABLE_INVOICE WHERE INVOICE_ID =".$VAR['invoice_id'];
+        $rs = $db->execute($q);
+        $paid_amount = $rs->fields['PAID_AMOUNT'];
         }
         $invoice_balance = $invoice_total - $paid_amount;
        
         
-	/* update database */
-		$q = "UPDATE ".PRFX."TABLE_INVOICE SET
-			INVOICE_DATE		=". $db->qstr( $date).",
-			CUSTOMER_ID		=". $db->qstr( $customer_id).",
-			EMPLOYEE_ID		=". $db->qstr( $_SESSION['login_id']).",
-			DISCOUNT		=". $db->qstr( number_format($discount_amount, 2,'.', '')).",
-			SUB_TOTAL 		=". $db->qstr( number_format($sub_total, 2,'.', '')).",
-			INVOICE_AMOUNT	        =". $db->qstr( number_format($invoice_total, 2,'.', '')).",
-                        TAX_RATE 	        =". $db->qstr( number_format($tax, 3,'.', '')).",
+    /* update database */
+        $q = "UPDATE ".PRFX."TABLE_INVOICE SET
+            INVOICE_DATE        =". $db->qstr( $date).",
+            CUSTOMER_ID        =". $db->qstr( $customer_id).",
+            EMPLOYEE_ID        =". $db->qstr( $_SESSION['login_id']).",
+            DISCOUNT        =". $db->qstr( number_format($discount_amount, 2,'.', '')).",
+            SUB_TOTAL         =". $db->qstr( number_format($sub_total, 2,'.', '')).",
+            INVOICE_AMOUNT            =". $db->qstr( number_format($invoice_total, 2,'.', '')).",
+                        TAX_RATE             =". $db->qstr( number_format($tax, 3,'.', '')).",
                         DISCOUNT_APPLIED        =". $db->qstr( number_format($discount_rate * 100, 2,'.', '')).",
-                        BALANCE 	        =". $db->qstr( number_format($invoice_balance, 2,'.', '')).",
-			TAX 			=". $db->qstr( number_format($tax_amount, 2,'.', '')).",
-			INVOICE_DUE		=". $db->qstr( $due_date)." 
-			WHERE INVOICE_ID        =".$db->qstr( $VAR['invoice_id']);
+                        BALANCE             =". $db->qstr( number_format($invoice_balance, 2,'.', '')).",
+            TAX             =". $db->qstr( number_format($tax_amount, 2,'.', '')).",
+            INVOICE_DUE        =". $db->qstr( $due_date)." 
+            WHERE INVOICE_ID        =".$db->qstr( $VAR['invoice_id']);
 
-	if(!$rs = $db->Execute($q)){
-		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
-		exit;
-	}
-	if( $VAR['discount'] >= 100){
+    if(!$rs = $db->Execute($q)){
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
+        exit;
+    }
+    if( $VAR['discount'] >= 100){
                 $q = "UPDATE ".PRFX."TABLE_WORK_ORDER SET
-			WORK_ORDER_STATUS       	= '6',
-			WORK_ORDER_CURRENT_STATUS 	= '8'
-			WHERE WORK_ORDER_ID 		=".$db->qstr($wo_id);
-			if(!$rs = $db->execute($q)) {
-			force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
-			exit;
-			}
-	}
-	if( $VAR['discount'] >= 100){
-	/* update the invoice */	
-		$q = "UPDATE ".PRFX."TABLE_INVOICE SET
-			PAID_DATE  			= ".$db->qstr(time()).", 
-			PAID_AMOUNT 			= '0',
-			INVOICE_PAID			= '1'
-			WHERE INVOICE_ID                = ".$db->qstr( $VAR['invoice_id']);
-			
-		if(!$rs = $db->execute($q)) {
-			force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
-			exit;
-		}
-	}
+            WORK_ORDER_STATUS           = '6',
+            WORK_ORDER_CURRENT_STATUS     = '8'
+            WHERE WORK_ORDER_ID         =".$db->qstr($wo_id);
+            if(!$rs = $db->execute($q)) {
+            force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
+            exit;
+            }
+    }
+    if( $VAR['discount'] >= 100){
+    /* update the invoice */    
+        $q = "UPDATE ".PRFX."TABLE_INVOICE SET
+            PAID_DATE              = ".$db->qstr(time()).", 
+            PAID_AMOUNT             = '0',
+            INVOICE_PAID            = '1'
+            WHERE INVOICE_ID                = ".$db->qstr( $VAR['invoice_id']);
+            
+        if(!$rs = $db->execute($q)) {
+            force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
+            exit;
+        }
+    }
 
         /* send back to the invoice page - this loads the page with no POST variables */
-	force_page('invoice', 'new&wo_id='.$wo_id.'&customer_id='.$customer_id.'&invoice_id='.$VAR['invoice_id']);
+    force_page('invoice', 'new&wo_id='.$wo_id.'&customer_id='.$customer_id.'&invoice_id='.$VAR['invoice_id']);
         
 ############################################
 # Create New Invoice or load from database # // when page loads with no button presssed
@@ -257,13 +257,13 @@ if(isset($submit)){
 
 } else {
 
-	/* check if an invoice has been created else create a new invoice for this workorder section done by counting logic*/
-	$q = "SELECT count(*) as count FROM ".PRFX."TABLE_INVOICE WHERE WORKORDER_ID=".$db->qstr($wo_id);
-	$rs = $db->Execute($q);
-	$count = $rs->fields['count'];
+    /* check if an invoice has been created else create a new invoice for this workorder section done by counting logic*/
+    $q = "SELECT count(*) as count FROM ".PRFX."TABLE_INVOICE WHERE WORKORDER_ID=".$db->qstr($wo_id);
+    $rs = $db->Execute($q);
+    $count = $rs->fields['count'];
         //$invoice_id = $VAR['invoice_id']; // might not be able to use dynamic variables in if statement
         // if no invoice exists for this work order id / new invoice no WO - then create invoice
-	if($count == 0 || ($wo_id == "0" && $VAR['invoice_type'] == 'invoice-only')) {
+    if($count == 0 || ($wo_id == "0" && $VAR['invoice_type'] == 'invoice-only')) {
 
                         $q = "INSERT INTO ".PRFX."TABLE_INVOICE SET
                                         INVOICE_DATE            =".$db->qstr(time()).",
@@ -286,9 +286,9 @@ if(isset($submit)){
                         // This runs when invoices have attached work orders
                         if($count == 0 && $wo_id > 0){
                                 $sql = "INSERT INTO ".PRFX."TABLE_WORK_ORDER_STATUS SET
-                                                WORK_ORDER_ID			=".$db->qstr($wo_id).",
-                                                WORK_ORDER_STATUS_DATE		=".$db->qstr(time()).",
-                                                WORK_ORDER_STATUS_NOTES		=".$db->qstr($msg).",
+                                                WORK_ORDER_ID            =".$db->qstr($wo_id).",
+                                                WORK_ORDER_STATUS_DATE        =".$db->qstr(time()).",
+                                                WORK_ORDER_STATUS_NOTES        =".$db->qstr($msg).",
                                                 WORK_ORDER_STATUS_ENTER_BY      =".$db->qstr($_SESSION['login_id']);
 
                                                 if(!$result = $db->Execute($sql)) {
@@ -325,7 +325,7 @@ if(isset($submit)){
                                    // add } else { here for another error ie undefined to allow fail gracefully
 
 
-		/* get any labor details */
+        /* get any labor details */
                 $q = "SELECT * FROM ".PRFX."TABLE_INVOICE_LABOR WHERE INVOICE_ID=".$db->qstr($invoice['INVOICE_ID']);
                 $rs = $db->execute($q);
                 $labor = $rs->GetArray();
@@ -359,7 +359,7 @@ if(isset($submit)){
                 $rs = $db->execute($q);
                 $rate = $rs->GetArray();
                 $smarty->assign('rate', $rate);
-				
+                
                 /* Assign company information */
                 $q = "SELECT * FROM ".PRFX."TABLE_COMPANY";
                 $rs = $db->Execute($q);
@@ -378,9 +378,9 @@ if(isset($submit)){
                 // If discount is greate than 100% then these close WO and mark the invoice as paid
                 if( $VAR['discount'] >= 100){
                 $q = "UPDATE ".PRFX."TABLE_WORK_ORDER SET
-                                WORK_ORDER_STATUS		= '6',
-                                WORK_ORDER_CURRENT_STATUS 	= '8'
-                                WHERE WORK_ORDER_ID 		=".$db->qstr($wo_id);
+                                WORK_ORDER_STATUS        = '6',
+                                WORK_ORDER_CURRENT_STATUS     = '8'
+                                WHERE WORK_ORDER_ID         =".$db->qstr($wo_id);
                                 if(!$rs = $db->execute($q)) {
                                 force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
                                 exit;
@@ -389,10 +389,10 @@ if(isset($submit)){
                 if( $VAR['discount'] >= 100){
                 /* update the invoice */
                         $q = "UPDATE ".PRFX."TABLE_INVOICE SET
-                                PAID_DATE  		= ".$db->qstr(time()).",
-                                PAID_AMOUNT 		= '0',
-                                INVOICE_PAID		= '1'
-                                WHERE INVOICE_ID 	= ".$db->qstr( $VAR['invoice_id']);
+                                PAID_DATE          = ".$db->qstr(time()).",
+                                PAID_AMOUNT         = '0',
+                                INVOICE_PAID        = '1'
+                                WHERE INVOICE_ID     = ".$db->qstr( $VAR['invoice_id']);
 
                         if(!$rs = $db->execute($q)) {
                                 force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
@@ -402,16 +402,16 @@ if(isset($submit)){
         }
 
 ##################################
-# If We have a Submit2 		 #
+# If We have a Submit2          #
 ##################################
 
 if(isset($submit2) && $wo_id != "0"){
-	$q = "UPDATE ".PRFX."TABLE_WORK_ORDER SET
-			WORK_ORDER_STATUS		= '6',
-			WORK_ORDER_CURRENT_STATUS 	= '8'
-			WHERE WORK_ORDER_ID 		=".$db->qstr($wo_id);
-			if(!$rs = $db->execute($q)) {
-			force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
-			exit;
-			}
+    $q = "UPDATE ".PRFX."TABLE_WORK_ORDER SET
+            WORK_ORDER_STATUS        = '6',
+            WORK_ORDER_CURRENT_STATUS     = '8'
+            WHERE WORK_ORDER_ID         =".$db->qstr($wo_id);
+            if(!$rs = $db->execute($q)) {
+            force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
+            exit;
+            }
             }

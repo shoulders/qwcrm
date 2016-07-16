@@ -1,6 +1,6 @@
 <?php
 if(!xml2php("core")) {
-	$smarty->assign('error_msg',"Error in language file");
+    $smarty->assign('error_msg',"Error in language file");
 }
 //$employee_id = $VAR['employee_id'];
 $sch_id = $VAR['sch_id'];
@@ -11,9 +11,9 @@ $y1 = $VAR['y'] ;
 $m1 = $VAR['m'];
 $d1 = $VAR['d'];
 } else {
-$y1 =	(Date("Y"));
-$m1 =	(Date("m"));
-$d1 =	(Date("d"));
+$y1 =    (Date("Y"));
+$m1 =    (Date("m"));
+$d1 =    (Date("d"));
 }
 $smarty->assign('y1',$y1);
 $smarty->assign('m1',$m1);
@@ -81,7 +81,7 @@ $cred = $rs->FetchRow();
 //$smarty->assign('login',$login);
 $smarty->assign('cred',$cred);
 $smarty->assign('unassigned',$unassigned);
-$smarty->assign('status2',$status2);	
+$smarty->assign('status2',$status2);    
 $smarty->display('core'.SEP.'navagation.tpl');
 
 ?>

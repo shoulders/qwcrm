@@ -1,45 +1,45 @@
 <?php
 if(!xml2php("billing")) {
-	$smarty->assign('error_msg',"Error in language file");
+    $smarty->assign('error_msg',"Error in language file");
 }
 $paypal_amount  = $VAR['paypal_amount'];
-$customer_id	= $VAR['customer_id'];
-$invoice_id	= $VAR['invoice_id'];
-$workorder_id	= $VAR['workorder_id'];
+$customer_id    = $VAR['customer_id'];
+$invoice_id    = $VAR['invoice_id'];
+$workorder_id    = $VAR['workorder_id'];
 
 /* get company Info */
 $q = "SELECT COMPANY_NAME, COMPANY_COUNTRY FROM ".PRFX."TABLE_COMPANY";
-	if(!$rs = $db->execute($q)) {
-		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-		exit;
-	}
-$company			= $rs->fields['COMPANY_NAME'];
-$country			= $rs->fields['COMPANY_COUNTRY'];
+    if(!$rs = $db->execute($q)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
+    }
+$company            = $rs->fields['COMPANY_NAME'];
+$country            = $rs->fields['COMPANY_COUNTRY'];
 
 /* get invoice details */
 $q = "SELECT * FROM ".PRFX."TABLE_INVOICE WHERE INVOICE_ID=".$db->qstr($invoice_id);
 if(!$rs = $db->execute($q)) {
-	force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
-	exit;
+    force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
+    exit;
 }
 $invoice_details = $rs->FetchRow();
 //Check to see if we are processing more then required
 if($invoice_details['BALANCE'] < $paypal_amount){
-		force_page('billing', 'new&wo_id='.$workorder_id.'&customer_id='.$customer_id.'	&invoice_id='.$invoice_id.'&error_msg= You can not bill more than the amount of the invoice.');
-			exit;
-	}
+        force_page('billing', 'new&wo_id='.$workorder_id.'&customer_id='.$customer_id.'    &invoice_id='.$invoice_id.'&error_msg= You can not bill more than the amount of the invoice.');
+            exit;
+    }
 
 /* get pay pal login */
 $q = "SELECT PP_ID FROM ".PRFX."SETUP";
-	if(!$rs = $db->execute($q)) {
-		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-		exit;
-	}
-$pay_pal_email	= $rs->fields['PP_ID'];
+    if(!$rs = $db->execute($q)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
+    }
+$pay_pal_email    = $rs->fields['PP_ID'];
 
 /* get invoice totals */
-$amount		= $VAR['paypal_amount'];
-$invoice_id	= $VAR['invoice_id'];
+$amount        = $VAR['paypal_amount'];
+$invoice_id    = $VAR['invoice_id'];
 
 //$content = "cmd=_xclick&business=".$pay_pal_email."&item_name=".$company."&item_number=".$invoice_id."&description=Invoice#&amount=".$amount."&no_note=0&currency_code=".$curency_code."&lc=".$country."&bn=PP-BuyNowBF";
 //

@@ -5,7 +5,7 @@ require_once('include.php');
 
 // Load the Translations for this Module
 if(!xml2php('expense')) {
-	$smarty->assign('error_msg',"Error in language file");
+    $smarty->assign('error_msg',"Error in language file");
 }
 
 $expenseID = $VAR['expenseID'];
@@ -15,9 +15,9 @@ $langvals = gateway_xml2php('expense');
 
 // Make sure we got an Expense ID number
 if(!isset($expenseID) || $expenseID =="") {
-	$smarty->assign('results', 'Please go back and select an expense record');
-	die;
-}	
+    $smarty->assign('results', 'Please go back and select an expense record');
+    die;
+}    
 
 // Delete the expense function call
 if(!delete_expense($db,$expenseID)) {

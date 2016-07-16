@@ -2,10 +2,10 @@
 
 $smarty->display('core'.SEP.'footer.tpl');
 //$smarty->assign('VERSION', MYIT_CRM_VERSION);
-if(debug == 'yes')	{
-	echo 'PHP script executed in: ' . (getMicroTime() - $start .' secs<br>');
-       	
-	unset($VAR);
+if(debug == 'yes')    {
+    echo 'PHP script executed in: ' . (getMicroTime() - $start .' secs<br>');
+           
+    unset($VAR);
 {
 if (!empty($_SERVER['HTTP_CLIENT_IP'])) //check ip from share internet
 {

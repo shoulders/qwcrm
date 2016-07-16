@@ -5,7 +5,7 @@
 require_once ('include.php');
 header('Content-type: text/html; charset=utf-8');
 if(!xml2php("invoice")) {
-	$smarty->assign('error_msg',"Error in language file");
+    $smarty->assign('error_msg',"Error in language file");
 }
 
 // Load PHP Language Translations
@@ -17,72 +17,72 @@ $print_type = $VAR['print_type'];
 
 /* Generic error control */
 if(empty($invoice_id)) {
-	/* If no work order ID then we dont belong here */
-	force_page('core', 'error&error_msg=Invoice Not found: Invoice ID: '.$invoice_id.'&menu=1');
+    /* If no work order ID then we dont belong here */
+    force_page('core', 'error&error_msg=Invoice Not found: Invoice ID: '.$invoice_id.'&menu=1');
 }
 
 // Customer Section
 
 /* check if we have a customer id and if so get details */
 if($customer_id == "" || $customer_id == "0"){
-	force_page('core', 'error&error_msg=No Customer ID&menu=1');
-	exit;
+    force_page('core', 'error&error_msg=No Customer ID&menu=1');
+    exit;
 } else {
-	$q = "SELECT * FROM ".PRFX."TABLE_CUSTOMER WHERE CUSTOMER_ID=".$db->qstr($customer_id);
-	if(!$rs = $db->execute($q)) {
-		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
-		exit;
-	}
+    $q = "SELECT * FROM ".PRFX."TABLE_CUSTOMER WHERE CUSTOMER_ID=".$db->qstr($customer_id);
+    if(!$rs = $db->execute($q)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
+        exit;
+    }
 
-	$customer_details = $rs->GetAssoc();
-	if(empty($customer_details)){
-		force_page('core', 'error&error_msg=No Customer details found for Customer ID '.$customer_id.'.&menu=1');
-		exit;
-	}
+    $customer_details = $rs->GetAssoc();
+    if(empty($customer_details)){
+        force_page('core', 'error&error_msg=No Customer details found for Customer ID '.$customer_id.'.&menu=1');
+        exit;
+    }
 }
 
 // Invoice Section
 
-	/* get invoice details */
-	$q = "SELECT  ".PRFX."TABLE_INVOICE.*, ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_DISPLAY_NAME FROM  ".PRFX."TABLE_INVOICE
-			LEFT JOIN ".PRFX."TABLE_EMPLOYEE ON (".PRFX."TABLE_INVOICE.EMPLOYEE_ID = ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_ID)
-			WHERE INVOICE_ID=".$db->qstr($invoice_id);
-	if(!$rs = $db->execute($q)) {
-		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
-		exit;
-	}
-	$invoice = $rs->FetchRow();
-	//print($invoice);
+    /* get invoice details */
+    $q = "SELECT  ".PRFX."TABLE_INVOICE.*, ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_DISPLAY_NAME FROM  ".PRFX."TABLE_INVOICE
+            LEFT JOIN ".PRFX."TABLE_EMPLOYEE ON (".PRFX."TABLE_INVOICE.EMPLOYEE_ID = ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_ID)
+            WHERE INVOICE_ID=".$db->qstr($invoice_id);
+    if(!$rs = $db->execute($q)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
+        exit;
+    }
+    $invoice = $rs->FetchRow();
+    //print($invoice);
 
 // Work Order Section
 
         /* get specific workorder details from database */
-	 $q = "SELECT * FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_ID=".$db->qstr($invoice['WORKORDER_ID']);
+     $q = "SELECT * FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_ID=".$db->qstr($invoice['WORKORDER_ID']);
 
-	if(!$rs = $db->Execute($q)) {
-		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-		exit;
-	}
-		$stats = $rs->FetchRow();
+    if(!$rs = $db->Execute($q)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
+    }
+        $stats = $rs->FetchRow();
 
         /* get workorder status  */
-	 $q = "SELECT * FROM ".PRFX."CONFIG_WORK_ORDER_STATUS WHERE CONFIG_WORK_ORDER_STATUS_ID=".$db->qstr($stats['WORK_ORDER_STATUS']);
+     $q = "SELECT * FROM ".PRFX."CONFIG_WORK_ORDER_STATUS WHERE CONFIG_WORK_ORDER_STATUS_ID=".$db->qstr($stats['WORK_ORDER_STATUS']);
 
-	if(!$rs = $db->Execute($q)) {
-		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-		exit;
-	}
-		$stats2 = $rs->FetchRow();
+    if(!$rs = $db->Execute($q)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
+    }
+        $stats2 = $rs->FetchRow();
 
 // Labour Section
 
-	/* get any labour database rows */
-	$q = "SELECT * FROM ".PRFX."TABLE_INVOICE_LABOR WHERE INVOICE_ID=".$db->qstr($invoice['INVOICE_ID']);
-	if(!$rs = $db->execute($q)) {
-		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
-		exit;
-	}
-	$labor = $rs->GetArray();
+    /* get any labour database rows */
+    $q = "SELECT * FROM ".PRFX."TABLE_INVOICE_LABOR WHERE INVOICE_ID=".$db->qstr($invoice['INVOICE_ID']);
+    if(!$rs = $db->execute($q)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
+        exit;
+    }
+    $labor = $rs->GetArray();
         
         /* Sum Labour Sub Totals */
 
@@ -94,13 +94,13 @@ if($customer_id == "" || $customer_id == "0"){
 
 // Parts Section
 
-	/* get any parts database rows */
-	$q = "SELECT * FROM ".PRFX."TABLE_INVOICE_PARTS WHERE INVOICE_ID=".$db->qstr($invoice['INVOICE_ID']);
-	if(!$rs = $db->execute($q)) {
-		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
-		exit;
-	}
-	$parts = $rs->GetArray();
+    /* get any parts database rows */
+    $q = "SELECT * FROM ".PRFX."TABLE_INVOICE_PARTS WHERE INVOICE_ID=".$db->qstr($invoice['INVOICE_ID']);
+    if(!$rs = $db->execute($q)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
+        exit;
+    }
+    $parts = $rs->GetArray();
 
         /* Sum Parts Sub Total */
 
@@ -115,13 +115,13 @@ if($customer_id == "" || $customer_id == "0"){
 // Misc Section
 
         /* get payment history */
-	 $q = "SELECT * FROM ".PRFX."TABLE_TRANSACTION WHERE WORKORDER_ID=".$db->qstr($invoice['WORKORDER_ID']);
+     $q = "SELECT * FROM ".PRFX."TABLE_TRANSACTION WHERE WORKORDER_ID=".$db->qstr($invoice['WORKORDER_ID']);
 
-	if(!$rs = $db->Execute($q)) {
-		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-		exit;
-	}
-		$payments = $rs->FetchRow();
+    if(!$rs = $db->Execute($q)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
+    }
+        $payments = $rs->FetchRow();
 
 /* get printing options */
 $q = "SELECT * FROM ".PRFX."SETUP";
@@ -151,37 +151,37 @@ $company2 = $rs->FetchRow();
 
 $q = "SELECT * FROM ".PRFX."SETUP;";
 if(!$rs = $db->Execute($q)) {
-		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-		exit;
-	}
-		$setup1 = $rs->FetchRow();
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
+    }
+        $setup1 = $rs->FetchRow();
 
 $q = "SELECT * FROM ".PRFX."TABLE_COMPANY;";
 if(!$rs = $db->Execute($q)) {
-		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-		exit;
-	}
-		$company1 = $rs->FetchRow();
-		$smarty->assign('sss',$thank_you);
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
+    }
+        $company1 = $rs->FetchRow();
+        $smarty->assign('sss',$thank_you);
 
 /* check if we have a customer id and if so get details */
-	$q = "SELECT * FROM ".PRFX."TABLE_CUSTOMER WHERE CUSTOMER_ID=".$db->qstr($customer_id);
-	if(!$rs = $db->execute($q)) {
-		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
-		exit;
-	}
+    $q = "SELECT * FROM ".PRFX."TABLE_CUSTOMER WHERE CUSTOMER_ID=".$db->qstr($customer_id);
+    if(!$rs = $db->execute($q)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
+        exit;
+    }
 
-	$customer1 = $rs->FetchRow();
-	if(empty($customer1)){
-		force_page('core', 'error&error_msg=No Customer details found for Customer ID '.$customer_id.'.&menu=1');
-		exit;
-	}
-	$q = "SELECT * FROM ".PRFX."TABLE_INVOICE WHERE INVOICE_ID=".$db->qstr($invoice_id);
-	if(!$rs = $db->execute($q)) {
-		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
-		exit;
-	}
-	$invoice3 = $rs->FetchRow();
+    $customer1 = $rs->FetchRow();
+    if(empty($customer1)){
+        force_page('core', 'error&error_msg=No Customer details found for Customer ID '.$customer_id.'.&menu=1');
+        exit;
+    }
+    $q = "SELECT * FROM ".PRFX."TABLE_INVOICE WHERE INVOICE_ID=".$db->qstr($invoice_id);
+    if(!$rs = $db->execute($q)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
+        exit;
+    }
+    $invoice3 = $rs->FetchRow();
 
 //Company Details
 $cname = $company1['COMPANY_NAME'];
@@ -233,12 +233,12 @@ $paymate_amt = sprintf( "%.2f",$paymate_amt);
 
 /* get Date Formatting value from database and assign it to $format*/
 $q = 'SELECT * FROM '.PRFX.'TABLE_COMPANY';
-	if(!$rs = $db->execute($q)) {
-		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-		exit;
-	} else {
-		$format = $rs->fields['COMPANY_DATE_FORMAT'];
-	}
+    if(!$rs = $db->execute($q)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
+    } else {
+        $format = $rs->fields['COMPANY_DATE_FORMAT'];
+    }
 
 // Stripping out the percentage signs so php can render it correctly
 $literals = "%";
@@ -257,20 +257,20 @@ if($print_type == 'html') {
 
     /* html Print out */
 
-	if(empty($labor)){$smarty->assign('labor', 0);} else {$smarty->assign('labor', $labor);}
-	if(empty($parts)){$smarty->assign('parts', 0);} else {$smarty->assign('parts', $parts);}
-	if(empty($stats)){$smarty->assign('stats', 0);} else {$smarty->assign('stats', $stats);}
-	if(empty($stats2)){$smarty->assign('stats2', 0);} else {$smarty->assign('stats2', $stats2);}
-	if(empty($payments)){$smarty->assign('payments', 0);} else {$smarty->assign('payments', $payments);}
-	if(empty($paid)){$smarty->assign('paid', 0);} else {$smarty->assign('paid', $paid);}
+    if(empty($labor)){$smarty->assign('labor', 0);} else {$smarty->assign('labor', $labor);}
+    if(empty($parts)){$smarty->assign('parts', 0);} else {$smarty->assign('parts', $parts);}
+    if(empty($stats)){$smarty->assign('stats', 0);} else {$smarty->assign('stats', $stats);}
+    if(empty($stats2)){$smarty->assign('stats2', 0);} else {$smarty->assign('stats2', $stats2);}
+    if(empty($payments)){$smarty->assign('payments', 0);} else {$smarty->assign('payments', $payments);}
+    if(empty($paid)){$smarty->assign('paid', 0);} else {$smarty->assign('paid', $paid);}
 
-	$smarty->assign('thank_you',$thank_you);
-	$smarty->assign('trans',$trans);
-	$smarty->assign('paid',$paid);
-	$smarty->assign('customer_details',$customer_details);
+    $smarty->assign('thank_you',$thank_you);
+    $smarty->assign('trans',$trans);
+    $smarty->assign('paid',$paid);
+    $smarty->assign('customer_details',$customer_details);
         $smarty->assign('customer1',$customer1);
-	$smarty->assign('invoice',$invoice);
-	$smarty->assign('PP_ID', $PP_ID);
+    $smarty->assign('invoice',$invoice);
+    $smarty->assign('PP_ID', $PP_ID);
         $smarty->assign('DD_NAME', $DD_NAME);
         $smarty->assign('DD_BSB', $DD_BSB);
         $smarty->assign('DD_ACC', $DD_ACC);
@@ -278,9 +278,9 @@ if($print_type == 'html') {
         $smarty->assign('DD_BANK', $DD_BANK);
         $smarty->assign('CHECK_PAYABLE',$CHECK_PAYABLE);
         $smarty->assign('PAYMATE_LOGIN',$PAYMATE_LOGIN);
-	$smarty->assign('company',$company);
-	$smarty->assign('company2',$company2);
-	//$smarty->assign('CURRENCY_CODE',$CURRENCY_CODE);
+    $smarty->assign('company',$company);
+    $smarty->assign('company2',$company2);
+    //$smarty->assign('CURRENCY_CODE',$CURRENCY_CODE);
         //$smarty->assign('currency_sym',$currency_sym);
         $smarty->assign('country',$country);
         $smarty->assign('pamount',$pamount);
@@ -291,9 +291,9 @@ if($print_type == 'html') {
         $smarty->assign('wo_description', $wo_description);
         $smarty->assign('wo_resolution', $wo_resolution);
 
-	$smarty->display('invoice'.SEP.'print_html.tpl');
+    $smarty->display('invoice'.SEP.'print_html.tpl');
 
-}	 else {
+}     else {
 
 // EOF HTML Printing Section
 
@@ -303,7 +303,7 @@ if($print_type == 'pdf') {
 
     require_once FILE_ROOT.'templates/invoice/print_pdf_tpl.php'; //This loads the PDF template file
 
-        }	 else {
+        }     else {
             
                         force_page('core', "error&menu=1&error_msg=No Printing Options set. Please set up printing options in the Control Center.&type=error");
                         exit;

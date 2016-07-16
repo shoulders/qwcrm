@@ -7,11 +7,11 @@
 function tax_rate($db){
 
 $q = 'SELECT * FROM '.PRFX.'SETUP';
-	if(!$rs = $db->execute($q)) {
-		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-		exit;
-	} else {
-		$tax_rate = $rs->fields['INVOICE_TAX'];
+    if(!$rs = $db->execute($q)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
+    } else {
+        $tax_rate = $rs->fields['INVOICE_TAX'];
                 return $tax_rate;
         }
 }
@@ -23,11 +23,11 @@ $q = 'SELECT * FROM '.PRFX.'SETUP';
 function date_format_call($db){
 
 $q = 'SELECT * FROM '.PRFX.'TABLE_COMPANY';
-	if(!$rs = $db->execute($q)) {
-		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-		exit;
-	} else {
-		$date_format = $rs->fields['COMPANY_DATE_FORMAT'];
+    if(!$rs = $db->execute($q)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
+    } else {
+        $date_format = $rs->fields['COMPANY_DATE_FORMAT'];
                 return $date_format;
         }
 }
@@ -39,11 +39,11 @@ $q = 'SELECT * FROM '.PRFX.'TABLE_COMPANY';
 function last_record_id_lookup($db){
 
 $q = 'SELECT * FROM '.PRFX.'TABLE_REFUND ORDER BY REFUND_ID DESC LIMIT 1';
-	if(!$rs = $db->execute($q)) {
-		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-		exit;
-	} else {
-		$last_record_id = $rs->fields['REFUND_ID'];
+    if(!$rs = $db->execute($q)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
+    } else {
+        $last_record_id = $rs->fields['REFUND_ID'];
                 return $last_record_id;
         }
 }
@@ -132,27 +132,27 @@ $refundNotes_string = stripslashes($refundNotes_string);
 $refundItems_string = $VAR['refundItems'];
 $refundItems_string = stripslashes($refundItems_string);
 
-	$sql = "INSERT INTO ".PRFX."TABLE_REFUND SET
+    $sql = "INSERT INTO ".PRFX."TABLE_REFUND SET
 
-			REFUND_ID			= ". $db->qstr( $VAR['refundID']           ).",
-			REFUND_PAYEE			= ". $db->qstr( $VAR['refundPayee']        ).",
-			REFUND_DATE			= ". $db->qstr( $checked_date               ).",
-			REFUND_TYPE			= ". $db->qstr( $VAR['refundType']         ).",
-			REFUND_PAYMENT_METHOD          = ". $db->qstr( $VAR['refundPaymentMethod']).",
-			REFUND_NET_AMOUNT		= ". $db->qstr( $VAR['refundNetAmount']    ).",
+            REFUND_ID            = ". $db->qstr( $VAR['refundID']           ).",
+            REFUND_PAYEE            = ". $db->qstr( $VAR['refundPayee']        ).",
+            REFUND_DATE            = ". $db->qstr( $checked_date               ).",
+            REFUND_TYPE            = ". $db->qstr( $VAR['refundType']         ).",
+            REFUND_PAYMENT_METHOD          = ". $db->qstr( $VAR['refundPaymentMethod']).",
+            REFUND_NET_AMOUNT        = ". $db->qstr( $VAR['refundNetAmount']    ).",
                         REFUND_TAX_RATE                = ". $db->qstr( $VAR['refundTaxRate']      ).",
                         REFUND_TAX_AMOUNT              = ". $db->qstr( $VAR['refundTaxAmount']    ).",
                         REFUND_GROSS_AMOUNT            = ". $db->qstr( $VAR['refundGrossAmount']  ).",
                         REFUND_NOTES                   = ". $db->qstr( $refundNotes_string        ).",
                         REFUND_ITEMS                   = ". $db->qstr( $refundItems_string        );
 
-	if(!$result = $db->Execute($sql)) {
-		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-		exit;
+    if(!$result = $db->Execute($sql)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
     } /*else {
-		return true;
+        return true;
     } */
-	
+    
 } 
 
 #####################################
@@ -160,19 +160,19 @@ $refundItems_string = stripslashes($refundItems_string);
 #####################################
 
 function edit_info($db, $refundID){
-	$sql = "SELECT * FROM ".PRFX."TABLE_REFUND WHERE REFUND_ID=".$db->qstr($refundID);
-	
-	if(!$result = $db->Execute($sql)) {
-		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-		exit;
-	} else {
-		$row = $result->FetchRow();
-		return $row;
-	}
+    $sql = "SELECT * FROM ".PRFX."TABLE_REFUND WHERE REFUND_ID=".$db->qstr($refundID);
+    
+    if(!$result = $db->Execute($sql)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
+    } else {
+        $row = $result->FetchRow();
+        return $row;
+    }
 }
 
 #####################################
-#	 Update Record              #
+#     Update Record              #
 #####################################
 
 function update_refund($db,$VAR) {
@@ -186,43 +186,43 @@ $refundNotes_string = stripslashes($refundNotes_string);
 $refundItems_string = $VAR['refundItems'];
 $refundItems_string = stripslashes($refundItems_string);
 
-	$sql = "UPDATE ".PRFX."TABLE_REFUND SET
+    $sql = "UPDATE ".PRFX."TABLE_REFUND SET
 
-			REFUND_PAYEE			= ". $db->qstr( $VAR['refundPayee']        ).",
-			REFUND_DATE			= ". $db->qstr( $checked_date               ).",
-			REFUND_TYPE			= ". $db->qstr( $VAR['refundType']         ).",
-			REFUND_PAYMENT_METHOD          = ". $db->qstr( $VAR['refundPaymentMethod']).",
-			REFUND_NET_AMOUNT		= ". $db->qstr( $VAR['refundNetAmount']    ).",
+            REFUND_PAYEE            = ". $db->qstr( $VAR['refundPayee']        ).",
+            REFUND_DATE            = ". $db->qstr( $checked_date               ).",
+            REFUND_TYPE            = ". $db->qstr( $VAR['refundType']         ).",
+            REFUND_PAYMENT_METHOD          = ". $db->qstr( $VAR['refundPaymentMethod']).",
+            REFUND_NET_AMOUNT        = ". $db->qstr( $VAR['refundNetAmount']    ).",
                         REFUND_TAX_RATE                = ". $db->qstr( $VAR['refundTaxRate']      ).",
                         REFUND_TAX_AMOUNT              = ". $db->qstr( $VAR['refundTaxAmount']    ).",
                         REFUND_GROSS_AMOUNT            = ". $db->qstr( $VAR['refundGrossAmount']  ).",
                         REFUND_NOTES                   = ". $db->qstr( $refundNotes_string        ).",
                         REFUND_ITEMS                   = ". $db->qstr( $refundItems_string        )."
-                        WHERE REFUND_ID		= ". $db->qstr( $VAR['refundID']           );
+                        WHERE REFUND_ID        = ". $db->qstr( $VAR['refundID']           );
                         
-			
-	if(!$result = $db->Execute($sql)) {
-		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-		exit;
+            
+    if(!$result = $db->Execute($sql)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
     } else {
       return true;
     }
-	
+    
 } 
 
 #####################################
-#	Delete Record               #
+#    Delete Record               #
 #####################################
 
 function delete_refund($db, $refundID){
-	$sql = "DELETE FROM ".PRFX."TABLE_REFUND WHERE REFUND_ID=".$db->qstr($refundID);
-	
-	if(!$rs = $db->Execute($sql)) {
-		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-		exit;	
-	} else {
-		return true;
-	}	
+    $sql = "DELETE FROM ".PRFX."TABLE_REFUND WHERE REFUND_ID=".$db->qstr($refundID);
+    
+    if(!$rs = $db->Execute($sql)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;    
+    } else {
+        return true;
+    }    
 }
 
 #####################################
@@ -231,20 +231,20 @@ function delete_refund($db, $refundID){
 
 function display_refund_info($db, $refundID){
 
-	$sql = "SELECT * FROM ".PRFX."TABLE_REFUND WHERE REFUND_ID=".$db->qstr($refundID);
+    $sql = "SELECT * FROM ".PRFX."TABLE_REFUND WHERE REFUND_ID=".$db->qstr($refundID);
 
-	if(!$result = $db->Execute($sql)) {
-		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-		exit;
-	} else {
-		$refund_array = array();
-	}
+    if(!$result = $db->Execute($sql)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
+    } else {
+        $refund_array = array();
+    }
 
-	while($row = $result->FetchRow()){
-		 array_push($refund_array, $row);
-	}
+    while($row = $result->FetchRow()){
+         array_push($refund_array, $row);
+    }
 
-	return $refund_array;
+    return $refund_array;
 }
 
 ##########################################
@@ -253,9 +253,9 @@ function display_refund_info($db, $refundID){
 ##########################################
 
 function gateway_xml2php($module) {
-	global $smarty;
+    global $smarty;
 
-	//$file = FILE_ROOT."language".SEP.$module.SEP.LANG ;
+    //$file = FILE_ROOT."language".SEP.$module.SEP.LANG ;
         $file = FILE_ROOT."language".SEP.LANG ;
 
    $xml_parser = xml_parser_create();
@@ -270,17 +270,17 @@ function gateway_xml2php($module) {
    $xmlarray = array();
 
   foreach($arr_vals as $things){
-		if($things['tag'] != 'TRANSLATE' && $things['value'] != "" ){
+        if($things['tag'] != 'TRANSLATE' && $things['value'] != "" ){
 
                     $ttag = strtolower($things['tag']);
                     $tvalue = $things['value'];
 
                     $xmlarray[$ttag]= $tvalue;
                       
-		}
-	}
+        }
+    }
  
-	return $xmlarray;
+    return $xmlarray;
 }
 
 ######################################################
@@ -289,7 +289,7 @@ function gateway_xml2php($module) {
 ######################################################
 
 function refund_search_gateway($db, $refund_search_category, $refund_search_term) {
-	// global $smarty;
+    // global $smarty;
 
            $langvals = gateway_xml2php('refund');
 
@@ -410,62 +410,62 @@ function refund_search_gateway($db, $refund_search_category, $refund_search_term
 ######################################################
 
 function display_refund_search($db, $refund_search_category, $refund_search_term, $page_no, $smarty) {
-	global $smarty;
+    global $smarty;
 
-	// Define the number of results per page
-	$max_results = 25;
+    // Define the number of results per page
+    $max_results = 25;
 
-	// Figure out the limit for the Execute based
-	// on the current page number.
-	$from = (($page_no * $max_results) - $max_results);
+    // Figure out the limit for the Execute based
+    // on the current page number.
+    $from = (($page_no * $max_results) - $max_results);
 
-	$sql = "SELECT * FROM ".PRFX."TABLE_REFUND WHERE REFUND_$refund_search_category LIKE '$refund_search_term' ORDER BY REFUND_ID DESC LIMIT $from, $max_results";
+    $sql = "SELECT * FROM ".PRFX."TABLE_REFUND WHERE REFUND_$refund_search_category LIKE '$refund_search_term' ORDER BY REFUND_ID DESC LIMIT $from, $max_results";
 
-	//print $sql;
+    //print $sql;
 
-	if(!$result = $db->Execute($sql)) {
-		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-		exit;
-	} else {
-		$refund_search_result = array();
-	}
+    if(!$result = $db->Execute($sql)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
+    } else {
+        $refund_search_result = array();
+    }
 
-	while($row = $result->FetchRow()){
-		 array_push($refund_search_result, $row);
-	}
+    while($row = $result->FetchRow()){
+         array_push($refund_search_result, $row);
+    }
 
-	// Figure out the total number of results in DB:
-	$results = $db->Execute("SELECT COUNT(*) as Num FROM ".PRFX."TABLE_REFUND WHERE REFUND_$refund_search_category LIKE ".$db->qstr("$refund_search_term") );
+    // Figure out the total number of results in DB:
+    $results = $db->Execute("SELECT COUNT(*) as Num FROM ".PRFX."TABLE_REFUND WHERE REFUND_$refund_search_category LIKE ".$db->qstr("$refund_search_term") );
 
-	if(!$total_results = $results->FetchRow()) {
-		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-		exit;
-	} else {
-		$smarty->assign('total_results', $total_results['Num']);
-	}
+    if(!$total_results = $results->FetchRow()) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
+    } else {
+        $smarty->assign('total_results', $total_results['Num']);
+    }
 
-	// Figure out the total number of pages. Always round up using ceil()
-	$total_pages = ceil($total_results["Num"] / $max_results);
-	$smarty->assign('total_pages', $total_pages);
+    // Figure out the total number of pages. Always round up using ceil()
+    $total_pages = ceil($total_results["Num"] / $max_results);
+    $smarty->assign('total_pages', $total_pages);
 
-	// Assign the first page
-	if($page_no > 1) {
-    	$prev = ($page_no - 1);
-	}
+    // Assign the first page
+    if($page_no > 1) {
+        $prev = ($page_no - 1);
+    }
 
-	// Build Next Link
-	if($page_no < $total_pages){
-    	$next = ($page_no + 1);
-	}
+    // Build Next Link
+    if($page_no < $total_pages){
+        $next = ($page_no + 1);
+    }
 
-	$smarty->assign('items', $items);
-	$smarty->assign('page_no', $page_no);
-	$smarty->assign('previous', $prev);
-	$smarty->assign('next', $next);
+    $smarty->assign('items', $items);
+    $smarty->assign('page_no', $page_no);
+    $smarty->assign('previous', $prev);
+    $smarty->assign('next', $next);
         $smarty->assign('refund_search_category', $refund_search_category);
         $smarty->assign('refund_search_term', $refund_search_term);
 
-	return $refund_search_result;
+    return $refund_search_result;
 }
 
 ?>

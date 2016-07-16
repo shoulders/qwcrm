@@ -10,10 +10,10 @@ $customer_id = $VAR['customer_id'];
 
 /* Lets Grab Technicians Names */
 $q = "SELECT EMPLOYEE_LOGIN, EMPLOYEE_ID FROM ".PRFX."TABLE_EMPLOYEE WHERE EMPLOYEE_STATUS=1";
-	if(!$rs = $db->execute($q)) {
-		force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-		exit;
-	}
+    if(!$rs = $db->execute($q)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
+    }
         $tech=$rs->GetMenu2('created_by', $login,$login_id);
 $smarty->assign('tech', $tech);
 
