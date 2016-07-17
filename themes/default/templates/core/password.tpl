@@ -3,7 +3,7 @@
     <head>
         <title>Password Reset</title>
         <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-        <link href="{$theme_dir}css/template.css" rel="stylesheet" type="text/css">
+        <link href="{$theme_css_dir}template.css" rel="stylesheet" type="text/css">
     </head>
     <body>
         {include file="../js/password.js"}

@@ -5,7 +5,7 @@
     <meta name="description" content="MyIT CRM - The Best Open Source Repairs Business CRM program available!" />
     <meta name="keywords" content="CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment Processing" />
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-    <link href="{$theme_dir}css/template.css" rel="stylesheet" type="text/css">
+    <link href="{$theme_css_dir}template.css" rel="stylesheet" type="text/css">
   </head>
   <body>
     <center>
