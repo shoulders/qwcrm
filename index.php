@@ -9,10 +9,10 @@ session_start();
 require('conf.php');
 //http_redirect("install2", array("name" => "value"), true, HTTP_REDIRECT_PERM);
 
-$VAR = array_merge($_GET,$_POST);
-$wo_id = $VAR['wo_id'];
-$customer_id = $VAR['customer_id'];
-$id = $login_id;
+$VAR            = array_merge($_GET,$_POST);
+$wo_id          = $VAR['wo_id'];
+$customer_id    = $VAR['customer_id'];
+$id             = $login_id;
 $smarty->assign('id', $id);
 
 
