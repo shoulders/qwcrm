@@ -29,7 +29,7 @@
         ed.addButton('mybutton', {
             title : 'Insert Customer Name',
             //name : 'Customer Name',
-            image : 'images/icons/customers.gif',
+            image : '{$theme_images_dir}icons/customers.gif',
             onclick : function() {
                 // Add you own code to execute something on click
                 ed.focus();
@@ -66,7 +66,7 @@
                                                 &nbsp;Send Email to {$customer_details[i].CUSTOMER_DISPLAY_NAME}
                                                                        </td>
                                             <td class="menuhead2" width="20%" align="right" valign="middle">
-                                                <a href="?page=customer:edit&customer_id={$customer_details[i].CUSTOMER_ID}&page_title=Edit%20Customer%20Information" target="new"><img src="images/icons/edit.gif"  alt="" height="16" border="0"> Edit</a>
+                                                <a href="?page=customer:edit&customer_id={$customer_details[i].CUSTOMER_ID}&page_title=Edit%20Customer%20Information" target="new"><img src="{$theme_images_dir}icons/edit.gif"  alt="" height="16" border="0"> Edit</a>
                                             </td>
                                         </tr>
                                         <tr>

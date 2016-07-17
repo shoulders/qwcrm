@@ -2,7 +2,7 @@
 <head>
     <title>{$translate_billing_print_title}</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-    <link href="css/default.css" rel="stylesheet" type="text/css">
+    <link href="{$theme_dir}css/template.css" rel="stylesheet" type="text/css">
 </head>
 <body>
                         <table width="700" cellpadding="4" cellspacing="0" border="0" class="olotable">

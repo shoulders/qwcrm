@@ -10,7 +10,7 @@
                             <tr>
                                 <td width="33%" align="right"><a
                                         href="?page=customer:edit&customer_id={$single_workorder_array[i].CUSTOMER_ID}&page_title={$single_workorder_array[i].CUSTOMER_DISPLAY_NAME}"><img
-                                        src="images/icons/16x16/small_edit.gif" border="0"
+                                        src="{$theme_images_dir}icons/16x16/small_edit.gif" border="0"
                                         onMouseOver="ddrivetip('Edit Customer')" onMouseOut="hideddrivetip()"></a></td>
                             </tr>
                         </table>

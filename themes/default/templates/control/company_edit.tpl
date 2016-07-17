@@ -6,13 +6,13 @@
 <td>
 <div id="tabs_container">
 <ul class="tabs">
-    <li class="active"><a href="#" rel="#tab_1_contents" class="tab"><img src="images/icons/key.png" alt="" border="0"
+    <li class="active"><a href="#" rel="#tab_1_contents" class="tab"><img src="{$theme_images_dir}icons/key.png" alt="" border="0"
                                                                           height="14" width="14"/>&nbsp;Company Details</a>
     </li>
-    <li><a href="#" rel="#tab_2_contents" class="tab"><img src="images/icons/money.png" alt="" border="0" height="14"
+    <li><a href="#" rel="#tab_2_contents" class="tab"><img src="{$theme_images_dir}icons/money.png" alt="" border="0" height="14"
                                                            width="14"/>&nbsp;Localisation Setup</a></li>
-    <!-- <li><a href="#" rel="#tab_3_contents" class="tab"><img src="images/icons/16x16/email.jpg" alt="" border="0" height="14" width="14" />&nbsp;Email Setup</a></li>
-<li><a href="#" rel="#tab_4_contents" class="tab"><img src="images/icons/16x16/email.jpg" alt="" border="0" height="14" width="14" />&nbsp;Email Messages</a></li> -->
+    <!-- <li><a href="#" rel="#tab_3_contents" class="tab"><img src="{$theme_images_dir}icons/16x16/email.jpg" alt="" border="0" height="14" width="14" />&nbsp;Email Setup</a></li>
+<li><a href="#" rel="#tab_4_contents" class="tab"><img src="{$theme_images_dir}icons/16x16/email.jpg" alt="" border="0" height="14" width="14" />&nbsp;Email Messages</a></li> -->
 
 </ul>
 

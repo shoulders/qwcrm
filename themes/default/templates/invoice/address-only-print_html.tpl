@@ -2,7 +2,7 @@
     <head>
         <title>{$translate_invoice_invoice}#{$invoice.INVOICE_ID}</title>
         <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-        <link href="css/default.css" rel="stylesheet" type="text/css">
+        <link href="{$theme_dir}css/template.css" rel="stylesheet" type="text/css">
     </head>
     <body>
 
@@ -41,7 +41,7 @@
                     <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
                         <tr>
                             <td width="100%">
-                                <a><img src="images/logo.jpg" alt="" border="0"></a>
+                                <a><img src="{$theme_images_dir}logo.jpg" alt="" border="0"></a>
                             </td>
                         </tr>
                         <tr>
@@ -165,13 +165,13 @@
                             <td>
                                 {if $CHECK_PAYABLE <> ""}
                         <tr>
-                            <td><img src="images/icons/cheque.jpeg" alt="" height="20">&nbsp;- Please make {$translate_invoice_cheque} payable to {$CHECK_PAYABLE}<BR></td>
+                            <td><img src="{$theme_images_dir}icons/cheque.jpeg" alt="" height="20">&nbsp;- Please make {$translate_invoice_cheque} payable to {$CHECK_PAYABLE}<BR></td>
 
                         </tr>
                         {/if}
                         {if $DD_NAME <> ""}
                         <tr>
-                            <td><img src="images/icons/deposit.jpeg" alt="" height="20">Direct deposit details:-
+                            <td><img src="{$theme_images_dir}icons/deposit.jpeg" alt="" height="20">Direct deposit details:-
                                 <br>Bank: {$DD_BANK}
                                 <br>Name: {$DD_NAME}
                                 <br>Branch/BSB: {$DD_BSB}
@@ -183,7 +183,7 @@
                         {if $PP_ID <> ""}
                         <tr>
                             <td>
-                                <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business={$PP_ID}&item_name=Payment%20for%20invoice%20{$invoice.INVOICE_ID}&item_number={$invoice.INVOICE_ID}&description=Invoice%20for%20{$invoice.INVOICE_ID}&amount={$pamount}&no_note=Thankyou%20for%20your%20buisness.&currency_sym={$currency_sym}&lc='.$country." target="_blank" ><img src="images/paypal/pay_now.gif" height="20"  alt="PayPal - The safer, easier way to pay online">&nbsp;<< Click on "Pay Now" to pay this invoice via PayPal using a valid Credit Card.<BR>
+                                <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business={$PP_ID}&item_name=Payment%20for%20invoice%20{$invoice.INVOICE_ID}&item_number={$invoice.INVOICE_ID}&description=Invoice%20for%20{$invoice.INVOICE_ID}&amount={$pamount}&no_note=Thankyou%20for%20your%20buisness.&currency_sym={$currency_sym}&lc='.$country." target="_blank" ><img src="{$theme_images_dir}paypal/pay_now.gif" height="20"  alt="PayPal - The safer, easier way to pay online">&nbsp;<< Click on "Pay Now" to pay this invoice via PayPal using a valid Credit Card.<BR>
                                     <I><B><font size="-0.5">* A 1.5% surcharge applies.</font></B></I><BR></a>
                             </td>
                         </tr>
@@ -191,7 +191,7 @@
                         {if $PAYMATE_LOGIN <> ""}
                         <tr valign="top">
                             <td>
-                                <a href="https://www.paymate.com/PayMate/ExpressPayment?mid={$PAYMATE_LOGIN}&amt={$paymate_amt}&ref=Payment%20for%20invoice%20{$invoice.INVOICE_ID}&currency={$currency_sym}&amt_editable=N&pmt_sender_email={$customer1.CUSTOMER_EMAIL}&pmt_contact_firstname={$customer1.CUSTOMER_FIRST_NAME}&pmt_contact_surname={$customer1.CUSTOMER_LAST_NAME}&pmt_contact_phone={$customer1.CUSTOMER_PHONE}&regindi_state={$customer1.CUSTOMER_STATE}&regindi_address1={$customer1.CUSTOMER_ADDRESS}&regindi_sub={$customer1.CUSTOMER_CITY}&regindi_pcode={$customer1.CUSTOMER_ZIP}" target="_blank" ><img src="images/paymate/paymate_cc.gif" height="20"  alt="Paymate provides secure, reliable and innovative Internet-based payment services to buyers in 57 countries around the world and sellers in Australia, New Zealand and the USA.">&nbsp;<< Click to pay this invoice via Paymate using a valid Credit Card.<br>
+                                <a href="https://www.paymate.com/PayMate/ExpressPayment?mid={$PAYMATE_LOGIN}&amt={$paymate_amt}&ref=Payment%20for%20invoice%20{$invoice.INVOICE_ID}&currency={$currency_sym}&amt_editable=N&pmt_sender_email={$customer1.CUSTOMER_EMAIL}&pmt_contact_firstname={$customer1.CUSTOMER_FIRST_NAME}&pmt_contact_surname={$customer1.CUSTOMER_LAST_NAME}&pmt_contact_phone={$customer1.CUSTOMER_PHONE}&regindi_state={$customer1.CUSTOMER_STATE}&regindi_address1={$customer1.CUSTOMER_ADDRESS}&regindi_sub={$customer1.CUSTOMER_CITY}&regindi_pcode={$customer1.CUSTOMER_ZIP}" target="_blank" ><img src="{$theme_images_dir}paymate/paymate_cc.gif" height="20"  alt="Paymate provides secure, reliable and innovative Internet-based payment services to buyers in 57 countries around the world and sellers in Australia, New Zealand and the USA.">&nbsp;<< Click to pay this invoice via Paymate using a valid Credit Card.<br>
                                     <I><B><font size="-0.5">* A {$PAYMATE_FEES}% surcharge applies.</font></B></I><BR></a>
                             </td>
                         </tr>

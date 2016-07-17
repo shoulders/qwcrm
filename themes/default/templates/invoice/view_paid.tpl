@@ -15,7 +15,7 @@
                 <tr>
                     <td class="menuhead2" width="80%">&nbsp;{$translate_invoice_view_paid} - {$total_results} {$translate_invoice_records}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
-                        <img src="images/icons/16x16/help.gif" alt="" border="0">
+                        <img src="{$theme_images_dir}icons/16x16/help.gif" alt="" border="0">
                     </td>
                 </tr><tr>
                     <td class="menutd2" colspan="2">
@@ -33,9 +33,9 @@
                                             <td valign="top"></td>
                                             <td valign="top" nowrap align="right">
                                                 <form id="1" action="">
-                                                    <a href="?page=invoice:view_paid&submit=submit&page_no=1"><img src="images/rewnd_24.gif" alt="" border="0"></a>&nbsp;
+                                                    <a href="?page=invoice:view_paid&submit=submit&page_no=1"><img src="{$theme_images_dir}rewnd_24.gif" alt="" border="0"></a>&nbsp;
                                                     {if $previous != ''}
-                                                    <a href="?page=invoice:view_paid&submit=submit&page_no={$previous}"><img src="images/back_24.gif" alt="" border="0"></a>&nbsp;
+                                                    <a href="?page=invoice:view_paid&submit=submit&page_no={$previous}"><img src="{$theme_images_dir}back_24.gif" alt="" border="0"></a>&nbsp;
                                                     {/if}
                                                     <select name="page_no" onChange="go()">
                             {section name=page loop=$total_pages start=1}
@@ -49,9 +49,9 @@
                                             </select>
 
                                             {if $next != ''}
-                                            <a href="?page=invoice:view_paid&submit=submit&page_no={$next}"><img src="images/forwd_24.gif" alt="" border="0"></a>
+                                            <a href="?page=invoice:view_paid&submit=submit&page_no={$next}"><img src="{$theme_images_dir}forwd_24.gif" alt="" border="0"></a>
                                             {/if}
-                                            <a href="?page=invoice:view_paid&submit=submit&page_no={$total_pages}"><img src="images/fastf_24.gif" alt="" border="0"></a>
+                                            <a href="?page=invoice:view_paid&submit=submit&page_no={$total_pages}"><img src="{$theme_images_dir}fastf_24.gif" alt="" border="0"></a>
                                         </form>
                                     </td>
                                 </tr><tr>
@@ -75,9 +75,9 @@
                                                 <td class="olotd4" nowrap><a href="index.php?page=invoice:view&invoice_id={$invoice[q].INVOICE_ID}&wo_id={$wo_id}&page_title=Invoice&customer_id={$invoice[q].CUSTOMER_ID}">{$invoice[q].INVOICE_ID}</a></td>
                                                 <td class="olotd4" nowrap>{$invoice[q].INVOICE_DATE|date_format:"$date_format"}</td>
                                                 <td class="olotd4" nowrap>{$invoice[q].INVOICE_DUE|date_format:"$date_format"}</td>
-                                                <td class="olotd4" nowrap><img src="images/icons/16x16/view.gif" alt="" border="0" onMouseOver="ddrivetip('<b>{$translate_invoice_phone} </b>{$invoice[q].CUSTOMER_PHONE}<br><b>Work: </b>{$invoice[q].CUSTOMER_WORK_PHONE}<br><b>Moile: </b>{$invoice[q].CUSTOMER_MOBILE_PHONE}<br><br>{$invoice[q].CUSTOMER_ADDRESS}<br>{$invoice[q].CUSTOMER_CITY}, {$invoice[q].CUSTOMER_STATE}<br>{$invoice[q].CUSTOMER_ZIP}')" onMouseOut="hideddrivetip()"><a href="?page=customer:customer_details&customer_id={$invoice[q].CUSTOMER_ID}&page_title={$invoice[q].CUSTOMER_DISPLAY_NAME}">{$invoice[q].CUSTOMER_DISPLAY_NAME}</a></td>
+                                                <td class="olotd4" nowrap><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" onMouseOver="ddrivetip('<b>{$translate_invoice_phone} </b>{$invoice[q].CUSTOMER_PHONE}<br><b>Work: </b>{$invoice[q].CUSTOMER_WORK_PHONE}<br><b>Moile: </b>{$invoice[q].CUSTOMER_MOBILE_PHONE}<br><br>{$invoice[q].CUSTOMER_ADDRESS}<br>{$invoice[q].CUSTOMER_CITY}, {$invoice[q].CUSTOMER_STATE}<br>{$invoice[q].CUSTOMER_ZIP}')" onMouseOut="hideddrivetip()"><a href="?page=customer:customer_details&customer_id={$invoice[q].CUSTOMER_ID}&page_title={$invoice[q].CUSTOMER_DISPLAY_NAME}">{$invoice[q].CUSTOMER_DISPLAY_NAME}</a></td>
                                                 <td class="olotd4" nowrap><a href="index.php?page=workorder:view&wo_id={$invoice[q].WORKORDER_ID}&wo_id={$wo_id}&page_title={$translate_invoice_wo_id}{$invoice[q].WORKORDER_ID}">{$invoice[q].WORKORDER_ID}</a></td>
-                                                <td class="olotd4" nowrap><img src="images/icons/16x16/view.gif" alt="" border="0" onMouseOver="ddrivetip('<b>Work: </b>{$invoice[q].EMPLOYEE_WORK_PHONE}<br><b>Mobile: </b>{$invoice[q].EMPLOYEE_MOBILE_PHONE}<br><b>Home: </b>{$invoice[q].EMPLOYEE_HOME_PHONE}')" onMouseOut="hideddrivetip()"><a  href="?page=employees:employee_details&employee_id={$invoice[q].EMPLOYEE_ID}&page_title={$invoice[q].EMPLOYEE_DISPLAY_NAME}">{$invoice[q].EMPLOYEE_DISPLAY_NAME}</a></td>
+                                                <td class="olotd4" nowrap><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" onMouseOver="ddrivetip('<b>Work: </b>{$invoice[q].EMPLOYEE_WORK_PHONE}<br><b>Mobile: </b>{$invoice[q].EMPLOYEE_MOBILE_PHONE}<br><b>Home: </b>{$invoice[q].EMPLOYEE_HOME_PHONE}')" onMouseOut="hideddrivetip()"><a  href="?page=employees:employee_details&employee_id={$invoice[q].EMPLOYEE_ID}&page_title={$invoice[q].EMPLOYEE_DISPLAY_NAME}">{$invoice[q].EMPLOYEE_DISPLAY_NAME}</a></td>
                                                 <td class="olotd4" nowrap>{$currency_sym}{$invoice[q].SUB_TOTAL}</td>
                                                 <td class="olotd4" nowrap>{$currency_sym}{$invoice[q].DISCOUNT}</td>
                                                 <td class="olotd4" nowrap>{$currency_sym}{$invoice[q].SHIPPING}</td>

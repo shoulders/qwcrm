@@ -10,7 +10,7 @@
                             <tr>                                   
                                 <td class="button">    
                                     <a href="?page=customer:new">
-                                        <img src="images/icons/new_employee.gif" border="0"
+                                        <img src="{$theme_images_dir}icons/new_employee.gif" border="0"
                                             onMouseOver="ddrivetip('Add New Employee')" onMouseOut="hideddrivetip()">
                                     </a>
                                 </td>

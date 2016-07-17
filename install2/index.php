@@ -1281,8 +1281,8 @@ $content = "<?php
 @define('FILE_ROOT',dirname(__FILE__).SEP);
 @define('WWW_ROOT','".$_POST['default_site_name']."');
 @define('IMG_URL',WWW_ROOT.'images');
-@define('INCLUDE_URL',FILE_ROOT.'include'.SEP);
-@define('SMARTY_URL',INCLUDE_URL.'SMARTY'.SEP);
+@define('INCLUDES_DIR',FILE_ROOT.'include'.SEP);
+@define('SMARTY_URL',INCLUDES_DIR.'SMARTY'.SEP);
 @define('ACCESS_LOG',FILE_ROOT.'log'.SEP.'access.log');
 @define('LANG','".$_POST['language']."');
 @define('INSTALL_DATE','".$install_date."');
@@ -1305,15 +1305,15 @@ $content = "<?php
 \$link = mysqli_connect( \$DB_HOST, \$DB_USER, \$DB_PASS );
 
 /* Load required Includes */
-require(INCLUDE_URL.'session.php');
-require(INCLUDE_URL.'auth.php');
+require(INCLUDES_DIR.'session.php');
+require(INCLUDES_DIR.'auth.php');
 
 /* Set Path for SMARTY in the php include path */
-set_include_path(get_include_path() . PATH_SEPARATOR . INCLUDE_URL.'SMARTY'.SEP);
+set_include_path(get_include_path() . PATH_SEPARATOR . INCLUDES_DIR.'SMARTY'.SEP);
 require('Smarty.class.php');
 
 /* Set Path for ADODB in the php include path */
-set_include_path(get_include_path() . PATH_SEPARATOR . INCLUDE_URL.'ADODB'.SEP);
+set_include_path(get_include_path() . PATH_SEPARATOR . INCLUDES_DIR.'ADODB'.SEP);
 require('adodb.inc.php');
 
 /* Load smarty template engine */

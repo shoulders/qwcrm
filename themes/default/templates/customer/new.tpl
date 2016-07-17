@@ -31,7 +31,7 @@
                 <tr>
                     <td class="menuhead2" width="80%">{$translate_customer_add}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
-                        <a><img src="images/icons/16x16/help.gif" alt="" border="0"
+                        <a><img src="{$theme_images_dir}icons/16x16/help.gif" alt="" border="0"
                                 onMouseOver="ddrivetip('<b>{$translate_customer_add}</b><hr><p><i>Display Name:</i>This is the customers display name. It will show up on all pertaining pages. This can be a company name or the customers Fist name and last name.<br><br> <i>First Name:</i>This is the customers first name or if this is a bussiness this is the main contacts first name for the bussiness.<br></p>')"
                                 onMouseOut="hideddrivetip()"
                                 onClick="window.location"></a>

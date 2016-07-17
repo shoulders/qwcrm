@@ -7,7 +7,7 @@
                 <tr>
                     <td class="menuhead2" width="80%">&nbsp;{$translate_billing_title}{$wo_id}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
-                        <img src="images/icons/16x16/help.gif" alt="" border="0"
+                        <img src="{$theme_images_dir}icons/16x16/help.gif" alt="" border="0"
                              onMouseOver="ddrivetip('<b>New Invoice</b><hr><p></p>')"
                              onMouseOut="hideddrivetip()">
                     </td>

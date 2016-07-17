@@ -77,7 +77,7 @@
                                 </td>
                             </tr>
                         </table>
-                        <a href="?page=billing:new_gift&gift_id={$gift_id}&customer_id={$customer_id}&action=print&submit=1&escape=1" target="new" ><img src="images/icons/16x16/fileprint.gif" border="0" onMouseOver="ddrivetip('Print')" onMouseOut="hideddrivetip()"></a>&nbsp;<a href="?page=customer:customer_details&customer_id={$customer_id}">{$translate_billing_back}</a>
+                        <a href="?page=billing:new_gift&gift_id={$gift_id}&customer_id={$customer_id}&action=print&submit=1&escape=1" target="new" ><img src="{$theme_images_dir}icons/16x16/fileprint.gif" border="0" onMouseOver="ddrivetip('Print')" onMouseOut="hideddrivetip()"></a>&nbsp;<a href="?page=customer:customer_details&customer_id={$customer_id}">{$translate_billing_back}</a>
                     </td>
                 </tr>
             </table>

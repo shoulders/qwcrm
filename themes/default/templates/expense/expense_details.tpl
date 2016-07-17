@@ -10,8 +10,8 @@
                                 <td class="menuhead2" width="80%">
                                   {$translate_expense_details_title}
                                 <td class="menuhead2" width="20%" align="right" valign="middle">
-                                    <a href="?page=expense:edit&expenseID={$expense_details[i].EXPENSE_ID}&page_title={$translate_expense_edit_title}" ><img src="images/icons/edit.gif"  alt="" height="16" border="0">{$translate_expense_details_edit}</a>
-                                    &nbsp;<a><img src="images/icons/16x16/help.gif" border="0" alt=""
+                                    <a href="?page=expense:edit&expenseID={$expense_details[i].EXPENSE_ID}&page_title={$translate_expense_edit_title}" ><img src="{$theme_images_dir}icons/edit.gif"  alt="" height="16" border="0">{$translate_expense_details_edit}</a>
+                                    &nbsp;<a><img src="{$theme_images_dir}icons/16x16/help.gif" border="0" alt=""
                                             onMouseOver="ddrivetip('<b>{$translate_expense_details_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_expense_details_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>')"
                                             onMouseOut="hideddrivetip()"></a>
                                 </td>

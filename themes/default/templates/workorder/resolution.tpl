@@ -8,7 +8,7 @@
                             <td class="menuhead2" width="20%" align="right">
                                 <table cellpadding="2" cellspacing="2" border="0">
                                     <tr>
-                                        <td width="33%" align="right"><a href="?page=workorder:close&wo_id={$single_workorder_array[i].WORK_ORDER_ID}&page_title={$translate_workorder_edit_title}"> <img src="images/icons/16x16/small_edit.gif" border="0" onMouseOver="ddrivetip('Edit Description')" onMouseOut="hideddrivetip()"></a></td>
+                                        <td width="33%" align="right"><a href="?page=workorder:close&wo_id={$single_workorder_array[i].WORK_ORDER_ID}&page_title={$translate_workorder_edit_title}"> <img src="{$theme_images_dir}icons/16x16/small_edit.gif" border="0" onMouseOver="ddrivetip('Edit Description')" onMouseOut="hideddrivetip()"></a></td>
                                     </tr>
                                 </table>
                             </td>

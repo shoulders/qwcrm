@@ -52,7 +52,7 @@
                             Set schedule For Work Order ID#{$wo_id}
                         {/if}
                     </td>
-                    <td class="menuhead2" size="10%" valign="right"><img src="images/icons/16x16/help.gif" border="0"
+                    <td class="menuhead2" size="10%" valign="right"><img src="{$theme_images_dir}icons/16x16/help.gif" border="0"
                         onMouseOver="ddrivetip('<b>Set schedule</b>')" onMouseOut="hideddrivetip()">
                     </td>
                 </tr><tr>

@@ -1,39 +1,26 @@
 <?php
+################################################
+#         error reporting and headers          #
+################################################
 /*Used to suppress Notices*/
 //error_reporting(E_ALL & ~E_NOTICE);
 error_reporting(E_ERROR);
 // Added to eliminate special characters
 header('Content-type: text/html; charset=utf-8');
-/* check if lock file exists if not we need to install */
-
-
-/* Initilise smarty */
-session_start(); // migt not be needed because the auth creates the session
-require('conf.php');
 //http_redirect("install2", array("name" => "value"), true, HTTP_REDIRECT_PERM);
-require(INCLUDE_URL.'smarty.php');
+
+################################################
+#         Initilise smarty                     #
+################################################
+require('conf.php');
+require(INCLUDES_DIR.'smarty.php');
 
 
-///////////////////////////////
+################################################
+#          Initial login and checks            #
+################################################
 
-
-
-
-
-
-
-
-
-
-$VAR            = array_merge($_GET,$_POST);
-$wo_id          = $VAR['wo_id'];
-$customer_id    = $VAR['customer_id'];
-$id             = $login_id;
-$smarty->assign('id', $id);
-
-/* set template directory */
-$smarty->assign('theme_dir', THEME_DIR);
-
+/* check if lock file exists if not we need to install */
 if(!is_file('cache/lock') ) {
     echo("
         <script type=\"text/javascript\">
@@ -46,17 +33,34 @@ if(!is_file('cache/lock') ) {
     die;
 }
 
-
-$page_title = $VAR['page_title'];
-
 $auth = new Auth($db, 'login.php', 'secret');
-require(INCLUDE_URL.SEP.'acl.php');
+require(INCLUDES_DIR.'acl.php');
+
+################################################
+#   Grab &_POST and $_GET values               #
+################################################
+
+$VAR            = array_merge($_GET,$_POST);
+$wo_id          = $VAR['wo_id'];
+$customer_id    = $VAR['customer_id'];
+$id             = $login_id;
+$page_title     = $VAR['page_title'];
 
 require('modules/core/translate.php');
-############################
-#        Debuging          #
-############################
 
+################################################
+#   log off                                    #
+################################################
+// If log off is set then we log off
+if (isset($VAR['action']) && $VAR['action'] == 'logout') {
+  $auth->logout('login.php');
+}
+
+################################################
+#   Debuging Information  - page load speed    #
+################################################
+
+// should this be further at the top
 function getMicroTime() {
   list($usec, $sec) = explode(" ", microtime()); 
     return (float)$usec + (float)$sec;
@@ -64,21 +68,15 @@ function getMicroTime() {
 
 $start = getMicroTime();
 
-
-
-// If log off is set then we log off
-if (isset($VAR['action']) && $VAR['action'] == 'logout') {
-  $auth->logout('login.php');
-}
-
+##########################################################################
+#   Assign variables into smarty for use by all native module templates  #
+##########################################################################
 /* get company info for defaults */
 $q = 'SELECT * FROM '.PRFX.'TABLE_COMPANY, '.PRFX.'VERSION ORDER BY  '.PRFX.'VERSION.`VERSION_INSTALLED` DESC LIMIT 1';
     if(!$rs = $db->execute($q)) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
         exit;
     }
-
-
 $smarty->assign('version', $rs->fields['VERSION_NAME']);
 $smarty->assign('company_name', $rs->fields['COMPANY_NAME']);
 $smarty->assign('company_address', $rs->fields['COMPANY_ADDRESS']);
@@ -100,6 +98,8 @@ $smarty->assign('email_server_port',$rs->fields['COMPANY_EMAIL_PORT']);
 $smarty->assign('email_username',$rs->fields['COMPANY_SMTP_USERNAME']);
 $smarty->assign('email_password',$rs->fields['COMPANY_SMTP_PASSWORD']);
 
+/* Others */
+$smarty->assign('id', $id);
 
 ##############################################################
 #    Url Builder This grabs gets and post and builds the url # 
@@ -209,6 +209,9 @@ if($VAR['escape'] != 1 ) {
     require('modules'.SEP.'core'.SEP.'footer.php');
 }
 
+################################################
+#         Logging                              #
+################################################
 /* Tracker code */
 function getIP() {
 //    $ip;
@@ -219,9 +222,8 @@ function getIP() {
     return $ip;
 }
 
-
-
 $logtime = time();
+
 $q = 'INSERT into '.PRFX.'TRACKER SET
    date          = '. $db->qstr( $logtime    ).',
    ip            = '. $db->qstr( getIP() ).',
@@ -234,8 +236,3 @@ $q = 'INSERT into '.PRFX.'TRACKER SET
    if(!$rs = $db->Execute($q)) {
       echo 'Error inserting tracker :'. $db->ErrorMsg();
    }
-
-
-
-?>
-

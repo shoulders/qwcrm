@@ -9,7 +9,7 @@
                         <table cellpadding="2" cellspacing="2" border="0">
                             <tr>
                                 <td width="33%" align="right" >
-                                    <a <img src="images/icons/16x16/small_new_work_order.gif" border="0" onMouseOver="ddrivetip('New Schedule')" onMouseOut="hideddrivetip()"></a>
+                                    <a><img src="{$theme_images_dir}icons/16x16/small_new_work_order.gif" border="0" onMouseOver="ddrivetip('New Schedule')" onMouseOut="hideddrivetip()"></a>
                                 </td>
                             </tr>
                         </table>

@@ -6,7 +6,7 @@
                 <tr>
                     <td class="menuhead2" width="80%">&nbsp;{$translate_invoice_for} {$wo_id}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
-                        <a><img src="images/icons/16x16/help.gif" border="0" alt=""
+                        <a><img src="{$theme_images_dir}icons/16x16/help.gif" border="0" alt=""
                                     onMouseOver="ddrivetip('<b>{$translate_invoice_view_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_invoice_view_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>')"
                                     onMouseOut="hideddrivetip()"></a>
                     </td>
@@ -95,7 +95,7 @@
                                     
                                     <form action="">
                                         <button type="button" name="{$translate_invoice_print}" onClick=window.open('?page=invoice:print&amp;print_type=html&amp;wo_id={$invoice.WORKORDER_ID}&amp;customer_id={$invoice.CUSTOMER_ID}&amp;invoice_id={$invoice.INVOICE_ID}&amp;escape=1')>{$translate_invoice_print}</button>
-                                        <button type="button" name="{$translate_invoice_pdf}" OnClick=window.open('?page=invoice:print&amp;print_type=pdf&amp;wo_id={$invoice.WORKORDER_ID}&customer_id={$invoice.CUSTOMER_ID}&invoice_id={$invoice.INVOICE_ID}&escape=1')><img src="images/icons/pdf_small.png"  height="14" alt="pdf">&nbsp;{$translate_invoice_pdf}</button>
+                                        <button type="button" name="{$translate_invoice_pdf}" OnClick=window.open('?page=invoice:print&amp;print_type=pdf&amp;wo_id={$invoice.WORKORDER_ID}&customer_id={$invoice.CUSTOMER_ID}&invoice_id={$invoice.INVOICE_ID}&escape=1')><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">&nbsp;{$translate_invoice_pdf}</button>
                                     </form>
                                     {if $invoice.INVOICE_AMOUNT-$invoice.PAID_AMOUNT > 0 }
                                         <button type="button" name="{$translate_invoice_bill_customer}" OnClick=location.href='?page=billing:new&wo_id={$invoice.WORKORDER_ID}&customer_id={$invoice.CUSTOMER_ID}&invoice_id={$invoice.INVOICE_ID}&page_title=Receiving%20Payment%20for%20{$invoice.INVOICE_ID}'>{$translate_invoice_bill_customer}</button>

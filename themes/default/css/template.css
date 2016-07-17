@@ -76,12 +76,12 @@ a.link3 {
 }
 
 .bg2 {
-    background-image: url('images/index28.jpg');
+    background-image: url('../images/index28.jpg');
     background-repeat: no-repeat;
     background-position: right top
 }
 mainbg {
-    background-image: url('images/index14.gif');
+    background-image: url('../images/index14.gif');
     background-repeat:repeat;
 }
 
@@ -254,17 +254,17 @@ a.menuhead2 { color:#ffffff; font-weight:bolder; font-size: 12px; text-decoratio
 }
 
 .toolbar {
-    background-image: url('/images/swsh.gif');
+    background-image: url('../images/swsh.gif');
     text-decoration: none
 }
 
 a.toolbar {
-    background-image: url('images/swsh.gif');
+    background-image: url('../images/swsh.gif');
     text-decoration: none
 }
 
 a.button { 
-    background-image: url('/images/swsh.gif');
+    background-image: url('../images/swsh.gif');
     color:#6699FF;
     font-weight:bolder;
     font-size: 12px;
@@ -329,7 +329,7 @@ a.menu_SUB{
     color: #cccccc;
     padding: 0px;
     margin: 0px;
-    background-image: url('images/glbnav_background.gif');
+    background-image: url('../images/glbnav_background.gif');
 }
 
 #globalNav img{
@@ -371,7 +371,7 @@ a.glink, a.glink:visited{
 }
 
 a.glink:hover{
-    background-image: url('images/glblnav_selected.gif');
+    background-image: url('../images/glblnav_selected.gif');
     text-decoration: none
 }
 

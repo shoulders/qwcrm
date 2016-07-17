@@ -2,7 +2,7 @@
     <head>
         <title>{$translate_submit_page_title}</title>
         <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-        <link href="css/default.css" rel="stylesheet" type="text/css">
+        <link href="{$theme_dir}css/template.css" rel="stylesheet" type="text/css">
         
     </head>
     <body>
@@ -21,14 +21,14 @@
             <table width="100%"  border="0" cellspacing="0" cellpadding="0">
                 <tr>
                     <td>
-                        <img src="images/logo.jpg" alt="" height="114">
+                        <img src="{$theme_images_dir}logo.jpg" alt="" height="114">
                     </td>
                 </tr>
             </table>
             <table width="100%"  border="0" cellspacing="0" cellpadding="2">
                 <tr>
                     <td colspan="3" >
-                        <img src="images/index03.gif" alt="" width="100%" height="40">
+                        <img src="{$theme_images_dir}index03.gif" alt="" width="100%" height="40">
                     </td>
                 </tr>
                 <tr>
@@ -47,7 +47,7 @@
                             </tr>
                             <tr>
                                 <td class="olotd5">
-                                    <img src="images/request.png" alt="Submit Request" align="middle" hspace="3">
+                                    <img src="{$theme_images_dir}request.png" alt="Submit Request" align="middle" hspace="3">
                                     <b>{$translate_submit_form_description}</b>
                                     <br>
                                     <br>
@@ -215,7 +215,7 @@
                                                         </tr>
                                                         <tr align="center">
                                                             <td colspan="2">
-                                                                <button type="submit" name="submit"><img src="images/tick.png" alt=""> {$translate_employee_login}</button>
+                                                                <button type="submit" name="submit"><img src="{$theme_images_dir}tick.png" alt=""> {$translate_employee_login}</button>
                                                             </td>
                                                         </tr>
                                                         { if $error_msg != "" }

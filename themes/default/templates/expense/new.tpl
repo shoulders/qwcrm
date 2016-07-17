@@ -37,7 +37,7 @@
                 <tr>
                     <td class="menuhead2" width="80%">{$translate_expense_new_title}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
-                        <a><img src="images/icons/16x16/help.gif" alt="" border="0"
+                        <a><img src="{$theme_images_dir}icons/16x16/help.gif" alt="" border="0"
                                 onMouseOver="ddrivetip('<b>{$translate_expense_new_help_title}</b><hr><p>{$translate_expense_new_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>')"
                                 onMouseOut="hideddrivetip()"
                                 onClick="window.location"></a>

@@ -5,7 +5,7 @@
     <meta name="description" content="MyIT CRM - The Best Open Source Repairs Business CRM program available!" />
     <meta name="keywords" content="CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment Processing" />
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-    <link href="css/default.css" rel="stylesheet" type="text/css">
+    <link href="{$theme_dir}css/template.css" rel="stylesheet" type="text/css">
   </head>
   <body>
     <center>
@@ -17,7 +17,7 @@
       <table width="100%"  border="0" cellspacing="0" cellpadding="2">
         <tr>
           <td colspan="3" >
-            <img src="images/index03.gif" alt="" width="100%" height="40">
+            <img src="{$theme_images_dir}index03.gif" alt="" width="100%" height="40">
           </td>
         </tr>
         <tr>
@@ -39,19 +39,19 @@
                           <table class="olotable" width="100%" align="center" border ="0"  >
                              <tr>
                                  <td valign="middle" colspan="1" width="50%" >
-                                      <img src="images/request.png" alt="Submit Request" align="middle" hspace="3"><a href="submit.php" ><font size="+1">Submit a New Support Request</font></a>
+                                      <img src="{$theme_images_dir}request.png" alt="Submit Request" align="middle" hspace="3"><a href="submit.php" ><font size="+1">Submit a New Support Request</font></a>
                                       <br> This is were you can submit your support request through of Helpdesk system
                                       <br>
                                       <br>
                                   </td>
                                   <td valign="middle" colspan="2" width="50%" >
-                                      <img src="images/news.png" alt="News" align="middle" hspace="3"><a><font size="+1">Latest News Coming Soon!!</font></a>
+                                      <img src="{$theme_images_dir}news.png" alt="News" align="middle" hspace="3"><a><font size="+1">Latest News Coming Soon!!</font></a>
                                       <br>
                                   </td>
                              </tr>
                              <tr>                                 
                                   <td valign="middle" colspan="3" width="100%" >
-                                      <img src="images/news.png" alt="News" align="middle" hspace="3"><a><font size="+1">Knowledge Base and Trobleshooter Coming Soon!!</font></a>
+                                      <img src="{$theme_images_dir}news.png" alt="News" align="middle" hspace="3"><a><font size="+1">Knowledge Base and Trobleshooter Coming Soon!!</font></a>
                                       <br>
                                   </td>
                              </tr>
@@ -92,7 +92,7 @@
                             </tr>
                             <tr align="center">
                               <td colspan="2">
-                                <button type="submit" name="submit"><img src="images/tick.png" alt=""> Login</button>
+                                <button type="submit" name="submit"><img src="{$theme_images_dir}tick.png" alt=""> Login</button>
                               </td>
                             </tr>
                              { if $error_msg != "" }

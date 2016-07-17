@@ -104,7 +104,7 @@
                                                         </tr>
                                                         <tr>
                                                             <td>
-                                                                <img src="images/rate_upload.PNG" alt="CSV Example screenshot" height="150"/>
+                                                                <img src="{$theme_images_dir}rate_upload.PNG" alt="CSV Example screenshot" height="150"/>
                                                             </td>
                                                         </tr>
                                                         <tr>

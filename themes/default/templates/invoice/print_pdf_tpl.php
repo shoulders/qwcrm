@@ -2,7 +2,7 @@
 
 // Print PDF Invoice Template File
 
-require(INCLUDE_URL.SEP.'fpdf'.SEP.'fpdf.php');
+require(INCLUDES_DIR.SEP.'fpdf'.SEP.'fpdf.php');
 
 // Xavier Nicolay 2004
 // Version 1.01
@@ -459,7 +459,7 @@ if($cabn == ""){
 
 
 // Logo
-$pdf->Image('images/logo.jpg',60,5,0,15,JPG);
+$pdf->Image('{$theme_images_dir}logo.jpg',60,5,0,15,JPG);
 $pdf->temporary($company1['COMPANY_NAME'] );
 //$pdf->addDate(date('d M Y',($invoice[INVOICE_DATE])));
 //$pdf->addClient($invoice[CUSTOMER_ID]);
@@ -663,7 +663,7 @@ while($parts_row = mysql_fetch_array($parts_row_pdf))
  $pdf->SetX(20);
  $pdf->SetFont('Arial', 'B', 6);
  $pdf->MultiCell(100, 3, "\n" .
-                        $pdf->Image('images/icons/cheque.jpeg',10,194,0,5,JPG) .
+                        $pdf->Image('{$theme_images_dir}icons/cheque.jpeg',10,194,0,5,JPG) .
                         "Cheque\Money Orders:-\n" .
                         "  -Please make payable to $CHECK_PAYABLE\n" .
                         "\n" , 0 ,'L', FALSE);
@@ -675,7 +675,7 @@ while($parts_row = mysql_fetch_array($parts_row_pdf))
                         $pdf->SetX(20);
                          $pdf->SetFont('Arial', 'B', 6);
                         $pdf->MultiCell(100, 3, "\n" .
-                        $pdf->Image('images/icons/deposit.jpeg',3,205,0,5,JPG) .
+                        $pdf->Image('{$theme_images_dir}icons/deposit.jpeg',3,205,0,5,JPG) .
                         "Direct Deposit:-\n" .
                         "- Bank: $DD_BANK\n" .
                         "- Name: $DD_NAME\n" .
@@ -695,7 +695,7 @@ if($PP_ID <> "" ){
                         "PayPal Credit Card Processing:-", 0 ,'L', FALSE);
 
 $pdf->SetLink($link);
-$pdf->Image('images/paypal/pay_now.gif',5,230,15,0,'','https://www.paypal.com/cmd=_xclick&business='.$PP_ID.'&item_name=Payment%20for%20invoice%20'.$invoice_id.'&item_number='.$invoice_id.'&description=Invoice%20for%20'.$invoice_id.'&amount='.$pamount.'&no_note=Thankyou%20for%20your%20buisness.&currency_code='.$currency_code.'&lc='.$country.'&bn=PP-BuyNowBF');
+$pdf->Image('{$theme_images_dir}paypal/pay_now.gif',5,230,15,0,'','https://www.paypal.com/cmd=_xclick&business='.$PP_ID.'&item_name=Payment%20for%20invoice%20'.$invoice_id.'&item_number='.$invoice_id.'&description=Invoice%20for%20'.$invoice_id.'&amount='.$pamount.'&no_note=Thankyou%20for%20your%20buisness.&currency_code='.$currency_code.'&lc='.$country.'&bn=PP-BuyNowBF');
 $pdf->SetLeftMargin(20);
 //$pdf->SetFontSize(14);
 $pdf->WriteHTML($html);
@@ -709,7 +709,7 @@ if($PAYMATE_LOGIN <> "" ){
                         "Paymate Processing:-", 0 ,'L', FALSE);
 
 $pdf->SetLink($link);
-$pdf->Image('images/paymate/paymate_cc.gif',5,242,15,0,'','https://www.paymate.com/PayMate/ExpressPayment?mid='.$PAYMATE_LOGIN.'&amt='.$paymate_amt.'&ref=Payment%20for%20invoice%20'.$invoice_id.'&currency='.$currency_code.'&amt_editable=N&pmt_sender_email='.$cusemail.'&pmt_contact_firstname='.$cusnamef.'&pmt_contact_surname='.$cusnamel.'&pmt_contact_phone='.$cusphone.'&regindi_state='.$cusstate.'&regindi_address1='.$cusaddress.'&regindi_sub='.$cuscity.'&regindi_pcode='.$cuszip.'');
+$pdf->Image('{$theme_images_dir}paymate/paymate_cc.gif',5,242,15,0,'','https://www.paymate.com/PayMate/ExpressPayment?mid='.$PAYMATE_LOGIN.'&amt='.$paymate_amt.'&ref=Payment%20for%20invoice%20'.$invoice_id.'&currency='.$currency_code.'&amt_editable=N&pmt_sender_email='.$cusemail.'&pmt_contact_firstname='.$cusnamef.'&pmt_contact_surname='.$cusnamel.'&pmt_contact_phone='.$cusphone.'&regindi_state='.$cusstate.'&regindi_address1='.$cusaddress.'&regindi_sub='.$cuscity.'&regindi_pcode='.$cuszip.'');
 $pdf->SetLeftMargin(20);
 //$pdf->SetFontSize(14);
 $pdf->WriteHTML($html2);

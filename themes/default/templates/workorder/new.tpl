@@ -164,7 +164,7 @@
                                                             <td class="olotd4">{$customer_details[i].CUSTOMER_DISPLAY_NAME}</td>
                                                             <td class="olotd4"><input size="40" id="scope" name="scope" type="text" value="" onkeyup="lookup(this.value);" onblur="fill();">
                                                                 <div class="suggestionsBox" id="suggestions" style="display: none;">
-                                                            <img src="images/upArrow.png" style="position: relative; top: -12px; left: 1px;" alt="upArrow" />
+                                                            <img src="{$theme_images_dir}upArrow.png" style="position: relative; top: -12px; left: 1px;" alt="upArrow" />
                                                             <div class="suggestionList" id="autoSuggestionsList">
                                                                 &nbsp;
                                                             </div>
@@ -238,7 +238,7 @@
                                         <tr>
                                             <td class="menuhead2" width="80%">{$translate_workorder_cutomer_contact_title}</td>
                                             <td class="menuhead2" width="20%" align="right">
-                                                <a href="?page=customer:edit&amp;customer_id={$customer_details[i].CUSTOMER_ID}"<img src="images/icons/16x16/small_edit.gif" border="0" alt="" /></a>                                                    </td>
+                                                <a href="?page=customer:edit&amp;customer_id={$customer_details[i].CUSTOMER_ID}"<img src="{$theme_images_dir}icons/16x16/small_edit.gif" border="0" alt="" /></a>                                                    </td>
                                         </tr>
                                     </table>                                        </td>
                             </tr>

@@ -2,13 +2,13 @@
 <head>
     <title>{$translate_parts_order_complete}</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-    <link href="css/default.css" rel="stylesheet" type="text/css">
+    <link href="{$theme_dir}css/template.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <table  width="700" border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
     <tr>
         <td valign="top">
-            <img src="images/logo.jpg" border="0">
+            <img src="{$theme_images_dir}logo.jpg" border="0">
         </td>
     </tr>
 </table>

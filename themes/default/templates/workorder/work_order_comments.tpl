@@ -9,7 +9,7 @@
                                                 <tr>
                                                     <td width="33%" align="right"> 
                                                         
-                                                        <a href="?page=workorder:edit_comment&wo_id={$single_workorder_array[i].WORK_ORDER_ID}&page_title={$translate_workorder_edit_comments}"><img src="images/icons/16x16/small_edit.gif" border="0" onMouseOver="ddrivetip('Edit Comment')" onMouseOut="hideddrivetip()"></a>
+                                                        <a href="?page=workorder:edit_comment&wo_id={$single_workorder_array[i].WORK_ORDER_ID}&page_title={$translate_workorder_edit_comments}"><img src="{$theme_images_dir}icons/16x16/small_edit.gif" border="0" onMouseOver="ddrivetip('Edit Comment')" onMouseOut="hideddrivetip()"></a>
                                                         
                                                     </td>
                                                 </tr>

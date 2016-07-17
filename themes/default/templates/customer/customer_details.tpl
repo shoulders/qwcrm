@@ -21,9 +21,9 @@ window.open({/literal}$src{literal}, menubar=0)
         <td>
             <div id="tabs_container">
                 <ul class="tabs">
-                    <li class="active"><a href="#" rel="#tab_1_contents" class="tab"><img src="images/icons/customers.gif" alt="" border="0" height="14" width="14" />&nbsp;Customer Details</a></li>
-                    <li><a href="#" rel="#tab_2_contents" class="tab"><img src="images/icons/workorders.gif" alt="" border="0" height="14" width="14" />&nbsp;Works Orders</a></li>
-                    <li><a href="#" rel="#tab_3_contents" class="tab"><img src="images/icons/invoice.png" alt="" border="0" height="14" width="14" />&nbsp;Invoices</a></li>
+                    <li class="active"><a href="#" rel="#tab_1_contents" class="tab"><img src="{$theme_images_dir}icons/customers.gif" alt="" border="0" height="14" width="14" />&nbsp;Customer Details</a></li>
+                    <li><a href="#" rel="#tab_2_contents" class="tab"><img src="{$theme_images_dir}icons/workorders.gif" alt="" border="0" height="14" width="14" />&nbsp;Works Orders</a></li>
+                    <li><a href="#" rel="#tab_3_contents" class="tab"><img src="{$theme_images_dir}icons/invoice.png" alt="" border="0" height="14" width="14" />&nbsp;Invoices</a></li>
                     <!-- TODO: <li><a href="#" rel="#tab_5_contents" class="tab">{$translate_customer_asset_tab}</a></li> -->
                 </ul>
 
@@ -44,7 +44,7 @@ window.open({/literal}$src{literal}, menubar=0)
                                             <td class="menuhead2" width="80%">
                                                 &nbsp;{$translate_customer_details} {$customer_details[i].CUSTOMER_FIRST_NAME}&nbsp;{$customer_details[i].CUSTOMER_LAST_NAME}</td>
                                             <td class="menuhead2" width="20%" align="right" valign="middle">
-                                                <a href="?page=customer:edit&customer_id={$customer_details[i].CUSTOMER_ID}&page_title=Edit%20Customer%20Information" ><img src="images/icons/edit.gif"  alt="" height="16" border="0"> Edit</a>
+                                                <a href="?page=customer:edit&customer_id={$customer_details[i].CUSTOMER_ID}&page_title=Edit%20Customer%20Information" ><img src="{$theme_images_dir}icons/edit.gif"  alt="" height="16" border="0"> Edit</a>
                                             </td>
                                         </tr>
                                         <tr>
@@ -88,7 +88,7 @@ window.open({/literal}$src{literal}, menubar=0)
                                                                     <td class="menutd" colspan="4"></td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td class="menutd"> <b>{$translate_customer_address}</b> <a style="color:red" href="{$src}" target="_blank" ><img src="images/icons/map.png" alt="" border="0" height="14" width="14" />[{$translate_get_directions}]</a></td>
+                                                                    <td class="menutd"> <b>{$translate_customer_address}</b> <a style="color:red" href="{$src}" target="_blank" ><img src="{$theme_images_dir}icons/map.png" alt="" border="0" height="14" width="14" />[{$translate_get_directions}]</a></td>
                                                                     <td class="menutd"></td>
                                                                     <td class="menutd"><b>{$translate_customer_home}</b></td>
                                                                     <td class="menutd">{$customer_details[i].CUSTOMER_PHONE}</td>
@@ -167,7 +167,7 @@ window.open({/literal}$src{literal}, menubar=0)
                                 <td class="olotd4">{$open_work_orders[a].CONFIG_WORK_ORDER_STATUS}</td>
                                 <td class="olotd4">
                                     {if $open_work_orders[a].EMPLOYEE_ID != ''}
-                                        <img src="images/icons/16x16/view.gif" border="0" alt="" {literal}onMouseOver="ddrivetip('<center><b>{/literal}{$translate_contact}{literal}</b></center><hr>
+                                        <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" {literal}onMouseOver="ddrivetip('<center><b>{/literal}{$translate_contact}{literal}</b></center><hr>
                                         <b>{/literal}{$translate_work}{literal} </b>
                                         {/literal}{$open_work_orders[a].EMPLOYEE_WORK_PHONE}{literal}
                                         <br/>
@@ -181,9 +181,9 @@ window.open({/literal}$src{literal}, menubar=0)
                                 </td>
                                 <td class="olotd4" align="center">
                                     <a href="?page=workorder:print&wo_id={$open_work_orders[a].WORK_ORDER_ID}&customer_id={$open_work_orders[a].CUSTOMER_ID}&escape=1" target="new">
-                                        <img src="images/icons/16x16/fileprint.gif" alt="" border="0" onMouseOver="ddrivetip('{$translate_customer_print}')" onMouseOut="hideddrivetip()"></a>
+                                        <img src="{$theme_images_dir}icons/16x16/fileprint.gif" alt="" border="0" onMouseOver="ddrivetip('{$translate_customer_print}')" onMouseOut="hideddrivetip()"></a>
                                     <a href="?page=workorder:view&wo_id={$open_work_orders[a].WORK_ORDER_ID}&customer_id={$open_work_orders[a].CUSTOMER_ID}">
-                                        <img src="images/icons/16x16/viewmag.gif"  alt="" border="0" onMouseOver="ddrivetip('{$translate_customer_view_wo}')" onMouseOut="hideddrivetip()"></a> </td>
+                                        <img src="{$theme_images_dir}icons/16x16/viewmag.gif"  alt="" border="0" onMouseOver="ddrivetip('{$translate_customer_view_wo}')" onMouseOut="hideddrivetip()"></a> </td>
                             </tr>
                             {/section}
                         </table>
@@ -207,7 +207,7 @@ window.open({/literal}$src{literal}, menubar=0)
                                 <td class="olotd4">{$closed_work_orders[b].WORK_ORDER_SCOPE}</td>
                                 <td class="olotd4">{$closed_work_orders[b].CONFIG_WORK_ORDER_STATUS}</td>
                                 <td class="olotd4"> {if $closed_work_orders[b].EMPLOYEE_ID != ''}
-                                    <img src="images/icons/16x16/view.gif" border="0" alt="" {literal}onMouseOver="ddrivetip('<center><b>{$translate_contact}</b></center><hr>
+                                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" {literal}onMouseOver="ddrivetip('<center><b>{$translate_contact}</b></center><hr>
                                             <b>{$translate_work} </b>
                                             {$open_work_orders[a].EMPLOYEE_WORK_PHONE}
                                             <br>
@@ -218,9 +218,9 @@ window.open({/literal}$src{literal}, menubar=0)
                                     <a class="link1" href="?page=employees:employee_details&employee_id={$closed_work_orders[b].EMPLOYEE_ID}&page_title={$closed_work_orders[b].EMPLOYEE_DISPLAY_NAME}">{$closed_work_orders[b].EMPLOYEE_DISPLAY_NAME}</a> { else } Not Assigned {/if}</td>
                                 <td class="olotd4" align="center">
                                     <a href="?page=workorder:print&wo_id={$closed_work_orders[b].WORK_ORDER_ID}&customer_id={$closed_work_orders[b].CUSTOMER_ID}&escape=1" target="new">
-                                        <img src="images/icons/16x16/fileprint.gif" alt="" border="0" onMouseOver="ddrivetip('{$translate_customer_print}')" onMouseOut="hideddrivetip()"></a>
+                                        <img src="{$theme_images_dir}icons/16x16/fileprint.gif" alt="" border="0" onMouseOver="ddrivetip('{$translate_customer_print}')" onMouseOut="hideddrivetip()"></a>
                                     <a href="?page=workorder:view&wo_id={$closed_work_orders[b].WORK_ORDER_ID}&customer_id={$closed_work_orders[b].CUSTOMER_ID}">
-                                        <img src="images/icons/16x16/viewmag.gif"  alt="" border="0" onMouseOver="ddrivetip('{$translate_customer_view_wo}')" onMouseOut="hideddrivetip()"></a> </td>
+                                        <img src="{$theme_images_dir}icons/16x16/viewmag.gif"  alt="" border="0" onMouseOver="ddrivetip('{$translate_customer_view_wo}')" onMouseOut="hideddrivetip()"></a> </td>
                             </tr>
                             {/section}
                         </table>
@@ -253,9 +253,9 @@ window.open({/literal}$src{literal}, menubar=0)
                                 <td class="olotd4">{$unpaid_invoices[w].PAID_DATE|date_format:"$date_format"}</td>
                                 <td class="olotd4">{$unpaid_invoices[w].EMPLOYEE_DISPLAY_NAME}</td>
                                 <td class="olotd4" align="center">
-                                    <a href="?page=invoice:print&print_type=pdf&invoice_id={$unpaid_invoices[w].INVOICE_ID}&customer_id={$unpaid_invoices[w].CUSTOMER_ID}&escape=1" target="new" ><img src="images/icons/16x16/pdf_small.gif" alt="" border="0" onMouseOver="ddrivetip('{$translate_customer_print_pdf}')" onMouseOut="hideddrivetip()"></a>
-                                    <a href="?page=invoice:print&print_type=html&invoice_id={$unpaid_invoices[w].INVOICE_ID}&customer_id={$unpaid_invoices[w].CUSTOMER_ID}&escape=1" target="new" ><img src="images/icons/16x16/fileprint.gif" alt="" border="0" onMouseOver="ddrivetip('{$translate_customer_print}')" onMouseOut="hideddrivetip()"></a>
-                                    <a href="?page=workorder:view&wo_id={$unpaid_invoices[w].WORKORDER_ID}&customer_id={$unpaid_invoices[w].CUSTOMER_ID}"><img src="images/icons/16x16/viewmag.gif" alt="" border="0" onMouseOver="ddrivetip('{$translate_customer_view}')" onMouseOut="hideddrivetip()"></a>
+                                    <a href="?page=invoice:print&print_type=pdf&invoice_id={$unpaid_invoices[w].INVOICE_ID}&customer_id={$unpaid_invoices[w].CUSTOMER_ID}&escape=1" target="new" ><img src="{$theme_images_dir}icons/16x16/pdf_small.gif" alt="" border="0" onMouseOver="ddrivetip('{$translate_customer_print_pdf}')" onMouseOut="hideddrivetip()"></a>
+                                    <a href="?page=invoice:print&print_type=html&invoice_id={$unpaid_invoices[w].INVOICE_ID}&customer_id={$unpaid_invoices[w].CUSTOMER_ID}&escape=1" target="new" ><img src="{$theme_images_dir}icons/16x16/fileprint.gif" alt="" border="0" onMouseOver="ddrivetip('{$translate_customer_print}')" onMouseOut="hideddrivetip()"></a>
+                                    <a href="?page=workorder:view&wo_id={$unpaid_invoices[w].WORKORDER_ID}&customer_id={$unpaid_invoices[w].CUSTOMER_ID}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" onMouseOver="ddrivetip('{$translate_customer_view}')" onMouseOut="hideddrivetip()"></a>
                                 </td>
                             </tr>
                             {/section}
@@ -286,9 +286,9 @@ window.open({/literal}$src{literal}, menubar=0)
                                 <td class="olotd4">{$paid_invoices[w].PAID_DATE|date_format:"$date_format"}</td>
                                 <td class="olotd4">{$paid_invoices[w].EMPLOYEE_DISPLAY_NAME}</td>
                                 <td class="olotd4" align="center">
-                                    <a href="?page=invoice:print&print_type=pdf&invoice_id={$paid_invoices[w].INVOICE_ID}&customer_id={$paid_invoices[w].CUSTOMER_ID}&escape=1" target="new" ><img src="images/icons/16x16/pdf_small.gif" alt="" border="0" onMouseOver="ddrivetip('{$translate_customer_print_pdf}')" onMouseOut="hideddrivetip()"></a>
-                                    <a href="?page=invoice:print&print_type=html&invoice_id={$paid_invoices[w].INVOICE_ID}&customer_id={$paid_invoices[w].CUSTOMER_ID}&escape=1" target="new" ><img src="images/icons/16x16/fileprint.gif" alt="" border="0" onMouseOver="ddrivetip('{$translate_customer_print}')" onMouseOut="hideddrivetip()"></a>
-                                    <a href="?page=invoice:view&invoice_id={$paid_invoices[w].INVOICE_ID}&customer_id={$paid_invoices[w].CUSTOMER_ID}&page_title={$translate_customer_invoice}"><img src="images/icons/16x16/viewmag.gif"  alt="" border="0" onMouseOver="ddrivetip('{$translate_customer_view}')" onMouseOut="hideddrivetip()"></a>
+                                    <a href="?page=invoice:print&print_type=pdf&invoice_id={$paid_invoices[w].INVOICE_ID}&customer_id={$paid_invoices[w].CUSTOMER_ID}&escape=1" target="new" ><img src="{$theme_images_dir}icons/16x16/pdf_small.gif" alt="" border="0" onMouseOver="ddrivetip('{$translate_customer_print_pdf}')" onMouseOut="hideddrivetip()"></a>
+                                    <a href="?page=invoice:print&print_type=html&invoice_id={$paid_invoices[w].INVOICE_ID}&customer_id={$paid_invoices[w].CUSTOMER_ID}&escape=1" target="new" ><img src="{$theme_images_dir}icons/16x16/fileprint.gif" alt="" border="0" onMouseOver="ddrivetip('{$translate_customer_print}')" onMouseOut="hideddrivetip()"></a>
+                                    <a href="?page=invoice:view&invoice_id={$paid_invoices[w].INVOICE_ID}&customer_id={$paid_invoices[w].CUSTOMER_ID}&page_title={$translate_customer_invoice}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif"  alt="" border="0" onMouseOver="ddrivetip('{$translate_customer_view}')" onMouseOut="hideddrivetip()"></a>
                                 </td>
                             </tr>
                             {/section}
@@ -358,9 +358,9 @@ window.open({/literal}$src{literal}, menubar=0)
                                 <td class="olotd4">
                                     {$unpaid_invoices[w].EMPLOYEE_DISPLAY_NAME}</td>
                                 <td class="olotd4" align="center">
-                                    <a href="?page=invoice:pdf&invoice_id={$unpaid_invoices[w].INVOICE_ID}&customer_id={$unpaid_invoices[w].CUSTOMER_ID}&escape=1" target="new" ><img src="images/icons/16x16/pdf_small.gif" alt="" border="0" onMouseOver="ddrivetip('{$translate_customer_print_pdf}')" onMouseOut="hideddrivetip()"></a>
-                                    <a href="?page=invoice:print&invoice_id={$unpaid_invoices[w].INVOICE_ID}&customer_id={$unpaid_invoices[w].CUSTOMER_ID}&escape=1" target="new" ><img src="images/icons/16x16/fileprint.gif" alt="" border="0" onMouseOver="ddrivetip('{$translate_customer_print}')" onMouseOut="hideddrivetip()"></a>
-                                    <a href="?page=workorder:view&wo_id={$unpaid_invoices[w].WORK_ORDER_ID}&customer_id={$unpaid_invoices[w].CUSTOMER_ID}"><img src="images/icons/16x16/viewmag.gif" alt="" border="0" onMouseOver="ddrivetip('{$translate_customer_view}')" onMouseOut="hideddrivetip()"></a></td>
+                                    <a href="?page=invoice:pdf&invoice_id={$unpaid_invoices[w].INVOICE_ID}&customer_id={$unpaid_invoices[w].CUSTOMER_ID}&escape=1" target="new" ><img src="{$theme_images_dir}icons/16x16/pdf_small.gif" alt="" border="0" onMouseOver="ddrivetip('{$translate_customer_print_pdf}')" onMouseOut="hideddrivetip()"></a>
+                                    <a href="?page=invoice:print&invoice_id={$unpaid_invoices[w].INVOICE_ID}&customer_id={$unpaid_invoices[w].CUSTOMER_ID}&escape=1" target="new" ><img src="{$theme_images_dir}icons/16x16/fileprint.gif" alt="" border="0" onMouseOver="ddrivetip('{$translate_customer_print}')" onMouseOut="hideddrivetip()"></a>
+                                    <a href="?page=workorder:view&wo_id={$unpaid_invoices[w].WORK_ORDER_ID}&customer_id={$unpaid_invoices[w].CUSTOMER_ID}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" onMouseOver="ddrivetip('{$translate_customer_view}')" onMouseOut="hideddrivetip()"></a></td>
                             </tr>{/section}
                         </table>
                         <br>
@@ -405,9 +405,9 @@ window.open({/literal}$src{literal}, menubar=0)
                                 <td class="olotd4">
                                     {$paid_invoices[w].EMPLOYEE_DISPLAY_NAME}</td>
                                 <td class="olotd4" align="center">
-                                    <a href="?page=invoice:pdf&invoice_id={$paid_invoices[w].INVOICE_ID}&customer_id={$paid_invoices[w].CUSTOMER_ID}&escape=1" target="new" ><img src="images/icons/16x16/pdf_small.gif" alt="" border="0" onMouseOver="ddrivetip('{$translate_customer_print_pdf}')" onMouseOut="hideddrivetip()"></a>
-                                    <a href="?page=invoice:print&invoice_id={$paid_invoices[w].INVOICE_ID}&customer_id={$paid_invoices[w].CUSTOMER_ID}&escape=1" target="new" ><img src="images/icons/16x16/fileprint.gif" alt="" border="0" onMouseOver="ddrivetip('{$translate_customer_print}')" onMouseOut="hideddrivetip()"></a>
-                                    <a href="?page=invoice:view&customer_id={$paid_invoices[w].CUSTOMER_ID}&invoice_id={$paid_invoices[w].INVOICE_ID}&page_title={$translate_customer_invoice}"><img src="images/icons/16x16/viewmag.gif"  alt="" border="0" onMouseOver="ddrivetip('{$translate_customer_view}')" onMouseOut="hideddrivetip()"></a></td>
+                                    <a href="?page=invoice:pdf&invoice_id={$paid_invoices[w].INVOICE_ID}&customer_id={$paid_invoices[w].CUSTOMER_ID}&escape=1" target="new" ><img src="{$theme_images_dir}icons/16x16/pdf_small.gif" alt="" border="0" onMouseOver="ddrivetip('{$translate_customer_print_pdf}')" onMouseOut="hideddrivetip()"></a>
+                                    <a href="?page=invoice:print&invoice_id={$paid_invoices[w].INVOICE_ID}&customer_id={$paid_invoices[w].CUSTOMER_ID}&escape=1" target="new" ><img src="{$theme_images_dir}icons/16x16/fileprint.gif" alt="" border="0" onMouseOver="ddrivetip('{$translate_customer_print}')" onMouseOut="hideddrivetip()"></a>
+                                    <a href="?page=invoice:view&customer_id={$paid_invoices[w].CUSTOMER_ID}&invoice_id={$paid_invoices[w].INVOICE_ID}&page_title={$translate_customer_invoice}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif"  alt="" border="0" onMouseOver="ddrivetip('{$translate_customer_view}')" onMouseOut="hideddrivetip()"></a></td>
                             </tr> {/section}
                         </table>
                     </div>

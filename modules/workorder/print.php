@@ -43,7 +43,7 @@ if($html_print == 1) {
     $smarty->display('workorder/print.tpl');
 } else if($pdf_print == 1) {
     /* create pdf */
-    require(INCLUDE_URL.SEP.'fpdf'.SEP.'fpdf.php');
+    require(INCLUDES_DIR.SEP.'fpdf'.SEP.'fpdf.php');
     class PDF extends FPDF {
     //Page header
     function Header() {

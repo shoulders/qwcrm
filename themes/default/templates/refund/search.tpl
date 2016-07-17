@@ -9,7 +9,7 @@
                 <tr>
                                     <td class="menuhead2" width="80%">&nbsp;&nbsp;{$translate_refund_view_title}</td>
                                     <td class="menuhead2" width="20%" align="right" valign="middle">
-                                        <a><img src="images/icons/16x16/help.gif" border="0" alt=""
+                                        <a><img src="{$theme_images_dir}icons/16x16/help.gif" border="0" alt=""
                                             onMouseOver="ddrivetip('<b>{$translate_refund_search_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_refund_search_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>')"
                                             onMouseOut="hideddrivetip()"></a>
                                     </td>
@@ -74,17 +74,17 @@
                                                                             <form id="1">
 
                                                                                     <!-- Left buttons -->
-                                                                                    <a href="?page=refund%3Asearch&refund_search_category={$refund_search_category}&refund_search_term={$refund_search_term}&submit=submit&page_no=1&page_title={$translate_refund_view_title}"><img src="images/rewnd_24.gif" border="0" alt=""></a>&nbsp;
+                                                                                    <a href="?page=refund%3Asearch&refund_search_category={$refund_search_category}&refund_search_term={$refund_search_term}&submit=submit&page_no=1&page_title={$translate_refund_view_title}"><img src="{$theme_images_dir}rewnd_24.gif" border="0" alt=""></a>&nbsp;
                                                                                     {if $previous != ''}
-                                                                                    <a href="?page=refund%3Asearch&refund_search_category={$refund_search_category}&refund_search_term={$refund_search_term}&submit=submit&page_no={$previous}&page_title={$translate_refund_view_title}"><img src="images/back_24.gif" border="0" alt=""></a>&nbsp;
+                                                                                    <a href="?page=refund%3Asearch&refund_search_category={$refund_search_category}&refund_search_term={$refund_search_term}&submit=submit&page_no={$previous}&page_title={$translate_refund_view_title}"><img src="{$theme_images_dir}back_24.gif" border="0" alt=""></a>&nbsp;
                                                                                     {/if}
                                                                                     <!-- end of Left Side Buttons -->
 
                                                                                     <!-- Right Side Buttons -->
                                                                                     {if $next != ''}
-                                                                                    <a href="?page=refund%3Asearch&refund_search_category={$refund_search_category}&refund_search_term={$refund_search_term}&submit=submit&page_no={$next}&page_title={$translate_refund_view_title}"><img src="images/forwd_24.gif" border="0" alt=""></a>
+                                                                                    <a href="?page=refund%3Asearch&refund_search_category={$refund_search_category}&refund_search_term={$refund_search_term}&submit=submit&page_no={$next}&page_title={$translate_refund_view_title}"><img src="{$theme_images_dir}forwd_24.gif" border="0" alt=""></a>
                                                                                     {/if}
-                                                                                    <a href="?page=refund%3Asearch&refund_search_category={$refund_search_category}&refund_search_term={$refund_search_term}&submit=submit&page_no={$total_pages}&page_title={$translate_refund_view_title}"><img src="images/fastf_24.gif" border="0" alt=""></a>
+                                                                                    <a href="?page=refund%3Asearch&refund_search_category={$refund_search_category}&refund_search_term={$refund_search_term}&submit=submit&page_no={$total_pages}&page_title={$translate_refund_view_title}"><img src="{$theme_images_dir}fastf_24.gif" border="0" alt=""></a>
                                                                                     <!-- end of Right Side Buttons -->
 
                                                                                     <!-- Page Number Display -->
@@ -216,29 +216,29 @@
 
                                                                                             <!-- Notes Column -->
                                                                                             <td class="olotd4" nowrap>{if !$refund_search_result[i].REFUND_NOTES == ""}
-                                                                                                <img src="images/icons/16x16/view.gif" border="0" alt=""
+                                                                                                <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt=""
                                                                                                     onMouseOver="ddrivetip('<b>{$translate_refund_notes}</b><hr><p>{$refund_search_result[i].REFUND_NOTES|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>')"
                                                                                                     onMouseOut="hideddrivetip()">{/if}</td>
 
                                                                                             <!-- Items Column  -->
-                                                                                            <td class="olotd4" nowrap><img src="images/icons/16x16/view.gif" border="0" alt=""
+                                                                                            <td class="olotd4" nowrap><img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt=""
                                                                                                     onMouseOver="ddrivetip('<b>{$translate_refund_items}</b><hr><p>{$refund_search_result[i].REFUND_ITEMS|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>')"
                                                                                                     onMouseOut="hideddrivetip()"></td>
 
                                                                                             <!-- Action Column -->
                                                                                             <td class="olotd4" nowrap>
                                                                                                 <a href="index.php?page=refund:refund_details&refundID={$refund_search_result[i].REFUND_ID}&page_title={$translate_refund_details_title}">
-                                                                                                    <img src="images/icons/16x16/viewmag.gif" alt="" border="0"
+                                                                                                    <img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0"
                                                                                                          onMouseOver="ddrivetip('<b>{$translate_refund_search_details|nl2br|regex_replace:"/[\r\t\n]/":" "}</b>')"
                                                                                                          onMouseOut="hideddrivetip()"></a>
 
                                                                                                 <a href="?page=refund:edit&refundID={$refund_search_result[i].REFUND_ID}&page_title={$translate_refund_edit_title}">
-                                                                                                    <img src="images/icons/16x16/small_edit.gif" alt=""  border="0"
+                                                                                                    <img src="{$theme_images_dir}icons/16x16/small_edit.gif" alt=""  border="0"
                                                                                                          onMouseOver="ddrivetip('<b>{$translate_refund_search_edit_details|nl2br|regex_replace:"/[\r\t\n]/":" "}</b>')"
                                                                                                          onMouseOut="hideddrivetip()"></a>
 
                                                                                                 <a href="?page=refund:search&amp;page_title={$translate_refund_search_title}" onclick="confirmDelete({$refund_search_result[i].REFUND_ID});">
-                                                                                                    <img src="images/icons/delete.gif" alt="" border="0" height="14" width="14"
+                                                                                                    <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14"
                                                                                                          onMouseOver="ddrivetip('<b>{$translate_refund_search_delete_record|nl2br|regex_replace:"/[\r\t\n]/":" "}</b>')"
                                                                                                          onMouseOut="hideddrivetip()"></a>                                                                                                         
 

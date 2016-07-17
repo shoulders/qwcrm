@@ -11,7 +11,7 @@
                                                     <td width="33%" align="right">
                                                         {if $single_workorder_array[i].WORK_ORDER_STATUS != 6}
                                                         <a href="?page=workorder:edit_description&wo_id={$single_workorder_array[i].WORK_ORDER_ID}&page_title={$translate_workorder_edit_title}">
-                                                        <img src="images/icons/16x16/small_edit.gif" alt="" border="0" onMouseOver="ddrivetip('Edit Description')" onMouseOut="hideddrivetip()"></a>
+                                                        <img src="{$theme_images_dir}icons/16x16/small_edit.gif" alt="" border="0" onMouseOver="ddrivetip('Edit Description')" onMouseOut="hideddrivetip()"></a>
                                                         {/if}
                                                     </td>
                                                 </tr>

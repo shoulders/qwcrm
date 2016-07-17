@@ -3,7 +3,7 @@
     <head>
         <title>Password Reset</title>
         <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-        <link href="css/default.css" rel="stylesheet" type="text/css">
+        <link href="{$theme_dir}css/template.css" rel="stylesheet" type="text/css">
     </head>
     <body>
         {include file="../js/password.js"}
@@ -12,14 +12,14 @@
                 
                 <tr>
                     <td>
-                        <img src="images/logo.jpg" alt="" height="114">
+                        <img src="{$theme_images_dir}logo.jpg" alt="" height="114">
                     </td>
                 </tr>
             </table>
             <table width="100%"  border="0" cellspacing="0" cellpadding="2">
                 <tr>
                     <td colspan="3" >
-                        <img src="images/index03.gif" alt="" width="100%" height="40">
+                        <img src="{$theme_images_dir}index03.gif" alt="" width="100%" height="40">
                     </td>
                 </tr>
                 <tr>

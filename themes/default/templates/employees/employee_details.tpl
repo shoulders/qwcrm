@@ -7,7 +7,7 @@
                 <tr>
                     <td class="menuhead2" width="80%">&nbsp;{$translate_employee_details_for} {$employee_details[i].EMPLOYEE_DISPLAY_NAME}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
-                            <img src="images/icons/16x16/help.gif" border="0" >
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" >
                     </td>
                 </tr><tr>
                     <td class="menutd2" colspan="2">
@@ -79,21 +79,21 @@
                                 <td class="olotd4">{$open_work_orders[a].WORK_ORDER_ID}</td>
                                 <td class="olotd4">{$open_work_orders[a].WORK_ORDER_OPEN_DATE|date_format:"$date_format"}</td>
                                 <td class="olotd4">
-                                    <img src="images/icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<center><b>Customer Contact</b><hr></center><b>Home: </b>{$open_work_orders[a].CUSTOMER_PHONE}<br><b>Work: </b>{$open_work_orders[a].CUSTOMER_WORK_PHONE}<br><b>Mobile: </b>{$open_work_orders[a].CUSTOMER_MOBILE_PHONE}')"
+                                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<center><b>Customer Contact</b><hr></center><b>Home: </b>{$open_work_orders[a].CUSTOMER_PHONE}<br><b>Work: </b>{$open_work_orders[a].CUSTOMER_WORK_PHONE}<br><b>Mobile: </b>{$open_work_orders[a].CUSTOMER_MOBILE_PHONE}')"
                                         onMouseOut="hideddrivetip()">{$open_work_orders[a].CUSTOMER_DISPLAY_NAME}
                                 </td>
                                 <td class="olotd4">
-                                    <img src="images/icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<center><b> Description</b><hr></center>{$open_work_orders[a].WORK_ORDER_DESCRIPTION}')" onMouseOut="hideddrivetip()">
+                                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<center><b> Description</b><hr></center>{$open_work_orders[a].WORK_ORDER_DESCRIPTION}')" onMouseOut="hideddrivetip()">
                                     {$open_work_orders[a].WORK_ORDER_SCOPE}
                                 </td>
                                 <td class="olotd4">{$open_work_orders[a].CONFIG_WORK_ORDER_STATUS}</td>
                                 <td class="olotd4">{$open_work_orders[a].EMPLOYEE_DISPLAY_NAME}</td>
                                 <td class="olotd4" align="center">
                                     <a href="?page=workorder:print&wo_id={$open_work_orders[a].WORK_ORDER_ID}&customer_id={$open_work_orders[a].CUSTOMER_ID}&escape=1" target="new" >
-                                    <img src="images/icons/16x16/fileprint.gif" border="0"
+                                    <img src="{$theme_images_dir}icons/16x16/fileprint.gif" border="0"
                                         onMouseOver="ddrivetip('Print The Work Order')" onMouseOut="hideddrivetip()"></a>
                                     <a href="?page=workorder:view&wo_id={$open_work_orders[a].WORK_ORDER_ID}&customer_id={$open_work_orders[a].CUSTOMER_ID}">
-                                    <img src="images/icons/16x16/viewmag.gif"  border="0"
+                                    <img src="{$theme_images_dir}icons/16x16/viewmag.gif"  border="0"
                                         onMouseOver="ddrivetip('View The Work Order')" onMouseOut="hideddrivetip()"></a>
                                 </td>
                             </tr>

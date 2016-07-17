@@ -48,7 +48,7 @@ document.form1.bk2.value="";
 <table  width="100%" border="1" cellpadding="2" cellspacing="0" style="border-collapse: collapse;">
     <tr align="center">
         <!-- right column -->
-        <td valign="top" align="center" ><img src="images/logo.jpg" alt="" height="50"></td>
+        <td valign="top" align="center" ><img src="{$theme_images_dir}logo.jpg" alt="" height="50"></td>
         <!-- middle column -->
         <td valign="top" align="center" width="80%">
             <font size="+3">TECHNICIAN COPY</font><br>
@@ -331,7 +331,7 @@ document.form1.bk2.value="";
 <table  width="100%" border="1" cellpadding="2" cellspacing="0" style="border-collapse: collapse;">
     <tr>
         <!-- right column -->
-        <td valign="top" align="center" ><img src="images/logo.jpg" alt="" height="50"></td>
+        <td valign="top" align="center" ><img src="{$theme_images_dir}logo.jpg" alt="" height="50"></td>
         <!-- middle column -->
         <td valign="top" align="center">
             <font size="+3">Customer Workorder Slip</font><br>

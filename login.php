@@ -13,7 +13,7 @@
 #####################################
 /* Initilise smarty */
 require('conf.php');
-require(INCLUDE_URL.'smarty.php');
+require(INCLUDES_DIR.'smarty.php');
 
 
 

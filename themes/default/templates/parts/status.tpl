@@ -17,7 +17,7 @@
                 <tr>
                     <td class="menuhead2" width="80%">&nbsp;{$or_status} Orders</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
-                                        <img src="images/icons/16x16/help.gif" border="0" alt="" onMouseOver="ddrivetip('<b>Employee Search</b><hr><p>You can search by the employees full display name or just their first name. If you wish to see all the employees for just one letter like A enter the letter a only.</p> <p>To find employees whos name starts with Ja enter just ja. The system will intelegently look for the corect employee that matches.</p>')"
+                                        <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" alt="" onMouseOver="ddrivetip('<b>Employee Search</b><hr><p>You can search by the employees full display name or just their first name. If you wish to see all the employees for just one letter like A enter the letter a only.</p> <p>To find employees whos name starts with Ja enter just ja. The system will intelegently look for the corect employee that matches.</p>')"
                             onMouseOut="hideddrivetip()">
                     </td>
                 </tr><tr>
@@ -51,9 +51,9 @@
                                                             <td valign="top">
                                 <form id="1"><a href="?page=parts:status&submit=submit&page_no=1">
                                     <input type="hidden" name="status" value="{$status}">
-                                    <img src="images/rewnd_24.gif" border="0" alt=""></a>&nbsp;
+                                    <img src="{$theme_images_dir}rewnd_24.gif" border="0" alt=""></a>&nbsp;
                                     {if $previous != ''}
-                                        <a href="?page=parts:status&submit=submit&page_no={$previous}"><img src="images/back_24.gif" border="0" alt=""></a>&nbsp;
+                                        <a href="?page=parts:status&submit=submit&page_no={$previous}"><img src="{$theme_images_dir}back_24.gif" border="0" alt=""></a>&nbsp;
                                     {/if}
                                     <select name="page_no" onChange="go()">
                                     {section name=page loop=$total_pages start=1}
@@ -66,10 +66,10 @@
                                         </option>
                                     </select>
                                     {if $next != ''}
-                                    <a href="?page=parts:status&submit=submit&page_no={$next}"><img src="images/forwd_24.gif" border="0" alt=""></a>
+                                    <a href="?page=parts:status&submit=submit&page_no={$next}"><img src="{$theme_images_dir}forwd_24.gif" border="0" alt=""></a>
                                     {/if}
                                     
-                                    <a href="?page=pafile:///srv/www/htdocs/citecrm/templates/parts/status.tplrts:status&submit=submit&page_no={$total_pages}"><img src="images/fastf_24.gif" border="0" alt=""></a>
+                                    <a href="?page=pafile:///srv/www/htdocs/citecrm/templates/parts/status.tplrts:status&submit=submit&page_no={$total_pages}"><img src="{$theme_images_dir}fastf_24.gif" border="0" alt=""></a>
                                     <br>
                                     {$total_results} {$translate_parts_records_found}
                                 </td>
