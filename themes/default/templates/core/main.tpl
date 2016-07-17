@@ -1,3 +1,4 @@
+{debug}
 <!-- Main TPL -->
 
 <table width="700" border="0" cellpadding="2" cellspacing="5">

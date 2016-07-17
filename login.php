@@ -1,4 +1,5 @@
 <?php
+
 #####################################################
 # This program is distributed under the terms and   #
 # conditions of the GPL                             #
@@ -10,7 +11,12 @@
 #####################################
 #    Load all Configs               #
 #####################################
-require("conf.php");
+/* Initilise smarty */
+require('conf.php');
+require(INCLUDE_URL.'smarty.php');
+
+
+
 
 /* get company logo */
 $q = 'SELECT COMPANY_LOGO FROM '.PRFX.'TABLE_COMPANY LIMIT 1';

@@ -8,8 +8,8 @@
     </title>
     <link rel="shortcut icon" href="/favicon.ico">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link rel="stylesheet" href="css/default.css" type="text/css"/>
-    <link rel="stylesheet" href="css/sdmenu.css" type="text/css"/>
+    <link rel="stylesheet" href="{$theme_dir}css/default.css" type="text/css"/>
+    <link rel="stylesheet" href="{$theme_dir}css/sdmenu.css" type="text/css"/>
     <script type="text/javascript" src="js/sdmenu.js"></script>
     <script type="text/javascript" src="js/jquery.min.js"></script>
     <script type="text/javascript" src="js/tabs.js"></script>

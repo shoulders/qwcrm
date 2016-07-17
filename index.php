@@ -5,9 +5,25 @@ error_reporting(E_ERROR);
 // Added to eliminate special characters
 header('Content-type: text/html; charset=utf-8');
 /* check if lock file exists if not we need to install */
-session_start();
+
+
+/* Initilise smarty */
+session_start(); // migt not be needed because the auth creates the session
 require('conf.php');
 //http_redirect("install2", array("name" => "value"), true, HTTP_REDIRECT_PERM);
+require(INCLUDE_URL.'smarty.php');
+
+
+///////////////////////////////
+
+
+
+
+
+
+
+
+
 
 $VAR            = array_merge($_GET,$_POST);
 $wo_id          = $VAR['wo_id'];
@@ -15,7 +31,8 @@ $customer_id    = $VAR['customer_id'];
 $id             = $login_id;
 $smarty->assign('id', $id);
 
-
+/* set template directory */
+$smarty->assign('theme_dir', THEME_DIR);
 
 if(!is_file('cache/lock') ) {
     echo("
