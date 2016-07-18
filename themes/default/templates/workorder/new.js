@@ -1,5 +1,4 @@
 {literal}
-//<![CDATA[
 function validate_new_workorder(frm) {
   var value = '';
   var errFlag = new Array();
@@ -35,5 +34,4 @@ function validate_new_workorder(frm) {
   }
   return true;
 }
-//]]>
 {/literal}    

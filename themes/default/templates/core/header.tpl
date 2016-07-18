@@ -15,14 +15,11 @@
     <script type="text/javascript" src="js/tabs.js"></script>
 {literal}
     <script type="text/javascript">
-        //<![CDATA[
         var myMenu;
         window.onload = function() {
             myMenu = new SDMenu("my_menu");
             myMenu.init();
         };
-        //]]>
-
     </script>
 {/literal}
 </head>

@@ -1,5 +1,4 @@
 {literal}
-//<![CDATA[
 function validate_submit(frm) {
   var value = '';
   var errFlag = new Array();
@@ -55,5 +54,4 @@ value = frm.elements['from'].value;
   }
   return true;
 }
-//]]>
 {/literal}

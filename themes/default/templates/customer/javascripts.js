@@ -1,6 +1,4 @@
 {literal}
-//cdata
-
 // Validate Customer Data - New and Update pages
 function validate_customer(frm) {
   var value = '';
@@ -275,6 +273,4 @@ else if ((("abcdefghijklmnopqrstuvwxyz0123456789,/-'").indexOf(keychar) > -1))
 else
    return false;
 }
-
-//cdata
 {/literal}

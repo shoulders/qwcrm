@@ -1,11 +1,9 @@
 {literal}
-//<![CDATA[
 function validate_new_employee(frm) {
   var value = '';
   var errFlag = new Array();
   var _qfGroups = {};
   _qfMsg = '';
-
   
 
   value = frm.elements['password'].value;
