@@ -1,6 +1,4 @@
 {literal}
-<script type="text/javascript">
-
 //cdata
 
 // Validate Customer Data - New and Update pages
@@ -279,6 +277,4 @@ else
 }
 
 //cdata
-
-</script>
 {/literal}

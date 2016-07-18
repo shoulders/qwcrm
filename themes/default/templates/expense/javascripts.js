@@ -1,4 +1,3 @@
-<script type="text/javascript">
 {literal}
 
 // Validate Expense Data - New and Update pages
@@ -233,4 +232,3 @@ function dropdown_select_edit_payment_method(menu_item){
                            }
 
 {/literal}
-</script>
