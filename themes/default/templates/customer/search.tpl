@@ -10,7 +10,6 @@
 </script>
 
         <script type="text/javascript">
-        //<![CDATA[
         function validate_customer_search(frm) {
         var value =  '';
         var errFlag = new Array();
@@ -57,7 +56,6 @@ else if ((("abcdefghijklmnopqrstuvwxyz0123456789,/-'").indexOf(keychar) > -1))
 else
    return false;
 }
-        //]]>
 </script>
 
 {/literal}

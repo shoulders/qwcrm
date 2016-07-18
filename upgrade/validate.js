@@ -1,5 +1,4 @@
 <script type="text/javascript">
-//<![CDATA[
 function validate_install(frm) {
   var value = '';
   var errFlag = new Array();
@@ -228,5 +227,4 @@ value = frm.elements['default_site_name'].value;
   }
   return true;
 }
-//]]>
 </script>

@@ -29,7 +29,6 @@
 <script type="text/javascript" src="include/jscalendar/calendar-setup_stripped.js"></script>
 
 <script type="text/javascript">
-//<![CDATA[
 function validate_gift(frm) {
   var value = '';
   var errFlag = new Array();
@@ -58,7 +57,6 @@ if (_qfMsg != '') {
   }
   return true;
 }
-//]]>
 </script>
 {/literal}
 <table width="700" border="0" cellpadding="20" cellspacing="5">

@@ -1,6 +1,5 @@
 {literal}
     <script type="text/javascript">
-    //<![CDATA[
     function validate_rate_upload(frm) {
     var value = '';
     var errFlag = new Array();
@@ -27,8 +26,5 @@ function go()
                 destination = box.options[box.selectedIndex].value;
                 if (destination) location.href = destination;
         }
-
-}
-//]]>
 </script>
 {/literal}
