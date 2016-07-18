@@ -131,4 +131,3 @@ if(isset($VAR['submit'])) {
     $smarty->display('control'.SEP.'payment_options.tpl');
 
 }
-?>

@@ -27,5 +27,3 @@ if(!delete_expense($db,$expenseID)) {
         force_page('expense', 'search&page_title='.$langvals['expense_search_title']);
         exit;
 }
-
-?>

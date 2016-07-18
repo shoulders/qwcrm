@@ -85,4 +85,3 @@ global $smarty;
     $smarty->assign("next", $next);
     return $work_order;
 }
-?>

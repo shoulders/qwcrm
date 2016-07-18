@@ -51,7 +51,3 @@ if(!delete_invoice($db, $invoice_id, $customer_id, $login)) {
     force_page('invoice' , 'view_paid&page_title=Paid%20Invoices');
     exit;
 }
-
-
-
-?>

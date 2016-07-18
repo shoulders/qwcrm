@@ -69,5 +69,3 @@ if(isset($VAR['submit'])){
         $smarty->assign('start_time', $start_time);
         $smarty->display('schedule'.SEP.'new.tpl');
 }
-
-?>

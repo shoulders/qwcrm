@@ -161,4 +161,3 @@ function force_page($module, $cur_page) {
 			//-->
 		</script>");
 }
-?>

@@ -113,5 +113,3 @@ else {
         $smarty->assign('wo_id', $VAR['wo_id']);
         $smarty->display('workorder'.SEP.'close.tpl');
      }
-    
-?>

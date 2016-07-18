@@ -20,7 +20,3 @@ if(!xml2php("employees")) {
     $smarty->assign('alpha', $alpha);
     $smarty->assign('employee_search_result' ,$employee_search_result );
     $smarty->display('employees'.SEP.'main.tpl');
-    
-
-
-?>

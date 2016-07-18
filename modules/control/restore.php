@@ -59,9 +59,9 @@ function backup_tables($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME, $tables = '*')
     fwrite($handle,$return);
     fclose($handle);
 }
-Echo "The database has now been backed up successfully. File is named DB-".$DB_NAME."-".time().".sql. 
+echo "The database has now been backed up successfully. File is named DB-".$DB_NAME."-".time().".sql. 
 Please use your ftp client to download this file from the /backup folder in your home folder for this program.";
 ?>
-<iframe src ="backup/bigdump.php" width="100%" height="800">
-                            <p>Your browser does not support iframes.</p>
-                        </iframe>
+<iframe src ="backup/bigdump.php" width="800" height="800">
+    <p>Your browser does not support iframes.</p>
+</iframe>

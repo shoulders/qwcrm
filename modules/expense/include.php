@@ -547,5 +547,3 @@ function display_expense_search($db, $expense_search_category, $expense_search_t
 
     return $expense_search_result;
 }
-
-?>

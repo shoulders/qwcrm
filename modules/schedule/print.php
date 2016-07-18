@@ -195,6 +195,3 @@ $smarty->assign('d', $d);
 $smarty->assign('m', $m);
 $smarty->assign('y', $y);
 $smarty->display('schedule'.SEP.'print.tpl');
-
-
-?>

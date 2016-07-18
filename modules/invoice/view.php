@@ -103,4 +103,3 @@ if($customer_id == '' || $customer_id == '0'){
         $smarty->assign('parts_sub_total_sum', $parts_sub_total_sum);
      
     $smarty->display('invoice'.SEP.'view.tpl');
-?>

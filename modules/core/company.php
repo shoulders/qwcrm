@@ -26,4 +26,3 @@ $smarty->assign('closed', $closed);
 
 
 $smarty->display('core'.SEP.'company.tpl');
-?>

@@ -131,4 +131,3 @@ $smarty->assign('mine4', $mine4);
 
 $smarty->assign('msg', $msg);
 $smarty->display('core'.SEP.'header.tpl');
-?>

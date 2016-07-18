@@ -83,5 +83,3 @@ $smarty->assign('cred',$cred);
 $smarty->assign('unassigned',$unassigned);
 $smarty->assign('status2',$status2);    
 $smarty->display('core'.SEP.'navagation.tpl');
-
-?>

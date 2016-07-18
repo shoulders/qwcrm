@@ -30,4 +30,4 @@ SEQUENCE:<? print "0" . "\n";?>
 UID:<? print time() . "\n"; ?>
 <? print "END:VEVENT"  . "\n"; ?>
 <?php } ?>
-END:VCALENDAR 
+END:VCALENDAR

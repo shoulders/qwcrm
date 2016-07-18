@@ -16,6 +16,3 @@ if(!$invoice = display_open_invoice($db,$page_no,$smarty)) {
     $smarty->assign('invoice', $invoice);
     $smarty->display('invoice'.SEP.'view_unpaid.tpl');
 }
-
-
-?>

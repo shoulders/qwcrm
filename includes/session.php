@@ -35,5 +35,4 @@ class Session {
     $_SESSION = array();
     session_destroy();
   }
-} 
-?>
+}

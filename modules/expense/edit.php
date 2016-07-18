@@ -32,5 +32,3 @@ if(isset($VAR['submit'])) {
     $smarty->assign('expense_details', $expense_details);
     $smarty->display('expense'.SEP.'edit.tpl');
        }
-
-?>

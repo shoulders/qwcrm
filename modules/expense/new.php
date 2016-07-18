@@ -48,5 +48,3 @@ $new_record_id = $last_record_id + 1;
             $smarty->display('expense'.SEP.'new.tpl');
 
        }
-
-?>

@@ -31,4 +31,3 @@ if(isset($VAR['submit'])) {
     $smarty->assign('sch_id',$sch_id);
     $smarty->display('schedule'.SEP.'edit.tpl');
 }
-?>

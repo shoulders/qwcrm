@@ -64,6 +64,3 @@ $smarty->assign('message',$message);
 $smarty->assign('cur_version',$cur_version);
 
 $smarty->display('control'.SEP.'check.tpl');
-    
-
-?>

@@ -274,4 +274,3 @@ function display_workorders($db, $page_no, $where){
         return $workorders_array;
     }
 }
-?>

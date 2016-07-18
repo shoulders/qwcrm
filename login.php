@@ -48,5 +48,3 @@ if(isset($_GET["error_msg"]))
 /* CRM Version */
 /*$smarty->assign('VERSION', VERSION_NAME);*/
 $smarty->display('core'.SEP.'login.tpl');
-
-?>

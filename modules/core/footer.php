@@ -23,5 +23,3 @@ else
  echo ('My real IP is:'.$ip);
 }
 }
-
-?>

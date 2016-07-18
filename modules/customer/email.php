@@ -175,5 +175,3 @@ $message = Swift_Message::newInstance($email_subject)
 }
 }///Display the template we will use
     $smarty->display('customer'.SEP.'email.tpl');
-
-?>

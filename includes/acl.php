@@ -86,5 +86,3 @@ $deresult.=$char;
 
 return $deresult;
 }
-
-?>

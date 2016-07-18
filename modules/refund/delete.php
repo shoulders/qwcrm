@@ -24,5 +24,3 @@ if(!delete_refund($db,$refundID)) {
         force_page('refund', 'view&page_title=Refund');
         exit;
 }
-
-?>

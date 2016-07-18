@@ -26,6 +26,3 @@ if(isset($error)) {
 $smarty->assign('error_msg', $error);
 
 }
-
-
-?>

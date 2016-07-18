@@ -173,4 +173,3 @@ if($invoice_details['INVOICE_AMOUNT'] > $paymate_amount){
             
     }
 }
-?>

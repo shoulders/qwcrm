@@ -31,4 +31,3 @@ if(isset($VAR['submit'])) {
         $smarty->display('customer'.SEP.'memo.tpl');
     }
 }
-?>

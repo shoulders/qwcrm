@@ -434,5 +434,3 @@ function display_supplier_search($db, $supplier_search_category, $supplier_searc
 
     return $supplier_search_result;
 }
-
-?>

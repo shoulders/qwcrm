@@ -1,14 +1,14 @@
 <?php
 ####################################################
-# IN             #    
-#                     #
-#                  #
-#  This program is distributed under the terms and     #
-#  conditions of the GPL                                        #
-#  Order status                                                    #
-#  Version 0.0.1    Sat Nov 26 20:46:40 PST 2005        #
-#                                                                    #
+# IN                                               #    
+#                                                  #
+#  This program is distributed under the terms and #
+#  conditions of the GPL                           #
+#  Parts Update                                    #
+#  Version 0.0.1    Sat Nov 26 20:46:40 PST 2005   #
+#                                                  #
 ####################################################
+
 if(!xml2php("parts")) {
     $smarty->assign('error_msg',"Error in language file");
 }
@@ -76,4 +76,3 @@ if($status == 1) {
 /* display Smarty */
 $smarty->assign('order', $order);
 $smarty->display('parts'.SEP.'status.tpl');
-?>

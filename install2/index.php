@@ -1377,5 +1377,3 @@ function validate($data)
         error_check("Administrators Passwords do not match.</br>");
     }
 }
-
-?>

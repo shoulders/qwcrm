@@ -165,4 +165,3 @@ if($invoice_details['INVOICE_AMOUNT'] > $cash_amount) {
             
     }
 }
-?>

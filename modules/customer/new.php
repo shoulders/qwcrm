@@ -19,9 +19,3 @@ if(isset($VAR['submit'])) {
     $smarty->display('customer'.SEP.'new.tpl');
 
 }
-
-
-    
-
-
-?>

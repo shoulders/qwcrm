@@ -310,5 +310,3 @@ if($print_type == 'pdf') {
 }
 }
 // EOF PDF Printing Section
-
-?>

@@ -108,5 +108,3 @@ $smarty->assign('invoice_details',$invoice_details);
 
     
 $smarty->display('billing'.SEP.'new.tpl');
-
-?>

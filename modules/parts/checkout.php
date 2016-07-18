@@ -1,13 +1,12 @@
 <?php
 ####################################################
-# IN             #    
-#                     #
-#                  #
-#  This program is distributed under the terms and     #
-#  conditions of the GPL                                        #
-#  Parts Check Out file                                        #
-#  Version 0.0.1    Sat Nov 26 20:46:40 PST 2005        #
-#                                                                    #
+# IN                                               #    
+#                                                  #
+#  This program is distributed under the terms and #
+#  conditions of the GPL                           #
+#  Parts Update                                    #
+#  Version 0.0.1    Sat Nov 26 20:46:40 PST 2005   #
+#                                                  #
 ####################################################
 
 $q = "SELECT PARTS_LO,PARTS_LOGIN,PARTS_PASSWORD,SERVICE_CODE,PARTS_MARKUP,INVOICE_TAX   FROM ".PRFX."SETUP ";
@@ -383,5 +382,3 @@ if($content == '') {
 
     $smarty->display('parts'.SEP.'results.tpl');
 }
-
-?>

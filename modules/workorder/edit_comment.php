@@ -66,4 +66,3 @@ $comment_string = stripslashes($comment_string);
     $smarty->display('workorder'.SEP.'edit_comment.tpl');
     
 }
-?>

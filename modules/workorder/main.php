@@ -29,4 +29,3 @@ $smarty->assign('payment', display_workorders($db, $page_no, $where));
 
 //$smarty->assign('new_workorder', display_workorders($db, $page_no,$where));
 $smarty->display('workorder'.SEP.'main.tpl');
-?>

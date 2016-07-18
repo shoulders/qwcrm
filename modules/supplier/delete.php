@@ -24,5 +24,3 @@ if(!delete_supplier($db,$supplierID)) {
         force_page('supplier', 'view&page_title=Supplier');
         exit;
 }
-
-?>

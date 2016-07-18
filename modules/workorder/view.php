@@ -144,6 +144,3 @@ if (isset($VAR['assign2'])) {
         </script>");
   }
 $smarty->assign('assign2', $assign2);
-
-
-?>

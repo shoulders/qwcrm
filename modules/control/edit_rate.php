@@ -79,4 +79,3 @@ if(isset($VAR['submit'])) {
     $smarty->assign('rate', $arr);
     $smarty->display('control'.SEP.'edit_rate.tpl');
 }
-?>

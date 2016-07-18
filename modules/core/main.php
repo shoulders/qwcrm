@@ -241,5 +241,3 @@ $cred2 = $rs->FetchRow();
 
 
 $smarty->display('core'.SEP.'main.tpl');
-
-?>

@@ -1,13 +1,12 @@
 <?php
 ####################################################
-# IN             #    
-#                     #
-#                  #
-#  This program is distributed under the terms and     #
-#  conditions of the GPL                                        #
-#  New Note                                                        #
-#  Version 0.0.1    Sat Nov 26 20:46:40 PST 2005        #
-#                                                                    #
+# IN                                               #    
+#                                                  #
+#  This program is distributed under the terms and #
+#  conditions of the GPL                           #
+#  New Note                                        #
+#  Version 0.0.1    Sat Nov 26 20:46:40 PST 2005   #
+#                                                  #
 ####################################################
 require_once ("include.php");
 
@@ -30,5 +29,3 @@ if(isset($VAR['submit'])){
     $smarty->assign('wo_id', $VAR['wo_id']);
     $smarty->display('workorder'.SEP.'new_note.tpl');
 }
-
-?>

@@ -1,11 +1,11 @@
 <?php
-/*###########################################################
-# This program is distributed under the terms and                   #
-# conditions of the GPL    and is free to use or modify              #
-#                                                                                                   #
-# main.php                                                                                #
-# Version 0.1.0    21/02/2009 11:11:43 PM                                   #
-###########################################################*/
+###########################################################
+# This program is distributed under the terms and         #
+# conditions of the GPL    and is free to use or modify   #
+#                                                         #
+# main.php                                                #
+# Version 0.1.0    21/02/2009 11:11:43 PM                 #
+###########################################################
 
 require_once ('include.php');
 
@@ -20,7 +20,3 @@ require_once ('include.php');
 /* assign the smarty array */    
 $smarty->assign('invoice_array', display_open_invoice($db, $page_no));
 $smarty->display("workorder'.SEP.'main.tpl");
-
-
-?>
-

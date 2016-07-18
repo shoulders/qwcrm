@@ -48,4 +48,3 @@ if(isset($VAR['submit']) ) {
     $smarty->assign('arr', $arr);
     $smarty->display('control/hours_edit.tpl');
 }
-?>

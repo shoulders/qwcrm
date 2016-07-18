@@ -21,5 +21,4 @@ if(isset($VAR['submit'])) {
 
     $smarty->assign('customer', $customer_details);
     $smarty->display('customer'.SEP.'edit.tpl');
-}    
-?>
+}

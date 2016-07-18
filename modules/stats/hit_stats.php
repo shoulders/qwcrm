@@ -57,6 +57,3 @@ $smarty->assign('month_hit', $count);
 //print_r($arr);
 
 $smarty->display('stats'.SEP.'hit_stats.tpl');
-
-
-?>

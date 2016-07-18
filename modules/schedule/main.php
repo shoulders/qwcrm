@@ -235,6 +235,3 @@ $calendar .= "\n</table>";
 /* feed smarty */
 $smarty->assign('calendar', $calendar);
 $smarty->display('schedule'.SEP.'main.tpl');
-
-
-?>

@@ -27,5 +27,3 @@ $refund_search_result = display_refund_search($db, $refund_search_category, $ref
 $smarty->assign('refund_search_term', $refund_search_term);
 $smarty->assign('refund_search_result', $refund_search_result);
 $smarty->display('refund'.SEP.'search.tpl');
-
-   ?>

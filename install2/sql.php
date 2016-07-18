@@ -2015,5 +2015,3 @@ function create_country($db){
     }
 
 }
-?>
-

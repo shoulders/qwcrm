@@ -32,5 +32,3 @@ if(isset($VAR['submit'])) {
     $smarty->assign('refund_details', $refund_details);
     $smarty->display('refund'.SEP.'edit.tpl');
        }
-
-?>

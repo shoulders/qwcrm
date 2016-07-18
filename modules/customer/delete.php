@@ -28,5 +28,3 @@ $q = "SELECT count(*) as count FROM `".PRFX."TABLE_WORK_ORDER` LEFT JOIN ".PRFX.
             exit;
         }
     }
-
-?>

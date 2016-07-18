@@ -24,4 +24,3 @@ function xml2php($module) {
 }
 
 //print_r($arr);
-?>

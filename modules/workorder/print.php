@@ -76,6 +76,3 @@ $pdf->Output();
     force_page('core', "error&menu=1&error_msg=No Printing Options set. Please set up printing options in the Control Center.&type=error");
     exit;
 }
-
-
-?>

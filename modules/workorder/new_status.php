@@ -20,5 +20,3 @@ if(isset($VAR['submit'])){
         $smarty->assign('wo_id', $VAR['wo_id']);
         $smarty->display('workorder'.SEP.'new_status.tpl');
 }
-
-?>

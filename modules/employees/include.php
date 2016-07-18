@@ -195,5 +195,3 @@ function employee_type($db) {
         return $arr;
     }
 }
-
-?>

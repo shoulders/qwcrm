@@ -44,4 +44,3 @@ include ('../../conf.php');
             echo 'There should be no direct access to this script!';
         }
     }
-?>

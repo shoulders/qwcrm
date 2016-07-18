@@ -39,4 +39,3 @@ if(isset($VAR['submit'])) {
     $smarty->assign( 'acl', $arr );
     $smarty->display('control'.SEP.'acl.tpl');
 }
-?>

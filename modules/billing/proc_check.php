@@ -174,4 +174,3 @@ if($invoice_details['INVOICE_AMOUNT'] > $cheque_amount){
             
     }
 }
-?>

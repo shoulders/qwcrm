@@ -18,5 +18,3 @@ function display_workorder_status2($db, $wo_id){
     return $work_order_status2;
     
 }
-
-?>

@@ -33,6 +33,3 @@ if(isset($VAR['submit'])) {
     $smarty->display('employees'.SEP.'new.tpl');
 
 }
-
-
-?>

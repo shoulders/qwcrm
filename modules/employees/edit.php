@@ -63,4 +63,3 @@ if(isset($VAR['submit']) ) {
     $smarty->assign('employee_details', display_employee_info($db, $VAR['employee_id']));
     $smarty->display('employees'.SEP.'edit.tpl');
 }
-?>

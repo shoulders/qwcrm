@@ -20,6 +20,3 @@ $d =    $VAR['d'];
             force_page('schedule', 'main&y='.$y.'&m='.$m.'&d='.$d.'&wo_id='.$VAR['wo_id']);
             exit;
         }
-
-
-?>

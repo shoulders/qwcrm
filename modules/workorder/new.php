@@ -38,6 +38,3 @@ if (isset($VAR['email'])) {
         $smarty->display('workorder'.SEP.'new.tpl');
     }
 }
-
-
-?>

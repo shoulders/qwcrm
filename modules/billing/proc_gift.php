@@ -219,5 +219,3 @@ if($flag != 1) {
     }
 
 force_page('invoice', "view&invoice_id=$invoice_id&customer_id=$customer_id");
-
-?>

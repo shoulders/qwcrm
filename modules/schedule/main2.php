@@ -368,6 +368,3 @@ $daysub = date("w", $dateline);
 $smarty->assign('calendar', $calendar);
 $smarty->assign('cur_date', $cur_date);
 $smarty->display('schedule'.SEP.'main.tpl');
-
-
-?>

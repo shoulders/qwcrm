@@ -251,5 +251,3 @@ if(isset($VAR['submit'])){
         }
 
 $smarty->display('stats'.SEP.'main.tpl');
-
-?>

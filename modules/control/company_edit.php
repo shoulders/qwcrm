@@ -138,6 +138,3 @@ $q = 'UPDATE '.PRFX.'SETUP SET
     $smarty->assign('company', $arr);
     $smarty->display('control/company_edit.tpl');
 }
-
-
-?>

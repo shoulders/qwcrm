@@ -14,4 +14,3 @@ $smarty->assign('open_work_orders', display_open_workorders($db, $employee_id));
 $smarty->assign('employee_details', display_employee_info($db, $employee_id));
 
 $smarty->display('employees'.SEP.'employee_details.tpl');
-?>

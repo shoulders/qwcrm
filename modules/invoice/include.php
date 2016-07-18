@@ -264,5 +264,3 @@ function parts_sub_total_sum($db, $invoiceID)
     $parts_sub_total_sum = $rs->fields['parts_sub_total_sum'];
     return $parts_sub_total_sum;
 }
-
-?>

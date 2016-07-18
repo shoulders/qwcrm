@@ -185,4 +185,3 @@ $q = 'SELECT COMPANY_CURRENCY_SYMBOL FROM '.PRFX.'TABLE_COMPANY';
     }
 // $smarty->assign('currency_sym',$rs->fields['COMPANY_CURRENCY_SYMBOL']);
         $currency_sym = $rs->fields['COMPANY_CURRENCY_SYMBOL'];
-?>

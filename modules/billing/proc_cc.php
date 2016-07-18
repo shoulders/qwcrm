@@ -1,4 +1,5 @@
-<?
+<?php
+
 require('include.php');
 //print_r ($_POST);
 /* get vars */
@@ -352,5 +353,3 @@ if($result[0] == "1") {
 } else {
 
 }
-
-?>

@@ -59,4 +59,3 @@ $description_string = stripslashes($description_string);
     $smarty->display('workorder'.SEP.'edit_description.tpl');
     
 }
-?>

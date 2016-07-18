@@ -402,7 +402,7 @@ if(isset($submit)){
         }
 
 ##################################
-# If We have a Submit2          #
+# If We have a Submit2           #
 ##################################
 
 if(isset($submit2) && $wo_id != "0"){
@@ -414,4 +414,4 @@ if(isset($submit2) && $wo_id != "0"){
             force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
             exit;
             }
-            }
+}

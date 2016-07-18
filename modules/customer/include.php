@@ -420,5 +420,3 @@ function display_memo($db,$customer_id) {
     $arr = $rs->GetArray();
     return $arr;
 }
-
-?>

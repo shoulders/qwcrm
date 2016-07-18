@@ -467,5 +467,3 @@ function display_refund_search($db, $refund_search_category, $refund_search_term
 
     return $refund_search_result;
 }
-
-?>

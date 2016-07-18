@@ -141,6 +141,3 @@ if(isset($VAR['submit'])) {
 }    else {
     $smarty->display('billing'.SEP.'new_gift.tpl');
 }
-
-
-?>

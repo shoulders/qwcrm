@@ -21,4 +21,3 @@ if($arr) {
 } else {
     echo "No schedule found";
 }
-?>

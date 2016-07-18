@@ -84,5 +84,3 @@ function timestamp_to_date($db, $timestamp){
       }
 
 }
-
-?>
