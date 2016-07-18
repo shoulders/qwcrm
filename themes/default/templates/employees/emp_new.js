@@ -1,4 +1,5 @@
 {literal}
+//<![CDATA[
 function validate_new_employee(frm) {
   var value = '';
   var errFlag = new Array();
@@ -191,4 +192,5 @@ function validate_new_employee(frm) {
   }
   return true;
 }
+//]]>
 {/literal}

@@ -1,4 +1,6 @@
 {literal}
+
+    //<![CDATA[
     function validate_rate_upload(frm) {
     var value = '';
     var errFlag = new Array();
@@ -26,4 +28,6 @@ function go()
                 if (destination) location.href = destination;
         }
 
+}
+//]]>
 {/literal}

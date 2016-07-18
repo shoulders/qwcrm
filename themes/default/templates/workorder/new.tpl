@@ -86,6 +86,7 @@
 
 
 <script type="text/javascript">
+    //<![CDATA[
     function validate_new_workorder(frm) {
         var value = '';
         var errFlag = new Array();
@@ -111,6 +112,7 @@
         }
         return true;
     }
+    //]]>
 </script>
 {/literal}
 <table width="100%">
