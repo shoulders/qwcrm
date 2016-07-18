@@ -1,5 +1,5 @@
 {literal}
-
+    <script type="text/javascript">
     //<![CDATA[
     function validate_rate_upload(frm) {
     var value = '';
@@ -30,4 +30,5 @@ function go()
 
 }
 //]]>
+</script>
 {/literal}

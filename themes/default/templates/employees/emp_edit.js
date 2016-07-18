@@ -1,4 +1,5 @@
 {literal}
+    <script type="text/javascript">
 //<![CDATA[
 function validate_new_employee(frm) {
   var value = '';
@@ -172,4 +173,5 @@ function validate_new_employee(frm) {
   return true;
 }
 //]]>
+</script>
 {/literal}

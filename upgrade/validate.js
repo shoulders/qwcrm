@@ -1,4 +1,4 @@
-{literal}
+<script type="text/javascript">
 //<![CDATA[
 function validate_install(frm) {
   var value = '';
@@ -229,4 +229,4 @@ value = frm.elements['default_site_name'].value;
   return true;
 }
 //]]>
-{/literal}
+</script>

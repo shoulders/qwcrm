@@ -1,3 +1,4 @@
+<script type="text/javascript">
 //<![CDATA[
 function data_copy()
 {
@@ -244,3 +245,4 @@ value = frm.elements['default_site_name'].value;
   return true;
 }
 //]]>
+</script>

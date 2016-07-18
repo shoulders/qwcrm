@@ -1,4 +1,5 @@
 {literal}
+<script type="text/javascript">
 //<![CDATA[
 function validate_new_workorder(frm) {
   var value = '';
@@ -36,4 +37,5 @@ function validate_new_workorder(frm) {
   return true;
 }
 //]]>
+</script>
 {/literal}    

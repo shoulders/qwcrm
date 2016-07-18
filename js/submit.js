@@ -1,4 +1,5 @@
 {literal}
+<script type="text/javascript">
 //<![CDATA[
 function validate_submit(frm) {
   var value = '';
@@ -56,4 +57,5 @@ value = frm.elements['from'].value;
   return true;
 }
 //]]>
+</script>
 {/literal}

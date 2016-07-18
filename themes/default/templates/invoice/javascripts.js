@@ -1,3 +1,4 @@
+<script type="text/javascript">
 {literal}
 
 // Performs a redirect to the new Search Page Number - takes the inputted number and adds it ot the end
@@ -33,3 +34,4 @@ function GotoPageNumber() {
 }
 
 {/literal}
+</script>
