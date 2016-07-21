@@ -125,16 +125,18 @@
         {/if}
         <div>
         <span>{$translate_menu_project}</span>
-            <a href="http://myitcrm.com" target="_blank"><img src="{$theme_images_dir}icons/web.png" alt="" border="0" height="14" width="14" /> Website</a>
-            <a href="http://wiki.myitcrm.com" target="_blank"><img src="{$theme_images_dir}icons/invoice.png" alt="" border="0" height="14" width="14" /> Documentation</a>
-            <a href="http://team.myitcrm.com/projects/main/issues" target="_blank"><img src="{$theme_images_dir}icons/bug.png" alt=""border="0" height="14" width="14" /> Bug Tracker</a>
-            <a href="http://myitcrm.com/forum/index.php" target="_blank"><img src="{$theme_images_dir}icons/comment.png" alt="" border="0" height="14" width="14" /> Forum</a>
-            <a>Support this Software!<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
-<input type="hidden" name="cmd" value="_s-xclick">
-<input type="hidden" name="hosted_button_id" value="UPRUT8UBPERVQ">
-<input type="image" src="{$theme_images_dir}paypal/donate.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online.">
-</form>
-</a>
+            <a href="http://quantumwarp.com/" target="_blank"><img src="{$theme_images_dir}icons/web.png" alt="" border="0" height="14" width="14" /> Website</a>
+            <a href="http://quantumwarp.com/" target="_blank"><img src="{$theme_images_dir}icons/invoice.png" alt="" border="0" height="14" width="14" /> Documentation</a>
+            <a href="https://github.com/shoulders/myitcrm/issues" target="_blank"><img src="{$theme_images_dir}icons/bug.png" alt=""border="0" height="14" width="14" /> Bug Tracker</a>
+            <a href="http://quantumwarp.com/" target="_blank"><img src="{$theme_images_dir}icons/comment.png" alt="" border="0" height="14" width="14" /> Forum</a>
+            
+            <a>Support this Software!</a>                
+            <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+                <input type="hidden" name="cmd" value="_s-xclick">
+                <input type="hidden" name="hosted_button_id" value="URZF9CEA7JM6C">
+                <input type="image" src="{$theme_images_dir}paypal/donate.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online.">
+            </form>
+            
             <a href="https://sourceforge.net/projects/myitcrm/" target="_blank"><img src="{$theme_images_dir}icons/sf.ico" alt="" border="0" height="14" width="14" /> SF Page</a>
         </div>
     </div>
