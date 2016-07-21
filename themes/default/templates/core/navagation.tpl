@@ -135,9 +135,8 @@
                 <input type="hidden" name="cmd" value="_s-xclick">
                 <input type="hidden" name="hosted_button_id" value="URZF9CEA7JM6C">
                 <input type="image" src="{$theme_images_dir}paypal/donate.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online.">
-            </form>
-            
-            <a href="https://sourceforge.net/projects/myitcrm/" target="_blank"><img src="{$theme_images_dir}icons/sf.ico" alt="" border="0" height="14" width="14" /> SF Page</a>
+            </form>            
+           
         </div>
     </div>
   </tr>
