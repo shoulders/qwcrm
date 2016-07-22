@@ -8,10 +8,12 @@
                     <td class="menuhead2" width="80%">{$translate_workorder_title}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
                         <a><img src="{$theme_images_dir}icons/16x16/help.gif" border="0" 
-                            onMouseOver="ddrivetip('<b>Navigation</b><hr><p>Double Click on an empty space in each row to go directly to the work order. <br><br>Hover over the magnifying glass under Customer to view the Quick Contact Information. Click on the Customers name to view the customers details.<br><br>Click on the status of each work order listed to update the curent work order status.<br><br>Hover over the Magnifying Glass under the Employee to view the Quick Contact Information for the assigned employee. Click on the employees name to view the details.<br><br>Under Action click the Printer Icon to print the work order. Click the mMagnifying Glass to view the work order. Click the Red Stop sign to close the work order and start the invoicing.</p>')" 
-                            onMouseOut="hideddrivetip()"></a>
+                            onMouseOver="ddrivetip('<b>{$translate_workorder_open_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_workorder_open_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" 
+                            onMouseOut="hideddrivetip();">
+                        </a>
                     </td>
-                </tr><tr>
+                </tr>
+                <tr>
                     <td class="menutd2" colspan="2">    
                         <table class="olotable" width="100%" border="0" cellpadding="5" cellspacing="0">
                             <tr>
@@ -39,5 +41,3 @@
         </td>
     </tr>
 </table>
-    
-

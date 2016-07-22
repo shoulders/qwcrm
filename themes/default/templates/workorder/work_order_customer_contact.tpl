@@ -4,14 +4,17 @@
         <td class="olohead">
             <table width="100%" cellpadding="0" cellspacing="0" border="0">
                 <tr>
-                    <td class="menuhead2" width="80%">&nbsp;{$translate_workorder_cutomer_contact_title}</td>
+                    <td class="menuhead2" width="80%">&nbsp;{$translate_workorder_customer_contact_title}</td>
                     <td class="menuhead2" width="20%" align="right">
                         <table cellpadding="2" cellspacing="2" border="0">
                             <tr>
-                                <td width="33%" align="right"><a
-                                        href="?page=customer:edit&customer_id={$single_workorder_array[i].CUSTOMER_ID}&page_title={$single_workorder_array[i].CUSTOMER_DISPLAY_NAME}"><img
-                                        src="{$theme_images_dir}icons/16x16/small_edit.gif" border="0"
-                                        onMouseOver="ddrivetip('Edit Customer')" onMouseOut="hideddrivetip()"></a></td>
+                                <td width="33%" align="right">
+                                    <a href="?page=customer:edit&customer_id={$single_workorder_array[i].CUSTOMER_ID}&page_title={$single_workorder_array[i].CUSTOMER_DISPLAY_NAME}">
+                                        <img src="{$theme_images_dir}icons/16x16/small_edit.gif" border="0"
+                                            onMouseOver="ddrivetip('{$translate_workorder_edit_customer}');"
+                                            onMouseOut="hideddrivetip();">
+                                    </a>
+                                </td>
                             </tr>
                         </table>
                     </td>
@@ -26,9 +29,7 @@
         <table class="olotable" border="0" cellpadding="5" cellspacing="5" width="100%" summary="Customer Contact">
             <tr>
                 <td class="menutd"><b>{$translate_workorder_contact}</b></td>
-                <td class="menutd"><a
-                        href="?page=customer:customer_details&customer_id={$single_workorder_array[i].CUSTOMER_ID}&page_title={$single_workorder_array[i].CUSTOMER_FIRST_NAME} {$single_workorder_array[i].CUSTOMER_LAST_NAME} ">{$single_workorder_array[i].CUSTOMER_DISPLAY_NAME}</a>
-                </td>
+                <td class="menutd"><a href="?page=customer:customer_details&customer_id={$single_workorder_array[i].CUSTOMER_ID}&page_title={$single_workorder_array[i].CUSTOMER_FIRST_NAME} {$single_workorder_array[i].CUSTOMER_LAST_NAME} ">{$single_workorder_array[i].CUSTOMER_DISPLAY_NAME}</a></td>                
                 <td class="menutd"><b>{$translate_workorder_www}</b></td>
                 <td class="menutd">{$single_workorder_array[i].CUSTOMER_WWW}</td>
             </tr>
@@ -36,9 +37,7 @@
                 <td class="menutd"></td>
                 <td class="menutd"></td>
                 <td class="menutd"><b>{$translate_workorder_email}</b></td>
-                <td class="menutd"><a
-                        href="?page=customer:email&customer_id={$single_workorder_array[i].CUSTOMER_ID}&page_title=Email%20Customer"> {$single_workorder_array[i].CUSTOMER_EMAIL}</a>
-                </td>
+                <td class="menutd"><a href="?page=customer:email&customer_id={$single_workorder_array[i].CUSTOMER_ID}&page_title=Email%20Customer"> {$single_workorder_array[i].CUSTOMER_EMAIL}</a></td>
             </tr>
             <tr>
                 <td class="menutd"><b>{$translate_workorder_credit_terms}</b></td>
@@ -55,9 +54,12 @@
             </tr>
             <tr>
                 <td class="menutd"></td>
-                <td class="menutd">{$single_workorder_array[i].CUSTOMER_ADDRESS|nl2br}
-                    <br>{$single_workorder_array[i].CUSTOMER_CITY}<br>{$single_workorder_array[i].CUSTOMER_STATE}
-                    <br>{$single_workorder_array[i].CUSTOMER_ZIP}</td>
+                <td class="menutd">
+                    {$single_workorder_array[i].CUSTOMER_ADDRESS|nl2br}<br>
+                    {$single_workorder_array[i].CUSTOMER_CITY}<br>
+                    {$single_workorder_array[i].CUSTOMER_STATE}<br>
+                    {$single_workorder_array[i].CUSTOMER_ZIP}
+                </td>
                 <td class="menutd"><b>{$translate_workorder_phone_2}</b></td>
                 <td class="menutd">{$single_workorder_array[i].CUSTOMER_WORK_PHONE}</td>
             </tr>
@@ -73,18 +75,18 @@
             <tr>
                 <td class="menutd"><b>{$translate_workorder_type}</b></td>
                 <td class="menutd">
-                    {if $single_workorder_array[i].CUSTOMER_TYPE ==1}
-                        {$translate_workorder_type_1}
-                    {/if}
-                                                {if $single_workorder_array[i].CUSTOMER_TYPE ==2}
-                    {$translate_workorder_type_2}
-                {/if}
-                                                {if $single_workorder_array[i].CUSTOMER_TYPE ==3}
-                    {$translate_workorder_type_3}
-                {/if}
-                                                {if $single_workorder_array[i].CUSTOMER_TYPE ==4}
-                    {$translate_workorder_type_4}
-                {/if}
+                        {if $single_workorder_array[i].CUSTOMER_TYPE ==1}
+                            {$translate_workorder_type_1}
+                        {/if}
+                        {if $single_workorder_array[i].CUSTOMER_TYPE ==2}
+                            {$translate_workorder_type_2}
+                        {/if}
+                        {if $single_workorder_array[i].CUSTOMER_TYPE ==3}
+                            {$translate_workorder_type_3}
+                        {/if}
+                        {if $single_workorder_array[i].CUSTOMER_TYPE ==4}
+                            {$translate_workorder_type_4}
+                        {/if}
                 </td>
                 <td class="menutd"><b>{$translate_workorder_discount}</b></td>
                 <td class="menutd">{$single_workorder_array[i].DISCOUNT}%</td>
@@ -105,7 +107,7 @@
                 <td class="menutd" colspan="3">{$single_workorder_array[i].CUSTOMER_NOTES}</td>
             </tr>
         </table>
-
+    </td>
     {/if}
     </tr>
 </table>

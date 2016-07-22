@@ -1,7 +1,7 @@
 <!-- Add New Work Order tpl -->
 <script type="text/javascript" src="js/jquery-1.2.1.pack.js"></script>
+<script language="javascript" type="text/javascript" src="includes/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
 {literal}
-<script language="javascript" type="text/javascript" src="include/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
 <script language="javascript" type="text/javascript">
     tinyMCE.init({
         mode : "specific_textareas",
@@ -10,8 +10,7 @@
         theme_advanced_buttons2_add : "separator,insertdate,inserttime,preview,separator,forecolor,backcolor",
         theme_advanced_buttons2_add_before: "cut,copy,paste",
         theme_advanced_toolbar_location : "bottom",
-        theme_advanced_toolbar_align : "center",
-        
+        theme_advanced_toolbar_align : "center",        
         plugin_insertdate_dateFormat : "%Y-%m-%d",
         plugin_insertdate_timeFormat : "%H:%M:%S",
         extended_valid_elements : "a[name|href|target|title|onclick],img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name],hr[class|width|size|noshade],font[face|size|color|style],span[class|align|style]",
@@ -22,6 +21,7 @@
         width : "100%"
     });
 </script>
+
 <script type="text/javascript">
     function lookup(scope) {
         if(scope.length == 0) {
@@ -84,7 +84,6 @@
     }
 </style>
 
-
 <script type="text/javascript">
     function validate_new_workorder(frm) {
         var value = '';
@@ -114,38 +113,39 @@
 </script>
 {/literal}
 <table width="100%">
-       <tr>
-        <td>{if $error_msg != ""}{include file="core/error.tpl"}{/if}
+    <tr>
+        <td>
+            {if $error_msg != ""}{include file="core/error.tpl"}{/if}
             <br> <!-- Gives me some room at the top -->
             <div id="tabs_container">
                 <ul class="tabs">
-                    <li class="active"><a href="#" rel="#tab_1_contents" class="tab">Work Order Details</a></li>
-                    <li><a href="#" rel="#tab_2_contents" class="tab">Customer Details</a></li>                
-
+                    <li class="active"><a href="#" rel="#tab_1_contents" class="tab">{$translate_workorder_details}</a></li>
+                    <li><a href="#" rel="#tab_2_contents" class="tab">{$translate_workorder_customer_details}</a></li>
                 </ul>
 
-                <!-- This is used so the contents don't appear to the
-                     right of the tabs -->
+                <!-- This is used so the contents don't appear to the right of the tabs -->
                 <div class="clear"></div>
 
                 <!-- This is a div that hold all the tabbed contents -->
                 <div class="tab_contents_container">
                     <!-- Tab 1 Contents -->
                     <div id="tab_1_contents" class="tab_contents tab_contents_active">
-                      <table width="700" cellpadding="5" cellspacing="0" border="0" >
-                            <tr>{section name=i loop=$customer_details}
+                        <table width="700" cellpadding="5" cellspacing="0" border="0" >
+                            <tr>
+                                {section name=i loop=$customer_details}
                                 <td class="menuhead2" width="80%">{$translate_workorder_new_title} for {$customer_details[i].CUSTOMER_DISPLAY_NAME}</td>
                                 <td class="menuhead2" width="10%" align="right">
-
                             </tr>
                             <tr>
                                 <td class="menutd2" colspan="2">{if $error_msg != ""}{include file="core/error.tpl"}{/if}
                                     <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0" >
                                         <tr>
                                             <td width="100%" valign="top" >                                               
-                                            {$form.javascript}
-                                                <!-- New Work Order Form -->                                {literal}
-                                                <form method="POST"  action="index.php?page=workorder:new" name="new_workorder" id="new_workorder" onsubmit="try { var myValidator = validate_new_workorder; } catch(e) { return true; } return myValidator(this);">                                {/literal}
+                                                {$form.javascript}
+                                                <!-- New Work Order Form -->
+                                                {literal}
+                                                <form method="POST"  action="index.php?page=workorder:new" name="new_workorder" id="new_workorder" onsubmit="try { var myValidator = validate_new_workorder; } catch(e) { return true; } return myValidator(this);">
+                                                {/literal}
                                                     <input type="hidden" name="customer_ID" value="{$customer_details[i].CUSTOMER_ID}">
                                                     <input type="hidden" name="page" value="workorder:new">
                                                     <!--<input type="hidden" name="create_by" value="{$login_id}"> -->
@@ -162,16 +162,14 @@
                                                             <td class="olotd4">{$customer_details[i].CUSTOMER_DISPLAY_NAME}</td>
                                                             <td class="olotd4"><input size="40" id="scope" name="scope" type="text" value="" onkeyup="lookup(this.value);" onblur="fill();">
                                                                 <div class="suggestionsBox" id="suggestions" style="display: none;">
-                                                            <img src="{$theme_images_dir}upArrow.png" style="position: relative; top: -12px; left: 1px;" alt="upArrow" />
-                                                            <div class="suggestionList" id="autoSuggestionsList">
-                                                                &nbsp;
-                                                            </div>
-                                                    </div></td>
+                                                                    <img src="{$theme_images_dir}upArrow.png" style="position: relative; top: -12px; left: 1px;" alt="upArrow" />
+                                                                    <div class="suggestionList" id="autoSuggestionsList">&nbsp;</div>
+                                                                </div>
+                                                            </td>
                                                             <td class="olotd4">{$translate_workorder_created}</td>
                                                             <td class="olotd4">{$login}</td>
                                                         </tr>
                                                     </table>
-                                                    
                                                     <br>
                                                     <!-- Display Work Order Discription -->
                                                     <table class="olotable" width="100%" border="0" summary="Work order display">
@@ -180,7 +178,8 @@
                                                         </tr>
                                                         <tr>
                                                             <td class="olotd">
-                                                                <textarea  class="olotd4" rows="15" cols="70" mce_editable="true" name="work_order_description"></textarea></td>
+                                                                <textarea class="olotd4" rows="15" cols="70" mce_editable="true" name="work_order_description"></textarea>
+                                                            </td>
                                                         </tr>
                                                     </table>
                                                     <br>
@@ -194,7 +193,8 @@
                                                         </tr>
                                                         <tr>
                                                             <td class="olotd">
-                                                                <textarea class="olotd4" rows="15" cols="70" mce_editable="true" name="work_order_comments"></textarea></td>
+                                                                <textarea class="olotd4" rows="15" cols="70" mce_editable="true" name="work_order_comments"></textarea>
+                                                            </td>
                                                         </tr>
                                                     </table>
                                                     <br>
@@ -208,21 +208,21 @@
                                                         </tr>
                                                         <tr>
                                                             <td class="olotd">
-                                                                <textarea class="olotd4" rows="15" cols="70" mce_editable="true" name="work_order_notes"></textarea></td>
+                                                                <textarea class="olotd4" rows="15" cols="70" mce_editable="true" name="work_order_notes"></textarea>
+                                                            </td>
                                                         </tr>
                                                     </table>
                                                     <br>
                                                     <input type="submit" name="submit" value="{$translate_workorder_submit}"/>
-
                                                 </form>
-                                            {/section}
-                                            <br>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
-                    </table>
+                                {/section}
+                                                <br>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
                     </div>
 
                     <!-- Tab 2 Contents -->
@@ -236,9 +236,11 @@
                                         <tr>
                                             <td class="menuhead2" width="80%">{$translate_workorder_cutomer_contact_title}</td>
                                             <td class="menuhead2" width="20%" align="right">
-                                                <a href="?page=customer:edit&amp;customer_id={$customer_details[i].CUSTOMER_ID}"<img src="{$theme_images_dir}icons/16x16/small_edit.gif" border="0" alt="" /></a>                                                    </td>
+                                                <a href="?page=customer:edit&amp;customer_id={$customer_details[i].CUSTOMER_ID}"<img src="{$theme_images_dir}icons/16x16/small_edit.gif" border="0" alt="" /></a>
+                                            </td>
                                         </tr>
-                                    </table>                                        </td>
+                                    </table>
+                                </td>
                             </tr>
                             <tr>
                                 <td class="menutd"><b>{$translate_workorder_contact}</b></td>
@@ -295,12 +297,11 @@
                             <tr>
                                 <td class="row2" colspan="4">&nbsp;</td>
                             </tr>
-                        </table>{/section}
+                        </table>
+                        {/section}
                     </div>
                 </div>
-                </div>
-             </td>
+            </div>
+        </td>
     </tr>
 </table>
-
-                                                                                                                    

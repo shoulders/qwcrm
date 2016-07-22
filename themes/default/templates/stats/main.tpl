@@ -1,7 +1,7 @@
-<link rel="stylesheet" type="text/css" media="all" href="include/jscalendar/calendar-blue.css" title="win2k-1" />
-<script type="text/javascript" src="include/jscalendar/calendar_stripped.js"></script>
-<script type="text/javascript" src="include/jscalendar/lang/calendar-english.js"></script>
-<script type="text/javascript" src="include/jscalendar/calendar-setup_stripped.js"></script>
+<link rel="stylesheet" type="text/css" media="all" href="includes/jscalendar/calendar-blue.css" title="win2k-1" />
+<script type="text/javascript" src="includes/jscalendar/calendar_stripped.js"></script>
+<script type="text/javascript" src="includes/jscalendar/lang/calendar-english.js"></script>
+<script type="text/javascript" src="includes/jscalendar/calendar-setup_stripped.js"></script>
 {literal}
 <form action="index.php?page=stats:main" method="POST" name="stats_report" id="stats_report"> 
 {/literal}

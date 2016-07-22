@@ -2,16 +2,16 @@
 
 {include file="invoice/javascripts.js"}
 
-<link rel="stylesheet" type="text/css" media="all" href="include/jscalendar/calendar-blue.css" title="win2k-1" />
-<script type="text/javascript" src="include/jscalendar/calendar_stripped.js"></script>
-<script type="text/javascript" src="include/jscalendar/lang/calendar-english.js"></script>
-<script type="text/javascript" src="include/jscalendar/calendar-setup_stripped.js"></script>
+<link rel="stylesheet" type="text/css" media="all" href="includes/jscalendar/calendar-blue.css" title="win2k-1" />
+<script type="text/javascript" src="includes/jscalendar/calendar_stripped.js"></script>
+<script type="text/javascript" src="includes/jscalendar/lang/calendar-english.js"></script>
+<script type="text/javascript" src="includes/jscalendar/calendar-setup_stripped.js"></script>
 
 <!-- dhtmlx Combo Box -->
-<script type="text/javascript" src="include/dhtmlxcombo/dhtmlxcommon.js"></script>
-<script type="text/javascript" src="include/dhtmlxcombo/dhtmlxcombo.js"></script>
-<link rel="STYLESHEET" type="text/css" href="include/dhtmlxcombo/dhtmlxcombo.css">
-<script>window.dhx_globalImgPath="include/dhtmlxcombo/imgs/";</script>
+<script type="text/javascript" src="includes/dhtmlxcombo/dhtmlxcommon.js"></script>
+<script type="text/javascript" src="includes/dhtmlxcombo/dhtmlxcombo.js"></script>
+<link rel="STYLESHEET" type="text/css" href="includes/dhtmlxcombo/dhtmlxcombo.css">
+<script>window.dhx_globalImgPath="includes/dhtmlxcombo/imgs/";</script>
 
 <script type="text/javascript">
 

@@ -1,6 +1,6 @@
 <!-- Update Refund TPL -->
 {literal}
-<script language="javascript" type="text/javascript" src="include/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
+<script language="javascript" type="text/javascript" src="includes/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
 <script language="javascript" type="text/javascript">
     tinyMCE.init({
         mode : "exact",
@@ -24,10 +24,10 @@
 </script>
 {/literal}
 
-<link rel="stylesheet" type="text/css" media="all" href="include/jscalendar/calendar-blue.css" title="win2k-1" />
-<script type="text/javascript" src="include/jscalendar/calendar_stripped.js"></script>
-<script type="text/javascript" src="include/jscalendar/lang/calendar-english.js"></script>
-<script type="text/javascript" src="include/jscalendar/calendar-setup_stripped.js"></script>
+<link rel="stylesheet" type="text/css" media="all" href="includes/jscalendar/calendar-blue.css" title="win2k-1" />
+<script type="text/javascript" src="includes/jscalendar/calendar_stripped.js"></script>
+<script type="text/javascript" src="includes/jscalendar/lang/calendar-english.js"></script>
+<script type="text/javascript" src="includes/jscalendar/calendar-setup_stripped.js"></script>
 {include file="refund/javascripts.js"}
 
 <table width="100%" border="0" cellpadding="20" cellspacing="0">

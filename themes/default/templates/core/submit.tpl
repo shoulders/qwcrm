@@ -8,7 +8,7 @@
     <body>
         {literal}
 <script type="text/javascript" src="js/jquery.min.js"></script>
-<script language="javascript" type="text/javascript" src="include/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
+<script language="javascript" type="text/javascript" src="includes/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
 <script language="javascript" type="text/javascript">
     tinyMCE.init({
         mode : "textareas",
