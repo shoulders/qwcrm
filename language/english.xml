@@ -852,7 +852,6 @@
         
         
         
-        
         // Workorder Templates
         <workorder_title>Work Orders</workorder_title>
         <workorder_page_title>Work Order ID</workorder_page_title>
@@ -943,6 +942,9 @@
         
         <work_order_close_title>Close Work Order</work_order_close_title>
         
+               
+        
+        
         // - WO Status        
         <workorder_open>Open</workorder_open>
         <workorder_delete>Delete</workorder_delete>
@@ -988,6 +990,7 @@
         <workorder_closed_contact_info_title>Contact Info</workorder_closed_contact_info_title>
         <workorder_closed_contact_info>Contact Info</workorder_closed_contact_info>
         
+               
         // - Close Results
         <workorder_create_invoice_for_work_order>Create Invoice for Work Order</workorder_create_invoice_for_work_order>
         
@@ -1050,6 +1053,9 @@
                     // use in resolution aswell
         <workorder_print_closed_by>Closed By</workorder_print_closed_by>
         
+        
+        
+        
             // right col
         <workorder_print_summary_title>Summary</workorder_print_summary_title>
         <workorder_print_summary_date_opened>Date Opened</workorder_print_summary_date_opened>
@@ -1083,13 +1089,14 @@
         <workorder_print_no>No</workorder_print_no>        
         <workorder_print_backup_disclaimer>NOTE: We have a duty of care to preserve you computers data whilst we are servicing it however, it is the customers responsibilty to ensure that this data is reliably backed up should data loss occur.</workorder_print_backup_disclaimer>
         
-        <workorder_print_important_notes_title>Important Notes</workorder_important_notes_title>
-        <workorder_print_important_notes_content>&lt;ul&gt;&lt;li&gt;Please hold onto this receipt as proof of service request&lt;/li&gt;&lt;li&gt;This document (copies will not be accepted) MUST be produce this at time of pickup. If this can&#39;t be provided then photo identification is required.&lt;/li&gt;&lt;/ul&gt;</workorder_important_notes_content>
+    
+        <workorder_print_important_notes_title>Important Notes</workorder_print_important_notes_title>
+        <workorder_print_important_notes_content>&lt;ul&gt;&lt;li&gt;Please hold onto this receipt as proof of service request&lt;/li&gt;&lt;li&gt;This document (copies will not be accepted) MUST be produce this at time of pickup. If this can&#39;t be provided then photo identification is required.&lt;/li&gt;&lt;/ul&gt;</workorder_print_important_notes_content>
         
         <workorder_print_customer_workorder_slip>Customer Workorder Slip</workorder_print_customer_workorder_slip>
         <workorder_print_work_order_id>Work Order ID</workorder_print_work_order_id>
         
-        <workorder_print_description>Description</workorder_print_description>
+        <workorder_print_description>Description</workorder_print_description>       
         
         <workorder_print_this_work_order_was_created_on_the>This Work Order was created on the</workorder_print_this_work_order_was_created_on_the>
         <workorder_print_and_has_the_status_of>and has the status of</workorder_print_and_has_the_status_of>
@@ -1099,6 +1106,7 @@
         <workorder_print_company_phone>Company Phone</workorder_print_company_phone>
         <workorder_print_toll_free>Toll Free</workorder_print_toll_free>
         
+       
         // - resolution
         <workorder_work_order_resolution_help_title>Edit Resolution</workorder_work_order_resolution_help_title>
         
@@ -1110,6 +1118,7 @@
         <workorder_start_time>Start Time</workorder_start_time>
         <workorder_end_time>End Time</workorder_end_time>
         <work_order_new_schedule>New Schedule</work_order_new_schedule>
+        
         
         // - comments / notes
         
@@ -1152,5 +1161,6 @@
         //- Navigation
         <workorder_nav_new>Create New WO</workorder_nav_new>
         <get_directions>Get Directions</get_directions>
+        
         
     </translate>
