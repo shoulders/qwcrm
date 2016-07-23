@@ -1,7 +1,7 @@
-<!-- edit_description.tpl - Edit Work Order Description Page -->
-<script language="javascript" type="text/javascript" src="includes/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
+<!-- details_edit_comments.tpl - Edit Work Order Comments Page -->
+<script type="text/javascript" src="includes/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
 {literal}
-<script language="javascript" type="text/javascript">
+<script type="text/javascript">
     tinyMCE.init({
         mode : "specific_textareas",
         theme : "advanced",
@@ -26,7 +26,7 @@
         <td><!-- Begin Page -->
             <table width="700" cellpadding="5" cellspacing="0" border="0" >
                 <tr>
-                    <td class="menuhead2" width="100%">{$translate_workorder_edit_description}</td>
+                    <td class="menuhead2" width="100%">{$translate_workorder_edit_comments}</td>
                 </tr>
                 <tr>
                     <td class="menutd2">
@@ -37,17 +37,12 @@
                             <tr>
                                 <td width="100%" valign="top" >
                                     <!-- Content Here -->
-                                    <form  action="?page=workorder:edit_description" method="POST">
-                                        <b>{$translate_workorder_edit_scope}</b></br>
-                                        <input type="text" class="olotd4" size="20" name="scope" value="{$scope}">
-                                        <br>
-                                        <br>
-                                        <br>
-                                        <b>{$translate_workorder_description_title}</b><br>
-                                        <textarea class="olotd4" rows="15" cols="70" mce_editable="true" name="description">{$description}</textarea>
-                                        <br>
-                                        <input type="hidden" name="wo_id" value="{$wo_id}">
-                                        <input class="olotd4" name="submit" value="{$translate_workorder_submit}" type="submit" />
+                                    <form  action="?page=workorder:details_edit_comments" method="POST">
+                                    <b>{$translate_workorder_comments_title}</b><br>
+                                    <textarea class="olotd4" rows="15" cols="70" mce_editable="true" name="comment">{$comment}</textarea>
+                                    <br>
+                                    <input type="hidden" name="wo_id" value="{$wo_id}">
+                                    <input class="olotd4" name="submit" value="{$translate_workorder_submit}" type="submit" />
                                     </form>
                                     <br>
                                 </td>

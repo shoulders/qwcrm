@@ -63,6 +63,6 @@ $comment_string = stripslashes($comment_string);
     $comment = $rs->fields['WORK_ORDER_COMMENT'];
 
     $smarty->assign('comment', $comment);
-    $smarty->display('workorder'.SEP.'edit_comment.tpl');
+    $smarty->display('workorder'.SEP.'details_edit_comments.tpl');
     
 }

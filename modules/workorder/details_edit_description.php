@@ -56,6 +56,6 @@ $description_string = stripslashes($description_string);
 
     $smarty->assign('description', $description);
         $smarty->assign('scope', $scope);
-    $smarty->display('workorder'.SEP.'edit_description.tpl');
+    $smarty->display('workorder'.SEP.'details_edit_description.tpl');
     
 }
