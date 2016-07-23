@@ -28,4 +28,4 @@ $where = "WHERE ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_CURRENT_STATUS= ".$db->qstr(
 $smarty->assign('payment', display_workorders($db, $page_no, $where));
 
 //$smarty->assign('new_workorder', display_workorders($db, $page_no,$where));
-$smarty->display('workorder'.SEP.'main.tpl');
+$smarty->display('workorder'.SEP.'open.tpl');

@@ -1,4 +1,4 @@
-<!-- main.tpl - Work Order Main/Open Page -->
+<!-- open.tpl - Work Order Open Page -->
 <table width="100%" border="0" cellpadding="20" cellspacing="5">
     <tr>
         <td>
@@ -20,16 +20,16 @@
                                 <td class="menutd">
                                     <table width="100%" border="0" cellpadding="10" cellspacing="0">
                                         <tr>
-                                            <td><a name="new"></a>{include file="workorder/blocks/new_work_order.tpl"}</td>
+                                            <td><a name="new"></a>{include file="workorder/blocks/new_work_order_block.tpl"}</td>
                                         </tr>
                                         <tr>
-                                            <td><a name="assigned"></a>{include file="workorder/blocks/assigned_work_order.tpl"}</td>
+                                            <td><a name="assigned"></a>{include file="workorder/blocks/assigned_work_order_block.tpl"}</td>
                                         </tr>
                                         <tr>
-                                            <td><a name="awaiting"></a>{include file="workorder/blocks/awaiting_work_order.tpl"}</td>
+                                            <td><a name="awaiting"></a>{include file="workorder/blocks/awaiting_work_order_block.tpl"}</td>
                                         </tr>
                                         <tr>
-                                            <td><a name="payment"></a>{include  file="workorder/blocks/payment_work_order.tpl"}</td>
+                                            <td><a name="payment"></a>{include  file="workorder/blocks/payment_work_order_block.tpl"}</td>
                                         </tr>
                                     </table>
                                 </td>

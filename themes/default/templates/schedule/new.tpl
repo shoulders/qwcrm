@@ -57,7 +57,7 @@
                                             <td><a name="new"></a>{include file="schedule/new_work_order.tpl"}</td>
                                         </tr>
                                         <tr>
-                                            <td><a name="assigned"></a>{include file="schedule/assigned_work_order.tpl"}
+                                            <td><a name="assigned"></a>{include file="schedule/assigned_work_order_block.tpl"}
                                             </td>
                                         </tr>
                                     </table>
@@ -75,7 +75,7 @@
                                             <td><a name="new"></a>{include file="schedule/new_work_order.tpl"}</td>
                                         </tr>
                                         <tr>
-                                            <td><a name="assigned"></a>{include file="schedule/assigned_work_order.tpl"}
+                                            <td><a name="assigned"></a>{include file="schedule/assigned_work_order_block.tpl"}
                                             </td>
                                         </tr>
                                     </table>

@@ -69,7 +69,7 @@
                                                         <td width="100%" valign="top" >
                                                             <!-- Inside Content -->
                                                             <!-- Display Work order -->
-                                                            {include file="workorder/work_order_head.tpl"}
+                                                            {include file="workorder/work_order_header_block.tpl"}
                                                             <br>
                                                             {include file="workorder/work_order_description.tpl"}
                                                             <!-- Display Comment -->
