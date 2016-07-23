@@ -13,8 +13,8 @@
                 
                 {foreach from=$new item=new}
                 {if $new.WORK_ORDER_ID > 0}
-                <tr onmouseover="this.className='row2'" onmouseout="this.className='row1'" onDblClick="window.location='?page=workorder:view&wo_id={$new.WORK_ORDER_ID}&customer_id={$new.CUSTOMER_ID}&page_title={$translate_workorder_page_title} {$new.WORK_ORDER_ID}';" class="row1">
-                    <td class="olotd4"><a href="?page=workorder:view&wo_id={$new.WORK_ORDER_ID}&customer_id={$new.CUSTOMER_ID}&page_title={$translate_workorder_page_title} {$new.WORK_ORDER_ID}">{$new.WORK_ORDER_ID}</a>
+                <tr onmouseover="this.className='row2'" onmouseout="this.className='row1'" onDblClick="window.location='?page=workorder:details&wo_id={$new.WORK_ORDER_ID}&customer_id={$new.CUSTOMER_ID}&page_title={$translate_workorder_page_title} {$new.WORK_ORDER_ID}';" class="row1">
+                    <td class="olotd4"><a href="?page=workorder:details&wo_id={$new.WORK_ORDER_ID}&customer_id={$new.CUSTOMER_ID}&page_title={$translate_workorder_page_title} {$new.WORK_ORDER_ID}">{$new.WORK_ORDER_ID}</a>
                     </td>
                     <td class="olotd4"> {$new.WORK_ORDER_OPEN_DATE|date_format:"$date_format"}
                     </td>
@@ -35,9 +35,9 @@
                     {/if}
                     </td>
                     <td class="olotd4" align="center" nowrap>
-                        <a href="?page=workorder:view&wo_id={$new.WORK_ORDER_ID}&customer_id={$new.WORK_ORDER_ID}&page_title={$translate_workorder_page_title} {$new.WORK_ORDER_ID}"><img src="{$theme_images_dir}icons/16x16/Calendar.gif" width="16" height="16" border="0" onMouseOver="ddrivetip('Schedule this Works Order')" onMouseOut="hideddrivetip()"></a>
+                        <a href="?page=workorder:details&wo_id={$new.WORK_ORDER_ID}&customer_id={$new.WORK_ORDER_ID}&page_title={$translate_workorder_page_title} {$new.WORK_ORDER_ID}"><img src="{$theme_images_dir}icons/16x16/Calendar.gif" width="16" height="16" border="0" onMouseOver="ddrivetip('Schedule this Works Order')" onMouseOut="hideddrivetip()"></a>
                         <a href="?page=workorder:print&wo_id={$new.WORK_ORDER_ID}&customer_id={$new.CUSTOMER_ID}&page_title={$translate_workorder_print_title} {$new.WORK_ORDER_ID}&escape=1"><img src="{$theme_images_dir}icons/16x16/fileprint.gif" border="0" onMouseOver="ddrivetip('Print The Work Order')" onMouseOut="hideddrivetip()"></a>
-                        <a href="?page=workorder:view&wo_id={$new.WORK_ORDER_ID}&customer_id={$new.CUSTOMER_ID}&page_title={$translate_workorder_page_title} {$new.WORK_ORDER_ID}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif"  border="0" onMouseOver="ddrivetip('View The Work Order')" onMouseOut="hideddrivetip()"></a>                                            
+                        <a href="?page=workorder:details&wo_id={$new.WORK_ORDER_ID}&customer_id={$new.CUSTOMER_ID}&page_title={$translate_workorder_page_title} {$new.WORK_ORDER_ID}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif"  border="0" onMouseOver="ddrivetip('View The Work Order')" onMouseOut="hideddrivetip()"></a>                                            
                     </td>
                 </tr>
                 {else}

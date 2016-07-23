@@ -75,7 +75,7 @@
                                 <td class="olohead">Action</td>
                             </tr>
                             {section name=a loop=$open_work_orders}
-                            <tr onmouseover="this.className='row2'" onmouseout="this.className='row1'" onDblClick="window.location='?page=workorder:view&wo_id={$open_work_orders[a].WORK_ORDER_ID}&customer_id={$open_work_orders[a].CUSTOMER_ID}&page_title={$translate_employee_work_order_id}{$open_work_orders[a].WORK_ORDER_ID},';" class="row1">
+                            <tr onmouseover="this.className='row2'" onmouseout="this.className='row1'" onDblClick="window.location='?page=workorder:details&wo_id={$open_work_orders[a].WORK_ORDER_ID}&customer_id={$open_work_orders[a].CUSTOMER_ID}&page_title={$translate_employee_work_order_id}{$open_work_orders[a].WORK_ORDER_ID},';" class="row1">
                                 <td class="olotd4">{$open_work_orders[a].WORK_ORDER_ID}</td>
                                 <td class="olotd4">{$open_work_orders[a].WORK_ORDER_OPEN_DATE|date_format:"$date_format"}</td>
                                 <td class="olotd4">
@@ -92,7 +92,7 @@
                                     <a href="?page=workorder:print&wo_id={$open_work_orders[a].WORK_ORDER_ID}&customer_id={$open_work_orders[a].CUSTOMER_ID}&escape=1" target="new" >
                                     <img src="{$theme_images_dir}icons/16x16/fileprint.gif" border="0"
                                         onMouseOver="ddrivetip('Print The Work Order')" onMouseOut="hideddrivetip()"></a>
-                                    <a href="?page=workorder:view&wo_id={$open_work_orders[a].WORK_ORDER_ID}&customer_id={$open_work_orders[a].CUSTOMER_ID}">
+                                    <a href="?page=workorder:details&wo_id={$open_work_orders[a].WORK_ORDER_ID}&customer_id={$open_work_orders[a].CUSTOMER_ID}">
                                     <img src="{$theme_images_dir}icons/16x16/viewmag.gif"  border="0"
                                         onMouseOver="ddrivetip('View The Work Order')" onMouseOut="hideddrivetip()"></a>
                                 </td>

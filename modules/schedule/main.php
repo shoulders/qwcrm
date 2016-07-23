@@ -165,7 +165,7 @@ while($start <= $business_end){
             if($start == $sch[$i]['SCHEDULE_START']){
 
                     if($sch[$i]['WORK_ORDER_ID'] != 0) {
-                        $calendar .= "<td class=\"menutd2\" align=\"center\" onClick=\"window.location='?page=workorder:view&amp;wo_id=".$sch[$i]['WORK_ORDER_ID']."page_title=Work Order ID ".$sch[$i]['WORK_ORDER_ID ']."'\"><b>\n";
+                        $calendar .= "<td class=\"menutd2\" align=\"center\" onClick=\"window.location='?page=workorder:details&amp;wo_id=".$sch[$i]['WORK_ORDER_ID']."page_title=Work Order ID ".$sch[$i]['WORK_ORDER_ID ']."'\"><b>\n";
                         $calendar .= " <b><font color=\"red\">Work Order ". $sch[$i]['WORK_ORDER_ID']." for ". $sch[$i]['CUSTOMER_NAME']."<br>".date("h:i a",$sch[$i]['SCHEDULE_START'])." - ".date("h:i a",$sch[$i]['SCHEDULE_END'])."</font><br><font color=\"blue\">NOTES-  ".$sch[$i]['SCHEDULE_NOTES']."</font><br>
                         <a href=\"index.php?page=schedule:edit&amp;sch_id=".$sch[$i]['SCHEDULE_ID']."&y=".$y."&m=".$m."&d=".$d."&amp;wo_id=".$sch[$i]['WORK_ORDER_ID']."\">Add Note</a> -
                         <a href=\"index.php?page=schedule:sync&amp;wo_id=".$sch[$i]['WORK_ORDER_ID']."&escape=1\">Sync</a> -
@@ -198,7 +198,7 @@ while($start <= $business_end){
             if($start == $sch[$i]['SCHEDULE_START']) {
 
                 if($sch[$i]['WORK_ORDER_ID'] != 0) {
-                        $calendar .= "<td class=\"menutd2\" align=\"center\" onClick=\"window.location='?page=workorder:view&amp;wo_id=".$sch[$i]['WORK_ORDER_ID']."page_title=Work Order ID ".$sch[$i]['WORK_ORDER_ID ']."'\"><b>\n";
+                        $calendar .= "<td class=\"menutd2\" align=\"center\" onClick=\"window.location='?page=workorder:details&amp;wo_id=".$sch[$i]['WORK_ORDER_ID']."page_title=Work Order ID ".$sch[$i]['WORK_ORDER_ID ']."'\"><b>\n";
                         $calendar .= " <b><font color=\"red\">Work Order ". $sch[$i]['WORK_ORDER_ID']." for ". $sch[$i]['CUSTOMER_NAME']."<br>".date("h:i a",$sch[$i]['SCHEDULE_START'])." - ".date("h:i a",$sch[$i]['SCHEDULE_END'])."</font><br><font color=\"blue\">NOTES-  ".$sch[$i]['SCHEDULE_NOTES']."</font><br>
                         <a href=\"index.php?page=schedule:edit&amp;sch_id=".$sch[$i]['SCHEDULE_ID']."&amp;y=".$y."&amp;m=".$m."&amp;d=".$d."&amp;wo_id=".$sch[$i]['WORK_ORDER_ID']."\">Add Note</a> -
                         <a href=\"index.php?page=schedule:sync&amp;wo_id=".$sch[$i]['WORK_ORDER_ID']."&amp;escape=1\">Sync</a> -

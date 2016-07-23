@@ -38,24 +38,24 @@
                                             <td valign="top"></td>
                                             <td valign="top" nowrap align="right">
                                                 <form id="1" action="">
-                                                    <a href="?page=workorder:view_closed&submit=submit&page_no=1"><img src="{$theme_images_dir}rewnd_24.gif" alt="" border="0"></a>&nbsp;
+                                                    <a href="?page=workorder:closed&submit=submit&page_no=1"><img src="{$theme_images_dir}rewnd_24.gif" alt="" border="0"></a>&nbsp;
                                                     {if $previous != ''}
-                                                        <a href="?page=workorder:view_closed&submit=submit&page_no={$previous}"><img src="{$theme_images_dir}back_24.gif" alt="" border="0"></a>&nbsp;
+                                                        <a href="?page=workorder:closed&submit=submit&page_no={$previous}"><img src="{$theme_images_dir}back_24.gif" alt="" border="0"></a>&nbsp;
                                                     {/if}
                                                     <select name="page_no" onChange="go();">
                                                     {section name=page loop=$total_pages start=1}
-                                                        <option value="?page=workorder:view_closed&submit=submit&page_no={$smarty.section.page.index}" {if $page_no == $smarty.section.page.index } Selected {/if}>
+                                                        <option value="?page=workorder:closed&submit=submit&page_no={$smarty.section.page.index}" {if $page_no == $smarty.section.page.index } Selected {/if}>
                                                             {$translate_workorder_page} {$smarty.section.page.index} {$translate_workorder_of} {$total_pages} 
                                                         </option>
                                                     {/section}
-                                                        <option value="?page=workorder:view_closed&submit=submit&page_no={$total_pages}" {if $page_no == $total_pages} selected {/if}>
+                                                        <option value="?page=workorder:closed&submit=submit&page_no={$total_pages}" {if $page_no == $total_pages} selected {/if}>
                                                             {$translate_workorder_page} {$total_pages} {$translate_workorder_of} {$total_pages}
                                                         </option>
                                                     </select>
                                                     {if $next != ''}
-                                                    <a href="?page=workorder:view_closed&submit=submit&page_no={$next}"><img src="{$theme_images_dir}forwd_24.gif" alt="" border="0"></a>
+                                                    <a href="?page=workorder:closed&submit=submit&page_no={$next}"><img src="{$theme_images_dir}forwd_24.gif" alt="" border="0"></a>
                                                     {/if}
-                                                    <a href="?page=workorder:view_closed&submit=submit&page_no={$total_pages}"><img src="{$theme_images_dir}fastf_24.gif" alt="" border="0"></a>
+                                                    <a href="?page=workorder:closed&submit=submit&page_no={$total_pages}"><img src="{$theme_images_dir}fastf_24.gif" alt="" border="0"></a>
                                                 </form>
                                             </td>
                                         </tr>
@@ -73,8 +73,8 @@
                                                     </tr>
                                                     {foreach from=$work_order item=work_order}
                                                     {if $work_order.WORK_ORDER_ID  != ""}
-                                                    <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='?page=workorder:view&wo_id={$work_order.WORK_ORDER_ID}&customer_id={$work_order.CUSTOMER_ID}&page_title={$translate_workorder_page_title} {$work_order.WORK_ORDER_ID}';" class="row1">
-                                                        <td class="olotd4"><a href="?page=workorder:view&wo_id={$work_order.WORK_ORDER_ID}&customer_id={$work_order.CUSTOMER_ID}&page_title={$translate_workorder_page_title} {$work_order.WORK_ORDER_ID}">{$work_order.WORK_ORDER_ID}</a></td>
+                                                    <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='?page=workorder:details&wo_id={$work_order.WORK_ORDER_ID}&customer_id={$work_order.CUSTOMER_ID}&page_title={$translate_workorder_page_title} {$work_order.WORK_ORDER_ID}';" class="row1">
+                                                        <td class="olotd4"><a href="?page=workorder:details&wo_id={$work_order.WORK_ORDER_ID}&customer_id={$work_order.CUSTOMER_ID}&page_title={$translate_workorder_page_title} {$work_order.WORK_ORDER_ID}">{$work_order.WORK_ORDER_ID}</a></td>
                                                         <td class="olotd4"> {$work_order.WORK_ORDER_OPEN_DATE|date_format:"$date_format"}</td>
                                                         <td class="olotd4">{$work_order.WORK_ORDER_CLOSE_DATE|date_format:"$date_format"}</td>
                                                         <td class="olotd4" nowrap>

@@ -120,7 +120,7 @@ while($start <= $business_end){
             if($start == $sch[$i]['SCHEDULE_START']){
                 
                     if($sch[$i]['WORK_ORDER_ID'] > 1 ) {
-                        //$calendar .= "<td class=\"menutd2\" align=\"center\" onClick=\"window.location='?page=workorder:view&wo_id=".$sch[$i]['WORK_ORDER_ID']."page_title=Work Order ID ".$sch[$i]['WORK_ORDER_ID ']."'\"><b>\n"; 
+                        //$calendar .= "<td class=\"menutd2\" align=\"center\" onClick=\"window.location='?page=workorder:details&wo_id=".$sch[$i]['WORK_ORDER_ID']."page_title=Work Order ID ".$sch[$i]['WORK_ORDER_ID ']."'\"><b>\n"; 
                         $calendar .= "<td class=\"menutd2\" align=\"center\" onClick=\"window.location='?page=schedule:view&sch_id=".$sch[$i]['SCHEDULE_ID']."&y=".$y."&m=".$m."&d=".$d."'\">";
                       $calendar .= "Work Order ". $sch[$i]['WORK_ORDER_ID']." - Currently scheduled for ".date("h:i a",$sch[$i]['SCHEDULE_START'])." until ".date("h:i a",$sch[$i]['SCHEDULE_END'])." ".$sch[$i]['SCHEDULE_NOTES']."\n";
                         $calendar . "</b></td>\n";
@@ -149,7 +149,7 @@ while($start <= $business_end){
             if($start == $sch[$i]['SCHEDULE_START']) {
             
                 if($sch[$i]['WORK_ORDER_ID'] > 1 ) {
-                    //$calendar .= "<td class=\"menutd2\" align=\"center\" onClick=\"window.location='?page=workorder:view&wo_id=".$sch[$i]['WORK_ORDER_ID']."page_title=Work Order ID ".$sch[$i]['WORK_ORDER_ID ']."'\"><b>\n"; 
+                    //$calendar .= "<td class=\"menutd2\" align=\"center\" onClick=\"window.location='?page=workorder:details&wo_id=".$sch[$i]['WORK_ORDER_ID']."page_title=Work Order ID ".$sch[$i]['WORK_ORDER_ID ']."'\"><b>\n"; 
                     $calendar .= "<td class=\"menutd2\" align=\"center\" onClick=\"window.location='?page=schedule:view&sch_id=".$sch[$i]['SCHEDULE_ID']."&y=".$y."&m=".$m."&d=".$d."'\">";
                     $calendar .= "Work Order ID ". $sch[$i]['WORK_ORDER_ID']." From: ".date("h:i a",$sch[$i]['SCHEDULE_START'])." To: ".date("h:i a",$sch[$i]['SCHEDULE_END'])." ".$sch[$i]['SCHEDULE_NOTES']."\n";
                     $calendar . "</b></td>\n";

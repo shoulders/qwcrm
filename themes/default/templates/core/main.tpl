@@ -40,7 +40,7 @@
                                             <td><a href="?page=workorder:open#assigned">{$wo_ass_count}</a></td>
                                             <td><a href="?page=workorder:open#awaiting">{$wo_parts_count}</a></td>
                                             <td><a href="?page=workorder:open#payment">{$wo_pay_count}</a></td>
-                                            <td><a href="?page=workorder:view_closed">{$wo_closed_count}</a></td>
+                                            <td><a href="?page=workorder:closed">{$wo_closed_count}</a></td>
                                             <td>{$wo_total_count}</td>
                                         </tr>
                                     </table>

@@ -97,7 +97,7 @@
                                 </td>
                                 <td class="olotd4">{$order[i].DATE_CREATE|date_format:"$date_format"}</td>
                                 <td class="olotd4">{$order[i].INVOICE_ID}</td>
-                                                                <td class="olotd4"><a href ="?page=workorder:view&wo_id={$order[i].WO_ID}&page_title={$translate_parts_wo_id} {$order[i].WO_ID}">{$order[i].WO_ID}</a></td>
+                                                                <td class="olotd4"><a href ="?page=workorder:details&wo_id={$order[i].WO_ID}&page_title={$translate_parts_wo_id} {$order[i].WO_ID}">{$order[i].WO_ID}</a></td>
                                 <td class="olotd4">${$order[i].SUB_TOTAL|string_format:"%.2f"}</td>
                                 <td class="olotd4">${$order[i].SHIPPING|string_format:"%.2f"}</td>
                                 <td class="olotd4">${$order[i].TOTAL|string_format:"%.2f"}</td>
