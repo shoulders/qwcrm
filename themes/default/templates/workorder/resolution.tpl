@@ -1,4 +1,4 @@
-<!-- Display Work Order Resolution With Edit Button If Open -->
+<!-- resolution.tpl - Display Work Order Resolution With Edit Button If Open (Work Orders - Details Page) -->
 <table class="olotable" border="0" width="100%" cellpadding="0" cellspacing="0" >
     <tr>
         <td class="olohead">

@@ -1,4 +1,4 @@
-<!-- Work order main TPL-->
+<!-- main.tpl - Work Order Main/Open Page -->
 <table width="100%" border="0" cellpadding="20" cellspacing="5">
     <tr>
         <td>

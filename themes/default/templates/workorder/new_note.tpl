@@ -1,4 +1,4 @@
-<!-- Add New Note tpl -->
+<!-- new_note.tpl - Add New Note tpl -->
 <script language="javascript" type="text/javascript" src="includes/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
 {literal}
 <script language="javascript" type="text/javascript">

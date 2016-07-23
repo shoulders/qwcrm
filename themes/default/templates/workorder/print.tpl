@@ -1,4 +1,4 @@
-<!-- Print Work Order -->
+<!-- print.tpl - Print Work Order Template -->
 {literal}
 <script type="text/javascript">
     function data_copy() {

@@ -1,7 +1,7 @@
-<!-- Update work order desription -->
-<script language="javascript" type="text/javascript" src="includes/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
+<!-- edit_comment.tpl - Edit Work Order Comments Page -->
+<script type="text/javascript" src="includes/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
 {literal}
-<script language="javascript" type="text/javascript">
+<script type="text/javascript">
     tinyMCE.init({
         mode : "specific_textareas",
         theme : "advanced",

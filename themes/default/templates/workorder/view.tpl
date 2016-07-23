@@ -1,4 +1,4 @@
-<!-- View Work Order tpl -->
+<!-- view.tpl - Work Order Details Page -->
 <script language="javascript" type="text/javascript" src="includes/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
 {literal}
 <script language="javascript" type="text/javascript">

@@ -1,4 +1,4 @@
-<!-- Display Work Order Discription -->
+<!-- work_order_description.tpl - Display Work Order Description (Work Orders - Details Page) -->
 <table class="olotable" width="100%" border="0" cellpadding="0" cellspacing="0">
     <tr>
         <td class="olohead">

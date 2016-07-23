@@ -1,3 +1,4 @@
+<!-- close.tpl - Work Order Close/Resolution Page -->
 <script language="javascript" type="text/javascript" src="includes/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
 {literal}
 <script language="javascript" type="text/javascript">

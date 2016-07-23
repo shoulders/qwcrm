@@ -1,8 +1,9 @@
-<!-- Add New Work Order tpl -->
+<!-- new.tpl - New Work Order Page -->
 <script type="text/javascript" src="js/jquery-1.2.1.pack.js"></script>
 <script language="javascript" type="text/javascript" src="includes/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
+{include file="new.js"}
 {literal}
-<script language="javascript" type="text/javascript">
+<script type="text/javascript">
     tinyMCE.init({
         mode : "specific_textareas",
         theme : "advanced",
@@ -20,96 +21,6 @@
         file_browser_callback : "fileBrowserCallBack",
         width : "100%"
     });
-</script>
-
-<script type="text/javascript">
-    function lookup(scope) {
-        if(scope.length == 0) {
-            // Hide the suggestion box.
-            $('#suggestions').hide();
-        } else {
-            $.post("modules/workorder/autosuggest.php", {queryString: ""+scope+""}, function(data){
-                if(data.length >0) {
-                    $('#suggestions').show();
-                    $('#autoSuggestionsList').html(data);
-                }
-            });
-        }
-    } // lookup
-
-    function fill(thisValue) {
-        $('#scope').val(thisValue);
-        setTimeout("$('#suggestions').hide();", 200);
-    }
-</script>
-
-<style type="text/css">
-    body {
-        font-family: Helvetica;
-        font-size: 11px;
-        color: #000;
-    }
-
-    h3 {
-        margin: 0px;
-        padding: 0px;
-    }
-
-    .suggestionsBox {
-        position: relative;
-        left: 30px;
-        margin: 10px 0px 0px 0px;
-        width: 200px;
-        background-color: #212427;
-        -moz-border-radius: 7px;
-        -webkit-border-radius: 7px;
-        border: 2px solid #000;
-        color: #fff;
-    }
-
-    .suggestionList {
-        margin: 0px;
-        padding: 0px;
-    }
-
-    .suggestionList li {
-
-        margin: 0px 0px 3px 0px;
-        padding: 3px;
-        cursor: pointer;
-    }
-
-    .suggestionList li:hover {
-        background-color: #659CD8;
-    }
-</style>
-
-<script type="text/javascript">
-    function validate_new_workorder(frm) {
-        var value = '';
-        var errFlag = new Array();
-        var _qfGroups = {};
-        _qfMsg = '';
-        value = frm.elements['scope'].value;
-        if (value == '' && !errFlag['scope']) {
-            errFlag['scope'] = true;
-            _qfMsg = _qfMsg + '\n - Please enter the  Work Order Scope';
-            frm.elements['scope'].className = 'error';
-        }
-        value = frm.elements['scope'].value;
-        if (value != '' && value.length > 40 && !errFlag['scope']) {
-            errFlag['scope'] = true;
-            _qfMsg = _qfMsg + '\n - The Work Order Scope cannot be more than 40 characters';
-            frm.elements['scope'].className = 'error';
-        }
-        if (_qfMsg != '') {
-            _qfMsg = 'Invalid information entered.' + _qfMsg;
-            _qfMsg = _qfMsg + '\nPlease correct these fields.';
-            alert(_qfMsg);
-            return false;
-        }
-        return true;
-    }
 </script>
 {/literal}
 <table width="100%">

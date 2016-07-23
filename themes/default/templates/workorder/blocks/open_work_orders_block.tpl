@@ -1,4 +1,4 @@
-<!-- Open Work Orders Block -->
+<!-- open_work_orders_block.tpl -->
 <table width="100%" cellpadding="0" cellspacing="0" border="0">
     <tr>
         <td class="menuhead2" width="80%">{$translate_workorder_open_work_orders}</td>

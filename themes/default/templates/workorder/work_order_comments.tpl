@@ -1,3 +1,4 @@
+<!-- work_order_comments.tpl - Display Work Order Comments (Work Orders - Details Page) -->
 <table class="olotable" width="100%" border="0"  cellpadding="0" cellspacing="0" summary="Work order display">
     <tr>
         <td class="olohead">

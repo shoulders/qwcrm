@@ -1,4 +1,4 @@
-<!-- Open Work Orders Block -->
+<!-- closed_work_orders_block.tpl -->
 <table width="100%" cellpadding="0" cellspacing="0" border="0">
     <tr>
         <td class="menuhead2" width="80%">{$translate_workorder_open_work_orders}</td>
@@ -9,7 +9,7 @@
                     <td width="33%" align="center" class="button"><a href="" class="button" onClick="document.cookie='hide_open_work_order=0; path=/';">+</a></td>
                     <td width="33%" align="center" class="button">
                         <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" 
-                            onMouseOver="ddrivetip('<b>Navagation</b><hr><p>Double Click on an empty space in each row to go directly to the work order. <br><br>Hover over the magnifying glass under Customer to view the Quick Contact Information. Click on the Customers name to view the customers details.<br><br>Click on the status of each work order listed to update the curent work order status.<br><br>Hover over the Magnifying Glass under the Employee to view the Quick Contact Information for the assigned employee. Click on the employees name to view the details.<br><br>Under Action click the Printer Icon to print the work order. Click the Magnifying Glass to view the work order. </p>');" 
+                            onMouseOver="ddrivetip('<b>{$translate_workorder_closed_work_orders_block_help_title}</b><hr><p>{$translate_workorder_closed_work_orders_block_help_content}</p>');" 
                             onMouseOut="hideddrivetip();"></td>
                 </tr>
             </table>

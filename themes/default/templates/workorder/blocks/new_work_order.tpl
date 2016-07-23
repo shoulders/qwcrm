@@ -1,4 +1,4 @@
-<!-- Open Work Orders Block -->
+<!-- new_work_order.tpl - Display New Work Orders (Work Orders - Open Page) -->
 <b>{$translate_workorder_new_title}</b>
 <table class="olotable" width="100%" border="0" cellpadding="4" cellspacing="0">
     <tr>

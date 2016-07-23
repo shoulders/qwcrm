@@ -1,4 +1,4 @@
-<!-- Update work order desription -->
+<!-- edit_description.tpl - Edit Work Order Description Page -->
 <script language="javascript" type="text/javascript" src="includes/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
 {literal}
 <script language="javascript" type="text/javascript">

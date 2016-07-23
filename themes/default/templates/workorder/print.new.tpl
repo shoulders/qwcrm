@@ -1,4 +1,4 @@
-<!-- Print Work Order -->
+<!-- print.new.tpl - Print Work Order Template -->
 {section name=i loop=$single_workorder_array}
 <table  width="900" border="1" cellpadding="2" cellspacing="0" style="border-collapse: collapse;">
     <tr>
