@@ -218,7 +218,7 @@
                                                         <td width="100%" valign="top" >
                                                             <!-- Inside Content -->
                                                             <!-- Work Order Status -->
-                                                            {include file="workorder/blocks/details_status_block.tpl"}
+                                                            {include file="workorder/blocks/details_history_block.tpl"}
                                                             <br>
                                                         </td>
                                                     </tr>

@@ -15,8 +15,8 @@
                             <tr>
                                 <td width="100%" valign="top" >
                                     <!-- Content Here -->
-                                    <form  action="index.php?page=workorder:status_new" method="POST" name="new_workorder_status" id="new_workorder_status">
-                                        <input type="hidden" name="page" value="workorder:status_new">
+                                    <form  action="index.php?page=workorder:status" method="POST" name="new_workorder_status" id="new_workorder_status">
+                                        <input type="hidden" name="page" value="workorder:status">
                                         <input type="hidden" name="create_by" value="{$display_login}">
                                         <input type="hidden" name="wo_id" value="{$wo_id}">
                                         <p>&nbsp;</p>

@@ -229,9 +229,8 @@ $work_order_comments_string = stripslashes($work_order_comments_string);
         }
                 
         $smarty->assign('wo_id', $wo_id);
-                $smarty->assign('customer_id', $customer_id);
-        $smarty->display("workorder/new_results.tpl");
-
+        $smarty->assign('customer_id', $customer_id);
+        $smarty->display("workorder/reload_current_workorder.js");
     
 }
 

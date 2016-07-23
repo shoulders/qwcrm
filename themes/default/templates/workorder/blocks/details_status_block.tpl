@@ -1,4 +1,4 @@
-<!-- details_status_block.tpl - Display Work Order History (Work Orders - Details Page) -->
+<!-- details_history_block.tpl - Display Work Order History (Work Orders - Details Page) -->
 <table class="olotable" width="100%" cellpadding="3" cellspacing="0" >fffffffffcock
     <tr>
         <td class="olohead">
