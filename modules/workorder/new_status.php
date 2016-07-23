@@ -12,7 +12,7 @@ if(isset($VAR['submit'])){
         force_page('core', 'error&error_msg=Falied to update work order status');
         exit;
     } else {
-        force_page('workorder', 'view&wo_id='.$VAR['wo_id'].'&page_title=Work%20Order%20ID%20'.$VAR['wo_id']);
+        force_page('workorder', 'details&wo_id='.$VAR['wo_id'].'&page_title=Work%20Order%20ID%20'.$VAR['wo_id']);
         exit;
     }
 

@@ -18,9 +18,9 @@ if(!$rs = $db->execute($q)) {
 }
 
 if($rs->fields['WORK_ORDER_STATUS'] == 9) {
-    force_page('workorder', "view&wo_id=$wo_id&error_msg=Work Order Is already Closed. Please Create an Invoice.&page_title=Work Order ID $wo_id&type=info");
+    force_page('workorder', "details&wo_id=$wo_id&error_msg=Work Order Is already Closed. Please Create an Invoice.&page_title=Work Order ID $wo_id&type=info");
 } elseif ($rs->fields['WORK_ORDER_CURRENT_STATUS'] == 3) {
-    force_page('workorder', "view&wo_id=$wo_id&error_msg=Can not close a work order if it is Waiting For Parts. Please Adjust the status.&page_title=Work Order ID $wo_id&type=warning");
+    force_page('workorder', "details&wo_id=$wo_id&error_msg=Can not close a work order if it is Waiting For Parts. Please Adjust the status.&page_title=Work Order ID $wo_id&type=warning");
 }
 
 // loads resolution if it exists from the database
@@ -65,7 +65,7 @@ if($rs->fields['WORK_ORDER_STATUS'] == 9) {
                     exit;
                     }
 
-            force_page('workorder', 'view&wo_id='.$wo_id);
+            force_page('workorder', 'details&wo_id='.$wo_id);
             exit;
 
                         }
@@ -75,7 +75,7 @@ if($rs->fields['WORK_ORDER_STATUS'] == 9) {
     if(isset($VAR["closewithoutinvoice"])){
 
             if (!close_work_order_no_invoice($db,$VAR)){
-                    force_page('workorder', "view&wo_id=$wo_id&error_msg=Failed to Close Work Order.&page_title=Work Order ID $wo_id");
+                    force_page('workorder', "details&wo_id=$wo_id&error_msg=Failed to Close Work Order.&page_title=Work Order ID $wo_id");
 
                 } else {
 
@@ -92,7 +92,7 @@ if($rs->fields['WORK_ORDER_STATUS'] == 9) {
     if(isset($VAR["closewithinvoice"])){
 
             if (!close_work_order($db,$VAR)){
-                    force_page('workorder', "view&wo_id=$wo_id&error_msg=Failed to Close Work Order.&page_title=Work Order ID $wo_id");
+                    force_page('workorder', "details&wo_id=$wo_id&error_msg=Failed to Close Work Order.&page_title=Work Order ID $wo_id");
 
                 } else {
 
@@ -111,5 +111,5 @@ if($rs->fields['WORK_ORDER_STATUS'] == 9) {
 // If nothing else it loads the work order resolution page
 else {
         $smarty->assign('wo_id', $VAR['wo_id']);
-        $smarty->display('workorder'.SEP.'close.tpl');
+        $smarty->display('workorder'.SEP.'resolution.tpl');
      }

@@ -40,7 +40,7 @@ $description_string = stripslashes($description_string);
         exit;
     }
 
-    force_page('workorder', 'view&wo_id='.$wo_id);
+    force_page('workorder', 'details&wo_id='.$wo_id);
     exit;
     
 } else {

@@ -1135,9 +1135,6 @@
         //- closed work orders
         <workorder_open_work_orders>Open Work Orders<workorder_open_work_orders>
         
-        //- closed works orders block
-        <workorder_closed_work_orders_block_help_title>Closed Work Orders Block</workorder_closed_work_orders_block_help_title>
-        <workorder_closed_work_orders_block_help_content>Double Click on an empty space in each row to go directly to the work order. &lt;br&gt;&lt;br&gt;Hover over the magnifying glass under Customer to view the Quick Contact Information. Click on the Customers name to view the customers details.&lt;br&gt;&lt;br&gt;Click on the status of each work order listed to update the curent work order status.&lt;br&gt;&lt;br&gt;Hover over the Magnifying Glass under the Employee to view the Quick Contact Information for the assigned employee. Click on the employees name to view the details.&lt;br&gt;&lt;br&gt;Under Action click the Printer Icon to print the work order. Click the Magnifying Glass to view the work order.</workorder_closed_work_orders_block_help_content>
         
         
         // - open_work_orders_block - not sure where this is displayed
@@ -1145,11 +1142,7 @@
         <workorder_open_work_orders_block_help_content>Double Click on an empty space in each row to go directly to the work order. &lt;br&gt;&lt;br&gt;Hover over the magnifying glass under Customer to view the Quick Contact Information. Click on the Customers name to view the customers details.&lt;br&gt;&lt;br&gt;Click on the status of each work order listed to update the curent work order status.&lt;br&gt;&lt;br&gt;Hover over the Magnifying Glass under the Employee to view the Quick Contact Information for the assigned employee. Click on the employees name to view the details.&lt;br&gt;&lt;br&gt;Under Action click the Printer Icon to print the work order. Click the mMagnifying Glass to view the work order.</workorder_open_work_orders_block_help_content>
         <workorder_there_are_no_open_work_orders>There are No Open Work Orders</workorder_there_are_no_open_work_orders>
         
-        
-        // - today work orders_block
-        <workorder_today_work_orders_block_help_title>today work orders_block Navagation</workorder_today_work_orders_block_help_title>
-        <workorder_today_work_orders_block_help_content>Double Click on an empty space in each row to go directly to the work order. &lt;br&gt;&lt;br&gt;Hover over the magnifying glass under Customer to view the Quick Contact Information. Click on the Customers name to view the customers details.&lt;br&gt;&lt;br&gt;Click on the status of each work order listed to update the curent work order status.&lt;br&gt;&lt;br&gt;Hover over the Magnifying Glass under the Employee to view the Quick Contact Information for the assigned employee. Click on the employees name to view the details.&lt;br&gt;&lt;br&gt;Under Action click the Printer Icon to print the work order. Click the mMagnifying Glass to view the work order.</workorder_today_work_orders_block_help_content>
-        
+       
         // validators
                
         

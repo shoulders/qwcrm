@@ -41,7 +41,7 @@
                 <a href="?page=workorder:closed&amp;page_title={$translate_menu_closed_work_orders}"><img src="{$theme_images_dir}icons/close.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_closed} <b><font color="RED">{if $closed > 0 } ({$closed}){/if} {if $closed < 1 }{/if} </font></b></a>
                 {if $wo_id >= "1"}
                     {if $status2.WORK_ORDER_STATUS == "10" }
-                        <a href="?page=workorder:close&amp;wo_id={$wo_id}&amp;page_title={$translate_menu_close}"><img src="{$theme_images_dir}icons/close.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_close}</a>
+                        <a href="?page=workorder:resolution&amp;wo_id={$wo_id}&amp;page_title={$translate_menu_close}"><img src="{$theme_images_dir}icons/close.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_close}</a>
                         <a href="?page=workorder:new_note&amp;wo_id={$wo_id}&amp;page_title={$translate_menu_new_note}"><img src="{$theme_images_dir}icons/note.png" alt="" border="0" height="14" width="14" /> {$translate_menu_new_note}</a>
                     {/if}
                     <a href="?page=workorder:print&amp;wo_id={$wo_id}&amp;page_title={$translate_menu_print_wo}&amp;escape=1" target="_blank"><img src="{$theme_images_dir}icons/print.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_print_wo}</a>

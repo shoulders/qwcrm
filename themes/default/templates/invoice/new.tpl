@@ -376,7 +376,7 @@
                                             <button type="button" name="{$translate_invoice_delete}" OnClick=location.href='?page=invoice:delete&amp;customer_id={$invoice.CUSTOMER_ID}&amp;invoice_id={$invoice.INVOICE_ID}&amp;page_title=Deleting&nbsp;Invoice&nbsp;-{$invoice.INVOICE_ID}'>{$translate_invoice_delete}</button>
                          {/if}
                                                {else}
-                                            <button type="button" name="Close Work Order" OnClick=location.href='?page=workorder:close&amp;wo_id={$invoice.WORKORDER_ID}&amp;page_title=Closing%20Work%20Order{$invoice.WORKORDER_ID}'>{$translate_invoice_close_wo}</button>
+                                            <button type="button" name="Close Work Order" OnClick=location.href='?page=workorder:resolution&amp;wo_id={$invoice.WORKORDER_ID}&amp;page_title=Closing%20Work%20Order{$invoice.WORKORDER_ID}'>{$translate_invoice_close_wo}</button>
                                             {$translate_invoice_msg}
                                          {/if}
 

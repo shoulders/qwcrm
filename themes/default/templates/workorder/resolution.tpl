@@ -1,4 +1,4 @@
-<!-- close.tpl - Work Order Close/Resolution Page -->
+<!-- workorder:details - Work Order Close/Resolution Page -->
 <script language="javascript" type="text/javascript" src="includes/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
 {literal}
 <script language="javascript" type="text/javascript">
@@ -37,11 +37,11 @@
                             <tr>
                                 <td width="100%" valign="top" >
                                     <!-- Content Here -->
-                                    <form  action="index.php?page=workorder:close" method="POST" name="close_work_order" id="close_work_order">
+                                    <form  action="index.php?page=workorder:resolution" method="POST" name="close_work_order" id="close_work_order">
                                         <b>{$translate_workorder_resolution}</b><br>
                                         <textarea class="olotd4" rows="15" cols="70" mce_editable="true" name="resolution">{$close}</textarea>
                                         <br>
-                                        <input type="hidden" name="page" value="workorder:close">
+                                        <input type="hidden" name="page" value="workorder:resolution">
                                         <input type="hidden" name="create_by" value="{$display_login}">
                                         <input type="hidden" name="wo_id" value="{$wo_id}">
                                         <input type="submit" name="submitchangesonly" value="{$translate_workorder_submit_changes_only}">
