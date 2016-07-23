@@ -37,8 +37,8 @@
                             <tr>
                                 <td width="100%" valign="top" >
                                     <!-- Work Order Notes -->                                    
-                                    <form  action="index.php?page=workorder:note_new" method="POST" name="new_workorder_note" id="new_workorder_note">
-                                        <input type="hidden" name="page" value="workorder:note_new">
+                                    <form  action="index.php?page=workorder:details_new_note" method="POST" name="new_workorder_note" id="new_workorder_note">
+                                        <input type="hidden" name="page" value="workorder:details_new_note">
                                         <input type="hidden" name="wo_id" value="{$wo_id}">
                                         <table class="olotable" width="100%" border="0" summary="Work order display">
                                             <tr>
