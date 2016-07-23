@@ -1,4 +1,4 @@
-<!-- status_new.tpl -->
+<!-- status.tpl -->
 <table width="100%" border="0" cellpadding="20" cellspacing="0">
     <tr>
         <td><!-- Begin Page -->

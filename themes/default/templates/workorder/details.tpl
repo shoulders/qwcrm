@@ -71,7 +71,9 @@
                                                             <!-- Display Work order -->
                                                             {include file="workorder/blocks/details_header_block.tpl"}
                                                             <br>
+                                                            <!-- Display Description -->
                                                             {include file="workorder/blocks/details_description_block.tpl"}
+                                                            <br>
                                                             <!-- Display Comment -->
                                                             {include file="workorder/blocks/details_comments_block.tpl"}
                                                             <br>
