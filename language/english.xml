@@ -115,6 +115,7 @@
         <menu_open_work_orders>Open Work Orders</menu_open_work_orders>
         <menu_closed_work_orders>Closed Work Orders</menu_closed_work_orders>
         <menu_new_note>New Note</menu_new_note>
+        <menu_status>Status</menu_status>
         <menu_recieved_parts>Received Parts</menu_recieved_parts>
         <menu_order_parts>Order Parts</menu_order_parts>
         <menu_close_work_order>Close Work Order ID</menu_close_work_order>
@@ -1123,7 +1124,7 @@
         <workorder_tracking>Tracking</workorder_tracking>
         <workorder_status>Status</workorder_status>
         <workorder_get_tracking>Get Tracking</workorder_get_tracking>
-        <workorder_no_parts_on_order>No Parts On Order</workorder__no_parts_on_order>
+        <workorder_no_parts_on_order>No Parts On Order</workorder_no_parts_on_order>
         
         // - edit description
         <workorder_edit_scope>Edit Scope</workorder_edit_scope>
@@ -1145,7 +1146,8 @@
        
         // validators
                
-        
+        // Status Page
+      
         
         //- Navigation
         <workorder_nav_new>Create New WO</workorder_nav_new>

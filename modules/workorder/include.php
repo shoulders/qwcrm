@@ -202,15 +202,15 @@ $work_order_comments_string = stripslashes($work_order_comments_string);
 
 
     $sql = "INSERT INTO ".PRFX."TABLE_WORK_ORDER  SET 
-            CUSTOMER_ID            =".$db->qstr($VAR["customer_ID"]            ).",
-            WORK_ORDER_OPEN_DATE        =".$db->qstr(time()                         ).",
-            WORK_ORDER_STATUS        =".$db->qstr(10                             ).",
-            WORK_ORDER_CURRENT_STATUS    =".$db->qstr(1                              ).",
-            WORK_ORDER_CREATE_BY        =".$db->qstr($VAR["created_by"]             ).",
-            WORK_ORDER_SCOPE        =".$db->qstr($VAR["scope"]                  ).",
-            WORK_ORDER_DESCRIPTION        =".$db->qstr($work_order_description_string ).",
-            LAST_ACTIVE            =".$db->qstr(time()                         ).",
-            WORK_ORDER_COMMENT        =".$db->qstr($work_order_comments_string    );
+            CUSTOMER_ID                                 =".$db->qstr($VAR["customer_ID"]            ).",
+            WORK_ORDER_OPEN_DATE                        =".$db->qstr(time()                         ).",
+            WORK_ORDER_STATUS                           =".$db->qstr(10                             ).",
+            WORK_ORDER_CURRENT_STATUS                   =".$db->qstr(1                              ).",
+            WORK_ORDER_CREATE_BY                        =".$db->qstr($VAR["created_by"]             ).",
+            WORK_ORDER_SCOPE                            =".$db->qstr($VAR["scope"]                  ).",
+            WORK_ORDER_DESCRIPTION                      =".$db->qstr($work_order_description_string ).",
+            LAST_ACTIVE                                 =".$db->qstr(time()                         ).",
+            WORK_ORDER_COMMENT                          =".$db->qstr($work_order_comments_string    );
        
     if(!$result = $db->Execute($sql)) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
@@ -227,15 +227,17 @@ $work_order_comments_string = stripslashes($work_order_comments_string);
         if(!empty($VAR['SCHEDULE_notes'])){
             insert_new_note($db,$VAR);
         }
-                
+        
+        /* This is a workaround to pass the variables outside of the function
         $smarty->assign('wo_id', $wo_id);
         $smarty->assign('customer_id', $customer_id);
-        $smarty->display("workorder/reload_current_workorder.js");
-    
+        $smarty->display("workorder/reload_current_workorder.js");*/
+        
+        return $VAR;
 }
 
 #############################################################
-# Insert Status    note                                        #
+# Insert Status    note                                     #
 #############################################################
 
 function insert_new_status($db,$VAR){

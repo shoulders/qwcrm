@@ -55,7 +55,7 @@
                                                 {$form.javascript}
                                                 <!-- New Work Order Form -->
                                                 {literal}
-                                                <form method="POST"  action="index.php?page=workorder:new" name="new_workorder" id="new_workorder" onsubmit="try { var myValidator = validate_new_workorder; } catch(e) { return true; } return myValidator(this);">
+                                                <form method="POST" action="index.php?page=workorder:new" name="new_workorder" id="new_workorder" onsubmit="try { var myValidator = validate_new_workorder; } catch(e) { return true; } return myValidator(this);">
                                                 {/literal}
                                                     <input type="hidden" name="customer_ID" value="{$customer_details[i].CUSTOMER_ID}">
                                                     <input type="hidden" name="page" value="workorder:new">

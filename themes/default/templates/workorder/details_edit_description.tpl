@@ -37,7 +37,7 @@
                             <tr>
                                 <td width="100%" valign="top" >
                                     <!-- Content Here -->
-                                    <form  action="?page=workorder:details_edit_description" method="POST">
+                                    <form action="?page=workorder:details_edit_description" method="POST">
                                         <b>{$translate_workorder_edit_scope}</b></br>
                                         <input type="text" class="olotd4" size="20" name="scope" value="{$scope}">
                                         <br>

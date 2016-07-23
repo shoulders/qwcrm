@@ -9,7 +9,7 @@ if(empty($VAR['wo_id'])){
 if(isset($VAR['submit'])){
 
     if (!update_status($db,$VAR)){
-        force_page('core', 'error&error_msg=Falied to update work order status');
+        force_page('core', 'error&error_msg=Failed to update work order status');
         exit;
     } else {
         force_page('workorder', 'details&wo_id='.$VAR['wo_id'].'&page_title=Work%20Order%20ID%20'.$VAR['wo_id']);
