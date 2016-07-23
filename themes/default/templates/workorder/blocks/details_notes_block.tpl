@@ -9,7 +9,7 @@
                         <table cellpadding="2" cellspacing="2" border="0">
                             <tr> 
                                 <td width="33%" align="right" >
-                                    <a href="?page=workorder:new_note&wo_id={$single_workorder_array[i].WORK_ORDER_ID}&page_title={$translate_workorder_new_note_title}">
+                                    <a href="?page=workorder:note_new&wo_id={$single_workorder_array[i].WORK_ORDER_ID}&page_title={$translate_workorder_new_note_title}">
                                         <img src="{$theme_images_dir}icons/16x16/small_new_work_order.gif" border="0"
                                              onMouseOver="ddrivetip('{$translate_workorder_new_note}');"
                                              onMouseOut="hideddrivetip();">

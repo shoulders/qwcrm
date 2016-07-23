@@ -1,5 +1,5 @@
 <!-- details_status_block.tpl - Display Work Order History (Work Orders - Details Page) -->
-<table class="olotable" width="100%" cellpadding="3" cellspacing="0" >
+<table class="olotable" width="100%" cellpadding="3" cellspacing="0" >fffffffffcock
     <tr>
         <td class="olohead">
             <table width="100%" cellpadding="0" cellspacing="0" border="0">

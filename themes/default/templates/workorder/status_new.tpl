@@ -1,4 +1,4 @@
-<!-- new_status.tpl -->
+<!-- status_new.tpl -->
 <table width="100%" border="0" cellpadding="20" cellspacing="0">
     <tr>
         <td><!-- Begin Page -->
@@ -15,8 +15,8 @@
                             <tr>
                                 <td width="100%" valign="top" >
                                     <!-- Content Here -->
-                                    <form  action="index.php?page=workorder:new_status" method="POST" name="new_workorder_status" id="new_workorder_status">
-                                        <input type="hidden" name="page" value="workorder:new_status">
+                                    <form  action="index.php?page=workorder:status_new" method="POST" name="new_workorder_status" id="new_workorder_status">
+                                        <input type="hidden" name="page" value="workorder:status_new">
                                         <input type="hidden" name="create_by" value="{$display_login}">
                                         <input type="hidden" name="wo_id" value="{$wo_id}">
                                         <p>&nbsp;</p>
