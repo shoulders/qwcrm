@@ -69,14 +69,14 @@
                                                         <td width="100%" valign="top" >
                                                             <!-- Inside Content -->
                                                             <!-- Display Work order -->
-                                                            {include file="workorder/work_order_header_block.tpl"}
+                                                            {include file="workorder/blocks/details_header_block.tpl"}
                                                             <br>
-                                                            {include file="workorder/work_order_description.tpl"}
+                                                            {include file="workorder/blocks/details_description_block.tpl"}
                                                             <!-- Display Comment -->
-                                                            {include file="workorder/work_order_comments.tpl"}
+                                                            {include file="workorder/blocks/details_comments_block.tpl"}
                                                             <br>
                                                             <!-- Display Resolution -->
-                                                            {include file="workorder/resolution.tpl"}                                                            
+                                                            {include file="workorder/blocks/details_resolution_block.tpl"}                                                            
                                                             <br>
                                                         </td>
                                                     </tr>
@@ -110,7 +110,7 @@
                                                     <tr>
                                                         <td width="700" valign="top" >
                                                             <!-- Inside Content -->
-                                                            {include file="workorder/work_order_customer_contact.tpl"}
+                                                            {include file="workorder/blocks/details_customer_contact_block.tpl"}
                                                             <br>
                                                         </td>
                                                     </tr>
@@ -145,7 +145,7 @@
                                                         <td width="100%" valign="top" >
                                                             <!-- Inside Content -->
                                                             <!-- Display schedule -->
-                                                            {include file="workorder/work_order_schedule.tpl"}
+                                                            {include file="workorder/blocks/details_schedule_block.tpl"}
                                                             <br>
                                                         </td>
                                                     </tr>
@@ -180,7 +180,7 @@
                                                         <td width="100%" valign="top" >
                                                             <!-- Inside Content -->
                                                             <!-- Work Order Notes -->
-                                                            {include file="workorder/work_order_notes.tpl"}
+                                                            {include file="workorder/blocks/details_notes_block.tpl"}
                                                             <br>
                                                         </td>
                                                     </tr>
@@ -218,7 +218,7 @@
                                                         <td width="100%" valign="top" >
                                                             <!-- Inside Content -->
                                                             <!-- Work Order Status -->
-                                                            {include file="workorder/work_order_status.tpl"}
+                                                            {include file="workorder/blocks/details_status_block.tpl"}
                                                             <br>
                                                         </td>
                                                     </tr>

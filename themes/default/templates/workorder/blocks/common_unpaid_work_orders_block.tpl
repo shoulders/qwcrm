@@ -1,4 +1,4 @@
-<!-- payment_work_order_block.tpl - Display Unpaid Word Orders (Work Orders - Open Page) -->
+<!-- common_unpaid_work_orders.tpl - Display Unpaid Word Orders (Work Orders - Open Page) -->
 <b>{$translate_workorder_unpaid_title}</b>
 <table class="olotable" width="100%" border="0" cellpadding="4" cellspacing="0">
     <tr>

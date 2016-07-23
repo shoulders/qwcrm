@@ -1,4 +1,4 @@
-<!-- awaiting_work_order_block.tpl - Display Awaiting Parts (Work Orders - Open Page) -->
+<!-- common_work_orders_awaiting_parts_block.tpl - Display Awaiting Parts (Work Orders - Open Page) -->
 <b>{$translate_workorder_waiting_parts_title}</b>
 <table class="olotable" width="100%" border="0" cellpadding="4" cellspacing="0">
     <tr>

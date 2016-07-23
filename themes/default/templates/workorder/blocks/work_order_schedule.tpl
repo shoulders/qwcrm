@@ -1,4 +1,4 @@
-<!-- work_order_schedule.tpl - Display Work Order Schedule (Work Orders - Details Page) -->
+<!-- details_schedule_block.tpl - Display Work Order Schedule (Work Orders - Details Page) -->
 <table class="olotable" width="100%" border="0" cellpadding="0" cellspacing="0">
     <tr>
         <td class="olohead">
