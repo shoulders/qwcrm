@@ -1,4 +1,4 @@
-<!-- view_closed.tpl - Closed Work Orders Page -->
+<!-- closed.tpl - Closed Work Orders Page -->
 {literal}
 <script language="javascript" type="text/javascript">
     function go()

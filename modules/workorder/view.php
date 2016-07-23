@@ -70,7 +70,7 @@ if (isset($VAR['submit'])) {
             //-->
         </script>");
   } ELSE {
-$smarty->display('workorder'.SEP.'view.tpl');
+$smarty->display('workorder'.SEP.'details.tpl');
   }
 
 

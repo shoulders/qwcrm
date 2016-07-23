@@ -10,7 +10,7 @@ if(!isset($VAR["page_no"])){
 
 $work_order = display_closed($db,$page_no,$smarty);
 $smarty->assign('work_order', $work_order);
-$smarty->display('workorder'.SEP.'view_closed.tpl');
+$smarty->display('workorder'.SEP.'closed.tpl');
 
 function display_closed($db,$page_no,$smarty) {
     
