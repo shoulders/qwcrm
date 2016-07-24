@@ -88,7 +88,7 @@ window.open({/literal}$src{literal}, menubar=0)
                                                                     <td class="menutd" colspan="4"></td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td class="menutd"> <b>{$translate_customer_address}</b> <a style="color:red" href="{$src}" target="_blank" ><img src="{$theme_images_dir}icons/map.png" alt="" border="0" height="14" width="14" />[{$translate_get_directions}]</a></td>
+                                                                    <td class="menutd"> <b>{$translate_customer_address}</b> <a style="color:red" href="{$src}" target="_blank" ><img src="{$theme_images_dir}icons/map.png" alt="" border="0" height="14" width="14" />[{$translate_customer_get_directions}]</a></td>
                                                                     <td class="menutd"></td>
                                                                     <td class="menutd"><b>{$translate_customer_home}</b></td>
                                                                     <td class="menutd">{$customer_details[i].CUSTOMER_PHONE}</td>

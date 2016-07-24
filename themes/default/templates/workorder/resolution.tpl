@@ -26,10 +26,16 @@
         <td><!-- Begin Page -->
             <table width="700" cellpadding="5" cellspacing="0" border="0" >
                 <tr>
-                    <td class="menuhead2" width="100%">{$translate_work_order_close_title} {$wo_id}</td>
+                    <td class="menuhead2" width="80%">{$translate_workorder_details_edit_resolution_title}</td>
+                    <td class="menuhead2" width="20%" align="right" valign="middle">
+                        <a><img src="{$theme_images_dir}icons/16x16/help.gif" border="0" 
+                            onMouseOver="ddrivetip('<b>{$translate_workorder_details_edit_resolution_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_workorder_details_edit_resolution_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" 
+                            onMouseOut="hideddrivetip();">
+                        </a>
+                    </td>
                 </tr>
                 <tr>
-                    <td class="menutd2">
+                    <td class="menutd2" colspan="2">
                         {if $error_msg != ""}
                             {include file="core/error.tpl"}
                         {/if}
@@ -38,15 +44,15 @@
                                 <td width="100%" valign="top" >
                                     <!-- Content Here -->
                                     <form  action="index.php?page=workorder:resolution" method="POST" name="close_work_order" id="close_work_order">
-                                        <b>{$translate_workorder_resolution}</b><br>
+                                        <b>{$translate_workorder_details_resolution_title}</b><br>
                                         <textarea class="olotd4" rows="15" cols="70" mce_editable="true" name="resolution">{$close}</textarea>
                                         <br>
                                         <input type="hidden" name="page" value="workorder:resolution">
                                         <input type="hidden" name="create_by" value="{$display_login}">
                                         <input type="hidden" name="wo_id" value="{$wo_id}">
-                                        <input type="submit" name="submitchangesonly" value="{$translate_workorder_submit_changes_only}">
-                                        <input type="submit" name="closewithoutinvoice" value="{$translate_workorder_close_without_invoice}">
-                                        <input type="submit" name="closewithinvoice" value="{$translate_workorder_close_with_invoice}">
+                                        <input type="submit" name="submitchangesonly" value="{$translate_workorder_details_edit_resolution_submit_changes_only}">
+                                        <input type="submit" name="closewithoutinvoice" value="{$translate_workorder_details_edit_resolution_close_without_invoice}">
+                                        <input type="submit" name="closewithinvoice" value="{$translate_workorder_details_edit_resolution_close_with_invoice}">
                                     </form>
                                     <br>
                                 </td>

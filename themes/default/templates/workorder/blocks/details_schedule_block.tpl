@@ -34,7 +34,7 @@
                             <table class="olotablered" width="100%" border="0" cellpadding="5" cellspacing="0">
                                 <tr>
                                     <td>
-                                        <span class="error_font">{$translate_workorder_warning}: </span> {$translate_workorder_msg_5}
+                                        <span class="error_font">{$translate_workorder_warning}: </span> {$translate_workorder_msg_no_schedule_has_been_set}
                                     </td>
                                 </tr>
                             </table>    

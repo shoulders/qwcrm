@@ -42,7 +42,7 @@
                 </tr>
                 {else}
                     <tr>
-                        <td colspan="7" class="error">{$translate_workorder_msg_1}</td>
+                        <td colspan="7" class="error">{$translate_workorder_msg_there_are_no_new_work_orders}</td>
                     </tr>
                 {/if}
                 {/foreach}

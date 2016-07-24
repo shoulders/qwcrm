@@ -44,7 +44,7 @@
                         <table width="700" cellpadding="5" cellspacing="0" border="0" >
                             <tr>
                                 {section name=i loop=$customer_details}
-                                <td class="menuhead2" width="80%">{$translate_workorder_new_title} for {$customer_details[i].CUSTOMER_DISPLAY_NAME}</td>
+                                <td class="menuhead2" width="80%">{$translate_workorder_new} for {$customer_details[i].CUSTOMER_DISPLAY_NAME}</td>
                                 <td class="menuhead2" width="10%" align="right">
                             </tr>
                             <tr>
@@ -85,7 +85,7 @@
                                                     <!-- Display Work Order Discription -->
                                                     <table class="olotable" width="100%" border="0" summary="Work order display">
                                                         <tr>
-                                                            <td class="olohead">{$translate_workorder_description_title}</td>
+                                                            <td class="olohead">{$translate_workorder_details_description_title}</td>
                                                         </tr>
                                                         <tr>
                                                             <td class="olotd">
@@ -100,7 +100,7 @@
                                                     <br>
                                                     <table class="olotable" width="100%" border="0" summary="Work order display">
                                                         <tr>
-                                                            <td class="olohead">{$translate_workorder_comments_title}</td>
+                                                            <td class="olohead">{$translate_workorder_details_comments_title}</td>
                                                         </tr>
                                                         <tr>
                                                             <td class="olotd">
@@ -171,18 +171,18 @@
                             <tr>
                                 <td class="menutd"><b>{$translate_workorder_address}</b></td>
                                 <td class="menutd"></td>
-                                <td class="menutd"><b>{$translate_workorder_phone_1}</b></td>
+                                <td class="menutd"><b>{$translate_workorder_primary_phone}</b></td>
                                 <td class="menutd">{$customer_details[i].CUSTOMER_PHONE}</td>
                             </tr>
                             <tr>
                                 <td class="menutd" colspan="2">{$customer_details[i].CUSTOMER_ADDRESS|nl2br}</td>
-                                <td class="menutd"><b>{$translate_workorder_phone_2}</b></td>
+                                <td class="menutd"><b>{$translate_workorder_fax}</b></td>
                                 <td class="menutd"> {$customer_details[i].CUSTOMER_WORK_PHONE}</td>
                             </tr>
                             <tr>
                                 <td class="menutd"> {$customer_details[i].CUSTOMER_CITY},</td>
                                 <td class="menutd">{$customer_details[i].CUSTOMER_STATE} {$customer_details[i].CUSTOMER_ZIP}</td>
-                                <td class="menutd"><b>{$translate_workorder_phone_3}</b></td>
+                                <td class="menutd"><b>{$translate_workorder_mobile}</b></td>
                                 <td class="menutd"> {$customer_details[i].CUSTOMER_MOBILE_PHONE}</td>
                             </tr>
                             <tr>

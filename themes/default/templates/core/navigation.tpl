@@ -11,7 +11,7 @@
                 {if $y1 > 0}
                     <a href="index.php?page=schedule:main&amp;y={$y1}&amp;m={$m1}&amp;d={$d1}&amp;page_title=schedule"><img src="{$theme_images_dir}icons/16x16/Calendar.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_calendar}</a>
                 {/if}
-                <!--<a href="modules/schedule/sync.php">Cal Sync</a>-->
+                <a href="modules/schedule/sync.php">Cal Sync</a>
                 <a href="index.php?action=logout"><img src="{$theme_images_dir}icons/logout.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_log_out}</a>
             </div>
             
@@ -32,7 +32,7 @@
             <div>
                 <span>{$translate_menu_work_orders}</span>
                 {if $cust_id > 0 }
-                    <a href="?page=workorder:new&amp;customer_id={$cust_id}&amp;page_title={$translate_workorder_new_title}"><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" height="14" width="14" /> {$translate_workorder_nav_new}</a>
+                    <a href="?page=workorder:new&amp;customer_id={$cust_id}&amp;page_title={$translate_workorder_new_title}"><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_create_new_wo}</a>
                 {/if}
                 {if $unassigned > 0 }
                     <a href="?page=workorder:open&amp;page_title={$translate_menu_work_orders}"><img src="{$theme_images_dir}icons/warning.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_unassigned} <b><font color="RED">{if $unassigned > 0} ({$unassigned}){/if}{if $unassigned < 1}{/if}</font></b></a>
@@ -45,7 +45,7 @@
                         <a href="?page=workorder:details_new_note&amp;wo_id={$wo_id}&amp;page_title={$translate_menu_new_note}"><img src="{$theme_images_dir}icons/note.png" alt="" border="0" height="14" width="14" /> {$translate_menu_new_note}</a>
                     {/if}
                     <a href="?page=workorder:print&amp;wo_id={$wo_id}&amp;page_title={$translate_menu_print_wo}&amp;escape=1" target="_blank"><img src="{$theme_images_dir}icons/print.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_print_wo}</a>
-                    <a href="?page=workorder:status&amp;wo_id={$wo_id}&amp;"><img src="{$theme_images_dir}icons/status.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_status}</a>
+                    <a href="?page=workorder:status&amp;wo_id={$wo_id}"><img src="{$theme_images_dir}icons/status.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_status}</a>
                 {/if}
                 {if $cust_id > 0 }
                     <a href="?page=invoice:new&amp;invoice_type=invoice-only&amp;wo_id=0&amp;customer_id={$cust_id}&amp;page_title={$translate_menu_invoice_only}"><img src="{$theme_images_dir}icons/invoice.png" alt="" border="0" height="14" width="14" /> {$translate_menu_invoice_only}</a>

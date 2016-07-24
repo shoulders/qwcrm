@@ -4,14 +4,14 @@
         <td class="olohead">
             <table width="100%" cellpadding="0" cellspacing="0" border="0">
                 <tr>
-                    <td class="menuhead2" width="80%">&nbsp;{$translate_workorder_customer_contact_title}</td>
+                    <td class="menuhead2" width="80%">&nbsp;{$translate_workorder_details_customer_contact_title}</td>
                     <td class="menuhead2" width="20%" align="right">
                         <table cellpadding="2" cellspacing="2" border="0">
                             <tr>
                                 <td width="33%" align="right">
                                     <a href="?page=customer:edit&customer_id={$single_workorder_array[i].CUSTOMER_ID}&page_title={$single_workorder_array[i].CUSTOMER_DISPLAY_NAME}">
                                         <img src="{$theme_images_dir}icons/16x16/small_edit.gif" border="0"
-                                            onMouseOver="ddrivetip('{$translate_workorder_edit_customer}');"
+                                            onMouseOver="ddrivetip('{$translate_workorder_details_edit_customer_contact_title}');"
                                             onMouseOut="hideddrivetip();">
                                     </a>
                                 </td>
@@ -49,7 +49,7 @@
             <tr>
                 <td class="menutd"><b>{$translate_workorder_address}</b></td>
                 <td class="menutd"></td>
-                <td class="menutd"><b>{$translate_workorder_phone_1}</b></td>
+                <td class="menutd"><b>{$translate_workorder_primary_phone}</b></td>
                 <td class="menutd">{$single_workorder_array[i].CUSTOMER_PHONE}</td>
             </tr>
             <tr>
@@ -60,13 +60,13 @@
                     {$single_workorder_array[i].CUSTOMER_STATE}<br>
                     {$single_workorder_array[i].CUSTOMER_ZIP}
                 </td>
-                <td class="menutd"><b>{$translate_workorder_phone_2}</b></td>
+                <td class="menutd"><b>{$translate_workorder_fax}</b></td>
                 <td class="menutd">{$single_workorder_array[i].CUSTOMER_WORK_PHONE}</td>
             </tr>
             <tr>
                 <td class="menutd"></td>
                 <td class="menutd"></td>
-                <td class="menutd"><b>{$translate_workorder_phone_3}</b></td>
+                <td class="menutd"><b>{$translate_workorder_mobile}</b></td>
                 <td class="menutd">{$single_workorder_array[i].CUSTOMER_MOBILE_PHONE}</td>
             </tr>
             <tr class="row2">

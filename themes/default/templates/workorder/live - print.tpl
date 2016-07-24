@@ -48,7 +48,7 @@
         <!-- middle column -->
         <td valign="top" align="center" width="80%">
             <font size="+3">{$translate_workorder_print_technician_copy}</font><br>
-            {$translate_workorder_print_work_order_id}# {$single_workorder_array[i].WORK_ORDER_ID}
+            {$translate_workorder_print_work_order_id} #{$single_workorder_array[i].WORK_ORDER_ID}
         </td>
     </tr>
     <tr>
@@ -171,7 +171,7 @@
                         <b>{$translate_workorder_print_resolution_title}:</b><br>
                         {section name=r loop=$work_order_res}
                             {if $work_order_res[r].EMPLOYEE_DISPLAY_NAME != ''}
-                                <b>{$translate_workorder_print_closed_by}:</b> {$work_order_res[r].EMPLOYEE_DISPLAY_NAME} <b>{$translate_workorder_date}:</b>  {$work_order_res[r].WORK_ORDER_CLOSE_DATE|date_format:"$date_format"}
+                                <b>{$translate_workorder_closed_by}:</b> {$work_order_res[r].EMPLOYEE_DISPLAY_NAME} <b>{$translate_workorder_date}:</b>  {$work_order_res[r].WORK_ORDER_CLOSE_DATE|date_format:"$date_format"}
                                 {$work_order_res[r].WORK_ORDER_RESOLUTION}
                             {/if}
                         {/section}
@@ -225,7 +225,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td><b>{$translate_workorder_last_changed}:</b></td>
+                    <td><b>{$translate_workorder_print_last_changed}:</b></td>
                     <td>{$single_workorder_array[i].LAST_ACTIVE|date_format:"$date_format"}</td>
                 </tr>
             </table>
@@ -364,7 +364,7 @@
             <!-- middle column -->
             <td valign="top" align="center">
                 <font size="+3">{$translate_workorder_print_customer_workorder_slip}</font><br>
-                {$translate_workorder_print_work_order_id}# {$single_workorder_array[i].WORK_ORDER_ID}
+                {$translate_workorder_print_work_order_id} #{$single_workorder_array[i].WORK_ORDER_ID}
             </td>
         </tr>
         <tr>

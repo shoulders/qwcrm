@@ -6,7 +6,7 @@
         <td class="olohead" align="center">{$translate_workorder_state}</td>
         <td class="olohead" align="center">{$translate_workorder_scope}</td>                
         <td class="olohead" align="center">{$translate_workorder_status}</td>
-        <td class="olohead" align="center">{$translate_workorder_assign}</td>
+        <td class="olohead" align="center">{$translateworkorder_assigned_to}</td>
         <td class="olohead" align="center">{$translate_workorder_last_change}</td>
         {if $single_workorder_array[i].WORK_ORDER_CURRENT_STATUS == "1" || $single_workorder_array[i].WORK_ORDER_CURRENT_STATUS == "10"}
         <td class="olohead" align="center">{$translate_workorder_delete}</td>
@@ -51,7 +51,7 @@
                 </form>
             {else}
             <img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0"
-                 onMouseOver="ddrivetip('<center><b>{$translate_workorder_contact}</b></center><hr><b>{$translate_workorder_work}: </b>{$single_workorder_array[i].EMPLOYEE_WORK_PHONE}<br><b>{$translate_workorder_mobile}: </b>{$single_workorder_array[i].EMPLOYEE_MOBILE_PHONE}<br><b>{$translate_workorder_home}: </b>{$single_workorder_array[i].EMPLOYEE_HOME_PHONE}');"
+                 onMouseOver="ddrivetip('<center><b>{$translate_workorder_contact}</b></center><hr><b>{$translate_workorder_fax}: </b>{$single_workorder_array[i].EMPLOYEE_WORK_PHONE}<br><b>{$translate_workorder_mobile}: </b>{$single_workorder_array[i].EMPLOYEE_MOBILE_PHONE}<br><b>{$translate_workorder_home}: </b>{$single_workorder_array[i].EMPLOYEE_HOME_PHONE}');"
                  onMouseOut="hideddrivetip();">
             <a class="link1" href="?page=employees:employee_details&employee_id={$single_workorder_array[i].EMPLOYEE_ID}&page_title={$single_workorder_array[i].EMPLOYEE_DISPLAY_NAME}">{$single_workorder_array[i].EMPLOYEE_DISPLAY_NAME}</a>
             {/if}            

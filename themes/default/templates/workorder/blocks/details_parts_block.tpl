@@ -54,7 +54,7 @@
                             </tr>
                         </table>
                         {sectionelse}
-                            {$translate_workorder_no_parts_on_order}
+                            {$translate_workorder_msg_no_parts_on_order}
                         {/section}
                     </td>
                 </tr>

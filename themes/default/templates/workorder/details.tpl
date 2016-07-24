@@ -27,11 +27,12 @@
         <td>
             <div id="tabs_container">
                 <ul class="tabs">
-                    <li class="active"><a href="#" rel="#tab_1_contents" class="tab"><img src="{$theme_images_dir}icons/workorders.gif" alt="" border="0" height="14" width="14" />&nbsp;{$translate_workorder_details}</a></li>
-                    <li><a href="#" rel="#tab_2_contents" class="tab"><img src="{$theme_images_dir}icons/customers.gif" alt="" border="0" height="14" width="14" />&nbsp;{$translate_workorder_customer_contact_title}</a></li>
+                    <li class="active">
+                        <a href="#" rel="#tab_1_contents" class="tab"><img src="{$theme_images_dir}icons/workorders.gif" alt="" border="0" height="14" width="14" />&nbsp;{$translate_workorder_details_title}</a></li>
+                    <li><a href="#" rel="#tab_2_contents" class="tab"><img src="{$theme_images_dir}icons/customers.gif" alt="" border="0" height="14" width="14" />&nbsp;{$translate_workorder_details_customer_contact_title}</a></li>
                     <li><a href="#" rel="#tab_3_contents" class="tab"><img src="{$theme_images_dir}icons/16x16/Calendar.gif" alt="" border="0" height="14" width="14" />&nbsp;{$translate_workorder_schedule_title}</a></li>
                     <li><a href="#" rel="#tab_4_contents" class="tab"><img src="{$theme_images_dir}icons/note.png" alt="" border="0" height="14" width="14" /> &nbsp;{$translate_workorder_notes}</a></li>
-                    {*<li><a href="#" rel="#tab_5_contents" class="tab"><img src="{$theme_images_dir}icons/status.gif" alt="" border="0" height="14" width="14" />&nbsp;{$translate_workorder_parts}</a></li>*}
+                    <li><a href="#" rel="#tab_5_contents" class="tab"><img src="{$theme_images_dir}icons/status.gif" alt="" border="0" height="14" width="14" />&nbsp;{$translate_workorder_parts}</a></li>
                     <li><a href="#" rel="#tab_6_contents" class="tab"><img src="{$theme_images_dir}icons/clock.gif" alt="" border="0" height="14" width="14" />&nbsp;{$translate_workorder_history_title}</a></li>
                 </ul>
 
@@ -49,15 +50,16 @@
                                 <td><!-- Begin Page -->
                                     <table width="700" cellpadding="5" cellspacing="0" border="0" >
                                         <tr>
-                                            <td class="menuhead2" width="80%">&nbsp;{$translate_workorder_page_title} {$single_workorder_array[i].WORK_ORDER_ID}</td>
+                                            <td class="menuhead2" width="80%">&nbsp;{$translate_workorder_work_order_id} {$single_workorder_array[i].WORK_ORDER_ID}</td>
                                             <td class="menuhead2" width="20%" align="right" valign="middle">
                                                 <a href="index.php?page=workorder:print&amp;wo_id={$wo_id}&page_title=Print&escape=1" target="_blank">
                                                     <img src="{$theme_images_dir}icons/print.gif" alt="Print Works Order" border="0" height="14" width="14"
-                                                    onMouseOver="ddrivetip('{$translate_workorder_print_title}');"
+                                                    onMouseOver="ddrivetip('{$translate_workorder_print_work_order}');"
                                                     onMouseOut="hideddrivetip();" />
                                                 </a>
-                                                <a href="" target="new"><img src="{$theme_images_dir}icons/16x16/help.gif" border="0" alt=""
-                                                    onMouseOver="ddrivetip('<b>{$translate_workorder_view_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_workorder_view_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');"
+                                                <a href="" target="new">
+                                                    <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" alt=""
+                                                    onMouseOver="ddrivetip('<b>{$translate_workorder_details_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_workorder_details_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');"
                                                     onMouseOut="hideddrivetip();">
                                                 </a>
                                             </td>
@@ -98,10 +100,16 @@
                                 <td><!-- Begin Page -->
                                     <table width="700" cellpadding="5" cellspacing="0" border="0" >
                                         <tr>
-                                            <td class="menuhead2" width="80%">&nbsp;{$translate_workorder_page_title} {$single_workorder_array[i].WORK_ORDER_ID}</td>
+                                            <td class="menuhead2" width="80%">&nbsp;{$translate_workorder_work_order_id} {$single_workorder_array[i].WORK_ORDER_ID}</td>
                                             <td class="menuhead2" width="20%" align="right" valign="middle">
-                                                <a href="" target="new"><img src="{$theme_images_dir}icons/16x16/help.gif" border="0" alt=""
-                                                    onMouseOver="ddrivetip('<b>{$translate_workorder_view_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_workorder_view_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');"
+                                                <a href="index.php?page=workorder:print&amp;wo_id={$wo_id}&page_title=Print&escape=1" target="_blank">
+                                                    <img src="{$theme_images_dir}icons/print.gif" alt="Print Works Order" border="0" height="14" width="14"
+                                                    onMouseOver="ddrivetip('{$translate_workorder_print_work_order}');"
+                                                    onMouseOut="hideddrivetip();" />
+                                                </a>
+                                                <a href="" target="new">
+                                                    <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" alt=""
+                                                    onMouseOver="ddrivetip('<b>{$translate_workorder_details_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_workorder_details_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');"
                                                     onMouseOut="hideddrivetip();">
                                                 </a>
                                             </td>
@@ -112,6 +120,7 @@
                                                     <tr>
                                                         <td width="700" valign="top" >
                                                             <!-- Inside Content -->
+                                                            <!-- Display Customer Contact -->
                                                             {include file="workorder/blocks/details_customer_contact_block.tpl"}
                                                             <br>
                                                         </td>
@@ -132,10 +141,16 @@
                                 <td><!-- Begin Page -->
                                     <table width="700" cellpadding="5" cellspacing="0" border="0" >
                                         <tr>
-                                            <td class="menuhead2" width="80%">&nbsp;{$translate_workorder_page_title} {$single_workorder_array[i].WORK_ORDER_ID}</td>
+                                            <td class="menuhead2" width="80%">&nbsp;{$translate_workorder_work_order_id} {$single_workorder_array[i].WORK_ORDER_ID}</td>
                                             <td class="menuhead2" width="20%" align="right" valign="middle">
-                                                <a href="" target="new"><img src="{$theme_images_dir}icons/16x16/help.gif" border="0" alt=""
-                                                    onMouseOver="ddrivetip('<b>{$translate_workorder_view_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_workorder_view_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');"
+                                                <a href="index.php?page=workorder:print&amp;wo_id={$wo_id}&page_title=Print&escape=1" target="_blank">
+                                                    <img src="{$theme_images_dir}icons/print.gif" alt="Print Works Order" border="0" height="14" width="14"
+                                                    onMouseOver="ddrivetip('{$translate_workorder_print_work_order}');"
+                                                    onMouseOut="hideddrivetip();" />
+                                                </a>
+                                                <a href="" target="new">
+                                                    <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" alt=""
+                                                    onMouseOver="ddrivetip('<b>{$translate_workorder_details_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_workorder_details_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');"
                                                     onMouseOut="hideddrivetip();">
                                                 </a>
                                             </td>
@@ -146,7 +161,7 @@
                                                     <tr>
                                                         <td width="100%" valign="top" >
                                                             <!-- Inside Content -->
-                                                            <!-- Display schedule -->
+                                                            <!-- Display Schedule -->
                                                             {include file="workorder/blocks/details_schedule_block.tpl"}
                                                             <br>
                                                         </td>
@@ -167,10 +182,16 @@
                                 <td><!-- Begin Page -->
                                     <table width="700" cellpadding="5" cellspacing="0" border="0" >
                                         <tr>
-                                            <td class="menuhead2" width="80%">&nbsp;{$translate_workorder_page_title} {$single_workorder_array[i].WORK_ORDER_ID}</td>
+                                            <td class="menuhead2" width="80%">&nbsp;{$translate_workorder_work_order_id} {$single_workorder_array[i].WORK_ORDER_ID}</td>
                                             <td class="menuhead2" width="20%" align="right" valign="middle">
-                                                <a href="" target="new"><img src="{$theme_images_dir}icons/16x16/help.gif" border="0" alt=""
-                                                    onMouseOver="ddrivetip('<b>{$translate_workorder_view_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_workorder_view_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');"
+                                                <a href="index.php?page=workorder:print&amp;wo_id={$wo_id}&page_title=Print&escape=1" target="_blank">
+                                                    <img src="{$theme_images_dir}icons/print.gif" alt="Print Works Order" border="0" height="14" width="14"
+                                                    onMouseOver="ddrivetip('{$translate_workorder_print_work_order}');"
+                                                    onMouseOut="hideddrivetip();" />
+                                                </a>
+                                                <a href="" target="new">
+                                                    <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" alt=""
+                                                    onMouseOver="ddrivetip('<b>{$translate_workorder_details_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_workorder_details_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');"
                                                     onMouseOut="hideddrivetip();">
                                                 </a>
                                             </td>
@@ -181,7 +202,7 @@
                                                     <tr>
                                                         <td width="100%" valign="top" >
                                                             <!-- Inside Content -->
-                                                            <!-- Work Order Notes -->
+                                                            <!-- Display Work Order Notes -->
                                                             {include file="workorder/blocks/details_notes_block.tpl"}
                                                             <br>
                                                         </td>
@@ -196,19 +217,22 @@
                     </div>
 
                     <!-- Tab 5 Contents -->
-                    <!-- Parts Section -->
-                                                            
-                    <!-- Tab 6 Contents -->
-                    <div id="tab_6_contents" class="tab_contents">
+                    <div id="tab_5_contents" class="tab_contents">
                         <table width="100%" border="0" cellpadding="20" cellspacing="0">
                             <tr>
                                 <td><!-- Begin Page -->
                                     <table width="700" cellpadding="5" cellspacing="0" border="0" >
                                         <tr>
-                                            <td class="menuhead2" width="80%">&nbsp;{$translate_workorder_page_title} {$single_workorder_array[i].WORK_ORDER_ID}</td>
+                                            <td class="menuhead2" width="80%">&nbsp;{$translate_workorder_work_order_id} {$single_workorder_array[i].WORK_ORDER_ID}</td>
                                             <td class="menuhead2" width="20%" align="right" valign="middle">
-                                                <a href="" target="new"><img src="{$theme_images_dir}icons/16x16/help.gif" border="0" alt=""
-                                                    onMouseOver="ddrivetip('<b>{$translate_workorder_view_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_workorder_view_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');"
+                                                <a href="index.php?page=workorder:print&amp;wo_id={$wo_id}&page_title=Print&escape=1" target="_blank">
+                                                    <img src="{$theme_images_dir}icons/print.gif" alt="Print Works Order" border="0" height="14" width="14"
+                                                    onMouseOver="ddrivetip('{$translate_workorder_print_work_order}');"
+                                                    onMouseOut="hideddrivetip();" />
+                                                </a>
+                                                <a href="" target="new">
+                                                    <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" alt=""
+                                                    onMouseOver="ddrivetip('<b>{$translate_workorder_details_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_workorder_details_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');"
                                                     onMouseOut="hideddrivetip();">
                                                 </a>
                                             </td>
@@ -219,7 +243,48 @@
                                                     <tr>
                                                         <td width="100%" valign="top" >
                                                             <!-- Inside Content -->
-                                                            <!-- Work Order Status -->
+                                                            <!-- Dispaly Parts -->PARTS - FIX ME
+                                                            {include file="workorder/blocks/details_parts_block.tpl"}
+                                                            <br>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                                                            
+                    <!-- Tab 6 Contents -->
+                    <div id="tab_6_contents" class="tab_contents">
+                        <table width="100%" border="0" cellpadding="20" cellspacing="0">
+                            <tr>
+                                <td><!-- Begin Page -->
+                                    <table width="700" cellpadding="5" cellspacing="0" border="0" >
+                                        <tr>
+                                            <td class="menuhead2" width="80%">&nbsp;{$translate_workorder_work_order_id} {$single_workorder_array[i].WORK_ORDER_ID}</td>
+                                            <td class="menuhead2" width="20%" align="right" valign="middle">
+                                                <a href="index.php?page=workorder:print&amp;wo_id={$wo_id}&page_title=Print&escape=1" target="_blank">
+                                                    <img src="{$theme_images_dir}icons/print.gif" alt="Print Works Order" border="0" height="14" width="14"
+                                                    onMouseOver="ddrivetip('{$translate_workorder_print_work_order}');"
+                                                    onMouseOut="hideddrivetip();" />
+                                                </a>
+                                                <a href="" target="new">
+                                                    <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" alt=""
+                                                    onMouseOver="ddrivetip('<b>{$translate_workorder_details_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_workorder_details_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');"
+                                                    onMouseOut="hideddrivetip();">
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="menutd2" colspan="2">
+                                                <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0" >
+                                                    <tr>
+                                                        <td width="100%" valign="top" >
+                                                            <!-- Inside Content -->
+                                                            <!-- Display Work Order History -->
                                                             {include file="workorder/blocks/details_history_block.tpl"}
                                                             <br>
                                                         </td>
