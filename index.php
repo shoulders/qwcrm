@@ -186,7 +186,7 @@ if(isset($VAR['msg'])) {
 
 if($VAR['escape'] != 1 ) {
     require('modules'.SEP.'core'.SEP.'header.php');
-    require('modules'.SEP.'core'.SEP.'navagation.php');
+    require('modules'.SEP.'core'.SEP.'navigation.php');
     require('modules'.SEP.'core'.SEP.'company.php');
 }
 
