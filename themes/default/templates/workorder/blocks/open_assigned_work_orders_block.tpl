@@ -1,4 +1,4 @@
-<!-- common_assigned_work_orders_block.tpl - Display Assigned Work Orders (Work Orders - Open Page) -->
+<!-- open_assigned_work_orders_block.tpl - Display Assigned Work Orders (Work Orders - Open Page) -->
 <b>{$translate_workorder_assigned_title}</b>
 <table class="olotable" width="100%" border="0" cellpadding="4" cellspacing="0">
     <tr>

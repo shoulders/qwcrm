@@ -20,16 +20,16 @@
                                 <td class="menutd">
                                     <table width="100%" border="0" cellpadding="10" cellspacing="0">
                                         <tr>
-                                            <td><a name="new"></a>{include file="workorder/blocks/common_new_work_orders_block.tpl"}</td>
+                                            <td><a name="new"></a>{include file="workorder/blocks/open_new_work_orders_block.tpl"}</td>
                                         </tr>
                                         <tr>
-                                            <td><a name="assigned"></a>{include file="workorder/blocks/common_assigned_work_orders_block.tpl"}</td>
+                                            <td><a name="assigned"></a>{include file="workorder/blocks/open_assigned_work_orders_block.tpl"}</td>
                                         </tr>
                                         <tr>
-                                            <td><a name="awaiting"></a>{include file="workorder/blocks/common_work_orders_awaiting_parts_block.tpl"}</td>
+                                            <td><a name="awaiting"></a>{include file="workorder/blocks/open_work_orders_awaiting_parts_block.tpl"}</td>
                                         </tr>
                                         <tr>
-                                            <td><a name="payment"></a>{include file="workorder/blocks/common_unpaid_work_orders_block.tpl"}</td>
+                                            <td><a name="payment"></a>{include file="workorder/blocks/open_unpaid_work_orders_block.tpl"}</td>
                                         </tr>
                                     </table>
                                 </td>
