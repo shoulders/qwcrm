@@ -30,7 +30,7 @@
             <br> <!-- Gives me some room at the top -->
             <div id="tabs_container">
                 <ul class="tabs">
-                    <li class="active"><a href="#" rel="#tab_1_contents" class="tab">{$translate_workorder_details}</a></li>
+                    <li class="active"><a href="#" rel="#tab_1_contents" class="tab">{$translate_workorder_details_title}</a></li>
                     <li><a href="#" rel="#tab_2_contents" class="tab">{$translate_workorder_customer_details}</a></li>
                 </ul>
 
@@ -39,13 +39,18 @@
 
                 <!-- This is a div that hold all the tabbed contents -->
                 <div class="tab_contents_container">
-                    <!-- Tab 1 Contents -->
+                    <!-- Tab 1 Contents - work Order Details -->
                     <div id="tab_1_contents" class="tab_contents tab_contents_active">
                         <table width="700" cellpadding="5" cellspacing="0" border="0" >
                             <tr>
                                 {section name=i loop=$customer_details}
-                                <td class="menuhead2" width="80%">{$translate_workorder_new} for {$customer_details[i].CUSTOMER_DISPLAY_NAME}</td>
-                                <td class="menuhead2" width="10%" align="right">
+                                <td class="menuhead2" width="80%">{$translate_workorder_new} {$translate_workorder_work_order} {$translate_workorder_for} {$customer_details[i].CUSTOMER_DISPLAY_NAME}</td>
+                                <td class="menuhead2" width="20%" align="right" valign="middle">
+                                  <a><img src="{$theme_images_dir}icons/16x16/help.gif" border="0" 
+                                      onMouseOver="ddrivetip('<b>{$translate_workorder_new_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_workorder_new_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" 
+                                      onMouseOut="hideddrivetip();">
+                                  </a>
+                                </td>
                             </tr>
                             <tr>
                                 <td class="menutd2" colspan="2">{if $error_msg != ""}{include file="core/error.tpl"}{/if}
@@ -66,7 +71,7 @@
                                                             <td class="olohead">{$translate_workorder_customer}</td>
                                                             <td class="olohead">{$translate_workorder_scope}</td>
                                                             <td class="olohead">{$translate_workorder_status}</td>
-                                                            <td class="olohead">{$translate_workorder_enter_by}</td>
+                                                            <td class="olohead">{$translate_workorder_entered_by}</td>
                                                         </tr>
                                                         <tr>
                                                             <td class="olotd4">{$smarty.now|date_format:"$date_format"}</td>
@@ -85,7 +90,7 @@
                                                     <!-- Display Work Order Discription -->
                                                     <table class="olotable" width="100%" border="0" summary="Work order display">
                                                         <tr>
-                                                            <td class="olohead">{$translate_workorder_details_description_title}</td>
+                                                            <td class="olohead">&nbsp;{$translate_workorder_details_description_title}</td>
                                                         </tr>
                                                         <tr>
                                                             <td class="olotd">
@@ -100,7 +105,7 @@
                                                     <br>
                                                     <table class="olotable" width="100%" border="0" summary="Work order display">
                                                         <tr>
-                                                            <td class="olohead">{$translate_workorder_details_comments_title}</td>
+                                                            <td class="olohead">&nbsp;{$translate_workorder_details_comments_title}</td>
                                                         </tr>
                                                         <tr>
                                                             <td class="olotd">
@@ -115,7 +120,7 @@
                                                     <!-- Work Order Notes -->
                                                     <table class="olotable" width="100%" border="0" summary="Work order display">
                                                         <tr>
-                                                            <td class="olohead">{$translate_workorder_notes}</td>
+                                                            <td class="olohead">&nbsp;{$translate_workorder_details_notes_title}</td>
                                                         </tr>
                                                         <tr>
                                                             <td class="olotd">
@@ -136,7 +141,7 @@
                         </table>
                     </div>
 
-                    <!-- Tab 2 Contents -->
+                    <!-- Tab 2 Contents - Customer Details-->
                     <div id="tab_2_contents" class="tab_contents">
                     <!-- Display Customer Contact Infromation -->
                         {section name=i loop=$customer_details}
@@ -160,9 +165,9 @@
                                 <td class="menutd"> {$customer_details[i].CUSTOMER_EMAIL}</td>
                             </tr>
                             <tr>
-                                <td class="menutd"><b>{$translate_workorder_customer_first}</b></td>
+                                <td class="menutd"><b>{$translate_workorder_first_name}</b></td>
                                 <td class="menutd">{$customer_details[i].CUSTOMER_FIRST_NAME}</td>
-                                <td class="menutd"><b>{$translate_workorder_customer_last}</b>
+                                <td class="menutd"><b>{$translate_workorder_last_name}</b>
                                 <td class="menutd">{$customer_details[i].CUSTOMER_LAST_NAME}</td>
                             </tr>
                             <tr>

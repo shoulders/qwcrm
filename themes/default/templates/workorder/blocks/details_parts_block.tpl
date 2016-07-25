@@ -4,7 +4,7 @@
         <td class="olohead">
             <table width="100%" cellpadding="0" cellspacing="0" border="0">
                 <tr>
-                    <td class="menuhead2" width="80%">{$translate_workorder_parts}</td>
+                    <td class="menuhead2" width="80%">{$translate_workorder_details_parts_title}</td>
                     <td class="menuhead2" width="20%" align="right">
                         <table cellpadding="2" cellspacing="2" border="0">
                             <tr> 

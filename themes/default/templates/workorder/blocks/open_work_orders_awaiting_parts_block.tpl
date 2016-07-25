@@ -17,7 +17,7 @@
         <td class="olotd4"> {$awaiting.WORK_ORDER_OPEN_DATE|date_format:"$date_format"}</td>
         <td class="olotd4" nowrap>
             <img src="{$theme_images_dir}icons/16x16/view.gif" border="0"
-                 onMouseOver="ddrivetip('<b><center>{$translate_workorder_contact_info_tooltip_title}</b></center><hr><b>{$translate_workorder_phone}: </b>{$awaiting.CUSTOMER_PHONE}<br> <b>{$translate_workorder_fax}: </b>{$awaiting.CUSTOMER_WORK_PHONE}<br><b>{$translate_workorder_mobile}: </b>{$awaiting.CUSTOMER_MOBILE_PHONE}<br><b>{$translate_workorder_address}</b><br>{$awaiting.CUSTOMER_ADDRESS}<br>{$awaiting.CUSTOMER_CITY}, {$awaiting.CUSTOMER_STATE}<br>{$awaiting.CUSTOMER_ZIP}');"
+                 onMouseOver="ddrivetip('<b><center>{$translate_workorder_contact_info_tooltip_title}</b></center><hr><b>{$translate_workorder_phone}: </b>{$awaiting.CUSTOMER_PHONE}<br> <b>{$translate_workorder_fax}: </b>{$awaiting.CUSTOMER_WORK_PHONE}<br><b>{$translate_workorder_mobile}: </b>{$awaiting.CUSTOMER_MOBILE_PHONE}<br><b>{$translate_workorder_address}:</b><br>{$awaiting.CUSTOMER_ADDRESS}<br>{$awaiting.CUSTOMER_CITY}, {$awaiting.CUSTOMER_STATE}<br>{$awaiting.CUSTOMER_ZIP}');"
                  onMouseOut="hideddrivetip();">
             <a class="link1" href="?page=customer:customer_details&customer_id={$awaiting.CUSTOMER_ID}&page_title={$awaiting.CUSTOMER_DISPLAY_NAME}">{$awaiting.CUSTOMER_DISPLAY_NAME}</a>
         </td>

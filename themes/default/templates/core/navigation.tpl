@@ -9,7 +9,7 @@
                 <span>{$translate_core_menu}</span>
                 <a href="index.php"><img src="{$theme_images_dir}icons/home.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_home}</a>
                 {if $y1 > 0}
-                    <a href="index.php?page=schedule:main&amp;y={$y1}&amp;m={$m1}&amp;d={$d1}&amp;page_title=schedule"><img src="{$theme_images_dir}icons/16x16/Calendar.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_calendar}</a>
+                    <a href="index.php?page=schedule:main&amp;y={$y1}&amp;m={$m1}&amp;d={$d1}&amp;page_title=schedule"><img src="{$theme_images_dir}icons/16x16/Calendar.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_schedule}</a>
                 {/if}
                 <a href="modules/schedule/sync.php">Cal Sync</a>
                 <a href="index.php?action=logout"><img src="{$theme_images_dir}icons/logout.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_log_out}</a>

@@ -27,13 +27,12 @@
         <td>
             <div id="tabs_container">
                 <ul class="tabs">
-                    <li class="active">
-                        <a href="#" rel="#tab_1_contents" class="tab"><img src="{$theme_images_dir}icons/workorders.gif" alt="" border="0" height="14" width="14" />&nbsp;{$translate_workorder_details_title}</a></li>
-                    <li><a href="#" rel="#tab_2_contents" class="tab"><img src="{$theme_images_dir}icons/customers.gif" alt="" border="0" height="14" width="14" />&nbsp;{$translate_workorder_details_customer_contact_title}</a></li>
-                    <li><a href="#" rel="#tab_3_contents" class="tab"><img src="{$theme_images_dir}icons/16x16/Calendar.gif" alt="" border="0" height="14" width="14" />&nbsp;{$translate_workorder_schedule_title}</a></li>
-                    <li><a href="#" rel="#tab_4_contents" class="tab"><img src="{$theme_images_dir}icons/note.png" alt="" border="0" height="14" width="14" /> &nbsp;{$translate_workorder_notes}</a></li>
-                    <li><a href="#" rel="#tab_5_contents" class="tab"><img src="{$theme_images_dir}icons/status.gif" alt="" border="0" height="14" width="14" />&nbsp;{$translate_workorder_parts}</a></li>
-                    <li><a href="#" rel="#tab_6_contents" class="tab"><img src="{$theme_images_dir}icons/clock.gif" alt="" border="0" height="14" width="14" />&nbsp;{$translate_workorder_history_title}</a></li>
+                    <li class="active"><a href="#" rel="#tab_1_contents" class="tab"><img src="{$theme_images_dir}icons/workorders.gif" alt="" border="0" height="14" width="14" />&nbsp;{$translate_workorder_details_title}</a></li>
+                    <li><a href="#" rel="#tab_2_contents" class="tab"><img src="{$theme_images_dir}icons/customers.gif" alt="" border="0" height="14" width="14" />&nbsp;{$translate_workorder_details_customer_details_title}</a></li>
+                    <li><a href="#" rel="#tab_3_contents" class="tab"><img src="{$theme_images_dir}icons/16x16/Calendar.gif" alt="" border="0" height="14" width="14" />&nbsp;{$translate_workorder_details_schedule_title}</a></li>
+                    <li><a href="#" rel="#tab_4_contents" class="tab"><img src="{$theme_images_dir}icons/note.png" alt="" border="0" height="14" width="14" /> &nbsp;{$translate_workorder_details_notes_title}</a></li>
+                    <li><a href="#" rel="#tab_5_contents" class="tab"><img src="{$theme_images_dir}icons/status.gif" alt="" border="0" height="14" width="14" />&nbsp;{$translate_workorder_details_parts_title}</a></li>
+                    <li><a href="#" rel="#tab_6_contents" class="tab"><img src="{$theme_images_dir}icons/clock.gif" alt="" border="0" height="14" width="14" />&nbsp;{$translate_workorder_details_history_title}</a></li>
                 </ul>
 
                 <!-- This is used so the contents don't appear to the
@@ -43,7 +42,7 @@
                 <!-- This is a div that hold all the tabbed contents -->
                 <div class="tab_contents_container">
                     
-                    <!-- Tab 1 Contents -->
+                    <!-- Tab 1 Contents - Work Order Details -->
                     <div id="tab_1_contents" class="tab_contents tab_contents_active">
                         <table width="100%" border="0" cellpadding="20" cellspacing="0">
                             <tr>
@@ -93,7 +92,7 @@
                         </table>
                     </div>
 
-                    <!-- Tab 2 Contents -->
+                    <!-- Tab 2 Contents - Customer Contact -->
                     <div id="tab_2_contents" class="tab_contents">
                         <table width="100%" border="0" cellpadding="20" cellspacing="0">
                             <tr>
@@ -121,7 +120,7 @@
                                                         <td width="700" valign="top" >
                                                             <!-- Inside Content -->
                                                             <!-- Display Customer Contact -->
-                                                            {include file="workorder/blocks/details_customer_contact_block.tpl"}
+                                                            {include file="workorder/blocks/details_customer_details_block.tpl"}
                                                             <br>
                                                         </td>
                                                     </tr>
@@ -134,7 +133,7 @@
                         </table>
                     </div>
 
-                    <!-- Tab 3 Contents -->
+                    <!-- Tab 3 Contents - Schedule -->
                     <div id="tab_3_contents" class="tab_contents">
                         <table width="100%" border="0" cellpadding="20" cellspacing="0">
                             <tr>
@@ -175,7 +174,7 @@
                         </table>
                     </div>
                     
-                    <!-- Tab 4 Contents -->
+                    <!-- Tab 4 Contents - Notes -->
                     <div id="tab_4_contents" class="tab_contents">
                         <table width="100%" border="0" cellpadding="20" cellspacing="0">
                             <tr>
@@ -216,7 +215,7 @@
                         </table>
                     </div>
 
-                    <!-- Tab 5 Contents -->
+                    <!-- Tab 5 Contents - Parts -->
                     <div id="tab_5_contents" class="tab_contents">
                         <table width="100%" border="0" cellpadding="20" cellspacing="0">
                             <tr>
@@ -243,7 +242,7 @@
                                                     <tr>
                                                         <td width="100%" valign="top" >
                                                             <!-- Inside Content -->
-                                                            <!-- Dispaly Parts -->PARTS - FIX ME
+                                                            <!-- Dispaly Parts -->
                                                             {include file="workorder/blocks/details_parts_block.tpl"}
                                                             <br>
                                                         </td>
@@ -257,7 +256,7 @@
                         </table>
                     </div>
                                                             
-                    <!-- Tab 6 Contents -->
+                    <!-- Tab 6 Contents - History -->
                     <div id="tab_6_contents" class="tab_contents">
                         <table width="100%" border="0" cellpadding="20" cellspacing="0">
                             <tr>

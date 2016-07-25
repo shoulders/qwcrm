@@ -1,17 +1,17 @@
-<!-- details_customer_contact_block.tpl - Display Customer Contact Information (Work Orders - Details Page) -->
+<!-- details_customer_details_block.tpl - Display Customer Contact Information (Work Orders - Details Page) -->
 <table class="olotable" border="0" cellpadding="0" cellspacing="0" width="100%" summary="Customer Contact">
     <tr>
         <td class="olohead">
             <table width="100%" cellpadding="0" cellspacing="0" border="0">
                 <tr>
-                    <td class="menuhead2" width="80%">&nbsp;{$translate_workorder_details_customer_contact_title}</td>
+                    <td class="menuhead2" width="80%">&nbsp;{$translate_workorder_details_customer_details_title}</td>
                     <td class="menuhead2" width="20%" align="right">
                         <table cellpadding="2" cellspacing="2" border="0">
                             <tr>
                                 <td width="33%" align="right">
                                     <a href="?page=customer:edit&customer_id={$single_workorder_array[i].CUSTOMER_ID}&page_title={$single_workorder_array[i].CUSTOMER_DISPLAY_NAME}">
                                         <img src="{$theme_images_dir}icons/16x16/small_edit.gif" border="0"
-                                            onMouseOver="ddrivetip('{$translate_workorder_details_edit_customer_contact_title}');"
+                                            onMouseOver="ddrivetip('{$translate_workorder_details_edit_customer_details_button_tooltip}');"
                                             onMouseOut="hideddrivetip();">
                                     </a>
                                 </td>

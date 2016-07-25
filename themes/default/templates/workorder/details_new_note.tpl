@@ -26,7 +26,7 @@
         <td><!-- Begin Page -->
             <table width="700" cellpadding="5" cellspacing="0" border="0" >
                 <tr>
-                    <td class="menuhead2" width="80%">{$translate_workorder_notes_add_work_order_note_for_work_order_id} {$wo_id}</td>
+                    <td class="menuhead2" width="80%">{$translate_workorder_details_new_note_title} {$wo_id}</td>
                 </tr>
                 <tr>
                     <td class="menutd2">
@@ -42,7 +42,7 @@
                                         <input type="hidden" name="wo_id" value="{$wo_id}">
                                         <table class="olotable" width="100%" border="0" summary="Work order display">
                                             <tr>
-                                                <td class="olohead">{$translate_workorder_notes_work_order_notes}</td>
+                                                <td class="olohead">{$translate_workorder_details_notes_title}</td>
                                             </tr>
                                             <tr>
                                                 <td class="olotd">
@@ -51,7 +51,7 @@
                                             </tr>
                                         </table>
                                         <br>
-                                        <input class="olotd4" name="submit" value="submit" type="submit" />    
+                                        <input class="olotd4" name="submit" value="{$translate_workorder_submit}" type="submit" />    
                                     </form>
                                     <br>
                                 </td>

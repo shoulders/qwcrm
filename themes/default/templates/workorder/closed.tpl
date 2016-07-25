@@ -14,9 +14,10 @@
         <td>
             <table width="700" cellpadding="4" cellspacing="0" border="0" >
                 <tr>
-                    <td class="menuhead2" width="80%">&nbsp;{$translate_workorder_view_closed} - {$total_results} {$translate_workorder_records}</td>
+                    <td class="menuhead2" width="80%">&nbsp;{$translate_workorder_closed_title} - {$total_results} {$translate_workorder_records_found}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
-                        <a><img src="{$theme_images_dir}icons/16x16/help.gif" border="0" alt=""
+                        <a>
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" alt=""
                                 onMouseOver="ddrivetip('<b>{$translate_workorder_closed_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_workorder_closed_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');"
                                 onMouseOut="hideddrivetip();">
                         </a>

@@ -2,7 +2,7 @@
     <translate>
 
         // Common - add all shared words and phrases here - below is an example
-        <common_scope>Scope</common_scope>
+        <common_scope>Scope</common_scope> //do i need this yet
         
         // Assets Templates
         <main_title>Customer's Assets</main_title>
@@ -133,7 +133,7 @@
         <menu_un_paid_2>Un-Paid Invoices</menu_un_paid_2>
         <menu_open_orders>Open Orders</menu_open_orders>
         <menu_closed_orders>Closed Orders</menu_closed_orders>
-        <menu_calendar>Calendar</menu_calendar>
+        <menu_schedule>Schedule</menu_schedule>
         <menu_invoices>Invoices</menu_invoices>
         
         
@@ -871,38 +871,47 @@
 
         //// Common
 
-        // General
-        <workorder_work_order_id>Work Order ID</workorder_work_order_id>
+        // General / Miscellaneous
+        <workorder_work_order>Work Order</workorder_work_order>
+        <workorder_work_order_id>Work Order ID</workorder_work_order_id>        
         <workorder_print_work_order>Print Work Order</workorder_print_work_order>
-        <workorder_print_work_order_id>Print Work Order ID</workorder_print_work_order_id>
+        <workorder_print_work_order_id>Print Work Order ID</workorder_print_work_order_id>        
+        <workorder_new>New</workorder_new>        
+        <workorder_for>for</workorder_for>        
+        <workorder_page>Page</workorder_page>
+        <workorder_of>Of</workorder_of>
+        <workorder_records_found>Records Found</workorder_records_found>
+        <workorder_warning>Warning</workorder_warning>        
+        <workorder_employee>Employee</workorder_employee> 
         
-        <workorder_new>New</workorder_new>
-
         // Buttons
         <workorder_submit>Submit</workorder_submit>
-
 
         // WO Status        
         <workorder_open>Open</workorder_open>
         <workorder_delete>Delete</workorder_delete>
         <workorder_pending>Pending</workorder_pending>
-        <workorder_closed>Closed</workorder_closed>
-        <workorder_created>Created</workorder_created>
+        <workorder_closed>Closed</workorder_closed>        
+        <workorder_created>Created</workorder_created>        
         <workorder_assigned>Assigned</workorder_assigned>        
         <workorder_waiting_for_parts>Waiting For Parts</workorder_waiting_for_parts>
         <workorder_waiting_for_payment>Waiting For Payment</workorder_waiting_for_payment>
         <workorder_payment_made>Payment Made</workorder_payment_made>
         <workorder_not_assigned>Not Assigned</workorder_not_assigned>
-        <workorder_awaiting_parts>Awaiting Parts</workorder_awaiting_parts>
-
-        // WO Messages
+        <workorder_awaiting_parts>Awaiting Parts</workorder_awaiting_parts>        
+        <workorder_updated>Updated</workorder_updated>
+        <workorder_closed_by>Closed By</workorder_closed_by>        
+        <workorder_status>Status</workorder_status>        
+        <workorder_unpaid>Unpaid</workorder_unpaid>
+          
+        // Messages
         <workorder_msg_there_are_no_new_work_orders>There are No new Work Orders</workorder_msg_there_are_no_new_work_orders>
         <workorder_msg_there_are_no_assigned_work_orders>There are No Assigned Work Orders</workorder_msg_there_are_no_assigned_work_orders>
         <workorder_msg_there_are_no_unpaid_work_orders>There are No Unpaid Work Orders</workorder_msg_there_are_no_unpaid_work_orders>
         <workorder_msg_there_are_no_work_orders_waiting_for_parts>There are No Work Orders Waiting for Parts</workorder_msg_there_are_no_work_orders_waiting_for_parts>
         <workorder_msg_no_schedule_has_been_set>No schedule has been set. Click the day on the calendar you wish to set the schedule.</workorder_msg_no_schedule_has_been_set>
         <workorder_msg_there_are_no_closed_work_orders>There are no closed work orders</workorder_msg_there_are_no_closed_work_orders>
-        <workorder_msg_no_parts_on_order>No Parts On Order</workorder_msg_no_parts_on_order>
+        <workorder_msg_no_parts_on_order>No Parts On Order</workorder_msg_no_parts_on_order>        
 
         // Table Headings
         <workorder_id>ID</workorder_id>
@@ -915,7 +924,23 @@
         <workorder_last_change>Last Change</workorder_last_change>
         <workorder_tech>Tech</workorder_tech>
         <workorder_action>Action</workorder_action>
+        <workorder_entered_by>Entered By</workorder_entered_by>        
+        
+        // Invoicing / Parts
+        <workorder_invoice>Invoice</workorder_invoice>
+        <workorder_discount>Discount</workorder_discount>        
+        <workorder_sub_total>Sub Total</workorder_sub_total>
+        <workorder_shipping>Shipping</workorder_shipping>
+        <workorder_total>Total</workorder_total>
+        <workorder_tracking>Tracking</workorder_tracking>        
+        <workorder_get_tracking>Get Tracking</workorder_get_tracking>
+        <workorder_date>Date</workorder_date>        
 
+        // Scheduling
+        <workorder_start>Start</workorder_start>         
+        <workorder_end>End</workorder_end>
+        <workorder_schedule>Schedule</workorder_schedule>   
+        
         // Customer Type
         <workorder_type>Type</workorder_type>
         <workorder_type_1>Residential</workorder_type_1>
@@ -941,99 +966,88 @@
         <workorder_primary_phone>Primary Phone</workorder_primary_phone>      
         <workorder_mobile>Mobile</workorder_mobile>
         <workorder_home>Home</workorder_home>   
-
-        // Invoicing / Parts / Actions
-        <workorder_invoice>Invoice</workorder_invoice>
-        <workorder_created>Created</workorder_created>
-        <workorder_updated>Updated</workorder_updated>
-        <workorder_closed_by>Closed By</workorder_closed_by>
-        
-        <workorder_sub_total>Sub Total</workorder_sub_total>
-        <workorder_shipping>Shipping</workorder_shipping>
-        <workorder_total>Total</workorder_total>
-        <workorder_tracking>Tracking</workorder_tracking>        
-        <workorder_get_tracking>Get Tracking</workorder_get_tracking>
-        
-        <workorder_status>Status</workorder_status>        
-        <workorder_unpaid>Unpaid</workorder_unpaid>
-        <workorder_discount>Discount</workorder_discount> 
+        <workorder_notes>Notes</workorder_notes>
+        <workorder_contact>Contact</workorder_contact>
+        <workorder_first_name>First Name</workorder_first_name>
+        <workorder_last_name>Last Name</workorder_last_name>        
+        <workorder_last_activity>Last Activity</workorder_last_activity>
         
         // Misc Tooltips
         <workorder_contact_info_tooltip_title>Contact Info</workorder_contact_info_tooltip_title>
         <workorder_print_the_work_order_button_tooltip>Print The Work Order</workorder_print_the_work_order_button_tooltip>
         <workorder_view_the_work_order_button_tooltip>View The Work Order</workorder_view_the_work_order_button_tooltip>
          
-        //// Blocks
-
-        // Details Customer Contact Block        
-        <workorder_details_customer_contact_title>Customer Contact</workorder_details_customer_contact_title>
-
-        <workorder_details_edit_customer_contact_title>Edit Customer Contact</workorder_details_edit_customer_contact_title>
-        <workorder_details_edit_customer_contact_button_tooltip>Click to edit customer contact details</workorder_details_edit_customer_contact_button_tooltip>              
-
-        
-
-
         //// Pages
 
         // Closed
+        <workorder_closed_title>Closed Work Orders</workorder_closed_title>
         <workorder_closed_help_title>Closed Work Orders Help</workorder_closed_help_title>
-        <workorder_closed_help_content>You can view all closed work orders here.</workorder_closed_help_content>    
-
+        <workorder_closed_help_content>You can view all closed work orders here.</workorder_closed_help_content>
+        
         // Details
         <workorder_details_title>Work Order Details</workorder_details_title>        
         <workorder_details_help_title>Work Order Details Help</workorder_details_help_title>
         <workorder_details_help_content>You can edit the Work order commments, notes, and set schedule by clicking the icon on the right of each window&lt;br&gt;&lt;br&gt;You can navigate to the customer by clicking their name. Hover over the Magnifing glass by the customer name to view Quick Contact Information. &lt;br&gt;&lt;br&gt;If you need to edit the Customers Contact Information click the Edit Icon by their contact details.&lt;br&gt;&lt;br&gt;Click on the Employee name to go to the employees details. Hover over the Magnifing glass to view the employees Quick Contact Information.&lt;br&gt;&lt;br&gt;Click the Print link on the Quick Bar to generate a printable PDF of this work order. Click the Close link on the Quick Bar to complete the order and start the invoicing processes.</workorder_details_help_content>
               
-
+        // Details - Customer Details Block        
+        <workorder_details_customer_details_title>Customer Details</workorder_details_customer_details_title>  
+        <workorder_details_edit_customer_details_button_tooltip>Click to edit customer details</workorder_details_edit_customer_details_button_tooltip>   
+        
         // Details - Edit Comments
         <workorder_details_comments_title>Comments</workorder_details_comments_title>
         <workorder_details_edit_comments_help_title>Edit Comments Help</workorder_details_edit_comments_help_title>
-        <workorder_details_edit_comments_help_content>You can edit the comments attached to the work order here.</workorder_details_edit_comments_help_content>
-
+        <workorder_details_edit_comments_help_content>You can edit the comments attached to the work order here.</workorder_details_edit_comments_help_content>        
         <workorder_details_edit_comments_title>Edit Comments</workorder_details_edit_comments_title>        
-        <workorder_details_edit_comments_button_tooltip>Click to edit comments</workorder_details_edit_comments_button_tooltip>        
-
+        <workorder_details_edit_comments_button_tooltip>Click to edit comments</workorder_details_edit_comments_button_tooltip>
                        
         // Details - Edit Description
         <workorder_details_description_title>Description</workorder_details_description_title>
         <workorder_details_edit_description_help_title>Edit Description Help</workorder_details_edit_description_help_title>
         <workorder_details_edit_description_help_content>You can edit the description attached to the work order here.</workorder_details_edit_description_help_content>
-
         <workorder_details_edit_description_title>Edit Description</workorder_details_edit_description_title>
-        <workorder_details_edit_description_button_tooltip>Click to edit description</workorder_details_edit_description_button_tooltip>        
+        <workorder_details_edit_description_button_tooltip>Click to edit description</workorder_details_edit_description_button_tooltip>           
+  
+        // Details - History
+        <workorder_details_history_title>History</workorder_details_history_title>              
 
-        // Details - Customer Contact
+        // Details - Notes        
+        <workorder_details_notes_title>Notes</workorder_details_notes_title>        
+        <workorder_details_new_note_title>Add A New Note For Work Order ID</workorder_details_new_note_title>   
+        <workorder_details_new_note_button_tooltip>Click to create a new note</workorder_details_new_note_button_tooltip>   
+                   
+        // Details - Parts
+        <workorder_details_parts_title>Parts</workorder_details_parts_title>
         
-
-        // Details - New Note
-
+        // Details - Schedule
+        <workorder_details_schedule_title>Schedule</workorder_details_schedule_title>
+        <workorder_details_schedule_button_tooltip>Create a New Schedule</workorder_details_schedule_button_tooltip>        
+        
         // New Page
+        <workorder_new_title>New Work Order</workorder_new_title>
+        <workorder_new_help_title>New Work Order Help</workorder_new_help_title>
+        <workorder_new_help_content>Create new Work Orders here.</workorder_new_help_content>               
 
         // Open Page
         <workorder_open_title>Open Work Orders</workorder_open_title>
         <workorder_open_help_title>Open Work Orders Help</workorder_open_help_title>
         <workorder_open_help_content>Double Click on an empty space in each row to go directly to the work order. &lt;br&gt;&lt;br&gt;Hover over the magnifying glass under Customer to view the Quick Contact Information. Click on the Customers name to view the customers details.&lt;br&gt;&lt;br&gt;Click on the status of each work order listed to update the curent work order status.&lt;br&gt;&lt;br&gt;Hover over the Magnifying Glass under the Employee to view the Quick Contact Information for the assigned employee. Click on the employees name to view the details.&lt;br&gt;&lt;br&gt;Under Action click the Printer Icon to print the work order. Click the Magnifying Glass to view the work order. Click the Red Stop sign to close the work order and start the invoicing.</workorder_open_help_content>
-               
+        
         // Print Template - add this last
 
         // Resolution  
         <workorder_details_resolution_title>Resolution</workorder_details_resolution_title>
         <workorder_details_edit_resolution_help_title>Edit Resolution Help</workorder_details_edit_resolution_help_title>
         <workorder_details_edit_resolution_help_content>You can edit or close the resolution attached to the work order here.</workorder_details_edit_resolution_help_content>
-
         <workorder_details_edit_resolution_title>Edit Resolution</workorder_details_edit_resolution_title>        
         <workorder_details_edit_resolution_button_tooltip>Click to edit resolution</workorder_details_edit_resolution_button_tooltip>        
-
         <workorder_details_edit_resolution_submit_changes_only>Submit Changes Only</workorder_details_edit_resolution_submit_changes_only>
         <workorder_details_edit_resolution_close_without_invoice>Close Without Invoice</workorder_details_edit_resolution_close_without_invoice>
-        <workorder_details_edit_resolution_close_with_invoice>Close With Invoice</workorder_details_edit_resolution_close_with_invoice>        
-
+        <workorder_details_edit_resolution_close_with_invoice>Close With Invoice</workorder_details_edit_resolution_close_with_invoice>
+        
         // Status
         <workorder_status_title>Status</workorder_status_title>   
         <workorder_status_help_title>Status Help</workorder_status_help_title>
-        <workorder_status_help_content>You can change the status of a work order here.</workorder_status_help_content>  
-
+        <workorder_status_help_content>You can change the status of a work order here.</workorder_status_help_content>
         <workorder_status_update_work_order_status_for_work_order_id>Update Work Order Status For Work Order ID</workorder_status_update_work_order_status_for_work_order_id>
         <workorder_status_new_status>New Status</workorder_status_new_status>  
 

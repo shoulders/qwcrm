@@ -4,14 +4,14 @@
         <td class="olohead">
             <table width="100%" cellpadding="0" cellspacing="0" border="0">
                 <tr>
-                    <td class="menuhead2" width="80%">&nbsp;{$translate_workorder_schedule_title}</td>
+                    <td class="menuhead2" width="80%">&nbsp;{$translate_workorder_details_schedule_title}</td>
                     <td class="menuhead2" width="20%" align="right">
                         <table cellpadding="2" cellspacing="2" border="0">
                             <tr>
                                 <td width="33%" align="right" >
                                     <a>
                                         <img src="{$theme_images_dir}icons/16x16/small_new_work_order.gif" border="0"
-                                            onMouseOver="ddrivetip('{$translate_workorder_new_schedule}');"
+                                            onMouseOver="ddrivetip('{$translate_workorder_details_schedule_button_tooltip}');"
                                             onMouseOut="hideddrivetip();">
                                     </a>
                                 </td>
@@ -60,7 +60,7 @@
                                                 var m = M + 1;   // integer, 0..11
                                                 var d = calendar.date.getDate();      // integer, 1..31
                                                 // redirect...
-                                                window.location =  "?page=schedule:main&y="+y+"&m="+m+"&d="+d+"&wo_id={/literal}{$wo_id}{literal}&page_title={/literal}{$translate_core_schedule}{literal}";
+                                                window.location =  "?page=schedule:main&y="+y+"&m="+m+"&d="+d+"&wo_id={/literal}{$wo_id}{literal}&page_title={/literal}{$translate_workorder_schedule}{literal}";
                                             }
                                         };
                                          Calendar.setup(
