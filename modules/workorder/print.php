@@ -1,9 +1,9 @@
 <?php
 require_once('include.php');
+
 if(!xml2php("workorder")) {
     $smarty->assign('error_msg',"Error in language file");
 }
-require_once("include.php");
 
 if(!$single_work_order = display_single_open_workorder($db, $VAR['wo_id'])){
     force_page('core', "error&menu=1&error_msg=The Work Order you Requested was not found&type=error");
@@ -37,43 +37,47 @@ $pdf_print  = $rs->fields['PDF_PRINT'];
 
 if($html_print == 1) {
     /* htm print page */
-    $smarty->assign('company',                         $company);
-    $smarty->assign('single_workorder_array',     $single_work_order);
-    $smarty->assign('work_order_notes',             $work_order_notes );
-    $smarty->assign('work_order_status',             $work_order_status);
-    $smarty->assign('work_order_sched',             $work_order_sched);
-    $smarty->assign('work_order_res',                $work_order_res);        
+    $smarty->assign('company',                  $company);
+    $smarty->assign('single_workorder_array',   $single_work_order);
+    $smarty->assign('work_order_notes',         $work_order_notes );
+    $smarty->assign('work_order_status',        $work_order_status);
+    $smarty->assign('work_order_sched',         $work_order_sched);
+    $smarty->assign('work_order_res',           $work_order_res);        
     $smarty->display('workorder/print.tpl');
-} else if($pdf_print == 1) {
+    
+} else if ($pdf_print == 1) {
+    
     /* create pdf */
     require(INCLUDES_DIR.SEP.'fpdf'.SEP.'fpdf.php');
     class PDF extends FPDF {
-    //Page header
-    function Header() {
-        $this->SetFont('Arial','B',15);
+        
+        // Page header
+        function Header() {
+            $this->SetFont('Arial','B',15);
+        }
+
+        // Page footer
+        function Footer(){
+            
+            //Position at 1.5 cm from bottom
+            $this->SetY(-15);
+            
+            //Arial italic 8
+            $this->SetFont('Arial','I',8);
+            
+            //Page number
+            $this->Cell(0,10,'Page '.$this->PageNo().'/{nb}',0,0,'C');
+        }
     }
 
-//Page footer
-    function Footer(){
-        //Position at 1.5 cm from bottom
-        $this->SetY(-15);
-        //Arial italic 8
-        $this->SetFont('Arial','I',8);
-        //Page number
-        $this->Cell(0,10,'Page '.$this->PageNo().'/{nb}',0,0,'C');
-    }
-}
-
-//Instanciation of inherited class
-$pdf=new PDF();
-$pdf->AliasNbPages();
-$pdf->AddPage();
-$pdf->SetFont('Times','',12);
-
+    // Instantiation of inherited class
+    $pdf = new PDF();
+    $pdf->AliasNbPages();
+    $pdf->AddPage();
+    $pdf->SetFont('Times','',12);
     $pdf->Cell(0,10,'',1,1);
     $pdf->Cell(10,0,$work_order_notes,1,1);
-$pdf->Output();    
-
+    $pdf->Output();
     
 } else {
     force_page('core', "error&menu=1&error_msg=No Printing Options set. Please set up printing options in the Control Center.&type=error");

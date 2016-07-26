@@ -859,14 +859,7 @@
         <supplier_delete_mes_recordnotdeleted>Record Not Deleted</supplier_delete_mes_recordnotdeleted>
 
         
-        
-        
-        
-        
-        
-        
-        
-    
+
         // -- Workorder Module
 
         //// Common
@@ -883,7 +876,7 @@
         <workorder_records_found>Records Found</workorder_records_found>
         <workorder_warning>Warning</workorder_warning>        
         <workorder_employee>Employee</workorder_employee> 
-        
+
         // Buttons
         <workorder_submit>Submit</workorder_submit>
 
@@ -925,7 +918,7 @@
         <workorder_tech>Tech</workorder_tech>
         <workorder_action>Action</workorder_action>
         <workorder_entered_by>Entered By</workorder_entered_by>        
-        
+
         // Invoicing / Parts
         <workorder_invoice>Invoice</workorder_invoice>
         <workorder_discount>Discount</workorder_discount>        
@@ -940,7 +933,7 @@
         <workorder_start>Start</workorder_start>         
         <workorder_end>End</workorder_end>
         <workorder_schedule>Schedule</workorder_schedule>   
-        
+
         // Customer Type
         <workorder_type>Type</workorder_type>
         <workorder_type_1>Residential</workorder_type_1>
@@ -953,7 +946,7 @@
         <workorder_type_8>-</workorder_type_8>
         <workorder_type_9>-</workorder_type_9>
         <workorder_type_10>-</workorder_type_10>
-        
+
         // Customer Details
         <workorder_customer_details>Customer Details</workorder_customer_details>
         <workorder_email>Email</workorder_email>
@@ -971,28 +964,28 @@
         <workorder_first_name>First Name</workorder_first_name>
         <workorder_last_name>Last Name</workorder_last_name>        
         <workorder_last_activity>Last Activity</workorder_last_activity>
-        
+
         // Misc Tooltips
         <workorder_contact_info_tooltip_title>Contact Info</workorder_contact_info_tooltip_title>
         <workorder_print_the_work_order_button_tooltip>Print The Work Order</workorder_print_the_work_order_button_tooltip>
         <workorder_view_the_work_order_button_tooltip>View The Work Order</workorder_view_the_work_order_button_tooltip>
-         
-        //// Pages
+
+        //// Pages - these are apge specific translations
 
         // Closed
         <workorder_closed_title>Closed Work Orders</workorder_closed_title>
         <workorder_closed_help_title>Closed Work Orders Help</workorder_closed_help_title>
         <workorder_closed_help_content>You can view all closed work orders here.</workorder_closed_help_content>
-        
+
         // Details
         <workorder_details_title>Work Order Details</workorder_details_title>        
         <workorder_details_help_title>Work Order Details Help</workorder_details_help_title>
         <workorder_details_help_content>You can edit the Work order commments, notes, and set schedule by clicking the icon on the right of each window&lt;br&gt;&lt;br&gt;You can navigate to the customer by clicking their name. Hover over the Magnifing glass by the customer name to view Quick Contact Information. &lt;br&gt;&lt;br&gt;If you need to edit the Customers Contact Information click the Edit Icon by their contact details.&lt;br&gt;&lt;br&gt;Click on the Employee name to go to the employees details. Hover over the Magnifing glass to view the employees Quick Contact Information.&lt;br&gt;&lt;br&gt;Click the Print link on the Quick Bar to generate a printable PDF of this work order. Click the Close link on the Quick Bar to complete the order and start the invoicing processes.</workorder_details_help_content>
               
-        // Details - Customer Details Block        
+        // Details - Customer Details       
         <workorder_details_customer_details_title>Customer Details</workorder_details_customer_details_title>  
         <workorder_details_edit_customer_details_button_tooltip>Click to edit customer details</workorder_details_edit_customer_details_button_tooltip>   
-        
+
         // Details - Edit Comments
         <workorder_details_comments_title>Comments</workorder_details_comments_title>
         <workorder_details_edit_comments_help_title>Edit Comments Help</workorder_details_edit_comments_help_title>
@@ -1006,7 +999,7 @@
         <workorder_details_edit_description_help_content>You can edit the description attached to the work order here.</workorder_details_edit_description_help_content>
         <workorder_details_edit_description_title>Edit Description</workorder_details_edit_description_title>
         <workorder_details_edit_description_button_tooltip>Click to edit description</workorder_details_edit_description_button_tooltip>           
-  
+
         // Details - History
         <workorder_details_history_title>History</workorder_details_history_title>              
 
@@ -1017,11 +1010,11 @@
                    
         // Details - Parts
         <workorder_details_parts_title>Parts</workorder_details_parts_title>
-        
+
         // Details - Schedule
         <workorder_details_schedule_title>Schedule</workorder_details_schedule_title>
         <workorder_details_schedule_button_tooltip>Create a New Schedule</workorder_details_schedule_button_tooltip>        
-        
+
         // New Page
         <workorder_new_title>New Work Order</workorder_new_title>
         <workorder_new_help_title>New Work Order Help</workorder_new_help_title>
@@ -1031,7 +1024,7 @@
         <workorder_open_title>Open Work Orders</workorder_open_title>
         <workorder_open_help_title>Open Work Orders Help</workorder_open_help_title>
         <workorder_open_help_content>Double Click on an empty space in each row to go directly to the work order. &lt;br&gt;&lt;br&gt;Hover over the magnifying glass under Customer to view the Quick Contact Information. Click on the Customers name to view the customers details.&lt;br&gt;&lt;br&gt;Click on the status of each work order listed to update the curent work order status.&lt;br&gt;&lt;br&gt;Hover over the Magnifying Glass under the Employee to view the Quick Contact Information for the assigned employee. Click on the employees name to view the details.&lt;br&gt;&lt;br&gt;Under Action click the Printer Icon to print the work order. Click the Magnifying Glass to view the work order. Click the Red Stop sign to close the work order and start the invoicing.</workorder_open_help_content>
-        
+
         // Print Template - add this last
 
         // Resolution  
@@ -1043,7 +1036,7 @@
         <workorder_details_edit_resolution_submit_changes_only>Submit Changes Only</workorder_details_edit_resolution_submit_changes_only>
         <workorder_details_edit_resolution_close_without_invoice>Close Without Invoice</workorder_details_edit_resolution_close_without_invoice>
         <workorder_details_edit_resolution_close_with_invoice>Close With Invoice</workorder_details_edit_resolution_close_with_invoice>
-        
+
         // Status
         <workorder_status_title>Status</workorder_status_title>   
         <workorder_status_help_title>Status Help</workorder_status_help_title>
@@ -1051,62 +1044,6 @@
         <workorder_status_update_work_order_status_for_work_order_id>Update Work Order Status For Work Order ID</workorder_status_update_work_order_status_for_work_order_id>
         <workorder_status_new_status>New Status</workorder_status_new_status>  
 
-    
-            
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
       
         
         

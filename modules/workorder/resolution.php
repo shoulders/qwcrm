@@ -2,6 +2,7 @@
 if(!xml2php("workorder")) {
     $smarty->assign('error_msg',"Error in language file");
 }
+
 require_once ("include.php");
 
 if(empty($VAR['wo_id'])){
@@ -24,92 +25,87 @@ if($rs->fields['WORK_ORDER_STATUS'] == 9) {
 }
 
 // loads resolution if it exists from the database
-    $q = "SELECT WORK_ORDER_RESOLUTION FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_ID=".$db->qstr( $wo_id );
-            if(!$rs = $db->execute($q)) {
-            force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-            exit;
-            }
+$q = "SELECT WORK_ORDER_RESOLUTION FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_ID=".$db->qstr( $wo_id );
+if(!$rs = $db->execute($q)) {
+    force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+    exit;
+}
 
 // Loads work resolution if present for editing into text area
-    $close = $rs->fields['WORK_ORDER_RESOLUTION'];
-    $smarty->assign('close', $close);
+$close = $rs->fields['WORK_ORDER_RESOLUTION'];
+$smarty->assign('close', $close);
 
 
 
 // Update Work Resolution Only
-    if(isset($VAR['submitchangesonly'])) {
+if(isset($VAR['submitchangesonly'])) {
 
-    //Remove Extra Slashes caused by Magic Quotes
+    // Remove Extra Slashes caused by Magic Quotes
     $resolution_string = $VAR['resolution'];
     $resolution_string = stripslashes($resolution_string);
 
-            $q = "UPDATE ".PRFX."TABLE_WORK_ORDER SET
-                            WORK_ORDER_RESOLUTION   =".$db->qstr( $resolution_string    ).",
-                            LAST_ACTIVE             =".$db->qstr( time()                )."
-                            WHERE  WORK_ORDER_ID    =".$db->qstr( $wo_id                );
+    $q = "UPDATE ".PRFX."TABLE_WORK_ORDER SET
+            WORK_ORDER_RESOLUTION   =".$db->qstr( $resolution_string    ).",
+            LAST_ACTIVE             =".$db->qstr( time()                )."
+            WHERE  WORK_ORDER_ID    =".$db->qstr( $wo_id                );
 
-            if(!$rs = $db->execute($q)) {
-                    force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-                    exit;
-                    }
+    if(!$rs = $db->execute($q)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
+    }
 
-            $msg = 'Resolution has been Updated';
-            $sql = "INSERT INTO ".PRFX."TABLE_WORK_ORDER_STATUS SET
-                              WORK_ORDER_ID                 =". $db->qstr( $wo_id                   ).",
-                              WORK_ORDER_STATUS_DATE        =". $db->qstr( time()                   ).",
-                              WORK_ORDER_STATUS_NOTES       =". $db->qstr( $msg                     ).",
-                              WORK_ORDER_STATUS_ENTER_BY    =". $db->qstr( $_SESSION['login_id']    );
+    $msg = 'Resolution has been Updated';
+    $sql = "INSERT INTO ".PRFX."TABLE_WORK_ORDER_STATUS SET
+                WORK_ORDER_ID                 =". $db->qstr( $wo_id                   ).",
+                WORK_ORDER_STATUS_DATE        =". $db->qstr( time()                   ).",
+                WORK_ORDER_STATUS_NOTES       =". $db->qstr( $msg                     ).",
+                WORK_ORDER_STATUS_ENTER_BY    =". $db->qstr( $_SESSION['login_id']    );
 
-            if(!$result = $db->Execute($sql)) {
-                    force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-                    exit;
-                    }
+    if(!$result = $db->Execute($sql)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
+    }
 
-            force_page('workorder', 'details&wo_id='.$wo_id);
-            exit;
-
-                        }
+    force_page('workorder', 'details&wo_id='.$wo_id);
+    exit;
+}
 
 
 // Close without invoice
-    if(isset($VAR["closewithoutinvoice"])){
+if(isset($VAR["closewithoutinvoice"])){
 
-            if (!close_work_order_no_invoice($db,$VAR)){
-                    force_page('workorder', "details&wo_id=$wo_id&error_msg=Failed to Close Work Order.&page_title=Work Order ID $wo_id");
+    if (!close_work_order_no_invoice($db,$VAR)){
+            force_page('workorder', "details&wo_id=$wo_id&error_msg=Failed to Close Work Order.&page_title=Work Order ID $wo_id");
+        } else {
 
-                } else {
-
-                        $q = "SELECT CUSTOMER_ID FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_ID=".$db->qstr($wo_id);
-                        if(!$rs = $db->execute($q)) {
-                                force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-                                exit;
-                                                    }
-                    force_page('workorder', "main&page_title=Work Orders");
-                       }
-         }
+            $q = "SELECT CUSTOMER_ID FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_ID=".$db->qstr($wo_id);
+            if(!$rs = $db->execute($q)) {
+                force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+                exit;
+            }
+            
+            force_page('workorder', "main&page_title=Work Orders");
+            
+        }
+}
 
 // Close with invoice
-    if(isset($VAR["closewithinvoice"])){
+if(isset($VAR["closewithinvoice"])){
 
-            if (!close_work_order($db,$VAR)){
-                    force_page('workorder', "details&wo_id=$wo_id&error_msg=Failed to Close Work Order.&page_title=Work Order ID $wo_id");
+    if (!close_work_order($db,$VAR)){
+        force_page('workorder', "details&wo_id=$wo_id&error_msg=Failed to Close Work Order.&page_title=Work Order ID $wo_id");
 
-                } else {
-
-                        $q = "SELECT CUSTOMER_ID FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_ID=".$db->qstr($wo_id);
-                        if(!$rs = $db->execute($q)) {
-                                force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-                                exit;
-                        }
-
-                        $customer_id = $rs->fields['CUSTOMER_ID'];
-                        force_page('invoice', 'new&wo_id='.$wo_id.'&customer_id='.$customer_id.'&page_title=Create Invoice for Work Order# wo_id='.$wo_id);
-                }
-
+    } else {
+        $q = "SELECT CUSTOMER_ID FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_ID=".$db->qstr($wo_id);
+        if(!$rs = $db->execute($q)) {
+            force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+            exit;
+        }
+        $customer_id = $rs->fields['CUSTOMER_ID'];
+        force_page('invoice', 'new&wo_id='.$wo_id.'&customer_id='.$customer_id.'&page_title=Create Invoice for Work Order# wo_id='.$wo_id);
     }
-
-// If nothing else it loads the work order resolution page
-else {
-        $smarty->assign('wo_id', $VAR['wo_id']);
-        $smarty->display('workorder'.SEP.'resolution.tpl');
-     }
+} else {
+    // If nothing else it loads the work order resolution page
+    $smarty->assign('wo_id', $VAR['wo_id']);
+    $smarty->display('workorder'.SEP.'resolution.tpl');
+}

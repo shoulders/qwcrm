@@ -1,5 +1,6 @@
 <?php
 require_once('include.php');
+
 if(!xml2php("workorder")) {
     $smarty->assign('error_msg',"Error in language file");
 }

@@ -68,7 +68,7 @@
         {if $single_workorder_array[i].WORK_ORDER_CURRENT_STATUS == "1" || $single_workorder_array[i].WORK_ORDER_CURRENT_STATUS == "10"}
         <td class="olotd4" align="center">
             <form method="POST" action="">
-                <input type="submit" name="submit" value="{$translate_workorder_delete}"/>
+                <input type="submit" name="delete" value="{$translate_workorder_delete}"/>
             </form>
         </td>
         {/if}

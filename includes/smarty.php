@@ -26,8 +26,7 @@ $smarty->compile_dir    = 'cache/';
 $smarty->config_dir     = 'smarty/configs/';
 $smarty->cache_dir      = 'smarty/cache/';
 $smarty->load_filter('output','trimwhitespace');
-
-$smarty->caching = 0;
+//$smarty->caching = 0;
 
 /* Set Template variables into smarty - currently login and main are seperate so this need to be here and not index.php as they both need it */
 $smarty->assign('theme_dir', THEME_DIR); // set template directory

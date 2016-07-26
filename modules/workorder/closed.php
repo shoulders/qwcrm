@@ -2,6 +2,7 @@
 if(!xml2php("workorder")) {
     $smarty->assign('error_msg',"Error in language file");
 }
+
 if(!isset($VAR["page_no"])){
     $page_no = 1;
 } else {
@@ -12,17 +13,18 @@ $work_order = display_closed($db,$page_no,$smarty);
 $smarty->assign('work_order', $work_order);
 $smarty->display('workorder'.SEP.'closed.tpl');
 
+/* Return all closed Work Orders in an array */
 function display_closed($db,$page_no,$smarty) {
     
-global $smarty;
+    global $smarty;
     
     // Define the number of results per page
     $max_results = 25;
     
-    // Figure out the limit for the Execute based
-    // on the current page number.
+    // Figure out the limit for the Execute based on the current page number.
     $from = (($page_no * $max_results) - $max_results);  
     
+    // Grab closed workorders by employee and return an array
     $sql = "SELECT 
             ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_ID, 
             ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_OPEN_DATE,
@@ -40,23 +42,22 @@ global $smarty;
             LEFT JOIN ".PRFX."TABLE_CUSTOMER ON ".PRFX."TABLE_WORK_ORDER.CUSTOMER_ID = ".PRFX."TABLE_CUSTOMER.CUSTOMER_ID
             LEFT JOIN ".PRFX."TABLE_EMPLOYEE ON ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_ASSIGN_TO = ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_ID
             LEFT JOIN ".PRFX."CONFIG_WORK_ORDER_STATUS ON ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_CURRENT_STATUS = ".PRFX."CONFIG_WORK_ORDER_STATUS.CONFIG_WORK_ORDER_STATUS_ID
-            WHERE WORK_ORDER_STATUS=".$db->qstr(6)." GROUP BY ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_ID ORDER BY ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_ID DESC LIMIT $from, $max_results";
-
+            WHERE WORK_ORDER_STATUS=".$db->qstr(6)." GROUP BY ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_ID ORDER BY ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_ID DESC LIMIT $from, $max_results";    
+    
     if(!$rs = $db->Execute($sql)) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
         exit;
     } else {
         $work_order = $rs->GetArray();
     }
-
-    // Figure out the total number of results in DB: 
+    
+    // Figure out the total number of closed work orders in the database 
     $q = "SELECT COUNT(*) as Num FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_STATUS=".$db->qstr(6);
     if(!$results = $db->Execute($q)) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
         exit;
     }
-
-
+   
     if(!$total_results = $results->FetchRow()) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
         exit;
@@ -78,7 +79,7 @@ global $smarty;
         $next = ($page_no + 1); 
     }
 
-
+    // Assign Smarty Variables
     $smarty->assign('name', $name);
     $smarty->assign('page_no', $page_no);
     $smarty->assign("previous", $prev);    
