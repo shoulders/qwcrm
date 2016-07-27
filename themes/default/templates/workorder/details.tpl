@@ -50,11 +50,20 @@
                                     <table width="700" cellpadding="5" cellspacing="0" border="0" >
                                         <tr>
                                             <td class="menuhead2" width="80%">&nbsp;{$translate_workorder_work_order_id} {$single_workorder_array[i].WORK_ORDER_ID}</td>
-                                            <td class="menuhead2" width="20%" align="right" valign="middle">
-                                               <!-- <a href="index.php?page=workorder:print&amp;wo_id={$wo_id}&page_title=Print&escape=1" target="_blank">  do a search and replace for this and the translations -->
-                                                <a href="index.php?page=workorder:print&amp;wo_id={$wo_id}&amp;print_content=technician_wo_slip&amp;print_output_method=html&escape=1&page_title=CHANGE THIS TITLE" target="_blank">
+                                            <td class="menuhead2" width="20%" align="right" valign="middle">                                               
+                                                <a href="index.php?page=workorder:print&amp;wo_id={$wo_id}&amp;print_content=technician_workorder_slip&amp;print_output_method=html&escape=1&page_title=CHANGE THIS TITLE" target="_blank">                                                    
                                                     <img src="{$theme_images_dir}icons/print.gif" alt="Print Works Order" border="0" height="14" width="14"
-                                                    onMouseOver="ddrivetip('{$translate_workorder_print_work_order}');"
+                                                    onMouseOver="ddrivetip('{$translate_workorder_print_work_order} <br> Tech translate me');"
+                                                    onMouseOut="hideddrivetip();" />
+                                                </a>
+                                                <a href="index.php?page=workorder:print&amp;wo_id={$wo_id}&amp;print_content=customer_workorder_slip&amp;print_output_method=html&escape=1&page_title=CHANGE THIS TITLE" target="_blank">                                                    
+                                                    <img src="{$theme_images_dir}icons/print.gif" alt="Print Works Order" border="0" height="14" width="14"
+                                                    onMouseOver="ddrivetip('{$translate_workorder_print_work_order} <br> Customer translate me');"
+                                                    onMouseOut="hideddrivetip();" />
+                                                </a>
+                                                <a href="index.php?page=workorder:print&amp;wo_id={$wo_id}&amp;print_content=job_sheet&amp;print_output_method=html&escape=1&page_title=CHANGE THIS TITLE" target="_blank">                                                    
+                                                    <img src="{$theme_images_dir}icons/print.gif" alt="Print Works Order" border="0" height="14" width="14"
+                                                    onMouseOver="ddrivetip('{$translate_workorder_print_work_order} <br> Job sheet translate me');"
                                                     onMouseOut="hideddrivetip();" />
                                                 </a>
                                                 <a href="" target="new">

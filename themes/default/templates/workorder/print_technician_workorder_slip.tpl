@@ -1,4 +1,4 @@
-<!-- print_customer_workorder_slip.tpl - Technician Work Order Slip Print Template -->
+<!-- print_technician_workorder_slip.tpl - Technician Work Order Slip Print Template -->
 
 <!-- Header -->
 {section name=i loop=$single_work_order}
@@ -6,7 +6,7 @@
     <tr bgcolor="#999999">
         <td width="20%" valign="middle" align="center"><img src="{$company_logo}" alt="" height="50"></td>
         <td valign="top" align="center">            
-            <font size="+3">{$translate_workorder_print_customer_workorder_slip_title}</font><br />
+            <font size="+3">{$translate_workorder_print_technician_workorder_slip_title}</font><br />
             {$translate_workorder_work_order_id} {$single_work_order[i].WORK_ORDER_ID}
         </td>
         <td width="20%" valign="middle" align="center"></td>
@@ -21,7 +21,7 @@
     </tr>    
     <tr>
         
-        <!-- Client Details -->
+        <!-- Customer Details -->
         <td valign="top">
             <table border="0" cellpadding="4" cellspacing="0">
                 <tr>
@@ -57,7 +57,7 @@
             </table>            
         </td>
         
-        <!-- Company Info -->
+        <!-- Company Details -->
         <td valign="top">
             <table cellpadding="4" cellspacing="0" border="0">
                 {section name=d loop=$company}                
@@ -271,6 +271,9 @@
                 <tr>
                     <td><b>{$translate_workorder_print_signature}</b></td>
                     <td>__________________</td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
                 </tr>
             </table>                    
                     

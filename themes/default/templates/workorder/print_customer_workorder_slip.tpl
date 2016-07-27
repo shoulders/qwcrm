@@ -1,4 +1,4 @@
-<!-- print_technician_workorder_slip.tpl - Technician Work Order Slip Print Template -->
+<!-- print_customer_workorder_slip.tpl - Customer Work Order Slip Print Template -->
 
 <!-- Header -->
 {section name=i loop=$single_work_order}
@@ -6,7 +6,7 @@
     <tr bgcolor="#999999">
         <td width="20%" valign="middle" align="center"><img src="{$company_logo}" alt="" height="50"></td>
         <td valign="top" align="center">            
-            <font size="+3">{$translate_workorder_print_technician_workorder_slip_title}</font><br />
+            <font size="+3">{$translate_workorder_print_customer_workorder_slip_title}</font><br />
             {$translate_workorder_work_order_id} {$single_work_order[i].WORK_ORDER_ID}
         </td>
         <td width="20%" valign="middle" align="center"></td>
@@ -85,7 +85,7 @@
     </tr>
 </table>
 
-<!-- Work Order Information -->
+<!-- Work Order Details -->
 <table width="900" border="1" cellpadding="2" cellspacing="0" style="border-collapse: collapse;">
     <tr>        
         <td valign="top" align="center" nowrap><b>{$translate_workorder_print_workorder_details_title}</b></td>        
@@ -112,61 +112,6 @@
                     <td><div>{$single_work_order[i].WORK_ORDER_DESCRIPTION}</div></td>
                 </tr>
             </table>
-                
-            <!-- Comments -->
-            <hr>
-            <table border="0" cellpadding="4" cellspacing="0">
-                <tr>
-                    <td><b>{$translate_workorder_details_comments_title}:</b></td>
-                </tr>
-                <tr>
-                    <td><div style="min-height: 300px;">{$single_work_order[i].WORK_ORDER_COMMENT}</div></td>
-                </tr>
-            </table>
-                                
-            <!-- Resolution -->
-            <hr>
-            <table border="0" cellpadding="4" cellspacing="0">
-                <tr>
-                    <td><b>{$translate_workorder_details_resolution_title}:</b></td>
-                </tr>
-                {section name=r loop=$work_order_resolution}  
-                <tr>                                    
-                    {if $work_order_resolution[r].EMPLOYEE_DISPLAY_NAME != ''}                            
-                    <td><b>{$translate_workorder_closed_by}:</b>{$work_order_resolution[r].EMPLOYEE_DISPLAY_NAME} on <b>Date: </b>{$work_order_resolution[r].WORK_ORDER_CLOSE_DATE|date_format:$date_format}</td>                                                       
-                    {/if}
-                </tr>
-                <tr>
-                    <td><div style="min-height: 150px;">{$work_order_resolution[r].WORK_ORDER_RESOLUTION}</div></td>                 
-                </tr>
-                {/section}   
-            </table>
-            
-            <!-- Notes -->
-            <hr>
-            <table border="0" cellpadding="4" cellspacing="0">
-                <tr>
-                    <td><b>{$translate_workorder_details_notes_title}:</b></td>
-                </tr>
-                {section name=b loop=$work_order_notes}                        
-                {if $work_order_notes[b].WORK_ORDER_NOTES_DESCRIPTION != ''} 
-                <tr>
-                    <td>
-                        <p>
-                            ------------------------------------------------------------------------------------<br>
-                            {$translate_workorder_print_this_note_was_created_by} <b>{$translate_workorder_technician}: </b>{$work_order_notes[b].EMPLOYEE_DISPLAY_NAME} {$translate_workorder_on} <b>{$translate_workorder_date}: </b> {$work_order_notes[b].WORK_ORDER_NOTES_DATE|date_format:"$date_format %R"}
-                        </p>
-                        <div>{$work_order_notes[b].WORK_ORDER_NOTES_DESCRIPTION}</div>                       
-                    </td>
-                </tr>
-                {else}
-                    <tr>
-                        <td><div>{$translate_workorder_print_there_are_no_notes}</div></td>
-                    </tr>                   
-                {/if}
-                {/section}
-            </table>                    
-        </td>
         
         <!-- Right Column -->
         <td valign="top" width="20%">
@@ -205,51 +150,8 @@
                     <td><b>{$translate_workorder_last_change}:</b></td>
                     <td>{$single_work_order[i].LAST_ACTIVE|date_format:"$date_format"}</td>
                 </tr>
-            </table>
-                
-            <!-- Service Time -->
-            <hr>
-            <table width="100%" border="0" cellpadding="4" cellspacing="0">
-                <tr>
-                    <td align="center" colspan="2"><b>{$translate_workorder_print_service_times_title}</b></td>
-                </tr>
-                <tr>
-                    <td><b>{$translate_workorder_print_departed}</b></td>
-                    <td>___/____/____ __:__</td>
-                </tr>
-                <tr>
-                    <td><b>{$translate_workorder_print_started_wo}</b></td>
-                    <td>___/____/____ __:__</td>
-                </tr>
-                <tr>
-                    <td><b>{$translate_workorder_print_finished_wo}</b></td>
-                    <td>___/____/____ __:__</td>
-                </tr>
-                <tr>
-                    <td><b>{$translate_workorder_print_returned}</b></td>
-                    <td>___/____/____ __:__</td>
-                </tr>
-            </table>
-            
-            <!-- Schedule -->
-            <hr>
-            <table width="100%" cellpadding="4" cellspacing="0" border="0">
-                <tr>
-                    <td align="center"><b>{$translate_workorder_print_schedule_title}</b></td>
-                </tr><tr>
-                    <td>
-                        {section name=e loop=$work_order_schedule}
-                            <b>{$translate_workorder_start_time}:</b> {$work_order_schedule[e].SCHEDULE_START|date_format:"$date_format %R"}<br>
-                            <b>{$translate_workorder_end_time}:</b> {$work_order_schedule[e].SCHEDULE_END|date_format:"$date_format %R"}<br>
-                            <b>{$translate_workorder_schedule_notes}:</b><br>
-                            <div>{$work_order_schedule[e].SCHEDULE_NOTES}</div>
-                        {sectionelse}
-                            {$translate_workorder_print_no_schedule_has_been_set}
-                        {/section}
-                    </td>
-                </tr>
-            </table>
-            
+            </table>                
+        
             <!-- Signatures -->
             <hr>
             <table width="100%" border="0" cellpadding="4" cellspacing="0">
@@ -272,16 +174,84 @@
                     <td><b>{$translate_workorder_print_signature}</b></td>
                     <td>__________________</td>
                 </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                </tr>
             </table>                    
                     
         </td>
     </tr>
 </table>
 
+<!-- Equipment Receipt -->
+<table width="900" border="1" cellpadding="2" cellspacing="0" style="border-collapse: collapse;">   
+    <tr border="0">
+        <td border="0" align="center"><b>{$translate_workorder_print_equipment_receipt_title}</b></td>
+    </tr>
+    <tr>
+        <td border="0" align="center">{$translate_workorder_print_equipment_receipt_content}</td>        
+    </tr>
+    <tr>
+        <td>
+            <br>
+            <table width="100%" align="center" border="0" cellpadding="2" cellspacing="0" style="border-collapse: collapse;">
+                <tr>
+                    <td>
+                        {$translate_workorder_description} : <input type="text" size="40" name="ddt1"><br><br>
+                        {$translate_workorder_description} : <input type="text" size="40" name="ddt2"><br><br>
+                        {$translate_workorder_description} : <input type="text" size="40" name="ddt3"><br><br>
+                        {$translate_workorder_description} : <input type="text" size="40" name="ddt4"><br><br>
+                        {$translate_workorder_description} : <input type="text" size="40" name="ddt5"><br><br>                                                                     
+                    </td>
+                    <td>
+                        {$translate_workorder_print_make_model} : <input type="text" size="40" name="ddt1"><br><br>
+                        {$translate_workorder_print_make_model} : <input type="text" size="40" name="ddt2"><br><br>
+                        {$translate_workorder_print_make_model} : <input type="text" size="40" name="ddt3"><br><br>
+                        {$translate_workorder_print_make_model} : <input type="text" size="40" name="ddt4"><br><br>
+                        {$translate_workorder_print_make_model} : <input type="text" size="40" name="ddt5"><br><br>                                                                       
+                    </td>
+                    <td>
+                        {$translate_workorder_qty} : <input type="text" size="3" name="tt1"><br><br>
+                        {$translate_workorder_qty} : <input type="text" size="3" name="tt2"><br><br>
+                        {$translate_workorder_qty} : <input type="text" size="3" name="tt3"><br><br>
+                        {$translate_workorder_qty} : <input type="text" size="3" name="tt4"><br><br>
+                        {$translate_workorder_qty} : <input type="text" size="3" name="tt5"><br><br>                                                                    
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>  
+</table>
+<!-- Disclaimer -->
+<table width="900" border="1" cellpadding="2" cellspacing="0" style="border-collapse: collapse;">   
+    <tr border="0">
+        <td border="0" align="center"><b>{$translate_workorder_print_disclaimer_title}</b></td>
+    </tr>
+    <tr>
+        <td border="0" align="center">{$translate_workorder_print_disclaimer_content}</td>        
+    </tr>
+</table>
+    
+<!-- Important Notes -->
+<table width="900" border="1" cellpadding="2" cellspacing="0" style="border-collapse: collapse;">   
+    <tr border="0">
+        <td border="0" align="center">
+            <b>{$translate_workorder_print_important_notes_title}</b></td>
+    </tr>
+    <tr>
+        <td border="0">{$translate_workorder_print_important_notes_content}</td>        
+    </tr>
+</table>
+    
 <!-- Footer -->
 <table width="900" border="1" cellpadding="2" cellspacing="0" style="border-collapse: collapse;">   
     <tr border="0">
-        <td colspan="3" border="0" align="center">{$translate_workorder_print_this_workorder_is_confidential}</td>
+        <td border="0" align="center">{$translate_workorder_print_this_workorder_is_confidential}</td>
     </tr>
 </table>
+
+        
+        
+        
+        
 {/section}

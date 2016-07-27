@@ -903,7 +903,7 @@
         <workorder_records_found>Records Found</workorder_records_found>
         <workorder_warning>Warning</workorder_warning>        
         <workorder_employee>Employee</workorder_employee>
-        <workorder_technician>Technician</workorder_technician>
+        <workorder_technician>Technician</workorder_technician>        
         
         // Buttons
         <workorder_submit>Submit</workorder_submit>
@@ -1087,6 +1087,23 @@
         <workorder_print_signatures_title>Signatures</workorder_print_signatures_title>
         <workorder_print_client_name>Client Name</workorder_print_client_name>
         <workorder_print_signature>Signature</workorder_print_signature>
+        
+            // Equipment Receipt
+        <workorder_print_equipment_receipt_title>Equipment Receipt</workorder_print_equipment_receipt_title>
+        <workorder_print_equipment_receipt_content>Below is a list of the equipment you have left with us. Please check and make sure the list is correct as it cannot be remedied later.</workorder_print_equipment_receipt_content>
+        
+        <workorder_qty>Qty</workorder_qty> 
+        <workorder_description>Description</workorder_description>
+        <workorder_print_make_model>Make/Model</workorder_print_make_model>
+        
+            // Disclaimer
+        <workorder_print_disclaimer_title>Disclaimer</workorder_print_disclaimer_title>
+        <workorder_print_disclaimer_content>We have a duty of care to preserve your computers data whilst we are servicing it, however it is the customers responsibilty to ensure that this data is reliably backed before work is started just incase data loss should occur. If you do not agree to these terms you cannot use our services.</workorder_print_disclaimer_content>
+        
+            // Important Notes
+        <workorder_print_important_notes_title>Important Notes</workorder_print_important_notes_title>
+        <workorder_print_important_notes_content>&lt;ul&gt;&lt;li&gt;Please hold onto this receipt as proof of service request&lt;/li&gt;&lt;li&gt;This document (copies will not be accepted) MUST be produce this at time of pickup. If this can&#39;t be provided then photo identification is required.&lt;/li&gt;&lt;/ul&gt;</workorder_print_important_notes_content>
+                    
         
             // Footer
         <workorder_print_this_workorder_is_confidential>This Workorder is confidential and contains privileged information.</workorder_print_this_workorder_is_confidential>
