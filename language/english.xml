@@ -859,6 +859,32 @@
         <supplier_delete_mes_recordnotdeleted>Record Not Deleted</supplier_delete_mes_recordnotdeleted>
 
         
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
 
         // -- Workorder Module
 
@@ -873,10 +899,12 @@
         <workorder_for>for</workorder_for>        
         <workorder_page>Page</workorder_page>
         <workorder_of>Of</workorder_of>
+        <workorder_on>on</workorder_on>
         <workorder_records_found>Records Found</workorder_records_found>
         <workorder_warning>Warning</workorder_warning>        
-        <workorder_employee>Employee</workorder_employee> 
-
+        <workorder_employee>Employee</workorder_employee>
+        <workorder_technician>Technician</workorder_technician>
+        
         // Buttons
         <workorder_submit>Submit</workorder_submit>
 
@@ -897,7 +925,7 @@
         <workorder_status>Status</workorder_status>        
         <workorder_unpaid>Unpaid</workorder_unpaid>
           
-        // Messages
+        // WO Messages
         <workorder_msg_there_are_no_new_work_orders>There are No new Work Orders</workorder_msg_there_are_no_new_work_orders>
         <workorder_msg_there_are_no_assigned_work_orders>There are No Assigned Work Orders</workorder_msg_there_are_no_assigned_work_orders>
         <workorder_msg_there_are_no_unpaid_work_orders>There are No Unpaid Work Orders</workorder_msg_there_are_no_unpaid_work_orders>
@@ -919,7 +947,7 @@
         <workorder_action>Action</workorder_action>
         <workorder_entered_by>Entered By</workorder_entered_by>        
 
-        // Invoicing / Parts
+        // Invoicing / Shipping
         <workorder_invoice>Invoice</workorder_invoice>
         <workorder_discount>Discount</workorder_discount>        
         <workorder_sub_total>Sub Total</workorder_sub_total>
@@ -927,31 +955,35 @@
         <workorder_total>Total</workorder_total>
         <workorder_tracking>Tracking</workorder_tracking>        
         <workorder_get_tracking>Get Tracking</workorder_get_tracking>
-        <workorder_date>Date</workorder_date>        
-
+        
         // Scheduling
+        <workorder_date>Date</workorder_date>
         <workorder_start>Start</workorder_start>         
         <workorder_end>End</workorder_end>
-        <workorder_schedule>Schedule</workorder_schedule>   
+        <workorder_schedule>Schedule</workorder_schedule>
+        <workorder_todays_date>Today&#39;s Date</workorder_todays_date>
+        <workorder_start_time>Start Time</workorder_start_time>
+        <workorder_end_time>End Time</workorder_end_time>
+        <workorder_schedule_notes>Schedule Notes</workorder_schedule_notes>
 
         // Customer Type
         <workorder_type>Type</workorder_type>
-        <workorder_type_1>Residential</workorder_type_1>
-        <workorder_type_2>Commercial</workorder_type_2>
-        <workorder_type_3>Charity</workorder_type_3>
-        <workorder_type_4>Educational</workorder_type_4>
-        <workorder_type_5>Governmental</workorder_type_5>
-        <workorder_type_6>-</workorder_type_6>
-        <workorder_type_7>-</workorder_type_7>
-        <workorder_type_8>-</workorder_type_8>
-        <workorder_type_9>-</workorder_type_9>
-        <workorder_type_10>-</workorder_type_10>
+        <workorder_customer_type_1>Residential</workorder_customer_type_1>
+        <workorder_customer_type_2>Commercial</workorder_customer_type_2>
+        <workorder_customer_type_3>Charity</workorder_customer_type_3>
+        <workorder_customer_type_4>Educational</workorder_customer_type_4>
+        <workorder_customer_type_5>Governmental</workorder_customer_type_5>
+        <workorder_customer_type_6>-</workorder_customer_type_6>
+        <workorder_customer_type_7>-</workorder_customer_type_7>
+        <workorder_customer_type_8>-</workorder_customer_type_8>
+        <workorder_customer_type_9>-</workorder_customer_type_9>
+        <workorder_customer_type_10>-</workorder_customer_type_10>
 
         // Customer Details
         <workorder_customer_details>Customer Details</workorder_customer_details>
         <workorder_email>Email</workorder_email>
         <workorder_credit_terms>Credit Terms</workorder_credit_terms>
-        <workorder_www>Website</workorder_www>
+        <workorder_website>Website</workorder_website>
         <workorder_address>Address</workorder_address>
         <workorder_phone>Phone</workorder_phone>
         <workorder_work>Work</workorder_work>
@@ -963,7 +995,7 @@
         <workorder_contact>Contact</workorder_contact>
         <workorder_first_name>First Name</workorder_first_name>
         <workorder_last_name>Last Name</workorder_last_name>        
-        <workorder_last_activity>Last Activity</workorder_last_activity>
+        <workorder_last_activity>Last Activity</workorder_last_activity>        
 
         // Misc Tooltips
         <workorder_contact_info_tooltip_title>Contact Info</workorder_contact_info_tooltip_title>
@@ -1015,17 +1047,70 @@
         <workorder_details_schedule_title>Schedule</workorder_details_schedule_title>
         <workorder_details_schedule_button_tooltip>Create a New Schedule</workorder_details_schedule_button_tooltip>        
 
-        // New Page
-        <workorder_new_title>New Work Order</workorder_new_title>
-        <workorder_new_help_title>New Work Order Help</workorder_new_help_title>
-        <workorder_new_help_content>Create new Work Orders here.</workorder_new_help_content>               
+        // New
+        <workorder_new_title>New Workorder</workorder_new_title>
+        <workorder_new_help_title>New Workorder Help</workorder_new_help_title>
+        <workorder_new_help_content>Create new Workorders here.</workorder_new_help_content>               
 
-        // Open Page
-        <workorder_open_title>Open Work Orders</workorder_open_title>
-        <workorder_open_help_title>Open Work Orders Help</workorder_open_help_title>
-        <workorder_open_help_content>Double Click on an empty space in each row to go directly to the work order. &lt;br&gt;&lt;br&gt;Hover over the magnifying glass under Customer to view the Quick Contact Information. Click on the Customers name to view the customers details.&lt;br&gt;&lt;br&gt;Click on the status of each work order listed to update the curent work order status.&lt;br&gt;&lt;br&gt;Hover over the Magnifying Glass under the Employee to view the Quick Contact Information for the assigned employee. Click on the employees name to view the details.&lt;br&gt;&lt;br&gt;Under Action click the Printer Icon to print the work order. Click the Magnifying Glass to view the work order. Click the Red Stop sign to close the work order and start the invoicing.</workorder_open_help_content>
+        // Open
+        <workorder_open_title>Open Workorders</workorder_open_title>
+        <workorder_open_help_title>Open Workorders Help</workorder_open_help_title>
+        <workorder_open_help_content>Double Click on an empty space in each row to go directly to the work order. &lt;br&gt;&lt;br&gt;Hover over the magnifying glass under Customer to view the Quick Contact Information. Click on the Customers name to view the customers details.&lt;br&gt;&lt;br&gt;Click on the status of each workorder listed to update the curent workorder status.&lt;br&gt;&lt;br&gt;Hover over the Magnifying Glass under the Employee to view the Quick Contact Information for the assigned employee. Click on the employees name to view the details.&lt;br&gt;&lt;br&gt;Under Action click the Printer Icon to print the workorder. Click the Magnifying Glass to view the workorder. Click the Red Stop sign to close the workorder and start the invoicing.</workorder_open_help_content>
 
-        // Print Template - add this last
+        // Print - Workorder Slip Templates
+        
+            // Document Title
+        <workorder_print_technician_workorder_slip_title>Technician Workorder Slip</workorder_print_technician_workorder_slip_title>
+        <workorder_print_customer_workorder_slip_title>Customer Workorder Slip</workorder_print_customer_workorder_slip_title>
+        
+            // Details Titles
+        <workorder_print_customer_details_title>Customer Details</workorder_print_customer_details_title>        
+        <workorder_print_company_details_title>Company Details</workorder_print_company_details_title> 
+        
+            // Workorder Details
+        <workorder_print_workorder_details_title>Workorder Details</workorder_print_workorder_details_title>
+        <workorder_print_this_note_was_created_by>This note was created by</workorder_print_this_note_was_created_by>
+        <workorder_print_there_are_no_notes>There are no notes.</workorder_print_there_are_no_notes>
+        
+            // Summary        
+        <workorder_print_summary_title>Summary</workorder_print_summary_title> 
+        
+        <workorder_print_service_times_title>Service Times</workorder_print_service_times_title>
+        
+        <workorder_print_schedule_title>Schedule</workorder_print_schedule_title>
+        <workorder_print_departed>Departed</workorder_print_departed>
+        <workorder_print_started_wo>Started WO</workorder_print_started_wo>
+        <workorder_print_finished_wo>Finished WO</workorder_print_finished_wo>
+        <workorder_print_returned>Returned</workorder_print_returned>
+        <workorder_print_no_schedule_has_been_set>No schedule has been set. Click the day on the calendar you want to set the schedule.</workorder_print_no_schedule_has_been_set>N
+        
+        <workorder_print_signatures_title>Signatures</workorder_print_signatures_title>
+        <workorder_print_client_name>Client Name</workorder_print_client_name>
+        <workorder_print_signature>Signature</workorder_print_signature>
+        
+            // Footer
+        <workorder_print_this_workorder_is_confidential>This Workorder is confidential and contains privileged information.</workorder_print_this_workorder_is_confidential>
+        
+        
+        
+        
+        
+
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
 
         // Resolution  
         <workorder_details_resolution_title>Resolution</workorder_details_resolution_title>

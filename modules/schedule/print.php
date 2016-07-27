@@ -194,4 +194,4 @@ $smarty->assign('cur_date', $cur_date);
 $smarty->assign('d', $d);
 $smarty->assign('m', $m);
 $smarty->assign('y', $y);
-$smarty->display('schedule'.SEP.'print.tpl');
+$smarty->display('schedule'.SEP.'print_technician_wo_slip.tpl');

@@ -44,12 +44,8 @@
                                 <td class="olotd4">{$currency_sym}{$order[p].TOTAL}</td>
                                 <td class="olotd4">{if $order[p].TRACKING_NO == 0} <a href="">{$translate_workorder_get_tracking}{else} {$order[p].TRACKING_NO} {/if}</td>
                                 <td class="olotd4">
-                                    {if $order[p].STATUS == '1'}
-                                        {$translate_workorder_open}
-                                    {/if}
-                                    {if $order[p].STATUS == '0'}    
-                                        {$translate_workorder_closed}
-                                    {/if}
+                                    {if $order[p].STATUS == '1'}{$translate_workorder_open}{/if}
+                                    {if $order[p].STATUS == '0'}{$translate_workorder_closed}{/if}
                                 </td>
                             </tr>
                         </table>

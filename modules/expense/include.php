@@ -211,7 +211,7 @@ $expenseItems_string = stripslashes($expenseItems_string);
 } 
 
 #####################################
-#    Delete Record               #
+#    Delete Record                  #
 #####################################
 
 function delete_expense($db, $expenseID){

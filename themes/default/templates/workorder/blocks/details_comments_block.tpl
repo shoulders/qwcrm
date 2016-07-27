@@ -25,15 +25,12 @@
         </td>
     </tr>
     <tr>
-    {if $hide_work_order_comment == 1}
-    {else}
         <td class="menutd">
             <table width="100%" cellpadding="4" cellspacing="0">
                 <tr>
                     <td>{$single_workorder_array[i].WORK_ORDER_COMMENT}<br></td>
                 </tr>
             </table>    
-        </td>
-    {/if}
+        </td>    
     </tr>
 </table>

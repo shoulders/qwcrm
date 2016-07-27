@@ -87,7 +87,6 @@ $smarty->assign('company_country', $rs->fields['COMPANY_COUNTRY']);
 $smarty->assign('company_phone',$rs->fields['COMPANY_PHONE']);
 $smarty->assign('company_email',$rs->fields['COMPANY_EMAIL']);
 $smarty->assign('company_mobile',$rs->fields['COMPANY_MOBILE']);
-$smarty->assign('company_toll_free',$rs->fields['COMPANY_TOLL_FREE']);
 $smarty->assign('company_logo',$rs->fields['COMPANY_LOGO']);
 $smarty->assign('currency_sym',$rs->fields['COMPANY_CURRENCY_SYMBOL']);
 $smarty->assign('currency_code',$rs->fields['COMPANY_CURRENCY_CODE']);
@@ -184,6 +183,7 @@ if(isset($VAR['msg'])) {
     $smarty->assign('msg', $VAR['msg']);
 }
 
+// If escape=1 varible is set do not load the template wrapper - useful for printing
 if($VAR['escape'] != 1 ) {
     require('modules'.SEP.'core'.SEP.'header.php');
     require('modules'.SEP.'core'.SEP.'navigation.php');

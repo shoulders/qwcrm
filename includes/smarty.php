@@ -33,6 +33,7 @@ $smarty->assign('theme_dir', THEME_DIR); // set template directory
 $smarty->assign('theme_images_dir', THEME_IMAGES_DIR); // set template images directory
 $smarty->assign('theme_css_dir', THEME_CSS_DIR); // set template CSS directory
 $smarty->assign('theme_js_dir', THEME_JS_DIR); // set template JS directory
+$smarty->assign('root_media_dir', ROOT_MEDIA_DIR); // set template JS directory
 
 /* create adodb database connection */
 $db = &ADONewConnection('mysqli');

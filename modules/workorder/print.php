@@ -1,7 +1,7 @@
 <?php
 require_once('include.php');
 
-if(!xml2php("workorder")) {
+if(!xml2php('workorder')) {
     $smarty->assign('error_msg',"Error in language file");
 }
 
@@ -15,40 +15,86 @@ if(!$single_work_order = display_single_open_workorder($db, $VAR['wo_id'])){
     $rs = $db->execute($q);
     $company = $rs->GetArray();
 
-    /* Work order notes */
+    /* work order notes */
     $work_order_notes = display_workorder_notes($db, $VAR['wo_id']);
 
     /* work order Status */
     $work_order_status = display_workorder_status($db, $VAR['wo_id']);
     
     /* work order schedule */
-    $work_order_sched = get_work_order_schedule ($db, $VAR['wo_id']);
+    $work_order_schedule = get_work_order_schedule($db, $VAR['wo_id']);
     
     /* work order resolution */
-    $work_order_res = display_resolution($db,$VAR['wo_id']);
+    $work_order_resolution = display_resolution($db,$VAR['wo_id']);
 
 }
 
-/* get printing options */
+$smarty->assign('company',                  $company                );
+$smarty->assign('single_work_order',        $single_work_order      );
+$smarty->assign('work_order_notes',         $work_order_notes       );
+$smarty->assign('work_order_status',        $work_order_status      );
+$smarty->assign('work_order_schedule',      $work_order_schedule    );
+$smarty->assign('work_order_resolution',    $work_order_resolution  ); 
+
+/* Technician Work Order Slip Print Routine */
+if($VAR['print_content'] == 'technician_wo_slip') {
+    if ($VAR['print_output_method'] == 'html') {
+        $smarty->display('workorder/print_technician_wo_slip.tpl');
+    } elseif ($VAR['print_output_method'] == 'pdf') {        
+        $pdf_output = $smarty->fetch('workorder/print_technician_wo_slip.tpl');
+        // add pdf creation routing here
+    } elseif ($VAR['print_output_method'] == 'email_pdf') {        
+        $pdf_output = $smarty->fetch('workorder/print_technician_wo_slip.tpl');
+        // add pdf creation routing here
+    }
+}
+
+/* Customer Work Order Slip Print Routine */
+if($VAR['print_content'] == 'customer_wo_slip') {
+    if ($VAR['print_output_method'] == 'html') {
+        $smarty->display('workorder/print_customer_wo_slip.tpl');
+    } elseif ($VAR['print_output_method'] == 'pdf') {        
+        $pdf_output = $smarty->fetch('workorder/print_customer_wo_slip.tpl');
+        // add pdf creation routing here
+    } elseif ($VAR['print_output_method'] == 'email_pdf') {        
+        $pdf_output = $smarty->fetch('workorder/print_customer_wo_slip.tpl');
+        // add pdf creation routing here
+    }
+}
+
+/* Error Catcher - if nothing is done run this - CHANGE MESSAGE */
+if($VAR['print_content'] == '' || $VAR['print_output_method'] == '') {
+    force_page('core', "error&menu=1&error_msg=No Printing Options set. Please set up printing options in the Control Center.&type=error");
+    exit;
+}
+
+
+/* remove all of this pdf shite - THROUGH MYITCRM AND THE DATABASE */
+
+
+
+
+
+
+
+
+
+
+
+
+/* get printing options 
 $q = "SELECT  HTML_PRINT, PDF_PRINT FROM ".PRFX."SETUP";
 $rs = $db->execute($q);
 $html_print = $rs->fields['HTML_PRINT'];
 $pdf_print  = $rs->fields['PDF_PRINT'];
+//if($html_print == 1) */
 
-if($html_print == 1) {
-    /* htm print page */
-    $smarty->assign('company',                  $company);
-    $smarty->assign('single_workorder_array',   $single_work_order);
-    $smarty->assign('work_order_notes',         $work_order_notes );
-    $smarty->assign('work_order_status',        $work_order_status);
-    $smarty->assign('work_order_sched',         $work_order_sched);
-    $smarty->assign('work_order_res',           $work_order_res);        
-    $smarty->display('workorder/print.tpl');
-    
+
+/*
 } else if ($pdf_print == 1) {
     
     /* create pdf */
-    require(INCLUDES_DIR.SEP.'fpdf'.SEP.'fpdf.php');
+ /*   require(INCLUDES_DIR.SEP.'fpdf'.SEP.'fpdf.php');
     class PDF extends FPDF {
         
         // Page header
@@ -77,9 +123,11 @@ if($html_print == 1) {
     $pdf->SetFont('Times','',12);
     $pdf->Cell(0,10,'',1,1);
     $pdf->Cell(10,0,$work_order_notes,1,1);
-    $pdf->Output();
-    
+    $pdf->Output();*/
+
+
+/*
 } else {
     force_page('core', "error&menu=1&error_msg=No Printing Options set. Please set up printing options in the Control Center.&type=error");
     exit;
-}
+}*/

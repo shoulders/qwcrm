@@ -196,16 +196,16 @@
                             <tr>
                                 <td class="menutd"><b>{$translate_workorder_type}</b></td>
                                 <td class="menutd">
-                                    {if $customer_details[i].CUSTOMER_TYPE ==1}{$translate_workorder_type_1}{/if}
-                                    {if $customer_details[i].CUSTOMER_TYPE ==2}{$translate_workorder_type_2}{/if}
-                                    {if $customer_details[i].CUSTOMER_TYPE ==3}{$translate_workorder_type_3}{/if}
-                                    {if $customer_details[i].CUSTOMER_TYPE ==4}{$translate_workorder_type_4}{/if}
-                                    {if $customer_details[i].CUSTOMER_TYPE ==5}{$translate_workorder_type_5}{/if}
-                                    {if $customer_details[i].CUSTOMER_TYPE ==6}{$translate_workorder_type_6}{/if}
-                                    {if $customer_details[i].CUSTOMER_TYPE ==7}{$translate_workorder_type_7}{/if}
-                                    {if $customer_details[i].CUSTOMER_TYPE ==8}{$translate_workorder_type_8}{/if}
-                                    {if $customer_details[i].CUSTOMER_TYPE ==9}{$translate_workorder_type_9}{/if}
-                                    {if $customer_details[i].CUSTOMER_TYPE ==10}{$translate_workorder_type_10}{/if}
+                                    {if $customer_details[i].CUSTOMER_TYPE =='1'}{$translate_workorder_customer_type_1}{/if}
+                                    {if $customer_details[i].CUSTOMER_TYPE =='2'}{$translate_workorder_customer_type_2}{/if}
+                                    {if $customer_details[i].CUSTOMER_TYPE =='3'}{$translate_workorder_customer_type_3}{/if}
+                                    {if $customer_details[i].CUSTOMER_TYPE =='4'}{$translate_workorder_customer_type_4}{/if}
+                                    {if $customer_details[i].CUSTOMER_TYPE =='5'}{$translate_workorder_customer_type_5}{/if}
+                                    {if $customer_details[i].CUSTOMER_TYPE =='6'}{$translate_workorder_customer_type_6}{/if}
+                                    {if $customer_details[i].CUSTOMER_TYPE =='7'}{$translate_workorder_customer_type_7}{/if}
+                                    {if $customer_details[i].CUSTOMER_TYPE =='8'}{$translate_workorder_customer_type_8}{/if}
+                                    {if $customer_details[i].CUSTOMER_TYPE =='9'}{$translate_workorder_customer_type_9}{/if}
+                                    {if $customer_details[i].CUSTOMER_TYPE =='10'}{$translate_workorder_customer_type_10}{/if}
                                 </td>
                                 <td class="menutd"></td>
                                 <td class="menutd"></td>
