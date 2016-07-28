@@ -858,40 +858,12 @@
         <supplier_delete_mes_recorddeleted>Record Deleted</supplier_delete_mes_recorddeleted>
         <supplier_delete_mes_recordnotdeleted>Record Not Deleted</supplier_delete_mes_recordnotdeleted>
 
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-
         // -- Workorder Module
 
         //// Common
 
         // General / Miscellaneous
-        <workorder_work_order>Work Order</workorder_work_order>
+        <workorder_workorder>Work Order</workorder_workorder>
         <workorder_work_order_id>Work Order ID</workorder_work_order_id>        
         <workorder_print_work_order>Print Work Order</workorder_print_work_order>
         <workorder_print_work_order_id>Print Work Order ID</workorder_print_work_order_id>        
@@ -955,6 +927,7 @@
         <workorder_total>Total</workorder_total>
         <workorder_tracking>Tracking</workorder_tracking>        
         <workorder_get_tracking>Get Tracking</workorder_get_tracking>
+        <workorder_qty>Qty</workorder_qty> 
         
         // Scheduling
         <workorder_date>Date</workorder_date>
@@ -1057,11 +1030,12 @@
         <workorder_open_help_title>Open Workorders Help</workorder_open_help_title>
         <workorder_open_help_content>Double Click on an empty space in each row to go directly to the work order. &lt;br&gt;&lt;br&gt;Hover over the magnifying glass under Customer to view the Quick Contact Information. Click on the Customers name to view the customers details.&lt;br&gt;&lt;br&gt;Click on the status of each workorder listed to update the curent workorder status.&lt;br&gt;&lt;br&gt;Hover over the Magnifying Glass under the Employee to view the Quick Contact Information for the assigned employee. Click on the employees name to view the details.&lt;br&gt;&lt;br&gt;Under Action click the Printer Icon to print the workorder. Click the Magnifying Glass to view the workorder. Click the Red Stop sign to close the workorder and start the invoicing.</workorder_open_help_content>
 
-        // Print - Workorder Slip Templates
+        // Print
         
-            // Document Title
+            // Document Titles
         <workorder_print_technician_workorder_slip_title>Technician Workorder Slip</workorder_print_technician_workorder_slip_title>
         <workorder_print_customer_workorder_slip_title>Customer Workorder Slip</workorder_print_customer_workorder_slip_title>
+        <workorder_print_job_sheet_title>Job Sheet</workorder_print_job_sheet_title>
         
             // Details Titles
         <workorder_print_customer_details_title>Customer Details</workorder_print_customer_details_title>        
@@ -1074,16 +1048,13 @@
         
             // Summary        
         <workorder_print_summary_title>Summary</workorder_print_summary_title> 
-        
         <workorder_print_service_times_title>Service Times</workorder_print_service_times_title>
-        
         <workorder_print_schedule_title>Schedule</workorder_print_schedule_title>
         <workorder_print_departed>Departed</workorder_print_departed>
         <workorder_print_started_wo>Started WO</workorder_print_started_wo>
         <workorder_print_finished_wo>Finished WO</workorder_print_finished_wo>
         <workorder_print_returned>Returned</workorder_print_returned>
         <workorder_print_no_schedule_has_been_set>No schedule has been set. Click the day on the calendar you want to set the schedule.</workorder_print_no_schedule_has_been_set>N
-        
         <workorder_print_signatures_title>Signatures</workorder_print_signatures_title>
         <workorder_print_client_name>Client Name</workorder_print_client_name>
         <workorder_print_signature>Signature</workorder_print_signature>
@@ -1091,9 +1062,7 @@
             // Equipment Receipt
         <workorder_print_equipment_receipt_title>Equipment Receipt</workorder_print_equipment_receipt_title>
         <workorder_print_equipment_receipt_content>Below is a list of the equipment you have left with us. Please check and make sure the list is correct as it cannot be remedied later.</workorder_print_equipment_receipt_content>
-        
-        <workorder_qty>Qty</workorder_qty> 
-        <workorder_description>Description</workorder_description> //should i use the details title
+        <workorder_print_description>Description</workorder_print_description>
         <workorder_print_make_model>Make/Model</workorder_print_make_model>
         
             // Disclaimer
@@ -1103,34 +1072,14 @@
             // Important Notes
         <workorder_print_important_notes_title>Important Notes</workorder_print_important_notes_title>
         <workorder_print_important_notes_content>&lt;ul&gt;&lt;li&gt;Please hold onto this receipt as proof of service request&lt;/li&gt;&lt;li&gt;This document (copies will not be accepted) MUST be produce this at time of pickup. If this can&#39;t be provided then photo identification is required.&lt;/li&gt;&lt;/ul&gt;</workorder_print_important_notes_content>
-                    
-        
+           
             // Footer
         <workorder_print_this_workorder_is_confidential>This Workorder is confidential and contains privileged information.</workorder_print_this_workorder_is_confidential>
         
-        // Print - Job Sheet Template
-            // Document Title
-        <workorder_print_job_sheet_title>Job Sheet</workorder_print_job_sheet_slip_title>        
+            // Job Sheet Template     
+        <workorder_print_parts_used>Parts Used</workorder_print_parts_used>
+        <workorder_print_required_passwords>Required Passwords</workorder_print_required_passwords>
         
-        
-        
-
-
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-
         // Resolution  
         <workorder_details_resolution_title>Resolution</workorder_details_resolution_title>
         <workorder_details_edit_resolution_help_title>Edit Resolution Help</workorder_details_edit_resolution_help_title>
@@ -1148,7 +1097,4 @@
         <workorder_status_update_work_order_status_for_work_order_id>Update Work Order Status For Work Order ID</workorder_status_update_work_order_status_for_work_order_id>
         <workorder_status_new_status>New Status</workorder_status_new_status>  
 
-      
-        
-        
     </translate>

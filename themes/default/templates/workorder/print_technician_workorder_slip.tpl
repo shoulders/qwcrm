@@ -133,7 +133,7 @@
                 {section name=r loop=$work_order_resolution}  
                 <tr>                                    
                     {if $work_order_resolution[r].EMPLOYEE_DISPLAY_NAME != ''}                            
-                    <td><b>{$translate_workorder_closed_by}:</b>{$work_order_resolution[r].EMPLOYEE_DISPLAY_NAME} on <b>Date: </b>{$work_order_resolution[r].WORK_ORDER_CLOSE_DATE|date_format:$date_format}</td>                                                       
+                    <td><b>{$translate_workorder_closed_by}:</b>{$work_order_resolution[r].EMPLOYEE_DISPLAY_NAME} on <b>{$translate_workorder_date}: </b>{$work_order_resolution[r].WORK_ORDER_CLOSE_DATE|date_format:$date_format}</td>                                                       
                     {/if}
                 </tr>
                 <tr>

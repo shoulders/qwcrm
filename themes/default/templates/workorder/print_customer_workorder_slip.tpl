@@ -197,11 +197,11 @@
             <table width="100%" align="center" border="0" cellpadding="2" cellspacing="0" style="border-collapse: collapse;">
                 <tr>
                     <td>
-                        {$translate_workorder_description} : <input type="text" size="40" name="ddt1"><br><br>
-                        {$translate_workorder_description} : <input type="text" size="40" name="ddt2"><br><br>
-                        {$translate_workorder_description} : <input type="text" size="40" name="ddt3"><br><br>
-                        {$translate_workorder_description} : <input type="text" size="40" name="ddt4"><br><br>
-                        {$translate_workorder_description} : <input type="text" size="40" name="ddt5"><br><br>                                                                     
+                        {$translate_workorder_print_description} : <input type="text" size="40" name="ddt1"><br><br>
+                        {$translate_workorder_print_description} : <input type="text" size="40" name="ddt2"><br><br>
+                        {$translate_workorder_print_description} : <input type="text" size="40" name="ddt3"><br><br>
+                        {$translate_workorder_print_description} : <input type="text" size="40" name="ddt4"><br><br>
+                        {$translate_workorder_print_description} : <input type="text" size="40" name="ddt5"><br><br>                                                                     
                     </td>
                     <td>
                         {$translate_workorder_print_make_model} : <input type="text" size="40" name="ddt1"><br><br>
