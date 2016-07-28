@@ -36,7 +36,7 @@ $smarty->assign('work_order_status',        $work_order_status      );
 $smarty->assign('work_order_schedule',      $work_order_schedule    );
 $smarty->assign('work_order_resolution',    $work_order_resolution  ); 
 
-/* Technician Work Order Slip Print Routine */
+/* Technician Workorder Slip Print Routine */
 if($VAR['print_content'] == 'technician_workorder_slip') {
     if ($VAR['print_output_method'] == 'html') {
         $smarty->display('workorder/print_technician_workorder_slip.tpl');
@@ -49,7 +49,7 @@ if($VAR['print_content'] == 'technician_workorder_slip') {
     }
 }
 
-/* Customer Work Order Slip Print Routine */
+/* Customer Workorder Slip Print Routine */
 if($VAR['print_content'] == 'customer_workorder_slip') {
     if ($VAR['print_output_method'] == 'html') {
         $smarty->display('workorder/print_customer_workorder_slip.tpl');

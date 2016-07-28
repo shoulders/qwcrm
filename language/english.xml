@@ -1093,7 +1093,7 @@
         <workorder_print_equipment_receipt_content>Below is a list of the equipment you have left with us. Please check and make sure the list is correct as it cannot be remedied later.</workorder_print_equipment_receipt_content>
         
         <workorder_qty>Qty</workorder_qty> 
-        <workorder_description>Description</workorder_description>
+        <workorder_description>Description</workorder_description> //should i use the details title
         <workorder_print_make_model>Make/Model</workorder_print_make_model>
         
             // Disclaimer
@@ -1108,7 +1108,9 @@
             // Footer
         <workorder_print_this_workorder_is_confidential>This Workorder is confidential and contains privileged information.</workorder_print_this_workorder_is_confidential>
         
-        
+        // Print - Job Sheet Template
+            // Document Title
+        <workorder_print_job_sheet_title>Job Sheet</workorder_print_job_sheet_slip_title>        
         
         
         
