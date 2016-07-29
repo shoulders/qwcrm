@@ -1,9 +1,6 @@
 <?php
-require_once('include.php');
 
-if(!xml2php('workorder')) {
-    $smarty->assign('error_msg',"Error in language file");
-}
+require_once('include.php');
 
 if(!$single_work_order = display_single_open_workorder($db, $VAR['wo_id'])){
     force_page('core', "error&menu=1&error_msg=The Work Order you Requested was not found&type=error");
@@ -80,67 +77,3 @@ if($VAR['print_content'] == '' || $VAR['print_output_method'] == '') {
     force_page('core', "error&menu=1&error_msg=No Printing Options set. Please set up printing options in the Control Center.&type=error");
     exit;
 }
-
-
-/* remove all of this pdf shite - THROUGH MYITCRM AND THE DATABASE */
-
-
-
-
-
-
-
-
-
-
-
-
-/* get printing options 
-$q = "SELECT  HTML_PRINT, PDF_PRINT FROM ".PRFX."SETUP";
-$rs = $db->execute($q);
-$html_print = $rs->fields['HTML_PRINT'];
-$pdf_print  = $rs->fields['PDF_PRINT'];
-//if($html_print == 1) */
-
-
-/*
-} else if ($pdf_print == 1) {
-    
-    /* create pdf */
- /*   require(INCLUDES_DIR.SEP.'fpdf'.SEP.'fpdf.php');
-    class PDF extends FPDF {
-        
-        // Page header
-        function Header() {
-            $this->SetFont('Arial','B',15);
-        }
-
-        // Page footer
-        function Footer(){
-            
-            //Position at 1.5 cm from bottom
-            $this->SetY(-15);
-            
-            //Arial italic 8
-            $this->SetFont('Arial','I',8);
-            
-            //Page number
-            $this->Cell(0,10,'Page '.$this->PageNo().'/{nb}',0,0,'C');
-        }
-    }
-
-    // Instantiation of inherited class
-    $pdf = new PDF();
-    $pdf->AliasNbPages();
-    $pdf->AddPage();
-    $pdf->SetFont('Times','',12);
-    $pdf->Cell(0,10,'',1,1);
-    $pdf->Cell(10,0,$work_order_notes,1,1);
-    $pdf->Output();*/
-
-
-/*
-} else {
-    force_page('core', "error&menu=1&error_msg=No Printing Options set. Please set up printing options in the Control Center.&type=error");
-    exit;
-}*/

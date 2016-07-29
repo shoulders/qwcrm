@@ -33,8 +33,12 @@ if(!is_file('cache/lock') ) {
     die;
 }
 
+
+
 $auth = new Auth($db, 'login.php', 'secret');
 require(INCLUDES_DIR.'acl.php');
+
+require(INCLUDES_DIR.'include.php');
 
 ################################################
 #   Grab &_POST and $_GET values               #

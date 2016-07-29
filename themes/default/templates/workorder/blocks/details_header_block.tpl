@@ -32,11 +32,11 @@
         </td>
         <td class="olotd4" align="center">            
             {if $single_workorder_array[i].WORK_ORDER_STATUS != 6}
-            <!-- If the assigned employee matches the $login_id or the employee id does not exist -->
-            {if $single_workorder_array[i].EMPLOYEE_ID == "$login_id" || $single_workorder_array[i].EMPLOYEE_ID == ""}
+            <!-- If the assigned employee matches the $login_id, or the employee id does not exist, or if an Admin -->
+            {if $single_workorder_array[i].EMPLOYEE_ID == "$login_id" || $single_workorder_array[i].EMPLOYEE_ID == '' || $single_workorder_array[i].EMPLOYEE_TYPE == '1'}
             <form method="POST" action="">
-                {$tech}
-                <input type="submit" name="assign" value="Update"/>
+                {$employee_list}
+                <input type="submit" name="assign_employee" value="{$translate_workorder_update}"/>
             </form>
             {else}
             <img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0"

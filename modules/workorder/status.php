@@ -1,5 +1,6 @@
 <?php
-require_once ("include.php");
+
+require_once('include.php');
 
 if(empty($VAR['wo_id'])){
     force_page('core', 'error&error_msg=No Work Order ID');

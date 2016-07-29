@@ -129,8 +129,7 @@ class Auth {
     $this->session->del('login_hash');
     $this->redirect($from);
   }
-  
- 
+   
   function redirect($from = true)
   {
     if ($from) {
@@ -141,23 +140,5 @@ class Auth {
     }
     exit();
   }
-
   
-	function force_page($page) {
-			echo("
-				<script type=\"text/javascript\">
-					<!--
-					window.location = \"$page\"
-					//-->
-				</script>");
-	}
-}
-
-function force_page($module, $cur_page) {
-    echo("
-		<script type=\"text/javascript\">
-			<!--
-			window.location = \"index.php?page=$module:$cur_page\"
-			//-->
-		</script>");
 }

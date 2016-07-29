@@ -1,9 +1,6 @@
 <?php
-if(!xml2php("workorder")) {
-    $smarty->assign('error_msg',"Error in language file");
-}
 
-require_once ("include.php");
+require_once('include.php');
 
 if(empty($VAR['wo_id'])){
     force_page('core', 'error&error_msg=No Work Order ID');

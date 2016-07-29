@@ -1,11 +1,8 @@
 <?php
+
 require_once('include.php');
 
-if(!xml2php("workorder")) {
-    $smarty->assign('error_msg',"Error in language file");
-}
-
-// Get the page number we are on if first page set to 1
+/* Get the page number we are on if first page set to 1 */
     if(!isset($VAR["page_no"])) {
         $page_no = 1;
     } else {

@@ -140,8 +140,8 @@
             <a href="http://quantumwarp.com/" target="_blank"><img src="{$theme_images_dir}icons/invoice.png" alt="" border="0" height="14" width="14" /> Documentation</a>
             <a href="https://github.com/shoulders/myitcrm/issues" target="_blank"><img src="{$theme_images_dir}icons/bug.png" alt=""border="0" height="14" width="14" /> Bug Tracker</a>
             <a href="http://quantumwarp.com/" target="_blank"><img src="{$theme_images_dir}icons/comment.png" alt="" border="0" height="14" width="14" /> Forum</a>            
-            <a>Support this Software!</a>                
-            <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+            <a style="text-align: center;">Support this Software!</a>                
+            <form action="https://www.paypal.com/cgi-bin/webscr" method="post" style="text-align: center;" >
                 <input type="hidden" name="cmd" value="_s-xclick">
                 <input type="hidden" name="hosted_button_id" value="URZF9CEA7JM6C">
                 <input type="image" src="{$theme_images_dir}paypal/donate.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online.">
@@ -152,4 +152,3 @@
 </table>
 <br>
 <!-- End navigation.tpl -->
-        

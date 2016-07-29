@@ -10,9 +10,7 @@
 #                                                   #
 #####################################################
 
-if(!xml2php("workorder")) {
-    $smarty->assign('error_msg',"Error in language file");
-}
+require_once('include.php');
 
 $wo_id = $VAR['wo_id'];
 $smarty->assign('wo_id', $wo_id);

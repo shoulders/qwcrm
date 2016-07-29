@@ -1,4 +1,13 @@
 <?php
+
+#####################################
+# Load language translations        #
+#####################################
+
+if(!xml2php('workorder')) {
+    $smarty->assign('error_msg', $smarty->get_template_vars('translate_workorder_error_message_error_in_language_file'));
+}
+
 #####################################
 # Display a single open work order  #
 #####################################
@@ -28,6 +37,7 @@ function display_single_open_workorder($db, $wo_id){
             ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_ID,
             ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_EMAIL,
             ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_DISPLAY_NAME,
+            ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_TYPE,   
             ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_WORK_PHONE,
             ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_HOME_PHONE,
             ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_MOBILE_PHONE,
@@ -175,7 +185,7 @@ function display_customer_info($db, $customer_id){
 }
 
 #############################################################
-# Display all open Work orders to                           #
+# Display all open Work orders for an employee              #
 #############################################################
 
 function display_tech($db){
@@ -259,7 +269,7 @@ function insert_new_status($db,$VAR){
 }
 
 ####################################################
-# Update Work Order Satus                          #
+# Update Work Order Status                          #
 ####################################################
 
 function update_status($db,$VAR){
@@ -469,11 +479,88 @@ function get_work_order_schedule ($db,$wo_id){
 #    Update Last Active         #
 #################################
 
-function update_last_active($db,$wo_id) {
-    $q = "UPDATE ".PRFX."TABLE_WORK_ORDER SET LAST_ACTIVE=".$db->qstr(time())." WHERE WORK_ORDER_ID=".$db->qstr($wo_id);
+function update_last_active($db, $wo_id) {
+    $sql = "UPDATE ".PRFX."TABLE_WORK_ORDER SET LAST_ACTIVE=".$db->qstr(time())." WHERE WORK_ORDER_ID=".$db->qstr($wo_id);
     if(!$rs = $db->execute($q)) {
     
     force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
         exit;
     }
+}
+
+#################################
+#    Delete Work Order          #
+#################################
+
+function delete_work_order($db, $wo_id, $assigned_employee) {
+    $sql = "DELETE FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_ID=".$db->qstr($wo_id) ;
+    if(!$result = $db->Execute($sql)) {
+        force_page('core', 'error&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_mysql_error').': '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
+    }
+    
+    // Record to add
+    $record = $smarty->get_template_vars('translate_workorder_log_message_work_order') .' ' . $wo_id . ' ' .$smarty->get_template_vars('translate_workorder_log_message_has_been_deleted') . ', ' . $assigned_employee;
+    
+    // Write the record to the access log file 
+    write_record_to_access_log($record);
+
+    // Redirect to the Open Work Orders Page
+    force_page('workorder', 'open&page_title='.$smarty->get_template_vars('translate_workorder_open_title'));
+    exit;
+}
+
+##########################################################
+#    Assign Work Order to another employee and log it    #
+##########################################################
+
+function assign_work_order_to_employee($db, $wo_id, $logged_in_employee_id, $assigned_employee_id ,$target_employee_id){
+    
+    //echo $assigned_employee_id; die;
+    global $smarty;
+    
+    $sql = "UPDATE ".PRFX."TABLE_WORK_ORDER SET WORK_ORDER_ASSIGN_TO=".$db->qstr($target_employee_id).", WORK_ORDER_CURRENT_STATUS=2 WHERE WORK_ORDER_ID=".$db->qstr($wo_id) ;
+    if(!$result = $db->Execute($sql)) {
+        force_page('core', 'error&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_mysql_error').': '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
+    }    
+
+    // Change Employee ID into Display Names.
+    $logged_in_employee_display_name = get_employee_display_name_by_id($db, $logged_in_employee_id);
+    if($assigned_employee_id === '0'){$assigned_employee_display_name = $smarty->get_template_vars('translate_workorder_log_message_unassigned');} else {$assigned_employee_display_name = get_employee_display_name_by_id($db, $assigned_employee_id);}
+    $target_employee_display_name   = get_employee_display_name_by_id($db, $target_employee_id);    
+    
+    // Record to add
+    $record = $smarty->get_template_vars('translate_workorder_log_message_work_order') . ' ' . $wo_id . ' ' . $smarty->get_template_vars('translate_workorder_log_message_has_been_assigned_to') . ' ' . $target_employee_display_name . ' ' . $smarty->get_template_vars('translate_workorder_log_message_from') . ' ' . $assigned_employee_display_name . ' ' . $smarty->get_template_vars('translate_workorder_log_message_by') . ' ' . $logged_in_employee_display_name;
+    
+    // Write the record to the access log file 
+    write_record_to_access_log($record);
+
+    // Redirect to the Open Work Orders Page
+    force_page('workorder', 'open&page_title='.$smarty->get_template_vars('translate_workorder_open_title'));
+    exit;   
+}
+
+##############################################
+#    Get Employee Display Name from ID       #
+##############################################
+
+function get_employee_display_name_by_id($db, $employee_id) {
+
+    // was function display_employee_info($db, $employee_id)
+    
+    $q = "SELECT ".PRFX."TABLE_EMPLOYEE.*, ".PRFX."CONFIG_EMPLOYEE_TYPE.TYPE_NAME  FROM ".PRFX."TABLE_EMPLOYEE
+            LEFT JOIN ".PRFX."CONFIG_EMPLOYEE_TYPE ON (".PRFX."TABLE_EMPLOYEE.EMPLOYEE_TYPE = ".PRFX."CONFIG_EMPLOYEE_TYPE.TYPE_ID)
+            WHERE EMPLOYEE_ID=". $db->qstr($employee_id);
+    
+    if(!$rs = $db->Execute($q)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
+    } else {
+        $employee_array = $rs->GetArray();
+    }
+
+    //return $employee_array;
+    return $employee_array['0']['EMPLOYEE_DISPLAY_NAME'];
+    
 }

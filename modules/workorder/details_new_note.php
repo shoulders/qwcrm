@@ -8,7 +8,8 @@
 #  Version 0.0.1    Sat Nov 26 20:46:40 PST 2005   #
 #                                                  #
 ####################################################
-require_once ("include.php");
+
+require_once('include.php');
 
 if(empty($VAR['wo_id'])){
     force_page('core', 'error&error_msg=No Work Order ID');

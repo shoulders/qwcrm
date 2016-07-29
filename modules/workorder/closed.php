@@ -1,7 +1,6 @@
 <?php
-if(!xml2php("workorder")) {
-    $smarty->assign('error_msg',"Error in language file");
-}
+
+require_once('include.php');
 
 if(!isset($VAR["page_no"])){
     $page_no = 1;
@@ -9,12 +8,12 @@ if(!isset($VAR["page_no"])){
     $page_no = $VAR['page_no'];
 }    
 
-$work_order = display_closed($db,$page_no,$smarty);
+$work_order = display_closed($db, $page_no, $smarty);
 $smarty->assign('work_order', $work_order);
 $smarty->display('workorder'.SEP.'closed.tpl');
 
 /* Return all closed Work Orders in an array */
-function display_closed($db,$page_no,$smarty) {
+function display_closed($db, $page_no, $smarty) {
     
     global $smarty;
     
@@ -45,7 +44,7 @@ function display_closed($db,$page_no,$smarty) {
             WHERE WORK_ORDER_STATUS=".$db->qstr(6)." GROUP BY ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_ID ORDER BY ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_ID DESC LIMIT $from, $max_results";    
     
     if(!$rs = $db->Execute($sql)) {
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        force_page('core', 'error&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_mysql_error').': '.$db->ErrorMsg().'&menu=1&type=database');
         exit;
     } else {
         $work_order = $rs->GetArray();
@@ -59,7 +58,7 @@ function display_closed($db,$page_no,$smarty) {
     }
    
     if(!$total_results = $results->FetchRow()) {
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        force_page('core', 'error&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_mysql_error').': '.$db->ErrorMsg().'&menu=1&type=database');
         exit;
     } else {
         $smarty->assign('total_results', $total_results['Num']);

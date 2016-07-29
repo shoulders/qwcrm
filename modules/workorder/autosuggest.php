@@ -32,9 +32,10 @@ if(!$db) {
                     /* 
                      * Format the results, im using <li> for the list, you can change it.
                      * The onClick function fills the textbox with the result.
-                     * YOU MUST CHANGE: $result->value to $result->your_column                     * 
+                     * YOU MUST CHANGE: $result->value to $result->your_column
                      */
                      echo '<li onClick="fill(\''.$result->WORK_ORDER_SCOPE.'\');">'.$result->WORK_ORDER_SCOPE.'</li>';
+                     
                  }
             } else {
                 echo 'ERROR: There was a problem with the query.';

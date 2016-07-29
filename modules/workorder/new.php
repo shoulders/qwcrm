@@ -1,8 +1,6 @@
 <?php
-if(!xml2php("workorder")) {
-    $smarty->assign('error_msg',"Error in language file");
-}
-require_once ("include.php");
+
+require_once('include.php');
 
 $submit         = $VAR['submit'];
 $email          = $VAR['email'];
