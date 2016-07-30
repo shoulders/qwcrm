@@ -17,7 +17,7 @@
     });
 </script>
 {/literal}
-{section name=i loop=$single_workorder_array}
+{section name=i loop=$single_workorder}
 {if $error_msg|escape != ""}
     {include file="core/error.tpl"}
 {/if}
@@ -46,10 +46,10 @@
                     <div id="tab_1_contents" class="tab_contents tab_contents_active">
                         <table width="100%" border="0" cellpadding="20" cellspacing="0">
                             <tr>
-                                <td><!-- Begin Page -->
+                                <td>
                                     <table width="700" cellpadding="5" cellspacing="0" border="0" >
                                         <tr>
-                                            <td class="menuhead2" width="80%">&nbsp;{$translate_workorder_work_order_id} {$single_workorder_array[i].WORK_ORDER_ID}</td>
+                                            <td class="menuhead2" width="80%">&nbsp;{$translate_workorder_work_order_id} {$single_workorder[i].WORK_ORDER_ID}</td>
                                             <td class="menuhead2" width="20%" align="right" valign="middle">                                               
                                                 <a href="index.php?page=workorder:print&amp;wo_id={$wo_id}&amp;print_content=technician_workorder_slip&amp;print_output_method=html&escape=1&page_title=CHANGE THIS TITLE" target="_blank">                                                    
                                                     <img src="{$theme_images_dir}icons/print.gif" alt="Print Works Order" border="0" height="14" width="14"
@@ -77,8 +77,7 @@
                                             <td class="menutd2" colspan="2">
                                                 <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0" >
                                                     <tr>
-                                                        <td width="100%" valign="top" >
-                                                            <!-- Inside Content -->
+                                                        <td width="100%" valign="top" >                                                            
                                                             <!-- Display Work order -->
                                                             {include file="workorder/blocks/details_header_block.tpl"}
                                                             <br>
@@ -106,10 +105,10 @@
                     <div id="tab_2_contents" class="tab_contents">
                         <table width="100%" border="0" cellpadding="20" cellspacing="0">
                             <tr>
-                                <td><!-- Begin Page -->
+                                <td>
                                     <table width="700" cellpadding="5" cellspacing="0" border="0" >
                                         <tr>
-                                            <td class="menuhead2" width="80%">&nbsp;{$translate_workorder_work_order_id} {$single_workorder_array[i].WORK_ORDER_ID}</td>
+                                            <td class="menuhead2" width="80%">&nbsp;{$translate_workorder_work_order_id} {$single_workorder[i].WORK_ORDER_ID}</td>
                                             <td class="menuhead2" width="20%" align="right" valign="middle">
                                                 <a href="index.php?page=workorder:print&amp;wo_id={$wo_id}&page_title=Print&escape=1" target="_blank">
                                                     <img src="{$theme_images_dir}icons/print.gif" alt="Print Works Order" border="0" height="14" width="14"
@@ -127,8 +126,7 @@
                                             <td class="menutd2" colspan="2">
                                                 <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0" >
                                                     <tr>
-                                                        <td width="700" valign="top" >
-                                                            <!-- Inside Content -->
+                                                        <td width="700" valign="top">                                                            
                                                             <!-- Display Customer Contact -->
                                                             {include file="workorder/blocks/details_customer_details_block.tpl"}
                                                             <br>
@@ -147,10 +145,10 @@
                     <div id="tab_3_contents" class="tab_contents">
                         <table width="100%" border="0" cellpadding="20" cellspacing="0">
                             <tr>
-                                <td><!-- Begin Page -->
+                                <td>
                                     <table width="700" cellpadding="5" cellspacing="0" border="0" >
                                         <tr>
-                                            <td class="menuhead2" width="80%">&nbsp;{$translate_workorder_work_order_id} {$single_workorder_array[i].WORK_ORDER_ID}</td>
+                                            <td class="menuhead2" width="80%">&nbsp;{$translate_workorder_work_order_id} {$single_workorder[i].WORK_ORDER_ID}</td>
                                             <td class="menuhead2" width="20%" align="right" valign="middle">
                                                 <a href="index.php?page=workorder:print&amp;wo_id={$wo_id}&page_title=Print&escape=1" target="_blank">
                                                     <img src="{$theme_images_dir}icons/print.gif" alt="Print Works Order" border="0" height="14" width="14"
@@ -168,8 +166,7 @@
                                             <td class="menutd2" colspan="2">
                                                 <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0" >
                                                     <tr>
-                                                        <td width="100%" valign="top" >
-                                                            <!-- Inside Content -->
+                                                        <td width="100%" valign="top">                                                            
                                                             <!-- Display Schedule -->
                                                             {include file="workorder/blocks/details_schedule_block.tpl"}
                                                             <br>
@@ -188,10 +185,10 @@
                     <div id="tab_4_contents" class="tab_contents">
                         <table width="100%" border="0" cellpadding="20" cellspacing="0">
                             <tr>
-                                <td><!-- Begin Page -->
+                                <td>
                                     <table width="700" cellpadding="5" cellspacing="0" border="0" >
                                         <tr>
-                                            <td class="menuhead2" width="80%">&nbsp;{$translate_workorder_work_order_id} {$single_workorder_array[i].WORK_ORDER_ID}</td>
+                                            <td class="menuhead2" width="80%">&nbsp;{$translate_workorder_work_order_id} {$single_workorder[i].WORK_ORDER_ID}</td>
                                             <td class="menuhead2" width="20%" align="right" valign="middle">
                                                 <a href="index.php?page=workorder:print&amp;wo_id={$wo_id}&page_title=Print&escape=1" target="_blank">
                                                     <img src="{$theme_images_dir}icons/print.gif" alt="Print Works Order" border="0" height="14" width="14"
@@ -209,8 +206,7 @@
                                             <td class="menutd2" colspan="2">
                                                 <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0" >
                                                     <tr>
-                                                        <td width="100%" valign="top" >
-                                                            <!-- Inside Content -->
+                                                        <td width="100%" valign="top">                                                            
                                                             <!-- Display Work Order Notes -->
                                                             {include file="workorder/blocks/details_notes_block.tpl"}
                                                             <br>
@@ -229,10 +225,10 @@
                     <div id="tab_5_contents" class="tab_contents">
                         <table width="100%" border="0" cellpadding="20" cellspacing="0">
                             <tr>
-                                <td><!-- Begin Page -->
+                                <td>
                                     <table width="700" cellpadding="5" cellspacing="0" border="0" >
                                         <tr>
-                                            <td class="menuhead2" width="80%">&nbsp;{$translate_workorder_work_order_id} {$single_workorder_array[i].WORK_ORDER_ID}</td>
+                                            <td class="menuhead2" width="80%">&nbsp;{$translate_workorder_work_order_id} {$single_workorder[i].WORK_ORDER_ID}</td>
                                             <td class="menuhead2" width="20%" align="right" valign="middle">
                                                 <a href="index.php?page=workorder:print&amp;wo_id={$wo_id}&page_title=Print&escape=1" target="_blank">
                                                     <img src="{$theme_images_dir}icons/print.gif" alt="Print Works Order" border="0" height="14" width="14"
@@ -250,8 +246,7 @@
                                             <td class="menutd2" colspan="2">
                                                 <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0" >
                                                     <tr>
-                                                        <td width="100%" valign="top" >
-                                                            <!-- Inside Content -->
+                                                        <td width="100%" valign="top">                                                            
                                                             <!-- Dispaly Parts -->
                                                             {include file="workorder/blocks/details_parts_block.tpl"}
                                                             <br>
@@ -270,10 +265,10 @@
                     <div id="tab_6_contents" class="tab_contents">
                         <table width="100%" border="0" cellpadding="20" cellspacing="0">
                             <tr>
-                                <td><!-- Begin Page -->
+                                <td>
                                     <table width="700" cellpadding="5" cellspacing="0" border="0" >
                                         <tr>
-                                            <td class="menuhead2" width="80%">&nbsp;{$translate_workorder_work_order_id} {$single_workorder_array[i].WORK_ORDER_ID}</td>
+                                            <td class="menuhead2" width="80%">&nbsp;{$translate_workorder_work_order_id} {$single_workorder[i].WORK_ORDER_ID}</td>
                                             <td class="menuhead2" width="20%" align="right" valign="middle">
                                                 <a href="index.php?page=workorder:print&amp;wo_id={$wo_id}&page_title=Print&escape=1" target="_blank">
                                                     <img src="{$theme_images_dir}icons/print.gif" alt="Print Works Order" border="0" height="14" width="14"
@@ -291,8 +286,7 @@
                                             <td class="menutd2" colspan="2">
                                                 <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0" >
                                                     <tr>
-                                                        <td width="100%" valign="top" >
-                                                            <!-- Inside Content -->
+                                                        <td width="100%" valign="top">                                                            
                                                             <!-- Display Work Order History -->
                                                             {include file="workorder/blocks/details_history_block.tpl"}
                                                             <br>

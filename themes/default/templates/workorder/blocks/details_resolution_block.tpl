@@ -9,8 +9,8 @@
                         <table cellpadding="2" cellspacing="2" border="0">
                             <tr>
                                 <td width="33%" align="right">
-                                    {if $single_workorder_array[i].WORK_ORDER_STATUS != 6}
-                                    <a href="?page=workorder:resolution&wo_id={$single_workorder_array[i].WORK_ORDER_ID}&page_title={$translate_workorder_details_edit_resolution_title}">
+                                    {if $single_workorder[i].WORK_ORDER_STATUS != 6}
+                                    <a href="?page=workorder:resolution&wo_id={$single_workorder[i].WORK_ORDER_ID}&page_title={$translate_workorder_details_resolution_title}">
                                         <img src="{$theme_images_dir}icons/16x16/small_edit.gif" border="0"
                                             onMouseOver="ddrivetip('{$translate_workorder_details_edit_resolution_button_tooltip}');"
                                             onMouseOut="hideddrivetip();">
@@ -29,12 +29,12 @@
             <table width="100%" cellpadding="4" cellspacing="0" border="0">
                 <tr>
                     <td>
-                        {section name=v loop=$resolution}
-                        {if $single_workorder_array[i].WORK_ORDER_CLOSE_BY != "" }
-                            <p><b>{$translate_workorder_closed_by}: </b>{$resolution[v].EMPLOYEE_DISPLAY_NAME}  <b>{$translate_workorder_date}: </b>
-                            {$resolution[v].WORK_ORDER_CLOSE_DATE|date_format:"$date_format"} <br>
+                        {section name=v loop=$workorder_resolution}
+                        {if $single_workorder[i].WORK_ORDER_CLOSE_BY != "" }
+                            <p><b>{$translate_workorder_closed_by}: </b>{$workorder_resolution[v].EMPLOYEE_DISPLAY_NAME}  <b>{$translate_workorder_date}: </b>
+                            {$workorder_resolution[v].WORK_ORDER_CLOSE_DATE|date_format:"$date_format"} <br>
                             {/if}
-                            {$resolution[v].WORK_ORDER_RESOLUTION}
+                            {$workorder_resolution[v].WORK_ORDER_RESOLUTION}
                             </p>
                         {/section}
                     </td>

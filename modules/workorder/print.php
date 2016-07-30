@@ -19,7 +19,7 @@ if(!$single_work_order = display_single_open_workorder($db, $VAR['wo_id'])){
     $work_order_status = display_workorder_status($db, $VAR['wo_id']);
     
     /* work order schedule */
-    $work_order_schedule = get_work_order_schedule($db, $VAR['wo_id']);
+    $work_order_schedule = display_work_order_schedule($db, $VAR['wo_id']);
     
     /* work order resolution */
     $work_order_resolution = display_resolution($db,$VAR['wo_id']);

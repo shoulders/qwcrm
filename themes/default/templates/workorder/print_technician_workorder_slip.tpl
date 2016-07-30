@@ -130,14 +130,14 @@
                 <tr>
                     <td><b>{$translate_workorder_details_resolution_title}:</b></td>
                 </tr>
-                {section name=r loop=$work_order_resolution}  
+                {section name=r loop=$workorder_resolution}  
                 <tr>                                    
-                    {if $work_order_resolution[r].EMPLOYEE_DISPLAY_NAME != ''}                            
-                    <td><b>{$translate_workorder_closed_by}:</b>{$work_order_resolution[r].EMPLOYEE_DISPLAY_NAME} on <b>{$translate_workorder_date}: </b>{$work_order_resolution[r].WORK_ORDER_CLOSE_DATE|date_format:$date_format}</td>                                                       
+                    {if $workorder_resolution[r].EMPLOYEE_DISPLAY_NAME != ''}                            
+                    <td><b>{$translate_workorder_closed_by}:</b>{$workorder_resolution[r].EMPLOYEE_DISPLAY_NAME} on <b>{$translate_workorder_date}: </b>{$workorder_resolution[r].WORK_ORDER_CLOSE_DATE|date_format:$date_format}</td>                                                       
                     {/if}
                 </tr>
                 <tr>
-                    <td><div style="min-height: 150px;">{$work_order_resolution[r].WORK_ORDER_RESOLUTION}</div></td>                 
+                    <td><div style="min-height: 150px;">{$workorder_resolution[r].WORK_ORDER_RESOLUTION}</div></td>                 
                 </tr>
                 {/section}   
             </table>
@@ -238,11 +238,11 @@
                     <td align="center"><b>{$translate_workorder_print_schedule_title}</b></td>
                 </tr><tr>
                     <td>
-                        {section name=e loop=$work_order_schedule}
-                            <b>{$translate_workorder_start_time}:</b> {$work_order_schedule[e].SCHEDULE_START|date_format:"$date_format %R"}<br>
-                            <b>{$translate_workorder_end_time}:</b> {$work_order_schedule[e].SCHEDULE_END|date_format:"$date_format %R"}<br>
+                        {section name=e loop=$workorder_schedule}
+                            <b>{$translate_workorder_start_time}:</b> {$workorder_scheduleule[e].SCHEDULE_START|date_format:"$date_format %R"}<br>
+                            <b>{$translate_workorder_end_time}:</b> {$workorder_scheduleule[e].SCHEDULE_END|date_format:"$date_format %R"}<br>
                             <b>{$translate_workorder_schedule_notes}:</b><br>
-                            <div>{$work_order_schedule[e].SCHEDULE_NOTES}</div>
+                            <div>{$workorder_schedule[e].SCHEDULE_NOTES}</div>
                         {sectionelse}
                             {$translate_workorder_print_no_schedule_has_been_set}
                         {/section}

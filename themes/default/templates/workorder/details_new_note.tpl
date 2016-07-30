@@ -37,7 +37,7 @@
                             <tr>
                                 <td width="100%" valign="top" >
                                     <!-- Work Order Notes -->                                    
-                                    <form  action="index.php?page=workorder:details_new_note" method="POST" name="new_workorder_note" id="new_workorder_note">
+                                    <form action="index.php?page=workorder:details_new_note" method="POST" name="new_workorder_note" id="new_workorder_note">
                                         <input type="hidden" name="page" value="workorder:details_new_note">
                                         <input type="hidden" name="wo_id" value="{$wo_id}">
                                         <table class="olotable" width="100%" border="0" summary="Work order display">
@@ -46,7 +46,7 @@
                                             </tr>
                                             <tr>
                                                 <td class="olotd">
-                                                    <textarea class="olotd4" rows="15" cols="70" name="work_order_notes"></textarea>
+                                                    <textarea class="olotd4" rows="15" cols="70" name="workorder_note"></textarea>
                                                 </td>
                                             </tr>
                                         </table>

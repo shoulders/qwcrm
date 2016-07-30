@@ -21,7 +21,7 @@
             <table width="100%" cellpadding="1" cellspacing="0" border="0">
                 <tr>
                     <td>
-                        {section name=p loop=$order}
+                        {section name=p loop=$workorder_parts}
                         <table width="100%" class="olotable" cellpadding="3" cellspacing="0" border="0">
                             <tr>
                                 <td class="olohead">{$translate_workorder_id}</td>
@@ -35,17 +35,17 @@
                                 <td class="olohead">{$translate_workorder_status}</td>
                             </tr>
                             <tr>
-                                <td class="olotd4"><a href="?page=parts:view&ORDER_ID={$order[p].ORDER_ID}&page_title=Order%20Details%20for%20{$order[p].ORDER_ID}">{$order[p].ORDER_ID}</a></td>
-                                <td class="olotd4">{$order[p].INVOICE_ID}</td>
-                                <td class="olotd4">{$order[p].DATE_CREATE|date_format:"$date_format"}</td>
-                                <td class="olotd4">{$order[p].DATE_LAST|date_format:"$date_format"}</td>
-                                <td class="olotd4">{$currency_sym}{$order[p].SUB_TOTAL}</td>
-                                <td class="olotd4">{$currency_sym}{$order[p].SHIPPING}</td>
-                                <td class="olotd4">{$currency_sym}{$order[p].TOTAL}</td>
-                                <td class="olotd4">{if $order[p].TRACKING_NO == 0} <a href="">{$translate_workorder_get_tracking}{else} {$order[p].TRACKING_NO} {/if}</td>
+                                <td class="olotd4"><a href="?page=parts:view&ORDER_ID={$workorder_parts[p].ORDER_ID}&page_title=Order%20Details%20for%20{$workorder_parts[p].ORDER_ID}">{$workorder_parts[p].ORDER_ID}</a></td>
+                                <td class="olotd4">{$workorder_parts[p].INVOICE_ID}</td>
+                                <td class="olotd4">{$workorder_parts[p].DATE_CREATE|date_format:"$date_format"}</td>
+                                <td class="olotd4">{$workorder_parts[p].DATE_LAST|date_format:"$date_format"}</td>
+                                <td class="olotd4">{$currency_sym}{$workorder_parts[p].SUB_TOTAL}</td>
+                                <td class="olotd4">{$currency_sym}{$workorder_parts[p].SHIPPING}</td>
+                                <td class="olotd4">{$currency_sym}{$workorder_parts[p].TOTAL}</td>
+                                <td class="olotd4">{if $workorder_parts[p].TRACKING_NO == 0} <a href="">{$translate_workorder_get_tracking}{else} {$workorder_parts[p].TRACKING_NO} {/if}</td>
                                 <td class="olotd4">
-                                    {if $order[p].STATUS == '1'}{$translate_workorder_open}{/if}
-                                    {if $order[p].STATUS == '0'}{$translate_workorder_closed}{/if}
+                                    {if $workorder_parts[p].STATUS == '1'}{$translate_workorder_open}{/if}
+                                    {if $workorder_parts[p].STATUS == '0'}{$translate_workorder_closed}{/if}
                                 </td>
                             </tr>
                         </table>

@@ -26,10 +26,10 @@
             <table width="100%" cellpadding="4" cellspacing="0">
                 <tr>
                     <td>
-                        {section name=e loop=$work_order_sched}
-                            <b>{$translate_workorder_start} </b>{$work_order_sched[e].SCHEDULE_START|date_format:"$date_format %I:%M  %p"} <b>- {$translate_workorder_end} </b> {$work_order_sched[e].SCHEDULE_END|date_format:"$date_formatS %I:%M  %p "} <br>
+                        {section name=e loop=$workorder_schedule}
+                            <b>{$translate_workorder_start} </b>{$workorder_schedule[e].SCHEDULE_START|date_format:"$date_format %I:%M  %p"} <b>- {$translate_workorder_end} </b> {$workorder_schedule[e].SCHEDULE_END|date_format:"$date_formatS %I:%M  %p "} <br>
                             <b>{$translate_workorder_notes}</b><br>
-                            {$work_order_sched[e].SCHEDULE_NOTES}
+                            {$workorder_schedule[e].SCHEDULE_NOTES}
                         {sectionelse}
                             <table class="olotablered" width="100%" border="0" cellpadding="5" cellspacing="0">
                                 <tr>

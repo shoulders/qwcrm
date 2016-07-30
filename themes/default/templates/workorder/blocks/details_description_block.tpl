@@ -9,8 +9,8 @@
                         <table cellpadding="2" cellspacing="2" border="0">
                             <tr>
                                 <td width="33%" align="right">
-                                    {if $single_workorder_array[i].WORK_ORDER_STATUS != 6}
-                                    <a href="?page=workorder:details_edit_description&wo_id={$single_workorder_array[i].WORK_ORDER_ID}&page_title={$translate_workorder_details_edit_description_title}">
+                                    {if $single_workorder[i].WORK_ORDER_STATUS != 6}
+                                    <a href="?page=workorder:details_edit_description&wo_id={$single_workorder[i].WORK_ORDER_ID}&page_title={$translate_workorder_details_edit_description_title}">
                                         <img src="{$theme_images_dir}icons/16x16/small_edit.gif" alt="" border="0"
                                              onMouseOver="ddrivetip('{$translate_workorder_details_edit_description_button_tooltip}');"
                                              onMouseOut="hideddrivetip();">
@@ -30,7 +30,7 @@
         <td class="olotd4">
             <table width="100%" cellspacing="0" cellpadding="4">
                 <tr>
-                    <td>{$single_workorder_array[i].WORK_ORDER_DESCRIPTION }<br></td>
+                    <td>{$single_workorder[i].WORK_ORDER_DESCRIPTION }<br></td>
                 </tr>
             </table>
         </td>

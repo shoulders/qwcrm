@@ -62,9 +62,9 @@
                                                 {literal}
                                                 <form method="POST" action="index.php?page=workorder:new" name="new_workorder" id="new_workorder" onsubmit="try { var myValidator = validate_new_workorder; } catch(e) { return true; } return myValidator(this);">
                                                 {/literal}
-                                                    <input type="hidden" name="customer_ID" value="{$customer_details[i].CUSTOMER_ID}">
-                                                    <input type="hidden" name="page" value="workorder:new">
-                                                    <!--<input type="hidden" name="create_by" value="{$login_id}"> -->
+                                                    <input type="hidden" name="customer_id" value="{$customer_details[i].CUSTOMER_ID}">                                                    
+                                                    <input type="hidden" name="created_by" value="{$login_id}">
+                                                    <!--<input type="hidden" name="page" value="workorder:new">-->
                                                     <table class="olotable" width="100%" border="0"  cellpadding="4" cellspacing="0" summary="Work order display">
                                                         <tr>
                                                             <td class="olohead">{$translate_workorder_opened}</td>
@@ -76,7 +76,8 @@
                                                         <tr>
                                                             <td class="olotd4">{$smarty.now|date_format:"$date_format"}</td>
                                                             <td class="olotd4">{$customer_details[i].CUSTOMER_DISPLAY_NAME}</td>
-                                                            <td class="olotd4"><input size="40" id="scope" name="scope" type="text" value="" onkeyup="lookup(this.value);" onblur="fill();">
+                                                            <td class="olotd4">
+                                                                <input size="40" id="scope" name="scope" type="text" value="" onkeyup="lookup(this.value);" onblur="fill();">
                                                                 <div class="suggestionsBox" id="suggestions" style="display: none;">
                                                                     <img src="{$theme_images_dir}upArrow.png" style="position: relative; top: -12px; left: 1px;" alt="upArrow" />
                                                                     <div class="suggestionList" id="autoSuggestionsList">&nbsp;</div>
@@ -87,14 +88,14 @@
                                                         </tr>
                                                     </table>
                                                     <br>
-                                                    <!-- Display Work Order Discription -->
+                                                    <!-- Display Work Order Description -->
                                                     <table class="olotable" width="100%" border="0" summary="Work order display">
                                                         <tr>
                                                             <td class="olohead">&nbsp;{$translate_workorder_details_description_title}</td>
                                                         </tr>
                                                         <tr>
                                                             <td class="olotd">
-                                                                <textarea class="olotd4" rows="15" cols="70" mce_editable="true" name="work_order_description"></textarea>
+                                                                <textarea class="olotd4" rows="15" cols="70" mce_editable="true" name="workorder_description"></textarea>
                                                             </td>
                                                         </tr>
                                                     </table>
@@ -109,7 +110,7 @@
                                                         </tr>
                                                         <tr>
                                                             <td class="olotd">
-                                                                <textarea class="olotd4" rows="15" cols="70" mce_editable="true" name="work_order_comments"></textarea>
+                                                                <textarea class="olotd4" rows="15" cols="70" mce_editable="true" name="workorder_comments"></textarea>
                                                             </td>
                                                         </tr>
                                                     </table>
@@ -124,7 +125,7 @@
                                                         </tr>
                                                         <tr>
                                                             <td class="olotd">
-                                                                <textarea class="olotd4" rows="15" cols="70" mce_editable="true" name="work_order_notes"></textarea>
+                                                                <textarea class="olotd4" rows="15" cols="70" mce_editable="true" name="workorder_note"></textarea>
                                                             </td>
                                                         </tr>
                                                     </table>

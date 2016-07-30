@@ -918,7 +918,8 @@
         <workorder_last_change>Last Change</workorder_last_change>
         <workorder_tech>Tech</workorder_tech>
         <workorder_action>Action</workorder_action>
-        <workorder_entered_by>Entered By</workorder_entered_by>        
+        <workorder_entered_by>Entered By</workorder_entered_by>
+        <workorder_assign_to>Assign To</workorder_assign_to>      
 
         // Invoicing / Shipping
         <workorder_invoice>Invoice</workorder_invoice>
@@ -976,7 +977,7 @@
         <workorder_print_the_work_order_button_tooltip>Print The Work Order</workorder_print_the_work_order_button_tooltip>
         <workorder_view_the_work_order_button_tooltip>View The Work Order</workorder_view_the_work_order_button_tooltip>
 
-        //// Pages - these are apge specific translations
+        //// Pages - these are page specific translations
 
         // Closed
         <workorder_closed_title>Closed Work Orders</workorder_closed_title>
@@ -1096,7 +1097,8 @@
         <workorder_status_help_title>Status Help</workorder_status_help_title>
         <workorder_status_help_content>You can change the status of a work order here.</workorder_status_help_content>
         <workorder_status_update_work_order_status_for_work_order_id>Update Work Order Status For Work Order ID</workorder_status_update_work_order_status_for_work_order_id>
-        <workorder_status_new_status>New Status</workorder_status_new_status> 
+        <workorder_status_new_status>New Status</workorder_status_new_status>
+        <workorder_status_this_work_order_cannot_be_deleted>This Work order cannot be deleted. &lt;br /&gt;If the work order is in the following state, created and open, you can delete it, otherwise you cannot.</workorder_status_this_work_order_cannot_be_deleted>
         
         
         // --  module code
@@ -1109,7 +1111,7 @@
         
             // common
         <workorder_error_message_mysql_error>MySQL Error</workorder_error_message_mysql_error>
-        <workorder_log_message_cant_open_access_log>can&#39;t open access.log</workorder_log_message_cant_open_access_log>
+        <workorder_log_message_cant_open_access_log>can&#39;t open access.log</workorder_log_message_cant_open_access_log> //change this
         
             //include.php
         <workorder_error_message_error_in_language_file>Error in language file</workorder_error_message_error_in_language_file>

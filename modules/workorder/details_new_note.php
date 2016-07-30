@@ -16,9 +16,11 @@ if(empty($VAR['wo_id'])){
     exit;
 }
 
+$workorder_note = $VAR['workorder_note'];
+
 if(isset($VAR['submit'])){
 
-    if (!insert_new_note($db,$VAR)) {
+    if (!insert_new_note($db, $wo_id, $work_order_note_content)) {
         force_page('core', 'error&error_msg=Falied to insert Work Order Note');
         exit;
     } else {
