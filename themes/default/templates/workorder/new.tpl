@@ -1,7 +1,8 @@
 <!-- new.tpl - New Work Order Page -->
 <script type="text/javascript" src="js/jquery-1.2.1.pack.js"></script>
 <script language="javascript" type="text/javascript" src="includes/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
-{include file="new.js"}
+{include file="javascript.js"}
+{include file="validate.js"}
 {literal}
 <script type="text/javascript">
     tinyMCE.init({

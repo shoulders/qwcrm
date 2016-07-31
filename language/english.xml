@@ -1128,6 +1128,15 @@
             <workorder_log_message_by>by</workorder_log_message_by>
             <workorder_log_message_from>from</workorder_log_message_from>
             <workorder_log_message_unassigned>Unassigned</workorder_log_message_unassigned>
+            
+            
+         // Validators
+        <workorder_validate_work_order_creation_date_notpresent>Please enter the Date the Work Order Is created</workorder_validate_work_order_creation_date_notpresent>
+        <workorder_validate_scope_notpresent>Please enter the Work Order Scope</workorder_validate_scope_notpresent>
+        <workorder_validate_scope_size>The Work Order Scope cannot be more than 40 characters</workorder_validate_scope_size>              
+        <workorder_validate_warning_messsage_invalidinformation>Invalid information entered.</workorder_validate_warning_messsage_invalidinformation>
+        <workorder_validate_warning_message_pleasecorrect>Please correct these fields.</workorder_validate_warning_message_pleasecorrect>
+              
                 
             
     </translate>
