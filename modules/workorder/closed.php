@@ -2,15 +2,13 @@
 
 require_once('include.php');
 
-// Grab the page number to show
+// Grab the page number to show else set page 1
 if(!isset($VAR["page_no"])){
     $page_no = 1;
 } else {
     $page_no = $VAR['page_no'];
 }    
 
-$work_order = display_closed($db, $page_no, $smarty);
-
-$smarty->assign('work_order', $work_order);
+$smarty->assign('work_order', display_closed($db, $page_no, $smarty));
 
 $smarty->display('workorder'.SEP.'closed.tpl');

@@ -45,12 +45,12 @@
                                     <!-- Content Here -->
                                     <form action="?page=workorder:details_edit_description" method="POST">
                                         <b>{$translate_workorder_scope}</b></br>
-                                        <input type="text" class="olotd4" size="20" name="scope" value="{$scope}">
+                                        <input type="text" class="olotd4" size="20" name="workorder_scope" value="{$workorder_scope}">
                                         <br>
                                         <br>
                                         <br>
                                         <b>{$translate_workorder_details_description_title}</b><br>
-                                        <textarea class="olotd4" rows="15" cols="70" mce_editable="true" name="description">{$description}</textarea>
+                                        <textarea class="olotd4" rows="15" cols="70" mce_editable="true" name="workorder_description">{$workorder_description}</textarea>
                                         <br>
                                         <input type="hidden" name="wo_id" value="{$wo_id}">
                                         <input class="olotd4" name="submit" value="{$translate_workorder_submit}" type="submit" />

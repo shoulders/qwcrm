@@ -10,20 +10,15 @@ require_once('include.php');
     }    
 
 /* display new Workorders */    
-$where = "WHERE ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_CURRENT_STATUS= ".$db->qstr(1);
-$smarty->assign('new', display_workorders($db, $page_no, $where));
+$smarty->assign('new', display_workorders($db, $page_no, 1));
 
-/* display assigned Workorders */    
-$where = "WHERE ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_CURRENT_STATUS= ".$db->qstr(2);
-$smarty->assign('assigned', display_workorders($db, $page_no, $where));
+/* display assigned Workorders */
+$smarty->assign('assigned', display_workorders($db, $page_no, 2));
 
 /* display Workorders awaiting parts  */    
-$where = "WHERE ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_CURRENT_STATUS= ".$db->qstr(3);
-$smarty->assign('awaiting', display_workorders($db, $page_no, $where));
+$smarty->assign('awaiting', display_workorders($db, $page_no, 3));
 
 /* display work orders that need payment */
-$where = "WHERE ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_CURRENT_STATUS= ".$db->qstr(7);
-$smarty->assign('payment', display_workorders($db, $page_no, $where));
+$smarty->assign('payment', display_workorders($db, $page_no, 7));
 
-//$smarty->assign('new_workorder', display_workorders($db, $page_no,$where));
 $smarty->display('workorder'.SEP.'open.tpl');

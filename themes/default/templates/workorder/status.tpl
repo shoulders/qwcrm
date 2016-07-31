@@ -5,7 +5,7 @@
         <td>
             <table width="700" cellpadding="5" cellspacing="0" border="0" >
                 <tr>
-                    <td class="menuhead2" width="80%">{$translate_workorder_status_title} - {$translate_workorder_status_update_work_order_status_for_work_order_id} #{$wo_id}</td>
+                    <td class="menuhead2" width="80%">{$translate_workorder_status_title} - {$translate_workorder_status_update_work_order_status_for_work_order_id} {$wo_id}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
                         <a><img src="{$theme_images_dir}icons/16x16/help.gif" border="0" 
                             onMouseOver="ddrivetip('<b>{$translate_workorder_status_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_workorder_status_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" 
@@ -27,7 +27,7 @@
                             <tr>
                                 
                                 <!-- Assign Status Update -->
-                                <td class="olotd4" align="center"> 
+                                <td class="olotd4" align="center" width="33%"> 
                                     <p>&nbsp;</p>                                    
                                     <form action="index.php?page=workorder:status" method="POST" name="new_workorder_status" id="new_workorder_status">
                                         <b>{$translate_workorder_status_new_status}: </b>
@@ -44,8 +44,8 @@
                                     </form>
                                 </td>
                                 
-                               <!-- Update Assigned Employee -->
-                                <td class="olotd4" align="center">
+                                <!-- Update Assigned Employee -->
+                                <td class="olotd4" align="center" width="33%"> 
                                     
                                     <!-- If the work Order Is closed -->
                                     {if $single_workorder[i].WORK_ORDER_STATUS != 6}
@@ -53,7 +53,7 @@
                                         <!-- If the employee is assigned to this work order, or if no one is assigned, or the user is an admin show update button, else show the employee details instead -->
                                         {if $single_workorder[i].EMPLOYEE_ID == "$login_id" || $single_workorder[i].EMPLOYEE_ID == '' || $single_workorder[i].EMPLOYEE_TYPE == '1'}
                                         <p>&nbsp;</p>  
-                                        <form method="POST" action="">
+                                        <form method="POST" action="">                                            
                                             {$employee_list}
                                             <p>&nbsp;</p>
                                             <input type="submit" name="assign_employee" value="{$translate_workorder_update}"/>
@@ -88,7 +88,7 @@
                                 </td>
 
                                 <!-- Delete Work Order Button -->                        
-                                 <td class="olotd4" align="center">
+                                <td class="olotd4" align="center" width="33%"> 
                                     <!-- if work order is created and open, you can delete it, otherwise you cannot -->
                                     {if $single_workorder[i].WORK_ORDER_CURRENT_STATUS == '1' || $single_workorder[i].WORK_ORDER_CURRENT_STATUS == '10'}
                                     <form method="POST" action="">

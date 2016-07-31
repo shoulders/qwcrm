@@ -220,9 +220,9 @@ switch ($mode) {
                                                                 
                                                                     <td width=\"140\">Access Log</td>
                                                                     <td>");
-        if(!check_write ('../../log/access.log')) {
-            echo("<font color=\"red\">../../log/access.log is not writable stopping.</font>");
-            $errors[] = array('../../log/access.log'=>'Not Writable');
+        if(!check_write ('../../log/activity.log')) {
+            echo("<font color=\"red\">../../log/activity.log is not writable stopping.</font>");
+            $errors[] = array('../../log/activity.log'=>'Not Writable');
         } else {
             echo("<font color=\"green\"><b>OK</b>");
         }

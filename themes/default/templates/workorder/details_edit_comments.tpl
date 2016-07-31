@@ -45,7 +45,7 @@
                                     <!-- Content Here -->
                                     <form  action="?page=workorder:details_edit_comments" method="POST">
                                     <b>{$translate_workorder_details_comments_title}</b><br>
-                                    <textarea class="olotd4" rows="15" cols="70" mce_editable="true" name="comment">{$comment}</textarea>
+                                    <textarea class="olotd4" rows="15" cols="70" mce_editable="true" name="comment">{$workorder_comments}</textarea>
                                     <br>
                                     <input type="hidden" name="wo_id" value="{$wo_id}">
                                     <input class="olotd4" name="submit" value="{$translate_workorder_submit}" type="submit" />

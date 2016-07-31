@@ -3,59 +3,24 @@
 require_once('include.php');
 
 $wo_id = $VAR['wo_id'];
-$smarty->assign('wo_id', $wo_id);
+$workorder_scope = $VAR['workorder_scope'];
+$workorder_description = $VAR['workorder_description'];
 
 if($wo_id == '') {
-force_page('core', 'error&error_msg=No Work Order ID');
-        exit;
+    force_page('core', 'error&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_no_work_order_id'));
+    exit;
 }
 
 if(isset($VAR['submit'])) {
-
-//Remove Extra Slashes caused by Magic Quotes
-$description_string = $VAR['description'];
-$description_string = stripslashes($description_string);
-
-    $q = "UPDATE ".PRFX."TABLE_WORK_ORDER SET
-            WORK_ORDER_SCOPE        =".$db->qstr( $VAR['scope']         ).",
-            WORK_ORDER_DESCRIPTION  =".$db->qstr( $description_string   ).",
-            LAST_ACTIVE             =".$db->qstr( time()                )."
-            WHERE  WORK_ORDER_ID    =".$db->qstr( $wo_id                );
-
-    if(!$rs = $db->execute($q)) {
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-        exit;
-    } 
-
-    /* add note */
-    $msg = 'Description has been Updated';
-    $sql = "INSERT INTO ".PRFX."TABLE_WORK_ORDER_STATUS SET
-            WORK_ORDER_ID                 =". $db->qstr( $wo_id                  ).",
-            WORK_ORDER_STATUS_DATE        =". $db->qstr( time()                  ).",
-            WORK_ORDER_STATUS_NOTES       =". $db->qstr( $msg                    ).",
-            WORK_ORDER_STATUS_ENTER_BY    =". $db->qstr( $_SESSION['login_id']   );
-        
-    if(!$result = $db->Execute($sql)) {
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-        exit;
-    }
-
-    force_page('workorder', 'details&wo_id='.$wo_id);
-    exit;
-    
+    update_workorder_scope_and_description($db, $wo_id, $workorder_scope, $workorder_description);    
 } else {
 
-    $q = "SELECT WORK_ORDER_DESCRIPTION, WORK_ORDER_SCOPE FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_ID=".$db->qstr( $wo_id );
-        if(!$rs = $db->execute($q)) {
-            force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-            exit;
-        }
-
-    $description = $rs->fields['WORK_ORDER_DESCRIPTION'];
-        $scope = $rs->fields['WORK_ORDER_SCOPE'];
-
-    $smarty->assign('description', $description);
-        $smarty->assign('scope', $scope);
-    $smarty->display('workorder'.SEP.'details_edit_description.tpl');
+    $workorder_scope_description = get_workorder_scope_and_description($db, $wo_id);
     
+    $smarty->assign('wo_id', $wo_id);    
+    $smarty->assign('workorder_scope',        $workorder_scope_description->fields['WORK_ORDER_SCOPE']);
+    $smarty->assign('workorder_description',  $workorder_scope_description->fields['WORK_ORDER_DESCRIPTION']);
+    
+    $smarty->display('workorder'.SEP.'details_edit_description.tpl');
+
 }

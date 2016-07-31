@@ -103,7 +103,7 @@ class Auth {
     // Create entry
     $data = $status.",".$login.",".$hostname.",".$month."-".$day."-".$year.",".$time.",\n";
     // Write File
-    $fp = fopen(ACCESS_LOG,'a') or die("can't open access.log: $php_errormsg");
+    $fp = fopen(ACTIVITY_LOG,'a') or die("can't open access.log: $php_errormsg");
     fwrite($fp, $data);
     fclose($fp);
   }

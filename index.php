@@ -2,6 +2,7 @@
 ################################################
 #         error reporting and headers          #
 ################################################
+
 /*Used to suppress Notices*/
 //error_reporting(E_ALL & ~E_NOTICE);
 error_reporting(E_ERROR);
@@ -13,6 +14,7 @@ header('Content-type: text/html; charset=utf-8');
 #         Initilise smarty                     #
 ################################################
 require('conf.php');
+//require(includes/defines.php');
 require(INCLUDES_DIR.'smarty.php');
 
 

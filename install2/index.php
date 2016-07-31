@@ -1283,7 +1283,7 @@ $content = "<?php
 @define('IMG_URL',WWW_ROOT.'images');
 @define('INCLUDES_DIR',FILE_ROOT.'include'.SEP);
 @define('SMARTY_URL',INCLUDES_DIR.'SMARTY'.SEP);
-@define('ACCESS_LOG',FILE_ROOT.'log'.SEP.'access.log');
+@define('ACTIVITY_LOG',FILE_ROOT.'log'.SEP.'activity.log');
 @define('LANG','".$_POST['language']."');
 @define('INSTALL_DATE','".$install_date."');
 @define('debug', 'no');

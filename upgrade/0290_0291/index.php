@@ -207,7 +207,7 @@ switch ($mode) {
                                                                 <tr>
                                                                     <td align=\"left\">
                                                                         You need to set the config file conf.php to be writable by your webserver for the install after that you must make them read only by your webserver.
-                                                                        The file log/access.log needs to be writable by the web server. The cache directory needs to be writable by the server.
+                                                                        The file log/activiy.log needs to be writable by the web server. The cache directory needs to be writable by the server.
                                                                     </td>
                                                                 </tr><tr>
 
@@ -233,9 +233,9 @@ switch ($mode) {
                                                                 </tr><tr>
 
                                                                     <td align=\"left\">Access Log ");
-        if(!check_write ('../../log/access.log')) {
-            echo("<font color=\"red\">../../log/access.log is not writable stopping.</font>");
-            $errors[] = array('../../log/access.log'=>'Not Writable');
+        if(!check_write ('../../log/activity.log')) {
+            echo("<font color=\"red\">../../log/activity.log is not writable stopping.</font>");
+            $errors[] = array('../../log/activity.log'=>'Not Writable');
         } else {
             echo("<font color=\"green\"><b>OK</b>");
         }

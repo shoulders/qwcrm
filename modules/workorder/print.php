@@ -2,8 +2,10 @@
 
 require_once('include.php');
 
+$wo_id = $VAR['wo_id'];
+
 if(!$single_work_order = display_single_open_workorder($db, $VAR['wo_id'])){
-    force_page('core', "error&menu=1&error_msg=The Work Order you Requested was not found&type=error");
+    force_page('core', "error&menu=1&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_the_work_order_you_requested_was_not_found').'&type=error");
     exit;
 } else {
 
@@ -13,16 +15,16 @@ if(!$single_work_order = display_single_open_workorder($db, $VAR['wo_id'])){
     $company = $rs->GetArray();
 
     /* work order notes */
-    $work_order_notes = display_workorder_notes($db, $VAR['wo_id']);
+    $work_order_notes = display_workorder_notes($db, $wo_id);
 
     /* work order Status */
-    $work_order_status = display_workorder_status($db, $VAR['wo_id']);
+    $work_order_status = display_workorder_status($db, $wo_id);
     
     /* work order schedule */
-    $work_order_schedule = display_work_order_schedule($db, $VAR['wo_id']);
+    $work_order_schedule = display_work_order_schedule($db, $wo_id);
     
     /* work order resolution */
-    $work_order_resolution = display_resolution($db,$VAR['wo_id']);
+    $work_order_resolution = display_resolution($db, $wo_id);
 
 }
 
@@ -74,6 +76,6 @@ if($VAR['print_content'] == 'job_sheet') {
 
 /* Error Catcher - if nothing is done run this - CHANGE MESSAGE */
 if($VAR['print_content'] == '' || $VAR['print_output_method'] == '') {
-    force_page('core', "error&menu=1&error_msg=No Printing Options set. Please set up printing options in the Control Center.&type=error");
+    force_page('core', 'error&menu=1&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_no_printing_options_set').'&type=error');
     exit;
 }
