@@ -35,8 +35,7 @@
                 elementFlaggedErrors['workorder_scope'] = false;
                 frm.elements['workorder_scope'].className = '';
             }
-        }
-             
+        }             
 
         // Work Order Description Validator
         if(frm.elements['workorder_description']){
@@ -68,8 +67,7 @@
                 elementFlaggedErrors['workorder_date'] = false;
                 frm.elements['workorder_date'].className = '';
             }
-        }
-        
+        }        
        
         // Check if the key/value (associative array) has any element validation errors stored, if so return false      
         elementErrorsPresent = false;        
