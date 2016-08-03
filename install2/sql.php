@@ -695,7 +695,7 @@ function create_employee_type($db) {
     if(!$rs = $db->Execute($q)) {
         return false;
     } else {
-        $q = "REPLACE INTO `".PRFX."CONFIG_EMPLOYEE_TYPE` VALUES (1, 'Manager'),(2, 'Supervisor'),(3, 'Technician'),(4, 'Admin')";
+        $q = "REPLACE INTO `".PRFX."CONFIG_EMPLOYEE_TYPE` VALUES (1, 'Manager'),(2, 'Supervisor'),(3, 'Technician'),(4, 'Admin'),(5, 'Client')";
         if(!$rs = $db->execute($q)) {
             return false;
         } else {

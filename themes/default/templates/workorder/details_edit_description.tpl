@@ -1,5 +1,6 @@
 <!-- details_edit_description.tpl - Edit Work Order Description Page -->
 <script language="javascript" type="text/javascript" src="includes/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
+{include file='workorder/validate.js'}
 {literal}
 <script language="javascript" type="text/javascript">
     tinyMCE.init({
@@ -43,9 +44,12 @@
                             <tr>
                                 <td width="100%" valign="top" >
                                     <!-- Content Here -->
-                                    <form action="?page=workorder:details_edit_description" method="POST">
+                                    {literal}
+                                    <!--<form action="index.php?page=workorder:details_edit_description" method="POST" name="workorder_validate" id="workorder_validate"  onsubmit="try { var myValidator = workorder_validate; } catch(e) { return true; } return myValidator(this);">-->
+                                    <form method="POST" action="index.php?page=workorder:details_edit_description" name="new_refund" id="new_refund" onsubmit="return validateForm(this); return false;">
+                                    {/literal}
                                         <b>{$translate_workorder_scope}</b></br>
-                                        <input type="text" class="olotd4" size="20" name="workorder_scope" value="{$workorder_scope}">
+                                        <input type="text" class="olotd4 validateScopeExists" size="20" name="workorder_scope" value="{$workorder_scope}">
                                         <br>
                                         <br>
                                         <br>

@@ -1,8 +1,8 @@
 <!-- new.tpl - New Work Order Page -->
 <script type="text/javascript" src="js/jquery-1.2.1.pack.js"></script>
 <script language="javascript" type="text/javascript" src="includes/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
-{include file="javascript.js"}
-{include file="validate.js"}
+{include file='workorder/javascript.js'}
+{include file='workorder/validate.js'}
 {literal}
 <script type="text/javascript">
     tinyMCE.init({
@@ -61,6 +61,7 @@
                                                 {$form.javascript}
                                                 <!-- New Work Order Form -->
                                                 {literal}
+                                                <!--<form method="POST" action="index.php?page=workorder:new" name="workorder_validate" id="workorder_validate" onsubmit="try { var myValidator = workorder_validate; } catch(e) { return true; } return myValidator(this);">-->
                                                 <form method="POST" action="index.php?page=workorder:new" name="new_workorder" id="new_workorder" onsubmit="try { var myValidator = validate_new_workorder; } catch(e) { return true; } return myValidator(this);">
                                                 {/literal}
                                                     <input type="hidden" name="customer_id" value="{$customer_details[i].CUSTOMER_ID}">                                                    

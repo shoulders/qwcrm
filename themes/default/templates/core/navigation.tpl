@@ -1,5 +1,5 @@
 <!-- begin navigation.tpl -->
-<table width="150"   border="2" cellspacing="0" cellpadding="0">
+<table width="150"  border="2" cellspacing="0" cellpadding="0">
     <tr>
         <td>
         <div style="float: left" id="my_menu" class="sdmenu">
@@ -40,7 +40,7 @@
                 <a href="?page=workorder:open&amp;page_title={$translate_menu_work_orders}"><img src="{$theme_images_dir}tick.png" alt="" border="0" height="14" width="14" /> {$translate_menu_open} <b><font color="RED">{if $open_count > 0} ({$open_count}){/if}{if $open_count < 1}{/if}</font></b></a>
                 <a href="?page=workorder:closed&amp;page_title={$translate_menu_closed_work_orders}"><img src="{$theme_images_dir}icons/close.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_closed} <b><font color="RED">{if $closed > 0 } ({$closed}){/if} {if $closed < 1 }{/if} </font></b></a>
                 {if $wo_id >= "1"}
-                    {if $status2.WORK_ORDER_STATUS == "10" }
+                    {if $status2.WORK_ORDER_STATUS == "10"}
                         <a href="?page=workorder:resolution&amp;wo_id={$wo_id}&amp;page_title={$translate_menu_close}"><img src="{$theme_images_dir}icons/close.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_close}</a>
                         <a href="?page=workorder:details_new_note&amp;wo_id={$wo_id}&amp;page_title={$translate_menu_new_note}"><img src="{$theme_images_dir}icons/note.png" alt="" border="0" height="14" width="14" /> {$translate_menu_new_note}</a>
                     {/if}
@@ -64,12 +64,12 @@
                 <span>{$translate_menu_administration}</span>
                 <a href="?page=employees:main&amp;page_title={$translate_menu_employees_view}" ><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_employees_view}</a>
                 <!-- Menu limited to Managers or Supervisors -->
-                {if $cred.EMPLOYEE_TYPE == 1 ||  $cred.EMPLOYEE_TYPE == 2 }
+                {if $cred.EMPLOYEE_TYPE == 1 || $cred.EMPLOYEE_TYPE == 2}
                     <a href="?page=employees:new&amp;page_title=New"><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" height="14" width="14" /> New Employee</a>
                     <a href="?page=stats:main&amp;page_title=Stats"><img src="{$theme_images_dir}icons/reports.png" alt="" border="0" height="14" width="14" /> {$translate_stats_nav_report}</a>
                 {/if}
                 <!-- Menu limited to Managers and Admins -->
-                {if $cred.EMPLOYEE_TYPE == 1 || $cred.EMPLOYEE_TYPE == 4 }
+                {if $cred.EMPLOYEE_TYPE == 1 || $cred.EMPLOYEE_TYPE == 4}
                     <a href="?page=employees:new&amp;page_title=New"><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" height="14" width="14" /> New Employee</a>
                     {if $employee_id > '' || $employee_id > 0 }
                         <a href="?page=employees:edit&amp;employee_id={$employee_id}&amp;page_title={$translate_menu_edit}"><img src="{$theme_images_dir}icons/edit_employees.gif" alt="" border="0" height="14" width="14" /> Edit Employee</a>
@@ -82,8 +82,9 @@
         
         <!-- General Ledger -->
         <!-- Menu limited to Managers and Admins -->
-        {if $cred.EMPLOYEE_TYPE == 1 || $cred.EMPLOYEE_TYPE == 4 }
+        {if $cred.EMPLOYEE_TYPE == 1 || $cred.EMPLOYEE_TYPE == 4}
             <div>
+                
                 <span>{$translate_general_ledger_nav_title}</span>
 
                 <!-- Expenses -->
@@ -109,7 +110,7 @@
         
         <!-- Supplier Section -->
         <!-- Menu limited to Managers and Admins -->
-        {if $cred.EMPLOYEE_TYPE == 1 || $cred.EMPLOYEE_TYPE == 4 }
+        {if $cred.EMPLOYEE_TYPE == 1 || $cred.EMPLOYEE_TYPE == 4}
             <div>
                 <span>{$translate_supplier_nav_title}</span> 
                 <a href="?page=supplier:new&amp;page_title={$translate_supplier_new_title}"><img src="{$theme_images_dir}icons/new.gif" alt="" border="0" height="14" width="14" />{$translate_supplier_nav_new}</a>
@@ -121,7 +122,7 @@
                 {/if}
             </div>
         {/if}
-        {if $cred.EMPLOYEE_TYPE == 4 }
+        {if $cred.EMPLOYEE_TYPE == 4}
         <div>
             <span>{$translate_menu_setup}</span>
             <a href="?page=control:company_edit"><img src="{$theme_images_dir}icons/key.png" alt="" border="0" height="14" width="14" /> Business Setup</a>

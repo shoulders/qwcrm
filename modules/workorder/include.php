@@ -762,13 +762,13 @@ function get_workorder_scope_and_description($db, $wo_id){
 function update_workorder_scope_and_description($db, $wo_id, $workorder_scope, $workorder_description){
     
     // Remove Extra Slashes caused by Magic Quotes    
-    stripslashes($workorder_description);
+    //stripslashes($workorder_description);
 
     $q = "UPDATE ".PRFX."TABLE_WORK_ORDER SET
             WORK_ORDER_SCOPE        =".$db->qstr( $workorder_scope          ).",
             WORK_ORDER_DESCRIPTION  =".$db->qstr( $workorder_description    ).",
             LAST_ACTIVE             =".$db->qstr( time()                    )."
-            WHERE  WORK_ORDER_ID    =".$db->qstr( $wo_id                    );
+            WHERE WORK_ORDER_ID     =".$db->qstr( $wo_id                    );
 
     if(!$rs = $db->execute($q)) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
