@@ -1108,8 +1108,7 @@
         
         
         // Error Messages - some of these could also go global
-        <workorder_error_message_mysql_error>MySQL Error</workorder_error_message_mysql_error>
-        <workorder_error_message_error_in_language_file>Error in language file</workorder_error_message_error_in_language_file>
+        <workorder_error_message_mysql_error>MySQL Error</workorder_error_message_mysql_error>        
         <workorder_error_message_the_work_order_you_requested_was_not_found>The Work Order you requested was not found</workorder_error_message_the_work_order_you_requested_was_not_found>
         <workorder_error_message_no_work_order_id>No Work Order ID</workorder_error_message_no_work_order_id>
         <workorder_error_message_no_customer_information_set>No Customer Information Set</workorder_error_message_no_customer_information_set>

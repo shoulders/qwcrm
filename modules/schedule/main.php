@@ -101,7 +101,7 @@ if(!isset($VAR['tech'])) {
 }
 
 /* get list of techs for dropdown*/
-$tech_array =  display_tech($db);
+$tech_array =  display_employee_info($db);
 $smarty->assign('selected', $tech);
 $smarty->assign('tech',$tech_array);
 $smarty->assign('y',$y);

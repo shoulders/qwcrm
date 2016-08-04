@@ -1124,15 +1124,15 @@ function create_workorder_notes($db)
 
 function creat_workorder_status($db)
 {
-    $q="CREATE TABLE IF NOT EXISTS `".PRFX."TABLE_WORK_ORDER_STATUS` (
-        `WORK_ORDER_STATUS_ID` int(11) NOT NULL auto_increment,
+    $q="CREATE TABLE IF NOT EXISTS `".PRFX."TABLE_WORK_ORDER_HISTORY` (
+        `HISTORY_ID` int(11) NOT NULL auto_increment,
         `WORK_ORDER_ID` int(11) NOT NULL default '0',
-        `WORK_ORDER_STATUS_DATE` varchar(30) NOT NULL default '',
-        `WORK_ORDER_STATUS_NOTES` text NOT NULL,
-        `WORK_ORDER_STATUS_ENTER_BY` varchar(32) NOT NULL default '',
-        PRIMARY KEY  (`WORK_ORDER_STATUS_ID`),
+        `DATE` varchar(30) NOT NULL default '',
+        `NOTE` text NOT NULL,
+        `ENTERED_BY` varchar(32) NOT NULL default '',
+        PRIMARY KEY  (`HISTORY_ID`),
         KEY `WORK_ORDER_ID` (`WORK_ORDER_ID`),
-        KEY `WORK_ORDER_STATUS_ENTER_BY` (`WORK_ORDER_STATUS_ENTER_BY`)
+        KEY `ENTERED_BY` (`ENTERED_BY`)
         ) ENGINE=MyISAM ";
     
     $rs = $db->Execute($q);

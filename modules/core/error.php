@@ -2,6 +2,7 @@
 $error = $VAR['error_msg'];
 $menu  = $VAR['menu'];
 $type  = $VAR['type'];
+
 if(isset($error)) {
     if($type == 'error') {
         $smarty->assign('type', 'Error:');

@@ -87,11 +87,11 @@ if($invoice_details['INVOICE_AMOUNT'] > $paymate_amount){
     }
     
     /* update work order */
-    $q = "INSERT INTO ".PRFX."TABLE_WORK_ORDER_STATUS SET
-          WORK_ORDER_ID                = ".$db->qstr($workorder_id).",
-          WORK_ORDER_STATUS_DATE         = ".$db->qstr(time()).",
-          WORK_ORDER_STATUS_NOTES         = ".$db->qstr($memo).",
-          WORK_ORDER_STATUS_ENTER_BY        = ".$db->qstr($employee);
+    $q = "INSERT INTO ".PRFX."TABLE_WORK_ORDER_HISTORY SET
+          WORK_ORDER_ID     = ".$db->qstr($workorder_id).",
+          DATE              = ".$db->qstr(time()).",
+          NOTE              = ".$db->qstr($memo).",
+          ENTERED_BY        = ".$db->qstr($employee);
     
     if(!$rs = $db->execute($q)) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
@@ -149,11 +149,11 @@ if($invoice_details['INVOICE_AMOUNT'] > $paymate_amount){
         }
         
         /* update work order */
-        $q = "INSERT INTO ".PRFX."TABLE_WORK_ORDER_STATUS SET
-            WORK_ORDER_ID            = ".$db->qstr($workorder_id).",
-            WORK_ORDER_STATUS_DATE         = ".$db->qstr(time()).",
-            WORK_ORDER_STATUS_NOTES     = ".$db->qstr($memo).",
-            WORK_ORDER_STATUS_ENTER_BY    = ".$db->qstr($_SESSION['login_id']);
+        $q = "INSERT INTO ".PRFX."TABLE_WORK_ORDER_HISTORY SET
+            WORK_ORDER_ID       = ".$db->qstr($workorder_id).",
+            DATE                = ".$db->qstr(time()).",
+            NOTE                = ".$db->qstr($memo).",
+            ENTERED_BY          = ".$db->qstr($_SESSION['login_id']);
         
         if(!$rs = $db->execute($q)) {
             force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');

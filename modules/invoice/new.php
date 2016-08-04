@@ -285,11 +285,11 @@ if(isset($submit)){
 
                         // This runs when invoices have attached work orders
                         if($count == 0 && $wo_id > 0){
-                                $sql = "INSERT INTO ".PRFX."TABLE_WORK_ORDER_STATUS SET
-                                                WORK_ORDER_ID            =".$db->qstr($wo_id).",
-                                                WORK_ORDER_STATUS_DATE        =".$db->qstr(time()).",
-                                                WORK_ORDER_STATUS_NOTES        =".$db->qstr($msg).",
-                                                WORK_ORDER_STATUS_ENTER_BY      =".$db->qstr($_SESSION['login_id']);
+                                $sql = "INSERT INTO ".PRFX."TABLE_WORK_ORDER_HISTORY SET
+                                                WORK_ORDER_ID       =".$db->qstr($wo_id).",
+                                                DATE                =".$db->qstr(time()).",
+                                                NOTE                =".$db->qstr($msg).",
+                                                ENTERED_BY          =".$db->qstr($_SESSION['login_id']);
 
                                                 if(!$result = $db->Execute($sql)) {
                                                         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');

@@ -115,11 +115,11 @@ $q = 'SELECT * FROM '.PRFX.'TABLE_COMPANY';
             
             /* update Notes */
             $msg ="Work Order Assigned to ".$tech;
-            $q = "INSERT INTO ".PRFX."TABLE_WORK_ORDER_STATUS SET
-                  WORK_ORDER_ID                    = ".$db->qstr($VAR['wo_id']).",
-                  WORK_ORDER_STATUS_NOTES      = ".$db->qstr($msg).",
-                  WORK_ORDER_STATUS_ENTER_BY     = ".$db->qstr($_SESSION['login_id']).",
-                  WORK_ORDER_STATUS_DATE          = ".$db->qstr(time());
+            $q = "INSERT INTO ".PRFX."TABLE_WORK_ORDER_HISTORY SET
+                  WORK_ORDER_ID         = ".$db->qstr($VAR['wo_id']).",
+                  NOTE                  = ".$db->qstr($msg).",
+                  ENTERED_BY            = ".$db->qstr($_SESSION['login_id']).",
+                  DATE                  = ".$db->qstr(time());
             if(!$rs = $db->Execute($q)) {
                 force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
                 exit;
@@ -127,11 +127,11 @@ $q = 'SELECT * FROM '.PRFX.'TABLE_COMPANY';
                   
             /* update Notes */
             $msg ="Schedule has been set.";
-            $q = "INSERT INTO ".PRFX."TABLE_WORK_ORDER_STATUS SET
-                  WORK_ORDER_ID                    = ".$db->qstr($VAR['wo_id']).",
-                  WORK_ORDER_STATUS_NOTES      = ".$db->qstr($msg).",
-                  WORK_ORDER_STATUS_ENTER_BY      = ".$db->qstr($_SESSION['login_id']).",
-                  WORK_ORDER_STATUS_DATE          = ".$db->qstr(time());
+            $q = "INSERT INTO ".PRFX."TABLE_WORK_ORDER_HISTORY SET
+                  WORK_ORDER_ID     = ".$db->qstr($VAR['wo_id']).",
+                  NOTE              = ".$db->qstr($msg).",
+                  ENTERED_BY        = ".$db->qstr($_SESSION['login_id']).",
+                  DATE              = ".$db->qstr(time());
             if(!$rs = $db->Execute($q)) {
                 force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
                 exit;
@@ -196,7 +196,7 @@ $q = 'SELECT * FROM '.PRFX.'TABLE_COMPANY';
 ######################################
 # Tech List                           #
 ######################################    
-function display_tech($db){
+function display_employee_info($db){
     $sql = "SELECT  EMPLOYEE_ID, EMPLOYEE_TYPE, EMPLOYEE_LOGIN FROM ".PRFX."TABLE_EMPLOYEE"; 
     if(!$result = $db->Execute($sql)) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');

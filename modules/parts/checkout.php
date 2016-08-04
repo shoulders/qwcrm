@@ -239,11 +239,11 @@ if($content == '') {
             /* Update Work Order status and record invoice created */
             $msg = "Invoice Created ID: ".$invoice_id;
         
-            $sql = "INSERT INTO ".PRFX."TABLE_WORK_ORDER_STATUS SET
-                WORK_ORDER_ID                    =".$db->qstr($wo_id).",
-                WORK_ORDER_STATUS_DATE            =".$db->qstr(time()).",
-                WORK_ORDER_STATUS_NOTES        =".$db->qstr($msg).",
-                WORK_ORDER_STATUS_ENTER_BY     =".$db->qstr($_SESSION['login_id']);    
+            $sql = "INSERT INTO ".PRFX."TABLE_WORK_ORDER_HISTORY SET
+                WORK_ORDER_ID       =".$db->qstr($wo_id).",
+                DATE                =".$db->qstr(time()).",
+                NOTE                =".$db->qstr($msg).",
+                ENTERED_BY      =".$db->qstr($_SESSION['login_id']);    
 
             if(!$result = $db->Execute($sql)) {
                 force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
@@ -272,11 +272,11 @@ if($content == '') {
         /* update work order Status */
         $msg = "Parts Ordered. Cite CRM Orderd ID: ".$crm_invoice_id." Amount: $".number_format($cart_total, 2, '.', ',')." Shipping: $".number_format($shipping, 2, '.', ',')." Total: $".number_format($cart_total + $shipping, 2, '.', ',');
         
-        $sql = "INSERT INTO ".PRFX."TABLE_WORK_ORDER_STATUS SET
-                WORK_ORDER_ID                    =".$db->qstr($wo_id).",
-                WORK_ORDER_STATUS_DATE            =".$db->qstr(time()).",
-                WORK_ORDER_STATUS_NOTES        =".$db->qstr($msg).",
-                WORK_ORDER_STATUS_ENTER_BY     =".$db->qstr($_SESSION['login_id']);    
+        $sql = "INSERT INTO ".PRFX."TABLE_WORK_ORDER_HISTORY SET
+                WORK_ORDER_ID       =".$db->qstr($wo_id).",
+                DATE                =".$db->qstr(time()).",
+                NOTE                =".$db->qstr($msg).",
+                ENTERED_BY          =".$db->qstr($_SESSION['login_id']);    
 
         if(!$result = $db->Execute($sql)) {
             force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
@@ -295,11 +295,11 @@ if($content == '') {
         }
 
         $msg = "Work Order Changed status to Waiting For Parts";
-        $sql = "INSERT INTO ".PRFX."TABLE_WORK_ORDER_STATUS SET
-              WORK_ORDER_ID                    =". $db->qstr( $wo_id).",
-              WORK_ORDER_STATUS_DATE        =". $db->qstr( time()).",
-              WORK_ORDER_STATUS_NOTES        =". $db->qstr( $msg).",
-              WORK_ORDER_STATUS_ENTER_BY =". $db->qstr( $_SESSION['login_id']);
+        $sql = "INSERT INTO ".PRFX."TABLE_WORK_ORDER_HISTORY SET
+              WORK_ORDER_ID     =". $db->qstr( $wo_id).",
+              DATE              =". $db->qstr( time()).",
+              NOTE              =". $db->qstr( $msg).",
+              ENTERED_BY        =". $db->qstr( $_SESSION['login_id']);
         
         if(!$result = $db->Execute($sql)) {
             force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
