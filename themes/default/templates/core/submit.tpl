@@ -1,4 +1,5 @@
-<!-- Begin submit.tpl--><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html>
+<!-- submit.tpl -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html>
     <head>
         <title>{$translate_submit_page_title}</title>
         <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
@@ -54,23 +55,22 @@
                                     {literal}
                                    <form action="submit.php" method="post" onsubmit="try { var myValidator = validate_submit; } catch(e) { return true; } return myValidator(this);" >
                                     {/literal}   <!-- Let get some info from the customer if this is there first time using this service -->
-                                     {literal}<script type="text/javascript">
- $(function(){
-     $("#newuser").click(function(event) {
-     event.preventDefault();
-     $("#newuserform").slideToggle();
- });
- $("#newuserform a").click(function(event) {
-     event.preventDefault();
-     $("#newuserform").slideUp();
- });
- });
- </script>
- {/literal}
-  <a href="#" id="newuser">{$translate_submit_new_account}</a>
- <div id="newuserform">
-
-
+                                    {literal}
+                                        <script type="text/javascript">
+                                            $(function(){
+                                                $("#newuser").click(function(event) {
+                                                    event.preventDefault();
+                                                    $("#newuserform").slideToggle();
+                                                });
+                                                $("#newuserform a").click(function(event) {
+                                                    event.preventDefault();
+                                                    $("#newuserform").slideUp();
+                                                });
+                                            });
+                                        </script>
+                                    {/literal}
+                                    <a href="#" id="newuser">{$translate_submit_new_account}</a>
+                                    <div id="newuserform">
                                     <table width="100%" class="olotd" cellpadding="4" cellspacing="2">
                                             <tr>
                                                 <td  colspan="1" width="100" align="right">

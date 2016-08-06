@@ -31,6 +31,28 @@ function display_employee_info($db, $employee_id) {
     
 }
 
+################################################
+# Display all open Work orders for an employee #
+################################################
+
+// this was taken from workorders/include.php and I could not find it used anywhere
+
+function display_employee_info_version2_not_used($db){
+    
+    $sql = "SELECT  EMPLOYEE_ID, EMPLOYEE_LOGIN FROM ".PRFX."TABLE_EMPLOYEE"; 
+    if(!$result = $db->Execute($sql)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&error_type=database');
+        exit;
+    }
+    
+    while($row = $result->FetchRow()){
+        $id = $row["EMPLOYEE_ID"];
+        $tech = $row["EMPLOYEE_LOGIN"];        
+        $tech_array[$id]=$tech;
+    }
+    return $tech_array;
+}
+
 #####################################
 #    Search                            #
 #####################################

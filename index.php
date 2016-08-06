@@ -1,65 +1,16 @@
 <?php
-################################################
-#         error reporting and headers          #
-################################################
-
-/*Used to suppress Notices*/
-//error_reporting(E_ALL & ~E_NOTICE);
-error_reporting(E_ERROR);
-// Added to eliminate special characters
-header('Content-type: text/html; charset=utf-8');
-//http_redirect("install2", array("name" => "value"), true, HTTP_REDIRECT_PERM);
 
 ################################################
-#         Initilise smarty                     #
-################################################
-require('conf.php');
-//require(includes/defines.php');
-require(INCLUDES_DIR.'smarty.php');
-
-
-################################################
-#          Initial login and checks            #
+#   Minimum PHP Version                        #
 ################################################
 
-/* check if lock file exists if not we need to install */
-if(!is_file('cache/lock') ) {
-    echo("
-        <script type=\"text/javascript\">
-            <!--
-            window.location = \"install\"
-            //-->
-        </script>");
-} else if(is_dir('install') ) {
-    echo("<a style=\"color:red;\">The install Directory Exists!! Please Rename or remove the install directory.</a>");
-    die;
-}
+/*
+ * Define the application's minimum supported PHP version as a constant so it can be referenced within the application.
+ */
+define('QWCRM_MINIMUM_PHP', '5.3.10');
 
-
-
-$auth = new Auth($db, 'login.php', 'secret');
-require(INCLUDES_DIR.'acl.php');
-
-require(INCLUDES_DIR.'include.php');
-
-################################################
-#   Grab &_POST and $_GET values               #
-################################################
-
-$VAR            = array_merge($_GET,$_POST);
-$wo_id          = $VAR['wo_id'];
-$customer_id    = $VAR['customer_id'];
-$id             = $login_id;
-$page_title     = $VAR['page_title'];
-
-require('modules/core/translate.php');
-
-################################################
-#   log off                                    #
-################################################
-// If log off is set then we log off
-if (isset($VAR['action']) && $VAR['action'] == 'logout') {
-  $auth->logout('login.php');
+if (version_compare(PHP_VERSION, QWCRM_MINIMUM_PHP, '<')){
+    die('Your host needs to use PHP ' . QWCRM_MINIMUM_PHP . ' or higher to run this version of QWCRM!');
 }
 
 ################################################
@@ -67,22 +18,100 @@ if (isset($VAR['action']) && $VAR['action'] == 'logout') {
 ################################################
 
 // should this be further at the top
-function getMicroTime() {
-  list($usec, $sec) = explode(" ", microtime()); 
+function getMicroTime(){  
+    list($usec, $sec) = explode(" ", microtime()); 
     return (float)$usec + (float)$sec;
 } 
 
 $start = getMicroTime();
 
+// Saves the start time and memory usage.
+//$startTime = microtime(1);
+//$startMem  = memory_get_usage();
+
+################################################
+#         error reporting and headers          #
+################################################
+
+/* Used to suppress PHP error Notices */
+//error_reporting(E_ALL & ~E_NOTICE);
+error_reporting(E_ERROR);
+
+// Added to eliminate special characters
+header('Content-type: text/html; charset=utf-8');
+
+################################################
+#          Is Installed Check                  #
+################################################
+
+/* 
+ * check if lock file exists, if not, we need to install
+ * If installed remove the install directory
+ */
+if(!is_file('cache/lock')){
+    echo('
+        <script type="text/javascript">            
+            window.location = "install"           
+        </script>
+        ');
+} else if(is_dir('install') ) {
+    echo('<a style="color: red;">The install Directory Exists!! Please Rename or remove the install directory.</a>');
+    die;
+}
+
+################################################
+#   Grab &_POST and $_GET values               #
+################################################
+
+// do these need to be here? (array merge does)
+
+$VAR            = array_merge($_GET, $_POST);
+$page_title     = $VAR['page_title'];
+
+/*
+$wo_id          = $VAR['wo_id'];
+$customer_id    = $VAR['customer_id'];
+$id             = $login_id; // this should be replaced with $login_id anyway
+*/
+
+################################################
+#         Initilise QWCRM                      #
+################################################
+
+require('configuration.php');
+require('includes/defines.php');
+require(INCLUDES_DIR.'include.php');
+require(INCLUDES_DIR.'session.php');
+require(INCLUDES_DIR.'auth.php');
+require(INCLUDES_DIR.'smarty.php');
+require(INCLUDES_DIR.'acl.php');
+
+################################################
+#          Enable Authentication               #
+################################################
+
+$auth = new Auth($db, 'login.php', 'secret');
+
+################################################
+#   should I log off                           #
+################################################
+
+// If log off is set then log user off
+if (isset($VAR['action']) && $VAR['action'] == 'logout') {    
+    $auth->logout('login.php');
+}
+
 ##########################################################################
 #   Assign variables into smarty for use by all native module templates  #
 ##########################################################################
+
 /* get company info for defaults */
 $q = 'SELECT * FROM '.PRFX.'TABLE_COMPANY, '.PRFX.'VERSION ORDER BY  '.PRFX.'VERSION.`VERSION_INSTALLED` DESC LIMIT 1';
-    if(!$rs = $db->execute($q)) {
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-        exit;
-    }
+if(!$rs = $db->execute($q)){
+force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+exit;
+}
+
 $smarty->assign('version', $rs->fields['VERSION_NAME']);
 $smarty->assign('company_name', $rs->fields['COMPANY_NAME']);
 $smarty->assign('company_address', $rs->fields['COMPANY_ADDRESS']);
@@ -108,137 +137,139 @@ $smarty->assign('id', $id);
 
 ##############################################################
 #    Url Builder This grabs gets and post and builds the url # 
-#    conection strings                                       #
+#    conection strings ($_GET has priority)                  #
 ##############################################################
-if(!isset($_POST['page'])) {
-        if ( $_GET['page']) {
-                // Explode the url so we can get the module and page
-                list($module, $page) = explode(":", $_GET['page']);
-                $the_page = 'modules'.SEP.$module.SEP.$page.'.php';
 
-                // remove page from the $_GET array we dont want it to pass the options
-                unset($_GET['page']);
-
-                // Define the global options for each page
-                foreach($_GET as $key=>$val){
-                        @define($key, $val);
-                }
-
-                // Check to see if the page is real other wise send em a 404
-                if ( file_exists ($the_page) ) {
-                        $the_page= 'modules'.SEP.$module.SEP.$page.'.php';
-                } else {
-                        $the_page= 'modules'.SEP.'core'.SEP.'404.php';
-                }
-        } else {
-                // If no page is supplied then go to the main page
-                $the_page= 'modules'.SEP.'core'.SEP.'main.php';
-        }
-} else {
+if(!isset($_POST['page'])){
+    if ( $_GET['page']){
+        
         // Explode the url so we can get the module and page
-                list($module, $page) = explode(":", $_POST['page']);
-                $the_page = $the_page= 'modules'.SEP.$module.SEP.$page.'.php';
+        list($module, $page) = explode(":", $_GET['page']);
+        $the_page = 'modules'.SEP.$module.SEP.$page.'.php';
 
-                // remove page from the $_GET array we dont want it to pass the options
-                unset($_POST['page']);
+        // remove page from the $_GET array we dont want it to pass the options
+        unset($_GET['page']);
 
-                // Define the global options for each page
-                foreach($_POST as $key=>$val){
-                        @define($key, $val);
-                }
+        // Define the global options for each page
+        foreach($_GET as $key=>$val){
+            define($key, $val);
+        }
 
-                // Check to see if the page is real other wise send em a 404
-                if ( file_exists ($the_page) ) {
-                        $the_page= 'modules'.SEP.$module.SEP.$page.'.php';
-                } else {
-                        $the_page= 'modules'.SEP.'core'.SEP.'404.php';
-                }
+        // Check to see if the page is real other wise send em a 404
+        if (file_exists($the_page)){
+            $the_page = 'modules'.SEP.$module.SEP.$page.'.php';
+        } else {
+            $the_page = 'modules'.SEP.'core'.SEP.'404.php';
+        }
+    } else {
+        // If no page is supplied then go to the main page
+        $the_page = 'modules'.SEP.'core'.SEP.'main.php';
+    }
+} else {
+    // Explode the url so we can get the module and page
+    list($module, $page) = explode(":", $_POST['page']);
+    $the_page = $the_page= 'modules'.SEP.$module.SEP.$page.'.php';
+
+    // remove page from the $_GET array we dont want it to pass the options
+    unset($_POST['page']);
+
+    // Define the global options for each page - is this needed - possibly rem it out for future use
+    foreach($_POST as $key=>$val){
+        define($key, $val);
+    }
+
+    // Check to see if the page is real other wise send em a 404
+    if ( file_exists ($the_page) ) {
+        $the_page= 'modules'.SEP.$module.SEP.$page.'.php';
+    } else {
+        $the_page= 'modules'.SEP.'core'.SEP.'404.php';
+    }
 }
 
-
-$tracker_page = "$module:$page";
-
+$tracker_page = "$module:$page"; // what is this for
 
 #####################################
 #    Display the pages              #
 #####################################  
 
-if(isset($_GET['wo_id'])) {
+/* Work Order ID */
+if(isset($_GET['wo_id'])){
     $smarty->assign('wo_id', $_GET['wo_id']);
     global $wo_id;
 } else {
     $smarty->assign('wo_id','0');
 }
-if(isset($_GET['customer_id'])) {
-    $smarty->assign('wo_id', $_GET['customer_id']);
+
+/* customer ID */
+if(isset($_GET['customer_id'])){
+    $smarty->assign('customer_id', $_GET['customer_id']);
     global $customer_id;
 } else {
-    $smarty->assign('customer','0');
+    $smarty->assign('customer_id','0');
 }
-require('modules'.SEP.'core'.SEP.'error.php');
 
-if(isset($page_title)) {
+/* Gets the error details and sets a page title if error set */
+//require('modules'.SEP.'core'.SEP.'error.php');
+
+/* Page Title */
+
+// i could write a function to build all page titles here and remove from the url
+if(isset($page_title)){
     $smarty->assign('page_title', $page_title); 
 } else {
-    $page_title ="Home";
+    $page_title = 'Home';
     $smarty->assign('page_title', $page_title);
 }  
 
-if(isset($VAR['msg'])) {
-
+/* Message */
+if(isset($VAR['msg'])){
     $smarty->assign('msg', $VAR['msg']);
 }
 
-// If escape=1 varible is set do not load the template wrapper - useful for printing
-if($VAR['escape'] != 1 ) {
+//tmpl=component or tmpl=0
+/* If escape=1 varible is set do not load the template wrapper - useful for printing */
+if($VAR['escape'] != 1 ){
     require('modules'.SEP.'core'.SEP.'header.php');
     require('modules'.SEP.'core'.SEP.'navigation.php');
     require('modules'.SEP.'core'.SEP.'company.php');
 }
-
-if($menu == 1 ) {
-
-    $smarty->assign('menu', '1');
-    $smarty->display('core'.SEP.'error.tpl');
-
-} else {
     
-    /* check acl for page request */
-    if(!check_acl($db,$module,$page)) {
-        force_page('core','error&error_msg=You do not have permission to access this '.$module.':'.$page.'&menu=1');
-    } else { 
-        require($the_page);
-    }
+/* check acl for page request - if ok display */
+if(!check_acl($db, $module, $page)){
+    force_page('core','error&error_msg=You do not have permission to access this '.$module.':'.$page.'&menu=1');
+} else { 
+    require($the_page);
 }
 
-if($VAR['escape'] != 1 ) {
+// dont show the footer in templess mode - this has diagnostics in
+if($VAR['escape'] != 1 ){
     require('modules'.SEP.'core'.SEP.'footer.php');
 }
 
 ################################################
 #         Logging                              #
 ################################################
+
 /* Tracker code */
-function getIP() {
-//    $ip;
-    if (getenv("HTTP_CLIENT_IP")) $ip = getenv("HTTP_CLIENT_IP");
-    else if(getenv("HTTP_X_FORWARDED_FOR")) $ip = getenv("HTTP_X_FORWARDED_FOR");
-    else if(getenv("REMOTE_ADDR")) $ip = getenv("REMOTE_ADDR");
-    else $ip = "UNKNOWN";
+function getIP(){
+    if (getenv('HTTP_CLIENT_IP')) {$ip = getenv('HTTP_CLIENT_IP');}
+    elseif (getenv('HTTP_X_FORWARDED_FOR')) {$ip = getenv('HTTP_X_FORWARDED_FOR');}
+    elseif (getenv('REMOTE_ADDR')) {$ip = getenv('REMOTE_ADDR');}
+    else {$ip = 'UNKNOWN';}
     return $ip;
 }
 
-$logtime = time();
-
 $q = 'INSERT into '.PRFX.'TRACKER SET
-   date          = '. $db->qstr( $logtime    ).',
-   ip            = '. $db->qstr( getIP() ).',
-   uagent        = '. $db->qstr( getenv(HTTP_USER_AGENT) ).',
-   full_page     = '. $db->qstr( $the_page ).',
-   module        = '. $db->qstr( $module ).',
-   page          = '. $db->qstr( $page ).',
-   referer       = '. $db->qstr( getenv(HTTP_REFERER) );
+   date          = '. $db->qstr( time()                     ).',
+   ip            = '. $db->qstr( getIP()                    ).',
+   uagent        = '. $db->qstr( getenv(HTTP_USER_AGENT)    ).',
+   full_page     = '. $db->qstr( $the_page                  ).',
+   module        = '. $db->qstr( $module                    ).',
+   page          = '. $db->qstr( $page                      ).',
+   referer       = '. $db->qstr( getenv(HTTP_REFERER)       );
 
    if(!$rs = $db->Execute($q)) {
       echo 'Error inserting tracker :'. $db->ErrorMsg();
    }
+   
+ 

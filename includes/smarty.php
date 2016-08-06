@@ -4,12 +4,6 @@
 #         Setup Smarty        #
 ###############################
 
-$link = mysqli_connect( $DB_HOST, $DB_USER, $DB_PASS ); /*this might be redundant */
-
-/* Load required Includes */
-require(INCLUDES_DIR.'session.php');
-require(INCLUDES_DIR.'auth.php');
-
 /* Set Path for SMARTY in the php include path */
 set_include_path(get_include_path() . PATH_SEPARATOR . INCLUDES_DIR.'SMARTY'.SEP);
 require('Smarty.class.php');

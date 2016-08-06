@@ -61,8 +61,7 @@
                                                 {$form.javascript}
                                                 <!-- New Work Order Form -->
                                                 {literal}
-                                                <!--<form method="POST" action="index.php?page=workorder:new" name="workorder_validate" id="workorder_validate" onsubmit="try { var myValidator = workorder_validate; } catch(e) { return true; } return myValidator(this);">-->
-                                                <form method="POST" action="index.php?page=workorder:new" name="new_workorder" id="new_workorder" onsubmit="try { var myValidator = validate_new_workorder; } catch(e) { return true; } return myValidator(this);">
+                                                <form method="POST" action="index.php?page=workorder:new" name="new_workorder" id="new_workorder" onsubmit="return validateForm(this); return false;">
                                                 {/literal}
                                                     <input type="hidden" name="customer_id" value="{$customer_details[i].CUSTOMER_ID}">                                                    
                                                     <input type="hidden" name="created_by" value="{$login_id}">
@@ -79,7 +78,7 @@
                                                             <td class="olotd4">{$smarty.now|date_format:"$date_format"}</td>
                                                             <td class="olotd4">{$customer_details[i].CUSTOMER_DISPLAY_NAME}</td>
                                                             <td class="olotd4">
-                                                                <input size="40" id="scope" name="scope" type="text" value="" onkeyup="lookup(this.value);" onblur="fill();">
+                                                                <input size="40" id="workorder_scope" name="workorder_scope" type="text" value="" onkeyup="lookup(this.value);" onblur="fill();">
                                                                 <div class="suggestionsBox" id="suggestions" style="display: none;">
                                                                     <img src="{$theme_images_dir}upArrow.png" style="position: relative; top: -12px; left: 1px;" alt="upArrow" />
                                                                     <div class="suggestionList" id="autoSuggestionsList">&nbsp;</div>

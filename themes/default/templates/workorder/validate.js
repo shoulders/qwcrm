@@ -21,7 +21,7 @@
             if (value === '') {
                 errorFlagged = true;
                 elementFlaggedErrors['workorder_scope'] = true;
-                _qfMsg = _qfMsg + "\n - Please enter a scope";
+                _qfMsg = _qfMsg + "\n - {/literal}{$translate_workorder_validate_scope_notpresent}{literal}";
                 frm.elements['workorder_scope'].className = 'error';              
             } else
             
@@ -29,7 +29,7 @@
             if (value.length > 40 ) {
                 errorFlagged = true;
                 elementFlaggedErrors['workorder_scope'] = true;
-                _qfMsg = _qfMsg + "\n - The Work Order Scope cannot be more than 40 characters";
+                _qfMsg = _qfMsg + "\n - {/literal}{$translate_workorder_validate_scope_length}{literal}";
                 frm.elements['workorder_scope'].className = 'error';               
             } else {
                 elementFlaggedErrors['workorder_scope'] = false;
@@ -47,7 +47,7 @@
             if (value === '') {
                 errorFlagged = true;
                 elementFlaggedErrors['workorder_description'] = true;
-                _qfMsg = _qfMsg + "\n - Please enter a description";
+                _qfMsg = _qfMsg + "\n - {/literal}{$translate_workorder_validate_description_notpresent}{literal}";
                 frm.elements['workorder_description'].className = 'error';         
             } else {
                 elementFlaggedErrors['workorder_description'] = false;
@@ -55,13 +55,14 @@
             }
         }
         
-        // Work Order date is not empty - might not be used - if the value does not exist javascript fails
+        // Work Order Creation Date is not empty
+        // this is currently not used but might be if i make the ability to add a date manually
         if(frm.elements['workorder_date']){
             value = frm.elements['workorder_date'].value;
             if (value === '') {
                 errorFlagged = true;
                 elementFlaggedErrors['workorder_date'] = true;
-                _qfMsg = _qfMsg + "\n - Please enter the Date the Work Order Is created";
+                _qfMsg = _qfMsg + "\n - {/literal}{$translate_workorder_validate_creation_date_notpresent}{literal}";
                 frm.elements['workorder_date'].className = 'error';         
             } else {
                 elementFlaggedErrors['workorder_date'] = false;
@@ -82,7 +83,7 @@
 
         // If there are element/form errors show the warning message that has been built
         if (errorFlagged === true) {
-            _qfMsg = "{/literal}{$translate_workorder_validate_warning_messsage_invalidinformation}{literal}\n" + _qfMsg;
+            _qfMsg = "{/literal}{$translate_workorder_validate_warning_message_invalidinformation}{literal}\n" + _qfMsg;
             _qfMsg = _qfMsg + "\n\n{/literal}{$translate_workorder_validate_warning_message_pleasecorrect}{literal}";
             alert(_qfMsg);            
             return false;

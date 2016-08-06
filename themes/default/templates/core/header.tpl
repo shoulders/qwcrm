@@ -30,17 +30,6 @@
 <script type="text/javascript" src="js/dhtml.js">
 </script>
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
-    <tr>
-
-        <td class="menutd" align="right">
-        {if $error_msg != ""}<br/>
-        {include file="core/error_header.tpl"}<br/>
-        {/if}
-        </td>
-
-    </tr>
-</table>
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
     <tr class="text4" width="100%">
         <td>
             <span class="text4"></span>

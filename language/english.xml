@@ -852,6 +852,7 @@
         <supplier_val_description_notpresent>Please enter a description of this supplier</supplier_val_description_notpresent>
         <supplier_val_pageno_notpresent>Please enter a page number</supplier_val_pageno_notpresent>
         <supplier_val_pageno_size>Please enter a valid page number</supplier_val_pageno_size>
+        
         <supplier_val_mes_invalidinformation>Invalid information entered.</supplier_val_mes_invalidinformation>
         <supplier_val_mes_pleasecorrect>Please correct these fields.</supplier_val_mes_pleasecorrect>
         <supplier_delete_mes_confirmation>Are you Sure you want to delete this Supplier Record ? This will permanently remove the record from the database.</supplier_delete_mes_confirmation>
@@ -1107,15 +1108,79 @@
         
         
         
-        // Error Messages - some of these could also go global
-        <workorder_error_message_mysql_error>MySQL Error</workorder_error_message_mysql_error>        
-        <workorder_error_message_the_work_order_you_requested_was_not_found>The Work Order you requested was not found</workorder_error_message_the_work_order_you_requested_was_not_found>
-        <workorder_error_message_no_work_order_id>No Work Order ID</workorder_error_message_no_work_order_id>
-        <workorder_error_message_no_customer_information_set>No Customer Information Set</workorder_error_message_no_customer_information_set>
-        <workorder_error_message_no_printing_options_set>No Printing Options set. Please set up printing options in the Control Center./workorder_error_message_no_printing_options_set>
+        // include.php
+        <workorder_error_message_function_display_single_open_workorder_failed>Could not display the Work Order record requested</workorder_error_message_function_display_single_open_workorder_failed>
+        <workorder_error_message_function_display_single_open_workorder_notfound>The requested Work Order could not be found</workorder_error_message_function_display_single_open_workorder_notfound>
+        
+        <workorder_error_message_function_display_workorders_failed>Could not display the Work Order(s) requested</workorder_error_message_function_display_workorders_failed>
+        <workorder_error_message_function_display_workorders_notfound>The requested Work Order(s) could not be found</workorder_error_message_function_display_workorders_notfound>
+       
+        <workorder_error_message_function_display_closed_failed>Could not display the Work Order(s) requested</workorder_error_message_function_display_closed_failed>        
+        <workorder_error_message_function_display_closed_notfound>The requested Work Order(s) could not be found</workorder_error_message_function_display_closed_notfound>        
+        <workorder_error_message_function_display_closed_failedcount>Failed to select and count closed Work Orders</workorder_error_message_function_display_closed_failedcount>
+        
+        <workorder_error_message_function_display_workorder_notes_failed>Could not to display notes for the Work Order</workorder_error_message_function_display_workorder_notes_failed>
+        
+        <workorder_error_message_function_display_workorder_history_failed>Could not display history for the Work Order</workorder_error_message_function_display_workorder_history_failed>
+        
+        <workorder_error_message_function_display_customer_info_failed>Could not display Customer Information for the Work Order</workorder_error_message_function_display_customer_info_failed>
+        
+        <workorder_error_message_function_display_status_types_failed>Could not display Work Order status types</workorder_error_message_function_display_status_types_failed>
+        
+        <workorder_error_message_function_display_parts_failed>Could not display parts for the Work Order</workorder_error_message_function_display_parts_failed>
+        
+        <workorder_error_message_function_display_resolution_failed>Could not display resolution for the Work Order</workorder_error_message_function_display_resolution_failed>
+
+        <workorder_error_message_function_display_workorder_schedule_failed>Could not display schedule for the Work Order</workorder_error_message_function_display_workorder_schedule_failed>    
+        
+        <workorder_error_message_function_insert_new_workorder_failed>Could not insert a note for the Work Order</workorder_error_message_function_insert_new_workorder_failed> 
+
+        <workorder_error_message_function_insert_new_workorder_history_note_failed>Could not insert a history note for the Work Order</workorder_error_message_function_insert_new_workorder_history_note_failed>
+        
+        <workorder_error_message_function_insert_new_note_failed>Could not insert a note for the Work Order</workorder_error_message_function_insert_new_note_failed>
+        
+        <workorder_error_message_function_get_workorder_scope_and_description_failed>Failed to get the Scope and Description for the Work Order</workorder_error_message_function_get_workorder_scope_and_description_failed>
+        
+        <workorder_error_message_function_get_workorder_comments_failed>Failed to get the Comments for the Work Order</workorder_error_message_function_get_workorder_comments_failed>
+        
+        <workorder_error_message_function_get_workorder_resolution_failed>Failed to get the Resolution for the Work Order</workorder_error_message_function_get_workorder_resolution_failed>
+        
+        <workorder_error_message_function_get_employee_display_name_by_id_failed>Failed to get the Employee Name by ID for the Work Order</workorder_error_message_function_get_employee_display_name_by_id_failed>
+        
+        <workorder_error_message_function_update_workorder_scope_and_description_failed>Failed to update the Scope and Description for the Work Order</workorder_error_message_function_update_workorder_scope_and_description_failed>
+        
+        <workorder_error_message_function_update_workorder_comments_failed>Failed to update the Comments for the Work Order</workorder_error_message_function_update_workorder_comments_failed>
+        
+        <workorder_error_message_function_update_workorder_resolution_failed>Failed to update the Resolution for the Work Order</workorder_error_message_function_update_workorder_resolution_failed>
+        
+        <workorder_error_message_function_update_status_failed>Failed to update the Status for the Work Order</workorder_error_message_function_update_status_failed>
+        
+        <workorder_error_message_function_update_last_active_failed>Failed to update the Last Activity Date for the Work Order</workorder_error_message_function_update_last_active_failed>
+        
+        <workorder_error_message_function_close_workorder_with_invoice_failed>Failed to Close the Work Order and create an Invoice</workorder_error_message_function_close_workorder_with_invoice_failed>
+        
+        <workorder_error_message_function_close_workorder_without_invoice_failed>Failed to Close the Work Order</workorder_error_message_function_close_workorder_without_invoice_failed>
+        
+        <workorder_error_message_function_delete_work_order_failed>Failed to Delete the Work Order</workorder_error_message_function_delete_work_order_failed>
+        
+        <workorder_error_message_function_assign_work_order_to_employee_failed>Failed to assign Work Order to another employee</workorder_error_message_function_assign_work_order_to_employee_failed>
+
+        <workorder_error_message_function_build_active_employee_form_option_list_failed>Failed build and return and Employee list</workorder_error_message_function_build_active_employee_form_option_list_failed>
+        
+        <workorder_error_message_function_resolution_edit_status_check_failed>Failed to check the Resolution Status of the Work Order</workorder_error_message_function_resolution_edit_status_check_failed>
             
+        // new.php
+        <workorder_error_message_new_loadpage_failed>Cannot create a New Work Order without a Customer ID - No Customer ID has been set</workorder_error_message_new_loadpage_failed>
+        
         // Global Error messages (i.e. main include.php) - possibly rename global_error_message
         <include_error_message_cant_open_activity_log>can&#39;t open activity.log</include_error_message_cant_open_activity_log>
+        <workorder_error_message_mysql_error>MySQL Error</workorder_error_message_mysql_error>  
+        
+        // other
+        <workorder_error_message_no_work_order_id>No Work Order ID</workorder_error_message_no_work_order_id>
+        
+        <workorder_error_message_no_printing_options_set>No Printing Options set. Please set up printing options in the Control Center.</workorder_error_message_no_printing_options_set>
+        
         
         
         // Logging Messages - some of these might go global
@@ -1130,10 +1195,12 @@
             
             
          // Validators
-        <workorder_validate_work_order_creation_date_notpresent>Please enter the Date the Work Order Is created</workorder_validate_work_order_creation_date_notpresent>
-        <workorder_validate_scope_notpresent>Please enter the Work Order Scope</workorder_validate_scope_notpresent>
-        <workorder_validate_scope_size>The Work Order Scope cannot be more than 40 characters</workorder_validate_scope_size>              
-        <workorder_validate_warning_messsage_invalidinformation>Invalid information entered.</workorder_validate_warning_messsage_invalidinformation>
+        <workorder_validate_scope_notpresent>Enter a scope</workorder_validate_scope_notpresent>
+        <workorder_validate_scope_length>The scope cannot be more than 40 characters</workorder_validate_scope_length>        
+        <workorder_validate_description_notpresent>Enter a description</workorder_validate_description_notpresent>
+        <workorder_validate_creation_date_notpresent>Enter the Work Order creation date</workorder_validate_creation_date_notpresent>
+                     
+        <workorder_validate_warning_message_invalidinformation>Invalid information entered.</workorder_validate_warning_message_invalidinformation>
         <workorder_validate_warning_message_pleasecorrect>Please correct these fields.</workorder_validate_warning_message_pleasecorrect>
               
                 
