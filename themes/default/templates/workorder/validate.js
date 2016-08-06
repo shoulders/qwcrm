@@ -40,8 +40,13 @@
         // Work Order Description Validator
         if(frm.elements['workorder_description']){
             
-            //value = frm.elements['workorder_description'].value; 
-            value = tinyMCE.activeEditor.getContent();
+            //value = frm.elements['workorder_description'].value;
+            
+            // Get the HTML contents of the currently active editor
+            //value = tinyMCE.activeEditor.getContent();
+            
+            // Get content of a specific editor: (name will work if id is not set)
+            value = tinyMCE.get('workorder_description').getContent();
             
             // Work Order description is not empty
             if (value === '') {

@@ -239,5 +239,4 @@ $q = "SELECT * FROM ".PRFX."TABLE_EMPLOYEE WHERE EMPLOYEE_DISPLAY_NAME ='".$logi
 $rs = $db->Execute($q);
 $cred2 = $rs->FetchRow();
 
-
 $smarty->display('core'.SEP.'main.tpl');

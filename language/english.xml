@@ -1003,7 +1003,7 @@
         <workorder_print_the_work_order_button_tooltip>Print The Work Order</workorder_print_the_work_order_button_tooltip>
         <workorder_view_the_work_order_button_tooltip>View The Work Order</workorder_view_the_work_order_button_tooltip>
 
-        //// Pages
+        //// Pages (tpl)
 
         // Closed
         <workorder_closed_title>Closed Work Orders</workorder_closed_title>
@@ -1015,7 +1015,7 @@
         <workorder_details_help_title>Work Order Details Help</workorder_details_help_title>
         <workorder_details_help_content>You can edit the Work order commments, notes, and set schedule by clicking the icon on the right of each window&lt;br&gt;&lt;br&gt;You can navigate to the customer by clicking their name. Hover over the Magnifing glass by the customer name to view Quick Contact Information. &lt;br&gt;&lt;br&gt;If you need to edit the Customers Contact Information click the Edit Icon by their contact details.&lt;br&gt;&lt;br&gt;Click on the Employee name to go to the employees details. Hover over the Magnifing glass to view the employees Quick Contact Information.&lt;br&gt;&lt;br&gt;Click the Print link on the Quick Bar to generate a printable PDF of this work order. Click the Close link on the Quick Bar to complete the order and start the invoicing processes.</workorder_details_help_content>
               
-            // Details - Customer Details       
+            // Details - Customer Details
             <workorder_details_customer_details_title>Customer Details</workorder_details_customer_details_title>  
             <workorder_details_edit_customer_details_button_tooltip>Click to edit customer details</workorder_details_edit_customer_details_button_tooltip>   
 
@@ -1181,7 +1181,7 @@
         // status.php
         <workorder_error_message_status_loadpage_failed>There is no Work Order ID set</workorder_error_message_status_loadpage_failed>
             
-        //// Logging Messages       
+        //// Activity Log Messages       
                    
         <workorder_log_message_work_order>Work Order</workorder_log_message_work_order>
         <workorder_log_message_has_been_deleted>has been deleted</workorder_log_message_has_been_deleted>            
@@ -1200,6 +1200,4 @@
         <workorder_validate_warning_message_invalidinformation>Invalid information entered.</workorder_validate_warning_message_invalidinformation>
         <workorder_validate_warning_message_pleasecorrect>Please correct these fields.</workorder_validate_warning_message_pleasecorrect>
               
-                
-            
-    </translate>
+</translate>

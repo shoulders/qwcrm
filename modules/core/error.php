@@ -2,7 +2,7 @@
 
 // do I need this here
 if(!xml2php('core')) {
-    $smarty->assign('error_msg',"Error in language file");
+    $smarty->assign('error_msg','Error in language file');
 }
 
 $error_type         = $VAR['error_type'];
@@ -10,7 +10,6 @@ $error_msg          = $VAR['error_msg'];
 $error_location     = $VAR['error_location'];
 $database_error     = $VAR['database_error']; 
 $php_function       = $VAR['php_function'];
-
 
 /*
  * this is need to set the page title but doe snot work here, maybe make it a function called in index.php
@@ -54,5 +53,6 @@ $smarty->assign('php_function',     $php_function       );
 $smarty->assign('database_error',   $database_error     );
 
 // I need to write this to an error log ? - add here
+// when writing to the log i can use apache variable URL_REFER to get the page where the error occured and use a bit of regex on it to write it to the error log
 
 $smarty->display('core'.SEP.'error.tpl');

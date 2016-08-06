@@ -73,11 +73,12 @@ $wo_id          = $VAR['wo_id'];
 $customer_id    = $VAR['customer_id'];
  * */
  
-$id             = $login_id; // this should be replaced with $login_id anyway
+$id             = $login_id; // this should be replaced with $login_id anyway - page tile, msg , varible loops etc..
 
+// add varible calls here - i can sort them at a later date
 
 ################################################
-#         Initilise QWCRM                      #
+#         Initialise QWCRM                     #
 ################################################
 
 require('configuration.php');
@@ -92,7 +93,7 @@ require(INCLUDES_DIR.'acl.php');
 #          Enable Authentication               #
 ################################################
 
-$auth = new Auth($db, 'login.php', 'secret');
+$auth = new Auth($db, 'login.php', 'secret'); // secret possible = $strKey fron configuration.php
 
 ################################################
 #   should I log off                           #
@@ -140,8 +141,10 @@ $smarty->assign('id', $id);
 
 ##############################################################
 #    Url Builder This grabs gets and post and builds the url # 
-#    conection strings ($_GET has priority)                  #
+#    conection strings ($_POST has priority)                 #
 ##############################################################
+
+// This section is a real mess - alot of the suff is not needed also use $VAR
 
 if(!isset($_POST['page'])){
     if ( $_GET['page']){
@@ -170,8 +173,8 @@ if(!isset($_POST['page'])){
     }
 } else {
     // Explode the url so we can get the module and page
-    list($module, $page) = explode(":", $_POST['page']);
-    $the_page = $the_page= 'modules'.SEP.$module.SEP.$page.'.php';
+    list($module, $page) = explode(":", $_POST['page']);  //list($module, $page, $variables) would split into 3, where currenltly only split in too 2 chunks, check this
+    $the_page = 'modules'.SEP.$module.SEP.$page.'.php';
 
     // remove page from the $_GET array we dont want it to pass the options
     unset($_POST['page']);
@@ -189,7 +192,7 @@ if(!isset($_POST['page'])){
     }
 }
 
-$tracker_page = "$module:$page"; // what is this for
+$tracker_page = "$module:$page"; // what is this for - not used anywhere
 
 #####################################
 #    Display the pages              #
@@ -224,7 +227,7 @@ if(isset($page_title)){
     $smarty->assign('page_title', $page_title);
 }  
 
-/* Message */
+/* Message - Legacy Message Feature - Possibly will use it in future*/
 if(isset($VAR['msg'])){
     $smarty->assign('msg', $VAR['msg']);
 }

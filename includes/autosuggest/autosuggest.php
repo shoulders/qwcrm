@@ -1,8 +1,9 @@
 <?php
 
 include ('../../configuration.php');
-    
-if($db != new mysqli( $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME)){
+include ('../../includes/defines.php');
+
+if(!$db = new mysqli( $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME)){
     echo 'ERROR: Could not connect to the database.';
 } else {
     

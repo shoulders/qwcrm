@@ -6,6 +6,7 @@
             // Hide the suggestion box.
             $('#suggestions').hide();
         } else {
+            // Lookup Records
             $.post("includes/autosuggest/autosuggest.php", {queryString: ""+scope+""}, function(data){
                 if(data.length >0) {
                     $('#suggestions').show();
@@ -13,10 +14,10 @@
                 }
             });
         }
-    } // lookup
+    } 
 
     function fill(thisValue) {
-        $('#scope').val(thisValue);
+        $('#workorder_scope').val(thisValue);
         setTimeout("$('#suggestions').hide();", 200);
     }
 </script>
