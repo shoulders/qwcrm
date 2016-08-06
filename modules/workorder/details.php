@@ -2,7 +2,6 @@
 
 require_once('include.php');
 
-/* Grab passed varibles */
 $wo_id  = $VAR['wo_id'];
 
 /* Assign Varibles to smarty */

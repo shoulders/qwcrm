@@ -6,7 +6,7 @@
             // Hide the suggestion box.
             $('#suggestions').hide();
         } else {
-            $.post("modules/workorder/autosuggest.php", {queryString: ""+scope+""}, function(data){
+            $.post("includes/autosuggest/autosuggest.php", {queryString: ""+scope+""}, function(data){
                 if(data.length >0) {
                     $('#suggestions').show();
                     $('#autoSuggestionsList').html(data);

@@ -2,12 +2,12 @@
 
 require_once('include.php');
 
-if(empty($VAR['wo_id'])){
-    force_page('core', 'error&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_no_printing_options_set'));
+if(empty($VAR['wo_id'])){    
+    force_page('core', 'error', 'error_type=warning&error_location=workorder:status&php_function=&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_print_loadpage_failed').'&database_error='.$db->ErrorMsg());
     exit;
 }
     
-$wo_id                  = $VAR['wo_id']; // seems to already be defined somewhere, perhaps the session? This ensures the correct WO is selected
+$wo_id                  = $VAR['wo_id'];
 $assign_status          = $VAR['assign_status'];
 $logged_in_employee_id  = $_SESSION['login_id'];
 $target_employee_id     = $VAR['assign_employee_val']; // This is automatically created by <form>{$employee_list}</form>
@@ -33,8 +33,8 @@ if (isset($VAR['delete'])) {
     delete_work_order($db, $wo_id, $logged_in_employee_id);            
 }
 
-$smarty->assign('employee_list',        build_active_employee_form_option_list($db, $assigned_employee_id));
-$smarty->assign('single_workorder',     $single_work_order);
-$smarty->assign('wo_id', $wo_id);
+$smarty->assign('employee_list',        build_active_employee_form_option_list($db, $assigned_employee_id)  );
+$smarty->assign('single_workorder',     $single_work_order                                                  );
+$smarty->assign('wo_id',                $wo_id                                                              );
 
 $smarty->display('workorder'.SEP.'status.tpl');

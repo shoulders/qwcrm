@@ -1,18 +1,18 @@
 <?php
-include ('../../conf.php');
-    
-$db = new mysqli( $DB_HOST , $DB_USER, $DB_PASS, $DB_NAME);
 
-if(!$db) {
-    // Show error if we cannot connect.
+include ('../../configuration.php');
+    
+if($db != new mysqli( $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME)){
     echo 'ERROR: Could not connect to the database.';
 } else {
+    
     // Is there a posted query string?
     if(isset($_POST['queryString'])) {
+        
         $queryString = $db->real_escape_string($_POST['queryString']);
 
         // Is the string length greater than 0?
-        if(strlen($queryString) >0) {
+        if(strlen($queryString) > 0) {
             /* 
              * Run the query: We use LIKE '$queryString%'
              * The percentage sign is a wild-card, in my example of countries it works like this...
@@ -25,7 +25,9 @@ if(!$db) {
              */
 
             $query = $db->query("SELECT WORK_ORDER_SCOPE FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_SCOPE LIKE '$queryString%' LIMIT 10");
+            
             if($query) {
+                
                 // While there are results loop through them - fetching an Object (i like PHP5 btw!).
                 while ($result = $query ->fetch_object()) {
                     

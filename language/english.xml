@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
     <translate>
-
+        
+        // - SORT
+        // Global Error messages (i.e. main include.php) - possibly rename global_error_message
+        <include_error_message_cant_open_activity_log>can&#39;t open activity.log</include_error_message_cant_open_activity_log>
+        
+        
+        
+        
+        
+        
         // Common - add all shared words and phrases here - below is an example
         <common_scope>Scope</common_scope> //do i need this yet
         
@@ -859,7 +868,23 @@
         <supplier_delete_mes_recorddeleted>Record Deleted</supplier_delete_mes_recorddeleted>
         <supplier_delete_mes_recordnotdeleted>Record Not Deleted</supplier_delete_mes_recordnotdeleted>
 
-        // -- Workorder Module
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        //// -- Workorder Module -- ////
 
         //// Common
 
@@ -978,7 +1003,7 @@
         <workorder_print_the_work_order_button_tooltip>Print The Work Order</workorder_print_the_work_order_button_tooltip>
         <workorder_view_the_work_order_button_tooltip>View The Work Order</workorder_view_the_work_order_button_tooltip>
 
-        //// Pages - these are page specific translations
+        //// Pages
 
         // Closed
         <workorder_closed_title>Closed Work Orders</workorder_closed_title>
@@ -990,38 +1015,38 @@
         <workorder_details_help_title>Work Order Details Help</workorder_details_help_title>
         <workorder_details_help_content>You can edit the Work order commments, notes, and set schedule by clicking the icon on the right of each window&lt;br&gt;&lt;br&gt;You can navigate to the customer by clicking their name. Hover over the Magnifing glass by the customer name to view Quick Contact Information. &lt;br&gt;&lt;br&gt;If you need to edit the Customers Contact Information click the Edit Icon by their contact details.&lt;br&gt;&lt;br&gt;Click on the Employee name to go to the employees details. Hover over the Magnifing glass to view the employees Quick Contact Information.&lt;br&gt;&lt;br&gt;Click the Print link on the Quick Bar to generate a printable PDF of this work order. Click the Close link on the Quick Bar to complete the order and start the invoicing processes.</workorder_details_help_content>
               
-        // Details - Customer Details       
-        <workorder_details_customer_details_title>Customer Details</workorder_details_customer_details_title>  
-        <workorder_details_edit_customer_details_button_tooltip>Click to edit customer details</workorder_details_edit_customer_details_button_tooltip>   
+            // Details - Customer Details       
+            <workorder_details_customer_details_title>Customer Details</workorder_details_customer_details_title>  
+            <workorder_details_edit_customer_details_button_tooltip>Click to edit customer details</workorder_details_edit_customer_details_button_tooltip>   
 
-        // Details - Edit Comments
-        <workorder_details_comments_title>Comments</workorder_details_comments_title>
-        <workorder_details_edit_comments_help_title>Edit Comments Help</workorder_details_edit_comments_help_title>
-        <workorder_details_edit_comments_help_content>You can edit the comments attached to the work order here.</workorder_details_edit_comments_help_content>        
-        <workorder_details_edit_comments_title>Edit Comments</workorder_details_edit_comments_title>        
-        <workorder_details_edit_comments_button_tooltip>Click to edit comments</workorder_details_edit_comments_button_tooltip>
-                       
-        // Details - Edit Description
-        <workorder_details_description_title>Description</workorder_details_description_title>
-        <workorder_details_edit_description_help_title>Edit Description Help</workorder_details_edit_description_help_title>
-        <workorder_details_edit_description_help_content>You can edit the description attached to the work order here.</workorder_details_edit_description_help_content>
-        <workorder_details_edit_description_title>Edit Description</workorder_details_edit_description_title>
-        <workorder_details_edit_description_button_tooltip>Click to edit description</workorder_details_edit_description_button_tooltip>           
+            // Details - Edit Comments
+            <workorder_details_comments_title>Comments</workorder_details_comments_title>
+            <workorder_details_edit_comments_help_title>Edit Comments Help</workorder_details_edit_comments_help_title>
+            <workorder_details_edit_comments_help_content>You can edit the comments attached to the work order here.</workorder_details_edit_comments_help_content>        
+            <workorder_details_edit_comments_title>Edit Comments</workorder_details_edit_comments_title>        
+            <workorder_details_edit_comments_button_tooltip>Click to edit comments</workorder_details_edit_comments_button_tooltip>
 
-        // Details - History
-        <workorder_details_history_title>History</workorder_details_history_title>              
+            // Details - Edit Description
+            <workorder_details_description_title>Description</workorder_details_description_title>
+            <workorder_details_edit_description_help_title>Edit Description Help</workorder_details_edit_description_help_title>
+            <workorder_details_edit_description_help_content>You can edit the description attached to the work order here.</workorder_details_edit_description_help_content>
+            <workorder_details_edit_description_title>Edit Description</workorder_details_edit_description_title>
+            <workorder_details_edit_description_button_tooltip>Click to edit description</workorder_details_edit_description_button_tooltip>           
 
-        // Details - Notes        
-        <workorder_details_notes_title>Notes</workorder_details_notes_title>        
-        <workorder_details_new_note_title>Add A New Note For Work Order ID</workorder_details_new_note_title>   
-        <workorder_details_new_note_button_tooltip>Click to create a new note</workorder_details_new_note_button_tooltip>   
-                   
-        // Details - Parts
-        <workorder_details_parts_title>Parts</workorder_details_parts_title>
+            // Details - History
+            <workorder_details_history_title>History</workorder_details_history_title>              
 
-        // Details - Schedule
-        <workorder_details_schedule_title>Schedule</workorder_details_schedule_title>
-        <workorder_details_schedule_button_tooltip>Create a New Schedule</workorder_details_schedule_button_tooltip>        
+            // Details - Notes        
+            <workorder_details_notes_title>Notes</workorder_details_notes_title>        
+            <workorder_details_new_note_title>Add A New Note For Work Order ID</workorder_details_new_note_title>   
+            <workorder_details_new_note_button_tooltip>Click to create a new note</workorder_details_new_note_button_tooltip>   
+
+            // Details - Parts
+            <workorder_details_parts_title>Parts</workorder_details_parts_title>
+
+            // Details - Schedule
+            <workorder_details_schedule_title>Schedule</workorder_details_schedule_title>
+            <workorder_details_schedule_button_tooltip>Create a New Schedule</workorder_details_schedule_button_tooltip>        
 
         // New
         <workorder_new_title>New Workorder</workorder_new_title>
@@ -1036,54 +1061,54 @@
         // Print
         
             // Document Titles
-        <workorder_print_technician_workorder_slip_title>Technician Workorder Slip</workorder_print_technician_workorder_slip_title>
-        <workorder_print_customer_workorder_slip_title>Customer Workorder Slip</workorder_print_customer_workorder_slip_title>
-        <workorder_print_job_sheet_title>Job Sheet</workorder_print_job_sheet_title>
-        
+            <workorder_print_technician_workorder_slip_title>Technician Workorder Slip</workorder_print_technician_workorder_slip_title>
+            <workorder_print_customer_workorder_slip_title>Customer Workorder Slip</workorder_print_customer_workorder_slip_title>
+            <workorder_print_job_sheet_title>Job Sheet</workorder_print_job_sheet_title>
+
             // Details Titles
-        <workorder_print_customer_details_title>Customer Details</workorder_print_customer_details_title>        
-        <workorder_print_company_details_title>Company Details</workorder_print_company_details_title> 
-        
+            <workorder_print_customer_details_title>Customer Details</workorder_print_customer_details_title>        
+            <workorder_print_company_details_title>Company Details</workorder_print_company_details_title> 
+
             // Workorder Details
-        <workorder_print_workorder_details_title>Workorder Details</workorder_print_workorder_details_title>
-        <workorder_print_this_note_was_created_by>This note was created by</workorder_print_this_note_was_created_by>
-        <workorder_print_there_are_no_notes>There are no notes.</workorder_print_there_are_no_notes>
-        
+            <workorder_print_workorder_details_title>Workorder Details</workorder_print_workorder_details_title>
+            <workorder_print_this_note_was_created_by>This note was created by</workorder_print_this_note_was_created_by>
+            <workorder_print_there_are_no_notes>There are no notes.</workorder_print_there_are_no_notes>
+
             // Summary        
-        <workorder_print_summary_title>Summary</workorder_print_summary_title> 
-        <workorder_print_service_times_title>Service Times</workorder_print_service_times_title>
-        <workorder_print_schedule_title>Schedule</workorder_print_schedule_title>
-        <workorder_print_departed>Departed</workorder_print_departed>
-        <workorder_print_started_wo>Started WO</workorder_print_started_wo>
-        <workorder_print_finished_wo>Finished WO</workorder_print_finished_wo>
-        <workorder_print_returned>Returned</workorder_print_returned>
-        <workorder_print_no_schedule_has_been_set>No schedule has been set. Click the day on the calendar you want to set the schedule.</workorder_print_no_schedule_has_been_set>N
-        <workorder_print_signatures_title>Signatures</workorder_print_signatures_title>
-        <workorder_print_client_name>Client Name</workorder_print_client_name>
-        <workorder_print_signature>Signature</workorder_print_signature>
-        
+            <workorder_print_summary_title>Summary</workorder_print_summary_title> 
+            <workorder_print_service_times_title>Service Times</workorder_print_service_times_title>
+            <workorder_print_schedule_title>Schedule</workorder_print_schedule_title>
+            <workorder_print_departed>Departed</workorder_print_departed>
+            <workorder_print_started_wo>Started WO</workorder_print_started_wo>
+            <workorder_print_finished_wo>Finished WO</workorder_print_finished_wo>
+            <workorder_print_returned>Returned</workorder_print_returned>
+            <workorder_print_no_schedule_has_been_set>No schedule has been set. Click the day on the calendar you want to set the schedule.</workorder_print_no_schedule_has_been_set>N
+            <workorder_print_signatures_title>Signatures</workorder_print_signatures_title>
+            <workorder_print_client_name>Client Name</workorder_print_client_name>
+            <workorder_print_signature>Signature</workorder_print_signature>
+
             // Equipment Receipt
-        <workorder_print_equipment_receipt_title>Equipment Receipt</workorder_print_equipment_receipt_title>
-        <workorder_print_equipment_receipt_content>Below is a list of the equipment you have left with us. Please check and make sure the list is correct as it cannot be remedied later.</workorder_print_equipment_receipt_content>
-        <workorder_print_description>Description</workorder_print_description>
-        <workorder_print_make_model>Make/Model</workorder_print_make_model>
-        
+            <workorder_print_equipment_receipt_title>Equipment Receipt</workorder_print_equipment_receipt_title>
+            <workorder_print_equipment_receipt_content>Below is a list of the equipment you have left with us. Please check and make sure the list is correct as it cannot be remedied later.</workorder_print_equipment_receipt_content>
+            <workorder_print_description>Description</workorder_print_description>
+            <workorder_print_make_model>Make/Model</workorder_print_make_model>
+
             // Disclaimer
-        <workorder_print_disclaimer_title>Disclaimer</workorder_print_disclaimer_title>
-        <workorder_print_disclaimer_content>We have a duty of care to preserve your computers data whilst we are servicing it, however it is the customers responsibilty to ensure that this data is reliably backed before work is started just incase data loss should occur. If you do not agree to these terms you cannot use our services.</workorder_print_disclaimer_content>
-        
+            <workorder_print_disclaimer_title>Disclaimer</workorder_print_disclaimer_title>
+            <workorder_print_disclaimer_content>We have a duty of care to preserve your computers data whilst we are servicing it, however it is the customers responsibilty to ensure that this data is reliably backed before work is started just incase data loss should occur. If you do not agree to these terms you cannot use our services.</workorder_print_disclaimer_content>
+
             // Important Notes
-        <workorder_print_important_notes_title>Important Notes</workorder_print_important_notes_title>
-        <workorder_print_important_notes_content>&lt;ul&gt;&lt;li&gt;Please hold onto this receipt as proof of service request&lt;/li&gt;&lt;li&gt;This document (copies will not be accepted) MUST be produce this at time of pickup. If this can&#39;t be provided then photo identification is required.&lt;/li&gt;&lt;/ul&gt;</workorder_print_important_notes_content>
-           
+            <workorder_print_important_notes_title>Important Notes</workorder_print_important_notes_title>
+            <workorder_print_important_notes_content>&lt;ul&gt;&lt;li&gt;Please hold onto this receipt as proof of service request&lt;/li&gt;&lt;li&gt;This document (copies will not be accepted) MUST be produce this at time of pickup. If this can&#39;t be provided then photo identification is required.&lt;/li&gt;&lt;/ul&gt;</workorder_print_important_notes_content>
+
             // Footer
-        <workorder_print_this_workorder_is_confidential>This Workorder is confidential and contains privileged information.</workorder_print_this_workorder_is_confidential>
-        
+            <workorder_print_this_workorder_is_confidential>This Workorder is confidential and contains privileged information.</workorder_print_this_workorder_is_confidential>
+
             // Job Sheet Template     
-        <workorder_print_parts_used>Parts Used</workorder_print_parts_used>
-        <workorder_print_required_passwords>Required Passwords</workorder_print_required_passwords>
+            <workorder_print_parts_used>Parts Used</workorder_print_parts_used>
+            <workorder_print_required_passwords>Required Passwords</workorder_print_required_passwords>
         
-        // Resolution  
+        // Resolution
         <workorder_details_resolution_title>Resolution</workorder_details_resolution_title>
         <workorder_details_edit_resolution_help_title>Edit Resolution Help</workorder_details_edit_resolution_help_title>
         <workorder_details_edit_resolution_help_content>You can edit or close the resolution attached to the work order here.</workorder_details_edit_resolution_help_content>
@@ -1100,101 +1125,73 @@
         <workorder_status_update_work_order_status_for_work_order_id>Update Work Order Status For Work Order ID</workorder_status_update_work_order_status_for_work_order_id>
         <workorder_status_new_status>New Status</workorder_status_new_status>
         <workorder_status_this_work_order_cannot_be_deleted>This Work order cannot be deleted. &lt;br /&gt;If the work order is in the following state, created and open, you can delete it, otherwise you cannot.</workorder_status_this_work_order_cannot_be_deleted>
-        
-        
-        // --  module code
-        
-        // main include file
-        
-        
+                
+        //// Error Messages (module code)
         
         // include.php
         <workorder_error_message_function_display_single_open_workorder_failed>Could not display the Work Order record requested</workorder_error_message_function_display_single_open_workorder_failed>
-        <workorder_error_message_function_display_single_open_workorder_notfound>The requested Work Order could not be found</workorder_error_message_function_display_single_open_workorder_notfound>
-        
+        <workorder_error_message_function_display_single_open_workorder_notfound>The requested Work Order could not be found</workorder_error_message_function_display_single_open_workorder_notfound>        
         <workorder_error_message_function_display_workorders_failed>Could not display the Work Order(s) requested</workorder_error_message_function_display_workorders_failed>
-        <workorder_error_message_function_display_workorders_notfound>The requested Work Order(s) could not be found</workorder_error_message_function_display_workorders_notfound>
-       
+        <workorder_error_message_function_display_workorders_notfound>The requested Work Order(s) could not be found</workorder_error_message_function_display_workorders_notfound>       
         <workorder_error_message_function_display_closed_failed>Could not display the Work Order(s) requested</workorder_error_message_function_display_closed_failed>        
         <workorder_error_message_function_display_closed_notfound>The requested Work Order(s) could not be found</workorder_error_message_function_display_closed_notfound>        
-        <workorder_error_message_function_display_closed_failedcount>Failed to select and count closed Work Orders</workorder_error_message_function_display_closed_failedcount>
-        
-        <workorder_error_message_function_display_workorder_notes_failed>Could not to display notes for the Work Order</workorder_error_message_function_display_workorder_notes_failed>
-        
-        <workorder_error_message_function_display_workorder_history_failed>Could not display history for the Work Order</workorder_error_message_function_display_workorder_history_failed>
-        
-        <workorder_error_message_function_display_customer_info_failed>Could not display Customer Information for the Work Order</workorder_error_message_function_display_customer_info_failed>
-        
-        <workorder_error_message_function_display_status_types_failed>Could not display Work Order status types</workorder_error_message_function_display_status_types_failed>
-        
-        <workorder_error_message_function_display_parts_failed>Could not display parts for the Work Order</workorder_error_message_function_display_parts_failed>
-        
+        <workorder_error_message_function_display_closed_failedcount>Failed to select and count closed Work Orders</workorder_error_message_function_display_closed_failedcount>        
         <workorder_error_message_function_display_resolution_failed>Could not display resolution for the Work Order</workorder_error_message_function_display_resolution_failed>
-
-        <workorder_error_message_function_display_workorder_schedule_failed>Could not display schedule for the Work Order</workorder_error_message_function_display_workorder_schedule_failed>    
-        
+        <workorder_error_message_function_display_customer_info_failed>Could not display Customer Information for the Work Order</workorder_error_message_function_display_customer_info_failed>
+        <workorder_error_message_function_display_workorder_schedule_failed>Could not display schedule for the Work Order</workorder_error_message_function_display_workorder_schedule_failed> 
+        <workorder_error_message_function_display_workorder_notes_failed>Could not to display notes for the Work Order</workorder_error_message_function_display_workorder_notes_failed>
+        <workorder_error_message_function_display_parts_failed>Could not display parts for the Work Order</workorder_error_message_function_display_parts_failed>
+        <workorder_error_message_function_display_workorder_history_failed>Could not display history for the Work Order</workorder_error_message_function_display_workorder_history_failed>        
+        <workorder_error_message_function_display_status_types_failed>Could not display Work Order status types</workorder_error_message_function_display_status_types_failed>        
         <workorder_error_message_function_insert_new_workorder_failed>Could not insert a note for the Work Order</workorder_error_message_function_insert_new_workorder_failed> 
-
-        <workorder_error_message_function_insert_new_workorder_history_note_failed>Could not insert a history note for the Work Order</workorder_error_message_function_insert_new_workorder_history_note_failed>
-        
         <workorder_error_message_function_insert_new_note_failed>Could not insert a note for the Work Order</workorder_error_message_function_insert_new_note_failed>
-        
+        <workorder_error_message_function_insert_new_workorder_history_note_failed>Could not insert a history note for the Work Order</workorder_error_message_function_insert_new_workorder_history_note_failed>        
         <workorder_error_message_function_get_workorder_scope_and_description_failed>Failed to get the Scope and Description for the Work Order</workorder_error_message_function_get_workorder_scope_and_description_failed>
-        
         <workorder_error_message_function_get_workorder_comments_failed>Failed to get the Comments for the Work Order</workorder_error_message_function_get_workorder_comments_failed>
-        
-        <workorder_error_message_function_get_workorder_resolution_failed>Failed to get the Resolution for the Work Order</workorder_error_message_function_get_workorder_resolution_failed>
-        
-        <workorder_error_message_function_get_employee_display_name_by_id_failed>Failed to get the Employee Name by ID for the Work Order</workorder_error_message_function_get_employee_display_name_by_id_failed>
-        
+        <workorder_error_message_function_get_workorder_resolution_failed>Failed to get the Resolution for the Work Order</workorder_error_message_function_get_workorder_resolution_failed>        
+        <workorder_error_message_function_get_employee_display_name_by_id_failed>Failed to get the Employee Name by ID for the Work Order</workorder_error_message_function_get_employee_display_name_by_id_failed>        
         <workorder_error_message_function_update_workorder_scope_and_description_failed>Failed to update the Scope and Description for the Work Order</workorder_error_message_function_update_workorder_scope_and_description_failed>
-        
         <workorder_error_message_function_update_workorder_comments_failed>Failed to update the Comments for the Work Order</workorder_error_message_function_update_workorder_comments_failed>
-        
-        <workorder_error_message_function_update_workorder_resolution_failed>Failed to update the Resolution for the Work Order</workorder_error_message_function_update_workorder_resolution_failed>
-        
+        <workorder_error_message_function_update_workorder_resolution_failed>Failed to update the Resolution for the Work Order</workorder_error_message_function_update_workorder_resolution_failed>        
         <workorder_error_message_function_update_status_failed>Failed to update the Status for the Work Order</workorder_error_message_function_update_status_failed>
-        
-        <workorder_error_message_function_update_last_active_failed>Failed to update the Last Activity Date for the Work Order</workorder_error_message_function_update_last_active_failed>
-        
+        <workorder_error_message_function_update_status_failedunassigned>Failed to update the Status to unassigned for the Work Order</workorder_error_message_function_update_status_failedunassigned>        
+        <workorder_error_message_function_update_last_active_failed>Failed to update the Last Activity Date for the Work Order</workorder_error_message_function_update_last_active_failed>        
         <workorder_error_message_function_close_workorder_with_invoice_failed>Failed to Close the Work Order and create an Invoice</workorder_error_message_function_close_workorder_with_invoice_failed>
-        
-        <workorder_error_message_function_close_workorder_without_invoice_failed>Failed to Close the Work Order</workorder_error_message_function_close_workorder_without_invoice_failed>
-        
-        <workorder_error_message_function_delete_work_order_failed>Failed to Delete the Work Order</workorder_error_message_function_delete_work_order_failed>
-        
+        <workorder_error_message_function_close_workorder_with_invoice_failedcustomerid>Failed to get the Customer ID and create the Invoice</workorder_error_message_function_close_workorder_with_invoice_failedcustomerid>
+        <workorder_error_message_function_close_workorder_without_invoice_failed>Failed to Close the Work Order</workorder_error_message_function_close_workorder_without_invoice_failed>        
+        <workorder_error_message_function_delete_work_order_failed>Failed to Delete the Work Order</workorder_error_message_function_delete_work_order_failed>        
         <workorder_error_message_function_assign_work_order_to_employee_failed>Failed to assign Work Order to another employee</workorder_error_message_function_assign_work_order_to_employee_failed>
-
-        <workorder_error_message_function_build_active_employee_form_option_list_failed>Failed build and return and Employee list</workorder_error_message_function_build_active_employee_form_option_list_failed>
-        
+        <workorder_error_message_function_build_active_employee_form_option_list_failed>Failed build and return and Employee list</workorder_error_message_function_build_active_employee_form_option_list_failed>        
         <workorder_error_message_function_resolution_edit_status_check_failed>Failed to check the Resolution Status of the Work Order</workorder_error_message_function_resolution_edit_status_check_failed>
             
+        // details.php
+        <workorder_error_message_details_loadpage_failed>There is no Work Order ID set</workorder_error_message_details_loadpage_failed>
+        <workorder_error_message_details_edit_description_loadpage_failed>There is no Work Order ID</workorder_error_message_details_edit_description_loadpage_failed>
+        <workorder_error_message_details_new_note_loadpage_failed>There is no Work Order ID</workorder_error_message_details_new_note_loadpage_failed>
+        
         // new.php
         <workorder_error_message_new_loadpage_failed>Cannot create a New Work Order without a Customer ID - No Customer ID has been set</workorder_error_message_new_loadpage_failed>
         
-        // Global Error messages (i.e. main include.php) - possibly rename global_error_message
-        <include_error_message_cant_open_activity_log>can&#39;t open activity.log</include_error_message_cant_open_activity_log>
-        <workorder_error_message_mysql_error>MySQL Error</workorder_error_message_mysql_error>  
+        // print.php
+        <workorder_error_message_print_loadpage_failed>Some or all of the Printing Options are not set</workorder_error_message_print_loadpage_failed>
         
-        // other
-        <workorder_error_message_no_work_order_id>No Work Order ID</workorder_error_message_no_work_order_id>
+        // resolution.php
+        <workorder_error_message_resolution_loadpage_failed>There is no Work Order ID set</workorder_error_message_resolution_loadpage_failed>
         
-        <workorder_error_message_no_printing_options_set>No Printing Options set. Please set up printing options in the Control Center.</workorder_error_message_no_printing_options_set>
-        
-        
-        
-        // Logging Messages - some of these might go global
-        
-            // details            
-            <workorder_log_message_work_order>Work Order</workorder_log_message_work_order>
-            <workorder_log_message_has_been_deleted>has been deleted</workorder_log_message_has_been_deleted>            
-            <workorder_log_message_has_been_assigned_to>has been assigned to</workorder_log_message_has_been_assigned_to>
-            <workorder_log_message_by>by</workorder_log_message_by>
-            <workorder_log_message_from>from</workorder_log_message_from>
-            <workorder_log_message_unassigned>Unassigned</workorder_log_message_unassigned>
+        // status.php
+        <workorder_error_message_status_loadpage_failed>There is no Work Order ID set</workorder_error_message_status_loadpage_failed>
             
+        //// Logging Messages       
+                   
+        <workorder_log_message_work_order>Work Order</workorder_log_message_work_order>
+        <workorder_log_message_has_been_deleted>has been deleted</workorder_log_message_has_been_deleted>            
+        <workorder_log_message_has_been_assigned_to>has been assigned to</workorder_log_message_has_been_assigned_to>
+        <workorder_log_message_by>by</workorder_log_message_by>
+        <workorder_log_message_from>from</workorder_log_message_from>
+        <workorder_log_message_unassigned>Unassigned</workorder_log_message_unassigned>            
             
-         // Validators
+        //// Validators
+        
         <workorder_validate_scope_notpresent>Enter a scope</workorder_validate_scope_notpresent>
         <workorder_validate_scope_length>The scope cannot be more than 40 characters</workorder_validate_scope_length>        
         <workorder_validate_description_notpresent>Enter a description</workorder_validate_description_notpresent>

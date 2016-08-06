@@ -71,8 +71,10 @@ $page_title     = $VAR['page_title'];
 /*
 $wo_id          = $VAR['wo_id'];
 $customer_id    = $VAR['customer_id'];
+ * */
+ 
 $id             = $login_id; // this should be replaced with $login_id anyway
-*/
+
 
 ################################################
 #         Initilise QWCRM                      #
@@ -105,6 +107,7 @@ if (isset($VAR['action']) && $VAR['action'] == 'logout') {
 #   Assign variables into smarty for use by all native module templates  #
 ##########################################################################
 
+// workorder/print.php has company code in it
 /* get company info for defaults */
 $q = 'SELECT * FROM '.PRFX.'TABLE_COMPANY, '.PRFX.'VERSION ORDER BY  '.PRFX.'VERSION.`VERSION_INSTALLED` DESC LIMIT 1';
 if(!$rs = $db->execute($q)){

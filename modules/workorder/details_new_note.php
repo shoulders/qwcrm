@@ -5,8 +5,8 @@ require_once('include.php');
 $wo_id = $VAR['wo_id'];
 $workorder_note = $VAR['workorder_note'];
 
-if(empty($VAR['wo_id'])){
-    force_page('core', 'error&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_no_work_order_id'));
+if($wo_id == '') {
+    force_page('core', 'error', 'error_type=warning&error_location=workorder:details_new_note&php_function=&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_details_new_note_loadpage_failed').'&database_error='.$db->ErrorMsg());
     exit;
 }
 
