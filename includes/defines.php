@@ -18,10 +18,6 @@ define('QWROOT_MEDIA_DIR','media/');                        // properly name thi
 // Smarty
 define('SMARTY_URL','includes/smarty/');
 
-// Authentication
-define('LOGIN_USR', 'login_usr');
-define('LOGIN_PWD', 'login_pwd');
-
 // Configuration
 define('ACTIVITY_LOG','log/activity.log');
 define('LANG','english.xml');                               // check translate code to tidy this up?
