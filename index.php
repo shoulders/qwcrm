@@ -67,16 +67,13 @@ if(!is_file('cache/lock')){
 
 $VAR            = array_merge($_GET, $_POST);
 $page_title     = $VAR['page_title'];
+//$page           = $VAR['page'];
 
 /*
 $wo_id          = $VAR['wo_id'];
 $customer_id    = $VAR['customer_id'];
  * */
  
-$id             = $login_id; // this should be replaced with $login_id anyway - page tile, msg , varible loops etc..
-
-// add varible calls here - i can sort them at a later date
-
 ################################################
 #         Initialise QWCRM                     #
 ################################################
@@ -93,7 +90,7 @@ require(INCLUDES_DIR.'acl.php');
 #          Enable Authentication               #
 ################################################
 
-$auth = new Auth($db, 'login.php', 'secret'); // secret possible = $strKey fron configuration.php
+$auth = new Auth($db, 'login.php');
 
 ################################################
 #   should I log off                           #
@@ -107,96 +104,6 @@ if (isset($VAR['action']) && $VAR['action'] == 'logout') {
 ##########################################################################
 #   Assign variables into smarty for use by all native module templates  #
 ##########################################################################
-
-// workorder/print.php has company code in it
-/* get company info for defaults */
-$q = 'SELECT * FROM '.PRFX.'TABLE_COMPANY, '.PRFX.'VERSION ORDER BY  '.PRFX.'VERSION.`VERSION_INSTALLED` DESC LIMIT 1';
-if(!$rs = $db->execute($q)){
-force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-exit;
-}
-
-$smarty->assign('version', $rs->fields['VERSION_NAME']);
-$smarty->assign('company_name', $rs->fields['COMPANY_NAME']);
-$smarty->assign('company_address', $rs->fields['COMPANY_ADDRESS']);
-$smarty->assign('company_city', $rs->fields['COMPANY_CITY']);
-$smarty->assign('company_state', $rs->fields['COMPANY_STATE']);
-$smarty->assign('company_zip', $rs->fields['COMPANY_ZIP']);
-$smarty->assign('company_country', $rs->fields['COMPANY_COUNTRY']);
-$smarty->assign('company_phone',$rs->fields['COMPANY_PHONE']);
-$smarty->assign('company_email',$rs->fields['COMPANY_EMAIL']);
-$smarty->assign('company_mobile',$rs->fields['COMPANY_MOBILE']);
-$smarty->assign('company_logo',$rs->fields['COMPANY_LOGO']);
-$smarty->assign('currency_sym',$rs->fields['COMPANY_CURRENCY_SYMBOL']);
-$smarty->assign('currency_code',$rs->fields['COMPANY_CURRENCY_CODE']);
-$smarty->assign('date_format',$rs->fields['COMPANY_DATE_FORMAT']);
-$smarty->assign('company_email_from',$rs->fields['COMPANY_EMAIL_FROM']);
-$smarty->assign('email_server',$rs->fields['COMPANY_EMAIL_SERVER']);
-$smarty->assign('email_server_port',$rs->fields['COMPANY_EMAIL_PORT']);
-$smarty->assign('email_username',$rs->fields['COMPANY_SMTP_USERNAME']);
-$smarty->assign('email_password',$rs->fields['COMPANY_SMTP_PASSWORD']);
-
-/* Others */
-$smarty->assign('id', $id);
-
-##############################################################
-#    Url Builder This grabs gets and post and builds the url # 
-#    conection strings ($_POST has priority)                 #
-##############################################################
-
-// This section is a real mess - alot of the suff is not needed also use $VAR
-
-if(!isset($_POST['page'])){
-    if ( $_GET['page']){
-        
-        // Explode the url so we can get the module and page
-        list($module, $page) = explode(":", $_GET['page']);
-        $the_page = 'modules'.SEP.$module.SEP.$page.'.php';
-
-        // remove page from the $_GET array we dont want it to pass the options
-        unset($_GET['page']);
-
-        // Define the global options for each page
-        foreach($_GET as $key=>$val){
-            define($key, $val);
-        }
-
-        // Check to see if the page is real other wise send em a 404
-        if (file_exists($the_page)){
-            $the_page = 'modules'.SEP.$module.SEP.$page.'.php';
-        } else {
-            $the_page = 'modules'.SEP.'core'.SEP.'404.php';
-        }
-    } else {
-        // If no page is supplied then go to the main page
-        $the_page = 'modules'.SEP.'core'.SEP.'main.php';
-    }
-} else {
-    // Explode the url so we can get the module and page
-    list($module, $page) = explode(":", $_POST['page']);  //list($module, $page, $variables) would split into 3, where currenltly only split in too 2 chunks, check this
-    $the_page = 'modules'.SEP.$module.SEP.$page.'.php';
-
-    // remove page from the $_GET array we dont want it to pass the options
-    unset($_POST['page']);
-
-    // Define the global options for each page - is this needed - possibly rem it out for future use
-    foreach($_POST as $key=>$val){
-        define($key, $val);
-    }
-
-    // Check to see if the page is real other wise send em a 404
-    if ( file_exists ($the_page) ) {
-        $the_page= 'modules'.SEP.$module.SEP.$page.'.php';
-    } else {
-        $the_page= 'modules'.SEP.'core'.SEP.'404.php';
-    }
-}
-
-$tracker_page = "$module:$page"; // what is this for - not used anywhere
-
-#####################################
-#    Display the pages              #
-#####################################  
 
 /* Work Order ID */
 if(isset($_GET['wo_id'])){
@@ -214,8 +121,56 @@ if(isset($_GET['customer_id'])){
     $smarty->assign('customer_id','0');
 }
 
-/* Gets the error details and sets a page title if error set */
-//require('modules'.SEP.'core'.SEP.'error.php');
+/*
+ * taken from url build
+ * 
+// remove page from the $_GET array we dont want it to pass the options
+unset($VAR['page']);
+
+// Define the global options for each page
+foreach($VAR as $key=>$val){
+    define($key, $val);
+}
+ *
+ */
+
+
+// workorder/print.php has company code in it
+/* get company info for defaults */
+$q = 'SELECT * FROM '.PRFX.'TABLE_COMPANY, '.PRFX.'VERSION ORDER BY  '.PRFX.'VERSION.`VERSION_INSTALLED` DESC LIMIT 1';
+if(!$rs = $db->execute($q)){
+force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+exit;
+}
+
+$smarty->assign('version', $rs->fields['VERSION_NAME']);                // core/footer.tpl and core/submit.tpl
+$smarty->assign('company_name', $rs->fields['COMPANY_NAME']);           // billing/display_gift.tpl , billing/print_gift.tpl, parts/print_result.tpl, parts/view.tpl
+$smarty->assign('company_address', $rs->fields['COMPANY_ADDRESS']);     // parts/print_result.tpl, parts/view.tpl
+$smarty->assign('company_city', $rs->fields['COMPANY_CITY']);           // employees/new.tpl, parts/print_result.tpl, parts/view.tpl
+$smarty->assign('company_state', $rs->fields['COMPANY_STATE']);         // employees/new.tpl, parts/view.tpl
+$smarty->assign('company_zip', $rs->fields['COMPANY_ZIP']);             // employees/new.tpl, parts/print_result.tpl, parts/view.tpl
+$smarty->assign('company_country', $rs->fields['COMPANY_COUNTRY']);     // not used
+$smarty->assign('company_phone',$rs->fields['COMPANY_PHONE']);          // billing/display_gift.tpl , billing/print_gift.tpl, parts/print_result.tpl, parts/view.tpl
+$smarty->assign('company_email',$rs->fields['COMPANY_EMAIL']);          // not used
+$smarty->assign('company_mobile',$rs->fields['COMPANY_MOBILE']);        // not used
+$smarty->assign('company_logo',$rs->fields['COMPANY_LOGO']);            // core/login.tpl, workorder/print_customer_workorder_slip.tpl, workorder/print_job_sheet.tpl, workorder/print_technician_workorder_slip.tpl
+$smarty->assign('currency_sym',$rs->fields['COMPANY_CURRENCY_SYMBOL']); // used throughout the site
+$smarty->assign('currency_code',$rs->fields['COMPANY_CURRENCY_CODE']);  // only in invoice/print_html.tpl
+$smarty->assign('date_format',$rs->fields['COMPANY_DATE_FORMAT']);      // used throughout the site
+$smarty->assign('company_email_from',$rs->fields['COMPANY_EMAIL_FROM']);// not used
+$smarty->assign('email_server',$rs->fields['COMPANY_EMAIL_SERVER']);    // only customer/email.tpl
+$smarty->assign('email_server_port',$rs->fields['COMPANY_EMAIL_PORT']); // only customer/email.tpl
+$smarty->assign('email_username',$rs->fields['COMPANY_SMTP_USERNAME']); // not used
+$smarty->assign('email_password',$rs->fields['COMPANY_SMTP_PASSWORD']); // not used
+
+/* Message - Legacy Message Feature - Possibly will use it in future*/
+if(isset($VAR['msg'])){
+    $smarty->assign('msg', $VAR['msg']);
+}
+
+#####################################
+#    Set the Page Title             #
+#####################################  
 
 /* Page Title */
 
@@ -227,10 +182,40 @@ if(isset($page_title)){
     $smarty->assign('page_title', $page_title);
 }  
 
-/* Message - Legacy Message Feature - Possibly will use it in future*/
-if(isset($VAR['msg'])){
-    $smarty->assign('msg', $VAR['msg']);
-}
+##############################################################
+#    Url Builder This grabs gets and post and builds the url # 
+#    conection strings ($_POST has priority)                 #
+##############################################################
+
+// This section is a real mess - alot of the suff is not needed also use $VAR
+
+// this needs a tickle to sort the logic out, the 404 is not quite working. it will only work if an incoorect page varible is sent.
+
+if(isset($VAR['page'])){
+    
+        // Explode the URL so we can get the module and page
+        list($module, $page)        = explode(':', $VAR['page']);
+        $page_display_controller    = 'modules'.SEP.$module.SEP.$page.'.php';
+
+        // Check to see if the page exists and set it, other wise send them to the 404 page
+        if (file_exists($page_display_controller)){
+            $page_display_controller = 'modules'.SEP.$module.SEP.$page.'.php';
+        } else {
+            
+            $page_display_controller = 'modules'.SEP.'core'.SEP.'404.php';
+            
+            // even though this is set, the ACL is still checking $module and $page againt access so set them to the 404 page
+            $module = 'core';
+            $page = '404';
+        }
+    } else {
+        // If no page is supplied then go to the main page
+        $page_display_controller = 'modules'.SEP.'core'.SEP.'main.php';        
+    }
+    
+#####################################
+#    Display the page (as required) #
+#####################################  
 
 //tmpl=component or tmpl=0
 /* If escape=1 varible is set do not load the template wrapper - useful for printing */
@@ -239,12 +224,14 @@ if($VAR['escape'] != 1 ){
     require('modules'.SEP.'core'.SEP.'navigation.php');
     require('modules'.SEP.'core'.SEP.'company.php');
 }
-    
-/* check acl for page request - if ok display */
-if(!check_acl($db, $module, $page)){
-    force_page('core','error&error_msg=You do not have permission to access this '.$module.':'.$page.'&menu=1');
-} else { 
-    require($the_page);
+ 
+ // The check_acl() will not allow 404
+
+/* Check ACL for page request - if ok display */
+if(!check_acl($db, $module, $page)){    
+    force_page('core','error','error_msg=You do not have permission to access this '.$module.':'.$page.'&menu=1');
+} else {    
+    require($page_display_controller); // this activates the page
 }
 
 // dont show the footer in templess mode - this has diagnostics in
@@ -255,6 +242,8 @@ if($VAR['escape'] != 1 ){
 ################################################
 #         Logging                              #
 ################################################
+
+$tracker_page = "$module:$page"; // what is this for - not used anywhere
 
 /* Tracker code */
 function getIP(){
@@ -278,4 +267,12 @@ $q = 'INSERT into '.PRFX.'TRACKER SET
       echo 'Error inserting tracker :'. $db->ErrorMsg();
    }
    
- 
+  /*
+   * add to diagnostics it gives the real php file loaded
+   * 
+   * echo $VAR['page'].'<br />'; //workorder:closed
+    echo $page.'<br />';    //closed
+    echo $page_display_controller.'<br />'; //modules/workorder/closed.php
+    
+   */   
+    

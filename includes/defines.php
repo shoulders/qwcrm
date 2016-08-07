@@ -6,12 +6,14 @@
   * this inly kept for legacy purposes, i will slowly remove this pointless thing from the code
   * const SEP = '/'; //this type of constant definition is supposed to be quicker and only php 5.3+  * 
   */
-define('SEP',DIRECTORY_SEPARATOR); // was define('SEP','/');
+//define('SEP',DIRECTORY_SEPARATOR); // on windos = '\'
+define('SEP','/');
 
 define('FILE_ROOT',dirname(__FILE__).SEP);                  // returns the physical path - is used in places but could be removed
 define('INSTALL_DATE','Jul 11 2016 08:46:45 PM');           // is this really needed?
 
 // Root Folder Settings
+//define('QWROOT_DIR','qwcrm/');                           //this is temp, might need to be renamed
 define('INCLUDES_DIR','includes/'); 
 define('QWROOT_MEDIA_DIR','media/');                        // properly name this ie set global varibles
 

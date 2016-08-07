@@ -46,11 +46,11 @@ function display_employee_info_version2_not_used($db){
     }
     
     while($row = $result->FetchRow()){
-        $id = $row["EMPLOYEE_ID"];
-        $tech = $row["EMPLOYEE_LOGIN"];        
-        $tech_array[$id]=$tech;
+        $employee_id                    = $row["EMPLOYEE_ID"];
+        $employee_login                 = $row["EMPLOYEE_LOGIN"];        
+        $employee_array[$employee_id]   = $employee_login;
     }
-    return $tech_array;
+    return $employee_array;
 }
 
 #####################################

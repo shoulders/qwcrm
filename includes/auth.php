@@ -1,4 +1,5 @@
 <?php
+
 class Auth {
     var $session;
     var $redirect;
@@ -27,19 +28,19 @@ class Auth {
             $this->redirect();
         }
 
-        // md5 encrypt the password if available
+        // Calculate the md5 hash of the POST'ed password and stores it as $login_pwd
         if ($this->md5){
             $login_pwd = md5($_POST['login_pwd']);
         } else {
             $login_pwd = $_POST['login_pwd'];
         }
 
-        // Escape the variables for the query
+        // Escape the variables for the query - not sure wha this is for
         $login_usr = mysql_real_escape_string($_POST['login_usr']);
         $login_pwd = mysql_real_escape_string($login_pwd);
 
         // Query to count number of users with this combination
-        $sql    = "SELECT COUNT(*) AS num_users FROM ".PRFX."TABLE_EMPLOYEE WHERE EMPLOYEE_STATUS = '1' AND EMPLOYEE_LOGIN=".$this->db->qstr($login_usr) ." AND EMPLOYEE_PASSWD=".$this->db->qstr($login_pwd);
+        $sql    = "SELECT COUNT(*) AS num_users FROM ".PRFX."TABLE_EMPLOYEE WHERE EMPLOYEE_STATUS = '1' AND EMPLOYEE_LOGIN=".$this->db->qstr($login_usr)." AND EMPLOYEE_PASSWD=".$this->db->qstr($login_pwd);
         $result = $this->db->Execute($sql);
         $row    = $result->FetchRow();
 
@@ -52,11 +53,11 @@ class Auth {
             // Reload with 'Login Failed' message
             force_page('login.php?error_msg=Login Failed');
 
-        // Else if there is a valid user; set the session variables
+        // Else if there is a valid user, set the session variables
         } else {
             
             // Grab their login ID for tracking purposes
-            $sql = "SELECT EMPLOYEE_ID  FROM ".PRFX."TABLE_EMPLOYEE WHERE EMPLOYEE_STATUS = '1' AND EMPLOYEE_LOGIN='$login_usr'";
+            $sql = "SELECT EMPLOYEE_ID FROM ".PRFX."TABLE_EMPLOYEE WHERE EMPLOYEE_STATUS = '1' AND EMPLOYEE_LOGIN=".$this->db->qstr($login_usr);
             $result = $this->db->Execute($sql);
             $row = $result->FetchRow();
 

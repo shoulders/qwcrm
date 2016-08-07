@@ -3,7 +3,6 @@ if(!xml2php("core")) {
     $smarty->assign('error_msg',"Error in language file");
 }
 $ip = $_SERVER['REMOTE_ADDR'];
-$id = $login_id;
 $login_usr = $_SESSION['login_usr'];
 $wo_id = $VAR['wo_id'];
 $cus_id = $VAR['customer_id'];
