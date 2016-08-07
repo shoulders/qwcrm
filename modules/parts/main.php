@@ -39,7 +39,7 @@ if($count > 0) {
         exit;
     }
     $local             = $rs->fields['PARTS_LO'];
-     $login                = $rs->fields['PARTS_LOGIN'];
+     $login_usr                = $rs->fields['PARTS_LOGIN'];
     $passwd            = $rs->fields['PARTS_PASSWORD'];
     $service_code    = $rs->fields['SERVICE_CODE'];
     $mark_up            = $rs->fields['PARTS_MARKUP'];
@@ -138,7 +138,7 @@ if(isset($VAR['submit'])) {
 if(!isset($VAR['check_out'])) {
     /* get parts */
     $x = "<CRM_PARTS_LIST>
-                <LOGIN>$login</LOGIN>
+                <LOGIN>$login_usr</LOGIN>
                 <PASSWORD>$passwd</PASSWORD>
                 <SUB_CATEGORY>".$VAR['CAT2']."</SUB_CATEGORY>
                 <LOCATION>$local</LOCATION>

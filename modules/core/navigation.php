@@ -73,12 +73,11 @@ $smarty->assign('paid', $paid);
 $unassigned = $opened - $assigned2 ;
 
 /* Get employee credentials */
-$q = "SELECT * FROM ".PRFX."TABLE_EMPLOYEE WHERE EMPLOYEE_LOGIN ='".$login."'" ;
+$q = "SELECT * FROM ".PRFX."TABLE_EMPLOYEE WHERE EMPLOYEE_LOGIN ='".$login_usr."'" ;
 $rs = $db->Execute($q);
 $cred = $rs->FetchRow();
 
 
-//$smarty->assign('login',$login);
 $smarty->assign('cred',$cred);
 $smarty->assign('unassigned',$unassigned);
 $smarty->assign('status2',$status2);    

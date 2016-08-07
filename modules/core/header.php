@@ -4,7 +4,7 @@ if(!xml2php("core")) {
 }
 $ip = $_SERVER['REMOTE_ADDR'];
 $id = $login_id;
-$login = $_SESSION['login'];
+$login_usr = $_SESSION['login_usr'];
 $wo_id = $VAR['wo_id'];
 $cus_id = $VAR['customer_id'];
 $expenseID = $VAR['expenseID'];
@@ -14,12 +14,12 @@ $employee_id = $VAR['employee_id'];
 $today = (Date('l, j F Y'));
 $smarty->assign('today',$today);
 
-if(!$login)
+if(!$login_usr)
 {
-    $smarty->assign('login', '');
+    $smarty->assign('login_usr', '');
 } else {
-    $smarty->assign('login', $login);
-    $smarty->assign('display_login', $login);
+    $smarty->assign('login_usr', $login_usr);
+    $smarty->assign('display_login', $login_usr);
     $smarty->assign('login_id', $_SESSION['login_id']);
     $smarty->assign('wo_id', $wo_id);
     $smarty->assign('cust_id',$cus_id);
@@ -56,11 +56,11 @@ $smarty->assign('closed', $closed);
 
 //Lets add a welcome message based on time
 
-$afternoon = "Good afternoon! $login. ";
-$evening = "Good evening! $login. ";
-$late = "Working late? $login. ";
-$morning = "Good morning! $login. ";
-$friday = "Get ready for the weekend! $login. ";
+$afternoon = "Good afternoon! $login_usr. ";
+$evening = "Good evening! $login_usr. ";
+$late = "Working late? $login_usr. ";
+$morning = "Good morning! $login_usr. ";
+$friday = "Get ready for the weekend! $login_usr. ";
 
 //No need to edit any further
 
@@ -87,7 +87,7 @@ $msg =  $evening;
 }
 //Let get a summary here of my things
 /* Lets get employee ID number */
-$q = 'SELECT EMPLOYEE_ID FROM '.PRFX.'TABLE_EMPLOYEE WHERE EMPLOYEE_LOGIN ='.$db->qstr($login) ;
+$q = 'SELECT EMPLOYEE_ID FROM '.PRFX.'TABLE_EMPLOYEE WHERE EMPLOYEE_LOGIN ='.$db->qstr($login_usr) ;
 $rs = $db->Execute($q);
 if(!$rs = $db->Execute($q)) {
       echo 'Error:'. $db->ErrorMsg();

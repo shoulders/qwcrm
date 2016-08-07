@@ -19,7 +19,7 @@ $where = "WHERE ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_CURRENT_STATUS= ".$db->qstr(
 $smarty->assign('awaiting', display_workorders($db, $page_no, $where));
 
 /* Get employee credentials */
-$q = "SELECT * FROM ".PRFX."TABLE_EMPLOYEE WHERE EMPLOYEE_DISPLAY_NAME ='".$login."'" ;
+$q = "SELECT * FROM ".PRFX."TABLE_EMPLOYEE WHERE EMPLOYEE_DISPLAY_NAME ='".$login_usr."'" ;
 $rs = $db->Execute($q);
 $cred = $rs->FetchRow();
 

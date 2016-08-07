@@ -175,7 +175,7 @@ function check_employee_ex($db,$VAR){
 function insert_new_employee($db,$VAR){
 
     $password = encryptValue($VAR["password"]);
-    // $login    = strtolower($VAR["firstName"]{0}).strtolower($VAR["lastName"]);
+    // $login_usr    = strtolower($VAR["firstName"]{0}).strtolower($VAR["lastName"]);
     
     $q = "INSERT INTO ".PRFX."TABLE_EMPLOYEE SET
           EMPLOYEE_PASSWD            = ". $db->qstr( $password           ).",

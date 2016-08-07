@@ -235,7 +235,7 @@ if(!$rs = $db->execute($q)){
 
 
 /* Get employee credentials */
-$q = "SELECT * FROM ".PRFX."TABLE_EMPLOYEE WHERE EMPLOYEE_DISPLAY_NAME ='".$login."'" ;
+$q = "SELECT * FROM ".PRFX."TABLE_EMPLOYEE WHERE EMPLOYEE_DISPLAY_NAME ='".$login_usr."'" ;
 $rs = $db->Execute($q);
 $cred2 = $rs->FetchRow();
 

@@ -22,7 +22,7 @@ class Authorize extends PaymentGateway
      *
      * @var string
      */
-    public $login;
+    public $login_usr;
 
     /**
      * Secret key from authorize.net account
@@ -71,9 +71,9 @@ class Authorize extends PaymentGateway
      * @param string secret key
      * @return void
      */
-    public function setUserInfo($login, $key)
+    public function setUserInfo($login_usr, $key)
     {
-        $this->login  = $login;
+        $this->login  = $login_usr;
         $this->secret = $key;
     }
 

@@ -213,7 +213,7 @@ function delete_parts_record($db, $partsID)
 #   Delete Invoice                  #
 #####################################
 
-function delete_invoice($db, $invoice_id, $customer_id, $login)
+function delete_invoice($db, $invoice_id, $customer_id, $login_usr)
 {
       //Actual Deletion Function from Invoice Table
     $q = "DELETE FROM ".PRFX."TABLE_INVOICE WHERE INVOICE_ID=".$db->qstr($invoice_id);
@@ -227,7 +227,7 @@ function delete_invoice($db, $invoice_id, $customer_id, $login)
     // TODO - Add transaction log to database
 /*
     $q = "INSERT INTO ".PRFX."TABLE_TRANSACTION ( TRANSACTION_ID, DATE, TYPE, INVOICE_ID, WORKORDER_ID, CUSTOMER_ID, MEMO, AMOUNT ) VALUES,
-         ( NULL, ".$db->qstr(time()).",'6',".$db->qstr($invoice_id).",'0',".$db->qstr($customer_id).",'Invoice Deleted By ".$db->qstr($login).",'0.00');";
+         ( NULL, ".$db->qstr(time()).",'6',".$db->qstr($invoice_id).",'0',".$db->qstr($customer_id).",'Invoice Deleted By ".$db->qstr($login_usr).",'0.00');";
 
     if (!$rs = $db->Execute($q)) {
         force_page('core', 'error&error_msg=MySQL Error: ' . $db->ErrorMsg() . '&menu=1&type=database');

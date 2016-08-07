@@ -79,7 +79,7 @@
                                  Login
                               </td>
                               <td>
-                                <input type="text" name="login" size="25" class="olotd5" alt="login">
+                                <input type="text" name="login_usr" size="25" class="olotd5" alt="login">
                               </td>
                             </tr>
                             <tr>
@@ -87,7 +87,7 @@
                                  Password
                               </td>
                               <td>
-                                <input type="password" name="password" size="25"  class="olotd5" alt="password">
+                                <input type="password" name="login_pwd" size="25"  class="olotd5" alt="password">
                               </td>
                             </tr>
                             <tr align="center">

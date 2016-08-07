@@ -6,7 +6,7 @@ if(!xml2php("customer")) {
 // Get the customers id from the url
 $customer_id = $VAR['customer_id'];
 
-$q = "SELECT * FROM ".PRFX."TABLE_EMPLOYEE WHERE EMPLOYEE_DISPLAY_NAME ='".$login."'" ;
+$q = "SELECT * FROM ".PRFX."TABLE_EMPLOYEE WHERE EMPLOYEE_DISPLAY_NAME ='".$login_usr."'" ;
 $rs = $db->Execute($q);
 $employee_details = $rs->FetchRow();
 $smarty->assign('employee_details', $employee_details);

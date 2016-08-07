@@ -16,7 +16,7 @@ $q = "SELECT PARTS_LO,PARTS_LOGIN,PARTS_PASSWORD,SERVICE_CODE,PARTS_MARKUP,INVOI
     }
 
     $local             = $rs->fields['PARTS_LO'];
-     $login                = $rs->fields['PARTS_LOGIN'];
+     $login_usr                = $rs->fields['PARTS_LOGIN'];
     $passwd            = $rs->fields['PARTS_PASSWORD'];
     $service_code    = $rs->fields['SERVICE_CODE'];
     $tax                 = $rs->fields['INVOICE_TAX'];
@@ -57,7 +57,7 @@ if($rs->fields['SKU'] == ''){
 $cc .= "
     <CRMPARTSREQUEST>
         <ACCOUNT>
-            <LOGIN>$login</LOGIN>
+            <LOGIN>$login_usr</LOGIN>
             <PASSWORD>$passwd</PASSWORD>
             <FROMZIP>$from_zip</FROMZIP>
             <LOCAL>$local</LOCAL>

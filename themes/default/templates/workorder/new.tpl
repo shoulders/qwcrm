@@ -85,7 +85,7 @@
                                                                 </div>
                                                             </td>
                                                             <td class="olotd4">{$translate_workorder_created}</td>
-                                                            <td class="olotd4">{$login}</td>
+                                                            <td class="olotd4">{$login_usr}</td>
                                                         </tr>
                                                     </table>
                                                     <br>

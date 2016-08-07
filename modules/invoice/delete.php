@@ -44,7 +44,7 @@ if(isset($VAR['deleteType']) && $VAR['deleteType'] == "partsRecord") {
 
 }
 // Delete Invoice
-if(!delete_invoice($db, $invoice_id, $customer_id, $login)) {
+if(!delete_invoice($db, $invoice_id, $customer_id, $login_usr)) {
      force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
     exit;
 } else {

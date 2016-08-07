@@ -22,101 +22,95 @@ class Auth {
         }
 
         // If this is a fresh login, check $_POST variables
-        if (!isset($_POST[USER_LOGIN_VAR]) || !isset($_POST[USER_PASSW_VAR])){
+        if (!isset($_POST[LOGIN_USR]) || !isset($_POST[LOGIN_PWD])){
             $this->redirect();
         }
 
+        // md5 encrypt the password if available
         if ($this->md5){
-            $password = md5($_POST[USER_PASSW_VAR]);
+            $login_pwd = md5($_POST[LOGIN_PWD]);
         } else {
-            $password = $_POST[USER_PASSW_VAR];
+            $login_pwd = $_POST[LOGIN_PWD];
         }
 
         // Escape the variables for the query
-        $login      = mysql_real_escape_string($_POST[USER_LOGIN_VAR]);
-        $password   = mysql_real_escape_string($password);
+        $login_usr = mysql_real_escape_string($_POST[LOGIN_USR]);
+        $login_pwd = mysql_real_escape_string($login_pwd);
 
         // Query to count number of users with this combination
-        $sql = "SELECT COUNT(*) AS num_users FROM ".PRFX."TABLE_EMPLOYEE WHERE EMPLOYEE_STATUS = '1' AND EMPLOYEE_LOGIN=".$this->db->qstr($login) ." AND EMPLOYEE_PASSWD=".$this->db->qstr($password);
+        $sql    = "SELECT COUNT(*) AS num_users FROM ".PRFX."TABLE_EMPLOYEE WHERE EMPLOYEE_STATUS = '1' AND EMPLOYEE_LOGIN=".$this->db->qstr($login_usr) ." AND EMPLOYEE_PASSWD=".$this->db->qstr($login_pwd);
         $result = $this->db->Execute($sql);
-        $row = $result->FetchRow();
+        $row    = $result->FetchRow();
 
         // If there isn't is exactly one entry, redirect
         if ($row['num_users'] != 1) {    
-            $this->writeLog('Failed Login',$login);
-            $this->force_page('login.php?error_msg=Login Failed');
+                        
+            // Log activity       
+            write_record_to_activity_log('Failed Login '.$login_usr);  
+        
+            // Reload with 'Login Failed' message
+            force_page('login.php?error_msg=Login Failed');
 
         // Else is a valid user; set the session variables
         } else {
+            
             // grab their login ID for tracking purposes
-            $sql = "SELECT EMPLOYEE_ID  FROM ".PRFX."TABLE_EMPLOYEE WHERE EMPLOYEE_STATUS = '1' AND EMPLOYEE_LOGIN='$login'";
+            $sql = "SELECT EMPLOYEE_ID  FROM ".PRFX."TABLE_EMPLOYEE WHERE EMPLOYEE_STATUS = '1' AND EMPLOYEE_LOGIN='$login_usr'";
             $result = $this->db->Execute($sql);
             $row = $result->FetchRow();
 
             // If We did not get a login ID 
-            if (!isset($row['EMPLOYEE_ID'])){
-                $this->writeLog('Failed Login ID For ',$login);
-                $this->force_page('login.php?error_msg=Login Failed');
+            if (!isset($row['EMPLOYEE_ID'])){          
+                
+                // Log activity       
+                write_record_to_activity_log('Failed Login ID For '.$login_usr);
+                
+                // Reload with 'Login Failed' message
+                force_page('login.php?error_msg=Login Failed');
+                
             } else {
                 $login_id = $row['EMPLOYEE_ID'];
             }
 
-          $this->storeAuth($login, $password, $COMPANY, $login_id);
+          $this->storeAuth($login_usr, $login_pwd, $COMPANY, $login_id);
 
         }
-    }
-  
+    }  
 
-    function storeAuth($login, $password, $COMPANY, $login_id){
-        $this->session->set(USER_LOGIN_VAR, $login);
-        $this->session->set(USER_PASSW_VAR, $password);
-        $this->session->set('login_id', $login_id);
+    function storeAuth($login_usr, $login_pwd, $COMPANY, $login_id){
+        $this->session->set(LOGIN_USR,  $login_usr  );
+        $this->session->set(LOGIN_PWD,  $login_pwd  );
+        $this->session->set('login_id', $login_id   );
 
         // Create a session variable to use to confirm sessions
-        $hashKey = md5($this->hashKey . $login . $password);
+        $hashKey = md5($this->hashKey . $login_usr . $login_pwd);
         $this->session->set('login_hash', $hashKey);
-
-        $this->writeLog('Login', $login);
+ 
+        // Log activity       
+        write_record_to_activity_log('Login '.$login_usr);   
+        
 
     }
   
-  // Code to log to a file
-    function writeLog ($status, $login){
-    
-        //get current date and time
-        $month = date("M");
-        $day = date("d");
-        $year = date("Y");
-        $time =  date("H").":".date("i").":".date("s");
-
-        //get environment variables
-        $hostname = gethostbyaddr($_SERVER['REMOTE_ADDR']);
-
-        // Create entry
-        $data = $status.",".$login.",".$hostname.",".$month."-".$day."-".$year.",".$time.",\n";
-
-        // Write File
-        $fp = fopen(ACTIVITY_LOG,'a') or die("can't open access.log: $php_errormsg");
-        fwrite($fp, $data);
-        fclose($fp);
-        
-    }
- 
-    function confirmAuth(){
-        $login = $this->session->get(USER_LOGIN_VAR);
-        $password = $this->session->get(USER_PASSW_VAR);
+function confirmAuth(){
+        $login_usr = $this->session->get(LOGIN_USR);
+        $login_pwd = $this->session->get(LOGIN_PWD);
         $hashKey = $this->session->get('login_hash');
-        if (md5($this->hashKey . $login . $password) != $hashKey){
+        if (md5($this->hashKey . $login_usr . $login_pwd) != $hashKey){
             $this->logout(true);
         }
     }
   
  
     function logout($from){
-        $login = $this->session->get(USER_LOGIN_VAR);
-        $this->writeLog('Log Out', $login);
-        $this->session->del(USER_LOGIN_VAR);
-        $this->session->del(USER_PASSW_VAR);
+        
+        $login_usr = $this->session->get(LOGIN_USR);
+        
+        // Log activity       
+        write_record_to_activity_log('Log Out '.$login_usr);
+        
+        $this->session->del(LOGIN_USR);
+        $this->session->del(LOGIN_PWD);
         $this->session->del('login_hash');
         $this->redirect($from);
     }

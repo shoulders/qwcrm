@@ -34,7 +34,7 @@ $rs = $db->Execute($q);
 $customer_details = $rs->GetArray();
 $smarty->assign('customer_details', $customer_details);
 /*Get Employee Info */
-$q = "SELECT * FROM ".PRFX."TABLE_EMPLOYEE WHERE EMPLOYEE_DISPLAY_NAME ='".$login."'" ;
+$q = "SELECT * FROM ".PRFX."TABLE_EMPLOYEE WHERE EMPLOYEE_DISPLAY_NAME ='".$login_usr."'" ;
 $rs = $db->Execute($q);
 $employee_details = $rs->FetchRow();
 $smarty->assign('employee_details', $employee_details);
@@ -75,7 +75,7 @@ if(isset ($submit)){
             CUSTOMER_ID             = ". $db->qstr($VAR["c2"]).",
             CUSTOMER_EMAIL_ADDRESS    = ". $db->qstr( $VAR["email_to"]).",
             CUSTOMER_FROM_EMAIL_ADDRESS = ". $db->qstr( $VAR["email_from"]).",
-            CUSTOMER_EMAIL_SENT_BY        = ". $db->qstr( $login ).", 
+            CUSTOMER_EMAIL_SENT_BY        = ". $db->qstr( $login_usr ).", 
             CUSTOMER_EMAIL_SENT_ON        = ". $db->qstr( time()).",
             CUSTOMER_EMAIL_SUBJECT        = ". $db->qstr( $VAR["email_subject"]).",
             CUSTOMER_EMAIL_BODY    = ". $db->qstr( $VAR["message_body"]).",
