@@ -10,7 +10,7 @@ thanks
 
 shoulders
 
-!http://quantumwarp.com/images/logo.png(MyITCRM)!:http://quantumwarp.com
+!http://quantumwarp.com/images/logo.png(QWcrm)!:http://quantumwarp.com
 
 h3. Requirements: - "QWcrm Installation Requirements":https://github.com/shoulders/qwcrm/wiki/Installation-on-Web-Host
 
