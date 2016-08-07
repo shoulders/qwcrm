@@ -1,23 +1,23 @@
-!http://myitcrm.com/images/logo.png(MyITCRM)!:http://myitcrm.com
+!http://quantumwarp.com/images/logo.png(MyITCRM)!:http://quantumwarp.com
 
-h3. Requirements: - "MyITCRM Installation Requirements":https://github.com/myitcrm/myitcrm1/wiki/Installation-on-Web-Host
+h3. Requirements: - "MyITCRM Installation Requirements":https://github.com/shoulders/qwcrm/wiki/Installation-on-Web-Host
 
 h1. What is MtyITCRM?
 
-"MyITCRM":http://myitcrm.com - Free and Opensource CRM Software.
+"QWcrm":http://quantumwarp.com - Free and Opensource CRM Software.
 
-"MyITCRM":http://myitcrm.com is designed for the needs of the Service and Repairs Business Industry.
+"QWcrm":http://quantumwarp.com is designed for the needs of the Service and Repairs Business Industry.
 
-"MyITCRM":http://myitcrm.com provides your business the tools to maintain and track your customers information and work orders, payments made, invoicing, employees and jobs.
+"QWcrm":http://quantumwarp.com provides your business the tools to maintain and track your customers information and work orders, payments made, invoicing, employees and jobs.
 
-Whilst "MyITCRM":http://myitcrm.com was originally designed for the Computer Repairs Industry, it can easily be used for any type of repiars related business
+Whilst "QWcrm":http://quantumwarp.com was originally designed for the Computer Repairs Industry, it can easily be used for any type of repiars related business
 
     * Electrical Device Repairs and Servicing;
     * Small/Large Plant Maintenance and  Servicing;
     * Motorcycles, Cars, Lawn Equipment Servicing and Repairs.
 
-We also strong community input via the "forum.":http://myitcrm.com/forum/ With new features and bugs being actively reported and resolved. It’s also a great way to get personal involvement from all our end users to help build on this software.
-Some of "MyITCRM's":http://myitcrm.com Features:
+We also strong community input via the "forum.":http://quantumwarp.com/forum/ With new features and bugs being actively reported and resolved. It’s also a great way to get personal involvement from all our end users to help build on this software.
+Some of "QWcrm's":http://quantumwarp.com Features:
 
     * Customer details including Google maps directions ;
     * Work Order (Jobs/Tasks) Management ;
@@ -26,8 +26,8 @@ Some of "MyITCRM's":http://myitcrm.com Features:
     * Accept payments via Credit Cards via either Paymate, Paypal , Cheques, Cash or Gift Certificates ;
     and much more!
 
-So now give the "demo":http://demo.myitcrm.com a try or download your free copy and start optimizing your business with this easy to use and feature packed CRM Program.
+So now give the "demo":http://demo.quantumwarp.com a try or download your free copy and start optimizing your business with this easy to use and feature packed CRM Program.
 
 h2. Special Thanks
 
-A big thanks goes out to those how have "contributed":https://github.com/myitcrm/myitcrm1/contributors to MyITCRM
+A big thanks goes out to those how have "contributed":https://github.com/shoulders/qwcrm/contributors to MyITCRM
