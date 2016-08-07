@@ -496,7 +496,7 @@
         <invoice_remove>Remove</invoice_remove>
         <invoice_submit>Submit / Recalculate</invoice_submit>
         <invoice_submit2>Close Invoice</invoice_submit2>
-        <invoice_wo_id>Work%20Order%20ID%20</invoice_wo_id>
+        <invoice_wo_id>Work Order ID</invoice_wo_id>
         <invoice_actions>Actions</invoice_actions>
         <invoice_labour_total>Labour Total</invoice_labour_total>
         <invoice_parts_total>Parts Total</invoice_parts_total>
@@ -1116,7 +1116,8 @@
         <workorder_details_edit_resolution_button_tooltip>Click to edit resolution</workorder_details_edit_resolution_button_tooltip>        
         <workorder_details_edit_resolution_submit_changes_only>Submit Changes Only</workorder_details_edit_resolution_submit_changes_only>
         <workorder_details_edit_resolution_close_without_invoice>Close Without Invoice</workorder_details_edit_resolution_close_without_invoice>
-        <workorder_details_edit_resolution_close_with_invoice>Close With Invoice</workorder_details_edit_resolution_close_with_invoice>
+        <workorder_details_edit_resolution_close_with_invoice>Close With Invoice</workorder_details_edit_resolution_close_with_invoice>        
+        <workorder_details_edit_resolution_create_invoice_for_work_order_id>Create Invoice for Work Order ID</workorder_details_edit_resolution_create_invoice_for_work_order_id>
 
         // Status
         <workorder_status_title>Status</workorder_status_title>   
@@ -1161,8 +1162,10 @@
         <workorder_error_message_function_close_workorder_without_invoice_failed>Failed to Close the Work Order</workorder_error_message_function_close_workorder_without_invoice_failed>        
         <workorder_error_message_function_delete_work_order_failed>Failed to Delete the Work Order</workorder_error_message_function_delete_work_order_failed>        
         <workorder_error_message_function_assign_work_order_to_employee_failed>Failed to assign Work Order to another employee</workorder_error_message_function_assign_work_order_to_employee_failed>
-        <workorder_error_message_function_build_active_employee_form_option_list_failed>Failed build and return and Employee list</workorder_error_message_function_build_active_employee_form_option_list_failed>        
+        <workorder_error_message_function_build_active_employee_form_option_list_failed>Failed build and return and Employee list</workorder_error_message_function_build_active_employee_form_option_list_failed>   
         <workorder_error_message_function_resolution_edit_status_check_failed>Failed to check the Resolution Status of the Work Order</workorder_error_message_function_resolution_edit_status_check_failed>
+        <workorder_error_message_function_resolution_edit_status_check_workorderalreadyclosed>Work Order Is already Closed. Please Create an Invoice</workorder_error_message_function_resolution_edit_status_check_workorderalreadyclosed>
+        <workorder_error_message_function_resolution_edit_status_check_waitingforparts>Can not close a work order if it is Waiting For Parts. Please Adjust the status.</workorder_error_message_function_resolution_edit_status_check_waitingforparts>
             
         // details.php
         <workorder_error_message_details_loadpage_failed>There is no Work Order ID set</workorder_error_message_details_loadpage_failed>
@@ -1176,20 +1179,31 @@
         <workorder_error_message_print_loadpage_failed>Some or all of the Printing Options are not set</workorder_error_message_print_loadpage_failed>
         
         // resolution.php
-        <workorder_error_message_resolution_loadpage_failed>There is no Work Order ID set</workorder_error_message_resolution_loadpage_failed>
+        <workorder_error_message_resolution_loadpage_failed>There is no Work Order ID set</workorder_error_message_resolution_loadpage_failed>        
         
         // status.php
         <workorder_error_message_status_loadpage_failed>There is no Work Order ID set</workorder_error_message_status_loadpage_failed>
             
         //// Activity Log Messages       
-                   
-        <workorder_log_message_work_order>Work Order</workorder_log_message_work_order>
-        <workorder_log_message_has_been_deleted>has been deleted</workorder_log_message_has_been_deleted>            
+            
+        // Common     
+        <workorder_log_message_work_order>Work Order</workorder_log_message_work_order>                   
         <workorder_log_message_has_been_assigned_to>has been assigned to</workorder_log_message_has_been_assigned_to>
         <workorder_log_message_by>by</workorder_log_message_by>
         <workorder_log_message_from>from</workorder_log_message_from>
-        <workorder_log_message_unassigned>Unassigned</workorder_log_message_unassigned>            
-            
+        <workorder_log_message_unassigned>Unassigned</workorder_log_message_unassigned>
+        <workorder_log_message_by_the_logged_in_user>by the logged in user</workorder_log_message_by_the_logged_in_user>    
+        
+        // Specific Functions / Messages
+        <workorder_log_message_function_insert_new_workorder>Work Order Created</workorder_log_message_function_insert_new_workorder>              
+        <workorder_log_message_function_update_workorder_scope_and_description>Description has been Updated</workorder_log_message_function_update_workorder_scope_and_description>
+        <workorder_log_message_function_update_workorder_comments>Comment has been Updated</workorder_log_message_function_update_workorder_comments>
+        <workorder_log_message_function_update_workorder_resolution>Resolution has been Updated</workorder_log_message_function_update_workorder_resolution>
+        <workorder_log_message_function_update_status_work_order_status_changed_to>Work Order status changed to</workorder_log_message_function_update_status_work_order_status_changed_to>
+        <workorder_log_message_function_close_workorder_with_invoice>Work Order has been closed and set to Awaiting Payment</workorder_log_message_function_close_workorder_with_invoice>
+        <workorder_log_message_function_close_workorder_without_invoice>Work Order has been closed and No Invoice Required</workorder_log_message_function_close_workorder_without_invoice>
+        <workorder_log_message_function_delete_work_order_has_been_deleted>has been deleted</workorder_log_message_function_delete_work_order_has_been_deleted> 
+        
         //// Validators
         
         <workorder_validate_scope_notpresent>Enter a scope</workorder_validate_scope_notpresent>
