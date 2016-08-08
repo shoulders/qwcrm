@@ -33,9 +33,33 @@ $start = getMicroTime();
 #         error reporting and headers          #
 ################################################
 
-/* Used to suppress PHP error Notices */
-//error_reporting(E_ALL & ~E_NOTICE);
-error_reporting(E_ERROR);
+/* Used to suppress PHP error Notices - this will overide php.ini settings */
+
+// Turn off all error reporting
+//error_reporting(0);
+
+// Report simple running errors
+//error_reporting(E_ERROR | E_WARNING | E_PARSE);
+
+// Reporting E_NOTICE can be good too (to report uninitialized
+// variables or catch variable name misspellings ...)
+//error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
+
+// Report all errors except E_NOTICE
+error_reporting(E_ALL & ~E_NOTICE); // This will only show major errors (default)
+
+// Report all PHP errors (see changelog)
+//error_reporting(E_ALL);
+
+// Report all PHP errors
+//error_reporting(-1);
+
+// Same as error_reporting(E_ALL);
+//ini_set('error_reporting', E_ALL);
+
+################################################
+#          Header                              #
+################################################
 
 // Added to eliminate special characters
 header('Content-type: text/html; charset=utf-8');
@@ -90,7 +114,7 @@ require(INCLUDES_DIR.'acl.php');
 #          Enable Authentication               #
 ################################################
 
-$auth = new Auth($db, 'login.php');
+$auth = new Auth($db, 'login.php', 'secret'); // need to chase this, should i be using a nonce / random string
 
 ################################################
 #   should I log off                           #
@@ -168,6 +192,79 @@ if(isset($VAR['msg'])){
     $smarty->assign('msg', $VAR['msg']);
 }
 
+
+// from theme_header_block.php
+
+$ip             = $_SERVER['REMOTE_ADDR'];
+$login_usr      = $_SESSION['login_usr'];
+$wo_id          = $VAR['wo_id'];
+$cus_id         = $VAR['customer_id'];
+$expenseID      = $VAR['expenseID'];
+$refundID       = $VAR['refundID'];
+$supplierID     = $VAR['supplierID'];
+$employee_id    = $VAR['employee_id'];
+$today          = (Date('l, j F Y'));
+$smarty->assign('today',$today);
+
+if(!$login_usr)
+{
+    $smarty->assign('login_usr', '');
+} else {
+    $smarty->assign('login_usr', $login_usr);
+    $smarty->assign('display_login', $login_usr);
+    $smarty->assign('login_id', $_SESSION['login_id']);
+    $smarty->assign('wo_id', $wo_id);
+    $smarty->assign('cust_id',$cus_id);
+    $smarty->assign('expenseID', $expenseID);
+    $smarty->assign('refundID', $refundID);
+    $smarty->assign('supplierID', $supplierID);
+    $smarty->assign('ip',$ip);
+    $smarty->assign('employee_id',$employee_id);
+}
+
+$smarty->assign('msg', $msg);
+
+
+// theme_header_block.php
+
+//$employee_id = $VAR['employee_id'];
+$sch_id = $VAR['sch_id'];
+$today2 = (Date("d")); 
+if ( $cur_date > 0 )
+{
+$y1 = $VAR['y'] ;
+$m1 = $VAR['m'];
+$d1 = $VAR['d'];
+} else {
+$y1 =    (Date("Y"));
+$m1 =    (Date("m"));
+$d1 =    (Date("d"));
+}
+$smarty->assign('y1',$y1);
+$smarty->assign('m1',$m1);
+$smarty->assign('d1',$d1);
+$smarty->assign('Y',$Y);
+$smarty->assign('m',$m);
+$smarty->assign('d',$d);
+$smarty->assign('today2',$today2);
+
+
+
+if ($VAR['wo_id'] == '' || $VAR['wo_id'] < "1" )
+{
+$wo_id = 0 ;
+} else {
+$wo_id = $VAR['wo_id'] ;
+$woid = $VAR['wo_id'] ;
+}
+
+/*if ($VAR['woid'] == '' || $VAR['woid'] < "1" )
+{
+$wo_id = 0 ;
+} else {
+$wo_id = $VAR['woid'] ;
+}
+*/
 #####################################
 #    Set the Page Title             #
 #####################################  
@@ -202,11 +299,13 @@ if(isset($VAR['page'])){
             
             // even though this is set, the ACL is still checking $module and $page againt access so set them to the 404 page
             $module = 'core';
-            $page = '404';
+            $page   = '404';
         }
     } else {
         // If no page is supplied then go to the main page
-        $page_display_controller = 'modules'.SEP.'core'.SEP.'main.php';        
+        $page_display_controller = 'modules'.SEP.'core'.SEP.'main.php';
+        $module = 'core';
+        $page   = 'main';
     }
     
 ###############################################
@@ -220,7 +319,7 @@ if(!check_acl($db, $module, $page)){
 } else {    
    
     // Displays Header and Menu
-    if($VAR['theme'] != 'off' ){        
+    if($VAR['theme'] != 'off'){        
         require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_header_block.php');
         require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_menu_block.php');        
     }
@@ -232,6 +331,8 @@ if(!check_acl($db, $module, $page)){
     if($VAR['theme'] != 'off'){
         require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_footer_block.php');
     }
+    
+    // Add debug / logging module here - cannot be turned off
     
 }
 
@@ -253,11 +354,11 @@ function getIP(){
 $q = 'INSERT into '.PRFX.'TRACKER SET
    date          = '. $db->qstr( time()                     ).',
    ip            = '. $db->qstr( getIP()                    ).',
-   uagent        = '. $db->qstr( getenv(HTTP_USER_AGENT)    ).',
+   uagent        = '. $db->qstr( getenv('HTTP_USER_AGENT')  ).',
    full_page     = '. $db->qstr( $the_page                  ).',
    module        = '. $db->qstr( $module                    ).',
    page          = '. $db->qstr( $page                      ).',
-   referer       = '. $db->qstr( getenv(HTTP_REFERER)       );
+   referer       = '. $db->qstr( getenv('HTTP_REFERER')     );
 
    if(!$rs = $db->Execute($q)) {
       echo 'Error inserting tracker :'. $db->ErrorMsg();

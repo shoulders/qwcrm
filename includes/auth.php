@@ -36,8 +36,8 @@ class Auth {
         }
 
         // Escape the variables for the query - not sure wha this is for
-        $login_usr = mysql_real_escape_string($_POST['login_usr']);
-        $login_pwd = mysql_real_escape_string($login_pwd);
+        $login_usr = mysqli_real_escape_string($_POST['login_usr']);
+        $login_pwd = mysqli_real_escape_string($login_pwd);
 
         // Query to count number of users with this combination
         $sql    = "SELECT COUNT(*) AS num_users FROM ".PRFX."TABLE_EMPLOYEE WHERE EMPLOYEE_STATUS = '1' AND EMPLOYEE_LOGIN=".$this->db->qstr($login_usr)." AND EMPLOYEE_PASSWD=".$this->db->qstr($login_pwd);
