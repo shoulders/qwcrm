@@ -1,6 +1,6 @@
 <?php
 
-$smarty->display('core'.SEP.'footer.tpl');
+$smarty->display('core'.SEP.'blocks'.SEP.'theme_footer_block.tpl');
 //$smarty->assign('VERSION', MYIT_CRM_VERSION);
 if(debug == 'yes')    {
     echo 'PHP script executed in: ' . (getMicroTime() - $start .' secs<br>');

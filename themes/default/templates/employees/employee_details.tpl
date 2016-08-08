@@ -89,7 +89,7 @@
                                 <td class="olotd4">{$open_work_orders[a].CONFIG_WORK_ORDER_STATUS}</td>
                                 <td class="olotd4">{$open_work_orders[a].EMPLOYEE_DISPLAY_NAME}</td>
                                 <td class="olotd4" align="center">
-                                    <a href="?page=workorder:print&wo_id={$open_work_orders[a].WORK_ORDER_ID}&customer_id={$open_work_orders[a].CUSTOMER_ID}&escape=1" target="new" >
+                                    <a href="?page=workorder:print&wo_id={$open_work_orders[a].WORK_ORDER_ID}&customer_id={$open_work_orders[a].CUSTOMER_ID}&theme=off" target="new" >
                                     <img src="{$theme_images_dir}icons/16x16/fileprint.gif" border="0"
                                         onMouseOver="ddrivetip('Print The Work Order')" onMouseOut="hideddrivetip()"></a>
                                     <a href="?page=workorder:details&wo_id={$open_work_orders[a].WORK_ORDER_ID}&customer_id={$open_work_orders[a].CUSTOMER_ID}">

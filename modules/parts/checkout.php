@@ -80,7 +80,7 @@ $cc .="</CRMPARTSREQUEST>" ;
  $ch = curl_init();
  curl_setopt($ch, CURLOPT_URL, INCITCRM);
  curl_setopt ($ch, CURLOPT_POST, 1);
- curl_setopt ($ch, CURLOPT_POSTFIELDS, "page=parts:processes&xml=".$cc."&escape=1");
+ curl_setopt ($ch, CURLOPT_POSTFIELDS, "page=parts:processes&xml=".$cc."&theme=off");
  curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
  curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
  $content = curl_exec ($ch); # This returns HTML

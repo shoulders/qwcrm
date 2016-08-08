@@ -252,6 +252,7 @@ function display_expense_info($db, $expenseID){
 # Loads language file up as a php array  #
 ##########################################
 
+// might be redundant now - move to includes/includes
 function gateway_xml2php($module) {
     global $smarty;
 

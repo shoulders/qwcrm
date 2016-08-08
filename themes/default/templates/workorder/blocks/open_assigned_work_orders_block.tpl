@@ -32,7 +32,7 @@
             <a class="link1" href="?page=employees:employee_details&employee_id={$assigned.EMPLOYEE_ID}&page_title={$assigned.EMPLOYEE_DISPLAY_NAME}">{$assigned.EMPLOYEE_DISPLAY_NAME}</a>
         </td>
         <td class="olotd4" align="center" nowrap>
-            <a href="?page=workorder:print&wo_id={$assigned.WORK_ORDER_ID}&customer_id={$assigned.CUSTOMER_ID}&page_title=$translate_workorder_print_work_order_id} {$assigned.WORK_ORDER_ID}&escape=1" target="new" >
+            <a href="?page=workorder:print&wo_id={$assigned.WORK_ORDER_ID}&customer_id={$assigned.CUSTOMER_ID}&page_title=$translate_workorder_print_work_order_id} {$assigned.WORK_ORDER_ID}&theme=off" target="new" >
                 <img src="{$theme_images_dir}icons/16x16/fileprint.gif" border="0"
                     onMouseOver="ddrivetip('{$translate_workorder_print_the_work_order_button_tooltip}');"
                     onMouseOut="hideddrivetip();">

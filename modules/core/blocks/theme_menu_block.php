@@ -81,4 +81,4 @@ $cred = $rs->FetchRow();
 $smarty->assign('cred',$cred);
 $smarty->assign('unassigned',$unassigned);
 $smarty->assign('status2',$status2);    
-$smarty->display('core'.SEP.'navigation.tpl');
+$smarty->display('core'.SEP.'blocks'.SEP.'theme_menu_block.tpl');

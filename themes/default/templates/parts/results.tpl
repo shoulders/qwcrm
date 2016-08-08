@@ -15,7 +15,7 @@
                         <tr>
                             <td class="menutd" valign="top" >
                                 {$translate_parts_msg_10} <a
-                                 href="?page=parts:print_results&wo_id={$invoice_details.WORKORDER}&escape=1" target="new">{$translate_parts_print    }</a> 
+                                 href="?page=parts:print_results&wo_id={$invoice_details.WORKORDER}&theme=off" target="new">{$translate_parts_print    }</a> 
                                 <table  width="700" border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
     <tr>
         <td valign="top">

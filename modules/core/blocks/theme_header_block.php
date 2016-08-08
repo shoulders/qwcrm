@@ -129,4 +129,4 @@ $mine4 = $rs->fields['MINE4'];
 $smarty->assign('mine4', $mine4);
 
 $smarty->assign('msg', $msg);
-$smarty->display('core'.SEP.'header.tpl');
+$smarty->display('core'.SEP.'blocks'.SEP.'theme_header_block.tpl');

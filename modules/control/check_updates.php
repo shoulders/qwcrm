@@ -7,7 +7,7 @@
 # Version 0.1.0    21/02/2009 11:10:42 PM                                   #
 ###########################################################*/
 
-$page    = 'page=update:check&crm_version='.MYIT_CRM_VERSION.'&escape=1';
+$page    = 'page=update:check&crm_version='.MYIT_CRM_VERSION.'&theme=off';
 
 /* get curent version and check against sourceforge */
 $ch = curl_init();

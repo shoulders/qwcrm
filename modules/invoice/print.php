@@ -3,10 +3,9 @@
 // BOF shared variables for invoicing
 
 require_once ('include.php');
-header('Content-type: text/html; charset=utf-8');
-if(!xml2php("invoice")) {
-    $smarty->assign('error_msg',"Error in language file");
-}
+
+// header('Content-type: text/html; charset=utf-8');
+
 
 // Load PHP Language Translations
 $langvals = gateway_xml2php('invoice');

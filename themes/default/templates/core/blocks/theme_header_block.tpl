@@ -29,6 +29,7 @@
 <div id="dhtmltooltip"></div>
 <script type="text/javascript" src="js/dhtml.js">
 </script>
+
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
     <tr class="text4" width="100%">
         <td>
@@ -43,5 +44,11 @@
         {if $mine4 != 0}& &rArr;{$mine4} {$translate_core_waiting_payment}{/if}
         </td>
     </tr>
+</table>
+
+<!-- Begin Wrapping Table -->
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td width="150" class="left_window" valign="top">
+            
+            <!-- Menu Goes Here -->

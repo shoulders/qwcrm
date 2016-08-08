@@ -21,7 +21,7 @@
                 ????????<br>
                 ????????<br>
                 ????????<br>
-                                                    <a href="?page=parts:print_results&wo_id={$order[q].WO_ID}&escape=1" target="new">{$translate_parts_print}</a>
+                                                    <a href="?page=parts:print_results&wo_id={$order[q].WO_ID}&theme=off" target="new">{$translate_parts_print}</a>
                                                 </td>
                                                 <td valign="top" align="right" width="205">
                                                 <!-- Right Column -->

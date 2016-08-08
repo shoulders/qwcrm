@@ -35,7 +35,7 @@
         {/if}
         </td>
         <td class="olotd4" align="center" nowrap>
-            <a href="?page=workorder:print&wo_id={$awaiting.WORK_ORDER_ID}&customer_id={$awaiting.CUSTOMER_ID}&page_title=$translate_workorder_print_work_order_id} {$awaiting.WORK_ORDER_ID}&escape=1">
+            <a href="?page=workorder:print&wo_id={$awaiting.WORK_ORDER_ID}&customer_id={$awaiting.CUSTOMER_ID}&page_title=$translate_workorder_print_work_order_id} {$awaiting.WORK_ORDER_ID}&theme=off">
                 <img src="{$theme_images_dir}icons/16x16/fileprint.gif" border="0"
                 onMouseOver="ddrivetip('{$translate_workorder_print_the_work_order_button_tooltip}');"
                 onMouseOut="hideddrivetip();">

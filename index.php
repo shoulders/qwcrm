@@ -182,14 +182,10 @@ if(isset($page_title)){
     $smarty->assign('page_title', $page_title);
 }  
 
-##############################################################
-#    Url Builder This grabs gets and post and builds the url # 
-#    conection strings ($_POST has priority)                 #
-##############################################################
-
-// This section is a real mess - alot of the suff is not needed also use $VAR
-
-// this needs a tickle to sort the logic out, the 404 is not quite working. it will only work if an incoorect page varible is sent.
+#############################################
+#  Extract Page Parameters and Validate     #
+#  the page exists ready for building       #
+#############################################
 
 if(isset($VAR['page'])){
     
@@ -213,30 +209,30 @@ if(isset($VAR['page'])){
         $page_display_controller = 'modules'.SEP.'core'.SEP.'main.php';        
     }
     
-#####################################
-#    Display the page (as required) #
-#####################################  
-
-//tmpl=component or tmpl=0
-/* If escape=1 varible is set do not load the template wrapper - useful for printing */
-if($VAR['escape'] != 1 ){
-    require('modules'.SEP.'core'.SEP.'header.php');
-    require('modules'.SEP.'core'.SEP.'navigation.php');
-    require('modules'.SEP.'core'.SEP.'company.php');
-}
- 
- // The check_acl() will not allow 404
+###############################################
+#    Build and Display the page (as required) #
+#    If the user has the correct permissions  #
+###############################################
 
 /* Check ACL for page request - if ok display */
 if(!check_acl($db, $module, $page)){    
     force_page('core','error','error_msg=You do not have permission to access this '.$module.':'.$page.'&menu=1');
 } else {    
-    require($page_display_controller); // this activates the page
-}
+   
+    // Displays Header and Menu
+    if($VAR['theme'] != 'off' ){        
+        require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_header_block.php');
+        require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_menu_block.php');        
+    }
 
-// dont show the footer in templess mode - this has diagnostics in
-if($VAR['escape'] != 1 ){
-    require('modules'.SEP.'core'.SEP.'footer.php');
+    // Displays the Page Content
+    require($page_display_controller);
+    
+    // Displays the Footer
+    if($VAR['theme'] != 'off'){
+        require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_footer_block.php');
+    }
+    
 }
 
 ################################################

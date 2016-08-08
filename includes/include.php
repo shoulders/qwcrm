@@ -33,26 +33,29 @@ function write_record_to_activity_log($record){
 }
 
 /* Language Translation Function */
+
+// remove error control from the modules and add it here.
+
 function xml2php($module) {
     global $smarty;
 
     //$file = FILE_ROOT."language".SEP.$module.SEP.LANG ;
-        $file = 'language/'.LANG ;
-    
-   $xml_parser = xml_parser_create();
-   if (!($fp = fopen($file, 'r'))) {
-       die('unable to open XML');
-   }
-   $contents = fread($fp, filesize($file));
-   fclose($fp);
-   xml_parse_into_struct($xml_parser, $contents, $arr_vals);   
-   xml_parser_free($xml_parser);
+    $file = 'language/'.LANG ;
 
-   foreach($arr_vals as $things){
+    $xml_parser = xml_parser_create();
+    if (!($fp = fopen($file, 'r'))) {
+       die('unable to open XML');
+    }
+    $contents = fread($fp, filesize($file));
+    fclose($fp);
+    xml_parse_into_struct($xml_parser, $contents, $arr_vals);   
+    xml_parser_free($xml_parser);
+
+    foreach($arr_vals as $things){
         if($things['tag'] != 'TRANSLATE' && $things['value'] != "" ){
             $smarty->assign('translate_'.strtolower($things['tag']),$things['value']);
         }
     }    
-    
+
     return true;
 }

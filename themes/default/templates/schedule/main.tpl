@@ -83,7 +83,7 @@
                         <!-- Content -->
                         <table width="100%" cellpadding="4" cellspacing="0" border="0">
                             <tr>
-                                <td><button type="submit" name="{$translate_schedule_print}" OnClick=location.href="?page=schedule:print&amp;y={$y}&amp;m={$m}&amp;d={$d}&amp;escape=1" >{$translate_schedule_print}</button> </td>
+                                <td><button type="submit" name="{$translate_schedule_print}" OnClick=location.href="?page=schedule:print&amp;y={$y}&amp;m={$m}&amp;d={$d}&amp;theme=off" >{$translate_schedule_print}</button> </td>
                                 <td valign="top" align="right" valign="middle">
                                 {if $cred.EMPLOYEE_TYPE <> 3 }
                                     <form>
