@@ -30,7 +30,7 @@ $start = getMicroTime();
 //$startMem  = memory_get_usage();
 
 ################################################
-#         error reporting and headers          #
+#         Error reporting and headers          #
 ################################################
 
 /* Used to suppress PHP error Notices - this will overide php.ini settings */
@@ -92,7 +92,8 @@ if(!is_file('cache/lock')){
 $VAR            = array_merge($_GET, $_POST);
 $page_title     = $VAR['page_title'];
 //$page           = $VAR['page'];
-
+//$login_usr      = $_SESSION['login_usr'];
+$login_usr  = $_POST['login_id'];
 /*
 $wo_id          = $VAR['wo_id'];
 $customer_id    = $VAR['customer_id'];
@@ -192,19 +193,18 @@ if(isset($VAR['msg'])){
     $smarty->assign('msg', $VAR['msg']);
 }
 
-
+/*
 // from theme_header_block.php
 
 $ip             = $_SERVER['REMOTE_ADDR'];
 $login_usr      = $_SESSION['login_usr'];
 $wo_id          = $VAR['wo_id'];
-$cus_id         = $VAR['customer_id'];
+$customer_id    = $VAR['customer_id'];
 $expenseID      = $VAR['expenseID'];
 $refundID       = $VAR['refundID'];
 $supplierID     = $VAR['supplierID'];
 $employee_id    = $VAR['employee_id'];
-$today          = (Date('l, j F Y'));
-$smarty->assign('today',$today);
+
 
 if(!$login_usr)
 {
@@ -214,7 +214,7 @@ if(!$login_usr)
     $smarty->assign('display_login', $login_usr);
     $smarty->assign('login_id', $_SESSION['login_id']);
     $smarty->assign('wo_id', $wo_id);
-    $smarty->assign('cust_id',$cus_id);
+    $smarty->assign('customer_id',$customer_id);
     $smarty->assign('expenseID', $expenseID);
     $smarty->assign('refundID', $refundID);
     $smarty->assign('supplierID', $supplierID);
@@ -318,22 +318,28 @@ if(!check_acl($db, $module, $page)){
     force_page('core','error','error_msg=You do not have permission to access this '.$module.':'.$page.'&menu=1');
 } else {    
    
-    // Displays Header and Menu
+    // Display Header and Menu
     if($VAR['theme'] != 'off'){        
         require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_header_block.php');
         require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_menu_block.php');        
     }
 
-    // Displays the Page Content
-    require($page_display_controller);
-    
-    // Displays the Footer
+    // Display the Page Content
+    require($page_display_controller);    
+  
+    // Display the Footer
     if($VAR['theme'] != 'off'){
         require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_footer_block.php');
+        if ($qwcrm_debug != 'on'){
+            echo '</body></html>';
+        }
     }
     
-    // Add debug / logging module here - cannot be turned off
-    
+    // Display the Debug
+    if($qwcrm_debug === 'on'){
+        require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_debug_block.php');
+        echo '</body></html>';
+    }
 }
 
 ################################################
@@ -373,3 +379,6 @@ $q = 'INSERT into '.PRFX.'TRACKER SET
     
    */   
     
+echo'<pre>'.var_dump($_SESSION);'</pre>'; //add this to diagnostics
+echo'<br />';
+echo'<pre>'.print_r(get_defined_vars()).'</pre>'; //add this to diagnostics

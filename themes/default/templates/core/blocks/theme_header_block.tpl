@@ -30,23 +30,17 @@
 <script type="text/javascript" src="js/dhtml.js">
 </script>
 
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-    <tr class="text4" width="100%">
-        <td>
-            <span class="text4"></span>
-        </td>
-        <td width="100%" class="text4" align="center">
-        >IP {$ip}<|>{$today}<|>{if $mine != 0 || $mine2 != 0 || $mine3 != 0 || $mine4 != 0}
-            and {$translate_main_you_have} {/if}
-            {if $mine != 0}&rArr;{$mine} {$translate_core_open_workorders}{/if}
-        {if $mine2 != 0}& &rArr;{$mine2} {$translate_core_assigned_workorders}{/if}
-        {if $mine3 != 0}& &rArr;{$mine3} {$translate_main_payment}{/if}
-        {if $mine4 != 0}& &rArr;{$mine4} {$translate_core_waiting_payment}{/if}
-        </td>
+<div class="text4">
+  <table width="900px" border="0" cellspacing="0" cellpadding="0">
+    <tr class="text4">
+        <td width="450" class="text4" align="left">{$greeting_msg}</td>         
+        <td width="50%" class="text4" align="right">{$today}</td>
     </tr>
-</table>
+</table>  
+</div>
 
-<!-- Begin Wrapping Table -->
+
+<!-- BOF Wrapping Table -->
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td width="150" class="left_window" valign="top">

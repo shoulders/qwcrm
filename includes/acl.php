@@ -1,20 +1,20 @@
 <?php
 function check_acl($db, $module, $page){
     
-    // this is not returning allowed permission for 404.php
+    // if $_SESSION['login_id'] is not set, this goes mental into a loop
     
-    $uid = $_SESSION['login_id'];
+    // so add if login_id does not exit under any format, die, force logout, this will prevent dodgy logins
 
-    /* Get Group ID */
+    /* Get Employee Account Type - Group ID */
     $q = 'SELECT '.PRFX.'CONFIG_EMPLOYEE_TYPE.TYPE_NAME
             FROM '.PRFX.'TABLE_EMPLOYEE,'.PRFX.'CONFIG_EMPLOYEE_TYPE 
-            WHERE '.PRFX.'TABLE_EMPLOYEE.EMPLOYEE_TYPE  = '.PRFX.'CONFIG_EMPLOYEE_TYPE.TYPE_ID AND EMPLOYEE_ID='.$db->qstr($uid);
+            WHERE '.PRFX.'TABLE_EMPLOYEE.EMPLOYEE_TYPE  = '.PRFX.'CONFIG_EMPLOYEE_TYPE.TYPE_ID AND EMPLOYEE_ID='.$db->qstr($_SESSION['login_id']);
     
     if(!$rs = $db->execute($q)) {
         force_page('core','error&error_msg=Could not get Group ID for user');
         exit;
     } else {
-        $gid = $rs->fields['TYPE_NAME'];
+        $employee_acl_account_type = $rs->fields['TYPE_NAME'];
     }
 
     /* Check Page to see if we have access */
@@ -24,13 +24,13 @@ function check_acl($db, $module, $page){
         $module_page = $module.':'.$page;
     }
     
-    $q = 'SELECT '.$gid.' as ACL FROM '.PRFX.'ACL WHERE page='.$db->qstr($module_page);
+    $q = "SELECT ".$employee_acl_account_type." AS PAGE_ACL FROM ".PRFX."ACL WHERE page=".$db->qstr($module_page);
 
     if(!$rs = $db->execute($q)) {
-        force_page('core','error&error_msg=Could not get Page ACL');
+        force_page('core','error&error_msg=Could not get Page ACL'.$db->ErrorMsg());
         exit;
     } else {
-        $acl = $rs->fields['ACL'];
+        $acl = $rs->fields['PAGE_ACL'];
         if($acl != 1) {
             return false;	
         } else {

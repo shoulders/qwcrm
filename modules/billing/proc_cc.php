@@ -52,7 +52,7 @@ $q = "SELECT CUSTOMER_ID,CUSTOMER_DISPLAY_NAME,CUSTOMER_FIRST_NAME,CUSTOMER_LAST
         exit;
     }
 
-$cust_id    = $rs->fields['CUSTOMER_ID'];
+$customer_id    = $rs->fields['CUSTOMER_ID'];
 $first_name     = $rs->fields['CUSTOMER_FIRST_NAME'];
 $last_name     = $rs->fields['CUSTOMER_LAST_NAME'];
 $display_name    = $rs->fields['CUSTOMER_DISPLAY_NAME'];
@@ -102,7 +102,7 @@ $authnet_values                = array
 "x_Password"            =>$an_password,
 "x_Trans_ID"            =>"",
 "x_Type"            =>"AUTH_CAPTURE",
-"x_cust_id"            =>$cust_id,
+"x_cust_id"            =>$customer_id,
 "x_first_name"            =>$first_name,
 "x_last_name"            =>$last_name,
 "x_company"            =>$display_name,

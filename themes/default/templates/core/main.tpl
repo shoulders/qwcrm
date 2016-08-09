@@ -60,7 +60,7 @@
  {/literal}
   <a href="#" id="hidden_stats">{$translate_main_invoice_stats}</a>
  <div id="hide_stats">
-                  {if $cred.EMPLOYEE_TYPE == 1 || $cred.EMPLOYEE_TYPE == 4 }
+                  {if $employee_record.EMPLOYEE_TYPE == 1 || $employee_record.EMPLOYEE_TYPE == 4 }
                                     <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
                                         <tr class="olotd4">
                                             <td class="row2"><b>{$translate_main_unpaid}</b></td>

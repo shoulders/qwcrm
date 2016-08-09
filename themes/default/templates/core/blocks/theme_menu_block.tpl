@@ -1,4 +1,4 @@
-<!-- navigation.tpl -->
+<!-- navigation.tpl -->{$employee_id}
 <table width="150" border="2" cellspacing="0" cellpadding="0">
     <tr>
         <td>
@@ -20,43 +20,43 @@
                 <span>{$translate_menu_customers}</span>
                 <a href="?page=customer:new&amp;page_title={$translate_menu_add_new_customer}"><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_add_new}</a>
                 <a href="?page=customer:view&amp;page_title={$translate_menu_customers}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_view}</a>
-                {if $cust_id > 0 }
-                    <a href="?page=customer:edit&amp;customer_id={$cust_id}&amp;page_title={$translate_menu_edit_customer}"><img src="{$theme_images_dir}icons/edit_employees.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_edit_customer}</a>
-                    <a href="?page=billing:new_gift&amp;customer_id={$cust_id}&amp;page_title={$translate_menu_new_gift}&amp;customer_name={$customer_details[i].CUSTOMER_DISPLAY_NAME}"><img src="{$theme_images_dir}icons/gift.png" alt="" border="0" height="14" width="14" /> {$translate_menu_new_gift}</a>
-                    <a href="?page=customer:delete&amp;customer_id={$cust_id}&amp;page_title={$translate_menu_delete_customer}"><img src="{$theme_images_dir}icons/delete_employees.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_delete_customer}</a>
-                    <!--<a href="?page=customer:email&amp;customer_id={$cust_id}&amp;page_title=Email Customer"><img src="{$theme_images_dir}icons/16x16/email.jpg" alt="" border="0" height="14" width="14" /> {$translate_menu_email_customer}</a>-->
+                {if $customer_id > 0 }
+                    <a href="?page=customer:edit&amp;customer_id={$customer_id}&amp;page_title={$translate_menu_edit_customer}"><img src="{$theme_images_dir}icons/edit_employees.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_edit_customer}</a>
+                    <a href="?page=billing:new_gift&amp;customer_id={$customer_id}&amp;page_title={$translate_menu_new_gift}&amp;customer_name=ADD NAME HERE"><img src="{$theme_images_dir}icons/gift.png" alt="" border="0" height="14" width="14" /> {$translate_menu_new_gift}</a>
+                    <a href="?page=customer:delete&amp;customer_id={$customer_id}&amp;page_title={$translate_menu_delete_customer}"><img src="{$theme_images_dir}icons/delete_employees.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_delete_customer}</a>
+                    <!--<a href="?page=customer:email&amp;customer_id={$customer_id}&amp;page_title=Email Customer"><img src="{$theme_images_dir}icons/16x16/email.jpg" alt="" border="0" height="14" width="14" /> {$translate_menu_email_customer}</a>-->
                 {/if}        
             </div>
             
             <!-- Work Orders -->
             <div>
                 <span>{$translate_menu_work_orders}</span>
-                {if $cust_id > 0 }
-                    <a href="?page=workorder:new&amp;customer_id={$cust_id}&amp;page_title={$translate_workorder_new_title}"><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_create_new_wo}</a>
+                {if $customer_id > 0 }
+                    <a href="?page=workorder:new&amp;customer_id={$customer_id}&amp;page_title={$translate_workorder_new_title}"><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_create_new_wo}</a>
                 {/if}
-                {if $unassigned > 0 }
-                    <a href="?page=workorder:open&amp;page_title={$translate_menu_work_orders}"><img src="{$theme_images_dir}icons/warning.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_unassigned} <b><font color="RED">{if $unassigned > 0} ({$unassigned}){/if}{if $unassigned < 1}{/if}</font></b></a>
+                {if $menu_workorders_unassigned > 0 }
+                    <a href="?page=workorder:open&amp;page_title={$translate_menu_work_orders}"><img src="{$theme_images_dir}icons/warning.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_unassigned} <b><font color="RED">{if $menu_workorders_unassigned > 0} ({$menu_workorders_unassigned}){/if}{if $menu_workorders_unassigned < 1}{/if}</font></b></a>
                 {/if}
-                <a href="?page=workorder:open&amp;page_title={$translate_menu_work_orders}"><img src="{$theme_images_dir}tick.png" alt="" border="0" height="14" width="14" /> {$translate_menu_open} <b><font color="RED">{if $open_count > 0} ({$open_count}){/if}{if $open_count < 1}{/if}</font></b></a>
-                <a href="?page=workorder:closed&amp;page_title={$translate_menu_closed_work_orders}"><img src="{$theme_images_dir}icons/close.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_closed} <b><font color="RED">{if $closed > 0 } ({$closed}){/if} {if $closed < 1 }{/if} </font></b></a>
+                <a href="?page=workorder:open&amp;page_title={$translate_menu_work_orders}"><img src="{$theme_images_dir}tick.png" alt="" border="0" height="14" width="14" /> {$translate_menu_open} <b><font color="RED">{if $menu_workorders_open_count > 0} ({$menu_workorders_open_count}){/if}{if $menu_workorders_open_count < 1}{/if}</font></b></a>
+                <a href="?page=workorder:closed&amp;page_title={$translate_menu_closed_work_orders}"><img src="{$theme_images_dir}icons/close.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_closed} <b><font color="RED">{if $menu_workorders_closed_count > 0 } ({$menu_workorders_closed_count}){/if} {if $menu_workorders_closed_count < 1 }{/if} </font></b></a>
                 {if $wo_id >= "1"}
-                    {if $status2.WORK_ORDER_STATUS == "10"}
+                    {if $menu_workorder_record.WORK_ORDER_STATUS == "10"}
                         <a href="?page=workorder:resolution&amp;wo_id={$wo_id}&amp;page_title={$translate_menu_close}"><img src="{$theme_images_dir}icons/close.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_close}</a>
                         <a href="?page=workorder:details_new_note&amp;wo_id={$wo_id}&amp;page_title={$translate_menu_new_note}"><img src="{$theme_images_dir}icons/note.png" alt="" border="0" height="14" width="14" /> {$translate_menu_new_note}</a>
                     {/if}
                     <a href="?page=workorder:print&amp;wo_id={$wo_id}&amp;page_title={$translate_menu_print_wo}&amp;theme=off" target="_blank"><img src="{$theme_images_dir}icons/print.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_print_wo}</a>
                     <a href="?page=workorder:status&amp;wo_id={$wo_id}"><img src="{$theme_images_dir}icons/status.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_status}</a>
                 {/if}
-                {if $cust_id > 0 }
-                    <a href="?page=invoice:new&amp;invoice_type=invoice-only&amp;wo_id=0&amp;customer_id={$cust_id}&amp;page_title={$translate_menu_invoice_only}"><img src="{$theme_images_dir}icons/invoice.png" alt="" border="0" height="14" width="14" /> {$translate_menu_invoice_only}</a>
+                {if $customer_id > 0 }
+                    <a href="?page=invoice:new&amp;invoice_type=invoice-only&amp;wo_id=0&amp;customer_id={$customer_id}&amp;page_title={$translate_menu_invoice_only}"><img src="{$theme_images_dir}icons/invoice.png" alt="" border="0" height="14" width="14" /> {$translate_menu_invoice_only}</a>
                 {/if}
             </div>
             
             <!-- Invoices -->
             <div>
                 <span>{$translate_menu_invoices}</span>
-                <a href="?page=invoice:view_paid&amp;page_title=Paid%20Invoices"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_paid_2} <b><font color="RED">{if $paid > 0} ({$paid}){/if}{if $paid < 1}{/if}</font></b></a>
-                <a href="?page=invoice:view_unpaid&amp;page_title={$translate_menu_un_paid_2}"><img src="{$theme_images_dir}icons/warning.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_un_paid_2} <b><font color="RED">{if $unpaid > 0} ({$unpaid}){/if}{if $unpaid < 1}{/if}</font></b></a>
+                <a href="?page=invoice:view_paid&amp;page_title=Paid%20Invoices"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_paid_2} <b><font color="RED">{if $menu_workorders_paid_count > 0} ({$menu_workorders_paid_count}){/if}{if $menu_workorders_paid_count < 1}{/if}</font></b></a>
+                <a href="?page=invoice:view_unpaid&amp;page_title={$translate_menu_un_paid_2}"><img src="{$theme_images_dir}icons/warning.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_un_paid_2} <b><font color="RED">{if $menu_workorders_unpaid_count > 0} ({$menu_workorders_unpaid_count}){/if}{if $menu_workorders_unpaid_count < 1}{/if}</font></b></a>
             </div>
             
             <!-- Administration -->
@@ -64,12 +64,12 @@
                 <span>{$translate_menu_administration}</span>
                 <a href="?page=employees:main&amp;page_title={$translate_menu_employees_view}" ><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_employees_view}</a>
                 <!-- Menu limited to Managers or Supervisors -->
-                {if $cred.EMPLOYEE_TYPE == 1 || $cred.EMPLOYEE_TYPE == 2}
+                {if $menu_employee_record.EMPLOYEE_TYPE == 1 || $menu_employee_record.EMPLOYEE_TYPE == 2}
                     <a href="?page=employees:new&amp;page_title=New"><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" height="14" width="14" /> New Employee</a>
                     <a href="?page=stats:main&amp;page_title=Stats"><img src="{$theme_images_dir}icons/reports.png" alt="" border="0" height="14" width="14" /> {$translate_stats_nav_report}</a>
                 {/if}
                 <!-- Menu limited to Managers and Admins -->
-                {if $cred.EMPLOYEE_TYPE == 1 || $cred.EMPLOYEE_TYPE == 4}
+                {if $menu_employee_record.EMPLOYEE_TYPE == 1 || $menu_employee_record.EMPLOYEE_TYPE == 4}
                     <a href="?page=employees:new&amp;page_title=New"><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" height="14" width="14" /> New Employee</a>
                     {if $employee_id > '' || $employee_id > 0 }
                         <a href="?page=employees:edit&amp;employee_id={$employee_id}&amp;page_title={$translate_menu_edit}"><img src="{$theme_images_dir}icons/edit_employees.gif" alt="" border="0" height="14" width="14" /> Edit Employee</a>
@@ -82,7 +82,7 @@
         
         <!-- General Ledger -->
         <!-- Menu limited to Managers and Admins -->
-        {if $cred.EMPLOYEE_TYPE == 1 || $cred.EMPLOYEE_TYPE == 4}
+        {if $menu_employee_record.EMPLOYEE_TYPE == 1 || $menu_employee_record.EMPLOYEE_TYPE == 4}
             <div>
                 
                 <span>{$translate_general_ledger_nav_title}</span>
@@ -110,7 +110,7 @@
         
         <!-- Supplier Section -->
         <!-- Menu limited to Managers and Admins -->
-        {if $cred.EMPLOYEE_TYPE == 1 || $cred.EMPLOYEE_TYPE == 4}
+        {if $menu_employee_record.EMPLOYEE_TYPE == 1 || $menu_employee_record.EMPLOYEE_TYPE == 4}
             <div>
                 <span>{$translate_supplier_nav_title}</span> 
                 <a href="?page=supplier:new&amp;page_title={$translate_supplier_new_title}"><img src="{$theme_images_dir}icons/new.gif" alt="" border="0" height="14" width="14" />{$translate_supplier_nav_new}</a>
@@ -122,7 +122,7 @@
                 {/if}
             </div>
         {/if}
-        {if $cred.EMPLOYEE_TYPE == 4}
+        {if $menu_employee_record.EMPLOYEE_TYPE == 4}
         <div>
             <span>{$translate_menu_setup}</span>
             <a href="?page=control:company_edit"><img src="{$theme_images_dir}icons/key.png" alt="" border="0" height="14" width="14" /> Business Setup</a>

@@ -3,7 +3,7 @@
 /** Main Include File **/
 
 /* Redirect page with javascript */
-function force_page($module, $page, $variables) {
+function force_page($module, $page = Null, $variables = Null) {
     echo('
         <script type="text/javascript">
             window.location = "index.php?page='.$module.':'.$page.'&'.$variables.'"

@@ -35,12 +35,20 @@ class Auth {
             $login_pwd = $_POST['login_pwd'];
         }
 
-        // Escape the variables for the query - not sure wha this is for
-        $login_usr = mysqli_real_escape_string($_POST['login_usr']);
-        $login_pwd = mysqli_real_escape_string($login_pwd);
+        // Escape the variables for the query - not currently used
+        // is this needed?
+        //$login_usr = mysqli_real_escape_string($link, $_POST['login_usr']);
+        //$login_pwd = mysqli_real_escape_string($link, $login_pwd);
+        $login_usr = mysql_real_escape_string($login_usr);
+        $login_pwd = mysql_real_escape_string($login_pwd);
+
 
         // Query to count number of users with this combination
-        $sql    = "SELECT COUNT(*) AS num_users FROM ".PRFX."TABLE_EMPLOYEE WHERE EMPLOYEE_STATUS = '1' AND EMPLOYEE_LOGIN=".$this->db->qstr($login_usr)." AND EMPLOYEE_PASSWD=".$this->db->qstr($login_pwd);
+        $sql    = "SELECT COUNT(*) AS num_users FROM ".PRFX."TABLE_EMPLOYEE
+                    WHERE EMPLOYEE_STATUS = '1'
+                    AND EMPLOYEE_LOGIN=".$this->db->qstr($login_usr)."
+                    AND EMPLOYEE_PASSWD=".$this->db->qstr($login_pwd);
+        
         $result = $this->db->Execute($sql);
         $row    = $result->FetchRow();
 
@@ -48,16 +56,18 @@ class Auth {
         if ($row['num_users'] != 1) {    
                         
             // Log activity       
-            write_record_to_activity_log('Failed Login '.$login_usr);  
+            write_record_to_activity_log('Failed Login  - not exactly 1 entry'.$login_usr);  
         
             // Reload with 'Login Failed' message
-            force_page('login.php?error_msg=Login Failed');
+            force_page('login.php?error_msg=Login Failed - not exactly 1 entry');
 
         // Else if there is a valid user, set the session variables
         } else {
             
             // Grab their login ID for tracking purposes
-            $sql = "SELECT EMPLOYEE_ID FROM ".PRFX."TABLE_EMPLOYEE WHERE EMPLOYEE_STATUS = '1' AND EMPLOYEE_LOGIN=".$this->db->qstr($login_usr);
+            $sql = "SELECT EMPLOYEE_ID FROM ".PRFX."TABLE_EMPLOYEE
+                    WHERE EMPLOYEE_STATUS = '1'
+                    AND EMPLOYEE_LOGIN=".$this->db->qstr($login_usr);
             $result = $this->db->Execute($sql);
             $row = $result->FetchRow();
 
@@ -65,25 +75,36 @@ class Auth {
             if (!isset($row['EMPLOYEE_ID'])){          
                 
                 // Log activity       
-                write_record_to_activity_log('Failed Login ID For '.$login_usr);
+                write_record_to_activity_log('Failed Login ID For - - no login ID'.$login_usr);
+                
+                // add session destruction here for safty
                 
                 // Reload with 'Login Failed' message
-                force_page('login.php?error_msg=Login Failed');
+                force_page('login.php?error_msg=Login Failed - no login username');
                 
             } else {
                 // Sets the Employees ID number
                 $login_id = $row['EMPLOYEE_ID'];
+                
+                // Set the account type
+                $login_account_type = $row['EMPLOYEE_TYPE'];
+                
+                // Set the display name
+                $login_display_name = $row['EMPLOYEE_DISPLAY_NAME'];
             }
 
-          $this->storeAuth($login_usr, $login_pwd, $COMPANY, $login_id);
+          $this->storeAuth($login_usr, $login_pwd, $login_id, $login_account_type, $login_display_name);
 
         }
     }  
 
-    function storeAuth($login_usr, $login_pwd, $COMPANY, $login_id){
-        $this->session->set('login_usr',    $login_usr  );
-        $this->session->set('login_pwd',    $login_pwd  );
-        $this->session->set('login_id',     $login_id   );
+    function storeAuth($login_usr, $login_pwd, $login_id, $login_account_type, $login_display_name){
+        $this->session->set('login_usr',            $login_usr          );
+        $this->session->set('login_pwd',            $login_pwd          );
+        $this->session->set('login_id',             $login_id           );
+        
+        $this->session->set('login_account_type',   $login_account_type );
+        $this->session->set('login_display_name',   $login_display_name );
 
         // Create a session variable to use to confirm sessions
         $hashKey = md5($this->hashKey . $login_usr . $login_pwd);
@@ -116,7 +137,7 @@ class Auth {
         $this->redirect();
     }
    
-    function redirect($addFromQuery){
+    function redirect($addFromQuery = Null){
         if ($addFromQuery){
             header('Location: ' . $this->redirect . '?from=' . $_SERVER['REQUEST_URI']);
         } else {

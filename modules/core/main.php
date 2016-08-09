@@ -1,6 +1,14 @@
 <?php
+
+// Load the required includes
+require_once ('include.php');
+//require_once (__DIR__.'/../include.php');
+//require_once ('.'.SEP.'modules'.SEP.'workorder'.SEP.'include.php');
+
+
+
 $wo_id = $VAR['wo_id'];
-$status = 10;
+//$status = 10;
 /* Main Home Page */
 // Get the page number we are on if first page set to 1
     if(!isset($VAR['page_no']))
@@ -9,98 +17,49 @@ $status = 10;
     } else {
         $page_no = $VAR['page_no'];
     }
-// Load the required includes
-require_once ('.'.SEP.'modules'.SEP.'workorder'.SEP.'include.php');
+
 
 /* display welcome note */
-$q = 'SELECT WELCOME_NOTE FROM '.PRFX.'SETUP';
-if(!$rs = $db->execute($q)){
-    force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
-    exit;
-} else {
-    $smarty->assign('welcome',$rs->fields['WELCOME_NOTE']);
-}
+$smarty->assign('welcome', display_welcome_note($db));
+
 
 
 /* work order stats */
 
 /* New Work Order Counts */
-$q = 'SELECT count(*) as count FROM '.PRFX.'TABLE_WORK_ORDER WHERE  WORK_ORDER_CURRENT_STATUS='.$db->qstr(1);
-if(!$rs = $db->execute($q)){
-    force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
-    exit;
-} else {
-    $wo_new_count = $rs->fields['count'];
-    $smarty->assign('wo_new_count',$wo_new_count);
-}
+$smarty->assign('wo_new_count',count_workorders_with_status($db, 1));
 
 /* Assigned counts */
-$q = 'SELECT count(*) as count FROM '.PRFX.'TABLE_WORK_ORDER WHERE  WORK_ORDER_CURRENT_STATUS='.$db->qstr(2);
-if(!$rs = $db->execute($q)){
-    force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
-    exit;
-} else {
-    $wo_ass_count = $rs->fields['count'];
-    $smarty->assign('wo_ass_count',$wo_ass_count);
-}
+$smarty->assign('wo_ass_count', count_workorders_with_status($db, 2));
+
 
 /* waiting for parts count */
-$q = 'SELECT count(*) as count FROM '.PRFX.'TABLE_WORK_ORDER WHERE  WORK_ORDER_CURRENT_STATUS='.$db->qstr(3);
-if(!$rs = $db->execute($q)){
-    force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
-    exit;
-} else {
-    $wo_parts_count = $rs->fields['count'];
-    $smarty->assign('wo_parts_count',$wo_parts_count);
-}
+$smarty->assign('wo_parts_count', count_workorders_with_status($db, 3));
 
 /* waiting for payment */
-$q = 'SELECT count(*) as count FROM '.PRFX.'TABLE_WORK_ORDER WHERE  WORK_ORDER_CURRENT_STATUS='.$db->qstr(7);
-if(!$rs = $db->execute($q)){
-    force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
-    exit;
-} else {
-    $wo_pay_count = $rs->fields['count'];
-    $smarty->assign('wo_pay_count',$wo_pay_count);
-}
+$smarty->assign('wo_pay_count', count_workorders_with_status($db, 7));
 
 /* closed */
-$q = 'SELECT count(*) as count FROM '.PRFX.'TABLE_WORK_ORDER WHERE  WORK_ORDER_STATUS='.$db->qstr(6);
-if(!$rs = $db->execute($q)){
-    force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
-    exit;
-} else {
-    $wo_closed_count = $rs->fields['count'];
-    $smarty->assign('wo_closed_count',$wo_closed_count);
-}
+$smarty->assign('wo_closed_count',count_workorders_with_status($db, 6));
 
 /* WO total count */
-$q = 'SELECT count(*) as count FROM '.PRFX.'TABLE_WORK_ORDER';
-if(!$rs = $db->execute($q)){
-    force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
-    exit;
-} else {
-    $wo_total_count = $rs->fields['count'];
-    $smarty->assign('wo_total_count',$wo_total_count);
-}
+$smarty->assign('wo_total_count',count_all_workorders($db));
 
 
 
 
 
 
-/* Discount stats */
-// Sum unpaid Discounts on Invoices
-$q = "SELECT SUM(DISCOUNT) AS DISCOUNT FROM ".PRFX."TABLE_INVOICE WHERE INVOICE_PAID=".$db->qstr(0)." AND  balance=".$db->qstr(0);
-if(!$rs = $db->Execute($q)){
-    echo 'Error: '. $db->ErrorMsg();
-    die;
-}
-$unpaid_discounts = $rs->fields['DISCOUNT'];
+/** Discount stats **/
+
+/* Sum unpaid Discounts on Invoices */
+$unpaid_discounts = sum_unpaid_discounts_on_invoices($db);
 
 
 // Sum Paid Discounts on Invoices
-$q = "SELECT SUM(DISCOUNT) AS DISCOUNT FROM ".PRFX."TABLE_INVOICE";
+$q = "SELECT SUM(DISCOUNT) AS DISCOUNT
+        FROM ".PRFX."TABLE_INVOICE
+        WHERE INVOICE_PAID=".$db->qstr(1);
 if(!$rs = $db->Execute($q)){
     echo 'Error: '. $db->ErrorMsg();
     die;
@@ -108,7 +67,9 @@ if(!$rs = $db->Execute($q)){
 $all_discounts = $rs->fields['DISCOUNT'];
 
 // Sum partial Discounts on Invoices
-$q = "SELECT SUM(DISCOUNT) AS DISCOUNT FROM ".PRFX."TABLE_INVOICE WHERE INVOICE_PAID=".$db->qstr(0)." AND  balance >".$db->qstr(0);
+$q = "SELECT SUM(DISCOUNT) AS DISCOUNT
+        FROM ".PRFX."TABLE_INVOICE
+        WHERE INVOICE_PAID=".$db->qstr(0)." AND BALANCE >".$db->qstr(0);
 if(!$rs = $db->Execute($q)){
     echo 'Error: '. $db->ErrorMsg();
     die;
@@ -235,7 +196,7 @@ if(!$rs = $db->execute($q)){
 
 
 /* Get employee credentials */
-$q = "SELECT * FROM ".PRFX."TABLE_EMPLOYEE WHERE EMPLOYEE_DISPLAY_NAME ='".$login_usr."'" ;
+$q = "SELECT * FROM ".PRFX."TABLE_EMPLOYEE WHERE EMPLOYEE_LOGIN ='".$login_usr."'" ;
 $rs = $db->Execute($q);
 $cred2 = $rs->FetchRow();
 
@@ -272,3 +233,31 @@ $smarty->assign('closed', $closed);
 $smarty->display('core'.SEP.'company.tpl');
  
 */
+
+////////////////
+
+//These are currently not used anywhere - from header and menu
+
+/* Get Employee Id by Username */
+$login_id = get_employee_id_by_username($db, $login_usr);
+// or
+//$login_id = $_SESSION['login_id'];//
+//echo $login_id;
+
+/* Logged in Employee - Open Work Orders */
+$smarty->assign('employee_workorders_open_count', count_employee_workorders_with_status($db, $login_id, 10));
+
+/* Logged in Employee - Assigned Work Orders */
+$smarty->assign('employee_workorders_assigned_count', count_employee_workorders_with_status($db, $login_id, 2));
+
+/* Logged in Employee - Work Orders Awaiting Payment*/
+$smarty->assign('employee_workorders_awaiting_payment_count', count_employee_workorders_with_status($db, $login_id, 7));
+
+/* Logged in Employee - Unpaid Invoices */
+$smarty->assign('employee_invoices_unpaid_count', count_employee_invoices_with_status($db, $login_id, 0));
+
+/* Assigned Work Orders - not used in theme header or menu */
+$smarty->assign('workorders_assigned_count', count_workorders_with_status($db, 2));
+
+
+///////////////
