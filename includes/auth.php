@@ -17,13 +17,13 @@ class Auth {
  
     function login(){
         
-        // See if we have values already stored in the session
+        // See if we have values already stored in the session - if hash matchs return to index.php code to process
         if ($this->session->get('login_hash')) {
             $this->confirmAuth();
             return;
         }
 
-        // If this is a fresh login, check $_POST variables
+        // If this is a fresh login, check $_POST variables - will require suername and password to continue
         if (!isset($_POST['login_usr']) || !isset($_POST['login_pwd'])){
             $this->redirect();
         }
@@ -39,7 +39,7 @@ class Auth {
         // is this needed?
         //$login_usr = mysqli_real_escape_string($link, $_POST['login_usr']);
         //$login_pwd = mysqli_real_escape_string($link, $login_pwd);
-        $login_usr = mysql_real_escape_string($login_usr);
+        $login_usr = mysql_real_escape_string($_POST['login_usr']);
         $login_pwd = mysql_real_escape_string($login_pwd);
 
 
@@ -122,6 +122,7 @@ class Auth {
         if (md5($this->hashKey . $login_usr . $login_pwd) != $hashKey){
             $this->logout(true);
         }
+        
     }  
  
     function logout(){
