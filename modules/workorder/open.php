@@ -1,6 +1,6 @@
 <?php
 
-require_once('include.php');
+require('includes'.SEP.'modules'.SEP.'workorder.php');
 
 /* Get the page number we are on if first page set to 1 */
     if(!isset($VAR["page_no"])) {

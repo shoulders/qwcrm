@@ -64,14 +64,14 @@ class Auth {
         // Else if there is a valid user, set the session variables
         } else {
             
-            // Grab their login ID for tracking purposes
-            $sql = "SELECT EMPLOYEE_ID FROM ".PRFX."TABLE_EMPLOYEE
+            // Grab their login ID for tracking purposes (Employee Must be Active)
+            $sql = "SELECT EMPLOYEE_ID, EMPLOYEE_TYPE, EMPLOYEE_DISPLAY_NAME FROM ".PRFX."TABLE_EMPLOYEE
                     WHERE EMPLOYEE_STATUS = '1'
                     AND EMPLOYEE_LOGIN=".$this->db->qstr($login_usr);
             $result = $this->db->Execute($sql);
             $row = $result->FetchRow();
 
-            // If We did not get a login ID 
+            // If We did not get a login ID                      // the above only grabs the ID not the other employee things
             if (!isset($row['EMPLOYEE_ID'])){          
                 
                 // Log activity       
@@ -99,6 +99,8 @@ class Auth {
     }  
 
     function storeAuth($login_usr, $login_pwd, $login_id, $login_account_type, $login_display_name){
+        
+        // Store Variables in $_SESSION
         $this->session->set('login_usr',            $login_usr          );
         $this->session->set('login_pwd',            $login_pwd          );
         $this->session->set('login_id',             $login_id           );
@@ -135,6 +137,11 @@ class Auth {
         $this->session->del('login_usr');
         $this->session->del('login_pwd');
         $this->session->del('login_hash');
+        
+        $this->session->del('login_id');
+        $this->session->del('login_account_type');
+        $this->session->del('login_display_name');
+        
         $this->redirect();
     }
    

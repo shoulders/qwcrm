@@ -1,9 +1,6 @@
 <?php
 
-// do I need this here
-if(!xml2php('core')) {
-    $smarty->assign('error_msg','Error in language file');
-}
+//require('includes'.SEP.'modules'.SEP.'core.php');
 
 $error_type         = $VAR['error_type'];
 $error_location     = $VAR['error_location'];

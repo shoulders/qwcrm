@@ -91,13 +91,28 @@ if(!is_file('cache/lock')){
 
 $VAR            = array_merge($_GET, $_POST);
 $page_title     = $VAR['page_title'];
+
+
+
 //$page           = $VAR['page'];
 //$login_usr      = $_SESSION['login_usr'];
-$login_usr  = $_POST['login_id'];
+//$login_usr  = $_POST['login_id'];
 /*
 $wo_id          = $VAR['wo_id'];
 $customer_id    = $VAR['customer_id'];
  * */
+
+// from theme_header_block.php
+/*
+$ip             = $_SERVER['REMOTE_ADDR'];
+$login_usr      = $_SESSION['login_usr'];
+$wo_id          = $VAR['wo_id'];
+$customer_id    = $VAR['customer_id'];
+$expenseID      = $VAR['expenseID'];
+$refundID       = $VAR['refundID'];
+$supplierID     = $VAR['supplierID'];
+$employee_id    = $VAR['employee_id'];
+*/
  
 ################################################
 #         Initialise QWCRM                     #
@@ -115,7 +130,11 @@ require(INCLUDES_DIR.'acl.php');
 #          Enable Authentication               #
 ################################################
 
-$auth = new Auth($db, 'login.php', 'secret'); // need to chase this, should i be using a nonce / random string
+$auth = new Auth($db, 'login.php', $strKey); // need to chase this, should i be using a nonce / random string
+
+$login_usr          = $_SESSION['login_usr'];
+$login_account_type = $_SESSION['login_account_type'];
+$login_display_name = $_SESSION['login_display_name'];
 
 ################################################
 #   should I log off                           #
@@ -130,7 +149,7 @@ if (isset($VAR['action']) && $VAR['action'] == 'logout') {
 #   Assign variables into smarty for use by all native module templates  #
 ##########################################################################
 
-/* Work Order ID */
+/* Work Order ID 
 if(isset($_GET['wo_id'])){
     $smarty->assign('wo_id', $_GET['wo_id']);
     global $wo_id;
@@ -138,13 +157,15 @@ if(isset($_GET['wo_id'])){
     $smarty->assign('wo_id','0');
 }
 
-/* customer ID */
+/* customer ID 
 if(isset($_GET['customer_id'])){
     $smarty->assign('customer_id', $_GET['customer_id']);
     global $customer_id;
 } else {
     $smarty->assign('customer_id','0');
 }
+*/
+
 
 /*
  * taken from url build
@@ -160,50 +181,8 @@ foreach($VAR as $key=>$val){
  */
 
 
-// workorder/print.php has company code in it
-/* get company info for defaults */
-$q = 'SELECT * FROM '.PRFX.'TABLE_COMPANY, '.PRFX.'VERSION ORDER BY  '.PRFX.'VERSION.`VERSION_INSTALLED` DESC LIMIT 1';
-if(!$rs = $db->execute($q)){
-force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-exit;
-}
-
-$smarty->assign('version', $rs->fields['VERSION_NAME']);                // core/footer.tpl and core/submit.tpl
-$smarty->assign('company_name', $rs->fields['COMPANY_NAME']);           // billing/display_gift.tpl , billing/print_gift.tpl, parts/print_result.tpl, parts/view.tpl
-$smarty->assign('company_address', $rs->fields['COMPANY_ADDRESS']);     // parts/print_result.tpl, parts/view.tpl
-$smarty->assign('company_city', $rs->fields['COMPANY_CITY']);           // employees/new.tpl, parts/print_result.tpl, parts/view.tpl
-$smarty->assign('company_state', $rs->fields['COMPANY_STATE']);         // employees/new.tpl, parts/view.tpl
-$smarty->assign('company_zip', $rs->fields['COMPANY_ZIP']);             // employees/new.tpl, parts/print_result.tpl, parts/view.tpl
-$smarty->assign('company_country', $rs->fields['COMPANY_COUNTRY']);     // not used
-$smarty->assign('company_phone',$rs->fields['COMPANY_PHONE']);          // billing/display_gift.tpl , billing/print_gift.tpl, parts/print_result.tpl, parts/view.tpl
-$smarty->assign('company_email',$rs->fields['COMPANY_EMAIL']);          // not used
-$smarty->assign('company_mobile',$rs->fields['COMPANY_MOBILE']);        // not used
-$smarty->assign('company_logo',$rs->fields['COMPANY_LOGO']);            // core/login.tpl, workorder/print_customer_workorder_slip.tpl, workorder/print_job_sheet.tpl, workorder/print_technician_workorder_slip.tpl
-$smarty->assign('currency_sym',$rs->fields['COMPANY_CURRENCY_SYMBOL']); // used throughout the site
-$smarty->assign('currency_code',$rs->fields['COMPANY_CURRENCY_CODE']);  // only in invoice/print_html.tpl
-$smarty->assign('date_format',$rs->fields['COMPANY_DATE_FORMAT']);      // used throughout the site
-$smarty->assign('company_email_from',$rs->fields['COMPANY_EMAIL_FROM']);// not used
-$smarty->assign('email_server',$rs->fields['COMPANY_EMAIL_SERVER']);    // only customer/email.tpl
-$smarty->assign('email_server_port',$rs->fields['COMPANY_EMAIL_PORT']); // only customer/email.tpl
-$smarty->assign('email_username',$rs->fields['COMPANY_SMTP_USERNAME']); // not used
-$smarty->assign('email_password',$rs->fields['COMPANY_SMTP_PASSWORD']); // not used
-
-/* Message - Legacy Message Feature - Possibly will use it in future*/
-if(isset($VAR['msg'])){
-    $smarty->assign('msg', $VAR['msg']);
-}
-
 /*
 // from theme_header_block.php
-
-$ip             = $_SERVER['REMOTE_ADDR'];
-$login_usr      = $_SESSION['login_usr'];
-$wo_id          = $VAR['wo_id'];
-$customer_id    = $VAR['customer_id'];
-$expenseID      = $VAR['expenseID'];
-$refundID       = $VAR['refundID'];
-$supplierID     = $VAR['supplierID'];
-$employee_id    = $VAR['employee_id'];
 
 
 if(!$login_usr)
@@ -265,6 +244,44 @@ $wo_id = 0 ;
 $wo_id = $VAR['woid'] ;
 }
 */
+
+//////////////
+
+// workorder/print.php has company code in it
+/* get company info for defaults */
+$q = 'SELECT * FROM '.PRFX.'TABLE_COMPANY, '.PRFX.'VERSION ORDER BY  '.PRFX.'VERSION.`VERSION_INSTALLED` DESC LIMIT 1';
+if(!$rs = $db->execute($q)){
+force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+exit;
+}
+
+$smarty->assign('version', $rs->fields['VERSION_NAME']);                // core/footer.tpl and core/submit.tpl
+$smarty->assign('company_name', $rs->fields['COMPANY_NAME']);           // billing/display_gift.tpl , billing/print_gift.tpl, parts/print_result.tpl, parts/view.tpl
+$smarty->assign('company_address', $rs->fields['COMPANY_ADDRESS']);     // parts/print_result.tpl, parts/view.tpl
+$smarty->assign('company_city', $rs->fields['COMPANY_CITY']);           // employees/new.tpl, parts/print_result.tpl, parts/view.tpl
+$smarty->assign('company_state', $rs->fields['COMPANY_STATE']);         // employees/new.tpl, parts/view.tpl
+$smarty->assign('company_zip', $rs->fields['COMPANY_ZIP']);             // employees/new.tpl, parts/print_result.tpl, parts/view.tpl
+$smarty->assign('company_country', $rs->fields['COMPANY_COUNTRY']);     // not used
+$smarty->assign('company_phone',$rs->fields['COMPANY_PHONE']);          // billing/display_gift.tpl , billing/print_gift.tpl, parts/print_result.tpl, parts/view.tpl
+$smarty->assign('company_email',$rs->fields['COMPANY_EMAIL']);          // not used
+$smarty->assign('company_mobile',$rs->fields['COMPANY_MOBILE']);        // not used
+$smarty->assign('company_logo',$rs->fields['COMPANY_LOGO']);            // core/login.tpl, workorder/print_customer_workorder_slip.tpl, workorder/print_job_sheet.tpl, workorder/print_technician_workorder_slip.tpl
+$smarty->assign('currency_sym',$rs->fields['COMPANY_CURRENCY_SYMBOL']); // used throughout the site
+$smarty->assign('currency_code',$rs->fields['COMPANY_CURRENCY_CODE']);  // only in invoice/print_html.tpl
+$smarty->assign('date_format',$rs->fields['COMPANY_DATE_FORMAT']);      // used throughout the site
+$smarty->assign('company_email_from',$rs->fields['COMPANY_EMAIL_FROM']);// not used
+$smarty->assign('email_server',$rs->fields['COMPANY_EMAIL_SERVER']);    // only customer/email.tpl
+$smarty->assign('email_server_port',$rs->fields['COMPANY_EMAIL_PORT']); // only customer/email.tpl
+$smarty->assign('email_username',$rs->fields['COMPANY_SMTP_USERNAME']); // not used
+$smarty->assign('email_password',$rs->fields['COMPANY_SMTP_PASSWORD']); // not used
+
+/* Message - Legacy Message Feature - Possibly will use it in future*/
+if(isset($VAR['msg'])){
+    $smarty->assign('msg', $VAR['msg']);
+}
+
+//////////////
+
 #####################################
 #    Set the Page Title             #
 #####################################  
@@ -346,6 +363,8 @@ if(!check_acl($db, $module, $page)){
 #         Logging                              #
 ################################################
 
+// should this have its own page? - no, single function here will suffice - main include though
+
 $tracker_page = "$module:$page"; // what is this for - not used anywhere
 
 /* Tracker code */
@@ -369,16 +388,3 @@ $q = 'INSERT into '.PRFX.'TRACKER SET
    if(!$rs = $db->Execute($q)) {
       echo 'Error inserting tracker :'. $db->ErrorMsg();
    }
-   
-  /*
-   * add to diagnostics it gives the real php file loaded
-   * 
-   * echo $VAR['page'].'<br />'; //workorder:closed
-    echo $page.'<br />';    //closed
-    echo $page_display_controller.'<br />'; //modules/workorder/closed.php
-    
-   */   
-    
-echo'<pre>'.var_dump($_SESSION);'</pre>'; //add this to diagnostics
-echo'<br />';
-echo'<pre>'.print_r(get_defined_vars()).'</pre>'; //add this to diagnostics

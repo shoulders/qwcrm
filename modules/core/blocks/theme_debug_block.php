@@ -1,7 +1,30 @@
 <?php
 
 $smarty->display('core'.SEP.'blocks'.SEP.'theme_debug_block.tpl');
+
+/*-------------*/
+   
+  /*
+   * add to diagnostics it gives the real php file loaded
+   * 
+   * echo $VAR['page'].'<br />'; //workorder:closed
+    echo $page.'<br />';    //closed
+    echo $page_display_controller.'<br />'; //modules/workorder/closed.php
     
+   */   
+
+if($qwcrm_advanced_debug === 'on'){
+    
+    /* PHP Variable Dump */
+    echo'<pre>';
+    echo var_dump($_SESSION); // $_SESSION Variables
+    echo'<br />';
+    print_r(get_defined_vars()); // All defined PHP Variables
+    echo '</pre>';
+}
+
+/* ----------- */
+
 echo 'PHP script executed in: ' . (getMicroTime() - $start .' secs<br>');
 unset($VAR);
 

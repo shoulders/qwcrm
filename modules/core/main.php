@@ -1,11 +1,6 @@
 <?php
 
-// Load the required includes
-require_once ('include.php');
-//require_once (__DIR__.'/../include.php');
-//require_once ('.'.SEP.'modules'.SEP.'workorder'.SEP.'include.php');
-
-
+//require('includes'.SEP.'modules'.SEP.'core.php');
 
 $wo_id = $VAR['wo_id'];
 //$status = 10;

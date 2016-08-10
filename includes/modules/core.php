@@ -19,12 +19,12 @@ if(!xml2php('core')) {
 #  Greeting Message Based on Time       #
 #########################################
 
-function greeting_message_based_on_time($employee_usr){    
+function greeting_message_based_on_time($employee_name){    
     
-    $morning    = "Good morning! $employee_usr";
-    $afternoon  = "Good afternoon! $employee_usr";
-    $evening    = "Good evening! $employee_usr";
-    $night      = "Working late? $employee_usr";
+    $morning    = "Good morning! $employee_name";
+    $afternoon  = "Good afternoon! $employee_name";
+    $evening    = "Good evening! $employee_name";
+    $night      = "Working late? $employee_name";
     
     $friday     = "Get ready for the weekend!";
 
