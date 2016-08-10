@@ -14,7 +14,6 @@ if(!xml2php('core')) {
 
 /** Misc **/
 
-
 #########################################
 #  Greeting Message Based on Time       #
 #########################################
@@ -63,7 +62,9 @@ function greeting_message_based_on_time($employee_name){
 #########################################
 
 function display_welcome_note($db){
+    
     $q = 'SELECT WELCOME_NOTE FROM '.PRFX.'SETUP';
+    
     if(!$rs = $db->execute($q)){
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
         exit;
@@ -71,50 +72,31 @@ function display_welcome_note($db){
         return $rs->fields['WELCOME_NOTE'];
     }
 }
-#########################################
-# Get employee ID number from username  #
-#########################################
 
-/* I dont thinks this is needed in core
- * it was used for getting user specific stats in theme_header_block.php
- * i am using $login_id instead now
- * i will leave this here just for now
- */
-
-function get_employee_id_by_username($db, $employee_usr){
-    $q = 'SELECT EMPLOYEE_ID FROM '.PRFX.'TABLE_EMPLOYEE WHERE EMPLOYEE_LOGIN ='.$db->qstr($employee_usr);
-    $rs = $db->Execute($q);
-    return $rs->fields['EMPLOYEE_ID'];
-}
-
-#########################################
-# Get employee record by username       #
-#########################################
-
-function get_employee_record_by_username($db, $employee_usr){
-    $q = "SELECT * FROM ".PRFX."TABLE_EMPLOYEE WHERE EMPLOYEE_LOGIN =".$db->qstr($employee_usr);
-    $rs = $db->Execute($q);
-    return $rs->FetchRow();
-}
+/** Work Orders **/
 
 ##########################################
 # Display single Work Order information  #
 ##########################################
 
 function display_single_workorder_record($db, $wo_id){
+    
     $q = "SELECT * FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_ID =".$db->qstr($wo_id);
+    
     $rs = $db->Execute($q);
     return $rs->FetchRow();
 }
-
-/** Counting Functions - General **/
 
 #########################################
 # Count Work Orders for a given status  #
 #########################################
 
 function count_workorders_with_status($db, $workorder_status){
-    $q = "SELECT count(*) AS WORKORDER_STATUS_COUNT FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_STATUS=".$db->qstr($workorder_status);
+    
+    $q = "SELECT COUNT(*) AS WORKORDER_STATUS_COUNT
+            FROM ".PRFX."TABLE_WORK_ORDER
+            WHERE WORK_ORDER_STATUS=".$db->qstr($workorder_status);
+    
     $rs = $db->Execute($q);    
     return  $rs->fields['WORKORDER_STATUS_COUNT'];
 }
@@ -135,7 +117,9 @@ function count_unassigned_workorders($db){
 #############################################
 
 function count_all_workorders($db){
-    $q = 'SELECT count(*) AS WORKORDER_TOTAL_COUNT FROM '.PRFX.'TABLE_WORK_ORDER';
+    
+    $q = 'SELECT COUNT(*) AS WORKORDER_TOTAL_COUNT FROM '.PRFX.'TABLE_WORK_ORDER';
+    
     if(!$rs = $db->execute($q)){
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
         exit;
@@ -144,27 +128,252 @@ function count_all_workorders($db){
     }
 }
 
+/** Invoices **/
+
 ############################################
 # Count Invoices with Status (paid/unpaid) #
 ############################################
 
 function count_invoices_with_status($db, $invoice_status){
+    
     $q ="SELECT COUNT(*) AS UNPAID_COUNT FROM ".PRFX."TABLE_INVOICE WHERE INVOICE_PAID=".$db->qstr($invoice_status);
+    
     $rs = $db->Execute($q);
     return $rs->fields['UNPAID_COUNT'];
 }
 
-/** Counting Functions - Employee Specific **/
+
+########################################
+# Sum of Discounts on Unpaid Invoices  #
+########################################
+
+function sum_of_discounts_on_unpaid_invoices($db){
+    
+    $q = "SELECT SUM(DISCOUNT) AS DISCOUNT_SUM
+            FROM ".PRFX."TABLE_INVOICE
+            WHERE INVOICE_PAID=".$db->qstr(0)." AND BALANCE=".$db->qstr(0); 
+    
+    if(!$rs = $db->Execute($q)){
+        echo 'Error: '. $db->ErrorMsg();
+        die;
+    } else {
+        return $rs->fields['DISCOUNT_SUM'];
+    }    
+}
+
+########################################
+# Sum of Discounts on Paid Invoices    #
+########################################
+
+function sum_of_discounts_on_paid_invoices($db){
+    
+    $q = "SELECT SUM(DISCOUNT) AS DISCOUNT_SUM
+        FROM ".PRFX."TABLE_INVOICE
+        WHERE INVOICE_PAID=".$db->qstr(1);
+    
+    if(!$rs = $db->Execute($q)){
+        echo 'Error: '. $db->ErrorMsg();
+        die;
+    } else {
+        return $rs->fields['DISCOUNT_SUM'];
+    }    
+}
+
+##################################################
+# Sum of Discounts on Partially Paid Invoices    #
+##################################################
+
+function sum_of_discounts_on_partially_paid_invoices($db){
+    
+    $q = "SELECT SUM(DISCOUNT) AS DISCOUNT_SUM
+        FROM ".PRFX."TABLE_INVOICE
+        WHERE INVOICE_PAID=".$db->qstr(0)." AND BALANCE >".$db->qstr(0);
+    
+    if(!$rs = $db->Execute($q)){
+        echo 'Error: '. $db->ErrorMsg();
+        die;
+    } else {
+        return $rs->fields['DISCOUNT_SUM'];
+    }
+}
+
+##################################################
+# Count Unpaid Invoices                          #
+##################################################
+
+function count_upaid_invoices($db){
+    
+    $q = 'SELECT COUNT(*) AS INVOICE_COUNT FROM '.PRFX.'TABLE_INVOICE WHERE INVOICE_PAID='.$db->qstr(0);
+    
+    if(!$rs = $db->execute($q)){
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
+        exit;
+    } else {
+        return $rs->fields['INVOICE_COUNT'];        
+    }
+}
+
+###################################################
+# Sum of Outstanding Balances for Unpaid Invoices #
+###################################################
+
+function sum_outstanding_balances_unpaid_invoices($db){
+    
+    $q = 'SELECT SUM(BALANCE) AS BALANCE_SUM FROM '.PRFX.'TABLE_INVOICE WHERE INVOICE_PAID='.$db->qstr(0).' AND BALANCE >'.$db->qstr(0);
+    
+    if(!$rs = $db->execute($q)){
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
+        exit;
+    } else {
+        return $rs->fields['BALANCE_SUM'];        
+    } 
+}
+
+##################################################
+# Count Partially Paid Invoices                  #
+##################################################
+
+function count_partially_paid_invoices($db){
+    
+    $q = 'SELECT COUNT(*) AS BALANCE_COUNT FROM '.PRFX.'TABLE_INVOICE WHERE INVOICE_PAID='.$db->qstr(0).' AND BALANCE <> INVOICE_AMOUNT';
+    
+    if(!$rs = $db->execute($q)){
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
+        exit;
+    } else {
+        return $rs->fields['BALANCE_COUNT'];       
+    }  
+}
+
+###########################################################
+# Sum of Outstanding Balances for Partially Paid Invoices #
+###########################################################
+
+function sum_outstanding_balances_partially_paid_invoices($db){
+    
+    $q = 'SELECT SUM(BALANCE) AS BALANCE_SUM FROM '.PRFX.'TABLE_INVOICE WHERE INVOICE_PAID='.$db->qstr(0).' AND BALANCE <> INVOICE_AMOUNT';
+    
+    if(!$rs = $db->execute($q)){
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
+        exit;
+    } else {
+        return $rs->fields['BALANCE_SUM'];
+    }
+}
+
+#############################################
+# Count All Paid Invoices                   #
+#############################################
+
+function count_all_paid_invoices($db){
+    
+    $q = 'SELECT COUNT(*) AS INVOICE_COUNT FROM '.PRFX.'TABLE_INVOICE WHERE INVOICE_PAID='.$db->qstr(1);
+    
+    if(!$rs = $db->execute($q)){
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
+        exit;
+    } else {
+        return $rs->fields['INVOICE_COUNT'];        
+    }
+}
+
+###################################################
+# Sum of Invoice Amount for All Paid Invoices     #
+###################################################
+
+function sum_invoiceamounts_paid_invoices($db){
+    
+    $q = 'SELECT SUM(INVOICE_AMOUNT) AS INVOICE_AMOUNT_SUM FROM '.PRFX.'TABLE_INVOICE WHERE INVOICE_PAID='.$db->qstr(1);
+    
+    if(!$rs = $db->execute($q)){
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
+        exit;
+    } else {
+        return $rs->fields['INVOICE_AMOUNT_SUM'];
+    }    
+}
+
+/** Customers **/
+
+#############################################
+# New Customers during this period          #
+#############################################
+
+function new_customers_during_period($db, $requested_period){
+    
+    if($requested_period === 'month')   {$period = mktime(0,0,0,date('m'),0,date('Y'));}
+    if($requested_period === 'year')    {$period = mktime(0,0,0,0,0,date('Y'));}
+    
+    $q = 'SELECT COUNT(*) AS CUSTOMER_COUNT FROM '.PRFX.'TABLE_CUSTOMER WHERE CREATE_DATE >= '.$db->qstr($period);
+    
+    if(!$rs = $db->execute($q)){
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
+        exit;
+    } else {
+        return $rs->fields['CUSTOMER_COUNT'];       
+    }
+}
+
+#############################################
+# Count All Customers                       #
+#############################################
+
+function count_all_customers($db){
+    
+    $q = 'SELECT COUNT(*) AS CUSTOMER_COUNT FROM '.PRFX.'TABLE_CUSTOMER';
+    
+    if(!$rs = $db->execute($q)){
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
+        exit;
+    } else {
+        return $rs->fields['CUSTOMER_COUNT'];
+    }    
+}
+
+/** Employee **/
+
+#########################################
+# Get Employee ID by username           #
+#########################################
+
+/* 
+ * Not used in core anywhere
+ * it was used for getting user specific stats in theme_header_block.php
+ * $login_id / $login_usr is not set via the auth session
+ * i will leave this here just for now
+ *  * no longer needed as I sotre the id in the session
+ * 
+ */
+
+function get_employee_id_by_username($db, $employee_usr){
+    
+    $q = 'SELECT EMPLOYEE_ID FROM '.PRFX.'TABLE_EMPLOYEE WHERE EMPLOYEE_LOGIN ='.$db->qstr($employee_usr);    
+    $rs = $db->Execute($q);
+    return $rs->fields['EMPLOYEE_ID'];
+}
+
+#########################################
+# Get employee record by username       #
+#########################################
+
+function get_employee_record_by_username($db, $employee_usr){
+    
+    $q = "SELECT * FROM ".PRFX."TABLE_EMPLOYEE WHERE EMPLOYEE_LOGIN =".$db->qstr($employee_usr);    
+    $rs = $db->Execute($q);
+    return $rs->FetchRow();
+}
 
 #################################################
 # Count Employee Work Orders for a given status #
 #################################################
 
 function count_employee_workorders_with_status($db, $employee_id, $workorder_status){
-    $q = "SELECT count(*) AS EMPLOYEE_WORKORDER_STATUS_COUNT
+    
+    $q = "SELECT COUNT(*) AS EMPLOYEE_WORKORDER_STATUS_COUNT
          FROM ".PRFX."TABLE_WORK_ORDER
          WHERE WORK_ORDER_ASSIGN_TO=".$db->qstr($employee_id)."
          AND WORK_ORDER_STATUS=".$db->qstr($workorder_status);
+    
     if(!$rs = $db->Execute($q)){
       echo 'Error:'. $db->ErrorMsg();
    } else {
@@ -177,63 +386,15 @@ function count_employee_workorders_with_status($db, $employee_id, $workorder_sta
 ###############################################
 
 function count_employee_invoices_with_status($db, $employee_id, $invoice_status){
-    $q = "SELECT count(*) AS EMPLOYEE_INVOICE_COUNT
+    
+    $q = "SELECT COUNT(*) AS EMPLOYEE_INVOICE_COUNT
          FROM ".PRFX."TABLE_INVOICE
          WHERE INVOICE_PAID=".$db->qstr($invoice_status)."
          AND EMPLOYEE_ID=".$db->qstr($employee_id);
+    
     if(!$rs = $db->Execute($q)) {
         echo 'Error:'. $db->ErrorMsg();
    } else {
        return $rs->fields['EMPLOYEE_INVOICE_COUNT'];
    }
-}
-
-
-
-
-
-
-
-
-
-
-
-/** Discount Stats **/
-
-########################################
-# Sum of Unpaid Discounts on Invoices  #
-########################################
-function sum_unpaid_discounts_on_invoices($db){
-    $q = "SELECT SUM(DISCOUNT) AS SUM_UNPAID_DISCOUNT
-            FROM ".PRFX."TABLE_INVOICE
-            WHERE INVOICE_PAID=".$db->qstr(0)." AND BALANCE=".$db->qstr(0);
-    if(!$rs = $db->Execute($q)){
-        echo 'Error: '. $db->ErrorMsg();
-        die;
-    } else {
-        return $rs->fields['SUM_UNPAID_DISCOUNT'];
-    }    
-}
-
-/*
- * unpaid   - sum of discount sitting on unpaid invoices
- * partial  - sum of discount paid on partially paid invoices
- * paid     - Total of discount paid
- */
-function discounts_applied_on_invoices($db, $invoice_payment_status){
-    
-    if($invoice_payment_status === 'unpaid')    {$invoice_filter = "WHERE INVOICE_PAID=".$db->qstr(0)." AND BALANCE=".$db->qstr(0);}
-    if($invoice_payment_status === 'partial')   {$invoice_filter = "WHERE INVOICE_PAID=".$db->qstr(1);}
-    if($invoice_payment_status === 'paid')      {$invoice_filter = "WHERE INVOICE_PAID=".$db->qstr(0)." AND BALANCE >".$db->qstr(0);}
-    
-    $q = "SELECT SUM(DISCOUNT) AS SUM_APPLIED_DISCOUNT
-            FROM ".PRFX."TABLE_INVOICE
-            WHERE INVOICE_PAID=".$db->qstr(0)." AND BALANCE=".$db->qstr(0)
-            .$invoice_filter;
-    if(!$rs = $db->Execute($q)){
-        echo 'Error: '. $db->ErrorMsg();
-        die;
-    } else {
-        return $rs->fields['SUM_APPLIED_DISCOUNT'];
-    }    
 }

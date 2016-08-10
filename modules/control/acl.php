@@ -12,7 +12,8 @@ if(isset($VAR['submit'])) {
                 //print $perm." = ".$acl."<br>";
             }
 
-            $values .="Admin='1' ";
+            // Enforce Administrators always have access to everything
+            $values .="Administrator='1' ";
 
             $q = "UPDATE ".PRFX."ACL SET ".$values."WHERE page='".$page."'";
 

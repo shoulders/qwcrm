@@ -5,25 +5,26 @@
         <td>
             <table width="700" cellpadding="4" cellspacing="0" border="0" >
                 <tr>
-                    <td class="menuhead2" width="80%">
-                        &nbsp;{$translate_main_heading}
-                    </td>
+                    <td class="menuhead2" width="80%">&nbsp;{$translate_main_heading}</td>
                 </tr>
                 <tr>
                     <td class="menutd2">
                         <table class="olotable" width="700" border="0" cellpadding="5" cellspacing="0">
                             <tr>
                                 <td>
-                                    <!-- Content -->
+                                    
+                                    <!-- Company notes - welcome Message -->
                                     <table width="700" cellpadding="4" cellspacing="0" border="0" class="olotable">
                                         <tr class="olotd4">
                                             <td class="row2"><b>{$translate_main_company_notes}</b></td>
                                         </tr>
                                         <tr class="olotd4">
-                                            <td>{ $welcome|default:"Thank you for choosing MYIT CRM. You can Change this note in the Control Center under company setup."}</td>
+                                            <td>{$welcome_note}</td>
                                         </tr>
                                     </table>
                                     <br>
+                                    
+                                    <!-- Work Order Stats -->
                                     <b>{$translate_main_workorder_stats}</b>
                                     <br>
                                     <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
@@ -45,22 +46,29 @@
                                         </tr>
                                     </table>
                                     <br>
-{literal}<script type="text/javascript">
- $(function(){
-     $("#hidden_stats").click(function(event) {
-     event.preventDefault();
-     $("#hide_stats").slideToggle();
- });
- $("#hide_stats a").click(function(event) {
-     event.preventDefault();
-     $("#hide_stats").slideUp();
- });
- });
- </script>
- {/literal}
-  <a href="#" id="hidden_stats">{$translate_main_invoice_stats}</a>
- <div id="hide_stats">
-                  {if $employee_record.EMPLOYEE_TYPE == 1 || $employee_record.EMPLOYEE_TYPE == 4 }
+                                    
+                                    <!-- Invoice Stats -->
+                                    {literal}
+                                    <script type="text/javascript">
+                                        $(function(){
+                                            $("#hidden_stats").click(function(event) {
+                                            event.preventDefault();
+
+                                            $("#hide_stats").slideToggle();
+                                            });
+
+                                            $("#hide_stats a").click(function(event) {
+                                            event.preventDefault();
+
+                                            $("#hide_stats").slideUp();
+                                            });
+                                        });
+                                    </script>
+                                     {/literal}
+                                     
+                                    <a href="#" id="hid  den_stats">{$translate_main_invoice_stats}</a>
+                                    <div id="hid  e_stats">
+                                    {if $login_account_type == 1 || $login_account_type == 4 }
                                     <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
                                         <tr class="olotd4">
                                             <td class="row2"><b>{$translate_main_unpaid}</b></td>
@@ -83,8 +91,9 @@
                                     </table>
                                     <br>
                                     {/if}
-                                    </div>
-                                    <br />
+                                    </div>                                    
+                                    
+                                    <!-- Customer Stats -->
                                     <b>{$translate_main_customer_stats}</b>
                                     <br>
                                     <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
@@ -99,19 +108,29 @@
                                             <td>{$cu_total_count}</td>
                                         </tr>
                                     </table>
+                                    <br />
+                                        
+                                    <!-- Employee Stats -->
+                                    <b>Employee Stats - ADD HERE</b>
+                                    <br>
+                                    <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
+                                        <tr class="olotd4">
+                                            <td class="row2"><b>{$translate_main_new_customers}</b></td>
+                                            <td class="row2"><b>{$translate_main_new_year_customers}</b></td>
+                                            <td class="row2"><b>{$translate_main_total}</b></td>
+                                        </tr>
+                                        <tr class="olotd4">
+                                            <td>{$cu_month_count}</td>
+                                            <td>{$cu_year_count}</td>
+                                            <td>{$cu_total_count}</td>
+                                        </tr>
+                                    </table>
+                                        
                                 </td>
                             </tr>
                         </table>
                     </td>
+                </tr>
             </table>
-    </tr>
+        </tr>
 </table>
-
-
-
-
-
-
-
-
-

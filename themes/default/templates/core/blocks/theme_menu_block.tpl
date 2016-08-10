@@ -64,12 +64,12 @@
                 <span>{$translate_menu_administration}</span>
                 <a href="?page=employees:main&amp;page_title={$translate_menu_employees_view}" ><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_employees_view}</a>
                 <!-- Menu limited to Managers or Supervisors -->
-                {if $menu_employee_record.EMPLOYEE_TYPE == 1 || $menu_employee_record.EMPLOYEE_TYPE == 2}
+                {if $login_account_type == 1 || $login_account_type == 3}
                     <a href="?page=employees:new&amp;page_title=New"><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" height="14" width="14" /> New Employee</a>
                     <a href="?page=stats:main&amp;page_title=Stats"><img src="{$theme_images_dir}icons/reports.png" alt="" border="0" height="14" width="14" /> {$translate_stats_nav_report}</a>
                 {/if}
                 <!-- Menu limited to Managers and Admins -->
-                {if $menu_employee_record.EMPLOYEE_TYPE == 1 || $menu_employee_record.EMPLOYEE_TYPE == 4}
+                {if $login_account_type == 1 || $login_account_type == 4}
                     <a href="?page=employees:new&amp;page_title=New"><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" height="14" width="14" /> New Employee</a>
                     {if $employee_id > '' || $employee_id > 0 }
                         <a href="?page=employees:edit&amp;employee_id={$employee_id}&amp;page_title={$translate_menu_edit}"><img src="{$theme_images_dir}icons/edit_employees.gif" alt="" border="0" height="14" width="14" /> Edit Employee</a>
@@ -82,7 +82,7 @@
         
         <!-- General Ledger -->
         <!-- Menu limited to Managers and Admins -->
-        {if $menu_employee_record.EMPLOYEE_TYPE == 1 || $menu_employee_record.EMPLOYEE_TYPE == 4}
+        {if $login_account_type == 1 || $login_account_type == 4}
             <div>
                 
                 <span>{$translate_general_ledger_nav_title}</span>
@@ -110,7 +110,7 @@
         
         <!-- Supplier Section -->
         <!-- Menu limited to Managers and Admins -->
-        {if $menu_employee_record.EMPLOYEE_TYPE == 1 || $menu_employee_record.EMPLOYEE_TYPE == 4}
+        {if $login_account_type == 1 || $login_account_type == 4}
             <div>
                 <span>{$translate_supplier_nav_title}</span> 
                 <a href="?page=supplier:new&amp;page_title={$translate_supplier_new_title}"><img src="{$theme_images_dir}icons/new.gif" alt="" border="0" height="14" width="14" />{$translate_supplier_nav_new}</a>
@@ -122,7 +122,7 @@
                 {/if}
             </div>
         {/if}
-        {if $menu_employee_record.EMPLOYEE_TYPE == 4}
+        {if $login_account_type == 1}
         <div>
             <span>{$translate_menu_setup}</span>
             <a href="?page=control:company_edit"><img src="{$theme_images_dir}icons/key.png" alt="" border="0" height="14" width="14" /> Business Setup</a>

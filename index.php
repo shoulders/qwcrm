@@ -132,9 +132,15 @@ require(INCLUDES_DIR.'acl.php');
 
 $auth = new Auth($db, 'login.php', $strKey); // need to chase this, should i be using a nonce / random string
 
+$login_id           = $_SESSION['login_id'];
 $login_usr          = $_SESSION['login_usr'];
 $login_account_type = $_SESSION['login_account_type'];
 $login_display_name = $_SESSION['login_display_name'];
+
+$smarty->assign('login_id',             $login_id           );
+$smarty->assign('login_usr',            $login_usr          );
+$smarty->assign('login_account_type',   $login_account_type );
+$smarty->assign('login_display_name',   $login_display_name );
 
 ################################################
 #   should I log off                           #

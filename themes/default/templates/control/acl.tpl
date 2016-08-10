@@ -32,7 +32,7 @@
                                                     
                                                     <!-- Administrator -->
                                                     <td class="olotd4">
-                                                        <select name="{$acl[q].page}[Admin]"> <!-- this needs changing to administrator proprely-->
+                                                        <select name="{$acl[q].page}[Administrator]"> <!-- this needs changing to administrator proprely-->
                                                             <option value="1" selected>Yes</option>                                                            
                                                         </select>
                                                     </td>

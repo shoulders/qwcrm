@@ -21,8 +21,8 @@ $smarty->assign('menu_workorders_paid_count', count_invoices_with_status($db, 1)
 
 
 
-/* Get Employee Details */ // set to get employee type
-$smarty->assign('menu_employee_record', get_employee_record_by_username($db, $login_usr));
+/* Get Employee Details */ // set to get employee type - not used now
+//$smarty->assign('menu_employee_record', get_employee_record_by_username($db, $login_usr));
 
 
 
