@@ -85,7 +85,7 @@ require(INCLUDES_DIR.'smarty.php');
 #          Enable Authentication               #
 ################################################
 
-$auth = new Auth($db, 'login.php', $strKey); // need to chase this, should i be using a nonce / random string
+$auth = new Auth($db, 'login.php', $strKey);
 
 $login_id           = $_SESSION['login_id'];
 $login_usr          = $_SESSION['login_usr'];
@@ -97,6 +97,14 @@ $smarty->assign('login_usr',            $login_usr          );
 $smarty->assign('login_account_type',   $login_account_type );
 $smarty->assign('login_display_name',   $login_display_name );
 
+################################################
+#   Should I log off                           #
+################################################
+
+// If log off is set then log user off
+if (isset($_GET['action']) && $_GET['action'] == 'logout') {    
+    $auth->logout('login.php');
+}
 
 ################################################
 #   Grab &_POST and $_GET values               #
@@ -106,7 +114,7 @@ $smarty->assign('login_display_name',   $login_display_name );
 
 $VAR            = array_merge($_GET, $_POST);
 $page_title     = $VAR['page_title'];
-//$page           = $VAR['page'];
+//$page           = $VAR['page'];   // check the varibel set thing, then use this if it works
 
 // These are used globally but mainly for the menu !!
 $wo_id          = $VAR['wo_id'];
@@ -115,15 +123,6 @@ $employee_id    = $VAR['employee_id'];
 $expense_id     = $VAR['expense_id'];
 $refund_id      = $VAR['refund_id'];
 $supplier_id    = $VAR['supplier_id'];
-
-################################################
-#   Should I log off                           # // if this is before array merege chang the $_post / $_GET etc to make it work
-################################################
-
-// If log off is set then log user off
-if (isset($VAR['action']) && $VAR['action'] == 'logout') {    
-    $auth->logout('login.php');
-}
 
 ##########################################################################
 #   Assign variables into smarty for use by all native module templates  #
