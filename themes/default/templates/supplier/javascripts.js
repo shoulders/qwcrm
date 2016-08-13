@@ -271,11 +271,11 @@ function GotoPageNumber() {
 }
 
 // Shows a Confirm Delete Dialogue Box
-    function confirmDelete(supplierID){
+    function confirmDelete(supplier_id){
 
         var answer = confirm ("{/literal}{$translate_supplier_delete_mes_confirmation}{literal}")
         if (answer){
-            window.location='?page=supplier:delete&supplierID=' + supplierID
+            window.location='?page=supplier:delete&supplier_id=' + supplier_id
             alert("{/literal}{$translate_supplier_delete_mes_recorddeleted}{literal}")
     }
     else{

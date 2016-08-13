@@ -37,11 +37,11 @@
                                             <td class="row2"><b>{$translate_main_total}</b></td>
                                         </tr>
                                         <tr class="olotd4">
-                                            <td><a href="?page=workorder:open#new">{$wo_new_count}</a></td>
-                                            <td><a href="?page=workorder:open#assigned">{$wo_ass_count}</a></td>
-                                            <td><a href="?page=workorder:open#awaiting">{$wo_parts_count}</a></td>
-                                            <td><a href="?page=workorder:open#payment">{$wo_pay_count}</a></td>
-                                            <td><a href="?page=workorder:closed">{$wo_closed_count}</a></td>
+                                            <td><a href="?page=workorder:open#new">{$workorders_open_count}</a></td>
+                                            <td><a href="?page=workorder:open#assigned">{$workorders_assigned_count}</a></td>
+                                            <td><a href="?page=workorder:open#awaiting">{$workorders_waiting_for_parts_count}</a></td>
+                                            <td><a href="?page=workorder:open#payment">{$workorders_awaiting_payment_count}</a></td>
+                                            <td><a href="?page=workorder:closed">{$workorders_closed_count}</a></td>
                                             <td>{$wo_total_count}</td>
                                         </tr>
                                     </table>

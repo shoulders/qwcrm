@@ -202,11 +202,11 @@ function GotoPageNumber() {
 }
 
 // Shows a Confirm Delete Dialogue Box
-    function confirmDelete(refundID){
+    function confirmDelete(refund_id){
 
         var answer = confirm ("{/literal}{$translate_refund_delete_mes_confirmation}{literal}")
         if (answer){
-            window.location='?page=refund:delete&refundID=' + refundID
+            window.location='?page=refund:delete&refund_id=' + refund_id
             alert("{/literal}{$translate_refund_delete_mes_recorddeleted}{literal}")
     }
     else{

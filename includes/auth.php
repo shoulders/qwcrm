@@ -65,9 +65,11 @@ class Auth {
         } else {
             
             // Grab their login ID for tracking purposes (Employee Must be Active)
-            $sql = "SELECT EMPLOYEE_ID, EMPLOYEE_TYPE, EMPLOYEE_DISPLAY_NAME FROM ".PRFX."TABLE_EMPLOYEE
+            $sql = "SELECT EMPLOYEE_ID, EMPLOYEE_TYPE, EMPLOYEE_DISPLAY_NAME
+                    FROM ".PRFX."TABLE_EMPLOYEE
                     WHERE EMPLOYEE_STATUS = '1'
                     AND EMPLOYEE_LOGIN=".$this->db->qstr($login_usr);
+            
             $result = $this->db->Execute($sql);
             $row = $result->FetchRow();
 
@@ -129,10 +131,10 @@ class Auth {
  
     function logout(){
         
-        $login_usr = $this->session->get('login_usr');
+        //$login_usr = $this->session->get('login_usr');
         
         // Log activity       
-        write_record_to_activity_log('Log Out '.$login_usr);
+        write_record_to_activity_log('Log Out '.$this->session->get('login_usr'));
         
         $this->session->del('login_usr');
         $this->session->del('login_pwd');

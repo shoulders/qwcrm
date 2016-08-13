@@ -12,19 +12,19 @@ if(!xml2php('refund')) {
 $langvals = gateway_xml2php('refund');
 
 // Load refund details
-$refund_details = display_refund_info($db, $VAR['refundID']);
+$refund_details = display_refund_info($db, $VAR['refund_id']);
 
 // If details submitted run update values, if not set load edit.tpl and populate values
 if(isset($VAR['submit'])) {    
         
     if (!update_refund($db, $VAR)){
 
-        force_page('refund', 'edit&error_msg=Falied to Update refund Information&refundID='.$VAR['refundID']);
+        force_page('refund', 'edit&error_msg=Falied to Update refund Information&refund_id='.$VAR['refund_id']);
         exit;
                 
     } else {
             
-        force_page('refund', 'refund_details&refundID='.$VAR['refundID'].'&page_title='.$langvals['refund_details_title']);
+        force_page('refund', 'refund_details&refund_id='.$VAR['refund_id'].'&page_title='.$langvals['refund_details_title']);
         exit;
     }
 

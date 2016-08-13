@@ -12,19 +12,19 @@ if(!xml2php('expense')) {
 $langvals = gateway_xml2php('expense');
 
 // Load expense details
-$expense_details = display_expense_info($db, $VAR['expenseID']);
+$expense_details = display_expense_info($db, $VAR['expense_id']);
 
 // If details submitted run update values, if not set load edit.tpl and populate values
 if(isset($VAR['submit'])) {    
         
     if (!update_expense($db, $VAR)){
 
-        force_page('expense', 'edit&error_msg=Falied to Update Expense Information&expenseID='.$VAR['expenseID']);
+        force_page('expense', 'edit&error_msg=Falied to Update Expense Information&expense_id='.$VAR['expense_id']);
         exit;
                 
     } else {
             
-        force_page('expense', 'expense_details&expenseID='.$VAR['expenseID'].'&page_title='.$langvals['expense_details_title']);
+        force_page('expense', 'expense_details&expense_id='.$VAR['expense_id'].'&page_title='.$langvals['expense_details_title']);
         exit;
     }
 

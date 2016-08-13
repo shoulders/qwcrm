@@ -9,5 +9,5 @@ if(!xml2php('refund')) {
 }
 
 // Assign the arrays
-$smarty->assign('refund_details', display_refund_info($db, $VAR['refundID']));
+$smarty->assign('refund_details', display_refund_info($db, $VAR['refund_id']));
 $smarty->display('refund'.SEP.'refund_details.tpl');

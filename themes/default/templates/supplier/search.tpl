@@ -125,10 +125,10 @@
                                                                                         {section name=i loop=$supplier_search_result}
 
                                                                                         <!-- This allows double clicking on a row and opens the corresponding supplier view details -->
-                                                                                        <tr onmouseover="this.className='row2'" onmouseout="this.className='row1'" onDblClick="window.location='index.php?page=supplier:supplier_details&supplierID={$supplier_search_result[i].SUPPLIER_ID}&page_title={$translate_supplier_details_title}';" class="row1">
+                                                                                        <tr onmouseover="this.className='row2'" onmouseout="this.className='row1'" onDblClick="window.location='index.php?page=supplier:supplier_details&supplier_id={$supplier_search_result[i].SUPPLIER_ID}&page_title={$translate_supplier_details_title}';" class="row1">
 
                                                                                             <!-- Supplier ID Column -->
-                                                                                            <td class="olotd4" nowrap><a href="index.php?page=supplier:supplier_details&supplierID={$supplier_search_result[i].SUPPLIER_ID}&page_title={$translate_supplier_details_title}">{$supplier_search_result[i].SUPPLIER_ID}</a></td>
+                                                                                            <td class="olotd4" nowrap><a href="index.php?page=supplier:supplier_details&supplier_id={$supplier_search_result[i].SUPPLIER_ID}&page_title={$translate_supplier_details_title}">{$supplier_search_result[i].SUPPLIER_ID}</a></td>
 
                                                                                             <!-- Supplier Name Column -->
                                                                                             <td class="olotd4" nowrap>{$supplier_search_result[i].SUPPLIER_NAME}</td>
@@ -186,12 +186,12 @@
 
                                                                                             <!-- Action Column -->
                                                                                             <td class="olotd4" nowrap>
-                                                                                                <a href="index.php?page=supplier:supplier_details&supplierID={$supplier_search_result[i].SUPPLIER_ID}&page_title={$translate_supplier_details_title}">
+                                                                                                <a href="index.php?page=supplier:supplier_details&supplier_id={$supplier_search_result[i].SUPPLIER_ID}&page_title={$translate_supplier_details_title}">
                                                                                                     <img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0"
                                                                                                          onMouseOver="ddrivetip('<b>{$translate_supplier_search_details|nl2br|regex_replace:"/[\r\t\n]/":" "}</b>')"
                                                                                                          onMouseOut="hideddrivetip()"></a>
 
-                                                                                                <a href="?page=supplier:edit&supplierID={$supplier_search_result[i].SUPPLIER_ID}&page_title={$translate_supplier_edit_title}">
+                                                                                                <a href="?page=supplier:edit&supplier_id={$supplier_search_result[i].SUPPLIER_ID}&page_title={$translate_supplier_edit_title}">
                                                                                                     <img src="{$theme_images_dir}icons/16x16/small_edit.gif" alt=""  border="0"
                                                                                                          onMouseOver="ddrivetip('<b>{$translate_supplier_search_edit_details|nl2br|regex_replace:"/[\r\t\n]/":" "}</b>')"
                                                                                                          onMouseOut="hideddrivetip()"></a>

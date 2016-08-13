@@ -32,6 +32,8 @@ $q = 'SELECT * FROM '.PRFX.'TABLE_COMPANY';
         }
 }
 
+//is $date format not called globally?
+
 ##########################################
 #      Last Record Look Up               #
 ##########################################
@@ -134,7 +136,7 @@ $refundItems_string = stripslashes($refundItems_string);
 
     $sql = "INSERT INTO ".PRFX."TABLE_REFUND SET
 
-            REFUND_ID            = ". $db->qstr( $VAR['refundID']           ).",
+            REFUND_ID            = ". $db->qstr( $VAR['refund_id']           ).",
             REFUND_PAYEE            = ". $db->qstr( $VAR['refundPayee']        ).",
             REFUND_DATE            = ". $db->qstr( $checked_date               ).",
             REFUND_TYPE            = ". $db->qstr( $VAR['refundType']         ).",
@@ -159,8 +161,8 @@ $refundItems_string = stripslashes($refundItems_string);
 #     Edit - Load Record            #
 #####################################
 
-function edit_info($db, $refundID){
-    $sql = "SELECT * FROM ".PRFX."TABLE_REFUND WHERE REFUND_ID=".$db->qstr($refundID);
+function edit_info($db, $refund_id){
+    $sql = "SELECT * FROM ".PRFX."TABLE_REFUND WHERE REFUND_ID=".$db->qstr($refund_id);
     
     if(!$result = $db->Execute($sql)) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
@@ -198,7 +200,7 @@ $refundItems_string = stripslashes($refundItems_string);
                         REFUND_GROSS_AMOUNT            = ". $db->qstr( $VAR['refundGrossAmount']  ).",
                         REFUND_NOTES                   = ". $db->qstr( $refundNotes_string        ).",
                         REFUND_ITEMS                   = ". $db->qstr( $refundItems_string        )."
-                        WHERE REFUND_ID        = ". $db->qstr( $VAR['refundID']           );
+                        WHERE REFUND_ID        = ". $db->qstr( $VAR['refund_id']           );
                         
             
     if(!$result = $db->Execute($sql)) {
@@ -214,8 +216,8 @@ $refundItems_string = stripslashes($refundItems_string);
 #    Delete Record               #
 #####################################
 
-function delete_refund($db, $refundID){
-    $sql = "DELETE FROM ".PRFX."TABLE_REFUND WHERE REFUND_ID=".$db->qstr($refundID);
+function delete_refund($db, $refund_id){
+    $sql = "DELETE FROM ".PRFX."TABLE_REFUND WHERE REFUND_ID=".$db->qstr($refund_id);
     
     if(!$rs = $db->Execute($sql)) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
@@ -229,9 +231,9 @@ function delete_refund($db, $refundID){
 #     Display Single Record         #
 #####################################
 
-function display_refund_info($db, $refundID){
+function display_refund_info($db, $refund_id){
 
-    $sql = "SELECT * FROM ".PRFX."TABLE_REFUND WHERE REFUND_ID=".$db->qstr($refundID);
+    $sql = "SELECT * FROM ".PRFX."TABLE_REFUND WHERE REFUND_ID=".$db->qstr($refund_id);
 
     if(!$result = $db->Execute($sql)) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');

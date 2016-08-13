@@ -2,9 +2,6 @@
 
 require_once ('include.php');
 
-if(!xml2php("invoice")) {
-    $smarty->assign('error_msg',"Error in language file");
-}
 
 // Grab customers Information
 $wo_id       = $VAR['wo_id'];

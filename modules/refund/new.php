@@ -35,7 +35,7 @@ $new_record_id = $last_record_id + 1;
                                                         else {
 
                                                             // Submit and load Refund View Details
-                                                            force_page('refund', 'refund_details&refundID='.$new_record_id.'&page_title='.$langvals['refund_details_title']);
+                                                            force_page('refund', 'refund_details&refund_id='.$new_record_id.'&page_title='.$langvals['refund_details_title']);
                                                             exit;
 
                                                 }

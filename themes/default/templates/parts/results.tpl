@@ -59,7 +59,7 @@
                 <tr>
                     <td class="olotd5">
                         <b>{$translate_parts_wo_id}</b> {$invoice_details.WORKORDER}<br>
-                        <b>{$translate_parts_tech}</b> {$display_login}
+                        <b>{$translate_parts_tech}</b> {{$login_display_name}
                     </td>
                 </tr>
             </table>

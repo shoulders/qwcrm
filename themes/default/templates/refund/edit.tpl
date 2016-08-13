@@ -66,7 +66,7 @@
                                                                             </tr>
                                                                             <tr>
                                                                                 <td align="right"><b>{$translate_refund_id}</b></td>
-                                                                                <td colspan="3"><input name="refundID" type="hidden" value="{$refund_details[q].REFUND_ID}"/>{$refund_details[q].REFUND_ID}</td>
+                                                                                <td colspan="3"><input name="refund_id" type="hidden" value="{$refund_details[q].REFUND_ID}"/>{$refund_details[q].REFUND_ID}</td>
                                                                             </tr>
                                                                             <tr>
                                                                                 <td align="right"><b>{$translate_refund_payee}</b><span style="color: #ff0000"> *</span></td>

@@ -1,12 +1,6 @@
 <?php
 
-// Load the Refund Functions
 require_once('include.php');
-
-// Load the Translation for this Module
-if(!xml2php('invoice')) {
-    $smarty->assign('error_msg',"Error in language file");
-}
 
 $langvals = gateway_xml2php(invoice);
 

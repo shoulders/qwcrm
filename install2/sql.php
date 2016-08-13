@@ -673,8 +673,7 @@ function create_config_work_order_status($db)
 {
     $q="CREATE TABLE IF NOT EXISTS `".PRFX."CONFIG_WORK_ORDER_STATUS` (
         `CONFIG_WORK_ORDER_STATUS_ID` int(11) NOT NULL auto_increment,
-        `CONFIG_WORK_ORDER_STATUS` varchar(64) NOT NULL default '',
-        `DISPLAY` int(1) NOT NULL default '0',
+        `CONFIG_WORK_ORDER_STATUS` varchar(64) NOT NULL default ''        
         PRIMARY KEY  (`CONFIG_WORK_ORDER_STATUS_ID`)
         ) ENGINE=MyISAM ";
     $rs = $db->Execute($q);
@@ -695,7 +694,7 @@ function create_employee_type($db) {
     if(!$rs = $db->Execute($q)) {
         return false;
     } else {
-        $q = "REPLACE INTO `".PRFX."CONFIG_EMPLOYEE_TYPE` VALUES (1, 'Manager'),(2, 'Supervisor'),(3, 'Technician'),(4, 'Admin'),(5, 'Client')";
+        $q = "REPLACE INTO `".PRFX."CONFIG_EMPLOYEE_TYPE` VALUES (1, 'Administrator'),(2, 'Manager'),(3, 'Supervisor'),(4, 'Technician'),(5, 'Client')";
         if(!$rs = $db->execute($q)) {
             return false;
         } else {
@@ -1240,7 +1239,7 @@ function create_acl($db) {
             return false;
         } else {
             $q = "REPLACE INTO `".PRFX."ACL` VALUES 
-(1, 'core:main', 1, 1, 1, 1, 0),
+(1, 'core:home', 1, 1, 1, 1, 0),
 (2, 'customer:view', 1, 1, 1, 1, 0),
 (3, 'customer:customer_details', 1, 1, 1, 1, 0),
 (4, 'customer:edit', 1, 1, 1, 1, 0),

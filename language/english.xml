@@ -4,7 +4,7 @@
         // - SORT
         // Global Error messages (i.e. main include.php) - possibly rename global_error_message
         <include_error_message_cant_open_activity_log>can&#39;t open activity.log</include_error_message_cant_open_activity_log>
-        
+        <include_error_message_cant_open_access_log>can&#39;t open sccess.log</include_error_message_cant_open_access_log>
         
         
         

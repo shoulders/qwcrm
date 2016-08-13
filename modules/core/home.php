@@ -6,68 +6,71 @@ $wo_id = $VAR['wo_id'];
 
 /** Misc **/
 
-/* Get the page number we are on if first page set to 1 - this might not be needed */
-    if(!isset($VAR['page_no'])){
-        $page_no = 1;
-    } else {
-        $page_no = $VAR['page_no'];
-    }
-
 /* Display Welcome Note */
 $smarty->assign('welcome_note', display_welcome_note($db));
 
 
 /** Work Orders **/
 
-/* New Work Order Counts */
-$smarty->assign('wo_new_count', count_workorders_with_status($db, 1));
+/* Created - New - Work Orders Count */ //workorders_created_count
+$smarty->assign('workorders_open_count', count_workorders_with_status($db, 1));
 
-/* Assigned counts */
-$smarty->assign('wo_ass_count', count_workorders_with_status($db, 2));
+/* Assigned - Work Orders Count - not used in theme header or menu */
+$smarty->assign('workorders_assigned_count', count_workorders_with_status($db, 2));
 
-/* waiting for parts count */
-$smarty->assign('wo_parts_count', count_workorders_with_status($db, 3));
+/* Waiting For Parts - Work Orders count */
+$smarty->assign('workorders_waiting_for_parts_count', count_workorders_with_status($db, 3));
 
-/* waiting for payment */
-$smarty->assign('wo_pay_count', count_workorders_with_status($db, 7));
+/* Awaiting Payment - Work Orders count */
+$smarty->assign('workorders_awaiting_payment_count', count_workorders_with_status($db, 7));
 
-/* closed */
-$smarty->assign('wo_closed_count', count_workorders_with_status($db, 6));
+/* Closed - Work Orders count */
+$smarty->assign('workorders_closed_count', count_workorders_with_status($db, 6));
+
 
 /* WO total count */
 $smarty->assign('wo_total_count', count_all_workorders($db));
 
-/* Assigned Work Orders - not used in theme header or menu */
-$smarty->assign('workorders_assigned_count', count_workorders_with_status($db, 2));
 
 
 
 /** Invoices **/
 
-/* Sum of Discounts on Unpaid Invoices  */
+/* Unpaid - Count Unpaid Invoices */
+$smarty->assign('in_unpaid_count', count_partially_paid_invoices($db));
+
+/* Balance - Sum of Outstanding Balances for Unpaid Invoices */
+$smarty->assign('in_unpaid_bal', sum_outstanding_balances_unpaid_invoices($db));
+
+/* Partial Paid - Count Partially Paid Invoices */
+$smarty->assign('in_part_count', count_partially_paid_invoices($db));
+
+/* Partial Paid Balance - Sum of Outstanding Balances for Partially Paid Invoices */
+$smarty->assign('in_part_bal', sum_outstanding_balances_partially_paid_invoices($db));
+
+/* Recieved Monies Total - Count All Paid Invoices */
+$smarty->assign('in_paid_count',count_all_paid_invoices($db));
+
+// Invocied Total
+
+
+
+
+
+
+
+
+/* Sum of Discounts on Paid Invoices - NOT USED */
+$all_discounts = sum_of_discounts_on_paid_invoices($db);
+
+/* Sum of Discounts on Partially Paid Invoices - NOT USED */
+$part_discounts = sum_of_discounts_on_partially_paid_invoices($db);
+
+/* Sum of Discounts on Unpaid Invoices - NOT USED */
 $unpaid_discounts = sum_of_discounts_on_unpaid_invoices($db);
 
 
-/* Sum of Discounts on Paid Invoices */
-$all_discounts = sum_of_discounts_on_paid_invoices($db);
 
-/* Sum of Discounts on Partially Paid Invoices */
-$part_discounts = sum_of_discounts_on_partially_paid_invoices($db);
-
-/* Count Unpaid Invoices */
-$smarty->assign('in_unpaid_count', count_partially_paid_invoices($db));
-
-/* Sum of Outstanding Balances for Unpaid Invoices */
-$smarty->assign('in_unpaid_bal', sum_outstanding_balances_unpaid_invoices($db));
-
-/* Count Partially Paid Invoices */
-$smarty->assign('in_part_count', count_partially_paid_invoices($db));
-
-/* Sum of Outstanding Balances for Partially Paid Invoices */
-$smarty->assign('in_part_bal', sum_outstanding_balances_partially_paid_invoices($db));
-
-/* Count All Paid Invoices */
-$smarty->assign('in_paid_count',count_all_paid_invoices($db));
 
 
 
@@ -75,9 +78,20 @@ $smarty->assign('in_paid_count',count_all_paid_invoices($db));
 /* Sum of Paid Invoices */
 $in_total = sum_invoiceamounts_paid_invoices($db);
 
+
+
+
+
+
+
+
+
+
 /* All Time Invoice Totals */
 $in_total_bal = $in_total - $in_out_bal;
 $in_total2 = $in_total ;
+
+
 
 // Total Invoice Monies Recieved
 $smarty->assign('in_total_bal',$in_total_bal);
@@ -90,8 +104,6 @@ $in_out_bal = $in_unpaid_bal ;
 $smarty->assign('in_out_bal',$in_out_bal);
 
 
-
-
 /** Customers **/
 
 /*new customers this month */
@@ -102,6 +114,7 @@ $smarty->assign('cu_year_count',new_customers_during_period($db, 'year'));
 
 /* Count All Customers */
 $smarty->assign('cu_total_count', count_all_customers($db));
+
 
 /** Employee **/
 
@@ -121,9 +134,7 @@ $smarty->assign('employee_workorders_awaiting_payment_count', count_employee_wor
 $smarty->assign('employee_invoices_unpaid_count', count_employee_invoices_with_status($db, $login_id, 0));
 
 
-
-
-$smarty->display('core'.SEP.'main.tpl');
+$smarty->display('core'.SEP.'home.tpl');
 
 
 

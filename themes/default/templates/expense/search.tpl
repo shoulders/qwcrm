@@ -132,10 +132,10 @@
                                                                                         {section name=i loop=$expense_search_result}
 
                                                                                         <!-- This allows double clicking on a row and opens the corresponding expense view details -->
-                                                                                        <tr onmouseover="this.className='row2'" onmouseout="this.className='row1'" onDblClick="window.location='index.php?page=expense:expense_details&expenseID={$expense_search_result[i].EXPENSE_ID}&page_title={$translate_expense_details_title}';" class="row1">
+                                                                                        <tr onmouseover="this.className='row2'" onmouseout="this.className='row1'" onDblClick="window.location='index.php?page=expense:expense_details&expense_id={$expense_search_result[i].EXPENSE_ID}&page_title={$translate_expense_details_title}';" class="row1">
 
                                                                                             <!-- Expense ID Column -->
-                                                                                            <td class="olotd4" nowrap><a href="index.php?page=expense:expense_details&expenseID={$expense_search_result[i].EXPENSE_ID}&page_title={$translate_expense_details_title}">{$expense_search_result[i].EXPENSE_ID}</a></td>
+                                                                                            <td class="olotd4" nowrap><a href="index.php?page=expense:expense_details&expense_id={$expense_search_result[i].EXPENSE_ID}&page_title={$translate_expense_details_title}">{$expense_search_result[i].EXPENSE_ID}</a></td>
 
                                                                                             <!-- Payee Column -->
                                                                                             <td class="olotd4" nowrap>{$expense_search_result[i].EXPENSE_PAYEE}</td>
@@ -275,12 +275,12 @@
 
                                                                                             <!-- Action Column -->
                                                                                             <td class="olotd4" nowrap>
-                                                                                                <a href="index.php?page=expense:expense_details&expenseID={$expense_search_result[i].EXPENSE_ID}&page_title={$translate_expense_details_title}">
+                                                                                                <a href="index.php?page=expense:expense_details&expense_id={$expense_search_result[i].EXPENSE_ID}&page_title={$translate_expense_details_title}">
                                                                                                     <img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0"
                                                                                                          onMouseOver="ddrivetip('<b>{$translate_expense_search_details|nl2br|regex_replace:"/[\r\t\n]/":" "}</b>')"
                                                                                                          onMouseOut="hideddrivetip()"></a>
 
-                                                                                                <a href="?page=expense:edit&expenseID={$expense_search_result[i].EXPENSE_ID}&page_title={$translate_expense_edit_title}">
+                                                                                                <a href="?page=expense:edit&expense_id={$expense_search_result[i].EXPENSE_ID}&page_title={$translate_expense_edit_title}">
                                                                                                     <img src="{$theme_images_dir}icons/16x16/small_edit.gif" alt=""  border="0"
                                                                                                          onMouseOver="ddrivetip('<b>{$translate_expense_search_edit_details|nl2br|regex_replace:"/[\r\t\n]/":" "}</b>')"
                                                                                                          onMouseOut="hideddrivetip()"></a>

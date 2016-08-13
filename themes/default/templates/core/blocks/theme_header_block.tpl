@@ -34,7 +34,7 @@
   <table width="900px" border="0" cellspacing="0" cellpadding="0">
     <tr class="text4">
         <td width="450" class="text4" align="left">{$greeting_msg}</td>         
-        <td width="50%" class="text4" align="right">{$today}</td>
+        <td class="text4" align="right">{$today}</td>
     </tr>
 </table>  
 </div>

@@ -132,10 +132,10 @@
                                                                                         {section name=i loop=$refund_search_result}
 
                                                                                         <!-- This allows double clicking on a row and opens the corresponding refund view details -->
-                                                                                        <tr onmouseover="this.className='row2'" onmouseout="this.className='row1'" onDblClick="window.location='index.php?page=refund:refund_details&refundID={$refund_search_result[i].REFUND_ID}&page_title={$translate_refund_details_title}';" class="row1">
+                                                                                        <tr onmouseover="this.className='row2'" onmouseout="this.className='row1'" onDblClick="window.location='index.php?page=refund:refund_details&refund_id={$refund_search_result[i].REFUND_ID}&page_title={$translate_refund_details_title}';" class="row1">
 
                                                                                             <!-- Refund ID Column -->
-                                                                                            <td class="olotd4" nowrap><a href="index.php?page=refund:refund_details&refundID={$refund_search_result[i].REFUND_ID}&page_title={$translate_refund_details_title}">{$refund_search_result[i].REFUND_ID}</a></td>
+                                                                                            <td class="olotd4" nowrap><a href="index.php?page=refund:refund_details&refund_id={$refund_search_result[i].REFUND_ID}&page_title={$translate_refund_details_title}">{$refund_search_result[i].REFUND_ID}</a></td>
 
                                                                                             <!-- Payee Column -->
                                                                                             <td class="olotd4" nowrap>{$refund_search_result[i].REFUND_PAYEE}</td>
@@ -227,12 +227,12 @@
 
                                                                                             <!-- Action Column -->
                                                                                             <td class="olotd4" nowrap>
-                                                                                                <a href="index.php?page=refund:refund_details&refundID={$refund_search_result[i].REFUND_ID}&page_title={$translate_refund_details_title}">
+                                                                                                <a href="index.php?page=refund:refund_details&refund_id={$refund_search_result[i].REFUND_ID}&page_title={$translate_refund_details_title}">
                                                                                                     <img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0"
                                                                                                          onMouseOver="ddrivetip('<b>{$translate_refund_search_details|nl2br|regex_replace:"/[\r\t\n]/":" "}</b>')"
                                                                                                          onMouseOut="hideddrivetip()"></a>
 
-                                                                                                <a href="?page=refund:edit&refundID={$refund_search_result[i].REFUND_ID}&page_title={$translate_refund_edit_title}">
+                                                                                                <a href="?page=refund:edit&refund_id={$refund_search_result[i].REFUND_ID}&page_title={$translate_refund_edit_title}">
                                                                                                     <img src="{$theme_images_dir}icons/16x16/small_edit.gif" alt=""  border="0"
                                                                                                          onMouseOver="ddrivetip('<b>{$translate_refund_search_edit_details|nl2br|regex_replace:"/[\r\t\n]/":" "}</b>')"
                                                                                                          onMouseOut="hideddrivetip()"></a>

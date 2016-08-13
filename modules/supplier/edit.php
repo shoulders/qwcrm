@@ -12,19 +12,19 @@ if(!xml2php('supplier')) {
 $langvals = gateway_xml2php('supplier');
 
 // Load supplier details
-$supplier_details = display_supplier_info($db, $VAR['supplierID']);
+$supplier_details = display_supplier_info($db, $VAR['supplier_id']);
 
 // If details submitted run update values, if not set load edit.tpl and populate values
 if(isset($VAR['submit'])) {    
         
     if (!update_supplier($db, $VAR)){
 
-        force_page('supplier', 'edit&error_msg=Falied to Update Supplier Information&supplierID='.$VAR['supplierID']);
+        force_page('supplier', 'edit&error_msg=Falied to Update Supplier Information&supplier_id='.$VAR['supplier_id']);
         exit;
                 
     } else {
             
-        force_page('supplier', 'supplier_details&supplierID='.$VAR['supplierID'].'&page_title='.$langvals['supplier_details_title']);
+        force_page('supplier', 'supplier_details&supplier_id='.$VAR['supplier_id'].'&page_title='.$langvals['supplier_details_title']);
         exit;
     }
 

@@ -35,7 +35,7 @@ $new_record_id = $last_record_id + 1;
                                                         else {
 
                                                             // Submit and load Supplier View Details
-                                                            force_page('supplier', 'supplier_details&supplierID='.$new_record_id.'&page_title='.$langvals['supplier_details_title']);
+                                                            force_page('supplier', 'supplier_details&supplier_id='.$new_record_id.'&page_title='.$langvals['supplier_details_title']);
                                                             exit;
 
                                                 }

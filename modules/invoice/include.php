@@ -11,7 +11,7 @@ if(!xml2php('invoice')) {
 }
 
 #########################################
-#     Display Open Invoice        #
+#     Display Open Invoice              #
 #########################################
 
 function display_open_invoice($db, $page_no, $smarty)
@@ -156,7 +156,7 @@ function gateway_xml2php($module)
     global $smarty;
 
     //$file = FILE_ROOT."language".SEP.$module.SEP.LANG ;
-    $file = FILE_ROOT . "language" . SEP . LANG;
+    $file = FILE_ROOT . '../language' . SEP . LANG;
 
     $xml_parser = xml_parser_create();
     if (!($fp = fopen($file, 'r'))) {

@@ -202,11 +202,11 @@ function GotoPageNumber() {
 }
 
 // Shows a Confirm Delete Dialogue Box
-    function confirmDelete(expenseID){
+    function confirmDelete(expense_id){
 
         var answer = confirm ("{/literal}{$translate_expense_delete_mes_confirmation}{literal}")
         if (answer){
-            window.location='?page=expense:delete&expenseID=' + expenseID            
+            window.location='?page=expense:delete&expense_id=' + expense_id            
             alert("{/literal}{$translate_expense_delete_mes_recorddeleted}{literal}")
     }
     else{

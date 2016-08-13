@@ -132,7 +132,7 @@ $supplierItems_string = stripslashes($supplierItems_string);
 
     $sql = "INSERT INTO ".PRFX."TABLE_SUPPLIER SET
 
-            SUPPLIER_ID            = ". $db->qstr( $VAR['supplierID']          ).",
+            SUPPLIER_ID            = ". $db->qstr( $VAR['supplier_id']          ).",
             SUPPLIER_NAME            = ". $db->qstr( $VAR['supplierName']        ).",
             SUPPLIER_CONTACT        = ". $db->qstr( $VAR['supplierContact']     ).",
             SUPPLIER_TYPE            = ". $db->qstr( $VAR['supplierType']        ).",
@@ -161,8 +161,8 @@ $supplierItems_string = stripslashes($supplierItems_string);
 #     Edit - Load Record            #
 #####################################
 
-function edit_info($db, $supplierID){
-    $sql = "SELECT * FROM ".PRFX."TABLE_SUPPLIER WHERE SUPPLIER_ID=".$db->qstr($supplierID);
+function edit_info($db, $supplier_id){
+    $sql = "SELECT * FROM ".PRFX."TABLE_SUPPLIER WHERE SUPPLIER_ID=".$db->qstr($supplier_id);
     
     if(!$result = $db->Execute($sql)) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
@@ -207,7 +207,7 @@ $supplierDescription_string = stripslashes($supplierDescription_string);
                         SUPPLIER_ZIP                    = ". $db->qstr( $VAR['supplierZip']         ).",
                         SUPPLIER_NOTES                  = ". $db->qstr( $supplierNotes_string       ).",
                         SUPPLIER_DESCRIPTION            = ". $db->qstr( $supplierDescription_string )."
-                        WHERE SUPPLIER_ID        = ". $db->qstr( $VAR['supplierID']          );                        
+                        WHERE SUPPLIER_ID        = ". $db->qstr( $VAR['supplier_id']          );                        
             
     if(!$result = $db->Execute($sql)) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
@@ -222,8 +222,8 @@ $supplierDescription_string = stripslashes($supplierDescription_string);
 #    Delete Record               #
 #####################################
 
-function delete_supplier($db, $supplierID){
-    $sql = "DELETE FROM ".PRFX."TABLE_SUPPLIER WHERE SUPPLIER_ID=".$db->qstr($supplierID);
+function delete_supplier($db, $supplier_id){
+    $sql = "DELETE FROM ".PRFX."TABLE_SUPPLIER WHERE SUPPLIER_ID=".$db->qstr($supplier_id);
     
     if(!$rs = $db->Execute($sql)) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
@@ -237,9 +237,9 @@ function delete_supplier($db, $supplierID){
 #     Display Single Record         #
 #####################################
 
-function display_supplier_info($db, $supplierID){
+function display_supplier_info($db, $supplier_id){
 
-    $sql = "SELECT * FROM ".PRFX."TABLE_SUPPLIER WHERE SUPPLIER_ID=".$db->qstr($supplierID);
+    $sql = "SELECT * FROM ".PRFX."TABLE_SUPPLIER WHERE SUPPLIER_ID=".$db->qstr($supplier_id);
 
     if(!$result = $db->Execute($sql)) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');

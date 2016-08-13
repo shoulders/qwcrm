@@ -1,9 +1,6 @@
 <?php
 require_once ('include.php');
-if(!xml2php("invoice")) {
-    $smarty->assign('error_msg',"Error in language file");
-    
-}
+
 
 /* Assign company information */
 $q = 'SELECT * FROM '.PRFX.'TABLE_COMPANY';

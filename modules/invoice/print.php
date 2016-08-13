@@ -4,9 +4,6 @@
 
 require_once ('include.php');
 
-// header('Content-type: text/html; charset=utf-8');
-
-
 // Load PHP Language Translations
 $langvals = gateway_xml2php('invoice');
 

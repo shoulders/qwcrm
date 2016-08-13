@@ -10,7 +10,7 @@ $php_error_msg      = $VAR['php_error_msg'];
 $database_error     = $VAR['database_error'];
 
 // Regex the HTTP_REFERER to give the page the error occured on
-preg_match('/.*\?page=(.*)&.*/', $_SERVER['HTTP_REFERER'], $page_string);
+preg_match('/.*\?page=(.*)&.*/', getenv('HTTP_REFERER'), $page_string);
 $error_page = $page_string[1];
 
 /*

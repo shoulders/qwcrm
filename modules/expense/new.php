@@ -35,7 +35,7 @@ $new_record_id = $last_record_id + 1;
                                                         else {
 
                                                             // Submit and load Expense View Details
-                                                            force_page('expense', 'expense_details&expenseID='.$new_record_id.'&page_title='.$langvals['expense_details_title']);
+                                                            force_page('expense', 'expense_details&expense_id='.$new_record_id.'&page_title='.$langvals['expense_details_title']);
                                                             exit;
 
                                                 }

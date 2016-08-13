@@ -65,56 +65,6 @@ error_reporting(E_ALL & ~E_NOTICE); // This will only show major errors (default
 header('Content-type: text/html; charset=utf-8');
 
 ################################################
-#          Is Installed Check                  #
-################################################
-
-/* 
- * check if lock file exists, if not, we need to install
- * If installed remove the install directory
- */
-if(!is_file('cache/lock')){
-    echo('
-        <script type="text/javascript">            
-            window.location = "install"           
-        </script>
-        ');
-} else if(is_dir('install') ) {
-    echo('<a style="color: red;">The install Directory Exists!! Please Rename or remove the install directory.</a>');
-    die;
-}
-
-################################################
-#   Grab &_POST and $_GET values               #
-################################################
-
-// do these need to be here? (array merge does)
-
-$VAR            = array_merge($_GET, $_POST);
-$page_title     = $VAR['page_title'];
-
-
-
-//$page           = $VAR['page'];
-//$login_usr      = $_SESSION['login_usr'];
-//$login_usr  = $_POST['login_id'];
-/*
-$wo_id          = $VAR['wo_id'];
-$customer_id    = $VAR['customer_id'];
- * */
-
-// from theme_header_block.php
-/*
-$ip             = $_SERVER['REMOTE_ADDR'];
-$login_usr      = $_SESSION['login_usr'];
-$wo_id          = $VAR['wo_id'];
-$customer_id    = $VAR['customer_id'];
-$expenseID      = $VAR['expenseID'];
-$refundID       = $VAR['refundID'];
-$supplierID     = $VAR['supplierID'];
-$employee_id    = $VAR['employee_id'];
-*/
- 
-################################################
 #         Initialise QWCRM                     #
 ################################################
 
@@ -124,8 +74,13 @@ require(INCLUDES_DIR.'include.php');
 require(INCLUDES_DIR.'session.php');
 require(INCLUDES_DIR.'auth.php');
 require(INCLUDES_DIR.'smarty.php');
-require(INCLUDES_DIR.'acl.php');
 
+################################################
+#    Verify QWcrm is installed correctly       #
+################################################
+
+//verify_qwcrm_is_installed_correctly($db); // works well
+ 
 ################################################
 #          Enable Authentication               #
 ################################################
@@ -142,8 +97,27 @@ $smarty->assign('login_usr',            $login_usr          );
 $smarty->assign('login_account_type',   $login_account_type );
 $smarty->assign('login_display_name',   $login_display_name );
 
+
 ################################################
-#   should I log off                           #
+#   Grab &_POST and $_GET values               #
+################################################
+
+// do these need to be here? (array merge does)
+
+$VAR            = array_merge($_GET, $_POST);
+$page_title     = $VAR['page_title'];
+//$page           = $VAR['page'];
+
+// These are used globally but mainly for the menu !!
+$wo_id          = $VAR['wo_id'];
+$customer_id    = $VAR['customer_id'];
+$employee_id    = $VAR['employee_id'];
+$expense_id     = $VAR['expense_id'];
+$refund_id      = $VAR['refund_id'];
+$supplier_id    = $VAR['supplier_id'];
+
+################################################
+#   Should I log off                           # // if this is before array merege chang the $_post / $_GET etc to make it work
 ################################################
 
 // If log off is set then log user off
@@ -155,6 +129,19 @@ if (isset($VAR['action']) && $VAR['action'] == 'logout') {
 #   Assign variables into smarty for use by all native module templates  #
 ##########################################################################
 
+// These are used globally but mainly for the menu !!
+$smarty->assign('wo_id',        $wo_id          );
+$smarty->assign('customer_id',  $customer_id    );
+$smarty->assign('employee_id',  $employee_id    ); // This is the same as $login_id at some points - when used globally - check
+$smarty->assign('expense_id',   $expense_id     );
+$smarty->assign('refund_id',    $refund_id      );
+$smarty->assign('supplier_id',  $supplier_id    );
+
+// Used Throughout the site
+$smarty->assign('company_logo', get_company_logo($db)       );        
+$smarty->assign('currency_sym', get_currency_symbol($db)    );
+$smarty->assign('date_format',  get_date_format($db)        );
+
 /* Work Order ID 
 if(isset($_GET['wo_id'])){
     $smarty->assign('wo_id', $_GET['wo_id']);
@@ -163,6 +150,22 @@ if(isset($_GET['wo_id'])){
     $smarty->assign('wo_id','0');
 }
 
+if ($VAR['wo_id'] == '' || $VAR['wo_id'] < "1" )
+{
+$wo_id = 0 ;
+} else {
+$wo_id = $VAR['wo_id'] ;
+$woid = $VAR['wo_id'] ;
+}
+
+/*if ($VAR['woid'] == '' || $VAR['woid'] < "1" )
+{
+$wo_id = 0 ;
+} else {
+$wo_id = $VAR['woid'] ;
+}
+ * 
+ */
 /* customer ID 
 if(isset($_GET['customer_id'])){
     $smarty->assign('customer_id', $_GET['customer_id']);
@@ -191,28 +194,13 @@ foreach($VAR as $key=>$val){
 // from theme_header_block.php
 
 
-if(!$login_usr)
-{
-    $smarty->assign('login_usr', '');
-} else {
-    $smarty->assign('login_usr', $login_usr);
-    $smarty->assign('display_login', $login_usr);
-    $smarty->assign('login_id', $_SESSION['login_id']);
-    $smarty->assign('wo_id', $wo_id);
-    $smarty->assign('customer_id',$customer_id);
-    $smarty->assign('expenseID', $expenseID);
-    $smarty->assign('refundID', $refundID);
-    $smarty->assign('supplierID', $supplierID);
-    $smarty->assign('ip',$ip);
-    $smarty->assign('employee_id',$employee_id);
-}
+  
 
-$smarty->assign('msg', $msg);
 
 
 // theme_header_block.php
 
-//$employee_id = $VAR['employee_id'];
+
 $sch_id = $VAR['sch_id'];
 $today2 = (Date("d")); 
 if ( $cur_date > 0 )
@@ -234,52 +222,20 @@ $smarty->assign('d',$d);
 $smarty->assign('today2',$today2);
 
 
-
-if ($VAR['wo_id'] == '' || $VAR['wo_id'] < "1" )
-{
-$wo_id = 0 ;
+// Get the page number we are on if first page set to 1 - should i se this here rather than loads
+if(!isset($VAR['page_no'])){
+    $page_no = 1;
 } else {
-$wo_id = $VAR['wo_id'] ;
-$woid = $VAR['wo_id'] ;
+    $page_no = $VAR['page_no'];
 }
+    
 
-/*if ($VAR['woid'] == '' || $VAR['woid'] < "1" )
-{
-$wo_id = 0 ;
-} else {
-$wo_id = $VAR['woid'] ;
-}
 */
 
-//////////////
 
-// workorder/print.php has company code in it
-/* get company info for defaults */
-$q = 'SELECT * FROM '.PRFX.'TABLE_COMPANY, '.PRFX.'VERSION ORDER BY  '.PRFX.'VERSION.`VERSION_INSTALLED` DESC LIMIT 1';
-if(!$rs = $db->execute($q)){
-force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-exit;
-}
 
-$smarty->assign('version', $rs->fields['VERSION_NAME']);                // core/footer.tpl and core/submit.tpl
-$smarty->assign('company_name', $rs->fields['COMPANY_NAME']);           // billing/display_gift.tpl , billing/print_gift.tpl, parts/print_result.tpl, parts/view.tpl
-$smarty->assign('company_address', $rs->fields['COMPANY_ADDRESS']);     // parts/print_result.tpl, parts/view.tpl
-$smarty->assign('company_city', $rs->fields['COMPANY_CITY']);           // employees/new.tpl, parts/print_result.tpl, parts/view.tpl
-$smarty->assign('company_state', $rs->fields['COMPANY_STATE']);         // employees/new.tpl, parts/view.tpl
-$smarty->assign('company_zip', $rs->fields['COMPANY_ZIP']);             // employees/new.tpl, parts/print_result.tpl, parts/view.tpl
-$smarty->assign('company_country', $rs->fields['COMPANY_COUNTRY']);     // not used
-$smarty->assign('company_phone',$rs->fields['COMPANY_PHONE']);          // billing/display_gift.tpl , billing/print_gift.tpl, parts/print_result.tpl, parts/view.tpl
-$smarty->assign('company_email',$rs->fields['COMPANY_EMAIL']);          // not used
-$smarty->assign('company_mobile',$rs->fields['COMPANY_MOBILE']);        // not used
-$smarty->assign('company_logo',$rs->fields['COMPANY_LOGO']);            // core/login.tpl, workorder/print_customer_workorder_slip.tpl, workorder/print_job_sheet.tpl, workorder/print_technician_workorder_slip.tpl
-$smarty->assign('currency_sym',$rs->fields['COMPANY_CURRENCY_SYMBOL']); // used throughout the site
-$smarty->assign('currency_code',$rs->fields['COMPANY_CURRENCY_CODE']);  // only in invoice/print_html.tpl
-$smarty->assign('date_format',$rs->fields['COMPANY_DATE_FORMAT']);      // used throughout the site
-$smarty->assign('company_email_from',$rs->fields['COMPANY_EMAIL_FROM']);// not used
-$smarty->assign('email_server',$rs->fields['COMPANY_EMAIL_SERVER']);    // only customer/email.tpl
-$smarty->assign('email_server_port',$rs->fields['COMPANY_EMAIL_PORT']); // only customer/email.tpl
-$smarty->assign('email_username',$rs->fields['COMPANY_SMTP_USERNAME']); // not used
-$smarty->assign('email_password',$rs->fields['COMPANY_SMTP_PASSWORD']); // not used
+
+
 
 /* Message - Legacy Message Feature - Possibly will use it in future*/
 if(isset($VAR['msg'])){
@@ -320,24 +276,25 @@ if(isset($VAR['page'])){
             
             $page_display_controller = 'modules'.SEP.'core'.SEP.'404.php';
             
-            // even though this is set, the ACL is still checking $module and $page againt access so set them to the 404 page
+            // Currently these are set to the unknown page and the page request will be denied by the the ACL.
+            // This will change these values to the 404 page allowing it to be loaded.          
             $module = 'core';
             $page   = '404';
         }
     } else {
         // If no page is supplied then go to the main page
-        $page_display_controller = 'modules'.SEP.'core'.SEP.'main.php';
+        $page_display_controller = 'modules'.SEP.'core'.SEP.'home.php';
         $module = 'core';
-        $page   = 'main';
+        $page   = 'home';
     }
-    
+   
 ###############################################
 #    Build and Display the page (as required) #
 #    If the user has the correct permissions  #
 ###############################################
 
 /* Check ACL for page request - if ok display */
-if(!check_acl($db, $module, $page)){    
+if(!check_acl($db, $login_id, $module, $page)){    
     force_page('core','error','error_msg=You do not have permission to access this '.$module.':'.$page.'&menu=1');
 } else {    
    
@@ -369,28 +326,12 @@ if(!check_acl($db, $module, $page)){
 #         Logging                              #
 ################################################
 
-// should this have its own page? - no, single function here will suffice - main include though
-
-$tracker_page = "$module:$page"; // what is this for - not used anywhere
-
-/* Tracker code */
-function getIP(){
-    if (getenv('HTTP_CLIENT_IP')) {$ip = getenv('HTTP_CLIENT_IP');}
-    elseif (getenv('HTTP_X_FORWARDED_FOR')) {$ip = getenv('HTTP_X_FORWARDED_FOR');}
-    elseif (getenv('REMOTE_ADDR')) {$ip = getenv('REMOTE_ADDR');}
-    else {$ip = 'UNKNOWN';}
-    return $ip;
+/* This records access details to the stats tracker table in the database */
+if($qwcrm_tracker === 'on'){
+    write_record_to_tracker_table($db, $page_display_controller, $page, $module);
 }
 
-$q = 'INSERT into '.PRFX.'TRACKER SET
-   date          = '. $db->qstr( time()                     ).',
-   ip            = '. $db->qstr( getIP()                    ).',
-   uagent        = '. $db->qstr( getenv('HTTP_USER_AGENT')  ).',
-   full_page     = '. $db->qstr( $the_page                  ).',
-   module        = '. $db->qstr( $module                    ).',
-   page          = '. $db->qstr( $page                      ).',
-   referer       = '. $db->qstr( getenv('HTTP_REFERER')     );
-
-   if(!$rs = $db->Execute($q)) {
-      echo 'Error inserting tracker :'. $db->ErrorMsg();
-   }
+/* This records access details to the access log */
+if($qwcrm_access_log === 'on'){
+    write_record_to_access_log($login_usr);
+}

@@ -66,7 +66,7 @@
                                                                             </tr>                                                                            
                                                                             <tr>
                                                                                 <td align="right"><b>{$translate_supplier_id}</b></td>
-                                                                                <td colspan="3"><input name="supplierID" type="hidden" value="{$supplier_details[q].SUPPLIER_ID}"/>{$supplier_details[q].SUPPLIER_ID}</td>
+                                                                                <td colspan="3"><input name="supplier_id" type="hidden" value="{$supplier_details[q].SUPPLIER_ID}"/>{$supplier_details[q].SUPPLIER_ID}</td>
                                                                             </tr>
                                                                             <tr>
                                                                                 <td align="right"><b>{$translate_supplier_name}</b><span style="color: #ff0000"> *</span></td>

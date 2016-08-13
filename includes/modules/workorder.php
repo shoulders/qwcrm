@@ -188,8 +188,7 @@ function display_workorder_status($db, $wo_id){
 
 function display_closed($db, $page_no) {
     
-    global $smarty;
-    global $php_errormsg;
+    global $smarty;   
     
     // Define the number of results per page
     $max_results = 25;

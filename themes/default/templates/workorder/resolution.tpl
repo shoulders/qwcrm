@@ -48,7 +48,7 @@
                                         <textarea class="olotd4" rows="15" cols="70" mce_editable="true" name="workorder_resolution">{$workorder_resolution}</textarea>
                                         <br>
                                         <input type="hidden" name="page" value="workorder:resolution">
-                                        <input type="hidden" name="create_by" value="{$display_login}">
+                                        <input type="hidden" name="created_by" value="{$login_display_name}">
                                         <input type="hidden" name="wo_id" value="{$wo_id}">
                                         <input type="submit" name="submitchangesonly" value="{$translate_workorder_details_edit_resolution_submit_changes_only}">
                                         <input type="submit" name="closewithoutinvoice" value="{$translate_workorder_details_edit_resolution_close_without_invoice}">

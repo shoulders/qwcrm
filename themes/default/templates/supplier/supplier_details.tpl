@@ -10,7 +10,7 @@
                                 <td class="menuhead2" width="80%">
                                   {$translate_supplier_details_title}
                                 <td class="menuhead2" width="20%" align="right" valign="middle">
-                                    <a href="?page=supplier:edit&supplierID={$supplier_details[i].SUPPLIER_ID}&page_title={$translate_supplier_edit_title}" ><img src="{$theme_images_dir}icons/edit.gif"  alt="" height="16" border="0">{$translate_supplier_details_edit}</a>
+                                    <a href="?page=supplier:edit&supplier_id={$supplier_details[i].SUPPLIER_ID}&page_title={$translate_supplier_edit_title}" ><img src="{$theme_images_dir}icons/edit.gif"  alt="" height="16" border="0">{$translate_supplier_details_edit}</a>
                                     &nbsp;<a><img src="{$theme_images_dir}icons/16x16/help.gif" border="0" alt=""
                                             onMouseOver="ddrivetip('<b>{$translate_supplier_details_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_supplier_details_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>')"
                                             onMouseOut="hideddrivetip()"></a>
@@ -161,7 +161,7 @@
                                                         <td class="menutd" colspan="3">{$supplier_details[i].SUPPLIER_DESCRIPTION}</td>
                                                         <td class="menutd"></td>
                                                     </tr>
-                                                    {assign var="supplierID" value=$supplier_details[i].SUPPLIER_ID}
+                                                    {assign var="supplier_id" value=$supplier_details[i].SUPPLIER_ID}
                                                     {/section}
                                             </table>
 

@@ -134,7 +134,7 @@ $expenseItems_string = stripslashes($expenseItems_string);
 
     $sql = "INSERT INTO ".PRFX."TABLE_EXPENSE SET
 
-            EXPENSE_ID            = ". $db->qstr( $VAR['expenseID']           ).",
+            EXPENSE_ID            = ". $db->qstr( $VAR['expense_id']           ).",
             EXPENSE_PAYEE            = ". $db->qstr( $VAR['expensePayee']        ).",
             EXPENSE_DATE            = ". $db->qstr( $checked_date               ).",
             EXPENSE_TYPE            = ". $db->qstr( $VAR['expenseType']         ).",
@@ -159,8 +159,8 @@ $expenseItems_string = stripslashes($expenseItems_string);
 #     Edit - Load Record            #
 #####################################
 
-function edit_info($db, $expenseID){
-    $sql = "SELECT * FROM ".PRFX."TABLE_EXPENSE WHERE EXPENSE_ID=".$db->qstr($expenseID);
+function edit_info($db, $expense_id){
+    $sql = "SELECT * FROM ".PRFX."TABLE_EXPENSE WHERE EXPENSE_ID=".$db->qstr($expense_id);
     
     if(!$result = $db->Execute($sql)) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
@@ -198,7 +198,7 @@ $expenseItems_string = stripslashes($expenseItems_string);
                         EXPENSE_GROSS_AMOUNT            = ". $db->qstr( $VAR['expenseGrossAmount']  ).",
                         EXPENSE_NOTES                   = ". $db->qstr( $expenseNotes_string        ).",
                         EXPENSE_ITEMS                   = ". $db->qstr( $expenseItems_string        )."
-                        WHERE EXPENSE_ID        = ". $db->qstr( $VAR['expenseID']           );
+                        WHERE EXPENSE_ID        = ". $db->qstr( $VAR['expense_id']           );
                         
             
     if(!$result = $db->Execute($sql)) {
@@ -214,8 +214,8 @@ $expenseItems_string = stripslashes($expenseItems_string);
 #    Delete Record                  #
 #####################################
 
-function delete_expense($db, $expenseID){
-    $sql = "DELETE FROM ".PRFX."TABLE_EXPENSE WHERE EXPENSE_ID=".$db->qstr($expenseID);
+function delete_expense($db, $expense_id){
+    $sql = "DELETE FROM ".PRFX."TABLE_EXPENSE WHERE EXPENSE_ID=".$db->qstr($expense_id);
     
     if(!$rs = $db->Execute($sql)) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
@@ -229,9 +229,9 @@ function delete_expense($db, $expenseID){
 #     Display Single Record         #
 #####################################
 
-function display_expense_info($db, $expenseID){
+function display_expense_info($db, $expense_id){
 
-    $sql = "SELECT * FROM ".PRFX."TABLE_EXPENSE WHERE EXPENSE_ID=".$db->qstr($expenseID);
+    $sql = "SELECT * FROM ".PRFX."TABLE_EXPENSE WHERE EXPENSE_ID=".$db->qstr($expense_id);
 
     if(!$result = $db->Execute($sql)) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');

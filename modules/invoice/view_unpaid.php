@@ -1,8 +1,6 @@
 <?php
 require_once('include.php');
-if(!xml2php("invoice")) {
-    $smarty->assign('error_msg',"Error in language file");
-}
+
 if(!isset($VAR['page_no'])){
     $page_no = 1;
 } else {
