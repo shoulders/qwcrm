@@ -42,4 +42,6 @@ elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])){
 
 echo ('My real IP is:'.$ip);
 
-
+/* Get the Time to redure the page to the nearest microsecond */
+$endTime = $startTime = microtime(1);
+echo $endtime

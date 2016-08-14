@@ -7,6 +7,7 @@
 /*
  * Define the application's minimum supported PHP version as a constant so it can be referenced within the application.
  */
+
 define('QWCRM_MINIMUM_PHP', '5.3.10');
 
 if (version_compare(PHP_VERSION, QWCRM_MINIMUM_PHP, '<')){
@@ -17,17 +18,12 @@ if (version_compare(PHP_VERSION, QWCRM_MINIMUM_PHP, '<')){
 #   Debuging Information  - page load speed    #
 ################################################
 
-// should this be further at the top
-function getMicroTime(){  
-    list($usec, $sec) = explode(" ", microtime()); 
-    return (float)$usec + (float)$sec;
-} 
-
-$start = getMicroTime();
-
 // Saves the start time and memory usage.
-//$startTime = microtime(1);
+$startTime = microtime(1);                  // To the nearest microsecond from the epoch
+
+
 //$startMem  = memory_get_usage();
+// memory_get_peak_usage()
 
 ################################################
 #         Error reporting and headers          #
@@ -82,7 +78,7 @@ require(INCLUDES_DIR.'smarty.php');
 //verify_qwcrm_is_installed_correctly($db); // works well
  
 ################################################
-#          Enable Authentication               #
+#          Authentication                      #
 ################################################
 
 $auth = new Auth($db, 'login.php', $strKey);
@@ -97,11 +93,7 @@ $smarty->assign('login_usr',            $login_usr          );
 $smarty->assign('login_account_type',   $login_account_type );
 $smarty->assign('login_display_name',   $login_display_name );
 
-################################################
-#   Should I log off                           #
-################################################
-
-// If log off is set then log user off
+/* If logout is set, log user off */
 if (isset($_GET['action']) && $_GET['action'] == 'logout') {    
     $auth->logout('login.php');
 }
@@ -114,7 +106,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'logout') {
 
 $VAR            = array_merge($_GET, $_POST);
 $page_title     = $VAR['page_title'];
-//$page           = $VAR['page'];   // check the varibel set thing, then use this if it works
+//$page           = $VAR['page'];   // check the varibel set thing, then use this if it works - do i need to, it is not used globally?
 
 // These are used globally but mainly for the menu !!
 $wo_id          = $VAR['wo_id'];
@@ -293,10 +285,8 @@ if(isset($VAR['page'])){
 ###############################################
 
 /* Check ACL for page request - if ok display */
-if(!check_acl($db, $login_id, $module, $page)){    
-    force_page('core','error','error_msg=You do not have permission to access this '.$module.':'.$page.'&menu=1');
-} else {    
-   
+if(check_acl($db, $login_id, $module, $page)){
+    
     // Display Header and Menu
     if($VAR['theme'] != 'off'){        
         require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_header_block.php');
@@ -327,7 +317,7 @@ if(!check_acl($db, $login_id, $module, $page)){
 
 /* This records access details to the stats tracker table in the database */
 if($qwcrm_tracker === 'on'){
-    write_record_to_tracker_table($db, $page_display_controller, $page, $module);
+    write_record_to_tracker_table($db, $page_display_controller, $module, $page);
 }
 
 /* This records access details to the access log */

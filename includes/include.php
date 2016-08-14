@@ -61,6 +61,8 @@ function check_acl($db, $login_id, $module, $page){
     // if $_SESSION['login_id'] is not set, this goes mental into a loop
     
     // so add if login_id does not exit under any format, die, force logout, this will prevent dodgy logins
+    
+    // need to cpmensate for when a user is not logged in, ie. when i make login.php native perhaps use an if statement with the swl code below as 1 side of the options
 
     /* Get Employee Account Type (Group ID) */
     $q = 'SELECT '.PRFX.'CONFIG_EMPLOYEE_TYPE.TYPE_NAME
@@ -89,7 +91,7 @@ function check_acl($db, $login_id, $module, $page){
     } else {
         $acl = $rs->fields['PAGE_ACL'];
         if($acl != 1) {
-            return false;	
+            force_page('core','error','error_msg=You do not have permission to access this '.$module.':'.$page.'&menu=1');	
         } else {
             return true;	
         }
@@ -302,7 +304,7 @@ function get_ip_address(){
 #  Write a record to the Tracker Table         #
 ################################################
 
-function write_record_to_tracker_table($db, $page_display_controller, $page, $module){
+function write_record_to_tracker_table($db, $page_display_controller, $module, $page){
     
    $q = 'INSERT into '.PRFX.'TRACKER SET
    date          = '. $db->qstr( time()                     ).',
@@ -405,3 +407,12 @@ function write_record_to_access_log($login_usr = Null){
     
     return;    
 }
+
+############################################
+#  Get the Micro Time                      #
+############################################
+
+/*
+ * This function get the time at the point called in the number of seconds from the epoc
+ * mocrotime() returns 2 values, 1)
+ */
