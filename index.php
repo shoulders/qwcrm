@@ -81,7 +81,7 @@ require(INCLUDES_DIR.'smarty.php');
 #          Authentication                      #
 ################################################
 
-$auth = new Auth($db, 'login.php', $strKey);
+$auth = new Auth($db, 'index.php', $strKey);
 
 $login_id           = $_SESSION['login_id'];
 $login_usr          = $_SESSION['login_usr'];
@@ -95,7 +95,23 @@ $smarty->assign('login_display_name',   $login_display_name );
 
 /* If logout is set, log user off */
 if (isset($_GET['action']) && $_GET['action'] == 'logout') {    
-    $auth->logout('login.php');
+    $auth->logout('index.php');
+}
+
+/* If not logged in */
+if(!isset($_SESSION['login_hash'])){
+ 
+    // Set Page Title
+    $smarty->assign('page_title', 'Login');
+
+    // Error Message Display - does this need to be here - perhaps call it login error message
+    if(isset($_GET['error_msg'])){
+        $smarty->assign('error_msg', $_GET['error_msg']);
+    }
+
+    // Display the login page
+    $smarty->display('core'.SEP.'login.tpl');  
+    die;
 }
 
 ################################################
@@ -222,10 +238,6 @@ if(!isset($VAR['page_no'])){
     
 
 */
-
-
-
-
 
 
 /* Message - Legacy Message Feature - Possibly will use it in future*/

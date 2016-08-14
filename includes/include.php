@@ -6,12 +6,31 @@
 #   Redirect page with javascript   #
 #####################################
 
+/*
+ * If no $page and $variables are supplied then this function 
+ * will force a redirect exactly how it was supplied * 
+ */
+
 function force_page($module, $page = Null, $variables = Null) {
-    echo('
-        <script type="text/javascript">
-            window.location = "index.php?page='.$module.':'.$page.'&'.$variables.'"
-        </script>
-        ');
+    
+    if($page === Null && $variables === Null){
+        
+        // Normal URL Redirect
+        echo('
+                <script type="text/javascript">
+                    window.location = "'.$module.'"
+                </script>
+            ');
+    } else {
+        
+        // QWcrm Style Redirect
+        echo('
+                <script type="text/javascript">
+                    window.location = "index.php?page='.$module.':'.$page.'&'.$variables.'"
+                </script>
+            ');
+    }
+    
 }
 
 #####################################################
@@ -59,6 +78,7 @@ function xml2php($module) {
 function check_acl($db, $login_id, $module, $page){
     
     // if $_SESSION['login_id'] is not set, this goes mental into a loop
+    if($login_id == ''){echo 'The ACL has been supplied no Login ID - I will now die.';die;}
     
     // so add if login_id does not exit under any format, die, force logout, this will prevent dodgy logins
     

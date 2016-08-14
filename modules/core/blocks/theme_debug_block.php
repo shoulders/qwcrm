@@ -25,8 +25,8 @@ if($qwcrm_advanced_debug === 'on'){
 
 /* ----------- */
 
-echo 'PHP script executed in: ' . (getMicroTime() - $start .' secs<br>');
-unset($VAR);
+//echo 'PHP script executed in: ' . (getMicroTime() - $start .' secs<br>');
+unset($VAR);  // is this needed
 
 // Check ip from share internet
 if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
@@ -44,4 +44,4 @@ echo ('My real IP is:'.$ip);
 
 /* Get the Time to redure the page to the nearest microsecond */
 $endTime = $startTime = microtime(1);
-echo $endtime
+echo $endtime;

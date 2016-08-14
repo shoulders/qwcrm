@@ -87,12 +87,12 @@
                                  Password
                               </td>
                               <td>
-                                <input type="password" name="login_pwd" size="25"  class="olotd5" alt="password">
+                                <input type="password" name="login_pwd" size="25" class="olotd5" alt="password">
                               </td>
                             </tr>
                             <tr align="center">
                               <td colspan="2">
-                                <button type="submit" name="submit"><img src="{$theme_images_dir}tick.png" alt=""> Login</button>
+                                <button type="submit" name="submit" value="login"><img src="{$theme_images_dir}tick.png" alt=""> Login</button>
                               </td>
                             </tr>
                              { if $error_msg != "" }
