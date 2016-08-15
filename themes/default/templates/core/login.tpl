@@ -26,8 +26,8 @@
                &nbsp;
             </p>
             </td>
-          <td align="center">
-              <!-- Start of new dashboard front page 
+          <td align="center"> new ticket - KB - latest news stuff hidden in login.tpl (here) add to github - ps make this a block?
+              <!--Start of new dashboard front page 
               <table class="olotable" width="800" align="left" border ="1" cellpadding="5" cellspacing="5" >
                   <tr>
                       <td class="olohead" colspan="2">
@@ -92,7 +92,7 @@
                             </tr>
                             <tr align="center">
                               <td colspan="2">
-                                <button type="submit" name="submit" value="login"><img src="{$theme_images_dir}tick.png" alt=""> Login</button>
+                                <button type="submit" name="action" value="login"><img src="{$theme_images_dir}tick.png" alt=""> Login</button>
                               </td>
                             </tr>
                              { if $error_msg != "" }
@@ -118,7 +118,7 @@
             <table width="100%"  border="0" cellspacing="0" cellpadding="0">
               <tr>
                 <td align="center" >
-                  <span class="text3"><a href="http://myitcrm.com"><b>MyIT CRM - The Best Open Source Repairs Business CRM program available!</b></a><br><a>This software is distributed under the GNU General Public License V3</a><br></span>
+                  <span class="text3"><a href="http://quantumwarp.com"><b>QWcrm - The Best Open Source Repairs Business CRM program available!</b></a><br><a>This software is distributed under the GNU General Public License V3</a><br></span>
                 </td>
               </tr>              
             </table>
@@ -126,5 +126,3 @@
         </tr>
       </table>
     </center>
-  </body>
-</html>

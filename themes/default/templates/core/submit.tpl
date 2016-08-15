@@ -241,7 +241,7 @@
                         <table width="100%"  border="0" cellspacing="0" cellpadding="0">
                             <tr>
                                 <td align="center" >
-                                    <span class="text3"><a href="http://team.myitcrm.com"><b>MyIT CRM Version - {$qwcrm_version</b></a><br><a href="http://team.myitcrm.com"><b>{$translate_footer1}</b></a><br><a>{$translate_footer_license}</a><br></span>
+                                    <span class="text3"><a href="http://team.myitcrm.com"><b>MyIT CRM Version - {$qwcrm_version}</b></a><br><a href="http://team.myitcrm.com"><b>{$translate_footer1}</b></a><br><a>{$translate_footer_license}</a><br></span>
                                 </td>
                             </tr>
                         </table>

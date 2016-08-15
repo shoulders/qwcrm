@@ -82,7 +82,7 @@ function check_acl($db, $login_id, $module, $page){
     
     // so add if login_id does not exit under any format, die, force logout, this will prevent dodgy logins
     
-    // need to cpmensate for when a user is not logged in, ie. when i make login.php native perhaps use an if statement with the swl code below as 1 side of the options
+    // need to compensate for when a user is not logged in, ie. when i make login.php native perhaps use an if statement with the swl code below as 1 side of the options
 
     /* Get Employee Account Type (Group ID) */
     $q = 'SELECT '.PRFX.'CONFIG_EMPLOYEE_TYPE.TYPE_NAME
@@ -320,6 +320,26 @@ function get_ip_address(){
     return $ip;
 }
 
+/*
+ * The following code delivers ::1 instead of 127.0.0.1
+ */
+
+/*
+// Check ip from share internet
+if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+    $ip=$_SERVER['HTTP_CLIENT_IP'];
+}
+
+// To check ip is pass from proxy
+elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])){
+    $ip=$_SERVER['HTTP_X_FORWARDED_FOR'];
+} else {
+    $ip=$_SERVER['REMOTE_ADDR'];
+}
+
+echo ('My real IP is:'.$ip);
+*/
+
 ################################################
 #  Write a record to the Tracker Table         #
 ################################################
@@ -398,9 +418,12 @@ function write_record_to_access_log($login_usr = Null){
     }  
     
     $time           = date("[d/M/Y:H:i:s O]", $_SERVER['REQUEST_TIME']);    // Time in apache log format
-    $request_method = $_SERVER['REQUEST_METHOD'];                           // GET/POST
-    $url            = $_SERVER['REQUEST_URI'];                              // the URL
+    
+    // The Following 3 items make up the Request
+    $method         = $_SERVER['REQUEST_METHOD'];                           // GET/POST
+    $uri            = $_SERVER['REQUEST_URI'];                              // the URL
     $protocol       = $_SERVER['SERVER_PROTOCOL'];                          // HTTP/1.0    
+    
     $status         = '-';                                                  // dont think I can get this 200,401,404 etc..
     $bytes          = '-';                                                  // cant get this - page size / payload size
     
@@ -418,7 +441,7 @@ function write_record_to_access_log($login_usr = Null){
         $user_agent = '-';
     } 
    
-    $log_entry = $remote_ip.' '.$logname.' '.$user.' '.$time.' "'.$request_method.' '.$url.' '.$protocol.'" '.$status.' '.$bytes.' "'.$referring_url.'" "'.$user_agent.'"'."\n";
+    $log_entry = $remote_ip.' '.$logname.' '.$user.' '.$time.' "'.$method.' '.$uri.' '.$protocol.'" '.$status.' '.$bytes.' "'.$referring_url.'" "'.$user_agent.'"'."\n";
     
     // Write log entry to access log    
     $fp = fopen(ACCESS_LOG,'a') or die($smarty->get_template_vars('translate_include_error_message_cant_open_access_log').': '.$php_errormsg);

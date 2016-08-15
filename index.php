@@ -14,16 +14,13 @@ if (version_compare(PHP_VERSION, QWCRM_MINIMUM_PHP, '<')){
     die('Your host needs to use PHP ' . QWCRM_MINIMUM_PHP . ' or higher to run this version of QWCRM!');
 }
 
-################################################
-#   Debuging Information  - page load speed    #
-################################################
+#################################################
+# Debuging Information Start Varible Acqusition #
+#################################################
 
 // Saves the start time and memory usage.
-$startTime = microtime(1);                  // To the nearest microsecond from the epoch
-
-
-//$startMem  = memory_get_usage();
-// memory_get_peak_usage()
+$startTime = microtime(1);
+$startMem  = memory_get_usage();
 
 ################################################
 #         Error reporting and headers          #
@@ -98,31 +95,20 @@ if (isset($_GET['action']) && $_GET['action'] == 'logout') {
     $auth->logout('index.php');
 }
 
-/* If not logged in */
-if(!isset($_SESSION['login_hash'])){
- 
-    // Set Page Title
-    $smarty->assign('page_title', 'Login');
-
-    // Error Message Display - does this need to be here - perhaps call it login error message
-    if(isset($_GET['error_msg'])){
-        $smarty->assign('error_msg', $_GET['error_msg']);
-    }
-
-    // Display the login page
-    $smarty->display('core'.SEP.'login.tpl');  
-    die;
-}
-
 ################################################
 #   Grab &_POST and $_GET values               #
 ################################################
 
-// do these need to be here? (array merge does)
+// These are used to set varibles that are also use elsewhere (sort of global) not just in index.php logic / outside of index.php
 
 $VAR            = array_merge($_GET, $_POST);
-$page_title     = $VAR['page_title'];
-//$page           = $VAR['page'];   // check the varibel set thing, then use this if it works - do i need to, it is not used globally?
+
+// Get the page number if it exists or set to page number to 1  - do i need this here?
+if(isset($VAR['page_no'])){
+    $page_no = $VAR['page_no'];
+} else {
+    $page_no = 1;
+}
 
 // These are used globally but mainly for the menu !!
 $wo_id          = $VAR['wo_id'];
@@ -139,7 +125,7 @@ $supplier_id    = $VAR['supplier_id'];
 // These are used globally but mainly for the menu !!
 $smarty->assign('wo_id',        $wo_id          );
 $smarty->assign('customer_id',  $customer_id    );
-$smarty->assign('employee_id',  $employee_id    ); // This is the same as $login_id at some points - when used globally - check
+$smarty->assign('employee_id',  $employee_id    );          // This is the same as $login_id at some points - when used globally - check
 $smarty->assign('expense_id',   $expense_id     );
 $smarty->assign('refund_id',    $refund_id      );
 $smarty->assign('supplier_id',  $supplier_id    );
@@ -149,117 +135,81 @@ $smarty->assign('company_logo', get_company_logo($db)       );
 $smarty->assign('currency_sym', get_currency_symbol($db)    );
 $smarty->assign('date_format',  get_date_format($db)        );
 
-/* Work Order ID 
-if(isset($_GET['wo_id'])){
-    $smarty->assign('wo_id', $_GET['wo_id']);
-    global $wo_id;
-} else {
-    $smarty->assign('wo_id','0');
-}
+// Set the Page Title - i could write a function to build all page titles here and remove from the url
+if(isset($VAR['page_title'])){
+    $smarty->assign('page_title', $VAR['page_title']); 
+} else {    
+    $smarty->assign('page_title', 'Home');
+}  
 
-if ($VAR['wo_id'] == '' || $VAR['wo_id'] < "1" )
-{
-$wo_id = 0 ;
-} else {
-$wo_id = $VAR['wo_id'] ;
-$woid = $VAR['wo_id'] ;
-}
-
-/*if ($VAR['woid'] == '' || $VAR['woid'] < "1" )
-{
-$wo_id = 0 ;
-} else {
-$wo_id = $VAR['woid'] ;
-}
- * 
- */
-/* customer ID 
-if(isset($_GET['customer_id'])){
-    $smarty->assign('customer_id', $_GET['customer_id']);
-    global $customer_id;
-} else {
-    $smarty->assign('customer_id','0');
-}
-*/
-
-
-/*
- * taken from url build
- * 
-// remove page from the $_GET array we dont want it to pass the options
-unset($VAR['page']);
-
-// Define the global options for each page
-foreach($VAR as $key=>$val){
-    define($key, $val);
-}
- *
- */
-
-
-/*
-// from theme_header_block.php
-
-
-  
-
-
-
-// theme_header_block.php
-
-
-$sch_id = $VAR['sch_id'];
-$today2 = (Date("d")); 
-if ( $cur_date > 0 )
-{
-$y1 = $VAR['y'] ;
-$m1 = $VAR['m'];
-$d1 = $VAR['d'];
-} else {
-$y1 =    (Date("Y"));
-$m1 =    (Date("m"));
-$d1 =    (Date("d"));
-}
-$smarty->assign('y1',$y1);
-$smarty->assign('m1',$m1);
-$smarty->assign('d1',$d1);
-$smarty->assign('Y',$Y);
-$smarty->assign('m',$m);
-$smarty->assign('d',$d);
-$smarty->assign('today2',$today2);
-
-
-// Get the page number we are on if first page set to 1 - should i se this here rather than loads
-if(!isset($VAR['page_no'])){
-    $page_no = 1;
-} else {
-    $page_no = $VAR['page_no'];
-}
-    
-
-*/
-
-
-/* Message - Legacy Message Feature - Possibly will use it in future*/
+// Message - Legacy Message Feature - Possibly will use it in future
 if(isset($VAR['msg'])){
     $smarty->assign('msg', $VAR['msg']);
 }
 
-//////////////
+//-------------------------------------------
 
-#####################################
-#    Set the Page Title             #
-#####################################  
+// used only in schedule and menu - make neater - sort
+$sch_id = $VAR['sch_id']; // add this one possible to the sections above to keep things in order
 
-/* Page Title */
-
-// i could write a function to build all page titles here and remove from the url
-if(isset($page_title)){
-    $smarty->assign('page_title', $page_title); 
+if ( $cur_date > 0 ){
+    $y1 = $VAR['y'] ;
+    $m1 = $VAR['m'];
+    $d1 = $VAR['d'];
 } else {
-    $page_title = 'Home';
-    $smarty->assign('page_title', $page_title);
-}  
+    $y1 = (date('Y'));
+    $m1 = (date('m'));
+    $d1 = (date('d'));
+}
+
+$smarty->assign('y1',$y1);
+$smarty->assign('m1',$m1);
+$smarty->assign('d1',$d1);
+
+$smarty->assign('Y',$Y);
+$smarty->assign('m',$m);
+$smarty->assign('d',$d);
+
+################################################
+#  Page Building logic - when not logged in    #
+################################################
+
+/*
+ * This section handles pages that are not within the 'logged in' scope
+ * 
+ * does this section properly fit here or should it be before 'logged in' user pages
+ * ie before 'Extract Page Parameters and Validate......'
+ */
+
+if(!isset($_SESSION['login_hash'])){
+ 
+    // Set Page Title
+    $smarty->assign('page_title', 'Login');
+
+    // Error Message Display - does this need to be here - perhaps call it login error message also see $VAR['$msg']
+    // i would probably repalce this with $MSG only not ahve both. this definately should not be called error_msg
+    if(isset($_GET['error_msg'])){
+        $smarty->assign('error_msg', $_GET['error_msg']);
+    }
+    
+    // Add reset password page here i.e.
+    // $smarty->display('core'.SEP.'password.tpl');
+
+    // Display the login page
+    $smarty->display('core'.SEP.'login.tpl');
+    
+    // Display the Debug
+    if($qwcrm_debug === 'on'){
+        require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_debug_block.php');
+        echo '</body></html>';
+    } else {
+        echo '</body></html>';
+    }
+    
+    // Skip the rest of the code and goto the logging_section
+    goto logging_section;
+    
+}
 
 #############################################
 #  Extract Page Parameters and Validate     #
@@ -272,7 +222,7 @@ if(isset($VAR['page'])){
         list($module, $page)        = explode(':', $VAR['page']);
         $page_display_controller    = 'modules'.SEP.$module.SEP.$page.'.php';
 
-        // Check to see if the page exists and set it, other wise send them to the 404 page
+        // Check to see if the page exists and set it, otherwise send them to the 404 page
         if (file_exists($page_display_controller)){
             $page_display_controller = 'modules'.SEP.$module.SEP.$page.'.php';
         } else {
@@ -296,7 +246,7 @@ if(isset($VAR['page'])){
 #    If the user has the correct permissions  #
 ###############################################
 
-/* Check ACL for page request - if ok display */
+/* Check the requested page with 'logged in' user against the ACL for authorisation - if allowed, display */
 if(check_acl($db, $login_id, $module, $page)){
     
     // Display Header and Menu
@@ -310,15 +260,14 @@ if(check_acl($db, $login_id, $module, $page)){
   
     // Display the Footer
     if($VAR['theme'] != 'off'){
-        require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_footer_block.php');
-        if ($qwcrm_debug != 'on'){
-            echo '</body></html>';
-        }
+        require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_footer_block.php');        
     }
     
     // Display the Debug
     if($qwcrm_debug === 'on'){
         require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_debug_block.php');
+        echo '</body></html>';
+    } else {
         echo '</body></html>';
     }
 }
@@ -327,12 +276,18 @@ if(check_acl($db, $login_id, $module, $page)){
 #         Logging                              #
 ################################################
 
-/* This records access details to the stats tracker table in the database */
+// Defines the Logging Section
+logging_section:
+    
+// This logs access details to the stats tracker table in the database
 if($qwcrm_tracker === 'on'){
     write_record_to_tracker_table($db, $page_display_controller, $module, $page);
 }
 
-/* This records access details to the access log */
+// This logs access details to the access log
 if($qwcrm_access_log === 'on'){
     write_record_to_access_log($login_usr);
 }
+
+// should i add the error logger here, makes sense but it is not in error module
+// if page = core and module = error then ....

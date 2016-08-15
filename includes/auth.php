@@ -6,11 +6,10 @@ class Auth {
     var $hashKey;
     var $md5;
 
-    function Auth($db, $redirect, $hashKey, $md5 = true){
+    function Auth($db, $redirect, $hashKey){
         $this->db       = $db;
         $this->redirect = $redirect;
-        $this->hashKey  = $hashKey;
-        $this->md5      = $md5;
+        $this->hashKey  = $hashKey;        
         $this->session  = new Session();
         $this->login();                     // automatically runs this function
     } 
@@ -24,23 +23,16 @@ class Auth {
         }
         
         // If this is a Fresh Login
-        if(isset($_POST['submit']) && $_POST['submit'] === 'login'){
+        if(isset($_POST['action']) && $_POST['action'] === 'login'){
             
             // and there is no username or password supplied then redirect
                 if (!isset($_POST['login_usr']) || !isset($_POST['login_pwd'])){
-                    $this->performRedirect();
-                    //return false;
-                    // error message to go here - no login details supplied
-                    //exit;
-                    
+                    $this->performRedirect();                  
                 }
 
-            // Calculate the md5 hash of the POST'ed password and stores it as $login_pwd
-            if ($this->md5){
-                $login_pwd = md5($_POST['login_pwd']);
-            } else {
-                $login_pwd = $_POST['login_pwd'];
-            }
+            // Hash the POST'ed password with MD5 and store it as $login_pwd - after this the password is always encrypted
+            $login_pwd = md5($_POST['login_pwd']);
+           
 
             // Escape the variables for the query - not currently used - is this needed?         
             //$link = mysqli_connec($DB_HOST, $DB_USER, $DB_PASS);
@@ -128,8 +120,7 @@ class Auth {
         // Store Variables in $_SESSION
         $this->session->set('login_usr',            $login_usr          );
         $this->session->set('login_pwd',            $login_pwd          );
-        $this->session->set('login_id',             $login_id           );
-        
+        $this->session->set('login_id',             $login_id           );        
         $this->session->set('login_account_type',   $login_account_type );
         $this->session->set('login_display_name',   $login_display_name );
 
@@ -156,15 +147,12 @@ class Auth {
  
     function logout(){
         
-        //$login_usr = $this->session->get('login_usr');
-        
         // Log activity       
         write_record_to_activity_log('Log Out '.$this->session->get('login_usr'));
         
         $this->session->del('login_usr');
         $this->session->del('login_pwd');
-        $this->session->del('login_hash');
-        
+        $this->session->del('login_hash');        
         $this->session->del('login_id');
         $this->session->del('login_account_type');
         $this->session->del('login_display_name');
@@ -178,10 +166,6 @@ class Auth {
         } else {
             header('Location: ' . $this->redirect);
         }
-        exit();
-       
-       
-       //force_page('index.php');
-       //exit;
+        exit();       
     }
 }
