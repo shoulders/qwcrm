@@ -31,6 +31,12 @@ if(isset($VAR['submit'])) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
         exit;    
     }
+    // Make 404 Page (core:404) always be accessible to all account types 
+    $q = "UPDATE ".PRFX."ACL SET `Administrator`= 1, `Manager`=1, `Supervisor`=1,`Technician`=1, `Client`=1, `Guest`=1 WHERE`page`= 'core:404'";
+    if(!$rs = $db->execute($q)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;    
+    }
         
     force_page('control', 'acl&msg=Permisions Updated');
 
