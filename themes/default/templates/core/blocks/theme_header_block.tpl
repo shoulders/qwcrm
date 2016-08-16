@@ -39,6 +39,35 @@
 </table>  
 </div>
 
+        <!-- Information Message -->
+{if $information_msg != ''}
+<table width="900px" border="0" cellpadding="4" cellspacing="4">
+    <tr>
+        <td>
+            <table class="olotablegreen" width="100%" border="0" cellpadding="5" cellspacing="5" style="text-align: center;">
+                <tr>
+                    <td valign="middle">{$information_msg}</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+{/if}
+
+<!-- Warning Message -->
+{if $warning_msg != ''}
+<table width="900px" border="0" cellpadding="4" cellspacing="4">
+    <tr>
+        <td>
+            <table class="olotablegreen" width="100%" border="0" cellpadding="5" cellspacing="5" style="text-align: center;">
+                <tr>
+                    <td valign="middle">{$warning_msg}</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+{/if}
 
 <!-- BOF Wrapping Table -->
 <table width="100%" border="0" cellspacing="0" cellpadding="0">

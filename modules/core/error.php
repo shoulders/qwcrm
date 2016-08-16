@@ -13,8 +13,12 @@ $database_error     = $VAR['database_error'];
 preg_match('/.*\?page=(.*)&.*/', getenv('HTTP_REFERER'), $page_string);
 $error_page = $page_string[1];
 
+// regex Error Location: includes:modules:workorder to add slashess and .php
+
 /*
- * this is need to set the page title but doe snot work here, maybe make it a function called in index.php
+ * page title handling shoul dbe handled in the index.php
+ * 
+ * this is need to set the page title but does not work here, maybe make it a function called in index.php
  * it is not a big issue
  * split the assign and page title setup
  * this is also a list of error types
@@ -46,13 +50,10 @@ if(isset($error_msg)) {
         $VAR['page_title'] = "System Error";
     }
 }
-
-
-
-
-
-
 //$smarty->assign('page_title', $VAR['page_title']);
+
+
+
 
 $smarty->assign('error_type',       $error_type             );
 $smarty->assign('error_location',   $error_location         );
@@ -61,8 +62,5 @@ $smarty->assign('php_function',     $php_function           );
 $smarty->assign('error_msg',        $error_msg              );
 $smarty->assign('php_error_msg',    $php_error_msg          );
 $smarty->assign('database_error',   $database_error         );
-
-
-// I need to write this to an error log ? - add here
 
 $smarty->display('core'.SEP.'error.tpl');

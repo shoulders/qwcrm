@@ -94,19 +94,27 @@
                               <td colspan="2">
                                 <button type="submit" name="action" value="login"><img src="{$theme_images_dir}tick.png" alt=""> Login</button>
                               </td>
+                            </tr>                            
+                            
+                            <!-- Information Message -->
+                            {if $information_msg != '' }
+                            <tr align="center">
+                                <td colspan="2" class="olotablegreen" style="text-align: center;">{$information_msg}</td>
                             </tr>
-                             { if $error_msg != "" }
-                            <tr>
-                              <td colspan="2" class="error">
-                                 {$error_msg}
-                              </td>
+                            {/if}
+                            
+                            <!-- Warning Message -->
+                            {if $warning_msg != '' }
+                            <tr align="center">
+                              <td colspan="2" class="error">{$warning_msg}</td>
                             </tr>
-                            { /if}
-                            <!--<tr align="center">
-                                <td colspan="2">
-                                    <a href="password.php"> Forgotton your password?</a>
-                                </td>
-                            </tr> -->
+                            {/if}                            
+                            
+                            <!-- Forgotton Password -->
+                            <tr align="center">
+                                <td colspan="2"><a href="index.php?page=password_reset">Forgotten your password?</a></td>
+                            </tr>
+                            
                           </table>
                         </form>
                       </td>

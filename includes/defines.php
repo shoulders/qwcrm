@@ -25,6 +25,7 @@ define('SMARTY_URL','includes/smarty/');
 // Configuration
 define('ACTIVITY_LOG','log/activity.log');
 define('ACCESS_LOG','log/access.log');
+define('ERROR_LOG','log/error.log');
 define('LANG','english.xml');                               // check translate code to tidy this up?
 define('THEME_NAME','default/');                            // This value is here so it can be set from the 
 define('debug', 'no');                                      // in billing/include.php and core/footer.php - needs fixing - controls some footer informtion

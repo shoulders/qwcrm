@@ -82,7 +82,14 @@ $auth = new Auth($db, 'index.php', $strKey);
 
 $login_id           = $_SESSION['login_id'];
 $login_usr          = $_SESSION['login_usr'];
-$login_account_type = $_SESSION['login_account_type'];
+
+// If there is no account type details, set this to Guest
+if(!isset($_SESSION['login_account_type'])){
+    $login_account_type = 6;
+} else {
+    $login_account_type = $_SESSION['login_account_type'];   
+}
+
 $login_display_name = $_SESSION['login_display_name'];
 
 $smarty->assign('login_id',             $login_id           );
@@ -117,6 +124,7 @@ $employee_id    = $VAR['employee_id'];
 $expense_id     = $VAR['expense_id'];
 $refund_id      = $VAR['refund_id'];
 $supplier_id    = $VAR['supplier_id'];
+$sch_id         = $VAR['sch_id'];           // rename this to somethign better ie $schedule_id
 
 ##########################################################################
 #   Assign variables into smarty for use by all native module templates  #
@@ -129,28 +137,36 @@ $smarty->assign('employee_id',  $employee_id    );          // This is the same 
 $smarty->assign('expense_id',   $expense_id     );
 $smarty->assign('refund_id',    $refund_id      );
 $smarty->assign('supplier_id',  $supplier_id    );
+// $schedule id - is this needed for the menu
 
-// Used Throughout the site
+// Used Throughout the site - could combine these functions into one passing the required field
 $smarty->assign('company_logo', get_company_logo($db)       );        
 $smarty->assign('currency_sym', get_currency_symbol($db)    );
 $smarty->assign('date_format',  get_date_format($db)        );
 
-// Set the Page Title - i could write a function to build all page titles here and remove from the url
+// Set the Page Title - i could write a function to build all page titles here and remove from the url - grabs from the language file - but this would mean the whole file had to be loaded unless i redid all titles in core
 if(isset($VAR['page_title'])){
     $smarty->assign('page_title', $VAR['page_title']); 
 } else {    
     $smarty->assign('page_title', 'Home');
 }  
 
-// Message - Legacy Message Feature - Possibly will use it in future
-if(isset($VAR['msg'])){
-    $smarty->assign('msg', $VAR['msg']);
+/* System Messages */
+
+// Information Message (Green)
+if(isset($VAR['information_msg'])){
+    $smarty->assign('information_msg', $VAR['information_msg']);
+}
+
+// Warning Message (Red)
+if(isset($VAR['warning_msg'])){
+    $smarty->assign('warning_msg', $VAR['warning_msg']);
 }
 
 //-------------------------------------------
 
 // used only in schedule and menu - make neater - sort
-$sch_id = $VAR['sch_id']; // add this one possible to the sections above to keep things in order
+ // add this one possible to the sections above to keep things in order
 
 if ( $cur_date > 0 ){
     $y1 = $VAR['y'] ;
@@ -171,7 +187,7 @@ $smarty->assign('m',$m);
 $smarty->assign('d',$d);
 
 ################################################
-#  Page Building logic - when not logged in    #
+#  Page Building logic (Not logged in)         #
 ################################################
 
 /*
@@ -179,35 +195,36 @@ $smarty->assign('d',$d);
  * 
  * does this section properly fit here or should it be before 'logged in' user pages
  * ie before 'Extract Page Parameters and Validate......'
+ * 
+ * These have to be added manually - or if I add guest to acl I can make these avaiable by not adding the tempalte and having a guest ACL
+ * 
+ * this below allows me to use the ACL - i have just added a Guest ACL level
+ * 
  */
 
-if(!isset($_SESSION['login_hash'])){
- 
-    // Set Page Title
-    $smarty->assign('page_title', 'Login');
+if(!isset($_SESSION['login_hash'])){ 
 
-    // Error Message Display - does this need to be here - perhaps call it login error message also see $VAR['$msg']
-    // i would probably repalce this with $MSG only not ahve both. this definately should not be called error_msg
-    if(isset($_GET['error_msg'])){
-        $smarty->assign('error_msg', $_GET['error_msg']);
-    }
-    
-    // Add reset password page here i.e.
-    // $smarty->display('core'.SEP.'password.tpl');
-
-    // Display the login page
-    $smarty->display('core'.SEP.'login.tpl');
-    
-    // Display the Debug
-    if($qwcrm_debug === 'on'){
-        require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_debug_block.php');
-        echo '</body></html>';
+    if(isset($_GET['page']) && $_GET['page'] != ''){
+        
+       // do nothing
+        
     } else {
-        echo '</body></html>';
+        
+        // Display the Login Page    
+        $smarty->display('core'.SEP.'login.tpl');   
+
+        // Display the Debug
+        if($qwcrm_debug === 'on'){
+            require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_debug_block.php');
+            echo '</body></html>';
+        } else {
+            echo '</body></html>';
+        }
+
+        // Skip the rest of the code and goto the logging_section
+        goto logging_section;
+        
     }
-    
-    // Skip the rest of the code and goto the logging_section
-    goto logging_section;
     
 }
 
@@ -245,12 +262,14 @@ if(isset($VAR['page'])){
 #    Build and Display the page (as required) #
 #    If the user has the correct permissions  #
 ###############################################
-
+//echo $login_account_type;die;
 /* Check the requested page with 'logged in' user against the ACL for authorisation - if allowed, display */
-if(check_acl($db, $login_id, $module, $page)){
+if(check_acl($db, $login_account_type, $module, $page)){
+    
+    // Guests (not logged in) will not see the header, footer or menu - CSS styling is missing on the error pages - but better splitting of the header, menu, content, and footer would heklp control here
     
     // Display Header and Menu
-    if($VAR['theme'] != 'off'){        
+    if($VAR['theme'] != 'off' && $login_account_type != 6){        
         require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_header_block.php');
         require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_menu_block.php');        
     }
@@ -259,7 +278,7 @@ if(check_acl($db, $login_id, $module, $page)){
     require($page_display_controller);    
   
     // Display the Footer
-    if($VAR['theme'] != 'off'){
+    if($VAR['theme'] != 'off' && $login_account_type != 6){
         require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_footer_block.php');        
     }
     
@@ -276,6 +295,9 @@ if(check_acl($db, $login_id, $module, $page)){
 #         Logging                              #
 ################################################
 
+
+// this needs finishing off, clarification of errors logged and the logic when logged in and when loggged out;
+
 // Defines the Logging Section
 logging_section:
     
@@ -289,5 +311,19 @@ if($qwcrm_access_log === 'on'){
     write_record_to_access_log($login_usr);
 }
 
-// should i add the error logger here, makes sense but it is not in error module
-// if page = core and module = error then ....
+// This logs errors to the error log
+if($qwcrm_error_log === 'on'){
+    
+    // can i use $VAR['error_msg'] as detection instead?
+    
+    // Error page when logged in - thes variables have just been set in the error.php controller
+    if(isset($_SESSION['login_hash']) && isset($_GET['error_msg']) && $module === 'core' && $page === 'error'){
+        write_record_to_error_log($login_usr, $error_type, $error_location, $php_function, $error_msg, $php_error_msg, $database_error);
+    }
+    
+    // Error page when not logged in - find out which ones are missing and perhaps do coding on them
+    elseif(!isset($_SESSION['login_hash']) && isset($_GET['error_msg'])) {
+        write_record_to_error_log('-', $_GET['error_type'], $error_location, $php_function, $error_msg, $php_error_msg, $database_error);
+    }
+    
+}

@@ -5,7 +5,7 @@
             <table class="olotablegreen" width="100%" border="0" cellpadding="5" cellspacing="5">
                 <tr>
                     <td valign="middle">
-                        {$msg}
+                        {$information_msg}
                         <br>
                     </td>
                 </tr>

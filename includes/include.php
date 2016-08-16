@@ -75,43 +75,39 @@ function xml2php($module) {
 #  Verify Employee's authorization for a specific page   #
 ##########################################################
 
-function check_acl($db, $login_id, $module, $page){
+function check_acl($db, $login_account_type, $module, $page){
     
-    // if $_SESSION['login_id'] is not set, this goes mental into a loop
-    if($login_id == ''){echo 'The ACL has been supplied no Login ID - I will now die.';die;}
-    
-    // so add if login_id does not exit under any format, die, force logout, this will prevent dodgy logins
-    
-    // need to compensate for when a user is not logged in, ie. when i make login.php native perhaps use an if statement with the swl code below as 1 side of the options
+    if($login_account_type == ''){echo 'The ACL has been supplied with no account type - I will now die.';die;}
 
-    /* Get Employee Account Type (Group ID) */
+    /* Get Account Type Display Name by login_account_type ID*/
     $q = 'SELECT '.PRFX.'CONFIG_EMPLOYEE_TYPE.TYPE_NAME
-            FROM '.PRFX.'TABLE_EMPLOYEE,'.PRFX.'CONFIG_EMPLOYEE_TYPE 
-            WHERE '.PRFX.'TABLE_EMPLOYEE.EMPLOYEE_TYPE  = '.PRFX.'CONFIG_EMPLOYEE_TYPE.TYPE_ID AND EMPLOYEE_ID='.$db->qstr($login_id);
+            FROM '.PRFX.'CONFIG_EMPLOYEE_TYPE 
+            WHERE TYPE_ID ='.$db->qstr($login_account_type);
     
     if(!$rs = $db->execute($q)) {
         force_page('core','error&error_msg=Could not get Group ID for user');
         exit;
     } else {
-        $employee_acl_account_type = $rs->fields['TYPE_NAME'];
-    }
-
-    /* Check Page to see if we have access */ // this hould not be needed - no page etc force logout must incase
-    if(!isset($module)) {
-        $module_page = 'core:home';
-    } else {
-        $module_page = $module.':'.$page;
-    }
+        $employee_acl_account_type_display_name = $rs->fields['TYPE_NAME'];
+    } 
     
-    $q = "SELECT ".$employee_acl_account_type." AS PAGE_ACL FROM ".PRFX."ACL WHERE page=".$db->qstr($module_page);
+    // Build the page name for the ACL lookup
+    $module_page = $module.':'.$page;
+    
+    /* Check Page to see if we have access */
+    $q = "SELECT ".$employee_acl_account_type_display_name." AS PAGE_ACL FROM ".PRFX."ACL WHERE page=".$db->qstr($module_page);
 
     if(!$rs = $db->execute($q)) {
         force_page('core','error&error_msg=Could not get Page ACL'.$db->ErrorMsg());
         exit;
     } else {
         $acl = $rs->fields['PAGE_ACL'];
+        
+        // Add if guest (6) rules here if there are errors
+        
         if($acl != 1) {
-            force_page('core','error','error_msg=You do not have permission to access this '.$module.':'.$page.'&menu=1');	
+            force_page('core','error','error_msg=You do not have permission to access this '.$module.':'.$page.'&menu=1');
+            exit;
         } else {
             return true;	
         }
@@ -363,22 +359,18 @@ function write_record_to_tracker_table($db, $page_display_controller, $module, $
 
 
 ############################################
-#  Write a record to the activity log file #
+#  Write a record to the activity.log file #
 ############################################
 
 /*
- * This writes Specific QWcrm activity note to the log, i.e. login/logout
+ * This writes Specific QWcrm activity note to the activity.log, i.e. login/logout
+ * The messages and information is already formed before reaching here
  */
 
 function write_record_to_activity_log($record){
     
-    // Build log entry
+    // Build log entry - perhaps use the apache time stamp below
     $log_entry = $_SERVER['REMOTE_ADDR'] . ',' . date(DATE_W3C) . ',' . $record . "\n";
-    
-    // Apache log format
-    // https://httpd.apache.org/docs/1.3/logs.html
-    // Combined Log Format - LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\"" combined
-    // 127.0.0.1 - frank [10/Oct/2000:13:55:36 -0700] "GET /apache_pb.gif HTTP/1.0" 200 2326 "http://www.example.com/start.html" "Mozilla/4.08 [en] (Win98; I ;Nav)"
     
     // Write log entry to access log    
     $fp = fopen(ACTIVITY_LOG,'a') or die($smarty->get_template_vars('translate_include_error_message_cant_open_activity_log').': '.$php_errormsg);
@@ -389,17 +381,14 @@ function write_record_to_activity_log($record){
 }
 
 ############################################
-#  Write a record to the access log file   #
+#  Write a record to the access.log file   #
 ############################################
 
 /*
- * This will create an apache compatible access log (Combined Log Format)
+ * This will create an apache compatible access.log (Combined Log Format)
  */
 
 function write_record_to_access_log($login_usr = Null){
-
-    // Build log entry
-    //$log_entry = $_SERVER['REMOTE_ADDR'] . ',' . date(DATE_W3C) . ',' . $record . "\n";
     
     // Apache log format
     // https://httpd.apache.org/docs/2.4/logs.html
@@ -452,10 +441,31 @@ function write_record_to_access_log($login_usr = Null){
 }
 
 ############################################
-#  Get the Micro Time                      #
+#  Write a record to the error.log file    #
 ############################################
 
-/*
- * This function get the time at the point called in the number of seconds from the epoc
- * mocrotime() returns 2 values, 1)
- */
+function write_record_to_error_log($login_usr = '-', $error_type, $error_location, $php_function, $error_msg, $php_error_msg, $database_error){
+
+    /* If no logged in user
+    if($login_usr == ''){
+        $login_usr = '-';        
+    }*/
+    
+    // Regex the HTTP_REFERER to give the page the error occured on
+    preg_match('/.*\?page=(.*)&.*/', getenv('HTTP_REFERER'), $page_string);
+    $error_page = $page_string[1];
+    
+    // regex Error Location: includes:modules:workorder to add slashess and .php
+
+    // Build log entry - perhaps use the apache time stamp below
+    $log_entry = $_SERVER['REMOTE_ADDR'].','.$login_usr.','.date(DATE_W3C).','.$error_type.','.$error_location.','.$error_page.','.$php_function.','.$error_msg.','.$php_error_msg.','.$database_error."\n";
+
+    // Write log entry to error.log    
+    $fp = fopen(ERROR_LOG,'a') or die($smarty->get_template_vars('translate_include_error_message_cant_open_activity_log').': '.$php_errormsg);
+    fwrite($fp, $log_entry);
+    fclose($fp);
+    
+    return;    
+}
+
+//force_page('core', 'error', 'error_type=database&error_location=includes:modules:workorder&php_function=display_single_open_workorder()&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_function_display_single_open_workorder_failed').'&php_error_msg='.$php_errormsg.'&database_error='.$db->ErrorMsg());
