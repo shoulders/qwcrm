@@ -97,7 +97,7 @@ $smarty->assign('login_usr',            $login_usr          );
 $smarty->assign('login_account_type',   $login_account_type );
 $smarty->assign('login_display_name',   $login_display_name );
 
-/* If logout is set, log user off */
+/* If logout is set, then log user off */
 if (isset($_GET['action']) && $_GET['action'] == 'logout') {    
     $auth->logout('index.php');
 }
@@ -106,7 +106,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'logout') {
 #   Grab &_POST and $_GET values               #
 ################################################
 
-// These are used to set varibles that are also use elsewhere (sort of global) not just in index.php logic / outside of index.php
+// These are used to set varibles that are also used elsewhere (sort of global) not just in index.php
 
 $VAR            = array_merge($_GET, $_POST);
 
@@ -124,7 +124,7 @@ $employee_id    = $VAR['employee_id'];
 $expense_id     = $VAR['expense_id'];
 $refund_id      = $VAR['refund_id'];
 $supplier_id    = $VAR['supplier_id'];
-$sch_id         = $VAR['sch_id'];           // rename this to somethign better ie $schedule_id
+$schedule_id    = $VAR['schedule_id'];
 
 ##########################################################################
 #   Assign variables into smarty for use by all native module templates  #
@@ -137,7 +137,7 @@ $smarty->assign('employee_id',  $employee_id    );          // This is the same 
 $smarty->assign('expense_id',   $expense_id     );
 $smarty->assign('refund_id',    $refund_id      );
 $smarty->assign('supplier_id',  $supplier_id    );
-// $schedule id - is this needed for the menu
+// $schedule id - is this needed for the menu - see above
 
 // Used Throughout the site - could combine these functions into one passing the required field
 $smarty->assign('company_logo', get_company_logo($db)       );        
@@ -150,8 +150,6 @@ if(isset($VAR['page_title'])){
 } else {    
     $smarty->assign('page_title', 'Home');
 }  
-
-/* System Messages */
 
 // Information Message (Green)
 if(isset($VAR['information_msg'])){
@@ -262,25 +260,35 @@ if(isset($VAR['page'])){
 #    Build and Display the page (as required) #
 #    If the user has the correct permissions  #
 ###############################################
-//echo $login_account_type;die;
+
 /* Check the requested page with 'logged in' user against the ACL for authorisation - if allowed, display */
 if(check_acl($db, $login_account_type, $module, $page)){
     
-    // Guests (not logged in) will not see the header, footer or menu - CSS styling is missing on the error pages - but better splitting of the header, menu, content, and footer would heklp control here
+    // Guests (not logged in) will not see the menu
     
-    // Display Header and Menu
-    if($VAR['theme'] != 'off' && $login_account_type != 6){        
-        require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_header_block.php');
-        require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_menu_block.php');        
+    // Display Header
+    if($VAR['theme'] != 'off'){        
+        require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_header_block.php');      
     }
+    
+    // Display Header Legacy Template Code and Menu
+    if($VAR['theme'] != 'off' && $login_account_type != 6){       
+        $smarty->display('core'.SEP.'blocks'.SEP.'theme_header_legacy_supplement_block.tpl');
+        require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_menu_block.php');        
+    }    
 
     // Display the Page Content
     require($page_display_controller);    
   
-    // Display the Footer
+    // Display Footer Legacy Template code (closes content table)
     if($VAR['theme'] != 'off' && $login_account_type != 6){
-        require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_footer_block.php');        
+        $smarty->display('core'.SEP.'blocks'.SEP.'theme_footer_legacy_supplement_block.tpl');;             
     }
+    
+    // Display the Footer
+    if($VAR['theme'] != 'off'){        
+        require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_footer_block.php');        
+    }    
     
     // Display the Debug
     if($qwcrm_debug === 'on'){

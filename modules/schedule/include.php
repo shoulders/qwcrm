@@ -177,11 +177,11 @@ $q = 'SELECT * FROM '.PRFX.'TABLE_COMPANY';
 ######################################
 # View New schedule                   #
 ######################################
-    function view_schedule($db, $sch_id) {
+    function view_schedule($db, $schedule_id) {
     
         $q = "SELECT ".PRFX."TABLE_SCHEDULE.*, ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_DISPLAY_NAME FROM ".PRFX."TABLE_SCHEDULE 
                 LEFT JOIN ".PRFX."TABLE_EMPLOYEE ON (".PRFX."TABLE_SCHEDULE.EMPLOYEE_ID=".PRFX."TABLE_EMPLOYEE.EMPLOYEE_ID )
-                WHERE SCHEDULE_ID='".$sch_id."'";
+                WHERE SCHEDULE_ID='".$schedule_id."'";
         
         if(!$rs = $db->Execute($q)) {
             force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');

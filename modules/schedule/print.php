@@ -136,7 +136,7 @@ while($start <= $business_end){
                         $calendar .= "Work Order ID ". $sch[$i]['WORK_ORDER_ID']." From: ".date("h:i a",$sch[$i]['SCHEDULE_START'])." To: ".date("h:i a",$sch[$i]['SCHEDULE_END'])." ".$sch[$i]['SCHEDULE_NOTES']."\n";
                         $calendar . "</b></td>\n";
                     } else {
-                        $calendar .= "<td class=\"menutd2\" align=\"center\" onClick=\"window.location='?page=schedule:view&sch_id=".$sch[$i]['SCHEDULE_ID']."'\">";
+                        $calendar .= "<td class=\"menutd2\" align=\"center\" onClick=\"window.location='?page=schedule:view&schedule_id=".$sch[$i]['SCHEDULE_ID']."'\">";
                         $calendar .= "<b>From: ".date("h:i a",$sch[$i]['SCHEDULE_START'])." To: ".date("h:i a",$sch[$i]['SCHEDULE_END']).' '.$sch[$i]['SCHEDULE_NOTES']."\n";
                         $calendar .= "</b></td>\n";
                     }
@@ -163,7 +163,7 @@ while($start <= $business_end){
                     $calendar .= "Work Order ID ". $sch[$i]['WORK_ORDER_ID']." From: ".date("h:i a",$sch[$i]['SCHEDULE_START'])." To: ".date("h:i a",$sch[$i]['SCHEDULE_END'])." ".$sch[$i]['SCHEDULE_NOTES']."\n";
                     $calendar . "</b></td>\n";
                 } else {
-                    $calendar .= "<td class=\"menutd2\" align=\"center\" onClick=\"window.location='?page=schedule:view&sch_id=".$sch[$i]['SCHEDULE_ID']."'\">";
+                    $calendar .= "<td class=\"menutd2\" align=\"center\" onClick=\"window.location='?page=schedule:view&schedule_id=".$sch[$i]['SCHEDULE_ID']."'\">";
                     $calendar .= "<b>From: ".date("h:i a",$sch[$i]['SCHEDULE_START'])." To: ".date("h:i a",$sch[$i]['SCHEDULE_END']).' '.$sch[$i]['SCHEDULE_NOTES']."\n";
                     $calendar .= "</b></td>\n";
                 }

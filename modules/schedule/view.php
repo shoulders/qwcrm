@@ -3,13 +3,13 @@ require('include.php');
 if(!xml2php("schedule")) {
     $smarty->assign('error_msg',"Error in language file");
 }
-$sch_id = $VAR['sch_id'];
+$schedule_id = $VAR['schedule_id'];
 $woid = $VAR['woid'];
 $y =    $VAR['y'];
 $m =    $VAR['m'];
 $d =    $VAR['d'];
 
-$arr = view_schedule($db, $sch_id);
+$arr = view_schedule($db, $schedule_id);
 //echo $arr;
 if($arr) {
     $smarty->assign('y',$y);

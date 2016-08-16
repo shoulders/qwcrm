@@ -20,8 +20,8 @@
                                             <b>{$translate_schedule_tech}</b> {$arr[a].EMPLOYEE_DISPLAY_NAME}
                                             <br>
                                             <br>
-                                            <INPUT TYPE="submit" value="{$translate_schedule_edit}" onClick="parent.location='?page=schedule:edit&sch_id={$arr[a].SCHEDULE_ID}&y={$y}&m={$m}&d={$d}'">
-                                            <INPUT TYPE="submit" value="{$translate_schedule_delete}" onClick="parent.location='?page=schedule:delete&sch_id={$arr[a].SCHEDULE_ID}&y={$y}&m={$m}&d={$d}'">
+                                            <INPUT TYPE="submit" value="{$translate_schedule_edit}" onClick="parent.location='?page=schedule:edit&schedule_id={$arr[a].SCHEDULE_ID}&y={$y}&m={$m}&d={$d}'">
+                                            <INPUT TYPE="submit" value="{$translate_schedule_delete}" onClick="parent.location='?page=schedule:delete&schedule_id={$arr[a].SCHEDULE_ID}&y={$y}&m={$m}&d={$d}'">
                                             <INPUT TYPE="submit" value="Export" onClick="parent.location='?page=schedule:sync&&wo_id={$arr[a].WORK_ORDER_ID}'">                                            
                                             <INPUT TYPE="submit" value="View Work Order" onClick="parent.location='?page=workorder:details&wo_id={$arr[a].WORK_ORDER_ID}'">
                                             </td>

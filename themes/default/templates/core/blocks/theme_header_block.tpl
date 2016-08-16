@@ -1,3 +1,4 @@
+<!-- theme_header_block.tpl -->
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
         "http://www.w3.org/TR/html4/loose.dtd">
 <meta http-equiv="X-UA-Compatible" content="IE=8" />
@@ -24,7 +25,7 @@
 {/literal}
 </head>
 <body>
-<a name="top"></a>
+    <a name="top"></a>
 
 <div id="dhtmltooltip"></div>
 <script type="text/javascript" src="js/dhtml.js">
@@ -39,7 +40,7 @@
 </table>  
 </div>
 
-        <!-- Information Message -->
+<!-- Information Message -->
 {if $information_msg != ''}
 <table width="900px" border="0" cellpadding="4" cellspacing="4">
     <tr>
@@ -68,10 +69,3 @@
     </tr>
 </table>
 {/if}
-
-<!-- BOF Wrapping Table -->
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-    <tr>
-        <td width="150" class="left_window" valign="top">
-            
-            <!-- Menu Goes Here -->
