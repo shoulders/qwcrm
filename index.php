@@ -137,7 +137,7 @@ $smarty->assign('employee_id',  $employee_id    );          // This is the same 
 $smarty->assign('expense_id',   $expense_id     );
 $smarty->assign('refund_id',    $refund_id      );
 $smarty->assign('supplier_id',  $supplier_id    );
-// $schedule id - is this needed for the menu - see above
+$smarty->assign('schedule_id',  $schedule_id    );
 
 // Used Throughout the site - could combine these functions into one passing the required field
 $smarty->assign('company_logo', get_company_logo($db)       );        
@@ -324,13 +324,13 @@ if($qwcrm_error_log === 'on'){
     
     // can i use $VAR['error_msg'] as detection instead?
     
-    // Error page when logged in - thes variables have just been set in the error.php controller
+    // Error page when logged in - these variables have just been set in the error.php controller
     if(isset($_SESSION['login_hash']) && isset($_GET['error_msg']) && $module === 'core' && $page === 'error'){
         write_record_to_error_log($login_usr, $error_type, $error_location, $php_function, $error_msg, $php_error_msg, $database_error);
     }
     
-    // Error page when not logged in - find out which ones are missing and perhaps do coding on them
-    elseif(!isset($_SESSION['login_hash']) && isset($_GET['error_msg'])) {
+    // Error page when NOT logged in - find out which ones are missing and perhaps do coding on them - most of these variables are not set
+    elseif(!isset($_SESSION['login_hash']) && isset($_GET['error_msg']) && $module === 'core' && $page === 'error') {
         write_record_to_error_log('-', $_GET['error_type'], $error_location, $php_function, $error_msg, $php_error_msg, $database_error);
     }
     
