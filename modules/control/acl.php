@@ -46,8 +46,8 @@ if(isset($VAR['submit'])) {
             force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
             exit;
         }
-    $arr = $rs->GetArray();
-    //print_r($arr);
-    $smarty->assign( 'acl', $arr );
+    $arr = $rs->GetArray();    
+    $smarty->assign('acl', $arr);
+    
     $smarty->display('control'.SEP.'acl.tpl');
 }

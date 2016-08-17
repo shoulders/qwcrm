@@ -1,8 +1,7 @@
 <?php
 
+// This is already called in theme_header_block.php see issue #117
 //require('includes'.SEP.'modules'.SEP.'core.php');
-
-$wo_id = $VAR['wo_id'];
 
 /** Misc **/
 
@@ -27,11 +26,8 @@ $smarty->assign('workorders_awaiting_payment_count', count_workorders_with_statu
 /* Closed - Work Orders count */
 $smarty->assign('workorders_closed_count', count_workorders_with_status($db, 6));
 
-
 /* WO total count */
 $smarty->assign('wo_total_count', count_all_workorders($db));
-
-
 
 
 /** Invoices **/
@@ -51,7 +47,6 @@ $smarty->assign('in_part_bal', sum_outstanding_balances_partially_paid_invoices(
 /* Recieved Monies Total - Count All Paid Invoices */
 $smarty->assign('in_paid_count',count_all_paid_invoices($db));
 
-// Invocied Total
 
 
 
@@ -59,6 +54,7 @@ $smarty->assign('in_paid_count',count_all_paid_invoices($db));
 
 
 
+/** Discounts **/
 
 /* Sum of Discounts on Paid Invoices - NOT USED */
 $all_discounts = sum_of_discounts_on_paid_invoices($db);
@@ -135,8 +131,3 @@ $smarty->assign('employee_invoices_unpaid_count', count_employee_invoices_with_s
 
 
 $smarty->display('core'.SEP.'home.tpl');
-
-
-
-
-

@@ -21,5 +21,4 @@ $smarty->assign('menu_workorders_paid_count', count_invoices_with_status($db, 1)
 /* Un-Assigned Work Orders - Work out WO that are un-assigned */
 $smarty->assign('menu_workorders_unassigned', count_unassigned_workorders($db));
 
-
 $smarty->display('core'.SEP.'blocks'.SEP.'theme_menu_block.tpl');

@@ -2,8 +2,7 @@
 
 require('includes'.SEP.'modules'.SEP.'workorder.php');
 
-$wo_id              = $VAR['wo_id'];
-$workorder_comments = $VAR['comment'];
+$workorder_comments = $VAR['workorder_comments'];
 
 if($wo_id == '') {
     force_page('core', 'error', 'error_type=warning&error_location=workorder:details&php_function=&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_details_loadpage_failed').'&php_error_msg='.$php_errormsg.'&database_error='.$db->ErrorMsg());

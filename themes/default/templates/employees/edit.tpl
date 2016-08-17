@@ -25,7 +25,7 @@
                                                         <tr>
                                                             <td>
                                                 {section name="a" loop=$employee_details}
-                                                                {include file="employees/emp_edit.js"}
+                                                                {include file="employees/edit.js"}
                                                                 <input type="hidden" name="employee_id" value="{$employee_details[a].EMPLOYEE_ID}">
                                                                 <table width="100%" cellpadding="5" cellspacing="0" border="0" class="olotable">
                                                                     <tr class="row2">

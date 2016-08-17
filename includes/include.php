@@ -33,14 +33,6 @@ function force_page($module, $page = Null, $variables = Null) {
     
 }
 
-#####################################################
-#  function force_page_external($page) - if neeed   #
-#####################################################
-
-// function goes here
-
-
-
 ############################################
 #  Language Translation Function           #
 ############################################

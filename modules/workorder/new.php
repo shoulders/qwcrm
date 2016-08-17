@@ -2,10 +2,8 @@
 
 require('includes'.SEP.'modules'.SEP.'workorder.php');
 
-$wo_id                  = $VAR['wo_id']; 
 $submit                 = $VAR['submit'];
 $email                  = $VAR['email'];
-$customer_id            = $VAR['customer_id'];
 $created_by             = $VAR['created_by'];
 $workorder_scope        = $VAR['workorder_scope'];
 $workorder_description  = $VAR['workorder_description'];

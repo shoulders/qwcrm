@@ -2,7 +2,6 @@
 
 require('includes'.SEP.'modules'.SEP.'workorder.php');
 
-$wo_id                  = $VAR['wo_id'];
 $workorder_scope        = $VAR['workorder_scope'];
 $workorder_description  = $VAR['workorder_description'];
 

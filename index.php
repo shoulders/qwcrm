@@ -1,5 +1,12 @@
 <?php
 
+/*
+$test_variable = $_GET['testvariable'];
+if(isset($test_variable)){echo 'is set';} else {echo 'not set';}
+
+// so if the vriable =  a $_GET that is empty or not set, then it is not set either;
+*/
+
 ################################################
 #   Minimum PHP Version                        #
 ################################################
@@ -83,7 +90,7 @@ $auth = new Auth($db, 'index.php', $strKey);
 $login_id           = $_SESSION['login_id'];
 $login_usr          = $_SESSION['login_usr'];
 
-// If there is no account type details, set this to Guest
+// If there is no account type details, set to Guest
 if(!isset($_SESSION['login_account_type'])){
     $login_account_type = 6;
 } else {
@@ -106,16 +113,12 @@ if (isset($_GET['action']) && $_GET['action'] == 'logout') {
 #   Grab &_POST and $_GET values               #
 ################################################
 
-// These are used to set varibles that are also used elsewhere (sort of global) not just in index.php
+/*
+ * These are used to set varibles that are also used elsewhere (sort of global) not just in index.php
+ */
 
+// Merge the $_GET, $_POST for legacy code
 $VAR            = array_merge($_GET, $_POST);
-
-// Get the page number if it exists or set to page number to 1  - do i need this here?
-if(isset($VAR['page_no'])){
-    $page_no = $VAR['page_no'];
-} else {
-    $page_no = 1;
-}
 
 // These are used globally but mainly for the menu !!
 $wo_id          = $VAR['wo_id'];
@@ -125,6 +128,13 @@ $expense_id     = $VAR['expense_id'];
 $refund_id      = $VAR['refund_id'];
 $supplier_id    = $VAR['supplier_id'];
 $schedule_id    = $VAR['schedule_id'];
+
+// Get the page number if it exists or set to page number to 1
+if(isset($VAR['page_no'])){
+    $page_no = $VAR['page_no'];
+} else {
+    $page_no = 1;
+}
 
 ##########################################################################
 #   Assign variables into smarty for use by all native module templates  #
@@ -139,7 +149,7 @@ $smarty->assign('refund_id',    $refund_id      );
 $smarty->assign('supplier_id',  $supplier_id    );
 $smarty->assign('schedule_id',  $schedule_id    );
 
-// Used Throughout the site - could combine these functions into one passing the required field
+// Used throughout the site - could combine these functions into one passing the required field
 $smarty->assign('company_logo', get_company_logo($db)       );        
 $smarty->assign('currency_sym', get_currency_symbol($db)    );
 $smarty->assign('date_format',  get_date_format($db)        );
@@ -161,10 +171,10 @@ if(isset($VAR['warning_msg'])){
     $smarty->assign('warning_msg', $VAR['warning_msg']);
 }
 
-//-------------------------------------------
+//-------------schedule------------------------------
 
 // used only in schedule and menu - make neater - sort
- // add this one possible to the sections above to keep things in order
+// add this one possible to the sections above to keep things in order
 
 if ( $cur_date > 0 ){
     $y1 = $VAR['y'] ;
@@ -190,28 +200,34 @@ $smarty->assign('d',$d);
 
 /*
  * This section handles pages that are not within the 'logged in' scope
- * 
- * does this section properly fit here or should it be before 'logged in' user pages
- * ie before 'Extract Page Parameters and Validate......'
- * 
- * These have to be added manually - or if I add guest to acl I can make these avaiable by not adding the tempalte and having a guest ACL
- * 
- * this below allows me to use the ACL - i have just added a Guest ACL level
- * 
  */
 
 if(!isset($_SESSION['login_hash'])){ 
 
+    // Is there a page title set
     if(isset($_GET['page']) && $_GET['page'] != ''){
         
        // do nothing
         
     } else {
         
-        // Display the Login Page    
-        $smarty->display('core'.SEP.'login.tpl');   
+        // Display Header Block
+        if($VAR['theme'] != 'off'){        
+            require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_header_block.php');      
+        }
+        
+        // Display the Dashboard Block
+        $smarty->display('core'.SEP.'blocks'.SEP.'home_dashboard_block.tpl');
+        
+        // Display the Login Block  
+        $smarty->display('core'.SEP.'blocks'.SEP.'home_login_block.tpl');
+        
+        // Display the Footer Block
+        if($VAR['theme'] != 'off'){        
+            require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_footer_block.php');        
+        }    
 
-        // Display the Debug
+        // Display the Debug Block
         if($qwcrm_debug === 'on'){
             require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_debug_block.php');
             echo '</body></html>';
@@ -266,12 +282,12 @@ if(check_acl($db, $login_account_type, $module, $page)){
     
     // Guests (not logged in) will not see the menu
     
-    // Display Header
+    // Display Header Block
     if($VAR['theme'] != 'off'){        
         require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_header_block.php');      
     }
     
-    // Display Header Legacy Template Code and Menu
+    // Display Header Legacy Template Code and Menu Block
     if($VAR['theme'] != 'off' && $login_account_type != 6){       
         $smarty->display('core'.SEP.'blocks'.SEP.'theme_header_legacy_supplement_block.tpl');
         require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_menu_block.php');        
@@ -280,17 +296,17 @@ if(check_acl($db, $login_account_type, $module, $page)){
     // Display the Page Content
     require($page_display_controller);    
   
-    // Display Footer Legacy Template code (closes content table)
+    // Display Footer Legacy Template code Block (closes content table)
     if($VAR['theme'] != 'off' && $login_account_type != 6){
         $smarty->display('core'.SEP.'blocks'.SEP.'theme_footer_legacy_supplement_block.tpl');;             
     }
     
-    // Display the Footer
+    // Display the Footer Block
     if($VAR['theme'] != 'off'){        
         require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_footer_block.php');        
     }    
     
-    // Display the Debug
+    // Display the Debug Block
     if($qwcrm_debug === 'on'){
         require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_debug_block.php');
         echo '</body></html>';
@@ -300,11 +316,8 @@ if(check_acl($db, $login_account_type, $module, $page)){
 }
 
 ################################################
-#         Logging                              #
+#        Access Logging                        #
 ################################################
-
-
-// this needs finishing off, clarification of errors logged and the logic when logged in and when loggged out;
 
 // Defines the Logging Section
 logging_section:
@@ -317,21 +330,4 @@ if($qwcrm_tracker === 'on'){
 // This logs access details to the access log
 if($qwcrm_access_log === 'on'){
     write_record_to_access_log($login_usr);
-}
-
-// This logs errors to the error log
-if($qwcrm_error_log === 'on'){
-    
-    // can i use $VAR['error_msg'] as detection instead?
-    
-    // Error page when logged in - these variables have just been set in the error.php controller
-    if(isset($_SESSION['login_hash']) && isset($_GET['error_msg']) && $module === 'core' && $page === 'error'){
-        write_record_to_error_log($login_usr, $error_type, $error_location, $php_function, $error_msg, $php_error_msg, $database_error);
-    }
-    
-    // Error page when NOT logged in - find out which ones are missing and perhaps do coding on them - most of these variables are not set
-    elseif(!isset($_SESSION['login_hash']) && isset($_GET['error_msg']) && $module === 'core' && $page === 'error') {
-        write_record_to_error_log('-', $_GET['error_type'], $error_location, $php_function, $error_msg, $php_error_msg, $database_error);
-    }
-    
 }

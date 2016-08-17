@@ -1,5 +1,5 @@
 <!-- edit rates -->
-{include file="../js/myitcrm.js"}
+{include file="control/edit_rate.js"}
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <table width="100%" border="0" cellpadding="20" cellspacing="5">
     <tr>

@@ -2,8 +2,6 @@
 
 require('includes'.SEP.'modules'.SEP.'workorder.php');
 
-$wo_id  = $VAR['wo_id'];
-
 /* Assign Varibles to smarty */
 $smarty->assign('single_workorder',         display_single_open_workorder($db, $wo_id)  );
 $smarty->assign('workorder_notes',          display_workorder_notes($db, $wo_id)        );

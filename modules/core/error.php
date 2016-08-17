@@ -13,47 +13,22 @@ $database_error     = $VAR['database_error'];
 preg_match('/.*\?page=(.*)&.*/', getenv('HTTP_REFERER'), $page_string);
 $error_page = $page_string[1];
 
-// regex Error Location: includes:modules:workorder to add slashess and .php
-
-/*
- * page title handling shoul dbe handled in the index.php
- * 
- * this is need to set the page title but does not work here, maybe make it a function called in index.php
- * it is not a big issue
- * split the assign and page title setup
- * this is also a list of error types
- */
-if(isset($error_msg)) {
+// This logs errors to the error log
+if($qwcrm_error_log === 'on'){
     
-    if($error_type == 'error') {
-        $smarty->assign('error_type', 'Error:');
-        $VAR['page_title'] = 'Error';
-        
-    } elseif ($error_type == '') {
-        $smarty->assign('error_type', 'Error:');
-        $VAR['page_title'] = 'Error';             
-        
-    } elseif ($error_type == 'info') {
-        $smarty->assign('error_type', 'Info:');
-        $VAR['page_title'] = 'Info';
-        
-    } elseif ($error_type == 'warning') {
-        $smarty->assign('error_type', 'Warning:');
-        $VAR['page_title'] = "Warning";        
-   
-    } elseif ($error_type == 'database') {
-        $smarty->assign('error_type', 'Database Error:');
-        $VAR['page_title'] = "Database Error";
-        
-    } elseif ($error_type == 'system') {
-        $smarty->assign('error_type', 'System Error');
-        $VAR['page_title'] = "System Error";
+    // can i use $VAR['error_msg'] as detection instead?
+    
+    // Error page when logged in - these variables have just been set in the error.php controller
+    if(isset($_SESSION['login_hash']) && isset($_GET['error_msg']) && $module === 'core' && $page === 'error'){
+        write_record_to_error_log($login_usr, $error_type, $error_location, $php_function, $error_msg, $php_error_msg, $database_error);
     }
+    
+    // Error page when NOT logged in - find out which ones are missing and perhaps do coding on them - most of these variables are not set
+    elseif(!isset($_SESSION['login_hash']) && isset($_GET['error_msg']) && $module === 'core' && $page === 'error') {
+        write_record_to_error_log('-', $_GET['error_type'], $error_location, $php_function, $error_msg, $php_error_msg, $database_error);
+    }
+    
 }
-//$smarty->assign('page_title', $VAR['page_title']);
-
-
-
 
 $smarty->assign('error_type',       $error_type             );
 $smarty->assign('error_location',   $error_location         );
@@ -63,4 +38,10 @@ $smarty->assign('error_msg',        $error_msg              );
 $smarty->assign('php_error_msg',    $php_error_msg          );
 $smarty->assign('database_error',   $database_error         );
 
-$smarty->display('core'.SEP.'error.tpl');
+// examine how i want this part to work and if i want to include the above block in the same place
+// maybe on if advanced debug is turned on?
+if($VAR['theme'] != 'off' && $login_account_type != 6){
+    $smarty->display('core'.SEP.'error.tpl');
+} else {
+    echo 'an error has occured but you are not allowed to see it if you are a guest';
+}

@@ -7,9 +7,7 @@ if(empty($VAR['wo_id'])){
     exit;
 }
     
-$wo_id                  = $VAR['wo_id'];
 $assign_status          = $VAR['assign_status'];
-$logged_in_employee_id  = $_SESSION['login_id'];
 $target_employee_id     = $VAR['assign_employee_val']; // This is automatically created by <form>{$employee_list}</form>
 
 /* Load the specifed work order details */
@@ -25,12 +23,12 @@ if(isset($VAR['assign_status'])){
 
 /* Assign Work Order to another employee */
 if (isset($VAR['assign_employee'])) {
-    assign_work_order_to_employee($db, $wo_id, $logged_in_employee_id, $assigned_employee_id, $target_employee_id);
+    assign_work_order_to_employee($db, $wo_id, $login_id, $assigned_employee_id, $target_employee_id);
 }
 
 /* Delete a Work Order */
 if (isset($VAR['delete'])) {
-    delete_work_order($db, $wo_id, $logged_in_employee_id);            
+    delete_work_order($db, $wo_id, $login_id);            
 }
 
 $smarty->assign('employee_list',        build_active_employee_form_option_list($db, $assigned_employee_id)  );

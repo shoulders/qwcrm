@@ -1,4 +1,4 @@
-<!-- navigation.tpl -->{$employee_id}
+<!-- theme_menu_block.tpl -->
 <table width="150" border="2" cellspacing="0" cellpadding="0">
     <tr>
         <td>
@@ -134,7 +134,7 @@
         </div>
         {/if}
         
-        <!-- MyITCRM Info / Project -->
+        <!-- QWcrm Info / Project -->
         <div>
             <span>{$translate_menu_project}</span>
             <a href="http://quantumwarp.com/" target="_blank"><img src="{$theme_images_dir}icons/web.png" alt="" border="0" height="14" width="14" /> Website</a>
