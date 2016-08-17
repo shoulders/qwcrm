@@ -13,7 +13,7 @@
 </script>
 {/literal}
 
-{include file='core/submit_ticket.js'}                        
+{include file='user/ticket_new.js'}                        
                         
 <table class="olotable" width="60%" align="left" border ="1" cellpadding="5" cellspacing="5" >
     <tr>

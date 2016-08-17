@@ -25,6 +25,8 @@ if(isset($VAR['submit'])) {
 
     }
     
+    // can i add these in to 1 statement
+    
     // Make Error Page (core:error) always be accessible to all account types 
     $q = "UPDATE ".PRFX."ACL SET `Administrator`= 1, `Manager`=1, `Supervisor`=1,`Technician`=1, `Client`=1, `Guest`=1 WHERE`page`= 'core:error'";
     if(!$rs = $db->execute($q)) {
@@ -38,7 +40,7 @@ if(isset($VAR['submit'])) {
         exit;    
     }
         
-    force_page('control', 'acl&msg=Permisions Updated');
+    force_page('control', 'acl','inforamtion_msg=Permisions Updated');
 
 } else {
     $q = "SELECT * FROM ".PRFX."ACL ORDER BY page";

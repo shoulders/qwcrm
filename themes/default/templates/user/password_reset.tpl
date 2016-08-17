@@ -1,6 +1,7 @@
 <!-- Begin reset_password.tpl-->
 
 <!-- if password is reset whilst someone is logged in, force loggout -->
+{include file='user/password_reset.js'}
 
 <table class="olotable"  border="0" align="center">
     <tr>
