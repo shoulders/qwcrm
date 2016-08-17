@@ -1319,7 +1319,11 @@ function create_acl($db) {
 (79, 'refund:refund_details', 1, 1, 1, 1, 0),
 (80, 'refund:edit', 1, 1, 1, 1, 0),
 (81, 'expense:edit', 1, 1, 1, 1, 0),
-(82, 'supplier:edit', 1, 1, 1, 1, 0)";
+(82, 'supplier:edit', 1, 1, 1, 1, 0),
+(83, 'help:about', 1, 1, 1, 1, 0),
+(84, 'help:attribution', 1, 1, 1, 1, 0),
+(85, 'help:license', 1, 1, 1, 1, 0),
+(86, 'help:update', 1, 1, 1, 1, 0)";
         $rs = $db->Execute($q);
             if(!$rs) {
                 return false;

@@ -136,7 +136,12 @@
         
         <!-- QWcrm Info / Project -->
         <div>
-            <span>{$translate_menu_project}</span>
+            <span>{$translate_menu_project}<br />- Help</span>
+            <a href="?page=help:about"><img src="{$theme_images_dir}icons/web.png" alt="" border="0" height="14" width="14" /> About</a>
+            <a href="?page=help:attribution"><img src="{$theme_images_dir}icons/web.png" alt="" border="0" height="14" width="14" /> Attribution</a>
+            <a href="?page=help:license"><img src="{$theme_images_dir}icons/web.png" alt="" border="0" height="14" width="14" /> License</a>
+            <a href="?page=help:update"><img src="{$theme_images_dir}icons/web.png" alt="" border="0" height="14" width="14" /> Update</a>
+            
             <a href="http://quantumwarp.com/" target="_blank"><img src="{$theme_images_dir}icons/web.png" alt="" border="0" height="14" width="14" /> Website</a>
             <a href="http://quantumwarp.com/" target="_blank"><img src="{$theme_images_dir}icons/invoice.png" alt="" border="0" height="14" width="14" /> Documentation</a>
             <a href="https://github.com/shoulders/myitcrm/issues" target="_blank"><img src="{$theme_images_dir}icons/bug.png" alt=""border="0" height="14" width="14" /> Bug Tracker</a>
