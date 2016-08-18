@@ -298,7 +298,7 @@ if(check_acl($db, $login_account_type, $module, $page)){
   
     // Display Footer Legacy Template code Block (closes content table)
     if($VAR['theme'] != 'off' && $login_account_type != 6){
-        $smarty->display('core'.SEP.'blocks'.SEP.'theme_footer_legacy_supplement_block.tpl');;             
+        $smarty->display('core'.SEP.'blocks'.SEP.'theme_footer_legacy_supplement_block.tpl');             
     }
     
     // Display the Footer Block

@@ -1,13 +1,11 @@
 <?php
 
-// This is already called in theme_header_block.php see issue #117
-//require('includes'.SEP.'modules'.SEP.'core.php');
+require('includes'.SEP.'modules'.SEP.'core.php');
 
 /** Misc **/
 
 /* Display Welcome Note */
 $smarty->assign('welcome_note', display_welcome_note($db));
-
 
 /** Work Orders **/
 
@@ -48,12 +46,6 @@ $smarty->assign('in_part_bal', sum_outstanding_balances_partially_paid_invoices(
 $smarty->assign('in_paid_count',count_all_paid_invoices($db));
 
 
-
-
-
-
-
-
 /** Discounts **/
 
 /* Sum of Discounts on Paid Invoices - NOT USED */
@@ -88,9 +80,11 @@ $in_out_bal = $in_unpaid_bal ;
 $smarty->assign('in_out_bal',$in_out_bal);
 
 
+
+
 /** Customers **/
 
-/*new customers this month */
+/* new customers this month */
 $smarty->assign('cu_month_count', new_customers_during_period($db, 'month'));
 
 /* new customers this year */
@@ -101,9 +95,6 @@ $smarty->assign('cu_total_count', count_all_customers($db));
 
 
 /** Employee **/
-
-/* Get Employee Credentials */ // not used - replaced by session stuff - when remove from here add not to core.php function
-//$smarty->assign('employee_record', get_employee_record_by_username($db, $login_usr));
 
 /* Logged in Employee - Open Work Orders count */
 $smarty->assign('employee_workorders_open_count', count_employee_workorders_with_status($db, $login_id, 10));

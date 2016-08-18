@@ -1,6 +1,6 @@
 <?php
 
-//require('includes'.SEP.'modules'.SEP.'core.php');
+require('includes'.SEP.'modules'.SEP.'core.php');
 
 $error_type         = $VAR['error_type'];
 $error_location     = $VAR['error_location'];
