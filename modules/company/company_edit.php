@@ -135,6 +135,7 @@ $q = 'UPDATE '.PRFX.'SETUP SET
     
     $smarty->assign('country', $country);
     $smarty->assign('setup', $setup);
-    $smarty->assign('company', $arr);
-    $smarty->display('control/company_edit.tpl');
+    $smarty->assign('company', $arr);    
+
+    $smarty->display('company'.SEP.'company_edit.tpl');
 }

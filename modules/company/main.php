@@ -1,3 +1,3 @@
 <?php
-$smarty->display('control'.SEP.'main.tpl');
-?>
+
+$smarty->display('company'.SEP.'main.tpl');

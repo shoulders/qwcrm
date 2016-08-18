@@ -77,5 +77,6 @@ if(isset($VAR['submit'])) {
 
     $arr = $rs->GetArray();
     $smarty->assign('rate', $arr);
-    $smarty->display('control'.SEP.'edit_rate.tpl');
+    
+    $smarty->display('company'.SEP.'edit_rate.tpl');
 }

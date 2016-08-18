@@ -5,7 +5,7 @@
 {literal}
 <form action="index.php?page=stats:main" method="POST" name="stats_report" id="stats_report"> 
 {/literal}
-<table width="65%" border="0" cellpadding="20" cellspacing="5">
+<table width="650px" border="0" cellpadding="20" cellspacing="5">
   <tr>
     <td class="olotd">
       <table width="100%" cellpadding="4" cellspacing="0" border="0" >
@@ -49,7 +49,7 @@
           <td align="center"><input type="submit" name="submit" value="{$translate_stats_submit}"></td>
         </tr>
 </table>
-<table width="65%" class="olotable"  border="0" cellpadding="4" cellspacing="0">
+<table width="650px" class="olotable"  border="0" cellpadding="4" cellspacing="0">
     <tr>
         <td class="olotd">
             <table width="100%" cellpadding="4" cellspacing="0" border="0" >
@@ -132,7 +132,7 @@
 <br />
 <div style="width: 65%; text-align: center;">Taxable Profit = Invoiced - (Expenses - Refunds)</div>
 <br />
-<table width="65%" class="olotable"  border="0" cellpadding="4" cellspacing="0">
+<table width="650px" class="olotable"  border="0" cellpadding="4" cellspacing="0">
     <tr>
         <td class="olotd">
             <table width="100%" cellpadding="4" cellspacing="0" border="0" >

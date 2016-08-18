@@ -1,4 +1,4 @@
 <?php
 
-$smarty->display('help'.SEP.'update.tpl');
+$smarty->display('administrator'.SEP.'update.tpl');
 

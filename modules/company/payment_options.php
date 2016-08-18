@@ -127,7 +127,7 @@ if(isset($VAR['submit'])) {
         $smarty->assign( 'PAYMATE_FEES', $PAYMATE_FEES );
         $smarty->assign( 'AN_LOGIN_ID', $AN_LOGIN_ID );
         //$smarty->assign( 'epass', $epass );
-
-    $smarty->display('control'.SEP.'payment_options.tpl');
+   
+    $smarty->display('company'.SEP.'payment_options.tpl');
 
 }

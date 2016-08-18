@@ -46,5 +46,6 @@ if(isset($VAR['submit']) ) {
     
     $smarty->assign('hour', $hour );
     $smarty->assign('arr', $arr);
-    $smarty->display('control/hours_edit.tpl');
+    
+    $smarty->display('company'.SEP.'hours_edit.tpl');
 }

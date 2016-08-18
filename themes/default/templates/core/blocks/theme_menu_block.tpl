@@ -90,7 +90,7 @@
                     <a href="?page=refund:search&amp;page_title={$translate_refund_search_title} onclick="confirmDelete({$refund_id});"><img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" /> {$translate_refund_nav_delete}</a>
                 {/if}
                 
-                <a href="?page=stats:main&amp;page_title=Stats"><img src="{$theme_images_dir}icons/reports.png" alt="" border="0" height="14" width="14" /> Financial {$translate_stats_nav_report}</a>
+                <a href="?page=report:financial&amp;page_title=Financial Report"><img src="{$theme_images_dir}icons/reports.png" alt="" border="0" height="14" width="14" /> Financial {$translate_stats_nav_report}</a>
                 
             </div>
         {/if}
@@ -115,10 +115,10 @@
         {if $login_account_type == 1}
         <div>
             <span>{$translate_menu_setup}</span>
-            <a href="?page=control:company_edit"><img src="{$theme_images_dir}icons/key.png" alt="" border="0" height="14" width="14" /> Business Setup</a>
-            <a href="?page=control:hours_edit"><img src="{$theme_images_dir}icons/clock.gif" alt="" border="0" height="14" width="14" /> Business Hours</a>
-            <a href="?page=control:payment_options"><img src="{$theme_images_dir}icons/money.png" alt="" border="0" height="14" width="14" /> Payment Options</a>
-            <a href="?page=control:edit_rate"><img src="{$theme_images_dir}icons/money.png" alt="" border="0" height="14" width="14" /> Invoice Rates</a>
+            <a href="?page=company:company_edit"><img src="{$theme_images_dir}icons/key.png" alt="" border="0" height="14" width="14" /> Business Setup</a>
+            <a href="?page=company:hours_edit"><img src="{$theme_images_dir}icons/clock.gif" alt="" border="0" height="14" width="14" /> Business Hours</a>
+            <a href="?page=company:payment_options"><img src="{$theme_images_dir}icons/money.png" alt="" border="0" height="14" width="14" /> Payment Options</a>
+            <a href="?page=company:edit_rate"><img src="{$theme_images_dir}icons/money.png" alt="" border="0" height="14" width="14" /> Invoice Rates</a>
         </div>
         {/if}
 
@@ -134,13 +134,16 @@
                     <a href="?page=employees:edit&amp;employee_id={$employee_id}&amp;page_title={$translate_menu_edit}"><img src="{$theme_images_dir}icons/edit_employees.gif" alt="" border="0" height="14" width="14" /> Edit Employee</a>
                 {/if}
 
-                <a href="?page=control:acl"><img src="{$theme_images_dir}icons/encrypted.png" alt="" border="0" height="14" width="14" /> Edit Permissions</a>
+                <a href="?page=administrator:acl"><img src="{$theme_images_dir}icons/encrypted.png" alt="" border="0" height="14" width="14" /> Edit Permissions</a>
 
-                <a href="?page=stats:main&amp;page_title=Stats"><img src="{$theme_images_dir}icons/reports.png" alt="" border="0" height="14" width="14" /> Hits Stats</a>
+                <a href="?page=stats:hit_stats&page_title=Stats"><img src="{$theme_images_dir}icons/reports.png" alt="" border="0" height="14" width="14" /> Hits Stats</a>
+                <a href="?page=stats:hit_stats_view&page_title=Stats View"><img src="{$theme_images_dir}icons/reports.png" alt="" border="0" height="14" width="14" /> Hits Stats View</a>
 
-            <a href="?page=control:backup"><img src="{$theme_images_dir}icons/db_restore.png" alt="" border="0" height="14" width="14" /> Restore Database</a>
-            <a href="modules/core/backup.php"><img src="{$theme_images_dir}icons/db_save.png" alt="" border="0" height="14" width="14" /> Backup Database</a>
+            <a href="?page=administrator:backup"><img src="{$theme_images_dir}icons/db_restore.png" alt="" border="0" height="14" width="14" /> Backup Database</a>
+            <a href="?page=administrator:restore"><img src="{$theme_images_dir}icons/db_save.png" alt="" border="0" height="14" width="14" /> Restore Database</a>
             <a href="?page=administrator:php_info&theme=off"><img src="{$theme_images_dir}icons/php.png" alt="" border="0" height="14" width="14" /> PHP Info</a>
+            <a href="?page=administrator:update"><img src="{$theme_images_dir}icons/web.png" alt="" border="0" height="14" width="14" />Check for Updates 1</a>
+            <a href="?page=administrator:check_updates"><img src="{$theme_images_dir}icons/web.png" alt="" border="0" height="14" width="14" />Check for Updates 2</a>
             {/if}
         </div>
         
@@ -149,8 +152,7 @@
             <span>{$translate_menu_project}<br />- Help</span>
             <a href="?page=help:about"><img src="{$theme_images_dir}icons/web.png" alt="" border="0" height="14" width="14" /> About</a>
             <a href="?page=help:attribution"><img src="{$theme_images_dir}icons/web.png" alt="" border="0" height="14" width="14" /> Attribution</a>
-            <a href="?page=help:license"><img src="{$theme_images_dir}icons/web.png" alt="" border="0" height="14" width="14" /> License</a>
-            <a href="?page=help:update"><img src="{$theme_images_dir}icons/web.png" alt="" border="0" height="14" width="14" /> Update</a>
+            <a href="?page=help:license"><img src="{$theme_images_dir}icons/web.png" alt="" border="0" height="14" width="14" /> License</a>            
             
             <a href="http://quantumwarp.com/" target="_blank"><img src="{$theme_images_dir}icons/web.png" alt="" border="0" height="14" width="14" /> Website</a>
             <a href="http://quantumwarp.com/" target="_blank"><img src="{$theme_images_dir}icons/invoice.png" alt="" border="0" height="14" width="14" /> Documentation</a>

@@ -250,4 +250,4 @@ if(isset($VAR['submit'])){
                         $smarty->assign('taxable_profit_amount', $taxable_profit_amount);
         }
 
-$smarty->display('stats'.SEP.'main.tpl');
+$smarty->display('report'.SEP.'financial.tpl');

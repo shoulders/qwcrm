@@ -7,7 +7,9 @@
 # Version 0.1.0    21/02/2009 11:10:42 PM                                   #
 ###########################################################*/
 
-$page    = 'page=update:check&crm_version='.MYIT_CRM_VERSION.'&theme=off';
+// when fixing move version number assign to global perhaps
+
+$page    = 'page=update:check_updates&crm_version='.MYIT_CRM_VERSION.'&theme=off';
 
 /* get curent version and check against sourceforge */
 $ch = curl_init();
@@ -22,7 +24,7 @@ curl_close ($ch);
 if( $content == '') {
     $smarty->assign('status','0');
     $smarty->assign('message','No response from server');
-    $smarty->display('control'.SEP.'check.tpl');
+    $smarty->display('administrator'.SEP.'check_updates.tpl');
     exit;
 }
 
@@ -63,4 +65,4 @@ $smarty->assign('date',$date);
 $smarty->assign('message',$message);
 $smarty->assign('cur_version',$cur_version);
 
-$smarty->display('control'.SEP.'check.tpl');
+$smarty->display('administrator'.SEP.'check_updates.tpl');

@@ -1,4 +1,6 @@
 <?php
+
+echo 'restore needs fixing before use';die;
 /* Load MySQL Database Settings */
 include_once('conf.php');
 

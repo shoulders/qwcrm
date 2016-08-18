@@ -52,7 +52,7 @@
 
                                             <!-- Forgotton Password -->
                                             <tr align="center">
-                                                <td colspan="2"><a href="index.php?page=reset_password">Forgotten your password?</a></td>
+                                                <td colspan="2"><a href="index.php?page=user:password_reset">Forgotten your password?</a></td>
                                             </tr>
                                         </table>
                                     </form>
