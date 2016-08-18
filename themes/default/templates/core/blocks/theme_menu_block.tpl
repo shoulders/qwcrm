@@ -8,11 +8,17 @@
             <div>                
                 <span>{$translate_core_menu}</span>
                 <a href="index.php"><img src="{$theme_images_dir}icons/home.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_home}</a>
+                <a href="index.php?action=logout"><img src="{$theme_images_dir}icons/logout.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_log_out}</a>                
+            </div>
+            
+            
+            <!-- Schedule -->
+            <div>
+                <span>Schedule</span>
+                <a href="modules/schedule/sync.php"><img src="{$theme_images_dir}icons/16x16/Calendar.gif" alt="" border="0" height="14" width="14" /> Cal Sync</a>                
                 {if $y1 > 0}
                     <a href="index.php?page=schedule:main&amp;y={$y1}&amp;m={$m1}&amp;d={$d1}&amp;page_title=schedule"><img src="{$theme_images_dir}icons/16x16/Calendar.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_schedule}</a>
                 {/if}
-                <a href="modules/schedule/sync.php">Cal Sync</a>
-                <a href="index.php?action=logout"><img src="{$theme_images_dir}icons/logout.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_log_out}</a>
             </div>
             
             <!-- Customers -->
@@ -58,30 +64,9 @@
                 <a href="?page=invoice:view_paid&amp;page_title=Paid%20Invoices"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_paid_2} <b><font color="RED">{if $menu_workorders_paid_count > 0} ({$menu_workorders_paid_count}){/if}{if $menu_workorders_paid_count < 1}{/if}</font></b></a>
                 <a href="?page=invoice:view_unpaid&amp;page_title={$translate_menu_un_paid_2}"><img src="{$theme_images_dir}icons/warning.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_un_paid_2} <b><font color="RED">{if $menu_workorders_unpaid_count > 0} ({$menu_workorders_unpaid_count}){/if}{if $menu_workorders_unpaid_count < 1}{/if}</font></b></a>
             </div>
-            
-            <!-- Administration -->
-            <div>
-                <span>{$translate_menu_administration}</span>
-                <a href="?page=employees:main&amp;page_title={$translate_menu_employees_view}" ><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_employees_view}</a>
-                <!-- Menu limited to Managers or Supervisors -->
-                {if $login_account_type == 1 || $login_account_type == 3}
-                    <a href="?page=employees:new&amp;page_title=New"><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" height="14" width="14" /> New Employee</a>
-                    <a href="?page=stats:main&amp;page_title=Stats"><img src="{$theme_images_dir}icons/reports.png" alt="" border="0" height="14" width="14" /> {$translate_stats_nav_report}</a>
-                {/if}
-                <!-- Menu limited to Managers and Admins -->
-                {if $login_account_type == 1 || $login_account_type == 4}
-                    <a href="?page=employees:new&amp;page_title=New"><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" height="14" width="14" /> New Employee</a>
-                    {if $employee_id > '' || $employee_id > 0 }
-                        <a href="?page=employees:edit&amp;employee_id={$employee_id}&amp;page_title={$translate_menu_edit}"><img src="{$theme_images_dir}icons/edit_employees.gif" alt="" border="0" height="14" width="14" /> Edit Employee</a>
-                    {/if}
-                    <a href="?page=control:edit_rate"><img src="{$theme_images_dir}icons/money.png" alt="" border="0" height="14" width="14" /> Invoice Rates</a>
-                    <a href="?page=control:acl"><img src="{$theme_images_dir}icons/encrypted.png" alt="" border="0" height="14" width="14" /> Edit Permissions</a>
-                    <a href="?page=stats:main&amp;page_title=Stats"><img src="{$theme_images_dir}icons/reports.png" alt="" border="0" height="14" width="14" /> {$translate_stats_nav_report}</a>
-                {/if}
-        </div>
-        
+                    
         <!-- General Ledger -->
-        <!-- Menu limited to Managers and Admins -->
+        <!-- Menu limited to Administrators and Managers -->
         {if $login_account_type == 1 || $login_account_type == 4}
             <div>
                 
@@ -105,11 +90,13 @@
                     <a href="?page=refund:search&amp;page_title={$translate_refund_search_title} onclick="confirmDelete({$refund_id});"><img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" /> {$translate_refund_nav_delete}</a>
                 {/if}
                 
+                <a href="?page=stats:main&amp;page_title=Stats"><img src="{$theme_images_dir}icons/reports.png" alt="" border="0" height="14" width="14" /> Financial {$translate_stats_nav_report}</a>
+                
             </div>
         {/if}
         
-        <!-- Supplier Section -->
-        <!-- Menu limited to Managers and Admins -->
+        <!-- Suppliers -->
+        <!-- Menu limited to Administrators and Managers -->
         {if $login_account_type == 1 || $login_account_type == 4}
             <div>
                 <span>{$translate_supplier_nav_title}</span> 
@@ -122,19 +109,42 @@
                 {/if}
             </div>
         {/if}
+        
+        <!-- Business Setup -->
+        <!-- Menu limited to Administrators -->
         {if $login_account_type == 1}
         <div>
             <span>{$translate_menu_setup}</span>
             <a href="?page=control:company_edit"><img src="{$theme_images_dir}icons/key.png" alt="" border="0" height="14" width="14" /> Business Setup</a>
             <a href="?page=control:hours_edit"><img src="{$theme_images_dir}icons/clock.gif" alt="" border="0" height="14" width="14" /> Business Hours</a>
             <a href="?page=control:payment_options"><img src="{$theme_images_dir}icons/money.png" alt="" border="0" height="14" width="14" /> Payment Options</a>
-            {*<a href="?page=control:backup"><img src="{$theme_images_dir}icons/db_restore.png" alt="" border="0" height="14" width="14" /> Restore Database</a>
-            <a href="modules/core/backup.php"><img src="{$theme_images_dir}icons/db_save.png" alt="" border="0" height="14" width="14" /> Backup Database</a>
-            <a href="#"><img src="{$theme_images_dir}icons/php.png" alt="" border="0" height="14" width="14" /> PHP Info</a>*}
+            <a href="?page=control:edit_rate"><img src="{$theme_images_dir}icons/money.png" alt="" border="0" height="14" width="14" /> Invoice Rates</a>
         </div>
         {/if}
+
+        <!-- Administration -->
+        <div>
+            <span>{$translate_menu_administration}</span>                
+
+            <!-- Menu limited to Administrators and Managers -->
+            {if $login_account_type == 1 || $login_account_type == 4}
+                <a href="?page=employees:main&amp;page_title={$translate_menu_employees_view}" ><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_employees_view}</a>
+                <a href="?page=employees:new&amp;page_title=New"><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" height="14" width="14" /> New Employee</a>
+                {if $employee_id > '' || $employee_id > 0 }
+                    <a href="?page=employees:edit&amp;employee_id={$employee_id}&amp;page_title={$translate_menu_edit}"><img src="{$theme_images_dir}icons/edit_employees.gif" alt="" border="0" height="14" width="14" /> Edit Employee</a>
+                {/if}
+
+                <a href="?page=control:acl"><img src="{$theme_images_dir}icons/encrypted.png" alt="" border="0" height="14" width="14" /> Edit Permissions</a>
+
+                <a href="?page=stats:main&amp;page_title=Stats"><img src="{$theme_images_dir}icons/reports.png" alt="" border="0" height="14" width="14" /> Hits Stats</a>
+
+            <a href="?page=control:backup"><img src="{$theme_images_dir}icons/db_restore.png" alt="" border="0" height="14" width="14" /> Restore Database</a>
+            <a href="modules/core/backup.php"><img src="{$theme_images_dir}icons/db_save.png" alt="" border="0" height="14" width="14" /> Backup Database</a>
+            <a href="?page=administrator:php_info&theme=off"><img src="{$theme_images_dir}icons/php.png" alt="" border="0" height="14" width="14" /> PHP Info</a>
+            {/if}
+        </div>
         
-        <!-- QWcrm Info / Project -->
+        <!-- Help -->
         <div>
             <span>{$translate_menu_project}<br />- Help</span>
             <a href="?page=help:about"><img src="{$theme_images_dir}icons/web.png" alt="" border="0" height="14" width="14" /> About</a>
@@ -156,7 +166,7 @@
     </div>
   </tr>     
 </table>
-<!-- End navigation.tpl -->
+<!-- End theme_menu_block.tpl -->
 
 </td>
 <td valign="top">

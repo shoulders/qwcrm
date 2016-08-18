@@ -1,0 +1,1 @@
+<!-- php_info.tpl - not needed -->

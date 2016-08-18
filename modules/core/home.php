@@ -68,26 +68,14 @@ $unpaid_discounts = sum_of_discounts_on_unpaid_invoices($db);
 
 
 
-
-
+/* need to check all of these */
 
 /* Sum of Paid Invoices */
 $in_total = sum_invoiceamounts_paid_invoices($db);
 
-
-
-
-
-
-
-
-
-
 /* All Time Invoice Totals */
 $in_total_bal = $in_total - $in_out_bal;
 $in_total2 = $in_total ;
-
-
 
 // Total Invoice Monies Recieved
 $smarty->assign('in_total_bal',$in_total_bal);
@@ -117,17 +105,22 @@ $smarty->assign('cu_total_count', count_all_customers($db));
 /* Get Employee Credentials */ // not used - replaced by session stuff - when remove from here add not to core.php function
 //$smarty->assign('employee_record', get_employee_record_by_username($db, $login_usr));
 
-/* Logged in Employee - Open Work Orders */
+/* Logged in Employee - Open Work Orders count */
 $smarty->assign('employee_workorders_open_count', count_employee_workorders_with_status($db, $login_id, 10));
 
-/* Logged in Employee - Assigned Work Orders */
+/* Logged in Employee - Assigned Work Orders count */
 $smarty->assign('employee_workorders_assigned_count', count_employee_workorders_with_status($db, $login_id, 2));
 
-/* Logged in Employee - Work Orders Awaiting Payment*/
+/* Logged in Employee - Work Orders Waiting For Parts count */
+$smarty->assign('employeee_workorders_waiting_for_parts_count', count_employee_workorders_with_status($db, $login_id, 3));
+
+/* Logged in Employee - Work Orders Awaiting Payment count */
 $smarty->assign('employee_workorders_awaiting_payment_count', count_employee_workorders_with_status($db, $login_id, 7));
 
-/* Logged in Employee - Unpaid Invoices */
-$smarty->assign('employee_invoices_unpaid_count', count_employee_invoices_with_status($db, $login_id, 0));
+/* Logged in Employee - Closed Work Orders Awaiting Payment count */
+$smarty->assign('employee_workorders_awaiting_payment_count', count_employee_workorders_with_status($db, $login_id, 6));
 
+/* Logged in Employee - Unpaid Invoices count - NOT USED*/
+$smarty->assign('employee_invoices_unpaid_count', count_employee_invoices_with_status($db, $login_id, 0));
 
 $smarty->display('core'.SEP.'home.tpl');

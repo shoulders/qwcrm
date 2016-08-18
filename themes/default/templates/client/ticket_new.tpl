@@ -1,4 +1,4 @@
-<!-- submit_ticket.tpl -->
+<!-- ticket_new.tpl -->
 
 <!-- Submit a New Support Request - This is were you can submit your support request through of Helpdesk system  -->
 
@@ -13,11 +13,11 @@
 </script>
 {/literal}
 
-{include file='user/ticket_new.js'}                        
+{include file='client/ticket_new.js'}                        
                         
 <table class="olotable" width="60%" align="left" border ="1" cellpadding="5" cellspacing="5" >
     <tr>
-        <td class="olohead" colspan="2">{$translate_submit_page_title}</td>
+        <td class="olohead" colspan="2">{$translate_submit_page_title}Page title</td>
     </tr>
     <tr>
         <td class="olotd5">
@@ -27,7 +27,7 @@
             <br>
             
             {literal}
-            <form action="submit.php" method="post" onsubmit="try { var myValidator = validate_submit; } catch(e) { return true; } return myValidator(this);" >
+            <form action="?page=client:ticket_new" method="post" onsubmit="try { var myValidator = validate_submit; } catch(e) { return true; } return myValidator(this);" >
             {/literal}
 
                 <!-- Let get some info from the customer if this is there first time using this service -->
@@ -46,8 +46,8 @@
                 </script>
                 {/literal}
 
-                <a href="#" id="newuser">{$translate_submit_new_account}</a>
-                <div id="newuserform">
+                <a href="#" id="newu ser">{$translate_submit_new_account}</a>
+                <div id="newus erform">
                     <table width="100%" class="olotd" cellpadding="4" cellspacing="2">
                         <tr>
                             <td colspan="1" width="100" align="right">{$translate_submit_full_name}:</td>
@@ -65,7 +65,6 @@
                 </div>
 
                 <!-- Now lets get the details of the issue -->
-
                 <table>                                            
                     <tr>
                         <td colspan="3"><b><font color="BLUE" size="+1">{$translate_submit_form_heading}</font></b></td>
@@ -121,4 +120,6 @@
         </td>
     </tr>
 </table>
-                                            
+                    
+<!-- why do i need this - is it just this tpl -->
+<div style="clear: both"></div>                        

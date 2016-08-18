@@ -110,21 +110,28 @@
                                     </table>
                                     <br />
                                         
-                                    <!-- Employee Stats -->
-                                    <b>Employee Stats - ADD HERE</b>
+                                    <!-- Currently Logged In Employee Stats -->                                    
+                                    <b>{$translate_main_workorder_stats} ({$login_display_name})</b>
                                     <br>
                                     <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
                                         <tr class="olotd4">
-                                            <td class="row2"><b>{$translate_main_new_customers}</b></td>
-                                            <td class="row2"><b>{$translate_main_new_year_customers}</b></td>
+                                            <td class="row2"><b>{$translate_main_new}</b></td>
+                                            <td class="row2"><b>{$translate_main_assigned}</b></td>
+                                            <td class="row2"><b>{$translate_main_waiting}</b></td>
+                                            <td class="row2"><b>{$translate_main_payment}</b></td>
+                                            <td class="row2"><b>{$translate_main_closed}</b></td>
                                             <td class="row2"><b>{$translate_main_total}</b></td>
                                         </tr>
                                         <tr class="olotd4">
-                                            <td>{$cu_month_count}</td>
-                                            <td>{$cu_year_count}</td>
-                                            <td>{$cu_total_count}</td>
+                                            <td><a href="?page=workorder:open#new">{$employee_workorders_open_count}</a></td>
+                                            <td><a href="?page=workorder:open#assigned">{$employee_workorders_assigned_count}</a></td>
+                                            <td><a href="?page=workorder:open#awaiting">{$employeee_workorders_waiting_for_parts_count}</a></td>
+                                            <td><a href="?page=workorder:open#payment">{$employee_workorders_awaiting_payment_count}</a></td>
+                                            <td><a href="?page=workorder:closed">{$workorders_closed_count}</a></td>
+                                            <td>{$wo_total_count}</td>
                                         </tr>
                                     </table>
+                                    <br>
                                         
                                 </td>
                             </tr>

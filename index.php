@@ -217,10 +217,10 @@ if(!isset($_SESSION['login_hash'])){
         }
         
         // Display the Dashboard Block
-        $smarty->display('core'.SEP.'blocks'.SEP.'home_dashboard_block.tpl');
+        $smarty->display('core'.SEP.'blocks'.SEP.'home_external_dashboard_block.tpl');
         
         // Display the Login Block  
-        $smarty->display('core'.SEP.'blocks'.SEP.'home_login_block.tpl');
+        $smarty->display('core'.SEP.'blocks'.SEP.'home_external_login_block.tpl');
         
         // Display the Footer Block
         if($VAR['theme'] != 'off'){        
