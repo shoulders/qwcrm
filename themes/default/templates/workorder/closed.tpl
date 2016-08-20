@@ -90,7 +90,7 @@
                                                             <img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0"
                                                                  onMouseOver="ddrivetip('<center><b>{$translate_workorder_contact_info_tooltip_title}</b></center><hr><b>{$translate_workorder_fax}: </b>{$work_order.EMPLOYEE_WORK_PHONE}<br><b>{$translate_workorder_mobile}: </b>{$work_order.EMPLOYEE_MOBILE_PHONE}<br><b>{$translate_workorder_home}: </b>{$work_order.EMPLOYEE_HOME_PHONE}');"
                                                                  onMouseOut="hideddrivetip();">
-                                                            <a class="link1" href="?page=employees:employee_details&employee_id={$work_order.EMPLOYEE_ID}&page_title={$work_order.EMPLOYEE_DISPLAY_NAME}">{$work_order.EMPLOYEE_DISPLAY_NAME}</a>
+                                                            <a class="link1" href="?page=employee:employee_details&employee_id={$work_order.EMPLOYEE_ID}&page_title={$work_order.EMPLOYEE_DISPLAY_NAME}">{$work_order.EMPLOYEE_DISPLAY_NAME}</a>
                                                         </td>
                                                     </tr>
                                                     {else}

@@ -82,7 +82,7 @@ else
                             <tr>
                                 <td>
                                     {literal}
-                                    <form method="get" action="?page=employees:main" onsubmit="try { var myValidator = validate_employee_search; } catch(e) { return true; } return myValidator(this);">
+                                    <form method="get" action="?page=employee:main" onsubmit="try { var myValidator = validate_employee_search; } catch(e) { return true; } return myValidator(this);">
                                     {/literal}
                                                                         <table border="0">
                                                                             <p>
@@ -103,32 +103,32 @@ else
                                 </td>
                                 <td valign="top">
                                 <form id="1">
-                                    <a href="?page=employees%3Amain&name={$name}&submit=submit&page_no=1"><img src="{$theme_images_dir}rewnd_24.gif" border="0"></a>&nbsp;
+                                    <a href="?page=employee%3Amain&name={$name}&submit=submit&page_no=1"><img src="{$theme_images_dir}rewnd_24.gif" border="0"></a>&nbsp;
                                     {if $previous != ''}
-                                        <a href="?page=employees%3Amain&name={$name}&submit=submit&page_no={$previous}"><img src="{$theme_images_dir}back_24.gif" border="0"></a>&nbsp;
+                                        <a href="?page=employee%3Amain&name={$name}&submit=submit&page_no={$previous}"><img src="{$theme_images_dir}back_24.gif" border="0"></a>&nbsp;
                                     {/if}
                                     <select name="page_no" onChange="go()">
                                     {section name=page loop=$total_pages start=1}
-                                        <option value="?page=employees%3Amain&name={$name}&submit=submit&page_no={$smarty.section.page.index}" {if $page_no == $smarty.section.page.index } Selected {/if}>
+                                        <option value="?page=employee%3Amain&name={$name}&submit=submit&page_no={$smarty.section.page.index}" {if $page_no == $smarty.section.page.index } Selected {/if}>
                                             {$translate_employee_page} {$smarty.section.page.index} {$translate_employee_of} {$total_pages}
                                         </option>
                                     {/section}
-                                        <option value="?page=employees%3Amain&name={$name}&submit=submit&page_no={$total_pages}" {if $page_no == $total_pages} selected {/if}>
+                                        <option value="?page=employee%3Amain&name={$name}&submit=submit&page_no={$total_pages}" {if $page_no == $total_pages} selected {/if}>
                                             {$translate_employee_page} {$total_pages} {$translate_employee_of} {$total_pages}
                                         </option>
                                     </select>
                                     {if $next != ''}
-                                    <a href="?page=employees%3Amain&name={$name}&submit=submit&page_no={$next}"><img src="{$theme_images_dir}forwd_24.gif" border="0"></a>
+                                    <a href="?page=employee%3Amain&name={$name}&submit=submit&page_no={$next}"><img src="{$theme_images_dir}forwd_24.gif" border="0"></a>
                                     {/if}
                                     
-                                    <a href="?page=employees%3Amain&name={$name}&submit=submit&page_no={$total_pages}"><img src="{$theme_images_dir}fastf_24.gif" border="0"></a>
+                                    <a href="?page=employee%3Amain&name={$name}&submit=submit&page_no={$total_pages}"><img src="{$theme_images_dir}fastf_24.gif" border="0"></a>
                                     <br>
                                     {$total_results} {$translate_employee_records_found}
                                 </td>
                             </tr><tr>
                                 <td valign="top" colspan="2">
                                     {foreach  from=$alpha item=alpha}
-                                        &nbsp;<a href="?page=employees%3Amain&name={$alpha}&submit=submit">{$alpha}</a>&nbsp;
+                                        &nbsp;<a href="?page=employee%3Amain&name={$alpha}&submit=submit">{$alpha}</a>&nbsp;
                                     {/foreach}
                                     
                                 </td>
@@ -146,8 +146,8 @@ else
                                 <td class="olohead">{$translate_employee_action}</td>
                             </tr>
                             {section name=i loop=$employee_search_result}
-                            <tr onmouseover="this.className='row2'" onmouseout="this.className='row1'" onDblClick="window.location='index.php?page=employees:employee_details&employee_id={$employee_search_result[i].EMPLOYEE_ID}&page_title={$translate_employee_details_for} {$employee_search_result[i].EMPLOYEE_DISPLAY_NAME}';" class="row1">
-                                <td class="olotd4"><a href="?page=employees:employee_details&employee_id={$employee_search_result[i].EMPLOYEE_ID}&page_title={$translate_employee_details_for} {$employee_search_result[i].EMPLOYEE_DISPLAY_NAME}">{$employee_search_result[i].EMPLOYEE_ID}</a></td>
+                            <tr onmouseover="this.className='row2'" onmouseout="this.className='row1'" onDblClick="window.location='index.php?page=employee:employee_details&employee_id={$employee_search_result[i].EMPLOYEE_ID}&page_title={$translate_employee_details_for} {$employee_search_result[i].EMPLOYEE_DISPLAY_NAME}';" class="row1">
+                                <td class="olotd4"><a href="?page=employee:employee_details&employee_id={$employee_search_result[i].EMPLOYEE_ID}&page_title={$translate_employee_details_for} {$employee_search_result[i].EMPLOYEE_DISPLAY_NAME}">{$employee_search_result[i].EMPLOYEE_ID}</a></td>
                                 <td class="olotd4">
                                     <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('{$employee_search_result[i].EMPLOYEE_ADDRESS}<br>{$employee_search_result[i].EMPLOYEE_CITY}, {$employee_search_result[i].EMPLOYEE_SATE}  {$employee_search_result[i].EMPLOYEE_ZIP}')" onMouseOut="hideddrivetip()">
                                     {$employee_search_result[i].EMPLOYEE_DISPLAY_NAME}
@@ -163,7 +163,7 @@ else
                                 <td class="olotd4">{$employee_search_result[i].TYPE_NAME}</td>
                                 <td class="olotd4"><a href="mailto: {$employee_search_result[i].EMPLOYEE_EMAIL}"><font class="blueLink">{$employee_search_result[i].EMPLOYEE_EMAIL}</font></a></td>
                                 <td class="olotd4">
-                                    <a href="?page=employees:employee_details&employee_id={$employee_search_result[i].EMPLOYEE_ID}&page_title={$translate_employee_details_for} {$employee_search_result[i].EMPLOYEE_DISPLAY_NAME}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif"  border="0" onMouseOver="ddrivetip('View Employees Details')" onMouseOut="hideddrivetip()"></a>&nbsp;<a href="?page=employees:edit&employee_id={$employee_search_result[i].EMPLOYEE_ID}&page_title={$translate_employee_edit} {$employee_search_result[i].EMPLOYEE_DISPLAY_NAME}"><img src="{$theme_images_dir}icons/16x16/small_edit_employees.gif" border="0" onMouseOver="ddrivetip('Edit')" onMouseOut="hideddrivetip()"></a>
+                                    <a href="?page=employee:employee_details&employee_id={$employee_search_result[i].EMPLOYEE_ID}&page_title={$translate_employee_details_for} {$employee_search_result[i].EMPLOYEE_DISPLAY_NAME}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif"  border="0" onMouseOver="ddrivetip('View Employees Details')" onMouseOut="hideddrivetip()"></a>&nbsp;<a href="?page=employee:edit&employee_id={$employee_search_result[i].EMPLOYEE_ID}&page_title={$translate_employee_edit} {$employee_search_result[i].EMPLOYEE_DISPLAY_NAME}"><img src="{$theme_images_dir}icons/16x16/small_edit_employee.gif" border="0" onMouseOver="ddrivetip('Edit')" onMouseOut="hideddrivetip()"></a>
                                 </td>
                             </tr>
                             {/section}
@@ -182,6 +182,6 @@ else
         </td>
     </tr>
 </table>
-<!--                    <td><a href="?page=employees:new">New Employee</a></td> -->
+<!--                    <td><a href="?page=employee:new">New Employee</a></td> -->
             
             

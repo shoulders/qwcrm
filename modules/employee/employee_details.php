@@ -1,6 +1,6 @@
 <?php
 require_once("include.php");
-if(!xml2php("employees")) {
+if(!xml2php("employee")) {
     $smarty->assign('error_msg',"Error in language file");
 }
 
@@ -13,4 +13,4 @@ $employee_id = $VAR['employee_id'];
 $smarty->assign('open_work_orders', display_open_workorders($db, $employee_id));
 $smarty->assign('employee_details', display_employee_info($db, $employee_id));
 
-$smarty->display('employees'.SEP.'employee_details.tpl');
+$smarty->display('employee'.SEP.'employee_details.tpl');

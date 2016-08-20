@@ -11,4 +11,4 @@
 ####################################################
 require_once("include.php");
 
-$smarty->display('employees'.SEP.'delete.tpl');
+$smarty->display('employee'.SEP.'delete.tpl');

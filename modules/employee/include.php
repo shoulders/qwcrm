@@ -6,7 +6,7 @@
 #  Version 0.0.1    Fri Sep 30 09:30:10 PDT 2005        #
 #                                                        #
 #########################################################
-if(!xml2php("employees")) {
+if(!xml2php("employee")) {
     $smarty->assign('error_msg',"Error in language file");
 }
 

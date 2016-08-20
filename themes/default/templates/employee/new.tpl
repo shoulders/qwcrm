@@ -18,7 +18,7 @@
                             <table class="menutable" width="100%" border="0" cellpadding="0" cellspacing="0" >
                                 <tr>
                                     <td class="menutd">
-                                        <input type="hidden" name="page" value="employees:new">
+                                        <input type="hidden" name="page" value="employee:new">
 
                                         <table width="100%" cellpadding="2" cellspacing="2" border="0" class="menutd2">
                                             <tr>
@@ -28,7 +28,7 @@
                                                             <td colspan="2" align="left">
                                                                 <table>
                                                                     <tbody align="left">
-                                                                        <tr>{include file="employees/emp_new.js"}
+                                                                        <tr>{include file="employee/emp_new.js"}
                                                                             <td><span style="color: #ff0000">*</span>
                                                                                 <strong>{$translate_employee_display_name}</strong></td>
                                                                             <td colspan="3"><input size="60" name="displayName" type="text" class="olotd5" /></td>

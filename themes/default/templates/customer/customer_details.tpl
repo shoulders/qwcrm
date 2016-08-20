@@ -176,7 +176,7 @@ window.open({/literal}$src{literal}, menubar=0)
                                         <br>
                                         <b>{/literal}{$translate_home} {literal}</b>
                                         {/literal}{$open_work_orders[a].EMPLOYEE_HOME_PHONE}')" onMouseOut="hideddrivetip()">
-                                        <a class="link1" href="?page=employees:employee_details&employee_id={$open_work_orders[a].EMPLOYEE_ID}&page_title={$open_work_orders[a].EMPLOYEE_DISPLAY_NAME}">{$open_work_orders[a].EMPLOYEE_DISPLAY_NAME}</a> { else } Not Assigned
+                                        <a class="link1" href="?page=employee:employee_details&employee_id={$open_work_orders[a].EMPLOYEE_ID}&page_title={$open_work_orders[a].EMPLOYEE_DISPLAY_NAME}">{$open_work_orders[a].EMPLOYEE_DISPLAY_NAME}</a> { else } Not Assigned
                                     {/if}
                                 </td>
                                 <td class="olotd4" align="center">
@@ -215,7 +215,7 @@ window.open({/literal}$src{literal}, menubar=0)
                                             {$open_work_orders[a].EMPLOYEE_MOBILE_PHONE}
                                             <br>
                                             <b>{$translate_home} </b> {literal}{$closed_work_orders[a].EMPLOYEE_HOME_PHONE}')" onMouseOut="hideddrivetip()">{/literal}
-                                    <a class="link1" href="?page=employees:employee_details&employee_id={$closed_work_orders[b].EMPLOYEE_ID}&page_title={$closed_work_orders[b].EMPLOYEE_DISPLAY_NAME}">{$closed_work_orders[b].EMPLOYEE_DISPLAY_NAME}</a> { else } Not Assigned {/if}</td>
+                                    <a class="link1" href="?page=employee:employee_details&employee_id={$closed_work_orders[b].EMPLOYEE_ID}&page_title={$closed_work_orders[b].EMPLOYEE_DISPLAY_NAME}">{$closed_work_orders[b].EMPLOYEE_DISPLAY_NAME}</a> { else } Not Assigned {/if}</td>
                                 <td class="olotd4" align="center">
                                     <a href="?page=workorder:print&wo_id={$closed_work_orders[b].WORK_ORDER_ID}&customer_id={$closed_work_orders[b].CUSTOMER_ID}&theme=off" target="new">
                                         <img src="{$theme_images_dir}icons/16x16/fileprint.gif" alt="" border="0" onMouseOver="ddrivetip('{$translate_customer_print}')" onMouseOut="hideddrivetip()"></a>

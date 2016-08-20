@@ -1,6 +1,6 @@
 <?php
 /* load translation for this module */
-if(!xml2php('employees')) {
+if(!xml2php('employee')) {
     $smarty->assign('error_msg',"Error in language file");
 }
 

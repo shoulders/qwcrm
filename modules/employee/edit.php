@@ -1,6 +1,6 @@
 <?php
 require_once("include.php");
-if(!xml2php("employees")) {
+if(!xml2php("employee")) {
     $smarty->assign('error_msg',"Error in language file");
 }
 
@@ -56,10 +56,10 @@ if(isset($VAR['submit']) ) {
         force_page('core', 'error&error_msg=Error updateing Employee Information');    
     }
 
-    force_page('employees', 'employee_details&employee_id='.$VAR['employee_id'].'&page_title=Employees');    
+    force_page('employee', 'employee_details&employee_id='.$VAR['employee_id'].'&page_title=Employees');    
 
 } else {
     $smarty->assign('employee_type', employee_type($db));
     $smarty->assign('employee_details', display_employee_info($db, $VAR['employee_id']));
-    $smarty->display('employees'.SEP.'edit.tpl');
+    $smarty->display('employee'.SEP.'edit.tpl');
 }

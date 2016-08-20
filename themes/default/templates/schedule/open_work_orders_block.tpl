@@ -41,7 +41,7 @@
                     {$open_workorders.WORK_ORDER_SCOPE}</td>
                     <td class="olotd4">{$open_workorders.WORK_ORDER_CURRENT_STATUS}</td>
                     <td class="olotd4" nowrap>
-                        <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<center><b>Contact</b></center><hr><b>Work: </b>{$open_workorders.EMPLOYEE_WORK_PHONE}<br><b>Mobile: </b>{$open_workorders.EMPLOYEE_MOBILE_PHONE}<br><b>Home: </b>{$open_workorders.EMPLOYEE_HOME_PHONE}')"onMouseOut="hideddrivetip()"><a  href="?page=employees:employee_details&employee_id={$open_workorders.EMPLOYEE_ID}&page_title={$open_workorders.EMPLOYEE_DISPLAY_NAME}">{$open_workorders.EMPLOYEE_DISPLAY_NAME}</a>
+                        <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<center><b>Contact</b></center><hr><b>Work: </b>{$open_workorders.EMPLOYEE_WORK_PHONE}<br><b>Mobile: </b>{$open_workorders.EMPLOYEE_MOBILE_PHONE}<br><b>Home: </b>{$open_workorders.EMPLOYEE_HOME_PHONE}')"onMouseOut="hideddrivetip()"><a  href="?page=employee:employee_details&employee_id={$open_workorders.EMPLOYEE_ID}&page_title={$open_workorders.EMPLOYEE_DISPLAY_NAME}">{$open_workorders.EMPLOYEE_DISPLAY_NAME}</a>
                     </td>
                     <td class="olotd4" align="center" nowrap>
                         <a href="?page=workorder:print&wo_id={$open_workorders.WORK_ORDER_ID}&customer_id={$open_workorders.CUSTOMER_ID}&page_title=Print Work Order ID {$open_workorders.WORK_ORDER_ID}&theme=off"><img src="{$theme_images_dir}icons/16x16/fileprint.gif" border="0" onMouseOver="ddrivetip('Print The Work Order')" onMouseOut="hideddrivetip()"></a>

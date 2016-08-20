@@ -785,7 +785,7 @@ echo ("
                                                                         <table width=\"100%\"  cellpadding=\"5\" cellspacing=\"0\" border=\"0\">
                                                                             <tr>
                                                                                 <td>
-                                                                                        Add the default Administrator. This user will have full permissions to the program and database. This user will also be the Manager of all work orders and employees. IE Full Permissions.
+                                                                                        Add the default Administrator. This user will have full permissions to the program and database. This user will also be the Manager of all work orders and employee. IE Full Permissions.
                                                                                         The login will be created bu using the first initial of the first name and the full last name. 
                                                                                 </td>    
                                                                             </tr>

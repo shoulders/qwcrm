@@ -25,7 +25,7 @@
                     </td>
                     <td class="olotd4" nowrap>
                         <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<center><b>Contact</b></center><hr><b>Work: </b>{$assigned.EMPLOYEE_WORK_PHONE}<br><b>Mobile: </b>{$assigned.EMPLOYEE_MOBILE_PHONE}<br><b>Home: </b>{$assigned.EMPLOYEE_HOME_PHONE}')" onMouseOut="hideddrivetip()"> 
-                        <a class="link1" href="?page=employees:employee_details&employee_id={$assigned.EMPLOYEE_ID}&page_title={$assigned.EMPLOYEE_DISPLAY_NAME}">{$assigned.EMPLOYEE_DISPLAY_NAME}</a>
+                        <a class="link1" href="?page=employee:employee_details&employee_id={$assigned.EMPLOYEE_ID}&page_title={$assigned.EMPLOYEE_DISPLAY_NAME}">{$assigned.EMPLOYEE_DISPLAY_NAME}</a>
                     </td>
                     <td class="olotd4" align="center" nowrap>
                         <a href="?page=workorder:details&wo_id={$assigned.WORK_ORDER_ID}&customer_id={$assigned.CUSTOMER_ID}&page_title={$translate_workorder_page_title} {$assigned.WORK_ORDER_ID}"><img src="{$theme_images_dir}icons/16x16/Calendar.gif" width="16" height="16" border="0" onMouseOver="ddrivetip('Schedule this Works Order')" onMouseOut="hideddrivetip()"></a>

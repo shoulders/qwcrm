@@ -29,7 +29,7 @@
             <img src="{$theme_images_dir}icons/16x16/view.gif" border="0"
                  onMouseOver="ddrivetip('<center><b>{$translate_workorder_contact_info_tooltip_title}</b></center><hr><b>{$translate_workorder_fax}: </b>{$assigned.EMPLOYEE_WORK_PHONE}<br><b>{$translate_workorder_mobile}: </b>{$assigned.EMPLOYEE_MOBILE_PHONE}<br><b>{$translate_workorder_home}: </b>{$assigned.EMPLOYEE_HOME_PHONE}');"
                  onMouseOut="hideddrivetip();"> 
-            <a class="link1" href="?page=employees:employee_details&employee_id={$assigned.EMPLOYEE_ID}&page_title={$assigned.EMPLOYEE_DISPLAY_NAME}">{$assigned.EMPLOYEE_DISPLAY_NAME}</a>
+            <a class="link1" href="?page=employee:employee_details&employee_id={$assigned.EMPLOYEE_ID}&page_title={$assigned.EMPLOYEE_DISPLAY_NAME}">{$assigned.EMPLOYEE_DISPLAY_NAME}</a>
         </td>
         <td class="olotd4" align="center" nowrap>
             <a href="?page=workorder:print&wo_id={$assigned.WORK_ORDER_ID}&customer_id={$assigned.CUSTOMER_ID}&page_title=$translate_workorder_print_work_order_id} {$assigned.WORK_ORDER_ID}&theme=off" target="new" >

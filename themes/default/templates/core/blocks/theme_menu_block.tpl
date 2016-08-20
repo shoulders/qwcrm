@@ -27,9 +27,9 @@
                 <a href="?page=customer:new&amp;page_title={$translate_menu_add_new_customer}"><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_add_new}</a>
                 <a href="?page=customer:view&amp;page_title={$translate_menu_customers}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_view}</a>
                 {if $customer_id > 0 }
-                    <a href="?page=customer:edit&amp;customer_id={$customer_id}&amp;page_title={$translate_menu_edit_customer}"><img src="{$theme_images_dir}icons/edit_employees.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_edit_customer}</a>
+                    <a href="?page=customer:edit&amp;customer_id={$customer_id}&amp;page_title={$translate_menu_edit_customer}"><img src="{$theme_images_dir}icons/edit_employee.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_edit_customer}</a>
                     <a href="?page=billing:new_gift&amp;customer_id={$customer_id}&amp;page_title={$translate_menu_new_gift}&amp;customer_name=ADD NAME HERE"><img src="{$theme_images_dir}icons/gift.png" alt="" border="0" height="14" width="14" /> {$translate_menu_new_gift}</a>
-                    <a href="?page=customer:delete&amp;customer_id={$customer_id}&amp;page_title={$translate_menu_delete_customer}"><img src="{$theme_images_dir}icons/delete_employees.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_delete_customer}</a>
+                    <a href="?page=customer:delete&amp;customer_id={$customer_id}&amp;page_title={$translate_menu_delete_customer}"><img src="{$theme_images_dir}icons/delete_employee.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_delete_customer}</a>
                     <!--<a href="?page=customer:email&amp;customer_id={$customer_id}&amp;page_title=Email Customer"><img src="{$theme_images_dir}icons/16x16/email.jpg" alt="" border="0" height="14" width="14" /> {$translate_menu_email_customer}</a>-->
                 {/if}        
             </div>
@@ -128,10 +128,10 @@
 
             <!-- Menu limited to Administrators and Managers -->
             {if $login_account_type_id == 1 || $login_account_type_id == 4}
-                <a href="?page=employees:main&amp;page_title={$translate_menu_employees_view}" ><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_employees_view}</a>
-                <a href="?page=employees:new&amp;page_title=New"><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" height="14" width="14" /> New Employee</a>
+                <a href="?page=employee:main&amp;page_title={$translate_menu_employee_view}" ><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_employee_view}</a>
+                <a href="?page=employee:new&amp;page_title=New"><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" height="14" width="14" /> New Employee</a>
                 {if $employee_id > '' || $employee_id > 0 }
-                    <a href="?page=employees:edit&amp;employee_id={$employee_id}&amp;page_title={$translate_menu_edit}"><img src="{$theme_images_dir}icons/edit_employees.gif" alt="" border="0" height="14" width="14" /> Edit Employee</a>
+                    <a href="?page=employee:edit&amp;employee_id={$employee_id}&amp;page_title={$translate_menu_edit}"><img src="{$theme_images_dir}icons/edit_employee.gif" alt="" border="0" height="14" width="14" /> Edit Employee</a>
                 {/if}
 
                 <a href="?page=administrator:acl"><img src="{$theme_images_dir}icons/encrypted.png" alt="" border="0" height="14" width="14" /> Edit Permissions</a>

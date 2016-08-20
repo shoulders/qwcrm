@@ -2,7 +2,7 @@
 /* Employee Main page */
 // Load the customer classes
     require_once("include.php");
-if(!xml2php("employees")) {
+if(!xml2php("employee")) {
     $smarty->assign('error_msg',"Error in language file");
 }
     
@@ -19,4 +19,4 @@ if(!xml2php("employees")) {
     
     $smarty->assign('alpha', $alpha);
     $smarty->assign('employee_search_result' ,$employee_search_result );
-    $smarty->display('employees'.SEP.'main.tpl');
+    $smarty->display('employee'.SEP.'main.tpl');

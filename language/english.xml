@@ -131,9 +131,9 @@
         <menu_recieved_parts>Received Parts</menu_recieved_parts>
         <menu_order_parts>Order Parts</menu_order_parts>
         <menu_close_work_order>Close Work Order ID</menu_close_work_order>
-        <menu_employees_view>View Employees</menu_employees_view>
-        <menu_employees_new>New Employee</menu_employees_new>
-        <menu_employees>Employees</menu_employees>
+        <menu_employee_view>View Employees</menu_employee_view>
+        <menu_employee_new>New Employee</menu_employee_new>
+        <menu_employee>Employees</menu_employee>
         <menu_invoice>Invoice</menu_invoice>
         <menu_invoice_only>Invoice Only</menu_invoice_only>
         <menu_paid>Paid</menu_paid>

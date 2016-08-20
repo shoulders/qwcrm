@@ -18,7 +18,7 @@
                 <tr>
                     <td>
                         <b>{$translate_workorder_entered_by} </b>
-                        <a href="?page=employees:employee_details&employee_id={$workorder_history[c].WORK_ORDER_HISTORY_ENTERED_BY}&page_title={$translate_workorder_employee} {$workorder_history[c].EMPLOYEE_DISPLAY_NAME}">{$workorder_history[c].EMPLOYEE_DISPLAY_NAME}</a> 
+                        <a href="?page=employee:employee_details&employee_id={$workorder_history[c].WORK_ORDER_HISTORY_ENTERED_BY}&page_title={$translate_workorder_employee} {$workorder_history[c].EMPLOYEE_DISPLAY_NAME}">{$workorder_history[c].EMPLOYEE_DISPLAY_NAME}</a> 
                         <b>{$translate_workorder_date} </b>{$workorder_history[c].WORK_ORDER_HISTORY_DATE|date_format:"$date_format %r"}<br>
                         {$workorder_history[c].WORK_ORDER_HISTORY_NOTES}
                     </td>
