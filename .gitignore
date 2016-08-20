@@ -1,7 +1,7 @@
-/cache/
 /log/
 /log/access.log
 /nbproject/
 /conf.php
 /configuration.php
 /media/
+/cache/lock
