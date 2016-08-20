@@ -8,7 +8,7 @@
             <div>                
                 <span>{$translate_core_menu}</span>
                 <a href="index.php"><img src="{$theme_images_dir}icons/home.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_home}</a>
-                <a href="index.php?action=logout"><img src="{$theme_images_dir}icons/logout.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_log_out}</a>                
+                <a href="?action=logout"><img src="{$theme_images_dir}icons/logout.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_log_out}</a>                
             </div>
             
             
@@ -46,7 +46,7 @@
                 <a href="?page=workorder:open&amp;page_title={$translate_menu_work_orders}"><img src="{$theme_images_dir}tick.png" alt="" border="0" height="14" width="14" /> {$translate_menu_open} <b><font color="RED">{if $menu_workorders_open_count > 0} ({$menu_workorders_open_count}){/if}{if $menu_workorders_open_count < 1}{/if}</font></b></a>
                 <a href="?page=workorder:closed&amp;page_title={$translate_menu_closed_work_orders}"><img src="{$theme_images_dir}icons/close.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_closed} <b><font color="RED">{if $menu_workorders_closed_count > 0 } ({$menu_workorders_closed_count}){/if} {if $menu_workorders_closed_count < 1 }{/if} </font></b></a>
                 {if $wo_id >= "1"}
-                    {if $menu_workorder_record.WORK_ORDER_STATUS == "10"}
+                    {if $menu_workorder_status == "10"}
                         <a href="?page=workorder:resolution&amp;wo_id={$wo_id}&amp;page_title={$translate_menu_close}"><img src="{$theme_images_dir}icons/close.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_close}</a>
                         <a href="?page=workorder:details_new_note&amp;wo_id={$wo_id}&amp;page_title={$translate_menu_new_note}"><img src="{$theme_images_dir}icons/note.png" alt="" border="0" height="14" width="14" /> {$translate_menu_new_note}</a>
                     {/if}
@@ -67,7 +67,7 @@
                     
         <!-- General Ledger -->
         <!-- Menu limited to Administrators and Managers -->
-        {if $login_account_type == 1 || $login_account_type == 4}
+        {if $login_account_type_id == 1 || $login_account_type_id == 4}
             <div>
                 
                 <span>{$translate_general_ledger_nav_title}</span>
@@ -97,7 +97,7 @@
         
         <!-- Suppliers -->
         <!-- Menu limited to Administrators and Managers -->
-        {if $login_account_type == 1 || $login_account_type == 4}
+        {if $login_account_type_id == 1 || $login_account_type_id == 4}
             <div>
                 <span>{$translate_supplier_nav_title}</span> 
                 <a href="?page=supplier:new&amp;page_title={$translate_supplier_new_title}"><img src="{$theme_images_dir}icons/new.gif" alt="" border="0" height="14" width="14" />{$translate_supplier_nav_new}</a>
@@ -112,7 +112,7 @@
         
         <!-- Business Setup -->
         <!-- Menu limited to Administrators -->
-        {if $login_account_type == 1}
+        {if $login_account_type_id == 1}
         <div>
             <span>{$translate_menu_setup}</span>
             <a href="?page=company:company_edit"><img src="{$theme_images_dir}icons/key.png" alt="" border="0" height="14" width="14" /> Business Setup</a>
@@ -127,7 +127,7 @@
             <span>{$translate_menu_administration}</span>                
 
             <!-- Menu limited to Administrators and Managers -->
-            {if $login_account_type == 1 || $login_account_type == 4}
+            {if $login_account_type_id == 1 || $login_account_type_id == 4}
                 <a href="?page=employees:main&amp;page_title={$translate_menu_employees_view}" ><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_employees_view}</a>
                 <a href="?page=employees:new&amp;page_title=New"><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" height="14" width="14" /> New Employee</a>
                 {if $employee_id > '' || $employee_id > 0 }
@@ -156,8 +156,8 @@
             
             <a href="http://quantumwarp.com/" target="_blank"><img src="{$theme_images_dir}icons/web.png" alt="" border="0" height="14" width="14" /> Website</a>
             <a href="http://quantumwarp.com/" target="_blank"><img src="{$theme_images_dir}icons/invoice.png" alt="" border="0" height="14" width="14" /> Documentation</a>
-            <a href="https://github.com/shoulders/myitcrm/issues" target="_blank"><img src="{$theme_images_dir}icons/bug.png" alt=""border="0" height="14" width="14" /> Bug Tracker</a>
-            <a href="http://quantumwarp.com/" target="_blank"><img src="{$theme_images_dir}icons/comment.png" alt="" border="0" height="14" width="14" /> Forum</a>            
+            <a href="https://github.com/shoulders/qwcrm/issues" target="_blank"><img src="{$theme_images_dir}icons/bug.png" alt=""border="0" height="14" width="14" /> Bug Tracker</a>
+            <a href="http://quantumwarp.com/forum/" target="_blank"><img src="{$theme_images_dir}icons/comment.png" alt="" border="0" height="14" width="14" /> Forum</a>            
             <a style="text-align: center;">Support this Software!</a>                
             <form action="https://www.paypal.com/cgi-bin/webscr" method="post" style="text-align: center;" >
                 <input type="hidden" name="cmd" value="_s-xclick">

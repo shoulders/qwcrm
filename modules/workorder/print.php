@@ -17,7 +17,6 @@ $company = $rs->GetArray();
 $smarty->assign('company',                  $company                                    );
 $smarty->assign('single_work_order',        display_single_open_workorder($db, $wo_id)  );
 $smarty->assign('work_order_notes',         display_workorder_notes($db, $wo_id)        );
-$smarty->assign('work_order_status',        display_workorder_status($db, $wo_id)       );
 $smarty->assign('work_order_schedule',      display_workorder_schedule($db, $wo_id)     );
 $smarty->assign('work_order_resolution',    display_resolution($db, $wo_id)             ); 
 

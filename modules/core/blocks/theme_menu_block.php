@@ -1,7 +1,7 @@
 <?php
  
-/* Get Workorder Details */
-$smarty->assign('menu_workorder_record', menu_display_single_workorder_record($db, $wo_id)); 
+/* Get Workorder Status */
+$smarty->assign('menu_workorder_status', menu_get_single_workorder_status($db, $wo_id)); 
 
 /* Open Work Orders */
 $smarty->assign('menu_workorders_open_count', menu_count_workorders_with_status($db, 10));

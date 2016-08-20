@@ -40,7 +40,7 @@ $smarty->assign('database_error',   $database_error         );
 
 // examine how i want this part to work and if i want to include the above block in the same place
 // maybe on if advanced debug is turned on?
-if($VAR['theme'] != 'off' && $login_account_type != 6){
+if($VAR['theme'] != 'off' && $login_account_type_id != 6){
     $smarty->display('core'.SEP.'error.tpl');
 } else {
     echo 'an error has occured but you are not allowed to see it if you are a guest';

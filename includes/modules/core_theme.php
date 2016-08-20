@@ -64,25 +64,28 @@ function greeting_message_based_on_time($employee_name){
     return $greeting_msg;
 }
 
+
+
+/** Word Orders **/ 
+
+##########################################
+# Get single Work Order ststus           #
+##########################################
+
+function menu_get_single_workorder_status($db, $wo_id){
+    
+    $q = "SELECT WORK_ORDER_STATUS FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_ID =".$db->qstr($wo_id);    
+    $rs = $db->Execute($q);    
+    return $rs->fields['WORK_ORDER_STATUS'];
+}
+
 /* 
  * These are copied from includes/core.php but with menu added on the front of the name
  * These are only used to show numbers in the menu and could be removed
  * 
  */
 
-/** Word Orders **/ 
 
-##########################################
-# Display single Work Order information  #
-##########################################
-
-function menu_display_single_workorder_record($db, $wo_id){
-    
-    $q = "SELECT * FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_ID =".$db->qstr($wo_id);
-    
-    $rs = $db->Execute($q);
-    return $rs->FetchRow();
-}
 
 #########################################
 # Count Work Orders for a given status  #

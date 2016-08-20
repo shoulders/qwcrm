@@ -8,7 +8,7 @@
 
 /*
  * If no $page and $variables are supplied then this function 
- * will force a redirect exactly how it was supplied * 
+ * will force a URL redirect exactly how it was supplied 
  */
 
 function force_page($module, $page = Null, $variables = Null) {
@@ -21,6 +21,16 @@ function force_page($module, $page = Null, $variables = Null) {
                     window.location = "'.$module.'"
                 </script>
             ');
+        
+    } elseif ($page != Null && $variables === Null){
+    
+        // Normal URL Redirect with no starting '&' for variable string 
+        echo('
+                <script type="text/javascript">
+                    window.location = "index.php?page='.$module.':'.$page.'"
+                </script>
+            ');
+         
     } else {
         
         // QWcrm Style Redirect
@@ -39,7 +49,8 @@ function force_page($module, $page = Null, $variables = Null) {
 
 // remove error control from the modules and add it here.
 
-function xml2php($module) {
+function xml2php($module){
+    
     global $smarty;
 
     //$file = FILE_ROOT."language".SEP.$module.SEP.LANG ;
@@ -67,14 +78,14 @@ function xml2php($module) {
 #  Verify Employee's authorization for a specific page   #
 ##########################################################
 
-function check_acl($db, $login_account_type, $module, $page){
+function check_acl($db, $login_account_type_id, $module, $page){
     
-    if($login_account_type == ''){echo 'The ACL has been supplied with no account type - I will now die.';die;}
+    if($login_account_type_id == ''){echo 'The ACL has been supplied with no account type - I will now die.';die;}
 
-    /* Get Account Type Display Name by login_account_type ID*/
+    /* Get Account Type Display Name by login_account_type_id ID*/
     $q = 'SELECT '.PRFX.'CONFIG_EMPLOYEE_TYPE.TYPE_NAME
             FROM '.PRFX.'CONFIG_EMPLOYEE_TYPE 
-            WHERE TYPE_ID ='.$db->qstr($login_account_type);
+            WHERE TYPE_ID ='.$db->qstr($login_account_type_id);
     
     if(!$rs = $db->execute($q)) {
         force_page('core','error&error_msg=Could not get Group ID for user');
@@ -162,6 +173,8 @@ function get_qwcrm_database_version_number($db){
     if(!$rs = $db->execute($q)){
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
         exit;
+    } else {
+        return $rs->fields['VERSION_INSTALLED'];
     }
 }
 
@@ -442,6 +455,8 @@ function write_record_to_error_log($login_usr = '-', $error_type, $error_locatio
     if($login_usr == ''){
         $login_usr = '-';        
     }*/
+    
+    global $smarty;
     
     // Regex the HTTP_REFERER to give the page the error occured on
     preg_match('/.*\?page=(.*)&.*/', getenv('HTTP_REFERER'), $page_string);

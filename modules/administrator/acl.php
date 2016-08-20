@@ -23,24 +23,21 @@ if(isset($VAR['submit'])) {
 
         }
 
-    }
-    
-    // can i add these in to 1 statement
-    
-    // Make Error Page (core:error) always be accessible to all account types 
-    $q = "UPDATE ".PRFX."ACL SET `Administrator`= 1, `Manager`=1, `Supervisor`=1,`Technician`=1, `Client`=1, `Guest`=1 WHERE`page`= 'core:error'";
+    }    
+   
+    // Make these pages permissions available to all User Account Types - This prevents systems errors
+    $q = "UPDATE ".PRFX."ACL SET `Administrator`= 1, `Manager`=1, `Supervisor`=1,`Technician`=1, `Clerical`=1, `Counter`=1, `Customer`=1, `Guest`=1
+            WHERE `page`= 'core:error'
+            OR `page`= 'core:404'
+            OR `page`= 'user:password_reset'            
+            ";            
+
     if(!$rs = $db->execute($q)) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
         exit;    
-    }
-    // Make 404 Page (core:404) always be accessible to all account types 
-    $q = "UPDATE ".PRFX."ACL SET `Administrator`= 1, `Manager`=1, `Supervisor`=1,`Technician`=1, `Client`=1, `Guest`=1 WHERE`page`= 'core:404'";
-    if(!$rs = $db->execute($q)) {
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-        exit;    
-    }
-        
-    force_page('control', 'acl','inforamtion_msg=Permisions Updated');
+    }   
+    
+    force_page('administrator', 'acl', 'information_msg=Permisions Updated');
 
 } else {
     $q = "SELECT * FROM ".PRFX."ACL ORDER BY page";
@@ -51,5 +48,5 @@ if(isset($VAR['submit'])) {
     $arr = $rs->GetArray();    
     $smarty->assign('acl', $arr);
     
-    $smarty->display('control'.SEP.'acl.tpl');
+    $smarty->display('administrator'.SEP.'acl.tpl');
 }

@@ -107,13 +107,13 @@ class Auth {
                     $login_id = $row['EMPLOYEE_ID'];
 
                     // Set the account type
-                    $login_account_type = $row['EMPLOYEE_TYPE'];
+                    $login_account_type_id = $row['EMPLOYEE_TYPE'];
 
                     // Set the display name
                     $login_display_name = $row['EMPLOYEE_DISPLAY_NAME'];
                 }
 
-            $this->storeAuth($login_usr, $login_pwd, $login_id, $login_account_type, $login_display_name);
+            $this->storeAuth($login_usr, $login_pwd, $login_id, $login_account_type_id, $login_display_name);
             
             // Log activity       
             write_record_to_activity_log('Login '.$login_usr); 
@@ -123,13 +123,13 @@ class Auth {
         }
     }  
  }
-    function storeAuth($login_usr, $login_pwd, $login_id, $login_account_type, $login_display_name){
+    function storeAuth($login_usr, $login_pwd, $login_id, $login_account_type_id, $login_display_name){
         
         // Store Variables in $_SESSION
         $this->session->set('login_usr',            $login_usr          );
         $this->session->set('login_pwd',            $login_pwd          );
         $this->session->set('login_id',             $login_id           );        
-        $this->session->set('login_account_type',   $login_account_type );
+        $this->session->set('login_account_type_id',   $login_account_type_id );
         $this->session->set('login_display_name',   $login_display_name );
 
         // Create a session variable to use to confirm sessions
@@ -156,7 +156,7 @@ class Auth {
         $this->session->del('login_pwd');
         $this->session->del('login_hash');        
         $this->session->del('login_id');
-        $this->session->del('login_account_type');
+        $this->session->del('login_account_type_id');
         $this->session->del('login_display_name');
         
         // Log activity       

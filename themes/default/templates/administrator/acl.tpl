@@ -14,7 +14,7 @@
                         <table class="olotable" width="100%" border="0" cellpadding="5" cellspacing="0">
                             <tr>
                                 <td class="menutd">
-                                    <form method="post" action="?page=control:acl">
+                                    <form method="post" action="?page=administrator:acl">
                                         <table class="olotable" cellpadding="5" cellspacing="0" border="0">
                                             <tr >
                                                 <td class="olohead">Module:Page</td>
@@ -22,7 +22,9 @@
                                                 <td class="olohead">Manager</td>
                                                 <td class="olohead">Supervisor</td>
                                                 <td class="olohead">Technician</td>
-                                                <td class="olohead">Client</td>
+                                                <td class="olohead">Clerical</td>
+                                                <td class="olohead">Counter</td>
+                                                <td class="olohead">Customer</td>
                                                 <td class="olohead">Guest</td>
                                             </tr>
                                             {section name=q loop=$acl}
@@ -61,12 +63,28 @@
                                                         <option value="0" {if $acl[q].Technician == '0'}selected{/if}>No</option>
                                                     </select> 
                                                 </td>
-
-                                                <!-- Client -->
+                                                
+                                                <!-- Clerical -->
                                                 <td class="olotd4">
-                                                    <select name="{$acl[q].page}[Client]">
-                                                        <option value="1" {if $acl[q].Client == '1'}selected{/if}>Yes</option>
-                                                        <option value="0" {if $acl[q].Client == '0'}selected{/if}>No</option>
+                                                    <select name="{$acl[q].page}[Clerical]">
+                                                        <option value="1" {if $acl[q].Clerical == '1'}selected{/if}>Yes</option>
+                                                        <option value="0" {if $acl[q].Clerical == '0'}selected{/if}>No</option>
+                                                    </select>
+                                                </td>
+
+                                                <!-- Counter-->
+                                                <td class="olotd4">
+                                                    <select name="{$acl[q].page}[Counter]">
+                                                        <option value="1" {if $acl[q].Counter == '1'}selected{/if}>Yes</option>
+                                                        <option value="0" {if $acl[q].Counter == '0'}selected{/if}>No</option>
+                                                    </select>
+                                                </td>                                                
+
+                                                <!-- Customer -->
+                                                <td class="olotd4">
+                                                    <select name="{$acl[q].page}[Customer]">
+                                                        <option value="1" {if $acl[q].Customer == '1'}selected{/if}>Yes</option>
+                                                        <option value="0" {if $acl[q].Customer == '0'}selected{/if}>No</option>
                                                     </select>
                                                 </td>
 

@@ -79,7 +79,7 @@ require(INCLUDES_DIR.'smarty.php');
 #    Verify QWcrm is installed correctly       #
 ################################################
 
-//verify_qwcrm_is_installed_correctly($db); // works well
+verify_qwcrm_is_installed_correctly($db); // works well
  
 ################################################
 #          Authentication                      #
@@ -91,17 +91,17 @@ $login_id           = $_SESSION['login_id'];
 $login_usr          = $_SESSION['login_usr'];
 
 // If there is no account type details, set to Guest
-if(!isset($_SESSION['login_account_type'])){
-    $login_account_type = 6;
+if(!isset($_SESSION['login_account_type_id'])){
+    $login_account_type_id = 8;
 } else {
-    $login_account_type = $_SESSION['login_account_type'];   
+    $login_account_type_id = $_SESSION['login_account_type_id'];   
 }
 
 $login_display_name = $_SESSION['login_display_name'];
 
 $smarty->assign('login_id',             $login_id           );
 $smarty->assign('login_usr',            $login_usr          );
-$smarty->assign('login_account_type',   $login_account_type );
+$smarty->assign('login_account_type_id',   $login_account_type_id );
 $smarty->assign('login_display_name',   $login_display_name );
 
 /* If logout is set, then log user off */
@@ -140,10 +140,19 @@ if(isset($VAR['page_no'])){
 #   Assign variables into smarty for use by all native module templates  #
 ##########################################################################
 
+// QWcrm System Directory Template Variables
+$smarty->assign('root_media_dir',   QWROOT_MEDIA_DIR    );      // set QWcrm root JS directory
+
+// QWcrm Theme Directory Template Variables
+$smarty->assign('theme_dir',        THEME_DIR           );      // set theme directory
+$smarty->assign('theme_images_dir', THEME_IMAGES_DIR    );      // set theme images directory
+$smarty->assign('theme_css_dir',    THEME_CSS_DIR       );      // set theme CSS directory
+$smarty->assign('theme_js_dir',     THEME_JS_DIR        );      // set theme JS directory
+
 // These are used globally but mainly for the menu !!
 $smarty->assign('wo_id',        $wo_id          );
 $smarty->assign('customer_id',  $customer_id    );
-$smarty->assign('employee_id',  $employee_id    );          // This is the same as $login_id at some points - when used globally - check
+$smarty->assign('employee_id',  $employee_id    );              // This is the same as $login_id at some points - when used globally - check
 $smarty->assign('expense_id',   $expense_id     );
 $smarty->assign('refund_id',    $refund_id      );
 $smarty->assign('supplier_id',  $supplier_id    );
@@ -225,7 +234,9 @@ if(!isset($_SESSION['login_hash'])){
         // Display the Footer Block
         if($VAR['theme'] != 'off'){        
             require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_footer_block.php');        
-        }    
+        }
+        
+        // add smarty debug here or the best place remeber i am just calling a tpl with {debug} in it - also investigate the prestashop debug.tpl - take note {if isset($_smarty_debug_output) and $_smarty_debug_output eq "html"} - what is {debug} for, is it neeeded
 
         // Display the Debug Block
         if($qwcrm_debug === 'on'){
@@ -278,7 +289,7 @@ if(isset($VAR['page'])){
 ###############################################
 
 /* Check the requested page with 'logged in' user against the ACL for authorisation - if allowed, display */
-if(check_acl($db, $login_account_type, $module, $page)){
+if(check_acl($db, $login_account_type_id, $module, $page)){
     
     // Guests (not logged in) will not see the menu
     
@@ -288,7 +299,7 @@ if(check_acl($db, $login_account_type, $module, $page)){
     }
     
     // Display Header Legacy Template Code and Menu Block
-    if($VAR['theme'] != 'off' && $login_account_type != 6){       
+    if($VAR['theme'] != 'off' && $login_account_type_id != 8){       
         $smarty->display('core'.SEP.'blocks'.SEP.'theme_header_legacy_supplement_block.tpl');
         require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_menu_block.php');        
     }    
@@ -297,7 +308,7 @@ if(check_acl($db, $login_account_type, $module, $page)){
     require($page_display_controller);    
   
     // Display Footer Legacy Template code Block (closes content table)
-    if($VAR['theme'] != 'off' && $login_account_type != 6){
+    if($VAR['theme'] != 'off' && $login_account_type_id != 8){
         $smarty->display('core'.SEP.'blocks'.SEP.'theme_footer_legacy_supplement_block.tpl');             
     }
     

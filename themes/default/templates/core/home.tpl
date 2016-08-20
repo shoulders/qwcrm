@@ -68,7 +68,7 @@
                                      
                                     <a href="#" id="hid  den_stats">{$translate_main_invoice_stats}</a>
                                     <div id="hid  e_stats">
-                                    {if $login_account_type == 1 || $login_account_type == 4 }
+                                    {if $login_account_type_id == 1 || $login_account_type_id == 4 }
                                     <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
                                         <tr class="olotd4">
                                             <td class="row2"><b>{$translate_main_unpaid}</b></td>
