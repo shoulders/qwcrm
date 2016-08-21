@@ -280,7 +280,7 @@ if(isset($VAR['page'])){
             $page   = '404';
         }
     } else {
-        // If no page is supplied then go to the main page
+        // If no page is supplied then go to the main page (this assumes you are logged in)
         $page_display_controller = 'modules'.SEP.'core'.SEP.'home.php';
         $module = 'core';
         $page   = 'home';
