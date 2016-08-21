@@ -1,12 +1,5 @@
 <?php
 
-/*
-$test_variable = $_GET['testvariable'];
-if(isset($test_variable)){echo 'is set';} else {echo 'not set';}
-
-// so if the vriable =  a $_GET that is empty or not set, then it is not set either;
-*/
-
 ################################################
 #   Minimum PHP Version                        #
 ################################################
@@ -36,7 +29,7 @@ $startMem  = memory_get_usage();
 /* Used to suppress PHP error Notices - this will overide php.ini settings */
 
 // Turn off all error reporting
-//error_reporting(0);
+error_reporting(0);
 
 // Report simple running errors
 //error_reporting(E_ERROR | E_WARNING | E_PARSE);
@@ -46,7 +39,7 @@ $startMem  = memory_get_usage();
 //error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
 
 // Report all errors except E_NOTICE
-error_reporting(E_ALL & ~E_NOTICE); // This will only show major errors (default)
+////error_reporting(E_ALL & ~E_NOTICE); // This will only show major errors (default)
 
 // Report all PHP errors (see changelog)
 //error_reporting(E_ALL);
@@ -163,7 +156,7 @@ $smarty->assign('company_logo', get_company_logo($db)       );
 $smarty->assign('currency_sym', get_currency_symbol($db)    );
 $smarty->assign('date_format',  get_date_format($db)        );
 
-// Set the Page Title - i could write a function to build all page titles here and remove from the url - grabs from the language file - but this would mean the whole file had to be loaded unless i redid all titles in core
+// Set the Page Title - This will be removed once all page titles are in the xmls
 if(isset($VAR['page_title'])){
     $smarty->assign('page_title', $VAR['page_title']); 
 } else {    
@@ -214,15 +207,27 @@ $smarty->assign('d',$d);
 if(!isset($_SESSION['login_hash'])){ 
 
     // Is there a page title set
-    if(isset($_GET['page']) && $_GET['page'] != ''){
+    if(isset($_VAR['page']) && $_VAR['page'] != ''){
         
-       // do nothing
+       // do nothing here and preceed to the next section to extract the page
         
     } else {
+        
+        /* This builds the landing page when not logged in */
+        
+        // Load Module Language Translations
+        if(!xml2php('core')) {    
+            $smarty->assign('error_msg', 'Error in the '.'core'.' language file');
+        }
+
+        // Set Page Header and Meta Data
+        set_page_header_and_meta_data('core', 'login');
         
         // Display Header Block
         if($VAR['theme'] != 'off'){        
             require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_header_block.php');      
+        } else {
+            echo '<!DOCTYPE html><head></head><body>';        
         }
         
         // Display the Dashboard Block
@@ -234,10 +239,8 @@ if(!isset($_SESSION['login_hash'])){
         // Display the Footer Block
         if($VAR['theme'] != 'off'){        
             require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_footer_block.php');        
-        }
+        }    
         
-        // add smarty debug here or the best place remeber i am just calling a tpl with {debug} in it - also investigate the prestashop debug.tpl - take note {if isset($_smarty_debug_output) and $_smarty_debug_output eq "html"} - what is {debug} for, is it neeeded
-
         // Display the Debug Block
         if($qwcrm_debug === 'on'){
             require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_debug_block.php');
@@ -293,9 +296,20 @@ if(check_acl($db, $login_account_type_id, $module, $page)){
     
     // Guests (not logged in) will not see the menu
     
+    // Load Module Language Translations
+    if(!xml2php($module)) {    
+        $smarty->assign('error_msg', 'Error in the '.$module.' language file');
+    }
+    
+    // Set Page Header and Meta Data
+    set_page_header_and_meta_data($module, $page);
+    
+    
     // Display Header Block
     if($VAR['theme'] != 'off'){        
         require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_header_block.php');      
+    } else {
+        echo '<!DOCTYPE html><head></head><body>';        
     }
     
     // Display Header Legacy Template Code and Menu Block

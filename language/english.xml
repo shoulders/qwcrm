@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
     <translate>
         
         // - SORT
@@ -11,7 +11,8 @@
         
         
         // Common - add all shared words and phrases here - below is an example
-        <common_scope>Scope</common_scope> //do i need this yet
+        //do i need this yet
+        <common_scope>Scope</common_scope>
         
         // Assets Templates
         <main_title>Customer's Assets</main_title>
@@ -72,6 +73,11 @@
         <billing_error_fix>Please correct these fields.</billing_error_fix>
 
         // Core Templates
+        
+        <core_login_header_page_title>Login To QWcrm</core_login_header_page_title>
+        <core_login_header_meta_description>QWcrm - The Best Open Source Repairs Business CRM program available!</core_login_header_meta_description>
+        <core_login_header_meta_keywords>CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment Processing</core_login_header_meta_keywords>
+        
         <core_log_off>Log Off</core_log_off>
         <core_loged_in>Currently Logged in as </core_loged_in>
         <core_schedule>Schedule</core_schedule>
@@ -1054,6 +1060,12 @@
         <workorder_new_help_content>Create new Workorders here.</workorder_new_help_content>               
 
         // Open
+        <workorder_open_header_page_title>Open Works Orders</workorder_open_header_page_title>
+        <workorder_open_header_meta_description></workorder_open_header_meta_description>
+        <workorder_open_header_meta_keywords></workorder_open_header_meta_keywords>
+        
+        
+        
         <workorder_open_title>Open Workorders</workorder_open_title>
         <workorder_open_help_title>Open Workorders Help</workorder_open_help_title>
         <workorder_open_help_content>Double Click on an empty space in each row to go directly to the work order. &lt;br&gt;&lt;br&gt;Hover over the magnifying glass under Customer to view the Quick Contact Information. Click on the Customers name to view the customers details.&lt;br&gt;&lt;br&gt;Click on the status of each workorder listed to update the curent workorder status.&lt;br&gt;&lt;br&gt;Hover over the Magnifying Glass under the Employee to view the Quick Contact Information for the assigned employee. Click on the employees name to view the details.&lt;br&gt;&lt;br&gt;Under Action click the Printer Icon to print the workorder. Click the Magnifying Glass to view the workorder. Click the Red Stop sign to close the workorder and start the invoicing.</workorder_open_help_content>

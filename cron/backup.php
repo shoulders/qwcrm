@@ -1,5 +1,7 @@
 <?php
 /* Load MySQL Database Settings */
+
+die('this has the word DROP in it');
 require('../conf.php');
 $root = getenv("DOCUMENT_ROOT");
 

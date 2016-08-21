@@ -16,10 +16,11 @@
 ##############################
 # Load language translations #
 ##############################
-
+/*
 if(!xml2php('workorder')) {    
     $smarty->assign('error_msg', 'Error in Work Order language file');
 }
+*/
 
 /** Display Functions **/
 

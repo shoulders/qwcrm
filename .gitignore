@@ -5,3 +5,5 @@
 /configuration.php
 /media/
 /cache/lock
+/cache/smarty/cache/
+/cache/smarty/compile/

@@ -74,6 +74,22 @@ function xml2php($module){
     return true;
 }
 
+############################################
+#      Set Page Header and Meta Data       #
+############################################
+
+function set_page_header_and_meta_data($module, $page){
+    
+    global $smarty;
+    
+    $smarty->assign('page_title', $smarty->get_template_vars('translate_'.$module.'_'.$page.'_header_page_title'));
+    $smarty->assign('meta_description', $smarty->get_template_vars('translate_'.$module.'_'.$page.'_header_meta_description'));
+    $smarty->assign('meta_keywords', $smarty->get_template_vars('translate_'.$module.'_'.$page.'_header_meta_keywords'));
+    
+    return;
+}
+
+
 ##########################################################
 #  Verify Employee's authorization for a specific page   #
 ##########################################################
