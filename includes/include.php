@@ -78,6 +78,10 @@ function xml2php($module){
 #      Set Page Header and Meta Data       #
 ############################################
 
+/*
+ * This does cause these translations to be loaded/assigned twice but allow sme to use 1 file language instead of 2
+ */
+
 function set_page_header_and_meta_data($module, $page){
     
     global $smarty;

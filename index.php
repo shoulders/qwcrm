@@ -156,7 +156,7 @@ $smarty->assign('company_logo', get_company_logo($db)       );
 $smarty->assign('currency_sym', get_currency_symbol($db)    );
 $smarty->assign('date_format',  get_date_format($db)        );
 
-// Set the Page Title - This will be removed once all page titles are in the xmls
+// Set the Page Title (legacy) - This will be removed once all page titles are in the xmls
 if(isset($VAR['page_title'])){
     $smarty->assign('page_title', $VAR['page_title']); 
 } else {    
