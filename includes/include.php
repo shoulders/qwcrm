@@ -63,7 +63,7 @@ function xml2php($module){
     $contents = fread($fp, filesize($file));
     fclose($fp);
     xml_parse_into_struct($xml_parser, $contents, $arr_vals);   
-    xml_parser_free($xml_parser);
+    xml_parser_free($xml_parser); //does this function exist?
 
     foreach($arr_vals as $things){
         if($things['tag'] != 'TRANSLATE' && $things['value'] != "" ){
@@ -82,17 +82,27 @@ function xml2php($module){
  * This does cause these translations to be loaded/assigned twice but allow sme to use 1 file language instead of 2
  */
 
-function set_page_header_and_meta_data($module, $page){
+function set_page_header_and_meta_data($module, $page, $page_title_from_var = Null){
     
     global $smarty;
     
-    $smarty->assign('page_title', $smarty->get_template_vars('translate_'.$module.'_'.$page.'_header_page_title'));
+    /* Page Title
+     * This allows the title to be overidden and legacy compatibility where the title is passed to the new page
+     * or just use the page title from the language file
+     * legacy option will be removed in future
+     */
+    if ($page_title_from_var != Null){
+        $smarty->assign('page_title', $page_title_from_var); 
+    } else {
+        $smarty->assign('page_title', $smarty->get_template_vars('translate_'.$module.'_'.$page.'_header_page_title'));
+    }    
+    
+    // Meta Tags
     $smarty->assign('meta_description', $smarty->get_template_vars('translate_'.$module.'_'.$page.'_header_meta_description'));
     $smarty->assign('meta_keywords', $smarty->get_template_vars('translate_'.$module.'_'.$page.'_header_meta_keywords'));
     
     return;
 }
-
 
 ##########################################################
 #  Verify Employee's authorization for a specific page   #

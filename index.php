@@ -156,13 +156,6 @@ $smarty->assign('company_logo', get_company_logo($db)       );
 $smarty->assign('currency_sym', get_currency_symbol($db)    );
 $smarty->assign('date_format',  get_date_format($db)        );
 
-// Set the Page Title (legacy) - This will be removed once all page titles are in the xmls
-if(isset($VAR['page_title'])){
-    $smarty->assign('page_title', $VAR['page_title']); 
-} else {    
-    $smarty->assign('page_title', 'Home');
-}  
-
 // Information Message (Green)
 if(isset($VAR['information_msg'])){
     $smarty->assign('information_msg', $VAR['information_msg']);
@@ -302,8 +295,7 @@ if(check_acl($db, $login_account_type_id, $module, $page)){
     }
     
     // Set Page Header and Meta Data
-    set_page_header_and_meta_data($module, $page);
-    
+    set_page_header_and_meta_data($module, $page, $VAR['page_title']);    
     
     // Display Header Block
     if($VAR['theme'] != 'off'){        

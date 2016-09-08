@@ -5,9 +5,11 @@
     <title>{$page_title}</title>
     <!--<base href="http://quantumwarp.com/" />-->    
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <!-- from netbeans default tempalte <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
     <meta name="description" content="{$meta_description}" />
     <meta name="keywords" content="{$meta_keywords}" />
-    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="shortcut icon" href="favicon.ico">
     <link rel="stylesheet" href="{$theme_css_dir}template.css" type="text/css"/>
     <link rel="stylesheet" href="{$theme_css_dir}sdmenu.css" type="text/css"/>
     <link href="{$theme_css_dir}template.css" rel="stylesheet" type="text/css">
