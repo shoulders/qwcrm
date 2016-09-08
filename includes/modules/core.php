@@ -22,10 +22,12 @@ if(!xml2php('core')) {
 
 function display_welcome_note($db){
     
+    global $smarty;
+    
     $q = 'SELECT WELCOME_NOTE FROM '.PRFX.'SETUP';
     
     if(!$rs = $db->execute($q)){
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
+        force_page('core', 'error', 'error_type=database&error_location=includes:modules:core&php_function=display_welcome_note()&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_function_display_welcome_note_failed').'&php_error_msg='.$php_errormsg.'&database_error='.$db->ErrorMsg());
         exit;
     } else { 
         return $rs->fields['WELCOME_NOTE'];
@@ -40,10 +42,17 @@ function display_welcome_note($db){
 
 function display_single_workorder_record($db, $wo_id){
     
+    global $smarty;
+    
     $q = "SELECT * FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_ID =".$db->qstr($wo_id);
     
-    $rs = $db->Execute($q);
-    return $rs->FetchRow();
+    if(!$rs = $db->Execute($q)){
+        force_page('core', 'error', 'error_type=database&error_location=includes:modules:core&php_function=display_single_workorder_record()&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_function_display_single_workorder_record_failed').'&php_error_msg='.$php_errormsg.'&database_error='.$db->ErrorMsg());
+        exit;
+    } else {
+        return $rs->FetchRow();
+    }
+    
 }
 
 #########################################
@@ -52,12 +61,19 @@ function display_single_workorder_record($db, $wo_id){
 
 function count_workorders_with_status($db, $workorder_status){
     
+    global $smarty;
+    
     $q = "SELECT COUNT(*) AS WORKORDER_STATUS_COUNT
             FROM ".PRFX."TABLE_WORK_ORDER
             WHERE WORK_ORDER_STATUS=".$db->qstr($workorder_status);
     
-    $rs = $db->Execute($q);    
-    return  $rs->fields['WORKORDER_STATUS_COUNT'];
+    if(!$rs = $db->Execute($q)){
+        force_page('core', 'error', 'error_type=database&error_location=includes:modules:core&php_function=count_workorders_with_status()&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_function_count_workorders_with_status_failed').'&php_error_msg='.$php_errormsg.'&database_error='.$db->ErrorMsg());
+        exit;
+    } else {        
+        return  $rs->fields['WORKORDER_STATUS_COUNT'];
+    }
+    
 }
 
 #########################################
@@ -67,8 +83,8 @@ function count_workorders_with_status($db, $workorder_status){
 // Open - Assigned
 // This might not be 100% correct
 
-function count_unassigned_workorders($db){   
-    return (count_workorders_with_status($db, 10) - count_workorders_with_status($db, 2));
+function count_unassigned_workorders($db){    
+    return (count_workorders_with_status($db, 10) - count_workorders_with_status($db, 2));    
 }
 
 #############################################
@@ -77,12 +93,14 @@ function count_unassigned_workorders($db){
 
 function count_all_workorders($db){
     
+    global $smarty;
+        
     $q = 'SELECT COUNT(*) AS WORKORDER_TOTAL_COUNT FROM '.PRFX.'TABLE_WORK_ORDER';
     
     if(!$rs = $db->execute($q)){
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
+        force_page('core', 'error', 'error_type=database&error_location=includes:modules:core&php_function=count_all_workorders()&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_function_count_all_workorders_failed').'&php_error_msg='.$php_errormsg.'&database_error='.$db->ErrorMsg());
         exit;
-    } else {
+    } else {        
         return $rs->fields['WORKORDER_TOTAL_COUNT'];
     }
 }
@@ -95,10 +113,17 @@ function count_all_workorders($db){
 
 function count_invoices_with_status($db, $invoice_status){
     
+    global $smarty;
+    
     $q ="SELECT COUNT(*) AS INVOICE_COUNT FROM ".PRFX."TABLE_INVOICE WHERE INVOICE_PAID=".$db->qstr($invoice_status);
     
-    $rs = $db->Execute($q);
-    return $rs->fields['INVOICE_COUNT'];
+    if(!$rs = $db->execute($q)){
+        force_page('core', 'error', 'error_type=database&error_location=includes:modules:core&php_function=count_invoices_with_status()&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_function_count_invoices_with_status_failed').'&php_error_msg='.$php_errormsg.'&database_error='.$db->ErrorMsg());
+        exit;
+    } else {
+       return $rs->fields['INVOICE_COUNT']; 
+    }
+    
 }
 
 
@@ -108,13 +133,15 @@ function count_invoices_with_status($db, $invoice_status){
 
 function sum_of_discounts_on_unpaid_invoices($db){
     
+    global $smarty;
+    
     $q = "SELECT SUM(DISCOUNT) AS DISCOUNT_SUM
             FROM ".PRFX."TABLE_INVOICE
             WHERE INVOICE_PAID=".$db->qstr(0)." AND BALANCE=".$db->qstr(0); 
     
     if(!$rs = $db->Execute($q)){
-        echo 'Error: '. $db->ErrorMsg();
-        die;
+        force_page('core', 'error', 'error_type=database&error_location=includes:modules:core&php_function=sum_of_discounts_on_unpaid_invoices()&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_function_sum_of_discounts_on_unpaid_invoices_failed').'&php_error_msg='.$php_errormsg.'&database_error='.$db->ErrorMsg());
+        exit;
     } else {
         return $rs->fields['DISCOUNT_SUM'];
     }    
@@ -126,13 +153,15 @@ function sum_of_discounts_on_unpaid_invoices($db){
 
 function sum_of_discounts_on_paid_invoices($db){
     
+    global $smarty;
+    
     $q = "SELECT SUM(DISCOUNT) AS DISCOUNT_SUM
         FROM ".PRFX."TABLE_INVOICE
         WHERE INVOICE_PAID=".$db->qstr(1);
     
     if(!$rs = $db->Execute($q)){
-        echo 'Error: '. $db->ErrorMsg();
-        die;
+        force_page('core', 'error', 'error_type=database&error_location=includes:modules:core&php_function=sum_of_discounts_on_paid_invoices()&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_function_sum_of_discounts_on_paid_invoices_failed').'&php_error_msg='.$php_errormsg.'&database_error='.$db->ErrorMsg());
+        exit;
     } else {
         return $rs->fields['DISCOUNT_SUM'];
     }    
@@ -144,12 +173,14 @@ function sum_of_discounts_on_paid_invoices($db){
 
 function sum_of_discounts_on_partially_paid_invoices($db){
     
+    global $smarty;
+    
     $q = "SELECT SUM(DISCOUNT) AS DISCOUNT_SUM
         FROM ".PRFX."TABLE_INVOICE
         WHERE INVOICE_PAID=".$db->qstr(0)." AND BALANCE >".$db->qstr(0);
     
     if(!$rs = $db->Execute($q)){
-        echo 'Error: '. $db->ErrorMsg();
+        force_page('core', 'error', 'error_type=database&error_location=includes:modules:core&php_function=sum_of_discounts_on_partially_paid_invoices()&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_function_sum_of_discounts_on_partially_paid_invoices_failed').'&php_error_msg='.$php_errormsg.'&database_error='.$db->ErrorMsg());
         die;
     } else {
         return $rs->fields['DISCOUNT_SUM'];
@@ -162,10 +193,12 @@ function sum_of_discounts_on_partially_paid_invoices($db){
 
 function count_upaid_invoices($db){
     
+    global $smarty;
+    
     $q = 'SELECT COUNT(*) AS INVOICE_COUNT FROM '.PRFX.'TABLE_INVOICE WHERE INVOICE_PAID='.$db->qstr(0);
     
     if(!$rs = $db->execute($q)){
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
+        force_page('core', 'error', 'error_type=database&error_location=includes:modules:core&php_function=count_upaid_invoices()&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_function_count_upaid_invoices_failed').'&php_error_msg='.$php_errormsg.'&database_error='.$db->ErrorMsg());
         exit;
     } else {
         return $rs->fields['INVOICE_COUNT'];        
@@ -178,10 +211,12 @@ function count_upaid_invoices($db){
 
 function sum_outstanding_balances_unpaid_invoices($db){
     
+    global $smarty;
+    
     $q = 'SELECT SUM(BALANCE) AS BALANCE_SUM FROM '.PRFX.'TABLE_INVOICE WHERE INVOICE_PAID='.$db->qstr(0).' AND BALANCE >'.$db->qstr(0);
     
     if(!$rs = $db->execute($q)){
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
+        force_page('core', 'error', 'error_type=database&error_location=includes:modules:core&php_function=sum_outstanding_balances_unpaid_invoices()&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_function_sum_outstanding_balances_unpaid_invoices_failed').'&php_error_msg='.$php_errormsg.'&database_error='.$db->ErrorMsg());
         exit;
     } else {
         return $rs->fields['BALANCE_SUM'];        
@@ -194,10 +229,12 @@ function sum_outstanding_balances_unpaid_invoices($db){
 
 function count_partially_paid_invoices($db){
     
+    global $smarty;
+    
     $q = 'SELECT COUNT(*) AS BALANCE_COUNT FROM '.PRFX.'TABLE_INVOICE WHERE INVOICE_PAID='.$db->qstr(0).' AND BALANCE <> INVOICE_AMOUNT';
     
     if(!$rs = $db->execute($q)){
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
+        force_page('core', 'error', 'error_type=database&error_location=includes:modules:core&php_function=count_partially_paid_invoices()&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_function_count_partially_paid_invoices_failed').'&php_error_msg='.$php_errormsg.'&database_error='.$db->ErrorMsg());
         exit;
     } else {
         return $rs->fields['BALANCE_COUNT'];       
@@ -210,10 +247,12 @@ function count_partially_paid_invoices($db){
 
 function sum_outstanding_balances_partially_paid_invoices($db){
     
+    global $smarty;
+    
     $q = 'SELECT SUM(BALANCE) AS BALANCE_SUM FROM '.PRFX.'TABLE_INVOICE WHERE INVOICE_PAID='.$db->qstr(0).' AND BALANCE <> INVOICE_AMOUNT';
     
     if(!$rs = $db->execute($q)){
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
+        force_page('core', 'error', 'error_type=database&error_location=includes:modules:core&php_function=sum_outstanding_balances_partially_paid_invoices()&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_function_sum_outstanding_balances_partially_paid_invoices_failed').'&php_error_msg='.$php_errormsg.'&database_error='.$db->ErrorMsg());
         exit;
     } else {
         return $rs->fields['BALANCE_SUM'];
@@ -226,10 +265,12 @@ function sum_outstanding_balances_partially_paid_invoices($db){
 
 function count_all_paid_invoices($db){
     
+    global $smarty;
+    
     $q = 'SELECT COUNT(*) AS INVOICE_COUNT FROM '.PRFX.'TABLE_INVOICE WHERE INVOICE_PAID='.$db->qstr(1);
     
     if(!$rs = $db->execute($q)){
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
+        force_page('core', 'error', 'error_type=database&error_location=includes:modules:core&php_function=count_all_paid_invoices()&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_function_count_all_paid_invoices_failed').'&php_error_msg='.$php_errormsg.'&database_error='.$db->ErrorMsg());
         exit;
     } else {
         return $rs->fields['INVOICE_COUNT'];        
@@ -242,10 +283,12 @@ function count_all_paid_invoices($db){
 
 function sum_invoiceamounts_paid_invoices($db){
     
+    global $smarty;
+    
     $q = 'SELECT SUM(INVOICE_AMOUNT) AS INVOICE_AMOUNT_SUM FROM '.PRFX.'TABLE_INVOICE WHERE INVOICE_PAID='.$db->qstr(1);
     
     if(!$rs = $db->execute($q)){
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
+        force_page('core', 'error', 'error_type=database&error_location=includes:modules:core&php_function=sum_invoiceamounts_paid_invoices()&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_function_sum_invoiceamounts_paid_invoices_failed').'&php_error_msg='.$php_errormsg.'&database_error='.$db->ErrorMsg());
         exit;
     } else {
         return $rs->fields['INVOICE_AMOUNT_SUM'];
@@ -260,13 +303,15 @@ function sum_invoiceamounts_paid_invoices($db){
 
 function new_customers_during_period($db, $requested_period){
     
+    global $smarty;
+    
     if($requested_period === 'month')   {$period = mktime(0,0,0,date('m'),0,date('Y'));}
     if($requested_period === 'year')    {$period = mktime(0,0,0,0,0,date('Y'));}
     
     $q = 'SELECT COUNT(*) AS CUSTOMER_COUNT FROM '.PRFX.'TABLE_CUSTOMER WHERE CREATE_DATE >= '.$db->qstr($period);
     
     if(!$rs = $db->execute($q)){
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
+        force_page('core', 'error', 'error_type=database&error_location=includes:modules:core&php_function=new_customers_during_period()&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_function_new_customers_during_period_failed').'&php_error_msg='.$php_errormsg.'&database_error='.$db->ErrorMsg());
         exit;
     } else {
         return $rs->fields['CUSTOMER_COUNT'];       
@@ -279,10 +324,12 @@ function new_customers_during_period($db, $requested_period){
 
 function count_all_customers($db){
     
+    global $smarty;
+    
     $q = 'SELECT COUNT(*) AS CUSTOMER_COUNT FROM '.PRFX.'TABLE_CUSTOMER';
     
     if(!$rs = $db->execute($q)){
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
+        force_page('core', 'error', 'error_type=database&error_location=includes:modules:core&php_function=count_all_customers()&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_function_count_all_customers_failed').'&php_error_msg='.$php_errormsg.'&database_error='.$db->ErrorMsg());
         exit;
     } else {
         return $rs->fields['CUSTOMER_COUNT'];
@@ -306,9 +353,16 @@ function count_all_customers($db){
 
 function get_employee_id_by_username($db, $employee_usr){
     
+    global $smarty;
+    
     $q = 'SELECT EMPLOYEE_ID FROM '.PRFX.'TABLE_EMPLOYEE WHERE EMPLOYEE_LOGIN ='.$db->qstr($employee_usr);    
-    $rs = $db->Execute($q);
-    return $rs->fields['EMPLOYEE_ID'];
+    if(!$rs = $db->execute($q)){
+        force_page('core', 'error', 'error_type=database&error_location=includes:modules:core&php_function=get_employee_id_by_username()&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_function_get_employee_id_by_username_failed').'&php_error_msg='.$php_errormsg.'&database_error='.$db->ErrorMsg());
+        exit;
+    } else {
+        return $rs->fields['EMPLOYEE_ID'];
+    }
+        
 }
 
 #########################################
@@ -318,8 +372,13 @@ function get_employee_id_by_username($db, $employee_usr){
 function get_employee_record_by_username($db, $employee_usr){
     
     $q = "SELECT * FROM ".PRFX."TABLE_EMPLOYEE WHERE EMPLOYEE_LOGIN =".$db->qstr($employee_usr);    
-    $rs = $db->Execute($q);
-    return $rs->FetchRow();
+    if(!$rs = $db->execute($q)){
+        force_page('core', 'error', 'error_type=database&error_location=includes:modules:core&php_function=get_employee_record_by_username()&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_function_get_employee_record_by_username_failed').'&php_error_msg='.$php_errormsg.'&database_error='.$db->ErrorMsg());
+        exit;
+    } else {
+        return $rs->FetchRow();
+    }
+    
 }
 
 #################################################
@@ -334,7 +393,8 @@ function count_employee_workorders_with_status($db, $employee_id, $workorder_sta
          AND WORK_ORDER_STATUS=".$db->qstr($workorder_status);
     
     if(!$rs = $db->Execute($q)){
-      echo 'Error:'. $db->ErrorMsg();
+        force_page('core', 'error', 'error_type=database&error_location=includes:modules:core&php_function=count_employee_workorders_with_status()&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_function_count_employee_workorders_with_status_failed').'&php_error_msg='.$php_errormsg.'&database_error='.$db->ErrorMsg());
+        exit;
    } else {
        return $rs->fields['EMPLOYEE_WORKORDER_STATUS_COUNT'];
    }
@@ -352,7 +412,8 @@ function count_employee_invoices_with_status($db, $employee_id, $invoice_status)
          AND EMPLOYEE_ID=".$db->qstr($employee_id);
     
     if(!$rs = $db->Execute($q)) {
-        echo 'Error:'. $db->ErrorMsg();
+        force_page('core', 'error', 'error_type=database&error_location=includes:modules:core&php_function=count_employee_invoices_with_status()&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_function_count_employee_invoices_with_status_failed').'&php_error_msg='.$php_errormsg.'&database_error='.$db->ErrorMsg());
+        exit;
    } else {
        return $rs->fields['EMPLOYEE_INVOICE_COUNT'];
    }

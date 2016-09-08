@@ -69,14 +69,20 @@ function greeting_message_based_on_time($employee_name){
 /** Word Orders **/ 
 
 ##########################################
-# Get single Work Order ststus           #
+# Get single Work Order status           #
 ##########################################
 
 function menu_get_single_workorder_status($db, $wo_id){
     
-    $q = "SELECT WORK_ORDER_STATUS FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_ID =".$db->qstr($wo_id);    
-    $rs = $db->Execute($q);    
-    return $rs->fields['WORK_ORDER_STATUS'];
+    $q = "SELECT WORK_ORDER_STATUS FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_ID =".$db->qstr($wo_id);
+    
+    if(!$rs = $db->Execute($q)) {
+        force_page('core', 'error', 'error_type=database&error_location=includes:modules:core_theme&php_function=menu_get_single_workorder_status()&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_function_menu_get_single_workorder_status_failed').'&php_error_msg='.$php_errormsg.'&database_error='.$db->ErrorMsg());
+        exit;   
+    } else {
+        return $rs->fields['WORK_ORDER_STATUS'];
+    }
+    
 }
 
 /* 
@@ -97,8 +103,13 @@ function menu_count_workorders_with_status($db, $workorder_status){
             FROM ".PRFX."TABLE_WORK_ORDER
             WHERE WORK_ORDER_STATUS=".$db->qstr($workorder_status);
     
-    $rs = $db->Execute($q);    
-    return  $rs->fields['WORKORDER_STATUS_COUNT'];
+    if(!$rs = $db->Execute($q)) {
+        force_page('core', 'error', 'error_type=database&error_location=includes:modules:core_theme&php_function=menu_count_workorders_with_status()&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_function_menu_count_workorders_with_status_failed').'&php_error_msg='.$php_errormsg.'&database_error='.$db->ErrorMsg());
+        exit;
+   } else {
+       return  $rs->fields['WORKORDER_STATUS_COUNT']; 
+    }
+    
 }
 
 /** Invoices **/
@@ -111,8 +122,12 @@ function menu_count_invoices_with_status($db, $invoice_status){
     
     $q ="SELECT COUNT(*) AS INVOICE_COUNT FROM ".PRFX."TABLE_INVOICE WHERE INVOICE_PAID=".$db->qstr($invoice_status);
     
-    $rs = $db->Execute($q);
-    return $rs->fields['INVOICE_COUNT'];
+    if(!$rs = $db->Execute($q)) {
+        force_page('core', 'error', 'error_type=database&error_location=includes:modules:core_theme&php_function=menu_count_invoices_with_status()&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_function_menu_count_invoices_with_status_failed').'&php_error_msg='.$php_errormsg.'&database_error='.$db->ErrorMsg());
+        exit;
+   } else {
+        return $rs->fields['INVOICE_COUNT'];
+    }    
 }
 
 #########################################

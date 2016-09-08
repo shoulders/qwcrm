@@ -204,6 +204,7 @@ function display_closed($db, $page_no) {
 
     // Figure out the total number of closed work orders in the database 
     $q = "SELECT COUNT(*) as Num FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_STATUS=".$db->qstr(6);
+    
     if(!$results = $db->Execute($q)) {
         force_page('core', 'error', 'error_type=database&error_location=includes:modules:workorder&php_function=display_closed()&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_function_display_closed_failedcount').'&php_error_msg='.$php_errormsg.'&database_error='.$db->ErrorMsg());
         exit;
@@ -269,6 +270,7 @@ function display_customer_info($db, $customer_id){
     global $smarty;
     
     $sql = "SELECT * FROM ".PRFX."TABLE_CUSTOMER WHERE CUSTOMER_ID=".$db->qstr($customer_id);
+    
     if(!$result = $db->Execute($sql)) {
         force_page('core', 'error', 'error_type=database&error_location=includes:modules:workorder&php_function=display_customer_info()&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_function_display_customer_info_failed').'&php_error_msg='.$php_errormsg.'&database_error='.$db->ErrorMsg());
         exit;
@@ -325,6 +327,7 @@ function display_parts($db, $wo_id) {
     global $smarty;
     
     $q = "SELECT * FROM ".PRFX."ORDERS WHERE  WO_ID=".$db->qstr($wo_id);
+    
     if(!$rs = $db->execute($q)) {
         force_page('core', 'error', 'error_type=database&error_location=includes:modules:workorder&php_function=display_parts()&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_function_display_parts_failed').'&php_error_msg='.$php_errormsg.'&database_error='.$db->ErrorMsg());
         exit;

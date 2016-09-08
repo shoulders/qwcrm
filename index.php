@@ -29,7 +29,7 @@ $startMem  = memory_get_usage();
 /* Used to suppress PHP error Notices - this will overide php.ini settings */
 
 // Turn off all error reporting
-error_reporting(0);
+//error_reporting(0);
 
 // Report simple running errors
 //error_reporting(E_ERROR | E_WARNING | E_PARSE);
@@ -39,7 +39,7 @@ error_reporting(0);
 //error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
 
 // Report all errors except E_NOTICE
-////error_reporting(E_ALL & ~E_NOTICE); // This will only show major errors (default)
+error_reporting(E_ALL & ~E_NOTICE); // This will only show major errors (default)
 
 // Report all PHP errors (see changelog)
 //error_reporting(E_ALL);
@@ -49,6 +49,9 @@ error_reporting(0);
 
 // Same as error_reporting(E_ALL);
 //ini_set('error_reporting', E_ALL);
+
+// sme as one of the above
+//ini_set('track_errors', 1); 
 
 ################################################
 #          Header                              #

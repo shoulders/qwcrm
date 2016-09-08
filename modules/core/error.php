@@ -5,13 +5,13 @@ require('includes'.SEP.'modules'.SEP.'core.php');
 $error_type         = $VAR['error_type'];
 $error_location     = $VAR['error_location'];
 $php_function       = $VAR['php_function'];
-$error_msg          = $VAR['error_msg'];
-$php_error_msg      = $VAR['php_error_msg'];
 $database_error     = $VAR['database_error'];
+$error_msg          = $VAR['error_msg'];
 
 // Regex the HTTP_REFERER to give the page the error occured on
 preg_match('/.*\?page=(.*)&.*/', getenv('HTTP_REFERER'), $page_string);
 $error_page = $page_string[1];
+if($error_page == ''){$error_page = 'Home';}
 
 // This logs errors to the error log
 if($qwcrm_error_log === 'on'){
@@ -20,12 +20,12 @@ if($qwcrm_error_log === 'on'){
     
     // Error page when logged in - these variables have just been set in the error.php controller
     if(isset($_SESSION['login_hash']) && isset($_GET['error_msg']) && $module === 'core' && $page === 'error'){
-        write_record_to_error_log($login_usr, $error_type, $error_location, $php_function, $error_msg, $php_error_msg, $database_error);
+        write_record_to_error_log($login_usr, $error_type, $error_location, $php_function, $database_error, $error_msg);
     }
     
     // Error page when NOT logged in - find out which ones are missing and perhaps do coding on them - most of these variables are not set
     elseif(!isset($_SESSION['login_hash']) && isset($_GET['error_msg']) && $module === 'core' && $page === 'error') {
-        write_record_to_error_log('-', $_GET['error_type'], $error_location, $php_function, $error_msg, $php_error_msg, $database_error);
+        write_record_to_error_log('-', $_GET['error_type'], $error_location, $php_function, $database_error, $error_msg);
     }
     
 }
