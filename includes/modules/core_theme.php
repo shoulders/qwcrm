@@ -25,7 +25,9 @@ if(!xml2php('core_menu')) {
 #  Greeting Message Based on Time       #
 #########################################
 
-function greeting_message_based_on_time($employee_name){    
+function greeting_message_based_on_time($employee_name){
+    
+    global $smarty;
     
     $morning    = "Good morning! $employee_name";
     $afternoon  = "Good afternoon! $employee_name";
@@ -74,10 +76,12 @@ function greeting_message_based_on_time($employee_name){
 
 function menu_get_single_workorder_status($db, $wo_id){
     
+    global $smarty;
+    
     $q = "SELECT WORK_ORDER_STATUS FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_ID =".$db->qstr($wo_id);
     
     if(!$rs = $db->Execute($q)) {
-        force_page('core', 'error', 'error_type=database&error_location=includes:modules:core_theme&php_function=menu_get_single_workorder_status()&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_function_menu_get_single_workorder_status_failed').'&php_error_msg='.$php_errormsg.'&database_error='.$db->ErrorMsg());
+        force_page('core', 'error', 'error_type=database&error_location=includes:modules:core_theme&php_function='.__FUNCTION__.'&database_error='.$db->ErrorMsg().'&error_msg='.$smarty->get_template_vars('translate_core_theme_error_message_function_'.__FUNCTION__.'_failed'));
         exit;   
     } else {
         return $rs->fields['WORK_ORDER_STATUS'];
@@ -99,12 +103,14 @@ function menu_get_single_workorder_status($db, $wo_id){
 
 function menu_count_workorders_with_status($db, $workorder_status){
     
+    global $smarty;
+    
     $q = "SELECT COUNT(*) AS WORKORDER_STATUS_COUNT
             FROM ".PRFX."TABLE_WORK_ORDER
             WHERE WORK_ORDER_STATUS=".$db->qstr($workorder_status);
     
     if(!$rs = $db->Execute($q)) {
-        force_page('core', 'error', 'error_type=database&error_location=includes:modules:core_theme&php_function=menu_count_workorders_with_status()&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_function_menu_count_workorders_with_status_failed').'&php_error_msg='.$php_errormsg.'&database_error='.$db->ErrorMsg());
+        force_page('core', 'error', 'error_type=database&error_location=includes:modules:core_theme&php_function='.__FUNCTION__.'&database_error='.$db->ErrorMsg().'&error_msg='.$smarty->get_template_vars('translate_core_theme_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
    } else {
        return  $rs->fields['WORKORDER_STATUS_COUNT']; 
@@ -120,10 +126,12 @@ function menu_count_workorders_with_status($db, $workorder_status){
 
 function menu_count_invoices_with_status($db, $invoice_status){
     
+    global $smarty;
+    
     $q ="SELECT COUNT(*) AS INVOICE_COUNT FROM ".PRFX."TABLE_INVOICE WHERE INVOICE_PAID=".$db->qstr($invoice_status);
     
     if(!$rs = $db->Execute($q)) {
-        force_page('core', 'error', 'error_type=database&error_location=includes:modules:core_theme&php_function=menu_count_invoices_with_status()&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_function_menu_count_invoices_with_status_failed').'&php_error_msg='.$php_errormsg.'&database_error='.$db->ErrorMsg());
+        force_page('core', 'error', 'error_type=database&error_location=includes:modules:core_theme&php_function='.__FUNCTION__.'&database_error='.$db->ErrorMsg().'&error_msg='.$smarty->get_template_vars('translate_core_theme_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
    } else {
         return $rs->fields['INVOICE_COUNT'];

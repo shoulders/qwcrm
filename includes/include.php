@@ -479,20 +479,14 @@ function write_record_to_access_log($login_usr = Null){
 #  Write a record to the error.log file    #
 ############################################
 
-function write_record_to_error_log($login_usr = '-', $error_type, $error_location, $php_function, $database_error, $error_msg){
-
-    /* If no logged in user
-    if($login_usr == ''){
-        $login_usr = '-';        
-    }*/
+function write_record_to_error_log($login_usr = '-', $error_type, $error_location, $error_page, $php_function, $database_error, $error_msg){
     
     global $smarty;
     
-    // Regex the HTTP_REFERER to give the page the error occured on
-    preg_match('/.*\?page=(.*)&.*/', getenv('HTTP_REFERER'), $page_string);
-    $error_page = $page_string[1];
-    
-    // regex Error Location: includes:modules:workorder to add slashess and .php
+    /* If no logged in user
+    if($login_usr == ''){
+        $login_usr = '-';        
+    }*/    
 
     // Build log entry - perhaps use the apache time stamp below
     $log_entry = $_SERVER['REMOTE_ADDR'].','.$login_usr.','.date(DATE_W3C).','.$error_type.','.$error_location.','.$error_page.','.$php_function.','.$database_error.','.$error_msg."\n";
@@ -501,8 +495,12 @@ function write_record_to_error_log($login_usr = '-', $error_type, $error_locatio
     $fp = fopen(ERROR_LOG,'a') or die($smarty->get_template_vars('translate_include_error_message_cant_open_activity_log').': '.$php_errormsg);
     fwrite($fp, $log_entry);
     fclose($fp);
-    
+        
     return;    
 }
 
+// old error line
 //force_page('core', 'error', 'error_type=database&error_location=includes:modules:workorder&php_function=display_single_open_workorder()&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_function_display_single_open_workorder_failed').'&php_error_msg='.$php_errormsg.'&database_error='.$db->ErrorMsg());
+
+// new error line
+// force_page('core', 'error', 'error_type=database&error_location=includes:modules:core&php_function='.__FUNCTION__.'&database_error='.$db->ErrorMsg().'&error_msg='.$smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
