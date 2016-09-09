@@ -400,6 +400,8 @@ function write_record_to_tracker_table($db, $page_display_controller, $module, $
 /*
  * This writes Specific QWcrm activity note to the activity.log, i.e. login/logout
  * The messages and information is already formed before reaching here
+ * 
+ * add username and other stuff here? not just the message
  */
 
 function write_record_to_activity_log($record){
@@ -448,7 +450,7 @@ function write_record_to_access_log($login_usr = Null){
     $uri            = $_SERVER['REQUEST_URI'];                              // the URL
     $protocol       = $_SERVER['SERVER_PROTOCOL'];                          // HTTP/1.0    
     
-    $status         = '-';                                                  // dont think I can get this 200,401,404 etc..
+    $status         = '-';                                                  // page returned status - dont think I can get this 200,401,404 etc..
     $bytes          = '-';                                                  // cant get this - page size / payload size
     
     // Referring URL
@@ -458,7 +460,7 @@ function write_record_to_access_log($login_usr = Null){
         $referring_url = '-';
     }   
     
-    // User Agent - check this logic can useragent be set with nothinh in it and then does apache return "-"
+    // User Agent - if there is no user agent or it cannot be detected then apache uses "-"
     if(isset($_SERVER['HTTP_USER_AGENT']) && ($_SERVER['HTTP_USER_AGENT'] != '')){
         $user_agent = $_SERVER['HTTP_USER_AGENT']; 
     } else {
@@ -479,7 +481,7 @@ function write_record_to_access_log($login_usr = Null){
 #  Write a record to the error.log file    #
 ############################################
 
-function write_record_to_error_log($login_usr = '-', $error_type, $error_location, $error_page, $php_function, $database_error, $error_msg){
+function write_record_to_error_log($login_usr = '-', $error_page, $error_type, $error_location, $php_function, $database_error, $error_msg){
     
     global $smarty;
     
@@ -489,7 +491,7 @@ function write_record_to_error_log($login_usr = '-', $error_type, $error_locatio
     }*/    
 
     // Build log entry - perhaps use the apache time stamp below
-    $log_entry = $_SERVER['REMOTE_ADDR'].','.$login_usr.','.date(DATE_W3C).','.$error_type.','.$error_location.','.$error_page.','.$php_function.','.$database_error.','.$error_msg."\n";
+    $log_entry = $_SERVER['REMOTE_ADDR'].','.$login_usr.','.date("[d/M/Y:H:i:s O]", $_SERVER['REQUEST_TIME']).','.$error_page.','.$error_type.','.$error_location.','.$php_function.','.$database_error.','.$error_msg."\n";
 
     // Write log entry to error.log    
     $fp = fopen(ERROR_LOG,'a') or die($smarty->get_template_vars('translate_include_error_message_cant_open_activity_log').': '.$php_errormsg);
@@ -504,3 +506,73 @@ function write_record_to_error_log($login_usr = '-', $error_type, $error_locatio
 
 // new error line
 // force_page('core', 'error', 'error_type=database&error_location=includes:modules:core&php_function='.__FUNCTION__.'&database_error='.$db->ErrorMsg().'&error_msg='.$smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
+
+// new new line - all automated
+//force_page('core', 'error', 'error_page='.prepare_error_data('error_page').'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
+
+// this is my current working line
+//force_page('core', 'error', 'error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
+
+############################################
+#  Error Handling - Data preperation       #
+############################################
+
+function prepare_error_data($type, $data = Null){
+
+    /* Error Page (by referring page), works after the redirect has happend- web page that caused the error */
+    if($type === 'error_page'){
+        
+        // extract the qwcrm page reference from the url      
+        preg_match('/^.*\?page=(.*)&.*/U', getenv('HTTP_REFERER'), $page_string);
+                
+        // compensate for home and login pages
+        if($page_string[1] == ''){     
+            // Must be Login or Home
+            if(isset($_SESSION['login_hash'])){
+                $error_page = 'home';
+            } else {
+                $error_page = 'login';
+            }    
+        } else {
+            $error_page = $page_string[1];            
+        }       
+        return $error_page;
+    } 
+    
+    /* Error Location */
+    if($type === 'error_location'){
+        
+        global $qwcrm_physical_path;        
+        
+        // remove qwcrm base physical webroot path thing
+        $data = str_replace($qwcrm_physical_path, '', $data);
+        
+        // replace backslashes with forward slashes (Windows OS)
+        $data = str_replace('\\','/',$data);
+        
+        // remove drive letter only (Windows OS)
+        //$data = preg_replace('/^[a-zA-Z]:/', '', $data);
+        
+        // remove preceeding slash
+        $data = preg_replace('/^\//', '', $data);
+        
+        return $data;
+
+    }
+   
+    /* PHP Function */
+    if($type === 'php_function'){
+
+        // add () to the end of the php function name
+        if($data != ''){$data.= '()';}        
+        return $data;
+    }
+    
+    /* Patabase Error */
+    if($type === 'database_error'){
+
+        // add () to the end of the php function name
+        if($data != ''){$data = str_replace("\n",'',$data);}  
+        return $data;
+    }
+}

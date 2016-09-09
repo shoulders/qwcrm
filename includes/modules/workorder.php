@@ -25,7 +25,7 @@ function display_single_open_workorder($db, $wo_id){
     
     global $smarty;
     
-     $sql = "SELECT ".PRFX."TABLE_WORK_ORDER.*,
+     $sql = "SEL ECT ".PRFX."TABLE_WORK_ORDER.*,
             ".PRFX."TABLE_CUSTOMER.CUSTOMER_ID,
             ".PRFX."TABLE_CUSTOMER.CUSTOMER_DISPLAY_NAME,
             ".PRFX."TABLE_CUSTOMER.CUSTOMER_ADDRESS,
@@ -61,7 +61,8 @@ function display_single_open_workorder($db, $wo_id){
              WHERE ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_ID =".$db->qstr($wo_id)." LIMIT 1";
 
     if(!$result = $db->Execute($sql)) {
-        force_page('core', 'error', 'error_type=database&error_location=includes:modules:workorder&php_function=display_single_open_workorder()&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_function_display_single_open_workorder_failed').'&php_error_msg='.$php_errormsg.'&database_error='.$db->ErrorMsg());
+        //force_page('core', 'error', 'error_type=database&error_location=includes:modules:workorder&php_function=display_single_open_workorder()&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_function_display_single_open_workorder_failed').'&php_error_msg='.$php_errormsg.'&database_error='.$db->ErrorMsg());
+        force_page('core', 'error', 'error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         

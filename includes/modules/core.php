@@ -24,10 +24,11 @@ function display_welcome_note($db){
     
     global $smarty;
     
-    $q = 'SELECT WELCOME_NOTE FROM '.PRFX.'SETUP';
+    $q = 'SELECT WELCO ME_NOTE FROM '.PRFX.'SETUP';
+    //echo __FILE__;die;
     
     if(!$rs = $db->execute($q)){
-        force_page('core', 'error', 'error_type=database&error_location=includes:modules:core&php_function='.__FUNCTION__.'&database_error='.$db->ErrorMsg().'&error_msg='.$smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
+        force_page('core', 'error', 'error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.__FUNCTION__.'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else { 
         return $rs->fields['WELCOME_NOTE'];

@@ -54,6 +54,17 @@ error_reporting(E_ALL & ~E_NOTICE); // This will only show major errors (default
 //ini_set('track_errors', 1); 
 
 ################################################
+#    Get Folder and Physical path info         #
+################################################
+
+// required for error location automation.
+global $qwcrm_physical_path;
+$qwcrm_physical_path = __DIR__;
+
+// returns the domain path - http://stackoverflow.com/questions/6768793/get-the-full-url-in-php
+$qwcrm_domain_path = 'http' . (isset($_SERVER['HTTPS']) ? 's' : '') . '://' . "{$_SERVER['HTTP_HOST']}/{$_SERVER['REQUEST_URI']}"; // not curently used
+
+################################################
 #          Header                              #
 ################################################
 

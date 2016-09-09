@@ -36,6 +36,3 @@ define('THEME_DIR','themes/'.THEME_NAME);                   // set the current t
 define('THEME_IMAGES_DIR',THEME_DIR.'images/');
 define('THEME_CSS_DIR',THEME_DIR.'css/');
 define('THEME_JS_DIR',THEME_DIR.'js/');
-
-// returns the domain path - http://stackoverflow.com/questions/6768793/get-the-full-url-in-php
-$domain_path = 'http' . (isset($_SERVER['HTTPS']) ? 's' : '') . '://' . "{$_SERVER['HTTP_HOST']}/{$_SERVER['REQUEST_URI']}"; // not curently used
