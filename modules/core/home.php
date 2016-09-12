@@ -1,6 +1,6 @@
 <?php
 
-require('includes'.SEP.'modules'.SEP.'core.php');
+require('includes'.SEP.'modules'.SEP.'core_home.php');
 
 /** Misc **/
 

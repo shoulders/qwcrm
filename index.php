@@ -86,7 +86,7 @@ require(INCLUDES_DIR.'smarty.php');
 #    Verify QWcrm is installed correctly       #
 ################################################
 
-verify_qwcrm_is_installed_correctly($db); // works well
+verify_qwcrm_is_installed_correctly($db);
  
 ################################################
 #          Authentication                      #
@@ -203,16 +203,53 @@ $smarty->assign('Y',$Y);
 $smarty->assign('m',$m);
 $smarty->assign('d',$d);
 
-################################################
-#  Page Building logic (Not logged in)         #
-################################################
+###################################
+# Load Core language translations #
+###################################
 
-/*
- * This section handles pages that are not within the 'logged in' scope
- */
+if(!xml2php('core')) {    
+    $smarty->assign('error_msg', 'Error in core language file');
+}
 
-if(!isset($_SESSION['login_hash'])){ 
+############################################
+#  Page Preperation Logic                  #
+#  Extract Page Parameters and Validate    #
+#  the page exists ready for building      #
+############################################
 
+/* If logged In */
+
+if(isset($_SESSION['login_hash'])){
+    
+    if(isset($VAR['page'])){
+
+            // Explode the URL so we can get the module and page_tpl
+            list($module, $page_tpl)    = explode(':', $VAR['page']);
+            $page_display_controller    = 'modules'.SEP.$module.SEP.$page_tpl.'.php';
+
+            // Check to see if the page exists and set it, otherwise send them to the 404 page
+            if (file_exists($page_display_controller)){
+                $page_display_controller = 'modules'.SEP.$module.SEP.$page_tpl.'.php';
+            } else {
+
+                $page_display_controller = 'modules'.SEP.'core'.SEP.'404.php';
+
+                // Currently these are set to the unknown page and the page request will be denied by the the ACL.
+                // This will change these values to the 404 page allowing it to be loaded.          
+                $module     = 'core';
+                $page_tpl   = '404';
+            }
+        } else {
+            // If no page is supplied then go to the main page (this assumes you are logged in)
+            $page_display_controller    = 'modules'.SEP.'core'.SEP.'home.php';
+            $module                     = 'core';
+            $page_tpl                   = 'home';
+        }
+        
+} else {
+    
+/* If NOT logged In */
+    
     // Is there a page title set
     if(isset($_VAR['page']) && $_VAR['page'] != ''){
         
@@ -221,11 +258,6 @@ if(!isset($_SESSION['login_hash'])){
     } else {
         
         /* This builds the landing page when not logged in */
-        
-        // Load Module Language Translations
-        if(!xml2php('core')) {    
-            $smarty->assign('error_msg', 'Error in the '.'core'.' language file');
-        }
 
         // Set Page Header and Meta Data
         set_page_header_and_meta_data('core', 'login');
@@ -239,7 +271,7 @@ if(!isset($_SESSION['login_hash'])){
         if($VAR['theme'] != 'off'){        
             require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_header_block.php');      
         } else {
-            echo '<!DOCTYPE html><head></head><body>';        
+            echo '<!DOCTYPE html><head></head><body>';
         }
         
         // Display the Dashboard Block
@@ -265,42 +297,10 @@ if(!isset($_SESSION['login_hash'])){
         goto logging_section;
         
     }
-    
 }
-
-#############################################
-#  Extract Page Parameters and Validate     #
-#  the page exists ready for building       #
-#############################################
-
-if(isset($VAR['page'])){
-    
-        // Explode the URL so we can get the module and page_tpl
-        list($module, $page_tpl)    = explode(':', $VAR['page']);
-        $page_display_controller    = 'modules'.SEP.$module.SEP.$page_tpl.'.php';
-
-        // Check to see if the page exists and set it, otherwise send them to the 404 page
-        if (file_exists($page_display_controller)){
-            $page_display_controller = 'modules'.SEP.$module.SEP.$page_tpl.'.php';
-        } else {
-            
-            $page_display_controller = 'modules'.SEP.'core'.SEP.'404.php';
-            
-            // Currently these are set to the unknown page and the page request will be denied by the the ACL.
-            // This will change these values to the 404 page allowing it to be loaded.          
-            $module     = 'core';
-            $page_tpl   = '404';
-        }
-    } else {
-        // If no page is supplied then go to the main page (this assumes you are logged in)
-        $page_display_controller    = 'modules'.SEP.'core'.SEP.'home.php';
-        $module                     = 'core';
-        $page_tpl                   = 'home';
-    }
-   
 ###############################################
 #    Build and Display the page (as required) #
-#    If the user has the correct permissions  #
+#    if the user has the correct permissions  #
 ###############################################
 
 /* Check the requested page with 'logged in' user against the ACL for authorisation - if allowed, display */

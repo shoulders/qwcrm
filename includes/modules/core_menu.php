@@ -6,12 +6,9 @@
 # Load language translations #
 ##############################
 
-// Menu is a special case, it should have its own language file section
 if(!xml2php('core_menu')) {    
     $smarty->assign('error_msg', 'Error in core language file');
 }   
-
-
 
 /** Work Orders **/ 
 
@@ -35,12 +32,10 @@ function menu_get_single_workorder_status($db, $wo_id){
 }
 
 /* 
- * These are copied from includes/core.php but with menu added on the front of the name
+ * These are copied from includes/core_home.php but with menu added on the front of the name
  * These are only used to show numbers in the menu and could be removed
  * 
  */
-
-
 
 #########################################
 # Count Work Orders for a given status  #

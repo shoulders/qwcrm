@@ -36,7 +36,7 @@ class Auth {
            
 
             // Escape the variables for the query - not currently used - is this needed?         
-            //$link = mysqli_connec($DB_HOST, $DB_USER, $DB_PASS);
+            //$link = mysqli_connect($DB_HOST, $DB_USER, $DB_PASS);
             //$login_usr = mysqli_real_escape_string($link, $_POST['login_usr']);
             //$login_pwd = mysqli_real_escape_string($link, $login_pwd);
 

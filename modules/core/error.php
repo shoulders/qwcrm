@@ -1,6 +1,6 @@
 <?php
 
-require('includes'.SEP.'modules'.SEP.'core.php');
+//require('includes'.SEP.'modules'.SEP.'core_error.php'); not needed
 
 /* Grab and Process Values befor sending to the log and displaying */
 //$error_page         = prepare_error_data('error_page'); // only needed whn using referrer

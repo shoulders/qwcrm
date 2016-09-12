@@ -105,7 +105,7 @@ function set_page_header_and_meta_data($module, $page_tpl, $page_title_from_var 
 }
 
 ##########################################################
-#  Verify Employee's authorization for a specific page   #
+#  Verify User's authorization for a specific page       #
 ##########################################################
 
 function check_acl($db, $login_account_type_id, $module, $page_tpl){
@@ -209,7 +209,7 @@ function get_qwcrm_database_version_number($db){
 }
 
 ################################################
-#  Get company logo location                  #
+#  Get company logo location                   #
 ################################################
 
 function get_company_logo($db){    

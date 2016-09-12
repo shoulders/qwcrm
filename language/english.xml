@@ -109,7 +109,7 @@
     
     // Error Messages
 
-        // includes/modules/core.php
+        // includes/modules/core_home.php
         <core_error_message_function_display_welcome_note_failed></core_error_message_function_display_welcome_note_failed>     
         <core_error_message_function_count_workorders_with_status_failed></core_error_message_function_count_workorders_with_status_failed>
         <core_error_message_function_count_all_workorders_failed></core_error_message_function_count_all_workorders_failed>
@@ -132,7 +132,7 @@
         
                
         
-    // Log Messages (should all be in - includes/modules/core.php)
+    // Log Messages (should all be in - includes/modules/core_xxx.php)
     
     // Advisory Messages
         

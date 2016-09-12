@@ -4,18 +4,6 @@
 
 /** Mandatory Code **/
 
-##############################
-# Load language translations #
-##############################
-
-if(!xml2php('core')) {    
-    $smarty->assign('error_msg', 'Error in core language file');
-}
-
-/** Misc **/
-
-
-
 #########################################
 # Display Welcome Note                  #
 #########################################

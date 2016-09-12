@@ -1,6 +1,6 @@
 <?php
 
-require('includes'.SEP.'modules'.SEP.'core.php');
+//require('includes'.SEP.'modules'.SEP.'core_404.php'); not needed
 
 $smarty->assign('page_title', 'ERROR: 404');
 $smarty->assign('pagename', $_SERVER['REQUEST_URI']);

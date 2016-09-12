@@ -65,6 +65,3 @@ function greeting_message_based_on_time($employee_name){
     }
     return $greeting_msg;
 }
-
-
-
