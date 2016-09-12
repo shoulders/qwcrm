@@ -7,13 +7,13 @@
 #####################################
 
 /*
- * If no $page and $variables are supplied then this function 
+ * If no $page_tpl and $variables are supplied then this function 
  * will force a URL redirect exactly how it was supplied 
  */
 
-function force_page($module, $page = Null, $variables = Null) {
+function force_page($module, $page_tpl = Null, $variables = Null) {
     
-    if($page === Null && $variables === Null){
+    if($page_tpl === Null && $variables === Null){
         
         // Normal URL Redirect
         echo('
@@ -22,12 +22,12 @@ function force_page($module, $page = Null, $variables = Null) {
                 </script>
             ');
         
-    } elseif ($page != Null && $variables === Null){
+    } elseif ($page_tpl != Null && $variables === Null){
     
         // Normal URL Redirect with no starting '&' for variable string 
         echo('
                 <script type="text/javascript">
-                    window.location = "index.php?page='.$module.':'.$page.'"
+                    window.location = "index.php?page='.$module.':'.$page_tpl.'"
                 </script>
             ');
          
@@ -36,7 +36,7 @@ function force_page($module, $page = Null, $variables = Null) {
         // QWcrm Style Redirect
         echo('
                 <script type="text/javascript">
-                    window.location = "index.php?page='.$module.':'.$page.'&'.$variables.'"
+                    window.location = "index.php?page='.$module.':'.$page_tpl.'&'.$variables.'"
                 </script>
             ');
     }
@@ -82,7 +82,7 @@ function xml2php($module){
  * This does cause these translations to be loaded/assigned twice but allow sme to use 1 file language instead of 2
  */
 
-function set_page_header_and_meta_data($module, $page, $page_title_from_var = Null){
+function set_page_header_and_meta_data($module, $page_tpl, $page_title_from_var = Null){
     
     global $smarty;
     
@@ -94,12 +94,12 @@ function set_page_header_and_meta_data($module, $page, $page_title_from_var = Nu
     if ($page_title_from_var != Null){
         $smarty->assign('page_title', $page_title_from_var); 
     } else {
-        $smarty->assign('page_title', $smarty->get_template_vars('translate_'.$module.'_'.$page.'_header_page_title'));
+        $smarty->assign('page_title', $smarty->get_template_vars('translate_'.$module.'_'.$page_tpl.'_header_page_title'));
     }    
     
     // Meta Tags
-    $smarty->assign('meta_description', $smarty->get_template_vars('translate_'.$module.'_'.$page.'_header_meta_description'));
-    $smarty->assign('meta_keywords', $smarty->get_template_vars('translate_'.$module.'_'.$page.'_header_meta_keywords'));
+    $smarty->assign('meta_description', $smarty->get_template_vars('translate_'.$module.'_'.$page_tpl.'_header_meta_description'));
+    $smarty->assign('meta_keywords', $smarty->get_template_vars('translate_'.$module.'_'.$page_tpl.'_header_meta_keywords'));
     
     return;
 }
@@ -108,7 +108,7 @@ function set_page_header_and_meta_data($module, $page, $page_title_from_var = Nu
 #  Verify Employee's authorization for a specific page   #
 ##########################################################
 
-function check_acl($db, $login_account_type_id, $module, $page){
+function check_acl($db, $login_account_type_id, $module, $page_tpl){
     
     if($login_account_type_id == ''){echo 'The ACL has been supplied with no account type - I will now die.';die;}
 
@@ -125,7 +125,7 @@ function check_acl($db, $login_account_type_id, $module, $page){
     } 
     
     // Build the page name for the ACL lookup
-    $module_page = $module.':'.$page;
+    $module_page = $module.':'.$page_tpl;
     
     /* Check Page to see if we have access */
     $q = "SELECT ".$employee_acl_account_type_display_name." AS PAGE_ACL FROM ".PRFX."ACL WHERE page=".$db->qstr($module_page);
@@ -139,7 +139,7 @@ function check_acl($db, $login_account_type_id, $module, $page){
         // Add if guest (6) rules here if there are errors
         
         if($acl != 1) {
-            force_page('core','error','error_msg=You do not have permission to access this '.$module.':'.$page.'&menu=1');
+            force_page('core','error','error_msg=You do not have permission to access this '.$module.':'.$page_tpl.'&menu=1');
             exit;
         } else {
             return true;	
@@ -375,7 +375,7 @@ echo ('My real IP is:'.$ip);
 #  Write a record to the Tracker Table         #
 ################################################
 
-function write_record_to_tracker_table($db, $page_display_controller, $module, $page){
+function write_record_to_tracker_table($db, $page_display_controller, $module, $page_tpl){
     
    $q = 'INSERT into '.PRFX.'TRACKER SET
    date          = '. $db->qstr( time()                     ).',
@@ -383,7 +383,7 @@ function write_record_to_tracker_table($db, $page_display_controller, $module, $
    uagent        = '. $db->qstr( getenv('HTTP_USER_AGENT')  ).',
    full_page     = '. $db->qstr( $page_display_controller   ).',
    module        = '. $db->qstr( $module                    ).',
-   page          = '. $db->qstr( $page                      ).',
+   page          = '. $db->qstr( $page_tpl                  ).',
    referer       = '. $db->qstr( getenv('HTTP_REFERER')     );
 
    if(!$rs = $db->Execute($q)) {
@@ -391,7 +391,6 @@ function write_record_to_tracker_table($db, $page_display_controller, $module, $
    }
     
 }
-
 
 ############################################
 #  Write a record to the activity.log file #
@@ -503,15 +502,17 @@ function write_record_to_error_log($login_usr = '-', $error_page, $error_type, $
 
 // old error line
 //force_page('core', 'error', 'error_type=database&error_location=includes:modules:workorder&php_function=display_single_open_workorder()&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_function_display_single_open_workorder_failed').'&php_error_msg='.$php_errormsg.'&database_error='.$db->ErrorMsg());
-
 // new error line
 // force_page('core', 'error', 'error_type=database&error_location=includes:modules:core&php_function='.__FUNCTION__.'&database_error='.$db->ErrorMsg().'&error_msg='.$smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
-
 // new new line - all automated
 //force_page('core', 'error', 'error_page='.prepare_error_data('error_page').'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
-
 // this is my current working line
 //force_page('core', 'error', 'error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
+//force_page('core', 'error', 'error_page='.'error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed');
+
+
+/* current error - get is used because it is a super global to grab page title = simple*/
+// force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
 
 ############################################
 #  Error Handling - Data preperation       #
@@ -519,13 +520,14 @@ function write_record_to_error_log($login_usr = '-', $error_page, $error_type, $
 
 function prepare_error_data($type, $data = Null){
 
-    /* Error Page (by referring page), works after the redirect has happend- web page that caused the error */
+    /* Error Page (by referring page) - only needed when using referrer - not currently used 
     if($type === 'error_page'){
+     */
         
         // extract the qwcrm page reference from the url      
-        preg_match('/^.*\?page=(.*)&.*/U', getenv('HTTP_REFERER'), $page_string);
+        // preg_match('/^.*\?page=(.*)&.*/U', getenv('HTTP_REFERER'), $page_string);
                 
-        // compensate for home and login pages
+      /*  // compensate for home and login pages
         if($page_string[1] == ''){     
             // Must be Login or Home
             if(isset($_SESSION['login_hash'])){
@@ -537,7 +539,25 @@ function prepare_error_data($type, $data = Null){
             $error_page = $page_string[1];            
         }       
         return $error_page;
-    } 
+    }
+    */
+        
+    /* Error Page (by using $_GET['page'] */
+    if($type === 'error_page'){
+        
+        // compensate for home and login pages
+        if($data == ''){     
+            // Must be Login or Home
+            if(isset($_SESSION['login_hash'])){
+                $error_page = 'home';
+            } else {
+                $error_page = 'login';
+            }    
+        } else {
+            $error_page = $data;            
+        }       
+        return $error_page;
+    }     
     
     /* Error Location */
     if($type === 'error_location'){

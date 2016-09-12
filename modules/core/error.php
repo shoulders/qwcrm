@@ -3,7 +3,8 @@
 require('includes'.SEP.'modules'.SEP.'core.php');
 
 /* Grab and Process Values befor sending to the log and displaying */
-$error_page         = prepare_error_data('error_page');
+//$error_page         = prepare_error_data('error_page'); // only needed whn using referrer
+$error_page         = $VAR['error_page'];
 $error_type         = $VAR['error_type'];
 $error_location     = $VAR['error_location'];
 $php_function       = $VAR['php_function'];
@@ -14,12 +15,12 @@ $error_msg          = $VAR['error_msg'];
 if($qwcrm_error_log === 'on'){    
     
     // Error page when logged in - these variables have just been set in the error.php controller
-    if(isset($_SESSION['login_hash']) && isset($error_type) && $module === 'core' && $page === 'error'){
+    if(isset($_SESSION['login_hash']) && isset($error_type) && $module === 'core' && $page_tpl === 'error'){
         write_record_to_error_log($login_usr, $error_page, $error_type, $error_location, $php_function, $database_error, $error_msg);
     }
     
     // Error page when NOT logged in - find out which ones are missing and perhaps do coding on them - most of these variables are not set
-    elseif(!isset($_SESSION['login_hash']) && isset($error_type) && $module === 'core' && $page === 'error') {
+    elseif(!isset($_SESSION['login_hash']) && isset($error_type) && $module === 'core' && $page_tpl === 'error') {
         write_record_to_error_log('-', $error_page, $error_type , $error_location, $php_function, $database_error, $error_msg);
     }
     

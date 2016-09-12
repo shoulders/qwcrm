@@ -4,6 +4,8 @@ require('includes'.SEP.'modules'.SEP.'workorder.php');
 
 $workorder_resolution = $VAR['workorder_resolution'];
 
+
+// sort this, the format is wrong - is this advisory or an error
 if($wo_id == ''){
     force_page('core', 'error', 'error_type=warning&error_location=workorder:resolution&php_function=&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_print_loadpage_failed').'&php_error_msg='.$php_errormsg.'&database_error='.$db->ErrorMsg());
     exit;

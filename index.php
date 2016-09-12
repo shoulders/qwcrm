@@ -61,7 +61,7 @@ error_reporting(E_ALL & ~E_NOTICE); // This will only show major errors (default
 global $qwcrm_physical_path;
 $qwcrm_physical_path = __DIR__;
 
-// returns the domain path - http://stackoverflow.com/questions/6768793/get-the-full-url-in-php
+// returns the domain path and url - http://stackoverflow.com/questions/6768793/get-the-full-url-in-php
 $qwcrm_domain_path = 'http' . (isset($_SERVER['HTTPS']) ? 's' : '') . '://' . "{$_SERVER['HTTP_HOST']}/{$_SERVER['REQUEST_URI']}"; // not curently used
 
 ################################################
@@ -94,8 +94,8 @@ verify_qwcrm_is_installed_correctly($db); // works well
 
 $auth = new Auth($db, 'index.php', $strKey);
 
-$login_id           = $_SESSION['login_id'];
-$login_usr          = $_SESSION['login_usr'];
+$login_id   = $_SESSION['login_id'];
+$login_usr  = $_SESSION['login_usr'];
 
 // If there is no account type details, set to Guest
 if(!isset($_SESSION['login_account_type_id'])){
@@ -106,10 +106,10 @@ if(!isset($_SESSION['login_account_type_id'])){
 
 $login_display_name = $_SESSION['login_display_name'];
 
-$smarty->assign('login_id',             $login_id           );
-$smarty->assign('login_usr',            $login_usr          );
-$smarty->assign('login_account_type_id',   $login_account_type_id );
-$smarty->assign('login_display_name',   $login_display_name );
+$smarty->assign('login_id',                 $login_id               );
+$smarty->assign('login_usr',                $login_usr              );
+$smarty->assign('login_account_type_id',    $login_account_type_id  );
+$smarty->assign('login_display_name',       $login_display_name     );
 
 /* If logout is set, then log user off */
 if (isset($_GET['action']) && $_GET['action'] == 'logout') {    
@@ -230,6 +230,11 @@ if(!isset($_SESSION['login_hash'])){
         // Set Page Header and Meta Data
         set_page_header_and_meta_data('core', 'login');
         
+        // For debugging only - not used currently as only 1 page when not lo
+        $page_display_controller    = 'modules'.SEP.'core'.SEP.'home.php';
+        $module                     = 'core';
+        $page_tpl                   = 'login';
+        
         // Display Header Block
         if($VAR['theme'] != 'off'){        
             require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_header_block.php');      
@@ -270,27 +275,27 @@ if(!isset($_SESSION['login_hash'])){
 
 if(isset($VAR['page'])){
     
-        // Explode the URL so we can get the module and page
-        list($module, $page)        = explode(':', $VAR['page']);
-        $page_display_controller    = 'modules'.SEP.$module.SEP.$page.'.php';
+        // Explode the URL so we can get the module and page_tpl
+        list($module, $page_tpl)    = explode(':', $VAR['page']);
+        $page_display_controller    = 'modules'.SEP.$module.SEP.$page_tpl.'.php';
 
         // Check to see if the page exists and set it, otherwise send them to the 404 page
         if (file_exists($page_display_controller)){
-            $page_display_controller = 'modules'.SEP.$module.SEP.$page.'.php';
+            $page_display_controller = 'modules'.SEP.$module.SEP.$page_tpl.'.php';
         } else {
             
             $page_display_controller = 'modules'.SEP.'core'.SEP.'404.php';
             
             // Currently these are set to the unknown page and the page request will be denied by the the ACL.
             // This will change these values to the 404 page allowing it to be loaded.          
-            $module = 'core';
-            $page   = '404';
+            $module     = 'core';
+            $page_tpl   = '404';
         }
     } else {
         // If no page is supplied then go to the main page (this assumes you are logged in)
-        $page_display_controller = 'modules'.SEP.'core'.SEP.'home.php';
-        $module = 'core';
-        $page   = 'home';
+        $page_display_controller    = 'modules'.SEP.'core'.SEP.'home.php';
+        $module                     = 'core';
+        $page_tpl                   = 'home';
     }
    
 ###############################################
@@ -299,7 +304,7 @@ if(isset($VAR['page'])){
 ###############################################
 
 /* Check the requested page with 'logged in' user against the ACL for authorisation - if allowed, display */
-if(check_acl($db, $login_account_type_id, $module, $page)){
+if(check_acl($db, $login_account_type_id, $module, $page_tpl)){
     
     // Guests (not logged in) will not see the menu
     
@@ -309,7 +314,7 @@ if(check_acl($db, $login_account_type_id, $module, $page)){
     }
     
     // Set Page Header and Meta Data
-    set_page_header_and_meta_data($module, $page, $VAR['page_title']);    
+    set_page_header_and_meta_data($module, $page_tpl, $VAR['page_title']);    
     
     // Display Header Block
     if($VAR['theme'] != 'off'){        
@@ -355,7 +360,7 @@ logging_section:
     
 // This logs access details to the stats tracker table in the database
 if($qwcrm_tracker === 'on'){
-    write_record_to_tracker_table($db, $page_display_controller, $module, $page);
+    write_record_to_tracker_table($db, $page_display_controller, $module, $page_tpl);
 }
 
 // This logs access details to the access log

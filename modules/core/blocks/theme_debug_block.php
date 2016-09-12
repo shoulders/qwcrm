@@ -3,14 +3,14 @@
 // The header might be disabled but the wrapper include is still needed
 require_once('includes'.SEP.'modules'.SEP.'core_theme.php');
 
-$smarty->assign('IPaddress', get_ip_address());                         // IP address of the Visitor
-$smarty->assign('pageLoadTime', microtime(1) - $startTime);             // Time to load the page to the nearest microsecond
-$smarty->assign('pageDisplayController', $page_display_controller);     // the location of the real php file that loads the page
-$smarty->assign('loadedModule', $module);                               // Loaded module
-$smarty->assign('loadedPage', $page);                                   // Loaded page
-$smarty->assign('startMem', $startMem / 1048576);                       // PHP Memory used when starting QWcrm (in MB)
-$smarty->assign('currentMem', memory_get_usage() / 1048576);            // PHP Memory used at the time this php is called (in MB)
-$smarty->assign('peakMem', memory_get_peak_usage() / 1048576);          // Peak PHP Memory used during the page load (in MB)
+$smarty->assign('IPaddress',                get_ip_address()                    );  // IP address of the Visitor
+$smarty->assign('pageLoadTime',             microtime(1) - $startTime           );  // Time to load the page to the nearest microsecond
+$smarty->assign('pageDisplayController',    $page_display_controller            );  // the location of the real php file that loads the page
+$smarty->assign('loadedModule',             $module                             );  // Loaded module
+$smarty->assign('loadedPageTpl',            $page_tpl                           );  // Loaded page
+$smarty->assign('startMem',                 $startMem / 1048576                 );  // PHP Memory used when starting QWcrm (in MB)
+$smarty->assign('currentMem',               memory_get_usage() / 1048576        );  // PHP Memory used at the time this php is called (in MB)
+$smarty->assign('peakMem',                  memory_get_peak_usage() / 1048576   );  // Peak PHP Memory used during the page load (in MB)
 
 $smarty->display('core'.SEP.'blocks'.SEP.'theme_debug_block.tpl');
 

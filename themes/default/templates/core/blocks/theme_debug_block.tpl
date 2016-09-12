@@ -26,7 +26,7 @@
         </tr>
         <tr>
             <td><b><span class="text3">Page:</span></b></td>
-            <td>{$loadedPage}</td>
+            <td>{$loadedPageTpl}</td>
         </tr>    
 
         <!-- Memory Usage -->

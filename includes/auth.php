@@ -120,17 +120,18 @@ class Auth {
             
             force_page('index.php?information_msg=Login sucessful');
 
-        }
-    }  
- }
+            }
+        }  
+    }
+    
     function storeAuth($login_usr, $login_pwd, $login_id, $login_account_type_id, $login_display_name){
         
         // Store Variables in $_SESSION
-        $this->session->set('login_usr',            $login_usr          );
-        $this->session->set('login_pwd',            $login_pwd          );
-        $this->session->set('login_id',             $login_id           );        
-        $this->session->set('login_account_type_id',   $login_account_type_id );
-        $this->session->set('login_display_name',   $login_display_name );
+        $this->session->set('login_usr',                $login_usr              );
+        $this->session->set('login_pwd',                $login_pwd              );
+        $this->session->set('login_id',                 $login_id               );        
+        $this->session->set('login_account_type_id',    $login_account_type_id  );
+        $this->session->set('login_display_name',       $login_display_name     );
 
         // Create a session variable to use to confirm sessions
         $hashKey = md5($this->hashKey . $login_usr . $login_pwd);
@@ -164,6 +165,7 @@ class Auth {
         
         //$this->performRedirect();
         force_page('index.php?information_msg=Logout successful');
+        exit;
         
     }
    
@@ -179,4 +181,4 @@ class Auth {
     }     
      */ 
    
- }
+}
