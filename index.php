@@ -23,7 +23,7 @@ $startTime = microtime(1);
 $startMem  = memory_get_usage();
 
 ################################################
-#         Error reporting and headers          #
+#         Error Reporting                      #
 ################################################
 
 /* Used to suppress PHP error Notices - this will overide php.ini settings */
@@ -65,7 +65,7 @@ $qwcrm_physical_path = __DIR__;
 $qwcrm_domain_path = 'http' . (isset($_SERVER['HTTPS']) ? 's' : '') . '://' . "{$_SERVER['HTTP_HOST']}/{$_SERVER['REQUEST_URI']}"; // not curently used
 
 ################################################
-#          Header                              #
+#          Headers                             #
 ################################################
 
 // Added to eliminate special characters
@@ -207,6 +207,8 @@ $smarty->assign('d',$d);
 # Load Core language translations #
 ###################################
 
+// see page builder below, loads language. does this need to be here? or added into the pagebuilder routine
+
 if(!xml2php('core')) {    
     $smarty->assign('error_msg', 'Error in core language file');
 }
@@ -231,11 +233,8 @@ if(isset($_SESSION['login_hash'])){
             if (file_exists($page_display_controller)){
                 $page_display_controller = 'modules'.SEP.$module.SEP.$page_tpl.'.php';
             } else {
-
-                $page_display_controller = 'modules'.SEP.'core'.SEP.'404.php';
-
-                // Currently these are set to the unknown page and the page request will be denied by the the ACL.
-                // This will change these values to the 404 page allowing it to be loaded.          
+                // This will change these values to the 404 page allowing it to be loaded. 
+                $page_display_controller = 'modules'.SEP.'core'.SEP.'404.php'; 
                 $module     = 'core';
                 $page_tpl   = '404';
             }
@@ -257,16 +256,19 @@ if(isset($_SESSION['login_hash'])){
         
     } else {
         
-        /* This builds the landing page when not logged in */
+        /* This builds the landing page when not logged in and no page set */
 
         // Set Page Header and Meta Data
         set_page_header_and_meta_data('core', 'login');
         
-        // For debugging only - not used currently as only 1 page when not lo
+        // For debugging only - not used currently as only 1 page when not logged in
         $page_display_controller    = 'modules'.SEP.'core'.SEP.'home.php';
         $module                     = 'core';
         $page_tpl                   = 'login';
         
+        
+        
+        /* this block below can all be removed if i make login a real page */
         // Display Header Block
         if($VAR['theme'] != 'off'){        
             require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_header_block.php');      
@@ -298,6 +300,7 @@ if(isset($_SESSION['login_hash'])){
         
     }
 }
+
 ###############################################
 #    Build and Display the page (as required) #
 #    if the user has the correct permissions  #
@@ -324,7 +327,7 @@ if(check_acl($db, $login_account_type_id, $module, $page_tpl)){
     }
     
     // Display Header Legacy Template Code and Menu Block
-    if($VAR['theme'] != 'off' && $login_account_type_id != 8){       
+    if($VAR['theme'] != 'off' && isset($_SESSION['login_hash']) && $login_account_type_id != 8){       
         $smarty->display('core'.SEP.'blocks'.SEP.'theme_header_legacy_supplement_block.tpl');
         require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_menu_block.php');        
     }    
@@ -333,7 +336,7 @@ if(check_acl($db, $login_account_type_id, $module, $page_tpl)){
     require($page_display_controller);    
   
     // Display Footer Legacy Template code Block (closes content table)
-    if($VAR['theme'] != 'off' && $login_account_type_id != 8){
+    if($VAR['theme'] != 'off' && isset($_SESSION['login_hash']) && $login_account_type_id != 8){
         $smarty->display('core'.SEP.'blocks'.SEP.'theme_footer_legacy_supplement_block.tpl');             
     }
     
