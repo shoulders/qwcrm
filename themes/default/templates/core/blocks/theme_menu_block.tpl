@@ -7,8 +7,8 @@
             <!-- Main Menu -->
             <div>                
                 <span>{$translate_core_menu}</span>
-                <a href="index.php"><img src="{$theme_images_dir}icons/home.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_home}</a>
-                <a href="?action=logout"><img src="{$theme_images_dir}icons/logout.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_log_out}</a>                
+                <a href="index.php"><img src="{$theme_images_dir}icons/home.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_home}</a>
+                <a href="?action=logout"><img src="{$theme_images_dir}icons/logout.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_log_out}</a>                
             </div>
             
             
@@ -17,52 +17,52 @@
                 <span>Schedule</span>
                 <a href="modules/schedule/sync.php"><img src="{$theme_images_dir}icons/16x16/Calendar.gif" alt="" border="0" height="14" width="14" /> Cal Sync</a>                
                 {if $y1 > 0}
-                    <a href="index.php?page=schedule:main&amp;y={$y1}&amp;m={$m1}&amp;d={$d1}&amp;page_title=schedule"><img src="{$theme_images_dir}icons/16x16/Calendar.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_schedule}</a>
+                    <a href="index.php?page=schedule:main&amp;y={$y1}&amp;m={$m1}&amp;d={$d1}&amp;page_title=schedule"><img src="{$theme_images_dir}icons/16x16/Calendar.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_schedule}</a>
                 {/if}
             </div>
             
             <!-- Customers -->
             <div>
-                <span>{$translate_menu_customers}</span>
-                <a href="?page=customer:new&amp;page_title={$translate_menu_add_new_customer}"><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_add_new}</a>
-                <a href="?page=customer:view&amp;page_title={$translate_menu_customers}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_view}</a>
+                <span>{$translate_core_menu_customers}</span>
+                <a href="?page=customer:new&amp;page_title={$translate_core_menu_add_new_customer}"><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_add_new}</a>
+                <a href="?page=customer:view&amp;page_title={$translate_core_menu_customers}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_view}</a>
                 {if $customer_id > 0 }
-                    <a href="?page=customer:edit&amp;customer_id={$customer_id}&amp;page_title={$translate_menu_edit_customer}"><img src="{$theme_images_dir}icons/edit_employee.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_edit_customer}</a>
-                    <a href="?page=billing:new_gift&amp;customer_id={$customer_id}&amp;page_title={$translate_menu_new_gift}&amp;customer_name=ADD NAME HERE"><img src="{$theme_images_dir}icons/gift.png" alt="" border="0" height="14" width="14" /> {$translate_menu_new_gift}</a>
-                    <a href="?page=customer:delete&amp;customer_id={$customer_id}&amp;page_title={$translate_menu_delete_customer}"><img src="{$theme_images_dir}icons/delete_employee.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_delete_customer}</a>
-                    <!--<a href="?page=customer:email&amp;customer_id={$customer_id}&amp;page_title=Email Customer"><img src="{$theme_images_dir}icons/16x16/email.jpg" alt="" border="0" height="14" width="14" /> {$translate_menu_email_customer}</a>-->
+                    <a href="?page=customer:edit&amp;customer_id={$customer_id}&amp;page_title={$translate_core_menu_edit_customer}"><img src="{$theme_images_dir}icons/edit_employee.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_edit_customer}</a>
+                    <a href="?page=billing:new_gift&amp;customer_id={$customer_id}&amp;page_title={$translate_core_menu_new_gift}&amp;customer_name=ADD NAME HERE"><img src="{$theme_images_dir}icons/gift.png" alt="" border="0" height="14" width="14" /> {$translate_core_menu_new_gift}</a>
+                    <a href="?page=customer:delete&amp;customer_id={$customer_id}&amp;page_title={$translate_core_menu_delete_customer}"><img src="{$theme_images_dir}icons/delete_employee.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_delete_customer}</a>
+                    <!--<a href="?page=customer:email&amp;customer_id={$customer_id}&amp;page_title=Email Customer"><img src="{$theme_images_dir}icons/16x16/email.jpg" alt="" border="0" height="14" width="14" /> {$translate_core_menu_email_customer}</a>-->
                 {/if}        
             </div>
             
             <!-- Work Orders -->
             <div>
-                <span>{$translate_menu_work_orders}</span>
+                <span>{$translate_core_menu_work_orders}</span>
                 {if $customer_id > 0 }
-                    <a href="?page=workorder:new&amp;customer_id={$customer_id}&amp;page_title={$translate_workorder_new_title}"><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_create_new_wo}</a>
+                    <a href="?page=workorder:new&amp;customer_id={$customer_id}&amp;page_title={$translate_workorder_new_title}"><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_create_new_wo}</a>
                 {/if}
                 {if $menu_workorders_unassigned > 0 }
-                    <a href="?page=workorder:open&amp;page_title={$translate_menu_work_orders}"><img src="{$theme_images_dir}icons/warning.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_unassigned} <b><font color="RED">{if $menu_workorders_unassigned > 0} ({$menu_workorders_unassigned}){/if}{if $menu_workorders_unassigned < 1}{/if}</font></b></a>
+                    <a href="?page=workorder:open&amp;page_title={$translate_core_menu_work_orders}"><img src="{$theme_images_dir}icons/warning.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_unassigned} <b><font color="RED">{if $menu_workorders_unassigned > 0} ({$menu_workorders_unassigned}){/if}{if $menu_workorders_unassigned < 1}{/if}</font></b></a>
                 {/if}
-                <a href="?page=workorder:open&amp;page_title={$translate_menu_work_orders}"><img src="{$theme_images_dir}tick.png" alt="" border="0" height="14" width="14" /> {$translate_menu_open} <b><font color="RED">{if $menu_workorders_open_count > 0} ({$menu_workorders_open_count}){/if}{if $menu_workorders_open_count < 1}{/if}</font></b></a>
-                <a href="?page=workorder:closed&amp;page_title={$translate_menu_closed_work_orders}"><img src="{$theme_images_dir}icons/close.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_closed} <b><font color="RED">{if $menu_workorders_closed_count > 0 } ({$menu_workorders_closed_count}){/if} {if $menu_workorders_closed_count < 1 }{/if} </font></b></a>
+                <a href="?page=workorder:open&amp;page_title={$translate_core_menu_work_orders}"><img src="{$theme_images_dir}tick.png" alt="" border="0" height="14" width="14" /> {$translate_core_menu_open} <b><font color="RED">{if $menu_workorders_open_count > 0} ({$menu_workorders_open_count}){/if}{if $menu_workorders_open_count < 1}{/if}</font></b></a>
+                <a href="?page=workorder:closed&amp;page_title={$translate_core_menu_closed_work_orders}"><img src="{$theme_images_dir}icons/close.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_closed} <b><font color="RED">{if $menu_workorders_closed_count > 0 } ({$menu_workorders_closed_count}){/if} {if $menu_workorders_closed_count < 1 }{/if} </font></b></a>
                 {if $wo_id >= "1"}
                     {if $menu_workorder_status == "10"}
-                        <a href="?page=workorder:resolution&amp;wo_id={$wo_id}&amp;page_title={$translate_menu_close}"><img src="{$theme_images_dir}icons/close.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_close}</a>
-                        <a href="?page=workorder:details_new_note&amp;wo_id={$wo_id}&amp;page_title={$translate_menu_new_note}"><img src="{$theme_images_dir}icons/note.png" alt="" border="0" height="14" width="14" /> {$translate_menu_new_note}</a>
+                        <a href="?page=workorder:resolution&amp;wo_id={$wo_id}&amp;page_title={$translate_core_menu_close}"><img src="{$theme_images_dir}icons/close.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_close}</a>
+                        <a href="?page=workorder:details_new_note&amp;wo_id={$wo_id}&amp;page_title={$translate_core_menu_new_note}"><img src="{$theme_images_dir}icons/note.png" alt="" border="0" height="14" width="14" /> {$translate_core_menu_new_note}</a>
                     {/if}
-                    <a href="?page=workorder:print&amp;wo_id={$wo_id}&amp;page_title={$translate_menu_print_wo}&amp;theme=off" target="_blank"><img src="{$theme_images_dir}icons/print.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_print_wo}</a>
-                    <a href="?page=workorder:status&amp;wo_id={$wo_id}"><img src="{$theme_images_dir}icons/status.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_status}</a>
+                    <a href="?page=workorder:print&amp;wo_id={$wo_id}&amp;page_title={$translate_core_menu_print_wo}&amp;theme=off" target="_blank"><img src="{$theme_images_dir}icons/print.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_print_wo}</a>
+                    <a href="?page=workorder:status&amp;wo_id={$wo_id}"><img src="{$theme_images_dir}icons/status.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_status}</a>
                 {/if}
                 {if $customer_id > 0 }
-                    <a href="?page=invoice:new&amp;invoice_type=invoice-only&amp;wo_id=0&amp;customer_id={$customer_id}&amp;page_title={$translate_menu_invoice_only}"><img src="{$theme_images_dir}icons/invoice.png" alt="" border="0" height="14" width="14" /> {$translate_menu_invoice_only}</a>
+                    <a href="?page=invoice:new&amp;invoice_type=invoice-only&amp;wo_id=0&amp;customer_id={$customer_id}&amp;page_title={$translate_core_menu_invoice_only}"><img src="{$theme_images_dir}icons/invoice.png" alt="" border="0" height="14" width="14" /> {$translate_core_menu_invoice_only}</a>
                 {/if}
             </div>
             
             <!-- Invoices -->
             <div>
-                <span>{$translate_menu_invoices}</span>
-                <a href="?page=invoice:view_paid&amp;page_title=Paid%20Invoices"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_paid_2} <b><font color="RED">{if $menu_workorders_paid_count > 0} ({$menu_workorders_paid_count}){/if}{if $menu_workorders_paid_count < 1}{/if}</font></b></a>
-                <a href="?page=invoice:view_unpaid&amp;page_title={$translate_menu_un_paid_2}"><img src="{$theme_images_dir}icons/warning.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_un_paid_2} <b><font color="RED">{if $menu_workorders_unpaid_count > 0} ({$menu_workorders_unpaid_count}){/if}{if $menu_workorders_unpaid_count < 1}{/if}</font></b></a>
+                <span>{$translate_core_menu_invoices}</span>
+                <a href="?page=invoice:view_paid&amp;page_title=Paid%20Invoices"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_paid_2} <b><font color="RED">{if $menu_workorders_paid_count > 0} ({$menu_workorders_paid_count}){/if}{if $menu_workorders_paid_count < 1}{/if}</font></b></a>
+                <a href="?page=invoice:view_unpaid&amp;page_title={$translate_core_menu_un_paid_2}"><img src="{$theme_images_dir}icons/warning.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_un_paid_2} <b><font color="RED">{if $menu_workorders_unpaid_count > 0} ({$menu_workorders_unpaid_count}){/if}{if $menu_workorders_unpaid_count < 1}{/if}</font></b></a>
             </div>
                     
         <!-- General Ledger -->
@@ -114,7 +114,7 @@
         <!-- Menu limited to Administrators -->
         {if $login_account_type_id == 1}
         <div>
-            <span>{$translate_menu_setup}</span>
+            <span>{$translate_core_menu_setup}</span>
             <a href="?page=company:company_edit"><img src="{$theme_images_dir}icons/key.png" alt="" border="0" height="14" width="14" /> Business Setup</a>
             <a href="?page=company:hours_edit"><img src="{$theme_images_dir}icons/clock.gif" alt="" border="0" height="14" width="14" /> Business Hours</a>
             <a href="?page=company:payment_options"><img src="{$theme_images_dir}icons/money.png" alt="" border="0" height="14" width="14" /> Payment Options</a>
@@ -124,14 +124,14 @@
 
         <!-- Administration -->
         <div>
-            <span>{$translate_menu_administration}</span>                
+            <span>{$translate_core_menu_administration}</span>                
 
             <!-- Menu limited to Administrators and Managers -->
             {if $login_account_type_id == 1 || $login_account_type_id == 4}
-                <a href="?page=employee:main&amp;page_title={$translate_menu_employee_view}" ><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {$translate_menu_employee_view}</a>
+                <a href="?page=employee:main&amp;page_title={$translate_core_menu_employee_view}" ><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_employee_view}</a>
                 <a href="?page=employee:new&amp;page_title=New"><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" height="14" width="14" /> New Employee</a>
                 {if $employee_id > '' || $employee_id > 0 }
-                    <a href="?page=employee:edit&amp;employee_id={$employee_id}&amp;page_title={$translate_menu_edit}"><img src="{$theme_images_dir}icons/edit_employee.gif" alt="" border="0" height="14" width="14" /> Edit Employee</a>
+                    <a href="?page=employee:edit&amp;employee_id={$employee_id}&amp;page_title={$translate_core_menu_edit}"><img src="{$theme_images_dir}icons/edit_employee.gif" alt="" border="0" height="14" width="14" /> Edit Employee</a>
                 {/if}
 
                 <a href="?page=administrator:acl"><img src="{$theme_images_dir}icons/encrypted.png" alt="" border="0" height="14" width="14" /> Edit Permissions</a>
@@ -149,7 +149,7 @@
         
         <!-- Help -->
         <div>
-            <span>{$translate_menu_project}<br />- Help</span>
+            <span>{$translate_core_menu_project}<br />- Help</span>
             <a href="?page=help:about"><img src="{$theme_images_dir}icons/web.png" alt="" border="0" height="14" width="14" /> About</a>
             <a href="?page=help:attribution"><img src="{$theme_images_dir}icons/web.png" alt="" border="0" height="14" width="14" /> Attribution</a>
             <a href="?page=help:license"><img src="{$theme_images_dir}icons/web.png" alt="" border="0" height="14" width="14" /> License</a>            

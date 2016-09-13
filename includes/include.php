@@ -142,7 +142,7 @@ function check_acl($db, $login_account_type_id, $module, $page_tpl){
             force_page('core','error','error_msg=You do not have permission to access this '.$module.':'.$page_tpl.'&menu=1');
             exit;
         } else {
-            return true;	
+            return true;
         }
     }
 }

@@ -1,12 +1,38 @@
 <?xml version="1.0" encoding="UTF-8" ?>
     <translate>
         
-        // - SORT
-        // Global Error messages (i.e. main include.php) - possibly rename global_error_message
-        <include_error_message_cant_open_activity_log>can&#39;t open activity.log</include_error_message_cant_open_activity_log>
-        <include_error_message_cant_open_access_log>can&#39;t open access.log</include_error_message_cant_open_access_log>
-        <include_error_message_cant_open_error_log>can&#39;t open error.log</include_error_message_cant_open_error_log>
+    //// -- Blank -- ////
+    
+    //// Common
+
+    // General / Miscellaneous
+    
+    // Buttons
+    
+    // Misc Tooltips
+
+    //// Pages (tpl)
+    
+    // test.tpl
+    
+        // sub.tpl
+    
+    //// Messages
+    
+    // Error Messages  (should all be in - includes/modules/blank_test.php)
+
+        // includes/modules/blank_test.php
+
+    // Log Messages
+    
+        // includes/modules/blank_test.php
+    
+    // Advisory Messages
+    
+        // includes/modules/blank_test.php    
         
+    //// Validators    
+
         
         
         
@@ -17,17 +43,54 @@
         
     // core_common
     // core_core
+    // core_home
+    // core_login
     // core_theme
-    // core menu
-      
+    // core_menu
+    // core_auth
+    // core_include or include_ or qwcrm_include
+    
+    
+    
         
         
-    // Core Templates
         
-    <core_login_header_page_title>Login To QWcrm</core_login_header_page_title>
-    <core_login_header_meta_description>QWcrm - The Best Open Source Repairs Business CRM program available!</core_login_header_meta_description>
-    <core_login_header_meta_keywords>CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment Processing</core_login_header_meta_keywords>
+        
+    //// -- System -- ////
+    
+    //// Common
 
+    // General / Miscellaneous
+    
+    //// Messages
+    
+    // Error Messages
+       
+        // includes/auth.php
+        
+        // includes/include.php
+        <include_error_message_cant_open_activity_log>can&#39;t open activity.log</include_error_message_cant_open_activity_log>
+        <include_error_message_cant_open_access_log>can&#39;t open access.log</include_error_message_cant_open_access_log>
+        <include_error_message_cant_open_error_log>can&#39;t open error.log</include_error_message_cant_open_error_log>       
+        
+    // Log Messages
+    
+    // Advisory Messages
+    
+    //// Validators
+    
+    
+    
+    
+    
+    
+            
+        
+    //// -- Core Module -- ////
+    
+    //// Common
+
+    // General / Miscellaneous
     <core_log_off>Log Off</core_log_off>
     <core_loged_in>Currently Logged in as </core_loged_in>
     <core_schedule>Schedule</core_schedule>
@@ -52,117 +115,113 @@
     <error_404_request_3>An email has been sent to the system</error_404_request_3>
 
 
-    // -- Menu / Navigation
-    <menu_new>New</menu_new>
-    <menu_add_new>Add New</menu_add_new>
-    <menu_view>View</menu_view>
-    <menu_search>Search</menu_search>
-    <menu_delete>Delete</menu_delete>
-    <menu_close>Close</menu_close>
-    <menu_closed>Closed</menu_closed>
-    <menu_print>Print</menu_print>
-    <menu_create_new_wo>Create New WO</menu_create_new_wo>
-    <menu_print_wo>Print WO</menu_print_wo>
-    <menu_home>Home</menu_home>
-    <menu_unassigned>Unassigned</menu_unassigned>
-    <menu_log_out>Log Out</menu_log_out>
-    <menu_open>Open</menu_open>
-    <menu_accounts>Accounts</menu_accounts>
-    <menu_administration>Administration</menu_administration>
-    <menu_setup>Business Setup</menu_setup>
-    <menu_project>MyIT CRM Info</menu_project>
-    <menu_customers>Customers</menu_customers>
-    <menu_email_customer>Email Customer</menu_email_customer>
-    <menu_customer_search>Customer Search</menu_customer_search>
-    <menu_add_new_customer>Add New Customer</menu_add_new_customer>
-    <menu_edit_customer>Edit Customer</menu_edit_customer>
-    <menu_new_gift>New Gift Certificate</menu_new_gift>
-    <menu_gift_cert>Gift Certificate</menu_gift_cert>
-    <menu_delete_customer>Delete Customer</menu_delete_customer>
-    <menu_work_orders>Work Orders</menu_work_orders>
-    <menu_open_work_orders>Open Work Orders</menu_open_work_orders>
-    <menu_closed_work_orders>Closed Work Orders</menu_closed_work_orders>
-    <menu_new_note>New Note</menu_new_note>
-    <menu_status>Status</menu_status>
-    <menu_received_parts>Received Parts</menu_received_parts>
-    <menu_order_parts>Order Parts</menu_order_parts>
-    <menu_close_work_order>Close Work Order ID</menu_close_work_order>
-    <menu_employee_view>View Employees</menu_employee_view>
-    <menu_employee_new>New Employee</menu_employee_new>
-    <menu_employee>Employees</menu_employee>
-    <menu_invoice>Invoice</menu_invoice>
-    <menu_invoice_only>Invoice Only</menu_invoice_only>
-    <menu_paid>Paid</menu_paid>
-    <menu_paid_2>Paid Invoices</menu_paid_2>
-    <menu_un_paid>Unpaid</menu_un_paid>
-    <menu_un_paid_2>Un-Paid Invoices</menu_un_paid_2>
-    <menu_open_orders>Open Orders</menu_open_orders>
-    <menu_closed_orders>Closed Orders</menu_closed_orders>
-    <menu_schedule>Schedule</menu_schedule>
-    <menu_invoices>Invoices</menu_invoices>
-
+    //// Pages/Sections/tpl
     
-    // treat these as seperate modules ? or group them in the seperate file blocks as WO
+    // core_home / home.tpl
+    
+    // core_login / index.php / home_external / soon to be login.tpl
+    <core_login_header_page_title>Login To QWcrm</core_login_header_page_title>
+    <core_login_header_meta_description>QWcrm - The Best Open Source Repairs Business CRM program available!</core_login_header_meta_description>
+    <core_login_header_meta_keywords>CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment Processing</core_login_header_meta_keywords> 
+    
+    // core_menu - this does not match up with theme_menu_block.tpl - do i need to change this to core_menu_block.tpl - not a page but should be separate as if it were a page
+    <core_menu_new>New</core_menu_new>
+    <core_menu_add_new>Add New</core_menu_add_new>
+    <core_menu_view>View</core_menu_view>
+    <core_menu_search>Search</core_menu_search>
+    <core_menu_delete>Delete</core_menu_delete>
+    <core_menu_close>Close</core_menu_close>
+    <core_menu_closed>Closed</core_menu_closed>
+    <core_menu_print>Print</core_menu_print>
+    <core_menu_create_new_wo>Create New WO</core_menu_create_new_wo>
+    <core_menu_print_wo>Print WO</core_menu_print_wo>
+    <core_menu_home>Home</core_menu_home>
+    <core_menu_unassigned>Unassigned</core_menu_unassigned>
+    <core_menu_log_out>Log Out</core_menu_log_out>
+    <core_menu_open>Open</core_menu_open>
+    <core_menu_accounts>Accounts</core_menu_accounts>
+    <core_menu_administration>Administration</core_menu_administration>
+    <core_menu_setup>Business Setup</core_menu_setup>
+    <core_menu_project>QWcrm Info</core_menu_project>
+    <core_menu_customers>Customers</core_menu_customers>
+    <core_menu_email_customer>Email Customer</core_menu_email_customer>
+    <core_menu_customer_search>Customer Search</core_menu_customer_search>
+    <core_menu_add_new_customer>Add New Customer</core_menu_add_new_customer>
+    <core_menu_edit_customer>Edit Customer</core_menu_edit_customer>
+    <core_menu_new_gift>New Gift Certificate</core_menu_new_gift>
+    <core_menu_gift_cert>Gift Certificatecore_menu_gift_cert>
+    <core_menu_delete_customer>Delete Customer</core_menu_delete_customer>
+    <core_menu_work_orders>Work Orders</core_menu_work_orders>
+    <core_menu_open_work_orders>Open Work Orders</core_menu_open_work_orders>
+    <core_menu_closed_work_orders>Closed Work Orders</core_menu_closed_work_orders>
+    <core_menu_new_note>New Note</core_menu_new_note>
+    <core_menu_status>Status</core_menu_status>
+    <core_menu_received_parts>Received Parts</core_menu_received_parts>
+    <core_menu_order_parts>Order Parts</core_menu_order_parts>
+    <core_menu_close_work_order>Close Work Order ID</core_menu_close_work_order>
+    <core_menu_employee_view>View Employees</core_menu_employee_view>
+    <core_menu_employee_new>New Employee</core_menu_employee_new>
+    <core_menu_employee>Employees</core_menu_employee>
+    <core_menu_invoice>Invoice</core_menu_invoice>
+    <core_menu_invoice_only>Invoice Only</core_menu_invoice_only>
+    <core_menu_paid>Paid</core_menu_paid>
+    <core_menu_paid_2>Paid Invoices</core_menu_paid_2>
+    <core_menu_un_paid>Unpaid</core_menu_un_paid>
+    <core_menu_un_paid_2>Un-Paid Invoices</core_menu_un_paid_2>
+    <core_menu_open_orders>Open Orders</core_menu_open_orders>
+    <core_menu_closed_orders>Closed Orders</core_menu_closed_orders>
+    <core_menu_schedule>Schedule</core_menu_schedule>
+    <core_menu_invoices>Invoices</core_menu_invoices>
     
     
-    //// Messages (core)
+    //// Messages
     
     // Error Messages
 
-        // includes/modules/core_home.php
-        <core_error_message_function_display_welcome_note_failed></core_error_message_function_display_welcome_note_failed>     
-        <core_error_message_function_count_workorders_with_status_failed></core_error_message_function_count_workorders_with_status_failed>
-        <core_error_message_function_count_all_workorders_failed></core_error_message_function_count_all_workorders_failed>
-        <core_error_message_function_count_invoices_with_status_failed></core_error_message_function_count_invoices_with_status_failed>
-        <core_error_message_function_sum_of_discounts_on_unpaid_invoices_failed></core_error_message_function_sum_of_discounts_on_unpaid_invoices_failed>
-        <core_error_message_function_sum_of_discounts_on_paid_invoices_failed></core_error_message_function_sum_of_discounts_on_paid_invoices_failed>
-        <core_error_message_function_sum_of_discounts_on_partially_paid_invoices_failed></core_error_message_function_sum_of_discounts_on_partially_paid_invoices_failed>
-        <core_error_message_function_count_upaid_invoices_failed></core_error_message_function_count_upaid_invoices_failed>
-        <core_error_message_function_sum_outstanding_balances_unpaid_invoices_failed></core_error_message_function_sum_outstanding_balances_unpaid_invoices_failed>
-        <core_error_message_function_count_partially_paid_invoices_failed></core_error_message_function_count_partially_paid_invoices_failed>
-        <core_error_message_function_sum_outstanding_balances_partially_paid_invoices_failed></core_error_message_function_sum_outstanding_balances_partially_paid_invoices_failed>
-        <core_error_message_function_count_all_paid_invoices_failed></core_error_message_function_count_all_paid_invoices_failed>
-        <core_error_message_function_sum_invoiceamounts_paid_invoices_failed></core_error_message_function_sum_invoiceamounts_paid_invoices_failed>
-        <core_error_message_function_new_customers_during_period_failed></core_error_message_function_new_customers_during_period_failed>
-        <core_error_message_function_count_all_customers_failed></core_error_message_function_count_all_customers_failed>
-        <core_error_message_function_get_employee_id_by_username_failed></core_error_message_function_get_employee_id_by_username_failed>
-        <core_error_message_function_get_employee_record_by_username_failed></core_error_message_function_get_employee_record_by_username_failed>
-        <core_error_message_function_count_employee_workorders_with_status_failed></core_error_message_function_count_employee_workorders_with_status_failed>
-        <core_error_message_function_count_employee_invoices_with_status_failed></core_error_message_function_count_employee_invoices_with_status_failed>
+        // login
         
-               
+        // includes/modules/core_menu.php
+        <core_menu_error_message_function_menu_get_single_workorder_status_failed></core_menu_error_message_function_menu_get_single_workorder_status_failed>
+        <core_menu_error_message_function_menu_count_workorders_with_status_failed></core_menu_error_message_function_menu_count_workorders_with_status_failed> 
+        <core_menu_error_message_function_menu_count_invoices_with_status_failed></core_menu_error_message_function_menu_count_invoices_with_status_failed>
+        
+        // includes/modules/core_home.php
+        <core_home_error_message_function_display_welcome_note_failed>Could not display the welcome note</core_home_error_message_function_display_welcome_note_failed>     
+        <core_home_error_message_function_count_workorders_with_status_failed>Could not count Work Orders for the defined status</core_home_error_message_function_count_workorders_with_status_failed>
+        <core_home_error_message_function_count_all_workorders_failed>Could not count all Work Orders</core_home_error_message_function_count_all_workorders_failed>
+        <core_home_error_message_function_count_invoices_with_status_failed>Could not count the number of Invoices for the defined status</core_home_error_message_function_count_invoices_with_status_failed>
+        <core_home_error_message_function_sum_of_discounts_on_unpaid_invoices_failed>Could not sum the discounts of unpaid invoices</core_home_error_message_function_sum_of_discounts_on_unpaid_invoices_failed>
+        <core_home_error_message_function_sum_of_discounts_on_paid_invoices_failed>Could not sum the discounts of paid invoices</core_home_error_message_function_sum_of_discounts_on_paid_invoices_failed>
+        <core_home_error_message_function_sum_of_discounts_on_partially_paid_invoices_failed>Could not sum the discounts of partially paid invoices</core_home_error_message_function_sum_of_discounts_on_partially_paid_invoices_failed>
+        <core_home_error_message_function_count_unpaid_invoices_failed>Could not count the number of unpaid invoices</core_home_error_message_function_count_unpaid_invoices_failed>
+        <core_home_error_message_function_sum_outstanding_balances_unpaid_invoices_failed>Could not sum the outstanding balances for unpaid invoices</core_home_error_message_function_sum_outstanding_balances_unpaid_invoices_failed>
+        <core_home_error_message_function_count_partially_paid_invoices_failed>Could not count the number of invoices with partially paid invoices</core_home_error_message_function_count_partially_paid_invoices_failed>
+        <core_home_error_message_function_sum_outstanding_balances_partially_paid_invoices_failed>Could not sum the outstanding balances for partially paid invoices</core_home_error_message_function_sum_outstanding_balances_partially_paid_invoices_failed>
+        <core_home_error_message_function_count_all_paid_invoices_failed>Could not count the number of paid invoices</core_home_error_message_function_count_all_paid_invoices_failed>
+        <core_home_error_message_function_sum_invoiceamounts_paid_invoices_failed>Could not sum the total amount of paid invoices</core_home_error_message_function_sum_invoiceamounts_paid_invoices_failed>
+        <core_home_error_message_function_new_customers_during_period_failed>Could not count the number of new customers during the defined period</core_home_error_message_function_new_customers_during_period_failed>
+        <core_home_error_message_function_count_all_customers_failed>Could not count the total number of customers</core_home_error_message_function_count_all_customers_failed>
+        <core_home_error_message_function_get_employee_id_by_username_failed>Could not get employee ID by their username</core_home_error_message_function_get_employee_id_by_username_failed>
+        <core_home_error_message_function_get_employee_record_by_username_failed>Could not get the employee record by username</core_home_error_message_function_get_employee_record_by_username_failed>
+        <core_home_error_message_function_count_employee_workorders_with_status_failed>Could not count the number of Work Orders for the employees for the defined status</core_home_error_message_function_count_employee_workorders_with_status_failed>
+        <core_home_error_message_function_count_employee_invoices_with_status_failed>Could not count the number of invoices for the employee for the defined status</core_home_error_message_function_count_employee_invoices_with_status_failed>        
+        
+        // includes/modules/core_theme.php
+        
+                       
         
     // Log Messages (should all be in - includes/modules/core_xxx.php)
     
     // Advisory Messages
         
+    //// Validators
     
-    //// Messages (core_theme)
+  
     
-    // Error Messages
+      
+          
 
-        // includes/modules/core_theme.php
-        <core_theme_error_message_function_menu_get_single_workorder_status_failed></core_theme_error_message_function_menu_get_single_workorder_status_failed>
-        <core_theme_error_message_function_menu_count_workorders_with_status_failed></core_theme_error_message_function_menu_count_workorders_with_status_failed> 
-        <core_theme_error_message_function_menu_count_invoices_with_status_failed></core_theme_error_message_function_menu_count_invoices_with_status_failed> 
-
-    // Log Messages (should all be in - includes/modules/core_theme.php)
-    
-    // Advisory Messages
-    
-    
-    //// Messages (core_menu)
-    
-    // Error Messages
-
-        // includes/modules/core_menu.php
-
-    // Log Messages (should all be in - includes/modules/core_menu.php)
-    
-    // Advisory Messages
-        
-        
-        
+ 
         
         
         
@@ -356,12 +415,12 @@
         <customer_asset_support_length>Support Length</customer_asset_support_length>
         <customer_asset_active>Active</customer_asset_active>
         <customer_asset_notes>Notes</customer_asset_notes>
-        <customer_get_directions>Get Directions</customer_get_directions>
+        <customer_get_directions>Get Directions</customer_get_directions>  
         
-        
-        // should this be here?
-        <workorder_details_edit_customer_contact_help_title>Edit Customer Contact Help</workorder_details_edit_customer_contact_help_title>
-        <workorder_details_edit_customer_contact_help_content>You can edit the customers details attached to the work order here.</workorder_details_edit_customer_contact_help_content>
+        // customer details page
+        <customer_details_edit_customer_contact_help_title>Edit Customer Contact Help</customer_details_edit_customer_contact_help_title>
+        <customer_details_edit_customer_contact_help_content>You can edit the customers details attached to the work order here.</customer_details_edit_customer_contact_help_content>  
+
   
        
 
@@ -1108,7 +1167,7 @@
               
             // Details - Customer Details
             <workorder_details_customer_details_title>Customer Details</workorder_details_customer_details_title>  
-            <workorder_details_edit_customer_details_button_tooltip>Click to edit customer details</workorder_details_edit_customer_details_button_tooltip>   
+            <workorder_details_edit_customer_details_button_tooltip>Click to edit customer details</workorder_details_edit_customer_details_button_tooltip>
 
             // Details - Edit Comments
             <workorder_details_comments_title>Comments</workorder_details_comments_title>
@@ -1280,7 +1339,7 @@
             // status.php
             <workorder_error_message_status_loadpage_failed>There is no Work Order ID set</workorder_error_message_status_loadpage_failed>
             
-        // Log Messages (should all be in - includes/modules/workorder.php)
+        // Log Messages
             
             // Common     
             <workorder_log_message_work_order>Work Order</workorder_log_message_work_order>                   
