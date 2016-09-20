@@ -1,10 +1,11 @@
 <?php
 
 class Auth {
+    
     var $session;
     var $redirect;
     var $hashKey;
-    var $md5;
+    var $md5; // is this varible used?
 
     function Auth($db, $redirect, $hashKey){
         $this->db       = $db;
@@ -168,17 +169,5 @@ class Auth {
         exit;
         
     }
-   
-    /*
-    function performRedirect($addFromQuery){        
-         
-        if ($addFromQuery){            
-            header('Location: ' . $this->redirect . '?from=' . $_SERVER['REQUEST_URI']);
-        } else {
-            header('Location: ' . $this->redirect);
-        }        
-        exit();            
-    }     
-     */ 
    
 }

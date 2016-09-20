@@ -17,17 +17,28 @@ $smarty->display('core'.SEP.'blocks'.SEP.'theme_debug_block.tpl');
 /* Advanced Debug - Only use in offline sites and for developement only */
 
 if($qwcrm_advanced_debug === 'on'){
-    
+
+    echo '<div><p><strong>QWcrm Advanced Debug</strong></p></div>';
+ 
     /* 
      * All defined PHP Variables Dump
      *  
      * pick your poison - http://web-profile.net/php/dev/var_dump-print_r-var_export/
      * It is on several lines on purpose - a PHP quirk 
-     */
-    
-    echo '<div><p><strong>QWcrm Advanced Debug</strong></p></div>';
+     */    
+    echo '<div><p><strong>All defined PHP Variables</strong></p></div>';
     echo '<pre>';
     print_r(get_defined_vars());
     echo '</pre>';
+    
+    
+    /* 
+     * All defined PHP Constants
+     */    
+    echo '<div><p><strong>All defined PHP Constants</strong></p></div>';
+    echo '<pre>';
+    print_r(get_defined_constants());
+    echo '</pre>';
+       
     
 }

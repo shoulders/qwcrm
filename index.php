@@ -65,12 +65,11 @@ error_reporting(E_ALL & ~E_NOTICE); // This will only show major errors (default
 #    Get Folder and Physical path info         #
 ################################################
 
-// required for error location automation.
-global $qwcrm_physical_path;
-$qwcrm_physical_path = __DIR__;
+// required for error location automation. 
+define('QWCRM_PHYSICAL_PATH', __DIR__); 
 
-// returns the domain path and url - http://stackoverflow.com/questions/6768793/get-the-full-url-in-php
-$qwcrm_domain_path = 'http' . (isset($_SERVER['HTTPS']) ? 's' : '') . '://' . "{$_SERVER['HTTP_HOST']}/{$_SERVER['REQUEST_URI']}"; // not curently used
+// returns the domain path and url - http://stackoverflow.com/questions/6768793/get-the-full-url-in-php - not curently used - does include index.php and no query string
+define('QWCRM_DOMAIN_PATH', 'http' . (isset($_SERVER['HTTPS']) ? 's' : '') . '://' . "{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}");
 
 ################################################
 #          Headers                             #
@@ -144,7 +143,7 @@ $refund_id      = $VAR['refund_id'];
 $supplier_id    = $VAR['supplier_id'];
 $schedule_id    = $VAR['schedule_id'];
 
-// Get the page number if it exists or set to page number to 1
+// Get the page number if it exists or set to page number to 1 if not
 if(isset($VAR['page_no'])){
     $page_no = $VAR['page_no'];
 } else {
@@ -155,8 +154,8 @@ if(isset($VAR['page_no'])){
 #   Assign variables into smarty for use by all native module templates  #
 ##########################################################################
 
-// QWcrm System Directory Template Variables
-$smarty->assign('root_media_dir',   QWROOT_MEDIA_DIR    );      // set QWcrm root JS directory
+// QWcrm System Directory Variables
+$smarty->assign('qwroot_media_dir',   QWROOT_MEDIA_DIR    );    // set QWcrm root JS directory
 
 // QWcrm Theme Directory Template Variables
 $smarty->assign('theme_dir',        THEME_DIR           );      // set theme directory
@@ -174,9 +173,17 @@ $smarty->assign('supplier_id',  $supplier_id    );
 $smarty->assign('schedule_id',  $schedule_id    );
 
 // Used throughout the site - could combine these functions into one passing the required field
-$smarty->assign('company_logo', get_company_logo($db)       );        
+/*
 $smarty->assign('currency_sym', get_currency_symbol($db)    );
+$smarty->assign('company_logo', get_company_logo($db)       );      
 $smarty->assign('date_format',  get_date_format($db)        );
+*/
+$smarty->assign('currency_sym', get_company_info($db,   'COMPANY_CURRENCY_SYMBOL')  );
+$smarty->assign('company_logo', get_company_info($db,   'COMPANY_LOGO')             );
+$smarty->assign('date_format',  get_company_info($db,   'COMPANY_DATE_FORMAT')      );
+
+// all company info as an array
+//$smarty->assign('company_info', get_company_info($db,   'all')                      );
 
 // Information Message (Green)
 if(isset($VAR['information_msg'])){
@@ -211,6 +218,28 @@ $smarty->assign('Y',$Y);
 $smarty->assign('m',$m);
 $smarty->assign('d',$d);
 
+########################################
+# Load Mandatory Language Translations #
+########################################
+
+// Load System Language Translations
+if(!xml2php('system')){    
+    $smarty->assign('error_msg', 'Error in system language file');
+}
+
+// Load Core Module Language Translations
+if(!xml2php('core')){    
+    $smarty->assign('error_msg', 'Error in core language file');
+}
+
+/*
+// Load Module Specific Language Translations - this already done in the include files - perhaps here is better (not if i use classes not all files will get loaded?)
+if($module != 'core'){
+    if(!xml2php($module)){    
+        $smarty->assign('error_msg', 'Error in the '.$module.' language file');
+    }
+}*/
+    
 ############################################
 #  Page Preperation Logic                  #
 #  Extract Page Parameters and Validate    #
@@ -258,18 +287,6 @@ if(isset($VAR['page']) && $VAR['page'] != ''){
 
 /* Check the requested page with 'logged in' user against the ACL for authorisation - if allowed, display */
 if(check_acl($db, $login_account_type_id, $module, $page_tpl)){
-    
-    // Load Core Module Language Translations
-    if(!xml2php('core')){    
-        $smarty->assign('error_msg', 'Error in core language file');
-    }
-    
-    // Load Module Specific Language Translations
-    if($module != 'core'){
-        if(!xml2php($module)){    
-            $smarty->assign('error_msg', 'Error in the '.$module.' language file');
-        }
-    }
     
     // Set Page Header and Meta Data
     set_page_header_and_meta_data($module, $page_tpl, $VAR['page_title']);    
