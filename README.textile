@@ -1,6 +1,6 @@
 h1. QWcrm Latest News
 
-Keep an eye out on my QW blog for quick updates. I will only do quick updates until I get the first release done.
+Keep an eye out on my QW blog for updates. I will only do quick updates until I get the first release done.
 
 "QuantumWarp Blog":https://quantumwarp.com/blog
 
