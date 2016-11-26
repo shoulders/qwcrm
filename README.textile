@@ -1,4 +1,10 @@
-h1. New Version Conming Soon
+h1. QWcrm Latest News
+
+Keep an eye out on my QW blog for quick updates. I will only do quick updates until I get the first release done.
+
+"QuantumWarp Blog":https://quantumwarp.com
+
+h1. New Version Coming Soon
 
 I have just started to upgrade the code as it is a mess so please bear with me. This software when finished will upgrade MyITCRM v2.9.3.
 
@@ -10,7 +16,7 @@ thanks
 
 shoulders
 
-!http://quantumwarp.com/images/logo.png(QWcrm)!:http://quantumwarp.com
+!https://quantumwarp.com/images/common/logo.png(QWcrm)!:http://quantumwarp.com
 
 h3. Requirements: - "QWcrm Installation Requirements":https://github.com/shoulders/qwcrm/wiki/Installation-on-Web-Host
 
