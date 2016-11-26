@@ -4,6 +4,8 @@ Keep an eye out on my QW blog for quick updates. I will only do quick updates un
 
 "QuantumWarp Blog":https://quantumwarp.com
 
+!https://quantumwarp.com/images/common/Quantumwarp-Logo-Black.png(QWcrm)!:http://quantumwarp.com
+
 h1. New Version Coming Soon
 
 I have just started to upgrade the code as it is a mess so please bear with me. This software when finished will upgrade MyITCRM v2.9.3.
@@ -15,8 +17,6 @@ I cant give a time line but you can see that I am very active on this project.
 thanks
 
 shoulders
-
-!https://quantumwarp.com/images/common/logo.png(QWcrm)!:http://quantumwarp.com
 
 h3. Requirements: - "QWcrm Installation Requirements":https://github.com/shoulders/qwcrm/wiki/Installation-on-Web-Host
 
