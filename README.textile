@@ -2,9 +2,9 @@ h1. QWcrm Latest News
 
 Keep an eye out on my QW blog for quick updates. I will only do quick updates until I get the first release done.
 
-"QuantumWarp Blog":https://quantumwarp.com
+"QuantumWarp Blog":https://quantumwarp.com/blog
 
-!https://quantumwarp.com/images/common/Quantumwarp-Logo-Black.png(QWcrm)!:http://quantumwarp.com
+!https://quantumwarp.com/images/common/Quantumwarp-Logo-Black-GitHub.png(QWcrm)!:http://quantumwarp.com
 
 h1. New Version Coming Soon
 
