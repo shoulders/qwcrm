@@ -1,5 +1,5 @@
 <!-- dashboard.tpl-->
-<table class="olotable" width="800" align="left" border ="1" cellpadding="5" cellspacing="5">
+<table class="olotable" width="900" border ="1" cellpadding="5" cellspacing="5">
     <tr>
         <td class="olohead" colspan="2">Dashboard</td>
     </tr>
@@ -20,7 +20,7 @@
                 </tr>
                 <tr>                                 
                     <td valign="middle" colspan="3" width="100%">
-                        <img src="{$theme_images_dir}news.png" alt="News" align="middle" hspace="3"><a><font size="+1">Knowledge Base and Trobleshooter Coming Soon!!</font></a>
+                        <img src="{$theme_images_dir}news.png" alt="News" align="middle" hspace="3"><a><font size="+1">Knowledge Base and Troubleshooter Coming Soon!!</font></a>
                         <br>
                     </td>
                 </tr>

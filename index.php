@@ -30,6 +30,14 @@ if (version_compare(PHP_VERSION, QWCRM_MINIMUM_PHP, '<')){
 $startTime = microtime(1);
 $startMem  = memory_get_usage();
 
+#################################################
+#          Security                             #
+#################################################
+
+// add security routines here
+
+// url checking, dont forget htaccess single point, post get varible sanitation
+
 ################################################
 #         Error Reporting                      #
 ################################################
@@ -62,14 +70,17 @@ error_reporting(E_ALL & ~E_NOTICE); // This will only show major errors (default
 //ini_set('track_errors', 1); 
 
 ################################################
-#    Get Folder and Physical path info         #
+#    Get Root Folder and Physical path info    #
 ################################################
 
-// required for error location automation. 
+// QWCRM Physical path - required for error location automation. 
 define('QWCRM_PHYSICAL_PATH', __DIR__); 
 
-// returns the domain path and url - http://stackoverflow.com/questions/6768793/get-the-full-url-in-php - not curently used - does include index.php and no query string
-define('QWCRM_DOMAIN_PATH', 'http' . (isset($_SERVER['HTTPS']) ? 's' : '') . '://' . "{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}");
+// Website Domain Base
+define('QWCRM_DOMAIN_BASE', str_replace('index.php', '', $_SERVER['PHP_SELF']));
+
+// Website Domain Location - returns the domain path and url - http://stackoverflow.com/questions/6768793/get-the-full-url-in-php - not curently used - does include index.php and no query string
+//define('QWCRM_DOMAIN_PATH', 'http' . (isset($_SERVER['HTTPS']) ? 's' : '') . '://' . "{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}");
 
 ################################################
 #          Headers                             #
@@ -85,21 +96,49 @@ header('Content-type: text/html; charset=utf-8');
 require('configuration.php');
 require('includes/defines.php');
 require(INCLUDES_DIR.'include.php');
+require(INCLUDES_DIR.'smarty.php');
 require(INCLUDES_DIR.'session.php');
 require(INCLUDES_DIR.'auth.php');
-require(INCLUDES_DIR.'smarty.php');
+
+################################################
+#     Load Mandatory Language Translations     #
+################################################
+
+/* if i do seperate language files then system will have to load here and the page - was just before 'Page Preperation Logic'
+
+
+/* this loads all the language file */
+// Load System Language Translations
+if(!xml2php('system')){    
+    $smarty->assign('error_msg', 'Error in system language file');
+}
+/*
+// Load Core Module Language Translations
+if(!xml2php('core')){    
+    $smarty->assign('error_msg', 'Error in core language file');
+}*/
+
+
+// Module specific
+/*
+// Load Module Specific Language Translations - this already done in the include files - perhaps here is better (not if i use classes not all files will get loaded?)
+if($module != 'core'){
+    if(!xml2php($module)){    
+        $smarty->assign('error_msg', 'Error in the '.$module.' language file');
+    }
+}*/
 
 ################################################
 #    Verify QWcrm is installed correctly       #
 ################################################
 
 verify_qwcrm_is_installed_correctly($db);
- 
+
 ################################################
 #          Authentication                      #
 ################################################
 
-$auth = new Auth($db, 'index.php', $strKey);
+$auth = new Auth($db, $smarty, 'index.php', $secretKey);
 
 $login_id   = $_SESSION['login_id'];
 $login_usr  = $_SESSION['login_usr'];
@@ -124,7 +163,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'logout') {
 }
 
 ################################################
-#   Grab &_POST and $_GET values               #
+#   Grab $_POST and $_GET values               #
 ################################################
 
 /*
@@ -185,6 +224,11 @@ $smarty->assign('date_format',  get_company_info($db,   'COMPANY_DATE_FORMAT')  
 // all company info as an array
 //$smarty->assign('company_info', get_company_info($db,   'all')                      );
 
+
+#############################
+#        Messages           #
+#############################
+
 // Information Message (Green)
 if(isset($VAR['information_msg'])){
     $smarty->assign('information_msg', $VAR['information_msg']);
@@ -194,6 +238,10 @@ if(isset($VAR['information_msg'])){
 if(isset($VAR['warning_msg'])){
     $smarty->assign('warning_msg', $VAR['warning_msg']);
 }
+
+
+
+
 
 //-------------schedule------------------------------
 
@@ -218,28 +266,6 @@ $smarty->assign('Y',$Y);
 $smarty->assign('m',$m);
 $smarty->assign('d',$d);
 
-########################################
-# Load Mandatory Language Translations #
-########################################
-
-// Load System Language Translations
-if(!xml2php('system')){    
-    $smarty->assign('error_msg', 'Error in system language file');
-}
-
-// Load Core Module Language Translations
-if(!xml2php('core')){    
-    $smarty->assign('error_msg', 'Error in core language file');
-}
-
-/*
-// Load Module Specific Language Translations - this already done in the include files - perhaps here is better (not if i use classes not all files will get loaded?)
-if($module != 'core'){
-    if(!xml2php($module)){    
-        $smarty->assign('error_msg', 'Error in the '.$module.' language file');
-    }
-}*/
-    
 ############################################
 #  Page Preperation Logic                  #
 #  Extract Page Parameters and Validate    #

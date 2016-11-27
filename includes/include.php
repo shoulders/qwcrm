@@ -44,7 +44,7 @@ function force_page($module, $page_tpl = Null, $variables = Null) {
 }
 
    
-    /* redirect using headers (frmo auth.php)
+    /* redirect using headers (fron auth.php) - Joomla uses header redirect not a javascript one
     function performRedirect($addFromQuery){        
          
         if ($addFromQuery){            
@@ -56,7 +56,7 @@ function force_page($module, $page_tpl = Null, $variables = Null) {
     }     
      */ 
 
-// 20-09-16 - workign correct error statement
+// 26-11-16 - working correct error statement
 //force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
 
 ############################################
@@ -95,7 +95,7 @@ function xml2php($module){
 ############################################
 
 /*
- * This does cause these translations to be loaded/assigned twice but allow sme to use 1 file language instead of 2
+ * This does cause these translations to be loaded/assigned twice but allows me to use 1 file language instead of 2
  */
 
 function set_page_header_and_meta_data($module, $page_tpl, $page_title_from_var = Null){
@@ -114,8 +114,8 @@ function set_page_header_and_meta_data($module, $page_tpl, $page_title_from_var 
     }    
     
     // Meta Tags
-    $smarty->assign('meta_description', $smarty->get_template_vars('translate_'.$module.'_'.$page_tpl.'_header_meta_description'));
-    $smarty->assign('meta_keywords', $smarty->get_template_vars('translate_'.$module.'_'.$page_tpl.'_header_meta_keywords'));
+    $smarty->assign('meta_description', $smarty->get_template_vars('translate_'.$module.'_'.$page_tpl.'_header_meta_description')   );
+    $smarty->assign('meta_keywords',    $smarty->get_template_vars('translate_'.$module.'_'.$page_tpl.'_header_meta_keywords')      );
     
     return;
 }
@@ -126,15 +126,21 @@ function set_page_header_and_meta_data($module, $page_tpl, $page_title_from_var 
 
 function check_acl($db, $login_account_type_id, $module, $page_tpl){
     
-    if($login_account_type_id == ''){echo 'The ACL has been supplied with no account type - I will now die.';die;}
+    global $smarty;
+    
+    /* error catching - you cannot use normal error logging as it will cause a loop */
+    if($login_account_type_id == ''){
+        echo $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_no_account_type_id');
+        die;        
+    }
 
-    /* Get Account Type Display Name by login_account_type_id ID*/
+    /* Get user's Group Name by login_account_type_id */
     $q = 'SELECT '.PRFX.'CONFIG_EMPLOYEE_TYPE.TYPE_NAME
             FROM '.PRFX.'CONFIG_EMPLOYEE_TYPE 
             WHERE TYPE_ID ='.$db->qstr($login_account_type_id);
     
-    if(!$rs = $db->execute($q)) {
-        force_page('core','error&error_msg=Could not get Group ID for user');
+    if(!$rs = $db->execute($q)) {        
+        force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_group_name_failed'));
         exit;
     } else {
         $employee_acl_account_type_display_name = $rs->fields['TYPE_NAME'];
@@ -146,16 +152,16 @@ function check_acl($db, $login_account_type_id, $module, $page_tpl){
     /* Check Page to see if we have access */
     $q = "SELECT ".$employee_acl_account_type_display_name." AS PAGE_ACL FROM ".PRFX."ACL WHERE page=".$db->qstr($module_page);
 
-    if(!$rs = $db->execute($q)) {
-        force_page('core','error&error_msg=Could not get Page ACL'.$db->ErrorMsg());
+    if(!$rs = $db->execute($q)) {       
+        force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=authentication&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_get_page_acl_failed'));
         exit;
     } else {
         $acl = $rs->fields['PAGE_ACL'];
         
         // Add if guest (6) rules here if there are errors
         
-        if($acl != 1) {
-            force_page('core','error','error_msg=You do not have permission to access this '.$module.':'.$page_tpl.'&menu=1');
+        if($acl != 1) {            
+            force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=authentication&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_no_page_permission'));
             exit;
         } else {
             return true;
@@ -169,6 +175,8 @@ function check_acl($db, $login_account_type_id, $module, $page_tpl){
 
 function verify_qwcrm_is_installed_correctly($db){
 
+    global $smarty;
+    
     // If the lock file is not present QWcrm has not been installed - redirect to the installation directory
     if(!is_file('cache/lock')){
         echo('
@@ -180,22 +188,21 @@ function verify_qwcrm_is_installed_correctly($db){
         
     // has been installed but the installion directory is still present  
     if(is_dir('install') ) {
-        echo('<a style="color: red;">The install Directory Exists!! Please Rename or remove the install directory.</a>');
+        echo('<div style="color: red;">'.$smarty->get_template_vars('translate_system_include_advisory_message_function_verify_qwcrm_is_installed_correctly_install_directory_exists').'</div>');
         die;
     }
     
     // has been installed but the upgrade directory is still present  
     if(is_dir('install') ) {
-        echo('<a style="color: red;">The Upgrade Directory Exists!! Please Rename or remove the upgrade directory.</a>');
+        echo('<div style="color: red;">'.$smarty->get_template_vars('translate_system_include_advisory_message_function_verify_qwcrm_is_installed_correctly_upgrade_directory_exists').'</div>');
         die;
     }    
 
-    // Compare the version number of the file system against the database - if mismatch load upgrade for further instructions
+    // Compare the version number of the file system against the database - if mismatch load upgrade for further instructions?
     if(version_compare(get_qwcrm_database_version_number($db), QWCRM_VERSION, '!=')){
         
-        // I have not decides to use a message or automatic redirect to the upgrade folder
-        
-        echo('<a style="color: red;">The File System and Database versions do not match, run the upgrade routine</a>');
+        // I have not decided whether to use a message or automatic redirect to the upgrade folder        
+        echo('<div style="color: red;">'.$smarty->get_template_vars('translate_system_include_advisory_message_function_verify_qwcrm_is_installed_correctly_file_database_versions_dont_match').'</div>');
         die;
         
         /*
@@ -214,69 +221,21 @@ function verify_qwcrm_is_installed_correctly($db){
 ################################################
 
 function get_qwcrm_database_version_number($db){
+    
+    global $smarty;
 
     $q = 'SELECT * FROM '.PRFX.'VERSION ORDER BY '.PRFX.'VERSION.`VERSION_INSTALLED` DESC LIMIT 1';
     
-    if(!$rs = $db->execute($q)){
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+    if(!$rs = $db->execute($q)){        
+        force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         return $rs->fields['VERSION_INSTALLED'];
     }
 }
 
-/*
 ################################################
-#  Get currency symbol                         #
-################################################
-
-function get_currency_symbol($db){    
-
-    $q = 'SELECT COMPANY_CURRENCY_SYMBOL FROM '.PRFX.'TABLE_COMPANY';
-    
-    if(!$rs = $db->execute($q)){
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-        exit;
-    } else {
-        return $rs->fields['COMPANY_CURRENCY_SYMBOL'];
-    }
-}
-
-################################################
-#  Get company logo location                   #
-################################################
-
-function get_company_logo($db){    
-
-    $q = 'SELECT COMPANY_LOGO FROM '.PRFX.'TABLE_COMPANY';
-    
-    if(!$rs = $db->execute($q)){
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-        exit;
-    } else {
-        return $rs->fields['COMPANY_LOGO'];
-    }
-}
- * 
-################################################
-#  Get date format                             #
-################################################
-
-function get_date_format($db){    
-
-    $q = 'SELECT COMPANY_DATE_FORMAT FROM '.PRFX.'TABLE_COMPANY';
-    
-    if(!$rs = $db->execute($q)){
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-        exit;
-    } else {
-        return $rs->fields['COMPANY_DATE_FORMAT'];
-    }
-}
-*/
-
-################################################
-#  Get company info                            #
+#  Get company info - indivudual items         #
 ################################################
 
 /*
@@ -285,12 +244,14 @@ function get_date_format($db){
  * supply the required field name or all to return all of them as an array
  */
 
-function get_company_info($db, $item){    
+function get_company_info($db, $item){
+    
+    global $smarty;
 
     $q = 'SELECT * FROM '.PRFX.'TABLE_COMPANY';
     
-    if(!$rs = $db->execute($q)){
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+    if(!$rs = $db->execute($q)){        
+        force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {        
         if($item === 'all'){            
@@ -306,13 +267,13 @@ function get_company_info($db, $item){
 #  Encryption Routine using the secret key from configuration.php  #
 ####################################################################
 
-function encrypt($strString, $strKey){
+function encrypt($strString, $secretKey){
     
     $deresult = '';
     
     for($i=0; $i<strlen($strString); $i++){
         $char       =   substr($strString, $i, 1);
-        $keychar    =   substr($strKey, ($i % strlen($strKey))-1, 1);
+        $keychar    =   substr($secretKey, ($i % strlen($secretKey))-1, 1);
         $char       =   chr(ord($char)+ord($keychar));
         $deresult  .=   $char;
     }    
@@ -325,14 +286,14 @@ function encrypt($strString, $strKey){
 #  Deryption Routine using the secret key from configuration.php   #
 ####################################################################
 
-function decrypt($strString, $strKey){
+function decrypt($strString, $secretKey){
      
     $deresult = '';
     base64_decode($strstring);
     
     for($i=0; $i<strlen($strString); $i++){
         $char       =   substr($strString, $i, 1);
-        $keychar    =   substr($strKey, ($i % strlen($strKey))-1, 1);
+        $keychar    =   substr($secretKey, ($i % strlen($secretKey))-1, 1);
         $char       =   chr(ord($char)-ord($keychar));
         $deresult  .=   $char;
     }
@@ -346,14 +307,14 @@ function decrypt($strString, $strKey){
 ###################################################################################
 
 /*
-function encrypt($strString, $strKey){
+function encrypt($strString, $secretKey){
 
 	if ($strString == '') {
             return $strString;
 	}
         
 	$iv         = mcrypt_create_iv (mcrypt_get_iv_size (MCRYPT_BLOWFISH, MCRYPT_MODE_ECB), MCRYPT_RAND);
-	$enString   = mcrypt_ecb(MCRYPT_BLOWFISH, $strKey, $strString, MCRYPT_ENCRYPT, $iv);
+	$enString   = mcrypt_ecb(MCRYPT_BLOWFISH, $secretKey, $strString, MCRYPT_ENCRYPT, $iv);
 	$enString   = bin2hex($enString);
 
 	return ($enString);
@@ -366,7 +327,7 @@ function encrypt($strString, $strKey){
 ###################################################################################
 
 /*
-function decrypt($strString, $strKey){
+function decrypt($strString, $secretKey){
 	
 	if ($strString == '') {
             return $strString;
@@ -374,7 +335,7 @@ function decrypt($strString, $strKey){
         
 	$iv         = mcrypt_create_iv (mcrypt_get_iv_size (MCRYPT_BLOWFISH, MCRYPT_MODE_ECB), MCRYPT_RAND);
 	$strString  = hex2bin($strString);
-	$deString   = mcrypt_ecb(MCRYPT_BLOWFISH, $strKey, $strString, MCRYPT_DECRYPT, $iv);
+	$deString   = mcrypt_ecb(MCRYPT_BLOWFISH, $secretKey, $strString, MCRYPT_DECRYPT, $iv);
 
 	return ($deString);
 
@@ -430,6 +391,8 @@ echo ('My real IP is:'.$ip);
 
 function write_record_to_tracker_table($db, $page_display_controller, $module, $page_tpl){
     
+   global $smarty;
+    
    $q = 'INSERT into '.PRFX.'TRACKER SET
    date          = '. $db->qstr( time()                     ).',
    ip            = '. $db->qstr( getIP()                    ).',
@@ -440,7 +403,8 @@ function write_record_to_tracker_table($db, $page_display_controller, $module, $
    referer       = '. $db->qstr( getenv('HTTP_REFERER')     );
 
    if(!$rs = $db->Execute($q)) {
-      echo 'Error inserting tracker :'. $db->ErrorMsg();
+      force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
+      exit;      
    }
     
 }
@@ -462,7 +426,11 @@ function write_record_to_activity_log($record){
     $log_entry = $_SERVER['REMOTE_ADDR'] . ',' . date(DATE_W3C) . ',' . $record . "\n";
     
     // Write log entry to access log    
-    $fp = fopen(ACTIVITY_LOG,'a') or die($smarty->get_template_vars('translate_system_include_error_message_cant_open_activity_log').': '.$php_errormsg);
+    if(!$fp = fopen(ACTIVITY_LOG,'a')) {        
+        force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
+        exit;
+    }
+    
     fwrite($fp, $log_entry);
     fclose($fp);
     
@@ -522,7 +490,11 @@ function write_record_to_access_log($login_usr = Null){
     $log_entry = $remote_ip.' '.$logname.' '.$user.' '.$time.' "'.$method.' '.$uri.' '.$protocol.'" '.$status.' '.$bytes.' "'.$referring_url.'" "'.$user_agent.'"'."\n";
     
     // Write log entry to access log    
-    $fp = fopen(ACCESS_LOG,'a') or die($smarty->get_template_vars('translate_system_include_error_message_cant_open_access_log').': '.$php_errormsg);
+    if(!$fp = fopen(ACCESS_LOG,'a')) {        
+        force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
+        exit;
+    }
+    
     fwrite($fp, $log_entry);
     fclose($fp);
     
@@ -546,7 +518,11 @@ function write_record_to_error_log($login_usr = '-', $error_page, $error_type, $
     $log_entry = $_SERVER['REMOTE_ADDR'].','.$login_usr.','.date("[d/M/Y:H:i:s O]", $_SERVER['REQUEST_TIME']).','.$error_page.','.$error_type.','.$error_location.','.$php_function.','.$database_error.','.$error_msg."\n";
 
     // Write log entry to error.log    
-    $fp = fopen(ERROR_LOG,'a') or die($smarty->get_template_vars('translate_system_include_error_message_cant_open_error_log').': '.$php_errormsg);
+    if(!$fp = fopen(ERROR_LOG,'a')) {        
+        force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
+        exit;
+    }
+    
     fwrite($fp, $log_entry);
     fclose($fp);
         
@@ -629,10 +605,10 @@ function prepare_error_data($type, $data = Null){
         return $data;
     }
     
-    /* Patabase Error */
+    /* Database Error */
     if($type === 'database_error'){
 
-        // add () to the end of the php function name
+        // remove newlines from the database string
         if($data != ''){$data = str_replace("\n",'',$data);}  
         return $data;
     }

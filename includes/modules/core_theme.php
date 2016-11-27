@@ -29,13 +29,13 @@ function greeting_message_based_on_time($employee_name){
     
     global $smarty;
     
-    $morning    = "Good morning! $employee_name";
-    $afternoon  = "Good afternoon! $employee_name";
-    $evening    = "Good evening! $employee_name";
-    $night      = "Working late? $employee_name";
+    $morning    = $smarty->get_template_vars('translate_core_theme_function_greeting_message_based_on_time_morning_message').' '.$employee_name;
+    $afternoon  = $smarty->get_template_vars('translate_core_theme_function_greeting_message_based_on_time_afternoon_message').' '.$employee_name;
+    $evening    = $smarty->get_template_vars('translate_core_theme_function_greeting_message_based_on_time_evening_message').' '.$employee_name;
+    $night      = $smarty->get_template_vars('translate_core_theme_function_greeting_message_based_on_time_night_message').' '.$employee_name;
     
-    $friday     = "Get ready for the weekend!";
-
+    $friday     = $smarty->get_template_vars('translate_core_theme_function_greeting_message_based_on_time_friday_message');
+    
     // Get the current hour
     $current_time = date('H');
     

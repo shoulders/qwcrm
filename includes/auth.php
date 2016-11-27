@@ -2,22 +2,29 @@
 
 class Auth {
     
-    var $session;
-    var $redirect;
-    var $hashKey;
-    var $md5; // is this varible used?
-
-    function Auth($db, $redirect, $hashKey){
-        $this->db       = $db;
-        $this->redirect = $redirect;
-        $this->hashKey  = $hashKey;        
-        $this->session  = new Session();
-        $this->login();                     // automatically runs this function
-    } 
- 
+    // varibles if not declared are by default public - so i am forcing them private
+    private $session;
+    private $secretKey;
+  
+    /** 
+     * This function is always called when the class is invoked
+     *  - I dont know the difference between this and the constructor
+     */
+    function Auth($db, $smarty, $redirect, $secretKey){
+        
+        // Make variables available throught the class
+        $this->db           = $db;
+        $this->smarty       = $smarty;          // this allows the use of smarty translations
+        $this->redirect     = $redirect;
+        $this->secretKey    = $secretKey;        
+        $this->session      = new Session();        
+        $this->login();
+    }    
+    
+    // The actual login logic
     function login(){
         
-        // See if we have values already stored in the session - if hash matchs return to index.php code to process
+        // See if we have values already stored in the session - if hash matches return to index.php code to process
         if ($this->session->get('login_hash')) {
             $this->confirmAuth();
             return;
@@ -28,13 +35,12 @@ class Auth {
             
             // and there is no username or password supplied then redirect
             if (!isset($_POST['login_usr']) || $_POST['login_usr'] === '' || !isset($_POST['login_pwd']) || $_POST['login_pwd'] === ''){
-                //$this->performRedirect('Username or Password Missing');
-                force_page('index.php?warning_msg=Username or Password Missing');
+                force_page('?warning_msg='.$this->smarty->get_template_vars('translate_system_auth_advisory_message_username_or_password_missing'));
+                //$this->performRedirect('Username or Password Missing'); - this is not directly used anymore      
             }
 
-            // Hash the POST'ed password with MD5 and store it as $login_pwd - after this the password is always encrypted
-            $login_pwd = md5($_POST['login_pwd']);
-           
+            // Hash the POST'ed password with MD5 and store it as $login_pwd - after this point the password is always encrypted
+            $login_pwd = md5($_POST['login_pwd']);           
 
             // Escape the variables for the query - not currently used - is this needed?         
             //$link = mysqli_connect($DB_HOST, $DB_USER, $DB_PASS);
@@ -55,28 +61,28 @@ class Auth {
             $result = $this->db->Execute($sql);
             $row    = $result->FetchRow();
 
-            /* Validate the POST'ed username */
+            /* Validate the POST'ed username - check to see if there is a matching username and password pair */
 
-            // If is no matching username and password combo - this way you will never verify whether a username exists, only a matching combo will work
+            // If there are no matching username and password pairs
             if ($row['NUM_USERS'] == 0) {    
 
                 // Log activity       
-                write_record_to_activity_log('Failed Login  - Username and password do not match or you do not have an account yet.'.$login_usr);  
+                write_record_to_activity_log($this->smarty->get_template_vars('translate_system_auth_log_message_login_failed_username_password_dont_match_for').' '.$login_usr);  
 
                 // Reload with 'Login Failed' message
-                force_page('index.php?warning_msg=Login Failed - Username and password do not match or you do not have an account yet.');
+                force_page('?warning_msg='.$this->smarty->get_template_vars('translate_system_auth_advisory_message_login_failed'));
             }
 
-            // If there is more than one matching username and password - catches errors
+            // If there is more than one matching username and password pair (catches errors)
             elseif ($row['NUM_USERS'] > 1) {    
 
                 // Log activity       
-                write_record_to_activity_log('Failed Login  - There are Duplicate username and passwords of thos you set, so i cannot log you in. Contact an administrator.'.$login_usr);  
+                write_record_to_activity_log($this->smarty->get_template_vars('translate_system_auth_log_message_login_failed_duplicate_username_and_password_for').' '.$login_usr);  
 
                 // Reload with 'Login Failed' message
-                force_page('index.php?warning_msg=Login Failed - more than 1 matching username and password set so i cannot log you in - see an admin');   
+                force_page('?warning_msg='.$this->smarty->get_template_vars('translate_system_auth_advisory_message_login_failed'));
 
-            // Else if there is a valid user, set the session variables
+            // Else if there is a single valid user, set the session variables
             } else {
 
                 // Grab their login ID for tracking purposes (Employee Must be Active)
@@ -88,20 +94,18 @@ class Auth {
                 $result = $this->db->Execute($sql);
                 $row = $result->FetchRow();
 
-                // If We did not get a login ID
+                // If we did not get a login ID
                 if (!isset($row['EMPLOYEE_ID'])){          
 
                     // Log activity       
-                    write_record_to_activity_log('Failed Login ID For - no active login ID found'.$login_usr);
-
-                    // add session destruction here for safty
+                    write_record_to_activity_log($this->smarty->get_template_vars('translate_system_auth_log_message_login_failed_no_active_login_id_for').' '.$login_usr);
 
                     // Reload with 'Login Failed' message
-                    force_page('index.php?warning_msg=Login Failed - no active login ID found');
+                    force_page('?warning_msg='.$this->smarty->get_template_vars('translate_system_auth_advisory_message_login_failed'));
                     exit;
 
 
-                // We got a login_id now add the employee details to the session    
+                // We have a login_id, now add the employee details to the session    
                 } else {
 
                     // Sets the Employees ID number
@@ -114,45 +118,47 @@ class Auth {
                     $login_display_name = $row['EMPLOYEE_DISPLAY_NAME'];
                 }
 
+            // Store user data in the session - these are used throughout QWcrm and is used for validating the session
             $this->storeAuth($login_usr, $login_pwd, $login_id, $login_account_type_id, $login_display_name);
             
             // Log activity       
-            write_record_to_activity_log('Login '.$login_usr); 
+            write_record_to_activity_log($this->smarty->get_template_vars('translate_system_auth_log_message_login_successful_for').' '.$login_usr); 
             
-            force_page('index.php?information_msg=Login sucessful');
+            // Reload with 'Login Successful' message
+            force_page('?information_msg='.$this->smarty->get_template_vars('translate_system_auth_advisory_message_login_successful'));
 
             }
         }  
     }
-    
+        
+    // Store variables in the session
     function storeAuth($login_usr, $login_pwd, $login_id, $login_account_type_id, $login_display_name){
         
         // Store Variables in $_SESSION
-        $this->session->set('login_usr',                $login_usr              );
-        $this->session->set('login_pwd',                $login_pwd              );
-        $this->session->set('login_id',                 $login_id               );        
-        $this->session->set('login_account_type_id',    $login_account_type_id  );
-        $this->session->set('login_display_name',       $login_display_name     );
-
-        // Create a session variable to use to confirm sessions
-        $hashKey = md5($this->hashKey . $login_usr . $login_pwd);
-        $this->session->set('login_hash', $hashKey);    
+        $this->session->set('login_usr',                $login_usr                                      );
+        $this->session->set('login_pwd',                $login_pwd                                      );
+        $this->session->set('login_id',                 $login_id                                       );        
+        $this->session->set('login_account_type_id',    $login_account_type_id                          );
+        $this->session->set('login_display_name',       $login_display_name                             );
+        
+        // This is used to validate session authentication
+        $this->session->set('login_hash',               md5($this->secretKey . $login_usr . $login_pwd) );
 
     } 
     
+    // verify the user is logged in by checking session varibles and validating the credentials
     function confirmAuth(){
-        $login_usr  = $this->session->get('login_usr');
-        $login_pwd  = $this->session->get('login_pwd');
-        $hashKey    = $this->session->get('login_hash');
         
-        if (md5($this->hashKey . $login_usr . $login_pwd) != $hashKey){
+        if (md5($this->secretKey . $this->session->get('login_usr') . $this->session->get('login_pwd')) != $this->session->get('login_hash')){
             $this->logout();            
         } else {
             return true;            
-        }        
+        }
+        
     }  
  
-    function logout(){     
+    // perform a logourt from the session
+    function logout(){
         
         $this->session->del('login_usr');
         $this->session->del('login_pwd');
@@ -162,10 +168,10 @@ class Auth {
         $this->session->del('login_display_name');
         
         // Log activity       
-        write_record_to_activity_log('Log Out '.$this->session->get('login_usr'));
+        write_record_to_activity_log($this->smarty->get_template_vars('translate_system_auth_advisory_message_logout_successful').' '.$this->session->get('login_usr'));
         
-        //$this->performRedirect();
-        force_page('index.php?information_msg=Logout successful');
+        // Reload with 'Logout Successful' message
+        force_page('?information_msg='.$this->smarty->get_template_vars('translate_system_auth_advisory_message_logout_successful'));
         exit;
         
     }

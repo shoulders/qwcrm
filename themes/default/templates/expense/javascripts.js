@@ -155,7 +155,7 @@ function onlyNumbers(evt)
 
 }
 
-// Allows only numbers and 'Period' to be entered  (&& charCode != 44  is comma)
+// Allows only numbers and 'Period' to be entered  (&& charCode != 44 is comma)
 function onlyNumbersPeriods(evt)
             {
                     var e = event || evt; // for trans-browser compatibility

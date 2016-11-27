@@ -1,18 +1,17 @@
 <table width="100%" cellpadding="5" cellspacing="5">
     <tr>
         <td>
-            <P><font class="error_big_text ">404 - edit the TPL</font><img src="{$theme_images_dir}messagebox_warning.gif" border="0"></p>
+            <img src="{$company_logo}" alt="">            
             <hr>
-                <font size="+1">{$translate_error_404_request} <font class="error_text ">{$pagename}</font>  {$translate_error_404_request_2}<br>
-                {$translate_error_404_request_3}<a href="mailto:{$admin_email}">{$translate_core_admin}</a></font>
-                <p>&nbsp;</p>
-                <p>&nbsp;</p>
-                <p>&nbsp;</p>
-                <p>&nbsp;</p>
-                <p>&nbsp;</p>
-                <p>&nbsp;</p>
-                <p>&nbsp;</p>
-                <p>&nbsp;</p>
+            <font size="+1">{$translate_core_404_error_message}</font>            
+            <p>&nbsp;</p>
+            <p>&nbsp;</p>
+            <p>&nbsp;</p>
+            <p>&nbsp;</p>
+            <p>&nbsp;</p>
+            <p>&nbsp;</p>
+            <p>&nbsp;</p>
+            <p>&nbsp;</p>
         </td>
     </tr>
 </table>

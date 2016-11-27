@@ -65,7 +65,7 @@
                                                     var m = M + 1;   // integer, 0..11
                                                     var d = calendar.date.getDate();      // integer, 1..31
                                                     // redirect...
-                                                    window.location =  "?page=schedule:main&y="+y+"&m="+m+"&d="+d+"&wo_id={/literal}{$wo_id}{literal}&page_title={/literal}{$translate_core_schedule}{literal}";
+                                                    window.location =  "?page=schedule:main&y="+y+"&m="+m+"&d="+d+"&wo_id={/literal}{$wo_id}{literal}&page_title={/literal}{$translate_schedule_schedule}{literal}";
                                                 }
                                             };
                                             Calendar.setup(

@@ -2,11 +2,10 @@
 <!DOCTYPE html>
 <html lang="">
 <head>
-    <title>{$page_title}</title>
-    <!--<base href="http://quantumwarp.com/" />-->    
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <!-- from netbeans default tempalte <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <title>{$page_title}</title>       
+    <meta charset="UTF-8">
+    <!--<base href="http://quantumwarp.com/" />--> 
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
     <meta name="description" content="{$meta_description}" />
     <meta name="keywords" content="{$meta_keywords}" />
     <link rel="shortcut icon" href="favicon.ico">

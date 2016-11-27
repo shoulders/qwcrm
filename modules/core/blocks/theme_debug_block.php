@@ -18,24 +18,23 @@ $smarty->display('core'.SEP.'blocks'.SEP.'theme_debug_block.tpl');
 
 if($qwcrm_advanced_debug === 'on'){
 
-    echo '<div><p><strong>QWcrm Advanced Debug</strong></p></div>';
+    echo '<div><p><strong>'.$smarty->get_template_vars('translate_core_debug_qwcrm_advanced_debug_section_title').'</strong></p></div>';
  
     /* 
-     * All defined PHP Variables Dump
+     * All defined PHP Variables
      *  
      * pick your poison - http://web-profile.net/php/dev/var_dump-print_r-var_export/
      * It is on several lines on purpose - a PHP quirk 
      */    
-    echo '<div><p><strong>All defined PHP Variables</strong></p></div>';
+    echo '<div><p><strong>'.$smarty->get_template_vars('translate_core_debug_all_defined_php_variables_title').':</strong></p></div>';
     echo '<pre>';
     print_r(get_defined_vars());
     echo '</pre>';
     
-    
     /* 
      * All defined PHP Constants
      */    
-    echo '<div><p><strong>All defined PHP Constants</strong></p></div>';
+    echo '<div><p><strong>'.$smarty->get_template_vars('translate_core_debug_all_defined_php_constants_title').':</strong></p></div>';
     echo '<pre>';
     print_r(get_defined_constants());
     echo '</pre>';
