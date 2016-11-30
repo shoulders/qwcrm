@@ -1,22 +1,25 @@
 <!-- theme_header_block.tpl -->
 <!DOCTYPE html>
-<html lang="">
+<html lang="en-GB">
 <head>
-    <title>{$page_title}</title>       
-    <meta charset="UTF-8">
+    
+    <title>{$page_title}</title>
+    
+    <meta charset="utf-8">
     <!--<base href="http://quantumwarp.com/" />--> 
     <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
-    <meta name="description" content="{$meta_description}" />
-    <meta name="keywords" content="{$meta_keywords}" />
-    <link rel="shortcut icon" href="favicon.ico">
-    <link rel="stylesheet" href="{$theme_css_dir}template.css" type="text/css"/>
-    <link rel="stylesheet" href="{$theme_css_dir}sdmenu.css" type="text/css"/>
-    <link href="{$theme_css_dir}template.css" rel="stylesheet" type="text/css">
-    <script type="text/javascript" src="js/sdmenu.js"></script>
-    <script type="text/javascript" src="js/jquery.min.js"></script>
-    <script type="text/javascript" src="js/tabs.js"></script>
+    <meta name="description" content="{$meta_description}">
+    <meta name="keywords" content="{$meta_keywords}">
+    
+    <link rel="icon" href="favicon.ico">
+    <link rel="stylesheet" href="{$theme_css_dir}template.css">
+    <link rel="stylesheet" href="{$theme_css_dir}sdmenu.css">
+    
+    <script src="{$theme_js_dir}modules/core/sdmenu.js"></script>
+    <script src="{$theme_js_dir}modules/core/tabs.js"></script>
+    <script src="{$theme_js_dir}modules/core/jquery.min.js"></script>
     {literal}
-    <script type="text/javascript">
+    <script>
         var myMenu;
         window.onload = function() {
             myMenu = new SDMenu("my_menu");
@@ -24,12 +27,13 @@
         };
     </script>
     {/literal}
+    
 </head>
 
 <body>
     <a name="top"></a>
     <div id="dhtmltooltip"></div>
-    <script type="text/javascript" src="js/dhtml.js"></script>
+    <script src="{$theme_js_dir}modules/core/dhtml.js"></script>
     <div class="text4">
         <table width="900px" border="0" cellspacing="0" cellpadding="0">
             <tr class="text4">
