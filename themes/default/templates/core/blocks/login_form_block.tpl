@@ -44,7 +44,7 @@
                                             </tr>
                                             {/if}                            
 
-                                            <!-- Forgotton Password -->
+                                            <!-- Forgotten Password -->
                                             <tr align="center">
                                                 <td colspan="2"><a href="index.php?page=user:password_reset">{$translate_core_login_forgot_your_password}</a></td>
                                             </tr>

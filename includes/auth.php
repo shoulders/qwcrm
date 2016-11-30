@@ -42,11 +42,6 @@ class Auth {
             // Hash the POST'ed password with MD5 and store it as $login_pwd - after this point the password is always encrypted
             $login_pwd = md5($_POST['login_pwd']);           
 
-            // Escape the variables for the query - not currently used - is this needed?         
-            //$link = mysqli_connect($DB_HOST, $DB_USER, $DB_PASS);
-            //$login_usr = mysqli_real_escape_string($link, $_POST['login_usr']);
-            //$login_pwd = mysqli_real_escape_string($link, $login_pwd);
-
             // This is required unless I use the escaping code above
             $login_usr = $_POST['login_usr'];
             

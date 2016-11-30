@@ -219,7 +219,13 @@
     // error.tpl
     <core_error_header_page_title>QWcrm Error Page</core_error_header_page_title>
     <core_error_header_meta_description>QWcrm - The Best Open Source Repairs Business CRM program available!</core_error_header_meta_description>
-    <core_error_header_meta_keywords>CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment Processing</core_error_header_meta_keywords> 
+    <core_error_header_meta_keywords>CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment Processing</core_error_header_meta_keywords>
+    <core_error_error_page>Error Page</core_error_error_page>
+    <core_error_error_type>Error Type</core_error_error_type>
+    <core_error_error_location>Error Location</core_error_error_location>
+    <core_error_php_function>PHP Function</core_error_php_function>
+    <core_error_database_error>Database Error</core_error_database_error>
+    <core_error_error_message>Error Message</core_error_error_message>
     
     // core_home / home.tpl
     <core_home_header_page_title>QWcrm - Home Page</core_home_header_page_title>
