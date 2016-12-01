@@ -69,8 +69,7 @@ function xml2php($module){
     
     global $smarty;
 
-    //$file = FILE_ROOT."language".SEP.$module.SEP.LANG ;
-    $file = 'language/'.LANG ;
+    $file = LANGUAGE_DIR.THEME_LANGUAGE;
 
     $xml_parser = xml_parser_create();
     if (!($fp = fopen($file, 'r'))) {
@@ -88,6 +87,7 @@ function xml2php($module){
     }    
 
     return true;
+    
 }
 
 ############################################

@@ -5,18 +5,20 @@
 ###############################
 
 /* Set Path for SMARTY in the php include path */
-set_include_path(get_include_path() . PATH_SEPARATOR . INCLUDES_DIR.'SMARTY'.SEP);
+set_include_path(get_include_path() . PATH_SEPARATOR . INCLUDES_DIR.'smarty'.SEP);
 require('Smarty.class.php');
 
 /* Load Smarty template engine */
 
-global $smarty;
+global $smarty; // is this required, is it not automatically deinfed in global scope when called below.
 
 $smarty = new Smarty;
-$smarty->template_dir           = THEME_DIR.'templates/';
-$smarty->compile_dir            = 'cache/smarty/compile/';
-$smarty->cache_dir              = 'cache/smarty/cache/';
+
+$smarty->template_dir           = THEME_TEMPLATE_DIR;
+$smarty->cache_dir              = SMARTY_CACHE_DIR;
+$smarty->compile_dir            = SMARTY_COMPILE_DIR;
 //$smarty->load_filter('output','trimwhitespace');
+//$smarty->debug_tpl              = 'includes/smarty/debug.tpl';
 $smarty->debugging              = $smarty_debug;
 $smarty->force_compile          = $smarty_force_compile;
 $smarty->caching                = $smarty_caching;
@@ -28,10 +30,10 @@ $smarty->cache_modified_check   = $smarty_cache_modified_check;    // Smarty wil
 ###############################
 
 /* Set Path for ADODB in the php include path */
-set_include_path(get_include_path() . PATH_SEPARATOR . INCLUDES_DIR.'ADODB'.SEP);
+set_include_path(get_include_path() . PATH_SEPARATOR . INCLUDES_DIR.'adodb'.SEP);
 require('adodb.inc.php');
 
 /* create adodb database connection */
 $db = &ADONewConnection('mysqli');
-$db->Connect($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME);
+$db->Connect($db_host, $db_user, $db_pass, $db_name);   // change these to lower case as it annoys me
 
