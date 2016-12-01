@@ -11,8 +11,6 @@
     </tr>
     {section name=c loop=$workorder_history}
     <tr>
-        {if $hide_work_order_status == 1}
-        {else}
         <td class="menutd">
             <table width="100%" cellpadding="4" cellspacing="0" border="0">
                 <tr>
@@ -25,7 +23,6 @@
                 </tr>
             </table>
         </td>
-        {/if}
     </tr>
     {/section}
 </table>

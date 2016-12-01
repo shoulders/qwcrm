@@ -3,13 +3,12 @@
 <!-- Submit a New Support Request - This is were you can submit your support request through of Helpdesk system  -->
 
 {literal}
-<script type="text/javascript" src="js/jquery.min.js"></script>
-<script language="javascript" type="text/javascript" src="includes/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
-<script language="javascript" type="text/javascript">
+<script rc="includes/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
+<script>
     tinyMCE.init({
         mode : "textareas",
         theme : "simple"
-});
+    });
 </script>
 {/literal}
 
@@ -24,15 +23,13 @@
             <img src="{$theme_images_dir}request.png" alt="Submit Request" align="middle" hspace="3">
             <b>{$translate_submit_form_description}</b>
             <br>
-            <br>
-            
+            <br>            
             {literal}
-            <form action="?page=client:ticket_new" method="post" onsubmit="try { var myValidator = validate_submit; } catch(e) { return true; } return myValidator(this);" >
+            <form action="?page=client:ticket_new" method="post" onsubmit="try { var myValidator = validate_submit; } catch(e) { return true; } return myValidator(this);">
             {/literal}
-
                 <!-- Let get some info from the customer if this is there first time using this service -->
                 {literal}
-                <script type="text/javascript">
+                <script>
                     $(function(){
                         $("#newuser").click(function(event) {
                             event.preventDefault();
@@ -45,9 +42,8 @@
                     });
                 </script>
                 {/literal}
-
-                <a href="#" id="newu ser">{$translate_submit_new_account}</a>
-                <div id="newus erform">
+                <a href="#" id="newuser">{$translate_submit_new_account}</a>
+                <div id="newuserform">
                     <table width="100%" class="olotd" cellpadding="4" cellspacing="2">
                         <tr>
                             <td colspan="1" width="100" align="right">{$translate_submit_full_name}:</td>
@@ -63,7 +59,6 @@
                         </tr>
                     </table>
                 </div>
-
                 <!-- Now lets get the details of the issue -->
                 <table>                                            
                     <tr>
@@ -113,10 +108,8 @@
                     <tr>                                                                                          
                         <td colspan="2" align="center"><br><button type="submit" name="submit" id="submit" style="font-size: 14pt; color: RED">Proceed</button></td>
                     </tr>
-                </table>
-                    
-            </form>
-                    
+                </table>     
+            </form>                    
         </td>
     </tr>
 </table>

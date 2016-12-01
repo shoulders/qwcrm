@@ -1,15 +1,16 @@
+<!-- check_updates.tpl -->
 <table width="100%" border="0" cellpadding="20" cellspacing="0">
     <tr>
-        <td><!-- Begin Page -->
+        <td>
             <table width="700" cellpadding="5" cellspacing="0" border="0" >
                 <tr>
                     <td class="menuhead2" width="100%">Update Status</td>
-                </tr><tr>
+                </tr>
+                <tr>
                     <td class="menutd2">
                         <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0" >
                             <tr>
-                                <td width="100%" valign="top" >
-                                    <!-- Content Here -->
+                                <td width="100%" valign="top" >                                    
                                     {if $status == 1}
                                         Updates are available. Please download <a href="{$file}">{$file}</a> and place it in the top directory of your Cite 
                                         CRM install. Once you unpack the file read the README and the INSTALL files for further instructions.<br><br>
@@ -20,8 +21,7 @@
                                         {$message}
                                     {else}
                                         No Updates Available
-                                    {/if}
-                                    
+                                    {/if}                                    
                                     <br>
                                 </td>
                             </tr>

@@ -1,4 +1,4 @@
-<!-- -->
+<!-- display_gift.tpl -->
 <table width="700" border="0" cellpadding="20" cellspacing="5">
     <tr>
         <td>
@@ -7,10 +7,11 @@
                 <tr>
                     <td class="menuhead2" width="80%">&nbsp;{$translate_billing_gift}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle"></td>
-                </tr><tr>
+                </tr>
+                <tr>
                     <td class="olotd5" colspan="2">
-                    <!-- Content Begin -->
-
+                    
+                        <!-- Content Begin -->
                         <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
                             <tr>
                                 <td class="olotd4">
@@ -38,7 +39,6 @@
                                                                 {$customer[q].CUSTOMER_CITY} {$customer[q].CUSTOMER_STATE} .{$customer[q].CUSTOMER_ZIP}<br>
                                                                 <b>Customer ID: </b>{$customer[q].CUSTOMER_ID}
                                                                 {assign var="customer_id" value=$customer[q].CUSTOMER_ID}
-
                                                             {/section}
                                                             
                                                         </td>

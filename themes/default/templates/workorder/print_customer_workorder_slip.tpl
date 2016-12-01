@@ -249,9 +249,4 @@
         <td border="0" align="center">{$translate_workorder_print_this_workorder_is_confidential}</td>
     </tr>
 </table>
-
-        
-        
-        
-        
 {/section}

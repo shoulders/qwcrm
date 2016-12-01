@@ -1,3 +1,4 @@
+<!-- acl.tpl -->
 <table width="100%" border="0" cellpadding="20" cellspacing="5">
     <tr>
         <td>
@@ -9,14 +10,15 @@
                         onMouseOver="ddrivetip('<b>Help Menu</b><hr><p></p>')" 
                         onMouseOut="hideddrivetip()">
                     </td>
-                </tr><tr>
+                </tr>
+                <tr>
                     <td class="menutd2" colspan="2">
                         <table class="olotable" width="100%" border="0" cellpadding="5" cellspacing="0">
                             <tr>
                                 <td class="menutd">
                                     <form method="post" action="?page=administrator:acl">
                                         <table class="olotable" cellpadding="5" cellspacing="0" border="0">
-                                            <tr >
+                                            <tr>
                                                 <td class="olohead">Module:Page</td>
                                                 <td class="olohead">Administrator</td>
                                                 <td class="olohead">Manager</td>

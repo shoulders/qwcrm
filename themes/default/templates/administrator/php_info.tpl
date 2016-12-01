@@ -1,1 +1,1 @@
-<!-- php_info.tpl - not needed -->
+<!-- php_info.tpl - not needed - placeholder only -->

@@ -30,9 +30,9 @@
                 <tr>
                     <td>
                         {section name=v loop=$workorder_resolution}
-                        {if $single_workorder[i].WORK_ORDER_CLOSE_BY != "" }
-                            <p><b>{$translate_workorder_closed_by}: </b>{$workorder_resolution[v].EMPLOYEE_DISPLAY_NAME}  <b>{$translate_workorder_date}: </b>
-                            {$workorder_resolution[v].WORK_ORDER_CLOSE_DATE|date_format:"$date_format"} <br>
+                            {if $single_workorder[i].WORK_ORDER_CLOSE_BY != "" }
+                                <p><b>{$translate_workorder_closed_by}: </b>{$workorder_resolution[v].EMPLOYEE_DISPLAY_NAME}  <b>{$translate_workorder_date}: </b>
+                                {$workorder_resolution[v].WORK_ORDER_CLOSE_DATE|date_format:"$date_format"} <br>
                             {/if}
                             {$workorder_resolution[v].WORK_ORDER_RESOLUTION}
                             </p>

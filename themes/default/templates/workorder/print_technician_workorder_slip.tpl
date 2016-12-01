@@ -133,7 +133,7 @@
                 {section name=r loop=$workorder_resolution}  
                 <tr>                                    
                     {if $workorder_resolution[r].EMPLOYEE_DISPLAY_NAME != ''}                            
-                    <td><b>{$translate_workorder_closed_by}:</b>{$workorder_resolution[r].EMPLOYEE_DISPLAY_NAME} on <b>{$translate_workorder_date}: </b>{$workorder_resolution[r].WORK_ORDER_CLOSE_DATE|date_format:$date_format}</td>                                                       
+                        <td><b>{$translate_workorder_closed_by}:</b>{$workorder_resolution[r].EMPLOYEE_DISPLAY_NAME} on <b>{$translate_workorder_date}: </b>{$workorder_resolution[r].WORK_ORDER_CLOSE_DATE|date_format:$date_format}</td>                                                       
                     {/if}
                 </tr>
                 <tr>
@@ -150,15 +150,15 @@
                 </tr>
                 {section name=b loop=$work_order_notes}                        
                 {if $work_order_notes[b].WORK_ORDER_NOTES_DESCRIPTION != ''} 
-                <tr>
-                    <td>
-                        <p>
-                            ------------------------------------------------------------------------------------<br>
-                            {$translate_workorder_print_this_note_was_created_by} <b>{$translate_workorder_technician}: </b>{$work_order_notes[b].EMPLOYEE_DISPLAY_NAME} {$translate_workorder_on} <b>{$translate_workorder_date}: </b> {$work_order_notes[b].WORK_ORDER_NOTES_DATE|date_format:"$date_format %R"}
-                        </p>
-                        <div>{$work_order_notes[b].WORK_ORDER_NOTES_DESCRIPTION}</div>                       
-                    </td>
-                </tr>
+                    <tr>
+                        <td>
+                            <p>
+                                ------------------------------------------------------------------------------------<br>
+                                {$translate_workorder_print_this_note_was_created_by} <b>{$translate_workorder_technician}: </b>{$work_order_notes[b].EMPLOYEE_DISPLAY_NAME} {$translate_workorder_on} <b>{$translate_workorder_date}: </b> {$work_order_notes[b].WORK_ORDER_NOTES_DATE|date_format:"$date_format %R"}
+                            </p>
+                            <div>{$work_order_notes[b].WORK_ORDER_NOTES_DESCRIPTION}</div>                       
+                        </td>
+                    </tr>
                 {else}
                     <tr>
                         <td><div>{$translate_workorder_print_there_are_no_notes}</div></td>

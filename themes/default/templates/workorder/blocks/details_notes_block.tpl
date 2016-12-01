@@ -24,8 +24,6 @@
         </td>
     </tr>
     <tr>
-        {if $hide_work_order_notes == 1}
-        {else}
         <td class="menutd">
             <table width="100%" cellpadding="4" cellspacing="0" border="0">
                 <tr>
@@ -37,7 +35,6 @@
                     </td>
                 </tr>
             </table>
-        </td>
-        {/if}    
+        </td>          
     </tr>
 </table>

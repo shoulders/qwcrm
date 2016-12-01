@@ -25,8 +25,6 @@
         </td>
     </tr>
     <tr>
-        {if $hide_work_order_description == 1 }
-        {else}
         <td class="olotd4">
             <table width="100%" cellspacing="0" cellpadding="4">
                 <tr>
@@ -34,6 +32,5 @@
                 </tr>
             </table>
         </td>
-        {/if}
     </tr>
 </table>

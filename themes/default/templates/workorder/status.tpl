@@ -52,17 +52,17 @@
                                         
                                         <!-- If the employee is assigned to this work order, or if no one is assigned, or the user is an admin show update button, else show the employee details instead -->
                                         {if $single_workorder[i].EMPLOYEE_ID == "$login_id" || $single_workorder[i].EMPLOYEE_ID == '' || $single_workorder[i].EMPLOYEE_TYPE == '1'}
-                                        <p>&nbsp;</p>  
-                                        <form method="POST" action="">                                            
-                                            {$employee_list}
-                                            <p>&nbsp;</p>
-                                            <input type="submit" name="assign_employee" value="{$translate_workorder_update}"/>
-                                        </form>                                        
-                                        {else}    
-                                        <img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0"
-                                             onMouseOver="ddrivetip('<center><b>{$translate_workorder_contact}</b></center><hr><b>{$translate_workorder_fax}: </b>{$single_workorder[i].EMPLOYEE_WORK_PHONE}<br><b>{$translate_workorder_mobile}: </b>{$single_workorder[i].EMPLOYEE_MOBILE_PHONE}<br><b>{$translate_workorder_home}: </b>{$single_workorder[i].EMPLOYEE_HOME_PHONE}');"
-                                             onMouseOut="hideddrivetip();">
-                                        <a class="link1" href="?page=employee:employee_details&employee_id={$single_workorder[i].EMPLOYEE_ID}&page_title={$single_workorder[i].EMPLOYEE_DISPLAY_NAME}">{$single_workorder[i].EMPLOYEE_DISPLAY_NAME}</a>
+                                            <p>&nbsp;</p>  
+                                            <form method="POST" action="">                                            
+                                                {$employee_list}
+                                                <p>&nbsp;</p>
+                                                <input type="submit" name="assign_employee" value="{$translate_workorder_update}"/>
+                                            </form>                                        
+                                            {else}    
+                                            <img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0"
+                                                 onMouseOver="ddrivetip('<center><b>{$translate_workorder_contact}</b></center><hr><b>{$translate_workorder_fax}: </b>{$single_workorder[i].EMPLOYEE_WORK_PHONE}<br><b>{$translate_workorder_mobile}: </b>{$single_workorder[i].EMPLOYEE_MOBILE_PHONE}<br><b>{$translate_workorder_home}: </b>{$single_workorder[i].EMPLOYEE_HOME_PHONE}');"
+                                                 onMouseOut="hideddrivetip();">
+                                            <a class="link1" href="?page=employee:employee_details&employee_id={$single_workorder[i].EMPLOYEE_ID}&page_title={$single_workorder[i].EMPLOYEE_DISPLAY_NAME}">{$single_workorder[i].EMPLOYEE_DISPLAY_NAME}</a>
                                         {/if}
                                         
                                     <!-- If the work order is closed -->
@@ -70,17 +70,17 @@
                                         
                                         <!-- If the user is an admin show update button, else show the employee details instead -->
                                         {if $single_workorder[i].EMPLOYEE_ID == "$login_id" || $single_workorder[i].EMPLOYEE_ID == '' || $single_workorder[i].EMPLOYEE_TYPE == '1'}
-                                        <p>&nbsp;</p>  
-                                        <form method="POST" action="">
-                                            {$employee_list}
-                                            <p>&nbsp;</p>
-                                            <input type="submit" name="assign_employee" value="{$translate_workorder_update}"/>
-                                        </form>                                        
+                                            <p>&nbsp;</p>  
+                                            <form method="POST" action="">
+                                                {$employee_list}
+                                                <p>&nbsp;</p>
+                                                <input type="submit" name="assign_employee" value="{$translate_workorder_update}"/>
+                                            </form>                                        
                                         {else}    
-                                        <img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0"
-                                             onMouseOver="ddrivetip('<center><b>{$translate_workorder_contact}</b></center><hr><b>{$translate_workorder_fax}: </b>{$single_workorder[i].EMPLOYEE_WORK_PHONE}<br><b>{$translate_workorder_mobile}: </b>{$single_workorder[i].EMPLOYEE_MOBILE_PHONE}<br><b>{$translate_workorder_home}: </b>{$single_workorder[i].EMPLOYEE_HOME_PHONE}');"
-                                             onMouseOut="hideddrivetip();">
-                                        <a class="link1" href="?page=employee:employee_details&employee_id={$single_workorder[i].EMPLOYEE_ID}&page_title={$single_workorder[i].EMPLOYEE_DISPLAY_NAME}">{$single_workorder[i].EMPLOYEE_DISPLAY_NAME}</a>
+                                            <img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0"
+                                                 onMouseOver="ddrivetip('<center><b>{$translate_workorder_contact}</b></center><hr><b>{$translate_workorder_fax}: </b>{$single_workorder[i].EMPLOYEE_WORK_PHONE}<br><b>{$translate_workorder_mobile}: </b>{$single_workorder[i].EMPLOYEE_MOBILE_PHONE}<br><b>{$translate_workorder_home}: </b>{$single_workorder[i].EMPLOYEE_HOME_PHONE}');"
+                                                 onMouseOut="hideddrivetip();">
+                                            <a class="link1" href="?page=employee:employee_details&employee_id={$single_workorder[i].EMPLOYEE_ID}&page_title={$single_workorder[i].EMPLOYEE_DISPLAY_NAME}">{$single_workorder[i].EMPLOYEE_DISPLAY_NAME}</a>
                                         {/if}                                   
                                    
                                    {/if}
@@ -91,11 +91,11 @@
                                 <td class="olotd4" align="center" width="33%"> 
                                     <!-- if work order is created and open, you can delete it, otherwise you cannot -->
                                     {if $single_workorder[i].WORK_ORDER_CURRENT_STATUS == '1' || $single_workorder[i].WORK_ORDER_CURRENT_STATUS == '10'}
-                                    <form method="POST" action="">
-                                        <input type="submit" name="delete" value="{$translate_workorder_delete}"/>
-                                    </form>
+                                        <form method="POST" action="">
+                                            <input type="submit" name="delete" value="{$translate_workorder_delete}"/>
+                                        </form>
                                     {else}
-                                    {$translate_workorder_status_this_work_order_cannot_be_deleted}
+                                        {$translate_workorder_status_this_work_order_cannot_be_deleted}
                                     {/if}
                                 </td>
                             </tr>
