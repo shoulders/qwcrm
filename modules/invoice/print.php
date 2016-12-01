@@ -297,7 +297,7 @@ if($print_type == 'html') {
 
 if($print_type == 'pdf') {
 
-    require_once FILE_ROOT.'templates/invoice/print_pdf_tpl.php'; //This loads the PDF template file
+    require_once QWCRM_PHYSICAL_PATH.'templates/invoice/print_pdf_tpl.php'; //This loads the PDF template file
 
         }     else {
             

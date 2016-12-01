@@ -74,10 +74,10 @@ error_reporting(E_ALL & ~E_NOTICE); // This will only show major errors (default
 ################################################
 
 // QWCRM Physical path - required for error location automation. 
-define('QWCRM_PHYSICAL_PATH', __DIR__); 
+define('QWCRM_PHYSICAL_PATH', __DIR__.DIRECTORY_SEPARATOR); // eg: D:\websites\htdocs\develop\qwcrm\
 
 // Website Domain Base
-define('QWCRM_DOMAIN_BASE', str_replace('index.php', '', $_SERVER['PHP_SELF']));
+define('QWCRM_DOMAIN_BASE', str_replace('index.php', '', $_SERVER['PHP_SELF'])); // eg: /develop/qwcrm/
 
 // Website Domain Location - returns the domain path and url - http://stackoverflow.com/questions/6768793/get-the-full-url-in-php - not curently used - does include index.php and no query string
 //define('QWCRM_DOMAIN_PATH', 'http' . (isset($_SERVER['HTTPS']) ? 's' : '') . '://' . "{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}");
@@ -87,7 +87,7 @@ define('QWCRM_DOMAIN_BASE', str_replace('index.php', '', $_SERVER['PHP_SELF']));
 ################################################
 
 // Added to eliminate special characters
-header('Content-type: text/html; charset=utf-8');
+header('Content-type: text/html; charset=utf-8');  // is this needed?
 
 ################################################
 #         Initialise QWCRM                     #
@@ -194,7 +194,7 @@ if(isset($VAR['page_no'])){
 ##########################################################################
 
 // QWcrm System Directory Variables
-$smarty->assign('qwroot_media_dir',   QWROOT_MEDIA_DIR    );    // set QWcrm root JS directory
+//$smarty->assign('media_dir',   MEDIA_DIR                );      // not currently used
 
 // QWcrm Theme Directory Template Variables
 $smarty->assign('theme_dir',        THEME_DIR           );      // set theme directory
@@ -344,7 +344,7 @@ if(check_acl($db, $login_account_type_id, $module, $page_tpl)){
     }    
     
     // Display the Debug Block
-    if($qwcrm_debug === 'on'){
+    if($qwcrm_debug === true){
         require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_debug_block.php');
         echo '</body></html>';
     } else {
@@ -357,11 +357,11 @@ if(check_acl($db, $login_account_type_id, $module, $page_tpl)){
 ################################################
 
 // This logs access details to the stats tracker table in the database
-if($qwcrm_tracker === 'on'){
+if($qwcrm_tracker === true){
     write_record_to_tracker_table($db, $page_display_controller, $module, $page_tpl);
 }
 
 // This logs access details to the access log
-if($qwcrm_access_log === 'on'){
+if($qwcrm_access_log === true){
     write_record_to_access_log($login_usr);
 }

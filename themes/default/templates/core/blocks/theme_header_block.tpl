@@ -6,7 +6,7 @@
     <title>{$page_title}</title>
     
     <meta charset="utf-8">
-    <!--<base href="http://quantumwarp.com/" />--> 
+    <!--<base href="http://quantumwarp.com/">--> 
     <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
     <meta name="description" content="{$meta_description}">
     <meta name="keywords" content="{$meta_keywords}">

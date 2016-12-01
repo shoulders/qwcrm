@@ -16,7 +16,7 @@ $smarty->display('core'.SEP.'blocks'.SEP.'theme_debug_block.tpl');
 
 /* Advanced Debug - Only use in offline sites and for developement only */
 
-if($qwcrm_advanced_debug === 'on'){
+if($qwcrm_advanced_debug === true){
 
     echo '<div><p><strong>'.$smarty->get_template_vars('translate_core_debug_qwcrm_advanced_debug_section_title').'</strong></p></div>';
  

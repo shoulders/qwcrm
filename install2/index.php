@@ -1278,13 +1278,13 @@ $content = "<?php
 #############################################################
 \n
 @define('SEP','/');
-@define('FILE_ROOT',dirname(__FILE__).SEP);
+define('QWCRM_PHYSICAL_PATH', __DIR__);
 @define('WWW_ROOT','".$_POST['default_site_name']."');
 @define('IMG_URL',WWW_ROOT.'images');
-@define('INCLUDES_DIR',FILE_ROOT.'include'.SEP);
-@define('SMARTY_URL',INCLUDES_DIR.'SMARTY'.SEP);
-@define('ACTIVITY_LOG',FILE_ROOT.'log'.SEP.'activity.log');
-@define('LANG','".$_POST['language']."');
+define('INCLUDES_DIR',          'includes/'                 ); 
+@define('SMARTY_DIR',INCLUDES_DIR.'SMARTY'.SEP);
+define('ACTIVITY_LOG',          LOGS.'activity.log'         );
+@define('THEME_LANGUAGE','".$_POST['language']."');
 @define('INSTALL_DATE','".$install_date."');
 @define('debug', 'no');
 
@@ -1319,10 +1319,10 @@ require('adodb.inc.php');
 /* Load smarty template engine */
 global \$smarty;
 \$smarty = new Smarty;
-\$smarty->template_dir     = FILE_ROOT.'templates';
-\$smarty->compile_dir    = FILE_ROOT.'cache';
-\$smarty->config_dir    = SMARTY_URL.'configs';
-\$smarty->cache_dir    = SMARTY_URL.'cache';
+\$smarty->template_dir           = THEME_TEMPLATE_DIR;
+\$smarty->compile_dir            = SMARTY_COMPILE_DIR;
+\$smarty->config_dir    = SMARTY_DIR.'configs';
+\$smarty->cache_dir    = SMARTY_DIR.'cache';
 \$smarty->load_filter('output','trimwhitespace');
 
 \$strKey = 'kcmp7n2permbtr0dqebme6mpejhn3ki';

@@ -1,7 +1,7 @@
 <!-- parts -->
 {literal}
 
-<SCRIPT LANGUAGE="JavaScript">
+<script>
 
 function setOptions(chosen) {
 var selbox = document.form1.CAT2;

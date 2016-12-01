@@ -104,7 +104,7 @@ $target_path = $target_path . basename( $_FILES['attachment1']['name']);
         } else {
             echo "There was an error uploading the file, please try again!";
         }
-$fname2 = FILE_ROOT.$target_path ;
+$fname2 = QWCRM_PHYSICAL_PATH.$target_path ;
 $strip = stripslashes($message_body);
 //$mailer = Swift_Mailer::newInstance($transport);
 //Create a message
