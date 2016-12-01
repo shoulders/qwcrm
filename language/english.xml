@@ -100,8 +100,8 @@
         // includes/auth.php
         <system_auth_advisory_message_username_or_password_missing>Username or Password Missing</system_auth_advisory_message_username_or_password_missing>
         <system_auth_advisory_message_login_failed>Login Failed</system_auth_advisory_message_login_failed>
-        <system_auth_advisory_message_login_successful>Login sucessful</system_auth_advisory_message_login_successful>
-        <system_auth_advisory_message_logout_successful>Logout sucessful</system_auth_advisory_message_logout_successful>
+        <system_auth_advisory_message_login_successful>Login successful</system_auth_advisory_message_login_successful>
+        <system_auth_advisory_message_logout_successful>Logout successful</system_auth_advisory_message_logout_successful>
 
         // includes/include.php
         <system_include_advisory_message_function_verify_qwcrm_is_installed_correctly_install_directory_exists>The install Directory Exists!! Please Rename or remove the install directory.</system_include_advisory_message_function_verify_qwcrm_is_installed_correctly_install_directory_exists>

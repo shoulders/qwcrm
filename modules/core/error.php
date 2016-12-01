@@ -12,7 +12,7 @@ $database_error     = $VAR['database_error'];
 $error_msg          = $VAR['error_msg'];
 
 /* This logs errors to the error log */
-if($qwcrm_error_log === true){    
+if($qwcrm_error_log == true){    
     
     // Error page when logged in - these variables have just been set in the error.php controller
     if(isset($_SESSION['login_hash']) && isset($error_type) && $module === 'core' && $page_tpl === 'error'){

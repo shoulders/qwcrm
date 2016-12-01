@@ -155,15 +155,15 @@ class Auth {
     // perform a logourt from the session
     function logout(){
         
+        // Log activity       
+        write_record_to_activity_log($this->smarty->get_template_vars('translate_system_auth_log_message_logout_successful_for').' '.$this->session->get('login_usr'));
+        
         $this->session->del('login_usr');
         $this->session->del('login_pwd');
         $this->session->del('login_hash');        
         $this->session->del('login_id');
         $this->session->del('login_account_type_id');
-        $this->session->del('login_display_name');
-        
-        // Log activity       
-        write_record_to_activity_log($this->smarty->get_template_vars('translate_system_auth_advisory_message_logout_successful').' '.$this->session->get('login_usr'));
+        $this->session->del('login_display_name');   
         
         // Reload with 'Logout Successful' message
         force_page('?information_msg='.$this->smarty->get_template_vars('translate_system_auth_advisory_message_logout_successful'));

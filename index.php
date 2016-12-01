@@ -357,11 +357,11 @@ if(check_acl($db, $login_account_type_id, $module, $page_tpl)){
 ################################################
 
 // This logs access details to the stats tracker table in the database
-if($qwcrm_tracker === true){
+if($qwcrm_tracker == true){
     write_record_to_tracker_table($db, $page_display_controller, $module, $page_tpl);
 }
 
 // This logs access details to the access log
-if($qwcrm_access_log === true){
+if($qwcrm_access_log == true){
     write_record_to_access_log($login_usr);
 }

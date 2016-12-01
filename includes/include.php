@@ -422,6 +422,11 @@ function write_record_to_tracker_table($db, $page_display_controller, $module, $
 
 function write_record_to_activity_log($record){
     
+    global $qwcrm_activity_log;
+
+    // if activity logging not enabled exit
+    if($qwcrm_activity_log != true){return;}
+    
     // Build log entry - perhaps use the apache time stamp below
     $log_entry = $_SERVER['REMOTE_ADDR'] . ',' . date(DATE_W3C) . ',' . $record . "\n";
     
