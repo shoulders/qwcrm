@@ -159,8 +159,8 @@ function validate_cc( $ccNum, $card_type, $card_type_accepted_arr ){
 //
 //    /* debug only code */
 //
-//    $debug =0;
-//    if($debug ==1) {
+//    $qwcrm_debug = 0;
+//    if($qwcrm_debug == 1) {
 //            $text = $resp;
 //            $tok = strtok($text,"|");
 //            while(!($tok === FALSE)){

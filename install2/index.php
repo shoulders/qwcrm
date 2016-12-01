@@ -1265,7 +1265,7 @@ function check_write ($file) {
 function set_path()
 {
 
-    $install_date = date("M d Y h:i:s A" ,time());
+    //$install_date = date("M d Y h:i:s A" ,time()); //not used
     $filename = '../conf.php';
     $path2 = 'default_site_name';
     //rename(".$filename.'../install, '.$install_date.");
@@ -1285,8 +1285,6 @@ define('INCLUDES_DIR',          'includes/'                 );
 @define('SMARTY_DIR',INCLUDES_DIR.'SMARTY'.SEP);
 define('ACTIVITY_LOG',          LOGS.'activity.log'         );
 @define('THEME_LANGUAGE','".$_POST['language']."');
-@define('INSTALL_DATE','".$install_date."');
-@define('debug', 'no');
 
 
 /* Database Settings */
