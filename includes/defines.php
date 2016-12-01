@@ -21,7 +21,6 @@ define('LANGUAGE_DIR',          'language/'                 );
 define('LOGS_DIR',              'logs/'                     );
 
 // Smarty
-//define('SMARTY_DIR',            INCLUDES_DIR.'smarty/'      );          // Only used in the installer and smarty class sets this
 define('SMARTY_CACHE_DIR',      CACHE_DIR.'smarty/cache/'   );
 define('SMARTY_COMPILE_DIR',    CACHE_DIR.'smarty/compile/' );
 
