@@ -1,24 +1,8 @@
 <!-- details.tpl - Work Order Details Page -->
-<script language="javascript" type="text/javascript" src="includes/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
-{literal}
-<script language="javascript" type="text/javascript">
-    tinyMCE.init({
-        mode : "textareas",
-        theme : "advanced",
-        plugins : "advlink,iespell,insertdatetime,preview",
-        theme_advanced_buttons2_add : "separator,insertdate,inserttime,preview,separator,forecolor,backcolor",
-        theme_advanced_buttons2_add_before: "cut,copy,paste",
-        theme_advanced_toolbar_location : "bottom",
-        theme_advanced_toolbar_align : "center",
-        plugin_insertdate_dateFormat : "%Y-%m-%d",
-        plugin_insertdate_timeFormat : "%H:%M:%S",
-        extended_valid_elements : "a[name|href|target|title|onclick],img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name],hr[class|width|size|noshade],font[face|size|color|style],span[class|align|style]",
-        width : "100%"
-    });
-</script>
-{/literal}
+<script src="{$theme_js_dir}tinymce/tinymce.min.js"></script>
+<script src="{$theme_js_dir}editor-config.js"></script>
 {section name=i loop=$single_workorder}
-{if $error_msg|escape != ""}{include file="core/error.tpl"}{/if}
+    
 <br>
 <table width="100%">
     <tr>

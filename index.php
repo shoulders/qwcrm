@@ -196,6 +196,10 @@ if(isset($VAR['page_no'])){
 // QWcrm System Directory Variables
 //$smarty->assign('media_dir',   MEDIA_DIR                );      // not currently used
 
+// QWcrm System Folders
+$smarty->assign('includes_dir',     INCLUDES_DIR        );      // set includes directory  //do i need this one
+$smarty->assign('media_dir',        MEDIA_DIR           );      // set media directory
+
 // QWcrm Theme Directory Template Variables
 $smarty->assign('theme_dir',        THEME_DIR           );      // set theme directory
 $smarty->assign('theme_images_dir', THEME_IMAGES_DIR    );      // set theme images directory

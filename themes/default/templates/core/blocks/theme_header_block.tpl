@@ -15,9 +15,8 @@
     <link rel="stylesheet" href="{$theme_css_dir}template.css">
     <link rel="stylesheet" href="{$theme_css_dir}sdmenu.css">
     
-    <script src="{$theme_js_dir}modules/core/sdmenu.js"></script>
-    <script src="{$theme_js_dir}modules/core/tabs.js"></script>
-    <script src="{$theme_js_dir}modules/core/jquery.min.js"></script>
+    <script src="{$theme_js_dir}jquery.min.js"></script>
+    <script src="{$theme_js_dir}sdmenu.js"></script>     
     {literal}
     <script>
         var myMenu;
@@ -27,13 +26,15 @@
         };
     </script>
     {/literal}
+    <script src="{$theme_js_dir}tabs.js"></script>
+    <script src="{$theme_js_dir}template.js"></script>
     
 </head>
 
 <body>
     <a name="top"></a>
     <div id="dhtmltooltip"></div>
-    <script src="{$theme_js_dir}modules/core/dhtml.js"></script>
+    <script src="{$theme_js_dir}dhtmltooltip.js"></script>
     <div class="text4">
         <table width="900px" border="0" cellspacing="0" cellpadding="0">
             <tr class="text4">

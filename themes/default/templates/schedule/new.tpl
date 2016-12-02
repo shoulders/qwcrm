@@ -1,36 +1,10 @@
 <!-- New schedule tpl -->
-{literal}
-<script language="javascript" type="text/javascript" src="includes/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
-<script language="javascript" type="text/javascript">
-    tinyMCE.init({
-        mode : "specific_textareas",
-        theme : "advanced",
-        plugins : "advlink,iespell,insertdatetime,preview",
-        theme_advanced_buttons2_add : "separator,insertdate,inserttime,preview,separator,forecolor,backcolor",
-        theme_advanced_buttons2_add_before: "cut,copy,paste",
-        theme_advanced_toolbar_location : "bottom",
-        theme_advanced_toolbar_align : "center",
-
-        plugin_insertdate_dateFormat : "%Y-%m-%d",
-        plugin_insertdate_timeFormat : "%H:%M:%S",
-        extended_valid_elements : "a[name|href|target|title|onclick],img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name],hr[class|width|size|noshade],font[face|size|color|style],span[class|align|style]",
-        external_link_list_url : "example_link_list.js",
-        external_image_list_url : "example_image_list.js",
-        flash_external_list_url : "example_flash_list.js",
-        file_browser_callback : "fileBrowserCallBack",
-        width : "100%"
-    });
-
-</script>
+<script src="{$theme_js_dir}tinymce/tinymce.min.js"></script>
+<script src="{$theme_js_dir}editor-config.js"></script>
 <link rel="stylesheet" type="text/css" media="all" href="includes/jscalendar/calendar-blue.css" title="win2k-1"/>
 <script type="text/javascript" src="includes/jscalendar/calendar_stripped.js"></script>
 <script type="text/javascript" src="includes/jscalendar/lang/calendar-english.js"></script>
 <script type="text/javascript" src="includes/jscalendar/calendar-setup_stripped.js"></script>
-{/literal}
-{if $error_msg != ""}
-{include file="core/error.tpl"}
-{/if}
-
 
 <table width="100%" border="0" cellpadding="20" cellspacing="5">
     <tr>

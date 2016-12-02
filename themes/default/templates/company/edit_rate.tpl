@@ -29,7 +29,7 @@
                                                     </tr>
                                                     <tr>
                                                         {section name=q loop=$rate}
-                                                        <form method="POST" action="?page=control:edit_rate">
+                                                        <form method="POST" action="?page=company:edit_rate">
                                                             <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" class="row1">
                                                                 <td class="olotd4" nowrap>{$rate[q].LABOR_RATE_ID}</td>
                                                                 <td class="olotd4" nowrap><input class="olotd5" type="text" name="display" value="{$rate[q].LABOR_RATE_NAME}" size="50"></td>

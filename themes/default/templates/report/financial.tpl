@@ -3,7 +3,7 @@
 <script type="text/javascript" src="includes/jscalendar/lang/calendar-english.js"></script>
 <script type="text/javascript" src="includes/jscalendar/calendar-setup_stripped.js"></script>
 {literal}
-<form action="index.php?page=stats:main" method="POST" name="stats_report" id="stats_report"> 
+<form action="index.php?page=report:financial" method="POST" name="stats_report" id="stats_report"> 
 {/literal}
 <table width="650px" border="0" cellpadding="20" cellspacing="5">
   <tr>

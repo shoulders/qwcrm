@@ -1,35 +1,14 @@
-<!-- Add New Expense tpl -->
-{literal}
-<script language="javascript" type="text/javascript" src="includes/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
-<script language="javascript" type="text/javascript">
-    tinyMCE.init({
-        mode : "exact",
-        elements : "editor1, editor2, editor3",
-        theme : "advanced",
-        plugins : "advlink,iespell,insertdatetime,preview",
-        theme_advanced_buttons2_add : "separator,insertdate,inserttime,preview,separator,forecolor,backcolor",
-        theme_advanced_buttons2_add_before: "cut,copy,paste",
-        theme_advanced_toolbar_location : "bottom",
-        theme_advanced_toolbar_align : "center",
+<!-- new.tpl - Add New Expense -->
 
-        plugin_insertdate_dateFormat : "%Y-%m-%d",
-        plugin_insertdate_timeFormat : "%H:%M:%S",
-        extended_valid_elements : "a[name|href|target|title|onclick],img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name],hr[class|width|size|noshade],font[face|size|color|style],span[class|align|style]",
-        external_link_list_url : "example_link_list.js",
-        external_image_list_url : "example_image_list.js",
-        flash_external_list_url : "example_flash_list.js",
-        file_browser_callback : "fileBrowserCallBack",
-        width : "100%"
-    });
-</script>
-{/literal}
+<script src="{$theme_js_dir}tinymce/tinymce.min.js"></script>
+<script src="{$theme_js_dir}editor-config.js"></script>
 
         <link rel="stylesheet" type="text/css" media="all" href="includes/jscalendar/calendar-blue.css" title="win2k-1" />
         <script type="text/javascript" src="includes/jscalendar/calendar_stripped.js"></script>
         <script type="text/javascript" src="includes/jscalendar/lang/calendar-english.js"></script>
         <script type="text/javascript" src="includes/jscalendar/calendar-setup_stripped.js"></script>
 
-<table width="100%"   border="0" cellpadding="20" cellspacing="5">
+<table width="100%" border="0" cellpadding="20" cellspacing="5">
     <tr>
         <td>
             <!-- Begin page -->
@@ -37,18 +16,17 @@
                 <tr>
                     <td class="menuhead2" width="80%">{$translate_expense_new_title}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
-                        <a><img src="{$theme_images_dir}icons/16x16/help.gif" alt="" border="0"
+                        <a>
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" alt="" border="0"
                                 onMouseOver="ddrivetip('<b>{$translate_expense_new_help_title}</b><hr><p>{$translate_expense_new_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>')"
                                 onMouseOut="hideddrivetip()"
-                                onClick="window.location"></a>
+                                onClick="window.location">
+                        </a>
                     </td>
                 </tr>
                 <tr>
-                    <td class="menutd2" colspan="2">
-                            {if $error_msg != ""}
-                                    {include file="core/error.tpl"}
-                            {/if}
-                            {include file="expense/javascripts.js"}
+                    <td class="menutd2" colspan="2">                            
+                        {include file="expense/javascripts.js"}
                         <table class="olotable" width="100%" border="0" cellpadding="5" cellspacing="0">
                             <tr>
                                 <td class="menutd">
@@ -59,9 +37,9 @@
                                         <tr>
                                             <td>                                                
                                                 <input type="hidden" name="page" value="expense:edit">
-                        {literal}
-                                                <form  action="index.php?page=expense:new" method="POST" name="new_expense" id="new_expense" autocomplete="off" onsubmit="try { var myValidator = validate_expense; } catch(e) { return true; } return myValidator(this);">
-                        {/literal}
+                                                {literal}
+                                                <form action="index.php?page=expense:new" method="POST" name="new_expense" id="new_expense" autocomplete="off" onsubmit="try { var myValidator = validate_expense; } catch(e) { return true; } return myValidator(this);">
+                                                {/literal}
                                                     <table width="100%" cellpadding="3" cellspacing="0" border="0">
                                                         <tr>
                                                             <td colspan="2" align="left">

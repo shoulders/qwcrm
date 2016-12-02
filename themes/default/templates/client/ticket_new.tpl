@@ -1,18 +1,7 @@
-<!-- ticket_new.tpl -->
-
-<!-- Submit a New Support Request - This is were you can submit your support request through of Helpdesk system  -->
-
-{literal}
-<script rc="includes/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
-<script>
-    tinyMCE.init({
-        mode : "textareas",
-        theme : "simple"
-    });
-</script>
-{/literal}
-
-{include file='client/ticket_new.js'}                        
+<!-- ticket_new.tpl - Submit a New Support Request - This is were you can submit your support request through of Helpdesk system  -->
+<script src="{$theme_js_dir}tinymce/tinymce.min.js"></script>
+<script src="{$theme_js_dir}editor-config.js"></script>
+{include file='client/ticket_new.js'}     
                         
 <table class="olotable" width="60%" align="left" border ="1" cellpadding="5" cellspacing="5" >
     <tr>

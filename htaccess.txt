@@ -1,11 +1,11 @@
 <IfModule mod_rewrite.c>
 
-# URL rewriting module activation
-RewriteEngine on
+   # URL rewriting module activation
+   RewriteEngine on
 
-## SSL enforcement for MyITCRM
-RewriteCond %{HTTPS} !=on
-RewriteRule ^.* https://%{SERVER_NAME}%{REQUEST_URI} [R,L]
+   ## SSL enforcement for MyITCRM
+   RewriteCond %{HTTPS} !=on
+   RewriteRule ^.* https://%{SERVER_NAME}%{REQUEST_URI} [R,L]
 
 </IfModule>
 
@@ -24,6 +24,7 @@ RewriteRule ^.* https://%{SERVER_NAME}%{REQUEST_URI} [R,L]
 </IfModule>
 
 FileETag INode MTime Size
+
 <IfModule mod_deflate.c>
     AddOutputFilterByType DEFLATE text/html
     AddOutputFilterByType DEFLATE text/css

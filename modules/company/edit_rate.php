@@ -66,7 +66,7 @@ if(isset($VAR['submit'])) {
     }
 
     /* back to labor edit */
-    force_page('control', 'edit_rate&page_title=Edit Billing Rates');
+    force_page('company', 'edit_rate&page_title=Edit Billing Rates');
     exit;
 } else {
     $q = "SELECT * FROM ".PRFX."TABLE_LABOR_RATE ORDER BY LABOR_RATE_ID ASC";
