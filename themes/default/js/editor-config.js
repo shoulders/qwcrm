@@ -6,13 +6,13 @@
     browser_spellcheck: true,                   // enable browser native spell check
 
     // Menu Items and Toolbar Buttons
-    menubar: false,                                                                             // file/edit menu at the top - enabled by default    
-    contextmenu: 'cut copy paste | image | inserttable | cell row column deletetable | link',   // Enable these items in the context menu   
+    menubar: false,                             // file/edit menu at the top - enabled by default    
+    contextmenu: 'cut copy paste | link',       // Enable these items in the context menu   
     
     // Enable these Toolbar Buttons
     toolbar: [        
         'newdocument undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | outdent indent | blockquote hr charmap',
-        'bullist numlist | table | unlink link  print | searchreplace spellchecker | cut copy paste removeformat | code'      
+        'bullist numlist | table | unlink link | print | searchreplace spellchecker | cut copy paste removeformat | code'      
     ],
     
     // Enable these Plugins
