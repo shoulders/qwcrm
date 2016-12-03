@@ -14,7 +14,10 @@
 <script>
 
     {literal}
-    // Add Row to Labour Table
+ 
+// LABOUR    
+    
+    //// Add Row to Labour Table    
     function addRowToTableLabor(){
         var tbl = document.getElementById('labor');
         var lastRow = tbl.rows.length;
@@ -43,8 +46,8 @@
         // Qty Cell - Create Input Box
         var el = document.createElement('input');
         el.setAttribute('type', 'text');
-        el.setAttribute('name', 'hour['+iteration+']');
-        el.setAttribute('id', 'hour['+ iteration+']');
+        el.setAttribute('name', 'labour_hour['+iteration+']');
+        el.setAttribute('id', 'labour_hour['+ iteration+']');
         el.setAttribute('size', '4');        
         el.setAttribute('value', '1');
         buildRow.appendChild(el);
@@ -58,8 +61,8 @@
         
         // Description Cell - Create Select Input
         var el = document.createElement('select');        
-        el.setAttribute('name', 'description['+ iteration+']');
-        el.setAttribute('id', 'description['+ iteration+']');
+        el.setAttribute('name', 'labour_description['+iteration+']');
+        el.setAttribute('id', 'labour_description['+iteration+']');
         el.setAttribute('size', '100');        
         buildRow.appendChild(el);
         {/literal}
@@ -71,7 +74,7 @@
             
         {literal} 
         // Description Cell - Convert Select Input to a real Combo Box using dhtmlxcombo
-        var combo = dhtmlXComboFromSelect('description['+ iteration+']');                
+        var combo = dhtmlXComboFromSelect('labour_description['+iteration+']');                
         combo.setSize(400); // This sets the width of the combo box and drop down options width        
         
         
@@ -83,8 +86,8 @@
         
         // Rate Cell - Create Select Input
         var el = document.createElement('select');        
-        el.setAttribute('name', 'rate['+ iteration+']');
-        el.setAttribute('id', 'rate['+ iteration+']');
+        el.setAttribute('name', 'labour_rate['+iteration+']');
+        el.setAttribute('id', 'labour_rate['+iteration+']');
         el.setAttribute('size', '50');        
         buildRow.appendChild(el);
         {/literal}
@@ -99,11 +102,128 @@
         
         {literal}            
         // Rate Cell - Convert Select Input to a real Combo Box using dhtmlxcombo - Run after adding currency symbol to the cell otherwise it does not work
-        var combo = dhtmlXComboFromSelect('rate['+ iteration+']');
+        var combo = dhtmlXComboFromSelect('labour_rate['+iteration+']');
         combo.setSize(90);  // This sets the width of the combo box and drop down options width        
 
     }
 
+    //// Remove row from Labour tab;e
+    function removeRowFromTableLabor(){
+        var tbl = document.getElementById('labor');
+        var lastRow = tbl.rows.length;
+        if (lastRow > 1) tbl.deleteRow(lastRow - 1);
+    }
+    
+    //// Validate Labour Data?
+    function validateRowLabor(frm){
+        var chkb = document.getElementById('chkValidate');
+        if (chkb.checked) {
+            var tbl = document.getElementById('labor');
+            var lastRow = tbl.rows.length - 1;
+            var i;
+            for (i=1; i<=lastRow; i++) {
+                var aRow = document.getElementById('txtRow' + i);
+                if (aRow.value.length <= 0) {
+                    alert('Row ' + i + ' is empty');
+                    return;
+                }
+            }
+        }
+        openInNewWindow(frm);
+    }
+
+
+
+// PARTS
+
+
+
+    //// Add Row to Parts Table
+    function addRowToTableParts(){
+        var tbl = document.getElementById('parts');
+        var lastRow = tbl.rows.length;
+        
+        // Insert Row - if there's no header row in the table, then iteration = lastRow + 1
+        var iteration = lastRow;
+        var row = tbl.insertRow(lastRow);
+        row.setAttribute('class', 'olotd4');
+
+        // Number Cell - Create Cell
+        var buildRow = row.insertCell(0);        
+        //buildRow.setAttribute('width', '40px');
+        //buildRow.setAttribute('class', 'olotd4'); 
+        var el = document.createTextNode(iteration);        
+        buildRow.appendChild(el);
+
+        // Count Cell - Create Cell
+        var buildRow = row.insertCell(1);        
+        //buildRow.setAttribute('width', '40px');
+        //buildRow.setAttribute('class', 'olotd4'); 
+               
+        // Count Cell - Create Input Box
+        var el = document.createElement('input');
+        el.setAttribute('type', 'text');
+        el.setAttribute('name', 'parts_count['+iteration+']');
+        el.setAttribute('id', 'parts_count['+iteration+']');
+        el.setAttribute('size', '4');        
+        el.setAttribute('value', '1');
+        buildRow.appendChild(el);
+
+        // Description Cell - Create Cell
+        var buildRow = row.insertCell(2);        
+        //buildRow.setAttribute('width', '100px');
+        //buildRow.setAttribute('class', 'olotd4');
+        
+        // Description Cell - Create Select Input
+        var el = document.createElement('input');        
+        el.setAttribute('name', 'parts_description['+iteration+']');
+        el.setAttribute('id', 'parts_description['+iteration+']');
+        el.setAttribute('size', '75');        
+        buildRow.appendChild(el);
+        //el.onkeypress = keyPressTestLabor;
+
+        // Price Cell - Create Cell
+        var buildRow = row.insertCell(3);        
+        //buildRow.setAttribute('width', '40px');
+        //buildRow.setAttribute('class', 'olotd4');
+        
+        // Price Cell - Create Select Input
+        var el = document.createElement('input');        
+        el.setAttribute('name', 'parts_rate['+iteration+']');
+        el.setAttribute('id', 'parts_rate['+iteration+']');
+        el.setAttribute('size', '7');        
+        buildRow.appendChild(el);
+        
+        {/literal}
+        // Price Cell - Add some HTML to add the Currency Symbol        
+        buildRow.innerHTML = '<b>{$currency_sym}&nbsp;</b>' + buildRow.innerHTML;
+        {literal}
+    }
+
+
+    //// Remove row from Parts table
+    function removeRowFromTableParts(){
+        var tbl = document.getElementById('parts');
+        var lastRow = tbl.rows.length;
+        if (lastRow > 1) tbl.deleteRow(lastRow - 1);
+    }
+
+    //// Validate Parts Data?
+    function validateRowParts(frm){
+        var tbl = document.getElementById('parts');
+        var lastRow = tbl.rows.length - 1;
+        var i;
+        for (i=1; i<=lastRow; i++) {
+            var aRow = document.getElementById('txtRow' + i);
+            if (aRow.value.length <= 0) {
+                alert('Row ' + i + ' is empty');
+                return;
+            }
+        }
+    }
+    
+// OTHER
+    
     function keyPressTestLabor(e, obj){
         var validateChkb = document.getElementById('chkValidateOnKeyPress');
         if (validateChkb.checked) {
@@ -124,104 +244,10 @@
             displayObj.innerHTML = objId + ' : ' + String.fromCharCode(key);
         }
     }
-
-    function removeRowFromTableLabor(){
-        var tbl = document.getElementById('labor');
-        var lastRow = tbl.rows.length;
-        if (lastRow > 1) tbl.deleteRow(lastRow - 1);
-    }
-
-    function validateRowLabor(frm){
-        var chkb = document.getElementById('chkValidate');
-        if (chkb.checked) {
-            var tbl = document.getElementById('labor');
-            var lastRow = tbl.rows.length - 1;
-            var i;
-            for (i=1; i<=lastRow; i++) {
-                var aRow = document.getElementById('txtRow' + i);
-                if (aRow.value.length <= 0) {
-                    alert('Row ' + i + ' is empty');
-                    return;
-                }
-            }
-        }
-        openInNewWindow(frm);
-    }
-    // end of Labour
-
-    // Additional parts Table - add Row
-    function addRowToTableParts(){
-        var tbl = document.getElementById('parts');
-        var lastRow = tbl.rows.length;
-        // if there's no header row in the table, then iteration = lastRow + 1
-        var iteration = lastRow;
-        var row = tbl.insertRow(lastRow);
-
-        // Number Cell
-        var cellLeft = row.insertCell(0);
-        var textNode = document.createTextNode(iteration);
-        row.setAttribute('class', 'olotd4')
-        cellLeft.appendChild(textNode);
-
-        // Count Cell
-        var cellRight = row.insertCell(1);
-        var el = document.createElement('input');
-        el.setAttribute('type', 'text');
-        el.setAttribute('name', 'count['+iteration+']');
-        el.setAttribute('id', 'count['+ iteration+']');
-        el.setAttribute('size', '4');
-        el.setAttribute('class', 'olotd4');
-        el.setAttribute('value', '1');
-        cellRight.appendChild(el);
-
-        // Description Cell
-        var cellRight = row.insertCell(2);
-        row.setAttribute('class', 'olotd4');
-        var el = document.createElement('input');
-        el.setAttribute('type', 'text');
-        el.setAttribute('name', 'parts_description['+ iteration+']');
-        el.setAttribute('id', 'parts_description['+iteration+']');
-        el.setAttribute('size', '40');
-        el.setAttribute('class', 'olotd4');
-        //el.onkeypress = keyPressTestLabor;
-        cellRight.appendChild(el);
-
-        // Price Cell
-        var cellRight = row.insertCell(3);
-        var el = document.createElement('input');
-        el.setAttribute('type', 'text');
-        el.setAttribute('name', 'parts_price['+iteration+']');
-        el.setAttribute('id', 'parts_price['+ iteration+']');
-        el.setAttribute('size', '5');
-        el.setAttribute('class', 'olotd4');
-        cellRight.appendChild(el);
-
-    }
-
+    
     function keyPressTestParts(e, obj){
 
-    }
-
-    function removeRowFromTableParts(){
-        var tbl = document.getElementById('parts');
-        var lastRow = tbl.rows.length;
-        if (lastRow > 1) tbl.deleteRow(lastRow - 1);
-    }
-
-
-    function validateRowParts(frm){
-
-        var tbl = document.getElementById('parts');
-        var lastRow = tbl.rows.length - 1;
-        var i;
-        for (i=1; i<=lastRow; i++) {
-            var aRow = document.getElementById('txtRow' + i);
-            if (aRow.value.length <= 0) {
-                alert('Row ' + i + ' is empty');
-                return;
-            }
-        }
-    }
+    }    
 </script>
 {/literal}
 <table width="100%" border="0" cellpadding="20" cellspacing="5">

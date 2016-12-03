@@ -6,8 +6,7 @@
 
 <table width="100%">
     <tr>
-        <td>
-            {if $error_msg != ""}{include file="core/error.tpl"}{/if}
+        <td>            
             <br> <!-- Gives me some room at the top -->
             <div id="tabs_container">
                 <ul class="tabs">
@@ -20,6 +19,7 @@
 
                 <!-- This is a div that hold all the tabbed contents -->
                 <div class="tab_contents_container">
+                    
                     <!-- Tab 1 Contents - work Order Details -->
                     <div id="tab_1_contents" class="tab_contents tab_contents_active">
                         <table width="700" cellpadding="5" cellspacing="0" border="0" >
@@ -27,10 +27,10 @@
                                 {section name=i loop=$customer_details}
                                 <td class="menuhead2" width="80%">{$translate_workorder_new} {$translate_workorder_work_order} {$translate_workorder_for} {$customer_details[i].CUSTOMER_DISPLAY_NAME}</td>
                                 <td class="menuhead2" width="20%" align="right" valign="middle">
-                                  <a><img src="{$theme_images_dir}icons/16x16/help.gif" border="0" 
-                                      onMouseOver="ddrivetip('<b>{$translate_workorder_new_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_workorder_new_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" 
-                                      onMouseOut="hideddrivetip();">
-                                  </a>
+                                    <a><img src="{$theme_images_dir}icons/16x16/help.gif" border="0" 
+                                        onMouseOver="ddrivetip('<b>{$translate_workorder_new_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_workorder_new_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" 
+                                        onMouseOut="hideddrivetip();">
+                                    </a>
                                 </td>
                             </tr>
                             <tr>
