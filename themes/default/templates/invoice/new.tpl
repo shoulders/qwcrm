@@ -38,16 +38,16 @@
         
         
 
-        // Qty Cell - Create Cell
+        // QTY Cell - Create Cell
         var buildRow = row.insertCell(1);        
         //buildRow.setAttribute('width', '40px');
         //buildRow.setAttribute('class', 'olotd4'); 
         
-        // Qty Cell - Create Input Box
+        // QTY Cell - Create Input Box
         var el = document.createElement('input');
         el.setAttribute('type', 'text');
         el.setAttribute('name', 'labour_hour['+iteration+']');
-        el.setAttribute('id', 'labour_hour['+ iteration+']');
+        el.setAttribute('id', 'labour_hour['+iteration+']');
         el.setAttribute('size', '4');        
         el.setAttribute('value', '1');
         buildRow.appendChild(el);
@@ -63,7 +63,7 @@
         var el = document.createElement('select');        
         el.setAttribute('name', 'labour_description['+iteration+']');
         el.setAttribute('id', 'labour_description['+iteration+']');
-        el.setAttribute('size', '100');        
+        //el.setAttribute('size', '100');        
         buildRow.appendChild(el);
         {/literal}
                 
@@ -155,16 +155,16 @@
         var el = document.createTextNode(iteration);        
         buildRow.appendChild(el);
 
-        // Count Cell - Create Cell
+        // QTY Cell - Create Cell
         var buildRow = row.insertCell(1);        
         //buildRow.setAttribute('width', '40px');
         //buildRow.setAttribute('class', 'olotd4'); 
                
-        // Count Cell - Create Input Box
+        // QTY Cell - Create Input Box
         var el = document.createElement('input');
         el.setAttribute('type', 'text');
-        el.setAttribute('name', 'parts_count['+iteration+']');
-        el.setAttribute('id', 'parts_count['+iteration+']');
+        el.setAttribute('name', 'parts_qty['+iteration+']');
+        el.setAttribute('id', 'parts_qty['+iteration+']');
         el.setAttribute('size', '4');        
         el.setAttribute('value', '1');
         buildRow.appendChild(el);
@@ -178,7 +178,7 @@
         var el = document.createElement('input');        
         el.setAttribute('name', 'parts_description['+iteration+']');
         el.setAttribute('id', 'parts_description['+iteration+']');
-        el.setAttribute('size', '75');        
+        el.setAttribute('size', '62');        
         buildRow.appendChild(el);
         //el.onkeypress = keyPressTestLabor;
 
@@ -189,9 +189,9 @@
         
         // Price Cell - Create Select Input
         var el = document.createElement('input');        
-        el.setAttribute('name', 'parts_rate['+iteration+']');
-        el.setAttribute('id', 'parts_rate['+iteration+']');
-        el.setAttribute('size', '7');        
+        el.setAttribute('name', 'parts_price['+iteration+']');
+        el.setAttribute('id', 'parts_price['+iteration+']');
+        el.setAttribute('size', '10');        
         buildRow.appendChild(el);
         
         {/literal}
@@ -277,7 +277,7 @@
 
 
                                 {literal}
-                                    <form  action="index.php?page=invoice:new" method="POST" name="new_invoice" id="new_invoice" onsubmit="try { var myValidator = validate_new_invoice; } catch(e) { return true; } return myValidator(this);">
+                                    <form action="index.php?page=invoice:new" method="POST" name="new_invoice" id="new_invoice" onsubmit="try { var myValidator = validate_new_invoice; } catch(e) { return true; } return myValidator(this);">
                                 {/literal}
                                         <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
                                             <tr class="olotd4">
@@ -342,7 +342,7 @@
                                                         <br>
                                                         TERMS: <FONT color="red" size="+1">{$item.CREDIT_TERMS}</FONT><br><br><br>
                                                         Current customer discount rate is :
-                                                                <input type="hidden" name="customer_id"   value="{$item.CUSTOMER_ID}">
+                                                                <input type="hidden" name="customer_id" value="{$item.CUSTOMER_ID}">
                                                                 <input type="text" class="olotd4" size="4" name="discount" value="{$item.DISCOUNT}"> % <br>
                                                                 <b>**Change this if you want to temporarily override the discount rate for this invoice ONLY **</b>
                                                             </td>
@@ -526,7 +526,7 @@
                                                          {/section}
                                                         <tr>
                                                             <td colspan="5" style="text-align:right;"><b>{$translate_invoice_parts_total}</b></td>
-                                                            <td style="text-align:left;"">{$currency_sym}{$parts_sub_total_sum}</td>
+                                                            <td style="text-align:left;">{$currency_sym}{$parts_sub_total_sum}</td>
                                                         </tr>
                                                     </table>
 
@@ -536,7 +536,7 @@
                                                     <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable" id="parts">
                                                         <tr class="olotd4">
                                                             <td class="row2"><b>{$translate_invoice_no}</b></td>
-                                                            <td class="row2"><b>{$translate_invoice_count}</b></td>
+                                                            <td class="row2"><b>{$translate_invoice_count}-QTY</b></td>
                                                             <td class="row2"><b>{$translate_invoice_description}</b></td>
                                                             <td class="row2"><b>{$translate_invoice_price}</b></td>
                                                         </tr>
