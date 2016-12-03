@@ -7,77 +7,101 @@
 <script type="text/javascript" src="includes/jscalendar/lang/calendar-english.js"></script>
 <script type="text/javascript" src="includes/jscalendar/calendar-setup_stripped.js"></script>
 
-<!-- dhtmlx Combo Box -->
-<script type="text/javascript" src="includes/dhtmlxcombo/dhtmlxcommon.js"></script>
-<script type="text/javascript" src="includes/dhtmlxcombo/dhtmlxcombo.js"></script>
-<link rel="STYLESHEET" type="text/css" href="includes/dhtmlxcombo/dhtmlxcombo.css">
-<script>window.dhx_globalImgPath="includes/dhtmlxcombo/imgs/";</script>
+<script src="{$theme_js_dir}dhtmlxcombo/dhtmlxcombo.js"></script>
+<!--<link rel="stylesheet" href="{$theme_js_dir}dhtmlxcombo/fonts/font_roboto/roboto.css"/>-->
+<link rel="stylesheet" href="{$theme_js_dir}dhtmlxcombo/dhtmlxcombo.css">
 
-<script type="text/javascript">
+<script>
 
     {literal}
-    // Additional Labour Table - add Row
+    // Add Row to Labour Table
     function addRowToTableLabor(){
         var tbl = document.getElementById('labor');
         var lastRow = tbl.rows.length;
-        // if there's no header row in the table, then iteration = lastRow + 1
+        
+        // Insert Row - if there's no header row in the table, then iteration = lastRow + 1
         var iteration = lastRow;
         var row = tbl.insertRow(lastRow);
+        row.setAttribute('class', 'olotd4');
+        
+        
+        
+        // Number Cell - Create Cell
+        var buildRow = row.insertCell(0);        
+        //buildRow.setAttribute('width', '40px');
+        //buildRow.setAttribute('class', 'olotd4'); 
+        var el = document.createTextNode(iteration);        
+        buildRow.appendChild(el);
+        
+        
 
-        // Number Cell //
-        var cellLeft = row.insertCell(0);
-        var textNode = document.createTextNode(iteration);
-        row.setAttribute('class', 'olotd4')
-        cellLeft.appendChild(textNode);
-
-        // Qty Cell //
-        var cellRight = row.insertCell(1);
+        // Qty Cell - Create Cell
+        var buildRow = row.insertCell(1);        
+        //buildRow.setAttribute('width', '40px');
+        //buildRow.setAttribute('class', 'olotd4'); 
+        
+        // Qty Cell - Create Input Box
         var el = document.createElement('input');
         el.setAttribute('type', 'text');
         el.setAttribute('name', 'hour['+iteration+']');
         el.setAttribute('id', 'hour['+ iteration+']');
-        el.setAttribute('size', '4');
-        el.setAttribute('class', 'olotd4');
+        el.setAttribute('size', '4');        
         el.setAttribute('value', '1');
-        cellRight.appendChild(el);
+        buildRow.appendChild(el);
+        
+        
 
-        // Description Cell //
-        var cellRight = row.insertCell(2);
-        var sel = document.createElement('select');
-        sel.setAttribute('name', 'description['+ iteration+']');
-        sel.setAttribute('id', 'description['+ iteration+']');
-        sel.setAttribute('width', '300');
-        sel.setAttribute('class', 'olotd4');
+        // Description Cell - Create Cell
+        var buildRow = row.insertCell(2);        
+        //buildRow.setAttribute('width', '300px');
+        //buildRow.setAttribute('class', 'olotd4');
+        
+        // Description Cell - Create Select Input
+        var el = document.createElement('select');        
+        el.setAttribute('name', 'description['+ iteration+']');
+        el.setAttribute('id', 'description['+ iteration+']');
+        el.setAttribute('size', '100');        
+        buildRow.appendChild(el);
         {/literal}
+                
+        // Description Cell - Populate the Select Options
         {section loop=$rate name=i}
-        sel.options[{$smarty.section.i.index}] = new Option('{$rate[i].LABOR_RATE_NAME} - {$currency_sym}{$rate[i].LABOR_RATE_AMOUNT}', '{$rate[i].LABOR_RATE_NAME}');
+        el.options[{$smarty.section.i.index}] = new Option('{$rate[i].LABOR_RATE_NAME} - {$currency_sym}{$rate[i].LABOR_RATE_AMOUNT}', '{$rate[i].LABOR_RATE_NAME}');
         {/section}
-        {literal}
-        cellRight.appendChild(sel);
-        // This Call Transforms the Select Element by ID to a real Combo Box
-        var combo = dhtmlXComboFromSelect('description['+ iteration+']');
+            
+        {literal} 
+        // Description Cell - Convert Select Input to a real Combo Box using dhtmlxcombo
+        var combo = dhtmlXComboFromSelect('description['+ iteration+']');                
+        combo.setSize(400); // This sets the width of the combo box and drop down options width        
+        
+        
 
-        // Rate cell //
-        var cellRightSel = row.insertCell(3);
-        // Creates Select Box
-        var sel = document.createElement('select');
-        // Sets Variables for sel - sel is the select box - each row gets its own id on the end
-        sel.setAttribute('name', 'rate['+ iteration+']');
-        sel.setAttribute('id', 'rate['+ iteration+']');
-        sel.setAttribute('class', 'olotd4');
-        //cellRightSel.setAttribute('width', '40');
+        // Rate Cell - Create Cell
+        var buildRow = row.insertCell(3);        
+        //buildRow.setAttribute('width', '40px');
+        //buildRow.setAttribute('class', 'olotd4');
+        
+        // Rate Cell - Create Select Input
+        var el = document.createElement('select');        
+        el.setAttribute('name', 'rate['+ iteration+']');
+        el.setAttribute('id', 'rate['+ iteration+']');
+        el.setAttribute('size', '50');        
+        buildRow.appendChild(el);
         {/literal}
+            
+        // Rate Cell - Populate the Select Options
         {section loop=$rate name=i}
-        sel.options[{$smarty.section.i.index}] = new Option('${$rate[i].LABOR_RATE_AMOUNT}', '{$rate[i].LABOR_RATE_AMOUNT}');
+        el.options[{$smarty.section.i.index}] = new Option('${$rate[i].LABOR_RATE_AMOUNT}', '{$rate[i].LABOR_RATE_AMOUNT}');
         {/section}
-        {literal}
-        cellRightSel.appendChild(sel);
-        {/literal}
-        // Add some html to allow the placement of the Currency Symbol
-        cellRightSel.innerHTML = '<div style="float:left;"><b>{$currency_sym}&nbsp;</b></div><div>' + cellRightSel.innerHTML + '</div>'
-        {literal}
-        // This Call Transforms the Select Element by ID to a real Combo Box
+             
+        // Rate Cell - Add some HTML to add the Currency Symbol        
+        buildRow.innerHTML = '<div style="float:left;"><b>{$currency_sym}&nbsp;</b></div><div>' + buildRow.innerHTML + '</div>';
+        
+        {literal}            
+        // Rate Cell - Convert Select Input to a real Combo Box using dhtmlxcombo - Run after adding currency symbol to the cell otherwise it does not work
         var combo = dhtmlXComboFromSelect('rate['+ iteration+']');
+        combo.setSize(90);  // This sets the width of the combo box and drop down options width        
+
     }
 
     function keyPressTestLabor(e, obj){
@@ -133,13 +157,13 @@
         var iteration = lastRow;
         var row = tbl.insertRow(lastRow);
 
-        // Number
+        // Number Cell
         var cellLeft = row.insertCell(0);
         var textNode = document.createTextNode(iteration);
         row.setAttribute('class', 'olotd4')
         cellLeft.appendChild(textNode);
 
-        // Count
+        // Count Cell
         var cellRight = row.insertCell(1);
         var el = document.createElement('input');
         el.setAttribute('type', 'text');
@@ -150,7 +174,7 @@
         el.setAttribute('value', '1');
         cellRight.appendChild(el);
 
-        // Parts Description
+        // Description Cell
         var cellRight = row.insertCell(2);
         row.setAttribute('class', 'olotd4');
         var el = document.createElement('input');
@@ -162,7 +186,7 @@
         //el.onkeypress = keyPressTestLabor;
         cellRight.appendChild(el);
 
-        // Price
+        // Price Cell
         var cellRight = row.insertCell(3);
         var el = document.createElement('input');
         el.setAttribute('type', 'text');
