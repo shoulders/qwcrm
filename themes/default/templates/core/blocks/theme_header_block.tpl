@@ -12,8 +12,7 @@
     <meta name="keywords" content="{$meta_keywords}">
     
     <link rel="icon" href="favicon.ico">
-    <link rel="stylesheet" href="{$theme_css_dir}template.css">
-    <link rel="stylesheet" href="{$theme_css_dir}sdmenu.css">
+    <link rel="stylesheet" href="{$theme_css_dir}template.css">    
     
     <script src="{$theme_js_dir}jquery-3.1.1.min.js"></script>
     <script src="{$theme_js_dir}sdmenu.js"></script>     
