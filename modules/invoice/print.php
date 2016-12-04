@@ -84,8 +84,8 @@ if($customer_id == "" || $customer_id == "0"){
 
         $labour_sub_total_sum = labour_sub_total_sum($db, $invoice_id);
 
-        //Labour Lookup for PDF - uses a mysql query rather than an arrray
-        $query=mysql_query('select INVOICE_LABOR_UNIT, INVOICE_LABOR_DESCRIPTION, INVOICE_LABOR_RATE, INVOICE_LABOR_SUBTOTAL from '.PRFX.'TABLE_INVOICE_LABOR WHERE INVOICE_ID='.$db->qstr($invoice['INVOICE_ID']));
+        //Labour Lookup for PDF - uses a mysql query rather than an array
+        $query = mysqli_query('select INVOICE_LABOR_UNIT, INVOICE_LABOR_DESCRIPTION, INVOICE_LABOR_RATE, INVOICE_LABOR_SUBTOTAL from '.PRFX.'TABLE_INVOICE_LABOR WHERE INVOICE_ID='.$db->qstr($invoice['INVOICE_ID']));
         $labour_row_pdf = $query or die(mysql_error() . '<br />'. $query);
 
 // Parts Section
@@ -105,7 +105,7 @@ if($customer_id == "" || $customer_id == "0"){
         //Parts Lookup for PDF - uses a mysql query rather than an arrray
         // mysql_select_db( $DB_NAME , $link );
         // $query=mysql_query('select INVOICE_PARTS_COUNT, INVOICE_PARTS_DESCRIPTION, INVOICE_PARTS_AMOUNT from '.PRFX.'TABLE_INVOICE_PARTS WHERE INVOICE_ID='.$db->qstr($invoice['INVOICE_ID']),$link);
-        $query=mysql_query('select INVOICE_PARTS_COUNT, INVOICE_PARTS_DESCRIPTION, INVOICE_PARTS_AMOUNT, INVOICE_PARTS_SUBTOTAL from '.PRFX.'TABLE_INVOICE_PARTS WHERE INVOICE_ID='.$db->qstr($invoice['INVOICE_ID']));
+        $query = mysql_query('select INVOICE_PARTS_COUNT, INVOICE_PARTS_DESCRIPTION, INVOICE_PARTS_AMOUNT, INVOICE_PARTS_SUBTOTAL from '.PRFX.'TABLE_INVOICE_PARTS WHERE INVOICE_ID='.$db->qstr($invoice['INVOICE_ID']));
         $parts_row_pdf = $query or die(mysql_error() . '<br />'. $query);
 
 // Misc Section

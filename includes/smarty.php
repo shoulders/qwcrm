@@ -5,7 +5,7 @@
 ###############################
 
 /* Set Path for SMARTY in the php include path */
-set_include_path(get_include_path() . PATH_SEPARATOR . INCLUDES_DIR.'smarty'.SEP);
+set_include_path(get_include_path() . PATH_SEPARATOR . LIBRARIES_DIR.'smarty'.SEP);
 require('Smarty.class.php');
 
 /* Load Smarty template engine */
@@ -30,7 +30,7 @@ $smarty->cache_modified_check   = $smarty_cache_modified_check;    // Smarty wil
 ###############################
 
 /* Set Path for ADODB in the php include path */
-set_include_path(get_include_path() . PATH_SEPARATOR . INCLUDES_DIR.'adodb'.SEP);
+set_include_path(get_include_path() . PATH_SEPARATOR . LIBRARIES_DIR.'adodb'.SEP);
 require('adodb.inc.php');
 
 /* create adodb database connection */

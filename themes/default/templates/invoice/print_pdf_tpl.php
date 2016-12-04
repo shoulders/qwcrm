@@ -2,7 +2,7 @@
 
 // Print PDF Invoice Template File
 
-require(INCLUDES_DIR.SEP.'fpdf'.SEP.'fpdf.php');
+require(LIBRARIES_DIR.'fpdf/fpdf.php');
 
 // Xavier Nicolay 2004
 // Version 1.01

@@ -1,7 +1,7 @@
 <?php
 require_once("include.php");
 //Required for swift mailer
-require_once (INCLUDES_DIR.'/swift/lib/swift_required.php');
+require_once (LIBRARIES_DIR.'swift/swift_required.php');
 if(!xml2php("customer")) {
     $smarty->assign('error_msg',"Error in language file");
 }

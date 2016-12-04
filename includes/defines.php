@@ -18,6 +18,7 @@ define('CACHE_DIR',             'cache/'                    );
 define('INCLUDES_DIR',          'includes/'                 ); 
 define('MEDIA_DIR',             'media/'                    );
 define('LANGUAGE_DIR',          'language/'                 );
+define('LIBRARIES_DIR',         'libraries/'                 );
 define('LOGS_DIR',              'logs/'                     );
 
 // Smarty
