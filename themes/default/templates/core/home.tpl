@@ -55,7 +55,7 @@
                                     
                                     <!-- Invoice Stats -->
                                     {literal}
-                                    <script type="text/javascript">
+                                    <script>
                                         $(function(){
                                             $("#hidden_stats").click(function(event) {
                                             event.preventDefault();
@@ -72,8 +72,8 @@
                                     </script>
                                      {/literal}
                                      
-                                    <a href="#" id="hid    den_stats">{$translate_core_home_invoice_stats_title}</a>
-                                    <div id="hide_st   ats">
+                                    <a href="#" id="hidden_stats">{$translate_core_home_invoice_stats_title}</a>
+                                    <div id="hide_stats">
                                     {if $login_account_type_id == 1 || $login_account_type_id == 4 }
                                     <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
                                         <tr class="olotd4">

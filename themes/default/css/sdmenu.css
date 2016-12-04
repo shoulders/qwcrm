@@ -7,11 +7,11 @@ div.sdmenu {
     color: #fff;
 }
 div.sdmenu div {
-    background: url(../images/index14.gif) repeat-x;
+    background: url(../images/sdmenu/toptitle.gif) repeat-x;
     overflow: hidden;
 }
 div.sdmenu div:first-child {
-    background: url(../images/index14.gif) repeat-x;
+    background: url(../images/sdmenu/toptitle.gif) repeat-x;
 }
 div.sdmenu div.collapsed {
     height: 25px;
@@ -21,12 +21,12 @@ div.sdmenu div span {
     padding: 5px 25px;
     font-weight: bold;
     color: white;
-    background: url(../images/expanded.gif) no-repeat 10px;
+    background: url(../images/sdmenu/expanded.gif) no-repeat 10px;
     cursor: default;
     border-bottom: 1px solid #ddd;
 }
 div.sdmenu div.collapsed span {
-    background-image: url(../images/collapsed.gif);
+    background-image: url(../images/sdmenu/collapsed.gif);
 }
 div.sdmenu div a {
     padding: 5px 10px;
