@@ -1433,5 +1433,61 @@
                      
         <workorder_validate_warning_message_invalidinformation>Invalid information entered.</workorder_validate_warning_message_invalidinformation>
         <workorder_validate_warning_message_pleasecorrect>Please correct these fields.</workorder_validate_warning_message_pleasecorrect>
-              
+        
+        
+        //// -- JSCal2 -- ////
+        
+        <jscal2_language_shortcode>en</jscal2_language_shortcode>
+        <jscal2_language_name>English</jscal2_language_name>
+        
+        <jscal2_fdow>1</jscal2_fdow>                // first day of week for this locale; 0 = Sunday, 1 = Monday, etc.
+        <jscal2_gotoday>Go Today</jscal2_gotoday>
+        <jscal2_today>Today</jscal2_today>          // appears in bottom bar
+        <jscal2_wk>wk</jscal2_wk>
+        <jscal2_weekend>0,6</jscal2_weekend>        // 0 = Sunday, 1 = Monday, etc.
+        <jscal2_am>AM</jscal2_am>
+        <jscal2_pm>PM</jscal2_pm>
+        
+        <jscal2_january>January</jscal2_january>
+        <jscal2_february>February</jscal2_february>
+        <jscal2_march>March</jscal2_march>
+        <jscal2_april>April</jscal2_april>
+        <jscal2_may>May</jscal2_may>
+        <jscal2_june>June</jscal2_june>
+        <jscal2_july>July</jscal2_july>
+        <jscal2_august>August</jscal2_august>
+        <jscal2_september>September</jscal2_september>
+        <jscal2_october>October</jscal2_october>
+        <jscal2_november>November</jscal2_november>
+        <jscal2_december>December</jscal2_december>
+        
+        <jscal2_jan>Jan</jscal2_jan>
+        <jscal2_feb>Feb</jscal2_feb>
+        <jscal2_mar>Mar</jscal2_mar>
+        <jscal2_apr>Apr</jscal2_apr>
+        <jscal2_May>May</jscal2_May>
+        <jscal2_jun>Jun</jscal2_jun>
+        <jscal2_jul>Jul</jscal2_jul>
+        <jscal2_aug>Aug</jscal2_aug>
+        <jscal2_sep>Sep</jscal2_sep>
+        <jscal2_oct>Oct</jscal2_oct>
+        <jscal2_nov>Nov</jscal2_nov>
+        <jscal2_dec>Dec</jscal2_dec>
+        
+        <jscal2_sunday>Sunday</jscal2_sunday>
+        <jscal2_monday>Monday</jscal2_monday>
+        <jscal2_tuesday>Tuesday</jscal2_tuesday>
+        <jscal2_wednesday>Wednesday</jscal2_wednesday>
+        <jscal2_thursday>Thursday</jscal2_thursday>
+        <jscal2_friday>Friday</jscal2_friday>
+        <jscal2_saturday>Saturday</jscal2_saturday>
+        
+        <jscal2_su>Su</jscal2_su>
+        <jscal2_mo>Mo</jscal2_mo>
+        <jscal2_tu>Tu</jscal2_tu>
+        <jscal2_we>We</jscal2_we>
+        <jscal2_th>Th</jscal2_th>
+        <jscal2_fr>Fr</jscal2_fr>
+        <jscal2_sa>Sa</jscal2_sa>
+        
 </translate>

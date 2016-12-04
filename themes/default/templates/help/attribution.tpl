@@ -10,6 +10,6 @@
     <li>FPDF v1.81 (2015-12-20) | permissive | http://www.fpdf.org/</li>
     <li>Slashdot Menu (SDMenu) (2007-03-22) | no license specified, but seems free | http://dynamicdrive.com/dynamicindex1/slashdot.htm</li>
     <li>Cool DHMTL Tooltip (04-12-16) | Dynamic Drive License http://www.dynamicdrive.com/notice.htm | http://www.dynamicdrive.com/dynamicindex5/dhtmltooltip.htm </li>
-    <li>JSCalender</li>
+    <li>JSCal2 v1.9 (2011/03/13) not the latest, change? there is a 2013 ver</li>
     <li></li>
 </ul>

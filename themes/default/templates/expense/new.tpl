@@ -11,20 +11,15 @@
 <!-- add these using a .tpl file? because there are a lot of files -->
 <link rel="stylesheet" href="{$theme_js_dir}jscal2/css/jscal2.css" />
 <link rel="stylesheet" href="{$theme_js_dir}jscal2/css/border-radius.css" />
-<!-- <link rel="stylesheet" href="{$theme_js_dir}jscal2/css/reduce-spacing.css" /> -->
-<link id="skin-steel" title="Steel" rel="alternate stylesheet" href="{$theme_js_dir}jscal2/css/steel/steel.css" />
-<link id="skinhelper-compact" rel="alternate stylesheet" href="{$theme_js_dir}jscal2/css/reduce-spacing.css" />
+<script src="{$theme_js_dir}jscal2/jscal2.js"></script>
+<script src="{$theme_js_dir}jscal2/unicode-letter.js"></script>
 
-<script src="{$theme_js_dir}jscal2/js/jscal2.js"></script>
-<script src="{$theme_js_dir}jscal2/js/unicode-letter.js"></script>
-
-<!-- this must stay last so that English is the default one -->
-<script src="{$theme_js_dir}jscal2/js/lang/en.js"></script>
+<!-- load the QWcrm dynamic JSCal2 language file -->
+<script>{include file='../js/jscal2/language.js'}</script>
 
 <table width="100%" border="0" cellpadding="20" cellspacing="5">
     <tr>
-        <td>
-            <!-- Begin page -->
+        <td>            
             <table width="700" cellpadding="5" cellspacing="0" border="0" >
                 <tr>
                     <td class="menuhead2" width="80%">{$translate_expense_new_title}</td>
