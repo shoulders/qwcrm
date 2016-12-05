@@ -97,7 +97,7 @@ $q = 'UPDATE '.PRFX.'SETUP SET
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
         exit;
     }else {
-        force_page('control', 'company_edit&msg=The Company information was updated');
+        force_page('company', 'company_edit&msg=The Company information was updated');
         exit;
     }
 

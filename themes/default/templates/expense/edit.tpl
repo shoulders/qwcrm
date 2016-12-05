@@ -1,10 +1,12 @@
-<!-- Update Expense TPL -->
+<!-- edit.tpl - Update Expense TPL -->
+
 <script src="{$theme_js_dir}tinymce/tinymce.min.js"></script>
 <script src="{$theme_js_dir}editor-config.js"></script>
-<link rel="stylesheet" type="text/css" media="all" href="includes/jscalendar/calendar-blue.css" title="win2k-1" />
-<script type="text/javascript" src="includes/jscalendar/calendar_stripped.js"></script>
-<script type="text/javascript" src="includes/jscalendar/lang/calendar-english.js"></script>
-<script type="text/javascript" src="includes/jscalendar/calendar-setup_stripped.js"></script>
+<link rel="stylesheet" href="{$theme_js_dir}jscal2/css/jscal2.css" />
+<link rel="stylesheet" href="{$theme_js_dir}jscal2/css/steel/steel.css" />
+<script src="{$theme_js_dir}jscal2/jscal2.js"></script>
+<script src="{$theme_js_dir}jscal2/unicode-letter.js"></script>
+<script>{include file='../js/jscal2/language.js'}</script>
 {include file="expense/javascripts.js"}
 
 <table width="100%" border="0" cellpadding="20" cellspacing="0">
@@ -12,13 +14,15 @@
         <td >
             <table width="700" cellpadding="5" cellspacing="0" border="0" >
                 <tr>
-                                    <td class="menuhead2" width="80%">&nbsp;{$translate_expense_edit_title}</td>
-                                    <td class="menuhead2" width="20%" align="right" valign="middle">
-                        <a><img src="{$theme_images_dir}icons/16x16/help.gif" alt="" border="0"
+                    <td class="menuhead2" width="80%">&nbsp;{$translate_expense_edit_title}</td>
+                    <td class="menuhead2" width="20%" align="right" valign="middle">
+                        <a>
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" alt="" border="0"
                                 onMouseOver="ddrivetip('<b>{$translate_expense_edit_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_expense_edit_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>')"
                                 onMouseOut="hideddrivetip()"
-                                onClick="window.location"></a>
-                                    </td>
+                                onClick="window.location">
+                        </a>
+                    </td>
                 </tr>
                                 <tr>
                                     <td class="menutd2" colspan="2">
@@ -51,17 +55,15 @@
                                                                             </tr><tr>
                                                                                 <td align="right"><b>{$translate_expense_date}</b><span style="color: #ff0000"> *</span></td>
                                                                                 <td><input class="olotd5" size="10" name="expenseDate" type="text" id="expenseDate" value="{$expense_details[q].EXPENSE_DATE|date_format:$date_format}"/>
-                                                                                    <input type="button" id="trigger_date" value="+">
+                                                                                    <input type="button" id="expenseDate_button" value="+">
                                                                                     {literal}
-                                                                                        <script type="text/javascript">
-                                                                                        Calendar.setup(
-                                                                                        {
-                                                                                        inputField  : "expenseDate",
-                                                                                        ifFormat    : "{/literal}{$date_format}{literal}",
-                                                                                        button      : "trigger_date"
-                                                                                        }
-                                                                                        );
-                                                                                        </script>
+                                                                                    <script>
+                                                                                        Calendar.setup({
+                                                                                            trigger     : "expenseDate_button",
+                                                                                            inputField  : "expenseDate",
+                                                                                            dateFormat  : "{/literal}{$date_format}{literal}"                                                                                            
+                                                                                        });
+                                                                                    </script>
                                                                                     {/literal}
                                                                                 </td>
                                                                             </tr>

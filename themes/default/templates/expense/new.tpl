@@ -2,16 +2,7 @@
 
 <script src="{$theme_js_dir}tinymce/tinymce.min.js"></script>
 <script src="{$theme_js_dir}editor-config.js"></script>
-
-<!--<link rel="stylesheet" type="text/css" media="all" href="includes/jscalendar/calendar-blue.css" title="win2k-1" />
-<script type="text/javascript" src="includes/jscalendar/calendar_stripped.js"></script>
-<script type="text/javascript" src="includes/jscalendar/lang/calendar-english.js"></script>
-<script type="text/javascript" src="includes/jscalendar/calendar-setup_stripped.js"></script>-->
-
-<!-- add these using a .tpl file? because there are a lot of files -->
 <link rel="stylesheet" href="{$theme_js_dir}jscal2/css/jscal2.css" />
-<link rel="stylesheet" href="{$theme_js_dir}jscal2/css/border-radius.css" />
-<!--<link rel="stylesheet" href="{$theme_js_dir}jscal2/css/reduce-spacing.css" />-->
 <link rel="stylesheet" href="{$theme_js_dir}jscal2/css/steel/steel.css" />
 <script src="{$theme_js_dir}jscal2/jscal2.js"></script>
 <script src="{$theme_js_dir}jscal2/unicode-letter.js"></script>

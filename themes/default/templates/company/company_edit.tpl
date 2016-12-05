@@ -1,5 +1,5 @@
 <!-- company_edit.tpl -->
-<form method="POST" action="?page=control:company_edit" enctype="multipart/form-data">
+<form method="POST" action="?page=company:company_edit" enctype="multipart/form-data">
     <table width="100%" border="0" cellpadding="20" cellspacing="0">
         <tr>
             <td>

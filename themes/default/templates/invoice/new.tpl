@@ -1,19 +1,16 @@
-<!-- new.tpl -->
+<!-- new.tpl - New Invoice -->
 
-{include file="invoice/javascripts.js"}
-
-<link rel="stylesheet" type="text/css" media="all" href="includes/jscalendar/calendar-blue.css" title="win2k-1" />
-<script type="text/javascript" src="includes/jscalendar/calendar_stripped.js"></script>
-<script type="text/javascript" src="includes/jscalendar/lang/calendar-english.js"></script>
-<script type="text/javascript" src="includes/jscalendar/calendar-setup_stripped.js"></script>
-
+<link rel="stylesheet" href="{$theme_js_dir}jscal2/css/jscal2.css" />
+<link rel="stylesheet" href="{$theme_js_dir}jscal2/css/steel/steel.css" />
+<script src="{$theme_js_dir}jscal2/jscal2.js"></script>
+<script src="{$theme_js_dir}jscal2/unicode-letter.js"></script>
+<script>{include file='../js/jscal2/language.js'}</script>
 <script src="{$theme_js_dir}dhtmlxcombo/dhtmlxcombo.js"></script>
-<!--<link rel="stylesheet" href="{$theme_js_dir}dhtmlxcombo/fonts/font_roboto/roboto.css"/>-->
+<link rel="stylesheet" href="{$theme_js_dir}dhtmlxcombo/fonts/font_roboto/roboto.css"/>
 <link rel="stylesheet" href="{$theme_js_dir}dhtmlxcombo/dhtmlxcombo.css">
-
+{include file="invoice/javascripts.js"}
 <script>
-
-    {literal}
+{literal}
  
 // LABOUR    
     
@@ -288,46 +285,41 @@
                                                 <td class="row2"><b>{$translate_invoice_tech}</b></td>
                                                 <td class="row2"><b>{$translate_invoice_work_order}</b></td>
                                                 <td class="row2"><b>{$translate_invoice_balance}</b></td>
-                                            </tr><tr class="olotd4">
-
+                                            </tr>
+                                            <tr class="olotd4">
                                                 <td>{$invoice.INVOICE_ID}</td>
                                                 <td>
                                                     <input size="10" name="date" type="text" id="date" value="{$invoice.INVOICE_DATE|date_format:$date_format}" class="olotd4"/>
-                                                           <input type="button" id="trigger_date" value="+">
-                                             {literal}
-                                                    <script type="text/javascript">
-                                                        Calendar.setup(
-                                                        {
+                                                    <input type="button" id="date_button" value="+">
+                                                    {literal}
+                                                    <script>
+                                                        Calendar.setup({
+                                                            trigger     : "date_button",
                                                             inputField  : "date",
-                                                            ifFormat    : "{/literal}{$date_format}{literal}",
-                                                            button      : "trigger_date"
-                                                        }
-                                                    );
+                                                            dateFormat  : "{/literal}{$date_format}{literal}"                                                                                            
+                                                        });
                                                     </script>
-                                            {/literal}
+                                                    {/literal}
                                                 </td>
                                                 <td>{$item.INVOICE_DUE}
                                                     <input size="10" name="due_date" type="text" id="due_date" value="{$invoice.INVOICE_DUE|date_format:$date_format}" class="olotd4"/>
-                                                           <input type="button" id="trigger_due_date" value="+">
-                                             {literal}
-                                                    <script type="text/javascript">
-                                                        Calendar.setup(
-                                                        {
-                                                            inputField  : "due_date",
-                                                            ifFormat    : "{/literal}{$date_format}{literal}",
-                                                            button      : "trigger_due_date"
-                                                        }
-                                                    );
-                                                    </script>
-                                            {/literal}
+                                                    <input type="button" id="due_date_button" value="+">
+                                                    {literal}
+                                                    <script>
+                                                       Calendar.setup({
+                                                           trigger     : "due_date_button",
+                                                           inputField  : "due_date",
+                                                           dateFormat  : "{/literal}{$date_format}{literal}"                                                                                            
+                                                       });
+                                                   </script>
+                                                   {/literal}
                                                 </td>
                                                 <td>{$currency_sym}{$invoice.INVOICE_AMOUNT|string_format:"%.2f"}</td>
                                                 <td>{$invoice.EMPLOYEE_DISPLAY_NAME}</td>
                                                 <td><a href="?page=workorder:details&wo_id={$invoice.WORKORDER_ID}&page_title={$translate_invoice_wo_id} {$invoice.WORKORDER_ID}">{$invoice.WORKORDER_ID}</a></td>
-                                                <td><font color="#CC0000">{$currency_sym}{$invoice.BALANCE|string_format:"%.2f"}</font>
-                                                </td>
-
-                                            </tr><tr>
+                                                <td><font color="#CC0000">{$currency_sym}{$invoice.BALANCE|string_format:"%.2f"}</font></td>
+                                            </tr>
+                                            <tr>
                                                 <td colspan="3" valign="top" align="left">
                                                     <b>{$translate_invoice_bill}</b>
                                         {foreach item=item from=$customer_details}

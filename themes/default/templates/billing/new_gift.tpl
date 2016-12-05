@@ -1,12 +1,14 @@
 <!-- new_gift.tpl -->
+
 <script src="{$theme_js_dir}tinymce/tinymce.min.js"></script>
 <script src="{$theme_js_dir}editor-config.js"></script>
-<link rel="stylesheet" type="text/css" media="all" href="includes/jscalendar/calendar-blue.css" title="win2k-1" />
-<script type="text/javascript" src="includes/jscalendar/calendar_stripped.js"></script>
-<script type="text/javascript" src="includes/jscalendar/lang/calendar-english.js"></script>
-<script type="text/javascript" src="includes/jscalendar/calendar-setup_stripped.js"></script>
+<link rel="stylesheet" href="{$theme_js_dir}jscal2/css/jscal2.css" />
+<link rel="stylesheet" href="{$theme_js_dir}jscal2/css/steel/steel.css" />
+<script src="{$theme_js_dir}jscal2/jscal2.js"></script>
+<script src="{$theme_js_dir}jscal2/unicode-letter.js"></script>
+<script>{include file='../js/jscal2/language.js'}</script>
 {literal}
-<script type="text/javascript">
+<script>
     function validate_gift(frm) {
         
     var value = '';
@@ -65,33 +67,17 @@
                                                 <td><b>{$translate_billing_exp}</b></td>
                                                 <td>
                                                     <input class="olotd5" size="10" name="expire" type="text" id="due_date" value="" class="olotd4"/>
-                                                    <input type="button" id="trigger_due_date" value="+">
-                                                    {if $date_format == "%d/%m/%Y" || $date_format == "%d/%m/%y"}
-                                                        {literal}
-                                                            <script type="text/javascript">
-                                                            Calendar.setup(
-                                                            {
-                                                                inputField  : "due_date",
-                                                                ifFormat    : "%d/%m/%y",
-                                                                button      : "trigger_due_date"
-                                                            }
-                                                            );
-                                                            </script>
-                                                        {/literal}
-                                                    {/if}
-                                                    {if $date_format == "%m/%d/%Y" || $date_format == "%m/%d/%y"}
-                                                        {literal}
-                                                            <script type="text/javascript">
-                                                            Calendar.setup(
-                                                            {
-                                                                inputField  : "due_date",
-                                                                ifFormat    : "%m/%d/%y",
-                                                                button      : "trigger_due_date"
-                                                            }
-                                                            );
-                                                            </script>
-                                                        {/literal}
-                                                    {/if}
+                                                    <input type="button" id="due_date_button" value="+">
+                                                    
+                                                    {literal}
+                                                    <script>
+                                                        Calendar.setup({
+                                                            trigger     : "due_date_button",
+                                                            inputField  : "due_date",
+                                                            dateFormat  : "{/literal}{$date_format}{literal}"                                                                                            
+                                                        });
+                                                    </script>
+                                                    {/literal}                                                    
                                                 </td>
                                             </tr>
                                             <tr>

@@ -1,6 +1,12 @@
-<!-- main.tpl -->
+<!-- main.tpl - Schedule -->
+
+<link rel="stylesheet" href="{$theme_js_dir}jscal2/css/jscal2.css" />
+<link rel="stylesheet" href="{$theme_js_dir}jscal2/css/steel/steel.css" />
+<script src="{$theme_js_dir}jscal2/jscal2.js"></script>
+<script src="{$theme_js_dir}jscal2/unicode-letter.js"></script>
+<script>{include file='../js/jscal2/language.js'}</script>
 {literal}
-<script type="text/javascript">
+<script>
     function go()
     {
         box = document.forms[0].page_no;
@@ -47,10 +53,7 @@
                                         <tr>
                                             <td height="81"  align="center" >
                                                 <div id="calendar-container"></div>
-                                        <link rel="stylesheet" type="text/css" media="all" href="includes/jscalendar/calendar-blue.css" title="win2k-1" />
-                                        <script type="text/javascript" src="includes/jscalendar/calendar_stripped.js"></script>
-                                        <script type="text/javascript" src="includes/jscalendar/lang/calendar-english.js"></script>
-                                        <script type="text/javascript" src="includes/jscalendar/calendar-setup_stripped.js"></script>
+                                        
 
                             {literal}
                                         <script type="text/javascript">

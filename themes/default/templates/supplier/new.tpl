@@ -1,11 +1,12 @@
-<!-- Add New Supplier tpl -->
+<!-- new.tpl - New Supplier -->
+
 <script src="{$theme_js_dir}tinymce/tinymce.min.js"></script>
 <script src="{$theme_js_dir}editor-config.js"></script>
-
-<link rel="stylesheet" type="text/css" media="all" href="includes/jscalendar/calendar-blue.css" title="win2k-1" />
-<script type="text/javascript" src="includes/jscalendar/calendar_stripped.js"></script>
-<script type="text/javascript" src="includes/jscalendar/lang/calendar-english.js"></script>
-<script type="text/javascript" src="includes/jscalendar/calendar-setup_stripped.js"></script>
+<link rel="stylesheet" href="{$theme_js_dir}jscal2/css/jscal2.css" />
+<link rel="stylesheet" href="{$theme_js_dir}jscal2/css/steel/steel.css" />
+<script src="{$theme_js_dir}jscal2/jscal2.js"></script>
+<script src="{$theme_js_dir}jscal2/unicode-letter.js"></script>
+<script>{include file='../js/jscal2/language.js'}</script>
 
 <table width="100%"   border="0" cellpadding="20" cellspacing="5">
     <tr>

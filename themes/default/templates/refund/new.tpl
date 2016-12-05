@@ -1,10 +1,12 @@
-<!-- Add New Refund tpl -->
+<!-- new.tpl - Add New Refund -->
+
 <script src="{$theme_js_dir}tinymce/tinymce.min.js"></script>
 <script src="{$theme_js_dir}editor-config.js"></script>
-<link rel="stylesheet" type="text/css" media="all" href="includes/jscalendar/calendar-blue.css" title="win2k-1" />
-<script type="text/javascript" src="includes/jscalendar/calendar_stripped.js"></script>
-<script type="text/javascript" src="includes/jscalendar/lang/calendar-english.js"></script>
-<script type="text/javascript" src="includes/jscalendar/calendar-setup_stripped.js"></script>
+<link rel="stylesheet" href="{$theme_js_dir}jscal2/css/jscal2.css" />
+<link rel="stylesheet" href="{$theme_js_dir}jscal2/css/steel/steel.css" />
+<script src="{$theme_js_dir}jscal2/jscal2.js"></script>
+<script src="{$theme_js_dir}jscal2/unicode-letter.js"></script>
+<script>{include file='../js/jscal2/language.js'}</script>
 
 <table width="100%"   border="0" cellpadding="20" cellspacing="5">
     <tr>
@@ -58,17 +60,15 @@
                                                                         <tr>
                                                                             <td align="right"><b>{$translate_refund_date}</b><span style="color: #ff0000"> *</span></td>
                                                                             <td><input class="olotd5" size="10" name="refundDate" type="text" id="refundDate" />
-                                                                                <input type="button" id="trigger_date" value="+">
+                                                                                <input type="button" id="refundDate" value="+">
                                                                                 {literal}
-                                                                                    <script type="text/javascript">
-                                                                                    Calendar.setup(
-                                                                                    {
-                                                                                    inputField  : "refundDate",
-                                                                                    ifFormat    : "{/literal}{$date_format}{literal}",
-                                                                                    button      : "trigger_date"
-                                                                                    }
-                                                                                    );
-                                                                                    </script>
+                                                                                <script>
+                                                                                    Calendar.setup({
+                                                                                        trigger     : "refundDate_button",
+                                                                                        inputField  : "refundDate",
+                                                                                        dateFormat  : "{/literal}{$date_format}{literal}"                                                                                            
+                                                                                    });
+                                                                                </script>
                                                                                 {/literal}
                                                                             </td>
                                                                         </tr>
