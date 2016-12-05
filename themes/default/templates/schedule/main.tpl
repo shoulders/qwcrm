@@ -27,62 +27,55 @@
                         <table class="olotable" width="100%" border="0" cellpadding="5" cellspacing="0">
                             <tr>
                                 <td class="menutd">
-                        {if $error_msg != ""}
-                                    <br>
-                            {include file="core/error.tpl"}
-                                    <br>
+                        
                                     <table width="100%" border="0" cellpadding="10" cellspacing="0">
                                         <tr>
-                                            <td><a name="new"></a>{include file="schedule/new_work_order.tpl"}</td>
-                                        </tr><tr>
-                                            <td><a name="assigned"></a>{include file="schedule/assigned_work_order_block.tpl"}</td>
+                                            <td>new<a name="assigned"></a>{include file='schedule/blocks/schedule_new_workorder_block.tpl'}</td>
                                         </tr>
-                                    </table>
-                        {/if}
-                        {if $wo_id != '0'}
-                                    <table class="olotablered" width="100%" border="0" cellpadding="5" cellspacing="0">
                                         <tr>
-                                            <td>
-                                                <span class="error_font">{$translate_schedule_info} </span> {$translate_schedule_msg_1} {$wo_id} {$translate_schedule_msg_2}
-                                            </td>
+                                            <td>open<a name="new"></a>{include file='schedule/blocks/schedule_open_workorder_block.tpl'}</td>
+                                        </tr>                                        
+                                        <tr>
+                                            <td>assigned<a name="assigned"></a>{include file='schedule/blocks/schedule_assigned_workorder_block.tpl'}</td>
                                         </tr>
                                     </table>
-                                    <br>
-                    {/if}
+                        
+                                    {if $wo_id != 0}
+                                        <table class="olotablered" width="100%" border="0" cellpadding="5" cellspacing="0">
+                                            <tr>
+                                                <td>
+                                                    <span class="error_font">{$translate_schedule_info} </span> {$translate_schedule_msg_1} {$wo_id} {$translate_schedule_msg_2}
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <br>
+                                    {/if}
+                                    
                                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                         <tr>
                                             <td height="81"  align="center" >
-                                                <div id="calendar-container"></div>
-                                        
-
-                            {literal}
-                                        <script type="text/javascript">
-                                            function dateChanged(calendar) {
-                                                // Beware that this function is called even if the end-user only
-                                                // changed the month/year.  In order to determine if a date was
-                                                // clicked you can use the dateClicked property of the calendar:
-                                                if (calendar.dateClicked) {
-                                                    // OK, a date was clicked, redirect to /yyyy/mm/dd/index.php
-                                                    var y = calendar.date.getFullYear();
-                                                    var M = calendar.date.getMonth();
-                                                    var m = M + 1;   // integer, 0..11
-                                                    var d = calendar.date.getDate();      // integer, 1..31
-                                                    // redirect...
-                                                    window.location =  "?page=schedule:main&y="+y+"&m="+m+"&d="+d+"&wo_id={/literal}{$wo_id}{literal}&page_title={/literal}{$translate_schedule_schedule}{literal}";
-                                                }
-                                            };
-                                            Calendar.setup(
-                                            {
-                                                flat: "calendar-container",
-                                                showothers: true,
-                                                flatCallback : dateChanged
-                                            }
-                                        );
-                                        </script>
-                            {/literal}
-                                </td>
-                            </tr>
-                        </table>
+                                                <div id="calendar-container"></div>                                
+                                                {literal}
+                                                <script>
+                                                    Calendar.setup({
+                                                        cont: 'calendar-container',                                                     
+                                                        onSelect : function(calendar){                                                                        
+                                                                        var selectedDate = calendar.selection.get();            // get the selected date
+                                                                        var dateForLink = Calendar.intToDate(selectedDate);     // converts into a JavaScript date object
+                                                                        
+                                                                        var y = dateForLink.getFullYear();
+                                                                        var M = dateForLink.getMonth();                         // integer, 0..11
+                                                                        var m = M + 1;                                          // Correction for assignment issue above
+                                                                        var d = dateForLink.getDate();                          // integer, 1..31
+                                                                        // redirect...
+                                                                        window.location = "?page=schedule:main&y="+y+"&m="+m+"&d="+d+"&wo_id={/literal}{$wo_id}{literal}&page_title={/literal}{$translate_schedule_schedule}{literal}";
+                                                                    }
+                                                    });
+                                                </script>
+                                                {/literal}
+                                            </td>
+                                        </tr>
+                                    </table>
                         <!-- Content -->
                         <table width="100%" cellpadding="4" cellspacing="0" border="0">
                             <tr>

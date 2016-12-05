@@ -48,11 +48,10 @@
                                     </table>
                                     <table width="100%" border="0" cellpadding="10" cellspacing="0">
                                         <tr>
-                                            <td><a name="new"></a>{include file="schedule/new_work_order.tpl"}</td>
+                                            <td><a name="new"></a>{include file='schedule/blocks/schedule_new_workorder_block.tpl'}</td>
                                         </tr>
                                         <tr>
-                                            <td><a name="assigned"></a>{include file="schedule/assigned_work_order_block.tpl"}
-                                            </td>
+                                            <td><a name="assigned"></a>{include file='schedule/blocks/schedule_assigned_workorder_block.tpl'}</td>
                                         </tr>
                                     </table>
                                     <br>

@@ -1,4 +1,5 @@
 <!-- Open Work Orders Block -->
+<b>open work orders</b>
 <table width="100%" cellpadding="0" cellspacing="0" border="0">
     <tr>
         <td class="menuhead2" width="80%">&nbsp;Open Work Orders</td>
@@ -56,6 +57,5 @@
                 {/foreach}
             </table>
         </td>
-    </tr>
-    {/if}
+    </tr>    
 </table>    

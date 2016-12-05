@@ -1,5 +1,5 @@
 <!-- Open Work Orders Block -->
-<b>{$translate_workorder_assigned_title}</b>
+<b>{$translate_workorder_assigned_title}assigned work orders</b>
             <table class="olotable" width="100%" border="0" cellpadding="4" cellspacing="0">
                 <tr>
                     <td class="olohead" width="6"><b>{$translate_workorder_id}</b></td>

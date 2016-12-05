@@ -50,29 +50,22 @@
                             <tr>
                                 <td height="81"  align="center" >
                                     <div id="calendar-container"></div>                                    
-                                    {literal}
+                                    {literal}                                    
                                     <script>
-                                        function dateChanged(calendar) {
-                                            // Beware that this function is called even if the end-user only
-                                            // changed the month/year.  In order to determine if a date was
-                                            // clicked you can use the dateClicked property of the calendar:
-                                            if (calendar.dateClicked) {
-                                                // OK, a date was clicked, redirect to /yyyy/mm/dd/index.php
-                                                var y = calendar.date.getFullYear();
-                                                var M = calendar.date.getMonth();  
-                                                var m = M + 1;   // integer, 0..11
-                                                var d = calendar.date.getDate();      // integer, 1..31
-                                                // redirect...
-                                                window.location =  "?page=schedule:main&y="+y+"&m="+m+"&d="+d+"&wo_id={/literal}{$wo_id}{literal}&page_title={/literal}{$translate_workorder_schedule}{literal}";
-                                            }
-                                        };
-                                         Calendar.setup(
-                                            {
-                                            flat: "calendar-container",
-                                            showothers: true,
-                                            flatCallback : dateChanged
-                                            }
-                                        );
+                                        Calendar.setup({
+                                            cont: 'calendar-container',                                                     
+                                            onSelect : function(calendar){                                                                        
+                                                            var selectedDate = calendar.selection.get();            // get the selected date
+                                                            var dateForLink = Calendar.intToDate(selectedDate);     // converts into a JavaScript date object
+
+                                                            var y = dateForLink.getFullYear();
+                                                            var M = dateForLink.getMonth();                         // integer, 0..11
+                                                            var m = M + 1;                                          // Correction for assignment issue above
+                                                            var d = dateForLink.getDate();                          // integer, 1..31
+                                                            // redirect...
+                                                            window.location = "?page=schedule:main&y="+y+"&m="+m+"&d="+d+"&wo_id={/literal}{$wo_id}{literal}&page_title={/literal}{$translate_schedule_schedule}{literal}";
+                                                        }
+                                        });
                                     </script>
                                     {/literal}
                                 </td>
