@@ -1,11 +1,10 @@
 <!-- theme_header_block.tpl -->
+
 <!DOCTYPE html>
 <html lang="en-GB">
-<head>
-    
-    <title>{$page_title}</title>
-    
+<head>    
     <meta charset="utf-8">
+    <title>{$page_title}</title>   
     <!--<base href="http://quantumwarp.com/">--> 
     <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
     <meta name="description" content="{$meta_description}">
@@ -26,8 +25,7 @@
     </script>
     {/literal}
     <script src="{$theme_js_dir}tabs.js"></script>
-    <script src="{$theme_js_dir}template.js"></script>
-    
+    <script src="{$theme_js_dir}template.js"></script>    
 </head>
 
 <body>

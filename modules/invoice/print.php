@@ -7,9 +7,9 @@ require_once ('include.php');
 // Load PHP Language Translations
 $langvals = gateway_xml2php('invoice');
 
-$invoice_id  = $VAR['invoice_id'];
-$customer_id = $VAR['customer_id'];
-$print_type = $VAR['print_type'];
+$invoice_id             = $VAR['invoice_id'];
+$customer_id            = $VAR['customer_id'];
+$invoice_output_type    = $VAR['invoice_output_type'];
 
 /* Generic error control */
 if(empty($invoice_id)) {
@@ -75,7 +75,7 @@ if($customer_id == "" || $customer_id == "0"){
     /* get any labour database rows */
     $q = "SELECT * FROM ".PRFX."TABLE_INVOICE_LABOR WHERE INVOICE_ID=".$db->qstr($invoice['INVOICE_ID']);
     if(!$rs = $db->execute($q)) {
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
+        force_page('core', 'error&error_msg=get any labour database rows - MySQL Error: '.$db->ErrorMsg().'&menu=1');
         exit;
     }
     $labor = $rs->GetArray();
@@ -85,13 +85,17 @@ if($customer_id == "" || $customer_id == "0"){
         $labour_sub_total_sum = labour_sub_total_sum($db, $invoice_id);
 
         //Labour Lookup for PDF - uses a mysql query rather than an array
-        $query = mysqli_query('select INVOICE_LABOR_UNIT, INVOICE_LABOR_DESCRIPTION, INVOICE_LABOR_RATE, INVOICE_LABOR_SUBTOTAL from '.PRFX.'TABLE_INVOICE_LABOR WHERE INVOICE_ID='.$db->qstr($invoice['INVOICE_ID']));
-        $labour_row_pdf = $query or die(mysql_error() . '<br />'. $query);
+        $q = "SELECT INVOICE_LABOR_UNIT, INVOICE_LABOR_DESCRIPTION, INVOICE_LABOR_RATE, INVOICE_LABOR_SUBTOTAL from ".PRFX."TABLE_INVOICE_LABOR WHERE INVOICE_ID=".$db->qstr($invoice['INVOICE_ID']);
+        if(!$rs = $db->execute($q)) {
+            force_page('core', 'error&error_msg=Labour Lookup for PDF - uses a mysql query rather than an array - MySQL Error: '.$db->ErrorMsg().'&menu=1');
+            exit;
+        }
+        $labour_row_pdf = $rs;
 
 // Parts Section
 
     /* get any parts database rows */
-    $q = "SELECT * FROM ".PRFX."TABLE_INVOICE_PARTS WHERE INVOICE_ID=".$db->qstr($invoice['INVOICE_ID']);
+    $q = "SELECT * FROM ".PRFX."TABLE_INVOICE_PARTS WHERE INVOICE_ID=".$db->qstr(($invoice['INVOICE_ID']));
     if(!$rs = $db->execute($q)) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
         exit;
@@ -105,8 +109,12 @@ if($customer_id == "" || $customer_id == "0"){
         //Parts Lookup for PDF - uses a mysql query rather than an arrray
         // mysql_select_db( $DB_NAME , $link );
         // $query=mysql_query('select INVOICE_PARTS_COUNT, INVOICE_PARTS_DESCRIPTION, INVOICE_PARTS_AMOUNT from '.PRFX.'TABLE_INVOICE_PARTS WHERE INVOICE_ID='.$db->qstr($invoice['INVOICE_ID']),$link);
-        $query = mysql_query('select INVOICE_PARTS_COUNT, INVOICE_PARTS_DESCRIPTION, INVOICE_PARTS_AMOUNT, INVOICE_PARTS_SUBTOTAL from '.PRFX.'TABLE_INVOICE_PARTS WHERE INVOICE_ID='.$db->qstr($invoice['INVOICE_ID']));
-        $parts_row_pdf = $query or die(mysql_error() . '<br />'. $query);
+        $q = "select INVOICE_PARTS_COUNT, INVOICE_PARTS_DESCRIPTION, INVOICE_PARTS_AMOUNT, INVOICE_PARTS_SUBTOTAL from ".PRFX."TABLE_INVOICE_PARTS WHERE INVOICE_ID=".$db->qstr($invoice['INVOICE_ID']);
+        if(!$rs = $db->execute($q)) {
+            force_page('core', 'error&error_msg=Parts Lookup for PDF - MySQL Error: '.$db->ErrorMsg().'&menu=1');
+            exit;
+        }
+        $parts_row_pdf = $q;
 
 // Misc Section
 
@@ -247,13 +255,8 @@ $date_format = "m/d/Y";}
 
 // EOF shared variables for invoicing
 
-// BOF HTML Printing Section
 
-if($print_type == 'html') {
-
-    /* html Print out */
-
-    if(empty($labor)){$smarty->assign('labor', 0);} else {$smarty->assign('labor', $labor);}
+if(empty($labor)){$smarty->assign('labor', 0);} else {$smarty->assign('labor', $labor);}
     if(empty($parts)){$smarty->assign('parts', 0);} else {$smarty->assign('parts', $parts);}
     if(empty($stats)){$smarty->assign('stats', 0);} else {$smarty->assign('stats', $stats);}
     if(empty($stats2)){$smarty->assign('stats2', 0);} else {$smarty->assign('stats2', $stats2);}
@@ -264,45 +267,61 @@ if($print_type == 'html') {
     $smarty->assign('trans',$trans);
     $smarty->assign('paid',$paid);
     $smarty->assign('customer_details',$customer_details);
-        $smarty->assign('customer1',$customer1);
+    $smarty->assign('customer1',$customer1);
     $smarty->assign('invoice',$invoice);
     $smarty->assign('PP_ID', $PP_ID);
-        $smarty->assign('DD_NAME', $DD_NAME);
-        $smarty->assign('DD_BSB', $DD_BSB);
-        $smarty->assign('DD_ACC', $DD_ACC);
-        $smarty->assign('DD_INS', $DD_INS);
-        $smarty->assign('DD_BANK', $DD_BANK);
-        $smarty->assign('CHECK_PAYABLE',$CHECK_PAYABLE);
-        $smarty->assign('PAYMATE_LOGIN',$PAYMATE_LOGIN);
+    $smarty->assign('DD_NAME', $DD_NAME);
+    $smarty->assign('DD_BSB', $DD_BSB);
+    $smarty->assign('DD_ACC', $DD_ACC);
+    $smarty->assign('DD_INS', $DD_INS);
+    $smarty->assign('DD_BANK', $DD_BANK);
+    $smarty->assign('CHECK_PAYABLE',$CHECK_PAYABLE);
+    $smarty->assign('PAYMATE_LOGIN',$PAYMATE_LOGIN);
     $smarty->assign('company',$company);
     $smarty->assign('company2',$company2);
     //$smarty->assign('CURRENCY_CODE',$CURRENCY_CODE);
-        //$smarty->assign('currency_sym',$currency_sym);
-        $smarty->assign('country',$country);
-        $smarty->assign('pamount',$pamount);
-        $smarty->assign('paymate_amt',$paymate_amt);
-        $smarty->assign('PAYMATE_FEES',$PAYMATE_FEES);
-        $smarty->assign('parts_sub_total_sum', $parts_sub_total_sum);
-        $smarty->assign('labour_sub_total_sum', $labour_sub_total_sum);
-        $smarty->assign('wo_description', $wo_description);
-        $smarty->assign('wo_resolution', $wo_resolution);
+    //$smarty->assign('currency_sym',$currency_sym);
+    /*$smarty->assign('country',$country);*/  // this causes headers to be sent
+    $smarty->assign('pamount',$pamount);
+    $smarty->assign('paymate_amt',$paymate_amt);
+    $smarty->assign('PAYMATE_FEES',$PAYMATE_FEES);
+    $smarty->assign('parts_sub_total_sum', $parts_sub_total_sum);
+    $smarty->assign('labour_sub_total_sum', $labour_sub_total_sum);
+    $smarty->assign('wo_description', $wo_description);
+    $smarty->assign('wo_resolution', $wo_resolution);
 
-    $smarty->display('invoice'.SEP.'print_html.tpl');
+    
+    
+// Print HTML
 
-}     else {
+if($invoice_output_type == 'print_html') {
 
-// EOF HTML Printing Section
+    /* html Print out */
+    $smarty->display('invoice/print_invoice_template.tpl');   
 
-// BOF PDF Printing Section
+}
 
-if($print_type == 'pdf') {
 
-    require_once QWCRM_PHYSICAL_PATH.'templates/invoice/print_pdf_tpl.php'; //This loads the PDF template file
+// Print PDF
 
-        }     else {
+if($invoice_output_type == 'print_pdf') {
+
+    // Get Print Invoice as HTML into a variable - The template is a full webpage and can be completly altered if required.
+    $html = $smarty->fetch('invoice/print_invoice_template.tpl');
+    
+    // call mPDF and output as PDF to page - the config file
+    require_once(INCLUDES_DIR.'mpdf.php');    
+    
+}
+
+// Email PDF
+
+
+
+
+
+/* else {
             
-                        force_page('core', "error&menu=1&error_msg=No Printing Options set. Please set up printing options in the Control Center.&type=error");
-                        exit;
-}
-}
-// EOF PDF Printing Section
+    force_page('core', "error&menu=1&error_msg=No Printing Options set. Please set up printing options in the Control Center.&type=error");
+    exit; 
+} */

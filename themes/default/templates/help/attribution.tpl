@@ -11,5 +11,6 @@
     <li>Slashdot Menu (SDMenu) (2007-03-22) | no license specified, but seems free | http://dynamicdrive.com/dynamicindex1/slashdot.htm</li>
     <li>Cool DHMTL Tooltip (04-12-16) | Dynamic Drive License http://www.dynamicdrive.com/notice.htm | http://www.dynamicdrive.com/dynamicindex5/dhtmltooltip.htm </li>
     <li>JSCal2 v1.9 (2011/03/13) | permissive? | http://www.dynarch.com/jscal/</li>
-    <li></li>
+    <li>TCPDF v6.2.13 | LGPL v3 | http://www.tcpdf.org</li>
+    <li>mPDF | GPLv2</li>
 </ul>

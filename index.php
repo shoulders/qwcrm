@@ -55,7 +55,7 @@ $startMem  = memory_get_usage();
 //error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
 
 // Report all errors except E_NOTICE
-error_reporting(E_ALL & ~E_NOTICE); // This will only show major errors (default)
+//error_reporting(E_ALL & ~E_NOTICE); // This will only show major errors (default)
 
 // Report all PHP errors (see changelog)
 //error_reporting(E_ALL);
@@ -69,6 +69,9 @@ error_reporting(E_ALL & ~E_NOTICE); // This will only show major errors (default
 // sme as one of the above
 //ini_set('track_errors', 1); 
 
+error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
+
+// ~ does not seem to work/exclude
 ################################################
 #    Get Root Folder and Physical path info    #
 ################################################
@@ -87,7 +90,7 @@ define('QWCRM_DOMAIN_BASE', str_replace('index.php', '', $_SERVER['PHP_SELF']));
 ################################################
 
 // Added to eliminate special characters
-header('Content-type: text/html; charset=utf-8');  // is this needed?
+//header('Content-type: text/html; charset=utf-8');  // is this needed?
 
 ################################################
 #         Initialise QWCRM                     #
@@ -318,17 +321,23 @@ if(isset($VAR['page']) && $VAR['page'] != ''){
 /* Check the requested page with 'logged in' user against the ACL for authorisation - if allowed, display */
 if(check_acl($db, $login_account_type_id, $module, $page_tpl)){
     
+    // If theme is set to Print mode then fetch the Page Content - Print system will output with its own format without need for headers and footers here
+    if ($VAR['theme'] === 'print'){        
+        require($page_display_controller);
+        goto page_build_end;
+    }
+
     // Set Page Header and Meta Data
     set_page_header_and_meta_data($module, $page_tpl, $VAR['page_title']);    
-    
+
     // Display Header Block
     if($VAR['theme'] != 'off'){        
         require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_header_block.php');      
     } else {
         echo '<!DOCTYPE html><head></head><body>';        
     }
-    
-    // Display Header Legacy Template Code and Menu Block - Guests (not logged in) will not see the menu
+
+    // Display Header Legacy Template Code and Menu Block - Guests (and not logged in) will not see the menu
     if($VAR['theme'] != 'off' && isset($_SESSION['login_hash']) && $login_account_type_id != 8){       
         $smarty->display('core'.SEP.'blocks'.SEP.'theme_header_legacy_supplement_block.tpl');
         require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_menu_block.php');        
@@ -336,17 +345,17 @@ if(check_acl($db, $login_account_type_id, $module, $page_tpl)){
 
     // Display the Page Content
     require($page_display_controller);    
-  
+
     // Display Footer Legacy Template code Block (closes content table)
     if($VAR['theme'] != 'off' && isset($_SESSION['login_hash']) && $login_account_type_id != 8){
         $smarty->display('core'.SEP.'blocks'.SEP.'theme_footer_legacy_supplement_block.tpl');             
     }
-    
+
     // Display the Footer Block
     if($VAR['theme'] != 'off'){        
         require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_footer_block.php');        
     }    
-    
+
     // Display the Debug Block
     if($qwcrm_debug === true){
         require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_debug_block.php');
@@ -354,6 +363,9 @@ if(check_acl($db, $login_account_type_id, $module, $page_tpl)){
     } else {
         echo '</body></html>';
     }
+    
+    page_build_end:
+    
 }
 
 ################################################

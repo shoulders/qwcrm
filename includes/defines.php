@@ -13,13 +13,15 @@ define('SEP',                   '/'                         );
 define('QWCRM_VERSION' ,        '2.9.4'                     );
 define('PRFX',                  $db_prefix                  );          // Database Prefix
 
-// System Folders
+// System Folders - Web Based
 define('CACHE_DIR',             'cache/'                    );
 define('INCLUDES_DIR',          'includes/'                 ); 
 define('MEDIA_DIR',             'media/'                    );
 define('LANGUAGE_DIR',          'language/'                 );
-define('LIBRARIES_DIR',         'libraries/'                 );
+define('LIBRARIES_DIR',         'libraries/'                );
 define('LOGS_DIR',              'logs/'                     );
+
+// System Folders - Physical - do i need pyshical paths defined?
 
 // Smarty
 define('SMARTY_CACHE_DIR',      CACHE_DIR.'smarty/cache/'   );

@@ -411,14 +411,14 @@
                                             <button type="button" name="pdf" OnClick=window.open('?page=invoice:pdf&wo_id={$invoice.WORKORDER_ID}&customer_id={$invoice.CUSTOMER_ID}&invoice_id={$invoice.INVOICE_ID}&theme=off')><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf"> {$translate_invoice_pdf}</button>
                      {/if}
                      {if $wo_status == '9' || $wo_id == '0'}
-                                            <button type="button" name="{$translate_invoice_print}" onClick=window.open('?page=invoice:print&amp;print_type=html&amp;wo_id={$invoice.WORKORDER_ID}&amp;customer_id={$invoice.CUSTOMER_ID}&amp;invoice_id={$invoice.INVOICE_ID}&amp;theme=off')>{$translate_invoice_print}</button>
-                                            <button type="button" name="{$translate_invoice_pdf}" OnClick=window.open('?page=invoice:print&amp;print_type=pdf&amp;wo_id={$invoice.WORKORDER_ID}&customer_id={$invoice.CUSTOMER_ID}&invoice_id={$invoice.INVOICE_ID}&theme=off')><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">&nbsp;{$translate_invoice_pdf}</button>
+                                            <button type="button" name="{$translate_invoice_print}" onClick="window.open('?page=invoice:print&invoice_output_type=print_html&wo_id={$invoice.WORKORDER_ID}&customer_id={$invoice.CUSTOMER_ID}&invoice_id={$invoice.INVOICE_ID}&theme=print');">{$translate_invoice_print}</button>
+                                            <button type="button" name="{$translate_invoice_pdf}" onClick="window.open('?page=invoice:print&invoice_output_type=print_pdf&wo_id={$invoice.WORKORDER_ID}&customer_id={$invoice.CUSTOMER_ID}&invoice_id={$invoice.INVOICE_ID}&theme=print');"><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">{$translate_invoice_pdf}</button>
                                             <button type="button" name="{$translate_invoice_bill_customer}" OnClick=location.href='?page=billing:new&wo_id={$invoice.WORKORDER_ID}&customer_id={$invoice.CUSTOMER_ID}&invoice_id={$invoice.INVOICE_ID}&page_title=Receiving%20Payment%20for%20{$invoice.INVOICE_ID}'>{$translate_invoice_bill_customer}</button>
                          {if $invoice.INVOICE_AMOUNT == 0 || "" }
-                                            <button type="button" name="{$translate_invoice_delete}" OnClick=location.href='?page=invoice:delete&amp;customer_id={$invoice.CUSTOMER_ID}&amp;invoice_id={$invoice.INVOICE_ID}&amp;page_title=Deleting&nbsp;Invoice&nbsp;-{$invoice.INVOICE_ID}'>{$translate_invoice_delete}</button>
+                                            <button type="button" name="{$translate_invoice_delete}" OnClick=location.href='?page=invoice:delete&customer_id={$invoice.CUSTOMER_ID}&invoice_id={$invoice.INVOICE_ID}&page_title=Deleting&nbsp;Invoice&nbsp;-{$invoice.INVOICE_ID}'>{$translate_invoice_delete}</button>
                          {/if}
                                                {else}
-                                            <button type="button" name="Close Work Order" OnClick=location.href='?page=workorder:resolution&amp;wo_id={$invoice.WORKORDER_ID}&amp;page_title=Closing%20Work%20Order{$invoice.WORKORDER_ID}'>{$translate_invoice_close_wo}</button>
+                                            <button type="button" name="Close Work Order" OnClick=location.href='?page=workorder:resolution&wo_id={$invoice.WORKORDER_ID}&page_title=Closing%20Work%20Order{$invoice.WORKORDER_ID}'>{$translate_invoice_close_wo}</button>
                                             {$translate_invoice_msg}
                                          {/if}
 
