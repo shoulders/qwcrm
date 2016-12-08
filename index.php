@@ -116,6 +116,18 @@ require(INCLUDES_DIR.'auth.php');
 if(!xml2php('system')){    
     $smarty->assign('error_msg', 'Error in system language file');
 }
+
+
+// the extra infomration (i.e. translations should be listed here even thought thye are called elsewhere - this is for convineince)
+// dont forge teh language file will have 2 distinct sections
+// 1 license file is enough
+
+//language
+// language shortcode
+/// etc....
+
+
+
 /*
 // Load Core Module Language Translations
 if(!xml2php('core')){    
@@ -185,6 +197,7 @@ $expense_id     = $VAR['expense_id'];
 $refund_id      = $VAR['refund_id'];
 $supplier_id    = $VAR['supplier_id'];
 $schedule_id    = $VAR['schedule_id'];
+$invoice_id     = $VAR['invoice_id'];
 
 // Get the page number if it exists or set to page number to 1 if not
 if(isset($VAR['page_no'])){

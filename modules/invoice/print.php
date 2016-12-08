@@ -8,7 +8,7 @@ require_once ('include.php');
 $langvals = gateway_xml2php('invoice');
 
 $invoice_id             = $VAR['invoice_id'];
-$customer_id            = $VAR['customer_id'];
+
 $invoice_output_type    = $VAR['invoice_output_type'];
 
 /* Generic error control */
