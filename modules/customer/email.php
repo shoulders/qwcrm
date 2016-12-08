@@ -23,21 +23,24 @@ $rr_email = $VAR['rr'];
 $cus_name = $VAR['cus_name'];
 //$sig = "<br>Regards,<br>".$employee_details['EMPLOYEE_FIRST_NAME']."<br>MyIT CRM Test";
 
-//Get All customer Emails
+/*//Get All customer Emails
 $q = "SELECT * FROM ".PRFX."TABLE_CUSTOMER_EMAILS WHERE CUSTOMER_ID ='".$customer_id."' ORDER BY CUSTOMER_EMAIL_ID DESC" ;
 $rs = $db->Execute($q);
 $customer_emails = $rs->GetArray();
-$smarty->assign('customer_emails', $customer_emails);
+$smarty->assign('customer_emails', $customer_emails);*/
+
 /*Get Customer Info */
 $q = "SELECT * FROM ".PRFX."TABLE_CUSTOMER WHERE CUSTOMER_ID ='".$customer_id."'" ;
 $rs = $db->Execute($q);
 $customer_details = $rs->GetArray();
 $smarty->assign('customer_details', $customer_details);
+
 /*Get Employee Info */
 $q = "SELECT * FROM ".PRFX."TABLE_EMPLOYEE WHERE EMPLOYEE_DISPLAY_NAME ='".$login_usr."'" ;
 $rs = $db->Execute($q);
 $employee_details = $rs->FetchRow();
 $smarty->assign('employee_details', $employee_details);
+
 // assign the arrays
 $smarty->assign('open_work_orders',    display_open_workorders($db, $customer_id));
 $smarty->assign('closed_work_orders',    display_closed_workorders($db, $customer_id));
@@ -48,6 +51,7 @@ $smarty->assign('paid_invoices', display_paid_invoices($db,$customer_id));
 $smarty->assign('memo',    display_memo($db,$customer_id));
 $smarty->assign('gift',    display_gift($db, $customer_id));
 $smarty->assign('company_details',display_company_info($db, $company_id));
+
 //Lets Get the file downloaded to have a look at it from the database
 if(isset ($download_id)){
  /*Get All customer Emails */
@@ -62,6 +66,8 @@ $smarty->assign('file_download', $file_download);
  exit;
 
  }
+ 
+ 
 // BOF Email Message details
 //Mail
 if(isset ($submit)){
@@ -90,9 +96,11 @@ if(isset ($submit)){
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
         exit;
     }
+
 //print $sql ;
 $transport = Swift_smtpTransport::newInstance( "$email_server" , $email_server_port );
 $mailer = Swift_Mailer::newInstance($transport);
+
 //Do we have an attachment to include and upload?
 if($_FILES['attachment1']['size'] >  0 ){
 $target_path = "upload/";
@@ -107,6 +115,7 @@ $target_path = $target_path . basename( $_FILES['attachment1']['name']);
 $fname2 = QWCRM_PHYSICAL_PATH.$target_path ;
 $strip = stripslashes($message_body);
 //$mailer = Swift_Mailer::newInstance($transport);
+
 //Create a message
 $message = Swift_Message::newInstance($email_subject)
   ->setFrom(array($email_from => $employee_details['EMPLOYEE_FIRST_NAME']))
@@ -116,8 +125,10 @@ $message = Swift_Message::newInstance($email_subject)
   ->addPart($message_body, 'text/plain')
   ->attach(Swift_Attachment::fromPath($target_path))
   ;
+
 //Send the message
 $numSent = $mailer->send($message);
+
 //Display how many messages were sent
 echo "<script>alert('Email Information')</script>";
 echo "Sent %d messages\n", $numSent;
@@ -131,6 +142,7 @@ $smarty->assign('email_from',$email_from);
 $smarty->assign('email_to',$email_to);
 $smarty->assign('message_body',$message_body);
 $smarty->assign('attachment1',$attachment1);
+
 // EOF Email Message details
 force_page('customer' ,"view&page_title=Customers");
 //Delete uploaded files
@@ -156,13 +168,16 @@ $message = Swift_Message::newInstance($email_subject)
   ->setBody($message_body, 'text/html')
   //->addPart($message_body, 'text/plain')
   ;
+
 //Send the message
     $numSent = $mailer->send($message);
+    
 //Display how many messages were sent
     echo "<script>alert('Successfully Sent $numSent message')</script>";
     echo "<script>navigate('?page=customer:email&customer_id=".$c2."&page_title=Email Customer')</script>"; 
 //Show what file was uploaded
 //printf("File Location", $fname2);
+//
 //Assign the variables with smarty
     $smarty->assign('email_subject',$email_subject);
     $smarty->assign('email_from',$email_from);

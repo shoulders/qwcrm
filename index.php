@@ -69,7 +69,8 @@ $startMem  = memory_get_usage();
 // sme as one of the above
 //ini_set('track_errors', 1); 
 
-error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
+// no E_NOTICE errors, this one works
+error_reporting(E_ERROR | E_WARNING | E_PARSE);
 
 // ~ does not seem to work/exclude
 ################################################

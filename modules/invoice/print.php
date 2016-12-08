@@ -292,8 +292,7 @@ if(empty($labor)){$smarty->assign('labor', 0);} else {$smarty->assign('labor', $
 
     
     
-// Print HTML
-
+// Print HTML Invoice
 if($invoice_output_type == 'print_html') {
 
     /* html Print out */
@@ -302,19 +301,28 @@ if($invoice_output_type == 'print_html') {
 }
 
 
-// Print PDF
-
+// Print PDF Invoice
 if($invoice_output_type == 'print_pdf') {
 
     // Get Print Invoice as HTML into a variable - The template is a full webpage and can be completly altered if required.
-    $html = $smarty->fetch('invoice/print_invoice_template.tpl');
+    $html = $smarty->fetch('invoice/print/print_invoice.tpl');
     
     // call mPDF and output as PDF to page - the config file
     require_once(INCLUDES_DIR.'mpdf.php');    
     
 }
 
-// Email PDF
+
+// Email PDF Invoice
+
+
+// Print address only (HTML) print_address - use this for envelopes
+if($invoice_output_type == 'print_address') {
+
+    /* html Print out */
+    $smarty->display('invoice/print/print_address.tpl');
+    
+}
 
 
 
