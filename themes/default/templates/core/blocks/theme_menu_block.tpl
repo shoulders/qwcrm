@@ -4,7 +4,7 @@
         <td>
         <div style="float: left" id="my_menu" class="sdmenu">
             
-            <!-- Main Menu -->
+            <!-- Main -->
             <div>                
                 <span>{$translate_core_menu_main_menu}</span>
                 <a href="index.php"><img src="{$theme_images_dir}icons/home.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_home}</a>
@@ -45,8 +45,8 @@
                 {/if}
                 <a href="?page=workorder:open&page_title={$translate_core_menu_work_orders}"><img src="{$theme_images_dir}tick.png" alt="" border="0" height="14" width="14" /> {$translate_core_menu_open} <b><font color="RED">{if $menu_workorders_open_count > 0} ({$menu_workorders_open_count}){/if}{if $menu_workorders_open_count < 1}{/if}</font></b></a>
                 <a href="?page=workorder:closed&page_title={$translate_core_menu_closed_work_orders}"><img src="{$theme_images_dir}icons/close.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_closed} <b><font color="RED">{if $menu_workorders_closed_count > 0 } ({$menu_workorders_closed_count}){/if} {if $menu_workorders_closed_count < 1 }{/if} </font></b></a>
-                {if $wo_id >= "1"}
-                    {if $menu_workorder_status == "10"}
+                {if $wo_id >= 1}
+                    {if $menu_workorder_status == 10}
                         <a href="?page=workorder:resolution&wo_id={$wo_id}&page_title={$translate_core_menu_close}"><img src="{$theme_images_dir}icons/close.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_close}</a>
                         <a href="?page=workorder:details_new_note&wo_id={$wo_id}&page_title={$translate_core_menu_new_note}"><img src="{$theme_images_dir}icons/note.png" alt="" border="0" height="14" width="14" /> {$translate_core_menu_new_note}</a>
                     {/if}
@@ -153,7 +153,7 @@
             
             <a href="http://quantumwarp.com/" target="_blank"><img src="{$theme_images_dir}icons/web.png" alt="" border="0" height="14" width="14" /> {$translate_core_menu_website}</a>
             <a href="http://quantumwarp.com/" target="_blank"><img src="{$theme_images_dir}icons/invoice.png" alt="" border="0" height="14" width="14" /> {$translate_core_menu_documentation}</a>
-            <a href="https://github.com/shoulders/qwcrm/issues" target="_blank"><img src="{$theme_images_dir}icons/bug.png" alt=""border="0" height="14" width="14" /> {$translate_core_menu_bug_tracker}</a>
+            <a href="https://github.com/shoulders/qwcrm/issues" target="_blank"><img src="{$theme_images_dir}icons/bug.png" alt="" border="0" height="14" width="14" /> {$translate_core_menu_bug_tracker}</a>
             <a href="http://quantumwarp.com/forum/" target="_blank"><img src="{$theme_images_dir}icons/comment.png" alt="" border="0" height="14" width="14" /> {$translate_core_menu_forum}</a>            
             <a style="text-align: center;">{$translate_core_menu_support_this_software}</a>                
             <form action="https://www.paypal.com/cgi-bin/webscr" method="post" style="text-align: center;" >
@@ -165,9 +165,12 @@
     </div>
   </tr>     
 </table>
-<!-- End theme_menu_block.tpl -->
 
+<!-- Content Wrapping Table - Left Cell Close (menu)- Right Cell Open (content) --> 
 </td>
 <td valign="top">
     
+<!-- End theme_menu_block.tpl -->
+    
     <!-- Page Content Goes Here -->
+

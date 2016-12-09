@@ -1,7 +1,7 @@
 <!-- invoice -->
 <table width="700" border="0" cellpadding="20" cellspacing="0">
     <tr>
-        <td><!-- Begin Page -->
+        <td>
 
             <table width="100%"     cellpadding="5" cellspacing="0" border="0" >
                 <tr>

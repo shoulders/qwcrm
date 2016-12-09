@@ -1,3 +1,5 @@
+
+
 <!-- theme_footer_block.tpl -->
     <div style="color: #FFFFFF; font-weight: bold; background-color: #6699FF;">
         <table width="900px" border="0" cellspacing="0" cellpadding="0">
@@ -9,4 +11,3 @@
             </tr>                
         </table>
     </div>
-

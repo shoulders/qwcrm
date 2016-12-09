@@ -54,7 +54,7 @@
                     <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
                         <tr>
                             <td width="100%" align="center">
-                                <img src="{$theme_images_dir}logo.jpg" height="100px" alt="" border="0">
+                                <img src="{$theme_images_dir}logo.png" height="100px" alt="" border="0">
                             </td>
                         </tr>
                         <tr>

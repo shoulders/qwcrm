@@ -1,4 +1,4 @@
-<!-- Begin Login.tpl-->        
+<!-- login_form_block.tpl -->        
 <table width="900" border="0" cellspacing="0" cellpadding="2">
     <tr>
         <td align="center"><img src="{$company_logo}" alt="" height="114"></td>

@@ -1,5 +1,6 @@
 <!-- status.tpl -->
-{section name=i loop=$single_workorder}       
+
+{section name=i loop=$single_workorder}
 <table width="100%" border="0" cellpadding="20" cellspacing="0">
     <tr>
         <td>
@@ -14,10 +15,7 @@
                     </td>
                 </tr>  
                 <tr>
-                    <td class="menutd2" colspan="2">
-                        {if $error_msg != ""}
-                            {include file="core/error.tpl"}
-                        {/if}
+                    <td class="menutd2" colspan="2">                        
                         <table class="olotable" width="100%" border="0" cellpadding="2" cellspacing="0" >
                             <tr>
                                 <td class="olohead" align="center">{$translate_workorder_status}</td>

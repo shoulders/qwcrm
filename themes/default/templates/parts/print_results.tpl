@@ -8,7 +8,7 @@
 <table  width="700" border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
     <tr>
         <td valign="top">
-            <img src="{$theme_images_dir}logo.jpg" border="0">
+            <img src="{$theme_images_dir}logo.png" border="0">
         </td>
     </tr>
 </table>

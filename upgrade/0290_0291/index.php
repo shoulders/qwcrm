@@ -22,7 +22,7 @@ switch ($mode) {
 <center>\n
 <table width=\"100%\"  border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n
     <tr>\n
-        <td><img src=\"../../images/logo.jpg\" alt=\"\" width=\"490\" height=\"114\"></td>\n
+        <td><img src=\"../../images/logo.png\" alt=\"\" width=\"490\" height=\"114\"></td>\n
     </tr>\n
 </table>\n
             
@@ -36,7 +36,7 @@ switch ($mode) {
                 <tr>\n
                     <td class=\"olotd\" align=\"center\">\n
                         
-                        <!-- Begin Page -->\n
+                        \n
                         <table width=\"800\" cellpadding=\"5\" cellspacing=\"0\" border=\"0\" >\n
                             <tr>\n
                                 <td class=\"menuhead2\" width=\"80%\">&nbsp;MYIT CRM Upgrader</td>\n
@@ -165,7 +165,7 @@ switch ($mode) {
 <center>
 <table width=\"100%\"  border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
     <tr>
-        <td><img src=\"../../images/logo.jpg\" alt=\"\" width=\"490\" height=\"114\"></td>
+        <td><img src=\"../../images/logo.png\" alt=\"\" width=\"490\" height=\"114\"></td>
     </tr>
 </table>
             
@@ -180,7 +180,7 @@ switch ($mode) {
     <tr>
         <td class=\"olotd\" align=\"center\">
             
-            <!-- Begin Page -->
+            
             <table width=\"800\" cellpadding=\"5\" cellspacing=\"0\" border=\"0\" >
                 <tr>
                     <td class=\"menuhead2\" width=\"80%\">&nbsp;MyIT CRM Upgrader from versions 0.2.9.0, 0.2.9.1</td>

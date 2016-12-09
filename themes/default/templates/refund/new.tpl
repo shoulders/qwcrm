@@ -11,7 +11,7 @@
 <table width="100%"   border="0" cellpadding="20" cellspacing="5">
     <tr>
         <td>
-            <!-- Begin page -->
+            
             <table width="700" cellpadding="5" cellspacing="0" border="0" >
                 <tr>
                     <td class="menuhead2" width="80%">{$translate_refund_new_title}</td>

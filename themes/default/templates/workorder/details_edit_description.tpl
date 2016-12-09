@@ -1,11 +1,11 @@
 <!-- details_edit_description.tpl - Edit Work Order Description Page -->
 <script src="{$theme_js_dir}tinymce/tinymce.min.js"></script>
 <script src="{$theme_js_dir}editor-config.js"></script>
-{include file='workorder/validate.js'}
+<script>{include file="`$theme_js_modules_dir`workorder.js"}</script>
 
 <table width="100%" border="0" cellpadding="20" cellspacing="0">
     <tr>
-        <td><!-- Begin Page -->
+        <td>
             <table width="700" cellpadding="5" cellspacing="0" border="0" >
                 <tr>                    
                     <td class="menuhead2" width="80%">{$translate_workorder_details_edit_description_title}</td>

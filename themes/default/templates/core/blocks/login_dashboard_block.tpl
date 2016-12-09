@@ -1,4 +1,4 @@
-<!-- dashboard.tpl-->
+<!-- login_dashboard_block.tpl-->
 <table class="olotable" width="900" border ="1" cellpadding="5" cellspacing="5">
     <tr>
         <td class="olohead" colspan="2">Dashboard</td>

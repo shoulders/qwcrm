@@ -36,6 +36,9 @@ define('THEME_CSS_DIR',         THEME_DIR.'css/'            );
 define('THEME_JS_DIR',          THEME_DIR.'js/'             );
 define('THEME_TEMPLATE_DIR',    THEME_DIR.'templates/'      );
 
+// Theme Smarty File Include Paths
+define('THEME_JS_MODULES_DIR',  '../js/modules/'            );
+
 // Log files
 define('ACTIVITY_LOG',          LOGS_DIR.'activity.log'     );
 define('ACCESS_LOG',            LOGS_DIR.'access.log'       );

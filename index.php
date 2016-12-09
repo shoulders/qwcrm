@@ -70,7 +70,7 @@ $startMem  = memory_get_usage();
 //ini_set('track_errors', 1); 
 
 // no E_NOTICE errors, this one works
-error_reporting(E_ERROR | E_WARNING | E_PARSE);
+//error_reporting(E_ERROR | E_WARNING | E_PARSE);
 
 // ~ does not seem to work/exclude
 ################################################
@@ -214,14 +214,17 @@ if(isset($VAR['page_no'])){
 //$smarty->assign('media_dir',   MEDIA_DIR                );      // not currently used
 
 // QWcrm System Folders
-$smarty->assign('includes_dir',     INCLUDES_DIR        );      // set includes directory  //do i need this one
-$smarty->assign('media_dir',        MEDIA_DIR           );      // set media directory
+$smarty->assign('includes_dir',         INCLUDES_DIR            );      // set includes directory  //do i need this one
+$smarty->assign('media_dir',            MEDIA_DIR               );      // set media directory
 
 // QWcrm Theme Directory Template Variables
-$smarty->assign('theme_dir',        THEME_DIR           );      // set theme directory
-$smarty->assign('theme_images_dir', THEME_IMAGES_DIR    );      // set theme images directory
-$smarty->assign('theme_css_dir',    THEME_CSS_DIR       );      // set theme CSS directory
-$smarty->assign('theme_js_dir',     THEME_JS_DIR        );      // set theme JS directory
+$smarty->assign('theme_dir',            THEME_DIR               );      // set theme directory
+$smarty->assign('theme_images_dir',     THEME_IMAGES_DIR        );      // set theme images directory
+$smarty->assign('theme_css_dir',        THEME_CSS_DIR           );      // set theme CSS directory
+$smarty->assign('theme_js_dir',         THEME_JS_DIR            );      // set theme JS directory
+
+// QWcrm Theme Directory Template Smarty File Include Path Variables
+$smarty->assign('theme_js_modules_dir', THEME_JS_MODULES_DIR    );
 
 // These are used globally but mainly for the menu !!
 $smarty->assign('wo_id',        $wo_id          );
@@ -373,9 +376,9 @@ if(check_acl($db, $login_account_type_id, $module, $page_tpl)){
     // Display the Debug Block
     if($qwcrm_debug === true){
         require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_debug_block.php');
-        echo '</body></html>';
+        echo "\r\n</body>\r\n</html>";
     } else {
-        echo '</body></html>';
+        echo "\r\n</body>\r\n</html>";
     }
     
     page_build_end:

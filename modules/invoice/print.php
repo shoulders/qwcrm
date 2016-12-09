@@ -296,7 +296,7 @@ if(empty($labor)){$smarty->assign('labor', 0);} else {$smarty->assign('labor', $
 if($invoice_output_type == 'print_html') {
 
     /* html Print out */
-    $smarty->display('invoice/print_invoice_template.tpl');   
+    $smarty->display('invoice/print/print_invoice.tpl');   
 
 }
 

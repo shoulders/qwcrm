@@ -33,7 +33,7 @@ switch ($mode) {
                 <tr>\n
                     <td class=\"olotd\" align=\"center\">\n
                         
-                        <!-- Begin Page -->\n
+                        \n
                         <table width=\"55%\" cellpadding=\"5\" cellspacing=\"0\" border=\"0\" >\n
                             <tr>\n
                                 <td class=\"menuhead2\" width=\"100%\">&nbsp;MYIT CRM Upgrader</td>\n
@@ -152,7 +152,7 @@ switch ($mode) {
     <tr>
         <td class=\"olotd\" align=\"center\">
             
-            <!-- Begin Page -->
+            
             <table width=\"100%\" cellpadding=\"5\" cellspacing=\"0\" border=\"0\" >
                 <tr>
                     <td class=\"menuhead2\" width=\"100%\">&nbsp;MyIT CRM Upgrader from versions 0.2.9.x</td>

@@ -33,7 +33,7 @@ echo ("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http:/
 <center>\n
 <table width=\"100%\"  border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n
     <tr>\n
-        <td><img src=\"../images/logo.jpg\" alt=\"\" width=\"490\" height=\"114\"></td>\n
+        <td><img src=\"../images/logo.png\" alt=\"\" width=\"490\" height=\"114\"></td>\n
     </tr>\n
 </table>\n
             
@@ -47,7 +47,7 @@ echo ("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http:/
                 <tr>\n
                     <td class=\"olotd\" align=\"center\">\n
                         
-                        <!-- Begin Page -->\n
+                        \n
                         <table width=\"800\" cellpadding=\"5\" cellspacing=\"0\" border=\"0\" >\n
                             <tr>\n
                                 <td class=\"menuhead2\" width=\"100%\">&nbsp;MYIT CRM Installer</td>\n
@@ -264,7 +264,7 @@ echo ("
 <center>
 <table width=\"100%\"  border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
     <tr>
-        <td><img src=\"../images/logo.jpg\" alt=\"\" width=\"490\" height=\"114\"></td>
+        <td><img src=\"../images/logo.png\" alt=\"\" width=\"490\" height=\"114\"></td>
     </tr>
 </table>
             
@@ -279,7 +279,7 @@ echo ("
     <tr>
         <td class=\"olotd\" align=\"center\">
             
-            <!-- Begin Page -->
+            
             <table width=\"800\" cellpadding=\"5\" cellspacing=\"0\" border=\"0\" >
                 <tr>
                     <td class=\"menuhead2\" width=\"100%\">&nbsp;MyIT CRM Installer</td>

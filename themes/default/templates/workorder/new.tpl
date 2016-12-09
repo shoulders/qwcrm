@@ -1,8 +1,7 @@
 <!-- new.tpl - New Work Order Page -->
 <script src="{$theme_js_dir}tinymce/tinymce.min.js"></script>
 <script src="{$theme_js_dir}editor-config.js"></script>
-{include file='workorder/javascript.js'}
-{include file='workorder/validate.js'}
+<script>{include file="`$theme_js_modules_dir`workorder.js"}</script>
 
 <table width="100%">
     <tr>
