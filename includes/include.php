@@ -17,7 +17,7 @@ function force_page($module, $page_tpl = Null, $variables = Null) {
         
         // Normal URL Redirect
         echo('
-                <script type="text/javascript">
+                <script>
                     window.location = "'.$module.'"
                 </script>
             ');
@@ -26,7 +26,7 @@ function force_page($module, $page_tpl = Null, $variables = Null) {
     
         // Normal URL Redirect with no starting '&' for variable string 
         echo('
-                <script type="text/javascript">
+                <script>
                     window.location = "index.php?page='.$module.':'.$page_tpl.'"
                 </script>
             ');
@@ -35,7 +35,7 @@ function force_page($module, $page_tpl = Null, $variables = Null) {
         
         // QWcrm Style Redirect
         echo('
-                <script type="text/javascript">
+                <script>
                     window.location = "index.php?page='.$module.':'.$page_tpl.'&'.$variables.'"
                 </script>
             ');
@@ -180,7 +180,7 @@ function verify_qwcrm_is_installed_correctly($db){
     // If the lock file is not present QWcrm has not been installed - redirect to the installation directory
     if(!is_file('cache/lock')){
         echo('
-                <script type="text/javascript">            
+                <script>            
                     window.location = "install"           
                 </script>
             ');
@@ -207,7 +207,7 @@ function verify_qwcrm_is_installed_correctly($db){
         
         /*
         echo('
-            <script type="text/javascript">            
+            <script>            
                 window.location = "upgrade"           
             </script>
         ');

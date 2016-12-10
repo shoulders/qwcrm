@@ -66,39 +66,23 @@ $startMem  = memory_get_usage();
 
 // ~ does not seem to work/exclude
   
-#################################################
-#          Security                             #
-#################################################
 
-// force ssl
-// add security routines here
-
-// url checking, dont forget htaccess single point, post get varible sanitation
 
 ################################################
 #    Get Root Folder and Physical path info    #
 ################################################
 
-//are these named properly, also use one to set the bas path in header tempalte just for completeness. i am not sue i 100% need this but laeter systems will
-// make it https and www aware. need a setting some where, get qwcrm to perfom a 301 redirect if needed
+// QWcrm Physical Path  - D:\websites\htdocs\develop\qwcrm\
+define('QWCRM_PHYSICAL_PATH', __DIR__.DIRECTORY_SEPARATOR);
 
-// QWCRM Physical path  - eg: D:\websites\htdocs\develop\qwcrm\ - required for error location automation.
-define('QWCRM_PHYSICAL_PATH', __DIR__.DIRECTORY_SEPARATOR); // 
+// QWcrm Protocol - http:// || https://
+define('QWCRM_PROTOCOL', 'http' . (isset($_SERVER['HTTPS']) ? 's' : '') . '://');
 
-//these names are the wrong way around
+// QWcrm Domain - quantumwarp.com
+define('QWCRM_DOMAIN', $_SERVER['HTTP_HOST']);
 
-// Website Domain Base - eg: /develop/qwcrm/ - gives relative path
-define('QWCRM_DOMAIN_BASE', str_replace('index.php', '', $_SERVER['PHP_SELF'])); // 
-
-// gives the full url of the file accessed
-// Website Domain Location - eg: http://localhost/develop/qwcrm/index.php -  returns the domain path and url - http://stackoverflow.com/questions/6768793/get-the-full-url-in-php - not curently used - does include index.php and no query string
-define('QWCRM_DOMAIN_PATH', 'http' . (isset($_SERVER['HTTPS']) ? 's' : '') . '://' . "{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}");
-/*
-echo QWCRM_PHYSICAL_PATH.'<br>'; // is used
-echo QWCRM_DOMAIN_BASE.'<br>';  //base_url  / wrerirte basr // is not used
-echo QWCRM_DOMAIN_PATH.'<br>';die; // NOT USED*/
-
-//// set these in smarty section below, not here
+// QWcrm Path - /develop/qwcrm/
+define('QWCRM_PATH', str_replace('index.php', '', $_SERVER['PHP_SELF']));
 
 ################################################
 #          Headers                             #
@@ -106,6 +90,9 @@ echo QWCRM_DOMAIN_PATH.'<br>';die; // NOT USED*/
 
 // Added to eliminate special characters
 //header('Content-type: text/html; charset=utf-8');  // is this needed? move to normal page builder
+ /* 
+ * this needs to go into the page builder routine for the normal pages
+ */
 
 ################################################
 #         Initialise QWCRM                     #
@@ -113,50 +100,42 @@ echo QWCRM_DOMAIN_PATH.'<br>';die; // NOT USED*/
 
 require('configuration.php');
 require('includes/defines.php');
+require(INCLUDES_DIR.'security.php'); // some code auto runs in this library
 require(INCLUDES_DIR.'include.php');
 require(INCLUDES_DIR.'smarty.php');
 require(INCLUDES_DIR.'session.php');
 require(INCLUDES_DIR.'auth.php');
 
+#################################################
+#          Security                             #
+#################################################
+
+// it is called by including the file - security php will have some aut run code aswell as functions - this section might not be needed
+
+// should this be run before smarty?
+
+// force ssl - this nees to load the config
+// add security routines here
+
+// url checking, dont forget htaccess single point, post get varible sanitation
+
 ################################################
-#     Load Mandatory Language Translations     #
+#         Load Language                        #
 ################################################
 
-/* if i do seperate language files then system will have to load here and the page - was just before 'Page Preperation Logic'
-
-
-/* this loads all the language file */
-// Load System Language Translations
-if(!xml2php('system')){    
-    $smarty->assign('error_msg', 'Error in system language file');
-}
-
-
+/*
 // the extra infomration (i.e. translations should be listed here even thought thye are called elsewhere - this is for convineince)
 // dont forge teh language file will have 2 distinct sections
 // 1 license file is enough
-
 //language
 // language shortcode
 /// etc....
+// Load Language Settings
+if(!xml2php('settings')){$smarty->assign('error_msg', 'Error in system language file');}
+*/
 
-
-
-/*
-// Load Core Module Language Translations
-if(!xml2php('core')){    
-    $smarty->assign('error_msg', 'Error in core language file');
-}*/
-
-
-// Module specific
-/*
-// Load Module Specific Language Translations - this already done in the include files - perhaps here is better (not if i use classes not all files will get loaded?)
-if($module != 'core'){
-    if(!xml2php($module)){    
-        $smarty->assign('error_msg', 'Error in the '.$module.' language file');
-    }
-}*/
+// Load Language Translations
+if(!xml2php('translate')){$smarty->assign('error_msg', 'Error in system language file');}
 
 ################################################
 #    Verify QWcrm is installed correctly       #
@@ -201,7 +180,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'logout') {
  */
 
 // Merge the $_GET, $_POST for legacy code
-$VAR            = array_merge($_GET, $_POST);
+$VAR            = array_merge($_GET, $_POST);  // i could use a security function here to santise the varibles
 
 // These are used globally but mainly for the menu !!
 $wo_id          = $VAR['wo_id'];
@@ -248,6 +227,7 @@ $smarty->assign('expense_id',   $expense_id     );
 $smarty->assign('refund_id',    $refund_id      );
 $smarty->assign('supplier_id',  $supplier_id    );
 $smarty->assign('schedule_id',  $schedule_id    );
+$smarty->assign('invoice_id',   $invoice_id     );
 
 // Used throughout the site - could combine these functions into one passing the required field
 /*
@@ -393,7 +373,7 @@ if(check_acl($db, $login_account_type_id, $module, $page_tpl)){
     }    
 
     // Display the Debug Block
-    if($qwcrm_debug === true){
+    if($qwcrm_debug == true){
         require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_debug_block.php');
         echo "\r\n</body>\r\n</html>";
     } else {
