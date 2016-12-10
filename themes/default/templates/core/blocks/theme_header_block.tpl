@@ -26,8 +26,7 @@
     <script src="{$theme_js_dir}template.js"></script>    
 </head>
 
-<body>
-    <a name="top"></a>
+<body>    
     <div id="dhtmltooltip"></div>
     <script src="{$theme_js_dir}dhtmltooltip.js"></script>
     <div class="text4">

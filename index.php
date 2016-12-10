@@ -302,6 +302,7 @@ if(isset($VAR['page']) && $VAR['page'] != ''){
         $page_tpl   = '404';
         
         // Send 404 header
+        $VAR['theme'] = 'off';
         header('HTTP/1.1 404 Not Found');
     }        
 
@@ -343,7 +344,8 @@ if(check_acl($db, $login_account_type_id, $module, $page_tpl)){
     if($VAR['theme'] != 'off'){        
         require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_header_block.php');      
     } else {
-        echo '<!DOCTYPE html><head></head><body>';        
+        //echo '<!DOCTYPE html><head></head><body>';
+        require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_header_theme_off_block.php');
     }
 
     // Display Header Legacy Template Code and Menu Block - Guests (and not logged in) will not see the menu
