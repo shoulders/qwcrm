@@ -1,4 +1,4 @@
-<!-- details_notes_block.tpl - Display Work Order Notes (Work Orders - Details Page) -->
+<!-- details_notes_block.tpl -->
 <table class="olotable" border="0" width="100%" cellpadding="0" cellspacing="0" >
     <tr>
         <td class="olohead">

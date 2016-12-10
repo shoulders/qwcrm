@@ -1,4 +1,4 @@
-<!-- work_order_head.tpl - Works Order Details Page Header (Work Orders - Details Page) -->
+<!-- details_header_block.tpl -->
 <table class="olotable" width="100%" border="0" cellpadding="2" cellspacing="0" >
     <tr>
         <td class="olohead" align="center">{$translate_workorder_id}</td>

@@ -1,4 +1,4 @@
-<!-- open_new_work_orders_block.tpl - Display New Work Orders (Work Orders - Open Page) -->
+<!-- open_new_workorders_block.tpl -->
 <b>{$translate_workorder_new}</b>
 <table class="olotable" width="100%" border="0" cellpadding="4" cellspacing="0">
     <tr>
@@ -57,4 +57,3 @@
         {/if}
     {/foreach}
 </table>
-    

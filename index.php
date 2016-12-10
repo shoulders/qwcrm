@@ -16,7 +16,7 @@
  * Define the application's minimum supported PHP version as a constant so it can be referenced within the application.
  */
 
-define('QWCRM_MINIMUM_PHP', '5.3.10');
+define('QWCRM_MINIMUM_PHP', '5.3.10'); // i think composer needs 5.5
 
 if (version_compare(PHP_VERSION, QWCRM_MINIMUM_PHP, '<')){
     die('Your host needs to use PHP ' . QWCRM_MINIMUM_PHP . ' or higher to run this version of QWCRM!');
@@ -29,14 +29,6 @@ if (version_compare(PHP_VERSION, QWCRM_MINIMUM_PHP, '<')){
 // Saves the start time and memory usage.
 $startTime = microtime(1);
 $startMem  = memory_get_usage();
-
-#################################################
-#          Security                             #
-#################################################
-
-// add security routines here
-
-// url checking, dont forget htaccess single point, post get varible sanitation
 
 ################################################
 #         Error Reporting                      #
@@ -73,25 +65,47 @@ $startMem  = memory_get_usage();
 //error_reporting(E_ERROR | E_WARNING | E_PARSE);
 
 // ~ does not seem to work/exclude
+  
+#################################################
+#          Security                             #
+#################################################
+
+// force ssl
+// add security routines here
+
+// url checking, dont forget htaccess single point, post get varible sanitation
+
 ################################################
 #    Get Root Folder and Physical path info    #
 ################################################
 
-// QWCRM Physical path - required for error location automation. 
-define('QWCRM_PHYSICAL_PATH', __DIR__.DIRECTORY_SEPARATOR); // eg: D:\websites\htdocs\develop\qwcrm\
+//are these named properly, also use one to set the bas path in header tempalte just for completeness. i am not sue i 100% need this but laeter systems will
+// make it https and www aware. need a setting some where, get qwcrm to perfom a 301 redirect if needed
 
-// Website Domain Base
-define('QWCRM_DOMAIN_BASE', str_replace('index.php', '', $_SERVER['PHP_SELF'])); // eg: /develop/qwcrm/
+// QWCRM Physical path  - eg: D:\websites\htdocs\develop\qwcrm\ - required for error location automation.
+define('QWCRM_PHYSICAL_PATH', __DIR__.DIRECTORY_SEPARATOR); // 
 
-// Website Domain Location - returns the domain path and url - http://stackoverflow.com/questions/6768793/get-the-full-url-in-php - not curently used - does include index.php and no query string
-//define('QWCRM_DOMAIN_PATH', 'http' . (isset($_SERVER['HTTPS']) ? 's' : '') . '://' . "{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}");
+//these names are the wrong way around
+
+// Website Domain Base - eg: /develop/qwcrm/ - gives relative path
+define('QWCRM_DOMAIN_BASE', str_replace('index.php', '', $_SERVER['PHP_SELF'])); // 
+
+// gives the full url of the file accessed
+// Website Domain Location - eg: http://localhost/develop/qwcrm/index.php -  returns the domain path and url - http://stackoverflow.com/questions/6768793/get-the-full-url-in-php - not curently used - does include index.php and no query string
+define('QWCRM_DOMAIN_PATH', 'http' . (isset($_SERVER['HTTPS']) ? 's' : '') . '://' . "{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}");
+/*
+echo QWCRM_PHYSICAL_PATH.'<br>'; // is used
+echo QWCRM_DOMAIN_BASE.'<br>';  //base_url  / wrerirte basr // is not used
+echo QWCRM_DOMAIN_PATH.'<br>';die; // NOT USED*/
+
+//// set these in smarty section below, not here
 
 ################################################
 #          Headers                             #
 ################################################
 
 // Added to eliminate special characters
-//header('Content-type: text/html; charset=utf-8');  // is this needed?
+//header('Content-type: text/html; charset=utf-8');  // is this needed? move to normal page builder
 
 ################################################
 #         Initialise QWCRM                     #
@@ -214,17 +228,17 @@ if(isset($VAR['page_no'])){
 //$smarty->assign('media_dir',   MEDIA_DIR                );      // not currently used
 
 // QWcrm System Folders
-$smarty->assign('includes_dir',         INCLUDES_DIR            );      // set includes directory  //do i need this one
-$smarty->assign('media_dir',            MEDIA_DIR               );      // set media directory
+$smarty->assign('includes_dir',                 INCLUDES_DIR                );      // set includes directory  //do i need this one
+$smarty->assign('media_dir',                    MEDIA_DIR                   );      // set media directory
 
 // QWcrm Theme Directory Template Variables
-$smarty->assign('theme_dir',            THEME_DIR               );      // set theme directory
-$smarty->assign('theme_images_dir',     THEME_IMAGES_DIR        );      // set theme images directory
-$smarty->assign('theme_css_dir',        THEME_CSS_DIR           );      // set theme CSS directory
-$smarty->assign('theme_js_dir',         THEME_JS_DIR            );      // set theme JS directory
+$smarty->assign('theme_dir',                    THEME_DIR                   );      // set theme directory
+$smarty->assign('theme_images_dir',             THEME_IMAGES_DIR            );      // set theme images directory
+$smarty->assign('theme_css_dir',                THEME_CSS_DIR               );      // set theme CSS directory
+$smarty->assign('theme_js_dir',                 THEME_JS_DIR                );      // set theme JS directory
 
 // QWcrm Theme Directory Template Smarty File Include Path Variables
-$smarty->assign('theme_js_modules_dir', THEME_JS_MODULES_DIR    );
+$smarty->assign('theme_js_modules_dir_finc',    THEME_JS_MODULES_DIR_FINC   );
 
 // These are used globally but mainly for the menu !!
 $smarty->assign('wo_id',        $wo_id          );
@@ -271,6 +285,11 @@ if(isset($VAR['warning_msg'])){
 
 // used only in schedule and menu - make neater - sort
 // add this one possible to the sections above to keep things in order
+// only place is menu - is this to go to todays date, i can do that in the module rather global shit
+// should also be in work order schedule block - does not use these varibles but creates them via get
+
+// if not set try and set using php dat command - use $date_format instaed
+// move this to schedule include
 
 if ( $cur_date > 0 ){
     $y1 = $VAR['y'] ;

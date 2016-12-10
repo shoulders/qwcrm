@@ -4,12 +4,10 @@
 
 require_once ('include.php');
 
-// Load PHP Language Translations
-$langvals = gateway_xml2php('invoice');
 
-$invoice_id             = $VAR['invoice_id'];
 
-$invoice_output_type    = $VAR['invoice_output_type'];
+
+
 
 /* Generic error control */
 if(empty($invoice_id)) {
@@ -292,44 +290,42 @@ if(empty($labor)){$smarty->assign('labor', 0);} else {$smarty->assign('labor', $
 
     
     
-// Print HTML Invoice
-if($invoice_output_type == 'print_html') {
 
-    /* html Print out */
-    $smarty->display('invoice/print/print_invoice.tpl');   
-
+/* Invoice Print Routine */
+if($VAR['print_content'] == 'invoice') {
+    
+    // Print HTML Invoice
+    if ($VAR['print_type'] == 'print_html') {        
+        $smarty->display('invoice/printing/print_invoice.tpl');    
+        
+    // Print PDF Invoice
+    } elseif ($VAR['print_type'] == 'print_pdf') {        
+        // Get Print Invoice as HTML into a variable
+        $html = $smarty->fetch('invoice/printing/print_invoice.tpl');    
+        // Call mPDF and output as PDF to page      
+        require_once(INCLUDES_DIR.'mpdf.php');         
+        
+    // Email PDF Invoice
+    } elseif($VAR['print_type'] == 'email_pdf') {        
+        // add pdf creation routing here
+    
+    // if print options are set but no valid    
+    } else {            
+        force_page('core', "error&menu=1&error_msg=No Printing Options set. Please set up printing options in the Control Center.&type=error - print content selected but no print type");
+        exit; 
+    }
 }
 
-
-// Print PDF Invoice
-if($invoice_output_type == 'print_pdf') {
-
-    // Get Print Invoice as HTML into a variable - The template is a full webpage and can be completly altered if required.
-    $html = $smarty->fetch('invoice/print/print_invoice.tpl');
+/* Address Only Print Routine */
+if($VAR['print_content'] == 'address') {
     
-    // call mPDF and output as PDF to page - the config file
-    require_once(INCLUDES_DIR.'mpdf.php');    
-    
+    // Print HTML Address
+    if ($VAR['print_type'] == 'print_html') {        
+        $smarty->display('invoice/printing/print_address.tpl');     
+
+    // if print options are set but no valid    
+    } else {            
+        force_page('core', "error&menu=1&error_msg=No Printing Options set. Please set up printing options in the Control Center.&type=error - print content selected but no print type");
+        exit; 
+    }
 }
-
-
-// Email PDF Invoice
-
-
-// Print address only (HTML) print_address - use this for envelopes
-if($invoice_output_type == 'print_address') {
-
-    /* html Print out */
-    $smarty->display('invoice/print/print_address.tpl');
-    
-}
-
-
-
-
-
-/* else {
-            
-    force_page('core', "error&menu=1&error_msg=No Printing Options set. Please set up printing options in the Control Center.&type=error");
-    exit; 
-} */

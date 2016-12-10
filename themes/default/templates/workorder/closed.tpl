@@ -1,14 +1,15 @@
-<!-- closed.tpl - Closed Work Orders Page -->
+<!-- closed.tpl -->
+<script>
 {literal}
-<script language="javascript" type="text/javascript">
     function go()
     {
-            box = document.forms[0].page_no;
-            destination = box.options[box.selectedIndex].value;
-            if (destination) location.href = destination;
+        box = document.forms[0].page_no;
+        destination = box.options[box.selectedIndex].value;
+        if (destination) location.href = destination;
     }
-</script>
 {/literal}
+</script>
+
 <table width="100%" border="0" cellpadding="20" cellspacing="5">
     <tr>
         <td>
@@ -27,13 +28,7 @@
                     <td class="menutd2" colspan="2">
                         <table class="olotable" width="100%" border="0" cellpadding="5" cellspacing="0">
                             <tr>
-                                <td class="menutd">
-                                    {if $error_msg != ""}
-                                        <br>
-                                        {include file="core/error.tpl"}
-                                        <br>
-                                    {/if}
-                                    <!-- Content -->
+                                <td class="menutd">                                 
                                     <table class="menutable" width="100%" border="0" cellpadding="5" cellspacing="0">
                                         <tr>
                                             <td valign="top"></td>

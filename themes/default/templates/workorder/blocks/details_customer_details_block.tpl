@@ -1,4 +1,4 @@
-<!-- details_customer_details_block.tpl - Display Customer Contact Information (Work Orders - Details Page) -->
+<!-- details_customer_details_block.tpl -->
 <table class="olotable" border="0" cellpadding="0" cellspacing="0" width="100%" summary="Customer Contact">
     <tr>
         <td class="olohead">

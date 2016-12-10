@@ -1,4 +1,4 @@
-<!-- new_note.tpl - Add New Note tpl - Work Order New Note Page -->
+<!-- details_new_note.tpl  -->
 <script src="{$theme_js_dir}tinymce/tinymce.min.js"></script>
 <script src="{$theme_js_dir}editor-config.js"></script>
 
@@ -10,14 +10,10 @@
                     <td class="menuhead2" width="80%">{$translate_workorder_details_new_note_title} {$wo_id}</td>
                 </tr>
                 <tr>
-                    <td class="menutd2">
-                        {if $error_msg != ""}
-                            {include file="core/error.tpl"}
-                        {/if}
-                        <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0" >
+                    <td class="menutd2">                        
+                        <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0">
                             <tr>
-                                <td width="100%" valign="top" >
-                                    <!-- Work Order Notes -->                                    
+                                <td width="100%" valign="top">                                                                     
                                     <form action="index.php?page=workorder:details_new_note" method="POST" name="new_workorder_note" id="new_workorder_note">
                                         <input type="hidden" name="page" value="workorder:details_new_note">
                                         <input type="hidden" name="wo_id" value="{$wo_id}">
@@ -26,9 +22,7 @@
                                                 <td class="olohead">{$translate_workorder_details_notes_title}</td>
                                             </tr>
                                             <tr>
-                                                <td class="olotd">
-                                                    <textarea class="olotd4" rows="15" cols="70" name="workorder_note"></textarea>
-                                                </td>
+                                                <td class="olotd"><textarea class="olotd4" rows="15" cols="70" name="workorder_note"></textarea></td>
                                             </tr>
                                         </table>
                                         <br>

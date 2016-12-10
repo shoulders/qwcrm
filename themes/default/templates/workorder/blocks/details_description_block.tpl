@@ -1,4 +1,4 @@
-<!-- details_description_block.tpl - Display Work Order Description (Work Orders - Details Page) -->
+<!-- details_description_block.tpl -->
 <table class="olotable" width="100%" border="0" cellpadding="0" cellspacing="0">
     <tr>
         <td class="olohead">
@@ -10,11 +10,11 @@
                             <tr>
                                 <td width="33%" align="right">
                                     {if $single_workorder[i].WORK_ORDER_STATUS != 6}
-                                    <a href="?page=workorder:details_edit_description&wo_id={$single_workorder[i].WORK_ORDER_ID}&page_title={$translate_workorder_details_edit_description_title}">
-                                        <img src="{$theme_images_dir}icons/16x16/small_edit.gif" alt="" border="0"
-                                             onMouseOver="ddrivetip('{$translate_workorder_details_edit_description_button_tooltip}');"
-                                             onMouseOut="hideddrivetip();">
-                                    </a>
+                                        <a href="?page=workorder:details_edit_description&wo_id={$single_workorder[i].WORK_ORDER_ID}&page_title={$translate_workorder_details_edit_description_title}">
+                                            <img src="{$theme_images_dir}icons/16x16/small_edit.gif" alt="" border="0"
+                                                 onMouseOver="ddrivetip('{$translate_workorder_details_edit_description_button_tooltip}');"
+                                                 onMouseOut="hideddrivetip();">
+                                        </a>
                                     {/if}
                                 </td>
                             </tr>

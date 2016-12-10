@@ -1,5 +1,4 @@
-<!-- details_schedule_block.tpl - Display Work Order Schedule (Work Orders - Details Page) -->
-
+<!-- details_schedule_block.tpl -->
 <link rel="stylesheet" href="{$theme_js_dir}jscal2/css/jscal2.css" />
 <link rel="stylesheet" href="{$theme_js_dir}jscal2/css/steel/steel.css" />
 <script src="{$theme_js_dir}jscal2/jscal2.js"></script>
@@ -50,8 +49,8 @@
                             <tr>
                                 <td height="81"  align="center" >
                                     <div id="calendar-container"></div>                                    
-                                    {literal}                                    
-                                    <script>
+                                    <script>                                
+                                    {literal} 
                                         Calendar.setup({
                                             cont: 'calendar-container',                                                     
                                             onSelect : function(calendar){                                                                        
@@ -66,8 +65,8 @@
                                                             window.location = "?page=schedule:main&y="+y+"&m="+m+"&d="+d+"&wo_id={/literal}{$wo_id}{literal}&page_title={/literal}{$translate_schedule_schedule}{literal}";
                                                         }
                                         });
-                                    </script>
                                     {/literal}
+                                    </script>
                                 </td>
                             </tr>
                         </table>
