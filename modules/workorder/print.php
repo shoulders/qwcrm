@@ -1,6 +1,6 @@
 <?php
 
-require('includes'.SEP.'modules'.SEP.'workorder.php');
+require(INCLUDES_DIR.'modules/workorder.php');
 
 /* Error Catcher - if nothing is done run this - CHANGE MESSAGE */
 if($VAR['print_content'] == '' || $VAR['print_type'] == '') {

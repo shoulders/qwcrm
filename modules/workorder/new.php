@@ -1,6 +1,6 @@
 <?php
 
-require('includes'.SEP.'modules'.SEP.'workorder.php');
+require(INCLUDES_DIR.'modules/workorder.php');
 
 $submit                 = $VAR['submit'];
 $email                  = $VAR['email'];

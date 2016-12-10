@@ -1,6 +1,6 @@
 <?php
 
-require('includes'.SEP.'modules'.SEP.'workorder.php');
+require(INCLUDES_DIR.'modules/workorder.php');
 
 $workorder_scope        = $VAR['workorder_scope'];
 $workorder_description  = $VAR['workorder_description'];

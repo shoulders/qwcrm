@@ -238,7 +238,7 @@ $smarty->assign('theme_css_dir',                THEME_CSS_DIR               );  
 $smarty->assign('theme_js_dir',                 THEME_JS_DIR                );      // set theme JS directory
 
 // QWcrm Theme Directory Template Smarty File Include Path Variables
-$smarty->assign('theme_js_modules_dir_finc',    THEME_JS_MODULES_DIR_FINC   );
+$smarty->assign('theme_js_dir_finc',            THEME_JS_DIR_FINC           );
 
 // These are used globally but mainly for the menu !!
 $smarty->assign('wo_id',        $wo_id          );

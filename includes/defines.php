@@ -36,9 +36,8 @@ define('THEME_CSS_DIR',             THEME_DIR.'css/'            );
 define('THEME_JS_DIR',              THEME_DIR.'js/'             );
 define('THEME_TEMPLATE_DIR',        THEME_DIR.'templates/'      );
 
-// Theme Smarty File Include Paths
-define('THEME_JS_MODULES_DIR_FINC', '../js/modules/'            );
-//define('THEME_JS_DIR_FINC',         '../js/'                    );
+// Theme Smarty File Include Paths (for use within the TPL files)
+define('THEME_JS_DIR_FINC',         '../js/'                    );
 
 // Log files
 define('ACTIVITY_LOG',              LOGS_DIR.'activity.log'     );

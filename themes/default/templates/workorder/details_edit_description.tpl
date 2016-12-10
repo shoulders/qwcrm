@@ -1,7 +1,7 @@
 <!-- details_edit_description.tpl -->
 <script src="{$theme_js_dir}tinymce/tinymce.min.js"></script>
 <script src="{$theme_js_dir}editor-config.js"></script>
-<script>{include file="`$theme_js_modules_dir_finc`workorder.js"}</script>
+<script>{include file="`$theme_js_dir_finc`modules/workorder.js"}</script>
 
 <table width="100%" border="0" cellpadding="20" cellspacing="0">
     <tr>

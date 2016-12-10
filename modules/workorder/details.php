@@ -1,6 +1,6 @@
 <?php
 
-require('includes'.SEP.'modules'.SEP.'workorder.php');
+require(INCLUDES_DIR.'modules/workorder.php');
 
 /* Assign Varibles to smarty */
 $smarty->assign('single_workorder',         display_single_open_workorder($db, $wo_id)  );

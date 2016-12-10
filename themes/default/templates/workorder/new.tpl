@@ -1,7 +1,7 @@
 <!-- new.tpl -->
 <script src="{$theme_js_dir}tinymce/tinymce.min.js"></script>
 <script src="{$theme_js_dir}editor-config.js"></script>
-<script>{include file="`$theme_js_modules_dir_finc`workorder.js"}</script>
+<script>{include file="`$theme_js_dir_finc`modules/workorder.js"}</script>
 
 <table width="100%">
     <tr>
@@ -33,7 +33,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td class="menutd2" colspan="2">{if $error_msg != ""}{include file="core/error.tpl"}{/if}
+                                <td class="menutd2" colspan="2">
                                     <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0" >
                                         <tr>
                                             <td width="100%" valign="top" >                                               
