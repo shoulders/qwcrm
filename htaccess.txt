@@ -1,34 +1,21 @@
-<IfModule mod_rewrite.c>
+## Caching Rules
 
-   # URL rewriting module activation
-   RewriteEngine on
+#<IfModule mod_expires.c>
+#   ExpiresActive On
+#   ExpiresByType image/gif "access plus 30 days"
+#   ExpiresByType image/jpeg "access plus 30 days"
+#   ExpiresByType image/png "access plus 30 days"
+#   ExpiresByType text/css "access plus 30 days"
+#   ExpiresByType text/javascript "access plus 30 days"
+#   ExpiresByType application/javascript "access plus 30 days"
+#   ExpiresByType application/x-javascript "access plus 30 days"
+#   ExpiresByType image/x-icon "access plus 30 days"
+#</IfModule>
 
-   ## SSL enforcement for MyITCRM
-   RewriteCond %{HTTPS} !=on
-   RewriteRule ^.* https://%{SERVER_NAME}%{REQUEST_URI} [R,L]
+#FileETag INode MTime Size
 
-</IfModule>
-
-# Cache Rules
-
-<IfModule mod_expires.c>
-    ExpiresActive On
-    ExpiresByType image/gif "access plus 1 month"
-    ExpiresByType image/jpeg "access plus 1 month"
-    ExpiresByType image/png "access plus 1 month"
-    ExpiresByType text/css "access plus 1 week"
-    ExpiresByType text/javascript "access plus 1 week"
-    ExpiresByType application/javascript "access plus 1 week"
-    ExpiresByType application/x-javascript "access plus 1 week"
-    ExpiresByType image/x-icon "access plus 1 year"
-</IfModule>
-
-FileETag INode MTime Size
-
-<IfModule mod_deflate.c>
-    AddOutputFilterByType DEFLATE text/html
-    AddOutputFilterByType DEFLATE text/css
-    AddOutputFilterByType DEFLATE text/javascript
-    AddOutputFilterByType DEFLATE application/javascript
-    AddOutputFilterByType DEFLATE application/x-javascript
-</IfModule>
+#<IfModule mod_deflate.c>
+#   <IfModule mod_filter.c>
+#       AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript application/x-javascript
+#   </IfModule>
+#</IfModule>

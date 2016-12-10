@@ -85,16 +85,6 @@ define('QWCRM_DOMAIN', $_SERVER['HTTP_HOST']);
 define('QWCRM_PATH', str_replace('index.php', '', $_SERVER['PHP_SELF']));
 
 ################################################
-#          Headers                             #
-################################################
-
-// Added to eliminate special characters
-//header('Content-type: text/html; charset=utf-8');  // is this needed? move to normal page builder
- /* 
- * this needs to go into the page builder routine for the normal pages
- */
-
-################################################
 #         Initialise QWCRM                     #
 ################################################
 
@@ -310,6 +300,9 @@ if(isset($VAR['page']) && $VAR['page'] != ''){
         $page_display_controller = 'modules'.SEP.'core'.SEP.'404.php'; 
         $module     = 'core';
         $page_tpl   = '404';
+        
+        // Send 404 header
+        header('HTTP/1.1 404 Not Found');
     }        
 
 // if no page specified load a default landing page   
