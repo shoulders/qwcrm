@@ -1,5 +1,6 @@
 <!-- edit_rate.tpl -->
 {include file="control/edit_rate.js"}
+
 <table width="100%" border="0" cellpadding="20" cellspacing="5">
     <tr>
         <td>
@@ -29,32 +30,32 @@
                                                     </tr>
                                                     <tr>
                                                         {section name=q loop=$rate}
-                                                        <form method="POST" action="?page=company:edit_rate">
-                                                            <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" class="row1">
-                                                                <td class="olotd4" nowrap>{$rate[q].LABOR_RATE_ID}</td>
-                                                                <td class="olotd4" nowrap><input class="olotd5" type="text" name="display" value="{$rate[q].LABOR_RATE_NAME}" size="50"></td>
-                                                                <td class="olotd4" nowrap>{$currency_sym}<input class="olotd5" type="text" name="amount" value="{$rate[q].LABOR_RATE_AMOUNT}" size="6"></td>
-                                                                <td class="olotd4" nowrap>{$currency_sym}<input class="olotd5" type="text" name="cost" value="{$rate[q].LABOR_RATE_COST}" size="6"></td>
-                                                                <td class="olotd4" nowrap>
-                                                                    <select class="olotd5" name="active">
-                                                                        <option value="0" {if $rate[q].LABOR_RATE_ACTIVE == 0} selected{/if}>No</option>
-                                                                        <option value="1" {if $rate[q].LABOR_RATE_ACTIVE == 1} selected{/if}>Yes</option>
-                                                                    </select>
-                                                                </td>
-                                                                <td class="olotd4" nowrap>
-                                                                    <select class="olotd5" name="type">
-                                                                        <option value="Parts" {if $rate[q].LABOR_TYPE == "Parts"} selected{/if}>Parts</option>
-                                                                        <option value="Service" {if $rate[q].LABOR_TYPE == "Service"} selected{/if}>Service</option>
-                                                                    </select>
-                                                                </td>
-                                                                <td class="olotd4" nowrap><input class="olotd5" type="text" name="manufacturer" value="{$rate[q].LABOR_MANUF}" size="15"></td>
-                                                                <td class="olotd4" nowrap>
-                                                                    <input type="hidden" name="id" value="{$rate[q].LABOR_RATE_ID}">
-                                                                    <input type="submit" name="submit" value="Delete">
-                                                                    <input type="submit" name="submit" value="Edit">
-                                                                </td>
-                                                            </tr>
-                                                        </form>
+                                                            <form method="POST" action="?page=company:edit_rate">
+                                                                <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" class="row1">
+                                                                    <td class="olotd4" nowrap>{$rate[q].LABOR_RATE_ID}</td>
+                                                                    <td class="olotd4" nowrap><input class="olotd5" type="text" name="display" value="{$rate[q].LABOR_RATE_NAME}" size="50"></td>
+                                                                    <td class="olotd4" nowrap>{$currency_sym}<input class="olotd5" type="text" name="amount" value="{$rate[q].LABOR_RATE_AMOUNT}" size="6"></td>
+                                                                    <td class="olotd4" nowrap>{$currency_sym}<input class="olotd5" type="text" name="cost" value="{$rate[q].LABOR_RATE_COST}" size="6"></td>
+                                                                    <td class="olotd4" nowrap>
+                                                                        <select class="olotd5" name="active">
+                                                                            <option value="0" {if $rate[q].LABOR_RATE_ACTIVE == 0} selected{/if}>No</option>
+                                                                            <option value="1" {if $rate[q].LABOR_RATE_ACTIVE == 1} selected{/if}>Yes</option>
+                                                                        </select>
+                                                                    </td>
+                                                                    <td class="olotd4" nowrap>
+                                                                        <select class="olotd5" name="type">
+                                                                            <option value="Parts" {if $rate[q].LABOR_TYPE == "Parts"} selected{/if}>Parts</option>
+                                                                            <option value="Service" {if $rate[q].LABOR_TYPE == "Service"} selected{/if}>Service</option>
+                                                                        </select>
+                                                                    </td>
+                                                                    <td class="olotd4" nowrap><input class="olotd5" type="text" name="manufacturer" value="{$rate[q].LABOR_MANUF}" size="15"></td>
+                                                                    <td class="olotd4" nowrap>
+                                                                        <input type="hidden" name="id" value="{$rate[q].LABOR_RATE_ID}">
+                                                                        <input type="submit" name="submit" value="Delete">
+                                                                        <input type="submit" name="submit" value="Edit">
+                                                                    </td>
+                                                                </tr>
+                                                            </form>
                                                         {/section}            
                                                     </tr>                                                    
                                                 </table>
@@ -84,9 +85,9 @@
                                                         </tr>
                                                     </table>
                                                 </form>
-                                                {if $cred.EMPLOYEE_TYPE == 1 ||  $cred.EMPLOYEE_TYPE == 2 || $cred.EMPLOYEE_TYPE == 4}
-                                                    {literal}
-                                                    <script type="text/javascript">
+                                                {if $cred.EMPLOYEE_TYPE == 1 ||  $cred.EMPLOYEE_TYPE == 2 || $cred.EMPLOYEE_TYPE == 4}                                                    
+                                                    <script>
+                                                    {literal} 
                                                         $(function(){
                                                             $("#newfile").click(function(event) {
                                                                 event.preventDefault();
@@ -97,8 +98,8 @@
                                                                 $("#newuserform").slideUp();
                                                             });
                                                         });
-                                                    </script>
-                                                    {/literal}
+                                                    {/literal}   
+                                                    </script>                                                    
                                                     <a href="#" id="newfile">{$translate_invoice_rates_add_file}</a>
                                                     <div id="newuserform">
                                                         <table width="100%">

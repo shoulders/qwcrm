@@ -1,5 +1,4 @@
-<!-- Main TPL -->
-
+<!-- home.tpl -->
 <table width="700" border="0" cellpadding="2" cellspacing="5">
     <tr>
         <td>
@@ -7,7 +6,8 @@
                 <tr>
                     <td class="menuhead2" width="80%">&nbsp;{$translate_core_home_title}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
-                        <a><img src="{$theme_images_dir}icons/16x16/help.gif" border="0" 
+                        <a>
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" 
                             onMouseOver="ddrivetip('<b>{$translate_core_home_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_core_home_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" 
                             onMouseOut="hideddrivetip();">
                         </a>
@@ -53,9 +53,9 @@
                                     </table>
                                     <br>
                                     
-                                    <!-- Invoice Stats -->
-                                    {literal}
+                                    <!-- Invoice Stats -->                                    
                                     <script>
+                                    {literal}    
                                         $(function(){
                                             $("#hidden_stats").click(function(event) {
                                             event.preventDefault();
@@ -69,34 +69,33 @@
                                             $("#hide_stats").slideUp();
                                             });
                                         });
-                                    </script>
-                                     {/literal}
-                                     
+                                    {/literal}    
+                                    </script>                                     
                                     <a href="#" id="hidden_stats">{$translate_core_home_invoice_stats_title}</a>
                                     <div id="hide_stats">
-                                    {if $login_account_type_id == 1 || $login_account_type_id == 4 }
-                                    <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
-                                        <tr class="olotd4">
-                                            <td class="row2"><b>{$translate_core_home_unpaid}</b></td>
-                                            <td class="row2"><b>{$translate_core_home_balance}</b></td>
-                                            <td class="row2"><b>{$translate_core_home_partial_paid}</b></td>
-                                            <td class="row2"><b>{$translate_core_home_partial_paid_balance}</b></td>
-                                            <td class="row2"><b>{$translate_core_home_paid_in_full}</b></td>
-                                            <td class="row2"><b>{$translate_core_home_received_total}</b></td>
-                                            <td class="row2"><b>{$translate_core_home_invoiced_total}</b></td>
-                                        </tr>
-                                        <tr class="olotd4">
-                                            <td><a href="?page=invoice:view_unpaid&amp;page_title=Un-Paid%20Invoices">{$in_unpaid_count}</a></td>
-                                            <td><font color="#cc0000">{$currency_sym}{$in_unpaid_bal|string_format:"%.2f"}</font></td>
-                                            <td><a href="?page=invoice:view_unpaid&amp;page_title=Un-Paid%20Invoices">{$in_part_count}</a></td>
-                                            <td><font color="#cc0000">{$currency_sym}{$in_part_bal|string_format:"%.2f"}</font></td>
-                                            <td><a href="?page=invoice:view_paid&amp;page_title=Paid%20Invoices">{$in_paid_count}</a></td>
-                                            <td><font color="green">{$currency_sym}{$in_total_bal|string_format:"%.2f"}</font></td>
-                                            <td><font color="green">{$currency_sym}{$in_total2|string_format:"%.2f"}</font></td>
-                                        </tr>
-                                    </table>
-                                    <br>
-                                    {/if}
+                                        {if $login_account_type_id == 1 || $login_account_type_id == 4 }
+                                            <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
+                                                <tr class="olotd4">
+                                                    <td class="row2"><b>{$translate_core_home_unpaid}</b></td>
+                                                    <td class="row2"><b>{$translate_core_home_balance}</b></td>
+                                                    <td class="row2"><b>{$translate_core_home_partial_paid}</b></td>
+                                                    <td class="row2"><b>{$translate_core_home_partial_paid_balance}</b></td>
+                                                    <td class="row2"><b>{$translate_core_home_paid_in_full}</b></td>
+                                                    <td class="row2"><b>{$translate_core_home_received_total}</b></td>
+                                                    <td class="row2"><b>{$translate_core_home_invoiced_total}</b></td>
+                                                </tr>
+                                                <tr class="olotd4">
+                                                    <td><a href="?page=invoice:view_unpaid&amp;page_title=Un-Paid%20Invoices">{$in_unpaid_count}</a></td>
+                                                    <td><font color="#cc0000">{$currency_sym}{$in_unpaid_bal|string_format:"%.2f"}</font></td>
+                                                    <td><a href="?page=invoice:view_unpaid&amp;page_title=Un-Paid%20Invoices">{$in_part_count}</a></td>
+                                                    <td><font color="#cc0000">{$currency_sym}{$in_part_bal|string_format:"%.2f"}</font></td>
+                                                    <td><a href="?page=invoice:view_paid&amp;page_title=Paid%20Invoices">{$in_paid_count}</a></td>
+                                                    <td><font color="green">{$currency_sym}{$in_total_bal|string_format:"%.2f"}</font></td>
+                                                    <td><font color="green">{$currency_sym}{$in_total2|string_format:"%.2f"}</font></td>
+                                                </tr>
+                                            </table>
+                                            <br>
+                                        {/if}
                                     </div>                                    
                                     
                                     <!-- Customer Stats -->

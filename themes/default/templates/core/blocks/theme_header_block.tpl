@@ -12,16 +12,16 @@
     <link rel="icon" href="favicon.ico">
     <link rel="stylesheet" href="{$theme_css_dir}template.css">    
     <script src="{$theme_js_dir}jquery-3.1.1.min.js"></script>
-    <script src="{$theme_js_dir}sdmenu.js"></script>     
-    {literal}
+    <script src="{$theme_js_dir}sdmenu.js"></script>    
     <script>
+    {literal}    
         var myMenu;
         window.onload = function() {
             myMenu = new SDMenu("my_menu");
             myMenu.init();
         };
-    </script>
-    {/literal}
+    {/literal}   
+    </script>    
     <script src="{$theme_js_dir}tabs.js"></script>
     <script src="{$theme_js_dir}template.js"></script>    
 </head>
@@ -40,31 +40,31 @@
 
     <!-- Information Message -->
     {if $information_msg != ''}
-    <table width="900px" border="0" cellpadding="4" cellspacing="4">
-        <tr>
-            <td>
-                <table class="olotablegreen" width="100%" border="0" cellpadding="5" cellspacing="5" style="text-align: center;">
-                    <tr>
-                        <td valign="middle">{$information_msg}</td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-    </table>
+        <table width="900px" border="0" cellpadding="4" cellspacing="4">
+            <tr>
+                <td>
+                    <table class="olotablegreen" width="100%" border="0" cellpadding="5" cellspacing="5" style="text-align: center;">
+                        <tr>
+                            <td valign="middle">{$information_msg}</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
     {/if}
 
     <!-- Warning Message -->
     {if $warning_msg != ''}
-    <table width="900px" border="0" cellpadding="4" cellspacing="4">
-        <tr>
-            <td>
-                <table width="100%" border="0" cellpadding="5" cellspacing="5" style="text-align: center;">
-                    <tr>
-                        <td valign="middle"class="error">{$warning_msg}</td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-    </table>
+        <table width="900px" border="0" cellpadding="4" cellspacing="4">
+            <tr>
+                <td>
+                    <table width="100%" border="0" cellpadding="5" cellspacing="5" style="text-align: center;">
+                        <tr>
+                            <td valign="middle"class="error">{$warning_msg}</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
     {/if}
 

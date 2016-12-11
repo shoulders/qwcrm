@@ -1,3 +1,4 @@
+<!-- 404.tpl -->
 <table width="100%" cellpadding="5" cellspacing="5">
     <tr>
         <td>

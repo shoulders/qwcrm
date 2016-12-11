@@ -1,4 +1,4 @@
-<!-- main.tpl - company -->
+<!-- main.tpl -->
 <table width="100%" border="0" cellpadding="20" cellspacing="0">
     <tr>
         <td>
@@ -22,4 +22,3 @@
         </td>
     </tr>
 </table>
-    

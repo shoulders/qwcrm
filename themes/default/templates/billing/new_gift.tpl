@@ -1,45 +1,44 @@
 <!-- new_gift.tpl -->
-
 <script src="{$theme_js_dir}tinymce/tinymce.min.js"></script>
 <script src="{$theme_js_dir}editor-config.js"></script>
 <link rel="stylesheet" href="{$theme_js_dir}jscal2/css/jscal2.css" />
 <link rel="stylesheet" href="{$theme_js_dir}jscal2/css/steel/steel.css" />
 <script src="{$theme_js_dir}jscal2/jscal2.js"></script>
 <script src="{$theme_js_dir}jscal2/unicode-letter.js"></script>
-<script>{include file='../js/jscal2/language.js'}</script>
-{literal}
+<script>{include file="`$theme_js_dir_finc`jscal2/language.js"}</script>
 <script>
+{literal}    
     function validate_gift(frm) {
         
-    var value = '';
-    var errFlag = new Array();
-    var _qfGroups = {};
-    _qfMsg = '';
+        var value = '';
+        var errFlag = new Array();
+        var _qfGroups = {};
+        _qfMsg = '';
 
-    value = frm.elements['expire'].value;
-    if (value == '' && !errFlag['expire']) {
-      errFlag['expire'] = true;
-      _qfMsg = _qfMsg + '\n - {/literal}{$translate_billing_error_date}{literal}';
-      frm.elements['expire'].className = 'error';
-    }
+        value = frm.elements['expire'].value;
+        if (value == '' && !errFlag['expire']) {
+          errFlag['expire'] = true;
+          _qfMsg = _qfMsg + '\n - {/literal}{$translate_billing_error_date}{literal}';
+          frm.elements['expire'].className = 'error';
+        }
 
-    value = frm.elements['amount'].value;
-    if (value == '' && !errFlag['amount']) {
-      errFlag['amount'] = true;
-      _qfMsg = _qfMsg + '\n - {/literal}{$translate_billing_error_gift_amount}{literal}';
-      frm.elements['amount'].className = 'error';
-    }
+        value = frm.elements['amount'].value;
+        if (value == '' && !errFlag['amount']) {
+          errFlag['amount'] = true;
+          _qfMsg = _qfMsg + '\n - {/literal}{$translate_billing_error_gift_amount}{literal}';
+          frm.elements['amount'].className = 'error';
+        }
 
-    if (_qfMsg != '') {
-        _qfMsg = '{/literal}{$translate_billing_error_invalid}{literal}' + _qfMsg;
-        _qfMsg = _qfMsg + '\n{/literal}{$translate_billing_error_fix}{literal}';
-        alert(_qfMsg);
-        return false;
-      }
-      return true;
+        if (_qfMsg != '') {
+            _qfMsg = '{/literal}{$translate_billing_error_invalid}{literal}' + _qfMsg;
+            _qfMsg = _qfMsg + '\n{/literal}{$translate_billing_error_fix}{literal}';
+            alert(_qfMsg);
+            return false;
+          }
+          return true;
     }
-</script>
 {/literal}
+</script>
 
 <table width="700" border="0" cellpadding="20" cellspacing="5">
     <tr>
@@ -50,9 +49,7 @@
                     <td class="menuhead2" width="20%" align="right" valign="middle"></td>
                 </tr>
                 <tr>
-                    <td class="olotd5" colspan="2">
-                        
-                        <!-- Content Begin -->
+                    <td class="olotd5" colspan="2">     
                         <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
                             <tr>
                                 <td class="olotd4">
@@ -68,16 +65,15 @@
                                                 <td>
                                                     <input class="olotd5" size="10" name="expire" type="text" id="due_date" value="" class="olotd4"/>
                                                     <input type="button" id="due_date_button" value="+">
-                                                    
-                                                    {literal}
                                                     <script>
+                                                    {literal}    
                                                         Calendar.setup({
                                                             trigger     : "due_date_button",
                                                             inputField  : "due_date",
                                                             dateFormat  : "{/literal}{$date_format}{literal}"                                                                                            
                                                         });
-                                                    </script>
-                                                    {/literal}                                                    
+                                                    {/literal}   
+                                                    </script>                                                                                                        
                                                 </td>
                                             </tr>
                                             <tr>
@@ -103,9 +99,7 @@
                                     <a href="?page=customer:customer_details&customer_id={$customer_id}&page_title={$customer_name}">{$translate_billing_cancel}</a>
                                 </td>
                             </tr>
-                        </table>
-                        <!-- Content End -->
-                        
+                        </table>                       
                     </td>
                 </tr>
             </table>

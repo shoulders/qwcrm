@@ -7,8 +7,8 @@
                     <td class="menuhead2" width="80%">&nbsp;Update Permissions for Users</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
                         <img src="{$theme_images_dir}icons/16x16/help.gif" border="0"
-                        onMouseOver="ddrivetip('<b>Help Menu</b><hr><p></p>')" 
-                        onMouseOut="hideddrivetip()">
+                        onMouseOver="ddrivetip('<b>Help Menu</b><hr><p></p>');" 
+                        onMouseOut="hideddrivetip();">
                     </td>
                 </tr>
                 <tr>
@@ -30,75 +30,75 @@
                                                 <td class="olohead">Guest</td>
                                             </tr>
                                             {section name=q loop=$acl}
-                                            <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" class="row1">
+                                                <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" class="row1">
 
-                                                <!-- Module:Page -->
-                                                <td class="olotd4"><b>{$acl[q].page}</b></td>
+                                                    <!-- Module:Page -->
+                                                    <td class="olotd4"><b>{$acl[q].page}</b></td>
 
-                                                <!-- Administrator -->
-                                                <td class="olotd4">
-                                                    <select name="{$acl[q].page}[Administrator]"> <!-- this needs changing to administrator proprely-->
-                                                        <option value="1" selected>Yes</option>                                                            
-                                                    </select>
-                                                </td>
+                                                    <!-- Administrator -->
+                                                    <td class="olotd4">
+                                                        <select name="{$acl[q].page}[Administrator]"> <!-- this needs changing to administrator proprely-->
+                                                            <option value="1" selected>Yes</option>                                                            
+                                                        </select>
+                                                    </td>
 
-                                                <!-- Manager -->
-                                                <td class="olotd4">
-                                                    <select name="{$acl[q].page}[Manager]">
-                                                        <option value="1" {if $acl[q].Manager == '1'}selected{/if}>Yes</option>
-                                                        <option value="0" {if $acl[q].Manager == '0'}selected{/if}>No</option>
-                                                    </select>
-                                                </td>
+                                                    <!-- Manager -->
+                                                    <td class="olotd4">
+                                                        <select name="{$acl[q].page}[Manager]">
+                                                            <option value="1" {if $acl[q].Manager == '1'}selected{/if}>Yes</option>
+                                                            <option value="0" {if $acl[q].Manager == '0'}selected{/if}>No</option>
+                                                        </select>
+                                                    </td>
 
-                                                <!-- Supervisor -->
-                                                <td class="olotd4">
-                                                    <select name="{$acl[q].page}[Supervisor]">
-                                                        <option value="1" {if $acl[q].Supervisor == '1'}selected{/if}>Yes</option>
-                                                        <option value="0" {if $acl[q].Supervisor == '0'}selected{/if}>No</option>
-                                                    </select> 
-                                                </td>
+                                                    <!-- Supervisor -->
+                                                    <td class="olotd4">
+                                                        <select name="{$acl[q].page}[Supervisor]">
+                                                            <option value="1" {if $acl[q].Supervisor == '1'}selected{/if}>Yes</option>
+                                                            <option value="0" {if $acl[q].Supervisor == '0'}selected{/if}>No</option>
+                                                        </select> 
+                                                    </td>
 
-                                                <!-- Technician -->
-                                                <td class="olotd4">
-                                                    <select name="{$acl[q].page}[Technician]">
-                                                        <option value="1" {if $acl[q].Technician == '1'}selected{/if}>Yes</option>
-                                                        <option value="0" {if $acl[q].Technician == '0'}selected{/if}>No</option>
-                                                    </select> 
-                                                </td>
-                                                
-                                                <!-- Clerical -->
-                                                <td class="olotd4">
-                                                    <select name="{$acl[q].page}[Clerical]">
-                                                        <option value="1" {if $acl[q].Clerical == '1'}selected{/if}>Yes</option>
-                                                        <option value="0" {if $acl[q].Clerical == '0'}selected{/if}>No</option>
-                                                    </select>
-                                                </td>
+                                                    <!-- Technician -->
+                                                    <td class="olotd4">
+                                                        <select name="{$acl[q].page}[Technician]">
+                                                            <option value="1" {if $acl[q].Technician == '1'}selected{/if}>Yes</option>
+                                                            <option value="0" {if $acl[q].Technician == '0'}selected{/if}>No</option>
+                                                        </select> 
+                                                    </td>
 
-                                                <!-- Counter-->
-                                                <td class="olotd4">
-                                                    <select name="{$acl[q].page}[Counter]">
-                                                        <option value="1" {if $acl[q].Counter == '1'}selected{/if}>Yes</option>
-                                                        <option value="0" {if $acl[q].Counter == '0'}selected{/if}>No</option>
-                                                    </select>
-                                                </td>                                                
+                                                    <!-- Clerical -->
+                                                    <td class="olotd4">
+                                                        <select name="{$acl[q].page}[Clerical]">
+                                                            <option value="1" {if $acl[q].Clerical == '1'}selected{/if}>Yes</option>
+                                                            <option value="0" {if $acl[q].Clerical == '0'}selected{/if}>No</option>
+                                                        </select>
+                                                    </td>
 
-                                                <!-- Customer -->
-                                                <td class="olotd4">
-                                                    <select name="{$acl[q].page}[Customer]">
-                                                        <option value="1" {if $acl[q].Customer == '1'}selected{/if}>Yes</option>
-                                                        <option value="0" {if $acl[q].Customer == '0'}selected{/if}>No</option>
-                                                    </select>
-                                                </td>
+                                                    <!-- Counter-->
+                                                    <td class="olotd4">
+                                                        <select name="{$acl[q].page}[Counter]">
+                                                            <option value="1" {if $acl[q].Counter == '1'}selected{/if}>Yes</option>
+                                                            <option value="0" {if $acl[q].Counter == '0'}selected{/if}>No</option>
+                                                        </select>
+                                                    </td>                                                
 
-                                                <!-- Guest -->
-                                                <td class="olotd4">
-                                                    <select name="{$acl[q].page}[Guest]">
-                                                        <option value="1" {if $acl[q].Guest == '1'}selected{/if}>Yes</option>
-                                                        <option value="0" {if $acl[q].Guest == '0'}selected{/if}>No</option>
-                                                    </select>
-                                                </td>
+                                                    <!-- Customer -->
+                                                    <td class="olotd4">
+                                                        <select name="{$acl[q].page}[Customer]">
+                                                            <option value="1" {if $acl[q].Customer == '1'}selected{/if}>Yes</option>
+                                                            <option value="0" {if $acl[q].Customer == '0'}selected{/if}>No</option>
+                                                        </select>
+                                                    </td>
 
-                                            </tr>
+                                                    <!-- Guest -->
+                                                    <td class="olotd4">
+                                                        <select name="{$acl[q].page}[Guest]">
+                                                            <option value="1" {if $acl[q].Guest == '1'}selected{/if}>Yes</option>
+                                                            <option value="0" {if $acl[q].Guest == '0'}selected{/if}>No</option>
+                                                        </select>
+                                                    </td>
+
+                                                </tr>
                                             {/section}
                                         </table>
                                         <input type="submit" name="submit" value="Submit">
@@ -112,5 +112,3 @@
         </td>
     </tr>
 </table>
-
-                

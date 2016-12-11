@@ -7,8 +7,8 @@
                     <ul class="tabs">
                         <li class="active"><a href="#" rel="#tab_1_contents" class="tab"><img src="{$theme_images_dir}icons/key.png" alt="" border="0" height="14" width="14"/>&nbsp;Company Details</a></li>
                         <li><a href="#" rel="#tab_2_contents" class="tab"><img src="{$theme_images_dir}icons/money.png" alt="" border="0" height="14" width="14"/>&nbsp;Localisation Setup</a></li>
-                        <!--<li><a href="#" rel="#tab_3_contents" class="tab"><img src="{$theme_images_dir}icons/16x16/email.jpg" alt="" border="0" height="14" width="14" />&nbsp;Email Setup</a></li>-->
-                        <!--<li><a href="#" rel="#tab_4_contents" class="tab"><img src="{$theme_images_dir}icons/16x16/email.jpg" alt="" border="0" height="14" width="14" />&nbsp;Email Messages</a></li>-->
+                        <li><a href="#" rel="#tab_3_contents" class="tab"><img src="{$theme_images_dir}icons/16x16/email.jpg" alt="" border="0" height="14" width="14" />&nbsp;Email Setup</a></li>
+                        <li><a href="#" rel="#tab_4_contents" class="tab"><img src="{$theme_images_dir}icons/16x16/email.jpg" alt="" border="0" height="14" width="14" />&nbsp;Email Messages</a></li>
                     </ul>
 
                     <!-- This is used so the contents don't appear to the right of the tabs -->
@@ -204,11 +204,12 @@
                                                             </tr>
                                                             <tr>
                                                                 <td align="right"><b>Connection Type:</b></td>
-                                                                    <td>
-                                                                        <select class="olotd5" name="conn_type">
-                                                                            <option value="SSL" { if $company[q].COMPANY_EMAIL_CONNECTION_TYPE == 'SSL' } SELECTED {/if}>SSL</option>
-                                                                            <option value="" { if $company[q].COMPANY_EMAIL_CONNECTION_TYPE != 'SSL' } SELECTED {/if}>None</option>
-                                                                        /select>
+                                                                <td>
+                                                                    <select class="olotd5" name="conn_type">
+                                                                        <option value="SSL" {if $company[q].COMPANY_EMAIL_CONNECTION_TYPE == 'SSL' } selected{/if}>SSL</option>
+                                                                        <option value="" {if $company[q].COMPANY_EMAIL_CONNECTION_TYPE != 'SSL' } selected{/if}>None</option>
+                                                                    </select>
+                                                                </td>
                                                             </tr>
                                                             <tr>
                                                                 <td align="right"><b>SMTP Login Name:</b></td>
@@ -302,5 +303,3 @@
         </tr>
     </table>
 </form>
-
-    

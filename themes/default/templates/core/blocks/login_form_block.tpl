@@ -5,8 +5,7 @@
     </tr>
     <tr>
         <td><br /><br /></td>
-        <td>                   
-
+        <td>       
             <table class="olotable" border="0" align="center" style="margin: 20px;">
                 <tr>
                     <td class="olohead"> {$translate_core_login_login}</td>
@@ -32,16 +31,16 @@
 
                                             <!-- Information Message -->
                                             {if $information_msg != '' }
-                                            <tr align="center">
-                                                <td colspan="2" class="olotablegreen" style="text-align: center;">{$information_msg}</td>
-                                            </tr>
+                                                <tr align="center">
+                                                    <td colspan="2" class="olotablegreen" style="text-align: center;">{$information_msg}</td>
+                                                </tr>
                                             {/if}
 
                                             <!-- Warning Message -->
                                             {if $warning_msg != '' }
-                                            <tr align="center">
-                                                <td colspan="2" class="error">{$warning_msg}</td>
-                                            </tr>
+                                                <tr align="center">
+                                                    <td colspan="2" class="error">{$warning_msg}</td>
+                                                </tr>
                                             {/if}                            
 
                                             <!-- Forgotten Password -->
@@ -56,7 +55,6 @@
                     </td>
                 </tr>
             </table>
-
         </td>
     </tr>
 </table>

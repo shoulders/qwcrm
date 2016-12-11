@@ -1,5 +1,4 @@
-<!-- new.tpl - billing -->
-
+<!-- new.tpl -->
 <table width="700" border="0" cellpadding="20" cellspacing="5">
     <tr>
         <td>
@@ -14,7 +13,6 @@
                 </tr>
                 <tr>
                     <td class="olotd5" colspan="2">
-
                         <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
                             <tr class="olotd4">
                                 <td class="row2"><b>{$translate_billing_invoice_id}</b></td>
@@ -70,9 +68,9 @@
                                     {/foreach}        
                                 </td>
                             </tr>
-                        </table>
-                                
+                        </table>                                
                         <br>
+                        
                         {if $balance > 0 }
                             <table width="100%" cellpadding="4" cellspacing="0" border="0" >
                                 <tr>
@@ -88,23 +86,23 @@
                                                 <td class="row2"><b>{$translate_billing_type}</b></td>
                                             </tr>
                                             {section name=r loop=$trans}
-                                            <tr class="olotd4">
-                                                <td>{$trans[r].TRANSACTION_ID}</td>
-                                                <td>{$trans[r].DATE|date_format:"$date_format"}</td>
-                                                <td><b>{$currency_sym}</b>{$trans[r].AMOUNT|string_format:"%.2f"}</td>
-                                                <td>
-                                                    {if $trans[r].TYPE == 1}{$translate_billing_credit_card}
-                                                    {elseif $trans[r].TYPE == 2}{$translate_billing_check}
-                                                    {elseif $trans[r].TYPE == 3}{$translate_billing_cash}
-                                                    {elseif $trans[r].TYPE == 4}{$translate_billing_gift}
-                                                    {elseif $trans[r].TYPE == 5}{$translate_billing_paypal}
-                                                    {/if}
-                                                </td>
-                                            </tr>
-                                            <tr class="olotd4">
-                                                <td><b>{$translate_billing_memo}</b></td>
-                                                <td colspan="3">{$trans[r].MEMO}</td>
-                                            </tr>
+                                                <tr class="olotd4">
+                                                    <td>{$trans[r].TRANSACTION_ID}</td>
+                                                    <td>{$trans[r].DATE|date_format:"$date_format"}</td>
+                                                    <td><b>{$currency_sym}</b>{$trans[r].AMOUNT|string_format:"%.2f"}</td>
+                                                    <td>
+                                                        {if $trans[r].TYPE == 1}{$translate_billing_credit_card}
+                                                        {elseif $trans[r].TYPE == 2}{$translate_billing_check}
+                                                        {elseif $trans[r].TYPE == 3}{$translate_billing_cash}
+                                                        {elseif $trans[r].TYPE == 4}{$translate_billing_gift}
+                                                        {elseif $trans[r].TYPE == 5}{$translate_billing_paypal}
+                                                        {/if}
+                                                    </td>
+                                                </tr>
+                                                <tr class="olotd4">
+                                                    <td><b>{$translate_billing_memo}</b></td>
+                                                    <td colspan="3">{$trans[r].MEMO}</td>
+                                                </tr>
                                             {/section}
                                         </table>
                                     </td>
@@ -113,7 +111,6 @@
                             <br>
                         {/if}
                         
-                        <!-- Content -->
                         {if $billing_options.cc_billing == '1'}
                             <form method="POST" action="">
                                 <table width="100%" cellpadding="4" cellspacing="0" border="0" >
@@ -177,13 +174,7 @@
                                             <tr class="olotd4">
                                                 <td></td>
                                                 <td><input type="text" name="deposit_recieved" size="20" class="olotd4"></td>
-                                                <td>
-                                                    {$currency_sym}<input type="text" name="deposit_amount" size="8"
-                                                    {if $balance > 0 } value="{$invoice_amount-$invoice_paid_amount|string_format:"%.2f"}"
-                                                    {else}
-                                                    value="{$invoice_amount|string_format:"%.2f"}"
-                                                    {/if} class="olotd4">
-                                                </td>
+                                                <td>{$currency_sym}<input type="text" name="deposit_amount" size="8" {if $balance > 0 }value="{$invoice_amount-$invoice_paid_amount|string_format:"%.2f"}"{else}value="{$invoice_amount|string_format:"%.2f"}"{/if} class="olotd4"></td>
                                             </tr>
                                             <tr>
                                                 <td valign="top"><b>{$translate_billing_memo}</b></td>
@@ -221,13 +212,7 @@
                                                 <tr class="olotd4">
                                                     <td></td>
                                                     <td><input type="text" name="cheque_recieved" size="8" class="olotd4"></td>
-                                                    <td>
-                                                        {$currency_sym}<input type="text" name="cheque_amount" size="8"
-                                                        {if $balance > 0} value="{$invoice_amount-$invoice_paid_amount|string_format:"%.2f"}"
-                                                        {else}
-                                                        value="{$invoice_amount|string_format:"%.2f"}"
-                                                        {/if} class="olotd4">
-                                                    </td>
+                                                    <td>{$currency_sym}<input type="text" name="cheque_amount" size="8" {if $balance > 0}value="{$invoice_amount-$invoice_paid_amount|string_format:"%.2f"}"{else}value="{$invoice_amount|string_format:"%.2f"}"{/if} class="olotd4"></td>
                                                 </tr>
                                                 <tr>
                                                     <td valign="top"><b>{$translate_billing_memo}</b></td>
@@ -263,15 +248,7 @@
                                                 </tr>
                                                 <tr class="olotd4">
                                                     <td></td>
-                                                    <td>
-                                                        {$currency_sym}<input type="text" name="cash_amount" size="8"
-                                                        {if $balance > 0 }
-                                                        value="{$invoice_amount-$invoice_paid_amount|string_format:"%.2f"}"
-                                                        {else}
-                                                        value="{$invoice_amount|string_format:"%.2f"}"
-                                                        {/if}
-                                                        class="olotd4">
-                                                    </td>
+                                                    <td>{$currency_sym}<input type="text" name="cash_amount" size="8" {if $balance > 0 }value="{$invoice_amount-$invoice_paid_amount|string_format:"%.2f"}"{else}value="{$invoice_amount|string_format:"%.2f"}"{/if} class="olotd4"></td>
                                                 </tr>
                                                 <tr>
                                                     <td valign="top"><b>{$translate_billing_memo}</b></td>
@@ -308,7 +285,7 @@
                                                 </tr>
                                                 <tr class="olotd4">
                                                     <td></td>
-                                                    <td><input type="text" name="gift_amount" size="8" {if $balance > 0} value="{$invoice_amount-$invoice_paid_amount|string_format:"%.2f"}" {else} value="{$invoice_amount|string_format:"%.2f"}" {/if} class="olotd4"></td>
+                                                    <td><input type="text" name="gift_amount" size="8" {if $balance > 0}value="{$invoice_amount-$invoice_paid_amount|string_format:"%.2f"}"{else}value="{$invoice_amount|string_format:"%.2f"}" {/if} class="olotd4"></td>
                                                     <td><input type="text" name="gift_code" size="16" class="olotd4"><br>{$translate_billing_gift_code_2}</td>
                                                 </tr>
                                             </table>
@@ -342,15 +319,7 @@
                                                 </tr>
                                                 <tr class="olotd4">
                                                     <td></td>
-                                                    <td>
-                                                        $<input type="text" name="paypal_amount" size="8"
-                                                        {if $balance > 0 }
-                                                        value="{$invoice_amount-$invoice_paid_amount|string_format:"%.2f"}"
-                                                        {else}
-                                                        value="{$invoice_amount|string_format:"%.2f"}"
-                                                        {/if}
-                                                        class="olotd4">
-                                                    </td>
+                                                    <td>{$currency_sym}<input type="text" name="paypal_amount" size="8" {if $balance > 0 }value="{$invoice_amount-$invoice_paid_amount|string_format:"%.2f"}"{else}value="{$invoice_amount|string_format:"%.2f"}"{/if} class="olotd4"></td>
                                                 </tr>
                                             </table>
                                             <p>
@@ -383,12 +352,7 @@
                                                 <tr class="olotd4">
                                                     <td></td>
                                                     <td><input type="text" name="paymate_recieved" size="20" class="olotd4"></td>
-                                                    <td>
-                                                        {$currency_sym}<input type="text" name="paymate_amount" size="8"
-                                                        {if $balance > 0 } value="{$invoice_amount-$invoice_paid_amount|string_format:"%.2f"}"
-                                                        {else}
-                                                        value="{$invoice_amount|string_format:"%.2f"}"
-                                                        {/if} class="olotd4">
+                                                    <td>{$currency_sym}<input type="text" name="paymate_amount" size="8" {if $balance > 0 }value="{$invoice_amount-$invoice_paid_amount|string_format:"%.2f"}"{else}value="{$invoice_amount|string_format:"%.2f"}"{/if} class="olotd4">
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -408,11 +372,10 @@
                                 </table>
                             </form>
                         {/if}
-                    
+                        
                     </td>
                 </tr>
             </table>
         </td>
     </tr>
 </table>
-<!-- End Billing Contents -->
