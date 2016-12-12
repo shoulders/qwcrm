@@ -28,7 +28,6 @@
                                         <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0">
                                             <tr>
                                                 <td width="100%" valign="top">
-
                                                     {section name=q loop=$company}
                                                         <table cellpadding="5" cellspacing="0">
                                                             <tr>
@@ -80,48 +79,47 @@
                                                             <tr>
                                                                 <td align="right"><b>Fax:</b></td>
                                                                 <td><input class="olotd5" type="text" name="fax" value="{$company[q].COMPANY_FAX}"></td>
-                                                            </tr>                                                
-                                                            {section name=w loop=$setup}
-                                                                <tr>
-                                                                    <td align="right"><b>Tax Amount:</b></td>
-                                                                    <td><input type="text" size="6" name="inv_tax" value="{$setup[w].INVOICE_TAX}" class="olotd5">%</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td align="right"><b>Invoice Starting Number:</b></td>
-                                                                    <td><input class="olotd5" type="text" name="inv_number" value="{$setup[w].INVOICE_NUMBER_START}"></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td colspan="3" align="center"><b>eg: 2000 - this will start invoice increments from 2000 onwards</b><br></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td align="right"><b>Work Order Starting Number:</b></td>
-                                                                    <td><input class="olotd5" type="text" name="wo_number" value="{$setup[w].WO_NUMBER_START}"></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td colspan="3" align="center"><b>eg: 259 - this will start work order increments from 259 onwards</b><br></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td colspan="2"><b>Invoice Thank You Note:</b> 255 max characters. Displays at the bottom of each invoice.
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td colspan="2"><textarea class="olotd5" cols="80" rows="5" name="inv_thank_you">{$setup[w].INV_THANK_YOU}</textarea>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><b>Company Welcome Note</b> (home page)</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td colspan="2"><textarea class="olotd5" cols="80" rows="5" name="welcome">{$setup[w].WELCOME_NOTE}</textarea>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td colspan="2"><input class="olotd5" type="submit" name="submit" value="Update"></td>
-                                                                </tr>
-                                                            {/section}
-                                                        </table>
-                                                    {/section}
-
+                                                            </tr>
+                                                        {/section}
+                                                        {section name=w loop=$setup}
+                                                            <tr>
+                                                                <td align="right"><b>Tax Amount:</b></td>
+                                                                <td><input type="text" size="6" name="inv_tax" value="{$setup[w].INVOICE_TAX}" class="olotd5">%</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td align="right"><b>Invoice Starting Number:</b></td>
+                                                                <td><input class="olotd5" type="text" name="inv_number" value="{$setup[w].INVOICE_NUMBER_START}"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="3" align="center"><b>eg: 2000 - this will start invoice increments from 2000 onwards</b><br></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td align="right"><b>Work Order Starting Number:</b></td>
+                                                                <td><input class="olotd5" type="text" name="wo_number" value="{$setup[w].WO_NUMBER_START}"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="3" align="center"><b>eg: 259 - this will start work order increments from 259 onwards</b><br></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="2"><b>Invoice Thank You Note:</b> 255 max characters. Displays at the bottom of each invoice.
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="2"><textarea class="olotd5" cols="80" rows="5" name="inv_thank_you">{$setup[w].INV_THANK_YOU}</textarea>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><b>Company Welcome Note</b> (home page)</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="2"><textarea class="olotd5" cols="80" rows="5" name="welcome">{$setup[w].WELCOME_NOTE}</textarea>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="2"><input class="olotd5" type="submit" name="submit" value="Update"></td>
+                                                            </tr>
+                                                        {/section}
+                                                    </table>
                                                 </td>
                                             </tr>
                                         </table>
@@ -140,9 +138,9 @@
                                     <td class="menutd2">
                                         <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0">
                                             <tr>
-                                                <td width="100%" valign="top">                                         
-                                                    {section name=q loop=$company}
-                                                        <table cellpadding="5" cellspacing="0">
+                                                <td width="100%" valign="top">                                     
+                                                    <table cellpadding="5" cellspacing="0">
+                                                        {section name=q loop=$company}
                                                             <tr>
                                                                 <td align="right"><b>Currency Symbol:</b></td>
                                                                 <td><input class="olotd5" type="text" size="5" name="currency_sym" value="{$company[q].COMPANY_CURRENCY_SYMBOL}"></td>
@@ -162,13 +160,13 @@
                                                                     </select>
                                                                 </td>
                                                             </tr>
-                                                            {section name=w loop=$setup}
-                                                                <tr>
-                                                                    <td colspan="2"><input class="olotd5" type="submit" name="submit" value="Update"></td>
-                                                                </tr>
-                                                            {/section}
-                                                        </table>
-                                                    {/section}                                            
+                                                        {/section} 
+                                                        {section name=w loop=$setup}
+                                                            <tr>
+                                                                <td colspan="2"><input class="olotd5" type="submit" name="submit" value="Update"></td>
+                                                            </tr>
+                                                        {/section}
+                                                    </table>                                                                                               
                                                 </td>
                                             </tr>
                                         </table>
@@ -187,9 +185,9 @@
                                     <td class="menutd2">
                                         <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0" >
                                             <tr>
-                                                <td width="100%" valign="top">
-                                                    {section name=q loop=$company}
-                                                        <table  cellpadding="5" cellspacing="0">
+                                                <td width="100%" valign="top">                                                    
+                                                    <table  cellpadding="5" cellspacing="0">
+                                                        {section name=q loop=$company}
                                                             <tr>
                                                                 <td align="right"><b>Default No-Reply Email:</b></td>
                                                                 <td><input class="olotd5" type="text" size="50" name="email_from" value="{$company[q].COMPANY_EMAIL_FROM}"></td>
@@ -219,13 +217,13 @@
                                                                 <td align="right"><b>SMTP Server Password:</b></td>
                                                                 <td><input class="olotd5" size="50" type="password" name="email_password" value="{$company[q].COMPANY_SMTP_PASSWORD}"><font color="RED">*</font>Only required if authentication is needed</td>
                                                             </tr>
-                                                            {section name=w loop=$setup}
-                                                                <tr>
-                                                                     <td colspan="2"><input class="olotd5" type="submit" name="submit"  value="Update"></td>
-                                                                </tr>
-                                                            {/section}
-                                                        </table>
-                                                    {/section}
+                                                        {/section}
+                                                        {section name=w loop=$setup}
+                                                            <tr>
+                                                                 <td colspan="2"><input class="olotd5" type="submit" name="submit"  value="Update"></td>
+                                                            </tr>
+                                                        {/section}
+                                                    </table>                                                    
                                                 </td>
                                             </tr>
                                         </table>
@@ -260,12 +258,10 @@
                                                             </tr>
                                                             <tr>
                                                                 <td><textarea cols="80" rows="15" class="olotd5" name="new_invoice" >{$setup[e].EMAIL_MSG_NEW_INVOICE}</textarea></td>
-                                                            </tr>
-                                                            {section name=w loop=$setup}
+                                                            </tr>                                                            
                                                                 <tr>
-                                                                    <td colspan="2"> <input class="olotd5" type="submit" name="submit"  value="Update"></td>
-                                                                </tr>
-                                                            {/section}
+                                                                    <td colspan="2"> <input class="olotd5" type="submit" name="submit" value="Update"></td>
+                                                                </tr>                                                            
                                                         </table>
                                                         <table  cellpadding="5" cellspacing="0">
                                                             <tr>
@@ -281,12 +277,10 @@
                                                             </tr>
                                                             <tr>
                                                                 <td><textarea cols="80" rows="15" class="olotd5" name="new_wo" >{$setup[e].EMAIL_MSG_WO_CREATED}</textarea></td>
-                                                            </tr>
-                                                            {section name=w loop=$setup}
+                                                            </tr>                                                            
                                                                 <tr>
                                                                     <td colspan="2"> <input class="olotd5" type="submit" name="submit"  value="Update"></td>
-                                                                </tr>
-                                                            {/section}
+                                                                </tr>                                                            
                                                         </table>
                                                     {/section}
                                                 </td>

@@ -3,6 +3,7 @@
 <script src="{$theme_js_dir}editor-config.js"></script>
 <script>{include file="`$theme_js_dir_finc`modules/workorder.js"}</script>
 
+{section name=i loop=$customer_details}
 <table width="100%">
     <tr>
         <td>            
@@ -19,11 +20,10 @@
                 <!-- This is a div that hold all the tabbed contents -->
                 <div class="tab_contents_container">
                     
-                    <!-- Tab 1 Contents - work Order Details -->
-                    <div id="tab_1_contents" class="tab_contents tab_contents_active">
-                        <table width="700" cellpadding="5" cellspacing="0" border="0" >
-                            <tr>
-                                {section name=i loop=$customer_details}
+                    <!-- Tab 1 Contents - New Work Order Form -->
+                    <div id="tab_1_contents" class="tab_contents tab_contents_active">                        
+                        <table width="700" cellpadding="5" cellspacing="0" border="0">
+                            <tr>                                
                                 <td class="menuhead2" width="80%">{$translate_workorder_new} {$translate_workorder_work_order} {$translate_workorder_for} {$customer_details[i].CUSTOMER_DISPLAY_NAME}</td>
                                 <td class="menuhead2" width="20%" align="right" valign="middle">
                                     <a><img src="{$theme_images_dir}icons/16x16/help.gif" border="0" 
@@ -37,8 +37,7 @@
                                     <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0" >
                                         <tr>
                                             <td width="100%" valign="top" >                                               
-                                                {$form.javascript}
-                                                <!-- New Work Order Form -->
+                                                {$form.javascript}                                                    
                                                 {literal}
                                                 <form method="POST" action="index.php?page=workorder:new" name="new_workorder" id="new_workorder" onsubmit="return validateForm(this); return false;">
                                                 {/literal}
@@ -106,93 +105,90 @@
                                                     <br>
                                                     <input type="submit" name="submit" value="{$translate_workorder_submit}"/>
                                                 </form>
-                                {/section}
                                                 <br>
+                                            </td>
+                                        </tr>
+                                    </table>                                                
+                                </td>
+                            </tr>
+                        </table>                                
+                    </div>
+
+                    <!-- Tab 2 Contents - Customer Details -->
+                    <div id="tab_2_contents" class="tab_contents">                                        
+                        <table class="olotable" border="0" cellpadding="2" cellspacing="0" width="80%" summary="Customer Contact">
+                            <tr>
+                                <td class="olohead" colspan="4">
+                                    <table width="100%">
+                                        <tr>
+                                            <td class="menuhead2" width="80%">{$translate_workorder_cutomer_contact_title}</td>
+                                            <td class="menuhead2" width="20%" align="right">
+                                                <a href="?page=customer:edit&amp;customer_id={$customer_details[i].CUSTOMER_ID}"<img src="{$theme_images_dir}icons/16x16/small_edit.gif" border="0" alt="" /></a>
                                             </td>
                                         </tr>
                                     </table>
                                 </td>
                             </tr>
-                        </table>
-                    </div>
-
-                    <!-- Tab 2 Contents - Customer Details-->
-                    <div id="tab_2_contents" class="tab_contents">
-                    <!-- Display Customer Contact Infromation -->
-                        {section name=i loop=$customer_details}
-                            <table class="olotable" border="0" cellpadding="2" cellspacing="0" width="80%" summary="Customer Contact">
-                                <tr>
-                                    <td class="olohead" colspan="4">
-                                        <table width="100%">
-                                            <tr>
-                                                <td class="menuhead2" width="80%">{$translate_workorder_cutomer_contact_title}</td>
-                                                <td class="menuhead2" width="20%" align="right">
-                                                    <a href="?page=customer:edit&amp;customer_id={$customer_details[i].CUSTOMER_ID}"<img src="{$theme_images_dir}icons/16x16/small_edit.gif" border="0" alt="" /></a>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="menutd"><b>{$translate_workorder_contact}</b></td>
-                                    <td class="menutd"> {$customer_details[i].CUSTOMER_FIRST_NAME} {$customer_details[i].CUSTOMER_LAST_NAME}</td>
-                                    <td class="menutd"><b>{$translate_workorder_email}</b></td>
-                                    <td class="menutd"> {$customer_details[i].CUSTOMER_EMAIL}</td>
-                                </tr>
-                                <tr>
-                                    <td class="menutd"><b>{$translate_workorder_first_name}</b></td>
-                                    <td class="menutd">{$customer_details[i].CUSTOMER_FIRST_NAME}</td>
-                                    <td class="menutd"><b>{$translate_workorder_last_name}</b>
-                                    <td class="menutd">{$customer_details[i].CUSTOMER_LAST_NAME}</td>
-                                </tr>
-                                <tr>
-                                    <td class="row2" colspan="4">&nbsp;</td>
-                                </tr>
-                                <tr>
-                                    <td class="menutd"><b>{$translate_workorder_address}</b></td>
-                                    <td class="menutd"></td>
-                                    <td class="menutd"><b>{$translate_workorder_primary_phone}</b></td>
-                                    <td class="menutd">{$customer_details[i].CUSTOMER_PHONE}</td>
-                                </tr>
-                                <tr>
-                                    <td class="menutd" colspan="2">{$customer_details[i].CUSTOMER_ADDRESS|nl2br}</td>
-                                    <td class="menutd"><b>{$translate_workorder_fax}</b></td>
-                                    <td class="menutd"> {$customer_details[i].CUSTOMER_WORK_PHONE}</td>
-                                </tr>
-                                <tr>
-                                    <td class="menutd"> {$customer_details[i].CUSTOMER_CITY},</td>
-                                    <td class="menutd">{$customer_details[i].CUSTOMER_STATE} {$customer_details[i].CUSTOMER_ZIP}</td>
-                                    <td class="menutd"><b>{$translate_workorder_mobile}</b></td>
-                                    <td class="menutd"> {$customer_details[i].CUSTOMER_MOBILE_PHONE}</td>
-                                </tr>
-                                <tr>
-                                    <td class="row2" colspan="4">&nbsp;</td>
-                                </tr>
-                                <tr>
-                                    <td class="menutd"><b>{$translate_workorder_type}</b></td>
-                                    <td class="menutd">
-                                        {if $customer_details[i].CUSTOMER_TYPE =='1'}{$translate_workorder_customer_type_1}{/if}
-                                        {if $customer_details[i].CUSTOMER_TYPE =='2'}{$translate_workorder_customer_type_2}{/if}
-                                        {if $customer_details[i].CUSTOMER_TYPE =='3'}{$translate_workorder_customer_type_3}{/if}
-                                        {if $customer_details[i].CUSTOMER_TYPE =='4'}{$translate_workorder_customer_type_4}{/if}
-                                        {if $customer_details[i].CUSTOMER_TYPE =='5'}{$translate_workorder_customer_type_5}{/if}
-                                        {if $customer_details[i].CUSTOMER_TYPE =='6'}{$translate_workorder_customer_type_6}{/if}
-                                        {if $customer_details[i].CUSTOMER_TYPE =='7'}{$translate_workorder_customer_type_7}{/if}
-                                        {if $customer_details[i].CUSTOMER_TYPE =='8'}{$translate_workorder_customer_type_8}{/if}
-                                        {if $customer_details[i].CUSTOMER_TYPE =='9'}{$translate_workorder_customer_type_9}{/if}
-                                        {if $customer_details[i].CUSTOMER_TYPE =='10'}{$translate_workorder_customer_type_10}{/if}
-                                    </td>
-                                    <td class="menutd"></td>
-                                    <td class="menutd"></td>
-                                </tr>
-                                <tr>
-                                    <td class="row2" colspan="4">&nbsp;</td>
-                                </tr>
-                            </table>
-                        {/section}
+                            <tr>
+                                <td class="menutd"><b>{$translate_workorder_contact}</b></td>
+                                <td class="menutd"> {$customer_details[i].CUSTOMER_FIRST_NAME} {$customer_details[i].CUSTOMER_LAST_NAME}</td>
+                                <td class="menutd"><b>{$translate_workorder_email}</b></td>
+                                <td class="menutd"> {$customer_details[i].CUSTOMER_EMAIL}</td>
+                            </tr>
+                            <tr>
+                                <td class="menutd"><b>{$translate_workorder_first_name}</b></td>
+                                <td class="menutd">{$customer_details[i].CUSTOMER_FIRST_NAME}</td>
+                                <td class="menutd"><b>{$translate_workorder_last_name}</b>
+                                <td class="menutd">{$customer_details[i].CUSTOMER_LAST_NAME}</td>
+                            </tr>
+                            <tr>
+                                <td class="row2" colspan="4">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="menutd"><b>{$translate_workorder_address}</b></td>
+                                <td class="menutd"></td>
+                                <td class="menutd"><b>{$translate_workorder_primary_phone}</b></td>
+                                <td class="menutd">{$customer_details[i].CUSTOMER_PHONE}</td>
+                            </tr>
+                            <tr>
+                                <td class="menutd" colspan="2">{$customer_details[i].CUSTOMER_ADDRESS|nl2br}</td>
+                                <td class="menutd"><b>{$translate_workorder_fax}</b></td>
+                                <td class="menutd"> {$customer_details[i].CUSTOMER_WORK_PHONE}</td>
+                            </tr>
+                            <tr>
+                                <td class="menutd"> {$customer_details[i].CUSTOMER_CITY},</td>
+                                <td class="menutd">{$customer_details[i].CUSTOMER_STATE} {$customer_details[i].CUSTOMER_ZIP}</td>
+                                <td class="menutd"><b>{$translate_workorder_mobile}</b></td>
+                                <td class="menutd"> {$customer_details[i].CUSTOMER_MOBILE_PHONE}</td>
+                            </tr>
+                            <tr>
+                                <td class="row2" colspan="4">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="menutd"><b>{$translate_workorder_type}</b></td>
+                                <td class="menutd">
+                                    {if $customer_details[i].CUSTOMER_TYPE =='1'}{$translate_workorder_customer_type_1}{/if}
+                                    {if $customer_details[i].CUSTOMER_TYPE =='2'}{$translate_workorder_customer_type_2}{/if}
+                                    {if $customer_details[i].CUSTOMER_TYPE =='3'}{$translate_workorder_customer_type_3}{/if}
+                                    {if $customer_details[i].CUSTOMER_TYPE =='4'}{$translate_workorder_customer_type_4}{/if}
+                                    {if $customer_details[i].CUSTOMER_TYPE =='5'}{$translate_workorder_customer_type_5}{/if}
+                                    {if $customer_details[i].CUSTOMER_TYPE =='6'}{$translate_workorder_customer_type_6}{/if}
+                                    {if $customer_details[i].CUSTOMER_TYPE =='7'}{$translate_workorder_customer_type_7}{/if}
+                                    {if $customer_details[i].CUSTOMER_TYPE =='8'}{$translate_workorder_customer_type_8}{/if}
+                                    {if $customer_details[i].CUSTOMER_TYPE =='9'}{$translate_workorder_customer_type_9}{/if}
+                                    {if $customer_details[i].CUSTOMER_TYPE =='10'}{$translate_workorder_customer_type_10}{/if}
+                                </td>
+                                <td class="menutd"></td>
+                                <td class="menutd"></td>
+                            </tr>
+                            <tr>
+                                <td class="row2" colspan="4">&nbsp;</td>
+                            </tr>
+                        </table>                        
                     </div>
                 </div>
             </div>
         </td>
     </tr>
 </table>
+{/section}

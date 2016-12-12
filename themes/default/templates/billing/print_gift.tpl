@@ -27,38 +27,40 @@
                                 </td>
                                 <td valign="top" width="50%">
                                     {section name=g loop=$gift}
-                                    <table cellpadding="0" cellspacing="0" border="0" width="100%">
-                                        <tr>
-                                            <td><b>{$translate_billing_amount}</b></td>
-                                            <td>${$gift[g].AMOUNT|string_format:"%.2f"}</td>
-                                        </tr>
-                                        <tr>
-                                            <td><b>{$translate_billing_gift_code_3}</b></td>
-                                            <td>{$gift[g].GIFT_CODE}</td>
-                                        </tr>
-                                        <tr>
-                                            <td><b>{$translate_billing_created}</b></td>
-                                            <td>{$gift[g].DATE_CREATE|date_format:"$date_format"}</td>
-                                        </tr>
-                                        <tr>
-                                            <td><b>{$translate_billing_expires}</b></td>
-                                            <td>{$gift[g].EXPIRE|date_format:"$date_format"}</td>
-                                        </tr>
-                                    </table>    
+                                        <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                                            <tr>
+                                                <td><b>{$translate_billing_amount}</b></td>
+                                                <td>${$gift[g].AMOUNT|string_format:"%.2f"}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><b>{$translate_billing_gift_code_3}</b></td>
+                                                <td>{$gift[g].GIFT_CODE}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><b>{$translate_billing_created}</b></td>
+                                                <td>{$gift[g].DATE_CREATE|date_format:"$date_format"}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><b>{$translate_billing_expires}</b></td>
+                                                <td>{$gift[g].EXPIRE|date_format:"$date_format"}</td>
+                                            </tr>
+                                        </table>
+                                    {/section}
                                 </td>
                             </tr>
                         </table>
-                        <table cellpadding="3" cellspacing="0" border="0" width="100%">
-                            <tr>
-                                <td>{$gift[g].MEMO}</td>
-                            </tr>
-                        </table>
+                        {section name=g loop=$gift}        
+                            <table cellpadding="3" cellspacing="0" border="0" width="100%">
+                                <tr>
+                                    <td>{$gift[g].MEMO}</td>
+                                </tr>
+                            </table>
+                        {/section}
                         <br>
                         {$translate_billing_gift_note_1} ${$gift[g].AMOUNT|string_format:"%.2f"} {$translate_billing_gift_note_2}
                     </td>
                 </tr>
             </table>
-                                    {/section}
         </td>
     </tr>
 </table>

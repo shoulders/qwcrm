@@ -1,6 +1,5 @@
 <!-- print_customer_workorder_slip.tpl - Customer Work Order Slip Print Template -->
-{section name=i loop=$single_work_order}
-    
+{section name=i loop=$single_work_order}    
     <!-- Header -->
     <table width="900" border="0" cellpadding="2" cellspacing="0" style="border-collapse: collapse;">
         <tr bgcolor="#999999">
@@ -250,5 +249,5 @@
         <tr border="0">
             <td border="0" align="center">{$translate_workorder_print_this_workorder_is_confidential}</td>
         </tr>
-    </table>
+    </table>            
 {/section}

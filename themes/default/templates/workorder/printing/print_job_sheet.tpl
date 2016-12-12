@@ -1,6 +1,5 @@
 <!-- print_job_sheet_slip.tpl - Job Sheet Print Template -->
-{section name=i loop=$single_work_order}
-    
+{section name=i loop=$single_work_order}    
     <!-- Header -->
     <table width="900" border="0" cellpadding="2" cellspacing="0" style="border-collapse: collapse;">
         <tr>
@@ -118,5 +117,5 @@
         <tr>
             <td style="text-align: right;"><p><b>{$translate_workorder_closed}:  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b><br /><br /></td>
         </tr>
-    </table>
+    </table>            
 {/section}

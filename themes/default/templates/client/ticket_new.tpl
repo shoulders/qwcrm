@@ -16,9 +16,9 @@
             {literal}
             <form action="?page=client:ticket_new" method="post" onsubmit="try { var myValidator = validate_submit; } catch(e) { return true; } return myValidator(this);">
             {/literal}
-                <!-- Let get some info from the customer if this is there first time using this service -->
-                {literal}
+                <!-- Let get some info from the customer if this is there first time using this service -->                
                 <script>
+                {literal}    
                     $(function(){
                         $("#newuser").click(function(event) {
                             event.preventDefault();
@@ -29,8 +29,8 @@
                             $("#newuserform").slideUp();
                         });
                     });
-                </script>
-                {/literal}
+                {/literal}    
+                </script>                
                 <a href="#" id="newuser">{$translate_submit_new_account}</a>
                 <div id="newuserform">
                     <table width="100%" class="olotd" cellpadding="4" cellspacing="2">

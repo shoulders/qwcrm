@@ -28,7 +28,7 @@
         <td class="olotd4">
             <table width="100%" cellspacing="0" cellpadding="4">
                 <tr>
-                    <td>{$single_workorder[i].WORK_ORDER_DESCRIPTION }<br></td>
+                    <td>{$single_workorder[i].WORK_ORDER_DESCRIPTION}<br></td>
                 </tr>
             </table>
         </td>
