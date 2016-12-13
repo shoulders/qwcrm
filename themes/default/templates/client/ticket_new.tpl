@@ -1,7 +1,7 @@
 <!-- ticket_new.tpl - Submit a New Support Request - This is were you can submit your support request through of Helpdesk system  -->
 <script src="{$theme_js_dir}tinymce/tinymce.min.js"></script>
 <script src="{$theme_js_dir}editor-config.js"></script>
-{include file='client/ticket_new.js'}     
+<script>{include file="`$theme_js_dir_finc`modules/client.js"}</script>   
                         
 <table class="olotable" width="60%" align="left" border ="1" cellpadding="5" cellspacing="5" >
     <tr>

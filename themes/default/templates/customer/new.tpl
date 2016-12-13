@@ -1,31 +1,28 @@
-<!-- Add New Customer tpl -->
+<!-- new.tpl -->
 <script src="{$theme_js_dir}tinymce/tinymce.min.js"></script>
 <script src="{$theme_js_dir}editor-config.js"></script>
+<script>{include file="`$theme_js_dir_finc`modules/customer.js"}</script>
 
 <table width="100%"   border="0" cellpadding="20" cellspacing="5">
     <tr>
-        <td>
-            
+        <td>            
             <table width="700" cellpadding="5" cellspacing="0" border="0" >
                 <tr>
                     <td class="menuhead2" width="80%">{$translate_customer_add}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
-                        <a><img src="{$theme_images_dir}icons/16x16/help.gif" alt="" border="0"
+                        <a>
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" alt="" border="0"
                                 onMouseOver="ddrivetip('<b>{$translate_customer_add}</b><hr><p><i>Display Name:</i>This is the customers display name. It will show up on all pertaining pages. This can be a company name or the customers Fist name and last name.<br><br> <i>First Name:</i>This is the customers first name or if this is a bussiness this is the main contacts first name for the bussiness.<br></p>')"
                                 onMouseOut="hideddrivetip()"
-                                onClick="window.location"></a>
+                                onClick="window.location">
+                        </a>
                     </td>
                 </tr>
                 <tr>
-                    <td class="menutd2" colspan="2">
-                    {if $error_msg != ""}
-                        {include file="core/error.tpl"}
-                    {/if}
-                    {include file="customer/javascripts.js"}
+                    <td class="menutd2" colspan="2">               
                         <table class="olotable" width="100%" border="0" cellpadding="5" cellspacing="0">
                             <tr>
                                 <td class="menutd">
-
                                     <table class="menutable" width="100%" border="0" cellpadding="2" cellspacing="2" >
                                         <tr>
                                             <td>
@@ -41,10 +38,12 @@
                                                                         <tr>
                                                                             <td align="right"><b>{$translate_display}</b><span style="color: #ff0000">*</span></td>
                                                                             <td colspan="3"><input class="olotd5" size="60" name="displayName" type="text" onkeypress="return OnlyAlphaNumeric();" /></td>
-                                                                        </tr><tr>
+                                                                        </tr>
+                                                                        <tr>
                                                                             <td align="right"><b>{$translate_first}</b></td>
                                                                             <td><input class="olotd5" name="firstName" type="text" onkeypress="return OnlyAlphaNumeric();" /></td>
-                                                                        </tr><tr>
+                                                                        </tr>
+                                                                        <tr>
                                                                             <td align="right"><b>{$translate_last}</b></td>
                                                                             <td><input class="olotd5" name="lastName" type="text" onkeypress="return OnlyAlphaNumeric();" /></td>
                                                                         </tr>
@@ -62,12 +61,11 @@
                                                                                     <option value="8">{$translate_customer_type_8}</option>
                                                                                     <option value="9">{$translate_customer_type_9}</option>
                                                                                     <option value="10">{$translate_customer_type_10}</option>
-
                                                                                 </select>
                                                                                 <input type="hidden" name="page" value="customer:new">
                                                                             </td>
-
-                                                                        </tr><tr>
+                                                                        </tr>
+                                                                        <tr>
                                                                             <td align="right"><b>{$translate_customer_discount}</b></td>
                                                                             <td><a><input type="text" size="4" name="discount" value="" class="olotd5" onkeypress="return onlyNumbersPeriods();" ><b>%</b></a></td>
                                                                         </tr>
@@ -86,35 +84,40 @@
                                                                     </tbody>
                                                                 </table>
                                                             </td>
-                                                        </tr><tr>
+                                                        </tr>
+                                                        <tr>
                                                             <td class="menuhead" colspan="2">{$translate_phone}</td>
-                                                        </tr><tr>
+                                                        </tr>
+                                                        <tr>
                                                             <td colspan="2">
-
                                                                 <table>
                                                                     <tr>
                                                                         <td align="right"><b>{$translate_customer_home}</b></td>
                                                                         <td><input class="olotd5" name="homePhone" type="text" onkeypress="return onlyPhoneNumbers();" /></td>
-                                                                    </tr><tr>
+                                                                    </tr>
+                                                                    <tr>
                                                                         <td align="right"><b>{$translate_customer_work}</b></td>
                                                                         <td><input class="olotd5" name="workPhone" type="text" onkeypress="return onlyPhoneNumbers();" /></td>
-                                                                    </tr><tr>
+                                                                    </tr>
+                                                                    <tr>
                                                                         <td align="right"><b>{$translate_customer_mobile}</b></td>
                                                                         <td><input class="olotd5" name="mobilePhone" type="text" onkeypress="return onlyPhoneNumbers();" /></td>
                                                                     </tr>
                                                                 </table>
                                                             </td>
-                                                        </tr><tr>
+                                                        </tr>
+                                                        <tr>
                                                             <td class="menuhead" colspan="2">{$translate_customer_address}</td>
-                                                        </tr><tr>
+                                                        </tr>
+                                                        <tr>
                                                             <td colspan="2">
-
                                                                 <table>
                                                                     <tbody align="left">
                                                                         <tr>
                                                                             <td align="right"><b>{$translate_customer_address}</b></td>
                                                                             <td colspan="3"><textarea class="olotd5 mceNoEditor" cols="30" rows="3" name="address" ></textarea></td>
-                                                                        </tr><tr>
+                                                                        </tr>
+                                                                        <tr>
                                                                             <td align="right"><b>{$translate_customer_city}</b></td>
                                                                             <td><input class="olotd5" name="city" type="text" /></td>
                                                                         </tr>
@@ -138,28 +141,20 @@
                                                                             <td><input class="olotd5" name="submit" value="Submit" type="submit" /></td>
                                                                         </tr>
                                                                     </tbody>
-                                                                </table>    
-
+                                                                </table>
                                                             </td>
                                                         </tr>
                                                     </table>
-
                                                 </form>
                                             </td>
                                         </tr>
                                     </table>
-
                                 </td>
                             </tr>
                         </table>
-
                     </td>
                 </tr>
             </table>
-
         </td>
     </tr>
 </table>
-
-
-

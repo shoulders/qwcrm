@@ -6,39 +6,7 @@
 <script src="{$theme_js_dir}jscal2/jscal2.js"></script>
 <script src="{$theme_js_dir}jscal2/unicode-letter.js"></script>
 <script>{include file="`$theme_js_dir_finc`jscal2/language.js"}</script>
-<script>
-{literal}    
-    function validate_gift(frm) {
-        
-        var value = '';
-        var errFlag = new Array();
-        var _qfGroups = {};
-        _qfMsg = '';
-
-        value = frm.elements['expire'].value;
-        if (value == '' && !errFlag['expire']) {
-          errFlag['expire'] = true;
-          _qfMsg = _qfMsg + '\n - {/literal}{$translate_billing_error_date}{literal}';
-          frm.elements['expire'].className = 'error';
-        }
-
-        value = frm.elements['amount'].value;
-        if (value == '' && !errFlag['amount']) {
-          errFlag['amount'] = true;
-          _qfMsg = _qfMsg + '\n - {/literal}{$translate_billing_error_gift_amount}{literal}';
-          frm.elements['amount'].className = 'error';
-        }
-
-        if (_qfMsg != '') {
-            _qfMsg = '{/literal}{$translate_billing_error_invalid}{literal}' + _qfMsg;
-            _qfMsg = _qfMsg + '\n{/literal}{$translate_billing_error_fix}{literal}';
-            alert(_qfMsg);
-            return false;
-          }
-          return true;
-    }
-{/literal}
-</script>
+<script>{include file="`$theme_js_dir_finc`modules/billing.js"}</script>
 
 <table width="700" border="0" cellpadding="20" cellspacing="5">
     <tr>
