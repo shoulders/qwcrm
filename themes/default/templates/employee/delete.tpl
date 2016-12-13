@@ -1,4 +1,4 @@
-<!-- Edit Employee tpl -->
+<!-- delete.tpl -->
 <table width="100%" cellpadding="5" cellspacing="5">
     <tr>
         <td>
@@ -6,9 +6,9 @@
             <table class="menutable" width="100%" border="0" cellpadding="0" cellspacing="0">
                 <tr>
                     <td class="menuhead">Delete Employee</td>
-                </tr><tr>
-                    <td class="menutd">
-                    
+                </tr>
+                <tr>
+                    <td class="menutd">                    
                         <table class="olotable" width="100%" border="1" cellpadding="2" cellspacing="2" >
                             <tr>
                                 <td class="olotd">
@@ -18,28 +18,22 @@
                                     <p>&nbsp;</p>
                                 </td>
                             </tr>
-                        </table>
-                        
+                        </table>                        
                     </td>
                 </tr>
-            </table>
-            
+            </table>            
             <br>
-                        <table  width="100%" border="0" cellpadding="0" cellspacing="0">
+            <table  width="100%" border="0" cellpadding="0" cellspacing="0">
                 <tr>
-                    <td>
-                    
+                    <td>                    
                         <table width="100%" border="0" cellpadding="2" cellspacing="2" >
                             <tr>
-                                <td>
-                                </td>
+                                <td></td>
                             </tr>
-                        </table>
-                        
+                        </table>                        
                     </td>
                 </tr>
-            </table>        
-                
+            </table>                
         </td>
     </tr>
 </table>
