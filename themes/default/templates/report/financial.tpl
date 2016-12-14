@@ -1,54 +1,53 @@
-<!-- financial.tpl - Finance Report -->
-
+<!-- financial.tpl -->
 <link rel="stylesheet" href="{$theme_js_dir}jscal2/css/jscal2.css" />
 <link rel="stylesheet" href="{$theme_js_dir}jscal2/css/steel/steel.css" />
 <script src="{$theme_js_dir}jscal2/jscal2.js"></script>
 <script src="{$theme_js_dir}jscal2/unicode-letter.js"></script>
-<script>{include file='../js/jscal2/language.js'}</script>
+<script>{include file="`$theme_js_dir_finc`jscal2/language.js"}</script>
 
 <form action="index.php?page=report:financial" method="POST" name="stats_report" id="stats_report"> 
     <table width="650px" border="0" cellpadding="20" cellspacing="5">
-      <tr>
-        <td class="olotd">
-          <table width="100%" cellpadding="4" cellspacing="0" border="0" >
-            <tr align="left">
-              <td><b>{$translate_stats_report_from}: </b></td>
-              <td><b>{$translate_stats_report_to}: </b></td>
-            </tr>
-            <tr>
-              <td align="left">
-                <input size="10" name="start_date" type="text" id="start_date" value="{$start_date|date_format:$date_format}"/>
-                <input type="button" id="start_date_button" value="+">
-                {literal}
-                <script>
-                    Calendar.setup({
-                        trigger     : "start_date_button",
-                        inputField  : "start_date",
-                        dateFormat  : "{/literal}{$date_format}{literal}"                                                                                            
-                    });
-                </script>
-                {/literal}
-              </td>
-                <td>
-                    <input size="10" name="end_date" type="text" id="end_date" value="{$end_date|date_format:$date_format}">
-                    <input type="button" id="end_date_button" value="+">
-                    {literal}
-                    <script>
-                        Calendar.setup({
-                            trigger     : "end_date_button",
-                            inputField  : "end_date",
-                            dateFormat  : "{/literal}{$date_format}{literal}"                                                                                            
-                        });
-                    </script>
-                    {/literal}
-                </td>
-            </tr>
-          </table>
+        <tr>
+            <td class="olotd">
+                <table width="100%" cellpadding="4" cellspacing="0" border="0" >
+                    <tr align="left">
+                        <td><b>{$translate_stats_report_from}: </b></td>
+                        <td><b>{$translate_stats_report_to}: </b></td>
+                    </tr>
+                    <tr>
+                        <td align="left">
+                            <input size="10" name="start_date" type="text" id="start_date" value="{$start_date|date_format:$date_format}"/>
+                            <input type="button" id="start_date_button" value="+">
+                            <script>
+                            {literal}
+                                Calendar.setup({
+                                    trigger     : "start_date_button",
+                                    inputField  : "start_date",
+                                    dateFormat  : "{/literal}{$date_format}{literal}"                                                                                            
+                                });
+                            {/literal}
+                            </script>                
+                        </td>
+                        <td>
+                            <input size="10" name="end_date" type="text" id="end_date" value="{$end_date|date_format:$date_format}">
+                            <input type="button" id="end_date_button" value="+">                    
+                            <script>
+                            {literal}
+                                Calendar.setup({
+                                    trigger     : "end_date_button",
+                                    inputField  : "end_date",
+                                    dateFormat  : "{/literal}{$date_format}{literal}"                                                                                            
+                                });
+                            {/literal}
+                            </script>                    
+                        </td>
+                    </tr>
+                </table>
             </td>
-            </tr>
-            <tr>
-              <td align="center"><input type="submit" name="submit" value="{$translate_stats_submit}"></td>
-            </tr>
+        </tr>
+        <tr>
+            <td align="center"><input type="submit" name="submit" value="{$translate_stats_submit}"></td>
+        </tr>
     </table>
     <table width="650px" class="olotable"  border="0" cellpadding="4" cellspacing="0">
         <tr>
@@ -56,9 +55,9 @@
                 <table width="100%" cellpadding="4" cellspacing="0" border="0" >
                     <tr>
                         <td class="menuhead2" width="100%">&nbsp;{$translate_stats_basic_statistics}
-                                <a style="float:right;"><img src="{$theme_images_dir}icons/16x16/help.gif" border="0" alt=""
-                                onMouseOver="ddrivetip('<b>{$translate_stats_basic_statistics_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_stats_basic_statistics_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>')"
-                                onMouseOut="hideddrivetip()"></a>
+                            <a style="float:right;">
+                                <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{$translate_stats_basic_statistics_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_stats_basic_statistics_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();">
+                            </a>
                         </td>
                     </tr>
                     <tr>
@@ -74,7 +73,7 @@
                                     <td class="olotd4" valign="top">
                                         <table>
                                             <tr>
-                                                <td ><b>{$translate_stats_new}:</b></td>
+                                                <td><b>{$translate_stats_new}:</b></td>
                                                 <td><font color="red"<b> {$new_customers}</b></font></td>
                                             </tr>
                                         </table>
@@ -90,12 +89,12 @@
                                                 <td><font color="red"<b> {$wo_closed}</b></font></td>
                                             </tr>
                                         </table>
+                                    </td>
                                     <td class="olotd4" valign="top">
-                                        <table >
+                                        <table>
                                             <tr>
                                                 <td><b>{$translate_stats_new}:</b></td>
-                                                <td><font color="red"<b> {$new_invoices} </b>
-                                                    </font></td>
+                                                <td><font color="red"<b> {$new_invoices}</b></font></td>
                                             </tr>
                                             <tr>
                                                 <td><b>{$translate_stats_paid}:</b></td>
@@ -104,7 +103,7 @@
                                         </table>
                                     </td>
                                     <td class="olotd4" valign="top">
-                                        <table >
+                                        <table>
                                             <tr>
                                                 <td><b>{$translate_stats_total_invoiced}:</b></td>
                                                 <td><font color="red"<b>{$currency_sym}{$invoice_amount_sum}</b></font></td>
@@ -123,6 +122,7 @@
                                             </tr>
                                         </table>
                                     </td>
+                                </tr>
                             </table>
                         </td>
                     </tr>
@@ -139,9 +139,9 @@
                 <table width="100%" cellpadding="4" cellspacing="0" border="0" >
                     <tr>
                         <td class="menuhead2" width="100%">&nbsp;{$translate_stats_advanced_statistics}
-                                <a style="float:right;"><img src="{$theme_images_dir}icons/16x16/help.gif" border="0" alt=""
-                                onMouseOver="ddrivetip('<b>{$translate_stats_advanced_statistics_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_stats_advanced_statistics__help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>')"
-                                onMouseOut="hideddrivetip()"></a>
+                            <a style="float:right;">
+                                <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{$translate_stats_advanced_statistics_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_stats_advanced_statistics__help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();">
+                            </a>
                         </td>
                     </tr>
                     <tr>
@@ -156,7 +156,7 @@
                                 </tr>
                                 <tr>
                                     <td class="olotd4" valign="top">
-                                        <table >
+                                        <table>
                                             <tr>
                                                 <td><b>Items:</b></td>
                                                 <td><font color="red"<b> {$parts_different_items_count}</b></font></td>
@@ -186,8 +186,9 @@
                                                 <td><font color="red"<b>{$currency_sym}{$labour_sub_total_sum}</b></font></td>
                                             </tr>
                                         </table>
+                                    </td>
                                     <td class="olotd4" valign="top">
-                                        <table >
+                                        <table>
                                             <tr>
                                                 <td><b>Net:</b></td>
                                                 <td><font color="red"<b>{$currency_sym}{$expense_net_amount_sum}</b></font></td>
@@ -203,7 +204,7 @@
                                         </table>
                                     </td>
                                     <td class="olotd4" valign="top">
-                                        <table >
+                                        <table>
                                             <tr>
                                                 <td><b>Net:</b></td>
                                                 <td><font color="red"<b>{$currency_sym}{$refund_net_amount_sum}</b></font></td>
@@ -219,7 +220,7 @@
                                         </table>
                                     </td>
                                     <td class="olotd4" valign="top">
-                                        <table >
+                                        <table>
                                             <tr>
                                                 <td><b>Sub:</b></td>
                                                 <td><font color="red"<b>{$currency_sym}{$invoice_sub_total_sum}</b></font></td>
@@ -242,6 +243,7 @@
                                             </tr>
                                         </table>
                                     </td>
+                                </tr>
                             </table>
                         </td>
                     </tr>

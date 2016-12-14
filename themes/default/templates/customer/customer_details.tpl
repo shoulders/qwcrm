@@ -308,9 +308,9 @@
                                     <td class="olotd4"><a href="?page=invoice:new&wo_id={$unpaid_invoices[w].WORKORDER_ID}&customer_id={$unpaid_invoices[w].CUSTOMER_ID}&page_title={$translate_customer_invoice}">{$unpaid_invoices[w].INVOICE_ID}</a></td>
                                     <td class="olotd4"><a href="?page=workorder:details&wo_id={$unpaid_invoices[w].WORKORDER_ID}&page_title={$translate_customer_work_order_id} {$unpaid_invoices[w].WORKORDER_ID}">{$unpaid_invoices[w].WORKORDER_ID}</a></td>
                                     <td class="olotd4">{$unpaid_invoices[w].INVOICE_DATE|date_format:"$date_format"}</td>
-                                    <td class="olotd4">{$currency_symbol}{$unpaid_invoices[w].INVOICE_AMOUNT|string_format:"%.2f"}</td>
-                                    <td class="olotd4">{$currency_symbol}{$unpaid_invoices[w].PAID_AMOUNT|string_format:"%.2f"}</td>
-                                    <td class="olotd4">{$currency_symbol}{$unpaid_invoices[w].balance|string_format:"%.2f"}</td>
+                                    <td class="olotd4">{$currency_sym}{$unpaid_invoices[w].INVOICE_AMOUNT|string_format:"%.2f"}</td>
+                                    <td class="olotd4">{$currency_sym}{$unpaid_invoices[w].PAID_AMOUNT|string_format:"%.2f"}</td>
+                                    <td class="olotd4">{$currency_sym}{$unpaid_invoices[w].balance|string_format:"%.2f"}</td>
                                     <td class="olotd4">{$unpaid_invoices[w].PAID_DATE|date_format:"$date_format"}</td>
                                     <td class="olotd4">{$unpaid_invoices[w].EMPLOYEE_DISPLAY_NAME}</td>
                                     <td class="olotd4" align="center">
@@ -341,9 +341,9 @@
                                     <td class="olotd4"><a href="?page=invoice:view&customer_id={$paid_invoices[w].CUSTOMER_ID}&invoice_id={$paid_invoices[w].INVOICE_ID}&page_title={$translate_customer_invoice}">{$paid_invoices[w].INVOICE_ID}</a></td>
                                     <td class="olotd4"><a href="?page=workorder:details&wo_id={$paid_invoices[w].WORKORDER_ID}&page_title={$translate_customer_work_order_id} {$paid_invoices[w].WORKORDER_ID}">{$paid_invoices[w].WORKORDER_ID}</a></td>
                                     <td class="olotd4">{$paid_invoices[w].INVOICE_DATE|date_format:"$date_format"}</td>
-                                    <td class="olotd4">{$currency_symbol}{$paid_invoices[w].INVOICE_AMOUNT|string_format:"%.2f"}</td>
-                                    <td class="olotd4">{$currency_symbol}{$paid_invoices[w].PAID_AMOUNT|string_format:"%.2f"}</td>
-                                    <td class="olotd4">{$currency_symbol}{$paid_invoices[w].balance|string_format:"%.2f"}</td>
+                                    <td class="olotd4">{$currency_sym}{$paid_invoices[w].INVOICE_AMOUNT|string_format:"%.2f"}</td>
+                                    <td class="olotd4">{$currency_sym}{$paid_invoices[w].PAID_AMOUNT|string_format:"%.2f"}</td>
+                                    <td class="olotd4">{$currency_sym}{$paid_invoices[w].balance|string_format:"%.2f"}</td>
                                     <td class="olotd4">{$paid_invoices[w].PAID_DATE|date_format:"$date_format"}</td>
                                     <td class="olotd4">{$paid_invoices[w].EMPLOYEE_DISPLAY_NAME}</td>
                                     <td class="olotd4" align="center">
