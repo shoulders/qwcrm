@@ -1,43 +1,33 @@
-<!-- new.tpl - New Supplier -->
-
+<!-- new.tpl -->
 <script src="{$theme_js_dir}tinymce/tinymce.min.js"></script>
 <script src="{$theme_js_dir}editor-config.js"></script>
 <link rel="stylesheet" href="{$theme_js_dir}jscal2/css/jscal2.css" />
 <link rel="stylesheet" href="{$theme_js_dir}jscal2/css/steel/steel.css" />
 <script src="{$theme_js_dir}jscal2/jscal2.js"></script>
 <script src="{$theme_js_dir}jscal2/unicode-letter.js"></script>
-<script>{include file='../js/jscal2/language.js'}</script>
+<script>{include file="`$theme_js_dir_finc`jscal2/language.js"}</script>
+{include file="supplier/javascripts.js"}
 
 <table width="100%"   border="0" cellpadding="20" cellspacing="5">
     <tr>
-        <td>
-            
+        <td>            
             <table width="700" cellpadding="5" cellspacing="0" border="0" >
                 <tr>
                     <td class="menuhead2" width="80%">{$translate_supplier_new_title}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
-                        <a><img src="{$theme_images_dir}icons/16x16/help.gif" alt="" border="0"
-                                onMouseOver="ddrivetip('<b>{$translate_supplier_new_help_title}</b><hr><p>{$translate_supplier_new_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>')"
-                                onMouseOut="hideddrivetip()"
-                                onClick="window.location"></a>
+                        <a>
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" alt="" border="0" onMouseOver="ddrivetip('<b>{$translate_supplier_new_help_title}</b><hr><p>{$translate_supplier_new_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();" onClick="window.location;">
+                        </a>
                     </td>
                 </tr>
                 <tr>
-                    <td class="menutd2" colspan="2">
-                            {if $error_msg != ""}
-                                    {include file="core/error.tpl"}
-                            {/if}
-                            {include file="supplier/javascripts.js"}
+                    <td class="menutd2" colspan="2">                         
                         <table class="olotable" width="100%" border="0" cellpadding="5" cellspacing="0">
                             <tr>
-                                <td class="menutd">
-
-                                    <!-- start of form content -->
-
+                                <td class="menutd">                                   
                                     <table class="menutable" width="100%" border="0" cellpadding="2" cellspacing="2" >
                                         <tr>
-                                            <td>                                                
-                                                <input type="hidden" name="page" value="supplier:edit">
+                                            <td>                                           
                                                 {literal}
                                                 <form  action="index.php?page=supplier:new" method="POST" name="new_supplier" id="new_supplier" autocomplete="off" onsubmit="try { var myValidator = validate_supplier; } catch(e) { return true; } return myValidator(this);">
                                                 {/literal}
@@ -80,27 +70,27 @@
                                                                         </tr>                                                                                                                                                                                
                                                                         <tr>
                                                                             <td align="right"><b>{$translate_supplier_phone}</b></td>
-                                                                            <td><a><input type="text" size="20" name="supplierPhone" value="" class="olotd5" onkeypress="return onlyPhoneNumbers();" /></b></a></td>
+                                                                            <td><input type="text" size="20" name="supplierPhone" value="" class="olotd5" onkeypress="return onlyPhoneNumbers();" /></b></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><span style="color: #ff0000"></span><b>{$translate_supplier_fax}</td>
                                                                             <td><input class="olotd5" name="supplierFax" type="text" size="20" value="" onkeypress="return onlyPhoneNumbers();" /></td>
                                                                         </tr>
                                                                         <tr>
-                                                                        <td align="right"><b>{$translate_supplier_mobile}</b></td>
-                                                                        <td><input class="olotd5" name="supplierMobile" type="text" size="20" onkeypress="return OnlyPhoneNumbers();" /></td>
+                                                                            <td align="right"><b>{$translate_supplier_mobile}</b></td>
+                                                                            <td><input class="olotd5" name="supplierMobile" type="text" size="20" onkeypress="return OnlyPhoneNumbers();" /></td>
                                                                         </tr>
                                                                         <tr>
-                                                                        <td align="right"><b>{$translate_supplier_www}</b></td>
-                                                                        <td><input class="olotd5" name="supplierWww" type="text" size="60" /></td>
+                                                                            <td align="right"><b>{$translate_supplier_www}</b></td>
+                                                                            <td><input class="olotd5" name="supplierWww" type="text" size="60" /></td>
                                                                         </tr>
                                                                         <tr>
-                                                                        <td align="right"><b>{$translate_supplier_email}</b></td>
-                                                                        <td><input class="olotd5" name="supplierEmail" type="text" size="60" /></td>
+                                                                            <td align="right"><b>{$translate_supplier_email}</b></td>
+                                                                            <td><input class="olotd5" name="supplierEmail" type="text" size="60" /></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><strong>{$translate_supplier_address}</strong></td>
-                                                                            <td><textarea class="olotd5" cols="30" rows="3"  name="supplierAddress"  >{$employee_details[a].EMPLOYEE_ADDRESS}</textarea></td>
+                                                                            <td><textarea class="olotd5" cols="30" rows="3"  name="supplierAddress">{$employee_details[a].EMPLOYEE_ADDRESS}</textarea></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><strong>{$translate_supplier_city}</strong></td>
@@ -145,10 +135,7 @@
                                                 </form>
                                             </td>
                                         </tr>
-                                    </table>
-
-                                    <!-- end of form content -->
-                                    
+                                    </table>                                    
                                 </td>
                             </tr>
                         </table>
@@ -158,6 +145,3 @@
         </td>
     </tr>
 </table>
-
-
-
