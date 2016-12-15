@@ -4,16 +4,6 @@
 <script src="{$theme_js_dir}jscal2/jscal2.js"></script>
 <script src="{$theme_js_dir}jscal2/unicode-letter.js"></script>
 <script>{include file="`$theme_js_dir_finc`jscal2/language.js"}</script>
-<script>
-{literal}
-    function go()
-    {
-        box = document.forms[0].page_no;
-        destination = box.options[box.selectedIndex].value;
-        if (destination) location.href = destination;
-    }
-{/literal}    
-</script>
 
 <table width="100%" border="0" cellpadding="20" cellspacing="5">
     <tr>
@@ -77,7 +67,7 @@
                                             <td valign="top" align="right" valign="middle">
                                                 {if $cred.EMPLOYEE_TYPE <> 3 }
                                                     <form>
-                                                        <select name="page_no" onChange="go()">
+                                                        <select name="page_no" onChange="changePage()">
                                                             {section name=i loop=$tech}
                                                                 <option value="?page=schedule:main&amp;tech={$tech[i].EMPLOYEE_ID}
                                                                     {foreach from=$date_array key=key item=item}

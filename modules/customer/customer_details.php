@@ -51,8 +51,8 @@ $smarty->assign('cuszip3',$cuszip3);
 $f_caddress2 = preg_replace('/(\r|\n|\r\n){2,}/', ', ', $caddress2);
 $f_cusaddress3 = preg_replace('/(\r|\n|\r\n){2,}/', ', ', $cusaddress3);
 
-$src= "http://maps.google.com/maps?f=d&source=s_d&hl=en&geocode=&saddr=$f_caddress2,$ccity2,$czip2&daddr=$f_cusaddress3,$cuscity3,$cuszip3";
-$smarty->assign('src',$src);
+$GoogleMapString = "http://maps.google.com/maps?f=d&source=s_d&hl=en&geocode=&saddr=$f_caddress2,$ccity2,$czip2&daddr=$f_cusaddress3,$cuscity3,$cuszip3";
+$smarty->assign('GoogleMapString',$GoogleMapString);
 
 // assign the arrays
 $smarty->assign('open_work_orders',    display_open_workorders($db, $customer_id));

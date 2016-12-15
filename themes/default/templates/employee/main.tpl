@@ -1,14 +1,6 @@
 <!-- main.tpl -->
 {literal}
 <script>
-    function go()
-    {
-        box = document.forms[1].page_no;
-        destination = box.options[box.selectedIndex].value;
-        if (destination) location.href = destination;
-    }
-</script>
-<script>
 function validate_employee_search(frm) {
     var value =  '';
     var errFlag = new Array();
@@ -101,7 +93,7 @@ function OnlyAlphaNumeric(e)
                                                 <form id="1">
                                                     <a href="?page=employee%3Amain&name={$name}&submit=submit&page_no=1"><img src="{$theme_images_dir}rewnd_24.gif" border="0"></a>&nbsp;
                                                     {if $previous != ''}<a href="?page=employee%3Amain&name={$name}&submit=submit&page_no={$previous}"><img src="{$theme_images_dir}back_24.gif" border="0"></a>&nbsp;{/if}
-                                                    <select name="page_no" onChange="go();">
+                                                    <select name="page_no" onChange="changePage();">
                                                         {section name=page loop=$total_pages start=1}
                                                             <option value="?page=employee%3Amain&name={$name}&submit=submit&page_no={$smarty.section.page.index}" {if $page_no == $smarty.section.page.index } Selected {/if}>{$translate_employee_page} {$smarty.section.page.index} {$translate_employee_of} {$total_pages}</option>
                                                         {/section}

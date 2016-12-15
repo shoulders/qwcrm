@@ -20,11 +20,8 @@
   }
   return true;
 }
-function go()
-        {
-                box = document.forms[0].page_no;
-                destination = box.options[box.selectedIndex].value;
-                if (destination) location.href = destination;
-        }
+
+        
+        
 </script>
 {/literal}

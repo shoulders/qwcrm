@@ -1,4 +1,6 @@
-{literal}    
+{literal}
+/* billing.js */
+
 function validate_gift(frm) {
 
     var value = '';

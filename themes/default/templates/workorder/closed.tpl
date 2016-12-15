@@ -1,15 +1,4 @@
 <!-- closed.tpl -->
-<script>
-{literal}
-    function go()
-    {
-        box = document.forms[0].page_no;
-        destination = box.options[box.selectedIndex].value;
-        if (destination) location.href = destination;
-    }
-{/literal}
-</script>
-
 <table width="100%" border="0" cellpadding="20" cellspacing="5">
     <tr>
         <td>
@@ -18,9 +7,7 @@
                     <td class="menuhead2" width="80%">&nbsp;{$translate_workorder_closed_title} - {$total_results} {$translate_workorder_records_found}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
                         <a>
-                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" alt=""
-                                onMouseOver="ddrivetip('<b>{$translate_workorder_closed_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_workorder_closed_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');"
-                                onMouseOut="hideddrivetip();">
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" alt=""  onMouseOver="ddrivetip('<b>{$translate_workorder_closed_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_workorder_closed_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();">
                         </a>
                     </td>
                 </tr>
@@ -38,7 +25,7 @@
                                                     {if $previous != ''}
                                                         <a href="?page=workorder:closed&submit=submit&page_no={$previous}"><img src="{$theme_images_dir}back_24.gif" alt="" border="0"></a>&nbsp;
                                                     {/if}
-                                                    <select name="page_no" onChange="go();">
+                                                    <select name="page_no" onChange="changePage();">
                                                     {section name=page loop=$total_pages start=1}
                                                         <option value="?page=workorder:closed&submit=submit&page_no={$smarty.section.page.index}" {if $page_no == $smarty.section.page.index } Selected {/if}>
                                                             {$translate_workorder_page} {$smarty.section.page.index} {$translate_workorder_of} {$total_pages} 
@@ -82,9 +69,7 @@
                                                                 <td class="olotd4" nowrap>{$work_order.WORK_ORDER_SCOPE}</td>
                                                                 <td class="olotd4">{$work_order.CONFIG_WORK_ORDER_STATUS}</td>
                                                                 <td class="olotd4" nowrap>
-                                                                    <img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0"
-                                                                         onMouseOver="ddrivetip('<center><b>{$translate_workorder_contact_info_tooltip_title}</b></center><hr><b>{$translate_workorder_fax}: </b>{$work_order.EMPLOYEE_WORK_PHONE}<br><b>{$translate_workorder_mobile}: </b>{$work_order.EMPLOYEE_MOBILE_PHONE}<br><b>{$translate_workorder_home}: </b>{$work_order.EMPLOYEE_HOME_PHONE}');"
-                                                                         onMouseOut="hideddrivetip();">
+                                                                    <img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" onMouseOver="ddrivetip('<center><b>{$translate_workorder_contact_info_tooltip_title}</b></center><hr><b>{$translate_workorder_fax}: </b>{$work_order.EMPLOYEE_WORK_PHONE}<br><b>{$translate_workorder_mobile}: </b>{$work_order.EMPLOYEE_MOBILE_PHONE}<br><b>{$translate_workorder_home}: </b>{$work_order.EMPLOYEE_HOME_PHONE}');" onMouseOut="hideddrivetip();">                                                                         
                                                                     <a class="link1" href="?page=employee:employee_details&employee_id={$work_order.EMPLOYEE_ID}&page_title={$work_order.EMPLOYEE_DISPLAY_NAME}">{$work_order.EMPLOYEE_DISPLAY_NAME}</a>
                                                                 </td>
                                                             </tr>

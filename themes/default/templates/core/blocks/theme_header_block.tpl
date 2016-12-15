@@ -22,7 +22,6 @@
         };
     {/literal}   
     </script>    
-    <script src="{$theme_js_dir}tabs.js"></script>
     <script src="{$theme_js_dir}template.js"></script>    
 </head>
 

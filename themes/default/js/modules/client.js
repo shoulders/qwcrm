@@ -1,4 +1,6 @@
 {literal}
+/* client.js */
+
 // from ticket_new.js
 function validate_submit(frm) {
     var value = '';

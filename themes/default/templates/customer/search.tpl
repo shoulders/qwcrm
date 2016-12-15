@@ -7,9 +7,7 @@
                     <td class="menuhead2" width="80%">&nbsp;&nbsp;{$translate_main_title}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
                         <a>
-                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" alt=""
-                                onMouseOver="ddrivetip('<b>Customer Search</b><hr><p>You can search by the customers full display name or just their first name. If you wish to see all the customers for just one letter like A Click the letter A.</p> <p>To find customers whos name starts with Ja enter just ja. The system will intelegently look for the corect customers that match. To view all customers leave the name field blank and click view.</p>');" 
-                                onMouseOut="hideddrivetip();">
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" alt="" onMouseOver="ddrivetip('<b>Customer Search</b><hr><p>You can search by the customers full display name or just their first name. If you wish to see all the customers for just one letter like A Click the letter A.</p> <p>To find customers whos name starts with Ja enter just ja. The system will intelegently look for the corect customers that match. To view all customers leave the name field blank and click view.</p>');" onMouseOut="hideddrivetip();">
                         </a>
                     </td>
                     </tr>
@@ -43,7 +41,7 @@
                                                     {if $previous != ''}
                                                         <a href="?page=customer%3Aview&name={$name|escape}&submit=submit&page_no={$previous}"><img src="{$theme_images_dir}back_24.gif" border="0" alt=""></a>&nbsp;
                                                     {/if}
-                                                    <select name="page_no" onChange="go();">
+                                                    <select name="page_no" onChange="changePage();">
                                                         {section name=page loop=$total_pages start=1}
                                                             <option value="?page=customer%3Aview&name={$name|escape}&submit=submit&page_no={$smarty.section.page.index}" {if $page_no == $smarty.section.page.index } selected {/if}>{$translate_page} {$smarty.section.page.index} {$translate_of} {$total_pages}</option>
                                                         {/section}

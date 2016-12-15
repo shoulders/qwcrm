@@ -1,15 +1,4 @@
 <!-- view_paid.tpl -->
-<!--{literal}
-<script>
-    function go()
-    {
-            box = document.forms[0].page_no;
-            destination = box.options[box.selectedIndex].value;
-            if (destination) location.href = destination;
-    }
-</script>
-{/literal} -->
-    
 <table width="100%" border="0" cellpadding="20" cellspacing="5">
     <tr>
         <td>
@@ -32,7 +21,7 @@
                                                     {if $previous != ''}
                                                     <a href="?page=invoice:view_paid&submit=submit&page_no={$previous}"><img src="{$theme_images_dir}back_24.gif" alt="" border="0"></a>&nbsp;
                                                     {/if}
-                                                    <select name="page_no" onChange="go();">
+                                                    <select name="page_no" onChange="changePage();">
                                                         {section name=page loop=$total_pages start=1}
                                                             <option value="?page=invoice:view_paid&submit=submit&page_no={$smarty.section.page.index}" {if $page_no == $smarty.section.page.index } Selected {/if}>{$translate_invoice_page} {$smarty.section.page.index} {$translate_invoice_of} {$total_pages}</option>
                                                         {/section}
