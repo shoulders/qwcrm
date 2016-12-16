@@ -41,228 +41,113 @@ function changePage() {
 
 
 
-/** Key Input Restrictions **/
+/** Key Input Restrictions - case insensitive**/
 
-// Allows Only Uppercase and Lowercase Letters to be entered - Including Space
+// Allows Only Letters - Including (Backspace, Space, End, Home, Left Arrow, Up Arrow, Right Arrow, Down Arrow, Delete)
 function onlyAlpha(e) {
-    
-    var charCode = e.which || e.keyCode; 
-    
-    if ((charCode === 32 || charCode >= 65 && charCode <= 90) || (charCode >= 97 && charCode <= 122)){
-        return true;
-    }
-    return false;
+    return keyRestriction(e, "abcdefghijklmnopqrstuvwxyz", true);
 }
 
-// Allows Only Numbers to be entered - Including Backspace
-function onlyNumbers(e) {
-    
-    var charCode = e.which || e.keyCode;
-    
-    if (charCode > 31 && (charCode < 48 || charCode > 57)){
-        return false;
-    }
-    return true;
-}
-
-// Allows Only Numbers and Periods to be entered  (&& charCode != 44  is comma)
-function onlyNumbersPeriods(e) {
-    
-    var charCode = e.which || e.keyCode;
-    
-    if (charCode > 31 && (charCode < 48 || charCode > 57) && charCode !== 46){
-        return false;
-    }
-    return true;
-}
-
-// Allow Only Phone Numbers - Including (-, -, Backspace, Tab, Enter, Escape, Space && Period, Brackets, Plus, Minus)
-function onlyPhoneNumbers(e) {
-    
-    var key;
-    var keychar;
-
-    if (window.event)
-        key = window.event.keyCode;
-    else if (e)
-        key = e.which;
-    else
-        return true;
-    
-    // Make the script case insensitive
-    keychar = String.fromCharCode(key);
-    keychar = keychar.toLowerCase();
-
-    // Control keys (-, -, Backspace, Tab, Enter, Escape, Space)
-    if ((key===null) || (key===0) || (key===8) || (key===9) || (key===13) || (key===27) || (key===32))
-        return true;
-
-    // Allowed Characters
-    else if ((("0123456789.()-+").indexOf(keychar) > -1))
-        return true;
-    else
-        return false;
-}
-
-
-
-
-
-
-
-
-// Allow Only Numbers and Letters (Uppercase and Lowercase) - Including (Backspace, Space, Left Arrow, Right Arrow, Delete)
-function ddonlyAlphaNumeric(e) {
-    
-    var key;
-    var keychar;
-
-    if (window.event)
-       key = window.event.keyCode;
-    else if (e)
-       key = e.which;
-    else
-        return true;
-    
-    // Make the script case insensitive
-    keychar = String.fromCharCode(key);
-    keychar = keychar.toLowerCase();
-
-    // Control Keys (Backspace, Space, Left Arrow, Right Arrow, Delete)
-    if ((key===8) || (key===32) || (key===37) || (key===39) || (key===46))
-        return true;
-
-    // Allowed Characters
-    else if ((("abcdefghijklmnopqrstuvwxyz0123456789").indexOf(keychar) > -1))
-        return true;
-    else
-        return false;
-}
-
-// Allow Only Numbers and Letters - Including (-, -, Backspace, Tab, Enter, Escape, Space && Comma, Backslash, Minus, Single Quote)
-function ddonlyAlphaNumericExtra(e) {
-    
-    var key;
-    var keychar;
-
-    if (window.event)
-       key = window.event.keyCode;
-    else if (e)
-       key = e.which;
-    else
-        return true;
-    
-    // Make the script case insensitive
-    keychar = String.fromCharCode(key);
-    keychar = keychar.toLowerCase();
-
-    // Control Keys (-, -, Backspace, Tab, Enter, Escape, Space)
-    if ((key===null) || (key===0) || (key===8) || (key===9) || (key===13) || (key===27) || (key===32))
-        return true;
-
-    // Allowed Characters
-    else if ((("abcdefghijklmnopqrstuvwxyz0123456789,/-'").indexOf(keychar) > -1))
-        return true;
-    else
-        return false;
-}
-
-// Allow Only valid characters for URL - Including (-, -, Backspace, Tab, Enter, Escape, Space)
-function onlyURL(e) {
-    
-    var key;
-    var keychar;
-
-    if (window.event)
-        key = window.event.keyCode;
-    else if (e)
-        key = e.which;
-    else
-        return true;
-    
-    // Make the script case insensitive
-    keychar = String.fromCharCode(key);
-    keychar = keychar.toLowerCase();
-
-    // Control Keys (-, -, Backspace, Tab, Enter, Escape, Space)
-    if ((key===null) || (key===0) || (key===8) || (key===9) || (key===13) || (key===27) || (key===32))
-        return true;
-
-    // Allowed Characters
-    else if ((("abcdefghijklmnopqrstuvwxyz0123456789-._~:/?#[]@!$&'()*+,;=`.%").indexOf(keychar) > -1))
-        return true;
-    else
-        return false;
-}
-
-// Allow Only valid characters for Email - Including (-, -, Backspace, Tab, Enter, Escape, Space)
-function onlyEmail(e) {
-    
-    var key;
-    var keychar;
-
-    if (window.event)
-        key = window.event.keyCode;
-    else if (e)
-        key = e.which;
-    else
-       return true;
-   
-    // Make the script case insensitive
-    keychar = String.fromCharCode(key);
-    keychar = keychar.toLowerCase();
-
-    // Control Keys (-, -, Backspace, Tab, Enter, Escape, Space)
-    if ((key===null) || (key===0) || (key===8) || (key===9) || (key===13) || (key===27) || (key===32))
-       return true;
-
-    // Allowed Characters
-    else if ((("abcdefghijklmnopqrstuvwxyz0123456789-._@").indexOf(keychar) > -1))
-       return true;
-    else
-       return false;
-}
-
-
-
-
-
-
-
-
-
+// Allow Only Numbers and Letters - Including (Backspace, Space, End, Home, Left Arrow, Up Arrow, Right Arrow, Down Arrow, Delete)
 function onlyAlphaNumeric(e) {
     return keyRestriction(e, "abcdefghijklmnopqrstuvwxyz0123456789", true);
 }
 
+// Allow Only Numbers and Letters - Including (Backspace, Space, End, Home, Left Arrow, Up Arrow, Right Arrow, Down Arrow, Delete && Comma, Backslash, Minus, Single Quote)
 function onlyAlphaNumericExtra(e) {
    return keyRestriction(e, "abcdefghijklmnopqrstuvwxyz0123456789,/-'", true); 
 }
 
+// Allows Only Numbers - Including (Backspace, End, Home, Left Arrow, Up Arrow, Right Arrow, Down Arrow, Delete)
+function onlyNumbers(e) {
+    return keyRestriction(e, "0123456789", false);
+}
 
-// Common Function for key restriction routines
+// Allows Only Numbers and Periods - Including (Backspace, End, Home, Left Arrow, Up Arrow, Right Arrow, Down Arrow, Delete)
+function onlyNumbersPeriods(e) {
+    return keyRestriction(e, "0123456789.", false);
+}
+
+// Allow Only Phone Numbers - Including (Backspace, Space, End, Home, Left Arrow, Up Arrow, Right Arrow, Down Arrow, Delete && Period, Brackets, Plus, Minus)
+function onlyPhoneNumber(e) {
+    return keyRestriction(e, "0123456789.()-+", true);
+}
+
+// Allow Only valid characters for URL - Including (Backspace, End, Home, Left Arrow, Up Arrow, Right Arrow, Down Arrow, Delete)
+function onlyURL(e) {
+   return keyRestriction(e, "abcdefghijklmnopqrstuvwxyz0123456789-._~:/?#[]@!$&'()*+,;=`.%", false);
+}
+
+// Allow Only valid characters for Email - Including (Backspace, End, Home, Left Arrow, Up Arrow, Right Arrow, Down Arrow, Delete)
+function onlyEmail(e) {
+   return keyRestriction(e, "abcdefghijklmnopqrstuvwxyz0123456789-._@", false);
+}
+
+// Common Function for Key Input Restriction
 function keyRestriction(e, allowedCharacters, spacesAllowed) {
     
+    //if (!e.key){window.alert(key);}
+    
     var key;
-    var keychar;
-
-    if (window.event)
+    //var keychar;
+    
+    // Grab the character from the keypress
+    key = e.key;
+    
+    var keytest = e.which;
+    window.alert(key + ' - ' + keytest);
+    
+    //if (key == ''){window.alert(key);}
+    /*if (window.event)
         key = window.event.keyCode;
     else if (e)
         key = e.which;
     else
-       return true;
+       return true;*/   
    
-    // Make the script case insensitive
-    keychar = String.fromCharCode(key);
-    keychar = keychar.toLowerCase();
+    // Make the script case insensitive (onkeypress)
+    //keychar = String.fromCharCode(key);
+    //key = key.toLowerCase();
+    
+    
+    // This works - ish -- http://stackoverflow.com/questions/1435885/converting-keystrokes-gathered-by-onkeydown-into-characters-in-javascript
+    
+    // see these notes - http://www.w3schools.com/jsref/event_key_keycode.asp
+    
+    //The keydown and keyup events are traditionally associated with detecting any key, not just those which produce a character value.  - https://w3c.github.io/uievents/#widl-KeyboardEvent-key
+    
+    //var key = e.which || e.keyCode; // Use either which or keyCode, depending on browser support
+    //var keychar = String.fromCharCode(key);
+    //window.alert(keychar);
+    
+    // Make the script case insensitive (onkeydown)
+    //keychar = String.fromCharCode(key);
+    //keychar = keychar.toLowerCase();
+    
+    //var textBox = getObject('txtChar');
+    //var charCode = (e.which) ? e.which : e.keyCode;
+    //var keychar = String.fromCharCode(charCode);
     
     // Are Spaces Allowed
-    if (key===32 && spacesAllowed === true)
+    //if (key === 32 && spacesAllowed === true)
+        //return true;
+    if (key === ' ' && spacesAllowed === true)
         return true;
+    
+//window.alert(key.value);
 
-    // Control Keys (Backspace, Left Arrow, Right Arrow, Delete)
-    if ((key===8) || (key===37) || (key===39) || (key===46))
+    // do a if e.key is empty check for the charcode of the thing and then compare - this needs to be done until full support in chrome
+
+
+    // onkeydown key is corretly alerted but script fail to validate - Control Keys (Backspace, End, Home, Left Arrow, Up Arrow, Right Arrow, Down Arrow, Delete)
+    if (key === 8 || key === 35 || key === 36 || key === 37 || key === 38 || key === 39 || key === 40 || key === 46){          
+        return true;}
+    if (key === 'Backspace' || key === 'End' || key === 'Home' || key === 'ArrowLeft' || key === 'ArrowUp' || key === 'RightArrow' || key === 'ArrowDown' || key === 'Delete'){        
+        return true;}
+    
+    // onkeypress - original exceptions
+    // Control keys (-, -, Backspace, Tab, Enter, Escape, Space)
+    /*if ((key===null) || (key===0) || (key===8) || (key===9) || (key===13) || (key===27) || (key===32))
         return true;
 
     // Allowed Characters
@@ -270,4 +155,10 @@ function keyRestriction(e, allowedCharacters, spacesAllowed) {
        return true;
     else
        return false;
+       */
+      else if (allowedCharacters.indexOf(key) > -1)
+       return true;
+    else
+       return false;
+      
 }
