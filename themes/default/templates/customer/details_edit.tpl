@@ -104,7 +104,7 @@
                                                                     <table>
                                                                         <tr>
                                                                             <td align="right"><strong>{$translate_customer_address}</strong></td>
-                                                                            <td colspan="3"><textarea class="olotd5 mceNoEditor" cols="30" rows="3" name="address" maxlength="100" onkeydown="return onlyAlphaNumericExtra(event);"/>{$customer[q].CUSTOMER_ADDRESS}</textarea></td>
+                                                                            <td colspan="3"><textarea class="olotd5 mceNoEditor" cols="30" rows="3" name="address" maxlength="100" onkeydown="return onlyAddresses(event);"/>{$customer[q].CUSTOMER_ADDRESS}</textarea></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><strong>{$translate_customer_city}</strong></td>

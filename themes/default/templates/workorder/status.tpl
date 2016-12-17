@@ -8,9 +8,7 @@
                         <td class="menuhead2" width="80%">{$translate_workorder_status_title} - {$translate_workorder_status_update_work_order_status_for_work_order_id} {$wo_id}</td>
                         <td class="menuhead2" width="20%" align="right" valign="middle">
                             <a>
-                                <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" 
-                                onMouseOver="ddrivetip('<b>{$translate_workorder_status_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_workorder_status_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" 
-                                onMouseOut="hideddrivetip();">
+                                <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<b>{$translate_workorder_status_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_workorder_status_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();">
                             </a>
                         </td>
                     </tr>  

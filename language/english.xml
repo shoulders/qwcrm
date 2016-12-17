@@ -1423,17 +1423,8 @@
         <workorder_advisory_message_function_resolution_edit_status_check_alreadyclosed>Work Order Is already Closed. Please Create an Invoice</workorder_advisory_message_function_resolution_edit_status_check_alreadyclosed>
         <workorder_advisory_message_function_resolution_edit_status_check_waitingforparts>Can not close a work order if it is Waiting For Parts. Please Adjust the status.</workorder_advisory_message_function_resolution_edit_status_check_waitingforparts>
         
-        
         //// Validator Messages
-        
-        <workorder_validate_scope_notpresent>Enter a scope</workorder_validate_scope_notpresent>
-        <workorder_validate_scope_length>The scope cannot be more than 40 characters</workorder_validate_scope_length>        
-        <workorder_validate_description_notpresent>Enter a description</workorder_validate_description_notpresent>
-        <workorder_validate_creation_date_notpresent>Enter the Work Order creation date</workorder_validate_creation_date_notpresent>
-                     
-        <workorder_validate_warning_message_invalidinformation>Invalid information entered.</workorder_validate_warning_message_invalidinformation>
-        <workorder_validate_warning_message_pleasecorrect>Please correct these fields.</workorder_validate_warning_message_pleasecorrect>
-        
+               
         
         //// -- JSCal2 -- ////
         

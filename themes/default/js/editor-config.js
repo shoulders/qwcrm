@@ -1,4 +1,4 @@
-  tinymce.init({
+tinymce.init({
      
     selector : "textarea:not(.mceNoEditor)",    // Select all textarea exluding the mceNoEditor class    
     theme: 'modern',
@@ -21,6 +21,25 @@
       'searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking',
       'save table contextmenu directionality emoticons template paste textcolor',
       'codesample colorpicker importcss searchreplace toc'
-    ]
+    ],
 
-  });
+    // If TinyMCE Editor is empty and has the class "wysiwyg-checkforcontent" on its placeholder, dont submit the form
+    setup: function(editor) {
+        editor.on('submit', function(e) {
+
+            var placeholderElement = editor.getElement();   
+            var testClass = "wysiwyg-checkforcontent";            
+            
+            if(placeholderElement.classList.contains(testClass) && editor.getContent() === '') {
+                editor.getContainer().style.border = '3px solid red';
+                return false;
+            }
+
+        });
+    }
+
+
+});
+        
+       
+        

@@ -10,9 +10,7 @@
                     <td class="menuhead2" width="80%">{$translate_workorder_details_edit_comments_title}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
                         <a>
-                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" 
-                            onMouseOver="ddrivetip('<b>{$translate_workorder_details_edit_comments_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_workorder_details_edit_comments_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" 
-                            onMouseOut="hideddrivetip();">
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<b>{$translate_workorder_details_edit_comments_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_workorder_details_edit_comments_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();">
                         </a>
                     </td>
                 </tr>
@@ -23,7 +21,7 @@
                                 <td width="100%" valign="top">                                    
                                     <form action="?page=workorder:details_edit_comments" method="POST">
                                         <b>{$translate_workorder_details_comments_title}</b><br>
-                                        <textarea class="olotd4" rows="15" cols="70" mce_editable="true" name="workorder_comments">{$workorder_comments}</textarea>
+                                        <textarea class="olotd4" rows="15" cols="70" name="workorder_comments">{$workorder_comments}</textarea>
                                         <br>
                                         <input type="hidden" name="wo_id" value="{$wo_id}">
                                         <input class="olotd4" name="submit" value="{$translate_workorder_submit}" type="submit" />

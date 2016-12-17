@@ -19,7 +19,7 @@
                                             <td>
                                                 <br>
                                                 <form method="POST" action="?page=schedule:edit&y={$y}&d={$d}&m={$m}">
-                                                <textarea name="schedule_notes" rows="15" cols="70" mce_editable="true">{$schedule_notes}</textarea>
+                                                <textarea name="schedule_notes" rows="15" cols="70">{$schedule_notes}</textarea>
                                                     <input type="hidden" name="schedule_id" value="{$schedule_id}">
                                                     <br>
                                                     <input type="submit" name="submit" value="Submit">

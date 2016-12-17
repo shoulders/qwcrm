@@ -10,9 +10,7 @@
                     <td class="menuhead2" width="80%">{$translate_workorder_details_edit_resolution_title}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
                         <a>
-                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" 
-                            onMouseOver="ddrivetip('<b>{$translate_workorder_details_edit_resolution_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_workorder_details_edit_resolution_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" 
-                            onMouseOut="hideddrivetip();">
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<b>{$translate_workorder_details_edit_resolution_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_workorder_details_edit_resolution_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();">                            
                         </a>
                     </td>
                 </tr>
@@ -23,7 +21,7 @@
                                 <td width="100%" valign="top">                                    
                                     <form  action="index.php?page=workorder:resolution" method="POST" name="close_workorder" id="close_workorder">
                                         <b>{$translate_workorder_details_resolution_title}</b><br>
-                                        <textarea class="olotd4" rows="15" cols="70" mce_editable="true" name="workorder_resolution">{$workorder_resolution}</textarea>
+                                        <textarea class="olotd4" rows="15" cols="70" name="workorder_resolution">{$workorder_resolution}</textarea>
                                         <br>
                                         <input type="hidden" name="page" value="workorder:resolution">
                                         <input type="hidden" name="created_by" value="{$login_display_name}">

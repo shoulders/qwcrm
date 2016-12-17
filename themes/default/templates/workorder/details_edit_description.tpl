@@ -11,9 +11,7 @@
                     <td class="menuhead2" width="80%">{$translate_workorder_details_edit_description_title}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
                         <a>
-                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" 
-                            onMouseOver="ddrivetip('<b>{$translate_workorder_details_edit_description_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_workorder_details_edit_description_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" 
-                            onMouseOut="hideddrivetip();">
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<b>{$translate_workorder_details_edit_description_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_workorder_details_edit_description_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();">                            
                         </a>
                     </td>
                 </tr>                
@@ -22,20 +20,19 @@
                         <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0">
                             <tr>
                                 <td width="100%" valign="top">                                    
-                                    {literal}
-                                    <!--<form action="index.php?page=workorder:details_edit_description" method="POST" name="workorder_validate" id="workorder_validate"  onsubmit="try { var myValidator = workorder_validate; } catch(e) { return true; } return myValidator(this);">-->
-                                    <form method="POST" action="index.php?page=workorder:details_edit_description" name="new_refund" id="new_refund" onsubmit="return validateForm(this); return false;">
+                                    {literal}                                    
+                                    <form method="POST" action="index.php?page=workorder:details_edit_description" name="new_refund" id="new_refund">
                                     {/literal}
                                         <b>{$translate_workorder_scope}</b></br>
-                                        <input type="text" class="olotd4 validateScopeExists" size="20" name="workorder_scope" value="{$workorder_scope}">
+                                        <input class="olotd4" size="20" value="{$workorder_scope}" name="workorder_scope" type="text" maxlength="80" required onkeydown="return onlyAlphaNumeric(event);">
                                         <br>
                                         <br>
                                         <br>
                                         <b>{$translate_workorder_details_description_title}</b><br>
-                                        <textarea class="olotd4" rows="15" cols="70" mce_editable="true" name="workorder_description">{$workorder_description}</textarea>
+                                        <textarea class="olotd4 wysiwyg-checkforcontent" rows="15" cols="70" name="workorder_description">{$workorder_description}</textarea>
                                         <br>
                                         <input type="hidden" name="wo_id" value="{$wo_id}">
-                                        <input class="olotd4" name="submit" value="{$translate_workorder_submit}" type="submit" />
+                                        <input class="olotd4" name="submit" value="{$translate_workorder_submit}" type="submit">
                                     </form>
                                     <br>
                                 </td>

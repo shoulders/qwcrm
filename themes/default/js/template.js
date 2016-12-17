@@ -49,7 +49,7 @@ function onlyAlphaNumeric(e) {
 }
 
 // Allow Only Numbers and Letters - Including Comma, Backslash, Minus, Single Quote (for addresses?)
-function onlyAlphaNumericExtra(e) {
+function onlyAddresses(e) {
    return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789,/-'", true);
 }
 

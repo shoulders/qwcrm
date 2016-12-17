@@ -23,7 +23,7 @@
                                         <tr>
                                             <td>                                               
                                                 {literal}
-                                                <form  action="index.php?page=customer:new" method="POST" name="new_customer" id="new_customer" >
+                                                <form  action="index.php?page=customer:new" method="POST" name="new_customer" id="new_customer">
                                                 {/literal}
                                                     <table width="100%" cellpadding="3" cellspacing="0" border="0">
                                                         <tr>
@@ -110,7 +110,7 @@
                                                                     <tbody align="left">
                                                                         <tr>
                                                                             <td align="right"><b>{$translate_customer_address}</b></td>
-                                                                            <td colspan="3"><textarea class="olotd5 mceNoEditor" cols="30" rows="3" name="address" maxlength="100" onkeydown="return onlyAlphaNumericExtra(event);"/></textarea></td>
+                                                                            <td colspan="3"><textarea class="olotd5 mceNoEditor" cols="30" rows="3" name="address" maxlength="100" onkeydown="return onlyAddresses(event);"/></textarea></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{$translate_customer_city}</b></td>

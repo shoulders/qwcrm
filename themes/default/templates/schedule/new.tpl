@@ -116,7 +116,7 @@
                                                                             <td colspan="2">
                                                                                 <b>{$translate_schedule_notes}</b>
                                                                                 <br>
-                                                                                <textarea name="schedule_notes" rows="15" cols="70" mce_editable="true">{$schedule_notes}</textarea>
+                                                                                <textarea name="schedule_notes" rows="15" cols="70">{$schedule_notes}</textarea>
                                                                             </td>
                                                                         </tr>
                                                                         <tr>

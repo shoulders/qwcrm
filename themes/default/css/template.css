@@ -607,45 +607,40 @@ div.clear {
 
 }
 
-/* taken from WO new.tpl - seems to be suggestionbox */
-  /*  body {
-        font-family: Helvetica;
-        font-size: 11px;
-        color: #000;
-    }
+/* Suggestion Box */
 
-    h3 {
-        margin: 0px;
-        padding: 0px;
-    }*/
+.suggestionsBoxWrapper{
+    position: relative;
+} 
+.suggestionsBox {
+    display: none;
+    position: absolute;
+    left: 30px;
+    margin: 10px 0px 0px 0px;
+    width: 200px;
+    background-color: #212427;
+    -moz-border-radius: 7px;
+    -webkit-border-radius: 7px;
+    border: 2px solid #000;
+    color: #fff;
+    z-index: 100;
+}
 
-    .suggestionsBox {
-        position: relative;
-        left: 30px;
-        margin: 10px 0px 0px 0px;
-        width: 200px;
-        background-color: #212427;
-        -moz-border-radius: 7px;
-        -webkit-border-radius: 7px;
-        border: 2px solid #000;
-        color: #fff;
-    }
+/* this is the actual list */
+.suggestionList {
+    margin: 0px;
+    padding: 0px;
+}
 
-    .suggestionList {
-        margin: 0px;
-        padding: 0px;
-    }
+.suggestionList li {
+    margin: 0px 0px 3px 0px;
+    padding: 3px;
+    cursor: pointer;
+}
 
-    .suggestionList li {
-
-        margin: 0px 0px 3px 0px;
-        padding: 3px;
-        cursor: pointer;
-    }
-
-    .suggestionList li:hover {
-        background-color: #659CD8;
-    }
+.suggestionList li:hover {
+    background-color: #659CD8;
+}
     
 /* Slashdot Menu - SDMenu (Dynamic Drive) */
 
