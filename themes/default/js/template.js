@@ -36,129 +36,74 @@ function changePage() {
     destination = box.options[box.selectedIndex].value;
     if (destination) location.href = destination;*/
 
+/** Key Input Restrictions - Using event.key **/
 
-
-
-
-
-/** Key Input Restrictions - case insensitive**/
-
-// Allows Only Letters - Including (Backspace, Space, End, Home, Left Arrow, Up Arrow, Right Arrow, Down Arrow, Delete)
+// Allows Only Letters
 function onlyAlpha(e) {
-    return keyRestriction(e, "abcdefghijklmnopqrstuvwxyz", true);
+    return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", true);
 }
 
-// Allow Only Numbers and Letters - Including (Backspace, Space, End, Home, Left Arrow, Up Arrow, Right Arrow, Down Arrow, Delete)
+// Allow Only Numbers and Letters
 function onlyAlphaNumeric(e) {
-    return keyRestriction(e, "abcdefghijklmnopqrstuvwxyz0123456789", true);
+    return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", true);
 }
 
-// Allow Only Numbers and Letters - Including (Backspace, Space, End, Home, Left Arrow, Up Arrow, Right Arrow, Down Arrow, Delete && Comma, Backslash, Minus, Single Quote)
+// Allow Only Numbers and Letters - Including Comma, Backslash, Minus, Single Quote (for addresses?)
 function onlyAlphaNumericExtra(e) {
-   return keyRestriction(e, "abcdefghijklmnopqrstuvwxyz0123456789,/-'", true); 
+   return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789,/-'", true);
 }
 
-// Allows Only Numbers - Including (Backspace, End, Home, Left Arrow, Up Arrow, Right Arrow, Down Arrow, Delete)
+// Allows Only Numbers
 function onlyNumbers(e) {
     return keyRestriction(e, "0123456789", false);
 }
 
-// Allows Only Numbers and Periods - Including (Backspace, End, Home, Left Arrow, Up Arrow, Right Arrow, Down Arrow, Delete)
-function onlyNumbersPeriods(e) {
+// Allows Only Numbers and Period
+function onlyNumbersPeriod(e) {
     return keyRestriction(e, "0123456789.", false);
 }
 
-// Allow Only Phone Numbers - Including (Backspace, Space, End, Home, Left Arrow, Up Arrow, Right Arrow, Down Arrow, Delete && Period, Brackets, Plus, Minus)
+// Allow Only Phone Numbers - Including Period, Brackets, Plus, Minus
 function onlyPhoneNumber(e) {
     return keyRestriction(e, "0123456789.()-+", true);
 }
 
-// Allow Only valid characters for URL - Including (Backspace, End, Home, Left Arrow, Up Arrow, Right Arrow, Down Arrow, Delete)
+// Allow Only valid characters for URL
 function onlyURL(e) {
-   return keyRestriction(e, "abcdefghijklmnopqrstuvwxyz0123456789-._~:/?#[]@!$&'()*+,;=`.%", false);
+   return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._~:/?#[]@!$&'()*+,;=`%", false);
 }
 
-// Allow Only valid characters for Email - Including (Backspace, End, Home, Left Arrow, Up Arrow, Right Arrow, Down Arrow, Delete)
+// Allow Only valid characters for Email
 function onlyEmail(e) {
-   return keyRestriction(e, "abcdefghijklmnopqrstuvwxyz0123456789-._@", false);
+   return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@", false);
 }
 
 // Common Function for Key Input Restriction
-function keyRestriction(e, allowedCharacters, spacesAllowed) {
+function keyRestriction(e, allowedCharacters, spacesAllowed) {    
     
-    //if (!e.key){window.alert(key);}
-    
-    var key;
-    //var keychar;
-    
-    // Grab the character from the keypress
-    key = e.key;
-    
-    var keytest = e.which;
-    window.alert(key + ' - ' + keytest);
-    
-    //if (key == ''){window.alert(key);}
-    /*if (window.event)
-        key = window.event.keyCode;
-    else if (e)
-        key = e.which;
-    else
-       return true;*/   
-   
-    // Make the script case insensitive (onkeypress)
-    //keychar = String.fromCharCode(key);
-    //key = key.toLowerCase();
-    
-    
-    // This works - ish -- http://stackoverflow.com/questions/1435885/converting-keystrokes-gathered-by-onkeydown-into-characters-in-javascript
-    
-    // see these notes - http://www.w3schools.com/jsref/event_key_keycode.asp
-    
-    //The keydown and keyup events are traditionally associated with detecting any key, not just those which produce a character value.  - https://w3c.github.io/uievents/#widl-KeyboardEvent-key
-    
-    //var key = e.which || e.keyCode; // Use either which or keyCode, depending on browser support
-    //var keychar = String.fromCharCode(key);
-    //window.alert(keychar);
-    
-    // Make the script case insensitive (onkeydown)
-    //keychar = String.fromCharCode(key);
-    //keychar = keychar.toLowerCase();
-    
-    //var textBox = getObject('txtChar');
-    //var charCode = (e.which) ? e.which : e.keyCode;
-    //var keychar = String.fromCharCode(charCode);
+    // Grab the character from the pressed key
+    var key = e.key;   
     
     // Are Spaces Allowed
-    //if (key === 32 && spacesAllowed === true)
-        //return true;
     if (key === ' ' && spacesAllowed === true)
         return true;
     
-//window.alert(key.value);
-
-    // do a if e.key is empty check for the charcode of the thing and then compare - this needs to be done until full support in chrome
-
-
-    // onkeydown key is corretly alerted but script fail to validate - Control Keys (Backspace, End, Home, Left Arrow, Up Arrow, Right Arrow, Down Arrow, Delete)
-    if (key === 8 || key === 35 || key === 36 || key === 37 || key === 38 || key === 39 || key === 40 || key === 46){          
-        return true;}
-    if (key === 'Backspace' || key === 'End' || key === 'Home' || key === 'ArrowLeft' || key === 'ArrowUp' || key === 'RightArrow' || key === 'ArrowDown' || key === 'Delete'){        
-        return true;}
+    // Are Spaces Allowed (IE fix)
+    if (key === 'Spacebar' && spacesAllowed === true)
+        return true;
     
-    // onkeypress - original exceptions
-    // Control keys (-, -, Backspace, Tab, Enter, Escape, Space)
-    /*if ((key===null) || (key===0) || (key===8) || (key===9) || (key===13) || (key===27) || (key===32))
+    // Control Keys (Backspace, Enter and Return, End, Home, Left Arrow, Up Arrow, Right Arrow, Down Arrow, Delete)
+    if (key === 'Backspace' || key === 'Enter' || key === 'End' || key === 'Home' || key === 'ArrowLeft' || key === 'ArrowUp' || key === 'ArrowRight' || key === 'ArrowDown' || key === 'Delete')       
         return true;
 
+    // Control Keys (IE and Edge fix)
+    if (key === 'Left' || key === 'Up' || key === 'Right' || key === 'Down' || key === 'Del')       
+        return true;
+    
     // Allowed Characters
-    else if ((allowedCharacters.indexOf(keychar) > -1))
-       return true;
+    else if (allowedCharacters.indexOf(key) > -1)
+        return true;
     else
-       return false;
-       */
-      else if (allowedCharacters.indexOf(key) > -1)
-       return true;
-    else
-       return false;
-      
+        return false;
+    
 }

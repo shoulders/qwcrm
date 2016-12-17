@@ -65,4 +65,4 @@ $smarty->assign('gift',    display_gift($db, $customer_id));
 $smarty->assign('company_details',display_company_info($db, $company_id));
 
 
-$smarty->display('customer'.SEP.'customer_details.tpl');
+$smarty->display('customer'.SEP.'details.tpl');

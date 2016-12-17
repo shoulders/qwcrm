@@ -21,7 +21,7 @@
                                                 <td class="olohead"></td>
                                             </tr>
                                             <tr>
-                                                <td class="olotd"><textarea class="olotd4" rows="15" cols="70" mce_editable="true" name="memo"></textarea></td>
+                                                <td class="olotd"><textarea class="olotd4" rows="15" cols="70" name="memo" required></textarea></td>
                                             </tr>
                                         </table>
                                         <br>

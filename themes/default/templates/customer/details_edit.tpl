@@ -1,7 +1,6 @@
 <!-- edit.tpl -->
 <script src="{$theme_js_dir}tinymce/tinymce.min.js"></script>
 <script src="{$theme_js_dir}editor-config.js"></script>
-{* include file="`$theme_js_dir_finc`modules/customer.js" *}</script>
 
 <table width="100%" border="0" cellpadding="20" cellspacing="0">
     <tr>
@@ -20,7 +19,7 @@
                                             <td class="menutd">
                                                 {section name=q loop=$customer}
                                                     {literal}
-                                                    <form action="index.php?page=customer:edit" method="POST" name="edit_customer" id="edit_customer" onsubmit="try { var myValidator = validate_customer; } catch(e) { return true; } return myValidator(this);">
+                                                    <form action="index.php?page=customer:details_edit" method="POST" name="edit_customer" id="edit_customer">
                                                     {/literal}
                                                         <input type="hidden" name="customer_id" value="{$customer[q].CUSTOMER_ID}">
                                                         <table width="100%" cellpadding="2" cellspacing="2" border="0">
@@ -30,7 +29,7 @@
                                                                         <tbody align="left">
                                                                             <tr>
                                                                                 <td align="right"><strong>{$translate_display}</strong><span style="color: #ff0000">*</span></td>
-                                                                                <td colspan="3"><input class="olotd5" size="50" value="{$customer[q].CUSTOMER_DISPLAY_NAME}" name="displayName" type="text" maxlength="50" onkeydown="return onlyAlpha(event);"/></td>
+                                                                                <td colspan="3"><input class="olotd5" size="50" value="{$customer[q].CUSTOMER_DISPLAY_NAME}" name="displayName" type="text" maxlength="50" required onkeydown="return onlyAlpha(event);"/></td>
                                                                             </tr>
                                                                             <tr>
                                                                                 <td align="right"><strong>{$translate_first}</strong></td>
@@ -41,7 +40,7 @@
                                                                             </tr>
                                                                             <tr>
                                                                                 <td align="right"><span style="color: #ff0000"></span><b>{$translate_customer_www}</b></td>
-                                                                                <td><input class="olotd5" value="{$customer[q].CUSTOMER_WWW}" name="customerWww" size="50" type="url" maxlength="50" placeholder="https://quantumwarp.com" pattern="https?://.+"  onkeydown="return OnlyURL(event);"/></td>
+                                                                                <td><input class="olotd5" value="{$customer[q].CUSTOMER_WWW}" name="customerWww" size="50" type="url" maxlength="50" placeholder="https://quantumwarp.com" pattern="https?://.+" onkeydown="return onlyURL(event);"/></td>
                                                                             </tr>
                                                                             <tr>
                                                                                 <td align="right"><strong>{$translate_email}</strong></td>
@@ -65,13 +64,12 @@
                                                                                         <option value="8"{if $customer[q].CUSTOMER_TYPE == 8} selected{/if}>{$translate_customer_type_8}</option>
                                                                                         <option value="9"{if $customer[q].CUSTOMER_TYPE == 9} selected{/if}>{$translate_customer_type_9}</option>
                                                                                         <option value="10"{if $customer[q].CUSTOMER_TYPE == 10} selected{/if}>{$translate_customer_type_10}</option>
-                                                                                    </select>
-                                                                                    <input type="hidden" name="page" value="customer:edit">
+                                                                                    </select>                                                                                    
                                                                                 </td>
                                                                             </tr>
                                                                             <tr>
-                                                                                <td align="right"><b>{$translate_customer_discount}</b></td>
-                                                                                <td><input class="olotd5" size="4" name="discount" value="{$customer[q].DISCOUNT}" type="text" maxlength="5" pattern="{literal}\d{0,2}(\.\d{0,2})?{/literal}" onkeydown="return onlyNumbersPeriods(event);"><b>%</b></td>
+                                                                                <td align="right"><b>{$translate_customer_discount}</b><span style="color: #ff0000">*</span></td>
+                                                                                <td><input class="olotd5" size="4" value="{$customer[q].DISCOUNT}" name="discount" type="text" maxlength="5" pattern="{literal}\d{0,2}(\.\d{0,2})?{/literal}" required onkeydown="return onlyNumbersPeriod(event);"/><b>%</b></td>
                                                                             </tr>
                                                                         </tbody>
                                                                     </table>
@@ -106,7 +104,7 @@
                                                                     <table>
                                                                         <tr>
                                                                             <td align="right"><strong>{$translate_customer_address}</strong></td>
-                                                                            <td colspan="3"><textarea class="olotd5 mceNoEditor" cols="30" rows="3" name="address" maxlength="100">{$customer[q].CUSTOMER_ADDRESS}</textarea></td>
+                                                                            <td colspan="3"><textarea class="olotd5 mceNoEditor" cols="30" rows="3" name="address" maxlength="100" onkeydown="return onlyAlphaNumericExtra(event);"/>{$customer[q].CUSTOMER_ADDRESS}</textarea></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><strong>{$translate_customer_city}</strong></td>

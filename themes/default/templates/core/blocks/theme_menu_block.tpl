@@ -34,12 +34,13 @@
                 <div>
                     <span>{$translate_core_menu_customers}</span>
                     <a href="?page=customer:new&page_title={$translate_core_menu_add_new_customer}"><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_add_new}</a>
-                    <a href="?page=customer:view&page_title={$translate_core_menu_customers}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_view}</a>
+                    <a href="?page=customer:search&page_title={$translate_core_menu_customers}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_view}- tns me search</a>
                     {if $customer_id > 0 }
-                        <a href="?page=customer:edit&customer_id={$customer_id}&page_title={$translate_core_menu_edit_customer}"><img src="{$theme_images_dir}icons/edit_employee.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_edit_customer}</a>
+                        <a href="?page=customer:details_edit&customer_id={$customer_id}&page_title={$translate_core_menu_edit_customer}"><img src="{$theme_images_dir}icons/edit_employee.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_edit_customer}</a>
                         <a href="?page=billing:new_gift&customer_id={$customer_id}&page_title={$translate_core_menu_new_gift_certificate}&customer_name=ADD NAME HERE"><img src="{$theme_images_dir}icons/gift.png" alt="" border="0" height="14" width="14" /> {$translate_core_menu_new_gift_certificate}</a>
                         <a href="?page=customer:delete&customer_id={$customer_id}&page_title={$translate_core_menu_delete_customer}"><img src="{$theme_images_dir}icons/delete_employees.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_delete_customer}</a>
                         <a href="?page=customer:email&customer_id={$customer_id}&page_title=Email Customer"><img src="{$theme_images_dir}icons/16x16/email.jpg" alt="" border="0" height="14" width="14" /> {$translate_core_menu_email_customer}</a>
+                        <a href="?page=customer:memo&customer_id={$customer_id}&page_title=Email Customer"><img src="{$theme_images_dir}icons/16x16/email.jpg" alt="" border="0" height="14" width="14" />trans - memo</a>
                     {/if}        
                 </div>
 
