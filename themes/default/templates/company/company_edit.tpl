@@ -1,4 +1,7 @@
 <!-- company_edit.tpl -->
+<script src="{$theme_js_dir}tinymce/tinymce.min.js"></script>
+<script src="{$theme_js_dir}editor-config.js"></script>
+
 <form method="POST" action="?page=company:company_edit" enctype="multipart/form-data">
     <table width="100%" border="0" cellpadding="20" cellspacing="0">
         <tr>
@@ -31,60 +34,63 @@
                                                     {section name=q loop=$company}
                                                         <table cellpadding="5" cellspacing="0">
                                                             <tr>
-                                                                <td align="right"><b>Company Display Name:</b></td>
-                                                                <td><input class="olotd5" type="text" name="company_name" value="{$company[q].COMPANY_NAME}"</td>
+                                                                <td align="right"><b>Company Name:</b></td>
+                                                                <td><input name="company_name" class="olotd5" value="{$company[q].COMPANY_NAME}" type="text" maxlength="50" required onkeydown="return onlyAlpha(event);"></td>
                                                             </tr>
                                                             <tr>
-                                                                <td align="right"><label  for="file"><b>Logo Filename:</b></label></td>
-                                                                <td><input type="file" name="file" id="file" /> <img src="{$company[q].COMPANY_LOGO}" height="50px" alt="{$company[q].COMPANY_LOGO}"><br><a>Current Logo Path : {$company[q].COMPANY_LOGO}</a></td>
+                                                                <td align="right"><b>Logo Filename:</b></td>
+                                                                <td>
+                                                                    <input type="file" name="file" id="file" />
+                                                                    <img src="{$company[q].COMPANY_LOGO}" height="50px" alt="{$company[q].COMPANY_LOGO}"><br><a>Current Logo Path : {$company[q].COMPANY_LOGO}</a>
+                                                                </td>
                                                             </tr>
                                                             <tr>
                                                                 <td align="right"><b>Company ABN:</b></td>
-                                                                <td><input class="olotd5" type="text" name="company_abn" value="{$company[q].COMPANY_ABN}"></td>
+                                                                <td><input name="company_abn" class="olotd5" value="{$company[q].COMPANY_ABN}" type="text" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"/></td>
                                                             </tr>
                                                             <tr>
                                                                 <td align="right"><b>Address:</b></td>
-                                                                <td><textarea class="olotd5" cols="30" rows="3" name="address">{$company[q].COMPANY_ADDRESS}</textarea></td>
+                                                                <td><textarea name="address" class="olotd5 mceNoEditor" cols="30" rows="3" maxlength="100" required onkeydown="return onlyAddresses(event);">{$company[q].COMPANY_ADDRESS}</textarea></td>
                                                             </tr>
                                                             <tr>
                                                                 <td align="right"><b>City:</b></td>
-                                                                <td><input class="olotd5" type="text" name="city" value="{$company[q].COMPANY_CITY}"></td>
+                                                                <td><input name="city" class="olotd5" value="{$company[q].COMPANY_CITY}" type="text" maxlength="20" required onkeydown="return onlyAlpha(event);"></td>
                                                             </tr>
                                                             <tr>
                                                                 <td align="right"><b>State:</b></td>
-                                                                <td><input class="olotd5" type="text" name="state" value="{$company[q].COMPANY_STATE}"></td>
+                                                                <td><input name="state" class="olotd5" type="text" maxlength="20" required onkeydown="return onlyAlpha(event);"></td>
                                                             </tr>
                                                             <tr>
                                                                 <td align="right"><b>Zip:</b></td>
-                                                                <td><input class="olotd5" type="text" name="zip" value="{$company[q].COMPANY_ZIP}"></td>
+                                                                <td><input name="zip" class="olotd5" value="{$company[q].COMPANY_ZIP}" type="text" maxlength="20" required onkeydown="return onlyAlphaNumeric(event);"></td>
                                                             </tr>
                                                             <tr>
                                                                 <td align="right"><b>Country</b></td>
                                                                 <td>
                                                                     <select name="country" class="olotd5">
                                                                         {section name=c loop=$country}
-                                                                            <option value="{$country[c].code}" {if $company[q].COMPANY_COUNTRY == $country[c].code} selected {/if} >{$country[c].name}</option>
+                                                                            <option value="{$country[c].code}" {if $company[q].COMPANY_COUNTRY == $country[c].code} selected {/if}>{$country[c].name}</option>
                                                                         {/section}
                                                                     </select>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td align="right"><b>Phone:</b></td>
-                                                                <td><input class="olotd5" type="text" name="phone" value="{$company[q].COMPANY_PHONE}"></td>
+                                                                <td><input name="phone" class="olotd5" value="{$company[q].COMPANY_PHONE}" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"</td>
                                                             </tr>
                                                             <tr>
                                                                 <td align="right"><b>Mobile Phone:</b></td>
-                                                                <td><input class="olotd5" type="text" name="mobile_phone" value="{$company[q].COMPANY_MOBILE}"></td>
+                                                                <td><input name="mobile_phone" class="olotd5" value="{$company[q].COMPANY_MOBILE}" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"></td>
                                                             </tr>
                                                             <tr>
                                                                 <td align="right"><b>Fax:</b></td>
-                                                                <td><input class="olotd5" type="text" name="fax" value="{$company[q].COMPANY_FAX}"></td>
+                                                                <td><input name="fax" class="olotd5" value="{$company[q].COMPANY_FAX}" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"></td>
                                                             </tr>
                                                         {/section}
                                                         {section name=w loop=$setup}
                                                             <tr>
                                                                 <td align="right"><b>Tax Amount:</b></td>
-                                                                <td><input type="text" size="6" name="inv_tax" value="{$setup[w].INVOICE_TAX}" class="olotd5">%</td>
+                                                                <td><input name="inv_tax" class="olotd5" size="6" value="{$setup[w].INVOICE_TAX}" maxlength="5" pattern="{literal}\d{0,2}(\.\d{0,2})?{/literal}" required onkeydown="return onlyNumbersPeriod(event);"/>%</td>
                                                             </tr>
                                                             <tr>
                                                                 <td align="right"><b>Invoice Starting Number:</b></td>
@@ -101,7 +107,7 @@
                                                                 <td colspan="3" align="center"><b>eg: 259 - this will start work order increments from 259 onwards</b><br></td>
                                                             </tr>
                                                             <tr>
-                                                                <td colspan="2"><b>Invoice Thank You Note:</b> 255 max characters. Displays at the bottom of each invoice.
+                                                                <td colspan="2"><b>Invoice Thank You Note:</b><br>255 max characters. Displays at the bottom of each invoice.
                                                                 </td>
                                                             </tr>
                                                             <tr>
@@ -109,7 +115,7 @@
                                                                 </td>
                                                             </tr>
                                                             <tr>
-                                                                <td><b>Company Welcome Note</b> (home page)</td>
+                                                                <td><b>Company Welcome Note</b><br>(home page)</td>
                                                             </tr>
                                                             <tr>
                                                                 <td colspan="2"><textarea class="olotd5" cols="80" rows="5" name="welcome">{$setup[w].WELCOME_NOTE}</textarea>
@@ -143,11 +149,11 @@
                                                         {section name=q loop=$company}
                                                             <tr>
                                                                 <td align="right"><b>Currency Symbol:</b></td>
-                                                                <td><input class="olotd5" type="text" size="5" name="currency_sym" value="{$company[q].COMPANY_CURRENCY_SYMBOL}"></td>
+                                                                <td><input name="currency_sym" class="olotd5" size="3" value="{$company[q].COMPANY_CURRENCY_SYMBOL}" type="text" maxlength="1" required onkeydown="return onlyCurrencySymbol(event);"></td>
                                                             </tr>
                                                             <tr>
                                                                 <td align="right"><b>Currency Code:</b></td>
-                                                                <td><input class="olotd5" type="text" size="5" name="currency_code" value="{$company[q].COMPANY_CURRENCY_CODE}">eg: "USD" = US Dollars, "AUD" = Australian Dollars, "GBP" = British Pound.</td>
+                                                                <td><input name="currency_code" class="olotd5" size="5" value="{$company[q].COMPANY_CURRENCY_CODE}" type="text" maxlength="3" required onkeydown="return onlyAlpha(event);">eg: "USD" = US Dollars, "AUD" = Australian Dollars, "GBP" = British Pound.</td>
                                                             </tr>
                                                             <tr>
                                                                 <td align="right"><b>Date Formatting:</b></td>
@@ -190,15 +196,15 @@
                                                         {section name=q loop=$company}
                                                             <tr>
                                                                 <td align="right"><b>Default No-Reply Email:</b></td>
-                                                                <td><input class="olotd5" type="text" size="50" name="email_from" value="{$company[q].COMPANY_EMAIL_FROM}"></td>
+                                                                <td><input name="email_from" class="olotd5" size="50" value="{$company[q].COMPANY_EMAIL_FROM}" type="email" onkeydown="return onlyEmail(event);"></td>
                                                             </tr>
                                                             <tr>
                                                                 <td align="right"><b>Email SMTP Server:</b></td>
-                                                                <td><input class="olotd5" type="text" size="50" name="email_server" value="{$company[q].COMPANY_EMAIL_SERVER}"></td>
+                                                                <td><input name="email_server" class="olotd5" size="50" value="{$company[q].COMPANY_EMAIL_SERVER}" type="url" onkeydown="return onlyURL(event);"></td>
                                                             </tr>
                                                             <tr>
                                                                 <td align="right"><b>Email Port:</b></td>
-                                                                <td><input class="olotd5" type="text" size="5" name="email_port" value="{$company[q].COMPANY_EMAIL_PORT}"></td>
+                                                                <td><input name="email_port" class="olotd5" size="5" value="{$company[q].COMPANY_EMAIL_PORT}" type="text" onkeydown="return onlyNumbers(event);"></td>
                                                             </tr>
                                                             <tr>
                                                                 <td align="right"><b>Connection Type:</b></td>
@@ -211,16 +217,16 @@
                                                             </tr>
                                                             <tr>
                                                                 <td align="right"><b>SMTP Login Name:</b></td>
-                                                                <td><input class="olotd5" type="text" size="50" name="email_login" value="{$company[q].COMPANY_SMTP_USERNAME}"><font color="RED">*</font>Only required if authentication is needed</td>
+                                                                <td><input name="email_login" class="olotd5" size="50" value="{$company[q].COMPANY_SMTP_USERNAME}" type="text" maxlength="50" onkeydown="return onlyUsername(event);"><font color="RED">*</font>Only required if authentication is needed</td>
                                                             </tr>
                                                             <tr>
                                                                 <td align="right"><b>SMTP Server Password:</b></td>
-                                                                <td><input class="olotd5" size="50" type="password" name="email_password" value="{$company[q].COMPANY_SMTP_PASSWORD}"><font color="RED">*</font>Only required if authentication is needed</td>
+                                                                <td><input name="email_password" class="olotd5" size="50" value="{$company[q].COMPANY_SMTP_PASSWORD}" type="password" onkeydown="return onlyPassword(event);"><font color="RED">*</font>Only required if authentication is needed</td>
                                                             </tr>
                                                         {/section}
                                                         {section name=w loop=$setup}
                                                             <tr>
-                                                                 <td colspan="2"><input class="olotd5" type="submit" name="submit"  value="Update"></td>
+                                                                 <td colspan="2"><input class="olotd5" type="submit" name="submit" value="Update"></td>
                                                             </tr>
                                                         {/section}
                                                     </table>                                                    
@@ -279,7 +285,7 @@
                                                                 <td><textarea cols="80" rows="15" class="olotd5" name="new_wo" >{$setup[e].EMAIL_MSG_WO_CREATED}</textarea></td>
                                                             </tr>                                                            
                                                                 <tr>
-                                                                    <td colspan="2"> <input class="olotd5" type="submit" name="submit"  value="Update"></td>
+                                                                    <td colspan="2"> <input class="olotd5" type="submit" name="submit" value="Update"></td>
                                                                 </tr>                                                            
                                                         </table>
                                                     {/section}

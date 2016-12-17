@@ -29,7 +29,7 @@
                                                                 <td style ="color:RED;">{$translate_employee_display_name_criteria}</td>
                                                             </tr>
                                                             <tr>
-                                                                <td align="left" valign="top"><b>{$translate_display}</b><input class="olotd4" name="name" type="text" required onkeypress="return OnlyAlphaNumeric();" /><input class="olotd4" name="submit" value="Search" type="submit" /></td>
+                                                                <td align="left" valign="top"><b>{$translate_display}</b><input name="name" class="olotd4" type="text" required onkeypress="return OnlyAlphaNumeric();" /><input class="olotd4" name="submit" value="Search" type="submit" /></td>
                                                             </tr>                                    
                                                         </table>
                                                     </div>

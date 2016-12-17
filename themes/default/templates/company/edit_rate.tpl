@@ -1,6 +1,4 @@
 <!-- edit_rate.tpl -->
-{include file="control/edit_rate.js"}
-
 <table width="100%" border="0" cellpadding="20" cellspacing="5">
     <tr>
         <td>
@@ -33,9 +31,9 @@
                                                             <form method="POST" action="?page=company:edit_rate">
                                                                 <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" class="row1">
                                                                     <td class="olotd4" nowrap>{$rate[q].LABOR_RATE_ID}</td>
-                                                                    <td class="olotd4" nowrap><input class="olotd5" type="text" name="display" value="{$rate[q].LABOR_RATE_NAME}" size="50"></td>
-                                                                    <td class="olotd4" nowrap>{$currency_sym}<input class="olotd5" type="text" name="amount" value="{$rate[q].LABOR_RATE_AMOUNT}" size="6"></td>
-                                                                    <td class="olotd4" nowrap>{$currency_sym}<input class="olotd5" type="text" name="cost" value="{$rate[q].LABOR_RATE_COST}" size="6"></td>
+                                                                    <td class="olotd4" nowrap><input name="display" class="olotd5" size="50" value="{$rate[q].LABOR_RATE_NAME}" type="text" maxlength="50" required onkeydown="return onlyAlphaNumeric(event);"></td>
+                                                                    <td class="olotd4" nowrap>{$currency_sym}<input name="amount" class="olotd5" size="10" value="{$rate[q].LABOR_RATE_AMOUNT}" type="text" maxlength="10" pattern="{literal}\d{0,4}(\.\d{0,2})?{/literal}" required onkeydown="return onlyNumbersPeriod(event);"></td>
+                                                                    <td class="olotd4" nowrap>{$currency_sym}<input name="cost" class="olotd5" size="10" value="{$rate[q].LABOR_RATE_COST}" type="text" maxlength="10" pattern="{literal}\d{0,4}(\.\d{0,2})?{/literal}" required onkeydown="return onlyNumbersPeriod(event);"></td>
                                                                     <td class="olotd4" nowrap>
                                                                         <select class="olotd5" name="active">
                                                                             <option value="0" {if $rate[q].LABOR_RATE_ACTIVE == 0} selected{/if}>No</option>
@@ -48,7 +46,7 @@
                                                                             <option value="Service" {if $rate[q].LABOR_TYPE == "Service"} selected{/if}>Service</option>
                                                                         </select>
                                                                     </td>
-                                                                    <td class="olotd4" nowrap><input class="olotd5" type="text" name="manufacturer" value="{$rate[q].LABOR_MANUF}" size="15"></td>
+                                                                    <td class="olotd4" nowrap><input name="manufacturer" class="olotd5" size="20" value="{$rate[q].LABOR_MANUF}" type="text" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"></td>
                                                                     <td class="olotd4" nowrap>
                                                                         <input type="hidden" name="id" value="{$rate[q].LABOR_RATE_ID}">
                                                                         <input type="submit" name="submit" value="Delete">
@@ -71,21 +69,21 @@
                                                             <td class="olohead">Action</td>
                                                         </tr>
                                                         <tr>
-                                                            <td class="olotd4"><input class="olotd5" type="text" name="display" size="60"></td>
-                                                            <td class="olotd4">{$currency_sym}<input class="olotd5" type="text" name="amount" size="6"></td>
-                                                            <td class="olotd4">{$currency_sym}<input class="olotd5" type="text" name="cost" size="6"></td>
+                                                            <td class="olotd4"><input name="display" class="olotd5" size="50" type="text" maxlength="50" required onkeydown="return onlyAlphaNumeric(event);"></td>
+                                                            <td class="olotd4">{$currency_sym}<input name="amount" class="olotd5" size="10" type="text" maxlength="10" pattern="{literal}\d{0,4}(\.\d{0,2})?{/literal}" required onkeydown="return onlyNumbersPeriod(event);"></td>
+                                                            <td class="olotd4">{$currency_sym}<input name="cost" class="olotd5" size="10" type="text" maxlength="10" pattern="{literal}\d{0,4}(\.\d{0,2})?{/literal}" required onkeydown="return onlyNumbersPeriod(event);"></td>
                                                             <td class="olotd4" nowrap>
                                                                 <select class="olotd5" name="type">
                                                                     <option value="Parts">Parts</option>
-                                                                    <option value="Service" SELECTED>Service</option>
+                                                                    <option value="Service" selected>Service</option>
                                                                 </select>
                                                             </td>
-                                                            <td class="olotd4" nowrap><input class="olotd5" type="text" name="manufacturer" value="{$rate[q].LABOR_MANUF}" size="15"></td>
+                                                            <td class="olotd4" nowrap><input name="manufacturer" class="olotd5" size="20" type="text" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"></td>
                                                             <td class="olotd4"><input type="submit" name="submit" value="New"></td>
                                                         </tr>
                                                     </table>
                                                 </form>
-                                                {if $cred.EMPLOYEE_TYPE == 1 ||  $cred.EMPLOYEE_TYPE == 2 || $cred.EMPLOYEE_TYPE == 4}                                                    
+                                                {if $login_account_type_id.EMPLOYEE_TYPE == 1 ||  $login_account_type_id.EMPLOYEE_TYPE == 2 || $login_account_type_id.EMPLOYEE_TYPE == 3}                                                    
                                                     <script>
                                                     {literal} 
                                                         $(function(){

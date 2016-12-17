@@ -29,26 +29,26 @@
                                                                         <tbody align="left">
                                                                             <tr>
                                                                                 <td align="right"><strong>{$translate_display}</strong><span style="color: #ff0000">*</span></td>
-                                                                                <td colspan="3"><input class="olotd5" size="50" value="{$customer[q].CUSTOMER_DISPLAY_NAME}" name="displayName" type="text" maxlength="50" required onkeydown="return onlyAlpha(event);"/></td>
+                                                                                <td colspan="3"><input name="displayName" class="olotd5" size="50" value="{$customer[q].CUSTOMER_DISPLAY_NAME}" type="text" maxlength="50" required onkeydown="return onlyAlpha(event);"/></td>
                                                                             </tr>
                                                                             <tr>
                                                                                 <td align="right"><strong>{$translate_first}</strong></td>
-                                                                                <td><input class="olotd5" value="{$customer[q].CUSTOMER_FIRST_NAME}" name="firstName" type="text" maxlength="20" onkeydown="return onlyAlpha(event);"/></td>
+                                                                                <td><input name="firstName" class="olotd5" value="{$customer[q].CUSTOMER_FIRST_NAME}" type="text" maxlength="20" onkeydown="return onlyAlpha(event);"/></td>
                                                                             <tr>
                                                                                 <td align="right"><strong>{$translate_last}</strong></td>
-                                                                                <td><input class="olotd5" value="{$customer[q].CUSTOMER_LAST_NAME}" name="lastName" type="text" maxlength="20" onkeydown="return onlyAlpha(event);"/></td>
+                                                                                <td><input name="lastName" class="olotd5" value="{$customer[q].CUSTOMER_LAST_NAME}" type="text" maxlength="20" onkeydown="return onlyAlpha(event);"/></td>
                                                                             </tr>
                                                                             <tr>
                                                                                 <td align="right"><span style="color: #ff0000"></span><b>{$translate_customer_www}</b></td>
-                                                                                <td><input class="olotd5" value="{$customer[q].CUSTOMER_WWW}" name="customerWww" size="50" type="url" maxlength="50" placeholder="https://quantumwarp.com" pattern="https?://.+" onkeydown="return onlyURL(event);"/></td>
+                                                                                <td><input name="customerWww" class="olotd5" value="{$customer[q].CUSTOMER_WWW}" size="50" type="url" maxlength="50" placeholder="https://quantumwarp.com" pattern="https?://.+" onkeydown="return onlyURL(event);"/></td>
                                                                             </tr>
                                                                             <tr>
                                                                                 <td align="right"><strong>{$translate_email}</strong></td>
-                                                                                <td><input class="olotd5" value="{$customer[q].CUSTOMER_EMAIL}" name="email" size="50" type="email" maxlength="50" placeholder="no-reply@quantumwarp.com" onkeydown="return onlyEmail(event);"/></td>
+                                                                                <td><input name="email" class="olotd5" value="{$customer[q].CUSTOMER_EMAIL}" size="50" type="email" maxlength="50" placeholder="no-reply@quantumwarp.com" onkeydown="return onlyEmail(event);"/></td>
                                                                             </tr>
                                                                             <tr>
                                                                                 <td align="right"><strong>{$translate_credit_terms}</strong></td>
-                                                                                <td><input class="olotd5" value="{$customer[q].CREDIT_TERMS}" name="creditterms" size="50" type="text" maxlength="50" onkeydown="return onlyAlphaNumeric(event);"/></td>
+                                                                                <td><input name="creditterms" class="olotd5" value="{$customer[q].CREDIT_TERMS}" size="50" type="text" maxlength="50" onkeydown="return onlyAlphaNumeric(event);"/></td>
                                                                             </tr>
                                                                             <tr>
                                                                                 <td align="right"><strong>{$translate_type}</strong><span style="color: #ff0000">*</span></td>
@@ -69,7 +69,7 @@
                                                                             </tr>
                                                                             <tr>
                                                                                 <td align="right"><b>{$translate_customer_discount}</b><span style="color: #ff0000">*</span></td>
-                                                                                <td><input class="olotd5" size="4" value="{$customer[q].DISCOUNT}" name="discount" type="text" maxlength="5" pattern="{literal}\d{0,2}(\.\d{0,2})?{/literal}" required onkeydown="return onlyNumbersPeriod(event);"/><b>%</b></td>
+                                                                                <td><input name="discount" class="olotd5" size="4" value="{$customer[q].DISCOUNT}" type="text" maxlength="5" pattern="{literal}\d{0,2}(\.\d{0,2})?{/literal}" required onkeydown="return onlyNumbersPeriod(event);"/><b>%</b></td>
                                                                             </tr>
                                                                         </tbody>
                                                                     </table>
@@ -83,15 +83,15 @@
                                                                     <table>
                                                                         <tr>
                                                                             <td align="right"><strong>{$translate_customer_home}</strong></td>
-                                                                            <td><input class="olotd5" value="{$customer[q].CUSTOMER_PHONE}" name="homePhone" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"/></td>
+                                                                            <td><input name="homePhone" class="olotd5" value="{$customer[q].CUSTOMER_PHONE}" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"/></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><strong>{$translate_customer_work}</strong></td>
-                                                                            <td><input class="olotd5" value="{$customer[q].CUSTOMER_WORK_PHONE}" name="workPhone" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"/></td>
+                                                                            <td><input name="workPhone" class="olotd5" value="{$customer[q].CUSTOMER_WORK_PHONE}" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"/></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><strong>{$translate_customer_mobile}</strong></td>
-                                                                            <td><input class="olotd5" value="{$customer[q].CUSTOMER_MOBILE_PHONE}" name="mobilePhone" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"/></td>
+                                                                            <td><input name="mobilePhone" class="olotd5" value="{$customer[q].CUSTOMER_MOBILE_PHONE}" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"/></td>
                                                                         </tr>
                                                                     </table>
                                                                 </td>
@@ -104,33 +104,33 @@
                                                                     <table>
                                                                         <tr>
                                                                             <td align="right"><strong>{$translate_customer_address}</strong></td>
-                                                                            <td colspan="3"><textarea class="olotd5 mceNoEditor" cols="30" rows="3" name="address" maxlength="100" onkeydown="return onlyAddresses(event);"/>{$customer[q].CUSTOMER_ADDRESS}</textarea></td>
+                                                                            <td colspan="3"><textarea name="address" class="olotd5 mceNoEditor" cols="30" rows="3" maxlength="100" onkeydown="return onlyAddresses(event);"/>{$customer[q].CUSTOMER_ADDRESS}</textarea></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><strong>{$translate_customer_city}</strong></td>
-                                                                            <td><input class="olotd5" value="{$customer[q].CUSTOMER_CITY}" name="city" type="text" onkeydown="return onlyAlpha(event);"/></td>
+                                                                            <td><input name="city" class="olotd5" value="{$customer[q].CUSTOMER_CITY}" type="text" onkeydown="return onlyAlpha(event);"/></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><strong>{$translate_customer_state}</strong></td>
-                                                                            <td><input class="olotd5" value="{$customer[q].CUSTOMER_STATE}" name="state" type="text" onkeydown="return onlyAlpha(event);"/></td>
+                                                                            <td><input name="state" class="olotd5" value="{$customer[q].CUSTOMER_STATE}" type="text" onkeydown="return onlyAlpha(event);"/></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><strong>{$translate_customer_zip}</strong></td>
-                                                                            <td colspan="2"><input class="olotd5" value="{$customer[q].CUSTOMER_ZIP}" name="zip" type="text" onkeydown="return onlyAlphaNumeric(event);"/></td>
+                                                                            <td colspan="2"><input name="zip" class="olotd5" value="{$customer[q].CUSTOMER_ZIP}" type="text" onkeydown="return onlyAlphaNumeric(event);"/></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td class="menuhead"><b>{$translate_customer_notes}</b></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td></td>
-                                                                            <td colspan="2"><textarea class="olotd5" name="customerNotes" cols="50" rows="20">{$customer[q].CUSTOMER_NOTES}</textarea></td>
+                                                                            <td colspan="2"><textarea name="customerNotes" class="olotd5" cols="50" rows="20">{$customer[q].CUSTOMER_NOTES}</textarea></td>
                                                                         </tr>
                                                                     </table>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td></td>
-                                                                <td><input class="olotd5" type="submit" name="submit"value="Update"></td>
+                                                                <td><input class="olotd5" name="submit" value="Update" type="submit"></td>
                                                             </tr>
                                                         </table>                                                    
                                                     </form>

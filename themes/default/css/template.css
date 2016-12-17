@@ -562,6 +562,7 @@ div.tab_contents_active {
 div.clear {
     clear: both;
 }
+
 /* Used for slider on email from submittion for additional user info */
 
 #newuserform {
@@ -594,20 +595,19 @@ div.clear {
     font-weight:bolder;
     font-size: 12px;
 }
+
 /* Main Page Hide Invoice Stats CSS */
-#hide_stats {
-    
-    display: none;
-    
-    
+
+#hide_stats {    
+    display: none;    
 }
+
 #hidden_stats{
     display:block;
-    font-weight: bold; 
-
+    font-weight: bold;
 }
 
-/* Suggestion Box */
+/* Autosuggest Box */
 
 .suggestionsBoxWrapper{
     position: relative;

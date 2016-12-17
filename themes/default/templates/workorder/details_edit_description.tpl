@@ -24,12 +24,12 @@
                                     <form method="POST" action="index.php?page=workorder:details_edit_description" name="new_refund" id="new_refund">
                                     {/literal}
                                         <b>{$translate_workorder_scope}</b></br>
-                                        <input class="olotd4" size="20" value="{$workorder_scope}" name="workorder_scope" type="text" maxlength="80" required onkeydown="return onlyAlphaNumeric(event);">
+                                        <input name="workorder_scope" class="olotd4" size="20" value="{$workorder_scope}" type="text" maxlength="80" required onkeydown="return onlyAlphaNumeric(event);">
                                         <br>
                                         <br>
                                         <br>
                                         <b>{$translate_workorder_details_description_title}</b><br>
-                                        <textarea class="olotd4 wysiwyg-checkforcontent" rows="15" cols="70" name="workorder_description">{$workorder_description}</textarea>
+                                        <textarea name="workorder_description" class="olotd4 wysiwyg-checkforcontent" rows="15" cols="70">{$workorder_description}</textarea>
                                         <br>
                                         <input type="hidden" name="wo_id" value="{$wo_id}">
                                         <input class="olotd4" name="submit" value="{$translate_workorder_submit}" type="submit">

@@ -22,11 +22,11 @@
                                                 <td class="olohead">{$translate_workorder_details_notes_title}</td>
                                             </tr>
                                             <tr>
-                                                <td class="olotd"><textarea class="olotd4 wysiwyg-checkforcontent" rows="15" cols="70" name="workorder_note"></textarea></td>
+                                                <td class="olotd"><textarea name="workorder_note" class="olotd4 wysiwyg-checkforcontent" rows="15" cols="70"></textarea></td>
                                             </tr>
                                         </table>
                                         <br>
-                                        <input class="olotd4" name="submit" value="{$translate_workorder_submit}" type="submit" />    
+                                        <input name="submit" class="olotd4"  value="{$translate_workorder_submit}" type="submit" />    
                                     </form>
                                     <br>
                                 </td>

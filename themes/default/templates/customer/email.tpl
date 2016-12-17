@@ -38,24 +38,24 @@
                                                                         <tr>
                                                                             <td class="menutd" align="right"><b>From:</b></td>
                                                                             <td class="menutd" colspan="2">
-                                                                                <input type="text" name="" value="{$employee_details.EMPLOYEE_FIRST_NAME} {$employee_details.EMPLOYEE_LAST_NAME}  <{$employee_details.EMPLOYEE_EMAIL}>" size="60" readonly>
-                                                                                <input type="hidden" name="email_from" value="{$employee_details.EMPLOYEE_EMAIL}" size="60" readonly>
-                                                                                <input type="hidden" name="email_server2" value="{$email_server}" size="60" readonly>
-                                                                                <input type="hidden" name="email_server_port2" value="{$email_server_port}" size="60" readonly>
-                                                                                <input type="hidden" name="c2" value="{$customer_details[i].CUSTOMER_ID}" size="3" readonly>
-                                                                                <input type="hidden" name="cus_name" value="{$customer_details[i].CUSTOMER_DISPLAY_NAME}" size="3" readonly>
+                                                                                <input name="" size="60" value="{$employee_details.EMPLOYEE_FIRST_NAME} {$employee_details.EMPLOYEE_LAST_NAME}  <{$employee_details.EMPLOYEE_EMAIL}>" type="text" readonly>
+                                                                                <input name="email_from" size="60" value="{$employee_details.EMPLOYEE_EMAIL}" type="hidden" readonly>
+                                                                                <input name="email_server2" size="60" value="{$email_server}" type="hidden" readonly>
+                                                                                <input name="email_server_port2" size="60" value="{$email_server_port}" type="hidden" readonly>
+                                                                                <input name="c2" size="3" value="{$customer_details[i].CUSTOMER_ID}" type="hidden" readonly>
+                                                                                <input name="cus_name" size="3" value="{$customer_details[i].CUSTOMER_DISPLAY_NAME}" type="hidden" readonly>
                                                                             </td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td class="menutd" align="right"><b>To:</b></td>
                                                                             <td class="menutd" colspan="2">
-                                                                                <input type="text" name="" value="{$customer_details[i].CUSTOMER_FIRST_NAME} {$customer_details[i].CUSTOMER_LAST_NAME}  <{$customer_details[i].CUSTOMER_EMAIL}>" size="60" readonly>
-                                                                                <input type="hidden" name="email_to" value="{$customer_details[i].CUSTOMER_EMAIL}" size="60" readonly>
+                                                                                <input name="" size="60" value="{$customer_details[i].CUSTOMER_FIRST_NAME} {$customer_details[i].CUSTOMER_LAST_NAME}  <{$customer_details[i].CUSTOMER_EMAIL}>" type="text" readonly>
+                                                                                <input name="email_to" size="60" value="{$customer_details[i].CUSTOMER_EMAIL}" type="hidden" readonly>
                                                                             </td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td class="menutd" align="right"><b>Subject:</b></td>
-                                                                            <td class="menutd" colspan="2"><input type="text" name="email_subject" value="" size="60"></td>
+                                                                            <td class="menutd" colspan="2"><input name="email_subject" size="60" value="" type="text" ></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td class="menutd" align="right"><p></p></td>
@@ -66,11 +66,11 @@
                                                                         </tr>
                                                                         <tr>
                                                                             <td class="menutd" align="right" valign="top"><b>BCC:</b></td>
-                                                                            <td class="menutd" colspan="2"><input type="checkbox" name="bcc"></td>
+                                                                            <td class="menutd" colspan="2"><input name="bcc" type="checkbox"></td>
                                                                         </tr>                                                                    
                                                                         <tr>
                                                                             <td class="menutd" align="right" valign="top"><b>Read Receipt?</b></td>
-                                                                            <td class="menutd" colspan="2"><input type="checkbox" name="rr" value="1"></td>
+                                                                            <td class="menutd" colspan="2"><input name="rr" value="1" type="checkbox"></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td class="menutd" align="right" valign="top"><b>Priority:</b></td>
@@ -85,26 +85,26 @@
                                                                         <tr>
                                                                             <td class="menutd" align="right" valign="top"><b>Attachment 1:</b></td>
                                                                             <td class="menutd" colspan="2">
-                                                                                <input type="hidden" name="MAX_FILE_SIZE" value="2000000">
-                                                                                <input type="file" name="attachment1" size="50" id="attachment1">
+                                                                                <input name="MAX_FILE_SIZE" value="2000000" type="hidden">
+                                                                                <input name="attachment1" size="50" id="attachment1" type="file">
                                                                             </td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td class="menutd" align="right" valign="top"><b>Attachment 2:</b></td>
                                                                             <td class="menutd" colspan="2">
-                                                                                <input type="hidden" name="MAX_FILE_SIZE" value="2000000">
-                                                                                <input type="file" name="attachment2" size="50" id="attachment2">
+                                                                                <input name="MAX_FILE_SIZE" value="2000000" type="hidden">
+                                                                                <input id="attachment2" name="attachment2" size="50" type="file">
                                                                             </td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td class="menutd" align="right" valign="top"><b>Attachment 3:</b></td>
                                                                             <td class="menutd" colspan="2">
-                                                                                <input type="hidden" name="MAX_FILE_SIZE" value="2000000">
-                                                                                <input type="file" name="attachment3" size="50" id="attachment3">
+                                                                                <input name="MAX_FILE_SIZE" value="2000000" type="hidden">
+                                                                                <input id="attachment3" name="attachment3" size="50" type="file" >
                                                                             </td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td><input type="submit" name="submit" id="submit" value="Send" ></td>
+                                                                            <td><input name="submit" id="submit" value="Send" type="submit"></td>
                                                                         </tr>
                                                                         {assign var="customer_id" value=$customer_details[i].CUSTOMER_ID}
                                                                         {assign var="customer_name" value=$customer_details[i].CUSTOMER_DISPLAY_NAME}

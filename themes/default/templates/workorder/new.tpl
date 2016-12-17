@@ -39,8 +39,8 @@
                                                     {literal}
                                                     <form method="POST" action="index.php?page=workorder:new" name="new_workorder" id="new_workorder">
                                                     {/literal}
-                                                        <input type="hidden" name="customer_id" value="{$customer_details[i].CUSTOMER_ID}">                                                    
-                                                        <input type="hidden" name="created_by" value="{$login_id}">                                                    
+                                                        <input name="customer_id" value="{$customer_details[i].CUSTOMER_ID}" type="hidden">                                                    
+                                                        <input name="created_by" value="{$login_id}" type="hidden" >                                                    
                                                         <table class="olotable" width="100%" border="0"  cellpadding="4" cellspacing="0" summary="Work order display">
                                                             <tr>
                                                                 <td class="olohead">{$translate_workorder_opened}</td>
@@ -53,7 +53,7 @@
                                                                 <td class="olotd4">{$smarty.now|date_format:"$date_format"}</td>
                                                                 <td class="olotd4">{$customer_details[i].CUSTOMER_DISPLAY_NAME}</td>
                                                                 <td class="olotd4">
-                                                                    <input size="40" id="workorder_scope" name="workorder_scope" type="text" maxlength="80" required onkeydown="return onlyAlphaNumeric(event);" onkeyup="lookupSuggestions(this.value);" onblur="closeSuggestions();">
+                                                                    <input id="workorder_scope" name="workorder_scope" size="40" type="text" maxlength="80" required onkeydown="return onlyAlphaNumeric(event);" onkeyup="lookupSuggestions(this.value);" onblur="closeSuggestions();">
                                                                     <div class="suggestionsBoxWrapper">
                                                                         <div class="suggestionsBox" id="suggestions">
                                                                             <img src="{$theme_images_dir}upArrow.png" style="position: relative; top: -12px; left: 1px;" alt="upArrow" />

@@ -19,16 +19,16 @@
                         <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0" >
                             <tr>
                                 <td width="100%" valign="top">                                    
-                                    <form  action="index.php?page=workorder:resolution" method="POST" name="close_workorder" id="close_workorder">
+                                    <form action="index.php?page=workorder:resolution" method="POST" name="close_workorder" id="close_workorder">
                                         <b>{$translate_workorder_details_resolution_title}</b><br>
                                         <textarea class="olotd4" rows="15" cols="70" name="workorder_resolution">{$workorder_resolution}</textarea>
                                         <br>
-                                        <input type="hidden" name="page" value="workorder:resolution">
-                                        <input type="hidden" name="created_by" value="{$login_display_name}">
-                                        <input type="hidden" name="wo_id" value="{$wo_id}">
-                                        <input type="submit" name="submitchangesonly" value="{$translate_workorder_details_edit_resolution_submit_changes_only}">
-                                        <input type="submit" name="closewithoutinvoice" value="{$translate_workorder_details_edit_resolution_close_without_invoice}">
-                                        <input type="submit" name="closewithinvoice" value="{$translate_workorder_details_edit_resolution_close_with_invoice}">
+                                        <input name="page" value="workorder:resolution" type="hidden" >
+                                        <input name="created_by" value="{$login_display_name}" type="hidden">
+                                        <input name="wo_id" value="{$wo_id}" type="hidden">
+                                        <input name="submitchangesonly" value="{$translate_workorder_details_edit_resolution_submit_changes_only}" type="submit">
+                                        <input name="closewithoutinvoice" value="{$translate_workorder_details_edit_resolution_close_without_invoice}" type="submit">
+                                        <input name="closewithinvoice" value="{$translate_workorder_details_edit_resolution_close_with_invoice}" type="submit">
                                     </form>
                                     <br>
                                 </td>

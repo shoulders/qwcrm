@@ -21,7 +21,7 @@
                                                 <td class="olohead"></td>
                                             </tr>
                                             <tr>
-                                                <td class="olotd"><textarea class="olotd4" rows="15" cols="70" name="memo" required></textarea></td>
+                                                <td class="olotd"><textarea name="memo" class="olotd4" rows="15" cols="70" required></textarea></td>
                                             </tr>
                                         </table>
                                         <br>

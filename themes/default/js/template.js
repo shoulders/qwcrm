@@ -78,6 +78,23 @@ function onlyEmail(e) {
    return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@", false);
 }
 
+// Allow Only Currency Symbols
+function onlyEmail(e) {
+   return; 
+   //return keyRestriction(e, "", false);
+}
+
+// Allow Only valid characters for Usernames
+function onlyUsername(e) {
+   return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@", false);
+}
+
+// Allow Only valid characters for passwords
+function onlyPassword(e) {
+   //return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@", false);
+   return;
+}
+
 // Common Function for Key Input Restriction
 function keyRestriction(e, allowedCharacters, spacesAllowed) {    
     
