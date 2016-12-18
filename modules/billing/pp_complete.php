@@ -1,6 +1,6 @@
 <?php
 $invoice_id    = $VAR['invoice_id'];
-$workorder_id    = $VAR['wo_id'];
+$workorder_id    = $VAR['workorder_id'];
 $customer_id    = $VAR['customer_id'];
 $amount = $VAR['amount'];
 

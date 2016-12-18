@@ -74,7 +74,7 @@
                                                             <td class="olotd4"><a href="index.php?page=parts:view&ORDER_ID={$order[i].ORDER_ID}&page_title={$translate_parts_order_details} {$order[i].ORDER_ID}">{$order[i].ORDER_ID}</a></td>
                                                             <td class="olotd4">{$order[i].DATE_CREATE|date_format:"$date_format"}</td>
                                                             <td class="olotd4">{$order[i].INVOICE_ID}</td>
-                                                            <td class="olotd4"><a href ="?page=workorder:details&wo_id={$order[i].WO_ID}&page_title={$translate_parts_wo_id} {$order[i].WO_ID}">{$order[i].WO_ID}</a></td>
+                                                            <td class="olotd4"><a href ="?page=workorder:details&workorder_id={$order[i].WO_ID}&page_title={$translate_parts_workorder_id} {$order[i].WO_ID}">{$order[i].WO_ID}</a></td>
                                                             <td class="olotd4">${$order[i].SUB_TOTAL|string_format:"%.2f"}</td>
                                                             <td class="olotd4">${$order[i].SHIPPING|string_format:"%.2f"}</td>
                                                             <td class="olotd4">${$order[i].TOTAL|string_format:"%.2f"}</td>
@@ -88,7 +88,7 @@
                                                             </td>
                                                             <td class="olotd4">
                                                                 {if $order[i].STATUS == 1}
-                                                                    <a href="?page=parts:update&wo_id={$order[i].WO_ID}">{$translate_parts_set_recv}</a>
+                                                                    <a href="?page=parts:update&workorder_id={$order[i].WO_ID}">{$translate_parts_set_recv}</a>
                                                                 {else}
                                                                     {$translate_parts_rcv}
                                                                 {/if}

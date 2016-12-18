@@ -319,7 +319,7 @@ function keyPressTestParts(e, obj){
         <td>
             <table width="700" cellpadding="4" cellspacing="0" border="0" >
                 <tr>
-                    <td class="menuhead2" width="80%">&nbsp;{$translate_invoice_for}{$wo_id}</td>
+                    <td class="menuhead2" width="80%">&nbsp;{$translate_invoice_for}{$workorder_id}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
                         <a>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{$translate_invoice_new_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_invoice_new_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();">
@@ -375,7 +375,7 @@ function keyPressTestParts(e, obj){
                                                 </td>
                                                 <td>{$currency_sym}{$invoice.INVOICE_AMOUNT|string_format:"%.2f"}</td>
                                                 <td>{$invoice.EMPLOYEE_DISPLAY_NAME}</td>
-                                                <td><a href="?page=workorder:details&wo_id={$invoice.WORKORDER_ID}&page_title={$translate_invoice_wo_id} {$invoice.WORKORDER_ID}">{$invoice.WORKORDER_ID}</a></td>
+                                                <td><a href="?page=workorder:details&workorder_id={$invoice.WORKORDER_ID}&page_title={$translate_invoice_workorder_id} {$invoice.WORKORDER_ID}">{$invoice.WORKORDER_ID}</a></td>
                                                 <td><font color="#CC0000">{$currency_sym}{$invoice.BALANCE|string_format:"%.2f"}</font></td>
                                             </tr>
                                             <tr>
@@ -459,22 +459,22 @@ function keyPressTestParts(e, obj){
                                                 </tr>
                                             </table>
                                         {/if}                                
-                                        <!-- if pending or $wo_id = zero for invoice only -->
-                                        {if $wo_status == '9' || $wo_id == '0'}
+                                        <!-- if pending or $workorder_id = zero for invoice only -->
+                                        {if $wo_status == '9' || $workorder_id == '0'}
                                             <p>
                                                 <!-- if invoice has an amount -->
                                                 {if $invoice.INVOICE_AMOUNT > 0 }
                                                     <!-- Print Buttons -->   
-                                                    <button type="button" name="{$translate_invoice_print}" onClick="window.open('?page=invoice:print&print_type=print_html&print_content=invoice&wo_id={$invoice.WORKORDER_ID}&customer_id={$invoice.CUSTOMER_ID}&invoice_id={$invoice.INVOICE_ID}&theme=print');">{$translate_invoice_print}</button>
-                                                    <button type="button" name="{$translate_invoice_pdf}" onClick="window.open('?page=invoice:print&print_type=print_pdf&print_content=invoice&wo_id={$invoice.WORKORDER_ID}&customer_id={$invoice.CUSTOMER_ID}&invoice_id={$invoice.INVOICE_ID}&theme=print');"><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">{$translate_invoice_pdf}</button>
-                                                    <button type="button" name="Print Address Only" onClick="window.open('?page=invoice:print&print_type=print_html&print_content=invoice&wo_id={$invoice.WORKORDER_ID}&customer_id={$invoice.CUSTOMER_ID}&invoice_id={$invoice.INVOICE_ID}&theme=print');">Print Address Only</button>                                            
+                                                    <button type="button" name="{$translate_invoice_print}" onClick="window.open('?page=invoice:print&print_type=print_html&print_content=invoice&workorder_id={$invoice.WORKORDER_ID}&customer_id={$invoice.CUSTOMER_ID}&invoice_id={$invoice.INVOICE_ID}&theme=print');">{$translate_invoice_print}</button>
+                                                    <button type="button" name="{$translate_invoice_pdf}" onClick="window.open('?page=invoice:print&print_type=print_pdf&print_content=invoice&workorder_id={$invoice.WORKORDER_ID}&customer_id={$invoice.CUSTOMER_ID}&invoice_id={$invoice.INVOICE_ID}&theme=print');"><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">{$translate_invoice_pdf}</button>
+                                                    <button type="button" name="Print Address Only" onClick="window.open('?page=invoice:print&print_type=print_html&print_content=invoice&workorder_id={$invoice.WORKORDER_ID}&customer_id={$invoice.CUSTOMER_ID}&invoice_id={$invoice.INVOICE_ID}&theme=print');">Print Address Only</button>                                            
                                                     <!-- Receive Payment Button -->
-                                                    <button type="button" name="{$translate_invoice_bill_customer}" onClick="location.href='?page=billing:new&wo_id={$invoice.WORKORDER_ID}&customer_id={$invoice.CUSTOMER_ID}&invoice_id={$invoice.INVOICE_ID}&page_title=Receiving%20Payment%20for%20{$invoice.INVOICE_ID}';">{$translate_invoice_bill_customer}</button>
+                                                    <button type="button" name="{$translate_invoice_bill_customer}" onClick="location.href='?page=billing:new&workorder_id={$invoice.WORKORDER_ID}&customer_id={$invoice.CUSTOMER_ID}&invoice_id={$invoice.INVOICE_ID}&page_title=Receiving%20Payment%20for%20{$invoice.INVOICE_ID}';">{$translate_invoice_bill_customer}</button>
                                                 {else}
                                                     <!-- Delete Button -->
                                                     <button type="button" name="{$translate_invoice_delete}" onClick="location.href='?page=invoice:delete&customer_id={$invoice.CUSTOMER_ID}&invoice_id={$invoice.INVOICE_ID}&page_title=Deleting&nbsp;Invoice&nbsp;-{$invoice.INVOICE_ID}';">{$translate_invoice_delete}</button>
                                                     <!-- Close Button -->
-                                                    <button type="button" name="Close Work Order" onClick="location.href='?page=workorder:resolution&wo_id={$invoice.WORKORDER_ID}&page_title=Closing%20Work%20Order{$invoice.WORKORDER_ID}';">{$translate_invoice_close_wo}</button>
+                                                    <button type="button" name="Close Work Order" onClick="location.href='?page=workorder:resolution&workorder_id={$invoice.WORKORDER_ID}&page_title=Closing%20Work%20Order{$invoice.WORKORDER_ID}';">{$translate_invoice_close_wo}</button>
                                                     <!-- Work Order must be closed before payment can be received. -->
                                                     {$translate_invoice_msg}
                                                 {/if} 
@@ -505,7 +505,7 @@ function keyPressTestParts(e, obj){
                                                                     <td>{$currency_sym}{$labor[q].INVOICE_LABOR_RATE|string_format:"%.2f"}</td>
                                                                     <td>{$currency_sym}{$labor[q].INVOICE_LABOR_SUBTOTAL|string_format:"%.2f"}</td>
                                                                     <td>
-                                                                        <a href="javascript:void(0)" onclick="confirmLabourDelete({$labor[q].INVOICE_LABOR_ID}, {$invoice.INVOICE_ID}, {$wo_id}, {$customer_id});">
+                                                                        <a href="javascript:void(0)" onclick="confirmLabourDelete({$labor[q].INVOICE_LABOR_ID}, {$invoice.INVOICE_ID}, {$workorder_id}, {$customer_id});">
                                                                             <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{$translate_invoice_delete_labour_record|nl2br|regex_replace:"/[\r\t\n]/":" "}</b>');" onMouseOut="hideddrivetip();">
                                                                         </a>
                                                                     </td>
@@ -559,7 +559,7 @@ function keyPressTestParts(e, obj){
                                                                     <td>{$currency_sym}{$parts[w].INVOICE_PARTS_AMOUNT|string_format:"%.2f"}</td>
                                                                     <td>{$currency_sym}{$parts[w].INVOICE_PARTS_SUBTOTAL|string_format:"%.2f"}</td>
                                                                     <td>
-                                                                        <a href="javascript:void(0)" onclick="confirmPartsDelete({$parts[w].INVOICE_PARTS_ID}, {$invoice.INVOICE_ID}, {$wo_id}, {$customer_id});">
+                                                                        <a href="javascript:void(0)" onclick="confirmPartsDelete({$parts[w].INVOICE_PARTS_ID}, {$invoice.INVOICE_ID}, {$workorder_id}, {$customer_id});">
                                                                             <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{$translate_invoice_delete_parts_record|nl2br|regex_replace:"/[\r\t\n]/":" "}</b>');" onMouseOut="hideddrivetip();">
                                                                         </a>
                                                                     </td>
@@ -629,7 +629,7 @@ function keyPressTestParts(e, obj){
                                                     <input type="hidden" name="sub_total"     value="{$invoice.SUB_TOTAL|string_format:"%.2f"}">
                                                     <input type="hidden" name="page"          value="invoice:new">
                                                     <input type="hidden" name="create_by"     value="{$login_id}">
-                                                    <input type="hidden" name="wo_id"         value="{$wo_id}">
+                                                    <input type="hidden" name="workorder_id"         value="{$workorder_id}">
                                                     <input type="submit" name="submit"        value="{$translate_invoice_submit}">
                                                 </td>
                                                 <td align="right" width="75%"></td>

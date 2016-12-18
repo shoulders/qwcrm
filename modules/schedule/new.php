@@ -46,13 +46,13 @@ if(isset($VAR['submit'])){
                 $smarty->assign('start_time', $start_time);
                 $smarty->assign('schedule_notes', $notes);
                 $smarty->assign('tech',  $VAR['tech']);
-                $smarty->assign('wo_id', $VAR['wo_id']);
+                $smarty->assign('workorder_id', $VAR['workorder_id']);
                 $smarty->display("schedule/new.tpl");
-                //force_page('schedule','main&y='.$s_year.'&d='.$s_month.'&m='.$s_day.'&wo_id='.$VAR['wo_id'].'&page_title=schedule&tech='.$VAR['tech']);
+                //force_page('schedule','main&y='.$s_year.'&d='.$s_month.'&m='.$s_day.'&workorder_id='.$VAR['workorder_id'].'&page_title=schedule&tech='.$VAR['tech']);
             } else {
                 //list($s_day, $s_month, $s_year) = split('[/.-]', $VAR['start']['SCHEDULE_date']);
                 list($s_month, $s_day, $s_year) = split('[/.-]', $VAR['start']['SCHEDULE_date']);
-                force_page('schedule','main&y='.$s_year.'&d='.$s_month.'&m='.$s_day.'&wo_id='.$VAR['wo_id'].'&page_title=schedule&tech='.$VAR['tech']);
+                force_page('schedule','main&y='.$s_year.'&d='.$s_month.'&m='.$s_day.'&workorder_id='.$VAR['workorder_id'].'&page_title=schedule&tech='.$VAR['tech']);
             }
 
     
@@ -61,10 +61,10 @@ if(isset($VAR['submit'])){
         // Load html form to smarty
         $start_time = $VAR['starttime'];
         $day = $VAR['day'];
-        $wo_id = $VAR['wo_id'];
+        $workorder_id = $VAR['workorder_id'];
         $tech  = $VAR['tech'];
         $smarty->assign('tech', $tech);
-        $smarty->assign('wo_id', $wo_id);
+        $smarty->assign('workorder_id', $workorder_id);
         $smarty->assign('start_day', $day);
         $smarty->assign('start_time', $start_time);
         $smarty->display('schedule'.SEP.'new.tpl');

@@ -53,7 +53,7 @@ if($customer_id == '' || $customer_id == '0'){
     }
     $invoice = $rs->FetchRow();
     $smarty->assign('invoice',$invoice);
-    $smarty->assign('wo_id', $invoice['WORKORDER_ID']);
+    $smarty->assign('workorder_id', $invoice['WORKORDER_ID']);
         
     /* get any labor details */
     $q = 'SELECT * FROM '.PRFX.'TABLE_INVOICE_LABOR WHERE INVOICE_ID='.$db->qstr($invoice['INVOICE_ID']);

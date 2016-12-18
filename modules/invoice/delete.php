@@ -4,7 +4,7 @@ require_once('include.php');
 
 $langvals = gateway_xml2php(invoice);
 
-$wo_id = $VAR['wo_id'];
+$workorder_id = $VAR['workorder_id'];
 $customer_id = $VAR['customer_id'];
 $invoice_id = $VAR['invoice_id'];
 $labourID = $VAR['labourID'];
@@ -18,7 +18,7 @@ if(isset($VAR['deleteType']) && $VAR['deleteType'] == "labourRecord") {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
         exit;
     } else {
-        force_page('invoice', 'new&invoice_id='.$invoice_id.'&wo_id='.$wo_id.'&page_title='.$langvals['invoice_invoice'].'&customer_id='.$customer_id);
+        force_page('invoice', 'new&invoice_id='.$invoice_id.'&workorder_id='.$workorder_id.'&page_title='.$langvals['invoice_invoice'].'&customer_id='.$customer_id);
         exit;
     }
 
@@ -32,7 +32,7 @@ if(isset($VAR['deleteType']) && $VAR['deleteType'] == "partsRecord") {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
         exit;
     } else {
-        force_page('invoice', 'new&invoice_id='.$invoice_id.'&wo_id='.$wo_id.'&page_title='.$langvals['invoice_invoice'].'&customer_id='.$customer_id);
+        force_page('invoice', 'new&invoice_id='.$invoice_id.'&workorder_id='.$workorder_id.'&page_title='.$langvals['invoice_invoice'].'&customer_id='.$customer_id);
         exit;
     }
 

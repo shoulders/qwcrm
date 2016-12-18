@@ -4,11 +4,11 @@ if(!xml2php("schedule")) {
     $smarty->assign('error_msg',"Error in language file");
 }
 /* load the date formate from the js calendar */
-$wo_id = $_GET['wo_id'];
+$workorder_id = $_GET['workorder_id'];
 
 /* check if work order closed we don't want to reschedule a work order if it's closed */
-if(isset($wo_id)) {
-    $q = "SELECT WORK_ORDER_CURRENT_STATUS FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_ID=".$db->qstr($wo_id);
+if(isset($workorder_id)) {
+    $q = "SELECT WORK_ORDER_CURRENT_STATUS FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_ID=".$db->qstr($workorder_id);
     if(!$rs = $db->execute($q)) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
         exit;    
@@ -18,13 +18,13 @@ if(isset($wo_id)) {
     
     
     if($status == '6') {
-        force_page('workorder', 'view&wo_id='.$wo_id.'&error_msg=Can not set a schedule for closed work order&page_title=Work Order ID '.$wo_id.'&type=warning');
+        force_page('workorder', 'view&workorder_id='.$workorder_id.'&error_msg=Can not set a schedule for closed work order&page_title=Work Order ID '.$workorder_id.'&type=warning');
     } elseif ($status == '7') {
-        force_page('workorder', 'view&wo_id='.$wo_id.'&error_msg=Can not set a schedule for closed work order&page_title=Work Order ID '.$wo_id.'&type=warning');
+        force_page('workorder', 'view&workorder_id='.$workorder_id.'&error_msg=Can not set a schedule for closed work order&page_title=Work Order ID '.$workorder_id.'&type=warning');
     } elseif ($status == '8') {
-        force_page('workorder', 'view&wo_id='.$wo_id.'&error_msg=Can not set a schedule for closed work order&page_title=Work Order ID '.$wo_id.'&type=warning');
+        force_page('workorder', 'view&workorder_id='.$workorder_id.'&error_msg=Can not set a schedule for closed work order&page_title=Work Order ID '.$workorder_id.'&type=warning');
     } elseif ($status == '9') {
-        force_page('workorder', 'view&wo_id='.$wo_id.'&error_msg=Can not set a schedule for closed work order&page_title=Work Order ID '.$wo_id.'&type=warning');
+        force_page('workorder', 'view&workorder_id='.$workorder_id.'&error_msg=Can not set a schedule for closed work order&page_title=Work Order ID '.$workorder_id.'&type=warning');
     }
         
 }
@@ -52,7 +52,7 @@ $cur_date = $m."/".$d."/".$y;}
 //Assign it to Smarty
 $smarty->assign('cur_date', $cur_date);
 
-$date_array = array('y'=>$y, 'm'=>$m, 'd'=>$d, 'wo_id'=>$wo_id);
+$date_array = array('y'=>$y, 'm'=>$m, 'd'=>$d, 'workorder_id'=>$workorder_id);
 $smarty->assign('date_array',$date_array);
 
 /* load start time from setup */
@@ -132,7 +132,7 @@ while($start <= $business_end){
             if($start == $sch[$i]['SCHEDULE_START']){
                 
                     if($sch[$i]['WORK_ORDER_ID'] != 0) {
-                        $calendar .= "<td class=\"menutd2\" align=\"center\" onClick=\"window.location='?page=workorder:details&wo_id=".$sch[$i]['WORK_ORDER_ID']."page_title=Work Order ID ".$sch[$i]['WORK_ORDER_ID ']."'\"><b>\n";
+                        $calendar .= "<td class=\"menutd2\" align=\"center\" onClick=\"window.location='?page=workorder:details&workorder_id=".$sch[$i]['WORK_ORDER_ID']."page_title=Work Order ID ".$sch[$i]['WORK_ORDER_ID ']."'\"><b>\n";
                         $calendar .= "Work Order ID ". $sch[$i]['WORK_ORDER_ID']." From: ".date("h:i a",$sch[$i]['SCHEDULE_START'])." To: ".date("h:i a",$sch[$i]['SCHEDULE_END'])." ".$sch[$i]['SCHEDULE_NOTES']."\n";
                         $calendar . "</b></td>\n";
                     } else {
@@ -147,7 +147,7 @@ while($start <= $business_end){
             
         } else {
         
-            $calendar .= "<td class=\"olotd\" onClick=\"window.location='?page=schedule:new&starttime=".date("h:i a", $start)."&day=".$cur_date."&wo_id=".$wo_id."&tech=".$tech."'\"></td>\n";
+            $calendar .= "<td class=\"olotd\" onClick=\"window.location='?page=schedule:new&starttime=".date("h:i a", $start)."&day=".$cur_date."&workorder_id=".$workorder_id."&tech=".$tech."'\"></td>\n";
         }
         
         $calendar .= "</tr>";
@@ -159,7 +159,7 @@ while($start <= $business_end){
             if($start == $sch[$i]['SCHEDULE_START']) {
             
                 if($sch[$i]['WORK_ORDER_ID'] != 0) {
-                    $calendar .= "<td class=\"menutd2\" align=\"center\" onClick=\"window.location='?page=workorder:details&wo_id=".$sch[$i]['WORK_ORDER_ID']."page_title=Work Order ID ".$sch[$i]['WORK_ORDER_ID ']."'\"><b>\n";
+                    $calendar .= "<td class=\"menutd2\" align=\"center\" onClick=\"window.location='?page=workorder:details&workorder_id=".$sch[$i]['WORK_ORDER_ID']."page_title=Work Order ID ".$sch[$i]['WORK_ORDER_ID ']."'\"><b>\n";
                     $calendar .= "Work Order ID ". $sch[$i]['WORK_ORDER_ID']." From: ".date("h:i a",$sch[$i]['SCHEDULE_START'])." To: ".date("h:i a",$sch[$i]['SCHEDULE_END'])." ".$sch[$i]['SCHEDULE_NOTES']."\n";
                     $calendar . "</b></td>\n";
                 } else {
@@ -173,7 +173,7 @@ while($start <= $business_end){
             }
             
         } else {
-            $calendar .= "<td class=\"olotd4\" onClick=\"window.location='?page=schedule:new&starttime=".date("h:i a", $start) ."&day=".$cur_date."&wo_id=".$wo_id."&tech=".$tech."'\">&nbsp; ".date("h:i a", $start)."</td>\n</tr>";
+            $calendar .= "<td class=\"olotd4\" onClick=\"window.location='?page=schedule:new&starttime=".date("h:i a", $start) ."&day=".$cur_date."&workorder_id=".$workorder_id."&tech=".$tech."'\">&nbsp; ".date("h:i a", $start)."</td>\n</tr>";
         }
         
     }

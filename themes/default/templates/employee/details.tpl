@@ -71,7 +71,7 @@
                                         </table>                                    
                                         <table class="olotable" width="100%" border="0" cellpadding="5">
                                             <tr>
-                                                <td class="olohead">{$translate_employee_wo_id}</td>
+                                                <td class="olohead">{$translate_employee_workorder_id}</td>
                                                 <td class="olohead">{$translate_employee_date_open}</td>
                                                 <td class="olohead">{$translate_employee_customer}</td>
                                                 <td class="olohead">{$translate_employee_scope}</td>
@@ -80,7 +80,7 @@
                                                 <td class="olohead">Action</td>
                                             </tr>
                                             {section name=a loop=$open_work_orders}
-                                                <tr onmouseover="this.className='row2'" onmouseout="this.className='row1'" onDblClick="window.location='?page=workorder:details&wo_id={$open_work_orders[a].WORK_ORDER_ID}&customer_id={$open_work_orders[a].CUSTOMER_ID}&page_title={$translate_employee_work_order_id}{$open_work_orders[a].WORK_ORDER_ID},';" class="row1">
+                                                <tr onmouseover="this.className='row2'" onmouseout="this.className='row1'" onDblClick="window.location='?page=workorder:details&workorder_id={$open_work_orders[a].WORK_ORDER_ID}&customer_id={$open_work_orders[a].CUSTOMER_ID}&page_title={$translate_employee_work_order_id}{$open_work_orders[a].WORK_ORDER_ID},';" class="row1">
                                                     <td class="olotd4">{$open_work_orders[a].WORK_ORDER_ID}</td>
                                                     <td class="olotd4">{$open_work_orders[a].WORK_ORDER_OPEN_DATE|date_format:"$date_format"}</td>
                                                     <td class="olotd4"><img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<center><b>Customer Contact</b><hr></center><b>Home: </b>{$open_work_orders[a].CUSTOMER_PHONE}<br><b>Work: </b>{$open_work_orders[a].CUSTOMER_WORK_PHONE}<br><b>Mobile: </b>{$open_work_orders[a].CUSTOMER_MOBILE_PHONE}')"onMouseOut="hideddrivetip();">{$open_work_orders[a].CUSTOMER_DISPLAY_NAME}</td>                                                        
@@ -88,9 +88,9 @@
                                                     <td class="olotd4">{$open_work_orders[a].CONFIG_WORK_ORDER_STATUS}</td>
                                                     <td class="olotd4">{$open_work_orders[a].EMPLOYEE_DISPLAY_NAME}</td>
                                                     <td class="olotd4" align="center">
-                                                        <a href="?page=workorder:print&wo_id={$open_work_orders[a].WORK_ORDER_ID}&customer_id={$open_work_orders[a].CUSTOMER_ID}&theme=off" target="new">
+                                                        <a href="?page=workorder:print&workorder_id={$open_work_orders[a].WORK_ORDER_ID}&customer_id={$open_work_orders[a].CUSTOMER_ID}&theme=off" target="new">
                                                         <img src="{$theme_images_dir}icons/16x16/fileprint.gif" border="0" onMouseOver="ddrivetip('Print The Work Order');" onMouseOut="hideddrivetip();"></a>
-                                                        <a href="?page=workorder:details&wo_id={$open_work_orders[a].WORK_ORDER_ID}&customer_id={$open_work_orders[a].CUSTOMER_ID}">
+                                                        <a href="?page=workorder:details&workorder_id={$open_work_orders[a].WORK_ORDER_ID}&customer_id={$open_work_orders[a].CUSTOMER_ID}">
                                                         <img src="{$theme_images_dir}icons/16x16/viewmag.gif"  border="0" onMouseOver="ddrivetip('View The Work Order');" onMouseOut="hideddrivetip();"></a>
                                                     </td>
                                                 </tr>

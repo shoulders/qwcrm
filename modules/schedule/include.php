@@ -1,12 +1,12 @@
 <?php
-$wo_id = $VAR['wo_id'];
-$smarty->assign('wo_id',$wo_id);
+$workorder_id = $VAR['workorder_id'];
+$smarty->assign('workorder_id',$workorder_id);
 ######################################
 # Insert New schedule                   #
 ######################################
     function insert_new_schedule($db,$VAR){
         global $smarty;
-        $wo_id = $VAR['wo_id'];
+        $workorder_id = $VAR['workorder_id'];
         list($s_month, $s_day, $s_year) = split('[/.-]', $VAR['start']['SCHEDULE_date']);
         list($e_month, $e_day, $e_year) = split('[/.-]', $VAR['end']['SCHEDULE_date']);
         
@@ -88,14 +88,14 @@ $q = 'SELECT * FROM '.PRFX.'TABLE_COMPANY';
             $rs->MoveNext();
         }
 
-        if($wo_id != 0 ) {
+        if($workorder_id != 0 ) {
         
             /* Update work order and assign to tech */
             $q = "UPDATE ".PRFX."TABLE_WORK_ORDER SET 
                   WORK_ORDER_ASSIGN_TO        =".$db->qstr($VAR['tech']).",        
                   WORK_ORDER_CURRENT_STATUS    =".$db->qstr(2).",
                   LAST_ACTIVE                 =".$db->qstr(time())."  
-                  WHERE  WORK_ORDER_ID=".$db->qstr($VAR['wo_id']);
+                  WHERE  WORK_ORDER_ID=".$db->qstr($VAR['workorder_id']);
 
             if(!$rs = $db->Execute($q)) {
                 force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
@@ -116,7 +116,7 @@ $q = 'SELECT * FROM '.PRFX.'TABLE_COMPANY';
             /* update Notes */
             $msg ="Work Order Assigned to ".$tech;
             $q = "INSERT INTO ".PRFX."TABLE_WORK_ORDER_HISTORY SET
-                  WORK_ORDER_ID         = ".$db->qstr($VAR['wo_id']).",
+                  WORK_ORDER_ID         = ".$db->qstr($VAR['workorder_id']).",
                   NOTE                  = ".$db->qstr($msg).",
                   ENTERED_BY            = ".$db->qstr($_SESSION['login_id']).",
                   DATE                  = ".$db->qstr(time());
@@ -128,7 +128,7 @@ $q = 'SELECT * FROM '.PRFX.'TABLE_COMPANY';
             /* update Notes */
             $msg ="Schedule has been set.";
             $q = "INSERT INTO ".PRFX."TABLE_WORK_ORDER_HISTORY SET
-                  WORK_ORDER_ID     = ".$db->qstr($VAR['wo_id']).",
+                  WORK_ORDER_ID     = ".$db->qstr($VAR['workorder_id']).",
                   NOTE              = ".$db->qstr($msg).",
                   ENTERED_BY        = ".$db->qstr($_SESSION['login_id']).",
                   DATE              = ".$db->qstr(time());
@@ -138,7 +138,7 @@ $q = 'SELECT * FROM '.PRFX.'TABLE_COMPANY';
             }      
                   
             /* build query */
-            $q = "SELECT count(*) as count FROM ".PRFX."TABLE_SCHEDULE WHERE WORK_ORDER_ID='".$wo_id."'";
+            $q = "SELECT count(*) as count FROM ".PRFX."TABLE_SCHEDULE WHERE WORK_ORDER_ID='".$workorder_id."'";
             if(!$rs = $db->execute($q)) {
                 force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
                 exit;
@@ -148,7 +148,7 @@ $q = 'SELECT * FROM '.PRFX.'TABLE_COMPANY';
             
             if($count != 0) {
                 $sql = "UPDATE ".PRFX."TABLE_SCHEDULE SET ";
-                $where = " WHERE WORK_ORDER_ID='".$wo_id."'";
+                $where = " WHERE WORK_ORDER_ID='".$workorder_id."'";
             } else {
                 $sql = "INSERT INTO ".PRFX."TABLE_SCHEDULE SET ";
             }
@@ -159,7 +159,7 @@ $q = 'SELECT * FROM '.PRFX.'TABLE_COMPANY';
         
         $sql .="SCHEDULE_START    = '".$start_time."',
                  SCHEDULE_END        = '".$end_time."',
-                 WORK_ORDER_ID        = '".$VAR['wo_id']."',
+                 WORK_ORDER_ID        = '".$VAR['workorder_id']."',
                  EMPLOYEE_ID            = '".$VAR['tech']."',
                  SCHEDULE_NOTES        = '".$VAR['schedule_notes']."'
                 " .$where;

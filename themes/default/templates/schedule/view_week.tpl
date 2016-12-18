@@ -19,7 +19,7 @@
                                                     {$arr[a].SCHEDULE_NOTES}<br>
                                                     <b>{$translate_schedule_tech}</b> {$arr[a].EMPLOYEE_DISPLAY_NAME}
                                                     <br>
-                                                    <a href="?page=schedule:edit&schedule_id={$arr[a].SCHEDULE_ID}&y={$y}&m={$m}&d={$d}">{$translate_schedule_edit}</a> <a href="?page=schedule:delete&schedule_id={$arr[a].SCHEDULE_ID}&y={$y}&m={$m}&d={$d}">{$translate_schedule_delete}</a> <a href="?page=workorder:details&wo_id={$arr[a].WORK_ORDER_ID}">View Work Order</a>
+                                                    <a href="?page=schedule:edit&schedule_id={$arr[a].SCHEDULE_ID}&y={$y}&m={$m}&d={$d}">{$translate_schedule_edit}</a> <a href="?page=schedule:delete&schedule_id={$arr[a].SCHEDULE_ID}&y={$y}&m={$m}&d={$d}">{$translate_schedule_delete}</a> <a href="?page=workorder:details&workorder_id={$arr[a].WORK_ORDER_ID}">View Work Order</a>
                                                 </td>
                                             </tr>
                                         </table>

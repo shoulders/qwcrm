@@ -14,7 +14,7 @@ $q = "SELECT * FROM ".PRFX."GIFT_CERT WHERE GIFT_CODE LIKE".$db->qstr( $gift_cod
     }
 
 if($rs->fields['GIFT_ID'] == '') {
-    force_page('billing','new&wo_id='.$workorder_id.'&customer_id='.$customer_id.'&invoice_id='.$invoice_id.'&page_title=Billing&error_msg=Not a valid gift code.');
+    force_page('billing','new&workorder_id='.$workorder_id.'&customer_id='.$customer_id.'&invoice_id='.$invoice_id.'&page_title=Billing&error_msg=Not a valid gift code.');
 }
 
 $gift_expire        = $rs->fields['EXPIRE'];
@@ -26,13 +26,13 @@ $gift_id        = $rs->fields['GIFT_ID'];
 
 /* check active */
 if($gift_active != 1) {
-    force_page('billing','new&wo_id='.$workorder_id.'&customer_id='.$customer_id.'&invoice_id='.$invoice_id.'&page_title=Billing&error_msg=This gift certificate is not active');
+    force_page('billing','new&workorder_id='.$workorder_id.'&customer_id='.$customer_id.'&invoice_id='.$invoice_id.'&page_title=Billing&error_msg=This gift certificate is not active');
     exit;
 }
 
 /* check if expired */
 if($gift_expire < $date) {
-    force_page('billing','new&wo_id='.$workorder_id.'&customer_id='.$customer_id.'&invoice_id='.$invoice_id.'&page_title=Billing&error_msg=This gift certificate is expired.');
+    force_page('billing','new&workorder_id='.$workorder_id.'&customer_id='.$customer_id.'&invoice_id='.$invoice_id.'&page_title=Billing&error_msg=This gift certificate is expired.');
     exit;
 }
 
@@ -47,7 +47,7 @@ if(!$rs = $db->execute($q)) {
 $invoice_details = $rs->FetchRow();
 //Check to see if we are processing more then required
 if($invoice_details['BALANCE'] < $gift_amount){
-        force_page('billing', 'new&wo_id='.$workorder_id.'&customer_id='.$customer_id.'    &invoice_id='.$invoice_id.'&error_msg= You can not bill more than the amount of the invoice.');
+        force_page('billing', 'new&workorder_id='.$workorder_id.'&customer_id='.$customer_id.'    &invoice_id='.$invoice_id.'&error_msg= You can not bill more than the amount of the invoice.');
             exit;
     }
 

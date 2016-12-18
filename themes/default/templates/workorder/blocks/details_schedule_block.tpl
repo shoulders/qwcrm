@@ -62,7 +62,7 @@
                                                             var m = M + 1;                                          // Correction for assignment issue above
                                                             var d = dateForLink.getDate();                          // integer, 1..31
                                                             // redirect...
-                                                            window.location = "?page=schedule:main&y="+y+"&m="+m+"&d="+d+"&wo_id={/literal}{$wo_id}{literal}&page_title={/literal}{$translate_schedule_schedule}{literal}";
+                                                            window.location = "?page=schedule:main&y="+y+"&m="+m+"&d="+d+"&workorder_id={/literal}{$workorder_id}{literal}&page_title={/literal}{$translate_schedule_schedule}{literal}";
                                                         }
                                         });
                                     {/literal}

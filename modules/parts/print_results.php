@@ -12,7 +12,7 @@
 if(!xml2php("parts")) {
     $smarty->assign('error_msg',"Error in language file");
 }
-$q = "SELECT * FROM ".PRFX."ORDERS WHERE  WO_ID=".$db->qstr( $VAR['wo_id']);
+$q = "SELECT * FROM ".PRFX."ORDERS WHERE  WO_ID=".$db->qstr( $VAR['workorder_id']);
     if(!$rs = $db->execute($q)) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
         exit;

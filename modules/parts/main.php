@@ -13,19 +13,19 @@ if(!xml2php("parts")) {
     $smarty->assign('error_msg',"Error in language file");
 }
 /* if we have work order assign it */
-if(isset($VAR['wo_id'])) {
-    $smarty->assign('wo_id', $VAR['wo_id']);
+if(isset($VAR['workorder_id'])) {
+    $smarty->assign('workorder_id', $VAR['workorder_id']);
 } 
 
 /* check to see if we have an open order for this WO */
-$q = "SELECT count(*) as count  FROM ".PRFX."ORDERS WHERE WO_ID=".$db->qstr($VAR['wo_id']);
+$q = "SELECT count(*) as count  FROM ".PRFX."ORDERS WHERE WO_ID=".$db->qstr($VAR['workorder_id']);
     if(!$rs = $db->execute($q)) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
         exit;
     }
 $count = $rs->fields['count'];
 if($count > 0) {
-    force_page('workorder', 'view&wo_id='.$VAR['wo_id'].'&error&error_msg=A parts order already exists for this Work Order. &page_title=Work%20Order%20ID%20'.$VAR['wo_id']);
+    force_page('workorder', 'view&workorder_id='.$VAR['workorder_id'].'&error&error_msg=A parts order already exists for this Work Order. &page_title=Work%20Order%20ID%20'.$VAR['workorder_id']);
     exit;
 }
 
@@ -233,7 +233,7 @@ if(!isset($VAR['check_out'])) {
                 PRICE             =". $db->qstr($VAR['PRICE']) .",
                 SUB_TOTAL        =". $db->qstr($sub) .",
                 ZIP                =". $db->qstr($VAR['from_zip']) .",
-                WO_ID            =". $db->qstr($VAR['wo_id']) .",
+                WO_ID            =". $db->qstr($VAR['workorder_id']) .",
                 LAST            =". time();
         if(!$rs = $db->execute($q)) {
             force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');

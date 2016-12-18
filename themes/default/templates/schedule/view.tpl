@@ -22,8 +22,8 @@
                                                     <br>
                                                     <input TYPE="submit" value="{$translate_schedule_edit}" onClick="parent.location='?page=schedule:edit&schedule_id={$arr[a].SCHEDULE_ID}&y={$y}&m={$m}&d={$d}'">
                                                     <input TYPE="submit" value="{$translate_schedule_delete}" onClick="parent.location='?page=schedule:delete&schedule_id={$arr[a].SCHEDULE_ID}&y={$y}&m={$m}&d={$d}'">
-                                                    <input TYPE="submit" value="Export" onClick="parent.location='?page=schedule:sync&&wo_id={$arr[a].WORK_ORDER_ID}'">                                            
-                                                    <input TYPE="submit" value="View Work Order" onClick="parent.location='?page=workorder:details&wo_id={$arr[a].WORK_ORDER_ID}'">
+                                                    <input TYPE="submit" value="Export" onClick="parent.location='?page=schedule:sync&&workorder_id={$arr[a].WORK_ORDER_ID}'">                                            
+                                                    <input TYPE="submit" value="View Work Order" onClick="parent.location='?page=workorder:details&workorder_id={$arr[a].WORK_ORDER_ID}'">
                                                 </td>
                                             </tr>
                                         </table>

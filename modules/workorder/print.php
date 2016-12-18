@@ -15,10 +15,10 @@ $rs = $db->execute($q);
 $company = $rs->GetArray();
 
 $smarty->assign('company',                  $company                                    );
-$smarty->assign('single_work_order',        display_single_open_workorder($db, $wo_id)  );
-$smarty->assign('work_order_notes',         display_workorder_notes($db, $wo_id)        );
-$smarty->assign('work_order_schedule',      display_workorder_schedule($db, $wo_id)     );
-$smarty->assign('work_order_resolution',    display_resolution($db, $wo_id)             ); 
+$smarty->assign('single_work_order',        display_single_open_workorder($db, $workorder_id)  );
+$smarty->assign('work_order_notes',         display_workorder_notes($db, $workorder_id)        );
+$smarty->assign('work_order_schedule',      display_workorder_schedule($db, $workorder_id)     );
+$smarty->assign('work_order_resolution',    display_resolution($db, $workorder_id)             ); 
 
 /* Technician Workorder Slip Print Routine */
 if($VAR['print_content'] == 'technician_workorder_slip') {

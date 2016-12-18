@@ -12,11 +12,11 @@ $workorder_id       = $_POST['workorder_id'];
 
 /* validation */
 if(empty($deposit_amount)) {
-    force_page("billing", "new&error_msg=Please Fill in the Deposit amount.&wo_id=$workorder_id&customer_id=$customer_id&invoice_id=$invoice_id&page_title=Billing");
+    force_page("billing", "new&error_msg=Please Fill in the Deposit amount.&workorder_id=$workorder_id&customer_id=$customer_id&invoice_id=$invoice_id&page_title=Billing");
 }
 
 if(empty($deposit_recieved)) {
-    force_page("billing", "new&error_msg=Please Fill in the Deposit ID Number.&wo_id=$workorder_id&customer_id=$customer_id&invoice_id=$invoice_id&page_title=Billing");
+    force_page("billing", "new&error_msg=Please Fill in the Deposit ID Number.&workorder_id=$workorder_id&customer_id=$customer_id&invoice_id=$invoice_id&page_title=Billing");
 }
 
 /* get invoice details */
@@ -29,7 +29,7 @@ if(!$rs = $db->execute($q)) {
 $invoice_details = $rs->FetchRow();
 //Check to see if we are processing more then required
 if($invoice_details['BALANCE'] < $deposit_amount){
-        force_page('billing', 'new&wo_id='.$workorder_id.'&customer_id='.$customer_id.'    &invoice_id='.$invoice_id.'&error_msg= You can not bill more than the amount of the invoice.');
+        force_page('billing', 'new&workorder_id='.$workorder_id.'&customer_id='.$customer_id.'    &invoice_id='.$invoice_id.'&error_msg= You can not bill more than the amount of the invoice.');
             exit;
     }
 /* check if this is a partial payment */
@@ -115,7 +115,7 @@ if($invoice_details['INVOICE_AMOUNT'] > $deposit_amount){
 
     /* full payment made */
     if($invoice_details['INVOICE_AMOUNT'] < $deposit_amount) {
-        force_page('billing', 'new&wo_id='.$workorder_id.'&customer_id='.$customer_id.'&invoice_id='.$invoice_id.'&error_msg=You can not bill more than the amount of the invoice.');
+        force_page('billing', 'new&workorder_id='.$workorder_id.'&customer_id='.$customer_id.'&invoice_id='.$invoice_id.'&error_msg=You can not bill more than the amount of the invoice.');
             exit;
         } 
     if($invoice_details['INVOICE_AMOUNT'] == $deposit_amount){

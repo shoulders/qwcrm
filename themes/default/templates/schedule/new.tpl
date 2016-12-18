@@ -20,7 +20,7 @@
                         <table class="olotable" width="100%" border="0" cellpadding="5" cellspacing="0">
                             <tr>
                                 <td class="menutd">
-                                    {if $wo_id == '0'}
+                                    {if $workorder_id == '0'}
                                         <table class="olotablered" width="100%" border="0" cellpadding="5" cellspacing="0"> : </span> {$translate_schedule_error}</td>
                                             </tr>
                                         </table>
@@ -38,7 +38,7 @@
                                         </table>
                                         <br>
                                     {/if}
-                                    {if $wo_id == ''}
+                                    {if $workorder_id == ''}
                                         <table class="olotablered" width="100%" border="0" cellpadding="5" cellspacing="0">
                                             <tr>
                                                 <td><span class="error_font">{$translate_schedule_info2} : </span> {$translate_schedule_error}</td>
@@ -61,11 +61,11 @@
                                     <table class="menutable" width="100%" border="0" cellpadding="5" cellspacing="0">
                                         <tr>
                                             <td>
-                                                {if $wo_id > '0'}
+                                                {if $workorder_id > '0'}
                                                     <form method="POST" action="?page=schedule:new">
                                                         <input type="hidden" name="page" value="schedule:new">
                                                         <input type="hidden" name="tech" value="{$tech}">
-                                                        <input type="hidden" name="wo_id" value="{$wo_id}">
+                                                        <input type="hidden" name="workorder_id" value="{$workorder_id}">
                                                         <table class="olotable" width="100%" border="0" summary="Work order display">
                                                             <tr>
                                                                 <td class="olohead">{$translate_schedule_set}</td>
@@ -75,7 +75,7 @@
                                                                     <table width="100%" cellpadding="5" cellspacing="5">
                                                                         <tr>
                                                                             <td>
-                                                                                <input type="hidden" name="wo_id" value="{$wo_id}">
+                                                                                <input type="hidden" name="workorder_id" value="{$workorder_id}">
                                                                             </td>
                                                                         </tr>
                                                                         <tr>
@@ -121,7 +121,7 @@
                                                                         </tr>
                                                                         <tr>
                                                                             <td colspan="2">
-                                                                                <input type="hidden" name="wo_id" value="{$wo_id}">
+                                                                                <input type="hidden" name="workorder_id" value="{$workorder_id}">
                                                                                 <input type="submit" name="submit" value="{$translate_schedule_submit}">
                                                                             </td>
                                                                         </tr>

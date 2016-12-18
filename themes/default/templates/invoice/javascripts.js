@@ -8,11 +8,11 @@ function GotoPageNumber() {
 }
 
 // Shows a Confirm Delete Dialogue Box for Labour Item
-    function confirmLabourDelete(labourID, invoice_id, wo_id, customer_id){
+    function confirmLabourDelete(labourID, invoice_id, workorder_id, customer_id){
 
         var answer = confirm ("{/literal}{$translate_invoice_labour_delete_mes_confirmation}{literal}")
         if (answer){
-            window.location='?page=invoice:delete&deleteType=labourRecord&labourID=' + labourID + '&invoice_id=' + invoice_id + '&wo_id=' + wo_id + '&customer_id=' + customer_id
+            window.location='?page=invoice:delete&deleteType=labourRecord&labourID=' + labourID + '&invoice_id=' + invoice_id + '&workorder_id=' + workorder_id + '&customer_id=' + customer_id
             alert("{/literal}{$translate_invoice_delete_mes_recorddeleted}{literal}")
     }
     else{
@@ -21,11 +21,11 @@ function GotoPageNumber() {
 }
 
 // Shows a Confirm Delete Dialogue Box for Parts
-    function confirmPartsDelete(partsID, invoice_id, wo_id, customer_id){
+    function confirmPartsDelete(partsID, invoice_id, workorder_id, customer_id){
 
         var answer = confirm ("{/literal}{$translate_invoice_parts_delete_mes_confirmation}{literal}")
         if (answer){
-            window.location='?page=invoice:delete&deleteType=partsRecord&partsID=' + partsID + '&invoice_id=' + invoice_id + '&wo_id=' + wo_id + '&customer_id=' + customer_id
+            window.location='?page=invoice:delete&deleteType=partsRecord&partsID=' + partsID + '&invoice_id=' + invoice_id + '&workorder_id=' + workorder_id + '&customer_id=' + customer_id
             alert("{/literal}{$translate_invoice_delete_mes_recorddeleted}{literal}")
     }
     else{

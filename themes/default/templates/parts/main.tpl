@@ -88,7 +88,7 @@ var selbox = document.form1.CAT2;
                                                                         <input type="hidden" name="PRICE" value="{$parts[p].PRICE|string_format:"%.2f"}">
                                                                         <input type="hidden" name="CAT2" value="{$CAT2}">
                                                                         <input type="hidden" name="add_part" value="1">
-                                                                        <input type="hidden" name="wo_id" value="{$wo_id}">
+                                                                        <input type="hidden" name="workorder_id" value="{$workorder_id}">
                                                                         <input type="hidden" name="from_zip" value="{$from_zip}">
                                                                         <input type="submit" name="submit" value="Add">
                                                                     </td>
@@ -143,7 +143,7 @@ var selbox = document.form1.CAT2;
                                                                     <br>
                                                                 {else}
                                                                     <form method="post" action="?page=parts:checkout">
-                                                                        <input type="hidden" name="wo_id" value="{$wo_id}">
+                                                                        <input type="hidden" name="workorder_id" value="{$workorder_id}">
                                                                         <input type="submit" name="submit" value="check out">
                                                                     </form>
                                                                 {/if}
@@ -170,7 +170,7 @@ var selbox = document.form1.CAT2;
                                                     </select>
                                                     <br>
                                                     <br>
-                                                    <input type="hidden" name="wo_id" value="{$wo_id}">
+                                                    <input type="hidden" name="workorder_id" value="{$workorder_id}">
                                                     <input type="submit" name="submit" value="{$translate_parts_search}">
                                                 </form>
                                                 <hr>
@@ -194,7 +194,7 @@ var selbox = document.form1.CAT2;
                                                         {/section}    
                                                         <tr>
                                                             <td colspan="4">
-                                                                <input type="hidden" name="wo_id" value="{$wo_id}">
+                                                                <input type="hidden" name="workorder_id" value="{$workorder_id}">
                                                                 <input type="hidden" name="CAT2" value="{$CAT2}">
                                                                 <input type="hidden" name="update_cart" value="1">
                                                                 <input type="submit" name="submit" value="{$translate_parts_update}">                                                        
@@ -213,7 +213,7 @@ var selbox = document.form1.CAT2;
                                                         <td></td>
                                                         <td>
                                                             <form method="POST" action="?page=parts:main">
-                                                                <input type="hidden" name="wo_id" value="{$wo_id}">
+                                                                <input type="hidden" name="workorder_id" value="{$workorder_id}">
                                                                 <input type="hidden" name="check_out" value="1">                                                            
                                                                 <input type="submit" name="submit" value="{$translate_parts_checkout}">
                                                                 <input type="submit" name="submit" value="{$translate_parts_view}">
@@ -222,7 +222,7 @@ var selbox = document.form1.CAT2;
                                                     </tr>
                                                 </table>
                                                 <br>
-                                                <b>{$translate_parts_wo_id}</b> {$wo_id}<br>
+                                                <b>{$translate_parts_workorder_id}</b> {$workorder_id}<br>
                                                 <b>{$translate_parts_shipping_method}</b> {$service_code}<br>
                                                 <b>{$translate_parts_ware}</b> {$location}<br>                                            
                                             </td>    

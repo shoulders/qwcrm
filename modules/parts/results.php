@@ -31,7 +31,7 @@ if(!$rs = $db->execute($q)) {
     }
 
 $from_zip = $rs->fields['COMPANY_ZIP'];
-$workorder_id = $VAR['wo_id'];
+$workorder_id = $VAR['workorder_id'];
 
 $q = "SELECT CUSTOMER_ID FROM ".PRFX."TABLE_WORK_ORDER  WHERE WORK_ORDER_ID=".$db->qstr($workorder_id);
     if(!$rs = $db->execute($q)) {
@@ -50,7 +50,7 @@ $q = "SELECT SKU,AMOUNT FROM ".PRFX."CART";
     }
 
 if($rs->fields['SKU'] == ''){
-       force_page('parts', 'main&error_msg=You  have no parts in your Cart. Please select the parts you wish to order and click add.&wo_id='.$VAR['wo_id'].'&page_title=Order%20Parts');
+       force_page('parts', 'main&error_msg=You  have no parts in your Cart. Please select the parts you wish to order and click add.&workorder_id='.$VAR['workorder_id'].'&page_title=Order%20Parts');
         exit;
 }
 
@@ -147,7 +147,7 @@ if($content == '') {
         }
         
         if($xml['tag'] == "WORKORDER" && $xml['value'] != ""){
-            $wo_id = $xml['value'];
+            $workorder_id = $xml['value'];
         }
     
         /* get order details */
@@ -185,7 +185,7 @@ if($content == '') {
     /* Insert Order */
     $q= "INSERT INTO ".PRFX."ORDERS SET
             INVOICE_ID    =".$db->qstr($crm_invoice_id                                ).",
-            WO_ID             =".$db->qstr($wo_id                                            ).",
+            WO_ID             =".$db->qstr($workorder_id                                            ).",
             DATE_CREATE    ='".time()."',
             DATE_LAST        ='".time()."',
             SUB_TOTAL        =".$db->qstr( number_format($cart_total, 2,'.', '')    ).",
@@ -204,11 +204,11 @@ if($content == '') {
 
 
     /* Update Work Order status and record invoice created */
-    if($wo_id != '') {
+    if($workorder_id != '') {
 
         /* create Invoice */
 
-        $q = "SELECT  count(*) as count FROM ".PRFX."TABLE_INVOICE WHERE WORKORDER_ID=".$db->qstr($wo_id);
+        $q = "SELECT  count(*) as count FROM ".PRFX."TABLE_INVOICE WHERE WORKORDER_ID=".$db->qstr($workorder_id);
         $rs = $db->Execute($q);
         $count = $rs->fields['count'];
     
@@ -221,7 +221,7 @@ if($content == '') {
             $q = "INSERT INTO ".PRFX."TABLE_INVOICE SET
                 INVOICE_DATE     =".$db->qstr(time()                                            ).",
                 CUSTOMER_ID        =".$db->qstr($customer_id                                    ).", 
-                WORKORDER_ID        =".$db->qstr($wo_id                                            ).",
+                WORKORDER_ID        =".$db->qstr($workorder_id                                            ).",
                 EMPLOYEE_ID        =".$db->qstr($_SESSION['login_id']                            ).", 
                 INVOICE_PAID       ='0', 
                 INVOICE_AMOUNT    =".$db->qstr( number_format($total, 2, '.', ',')         ).",
@@ -240,7 +240,7 @@ if($content == '') {
             $msg = "Invoice Created ID: ".$invoice_id;
         
             $sql = "INSERT INTO ".PRFX."TABLE_WORK_ORDER_HISTORY SET
-                WORK_ORDER_ID       =".$db->qstr($wo_id).",
+                WORK_ORDER_ID       =".$db->qstr($workorder_id).",
                 DATE                =".$db->qstr(time()).",
                 NOTE                =".$db->qstr($msg).",
                 ENTERED_BY      =".$db->qstr($_SESSION['login_id']);    
@@ -252,7 +252,7 @@ if($content == '') {
 
         } else if($count == 1) {
             /* get curent Invoice details */
-            $q = "SELECT INVOICE_ID,INVOICE_AMOUNT, SUB_TOTAL, TAX FROM ".PRFX."TABLE_INVOICE WHERE WORKORDER_ID=".$db->qstr($wo_id);
+            $q = "SELECT INVOICE_ID,INVOICE_AMOUNT, SUB_TOTAL, TAX FROM ".PRFX."TABLE_INVOICE WHERE WORKORDER_ID=".$db->qstr($workorder_id);
             $rs = $db->Execute($q);
             $invoice_id    = $rs->fields['INVOICE_ID'];
             $tax_amount = number_format($total * $tax, 2, '.', ',');
@@ -273,7 +273,7 @@ if($content == '') {
         $msg = "Parts Ordered. Cite CRM Orderd ID: ".$crm_invoice_id." Amount: $".number_format($cart_total, 2, '.', ',')." Shipping: $".number_format($shipping, 2, '.', ',')." Total: $".number_format($cart_total + $shipping, 2, '.', ',');
         
         $sql = "INSERT INTO ".PRFX."TABLE_WORK_ORDER_HISTORY SET
-                WORK_ORDER_ID       =".$db->qstr($wo_id).",
+                WORK_ORDER_ID       =".$db->qstr($workorder_id).",
                 DATE                =".$db->qstr(time()).",
                 NOTE                =".$db->qstr($msg).",
                 ENTERED_BY          =".$db->qstr($_SESSION['login_id']);    
@@ -287,7 +287,7 @@ if($content == '') {
         $sql = "UPDATE ".PRFX."TABLE_WORK_ORDER SET
               WORK_ORDER_CURRENT_STATUS    ='3',
               LAST_ACTIVE                    =". $db->qstr(time())."
-                WHERE WORK_ORDER_ID            =". $db->qstr($wo_id);
+                WHERE WORK_ORDER_ID            =". $db->qstr($workorder_id);
 
         if(!$result = $db->Execute($sql)) {
             force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
@@ -296,7 +296,7 @@ if($content == '') {
 
         $msg = "Work Order Changed status to Waiting For Parts";
         $sql = "INSERT INTO ".PRFX."TABLE_WORK_ORDER_HISTORY SET
-              WORK_ORDER_ID     =". $db->qstr( $wo_id).",
+              WORK_ORDER_ID     =". $db->qstr( $workorder_id).",
               DATE              =". $db->qstr( time()).",
               NOTE              =". $db->qstr( $msg).",
               ENTERED_BY        =". $db->qstr( $_SESSION['login_id']);
@@ -320,7 +320,7 @@ if($content == '') {
             exit;    
         }
     
-        if($wo_id != '') {
+        if($workorder_id != '') {
             /* insert into Invoice Parts */
             $q = "INSERT INTO ".PRFX."TABLE_INVOICE_PARTS SET
             INVOICE_ID                         =".$db->qstr($invoice_id).",

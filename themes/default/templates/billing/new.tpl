@@ -4,7 +4,7 @@
         <td>
             <table width="100%" cellpadding="4" cellspacing="0" border="0">
                 <tr>
-                    <td class="menuhead2" width="80%">&nbsp;{$translate_billing_title}{$wo_id}</td>
+                    <td class="menuhead2" width="80%">&nbsp;{$translate_billing_title}{$workorder_id}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
                         <img src="{$theme_images_dir}icons/16x16/help.gif" alt="" border="0"
                             onMouseOver="ddrivetip('<b>New Invoice</b><hr><p></p>')"
@@ -19,7 +19,7 @@
                                 <td class="row2"><b>{$translate_billing_date}</b></td>
                                 <td class="row2"><b>{$translate_billing_due_date}</b></td>
                                 <td class="row2"><b>{$translate_billing_amount}</b></td>
-                                <td class="row2"><b>{$translate_billing_wo_id}</b></td>
+                                <td class="row2"><b>{$translate_billing_workorder_id}</b></td>
                                 <td class="row2"><b>{$translate_billing_balance}</b></td>
                             </tr>
                             <tr class="olotd4">

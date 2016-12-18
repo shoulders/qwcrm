@@ -43,7 +43,7 @@
                 <table width="200" border="1" cellpadding="5" cellspacing="0" style="border-collapse: collapse;">
                     <tr>
                         <td class="olotd5">
-                            <b>{$translate_parts_wo_id}</b> {$order.WO_ID}<br>
+                            <b>{$translate_parts_workorder_id}</b> {$order.WO_ID}<br>
                             <b>{$translate_parts_tech}</b>{$login_display_name}
                         </td>
                     </tr>

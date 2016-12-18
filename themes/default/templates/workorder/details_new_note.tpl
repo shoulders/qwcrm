@@ -7,7 +7,7 @@
         <td>
             <table width="700" cellpadding="5" cellspacing="0" border="0" >
                 <tr>
-                    <td class="menuhead2" width="80%">{$translate_workorder_details_new_note_title} {$wo_id}</td>
+                    <td class="menuhead2" width="80%">{$translate_workorder_details_new_note_title} {$workorder_id}</td>
                 </tr>
                 <tr>
                     <td class="menutd2">                        
@@ -16,7 +16,7 @@
                                 <td width="100%" valign="top">                                                                     
                                     <form action="index.php?page=workorder:details_new_note" method="POST" name="new_workorder_note" id="new_workorder_note">
                                         <input type="hidden" name="page" value="workorder:details_new_note">
-                                        <input type="hidden" name="wo_id" value="{$wo_id}">
+                                        <input type="hidden" name="workorder_id" value="{$workorder_id}">
                                         <table class="olotable" width="100%" border="0" summary="Work order display">
                                             <tr>
                                                 <td class="olohead">{$translate_workorder_details_notes_title}</td>

@@ -56,8 +56,8 @@
                                                     </tr>
                                                     {foreach from=$work_order item=work_order}
                                                         {if $work_order.WORK_ORDER_ID  != ""}
-                                                            <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='?page=workorder:details&wo_id={$work_order.WORK_ORDER_ID}&customer_id={$work_order.CUSTOMER_ID}&page_title={$translate_workorder_work_order_id} {$work_order.WORK_ORDER_ID}';" class="row1">
-                                                                <td class="olotd4"><a href="?page=workorder:details&wo_id={$work_order.WORK_ORDER_ID}&customer_id={$work_order.CUSTOMER_ID}&page_title={$translate_workorder_work_order_id} {$work_order.WORK_ORDER_ID}">{$work_order.WORK_ORDER_ID}</a></td>
+                                                            <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='?page=workorder:details&workorder_id={$work_order.WORK_ORDER_ID}&customer_id={$work_order.CUSTOMER_ID}&page_title={$translate_workorder_work_order_id} {$work_order.WORK_ORDER_ID}';" class="row1">
+                                                                <td class="olotd4"><a href="?page=workorder:details&workorder_id={$work_order.WORK_ORDER_ID}&customer_id={$work_order.CUSTOMER_ID}&page_title={$translate_workorder_work_order_id} {$work_order.WORK_ORDER_ID}">{$work_order.WORK_ORDER_ID}</a></td>
                                                                 <td class="olotd4"> {$work_order.WORK_ORDER_OPEN_DATE|date_format:"$date_format"}</td>
                                                                 <td class="olotd4">{$work_order.WORK_ORDER_CLOSE_DATE|date_format:"$date_format"}</td>
                                                                 <td class="olotd4" nowrap>

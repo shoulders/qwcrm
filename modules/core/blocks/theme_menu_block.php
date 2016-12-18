@@ -3,7 +3,7 @@
 require_once('includes'.SEP.'modules'.SEP.'core_menu.php');
  
 /* Get Workorder Status */
-$smarty->assign('menu_workorder_status', menu_get_single_workorder_status($db, $wo_id)); 
+$smarty->assign('menu_workorder_status', menu_get_single_workorder_status($db, $workorder_id)); 
 
 /* Open Work Orders */
 $smarty->assign('menu_workorders_open_count', menu_count_workorders_with_status($db, 10));

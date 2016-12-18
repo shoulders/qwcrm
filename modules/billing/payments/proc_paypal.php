@@ -60,5 +60,5 @@ $myPaypal->enableTestMode();
 $myPaypal->submitPayment(); */
 
 $smarty->assign('invoice_id', $invoice_id);
-$smarty->assign('wo_id', $VAR['workorder_id']);
+$smarty->assign('workorder_id', $VAR['workorder_id']);
 $smarty->display('billing'.SEP.'proc_paypal.tpl');

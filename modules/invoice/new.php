@@ -28,11 +28,11 @@ $smarty->assign('cur_date', $cur_date);
 $smarty->assign('format', $format);
 
 /* Generic error control */
-if($wo_id == '' && $wo_id != "0") {
+if($workorder_id == '' && $workorder_id != "0") {
     /* If no work order ID then we dont belong here */
     force_page('core', 'error&error_msg=No Work Order ID');
 } else {
-    $q = "SELECT WORK_ORDER_STATUS FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_ID=".$db->qstr($wo_id);
+    $q = "SELECT WORK_ORDER_STATUS FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_ID=".$db->qstr($workorder_id);
     if(!$rs = $db->execute($q)) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
         exit;
@@ -97,7 +97,7 @@ if(isset($submit)){
     $due_date = $datef2;
     $test = $desc2['LABOR_RATE_NAME'];
     $create_by = $VAR['create_by'];
-    $wo_id = $VAR['wo_id'];
+    $workorder_id = $VAR['workorder_id'];
 
      /* insert Labor into database */
     if($VAR['labour_hour'] > 0 ) {
@@ -227,7 +227,7 @@ if( $VAR['discount'] >= 100){
     $q = "UPDATE ".PRFX."TABLE_WORK_ORDER SET
         WORK_ORDER_STATUS           = '6',
         WORK_ORDER_CURRENT_STATUS     = '8'
-        WHERE WORK_ORDER_ID         =".$db->qstr($wo_id);
+        WHERE WORK_ORDER_ID         =".$db->qstr($workorder_id);
     if(!$rs = $db->execute($q)) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
         exit;
@@ -248,7 +248,7 @@ if( $VAR['discount'] >= 100){
 }
 
 /* send back to the invoice page - this loads the page with no POST variables */
-force_page('invoice', 'new&wo_id='.$wo_id.'&customer_id='.$customer_id.'&invoice_id='.$VAR['invoice_id']);
+force_page('invoice', 'new&workorder_id='.$workorder_id.'&customer_id='.$customer_id.'&invoice_id='.$VAR['invoice_id']);
         
 ############################################
 # Create New Invoice or load from database # // when page loads with no button presssed
@@ -257,17 +257,17 @@ force_page('invoice', 'new&wo_id='.$wo_id.'&customer_id='.$customer_id.'&invoice
 } else {
 
     /* check if an invoice has been created else create a new invoice for this workorder section done by counting logic*/
-    $q = "SELECT count(*) as count FROM ".PRFX."TABLE_INVOICE WHERE WORKORDER_ID=".$db->qstr($wo_id);
+    $q = "SELECT count(*) as count FROM ".PRFX."TABLE_INVOICE WHERE WORKORDER_ID=".$db->qstr($workorder_id);
     $rs = $db->Execute($q);
     $count = $rs->fields['count'];
     //$invoice_id = $VAR['invoice_id']; // might not be able to use dynamic variables in if statement
     // if no invoice exists for this work order id / new invoice no WO - then create invoice
-    if($count == 0 || ($wo_id == "0" && $VAR['invoice_type'] == 'invoice-only')) {
+    if($count == 0 || ($workorder_id == "0" && $VAR['invoice_type'] == 'invoice-only')) {
 
         $q = "INSERT INTO ".PRFX."TABLE_INVOICE SET
             INVOICE_DATE            =".$db->qstr(time()).",
             CUSTOMER_ID             =".$db->qstr($customer_id).",
-            WORKORDER_ID            =".$db->qstr($wo_id ).",
+            WORKORDER_ID            =".$db->qstr($workorder_id ).",
             EMPLOYEE_ID             =".$db->qstr($_SESSION['login_id']).",
             INVOICE_PAID            ='0',
             INVOICE_AMOUNT          ='0.00'";
@@ -283,9 +283,9 @@ force_page('invoice', 'new&wo_id='.$wo_id.'&customer_id='.$customer_id.'&invoice
         $msg = "Invoice Created ID: ".$invoice_id;
 
         // This runs when invoices have attached work orders
-        if($count == 0 && $wo_id > 0){
+        if($count == 0 && $workorder_id > 0){
             $sql = "INSERT INTO ".PRFX."TABLE_WORK_ORDER_HISTORY SET
-                WORK_ORDER_ID       =".$db->qstr($wo_id).",
+                WORK_ORDER_ID       =".$db->qstr($workorder_id).",
                 DATE                =".$db->qstr(time()).",
                 NOTE                =".$db->qstr($msg).",
                 ENTERED_BY          =".$db->qstr($_SESSION['login_id']);
@@ -294,15 +294,15 @@ force_page('invoice', 'new&wo_id='.$wo_id.'&customer_id='.$customer_id.'&invoice
             force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
             exit;
         } else {
-            force_page('invoice', 'new&wo_id='.$wo_id.'&customer_id='.$customer_id.'&invoice_id='.$invoice_id);
+            force_page('invoice', 'new&workorder_id='.$workorder_id.'&customer_id='.$customer_id.'&invoice_id='.$invoice_id);
         }
 
     } else {
-        force_page('invoice', 'new&wo_id='.$wo_id.'&customer_id='.$customer_id.'&invoice_id='.$invoice_id);    
+        force_page('invoice', 'new&workorder_id='.$workorder_id.'&customer_id='.$customer_id.'&invoice_id='.$invoice_id);    
     }
 
 // if an invoice exists for this work order id - this loads invoice data and employee display name
-} elseif($count == 1 || ($wo_id == "0" && $VAR['invoice_id'] != '')) {
+} elseif($count == 1 || ($workorder_id == "0" && $VAR['invoice_id'] != '')) {
     $q = "SELECT  ".PRFX."TABLE_INVOICE.*, ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_DISPLAY_NAME FROM  ".PRFX."TABLE_INVOICE
         LEFT JOIN ".PRFX."TABLE_EMPLOYEE ON (".PRFX."TABLE_INVOICE.EMPLOYEE_ID = ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_ID)
         WHERE INVOICE_ID=".$VAR['invoice_id'];
@@ -316,7 +316,7 @@ force_page('invoice', 'new&wo_id='.$wo_id.'&customer_id='.$customer_id.'&invoice
     }
 
     // if more than 1 invoice exists with the same work order id that is not work order id 0
-    } elseif($count > 1 && $wo_id > 0) {
+    } elseif($count > 1 && $workorder_id > 0) {
         force_page("core", "error&error_msg=Duplicate Invoice's. - WO has more than 1 Invoice");
         exit;
     }
@@ -379,7 +379,7 @@ force_page('invoice', 'new&wo_id='.$wo_id.'&customer_id='.$customer_id.'&invoice
         $q = "UPDATE ".PRFX."TABLE_WORK_ORDER SET
             WORK_ORDER_STATUS        = '6',
             WORK_ORDER_CURRENT_STATUS     = '8'
-            WHERE WORK_ORDER_ID         =".$db->qstr($wo_id);
+            WHERE WORK_ORDER_ID         =".$db->qstr($workorder_id);
         if(!$rs = $db->execute($q)) {
             force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
             exit;
@@ -404,11 +404,11 @@ force_page('invoice', 'new&wo_id='.$wo_id.'&customer_id='.$customer_id.'&invoice
 # If We have a Submit2           #
 ##################################
 
-if(isset($submit2) && $wo_id != "0"){
+if(isset($submit2) && $workorder_id != "0"){
     $q = "UPDATE ".PRFX."TABLE_WORK_ORDER SET
         WORK_ORDER_STATUS        = '6',
         WORK_ORDER_CURRENT_STATUS     = '8'
-        WHERE WORK_ORDER_ID         =".$db->qstr($wo_id);
+        WHERE WORK_ORDER_ID         =".$db->qstr($workorder_id);
     if(!$rs = $db->execute($q)) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
         exit;

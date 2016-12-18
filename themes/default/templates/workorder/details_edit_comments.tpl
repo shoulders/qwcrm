@@ -23,7 +23,7 @@
                                         <b>{$translate_workorder_details_comments_title}</b><br>
                                         <textarea class="olotd4" rows="15" cols="70" name="workorder_comments">{$workorder_comments}</textarea>
                                         <br>
-                                        <input type="hidden" name="wo_id" value="{$wo_id}">
+                                        <input type="hidden" name="workorder_id" value="{$workorder_id}">
                                         <input class="olotd4" name="submit" value="{$translate_workorder_submit}" type="submit" />
                                     </form>
                                     <br>

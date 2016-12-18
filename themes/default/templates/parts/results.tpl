@@ -11,7 +11,7 @@
                         <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0" >
                             <tr>
                                 <td class="menutd" valign="top">{$translate_parts_msg_10}
-                                    <a href="?page=parts:print_results&wo_id={$invoice_details.WORKORDER}&theme=off" target="new">{$translate_parts_print}</a>
+                                    <a href="?page=parts:print_results&workorder_id={$invoice_details.WORKORDER}&theme=off" target="new">{$translate_parts_print}</a>
                                     <table width="700" border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
                                         <tr>
                                             <td valign="top"><font size="+2">MyIT CRM CRM</font><br></td>
@@ -52,7 +52,7 @@
                         <table width="200" border="1" cellpadding="5" cellspacing="0" style="border-collapse: collapse;">
                             <tr>
                                 <td class="olotd5">
-                                    <b>{$translate_parts_wo_id}</b> {$invoice_details.WORKORDER}<br>
+                                    <b>{$translate_parts_workorder_id}</b> {$invoice_details.WORKORDER}<br>
                                     <b>{$translate_parts_tech}</b> {$login_display_name}
                                 </td>
                             </tr>

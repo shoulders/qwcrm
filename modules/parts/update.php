@@ -12,10 +12,10 @@
 if(!xml2php("parts")) {
     $smarty->assign('error_msg',"Error in language file");
 }
-$wo_id = $VAR['wo_id'];
+$workorder_id = $VAR['workorder_id'];
 
 /* update order */
-$q = "UPDATE ".PRFX."ORDERS SET STATUS='0' WHERE WO_ID=".$db->qstr($wo_id);
+$q = "UPDATE ".PRFX."ORDERS SET STATUS='0' WHERE WO_ID=".$db->qstr($workorder_id);
     if(!$rs = $db->execute($q)) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
         exit;
@@ -24,7 +24,7 @@ $q = "UPDATE ".PRFX."ORDERS SET STATUS='0' WHERE WO_ID=".$db->qstr($wo_id);
 /* update Status that we rec parts */
 $memo = "Parts received";
     $q = "INSERT INTO ".PRFX."TABLE_WORK_ORDER_HISTORY SET
-                WORK_ORDER_ID       = ".$db->qstr($wo_id).",
+                WORK_ORDER_ID       = ".$db->qstr($workorder_id).",
                 DATE                = ".$db->qstr(time()).",
                 NOTES               = ".$db->qstr($memo).",
                 ENTERED_BY          = ".$db->qstr($_SESSION['login_id']);
@@ -34,7 +34,7 @@ $memo = "Parts received";
                 exit;
             }
 /* check status */
-$q = "SELECT WORK_ORDER_STATUS FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_ID=". $db->qstr($wo_id);
+$q = "SELECT WORK_ORDER_STATUS FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_ID=". $db->qstr($workorder_id);
     if(!$rs = $db->execute($q)) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
         exit;
@@ -44,7 +44,7 @@ $q = "SELECT WORK_ORDER_STATUS FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_ID
 if($rs->fields['WORK_ORDER_STATUS'] != '6') {
 
         /* check if we have a schedule */
-        $q = "SELECT count(*) as count  FROM ".PRFX."TABLE_SCHEDULE WHERE WORK_ORDER_ID=".$db->qstr($wo_id);
+        $q = "SELECT count(*) as count  FROM ".PRFX."TABLE_SCHEDULE WHERE WORK_ORDER_ID=".$db->qstr($workorder_id);
             if(!$rs = $db->execute($q)) {
                 force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
                 exit;
@@ -56,10 +56,10 @@ if($rs->fields['WORK_ORDER_STATUS'] != '6') {
             $status ='1';
         }
         
-        $q = "UPDATE ".PRFX."TABLE_WORK_ORDER SET WORK_ORDER_CURRENT_STATUS =".$db->qstr($status).", LAST_ACTIVE=".$db->qstr(time())." WHERE WORK_ORDER_ID = ".$db->qstr($wo_id) ;
+        $q = "UPDATE ".PRFX."TABLE_WORK_ORDER SET WORK_ORDER_CURRENT_STATUS =".$db->qstr($status).", LAST_ACTIVE=".$db->qstr(time())." WHERE WORK_ORDER_ID = ".$db->qstr($workorder_id) ;
             if(!$rs = $db->execute($q)) {
                 force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
                 exit;
         }
 }
-force_page('workorder', 'view&wo_id='.$wo_id.'&page_title=Work%20Order%20ID%20'.$wo_id);
+force_page('workorder', 'view&workorder_id='.$workorder_id.'&page_title=Work%20Order%20ID%20'.$workorder_id);

@@ -345,7 +345,7 @@
         <billing_date>Date</billing_date>
         <billing_due_date>Invoice Due Date</billing_due_date>
         <billing_amount>Amount:</billing_amount>
-        <billing_wo_id>Workorder ID</billing_wo_id>
+        <billing_workorder_id>Workorder ID</billing_workorder_id>
         <billing_balance>Balance</billing_balance>
         <billing_email>Email:</billing_email>
         <billing_phone>Phone:</billing_phone>
@@ -442,7 +442,7 @@
         <customer_last>Last Activity</customer_last>
         <customer_open_work_orders>Open Work Orders</customer_open_work_orders>
         <customer_closed_work_orders>Closed Work Orders</customer_closed_work_orders>
-        <customer_wo_id>WO ID</customer_wo_id>
+        <customer_workorder_id>WO ID</customer_workorder_id>
         <customer_date_open>Date Opened</customer_date_open>
         <customer>Customer</customer>
         <customer_scope>Scope</customer_scope>
@@ -547,7 +547,7 @@
         <employee_edit>Edit</employee_edit>
         <employee_login>Login</employee_login>
         <employee_login_id>Login ID</employee_login_id>
-        <employee_wo_id>WO ID</employee_wo_id>
+        <employee_workorder_id>WO ID</employee_workorder_id>
         <employee_date_open>Date Opened</employee_date_open>
         <employee_customer>Customer</employee_customer>
         <employee_scope>Scope</employee_scope>
@@ -719,7 +719,7 @@
         <invoice_remove>Remove</invoice_remove>
         <invoice_submit>Submit / Recalculate</invoice_submit>
         <invoice_submit2>Close Invoice</invoice_submit2>
-        <invoice_wo_id>Work Order ID</invoice_wo_id>
+        <invoice_workorder_id>Work Order ID</invoice_workorder_id>
         <invoice_actions>Actions</invoice_actions>
         <invoice_labour_total>Labour Total</invoice_labour_total>
         <invoice_parts_total>Parts Total</invoice_parts_total>
@@ -833,7 +833,7 @@
         <parts_page>Page</parts_page>
         <parts_of>Of</parts_of>
         <parts_records_found>records found.</parts_records_found>
-        <parts_wo_id>Work Order ID</parts_wo_id>
+        <parts_workorder_id>Work Order ID</parts_workorder_id>
         <parts_shipping_method>Shipping Method</parts_shipping_method>
         <parts_ware>Warehouse Location</parts_ware>
         <parts_order_complete>Your Order Has Been Completed</parts_order_complete>

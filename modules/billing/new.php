@@ -4,14 +4,14 @@ if(!xml2php("billing")) {
     $smarty->assign('error_msg',"Error in language file");
 }
 // Grab customers Information
-$wo_id       = $VAR['wo_id'];
+$workorder_id       = $VAR['workorder_id'];
 $customer_id = $VAR['customer_id'];
 $tech        = $_SESSION['login_id'];
 $invoice_id  = $VAR['invoice_id'];
 
 
 /* Generic error control */
-if($wo_id == '' && $wo_id != "0") {
+if($workorder_id == '' && $workorder_id != "0") {
     force_page('core', 'error&error_msg=No Work Order ID&menu=1');
     exit;
 }

@@ -173,7 +173,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'logout') {
 $VAR            = array_merge($_GET, $_POST);  // i could use a security function here to santise the varibles
 
 // These are used globally but mainly for the menu !!
-$wo_id          = $VAR['wo_id'];
+$workorder_id   = $VAR['workorder_id'];
 $customer_id    = $VAR['customer_id'];
 $employee_id    = $VAR['employee_id'];
 $expense_id     = $VAR['expense_id'];
@@ -210,7 +210,7 @@ $smarty->assign('theme_js_dir',                 THEME_JS_DIR                );  
 $smarty->assign('theme_js_dir_finc',            THEME_JS_DIR_FINC           );
 
 // These are used globally but mainly for the menu !!
-$smarty->assign('wo_id',        $wo_id          );
+$smarty->assign('workorder_id',        $workorder_id          );
 $smarty->assign('customer_id',  $customer_id    );
 $smarty->assign('employee_id',  $employee_id    );              // This is the same as $login_id at some points - when used globally - check
 $smarty->assign('expense_id',   $expense_id     );

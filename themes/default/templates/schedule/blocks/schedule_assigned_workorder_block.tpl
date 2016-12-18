@@ -12,8 +12,8 @@
     </tr>
     {foreach from=$assigned item=assigned}
         {if $assigned.WORK_ORDER_ID > 0}
-            <tr onmouseover="this.className='row2'" onmouseout="this.className='row1'" onDblClick="window.location='?page=workorder:details&wo_id={$assigned.WORK_ORDER_ID}&customer_id={$assigned.CUSTOMER_ID}&page_title={$translate_workorder_page_title} {$assigned.WORK_ORDER_ID}';" class="row1">
-                <td class="olotd4"><a href="?page=workorder:details&wo_id={$assigned.WORK_ORDER_ID}&customer_id={$assigned.CUSTOMER_ID}&page_title={$translate_workorder_page_title} {$assigned.WORK_ORDER_ID}">{$assigned.WORK_ORDER_ID}</a></td>
+            <tr onmouseover="this.className='row2'" onmouseout="this.className='row1'" onDblClick="window.location='?page=workorder:details&workorder_id={$assigned.WORK_ORDER_ID}&customer_id={$assigned.CUSTOMER_ID}&page_title={$translate_workorder_page_title} {$assigned.WORK_ORDER_ID}';" class="row1">
+                <td class="olotd4"><a href="?page=workorder:details&workorder_id={$assigned.WORK_ORDER_ID}&customer_id={$assigned.CUSTOMER_ID}&page_title={$translate_workorder_page_title} {$assigned.WORK_ORDER_ID}">{$assigned.WORK_ORDER_ID}</a></td>
                 <td class="olotd4"> {$assigned.WORK_ORDER_OPEN_DATE|date_format:"$date_format"}</td>
                 <td class="olotd4" nowrap>
                     <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<b><center>Contact Info</b></center><hr><b>Phone: </b>{$assigned.CUSTOMER_PHONE}<br> <b>Work: </b>{$assigned.CUSTOMER_WORK_PHONE}<br><b>Moile: </b>{$assigned.CUSTOMER_MOBILE_PHONE}<br><br>{$assigned.CUSTOMER_ADDRESS}<br>{$assigned.CUSTOMER_CITY}, {$assigned.CUSTOMER_STATE}<br>{$assigned.CUSTOMER_ZIP}');" onMouseOut="hideddrivetip();">
@@ -26,9 +26,9 @@
                     <a class="link1" href="?page=employee:employee_details&employee_id={$assigned.EMPLOYEE_ID}&page_title={$assigned.EMPLOYEE_DISPLAY_NAME}">{$assigned.EMPLOYEE_DISPLAY_NAME}</a>
                 </td>
                 <td class="olotd4" align="center" nowrap>
-                    <a href="?page=workorder:details&wo_id={$assigned.WORK_ORDER_ID}&customer_id={$assigned.CUSTOMER_ID}&page_title={$translate_workorder_page_title} {$assigned.WORK_ORDER_ID}"><img src="{$theme_images_dir}icons/16x16/Calendar.gif" width="16" height="16" border="0" onMouseOver="ddrivetip('Schedule this Works Order');" onMouseOut="hideddrivetip();"></a>
-                    <a href="?page=workorder:print&wo_id={$assigned.WORK_ORDER_ID}&customer_id={$assigned.CUSTOMER_ID}&page_title=$translate_workorder_print_title} {$assigned.WORK_ORDER_ID}&theme=off" target="new" ><img src="{$theme_images_dir}icons/16x16/fileprint.gif" border="0" onMouseOver="ddrivetip('Print The Work Order');" onMouseOut="hideddrivetip();"></a>
-                    <a href="?page=workorder:details&wo_id={$assigned.WORK_ORDER_ID}&customer_id={$assigned.CUSTOMER_ID}&page_title={$translate_workorder_page_title} {$assigned.WORK_ORDER_ID}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif"  border="0" onMouseOver="ddrivetip('View The Work Order');" onMouseOut="hideddrivetip();"></a>    
+                    <a href="?page=workorder:details&workorder_id={$assigned.WORK_ORDER_ID}&customer_id={$assigned.CUSTOMER_ID}&page_title={$translate_workorder_page_title} {$assigned.WORK_ORDER_ID}"><img src="{$theme_images_dir}icons/16x16/Calendar.gif" width="16" height="16" border="0" onMouseOver="ddrivetip('Schedule this Works Order');" onMouseOut="hideddrivetip();"></a>
+                    <a href="?page=workorder:print&workorder_id={$assigned.WORK_ORDER_ID}&customer_id={$assigned.CUSTOMER_ID}&page_title=$translate_workorder_print_title} {$assigned.WORK_ORDER_ID}&theme=off" target="new" ><img src="{$theme_images_dir}icons/16x16/fileprint.gif" border="0" onMouseOver="ddrivetip('Print The Work Order');" onMouseOut="hideddrivetip();"></a>
+                    <a href="?page=workorder:details&workorder_id={$assigned.WORK_ORDER_ID}&customer_id={$assigned.CUSTOMER_ID}&page_title={$translate_workorder_page_title} {$assigned.WORK_ORDER_ID}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif"  border="0" onMouseOver="ddrivetip('View The Work Order');" onMouseOut="hideddrivetip();"></a>    
                 </td>
             </tr>
         {else}

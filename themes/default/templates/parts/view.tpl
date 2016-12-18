@@ -17,7 +17,7 @@
                                             <tr>
                                                 <td valign="top">                                                        
                                                     <font size="+2">MyIT CRM CRM</font><br />
-                                                    <a href="?page=parts:print_results&wo_id={$order[q].WO_ID}&theme=off" target="new">{$translate_parts_print}</a>
+                                                    <a href="?page=parts:print_results&workorder_id={$order[q].WO_ID}&theme=off" target="new">{$translate_parts_print}</a>
                                                 </td>
                                                 <td valign="top" align="right" width="205">                                                 
                                                     <table width="205" border_details="1" cellpadding="3" cellspacing="0" class="olotd5">
@@ -53,7 +53,7 @@
                                                     <table width="200" border_details="1" cellpadding="5" cellspacing="0" class="olotd5">
                                                         <tr>
                                                             <td>
-                                                                <b>{$translate_parts_wo_id}</b> {$order[q].WO_ID}<br>
+                                                                <b>{$translate_parts_workorder_id}</b> {$order[q].WO_ID}<br>
                                                                 <b>{$translate_parts_tech}</b> {$login_display_name}
                                                             </td>
                                                         </tr>

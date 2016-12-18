@@ -27,7 +27,7 @@
                                                                 <input type="text" name="pp_invoice" class="olotd4">&nbsp;                                                                
                                                                 <input type="hidden" name="invoice_id" value="{$invoice_id}">
                                                                 <input type="hidden" name="amount" value="{$amount}">
-                                                                <input type="hidden" name="wo_id" value="{$wo_id}">
+                                                                <input type="hidden" name="workorder_id" value="{$workorder_id}">
                                                                 <input type="submit" name="submit" value="Success">
                                                                 <input type="submit" name="submit2" value="Failed">                                                        
                                                             </form>

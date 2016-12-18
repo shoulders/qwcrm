@@ -28,10 +28,10 @@
                                             <td>assigned<a name="assigned"></a>{include file='schedule/blocks/schedule_assigned_workorder_block.tpl'}</td>
                                         </tr>
                                     </table>                        
-                                    {if $wo_id != 0}
+                                    {if $workorder_id != 0}
                                         <table class="olotablered" width="100%" border="0" cellpadding="5" cellspacing="0">
                                             <tr>
-                                                <td><span class="error_font">{$translate_schedule_info} </span> {$translate_schedule_msg_1} {$wo_id} {$translate_schedule_msg_2}</td>
+                                                <td><span class="error_font">{$translate_schedule_info} </span> {$translate_schedule_msg_1} {$workorder_id} {$translate_schedule_msg_2}</td>
                                             </tr>
                                         </table>
                                         <br>
@@ -53,7 +53,7 @@
                                                                         var m = M + 1;                                          // Correction for assignment issue above
                                                                         var d = dateForLink.getDate();                          // integer, 1..31
                                                                         // redirect...
-                                                                        window.location = "?page=schedule:main&y="+y+"&m="+m+"&d="+d+"&wo_id={/literal}{$wo_id}{literal}&page_title={/literal}{$translate_schedule_schedule}{literal}";
+                                                                        window.location = "?page=schedule:main&y="+y+"&m="+m+"&d="+d+"&workorder_id={/literal}{$workorder_id}{literal}&page_title={/literal}{$translate_schedule_schedule}{literal}";
                                                                     }
                                                     });
                                                 {/literal}  

@@ -17,6 +17,6 @@ $d =    $VAR['d'];
             force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
             exit;
         } else {
-            force_page('schedule', 'main&y='.$y.'&m='.$m.'&d='.$d.'&wo_id='.$VAR['wo_id']);
+            force_page('schedule', 'main&y='.$y.'&m='.$m.'&d='.$d.'&workorder_id='.$VAR['workorder_id']);
             exit;
         }

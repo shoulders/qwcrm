@@ -4,7 +4,7 @@
         <td>
             <table width="700" cellpadding="4" cellspacing="0" border="0" >
                 <tr>
-                    <td class="menuhead2" width="80%">&nbsp;{$translate_invoice_for} {$wo_id}</td>
+                    <td class="menuhead2" width="80%">&nbsp;{$translate_invoice_for} {$workorder_id}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
                         <a>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{$translate_invoice_view_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_invoice_view_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();">
@@ -34,7 +34,7 @@
                                             <td>{$invoice.INVOICE_DUE|date_format:"$date_format"}</td>
                                             <td>{$currency_sym}{$invoice.INVOICE_AMOUNT|string_format:"%.2f"}</td>
                                             <td>{$invoice.EMPLOYEE_DISPLAY_NAME}</td>
-                                            <td><a href="?page=workorder:details&amp;wo_id={$invoice.WORKORDER_ID}&amp;page_title={$translate_invoice_wo_id}&amp;{$invoice.WORKORDER_ID}">{$invoice.WORKORDER_ID}</a></td>
+                                            <td><a href="?page=workorder:details&amp;workorder_id={$invoice.WORKORDER_ID}&amp;page_title={$translate_invoice_workorder_id}&amp;{$invoice.WORKORDER_ID}">{$invoice.WORKORDER_ID}</a></td>
                                             <td>{$invoice.PAID_DATE|date_format:"$date_format"}</td>
                                             <td>{$currency_sym}{$invoice.PAID_AMOUNT|string_format:"%.2f"}</td>
                                             <td>
@@ -87,11 +87,11 @@
                                     </table>
                                     <br>                                    
                                     <form action="">
-                                        <button type="button" name="{$translate_invoice_print}" onClick=window.open('?page=invoice:print&amp;print_type=html&amp;wo_id={$invoice.WORKORDER_ID}&amp;customer_id={$invoice.CUSTOMER_ID}&amp;invoice_id={$invoice.INVOICE_ID}&amp;theme=off')>{$translate_invoice_print}</button>
-                                        <button type="button" name="{$translate_invoice_pdf}" OnClick=window.open('?page=invoice:print&amp;print_type=pdf&amp;wo_id={$invoice.WORKORDER_ID}&customer_id={$invoice.CUSTOMER_ID}&invoice_id={$invoice.INVOICE_ID}&theme=off')><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">&nbsp;{$translate_invoice_pdf}</button>
+                                        <button type="button" name="{$translate_invoice_print}" onClick=window.open('?page=invoice:print&amp;print_type=html&amp;workorder_id={$invoice.WORKORDER_ID}&amp;customer_id={$invoice.CUSTOMER_ID}&amp;invoice_id={$invoice.INVOICE_ID}&amp;theme=off')>{$translate_invoice_print}</button>
+                                        <button type="button" name="{$translate_invoice_pdf}" OnClick=window.open('?page=invoice:print&amp;print_type=pdf&amp;workorder_id={$invoice.WORKORDER_ID}&customer_id={$invoice.CUSTOMER_ID}&invoice_id={$invoice.INVOICE_ID}&theme=off')><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">&nbsp;{$translate_invoice_pdf}</button>
                                     </form>
                                     {if $invoice.INVOICE_AMOUNT-$invoice.PAID_AMOUNT > 0 }
-                                        <button type="button" name="{$translate_invoice_bill_customer}" OnClick=location.href='?page=billing:new&wo_id={$invoice.WORKORDER_ID}&customer_id={$invoice.CUSTOMER_ID}&invoice_id={$invoice.INVOICE_ID}&page_title=Receiving%20Payment%20for%20{$invoice.INVOICE_ID}'>{$translate_invoice_bill_customer}</button>
+                                        <button type="button" name="{$translate_invoice_bill_customer}" OnClick=location.href='?page=billing:new&workorder_id={$invoice.WORKORDER_ID}&customer_id={$invoice.CUSTOMER_ID}&invoice_id={$invoice.INVOICE_ID}&page_title=Receiving%20Payment%20for%20{$invoice.INVOICE_ID}'>{$translate_invoice_bill_customer}</button>
                                     {/if}                                
                                     <br>
                                     <table width="100%" cellpadding="4" cellspacing="0" border="0" >

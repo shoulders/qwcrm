@@ -5,7 +5,7 @@
             <td>
                 <table width="700" cellpadding="5" cellspacing="0" border="0" >
                     <tr>
-                        <td class="menuhead2" width="80%">{$translate_workorder_status_title} - {$translate_workorder_status_update_work_order_status_for_work_order_id} {$wo_id}</td>
+                        <td class="menuhead2" width="80%">{$translate_workorder_status_title} - {$translate_workorder_status_update_work_order_status_for_work_order_id} {$workorder_id}</td>
                         <td class="menuhead2" width="20%" align="right" valign="middle">
                             <a>
                                 <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<b>{$translate_workorder_status_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_workorder_status_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();">
@@ -34,7 +34,7 @@
                                                 <option value="3">{$translate_workorder_waiting_for_parts}</option>                                          
                                             </select>                                        
                                             <input type="hidden" name="updated_by" value="{$login_id}">
-                                            <input type="hidden" name="wo_id" value="{$wo_id}">
+                                            <input type="hidden" name="workorder_id" value="{$workorder_id}">
                                             <p>&nbsp;</p>                                        
                                             <input class="olotd4" name="submit_assign_status" value="{$translate_workorder_update}" type="submit" />                                                                      
                                         </form>

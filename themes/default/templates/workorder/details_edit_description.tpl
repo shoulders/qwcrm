@@ -31,7 +31,7 @@
                                         <b>{$translate_workorder_details_description_title}</b><br>
                                         <textarea name="workorder_description" class="olotd4 mceCheckForContent" rows="15" cols="70">{$workorder_description}</textarea>
                                         <br>
-                                        <input type="hidden" name="wo_id" value="{$wo_id}">
+                                        <input type="hidden" name="workorder_id" value="{$workorder_id}">
                                         <input class="olotd4" name="submit" value="{$translate_workorder_submit}" type="submit">
                                     </form>
                                     <br>
