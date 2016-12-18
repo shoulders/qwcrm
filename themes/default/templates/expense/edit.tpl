@@ -6,7 +6,7 @@
 <script src="{$theme_js_dir}jscal2/jscal2.js"></script>
 <script src="{$theme_js_dir}jscal2/unicode-letter.js"></script>
 <script>{include file="`$theme_js_dir_finc`jscal2/language.js"}</script>
-{include file="expense/javascripts.js"}
+<script>{include file="expense/javascripts.js"}</script>
 
 <table width="100%" border="0" cellpadding="20" cellspacing="0">
     <tr>
@@ -30,7 +30,7 @@
                                          <td>
                                             {section name=q loop=$expense_details}
                                                 {literal}
-                                                <form  action="index.php?page=expense:edit" method="POST" name="edit_expense" id="edit_expense" autocomplete="off" onsubmit="try { var myValidator = validate_expense; } catch(e) { return true; } return myValidator(this);">
+                                                <form  action="index.php?page=expense:edit" method="POST" name="edit_expense" id="edit_expense">
                                                 {/literal}
                                                     <table width="100%" cellpadding="2" cellspacing="2" border="0">                                             
                                                         <tr>
@@ -40,16 +40,16 @@
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{$translate_expense_id}</b></td>
-                                                            <td colspan="3"><input name="expense_id" type="hidden" value="{$expense_details[q].EXPENSE_ID}"/>{$expense_details[q].EXPENSE_ID}</td>
+                                                            <td colspan="3"><input name="expense_id" value="{$expense_details[q].EXPENSE_ID}" type="hidden">{$expense_details[q].EXPENSE_ID}</td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{$translate_expense_payee}</b><span style="color: #ff0000"> *</span></td>
-                                                            <td colspan="3"><input class="olotd5" size="60" name="expensePayee" type="text" value="{$expense_details[q].EXPENSE_PAYEE}" onkeypress="return onlyAlphaNumeric(event);"/></td>
+                                                            <td colspan="3"><input name="expensePayee" class="olotd5" size="50" value="{$expense_details[q].EXPENSE_PAYEE}" type="text" maxlength="50" required onkeydown="return onlyAlphaNumeric(event);"></td>
                                                         </tr><tr>
                                                             <td align="right"><b>{$translate_expense_date}</b><span style="color: #ff0000"> *</span></td>
                                                             <td>
-                                                                <input class="olotd5" size="10" name="expenseDate" type="text" id="expenseDate" value="{$expense_details[q].EXPENSE_DATE|date_format:$date_format}"/>
-                                                                <input type="button" id="expenseDate_button" value="+">                                                            
+                                                                <input id="expenseDate" name="expenseDate" class="olotd5" size="10" value="{$expense_details[q].EXPENSE_DATE|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{1,4}{/literal}" required onkeydown="return onlyDate(event);">
+                                                                <input id="expenseDate_button" value="+" type="button">                                                            
                                                                 <script>
                                                                 {literal}
                                                                     Calendar.setup({
@@ -64,7 +64,7 @@
                                                         <tr>
                                                             <td align="right"><b>{$translate_expense_type}</b><span style="color: #ff0000"> *</span></td>
                                                             <td>
-                                                                <select class="olotd5" id="expenseType" name="expenseType" col="30" style="width: 150px; visibility: visible;" value="{$expense_details[q].EXPENSE_TYPE}"/>
+                                                                <select id="expenseType" name="expenseType" class="olotd5" col="30" style="width: 150px;" value="{$expense_details[q].EXPENSE_TYPE}"/>
                                                                     <option value="1">{$translate_expense_type_1}</option>
                                                                     <option value="2">{$translate_expense_type_2}</option>
                                                                     <option value="3">{$translate_expense_type_3}</option>
@@ -92,7 +92,7 @@
                                                         <tr>
                                                             <td align="right"><b>{$translate_expense_payment_method}</b><span style="color: #ff0000"> *</span></td>
                                                             <td>
-                                                                <select class="olotd5" id="expensePaymentMethod" name="expensePaymentMethod" style="width: 150px; visibility: visible;" value="{$expense_details[q].EXPENSE_PAYMENT_METHOD}"/>
+                                                                <select id="expensePaymentMethod" name="expensePaymentMethod" class="olotd5" style="width: 150px;" value="{$expense_details[q].EXPENSE_PAYMENT_METHOD}"/>
                                                                     <option value="1">{$translate_expense_payment_method_1}</option>
                                                                     <option value="2">{$translate_expense_payment_method_2}</option>
                                                                     <option value="3">{$translate_expense_payment_method_3}</option>
@@ -109,31 +109,31 @@
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{$translate_expense_net_amount}</b></td>
-                                                            <td><input type="text" size="10" name="expenseNetAmount" class="olotd5" value="{$expense_details[q].EXPENSE_NET_AMOUNT}" onkeypress="return onlyNumbersPeriods();"></td>
+                                                            <td><input name="expenseNetAmount" class="olotd5" size="10" value="{$expense_details[q].EXPENSE_NET_AMOUNT}" type="text" maxlength="10" pattern="[0-9]{1,7}(.[0-9]{0,2})?" required onkeypress="return onlyNumbersPeriods();"></td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><span style="color: #ff0000"></span><b>{$translate_expense_tax_rate}</b></td>
-                                                            <td><input class="olotd5" name="expenseTaxRate" type="text" size="4" value="{$expense_details[q].EXPENSE_TAX_RATE}" onkeypress="return onlyNumbersPeriods();"/><b>%</b></td>
+                                                            <td><input name="expenseTaxRate" class="olotd5" size="4" value="{$expense_details[q].EXPENSE_TAX_RATE}" type="text" maxlength="5" pattern="\d{0,2}(\.\d{0,2})?" required onkeypress="return onlyNumbersPeriods();"/><b>%</b></td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{$translate_expense_tax_amount}</b></td>
-                                                            <td><input class="olotd5" name="expenseTaxAmount" type="text" size="10" value="{$expense_details[q].EXPENSE_TAX_AMOUNT}" onkeypress="return onlyNumbersPeriods();"/></td>
+                                                            <td><input name="expenseTaxAmount" class="olotd5" size="10" value="{$expense_details[q].EXPENSE_TAX_AMOUNT}" type="text" maxlength="10" pattern="[0-9]{1,7}(.[0-9]{0,2})?" required onkeypress="return onlyNumbersPeriods();"/></td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{$translate_expense_gross_amount}</b><span style="color: #ff0000"> *</span></td>
-                                                            <td><input class="olotd5" name="expenseGrossAmount" type="text" size="10" value="{$expense_details[q].EXPENSE_GROSS_AMOUNT}" onkeypress="return onlyNumbersPeriods();"/></td>
+                                                            <td><input name="expenseGrossAmount" class="olotd5" size="10" value="{$expense_details[q].EXPENSE_GROSS_AMOUNT}" type="text" maxlength="10" pattern="[0-9]{1,7}(.[0-9]{0,2})?" required onkeypress="return onlyNumbersPeriods();"/></td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{$translate_expense_notes}</b></td>
-                                                            <td><textarea class="olotd5" name="expenseNotes" cols="50" rows="15" id="editor1">{$expense_details[q].EXPENSE_NOTES}</textarea></td>
+                                                            <td><textarea name="expenseNotes" class="olotd5" cols="50" rows="15">{$expense_details[q].EXPENSE_NOTES}</textarea></td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{$translate_expense_items}</b><span style="color: #ff0000"> *</span></td>
-                                                            <td><textarea class="olotd5" name="expenseItems" cols="50" rows="15" id="editor2">{$expense_details[q].EXPENSE_ITEMS}</textarea></td>
+                                                            <td><textarea name="expenseItems" class="olotd5 mceCheckForContent" cols="50" rows="15">{$expense_details[q].EXPENSE_ITEMS}</textarea></td>
                                                         </tr>
                                                         <tr>
                                                             <td></td>
-                                                            <td><input class="olotd5" name="submit" type="submit" value="{$translate_expense_update_button}" /></td>
+                                                            <td><input name="submit" class="olotd5" value="{$translate_expense_update_button}" type="submit"></td>
                                                         </tr>                                        
                                                     </table>
                                                 </form>

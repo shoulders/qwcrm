@@ -10,4 +10,4 @@ if(!xml2php('expense')) {
 
 // Assign the arrays
 $smarty->assign('expense_details', display_expense_info($db, $VAR['expense_id']));
-$smarty->display('expense'.SEP.'expense_details.tpl');
+$smarty->display('expense'.SEP.'details.tpl');

@@ -1,11 +1,11 @@
-<!-- expense_details.tpl -->
-{include file="expense/javascripts.js"}
+<!-- details.tpl -->
+<script>{include file="expense/javascripts.js"}</script>
 
 {section name=i loop=$expense_details}
     <table width="700" border="0" cellpadding="20" cellspacing="5">
         <tr>
             <td>
-                <table width="100%" cellpadding="4" cellspacing="0" border="0" >
+                <table width="100%" cellpadding="4" cellspacing="0" border="0">
                     <tr>
                         <td class="menuhead2" width="80%">{$translate_expense_details_title}</td>
                         <td class="menuhead2" width="20%" align="right" valign="middle">

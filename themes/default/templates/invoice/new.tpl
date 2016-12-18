@@ -11,7 +11,7 @@
 <script>
 {literal}
  
-// LABOUR    
+/**--  LABOUR  --**/
 
 //// Add Row to Labour Table    
 function addRowToTableLabor(){
@@ -22,8 +22,8 @@ function addRowToTableLabor(){
     var iteration = lastRow;
     var row = tbl.insertRow(lastRow);
     row.setAttribute('class', 'olotd4');
-
-
+    
+    
 
     // Number Cell - Create Cell
     var buildRow = row.insertCell(0);        
@@ -31,8 +31,8 @@ function addRowToTableLabor(){
     //buildRow.setAttribute('class', 'olotd4'); 
     var el = document.createTextNode(iteration);        
     buildRow.appendChild(el);
-
-
+    
+    
 
     // QTY Cell - Create Cell
     var buildRow = row.insertCell(1);        
@@ -41,14 +41,18 @@ function addRowToTableLabor(){
 
     // QTY Cell - Create Input Box
     var el = document.createElement('input');
-    el.setAttribute('type', 'text');
-    el.setAttribute('name', 'labour_hour['+iteration+']');
     el.setAttribute('id', 'labour_hour['+iteration+']');
-    el.setAttribute('size', '4');        
+    el.setAttribute('name', 'labour_hour['+iteration+']');
+    //el.setAttribute('class', 'olotd4');
+    el.setAttribute('size', '6');        
     el.setAttribute('value', '1');
+    el.setAttribute('type', 'text');
+    el.setAttribute('maxlength', '6');
+    el.required = true;
+    el.setAttribute('onkeydown','return onlyNumbers(event)');
     buildRow.appendChild(el);
-
-
+    
+    
 
     // Description Cell - Create Cell
     var buildRow = row.insertCell(2);        
@@ -56,41 +60,67 @@ function addRowToTableLabor(){
     //buildRow.setAttribute('class', 'olotd4');
 
     // Description Cell - Create Select Input
-    var el = document.createElement('select');        
-    el.setAttribute('name', 'labour_description['+iteration+']');
+    var el = document.createElement('select');
     el.setAttribute('id', 'labour_description['+iteration+']');
-    //el.setAttribute('size', '100');        
-    buildRow.appendChild(el);
+    el.setAttribute('name', 'labour_description['+iteration+']');
+    //el.setAttribute('class', 'olotd4');
+    //el.setAttribute('size', '100');
+    //el.setAttribute('value', '1');
+    //el.setAttribute('maxlength', '50');
+    el.required = true;
+    //el.onkeypress = function(event){return onlyAlphaNumeric(event);};
+    //el.setAttribute("onkeypress", "return isNumberKeyDecimal(event)");
+    //el.onkeydown = 'return onlyAlphaNumeric(event)';
+    buildRow.appendChild(el);    
     {/literal}
 
     // Description Cell - Populate the Select Options
     {section loop=$rate name=i}
-    el.options[{$smarty.section.i.index}] = new Option('{$rate[i].LABOR_RATE_NAME} - {$currency_sym}{$rate[i].LABOR_RATE_AMOUNT}', '{$rate[i].LABOR_RATE_NAME}');
+        el.options[{$smarty.section.i.index}] = new Option('{$rate[i].LABOR_RATE_NAME} - {$currency_sym}{$rate[i].LABOR_RATE_AMOUNT}', '{$rate[i].LABOR_RATE_NAME}');
     {/section}
 
     {literal} 
     // Description Cell - Convert Select Input to a real Combo Box using dhtmlxcombo
-    var combo = dhtmlXComboFromSelect('labour_description['+iteration+']');                
-    combo.setSize(400); // This sets the width of the combo box and drop down options width        
+    var combo = dhtmlXComboFromSelect('labour_description['+iteration+']');
+    
+    // Description Cell - Set Combobox settings
+    combo.setSize(400);    
+    combo.DOMelem_input.maxLength = 50;    
+    combo.DOMelem_input.required = true;    
+    
+    // Description Cell - Apply Key restriction to the virtual combobox
+    dhtmlxEvent(combo.DOMelem_input, "keypress", function(e){
+        
+        if(onlyAlphaNumeric(e)){return true;}
+        
+        e.cancelBubble=true;
+        if (e.preventDefault) e.preventDefault();
+            return false;
+    });
 
 
-
+    
     // Rate Cell - Create Cell
     var buildRow = row.insertCell(3);        
     //buildRow.setAttribute('width', '40px');
     //buildRow.setAttribute('class', 'olotd4');
 
     // Rate Cell - Create Select Input
-    var el = document.createElement('select');        
-    el.setAttribute('name', 'labour_rate['+iteration+']');
+    var el = document.createElement('select');
     el.setAttribute('id', 'labour_rate['+iteration+']');
-    el.setAttribute('size', '50');        
+    el.setAttribute('name', 'labour_rate['+iteration+']');
+    //el.setAttribute('class', 'olotd4');
+    //el.setAttribute('size', '6');
+    //el.setAttribute('value', '1');
+    //el.setAttribute('maxlength', '6');
+    //el.required = true;
+    //el.setAttribute('onkeydown','return onlyNumbersPeriod(event)');
     buildRow.appendChild(el);
     {/literal}
 
     // Rate Cell - Populate the Select Options
     {section loop=$rate name=i}
-    el.options[{$smarty.section.i.index}] = new Option('${$rate[i].LABOR_RATE_AMOUNT}', '{$rate[i].LABOR_RATE_AMOUNT}');
+        el.options[{$smarty.section.i.index}] = new Option('${$rate[i].LABOR_RATE_AMOUNT}', '{$rate[i].LABOR_RATE_AMOUNT}');
     {/section}
 
     // Rate Cell - Add some HTML to add the Currency Symbol        
@@ -98,12 +128,27 @@ function addRowToTableLabor(){
 
     {literal}            
     // Rate Cell - Convert Select Input to a real Combo Box using dhtmlxcombo - Run after adding currency symbol to the cell otherwise it does not work
-    var combo = dhtmlXComboFromSelect('labour_rate['+iteration+']');
-    combo.setSize(90);  // This sets the width of the combo box and drop down options width        
+    var combo = dhtmlXComboFromSelect('labour_rate['+iteration+']');         
 
+    // Rate Cell - Set Combobox settings
+    combo.setSize(90);  // This sets the width of the combo box and drop down options width  
+    combo.DOMelem_input.maxLength = 10;
+    combo.DOMelem_input.setAttribute('pattern', '[0-9]{1,7}(.[0-9]{0,2})?');
+    combo.DOMelem_input.required = true;
+    
+    // Rate Cell - Apply Key restriction to the virtual combobox
+    dhtmlxEvent(combo.DOMelem_input, "keypress", function(e){
+        
+        if(onlyNumbersPeriod(e)){return true;}
+        
+        e.cancelBubble=true;
+        if (e.preventDefault) e.preventDefault();
+            return false;
+    });
+    
 }
 
-//// Remove row from Labour tab;e
+//// Remove row from Labour table
 function removeRowFromTableLabor(){
     var tbl = document.getElementById('labor');
     var lastRow = tbl.rows.length;
@@ -130,7 +175,7 @@ function validateRowLabor(frm){
 
 
 
-// PARTS
+/**--  PARTS  --**/
 
 
 
@@ -143,6 +188,8 @@ function addRowToTableParts(){
     var iteration = lastRow;
     var row = tbl.insertRow(lastRow);
     row.setAttribute('class', 'olotd4');
+    
+    
 
     // Number Cell - Create Cell
     var buildRow = row.insertCell(0);        
@@ -151,6 +198,8 @@ function addRowToTableParts(){
     var el = document.createTextNode(iteration);        
     buildRow.appendChild(el);
 
+
+
     // QTY Cell - Create Cell
     var buildRow = row.insertCell(1);        
     //buildRow.setAttribute('width', '40px');
@@ -158,12 +207,18 @@ function addRowToTableParts(){
 
     // QTY Cell - Create Input Box
     var el = document.createElement('input');
-    el.setAttribute('type', 'text');
-    el.setAttribute('name', 'parts_qty['+iteration+']');
     el.setAttribute('id', 'parts_qty['+iteration+']');
-    el.setAttribute('size', '4');        
+    el.setAttribute('name', 'parts_qty['+iteration+']');
+    //el.setAttribute('class', 'olotd4');
+    el.setAttribute('size', '6');        
     el.setAttribute('value', '1');
+    el.setAttribute('type', 'text');
+    el.setAttribute('maxlength', '6');
+    el.required = true;
+    el.setAttribute('onkeydown','return onlyNumbers(event)');
     buildRow.appendChild(el);
+
+
 
     // Description Cell - Create Cell
     var buildRow = row.insertCell(2);        
@@ -171,12 +226,18 @@ function addRowToTableParts(){
     //buildRow.setAttribute('class', 'olotd4');
 
     // Description Cell - Create Select Input
-    var el = document.createElement('input');        
-    el.setAttribute('name', 'parts_description['+iteration+']');
+    var el = document.createElement('input');
     el.setAttribute('id', 'parts_description['+iteration+']');
-    el.setAttribute('size', '62');        
+    el.setAttribute('name', 'parts_description['+iteration+']');    
+    //el.setAttribute('class', 'olotd4');
+    el.setAttribute('size', '62');
+    //el.setAttribute('value', '1');
+    el.setAttribute('maxlength', '6');
+    el.required = true;
+    el.setAttribute('onkeydown','return onlyAlphaNumeric(event)');
     buildRow.appendChild(el);
-    //el.onkeypress = keyPressTestLabor;
+    
+
 
     // Price Cell - Create Cell
     var buildRow = row.insertCell(3);        
@@ -184,10 +245,16 @@ function addRowToTableParts(){
     //buildRow.setAttribute('class', 'olotd4');
 
     // Price Cell - Create Select Input
-    var el = document.createElement('input');        
-    el.setAttribute('name', 'parts_price['+iteration+']');
+    var el = document.createElement('input');
     el.setAttribute('id', 'parts_price['+iteration+']');
-    el.setAttribute('size', '10');        
+    el.setAttribute('name', 'parts_price['+iteration+']');
+    //el.setAttribute('class', 'olotd4');
+    el.setAttribute('size', '10');
+    //el.setAttribute('value', '1');
+    el.setAttribute('maxlength', '10');    
+    el.setAttribute('pattern', '[0-9]{1,7}(.[0-9]{0,2})?');
+    el.required = true;
+    el.setAttribute('onkeydown','return onlyNumbersPeriod(event)');
     buildRow.appendChild(el);
 
     {/literal}
@@ -280,8 +347,8 @@ function keyPressTestParts(e, obj){
                                             <tr class="olotd4">
                                                 <td>{$invoice.INVOICE_ID}</td>
                                                 <td>
-                                                    <input size="10" name="date" type="text" id="date" value="{$invoice.INVOICE_DATE|date_format:$date_format}" class="olotd4"/>
-                                                    <input type="button" id="date_button" value="+">                                                    
+                                                    <input id="date" name="date" class="olotd4" size="10" value="{$invoice.INVOICE_DATE|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{1,4}{/literal}" required onkeydown="return onlyDate(event);">
+                                                    <input id="date_button" value="+" type="button">                                                    
                                                     <script>
                                                     {literal}  
                                                         Calendar.setup({
@@ -293,7 +360,7 @@ function keyPressTestParts(e, obj){
                                                     </script>                                                    
                                                 </td>
                                                 <td>{$item.INVOICE_DUE}
-                                                    <input size="10" name="due_date" type="text" id="due_date" value="{$invoice.INVOICE_DUE|date_format:$date_format}" class="olotd4"/>
+                                                    <input id="due_date" name="due_date" class="olotd4" size="10"  value="{$invoice.INVOICE_DUE|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{1,4}{/literal}" required onkeydown="return onlyDate(event);">
                                                     <input type="button" id="due_date_button" value="+">
                                                     
                                                     <script>

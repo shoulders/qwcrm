@@ -6,7 +6,7 @@
 <script src="{$theme_js_dir}jscal2/jscal2.js"></script>
 <script src="{$theme_js_dir}jscal2/unicode-letter.js"></script>
 <script>{include file="`$theme_js_dir_finc`jscal2/language.js"}</script>
-{include file="expense/javascripts.js"}
+<script>{include file="expense/javascripts.js"}</script>
 
 <table width="100%" border="0" cellpadding="20" cellspacing="5">
     <tr>
@@ -30,7 +30,7 @@
                                             <td>                                                
                                                 <input type="hidden" name="page" value="expense:edit">
                                                 {literal}
-                                                <form action="index.php?page=expense:new" method="POST" name="new_expense" id="new_expense" autocomplete="off" onsubmit="try { var myValidator = validate_expense; } catch(e) { return true; } return myValidator(this);">
+                                                <form action="index.php?page=expense:new" method="POST" name="new_expense" id="new_expense">
                                                 {/literal}
                                                     <table width="100%" cellpadding="3" cellspacing="0" border="0">
                                                         <tr>
@@ -41,18 +41,19 @@
                                                                             <td class="menuhead" colspan="3">{$translate_first_menu}</td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td align="right"><b>{$translate_expense_id}</b></td><td>{$new_record_id}</td>
+                                                                            <td align="right"><b>{$translate_expense_id}</b></td>
+                                                                            <td>{$new_record_id}</td>
                                                                             <td colspan="2"></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{$translate_expense_payee}</b><span style="color: #ff0000"> *</span></td>
-                                                                            <td colspan="3"><input class="olotd5" size="60" id="expensePayee" name="expensePayee" type="text" onkeypress="return onlyAlphaNumeric(event);" /></td>
+                                                                            <td colspan="3"><input id="expensePayee" name="expensePayee" class="olotd5" size="50" type="text" maxlength="50" required onkeypress="return onlyAlphaNumeric(event);"></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{$translate_expense_date}</b><span style="color: #ff0000"> *</span></td>
                                                                             <td>
-                                                                                <input class="olotd5" size="10" name="expenseDate" type="text" id="expenseDate" />                                                                            
-                                                                                <input type="button" id="expenseDate_button" value="+">                                                                                
+                                                                                <input id="expenseDate" name="expenseDate" class="olotd5" size="10" type="text" maxlength="10" pattern="{literal}[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{1,4}{/literal}" required onkeydown="return onlyDate(event);">                                                                           
+                                                                                <input id="expenseDate_button" type="button" value="+">                                                                                
                                                                                 <script>
                                                                                 {literal}
                                                                                     Calendar.setup({
@@ -67,7 +68,7 @@
                                                                         <tr>
                                                                             <td align="right"><b>{$translate_expense_type}</b><span style="color: #ff0000"> *</span></td>
                                                                             <td>
-                                                                                <select class="olotd5" name="expenseType" col="30" style="width: 150px; visibility: visible;"/>
+                                                                                <select name="expenseType" class="olotd5" col="30" style="width: 150px;"/>
                                                                                     <option value="1">{$translate_expense_type_1}</option>
                                                                                     <option value="2">{$translate_expense_type_2}</option>
                                                                                     <option value="3">{$translate_expense_type_3}</option>
@@ -95,7 +96,7 @@
                                                                         <tr>
                                                                             <td align="right"><b>{$translate_expense_payment_method}</b><span style="color: #ff0000"> *</span></td>
                                                                             <td>
-                                                                                <select class="olotd5" name="expensePaymentMethod" style="width: 150px; visibility: visible;"/>
+                                                                                <select name="expensePaymentMethod" class="olotd5" style="width: 150px;"/>
                                                                                     <option value="1">{$translate_expense_payment_method_1}</option>
                                                                                     <option value="2">{$translate_expense_payment_method_2}</option>
                                                                                     <option value="3">{$translate_expense_payment_method_3}</option>
@@ -112,19 +113,19 @@
                                                                         </tr>                                                                                                          
                                                                         <tr>
                                                                             <td align="right"><b>{$translate_expense_net_amount}</b></td>
-                                                                            <td><a><input type="text" size="10" name="expenseNetAmount" value="" class="olotd5" onkeypress="return onlyNumbersPeriods();"></b></a></td>
+                                                                            <td><a><input name="expenseNetAmount" class="olotd5" size="10" type="text" maxlength="10" pattern="[0-9]{1,7}(.[0-9]{0,2})?" onkeypress="return onlyNumbersPeriods();"></b></a></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><span style="color: #ff0000"></span><b>{$translate_expense_tax_rate}</td>
-                                                                            <td><input class="olotd5" name="expenseTaxRate" type="text" size="4" value="{$tax_rate}" onkeypress="return onlyNumbersPeriods();"/><b>%</b></td>
+                                                                            <td><input name="expenseTaxRate" class="olotd5" size="5" value="{$tax_rate}" type="text" maxlength="5" pattern="\d{0,2}(\.\d{0,2})?" required onkeypress="return onlyNumbersPeriods();"/><b>%</b></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{$translate_expense_tax_amount}</b></td>
-                                                                            <td><input class="olotd5" name="expenseTaxAmount" type="text" size="10" onkeypress="return onlyNumbersPeriods();"/></td>
+                                                                            <td><input name="expenseTaxAmount" class="olotd5" size="10" type="text" maxlength="10" pattern="[0-9]{1,7}(.[0-9]{0,2})?" onkeypress="return onlyNumbersPeriods();"/></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{$translate_expense_gross_amount}</b><span style="color: #ff0000"> *</span></td>
-                                                                            <td><input class="olotd5" name="expenseGrossAmount" type="text" size="10" onkeypress="return onlyNumbersPeriods();"/></td>
+                                                                            <td><input name="expenseGrossAmount" class="olotd5" size="10" type="text" maxlength="10" pattern="[0-9]{1,7}(.[0-9]{0,2})?" required onkeypress="return onlyNumbersPeriods();"/></td>
                                                                         </tr>
                                                                     </tbody>
                                                                 </table>
@@ -138,15 +139,18 @@
                                                                 <table>                                                                    
                                                                     <tr>
                                                                         <td align="right"><b>{$translate_expense_notes}</b></td>
-                                                                        <td><textarea class="olotd5" name="expenseNotes" cols="50" rows="15" id="editor1"></textarea></td>
+                                                                        <td><textarea name="expenseNotes" class="olotd5" cols="50" rows="15"></textarea></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td align="right"><b>{$translate_expense_items}</b><span style="color: #ff0000"> *</span></td>
-                                                                        <td><textarea class="olotd5" name="expenseItems" cols="50" rows="15" id="editor2"></textarea></td>
+                                                                        <td><textarea name="expenseItems" class="olotd5 mceCheckForContent" cols="50" rows="15"></textarea></td>
                                                                     </tr>                                                                    
                                                                     <tr>
                                                                         <td></td>
-                                                                        <td><input class="olotd5" name="submit" value="{$translate_expense_submit_button}" type="submit" /><input class="olotd5" name="submitandnew" value="{$translate_expense_submit_and_new_button}" type="submit" /></td>
+                                                                        <td>
+                                                                            <input name="submit" class="olotd5" value="{$translate_expense_submit_button}" type="submit" />
+                                                                            <input name="submitandnew" class="olotd5" value="{$translate_expense_submit_and_new_button}" type="submit" />
+                                                                        </td>
                                                                     </tr>
                                                                 </table>
                                                             </td>

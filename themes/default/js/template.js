@@ -46,11 +46,6 @@ function onlyAlphaNumeric(e) {
     return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", true);
 }
 
-// Addresses
-function onlyAddress(e) {
-   return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789,/-'", true);
-}
-
 // Numbers Only
 function onlyNumbers(e) {
     return keyRestriction(e, "0123456789", false);
@@ -68,29 +63,47 @@ function onlyPhoneNumber(e) {
 
 // URL
 function onlyURL(e) {
-   return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._~:/?#[]@!$&'()*+,;=`%", false);
+    return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._~:/?#[]@!$&'()*+,;=`%", false);
 }
 
 // Email
 function onlyEmail(e) {
-   return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@", false);
+    return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@", false);
+}
+
+// Addresses
+function onlyAddress(e) {
+    return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789,/-'", true);
 }
 
 // Currency Symbols
 function onlyEmail(e) {
-   return; 
-   //return keyRestriction(e, "", false);
+    return; 
+    //return keyRestriction(e, "", false);
 }
 
 // Usernames
 function onlyUsername(e) {
-   return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._", false);
+    return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._", false);
 }
 
 // Passwords
 function onlyPassword(e) {
-   //return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@", false);
-   return;
+    
+    //return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@", false);
+    
+    // No Spaces Allowed
+    var key = e.key;    
+    if (key === ' ' || key === 'Spacebar') {
+        return false;
+    } else {
+        return;
+    }   
+}
+
+// Dates
+function onlyDate(e) {
+   return keyRestriction(e, "0123456789\/\\-", false);
 }
 
 // Common Function for Key Input Restriction

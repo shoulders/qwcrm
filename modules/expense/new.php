@@ -44,7 +44,7 @@ $new_record_id = $last_record_id + 1;
 } else {
             
             $smarty->assign('new_record_id', $new_record_id);
-            $smarty->assign('tax_rate', $tax_rate);
+            $smarty->assign('tax_rate', tax_rate($db));
             $smarty->display('expense'.SEP.'new.tpl');
 
        }

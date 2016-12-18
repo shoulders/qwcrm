@@ -32,8 +32,8 @@
                                                                 <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" class="row1">
                                                                     <td class="olotd4" nowrap>{$rate[q].LABOR_RATE_ID}</td>
                                                                     <td class="olotd4" nowrap><input name="display" class="olotd5" size="50" value="{$rate[q].LABOR_RATE_NAME}" type="text" maxlength="50" required onkeydown="return onlyAlphaNumeric(event);"></td>
-                                                                    <td class="olotd4" nowrap>{$currency_sym}<input name="amount" class="olotd5" size="10" value="{$rate[q].LABOR_RATE_AMOUNT}" type="text" maxlength="10" pattern="{literal}\d{0,4}(\.\d{0,2})?{/literal}" required onkeydown="return onlyNumbersPeriod(event);"></td>
-                                                                    <td class="olotd4" nowrap>{$currency_sym}<input name="cost" class="olotd5" size="10" value="{$rate[q].LABOR_RATE_COST}" type="text" maxlength="10" pattern="{literal}\d{0,4}(\.\d{0,2})?{/literal}" required onkeydown="return onlyNumbersPeriod(event);"></td>
+                                                                    <td class="olotd4" nowrap>{$currency_sym}<input name="amount" class="olotd5" size="10" value="{$rate[q].LABOR_RATE_AMOUNT}" type="text" maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumbersPeriod(event);"></td>
+                                                                    <td class="olotd4" nowrap>{$currency_sym}<input name="cost" class="olotd5" size="10" value="{$rate[q].LABOR_RATE_COST}" type="text" maxlength="10" pattern="{literal}[[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumbersPeriod(event);"></td>
                                                                     <td class="olotd4" nowrap>
                                                                         <select class="olotd5" name="active">
                                                                             <option value="0" {if $rate[q].LABOR_RATE_ACTIVE == 0} selected{/if}>No</option>
@@ -70,8 +70,8 @@
                                                         </tr>
                                                         <tr>
                                                             <td class="olotd4"><input name="display" class="olotd5" size="50" type="text" maxlength="50" required onkeydown="return onlyAlphaNumeric(event);"></td>
-                                                            <td class="olotd4">{$currency_sym}<input name="amount" class="olotd5" size="10" type="text" maxlength="10" pattern="{literal}\d{0,4}(\.\d{0,2})?{/literal}" required onkeydown="return onlyNumbersPeriod(event);"></td>
-                                                            <td class="olotd4">{$currency_sym}<input name="cost" class="olotd5" size="10" type="text" maxlength="10" pattern="{literal}\d{0,4}(\.\d{0,2})?{/literal}" required onkeydown="return onlyNumbersPeriod(event);"></td>
+                                                            <td class="olotd4">{$currency_sym}<input name="amount" class="olotd5" size="10" type="text" maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumbersPeriod(event);"></td>
+                                                            <td class="olotd4">{$currency_sym}<input name="cost" class="olotd5" size="10" type="text" maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumbersPeriod(event);"></td>
                                                             <td class="olotd4" nowrap>
                                                                 <select class="olotd5" name="type">
                                                                     <option value="Parts">Parts</option>

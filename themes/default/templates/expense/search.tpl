@@ -1,5 +1,5 @@
 <!-- search.tpl -->
-{include file='expense/javascripts.js'}
+<script>{include file="expense/javascripts.js"}</script>
 
 <table width="100%" border="0" cellpadding="20" cellspacing="5">
     <tr>
@@ -21,9 +21,9 @@
                                             
                                             <!-- Category Search -->
                                             <td valign="top">
-                                                <form action="index.php?page=expense:search&page_title={$translate_expense_search_title}" method="post" name="expense_search" id="expense_search" autocomplete="off" >
+                                                <form action="index.php?page=expense:search&page_title={$translate_expense_search_title}" method="post" name="expense_search" id="expense_search">
                                                     <div>
-                                                        <input name="page" type="hidden" value="expense:search" />
+                                                        <input name="page" value="expense:search" type="hidden">
                                                         <table border="0">
                                                             <tr>
                                                                 <td align="left" valign="top"><b>{$translate_expense_search}</b>
@@ -44,20 +44,21 @@
                                                                    <br />
                                                                    <b>{$translate_expense_for}</b>
                                                                    <br />
-                                                                   <input class="olotd4" name="expense_search_term" type="text" value="{$expense_search_term}" onkeypress="return onlyAlphaNumeric(event);" />
-                                                                   <input class="olotd4" name="submit" value="{$translate_expense_search_button}" type="submit" />
-                                                                   <input class="olotd4" type="button" value="{$translate_expense_reset_button}" onclick="window.location.href='index.php?page=expense%3Asearch&page_title={$translate_expense_search_title}';">
+                                                                   <input name="expense_search_term" class="olotd4" value="{$expense_search_term}" type="text" maxlength="50" required onkeypress="return onlyAlphaNumeric(event);" />
+                                                                   <input name="submit" class="olotd4" value="{$translate_expense_search_button}" type="submit" />
+                                                                   <input class="olotd4" value="{$translate_expense_reset_button}" onclick="window.location.href='index.php?page=expense%3Asearch&page_title={$translate_expense_search_title}';" type="button">
                                                                 </td>
                                                             </tr>
                                                             <tr>
-                                                                <td><font color="RED">{$translate_expense_search_criteria_warning}</font></td>
+                                                                <td><font color="red">{$translate_expense_search_criteria_warning}</font></td>
                                                             </tr>
                                                         </table>
                                                     </div>
                                                 </form>
 
                                                 <!-- This script sets the dropdown to the correct item -->
-                                                <script type="text/javascript">dropdown_select_view_category("{$expense_search_category}");</script>
+                                                <script>dropdown_select_view_category("{$expense_search_category}");</script>
+                                                
                                             </td>
 
                                             <!-- Navigation Section  -->
