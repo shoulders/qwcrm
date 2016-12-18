@@ -117,6 +117,8 @@
     //// Common
 
     // General / Miscellaneous
+    <core_theme_passwords_match>Passwords Match!</core_theme_passwords_match>
+    <core_theme_passwords_do_not_match>Passwords Do Not Match!</core_theme_passwords_do_not_match>  
     
     // core_theme / theme_footer_block.tpl
     <core_theme_software_version>Software Version:</core_theme_software_version>

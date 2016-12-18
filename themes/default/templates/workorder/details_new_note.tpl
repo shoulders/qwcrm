@@ -22,7 +22,7 @@
                                                 <td class="olohead">{$translate_workorder_details_notes_title}</td>
                                             </tr>
                                             <tr>
-                                                <td class="olotd"><textarea name="workorder_note" class="olotd4 wysiwyg-checkforcontent" rows="15" cols="70"></textarea></td>
+                                                <td class="olotd"><textarea name="workorder_note" class="olotd4 mceCheckForContent" rows="15" cols="70"></textarea></td>
                                             </tr>
                                         </table>
                                         <br>

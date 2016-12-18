@@ -40,7 +40,7 @@
                                                                             </tr>
                                                                             <tr>
                                                                                 <td align="right"><span style="color: #ff0000"></span><b>{$translate_customer_www}</b></td>
-                                                                                <td><input name="customerWww" class="olotd5" value="{$customer[q].CUSTOMER_WWW}" size="50" type="url" maxlength="50" placeholder="https://quantumwarp.com" pattern="https?://.+" onkeydown="return onlyURL(event);"/></td>
+                                                                                <td><input name="customerWww" class="olotd5" value="{$customer[q].CUSTOMER_WWW}" size="50" type="url" maxlength="50" placeholder="https://quantumwarp.com/" pattern="https?://.+" onkeydown="return onlyURL(event);"/></td>
                                                                             </tr>
                                                                             <tr>
                                                                                 <td align="right"><strong>{$translate_email}</strong></td>
@@ -104,7 +104,7 @@
                                                                     <table>
                                                                         <tr>
                                                                             <td align="right"><strong>{$translate_customer_address}</strong></td>
-                                                                            <td colspan="3"><textarea name="address" class="olotd5 mceNoEditor" cols="30" rows="3" maxlength="100" onkeydown="return onlyAddresses(event);"/>{$customer[q].CUSTOMER_ADDRESS}</textarea></td>
+                                                                            <td colspan="3"><textarea name="address" class="olotd5 mceNoEditor" cols="30" rows="3" maxlength="100" onkeydown="return onlyAddress(event);"/>{$customer[q].CUSTOMER_ADDRESS}</textarea></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><strong>{$translate_customer_city}</strong></td>

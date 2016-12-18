@@ -157,10 +157,10 @@ function check_employee_ex($db,$VAR){
 
     
 // A function for comparing password
-    function cmpPass($element, $confirmPass) {
+    function cmpPass($element, $confirmPassword) {
         global $form;
         $password = $form->getElementValue('password');
-        return ($password == $confirmPass);
+        return ($password == $confirmPassword);
     }
 
     // A function to encrypt the password

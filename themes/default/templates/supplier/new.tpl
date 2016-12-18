@@ -44,11 +44,11 @@
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{$translate_supplier_name}</b><span style="color: #ff0000"> *</span></td>
-                                                                            <td colspan="3"><input class="olotd5" size="60" id="supplierName" name="supplierName" type="text" onkeypress="return OnlyAlphaNumeric();" /></td>
+                                                                            <td colspan="3"><input class="olotd5" size="60" id="supplierName" name="supplierName" type="text" onkeypress="return onlyAlphaNumeric(event);" /></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{$translate_supplier_contact}</b></td>
-                                                                            <td><input class="olotd5" size="60" name="supplierContact" type="text" id="supplierContact" type="text" onkeypress="return OnlyAlphaNumeric();" /></td>
+                                                                            <td><input class="olotd5" size="60" name="supplierContact" type="text" id="supplierContact" type="text" onkeypress="return onlyAlphaNumeric(event);" /></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{$translate_supplier_type}</b><span style="color: #ff0000"> *</span></td>

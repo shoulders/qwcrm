@@ -73,7 +73,7 @@
                                                             </tr>
                                                             <tr>
                                                                 <td class="olotd">
-                                                                    <textarea class="olotd4 wysiwyg-checkforcontent" rows="15" cols="70" name="workorder_description"></textarea>
+                                                                    <textarea class="olotd4 mceCheckForContent" rows="15" cols="70" name="workorder_description"></textarea>
                                                                 </td>
                                                             </tr>
                                                         </table>

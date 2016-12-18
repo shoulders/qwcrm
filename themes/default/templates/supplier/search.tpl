@@ -39,7 +39,7 @@
                                                                <br />
                                                                <b>{$translate_supplier_for}</b>
                                                                <br />
-                                                               <input class="olotd4" name="supplier_search_term" type="text" value="{$supplier_search_term}" onkeypress="return OnlyAlphaNumeric();" />
+                                                               <input class="olotd4" name="supplier_search_term" type="text" value="{$supplier_search_term}" onkeypress="return onlyAlphaNumeric(event);" />
                                                                <input class="olotd4" name="submit" value="{$translate_supplier_search_button}" type="submit" />
                                                                <input class="olotd4" type="button" value="{$translate_supplier_reset_button}" onclick="window.location.href='index.php?page=supplier%3Asearch&page_title={$translate_supplier_search_title}';">
                                                                 <input name="page" type="hidden" value="supplier:search" />

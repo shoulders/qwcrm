@@ -50,7 +50,7 @@
                                                             </tr>
                                                             <tr>
                                                                 <td align="right"><b>Address:</b></td>
-                                                                <td><textarea name="address" class="olotd5 mceNoEditor" cols="30" rows="3" maxlength="100" required onkeydown="return onlyAddresses(event);">{$company[q].COMPANY_ADDRESS}</textarea></td>
+                                                                <td><textarea name="address" class="olotd5 mceNoEditor" cols="30" rows="3" maxlength="100" required onkeydown="return onlyAddress(event);">{$company[q].COMPANY_ADDRESS}</textarea></td>
                                                             </tr>
                                                             <tr>
                                                                 <td align="right"><b>City:</b></td>

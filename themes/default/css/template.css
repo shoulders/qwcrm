@@ -213,6 +213,8 @@ a.menuhead2 { color:#ffffff; font-weight:bolder; font-size: 12px; text-decoratio
     font-weight:normal;
     background-color:#ECECEC;
 }
+
+/* was only used in employee edit */
 .requiredfields{
     border-collapse: collapse;
     color: #000000;

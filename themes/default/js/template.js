@@ -6,15 +6,13 @@ $(document).ready(function(){
     $(".tab").click(function(){
 
         // Remove the 'active' class from the active tab.
-        $("#tabs_container > .tabs > li.active")
-            .removeClass("active");
+        $("#tabs_container > .tabs > li.active").removeClass("active");
 
         // Add the 'active' class to the clicked tab.
         $(this).parent().addClass("active");
 
         // Remove the 'tab_contents_active' class from the visible tab contents.
-        $("#tabs_container > .tab_contents_container > div.tab_contents_active")
-            .removeClass("tab_contents_active");
+        $("#tabs_container > .tab_contents_container > div.tab_contents_active").removeClass("tab_contents_active");
 
         // Add the 'tab_contents_active' class to the associated tab contents.
         $(this.rel).addClass("tab_contents_active");
@@ -36,60 +34,60 @@ function changePage() {
     destination = box.options[box.selectedIndex].value;
     if (destination) location.href = destination;*/
 
-/** Key Input Restrictions - Using event.key **/
+/** Key Input Restrictors - Using event.key **/
 
 // Allows Only Letters
 function onlyAlpha(e) {
     return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", true);
 }
 
-// Allow Only Numbers and Letters
+// Numbers and Letters
 function onlyAlphaNumeric(e) {
     return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", true);
 }
 
-// Allow Only Numbers and Letters - Including Comma, Backslash, Minus, Single Quote (for addresses?)
-function onlyAddresses(e) {
+// Addresses
+function onlyAddress(e) {
    return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789,/-'", true);
 }
 
-// Allows Only Numbers
+// Numbers Only
 function onlyNumbers(e) {
     return keyRestriction(e, "0123456789", false);
 }
 
-// Allows Only Numbers and Period
+// Numbers and Period
 function onlyNumbersPeriod(e) {
     return keyRestriction(e, "0123456789.", false);
 }
 
-// Allow Only Phone Numbers - Including Period, Brackets, Plus, Minus
+// Phone Numbers
 function onlyPhoneNumber(e) {
     return keyRestriction(e, "0123456789.()-+", true);
 }
 
-// Allow Only valid characters for URL
+// URL
 function onlyURL(e) {
    return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._~:/?#[]@!$&'()*+,;=`%", false);
 }
 
-// Allow Only valid characters for Email
+// Email
 function onlyEmail(e) {
    return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@", false);
 }
 
-// Allow Only Currency Symbols
+// Currency Symbols
 function onlyEmail(e) {
    return; 
    //return keyRestriction(e, "", false);
 }
 
-// Allow Only valid characters for Usernames
+// Usernames
 function onlyUsername(e) {
-   return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@", false);
+   return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._", false);
 }
 
-// Allow Only valid characters for passwords
+// Passwords
 function onlyPassword(e) {
    //return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@", false);
    return;
@@ -123,4 +121,56 @@ function keyRestriction(e, allowedCharacters, spacesAllowed) {
     else
         return false;
     
+}
+
+
+
+
+
+
+
+// Confirm Passwords Match - Form Submmision Control
+function confirmPasswordsMatch() {
+    
+    // Store the password field objects into variables ...
+    var password        = document.getElementById('password');
+    var confirmPassword = document.getElementById('confirmPassword');
+    
+    if (password.value === confirmPassword.value) {
+        return true;
+    } else {
+       return false; 
+    }
+}
+
+// Check Passwords Match - Visual Message
+function checkPasswordsMatch(passwordsMatchMSG, passwordsDoNotMatchMSG) {
+    
+    // Store the password field objects into variables ...
+    var password        = document.getElementById('password');
+    var confirmPassword = document.getElementById('confirmPassword');
+    
+    // Set Confimation Message Location ...
+    var message = document.getElementById('passwordMessage');
+    
+    // Set the input background colors we will be using ...
+    var goodColor = "#66cc66";
+    var badColor  = "#ff6666";
+    
+    // Compare the values in the password field and the confirmation field
+    if (password.value === confirmPassword.value) {
+        // The passwords match - Set the color to the good color and inform the user that they have entered the correct password 
+        password.style.backgroundColor = goodColor;
+        confirmPassword.style.backgroundColor = goodColor;
+        message.style.color = goodColor;
+        message.innerHTML = passwordsMatchMSG;
+        return true;
+    } else {
+        // If the passwords do not match - Set the color to the bad color and notify the user.
+        password.style.backgroundColor = badColor;
+        confirmPassword.style.backgroundColor = badColor;
+        message.style.color = badColor;
+        message.innerHTML = passwordsDoNotMatchMSG;
+        return false;
+    }
 }

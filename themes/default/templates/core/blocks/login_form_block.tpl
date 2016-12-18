@@ -19,11 +19,11 @@
                                         <table width="25%" cellspacing="0" border="0" cellpadding="5" align="center">
                                             <tr>
                                                 <td>{$translate_core_login_login}</td>
-                                                <td><input type="text" name="login_usr" size="25" class="olotd5" alt="login"></td>
+                                                <td><input name="login_usr" class="olotd5" size="25" alt="login" type="text" required onkeydown="return onlyUsername(event);"></td>
                                             </tr>
                                             <tr>
                                                 <td>{$translate_core_login_password}</td>
-                                                <td><input type="password" name="login_pwd" size="25" class="olotd5" alt="password"></td>
+                                                <td><input name="login_pwd" class="olotd5" size="25" alt="password" type="password" required onkeydown="return onlyPassword(event);"></td>
                                             </tr>
                                             <tr align="center">
                                                 <td colspan="2"><button type="submit" name="action" value="login"><img src="{$theme_images_dir}tick.png" alt=""> {$translate_core_login_login}</button></td>

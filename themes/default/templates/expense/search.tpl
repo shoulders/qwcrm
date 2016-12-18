@@ -44,7 +44,7 @@
                                                                    <br />
                                                                    <b>{$translate_expense_for}</b>
                                                                    <br />
-                                                                   <input class="olotd4" name="expense_search_term" type="text" value="{$expense_search_term}" onkeypress="return OnlyAlphaNumeric();" />
+                                                                   <input class="olotd4" name="expense_search_term" type="text" value="{$expense_search_term}" onkeypress="return onlyAlphaNumeric(event);" />
                                                                    <input class="olotd4" name="submit" value="{$translate_expense_search_button}" type="submit" />
                                                                    <input class="olotd4" type="button" value="{$translate_expense_reset_button}" onclick="window.location.href='index.php?page=expense%3Asearch&page_title={$translate_expense_search_title}';">
                                                                 </td>

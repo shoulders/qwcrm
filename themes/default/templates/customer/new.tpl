@@ -44,7 +44,7 @@
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><span style="color: #ff0000"></span><b>{$translate_customer_www}</b></td>
-                                                                            <td><input name="customerWww" class="olotd5" size="50" type="url" maxlength="50" placeholder="https://quantumwarp.com" pattern="https?://.+" onkeydown="return onlyURL(event);"></td>
+                                                                            <td><input name="customerWww" class="olotd5" size="50" type="url" maxlength="50" placeholder="https://quantumwarp.com/" pattern="https?://.+" onkeydown="return onlyURL(event);"></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><span style="color: #ff0000"></span><b>{$translate_email}</b></td>
@@ -110,7 +110,7 @@
                                                                     <tbody align="left">
                                                                         <tr>
                                                                             <td align="right"><b>{$translate_customer_address}</b></td>
-                                                                            <td colspan="3"><textarea name="address" class="olotd5 mceNoEditor" cols="30" rows="3" maxlength="100" onkeydown="return onlyAddresses(event);"></textarea></td>
+                                                                            <td colspan="3"><textarea name="address" class="olotd5 mceNoEditor" cols="30" rows="3" maxlength="100" onkeydown="return onlyAddress(event);"></textarea></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{$translate_customer_city}</b></td>

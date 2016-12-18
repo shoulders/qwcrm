@@ -45,7 +45,7 @@
                                                                    <br />
                                                                    <b>{$translate_refund_for}</b>
                                                                    <br />
-                                                                   <input class="olotd4" name="refund_search_term" type="text" value="{$refund_search_term}" onkeypress="return OnlyAlphaNumeric();" />
+                                                                   <input class="olotd4" name="refund_search_term" type="text" value="{$refund_search_term}" onkeypress="return onlyAlphaNumeric(event);" />
                                                                    <input class="olotd4" name="submit" value="{$translate_refund_search_button}" type="submit" />
                                                                    <input class="olotd4" type="button" value="{$translate_refund_reset_button}" onclick="window.location.href='index.php?page=refund%3Asearch&page_title={$translate_refund_view_title}'">                                                                                       </td>
                                                                 </tr>

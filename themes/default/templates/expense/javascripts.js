@@ -169,7 +169,7 @@ function onlyNumbersPeriods(evt)
 }
 
 // Allow only numbers and letters including space, delete, enter , comma, backslash, apostrophe and minus
-function OnlyAlphaNumeric(e)
+function onlyAlphaNumeric(e)
 {
 var key;
 var keychar;

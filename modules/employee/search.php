@@ -1,5 +1,6 @@
 <?php
 /* Employee Main page */
+
 // Load the customer classes
     require_once("include.php");
 if(!xml2php("employee")) {
@@ -19,4 +20,4 @@ if(!xml2php("employee")) {
     
     $smarty->assign('alpha', $alpha);
     $smarty->assign('employee_search_result' ,$employee_search_result );
-    $smarty->display('employee'.SEP.'main.tpl');
+    $smarty->display('employee'.SEP.'search.tpl');

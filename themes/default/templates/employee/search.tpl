@@ -1,56 +1,4 @@
-<!-- main.tpl -->
-{literal}
-<script>
-function validate_employee_search(frm) {
-    var value =  '';
-    var errFlag = new Array();
-    var _qfGroups = {};
-    _qfMsg = '';
-
-    value = frm.elements['name'].value;
-    if (value != '' && value.length > 10 && !errFlag['name']) {
-        errFlag['name'] = true;
-        _qfMsg = _qfMsg + '\n - Employees Name cannot be more than 10 characters';
-    }
-
-    if (_qfMsg != '') {
-        _qfMsg = 'Invalid information entered.' + _qfMsg;
-        _qfMsg = _qfMsg + '\nPlease correct these fields.';
-        alert(_qfMsg);
-        return false;
-    }
-    return true;
-}
-
-// Allow only numbers and letters including space, delete, enter , comma, backslash, apostrophe and minus
-function OnlyAlphaNumeric(e)
-{
-    var key;
-    var keychar;
-
-    if (window.event)
-       key = window.event.keyCode;
-    else if (e)
-       key = e.which;
-    else
-       return true;
-    keychar = String.fromCharCode(key);
-    keychar = keychar.toLowerCase();
-
-    // control keys
-    if ((key==null) || (key==0) || (key==8) ||
-        (key==9) || (key==13) || (key==27) || (key==32) )
-       return true;
-
-    // alphas and numbers
-    else if ((("abcdefghijklmnopqrstuvwxyz0123456789,/-'").indexOf(keychar) > -1))
-       return true;
-    else
-       return false;
-}
-</script>
-{/literal}
-
+<!-- search.tpl -->
 <table width="100%" border="0" cellpadding="20" cellspacing="5">
     <tr>
         <td>
@@ -58,9 +6,7 @@ function OnlyAlphaNumeric(e)
                 <tr>
                     <td class="menuhead2" width="80%">&nbsp;{$translate_employee_search}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
-                        <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" 
-                        onMouseOver="ddrivetip('<b>Employee Search</b><hr><p>You can search by the employees full display name or just their first name. If you wish to see all the employees for just one letter like A enter the letter a only.</p> <p>To find employees whos name starts with Ja enter just ja. The system will intelegently look for the corect employee that matches.</p>');" 
-                        onMouseOut="hideddrivetip();">
+                        <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<b>Employee Search</b><hr><p>You can search by the employees full display name or just their first name. If you wish to see all the employees for just one letter like A enter the letter a only.</p> <p>To find employees whos name starts with Ja enter just ja. The system will intelegently look for the corect employee that matches.</p>');" onMouseOut="hideddrivetip();">
                     </td>
                 </tr>
                 <tr>
@@ -72,7 +18,7 @@ function OnlyAlphaNumeric(e)
                                         <tr>
                                             <td>
                                                 {literal}
-                                                <form method="get" action="?page=employee:main" onsubmit="try { var myValidator = validate_employee_search; } catch(e) { return true; } return myValidator(this);">
+                                                <form method="get" action="?page=employee:search">
                                                 {/literal}
                                                     <table border="0">
                                                         <tr>
@@ -80,7 +26,7 @@ function OnlyAlphaNumeric(e)
                                                         </tr>                                                     
                                                         <tr>
                                                             <td align="right" valign="top"><b>{$translate_employee_display_name}</b></td>
-                                                            <td valign="top" align="left"><input class="olotd4" name="name" type="text" onkeypress="return OnlyAlphaNumeric();" /></td>
+                                                            <td valign="top" align="left"><input name="name" class="olotd4" type="text" maxlength="50" onkeypress="return onlyAlphaNumeric(event);"></td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right" valign="top"><b></b></td>

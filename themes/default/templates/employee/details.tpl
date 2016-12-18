@@ -1,11 +1,11 @@
-<!-- employee_details.tpl -->
+<!-- details.tpl -->
 {section name=i loop=$employee_details}
     <table width="100%" border="0" cellpadding="20" cellspacing="0">
         <tr>
             <td>
                 <table width="700" cellpadding="5" cellspacing="0" border="0" >
                     <tr>
-                        <td class="menuhead2" width="80%">&nbsp;{$translate_employee_details_for} {$employee_details[i].EMPLOYEE_DISPLAY_NAME}</td>
+                        <td class="menuhead2" width="80%">&nbsp;{$translate_employee_details_for} {$employee_details[i].EMPLOYEE_DISPLAY_NAME} {$translate_employee_add_new_employee}</td>
                         <td class="menuhead2" width="20%" align="right" valign="middle"><img src="{$theme_images_dir}icons/16x16/help.gif" border="0"></td>
                     </tr>
                     <tr>

@@ -28,7 +28,7 @@ tinymce.init({
         editor.on('submit', function(e) {
 
             var placeholderElement = editor.getElement();   
-            var testClass = "wysiwyg-checkforcontent";            
+            var testClass = "mceCheckForContent";            
             
             if(placeholderElement.classList.contains(testClass) && editor.getContent() === '') {
                 editor.getContainer().style.border = '3px solid red';

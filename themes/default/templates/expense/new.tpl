@@ -46,7 +46,7 @@
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{$translate_expense_payee}</b><span style="color: #ff0000"> *</span></td>
-                                                                            <td colspan="3"><input class="olotd5" size="60" id="expensePayee" name="expensePayee" type="text" onkeypress="return OnlyAlphaNumeric();" /></td>
+                                                                            <td colspan="3"><input class="olotd5" size="60" id="expensePayee" name="expensePayee" type="text" onkeypress="return onlyAlphaNumeric(event);" /></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{$translate_expense_date}</b><span style="color: #ff0000"> *</span></td>

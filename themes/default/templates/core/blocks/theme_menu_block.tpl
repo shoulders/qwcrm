@@ -135,7 +135,7 @@
                 {if $login_account_type_id == 1 || $login_account_type_id == 4}
                     <div>
                         <span>{$translate_core_menu_administration}</span>  
-                        <a href="?page=employee:main&page_title={$translate_core_menu_view_employees}" ><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_view_employees}</a>
+                        <a href="?page=employee:search&page_title={$translate_core_menu_view_employees}" ><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_view_employees}</a>
                         <a href="?page=employee:new&page_title={$translate_core_menu_new_employee}"><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_new_employee}</a>
                         {if $employee_id > '' || $employee_id > 0 }
                             <a href="?page=employee:edit&employee_id={$employee_id}&page_title={$translate_core_menu_edit_employee}"><img src="{$theme_images_dir}icons/edit_employee.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_edit_employee}</a>
