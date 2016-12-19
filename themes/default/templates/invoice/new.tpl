@@ -347,7 +347,7 @@ function keyPressTestParts(e, obj){
                                             <tr class="olotd4">
                                                 <td>{$invoice.INVOICE_ID}</td>
                                                 <td>
-                                                    <input id="date" name="date" class="olotd4" size="10" value="{$invoice.INVOICE_DATE|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{1,4}{/literal}" required onkeydown="return onlyDate(event);">
+                                                    <input id="date" name="date" class="olotd4" size="10" value="{$invoice.INVOICE_DATE|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{1,4}${/literal}" required onkeydown="return onlyDate(event);">
                                                     <input id="date_button" value="+" type="button">                                                    
                                                     <script>
                                                     {literal}  
@@ -360,7 +360,7 @@ function keyPressTestParts(e, obj){
                                                     </script>                                                    
                                                 </td>
                                                 <td>{$item.INVOICE_DUE}
-                                                    <input id="due_date" name="due_date" class="olotd4" size="10"  value="{$invoice.INVOICE_DUE|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{1,4}{/literal}" required onkeydown="return onlyDate(event);">
+                                                    <input id="due_date" name="due_date" class="olotd4" size="10"  value="{$invoice.INVOICE_DUE|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{1,4}${/literal}" required onkeydown="return onlyDate(event);">
                                                     <input type="button" id="due_date_button" value="+">
                                                     
                                                     <script>

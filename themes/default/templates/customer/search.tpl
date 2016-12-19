@@ -30,8 +30,9 @@
                                                             </tr>
                                                             <tr>
                                                                 <td align="left" valign="top"><b>{$translate_display}</b>
-                                                                    <input name="name" class="olotd4" type="text" maxlength="50" required onkeypress="return onlyAlphaNumeric(event);">
-                                                                    <input class="olotd4" name="submit" value="Search" type="submit"></td>
+                                                                    <input name="name" class="olotd4" type="text" maxlength="20" required onkeydown="return onlyAlphaNumeric(event);">
+                                                                    <input class="olotd4" name="submit" value="Search" type="submit">
+                                                                </td>
                                                             </tr>                                    
                                                         </table>
                                                     </div>

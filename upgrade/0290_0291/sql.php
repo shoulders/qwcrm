@@ -32,7 +32,7 @@ echo("<tr>\n
 
 function create_acl($db) {
         
-        $q = "INSERT IGNORE INTO `".PRFX."ACL` VALUES (76, 'supplier:supplier_details', 1, 1, 1, 1, 0)";
+        $q = "INSERT IGNORE INTO `".PRFX."ACL` VALUES (76, 'supplier:details', 1, 1, 1, 1, 0)";
 
                                 $rs = $db->Execute($q);
                                 if(!$rs) {
@@ -42,7 +42,7 @@ function create_acl($db) {
                                 }
 
 
-        $q = "INSERT IGNORE INTO `".PRFX."ACL` VALUES (77, 'expense:expense_details', 1, 1, 1, 1, 0)";
+        $q = "INSERT IGNORE INTO `".PRFX."ACL` VALUES (77, 'expense:details', 1, 1, 1, 1, 0)";
 
                                 $rs = $db->Execute($q);
                                 if(!$rs) {

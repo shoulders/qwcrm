@@ -261,6 +261,8 @@ if(isset($VAR['warning_msg'])){
 // if not set try and set using php dat command - use $date_format instaed
 // move this to schedule include
 
+// if needed $schyedule_y , $schedule_m , $schedule_d
+
 if ( $cur_date > 0 ){
     $y1 = $VAR['y'] ;
     $m1 = $VAR['m'];

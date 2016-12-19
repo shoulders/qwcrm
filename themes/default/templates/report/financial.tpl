@@ -16,8 +16,8 @@
                     </tr>
                     <tr>
                         <td align="left">
-                            <input size="10" name="start_date" type="text" id="start_date" value="{$start_date|date_format:$date_format}"/>
-                            <input type="button" id="start_date_button" value="+">
+                            <input id="start_date" name="start_date" class="olotd5" size="10" value="{$start_date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{1,4}${/literal}" required onkeydown="return onlyDate(event);">
+                            <input id="start_date_button" value="+" type="button" >
                             <script>
                             {literal}
                                 Calendar.setup({
@@ -29,8 +29,8 @@
                             </script>                
                         </td>
                         <td>
-                            <input size="10" name="end_date" type="text" id="end_date" value="{$end_date|date_format:$date_format}">
-                            <input type="button" id="end_date_button" value="+">                    
+                            <input id="end_date" name="end_date" class="olotd5" size="10" value="{$end_date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{1,4}${/literal}" required onkeydown="return onlyDate(event);">
+                            <input id="end_date_button" value="+" type="button">                    
                             <script>
                             {literal}
                                 Calendar.setup({

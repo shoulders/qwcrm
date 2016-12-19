@@ -26,7 +26,7 @@
                                                         </tr>                                                     
                                                         <tr>
                                                             <td align="right" valign="top"><b>{$translate_employee_display_name}</b></td>
-                                                            <td valign="top" align="left"><input name="name" class="olotd4" size="50" type="text" maxlength="50" required onkeypress="return onlyAlphaNumeric(event);"></td>
+                                                            <td valign="top" align="left"><input name="name" class="olotd4" size="50" type="text" maxlength="20" required onkeydown="return onlyAlphaNumeric(event);"></td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right" valign="top"><b></b></td>

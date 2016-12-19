@@ -10,4 +10,4 @@ if(!xml2php('supplier')) {
 
 // Assign the arrays
 $smarty->assign('supplier_details', display_supplier_info($db, $VAR['supplier_id']));
-$smarty->display('supplier'.SEP.'supplier_details.tpl');
+$smarty->display('supplier'.SEP.'details.tpl');

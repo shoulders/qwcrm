@@ -47,12 +47,12 @@
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{$translate_expense_payee}</b><span style="color: #ff0000"> *</span></td>
-                                                                            <td colspan="3"><input id="expensePayee" name="expensePayee" class="olotd5" size="50" type="text" maxlength="50" required onkeypress="return onlyAlphaNumeric(event);"></td>
+                                                                            <td colspan="3"><input id="expensePayee" name="expensePayee" class="olotd5" size="50" type="text" maxlength="50" required onkeydown="return onlyAlphaNumeric(event);"></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{$translate_expense_date}</b><span style="color: #ff0000"> *</span></td>
                                                                             <td>
-                                                                                <input id="expenseDate" name="expenseDate" class="olotd5" size="10" type="text" maxlength="10" pattern="{literal}[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{1,4}{/literal}" required onkeydown="return onlyDate(event);">                                                                           
+                                                                                <input id="expenseDate" name="expenseDate" class="olotd5" size="10" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{1,4}${/literal}" required onkeydown="return onlyDate(event);">
                                                                                 <input id="expenseDate_button" type="button" value="+">                                                                                
                                                                                 <script>
                                                                                 {literal}
@@ -113,19 +113,19 @@
                                                                         </tr>                                                                                                          
                                                                         <tr>
                                                                             <td align="right"><b>{$translate_expense_net_amount}</b></td>
-                                                                            <td><a><input name="expenseNetAmount" class="olotd5" size="10" type="text" maxlength="10" pattern="[0-9]{1,7}(.[0-9]{0,2})?" onkeypress="return onlyNumbersPeriods();"></b></a></td>
+                                                                            <td><a><input name="expenseNetAmount" class="olotd5" size="10" type="text" maxlength="10" pattern="{literal}^[0-9]{1,7}(.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumbersPeriod(event);"></b></a></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><span style="color: #ff0000"></span><b>{$translate_expense_tax_rate}</td>
-                                                                            <td><input name="expenseTaxRate" class="olotd5" size="5" value="{$tax_rate}" type="text" maxlength="5" pattern="\d{0,2}(\.\d{0,2})?" required onkeypress="return onlyNumbersPeriods();"/><b>%</b></td>
+                                                                            <td><input name="expenseTaxRate" class="olotd5" size="5" value="{$tax_rate}" type="text" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumbersPeriod(event);"/><b>%</b></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{$translate_expense_tax_amount}</b></td>
-                                                                            <td><input name="expenseTaxAmount" class="olotd5" size="10" type="text" maxlength="10" pattern="[0-9]{1,7}(.[0-9]{0,2})?" onkeypress="return onlyNumbersPeriods();"/></td>
+                                                                            <td><input name="expenseTaxAmount" class="olotd5" size="10" type="text" maxlength="10" pattern="{literal}^[0-9]{1,7}(.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumbersPeriod(event);"/></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{$translate_expense_gross_amount}</b><span style="color: #ff0000"> *</span></td>
-                                                                            <td><input name="expenseGrossAmount" class="olotd5" size="10" type="text" maxlength="10" pattern="[0-9]{1,7}(.[0-9]{0,2})?" required onkeypress="return onlyNumbersPeriods();"/></td>
+                                                                            <td><input name="expenseGrossAmount" class="olotd5" size="10" type="text" maxlength="10" pattern="{literal}^[0-9]{1,7}(.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumbersPeriod(event);"/></td>
                                                                         </tr>
                                                                     </tbody>
                                                                 </table>
@@ -148,8 +148,8 @@
                                                                     <tr>
                                                                         <td></td>
                                                                         <td>
-                                                                            <input name="submit" class="olotd5" value="{$translate_expense_submit_button}" type="submit" />
-                                                                            <input name="submitandnew" class="olotd5" value="{$translate_expense_submit_and_new_button}" type="submit" />
+                                                                            <input name="submit" class="olotd5" value="{$translate_expense_submit_button}" type="submit">
+                                                                            <input name="submitandnew" class="olotd5" value="{$translate_expense_submit_and_new_button}" type="submit">
                                                                         </td>
                                                                     </tr>
                                                                 </table>

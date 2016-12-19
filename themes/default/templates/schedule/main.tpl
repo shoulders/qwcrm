@@ -19,13 +19,22 @@
                                 <td class="menutd">                        
                                     <table width="100%" border="0" cellpadding="10" cellspacing="0">
                                         <tr>
-                                            <td>new<a name="assigned"></a>{include file='schedule/blocks/schedule_new_workorder_block.tpl'}</td>
+                                            <td>
+                                                new<a name="assigned"></a>
+                                                {include file='schedule/blocks/schedule_new_workorder_block.tpl'}
+                                            </td>
                                         </tr>
                                         <tr>
-                                            <td>open<a name="new"></a>{include file='schedule/blocks/schedule_open_workorder_block.tpl'}</td>
+                                            <td>
+                                                open<a name="new"></a>
+                                                {include file='schedule/blocks/schedule_open_workorder_block.tpl'}
+                                            </td>
                                         </tr>                                        
                                         <tr>
-                                            <td>assigned<a name="assigned"></a>{include file='schedule/blocks/schedule_assigned_workorder_block.tpl'}</td>
+                                            <td>
+                                                assigned<a name="assigned"></a>
+                                                {include file='schedule/blocks/schedule_assigned_workorder_block.tpl'}
+                                            </td>
                                         </tr>
                                     </table>                        
                                     {if $workorder_id != 0}

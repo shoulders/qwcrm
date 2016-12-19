@@ -18,7 +18,7 @@ function create_acl($db)
 
     $q = "REPLACE INTO `".PRFX."ACL` VALUES
             (78, 'invoice:delete', 1, 1, 1, 1, 0),
-            (79, 'refund:refund_details', 1, 1, 1, 1, 0),
+            (79, 'refund:details', 1, 1, 1, 1, 0),
             (80, 'refund:edit', 1, 1, 1, 1, 0),
             (81, 'expense:edit', 1, 1, 1, 1, 0),
             (82, 'supplier:edit', 1, 1, 1, 1, 0)";

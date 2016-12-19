@@ -7,16 +7,16 @@ $smarty->assign('workorder_id',$workorder_id);
     function insert_new_schedule($db,$VAR){
         global $smarty;
         $workorder_id = $VAR['workorder_id'];
-        list($s_month, $s_day, $s_year) = split('[/.-]', $VAR['start']['SCHEDULE_date']);
-        list($e_month, $e_day, $e_year) = split('[/.-]', $VAR['end']['SCHEDULE_date']);
+        list($s_month, $s_day, $s_year) = split('[/.-]', $VAR['scheduleStart']['date']);
+        list($e_month, $e_day, $e_year) = split('[/.-]', $VAR['scheduleEnd']['date']);
         
-        $s_hour = $VAR['start']['Time_Hour'];
-        $s_min  = $VAR['start']['Time_Minute'];
-        $s_med  = $VAR['start']['Time_Meridian'];
+        $s_hour = $VAR['scheduleStart']['Time_Hour'];
+        $s_min  = $VAR['scheduleStart']['Time_Minute'];
+        $s_med  = $VAR['scheduleStart']['Time_Meridian'];
         
-        $e_hour = $VAR['end']['Time_Hour'];
-        $e_min  = $VAR['end']['Time_Minute'];
-        $e_med  = $VAR['end']['Time_Meridian'];
+        $e_hour = $VAR['scheduleEnd']['Time_Hour'];
+        $e_min  = $VAR['scheduleEnd']['Time_Minute'];
+        $e_med  = $VAR['scheduleEnd']['Time_Meridian'];
         
         $secs   = "00";
         //$date1 = $VAR['date']

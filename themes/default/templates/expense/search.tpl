@@ -44,7 +44,7 @@
                                                                    <br />
                                                                    <b>{$translate_expense_for}</b>
                                                                    <br />
-                                                                   <input name="expense_search_term" class="olotd4" value="{$expense_search_term}" type="text" maxlength="50" required onkeypress="return onlyAlphaNumeric(event);" />
+                                                                   <input name="expense_search_term" class="olotd4" value="{$expense_search_term}" type="text" maxlength="50" required onkeydown="return onlyAlphaNumeric(event);">
                                                                    <input name="submit" class="olotd4" value="{$translate_expense_search_button}" type="submit" />
                                                                    <input class="olotd4" value="{$translate_expense_reset_button}" onclick="window.location.href='index.php?page=expense%3Asearch&page_title={$translate_expense_search_title}';" type="button">
                                                                 </td>
@@ -87,9 +87,9 @@
 
                                                 <!-- Goto Page Form -->
                                                 {literal}
-                                                <form  method="POST" name="goto_page" id="goto_page" autocomplete="off"  onsubmit="try { var myValidator = validate_expense_goto_page; } catch(e) { return true; } return myValidator(this);">
+                                                <form  method="POST" name="goto_page" id="goto_page" autocomplete="off">
                                                 {/literal}
-                                                    <input class="olotd5" size="10" id="goto_page_no" name="goto_page_no" type="text" onkeypress="return onlyNumbers();" />
+                                                    <input class="olotd5" size="10" id="goto_page_no" name="goto_page_no" type="text" maxlength="6" required onkeydown="return onlyNumbers(event);">
                                                     <input class="olotd5" name="submit" value="{$translate_expense_search_goto_page_button}" type="submit" />
                                                 </form>
                                                 
@@ -115,8 +115,8 @@
                                                     </tr>
                                                     {section name=i loop=$expense_search_result}
                                                         <!-- This allows double clicking on a row and opens the corresponding expense view details -->
-                                                        <tr onmouseover="this.className='row2'" onmouseout="this.className='row1'" onDblClick="window.location='index.php?page=expense:expense_details&expense_id={$expense_search_result[i].EXPENSE_ID}&page_title={$translate_expense_details_title}';" class="row1">
-                                                            <td class="olotd4" nowrap><a href="index.php?page=expense:expense_details&expense_id={$expense_search_result[i].EXPENSE_ID}&page_title={$translate_expense_details_title}">{$expense_search_result[i].EXPENSE_ID}</a></td>
+                                                        <tr onmouseover="this.className='row2'" onmouseout="this.className='row1'" onDblClick="window.location='index.php?page=expense:details&expense_id={$expense_search_result[i].EXPENSE_ID}&page_title={$translate_expense_details_title}';" class="row1">
+                                                            <td class="olotd4" nowrap><a href="index.php?page=expense:details&expense_id={$expense_search_result[i].EXPENSE_ID}&page_title={$translate_expense_details_title}">{$expense_search_result[i].EXPENSE_ID}</a></td>
                                                             <td class="olotd4" nowrap>{$expense_search_result[i].EXPENSE_PAYEE}</td>
                                                             <td class="olotd4" nowrap>{$expense_search_result[i].EXPENSE_DATE|date_format:$date_format}</td>                                                                
                                                             <td class="olotd4" nowrap>
@@ -164,7 +164,7 @@
                                                             </td>
                                                             <td class="olotd4" nowrap><img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{$translate_expense_items}</b><hr><p>{$expense_search_result[i].EXPENSE_ITEMS|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();"></td>
                                                             <td class="olotd4" nowrap>
-                                                                <a href="index.php?page=expense:expense_details&expense_id={$expense_search_result[i].EXPENSE_ID}&page_title={$translate_expense_details_title}">
+                                                                <a href="index.php?page=expense:details&expense_id={$expense_search_result[i].EXPENSE_ID}&page_title={$translate_expense_details_title}">
                                                                     <img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" onMouseOver="ddrivetip('<b>{$translate_expense_search_details|nl2br|regex_replace:"/[\r\t\n]/":" "}</b>');" onMouseOut="hideddrivetip();">
                                                                 </a>
                                                                 <a href="?page=expense:edit&expense_id={$expense_search_result[i].EXPENSE_ID}&page_title={$translate_expense_edit_title}">

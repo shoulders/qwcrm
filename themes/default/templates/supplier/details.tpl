@@ -1,5 +1,5 @@
-<!-- supplier_details.tpl -->
-{include file="supplier/javascripts.js"}
+<!-- details.tpl -->
+<script>{include file="supplier/javascripts.js"}</script>
 
 <table width="700" border="0" cellpadding="20" cellspacing="5">
     <tr>

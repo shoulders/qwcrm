@@ -66,62 +66,56 @@
                                                         <input type="hidden" name="page" value="schedule:new">
                                                         <input type="hidden" name="tech" value="{$tech}">
                                                         <input type="hidden" name="workorder_id" value="{$workorder_id}">
-                                                        <table class="olotable" width="100%" border="0" summary="Work order display">
+                                                        <table class="olotable" width="100%" border="0">
                                                             <tr>
                                                                 <td class="olohead">{$translate_schedule_set}</td>
                                                             </tr>
                                                             <tr>
                                                                 <td class="olotd">
-                                                                    <table width="100%" cellpadding="5" cellspacing="5">
-                                                                        <tr>
-                                                                            <td>
-                                                                                <input type="hidden" name="workorder_id" value="{$workorder_id}">
-                                                                            </td>
-                                                                        </tr>
+                                                                    <table width="100%" cellpadding="5" cellspacing="5">                                          
                                                                         <tr>
                                                                             <td><b>{$translate_schedule_start}</b></td>
                                                                             <td><b>{$translate_schedule_end}</b></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td>
-                                                                                <input size="10" name="start[SCHEDULE_date]" type="text" id="SCHEDULE_date" value="{$start_day}"/>
-                                                                                <input type="button" id="trigger_SCHEDULE_date" value="+">                                                                                
+                                                                                <input id="schedule_start_date" name="scheduleStart[date]" size="10" value="{$start_day}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{1,4}${/literal}" required onkeydown="return onlyDate(event);">
+                                                                                <input id="schedule_start_date_button" value="+" type="button">                                                                                
                                                                                 <script>
                                                                                 {literal} 
                                                                                     Calendar.setup({
-                                                                                        inputField  : "SCHEDULE_date",
-                                                                                        ifFormat    : "{/literal}{$date_format}{literal}",
-                                                                                        button      : "trigger_SCHEDULE_date"
+                                                                                        trigger     : "schedule_start_date_button",
+                                                                                        inputField  : "schedule_start_date",
+                                                                                        dateFormat  : "{/literal}{$date_format}{literal}"                                                                                        
                                                                                     });
                                                                                 {/literal}
                                                                                 </script>                                                                            
-                                                                                {html_select_time use_24_hours=false display_seconds=false minute_interval=15 field_array=start time=$start_time}
+                                                                                {html_select_time use_24_hours=false display_seconds=false minute_interval=15 field_array=scheduleStart time=$start_time}
                                                                             </td>
                                                                             <td>
-                                                                                <input size="10" name="end[SCHEDULE_date]" type="text" id="end_SCHEDULE_date" value="{$start_day}">
-                                                                                <input type="button" id="trigger_end_SCHEDULE_date" value="+">                                                                                
+                                                                                <input id="schedule_end_date" name="scheduleEnd[date]" size="10" value="{$start_day}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{1,4}${/literal}" required onkeydown="return onlyDate(event);">
+                                                                                <input id="schedule_end_date_button" value="+" type="button">                                                                                
                                                                                 <script>
                                                                                 {literal}
                                                                                     Calendar.setup({
-                                                                                        inputField  : "end_SCHEDULE_date",
-                                                                                        ifFormat    : "{/literal}{$date_format}{literal}",
-                                                                                        button      : "trigger_end_SCHEDULE_date"
+                                                                                        trigger     : "schedule_end_date_button",
+                                                                                        inputField  : "schedule_end_date",
+                                                                                        dateFormat  : "{/literal}{$date_format}{literal}"                                                                                        
                                                                                     });
                                                                                 {/literal}
                                                                                 </script>                                                                            
-                                                                                {html_select_time use_24_hours=false display_seconds=false minute_interval=15 field_array=end time=$start_time}
+                                                                                {html_select_time use_24_hours=false display_seconds=false minute_interval=15 field_array=scheduleEnd time=$start_time}
                                                                             </td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td colspan="2">
                                                                                 <b>{$translate_schedule_notes}</b>
                                                                                 <br>
-                                                                                <textarea name="schedule_notes" rows="15" cols="70">{$schedule_notes}</textarea>
+                                                                                <textarea name="schedule_notes" class="olotd5 mceCheckForContent" rows="15" cols="70">{$schedule_notes}</textarea>
                                                                             </td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td colspan="2">
-                                                                                <input type="hidden" name="workorder_id" value="{$workorder_id}">
+                                                                            <td colspan="2">                                                                                
                                                                                 <input type="submit" name="submit" value="{$translate_schedule_submit}">
                                                                             </td>
                                                                         </tr>

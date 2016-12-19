@@ -6,7 +6,7 @@
 <script src="{$theme_js_dir}jscal2/jscal2.js"></script>
 <script src="{$theme_js_dir}jscal2/unicode-letter.js"></script>
 <script>{include file="`$theme_js_dir_finc`jscal2/language.js"}</script>
-{include file="refund/javascripts.js"}
+<script>{include file="refund/javascripts.js"}</script>
 
 <table width="100%"   border="0" cellpadding="20" cellspacing="5">
     <tr>
@@ -30,7 +30,7 @@
                                             <td>                                                
                                                 <input type="hidden" name="page" value="refund:edit">
                                                 {literal}
-                                                <form  action="index.php?page=refund:new" method="POST" name="new_refund" id="new_refund" autocomplete="off" onsubmit="try { var myValidator = validate_refund; } catch(e) { return true; } return myValidator(this);">
+                                                <form action="index.php?page=refund:new" method="POST" name="new_refund" id="new_refund" autocomplete="off">
                                                 {/literal}
                                                     <table width="100%" cellpadding="3" cellspacing="0" border="0">
                                                         <tr>
@@ -46,13 +46,13 @@
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{$translate_refund_payee}</b><span style="color: #ff0000"> *</span></td>
-                                                                            <td colspan="3"><input class="olotd5" size="60" id="refundPayee" name="refundPayee" type="text" onkeypress="return onlyAlphaNumeric(event);" /></td>
+                                                                            <td colspan="3"><input id="refundPayee" name="refundPayee" class="olotd5" size="50" type="text" maxlength="50" required onkeydown="return onlyAlphaNumeric(event);"></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{$translate_refund_date}</b><span style="color: #ff0000"> *</span></td>
                                                                             <td>
-                                                                                <input class="olotd5" size="10" name="refundDate" type="text" id="refundDate" />
-                                                                                <input type="button" id="refundDate" value="+">                                                                                
+                                                                                <input id="refundDate" name="refundDate" class="olotd5" size="10" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{1,4}${/literal}" required onkeydown="return onlyDate(event);">
+                                                                                <input id="refundDate_button" value="+" type="button">                                                                                
                                                                                 <script>
                                                                                 {literal}
                                                                                     Calendar.setup({
@@ -67,7 +67,7 @@
                                                                         <tr>
                                                                             <td align="right"><b>{$translate_refund_type}</b><span style="color: #ff0000"> *</span></td>
                                                                             <td>
-                                                                                <select class="olotd5" name="refundType" col="30" style="width: 150px"/>
+                                                                                <select name="refundType" class="olotd5" col="30" style="width: 150px"/>
                                                                                     <option value="1">{$translate_refund_type_1}</option>
                                                                                     <option value="2">{$translate_refund_type_2}</option>
                                                                                     <option value="3">{$translate_refund_type_3}</option>
@@ -79,7 +79,7 @@
                                                                         <tr>
                                                                             <td align="right"><b>{$translate_refund_payment_method}</b><span style="color: #ff0000"> *</span></td>
                                                                             <td>
-                                                                                <select class="olotd5" name="refundPaymentMethod" style="width: 150px"/>
+                                                                                <select name="refundPaymentMethod" class="olotd5" style="width: 150px"/>
                                                                                     <option value="1">{$translate_refund_payment_method_1}</option>
                                                                                     <option value="2">{$translate_refund_payment_method_2}</option>
                                                                                     <option value="3">{$translate_refund_payment_method_3}</option>
@@ -96,19 +96,19 @@
                                                                         </tr>                                                                                                          
                                                                         <tr>
                                                                             <td align="right"><b>{$translate_refund_net_amount}</b></td>
-                                                                            <td><input type="text" size="10" name="refundNetAmount" value="" class="olotd5" onkeypress="return onlyNumbersPeriods();"></b></td>
+                                                                            <td><input name="refundNetAmount" class="olotd5" size="10" type="text" maxlength="10" pattern="{literal}^[0-9]{1,7}(.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumbersPeriod(event);"></b></a></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><span style="color: #ff0000"></span><b>{$translate_refund_tax_rate}</td>
-                                                                            <td><input class="olotd5" name="refundTaxRate" type="text" size="4" value="{$tax_rate}" onkeypress="return onlyNumbersPeriods();"/><b>%</b></td>
+                                                                            <td><input name="refundTaxRate" class="olotd5" size="5" value="{$tax_rate}" type="text" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumbersPeriod(event);"/><b>%</b></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{$translate_refund_tax_amount}</b></td>
-                                                                            <td><input class="olotd5" name="refundTaxAmount" type="text" size="10" onkeypress="return onlyNumbersPeriods();"/></td>
+                                                                            <td><input name="refundTaxAmount" class="olotd5" size="10" type="text" maxlength="10" pattern="{literal}^[0-9]{1,7}(.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumbersPeriod(event);"/></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{$translate_refund_gross_amount}</b><span style="color: #ff0000"> *</span></td>
-                                                                            <td><input class="olotd5" name="refundGrossAmount" type="text" size="10" onkeypress="return onlyNumbersPeriods();"/></td>
+                                                                            <td><input name="refundGrossAmount" class="olotd5" size="10" type="text" maxlength="10" pattern="{literal}^[0-9]{1,7}(.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumbersPeriod(event);"/></td>
                                                                         </tr>
                                                                     </tbody>
                                                                 </table>
@@ -123,16 +123,19 @@
                                                                     <tbody align="left">
                                                                         <tr>
                                                                             <td align="right"><b>{$translate_refund_notes}</b></td>
-                                                                            <td><textarea class="olotd5" name="refundNotes" cols="50" rows="15" id="editor1"></textarea></td>
+                                                                            <td><textarea name="refundNotes" class="olotd5" cols="50" rows="15"></textarea></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{$translate_refund_items}</b><span style="color: #ff0000"> *</span></td>
-                                                                            <td><textarea class="olotd5" name="refundItems" cols="50" rows="15" id="editor2"></textarea></td>
+                                                                            <td><textarea name="refundItems" class="olotd5 mceCheckForContent" cols="50" rows="15"></textarea></td>
                                                                         </tr>
                                                                     </tbody>
                                                                         <tr>
                                                                             <td></td>
-                                                                            <td><input class="olotd5" name="submit" value="{$translate_refund_submit_button}" type="submit" /><input class="olotd5" name="submitandnew" value="{$translate_refund_submit_and_new_button}" type="submit" /></td>
+                                                                            <td>
+                                                                                <input name="submit" class="olotd5" value="{$translate_refund_submit_button}" type="submit">
+                                                                                <input name="submitandnew" class="olotd5" value="{$translate_refund_submit_and_new_button}" type="submit">
+                                                                            </td>
                                                                         </tr>
                                                                 </table>
                                                             </td>

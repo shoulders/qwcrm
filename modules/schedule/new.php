@@ -10,10 +10,9 @@ if(!xml2php("workorder")) {
 //Schedule Due Date
 $date_part2 = explode("/",$VAR['day']);
 //$timestamp2 = mktime(0,0,0,$date_part2[1],$date_part2[0],$date_part2[2]);
-if($date_format == "%d/%m/%Y"){
-$cur_date = $d."/".$m."/".$Y;}
-if($date_format == "%m/%d/%Y"){
-$cur_date = $m."/".$d."/".$Y;};
+if($date_format == "%d/%m/%Y"){$cur_date = $d."/".$m."/".$Y;}
+if($date_format == "%m/%d/%Y"){$cur_date = $m."/".$d."/".$Y;}
+
 $smarty->assign('Y',$Y);
 $smarty->assign('m',$m);
 $smarty->assign('d',$d);
@@ -36,10 +35,10 @@ if(isset($VAR['submit'])){
 
         if (!insert_new_schedule($db,$VAR)) {
                 /* If db insert fails send em the error */    
-                $day        = $VAR['start']['schedule_date'];
-                $start_time = $VAR['start']['Time_Hour'].":".$VAR['start']['Time_Minute']." ".$VAR['start']['Time_Meridian'];
-                $notes      = $VAR['schedule_notes']; 
-                $end_time   = $VAR['end']['Time_Hour'].":".$VAR['end']['Time_Minute']." ".$VAR['end']['Time_Meridian'];
+                $day        = $VAR['scheduleStart']['date'];
+                $start_time = $VAR['scheduleStart']['Time_Hour'].":".$VAR['scheduleStart']['Time_Minute']." ".$VAR['scheduleStart']['Time_Meridian'];
+                $notes      = $VAR['schedule_notes'];
+                $end_time   = $VAR['scheduleEnd']['Time_Hour'].":".$VAR['scheduleEnd']['Time_Minute']." ".$VAR['scheduleEnd']['Time_Meridian'];
                 
                 $smarty->assign('end_time', $end_time);
                 $smarty->assign('start_day', $day);
@@ -48,10 +47,11 @@ if(isset($VAR['submit'])){
                 $smarty->assign('tech',  $VAR['tech']);
                 $smarty->assign('workorder_id', $VAR['workorder_id']);
                 $smarty->display("schedule/new.tpl");
+                
                 //force_page('schedule','main&y='.$s_year.'&d='.$s_month.'&m='.$s_day.'&workorder_id='.$VAR['workorder_id'].'&page_title=schedule&tech='.$VAR['tech']);
             } else {
-                //list($s_day, $s_month, $s_year) = split('[/.-]', $VAR['start']['SCHEDULE_date']);
-                list($s_month, $s_day, $s_year) = split('[/.-]', $VAR['start']['SCHEDULE_date']);
+                //list($s_day, $s_month, $s_year) = split('[/.-]', $VAR['scheduleStart']['SCHEDULE_date']);
+                list($s_month, $s_day, $s_year) = split('[/.-]', $VAR['scheduleStart']['date']);
                 force_page('schedule','main&y='.$s_year.'&d='.$s_month.'&m='.$s_day.'&workorder_id='.$VAR['workorder_id'].'&page_title=schedule&tech='.$VAR['tech']);
             }
 

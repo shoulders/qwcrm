@@ -1,5 +1,5 @@
 <!-- search.tpl -->
-{include file="refund/javascripts.js"}
+<script>{include file="refund/javascripts.js"}</script>
 
 <table width="100%" border="0" cellpadding="20" cellspacing="5">
     <tr>
@@ -45,9 +45,9 @@
                                                                    <br />
                                                                    <b>{$translate_refund_for}</b>
                                                                    <br />
-                                                                   <input class="olotd4" name="refund_search_term" type="text" value="{$refund_search_term}" onkeypress="return onlyAlphaNumeric(event);" />
+                                                                   <input class="olotd4" name="refund_search_term" value="{$refund_search_term}" type="text"  maxlength="20" required onkeydown="return onlyAlphaNumeric(event);" />
                                                                    <input class="olotd4" name="submit" value="{$translate_refund_search_button}" type="submit" />
-                                                                   <input class="olotd4" type="button" value="{$translate_refund_reset_button}" onclick="window.location.href='index.php?page=refund%3Asearch&page_title={$translate_refund_view_title}'">                                                                                       </td>
+                                                                   <input class="olotd4" type="button" value="{$translate_refund_reset_button}" onclick="window.location.href='index.php?page=refund%3Asearch&page_title={$translate_refund_view_title}';">                                                                                       </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td><font color="RED">{$translate_refund_search_criteria_warning}</font></td>
@@ -84,9 +84,9 @@
 
                                                 <!-- Goto Page Form -->
                                                 {literal}
-                                                <form  method="POST" name="goto_page" id="goto_page" autocomplete="off"  onsubmit="try { var myValidator = validate_refund_goto_page; } catch(e) { return true; } return myValidator(this);">
+                                                <form  method="POST" name="goto_page" id="goto_page" autocomplete="off">
                                                 {/literal}
-                                                    <input class="olotd5" size="10" id="goto_page_no" name="goto_page_no" type="text" onkeypress="return onlyNumbers();" />
+                                                    <input class="olotd5" size="10" id="goto_page_no" name="goto_page_no" type="text" maxlength="6" required onkeydown="return onlyNumbers(event);" />
                                                     <input class="olotd5" name="submit" value="{$translate_refund_search_goto_page_button}" type="submit" />
                                                 </form>
                                             
@@ -113,8 +113,8 @@
                                                     </tr>
                                                     {section name=i loop=$refund_search_result}                                                            
                                                         <!-- This allows double clicking on a row and opens the corresponding refund view details -->
-                                                        <tr onmouseover="this.className='row2'" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=refund:refund_details&refund_id={$refund_search_result[i].REFUND_ID}&page_title={$translate_refund_details_title}';" class="row1">                                                                
-                                                            <td class="olotd4" nowrap><a href="index.php?page=refund:refund_details&refund_id={$refund_search_result[i].REFUND_ID}&page_title={$translate_refund_details_title}">{$refund_search_result[i].REFUND_ID}</a></td>                                                                
+                                                        <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=refund:details&refund_id={$refund_search_result[i].REFUND_ID}&page_title={$translate_refund_details_title}';" class="row1">                                                                
+                                                            <td class="olotd4" nowrap><a href="index.php?page=refund:details&refund_id={$refund_search_result[i].REFUND_ID}&page_title={$translate_refund_details_title}">{$refund_search_result[i].REFUND_ID}</a></td>                                                                
                                                             <td class="olotd4" nowrap>{$refund_search_result[i].REFUND_PAYEE}</td>                                                                
                                                             <td class="olotd4" nowrap>{$refund_search_result[i].REFUND_DATE|date_format:$date_format}</td>                                                                
                                                             <td class="olotd4" nowrap>
@@ -146,7 +146,7 @@
                                                             </td>                                                               
                                                             <td class="olotd4" nowrap><img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{$translate_refund_items}</b><hr><p>{$refund_search_result[i].REFUND_ITEMS|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();"></td>                                                                
                                                             <td class="olotd4" nowrap>
-                                                                <a href="index.php?page=refund:refund_details&refund_id={$refund_search_result[i].REFUND_ID}&page_title={$translate_refund_details_title}">
+                                                                <a href="index.php?page=refund:details&refund_id={$refund_search_result[i].REFUND_ID}&page_title={$translate_refund_details_title}">
                                                                     <img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" onMouseOver="ddrivetip('<b>{$translate_refund_search_details|nl2br|regex_replace:"/[\r\t\n]/":" "}</b>');" onMouseOut="hideddrivetip();">
                                                                 </a>
                                                                 <a href="?page=refund:edit&refund_id={$refund_search_result[i].REFUND_ID}&page_title={$translate_refund_edit_title}">

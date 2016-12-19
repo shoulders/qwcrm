@@ -44,7 +44,7 @@
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><span style="color: #ff0000"></span><b>{$translate_customer_www}</b></td>
-                                                                            <td><input name="customerWww" class="olotd5" size="50" type="url" maxlength="50" placeholder="https://quantumwarp.com/" pattern="https?://.+" onkeydown="return onlyURL(event);"></td>
+                                                                            <td><input name="customerWww" class="olotd5" size="50" type="url" maxlength="50" placeholder="https://quantumwarp.com/" pattern="^^https?://.+" onkeydown="return onlyURL(event);"></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><span style="color: #ff0000"></span><b>{$translate_email}</b></td>
@@ -74,7 +74,7 @@
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{$translate_customer_discount}</b><span style="color: #ff0000">*</span></td>
-                                                                            <td><a><input name="discount" class="olotd5" value="0.00" type="text" maxlength="5" pattern="{literal}\d{0,2}(\.\d{0,2})?{/literal}" required onkeydown="return onlyNumbersPeriod(event);"><b>%</b></a></td>
+                                                                            <td><a><input name="discount" class="olotd5" value="0.00" type="text" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumbersPeriod(event);"><b>%</b></a></td>
                                                                         </tr>                                                              
                                                                     </tbody>
                                                                 </table>

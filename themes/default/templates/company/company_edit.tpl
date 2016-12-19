@@ -90,7 +90,7 @@
                                                         {section name=w loop=$setup}
                                                             <tr>
                                                                 <td align="right"><b>Tax Amount:</b></td>
-                                                                <td><input name="inv_tax" class="olotd5" size="6" value="{$setup[w].INVOICE_TAX}" maxlength="5" pattern="{literal}\d{0,2}(\.\d{0,2})?{/literal}" required onkeydown="return onlyNumbersPeriod(event);"/>%</td>
+                                                                <td><input name="inv_tax" class="olotd5" size="6" value="{$setup[w].INVOICE_TAX}" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumbersPeriod(event);"/>%</td>
                                                             </tr>
                                                             <tr>
                                                                 <td align="right"><b>Invoice Starting Number:</b></td>

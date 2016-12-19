@@ -1,5 +1,5 @@
 <!-- search.tpl -->
-{include file="supplier/javascripts.js"}
+<script>{include file="supplier/javascripts.js"}</script>
 
 <table width="100%" border="0" cellpadding="20" cellspacing="5">
     <tr>
@@ -36,13 +36,13 @@
                                                                     <option value="NOTES">{$translate_supplier_notes}</option>
                                                                     <option value="DESCIPTION">{$translate_supplier_description}</option>
                                                                 </select>
-                                                               <br />
-                                                               <b>{$translate_supplier_for}</b>
-                                                               <br />
-                                                               <input class="olotd4" name="supplier_search_term" type="text" value="{$supplier_search_term}" onkeypress="return onlyAlphaNumeric(event);" />
-                                                               <input class="olotd4" name="submit" value="{$translate_supplier_search_button}" type="submit" />
-                                                               <input class="olotd4" type="button" value="{$translate_supplier_reset_button}" onclick="window.location.href='index.php?page=supplier%3Asearch&page_title={$translate_supplier_search_title}';">
-                                                                <input name="page" type="hidden" value="supplier:search" />
+                                                                <br />
+                                                                <b>{$translate_supplier_for}</b>
+                                                                <br />
+                                                                <input name="supplier_search_term" class="olotd4" value="{$supplier_search_term}" type="text" maxlength="20" required onkeydown="return onlyAlphaNumeric(event);" />
+                                                                <input name="submit" class="olotd4" value="{$translate_supplier_search_button}" type="submit" />
+                                                                <input type="button" class="olotd4" value="{$translate_supplier_reset_button}" onclick="window.location.href='index.php?page=supplier%3Asearch&page_title={$translate_supplier_search_title}';">
+                                                                <input name="page" value="supplier:search" type="hidden" >
                                                             </td>
                                                         </tr>
                                                         <tr>
@@ -79,10 +79,10 @@
 
                                                 <!-- Goto Page Form -->
                                                 {literal}
-                                                <form  method="POST" name="goto_page" id="goto_page" autocomplete="off"  onsubmit="try { var myValidator = validate_supplier_goto_page; } catch(e) { return true; } return myValidator(this);">
+                                                <form  method="POST" name="goto_page" id="goto_page" autocomplete="off">
                                                 {/literal}
-                                                    <input class="olotd5" size="10" id="goto_page_no" name="goto_page_no" type="text" onkeypress="return onlyNumbers();" />
-                                                    <input class="olotd5" name="submit" value="{$translate_supplier_search_goto_page_button}" type="submit" />
+                                                    <input id="goto_page_no" name="goto_page_no" class="olotd5" size="10" type="text" maxlength="6" required onkeydown="return onlyNumbers(event);">
+                                                    <input name="submit" class="olotd5" value="{$translate_supplier_search_goto_page_button}" type="submit">
                                                 </form>
                                             </td>
                                         </tr>
@@ -102,8 +102,8 @@
                                                         </tr>                                                    
 
                                                         <!-- This allows double clicking on a row and opens the corresponding supplier view details -->
-                                                        <tr onmouseover="this.className='row2'" onmouseout="this.className='row1'" onDblClick="window.location='index.php?page=supplier:supplier_details&supplier_id={$supplier_search_result[i].SUPPLIER_ID}&page_title={$translate_supplier_details_title}';" class="row1">                                                           
-                                                            <td class="olotd4" nowrap><a href="index.php?page=supplier:supplier_details&supplier_id={$supplier_search_result[i].SUPPLIER_ID}&page_title={$translate_supplier_details_title}">{$supplier_search_result[i].SUPPLIER_ID}</a></td>                                                            
+                                                        <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=supplier:details&supplier_id={$supplier_search_result[i].SUPPLIER_ID}&page_title={$translate_supplier_details_title}';" class="row1">                                                           
+                                                            <td class="olotd4" nowrap><a href="index.php?page=supplier:details&supplier_id={$supplier_search_result[i].SUPPLIER_ID}&page_title={$translate_supplier_details_title}">{$supplier_search_result[i].SUPPLIER_ID}</a></td>                                                            
                                                             <td class="olotd4" nowrap>{$supplier_search_result[i].SUPPLIER_NAME}</td>                                                            
                                                             <td class="olotd4" nowrap>{$supplier_search_result[i].SUPPLIER_CONTACT}</td>                                                            
                                                             <td class="olotd4" nowrap>
@@ -124,7 +124,7 @@
                                                             </td>                                                            
                                                             <td class="olotd4" nowrap><img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{$translate_supplier_description}</b><hr><p>{$supplier_search_result[i].SUPPLIER_DESCRIPTION|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();"></td>                                                            
                                                             <td class="olotd4" nowrap>
-                                                                <a href="index.php?page=supplier:supplier_details&supplier_id={$supplier_search_result[i].SUPPLIER_ID}&page_title={$translate_supplier_details_title}">
+                                                                <a href="index.php?page=supplier:details&supplier_id={$supplier_search_result[i].SUPPLIER_ID}&page_title={$translate_supplier_details_title}">
                                                                     <img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" onMouseOver="ddrivetip('<b>{$translate_supplier_search_details|nl2br|regex_replace:"/[\r\t\n]/":" "}</b>');" onMouseOut="hideddrivetip();">
                                                                 </a>
                                                                 <a href="?page=supplier:edit&supplier_id={$supplier_search_result[i].SUPPLIER_ID}&page_title={$translate_supplier_edit_title}">

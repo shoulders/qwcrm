@@ -1,5 +1,5 @@
-<!-- refund_details.tpl -->
-{include file="refund/javascripts.js"}
+<!-- details.tpl -->
+<script>{include file="refund/javascripts.js"}</script>
 
 <table width="700" border="0" cellpadding="20" cellspacing="5">
     <tr>

@@ -85,7 +85,7 @@
                         <a href="?page=expense:new&page_title={$translate_core_menu_new_expense}"><img src="{$theme_images_dir}icons/new.gif" alt="" border="0" height="14" width="14" />{$translate_core_menu_new_expense}</a>
                         <a href="?page=expense:search&page_title={$translate_core_menu_search_expenses}"><img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" />{$translate_core_menu_search_expenses}</a>
                         {if $expense_id > 0 }
-                            <a href="?page=expense:expense_details&expense_id={$expense_id}&page_title={$translate_core_menu_expense_details}"><img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_expense_details}</a>
+                            <a href="?page=expense:details&expense_id={$expense_id}&page_title={$translate_core_menu_expense_details}"><img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_expense_details}</a>
                             <a href="?page=expense:edit&expense_id={$expense_id}&page_title={$translate_core_menu_edit_expense}"><img src="{$theme_images_dir}icons/edit.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_edit_expense}</a>
                             <a href="?page=expense:search&page_title={$translate_core_menu_delete_expense} onclick="confirmDelete({$expense_id});"><img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_delete_expense}</a>
                         {/if}
@@ -94,7 +94,7 @@
                         <a href="?page=refund:new&page_title={$translate_core_menu_new_refund}"><img src="{$theme_images_dir}icons/new.gif" alt="" border="0" height="14" width="14" />{$translate_core_menu_new_refund}</a>
                         <a href="?page=refund:search&page_title={$translate_core_menu_search_refunds}"><img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" />{$translate_core_menu_search_refunds}</a>
                         {if $refund_id > 0 }
-                            <a href="?page=refund:refund_details&refund_id={$refund_id}&page_title={$translate_core_menu_refund_details}"><img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_refund_details}</a>
+                            <a href="?page=refund:details&refund_id={$refund_id}&page_title={$translate_core_menu_refund_details}"><img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_refund_details}</a>
                             <a href="?page=refund:edit&refund_id={$refund_id}&page_title={$translate_core_menu_edit_refund}"><img src="{$theme_images_dir}icons/edit.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_edit_refund}</a>
                             <a href="?page=refund:search&page_title={$translate_core_menu_delete_refund} onclick="confirmDelete({$refund_id});"><img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_delete_refund}</a>
                         {/if}
@@ -111,7 +111,7 @@
                         <a href="?page=supplier:new&page_title={$translate_core_menu_new_supplier}"><img src="{$theme_images_dir}icons/new.gif" alt="" border="0" height="14" width="14" />{$translate_core_menu_new_supplier}</a>
                         <a href="?page=supplier:search&page_title={$translate_core_menu_search_suppliers}"><img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" />{$translate_core_menu_search_suppliers}</a>
                         {if $supplier_id > 0 }
-                            <a href="?page=supplier:supplier_details&supplier_id={$supplier_id}&page_title={$translate_core_menu_supplier_details}"><img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_supplier_details}</a>
+                            <a href="?page=supplier:details&supplier_id={$supplier_id}&page_title={$translate_core_menu_supplier_details}"><img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_supplier_details}</a>
                             <a href="?page=supplier:edit&supplier_id={$supplier_id}&page_title={$translate_core_menu_edit_supplier}"><img src="{$theme_images_dir}icons/edit.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_edit_supplier}</a>
                             <a href="?page=supplier:search&page_title={$translate_core_menu_delete_supplier} onclick="confirmDelete({$supplier_id});"><img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_delete_supplier}</a>
                         {/if}

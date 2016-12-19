@@ -129,14 +129,13 @@ class Auth {
     // Store variables in the session
     function storeAuth($login_usr, $login_pwd, $login_id, $login_account_type_id, $login_display_name){
         
-        // Store Variables in $_SESSION
         $this->session->set('login_usr',                $login_usr                                      );
         $this->session->set('login_pwd',                $login_pwd                                      );
         $this->session->set('login_id',                 $login_id                                       );        
         $this->session->set('login_account_type_id',    $login_account_type_id                          );
         $this->session->set('login_display_name',       $login_display_name                             );
         
-        // This is used to validate session authentication
+        // This is used to validate session authentication - maybe not use this as makes confirm auth pointless
         $this->session->set('login_hash',               md5($this->secretKey . $login_usr . $login_pwd) );
 
     } 
@@ -152,7 +151,7 @@ class Auth {
         
     }  
  
-    // perform a logourt from the session
+    // perform a logout from the session
     function logout(){
         
         // Log activity       

@@ -6,7 +6,7 @@
 <script src="{$theme_js_dir}jscal2/jscal2.js"></script>
 <script src="{$theme_js_dir}jscal2/unicode-letter.js"></script>
 <script>{include file="`$theme_js_dir_finc`jscal2/language.js"}</script>
-{include file="supplier/javascripts.js"}
+<script>{include file="supplier/javascripts.js"}</script>
 
 <table width="100%"   border="0" cellpadding="20" cellspacing="5">
     <tr>
@@ -29,7 +29,7 @@
                                         <tr>
                                             <td>                                           
                                                 {literal}
-                                                <form  action="index.php?page=supplier:new" method="POST" name="new_supplier" id="new_supplier" autocomplete="off" onsubmit="try { var myValidator = validate_supplier; } catch(e) { return true; } return myValidator(this);">
+                                                <form  action="index.php?page=supplier:new" method="POST" name="new_supplier" id="new_supplier" autocomplete="off">
                                                 {/literal}
                                                     <table width="100%" cellpadding="3" cellspacing="0" border="0">
                                                         <tr>
@@ -37,23 +37,23 @@
                                                                 <table>
                                                                     <tbody align="left">
                                                                         <tr>
-                                                                            <td class="menuhead" colspan="3">{$translate_first_menu}</td></tr>
+                                                                            <td class="menuhead" colspan="2">{$translate_first_menu}</td>
                                                                         <tr>
                                                                             <td align="right"><b>{$translate_supplier_id}</b></td><td>{$new_record_id}</td>
                                                                             <td colspan="2"></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{$translate_supplier_name}</b><span style="color: #ff0000"> *</span></td>
-                                                                            <td colspan="3"><input class="olotd5" size="60" id="supplierName" name="supplierName" type="text" onkeypress="return onlyAlphaNumeric(event);" /></td>
+                                                                            <td colspan="3"><input id="supplierName" name="supplierName" class="olotd5" size="50" type="text" maxlength="20" required onkeydown="return onlyAlphaNumeric(event);"></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{$translate_supplier_contact}</b></td>
-                                                                            <td><input class="olotd5" size="60" name="supplierContact" type="text" id="supplierContact" type="text" onkeypress="return onlyAlphaNumeric(event);" /></td>
+                                                                            <td><input id="supplierContact" name="supplierContact" class="olotd5" size="50" type="text" maxlength="50" onkeydown="return onlyAlpha(event);" /></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{$translate_supplier_type}</b><span style="color: #ff0000"> *</span></td>
                                                                             <td>
-                                                                                <select class="olotd5" name="supplierType" col="30" style="width: 150px"/>
+                                                                                <select class="olotd5" name="supplierType" col="30" style="width: 150px">
                                                                                     <option value="1">{$translate_supplier_type_1}</option>
                                                                                     <option value="2">{$translate_supplier_type_2}</option>
                                                                                     <option value="3">{$translate_supplier_type_3}</option>
@@ -70,39 +70,39 @@
                                                                         </tr>                                                                                                                                                                                
                                                                         <tr>
                                                                             <td align="right"><b>{$translate_supplier_phone}</b></td>
-                                                                            <td><input type="text" size="20" name="supplierPhone" value="" class="olotd5" onkeypress="return onlyPhoneNumbers();" /></b></td>
+                                                                            <td><input name="supplierPhone" class="olotd5" size="20" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"></b></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><span style="color: #ff0000"></span><b>{$translate_supplier_fax}</td>
-                                                                            <td><input class="olotd5" name="supplierFax" type="text" size="20" value="" onkeypress="return onlyPhoneNumbers();" /></td>
+                                                                            <td><input name="supplierFax" class="olotd5" size="20" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{$translate_supplier_mobile}</b></td>
-                                                                            <td><input class="olotd5" name="supplierMobile" type="text" size="20" onkeypress="return OnlyPhoneNumbers();" /></td>
+                                                                            <td><input name="supplierMobile" class="olotd5" size="20" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{$translate_supplier_www}</b></td>
-                                                                            <td><input class="olotd5" name="supplierWww" type="text" size="60" /></td>
+                                                                            <td><input name="supplierWww" class="olotd5" size="50" type="url" maxlength="50" pattern="{literal}^https?://.+{/literal}" placeholder="https://quantumwarp.com/" onkeydown="return onlyURL(event);"></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{$translate_supplier_email}</b></td>
-                                                                            <td><input class="olotd5" name="supplierEmail" type="text" size="60" /></td>
+                                                                            <td><input name="supplierEmail" class="olotd5" size="50" type="email" maxlength="50" placeholder="no-reply@quantumwarp.com" onkeydown="return onlyEmail(event);"></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><strong>{$translate_supplier_address}</strong></td>
-                                                                            <td><textarea class="olotd5" cols="30" rows="3"  name="supplierAddress">{$employee_details[a].EMPLOYEE_ADDRESS}</textarea></td>
+                                                                            <td><textarea name="supplierAddress" class="olotd5 mceNoEditor" cols="30" rows="3" maxlength="100" onkeydown="return onlyAddress(event);">{$employee_details[a].EMPLOYEE_ADDRESS}</textarea></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><strong>{$translate_supplier_city}</strong></td>
-                                                                            <td><input name="supplierCity" type="text" class="olotd5" /></td>
+                                                                            <td><input name="supplierCity" class="olotd5" size="20" type="text" maxlength="20" onkeydown="return onlyAlpha(event);"></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><strong>{$translate_supplier_state}</strong></td>
-                                                                            <td><input name="supplierState" type="text" class="olotd5" /></td>
+                                                                            <td><input name="supplierState" class="olotd5" size="20" type="text" maxlength="20" onkeydown="return onlyAlpha(event);"></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><strong>{$translate_supplier_zip}</strong></td>
-                                                                            <td colspan="2"><input name="supplierZip" type="text" class="olotd5" /></td>
+                                                                            <td><input name="supplierZip" class="olotd5" size="20" type="text" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"></td>
                                                                         </tr>
                                                                     </tbody>
                                                                 </table>
@@ -117,16 +117,19 @@
                                                                     <tbody align="left">
                                                                         <tr>
                                                                             <td align="right"><b>{$translate_supplier_notes}</b></td>
-                                                                            <td><textarea class="olotd5" name="supplierNotes" cols="50" rows="15" id="editor1"></textarea></td>
+                                                                            <td><textarea name="supplierNotes" class="olotd5" cols="50" rows="20"></textarea></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{$translate_supplier_description}</b><span style="color: #ff0000"> *</span></td>
-                                                                            <td><textarea class="olotd5" name="supplierDescription" cols="50" rows="15" id="editor2"></textarea></td>
+                                                                            <td><textarea name="supplierDescription" class="olotd5 mceCheckForContent" cols="50" rows="20"></textarea></td>
                                                                         </tr>
                                                                     </tbody>
                                                                         <tr>
                                                                             <td></td>
-                                                                            <td><input class="olotd5" name="submit" value="{$translate_supplier_submit_button}" type="submit" /><input class="olotd5" name="submitandnew" value="{$translate_supplier_submit_and_new_button}" type="submit" /></td>
+                                                                            <td>
+                                                                                <input class="olotd5" name="submit" value="{$translate_supplier_submit_button}" type="submit">
+                                                                                <input class="olotd5" name="submitandnew" value="{$translate_supplier_submit_and_new_button}" type="submit">
+                                                                            </td>
                                                                         </tr>
                                                                 </table>
                                                             </td>

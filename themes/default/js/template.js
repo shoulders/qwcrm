@@ -77,7 +77,7 @@ function onlyAddress(e) {
 }
 
 // Currency Symbols
-function onlyEmail(e) {
+function onlyCurrencySymbols(e) {
     return; 
     //return keyRestriction(e, "", false);
 }
