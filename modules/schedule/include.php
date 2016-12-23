@@ -8,29 +8,28 @@ function insert_new_schedule($db, $workorder_id, $employee_id, $scheduleStart, $
     global $smarty;        
 
     // Get Schdule Start Time values
-    list($scheduleStart_month, $scheduleStart_day, $scheduleStart_year) = split('[/.-]', $scheduleStart['date']);
-    $scheduleStart_hour     = $scheduleStart['Time_Hour'];
-    $scheduleStart_min      = $scheduleStart['Time_Minute'];
-    $scheduleStart_ampm     = $scheduleStart['Time_Meridian'];
+    list($schedule_start_month, $schedule_start_day, $schedule_start_year) = split('[/.-]', $scheduleStart['date']);
+    $schedule_start_hour     = $scheduleStart['Time_Hour'];
+    $schedule_start_min      = $scheduleStart['Time_Minute'];
+    $schedule_start_ampm     = $scheduleStart['Time_Meridian'];
 
     // Get Schdule End Time values
-    list($scheduleEnd_month, $scheduleEnd_day, $scheduleEnd_year)       = split('[/.-]', $scheduleEnd['date']);
-    $scheduleEnd_hour       = $scheduleEnd['Time_Hour'];
-    $scheduleEnd_min        = $scheduleEnd['Time_Minute'];
-    $scheduleEnd_ampm       = $scheduleEnd['Time_Meridian'];
+    list($schedule_end_month, $schedule_end_day, $schedule_end_year)       = split('[/.-]', $scheduleEnd['date']);
+    $schedule_end_hour       = $scheduleEnd['Time_Hour'];
+    $schedule_end_min        = $scheduleEnd['Time_Minute'];
+    $schedule_end_ampm       = $scheduleEnd['Time_Meridian'];
 
     // Set 0 seconds for both start and end times
     $secs   = "00";
 
     // Translate the date and time to a unix timestamp - this includes the additional smarty dropdown variables from the form
     if(DATE_FORMAT == "%d/%m/%Y" || DATE_FORMAT == "%d/%m/%y"){
-        $schedule_start_time = strtotime("$scheduleStart_day/$scheduleStart_month/$scheduleStart_year $scheduleStart_hour:$scheduleStart_min:$secs $scheduleStart_ampm");
-        $schedule_end_time   = strtotime("$scheduleEnd_day/$scheduleEnd_month/$scheduleEnd_year $scheduleEnd_hour:$scheduleEnd_min:$secs $scheduleEnd_ampm");
+        $schedule_start_time = strtotime("$schedule_start_day/$schedule_start_month/$schedule_start_year $schedule_start_hour:$schedule_start_min:$secs $schedule_start_ampm");
+        $schedule_end_time   = strtotime("$schedule_end_day/$schedule_end_month/$schedule_end_year $schedule_end_hour:$schedule_end_min:$secs $schedule_end_ampm");
     } else if (DATE_FORMAT == "%m/%d/%Y" || DATE_FORMAT == "%m/%d/%y"){
-        $schedule_start_time = strtotime("$scheduleStart_month/$scheduleStart_day/$scheduleStart_year $scheduleStart_hour:$scheduleStart_min:$secs $scheduleStart_ampm");
-        $schedule_end_time   = strtotime("$scheduleEnd_month/$scheduleEnd_day/$scheduleEnd_year $scheduleEnd_hour:$scheduleEnd_min:$secs $scheduleEnd_ampm"); 
+        $schedule_start_time = strtotime("$schedule_start_month/$schedule_start_day/$schedule_start_year $schedule_start_hour:$schedule_start_min:$secs $schedule_start_ampm");
+        $schedule_end_time   = strtotime("$schedule_end_month/$schedule_end_day/$schedule_end_year $schedule_end_hour:$schedule_end_min:$secs $schedule_end_ampm"); 
     }
-
 
     // If start time is after end time show message and stop further processing
     if($schedule_start_time > $schedule_end_time) {        
