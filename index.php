@@ -189,6 +189,13 @@ if(isset($VAR['page_no'])){
     $page_no = 1;
 }
 
+##########################################
+#   Set Global PHP Values  from QWcrm    #
+##########################################
+
+// Set Date Format
+define('DATE_FORMAT', get_company_info($db,'COMPANY_DATE_FORMAT')); // se schedule could be useful - split('[/.-]', $VAR['scheduleStart']['date']);
+
 ##########################################################################
 #   Assign variables into smarty for use by all native module templates  #
 ##########################################################################
@@ -210,7 +217,7 @@ $smarty->assign('theme_js_dir',                 THEME_JS_DIR                );  
 $smarty->assign('theme_js_dir_finc',            THEME_JS_DIR_FINC           );
 
 // These are used globally but mainly for the menu !!
-$smarty->assign('workorder_id',        $workorder_id          );
+$smarty->assign('workorder_id', $workorder_id   );
 $smarty->assign('customer_id',  $customer_id    );
 $smarty->assign('employee_id',  $employee_id    );              // This is the same as $login_id at some points - when used globally - check
 $smarty->assign('expense_id',   $expense_id     );
@@ -227,7 +234,8 @@ $smarty->assign('date_format',  get_date_format($db)        );
 */
 $smarty->assign('currency_sym', get_company_info($db,   'COMPANY_CURRENCY_SYMBOL')  );
 $smarty->assign('company_logo', get_company_info($db,   'COMPANY_LOGO')             );
-$smarty->assign('date_format',  get_company_info($db,   'COMPANY_DATE_FORMAT')      );
+//$smarty->assign('date_format',  get_company_info($db,   'COMPANY_DATE_FORMAT')      ); // se schedule could be useful - split('[/.-]', $VAR['scheduleStart']['date']);
+$smarty->assign('date_format',  DATE_FORMAT                                         );
 
 // all company info as an array
 //$smarty->assign('company_info', get_company_info($db,   'all')                      );

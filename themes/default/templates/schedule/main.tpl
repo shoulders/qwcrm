@@ -20,20 +20,17 @@
                                     <table width="100%" border="0" cellpadding="10" cellspacing="0">
                                         <tr>
                                             <td>
-                                                new<a name="assigned"></a>
                                                 {include file='schedule/blocks/schedule_new_workorder_block.tpl'}
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>
-                                                open<a name="new"></a>
-                                                {include file='schedule/blocks/schedule_open_workorder_block.tpl'}
+                                                {include file='schedule/blocks/schedule_assigned_workorder_block.tpl'}
                                             </td>
-                                        </tr>                                        
+                                        </tr>
                                         <tr>
                                             <td>
-                                                assigned<a name="assigned"></a>
-                                                {include file='schedule/blocks/schedule_assigned_workorder_block.tpl'}
+                                                {include file='schedule/blocks/schedule_awaiting_parts_workorder_block.tpl'}
                                             </td>
                                         </tr>
                                     </table>                        

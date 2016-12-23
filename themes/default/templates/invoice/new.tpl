@@ -76,7 +76,7 @@ function addRowToTableLabor(){
 
     // Description Cell - Populate the Select Options
     {section loop=$rate name=i}
-        el.options[{$smarty.section.i.index}] = new Option('{$rate[i].LABOR_RATE_NAME} - {$currency_sym}{$rate[i].LABOR_RATE_AMOUNT}', '{$rate[i].LABOR_RATE_NAME}');
+        el.options[{$smarty.section.i.index}] = new Option('{$rate[i].LABOR_RATE_NAME}', '{$rate[i].LABOR_RATE_NAME}');
     {/section}
 
     {literal} 
@@ -120,10 +120,10 @@ function addRowToTableLabor(){
 
     // Rate Cell - Populate the Select Options
     {section loop=$rate name=i}
-        el.options[{$smarty.section.i.index}] = new Option('${$rate[i].LABOR_RATE_AMOUNT}', '{$rate[i].LABOR_RATE_AMOUNT}');
+        el.options[{$smarty.section.i.index}] = new Option('{$rate[i].LABOR_RATE_AMOUNT}', '{$rate[i].LABOR_RATE_AMOUNT}');
     {/section}
 
-    // Rate Cell - Add some HTML to add the Currency Symbol        
+    // Rate Cell - Add some HTML to add the Currency Symbol to the left of the Rate Box      
     buildRow.innerHTML = '<div style="float:left;"><b>{$currency_sym}&nbsp;</b></div><div>' + buildRow.innerHTML + '</div>';
 
     {literal}            
@@ -154,25 +154,6 @@ function removeRowFromTableLabor(){
     var lastRow = tbl.rows.length;
     if (lastRow > 1) tbl.deleteRow(lastRow - 1);
 }
-
-//// Validate Labour Data?
-function validateRowLabor(frm){
-    var chkb = document.getElementById('chkValidate');
-    if (chkb.checked) {
-        var tbl = document.getElementById('labor');
-        var lastRow = tbl.rows.length - 1;
-        var i;
-        for (i=1; i<=lastRow; i++) {
-            var aRow = document.getElementById('txtRow' + i);
-            if (aRow.value.length <= 0) {
-                alert('Row ' + i + ' is empty');
-                return;
-            }
-        }
-    }
-    openInNewWindow(frm);
-}
-
 
 
 /**--  PARTS  --**/
@@ -271,46 +252,6 @@ function removeRowFromTableParts(){
     if (lastRow > 1) tbl.deleteRow(lastRow - 1);
 }
 
-//// Validate Parts Data?
-function validateRowParts(frm){
-    var tbl = document.getElementById('parts');
-    var lastRow = tbl.rows.length - 1;
-    var i;
-    for (i=1; i<=lastRow; i++) {
-        var aRow = document.getElementById('txtRow' + i);
-        if (aRow.value.length <= 0) {
-            alert('Row ' + i + ' is empty');
-            return;
-        }
-    }
-}
-
-// OTHER
-
-function keyPressTestLabor(e, obj){
-    var validateChkb = document.getElementById('chkValidateOnKeyPress');
-    if (validateChkb.checked) {
-        var displayObj = document.getElementById('spanOutput');
-        var key;
-        if(window.event) {
-            key = window.event.keyCode;
-        }
-        else if(e.which) {
-            key = e.which;
-        }
-        var objId;
-        if (obj != null) {
-            objId = obj.id;
-        } else {
-            objId = this.id;
-        }
-        displayObj.innerHTML = objId + ' : ' + String.fromCharCode(key);
-    }
-}
-
-function keyPressTestParts(e, obj){
-    
-}    
 {/literal}
 </script>
 
@@ -361,8 +302,7 @@ function keyPressTestParts(e, obj){
                                                 </td>
                                                 <td>{$item.INVOICE_DUE}
                                                     <input id="due_date" name="due_date" class="olotd4" size="10"  value="{$invoice.INVOICE_DUE|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{1,4}${/literal}" required onkeydown="return onlyDate(event);">
-                                                    <input type="button" id="due_date_button" value="+">
-                                                    
+                                                    <input id="due_date_button" value="+" type="button">                                                    
                                                     <script>
                                                     {literal}
                                                        Calendar.setup({
@@ -439,7 +379,7 @@ function keyPressTestParts(e, obj){
                                                                 <tr class="olotd4">
                                                                     <td>{$trans[r].TRANSACTION_ID}</td>
                                                                     <td>{$trans[r].DATE|date_format:"$date_format"}</td>
-                                                                    <td><b>$</b>{$trans[r].AMOUNT|string_format:"%.2f"}</td>
+                                                                    <td><b>{currency_symbol}</b>{$trans[r].AMOUNT|string_format:"%.2f"}</td>
                                                                     <td>
                                                                         {if $trans[r].TYPE == 1}{$translate_invoice_cc}
                                                                         {elseif $trans[r].TYPE == 2}{$translate_invoice_check}

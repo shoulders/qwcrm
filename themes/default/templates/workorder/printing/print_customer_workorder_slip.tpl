@@ -123,7 +123,7 @@
                         <td valign="top">{$single_work_order[i].WORK_ORDER_ID}</td>
                     </tr>
                     <tr>
-                        <td valign="top"><b>{$translate_workorder_todays_date}</b></td>
+                        <td valign="top"><b>{$translate_workorder_todays_display_date}</b></td>
                         <td valign="top">{$smarty.now|date_format:$date_format}</td>
                     </tr>
                     <tr>

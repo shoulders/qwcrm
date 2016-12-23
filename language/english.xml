@@ -1174,7 +1174,7 @@
         <workorder_start>Start</workorder_start>         
         <workorder_end>End</workorder_end>
         <workorder_schedule>Schedule</workorder_schedule>
-        <workorder_todays_date>Today&#39;s Date</workorder_todays_date>
+        <workorder_todays_display_date>Today&#39;s Date</workorder_todays_display_date>
         <workorder_start_time>Start Time</workorder_start_time>
         <workorder_end_time>End Time</workorder_end_time>
         <workorder_schedule_notes>Schedule Notes</workorder_schedule_notes>

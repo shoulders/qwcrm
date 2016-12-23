@@ -19,25 +19,7 @@
                     <td class="menutd2" colspan="2">
                         <table class="olotable" width="100%" border="0" cellpadding="5" cellspacing="0">
                             <tr>
-                                <td class="menutd">
-                                    {if $workorder_id == '0'}
-                                        <table class="olotablered" width="100%" border="0" cellpadding="5" cellspacing="0"> : </span> {$translate_schedule_error}</td>
-                                            </tr>
-                                        </table>
-                                        <table width="100%" border="0" cellpadding="10" cellspacing="0">
-                                            <tr>
-                                                <td>
-                                                    {include file="schedule/new_work_order.tpl"}
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    {include file="schedule/assigned_work_order_block.tpl"}
-                                                </td>
-                                            </tr>
-                                        </table>
-                                        <br>
-                                    {/if}
+                                <td class="menutd">                                    
                                     {if $workorder_id == ''}
                                         <table class="olotablered" width="100%" border="0" cellpadding="5" cellspacing="0">
                                             <tr>
@@ -55,6 +37,11 @@
                                                     {include file='schedule/blocks/schedule_assigned_workorder_block.tpl'}
                                                 </td>
                                             </tr>
+                                            <tr>
+                                                <td>
+                                                    {include file='schedule/blocks/schedule_awaiting_parts_workorder_block.tpl'}
+                                                </td>
+                                            </tr>
                                         </table>
                                         <br>
                                     {/if}                                        
@@ -63,9 +50,9 @@
                                             <td>
                                                 {if $workorder_id > '0'}
                                                     <form method="POST" action="?page=schedule:new">
-                                                        <input type="hidden" name="page" value="schedule:new">
-                                                        <input type="hidden" name="tech" value="{$tech}">
+                                                        <input type="hidden" name="page" value="schedule:new">                                                        
                                                         <input type="hidden" name="workorder_id" value="{$workorder_id}">
+                                                        <input type="hidden" name="employee_id" value="{$employee_id}">
                                                         <table class="olotable" width="100%" border="0">
                                                             <tr>
                                                                 <td class="olohead">{$translate_schedule_set}</td>
@@ -79,7 +66,7 @@
                                                                         </tr>
                                                                         <tr>
                                                                             <td>
-                                                                                <input id="schedule_start_date" name="scheduleStart[date]" size="10" value="{$start_day}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{1,4}${/literal}" required onkeydown="return onlyDate(event);">
+                                                                                <input id="schedule_start_date" name="scheduleStart[date]" size="10" value="{$schedule_start_date}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{1,4}${/literal}" required onkeydown="return onlyDate(event);">
                                                                                 <input id="schedule_start_date_button" value="+" type="button">                                                                                
                                                                                 <script>
                                                                                 {literal} 
@@ -93,7 +80,7 @@
                                                                                 {html_select_time use_24_hours=false display_seconds=false minute_interval=15 field_array=scheduleStart time=$start_time}
                                                                             </td>
                                                                             <td>
-                                                                                <input id="schedule_end_date" name="scheduleEnd[date]" size="10" value="{$start_day}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{1,4}${/literal}" required onkeydown="return onlyDate(event);">
+                                                                                <input id="schedule_end_date" name="scheduleEnd[date]" size="10" value="{$schedule_end_date}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{1,4}${/literal}" required onkeydown="return onlyDate(event);">
                                                                                 <input id="schedule_end_date_button" value="+" type="button">                                                                                
                                                                                 <script>
                                                                                 {literal}
@@ -111,7 +98,7 @@
                                                                             <td colspan="2">
                                                                                 <b>{$translate_schedule_notes}</b>
                                                                                 <br>
-                                                                                <textarea name="schedule_notes" class="olotd5 mceCheckForContent" rows="15" cols="70">{$schedule_notes}</textarea>
+                                                                                <textarea name="scheduleNotes" class="olotd5 mceCheckForContent" rows="15" cols="70">{$schedule_notes}</textarea>
                                                                             </td>
                                                                         </tr>
                                                                         <tr>

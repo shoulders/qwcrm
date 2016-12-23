@@ -1,5 +1,5 @@
 <?php
-$schedule_id = $VAR['schedule_id'];
+
 $y = $VAR['y'];
 $m = $VAR['m'];
 $d = $VAR['d'];

@@ -186,7 +186,7 @@ while($start <= $business_end){
 
         } else {
 
-             $calendar .= "<td class=\"olotd\" onClick=\"window.location='?page=schedule:new&amp;starttime=".date("h:i a", $start)."&amp;day=".$cur_date."&amp;workorder_id=".$workorder_id."&amp;tech=".$tech."'\"></td>\n";
+             $calendar .= "<td class=\"olotd\" onClick=\"window.location='?page=schedule:new&amp;starttime=".date("h:i a", $start)."&amp;schedule_date=".$cur_date."&amp;workorder_id=".$workorder_id."&amp;tech=".$tech."'\"></td>\n";
         }
 
         $calendar .= "</tr>";
@@ -218,7 +218,7 @@ while($start <= $business_end){
             }
 
         } else {
-            $calendar .= "<td class=\"olotd4\" onClick=\"window.location='?page=schedule:new&amp;starttime=".date("h:i a", $start) ."&amp;day=".$cur_date."&amp;workorder_id=".$workorder_id."&amp;tech=".$tech."'\">&nbsp; ".date("h:i a", $start)."</td>\n</tr>";
+            $calendar .= "<td class=\"olotd4\" onClick=\"window.location='?page=schedule:new&amp;starttime=".date("h:i a", $start) ."&amp;schedule_date=".$cur_date."&amp;workorder_id=".$workorder_id."&amp;tech=".$tech."'\">&nbsp; ".date("h:i a", $start)."</td>\n</tr>";
         }
 
     }

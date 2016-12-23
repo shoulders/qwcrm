@@ -3,8 +3,6 @@ require('include.php');
 if(!xml2php("schedule")) {
     $smarty->assign('error_msg',"Error in language file");
 }
-/* load the date formate from the js calendar */
-$workorder_id = $_GET['workorder_id'];
 
 /* check if work order closed we don't want to reschedule a work order if it's closed */
 if(isset($workorder_id)) {
@@ -147,7 +145,7 @@ while($start <= $business_end){
             
         } else {
         
-            $calendar .= "<td class=\"olotd\" onClick=\"window.location='?page=schedule:new&starttime=".date("h:i a", $start)."&day=".$cur_date."&workorder_id=".$workorder_id."&tech=".$tech."'\"></td>\n";
+            $calendar .= "<td class=\"olotd\" onClick=\"window.location='?page=schedule:new&starttime=".date("h:i a", $start)."&schedule_date=".$cur_date."&workorder_id=".$workorder_id."&tech=".$tech."'\"></td>\n";
         }
         
         $calendar .= "</tr>";
@@ -173,7 +171,7 @@ while($start <= $business_end){
             }
             
         } else {
-            $calendar .= "<td class=\"olotd4\" onClick=\"window.location='?page=schedule:new&starttime=".date("h:i a", $start) ."&day=".$cur_date."&workorder_id=".$workorder_id."&tech=".$tech."'\">&nbsp; ".date("h:i a", $start)."</td>\n</tr>";
+            $calendar .= "<td class=\"olotd4\" onClick=\"window.location='?page=schedule:new&starttime=".date("h:i a", $start) ."&schedule_date=".$cur_date."&workorder_id=".$workorder_id."&tech=".$tech."'\">&nbsp; ".date("h:i a", $start)."</td>\n</tr>";
         }
         
     }
