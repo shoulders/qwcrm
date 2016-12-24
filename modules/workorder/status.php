@@ -33,6 +33,6 @@ if (isset($VAR['delete'])) {
 
 $smarty->assign('employee_list',        build_active_employee_form_option_list($db, $assigned_employee_id)  );
 $smarty->assign('single_workorder',     $single_work_order                                                  );
-$smarty->assign('workorder_id',                $workorder_id                                                              );
+$smarty->assign('workorder_id',         $workorder_id                                                       );
 
 $smarty->display('workorder'.SEP.'status.tpl');

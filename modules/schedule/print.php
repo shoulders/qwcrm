@@ -44,11 +44,11 @@ $literals = "%";
 $Dformat = str_replace($literals, "", $format);
 //Now lets display the right date format
 if($Dformat == 'd/m/Y' || $Dformat == 'd/m/y'  ){
-$cur_date = $d."/".$m."/".$y;}
+$current_schedule_date = $d."/".$m."/".$y;}
 elseif($Dformat == 'm/d/Y' || $Dformat == 'm/d/y' ){
-$cur_date = $m."/".$d."/".$y;}
+$current_schedule_date = $m."/".$d."/".$y;}
 //Assign it to Smarty
-$smarty->assign('cur_date', $cur_date);
+$smarty->assign('current_schedule_date', $current_schedule_date);
 
 $date_array = array('y'=>$y, 'm'=>$m, 'd'=>$d, 'workorder_id'=>$workorder_id);
 $smarty->assign('date_array',$date_array);
@@ -145,7 +145,7 @@ while($start <= $business_end){
             
         } else {
         
-            $calendar .= "<td class=\"olotd\" onClick=\"window.location='?page=schedule:new&schedule_start_time=".date("h:i a", $start)."&schedule_start_date=".$cur_date."&workorder_id=".$workorder_id."&tech=".$tech."'\"></td>\n";
+            $calendar .= "<td class=\"olotd\" onClick=\"window.location='?page=schedule:new&schedule_start_time=".date("h:i a", $start)."&schedule_start_date=".$current_schedule_date."&workorder_id=".$workorder_id."&tech=".$tech."'\"></td>\n";
         }
         
         $calendar .= "</tr>";
@@ -171,7 +171,7 @@ while($start <= $business_end){
             }
             
         } else {
-            $calendar .= "<td class=\"olotd4\" onClick=\"window.location='?page=schedule:new&schedule_start_time=".date("h:i a", $start) ."&schedule_start_date=".$cur_date."&workorder_id=".$workorder_id."&tech=".$tech."'\">&nbsp; ".date("h:i a", $start)."</td>\n</tr>";
+            $calendar .= "<td class=\"olotd4\" onClick=\"window.location='?page=schedule:new&schedule_start_time=".date("h:i a", $start) ."&schedule_start_date=".$current_schedule_date."&workorder_id=".$workorder_id."&tech=".$tech."'\">&nbsp; ".date("h:i a", $start)."</td>\n</tr>";
         }
         
     }
@@ -188,7 +188,7 @@ $calendar .= "\n</table>";
 
 /* feed smarty */
 $smarty->assign('calendar', $calendar);
-$smarty->assign('cur_date', $cur_date);
+$smarty->assign('current_schedule_date', $current_schedule_date);
 $smarty->assign('d', $d);
 $smarty->assign('m', $m);
 $smarty->assign('y', $y);

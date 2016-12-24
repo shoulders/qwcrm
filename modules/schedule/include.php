@@ -1,32 +1,57 @@
 <?php
+
+if(!xml2php("schedule")) {
+    $smarty->assign('error_msg',"Error in language file");
+}
+
+// Make sure an employee is set - if not employee set use the logged in user
+if(isset($VAR['employee_id'])) {
+    $employee_id = $VAR['employee_id'];
+} else {
+    $employee_id = $_SESSION['login_id'];
+}
+
 ######################################
 # Insert New schedule                #
 ######################################
 
-function insert_new_schedule($db, $workorder_id, $employee_id, $scheduleStart, $scheduleEnd, $schedule_notes){
+//$schedule_start_date and $schedule_end_date, add back into the time arrray would be neater?
 
-    global $smarty;        
+function insert_new_schedule($db, $schedule_start_date, $scheduleStartTime, $schedule_end_date, $scheduleEndTime, $schedule_notes, $employee_id, $workorder_id){
 
-    // Get Schdule Start Time values
-    list($schedule_start_month, $schedule_start_day, $schedule_start_year) = split('[/.-]', $scheduleStart['date']);
-    $schedule_start_hour     = $scheduleStart['Time_Hour'];
-    $schedule_start_min      = $scheduleStart['Time_Minute'];
-    $schedule_start_ampm     = $scheduleStart['Time_Meridian'];
+    global $smarty;
+    
+    print_r($scheduleStartTime['date']);
 
-    // Get Schdule End Time values
-    list($schedule_end_month, $schedule_end_day, $schedule_end_year)       = split('[/.-]', $scheduleEnd['date']);
-    $schedule_end_hour       = $scheduleEnd['Time_Hour'];
-    $schedule_end_min        = $scheduleEnd['Time_Minute'];
-    $schedule_end_ampm       = $scheduleEnd['Time_Meridian'];
+    // Get Scehdule Start Time values    
+    $schedule_start_hour     = $scheduleStartTime['Time_Hour'];
+    $schedule_start_min      = $scheduleStartTime['Time_Minute'];
+    $schedule_start_ampm     = $scheduleStartTime['Time_Meridian'];
+
+    // Get Scehdule End Time values    
+    $schedule_end_hour       = $scheduleEndTime['Time_Hour'];
+    $schedule_end_min        = $scheduleEndTime['Time_Minute'];
+    $schedule_end_ampm       = $scheduleEndTime['Time_Meridian'];
 
     // Set 0 seconds for both start and end times
-    $secs   = "00";
+    $secs   = '00';
 
-    // Translate the date and time to a unix timestamp - this includes the additional smarty dropdown variables from the form
-    if(DATE_FORMAT == "%d/%m/%Y" || DATE_FORMAT == "%d/%m/%y"){
+    // Translate the date and time to a unix timestamp (including the additional smarty dropdown variables from the form)
+    if(DATE_FORMAT == '%d/%m/%Y' || DATE_FORMAT == '%d/%m/%y'){
+        
+        list($schedule_start_day, $schedule_start_month, $schedule_start_year) = split('[/.-]', $schedule_start_date);
+        list($schedule_end_day, $schedule_end_month, $schedule_end_year)       = split('[/.-]', $schedule_end_date);
+        
         $schedule_start_time = strtotime("$schedule_start_day/$schedule_start_month/$schedule_start_year $schedule_start_hour:$schedule_start_min:$secs $schedule_start_ampm");
         $schedule_end_time   = strtotime("$schedule_end_day/$schedule_end_month/$schedule_end_year $schedule_end_hour:$schedule_end_min:$secs $schedule_end_ampm");
-    } else if (DATE_FORMAT == "%m/%d/%Y" || DATE_FORMAT == "%m/%d/%y"){
+        
+        echo $schedule_start_time."$schedule_start_day/$schedule_start_month/$schedule_start_year $schedule_start_hour:$schedule_start_min:$secs $schedule_start_ampm".'rrrrrr';
+        
+    } elseif (DATE_FORMAT == '%m/%d/%Y' || DATE_FORMAT == '%m/%d/%y'){
+        
+        list($schedule_start_month, $schedule_start_day, $schedule_start_year) = split('[/.-]', $schedule_start_date);
+        list($schedule_end_month, $schedule_end_day, $schedule_end_year)       = split('[/.-]', $schedule_end_date);
+        
         $schedule_start_time = strtotime("$schedule_start_month/$schedule_start_day/$schedule_start_year $schedule_start_hour:$schedule_start_min:$secs $schedule_start_ampm");
         $schedule_end_time   = strtotime("$schedule_end_month/$schedule_end_day/$schedule_end_year $schedule_end_hour:$schedule_end_min:$secs $schedule_end_ampm"); 
     }
@@ -40,6 +65,7 @@ function insert_new_schedule($db, $workorder_id, $employee_id, $scheduleStart, $
     // If the start time is the same as the end time show message and stop furhter processing
     if($schedule_start_time == $schedule_end_time) {       
         $smarty->assign('warning_msg', 'Start Time and End Time are the Same');
+        echo $schedule_start_time.'<br>cccccc'.$schedule_end_time; echo DATE_FORMAT;
         return false;
     }
 
@@ -51,10 +77,7 @@ function insert_new_schedule($db, $workorder_id, $employee_id, $scheduleStart, $
     if(!$rs = $db->Execute($q)) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
         exit;
-    }
-
-    
-    
+    }    
     
     // not sure what this does
     $counter = 1;
@@ -179,9 +202,9 @@ function insert_new_schedule($db, $workorder_id, $employee_id, $scheduleStart, $
 # List of all employees and their data #
 ########################################
     
-function display_employee_info($db){
+function display_employees_info($db){
     
-    $q = "SELECT  EMPLOYEE_ID, EMPLOYEE_TYPE, EMPLOYEE_LOGIN FROM ".PRFX."TABLE_EMPLOYEE";
+    $q = "SELECT EMPLOYEE_ID, EMPLOYEE_TYPE, EMPLOYEE_LOGIN FROM ".PRFX."TABLE_EMPLOYEE";
     
     if(!$rs = $db->Execute($q)) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
@@ -267,3 +290,219 @@ function display_workorders($db, $page_no, $status){
         }
     }
 }
+
+######################################################################################
+# display the current date for the schedule you are currently on from year/month/day #
+######################################################################################
+
+function display_current_schedule_date($schedule_start_year, $schedule_start_month, $schedule_start_day) {
+    
+    if(DATE_FORMAT === '%d/%m/%Y' || DATE_FORMAT === '%d/%m/%y'  ){
+        return $schedule_start_day."/".$schedule_start_month."/".$schedule_start_year;    
+    }
+    elseif(DATE_FORMAT === '%m/%d/%Y' || DATE_FORMAT === '%m/%d/%y' ){
+        return $schedule_start_month."/".$schedule_start_day."/".$schedule_start_year;    
+    }
+    
+}
+
+################################################
+#  Get setup info - individual items           # // translate this, maybe move to root or get rid of setup and add to company
+################################################
+
+/*
+ * This combined function allows you to pull any of the setup information individually
+ * or return them all as an array
+ * supply the required field name or all to return all of them as an array
+ */
+
+function get_setup_info($db, $item){
+    
+    global $smarty;
+
+    $q = 'SELECT * FROM '.PRFX.'SETUP';
+    
+    if(!$rs = $db->execute($q)){        
+        force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
+        exit;
+    } else {        
+        if($item === 'all'){            
+            return $rs->GetArray();            
+        } else {
+            return $rs->fields[$item];          
+        }        
+    }
+    
+}
+
+###############################################################
+# check the status of the workorder supplied to the schedule  #
+###############################################################
+
+function check_schedule_workorder_status($db, $workorder_id) {
+    
+    $q = "SELECT WORK_ORDER_CURRENT_STATUS FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_ID=".$db->qstr($workorder_id);
+    
+    if(!$rs = $db->execute($q)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
+    } else {
+        $status = $rs->fields['WORK_ORDER_CURRENT_STATUS'];
+    }
+
+    if($status == '6') {
+        force_page('workorder', 'view', 'workorder_id='.$workorder_id.'&error_msg=Can not set a schedule for closed work order&page_title=Work Order ID '.$workorder_id.'&type=warning');
+        exit;
+    } elseif ($status == '7') {
+        force_page('workorder', 'view', 'workorder_id='.$workorder_id.'&error_msg=Can not set a schedule for closed work order&page_title=Work Order ID '.$workorder_id.'&type=warning');
+        exit;
+    } elseif ($status == '8') {
+        force_page('workorder', 'view', 'workorder_id='.$workorder_id.'&error_msg=Can not set a schedule for closed work order&page_title=Work Order ID '.$workorder_id.'&type=warning');
+        exit;
+    } elseif ($status == '9') {
+        force_page('workorder', 'view', 'workorder_id='.$workorder_id.'&error_msg=Can not set a schedule for closed work order&page_title=Work Order ID '.$workorder_id.'&type=warning');
+        exit;
+    }    
+}
+
+#####################################################
+#   Build Calender Matrix                           #
+#####################################################
+
+function build_calendar_matrix($db, $schedule_start_year, $schedule_start_month, $schedule_start_day, $employee_id, $workorder_id = null) {
+    
+    // Get current schedule date in the DATE_FORMAT
+    $current_schedule_date = display_current_schedule_date($schedule_start_year, $schedule_start_month, $schedule_start_day);
+    
+    // Create time range to display schedule calendar using unixtimstamp
+    $business_day_start = mktime(get_setup_info($db, 'OFFICE_HOUR_START'),0,0,$schedule_start_month,$schedule_start_day,$schedule_start_year);
+    $business_day_end   = mktime(get_setup_info($db, 'OFFICE_HOUR_END'),0,0,$schedule_start_month,$schedule_start_day,$schedule_start_year);
+
+    // Look in the database for a scheduled events for the current schedule day (within business hours)
+    $q = "SELECT ".PRFX."TABLE_SCHEDULE.*,
+        ".PRFX."TABLE_CUSTOMER.CUSTOMER_DISPLAY_NAME
+        FROM ".PRFX."TABLE_SCHEDULE
+        INNER JOIN ".PRFX."TABLE_WORK_ORDER
+        ON ".PRFX."TABLE_SCHEDULE.WORK_ORDER_ID = ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_ID
+        INNER JOIN ".PRFX."TABLE_CUSTOMER
+        ON ".PRFX."TABLE_WORK_ORDER.CUSTOMER_ID = ".PRFX."TABLE_CUSTOMER.CUSTOMER_ID
+        WHERE ".PRFX."TABLE_SCHEDULE.SCHEDULE_START >= " . $business_day_start. " AND ".PRFX."TABLE_SCHEDULE.SCHEDULE_START <= " .$business_day_end. "
+        AND ".PRFX."TABLE_SCHEDULE.EMPLOYEE_ID ='".$employee_id."' ORDER BY ".PRFX."TABLE_SCHEDULE.SCHEDULE_START ASC";
+
+    if(!$rs = $db->Execute($q)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
+    }
+
+    // Add any scheduled events found into the $scheduleObject
+    $scheduleObject = array();
+    while (!$rs->EOF ){
+        array_push($scheduleObject, array(
+            "SCHEDULE_ID"      => $rs->fields["SCHEDULE_ID"],
+            "SCHEDULE_START"   => $rs->fields["SCHEDULE_START"],
+            "SCHEDULE_END"     => $rs->fields["SCHEDULE_END"],
+            "SCHEDULE_NOTES"   => $rs->fields["SCHEDULE_NOTES"],
+            "CUSTOMER_NAME"    => $rs->fields["CUSTOMER_DISPLAY_NAME"],
+            "WORK_ORDER_ID"    => $rs->fields["WORK_ORDER_ID"]
+            ));
+        $rs->MoveNext();
+    }
+
+    // Set Calendar Initial Values for the build loop
+    $i = 0;
+    $matrixStartTime = $business_day_start;
+
+    // Open the Calendar Matrix Table
+    $calendar .= "<table cellpadding=\"0\" cellspacing=\"0\" class=\"olotable\">\n
+        <tr>\n
+            <td class=\"olohead\" width=\"75\">&nbsp;</td>\n
+            <td class=\"olohead\" width=\"600\">&nbsp;</td>\n
+        </tr>\n";
+
+    // Build the Calendar Matrix Table content
+    while($matrixStartTime <= $business_day_end){
+
+        if(date("i",$matrixStartTime) == 0) {
+
+            $calendar .= "<tr><td class=\"olotd\" nowrap>&nbsp;<b>".date("h:i a", $matrixStartTime)."</b></td>\n";
+
+            if($matrixStartTime >= $scheduleObject[$i]['SCHEDULE_START'] && $matrixStartTime <= $scheduleObject[$i]['SCHEDULE_END']){
+
+                if($matrixStartTime == $scheduleObject[$i]['SCHEDULE_START']){
+
+                        if($scheduleObject[$i]['WORK_ORDER_ID'] != 0) {
+                            $calendar .= "<td class=\"menutd2\" align=\"center\" onClick=\"window.location='?page=workorder:details&workorder_id=".$scheduleObject[$i]['WORK_ORDER_ID']."page_title=Work Order ID ".$scheduleObject[$i]['WORK_ORDER_ID ']."'\"><b>\n";
+                            $calendar .= " <b><font color=\"red\">Work Order ". $scheduleObject[$i]['WORK_ORDER_ID']." for ". $scheduleObject[$i]['CUSTOMER_NAME']."<br>".date("h:i a",$scheduleObject[$i]['SCHEDULE_START'])." - ".date("h:i a",$scheduleObject[$i]['SCHEDULE_END'])."</font><br><font color=\"blue\">NOTES-  ".$scheduleObject[$i]['SCHEDULE_NOTES']."</font><br>
+                            <a href=\"index.php?page=schedule:edit&schedule_id=".$scheduleObject[$i]['SCHEDULE_ID']."&schedule_start_year=".$schedule_start_year."&schedule_start_month=".$schedule_start_month."&schedule_start_day=".$schedule_start_day."&workorder_id=".$scheduleObject[$i]['WORK_ORDER_ID']."\">Edit Note</a> -
+                            <a href=\"index.php?page=schedule:sync&workorder_id=".$scheduleObject[$i]['WORK_ORDER_ID']."&theme=off\">Sync</a> -
+                            <a href=\"index.php?page=schedule:delete&schedule_id=".$scheduleObject[$i]['SCHEDULE_ID']."&schedule_start_year=".$schedule_start_year."&schedule_start_month=".$schedule_start_month."&schedule_start_day=".$schedule_start_day."&workorder_id=".$scheduleObject[$i]['WORK_ORDER_ID']."\">Delete</a>\n";
+                            $calendar . "</b></td>\n";
+                        } else {
+                            $calendar .= "<td class=\"menutd2\" align=\"center\" onClick=\"window.location='?page=schedule:view&schedule_id=".$scheduleObject[$i]['SCHEDULE_ID']."&schedule_start_year=".$schedule_start_year."&schedule_start_month=".$schedule_start_month."&schedule_start_day=".$schedule_start_day."'\">";
+                            $calendar .= " <b><font color=\"red\">Work Order ". $scheduleObject[$i]['WORK_ORDER_ID']."for ". $scheduleObject[$i]['CUSTOMER_NAME']."<br>".date("h:i a",$scheduleObject[$i]['SCHEDULE_START'])." - ".date("h:i a",$scheduleObject[$i]['SCHEDULE_END'])."</font><br><font color=\"blue\">NOTES-  ".$scheduleObject[$i]['SCHEDULE_NOTES']."</font><br>
+                            <a href=\"index.php?page=schedule:edit&schedule_id=".$scheduleObject[$i]['SCHEDULE_ID']."&schedule_start_year=".$schedule_start_year."&schedule_start_month=".$schedule_start_month."&schedule_start_day=".$schedule_start_day."&workorder_id=".$scheduleObject[$i]['WORK_ORDER_ID']."\">Edit Note</a> -
+                            <a href=\"index.php?page=schedule:sync&workorder_id=".$scheduleObject[$i]['WORK_ORDER_ID']."&theme=off\">Sync</a> -
+                            <a href=\"index.php?page=schedule:delete&schedule_id=".$scheduleObject[$i]['SCHEDULE_ID']."&schedule_start_year=".$schedule_start_year."&schedule_start_month=".$schedule_start_month."&schedule_start_day=".$schedule_start_day."&workorder_id=".$scheduleObject[$i]['WORK_ORDER_ID']."\">Delete</a>\n";
+                            $calendar . "</b></td>\n";
+                        }
+
+                } else {                
+                    $calendar .= "<td class=\"menutd2\">&nbsp;</td>\n";
+                }
+
+            } else {            
+                $calendar .= "<td class=\"olotd\" onClick=\"window.location='?page=schedule:new&schedule_start_time=".date("h:i a", $matrixStartTime)."&schedule_start_date=".$current_schedule_date."&workorder_id=".$workorder_id."&employee_id=".$employee_id."'\"></td>\n";
+            }
+
+            $calendar .= "</tr>";
+
+        } else {
+
+            $calendar .= "<tr>\n<td></td>\n";
+
+            if($matrixStartTime >= $scheduleObject[$i]['SCHEDULE_START'] && $matrixStartTime <= $scheduleObject[$i]['SCHEDULE_END']){
+
+                if($matrixStartTime == $scheduleObject[$i]['SCHEDULE_START']) {
+
+                    if($scheduleObject[$i]['WORK_ORDER_ID'] != 0) {
+                        $calendar .= "<td class=\"menutd2\" align=\"center\" onClick=\"window.location='?page=workorder:details&workorder_id=".$scheduleObject[$i]['WORK_ORDER_ID']."page_title=Work Order ID ".$scheduleObject[$i]['WORK_ORDER_ID ']."'\"><b>\n";
+                        $calendar .= " <b><font color=\"red\">Work Order ". $scheduleObject[$i]['WORK_ORDER_ID']." for ". $scheduleObject[$i]['CUSTOMER_NAME']."<br>".date("h:i a",$scheduleObject[$i]['SCHEDULE_START'])." - ".date("h:i a",$scheduleObject[$i]['SCHEDULE_END'])."</font><br><font color=\"blue\">NOTES-  ".$scheduleObject[$i]['SCHEDULE_NOTES']."</font><br>
+                        <a href=\"index.php?page=schedule:edit&schedule_id=".$scheduleObject[$i]['SCHEDULE_ID']."&schedule_start_year=".$schedule_start_year."&schedule_start_month=".$schedule_start_month."&schedule_start_day=".$schedule_start_day."&workorder_id=".$scheduleObject[$i]['WORK_ORDER_ID']."\">Edit Note</a> -
+                        <a href=\"index.php?page=schedule:sync&workorder_id=".$scheduleObject[$i]['WORK_ORDER_ID']."&theme=off\">Sync</a> -
+                        <a href=\"index.php?page=schedule:delete&schedule_id=".$scheduleObject[$i]['SCHEDULE_ID']."&schedule_start_year=".$schedule_start_year."&schedule_start_month=".$schedule_start_month."&schedule_start_day=".$schedule_start_day."&workorder_id=".$scheduleObject[$i]['WORK_ORDER_ID']."\">Delete</a>\n";
+                        $calendar . "</b></td>\n";
+                    } else {
+                        $calendar .= "<td class=\"menutd2\" align=\"center\" onClick=\"window.location='?page=schedule:view&schedule_id=".$scheduleObject[$i]['SCHEDULE_ID']."&schedule_start_year=".$schedule_start_year."&schedule_start_month=".$schedule_start_month."&schedule_start_day=".$schedule_start_day."'\">";
+                        $calendar .= " <b><font color=\"red\">Work Order ". $scheduleObject[$i]['WORK_ORDER_ID']." for ". $scheduleObject[$i]['CUSTOMER_NAME']."<br>".date("h:i a",$scheduleObject[$i]['SCHEDULE_START'])." - ".date("h:i a",$scheduleObject[$i]['SCHEDULE_END'])."</font><br><font color=\"blue\">NOTES-  ".$scheduleObject[$i]['SCHEDULE_NOTES']."</font><br>
+                        <a href=\"index.php?page=schedule:edit&schedule_id=".$scheduleObject[$i]['SCHEDULE_ID']."&schedule_start_year=".$schedule_start_year."&schedule_start_month=".$schedule_start_month."&schedule_start_day=".$schedule_start_day."&workorder_id=".$scheduleObject[$i]['WORK_ORDER_ID']."\">Edit Note</a> -
+                        <a href=\"index.php?page=schedule:sync&workorder_id=".$scheduleObject[$i]['WORK_ORDER_ID']."&theme=off\">Sync</a> -
+                        <a href=\"index.php?page=schedule:delete&schedule_id=".$scheduleObject[$i]['SCHEDULE_ID']."&schedule_start_year=".$schedule_start_year."&schedule_start_month=".$schedule_start_month."&schedule_start_day=".$schedule_start_day."&workorder_id=".$scheduleObject[$i]['WORK_ORDER_ID']."\">Delete</a>\n";
+                        $calendar . "</b></td>\n";
+                    }
+
+                }  else {
+                    $calendar .= "<td class=\"menutd2\"><br></td>\n</tr>";
+                }
+
+            } else {                
+                $calendar .= "<td class=\"olotd4\" onClick=\"window.location='?page=schedule:new&schedule_start_time=".date("h:i a", $matrixStartTime) ."&schedule_start_date=".$current_schedule_date."&workorder_id=".$workorder_id."&employee_id=".$employee_id."'\">&nbsp; ".date("h:i a", $matrixStartTime)."</td>\n</tr>";
+            }
+
+        }
+
+        if($matrixStartTime == $scheduleObject[$i]['SCHEDULE_END']) {
+            $i++;
+        }
+
+        // Advance Start time by 15 minutes before restarting loop to create 15 minute segements
+        $matrixStartTime = mktime(date("H",$matrixStartTime),date("i",$matrixStartTime)+15,0,$schedule_start_month,$schedule_start_day,$schedule_start_year);
+
+    }
+
+    // Close the Calendar Matrix Table
+    $calendar .= "\n</table>";    
+    
+    // Return Calender HTML Matrix
+    return $calendar;
+}
+

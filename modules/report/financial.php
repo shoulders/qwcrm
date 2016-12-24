@@ -10,10 +10,10 @@ if(isset($VAR['submit'])){
 // General Section
 
                         /* Change dates to proper timestamps */
-                        $start_date = date_to_timestamp($db, $VAR['start_date']);
+                        $start_date = date_to_timestamp($VAR['start_date']);
                         $smarty->assign('start_date', $start_date);
 
-                        $end_date = date_to_timestamp($db, $VAR['end_date']);
+                        $end_date = date_to_timestamp($VAR['end_date']);
                         $smarty->assign('end_date', $end_date);
 
                         /* Count open work orders in selected period */

@@ -20,11 +20,11 @@ $literals = "%";
 $Dformat = str_replace($literals, "", $format);
 
 //Now lets display the right date format
-if($Dformat == 'd/m/Y' || $Dformat == 'd/m/y'){$cur_date = $d."/".$m."/".$y;}
-elseif($Dformat == 'm/d/Y' || $Dformat == 'm/d/y' ){$cur_date = $m."/".$d."/".$y;}
+if($Dformat == 'd/m/Y' || $Dformat == 'd/m/y'){$current_schedule_date = $d."/".$m."/".$y;}
+elseif($Dformat == 'm/d/Y' || $Dformat == 'm/d/y' ){$current_schedule_date = $m."/".$d."/".$y;}
 
 //Assign it to Smarty
-$smarty->assign('cur_date', $cur_date);
+$smarty->assign('current_schedule_date', $current_schedule_date);
 $smarty->assign('format', $format);
 
 /* Generic error control */

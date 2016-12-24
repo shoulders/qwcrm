@@ -11,6 +11,6 @@ $q = "DELETE FROM ".PRFX."TABLE_SCHEDULE WHERE SCHEDULE_ID =".$db->qstr($schedul
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
         exit;
     } else {
-        force_page('schedule', 'main&y='.$y.'&m='.$m.'&d='.$d.'&workorder_id='.$VAR['workorder_id']);
+        force_page('schedule', 'main&schedule_start_year='.$y.'&schedule_start_month='.$m.'&schedule_start_day='.$d.'&workorder_id='.$workorder_id);
         exit;
     }

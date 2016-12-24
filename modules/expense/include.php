@@ -17,22 +17,6 @@ $q = 'SELECT * FROM '.PRFX.'SETUP';
 }
 
 ##########################################
-#      MyITCRM Date Format Call          #
-##########################################
-
-function date_format_call($db){
-
-$q = 'SELECT * FROM '.PRFX.'TABLE_COMPANY';
-    if(!$rs = $db->execute($q)) {
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-        exit;
-    } else {
-        $date_format = $rs->fields['COMPANY_DATE_FORMAT'];
-                return $date_format;
-        }
-}
-
-##########################################
 #      Last Record Look Up               #
 ##########################################
 
@@ -49,81 +33,12 @@ $q = 'SELECT * FROM '.PRFX.'TABLE_EXPENSE ORDER BY EXPENSE_ID DESC LIMIT 1';
 }
 
 ##########################################
-# Convert dates into Timestamp           #
-# including UK to US date conversion     #
-##########################################
-
-  function date_to_timestamp($db, $check_date){
-
-      $date_format = date_format_call($db);
-
-      if
-          //Change and clean UK date to US date format
-            ($date_format == "%d/%m/%Y" || $date_format == "%d/%m/%y"){
-
-                // Removes all non valid seperators and replaces them with a / (slash)
-                    $newseparator = array('/', '/');
-                    $oldseparator = array('-', 'g');
-                    $cleaned_date = str_replace($oldseparator, $newseparator, $check_date);
-
-                // Convert a UK date (DD/MM/YYYY) to a US date (MM/DD/YYYY) and vice versa
-                    $aDate = split ("/", $cleaned_date);
-                    $USdate = $aDate[1]."/".$aDate[0]."/".$aDate[2];
-
-                // Converts date to string time
-                    $timestamp = strtotime($USdate);
-                    return $timestamp;
-
-            }
-
-        else if
-            //If already US format just run string to time
-              ($date_format == "%m/%d/%Y" || $date_format == "%m/%d/%y"){
-
-                // Converts date to string time
-                    $timestamp = strtotime($check_date);
-                    return $timestamp;
-            }
-      
-  }
-
-##########################################
-#     Timestamp to dates                 #
-##########################################
-
-function timestamp_to_date($db, $timestamp){
-
-     $date_format = date_format_call($db);
-     $formatted_date = date($date_format, $timestamp);
-
-      switch($date_format)
-      {
-          case "%d/%m/%Y":
-          $formatted_date = date("d/m/Y", $timestamp);
-          return $formatted_date;
-      
-          case "%d/%m/%y":
-          $formatted_date = date("d/m/y", $timestamp);
-          return $formatted_date;
-      
-          case "%m/%d/%Y":
-          $formatted_date = date("m/d/Y", $timestamp);
-          return $formatted_date;
-      
-          case "%m/%d/%y":
-          $formatted_date = date("m/d/y", $timestamp);
-          return $formatted_date;
-      }
-
-}
-
-##########################################
 #      Insert New Record                 #
 ##########################################
 
 function insert_new_expense($db,$VAR) {
 
-    $checked_date = date_to_timestamp($db, $VAR['expenseDate']);
+    $checked_date = date_to_timestamp($VAR['expenseDate']);
 
 //Remove Extra Slashes caused by Magic Quotes
 $expenseNotes_string = $VAR['expenseNotes'];
@@ -177,7 +92,7 @@ function edit_info($db, $expense_id){
 
 function update_expense($db,$VAR) {
 
-        $checked_date = date_to_timestamp($db, $VAR['expenseDate']);
+        $checked_date = date_to_timestamp($VAR['expenseDate']);
 
 //Remove Extra Slashes caused by Magic Quotes
 $expenseNotes_string = $VAR['expenseNotes'];
@@ -297,7 +212,7 @@ function expense_search_gateway($db, $expense_search_category, $expense_search_t
             switch ($expense_search_category) {
 
                    case "DATE": {
-                   $expense_gateway_search_term = date_to_timestamp($db, $expense_search_term);                   
+                   $expense_gateway_search_term = date_to_timestamp($expense_search_term);                   
                    return $expense_gateway_search_term;
                    break;
                    }

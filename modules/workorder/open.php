@@ -2,13 +2,6 @@
 
 require(INCLUDES_DIR.'modules/workorder.php');
 
-/* Get the page number we are on if first page set to 1 */
-    if(!isset($VAR["page_no"])) {
-        $page_no = 1;
-    } else {
-        $page_no = $VAR['page_no'];
-    }    
-
 $smarty->assign('new',      display_workorders($db, $page_no, 1)    );
 $smarty->assign('assigned', display_workorders($db, $page_no, 2)    );
 $smarty->assign('awaiting', display_workorders($db, $page_no, 3)    );

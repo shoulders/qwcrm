@@ -3,8 +3,6 @@ require('include.php');
 if(!xml2php("schedule")) {
     $smarty->assign('error_msg',"Error in language file");
 }
-/* load the date format from the js calendar */
-$workorder_id = $_GET['workorder_id'];
 
 /* check if work order closed we don't want to reschedule a work order if it's closed */
 if(isset($workorder_id)) {
@@ -33,8 +31,8 @@ if(isset($workorder_id)) {
 $y = $VAR['y'] ;
 $m = $VAR['m'];
 $d = $VAR['d'];
-//$cur_date = $d."/".$m."/".$y; //added by Glen V
-$cur_date = $d."/".$m."/".$y;
+//$current_schedule_date = $d."/".$m."/".$y; //added by Glen V
+$current_schedule_date = $d."/".$m."/".$y;
 
 
 
@@ -121,11 +119,11 @@ while($start <= $business_end){
                 
                     if($sch[$i]['WORK_ORDER_ID'] > 1 ) {
                         //$calendar .= "<td class=\"menutd2\" align=\"center\" onClick=\"window.location='?page=workorder:details&workorder_id=".$sch[$i]['WORK_ORDER_ID']."page_title=Work Order ID ".$sch[$i]['WORK_ORDER_ID ']."'\"><b>\n"; 
-                        $calendar .= "<td class=\"menutd2\" align=\"center\" onClick=\"window.location='?page=schedule:view&schedule_id=".$sch[$i]['SCHEDULE_ID']."&y=".$y."&m=".$m."&d=".$d."'\">";
+                        $calendar .= "<td class=\"menutd2\" align=\"center\" onClick=\"window.location='?page=schedule:view&schedule_id=".$sch[$i]['SCHEDULE_ID']."&schedule_year=".$y."&schedule_month=".$m."&schedule_day=".$d."'\">";
                       $calendar .= "Work Order ". $sch[$i]['WORK_ORDER_ID']." - Currently scheduled for ".date("h:i a",$sch[$i]['SCHEDULE_START'])." until ".date("h:i a",$sch[$i]['SCHEDULE_END'])." ".$sch[$i]['SCHEDULE_NOTES']."\n";
                         $calendar . "</b></td>\n";
                     } else {
-                        $calendar .= "<td class=\"menutd2\" align=\"center\" onClick=\"window.location='?page=schedule:view&schedule_id=".$sch[$i]['SCHEDULE_ID']."&y=".$y."&m=".$m."&d=".$d."'\">";
+                        $calendar .= "<td class=\"menutd2\" align=\"center\" onClick=\"window.location='?page=schedule:view&schedule_id=".$sch[$i]['SCHEDULE_ID']."&schedule_year=".$y."&schedule_month=".$m."&schedule_day=".$d."'\">";
                         $calendar .= "<b>From: ".date("h:i a",$sch[$i]['SCHEDULE_START'])." to: ".date("h:i a",$sch[$i]['SCHEDULE_END']).' '.$sch[$i]['SCHEDULE_NOTES']."\n";
                         $calendar .= "</b></td>\n";
                     }
@@ -137,7 +135,7 @@ while($start <= $business_end){
         } else {
         
          
-            $calendar .= "<td class=\"olotd\" onClick=\"window.location='?page=schedule:new&schedule_start_time=".date("h:i a", $start)."&schedule_start_date=".$cur_date."&workorder_id=".$workorder_id."&tech=".$tech."'\"></td>\n";
+            $calendar .= "<td class=\"olotd\" onClick=\"window.location='?page=schedule:new&schedule_start_time=".date("h:i a", $start)."&schedule_start_date=".$current_schedule_date."&workorder_id=".$workorder_id."&tech=".$tech."'\"></td>\n";
         }
         
         $calendar .= "</tr>";
@@ -150,11 +148,11 @@ while($start <= $business_end){
             
                 if($sch[$i]['WORK_ORDER_ID'] > 1 ) {
                     //$calendar .= "<td class=\"menutd2\" align=\"center\" onClick=\"window.location='?page=workorder:details&workorder_id=".$sch[$i]['WORK_ORDER_ID']."page_title=Work Order ID ".$sch[$i]['WORK_ORDER_ID ']."'\"><b>\n"; 
-                    $calendar .= "<td class=\"menutd2\" align=\"center\" onClick=\"window.location='?page=schedule:view&schedule_id=".$sch[$i]['SCHEDULE_ID']."&y=".$y."&m=".$m."&d=".$d."'\">";
+                    $calendar .= "<td class=\"menutd2\" align=\"center\" onClick=\"window.location='?page=schedule:view&schedule_id=".$sch[$i]['SCHEDULE_ID']."&schedule_year=".$y."&schedule_month=".$m."&schedule_day=".$d."'\">";
                     $calendar .= "Work Order ID ". $sch[$i]['WORK_ORDER_ID']." From: ".date("h:i a",$sch[$i]['SCHEDULE_START'])." To: ".date("h:i a",$sch[$i]['SCHEDULE_END'])." ".$sch[$i]['SCHEDULE_NOTES']."\n";
                     $calendar . "</b></td>\n";
                 } else {
-                    $calendar .= "<td class=\"menutd2\" align=\"center\" onClick=\"window.location='?page=schedule:view&schedule_id=".$sch[$i]['SCHEDULE_ID']."&y=".$y."&m=".$m."&d=".$d."'\">";
+                    $calendar .= "<td class=\"menutd2\" align=\"center\" onClick=\"window.location='?page=schedule:view&schedule_id=".$sch[$i]['SCHEDULE_ID']."&schedule_year=".$y."&schedule_month=".$m."&schedule_day=".$d."'\">";
                     $calendar .= "<b>From: ".date("h:i a",$sch[$i]['SCHEDULE_START'])." To: ".date("h:i a",$sch[$i]['SCHEDULE_END']).' '.$sch[$i]['SCHEDULE_NOTES']."\n";
                     $calendar .= "</b></td>\n";
                 }
@@ -164,7 +162,7 @@ while($start <= $business_end){
             }
             
         } else {
-        $calendar .= "<td class=\"olotd4\" onClick=\"window.location='?page=schedule:new&schedule_start_time=".date("h:i a", $start) ."&schedule_start_date=".$cur_date."&workorder_id=".$workorder_id."&tech=".$tech."'\">&nbsp; ".date("h:i a", $start)."</td>\n</tr>";
+        $calendar .= "<td class=\"olotd4\" onClick=\"window.location='?page=schedule:new&schedule_start_time=".date("h:i a", $start) ."&schedule_start_date=".$current_schedule_date."&workorder_id=".$workorder_id."&tech=".$tech."'\">&nbsp; ".date("h:i a", $start)."</td>\n</tr>";
    }
         
     }
@@ -183,10 +181,10 @@ $calendar .= "\n</table>";
 
 
 //Get weekdays calendar
-$daystore = explode("-", $cur_date);
+$daystore = explode("-", $current_schedule_date);
 $dateline = mktime(0,0,0,$daystore[1], $daystore[0], $daystore[2]);
-$nextday = $cur_date+(1*60*60*24);
-$preday = $cur_date-(1*60*60*24);
+$nextday = $current_schedule_date+(1*60*60*24);
+$preday = $current_schedule_date-(1*60*60*24);
 
 
 
@@ -366,5 +364,5 @@ $daysub = date("w", $dateline);
 
 /* feed smarty */
 $smarty->assign('calendar', $calendar);
-$smarty->assign('cur_date', $cur_date);
+$smarty->assign('current_schedule_date', $current_schedule_date);
 $smarty->display('schedule'.SEP.'main.tpl');

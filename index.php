@@ -173,14 +173,24 @@ if (isset($_GET['action']) && $_GET['action'] == 'logout') {
 $VAR            = array_merge($_GET, $_POST);  // i could use a security function here to santise the varibles
 
 // These are used globally but mainly for the menu !!
-$workorder_id   = $VAR['workorder_id'];
-$customer_id    = $VAR['customer_id'];
-$employee_id    = $VAR['employee_id'];
-$expense_id     = $VAR['expense_id'];
-$refund_id      = $VAR['refund_id'];
-$supplier_id    = $VAR['supplier_id'];
-$schedule_id    = $VAR['schedule_id'];
-$invoice_id     = $VAR['invoice_id'];
+$workorder_id           = $VAR['workorder_id'];
+$customer_id            = $VAR['customer_id'];
+$employee_id            = $VAR['employee_id'];
+$expense_id             = $VAR['expense_id'];
+$refund_id              = $VAR['refund_id'];
+$supplier_id            = $VAR['supplier_id'];
+$invoice_id             = $VAR['invoice_id'];
+$schedule_id            = $VAR['schedule_id'];
+$schedule_start_year    = $VAR['schedule_start_year'];
+$schedule_start_month   = $VAR['schedule_start_month'];
+$schedule_start_day     = $VAR['schedule_start_day'];
+
+/* Make sure an employee is set - if not employee set use the logged in user
+if(isset($VAR['employee_id'])) {
+    $employee_id = $VAR['employee_id'];
+} else {
+    $employee_id = $_SESSION['login_id'];
+}*/
 
 // Get the page number if it exists or set to page number to 1 if not
 if(isset($VAR['page_no'])){
@@ -204,27 +214,32 @@ define('DATE_FORMAT', get_company_info($db,'COMPANY_DATE_FORMAT')); // se schedu
 //$smarty->assign('media_dir',   MEDIA_DIR                );      // not currently used
 
 // QWcrm System Folders
-$smarty->assign('includes_dir',                 INCLUDES_DIR                );      // set includes directory  //do i need this one
-$smarty->assign('media_dir',                    MEDIA_DIR                   );      // set media directory
+$smarty->assign('includes_dir',             INCLUDES_DIR                );      // set includes directory  //do i need this one
+$smarty->assign('media_dir',                MEDIA_DIR                   );      // set media directory
 
 // QWcrm Theme Directory Template Variables
-$smarty->assign('theme_dir',                    THEME_DIR                   );      // set theme directory
-$smarty->assign('theme_images_dir',             THEME_IMAGES_DIR            );      // set theme images directory
-$smarty->assign('theme_css_dir',                THEME_CSS_DIR               );      // set theme CSS directory
-$smarty->assign('theme_js_dir',                 THEME_JS_DIR                );      // set theme JS directory
+$smarty->assign('theme_dir',                THEME_DIR                   );      // set theme directory
+$smarty->assign('theme_images_dir',         THEME_IMAGES_DIR            );      // set theme images directory
+$smarty->assign('theme_css_dir',            THEME_CSS_DIR               );      // set theme CSS directory
+$smarty->assign('theme_js_dir',             THEME_JS_DIR                );      // set theme JS directory
 
 // QWcrm Theme Directory Template Smarty File Include Path Variables
-$smarty->assign('theme_js_dir_finc',            THEME_JS_DIR_FINC           );
+$smarty->assign('theme_js_dir_finc',        THEME_JS_DIR_FINC           );
 
 // These are used globally but mainly for the menu !!
-$smarty->assign('workorder_id', $workorder_id   );
-$smarty->assign('customer_id',  $customer_id    );
-$smarty->assign('employee_id',  $employee_id    );              // This is the same as $login_id at some points - when used globally - check
-$smarty->assign('expense_id',   $expense_id     );
-$smarty->assign('refund_id',    $refund_id      );
-$smarty->assign('supplier_id',  $supplier_id    );
-$smarty->assign('schedule_id',  $schedule_id    );
-$smarty->assign('invoice_id',   $invoice_id     );
+$smarty->assign('workorder_id',             $workorder_id               );
+$smarty->assign('customer_id',              $customer_id                );
+$smarty->assign('employee_id',              $employee_id                );              // This is the same as $login_id at some points - when used globally - check
+$smarty->assign('expense_id',               $expense_id                 );
+$smarty->assign('refund_id',                $refund_id                  );
+$smarty->assign('supplier_id',              $supplier_id                );
+$smarty->assign('invoice_id',               $invoice_id                 );
+$smarty->assign('schedule_id',              $schedule_id                );
+$smarty->assign('schedule_start_year',      $schedule_start_year        );
+$smarty->assign('schedule_start_month',     $schedule_start_month       );
+$smarty->assign('schedule_start_day',       $schedule_start_day         );
+
+
 
 // Used throughout the site - could combine these functions into one passing the required field
 /*
@@ -240,6 +255,8 @@ $smarty->assign('date_format',  DATE_FORMAT                                     
 // all company info as an array
 //$smarty->assign('company_info', get_company_info($db,   'all')                      );
 
+// Set Date parameters for schedule
+
 
 #############################
 #        Messages           #
@@ -254,40 +271,6 @@ if(isset($VAR['information_msg'])){
 if(isset($VAR['warning_msg'])){
     $smarty->assign('warning_msg', $VAR['warning_msg']);
 }
-
-
-
-
-
-//-------------schedule------------------------------
-
-// used only in schedule and menu - make neater - sort
-// add this one possible to the sections above to keep things in order
-// only place is menu - is this to go to todays date, i can do that in the module rather global shit
-// should also be in work order schedule block - does not use these varibles but creates them via get
-
-// if not set try and set using php dat command - use $date_format instaed
-// move this to schedule include
-
-// if needed $schyedule_y , $schedule_m , $schedule_d
-
-if ( $cur_date > 0 ){
-    $y1 = $VAR['y'] ;
-    $m1 = $VAR['m'];
-    $d1 = $VAR['d'];
-} else {
-    $y1 = (date('Y'));
-    $m1 = (date('m'));
-    $d1 = (date('d'));
-}
-
-$smarty->assign('y1',$y1);
-$smarty->assign('m1',$m1);
-$smarty->assign('d1',$d1);
-
-$smarty->assign('Y',$Y);
-$smarty->assign('m',$m);
-$smarty->assign('d',$d);
 
 ############################################
 #  Page Preperation Logic                  #

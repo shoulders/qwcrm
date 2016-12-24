@@ -18,7 +18,7 @@
                                         <tr>
                                             <td>
                                                 <br>
-                                                <form method="POST" action="?page=schedule:edit&y={$y}&d={$d}&m={$m}">
+                                                <form method="POST" action="?page=schedule:edit&schedule_start_year={$schedule_start_year}&schedule_start_month={$schedule_start_month}&schedule_start_day={$schedule_start_day}">
                                                 <textarea name="schedule_notes" class="olotd5 mceCheckForContent" cols="50" rows="20" >{$schedule_notes}</textarea>
                                                 <input name="schedule_id" value="{$schedule_id}" type="hidden" >
                                                 <br>

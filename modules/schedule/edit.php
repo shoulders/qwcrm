@@ -14,8 +14,8 @@ if(isset($VAR['submit'])) {
             force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
             exit;
         } else {
-            force_page('schedule', 'main&schedule_id='.$schedule_id.'&y='.$y.'&d='.$d.'&m='.$m); 
-      //force_page('schedule', 'main&schedule_id='.$schedule_id.'&y='.$y.'&m='.$m.'&d='.$d);             
+            force_page('schedule', 'main&schedule_id='.$schedule_id.'&schedule_start_year='.$y.'&schedule_start_month='.$m.'&schedule_start_day='.$d); 
+      //force_page('schedule', 'main&schedule_id='.$schedule_id.'&schedule_start_year='.$y.'&schedule_start_month='.$m.'&schedule_start_day='.$d);             
             exit;
         }
 } else {

@@ -47,7 +47,7 @@
                         {/section}
                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
                             <tr>
-                                <td height="81"  align="center" >
+                                <td height="81" align="center">
                                     <div id="calendar-container"></div>                                    
                                     <script>                                
                                     {literal} 
@@ -62,7 +62,7 @@
                                                             var m = M + 1;                                          // Correction for assignment issue above
                                                             var d = dateForLink.getDate();                          // integer, 1..31
                                                             // redirect...
-                                                            window.location = "?page=schedule:main&y="+y+"&m="+m+"&d="+d+"&workorder_id={/literal}{$workorder_id}{literal}&page_title={/literal}{$translate_schedule_schedule}{literal}";
+                                                            window.location = "?page=schedule:main&schedule_start_year="+y+"&schedule_start_month="+m+"&schedule_start_day="+d+"&workorder_id={/literal}{$workorder_id}{literal}&page_title={/literal}{$translate_schedule_schedule}{literal}";
                                                         }
                                         });
                                     {/literal}

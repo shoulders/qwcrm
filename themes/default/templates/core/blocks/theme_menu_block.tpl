@@ -25,9 +25,7 @@
                 <div>
                     <span>{$translate_core_menu_schedule}</span>
                     <a href="modules/schedule/sync.php"><img src="{$theme_images_dir}icons/16x16/Calendar.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_cal_sync}</a>                
-                    {if $y1 > 0}
-                        <a href="index.php?page=schedule:main&y={$y1}&m={$m1}&d={$d1}&page_title=schedule"><img src="{$theme_images_dir}icons/16x16/Calendar.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_schedule}</a>
-                    {/if}
+                    <a href="index.php?page=schedule:main&schedule_start_year={$todays_schedule_year}&schedule_start_month={$todays_schedule_month}&schedule_start_day={$todays_schedule_day}&page_title=schedule"><img src="{$theme_images_dir}icons/16x16/Calendar.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_schedule}</a>                    
                 </div>
 
                 <!-- Customers -->

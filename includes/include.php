@@ -618,3 +618,49 @@ function prepare_error_data($type, $data = Null){
         return $data;
     }
 }
+
+
+##########################################
+# Convert dates into Timestamp           #
+# including UK to US date conversion     #
+##########################################
+
+function date_to_timestamp($date_to_check){
+    
+    switch(DATE_FORMAT) {
+        case '%d/%m/%Y':
+        return strtotime(date_create_from_format('d/m/Y', $date_to_check));     
+        
+        case '%d/%m/%y':
+        return strtotime(date_create_from_format('d/m/y', $date_to_check));
+
+        case '%m/%d/%Y':
+        return strtotime(date_create_from_format('m/d/Y', $date_to_check));
+
+        case '%m/%d/%y':       
+        return strtotime(date_create_from_format('m/d/y', $date_to_check));
+    }   
+      
+}
+
+##########################################
+#     Timestamp to dates                 #
+##########################################
+
+function timestamp_to_date($timestamp){    
+
+    switch(DATE_FORMAT) {
+        case '%d/%m/%Y':
+        return date('d/m/Y', $timestamp);        
+        
+        case '%d/%m/%y':
+        return date('d/m/y', $timestamp);       
+
+        case '%m/%d/%Y':
+        return date('m/d/Y', $timestamp);        
+
+        case '%m/%d/%y':
+        return date('m/d/y', $timestamp);        
+    }
+
+}
