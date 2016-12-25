@@ -625,20 +625,22 @@ function prepare_error_data($type, $data = Null){
 # including UK to US date conversion     #
 ##########################################
 
-function date_to_timestamp($date_to_check){
+function date_to_timestamp($date_to_convert){   
     
     switch(DATE_FORMAT) {
-        case '%d/%m/%Y':
-        return strtotime(date_create_from_format('d/m/Y', $date_to_check));     
         
-        case '%d/%m/%y':
-        return strtotime(date_create_from_format('d/m/y', $date_to_check));
+        case '%d/%m/%Y':         
+        return DateTime::createFromFormat('d/m/Y', $date_to_convert)->getTimestamp();
+        
+        case '%d/%m/%y':         
+        return DateTime::createFromFormat('d/m/y', $date_to_convert)->getTimestamp();
+        
+        case '%m/%d/%Y':         
+        return DateTime::createFromFormat('m/d/Y', $date_to_convert)->getTimestamp();
 
-        case '%m/%d/%Y':
-        return strtotime(date_create_from_format('m/d/Y', $date_to_check));
-
-        case '%m/%d/%y':       
-        return strtotime(date_create_from_format('m/d/y', $date_to_check));
+        case '%m/%d/%y':         
+        return DateTime::createFromFormat('m/d/y', $date_to_convert)->getTimestamp(); 
+        
     }   
       
 }
@@ -650,6 +652,7 @@ function date_to_timestamp($date_to_check){
 function timestamp_to_date($timestamp){    
 
     switch(DATE_FORMAT) {
+        
         case '%d/%m/%Y':
         return date('d/m/Y', $timestamp);        
         

@@ -1,14 +1,10 @@
 <?php
 
-###############################
-#         Setup Smarty        #
-###############################
-
-/* Set Path for SMARTY in the php include path */
+// Set Path for SMARTY in the php include path
 set_include_path(get_include_path() . PATH_SEPARATOR . LIBRARIES_DIR.'smarty'.SEP);
 require('Smarty.class.php');
 
-/* Load Smarty template engine */
+// Load Smarty template engine
 
 global $smarty; // is this required, is it not automatically deinfed in global scope when called below.
 
@@ -24,16 +20,3 @@ $smarty->force_compile          = $smarty_force_compile;
 $smarty->caching                = $smarty_caching;
 $smarty->cache_lifetime         = $smarty_cache_lifetime;
 $smarty->cache_modified_check   = $smarty_cache_modified_check;    // Smarty will respect the If-Modified-Since header sent from the client. Only works with caching enabled
-
-###############################
-#       Setup ADODB           #
-###############################
-
-/* Set Path for ADODB in the php include path */
-set_include_path(get_include_path() . PATH_SEPARATOR . LIBRARIES_DIR.'adodb'.SEP);
-require('adodb.inc.php');
-
-/* create adodb database connection */
-$db = &ADONewConnection('mysqli');
-$db->Connect($db_host, $db_user, $db_pass, $db_name);   // change these to lower case as it annoys me
-

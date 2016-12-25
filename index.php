@@ -93,6 +93,7 @@ require('includes/defines.php');
 require(INCLUDES_DIR.'security.php'); // some code auto runs in this library
 require(INCLUDES_DIR.'include.php');
 require(INCLUDES_DIR.'smarty.php');
+require(INCLUDES_DIR.'adodb.php');
 require(INCLUDES_DIR.'session.php');
 require(INCLUDES_DIR.'auth.php');
 
@@ -156,7 +157,7 @@ $smarty->assign('login_usr',                $login_usr              );
 $smarty->assign('login_account_type_id',    $login_account_type_id  );
 $smarty->assign('login_display_name',       $login_display_name     );
 
-/* If logout is set, then log user off */
+// If logout is set, then log user off
 if (isset($_GET['action']) && $_GET['action'] == 'logout') {    
     $auth->logout('index.php');
 }
