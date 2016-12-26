@@ -1176,8 +1176,8 @@ function drop_setup($db)
 
 function create_setup($db) {
     $q = "CREATE TABLE IF NOT EXISTS `".PRFX."SETUP` (
-  `OFFICE_HOUR_START` int(2) NOT NULL default '0',
-  `OFFICE_HOUR_END` int(2) NOT NULL default '0',
+  `OPENING_HOUR` int(2) NOT NULL default '0',
+  `CLOSING_HOUR` int(2) NOT NULL default '0',
   `AN_LOGIN_ID` varchar(255)NOT NULL default '',
   `AN_PASSWORD` varchar(255) NOT NULL default '',
   `AN_TRANS_KEY` varchar(255) NOT NULL default '',
@@ -1202,7 +1202,7 @@ function create_setup($db) {
   `DD_ACC` varchar(50) default NULL,
   `DD_INS` text default NULL,
   `INVOICE_NUMBER_START` varchar(10) default NULL,
-  KEY `OFFICE_HOUR_START` (`OFFICE_HOUR_START`,`OFFICE_HOUR_END`)
+  KEY `OPENING_HOUR` (`OPENING_HOUR`,`CLOSING_HOUR`)
 ) ENGINE=MyISAM ";
     $rs = $db->Execute($q);
         if(!$rs) {

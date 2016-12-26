@@ -51,7 +51,7 @@
                                                                                 });
                                                                             {/literal}
                                                                             </script>                                                                            
-                                                                            {html_select_time use_24_hours=false display_seconds=false minute_interval=15 field_array=scheduleStartTime time=$schedule_start_time}
+                                                                            {html_select_time use_24_hours=false minute_interval=15 display_seconds=false field_array=scheduleStartTime time=$schedule_start_time}
                                                                         </td>
                                                                         <td>
                                                                             <input id="schedule_end_date" name="schedule_end_date" size="10" value="{$schedule_end_date}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{1,4}${/literal}" required onkeydown="return onlyDate(event);">
@@ -65,7 +65,7 @@
                                                                                 });
                                                                             {/literal}
                                                                             </script>                                                                            
-                                                                            {html_select_time use_24_hours=false display_seconds=false minute_interval=15 field_array=scheduleEndTime time=$schedule_end_time}
+                                                                            {html_select_time use_24_hours=false minute_interval=15 display_seconds=false field_array=scheduleEndTime time=$schedule_end_time}
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
@@ -97,18 +97,3 @@
         </td>
     </tr>
 </table>
-
-<!-- Warning Message -->
-{if $warning_msg != ''}
-    <table width="900px" border="0" cellpadding="4" cellspacing="4">
-        <tr>
-            <td>
-                <table width="100%" border="0" cellpadding="5" cellspacing="5" style="text-align: center;">
-                    <tr>
-                        <td valign="middle"class="error">{$warning_msg}</td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-    </table>
-{/if}

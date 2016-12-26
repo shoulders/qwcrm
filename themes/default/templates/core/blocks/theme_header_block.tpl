@@ -36,34 +36,10 @@
             </tr>
         </table>  
     </div>
+        
+    <!-- Information Message --> 
+    <div id="information_msg" style="display: none;"></div>
 
-    <!-- Information Message -->
-    {if $information_msg != ''}
-        <table width="900px" border="0" cellpadding="4" cellspacing="4">
-            <tr>
-                <td>
-                    <table class="olotablegreen" width="100%" border="0" cellpadding="5" cellspacing="5" style="text-align: center;">
-                        <tr>
-                            <td valign="middle">{$information_msg}</td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
-    {/if}
-
-    <!-- Warning Message -->
-    {if $warning_msg != ''}
-        <table width="900px" border="0" cellpadding="4" cellspacing="4">
-            <tr>
-                <td>
-                    <table width="100%" border="0" cellpadding="5" cellspacing="5" style="text-align: center;">
-                        <tr>
-                            <td valign="middle"class="error">{$warning_msg}</td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
-    {/if}
+    <!-- Warning Message --> 
+    <div id="warning_msg" class="error" style="display: none;"></div>
 

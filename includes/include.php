@@ -619,35 +619,120 @@ function prepare_error_data($type, $data = Null){
     }
 }
 
+#########################################################
+#   Return Date in correct format from year/month/day   #
+#########################################################
+
+// only used in schedule
+
+function convert_year_month_day_to_date($schedule_start_year, $schedule_start_month, $schedule_start_day) {
+    
+        switch(DATE_FORMAT) {
+            
+            case '%d/%m/%Y':
+            return $schedule_start_day."/".$schedule_start_month."/".$schedule_start_year;
+
+            case '%d/%m/%y':
+            return $schedule_start_day."/".$schedule_start_month."/".substr($schedule_start_year, 2);
+
+            case '%m/%d/%Y':
+            return $schedule_start_month."/".$schedule_start_day."/".$schedule_start_year;
+
+            case '%m/%d/%y':
+            return $schedule_start_month."/".$schedule_start_day."/".substr($schedule_start_year, 2);
+            
+    }
+    
+}
 
 ##########################################
-# Convert dates into Timestamp           #
-# including UK to US date conversion     #
+#   Convert Date into Unix Timestamp     #
 ##########################################
 
 function date_to_timestamp($date_to_convert){   
     
+    // this is just returning the current time
+    // http://php.net/manual/en/datetime.createfromformat.php
+    //Be warned that DateTime object created without explicitely providing the time portion will have the current time set instead of 00:00:00.
+    // can also use - instead of /
+    // the ! allows the use without supplying the time portion
+    // this works for all formats of dates where as mktime() might be a bit dodgy
+    
     switch(DATE_FORMAT) {
         
         case '%d/%m/%Y':         
-        return DateTime::createFromFormat('d/m/Y', $date_to_convert)->getTimestamp();
+        return DateTime::createFromFormat('!d/m/Y', $date_to_convert)->getTimestamp();
         
         case '%d/%m/%y':         
-        return DateTime::createFromFormat('d/m/y', $date_to_convert)->getTimestamp();
+        return DateTime::createFromFormat('!d/m/y', $date_to_convert)->getTimestamp();
         
         case '%m/%d/%Y':         
-        return DateTime::createFromFormat('m/d/Y', $date_to_convert)->getTimestamp();
+        return DateTime::createFromFormat('!m/d/Y', $date_to_convert)->getTimestamp();
 
         case '%m/%d/%y':         
-        return DateTime::createFromFormat('m/d/y', $date_to_convert)->getTimestamp(); 
+        return DateTime::createFromFormat('!m/d/y', $date_to_convert)->getTimestamp(); 
         
     }   
       
 }
 
+
+##########################################
+#    Date with Time to Unix Timestamp    #
+##########################################
+
+// only used in schedule at the minute
+// is this the same as mktime(hour,minute,second,month,day,year,is_dst);
+
+function datetime_to_timestamp($date, $hour, $minute, $second, $clock, $meridian = null) {
+    
+    // When using a 12 hour clock
+    if($clock == '12') {
+        
+        // Create timestamp from date
+        $timestamp = date_to_timestamp($date);
+
+        // if hour is 12am set hour as 0 - for correct calculation as no zero hour
+        if($hour == '12' && $meridian == 'am'){$hour = '0';}
+
+        // Convert hours into seconds and then add - AM/PM aware
+        if($meridian == 'pm'){$timestamp += ($hour * 60 * 60 + 43200 );} else {$timestamp += ($hour * 60 * 60);}    
+
+        // Convert minutes into seconds and add
+        $timestamp += ($minute * 60);
+        
+        // Add seconds
+        $timestamp += $second;        
+        
+        return $timestamp;
+    }
+    
+    // When using a 24 hour clock
+    if($clock == '24') {
+        
+        // Create timestamp from date
+        $timestamp = date_to_timestamp($date);        
+
+        // Convert hours into seconds and then add
+        $timestamp += ($hour * 60 * 60 );
+
+        // Convert minutes into seconds and add
+        $timestamp += ($minute * 60);
+        
+        // Add seconds
+        $timestamp += $second;        
+        
+        return $timestamp;
+    }
+    
+}
+
+
 ##########################################
 #     Timestamp to dates                 #
 ##########################################
+
+// not used anywhere at the minute
 
 function timestamp_to_date($timestamp){    
 
@@ -667,3 +752,4 @@ function timestamp_to_date($timestamp){
     }
 
 }
+

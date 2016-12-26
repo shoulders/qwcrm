@@ -176,7 +176,7 @@ $VAR            = array_merge($_GET, $_POST);  // i could use a security functio
 // These are used globally but mainly for the menu !!
 $workorder_id           = $VAR['workorder_id'];
 $customer_id            = $VAR['customer_id'];
-$employee_id            = $VAR['employee_id'];
+//$employee_id            = $VAR['employee_id'];
 $expense_id             = $VAR['expense_id'];
 $refund_id              = $VAR['refund_id'];
 $supplier_id            = $VAR['supplier_id'];
@@ -186,12 +186,12 @@ $schedule_start_year    = $VAR['schedule_start_year'];
 $schedule_start_month   = $VAR['schedule_start_month'];
 $schedule_start_day     = $VAR['schedule_start_day'];
 
-/* Make sure an employee is set - if not employee set use the logged in user
+// Make sure an employee is always set - if no employee is set use the logged in user
 if(isset($VAR['employee_id'])) {
     $employee_id = $VAR['employee_id'];
 } else {
     $employee_id = $_SESSION['login_id'];
-}*/
+}
 
 // Get the page number if it exists or set to page number to 1 if not
 if(isset($VAR['page_no'])){

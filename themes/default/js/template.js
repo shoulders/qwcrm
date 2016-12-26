@@ -136,12 +136,6 @@ function keyRestriction(e, allowedCharacters, spacesAllowed) {
     
 }
 
-
-
-
-
-
-
 // Confirm Passwords Match - Form Submmision Control
 function confirmPasswordsMatch() {
     
@@ -186,4 +180,21 @@ function checkPasswordsMatch(passwordsMatchMSG, passwordsDoNotMatchMSG) {
         message.innerHTML = passwordsDoNotMatchMSG;
         return false;
     }
+}
+
+// This function allows me to grab systems messages created during page rendering and display
+function processSytemMessages(information_msg, warning_msg) {    
+           
+    if(information_msg) {
+        var information = document.getElementById('information_msg');
+        information.style.display = 'block';
+        information.innerHTML = information_msg;       
+    }
+    
+    if(warning_msg) {
+        var warning = document.getElementById('warning_msg'); 
+        warning.style.display = 'block';
+        warning.innerHTML = warning_msg;
+    }
+    
 }

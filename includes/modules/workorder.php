@@ -462,30 +462,7 @@ function insert_new_note($db, $workorder_id, $workorder_note){
     }
 }
 
-######################################
-# Insert New Work Order History Note #
-######################################
 
-// this might be go in the main include as diffferent modules add work order history notes
-
-function insert_new_workorder_history_note($db, $workorder_id, $workorder_history_note){
-    
-    global $smarty;
-    
-    $sql = "INSERT INTO ".PRFX."TABLE_WORK_ORDER_HISTORY SET
-        WORK_ORDER_ID   = " . $db->qstr( $workorder_id                     ).",
-        DATE            = " . $db->qstr( time()                     ).",
-        NOTE            = " . $db->qstr( $workorder_history_note    ).",
-        ENTERED_BY      = " . $db->qstr( $_SESSION['login_id']      );
-    
-    if(!$rs = $db->Execute($sql)) {        
-        force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
-        exit;
-    } else {        
-        update_last_active($db, $workorder_id);        
-        return true;        
-    }  
-}
 /** Get Functions **/
 
 ########################################

@@ -99,7 +99,13 @@ mainbg {
     /*filter: progid:DXImageTransform.Microsoft.Shadow(color=gray,direction=135);*/
 }
 
-.linkedcell { background: #88abf2; color: #FFFFFF; cursor:auto;  }
+.linkedcell {
+    background: #88abf2;
+    color: #FFFFFF;
+    cursor: auto;
+}
+
+
 /* Table Formating */
 
 .main_window {
@@ -156,6 +162,7 @@ a.menuhead2 { color:#ffffff; font-weight:bolder; font-size: 12px; text-decoratio
 .textTd {
     background: #F0F8FF;
 }
+
 .olotable { 
     border-collapse: collapse;
     margin: 1px;
@@ -163,24 +170,27 @@ a.menuhead2 { color:#ffffff; font-weight:bolder; font-size: 12px; text-decoratio
     border: 1px solid #1c679f;
 }
 
-.olotablered {  margin: 1px; background-color: #ffffff; border: 2px solid #CC0000; text-align: left; }
-.olotableredpop {  margin: 1px; background-color: #ffffff; border: 1px solid #CC0000;  border-spacing: 2px;}
-.olotablegreen{  margin: 1px; background-color: #ffffff; border: 2px solid #006600; text-align: left; }
-.error_font {
-    color: #CC0000;
-    font-weight:bolder;
-    font-size:large;
-}
-
-.error {
-    border-collapse: collapse;
-    color: #CC0000;
+.olotablered {
     margin: 1px;
-    border: 1px solid #CC0000;
-    font-weight:bold;
-    background-color:#ECECEC;
-
+    background-color: #ffffff;
+    border: 2px solid #CC0000;
+    text-align: left;
 }
+
+.olotableredpop {
+    margin: 1px;
+    background-color: #ffffff;
+    border: 1px solid #CC0000;
+    border-spacing: 2px;
+}
+
+.olotablegreen {
+    margin: 1px;
+    background-color: #ffffff;
+    border: 2px solid #006600;
+    text-align: left;
+}
+
 .olohead { 
     background:#6699FF;
     color:#ffffff;
@@ -214,38 +224,69 @@ a.menuhead2 { color:#ffffff; font-weight:bolder; font-size: 12px; text-decoratio
     background-color:#ECECEC;
 }
 
-/* was only used in employee edit */
-.requiredfields{
-    border-collapse: collapse;
-    color: #000000;
-    margin: 1px;
+.olohead2 {
+    background: #518AB5;
+    color: #ffffff;
+    font-weight: bolder;
     border: 1px solid #1c679f;
-    font-weight:normal;
-    background-color:#FFC1C1;
+    padding: 3px;
 }
 
-.olohead2 { background:#518AB5; color:#ffffff; font-weight:bolder; border: 1px solid #1c679f; padding: 3px;}
-.olotd2 { background: #C3D9EA; border: 1px solid #1c679f; padding: 3px; font-size: 11px; font-weight: bold; }
-.olotd3 { background: #518AB5; border: 1px solid #1c679f; padding: 3px; font-size: 11px; font-weight: bold; color:#ffffff }
+.olotd2 {
+    background: #C3D9EA;
+    border: 1px solid #1c679f;
+    padding: 3px;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.olotd3 {
+    background: #518AB5;
+    border: 1px solid #1c679f;
+    padding: 3px;
+    font-size: 11px;
+    font-weight: bold;
+    color:#ffffff
+}
 
 .row1 {
-
     background: #FFFFFF;
 }
 
-.row2 
-{
-
+.row2 {
     background-color: #ededed;
 }
 
-.row3 
-{
+.row3 {
     border-collapse: collapse;
     margin: 1px;
     border: 1px solid #1c679f;
     background-color: #ededed;
 }
+
+/* System Messages */
+
+#information_msg {
+    color: #006600;
+    text-align: center;
+    font-weight: bold;
+    padding: 5px;    
+    margin: 10px;    
+    border: 2px solid #006600;
+    background-color: #ECECEC;
+}
+
+#warning_msg {
+    color: #CC0000;
+    text-align: center;    
+    font-weight: bold;    
+    padding: 5px;
+    margin: 10px;
+    border: 2px solid #CC0000;    
+    background-color: #ECECEC;
+}
+
+/* not tables */
 
 .button { 
     background-image: url('../images/swsh.gif');
@@ -275,11 +316,8 @@ a.button {
 
 /* IMAGE HOVER CODE */
 
-
 .rollover     { background-color: #000000}
-
 .rolloveron     { background-color: #91B3C1;}
-
 
 
 /* START THE CODE FOR THE MENUS */

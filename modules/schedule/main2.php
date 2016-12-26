@@ -43,13 +43,13 @@ $smarty->assign('date_array',$date_array);
 $smarty->assign('date_array2',$date_array2);
 
 /* load start time from setup */
-$q = "SELECT OFFICE_HOUR_START,OFFICE_HOUR_END FROM ".PRFX."SETUP";
+$q = "SELECT OPENING_HOUR,CLOSING_HOUR FROM ".PRFX."SETUP";
 if(!$rs = $db->execute($q)) {
     force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
     exit;
 }
-$H = $rs->fields['OFFICE_HOUR_START'];
-$E = $rs->fields['OFFICE_HOUR_END'];
+$H = $rs->fields['OPENING_HOUR'];
+$E = $rs->fields['CLOSING_HOUR'];
 
 if(empty($H) || empty($E)) {
     force_page('core', 'error&error_msg=You must first set a start and stop times in the control center');
