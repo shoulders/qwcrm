@@ -322,11 +322,11 @@ function build_calendar_matrix($db, $schedule_start_year, $schedule_start_month,
             
     // Get the start and end time of the calendar schedule to be displayed, Office hours only - (unix timestamp)
     $business_day_start = mktime(get_setup_info($db, 'OPENING_HOUR'), 0, 0, $schedule_start_month, $schedule_start_day, $schedule_start_year);
-    $business_day_end   = mktime(get_setup_info($db, 'CLOSING_HOUR'),   0, 0, $schedule_start_month, $schedule_start_day, $schedule_start_year);    
+    $business_day_end   = mktime(get_setup_info($db, 'CLOSING_HOUR'), 59, 0, $schedule_start_month, $schedule_start_day, $schedule_start_year);
     
     /* Get the start and end time of the calendar schedule to be displayed, Office hours only - (unix timestamp) - Same as above but my code
     $business_day_start = datetime_to_timestamp($current_schedule_date, get_setup_info($db, 'OPENING_HOUR'), 0, 0, $clock = '24');
-    $business_day_end   = datetime_to_timestamp($current_schedule_date, get_setup_info($db, 'CLOSING_HOUR'), 0, 0, $clock = '24');*/
+    $business_day_end   = datetime_to_timestamp($current_schedule_date, get_setup_info($db, 'CLOSING_HOUR'), 59, 0, $clock = '24');*/
 
     // Look in the database for a scheduled events for the current schedule day (within business hours)
     $q = "SELECT ".PRFX."TABLE_SCHEDULE.*,
@@ -419,14 +419,9 @@ function build_calendar_matrix($db, $schedule_start_year, $schedule_start_month,
                             "<b><a href=\"index.php?page=schedule:delete&schedule_id=".$scheduleObject[$i]['SCHEDULE_ID']."&schedule_start_year=".$schedule_start_year."&schedule_start_month=".$schedule_start_month."&schedule_start_day=".$schedule_start_day."&workorder_id=".$scheduleObject[$i]['WORK_ORDER_ID']."\">Delete</a></b>\n";
 
                 // Close CELL
-                $calendar .= "</td>\n";
-
-            // If within the Schedule item's range but is not the start time build this CELL (right) and close the ROW 
-            } else {                
-                $calendar .= "<td class=\"menutd2\">&nbsp;</td>\n";
-                //$calendar .= "<td class=\"menutd2\"><br></td>\n</tr>\n";
+                $calendar .= "</td>\n";            
             }
-                
+            
         // Build empty Right CELL If not within a schedule item's time range
         } else {  
             
@@ -453,7 +448,7 @@ function build_calendar_matrix($db, $schedule_start_year, $schedule_start_month,
         
         /* Loop Advancement */
         
-        // If schedule item's end time has been reached advance the scehdule item counter to allow processing of multiple schedule items
+        // If schedule item's end time has been reached advance to the schedule item
         if($matrixStartTime == $scheduleObject[$i]['SCHEDULE_END']) {
             $i++;
         }
