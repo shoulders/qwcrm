@@ -358,165 +358,98 @@ function build_calendar_matrix($db, $schedule_start_year, $schedule_start_month,
         $rs->MoveNext();
     }
     
-    /* Build the Calendar Matrix Table Content (12 Hour) */    
+    /* Build the Calendar Matrix Table Content */    
     
     // Set Calendar Initial Values for the build loop
     $i = 0;
     $matrixStartTime = $business_day_start;
 
-    // Open the Calendar Matrix Table
+    // Open the Calendar Matrix Table - Blue Header Bar
     $calendar .= "<table cellpadding=\"0\" cellspacing=\"0\" class=\"olotable\">\n
         <tr>\n
             <td class=\"olohead\" width=\"75\">&nbsp;</td>\n
             <td class=\"olohead\" width=\"600\">&nbsp;</td>\n
         </tr>\n";    
 
-    /* Build the ROWS with whole HOURS (i.e. 11.00 , 23.00) */
-    
+    // Cycle through the Business day in 15 minute segments
     while($matrixStartTime <= $business_day_end){
 
-        // If segment time is an hour with no minutes - Build the ROWS with no minutes (i.e. 11.00 , 23.00)
-        if(date("i",$matrixStartTime) == 0) {
+        /*
+         * There are 2 segment/row types: Whole Hour, Hour With minutes
+         * Both have different Styles
+         * Left Cells = Time
+         * Right Cells = Blank||Clickable Links||Schedule Item
+         * each ROW is assigned a date and are seperated by 15 minutes
+         */
+        
 
-            // Start ROW and build time CELL (left)
-            $calendar .= "<tr><td class=\"olotd\" nowrap>&nbsp;<b>".date("h:i a", $matrixStartTime)."</b></td>\n";
+        /* Start ROW */
+        $calendar .= "<tr>\n";
 
-            // BUILD SCHEDULE ITEM (If the segment is within the range of the schedule item)
-            if($matrixStartTime >= $scheduleObject[$i]['SCHEDULE_START'] && $matrixStartTime <= $scheduleObject[$i]['SCHEDULE_END']){
-
-                // If the segment is the same as the schedule item's start time
-                if($matrixStartTime == $scheduleObject[$i]['SCHEDULE_START']){
-                    
-                    // If the schedule item has a workorder_id build this CELL (right)
-                    if($scheduleObject[$i]['WORK_ORDER_ID'] != 0) {
-                        
-                        // Open CELL and add clickable link (to workorder) for CELL
-                        $calendar .= "<td class=\"menutd2\" align=\"center\" onClick=\"window.location='?page=workorder:details&workorder_id=".$scheduleObject[$i]['WORK_ORDER_ID']."page_title=Work Order ID ".$scheduleObject[$i]['WORK_ORDER_ID ']."'\"><b>\n";
-                        
-                        // Schedule Item Title
-                        $calendar .= "<b><font color=\"red\">Work Order ".$scheduleObject[$i]['WORK_ORDER_ID']." for ". $scheduleObject[$i]['CUSTOMER_NAME']."<br>\n";
-                        
-                        // Time period of schedule
-                        $calendar .= date("h:i a",$scheduleObject[$i]['SCHEDULE_START'])." - ".date("h:i a",$scheduleObject[$i]['SCHEDULE_END'])."</font><br>\n";
-                        
-                        // Notes
-                        $calendar .= "<font color=\"blue\">NOTES-  ".$scheduleObject[$i]['SCHEDULE_NOTES']."</font><br>\n";
-                        
-                        // Links for schedule
-                        $calendar .= "<a href=\"index.php?page=schedule:edit&schedule_id=".$scheduleObject[$i]['SCHEDULE_ID']."&schedule_start_year=".$schedule_start_year."&schedule_start_month=".$schedule_start_month."&schedule_start_day=".$schedule_start_day."&workorder_id=".$scheduleObject[$i]['WORK_ORDER_ID']."\">Edit Note</a> -
-                                    <a href=\"index.php?page=schedule:sync&workorder_id=".$scheduleObject[$i]['WORK_ORDER_ID']."&theme=off\">Sync</a> -
-                                    <a href=\"index.php?page=schedule:delete&schedule_id=".$scheduleObject[$i]['SCHEDULE_ID']."&schedule_start_year=".$schedule_start_year."&schedule_start_month=".$schedule_start_month."&schedule_start_day=".$schedule_start_day."&workorder_id=".$scheduleObject[$i]['WORK_ORDER_ID']."\">Delete</a>\n";
-                        
-                        // Close CELL
-                        $calendar .= "</b></td>\n";
-                    
-                    // If the schedule has no workorder_id build this CELL (right) - not sure what this is for?
-                    } else {
-                        
-                        // Open CELL and add clickable link (to create a schedule item) for CELL
-                        $calendar .= "<td class=\"menutd2\" align=\"center\" onClick=\"window.location='?page=schedule:view&schedule_id=".$scheduleObject[$i]['SCHEDULE_ID']."&schedule_start_year=".$schedule_start_year."&schedule_start_month=".$schedule_start_month."&schedule_start_day=".$schedule_start_day."'\">\n";
-                        
-                        // Schedule Item Title
-                        $calendar .= "<b><font color=\"red\">Work Order ".$scheduleObject[$i]['WORK_ORDER_ID']."for ".$scheduleObject[$i]['CUSTOMER_NAME']."<br>\n";
-                        
-                        // Time period of schedule
-                        $calendar .= date("h:i a",$scheduleObject[$i]['SCHEDULE_START'])." - ".date("h:i a",$scheduleObject[$i]['SCHEDULE_END'])."</font><br>\n";
-                        
-                        // Notes
-                        $calendar .= "<font color=\"blue\">NOTES-  ".$scheduleObject[$i]['SCHEDULE_NOTES']."</font><br>\n";
-                        
-                        // Links for schedule
-                        $calendar .= "<a href=\"index.php?page=schedule:edit&schedule_id=".$scheduleObject[$i]['SCHEDULE_ID']."&schedule_start_year=".$schedule_start_year."&schedule_start_month=".$schedule_start_month."&schedule_start_day=".$schedule_start_day."&workorder_id=".$scheduleObject[$i]['WORK_ORDER_ID']."\">Edit Note</a> -
-                                    <a href=\"index.php?page=schedule:sync&workorder_id=".$scheduleObject[$i]['WORK_ORDER_ID']."&theme=off\">Sync</a> -
-                                    <a href=\"index.php?page=schedule:delete&schedule_id=".$scheduleObject[$i]['SCHEDULE_ID']."&schedule_start_year=".$schedule_start_year."&schedule_start_month=".$schedule_start_month."&schedule_start_day=".$schedule_start_day."&workorder_id=".$scheduleObject[$i]['WORK_ORDER_ID']."\">Delete</a>\n";
-                        
-                        // Close CELL
-                        $calendar .= "</b></td>\n";
-                    }
-                    
-                // If within the Schedule item's range but is not the start time build this CELL (right) and close the ROW 
-                } else {                
-                    $calendar .= "<td class=\"menutd2\">&nbsp;</td>\n";
-                }
-                
-            // BUILD BLANK ROW (If not within a schedule item's range build empty CELL (right) and close the ROW)
-            } else {            
-                $calendar .= "<td class=\"olotd4\" onClick=\"window.location='?page=schedule:new&schedule_start_year={$schedule_start_year}&schedule_start_month={$schedule_start_month}&schedule_start_day={$schedule_start_day}&schedule_start_time=".date("h:i a", $matrixStartTime)."&employee_id=".$employee_id."&workorder_id=".$workorder_id."'\">&nbsp;</td>\n</tr>\n";
-            }
-
-            $calendar .= "vvvv</tr>\n";            
-            
-        /* Build the ROWS with MINUTES (i.e. 11.15 , 23.15) */
-            
+        /* LEFT CELL*/
+        if(date("i",$matrixStartTime) == 0){
+            $calendar .= "<td class=\"olotd\" nowrap>&nbsp;<b>".date("h:i a", $matrixStartTime)."</b></td>\n";
         } else {
+            $calendar .= "<td></td>\n";
+        }
 
-            // Start ROW and build time CELL (left)
-            $calendar .= "<tr>\n<td></td>\n";
-            
-            // BUILD SCHEDULE ITEM (If the segment is within the range of the schedule item)
-            if($matrixStartTime >= $scheduleObject[$i]['SCHEDULE_START'] && $matrixStartTime <= $scheduleObject[$i]['SCHEDULE_END']){
+        /* RIGHT CELL */
 
-                // If the segment is the same as the schedule item's start time
-                if($matrixStartTime == $scheduleObject[$i]['SCHEDULE_START']) {
+        // If the ROW is within the time range of the schedule item            
+        if($matrixStartTime >= $scheduleObject[$i]['SCHEDULE_START'] && $matrixStartTime <= $scheduleObject[$i]['SCHEDULE_END']){
 
-                    // If the schedule item has a workorder_id build this CELL (right)
-                    if($scheduleObject[$i]['WORK_ORDER_ID'] != 0) {
-                        
-                        // Open CELL and add clickable link (to workorder) for CELL
-                        $calendar .= "<td class=\"menutd2\" align=\"center\" onClick=\"window.location='?page=workorder:details&workorder_id=".$scheduleObject[$i]['WORK_ORDER_ID']."page_title=Work Order ID ".$scheduleObject[$i]['WORK_ORDER_ID ']."'\"><b>\n";
-                        
-                        // Schedule Item Title
-                        $calendar .= "<b><font color=\"red\">Work Order ". $scheduleObject[$i]['WORK_ORDER_ID']." for ". $scheduleObject[$i]['CUSTOMER_NAME']."<br>\n";
-                        
-                        // Time period of schedule
-                        $calendar .= date("h:i a",$scheduleObject[$i]['SCHEDULE_START'])." - ".date("h:i a",$scheduleObject[$i]['SCHEDULE_END'])."</font><br>\n";
-                        
-                        // Notes
-                        $calendar .= "<font color=\"blue\">NOTES-  ".$scheduleObject[$i]['SCHEDULE_NOTES']."</font><br>\n";
-                        
-                        // Links for schedule
-                        $calendar .= "<a href=\"index.php?page=schedule:edit&schedule_id=".$scheduleObject[$i]['SCHEDULE_ID']."&schedule_start_year=".$schedule_start_year."&schedule_start_month=".$schedule_start_month."&schedule_start_day=".$schedule_start_day."&workorder_id=".$scheduleObject[$i]['WORK_ORDER_ID']."\">Edit Note</a> -
-                                    <a href=\"index.php?page=schedule:sync&workorder_id=".$scheduleObject[$i]['WORK_ORDER_ID']."&theme=off\">Sync</a> -
-                                    <a href=\"index.php?page=schedule:delete&schedule_id=".$scheduleObject[$i]['SCHEDULE_ID']."&schedule_start_year=".$schedule_start_year."&schedule_start_month=".$schedule_start_month."&schedule_start_day=".$schedule_start_day."&workorder_id=".$scheduleObject[$i]['WORK_ORDER_ID']."\">Delete</a>\n";
-                        
-                        // Close CELL
-                        $calendar .= "</b></td>\n";
-                        
-                    // If the schedule has no workorder_id build this CELL (right)   
-                    } else {
-                        
-                        // Open CELL and add clickable link (to create a schedule item) for CELL
-                        $calendar .= "<td class=\"menutd2\" align=\"center\" onClick=\"window.location='?page=schedule:view&schedule_id=".$scheduleObject[$i]['SCHEDULE_ID']."&schedule_start_year=".$schedule_start_year."&schedule_start_month=".$schedule_start_month."&schedule_start_day=".$schedule_start_day."'\">\n";
-                        
-                        // Schedule Item Title
-                        $calendar .= "<b><font color=\"red\">Work Order ".$scheduleObject[$i]['WORK_ORDER_ID']." for ". $scheduleObject[$i]['CUSTOMER_NAME']."<br>\n";
-                        
-                        // Time period of schedule
-                        $calendar .= date("h:i a",$scheduleObject[$i]['SCHEDULE_START'])." - ".date("h:i a",$scheduleObject[$i]['SCHEDULE_END'])."</font><br>\n";
-                        
-                        // Notes
-                        $calendar .= "<font color=\"blue\">NOTES-  ".$scheduleObject[$i]['SCHEDULE_NOTES']."</font><br>\n";
-                        
-                        // Links for schedule
-                        $calendar .= "<a href=\"index.php?page=schedule:edit&schedule_id=".$scheduleObject[$i]['SCHEDULE_ID']."&schedule_start_year=".$schedule_start_year."&schedule_start_month=".$schedule_start_month."&schedule_start_day=".$schedule_start_day."&workorder_id=".$scheduleObject[$i]['WORK_ORDER_ID']."\">Edit Note</a> -
-                                    <a href=\"index.php?page=schedule:sync&workorder_id=".$scheduleObject[$i]['WORK_ORDER_ID']."&theme=off\">Sync</a> -
-                                    <a href=\"index.php?page=schedule:delete&schedule_id=".$scheduleObject[$i]['SCHEDULE_ID']."&schedule_start_year=".$schedule_start_year."&schedule_start_month=".$schedule_start_month."&schedule_start_day=".$schedule_start_day."&workorder_id=".$scheduleObject[$i]['WORK_ORDER_ID']."\">Delete</a>\n";
-                        
-                        // Close CELL
-                        $calendar .= "</b></td>\n";
-                    }
-                    
-                // If within the Schedule item's range but is not the start time build this CELL (right) and close the ROW
-                }  else {
-                    $calendar .= "<td class=\"menutd2\"><br></td>\n</tr>\n";
-                }
-                
-            // BUILD BLANK ROW (If not within a schedule item's range build empty CELL (right) and close the ROW)
+            // Build the schedule CELL (If the ROW is the same as the schedule item's start time)
+            if($matrixStartTime == $scheduleObject[$i]['SCHEDULE_START']){
+
+                // Open CELL and add clickable link (to workorder) for CELL
+                $calendar .= "<td class=\"menutd2\" align=\"center\" onClick=\"window.location='?page=workorder:details&workorder_id=".$scheduleObject[$i]['WORK_ORDER_ID']."page_title=Work Order ID ".$scheduleObject[$i]['WORK_ORDER_ID']."'\">\n";
+
+                // Schedule Item Title
+                $calendar .= "<b><font color=\"red\">Work Order ".$scheduleObject[$i]['WORK_ORDER_ID']." for ". $scheduleObject[$i]['CUSTOMER_NAME']."</font></b><br>\n";
+
+                // Time period of schedule
+                $calendar .= "<b><font color=\"red\">".date("h:i a",$scheduleObject[$i]['SCHEDULE_START'])." - ".date("h:i a",$scheduleObject[$i]['SCHEDULE_END'])."</font></b><br>\n";
+
+                // Schedule Notes
+                $calendar .= "<div style=\"color: blue; font-weight: bold;\">NOTES-  ".$scheduleObject[$i]['SCHEDULE_NOTES']."</div><br>\n";
+
+                // Links for schedule
+                $calendar .= "<b><a href=\"index.php?page=schedule:edit&schedule_id=".$scheduleObject[$i]['SCHEDULE_ID']."&schedule_start_year=".$schedule_start_year."&schedule_start_month=".$schedule_start_month."&schedule_start_day=".$schedule_start_day."&workorder_id=".$scheduleObject[$i]['WORK_ORDER_ID']."\">Edit Note</a></b> -".
+                            "<b><a href=\"index.php?page=schedule:sync&workorder_id=".$scheduleObject[$i]['WORK_ORDER_ID']."&theme=off\">Sync</a></b> -".
+                            "<b><a href=\"index.php?page=schedule:delete&schedule_id=".$scheduleObject[$i]['SCHEDULE_ID']."&schedule_start_year=".$schedule_start_year."&schedule_start_month=".$schedule_start_month."&schedule_start_day=".$schedule_start_day."&workorder_id=".$scheduleObject[$i]['WORK_ORDER_ID']."\">Delete</a></b>\n";
+
+                // Close CELL
+                $calendar .= "</td>\n";
+
+            // If within the Schedule item's range but is not the start time build this CELL (right) and close the ROW 
             } else {                
-                $calendar .= "<td class=\"olotd4\" onClick=\"window.location='?page=schedule:new&&schedule_start_year={$schedule_start_year}&schedule_start_month={$schedule_start_month}&schedule_start_day={$schedule_start_day}&schedule_start_time=".date("h:i a", $matrixStartTime)."&employee_id=".$employee_id."&workorder_id=".$workorder_id."'\">&nbsp; ".date("h:i a", $matrixStartTime)."</td>\n</tr>\n";               
+                $calendar .= "<td class=\"menutd2\">&nbsp;</td>\n";
+                //$calendar .= "<td class=\"menutd2\"><br></td>\n</tr>\n";
             }
+                
+        // Build empty Right CELL If not within a schedule item's time range
+        } else {  
+            
+            // If just viewing the schedule day disable create schedule item clickable links in the blank right cells
+            if(!$workorder_id) {
+                if(date("i",$matrixStartTime) == 0) {
+                    $calendar .= "<td class=\"olotd4\">&nbsp;</td>\n";
+                } else {
+                    $calendar .= "<td class=\"olotd4\">&nbsp;".date("h:i a", $matrixStartTime)."</td>\n";
+                }
+            
+            // If workorder_id is present enable clickable links for blank right cells
+            } else {            
+                if(date("i",$matrixStartTime) == 0) {
+                    $calendar .= "<td class=\"olotd4\" onClick=\"window.location='?page=schedule:new&schedule_start_year={$schedule_start_year}&schedule_start_month={$schedule_start_month}&schedule_start_day={$schedule_start_day}&schedule_start_time=".date("h:i a", $matrixStartTime)."&employee_id=".$employee_id."&workorder_id=".$workorder_id."'\">&nbsp;</td>\n";
+                } else {
+                    $calendar .= "<td class=\"olotd4\" onClick=\"window.location='?page=schedule:new&&schedule_start_year={$schedule_start_year}&schedule_start_month={$schedule_start_month}&schedule_start_day={$schedule_start_day}&schedule_start_time=".date("h:i a", $matrixStartTime)."&employee_id=".$employee_id."&workorder_id=".$workorder_id."'\">&nbsp;".date("h:i a", $matrixStartTime)."</td>\n";
+                }
+            }
+        }
 
-        }        
+        /* Close ROW */
+        $calendar .= "</tr>\n";             
         
         /* Loop Advancement */
         
