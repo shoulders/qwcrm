@@ -1,5 +1,7 @@
 <?php
 
+require(INCLUDES_DIR.'modules/schedule.php');
+
 // should these be here or in the main index.php
 $y =    $VAR['y'];
 $m =    $VAR['m'];

@@ -1,5 +1,6 @@
 <?php
-require('include.php');
+
+require(INCLUDES_DIR.'modules/schedule.php');
 
 // check if workorder status we don't want to reschedule a work order if it's closed
 if(isset($workorder_id)) {    

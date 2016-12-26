@@ -1,4 +1,7 @@
-<?php 
+<?php
+
+require(INCLUDES_DIR.'modules/schedule.php');
+
 require_once('conf.php');
 $sql = "SELECT SCHEDULE_ID,EMPLOYEE_ID,WORK_ORDER_ID,SCHEDULE_NOTES,SCHEDULE_START,SCHEDULE_END , FROM_UNIXTIME( SCHEDULE_START ,'%Y%m%d') as date, FROM_UNIXTIME( SCHEDULE_END ,'%Y%m%d') as edate, FROM_UNIXTIME( SCHEDULE_START ,'%H%i') as hour, FROM_UNIXTIME( SCHEDULE_END ,'%H%i') as ehour, FROM_UNIXTIME( SCHEDULE_START,'%i') as mintues, FROM_UNIXTIME( SCHEDULE_END,'%i') as emintues FROM myit_table_schedule WHERE WORK_ORDER_ID=".$VAR['workorder_id'];
 $result = mysql_query($sql,$link); 

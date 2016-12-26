@@ -1,5 +1,7 @@
 <?php
 
+require(INCLUDES_DIR.'modules/schedule.php');
+
 $y = $VAR['y'];
 $m = $VAR['m'];
 $d = $VAR['d'];

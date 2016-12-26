@@ -1,8 +1,6 @@
 <?php
-require_once ('include.php');
-if(!xml2php("schedule")) {
-    $smarty->assign('error_msg',"Error in language file");
-}
+
+require(INCLUDES_DIR.'modules/schedule.php');
 
 // No Workorder Specified
 if ($workorder_id == '') { 

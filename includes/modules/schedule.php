@@ -380,8 +380,7 @@ function build_calendar_matrix($db, $schedule_start_year, $schedule_start_month,
          * Left Cells = Time
          * Right Cells = Blank||Clickable Links||Schedule Item
          * each ROW is assigned a date and are seperated by 15 minutes
-         */
-        
+         */        
 
         /* Start ROW */
         $calendar .= "<tr>\n";
@@ -414,7 +413,7 @@ function build_calendar_matrix($db, $schedule_start_year, $schedule_start_month,
                 $calendar .= "<div style=\"color: blue; font-weight: bold;\">NOTES-  ".$scheduleObject[$i]['SCHEDULE_NOTES']."</div><br>\n";
 
                 // Links for schedule
-                $calendar .= "<b><a href=\"index.php?page=schedule:edit&schedule_id=".$scheduleObject[$i]['SCHEDULE_ID']."&schedule_start_year=".$schedule_start_year."&schedule_start_month=".$schedule_start_month."&schedule_start_day=".$schedule_start_day."&workorder_id=".$scheduleObject[$i]['WORK_ORDER_ID']."\">Edit Note</a></b> -".
+                $calendar .= "<b><a href=\"index.php?page=schedule:edit&schedule_id=".$scheduleObject[$i]['SCHEDULE_ID']."&schedule_start_year=".$schedule_start_year."&schedule_start_month=".$schedule_start_month."&schedule_start_day=".$schedule_start_day."&workorder_id=".$scheduleObject[$i]['WORK_ORDER_ID']."\">Edit Schedule Item</a></b> -".
                             "<b><a href=\"index.php?page=schedule:sync&workorder_id=".$scheduleObject[$i]['WORK_ORDER_ID']."&theme=off\">Sync</a></b> -".
                             "<b><a href=\"index.php?page=schedule:delete&schedule_id=".$scheduleObject[$i]['SCHEDULE_ID']."&schedule_start_year=".$schedule_start_year."&schedule_start_month=".$schedule_start_month."&schedule_start_day=".$schedule_start_day."&workorder_id=".$scheduleObject[$i]['WORK_ORDER_ID']."\">Delete</a></b>\n";
 

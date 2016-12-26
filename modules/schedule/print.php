@@ -1,8 +1,6 @@
 <?php
-require('include.php');
-if(!xml2php("schedule")) {
-    $smarty->assign('error_msg',"Error in language file");
-}
+
+require(INCLUDES_DIR.'modules/schedule.php');
 
 /* check if work order closed we don't want to reschedule a work order if it's closed */
 if(isset($workorder_id)) {
