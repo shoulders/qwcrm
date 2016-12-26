@@ -322,7 +322,7 @@ function build_calendar_matrix($db, $schedule_start_year, $schedule_start_month,
             
     // Get the start and end time of the calendar schedule to be displayed, Office hours only - (unix timestamp)
     $business_day_start = mktime(get_setup_info($db, 'OPENING_HOUR'), 0, 0, $schedule_start_month, $schedule_start_day, $schedule_start_year);
-    $business_day_end   = mktime(get_setup_info($db, 'CLOSING_HOUR'), 59, 0, $schedule_start_month, $schedule_start_day, $schedule_start_year);
+    $business_day_end   = mktime(get_setup_info($db, 'CLOSING_HOUR'), 59, 59, $schedule_start_month, $schedule_start_day, $schedule_start_year);
     
     /* Get the start and end time of the calendar schedule to be displayed, Office hours only - (unix timestamp) - Same as above but my code
     $business_day_start = datetime_to_timestamp($current_schedule_date, get_setup_info($db, 'OPENING_HOUR'), 0, 0, $clock = '24');
