@@ -8,7 +8,7 @@
 
 function insert_new_schedule($db, $schedule_start_date, $scheduleStartTime, $schedule_end_date, $scheduleEndTime, $schedule_notes, $employee_id, $workorder_id){
 
-    global $smarty;    
+    //global $smarty;    
 
     // Get Full Timestamps for the schedule item (date/hour/minute/second) - 12 Hour
     //$schedule_start_timestamp = datetime_to_timestamp($schedule_start_date, $scheduleStartTime['Time_Hour'], $scheduleStartTime['Time_Minute'], '0', '12', $scheduleStartTime['Time_Meridian']);
@@ -16,8 +16,8 @@ function insert_new_schedule($db, $schedule_start_date, $scheduleStartTime, $sch
     
     // Get Full Timestamps for the schedule item (date/hour/minute/second) - 24 Hour
     $schedule_start_timestamp = datetime_to_timestamp($schedule_start_date, $scheduleStartTime['Time_Hour'], $scheduleStartTime['Time_Minute'], '0', '24');
-    $schedule_end_timestamp   = datetime_to_timestamp($schedule_end_date, $scheduleEndTime['Time_Hour'], $scheduleEndTime['Time_Minute'], '0', '24');
-    
+    $schedule_end_timestamp   = datetime_to_timestamp($schedule_end_date, $scheduleEndTime['Time_Hour'], $scheduleEndTime['Time_Minute'], '0', '24')-1;
+        
     validate_schedule_times($db, $schedule_start_date, $schedule_start_timestamp, $schedule_end_timestamp, $employee_id);
 
 /*
@@ -117,8 +117,8 @@ function update_schedule($db, $schedule_start_date, $scheduleStartTime, $schedul
     
     // Get Full Timestamps for the schedule item (date/hour/minute/second) - 24 Hour
     $schedule_start_timestamp = datetime_to_timestamp($schedule_start_date, $scheduleStartTime['Time_Hour'], $scheduleStartTime['Time_Minute'], '0', '24');
-    $schedule_end_timestamp   = datetime_to_timestamp($schedule_end_date, $scheduleEndTime['Time_Hour'], $scheduleEndTime['Time_Minute'], '0', '24');
-
+    $schedule_end_timestamp   = datetime_to_timestamp($schedule_end_date, $scheduleEndTime['Time_Hour'], $scheduleEndTime['Time_Minute'], '0', '24')-1;
+    
     validate_schedule_times($db, $schedule_start_date, $schedule_start_timestamp, $schedule_end_timestamp, $employee_id);
      
     /*
@@ -263,25 +263,27 @@ function build_calendar_matrix($db, $schedule_start_year, $schedule_start_month,
     $company_day_start = datetime_to_timestamp($current_schedule_date, get_setup_info($db, 'OPENING_HOUR'), 0, 0, $clock = '24');
     $company_day_end   = datetime_to_timestamp($current_schedule_date, get_setup_info($db, 'CLOSING_HOUR'), 59, 0, $clock = '24');*/
 
+    echo $company_day_start.'     '.$company_day_end."\n\n<br><br>";
+    
     // Look in the database for a scheduled events for the current schedule day (within business hours)
-    $q = "SELECT ".PRFX."TABLE_SCHEDULE.*,
+    $sql = "SELECT ".PRFX."TABLE_SCHEDULE.*,
         ".PRFX."TABLE_CUSTOMER.CUSTOMER_DISPLAY_NAME
         FROM ".PRFX."TABLE_SCHEDULE
         INNER JOIN ".PRFX."TABLE_WORK_ORDER
         ON ".PRFX."TABLE_SCHEDULE.WORKORDER_ID = ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_ID
         INNER JOIN ".PRFX."TABLE_CUSTOMER
         ON ".PRFX."TABLE_WORK_ORDER.CUSTOMER_ID = ".PRFX."TABLE_CUSTOMER.CUSTOMER_ID
-        WHERE ".PRFX."TABLE_SCHEDULE.SCHEDULE_START >= " . '0'. " AND ".PRFX."TABLE_SCHEDULE.SCHEDULE_START <= " .'1482903000'. "
+        WHERE ".PRFX."TABLE_SCHEDULE.SCHEDULE_START >= ".$company_day_start." AND ".PRFX."TABLE_SCHEDULE.SCHEDULE_START <= ".$company_day_end."
         AND ".PRFX."TABLE_SCHEDULE.EMPLOYEE_ID ='".$employee_id."' ORDER BY ".PRFX."TABLE_SCHEDULE.SCHEDULE_START ASC";
     
-    if(!$rs = $db->Execute($q)) {
+    if(!$rs = $db->Execute($sql)) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
         exit;
     }
 
     // Add any scheduled events found into the $scheduleObject for any employee
     $scheduleObject = array();
-    while (!$rs->EOF ){
+    while (!$rs->EOF ){        
         array_push($scheduleObject, array(
             "SCHEDULE_ID"      => $rs->fields["SCHEDULE_ID"],
             "SCHEDULE_START"   => $rs->fields["SCHEDULE_START"],
@@ -293,21 +295,22 @@ function build_calendar_matrix($db, $schedule_start_year, $schedule_start_month,
         $rs->MoveNext();
     }
     
-    /* Build the Calendar Matrix Table Content */    
-    
-    // Set Calendar Initial Values for the build loop
-    $i = 0;
-    $matrixStartTime = $company_day_start;
+    /* Build the Calendar Matrix Table Content */   
 
     // Open the Calendar Matrix Table - Blue Header Bar
     $calendar .= "<table cellpadding=\"0\" cellspacing=\"0\" class=\"olotable\">\n
         <tr>\n
             <td class=\"olohead\" width=\"75\">&nbsp;</td>\n
             <td class=\"olohead\" width=\"600\">&nbsp;</td>\n
-        </tr>\n";    
+        </tr>\n";
+    
+    // Set the Schedule item array counter
+    $i = 0;
+    
+    $matrixStartTime = $company_day_start;
 
-    // Cycle through the Business day in 15 minute segments
-    while($matrixStartTime <= $company_day_end){
+    // Cycle through the Business day in 15 minute segments (set at the bottom)
+    while($matrixStartTime <= $company_day_end) {        
 
         /*
          * There are 2 segment/row types: Whole Hour, Hour With minutes
@@ -320,10 +323,10 @@ function build_calendar_matrix($db, $schedule_start_year, $schedule_start_month,
         /* Start ROW */
         $calendar .= "<tr>\n";        
 
-        /* Build Schedule Block */
+        /* Schedule Block ROW */
         
         // If the ROW is within the time range of the schedule item            
-        if($matrixStartTime >= $scheduleObject[$i]['SCHEDULE_START'] && $matrixStartTime <= $scheduleObject[$i]['SCHEDULE_END']){
+        if($matrixStartTime >= $scheduleObject[$i]['SCHEDULE_START'] && $matrixStartTime <= $scheduleObject[$i]['SCHEDULE_END']) {
             
             /* LEFT CELL*/           
             
@@ -353,50 +356,48 @@ function build_calendar_matrix($db, $schedule_start_year, $schedule_start_month,
                             "<b><a href=\"index.php?page=schedule:delete&schedule_id=".$scheduleObject[$i]['SCHEDULE_ID']."\">Delete</a></b>\n";
 
                 // Close CELL
-                $calendar .= "</td>\n";            
-            }
+                $calendar .= "</td>\n";                
+                
+            }           
             
-        // Empty Left Cell
+        /* Empty ROW */
+            
         } else {  
             
             // If just viewing/no workorder_id -  no clickable links to create schedule items
             if(!$workorder_id) {
                 if(date('i',$matrixStartTime) == 0) {
                     $calendar .= "<td class=\"olotd\"><b>&nbsp;".date("H:i ", $matrixStartTime)."</b></td>\n";
+                    $calendar .= "<td class=\"olotd\"></td>\n";
                 } else {
                     $calendar .= "<td class=\"olotd4\">&nbsp;".date("H:i ", $matrixStartTime)."</td>\n";
+                    $calendar .= "<td class=\"olotd4\"></td>\n";
                 }
             
             // If workorder_id is present enable clickable links
             } else {            
                 if(date('i',$matrixStartTime) == 0) {
-                    $calendar .= "<td class=\"olotd4\" onClick=\"window.location='?page=schedule:new&schedule_start_year={$schedule_start_year}&schedule_start_month={$schedule_start_month}&schedule_start_day={$schedule_start_day}&schedule_start_time=".date("H:i ", $matrixStartTime)."&employee_id=".$employee_id."&workorder_id=".$workorder_id."'\"><b>&nbsp;".date("H:i ", $matrixStartTime)."</b></td>\n";
+                    $calendar .= "<td class=\"olotd\" onClick=\"window.location='?page=schedule:new&schedule_start_year={$schedule_start_year}&schedule_start_month={$schedule_start_month}&schedule_start_day={$schedule_start_day}&schedule_start_time=".date("H:i ", $matrixStartTime)."&employee_id=".$employee_id."&workorder_id=".$workorder_id."'\"><b>&nbsp;".date("H:i ", $matrixStartTime)."</b></td>\n";
+                    $calendar .= "<td class=\"olotd\" onClick=\"window.location='?page=schedule:new&schedule_start_year={$schedule_start_year}&schedule_start_month={$schedule_start_month}&schedule_start_day={$schedule_start_day}&schedule_start_time=".date("H:i ", $matrixStartTime)."&employee_id=".$employee_id."&workorder_id=".$workorder_id."'\"></td>\n";
                 } else {
                     $calendar .= "<td class=\"olotd4\" onClick=\"window.location='?page=schedule:new&&schedule_start_year={$schedule_start_year}&schedule_start_month={$schedule_start_month}&schedule_start_day={$schedule_start_day}&schedule_start_time=".date("H:i ", $matrixStartTime)."&employee_id=".$employee_id."&workorder_id=".$workorder_id."'\">&nbsp;".date("H:i ", $matrixStartTime)."</td>\n";
+                    $calendar .= "<td class=\"olotd4\" onClick=\"window.location='?page=schedule:new&&schedule_start_year={$schedule_start_year}&schedule_start_month={$schedule_start_month}&schedule_start_day={$schedule_start_day}&schedule_start_time=".date("H:i ", $matrixStartTime)."&employee_id=".$employee_id."&workorder_id=".$workorder_id."'\"></td>\n";
                 }                
-            }
-            
-            // Blank Right Cell
-            if(date('i',$matrixStartTime) == 0) {
-                $calendar .= "<td class=\"olotd\">&nbsp;</td>\n";
-            } else {
-                $calendar .= "<td class=\"olotd4\"></td>\n";
-            }
+            }          
             
         }
 
         /* Close ROW */
         $calendar .= "</tr>\n";             
         
-        /* Loop Advancement */
+        /* Loop Advancement */        
         
-        // If schedule item's end time has been reached advance to the schedule item
-        if($matrixStartTime == $scheduleObject[$i]['SCHEDULE_END']) {
-            $i++;
-        }
+        // Advance the schedule counter to the next item
+        if($matrixStartTime >= $scheduleObject[$i]['SCHEDULE_END']) {$i++;}
 
         // Advance matrixStartTime by 15 minutes before restarting loop to create 15 minute segements
-        $matrixStartTime = mktime(date("H",$matrixStartTime),date('i',$matrixStartTime)+15,0,$schedule_start_month,$schedule_start_day,$schedule_start_year);
+        //$matrixStartTime = mktime(date("H",$matrixStartTime),date('i',$matrixStartTime)+15,0,$schedule_start_month,$schedule_start_day,$schedule_start_year);
+        $matrixStartTime += 900;
 
     }
 
