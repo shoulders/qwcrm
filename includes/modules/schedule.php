@@ -318,22 +318,21 @@ function build_calendar_matrix($db, $schedule_start_year, $schedule_start_month,
          */        
 
         /* Start ROW */
-        $calendar .= "<tr>\n";
+        $calendar .= "<tr>\n";        
 
-        /* LEFT CELL*/
-        if(date("i",$matrixStartTime) == 0){
-            $calendar .= "<td class=\"olotd\">&nbsp;<b>".date("H:i ", $matrixStartTime)."</b></td>\n";
-        } else {
-            //$calendar .= "<td></td>\n";
-            $calendar .= "<td class=\"olotd\">&nbsp;".date("H:i ", $matrixStartTime)."</td>\n";
-        }
-
-        /* RIGHT CELL */
-
+        /* Build Schedule Block */
+        
         // If the ROW is within the time range of the schedule item            
         if($matrixStartTime >= $scheduleObject[$i]['SCHEDULE_START'] && $matrixStartTime <= $scheduleObject[$i]['SCHEDULE_END']){
+            
+            /* LEFT CELL*/           
+            
+            // Make the left column blank when there is a schedule item
+            $calendar .= "<td></td>\n";           
 
-            // Build the schedule CELL (If the ROW is the same as the schedule item's start time)
+            /* RIGHT CELL */
+            
+            // Build the Schedule Block (If the ROW is the same as the schedule item's start time)
             if($matrixStartTime == $scheduleObject[$i]['SCHEDULE_START']){
 
                 // Open CELL and add clickable link (to workorder) for CELL
@@ -357,25 +356,33 @@ function build_calendar_matrix($db, $schedule_start_year, $schedule_start_month,
                 $calendar .= "</td>\n";            
             }
             
-        // Build empty Right CELL If not within a schedule item's time range
+        // Empty Left Cell
         } else {  
             
-            // If just viewing the schedule day disable create schedule item clickable links in the blank right cells
+            // If just viewing/no workorder_id -  no clickable links to create schedule items
             if(!$workorder_id) {
-                if(date("i",$matrixStartTime) == 0) {
-                    $calendar .= "<td class=\"olotd4\">&nbsp;</td>\n";
+                if(date('i',$matrixStartTime) == 0) {
+                    $calendar .= "<td class=\"olotd\"><b>&nbsp;".date("H:i ", $matrixStartTime)."</b></td>\n";
                 } else {
                     $calendar .= "<td class=\"olotd4\">&nbsp;".date("H:i ", $matrixStartTime)."</td>\n";
                 }
             
-            // If workorder_id is present enable clickable links for blank right cells
+            // If workorder_id is present enable clickable links
             } else {            
-                if(date("i",$matrixStartTime) == 0) {
-                    $calendar .= "<td class=\"olotd4\" onClick=\"window.location='?page=schedule:new&schedule_start_year={$schedule_start_year}&schedule_start_month={$schedule_start_month}&schedule_start_day={$schedule_start_day}&schedule_start_time=".date("H:i ", $matrixStartTime)."&employee_id=".$employee_id."&workorder_id=".$workorder_id."'\">&nbsp;</td>\n";
+                if(date('i',$matrixStartTime) == 0) {
+                    $calendar .= "<td class=\"olotd4\" onClick=\"window.location='?page=schedule:new&schedule_start_year={$schedule_start_year}&schedule_start_month={$schedule_start_month}&schedule_start_day={$schedule_start_day}&schedule_start_time=".date("H:i ", $matrixStartTime)."&employee_id=".$employee_id."&workorder_id=".$workorder_id."'\"><b>&nbsp;".date("H:i ", $matrixStartTime)."</b></td>\n";
                 } else {
                     $calendar .= "<td class=\"olotd4\" onClick=\"window.location='?page=schedule:new&&schedule_start_year={$schedule_start_year}&schedule_start_month={$schedule_start_month}&schedule_start_day={$schedule_start_day}&schedule_start_time=".date("H:i ", $matrixStartTime)."&employee_id=".$employee_id."&workorder_id=".$workorder_id."'\">&nbsp;".date("H:i ", $matrixStartTime)."</td>\n";
-                }
+                }                
             }
+            
+            // Blank Right Cell
+            if(date('i',$matrixStartTime) == 0) {
+                $calendar .= "<td class=\"olotd\">&nbsp;</td>\n";
+            } else {
+                $calendar .= "<td class=\"olotd4\"></td>\n";
+            }
+            
         }
 
         /* Close ROW */
@@ -389,7 +396,7 @@ function build_calendar_matrix($db, $schedule_start_year, $schedule_start_month,
         }
 
         // Advance matrixStartTime by 15 minutes before restarting loop to create 15 minute segements
-        $matrixStartTime = mktime(date("H",$matrixStartTime),date("i",$matrixStartTime)+15,0,$schedule_start_month,$schedule_start_day,$schedule_start_year);
+        $matrixStartTime = mktime(date("H",$matrixStartTime),date('i',$matrixStartTime)+15,0,$schedule_start_month,$schedule_start_day,$schedule_start_year);
 
     }
 
