@@ -358,10 +358,7 @@ if($content == '') {
     $arr = $rs->GetArray();
     $smarty->assign('customer', $arr);
 
-    if(!xml2php("parts")) {
-    $smarty->assign('error_msg',"Error in language file");
-    }
-    
+        
     /* get CRM ORDER details */
     $q = "SELECT * FROM ".PRFX."ORDERS WHERE  INVOICE_ID=".$db->qstr($crm_invoice_id);
     if(!$rs = $db->execute($q)) {

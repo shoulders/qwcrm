@@ -2,14 +2,6 @@
 
 /** Mandatory Code **/
 
-##############################
-# Load language translations #
-##############################
-
-if(!xml2php('core_menu')) {    
-    $smarty->assign('error_msg', 'Error in core language file');
-}   
-
 /** Work Orders **/ 
 
 ##########################################

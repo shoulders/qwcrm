@@ -2,9 +2,6 @@
 
 /* customer Id */
 require_once ("include.php");
-if(!xml2php("billing")) {
-    $smarty->assign('error_msg',"Error in language file");
-}
         
 $customer_id     = $VAR['customer_id'];
 $customer_name    = $VAR['customer_name'];

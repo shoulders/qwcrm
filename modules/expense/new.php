@@ -3,10 +3,6 @@
 // Load the Expense Functions
 require_once('include.php');
 
-// Load the Translations for this Module
-if(!xml2php('expense')) {
-    $smarty->assign('error_msg',"Error in language file");
-}
 
 // Load PHP Language Translations
 $langvals = gateway_xml2php('expense');

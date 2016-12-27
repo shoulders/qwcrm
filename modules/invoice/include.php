@@ -2,13 +2,6 @@
 
 /** Mandatory Code **/
 
-##############################
-# Load language translations #
-##############################
-
-if(!xml2php('invoice')) {    
-    $smarty->assign('error_msg', 'Error in the Invoice language file');
-}
 
 #########################################
 #     Display Open Invoice              #

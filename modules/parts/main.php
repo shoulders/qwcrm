@@ -9,9 +9,6 @@
 #                                                  #
 ####################################################
 
-if(!xml2php("parts")) {
-    $smarty->assign('error_msg',"Error in language file");
-}
 /* if we have work order assign it */
 if(isset($VAR['workorder_id'])) {
     $smarty->assign('workorder_id', $VAR['workorder_id']);

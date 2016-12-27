@@ -2,9 +2,7 @@
 require_once("include.php");
 //Required for swift mailer
 require_once (LIBRARIES_DIR.'swift/swift_required.php');
-if(!xml2php("customer")) {
-    $smarty->assign('error_msg',"Error in language file");
-}
+
 // Lets grab some variables we need
 $email_username = $VAR['email_username'];
 $email_password = $VAR['email_password'];

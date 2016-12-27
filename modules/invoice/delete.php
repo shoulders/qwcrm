@@ -51,10 +51,6 @@ if(!delete_invoice($db, $invoice_id, $customer_id, $login_usr)) {
 // Load the Expense Functions
 require_once('include.php');
 
-// Load the Translations for this Module
-if(!xml2php('invoice')) {
-    $smarty->assign('error_msg',"Error in language file");
-}
 
 $expense_id = $VAR['expense_id'];
 

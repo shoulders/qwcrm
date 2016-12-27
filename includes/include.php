@@ -66,23 +66,28 @@ function force_page($module, $page_tpl = Null, $variables = Null) {
 #  Language Translation Function           #
 ############################################
 
-// remove error control from the modules and add it here.
-
-function xml2php($module){
+function xml2php($group){
     
     global $smarty;
-
-    $file = LANGUAGE_DIR.THEME_LANGUAGE;
-
-    $xml_parser = xml_parser_create();
+    
+    // Load file into memory
+    $file = LANGUAGE_DIR.THEME_LANGUAGE;   
     if (!($fp = fopen($file, 'r'))) {
        die('unable to open XML');
     }
     $contents = fread($fp, filesize($file));
     fclose($fp);
-    xml_parse_into_struct($xml_parser, $contents, $arr_vals);   
-    xml_parser_free($xml_parser); //does this function exist?
-
+    
+    // Start the XML parser
+    $xml_parser = xml_parser_create();
+    
+    // Convert XML data into an array
+    xml_parse_into_struct($xml_parser, $contents, $arr_vals);   // $arr_vals is correct here
+    
+    // Frees the given XML parser - I assume to reduce memory usage
+    xml_parser_free($xml_parser);
+    
+    // Loop through the array key/pairs and make smarty variables
     foreach($arr_vals as $things){
         if($things['tag'] != 'TRANSLATE' && $things['value'] != "" ){
             $smarty->assign('translate_'.strtolower($things['tag']),$things['value']);

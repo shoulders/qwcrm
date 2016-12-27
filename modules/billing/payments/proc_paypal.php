@@ -1,7 +1,5 @@
 <?php
-if(!xml2php("billing")) {
-    $smarty->assign('error_msg',"Error in language file");
-}
+
 /* get company Info */
 $q = "SELECT COMPANY_NAME, COMPANY_COUNTRY FROM ".PRFX."TABLE_COMPANY";
     if(!$rs = $db->execute($q)) {

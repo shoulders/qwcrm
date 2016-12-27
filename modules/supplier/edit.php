@@ -3,11 +3,6 @@
 // Load the Supplier classes
 require_once('include.php');
 
-// Load the Translation for this Module
-if(!xml2php('supplier')) {
-    $smarty->assign('error_msg',"Error in language file");
-}
-
 // Load PHP Language Translations
 $langvals = gateway_xml2php('supplier');
 

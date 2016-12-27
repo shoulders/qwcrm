@@ -1,7 +1,5 @@
 <?php
-if(!xml2php("billing")) {
-    $smarty->assign('error_msg',"Error in language file");
-}
+
 $paypal_amount  = $VAR['paypal_amount'];
 $customer_id    = $VAR['customer_id'];
 $invoice_id    = $VAR['invoice_id'];

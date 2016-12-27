@@ -1,14 +1,4 @@
 <?php
-#########################################################
-#  This program is distributed under the terms and         #
-#  conditions of the GPL                                #
-#  Employee Functions                                    #
-#  Version 0.0.1    Fri Sep 30 09:30:10 PDT 2005        #
-#                                                        #
-#########################################################
-if(!xml2php("employee")) {
-    $smarty->assign('error_msg',"Error in language file");
-}
 
 #####################################
 #    Display Employee Info            #

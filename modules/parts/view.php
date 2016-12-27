@@ -10,9 +10,7 @@
 ####################################################
 
 $order_id = $VAR['ORDER_ID'];
-if(!xml2php("parts")) {
-    $smarty->assign('error_msg',"Error in language file");
-}
+
 
 $q = "SELECT * FROM ".PRFX."ORDERS WHERE ORDER_ID=".$db->qstr($order_id);
     if(!$rs = $db->execute($q)) {

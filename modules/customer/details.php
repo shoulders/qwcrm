@@ -1,8 +1,6 @@
 <?php
 require_once("include.php");
-if(!xml2php("customer")) {
-    $smarty->assign('error_msg',"Error in language file");
-}
+
 // Get the customers id from the url
 $customer_id = $VAR['customer_id'];
 

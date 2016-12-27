@@ -114,16 +114,9 @@ require(INCLUDES_DIR.'auth.php');
 #         Load Language                        #
 ################################################
 
-/*
-// the extra infomration (i.e. translations should be listed here even thought thye are called elsewhere - this is for convineince)
-// dont forge teh language file will have 2 distinct sections
-// 1 license file is enough
-//language
-// language shortcode
-/// etc....
-// Load Language Settings
-if(!xml2php('settings')){$smarty->assign('error_msg', 'Error in system language file');}
-*/
+
+// Load Language Specifc Settings from language file
+//if(!xml2php('settings')){$smarty->assign('error_msg', 'Error in system language file');}
 
 // Load Language Translations
 if(!xml2php('translate')){$smarty->assign('error_msg', 'Error in system language file');}

@@ -3,11 +3,6 @@
 // Load the Expense Functions
 require_once('include.php');
 
-// Load the Translations for this Module
-if(!xml2php('expense')) {
-    $smarty->assign('error_msg',"Error in language file");
-}
-
 // This sets page to number. goto_page-->page--> sets as 1 if no value
 if(isset($VAR['goto_page_no'])){$page_no = $VAR['goto_page_no'];}
         else {if(isset($VAR['page_no'])) {$page_no = $VAR['page_no'];} else {$page_no = 1;}}

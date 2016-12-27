@@ -1,8 +1,6 @@
 <?php
 require_once ("include.php");
-if(!xml2php("customer")) {
-    $smarty->assign('error_msg',"Error in language file");
-}
+
 if(isset($VAR['submit'])) {
 
     if (!$customer_id = insert_new_customer($db,$VAR)){

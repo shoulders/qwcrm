@@ -1,9 +1,6 @@
 <?php
 
 require_once ('include.php');
-if(!xml2php('stats')) {
-    $smarty->assign('error_msg',"Error in language file");
-}
 
 if(isset($VAR['submit'])){
 

@@ -2,23 +2,6 @@
 
 /** Mandatory Code **/
 
-##############################
-# Load language translations #
-##############################
-
-if(!xml2php('core_theme')) {    
-    $smarty->assign('error_msg', 'Error in core language file');
-}
-
-
-// Menu is a special case, it should have its own language file section
-
-/*
-if(!xml2php('core_menu')) {    
-    $smarty->assign('error_msg', 'Error in core language file');
-}   
- */
-
 /** Misc **/
 
 #########################################
