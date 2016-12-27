@@ -119,7 +119,7 @@ require(INCLUDES_DIR.'auth.php');
 //if(!xml2php('settings')){$smarty->assign('error_msg', 'Error in system language file');}
 
 // Load Language Translations
-if(!xml2php('translate')){$smarty->assign('error_msg', 'Error in system language file');}
+if(!load_language()){$smarty->assign('error_msg', 'Error in system language file');}
 
 ################################################
 #    Verify QWcrm is installed correctly       #

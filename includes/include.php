@@ -66,7 +66,7 @@ function force_page($module, $page_tpl = Null, $variables = Null) {
 #  Language Translation Function           #
 ############################################
 
-function xml2php($group){
+function load_language(){
     
     global $smarty;
     
