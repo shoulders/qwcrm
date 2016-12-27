@@ -11,16 +11,13 @@ tinymce.init({
     
     // Enable these Toolbar Buttons
     toolbar: [        
-        'newdocument undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | outdent indent | blockquote hr charmap',
-        'bullist numlist | table | unlink link | print | searchreplace spellchecker | cut copy paste removeformat | code'      
+        'undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | outdent indent | blockquote hr charmap',
+        'bullist numlist | table | unlink link | spellchecker | cut copy paste removeformat | fullscreen code'      
     ],
     
     // Enable these Plugins
     plugins: [
-      'advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker',
-      'searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking',
-      'save table contextmenu directionality emoticons template paste textcolor',
-      'codesample colorpicker importcss searchreplace toc'
+      'advlist autolink link lists charmap hr spellchecker visualchars code fullscreen table contextmenu paste textcolor'      
     ],
 
     // If TinyMCE Editor is empty and has the class "wysiwyg-checkforcontent" on its placeholder, dont submit the form
