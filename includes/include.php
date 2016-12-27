@@ -70,32 +70,61 @@ function xml2php($group){
     
     global $smarty;
     
+/* 
+     
+    // xml_parse_into_struct() old method - keep for reference
+
     // Load file into memory
     $file = LANGUAGE_DIR.THEME_LANGUAGE;   
     if (!($fp = fopen($file, 'r'))) {
        die('unable to open XML');
     }
-    $contents = fread($fp, filesize($file));
+    $xmldata = fread($fp, filesize($file));
     fclose($fp);
     
     // Start the XML parser
-    $xml_parser = xml_parser_create();
+    $xmlparser = xml_parser_create();
     
     // Convert XML data into an array
-    xml_parse_into_struct($xml_parser, $contents, $arr_vals);   // $arr_vals is correct here
+    xml_parse_into_struct($xmlparser, $xmldata, $values);   // $arr_vals is correct here
     
     // Frees the given XML parser - I assume to reduce memory usage
-    xml_parser_free($xml_parser);
+    xml_parser_free($xmlparser);    
     
     // Loop through the array key/pairs and make smarty variables
-    foreach($arr_vals as $things){
-        if($things['tag'] != 'TRANSLATE' && $things['value'] != "" ){
+    foreach($values as $things){
+        if($things['tag'] != 'TRANSLATE' && $things['value'] != ''){
             $smarty->assign('translate_'.strtolower($things['tag']),$things['value']);
         }
     }    
 
     return true;
+*/
     
+    // SimpleXML Method
+    
+    $language_xml = simplexml_load_file(LANGUAGE_DIR.THEME_LANGUAGE);
+   
+    // Extract the <language_specific_settings> as an array
+    foreach ($language_xml->language_specific_settings as $language_specific_settings) {
+        // Cycle throught the array and extract
+        foreach ($language_specific_settings as $key => $value) {
+            //$smarty->assign('translate_'.$key, $value);
+            // for use later
+        }
+    }
+    
+    // Extract the <translate> as an array
+    foreach ($language_xml->translate as $translate) {
+        // Cycle throught the array and extract
+        foreach ($translate as $key => $value) {
+            $smarty->assign('translate_'.$key, $value);             
+        }
+    }
+    
+    // Destroy the loaded XML data to save memory
+    unset($language_xml);
+        
 }
 
 ############################################

@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<translate>
-        
+
+<wrapper>
     
+<language_specific_settings>
+    <language_name>English</language_name>
+    <country_shortcode>GPB</country_shortcode>
+    <country_currency>Experimental</country_currency>
+    <google_map_website>www.google.co.uk</google_map_website>    
+</language_specific_settings>
+    
+<translate>    
     
     //// -- Blank -- ////
     
@@ -93,7 +101,7 @@
         <system_auth_log_message_login_failed_duplicate_username_and_password_for>Login Failed - There is more than one matching username password pair in the database for</system_auth_log_message_login_failed_duplicate_username_and_password_for>
         <system_auth_log_message_login_failed_no_active_login_id_for>Login Failed - No active login ID found for</system_auth_log_message_login_failed_no_active_login_id_for>
         <system_auth_log_message_login_successful_for>Login successful for</system_auth_log_message_login_successful_for> 
-        <system_auth_log_message_logout_successful_for>Logout successful for</system_auth_log_message_logout_successful_for>    
+        <system_auth_log_message_logout_successful_for>Logout successful for</system_auth_log_message_logout_successful_for>
 
         //// Advisory Messages   
 
@@ -270,9 +278,9 @@
     // includes/modules/core_login.php
 
     // includes/modules/core_menu.php
-    <core_menu_error_message_function_menu_get_single_workorder_status_failed></core_menu_error_message_function_menu_get_single_workorder_status_failed>
-    <core_menu_error_message_function_menu_count_workorders_with_status_failed></core_menu_error_message_function_menu_count_workorders_with_status_failed> 
-    <core_menu_error_message_function_menu_count_invoices_with_status_failed></core_menu_error_message_function_menu_count_invoices_with_status_failed>
+    <core_menu_error_message_function_menu_get_single_workorder_status_failed>-</core_menu_error_message_function_menu_get_single_workorder_status_failed>
+    <core_menu_error_message_function_menu_count_workorders_with_status_failed>-</core_menu_error_message_function_menu_count_workorders_with_status_failed> 
+    <core_menu_error_message_function_menu_count_invoices_with_status_failed>-</core_menu_error_message_function_menu_count_invoices_with_status_failed>
 
     // includes/modules/core_home.php
     <core_home_error_message_function_display_welcome_note_failed>Could not display the welcome note</core_home_error_message_function_display_welcome_note_failed>     
@@ -364,8 +372,7 @@
         <billing_gift>Gift Certificate</billing_gift>
         <billing_paypal>Pay Pal</billing_paypal>
         <billing_memo>Memo:</billing_memo>
-        <billing_cc_num>Card Number</billing_cc_num>
-        <billing_type>Type</billing_type>
+        <billing_cc_num>Card Number</billing_cc_num>        
         <billing_ccv>CCV</billing_ccv>
         <billing_exp>Expiration</billing_exp>
         <billing_cheque_no>Document #</billing_cheque_no>
@@ -451,8 +458,7 @@
         <customer_action>Action</customer_action>
         <customer_work_order_id>Work Order ID</customer_work_order_id>
         <customer_gift_cert>Gift Certificates</customer_gift_cert>
-        <customer_id>ID</customer_id>
-        <customer_created>Created</customer_created>
+        <customer_id>ID</customer_id>        
         <customer_expire>Expire</customer_expire>
         <customer_amount>Amount</customer_amount>
         <customer_active>Active</customer_active>
@@ -531,8 +537,7 @@
         <employee_display>Display</employee_display>
         <employee_first>First</employee_first>
         <employee_last>Last</employee_last>
-        <employee_work_phone>Work</employee_work_phone>
-        <employee_type>Type</employee_type>
+        <employee_work_phone>Work</employee_work_phone>        
         <employee_email>Email</employee_email>
         <employee_action>Action</employee_action>
         <employee_view_employee_details>View Employee Details</employee_view_employee_details>
@@ -551,8 +556,7 @@
         <employee_date_open>Date Opened</employee_date_open>
         <employee_customer>Customer</employee_customer>
         <employee_scope>Scope</employee_scope>
-        <employee_status>Status</employee_status>
-        <employee_action>Action</employee_action>
+        <employee_status>Status</employee_status>        
         <employee_work_order_id>Work Order ID</employee_work_order_id>
         <employee_position>Position</employee_position>
         <employee_based>Employee works from </employee_based>
@@ -700,9 +704,7 @@
         <invoice_man>Manufacturer</invoice_man>
         <invoice_price>Price</invoice_price>
         <invoice_sub_total>Sub Total</invoice_sub_total>
-        <invoice_shipping>Shipping</invoice_shipping>
-        <invoice_tax>Tax</invoice_tax>
-        <invoice_discount>Discount</invoice_discount>
+        <invoice_shipping>Shipping</invoice_shipping>        
         <invoice_trans_log>Transaction Log</invoice_trans_log>
         <invoice_trans_id>Trans Id</invoice_trans_id>
         <invoice_type>Type</invoice_type>
@@ -750,9 +752,7 @@
         <invoice_prn_invoice_details>Invoice - </invoice_prn_invoice_details>
         <invoice_prn_labour_items>Labour Items</invoice_prn_labour_items>
         <invoice_prn_parts_items>Parts Items</invoice_prn_parts_items>
-        <invoice_prn_qty>Qty</invoice_prn_qty>
-        <invoice_prn_labour_items>Labour Items</invoice_prn_labour_items>
-        <invoice_prn_parts_items>Parts Items</invoice_prn_parts_items>
+        <invoice_prn_qty>Qty</invoice_prn_qty>        
         <invoice_prn_unit_price>Unit Price</invoice_prn_unit_price>
         <invoice_prn_labour_total>Labour Total</invoice_prn_labour_total>
         <invoice_prn_parts_total>Parts Total</invoice_prn_parts_total>
@@ -816,17 +816,14 @@
         <parts_order_details>Order Details for</parts_order_details>
         <parts_count>Count</parts_count>
         <parts_tax>Tax</parts_tax>
-        <parts_print>Print</parts_print>
-        <parts_tracking>Tracking</parts_tracking>
+        <parts_print>Print</parts_print>       
         <parts_get_tracking>Get Tracking Number</parts_get_tracking>
         <parts_select>Select Part Type</parts_select>
         <parts_select_cat>Select Category</parts_select_cat>
         <parts_search>Search</parts_search>
         <parts_cart>Shopping Cart</parts_cart>
         <parts_total_items>Total Items In Cart</parts_total_items>
-        <parts_remove>Remove</parts_remove>
-        <parts_sku>SKU</parts_sku>
-        <parts_update>Update</parts_update>
+        <parts_remove>Remove</parts_remove>        
         <parts_cart_total>Cart Total</parts_cart_total>
         <parts_view>View</parts_view>
         <parts_inc_inv>Cite CRM Invoice ID</parts_inc_inv>
@@ -838,9 +835,7 @@
         <parts_ware>Warehouse Location</parts_ware>
         <parts_order_complete>Your Order Has Been Completed</parts_order_complete>
         <parts_crm_order_id>Cite CRM Order ID</parts_crm_order_id>
-        <parts_date>Invoice Date</parts_date>
-        <parts_total_items>Total Items</parts_total_items>
-        <parts_weight>Weight</parts_weight>
+        <parts_date>Invoice Date</parts_date>        
         <parts_ship_to>Ship To</parts_ship_to>
         <parts_tech>Tech</parts_tech>
         <parts_cap_invoice>INVOICE</parts_cap_invoice>
@@ -950,7 +945,7 @@
         <schedule_delete>Delete</schedule_delete>
         <schedule_woview>View Work Order</schedule_woview>
         <schedule_msg_1>Setting schedule for work order</schedule_msg_1>
-        <schedule_msg_2></schedule_msg_2>
+        <schedule_msg_2>message 2</schedule_msg_2>
         <schedule_msg_3>Switch to another techs schedule</schedule_msg_3>
         <schedule_msg_4>'s schedule for</schedule_msg_4>
 
@@ -1151,7 +1146,7 @@
         <workorder_state>State</workorder_state>
         <workorder_customer>Customer</workorder_customer>
         <workorder_scope>Scope</workorder_scope>
-        <workorder_status>Status</workorder_status>        
+        <!--<workorder_status>Status</workorder_status>-->
         <workorder_assigned_to>Assigned To</workorder_assigned_to>
         <workorder_last_change>Last Change</workorder_last_change>
         <workorder_tech>Tech</workorder_tech>
@@ -1267,8 +1262,8 @@
 
         // open.tpl
         <workorder_open_header_page_title>Open Works Orders</workorder_open_header_page_title>
-        <workorder_open_header_meta_description></workorder_open_header_meta_description>
-        <workorder_open_header_meta_keywords></workorder_open_header_meta_keywords>
+        <workorder_open_header_meta_description>-</workorder_open_header_meta_description>
+        <workorder_open_header_meta_keywords>-</workorder_open_header_meta_keywords>
         
         <workorder_open_title>Open Workorders</workorder_open_title>
         <workorder_open_help_title>Open Workorders Help</workorder_open_help_title>
@@ -1484,3 +1479,5 @@
         <jscal2_sa>Sa</jscal2_sa>
         
 </translate>
+
+</wrapper>
