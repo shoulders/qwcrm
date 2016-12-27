@@ -16,7 +16,10 @@ function insert_new_schedule($db, $schedule_start_date, $scheduleStartTime, $sch
     
     // Get Full Timestamps for the schedule item (date/hour/minute/second) - 24 Hour
     $schedule_start_timestamp = datetime_to_timestamp($schedule_start_date, $scheduleStartTime['Time_Hour'], $scheduleStartTime['Time_Minute'], '0', '24');
-    $schedule_end_timestamp   = datetime_to_timestamp($schedule_end_date, $scheduleEndTime['Time_Hour'], $scheduleEndTime['Time_Minute'], '0', '24')-1;
+    $schedule_end_timestamp   = datetime_to_timestamp($schedule_end_date, $scheduleEndTime['Time_Hour'], $scheduleEndTime['Time_Minute'], '0', '24');
+    
+    // Corrects the extra segment issue
+    $schedule_end_timestamp += 1;
         
     validate_schedule_times($db, $schedule_start_date, $schedule_start_timestamp, $schedule_end_timestamp, $employee_id);
 
@@ -80,10 +83,10 @@ function insert_new_schedule($db, $schedule_start_date, $scheduleStartTime, $sch
     // Assign the workorder to the scheduled employee - this caues a page redirect
     //update_workorder_status($db, $workorder_id, 2);
 
-    // Update Workorder Notes - change this to the displayname of the employee_id not login display name
+    // Insert Workorder Note - change this to the displayname of the employee_id not login display name
     insert_new_workorder_history_note($db, $workorder_id, 'Work Order Assigned to '.$_SESSION['login_display_name']);        
 
-    // Update Notes
+    // Insert Note
     insert_new_workorder_history_note($db, $workorder_id, 'Schedule has been set.');   
 
     // Insert schedule item into the database
@@ -117,9 +120,12 @@ function update_schedule($db, $schedule_start_date, $scheduleStartTime, $schedul
     
     // Get Full Timestamps for the schedule item (date/hour/minute/second) - 24 Hour
     $schedule_start_timestamp = datetime_to_timestamp($schedule_start_date, $scheduleStartTime['Time_Hour'], $scheduleStartTime['Time_Minute'], '0', '24');
-    $schedule_end_timestamp   = datetime_to_timestamp($schedule_end_date, $scheduleEndTime['Time_Hour'], $scheduleEndTime['Time_Minute'], '0', '24')-1;
+    $schedule_end_timestamp   = datetime_to_timestamp($schedule_end_date, $scheduleEndTime['Time_Hour'], $scheduleEndTime['Time_Minute'], '0', '24');
     
-    validate_schedule_times($db, $schedule_start_date, $schedule_start_timestamp, $schedule_end_timestamp, $employee_id);
+    // Corrects the extra segment issue
+    $schedule_end_timestamp += 1;
+    
+    if(!validate_schedule_times($db, $schedule_start_date, $schedule_start_timestamp, $schedule_end_timestamp, $employee_id)) {return false;}
      
     /*
     // If start time is after end time show message and stop further processing
@@ -395,8 +401,7 @@ function build_calendar_matrix($db, $schedule_start_year, $schedule_start_month,
         // Advance the schedule counter to the next item
         if($matrixStartTime >= $scheduleObject[$i]['SCHEDULE_END']) {$i++;}
 
-        // Advance matrixStartTime by 15 minutes before restarting loop to create 15 minute segements
-        //$matrixStartTime = mktime(date("H",$matrixStartTime),date('i',$matrixStartTime)+15,0,$schedule_start_month,$schedule_start_day,$schedule_start_year);
+        // Advance matrixStartTime by 15 minutes before restarting loop to create 15 minute segements        
         $matrixStartTime += 900;
 
     }
@@ -436,6 +441,9 @@ function validate_schedule_times($db, $schedule_start_date, $schedule_start_time
     
     $company_day_start = datetime_to_timestamp($schedule_start_date, get_setup_info($db, 'OPENING_HOUR'), get_setup_info($db, 'OPENING_MINUTE'), '0', '24');
     $company_day_end   = datetime_to_timestamp($schedule_start_date, get_setup_info($db, 'CLOSING_HOUR'), get_setup_info($db, 'CLOSING_MINUTE'), '0', '24');
+    
+    // Add the second I removed to correct extra segment issue
+    $schedule_end_timestamp += 1;
      
     // If start time is after end time show message and stop further processing
     if($schedule_start_timestamp > $schedule_end_timestamp) {        
@@ -450,7 +458,7 @@ function validate_schedule_times($db, $schedule_start_date, $schedule_start_time
     }
 
     // Check the schedule is within Company Hours    
-    if($schedule_start_timestamp <= $company_day_start || $schedule_end_timestamp >= $company_day_end) {            
+    if($schedule_start_timestamp < $company_day_start || $schedule_end_timestamp > $company_day_end) {            
         $smarty->assign('warning_msg', 'You cannot book work outside of company hours');    
         return false;
     }    
@@ -473,7 +481,7 @@ function validate_schedule_times($db, $schedule_start_date, $schedule_start_time
 
         // Check if this schedule item ends after another item has started      
         if($schedule_start_timestamp <= $rs->fields["SCHEDULE_START"] && $schedule_end_timestamp >= $rs->fields["SCHEDULE_START"]) {            
-            $smarty->assign('warning_msg', 'Schedule conflict - This schedule item ends after another schdule has started');    
+            $smarty->assign('warning_msg', 'Schedule conflict - This schedule item ends after another schedule has started');    
             return false;
         }
         

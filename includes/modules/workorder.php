@@ -612,7 +612,7 @@ function update_workorder_comments($db, $workorder_id, $workorder_comments){
     $q = "UPDATE ".PRFX."TABLE_WORK_ORDER SET
         WORK_ORDER_COMMENT              =".$db->qstr( $workorder_comments   ).",
         LAST_ACTIVE                     =".$db->qstr( time()                )."
-        WHERE WORK_ORDER_ID             =".$db->qstr( $workorder_id                );
+        WHERE WORK_ORDER_ID             =".$db->qstr( $workorder_id         );
 
     if(!$rs = $db->execute($q)) {
         force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
@@ -638,7 +638,7 @@ function update_workorder_resolution($db, $workorder_id, $workorder_resolution){
     $q = "UPDATE ".PRFX."TABLE_WORK_ORDER SET
             WORK_ORDER_RESOLUTION   = " . $db->qstr( $workorder_resolution ).",
             LAST_ACTIVE             = " . $db->qstr( time()                )."
-            WHERE  WORK_ORDER_ID    = " . $db->qstr( $workorder_id                );
+            WHERE  WORK_ORDER_ID    = " . $db->qstr( $workorder_id         );
 
     if(!$rs = $db->execute($q)) {
         force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
