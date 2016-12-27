@@ -44,7 +44,7 @@
                                                     {if $previous != ''}
                                                         <a href="?page=customer:search&name={$name|escape}&submit=submit&page_no={$previous}"><img src="{$theme_images_dir}back_24.gif" border="0" alt=""></a>&nbsp;
                                                     {/if}
-                                                    <select name="page_no" onChange="changePage();">
+                                                    <select id="changeThisPage" onChange="changePage();">
                                                         {section name=page loop=$total_pages start=1}
                                                             <option value="?page=customer:search&name={$name|escape}&submit=submit&page_no={$smarty.section.page.index}" {if $page_no == $smarty.section.page.index } selected {/if}>{$translate_page} {$smarty.section.page.index} {$translate_of} {$total_pages}</option>
                                                         {/section}

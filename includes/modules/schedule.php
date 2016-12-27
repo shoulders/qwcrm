@@ -20,67 +20,11 @@ function insert_new_schedule($db, $schedule_start_date, $scheduleStartTime, $sch
     
     // Corrects the extra segment issue
     $schedule_end_timestamp += 1;
-        
+    
+    // Validate the submitted dates
     validate_schedule_times($db, $schedule_start_date, $schedule_start_timestamp, $schedule_end_timestamp, $employee_id);
 
-/*
-    // If start time is after end time show message and stop further processing
-    if($schedule_start_timestamp > $schedule_end_timestamp) {        
-        $smarty->assign('warning_msg', 'Schedule ends before it starts.');
-        return false;
-    }
-
-    // If the start time is the same as the end time show message and stop further processing
-    if($schedule_start_timestamp == $schedule_end_timestamp) {       
-        $smarty->assign('warning_msg', 'Start Time and End Time are the Same');        
-        return false;
-    }
-
-    // Check the schedule is within Company Hours
-    $company_day_start = datetime_to_timestamp($schedule_start_date, get_setup_info($db, 'OPENING_HOUR'), get_setup_info($db, 'OPENING_MINUTE'), '0', '24');
-    $company_day_end   = datetime_to_timestamp($schedule_start_date, get_setup_info($db, 'CLOSING_HOUR'), get_setup_info($db, 'CLOSING_MINUTE'), '0', '24');
-    if($schedule_start_timestamp <= $company_day_start || $schedule_end_timestamp >= $company_day_end) {            
-        $smarty->assign('warning_msg', 'You cannot book work outside of company hours');    
-        return false;
-    }
-    
-    // Get Todays Schedule time range (this ignores the company hours and returns the whole day)
-    //$todays_schedule_start = mktime(0,0,0,date('m',$schedule_start_timestamp),date('d',$schedule_start_timestamp),date('Y',$schedule_start_timestamp));
-    //$todays_schedule_end   = mktime(23,59,59,date('m',$schedule_end_timestamp),date('d',$schedule_end_timestamp),date('Y',$schedule_end_timestamp));    
-    
-    /*
-    // Load all schedule items from the database for the supplied employee for the specified day (this currently ignores company hours)
-    $q = "SELECT SCHEDULE_START,SCHEDULE_END, SCHEDULE_ID
-            FROM ".PRFX."TABLE_SCHEDULE
-            WHERE SCHEDULE_START >= ".$todays_schedule_start."
-            AND SCHEDULE_END <=".$todays_schedule_end."
-            AND EMPLOYEE_ID ='".$employee_id."'
-            ORDER BY SCHEDULE_START ASC";
-    
-    if(!$rs = $db->Execute($q)) {
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-        exit;
-    }    
-    
-    // Loop through all schedule items in the database (for the selected day and employee) and validate that schedule item can be inserted with no conflict.
-    while (!$rs->EOF){      
-
-        // Check if this schedule item ends after another item has started      
-        if($schedule_start_timestamp <= $rs->fields["SCHEDULE_START"] && $schedule_end_timestamp >= $rs->fields["SCHEDULE_START"]) {            
-            $smarty->assign('warning_msg', 'Schedule conflict - This schedule item ends after another schdule has started');    
-            return false;
-        }
-        
-        // Check if this schedule item starts before another item has finished
-        if($schedule_start_timestamp >= $rs->fields["SCHEDULE_START"] && $schedule_start_timestamp <= $rs->fields["SCHEDULE_END"]) {            
-            $smarty->assign('warning_msg', 'Schedule conflict - This schedule item starts before another schedule ends');            
-            return false;
-        }
-
-        $rs->MoveNext();
-    }
-*/
-    // Assign the workorder to the scheduled employee - this caues a page redirect
+    // Assign the workorder to the scheduled employee - this causes a page redirect
     //update_workorder_status($db, $workorder_id, 2);
 
     // Insert Workorder Note - change this to the displayname of the employee_id not login display name
@@ -125,41 +69,9 @@ function update_schedule($db, $schedule_start_date, $scheduleStartTime, $schedul
     // Corrects the extra segment issue
     $schedule_end_timestamp += 1;
     
+    // Validate the submitted dates
     if(!validate_schedule_times($db, $schedule_start_date, $schedule_start_timestamp, $schedule_end_timestamp, $employee_id)) {return false;}
-     
-    /*
-    // If start time is after end time show message and stop further processing
-    if($schedule_start_timestamp > $schedule_end_timestamp) {        
-        $smarty->assign('warning_msg', 'Schedule ends before it starts.');
-        return false;
-    }
-
-    // If the start time is the same as the end time show message and stop further processing
-    if($schedule_start_timestamp == $schedule_end_timestamp) {       
-        $smarty->assign('warning_msg', 'Start Time and End Time are the Same');        
-        return false;
-    }
-    
-    // Check the schedule is within Company Hours
-    $company_day_start = datetime_to_timestamp($schedule_start_date, get_setup_info($db, 'OPENING_HOUR'), get_setup_info($db, 'OPENING_MINUTE'), '0', '24');
-    $company_day_end   = datetime_to_timestamp($schedule_start_date, get_setup_info($db, 'CLOSING_HOUR'), get_setup_info($db, 'CLOSING_MINUTE'), '0', '24');
-    if($schedule_start_timestamp <= $company_day_start || $schedule_end_timestamp >= $company_day_end) {            
-        $smarty->assign('warning_msg', 'You cannot book work outside of company hours');    
-        return false;
-    }
-    
-    /*
-    // Check if this schedule item ends after another item has started      
-    if($schedule_start_timestamp <= $rs->fields["SCHEDULE_START"] && $schedule_end_timestamp >= $rs->fields["SCHEDULE_START"]) {            
-        $smarty->assign('warning_msg', 'Schedule conflict - This schedule item ends after another schdule has started');    
-        return false;
-    }
-
-    // Check if this schedule item starts before another item has finished
-    if($schedule_start_timestamp >= $rs->fields["SCHEDULE_START"] && $schedule_start_timestamp <= $rs->fields["SCHEDULE_END"]) {            
-        $smarty->assign('warning_msg', 'Schedule conflict - This schedule item starts before another schedule ends');            
-        return false;
-    }*/        
+        
     
     $q = "UPDATE ".PRFX."TABLE_SCHEDULE SET
         SCHEDULE_ID         =". $db->qstr( $schedule_id                 ).",
@@ -169,8 +81,7 @@ function update_schedule($db, $schedule_start_date, $scheduleStartTime, $schedul
         EMPLOYEE_ID         =". $db->qstr( $employee_id                 ).",
         SCHEDULE_NOTES      =". $db->qstr( $schedule_notes              )."
         WHERE SCHEDULE_ID   =". $db->qstr( $schedule_id                 );
-    //echo $q;die;
-
+   
     if(!$rs = $db->execute($q)) {
         // error message need translating
         force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
@@ -212,7 +123,7 @@ function display_single_schedule($db, $schedule_id) {
     
 function display_employees_info($db){
     
-    $q = "SELECT EMPLOYEE_ID, EMPLOYEE_TYPE, EMPLOYEE_LOGIN FROM ".PRFX."TABLE_EMPLOYEE";
+    $q = "SELECT EMPLOYEE_ID, EMPLOYEE_DISPLAY_NAME FROM ".PRFX."TABLE_EMPLOYEE";
     
     if(!$rs = $db->Execute($q)) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
@@ -268,9 +179,7 @@ function build_calendar_matrix($db, $schedule_start_year, $schedule_start_month,
     /* Same as above but my code - Get the start and end time of the calendar schedule to be displayed, Office hours only - (unix timestamp)
     $company_day_start = datetime_to_timestamp($current_schedule_date, get_setup_info($db, 'OPENING_HOUR'), 0, 0, $clock = '24');
     $company_day_end   = datetime_to_timestamp($current_schedule_date, get_setup_info($db, 'CLOSING_HOUR'), 59, 0, $clock = '24');*/
-
-    echo $company_day_start.'     '.$company_day_end."\n\n<br><br>";
-    
+      
     // Look in the database for a scheduled events for the current schedule day (within business hours)
     $sql = "SELECT ".PRFX."TABLE_SCHEDULE.*,
         ".PRFX."TABLE_CUSTOMER.CUSTOMER_DISPLAY_NAME
@@ -351,7 +260,7 @@ function build_calendar_matrix($db, $schedule_start_year, $schedule_start_month,
                 $calendar .= "<b><font color=\"red\">Work Order ".$scheduleObject[$i]['WORKORDER_ID']." for ". $scheduleObject[$i]['CUSTOMER_NAME']."</font></b><br>\n";
 
                 // Time period of schedule
-                $calendar .= "<b><font color=\"red\">".date("H:i ",$scheduleObject[$i]['SCHEDULE_START'])." - ".date("H:i ",$scheduleObject[$i]['SCHEDULE_END'])."</font></b><br>\n";
+                $calendar .= "<b><font color=\"red\">".date("H:i",$scheduleObject[$i]['SCHEDULE_START'])." - ".date("H:i",$scheduleObject[$i]['SCHEDULE_END'])."</font></b><br>\n";
 
                 // Schedule Notes
                 $calendar .= "<div style=\"color: blue; font-weight: bold;\">NOTES:  ".$scheduleObject[$i]['SCHEDULE_NOTES']."</div><br>\n";
@@ -373,21 +282,21 @@ function build_calendar_matrix($db, $schedule_start_year, $schedule_start_month,
             // If just viewing/no workorder_id -  no clickable links to create schedule items
             if(!$workorder_id) {
                 if(date('i',$matrixStartTime) == 0) {
-                    $calendar .= "<td class=\"olotd\"><b>&nbsp;".date("H:i ", $matrixStartTime)."</b></td>\n";
+                    $calendar .= "<td class=\"olotd\"><b>&nbsp;".date("H:i", $matrixStartTime)."</b></td>\n";
                     $calendar .= "<td class=\"olotd\"></td>\n";
                 } else {
-                    $calendar .= "<td class=\"olotd4\">&nbsp;".date("H:i ", $matrixStartTime)."</td>\n";
+                    $calendar .= "<td class=\"olotd4\">&nbsp;".date("H:i", $matrixStartTime)."</td>\n";
                     $calendar .= "<td class=\"olotd4\"></td>\n";
                 }
             
             // If workorder_id is present enable clickable links
             } else {            
                 if(date('i',$matrixStartTime) == 0) {
-                    $calendar .= "<td class=\"olotd\" onClick=\"window.location='?page=schedule:new&schedule_start_year={$schedule_start_year}&schedule_start_month={$schedule_start_month}&schedule_start_day={$schedule_start_day}&schedule_start_time=".date("H:i ", $matrixStartTime)."&employee_id=".$employee_id."&workorder_id=".$workorder_id."'\"><b>&nbsp;".date("H:i ", $matrixStartTime)."</b></td>\n";
-                    $calendar .= "<td class=\"olotd\" onClick=\"window.location='?page=schedule:new&schedule_start_year={$schedule_start_year}&schedule_start_month={$schedule_start_month}&schedule_start_day={$schedule_start_day}&schedule_start_time=".date("H:i ", $matrixStartTime)."&employee_id=".$employee_id."&workorder_id=".$workorder_id."'\"></td>\n";
+                    $calendar .= "<td class=\"olotd\" onClick=\"window.location='?page=schedule:new&schedule_start_year={$schedule_start_year}&schedule_start_month={$schedule_start_month}&schedule_start_day={$schedule_start_day}&schedule_start_time=".date("H:i", $matrixStartTime)."&employee_id=".$employee_id."&workorder_id=".$workorder_id."'\"><b>&nbsp;".date("H:i", $matrixStartTime)."</b></td>\n";
+                    $calendar .= "<td class=\"olotd\" onClick=\"window.location='?page=schedule:new&schedule_start_year={$schedule_start_year}&schedule_start_month={$schedule_start_month}&schedule_start_day={$schedule_start_day}&schedule_start_time=".date("H:i", $matrixStartTime)."&employee_id=".$employee_id."&workorder_id=".$workorder_id."'\"></td>\n";
                 } else {
-                    $calendar .= "<td class=\"olotd4\" onClick=\"window.location='?page=schedule:new&&schedule_start_year={$schedule_start_year}&schedule_start_month={$schedule_start_month}&schedule_start_day={$schedule_start_day}&schedule_start_time=".date("H:i ", $matrixStartTime)."&employee_id=".$employee_id."&workorder_id=".$workorder_id."'\">&nbsp;".date("H:i ", $matrixStartTime)."</td>\n";
-                    $calendar .= "<td class=\"olotd4\" onClick=\"window.location='?page=schedule:new&&schedule_start_year={$schedule_start_year}&schedule_start_month={$schedule_start_month}&schedule_start_day={$schedule_start_day}&schedule_start_time=".date("H:i ", $matrixStartTime)."&employee_id=".$employee_id."&workorder_id=".$workorder_id."'\"></td>\n";
+                    $calendar .= "<td class=\"olotd4\" onClick=\"window.location='?page=schedule:new&schedule_start_year={$schedule_start_year}&schedule_start_month={$schedule_start_month}&schedule_start_day={$schedule_start_day}&schedule_start_time=".date("H:i", $matrixStartTime)."&employee_id=".$employee_id."&workorder_id=".$workorder_id."'\">&nbsp;".date("H:i", $matrixStartTime)."</td>\n";
+                    $calendar .= "<td class=\"olotd4\" onClick=\"window.location='?page=schedule:new&schedule_start_year={$schedule_start_year}&schedule_start_month={$schedule_start_month}&schedule_start_day={$schedule_start_day}&schedule_start_time=".date("H:i", $matrixStartTime)."&employee_id=".$employee_id."&workorder_id=".$workorder_id."'\"></td>\n";
                 }                
             }          
             

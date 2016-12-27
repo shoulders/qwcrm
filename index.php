@@ -237,14 +237,7 @@ $smarty->assign('schedule_start_year',      $schedule_start_year        );
 $smarty->assign('schedule_start_month',     $schedule_start_month       );
 $smarty->assign('schedule_start_day',       $schedule_start_day         );
 
-
-
-// Used throughout the site - could combine these functions into one passing the required field
-/*
-$smarty->assign('currency_sym', get_currency_symbol($db)    );
-$smarty->assign('company_logo', get_company_logo($db)       );      
-$smarty->assign('date_format',  get_date_format($db)        );
-*/
+// Used throughout the site
 $smarty->assign('currency_sym', get_company_info($db,   'COMPANY_CURRENCY_SYMBOL')  );
 $smarty->assign('company_logo', get_company_info($db,   'COMPANY_LOGO')             );
 //$smarty->assign('date_format',  get_company_info($db,   'COMPANY_DATE_FORMAT')      ); // se schedule could be useful - split('[/.-]', $VAR['scheduleStart']['date']);
@@ -252,9 +245,6 @@ $smarty->assign('date_format',  DATE_FORMAT                                     
 
 // all company info as an array
 //$smarty->assign('company_info', get_company_info($db,   'all')                      );
-
-// Set Date parameters for schedule
-
 
 #############################
 #        Messages           #

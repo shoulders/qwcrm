@@ -21,18 +21,16 @@ $(document).ready(function(){
 });
 
 
-// Change page on select
-function changePage() {
-    box = document.forms[0].page_no;
-    destination = box.options[box.selectedIndex].value;
-    if (destination) {location.href = destination;}
+// Change page when user selects with a dropdown menu - must be put in the <select>
+function changePage() { 
+    
+    //var e = document.getElementById('changeThisPage');
+    //var value = e.options[e.selectedIndex].value;
+    //var text = changething.options[changething.selectedIndex].text;
+    // location.href = value;   or 
+    
+    location.href = document.getElementById('changeThisPage').value;
 }
-        
-/* customer.js /employee main.tpl - investigate why these have a different number, possible fault
-function changePage() {
-    box = document.forms[1].page_no;
-    destination = box.options[box.selectedIndex].value;
-    if (destination) location.href = destination;*/
 
 /** Key Input Restrictors - Using event.key **/
 

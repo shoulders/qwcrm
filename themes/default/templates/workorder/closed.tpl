@@ -25,12 +25,12 @@
                                                     {if $previous != ''}
                                                         <a href="?page=workorder:closed&submit=submit&page_no={$previous}"><img src="{$theme_images_dir}back_24.gif" alt="" border="0"></a>&nbsp;
                                                     {/if}
-                                                    <select name="page_no" onChange="changePage();">
-                                                    {section name=page loop=$total_pages start=1}
-                                                        <option value="?page=workorder:closed&submit=submit&page_no={$smarty.section.page.index}" {if $page_no == $smarty.section.page.index } Selected {/if}>
-                                                            {$translate_workorder_page} {$smarty.section.page.index} {$translate_workorder_of} {$total_pages} 
-                                                        </option>
-                                                    {/section}
+                                                    <select id="changeThisPage" onChange="changePage();">
+                                                        {section name=page loop=$total_pages start=1}
+                                                            <option value="?page=workorder:closed&submit=submit&page_no={$smarty.section.page.index}" {if $page_no == $smarty.section.page.index } Selected {/if}>
+                                                                {$translate_workorder_page} {$smarty.section.page.index} {$translate_workorder_of} {$total_pages} 
+                                                            </option>
+                                                        {/section}
                                                         <option value="?page=workorder:closed&submit=submit&page_no={$total_pages}" {if $page_no == $total_pages} selected {/if}>
                                                             {$translate_workorder_page} {$total_pages} {$translate_workorder_of} {$total_pages}
                                                         </option>

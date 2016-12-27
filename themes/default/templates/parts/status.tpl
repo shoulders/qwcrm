@@ -36,7 +36,7 @@
                                                     {if $previous != ''}
                                                         <a href="?page=parts:status&submit=submit&page_no={$previous}"><img src="{$theme_images_dir}back_24.gif" border="0" alt=""></a>&nbsp;
                                                     {/if}
-                                                    <select name="page_no" onChange="changePage()">
+                                                    <select id="changeThisPage" onChange="changePage();">
                                                         {section name=page loop=$total_pages start=1}
                                                             <option value="?page=parts:status&submit=submit&page_no={$smarty.section.page.index}" {if $page_no == $smarty.section.page.index } Selected {/if}>{$translate_parts_page} {$smarty.section.page.index} {$translate_parts_of} {$total_pages}</option>
                                                         {/section}

@@ -57,9 +57,9 @@
                                             <td valign="top" align="right" valign="middle">
                                                 {if $login_id != '0' }
                                                     <form>
-                                                        <select name="page_no" onChange="changePage();">
+                                                        <select id="changeThisPage" onChange="changePage();">
                                                             {section name=i loop=$employees}
-                                                                <option value="?page=schedule:main&employee_id={$employees[i].EMPLOYEE_ID}&schedule_start_year={$schedule_start_year}&schedule_start_month={$schedule_start_month}&schedule_start_day={$schedule_start_day}&page_title=schedule" {if $selected == $employees[i].EMPLOYEE_ID} selected {/if}>{$employees[i].EMPLOYEE_LOGIN}</option>
+                                                                <option value="?page=schedule:main&schedule_start_year={$schedule_start_year}&schedule_start_month={$schedule_start_month}&schedule_start_day={$schedule_start_day}&employee_id={$employees[i].EMPLOYEE_ID}&page_title=schedule" {if $selected_employee == $employees[i].EMPLOYEE_ID} selected {/if}>{$employees[i].EMPLOYEE_DISPLAY_NAME}</option>
                                                             {/section}
                                                         </select>
                                                     </form>
