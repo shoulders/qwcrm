@@ -18,7 +18,7 @@ $assigned_employee_id = $single_work_order['0']['WORK_ORDER_ASSIGN_TO'];
 
 /* Update Work Order Status */
 if(isset($VAR['assign_status'])){
-    update_status($db, $workorder_id, $assign_status);    
+    update_workorder_status($db, $workorder_id, $assign_status);    
 }
 
 /* Assign Work Order to another employee */

@@ -1,11 +1,6 @@
 <?php
 
 require_once('includes'.SEP.'modules'.SEP.'core_menu.php');
-
-// Set Year/Month/Day used to create for schedule menu link
-$smarty->assign('todays_schedule_year',    date('Y')   );
-$smarty->assign('todays_schedule_month',   date('m')   );
-$smarty->assign('todays_schedule_day',     date('d')   );
  
 /* Get Workorder Status */
 $smarty->assign('menu_workorder_status', menu_get_single_workorder_status($db, $workorder_id)); 

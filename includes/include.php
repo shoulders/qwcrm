@@ -9,6 +9,9 @@
 /*
  * If no $page_tpl and $variables are supplied then this function 
  * will force a URL redirect exactly how it was supplied 
+ * 
+ * force_page($module, $page_tpl = Null, $variables = Null, $method = null)
+ * method could be null / $_GET / $_SESSION - i dont need to use $_POST. I just have a flag that wipes session data stored by force_page - i would also need to add it to the array merge
  */
 
 function force_page($module, $page_tpl = Null, $variables = Null) {
@@ -251,6 +254,35 @@ function get_company_info($db, $item){
     $q = 'SELECT * FROM '.PRFX.'TABLE_COMPANY';
     
     if(!$rs = $db->execute($q)){        
+        force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
+        exit;
+    } else {        
+        if($item === 'all'){            
+            return $rs->GetArray();            
+        } else {
+            return $rs->fields[$item];          
+        }        
+    }
+    
+}
+
+################################################
+#  Get setup info - individual items           # 
+################################################
+
+/*
+ * This combined function allows you to pull any of the setup information individually
+ * or return them all as an array
+ * supply the required field name or all to return all of them as an array
+ */
+
+function get_setup_info($db, $item){
+    
+    global $smarty;
+
+    $sql = 'SELECT * FROM '.PRFX.'SETUP';
+    
+    if(!$rs = $db->execute($sql)){        
         force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {        
@@ -645,6 +677,15 @@ function convert_year_month_day_to_date($schedule_start_year, $schedule_start_mo
     
 }
 
+#############################################
+#    Get Timestamp from year/month/day      #
+#############################################
+
+function convert_year_month_day_to_timestamp($schedule_start_year, $schedule_start_month, $schedule_start_day) {    
+            
+        return DateTime::createFromFormat('!Y/m/d', $schedule_start_year.'/'.$schedule_start_month.'/'.$schedule_start_day)->getTimestamp();   
+}
+
 ##########################################
 #   Convert Date into Unix Timestamp     #
 ##########################################
@@ -675,7 +716,6 @@ function date_to_timestamp($date_to_convert){
     }   
       
 }
-
 
 ##########################################
 #    Date with Time to Unix Timestamp    #
@@ -753,3 +793,11 @@ function timestamp_to_date($timestamp){
 
 }
 
+##########################################
+#   Timestamp to calendar date format    #
+##########################################
+
+function timestamp_to_calendar_format($timestamp) {
+    
+    return date('Ymd', $timestamp);
+}

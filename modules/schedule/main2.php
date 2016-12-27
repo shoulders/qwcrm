@@ -89,7 +89,7 @@ $business_end = mktime($E,0,0,$m,$d,$y);
                  "SCHEDULE_START"    => $rs->fields["SCHEDULE_START"],
                  "SCHEDULE_END"        => $rs->fields["SCHEDULE_END"],    
                  "SCHEDULE_NOTES"    => $rs->fields["SCHEDULE_NOTES"],
-                 "WORK_ORDER_ID"    => $rs->fields["WORK_ORDER_ID"]
+                 "WORKORDER_ID"    => $rs->fields["WORKORDER_ID"]
                  ));
         $rs->MoveNext();
     }
@@ -115,10 +115,10 @@ while($start <= $business_end){
         
             if($start == $sch[$i]['SCHEDULE_START']){
                 
-                    if($sch[$i]['WORK_ORDER_ID'] > 1 ) {
-                        //$calendar .= "<td class=\"menutd2\" align=\"center\" onClick=\"window.location='?page=workorder:details&workorder_id=".$sch[$i]['WORK_ORDER_ID']."page_title=Work Order ID ".$sch[$i]['WORK_ORDER_ID ']."'\"><b>\n"; 
+                    if($sch[$i]['WORKORDER_ID'] > 1 ) {
+                        //$calendar .= "<td class=\"menutd2\" align=\"center\" onClick=\"window.location='?page=workorder:details&workorder_id=".$sch[$i]['WORKORDER_ID']."page_title=Work Order ID ".$sch[$i]['WORKORDER_ID ']."'\"><b>\n"; 
                         $calendar .= "<td class=\"menutd2\" align=\"center\" onClick=\"window.location='?page=schedule:view&schedule_id=".$sch[$i]['SCHEDULE_ID']."&schedule_year=".$y."&schedule_month=".$m."&schedule_day=".$d."'\">";
-                      $calendar .= "Work Order ". $sch[$i]['WORK_ORDER_ID']." - Currently scheduled for ".date("h:i a",$sch[$i]['SCHEDULE_START'])." until ".date("h:i a",$sch[$i]['SCHEDULE_END'])." ".$sch[$i]['SCHEDULE_NOTES']."\n";
+                      $calendar .= "Work Order ". $sch[$i]['WORKORDER_ID']." - Currently scheduled for ".date("h:i a",$sch[$i]['SCHEDULE_START'])." until ".date("h:i a",$sch[$i]['SCHEDULE_END'])." ".$sch[$i]['SCHEDULE_NOTES']."\n";
                         $calendar . "</b></td>\n";
                     } else {
                         $calendar .= "<td class=\"menutd2\" align=\"center\" onClick=\"window.location='?page=schedule:view&schedule_id=".$sch[$i]['SCHEDULE_ID']."&schedule_year=".$y."&schedule_month=".$m."&schedule_day=".$d."'\">";
@@ -144,10 +144,10 @@ while($start <= $business_end){
         
             if($start == $sch[$i]['SCHEDULE_START']) {
             
-                if($sch[$i]['WORK_ORDER_ID'] > 1 ) {
-                    //$calendar .= "<td class=\"menutd2\" align=\"center\" onClick=\"window.location='?page=workorder:details&workorder_id=".$sch[$i]['WORK_ORDER_ID']."page_title=Work Order ID ".$sch[$i]['WORK_ORDER_ID ']."'\"><b>\n"; 
+                if($sch[$i]['WORKORDER_ID'] > 1 ) {
+                    //$calendar .= "<td class=\"menutd2\" align=\"center\" onClick=\"window.location='?page=workorder:details&workorder_id=".$sch[$i]['WORKORDER_ID']."page_title=Work Order ID ".$sch[$i]['WORKORDER_ID ']."'\"><b>\n"; 
                     $calendar .= "<td class=\"menutd2\" align=\"center\" onClick=\"window.location='?page=schedule:view&schedule_id=".$sch[$i]['SCHEDULE_ID']."&schedule_year=".$y."&schedule_month=".$m."&schedule_day=".$d."'\">";
-                    $calendar .= "Work Order ID ". $sch[$i]['WORK_ORDER_ID']." From: ".date("h:i a",$sch[$i]['SCHEDULE_START'])." To: ".date("h:i a",$sch[$i]['SCHEDULE_END'])." ".$sch[$i]['SCHEDULE_NOTES']."\n";
+                    $calendar .= "Work Order ID ". $sch[$i]['WORKORDER_ID']." From: ".date("h:i a",$sch[$i]['SCHEDULE_START'])." To: ".date("h:i a",$sch[$i]['SCHEDULE_END'])." ".$sch[$i]['SCHEDULE_NOTES']."\n";
                     $calendar . "</b></td>\n";
                 } else {
                     $calendar .= "<td class=\"menutd2\" align=\"center\" onClick=\"window.location='?page=schedule:view&schedule_id=".$sch[$i]['SCHEDULE_ID']."&schedule_year=".$y."&schedule_month=".$m."&schedule_day=".$d."'\">";

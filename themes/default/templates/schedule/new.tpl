@@ -51,7 +51,7 @@
                                                                                 });
                                                                             {/literal}
                                                                             </script>                                                                            
-                                                                            {html_select_time use_24_hours=false minute_interval=15 display_seconds=false field_array=scheduleStartTime time=$schedule_start_time}
+                                                                            {html_select_time use_24_hours=true minute_interval=15 display_seconds=false field_array=scheduleStartTime time=$schedule_start_time}
                                                                         </td>
                                                                         <td>
                                                                             <input id="schedule_end_date" name="schedule_end_date" size="10" value="{$schedule_end_date}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{1,4}${/literal}" required onkeydown="return onlyDate(event);">
@@ -65,7 +65,7 @@
                                                                                 });
                                                                             {/literal}
                                                                             </script>                                                                            
-                                                                            {html_select_time use_24_hours=false minute_interval=15 display_seconds=false field_array=scheduleEndTime time=$schedule_end_time}
+                                                                            {html_select_time use_24_hours=true minute_interval=15 display_seconds=false field_array=scheduleEndTime time=$schedule_end_time}
                                                                         </td>
                                                                     </tr>
                                                                     <tr>

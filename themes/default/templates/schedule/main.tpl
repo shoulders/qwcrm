@@ -30,9 +30,10 @@
                                             <td height="81"  align="center" >
                                                 <div id="calendar-container"></div>                          
                                                 <script>
-                                                {literal}    
-                                                    Calendar.setup({
-                                                        cont: 'calendar-container',                                                     
+                                                {literal}
+                                                    Calendar.setup({                                                        
+                                                        cont: 'calendar-container',
+                                                        selection     : {/literal}{$selected_date}{literal},
                                                         onSelect :  function(calendar){                                                                        
                                                                         var selectedDate = calendar.selection.get();            // get the selected date
                                                                         var dateForLink = Calendar.intToDate(selectedDate);     // converts into a JavaScript date object

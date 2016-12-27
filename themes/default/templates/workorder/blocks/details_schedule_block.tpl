@@ -33,7 +33,7 @@
                 <tr>
                     <td>
                         {section name=e loop=$workorder_schedule}
-                            <b>{$translate_workorder_start} </b>{$workorder_schedule[e].SCHEDULE_START|date_format:"$date_format %I:%M  %p"} <b>- {$translate_workorder_end} </b> {$workorder_schedule[e].SCHEDULE_END|date_format:"$date_formatS %I:%M  %p "} <br>
+                            <b>{$translate_workorder_start} </b>{$workorder_schedule[e].SCHEDULE_START|date_format:"$date_format %H:%M"} <b>- {$translate_workorder_end} </b> {$workorder_schedule[e].SCHEDULE_END|date_format:"$date_format %H:%M"} <br>
                             <b>{$translate_workorder_notes}</b><br>
                             {$workorder_schedule[e].SCHEDULE_NOTES}
                         {sectionelse}

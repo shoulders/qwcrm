@@ -6,7 +6,7 @@ $y =    $VAR['y'];
 $m =    $VAR['m'];
 $d =    $VAR['d'];
 
-$arr = view_schedule($db, $schedule_id);
+$arr = display_single_schedule($db, $schedule_id);
 
 if($arr) {
     $smarty->assign('y',$y);

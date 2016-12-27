@@ -176,29 +176,26 @@ $VAR            = array_merge($_GET, $_POST);  // i could use a security functio
 // These are used globally but mainly for the menu !!
 $workorder_id           = $VAR['workorder_id'];
 $customer_id            = $VAR['customer_id'];
-//$employee_id            = $VAR['employee_id'];
 $expense_id             = $VAR['expense_id'];
 $refund_id              = $VAR['refund_id'];
 $supplier_id            = $VAR['supplier_id'];
 $invoice_id             = $VAR['invoice_id'];
 $schedule_id            = $VAR['schedule_id'];
-$schedule_start_year    = $VAR['schedule_start_year'];
-$schedule_start_month   = $VAR['schedule_start_month'];
-$schedule_start_day     = $VAR['schedule_start_day'];
+
+// If not schedule year set use todays year
+if(isset($VAR['schedule_start_year'])) {$schedule_start_year = $VAR['schedule_start_year'];} else {$schedule_start_year = date('Y');}
+
+// If not schedule month set use todays month
+if(isset($VAR['schedule_start_month'])) {$schedule_start_month = $VAR['schedule_start_month'];} else {$schedule_start_month = date('m');}
+
+// If not schedule day set use todays day
+if(isset($VAR['schedule_start_day'])) {$schedule_start_day = $VAR['schedule_start_day'];} else {$schedule_start_day = date('d');}
 
 // Make sure an employee is always set - if no employee is set use the logged in user
-if(isset($VAR['employee_id'])) {
-    $employee_id = $VAR['employee_id'];
-} else {
-    $employee_id = $_SESSION['login_id'];
-}
+if(isset($VAR['employee_id'])) {$employee_id = $VAR['employee_id'];} else {$employee_id = $_SESSION['login_id'];}
 
 // Get the page number if it exists or set to page number to 1 if not
-if(isset($VAR['page_no'])){
-    $page_no = $VAR['page_no'];
-} else {
-    $page_no = 1;
-}
+if(isset($VAR['page_no'])) {$page_no = $VAR['page_no'];} else {$page_no = 1;}
 
 ##########################################
 #   Set Global PHP Values  from QWcrm    #
