@@ -23,31 +23,22 @@ function force_page($module, $page_tpl = Null, $variables = Null, $method = 'ses
         // Normal URL Redirect    
         if($page_tpl === Null && $variables === Null){            
 
-            // Build the URL
-            $url = $module;
-            
-            // Perform the redirect
-            perform_redirect($url);
+            // Build the URL and perform the redirect
+            perform_redirect($module);
             
         }
 
         // Page Name Only    
         if ($page_tpl != Null && $variables === Null){
         
-            // Build the URL
-            $url = 'index.php?page='.$module.':'.$page_tpl;
-            
-            // Perform the redirect
-            perform_redirect($url);
+            // Build the URL and perform the redirect
+            perform_redirect('index.php?page='.$module.':'.$page_tpl);
 
         // Page Name and Variables (QWcrm Style Redirect) (js)
         } else {           
             
-            // Build the URL
-            $url = 'index.php?page='.$module.':'.$page_tpl.'&'.$variables;
-            
-            // Perform the redirect
-            perform_redirect($url);
+            // Build the URL and perform the redirect
+            perform_redirect('index.php?page='.$module.':'.$page_tpl.'&'.$variables);
                        
         }
     }
@@ -61,12 +52,8 @@ function force_page($module, $page_tpl = Null, $variables = Null, $method = 'ses
         // Page Name Only
         if ($page_tpl != Null && $variables === Null){                        
 
-            // Build the URL
-            $url = 'index.php?page='.$module.':'.$page_tpl;
-            
-            // Perform the redirect
-            perform_redirect($url);
-           
+            // Build the URL and perform the redirect
+            perform_redirect('index.php?page='.$module.':'.$page_tpl);           
 
         // Page Name and Variables (QWcrm Style Redirect)
         } else {          
@@ -80,11 +67,8 @@ function force_page($module, $page_tpl = Null, $variables = Null, $method = 'ses
                 $_SESSION['force_page'][$key] = $value;
             }     
 
-            // Build the URL
-            $url = 'index.php?page='.$module.':'.$page_tpl;
-            
-            // Perform the redirect
-            perform_redirect($url);
+            // Build the URL and perform the redirect
+            perform_redirect('index.php?page='.$module.':'.$page_tpl);
             
         }
     }
@@ -94,15 +78,15 @@ function force_page($module, $page_tpl = Null, $variables = Null, $method = 'ses
 #     Perform a Browser Redirect           #
 ############################################
 
-function perform_redirect($url, $type = 'header') {
+function perform_redirect($url, $type = 'javascript') {
     
-    // Redirect using headers - Joomla uses header redirect (prefered option)
+    // Redirect using Headers (cant always use this method in QWcrm)
     if($type == 'header') {
         header('Location: ' . $url);
         exit();
     }
     
-    // Redirect using Javascript (keep for legacy)
+    // Redirect using Javascript
     if($type == 'javascript') {                     
         echo('
                 <script>
@@ -116,8 +100,109 @@ function perform_redirect($url, $type = 'header') {
 #           force_error_page               #
 ############################################
 
-// 26-11-16 - working correct error statement
-//force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
+
+// Old Method Example (26-11-16) - use for text replace
+// force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
+ 
+// New Method - Example to use
+//force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
+
+function force_error_page($error_page, $error_type, $error_location, $php_function, $database_error, $sql_query, $error_msg) {    
+    
+    // New method of passing varibles with preperation
+    $_SESSION['force_page']['error_page']       = prepare_error_data('error_page', $error_page);
+    $_SESSION['force_page']['error_type']       = $error_type;
+    $_SESSION['force_page']['error_location']   = prepare_error_data('error_location', $error_location);
+    $_SESSION['force_page']['php_function']     = prepare_error_data('php_function', $php_function);
+    $_SESSION['force_page']['database_error']   = $database_error;
+    $_SESSION['force_page']['sql_query']        = $sql_query;
+    $_SESSION['force_page']['error_msg']        = $error_msg;
+    
+    force_page('core', 'error');
+    exit;
+    
+}
+
+############################################
+#  Error Handling - Data preperation       #
+############################################
+
+function prepare_error_data($type, $data = Null){
+
+    /* Error Page (by referring page) - only needed when using referrer - not currently used 
+    if($type === 'error_page'){
+     */
+        
+        // extract the qwcrm page reference from the url      
+        // preg_match('/^.*\?page=(.*)&.*/U', getenv('HTTP_REFERER'), $page_string);
+                
+      /*  // compensate for home and login pages
+        if($page_string[1] == ''){     
+            // Must be Login or Home
+            if(isset($_SESSION['login_hash'])){
+                $error_page = 'home';
+            } else {
+                $error_page = 'login';
+            }    
+        } else {
+            $error_page = $page_string[1];            
+        }       
+        return $error_page;
+    }
+    */
+        
+    /* Error Page (by using $_GET['page'] */
+    if($type === 'error_page'){
+        
+        // compensate for home and login pages
+        if($data == ''){     
+            // Must be Login or Home
+            if(isset($_SESSION['login_hash'])){
+                $error_page = 'home';
+            } else {
+                $error_page = 'login';
+            }    
+        } else {
+            $error_page = $data;            
+        }       
+        return $error_page;
+    }     
+    
+    /* Error Location */
+    if($type === 'error_location'){     
+               
+        // remove qwcrm base physical webroot path thing
+        $data = str_replace(QWCRM_PHYSICAL_PATH, '', $data);
+        
+        // replace backslashes with forward slashes (Windows OS)
+        $data = str_replace('\\','/',$data);
+        
+        // remove drive letter only (Windows OS)
+        //$data = preg_replace('/^[a-zA-Z]:/', '', $data);
+        
+        // remove preceeding slash
+        $data = preg_replace('/^\//', '', $data);
+        
+        return $data;
+
+    }
+   
+    /* PHP Function */
+    if($type === 'php_function'){
+
+        // add () to the end of the php function name
+        if($data != ''){$data.= '()';}        
+        return $data;
+    }
+    
+    /* Database Error */
+    if($type === 'database_error'){
+
+        // remove newlines from the database string
+        if($data != ''){$data = str_replace("\n",'',$data);}  
+        return $data;
+    }
+}
 
 ############################################
 #  Language Translation Function           #
@@ -125,9 +210,7 @@ function perform_redirect($url, $type = 'header') {
 
 function load_language(){
     
-    global $smarty;
-    
-/* 
+    global $smarty; 
      
     // xml_parse_into_struct() old method - keep for reference
 
@@ -156,8 +239,8 @@ function load_language(){
     }    
 
     return true;
-*/
-    
+
+    /*
     // SimpleXML Method
     
     $language_xml = simplexml_load_file(LANGUAGE_DIR.THEME_LANGUAGE);
@@ -181,7 +264,7 @@ function load_language(){
     
     // Destroy the loaded XML data to save memory
     unset($language_xml);
-        
+*/      
 }
 
 ############################################
@@ -655,91 +738,6 @@ function write_record_to_error_log($login_usr = '-', $error_page, $error_type, $
     fclose($fp);
         
     return;    
-}
-
-// check this
-/* current error - get is used because it is a super global to grab page title = simple*/
-// force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
-
-############################################
-#  Error Handling - Data preperation       #
-############################################
-
-function prepare_error_data($type, $data = Null){
-
-    /* Error Page (by referring page) - only needed when using referrer - not currently used 
-    if($type === 'error_page'){
-     */
-        
-        // extract the qwcrm page reference from the url      
-        // preg_match('/^.*\?page=(.*)&.*/U', getenv('HTTP_REFERER'), $page_string);
-                
-      /*  // compensate for home and login pages
-        if($page_string[1] == ''){     
-            // Must be Login or Home
-            if(isset($_SESSION['login_hash'])){
-                $error_page = 'home';
-            } else {
-                $error_page = 'login';
-            }    
-        } else {
-            $error_page = $page_string[1];            
-        }       
-        return $error_page;
-    }
-    */
-        
-    /* Error Page (by using $_GET['page'] */
-    if($type === 'error_page'){
-        
-        // compensate for home and login pages
-        if($data == ''){     
-            // Must be Login or Home
-            if(isset($_SESSION['login_hash'])){
-                $error_page = 'home';
-            } else {
-                $error_page = 'login';
-            }    
-        } else {
-            $error_page = $data;            
-        }       
-        return $error_page;
-    }     
-    
-    /* Error Location */
-    if($type === 'error_location'){     
-               
-        // remove qwcrm base physical webroot path thing
-        $data = str_replace(QWCRM_PHYSICAL_PATH, '', $data);
-        
-        // replace backslashes with forward slashes (Windows OS)
-        $data = str_replace('\\','/',$data);
-        
-        // remove drive letter only (Windows OS)
-        //$data = preg_replace('/^[a-zA-Z]:/', '', $data);
-        
-        // remove preceeding slash
-        $data = preg_replace('/^\//', '', $data);
-        
-        return $data;
-
-    }
-   
-    /* PHP Function */
-    if($type === 'php_function'){
-
-        // add () to the end of the php function name
-        if($data != ''){$data.= '()';}        
-        return $data;
-    }
-    
-    /* Database Error */
-    if($type === 'database_error'){
-
-        // remove newlines from the database string
-        if($data != ''){$data = str_replace("\n",'',$data);}  
-        return $data;
-    }
 }
 
 #########################################################

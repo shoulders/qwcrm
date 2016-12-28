@@ -8,7 +8,7 @@ class Auth {
   
     /** 
      * This function is always called when the class is invoked
-     *  - I dont know the difference between this and the constructor
+     *  I dont know the difference between this and the constructor
      */
     function Auth($db, $smarty, $redirect, $secretKey){
         

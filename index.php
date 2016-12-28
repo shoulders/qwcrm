@@ -136,9 +136,9 @@ $auth = new Auth($db, $smarty, 'index.php', $secretKey);
 $login_id   = $_SESSION['login_id'];
 $login_usr  = $_SESSION['login_usr'];
 
-// If there is no account type details, set to Guest
+// If there is no account type details, set to Public (This can caus elooping - invvestigate)
 if(!isset($_SESSION['login_account_type_id'])){
-    $login_account_type_id = 8;
+    $login_account_type_id = 9;
 } else {
     $login_account_type_id = $_SESSION['login_account_type_id'];   
 }
@@ -163,7 +163,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'logout') {
  * These are used to set varibles that are also used elsewhere (sort of global) not just for use in index.php
  */
 
-// Prevents errors if there is no $_SESSION varibales set via force_page
+// Prevents errors if there is no $_SESSION varibles set via force_page
 if(!is_array($_SESSION['force_page'])){$_SESSION['force_page'] = array();}
  
 // Merge the $_GET, $_POST for legacy code
@@ -265,6 +265,20 @@ if(isset($VAR['warning_msg'])){
 #  the page exists ready for building      #
 ############################################   
 
+if($maintenance == true){
+    // set to the maintenance page    
+    $page_display_controller = 'modules'.SEP.'core'.SEP.'maintenance.php'; 
+    $module     = 'core';
+    $page_tpl   = 'maintenance';
+    //$auth->logout('index.php');
+    //$login_account_type_id = 11;
+    // If logout is set, then log user off
+    //unset($_SESSION['login_hash']);
+    /*if(isset($_SESSION['login_hash'])) {    
+        $auth->logout('index.php');
+    }*/
+}
+
 // If there is a page set, verify it 
 if(isset($VAR['page']) && $VAR['page'] != ''){ 
 
@@ -328,8 +342,8 @@ if(check_acl($db, $login_account_type_id, $module, $page_tpl)){
         require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_header_theme_off_block.php');
     }
 
-    // Display Header Legacy Template Code and Menu Block - Public will not see the menu
-    if($VAR['theme'] != 'off' && isset($_SESSION['login_hash']) && $login_account_type_id != 11){       
+    // Display Header Legacy Template Code and Menu Block - Customers, Guests and Public users will not see the menu
+    if($VAR['theme'] != 'off' && isset($_SESSION['login_hash']) && $login_account_type_id != 7 && $login_account_type_id != 8 && $login_account_type_id != 9){       
         $smarty->display('core'.SEP.'blocks'.SEP.'theme_header_legacy_supplement_block.tpl');
         require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_menu_block.php');        
     }    
@@ -338,7 +352,7 @@ if(check_acl($db, $login_account_type_id, $module, $page_tpl)){
     require($page_display_controller);    
 
     // Display Footer Legacy Template code Block (closes content table)
-    if($VAR['theme'] != 'off' && isset($_SESSION['login_hash']) && $login_account_type_id != 11){
+    if($VAR['theme'] != 'off' && isset($_SESSION['login_hash']) && $login_account_type_id != 7 && $login_account_type_id != 8 && $login_account_type_id != 9){
         $smarty->display('core'.SEP.'blocks'.SEP.'theme_footer_legacy_supplement_block.tpl');             
     }
 
@@ -358,6 +372,12 @@ if(check_acl($db, $login_account_type_id, $module, $page_tpl)){
     page_build_end:
     
 }
+
+################################################
+#    Possible page display/echo here           #
+################################################
+
+//$smarty->display($the_whole_page);
 
 ################################################
 #        Access Logging                        #
