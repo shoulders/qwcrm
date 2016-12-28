@@ -2,9 +2,15 @@
 
 require(INCLUDES_DIR.'modules/schedule.php');
 
-// check if workorder status we don't want to reschedule a work order if it's closed
-if(isset($workorder_id)) {    
-    check_schedule_workorder_status($db, $workorder_id);
+// check the workorder status - we don't want to reschedule a work order if it's closed
+if(isset($workorder_id)) { 
+    
+    // If the workorder is closed - remove the workorder_id preventing further schedule creation
+    if(check_workorder_is_open($db, $workorder_id)) {        
+        $smarty->assign('warning_msg', 'Can not set a schedule for closed work orders - Work Order ID '.$workorder_id);
+        unset($workorder_id);
+    }
+    
 }
 
 // Set the Selected Date

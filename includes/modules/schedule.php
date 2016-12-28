@@ -134,14 +134,14 @@ function display_employees_info($db){
 }
 
 
+###############################################
+#      check if a workorder is open           #     // move this to workorder
+###############################################
 
 
-
-###############################################################
-# check the status of the workorder supplied to the schedule  #
-###############################################################
-
-function check_schedule_workorder_status($db, $workorder_id) {
+function check_workorder_is_open($db, $workorder_id) {
+       
+    if(!$workorder_id){return false;}
     
     $q = "SELECT WORK_ORDER_CURRENT_STATUS FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_ID=".$db->qstr($workorder_id);
     
@@ -152,20 +152,42 @@ function check_schedule_workorder_status($db, $workorder_id) {
         $status = $rs->fields['WORK_ORDER_CURRENT_STATUS'];
     }
 
-    if($status == '6') {
-        force_page('workorder', 'view', 'workorder_id='.$workorder_id.'&error_msg=Can not set a schedule for closed work order&page_title=Work Order ID '.$workorder_id.'&type=warning');
-        exit;
-    } elseif ($status == '7') {
-        force_page('workorder', 'view', 'workorder_id='.$workorder_id.'&error_msg=Can not set a schedule for closed work order&page_title=Work Order ID '.$workorder_id.'&type=warning');
-        exit;
-    } elseif ($status == '8') {
-        force_page('workorder', 'view', 'workorder_id='.$workorder_id.'&error_msg=Can not set a schedule for closed work order&page_title=Work Order ID '.$workorder_id.'&type=warning');
-        exit;
-    } elseif ($status == '9') {
-        force_page('workorder', 'view', 'workorder_id='.$workorder_id.'&error_msg=Can not set a schedule for closed work order&page_title=Work Order ID '.$workorder_id.'&type=warning');
-        exit;
-    }    
+    if($status == '6' || $status == '7' || $status == '8' || $status == '9') {        
+        return false;
+    } else {
+        return true;
+    }
+    
+    
 }
+
+###############################################
+#    Get a workorder ID from a schedule ID    #     // move this to workorder
+###############################################
+
+function get_workorder_id_from_schedule_id($db, $workorder_id = null) {
+    
+    global $smarty;
+    
+    if(!$workorder_id){return false;}
+    
+    $q = "SELECT WORK_ORDER_CURRENT_STATUS FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_ID=".$db->qstr($workorder_id);
+    
+    if(!$rs = $db->execute($q)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
+    } else {
+        $status = $rs->fields['WORK_ORDER_CURRENT_STATUS'];
+    }
+
+    if($status == '6' || '7' || '8' || '9') {
+        $smarty->assign('warning_msg', 'Can not set a schedule for closed work orders - Work Order ID '.$workorder_id);
+        return false;
+    }
+    
+    return true;
+}
+
 
 #####################################################
 #        Build Calendar Matrix                      #
@@ -266,9 +288,12 @@ function build_calendar_matrix($db, $schedule_start_year, $schedule_start_month,
                 $calendar .= "<div style=\"color: blue; font-weight: bold;\">NOTES:  ".$scheduleObject[$i]['SCHEDULE_NOTES']."</div><br>\n";
 
                 // Links for schedule
-                $calendar .= "<b><a href=\"index.php?page=schedule:edit&schedule_id=".$scheduleObject[$i]['SCHEDULE_ID']."\">Edit Schedule Item</a></b> -".
-                            "<b><a href=\"index.php?page=schedule:sync&schedule_id=".$scheduleObject[$i]['SCHEDULE_ID']."&theme=off\">Sync</a></b> -".
-                            "<b><a href=\"index.php?page=schedule:delete&schedule_id=".$scheduleObject[$i]['SCHEDULE_ID']."\">Delete</a></b>\n";
+                $calendar .= "<b><a href=\"index.php?page=schedule:view&schedule_id=".$scheduleObject[$i]['SCHEDULE_ID']."\">View Schedule Item</a></b>";
+                if(check_workorder_is_open($db, $scheduleObject[$i]['WORKORDER_ID'])) {                    
+                    $calendar .= " - <b><a href=\"index.php?page=schedule:edit&schedule_id=".$scheduleObject[$i]['SCHEDULE_ID']."\">Edit Schedule Item</a></b> - ".
+                                    "<b><a href=\"index.php?page=schedule:sync&schedule_id=".$scheduleObject[$i]['SCHEDULE_ID']."&theme=off\">Sync</a></b> - ".
+                                    "<b><a href=\"index.php?page=schedule:delete&schedule_id=".$scheduleObject[$i]['SCHEDULE_ID']."\">Delete</a></b>\n";
+                }
 
                 // Close CELL
                 $calendar .= "</td>\n";                
