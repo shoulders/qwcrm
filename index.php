@@ -160,11 +160,17 @@ if (isset($_GET['action']) && $_GET['action'] == 'logout') {
 ################################################
 
 /*
- * These are used to set varibles that are also used elsewhere (sort of global) not just in index.php
+ * These are used to set varibles that are also used elsewhere (sort of global) not just for use in index.php
  */
 
+// Prevents errors if there is no $_SESSION varibales set via force_page
+if(!is_array($_SESSION['force_page'])){$_SESSION['force_page'] = array();}
+ 
 // Merge the $_GET, $_POST for legacy code
-$VAR            = array_merge($_GET, $_POST);  // i could use a security function here to santise the varibles
+$VAR = array_merge($_GET, $_POST, $_SESSION['force_page']);
+
+// Delete the force_page varibles as I dont want them to be persistent
+unset($_SESSION['force_page']);
 
 // These are used globally but mainly for the menu !!
 $workorder_id           = $VAR['workorder_id'];

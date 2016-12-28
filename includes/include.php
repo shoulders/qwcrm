@@ -3,7 +3,7 @@
 /** Main Include File **/
 
 #####################################
-#   Redirect page with javascript   #
+#   force_page - Page Redirector    #
 #####################################
 
 /*
@@ -14,50 +14,107 @@
  * method could be null / $_GET / $_SESSION - i dont need to use $_POST. I just have a flag that wipes session data stored by force_page - i would also need to add it to the array merge
  */
 
-function force_page($module, $page_tpl = Null, $variables = Null) {
+function force_page($module, $page_tpl = Null, $variables = Null, $method = 'session') {
     
-    if($page_tpl === Null && $variables === Null){
-        
-        // Normal URL Redirect
-        echo('
-                <script>
-                    window.location = "'.$module.'"
-                </script>
-            ');
-        
-    } elseif ($page_tpl != Null && $variables === Null){
+    /* Send Varibles via $_GET */
     
-        // Normal URL Redirect with no starting '&' for variable string 
-        echo('
-                <script>
-                    window.location = "index.php?page='.$module.':'.$page_tpl.'"
-                </script>
-            ');
-         
-    } else {
+    if($method == 'get') {
         
-        // QWcrm Style Redirect
+        // Normal URL Redirect    
+        if($page_tpl === Null && $variables === Null){            
+
+            // Build the URL
+            $url = $module;
+            
+            // Perform the redirect
+            perform_redirect($url);
+            
+        }
+
+        // Page Name Only    
+        if ($page_tpl != Null && $variables === Null){
+        
+            // Build the URL
+            $url = 'index.php?page='.$module.':'.$page_tpl;
+            
+            // Perform the redirect
+            perform_redirect($url);
+
+        // Page Name and Variables (QWcrm Style Redirect) (js)
+        } else {           
+            
+            // Build the URL
+            $url = 'index.php?page='.$module.':'.$page_tpl.'&'.$variables;
+            
+            // Perform the redirect
+            perform_redirect($url);
+                       
+        }
+    }
+    
+    /* Send Varibles via $_SESSION */
+    
+    // (basically everything that is not index.php is a variable)    
+    // I could remove the page variable from the url aswell but i could not ID pages
+    if($method == 'session') {       
+        
+        // Page Name Only
+        if ($page_tpl != Null && $variables === Null){                        
+
+            // Build the URL
+            $url = 'index.php?page='.$module.':'.$page_tpl;
+            
+            // Perform the redirect
+            perform_redirect($url);
+           
+
+        // Page Name and Variables (QWcrm Style Redirect)
+        } else {          
+            
+            // Parse the URL into an array            
+            $variable_array = array();
+            parse_str($variables, $variable_array);
+            
+            // Set the page varible in the session - it does not matter page varible is set twice 1 in $_SESSION and 1 in $_GET the array merge will fix that
+            foreach($variable_array as $key => $value) {                    
+                $_SESSION['force_page'][$key] = $value;
+            }     
+
+            // Build the URL
+            $url = 'index.php?page='.$module.':'.$page_tpl;
+            
+            // Perform the redirect
+            perform_redirect($url);
+            
+        }
+    }
+}
+
+############################################
+#     Perform a Browser Redirect           #
+############################################
+
+function perform_redirect($url, $type = 'header') {
+    
+    // Redirect using headers - Joomla uses header redirect (prefered option)
+    if($type == 'header') {
+        header('Location: ' . $url);
+        exit();
+    }
+    
+    // Redirect using Javascript (keep for legacy)
+    if($type == 'javascript') {                     
         echo('
                 <script>
-                    window.location = "index.php?page='.$module.':'.$page_tpl.'&'.$variables.'"
+                    window.location = "'.$url.'"
                 </script>
             ');
     }
-    
 }
 
-   
-    /* redirect using headers (fron auth.php) - Joomla uses header redirect not a javascript one
-    function performRedirect($addFromQuery){        
-         
-        if ($addFromQuery){            
-            header('Location: ' . $this->redirect . '?from=' . $_SERVER['REQUEST_URI']);
-        } else {
-            header('Location: ' . $this->redirect);
-        }        
-        exit();            
-    }     
-     */ 
+############################################
+#           force_error_page               #
+############################################
 
 // 26-11-16 - working correct error statement
 //force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
