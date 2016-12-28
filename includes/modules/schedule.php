@@ -335,13 +335,12 @@ function delete_schedule($db, $schedule_id) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
         exit;
     } else {
-        force_page('schedule', 'main');
-        exit;
+        return true;
     }
 }
 
 ############################################
-#   validate scehdule start and end time   #
+#   validate schedule start and end time   #
 ############################################
 
 function validate_schedule_times($db, $schedule_start_date, $schedule_start_timestamp, $schedule_end_timestamp, $employee_id) {
