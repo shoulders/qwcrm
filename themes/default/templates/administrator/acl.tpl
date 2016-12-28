@@ -28,6 +28,7 @@
                                                 <td class="olohead">Counter</td>
                                                 <td class="olohead">Customer</td>
                                                 <td class="olohead">Guest</td>
+                                                <td class="olohead">Public</td>
                                             </tr>
                                             {section name=q loop=$acl}
                                                 <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" class="row1">
@@ -97,6 +98,14 @@
                                                             <option value="0" {if $acl[q].Guest == '0'}selected{/if}>No</option>
                                                         </select>
                                                     </td>
+
+                                                    <!-- Public -->
+                                                    <td class="olotd4">
+                                                        <select name="{$acl[q].page}[Public]">
+                                                            <option value="1" {if $acl[q].Public == '1'}selected{/if}>Yes</option>
+                                                            <option value="0" {if $acl[q].Public == '0'}selected{/if}>No</option>
+                                                        </select>
+                                                    </td>                                                    
 
                                                 </tr>
                                             {/section}

@@ -322,8 +322,8 @@ if(check_acl($db, $login_account_type_id, $module, $page_tpl)){
         require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_header_theme_off_block.php');
     }
 
-    // Display Header Legacy Template Code and Menu Block - Guests (and not logged in) will not see the menu
-    if($VAR['theme'] != 'off' && isset($_SESSION['login_hash']) && $login_account_type_id != 8){       
+    // Display Header Legacy Template Code and Menu Block - Public will not see the menu
+    if($VAR['theme'] != 'off' && isset($_SESSION['login_hash']) && $login_account_type_id != 11){       
         $smarty->display('core'.SEP.'blocks'.SEP.'theme_header_legacy_supplement_block.tpl');
         require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_menu_block.php');        
     }    
@@ -332,7 +332,7 @@ if(check_acl($db, $login_account_type_id, $module, $page_tpl)){
     require($page_display_controller);    
 
     // Display Footer Legacy Template code Block (closes content table)
-    if($VAR['theme'] != 'off' && isset($_SESSION['login_hash']) && $login_account_type_id != 8){
+    if($VAR['theme'] != 'off' && isset($_SESSION['login_hash']) && $login_account_type_id != 11){
         $smarty->display('core'.SEP.'blocks'.SEP.'theme_footer_legacy_supplement_block.tpl');             
     }
 

@@ -26,7 +26,7 @@ if(isset($VAR['submit'])) {
     }    
    
     // Make these pages permissions available to all User Account Types - This prevents systems errors
-    $q = "UPDATE ".PRFX."ACL SET `Administrator`= 1, `Manager`=1, `Supervisor`=1,`Technician`=1, `Clerical`=1, `Counter`=1, `Customer`=1, `Guest`=1
+    $q = "UPDATE ".PRFX."ACL SET `Administrator`= 1, `Manager`=1, `Supervisor`=1,`Technician`=1, `Clerical`=1, `Counter`=1, `Customer`=1, `Guest`=1, `Public`=1
             WHERE `page`= 'core:error'
             OR `page`= 'core:404'
             OR `page`= 'user:password_reset'            
