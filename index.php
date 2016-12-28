@@ -266,21 +266,22 @@ if(isset($VAR['warning_msg'])){
 ############################################   
 
 if($maintenance == true){
+    
     // set to the maintenance page    
     $page_display_controller = 'modules'.SEP.'core'.SEP.'maintenance.php'; 
     $module     = 'core';
     $page_tpl   = 'maintenance';
-    //$auth->logout('index.php');
-    //$login_account_type_id = 11;
-    // If logout is set, then log user off
-    //unset($_SESSION['login_hash']);
-    /*if(isset($_SESSION['login_hash'])) {    
+    $VAR['theme'] = 'off';   
+    
+    // If user logged in, then log user off    
+    if(isset($_SESSION['login_hash'])) {    
         $auth->logout('index.php');
-    }*/
+    }
+    
 }
 
 // If there is a page set, verify it 
-if(isset($VAR['page']) && $VAR['page'] != ''){ 
+elseif(isset($VAR['page']) && $VAR['page'] != ''){ 
 
     // Explode the URL so we can get the module and page_tpl
     list($module, $page_tpl)    = explode(':', $VAR['page']);
@@ -290,6 +291,7 @@ if(isset($VAR['page']) && $VAR['page'] != ''){
     if (file_exists($page_display_controller)){
         $page_display_controller = 'modules'.SEP.$module.SEP.$page_tpl.'.php';            
     } else {
+        
         // set to the 404 error page 
         $page_display_controller = 'modules'.SEP.'core'.SEP.'404.php'; 
         $module     = 'core';
@@ -298,6 +300,7 @@ if(isset($VAR['page']) && $VAR['page'] != ''){
         // Send 404 header
         $VAR['theme'] = 'off';
         header('HTTP/1.1 404 Not Found');
+        
     }        
 
 // if no page specified load a default landing page   
