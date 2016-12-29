@@ -33,7 +33,7 @@ function insert_new_schedule($db, $schedule_start_date, $scheduleStartTime, $sch
     $schedule_end_timestamp += 1;
     
     // Validate the submitted dates
-    validate_schedule_times($db, $schedule_start_date, $schedule_start_timestamp, $schedule_end_timestamp, $employee_id);
+    if(!validate_schedule_times($db, $schedule_start_date, $schedule_start_timestamp, $schedule_end_timestamp, $employee_id)) {return false;}
 
     // Assign the workorder to the scheduled employee - this causes a page redirect
     //update_workorder_status($db, $workorder_id, 2);
@@ -81,10 +81,9 @@ function update_schedule($db, $schedule_start_date, $scheduleStartTime, $schedul
     $schedule_end_timestamp += 1;
     
     // Validate the submitted dates
-    if(!validate_schedule_times($db, $schedule_start_date, $schedule_start_timestamp, $schedule_end_timestamp, $employee_id)) {return false;}
-        
+    if(!validate_schedule_times($db, $schedule_start_date, $schedule_start_timestamp, $schedule_end_timestamp, $employee_id, $schedule_id)) {return false;}        
     
-    $q = "UPDATE ".PRFX."TABLE_SCHEDULE SET
+    $sql = "UPDATE ".PRFX."TABLE_SCHEDULE SET
         SCHEDULE_ID         =". $db->qstr( $schedule_id                 ).",
         SCHEDULE_START      =". $db->qstr( $schedule_start_timestamp    ).",
         SCHEDULE_END        =". $db->qstr( $schedule_end_timestamp      ).",
@@ -93,50 +92,68 @@ function update_schedule($db, $schedule_start_date, $scheduleStartTime, $schedul
         SCHEDULE_NOTES      =". $db->qstr( $schedule_notes              )."
         WHERE SCHEDULE_ID   =". $db->qstr( $schedule_id                 );
    
-    if(!$rs = $db->execute($q)) {
+    if(!$rs = $db->execute($sql)) {
         // error message need translating
         force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
-    } else {
-        
-        //force_page('schedule', 'main','schedule_id='.$schedule_id.'&schedule_start_year='.$schedule_start_year.'&schedule_start_month='.$schedule_start_month.'&schedule_start_day='.$schedule_start_day);                 
+    } else {       
+        //force_page('schedule', 'day','schedule_id='.$schedule_id.'&schedule_start_year='.$schedule_start_year.'&schedule_start_month='.$schedule_start_month.'&schedule_start_day='.$schedule_start_day);                 
         //exit; 
         return true;
-    }
-        
-    return true;
+    }        
     
 }
 
-######################################
-#       Display Schedule             #
-######################################
+###############################################
+#    Get a workorder ID from a schedule ID    #
+###############################################
+
+// this actually loads the whole schedule
+// not currently used - do i need this
+
+function get_workorder_id_from_schedule($db, $schedule_id) {
+    
+    global $smarty;    
+     
+    $sql = "SELECT WORKORDER_ID FROM ".PRFX."TABLE_SCHEDULE WHERE SCHEDULE_ID=".$db->qstr($schedule_id);
+    
+    if(!$rs = $db->execute($sql)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
+    }  
+
+    return $rs->fields['SCHEDULE_ID'];
+
+}
+
+################################################
+#   Display Schedule with attached employee    #
+################################################
 
 function display_single_schedule($db, $schedule_id) {
 
-    $q = "SELECT ".PRFX."TABLE_SCHEDULE.*, ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_DISPLAY_NAME FROM ".PRFX."TABLE_SCHEDULE 
+    $sql = "SELECT ".PRFX."TABLE_SCHEDULE.*, ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_DISPLAY_NAME FROM ".PRFX."TABLE_SCHEDULE 
             LEFT JOIN ".PRFX."TABLE_EMPLOYEE ON (".PRFX."TABLE_SCHEDULE.EMPLOYEE_ID=".PRFX."TABLE_EMPLOYEE.EMPLOYEE_ID )
             WHERE SCHEDULE_ID='".$schedule_id."'";
 
-    if(!$rs = $db->Execute($q)) {
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+    if(!$rs = $db->Execute($sql)) {
+        force_page('core', 'error', 'error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
         exit;
     }
 
-    $arr = $rs->GetAll();    
-    return $arr;
+    return $rs->GetArray();    
 
 }
-    
+
 ########################################
 # List of all employees and their data #
 ########################################
     
 function display_employees_info($db){
     
-    $q = "SELECT EMPLOYEE_ID, EMPLOYEE_DISPLAY_NAME FROM ".PRFX."TABLE_EMPLOYEE";
+    $sql = "SELECT EMPLOYEE_ID, EMPLOYEE_DISPLAY_NAME FROM ".PRFX."TABLE_EMPLOYEE";
     
-    if(!$rs = $db->Execute($q)) {
+    if(!$rs = $db->Execute($sql)) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
         exit;
     } else {    
@@ -146,7 +163,7 @@ function display_employees_info($db){
 
 
 ###############################################
-#      check if a workorder is open           #     // move this to workorder
+#      Check if a workorder is open           #     // move this to workorder
 ###############################################
 
 
@@ -154,13 +171,13 @@ function check_workorder_is_open($db, $workorder_id) {
        
     if(!$workorder_id){return false;}
     
-    $q = "SELECT WORK_ORDER_CURRENT_STATUS FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_ID=".$db->qstr($workorder_id);
+    $sql = "SELECT WORK_ORDER_STATUS FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_ID=".$db->qstr($workorder_id);
     
-    if(!$rs = $db->execute($q)) {
+    if(!$rs = $db->execute($sql)) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
         exit;
     } else {
-        $status = $rs->fields['WORK_ORDER_CURRENT_STATUS'];
+        $status = $rs->fields['WORK_ORDER'];
     }
 
     if($status == '6' || $status == '7' || $status == '8' || $status == '9') {        
@@ -172,32 +189,6 @@ function check_workorder_is_open($db, $workorder_id) {
     
 }
 
-###############################################
-#    Get a workorder ID from a schedule ID    #     // move this to workorder
-###############################################
-
-function get_workorder_id_from_schedule_id($db, $workorder_id = null) {
-    
-    global $smarty;
-    
-    if(!$workorder_id){return false;}
-    
-    $q = "SELECT WORK_ORDER_CURRENT_STATUS FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_ID=".$db->qstr($workorder_id);
-    
-    if(!$rs = $db->execute($q)) {
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-        exit;
-    } else {
-        $status = $rs->fields['WORK_ORDER_CURRENT_STATUS'];
-    }
-
-    if($status == '6' || '7' || '8' || '9') {
-        $smarty->assign('warning_msg', 'Can not set a schedule for closed work orders - Work Order ID '.$workorder_id);
-        return false;
-    }
-    
-    return true;
-}
 
 
 #####################################################
@@ -208,7 +199,7 @@ function build_calendar_matrix($db, $schedule_start_year, $schedule_start_month,
             
     // Get the start and end time of the calendar schedule to be displayed, Office hours only - (unix timestamp)
     $company_day_start = mktime(get_setup_info($db, 'OPENING_HOUR'), get_setup_info($db, 'OPENING_MINUTE'), 0, $schedule_start_month, $schedule_start_day, $schedule_start_year);
-    $company_day_end   = mktime(get_setup_info($db, 'CLOSING_HOUR'), get_setup_info($db, 'CLOSING_MINUTE'), 0, $schedule_start_month, $schedule_start_day, $schedule_start_year);    
+    $company_day_end   = mktime(get_setup_info($db, 'CLOSING_HOUR'), get_setup_info($db, 'CLOSING_MINUTE'), 59, $schedule_start_month, $schedule_start_day, $schedule_start_year);    
     /* Same as above but my code - Get the start and end time of the calendar schedule to be displayed, Office hours only - (unix timestamp)
     $company_day_start = datetime_to_timestamp($current_schedule_date, get_setup_info($db, 'OPENING_HOUR'), 0, 0, $clock = '24');
     $company_day_end   = datetime_to_timestamp($current_schedule_date, get_setup_info($db, 'CLOSING_HOUR'), 59, 0, $clock = '24');*/
@@ -287,7 +278,7 @@ function build_calendar_matrix($db, $schedule_start_year, $schedule_start_month,
             if($matrixStartTime == $scheduleObject[$i]['SCHEDULE_START']){
 
                 // Open CELL and add clickable link (to workorder) for CELL
-                $calendar .= "<td class=\"menutd2\" align=\"center\" onClick=\"window.location='?page=workorder:details&workorder_id=".$scheduleObject[$i]['WORKORDER_ID']."page_title=Work Order ID ".$scheduleObject[$i]['WORKORDER_ID']."'\">\n";
+                $calendar .= "<td class=\"menutd2\" align=\"center\" >\n";
 
                 // Schedule Item Title
                 $calendar .= "<b><font color=\"red\">Work Order ".$scheduleObject[$i]['WORKORDER_ID']." for ". $scheduleObject[$i]['CUSTOMER_NAME']."</font></b><br>\n";
@@ -299,11 +290,12 @@ function build_calendar_matrix($db, $schedule_start_year, $schedule_start_month,
                 $calendar .= "<div style=\"color: blue; font-weight: bold;\">NOTES:  ".$scheduleObject[$i]['SCHEDULE_NOTES']."</div><br>\n";
 
                 // Links for schedule
+                $calendar .= "<b><a href=\"?page=workorder:details&workorder_id=".$scheduleObject[$i]['WORKORDER_ID']."\">View Work Order</a> - </b>";
                 $calendar .= "<b><a href=\"index.php?page=schedule:view&schedule_id=".$scheduleObject[$i]['SCHEDULE_ID']."\">View Schedule Item</a></b>";
                 if(check_workorder_is_open($db, $scheduleObject[$i]['WORKORDER_ID'])) {                    
                     $calendar .= " - <b><a href=\"index.php?page=schedule:edit&schedule_id=".$scheduleObject[$i]['SCHEDULE_ID']."\">Edit Schedule Item</a></b> - ".
-                                    "<b><a href=\"index.php?page=schedule:sync&schedule_id=".$scheduleObject[$i]['SCHEDULE_ID']."&theme=off\">Sync</a></b> - ".
-                                    "<b><a href=\"index.php?page=schedule:delete&schedule_id=".$scheduleObject[$i]['SCHEDULE_ID']."\">Delete</a></b>\n";
+                                    "<b><a href=\"index.php?page=schedule:icalendar&schedule_id=".$scheduleObject[$i]['SCHEDULE_ID']."&theme=print\">iCalendar</a></b> - ".
+                                    "<b><a href=\"index.php?page=schedule:delete&schedule_id=".$scheduleObject[$i]['SCHEDULE_ID']."\" onclick=\"return confirmDelete();\">Delete</a></b>\n";                                    
                 }
 
                 // Close CELL
@@ -371,7 +363,8 @@ function delete_schedule($db, $schedule_id) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
         exit;
     } else {
-        return true;
+        force_page('schedule', 'day', 'information_msg=Schedule has been deleted');
+        exit;
     }
 }
 
@@ -379,7 +372,7 @@ function delete_schedule($db, $schedule_id) {
 #   validate schedule start and end time   #
 ############################################
 
-function validate_schedule_times($db, $schedule_start_date, $schedule_start_timestamp, $schedule_end_timestamp, $employee_id) {
+function validate_schedule_times($db, $schedule_start_date, $schedule_start_timestamp, $schedule_end_timestamp, $employee_id, $schedule_id = null) {
     
     global $smarty;
     
@@ -408,7 +401,7 @@ function validate_schedule_times($db, $schedule_start_date, $schedule_start_time
     }    
 
     // Load all schedule items from the database for the supplied employee for the specified day (this currently ignores company hours)
-    $sql = "SELECT SCHEDULE_START,SCHEDULE_END, SCHEDULE_ID
+    $sql = "SELECT SCHEDULE_START, SCHEDULE_END, SCHEDULE_ID
             FROM ".PRFX."TABLE_SCHEDULE
             WHERE SCHEDULE_START >= ".$company_day_start."
             AND SCHEDULE_END <=".$company_day_end."
@@ -421,21 +414,27 @@ function validate_schedule_times($db, $schedule_start_date, $schedule_start_time
     }    
     
     // Loop through all schedule items in the database (for the selected day and employee) and validate that schedule item can be inserted with no conflict.
-    while (!$rs->EOF){      
-
-        // Check if this schedule item ends after another item has started      
-        if($schedule_start_timestamp <= $rs->fields["SCHEDULE_START"] && $schedule_end_timestamp >= $rs->fields["SCHEDULE_START"]) {            
-            $smarty->assign('warning_msg', 'Schedule conflict - This schedule item ends after another schedule has started');    
-            return false;
-        }
+    while (!$rs->EOF){
         
-        // Check if this schedule item starts before another item has finished
-        if($schedule_start_timestamp >= $rs->fields["SCHEDULE_START"] && $schedule_start_timestamp <= $rs->fields["SCHEDULE_END"]) {            
-            $smarty->assign('warning_msg', 'Schedule conflict - This schedule item starts before another schedule ends');            
-            return false;
+        // Check the schedule is not getting updated
+        if($schedule_id != $rs->fields['SCHEDULE_ID']) {
+
+            // Check if this schedule item ends after another item has started      
+            if($schedule_start_timestamp <= $rs->fields['SCHEDULE_START'] && $schedule_end_timestamp >= $rs->fields['SCHEDULE_START']) {                        
+                $smarty->assign('warning_msg', 'Schedule conflict - This schedule item ends after another schedule has started');    
+                return false;           
+            }
+
+            // Check if this schedule item starts before another item has finished
+            if($schedule_start_timestamp >= $rs->fields['SCHEDULE_START'] && $schedule_start_timestamp <= $rs->fields['SCHEDULE_END']) {                    
+                $smarty->assign('warning_msg', 'Schedule conflict - This schedule item starts before another schedule ends');    
+                return false;
+            }
+        
         }
 
         $rs->MoveNext();
+        
     }
     
     return true;

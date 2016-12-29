@@ -36,14 +36,13 @@
                                                         selection     : {/literal}{$selected_date}{literal},
                                                         onSelect :  function(calendar){                                                                        
                                                                         var selectedDate = calendar.selection.get();            // get the selected date
-                                                                        var dateForLink = Calendar.intToDate(selectedDate);     // converts into a JavaScript date object
-                                                                        
+                                                                        var dateForLink = Calendar.intToDate(selectedDate);     // converts into a JavaScript date object                                                                        
                                                                         var y = dateForLink.getFullYear();
                                                                         var M = dateForLink.getMonth();                         // integer, 0..11
                                                                         var m = M + 1;                                          // Correction for assignment issue above
                                                                         var d = dateForLink.getDate();                          // integer, 1..31
                                                                         // redirect...
-                                                                        window.location = "?page=schedule:main&schedule_start_year="+y+"&schedule_start_month="+m+"&schedule_start_day="+d+"&workorder_id={/literal}{$workorder_id}{literal}&page_title={/literal}{$translate_schedule_schedule}{literal}";
+                                                                        window.location = "?page=schedule:day&schedule_start_year="+y+"&schedule_start_month="+m+"&schedule_start_day="+d+"&workorder_id={/literal}{$workorder_id}{literal}&page_title={/literal}{$translate_schedule_schedule}{literal}";
                                                                     }
                                                     });
                                                 {/literal}  
@@ -55,11 +54,11 @@
                                         <tr>
                                             <td><button type="submit" name="{$translate_schedule_print}" OnClick=location.href="?page=schedule:print&schedule_start_year={$schedule_start_year}&schedule_start_month={$schedule_start_month}&schedule_start_day={$schedule_start_day}&theme=off"; >{$translate_schedule_print}</button></td>
                                             <td valign="top" align="right" valign="middle">
-                                                {if $login_id != '0' }
+                                                {if $login_account_type_id <= 3 }
                                                     <form>
                                                         <select id="changeThisPage" onChange="changePage();">
                                                             {section name=i loop=$employees}
-                                                                <option value="?page=schedule:main&schedule_start_year={$schedule_start_year}&schedule_start_month={$schedule_start_month}&schedule_start_day={$schedule_start_day}&employee_id={$employees[i].EMPLOYEE_ID}&page_title=schedule" {if $selected_employee == $employees[i].EMPLOYEE_ID} selected {/if}>{$employees[i].EMPLOYEE_DISPLAY_NAME}</option>
+                                                                <option value="?page=schedule:day&schedule_start_year={$schedule_start_year}&schedule_start_month={$schedule_start_month}&schedule_start_day={$schedule_start_day}&employee_id={$employees[i].EMPLOYEE_ID}&page_title=schedule" {if $selected_employee == $employees[i].EMPLOYEE_ID} selected {/if}>{$employees[i].EMPLOYEE_DISPLAY_NAME}</option>
                                                             {/section}
                                                         </select>
                                                     </form>

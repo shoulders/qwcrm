@@ -2,10 +2,10 @@
 <table width="100%" border="0" cellpadding="20" cellspacing="5">
     <tr>
         <td>
-            {section name=a loop=$arr}
+            {section name=a loop=$single_schedule}
                 <table width="700" cellpadding="4" cellspacing="0" border="0" >
                     <tr>
-                        <td class="menuhead2" width="80%">&nbsp;Scheduled range from the {$arr[a].SCHEDULE_START|date_format:"$date_format %r"} to {$arr[a].SCHEDULE_END|date_format:"$date_format %r"}</td>
+                        <td class="menuhead2" width="80%">&nbsp;Scheduled ID {$single_schedule[a].SCHEDULE_ID} on {$single_schedule[a].SCHEDULE_START|date_format:"$date_format"}</td>
                     </tr>
                     <tr>
                         <td class="menutd2">
@@ -15,15 +15,17 @@
                                         <table width="100%" cellpadding="5" cellspacing="5">
                                             <tr>
                                                 <td>
-                                                    <b>{$translate_schedule_start} </b>{$arr[a].SCHEDULE_START|date_format:"%H:%M %p"} <br><b>{$translate_schedule_end} </b>{$arr[a].SCHEDULE_END|date_format:"%H:%M %p"}<br>
-                                                    {$arr[a].SCHEDULE_NOTES}<br>
-                                                    <b>{$translate_schedule_tech}</b> {$arr[a].EMPLOYEE_DISPLAY_NAME}
-                                                    <br>
-                                                    <br>
-                                                    <input value="{$translate_schedule_edit}" onClick="window.location='?page=schedule:edit&schedule_id={$arr[a].SCHEDULE_ID}&schedule_start_year={$y}&schedule_start_month={$m}&schedule_start_day={$d}';" type="submit">
-                                                    <input value="{$translate_schedule_delete}" onClick="window.location='?page=schedule:delete&schedule_id={$arr[a].SCHEDULE_ID}&schedule_start_year={$y}&schedule_start_month={$m}&schedule_start_day={$d}';" type="submit">
-                                                    <input value="Export" onClick="window.location='?page=schedule:sync&&workorder_id={$arr[a].WORK_ORDER_ID}';" type="submit">                                            
-                                                    <input value="View Work Order" onClick="window.location='?page=workorder:details&workorder_id={$arr[a].WORK_ORDER_ID}';" type="submit">
+                                                    <p><b>Date: </b>{$single_schedule[a].SCHEDULE_START|date_format:"$date_format"}</p>
+                                                    <p>
+                                                        <b>{$translate_schedule_start}: </b>{$single_schedule[a].SCHEDULE_START|date_format:"%H:%M"}<br>
+                                                        <b>{$translate_schedule_end}: </b>{$single_schedule[a].SCHEDULE_END|date_format:"%H:%M"}
+                                                    </p>
+                                                    <p><b>{$translate_schedule_tech}: </b>{$single_schedule[a].EMPLOYEE_DISPLAY_NAME}</p>
+                                                    <b>Notes:</b><br />{$single_schedule[a].SCHEDULE_NOTES}<br>
+                                                    <button type="button" onClick="window.location='?page=schedule:edit&schedule_id={$single_schedule[a].SCHEDULE_ID}';">{$translate_schedule_edit}</button>
+                                                    <button type="button" onClick="return confirmDelete('are you sure'); window.location='?page=schedule:delete&schedule_id={$single_schedule[a].SCHEDULE_ID}';">{$translate_schedule_delete}</button>
+                                                    <button type="button" onClick="window.location='?page=schedule:icalendar&schedule_id={$single_schedule[a].SCHEDULE_ID}&theme=print';">Export</button>                                         
+                                                    <button type="button" onClick="window.location='?page=workorder:details&workorder_id={$single_schedule[a].WORKORDER_ID}';">View Work Order</button>
                                                 </td>
                                             </tr>
                                         </table>

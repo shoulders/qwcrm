@@ -62,7 +62,7 @@
                                                             var m = M + 1;                                          // Correction for assignment issue above
                                                             var d = dateForLink.getDate();                          // integer, 1..31
                                                             // redirect...
-                                                            window.location = "?page=schedule:main&schedule_start_year="+y+"&schedule_start_month="+m+"&schedule_start_day="+d+"&workorder_id={/literal}{$workorder_id}{literal}&page_title={/literal}{$translate_schedule_schedule}{literal}";
+                                                            window.location = "?page=schedule:day&schedule_start_year="+y+"&schedule_start_month="+m+"&schedule_start_day="+d+"&workorder_id={/literal}{$workorder_id}{literal}&page_title={/literal}{$translate_schedule_schedule}{literal}";
                                                         }
                                         });
                                     {/literal}

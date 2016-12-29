@@ -1,5 +1,5 @@
 <?php
-//force_page('schedule','main', 'schedule_start_year='.$schedule_start_year.'&schedule_start_month='.$schedule_start_month.'&schedule_start_day='.$schedule_start_day.'&employee_id='.$employee_id.'&workorder_id='.$workorder_id.'&page_title=schedule');
+
 require(INCLUDES_DIR.'modules/schedule.php');
 
 // If new schedule item submitted
@@ -15,6 +15,7 @@ if(isset($VAR['submit'])) {
         $smarty->assign('schedule_notes',           $VAR['schedule_notes']                                                                  );
         $smarty->assign('schedule_id',              $schedule_id                                                                            );
         $smarty->assign('employee_id',              $employee_id                                                                            );
+        $smarty->assign('employees',                display_employees_info($db)                                                             );
         $smarty->assign('workorder_id',             $workorder_id                                                                           );               
             
     } else {       
@@ -26,11 +27,12 @@ if(isset($VAR['submit'])) {
         $schedule_start_day             = date('d', $schedule_start_date_timestamp      );    
     
         // Load the schedule day with the updated schedule item
-        force_page('schedule','main', 'schedule_start_year='.$schedule_start_year.'&schedule_start_month='.$schedule_start_month.'&schedule_start_day='.$schedule_start_day.'&employee_id='.$employee_id.'&workorder_id='.$workorder_id.'&page_title=schedule');
+        force_page('schedule', 'day', 'schedule_start_year='.$schedule_start_year.'&schedule_start_month='.$schedule_start_month.'&schedule_start_day='.$schedule_start_day.'&employee_id='.$employee_id.'&workorder_id='.$workorder_id.'&page_title=schedule&information_msg=Schedule Successfully Updated');
         exit;
+        
     }
 
-// If new schedule form is intially loaded, load schedule item from the database and assign
+// If edit schedule form is loaded, get schedule item from the database and assign
 } else {
     
     $schedule_item = display_single_schedule($db, $schedule_id);
@@ -44,6 +46,7 @@ if(isset($VAR['submit'])) {
     $smarty->assign('schedule_notes',           $schedule_item['0']['SCHEDULE_NOTES']                       );
     $smarty->assign('schedule_id',              $schedule_item['0']['SCHEDULE_ID']                          );
     $smarty->assign('employee_id',              $schedule_item['0']['EMPLOYEE_ID']                          );
+    $smarty->assign('employees',                display_employees_info($db)                                 );
     $smarty->assign('workorder_id',             $schedule_item['0']['WORKORDER_ID']                         ); 
     
 }

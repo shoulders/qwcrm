@@ -1,14 +1,14 @@
 <?php
 
 ##########################################
-#      Get Start and End Times       #
+#      Get Start and End Times           #
 ##########################################
 
 function get_company_start_end_times($db, $time_event) {
     
-    $q = 'SELECT OPENING_HOUR, OPENING_MINUTE, CLOSING_HOUR, CLOSING_MINUTE FROM '.PRFX.'SETUP';
+    $sql = 'SELECT OPENING_HOUR, OPENING_MINUTE, CLOSING_HOUR, CLOSING_MINUTE FROM '.PRFX.'SETUP';
 
-    if(!$rs = $db->execute($q)) {
+    if(!$rs = $db->execute($sql)) {
         force_page('core', 'error','error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
         exit;
     }
@@ -57,13 +57,13 @@ function insert_company_hours($db, $openingTime, $closingTime) {
     
     global $smarty;
     
-    $q = 'UPDATE '.PRFX.'SETUP SET
+    $sql = 'UPDATE '.PRFX.'SETUP SET
         OPENING_HOUR    ='. $db->qstr( $openingTime['Time_Hour']     ).',
         OPENING_MINUTE  ='. $db->qstr( $openingTime['Time_Minute']   ).',
         CLOSING_HOUR    ='. $db->qstr( $closingTime['Time_Hour']     ).',
         CLOSING_MINUTE  ='. $db->qstr( $closingTime['Time_Minute']   );
 
-    if(!$rs = $db->execute($q)) {
+    if(!$rs = $db->execute($sql)) {
         force_page('core', 'error','error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
         exit;
     } else {            

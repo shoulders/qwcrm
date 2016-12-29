@@ -100,8 +100,9 @@ function onlyPassword(e) {
 }
 
 // Dates
-function onlyDate(e) {
-   return keyRestriction(e, "0123456789\/\\-", false);
+function onlyDate(e) {   
+   //return false; - Allow only the date picker to fill in date boxes
+   return keyRestriction(e, "0123456789\/", false); 
 }
 
 // Common Function for Key Input Restriction
@@ -195,4 +196,13 @@ function processSytemMessages(information_msg, warning_msg) {
         warning.innerHTML = warning_msg;
     }
     
+}
+
+// A standard delete confirmation dialogue - return confirmDelete(msg);
+function confirmDelete(msg) {    
+    var choice = confirm(msg);
+        if (choice)
+            return true;
+        else
+            return false;
 }

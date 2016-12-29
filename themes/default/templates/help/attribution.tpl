@@ -13,4 +13,5 @@
     <li>JSCal2 v1.9 (2011/03/13) | permissive? | http://www.dynarch.com/jscal/</li>
     <li>TCPDF v6.2.13 | LGPL v3 | http://www.tcpdf.org</li>
     <li>mPDF | GPLv2</li>
+    <li>PHPtoICS.php iCalendar script | free to use? | https://gist.github.com/jakebellacera/635416</li>
 </ul>

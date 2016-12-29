@@ -26,15 +26,29 @@
                                                 <form method="POST" action="?page=schedule:edit">
                                                     <!--<input type="hidden" name="page" value="schedule:edit">-->
                                                     <input type="hidden" name="schedule_id" value="{$schedule_id}">
-                                                    <input type="hidden" name="workorder_id" value="{$workorder_id}">
-                                                    <input type="hidden" name="employee_id" value="{$employee_id}">
+                                                    <input type="hidden" name="workorder_id" value="{$workorder_id}">                                                    
                                                     <table class="olotable" width="100%" border="0">
                                                         <tr>
                                                             <td class="olohead">{$translate_schedule_set}</td>
                                                         </tr>
                                                         <tr>
                                                             <td class="olotd">
-                                                                <table width="100%" cellpadding="5" cellspacing="5">                                          
+                                                                <table width="100%" cellpadding="5" cellspacing="5">
+                                                                    <tr>                                                                        
+                                                                        <td>
+                                                                            <p><b>Assigned Employee</b></p>
+                                                                            {if $login_account_type_id <= 3 }                                                                                
+                                                                                <select name="employee_id">
+                                                                                    {section name=i loop=$employees}
+                                                                                        <option value="{$employees[i].EMPLOYEE_ID}" {if $employee_id == $employees[i].EMPLOYEE_ID} selected {/if}>{$employees[i].EMPLOYEE_DISPLAY_NAME}</option>
+                                                                                    {/section}
+                                                                                </select>                                                                                
+                                                                            {else}
+                                                                                <input type="hidden" name="employee_id" value="{$employee_id}">
+                                                                            {/if}
+                                                                        </td>
+                                                                        <td></td>
+                                                                    </tr>
                                                                     <tr>
                                                                         <td><b>{$translate_schedule_start}</b></td>
                                                                         <td><b>{$translate_schedule_end}</b></td>
@@ -69,6 +83,7 @@
                                                                             {html_select_time use_24_hours=true minute_interval=15 display_seconds=false field_array=scheduleEndTime time=$schedule_end_time}
                                                                         </td>
                                                                     </tr>
+                                                                    
                                                                     <tr>
                                                                         <td colspan="2">
                                                                             <b>{$translate_schedule_notes}</b>

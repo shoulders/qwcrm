@@ -12,9 +12,9 @@ function menu_get_single_workorder_status($db, $workorder_id){
     
     global $smarty;
     
-    $q = "SELECT WORK_ORDER_STATUS FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_ID =".$db->qstr($workorder_id);
+    $sql = "SELECT WORK_ORDER_STATUS FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_ID =".$db->qstr($workorder_id);
     
-    if(!$rs = $db->Execute($q)) {
+    if(!$rs = $db->Execute($sql)) {
         force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_core_menu_error_message_function_'.__FUNCTION__.'_failed'));
         exit;   
     } else {
@@ -37,11 +37,11 @@ function menu_count_workorders_with_status($db, $workorder_status){
     
     global $smarty;
     
-    $q = "SELECT COUNT(*) AS WORKORDER_STATUS_COUNT
+    $sql = "SELECT COUNT(*) AS WORKORDER_STATUS_COUNT
             FROM ".PRFX."TABLE_WORK_ORDER
             WHERE WORK_ORDER_STATUS=".$db->qstr($workorder_status);
     
-    if(!$rs = $db->Execute($q)) {
+    if(!$rs = $db->Execute($sql)) {
         force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_core_menu_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
    } else {
@@ -60,9 +60,9 @@ function menu_count_invoices_with_status($db, $invoice_status){
     
     global $smarty;
     
-    $q ="SELECT COUNT(*) AS INVOICE_COUNT FROM ".PRFX."TABLE_INVOICE WHERE INVOICE_PAID=".$db->qstr($invoice_status);
+    $sql ="SELECT COUNT(*) AS INVOICE_COUNT FROM ".PRFX."TABLE_INVOICE WHERE INVOICE_PAID=".$db->qstr($invoice_status);
     
-    if(!$rs = $db->Execute($q)) {
+    if(!$rs = $db->Execute($sql)) {
         force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_core_menu_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
    } else {

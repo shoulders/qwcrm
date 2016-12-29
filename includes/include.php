@@ -9,9 +9,6 @@
 /*
  * If no $page_tpl and $variables are supplied then this function 
  * will force a URL redirect exactly how it was supplied 
- * 
- * force_page($module, $page_tpl = Null, $variables = Null, $method = null)
- * method could be null / $_GET / $_SESSION - i dont need to use $_POST. I just have a flag that wipes session data stored by force_page - i would also need to add it to the array merge
  */
 
 function force_page($module, $page_tpl = Null, $variables = Null, $method = 'session') {
@@ -164,6 +161,7 @@ function perform_redirect($url, $type = 'javascript') {
 // force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
  
 // New Method - Example to use
+// If a function needs more than 1 error notification - add after _failed - this keeps it easy to swapp stuff out : i.e _failed --> _failed_notfound ?
 //force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
 
 function force_error_page($error_page, $error_type, $error_location, $php_function, $database_error, $sql_query, $error_msg) {    
@@ -300,7 +298,7 @@ function load_language(){
     return true;
 
     /*
-    // SimpleXML Method
+    // SimpleXML Method (could be slower but more programmable)
     
     $language_xml = simplexml_load_file(LANGUAGE_DIR.THEME_LANGUAGE);
    
