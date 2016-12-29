@@ -21,7 +21,7 @@ class Auth {
         $this->login();
     }    
     
-    // The actual login logic
+    // Login User
     function login(){
         
         // See if we have values already stored in the session - if hash matches return to index.php code to process
@@ -33,10 +33,10 @@ class Auth {
         // If this is a Fresh Login
         if(isset($_POST['action']) && $_POST['action'] === 'login'){
             
-            // and there is no username or password supplied then redirect
+            // If username or password is missing, redirect
             if (!isset($_POST['login_usr']) || $_POST['login_usr'] === '' || !isset($_POST['login_pwd']) || $_POST['login_pwd'] === ''){
                 force_page('core', 'login', 'warning_msg='.$this->smarty->get_template_vars('translate_system_auth_advisory_message_username_or_password_missing'));
-                //$this->performRedirect('Username or Password Missing'); - this is not directly used anymore      
+                exit;
             }
 
             // Hash the POST'ed password with MD5 and store it as $login_pwd - after this point the password is always encrypted
@@ -66,6 +66,7 @@ class Auth {
 
                 // Reload with 'Login Failed' message
                 force_page('core', 'login', 'warning_msg='.$this->smarty->get_template_vars('translate_system_auth_advisory_message_login_failed'));
+                exit;
             }
 
             // If there is more than one matching username and password pair (catches errors)
@@ -76,6 +77,7 @@ class Auth {
 
                 // Reload with 'Login Failed' message
                 force_page('core', 'login', 'warning_msg='.$this->smarty->get_template_vars('translate_system_auth_advisory_message_login_failed'));
+                exit;
 
             // Else if there is a single valid user, set the session variables
             } else {
@@ -121,6 +123,7 @@ class Auth {
             
             // Reload with 'Login Successful' message
             force_page('core', 'home', 'information_msg='.$this->smarty->get_template_vars('translate_system_auth_advisory_message_login_successful'));
+            exit;
 
             }
         }  
@@ -151,7 +154,7 @@ class Auth {
         
     }  
  
-    // perform a logout from the session
+    // Logout from the session
     function logout(){
         
         // Log activity       

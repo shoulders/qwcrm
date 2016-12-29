@@ -1,5 +1,16 @@
 <?php
 
+/*
+ * Mandatory Code - Code that is run upon the file being loaded
+ * Display Functions - Code that is used to primarily display records
+ * New/Insert Functions - Creation of new records
+ * Get Functions - Grabs specific records/fields ready for update
+ * Update Functions - For updating records/fields
+ * Close Functions - Closing Work Orders code
+ * Delete Functions - Deleting Work Orders
+ * Other Functions - All other functions not covered above
+ */
+
 ######################################
 # Insert New schedule                #
 ######################################

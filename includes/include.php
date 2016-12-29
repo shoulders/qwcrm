@@ -21,78 +21,115 @@ function force_page($module, $page_tpl = Null, $variables = Null, $method = 'ses
     if($page_tpl == Null && $variables == Null){       
 
         // Build the URL and perform the redirect
-        perform_redirect($module);
-        exit;
+        perform_redirect($module);        
 
     }
     
     /* Send Variables via $_GET */
     
-    if($method == 'get') {        
+    if($method == 'get') {
+        
+        // If Login, home or maintenance do not show module:page
+        if($page_tpl == 'login' || $page_tpl == 'home' || $page_tpl == 'maintenance') {                
+            
+            // Page Name Only    
+            if ($page_tpl != Null && $variables == Null) {
 
-        // Page Name Only    
-        if ($page_tpl != Null && $variables == Null) {
-        
-            // Build the URL and perform the redirect
-            perform_redirect('index.php?page='.$module.':'.$page_tpl);
-            exit;
-            
-        }
-        
-        // Page Name and Variables (QWcrm Style Redirect) (js)
-        if ($page_tpl != Null && $variables == Null) {           
-            
-            // Build the URL and perform the redirect
-            perform_redirect('index.php?page='.$module.':'.$page_tpl.'&'.$variables);
-            exit;
-                       
-        }
-    }
-    
-    /* Send Varibles via $_SESSION */
-    
-    // (basically everything that is not index.php is a variable)    
-    // I could remove the page variable from the url aswell but i could not ID pages
-    if($method == 'session') {         
-        
-        // Page Name Only
-        if ($page_tpl != Null && $variables == Null) {                        
+                // Build the URL and perform the redirect
+                perform_redirect('index.php');            
 
-            // Build the URL and perform the redirect
-            perform_redirect('index.php?page='.$module.':'.$page_tpl);
-            exit;
-            
-        }
-        
-        // Page Name and Variables (QWcrm Style Redirect)
-        if($page_tpl != Null && $variables != Null) {          
-            
-            // Parse the URL into an array            
-            $variable_array = array();
-            parse_str($variables, $variable_array);
-            
-            // Set the page varible in the session - it does not matter page varible is set twice 1 in $_SESSION and 1 in $_GET the array merge will fix that
-            foreach($variable_array as $key => $value) {                    
-                $_SESSION['force_page'][$key] = $value;
+            }
+
+            // Page Name and Variables (QWcrm Style Redirect)
+            if ($page_tpl != Null && $variables != Null) {   
+
+                // Build the URL and perform the redirect
+                perform_redirect('index.php?'.$variables);            
+
             }
             
-            // If Login, home or maintenance do not show module:page
-            if($page_tpl == 'home' || $page_tpl == 'login') {
-                
+        } else {
+            
+            // Page Name Only    
+            if ($page_tpl != Null && $variables == Null) {
+
                 // Build the URL and perform the redirect
-                perform_redirect('index.php');
-                exit;
-                
-            } else {
-                
+                perform_redirect('index.php?page='.$module.':'.$page_tpl);            
+
+            }
+
+            // Page Name and Variables (QWcrm Style Redirect)
+            if ($page_tpl != Null && $variables != Null) {   
+
                 // Build the URL and perform the redirect
-                perform_redirect('index.php?page='.$module.':'.$page_tpl);
-                exit;
-                
-            }            
+                perform_redirect('index.php?page='.$module.':'.$page_tpl.'&'.$variables);            
+
+            }
             
         }
     }
+    
+    /* Send Varibles via $_SESSION */    
+    
+    if($method == 'session') {
+        
+        // If Login, home or maintenance do not show module:page
+        if($page_tpl == 'login' || $page_tpl == 'home' || $page_tpl == 'maintenance') { 
+            
+            // Page Name Only
+            if ($page_tpl != Null && $variables == Null) {                        
+
+                // Build the URL and perform the redirect
+                perform_redirect('index.php');            
+
+            }
+
+            // Page Name and Variables (QWcrm Style Redirect)
+            if($page_tpl != Null && $variables != Null) {          
+
+                // Parse the URL into an array            
+                $variable_array = array();
+                parse_str($variables, $variable_array);
+
+                // Set the page varible in the session - it does not matter page varible is set twice 1 in $_SESSION and 1 in $_GET the array merge will fix that
+                foreach($variable_array as $key => $value) {                    
+                    $_SESSION['force_page'][$key] = $value;
+                }               
+
+                // Build the URL and perform the redirect
+                perform_redirect('index.php');               
+
+            }
+            
+        } else {
+            
+            // Page Name Only
+            if ($page_tpl != Null && $variables == Null) {                        
+
+                // Build the URL and perform the redirect
+                perform_redirect('index.php?page='.$module.':'.$page_tpl);            
+
+            }
+
+            // Page Name and Variables (QWcrm Style Redirect)
+            if($page_tpl != Null && $variables != Null) {          
+
+                // Parse the URL into an array            
+                $variable_array = array();
+                parse_str($variables, $variable_array);
+
+                // Set the page varible in the session - it does not matter page varible is set twice 1 in $_SESSION and 1 in $_GET the array merge will fix that
+                foreach($variable_array as $key => $value) {                    
+                    $_SESSION['force_page'][$key] = $value;
+                }
+
+                // Build the URL and perform the redirect
+                perform_redirect('index.php?page='.$module.':'.$page_tpl);                
+
+            }
+                
+        }            
+    }    
 }
 
 ############################################
@@ -104,7 +141,7 @@ function perform_redirect($url, $type = 'javascript') {
     // Redirect using Headers (cant always use this method in QWcrm)
     if($type == 'header') {
         header('Location: ' . $url);
-        exit();
+        exit;
     }
     
     // Redirect using Javascript
@@ -114,6 +151,7 @@ function perform_redirect($url, $type = 'javascript') {
                     window.location = "'.$url.'"
                 </script>
             ');
+        
     }
 }
 

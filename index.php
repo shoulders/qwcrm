@@ -105,21 +105,20 @@ require(INCLUDES_DIR.'auth.php');
 
 // should this be run before smarty?
 
-// force ssl - this nees to load the config
+// force ssl - this needs to load the config
 // add security routines here
 
-// url checking, dont forget htaccess single point, post get varible sanitation
+// url checking, dont forget htaccess single point, post get varible sanitisation
 
 ################################################
 #         Load Language                        #
 ################################################
 
-
 // Load Language Specifc Settings from language file
 //if(!xml2php('settings')){$smarty->assign('error_msg', 'Error in system language file');}
 
 // Load Language Translations
-if(!load_language()){$smarty->assign('error_msg', 'Error in system language file');}
+if(!load_language()) {$smarty->assign('error_msg', 'Error in system language file');}
 
 ################################################
 #    Verify QWcrm is installed correctly       #
@@ -197,7 +196,7 @@ if(isset($VAR['employee_id'])) {$employee_id = $VAR['employee_id'];} else {$empl
 if(isset($VAR['page_no'])) {$page_no = $VAR['page_no'];} else {$page_no = 1;}
 
 ##########################################
-#   Set Global PHP Values  from QWcrm    #
+#   Set Global PHP Values from QWcrm     #
 ##########################################
 
 // Set Date Format
