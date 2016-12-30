@@ -55,7 +55,7 @@
                     <a href="?page=workorder:closed&page_title={$translate_core_menu_closed_work_orders}"><img src="{$theme_images_dir}icons/close.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_closed} <b><font color="RED">{if $menu_workorders_closed_count > 0 } ({$menu_workorders_closed_count}){/if} {if $menu_workorders_closed_count < 1 }{/if} </font></b></a>
                     {if $workorder_id >= 1}
                         {if $menu_workorder_status == 10}
-                            <a href="?page=workorder:resolution&workorder_id={$workorder_id}&page_title={$translate_core_menu_close}"><img src="{$theme_images_dir}icons/close.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_close}</a>
+                            <a href="?page=workorder:details_edit_resolution&workorder_id={$workorder_id}&page_title={$translate_core_menu_close}"><img src="{$theme_images_dir}icons/close.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_close}</a>
                             <a href="?page=workorder:details_new_note&workorder_id={$workorder_id}&page_title={$translate_core_menu_new_note}"><img src="{$theme_images_dir}icons/note.png" alt="" border="0" height="14" width="14" /> {$translate_core_menu_new_note}</a>
                         {/if}
                         <a href="?page=workorder:print&workorder_id={$workorder_id}&page_title={$translate_core_menu_print_wo}&theme=off" target="_blank"><img src="{$theme_images_dir}icons/print.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_print_wo}</a>

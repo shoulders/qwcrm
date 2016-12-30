@@ -1,5 +1,7 @@
 <?php
 
+/** Schedule Include File **/
+
 /*
  * Mandatory Code - Code that is run upon the file being loaded
  * Display Functions - Code that is used to primarily display records
@@ -15,8 +17,6 @@
 # Insert New schedule                #
 ######################################
 
-//$schedule_start_date and $schedule_end_date, add back into the time arrray would be neater?
-
 function insert_new_schedule($db, $schedule_start_date, $scheduleStartTime, $schedule_end_date, $scheduleEndTime, $schedule_notes, $employee_id, $workorder_id){
 
     //global $smarty;    
@@ -29,8 +29,8 @@ function insert_new_schedule($db, $schedule_start_date, $scheduleStartTime, $sch
     $schedule_start_timestamp = datetime_to_timestamp($schedule_start_date, $scheduleStartTime['Time_Hour'], $scheduleStartTime['Time_Minute'], '0', '24');
     $schedule_end_timestamp   = datetime_to_timestamp($schedule_end_date, $scheduleEndTime['Time_Hour'], $scheduleEndTime['Time_Minute'], '0', '24');
     
-    // Corrects the extra segment issue
-    $schedule_end_timestamp += 1;
+    // Corrects the extra time segment issue
+    $schedule_end_timestamp -= 1;
     
     // Validate the submitted dates
     if(!validate_schedule_times($db, $schedule_start_date, $schedule_start_timestamp, $schedule_end_timestamp, $employee_id)) {return false;}
@@ -55,9 +55,11 @@ function insert_new_schedule($db, $schedule_start_date, $scheduleStartTime, $sch
     if(!$rs = $db->Execute($sql)) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
         exit;
-    }
-
-    return true;
+    } else {
+        
+        return true;
+        
+    }    
 
 }
 
@@ -77,8 +79,8 @@ function update_schedule($db, $schedule_start_date, $scheduleStartTime, $schedul
     $schedule_start_timestamp = datetime_to_timestamp($schedule_start_date, $scheduleStartTime['Time_Hour'], $scheduleStartTime['Time_Minute'], '0', '24');
     $schedule_end_timestamp   = datetime_to_timestamp($schedule_end_date, $scheduleEndTime['Time_Hour'], $scheduleEndTime['Time_Minute'], '0', '24');
     
-    // Corrects the extra segment issue
-    $schedule_end_timestamp += 1;
+    // Corrects the extra time segment issue
+    $schedule_end_timestamp -= 1;
     
     // Validate the submitted dates
     if(!validate_schedule_times($db, $schedule_start_date, $schedule_start_timestamp, $schedule_end_timestamp, $employee_id, $schedule_id)) {return false;}        
@@ -97,9 +99,9 @@ function update_schedule($db, $schedule_start_date, $scheduleStartTime, $schedul
         force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {       
-        //force_page('schedule', 'day','schedule_id='.$schedule_id.'&schedule_start_year='.$schedule_start_year.'&schedule_start_month='.$schedule_start_month.'&schedule_start_day='.$schedule_start_day);                 
-        //exit; 
+         
         return true;
+        
     }        
     
 }
@@ -157,7 +159,9 @@ function display_employees_info($db){
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
         exit;
     } else {    
+        
         return $rs->GetArray();    
+        
     }    
 }
 
@@ -183,9 +187,10 @@ function check_workorder_is_open($db, $workorder_id) {
     if($status == '6' || $status == '7' || $status == '8' || $status == '9') {        
         return false;
     } else {
+        
         return true;
-    }
-    
+        
+    }    
     
 }
 
@@ -363,8 +368,9 @@ function delete_schedule($db, $schedule_id) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
         exit;
     } else {
-        force_page('schedule', 'day', 'information_msg=Schedule has been deleted');
-        exit;
+        
+        return true;
+        
     }
 }
 
@@ -380,7 +386,7 @@ function validate_schedule_times($db, $schedule_start_date, $schedule_start_time
     $company_day_end   = datetime_to_timestamp($schedule_start_date, get_setup_info($db, 'CLOSING_HOUR'), get_setup_info($db, 'CLOSING_MINUTE'), '0', '24');
     
     // Add the second I removed to correct extra segment issue
-    $schedule_end_timestamp += 1;
+    //$schedule_end_timestamp += 1;
      
     // If start time is after end time show message and stop further processing
     if($schedule_start_timestamp > $schedule_end_timestamp) {        
@@ -439,4 +445,24 @@ function validate_schedule_times($db, $schedule_start_date, $schedule_start_time
     
     return true;
     
+}
+
+###############################
+# Display Work Order Schedule #
+###############################
+
+function display_workorder_schedule($db, $workorder_id){
+    
+    global $smarty;
+    
+    $sql = "SELECT * FROM ".PRFX."TABLE_SCHEDULE WHERE WORKORDER_ID=".$db->qstr($workorder_id);
+    
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_schedule_error_message_function_'.__FUNCTION__.'_failed'));
+        exit;
+    } else {
+        
+        return $rs->GetArray();  
+        
+    }
 }

@@ -168,7 +168,7 @@ if(!is_array($_SESSION['force_page'])){$_SESSION['force_page'] = array();}
 // Merge the $_GET, $_POST for legacy code
 $VAR = array_merge($_GET, $_POST, $_SESSION['force_page']);
 
-// Delete the force_page varibles as I dont want them to be persistent
+// Delete the force_page array as varibles stored there are no longer needed
 unset($_SESSION['force_page']);
 
 // These are used globally but mainly for the menu !!

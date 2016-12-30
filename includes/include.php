@@ -2,6 +2,17 @@
 
 /** Main Include File **/
 
+/*
+ * Mandatory Code - Code that is run upon the file being loaded
+ * Display Functions - Code that is used to primarily display records
+ * New/Insert Functions - Creation of new records
+ * Get Functions - Grabs specific records/fields ready for update
+ * Update Functions - For updating records/fields
+ * Close Functions - Closing Work Orders code
+ * Delete Functions - Deleting Work Orders
+ * Other Functions - All other functions not covered above
+ */
+
 #####################################
 #   force_page - Page Redirector    #
 #####################################
@@ -352,6 +363,7 @@ function set_page_header_and_meta_data($module, $page_tpl, $page_title_from_var 
     $smarty->assign('meta_keywords',    $smarty->get_template_vars('translate_'.$module.'_'.$page_tpl.'_header_meta_keywords')      );
     
     return;
+    
 }
 
 ##########################################################
@@ -398,7 +410,9 @@ function check_acl($db, $login_account_type_id, $module, $page_tpl){
             force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=authentication&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_no_page_permission'));
             exit;
         } else {
+            
             return true;
+            
         }
     }
 }
@@ -464,7 +478,9 @@ function get_qwcrm_database_version_number($db){
         force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
+        
         return $rs->fields['VERSION_INSTALLED'];
+        
     }
 }
 
@@ -626,6 +642,7 @@ function get_ip_address(){
     else {$ip = 'UNKNOWN';}
     
     return $ip;
+    
 }
 
 /*
@@ -702,7 +719,8 @@ function write_record_to_activity_log($record){
     fwrite($fp, $log_entry);
     fclose($fp);
     
-    return;    
+    return;
+    
 }
 
 ############################################
@@ -766,7 +784,8 @@ function write_record_to_access_log($login_usr = Null){
     fwrite($fp, $log_entry);
     fclose($fp);
     
-    return;    
+    return;
+    
 }
 
 ############################################
@@ -794,7 +813,8 @@ function write_record_to_error_log($login_usr = '-', $error_page, $error_type, $
     fwrite($fp, $log_entry);
     fclose($fp);
         
-    return;    
+    return;
+    
 }
 
 #########################################################
@@ -909,6 +929,7 @@ function datetime_to_timestamp($date, $hour, $minute, $second, $clock, $meridian
         $timestamp += $second;        
         
         return $timestamp;
+        
     }
     
 }
@@ -934,7 +955,8 @@ function timestamp_to_date($timestamp){
         return date('m/d/Y', $timestamp);        
 
         case '%m/%d/%y':
-        return date('m/d/y', $timestamp);        
+        return date('m/d/y', $timestamp);
+            
     }
 
 }
@@ -946,4 +968,5 @@ function timestamp_to_date($timestamp){
 function timestamp_to_calendar_format($timestamp) {
     
     return date('Ymd', $timestamp);
+    
 }

@@ -2,24 +2,28 @@
 
 require(INCLUDES_DIR.'modules/workorder.php');
 
-$workorder_scope        = $VAR['workorder_scope'];
-$workorder_description  = $VAR['workorder_description'];
-
+// Check that there is a workorder_id set
 if($workorder_id == '') {
-    force_page('core', 'error', 'error_type=warning&error_location=workorder:details_edit_description&php_function=&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_details_edit_description_loadpage_failed').'&php_error_msg='.$php_errormsg.'&database_error='.$db->ErrorMsg());
+    force_page('workorder', 'open', 'warning_msg='.$smarty->get_template_vars('translate_workorder_error_message_details_edit_description_loadpage_no_workorder_id'));
     exit;
 }
 
+// If updated scope and description are submitted
 if(isset($VAR['submit'])) {
-    update_workorder_scope_and_description($db, $workorder_id, $workorder_scope, $workorder_description);    
+    
+    update_workorder_scope_and_description($db, $workorder_id, $VAR['workorder_scope'], $VAR['workorder_description']);
+    force_page('workorder', 'details', 'workorder_id='.$workorder_id);
+    exit;
+
+// Display the page with the scope and description from the database 
 } else {
 
     $workorder_scope_description = get_workorder_scope_and_description($db, $workorder_id);
     
-    $smarty->assign('workorder_id', $workorder_id);    
-    $smarty->assign('workorder_scope',        $workorder_scope_description->fields['WORK_ORDER_SCOPE']);
-    $smarty->assign('workorder_description',  $workorder_scope_description->fields['WORK_ORDER_DESCRIPTION']);
+    $smarty->assign('workorder_id',             $workorder_id                                                   );    
+    $smarty->assign('workorder_scope',          $workorder_scope_description->fields['WORK_ORDER_SCOPE']        );
+    $smarty->assign('workorder_description',    $workorder_scope_description->fields['WORK_ORDER_DESCRIPTION']  );
     
-    $smarty->display('workorder'.SEP.'details_edit_description.tpl');
+    $smarty->display('workorder/details_edit_description.tpl');
 
 }

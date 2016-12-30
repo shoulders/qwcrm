@@ -5,11 +5,9 @@ require(INCLUDES_DIR.'modules/workorder.php');
 
 // No Workorder Specified
 if ($workorder_id == '') { 
-
     // Should this be handled in a function?    
     force_page('workorder', 'open','warning_msg=ERROR : There was no Works Order number to schedule specified. Please select the works order from the below list and then schedule.');
-    exit;
-    
+    exit;    
 }
 
 // If new schedule item submitted

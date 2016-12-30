@@ -1,8 +1,9 @@
 <?php
 
 require(INCLUDES_DIR.'modules/workorder.php');
+require(INCLUDES_DIR.'modules/schedule.php');
 
-/* Assign Varibles to smarty */
+// Display the page with the workorder details from the database 
 $smarty->assign('single_workorder',         display_single_open_workorder($db, $workorder_id)  );
 $smarty->assign('workorder_notes',          display_workorder_notes($db, $workorder_id)        );
 $smarty->assign('workorder_parts',          display_parts($db, $workorder_id)                  );             

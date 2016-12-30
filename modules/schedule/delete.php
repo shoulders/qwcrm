@@ -8,4 +8,7 @@ if(!$schedule_id) {
 }
   
 // Delete the schedule
-delete_schedule($db, $schedule_id);
+if(delete_schedule($db, $schedule_id)) {
+    force_page('schedule', 'day', 'information_msg=Schedule has been deleted');
+    exit;
+}

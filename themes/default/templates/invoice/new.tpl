@@ -414,7 +414,7 @@ function removeRowFromTableParts(){
                                                     <!-- Delete Button -->
                                                     <button type="button" name="{$translate_invoice_delete}" onClick="location.href='?page=invoice:delete&customer_id={$invoice.CUSTOMER_ID}&invoice_id={$invoice.INVOICE_ID}&page_title=Deleting&nbsp;Invoice&nbsp;-{$invoice.INVOICE_ID}';">{$translate_invoice_delete}</button>
                                                     <!-- Close Button -->
-                                                    <button type="button" name="Close Work Order" onClick="location.href='?page=workorder:resolution&workorder_id={$invoice.WORKORDER_ID}&page_title=Closing%20Work%20Order{$invoice.WORKORDER_ID}';">{$translate_invoice_close_wo}</button>
+                                                    <button type="button" name="Close Work Order" onClick="location.href='?page=workorder:details_edit_resolution&workorder_id={$invoice.WORKORDER_ID}&page_title=Closing%20Work%20Order{$invoice.WORKORDER_ID}';">{$translate_invoice_close_wo}</button>
                                                     <!-- Work Order must be closed before payment can be received. -->
                                                     {$translate_invoice_msg}
                                                 {/if} 
