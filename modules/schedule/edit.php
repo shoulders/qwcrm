@@ -1,6 +1,7 @@
 <?php
 
 require(INCLUDES_DIR.'modules/schedule.php');
+require(INCLUDES_DIR.'modules/employee.php');
 
 // If new schedule item submitted
 if(isset($VAR['submit'])) {    
@@ -15,7 +16,7 @@ if(isset($VAR['submit'])) {
         $smarty->assign('schedule_notes',           $VAR['schedule_notes']                                                                  );
         $smarty->assign('schedule_id',              $schedule_id                                                                            );
         $smarty->assign('employee_id',              $employee_id                                                                            );
-        $smarty->assign('employees',                display_employees_info($db)                                                             );
+        $smarty->assign('active_employees',         get_active_employees($db)                                                               );
         $smarty->assign('workorder_id',             $workorder_id                                                                           );               
             
     } else {       
@@ -48,7 +49,7 @@ if(isset($VAR['submit'])) {
     $smarty->assign('schedule_notes',           $schedule_item['0']['SCHEDULE_NOTES']                       );
     $smarty->assign('schedule_id',              $schedule_item['0']['SCHEDULE_ID']                          );
     $smarty->assign('employee_id',              $schedule_item['0']['EMPLOYEE_ID']                          );
-    $smarty->assign('employees',                display_employees_info($db)                                 );
+    $smarty->assign('active_employees',         get_active_employees($db)                                   );
     $smarty->assign('workorder_id',             $schedule_item['0']['WORKORDER_ID']                         ); 
     
 }

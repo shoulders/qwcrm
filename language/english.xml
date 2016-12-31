@@ -1451,11 +1451,10 @@
         //// System Messages
         
         // includes/modules/workorder.php
-        <workorder_error_message_function_display_single_workorder_failed>Could not display the Work Order record requested</workorder_error_message_function_display_single_workorder_failed>
-        <workorder_error_message_function_display_single_workorder_notfound>The requested Work Order could not be found</workorder_error_message_function_display_single_workorder_notfound> 
+        <workorder_error_message_function_display_single_workorder_failed>Could not display the Work Order record requested</workorder_error_message_function_display_single_workorder_failed>        
         <workorder_error_message_function_display_workorders_failed>Could not display the Work Order(s) requested</workorder_error_message_function_display_workorders_failed>
         <workorder_error_message_function_display_workorders_notfound>The requested Work Order(s) could not be found</workorder_error_message_function_display_workorders_notfound> 
-        <workorder_error_message_function_display_workorders_count>Failed to select and count Work Orders requested</workorder_error_message_function_display_closed_count>     
+        <workorder_error_message_function_display_workorders_count>Failed to select and count Work Orders requested</workorder_error_message_function_display_workorders_count>     
         <workorder_error_message_function_display_resolution_failed>Could not display resolution for the Work Order</workorder_error_message_function_display_resolution_failed>
         <workorder_error_message_function_display_customer_info_failed>Could not display Customer Information for the Work Order</workorder_error_message_function_display_customer_info_failed>        
         <workorder_error_message_function_display_workorder_notes_failed>Could not to display notes for the Work Order</workorder_error_message_function_display_workorder_notes_failed>
@@ -1514,9 +1513,9 @@
         <workorder_advisory_message_print_noprintoptions>Some or all of the Printing Options are not set</workorder_advisory_message_print_noprintoptions>
 
         // status.php
-        <workorder_advisory_message_status_noworkorderid>Cannot print because there is no Work Order ID set</workorder_advisory_message_status_noworkorderid>
+        <workorder_advisory_message_status_noworkorderid>Cannot update Workorder status because there is no Work Order ID set</workorder_advisory_message_status_noworkorderid>
         <workorder_advisory_message_status_statusupdated>Workorder status updated</workorder_advisory_message_status_statusupdated>
-        <workorder_advisory_message_status_employeeupdated>Assigned employee updated</workorder_advisory_message_status_employeeupdated>
+        <workorder_advisory_message_status_employeeupdated>Assigned employee updated</workorder_advisory_message_status_employeeupdated>        
         <workorder_advisory_message_status_deleted>Workorder has been deleted</workorder_advisory_message_status_deleted>
         
         

@@ -172,13 +172,13 @@ $VAR = array_merge($_GET, $_POST, $_SESSION['force_page']);
 unset($_SESSION['force_page']);
 
 // These are used globally but mainly for the menu !!
-$workorder_id           = $VAR['workorder_id'];
-$customer_id            = $VAR['customer_id'];
-$expense_id             = $VAR['expense_id'];
-$refund_id              = $VAR['refund_id'];
-$supplier_id            = $VAR['supplier_id'];
-$invoice_id             = $VAR['invoice_id'];
-$schedule_id            = $VAR['schedule_id'];
+$workorder_id       = $VAR['workorder_id'];
+$customer_id        = $VAR['customer_id'];
+$expense_id         = $VAR['expense_id'];
+$refund_id          = $VAR['refund_id'];
+$supplier_id        = $VAR['supplier_id'];
+$invoice_id         = $VAR['invoice_id'];
+$schedule_id        = $VAR['schedule_id'];
 
 // If not schedule year set use todays year
 if(isset($VAR['schedule_start_year'])) {$schedule_start_year = $VAR['schedule_start_year'];} else {$schedule_start_year = date('Y');}

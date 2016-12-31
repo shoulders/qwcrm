@@ -147,23 +147,7 @@ function display_single_schedule($db, $schedule_id) {
 
 }
 
-########################################
-# List of all employees and their data #
-########################################
-    
-function display_employees_info($db){
-    
-    $sql = "SELECT EMPLOYEE_ID, EMPLOYEE_DISPLAY_NAME FROM ".PRFX."TABLE_EMPLOYEE";
-    
-    if(!$rs = $db->Execute($sql)) {
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-        exit;
-    } else {    
-        
-        return $rs->GetArray();    
-        
-    }    
-}
+
 
 
 ###############################################

@@ -1,10 +1,8 @@
 <?php
 
 #####################################
-# Get Employee Display Name from ID #
+# Get Employee Display Name from ID #  // not actually used anywhere
 #####################################
-
-// this perhaps should be in employee
 
 function get_employee_display_name_by_id($db, $employee_id){
     
@@ -30,7 +28,7 @@ function get_employee_display_name_by_id($db, $employee_id){
 
 
 ##############################################
-#   Build an active employee <option> list   #
+#   Build an active employee <option> list   #  // only used in workorder:status
 ##############################################
 
 /*
@@ -61,4 +59,23 @@ function build_active_employee_form_option_list($db, $assigned_employee_id){
         
     }
     
+}
+
+
+##################################################
+# List all active employees display name and ID  #
+##################################################
+    
+function get_active_employees($db){
+    
+    $sql = "SELECT EMPLOYEE_ID, EMPLOYEE_DISPLAY_NAME FROM ".PRFX."TABLE_EMPLOYEE WHERE EMPLOYEE_STATUS=1";
+    
+    if(!$rs = $db->Execute($sql)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
+    } else {    
+        
+        return $rs->GetArray();    
+        
+    }    
 }

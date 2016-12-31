@@ -28,6 +28,7 @@ function display_single_workorder($db, $workorder_id){
     global $smarty;
     
      $sql = "SELECT ".PRFX."TABLE_WORK_ORDER.*,
+            ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_STATUS,
             ".PRFX."TABLE_CUSTOMER.CUSTOMER_ID,
             ".PRFX."TABLE_CUSTOMER.CUSTOMER_DISPLAY_NAME,
             ".PRFX."TABLE_CUSTOMER.CUSTOMER_ADDRESS,
@@ -165,8 +166,9 @@ function display_workorders($db, $status, $direction = 'DESC', $use_pages = fals
     } else {       
 
         if(empty($rs->GetArray())) {
-            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_notfound'));
-            exit;
+            
+            return false;
+            
         } else {
             
             return $rs;
@@ -593,9 +595,9 @@ function update_workorder_status($db, $workorder_id, $assign_status){
     global $smarty;
 
     $sql = "UPDATE ".PRFX."TABLE_WORK_ORDER SET
-            WORK_ORDER_CURRENT_STATUS       = " . $db->qstr( $assign_status     ).",
-            LAST_ACTIVE                     = " . $db->qstr( time()             )."
-            WHERE WORK_ORDER_ID             = " . $db->qstr( $workorder_id      );
+            WORK_ORDER_STATUS       = " . $db->qstr( $assign_status     ).",
+            LAST_ACTIVE             = " . $db->qstr( time()             )."
+            WHERE WORK_ORDER_ID     = " . $db->qstr( $workorder_id      );
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
@@ -605,9 +607,9 @@ function update_workorder_status($db, $workorder_id, $assign_status){
         if ($assign_status == '0'){
             
             $sql = "UPDATE ".PRFX."TABLE_WORK_ORDER SET 
-                    WORK_ORDER_CURRENT_STATUS       = '1',
-                    WORK_ORDER_ASSIGN_TO            = '0'                    
-                    WHERE WORK_ORDER_ID             = " . $workorder_id;
+                    WORK_ORDER_STATUS       = '1',
+                    WORK_ORDER_ASSIGN_TO    = '0'                    
+                    WHERE WORK_ORDER_ID     = " . $workorder_id;
             
             if(!$rs = $db->Execute($sql)) {
                 force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_unassigned'));
@@ -757,7 +759,7 @@ function delete_workorder($db, $workorder_id, $assigned_employee) {
 # Assign Work Order to another employee #
 #########################################
 
-function assign_workorder_to_employee($db, $workorder_id, $logged_in_employee_id, $assigned_employee_id ,$target_employee_id){
+function assign_workorder_to_employee($db, $workorder_id, $logged_in_employee_id, $assigned_employee_id, $target_employee_id){
     
     global $smarty;
     
