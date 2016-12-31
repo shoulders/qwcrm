@@ -4,7 +4,7 @@ require(INCLUDES_DIR.'modules/workorder.php');
 
 // Check that there is a customer_id set
 if($VAR['customer_id'] == '' ) {   
-    force_page('workorder', 'open', 'warning_msg='.$smarty->get_template_vars('translate_workorder_error_message_new_loadpage_no_customer_id'));
+    force_page('workorder', 'overview', 'warning_msg='.$smarty->get_template_vars('translate_workorder_advisory_message_new_nocustomerid'));
     exit;
 }
 
@@ -12,7 +12,7 @@ if($VAR['customer_id'] == '' ) {
 if(isset($VAR['submit'])){
     
     insert_new_workorder($db, $customer_id, $VAR['created_by'], $VAR['workorder_scope'], $VAR['workorder_description'], $VAR['workorder_comments'], $VAR['workorder_note']);      
-    force_page('workorder', 'details', 'workorder_id='.$workorder_id);
+    force_page('workorder', 'details', 'workorder_id='.$workorder_id.'information_msg='.$smarty->get_template_vars('translate_workorder_advisory_message_new_created'));
     exit;
         
    

@@ -1,4 +1,4 @@
-<!-- open_new_workorders_block.tpl -->
+<!-- overview_new_workorders_block.tpl -->
 <b>{$translate_workorder_new}</b>
 <table class="olotable" width="100%" border="0" cellpadding="4" cellspacing="0">
     <tr>

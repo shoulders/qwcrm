@@ -1,4 +1,4 @@
-<!-- open_assigned_workorders_block.tpl -->
+<!-- overview_assigned_workorders_block.tpl -->
 <b>{$translate_workorder_assigned}</b>
 <table class="olotable" width="100%" border="0" cellpadding="4" cellspacing="0">
     <tr>

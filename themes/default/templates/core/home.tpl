@@ -43,10 +43,10 @@
                                             <td class="row2"><b>{$translate_core_home_total}</b></td>
                                         </tr>
                                         <tr class="olotd4">
-                                            <td><a href="?page=workorder:open#new">{$workorders_open_count}</a></td>
-                                            <td><a href="?page=workorder:open#assigned">{$workorders_assigned_count}</a></td>
-                                            <td><a href="?page=workorder:open#awaiting">{$workorders_waiting_for_parts_count}</a></td>
-                                            <td><a href="?page=workorder:open#payment">{$workorders_awaiting_payment_count}</a></td>
+                                            <td><a href="?page=workorder:overview#new">{$workorders_open_count}</a></td>
+                                            <td><a href="?page=workorder:overview#assigned">{$workorders_assigned_count}</a></td>
+                                            <td><a href="?page=workorder:overview#awaiting">{$workorders_waiting_for_parts_count}</a></td>
+                                            <td><a href="?page=workorder:overview#payment">{$workorders_awaiting_payment_count}</a></td>
                                             <td><a href="?page=workorder:closed">{$workorders_closed_count}</a></td>
                                             <td>{$wo_total_count}</td>
                                         </tr>
@@ -128,10 +128,10 @@
                                             <td class="row2"><b>{$translate_core_home_total}</b></td>
                                         </tr>
                                         <tr class="olotd4">
-                                            <td><a href="?page=workorder:open#new">{$employee_workorders_open_count}</a></td>
-                                            <td><a href="?page=workorder:open#assigned">{$employee_workorders_assigned_count}</a></td>
-                                            <td><a href="?page=workorder:open#awaiting">{$employeee_workorders_waiting_for_parts_count}</a></td>
-                                            <td><a href="?page=workorder:open#payment">{$employee_workorders_awaiting_payment_count}</a></td>
+                                            <td><a href="?page=workorder:overview#new">{$employee_workorders_open_count}</a></td>
+                                            <td><a href="?page=workorder:overview#assigned">{$employee_workorders_assigned_count}</a></td>
+                                            <td><a href="?page=workorder:overview#awaiting">{$employeee_workorders_waiting_for_parts_count}</a></td>
+                                            <td><a href="?page=workorder:overview#payment">{$employee_workorders_awaiting_payment_count}</a></td>
                                             <td><a href="?page=workorder:closed">{$workorders_closed_count}</a></td>
                                             <td>{$wo_total_count}</td>
                                         </tr>

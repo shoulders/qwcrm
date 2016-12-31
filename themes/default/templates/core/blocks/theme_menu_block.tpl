@@ -44,15 +44,12 @@
 
                 <!-- Work Orders -->
                 <div>
-                    <span>{$translate_core_menu_work_orders}</span>
-                    {if $customer_id > 0 }
-                        <a href="?page=workorder:new&customer_id={$customer_id}&page_title={$translate_core_menu_create_new_wo}"><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_create_new_wo}</a>
-                    {/if}
+                    <span>{$translate_core_menu_work_orders}</span>                                       
+                    <a href="?page=workorder:overview&page_title={$translate_core_menu_work_orders}"><img src="{$theme_images_dir}tick.png" alt="" border="0" height="14" width="14" /> {$translate_core_menu_overview} <b><font color="RED"></font></b></a>
                     {if $menu_workorders_unassigned > 0 }
-                        <a href="?page=workorder:open&page_title={$translate_core_menu_work_orders}"><img src="{$theme_images_dir}icons/warning.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_unassigned} <b><font color="RED">{if $menu_workorders_unassigned > 0} ({$menu_workorders_unassigned}){/if}{if $menu_workorders_unassigned < 1}{/if}</font></b></a>
+                        <a href="?page=workorder:overview&page_title={$translate_core_menu_work_orders}"><img src="{$theme_images_dir}icons/warning.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_unassigned} <b><font color="RED">{if $menu_workorders_unassigned > 0} ({$menu_workorders_unassigned}){/if}</font></b></a>
                     {/if}
-                    <a href="?page=workorder:open&page_title={$translate_core_menu_work_orders}"><img src="{$theme_images_dir}tick.png" alt="" border="0" height="14" width="14" /> {$translate_core_menu_open} <b><font color="RED">{if $menu_workorders_open_count > 0} ({$menu_workorders_open_count}){/if}{if $menu_workorders_open_count < 1}{/if}</font></b></a>
-                    <a href="?page=workorder:closed&page_title={$translate_core_menu_closed_work_orders}"><img src="{$theme_images_dir}icons/close.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_closed} <b><font color="RED">{if $menu_workorders_closed_count > 0 } ({$menu_workorders_closed_count}){/if} {if $menu_workorders_closed_count < 1 }{/if} </font></b></a>
+                    <a href="?page=workorder:closed&page_title={$translate_core_menu_closed_work_orders}"><img src="{$theme_images_dir}icons/close.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_closed} <b><font color="RED">{if $menu_workorders_closed_count > 0 } ({$menu_workorders_closed_count}){/if}</font></b></a>
                     {if $workorder_id >= 1}
                         {if $menu_workorder_status == 10}
                             <a href="?page=workorder:details_edit_resolution&workorder_id={$workorder_id}&page_title={$translate_core_menu_close}"><img src="{$theme_images_dir}icons/close.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_close}</a>
@@ -62,6 +59,7 @@
                         <a href="?page=workorder:status&workorder_id={$workorder_id}"><img src="{$theme_images_dir}icons/status.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_status}</a>
                     {/if}
                     {if $customer_id > 0 }
+                        <a href="?page=workorder:new&customer_id={$customer_id}&page_title={$translate_core_menu_create_new_wo}"><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_create_new_wo}</a>
                         <a href="?page=invoice:new&invoice_type=invoice-only&workorder_id=0&customer_id={$customer_id}&page_title={$translate_core_menu_invoice_only}"><img src="{$theme_images_dir}icons/invoice.png" alt="" border="0" height="14" width="14" /> {$translate_core_menu_invoice_only}</a>
                     {/if}
                 </div>

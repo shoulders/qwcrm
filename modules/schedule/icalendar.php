@@ -21,7 +21,7 @@ else {
 }*/
 
 $single_schedule = display_single_schedule($db, $schedule_id);
-$single_open_workorder = display_single_open_workorder($db, $single_schedule['0']['WORKORDER_ID']);
+$single_open_workorder = display_single_workorder($db, $single_schedule['0']['WORKORDER_ID']);
 
 $summary        = 'Workorder '.$single_schedule['0']['WORKORDER_ID'].' for '.$single_open_workorder['0']['CUSTOMER_FIRST_NAME'].' '.$single_open_workorder['0']['CUSTOMER_LAST_NAME'].
 $datestart      = $single_schedule['0']['SCHEDULE_START'];

@@ -4,19 +4,19 @@ require(INCLUDES_DIR.'modules/workorder.php');
 
 // Check that there is a workorder_id set
 if($workorder_id == '') {
-    force_page('workorder', 'open', 'warning_msg='.$smarty->get_template_vars('translate_workorder_error_message_details_edit_description_loadpage_no_workorder_id'));
+    force_page('workorder', 'overview', 'warning_msg='.$smarty->get_template_vars('translate_workorder_advisory_message_print_noworkorderid'));
     exit;
 }
 
 // Check there is a print content and print type set
 if($VAR['print_content'] == '' || $VAR['print_type'] == '') {
-    force_page('workorder', 'open', 'warning_msg='.$smarty->get_template_vars('translate_workorder_error_message_print_loadpage_no_print_options'));
+    force_page('workorder', 'overview', 'warning_msg='.$smarty->get_template_vars('translate_workorder_advisory_message_print_noprintoptions'));
     exit;
 }
 
 // Assign Variables
 $smarty->assign('company',                  get_company_info($db, 'all')                        );
-$smarty->assign('single_work_order',        display_single_open_workorder($db, $workorder_id)   );
+$smarty->assign('single_work_order',        display_single_workorder($db, $workorder_id)   );
 $smarty->assign('work_order_notes',         display_workorder_notes($db, $workorder_id)         );
 $smarty->assign('work_order_schedule',      display_workorder_schedule($db, $workorder_id)      );
 $smarty->assign('work_order_resolution',    display_resolution($db, $workorder_id)              );

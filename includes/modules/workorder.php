@@ -23,7 +23,7 @@
 
 // this returns all the relevant data for a single work order from the different database sections of QWcrm
 
-function display_single_open_workorder($db, $workorder_id){
+function display_single_workorder($db, $workorder_id){
     
     global $smarty;
     
@@ -77,169 +77,104 @@ function display_single_open_workorder($db, $workorder_id){
             return $single_workorder_array;
             
         }
+        
     }
+    
 }
 
 #####################################################
 # Display all open Work orders for the given status #
 #####################################################
 
-function display_workorders($db, $page_no, $status){
+function display_workorders($db, $status, $direction = 'DESC', $use_pages = false, $page_no = 1, $max_records = 25){
     
     global $smarty;
     
-    $max_results = 5;
+    /* Get workorders restricted by pages */
     
-    $from = (($page_no * $max_results) - $max_results);
- 
-    $rs = $db->Execute("SELECT COUNT(*) as Num FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_STATUS =".$db->qstr($status));
-                                                  
-    $where = "WHERE ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_CURRENT_STATUS= ".$db->qstr($status);    
+    if($use_pages == true) {
     
-    $total_results = $rs->FetchRow();
-    
-    $total_pages = ceil($total_results['Num'] / $max_results);
-    
-    if($page_no > 1){
-        $prev = ($page_no - 1);
-        $smarty->assign('previous', $prev);
-    } 
+        $start_record = (($page_no * $max_records) - $max_records);
+        
+        // Figure out the total number of closed work orders in the database 
+        $sql = "SELECT COUNT(*) as Num FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_STATUS=".$db->qstr($status);
 
-    if($page_no < $total_pages){
-        $next = ($page_no + 1);
-        $smarty->assign('next', $next);
-    }    
+        if(!$rs = $db->Execute($sql)) {
+            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_count'));
+            exit;
+        } else {        
+            $total_results = $rs->FetchRow();          
+            $smarty->assign('total_results', $total_results['Num']);
+        }        
+
+        // Figure out the total number of pages. Always round up using ceil()
+        $total_pages = ceil($total_results['Num'] / $max_records);
+        $smarty->assign('total_pages', $total_pages);
+        
+        // Set the page number
+        $smarty->assign('page_no', $page_no);
+        
+        // Assign the Previous page
+        if($page_no > 1){
+            $prev = ($page_no - 1);
+            $smarty->assign('previous', $prev);
+        } 
+        
+        // Assign the next page
+        if($page_no < $total_pages){
+            $next = ($page_no + 1);
+            $smarty->assign('next', $next);
+        }       
+        
+        // set SQL strings for record restriction
+        $whereTheseRecords = " WHERE ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_CURRENT_STATUS= ".$db->qstr($status);
+        $limitTheseRecords = " LIMIT ".$start_record.", ".$max_records;
+        
+        
+    /* Get all workorders (unrestricted) */
+        
+    } else {
+        $whereTheseRecords = " WHERE ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_CURRENT_STATUS= ".$db->qstr($status);
+    }
+    
+    /* Get the records */
     
     $sql = "SELECT 
             ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_ID, 
             ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_OPEN_DATE,
+            ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_CLOSE_DATE,   
             ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_ASSIGN_TO,
             ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_SCOPE,
             ".PRFX."TABLE_CUSTOMER.CUSTOMER_ID,
-            ".PRFX."TABLE_CUSTOMER.CUSTOMER_DISPLAY_NAME,
-            ".PRFX."TABLE_CUSTOMER.CUSTOMER_ADDRESS,
-            ".PRFX."TABLE_CUSTOMER.CUSTOMER_CITY,
-            ".PRFX."TABLE_CUSTOMER.CUSTOMER_STATE,
-            ".PRFX."TABLE_CUSTOMER.CUSTOMER_ZIP,
-            ".PRFX."TABLE_CUSTOMER.CUSTOMER_PHONE,
-            ".PRFX."TABLE_CUSTOMER.CUSTOMER_WORK_PHONE,
-            ".PRFX."TABLE_CUSTOMER.CUSTOMER_MOBILE_PHONE,
-            ".PRFX."TABLE_CUSTOMER.CUSTOMER_EMAIL,
-            ".PRFX."TABLE_CUSTOMER.CUSTOMER_TYPE,
-            ".PRFX."TABLE_CUSTOMER.CUSTOMER_FIRST_NAME,
-            ".PRFX."TABLE_CUSTOMER.CUSTOMER_LAST_NAME,
-            ".PRFX."TABLE_CUSTOMER.DISCOUNT,
-            ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_ID,
+            ".PRFX."TABLE_CUSTOMER.CUSTOMER_DISPLAY_NAME,            
             ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_DISPLAY_NAME,
-            ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_WORK_PHONE,
-            ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_HOME_PHONE,
-            ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_MOBILE_PHONE,
             ".PRFX."CONFIG_WORK_ORDER_STATUS.CONFIG_WORK_ORDER_STATUS
             FROM ".PRFX."TABLE_WORK_ORDER
             LEFT JOIN ".PRFX."TABLE_CUSTOMER ON ".PRFX."TABLE_WORK_ORDER.CUSTOMER_ID                            = ".PRFX."TABLE_CUSTOMER.CUSTOMER_ID
             LEFT JOIN ".PRFX."TABLE_EMPLOYEE ON ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_ASSIGN_TO                   = ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_ID
-            LEFT JOIN ".PRFX."CONFIG_WORK_ORDER_STATUS ON ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_CURRENT_STATUS    = ".PRFX."CONFIG_WORK_ORDER_STATUS.CONFIG_WORK_ORDER_STATUS_ID
-            ".$where." GROUP BY ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_ID ORDER BY ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_ID DESC";
+            LEFT JOIN ".PRFX."CONFIG_WORK_ORDER_STATUS ON ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_CURRENT_STATUS    = ".PRFX."CONFIG_WORK_ORDER_STATUS.CONFIG_WORK_ORDER_STATUS_ID"
+            .$whereTheseRecords.            
+            " GROUP BY ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_ID".
+            " ORDER BY ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_ID ".$direction
+            .$limitTheseRecords;    
+    
      
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
-    } else {
-    
-        $workorders_array = $rs->GetArray();
+    } else {       
 
-        if(empty($workorders_array)) {
+        if(empty($rs->GetArray())) {
             force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_notfound'));
             exit;
         } else {
             
-            return $workorders_array;
+            return $rs;
             
         }
-    }
-}
-
-##################################
-# Display all Closed Work Orders #
-##################################
-
-function display_closed($db, $page_no) {
-    
-    global $smarty;   
-    
-    // Define the number of results per page
-    $max_results = 25;
-    
-    // Figure out the limit for the Execute based on the current page number.
-    $from = (($page_no * $max_results) - $max_results);  
-    
-    // Grab closed workorders by employee and return an array
-    $sql = "SELECT 
-            ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_ID, 
-            ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_OPEN_DATE,
-            ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_ASSIGN_TO,
-            ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_SCOPE, 
-            ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_CLOSE_DATE,
-            ".PRFX."TABLE_CUSTOMER.*, 
-            ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_ID, 
-            ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_DISPLAY_NAME, 
-            ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_WORK_PHONE, 
-            ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_HOME_PHONE, 
-            ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_MOBILE_PHONE, 
-            ".PRFX."CONFIG_WORK_ORDER_STATUS.CONFIG_WORK_ORDER_STATUS
-            FROM ".PRFX."TABLE_WORK_ORDER
-            LEFT JOIN ".PRFX."TABLE_CUSTOMER ON ".PRFX."TABLE_WORK_ORDER.CUSTOMER_ID = ".PRFX."TABLE_CUSTOMER.CUSTOMER_ID
-            LEFT JOIN ".PRFX."TABLE_EMPLOYEE ON ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_ASSIGN_TO = ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_ID
-            LEFT JOIN ".PRFX."CONFIG_WORK_ORDER_STATUS ON ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_CURRENT_STATUS = ".PRFX."CONFIG_WORK_ORDER_STATUS.CONFIG_WORK_ORDER_STATUS_ID
-            WHERE WORK_ORDER_STATUS=".$db->qstr(6)." GROUP BY ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_ID ORDER BY ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_ID DESC LIMIT $from, $max_results";    
-    
-    if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
-        exit;
-    } else {
         
-        $work_order = $rs->GetArray();
-        
-        if(empty($work_order)) {
-            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_notfound'));
-            exit;
-        }        
     }
     
-    /* Other stuff */
-
-    // Figure out the total number of closed work orders in the database 
-    $sql = "SELECT COUNT(*) as Num FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_STATUS=".$db->qstr(6);
-    
-    if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_count'));
-        exit;
-    } else {        
-        $total_results = $rs->FetchRow();          
-        $smarty->assign('total_results', $total_results['Num']);
-    }    
-    
-    // Figure out the total number of pages. Always round up using ceil()
-    $total_pages = ceil($total_results['Num'] / $max_results); 
-    $smarty->assign('total_pages', $total_pages);
-    
-    // Assign the first page
-    if($page_no > 1) {
-        $prev = ($page_no - 1);     
-    }     
-
-    // Build Next Link
-    if($page_no < $total_pages){
-        $next = ($page_no + 1); 
-    }
-
-    // Assign Smarty Variables
-    $smarty->assign('name', $name);
-    $smarty->assign('page_no', $page_no);
-    $smarty->assign('previous', $prev);    
-    $smarty->assign('next', $next);
-    
-    return $work_order;
 }
 
 ######################
@@ -267,6 +202,7 @@ function display_resolution($db, $workorder_id){
         return $rs->GetArray();
         
     }
+    
 }
 
 ################################
@@ -286,7 +222,8 @@ function display_customer_info($db, $customer_id){
         
        return $rs->GetArray();  
        
-    }     
+    }   
+    
 }
 
 
@@ -311,7 +248,8 @@ function display_workorder_notes($db, $workorder_id){
         return $rs->GetArray(); 
         
     }
- }
+    
+}
 
 #########################################
 # Display Parts                         #
@@ -331,6 +269,7 @@ function display_parts($db, $workorder_id) {
         return $rs->GetArray();  
         
     }
+    
 }
 
 ##############################
@@ -354,6 +293,7 @@ function display_workorder_history($db, $workorder_id){
         return $rs->GetArray();  
         
     }
+    
 }
 
 ###################################
@@ -385,6 +325,7 @@ function display_status_types($db){
         return $status_array;
         
     }
+    
 }
 
 /** Insert New Functions **/
@@ -432,6 +373,7 @@ function insert_new_workorder($db, $customer_id, $created_by, $scope, $workorder
         return true;
         
     }
+    
 }
 
 ###################
@@ -461,6 +403,7 @@ function insert_new_note($db, $workorder_id, $workorder_note){
         return true;
         
     }
+    
 }
 
 ######################################
@@ -486,6 +429,7 @@ function insert_new_workorder_history_note($db, $workorder_id, $workorder_histor
         update_last_active($db, $workorder_id);        
         return true;        
     }  
+    
 }
 
 /** Get Functions **/
@@ -503,9 +447,12 @@ function get_workorder_scope_and_description($db, $workorder_id){
     if(!$rs = $db->execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
-    } else {            
+    } else { 
+        
         return $rs;
+        
     }
+    
 }
 
 ###########################
@@ -522,8 +469,11 @@ function get_workorder_comments($db, $workorder_id){
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
+        
         return $rs->fields['WORK_ORDER_COMMENT'];
+        
     }   
+    
 }
 
 #############################
@@ -540,33 +490,11 @@ function get_workorder_resolution($db, $workorder_id){
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
-        return $rs->fields['WORK_ORDER_RESOLUTION'];        
+        
+        return $rs->fields['WORK_ORDER_RESOLUTION'];    
+        
     }
-}
-
-#####################################
-# Get Employee Display Name from ID #
-#####################################
-
-// this perhaps should be in employee
-
-function get_employee_display_name_by_id($db, $employee_id){
     
-    global $smarty;
-    
-    $sql = "SELECT ".PRFX."TABLE_EMPLOYEE.*, ".PRFX."CONFIG_EMPLOYEE_TYPE.TYPE_NAME
-            FROM ".PRFX."TABLE_EMPLOYEE
-            LEFT JOIN ".PRFX."CONFIG_EMPLOYEE_TYPE ON (".PRFX."TABLE_EMPLOYEE.EMPLOYEE_TYPE = ".PRFX."CONFIG_EMPLOYEE_TYPE.TYPE_ID)
-            WHERE EMPLOYEE_ID=". $db->qstr($employee_id);
-    
-    if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
-        exit;
-    } else {
-        //$employee_array = $rs->GetArray();
-        //return $employee_array['0']['EMPLOYEE_DISPLAY_NAME'];
-        return $rs->fields['EMPLOYEE_DISPLAY_NAME'];
-    }
 }
 
 /** Update Functions **/
@@ -597,6 +525,7 @@ function update_workorder_scope_and_description($db, $workorder_id, $workorder_s
         return true;
         
     }
+    
 }
 
 ##################################
@@ -624,6 +553,7 @@ function update_workorder_comments($db, $workorder_id, $workorder_comments){
         return true;
         
     }
+    
 }
 
 ################################
@@ -651,6 +581,7 @@ function update_workorder_resolution($db, $workorder_id, $workorder_resolution){
         return true;
             
     }
+    
 }
 
 ############################
@@ -695,11 +626,11 @@ function update_workorder_status($db, $workorder_id, $assign_status){
         } elseif ($assign_status == '10') {$wo_status = $smarty->get_template_vars('translate_workorder_open');    
         }
 
-        $workorder_history_note = $smarty->get_template_vars('translate_workorder_log_message_function_update_status_work_order_status_changed_to'). ' ' . $wo_status . ' ' .$smarty->get_template_vars('translate_workorder_log_message_by_the_logged_in_user');    
-        insert_new_workorder_history_note($db, $workorder_id, $workorder_history_note);
-        force_page('workorder', 'details','workorder_id='.$workorder_id.'&page_title='.$smarty->get_template_vars('translate_workorder_work_order_id').' '.$workorder_id);
-        exit;  
+        insert_new_workorder_history_note($db, $workorder_id, $smarty->get_template_vars('translate_workorder_log_message_function_update_status_work_order_status_changed_to'). ' ' . $wo_status . ' ' .$smarty->get_template_vars('translate_workorder_log_message_by_the_logged_in_user'));
+        return true;
+        
     }
+    
 }
 
 #################################
@@ -716,8 +647,11 @@ function update_last_active($db, $workorder_id){
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
+        
         return;
+        
     }
+    
 }
 
 /** Close Functions **/
@@ -785,6 +719,7 @@ function close_workorder_without_invoice($db, $workorder_id, $workorder_resoluti
         return true;
         
     }
+    
 }
 
 /** Delete Work Orders **/
@@ -793,7 +728,7 @@ function close_workorder_without_invoice($db, $workorder_id, $workorder_resoluti
 # Delete Work Order #
 #####################
 
-function delete_work_order($db, $workorder_id, $assigned_employee) {
+function delete_workorder($db, $workorder_id, $assigned_employee) {
     
     global $smarty;
     
@@ -805,15 +740,15 @@ function delete_work_order($db, $workorder_id, $assigned_employee) {
     } else {
         
         // Record to add
-        $record = $smarty->get_template_vars('translate_workorder_log_message_work_order') . ' ' . $workorder_id . ' ' .$smarty->get_template_vars('translate_workorder_log_message_function_delete_work_order_has_been_deleted') . ', ' . $assigned_employee;
+        $record = $smarty->get_template_vars('translate_workorder_log_message_work_order') . ' ' . $workorder_id . ' ' .$smarty->get_template_vars('translate_workorder_log_message_function_delete_workorder_has_been_deleted') . ', ' . $assigned_employee;
 
         // Write the record to the access log file 
         write_record_to_activity_log($record);
 
-        // Redirect to the Open Work Orders Page
-        force_page('workorder', 'open','page_title='.$smarty->get_template_vars('translate_workorder_open_title'));
-        exit;    
+        return true;
+        
     }
+    
 }
 
 /** Other Functions **/
@@ -822,7 +757,7 @@ function delete_work_order($db, $workorder_id, $assigned_employee) {
 # Assign Work Order to another employee #
 #########################################
 
-function assign_work_order_to_employee($db, $workorder_id, $logged_in_employee_id, $assigned_employee_id ,$target_employee_id){
+function assign_workorder_to_employee($db, $workorder_id, $logged_in_employee_id, $assigned_employee_id ,$target_employee_id){
     
     global $smarty;
     
@@ -854,42 +789,11 @@ function assign_work_order_to_employee($db, $workorder_id, $logged_in_employee_i
         // Write the record to the access log file 
         write_record_to_activity_log($record);
 
-        // Redirect to the Open Work Orders Page
-        force_page('workorder', 'open','page_title='.$smarty->get_template_vars('translate_workorder_open_title'));
-        exit;       
+        return true;
+        
     }
+    
  }
-
-##############################################
-#   Build an active employee <option> list   #
-##############################################
-
-/*
- * This utilises the ADODB PHP Framework for building a <option> list from the supplied data set.
- * 
- * Build <option></option> list for a <form></form> to select employee for 'Assign To' feature
- * GetMenu2('assign_employee_val, null, false') will turn off the blank option
- * GetMenu2('dataset values', 'default option', 'blank 1st record' )
- * 
- * The assigned employee is the default option selected
- * 
- */
-
-function build_active_employee_form_option_list($db, $assigned_employee_id){
-    
-    global $smarty;
-    
-    // select all employees and return their display name and ID as an array
-    $sql = "SELECT EMPLOYEE_DISPLAY_NAME, EMPLOYEE_ID FROM ".PRFX."TABLE_EMPLOYEE WHERE EMPLOYEE_STATUS=1";
-    
-    if(!$rs = $db->execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
-        exit;
-    } else {        
-        // Get ADODB to build the form using the loaded dataset $rs
-        return $rs->GetMenu2('assign_employee_val', $assigned_employee_id, false );       
-    }
-}
 
 ################################
 # Resolution Edit Status Check #
@@ -919,7 +823,8 @@ function resolution_edit_status_check($db, $workorder_id){
            
             return true;
             
-       }       
+       } 
+       
     }
    
 }
