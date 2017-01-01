@@ -52,7 +52,7 @@
                                     </table>
                                     <table width="100%" cellpadding="4" cellspacing="0" border="0">
                                         <tr>
-                                            <td><button type="submit" name="{$translate_schedule_print}" OnClick=location.href="?page=schedule:print&schedule_start_year={$schedule_start_year}&schedule_start_month={$schedule_start_month}&schedule_start_day={$schedule_start_day}&theme=off"; >{$translate_schedule_print}</button></td>
+                                            <td><button type="submit" name="{$translate_schedule_print}" OnClick=location.href="?page=schedule:day&schedule_start_year={$schedule_start_year}&schedule_start_month={$schedule_start_month}&schedule_start_day={$schedule_start_day}&theme=off"; >{$translate_schedule_print}</button></td>
                                             <td valign="top" align="right" valign="middle">
                                                 {if $login_account_type_id <= 3 }
                                                     <form>

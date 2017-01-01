@@ -24,6 +24,8 @@ if(isset($VAR['deleteType']) && $VAR['deleteType'] == "labourRecord") {
 
 }
 
+// not sure these are used but i could employee them in making the delete invoice work without having to delete all items first.
+
 // Parts Delete Record
 if(isset($VAR['deleteType']) && $VAR['deleteType'] == "partsRecord") {
 

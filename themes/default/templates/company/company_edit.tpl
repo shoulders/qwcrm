@@ -58,7 +58,7 @@
                                                             </tr>
                                                             <tr>
                                                                 <td align="right"><b>State:</b></td>
-                                                                <td><input name="state" class="olotd5" type="text" maxlength="20" required onkeydown="return onlyAlpha(event);"></td>
+                                                                <td><input name="state" class="olotd5" value="{$company[q].COMPANY_STATE}" type="text" maxlength="20" required onkeydown="return onlyAlpha(event);"></td>
                                                             </tr>
                                                             <tr>
                                                                 <td align="right"><b>Zip:</b></td>

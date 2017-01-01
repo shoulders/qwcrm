@@ -11,23 +11,6 @@
                     <a href="?action=logout"><img src="{$theme_images_dir}icons/logout.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_logout}</a>                
                 </div>
 
-                <!-- Parts -->
-                <div>
-                    <span>Parts - TranslateMe</span>
-                    <a href="?page=parts:main"><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" height="14" width="14" /> main</a>
-                    <a href="?page=parts:print_results"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> print results</a>
-                    <a href="?page=parts:results"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> results</a>
-                    <a href="?page=parts:status"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> status</a>
-                    <a href="?page=parts:view"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> view</a>
-                </div>
-                
-                <!-- Schedule -->
-                <div>
-                    <span>{$translate_core_menu_schedule}</span>
-                    <a href="modules/schedule/sync.php"><img src="{$theme_images_dir}icons/16x16/Calendar.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_cal_sync}</a>                
-                    <a href="index.php?page=schedule:day"><img src="{$theme_images_dir}icons/16x16/Calendar.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_schedule}</a>                    
-                </div>
-
                 <!-- Customers -->
                 <div>
                     <span>{$translate_core_menu_customers}</span>
@@ -60,8 +43,9 @@
                     {/if}
                     {if $customer_id > 0 }
                         <a href="?page=workorder:new&customer_id={$customer_id}&page_title={$translate_core_menu_create_new_wo}"><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_create_new_wo}</a>
-                        <a href="?page=invoice:new&invoice_type=invoice-only&workorder_id=0&customer_id={$customer_id}&page_title={$translate_core_menu_invoice_only}"><img src="{$theme_images_dir}icons/invoice.png" alt="" border="0" height="14" width="14" /> {$translate_core_menu_invoice_only}</a>
+                        <a href="?page=invoice:edit&invoice_type=invoice-only&workorder_id=0&customer_id={$customer_id}&page_title={$translate_core_menu_invoice_only}"><img src="{$theme_images_dir}icons/invoice.png" alt="" border="0" height="14" width="14" /> {$translate_core_menu_invoice_only}</a>
                     {/if}
+                    <a href="index.php?page=schedule:day"><img src="{$theme_images_dir}icons/16x16/Calendar.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_schedules}</a>
                 </div>
 
                 <!-- Invoices -->

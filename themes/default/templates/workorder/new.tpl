@@ -78,7 +78,7 @@
                                                             </tr>
                                                         </table>
                                                         <br>
-                                                        <input type="submit" name="submit" value="{$translate_workorder_submit}"/>                                                    
+                                                        <input type="submit" name="submit" value="{$translate_workorder_submit}">                                                    
                                                         <br>
                                                         <br>
                                                         <table class="olotable" width="100%" border="0" summary="Work order display">
@@ -90,22 +90,8 @@
                                                             </tr>
                                                         </table>
                                                         <br>
-                                                        <input type="submit" name="submit" value="{$translate_workorder_submit}"/>
-                                                        <br>
-                                                        <br>
-                                                        <!-- Work Order Notes -->
-                                                        <table class="olotable" width="100%" border="0" summary="Work order display">
-                                                            <tr>
-                                                                <td class="olohead">&nbsp;{$translate_workorder_details_notes_title}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="olotd"><textarea class="olotd4" rows="15" cols="70" name="workorder_note"></textarea></td>
-                                                            </tr>
-                                                        </table>
-                                                        <br>
-                                                        <input type="submit" name="submit" value="{$translate_workorder_submit}"/>
-                                                    </form>
-                                                    <br>
+                                                        <input type="submit" name="submit" value="{$translate_workorder_submit}">                                                                                                             
+                                                    </form>                                                    
                                                 </td>
                                             </tr>
                                         </table>                                                

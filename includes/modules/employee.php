@@ -26,9 +26,8 @@ function get_employee_display_name_by_id($db, $employee_id){
     
 }
 
-
 ##############################################
-#   Build an active employee <option> list   #  // only used in workorder:status
+#   Build an active employee <option> list   #  // keep for reference
 ##############################################
 
 /*
@@ -54,13 +53,12 @@ function build_active_employee_form_option_list($db, $assigned_employee_id){
         exit;
     } else {
         
-        // Get ADODB to build the form using the loaded dataset $rs
-        return $rs->GetMenu2('assign_employee_val', $assigned_employee_id, false );
+        // Get ADODB to build the form using the loaded dataset
+        return $rs->GetMenu2('assign_employee', $assigned_employee_id, false);
         
     }
     
 }
-
 
 ##################################################
 # List all active employees display name and ID  #

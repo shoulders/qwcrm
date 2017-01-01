@@ -66,16 +66,15 @@ function display_single_workorder($db, $workorder_id){
     if(!$rs = $db->Execute($sql)) {        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
-    } else {
+    } else { 
+        $single_workorder = $rs->GetArray();
         
-        $single_workorder_array = $rs->GetArray();
-        
-        if(empty($single_workorder_array)) {
+        if(empty($single_workorder)) {
             force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_notfound'));
             exit;            
         } else {
             
-            return $single_workorder_array;
+            return $single_workorder;
             
         }
         
@@ -253,27 +252,6 @@ function display_workorder_notes($db, $workorder_id){
     
 }
 
-#########################################
-# Display Parts                         #
-#########################################
-
-function display_parts($db, $workorder_id) {
-    
-    global $smarty;
-    
-    $sql = "SELECT * FROM ".PRFX."ORDERS WHERE  WO_ID=".$db->qstr($workorder_id);
-    
-    if(!$rs = $db->execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
-        exit;
-    } else {
-        
-        return $rs->GetArray();  
-        
-    }
-    
-}
-
 ##############################
 # Display Work Order History #
 ##############################
@@ -336,14 +314,13 @@ function display_status_types($db){
 # Insert New Work Order #
 #########################
 
-function insert_new_workorder($db, $customer_id, $created_by, $scope, $workorder_description, $workorder_comments, $workorder_note){
+function insert_new_workorder($db, $customer_id, $created_by, $scope, $workorder_description, $workorder_comments){
     
     global $smarty;
 
     // Remove Extra Slashes caused by Magic Quotes    
     stripslashes($workorder_description);
-    stripslashes($workorder_comments);
-    stripslashes($workorder_note);
+    stripslashes($workorder_comments);    
 
     $sql = "INSERT INTO ".PRFX."TABLE_WORK_ORDER SET 
             CUSTOMER_ID                                 = " . $db->qstr( $customer_id           ).",
@@ -366,11 +343,6 @@ function insert_new_workorder($db, $customer_id, $created_by, $scope, $workorder
 
         // Creates a History record for the new work order
         insert_new_workorder_history_note($db, $workorder_id, $smarty->get_template_vars('workorder_log_message_function_insert_new_workorder'));
-
-        // If a submitted note is not empty
-        if(!empty($workorder_note)){        
-            insert_new_note($db, $workorder_id, $workorder_note);
-        }
 
         return true;
         
@@ -734,6 +706,19 @@ function delete_workorder($db, $workorder_id, $assigned_employee) {
     
     global $smarty;
     
+    // Does the workorder have an invoice
+    if(check_workorder_has_invoice($db, $workorder_id)) {
+        $_SESSION['force_page']['warning_msg'] = 'This workorder cannot be deleted because it has an invoice.';        
+        return false;
+    }
+    
+    // Is the workorder in an allowed state to be deleted
+    if(!check_workorder_status_is_allowed_for_deletion($db, $workorder_id)) {
+        $_SESSION['force_page']['warning_msg'] = 'This workorder cannot be deleted because its status does not allow it.';        
+        return false;
+    }
+    
+    // Delete the workorder
     $sql = "DELETE FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_ID=".$db->qstr($workorder_id);
     
     if(!$rs = $db->Execute($sql)) {
@@ -753,13 +738,67 @@ function delete_workorder($db, $workorder_id, $assigned_employee) {
     
 }
 
+##################################
+# Does workorder have an invoice # //translate this
+##################################
+
+function check_workorder_has_invoice($db, $workorder_id) {
+    
+    $sql = "SELECT * FROM ".PRFX."TABLE_INVOICE WHERE WORKORDER_ID=".$workorder_id;
+    
+    if(!$rs = $db->Execute($sql)) {        
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
+        exit;
+    } else {        
+        
+        if(empty($rs->GetArray())) {
+            
+            return false;
+            
+        } else {          
+            
+            return true;
+            
+        }
+        
+    }
+    
+}
+
+######################################################
+# Is the workorder in an allowed state to be deleted #  //translate this
+######################################################
+
+function check_workorder_status_is_allowed_for_deletion($db, $workorder_id) {
+    
+    $sql = "SELECT WORK_ORDER_STATUS FROM ".PRFX."TABLE_INVOICE WHERE WORKORDER_ID=".$workorder_id;
+    
+    if(!$rs = $db->Execute($sql)) {        
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
+        exit;
+    } else {        
+        
+        if($rs->fields['WORK_ORDER_STATUS'] == 1 || $rs->fields['WORK_ORDER_STATUS'] == 10) {
+            
+            return true;
+            
+        } else {             
+            
+            return false;
+            
+        }
+        
+    }
+    
+}
+
 /** Other Functions **/
 
 #########################################
 # Assign Work Order to another employee #
 #########################################
 
-function assign_workorder_to_employee($db, $workorder_id, $logged_in_employee_id, $assigned_employee_id, $target_employee_id){
+function assign_workorder_to_employee($db, $workorder_id, $logged_in_employee_id, $assigned_employee_id, $target_employee_id) {
     
     global $smarty;
     
@@ -801,7 +840,7 @@ function assign_workorder_to_employee($db, $workorder_id, $logged_in_employee_id
 # Resolution Edit Status Check #
 ################################
 
-function resolution_edit_status_check($db, $workorder_id){
+function resolution_edit_status_check($db, $workorder_id) {
     
     global $smarty;
     
@@ -810,7 +849,8 @@ function resolution_edit_status_check($db, $workorder_id){
     if(!$rs = $db->execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
-    } else {
+    } else {        
+    
         if($rs->fields['WORK_ORDER_STATUS'] == 9) {
             
             $_SESSION['force_page']['warning_msg'] = $smarty->get_template_vars('translate_workorder_advisory_message_function_resolution_edit_status_check_workorderalreadyclosed');
@@ -821,11 +861,11 @@ function resolution_edit_status_check($db, $workorder_id){
             $_SESSION['force_page']['warning_msg'] = $smarty->get_template_vars('translate_workorder_advisory_message_function_resolution_edit_status_check_waitingforparts');
             return false;
             
-       } else {
+        } else {
            
             return true;
             
-       } 
+        } 
        
     }
    

@@ -1,27 +1,26 @@
 <!-- status.tpl -->
-{section name=i loop=$single_workorder}
-    <table width="100%" border="0" cellpadding="20" cellspacing="0">
-        <tr>
-            <td>
-                <table width="700" cellpadding="5" cellspacing="0" border="0" >
-                    <tr>
-                        <td class="menuhead2" width="80%">{$translate_workorder_status_title} - {$translate_workorder_status_update_work_order_status_for_work_order_id} {$workorder_id}</td>
-                        <td class="menuhead2" width="20%" align="right" valign="middle">
-                            <a>
-                                <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<b>{$translate_workorder_status_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_workorder_status_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();">
-                            </a>
-                        </td>
-                    </tr>  
-                    <tr>
-                        <td class="menutd2" colspan="2">                        
-                            <table class="olotable" width="100%" border="0" cellpadding="2" cellspacing="0" >
-                                <tr>
-                                    <td class="olohead" align="center">{$translate_workorder_status}</td>
-                                    <td class="olohead" align="center">{$translate_workorder_assign_to}</td>
-                                    <td class="olohead" align="center">{$translate_workorder_delete}</td>
-                                </tr>
-                                <tr>
-
+<table width="100%" border="0" cellpadding="20" cellspacing="0">
+    <tr>
+        <td>
+            <table width="700" cellpadding="5" cellspacing="0" border="0" >
+                <tr>
+                    <td class="menuhead2" width="80%">{$translate_workorder_status_title} {$workorder_id}</td>
+                    <td class="menuhead2" width="20%" align="right" valign="middle">
+                        <a>
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<b>{$translate_workorder_status_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_workorder_status_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();">
+                        </a>
+                    </td>
+                </tr>  
+                <tr>
+                    <td class="menutd2" colspan="2">                        
+                        <table class="olotable" width="100%" border="0" cellpadding="2" cellspacing="0" >
+                            <tr>
+                                <td class="olohead" align="center">{$translate_workorder_status}</td>
+                                <td class="olohead" align="center">{$translate_workorder_assign_to}</td>
+                                <td class="olohead" align="center">{$translate_workorder_delete}</td>
+                            </tr>
+                            <tr>
+                                {section name=i loop=$single_workorder}
                                     <!-- Assign Status Update -->
                                     <td class="olotd4" align="center" width="33%"> 
                                         <p>&nbsp;</p>                                    
@@ -49,7 +48,7 @@
                                     <!-- Update Assigned Employee -->
                                     <td class="olotd4" align="center" width="33%"> 
                                         <!-- If the employee is assigned to this workorder and it is not closed, or no one is assigned, or the user is an admin show a dropdown list and update button, else show the employee details instead -->
-                                        {if ($single_workorder[i].EMPLOYEE_ID == $login_id && $single_workorder[i].WORK_ORDER_STATUS != 6) || ($single_workorder[i].EMPLOYEE_ID == '' || $single_workorder[i].EMPLOYEE_TYPE == '1' || $single_workorder[i].EMPLOYEE_TYPE == '2' || $single_workorder[i].EMPLOYEE_TYPE == '3')}
+                                        {if ($single_workorder[i].EMPLOYEE_ID == $login_id && $single_workorder[i].WORK_ORDER_STATUS != 6) || $single_workorder[i].EMPLOYEE_ID == '' || $single_workorder[i].EMPLOYEE_TYPE <= 3}
                                             <p>&nbsp;</p>  
                                             <form method="POST" action="index.php?page=workorder:status">
                                                 <select name="target_employee_id">
@@ -62,31 +61,32 @@
                                                 <input name="change_employee" value="{$translate_workorder_update}" type="submit">
                                             </form>                                       
                                         {else}    
-                                            <img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0"
-                                                 onMouseOver="ddrivetip('<center><b>{$translate_workorder_contact}</b></center><hr><b>{$translate_workorder_fax}: </b>{$single_workorder[i].EMPLOYEE_WORK_PHONE}<br><b>{$translate_workorder_mobile}: </b>{$single_workorder[i].EMPLOYEE_MOBILE_PHONE}<br><b>{$translate_workorder_home}: </b>{$single_workorder[i].EMPLOYEE_HOME_PHONE}');"
-                                                 onMouseOut="hideddrivetip();">
-                                            <a class="link1" href="?page=employee:employee_details&employee_id={$single_workorder[i].EMPLOYEE_ID}&page_title={$single_workorder[i].EMPLOYEE_DISPLAY_NAME}">{$single_workorder[i].EMPLOYEE_DISPLAY_NAME}</a>
+                                            <img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" onMouseOver="ddrivetip('<center><b>{$translate_workorder_contact}</b></center><hr><b>{$translate_workorder_fax}: </b>{$single_workorder[i].EMPLOYEE_WORK_PHONE}<br><b>{$translate_workorder_mobile}: </b>{$single_workorder[i].EMPLOYEE_MOBILE_PHONE}<br><b>{$translate_workorder_home}: </b>{$single_workorder[i].EMPLOYEE_HOME_PHONE}');" onMouseOut="hideddrivetip();">                                                 
+                                            <a class="link1" href="?page=employee:employee_details&employee_id={$single_workorder[i].EMPLOYEE_ID}">{$single_workorder[i].EMPLOYEE_DISPLAY_NAME}</a>
                                         {/if}
                                     </td>
-
+                                {/section}
+                                
+                                {section name=i loop=$single_workorder}
                                     <!-- Delete Workorder Button -->                        
                                     <td class="olotd4" align="center" width="33%"> 
-                                        <!-- if work order is created and open, you can delete it, otherwise you cannot -->
-                                        {if $single_workorder[i].WORK_ORDER_CURRENT_STATUS == '1' || $single_workorder[i].WORK_ORDER_CURRENT_STATUS == '10'}
+                                        <!-- if work order is created and open, you can delete it, otherwise you cannot -->                                        
+                                        {if $single_workorder[i].WORK_ORDER_STATUS == 1 || $single_workorder[i].WORK_ORDER_STATUS == 10}
                                             <form method="POST" action="index.php?page=workorder:status">
-                                                <input name="delete" value="{$translate_workorder_delete}" type="submit">
-                                            </form>
+                                                <input name="delete" value="{$translate_workorder_delete}" type="submit" onClick="return confirmDelete('{$translate_workorder_status_confirmdelete}');">
+                                                <input type="hidden" name="workorder_id" value="{$workorder_id}">
+                                            </form>                                            
                                         {else}
                                             {$translate_workorder_status_this_work_order_cannot_be_deleted}
-                                        {/if}
+                                        {/if}                                        
                                     </td>
-                                    
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-    </table>
-{/section}
+                                {/section}
+                                
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>

@@ -224,8 +224,8 @@
                                 <td class="olohead">{$translate_customer_action}</td>
                             </tr>
                             {section name=w loop=$unpaid_invoices}
-                                <tr onmouseover="this.className='row2'" onmouseout="this.className='row1'" onDblClick="window.location='?page=invoice:new&invoice_id={$unpaid_invoices[w].INVOICE_ID}&workorder_id={$unpaid_invoices[w].WORKORDER_ID}&customer_id={$unpaid_invoices[w].CUSTOMER_ID}&page_title={$translate_customer_invoice}'">
-                                    <td class="olotd4"><a href="?page=invoice:new&invoice_id={$unpaid_invoices[w].INVOICE_ID}&workorder_id={$unpaid_invoices[w].WORKORDER_ID}&customer_id={$unpaid_invoices[w].CUSTOMER_ID}&page_title={$translate_customer_invoice}">{$unpaid_invoices[w].INVOICE_ID}</a></td>
+                                <tr onmouseover="this.className='row2'" onmouseout="this.className='row1'" onDblClick="window.location='?page=invoice:edit&invoice_id={$unpaid_invoices[w].INVOICE_ID}&workorder_id={$unpaid_invoices[w].WORKORDER_ID}&customer_id={$unpaid_invoices[w].CUSTOMER_ID}&page_title={$translate_customer_invoice}'">
+                                    <td class="olotd4"><a href="?page=invoice:edit&invoice_id={$unpaid_invoices[w].INVOICE_ID}&workorder_id={$unpaid_invoices[w].WORKORDER_ID}&customer_id={$unpaid_invoices[w].CUSTOMER_ID}&page_title={$translate_customer_invoice}">{$unpaid_invoices[w].INVOICE_ID}</a></td>
                                     <td class="olotd4"><a href="?page=workorder:details&workorder_id={$unpaid_invoices[w].WORKORDER_ID}&page_title={$translate_customer_work_order_id} {$unpaid_invoices[w].WORKORDER_ID}">{$unpaid_invoices[w].WORKORDER_ID}</a></td>
                                     <td class="olotd4">{$unpaid_invoices[w].INVOICE_DATE|date_format:"$date_format"}</td>
                                     <td class="olotd4">{$currency_sym}{$unpaid_invoices[w].INVOICE_AMOUNT|string_format:"%.2f"}</td>
@@ -302,8 +302,8 @@
                                 <td class="olohead">{$translate_customer_asset_notes}</td>
                             </tr>
                             {section name=w loop=$unpaid_invoices}
-                                <tr onmouseover="this.className='row2'" onmouseout="this.className='row1'" onDblClick="window.location='?page=invoice:new&workorder_id={$unpaid_invoices[w].WORKORDER_ID}&customer_id={$unpaid_invoices[w].CUSTOMER_ID}&page_title={$translate_customer_invoice}'">
-                                    <td class="olotd4"><a href="?page=invoice:new&workorder_id={$unpaid_invoices[w].WORKORDER_ID}&customer_id={$unpaid_invoices[w].CUSTOMER_ID}&page_title={$translate_customer_invoice}">{$unpaid_invoices[w].INVOICE_ID}</a></td>
+                                <tr onmouseover="this.className='row2'" onmouseout="this.className='row1'" onDblClick="window.location='?page=invoice:edit&workorder_id={$unpaid_invoices[w].WORKORDER_ID}&customer_id={$unpaid_invoices[w].CUSTOMER_ID}&page_title={$translate_customer_invoice}'">
+                                    <td class="olotd4"><a href="?page=invoice:edit&workorder_id={$unpaid_invoices[w].WORKORDER_ID}&customer_id={$unpaid_invoices[w].CUSTOMER_ID}&page_title={$translate_customer_invoice}">{$unpaid_invoices[w].INVOICE_ID}</a></td>
                                     <td class="olotd4"><a href="?page=workorder:details&workorder_id={$unpaid_invoices[w].WORKORDER_ID}&page_title={$translate_customer_work_order_id} {$unpaid_invoices[w].WORKORDER_ID}">{$unpaid_invoices[w].WORKORDER_ID}</a></td>
                                     <td class="olotd4">{$unpaid_invoices[w].INVOICE_DATE|date_format:"$date_format"}</td>
                                     <td class="olotd4">{$currency_sym}{$unpaid_invoices[w].INVOICE_AMOUNT|string_format:"%.2f"}</td>

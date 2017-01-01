@@ -200,49 +200,9 @@
                                     </td>
                                 </tr>
                             </table>
-                        </div>
+                        </div>                       
 
-                        <!-- Tab 5 Contents - Parts -->
-                        <div id="tab_5_contents" class="tab_contents">
-                            <table width="100%" border="0" cellpadding="20" cellspacing="0">
-                                <tr>
-                                    <td>
-                                        <table width="700" cellpadding="5" cellspacing="0" border="0" >
-                                            <tr>
-                                                <td class="menuhead2" width="80%">&nbsp;{$translate_workorder_work_order_id} {$single_workorder[i].WORK_ORDER_ID}</td>
-                                                <td class="menuhead2" width="20%" align="right" valign="middle">
-                                                    <a href="index.php?page=workorder:print&workorder_id={$workorder_id}&page_title=Print&theme=off" target="_blank">
-                                                        <img src="{$theme_images_dir}icons/print.gif" alt="Print Works Order" border="0" height="14" width="14"
-                                                        onMouseOver="ddrivetip('{$translate_workorder_print_work_order}');"
-                                                        onMouseOut="hideddrivetip();" />
-                                                    </a>
-                                                    <a href="" target="new">
-                                                        <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" alt=""
-                                                        onMouseOver="ddrivetip('<b>{$translate_workorder_details_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_workorder_details_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');"
-                                                        onMouseOut="hideddrivetip();">
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="menutd2" colspan="2">
-                                                    <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0" >
-                                                        <tr>
-                                                            <td width="100%" valign="top">                                                            
-                                                                <!-- Display Parts -->
-                                                                {include file="workorder/blocks/details_parts_block.tpl"}
-                                                                <br>
-                                                            </td>
-                                                        </tr>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-
-                        <!-- Tab 6 Contents - History -->
+                        <!-- Tab 5 Contents - History -->
                         <div id="tab_6_contents" class="tab_contents">
                             <table width="100%" border="0" cellpadding="20" cellspacing="0">
                                 <tr>
@@ -281,6 +241,7 @@
                                 </tr>
                             </table>
                         </div>
+
                     </div>
                 </div>
             </td>

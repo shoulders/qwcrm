@@ -6,4 +6,4 @@ require('adodb.inc.php');
 
 // create adodb database connection
 $db = &ADONewConnection('mysqli');
-$db->Connect($db_host, $db_user, $db_pass, $db_name);   // change these to lower case as it annoys me
+$db->Connect($db_host, $db_user, $db_pass, $db_name);

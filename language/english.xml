@@ -149,9 +149,8 @@
     // core_menu / theme_menu_block.tpl
     <core_menu_main_menu>Main Menu</core_menu_main_menu>
     <core_menu_home>Home</core_menu_home>
-    <core_menu_logout>Logout</core_menu_logout>
-    <core_menu_schedule>Schedule</core_menu_schedule>
-    <core_menu_cal_sync>Cal Sync</core_menu_cal_sync>
+    <core_menu_logout>Logout</core_menu_logout>    
+    <core_menu_schedules>Schedules</core_menu_schedules>
     <core_menu_customers>Customers</core_menu_customers>
     <core_menu_add_new_customer>Add New Customer</core_menu_add_new_customer>
     <core_menu_add_new>Add New</core_menu_add_new>
@@ -1357,12 +1356,13 @@
             <workorder_details_new_note_title>Add A New Note For Work Order ID</workorder_details_new_note_title>   
             <workorder_details_new_note_button_tooltip>Click to create a new note</workorder_details_new_note_button_tooltip>   
 
-            // Details - Parts
-            <workorder_details_parts_title>Parts</workorder_details_parts_title>
-
             // Details - Schedule
             <workorder_details_schedule_title>Schedule</workorder_details_schedule_title>
-            <workorder_details_schedule_button_tooltip>Create a New Schedule</workorder_details_schedule_button_tooltip>        
+            <workorder_details_schedule_button_tooltip>Create a New Schedule</workorder_details_schedule_button_tooltip>
+            <workorder_details_schedule_edit>Edit</workorder_details_schedule_edit> 
+            <workorder_details_schedule_delete>Delete</workorder_details_schedule_delete> 
+            <workorder_details_schedule_export>Export</workorder_details_schedule_export> 
+            <workorder_details_schedule_confirmdelete>Are you sure you want to delete this Workorder?</workorder_details_schedule_confirmdelete>       
 
         // new.tpl
         <workorder_new_title>New Workorder</workorder_new_title>
@@ -1436,22 +1436,22 @@
         <workorder_details_edit_resolution_button_tooltip>Click to edit resolution</workorder_details_edit_resolution_button_tooltip>        
         <workorder_details_edit_resolution_submit_changes_only>Submit Changes Only</workorder_details_edit_resolution_submit_changes_only>
         <workorder_details_edit_resolution_close_without_invoice>Close Without Invoice</workorder_details_edit_resolution_close_without_invoice>
-        <workorder_details_edit_resolution_close_with_invoice>Close With Invoice</workorder_details_edit_resolution_close_with_invoice>      
-        
+        <workorder_details_edit_resolution_close_with_invoice>Close With Invoice</workorder_details_edit_resolution_close_with_invoice>         
 
         // status.tpl
-        <workorder_status_title>Status</workorder_status_title>   
+        <workorder_status_title>Status for Workorder</workorder_status_title>   
         <workorder_status_help_title>Status Help</workorder_status_help_title>
-        <workorder_status_help_content>You can change the status of a work order here.</workorder_status_help_content>
-        <workorder_status_update_work_order_status_for_work_order_id>Update Work Order Status For Work Order ID</workorder_status_update_work_order_status_for_work_order_id>
+        <workorder_status_help_content>You can change the status of a work order here.</workorder_status_help_content>        
         <workorder_status_new_status>New Status</workorder_status_new_status>
-        <workorder_status_this_work_order_cannot_be_deleted>This Work order cannot be deleted. &lt;br /&gt;If the work order is in the following state, created and open, you can delete it, otherwise you cannot.</workorder_status_this_work_order_cannot_be_deleted>
-                
+        <workorder_status_this_work_order_cannot_be_deleted>This Work order cannot be deleted. &lt;br /&gt;You can only delete the workorder if it's status is either Created or Open and the workorder has no invoice.</workorder_status_this_work_order_cannot_be_deleted>
+        <workorder_status_confirmdelete>Are you sure you want to delete this Workorder?</workorder_status_confirmdelete>
+        
         
         //// System Messages
         
         // includes/modules/workorder.php
-        <workorder_error_message_function_display_single_workorder_failed>Could not display the Work Order record requested</workorder_error_message_function_display_single_workorder_failed>        
+        <workorder_error_message_function_display_single_workorder_failed>Could not display the Work Order record requested</workorder_error_message_function_display_single_workorder_failed>
+        <workorder_error_message_function_display_single_workorder_notfound>The requested Work Order could not be found</workorder_error_message_function_display_single_workorder_notfound>      
         <workorder_error_message_function_display_workorders_failed>Could not display the Work Order(s) requested</workorder_error_message_function_display_workorders_failed>
         <workorder_error_message_function_display_workorders_notfound>The requested Work Order(s) could not be found</workorder_error_message_function_display_workorders_notfound> 
         <workorder_error_message_function_display_workorders_count>Failed to select and count Work Orders requested</workorder_error_message_function_display_workorders_count>     
@@ -1480,7 +1480,12 @@
         <workorder_error_message_function_resolution_edit_status_check_failed>Failed to check the Resolution Status of the Work Order</workorder_error_message_function_resolution_edit_status_check_failed>
 
         // closed.php
-                
+        
+        // delete.php
+        <workorder_advisory_message_delete_noworkorderid>Cannot update Workorder status because there is no Work Order ID set</workorder_advisory_message_delete_noworkorderid>        
+        <workorder_advisory_message_delete_deleted>Workorder has been deleted</workorder_advisory_message_delete_deleted>
+        <workorder_advisory_message_delete_notdeleted>Workorder has not been deleted</workorder_advisory_message_delete_notdeleted>
+        
         // details.php
         
         // details_edit_comments.php
@@ -1515,9 +1520,7 @@
         // status.php
         <workorder_advisory_message_status_noworkorderid>Cannot update Workorder status because there is no Work Order ID set</workorder_advisory_message_status_noworkorderid>
         <workorder_advisory_message_status_statusupdated>Workorder status updated</workorder_advisory_message_status_statusupdated>
-        <workorder_advisory_message_status_employeeupdated>Assigned employee updated</workorder_advisory_message_status_employeeupdated>        
-        <workorder_advisory_message_status_deleted>Workorder has been deleted</workorder_advisory_message_status_deleted>
-        
+        <workorder_advisory_message_status_employeeupdated>Assigned employee updated</workorder_advisory_message_status_employeeupdated>      
         
         
         //// Log Messages

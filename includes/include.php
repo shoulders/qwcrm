@@ -75,6 +75,7 @@ function force_page($module, $page_tpl = Null, $variables = Null, $method = 'ses
             }
             
         }
+        
     }
     
     /* Send Varibles via $_SESSION */    
@@ -136,8 +137,10 @@ function force_page($module, $page_tpl = Null, $variables = Null, $method = 'ses
 
             }
                 
-        }            
-    }    
+        }
+        
+    }
+    
 }
 
 ############################################
@@ -161,15 +164,15 @@ function perform_redirect($url, $type = 'javascript') {
             ');
         
     }
+    
 }
 
 ############################################
 #           force_error_page               #
 ############################################
 
-
 // Old Method Example (26-11-16) - use for text replace
-// force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
+// fo rce_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
  
 // New Method - Example to use
 // If a function needs more than 1 error notification - add after _failed - this keeps it easy to swapp stuff out : i.e _failed --> _failed_notfound ?
@@ -233,7 +236,9 @@ function prepare_error_data($type, $data = Null){
         } else {
             $error_page = $data;            
         }       
+        
         return $error_page;
+        
     }     
     
     /* Error Location */
@@ -269,6 +274,7 @@ function prepare_error_data($type, $data = Null){
         // remove newlines from the database string
         if($data != ''){$data = str_replace("\n",'',$data);}  
         return $data;
+        
     }
 }
 
@@ -276,7 +282,7 @@ function prepare_error_data($type, $data = Null){
 #  Language Translation Function           #
 ############################################
 
-function load_language(){
+function load_language() {
     
     global $smarty; 
      
@@ -332,7 +338,8 @@ function load_language(){
     
     // Destroy the loaded XML data to save memory
     unset($language_xml);
-*/      
+*/
+    
 }
 
 ############################################
@@ -376,7 +383,7 @@ function check_acl($db, $login_account_type_id, $module, $page_tpl){
     
     /* error catching - you cannot use normal error logging as it will cause a loop */
     if($login_account_type_id == ''){
-        echo $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_no_account_type_id');
+        echo $smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_no_account_type_id');
         die;        
     }
 
@@ -386,7 +393,7 @@ function check_acl($db, $login_account_type_id, $module, $page_tpl){
             WHERE TYPE_ID ='.$db->qstr($login_account_type_id);
     
     if(!$rs = $db->execute($q)) {        
-        force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_group_name_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_group_name_failed'));
         exit;
     } else {
         $employee_acl_account_type_display_name = $rs->fields['TYPE_NAME'];
@@ -414,7 +421,9 @@ function check_acl($db, $login_account_type_id, $module, $page_tpl){
             return true;
             
         }
+        
     }
+    
 }
 
 ############################################
@@ -462,6 +471,7 @@ function verify_qwcrm_is_installed_correctly($db){
         */
         
     }    
+    
 }
 
 ################################################
@@ -475,13 +485,14 @@ function get_qwcrm_database_version_number($db){
     $q = 'SELECT * FROM '.PRFX.'VERSION ORDER BY '.PRFX.'VERSION.`VERSION_INSTALLED` DESC LIMIT 1';
     
     if(!$rs = $db->execute($q)){        
-        force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
         return $rs->fields['VERSION_INSTALLED'];
         
     }
+    
 }
 
 ################################################
@@ -501,14 +512,19 @@ function get_company_info($db, $item){
     $q = 'SELECT * FROM '.PRFX.'TABLE_COMPANY';
     
     if(!$rs = $db->execute($q)){        
-        force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {        
-        if($item === 'all'){            
-            return $rs->GetArray();            
+        if($item === 'all'){
+            
+            return $rs->GetArray(); 
+            
         } else {
-            return $rs->fields[$item];          
-        }        
+            
+            return $rs->fields[$item];   
+            
+        } 
+        
     }
     
 }
@@ -530,14 +546,19 @@ function get_setup_info($db, $item){
     $sql = 'SELECT * FROM '.PRFX.'SETUP';
     
     if(!$rs = $db->execute($sql)){        
-        force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {        
-        if($item === 'all'){            
-            return $rs->GetArray();            
+        if($item === 'all'){
+            
+            return $rs->GetArray(); 
+            
         } else {
-            return $rs->fields[$item];          
-        }        
+            
+            return $rs->fields[$item]; 
+            
+        }    
+        
     }
     
 }
@@ -683,9 +704,11 @@ function write_record_to_tracker_table($db, $page_display_controller, $module, $
    referer       = '. $db->qstr( getenv('HTTP_REFERER')     );
 
    if(!$rs = $db->Execute($q)) {
-      force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
+      force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
       exit;      
    }
+   
+   return;
     
 }
 
@@ -712,7 +735,7 @@ function write_record_to_activity_log($record){
     
     // Write log entry to access log    
     if(!$fp = fopen(ACTIVITY_LOG,'a')) {        
-        force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     }
     
@@ -777,7 +800,7 @@ function write_record_to_access_log($login_usr = Null){
     
     // Write log entry to access log    
     if(!$fp = fopen(ACCESS_LOG,'a')) {        
-        force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     }
     
@@ -806,7 +829,7 @@ function write_record_to_error_log($login_usr = '-', $error_page, $error_type, $
 
     // Write log entry to error.log    
     if(!$fp = fopen(ERROR_LOG,'a')) {        
-        force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     }
     
@@ -825,19 +848,19 @@ function write_record_to_error_log($login_usr = '-', $error_page, $error_type, $
 
 function convert_year_month_day_to_date($schedule_start_year, $schedule_start_month, $schedule_start_day) {
     
-        switch(DATE_FORMAT) {
-            
-            case '%d/%m/%Y':
-            return $schedule_start_day."/".$schedule_start_month."/".$schedule_start_year;
+    switch(DATE_FORMAT) {
 
-            case '%d/%m/%y':
-            return $schedule_start_day."/".$schedule_start_month."/".substr($schedule_start_year, 2);
+        case '%d/%m/%Y':
+        return $schedule_start_day."/".$schedule_start_month."/".$schedule_start_year;
 
-            case '%m/%d/%Y':
-            return $schedule_start_month."/".$schedule_start_day."/".$schedule_start_year;
+        case '%d/%m/%y':
+        return $schedule_start_day."/".$schedule_start_month."/".substr($schedule_start_year, 2);
 
-            case '%m/%d/%y':
-            return $schedule_start_month."/".$schedule_start_day."/".substr($schedule_start_year, 2);
+        case '%m/%d/%Y':
+        return $schedule_start_month."/".$schedule_start_day."/".$schedule_start_year;
+
+        case '%m/%d/%y':
+        return $schedule_start_month."/".$schedule_start_day."/".substr($schedule_start_year, 2);
             
     }
     
@@ -847,9 +870,10 @@ function convert_year_month_day_to_date($schedule_start_year, $schedule_start_mo
 #    Get Timestamp from year/month/day      #
 #############################################
 
-function convert_year_month_day_to_timestamp($schedule_start_year, $schedule_start_month, $schedule_start_day) {    
+function convert_year_month_day_to_timestamp($schedule_start_year, $schedule_start_month, $schedule_start_day) {  
             
         return DateTime::createFromFormat('!Y/m/d', $schedule_start_year.'/'.$schedule_start_month.'/'.$schedule_start_day)->getTimestamp();   
+        
 }
 
 ##########################################
@@ -911,6 +935,7 @@ function datetime_to_timestamp($date, $hour, $minute, $second, $clock, $meridian
         $timestamp += $second;        
         
         return $timestamp;
+        
     }
     
     // When using a 24 hour clock

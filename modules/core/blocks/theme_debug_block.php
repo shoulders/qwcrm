@@ -1,7 +1,7 @@
 <?php
 
 // The header might be disabled but the wrapper include is still needed
-require_once('includes'.SEP.'modules'.SEP.'core_theme.php');
+require_once('includes/modules/core_theme.php');
 
 $smarty->assign('IPaddress',                get_ip_address()                    );  // IP address of the Visitor
 $smarty->assign('pageLoadTime',             microtime(1) - $startTime           );  // Time to load the page to the nearest microsecond
@@ -37,7 +37,6 @@ if($qwcrm_advanced_debug == true){
     echo '<div><p><strong>'.$smarty->get_template_vars('translate_core_debug_all_defined_php_constants_title').':</strong></p></div>';
     echo '<pre>';
     print_r(get_defined_constants());
-    echo '</pre>';
-       
+    echo '</pre>';       
     
 }

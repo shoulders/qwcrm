@@ -45,7 +45,7 @@ class Auth {
             // This is required unless I use the escaping code above
             $login_usr = $_POST['login_usr'];
             
-            /* username and password verification section */
+            /* Username and Password Verification Section */
 
             // Query to count number of users with this combination
             $sql    = "SELECT COUNT(*) AS NUM_USERS FROM ".PRFX."TABLE_EMPLOYEE

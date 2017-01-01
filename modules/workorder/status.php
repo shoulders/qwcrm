@@ -18,23 +18,22 @@ $assigned_employee_id = $single_work_order['0']['WORK_ORDER_ASSIGN_TO'];
 // Update Work Order Status
 if(isset($VAR['change_status'])){
     update_workorder_status($db, $workorder_id, $VAR['assign_status']);
-    force_page('workorder', 'details', 'workorder_id='.$workorder_id.'&information_msg='.$smarty->get_template_vars('translate_workorder_advisory_message_status_statusupdated'));
-    //force_page('workorder', 'status', 'workorder_id='.$workorder_id.'&information_msg='.$smarty->get_template_vars('translate_workorder_advisory_message_status_statusupdated'));
+    //force_page('workorder', 'details', 'workorder_id='.$workorder_id.'&information_msg='.$smarty->get_template_vars('translate_workorder_advisory_message_status_statusupdated'));
+    force_page('workorder', 'status', 'workorder_id='.$workorder_id.'&information_msg='.$smarty->get_template_vars('translate_workorder_advisory_message_status_statusupdated'));
     exit; 
 }
 
 // Assign Work Order to another employee
 if(isset($VAR['change_employee'])) {
     assign_workorder_to_employee($db, $workorder_id, $login_id, $assigned_employee_id, $VAR['target_employee_id']);    
-    force_page('workorder', 'details', 'workorder_id='.$workorder_id.'&information_msg='.$smarty->get_template_vars('translate_workorder_advisory_message_status_employeeupdated'));
-    //force_page('workorder', 'status', 'workorder_id='.$workorder_id.'&information_msg='.$smarty->get_template_vars('translate_workorder_advisory_message_status_employeeupdated'));
+    //force_page('workorder', 'details', 'workorder_id='.$workorder_id.'&information_msg='.$smarty->get_template_vars('translate_workorder_advisory_message_status_employeeupdated'));
+    force_page('workorder', 'status', 'workorder_id='.$workorder_id.'&information_msg='.$smarty->get_template_vars('translate_workorder_advisory_message_status_employeeupdated'));
     exit; 
 }
 
 // Delete a Work Order
-if(isset($VAR['delete'])) {
-    delete_workorder($db, $workorder_id, $login_id);
-    force_page('workorder', 'overview', 'information_msg='.$smarty->get_template_vars('translate_workorder_advisory_message_status_deleted'));
+if(isset($VAR['delete'])) {    
+    force_page('workorder', 'delete', 'workorder_id='.$workorder_id);
     exit;
 }
 

@@ -273,7 +273,7 @@ function removeRowFromTableParts(){
                             <tr>
                                 <td class="menutd">
                                     {literal}
-                                    <form action="index.php?page=invoice:new" method="POST" name="new_invoice" id="new_invoice" onsubmit="try { var myValidator = validate_new_invoice; } catch(e) { return true; } return myValidator(this);">
+                                    <form action="index.php?page=invoice:edit" method="POST" name="new_invoice" id="new_invoice" onsubmit="try { var myValidator = validate_new_invoice; } catch(e) { return true; } return myValidator(this);">
                                     {/literal}
                                         <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
                                             <tr class="olotd4">
@@ -379,7 +379,7 @@ function removeRowFromTableParts(){
                                                                 <tr class="olotd4">
                                                                     <td>{$trans[r].TRANSACTION_ID}</td>
                                                                     <td>{$trans[r].DATE|date_format:"$date_format"}</td>
-                                                                    <td><b>{currency_symbol}</b>{$trans[r].AMOUNT|string_format:"%.2f"}</td>
+                                                                    <td><b>{$currency_symbol}</b>{$trans[r].AMOUNT|string_format:"%.2f"}</td>
                                                                     <td>
                                                                         {if $trans[r].TYPE == 1}{$translate_invoice_cc}
                                                                         {elseif $trans[r].TYPE == 2}{$translate_invoice_check}
@@ -567,7 +567,7 @@ function removeRowFromTableParts(){
                                                     <input type="hidden" name="chkValidateOnKeyPress" value="checked">
                                                     <input type="hidden" name="invoice_id"    value="{$invoice.INVOICE_ID}">
                                                     <input type="hidden" name="sub_total"     value="{$invoice.SUB_TOTAL|string_format:"%.2f"}">
-                                                    <input type="hidden" name="page"          value="invoice:new">
+                                                    <input type="hidden" name="page"          value="invoice:edit">
                                                     <input type="hidden" name="create_by"     value="{$login_id}">
                                                     <input type="hidden" name="workorder_id"         value="{$workorder_id}">
                                                     <input type="submit" name="submit"        value="{$translate_invoice_submit}">

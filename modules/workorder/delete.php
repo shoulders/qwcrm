@@ -1,0 +1,19 @@
+<?php
+
+require(INCLUDES_DIR.'modules/workorder.php');
+
+// Check that there is a workorder_id set
+if(empty($VAR['workorder_id'])){
+    force_page('workorder', 'overview', 'warning_msg='.$smarty->get_template_vars('translate_workorder_advisory_message_delete_noworkorderid'));
+    exit;
+}
+
+// Delete the Workorder
+if(delete_workorder($db, $workorder_id, $login_id)) {
+    force_page('workorder', 'overview', 'information_msg='.$smarty->get_template_vars('translate_workorder_advisory_message_delete_deleted'));
+    exit;  
+} else {
+    force_page('workorder', 'status', 'workorder_id='.$workorder_id);
+    exit;  
+}
+    

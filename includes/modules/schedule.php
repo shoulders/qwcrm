@@ -235,10 +235,14 @@ function build_calendar_matrix($db, $schedule_start_year, $schedule_start_month,
     // Set the Schedule item array counter
     $i = 0;
     
-    $matrixStartTime = $company_day_start;
-
-    // Cycle through the Business day in 15 minute segments (set at the bottom)
-    while($matrixStartTime <= $company_day_end) {        
+    // Length of calendar times slots/segments
+    $time_slot_length   = 900;
+    
+    // Needed for the loop advancement
+    $matrixStartTime    = $company_day_start;
+    
+    // Cycle through the Business day in 15 minute segments (set at the bottom) - you take of the $time_slot_length to prevent an additional slot at the end
+    while($matrixStartTime <= $company_day_end - $time_slot_length) {        
 
         /*
          * There are 2 segment/row types: Whole Hour, Hour With minutes
@@ -246,8 +250,8 @@ function build_calendar_matrix($db, $schedule_start_year, $schedule_start_month,
          * Left Cells = Time
          * Right Cells = Blank||Clickable Links||Schedule Item
          * each ROW is assigned a date and are seperated by 15 minutes
-         */        
-
+         */
+        
         /* Start ROW */
         $calendar .= "<tr>\n";        
 
@@ -328,8 +332,8 @@ function build_calendar_matrix($db, $schedule_start_year, $schedule_start_month,
         if($matrixStartTime >= $scheduleObject[$i]['SCHEDULE_END']) {$i++;}
 
         // Advance matrixStartTime by 15 minutes before restarting loop to create 15 minute segements        
-        $matrixStartTime += 900;
-
+        $matrixStartTime += $time_slot_length;      
+       
     }
 
     // Close the Calendar Matrix Table
@@ -370,7 +374,7 @@ function validate_schedule_times($db, $schedule_start_date, $schedule_start_time
     $company_day_end   = datetime_to_timestamp($schedule_start_date, get_setup_info($db, 'CLOSING_HOUR'), get_setup_info($db, 'CLOSING_MINUTE'), '0', '24');
     
     // Add the second I removed to correct extra segment issue
-    //$schedule_end_timestamp += 1;
+    $schedule_end_timestamp += 1;
      
     // If start time is after end time show message and stop further processing
     if($schedule_start_timestamp > $schedule_end_timestamp) {        

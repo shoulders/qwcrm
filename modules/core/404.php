@@ -1,3 +1,3 @@
 <?php
 
-$smarty->display('core'.SEP.'404.tpl');
+$smarty->display('core/404.tpl');

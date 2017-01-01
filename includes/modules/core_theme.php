@@ -46,5 +46,7 @@ function greeting_message_based_on_time($employee_name){
     if ($current_day === 'Friday'){
         $greeting_msg = $greeting_msg.' - '.$friday;
     }
+    
     return $greeting_msg;
+    
 }

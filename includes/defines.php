@@ -1,11 +1,6 @@
 <?php
 
 // Misc
-
- /* 
-  * this inly kept for legacy purposes, i will slowly remove this pointless thing from the code
-  * const SEP = '/'; //this type of constant definition is supposed to be quicker and only php 5.3+  * 
-  */
 //define('SEP',                       DIRECTORY_SEPARATOR         );          // on windows = '\'
 define('SEP',                       '/'                         );
 
@@ -41,9 +36,3 @@ define('THEME_JS_DIR_FINC',         '../js/'                    );
 define('ACTIVITY_LOG',              LOGS_DIR.'activity.log'     );
 define('ACCESS_LOG',                LOGS_DIR.'access.log'       );
 define('ERROR_LOG',                 LOGS_DIR.'error.log'        );
-
-
-
-
-
-

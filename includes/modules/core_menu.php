@@ -2,7 +2,7 @@
 
 /** Mandatory Code **/
 
-/** Work Orders **/ 
+/** Workorders **/ 
 
 ##########################################
 # Get single Work Order status           #
@@ -18,7 +18,9 @@ function menu_get_single_workorder_status($db, $workorder_id){
         force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_core_menu_error_message_function_'.__FUNCTION__.'_failed'));
         exit;   
     } else {
+        
         return $rs->fields['WORK_ORDER_STATUS'];
+        
     }
     
 }
@@ -45,7 +47,9 @@ function menu_count_workorders_with_status($db, $workorder_status){
         force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_core_menu_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
    } else {
+       
        return  $rs->fields['WORKORDER_STATUS_COUNT']; 
+       
     }
     
 }
@@ -66,7 +70,9 @@ function menu_count_invoices_with_status($db, $invoice_status){
         force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_core_menu_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
    } else {
+       
         return $rs->fields['INVOICE_COUNT'];
+        
     }    
 }
 
@@ -77,6 +83,8 @@ function menu_count_invoices_with_status($db, $invoice_status){
 // Open - Assigned
 // This might not be 100% correct
 
-function menu_count_unassigned_workorders($db){   
+function menu_count_unassigned_workorders($db){
+    
     return (menu_count_workorders_with_status($db, 10) - menu_count_workorders_with_status($db, 2));
+    
 }

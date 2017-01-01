@@ -19,8 +19,11 @@ function display_welcome_note($db){
         force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else { 
+        
         return $rs->fields['WELCOME_NOTE'];
+        
     }
+    
 }
 
 /** Work Orders **/
@@ -40,8 +43,10 @@ function count_workorders_with_status($db, $workorder_status){
     if(!$rs = $db->Execute($sql)){
         force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
-    } else {        
+    } else {      
+        
         return  $rs->fields['WORKORDER_STATUS_COUNT'];
+        
     }
     
 }
@@ -54,7 +59,9 @@ function count_workorders_with_status($db, $workorder_status){
 // This might not be 100% correct
 
 function count_unassigned_workorders($db){    
-    return (count_workorders_with_status($db, 10) - count_workorders_with_status($db, 2));    
+    
+    return (count_workorders_with_status($db, 10) - count_workorders_with_status($db, 2)); 
+    
 }
 
 #############################################
@@ -70,9 +77,12 @@ function count_all_workorders($db){
     if(!$rs = $db->execute($sql)){
         force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
-    } else {        
+    } else {       
+        
         return $rs->fields['WORKORDER_TOTAL_COUNT'];
+        
     }
+    
 }
 
 /** Invoices **/
@@ -91,7 +101,9 @@ function count_invoices_with_status($db, $invoice_status){
         force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
+        
        return $rs->fields['INVOICE_COUNT']; 
+       
     }
     
 }
@@ -113,8 +125,11 @@ function sum_of_discounts_on_unpaid_invoices($db){
         force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
+        
         return $rs->fields['DISCOUNT_SUM'];
+        
     }    
+    
 }
 
 ########################################
@@ -133,8 +148,11 @@ function sum_of_discounts_on_paid_invoices($db){
         force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
+        
         return $rs->fields['DISCOUNT_SUM'];
+        
     }    
+    
 }
 
 ##################################################
@@ -153,8 +171,11 @@ function sum_of_discounts_on_partially_paid_invoices($db){
         force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
         die;
     } else {
+        
         return $rs->fields['DISCOUNT_SUM'];
+        
     }
+    
 }
 
 ##################################################
@@ -171,8 +192,11 @@ function count_upaid_invoices($db){
         force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
-        return $rs->fields['INVOICE_COUNT'];        
+        
+        return $rs->fields['INVOICE_COUNT']; 
+        
     }
+    
 }
 
 ###################################################
@@ -189,8 +213,11 @@ function sum_outstanding_balances_unpaid_invoices($db){
         force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
-        return $rs->fields['BALANCE_SUM'];        
+        
+        return $rs->fields['BALANCE_SUM']; 
+        
     } 
+    
 }
 
 ##################################################
@@ -207,8 +234,11 @@ function count_partially_paid_invoices($db){
         force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
-        return $rs->fields['BALANCE_COUNT'];       
+        
+        return $rs->fields['BALANCE_COUNT']; 
+        
     }  
+    
 }
 
 ###########################################################
@@ -225,8 +255,11 @@ function sum_outstanding_balances_partially_paid_invoices($db){
         force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
+        
         return $rs->fields['BALANCE_SUM'];
+        
     }
+    
 }
 
 #############################################
@@ -243,8 +276,11 @@ function count_all_paid_invoices($db){
         force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
-        return $rs->fields['INVOICE_COUNT'];        
+        
+        return $rs->fields['INVOICE_COUNT'];  
+        
     }
+    
 }
 
 ###################################################
@@ -261,8 +297,11 @@ function sum_invoiceamounts_paid_invoices($db){
         force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
+        
         return $rs->fields['INVOICE_AMOUNT_SUM'];
+        
     }    
+    
 }
 
 /** Customers **/
@@ -284,8 +323,11 @@ function new_customers_during_period($db, $requested_period){
         force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
-        return $rs->fields['CUSTOMER_COUNT'];       
+        
+        return $rs->fields['CUSTOMER_COUNT'];
+        
     }
+    
 }
 
 #############################################
@@ -302,8 +344,11 @@ function count_all_customers($db){
         force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
+        
         return $rs->fields['CUSTOMER_COUNT'];
+        
     }    
+    
 }
 
 /** Employee **/
@@ -330,7 +375,9 @@ function get_employee_id_by_username($db, $employee_usr){
         force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
+        
         return $rs->fields['EMPLOYEE_ID'];
+        
     }
         
 }
@@ -348,7 +395,9 @@ function get_employee_record_by_username($db, $employee_usr){
         force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
+        
         return $rs->FetchRow();
+        
     }
     
 }
@@ -370,8 +419,11 @@ function count_employee_workorders_with_status($db, $employee_id, $workorder_sta
         force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
    } else {
+       
        return $rs->fields['EMPLOYEE_WORKORDER_STATUS_COUNT'];
+       
    }
+   
 }
 
 ###############################################
@@ -391,6 +443,9 @@ function count_employee_invoices_with_status($db, $employee_id, $invoice_status)
         force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
    } else {
+       
        return $rs->fields['EMPLOYEE_INVOICE_COUNT'];
+       
    }
+   
 }
