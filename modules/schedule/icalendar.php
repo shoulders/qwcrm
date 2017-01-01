@@ -1,35 +1,7 @@
 <?php
 
-
-
-//  check for better versions via the forked versions of the script at github
-
-
-
-
-
 require(INCLUDES_DIR.'modules/schedule.php');
 require(INCLUDES_DIR.'modules/workorder.php');
-
-/*this forces it to save as a file or display on screen?
-if(isset($_GET["text"])) {
-    header("Content-Type: text/plain"); 
-}
-else {
-    header("Content-Type: text/Calendar");
-    header("Content-Disposition: inline; filename=$Filename");
-}*/
-
-$single_schedule = display_single_schedule($db, $schedule_id);
-$single_open_workorder = display_single_workorder($db, $single_schedule['0']['WORKORDER_ID']);
-
-$summary        = 'Workorder '.$single_schedule['0']['WORKORDER_ID'].' for '.$single_open_workorder['0']['CUSTOMER_FIRST_NAME'].' '.$single_open_workorder['0']['CUSTOMER_LAST_NAME'].
-$datestart      = $single_schedule['0']['SCHEDULE_START'];
-$dateend        = $single_schedule['0']['SCHEDULE_END'];
-$address        = $single_open_workorder['0']['CUSTOMER_ADDRESS'];
-$uri            = QWCRM_PROTOCOL.QWCRM_DOMAIN.QWCRM_PATH;
-$description    = $single_schedule['0']['SCHEDULE_NOTES'];
-$filename       = 'schedule.ics';
 
 // https://gist.github.com/jakebellacera/635416
 
@@ -63,11 +35,58 @@ $filename       = 'schedule.ics';
 //
 //      https://www.ietf.org/rfc/rfc5545.txt
 
-// 1. Set the correct headers for this file
+/* 1. Get the data */
+
+$single_schedule    = display_single_schedule($db, $schedule_id);
+$single_workorder   = display_single_workorder($db, $single_schedule['0']['WORKORDER_ID']);
+
+$start_datetime     = iCalendar_timestamp_to_datetime($single_schedule['0']['SCHEDULE_START']);
+$end_datetime       = iCalendar_timestamp_to_datetime($single_schedule['0']['SCHEDULE_END']);
+$current_datetime   = iCalendar_timestamp_to_datetime(time());
+
+$summary            = iCalendar_escapeThisString($single_workorder['0']['CUSTOMER_DISPLAY_NAME'].' - Workorder '.$single_schedule['0']['WORKORDER_ID'].' - Schedule '.$schedule_id);
+$description        = build_description($single_workorder['0']['WORK_ORDER_SCOPE'], $single_workorder['0']['WORK_ORDER_DESCRIPTION'], $single_schedule['0']['SCHEDULE_NOTES']);
+$address            = iCalendar_escapeThisString(build_full_address($single_workorder['0']['CUSTOMER_ADDRESS'], $single_workorder['0']['CUSTOMER_CITY'], $single_workorder['0']['CUSTOMER_STATE'], $single_workorder['0']['CUSTOMER_ZIP']));
+
+$uniqid             = uniqid();
+$filename           = str_replace(' ', '_', $single_workorder['0']['CUSTOMER_DISPLAY_NAME']).'-Workorder-'.$single_schedule['0']['WORKORDER_ID'].'-Schedule-'.$schedule_id.'.ics';
+//$filename           = 'schedule.ics'; 
+
+/* 2. Set the correct headers for this file */
+
 header('Content-type: text/calendar; charset=utf-8');
 header('Content-Disposition: attachment; filename=' . $filename);
 
-// 2. Define helper functions
+/* 3. Define helper functions */
+
+//$bob = build_full_address($single_workorder['0']['CUSTOMER_ADDRESS'], $single_workorder['0']['CUSTOMER_CITY'], $single_workorder['0']['CUSTOMER_STATE'], $single_workorder['0']['CUSTOMER_POSTCODE']);  
+
+// Correctly build the location field using address data
+function build_full_address($address, $city, $state, $postcode){
+       
+    // Replace real newlines with comma and space, build address using commans
+    return preg_replace("/(\r\n|\r|\n)/", ', ', $address).', '.$city.', '.$state.', '.$postcode;
+    
+}
+
+
+// Build the main message with the job informtion
+function build_description($workorder_scope, $workorder_description, $schedule_notes) {    
+    
+    $workorder_description  = iCalendar_html_to_textarea($workorder_description);
+    $schedule_notes         = iCalendar_html_to_textarea($schedule_notes);
+    
+    // Workorder Information
+    $description =  'Scope: \n\n'.$workorder_scope.'\n\n'.'Description: \n\n'.$workorder_description.'\n\n'.'Schedule Notes: \n\n'.$schedule_notes;
+    
+    // Contact Information
+    $description .= '';
+        
+    return $description;
+    
+}
+
+
 
 // Converts a unix timestamp to an ics-friendly format
 // NOTE: "Z" means that this timestamp is a UTC timestamp. If you need
@@ -76,29 +95,51 @@ header('Content-Disposition: attachment; filename=' . $filename);
 //
 // Also note that we are using "H" instead of "g" because iCalendar's Time format
 // requires 24-hour time (see RFC 5545 section 3.3.12 for info).
-function timestamp_to_iCalendar_date($timestamp) {
+function iCalendar_timestamp_to_datetime($timestamp) {
     return date('Ymd\THis\Z', $timestamp);
 }
 
 // Escapes a string of characters
-function iCalendar_escapeString($string) {
-    return preg_replace('/([\,;])/','\\\$1', $string);
+function iCalendar_escapeThisString($content) {
+    return preg_replace('/([\,;])/', '\\\$1', $content);
 }
 
-// 3. Echo out the ics file's contents
-?>
-BEGIN:VCALENDAR
-VERSION:2.0
-PRODID:-//hacksw/handcal//NONSGML v1.0//EN
-CALSCALE:GREGORIAN
-BEGIN:VEVENT
-DTEND:<?= timestamp_to_iCalendar_date($dateend) ?>
-UID:<?= uniqid() ?>
-DTSTAMP:<?= timestamp_to_iCalendar_date(time()) ?>
-LOCATION:<?= iCalendar_escapeString($address) ?>
-DESCRIPTION:<?= iCalendar_escapeString($description) ?>
-URL;VALUE=URI:<?= iCalendar_escapeString($uri) ?>
-SUMMARY:<?= iCalendar_escapeString($summary) ?>
-DTSTART:<?= timestamp_to_iCalendar_date($datestart) ?>
-END:VEVENT
-END:VCALENDAR
+// convert textarea stuff to icalendar
+function iCalendar_html_to_textarea($content) {   
+    
+    // Remove real newlines
+    $content = preg_replace("/(\r\n|\r|\n)/", '', $content);
+
+    // Escape some characters
+    $content = iCalendar_escapeThisString($content);
+        
+    // Replace <br /> and variants with newline
+    $content = preg_replace('/<br ?\/?>/', '\n', $content);    
+    
+    // Replace <p> with nothing (works)
+    $content = preg_replace('/<p>/', '', $content);    
+    
+    // Replace </p> with 2 newlines (works)
+    $content = preg_replace('/<\/p>/', '\n', $content);    
+    
+    return strip_tags($content);
+    
+}
+
+/* 4. Echo out the ics file's contents */
+echo 
+'BEGIN:VCALENDAR'."\r\n".
+'VERSION:2.0'."\r\n".
+'PRODID:-//QuantumWarp//QWcrm//EN'."\r\n".
+'CALSCALE:GREGORIAN'."\r\n".
+'BEGIN:VEVENT'."\r\n".
+'DTEND:'.$end_datetime."\r\n".
+'UID:'.$uniqid."\r\n".
+'DTSTAMP:'.$current_datetime."\r\n".
+'LOCATION:'.$address."\r\n".
+'DESCRIPTION:'.$description."\r\n".
+'SUMMARY:'.$summary."\r\n".
+'DTSTART:'.$start_datetime."\r\n".
+        'CONTACT:Jim Dolittle\, ABC Industries\, +1-919-555-1234'."\r\n".
+'END:VEVENT'."\r\n".
+'END:VCALENDAR'."\r\n";
