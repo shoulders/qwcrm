@@ -569,7 +569,7 @@ function ics_header_settings() {
 #        This is the schedule .ics builder          #
 #####################################################
 
-function build_single_schedule_ics($db, $schedule_id, $type = 'single') {
+function build_ics_schedule_item($db, $schedule_id, $type = 'single') {
     
     // Get the schedule information
     $single_schedule    = display_single_schedule($db, $schedule_id);
@@ -613,7 +613,7 @@ function build_single_schedule_ics($db, $schedule_id, $type = 'single') {
 
 // This create a whole calender and cannot be double clicked and all events added, it adds it as another calendar instead
 
-function build_multi_schedule_ics($db, $employee_id, $schedule_start_year, $schedule_start_month, $schedule_start_day) {
+function build_ics_schedule_day($db, $employee_id, $schedule_start_year, $schedule_start_month, $schedule_start_day) {
     
     // fetch all schdule items for this setup
     $schedule_multi_ics = ics_header_settings();

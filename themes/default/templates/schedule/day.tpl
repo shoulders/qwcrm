@@ -54,7 +54,7 @@
                                         <tr>
                                             <td>
                                                 <button type="submit" name="{$translate_schedule_print}" OnClick=location.href="?page=schedule:day&schedule_start_year={$schedule_start_year}&schedule_start_month={$schedule_start_month}&schedule_start_day={$schedule_start_day}&theme=off";>{$translate_schedule_print}</button>
-                                                <button type="submit" name="ics-schedule" OnClick=location.href="?page=schedule:icalendar&schedule_start_year={$schedule_start_year}&schedule_start_month={$schedule_start_month}&schedule_start_day={$schedule_start_day}&employee_id={$employee_id}&theme=print&ics_type=multi";>ICS Schedule</button>
+                                                <button type="submit" name="ics-schedule" OnClick=location.href="?page=schedule:icalendar&schedule_start_year={$schedule_start_year}&schedule_start_month={$schedule_start_month}&schedule_start_day={$schedule_start_day}&employee_id={$employee_id}&theme=print&ics_type=day";>ICS Schedule</button>
                                             </td>
                                             <td valign="top" align="right" valign="middle">
                                                 {if $login_account_type_id <= 3 }
