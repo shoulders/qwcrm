@@ -35,7 +35,7 @@ if(isset($VAR['closewithinvoice'])) {
     exit;
 }
         
-// Display the page with the resolution from the database 
+// Fetch the page with the resolution from the database 
 $smarty->assign('workorder_id', $workorder_id);
 $smarty->assign('workorder_resolution', get_workorder_resolution($db, $workorder_id));
 

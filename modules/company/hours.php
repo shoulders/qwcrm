@@ -27,5 +27,5 @@ if(isset($VAR['submit'])) {
     $smarty->assign('closing_time', get_company_start_end_times($db, 'closing_time'));   
 }
 
-// Display the hours page
+// Fetch the hours page
 $BuildPage .= $smarty->fetch('company'.SEP.'hours.tpl');

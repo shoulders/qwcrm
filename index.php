@@ -353,7 +353,7 @@ if(check_acl($db, $login_account_type_id, $module, $page_tpl)){
         require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_menu_block.php');        
     }    
 
-    // Display the Page Content
+    // Fetch the Page Content
     require($page_display_controller);    
 
     // Display Footer Legacy Template code Block (closes content table)
@@ -361,12 +361,12 @@ if(check_acl($db, $login_account_type_id, $module, $page_tpl)){
         $BuildPage .= $smarty->fetch('core'.SEP.'blocks'.SEP.'theme_footer_legacy_supplement_block.tpl');             
     }
 
-    // Display the Footer Block
+    // Fetch the Footer Block
     if($VAR['theme'] != 'off'){        
         require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_footer_block.php');        
     }    
 
-    // Display the Debug Block
+    // Fetch the Debug Block
     if($qwcrm_debug == true){
         require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_debug_block.php');
         $BuildPage .= "\r\n</body>\r\n</html>";

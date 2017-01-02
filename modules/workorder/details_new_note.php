@@ -15,7 +15,7 @@ if(isset($VAR['submit'])){
     force_page('workorder', 'details', 'workorder_id='.$workorder_id.'information_msg='.$smarty->get_template_vars('translate_workorder_error_message_details_new_note_inserted'));
     exit;
     
-// Display the page ready for a note submission 
+// Fetch the page ready for a note submission 
 } else {
     
     $smarty->assign('workorder_id', $VAR['workorder_id']);

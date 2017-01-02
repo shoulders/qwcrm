@@ -15,7 +15,7 @@ if(isset($VAR['submit'])) {
     force_page('workorder', 'details', 'workorder_id='.$workorder_id.'information_msg='.$smarty->get_template_vars('translate_workorder_advisory_message_details_edit_description_updated'));
     exit;
 
-// Display the page with the scope and description from the database 
+// Fetch the page with the scope and description from the database 
 } else {
 
     $workorder_scope_description = get_workorder_scope_and_description($db, $workorder_id);

@@ -37,7 +37,7 @@ if(isset($VAR['delete'])) {
     exit;
 }
 
-// Display the page with the current status from the database
+// Fetch the page with the current status from the database
 $smarty->assign('active_employees',     get_active_employees($db)                       );
 $smarty->assign('assigned_employee',    $assigned_employee_id                           );
 $smarty->assign('single_workorder',     $single_work_order                              );

@@ -16,7 +16,7 @@ if(isset($VAR['submit'])){
     exit;
         
    
-// Display the page ready for a workorder submission   
+// Fetch the page ready for a workorder submission   
 } else {
 
     $smarty->assign('customer_details', display_customer_info($db, $customer_id));

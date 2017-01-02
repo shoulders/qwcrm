@@ -15,7 +15,7 @@ if(isset($VAR['submit'])) {
     force_page('workorder', 'details', 'workorder_id='.$workorder_id.'information_msg='.$smarty->get_template_vars('translate_workorder_advisory_message_details_edit_comments_updated'));
     exit;
 
-// Display the page with the comments from the database    
+// Fetch the page with the comments from the database    
 } else {
     
     $smarty->assign('workorder_comments', get_workorder_comments($db, $workorder_id));

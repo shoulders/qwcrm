@@ -24,5 +24,5 @@ $smarty->assign('current_schedule_date',    convert_year_month_day_to_timestamp(
 $smarty->assign('calendar',                 build_calendar_matrix($db, $schedule_start_year, $schedule_start_month, $schedule_start_day, $employee_id, $workorder_id)           );
 $smarty->assign('selected_employee',        $employee_id                                                                                                                        );
 
-// Display the page
+// Fetch the page
 $BuildPage .= $smarty->fetch('schedule/day.tpl');
