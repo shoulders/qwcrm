@@ -86,7 +86,7 @@ if(isset($VAR['submit'])) {
             $smarty->assign('expire',$expire);
             $smarty->assign('gift_code',$gift_code);
             $smarty->assign('amount',$amount);
-            $smarty->display('billing'.SEP.'display_gift.tpl');
+            $BuildPage .= $smarty->fetch('billing'.SEP.'display_gift.tpl');
             exit;
         }
     } 
@@ -129,12 +129,12 @@ if(isset($VAR['submit'])) {
 
         $smarty->assign('customer', $arr);
         $smarty->assign('gift', $gift);
-        $smarty->display('billing'.SEP.'print_gift.tpl');
+        $BuildPage .= $smarty->fetch('billing'.SEP.'print_gift.tpl');
         exit;
     }
     
 
 /* else display the form */    
 }    else {
-    $smarty->display('billing'.SEP.'new_gift.tpl');
+    $BuildPage .= $smarty->fetch('billing'.SEP.'new_gift.tpl');
 }

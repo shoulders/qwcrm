@@ -1,3 +1,3 @@
 <?php
 
-$smarty->display('company'.SEP.'main.tpl');
+$BuildPage .= $smarty->fetch('company'.SEP.'main.tpl');

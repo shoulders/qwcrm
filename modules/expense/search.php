@@ -21,4 +21,4 @@ $expense_search_result = display_expense_search($db, $expense_search_category, $
 
 $smarty->assign('expense_search_term', $expense_search_term);
 $smarty->assign('expense_search_result', $expense_search_result);
-$smarty->display('expense'.SEP.'search.tpl');
+$BuildPage .= $smarty->fetch('expense'.SEP.'search.tpl');

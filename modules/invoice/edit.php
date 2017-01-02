@@ -372,7 +372,7 @@ force_page('invoice', 'new&workorder_id='.$workorder_id.'&customer_id='.$custome
     $smarty->assign('labour_sub_total_sum', $labour_sub_total_sum);
     $smarty->assign('parts_sub_total_sum', $parts_sub_total_sum);
 
-    $smarty->display('invoice'.SEP.'edit.tpl');
+    $BuildPage .= $smarty->fetch('invoice'.SEP.'edit.tpl');
 
     // If discount is greate than 100% then these close WO and mark the invoice as paid
     if($VAR['discount'] >= 100){

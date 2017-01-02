@@ -12,4 +12,4 @@ if(!isset($VAR['page_no']))
     
 /* assign the smarty array */    
 $smarty->assign('invoice_array', display_open_invoice($db, $page_no));
-$smarty->display("workorder'.SEP.'main.tpl");
+$BuildPage .= $smarty->fetch("workorder'.SEP.'main.tpl");

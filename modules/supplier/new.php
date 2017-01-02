@@ -14,7 +14,7 @@ $new_record_id = $last_record_id + 1;
         
                     if($run != insert_new_supplier($db,$VAR)){
                             $smarty->assign('error_msg', 'Falied to insert Supplier');
-                            $smarty->display('core'.SEP.'error.tpl');
+                            $BuildPage .= $smarty->fetch('core'.SEP.'error.tpl');
                             echo "supplier insert error";
 
                             } else {
@@ -40,6 +40,6 @@ $new_record_id = $last_record_id + 1;
             
             $smarty->assign('new_record_id', $new_record_id);
             $smarty->assign('tax_rate', tax_rate($db)); // this function needs to be put in include.php frome xpense/refund and rename company_tax_rate if not amalgamangted
-            $smarty->display('supplier'.SEP.'new.tpl');
+            $BuildPage .= $smarty->fetch('supplier'.SEP.'new.tpl');
 
        }

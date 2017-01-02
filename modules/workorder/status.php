@@ -43,4 +43,4 @@ $smarty->assign('assigned_employee',    $assigned_employee_id                   
 $smarty->assign('single_workorder',     $single_work_order                              );
 $smarty->assign('workorder_id',         $workorder_id                                   );
 
-$smarty->display('workorder/status.tpl');
+$BuildPage .= $smarty->fetch('workorder/status.tpl');

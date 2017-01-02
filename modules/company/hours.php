@@ -28,4 +28,4 @@ if(isset($VAR['submit'])) {
 }
 
 // Display the hours page
-$smarty->display('company'.SEP.'hours.tpl');
+$BuildPage .= $smarty->fetch('company'.SEP.'hours.tpl');

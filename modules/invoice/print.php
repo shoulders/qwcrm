@@ -296,12 +296,12 @@ if($VAR['print_content'] == 'invoice') {
     
     // Print HTML Invoice
     if ($VAR['print_type'] == 'print_html') {        
-        $smarty->display('invoice/printing/print_invoice.tpl');    
+        $BuildPage .= $smarty->fetch('invoice/printing/print_invoice.tpl');    
         
     // Print PDF Invoice
     } elseif ($VAR['print_type'] == 'print_pdf') {        
         // Get Print Invoice as HTML into a variable
-        $html = $smarty->fetch('invoice/printing/print_invoice.tpl');    
+        $pdf_output = $smarty->fetch('invoice/printing/print_invoice.tpl');    
         // Call mPDF and output as PDF to page      
         require_once(INCLUDES_DIR.'mpdf.php');         
         
@@ -321,7 +321,7 @@ if($VAR['print_content'] == 'address') {
     
     // Print HTML Address
     if ($VAR['print_type'] == 'print_html') {        
-        $smarty->display('invoice/printing/print_address.tpl');     
+        $BuildPage .= $smarty->fetch('invoice/printing/print_address.tpl');     
 
     // if print options are set but no valid    
     } else {            

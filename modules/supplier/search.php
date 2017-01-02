@@ -21,4 +21,4 @@ $supplier_search_result = display_supplier_search($db, $supplier_search_category
 
 $smarty->assign('supplier_search_term', $supplier_search_term);
 $smarty->assign('supplier_search_result', $supplier_search_result);
-$smarty->display('supplier'.SEP.'search.tpl');
+$BuildPage .= $smarty->fetch('supplier'.SEP.'search.tpl');

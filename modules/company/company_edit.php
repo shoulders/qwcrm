@@ -137,5 +137,5 @@ $q = 'UPDATE '.PRFX.'SETUP SET
     $smarty->assign('setup', $setup);
     $smarty->assign('company', $arr);    
 
-    $smarty->display('company'.SEP.'company_edit.tpl');
+    $BuildPage .= $smarty->fetch('company'.SEP.'company_edit.tpl');
 }

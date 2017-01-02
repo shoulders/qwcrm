@@ -128,6 +128,6 @@ if(isset($VAR['submit'])) {
         $smarty->assign( 'AN_LOGIN_ID', $AN_LOGIN_ID );
         //$smarty->assign( 'epass', $epass );
    
-    $smarty->display('company'.SEP.'payment_options.tpl');
+    $BuildPage .= $smarty->fetch('company'.SEP.'payment_options.tpl');
 
 }

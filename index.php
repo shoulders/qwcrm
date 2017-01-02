@@ -324,6 +324,9 @@ elseif(isset($VAR['page']) && $VAR['page'] != ''){
 #    if the user has the correct permissions  #
 ###############################################
 
+// This varible holds the page as it is built
+$BuildPage = '';
+
 /* Check the requested page with 'logged in' user against the ACL for authorisation - if allowed, display */
 if(check_acl($db, $login_account_type_id, $module, $page_tpl)){
     
@@ -346,7 +349,7 @@ if(check_acl($db, $login_account_type_id, $module, $page_tpl)){
 
     // Display Header Legacy Template Code and Menu Block - Customers, Guests and Public users will not see the menu
     if($VAR['theme'] != 'off' && isset($_SESSION['login_hash']) && $login_account_type_id != 7 && $login_account_type_id != 8 && $login_account_type_id != 9){       
-        $smarty->display('core'.SEP.'blocks'.SEP.'theme_header_legacy_supplement_block.tpl');
+        $BuildPage .= $smarty->fetch('core'.SEP.'blocks'.SEP.'theme_header_legacy_supplement_block.tpl');
         require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_menu_block.php');        
     }    
 
@@ -355,7 +358,7 @@ if(check_acl($db, $login_account_type_id, $module, $page_tpl)){
 
     // Display Footer Legacy Template code Block (closes content table)
     if($VAR['theme'] != 'off' && isset($_SESSION['login_hash']) && $login_account_type_id != 7 && $login_account_type_id != 8 && $login_account_type_id != 9){
-        $smarty->display('core'.SEP.'blocks'.SEP.'theme_footer_legacy_supplement_block.tpl');             
+        $BuildPage .= $smarty->fetch('core'.SEP.'blocks'.SEP.'theme_footer_legacy_supplement_block.tpl');             
     }
 
     // Display the Footer Block
@@ -366,9 +369,9 @@ if(check_acl($db, $login_account_type_id, $module, $page_tpl)){
     // Display the Debug Block
     if($qwcrm_debug == true){
         require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_debug_block.php');
-        echo "\r\n</body>\r\n</html>";
+        $BuildPage .= "\r\n</body>\r\n</html>";
     } else {
-        echo "\r\n</body>\r\n</html>";
+        $BuildPage .= "\r\n</body>\r\n</html>";
     }
     
     page_build_end:
@@ -394,10 +397,13 @@ if ($VAR['theme'] !== 'print'){
 }
     
 ################################################
-#    Possible page display/echo here           #
+#    Display the built page                    #
 ################################################
 
-//$smarty->display($the_whole_page);
+echo $BuildPage;
+
+//is this needed?
+//unset($BuildPage);
 
 ################################################
 #        Access Logging                        #

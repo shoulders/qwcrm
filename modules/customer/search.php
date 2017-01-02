@@ -15,4 +15,4 @@ $alpha = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 
 
     $smarty->assign('alpha', $alpha);
     $smarty->assign('customer_search_result', $customer_search_result);
-    $smarty->display('customer'.SEP.'search.tpl');
+    $BuildPage .= $smarty->fetch('customer'.SEP.'search.tpl');

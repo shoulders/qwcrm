@@ -1,3 +1,3 @@
 <?php
 
-$smarty->display('help'.SEP.'license.tpl');
+$BuildPage .= $smarty->fetch('help'.SEP.'license.tpl');

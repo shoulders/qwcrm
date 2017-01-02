@@ -2,4 +2,4 @@
 
 // maintenance page
 
-$smarty->display('core/maintenance.tpl');
+$BuildPage .= $smarty->fetch('core/maintenance.tpl');

@@ -187,4 +187,4 @@ $message = Swift_Message::newInstance($email_subject)
     force_page('customer' ,"email&customer_id=".$c2."&page_title=Email Customer");
 }
 }///Display the template we will use
-    $smarty->display('customer'.SEP.'email.tpl');
+    $BuildPage .= $smarty->fetch('customer'.SEP.'email.tpl');

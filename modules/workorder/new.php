@@ -21,6 +21,6 @@ if(isset($VAR['submit'])){
 
     $smarty->assign('customer_details', display_customer_info($db, $customer_id));
 
-    $smarty->display('workorder/new.tpl');
+    $BuildPage .= $smarty->fetch('workorder/new.tpl');
     
 }

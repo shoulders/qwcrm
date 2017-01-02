@@ -99,4 +99,4 @@ if($customer_id == '' || $customer_id == '0'){
         $smarty->assign('labour_sub_total_sum', $labour_sub_total_sum);
         $smarty->assign('parts_sub_total_sum', $parts_sub_total_sum);
      
-    $smarty->display('invoice'.SEP.'view.tpl');
+    $BuildPage .= $smarty->fetch('invoice'.SEP.'view.tpl');

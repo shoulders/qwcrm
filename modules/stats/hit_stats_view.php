@@ -18,4 +18,4 @@ if(!$rs = $db->execute($q)) {
 $arr = $rs->GetArray();
 
 $smarty->assign( 'hits',  $arr    );
-$smarty->display('stats'.SEP.'hit_stats_view.tpl' );
+$BuildPage .= $smarty->fetch('stats'.SEP.'hit_stats_view.tpl' );

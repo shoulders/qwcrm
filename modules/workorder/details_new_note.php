@@ -20,5 +20,5 @@ if(isset($VAR['submit'])){
     
     $smarty->assign('workorder_id', $VAR['workorder_id']);
     
-    $smarty->display('workorder/details_new_note.tpl');
+    $BuildPage .= $smarty->fetch('workorder/details_new_note.tpl');
 }

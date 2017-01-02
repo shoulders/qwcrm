@@ -14,7 +14,7 @@ $new_record_id = $last_record_id + 1;
         
                     if($run != insert_new_refund($db,$VAR)){
                             $smarty->assign('error_msg', 'Falied to insert Refund');
-                            $smarty->display('core'.SEP.'error.tpl');
+                            $BuildPage .= $smarty->fetch('core'.SEP.'error.tpl');
                             echo "refund insert error";
 
                             } else {
@@ -40,6 +40,6 @@ $new_record_id = $last_record_id + 1;
             
             $smarty->assign('new_record_id', $new_record_id);
             $smarty->assign('tax_rate', tax_rate($db));
-            $smarty->display('refund'.SEP.'new.tpl');
+            $BuildPage .= $smarty->fetch('refund'.SEP.'new.tpl');
 
        }

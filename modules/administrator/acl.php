@@ -51,5 +51,5 @@ if(isset($VAR['submit'])) {
     
     $smarty->assign('acl', $acl_array);
     
-    $smarty->display('administrator'.SEP.'acl.tpl');
+    $BuildPage .= $smarty->fetch('administrator'.SEP.'acl.tpl');
 }

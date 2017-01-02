@@ -25,5 +25,5 @@ if(isset($VAR['submit'])) {
 
 } else {
     $smarty->assign('refund_details', $refund_details);
-    $smarty->display('refund'.SEP.'edit.tpl');
+    $BuildPage .= $smarty->fetch('refund'.SEP.'edit.tpl');
        }

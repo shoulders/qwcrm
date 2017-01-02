@@ -18,4 +18,4 @@
     
     $smarty->assign('alpha', $alpha);
     $smarty->assign('employee_search_result' ,$employee_search_result );
-    $smarty->display('employee'.SEP.'search.tpl');
+    $BuildPage .= $smarty->fetch('employee'.SEP.'search.tpl');

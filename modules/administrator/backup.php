@@ -4,4 +4,4 @@
 
 echo 'backup needs fixing before use';die;
 
-$smarty->display('system'.SEP.'backup.tpl');
+$BuildPage .= $smarty->fetch('system'.SEP.'backup.tpl');

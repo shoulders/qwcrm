@@ -50,4 +50,4 @@ if(isset($VAR['submit'])) {
 }
 
 // Display the page
-$smarty->display('schedule/new.tpl');
+$BuildPage .= $smarty->fetch('schedule/new.tpl');

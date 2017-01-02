@@ -25,4 +25,4 @@ $smarty->assign('calendar',                 build_calendar_matrix($db, $schedule
 $smarty->assign('selected_employee',        $employee_id                                                                                                                        );
 
 // Display the page
-$smarty->display('schedule/day.tpl');
+$BuildPage .= $smarty->fetch('schedule/day.tpl');

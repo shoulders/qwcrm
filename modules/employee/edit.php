@@ -57,5 +57,5 @@ if(isset($VAR['submit']) ) {
 } else {
     $smarty->assign('employee_type', employee_type($db));
     $smarty->assign('employee_details', display_employee_info($db, $VAR['employee_id']));
-    $smarty->display('employee'.SEP.'edit.tpl');
+    $BuildPage .= $smarty->fetch('employee'.SEP.'edit.tpl');
 }

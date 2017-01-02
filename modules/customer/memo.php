@@ -28,6 +28,6 @@ if(isset($VAR['submit'])) {
 
     } else {
 
-        $smarty->display('customer'.SEP.'memo.tpl');
+        $BuildPage .= $smarty->fetch('customer'.SEP.'memo.tpl');
     }
 }

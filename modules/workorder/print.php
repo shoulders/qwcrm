@@ -26,7 +26,7 @@ $smarty->assign('work_order_resolution',    display_resolution($db, $workorder_i
 // Technician Workorder Slip Print Routine
 if($VAR['print_content'] == 'technician_workorder_slip') {
     if ($VAR['print_type'] == 'print_html') {
-        $smarty->display('workorder/printing/print_technician_workorder_slip.tpl');
+        $BuildPage .= $smarty->fetch('workorder/printing/print_technician_workorder_slip.tpl');
     } elseif ($VAR['print_type'] == 'print_pdf') {        
         $pdf_output = $smarty->fetch('workorder/printing/print_technician_workorder_slip.tpl');
         // add pdf creation routing here
@@ -39,7 +39,7 @@ if($VAR['print_content'] == 'technician_workorder_slip') {
 // Customer Workorder Slip Print Routine
 if($VAR['print_content'] == 'customer_workorder_slip') {
     if ($VAR['print_type'] == 'print_html') {
-        $smarty->display('workorder/printing/print_customer_workorder_slip.tpl');
+        $BuildPage .= $smarty->fetch('workorder/printing/print_customer_workorder_slip.tpl');
     } elseif ($VAR['print_type'] == 'print_pdf') {        
         $pdf_output = $smarty->fetch('workorder/printing/print_customer_workorder_slip.tpl');
         // add pdf creation routing here
@@ -52,7 +52,7 @@ if($VAR['print_content'] == 'customer_workorder_slip') {
 // Job Sheet Print Routine
 if($VAR['print_content'] == 'job_sheet') {
     if ($VAR['print_type'] == 'print_html') {
-        $smarty->display('workorder/printing/print_job_sheet.tpl');
+        $BuildPage .= $smarty->fetch('workorder/printing/print_job_sheet.tpl');
     } elseif ($VAR['print_type'] == 'print_pdf') {        
         $pdf_output = $smarty->fetch('workorder/printing/print_job_sheet.tpl');
         // add pdf creation routing here

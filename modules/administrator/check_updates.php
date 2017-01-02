@@ -24,7 +24,7 @@ curl_close ($ch);
 if( $content == '') {
     $smarty->assign('status','0');
     $smarty->assign('message','No response from server');
-    $smarty->display('administrator'.SEP.'check_updates.tpl');
+    $BuildPage .= $smarty->fetch('administrator'.SEP.'check_updates.tpl');
     exit;
 }
 
@@ -65,4 +65,4 @@ $smarty->assign('date',$date);
 $smarty->assign('message',$message);
 $smarty->assign('cur_version',$cur_version);
 
-$smarty->display('administrator'.SEP.'check_updates.tpl');
+$BuildPage .= $smarty->fetch('administrator'.SEP.'check_updates.tpl');

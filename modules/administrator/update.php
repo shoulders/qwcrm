@@ -1,4 +1,4 @@
 <?php
 
-$smarty->display('administrator'.SEP.'update.tpl');
+$BuildPage .= $smarty->fetch('administrator'.SEP.'update.tpl');
 

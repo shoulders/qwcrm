@@ -1,3 +1,3 @@
 <?php
 
-$smarty->display('core/404.tpl');
+$BuildPage .= $smarty->fetch('core/404.tpl');

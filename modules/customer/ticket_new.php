@@ -1,4 +1,4 @@
 <?php
 
-$smarty->display('customer/ticket_new.tpl');
+$BuildPage .= $smarty->fetch('customer/ticket_new.tpl');
 

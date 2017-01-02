@@ -10,4 +10,4 @@ $smarty->assign('workorder_history',        display_workorder_history($db, $work
 $smarty->assign('workorder_schedule',       display_workorder_schedule($db, $workorder_id)      );
 $smarty->assign('workorder_resolution',     display_resolution($db, $workorder_id)              );
 
-$smarty->display('workorder'.SEP.'details.tpl');
+$BuildPage .= $smarty->fetch('workorder'.SEP.'details.tpl');

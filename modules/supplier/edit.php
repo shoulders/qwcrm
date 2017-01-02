@@ -25,5 +25,5 @@ if(isset($VAR['submit'])) {
 
 } else {
     $smarty->assign('supplier_details', $supplier_details);
-    $smarty->display('supplier'.SEP.'edit.tpl');
+    $BuildPage .= $smarty->fetch('supplier'.SEP.'edit.tpl');
        }

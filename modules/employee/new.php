@@ -10,7 +10,7 @@ if(isset($VAR['submit'])) {
     
     if (!check_employee_ex($db,$VAR)) {
             $smarty->assign('error_msg', 'The employees Display Name, '.$VAR["displayName"].',  already exists! Please use a differnt name.');
-            $smarty->display('employee'.SEP.'new.tpl');
+            $BuildPage .= $smarty->fetch('employee'.SEP.'new.tpl');
         } else {
             if (!$employee_id = insert_new_employee($db,$VAR)){
                 $smarty->assign('error_msg', 'Falied to insert Employee');
@@ -22,6 +22,6 @@ if(isset($VAR['submit'])) {
 
 } else {
 
-    $smarty->display('employee'.SEP.'new.tpl');
+    $BuildPage .= $smarty->fetch('employee'.SEP.'new.tpl');
 
 }

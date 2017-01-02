@@ -11,4 +11,4 @@ $employee_id = $VAR['employee_id'];
 $smarty->assign('open_work_orders', display_open_workorders($db, $employee_id));
 $smarty->assign('employee_details', display_employee_info($db, $employee_id));
 
-$smarty->display('employee'.SEP.'details.tpl');
+$BuildPage .= $smarty->fetch('employee'.SEP.'details.tpl');

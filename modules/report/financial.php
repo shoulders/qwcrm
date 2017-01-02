@@ -247,4 +247,4 @@ if(isset($VAR['submit'])){
                         $smarty->assign('taxable_profit_amount', $taxable_profit_amount);
         }
 
-$smarty->display('report'.SEP.'financial.tpl');
+$BuildPage .= $smarty->fetch('report'.SEP.'financial.tpl');

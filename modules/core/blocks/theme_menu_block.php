@@ -21,4 +21,4 @@ $smarty->assign('menu_workorders_unpaid_count', menu_count_invoices_with_status(
 $smarty->assign('menu_workorders_paid_count', menu_count_invoices_with_status($db, 1));
 
 // Display menu block
-$smarty->display('core'.SEP.'blocks'.SEP.'theme_menu_block.tpl');
+$BuildPage .= $smarty->fetch('core'.SEP.'blocks'.SEP.'theme_menu_block.tpl');

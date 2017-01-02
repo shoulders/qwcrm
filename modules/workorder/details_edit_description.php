@@ -24,6 +24,6 @@ if(isset($VAR['submit'])) {
     $smarty->assign('workorder_scope',          $workorder_scope_description->fields['WORK_ORDER_SCOPE']        );
     $smarty->assign('workorder_description',    $workorder_scope_description->fields['WORK_ORDER_DESCRIPTION']  );
     
-    $smarty->display('workorder/details_edit_description.tpl');
+    $BuildPage .= $smarty->fetch('workorder/details_edit_description.tpl');
 
 }

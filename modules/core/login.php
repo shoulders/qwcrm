@@ -1,3 +1,3 @@
 <?php
 
-$smarty->display('core/login.tpl');
+$BuildPage .= $smarty->fetch('core/login.tpl');

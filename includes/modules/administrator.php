@@ -1,7 +1,5 @@
 <?php
 
-require(INCLUDES_DIR.'modules/administrator.php');
-
 /**
  * Method to get the PHP info
  *

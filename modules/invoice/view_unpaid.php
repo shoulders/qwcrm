@@ -9,8 +9,8 @@ if(!isset($VAR['page_no'])){
 
 if(!$invoice = display_open_invoice($db,$page_no,$smarty)) {
     $smarty->assign('invoice', $invoice);
-    $smarty->display('invoice'.SEP.'view_unpaid.tpl');
+    $BuildPage .= $smarty->fetch('invoice'.SEP.'view_unpaid.tpl');
 } else {
     $smarty->assign('invoice', $invoice);
-    $smarty->display('invoice'.SEP.'view_unpaid.tpl');
+    $BuildPage .= $smarty->fetch('invoice'.SEP.'view_unpaid.tpl');
 }
