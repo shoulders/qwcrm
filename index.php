@@ -152,24 +152,20 @@ if (isset($_GET['action']) && $_GET['action'] == 'logout') {
     $auth->logout('index.php');
 }
 
-################################################
-#   Grab $_POST and $_GET values               #
-################################################
-
-/*
- * These are used to set varibles that are also used elsewhere (sort of global) not just for use in index.php
- */
+################################
+#   Set Global PHP Values      #
+################################
 
 // Prevents errors if there is no $_SESSION varibles set via force_page
 if(!is_array($_SESSION['force_page'])){$_SESSION['force_page'] = array();}
  
-// Merge the $_GET, $_POST for legacy code
+// Merge the $_GET, $_POST and emulated $_POST
 $VAR = array_merge($_GET, $_POST, $_SESSION['force_page']);
 
 // Delete the force_page array as varibles stored there are no longer needed
 unset($_SESSION['force_page']);
 
-// These are used globally but mainly for the menu !!
+// These are used globally
 $workorder_id       = $VAR['workorder_id'];
 $customer_id        = $VAR['customer_id'];
 $expense_id         = $VAR['expense_id'];
@@ -236,7 +232,6 @@ $smarty->assign('schedule_start_day',       $schedule_start_day         );
 // Used throughout the site
 $smarty->assign('currency_sym', get_company_info($db,   'COMPANY_CURRENCY_SYMBOL')  );
 $smarty->assign('company_logo', get_company_info($db,   'COMPANY_LOGO')             );
-//$smarty->assign('date_format',  get_company_info($db,   'COMPANY_DATE_FORMAT')      ); // se schedule could be useful - split('[/.-]', $VAR['scheduleStart']['date']);
 $smarty->assign('date_format',  DATE_FORMAT                                         );
 
 // all company info as an array
@@ -337,7 +332,7 @@ if(check_acl($db, $login_account_type_id, $module, $page_tpl)){
     // Set Page Header and Meta Data
     set_page_header_and_meta_data($module, $page_tpl, $VAR['page_title']);    
 
-    // Display Header Block
+    // Fetch Header Block
     if($VAR['theme'] != 'off'){        
         require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_header_block.php');      
     } else {
@@ -345,7 +340,7 @@ if(check_acl($db, $login_account_type_id, $module, $page_tpl)){
         require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_header_theme_off_block.php');
     }
 
-    // Display Header Legacy Template Code and Menu Block - Customers, Guests and Public users will not see the menu
+    // Fetch Header Legacy Template Code and Menu Block - Customers, Guests and Public users will not see the menu
     if($VAR['theme'] != 'off' && isset($_SESSION['login_hash']) && $login_account_type_id != 7 && $login_account_type_id != 8 && $login_account_type_id != 9){       
         $BuildPage .= $smarty->fetch('core'.SEP.'blocks'.SEP.'theme_header_legacy_supplement_block.tpl');
         require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_menu_block.php');        
@@ -354,7 +349,7 @@ if(check_acl($db, $login_account_type_id, $module, $page_tpl)){
     // Fetch the Page Content
     require($page_display_controller);    
 
-    // Display Footer Legacy Template code Block (closes content table)
+    // Fetch Footer Legacy Template code Block (closes content table)
     if($VAR['theme'] != 'off' && isset($_SESSION['login_hash']) && $login_account_type_id != 7 && $login_account_type_id != 8 && $login_account_type_id != 9){
         $BuildPage .= $smarty->fetch('core'.SEP.'blocks'.SEP.'theme_footer_legacy_supplement_block.tpl');             
     }
@@ -374,6 +369,20 @@ if(check_acl($db, $login_account_type_id, $module, $page_tpl)){
     
     page_build_end:
     
+}
+
+################################################
+#        Access Logging                        #
+################################################
+
+// This logs access details to the stats tracker table in the database
+if($qwcrm_tracker == true){
+    write_record_to_tracker_table($db, $page_display_controller, $module, $page_tpl);
+}
+
+// This logs access details to the access log
+if($qwcrm_access_log == true){
+    write_record_to_access_log($login_usr);
 }
 
 ################################################
@@ -399,20 +408,3 @@ if ($VAR['theme'] !== 'print'){
 ################################################
 
 echo $BuildPage;
-
-//is this needed?
-//unset($BuildPage);
-
-################################################
-#        Access Logging                        #
-################################################
-
-// This logs access details to the stats tracker table in the database
-if($qwcrm_tracker == true){
-    write_record_to_tracker_table($db, $page_display_controller, $module, $page_tpl);
-}
-
-// This logs access details to the access log
-if($qwcrm_access_log == true){
-    write_record_to_access_log($login_usr);
-}
