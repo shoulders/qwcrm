@@ -65,8 +65,6 @@ $startMem  = memory_get_usage();
 //error_reporting(E_ERROR | E_WARNING | E_PARSE);
 
 // ~ does not seem to work/exclude
-  
-
 
 ################################################
 #    Get Root Folder and Physical path info    #
@@ -397,7 +395,7 @@ if ($VAR['theme'] !== 'print'){
 }
     
 ################################################
-#    Display the built page                    #
+#    Display the Built Page                    #
 ################################################
 
 echo $BuildPage;

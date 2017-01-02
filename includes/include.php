@@ -147,7 +147,7 @@ function force_page($module, $page_tpl = Null, $variables = Null, $method = 'ses
 #     Perform a Browser Redirect           #
 ############################################
 
-function perform_redirect($url, $type = 'javascript') {
+function perform_redirect($url, $type = 'header') {
     
     // Redirect using Headers (cant always use this method in QWcrm)
     if($type == 'header') {
@@ -161,8 +161,7 @@ function perform_redirect($url, $type = 'javascript') {
                 <script>
                     window.location = "'.$url.'"
                 </script>
-            ');
-        
+            ');        
     }
     
 }
@@ -244,7 +243,7 @@ function prepare_error_data($type, $data = Null){
     /* Error Location */
     if($type === 'error_location'){     
                
-        // remove qwcrm base physical webroot path thing
+        // remove qwcrm base physical webroot path
         $data = str_replace(QWCRM_PHYSICAL_PATH, '', $data);
         
         // replace backslashes with forward slashes (Windows OS)

@@ -454,3 +454,178 @@ function display_workorder_schedule($db, $workorder_id){
         
     }
 }
+
+
+
+##################################################
+# preperation functions for icalendar            #
+##################################################
+
+
+
+// Correctly build the location field using address data
+function build_full_address($address, $city, $state, $postcode){
+       
+    // Replace real newlines with comma and space, build address using commans
+    return preg_replace("/(\r\n|\r|\n)/", ', ', $address).', '.$city.', '.$state.', '.$postcode;
+    
+}
+
+// Build the main message with the job informtion
+function build_description($workorder_scope, $workorder_description, $schedule_notes) {    
+    
+    $workorder_description  = iCalendar_html_to_textarea($workorder_description);
+    $schedule_notes         = iCalendar_html_to_textarea($schedule_notes);
+    
+    // Workorder Information
+    $description =  'Scope: \n\n'.$workorder_scope.'\n\n'.'Description: \n\n'.$workorder_description.'\n\n'.'Schedule Notes: \n\n'.$schedule_notes;
+    
+    // Contact Information
+    $description .= '';
+        
+    return $description;
+    
+}
+
+// Converts a unix timestamp to an ics-friendly format
+// NOTE: "Z" means that this timestamp is a UTC timestamp. If you need
+// to set a locale, remove the "\Z" and modify DTEND, DTSTAMP and DTSTART
+// with TZID properties (see RFC 5545 section 3.3.5 for info)
+//
+// Also note that we are using "H" instead of "g" because iCalendar's Time format
+// requires 24-hour time (see RFC 5545 section 3.3.12 for info).
+function iCalendar_timestamp_to_datetime($timestamp) {
+    return date('Ymd\THis\Z', $timestamp);
+}
+
+// Escapes a string of characters
+function iCalendar_escapeThisString($content) {
+    return preg_replace('/([\,;])/', '\\\$1', $content);
+}
+
+// convert textarea stuff to icalendar
+function iCalendar_html_to_textarea($content) {   
+    
+    // Remove real newlines
+    $content = preg_replace("/(\r\n|\r|\n)/", '', $content);
+
+    // Escape some characters
+    $content = iCalendar_escapeThisString($content);
+        
+    // Replace <br /> and variants with newline
+    $content = preg_replace('/<br ?\/?>/', '\n', $content);    
+    
+    // Replace <p> with nothing (works)
+    $content = preg_replace('/<p>/', '', $content);    
+    
+    // Replace </p> with 2 newlines (works)
+    $content = preg_replace('/<\/p>/', '\n', $content);    
+    
+    return strip_tags($content);
+    
+}
+
+##########################################################
+#    Get all schedule IDs for an employee for a date     #
+##########################################################
+
+function get_schedule_ids_for_employee_on_date($db, $employee_id, $schedule_start_year, $schedule_start_month, $schedule_start_day) {
+    
+    // Get the start and end time of the calendar schedule to be displayed, Office hours only - (unix timestamp)
+    $company_day_start = mktime(get_setup_info($db, 'OPENING_HOUR'), get_setup_info($db, 'OPENING_MINUTE'), 0, $schedule_start_month, $schedule_start_day, $schedule_start_year);
+    $company_day_end   = mktime(get_setup_info($db, 'CLOSING_HOUR'), get_setup_info($db, 'CLOSING_MINUTE'), 59, $schedule_start_month, $schedule_start_day, $schedule_start_year);    
+      
+    // Look in the database for a scheduled events for the current schedule day (within business hours)
+    $sql = "SELECT SCHEDULE_ID FROM ".PRFX."TABLE_SCHEDULE       
+            WHERE SCHEDULE_START >= ".$company_day_start." AND SCHEDULE_START <= ".$company_day_end."
+            AND EMPLOYEE_ID ='".$employee_id.
+            "' ORDER BY SCHEDULE_START ASC";
+    
+    if(!$rs = $db->Execute($sql)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
+    }
+    
+    return $rs->GetArray();    
+    
+}
+
+#####################################################
+#     .ics header settings                          #
+#####################################################
+
+function ics_header_settings() {
+    
+    $ics_header_settings =
+        'BEGIN:VCALENDAR'."\r\n";
+        'VERSION:2.0'."\r\n".
+        'PRODID:-//QuantumWarp//QWcrm//EN'."\r\n".
+        'CALSCALE:GREGORIAN'."\r\n"; 
+    
+    return $ics_header_settings;
+}
+
+#####################################################
+#        This is the schedule .ics builder          #
+#####################################################
+
+function build_single_schedule_ics($db, $schedule_id, $type = 'single') {
+    
+    // Get the schedule information
+    $single_schedule    = display_single_schedule($db, $schedule_id);
+    $single_workorder   = display_single_workorder($db, $single_schedule['0']['WORKORDER_ID']);
+
+    $start_datetime     = iCalendar_timestamp_to_datetime($single_schedule['0']['SCHEDULE_START']);
+    $end_datetime       = iCalendar_timestamp_to_datetime($single_schedule['0']['SCHEDULE_END']);
+    $current_datetime   = iCalendar_timestamp_to_datetime(time());
+
+    $summary            = iCalendar_escapeThisString($single_workorder['0']['CUSTOMER_DISPLAY_NAME'].' - Workorder '.$single_schedule['0']['WORKORDER_ID'].' - Schedule '.$schedule_id);
+    $description        = build_description($single_workorder['0']['WORK_ORDER_SCOPE'], $single_workorder['0']['WORK_ORDER_DESCRIPTION'], $single_schedule['0']['SCHEDULE_NOTES']);
+    $address            = iCalendar_escapeThisString(build_full_address($single_workorder['0']['CUSTOMER_ADDRESS'], $single_workorder['0']['CUSTOMER_CITY'], $single_workorder['0']['CUSTOMER_STATE'], $single_workorder['0']['CUSTOMER_ZIP']));
+
+    $uniqid             = uniqid();
+
+    $single_schedule_ics = '';
+    
+    if($type == 'single') {$single_schedule_ics .= ics_header_settings();}
+    
+    $single_schedule_ics = 
+        'BEGIN:VEVENT'."\r\n".
+        'DTEND:'.$end_datetime."\r\n".
+        'UID:'.$uniqid."\r\n".
+        'DTSTAMP:'.$current_datetime."\r\n".
+        'LOCATION:'.$address."\r\n".
+        'DESCRIPTION:'.$description."\r\n".
+        'SUMMARY:'.$summary."\r\n".
+        'DTSTART:'.$start_datetime."\r\n".
+        'CONTACT:Jim Dolittle\, ABC Industries\, +1-919-555-1234'."\r\n".
+        'END:VEVENT'."\r\n";
+
+    if($type == 'single') {$single_schedule_ics .= 'END:VCALENDAR'."\r\n";}
+
+    return $single_schedule_ics;
+    
+}
+
+#########################################################################
+#    Build a multi .ics - the employees schedule items for that day     #
+#########################################################################
+
+// This create a whole calender and cannot be double clicked and all events added, it adds it as another calendar instead
+
+function build_multi_schedule_ics($db, $employee_id, $schedule_start_year, $schedule_start_month, $schedule_start_day) {
+    
+    // fetch all schdule items for this setup
+    $schedule_multi_ics = ics_header_settings();
+    
+    $schedule_multi_id = get_schedule_ids_for_employee_on_date($db, $employee_id, $schedule_start_year, $schedule_start_month, $schedule_start_day);    
+    
+    foreach($schedule_multi_id as $schedule_id) {
+        $schedule_multi_ics .= build_single_schedule_ics($db, $schedule_id['SCHEDULE_ID'], $type = 'multi');
+    }
+   
+    $schedule_multi_ics .= 'END:VCALENDAR'."\r\n";
+    
+    return $schedule_multi_ics;
+    
+}

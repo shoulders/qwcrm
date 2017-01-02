@@ -4,11 +4,6 @@
 
 require_once ('include.php');
 
-
-
-
-
-
 /* Generic error control */
 if(empty($invoice_id)) {
     /* If no work order ID then we dont belong here */
@@ -50,7 +45,7 @@ if($customer_id == "" || $customer_id == "0"){
 
 // Work Order Section
 
-        /* get specific workorder details from database */
+     /* get specific workorder details from database */
      $q = "SELECT * FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_ID=".$db->qstr($invoice['WORKORDER_ID']);
 
     if(!$rs = $db->Execute($q)) {

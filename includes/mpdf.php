@@ -11,7 +11,7 @@ require_once(LIBRARIES_DIR.'mpdf/vendor/autoload.php');
 $mpdf = new mPDF('c');
 
 //$mpdf->SetTitle('My Title');  //not needed when using full page import, should take it from the page - does not like parsing the header? not HTML5 compliant
-$mpdf->WriteHTML($html);
+$mpdf->WriteHTML($pdf_output);
 $mpdf->Output(); // outputs to the screen
 // $mpdf->Output('invoice.pdf'); outputs to a file but does not prompt
 exit;
