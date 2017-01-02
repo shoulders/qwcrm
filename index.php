@@ -376,6 +376,24 @@ if(check_acl($db, $login_account_type_id, $module, $page_tpl)){
 }
 
 ################################################
+#         Content Plugins                      #
+################################################
+
+// You can add plugins here that change the page content
+// $BuildPage
+
+################################################
+#         Headers                              #
+################################################
+
+// Send Headers if 'print' mode is not set
+if ($VAR['theme'] !== 'print'){        
+
+    // add headers here
+    
+}
+    
+################################################
 #    Possible page display/echo here           #
 ################################################
 
