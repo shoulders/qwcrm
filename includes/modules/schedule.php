@@ -248,7 +248,7 @@ function build_calendar_matrix($db, $schedule_start_year, $schedule_start_month,
          * There are 2 segment/row types: Whole Hour, Hour With minutes
          * Both have different Styles
          * Left Cells = Time
-         * Right Cells = Blank||Clickable Links||Schedule Item
+         * Right Cells = Blank || Clickable Links || Schedule Item
          * each ROW is assigned a date and are seperated by 15 minutes
          */
         
@@ -457,71 +457,66 @@ function display_workorder_schedule($db, $workorder_id){
 
 
 
-##################################################
-# preperation functions for icalendar            #
-##################################################
 
 
+#####################################################
+#     .ics header settings                          #
+#####################################################
 
-// Correctly build the location field using address data
-function build_full_address($address, $city, $state, $postcode){
-       
-    // Replace real newlines with comma and space, build address using commans
-    return preg_replace("/(\r\n|\r|\n)/", ', ', $address).', '.$city.', '.$state.', '.$postcode;
+function ics_header_settings() {
     
+    $ics_header_settings =
+        'BEGIN:VCALENDAR'."\r\n".
+        'VERSION:2.0'."\r\n".
+        'PRODID:-//QuantumWarp//QWcrm//EN'."\r\n".
+        'CALSCALE:GREGORIAN'."\r\n".
+        'METHOD:PUBLISH'."\r\n";        // does this force events to be added rather than create a new calendar
+    
+    return $ics_header_settings;
 }
 
-// Build the main message with the job informtion
-function build_description($workorder_scope, $workorder_description, $schedule_notes) {    
-    
-    $workorder_description  = iCalendar_html_to_textarea($workorder_description);
-    $schedule_notes         = iCalendar_html_to_textarea($schedule_notes);
-    
-    // Workorder Information
-    $description =  'Scope: \n\n'.$workorder_scope.'\n\n'.'Description: \n\n'.$workorder_description.'\n\n'.'Schedule Notes: \n\n'.$schedule_notes;
-    
-    // Contact Information
-    $description .= '';
-        
-    return $description;
-    
-}
+#####################################################
+#        This is the schedule .ics builder          #
+#####################################################
 
-// Converts a unix timestamp to an ics-friendly format
-// NOTE: "Z" means that this timestamp is a UTC timestamp. If you need
-// to set a locale, remove the "\Z" and modify DTEND, DTSTAMP and DTSTART
-// with TZID properties (see RFC 5545 section 3.3.5 for info)
-//
-// Also note that we are using "H" instead of "g" because iCalendar's Time format
-// requires 24-hour time (see RFC 5545 section 3.3.12 for info).
-function iCalendar_timestamp_to_datetime($timestamp) {
-    return date('Ymd\THis\Z', $timestamp);
-}
+function build_single_schedule_ics($db, $schedule_id, $ics_type = 'single') {
+    
+    // Get the schedule information
+    $single_schedule    = display_single_schedule($db, $schedule_id);
+    $single_workorder   = display_single_workorder($db, $single_schedule['0']['WORKORDER_ID']);
 
-// Escapes a string of characters
-function iCalendar_escapeThisString($content) {
-    return preg_replace('/([\,;])/', '\\\$1', $content);
-}
+    $start_datetime     = timestamp_to_ics_datetime($single_schedule['0']['SCHEDULE_START']);
+    $end_datetime       = timestamp_to_ics_datetime($single_schedule['0']['SCHEDULE_END']);
+    $current_datetime   = timestamp_to_ics_datetime(time());
 
-// convert textarea stuff to icalendar
-function iCalendar_html_to_textarea($content) {   
+    $summary            = prepare_ics_strings('SUMMARY', $single_workorder['0']['CUSTOMER_DISPLAY_NAME'].' - Workorder '.$single_schedule['0']['WORKORDER_ID'].' - Schedule '.$schedule_id);
+    $description        = prepare_ics_strings('DESCRIPTION', build_ics_description($single_workorder['0']['WORK_ORDER_SCOPE'], $single_workorder['0']['WORK_ORDER_DESCRIPTION'], $single_schedule['0']['SCHEDULE_NOTES'], 'textarea'));
+    $x_alt_desc         = prepare_ics_strings('X-ALT-DESC;FMTTYPE=text/html', build_ics_description($single_workorder['0']['WORK_ORDER_SCOPE'], $single_workorder['0']['WORK_ORDER_DESCRIPTION'], $single_schedule['0']['SCHEDULE_NOTES'], 'html'));
     
-    // Remove real newlines
-    $content = preg_replace("/(\r\n|\r|\n)/", '', $content);
+    $location           = prepare_ics_strings('LOCATION', build_ics_location($single_workorder['0']['CUSTOMER_ADDRESS'], $single_workorder['0']['CUSTOMER_CITY'], $single_workorder['0']['CUSTOMER_STATE'], $single_workorder['0']['CUSTOMER_ZIP']));
+    $uniqid             = 'QWcrm-'.$single_schedule['0']['SCHEDULE_ID'].'-'.$single_schedule['0']['SCHEDULE_START'];    
+  
+    // Build the Schedule .ics content
+    $single_schedule_ics = '';    
+   
+    if($ics_type == 'single') {$single_schedule_ics .= ics_header_settings();}
+    
+    $single_schedule_ics .= 
+        'BEGIN:VEVENT'."\r\n".
+        'DTSTART:'.$start_datetime."\r\n".    
+        'DTEND:'.$end_datetime."\r\n".        
+        'DTSTAMP:'.$current_datetime."\r\n".
+        'LOCATION:'.$location."\r\n".
+        'SUMMARY:'.$summary."\r\n".
+        'DESCRIPTION:'.$description."\r\n".
+        'X-ALT-DESC;FMTTYPE=text/html:'.$x_alt_desc."\r\n".  
+        'CONTACT:Jim Dolittle\, ABC Industries\, +1-919-555-1234'."\r\n".
+        'UID:'.$uniqid."\r\n".
+        'END:VEVENT'."\r\n";
 
-    // Escape some characters
-    $content = iCalendar_escapeThisString($content);
-        
-    // Replace <br /> and variants with newline
-    $content = preg_replace('/<br ?\/?>/', '\n', $content);    
-    
-    // Replace <p> with nothing (works)
-    $content = preg_replace('/<p>/', '', $content);    
-    
-    // Replace </p> with 2 newlines (works)
-    $content = preg_replace('/<\/p>/', '\n', $content);    
-    
-    return strip_tags($content);
+    if($ics_type == 'single') {$single_schedule_ics .= 'END:VCALENDAR'."\r\n";}
+
+    return $single_schedule_ics;
     
 }
 
@@ -550,68 +545,9 @@ function get_schedule_ids_for_employee_on_date($db, $employee_id, $schedule_star
     
 }
 
-#####################################################
-#     .ics header settings                          #
-#####################################################
-
-function ics_header_settings() {
-    
-    $ics_header_settings =
-        'BEGIN:VCALENDAR'."\r\n";
-        'VERSION:2.0'."\r\n".
-        'PRODID:-//QuantumWarp//QWcrm//EN'."\r\n".
-        'CALSCALE:GREGORIAN'."\r\n"; 
-    
-    return $ics_header_settings;
-}
-
-#####################################################
-#        This is the schedule .ics builder          #
-#####################################################
-
-function build_ics_schedule_item($db, $schedule_id, $type = 'single') {
-    
-    // Get the schedule information
-    $single_schedule    = display_single_schedule($db, $schedule_id);
-    $single_workorder   = display_single_workorder($db, $single_schedule['0']['WORKORDER_ID']);
-
-    $start_datetime     = iCalendar_timestamp_to_datetime($single_schedule['0']['SCHEDULE_START']);
-    $end_datetime       = iCalendar_timestamp_to_datetime($single_schedule['0']['SCHEDULE_END']);
-    $current_datetime   = iCalendar_timestamp_to_datetime(time());
-
-    $summary            = iCalendar_escapeThisString($single_workorder['0']['CUSTOMER_DISPLAY_NAME'].' - Workorder '.$single_schedule['0']['WORKORDER_ID'].' - Schedule '.$schedule_id);
-    $description        = build_description($single_workorder['0']['WORK_ORDER_SCOPE'], $single_workorder['0']['WORK_ORDER_DESCRIPTION'], $single_schedule['0']['SCHEDULE_NOTES']);
-    $address            = iCalendar_escapeThisString(build_full_address($single_workorder['0']['CUSTOMER_ADDRESS'], $single_workorder['0']['CUSTOMER_CITY'], $single_workorder['0']['CUSTOMER_STATE'], $single_workorder['0']['CUSTOMER_ZIP']));
-
-    $uniqid             = uniqid();
-
-    $single_schedule_ics = '';
-    
-    if($type == 'single') {$single_schedule_ics .= ics_header_settings();}
-    
-    $single_schedule_ics = 
-        'BEGIN:VEVENT'."\r\n".
-        'DTEND:'.$end_datetime."\r\n".
-        'UID:'.$uniqid."\r\n".
-        'DTSTAMP:'.$current_datetime."\r\n".
-        'LOCATION:'.$address."\r\n".
-        'DESCRIPTION:'.$description."\r\n".
-        'SUMMARY:'.$summary."\r\n".
-        'DTSTART:'.$start_datetime."\r\n".
-        'CONTACT:Jim Dolittle\, ABC Industries\, +1-919-555-1234'."\r\n".
-        'END:VEVENT'."\r\n";
-
-    if($type == 'single') {$single_schedule_ics .= 'END:VCALENDAR'."\r\n";}
-
-    return $single_schedule_ics;
-    
-}
-
 #########################################################################
 #    Build a multi .ics - the employees schedule items for that day     #
 #########################################################################
-
-// This create a whole calender and cannot be double clicked and all events added, it adds it as another calendar instead
 
 function build_ics_schedule_day($db, $employee_id, $schedule_start_year, $schedule_start_month, $schedule_start_day) {
     
@@ -627,5 +563,184 @@ function build_ics_schedule_day($db, $employee_id, $schedule_start_year, $schedu
     $schedule_multi_ics .= 'END:VCALENDAR'."\r\n";
     
     return $schedule_multi_ics;
+    
+}
+
+##################################################
+#    Build address for ics                      #
+##################################################
+
+function build_ics_location($address, $city, $state, $postcode){
+       
+    // Replace real newlines with comma and space, build address using commans
+    return preg_replace("/(\r\n|\r|\n)/", ', ', $address).', '.$city.', '.$state.', '.$postcode;
+    
+}
+
+##################################################
+#    Build description for ics                   #
+##################################################
+
+function build_ics_description($workorder_scope, $workorder_description, $schedule_notes, $type = 'textarea') {    
+    
+    if($type == 'textarea') {     
+    
+        $workorder_description  = html_to_textarea($workorder_description);
+        $schedule_notes         = html_to_textarea($schedule_notes);
+
+        // Workorder and Schedule Information
+        $description =  'Scope: \n\n'.
+                        $workorder_scope.'\n\n'.
+                        'Description: \n\n'.
+                        $workorder_description.'\n\n'.
+                        'Schedule Notes: \n\n'.
+                        $schedule_notes;
+
+        // Contact Information
+        $description .= '';
+    
+    }
+    
+    if($type == 'html') {
+        
+        // Open HTML Wrapper
+        $description .= '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">\n'.
+                        '<HTML>\n'.
+                        '<HEAD>\n'.
+                        '<META NAME="Generator" CONTENT="QuantumWarp - QWcrm">\n'.
+                        '<TITLE></TITLE>\n'.
+                        '</HEAD>\n'.
+                        '<BODY>\n';
+    
+        // Workorder and Schedule Information
+        $description .= '<p><strong>Scope: </strong></p>'.
+                        '<p>'.$workorder_scope.'</p>'.
+                        '<p><strong>Description: </strong></p>'.
+                        $workorder_description.
+                        '<p><strong>Schedule Notes: </strong></p>'.
+                        $schedule_notes;
+
+        // Contact Information
+        $description .= '';
+        
+        // Close HTML Wrapper
+        $description .= '</BODY>\n'.
+                        '</HTML>';
+    
+    }
+    
+    return $description;
+    
+}
+
+##################################################
+# Convert Timestamp into .ics compatilble format #
+##################################################
+
+// Converts a unix timestamp to an ics-friendly format
+// NOTE: "Z" means that this timestamp is a UTC timestamp. If you need
+// to set a locale, remove the "\Z" and modify DTEND, DTSTAMP and DTSTART
+// with TZID properties (see RFC 5545 section 3.3.5 for info)
+//
+// Also note that we are using "H" instead of "g" because iCalendar's Time format
+// requires 24-hour time (see RFC 5545 section 3.3.12 for info).
+function timestamp_to_ics_datetime($timestamp) {
+    return date('Ymd\THis\Z', $timestamp);
+}
+
+##################################################
+#      Convert HTML into Textarea                #
+##################################################
+
+function html_to_textarea($content) {   
+    
+    // Remove real newlines
+    $content = preg_replace("/(\r\n|\r|\n)/", '', $content);
+        
+    // Replace <br /> and variants with newline
+    $content = preg_replace('/<br ?\/?>/', '\n', $content);    
+    
+    // Remove <p>
+    $content = preg_replace('/<p>/', '', $content);    
+    
+    // Replace </p> with newline
+    $content = preg_replace('/<\/p>/', '\n', $content);    
+    
+    return strip_tags($content);
+    
+}
+
+##################################################
+#      Prepare the text strings for .ics         #
+##################################################
+
+// prepare the text strings
+function prepare_ics_strings($ics_keyname, $ics_string) {
+    
+    // Remove whitespace at the beginning and end of the string
+    $ics_string = trim($ics_string);
+    
+    // Replace real newlines with escaped character (i dont think this is needed)
+    $ics_string = preg_replace("/(\r\n|\r|\n)/", '', $ics_string);
+    
+    // Replace combined escaped newlines to escaped unix style newlines
+    $ics_string = preg_replace('/(\r\n)/', '\n', $ics_string);
+    
+    // Escape some characters .ics does not like
+    $ics_string = preg_replace('/([\,;])/', '\\\$1', $ics_string);
+    
+    // Break into octets with 75 character line limit (as per spec)
+    $ics_string = ics_string_octet_split($ics_keyname, $ics_string);
+    
+    return $ics_string;
+    
+}
+
+##################################################
+#     split ics content into 75-octet line       #
+##################################################
+
+// Original script from https://gist.github.com/hugowetterberg/81747
+
+function ics_string_octet_split($ics_keyname, $ics_string) {    
+
+    // Get the ics_key length (after correction)
+    $ics_keyname        .= ':';                 
+    $ics_keyname_len    = strlen($ics_keyname);
+    
+    // Get the Key by Regex if full string supplied
+    //preg_match('/^.*\:/U', $ics_string, $ics_keyname);
+    
+    $lines              = array();
+    
+    // Loop out the chopped lines to the array
+    while (strlen($ics_string) > (75 - $ics_keyname_len)) {
+        
+        $space  = (75 - $ics_keyname_len);
+        $mbcc   = $space;
+        
+        while ($mbcc) {
+            $line = mb_substr($ics_string, 0, $mbcc);
+            $oct = strlen($line);
+            
+            if ($oct > $space) {
+                $mbcc -= $oct - $space;
+            } else {
+                $lines[] = $line;
+                $ics_keyname_len = 1; // Still take the tab into account
+                $ics_string = mb_substr($ics_string, $mbcc);
+                break;
+            }
+            
+        }
+      
+    }
+    
+    if (!empty($ics_string)) {
+        $lines[] = $ics_string;
+    }
+    
+    // Join the lines and return the result
+    return join($lines, "\r\n\t");
     
 }

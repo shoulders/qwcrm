@@ -7,7 +7,7 @@ require(INCLUDES_DIR.'modules/workorder.php');
 
 // set the filename
 if($VAR['ics_type'] == 'day') {
-    $filename = 'EmployeeID-'.$employee_id.'-Date-'.$schedule_start_year.$schedule_start_month.$schedule_start_day;
+    $filename = 'EmployeeID-'.$employee_id.'-Date-'.$schedule_start_year.$schedule_start_month.$schedule_start_day.'.ics';
 } else {
     //$filename   = str_replace(' ', '_', $single_workorder['0']['CUSTOMER_DISPLAY_NAME']).'-Workorder-'.$single_schedule['0']['WORKORDER_ID'].'-Schedule-'.$schedule_id.'.ics';
     $filename   = 'schedule.ics';    
@@ -26,5 +26,5 @@ if($VAR['ics_type'] == 'day') {
     
 // Output just the single schedule item as an .ics
 } else {
-    echo build_ics_schedule_item($db, $schedule_id);
+    echo build_single_schedule_ics($db, $schedule_id);
 }
