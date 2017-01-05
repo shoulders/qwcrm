@@ -484,19 +484,21 @@ function build_single_schedule_ics($db, $schedule_id, $ics_type = 'single') {
     // Get the schedule information
     $single_schedule    = display_single_schedule($db, $schedule_id);
     $single_workorder   = display_single_workorder($db, $single_schedule['0']['WORKORDER_ID']);
-
+    //$single_customer   = display_single_customer($db, $single_workorder['0']['CUSTOMER_ID']);
+    
     $start_datetime     = timestamp_to_ics_datetime($single_schedule['0']['SCHEDULE_START']);
     $end_datetime       = timestamp_to_ics_datetime($single_schedule['0']['SCHEDULE_END']);
     $current_datetime   = timestamp_to_ics_datetime(time());
 
     $summary            = prepare_ics_strings('SUMMARY', $single_workorder['0']['CUSTOMER_DISPLAY_NAME'].' - Workorder '.$single_schedule['0']['WORKORDER_ID'].' - Schedule '.$schedule_id);
-    $description        = prepare_ics_strings('DESCRIPTION', build_ics_description($single_workorder['0']['WORK_ORDER_SCOPE'], $single_workorder['0']['WORK_ORDER_DESCRIPTION'], $single_schedule['0']['SCHEDULE_NOTES'], 'textarea'));
-    $x_alt_desc         = prepare_ics_strings('X-ALT-DESC;FMTTYPE=text/html', build_ics_description($single_workorder['0']['WORK_ORDER_SCOPE'], $single_workorder['0']['WORK_ORDER_DESCRIPTION'], $single_schedule['0']['SCHEDULE_NOTES'], 'html'));
+    $description        = prepare_ics_strings('DESCRIPTION', build_ics_description('textarea', $single_schedule, $single_workorder));
+    $x_alt_desc         = prepare_ics_strings('X-ALT-DESC;FMTTYPE=text/html', build_ics_description('html', $single_schedule, $single_workorder));
     
-    $location           = prepare_ics_strings('LOCATION', build_ics_location($single_workorder['0']['CUSTOMER_ADDRESS'], $single_workorder['0']['CUSTOMER_CITY'], $single_workorder['0']['CUSTOMER_STATE'], $single_workorder['0']['CUSTOMER_ZIP']));
+    $location           = prepare_ics_strings('LOCATION', build_single_line_address($single_workorder['0']['CUSTOMER_ADDRESS'], $single_workorder['0']['CUSTOMER_CITY'], $single_workorder['0']['CUSTOMER_STATE'], $single_workorder['0']['CUSTOMER_ZIP']));
     $uniqid             = 'QWcrm-'.$single_schedule['0']['SCHEDULE_ID'].'-'.$single_schedule['0']['SCHEDULE_START'];    
   
     // Build the Schedule .ics content
+    
     $single_schedule_ics = '';    
    
     if($ics_type == 'single') {$single_schedule_ics .= ics_header_settings();}
@@ -509,13 +511,13 @@ function build_single_schedule_ics($db, $schedule_id, $ics_type = 'single') {
         'LOCATION:'.$location."\r\n".
         'SUMMARY:'.$summary."\r\n".
         'DESCRIPTION:'.$description."\r\n".
-        'X-ALT-DESC;FMTTYPE=text/html:'.$x_alt_desc."\r\n".  
-        'CONTACT:Jim Dolittle\, ABC Industries\, +1-919-555-1234'."\r\n".
+        'X-ALT-DESC;FMTTYPE=text/html:'.$x_alt_desc."\r\n".        
         'UID:'.$uniqid."\r\n".
         'END:VEVENT'."\r\n";
 
     if($ics_type == 'single') {$single_schedule_ics .= 'END:VCALENDAR'."\r\n";}
 
+    // Return the .ics content
     return $single_schedule_ics;
     
 }
@@ -566,14 +568,35 @@ function build_ics_schedule_day($db, $employee_id, $schedule_start_year, $schedu
     
 }
 
-##################################################
-#    Build address for ics                      #
-##################################################
+#########################################################
+# Build single line address (suitable for .ics location #
+#########################################################
 
-function build_ics_location($address, $city, $state, $postcode){
+function build_single_line_address($address, $city, $state, $postcode){
        
     // Replace real newlines with comma and space, build address using commans
     return preg_replace("/(\r\n|\r|\n)/", ', ', $address).', '.$city.', '.$state.', '.$postcode;
+    
+}
+
+#####################################
+#     build adddress html style     #
+#####################################
+
+// build adddress html style
+function build_html_adddress($address, $city, $state, $postcode){
+       
+    // Open address block
+    $html_address = '<address>';
+    
+    // Replace real newlines with comma and space, build address using commas
+    $html_address .= preg_replace("/(\r\n|\r|\n)/", '<br>', $address).'<br>'.$city.'<br>'.$state.'<br>'.$postcode;
+    
+    // Close address block
+    $html_address .= '</address>';
+    
+    // Return the built address block
+    return $html_address;
     
 }
 
@@ -581,23 +604,27 @@ function build_ics_location($address, $city, $state, $postcode){
 #    Build description for ics                   #
 ##################################################
 
-function build_ics_description($workorder_scope, $workorder_description, $schedule_notes, $type = 'textarea') {    
+function build_ics_description($type, $single_schedule, $single_workorder) {     
     
-    if($type == 'textarea') {     
-    
-        $workorder_description  = html_to_textarea($workorder_description);
-        $schedule_notes         = html_to_textarea($schedule_notes);
+    if($type == 'textarea') {      
 
         // Workorder and Schedule Information
         $description =  'Scope: \n\n'.
-                        $workorder_scope.'\n\n'.
+                        $single_workorder['0']['WORK_ORDER_SCOPE'].'\n\n'.
                         'Description: \n\n'.
-                        $workorder_description.'\n\n'.
+                        html_to_textarea($single_workorder['0']['WORK_ORDER_DESCRIPTION']).'\n\n'.
                         'Schedule Notes: \n\n'.
-                        $schedule_notes;
+                        html_to_textarea($single_schedule['0']['SCHEDULE_NOTES']);
 
         // Contact Information
-        $description .= '';
+        $description .= 'Contact Information'.'\n\n'.
+                        'Company: ' .$single_workorder['0']['CUSTOMER_DISPLAY_NAME'].'\n\n'.
+                        'Contact: ' .$single_workorder['0']['CUSTOMER_FIRST_NAME'].' '.$single_workorder['0']['CUSTOMER_LAST_NAME'].'\n\n'.
+                        'Phone: '   .$single_workorder['0']['CUSTOMER_PHONE'].'\n\n'.
+                        'Mobile: '  .$single_workorder['0']['CUSTOMER_MOBILE_PHONE'].'\n\n'.
+                        'Email: '   .$single_workorder['0']['CUSTOMER_EMAIL'].'\n\n'.
+                        'Website: ' .$single_workorder['0']['CUSTOMER_WWW'].'\n\n'.
+                        'Address: ' .build_single_line_address($single_workorder['0']['CUSTOMER_ADDRESS'], $single_workorder['0']['CUSTOMER_CITY'], $single_workorder['0']['CUSTOMER_STATE'], $single_workorder['0']['CUSTOMER_ZIP']).'\n\n';                        
     
     }
     
@@ -614,18 +641,28 @@ function build_ics_description($workorder_scope, $workorder_description, $schedu
     
         // Workorder and Schedule Information
         $description .= '<p><strong>Scope: </strong></p>'.
-                        '<p>'.$workorder_scope.'</p>'.
+                        '<p>'.$single_workorder['0']['WORK_ORDER_SCOPE'].'</p>'.
                         '<p><strong>Description: </strong></p>'.
-                        $workorder_description.
+                        '<div>'.$single_workorder['0']['WORK_ORDER_DESCRIPTION'].'</div>'.
                         '<p><strong>Schedule Notes: </strong></p>'.
-                        $schedule_notes;
+                        '<div>'.$single_schedule['0']['SCHEDULE_NOTES'].'</div>';        
 
         // Contact Information
-        $description .= '';
+        $description .= '<p><strong>Contact Information:</strong></p>'.
+                        '<p>'.
+                        '<strong>Company:</strong> ' .$single_workorder['0']['CUSTOMER_DISPLAY_NAME'].'<br>'.
+                        '<strong>Contact:</strong> ' .$single_workorder['0']['CUSTOMER_FIRST_NAME'].' '.$single_workorder['0']['CUSTOMER_LAST_NAME'].'<br>'.              
+                        '<strong>Phone:</strong> '   .$single_workorder['0']['CUSTOMER_PHONE'].'<br>'.
+                        '<strong>Mobile:</strong> '  .$single_workorder['0']['CUSTOMER_MOBILE_PHONE'].'<br>'.
+                        '<strong>Email:</strong> '   .$single_workorder['0']['CUSTOMER_EMAIL'].'<br>'.
+                        '<strong>Website:</strong> ' .$single_workorder['0']['CUSTOMER_WWW'].
+                        '</p>'.                
+                        '<p><strong>Address: </strong></p>'.
+                        build_html_adddress($single_workorder['0']['CUSTOMER_ADDRESS'], $single_workorder['0']['CUSTOMER_CITY'], $single_workorder['0']['CUSTOMER_STATE'], $single_workorder['0']['CUSTOMER_ZIP']);
         
         // Close HTML Wrapper
         $description .= '</BODY>\n'.
-                        '</HTML>';
+                        '</HTML>';        
     
     }
     
@@ -634,7 +671,7 @@ function build_ics_description($workorder_scope, $workorder_description, $schedu
 }
 
 ##################################################
-# Convert Timestamp into .ics compatilble format #
+# Convert Timestamp into .ics compatible  format #
 ##################################################
 
 // Converts a unix timestamp to an ics-friendly format
@@ -655,9 +692,9 @@ function timestamp_to_ics_datetime($timestamp) {
 function html_to_textarea($content) {   
     
     // Remove real newlines
-    $content = preg_replace("/(\r\n|\r|\n)/", '', $content);
+    $content = preg_replace("/(\r|\n)/", '', $content);
         
-    // Replace <br /> and variants with newline
+    // Replace <br> and variants with newline
     $content = preg_replace('/<br ?\/?>/', '\n', $content);    
     
     // Remove <p>
@@ -681,7 +718,7 @@ function prepare_ics_strings($ics_keyname, $ics_string) {
     $ics_string = trim($ics_string);
     
     // Replace real newlines with escaped character (i dont think this is needed)
-    $ics_string = preg_replace("/(\r\n|\r|\n)/", '', $ics_string);
+    $ics_string = preg_replace("/(\r|\n)/", '', $ics_string);
     
     // Replace combined escaped newlines to escaped unix style newlines
     $ics_string = preg_replace('/(\r\n)/', '\n', $ics_string);
@@ -711,7 +748,7 @@ function ics_string_octet_split($ics_keyname, $ics_string) {
     // Get the Key by Regex if full string supplied
     //preg_match('/^.*\:/U', $ics_string, $ics_keyname);
     
-    $lines              = array();
+    $lines = array();
     
     // Loop out the chopped lines to the array
     while (strlen($ics_string) > (75 - $ics_keyname_len)) {
