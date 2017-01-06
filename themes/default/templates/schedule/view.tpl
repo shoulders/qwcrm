@@ -21,7 +21,8 @@
                                                         <b>{$translate_schedule_end}: </b>{$single_schedule[a].SCHEDULE_END|date_format:"%H:%M"}
                                                     </p>
                                                     <p><b>{$translate_schedule_tech}: </b>{$single_schedule[a].EMPLOYEE_DISPLAY_NAME}</p>
-                                                    <b>Notes:</b><br />{$single_schedule[a].SCHEDULE_NOTES}<br>
+                                                    <b>Notes:</b><br />
+                                                    <div>{$single_schedule[a].SCHEDULE_NOTES}</div><br>
                                                     <button type="button" onClick="window.location='?page=schedule:edit&schedule_id={$single_schedule[a].SCHEDULE_ID}';">{$translate_schedule_edit}</button>
                                                     <button type="button" onClick="return confirmDelete('are you sure'); window.location='?page=schedule:delete&schedule_id={$single_schedule[a].SCHEDULE_ID}';">{$translate_schedule_delete}</button>
                                                     <button type="button" onClick="window.location='?page=schedule:icalendar&schedule_id={$single_schedule[a].SCHEDULE_ID}&theme=print';">Export</button>                                         
