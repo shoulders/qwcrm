@@ -201,9 +201,7 @@
     <core_menu_edit_employee>Edit Employee</core_menu_edit_employee>    
     <core_menu_edit_permissions>Edit Permissions</core_menu_edit_permissions>
     <core_menu_hit_stats>Hit Stat</core_menu_hit_stats>
-    <core_menu_hit_stats_view>Hit Stats View</core_menu_hit_stats_view>
-    <core_menu_backup_database>Backup Database</core_menu_backup_database>
-    <core_menu_restore_database>Restore Database</core_menu_restore_database>
+    <core_menu_hit_stats_view>Hit Stats View</core_menu_hit_stats_view>    
     <core_menu_php_info>PHP Info</core_menu_php_info>
     <core_menu_check_for_updates>Check for Updates</core_menu_check_for_updates>
     <core_menu_help>Help</core_menu_help>
