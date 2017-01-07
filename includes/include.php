@@ -22,7 +22,7 @@
  * will force a URL redirect exactly how it was supplied 
  */
 
-function force_page($module, $page_tpl = Null, $variables = Null, $method = 'session') {
+function force_page($module, $page_tpl = Null, $variables = Null, $method = 'get') {
     
     /* Normal URL Redirect */
     
@@ -147,7 +147,7 @@ function force_page($module, $page_tpl = Null, $variables = Null, $method = 'ses
 #     Perform a Browser Redirect           #
 ############################################
 
-function perform_redirect($url, $type = 'header') {
+function perform_redirect($url, $type = 'javascript') {
     
     // Redirect using Headers (cant always use this method in QWcrm)
     if($type == 'header') {
@@ -387,11 +387,11 @@ function check_acl($db, $login_account_type_id, $module, $page_tpl){
     }
 
     /* Get user's Group Name by login_account_type_id */
-    $q = 'SELECT '.PRFX.'CONFIG_EMPLOYEE_TYPE.TYPE_NAME
+    $sql = 'SELECT '.PRFX.'CONFIG_EMPLOYEE_TYPE.TYPE_NAME
             FROM '.PRFX.'CONFIG_EMPLOYEE_TYPE 
             WHERE TYPE_ID ='.$db->qstr($login_account_type_id);
     
-    if(!$rs = $db->execute($q)) {        
+    if(!$rs = $db->execute($sql)) {        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_group_name_failed'));
         exit;
     } else {
@@ -402,9 +402,9 @@ function check_acl($db, $login_account_type_id, $module, $page_tpl){
     $module_page = $module.':'.$page_tpl;
     
     /* Check Page to see if we have access */
-    $q = "SELECT ".$employee_acl_account_type_display_name." AS PAGE_ACL FROM ".PRFX."ACL WHERE page=".$db->qstr($module_page);
+    $sql = "SELECT ".$employee_acl_account_type_display_name." AS PAGE_ACL FROM ".PRFX."ACL WHERE page=".$db->qstr($module_page);
 
-    if(!$rs = $db->execute($q)) {       
+    if(!$rs = $db->execute($sql)) {       
         force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=authentication&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_get_page_acl_failed'));
         exit;
     } else {
@@ -481,9 +481,9 @@ function get_qwcrm_database_version_number($db){
     
     global $smarty;
 
-    $q = 'SELECT * FROM '.PRFX.'VERSION ORDER BY '.PRFX.'VERSION.`VERSION_INSTALLED` DESC LIMIT 1';
+    $sql = 'SELECT * FROM '.PRFX.'VERSION ORDER BY '.PRFX.'VERSION.`VERSION_INSTALLED` DESC LIMIT 1';
     
-    if(!$rs = $db->execute($q)){        
+    if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
@@ -508,9 +508,9 @@ function get_company_info($db, $item){
     
     global $smarty;
 
-    $q = 'SELECT * FROM '.PRFX.'TABLE_COMPANY';
+    $sql = 'SELECT * FROM '.PRFX.'TABLE_COMPANY';
     
-    if(!$rs = $db->execute($q)){        
+    if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {        
@@ -693,7 +693,7 @@ function write_record_to_tracker_table($db, $page_display_controller, $module, $
     
    global $smarty;
     
-   $q = 'INSERT into '.PRFX.'TRACKER SET
+   $sql = 'INSERT into '.PRFX.'TRACKER SET
    date          = '. $db->qstr( time()                     ).',
    ip            = '. $db->qstr( getIP()                    ).',
    uagent        = '. $db->qstr( getenv('HTTP_USER_AGENT')  ).',
@@ -702,7 +702,7 @@ function write_record_to_tracker_table($db, $page_display_controller, $module, $
    page          = '. $db->qstr( $page_tpl                  ).',
    referer       = '. $db->qstr( getenv('HTTP_REFERER')     );
 
-   if(!$rs = $db->Execute($q)) {
+   if(!$rs = $db->Execute($sql)) {
       force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
       exit;      
    }
@@ -724,17 +724,18 @@ function write_record_to_tracker_table($db, $page_display_controller, $module, $
 
 function write_record_to_activity_log($record){
     
+    global $smarty;
     global $qwcrm_activity_log;
 
     // if activity logging not enabled exit
     if($qwcrm_activity_log != true){return;}
     
     // Build log entry - perhaps use the apache time stamp below
-    $log_entry = $_SERVER['REMOTE_ADDR'] . ',' . date(DATE_W3C) . ',' . $record . "\n";
+    $log_entry = $_SERVER['REMOTE_ADDR'] . ',' . $_SESSION['login_usr'] . ',' . date("[d/M/Y:H:i:s O]", time()) . ',' . $record . "\n";
     
     // Write log entry to access log    
     if(!$fp = fopen(ACTIVITY_LOG,'a')) {        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'file', __FILE__, __FUNCTION__, '', '', $smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     }
     
@@ -753,7 +754,7 @@ function write_record_to_activity_log($record){
  * This will create an apache compatible access.log (Combined Log Format)
  */
 
-function write_record_to_access_log($login_usr = Null){
+function write_record_to_access_log($login_usr = Null){    
     
     // Apache log format
     // https://httpd.apache.org/docs/2.4/logs.html
@@ -761,10 +762,12 @@ function write_record_to_access_log($login_usr = Null){
     // Combined Log Format - LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\"" combined
     // $remote_host, $logname, $user, $time, $method, $request, $protocol, $status, $bytes, $referer, $user_agent
     
+    global $smarty;
+    
     $remote_ip      = $_SERVER['REMOTE_ADDR'];                              // only using IP - not hostname lookup
     $logname        = '-';                                                  //  This is the RFC 1413 identity of the client determined by identd on the clients machine. This information is highly unreliable and should almost never be used except on tightly controlled internal networks.
     
-    // Login User - substituting qwcrm user for the traditional apache HTTP Authentication - check that isset works on variabels from null $_POST
+    // Login User - substituting qwcrm user for the traditional apache HTTP Authentication
     if($login_usr == ''){
         $user = '-';
     } else {
@@ -799,7 +802,7 @@ function write_record_to_access_log($login_usr = Null){
     
     // Write log entry to access log    
     if(!$fp = fopen(ACCESS_LOG,'a')) {        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'file', __FILE__, __FUNCTION__, '', '', $smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     }
     
@@ -828,7 +831,7 @@ function write_record_to_error_log($login_usr = '-', $error_page, $error_type, $
 
     // Write log entry to error.log    
     if(!$fp = fopen(ERROR_LOG,'a')) {        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'file', __FILE__, __FUNCTION__, '', '', $smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     }
     

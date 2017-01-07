@@ -61,18 +61,19 @@ class Auth {
             // If there are no matching username and password pairs
             if ($row['NUM_USERS'] == 0) {    
 
-                // Log activity       
+                // Log activity    
                 write_record_to_activity_log($this->smarty->get_template_vars('translate_system_auth_log_message_login_failed_username_password_dont_match_for').' '.$login_usr);  
 
                 // Reload with 'Login Failed' message
                 force_page('core', 'login', 'warning_msg='.$this->smarty->get_template_vars('translate_system_auth_advisory_message_login_failed'));
                 exit;
+                
             }
 
             // If there is more than one matching username and password pair (catches errors)
             elseif ($row['NUM_USERS'] > 1) {    
 
-                // Log activity       
+                // Log activity
                 write_record_to_activity_log($this->smarty->get_template_vars('translate_system_auth_log_message_login_failed_duplicate_username_and_password_for').' '.$login_usr);  
 
                 // Reload with 'Login Failed' message
@@ -126,7 +127,9 @@ class Auth {
             exit;
 
             }
+            
         }  
+        
     }
         
     // Store variables in the session

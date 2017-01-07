@@ -33,16 +33,7 @@ function insert_new_schedule($db, $schedule_start_date, $scheduleStartTime, $sch
     $schedule_end_timestamp -= 1;
     
     // Validate the submitted dates
-    if(!validate_schedule_times($db, $schedule_start_date, $schedule_start_timestamp, $schedule_end_timestamp, $employee_id)) {return false;}
-
-    // Assign the workorder to the scheduled employee - this causes a page redirect
-    //update_workorder_status($db, $workorder_id, 2);
-
-    // Insert Workorder Note - change this to the displayname of the employee_id not login display name
-    insert_new_workorder_history_note($db, $workorder_id, 'Work Order Assigned to '.$_SESSION['login_display_name']);        
-
-    // Insert Note
-    insert_new_workorder_history_note($db, $workorder_id, 'Schedule has been set.');   
+    if(!validate_schedule_times($db, $schedule_start_date, $schedule_start_timestamp, $schedule_end_timestamp, $employee_id)) {return false;}        
 
     // Insert schedule item into the database
     $sql = "INSERT INTO ".PRFX."TABLE_SCHEDULE SET
@@ -53,10 +44,30 @@ function insert_new_schedule($db, $schedule_start_date, $scheduleStartTime, $sch
             SCHEDULE_NOTES     = ". $db->qstr( $schedule_notes            );            
 
     if(!$rs = $db->Execute($sql)) {
+        
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
         exit;
+        
     } else {
         
+        // Get the new Workorders ID
+        $schedule_id = $db->Insert_ID();
+        
+        // Assign the workorder to the scheduled employee        
+        assign_workorder_to_employee($db, $workorder_id, $_SESSION['login_id'], get_workorder_employee($db, $workorder_id), $employee_id);
+    
+        // Change the Workorders Status
+        update_workorder_status($db, $workorder_id, 2); 
+        
+        // Insert Work Order History Note
+        insert_new_workorder_history_note($db, $workorder_id, 'Schdule 51 added');              
+        
+        // Log activity 
+        write_record_to_activity_log('Schdule'.' '.$schedule_id.' '.'has been created and added to work order'.' '.$workorder_id);        
+        
+        // Update Workorder last activity record
+        update_last_active($db, $workorder_id);
+    
         return true;
         
     }    
@@ -146,39 +157,6 @@ function display_single_schedule($db, $schedule_id) {
     return $rs->GetArray();    
 
 }
-
-
-
-
-###############################################
-#      Check if a workorder is open           #     // move this to workorder
-###############################################
-
-
-function check_workorder_is_open($db, $workorder_id) {
-       
-    if(!$workorder_id){return false;}
-    
-    $sql = "SELECT WORK_ORDER_STATUS FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_ID=".$db->qstr($workorder_id);
-    
-    if(!$rs = $db->execute($sql)) {
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-        exit;
-    } else {
-        $status = $rs->fields['WORK_ORDER'];
-    }
-
-    if($status == '6' || $status == '7' || $status == '8' || $status == '9') {        
-        return false;
-    } else {
-        
-        return true;
-        
-    }    
-    
-}
-
-
 
 #####################################################
 #        Build Calendar Matrix                      #
@@ -454,10 +432,6 @@ function display_workorder_schedule($db, $workorder_id){
         
     }
 }
-
-
-
-
 
 #####################################################
 #     .ics header settings                          #

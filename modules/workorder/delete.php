@@ -9,7 +9,7 @@ if(empty($VAR['workorder_id'])){
 }
 
 // Delete the Workorder
-if(delete_workorder($db, $workorder_id, $login_id)) {
+if(delete_workorder($db, $workorder_id)) {
     force_page('workorder', 'overview', 'information_msg='.$smarty->get_template_vars('translate_workorder_advisory_message_delete_deleted'));
     exit;  
 } else {

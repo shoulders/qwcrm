@@ -4,7 +4,7 @@
 
 /*
  * Mandatory Code - Code that is run upon the file being loaded
- * Display Functions - Code that is used to primarily display records
+ * Display Functions - Code that is used to primarily display records - linked tables
  * New/Insert Functions - Creation of new records
  * Get Functions - Grabs specific records/fields ready for update - no table linking
  * Update Functions - For updating records/fields
@@ -206,28 +206,6 @@ function display_resolution($db, $workorder_id){
     
 }
 
-################################
-# Display Customer Details     #
-################################
-
-function display_customer_info($db, $customer_id){
-    
-    global $smarty;
-    
-    $sql = "SELECT * FROM ".PRFX."TABLE_CUSTOMER WHERE CUSTOMER_ID=".$db->qstr($customer_id);
-    
-    if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
-        exit;
-    } else {
-        
-       return $rs->GetArray();  
-       
-    }   
-    
-}
-
-
 #############################
 # Display Work Order Notes  #
 #############################
@@ -263,7 +241,8 @@ function display_workorder_history($db, $workorder_id){
     $sql = "SELECT ".PRFX."TABLE_WORK_ORDER_HISTORY.*, ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_DISPLAY_NAME 
             FROM ".PRFX."TABLE_WORK_ORDER_HISTORY, ".PRFX."TABLE_EMPLOYEE 
             WHERE ".PRFX."TABLE_WORK_ORDER_HISTORY.WORK_ORDER_ID=".$db->qstr($workorder_id)." 
-            AND ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_ID = ".PRFX."TABLE_WORK_ORDER_HISTORY.ENTERED_BY ORDER BY ".PRFX."TABLE_WORK_ORDER_HISTORY.HISTORY_ID";
+            AND ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_ID = ".PRFX."TABLE_WORK_ORDER_HISTORY.ENTERED_BY
+            ORDER BY ".PRFX."TABLE_WORK_ORDER_HISTORY.HISTORY_ID";
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
@@ -339,10 +318,16 @@ function insert_new_workorder($db, $customer_id, $created_by, $scope, $workorder
         
     } else {
 
+        // Get the new Workorders ID
         $workorder_id = $db->Insert_ID();
 
         // Creates a History record for the new work order
-        insert_new_workorder_history_note($db, $workorder_id, $smarty->get_template_vars('workorder_log_message_function_insert_new_workorder'));
+        //insert_new_workorder_history_note($db, $workorder_id, $smarty->get_template_vars('translate_workorder_log_message_function_insert_new_workorder'));
+        insert_new_workorder_history_note($db, $workorder_id, $smarty->get_template_vars('translate_workorder_log_message_created').' '.$smarty->get_template_vars('translate_workorder_log_message_by').' '.$_SESSION['login_display_name']);
+        
+        // Log activity
+        //write_record_to_activity_log($smarty->get_template_vars('translate_workorder_log_message_work_order').' '.$workorder_id.' '.$smarty->get_template_vars('translate_workorder_log_message_created'));
+        write_record_to_activity_log($smarty->get_template_vars('translate_workorder_log_message_work_order').' '.$workorder_id.' '.$smarty->get_template_vars('translate_workorder_log_message_created').' '.$smarty->get_template_vars('translate_workorder_log_message_by').' '.$_SESSION['login_display_name']);
 
         return true;
         
@@ -373,7 +358,20 @@ function insert_new_note($db, $workorder_id, $workorder_note){
         
     } else {
         
+        // Get the new Note ID
+        $note_id = $db->Insert_ID();
+        
+        // Creates a History record for the new work order
+        //insert_new_workorder_history_note($db, $workorder_id, $smarty->get_template_vars('translate_workorder_log_message_function_insert_new_workorder'));
+        insert_new_workorder_history_note($db, $workorder_id, $smarty->get_template_vars('translate_workorder_log_message_note').' '.$smarty->get_template_vars('translate_workorder_log_message_added').' '.$smarty->get_template_vars('translate_workorder_log_message_by').' '.$_SESSION['login_display_name']);
+        
+        // Log activity
+        //write_record_to_activity_log($smarty->get_template_vars('translate_workorder_log_message_note').' '.$note_id.' '.$smarty->get_template_vars('translate_workorder_log_message_added'));
+        write_record_to_activity_log($smarty->get_template_vars('translate_workorder_log_message_work_order').' '.$workorder_id.' '.$smarty->get_template_vars('translate_workorder_log_message_note').' '.$note_id.' '.$smarty->get_template_vars('translate_workorder_log_message_added').' '.$smarty->get_template_vars('translate_workorder_log_message_by').' '.$_SESSION['login_display_name']);
+        
+        // Update Workorder last activity record
         update_last_active($db, $workorder_id);
+        
         return true;
         
     }
@@ -391,7 +389,7 @@ function insert_new_workorder_history_note($db, $workorder_id, $workorder_histor
     global $smarty;
     
     $sql = "INSERT INTO ".PRFX."TABLE_WORK_ORDER_HISTORY SET
-        WORK_ORDER_ID   = " . $db->qstr( $workorder_id                     ).",
+        WORK_ORDER_ID   = " . $db->qstr( $workorder_id              ).",
         DATE            = " . $db->qstr( time()                     ).",
         NOTE            = " . $db->qstr( $workorder_history_note    ).",
         ENTERED_BY      = " . $db->qstr( $_SESSION['login_id']      );
@@ -399,9 +397,11 @@ function insert_new_workorder_history_note($db, $workorder_id, $workorder_histor
     if(!$rs = $db->Execute($sql)) {        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
-    } else {        
+    } else {
+        
         update_last_active($db, $workorder_id);        
-        return true;        
+        return true;
+        
     }  
     
 }
@@ -454,7 +454,7 @@ function get_workorder_comments($db, $workorder_id){
 # Get Work Order Resolution #
 #############################
 
-function get_workorder_resolution($db, $workorder_id){
+function get_workorder_resolution($db, $workorder_id) {
     
     global $smarty;
     
@@ -466,6 +466,27 @@ function get_workorder_resolution($db, $workorder_id){
     } else {
         
         return $rs->fields['WORK_ORDER_RESOLUTION'];    
+        
+    }
+    
+}
+
+#############################
+# Get Work Order employee   #
+#############################
+
+function get_workorder_employee($db, $workorder_id) {
+    
+    global $smarty;
+    
+    $sql = "SELECT WORK_ORDER_ASSIGN_TO FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_ID=".$db->qstr($workorder_id);
+    
+    if(!$rs = $db->execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
+        exit;
+    } else {
+        
+        return $rs->fields['WORK_ORDER_ASSIGN_TO'];    
         
     }
     
@@ -488,14 +509,24 @@ function update_workorder_scope_and_description($db, $workorder_id, $workorder_s
             WORK_ORDER_SCOPE        =".$db->qstr( $workorder_scope          ).",
             WORK_ORDER_DESCRIPTION  =".$db->qstr( $workorder_description    ).",
             LAST_ACTIVE             =".$db->qstr( time()                    )."
-            WHERE WORK_ORDER_ID     =".$db->qstr( $workorder_id                    );
+            WHERE WORK_ORDER_ID     =".$db->qstr( $workorder_id             );
 
     if(!$rs = $db->execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
-        insert_new_workorder_history_note($db, $workorder_id, $smarty->get_template_vars('translate_workorder_log_message_function_update_workorder_scope_and_description'));
+        // Creates a History record
+        //insert_new_workorder_history_note($db, $workorder_id, $smarty->get_template_vars('translate_workorder_log_message_function_update_workorder_scope_and_description'));
+        insert_new_workorder_history_note($db, $workorder_id, $smarty->get_template_vars('translate_workorder_log_message_scope_and_description').' '.$smarty->get_template_vars('translate_workorder_log_message_updated').' '.$smarty->get_template_vars('translate_workorder_log_message_by').' '.$_SESSION['login_display_name']);
+        
+        // Log activity
+        //write_record_to_activity_log($smarty->get_template_vars('translate_workorder_log_message_work_order').' '.$workorder_id.' '.$smarty->get_template_vars('translate_workorder_log_message_scope_and_description').' '.$smarty->get_template_vars('translate_workorder_log_message_has_been_updated'));
+        write_record_to_activity_log($smarty->get_template_vars('translate_workorder_log_message_work_order').' '.$workorder_id.' '.$smarty->get_template_vars('translate_workorder_log_message_scope_and_description').' '.$smarty->get_template_vars('translate_workorder_log_message_updated').' '.$smarty->get_template_vars('translate_workorder_log_message_by').' '.$_SESSION['login_display_name']);
+        
+        // Update Workorder last activity record
+        update_last_active($db, $workorder_id);        
+        
         return true;
         
     }
@@ -523,7 +554,17 @@ function update_workorder_comments($db, $workorder_id, $workorder_comments){
         exit;
     } else {
         
-        insert_new_workorder_history_note($db, $workorder_id, $smarty->get_template_vars('translate_workorder_log_message_function_update_workorder_comments'));        
+        // Create a History record
+        //insert_new_workorder_history_note($db, $workorder_id, $smarty->get_template_vars('translate_workorder_log_message_function_update_workorder_comments'));   
+        insert_new_workorder_history_note($db, $workorder_id, $smarty->get_template_vars('translate_workorder_log_message_comments').' '.$smarty->get_template_vars('translate_workorder_log_message_updated').' '.$smarty->get_template_vars('translate_workorder_log_message_by').' '.$_SESSION['login_display_name']);
+        
+        // Log activity
+        //write_record_to_activity_log($smarty->get_template_vars('translate_workorder_log_message_work_order').' '.$workorder_id.' '.$smarty->get_template_vars('translate_workorder_log_message_comments').' '.$smarty->get_template_vars('translate_workorder_log_message_has_been_updated'));
+        write_record_to_activity_log($smarty->get_template_vars('translate_workorder_log_message_work_order').' '.$workorder_id.' '.$smarty->get_template_vars('translate_workorder_log_message_comments').' '.$smarty->get_template_vars('translate_workorder_log_message_updated').' '.$smarty->get_template_vars('translate_workorder_log_message_by').' '.$_SESSION['login_display_name']);
+        
+        // Update Workorder last activity record
+        update_last_active($db, $workorder_id);        
+        
         return true;
         
     }
@@ -551,7 +592,17 @@ function update_workorder_resolution($db, $workorder_id, $workorder_resolution){
         exit;
     } else {
         
-        insert_new_workorder_history_note($db, $workorder_id, $smarty->get_template_vars('translate_workorder_log_message_function_update_workorder_resolution'));
+        // Create a History record
+        //insert_new_workorder_history_note($db, $workorder_id, $smarty->get_template_vars('translate_workorder_log_message_function_update_workorder_resolution'));
+        insert_new_workorder_history_note($db, $workorder_id, $smarty->get_template_vars('translate_workorder_log_message_resolution').' '.$smarty->get_template_vars('translate_workorder_log_message_updated').' '.$smarty->get_template_vars('translate_workorder_log_message_by').' '.$_SESSION['login_display_name']);
+        
+        // Log activity
+        //write_record_to_activity_log($smarty->get_template_vars('translate_workorder_log_message_work_order').' '.$workorder_id.' '.$smarty->get_template_vars('translate_workorder_log_message_resolution').' '.$smarty->get_template_vars('translate_workorder_log_message_has_been_updated'));
+        write_record_to_activity_log($smarty->get_template_vars('translate_workorder_log_message_work_order').' '.$workorder_id.' '.$smarty->get_template_vars('translate_workorder_log_message_resolution').' '.$smarty->get_template_vars('translate_workorder_log_message_updated').' '.$smarty->get_template_vars('translate_workorder_log_message_by').' '.$_SESSION['login_display_name']);
+        
+        // Update Workorder last activity record
+        update_last_active($db, $workorder_id);        
+        
         return true;
             
     }
@@ -574,6 +625,7 @@ function update_workorder_status($db, $workorder_id, $assign_status){
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
+        
     } else {
         
         if ($assign_status == '0'){
@@ -587,6 +639,7 @@ function update_workorder_status($db, $workorder_id, $assign_status){
                 force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_unassigned'));
                 exit;
             }
+            
         }
     
         // for writing message to log file - this needs translating
@@ -599,8 +652,18 @@ function update_workorder_status($db, $workorder_id, $assign_status){
         } elseif ($assign_status == '9') {$wo_status = $smarty->get_template_vars('translate_workorder_pending');
         } elseif ($assign_status == '10') {$wo_status = $smarty->get_template_vars('translate_workorder_open');    
         }
-
-        insert_new_workorder_history_note($db, $workorder_id, $smarty->get_template_vars('translate_workorder_log_message_function_update_status_work_order_status_changed_to'). ' ' . $wo_status . ' ' .$smarty->get_template_vars('translate_workorder_log_message_by_the_logged_in_user'));
+        
+        // Create a History record
+        //insert_new_workorder_history_note($db, $workorder_id, $smarty->get_template_vars('translate_workorder_log_message_function_update_status_work_order_status_changed_to'). ' ' . $wo_status . ' ' .$smarty->get_template_vars('translate_workorder_log_message_by_the_logged_in_user'));
+        insert_new_workorder_history_note($db, $workorder_id, $smarty->get_template_vars('translate_workorder_log_message_status').' '.$smarty->get_template_vars('translate_workorder_log_message_updated').' '.$smarty->get_template_vars('translate_workorder_log_message_to').' '.$smarty->get_template_vars('translate_workorder_log_message_to').' '.$wo_status.' '.$smarty->get_template_vars('translate_workorder_log_message_by').' '.$_SESSION['login_display_name']);
+        
+        // Log activity
+        //write_record_to_activity_log($smarty->get_template_vars('translate_workorder_log_message_work_order').' '.$workorder_id.' '.$smarty->get_template_vars('translate_workorder_log_message_status').' '.$smarty->get_template_vars('translate_workorder_log_message_has_been_changed_to').' '.$wo_status);
+        write_record_to_activity_log($smarty->get_template_vars('translate_workorder_log_message_work_order').' '.$workorder_id.' '.$smarty->get_template_vars('translate_workorder_log_message_status').' '.$smarty->get_template_vars('translate_workorder_log_message_updated').' '.$smarty->get_template_vars('translate_workorder_log_message_to').' '.$wo_status.' '.$smarty->get_template_vars('translate_workorder_log_message_by').' '.$_SESSION['login_display_name']);
+        
+        // Update Workorder last activity record
+        update_last_active($db, $workorder_id);        
+        
         return true;
         
     }
@@ -649,16 +712,26 @@ function close_workorder_with_invoice($db, $workorder_id, $workorder_resolution)
              WORK_ORDER_CLOSE_BY        = ". $db->qstr( $_SESSION['login_id']   ).",
              WORK_ORDER_ASSIGN_TO       = ". $db->qstr( $_SESSION['login_id']   ).",
              WORK_ORDER_CURRENT_STATUS  = ". $db->qstr( 7                       )."
-             WHERE WORK_ORDER_ID        = ". $db->qstr( $workorder_id                  );
+             WHERE WORK_ORDER_ID        = ". $db->qstr( $workorder_id           );
     
     if(!$rs = $db->Execute($sql)){ 
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
-        insert_new_workorder_history_note($db, $workorder_id, $smarty->get_template_vars('translate_workorder_log_message_function_close_workorder_with_invoice'));
+        // Create a History record
+        //insert_new_workorder_history_note($db, $workorder_id, $smarty->get_template_vars('translate_workorder_log_message_function_close_workorder_with_invoice'));
+        insert_new_workorder_history_note($db, $workorder_id, $smarty->get_template_vars('translate_workorder_log_message_closed_with_invoice').' '.$smarty->get_template_vars('translate_workorder_log_message_by').' '.$_SESSION['login_display_name']);
+        
+        // Log activity
+        //write_record_to_activity_log($smarty->get_template_vars('translateworkorder_log_message_work_order').' '.$workorder_id.' '.$smarty->get_template_vars('translate_workorder_log_message_has_been_closed_with_invoice'));
+        write_record_to_activity_log($smarty->get_template_vars('translate_workorder_log_message_work_order').' '.$workorder_id.' '.$smarty->get_template_vars('translate_workorder_log_message_closed_with_invoice').' '.$smarty->get_template_vars('translate_workorder_log_message_by').' '.$_SESSION['login_display_name']);
+        
+        // Update Workorder last activity record
+        update_last_active($db, $workorder_id);        
+        
         return true;
-                        
+        
     }      
     
 }
@@ -689,7 +762,17 @@ function close_workorder_without_invoice($db, $workorder_id, $workorder_resoluti
         exit;
     } else {
         
-        insert_new_workorder_history_note($db, $workorder_id, $smarty->get_template_vars('translate_workorder_log_message_function_close_workorder_without_invoice'));
+        // Create a History record
+        //insert_new_workorder_history_note($db, $workorder_id, $smarty->get_template_vars('translate_workorder_log_message_function_close_workorder_without_invoice'));
+        insert_new_workorder_history_note($db, $workorder_id, $smarty->get_template_vars('translate_workorder_log_message_closed_without_invoice').' '.$smarty->get_template_vars('translate_workorder_log_message_by').' '.$_SESSION['login_display_name']);
+        
+        // Log activity
+        //write_record_to_activity_log($smarty->get_template_vars('translateworkorder_log_message_work_order').' '.$workorder_id.' '.$smarty->get_template_vars('translate_workorder_log_message_has_been_closed_without_invoice>'));
+        write_record_to_activity_log($smarty->get_template_vars('translate_workorder_log_message_work_order').' '.$workorder_id.' '.$smarty->get_template_vars('translate_workorder_log_message_closed_without_invoice').' '.$smarty->get_template_vars('translate_workorder_log_message_by').' '.$_SESSION['login_display_name']);
+        
+        // Update Workorder last activity record
+        update_last_active($db, $workorder_id);        
+        
         return true;
         
     }
@@ -702,7 +785,7 @@ function close_workorder_without_invoice($db, $workorder_id, $workorder_resoluti
 # Delete Work Order #
 #####################
 
-function delete_workorder($db, $workorder_id, $assigned_employee) {
+function delete_workorder($db, $workorder_id) {
     
     global $smarty;
     
@@ -724,19 +807,19 @@ function delete_workorder($db, $workorder_id, $assigned_employee) {
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
-    } else {
+    } else {        
+
+        // Write the record to the access log
+        //write_record_to_activity_log($smarty->get_template_vars('translate_workorder_log_message_work_order').' '.$workorder_id.' '.$smarty->get_template_vars('translate_workorder_log_message_function_delete_workorder_has_been_deleted'));
+        write_record_to_activity_log($smarty->get_template_vars('translate_workorder_log_message_work_order').' '.$workorder_id.' '.$smarty->get_template_vars('translate_workorder_log_message_deleted').' '.$smarty->get_template_vars('translate_workorder_log_message_by').' '.$_SESSION['login_display_name']);
         
-        // Record to add
-        $record = $smarty->get_template_vars('translate_workorder_log_message_work_order') . ' ' . $workorder_id . ' ' .$smarty->get_template_vars('translate_workorder_log_message_function_delete_workorder_has_been_deleted') . ', ' . $assigned_employee;
-
-        // Write the record to the access log file 
-        write_record_to_activity_log($record);
-
         return true;
         
     }
     
 }
+
+/** Misc **/
 
 ##################################
 # Does workorder have an invoice # //translate this
@@ -771,7 +854,9 @@ function check_workorder_has_invoice($db, $workorder_id) {
 
 function check_workorder_status_is_allowed_for_deletion($db, $workorder_id) {
     
-    $sql = "SELECT WORK_ORDER_STATUS FROM ".PRFX."TABLE_INVOICE WHERE WORKORDER_ID=".$workorder_id;
+    global $smarty;
+    
+    $sql = "SELECT WORK_ORDER_STATUS FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_ID=".$workorder_id;
     
     if(!$rs = $db->Execute($sql)) {        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
@@ -822,13 +907,13 @@ function assign_workorder_to_employee($db, $workorder_id, $logged_in_employee_id
         }
         
         // Get the Display Name of the Target Employee
-        $target_employee_display_name = get_employee_display_name_by_id($db, $target_employee_id);    
+        $target_employee_display_name = get_employee_display_name_by_id($db, $target_employee_id);
+        
+        // Creates a History record
+        insert_new_workorder_history_note($db, $workorder_id, $smarty->get_template_vars('translate_workorder_log_message_work_order').' '.$smarty->get_template_vars('translate_workorder_log_message_has_been_assigned_to').' '.$target_employee_display_name.' '.$smarty->get_template_vars('translate_workorder_log_message_from').' '.$assigned_employee_display_name.' '.$smarty->get_template_vars('translate_workorder_log_message_by').' '. $logged_in_employee_display_name);
 
-        // Record to add to log
-        $record = $smarty->get_template_vars('translate_workorder_log_message_work_order') . ' ' . $workorder_id . ' ' . $smarty->get_template_vars('translate_workorder_log_message_has_been_assigned_to') . ' ' . $target_employee_display_name . ' ' . $smarty->get_template_vars('translate_workorder_log_message_from') . ' ' . $assigned_employee_display_name . ' ' . $smarty->get_template_vars('translate_workorder_log_message_by') . ' ' . $logged_in_employee_display_name;
-
-        // Write the record to the access log file 
-        write_record_to_activity_log($record);
+        // Log activity
+        write_record_to_activity_log($smarty->get_template_vars('translate_workorder_log_message_work_order').' '.$workorder_id.' '.$smarty->get_template_vars('translate_workorder_log_message_has_been_assigned_to').' '.$target_employee_display_name.' '.$smarty->get_template_vars('translate_workorder_log_message_from').' '.$assigned_employee_display_name.' '.$smarty->get_template_vars('translate_workorder_log_message_by').' '. $logged_in_employee_display_name);
 
         return true;
         
@@ -869,4 +954,32 @@ function resolution_edit_status_check($db, $workorder_id) {
        
     }
    
+}
+
+###############################################
+#      Check if a workorder is open           #
+###############################################
+
+
+function check_workorder_is_open($db, $workorder_id) {
+       
+    if(!$workorder_id){return false;}
+    
+    $sql = "SELECT WORK_ORDER_STATUS FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_ID=".$db->qstr($workorder_id);
+    
+    if(!$rs = $db->execute($sql)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
+    } else {
+        $status = $rs->fields['WORK_ORDER'];
+    }
+
+    if($status == '6' || $status == '7' || $status == '8' || $status == '9') {        
+        return false;
+    } else {
+        
+        return true;
+        
+    }    
+    
 }

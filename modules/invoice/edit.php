@@ -28,7 +28,7 @@ $smarty->assign('current_schedule_date', $current_schedule_date);
 $smarty->assign('format', $format);
 
 /* Generic error control */
-if($workorder_id == '' && $workorder_id != "0") {
+if($workorder_id == '' && $workorder_id != '0') {
     /* If no work order ID then we dont belong here */
     force_page('core', 'error&error_msg=No Work Order ID');
 } else {
@@ -45,6 +45,7 @@ if($customer_id == '' || $customer_id == '0'){
         force_page('core', 'error&error_msg=No Customer ID&menu=1');
         exit;
 } else {
+    
     $q = "SELECT * FROM ".PRFX."TABLE_CUSTOMER WHERE CUSTOMER_ID=".$db->qstr($customer_id);
     if(!$rs = $db->execute($q)) {
             force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
@@ -56,7 +57,8 @@ if($customer_id == '' || $customer_id == '0'){
     if(empty($customer_details)){
             force_page('core', 'error&error_msg=No Customer details found.&menu=1');
             exit;
-            }
+    }
+            
     $smarty->assign('customer_details',$customer_details);
 
 }

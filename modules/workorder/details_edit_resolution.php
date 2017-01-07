@@ -31,12 +31,13 @@ if(isset($VAR['closewithoutinvoice'])) {
 // Close with invoice
 if(isset($VAR['closewithinvoice'])) {
     close_workorder_with_invoice($db, $workorder_id, $VAR['workorder_resolution']);       
-    force_page('invoice', 'edit','workorder_id='.$workorder_id.'information_msg='.$smarty->get_template_vars('translate_workorder_advisory_message_details_edit_resolution_workorderclosedwithinvoice'));
+    force_page('invoice', 'edit','workorder_id='.$workorder_id.'customer_id='.$customer_id.'information_msg='.$smarty->get_template_vars('translate_workorder_advisory_message_details_edit_resolution_workorderclosedwithinvoice'));
     exit;
 }
         
 // Fetch the page with the resolution from the database 
 $smarty->assign('workorder_id', $workorder_id);
+$smarty->assign('customer_id', $customer_id);
 $smarty->assign('workorder_resolution', get_workorder_resolution($db, $workorder_id));
 
 $BuildPage .= $smarty->fetch('workorder/details_edit_resolution.tpl');

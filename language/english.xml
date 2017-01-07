@@ -424,6 +424,11 @@
         
         
         // -- Customer
+        
+        <customer_error_message_function_display_customer_info_failed>Could not display Customer Information</customer_error_message_function_display_customer_info_failed>        
+        
+        
+        
         <customer_view_wo>View The Work Order</customer_view_wo>
         <customer_details>Customer Details For</customer_details>
         <customer_contact>Customer Contact Information</customer_contact>
@@ -1277,8 +1282,12 @@
         <workorder_schedule>Schedule</workorder_schedule>
         <workorder_todays_display_date>Today&#39;s Date</workorder_todays_display_date>
         <workorder_start_time>Start Time</workorder_start_time>
-        <workorder_end_time>End Time</workorder_end_time>
+        <workorder_end_time>End Time</workorder_end_time>        
         <workorder_schedule_notes>Schedule Notes</workorder_schedule_notes>
+        
+        // History
+        <workorder_time>Time</workorder_time>
+        <workorder_event>Event</workorder_event>        
 
         // Customer Type
         <workorder_type>Type</workorder_type>
@@ -1347,7 +1356,8 @@
             <workorder_details_edit_description_button_tooltip>Click to edit description</workorder_details_edit_description_button_tooltip>           
 
             // Details - History
-            <workorder_details_history_title>History</workorder_details_history_title>              
+            <workorder_details_history_title>History</workorder_details_history_title>
+            <workorder_details_history_notes>Notes</workorder_details_history_notes>               
 
             // Details - Notes      
             <workorder_details_notes_title>Notes</workorder_details_notes_title>        
@@ -1454,7 +1464,7 @@
         <workorder_error_message_function_display_workorders_notfound>The requested Work Order(s) could not be found</workorder_error_message_function_display_workorders_notfound> 
         <workorder_error_message_function_display_workorders_count>Failed to select and count Work Orders requested</workorder_error_message_function_display_workorders_count>     
         <workorder_error_message_function_display_resolution_failed>Could not display resolution for the Work Order</workorder_error_message_function_display_resolution_failed>
-        <workorder_error_message_function_display_customer_info_failed>Could not display Customer Information for the Work Order</workorder_error_message_function_display_customer_info_failed>        
+        
         <workorder_error_message_function_display_workorder_notes_failed>Could not to display notes for the Work Order</workorder_error_message_function_display_workorder_notes_failed>
         <workorder_error_message_function_display_parts_failed>Could not display parts for the Work Order</workorder_error_message_function_display_parts_failed>
         <workorder_error_message_function_display_workorder_history_failed>Could not display history for the Work Order</workorder_error_message_function_display_workorder_history_failed>        
@@ -1465,6 +1475,7 @@
         <workorder_error_message_function_get_workorder_scope_and_description_failed>Failed to get the Scope and Description for the Work Order</workorder_error_message_function_get_workorder_scope_and_description_failed>
         <workorder_error_message_function_get_workorder_comments_failed>Failed to get the Comments for the Work Order</workorder_error_message_function_get_workorder_comments_failed>
         <workorder_error_message_function_get_workorder_resolution_failed>Failed to get the Resolution for the Work Order</workorder_error_message_function_get_workorder_resolution_failed>             
+        <workorder_error_message_function_get_workorder_employee_failed>Failed to get the assinged employee for the Work Order</workorder_error_message_function_get_workorder_employee_failed>             
         <workorder_error_message_function_update_workorder_scope_and_description_failed>Failed to update the Scope and Description for the Work Order</workorder_error_message_function_update_workorder_scope_and_description_failed>
         <workorder_error_message_function_update_workorder_comments_failed>Failed to update the Comments for the Work Order</workorder_error_message_function_update_workorder_comments_failed>
         <workorder_error_message_function_update_workorder_resolution_failed>Failed to update the Resolution for the Work Order</workorder_error_message_function_update_workorder_resolution_failed>               
@@ -1524,22 +1535,52 @@
         //// Log Messages
             
         // Common     
-        <workorder_log_message_work_order>Work Order</workorder_log_message_work_order>                   
+        <workorder_log_message_work_order>Work Order</workorder_log_message_work_order>
+                          
         <workorder_log_message_has_been_assigned_to>has been assigned to</workorder_log_message_has_been_assigned_to>
+        <workorder_log_message_from>from</workorder_log_message_from>       
         <workorder_log_message_by>by</workorder_log_message_by>
-        <workorder_log_message_from>from</workorder_log_message_from>
+        <workorder_log_message_to>to</workorder_log_message_to>
+        
         <workorder_log_message_unassigned>Unassigned</workorder_log_message_unassigned>
-        <workorder_log_message_by_the_logged_in_user>by the logged in user</workorder_log_message_by_the_logged_in_user>    
+        <workorder_log_message_created>Created</workorder_log_message_created>
+        <workorder_log_message_added>Added</workorder_log_message_added>
+        <workorder_log_message_deleted>Deleted</workorder_log_message_deleted>
+        <workorder_log_message_updated>Updated</workorder_log_message_updated>     
+        
+        <workorder_log_message_scope_and_description>Scope and Description</workorder_log_message_scope_and_description>        
+        <workorder_log_message_comments>Comments</workorder_log_message_comments>
+        <workorder_log_message_resolution>Resolution</workorder_log_message_resolution>
+        <workorder_log_message_note>Note</workorder_log_message_note>
+        <workorder_log_message_status>Status</workorder_log_message_status>           
+             
+        <workorder_log_message_closed_with_invoice>Closed with Invoice</workorder_log_message_closed_with_invoice>
+        <workorder_log_message_closed_without_invoice>Closed without Invoice</workorder_log_message_closed_without_invoice>
+        
+        
+        
+        
+        
+        
+        
+            // these are not usedeither
+            <workorder_log_message_by_the_logged_in_user>by the logged in user</workorder_log_message_by_the_logged_in_user>
+            <workorder_log_message_has_been_changed_to>has been changed to</workorder_log_message_has_been_changed_to>
+            <workorder_log_message_has_been_closed>has been closed</workorder_log_message_has_been_closed>
+            <workorder_log_message_has_been_closed_with_invoice>has been closed with an invoice</workorder_log_message_has_been_closed_with_invoice>
+            <workorder_log_message_has_been_closed_without_invoice>has been closed without an invoice</workorder_log_message_has_been_closed_without_invoice>
+            <workorder_log_message_has_been_deleted>has been deleted</workorder_log_message_has_been_deleted>        
 
-        // Specific Messages
-        <workorder_log_message_function_insert_new_workorder>Work Order Created</workorder_log_message_function_insert_new_workorder>              
-        <workorder_log_message_function_update_workorder_scope_and_description>Description has been Updated</workorder_log_message_function_update_workorder_scope_and_description>
-        <workorder_log_message_function_update_workorder_comments>Comment has been Updated</workorder_log_message_function_update_workorder_comments>
-        <workorder_log_message_function_update_workorder_resolution>Resolution has been Updated</workorder_log_message_function_update_workorder_resolution>
-        <workorder_log_message_function_update_status_work_order_status_changed_to>Work Order status changed to</workorder_log_message_function_update_status_work_order_status_changed_to>
-        <workorder_log_message_function_close_workorder_with_invoice>Work Order has been closed and set to Awaiting Payment</workorder_log_message_function_close_workorder_with_invoice>
-        <workorder_log_message_function_close_workorder_without_invoice>Work Order has been closed and No Invoice Required</workorder_log_message_function_close_workorder_without_invoice>
-        <workorder_log_message_function_delete_workorder_has_been_deleted>has been deleted</workorder_log_message_function_delete_workorder_has_been_deleted> 
+            // Specific Messages -not used now
+            <workorder_log_message_function_insert_new_workorder>Work Order Created</workorder_log_message_function_insert_new_workorder>
+            <workorder_log_message_function_insert_new_note>Note added</workorder_log_message_function_insert_new_note>         
+            <workorder_log_message_function_update_workorder_scope_and_description>Scope and Description have been Updated</workorder_log_message_function_update_workorder_scope_and_description>
+            <workorder_log_message_function_update_workorder_comments>Comment has been Updated</workorder_log_message_function_update_workorder_comments>
+            <workorder_log_message_function_update_workorder_resolution>Resolution has been Updated</workorder_log_message_function_update_workorder_resolution>
+            <workorder_log_message_function_update_status_work_order_status_changed_to>Work Order status changed to</workorder_log_message_function_update_status_work_order_status_changed_to>
+            <workorder_log_message_function_close_workorder_with_invoice>Work Order has been closed and set to Awaiting Payment</workorder_log_message_function_close_workorder_with_invoice>
+            <workorder_log_message_function_close_workorder_without_invoice>Work Order has been closed and No Invoice Required</workorder_log_message_function_close_workorder_without_invoice>
+            <workorder_log_message_function_delete_workorder_has_been_deleted>has been deleted</workorder_log_message_function_delete_workorder_has_been_deleted> 
         
         //// Advisory Messages
         

@@ -2,6 +2,7 @@
 
 require(INCLUDES_DIR.'modules/schedule.php');
 require(INCLUDES_DIR.'modules/employee.php');
+require(INCLUDES_DIR.'modules/workorder.php');
 
 // Check the workorder status - We don't want to schedule/reschedule a workorder if it's closed
 if(isset($workorder_id)) { 

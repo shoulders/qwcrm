@@ -1,5 +1,7 @@
 <?php
 require_once("include.php");
+require(INCLUDES_DIR.'modules/customer.php');
+
 //Required for swift mailer
 require_once (LIBRARIES_DIR.'swift/swift_required.php');
 

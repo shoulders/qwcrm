@@ -1,6 +1,7 @@
 <?php
 
 require(INCLUDES_DIR.'modules/workorder.php');
+require(INCLUDES_DIR.'modules/customer.php');
 
 // Check that there is a customer_id set
 if($VAR['customer_id'] == '' ) {   

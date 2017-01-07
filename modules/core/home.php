@@ -1,6 +1,7 @@
 <?php
 
-require('includes/modules/core_home.php');
+require(INCLUDES_DIR.'modules/core.php');
+require(INCLUDES_DIR.'modules/employee.php');
 
 /** Misc **/
 

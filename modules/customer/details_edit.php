@@ -1,6 +1,7 @@
 <?php
 
 require_once ('include.php');
+require(INCLUDES_DIR.'modules/customer.php');
 
 if(isset($VAR['submit'])) {    
         

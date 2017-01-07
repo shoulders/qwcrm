@@ -1,6 +1,6 @@
 <?php
 
-require_once('includes/modules/core_theme.php');
+require_once(INCLUDES_DIR.'modules/core_theme.php');
 
 /* Display Date and Time */
 $smarty->assign('todays_display_date', date('l, j F Y'));

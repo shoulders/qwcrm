@@ -1,6 +1,8 @@
 <?php
 require_once("include.php");
 
+require(INCLUDES_DIR.'modules/customer.php');
+
 // Get the customers id from the url
 $customer_id = $VAR['customer_id'];
 

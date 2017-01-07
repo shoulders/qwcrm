@@ -10,11 +10,9 @@
                             <tr>
                                 <td width="33%" align="right">
                                     {if $single_workorder[i].WORK_ORDER_STATUS != 6}
-                                    <a href="?page=workorder:details_edit_resolution&workorder_id={$single_workorder[i].WORK_ORDER_ID}&page_title={$translate_workorder_details_resolution_title}">
-                                        <img src="{$theme_images_dir}icons/16x16/small_edit.gif" border="0"
-                                            onMouseOver="ddrivetip('{$translate_workorder_details_edit_resolution_button_tooltip}');"
-                                            onMouseOut="hideddrivetip();">
-                                    </a>
+                                        <a href="?page=workorder:details_edit_resolution&workorder_id={$single_workorder[i].WORK_ORDER_ID}&customer_id={$single_workorder[i].CUSTOMER_ID}&page_title={$translate_workorder_details_resolution_title}">
+                                            <img src="{$theme_images_dir}icons/16x16/small_edit.gif" border="0" onMouseOver="ddrivetip('{$translate_workorder_details_edit_resolution_button_tooltip}');" onMouseOut="hideddrivetip();">
+                                        </a>
                                     {/if}
                                 </td>
                             </tr>
@@ -31,11 +29,12 @@
                     <td>
                         {section name=v loop=$workorder_resolution}
                             {if $single_workorder[i].WORK_ORDER_CLOSE_BY != "" }
-                                <p><b>{$translate_workorder_closed_by}: </b>{$workorder_resolution[v].EMPLOYEE_DISPLAY_NAME}  <b>{$translate_workorder_date}: </b>
-                                {$workorder_resolution[v].WORK_ORDER_CLOSE_DATE|date_format:"$date_format"} <br>
+                                <p>
+                                    <b>{$translate_workorder_closed_by}: </b>{$workorder_resolution[v].EMPLOYEE_DISPLAY_NAME}<br>
+                                    <b>{$translate_workorder_date}: </b>{$workorder_resolution[v].WORK_ORDER_CLOSE_DATE|date_format:"$date_format"}<br>
+                                </p>
                             {/if}
-                            {$workorder_resolution[v].WORK_ORDER_RESOLUTION}
-                            </p>
+                            <div>{$workorder_resolution[v].WORK_ORDER_RESOLUTION}</div>                            
                         {/section}
                     </td>
                 </tr>

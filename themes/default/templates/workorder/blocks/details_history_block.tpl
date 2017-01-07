@@ -9,16 +9,16 @@
             </table>
         </td>
     </tr>
-    {section name=c loop=$workorder_history}
+    {section name=i loop=$workorder_history}
         <tr>
             <td class="menutd">
                 <table width="100%" cellpadding="4" cellspacing="0" border="0">
                     <tr>
                         <td>
-                            <b>{$translate_workorder_entered_by} </b>
-                            <a href="?page=employee:employee_details&employee_id={$workorder_history[c].WORK_ORDER_HISTORY_ENTERED_BY}&page_title={$translate_workorder_employee} {$workorder_history[c].EMPLOYEE_DISPLAY_NAME}">{$workorder_history[c].EMPLOYEE_DISPLAY_NAME}</a> 
-                            <b>{$translate_workorder_date} </b>{$workorder_history[c].WORK_ORDER_HISTORY_DATE|date_format:"$date_format %r"}<br>
-                            {$workorder_history[c].WORK_ORDER_HISTORY_NOTES}
+                            <b>{$translate_workorder_employee}: </b><a href="?page=employee:employee_details&employee_id={$workorder_history[i].ENTERED_BY}&page_title={$translate_workorder_employee} {$workorder_history[i].EMPLOYEE_DISPLAY_NAME}">{$workorder_history[i].EMPLOYEE_DISPLAY_NAME}</a><br>
+                            <b>{$translate_workorder_date}: </b>{$workorder_history[i].DATE|date_format:"$date_format"}<br>
+                            <b>{$translate_workorder_time}: </b>{$workorder_history[i].DATE|date_format:"%H:%M"}<br>
+                            <b>{$translate_workorder_event}: </b>{$workorder_history[i].NOTE}                            
                         </td>
                     </tr>
                 </table>

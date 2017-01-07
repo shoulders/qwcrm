@@ -1,7 +1,7 @@
 <?php
 
 /* Grab and Process Values befor sending to the log and displaying */
-//$error_page         = prepare_error_data('error_page'); // only needed whn using referrer
+//$error_page         = prepare_error_data('error_page'); // only needed when using referrer
 $error_page         = $VAR['error_page'];
 $error_type         = $VAR['error_type'];
 $error_location     = $VAR['error_location'];

@@ -1,6 +1,6 @@
 <?php
 
-require_once('includes/modules/core_menu.php');
+require_once(INCLUDES_DIR.'modules/core_menu.php');
  
 // Get Workorder Status
 $smarty->assign('menu_workorder_status', menu_get_single_workorder_status($db, $workorder_id)); 

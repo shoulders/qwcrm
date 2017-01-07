@@ -2,27 +2,7 @@
 
 $smarty->assign('employee_details', $employee_details);
 
-#####################################
-#    Display                     #
-#####################################
 
-function display_customer_info($db, $customer_id){
-
-    $sql = "SELECT * FROM ".PRFX."TABLE_CUSTOMER WHERE CUSTOMER_ID=".$db->qstr($customer_id);
-    
-    if(!$result = $db->Execute($sql)) {
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-        exit;
-    } else {
-        $customer_array = array();
-    }
-    
-    while($row = $result->FetchRow()){
-         array_push($customer_array, $row);
-    }
-    
-    return $customer_array;
-}
 
 #####################################
 #    Display    Company Info        #
