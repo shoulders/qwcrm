@@ -90,8 +90,8 @@ require('configuration.php');
 require('includes/defines.php');
 require(INCLUDES_DIR.'security.php'); // some code auto runs in this library
 require(INCLUDES_DIR.'include.php');
-require(INCLUDES_DIR.'smarty.php');
 require(INCLUDES_DIR.'adodb.php');
+require(INCLUDES_DIR.'smarty.php');//print_r(get_defined_vars());die;
 require(INCLUDES_DIR.'session.php');
 require(INCLUDES_DIR.'auth.php');
 
@@ -128,7 +128,7 @@ verify_qwcrm_is_installed_correctly($db);
 #          Authentication                      #
 ################################################
 
-$auth = new Auth($db, $smarty, 'index.php', $secretKey);
+$auth = new Auth($secretKey);
 
 $login_id   = $_SESSION['login_id'];
 $login_usr  = $_SESSION['login_usr'];
@@ -334,7 +334,7 @@ if(check_acl($db, $login_account_type_id, $module, $page_tpl)){
 
     // Fetch Header Block
     if($VAR['theme'] != 'off'){        
-        require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_header_block.php');      
+        require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_header_block.php');
     } else {
         //echo '<!DOCTYPE html><head></head><body>';
         require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_header_theme_off_block.php');
@@ -361,7 +361,7 @@ if(check_acl($db, $login_account_type_id, $module, $page_tpl)){
 
     // Fetch the Debug Block
     if($qwcrm_debug == true){
-        require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_debug_block.php');
+        require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_debug_block.php');        
         $BuildPage .= "\r\n</body>\r\n</html>";
     } else {
         $BuildPage .= "\r\n</body>\r\n</html>";
@@ -407,4 +407,5 @@ if ($VAR['theme'] !== 'print'){
 #    Display the Built Page                    #
 ################################################
 
+//$smarty->fetch('string:'.$string); - smarty3 only
 echo $BuildPage;

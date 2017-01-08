@@ -14,4 +14,6 @@
     <li>TCPDF v6.2.13 | LGPL v3 | http://www.tcpdf.org</li>
     <li>mPDF | GPLv2</li>
     <li>PHPtoICS.php iCalendar script | free to use? | https://gist.github.com/jakebellacera/635416</li>
+    <li>ADODB V4.66</li>
+    <li>Smarty v2.6.9</li>
 </ul>

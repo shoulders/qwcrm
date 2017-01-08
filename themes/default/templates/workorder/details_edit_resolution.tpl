@@ -25,8 +25,7 @@
                                         <br>
                                         <input name="page" value="workorder:details_edit_resolution" type="hidden" >
                                         <input name="created_by" value="{$login_display_name}" type="hidden">
-                                        <input name="workorder_id" value="{$workorder_id}" type="hidden">
-                                        <input name="customer_id" value="{$customer_id}" type="hidden">
+                                        <input name="workorder_id" value="{$workorder_id}" type="hidden">                                        
                                         <input name="submitchangesonly" value="{$translate_workorder_details_edit_resolution_submit_changes_only}" type="submit">
                                         <input name="closewithoutinvoice" value="{$translate_workorder_details_edit_resolution_close_without_invoice}" type="submit">
                                         <input name="closewithinvoice" value="{$translate_workorder_details_edit_resolution_close_with_invoice}" type="submit">

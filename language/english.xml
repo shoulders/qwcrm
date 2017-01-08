@@ -1492,13 +1492,13 @@
         
         // delete.php
         <workorder_advisory_message_delete_noworkorderid>Cannot update Workorder status because there is no Work Order ID set</workorder_advisory_message_delete_noworkorderid>        
-        <workorder_advisory_message_delete_deleted>Workorder has been deleted</workorder_advisory_message_delete_deleted>
-        <workorder_advisory_message_delete_notdeleted>Workorder has not been deleted</workorder_advisory_message_delete_notdeleted>
+        <workorder_advisory_message_delete_deleted>Work Order has been deleted</workorder_advisory_message_delete_deleted>
+        <workorder_advisory_message_delete_notdeleted>Work Order has not been deleted</workorder_advisory_message_delete_notdeleted>
         
         // details.php
         
         // details_edit_comments.php
-        <workorder_advisory_message_details_edit_comments_noworkorderid>You cannot edit the comments as there is no Workorder ID set</workorder_advisory_message_details_edit_comments_noworkorderid>
+        <workorder_advisory_message_details_edit_comments_noworkorderid>You cannot edit the comments as there is no Work Order ID set</workorder_advisory_message_details_edit_comments_noworkorderid>
         <workorder_advisory_message_details_edit_comments_updated>Comments has been updated</workorder_advisory_message_details_edit_comments_updated>
         
         // details_edit_description.php
@@ -1509,8 +1509,8 @@
         <workorder_advisory_message_details_edit_resolution_noworkorderid>Cannot update the resolution as there is no Work Order ID set</workorder_advisory_message_details_edit_resolution_noworkorderid>
         <workorder_advisory_message_details_edit_resolution_cannotedit>Cannot edit the resolution as workorder status does not allow it</workorder_advisory_message_details_edit_resolution_cannotedit>
         <workorder_advisory_message_details_edit_resolution_updated>Resolution has been updated</workorder_advisory_message_details_edit_resolution_updated>
-        <workorder_advisory_message_details_edit_resolution_workorderclosedwithoutinvoice>Workorder has been closed without an invoice</workorder_advisory_message_details_edit_resolution_workorderclosedwithoutinvoice>
-        <workorder_advisory_message_details_edit_resolution_workorderclosedwithinvoice>Workorder has been closed with an invoice</workorder_advisory_message_details_edit_resolution_workorderclosedwithinvoice>
+        <workorder_advisory_message_details_edit_resolution_workorderclosedwithoutinvoice>Work Order has been closed without an invoice</workorder_advisory_message_details_edit_resolution_workorderclosedwithoutinvoice>
+        <workorder_advisory_message_details_edit_resolution_workorderclosedwithinvoice>Work Order has been closed with an invoice</workorder_advisory_message_details_edit_resolution_workorderclosedwithinvoice>
         
         // details_new_note.php
         <workorder_error_message_details_new_note_noworkorderid>You cannot add a note as there is no Workorder ID set</workorder_error_message_details_new_note_noworkorderid>
@@ -1518,7 +1518,7 @@
         
         // new.php
         <workorder_advisory_message_new_nocustomerid>Cannot create a New Work Order without a Customer ID</workorder_advisory_message_new_nocustomerid>
-        <workorder_advisory_message_new_created>New Workorder created</workorder_advisory_message_new_created>
+        <workorder_advisory_message_new_created>New Work Order created</workorder_advisory_message_new_created>
         
         // open.php
 
@@ -1528,7 +1528,7 @@
 
         // status.php
         <workorder_advisory_message_status_noworkorderid>Cannot update Workorder status because there is no Work Order ID set</workorder_advisory_message_status_noworkorderid>
-        <workorder_advisory_message_status_statusupdated>Workorder status updated</workorder_advisory_message_status_statusupdated>
+        <workorder_advisory_message_status_statusupdated>Work Order status updated</workorder_advisory_message_status_statusupdated>
         <workorder_advisory_message_status_employeeupdated>Assigned employee updated</workorder_advisory_message_status_employeeupdated>      
         
         

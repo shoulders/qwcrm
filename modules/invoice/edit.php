@@ -250,7 +250,7 @@ if( $VAR['discount'] >= 100){
 }
 
 /* send back to the invoice page - this loads the page with no POST variables */
-force_page('invoice', 'new&workorder_id='.$workorder_id.'&customer_id='.$customer_id.'&invoice_id='.$VAR['invoice_id']);
+force_page('invoice', 'edit', 'workorder_id='.$workorder_id.'&customer_id='.$customer_id.'&invoice_id='.$VAR['invoice_id']);
         
 ############################################
 # Create New Invoice or load from database # // when page loads with no button presssed
@@ -296,11 +296,11 @@ force_page('invoice', 'new&workorder_id='.$workorder_id.'&customer_id='.$custome
             force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
             exit;
         } else {
-            force_page('invoice', 'new&workorder_id='.$workorder_id.'&customer_id='.$customer_id.'&invoice_id='.$invoice_id);
+            force_page('invoice', 'edit', 'workorder_id='.$workorder_id.'&customer_id='.$customer_id.'&invoice_id='.$invoice_id);
         }
 
     } else {
-        force_page('invoice', 'new&workorder_id='.$workorder_id.'&customer_id='.$customer_id.'&invoice_id='.$invoice_id);    
+        force_page('invoice', 'edit', 'workorder_id='.$workorder_id.'&customer_id='.$customer_id.'&invoice_id='.$invoice_id);    
     }
 
 // if an invoice exists for this work order id - this loads invoice data and employee display name

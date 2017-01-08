@@ -18,16 +18,28 @@
                                 <td class="menutd">
                                     <table width="100%" border="0" cellpadding="10" cellspacing="0">
                                         <tr>
-                                            <td><a name="new"></a>{include file="workorder/blocks/overview_new_workorders_block.tpl"}</td>
+                                            <td>
+                                                <a name="new"></a>                                                
+                                                {include file='workorder/blocks/overview_new_workorders_block.tpl'}
+                                            </td>
                                         </tr>
                                         <tr>
-                                            <td><a name="assigned"></a>{include file="workorder/blocks/overview_assigned_workorders_block.tpl"}</td>
+                                            <td>
+                                                <a name="assigned"></a>
+                                                {include file='workorder/blocks/overview_assigned_workorders_block.tpl'}
+                                            </td>
                                         </tr>
                                         <tr>
-                                            <td><a name="awaiting"></a>{include file="workorder/blocks/overview_awaiting_parts_workorders_block.tpl"}</td>
+                                            <td>
+                                                <a name="awaiting"></a>
+                                                {include file='workorder/blocks/overview_awaiting_parts_workorders_block.tpl'}
+                                            </td>
                                         </tr>
                                         <tr>
-                                            <td><a name="payment"></a>{include file="workorder/blocks/overview_unpaid_workorders_block.tpl"}</td>
+                                            <td>
+                                                <a name="payment"></a>
+                                                {include file='workorder/blocks/overview_unpaid_workorders_block.tpl'}
+                                            </td>
                                         </tr>
                                     </table>
                                 </td>

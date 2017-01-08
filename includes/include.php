@@ -22,7 +22,7 @@
  * will force a URL redirect exactly how it was supplied 
  */
 
-function force_page($module, $page_tpl = Null, $variables = Null, $method = 'get') {
+function force_page($module, $page_tpl = Null, $variables = Null, $method = 'session') {
     
     /* Normal URL Redirect */
     
@@ -147,7 +147,7 @@ function force_page($module, $page_tpl = Null, $variables = Null, $method = 'get
 #     Perform a Browser Redirect           #
 ############################################
 
-function perform_redirect($url, $type = 'javascript') {
+function perform_redirect($url, $type = 'header') {
     
     // Redirect using Headers (cant always use this method in QWcrm)
     if($type == 'header') {
