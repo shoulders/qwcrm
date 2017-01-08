@@ -127,14 +127,14 @@ function display_workorders($db, $status, $direction = 'DESC', $use_pages = fals
         }       
         
         // set SQL strings for record restriction
-        $whereTheseRecords = " WHERE ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_CURRENT_STATUS= ".$db->qstr($status);
+        $whereTheseRecords = " WHERE ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_STATUS= ".$db->qstr($status);
         $limitTheseRecords = " LIMIT ".$start_record.", ".$max_records;
         
         
     /* Get all workorders (unrestricted) */
         
     } else {
-        $whereTheseRecords = " WHERE ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_CURRENT_STATUS= ".$db->qstr($status);
+        $whereTheseRecords = " WHERE ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_STATUS= ".$db->qstr($status);
     }
     
     /* Get the records */
@@ -145,6 +145,7 @@ function display_workorders($db, $status, $direction = 'DESC', $use_pages = fals
             ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_CLOSE_DATE,   
             ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_ASSIGN_TO,
             ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_SCOPE,
+            ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_STATUS,
             ".PRFX."TABLE_CUSTOMER.CUSTOMER_ID,
             ".PRFX."TABLE_CUSTOMER.CUSTOMER_DISPLAY_NAME,            
             ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_DISPLAY_NAME,
@@ -157,8 +158,7 @@ function display_workorders($db, $status, $direction = 'DESC', $use_pages = fals
             " GROUP BY ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_ID".
             " ORDER BY ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_ID ".$direction
             .$limitTheseRecords;    
-    
-     
+         
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
         exit;

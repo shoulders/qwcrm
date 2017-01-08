@@ -1253,8 +1253,7 @@
 
         // Table Headings
         <workorder_id>ID</workorder_id>
-        <workorder_opened>Opened</workorder_opened>
-        <workorder_state>State</workorder_state>
+        <workorder_opened>Opened</workorder_opened>        
         <workorder_customer>Customer</workorder_customer>
         <workorder_scope>Scope</workorder_scope>
         <!--<workorder_status>Status</workorder_status>-->

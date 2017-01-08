@@ -128,7 +128,7 @@ verify_qwcrm_is_installed_correctly($db);
 #          Authentication                      #
 ################################################
 
-$auth = new Auth($secretKey);
+$auth = new Auth($db, $smarty, $secretKey);
 
 $login_id   = $_SESSION['login_id'];
 $login_usr  = $_SESSION['login_usr'];
@@ -407,5 +407,4 @@ if ($VAR['theme'] !== 'print'){
 #    Display the Built Page                    #
 ################################################
 
-//$smarty->fetch('string:'.$string); - smarty3 only
 echo $BuildPage;

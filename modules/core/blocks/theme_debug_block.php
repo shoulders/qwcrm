@@ -24,7 +24,7 @@ if($qwcrm_advanced_debug == true) {
      * All defined PHP Variables
      *  
      * pick your poison - http://web-profile.net/php/dev/var_dump-print_r-var_export/
-     * It is on several lines on purpose - a PHP quirk
+     * It is on several lines on purpose - a PHP quirk (it was)
      * 
      * BuildPage (and other variables and objects) seem to be shown twice
      * I think this is because they are registered in ['GLOBALS'] and the global scope (not 100% sure)

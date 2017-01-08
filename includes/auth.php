@@ -4,22 +4,21 @@ class Auth {
     
     // varibles if not declared, are by default public - so i am forcing them private
     private $session;
-    private $secretKey;
-  
+    private $secretKey;    
+    
     /** 
      * This function is always called when the class is invoked
      *  I dont know the difference between this and the constructor
      */
-    function Auth($secretKey){
-        
-        //global $smarty;
+    function Auth($db, $smarty, $secretKey){             
         
         // Make variables available throught the class        
-        //$this->smarty       = $smarty;          // this allows the use of smarty translations
-        //$this->redirect     = $redirect;
+        $this->db           = $db;
+        $this->smarty       = $smarty;
         $this->secretKey    = $secretKey;        
         $this->session      = new Session();        
         $this->login();
+        
     }    
     
     // Login User
