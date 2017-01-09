@@ -192,13 +192,14 @@
                     <tr>
                         <td valign="top"><b>{$translate_workorder_status}</b></td>
                         <td valign="top">
-                            {if $single_work_order[i].WORK_ORDER_CURRENT_STATUS == '1'}{$translate_workorder_created}{/if}
-                            {if $single_work_order[i].WORK_ORDER_CURRENT_STATUS == '2'}{$translate_workorder_assigned}{/if}
-                            {if $single_work_order[i].WORK_ORDER_CURRENT_STATUS == '3'}{$translate_workorder_waiting_for_parts}{/if}
-                            {if $single_work_order[i].WORK_ORDER_CURRENT_STATUS == '6'}{$translate_workorder_closed}{/if}
-                            {if $single_work_order[i].WORK_ORDER_CURRENT_STATUS == '7'}{$translate_workorder_waiting_for_payment}{/if}
-                            {if $single_work_order[i].WORK_ORDER_CURRENT_STATUS == '8'}{$translate_workorder_payment_made}{/if}
-                            {if $single_work_order[i].WORK_ORDER_CURRENT_STATUS == '9'}{$translate_workorder_pending}{/if}
+                            {if $single_workorder[i].WORK_ORDER_STATUS == '1'}{$translate_workorder_created}{/if}
+                            {if $single_workorder[i].WORK_ORDER_STATUS == '2'}{$translate_workorder_assigned}{/if}
+                            {if $single_workorder[i].WORK_ORDER_STATUS == '3'}{$translate_workorder_waiting_for_parts}{/if}
+                            {if $single_workorder[i].WORK_ORDER_STATUS == '6'}{$translate_workorder_closed}{/if}
+                            {if $single_workorder[i].WORK_ORDER_STATUS == '7'}{$translate_workorder_waiting_for_payment}{/if}
+                            {if $single_workorder[i].WORK_ORDER_STATUS == '8'}{$translate_workorder_payment_made}{/if}
+                            {if $single_workorder[i].WORK_ORDER_STATUS == '9'}{$translate_workorder_pending}{/if}
+                            {if $single_workorder[i].WORK_ORDER_STATUS == '10'}{$translate_workorder_open}{/if}
                         </td>
                     </tr>
                     <tr>

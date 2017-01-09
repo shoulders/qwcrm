@@ -122,8 +122,7 @@ if($invoice_details['INVOICE_AMOUNT'] > $gift_amount){
     /* update if balance = 0 */
         if($balance == 0 ) {
             $q = "UPDATE ".PRFX."TABLE_WORK_ORDER SET
-            WORK_ORDER_STATUS        = '6',
-            WORK_ORDER_CURRENT_STATUS     = '8'
+            WORK_ORDER_STATUS        = '8'            
             WHERE WORK_ORDER_ID         =".$db->qstr($workorder_id);
             if(!$rs = $db->execute($q)) {
             force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
@@ -192,8 +191,7 @@ if($invoice_details['INVOICE_AMOUNT'] > $gift_amount){
         }
         
         $q = "UPDATE ".PRFX."TABLE_WORK_ORDER SET
-            WORK_ORDER_STATUS        = '6',
-            WORK_ORDER_CURRENT_STATUS     = '8'
+            WORK_ORDER_STATUS        = '8'            
             WHERE WORK_ORDER_ID         =".$db->qstr($workorder_id);
         if(!$rs = $db->execute($q)) {
             force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');

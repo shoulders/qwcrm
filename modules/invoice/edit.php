@@ -42,7 +42,7 @@ if($workorder_id == '' && $workorder_id != '0') {
     
 /* check if we have a customer id and if so get details */
 if($customer_id == '' || $customer_id == '0'){
-        force_page('core', 'error&error_msg=No Customer ID&menu=1');
+        force_page('core', 'error&error_msg=No Customer ID - remove this check no customer id should be passed - invoice:edit - &menu=1');
         exit;
 } else {
     
@@ -227,8 +227,7 @@ if(!$rs = $db->Execute($q)){
 }
 if( $VAR['discount'] >= 100){
     $q = "UPDATE ".PRFX."TABLE_WORK_ORDER SET
-        WORK_ORDER_STATUS           = '6',
-        WORK_ORDER_CURRENT_STATUS     = '8'
+        WORK_ORDER_STATUS           = '8'        
         WHERE WORK_ORDER_ID         =".$db->qstr($workorder_id);
     if(!$rs = $db->execute($q)) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
@@ -379,8 +378,7 @@ force_page('invoice', 'edit', 'workorder_id='.$workorder_id.'&customer_id='.$cus
     // If discount is greate than 100% then these close WO and mark the invoice as paid
     if($VAR['discount'] >= 100){
         $q = "UPDATE ".PRFX."TABLE_WORK_ORDER SET
-            WORK_ORDER_STATUS        = '6',
-            WORK_ORDER_CURRENT_STATUS     = '8'
+            WORK_ORDER_STATUS        = '8'            
             WHERE WORK_ORDER_ID         =".$db->qstr($workorder_id);
         if(!$rs = $db->execute($q)) {
             force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
@@ -408,8 +406,7 @@ force_page('invoice', 'edit', 'workorder_id='.$workorder_id.'&customer_id='.$cus
 
 if(isset($submit2) && $workorder_id != "0"){
     $q = "UPDATE ".PRFX."TABLE_WORK_ORDER SET
-        WORK_ORDER_STATUS        = '6',
-        WORK_ORDER_CURRENT_STATUS     = '8'
+        WORK_ORDER_STATUS        = '8'        
         WHERE WORK_ORDER_ID         =".$db->qstr($workorder_id);
     if(!$rs = $db->execute($q)) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');

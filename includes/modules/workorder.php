@@ -148,16 +148,14 @@ function display_workorders($db, $status, $direction = 'DESC', $use_pages = fals
             ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_STATUS,
             ".PRFX."TABLE_CUSTOMER.CUSTOMER_ID,
             ".PRFX."TABLE_CUSTOMER.CUSTOMER_DISPLAY_NAME,            
-            ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_DISPLAY_NAME,
-            ".PRFX."CONFIG_WORK_ORDER_STATUS.CONFIG_WORK_ORDER_STATUS
+            ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_DISPLAY_NAME            
             FROM ".PRFX."TABLE_WORK_ORDER
-            LEFT JOIN ".PRFX."TABLE_CUSTOMER ON ".PRFX."TABLE_WORK_ORDER.CUSTOMER_ID                            = ".PRFX."TABLE_CUSTOMER.CUSTOMER_ID
-            LEFT JOIN ".PRFX."TABLE_EMPLOYEE ON ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_ASSIGN_TO                   = ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_ID
-            LEFT JOIN ".PRFX."CONFIG_WORK_ORDER_STATUS ON ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_CURRENT_STATUS    = ".PRFX."CONFIG_WORK_ORDER_STATUS.CONFIG_WORK_ORDER_STATUS_ID"
-            .$whereTheseRecords.            
+            LEFT JOIN ".PRFX."TABLE_CUSTOMER ON ".PRFX."TABLE_WORK_ORDER.CUSTOMER_ID            = ".PRFX."TABLE_CUSTOMER.CUSTOMER_ID
+            LEFT JOIN ".PRFX."TABLE_EMPLOYEE ON ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_ASSIGN_TO   = ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_ID".      
+            $whereTheseRecords.            
             " GROUP BY ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_ID".
-            " ORDER BY ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_ID ".$direction
-            .$limitTheseRecords;    
+            " ORDER BY ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_ID ".$direction.
+            $limitTheseRecords;    
          
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
@@ -255,38 +253,6 @@ function display_workorder_history($db, $workorder_id){
     
 }
 
-###################################
-# Display Work Order Status Types #
-###################################
-
-/*
- * This is currently NOT used
- * 
- * This creates an array of WO status types agaisnt the types ID number
- * This could be used on the status.tpl for the 'New Status:' option to build the form list
- */
-
-function display_status_types($db){
-
-    $sql = "SELECT * FROM ".PRFX."CONFIG_WORK_ORDER_STATUS WHERE DISPLAY='1'";
-    
-    if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
-        exit;
-    } else {
-        
-        while($row = $rs->FetchRow()){
-            $status_id                  = $row["CONFIG_WORK_ORDER_STATUS_ID"];
-            $status                     = $row["CONFIG_WORK_ORDER_STATUS"];
-            $status_array[$status_id]   = $status;
-        }
-        
-        return $status_array;
-        
-    }
-    
-}
-
 /** Insert New Functions **/
 
 #########################
@@ -304,8 +270,7 @@ function insert_new_workorder($db, $customer_id, $created_by, $scope, $workorder
     $sql = "INSERT INTO ".PRFX."TABLE_WORK_ORDER SET 
             CUSTOMER_ID                                 = " . $db->qstr( $customer_id           ).",
             WORK_ORDER_OPEN_DATE                        = " . $db->qstr( time()                 ).",
-            WORK_ORDER_STATUS                           = " . $db->qstr( 10                     ).",
-            WORK_ORDER_CURRENT_STATUS                   = " . $db->qstr( 1                      ).",
+            WORK_ORDER_STATUS                           = " . $db->qstr( 1                      ).",            
             WORK_ORDER_CREATE_BY                        = " . $db->qstr( $created_by            ).",
             WORK_ORDER_SCOPE                            = " . $db->qstr( $scope                 ).",
             WORK_ORDER_DESCRIPTION                      = " . $db->qstr( $workorder_description ).",
@@ -706,12 +671,11 @@ function close_workorder_with_invoice($db, $workorder_id, $workorder_resolution)
 
     /* Insert resolution and close information */
     $sql = "UPDATE ".PRFX."TABLE_WORK_ORDER SET
-             WORK_ORDER_STATUS          = '9',
+             WORK_ORDER_STATUS          = ". $db->qstr( 9                       ).",
              WORK_ORDER_CLOSE_DATE      = ". $db->qstr( time()                  ).",
              WORK_ORDER_RESOLUTION      = ". $db->qstr( $workorder_resolution   ).",
              WORK_ORDER_CLOSE_BY        = ". $db->qstr( $_SESSION['login_id']   ).",
-             WORK_ORDER_ASSIGN_TO       = ". $db->qstr( $_SESSION['login_id']   ).",
-             WORK_ORDER_CURRENT_STATUS  = ". $db->qstr( 7                       )."
+             WORK_ORDER_ASSIGN_TO       = ". $db->qstr( $_SESSION['login_id']   )."             
              WHERE WORK_ORDER_ID        = ". $db->qstr( $workorder_id           );
     
     if(!$rs = $db->Execute($sql)){ 
@@ -753,8 +717,7 @@ function close_workorder_without_invoice($db, $workorder_id, $workorder_resoluti
              WORK_ORDER_CLOSE_DATE      = ". $db->qstr( time()                  ).",
              WORK_ORDER_RESOLUTION      = ". $db->qstr( $workorder_resolution   ).",
              WORK_ORDER_CLOSE_BY        = ". $db->qstr( $_SESSION['login_id']   ).",
-             WORK_ORDER_ASSIGN_TO       = ". $db->qstr( $_SESSION['login_id']   ).",
-             WORK_ORDER_CURRENT_STATUS  = ". $db->qstr( 6                       )."
+             WORK_ORDER_ASSIGN_TO       = ". $db->qstr( $_SESSION['login_id']   )."             
              WHERE WORK_ORDER_ID        = ". $db->qstr( $workorder_id           );
     
     if(!$rs = $db->Execute($sql)) {
@@ -888,7 +851,7 @@ function assign_workorder_to_employee($db, $workorder_id, $logged_in_employee_id
     global $smarty;
     
     $sql = "UPDATE ".PRFX."TABLE_WORK_ORDER SET WORK_ORDER_ASSIGN_TO=".$db->qstr($target_employee_id).",
-            WORK_ORDER_CURRENT_STATUS=2
+            WORK_ORDER_STATUS=2
             WHERE WORK_ORDER_ID=".$db->qstr($workorder_id) ;
     
     if(!$rs = $db->Execute($sql)) {
@@ -929,28 +892,30 @@ function resolution_edit_status_check($db, $workorder_id) {
     
     global $smarty;
     
-    $sql = "SELECT WORK_ORDER_STATUS,WORK_ORDER_CURRENT_STATUS FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_ID=".$db->qstr($workorder_id);
+    $sql = "SELECT WORK_ORDER_STATUS FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_ID=".$db->qstr($workorder_id);
     
     if(!$rs = $db->execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
+        
     } else {        
     
-        if($rs->fields['WORK_ORDER_STATUS'] == 9) {
-            
-            $_SESSION['force_page']['warning_msg'] = $smarty->get_template_vars('translate_workorder_advisory_message_function_resolution_edit_status_check_workorderalreadyclosed');
-            return false;
-            
-        } elseif ($rs->fields['WORK_ORDER_CURRENT_STATUS'] == 3) {
+        // waiting for parts
+        if ($rs->fields['WORK_ORDER_STATUS'] == 3) {
             
             $_SESSION['force_page']['warning_msg'] = $smarty->get_template_vars('translate_workorder_advisory_message_function_resolution_edit_status_check_waitingforparts');
             return false;
             
-        } else {
-           
-            return true;
+        }
+        
+        // closed
+        if($rs->fields['WORK_ORDER_STATUS'] == 6) {
             
-        } 
+            $_SESSION['force_page']['warning_msg'] = $smarty->get_template_vars('translate_workorder_advisory_message_function_resolution_edit_status_check_workorderalreadyclosed');
+            return false;
+        }
+        
+        return true;        
        
     }
    

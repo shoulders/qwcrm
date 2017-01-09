@@ -57,8 +57,7 @@ if($VAR['submit']) {
         }
         
         $q = "UPDATE ".PRFX."TABLE_WORK_ORDER SET
-            WORK_ORDER_STATUS        = '6',
-            WORK_ORDER_CURRENT_STATUS     = '8'
+            WORK_ORDER_STATUS        = '8'            
             WHERE WORK_ORDER_ID         =".$db->qstr($workorder_id);
         if(!$rs = $db->execute($q)) {
             force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
