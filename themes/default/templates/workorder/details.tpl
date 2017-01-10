@@ -12,7 +12,7 @@
                         <li class="active"><a href="#" rel="#tab_1_contents" class="tab"><img src="{$theme_images_dir}icons/workorders.gif" alt="" border="0" height="14" width="14" />&nbsp;{$translate_workorder_details_title}</a></li>
                         <li><a href="#" rel="#tab_2_contents" class="tab"><img src="{$theme_images_dir}icons/customers.gif" alt="" border="0" height="14" width="14" />&nbsp;{$translate_workorder_details_customer_details_title}</a></li>
                         <li><a href="#" rel="#tab_3_contents" class="tab"><img src="{$theme_images_dir}icons/16x16/Calendar.gif" alt="" border="0" height="14" width="14" />&nbsp;{$translate_workorder_details_schedule_title}</a></li>
-                        <li><a href="#" rel="#tab_4_contents" class="tab"><img src="{$theme_images_dir}icons/note.png" alt="" border="0" height="14" width="14" /> &nbsp;{$translate_workorder_details_notes_title}</a></li>                        
+                        <li><a href="#" rel="#tab_4_contents" class="tab"><img src="{$theme_images_dir}icons/note.png" alt="" border="0" height="14" width="14" />&nbsp;{$translate_workorder_details_notes_title}</a></li>                        
                         <li><a href="#" rel="#tab_6_contents" class="tab"><img src="{$theme_images_dir}icons/clock.gif" alt="" border="0" height="14" width="14" />&nbsp;{$translate_workorder_details_history_title}</a></li>
                     </ul>
 
@@ -83,14 +83,10 @@
                                                 <td class="menuhead2" width="80%">&nbsp;{$translate_workorder_work_order_id} {$single_workorder[i].WORK_ORDER_ID}</td>
                                                 <td class="menuhead2" width="20%" align="right" valign="middle">
                                                     <a href="index.php?page=workorder:print&workorder_id={$workorder_id}&page_title=Print&theme=off" target="_blank">
-                                                        <img src="{$theme_images_dir}icons/print.gif" alt="Print Works Order" border="0" height="14" width="14"
-                                                        onMouseOver="ddrivetip('{$translate_workorder_print_work_order}');"
-                                                        onMouseOut="hideddrivetip();" />
+                                                        <img src="{$theme_images_dir}icons/print.gif" alt="Print Works Order" border="0" height="14" width="14" onMouseOver="ddrivetip('{$translate_workorder_print_work_order}');" onMouseOut="hideddrivetip();" />
                                                     </a>
                                                     <a href="" target="new">
-                                                        <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" alt=""
-                                                        onMouseOver="ddrivetip('<b>{$translate_workorder_details_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_workorder_details_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');"
-                                                        onMouseOut="hideddrivetip();">
+                                                        <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{$translate_workorder_details_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_workorder_details_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();">                                                        
                                                     </a>
                                                 </td>
                                             </tr>
@@ -123,14 +119,10 @@
                                                 <td class="menuhead2" width="80%">&nbsp;{$translate_workorder_work_order_id} {$single_workorder[i].WORK_ORDER_ID}</td>
                                                 <td class="menuhead2" width="20%" align="right" valign="middle">
                                                     <a href="index.php?page=workorder:print&workorder_id={$workorder_id}&page_title=Print&theme=off" target="_blank">
-                                                        <img src="{$theme_images_dir}icons/print.gif" alt="Print Works Order" border="0" height="14" width="14"
-                                                        onMouseOver="ddrivetip('{$translate_workorder_print_work_order}');"
-                                                        onMouseOut="hideddrivetip();" />
+                                                        <img src="{$theme_images_dir}icons/print.gif" alt="Print Works Order" border="0" height="14" width="14" onMouseOver="ddrivetip('{$translate_workorder_print_work_order}');" onMouseOut="hideddrivetip();" />
                                                     </a>
                                                     <a href="" target="new">
-                                                        <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" alt=""
-                                                        onMouseOver="ddrivetip('<b>{$translate_workorder_details_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_workorder_details_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');"
-                                                        onMouseOut="hideddrivetip();">
+                                                        <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{$translate_workorder_details_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_workorder_details_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();">                                                        
                                                     </a>
                                                 </td>
                                             </tr>
@@ -163,14 +155,10 @@
                                                 <td class="menuhead2" width="80%">&nbsp;{$translate_workorder_work_order_id} {$single_workorder[i].WORK_ORDER_ID}</td>
                                                 <td class="menuhead2" width="20%" align="right" valign="middle">
                                                     <a href="index.php?page=workorder:print&workorder_id={$workorder_id}&page_title=Print&theme=off" target="_blank">
-                                                        <img src="{$theme_images_dir}icons/print.gif" alt="Print Works Order" border="0" height="14" width="14"
-                                                        onMouseOver="ddrivetip('{$translate_workorder_print_work_order}');"
-                                                        onMouseOut="hideddrivetip();" />
+                                                        <img src="{$theme_images_dir}icons/print.gif" alt="Print Works Order" border="0" height="14" width="14" onMouseOver="ddrivetip('{$translate_workorder_print_work_order}');" onMouseOut="hideddrivetip();" />
                                                     </a>
                                                     <a href="" target="new">
-                                                        <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" alt=""
-                                                        onMouseOver="ddrivetip('<b>{$translate_workorder_details_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_workorder_details_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');"
-                                                        onMouseOut="hideddrivetip();">
+                                                        <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{$translate_workorder_details_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_workorder_details_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();">                                                        
                                                     </a>
                                                 </td>
                                             </tr>
@@ -203,14 +191,10 @@
                                                 <td class="menuhead2" width="80%">&nbsp;{$translate_workorder_work_order_id} {$single_workorder[i].WORK_ORDER_ID}</td>
                                                 <td class="menuhead2" width="20%" align="right" valign="middle">
                                                     <a href="index.php?page=workorder:print&workorder_id={$workorder_id}&page_title=Print&theme=off" target="_blank">
-                                                        <img src="{$theme_images_dir}icons/print.gif" alt="Print Works Order" border="0" height="14" width="14"
-                                                        onMouseOver="ddrivetip('{$translate_workorder_print_work_order}');"
-                                                        onMouseOut="hideddrivetip();" />
+                                                        <img src="{$theme_images_dir}icons/print.gif" alt="Print Works Order" border="0" height="14" width="14" onMouseOver="ddrivetip('{$translate_workorder_print_work_order}');" onMouseOut="hideddrivetip();" />
                                                     </a>
                                                     <a href="" target="new">
-                                                        <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" alt=""
-                                                        onMouseOver="ddrivetip('<b>{$translate_workorder_details_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_workorder_details_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');"
-                                                        onMouseOut="hideddrivetip();">
+                                                        <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{$translate_workorder_details_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_workorder_details_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();">                                                        
                                                     </a>
                                                 </td>
                                             </tr>

@@ -86,7 +86,7 @@ define('QWCRM_PATH', str_replace('index.php', '', $_SERVER['PHP_SELF']));
 #         Initialise QWCRM                     #
 ################################################
 
-require('configuration.php');
+if(is_file('configuration.php')) {require('configuration.php');}
 require('includes/defines.php');
 require(INCLUDES_DIR.'security.php');
 require(INCLUDES_DIR.'include.php');
@@ -122,7 +122,7 @@ if(!load_language()) {$smarty->assign('error_msg', 'Error in system language fil
 #    Verify QWcrm is installed correctly       #
 ################################################
 
-verify_qwcrm_is_installed_correctly($db);
+//verify_qwcrm_is_installed_correctly($db);
 
 ################################################
 #          Authentication                      #

@@ -433,14 +433,9 @@ function verify_qwcrm_is_installed_correctly($db){
 
     global $smarty;
     
-    // If the lock file is not present QWcrm has not been installed - redirect to the installation directory
-    if(!is_file('cache/lock')){        
+    // If no configuration file - redirect to the installation directory
+    if(!is_file('configuration.php')){        
         force_page('install');        
-    }
-
-    // Compare the version number of the file system against the database - if the same assumed installed
-    if(version_compare(get_qwcrm_database_version_number($db), QWCRM_VERSION, '==')){
-        return;        
     }
     
     // Compare the version number of the file system against the database - if mismatch load upgrade for further instructions?

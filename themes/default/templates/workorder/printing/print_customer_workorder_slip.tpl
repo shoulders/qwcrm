@@ -1,5 +1,6 @@
 <!-- print_customer_workorder_slip.tpl - Customer Work Order Slip Print Template -->
-{section name=i loop=$single_work_order}    
+{section name=i loop=$single_work_order}
+    
     <!-- Header -->
     <table width="900" border="0" cellpadding="2" cellspacing="0" style="border-collapse: collapse;">
         <tr bgcolor="#999999">

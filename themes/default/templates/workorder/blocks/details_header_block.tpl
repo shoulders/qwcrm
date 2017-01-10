@@ -9,6 +9,7 @@
         <td class="olohead" align="center">{$translate_workorder_last_change}</td>
     </tr>
     <tr>
+        
         <!-- ID -->
         <td class="olotd4" align="center">{$single_workorder[i].WORK_ORDER_ID}</td>
         
@@ -32,9 +33,7 @@
         
         <!-- Assigned To -->
         <td class="olotd4" align="center">
-            <img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0"
-                onMouseOver="ddrivetip('<center><b>{$translate_workorder_contact}</b></center><hr><b>{$translate_workorder_fax}: </b>{$single_workorder[i].EMPLOYEE_WORK_PHONE}<br><b>{$translate_workorder_mobile}: </b>{$single_workorder[i].EMPLOYEE_MOBILE_PHONE}<br><b>{$translate_workorder_home}: </b>{$single_workorder[i].EMPLOYEE_HOME_PHONE}');"
-                onMouseOut="hideddrivetip();">
+            <img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" onMouseOver="ddrivetip('<center><b>{$translate_workorder_contact}</b></center><hr><b>{$translate_workorder_fax}: </b>{$single_workorder[i].EMPLOYEE_WORK_PHONE}<br><b>{$translate_workorder_mobile}: </b>{$single_workorder[i].EMPLOYEE_MOBILE_PHONE}<br><b>{$translate_workorder_home}: </b>{$single_workorder[i].EMPLOYEE_HOME_PHONE}');" onMouseOut="hideddrivetip();">                
            <a class="link1" href="?page=employee:employee_details&employee_id={$single_workorder[i].EMPLOYEE_ID}&page_title={$single_workorder[i].EMPLOYEE_DISPLAY_NAME}">{$single_workorder[i].EMPLOYEE_DISPLAY_NAME}</a>
         </td>
         

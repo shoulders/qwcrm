@@ -10,9 +10,7 @@
                             <tr>
                                 <td width="33%" align="right">
                                     <a href="?page=customer:edit&customer_id={$single_workorder[i].CUSTOMER_ID}&page_title={$single_workorder[i].CUSTOMER_DISPLAY_NAME}">
-                                        <img src="{$theme_images_dir}icons/16x16/small_edit.gif" border="0"
-                                            onMouseOver="ddrivetip('{$translate_workorder_details_edit_customer_details_button_tooltip}');"
-                                            onMouseOut="hideddrivetip();">
+                                        <img src="{$theme_images_dir}icons/16x16/small_edit.gif" border="0" onMouseOver="ddrivetip('{$translate_workorder_details_edit_customer_details_button_tooltip}');" onMouseOut="hideddrivetip();">                                            
                                     </a>
                                 </td>
                             </tr>
@@ -77,6 +75,12 @@
                         {if $single_workorder[i].CUSTOMER_TYPE ==2}{$translate_workorder_customer_type_2}{/if}
                         {if $single_workorder[i].CUSTOMER_TYPE ==3}{$translate_workorder_customer_type_3}{/if}
                         {if $single_workorder[i].CUSTOMER_TYPE ==4}{$translate_workorder_customer_type_4}{/if}
+                        {if $single_workorder[i].CUSTOMER_TYPE ==5}{$translate_workorder_customer_type_5}{/if}
+                        {if $single_workorder[i].CUSTOMER_TYPE ==6}{$translate_workorder_customer_type_6}{/if}
+                        {if $single_workorder[i].CUSTOMER_TYPE ==7}{$translate_workorder_customer_type_7}{/if}
+                        {if $single_workorder[i].CUSTOMER_TYPE ==8}{$translate_workorder_customer_type_8}{/if}
+                        {if $single_workorder[i].CUSTOMER_TYPE ==9}{$translate_workorder_customer_type_9}{/if}
+                        {if $single_workorder[i].CUSTOMER_TYPE ==10}{$translate_workorder_customer_type_10}{/if}
                     </td>
                     <td class="menutd"><b>{$translate_workorder_discount}</b></td>
                     <td class="menutd">{$single_workorder[i].DISCOUNT}%</td>

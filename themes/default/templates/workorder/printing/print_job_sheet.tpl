@@ -1,5 +1,6 @@
-<!-- print_job_sheet_slip.tpl - Job Sheet Print Template -->
-{section name=i loop=$single_work_order}    
+<!-- print_job_sheet.tpl - Job Sheet Print Template -->
+{section name=i loop=$single_work_order}
+    
     <!-- Header -->
     <table width="900" border="0" cellpadding="2" cellspacing="0" style="border-collapse: collapse;">
         <tr>
