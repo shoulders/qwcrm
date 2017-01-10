@@ -266,7 +266,7 @@ function build_calendar_matrix($db, $schedule_start_year, $schedule_start_month,
                 if(check_workorder_is_open($db, $scheduleObject[$i]['WORKORDER_ID'])) {                    
                     $calendar .= " - <b><a href=\"index.php?page=schedule:edit&schedule_id=".$scheduleObject[$i]['SCHEDULE_ID']."\">Edit Schedule Item</a></b> - ".
                                     "<b><a href=\"index.php?page=schedule:icalendar&schedule_id=".$scheduleObject[$i]['SCHEDULE_ID']."&theme=print\">iCalendar</a></b> - ".
-                                    "<b><a href=\"index.php?page=schedule:delete&schedule_id=".$scheduleObject[$i]['SCHEDULE_ID']."\" onclick=\"return confirmDelete();\">Delete</a></b>\n";                                    
+                                    "<b><a href=\"index.php?page=schedule:delete&schedule_id=".$scheduleObject[$i]['SCHEDULE_ID']."\" onclick=\"return confirmDelete('are you sure');\">Delete</a></b>\n";                                    
                 }
 
                 // Close CELL

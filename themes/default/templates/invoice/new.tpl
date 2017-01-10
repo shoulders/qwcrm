@@ -1,4 +1,4 @@
-<!-- edit.tpl -->
+<!-- new.tpl -->
 <link rel="stylesheet" href="{$theme_js_dir}jscal2/css/jscal2.css" />
 <link rel="stylesheet" href="{$theme_js_dir}jscal2/css/steel/steel.css" />
 <script src="{$theme_js_dir}jscal2/jscal2.js"></script>

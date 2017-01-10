@@ -48,7 +48,7 @@
                                                         </tr><tr>
                                                             <td align="right"><b>{$translate_expense_date}</b><span style="color: #ff0000"> *</span></td>
                                                             <td>
-                                                                <input id="expenseDate" name="expenseDate" class="olotd5" size="10" value="{$expense_details[q].EXPENSE_DATE|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{1,4}${/literal}" required onkeydown="return onlyDate(event);">
+                                                                <input id="expenseDate" name="expenseDate" class="olotd5" size="10" value="{$expense_details[q].EXPENSE_DATE|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
                                                                 <input id="expenseDate_button" value="+" type="button">                                                            
                                                                 <script>
                                                                 {literal}

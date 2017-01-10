@@ -1,3 +1,5 @@
+
+
 <!-- theme_debug_block.tpl -->
 <div style="width: 900px; margin-bottom: 20px;">
     <table width="300" border="0" cellspacing="0" cellpadding="0" style="margin: auto auto;">

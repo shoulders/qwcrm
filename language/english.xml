@@ -145,6 +145,8 @@
     <core_debug_qwcrm_advanced_debug_section_title>QWcrm Advanced Debug Section</core_debug_qwcrm_advanced_debug_section_title>
     <core_debug_all_defined_php_variables_title>All Defined PHP Variables</core_debug_all_defined_php_variables_title>
     <core_debug_all_defined_php_constants_title>All Defined PHP Constants</core_debug_all_defined_php_constants_title>
+    <core_debug_all_defined_php_functions_title>All Defined PHP Functions</core_debug_all_defined_php_functions_title>
+    <core_debug_all_declared_php_classes_title>All Declared PHP Classes</core_debug_all_declared_php_classes_title>
 
     // core_menu / theme_menu_block.tpl
     <core_menu_main_menu>Main Menu</core_menu_main_menu>

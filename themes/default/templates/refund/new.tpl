@@ -51,7 +51,7 @@
                                                                         <tr>
                                                                             <td align="right"><b>{$translate_refund_date}</b><span style="color: #ff0000"> *</span></td>
                                                                             <td>
-                                                                                <input id="refundDate" name="refundDate" class="olotd5" size="10" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{1,4}${/literal}" required onkeydown="return onlyDate(event);">
+                                                                                <input id="refundDate" name="refundDate" class="olotd5" size="10" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
                                                                                 <input id="refundDate_button" value="+" type="button">                                                                                
                                                                                 <script>
                                                                                 {literal}

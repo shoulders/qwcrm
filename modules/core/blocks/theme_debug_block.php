@@ -12,10 +12,14 @@ $smarty->assign('startMem',                 $startMem / 1048576                 
 $smarty->assign('currentMem',               memory_get_usage() / 1048576        );  // PHP Memory used at the time this php is called (in MB)
 $smarty->assign('peakMem',                  memory_get_peak_usage() / 1048576   );  // Peak PHP Memory used during the page load (in MB)
 
-$BuildPage .= $smarty->fetch('core'.SEP.'blocks'.SEP.'theme_debug_block.tpl');
+$BuildPage .= $smarty->fetch('core/blocks/theme_debug_block.tpl');
 
-/* Advanced Debug - Only use in offline sites and for developement only */
+// Smarty Debugging - Done this way because $smarty_debugging is not supported when using fetch()
+if($smarty_debug == true) {
+    $BuildPage .= $smarty->fetch('core/blocks/theme_debug_smarty_debug_block.tpl');
+}
 
+// Advanced Debug - Only use in offline sites and for developement only
 if($qwcrm_advanced_debug == true) {
 
     $BuildPage .= "\r\n\r\n<div><p><strong>".$smarty->get_template_vars('translate_core_debug_qwcrm_advanced_debug_section_title')."</strong></p></div>\r\n";
@@ -45,13 +49,13 @@ if($qwcrm_advanced_debug == true) {
     /* 
      * All defined PHP functions
      */    
-    $BuildPage .= "<div><p><strong>".'defined functions'.":</strong></p></div>\r\n";
+    $BuildPage .= "<div><p><strong>".$smarty->get_template_vars('translate_core_debug_all_defined_php_functions_title').":</strong></p></div>\r\n";
     $BuildPage .= '<pre>'.print_r(get_defined_functions(), true).'</pre>';    
 
     /* 
      * All declared PHP Classes
      */    
-    $BuildPage .= "<div><p><strong>".'get declared classes'.":</strong></p></div>\r\n";
-    $BuildPage .= '<pre>'.print_r(get_declared_classes(), true).'</pre>';      
+    $BuildPage .= "<div><p><strong>".$smarty->get_template_vars('translate_core_debug_all_declared_php_classes_title').":</strong></p></div>\r\n";
+    $BuildPage .= '<pre>'.print_r(get_declared_classes(), true).'</pre>';   
     
 }
