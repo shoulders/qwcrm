@@ -434,14 +434,26 @@ function verify_qwcrm_is_installed_correctly($db){
     global $smarty;
     
     // If the lock file is not present QWcrm has not been installed - redirect to the installation directory
-    if(!is_file('cache/lock')){
-        echo('
-                <script>            
-                    window.location = "install"           
-                </script>
-            ');
+    if(!is_file('cache/lock')){        
+        force_page('install');        
     }
+
+    // Compare the version number of the file system against the database - if the same assumed installed
+    if(version_compare(get_qwcrm_database_version_number($db), QWCRM_VERSION, '==')){
+        return;        
+    }
+    
+    // Compare the version number of the file system against the database - if mismatch load upgrade for further instructions?
+    if(version_compare(get_qwcrm_database_version_number($db), QWCRM_VERSION, '!=')){
         
+        // I have not decided whether to use a message or automatic redirect to the upgrade folder        
+        echo('<div style="color: red;">'.$smarty->get_template_vars('translate_system_include_advisory_message_function_verify_qwcrm_is_installed_correctly_file_database_versions_dont_match').'</div>');
+        die;
+                
+        //force_page('upgrade');         
+        
+    }
+    
     // has been installed but the installion directory is still present  
     if(is_dir('install') ) {
         echo('<div style="color: red;">'.$smarty->get_template_vars('translate_system_include_advisory_message_function_verify_qwcrm_is_installed_correctly_install_directory_exists').'</div>');
@@ -449,27 +461,10 @@ function verify_qwcrm_is_installed_correctly($db){
     }
     
     // has been installed but the upgrade directory is still present  
-    if(is_dir('install') ) {
+    if(is_dir('upgrade') ) {
         echo('<div style="color: red;">'.$smarty->get_template_vars('translate_system_include_advisory_message_function_verify_qwcrm_is_installed_correctly_upgrade_directory_exists').'</div>');
         die;
-    }    
-
-    // Compare the version number of the file system against the database - if mismatch load upgrade for further instructions?
-    if(version_compare(get_qwcrm_database_version_number($db), QWCRM_VERSION, '!=')){
-        
-        // I have not decided whether to use a message or automatic redirect to the upgrade folder        
-        echo('<div style="color: red;">'.$smarty->get_template_vars('translate_system_include_advisory_message_function_verify_qwcrm_is_installed_correctly_file_database_versions_dont_match').'</div>');
-        die;
-        
-        /*
-        echo('
-            <script>            
-                window.location = "upgrade"           
-            </script>
-        ');
-        */
-        
-    }    
+    }  
     
 }
 

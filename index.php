@@ -88,10 +88,10 @@ define('QWCRM_PATH', str_replace('index.php', '', $_SERVER['PHP_SELF']));
 
 require('configuration.php');
 require('includes/defines.php');
-require(INCLUDES_DIR.'security.php'); // some code auto runs in this library
+require(INCLUDES_DIR.'security.php');
 require(INCLUDES_DIR.'include.php');
 require(INCLUDES_DIR.'adodb.php');
-require(INCLUDES_DIR.'smarty.php');//print_r(get_defined_vars());die;
+require(INCLUDES_DIR.'smarty.php');
 require(INCLUDES_DIR.'session.php');
 require(INCLUDES_DIR.'auth.php');
 
