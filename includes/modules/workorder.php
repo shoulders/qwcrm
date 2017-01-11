@@ -764,20 +764,45 @@ function delete_workorder($db, $workorder_id) {
         return false;
     }
     
-    // Delete the workorder
+    // Delete the workorder primary record
     $sql = "DELETE FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_ID=".$db->qstr($workorder_id);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
-        exit;
+        exit;        
+    
+    // Delete the workorder history
     } else {        
+       
+        $sql = "DELETE FROM ".PRFX."TABLE_WORK_ORDER_HISTORY WHERE WORK_ORDER_ID=".$db->qstr($workorder_id);
 
-        // Write the record to the access log
-        //write_record_to_activity_log($smarty->get_template_vars('translate_workorder_log_message_work_order').' '.$workorder_id.' '.$smarty->get_template_vars('translate_workorder_log_message_function_delete_workorder_has_been_deleted'));
-        write_record_to_activity_log($smarty->get_template_vars('translate_workorder_log_message_work_order').' '.$workorder_id.' '.$smarty->get_template_vars('translate_workorder_log_message_deleted').' '.$smarty->get_template_vars('translate_workorder_log_message_by').' '.$_SESSION['login_display_name']);
+        if(!$rs = $db->Execute($sql)) {
+            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
+            exit;
+            
+        // Delete the workorder history        
+        } else {
+
+            // Delete the workorder notes
+            $sql = "DELETE FROM ".PRFX."TABLE_WORK_ORDER_NOTES WHERE WORK_ORDER_ID=".$db->qstr($workorder_id);
+
+            if(!$rs = $db->Execute($sql)) {
+                force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
+                exit;        
+                
+            // Log the workorder deletion
+            } else {
         
-        return true;
+            // Write the record to the access log
+            //write_record_to_activity_log($smarty->get_template_vars('translate_workorder_log_message_work_order').' '.$workorder_id.' '.$smarty->get_template_vars('translate_workorder_log_message_function_delete_workorder_has_been_deleted'));
+            write_record_to_activity_log($smarty->get_template_vars('translate_workorder_log_message_work_order').' '.$workorder_id.' '.$smarty->get_template_vars('translate_workorder_log_message_deleted').' '.$smarty->get_template_vars('translate_workorder_log_message_by').' '.$_SESSION['login_display_name']);
+
+            return true;
+    
+            }        
         
+        }
+    
     }
     
 }
@@ -789,6 +814,8 @@ function delete_workorder($db, $workorder_id) {
 ##################################
 
 function check_workorder_has_invoice($db, $workorder_id) {
+    
+    global $smarty;
     
     $sql = "SELECT * FROM ".PRFX."TABLE_INVOICE WHERE WORKORDER_ID=".$workorder_id;
     
