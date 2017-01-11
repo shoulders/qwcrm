@@ -838,21 +838,27 @@ function write_record_to_error_log($login_usr = '-', $error_page, $error_type, $
 
 // only used in schedule
 
-function convert_year_month_day_to_date($schedule_start_year, $schedule_start_month, $schedule_start_day) {
+function convert_year_month_day_to_date($year, $month, $day) {    
+
+    // Ensure months supplied as 2 digits
+    if(strlen($month) == 1) {$month = '0'.$month;}
+    
+    // Ensure days supplied as 2 digits
+    if(strlen($day) == 1) {$day = '0'.$day;}
     
     switch(DATE_FORMAT) {
 
         case '%d/%m/%Y':
-        return $schedule_start_day."/".$schedule_start_month."/".$schedule_start_year;
+        return $day."/".$month."/".$year;
 
         case '%d/%m/%y':
-        return $schedule_start_day."/".$schedule_start_month."/".substr($schedule_start_year, 2);
+        return $day."/".$month."/".substr($year, 2);
 
         case '%m/%d/%Y':
-        return $schedule_start_month."/".$schedule_start_day."/".$schedule_start_year;
+        return $month."/".$day."/".$year;
 
         case '%m/%d/%y':
-        return $schedule_start_month."/".$schedule_start_day."/".substr($schedule_start_year, 2);
+        return $month."/".$day."/".substr($year, 2);
             
     }
     

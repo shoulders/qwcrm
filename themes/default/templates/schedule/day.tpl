@@ -8,9 +8,9 @@
 <table width="100%" border="0" cellpadding="20" cellspacing="5">
     <tr>
         <td>
-            <table width="700" cellpadding="4" cellspacing="0" border="0" >
+            <table width="700" cellpadding="4" cellspacing="0" border="0">
                 <tr>
-                    <td class="menuhead2" width="100%" align="center">&nbsp;{$translate_schedule_view} {$current_schedule_date}</td>                    
+                    <td class="menuhead2" width="100%" align="center">&nbsp;{$translate_schedule_view} {$current_schedule_date|date_format:"$date_format"}</td>                    
                 </tr>
                 <tr>
                     <td class="menutd2" colspan="3">

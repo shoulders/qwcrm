@@ -24,7 +24,7 @@
                                                     <b>Notes:</b><br />
                                                     <div>{$single_schedule[a].SCHEDULE_NOTES}</div><br>
                                                     <button type="button" onClick="window.location='?page=schedule:edit&schedule_id={$single_schedule[a].SCHEDULE_ID}';">{$translate_schedule_edit}</button>
-                                                    <button type="button" onClick="return confirmDelete('are you sure'); window.location='?page=schedule:delete&schedule_id={$single_schedule[a].SCHEDULE_ID}';">{$translate_schedule_delete}</button>
+                                                    <a href="?page=schedule:delete&schedule_id={$workorder_schedule[a].SCHEDULE_ID}" onclick="return confirmDelete('are you sure you want to delete the schedule item');"><button type="button">{$translate_schedule_delete}</button></a>                                                    
                                                     <button type="button" onClick="window.location='?page=schedule:icalendar&schedule_id={$single_schedule[a].SCHEDULE_ID}&theme=print';">Export</button>                                         
                                                     <button type="button" onClick="window.location='?page=workorder:details&workorder_id={$single_schedule[a].WORKORDER_ID}';">View Work Order</button>
                                                 </td>
