@@ -754,13 +754,13 @@ function delete_workorder($db, $workorder_id) {
     
     // Does the workorder have an invoice
     if(check_workorder_has_invoice($db, $workorder_id)) {
-        $_SESSION['force_page']['warning_msg'] = 'This workorder cannot be deleted because it has an invoice.';        
+        $_SESSION['force_page']['warning_msg'] = $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_hasinvoice');        
         return false;
     }
     
     // Is the workorder in an allowed state to be deleted
     if(!check_workorder_status_is_allowed_for_deletion($db, $workorder_id)) {
-        $_SESSION['force_page']['warning_msg'] = 'This workorder cannot be deleted because its status does not allow it.';        
+        $_SESSION['force_page']['warning_msg'] = $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_statusnotallowed');        
         return false;
     }
     
@@ -817,10 +817,10 @@ function delete_workorder($db, $workorder_id) {
     
 }    
 
-/** Misc **/
+/** Other Functions **/
 
 ##################################
-# Does workorder have an invoice # //translate this
+# Does workorder have an invoice #
 ##################################
 
 function check_workorder_has_invoice($db, $workorder_id) {
@@ -849,7 +849,7 @@ function check_workorder_has_invoice($db, $workorder_id) {
 }
 
 ######################################################
-# Is the workorder in an allowed state to be deleted #  //translate this
+# Is the workorder in an allowed state to be deleted #
 ######################################################
 
 function check_workorder_status_is_allowed_for_deletion($db, $workorder_id) {
@@ -876,8 +876,6 @@ function check_workorder_status_is_allowed_for_deletion($db, $workorder_id) {
     }
     
 }
-
-/** Other Functions **/
 
 #########################################
 # Assign Work Order to another employee #
@@ -962,7 +960,6 @@ function resolution_edit_status_check($db, $workorder_id) {
 #      Check if a workorder is open           #
 ###############################################
 
-
 function check_workorder_is_open($db, $workorder_id) {
        
     if(!$workorder_id){return false;}
@@ -970,7 +967,7 @@ function check_workorder_is_open($db, $workorder_id) {
     $sql = "SELECT WORK_ORDER_STATUS FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_ID=".$db->qstr($workorder_id);
     
     if(!$rs = $db->execute($sql)) {
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         $status = $rs->fields['WORK_ORDER'];

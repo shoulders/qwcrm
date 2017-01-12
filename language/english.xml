@@ -1464,8 +1464,7 @@
         <workorder_error_message_function_display_workorders_failed>Could not display the Work Order(s) requested</workorder_error_message_function_display_workorders_failed>
         <workorder_error_message_function_display_workorders_notfound>The requested Work Order(s) could not be found</workorder_error_message_function_display_workorders_notfound> 
         <workorder_error_message_function_display_workorders_count>Failed to select and count Work Orders requested</workorder_error_message_function_display_workorders_count>     
-        <workorder_error_message_function_display_resolution_failed>Could not display resolution for the Work Order</workorder_error_message_function_display_resolution_failed>
-        
+        <workorder_error_message_function_display_resolution_failed>Could not display resolution for the Work Order</workorder_error_message_function_display_resolution_failed>        
         <workorder_error_message_function_display_workorder_notes_failed>Could not to display notes for the Work Order</workorder_error_message_function_display_workorder_notes_failed>
         <workorder_error_message_function_display_parts_failed>Could not display parts for the Work Order</workorder_error_message_function_display_parts_failed>
         <workorder_error_message_function_display_workorder_history_failed>Could not display history for the Work Order</workorder_error_message_function_display_workorder_history_failed>        
@@ -1485,9 +1484,14 @@
         <workorder_error_message_function_update_last_active_failed>Failed to update the Last Activity Date for the Work Order</workorder_error_message_function_update_last_active_failed>                
         <workorder_error_message_function_close_workorder_with_invoice_failed>Failed to Close the Work Order and create an Invoice</workorder_error_message_function_close_workorder_with_invoice_failed>        
         <workorder_error_message_function_close_workorder_without_invoice_failed>Failed to Close the Work Order</workorder_error_message_function_close_workorder_without_invoice_failed>        
-        <workorder_error_message_function_delete_workorder_failed>Failed to Delete the Work Order</workorder_error_message_function_delete_workorder_failed>        
+        <workorder_error_message_function_delete_workorder_failed>Failed to Delete the Work Order</workorder_error_message_function_delete_workorder_failed>
+        <workorder_error_message_function_delete_workorder_hasinvoice>This workorder cannot be deleted because it has an invoice</workorder_error_message_function_delete_workorder_hasinvoice>
+        <workorder_error_message_function_delete_workorder_statusnotallowed>This workorder cannot be deleted because its status does not allow it</workorder_error_message_function_delete_workorder_statusnotallowed>        
+        <workorder_error_message_function_check_workorder_has_invoice_failed>Failed to check the Work Order has an invoice</workorder_error_message_function_check_workorder_has_invoice_failed>
+        <workorder_error_message_function_check_workorder_status_is_allowed_for_deletion_failed>Failed to check is the Work Order has a status allowing it to be deleted</workorder_error_message_function_check_workorder_status_is_allowed_for_deletion_failed>        
         <workorder_error_message_function_assign_workorder_to_employee_failed>Failed to assign Work Order to another employee</workorder_error_message_function_assign_workorder_to_employee_failed>        
         <workorder_error_message_function_resolution_edit_status_check_failed>Failed to check the Resolution Status of the Work Order</workorder_error_message_function_resolution_edit_status_check_failed>
+        <workorder_error_message_function_check_workorder_is_open_failed>Failed to check if the Work Order is open</workorder_error_message_function_check_workorder_is_open_failed>
 
         // closed.php
         
