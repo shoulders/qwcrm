@@ -253,7 +253,7 @@ function display_workorder_history($db, $workorder_id){
     
 }
 
-/** Insert New Functions **/
+/** New/Insert Functions **/
 
 #########################
 # Insert New Work Order #
