@@ -20,7 +20,7 @@ tinymce.init({
       'advlist autolink link lists charmap hr spellchecker visualchars code fullscreen table contextmenu paste textcolor'      
     ],
 
-    // If TinyMCE Editor is empty and has the class "wysiwyg-checkforcontent" on its placeholder, dont submit the form
+    // On Submit if TinyMCE Editor is empty and has the class "wysiwyg-checkforcontent" on its placeholder, dont submit the form and put a red border around it
     setup: function(editor) {
         editor.on('submit', function(e) {
 
@@ -35,8 +35,4 @@ tinymce.init({
         });
     }
 
-
 });
-        
-       
-        

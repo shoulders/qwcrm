@@ -882,7 +882,7 @@ function date_to_timestamp($date_to_convert){
     
     // this is just returning the current time
     // http://php.net/manual/en/datetime.createfromformat.php
-    //Be warned that DateTime object created without explicitely providing the time portion will have the current time set instead of 00:00:00.
+    // Be warned that DateTime object created without explicitely providing the time portion will have the current time set instead of 00:00:00.
     // can also use - instead of /
     // the ! allows the use without supplying the time portion
     // this works for all formats of dates where as mktime() might be a bit dodgy
