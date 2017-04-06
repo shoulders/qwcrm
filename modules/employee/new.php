@@ -1,16 +1,58 @@
 <?php
 
-// employee type is done different in new than edit i.e. function
-
 require(INCLUDES_DIR.'modules/employee.php');
- 
+
+// If employee data has been submitted
 if(isset($VAR['submit'])) {   
             
     // Insert the record if the username does not exist or reload the page for correction
-    if (check_employee_username_exists($db, $VAR['employee_usr'])) { 
+    if (check_employee_username_exists($db, $VAR['employee_usr'])) {
+        
+        // Change the $VAR array into the correct format for a smarty loop
+        $employee_details = array();
+        $employee_details[] = $VAR;         
+        
+        // Reload the page with the POST'ed data
+        $smarty->assign('employee_details', $employee_details); 
+        
+        $BuildPage .= $smarty->fetch('employee/new.tpl');
             
+        } else {    
+            
+            // Insert employee record (and return the new ID)
+            $employee_id = insert_new_employee($db, $VAR);
+            
+            // Redirect to the new employee's details page
+            force_page('employee', 'details&employee_id='.$employee_id);
+            exit;
+            
+        }
+
+// Load a blank new employee form        
+} else {
+    
+    // Empty placeholder nested arrays needed for the smarty loop to keep the page working (this is intentionally empty)
+    $smarty->assign('employee_details', array(array()));  
+    
+    // Fetch the page from the database
+    $smarty->assign('employee_type', get_employee_types($db));
+    
+    $BuildPage .= $smarty->fetch('employee/new.tpl');
+    
+}
+
+
+
+
+
+
+
+
+
+
+
         // Reload the page with the POST'ed data        
-        $smarty->assign('employee_usr',         $VAR['employee_usr']            );
+        /*$smarty->assign('employee_usr',         $VAR['employee_usr']            );
         $smarty->assign('employee_pwd',         $VAR['employee_pwd']            );
         $smarty->assign('employee_email',       $VAR['employee_email']          );
         $smarty->assign('employee_firstName',   $VAR['employee_firstName']      );
@@ -26,7 +68,7 @@ if(isset($VAR['submit'])) {
         $smarty->assign('employee_mobilePhone', $VAR['employee_mobilePhone']    );
         $smarty->assign('employee_based',       $VAR['employee_based']          );
         $smarty->assign('employee_acl',         $VAR['employee_acl']            );
-        $smarty->assign('employee_status',      $VAR['employee_status']         );
+        $smarty->assign('employee_status',      $VAR['employee_status']         );*/
         
         /*
         // Load record into an array for processing            
@@ -54,20 +96,10 @@ if(isset($VAR['submit'])) {
         
         //$smarty->assign('employee_details', display_single_employee($db, $employee_id));
         */
-        
-        // Make the array correct for a smarty loop
-        $employee_details= array();
-        $employee_details[] = $VAR;        
-        $smarty->assign('employee_details', $employee_details);
-        
-        
-        
-        $BuildPage .= $smarty->fetch('employee/new.tpl');
-            
-        } else {
+
             
             // Load record into an array for processing            
-            $employee_record['employee_usr']            = $VAR['employee_usr'];
+            /*$employee_record['employee_usr']            = $VAR['employee_usr'];
             $employee_record['employee_pwd']            = $VAR['employee_pwd'];
             $employee_record['employee_email']          = $VAR['employee_email'];
             $employee_record['employee_firstName']      = $VAR['employee_firstName'];            
@@ -83,20 +115,4 @@ if(isset($VAR['submit'])) {
             $employee_record['employee_mobilePhone']    = $VAR['employee_mobilePhone'];            
             $employee_record['employee_based']          = $VAR['employee_based'];            
             $employee_record['employee_acl']            = $VAR['employee_acl'];            
-            $employee_record['employee_status']         = $VAR['employee_status'];            
-            
-            // Insert employee record (and return the new ID)
-            $employee_id = insert_new_employee($db, $employee_record);
-            
-            // Redirect to new employee's details page
-            force_page('employee', 'details&employee_id='.$employee_id);
-            exit;
-            
-        }
-
-} else {
-    
-    // Fetch the page from the database
-    $BuildPage .= $smarty->fetch('employee/new.tpl');
-    
-}
+            $employee_record['employee_status']         = $VAR['employee_status'];*/      

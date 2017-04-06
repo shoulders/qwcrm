@@ -414,9 +414,12 @@ function build_active_employee_form_option_list($db, $assigned_employee_id){
 #    Check if Employee username already exists  #
 #################################################
 
-function check_employee_username_exists($db, $username){
+function check_employee_username_exists($db, $username, $current_username){
     
     global $smarty;
+    
+    // This prevents self-checking of the current username of the record being edited
+    if ($username === $current_username) {return false;}
     
     $sql = "SELECT COUNT(*) AS num_users FROM ".PRFX."TABLE_EMPLOYEE WHERE EMPLOYEE_LOGIN =". $db->qstr($username);
     

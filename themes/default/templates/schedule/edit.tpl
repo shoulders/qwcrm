@@ -1,4 +1,4 @@
-<!-- edir.tpl -->
+<!-- edit.tpl -->
 <script src="{$theme_js_dir}tinymce/tinymce.min.js"></script>
 <script src="{$theme_js_dir}editor-config.js"></script>
 <link rel="stylesheet" href="{$theme_js_dir}jscal2/css/jscal2.css" />
