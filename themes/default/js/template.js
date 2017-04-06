@@ -135,21 +135,22 @@ function keyRestriction(e, allowedCharacters, spacesAllowed) {
     
 }
 
-// Confirm Passwords Match - Form Submmision Control
+// Confirm Passwords Match - Form Submmision Control - No Visual message (not used anywhere)
 function confirmPasswordsMatch() {
     
     // Store the password field objects into variables ...
     var password        = document.getElementById('password');
     var confirmPassword = document.getElementById('confirmPassword');
     
+    // Validate the passwords match
     if (password.value === confirmPassword.value) {
         return true;
     } else {
-       return false; 
+        return false; 
     }
 }
 
-// Check Passwords Match - Visual Message
+// Check Passwords Match - With Visual Message
 function checkPasswordsMatch(passwordsMatchMSG, passwordsDoNotMatchMSG) {
     
     // Store the password field objects into variables ...
@@ -179,6 +180,7 @@ function checkPasswordsMatch(passwordsMatchMSG, passwordsDoNotMatchMSG) {
         message.innerHTML = passwordsDoNotMatchMSG;
         return false;
     }
+    
 }
 
 // This function allows me to grab systems messages created during page rendering and display

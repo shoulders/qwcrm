@@ -47,7 +47,7 @@
                         {$translate_workorder_not_assigned}
                     {else}
                         <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<center><b>{$translate_workorder_contact_info_tooltip_title}</b></center><hr><b>{$translate_workorder_fax}: </b>{$awaiting.EMPLOYEE_WORK_PHONE}<br><b>{$translate_workorder_mobile}: </b>{$awaiting.EMPLOYEE_MOBILE_PHONE}<br><b>{$translate_workorder_home}: </b>{$awaiting.EMPLOYEE_HOME_PHONE}');" onMouseOut="hideddrivetip();">                             
-                        <a class="link1" href="?page=employee:employee_details&employee_id={$awaiting.EMPLOYEE_ID}&page_title={$awaiting.EMPLOYEE_DISPLAY_NAME}">{$awaiting.EMPLOYEE_DISPLAY_NAME}</a>
+                        <a class="link1" href="?page=employee:details&employee_id={$awaiting.EMPLOYEE_ID}&page_title={$awaiting.EMPLOYEE_DISPLAY_NAME}">{$awaiting.EMPLOYEE_DISPLAY_NAME}</a>
                     {/if}
                 </td>
                 

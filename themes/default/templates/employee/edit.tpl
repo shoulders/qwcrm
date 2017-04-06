@@ -12,7 +12,7 @@
                             <tr>
                                 <td width="100%" valign="top">                                 
                                     {literal}
-                                    <form action="?page=employee:edit" method="POST" name="edit_employee" id="edit_employee" onsubmit="return confirmPasswordsMatch();">
+                                    <form action="?page=employee:edit" method="POST" name="edit_employee" id="edit_employee" onsubmit="return checkPasswordsMatch('{/literal}{$translate_core_theme_passwords_match}', '{$translate_core_theme_passwords_do_not_match}{literal}');">
                                     {/literal}
                                         <table class="menutable" width="100%" border="0" cellpadding="0" cellspacing="0">
                                             <tr>
@@ -32,24 +32,24 @@
                                                                                     <tbody align="left">
                                                                                         <tr>
                                                                                             <td align="right"><strong>{$translate_employee_display_name}</strong><span style="color: #ff0000">*</span></td>
-                                                                                            <td><input name="displayName" class="olotd5" value="{$employee_details[a].EMPLOYEE_DISPLAY_NAME}" type="text" maxlength="20" required onkeydown="return onlyAlpha(event);"></td>
+                                                                                            <td><input name="employee_displayName" class="olotd5" value="{$employee_details[a].EMPLOYEE_DISPLAY_NAME}" type="text" maxlength="20" required onkeydown="return onlyAlpha(event);"></td>
                                                                                         </tr>
                                                                                         <tr>
                                                                                             <td align="right"><strong>{$translate_employee_first_name}</strong><span style="color: #ff0000">*</span></td>
-                                                                                            <td><input name="firstName" class="olotd5" value="{$employee_details[a].EMPLOYEE_FIRST_NAME}" type="text" maxlength="20" required onkeydown="return onlyAlpha(event);"></td>
+                                                                                            <td><input name="employee_firstName" class="olotd5" value="{$employee_details[a].EMPLOYEE_FIRST_NAME}" type="text" maxlength="20" required onkeydown="return onlyAlpha(event);"></td>
                                                                                         </tr>
                                                                                         <tr>
                                                                                             <td align="right"><strong>{$translate_employee_last_name}</strong><span style="color: #ff0000">*</span></td>
-                                                                                            <td><input name="lastName" class="olotd5" value="{$employee_details[a].EMPLOYEE_LAST_NAME}" type="text" maxlength="20" required onkeydown="return onlyAlpha(event);"></td>
+                                                                                            <td><input name="employee_lastName" class="olotd5" value="{$employee_details[a].EMPLOYEE_LAST_NAME}" type="text" maxlength="20" required onkeydown="return onlyAlpha(event);"></td>
                                                                                         </tr>
                                                                                         <tr>
                                                                                             <td align="right"><strong>{$translate_employee_email_address}</strong><span style="color: #ff0000">*</span></td>
-                                                                                            <td><input name="email" class="olotd5" size="50" value="{$employee_details[a].EMPLOYEE_EMAIL}" type="email" maxlength="50" required onkeydown="return onlyEmail(event);"></td>
+                                                                                            <td><input name="employee_email" class="olotd5" size="50" value="{$employee_details[a].EMPLOYEE_EMAIL}" type="email" maxlength="50" required onkeydown="return onlyEmail(event);"></td>
                                                                                         </tr>
                                                                                         <tr>
                                                                                             <td align="right"><strong>{$translate_employee_type}</strong></td>
                                                                                             <td>
-                                                                                                <select name="type" class="olotd5">
+                                                                                                <select name="employee_type" class="olotd5">
                                                                                                     {section name=g loop=$employee_type}
                                                                                                         <option value="{$employee_type[g].TYPE_ID}" {if $employee_details[a].EMPLOYEE_TYPE == $employee_type[g].TYPE_ID} selected{/if}>{$employee_type[g].TYPE_NAME}</option>
                                                                                                     {/section}
@@ -59,7 +59,7 @@
                                                                                         <tr>
                                                                                             <td colspan="1" align="right"><b>Active</b></td>
                                                                                             <td>
-                                                                                                <select name="active" class="olotd5">
+                                                                                                <select name="employee_active" class="olotd5">
                                                                                                     <option value="0" {if $employee_details[a].EMPLOYEE_STATUS == '0'} selected {/if}>No</option>
                                                                                                     <option value="1" {if $employee_details[a].EMPLOYEE_STATUS == '1'} selected {/if}>Yes</option>
                                                                                                 </select>
@@ -67,11 +67,11 @@
                                                                                         </tr>
                                                                                         <tr>
                                                                                             <td align="right"><strong>{$translate_employee_login_id}</strong><span style="color: #ff0000">*</span></td>
-                                                                                            <td><input name="login_id" class="olotd5" value="{$employee_details[a].EMPLOYEE_LOGIN}" type="text" maxlength="20" required onkeydown="return onlyUsername(event);"></td>
+                                                                                            <td><input name="employee_usr" class="olotd5" value="{$employee_details[a].EMPLOYEE_LOGIN}" type="text" maxlength="20" required onkeydown="return onlyUsername(event);"></td>
                                                                                         </tr>
                                                                                         <tr>
                                                                                             <td align="right"><strong>{$translate_employee_password}</strong></td>
-                                                                                            <td><input id="password" name="password" class="olotd5" type="password" maxlength="20" onkeydown="return onlyPassword(event);"></td>
+                                                                                            <td><input id="password" name="employee_pwd" class="olotd5" type="password" maxlength="20" onkeydown="return onlyPassword(event);"></td>
                                                                                         </tr>
                                                                                         <tr>
                                                                                             <td align="right"><strong>{$translate_employee_password_confirm}</strong></td>
@@ -92,15 +92,15 @@
                                                                                 <table>
                                                                                     <tr>
                                                                                         <td align="right"><strong>{$translate_employee_home_phone_number}</strong></td>
-                                                                                        <td><input name="homePhone" class="olotd5" value="{$employee_details[a].EMPLOYEE_HOME_PHONE}" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"></td>
+                                                                                        <td><input name="employee_homePhone" class="olotd5" value="{$employee_details[a].EMPLOYEE_HOME_PHONE}" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"></td>
                                                                                     </tr>
                                                                                     <tr>
                                                                                         <td align="right"><strong>{$translate_employee_work_phone_number}</strong></td>
-                                                                                        <td><input name="workPhone" class="olotd5" value="{$employee_details[a].EMPLOYEE_WORK_PHONE}" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"></td>
+                                                                                        <td><input name="employee_workPhone" class="olotd5" value="{$employee_details[a].EMPLOYEE_WORK_PHONE}" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"></td>
                                                                                     </tr>
                                                                                     <tr>
                                                                                         <td align="right"><strong>{$translate_employee_mobile_phone_number}</strong></td>
-                                                                                        <td><input name="mobilePhone" class="olotd5" value="{$employee_details[a].EMPLOYEE_MOBILE_PHONE}" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"></td>
+                                                                                        <td><input name="employee_mobilePhone" class="olotd5" value="{$employee_details[a].EMPLOYEE_MOBILE_PHONE}" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"></td>
                                                                                     </tr>
                                                                                 </table>
                                                                             </td>
@@ -114,24 +114,24 @@
                                                                                     <tbody align="left">
                                                                                         <tr>
                                                                                             <td valign="top" align="right"><strong>{$translate_employee_address}</strong></td>
-                                                                                            <td><textarea name="address" class="olotd5" cols="30" rows="3" maxlength="100" onkeydown="return onlyAddress(event);">{$employee_details[a].EMPLOYEE_ADDRESS}</textarea></td>
+                                                                                            <td><textarea name="employee_address" class="olotd5" cols="30" rows="3" maxlength="100" onkeydown="return onlyAddress(event);">{$employee_details[a].EMPLOYEE_ADDRESS}</textarea></td>
                                                                                         </tr>
                                                                                         <tr>
                                                                                             <td align="right"><strong>{$translate_employee_city}</strong></td>
-                                                                                            <td><input name="city" class="olotd5" value="{$employee_details[a].EMPLOYEE_CITY}" type="text" maxlength="20" onkeydown="return onlyAlpha(event);"></td>
+                                                                                            <td><input name="employee_city" class="olotd5" value="{$employee_details[a].EMPLOYEE_CITY}" type="text" maxlength="20" onkeydown="return onlyAlpha(event);"></td>
                                                                                         </tr>
                                                                                         <tr>
                                                                                             <td align="right"><strong>{$translate_employee_state}</strong></td>
-                                                                                            <td><input name="state" class="olotd5" value="{$employee_details[a].EMPLOYEE_STATE}" type="text" maxlength="20" onkeydown="return onlyAlpha(event);"></td>
+                                                                                            <td><input name="employee_state" class="olotd5" value="{$employee_details[a].EMPLOYEE_STATE}" type="text" maxlength="20" onkeydown="return onlyAlpha(event);"></td>
                                                                                         </tr>
                                                                                         <tr>
                                                                                             <td align="right"><strong>{$translate_employee_zip}</strong></td>
-                                                                                            <td ><input name="zip" class="olotd5" value="{$employee_details[a].EMPLOYEE_ZIP}" type="text" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"></td>
+                                                                                            <td ><input name="employee_zip" class="olotd5" value="{$employee_details[a].EMPLOYEE_ZIP}" type="text" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"></td>
                                                                                         </tr>
                                                                                         <tr>
                                                                                             <td colspan="3">
                                                                                                 <strong>{$translate_employee_based}&nbsp&nbsp</strong>
-                                                                                                <select name="based" class="olotd5">                                                                                                    
+                                                                                                <select name="employee_based" class="olotd5">                                                                                                    
                                                                                                     <option value="0" {if $employee_details[a].EMPLOYEE_BASED == 0 } selected{/if}>Office</option>
                                                                                                     <option value="1" {if $employee_details[a].EMPLOYEE_BASED == 1 } selected{/if}>Home</option>
                                                                                                     <option value="2" {if $employee_details[a].EMPLOYEE_BASED == 2 } selected{/if}>OnSite</option>

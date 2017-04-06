@@ -77,7 +77,7 @@
                                                                 </td>  
                                                                 <td class="olotd4" nowrap>
                                                                     <img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" onMouseOver="ddrivetip('<center><b>{$translate_workorder_contact_info_tooltip_title}</b></center><hr><b>{$translate_workorder_fax}: </b>{$single_workorder.EMPLOYEE_WORK_PHONE}<br><b>{$translate_workorder_mobile}: </b>{$single_workorder.EMPLOYEE_MOBILE_PHONE}<br><b>{$translate_workorder_home}: </b>{$single_workorder.EMPLOYEE_HOME_PHONE}');" onMouseOut="hideddrivetip();">                                                                         
-                                                                    <a class="link1" href="?page=employee:employee_details&employee_id={$single_workorder.EMPLOYEE_ID}&page_title={$single_workorder.EMPLOYEE_DISPLAY_NAME}">{$single_workorder.EMPLOYEE_DISPLAY_NAME}</a>
+                                                                    <a class="link1" href="?page=employee:details&employee_id={$single_workorder.EMPLOYEE_ID}&page_title={$single_workorder.EMPLOYEE_DISPLAY_NAME}">{$single_workorder.EMPLOYEE_DISPLAY_NAME}</a>
                                                                 </td>
                                                             </tr>
                                                         {else}

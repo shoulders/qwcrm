@@ -253,6 +253,34 @@ function display_workorder_history($db, $workorder_id){
     
 }
 
+########################################
+#   Display Employee Open Work Orders  #
+########################################
+
+function display_employee_open_workorders ($db, $employee_id) {
+    
+    global $smarty;
+    
+    $sql = "SELECT ".PRFX."TABLE_WORK_ORDER.*,
+            ".PRFX."TABLE_CUSTOMER.*,        
+            ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_DISPLAY_NAME    
+            FROM ".PRFX."TABLE_WORK_ORDER 
+            LEFT JOIN ".PRFX."TABLE_CUSTOMER ON (".PRFX."TABLE_WORK_ORDER.CUSTOMER_ID = ".PRFX."TABLE_CUSTOMER.CUSTOMER_ID)                
+            LEFT JOIN ".PRFX."TABLE_EMPLOYEE ON (".PRFX."TABLE_WORK_ORDER.WORK_ORDER_CREATE_BY = ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_ID)
+            WHERE ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_ASSIGN_TO=".$db->qstr($employee_id)." 
+            AND WORK_ORDER_STATUS ='10' ";
+
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
+        exit;
+    } else {
+        
+        return $rs->GetArray();
+        
+    }    
+    
+}
+
 /** New/Insert Functions **/
 
 #########################

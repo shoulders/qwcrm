@@ -5,7 +5,7 @@
 define('SEP',                       '/'                         );
 
 // Information and Configuration
-define('QWCRM_VERSION' ,            '2.9.4'                     );
+define('QWCRM_VERSION' ,            '3.0.0'                     );
 define('PRFX',                      $db_prefix                  );
 
 // System Folders

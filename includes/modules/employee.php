@@ -1,10 +1,178 @@
 <?php
 
+/* Display functions */
+
+#####################################
+#    Display Employee Info          #
+#####################################
+
+function display_single_employee($db, $employee_id) {
+    
+    global $smarty;
+
+    $sql = "SELECT ".PRFX."TABLE_EMPLOYEE.*,
+            ".PRFX."CONFIG_EMPLOYEE_TYPE.TYPE_NAME
+            FROM ".PRFX."TABLE_EMPLOYEE
+            LEFT JOIN ".PRFX."CONFIG_EMPLOYEE_TYPE ON (".PRFX."TABLE_EMPLOYEE. EMPLOYEE_TYPE = ".PRFX."CONFIG_EMPLOYEE_TYPE.TYPE_ID)
+            WHERE EMPLOYEE_ID=". $db->qstr($employee_id);    
+
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
+        exit;
+    } else {
+        
+        return $rs->GetArray();
+        
+    }
+    
+}
+
+################################################
+# Display all open Work orders for an employee # not used
+################################################
+
+// this was taken from workorders/include.php and I could not find it used anywhere
+
+function display_employee_info_version2($db){
+    
+    global $smarty;
+    
+    $sql = "SELECT  EMPLOYEE_ID, EMPLOYEE_LOGIN FROM ".PRFX."TABLE_EMPLOYEE";
+    
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
+        exit;
+    } else { 
+    
+        while($row = $rs->FetchRow()){
+            $employee_id                    = $row["EMPLOYEE_ID"];
+            $employee_login                 = $row["EMPLOYEE_LOGIN"];        
+            $employee_array[$employee_id]   = $employee_login;
+        }
+
+        return $employee_array;
+    
+    }
+    
+}
+
+#####################################
+#    display Search                 #
+#####################################
+
+function display_employee_search($db, $name, $page_no) {
+
+    global $smarty;
+    
+    $safe_name = strip_tags($name);    
+    
+    // Define the number of results per page
+    $max_results = 50;
+    
+    // Figure out the limit for the query based on the current page number. 
+    $from = (($page_no * $max_results) - $max_results);    
+    
+    $sql = "SELECT ".PRFX."TABLE_EMPLOYEE.*,
+            ".PRFX."CONFIG_EMPLOYEE_TYPE.TYPE_NAME
+            FROM ".PRFX."TABLE_EMPLOYEE 
+            LEFT JOIN ".PRFX."CONFIG_EMPLOYEE_TYPE ON (".PRFX."TABLE_EMPLOYEE. EMPLOYEE_TYPE = ".PRFX."CONFIG_EMPLOYEE_TYPE.TYPE_ID)    
+            WHERE EMPLOYEE_DISPLAY_NAME LIKE '%$safe_name%'
+            ORDER BY EMPLOYEE_DISPLAY_NAME";
+    
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
+        exit;
+    } else {
+        
+        $employee_search_result = $rs->GetArray();
+        
+    }
+    
+
+    // Figure out the total number of results in DB: 
+    $sql = "SELECT COUNT(*) as Num FROM ".PRFX."TABLE_EMPLOYEE WHERE EMPLOYEE_DISPLAY_NAME LIKE '$safe_name%'";
+    
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
+        exit;
+    } else {        
+        $total_results = $rs->FetchRow();
+        $smarty->assign('total_results', strip_tags($total_results['Num']));
+    }
+    
+    // Figure out the total number of pages. Always round up using ceil()
+    $total_pages = ceil($total_results['Num'] / $max_results); 
+    
+    // Figure out the total number of pages. Always round up using ceil()
+    $total_pages = ceil($total_results['Num'] / $max_results); 
+    $smarty->assign('total_pages', strip_tags($total_pages));
+    
+    // Assign the first page
+    if($page_no > 1) {
+        $prev = ($page_no - 1);         
+    }     
+
+    // Build Next Link
+    if($page_no < $total_pages){
+        $next = ($page_no + 1); 
+    }
+    
+    $smarty->assign('name', strip_tags($name));
+    $smarty->assign('page_no', strip_tags($page_no));
+    $smarty->assign('previous', strip_tags($prev));
+    $smarty->assign('next', strip_tags($next));
+
+    return $employee_search_result;
+    
+}
+
+/* New/Insert Functions  */
+
+#####################################
+#    insert new Employee            #
+#####################################
+
+function insert_new_employee($db, $employee_record){
+    
+    global $smarty;
+    
+    $sql = "INSERT INTO ".PRFX."TABLE_EMPLOYEE SET
+            EMPLOYEE_LOGIN          =". $db->qstr( $employee_record['employee_usr']             ).",
+            EMPLOYEE_PASSWD         =". $db->qstr( md5($employee_record['employee_pwd'])        ).",
+            EMPLOYEE_EMAIL          =". $db->qstr( $employee_record['employee_email']           ).", 
+            EMPLOYEE_FIRST_NAME     =". $db->qstr( $employee_record['employee_firstName']       ).",
+            EMPLOYEE_LAST_NAME      =". $db->qstr( $employee_record['employee_lastName']        ).",
+            EMPLOYEE_DISPLAY_NAME   =". $db->qstr( $employee_record['employee_displayName']     ).",
+            EMPLOYEE_ADDRESS        =". $db->qstr( $employee_record['employee_address']         ).",
+            EMPLOYEE_CITY           =". $db->qstr( $employee_record['employee_city']            ).",
+            EMPLOYEE_STATE          =". $db->qstr( $employee_record['employee_state']           ).", 
+            EMPLOYEE_ZIP            =". $db->qstr( $employee_record['employee_zip']             ).",
+            EMPLOYEE_TYPE           =". $db->qstr( $employee_record['employee_type']            ).",                    
+            EMPLOYEE_WORK_PHONE     =". $db->qstr( $employee_record['employee_workPhone']       ).",
+            EMPLOYEE_HOME_PHONE     =". $db->qstr( $employee_record['employee_homePhone']       ).",
+            EMPLOYEE_MOBILE_PHONE   =". $db->qstr( $employee_record['employee_mobilePhone']     ).",
+            EMPLOYEE_BASED          =". $db->qstr( $employee_record['employee_based']           ).",
+            EMPLOYEE_ACL            =". $db->qstr( $employee_record['employee_acl']             ).",    
+            EMPLOYEE_STATUS         =". $db->qstr( $employee_record['employee_status']          );          
+          
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
+        exit;
+    } else {
+        
+        return $db->insert_id();        
+        
+    }
+    
+}
+
+/* Get functions */
+
 #####################################
 # Get Employee Display Name from ID #  // not actually used anywhere
 #####################################
 
-function get_employee_display_name_by_id($db, $employee_id){
+function get_employee_display_name_by_id($db, $employee_id) {
     
     global $smarty;
     
@@ -35,7 +203,7 @@ function get_employee_display_name_by_id($db, $employee_id){
  * it was used for getting user specific stats in theme_header_block.php
  * $login_id / $login_usr is not set via the auth session
  * i will leave this here just for now
- *  * no longer needed as I sotre the id in the session
+ * no longer needed as I stored the id in the session
  * 
  */
 
@@ -45,7 +213,7 @@ function get_employee_id_by_username($db, $employee_usr){
     
     $sql = 'SELECT EMPLOYEE_ID FROM '.PRFX.'TABLE_EMPLOYEE WHERE EMPLOYEE_LOGIN ='.$db->qstr($employee_usr);    
     if(!$rs = $db->execute($sql)){
-        force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -65,7 +233,7 @@ function get_employee_record_by_username($db, $employee_usr){
     
     $sql = "SELECT * FROM ".PRFX."TABLE_EMPLOYEE WHERE EMPLOYEE_LOGIN =".$db->qstr($employee_usr);    
     if(!$rs = $db->execute($sql)){
-        force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -75,6 +243,90 @@ function get_employee_record_by_username($db, $employee_usr){
     
 }
 
+##################################
+# Get Employee Types             #
+##################################
+
+function get_employee_types($db) {
+    
+    global $smarty;
+    
+    $sql = "SELECT * FROM ".PRFX."CONFIG_EMPLOYEE_TYPE";
+    
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
+        exit;
+    } else {
+        
+        return $rs->GetArray();
+        
+    }
+    
+}
+
+##################################################
+# Get all active employees display name and ID   #
+##################################################
+    
+function get_active_employees($db) {
+        
+    global $smarty;
+    
+    $sql = "SELECT EMPLOYEE_ID, EMPLOYEE_DISPLAY_NAME FROM ".PRFX."TABLE_EMPLOYEE WHERE EMPLOYEE_STATUS=1";
+    
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
+        exit;
+    } else {    
+        
+        return $rs->GetArray();    
+        
+    }
+    
+}
+
+/* Update Functions */
+
+#########################
+#   Update Employee     #
+#########################
+
+function update_employee($db, $employee_record) {
+    // Build the update statement with reguards to if the password is changing
+        $set .="    SET
+                    EMPLOYEE_LOGIN          =". $db->qstr( $employee_record['employee_usr']             ).",";
+
+    if($employee_record['login_pwd'] != '') {
+        $set .="    EMPLOYEE_PASSWD         =". $db->qstr( md5($employee_record['employee_pwd'])        ).",";
+    }
+
+        $set .="    EMPLOYEE_EMAIL          =". $db->qstr( $employee_record['employee_email']           ).", 
+                    EMPLOYEE_FIRST_NAME     =". $db->qstr( $employee_record['employee_firstName']       ).",
+                    EMPLOYEE_LAST_NAME      =". $db->qstr( $employee_record['employee_lastName']        ).",
+                    EMPLOYEE_DISPLAY_NAME   =". $db->qstr( $employee_record['employee_displayName']     ).",
+                    EMPLOYEE_ADDRESS        =". $db->qstr( $employee_record['employee_address']         ).",
+                    EMPLOYEE_CITY           =". $db->qstr( $employee_record['employee_city']            ).",
+                    EMPLOYEE_STATE          =". $db->qstr( $employee_record['employee_state']           ).", 
+                    EMPLOYEE_ZIP            =". $db->qstr( $employee_record['employee_zip']             ).",
+                    EMPLOYEE_TYPE           =". $db->qstr( $employee_record['employee_type']            ).",                    
+                    EMPLOYEE_WORK_PHONE     =". $db->qstr( $employee_record['employee_workPhone']       ).",
+                    EMPLOYEE_HOME_PHONE     =". $db->qstr( $employee_record['employee_homePhone']       ).",
+                    EMPLOYEE_MOBILE_PHONE   =". $db->qstr( $employee_record['employee_mobilePhone']     ).",
+                    EMPLOYEE_BASED          =". $db->qstr( $employee_record['employee_based']           ).",
+                    EMPLOYEE_ACL            =". $db->qstr( $employee_record['employee_acl']             ).",    
+                    EMPLOYEE_STATUS         =". $db->qstr( $employee_record['employee_status']          );
+
+    $sql = "UPDATE ".PRFX."TABLE_EMPLOYEE ". $set ." WHERE EMPLOYEE_ID= ".$db->qstr($employee_record['employee_id']);
+
+    if(!$rs = $db->execute($sql)) {
+        force_page('core', 'error&error_msg=Error updating Employee Information');    
+    }
+    
+}
+
+/* Delete Functions */
+
+/* Other Functions */
 
 #################################################
 # Count Employee Work Orders for a given status #
@@ -85,12 +337,12 @@ function count_employee_workorders_with_status($db, $employee_id, $workorder_sta
     global $smarty;
     
     $sql = "SELECT COUNT(*) AS EMPLOYEE_WORKORDER_STATUS_COUNT
-         FROM ".PRFX."TABLE_WORK_ORDER
-         WHERE WORK_ORDER_ASSIGN_TO=".$db->qstr($employee_id)."
-         AND WORK_ORDER_STATUS=".$db->qstr($workorder_status);
+            FROM ".PRFX."TABLE_WORK_ORDER
+            WHERE WORK_ORDER_ASSIGN_TO=".$db->qstr($employee_id)."
+            AND WORK_ORDER_STATUS=".$db->qstr($workorder_status);
     
     if(!$rs = $db->Execute($sql)){
-        force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
    } else {
        
@@ -114,7 +366,7 @@ function count_employee_invoices_with_status($db, $employee_id, $invoice_status)
          AND EMPLOYEE_ID=".$db->qstr($employee_id);
     
     if(!$rs = $db->Execute($sql)) {
-        force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
    } else {
        
@@ -158,20 +410,47 @@ function build_active_employee_form_option_list($db, $assigned_employee_id){
     
 }
 
-##################################################
-# List all active employees display name and ID  #
-##################################################
+#################################################
+#    Check if Employee username already exists  #
+#################################################
+
+function check_employee_username_exists($db, $username){
     
-function get_active_employees($db){
+    global $smarty;
     
-    $sql = "SELECT EMPLOYEE_ID, EMPLOYEE_DISPLAY_NAME FROM ".PRFX."TABLE_EMPLOYEE WHERE EMPLOYEE_STATUS=1";
+    $sql = "SELECT COUNT(*) AS num_users FROM ".PRFX."TABLE_EMPLOYEE WHERE EMPLOYEE_LOGIN =". $db->qstr($username);
     
     if(!$rs = $db->Execute($sql)) {
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
-    } else {    
+    } else {
         
-        return $rs->GetArray();    
+        if ($rs->fields['num_users'] >= 1) {
+            
+            $smarty->assign('warning_msg', 'The employees Username, '.$username.',  already exists! Please use a different one.');
+            return true;
+            
+        } else {
+            
+            return false;
+            
+        }        
         
-    }    
+    } 
+    
 }
+
+
+
+// check these and improve them etc..
+
+// A function for comparing password
+    function cmpPass($element, $confirmPassword) {
+        global $form;
+        $password = $form->getElementValue('password');
+        return ($password == $confirmPassword);
+    }
+    // A function to encrypt the password
+    function encryptValue($value) {
+        return md5($value);
+    }

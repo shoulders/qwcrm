@@ -1467,8 +1467,9 @@
         <workorder_error_message_function_display_resolution_failed>Could not display resolution for the Work Order</workorder_error_message_function_display_resolution_failed>        
         <workorder_error_message_function_display_workorder_notes_failed>Could not to display notes for the Work Order</workorder_error_message_function_display_workorder_notes_failed>
         <workorder_error_message_function_display_parts_failed>Could not display parts for the Work Order</workorder_error_message_function_display_parts_failed>
-        <workorder_error_message_function_display_workorder_history_failed>Could not display history for the Work Order</workorder_error_message_function_display_workorder_history_failed>        
-        <workorder_error_message_function_display_status_types_failed>Could not display Work Order status types</workorder_error_message_function_display_status_types_failed>        
+        <workorder_error_message_function_display_workorder_history_failed>Could not display history for the Work Order</workorder_error_message_function_display_workorder_history_failed>
+        <workorder_error_message_function_display_employee_open_workorders_failed>Could not display the Work Orders for the selected employee</workorder_error_message_function_display_employee_open_workorders_failed>
+              
         <workorder_error_message_function_insert_new_workorder_failed>Could not insert a note for the Work Order</workorder_error_message_function_insert_new_workorder_failed> 
         <workorder_error_message_function_insert_new_note_failed>Could not insert a note for the Work Order</workorder_error_message_function_insert_new_note_failed>
         <workorder_error_message_function_insert_new_workorder_history_note_failed>Could not insert a history note for the Work Order</workorder_error_message_function_insert_new_workorder_history_note_failed>        

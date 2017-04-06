@@ -184,7 +184,8 @@ if(isset($VAR['schedule_start_month'])) {$schedule_start_month = $VAR['schedule_
 if(isset($VAR['schedule_start_day'])) {$schedule_start_day = $VAR['schedule_start_day'];} else {$schedule_start_day = date('d');}
 
 // Make sure an employee is always set - if no employee is set use the logged in user
-if(isset($VAR['employee_id'])) {$employee_id = $VAR['employee_id'];} else {$employee_id = $_SESSION['login_id'];}
+//if(isset($VAR['employee_id'])) {$employee_id = $VAR['employee_id'];} else {$employee_id = $_SESSION['login_id'];}  // this might not be required
+$employee_id        = $VAR['employee_id'];
 
 // Get the page number if it exists or set to page number to 1 if not
 if(isset($VAR['page_no'])) {$page_no = $VAR['page_no'];} else {$page_no = 1;}

@@ -75,7 +75,7 @@ function display_open_invoice($db, $page_no, $smarty)
 # Paid Invoices                           #
 ########################################
 
-function display_paid_invoice($db, $page_no, $smarty)
+function display_paid_invoice($db, $page_no)
 {
 
     global $smarty;
@@ -136,7 +136,9 @@ function display_paid_invoice($db, $page_no, $smarty)
     $smarty->assign('page_no', $page_no);
     $smarty->assign("previous", $prev);
     $smarty->assign("next", $next);
+    
     return $invoice_arr;
+    
 }
 
 ##########################################

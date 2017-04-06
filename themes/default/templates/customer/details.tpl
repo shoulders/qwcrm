@@ -147,7 +147,7 @@
                                             <hr>
                                             <b>{/literal}{$translate_work}{literal} </b>{/literal}{$open_work_orders[a].EMPLOYEE_WORK_PHONE}{literal}<br>
                                             <b>{/literal}{$translate_mobile} {literal}</b>{/literal}{$open_work_orders[a].EMPLOYEE_MOBILE_PHONE}{literal}<br>
-                                            <b>{/literal}{$translate_home} {literal}</b>{/literal}{$open_work_orders[a].EMPLOYEE_HOME_PHONE}')" onMouseOut="hideddrivetip()"><a class="link1" href="?page=employee:employee_details&employee_id={$open_work_orders[a].EMPLOYEE_ID}&page_title={$open_work_orders[a].EMPLOYEE_DISPLAY_NAME}">{$open_work_orders[a].EMPLOYEE_DISPLAY_NAME}</a>
+                                            <b>{/literal}{$translate_home} {literal}</b>{/literal}{$open_work_orders[a].EMPLOYEE_HOME_PHONE}')" onMouseOut="hideddrivetip()"><a class="link1" href="?page=employee:details&employee_id={$open_work_orders[a].EMPLOYEE_ID}&page_title={$open_work_orders[a].EMPLOYEE_DISPLAY_NAME}">{$open_work_orders[a].EMPLOYEE_DISPLAY_NAME}</a>
                                         {else}
                                             Not Assigned
                                         {/if}
@@ -189,7 +189,7 @@
                                                     <b>{$translate_work} </b>{$open_work_orders[a].EMPLOYEE_WORK_PHONE}<br>
                                                     <b>{$translate_mobile} </b>{$open_work_orders[a].EMPLOYEE_MOBILE_PHONE}<br>
                                                     <b>{$translate_home} </b> {literal}{$closed_work_orders[a].EMPLOYEE_HOME_PHONE}')" onMouseOut="hideddrivetip()">{/literal}
-                                            <a class="link1" href="?page=employee:employee_details&employee_id={$closed_work_orders[b].EMPLOYEE_ID}&page_title={$closed_work_orders[b].EMPLOYEE_DISPLAY_NAME}">{$closed_work_orders[b].EMPLOYEE_DISPLAY_NAME}</a>
+                                            <a class="link1" href="?page=employee:details&employee_id={$closed_work_orders[b].EMPLOYEE_ID}&page_title={$closed_work_orders[b].EMPLOYEE_DISPLAY_NAME}">{$closed_work_orders[b].EMPLOYEE_DISPLAY_NAME}</a>
                                         {else}
                                             Not Assigned
                                         {/if}

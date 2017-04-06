@@ -4,7 +4,7 @@ require(INCLUDES_DIR.'modules/workorder.php');
 require(INCLUDES_DIR.'modules/employee.php');
 
 // Check that there is a workorder_id set
-if(empty($VAR['workorder_id'])){
+if(empty($workorder_id)){
     force_page('workorder', 'overview', 'warning_msg='.$smarty->get_template_vars('translate_workorder_advisory_message_status_noworkorderid'));
     exit;
 }

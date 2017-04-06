@@ -1,61 +1,22 @@
 <?php
-require_once("include.php");
 
+require(INCLUDES_DIR.'modules/employee.php');
 
-
-if(isset($VAR['submit']) ) {
-    /* check if we have an ID */
-    if(!isset($VAR['employee_id'])) {
-        force_page('core', 'error&error_msg=No Employee ID');    
-    }
-
-    /* if we are changing password update */
-    if($VAR['login_pwd'] != '' || $VAR['login_id'] != '') {
-        $update = "SET EMPLOYEE_PASSWD          =". $db->qstr( md5($VAR['login_pwd']) ).",
-                            EMPLOYEE_EMAIL            =". $db->qstr( $VAR['email']         ).", 
-                            EMPLOYEE_FIRST_NAME        =". $db->qstr( $VAR['firstName']     ).",
-                            EMPLOYEE_LAST_NAME        =". $db->qstr( $VAR['lastName']      ).",
-                            EMPLOYEE_DISPLAY_NAME =". $db->qstr( $VAR['displayName']   ).",
-                                                        EMPLOYEE_LOGIN =". $db->qstr( $VAR['login_id']   ).",                            
-                            EMPLOYEE_ADDRESS        =". $db->qstr( $VAR['address']       ).",
-                            EMPLOYEE_CITY            =". $db->qstr( $VAR['city']          ).",
-                            EMPLOYEE_STATE            =". $db->qstr( $VAR['state']         ).", 
-                            EMPLOYEE_ZIP             =". $db->qstr( $VAR['zip']           ).",
-                            EMPLOYEE_TYPE            =". $db->qstr( $VAR['type']          ).",
-                            EMPLOYEE_BASED            =". $db->qstr( $VAR['based']          ).",
-                            EMPLOYEE_WORK_PHONE    =". $db->qstr( $VAR['workPhone']     ).",
-                            EMPLOYEE_HOME_PHONE     =". $db->qstr( $VAR['homePhone']     ).",
-                            EMPLOYEE_MOBILE_PHONE    =". $db->qstr( $VAR['mobilePhone']   ).",
-                            EMPLOYEE_STATUS            =". $db->qstr( $VAR['active']        ); 
-    } else {
-        $update ="        SET
-                            EMPLOYEE_EMAIL            =". $db->qstr( $VAR['email']         ).",
-                            EMPLOYEE_FIRST_NAME        =". $db->qstr( $VAR['firstName']     ).",
-                            EMPLOYEE_LAST_NAME        =". $db->qstr( $VAR['lastName']      ).",
-                            EMPLOYEE_DISPLAY_NAME =". $db->qstr( $VAR['displayName']   ).",                            
-                            EMPLOYEE_ADDRESS        =". $db->qstr( $VAR['address']       ).",
-                            EMPLOYEE_CITY            =". $db->qstr( $VAR['city']          ).",
-                            EMPLOYEE_STATE            =". $db->qstr( $VAR['state']         ).", 
-                            EMPLOYEE_ZIP             =". $db->qstr( $VAR['zip']           ).",
-                            EMPLOYEE_TYPE            =". $db->qstr( $VAR['type']          ).",
-                            EMPLOYEE_BASED            =". $db->qstr( $VAR['based']          ).",                            
-                            EMPLOYEE_WORK_PHONE    =". $db->qstr( $VAR['workPhone']     ).",
-                            EMPLOYEE_HOME_PHONE     =". $db->qstr( $VAR['homePhone']     ).",
-                            EMPLOYEE_MOBILE_PHONE    =". $db->qstr( $VAR['mobilePhone']   ).",
-                            EMPLOYEE_STATUS            =". $db->qstr( $VAR['active']        ); 
-    }
-
-    $q = "UPDATE ".PRFX."TABLE_EMPLOYEE ". $update ."
-            WHERE  EMPLOYEE_ID= ".$db->qstr($VAR['employee_id']);
-
-    if(!$rs = $db->execute($q)) {
-        force_page('core', 'error&error_msg=Error updateing Employee Information');    
-    }
-
-    force_page('employee', 'employee_details&employee_id='.$VAR['employee_id'].'&page_title=Employees');    
-
-} else {
-    $smarty->assign('employee_type', employee_type($db));
-    $smarty->assign('employee_details', display_employee_info($db, $VAR['employee_id']));
-    $BuildPage .= $smarty->fetch('employee'.SEP.'edit.tpl');
+// Is there an employee ID supplied - prevents incorrect access
+if(empty($employee_id)) {
+    force_page('core', 'error&error_msg=No Employee ID');
+    exit;
 }
+
+// If the submit button has been pressed on the page, Process the submission
+if(isset($VAR['submit'])) {
+    update_employee($db, $VAR);
+    force_page('employee', 'details&employee_id='.$employee_id);    
+    exit;    
+}
+
+// Fetch the page with the employee information from the database
+$smarty->assign('employee_type', get_employee_types($db));
+$smarty->assign('employee_details', display_single_employee($db, $employee_id));
+
+$BuildPage .= $smarty->fetch('employee/edit.tpl');
