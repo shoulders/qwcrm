@@ -140,7 +140,7 @@
                                     <td class="olotd4">{$open_work_orders[a].WORK_ORDER_OPEN_DATE|date_format:"$date_format"}</td>
                                     <td class="olotd4">{section name=i loop=$customer_details}{$customer_details[i].CUSTOMER_DISPLAY_NAME}{/section}</td>
                                     <td class="olotd4">{$open_work_orders[a].WORK_ORDER_SCOPE}</td>
-                                    <td class="olotd4">{$open_work_orders[a].CONFIG_WORK_ORDER_STATUS}</td>
+                                    <td class="olotd4">{$open_work_orders[a].WORK_ORDER_STATUS}</td>
                                     <td class="olotd4">
                                         {if $open_work_orders[a].EMPLOYEE_ID != ''}
                                             <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" {literal}onMouseOver="ddrivetip('<center><b>{/literal}{$translate_contact}{literal}</b></center>
@@ -181,7 +181,7 @@
                                     <td class="olotd4">{$closed_work_orders[b].WORK_ORDER_OPEN_DATE|date_format:"$date_format"}</td>
                                     <td class="olotd4">{section name=i loop=$customer_details}{$customer_details[i].CUSTOMER_DISPLAY_NAME}{/section}</td>
                                     <td class="olotd4">{$closed_work_orders[b].WORK_ORDER_SCOPE}</td>
-                                    <td class="olotd4">{$closed_work_orders[b].CONFIG_WORK_ORDER_STATUS}</td>
+                                    <td class="olotd4">{$closed_work_orders[b].WORK_ORDER_STATUS}</td>
                                     <td class="olotd4">
                                         {if $closed_work_orders[b].EMPLOYEE_ID != ''}
                                             <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" {literal}onMouseOver="ddrivetip('<center><b>{$translate_contact}</b></center>

@@ -47,7 +47,7 @@
                                                                    <br />
                                                                    <input class="olotd4" name="refund_search_term" value="{$refund_search_term}" type="text"  maxlength="20" required onkeydown="return onlyAlphaNumeric(event);" />
                                                                    <input class="olotd4" name="submit" value="{$translate_refund_search_button}" type="submit" />
-                                                                   <input class="olotd4" type="button" value="{$translate_refund_reset_button}" onclick="window.location.href='index.php?page=refund%3Asearch&page_title={$translate_refund_view_title}';">                                                                                       </td>
+                                                                   <input class="olotd4" type="button" value="{$translate_refund_reset_button}" onclick="window.location.href='index.php?page=refund:search&page_title={$translate_refund_view_title}';">                                                                                       </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td><font color="RED">{$translate_refund_search_criteria_warning}</font></td>
@@ -62,34 +62,33 @@
                                                                             
                                             <!-- Navigation Section  -->
                                             <td valign="top" nowrap>
-                                                <form id="1">
+                                                <form id="navigation">
+                                                    
                                                     <!-- Left buttons -->
-                                                    <a href="?page=refund%3Asearch&refund_search_category={$refund_search_category}&refund_search_term={$refund_search_term}&submit=submit&page_no=1&page_title={$translate_refund_view_title}"><img src="{$theme_images_dir}rewnd_24.gif" border="0" alt=""></a>&nbsp;
                                                     {if $previous != ''}
-                                                        <a href="?page=refund%3Asearch&refund_search_category={$refund_search_category}&refund_search_term={$refund_search_term}&submit=submit&page_no={$previous}&page_title={$translate_refund_view_title}"><img src="{$theme_images_dir}back_24.gif" border="0" alt=""></a>&nbsp;
+                                                        <a href="?page=refund:search&refund_search_category={$refund_search_category}&refund_search_term={$refund_search_term}&submit=submit&page_no=1&page_title={$translate_refund_view_title}"><img src="{$theme_images_dir}rewnd_24.gif" border="0" alt=""></a>&nbsp;
+                                                        <a href="?page=refund:search&refund_search_category={$refund_search_category}&refund_search_term={$refund_search_term}&submit=submit&page_no={$previous}&page_title={$translate_refund_view_title}"><img src="{$theme_images_dir}back_24.gif" border="0" alt=""></a>&nbsp;
                                                     {/if}
-
+                                                    
                                                     <!-- Right Side Buttons -->
                                                     {if $next != ''}
-                                                        <a href="?page=refund%3Asearch&refund_search_category={$refund_search_category}&refund_search_term={$refund_search_term}&submit=submit&page_no={$next}&page_title={$translate_refund_view_title}"><img src="{$theme_images_dir}forwd_24.gif" border="0" alt=""></a>
+                                                        <a href="?page=refund:search&refund_search_category={$refund_search_category}&refund_search_term={$refund_search_term}&submit=submit&page_no={$next}&page_title={$translate_refund_view_title}"><img src="{$theme_images_dir}forwd_24.gif" border="0" alt=""></a>                                                    
+                                                        <a href="?page=refund:search&refund_search_category={$refund_search_category}&refund_search_term={$refund_search_term}&submit=submit&page_no={$total_pages}&page_title={$translate_refund_view_title}"><img src="{$theme_images_dir}fastf_24.gif" border="0" alt=""></a>
                                                     {/if}
-                                                    <a href="?page=refund%3Asearch&refund_search_category={$refund_search_category}&refund_search_term={$refund_search_term}&submit=submit&page_no={$total_pages}&page_title={$translate_refund_view_title}"><img src="{$theme_images_dir}fastf_24.gif" border="0" alt=""></a>
 
                                                     <!-- Page Number Display -->
                                                     <br>
                                                     {$translate_page} {$page_no} {$translate_of} {$total_pages}
                                                     <br />
                                                     {$total_results} {$translate_records_found}.
+                                                    
                                                 </form>                                                                            
 
-                                                <!-- Goto Page Form -->
-                                                {literal}
-                                                <form  method="POST" name="goto_page" id="goto_page" autocomplete="off">
-                                                {/literal}
+                                                <!-- Goto Page Form -->                                                
+                                                <form method="POST" name="goto_page" id="goto_page" autocomplete="off">                                                
                                                     <input class="olotd5" size="10" id="goto_page_no" name="goto_page_no" type="text" maxlength="6" required onkeydown="return onlyNumbers(event);" />
                                                     <input class="olotd5" name="submit" value="{$translate_refund_search_goto_page_button}" type="submit" />
-                                                </form>
-                                            
+                                                </form>                                            
 
                                             </td>
                                         </tr>

@@ -44,18 +44,18 @@
                 </tr>
                 <tr>
                     <td class="menutd"><b>{$translate_workorder_address}</b></td>
-                    <td class="menutd"></td>
-                    <td class="menutd"><b>{$translate_workorder_primary_phone}</b></td>
-                    <td class="menutd">{$single_workorder[i].CUSTOMER_PHONE}</td>
-                </tr>
-                <tr>
-                    <td class="menutd"></td>
                     <td class="menutd">
                         {$single_workorder[i].CUSTOMER_ADDRESS|nl2br}<br>
                         {$single_workorder[i].CUSTOMER_CITY}<br>
                         {$single_workorder[i].CUSTOMER_STATE}<br>
                         {$single_workorder[i].CUSTOMER_ZIP}
                     </td>
+                    <td class="menutd"><b>{$translate_workorder_primary_phone}</b></td>
+                    <td class="menutd">{$single_workorder[i].CUSTOMER_PHONE}</td>
+                </tr>
+                <tr>
+                    <td class="menutd"></td>
+                    <td class="menutd"></td>
                     <td class="menutd"><b>{$translate_workorder_fax}</b></td>
                     <td class="menutd">{$single_workorder[i].CUSTOMER_WORK_PHONE}</td>
                 </tr>

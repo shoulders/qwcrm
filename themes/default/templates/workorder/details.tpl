@@ -7,7 +7,11 @@
     <table width="100%">
         <tr>
             <td>
+                
+                <!-- Start of Tabs -->
                 <div id="tabs_container">
+                    
+                    <!-- The Actual Tabs -->
                     <ul class="tabs">
                         <li class="active"><a href="#" rel="#tab_1_contents" class="tab"><img src="{$theme_images_dir}icons/workorders.gif" alt="" border="0" height="14" width="14" />&nbsp;{$translate_workorder_details_title}</a></li>
                         <li><a href="#" rel="#tab_2_contents" class="tab"><img src="{$theme_images_dir}icons/customers.gif" alt="" border="0" height="14" width="14" />&nbsp;{$translate_workorder_details_customer_details_title}</a></li>

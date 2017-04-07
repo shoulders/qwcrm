@@ -16,9 +16,11 @@
                                 <td class="menutd">                       
                                     <table class="menutable" width="100%" border="0" cellpadding="5" cellspacing="0">
                                         <tr>
+                                            
+                                            <!-- Search Box -->
                                             <td>
                                                 {literal}
-                                                <form method="get" action="?page=employee:search">
+                                                <form method="post" action="?page=employee:search">
                                                 {/literal}
                                                     <table border="0">
                                                         <tr>
@@ -26,38 +28,44 @@
                                                         </tr>                                                     
                                                         <tr>
                                                             <td align="right" valign="top"><b>{$translate_employee_display_name}</b></td>
-                                                            <td valign="top" align="left"><input name="name" class="olotd4" size="50" type="text" maxlength="20" required onkeydown="return onlyAlphaNumeric(event);"></td>
+                                                            <td valign="top" align="left"><input name="employee_searchTerm" value="{$employee_searchTerm}" class="olotd4" size="50" type="text" maxlength="20" required onkeydown="return onlyAlphaNumeric(event);"></td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right" valign="top"><b></b></td>
-                                                            <td valign="top" align="left"><input class="olotd4" name="submit" value="Search" type="submit" /></td>
+                                                            <td valign="top" align="left">
+                                                                <input class="olotd4" name="submit" value="Search" type="submit" />
+                                                                <input class="olotd4" type="button" value="{$translate_refund_reset_button}" onclick="window.location.href='index.php?page=employee:search';">
+                                                            </td>
                                                         </tr>
                                                     </table>
                                                 </form>
                                             </td>
+                                            
+                                            <!-- Navigation -->
                                             <td valign="top">
-                                                <form id="1">
-                                                    <a href="?page=employee%3Amain&name={$name}&submit=submit&page_no=1"><img src="{$theme_images_dir}rewnd_24.gif" border="0"></a>&nbsp;
-                                                    {if $previous != ''}<a href="?page=employee%3Amain&name={$name}&submit=submit&page_no={$previous}"><img src="{$theme_images_dir}back_24.gif" border="0"></a>&nbsp;{/if}
+                                                <form id="navigation">
+                                                    {if $previous != ''}
+                                                        <a href="?page=employee:search&name={$name}&submit=submit&page_no=1"><img src="{$theme_images_dir}rewnd_24.gif" border="0"></a>&nbsp;
+                                                        <a href="?page=employee:search&name={$name}&submit=submit&page_no={$previous}"><img src="{$theme_images_dir}back_24.gif" border="0"></a>&nbsp;
+                                                    {/if}
                                                     <select id="changeThisPage" onChange="changePage();">
                                                         {section name=page loop=$total_pages start=1}
-                                                            <option value="?page=employee%3Amain&name={$name}&submit=submit&page_no={$smarty.section.page.index}" {if $page_no == $smarty.section.page.index } Selected {/if}>{$translate_employee_page} {$smarty.section.page.index} {$translate_employee_of} {$total_pages}</option>
+                                                            <option value="?page=employee:search&name={$name}&submit=submit&page_no={$smarty.section.page.index}" {if $page_no == $smarty.section.page.index } Selected {/if}>{$translate_employee_page} {$smarty.section.page.index} {$translate_employee_of} {$total_pages}</option>
                                                         {/section}
-                                                            <option value="?page=employee%3Amain&name={$name}&submit=submit&page_no={$total_pages}" {if $page_no == $total_pages} selected {/if}>{$translate_employee_page} {$total_pages} {$translate_employee_of} {$total_pages}</option>
+                                                            <option value="?page=employee:search&name={$name}&submit=submit&page_no={$total_pages}" {if $page_no == $total_pages} selected {/if}>{$translate_employee_page} {$total_pages} {$translate_employee_of} {$total_pages}</option>
                                                     </select>
-                                                    {if $next != ''}<a href="?page=employee%3Amain&name={$name}&submit=submit&page_no={$next}"><img src="{$theme_images_dir}forwd_24.gif" border="0"></a>{/if}
-                                                    <a href="?page=employee%3Amain&name={$name}&submit=submit&page_no={$total_pages}"><img src="{$theme_images_dir}fastf_24.gif" border="0"></a>
+                                                    {if $next != ''}
+                                                        <a href="?page=employee:search&name={$name}&submit=submit&page_no={$next}"><img src="{$theme_images_dir}forwd_24.gif" border="0"></a>
+                                                        <a href="?page=employee:search&name={$name}&submit=submit&page_no={$total_pages}"><img src="{$theme_images_dir}fastf_24.gif" border="0"></a>
+                                                    {/if}
                                                     <br>
                                                     {$total_results} {$translate_employee_records_found}
+                                                </form>
                                             </td>
-                                        </tr>
-                                        <tr>
-                                            <td valign="top" colspan="2">
-                                                {foreach  from=$alpha item=alpha}
-                                                    &nbsp;<a href="?page=employee%3Amain&name={$alpha}&submit=submit">{$alpha}</a>&nbsp;
-                                                {/foreach}
-                                            </td>
-                                        </tr>
+                                            
+                                        </tr>                                        
+                                        
+                                        <!-- Search Results Table -->
                                         <tr>
                                             <td valign="top" colspan="2">
                                                 <table class="olotable" width="100%" cellpadding="5" celspacing="0" border="0" summary="Work order display">
@@ -72,10 +80,10 @@
                                                         <td class="olohead">{$translate_employee_action}</td>
                                                     </tr>
                                                     {section name=i loop=$employee_search_result}
-                                                        <tr onmouseover="this.className='row2'" onmouseout="this.className='row1'" onDblClick="window.location='index.php?page=employee:details&employee_id={$employee_search_result[i].EMPLOYEE_ID}&page_title={$translate_employee_details_for} {$employee_search_result[i].EMPLOYEE_DISPLAY_NAME}';" class="row1">
+                                                        <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=employee:details&employee_id={$employee_search_result[i].EMPLOYEE_ID}&page_title={$translate_employee_details_for} {$employee_search_result[i].EMPLOYEE_DISPLAY_NAME}';" class="row1">
                                                             <td class="olotd4"><a href="?page=employee:details&employee_id={$employee_search_result[i].EMPLOYEE_ID}&page_title={$translate_employee_details_for} {$employee_search_result[i].EMPLOYEE_DISPLAY_NAME}">{$employee_search_result[i].EMPLOYEE_ID}</a></td>
                                                             <td class="olotd4">
-                                                                <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('{$employee_search_result[i].EMPLOYEE_ADDRESS}<br>{$employee_search_result[i].EMPLOYEE_CITY}, {$employee_search_result[i].EMPLOYEE_SATE}  {$employee_search_result[i].EMPLOYEE_ZIP}')" onMouseOut="hideddrivetip();">
+                                                                <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('{$employee_search_result[i].EMPLOYEE_ADDRESS}<br>{$employee_search_result[i].EMPLOYEE_CITY}, {$employee_search_result[i].EMPLOYEE_SATE}  {$employee_search_result[i].EMPLOYEE_ZIP}');" onMouseOut="hideddrivetip();">
                                                                 {$employee_search_result[i].EMPLOYEE_DISPLAY_NAME}
                                                             </td>
                                                             <td class="olotd4">{$employee_search_result[i].EMPLOYEE_FIRST_NAME}</td>
@@ -86,12 +94,13 @@
                                                             </td>
                                                             <td class="olotd4">{$employee_search_result[i].TYPE_NAME}</td>
                                                             <td class="olotd4"><a href="mailto: {$employee_search_result[i].EMPLOYEE_EMAIL}"><font class="blueLink">{$employee_search_result[i].EMPLOYEE_EMAIL}</font></a></td>
-                                                            <td class="olotd4"><a href="?page=employee:details&employee_id={$employee_search_result[i].EMPLOYEE_ID}&page_title={$translate_employee_details_for} {$employee_search_result[i].EMPLOYEE_DISPLAY_NAME}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif"  border="0" onMouseOver="ddrivetip('View Employees Details')" onMouseOut="hideddrivetip()"></a>&nbsp;<a href="?page=employee:edit&employee_id={$employee_search_result[i].EMPLOYEE_ID}&page_title={$translate_employee_edit} {$employee_search_result[i].EMPLOYEE_DISPLAY_NAME}"><img src="{$theme_images_dir}icons/16x16/small_edit_employee.gif" border="0" onMouseOver="ddrivetip('Edit')" onMouseOut="hideddrivetip();"></a></td>                                                        
+                                                            <td class="olotd4"><a href="?page=employee:details&employee_id={$employee_search_result[i].EMPLOYEE_ID}&page_title={$translate_employee_details_for} {$employee_search_result[i].EMPLOYEE_DISPLAY_NAME}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif"  border="0" onMouseOver="ddrivetip('View Employees Details');" onMouseOut="hideddrivetip();"></a>&nbsp;<a href="?page=employee:edit&employee_id={$employee_search_result[i].EMPLOYEE_ID}&page_title={$translate_employee_edit} {$employee_search_result[i].EMPLOYEE_DISPLAY_NAME}"><img src="{$theme_images_dir}icons/16x16/small_edit_employee.gif" border="0" onMouseOver="ddrivetip('Edit');" onMouseOut="hideddrivetip();"></a></td>                                                        
                                                         </tr>
                                                     {/section}
                                                 </table>
                                             </td>
-                                        </tr>                                       
+                                        </tr>
+                                        
                                     </table>
                                 </td>
                             </tr>

@@ -1,4 +1,4 @@
-<!-- new.tpl -->{$employee_details|@print_r}
+<!-- new.tpl -->
 <table width="100%" border="0" cellpadding="20" cellspacing="0">
     <tr>
         <td>
@@ -47,25 +47,12 @@
                                                                                         </tr>
                                                                                         <tr>
                                                                                             <td align="right"><strong>{$translate_employee_type}</strong></td>
-                                                                                            <td>                                                                                            
-                                                                                                <!--<select name="employee_type" class="olotd5">
-                                                                                                    <option value="1">Administrator</option>
-                                                                                                    <option value="2">{$translate_employee_manager}</option>
-                                                                                                    <option value="3">{$translate_employee_supervisor}</option>
-                                                                                                    <option value="4" selected>Technician</option>
-                                                                                                    <option value="5">Clerical</option>
-                                                                                                    <option value="6">Counter</option>
-                                                                                                    <option value="7">Customer</option>
-                                                                                                    <option value="8">Guest</option>
-                                                                                                    <option value="9">Public</option>
-                                                                                                </select>-->
-                                                                                                
+                                                                                            <td>                                                                                                
                                                                                                 <select name="employee_type" class="olotd5">
                                                                                                     {section name=b loop=$employee_type}
                                                                                                         <option value="{$employee_type[b].TYPE_ID}" {if $employee_details[a].employee_type == $employee_type[b].TYPE_ID} selected{/if}>{$employee_type[b].TYPE_NAME}</option>
                                                                                                     {/section}
-                                                                                                </select>
-                                                                                            
+                                                                                                </select>                                                                                            
                                                                                             </td>
                                                                                         </tr>
                                                                                         <tr>

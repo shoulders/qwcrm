@@ -198,7 +198,7 @@
     <core_menu_payment_options>Payment Options</core_menu_payment_options>
     <core_menu_invoice_rates>Invoice Rates</core_menu_invoice_rates>
     <core_menu_administration>Administration</core_menu_administration>
-    <core_menu_view_employees>View Employees</core_menu_view_employees>
+    <core_menu_search_employees>Search Employees</core_menu_search_employees>
     <core_menu_new_employee>New Employee</core_menu_new_employee>
     <core_menu_edit_employee>Edit Employee</core_menu_edit_employee>    
     <core_menu_edit_permissions>Edit Permissions</core_menu_edit_permissions>
@@ -516,7 +516,9 @@
         <employee_error_message_function_get_employee_display_name_by_id_failed>Failed to get the Employee Name by ID for the Work Order</employee_error_message_function_get_employee_display_name_by_id_failed>
         <employee_error_message_function_build_active_employee_form_option_list_failed>Failed build and return and Employee list</employee_error_message_function_build_active_employee_form_option_list_failed>           
         
-        
+        <employee_details_help_title>Employee Details Help</employee_details_help_title>
+        <employee_details_help_content>You can see the selected employees details and jobs he has worked on</employee_details_help_content>
+        <employee_details_edit_employee_details_button_tooltip>Click to edit employee details</employee_details_edit_employee_details_button_tooltip>
         
         
         <employee_add_new_employee>Add New Employee</employee_add_new_employee>
