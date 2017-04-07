@@ -18,8 +18,7 @@ if(isset($VAR['submit'])) {
 
         // Make the $VAR array have the correct format for a smarty loop and assign
         $employee_details = array();
-        $employee_details[] = $VAR;    
-        $smarty->assign('employee_details', $employee_details);  
+        $employee_details[] = $VAR;        
         
         // Reload the page with the POST'ed data
         $smarty->assign('employee_type', get_employee_types($db));
