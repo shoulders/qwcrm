@@ -102,7 +102,7 @@ function force_page($module, $page_tpl = Null, $variables = Null, $method = 'ses
 
                 // Set the page varible in the session - it does not matter page varible is set twice 1 in $_SESSION and 1 in $_GET the array merge will fix that
                 foreach($variable_array as $key => $value) {                    
-                    $_SESSION['force_page'][$key] = $value;
+                    postEmulation($key, $value);
                 }               
 
                 // Build the URL and perform the redirect
@@ -129,7 +129,7 @@ function force_page($module, $page_tpl = Null, $variables = Null, $method = 'ses
 
                 // Set the page varible in the session - it does not matter page varible is set twice 1 in $_SESSION and 1 in $_GET the array merge will fix that
                 foreach($variable_array as $key => $value) {                    
-                    $_SESSION['force_page'][$key] = $value;
+                    postEmulation($key, $value);
                 }
 
                 // Build the URL and perform the redirect
@@ -180,28 +180,27 @@ function perform_redirect($url, $type = 'header') {
 function force_error_page($error_page, $error_type, $error_location, $php_function, $database_error, $sql_query, $error_msg) {    
     
     // New method of passing varibles with preperation
-    $_SESSION['force_page']['error_page']       = prepare_error_data('error_page', $error_page);
-    $_SESSION['force_page']['error_type']       = $error_type;
-    $_SESSION['force_page']['error_location']   = prepare_error_data('error_location', $error_location);
-    $_SESSION['force_page']['php_function']     = prepare_error_data('php_function', $php_function);
-    $_SESSION['force_page']['database_error']   = $database_error;
-    $_SESSION['force_page']['sql_query']        = $sql_query;
-    $_SESSION['force_page']['error_msg']        = $error_msg;
+    postEmulation('error_page',         prepare_error_data('error_page', $error_page)           );
+    postEmulation('error_type',         $error_type                                             );
+    postEmulation('error_location',     prepare_error_data('error_location', $error_location)   );
+    postEmulation('php_function',       prepare_error_data('php_function', $php_function)       );
+    postEmulation('database_error',     $database_error                                         );
+    postEmulation('sql_query',          $sql_query                                              );
+    postEmulation('error_msg',          $error_msg                                              );    
     
+    // Load Error Page
     force_page('core', 'error');
     exit;
     
 }
 
-############################################
-#  Error Handling - Data preperation       #
-############################################
+###########################################
+#  POST Emulation - for server to server  #
+###########################################
 
-function postEmulate($key, $value) {
+function postEmulation($key, $value) {
     $_SESSION['post_emulation'][$key] = $value;
 }
-
-
 
 ############################################
 #  Error Handling - Data preperation       #

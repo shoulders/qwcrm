@@ -781,14 +781,14 @@ function delete_workorder($db, $workorder_id) {
     global $smarty;
     
     // Does the workorder have an invoice
-    if(check_workorder_has_invoice($db, $workorder_id)) {
-        $_SESSION['force_page']['warning_msg'] = $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_hasinvoice');        
+    if(check_workorder_has_invoice($db, $workorder_id)) {        
+        postEmulation('warning_msg', $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_hasinvoice'));
         return false;
     }
     
     // Is the workorder in an allowed state to be deleted
-    if(!check_workorder_status_is_allowed_for_deletion($db, $workorder_id)) {
-        $_SESSION['force_page']['warning_msg'] = $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_statusnotallowed');        
+    if(!check_workorder_status_is_allowed_for_deletion($db, $workorder_id)) {        
+        postEmulation('warning_msg', $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_statusnotallowed'));
         return false;
     }
     
@@ -964,9 +964,9 @@ function resolution_edit_status_check($db, $workorder_id) {
     } else {        
     
         // waiting for parts
-        if ($rs->fields['WORK_ORDER_STATUS'] == 3) {
+        if ($rs->fields['WORK_ORDER_STATUS'] == 3) {           
             
-            $_SESSION['force_page']['warning_msg'] = $smarty->get_template_vars('translate_workorder_advisory_message_function_resolution_edit_status_check_waitingforparts');
+            postEmulation('warning_msg', $smarty->get_template_vars('translate_workorder_advisory_message_function_resolution_edit_status_check_waitingforparts'));
             return false;
             
         }
@@ -974,7 +974,7 @@ function resolution_edit_status_check($db, $workorder_id) {
         // closed
         if($rs->fields['WORK_ORDER_STATUS'] == 6) {
             
-            $_SESSION['force_page']['warning_msg'] = $smarty->get_template_vars('translate_workorder_advisory_message_function_resolution_edit_status_check_workorderalreadyclosed');
+            postEmulation('warning_msg', $smarty->get_template_vars('translate_workorder_advisory_message_function_resolution_edit_status_check_workorderalreadyclosed'));
             return false;
         }
         

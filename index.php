@@ -157,13 +157,13 @@ if (isset($_GET['action']) && $_GET['action'] == 'logout') {
 ################################
 
 // Prevents errors if there is no $_SESSION varibles set via force_page
-if(!is_array($_SESSION['force_page'])){$_SESSION['force_page'] = array();}
+if(!is_array($_SESSION['post_emulation'])){$_SESSION['post_emulation'] = array();}
  
 // Merge the $_GET, $_POST and emulated $_POST
-$VAR = array_merge($_GET, $_POST, $_SESSION['force_page']);
+$VAR = array_merge($_GET, $_POST, $_SESSION['post_emulation']);
 
 // Delete the force_page array as varibles stored there are no longer needed
-unset($_SESSION['force_page']);
+unset($_SESSION['post_emulation']);
 
 // These are used globally
 $workorder_id       = $VAR['workorder_id'];
