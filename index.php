@@ -235,9 +235,6 @@ $smarty->assign('currency_sym', get_company_info($db,   'COMPANY_CURRENCY_SYMBOL
 $smarty->assign('company_logo', get_company_info($db,   'COMPANY_LOGO')             );
 $smarty->assign('date_format',  DATE_FORMAT                                         );
 
-// all company info as an array
-//$smarty->assign('company_info', get_company_info($db,   'all')                      );
-
 #############################
 #        Messages           #
 #############################

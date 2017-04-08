@@ -1,12 +1,12 @@
 <?php
 
 ##########################################
-#      MyITCRM TAX Rate Call             #
+#      QWcrm TAX Rate Call               #
 ##########################################
 
 function tax_rate($db){
 
-$q = 'SELECT * FROM '.PRFX.'SETUP';
+$q = 'SELECT * FROM '.PRFX.'TABLE_COMPANY';
     if(!$rs = $db->execute($q)) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
         exit;

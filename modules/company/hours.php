@@ -17,7 +17,7 @@ if(isset($VAR['submit'])) {
         
     }
     
-    // Assign varibles to load database or post
+    // Assign varibles (for page load)
     $smarty->assign('opening_time', $opening_time   );
     $smarty->assign('closing_time', $closing_time   );
 
@@ -28,4 +28,4 @@ if(isset($VAR['submit'])) {
 }
 
 // Fetch the hours page
-$BuildPage .= $smarty->fetch('company'.SEP.'hours.tpl');
+$BuildPage .= $smarty->fetch('company/hours.tpl');

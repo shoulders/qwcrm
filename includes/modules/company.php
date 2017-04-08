@@ -6,7 +6,7 @@
 
 function get_company_start_end_times($db, $time_event) {
     
-    $sql = 'SELECT OPENING_HOUR, OPENING_MINUTE, CLOSING_HOUR, CLOSING_MINUTE FROM '.PRFX.'SETUP';
+    $sql = 'SELECT OPENING_HOUR, OPENING_MINUTE, CLOSING_HOUR, CLOSING_MINUTE FROM '.PRFX.'TABLE_COMPANY';
 
     if(!$rs = $db->execute($sql)) {
         force_page('core', 'error','error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
@@ -23,6 +23,7 @@ function get_company_start_end_times($db, $time_event) {
     if($time_event == 'closing_time') {
         return $companyTime['0']['CLOSING_HOUR'].':'.$companyTime['0']['CLOSING_MINUTE'].':00';
     }
+    
 }
     
     
@@ -47,6 +48,7 @@ function check_start_end_times($start_time, $end_time) {
     }
     
     return true;
+    
 }
 
 ##########################################
@@ -57,11 +59,11 @@ function insert_company_hours($db, $openingTime, $closingTime) {
     
     global $smarty;
     
-    $sql = 'UPDATE '.PRFX.'SETUP SET
-        OPENING_HOUR    ='. $db->qstr( $openingTime['Time_Hour']     ).',
-        OPENING_MINUTE  ='. $db->qstr( $openingTime['Time_Minute']   ).',
-        CLOSING_HOUR    ='. $db->qstr( $closingTime['Time_Hour']     ).',
-        CLOSING_MINUTE  ='. $db->qstr( $closingTime['Time_Minute']   );
+    $sql = 'UPDATE '.PRFX.'TABLE_COMPANY SET
+            OPENING_HOUR    ='. $db->qstr( $openingTime['Time_Hour']     ).',
+            OPENING_MINUTE  ='. $db->qstr( $openingTime['Time_Minute']   ).',
+            CLOSING_HOUR    ='. $db->qstr( $closingTime['Time_Hour']     ).',
+            CLOSING_MINUTE  ='. $db->qstr( $closingTime['Time_Minute']   );
 
     if(!$rs = $db->execute($sql)) {
         force_page('core', 'error','error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
@@ -70,4 +72,5 @@ function insert_company_hours($db, $openingTime, $closingTime) {
         $smarty->assign('information_msg','Office hours have been updated.');
         return true;
     }
+    
 }

@@ -11,7 +11,7 @@
                         <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0" >
                             <tr>
                                 <td width="100%" valign="top" class="menutd">                                    
-                                    <form method="POST" action="?page=control:payment_options">
+                                    <form method="POST" action="?page=company:payment_options">
                                         <table>
                                             <caption><b><font color="RED">Available Payment types</font></b></caption>
                                             {section name=q loop=$arr}

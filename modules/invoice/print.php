@@ -55,7 +55,7 @@ if($customer_id == "" || $customer_id == "0"){
         $stats = $rs->FetchRow();
 
         /* get workorder status  */
-     $q = "SELECT * FROM ".PRFX."WORK_ORDER_STATUS WHERE WORK_ORDER_STATUS_ID=".$db->qstr($stats['WORK_ORDER_STATUS']);
+     //$q = "SELECT * FROM ".PRFX."WORK_ORDER_STATUS WHERE WORK_ORDER_STATUS_ID=".$db->qstr($stats['WORK_ORDER_STATUS']);
 
     if(!$rs = $db->Execute($q)) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');

@@ -503,7 +503,7 @@ function get_qwcrm_database_version_number($db){
  * supply the required field name or all to return all of them as an array
  */
 
-function get_company_info($db, $item){
+function get_company_info($db, $item = null){
     
     global $smarty;
 
@@ -513,7 +513,7 @@ function get_company_info($db, $item){
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {        
-        if($item === 'all'){
+        if($item === null){
             
             return $rs->GetArray(); 
             
@@ -528,7 +528,7 @@ function get_company_info($db, $item){
 }
 
 ################################################
-#  Get setup info - individual items           # 
+#  Get setup info - individual items           #  // not used anywhere
 ################################################
 
 /*
@@ -1000,5 +1000,24 @@ function timestamp_to_date($timestamp){
 function timestamp_to_calendar_format($timestamp) {
     
     return date('Ymd', $timestamp);
+    
+}
+
+##########################################
+#   Timestamp to calendar date format    #
+##########################################
+
+function get_country_codes($db) {
+
+    $sql = 'SELECT * FROM '.PRFX.'COUNTRY';
+
+    if(!$rs = $db->execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
+        exit;        
+    } else {
+        
+        return $rs->GetArray();
+        
+    }
     
 }

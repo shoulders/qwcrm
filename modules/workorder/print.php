@@ -15,11 +15,11 @@ if($VAR['print_content'] == '' || $VAR['print_type'] == '') {
 }
 
 // Assign Variables
-$smarty->assign('company',                  get_company_info($db, 'all')                        );
-$smarty->assign('single_work_order',        display_single_workorder($db, $workorder_id)   );
-$smarty->assign('work_order_notes',         display_workorder_notes($db, $workorder_id)         );
-$smarty->assign('work_order_schedule',      display_workorder_schedule($db, $workorder_id)      );
-$smarty->assign('work_order_resolution',    display_resolution($db, $workorder_id)              );
+$smarty->assign('company',                  get_company_info($db)                           );
+$smarty->assign('single_work_order',        display_single_workorder($db, $workorder_id)    );
+$smarty->assign('work_order_notes',         display_workorder_notes($db, $workorder_id)     );
+$smarty->assign('work_order_schedule',      display_workorder_schedule($db, $workorder_id)  );
+$smarty->assign('work_order_resolution',    display_resolution($db, $workorder_id)          );
 
 /* Display Page */
 

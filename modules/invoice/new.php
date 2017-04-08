@@ -185,7 +185,7 @@ $discount_amount = $sub_total * $discount_rate;
 $shipping = $VAR['shipping'];
 
 // Calculate Tax
-$q = "SELECT INVOICE_TAX FROM ".PRFX."SETUP";
+$q = "SELECT INVOICE_TAX FROM ".PRFX."TABLE_COMPANY";
 $rs = $db->execute($q);
 $tax = $rs->fields['INVOICE_TAX'];
 $tax_rate = $tax / 100; // turns 17.5 in to 0.175

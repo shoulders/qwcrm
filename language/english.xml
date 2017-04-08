@@ -89,6 +89,7 @@
     <system_include_error_message_function_write_record_to_activity_log_failed>can&#39;t open activity.log</system_include_error_message_function_write_record_to_activity_log_failed>
     <system_include_error_message_function_write_record_to_access_log_failed>can&#39;t open access.log</system_include_error_message_function_write_record_to_access_log_failed>
     <system_include_error_message_function_write_record_to_error_log_failed>can&#39;t open error.log</system_include_error_message_function_write_record_to_error_log_failed>
+    <system_include_error_message_function_get_country_codes_failed>Could not retrieve country codes</system_include_error_message_function_get_country_codes_failed>
 
     //// Log Messages
     
