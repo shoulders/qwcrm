@@ -197,6 +197,16 @@ function force_error_page($error_page, $error_type, $error_location, $php_functi
 #  Error Handling - Data preperation       #
 ############################################
 
+function postEmulate($key, $value) {
+    $_SESSION['post_emulation'][$key] = $value;
+}
+
+
+
+############################################
+#  Error Handling - Data preperation       #
+############################################
+
 function prepare_error_data($type, $data = Null){
 
     /* Error Page (by referring page) - only needed when using referrer - not currently used 

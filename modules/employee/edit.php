@@ -68,7 +68,6 @@ if(isset($VAR['submit'])) {
     // Fetch the page from the database   
     $smarty->assign('employee_type', get_employee_types($db));
     $smarty->assign('employee_details', $employee_details);
-
     $BuildPage .= $smarty->fetch('employee/edit.tpl');
     
 }

@@ -130,8 +130,7 @@
                         
                         <!-- System -->
                         <a href="?page=administrator:php_info"><img src="{$theme_images_dir}icons/php.png" alt="" border="0" height="14" width="14" /> {$translate_core_menu_php_info}</a>
-                        <a href="?page=administrator:update"><img src="{$theme_images_dir}icons/web.png" alt="" border="0" height="14" width="14" />{$translate_core_menu_check_for_updates} 1</a>
-                        <a href="?page=administrator:check_updates"><img src="{$theme_images_dir}icons/web.png" alt="" border="0" height="14" width="14" />{$translate_core_menu_check_for_updates} 2</a>
+                        <a href="?page=administrator:update"><img src="{$theme_images_dir}icons/web.png" alt="" border="0" height="14" width="14" />{$translate_core_menu_update}</a>                        
                         
                     </div>
                 {/if}                

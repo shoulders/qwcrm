@@ -37,7 +37,7 @@ function display_employee_info_version2($db){
     
     global $smarty;
     
-    $sql = "SELECT  EMPLOYEE_ID, EMPLOYEE_LOGIN FROM ".PRFX."TABLE_EMPLOYEE";
+    $sql = "SELECT EMPLOYEE_ID, EMPLOYEE_LOGIN FROM ".PRFX."TABLE_EMPLOYEE";
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
@@ -80,12 +80,9 @@ function display_employee_search($db, $search_term, $page_no) {
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
-    } else {
-        
-        $employee_search_result = $rs->GetArray();
-        
-    }
-    
+    } else {        
+        $employee_search_result = $rs->GetArray();        
+    }    
 
     // Figure out the total number of results in DB: 
     $sql = "SELECT COUNT(*) as Num FROM ".PRFX."TABLE_EMPLOYEE WHERE EMPLOYEE_DISPLAY_NAME LIKE '%$search_term%'";
@@ -94,12 +91,14 @@ function display_employee_search($db, $search_term, $page_no) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {        
-        $total_results = $rs->FetchRow();
-        $smarty->assign('total_results', strip_tags($total_results['Num']));
+        $total_results = $rs->fields['Num'];
+        $smarty->assign('total_results', $total_results);       
     }
     
     // Figure out the total number of pages. Always round up using ceil()
-    $total_pages = ceil($total_results['Num'] / $max_results); 
+    $total_pages = ceil($total_results / $max_results);
+    
+    // Assign Total number of pages
     $smarty->assign('total_pages', $total_pages);
     
     // Assign the first page
@@ -112,6 +111,7 @@ function display_employee_search($db, $search_term, $page_no) {
         $next = ($page_no + 1); 
     }
     
+    // Assign remaining variables
     $smarty->assign('employee_searchTerm', $search_term);
     $smarty->assign('page_no', $page_no);
     $smarty->assign('previous', $prev);
@@ -179,10 +179,8 @@ function get_employee_display_name_by_id($db, $employee_id) {
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
-    } else {
-        
-        //$employee_array = $rs->GetArray();
-        //return $employee_array['0']['EMPLOYEE_DISPLAY_NAME'];
+    } else {        
+
         return $rs->fields['EMPLOYEE_DISPLAY_NAME'];
         
     }
@@ -287,7 +285,9 @@ function get_active_employees($db) {
 #########################
 
 function update_employee($db, $employee_record) {
-    // Build the update statement with reguards to if the password is changing
+    
+    global $smarty;
+    
         $set .="    SET
                     EMPLOYEE_LOGIN          =". $db->qstr( $employee_record['employee_usr']             ).",";
 
@@ -313,8 +313,13 @@ function update_employee($db, $employee_record) {
 
     $sql = "UPDATE ".PRFX."TABLE_EMPLOYEE ". $set ." WHERE EMPLOYEE_ID= ".$db->qstr($employee_record['employee_id']);
 
-    if(!$rs = $db->execute($sql)) {
-        force_page('core', 'error&error_msg=Error updating Employee Information');    
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
+        exit;
+    } else{
+        
+        return true;
+        
     }
     
 }
@@ -437,18 +442,3 @@ function check_employee_username_exists($db, $username, $current_username){
     } 
     
 }
-
-
-
-// check these and improve them etc..
-
-// A function for comparing password
-    function cmpPass($element, $confirmPassword) {
-        global $form;
-        $password = $form->getElementValue('password');
-        return ($password == $confirmPassword);
-    }
-    // A function to encrypt the password
-    function encryptValue($value) {
-        return md5($value);
-    }
