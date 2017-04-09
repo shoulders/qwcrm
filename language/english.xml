@@ -194,7 +194,8 @@
     <core_menu_supplier_details>Supplier Details</core_menu_supplier_details>
     <core_menu_edit_supplier>Edit Supplier</core_menu_edit_supplier>
     <core_menu_delete_supplier>Delete Supplier</core_menu_delete_supplier>
-    <core_menu_business_setup>Business Setup</core_menu_business_setup>
+    <core_menu_company>Company</core_menu_company>
+    <core_menu_edit_company>Edit Company</core_menu_edit_company>
     <core_menu_business_hours>Business Hours</core_menu_business_hours>
     <core_menu_payment_options>Payment Options</core_menu_payment_options>
     <core_menu_invoice_rates>Invoice Rates</core_menu_invoice_rates>
@@ -202,7 +203,7 @@
     <core_menu_search_employees>Search Employees</core_menu_search_employees>
     <core_menu_new_employee>New Employee</core_menu_new_employee>
     <core_menu_edit_employee>Edit Employee</core_menu_edit_employee>    
-    <core_menu_edit_permissions>Edit Permissions</core_menu_edit_permissions>
+    <core_menu_permissions>Permissions</core_menu_permissions>
     <core_menu_hit_stats>Hit Stat</core_menu_hit_stats>
     <core_menu_hit_stats_view>Hit Stats View</core_menu_hit_stats_view>    
     <core_menu_php_info>PHP Info</core_menu_php_info>
@@ -245,7 +246,7 @@
     <core_home_title>QWcrm - Welcome to your Online Office</core_home_title>
     <core_home_help_title>Home Page Help</core_home_help_title>
     <core_home_help_content>This home page gives you an overview of your activities</core_home_help_content>        
-    <core_home_welcome_note_title>Company Messages - Welcome Notes</core_home_welcome_note_title>
+    <core_home_welcome_msg_title>Company Welcome Message</core_home_welcome_msg_title>
     <core_home_workorder_stats_title>Work Order Stats</core_home_workorder_stats_title>
     <core_home_new>New</core_home_new>
     <core_home_assigned>Assigned</core_home_assigned>
@@ -283,7 +284,7 @@
     <core_menu_error_message_function_menu_count_invoices_with_status_failed>-</core_menu_error_message_function_menu_count_invoices_with_status_failed>
 
     // includes/modules/core_home.php
-    <core_home_error_message_function_display_welcome_note_failed>Could not display the welcome note</core_home_error_message_function_display_welcome_note_failed>     
+    <core_home_error_message_function_display_welcome_msg_failed>Could not display the welcome note</core_home_error_message_function_display_welcome_msg_failed>     
     <core_home_error_message_function_count_workorders_with_status_failed>Could not count Work Orders for the defined status</core_home_error_message_function_count_workorders_with_status_failed>
     <core_home_error_message_function_count_all_workorders_failed>Could not count all Work Orders</core_home_error_message_function_count_all_workorders_failed>
     <core_home_error_message_function_count_invoices_with_status_failed>Could not count the number of Invoices for the defined status</core_home_error_message_function_count_invoices_with_status_failed>

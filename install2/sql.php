@@ -624,7 +624,7 @@ function create_version($db) {
 
 function create_billing_options($db) {
 
-$q = "CREATE TABLE IF NOT EXISTS `".PRFX."CONFIG_BILLING_OPTIONS` (
+$q = "CREATE TABLE IF NOT EXISTS `".PRFX."PAYMENT_METHODS` (
         `ID` int(11) NOT NULL auto_increment,
         `BILLING_OPTION` varchar(64) NOT NULL default '',
         `BILLING_NAME` varchar(64) NOT NULL default '',
@@ -636,7 +636,7 @@ $q = "CREATE TABLE IF NOT EXISTS `".PRFX."CONFIG_BILLING_OPTIONS` (
         return false;
     } else {
     
-        $q = "INSERT IGNORE INTO `".PRFX."CONFIG_BILLING_OPTIONS` VALUES (1,'cc_billing','Credit Card',0),(2,'cheque_billing','Cheque',1),(3,'cash_billing','Cash',1),(4,'gift_billing','Gift Certificate',0),(5,'paypal_billing','Pay Pal',0),(6,'deposit_billing','Direct Deposit',0)";
+        $q = "INSERT IGNORE INTO `".PRFX."PAYMENT_METHODS` VALUES (1,'cc_billing','Credit Card',0),(2,'cheque_billing','Cheque',1),(3,'cash_billing','Cash',1),(4,'gift_billing','Gift Certificate',0),(5,'paypal_billing','Pay Pal',0),(6,'deposit_billing','Direct Deposit',0)";
     
         if(!$rs = $db->execute($q) ) {
             return false;

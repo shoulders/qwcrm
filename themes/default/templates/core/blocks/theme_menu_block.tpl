@@ -57,7 +57,7 @@
 
                 <!-- General Ledger -->
                 <!-- Menu limited to Administrators and Managers -->
-                {if $login_account_type_id == 1 || $login_account_type_id == 4}
+                {if $login_account_type_id == 1 || $login_account_type_id == 2}
                     <div>
                         <span>{$translate_core_menu_general_ledger}</span>
                         
@@ -85,7 +85,7 @@
 
                 <!-- Suppliers -->
                 <!-- Menu limited to Administrators and Managers -->
-                {if $login_account_type_id == 1 || $login_account_type_id == 4}
+                {if $login_account_type_id == 1 || $login_account_type_id == 2}
                     <div>
                         <span>{$translate_core_menu_suppliers}</span> 
                         <a href="?page=supplier:new"><img src="{$theme_images_dir}icons/new.gif" alt="" border="0" height="14" width="14" />{$translate_core_menu_new_supplier}</a>
@@ -98,15 +98,15 @@
                     </div>
                 {/if}
 
-                <!-- Business Setup -->
+                <!-- Company -->
                 <!-- Menu limited to Administrators -->
                 {if $login_account_type_id == 1}
                     <div>
-                        <span>{$translate_core_menu_business_setup}</span>
-                        <a href="?page=company:company_edit"><img src="{$theme_images_dir}icons/key.png" alt="" border="0" height="14" width="14" /> {$translate_core_menu_business_setup}</a>
-                        <a href="?page=company:hours"><img src="{$theme_images_dir}icons/clock.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_business_hours}</a>
+                        <span>{$translate_core_menu_company}</span>
+                        <a href="?page=company:edit"><img src="{$theme_images_dir}icons/key.png" alt="" border="0" height="14" width="14" /> {$translate_core_menu_edit_company}</a>
+                        <a href="?page=company:business_hours"><img src="{$theme_images_dir}icons/clock.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_business_hours}</a>
                         <a href="?page=company:payment_options"><img src="{$theme_images_dir}icons/money.png" alt="" border="0" height="14" width="14" /> {$translate_core_menu_payment_options}</a>
-                        <a href="?page=company:edit_rate"><img src="{$theme_images_dir}icons/money.png" alt="" border="0" height="14" width="14" /> {$translate_core_menu_invoice_rates}</a>
+                        <a href="?page=company:invoice_rates"><img src="{$theme_images_dir}icons/money.png" alt="" border="0" height="14" width="14" /> {$translate_core_menu_invoice_rates}</a>
                     </div>
                 {/if}
 
@@ -122,7 +122,7 @@
                         {if $employee_id > '' || $employee_id > 0 }
                             <a href="?page=employee:edit&employee_id={$employee_id}"><img src="{$theme_images_dir}icons/edit_employee.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_edit_employee}</a>
                         {/if}
-                        <a href="?page=administrator:acl"><img src="{$theme_images_dir}icons/encrypted.png" alt="" border="0" height="14" width="14" /> {$translate_core_menu_edit_permissions}</a>
+                        <a href="?page=administrator:acl"><img src="{$theme_images_dir}icons/encrypted.png" alt="" border="0" height="14" width="14" /> {$translate_core_menu_permissions}</a>
                         
                         <!-- Stats -->
                         <a href="?page=stats:hit_stats"><img src="{$theme_images_dir}icons/reports.png" alt="" border="0" height="14" width="14" /> {$translate_core_menu_hit_stats}</a>

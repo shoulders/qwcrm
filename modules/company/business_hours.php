@@ -12,8 +12,8 @@ if(isset($VAR['submit'])) {
     // Validate the submitted times
     if (check_start_end_times($opening_time, $closing_time)) {
         
-        // Insert opening and closing Times into the database
-        insert_company_hours($db, $VAR['openingTime'], $VAR['closingTime']);
+        // Update opening and closing Times into the database
+        update_company_hours($db, $VAR['openingTime'], $VAR['closingTime']);
         
     }
     
@@ -28,4 +28,4 @@ if(isset($VAR['submit'])) {
 }
 
 // Fetch the hours page
-$BuildPage .= $smarty->fetch('company/hours.tpl');
+$BuildPage .= $smarty->fetch('company/business_hours.tpl');

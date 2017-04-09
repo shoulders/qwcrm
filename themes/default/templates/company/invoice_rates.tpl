@@ -1,4 +1,4 @@
-<!-- edit_rate.tpl -->
+<!-- invoice_rates.tpl -->
 <table width="100%" border="0" cellpadding="20" cellspacing="5">
     <tr>
         <td>
@@ -28,7 +28,7 @@
                                                     </tr>
                                                     <tr>
                                                         {section name=q loop=$rate}
-                                                            <form method="POST" action="?page=company:edit_rate">
+                                                            <form method="POST" action="?page=company:invoice_rates">
                                                                 <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" class="row1">
                                                                     <td class="olotd4" nowrap>{$rate[q].LABOR_RATE_ID}</td>
                                                                     <td class="olotd4" nowrap><input name="display" class="olotd5" size="50" value="{$rate[q].LABOR_RATE_NAME}" type="text" maxlength="50" required onkeydown="return onlyAlphaNumeric(event);"></td>
@@ -49,8 +49,8 @@
                                                                     <td class="olotd4" nowrap><input name="manufacturer" class="olotd5" size="20" value="{$rate[q].LABOR_MANUF}" type="text" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"></td>
                                                                     <td class="olotd4" nowrap>
                                                                         <input type="hidden" name="id" value="{$rate[q].LABOR_RATE_ID}">
-                                                                        <input type="submit" name="submit" value="Delete">
-                                                                        <input type="submit" name="submit" value="Edit">
+                                                                        <button type="submit" name="submit" value="delete">Delete</button>
+                                                                        <button type="submit" name="submit" value="update">Update</button>
                                                                     </td>
                                                                 </tr>
                                                             </form>
@@ -58,7 +58,7 @@
                                                     </tr>                                                    
                                                 </table>
                                                 <b>Add New</b>
-                                                <form method="POST" action="?page=control:edit_rate">
+                                                <form method="POST" action="?page=company:invoice_rates">
                                                     <table class="olotable" width="100%" border="0" cellpadding="5" cellspacing="0">
                                                         <tr>
                                                             <td class="olohead">Display</td>
@@ -79,11 +79,11 @@
                                                                 </select>
                                                             </td>
                                                             <td class="olotd4" nowrap><input name="manufacturer" class="olotd5" size="20" type="text" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"></td>
-                                                            <td class="olotd4"><input type="submit" name="submit" value="New"></td>
+                                                            <td class="olotd4"><button type="submit" name="submit" value="new">New</button</td>
                                                         </tr>
                                                     </table>
                                                 </form>
-                                                {if $login_account_type_id.EMPLOYEE_TYPE == 1 ||  $login_account_type_id.EMPLOYEE_TYPE == 2 || $login_account_type_id.EMPLOYEE_TYPE == 3}                                                    
+                                                {if $login_account_type_id == 1 || $login_account_type_id == 2}                                                  
                                                     <script>
                                                     {literal} 
                                                         $(function(){
@@ -105,18 +105,20 @@
                                                                 <td><a>{$translate_invoice_rates_example}</a></td>
                                                             </tr>
                                                             <tr>
-                                                                <td><img src="{$theme_images_dir}rate_upload.PNG" alt="CSV Example screenshot" height="150"/></td>
+                                                                <td><img src="{$theme_images_dir}rate_upload.png" alt="CSV Example screenshot" height="150"/></td>
                                                             </tr>
                                                             <tr>
                                                                 <td>
-                                                                    <form action="?page=control:edit_rate" method="post" enctype="multipart/form-data">
+                                                                    <form action="?page=company:invoice_rates" method="post" enctype="multipart/form-data">
                                                                         <table width="350" border="0" cellpadding="1" cellspacing="1" class="box">
                                                                             <tr>
-                                                                                <td width="246">
-                                                                                    <input type="hidden" name="MAX_FILE_SIZE" value="2000000">
-                                                                                    <input name="userfile" type="file" id="userfile">
+                                                                                <td width="246">                                                                                    
+                                                                                    <input name="invoice_rates_csv" type="file" id="invoice_rates_csv">
                                                                                 </td>
-                                                                                <td width="80"><input name="upload" type="submit" class="box" id="upload" value="Load"></td>
+                                                                                <td width="80"><button id="csv_upload" name="csv_upload" type="submit" class="box" value="csv_upload">CSV Upload</button></td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td width="246"><input id="empty_invoice_rates" name="empty_invoice_rates" type="checkbox" value="1">Empty Invoice Rates Table</td>                                                                                
                                                                             </tr>
                                                                         </table>
                                                                     </form>

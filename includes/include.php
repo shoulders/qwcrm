@@ -493,9 +493,9 @@ function get_qwcrm_database_version_number($db){
     
 }
 
-################################################
-#  Get company info - indivudual items         #
-################################################
+##########################
+#  Get company details   #
+##########################
 
 /*
  * This combined function allows you to pull any of the company information individually
@@ -503,7 +503,7 @@ function get_qwcrm_database_version_number($db){
  * supply the required field name or all to return all of them as an array
  */
 
-function get_company_info($db, $item = null){
+function get_company_details($db, $item = null){
     
     global $smarty;
 
@@ -522,40 +522,6 @@ function get_company_info($db, $item = null){
             return $rs->fields[$item];   
             
         } 
-        
-    }
-    
-}
-
-################################################
-#  Get setup info - individual items           #  // not used anywhere
-################################################
-
-/*
- * This combined function allows you to pull any of the setup information individually
- * or return them all as an array
- * supply the required field name or all to return all of them as an array
- */
-
-function get_setup_info($db, $item){
-    
-    global $smarty;
-
-    $sql = 'SELECT * FROM '.PRFX.'SETUP';
-    
-    if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
-        exit;
-    } else {        
-        if($item === 'all'){
-            
-            return $rs->GetArray(); 
-            
-        } else {
-            
-            return $rs->fields[$item]; 
-            
-        }    
         
     }
     

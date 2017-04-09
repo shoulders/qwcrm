@@ -8,11 +8,11 @@
 # Display Welcome Note                  #
 #########################################
 
-function display_welcome_note($db){
+function display_welcome_msg($db){
     
     global $smarty;
     
-    $sql = 'SELECT WELCOME_NOTE FROM '.PRFX.'SETUP';
+    $sql = 'SELECT WELCOME_MSG FROM '.PRFX.'TABLE_COMPANY';
     //echo __FILE__;die;
     
     if(!$rs = $db->execute($sql)){
@@ -20,7 +20,7 @@ function display_welcome_note($db){
         exit;
     } else { 
         
-        return $rs->fields['WELCOME_NOTE'];
+        return $rs->fields['WELCOME_MSG'];
         
     }
     

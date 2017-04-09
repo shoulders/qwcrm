@@ -22,7 +22,7 @@
                                     <!-- Company Notes - Welcome Message -->
                                     <table width="700" cellpadding="4" cellspacing="0" border="0" class="olotable">
                                         <tr class="olotd4">
-                                            <td class="row2"><b>{$translate_core_home_welcome_note_title}</b></td>
+                                            <td class="row2"><b>{$translate_core_home_welcome_msg_title}</b></td>
                                         </tr>
                                         <tr class="olotd4">
                                             <td>{$welcome_note}</td>

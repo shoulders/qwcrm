@@ -70,7 +70,7 @@ $smarty->assign('invoice_details',$invoice_details);
 
 
     /* get billing settings from db */
-    $q = "SELECT BILLING_OPTION, ACTIVE FROM ".PRFX."CONFIG_BILLING_OPTIONS WHERE  ACTIVE='1'";
+    $q = "SELECT BILLING_OPTION, ACTIVE FROM ".PRFX."PAYMENT_METHODS WHERE  ACTIVE='1'";
     if(!$rs = $db->execute($q)) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
         exit;

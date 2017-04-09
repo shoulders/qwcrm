@@ -13,101 +13,72 @@
                                 <td width="100%" valign="top" class="menutd">                                    
                                     <form method="POST" action="?page=company:payment_options">
                                         <table>
-                                            <caption><b><font color="RED">Available Payment types</font></b></caption>
-                                            {section name=q loop=$arr}
+                                            <caption><b><font color="red">Available Payment types</font></b></caption>
+                                            {section name=q loop=$payment_methods_status}
                                                 <tr>
-                                                    <td><b>{$arr[q].BILLING_NAME}</b></td>
-                                                    <td>Active: <input type="checkbox" name="{$arr[q].BILLING_OPTION}" {if $arr[q].ACTIVE == 1} checked {/if} value=1 class="olotd5"></td>
+                                                    <td colspan="2"><b>{$payment_methods_status[q].METHOD}</b></td>
+                                                    <td>Active: <input type="checkbox" name="{$payment_methods_status[q].SMARTY_TPL_KEY}" {if $payment_methods_status[q].ACTIVE == 1} checked {/if} value=1 class="olotd5"></td>
                                                 </tr>
                                             {/section}
-                                        </table>
-                                        <br>
-                                        <br>
-                                        <b><font color="red" size="+1" >CREDIT CARD PROCESSING VIA AUTHORIZE.NET HAS TEMPORARILY BEEN DISBALED</font></b><br>
-                                        <b><font color="RED">Authorize.Net information</font></b><br>
-                                        If you are enabling credit card billing you must have an Authorize.Net account set up and enbaled. To set up an Authorize.Net account click here. You account information will encrypted before being stored in the database. No credit Card information is stored in the MYIT CRM system. For more information on billing profiles and setup please contact Authorize.Net. If you re-install MYIT CRM you will need to enter your Authorize.Net account settings as a random encyption key is generated at install time.
-                                        {section name=w loop=$opts}
+                                        </table>                                        
+                                        {section name=w loop=$payment_settings}                                            
                                             <table>
+                                                
+                                                <!-- Pritning Group? -->
                                                 <tr>
-                                                    <td><b>Login:</b></td>
-                                                    <td><input type="text" name="AN_LOGIN_ID" value="{$opts[w].AN_LOGIN_ID}" class="olotd5"></td>
+                                                    <td colspan="2"><font color="red"><b>Payment Instructions printed on Invoices</b></font></td>
+                                                </tr>
+                                                
+                                                <!-- Bank Details -->                                                
+                                                <tr>
+                                                    <td><b>Bank Account Name:</b></td>
+                                                    <td><input class="olotd5" type="text" name="bank_account_name" value="{$payment_settings[w].BANK_ACCOUNT_NAME}"></td>
                                                 </tr>
                                                 <tr>
-                                                    <td><b>Password:</b></td>
-                                                    <td><input type="text" name="AN_PASSWORD" value="{$opts[w].AN_PASSWORD}" class="olotd5"></td>
+                                                    <td><b>Bank Name:</b></td>
+                                                    <td><input class="olotd5" type="text" name="bank_name" value="{$payment_settings[w].BANK_NAME}"></td>
+                                                </tr>
+                                                    <tr>
+                                                        <td><b>Bank Account Number:</b></td>
+                                                        <td><input class="olotd5" type="text" name="bank_account_number" value="{$payment_settings[w].BANK_ACCOUNT_NUMBER}"></td>
+                                                    </tr>
+                                                <tr>
+                                                    <td><b>Bank Sort Code</b></td>
+                                                    <td><input class="olotd5" type="text" name="bank_sort_code" value="{$payment_settings[w].BANK_SORT_CODE}"></td>
                                                 </tr>
                                                 <tr>
-                                                    <td><b>Transaction Key:</b></td>
-                                                    <td><input type="text" name="AN_TRANS_KEY" value="{$opts[w].AN_TRANS_KEY}" size="50" class="olotd5"></td>
+                                                    <td><b>Bank IBAN</b></td>
+                                                    <td><input class="olotd5" type="text" name="bank_iban" value="{$payment_settings[w].BANK_IBAN}"></td>
                                                 </tr>
-                                            </table>
-                                            <br>
-                                            <br>
-                                            <b><font color="RED">Paypal Information</font></b><br>
-                                            You must have a Paypal Merchant account set and working. Please see https://www.paypal.com/ for more information.
-                                            <table>
+                                                
                                                 <tr>
-                                                    <td><b>Paypal Email</b></td>
-                                                    <td><input type="text" name="PP_ID" value="{$opts[w].PP_ID}" size="50" class="olotd5"></td>
+                                                    <td><b>Bank Transaction Message</b></td>
+                                                    <td><textarea class="olotd5" name="bank_transaction_message" cols="50" rows="2" >{$payment_settings[w].BANK_TRANSACTION_MSG}</textarea></td>
                                                 </tr>
-                                                <tr>
-                                                    <td></td>
-                                                </tr>
-                                                <tr>
-                                                    <td colspan="2"><font color="RED"><b>Payment Instructions printed on Invoices</b></font></td>
-                                                </tr>
+                                                
+                                                <!-- Cheques -->                                                
                                                 <tr>
                                                     <td colspan="2"><b>Check/Cheque Details:</b></td>
                                                 </tr>
                                                 <tr>
                                                     <td><b>Checks payable to:</b></td>
-                                                    <td><input class="olotd5" type="text" name="CHECK_PAYABLE" value="{$opts[w].CHECK_PAYABLE}"></td>
+                                                    <td><textarea class="olotd5" name="check_payable_to_msg" cols="50" rows="2" >{$payment_settings[w].CHECK_PAYABLE_TO_MSG}</textarea></td>
+                                                </tr>                                                
+                                                
+                                                <!-- PayPal -->
+                                                <tr>
+                                                    <td colspan="2"><b><font color="red">Paypal Information</font></b></td>                                                    
                                                 </tr>
                                                 <tr>
-                                                    <td></td>
+                                                    <td colspan="2">You must have a Paypal Merchant account set and working. Please see https://www.paypal.com/ for more information.</td>
                                                 </tr>
                                                 <tr>
-                                                    <td colspan="2"><font color="RED"><b>Direct Deposit Details:</b></font></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><b>Name:</b></td>
-                                                    <td><input class="olotd5" type="text" name="DD_NAME" value="{$opts[w].DD_NAME}"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><b>Bank:</b></td>
-                                                    <td><input class="olotd5" type="text" name="DD_BANK" value="{$opts[w].DD_BANK}"></td>
-                                                </tr>
-                                                    <tr>
-                                                        <td><b>Bank ID/BSB Details:</b></td>
-                                                        <td><input class="olotd5" type="text" name="DD_BSB" value="{$opts[w].DD_BSB}"></td>
-                                                    </tr>
-                                                <tr>
-                                                    <td><b>Account Number:</b></td>
-                                                    <td><input class="olotd5" type="text" name="DD_ACC" value="{$opts[w].DD_ACC}"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><b>Transaction Instructions</b></td>
-                                                    <td><textarea class="olotd5" name="DD_INS" cols="50" rows="2" >{$opts[w].DD_INS}</textarea></td>
-                                                </tr>
-                                            </table>
-                                            <br>
-                                            <!-- Paymate.com Processing Option -->
-                                            <b><a href="http://paymate.com" target="new"><font color="RED">Paymate.com information</font></a></b><br>
-                                            Please visit <a href="http://paymate.com">Paymate.com</a> and signup for an account if you wish to enable this payment option
-                                            <table>
-                                                <tr>
-                                                    <td><b>Paymate Username:</b></td>
-                                                    <td><input type="text" name="PAYMATE_LOGIN" value="{$opts[w].PAYMATE_LOGIN}" class="olotd5"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><b>Password:</b></td>
-                                                    <td><input type="PASSWORD" name="PAYMATE_PASSWORD" value="{$opts[w].PAYMATE_PASSWORD}" class="olotd5"> </td>
-                                                </tr>
-                                                <tr>
-                                                    <td><b>Paymate Transaction fee- default 1.5%:</b></td>
-                                                    <td><input type="text" name="PAYMATE_FEES" value="{$opts[w].PAYMATE_FEES}" size="5" class="olotd5"></td>
-                                                </tr>
-                                            </table>
+                                                    <td><b>Paypal Email</b></td>
+                                                    <td><input type="text" name="paypal_email" value="{$payment_settings[w].PAYPAL_EMAIL}" size="50" class="olotd5"></td>
+                                                </tr>                                                
+                                                
+                                                
+                                            </table>                                            
                                             <input type="submit" name="submit" value="Submit">
                                         {/section}
                                     </form>   

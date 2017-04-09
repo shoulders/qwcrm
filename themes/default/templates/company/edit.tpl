@@ -1,9 +1,9 @@
-<!-- company_edit.tpl -->
+<!-- edit.tpl -->
 <script src="{$theme_js_dir}tinymce/tinymce.min.js"></script>
 <script src="{$theme_js_dir}editor-config.js"></script>
 
 {section name=i loop=$company}
-    <form method="post" action="?page=company:company_edit" enctype="multipart/form-data">
+    <form method="post" action="?page=company:edit" enctype="multipart/form-data">
         <table width="100%" border="0" cellpadding="20" cellspacing="0">
             <tr>
                 <td>
@@ -92,13 +92,13 @@
                                                                 <td><input name="company_invoice_tax_rate" class="olotd5" size="6" value="{$company[i].INVOICE_TAX_RATE}" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumbersPeriod(event);"/>%</td>
                                                             </tr>
                                                             <tr>
-                                                                <td><b>Company Welcome Note</b><br>(home page)</td>
+                                                                <td><b>Company Welcome Message:</b><br>(home page)</td>
                                                             </tr>
                                                             <tr>
                                                                 <td colspan="2"><textarea class="olotd5" cols="80" rows="5" name="company_welcome_msg">{$company[i].WELCOME_MSG}</textarea></td>
                                                             </tr>
                                                             <tr>
-                                                                <td colspan="2"><b>Invoice Thank You Note:</b><br>255 max characters. Displays at the bottom of each invoice.</td>
+                                                                <td colspan="2"><b>Invoice Thank You Message:</b><br>Displays at the bottom of each invoice.</td>
                                                             </tr>
                                                             <tr>
                                                                 <td colspan="2"><textarea class="olotd5" cols="80" rows="5" name="company_invoice_msg">{$company[i].INVOICE_MSG}</textarea></td>

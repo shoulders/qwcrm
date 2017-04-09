@@ -6,7 +6,7 @@ require(INCLUDES_DIR.'modules/employee.php');
 /** Misc **/
 
 /* Display Welcome Note */
-$smarty->assign('welcome_note', display_welcome_note($db));
+$smarty->assign('welcome_note', display_welcome_msg($db));
 
 /** Work Orders **/
 
@@ -115,4 +115,4 @@ $smarty->assign('employee_workorders_awaiting_payment_count', count_employee_wor
 /* Logged in Employee - Unpaid Invoices count - NOT USED*/
 $smarty->assign('employee_invoices_unpaid_count', count_employee_invoices_with_status($db, $login_id, 0));
 
-$BuildPage .= $smarty->fetch('core'.SEP.'home.tpl');
+$BuildPage .= $smarty->fetch('core/home.tpl');

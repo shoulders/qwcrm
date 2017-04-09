@@ -16,7 +16,7 @@ if($customer_id == '') {
     }
 
 /* check if gift cert is ebabled */
-$q = "SELECT  ACTIVE FROM ".PRFX."CONFIG_BILLING_OPTIONS WHERE BILLING_OPTION='gift_billing'";
+$q = "SELECT  ACTIVE FROM ".PRFX."PAYMENT_METHODS WHERE BILLING_OPTION='gift_billing'";
     if(!$rs = $db->execute($q)) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
         exit;

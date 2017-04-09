@@ -195,7 +195,7 @@ if(isset($VAR['page_no'])) {$page_no = $VAR['page_no'];} else {$page_no = 1;}
 ##########################################
 
 // Set Date Format
-define('DATE_FORMAT', get_company_info($db,'COMPANY_DATE_FORMAT')); // se schedule could be useful - split('[/.-]', $VAR['scheduleStart']['date']);
+define('DATE_FORMAT', get_company_details($db,'DATE_FORMAT'));
 
 ##########################################################################
 #   Assign variables into smarty for use by all native module templates  #
@@ -220,7 +220,7 @@ $smarty->assign('theme_js_dir_finc',        THEME_JS_DIR_FINC           );
 // These are used globally but mainly for the menu !!
 $smarty->assign('workorder_id',             $workorder_id               );
 $smarty->assign('customer_id',              $customer_id                );
-$smarty->assign('employee_id',              $employee_id                );              // This is the same as $login_id at some points - when used globally - check
+$smarty->assign('employee_id',              $employee_id                );
 $smarty->assign('expense_id',               $expense_id                 );
 $smarty->assign('refund_id',                $refund_id                  );
 $smarty->assign('supplier_id',              $supplier_id                );
@@ -231,9 +231,9 @@ $smarty->assign('schedule_start_month',     $schedule_start_month       );
 $smarty->assign('schedule_start_day',       $schedule_start_day         );
 
 // Used throughout the site
-$smarty->assign('currency_sym', get_company_info($db,   'COMPANY_CURRENCY_SYMBOL')  );
-$smarty->assign('company_logo', get_company_info($db,   'COMPANY_LOGO')             );
-$smarty->assign('date_format',  DATE_FORMAT                                         );
+$smarty->assign('currency_sym', get_company_details($db,    'CURRENCY_SYMBOL')  );
+$smarty->assign('company_logo', get_company_details($db,    'LOGO')             );
+$smarty->assign('date_format',  DATE_FORMAT                                     );
 
 #############################
 #        Messages           #
