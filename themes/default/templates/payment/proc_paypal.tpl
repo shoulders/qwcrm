@@ -4,7 +4,7 @@
         <td>
             <table width="825" cellpadding="4" cellspacing="0" border="0" >
                 <tr>
-                    <td class="menuhead2" width="80%">&nbsp;{$translate_billing_paypal}</td>
+                    <td class="menuhead2" width="80%">&nbsp;{$translate_payment_paypal}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle"></td>
                 </tr>
                 <tr>
@@ -14,16 +14,16 @@
                                 <td>
                                     <table width="100%" cellpadding="4" cellspacing="0" border="0" >
                                         <tr>
-                                            <td class="menuhead2">&nbsp;{$translate_billing_results}</td>
+                                            <td class="menuhead2">&nbsp;{$translate_payment_results}</td>
                                         </tr>
                                         <tr>
                                             <td class="menutd2">
                                                 <table class="olotable" width="100%" cellpadding="3" cellspacing="0">
                                                     <tr>
                                                         <td class="menutd">
-                                                            {$translate_billing_paypal_note}-{$amount}<br>
-                                                            <form method="POST" action="?page=billing:pp_complete">
-                                                                <b>{$translate_billing_pp_invoice_id}</b>
+                                                            {$translate_payment_paypal_note}-{$amount}<br>
+                                                            <form method="POST" action="?page=payment:pp_complete">
+                                                                <b>{$translate_payment_pp_invoice_id}</b>
                                                                 <input type="text" name="pp_invoice" class="olotd4">&nbsp;                                                                
                                                                 <input type="hidden" name="invoice_id" value="{$invoice_id}">
                                                                 <input type="hidden" name="amount" value="{$amount}">

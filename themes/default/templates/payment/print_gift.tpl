@@ -7,7 +7,7 @@
                     <td class="olotd4" valign="top">
                         <table cellpadding="3" cellspacing="0" border="0" width="100%">
                             <tr>
-                                <td><h2>{$translate_billing_gift}</h2></td>
+                                <td><h2>{$translate_payment_gift}</h2></td>
                                 <td>{$company_name}</td>
                                 <td>{$company_phone}</td>
                             </tr>
@@ -29,19 +29,19 @@
                                     {section name=g loop=$gift}
                                         <table cellpadding="0" cellspacing="0" border="0" width="100%">
                                             <tr>
-                                                <td><b>{$translate_billing_amount}</b></td>
+                                                <td><b>{$translate_payment_amount}</b></td>
                                                 <td>${$gift[g].AMOUNT|string_format:"%.2f"}</td>
                                             </tr>
                                             <tr>
-                                                <td><b>{$translate_billing_gift_code_3}</b></td>
+                                                <td><b>{$translate_payment_gift_code_3}</b></td>
                                                 <td>{$gift[g].GIFT_CODE}</td>
                                             </tr>
                                             <tr>
-                                                <td><b>{$translate_billing_created}</b></td>
+                                                <td><b>{$translate_payment_created}</b></td>
                                                 <td>{$gift[g].DATE_CREATE|date_format:"$date_format"}</td>
                                             </tr>
                                             <tr>
-                                                <td><b>{$translate_billing_expires}</b></td>
+                                                <td><b>{$translate_payment_expires}</b></td>
                                                 <td>{$gift[g].EXPIRE|date_format:"$date_format"}</td>
                                             </tr>
                                         </table>
@@ -57,7 +57,7 @@
                             </table>
                         {/section}
                         <br>
-                        {$translate_billing_gift_note_1} ${$gift[g].AMOUNT|string_format:"%.2f"} {$translate_billing_gift_note_2}
+                        {$translate_payment_gift_note_1} ${$gift[g].AMOUNT|string_format:"%.2f"} {$translate_payment_gift_note_2}
                     </td>
                 </tr>
             </table>

@@ -59,4 +59,4 @@ $myPaypal->submitPayment(); */
 
 $smarty->assign('invoice_id', $invoice_id);
 $smarty->assign('workorder_id', $VAR['workorder_id']);
-$BuildPage .= $smarty->fetch('billing'.SEP.'proc_paypal.tpl');
+$BuildPage .= $smarty->fetch('payment'.SEP.'proc_paypal.tpl');

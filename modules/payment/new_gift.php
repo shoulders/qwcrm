@@ -16,7 +16,7 @@ if($customer_id == '') {
     }
 
 /* check if gift cert is ebabled */
-$q = "SELECT  ACTIVE FROM ".PRFX."PAYMENT_METHODS WHERE BILLING_OPTION='gift_billing'";
+$q = "SELECT ACTIVE FROM ".PRFX."PAYMENT_METHODS WHERE SMARTY_TPL_KEY='gift_billing_active'";
     if(!$rs = $db->execute($q)) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
         exit;
@@ -86,7 +86,7 @@ if(isset($VAR['submit'])) {
             $smarty->assign('expire',$expire);
             $smarty->assign('gift_code',$gift_code);
             $smarty->assign('amount',$amount);
-            $BuildPage .= $smarty->fetch('billing'.SEP.'display_gift.tpl');
+            $BuildPage .= $smarty->fetch('payment'.SEP.'display_gift.tpl');
             exit;
         }
     } 
@@ -129,12 +129,12 @@ if(isset($VAR['submit'])) {
 
         $smarty->assign('customer', $arr);
         $smarty->assign('gift', $gift);
-        $BuildPage .= $smarty->fetch('billing'.SEP.'print_gift.tpl');
+        $BuildPage .= $smarty->fetch('payment'.SEP.'print_gift.tpl');
         exit;
     }
     
 
 /* else display the form */    
 }    else {
-    $BuildPage .= $smarty->fetch('billing'.SEP.'new_gift.tpl');
+    $BuildPage .= $smarty->fetch('payment'.SEP.'new_gift.tpl');
 }

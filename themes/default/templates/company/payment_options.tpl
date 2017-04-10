@@ -24,7 +24,7 @@
                                         {section name=w loop=$payment_settings}                                            
                                             <table>
                                                 
-                                                <!-- Pritning Group? -->
+                                                <!-- Printing Notification -->
                                                 <tr>
                                                     <td colspan="2"><font color="red"><b>Payment Instructions printed on Invoices</b></font></td>
                                                 </tr>
@@ -38,10 +38,10 @@
                                                     <td><b>Bank Name:</b></td>
                                                     <td><input class="olotd5" type="text" name="bank_name" value="{$payment_settings[w].BANK_NAME}"></td>
                                                 </tr>
-                                                    <tr>
-                                                        <td><b>Bank Account Number:</b></td>
-                                                        <td><input class="olotd5" type="text" name="bank_account_number" value="{$payment_settings[w].BANK_ACCOUNT_NUMBER}"></td>
-                                                    </tr>
+                                                <tr>
+                                                    <td><b>Bank Account Number:</b></td>
+                                                    <td><input class="olotd5" type="text" name="bank_account_number" value="{$payment_settings[w].BANK_ACCOUNT_NUMBER}"></td>
+                                                </tr>
                                                 <tr>
                                                     <td><b>Bank Sort Code</b></td>
                                                     <td><input class="olotd5" type="text" name="bank_sort_code" value="{$payment_settings[w].BANK_SORT_CODE}"></td>

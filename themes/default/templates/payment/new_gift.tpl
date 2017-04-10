@@ -6,14 +6,14 @@
 <script src="{$theme_js_dir}jscal2/jscal2.js"></script>
 <script src="{$theme_js_dir}jscal2/unicode-letter.js"></script>
 <script>{include file="`$theme_js_dir_finc`jscal2/language.js"}</script>
-<script>{include file="`$theme_js_dir_finc`modules/billing.js"}</script>
+<script>{include file="`$theme_js_dir_finc`modules/payment.js"}</script>
 
 <table width="700" border="0" cellpadding="20" cellspacing="5">
     <tr>
         <td>
             <table width="100%" cellpadding="4" cellspacing="0" border="0">
                 <tr>
-                    <td class="menuhead2" width="80%">&nbsp;{$translate_billing_new_gift} {$customer_id}</td>
+                    <td class="menuhead2" width="80%">&nbsp;{$translate_payment_new_gift} {$customer_id}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle"></td>
                 </tr>
                 <tr>
@@ -21,15 +21,15 @@
                         <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
                             <tr>
                                 <td class="olotd4">
-                                    {$translate_billing_gift_note_3} {$customer_name} {$translate_billing_gift_note_4}
-                                    <form method="POST"  action="index.php?page=billing:new_gift" name="gift" id="gift" onsubmit="try {literal}{ var myValidator = validate_gift; } catch(e) { return true; } return myValidator(this){/literal};">
+                                    {$translate_payment_gift_note_3} {$customer_name} {$translate_payment_gift_note_4}
+                                    <form method="POST"  action="index.php?page=payment:new_gift" name="gift" id="gift" onsubmit="try {literal}{ var myValidator = validate_gift; } catch(e) { return true; } return myValidator(this){/literal};">
                                         <table>
                                             <tr>
-                                                <td><b>{$translate_billing_customer_name}</b></td>
+                                                <td><b>{$translate_payment_customer_name}</b></td>
                                                 <td>{$customer_id}</td>
                                             </tr>
                                             <tr>
-                                                <td><b>{$translate_billing_exp}</b></td>
+                                                <td><b>{$translate_payment_exp}</b></td>
                                                 <td>
                                                     <input class="olotd5" size="10" name="expire" type="text" id="due_date" value="" class="olotd4"/>
                                                     <input type="button" id="due_date_button" value="+">
@@ -45,11 +45,11 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td><b>{$translate_billing_amount}</b></td>
+                                                <td><b>{$translate_payment_amount}</b></td>
                                                 <td>$<input type="text" name="amount" class="olotd5" size="6" ></td>
                                             </tr>
                                             <tr>
-                                                <td colspan="2"><b>{$translate_billing_memo}</b></td>
+                                                <td colspan="2"><b>{$translate_payment_memo}</b></td>
                                             </tr>
                                             <tr>
                                                 <td colspan="2"><textarea class="olotd5" rows="15" cols="70" name="memo"></textarea></td>
@@ -64,7 +64,7 @@
                                         </table>
                                     </form>
                                     <br>
-                                    <a href="?page=customer:customer_details&customer_id={$customer_id}&page_title={$customer_name}">{$translate_billing_cancel}</a>
+                                    <a href="?page=customer:customer_details&customer_id={$customer_id}&page_title={$customer_name}">{$translate_payment_cancel}</a>
                                 </td>
                             </tr>
                         </table>                       

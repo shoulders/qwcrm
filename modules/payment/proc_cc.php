@@ -31,17 +31,17 @@ $card_type_accepted_arr = $rs->GetArray();
 /* validation */
 //Check to see if we are processing more then required
 if($invoice_details['BALANCE'] < $cc_amount){
-        force_page('billing', 'new&workorder_id='.$workorder_id.'&customer_id='.$customer_id.'    &invoice_id='.$invoice_id.'&error_msg= You can not bill more than the amount of the invoice.');
+        force_page('payment', 'new&workorder_id='.$workorder_id.'&customer_id='.$customer_id.'    &invoice_id='.$invoice_id.'&error_msg= You can not bill more than the amount of the invoice.');
             exit;
     }
 if(!validate_cc( $cc_number, $card_type, $card_type_accepted_arr )){
-    force_page("billing", "new&error_msg=Card number is invalid.&workorder_id=$workorder_id&customer_id=$customer_id&invoice_id=$invoice_id&page_title=Billing");
+    force_page("payment", "new&error_msg=Card number is invalid.&workorder_id=$workorder_id&customer_id=$customer_id&invoice_id=$invoice_id&page_title=Billing");
     exit;
 }
 
 
 if(!validate_cc_exp($cc_expr_month, $cc_expr_year)) {
-    force_page("billing", "new&error_msg=Card expiration month or year is invalid.&workorder_id=$workorder_id&customer_id=$customer_id&invoice_id=$invoice_id&page_title=Billing");
+    force_page("payment", "new&error_msg=Card expiration month or year is invalid.&workorder_id=$workorder_id&customer_id=$customer_id&invoice_id=$invoice_id&page_title=Billing");
     exit;
 }
 
@@ -306,7 +306,7 @@ if($result[0] == "1") {
             exit;
         }
         
-    force_page('billing', 'new&workorder_id='.$workorder_id.'&customer_id='.$customer_id    .'&invoice_id='.$invoice_id.'&page_title=Billing&error_msg='.$result[3]);
+    force_page('payment', 'new&workorder_id='.$workorder_id.'&customer_id='.$customer_id    .'&invoice_id='.$invoice_id.'&page_title=Billing&error_msg='.$result[3]);
     exit;
 
 } else if($result[0] == "3") {
@@ -326,7 +326,7 @@ if($result[0] == "1") {
             exit;
         }
         
-    force_page('billing', 'new&workorder_id='.$workorder_id.'&customer_id='.$customer_id    .'&invoice_id='.$invoice_id.'&page_title=Billing&error_msg='.$result[3]);
+    force_page('payment', 'new&workorder_id='.$workorder_id.'&customer_id='.$customer_id    .'&invoice_id='.$invoice_id.'&page_title=Billing&error_msg='.$result[3]);
     exit;
 
 } else  if($result[0] == "4"){
@@ -346,7 +346,7 @@ if($result[0] == "1") {
             exit;
         }
         
-        force_page('billing', 'new&workorder_id='.$workorder_id.'&customer_id='.$customer_id    .'&invoice_id='.$invoice_id.'&page_title=Billing&error_msg='.$result[3]);
+        force_page('payment', 'new&workorder_id='.$workorder_id.'&customer_id='.$customer_id    .'&invoice_id='.$invoice_id.'&page_title=Billing&error_msg='.$result[3]);
         exit;
 } else {
 

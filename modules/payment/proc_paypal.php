@@ -23,7 +23,7 @@ if(!$rs = $db->execute($q)) {
 $invoice_details = $rs->FetchRow();
 //Check to see if we are processing more then required
 if($invoice_details['BALANCE'] < $paypal_amount){
-        force_page('billing', 'new&workorder_id='.$workorder_id.'&customer_id='.$customer_id.'    &invoice_id='.$invoice_id.'&error_msg= You can not bill more than the amount of the invoice.');
+        force_page('payment', 'new&workorder_id='.$workorder_id.'&customer_id='.$customer_id.'    &invoice_id='.$invoice_id.'&error_msg= You can not bill more than the amount of the invoice.');
             exit;
     }
 
@@ -78,4 +78,4 @@ $invoice_id    = $VAR['invoice_id'];
 $smarty->assign('invoice_id', $invoice_id);
 $smarty->assign('amount', $amount);
 $smarty->assign('workorder_id', $VAR['workorder_id']);
-$BuildPage .= $smarty->fetch('billing'.SEP.'proc_paypal.tpl');
+$BuildPage .= $smarty->fetch('payment'.SEP.'proc_paypal.tpl');

@@ -91,7 +91,7 @@
                                         <button type="button" name="{$translate_invoice_pdf}" OnClick=window.open('?page=invoice:print&amp;print_type=pdf&amp;workorder_id={$invoice.WORKORDER_ID}&customer_id={$invoice.CUSTOMER_ID}&invoice_id={$invoice.INVOICE_ID}&theme=off')><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">&nbsp;{$translate_invoice_pdf}</button>
                                     </form>
                                     {if $invoice.INVOICE_AMOUNT-$invoice.PAID_AMOUNT > 0 }
-                                        <button type="button" name="{$translate_invoice_bill_customer}" OnClick=location.href='?page=billing:new&workorder_id={$invoice.WORKORDER_ID}&customer_id={$invoice.CUSTOMER_ID}&invoice_id={$invoice.INVOICE_ID}&page_title=Receiving%20Payment%20for%20{$invoice.INVOICE_ID}'>{$translate_invoice_bill_customer}</button>
+                                        <button type="button" name="{$translate_invoice_bill_customer}" OnClick=location.href='?page=payment:new&workorder_id={$invoice.WORKORDER_ID}&customer_id={$invoice.CUSTOMER_ID}&invoice_id={$invoice.INVOICE_ID}&page_title=Receiving%20Payment%20for%20{$invoice.INVOICE_ID}'>{$translate_invoice_bill_customer}</button>
                                     {/if}                                
                                     <br>
                                     <table width="100%" cellpadding="4" cellspacing="0" border="0" >

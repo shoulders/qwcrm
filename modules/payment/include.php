@@ -1,4 +1,8 @@
 <?php
+#################################################
+#    Make sure all array values are not empty   #
+#################################################
+
 function validate_any($val_any){
     foreach($val_any as $key=> $val) {
         if($val == "") {
@@ -10,6 +14,9 @@ function validate_any($val_any){
     }
 }
 
+########################################
+#   validate credit card expiry date   #
+########################################
 
 function validate_cc_exp($month, $year){
     if ($year > date("Y")){
@@ -20,6 +27,10 @@ function validate_cc_exp($month, $year){
         return false;
     }
 }
+
+#####################################
+#   Validate Credit Card number     #
+#####################################
 
 function validate_cc( $ccNum, $card_type, $card_type_accepted_arr ){
     $v_ccNum = false;
@@ -106,29 +117,33 @@ function validate_cc( $ccNum, $card_type, $card_type_accepted_arr ){
         }
 
         if ( $v_ccNum ){
-            return TRUE;
+            return tru;
         } else {
-            return FALSE;
+            return false;
         }
 }
 
- function safe_number($ccNum){
-     $char = 'x';
+################################################
+#   I thing this is card number Obfuscation?   #
+################################################
 
-      $s_card_number = substr($ccNum, 0, 4);
+function safe_number($ccNum){
+    $char = 'x';
+
+    $s_card_number = substr($ccNum, 0, 4);
     $e_card_number = substr($ccNum, -4);
-
     $num_to_hide = strlen($ccNum) - 8;
 
-  for($i = 0; $i < $num_to_hide; $i++){
-     $pad = $char;
+    for($i = 0; $i < $num_to_hide; $i++){
+        $pad = $char;
   }
 
-//     $safe_num = $s_card_number;
-//     $safe_num = $pad;
-     $safe_num = $s_card_number & $pad & $e_card_number;
+    //$safe_num = $s_card_number;
+    //$safe_num = $pad;
+    $safe_num = $s_card_number & $pad & $e_card_number;
 
   return $safe_num;
+  
 }
 
 #########################################
@@ -173,15 +188,82 @@ function validate_cc( $ccNum, $card_type, $card_type_accepted_arr ){
 //    return $resp;
 //}
 
-#####################################
-#   Currency Symbol Lookup          #
-#####################################
 
-/* get company info for defaults */
-$q = 'SELECT COMPANY_CURRENCY_SYMBOL FROM '.PRFX.'TABLE_COMPANY';
-    if(!$rs = $db->execute($q)) {
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+#########################################
+#   Get invoice details by invoice ID   #
+#########################################
+
+function get_single_invoice_details($db, $invoice_id) {
+
+$sql = "SELECT count(*) as count,
+    INVOICE_AMOUNT, INVOICE_DATE, INVOICE_DUE,INVOICE_ID, PAID_AMOUNT, BALANCE, WORKORDER_ID
+    FROM ".PRFX."TABLE_INVOICE WHERE INVOICE_PAID='0'
+    AND INVOICE_ID=".$db->qstr($invoice_id)."
+    GROUP BY INVOICE_ID";
+
+if(!$rs = $db->execute($sql)) {
+    force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
+}
+
+return $rs->GetAssoc();
+
+}
+
+#########################################
+#   Get get active payment methods      #
+#########################################
+
+function get_active_payment_methods($db) {
+    
+    $sql = "SELECT SMARTY_TPL_KEY, ACTIVE FROM ".PRFX."PAYMENT_METHODS WHERE ACTIVE='1'";    
+    
+    if(!$rs = $db->execute($sql)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
         exit;
     }
-// $smarty->assign('currency_sym',$rs->fields['COMPANY_CURRENCY_SYMBOL']);
-        $currency_sym = $rs->fields['COMPANY_CURRENCY_SYMBOL'];
+   
+   // you can call $rs->GetArray twice
+   /* if(empty($rs->GetArray())) {
+        force_page('core', 'error&error_msg=No Billing Methods Available. Please select billing options in the configuration&menu=1');
+        exit;        
+    }*/
+    
+    return $rs->GetAssoc();
+    
+}
+
+#########################################
+#   Get get active credit cards         #
+#########################################
+
+function get_active_credit_cards($db){
+    
+    $sql = "SELECT CARD_TYPE, CARD_NAME FROM ".PRFX."CONFIG_CC_CARDS WHERE ACTIVE='1'";
+    
+    if(!$rs = $db->execute($sql)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
+        exit;
+    }
+    
+    // you can call $rs->GetArray twice
+    /*if(empty($rs->GetAssoc())) {
+        force_page('core', 'error&error_msg=Credit Card Billing is Set on but no cards are active. Please enable at least on credit card in the control panel&menu=1');
+        exit;
+    }*/
+
+    return $rs->GetAssoc();
+    
+}
+
+#########################################
+#   Get invoice transactions            #
+#########################################
+
+function get_invoice_transactions($db, $invoice_id){
+    
+    $sql ="SELECT * FROM ".PRFX."TABLE_TRANSACTION WHERE INVOICE_ID =".$db->qstr($invoice_id);
+    
+    $rs = $db->execute($sql);
+    
+    return $rs->GetArray();
+}

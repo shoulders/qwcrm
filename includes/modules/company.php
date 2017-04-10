@@ -217,7 +217,6 @@ function get_payment_settings($db, $item = null) {
     
 }
 
-
 #####################################
 #    Update Payment details         #
 #####################################
@@ -244,7 +243,6 @@ function update_payment_settings($db, $record) {
     }
     
 }
-
 
 #####################################
 #   Update Payment Methods status   #
@@ -278,17 +276,7 @@ function update_payment_methods_status($db, $record) {
         }
     }
     
-    
-    /*// You cannot do multi-row updates natively with MySQL in one statement
-    $payment_methods = array();
-    
-    $payment_methods[] = "UPDATE ".PRFX."PAYMENT_METHODS SET ACTIVE=". $db->qstr( $record['credit_card_active']        )." WHERE SMARTY_TPL_KEY='credit_card_active'";    
-    $payment_methods[] = "UPDATE ".PRFX."PAYMENT_METHODS SET ACTIVE=". $db->qstr( $record['cheque_active']             )." WHERE SMARTY_TPL_KEY='cheque_active'";    
-    $payment_methods[] = "UPDATE ".PRFX."PAYMENT_METHODS SET ACTIVE=". $db->qstr( $record['cash_active']               )." WHERE SMARTY_TPL_KEY='cash_active'";    
-    $payment_methods[] = "UPDATE ".PRFX."PAYMENT_METHODS SET ACTIVE=". $db->qstr( $record['gift_certificate_active']   )." WHERE SMARTY_TPL_KEY='gift_certificate_active'";    
-    $payment_methods[] = "UPDATE ".PRFX."PAYMENT_METHODS SET ACTIVE=". $db->qstr( $record['paypal_active']             )." WHERE SMARTY_TPL_KEY='paypal_active'";   
-    $payment_methods[] = "UPDATE ".PRFX."PAYMENT_METHODS SET ACTIVE=". $db->qstr( $record['direct_deposit_active']     )." WHERE SMARTY_TPL_KEY='direct_deposit_active'";
-*/
+}
     
 
 #####################################
@@ -304,6 +292,158 @@ function get_payment_methods_status($db) {
         exit;
     }
 
+    return $rs->GetArray();
+    
+}
+
+#####################################
+#   Upload invoice rate CSV file    #
+#####################################
+
+function upload_invoice_rates_csv($db, $VAR) {
+
+    // Allowed extensions
+    $allowedExts = array('csv');
+    
+    // Get file extension
+    $filename_info = pathinfo($_FILES['invoice_rates_csv']['name']);
+    $extension = $filename_info['extension'];
+    
+    // Validate the uploaded file is allowed (extension, mime type, 0 - 2mb)
+    if ((($_FILES['invoice_rates_csv']['type'] == 'text/csv'))            
+            || ($_FILES['invoice_rates_csv']['type'] == 'application/vnd.ms-excel') // CSV files created by excel - i might remove this
+            //|| ($_FILES['invoice_rates_csv']['type'] == 'text/plain')               // this seems a bit dangerous   
+            && ($_FILES['invoice_rates_csv']['size'] > 0)   
+            && ($_FILES['invoice_rates_csv']['size'] < 2048000)
+            && in_array($extension, $allowedExts)) {
+
+        // Check for file submission errors and echo them
+        if ($_FILES['invoice_rates_csv']['error'] > 0 ) {
+            echo 'Return Code: ' . $_FILES['invoice_rates_csv']['error'] . '<br />';                
+
+        // If no errors then move the file from the PHP temporary storage to the logo location
+        } else {        
+
+            // Empty Current Invoice Rates Table (if set)
+            if($VAR['empty_invoice_rates'] === '1'){
+                
+                $sql = "TRUNCATE ".PRFX."TABLE_LABOR_RATE";
+                
+                if(!$rs = $db->execute($sql)) {
+                force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+                exit;}
+            }
+            
+            // Open CSV file            
+            $handle = fopen($_FILES['invoice_rates_csv']['tmp_name'], 'r');
+
+            // Read CSV data and insert into database
+            while (($data = fgetcsv($handle, 1000, ',')) !== FALSE) {
+
+                $sql = "INSERT INTO ".PRFX."TABLE_LABOR_RATE(LABOR_RATE_NAME,LABOR_RATE_AMOUNT,LABOR_RATE_COST,LABOR_RATE_ACTIVE,LABOR_TYPE,LABOR_MANUF) VALUES ('$data[1]','$data[2]','$data[3]','$data[4]','$data[5]','$data[6]')";
+
+                if(!$rs = $db->execute($sql)) {
+                force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+                exit;}
+
+            }
+
+            // Close CSV file
+            fclose($handle);
+
+            // Delete CSV file - not sure this is needed becaus eit is temp
+            unlink($_FILES['invoice_rates_csv']['tmp_name']);
+
+        }
+
+    // If file is invalid then load the error page  
+    } else {
+        
+        /*
+        echo "Upload: "    . $_FILES['invoice_rates_csv']['name']           . '<br />';
+        echo "Type: "      . $_FILES['invoice_rates_csv']['type']           . '<br />';
+        echo "Size: "      . ($_FILES['invoice_rates_csv']['size'] / 1024)  . ' Kb<br />';
+        echo "Temp file: " . $_FILES['invoice_rates_csv']['tmp_name']       . '<br />';
+        echo "Stored in: " . MEDIA_DIR . $_FILES['file']['name']       ;
+         */
+        force_page('core', 'error&error_msg=Invalid File');
+
+    }
+    
+}
+
+#####################################
+#     edit invoice rate item        #
+#####################################
+
+function edit_invoice_rates_item($db, $VAR){
+    
+    $sql = "UPDATE ".PRFX."TABLE_LABOR_RATE SET
+        LABOR_RATE_NAME     =". $db->qstr( $VAR['display']      ).",
+        LABOR_RATE_AMOUNT   =". $db->qstr( $VAR['amount']       ).",
+        LABOR_RATE_COST     =". $db->qstr( $VAR['cost']         ).",
+        LABOR_RATE_ACTIVE   =". $db->qstr( $VAR['active']       ).",
+        LABOR_TYPE          =". $db->qstr( $VAR['type']         ).",
+        LABOR_MANUF         =". $db->qstr( $VAR['manufacturer'] )."
+        WHERE LABOR_RATE_ID =". $db->qstr( $VAR['id']           );
+
+    if(!$rs = $db->execute($sql)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
+    }
+    
+}
+
+#####################################
+#     delete invoice rate item      #
+#####################################
+
+function delete_invoice_rates_item($db, $VAR){
+    
+    $sql = "DELETE FROM ".PRFX."TABLE_LABOR_RATE WHERE LABOR_RATE_ID =".$db->qstr($VAR['id']);
+
+    if(!$rs = $db->execute($sql)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
+    }
+    
+}
+
+#####################################
+#     New invoice rate item         #
+#####################################
+
+function new_invoice_rates_item($db, $VAR){
+    
+    $sql = "INSERT INTO ".PRFX."TABLE_LABOR_RATE SET
+        LABOR_RATE_NAME     =". $db->qstr( $VAR['display']      ).",
+        LABOR_RATE_AMOUNT   =". $db->qstr( $VAR['amount']       ).",
+        LABOR_RATE_COST     =". $db->qstr( $VAR['cost']         ).",
+        LABOR_TYPE          =". $db->qstr( $VAR['type']         ).",
+        LABOR_MANUF         =". $db->qstr( $VAR['manufacturer'] ).",
+        LABOR_RATE_ACTIVE   =". $db->qstr( 1                    );
+
+    if(!$rs = $db->execute($sql)) {
+    force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+    exit;
+    }
+    
+}
+
+#####################################
+#     Get invoice rates item        #
+#####################################
+
+function get_invoice_rates_item($db){
+    
+    // Loads rates from database
+    $sql = "SELECT * FROM ".PRFX."TABLE_LABOR_RATE ORDER BY LABOR_RATE_ID ASC";
+    
+    if(!$rs = $db->execute($sql)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
+    }    
+    
     return $rs->GetArray();
     
 }

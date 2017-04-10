@@ -348,55 +348,55 @@
         
 
         // Billing Templates
-        <billing_invoice_id>Invoice ID</billing_invoice_id>
-        <billing_pp_invoice_id>PayPal Transaction/receipt #</billing_pp_invoice_id>
-        <billing_title>Billing For Work Order ID #</billing_title>
-        <billing_date>Date</billing_date>
-        <billing_due_date>Invoice Due Date</billing_due_date>
-        <billing_amount>Amount:</billing_amount>
-        <billing_workorder_id>Workorder ID</billing_workorder_id>
-        <billing_balance>Balance</billing_balance>
-        <billing_email>Email:</billing_email>
-        <billing_phone>Phone:</billing_phone>
-        <billing_trans_log>Transaction Log</billing_trans_log>
-        <billing_trans>Trans Id</billing_trans>
-        <billing_type>Type</billing_type>
-        <billing_credit_card>Credit Card</billing_credit_card>
-        <billing_check>Cheque</billing_check>
-        <billing_deposit>Direct Deposit</billing_deposit>
-        <billing_deposit_id>Direct Deposit ID#</billing_deposit_id>
-        <billing_deposit_payment>Submit Direct Deposit Payment</billing_deposit_payment>
-        <billing_paymate>Paymate</billing_paymate>
-        <billing_paymate_trans>Paymate Transaction ID#</billing_paymate_trans>
-        <billing_paymate_submit>Submit Paymate Payment</billing_paymate_submit>
-        <billing_cash>Cash</billing_cash>
-        <billing_gift>Gift Certificate</billing_gift>
-        <billing_paypal>Pay Pal</billing_paypal>
-        <billing_memo>Memo:</billing_memo>
-        <billing_cc_num>Card Number</billing_cc_num>        
-        <billing_ccv>CCV</billing_ccv>
-        <billing_exp>Expiration</billing_exp>
-        <billing_cheque_no>Document #</billing_cheque_no>
-        <billing_gift_code>Gift Code</billing_gift_code>
-        <billing_gift_code_2>Enter the 16 digit code</billing_gift_code_2>
-        <billing_gift_code_3>Redemption Code:</billing_gift_code_3>
-        <billing_created>Created:</billing_created>
-        <billing_expires>Expires:</billing_expires>
-        <billing_cancel>Cancel</billing_cancel>
-        <billing_gift_note_1>Redeem this on your next repair to save</billing_gift_note_1>
-        <billing_gift_note_2>on parts and service.</billing_gift_note_2>
-        <billing_gift_note_3>Create a new gift certificate for</billing_gift_note_3>
-        <billing_gift_note_4>This can be redeemed later towards parts purchases or services.</billing_gift_note_4>
-        <billing_new_gift>New Gift Certificate for</billing_new_gift>
-        <billing_back>Back To Customer</billing_back>
-        <billing_customer_name>Customer Name:</billing_customer_name>
-        <billing_print_title>Print Gift Certificate</billing_print_title>
-        <billing_results>Billing Results</billing_results>
-        <billing_paypal_note>Once the paypal payment has been confirmed, fill in the form below to finish billing.</billing_paypal_note>
-        <billing_error_date>Please enter the  Gift Certificate Expiration Date</billing_error_date>
-        <billing_error_gift_amount>Please enter the  Gift Certificate Amount</billing_error_gift_amount>
-        <billing_error_invalid>Invalid information entered.</billing_error_invalid>
-        <billing_error_fix>Please correct these fields.</billing_error_fix>
+        <payment_invoice_id>Invoice ID</payment_invoice_id>
+        <payment_pp_invoice_id>PayPal Transaction/receipt #</payment_pp_invoice_id>
+        <payment_title>Billing For Work Order ID #</payment_title>
+        <payment_date>Date</payment_date>
+        <payment_due_date>Invoice Due Date</payment_due_date>
+        <payment_amount>Amount:</payment_amount>
+        <payment_workorder_id>Workorder ID</payment_workorder_id>
+        <payment_balance>Balance</payment_balance>
+        <payment_email>Email:</payment_email>
+        <payment_phone>Phone:</payment_phone>
+        <payment_trans_log>Transaction Log</payment_trans_log>
+        <payment_trans>Trans Id</payment_trans>
+        <payment_type>Type</payment_type>
+        <payment_credit_card>Credit Card</payment_credit_card>
+        <payment_check>Cheque</payment_check>
+        <payment_deposit>Direct Deposit</payment_deposit>
+        <payment_deposit_id>Direct Deposit ID#</payment_deposit_id>
+        <payment_deposit_payment>Submit Direct Deposit Payment</payment_deposit_payment>
+        <payment_paymate>Paymate</payment_paymate>
+        <payment_paymate_trans>Paymate Transaction ID#</payment_paymate_trans>
+        <payment_paymate_submit>Submit Paymate Payment</payment_paymate_submit>
+        <payment_cash>Cash</payment_cash>
+        <payment_gift>Gift Certificate</payment_gift>
+        <payment_paypal>Pay Pal</payment_paypal>
+        <payment_memo>Memo:</payment_memo>
+        <payment_cc_num>Card Number</payment_cc_num>        
+        <payment_ccv>CCV</payment_ccv>
+        <payment_exp>Expiration</payment_exp>
+        <payment_cheque_no>Document #</payment_cheque_no>
+        <payment_gift_code>Gift Code</payment_gift_code>
+        <payment_gift_code_2>Enter the 16 digit code</payment_gift_code_2>
+        <payment_gift_code_3>Redemption Code:</payment_gift_code_3>
+        <payment_created>Created:</payment_created>
+        <payment_expires>Expires:</payment_expires>
+        <payment_cancel>Cancel</payment_cancel>
+        <payment_gift_note_1>Redeem this on your next repair to save</payment_gift_note_1>
+        <payment_gift_note_2>on parts and service.</payment_gift_note_2>
+        <payment_gift_note_3>Create a new gift certificate for</payment_gift_note_3>
+        <payment_gift_note_4>This can be redeemed later towards parts purchases or services.</payment_gift_note_4>
+        <payment_new_gift>New Gift Certificate for</payment_new_gift>
+        <payment_back>Back To Customer</payment_back>
+        <payment_customer_name>Customer Name:</payment_customer_name>
+        <payment_print_title>Print Gift Certificate</payment_print_title>
+        <payment_results>Billing Results</payment_results>
+        <payment_paypal_note>Once the paypal payment has been confirmed, fill in the form below to finish billing.</payment_paypal_note>
+        <payment_error_date>Please enter the  Gift Certificate Expiration Date</payment_error_date>
+        <payment_error_gift_amount>Please enter the  Gift Certificate Amount</payment_error_gift_amount>
+        <payment_error_invalid>Invalid information entered.</payment_error_invalid>
+        <payment_error_fix>Please correct these fields.</payment_error_fix>
 
        
         

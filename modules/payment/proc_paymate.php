@@ -12,11 +12,11 @@ $workorder_id = $_POST['workorder_id'];
 
 /* validation */
 if(empty($paymate_amount)) {
-    force_page("billing", "new&error_msg=Please Fill in the Paymate amount.&workorder_id=$workorder_id&customer_id=$customer_id&invoice_id=$invoice_id&page_title=Billing");
+    force_page("payment", "new&error_msg=Please Fill in the Paymate amount.&workorder_id=$workorder_id&customer_id=$customer_id&invoice_id=$invoice_id&page_title=Billing");
 }
 
 if(empty($paymate_recieved)) {
-    force_page("billing", "new&error_msg=Please Fill in the Paymate ID Number.&workorder_id=$workorder_id&customer_id=$customer_id&invoice_id=$invoice_id&page_title=Billing");
+    force_page("payment", "new&error_msg=Please Fill in the Paymate ID Number.&workorder_id=$workorder_id&customer_id=$customer_id&invoice_id=$invoice_id&page_title=Billing");
 }
 
 /* get invoice details */
@@ -29,7 +29,7 @@ if(!$rs = $db->execute($q)) {
 $invoice_details = $rs->FetchRow();
 //Check to see if we are processing more then required
 if($invoice_details['BALANCE'] < $paymate_amount){
-        force_page('billing', 'new&workorder_id='.$workorder_id.'&customer_id='.$customer_id.'    &invoice_id='.$invoice_id.'&error_msg= You can not bill more than the amount of the invoice.');
+        force_page('payment', 'new&workorder_id='.$workorder_id.'&customer_id='.$customer_id.'    &invoice_id='.$invoice_id.'&error_msg= You can not bill more than the amount of the invoice.');
             exit;
     }
 
@@ -114,7 +114,7 @@ if($invoice_details['INVOICE_AMOUNT'] > $paymate_amount){
 
     /* full payment made */
     if($invoice_details['INVOICE_AMOUNT'] < $paymate_amount) {
-        force_page('billing', 'new&workorder_id='.$workorder_id.'&customer_id='.$customer_id.'&invoice_id='.$invoice_id.'&error_msg=You can not bill more than the amount of the invoice.');
+        force_page('payment', 'new&workorder_id='.$workorder_id.'&customer_id='.$customer_id.'&invoice_id='.$invoice_id.'&error_msg=You can not bill more than the amount of the invoice.');
             exit;
         } 
     if($invoice_details['INVOICE_AMOUNT'] == $paymate_amount){

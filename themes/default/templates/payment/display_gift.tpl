@@ -4,7 +4,7 @@
         <td>
             <table width="100%" cellpadding="4" cellspacing="0" border="0">
                 <tr>
-                    <td class="menuhead2" width="80%">&nbsp;{$translate_billing_gift}</td>
+                    <td class="menuhead2" width="80%">&nbsp;{$translate_payment_gift}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle"></td>
                 </tr>
                 <tr>
@@ -17,7 +17,7 @@
                                             <td class="olotd4" valign="top">
                                                 <table cellpadding="3" cellspacing="0" border="0" width="100%">
                                                     <tr>
-                                                        <td><h2>{$translate_billing_gift}</h2></td>
+                                                        <td><h2>{$translate_payment_gift}</h2></td>
                                                         <td>{$company_name}</td>
                                                         <td>{$company_phone}</td>
                                                     </tr>
@@ -38,16 +38,16 @@
                                                         <td valign="top" width="50%">
                                                             <table cellpadding="0" cellspacing="0" border="0" width="100%">
                                                                 <tr>
-                                                                    <td><b>{$translate_billing_amount}</b></td>
+                                                                    <td><b>{$translate_payment_amount}</b></td>
                                                                     <td>${$amount|string_format:"%.2f"}</td>
                                                                 </tr><tr>
-                                                                    <td><b>{$translate_billing_gift_code_3}</b></td>
+                                                                    <td><b>{$translate_payment_gift_code_3}</b></td>
                                                                     <td>{$gift_code}</td>
                                                                 </tr><tr>
-                                                                    <td><b>{$translate_billing_created}</b></td>
+                                                                    <td><b>{$translate_payment_created}</b></td>
                                                                     <td>{$create|date_format:"$date_format"}</td>
                                                                 </tr><tr>
-                                                                    <td><b>{$translate_billing_expires}</b></td>
+                                                                    <td><b>{$translate_payment_expires}</b></td>
                                                                     <td>{$expire|date_format:"$date_format"}</td>
                                                                 </tr>
                                                             </table>
@@ -59,14 +59,14 @@
                                                         <td>
                                                     </tr>
                                                 </table>
-                                                {$translate_billing_gift_note_1} ${$amount} {$translate_billing_gift_note_2}
+                                                {$translate_payment_gift_note_1} ${$amount} {$translate_payment_gift_note_2}
                                             </td>
                                         </tr>
                                     </table>                            
                                 </td>
                             </tr>
                         </table>
-                        <a href="?page=billing:new_gift&gift_id={$gift_id}&customer_id={$customer_id}&action=print&submit=1&theme=off" target="new"><img src="{$theme_images_dir}icons/16x16/fileprint.gif" border="0" onMouseOver="ddrivetip('Print')" onMouseOut="hideddrivetip()"></a>&nbsp;<a href="?page=customer:customer_details&customer_id={$customer_id}">{$translate_billing_back}</a>
+                        <a href="?page=payment:new_gift&gift_id={$gift_id}&customer_id={$customer_id}&action=print&submit=1&theme=off" target="new"><img src="{$theme_images_dir}icons/16x16/fileprint.gif" border="0" onMouseOver="ddrivetip('Print')" onMouseOut="hideddrivetip()"></a>&nbsp;<a href="?page=customer:customer_details&customer_id={$customer_id}">{$translate_payment_back}</a>
                     </td>
                 </tr>
             </table>
