@@ -518,7 +518,8 @@ function get_company_details($db, $item = null){
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
-    } else {        
+    } else {
+        
         if($item === null){
             
             return $rs->GetArray(); 
@@ -882,7 +883,35 @@ function date_to_timestamp($date_to_convert){
         case '%m/%d/%y':         
         return DateTime::createFromFormat('!m/d/y', $date_to_convert)->getTimestamp(); 
         
-    }   
+    }
+    
+    /* Alternate method - keep for now
+     * // Invoice Date
+        if(DATE_FORMAT == "%d/%m/%Y"){
+            
+            // Invoice Date
+            $date_part = explode("/",$VAR['date']);
+            $timestamp = mktime(0,0,0,$date_part[1],$date_part[0],$date_part[2]);
+            $datef = $timestamp;
+
+            // Invoice Due Date
+            $date_part2 = explode("/",$VAR['due_date']);
+            $timestamp2 = mktime(0,0,0,$date_part2[1],$date_part2[0],$date_part2[2]);
+            $datef2 = $timestamp2;
+        }
+        if(DATE_FORMAT == "%m/%d/%Y"){
+            
+            // Invoice Date
+            $date_part = explode("/",$VAR['date']);
+            $timestamp = mktime(0,0,0,$date_part[0],$date_part[1],$date_part[2]);
+            $datef = $timestamp;
+
+            // Invoice Due Date
+            $date_part2 = explode("/",$VAR['due_date']);
+            $timestamp2 = mktime(0,0,0,$date_part2[0],$date_part2[1],$date_part2[2]);
+            $datef2 = $timestamp2;
+        }     
+     */
       
 }
 
@@ -991,5 +1020,40 @@ function get_country_codes($db) {
         return $rs->GetArray();
         
     }
+    
+}
+
+##########################################
+#          xml2php Gateway               # // this is a legacy function might not be used for long
+# Loads language file up as a PHP array  #
+##########################################
+
+function gateway_xml2php($module) {    
+
+    $file = QWCRM_PHYSICAL_PATH.LANGUAGE_DIR.THEME_LANGUAGE;
+
+    $xml_parser = xml_parser_create();
+    if (!($fp = fopen($file, 'r'))) {
+        die('unable to open XML');
+    }
+    $contents = fread($fp, filesize($file));
+    fclose($fp);
+    xml_parse_into_struct($xml_parser, $contents, $arr_vals);
+    xml_parser_free($xml_parser);
+
+    $xmlarray = array();
+
+    foreach ($arr_vals as $things) {
+        if ($things['tag'] != 'TRANSLATE' && $things['value'] != "") {
+
+            $ttag = strtolower($things['tag']);
+            $tvalue = $things['value'];
+
+            $xmlarray[$ttag] = $tvalue;
+
+        }
+    }
+
+    return $xmlarray;
     
 }

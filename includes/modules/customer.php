@@ -10,7 +10,7 @@
 # Display Customer Details     #
 ################################
 
-function display_customer_info($db, $customer_id){
+function display_customer_info($db, $customer_id, $item = null){
     
     global $smarty;
     
@@ -19,10 +19,18 @@ function display_customer_info($db, $customer_id){
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
-    } else {
+    } else { 
         
-       return $rs->GetArray();  
-       
-    }   
+        if($item === null){
+            
+            return $rs->GetArray(); 
+            
+        } else {
+            
+            return $rs->fields[$item];   
+            
+        } 
+        
+    }
     
 }

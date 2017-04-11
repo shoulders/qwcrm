@@ -408,6 +408,12 @@ function insert_new_workorder_history_note($db, $workorder_id, $workorder_histor
 /** Get Functions **/
 
 ########################################
+# Get single Work Order record    ?     #
+########################################
+
+
+
+########################################
 # Get Work Order Scope and Description #
 ########################################
 
@@ -489,6 +495,25 @@ function get_workorder_employee($db, $workorder_id) {
         
     }
     
+}
+
+########################################
+#    Get Work Order status             # // translate
+########################################
+
+function get_workorder_status($db, $workorder_id) {
+    
+    $sql = "SELECT WORK_ORDER_STATUS FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_ID=".$db->qstr($workorder_id);
+    
+    if(!$rs = $db->execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
+        exit;
+    } else {
+        
+        return $rs->fields['WORK_ORDER_STATUS'];
+        
+    }    
+          
 }
 
 /** Update Functions **/

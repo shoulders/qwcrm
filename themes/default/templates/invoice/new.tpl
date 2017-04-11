@@ -573,10 +573,10 @@ function removeRowFromTableParts(){
                                                 <td align="left" valign="top" width="25%">
                                                     <input type="hidden" name="chkValidateOnKeyPress" value="checked">
                                                     <input type="hidden" name="invoice_id"    value="{$invoice.INVOICE_ID}">
-                                                    <input type="hidden" name="sub_total"     value="{$invoice.SUB_TOTAL|string_format:"%.2f"}">
-                                                    <input type="hidden" name="page"          value="invoice:edit">
-                                                    <input type="hidden" name="create_by"     value="{$login_id}">
-                                                    <input type="hidden" name="workorder_id"         value="{$workorder_id}">
+                                                    <input type="hidden" name="sub_total"     value="{$invoice.SUB_TOTAL|string_format:"%.2f"}"> 
+                                                    
+                                                    <input type="hidden" name="workorder_id"  value="{$workorder_id}">
+                                                    
                                                     <input type="submit" name="submit"        value="{$translate_invoice_submit}">
                                                 </td>
                                                 <td align="right" width="75%"></td>

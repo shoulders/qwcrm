@@ -4,8 +4,8 @@
 
 require_once ('include.php');
 
-/* Generic error control */
-if(empty($invoice_id)) {
+// if not invoice_id
+if($invoice_id == '')
     /* If no work order ID then we dont belong here */
     force_page('core', 'error&error_msg=Invoice Not found: Invoice ID: '.$invoice_id.'&menu=1');
 }
