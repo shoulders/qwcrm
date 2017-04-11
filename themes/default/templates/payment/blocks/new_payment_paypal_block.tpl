@@ -9,7 +9,7 @@
                 <table width="100%" cellpadding="4" cellspacing="0" border="0" width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
                     <tr class="olotd4">
                         <td class="row2"><b>{$translate_payment_paypal}</b></td>
-                        <td class="row2"><b>{$currency_sym}{$translate_payment_amount}</b></td>
+                        <td class="row2"><b>{$translate_payment_amount}</b></td>
                         <td class="row2"></td>
                     </tr>
                     <tr class="olotd4">

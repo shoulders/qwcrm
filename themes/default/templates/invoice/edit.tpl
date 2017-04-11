@@ -404,19 +404,26 @@ function removeRowFromTableParts(){
                                             <p>
                                                 <!-- if invoice has an amount -->
                                                 {if $invoice.INVOICE_AMOUNT > 0 }
+                                                    
                                                     <!-- Print Buttons -->   
                                                     <button type="button" name="{$translate_invoice_print}" onClick="window.open('?page=invoice:print&print_type=print_html&print_content=invoice&workorder_id={$invoice.WORKORDER_ID}&customer_id={$invoice.CUSTOMER_ID}&invoice_id={$invoice.INVOICE_ID}&theme=print');">{$translate_invoice_print}</button>
                                                     <button type="button" name="{$translate_invoice_pdf}" onClick="window.open('?page=invoice:print&print_type=print_pdf&print_content=invoice&workorder_id={$invoice.WORKORDER_ID}&customer_id={$invoice.CUSTOMER_ID}&invoice_id={$invoice.INVOICE_ID}&theme=print');"><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">{$translate_invoice_pdf}</button>
                                                     <button type="button" name="Print Address Only" onClick="window.open('?page=invoice:print&print_type=print_html&print_content=invoice&workorder_id={$invoice.WORKORDER_ID}&customer_id={$invoice.CUSTOMER_ID}&invoice_id={$invoice.INVOICE_ID}&theme=print');">Print Address Only</button>                                            
+                                                    
                                                     <!-- Receive Payment Button -->
-                                                    <button type="button" name="{$translate_invoice_bill_customer}" onClick="location.href='?page=payment:new&workorder_id={$invoice.WORKORDER_ID}&customer_id={$invoice.CUSTOMER_ID}&invoice_id={$invoice.INVOICE_ID}&page_title=Receiving%20Payment%20for%20{$invoice.INVOICE_ID}';">{$translate_invoice_bill_customer}</button>
+                                                    <button type="button" name="{$translate_invoice_bill_customer}" onClick="location.href='?page=payment:new&invoice_id={$invoice.INVOICE_ID}';">{$translate_invoice_bill_customer}</button>
+                                                
                                                 {else}
+                                                    
                                                     <!-- Delete Button -->
                                                     <button type="button" name="{$translate_invoice_delete}" onClick="location.href='?page=invoice:delete&customer_id={$invoice.CUSTOMER_ID}&invoice_id={$invoice.INVOICE_ID}&page_title=Deleting&nbsp;Invoice&nbsp;-{$invoice.INVOICE_ID}';">{$translate_invoice_delete}</button>
+                                                    
                                                     <!-- Close Button -->
                                                     <button type="button" name="Close Work Order" onClick="location.href='?page=workorder:details_edit_resolution&workorder_id={$invoice.WORKORDER_ID}&page_title=Closing%20Work%20Order{$invoice.WORKORDER_ID}';">{$translate_invoice_close_wo}</button>
+                                                    
                                                     <!-- Work Order must be closed before payment can be received. -->
                                                     {$translate_invoice_msg}
+                                                    
                                                 {/if} 
                                             </p>
                                         {/if}

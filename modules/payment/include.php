@@ -1,4 +1,11 @@
 <?php
+/**
+ * @package   QWcrm
+ * @author    Jon Brown https://quantumwarp.com/
+ * @copyright Copyright (C) 2016 - 2017 Jon Brown, All rights reserved.
+ * @license   GNU/GPLv3 or later; https://www.gnu.org/licenses/gpl.html
+ */
+
 #################################################
 #    Make sure all array values are not empty   #
 #################################################
@@ -196,7 +203,7 @@ function safe_number($ccNum){
 function get_single_invoice_details($db, $invoice_id) {
 
 $sql = "SELECT count(*) as count,
-    INVOICE_AMOUNT, INVOICE_DATE, INVOICE_DUE,INVOICE_ID, PAID_AMOUNT, BALANCE, WORKORDER_ID
+    INVOICE_AMOUNT, INVOICE_DATE, INVOICE_DUE, INVOICE_ID, PAID_AMOUNT, BALANCE, WORKORDER_ID, CUSTOMER_ID
     FROM ".PRFX."TABLE_INVOICE WHERE INVOICE_PAID='0'
     AND INVOICE_ID=".$db->qstr($invoice_id)."
     GROUP BY INVOICE_ID";
@@ -266,4 +273,49 @@ function get_invoice_transactions($db, $invoice_id){
     $rs = $db->execute($sql);
     
     return $rs->GetArray();
+}
+
+
+############################
+#   insert transactions    #
+############################
+
+function insert_transaction($db, $type, $invoice_id, $workorder_id, $customer_id, $amount, $memo) {
+    
+    echo $memo;
+    
+    $sql = "INSERT INTO ".PRFX."TABLE_TRANSACTION SET
+        DATE            = ".$db->qstr(time()            ).",
+        TYPE            = ".$db->qstr( $type            ).",
+        INVOICE_ID      = ".$db->qstr( $invoice_id      ).",
+        WORKORDER_ID    = ".$db->qstr( $workorder_id    ).",
+        CUSTOMER_ID     = ".$db->qstr( $customer_id     )."
+        AMOUNT          = ".$db->qstr( $amount          ).",
+        MEMO            = ".$db->qstr( $memo            );
+
+    if(!$rs = $db->execute($sql)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
+        exit;
+    }
+    
+}
+
+########################################
+#   update invoice after transaction   #
+########################################
+
+function transaction_update_invoice($db, $invoice_id, $paid_status, $paid_date, $paid_amount, $balance) {
+    
+    $sql = "UPDATE ".PRFX."TABLE_INVOICE SET
+            INVOICE_PAID        =". $db->qstr( $paid_status ).",
+            PAID_DATE           =". $db->qstr( $paid_date   ).",        
+            PAID_AMOUNT         =". $db->qstr( $paid_amount ).",                    
+            BALANCE             =". $db->qstr( $balance     ).",
+            WHERE INVOICE_ID    =". $db->qstr( $invoice_id  );
+
+    if(!$rs = $db->execute($sql)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
+        exit;
+    }
+    
 }

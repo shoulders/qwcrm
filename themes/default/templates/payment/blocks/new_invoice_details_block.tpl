@@ -8,26 +8,13 @@
         <td class="menuhead2"><b>{$translate_payment_workorder_id}</b></td>
         <td class="menuhead2"><b>{$translate_payment_balance}</b></td>
     </tr>
-    <tr class="olotd4">
-        {foreach item=item from=$invoice_details}
-            <td>{$item.INVOICE_ID}</td>
-            <td>{$item.INVOICE_DATE|date_format:"$date_format"}</td>
-            <td>{$item.INVOICE_DUE|date_format:"$date_format"}</td>
-            <td>{$currency_sym}{$item.INVOICE_AMOUNT|string_format:"%.2f"}</td>
-            <td>{$item.WORKORDER_ID}</td>
-            <td>
-                {if $item.BALANCE > 0}
-                    <font color="#CC0000"><b>{$currency_sym}{$item.INVOICE_AMOUNT-$item.PAID_AMOUNT|string_format:"%.2f"}</b></font>
-                {else}
-                    <font color="#CC0000"><b>{$currency_sym}{$item.INVOICE_AMOUNT|string_format:"%.2f"}</b></font>
-                {/if}
-            </td>
-            {assign var="invoice_amount"        value=$item.INVOICE_AMOUNT}
-            {assign var="invoice_paid_amount"   value=$item.PAID_AMOUNT}
-            {assign var="invoice_id"            value=$item.INVOICE_ID}
-            {assign var="workorder_id"          value=$item.WORKORDER_ID}
-            {assign var="balance"               value=$item.BALANCE}
-        {/foreach}
+    <tr class="olotd4">        
+        <td>{$invoice_id}</td>
+        <td>{$invoice_date|date_format:$date_format}</td>
+        <td>{$invoice_due|date_format:$date_format}</td>
+        <td>{$currency_sym}{$invoice_amount|string_format:"%.2f"}</td>
+        <td>{$workorder_id}</td>
+        <td><font color="#CC0000"><b>{$currency_sym}{$balance|string_format:"%.2f"}</b></font></td>      
     </tr>
     <tr>
         <td colspan="6" valign="top">
