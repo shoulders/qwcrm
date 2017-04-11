@@ -70,7 +70,7 @@ function display_open_invoices($db, $page_no) {
 }
 
 ########################################
-# Paid Invoices                           #
+# Paid Invoices                        #
 ########################################
 
 function display_paid_invoice($db, $page_no) {
@@ -259,5 +259,131 @@ function get_invoice_details($db, $invoice_id, $item = null) {
 }
 
 #####################################
-#   #
+#   Get invoice labour details      #
 #####################################
+
+function get_invoice_labour_details($db, $invoice_id) {
+    
+    $sql = "SELECT * FROM ".PRFX."TABLE_INVOICE_LABOR WHERE INVOICE_ID=".$db->qstr( $invoice_id );
+    $rs = $db->execute($sql);
+    return $rs->GetArray();
+}
+
+#####################################
+#   Get invoice parts details       #
+#####################################
+
+function get_invoice_parts_details($db, $invoice_id) {
+    
+    $sql = "SELECT * FROM ".PRFX."TABLE_INVOICE_PARTS WHERE INVOICE_ID=".$db->qstr( $invoice_id );
+    $rs = $db->execute($sql);
+    return $rs->GetArray();
+}
+
+#####################################
+#   Get Labour Rate Items           #
+#####################################
+
+function get_active_labour_rate_items($db) {
+    
+    $sql = "SELECT * FROM ".PRFX."TABLE_LABOR_RATE WHERE LABOR_RATE_ACTIVE='1'";
+    
+    $rs = $db->execute($sql);
+    return $rs->GetArray();    
+}
+
+#####################################
+#     insert invoice                #
+#####################################
+
+function insert_invoice($db, $customer_id, $workorder_id, $amount_paid, $invoice_total) {
+    
+    $sql = "INSERT INTO ".PRFX."TABLE_INVOICE SET
+            INVOICE_DATE    =". $db->qstr( time()                   ).",
+            CUSTOMER_ID     =". $db->qstr( $customer_id             ).",
+            WORKORDER_ID    =". $db->qstr( $workorder_id            ).",
+            EMPLOYEE_ID     =". $db->qstr( $_SESSION['login_id']    ).",
+            INVOICE_PAID    =". $db->qstr( $amount_paid             ).",
+            INVOICE_AMOUNT  =". $db->qstr( $invoice_total           );
+
+    if(!$rs = $db->Execute($sql)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
+        exit;
+    }
+        
+    return $db->insert_id();
+    
+}
+
+#####################################
+#     update invoice                #
+#####################################
+
+function update_invoice($db, $invoice_id, $customer_id, $workorder_id, $employee_id, $date, $due_date, $discount_rate, $discount, $tax_rate, $tax_amount, $sub_total, $total, $is_paid, $paid_date, $paid_amount, $balance ) {
+    
+    $sql = "UPDATE ".PRFX."TABLE_INVOICE SET
+        
+            CUSTOMER_ID         =". $db->qstr( $customer_id             ).",
+            WORKORDER_ID        =". $db->qstr( $workorder_id            ).",
+            EMPLOYEE_ID         =". $db->qstr( $employee_id             ).",
+                
+            DATE                =". $db->qstr( $date            ).",
+            DUE_DATE            =". $db->qstr( $due_date                ).",
+                
+            DISCOUNT_RATE       =". $db->qstr( $discount_rate           ).",
+            DISCOUNT            =". $db->qstr( $discount                ).",    
+            TAX_RATE            =". $db->qstr( $tax_rate                ).",
+            TAX                 =". $db->qstr( $tax_amount              ).",
+            SUB_TOTAL           =". $db->qstr( $sub_total               ).", 
+            TOTAL               =". $db->qstr( $total                   ).",              
+                    
+            IS_PAID             =". $db->qstr( $is_paid                 ).",
+            PAID_DATE           =". $db->qstr( $paid_date               ).",
+            PAID_AMOUNT         =". $db->qstr( $paid_amount             ).",
+            BALANCE             =". $db->qstr( $balance                 )."            
+            
+            WHERE INVOICE_ID    =". $db->qstr( $invoice_id              );
+
+    if(!$rs = $db->Execute($sql)){
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
+        exit;
+    }    
+    
+}
+
+/*
+#####################################
+#     update invoice                #
+#####################################
+
+function update_invoice($db, $invoice_id, $customer_id, $workorder_id, $employee_id, $date, $due_date, $discount_rate, $discount, $tax_rate, $tax_amount, $sub_total, $total, $is_paid, $paid_date, $paid_amount, $balance ) {
+    
+    $sql = "UPDATE ".PRFX."TABLE_INVOICE SET
+        
+            CUSTOMER_ID         =". $db->qstr( $customer_id             ).",
+            WORKORDER_ID        =". $db->qstr( $workorder_id            ).",
+            EMPLOYEE_ID         =". $db->qstr( $employee_id             ).",
+                
+            DATE                =". $db->qstr( $date            ).",
+            DUE_DATE            =". $db->qstr( $due_date                ).",
+                
+            DISCOUNT_RATE       =". $db->qstr( $discount_rate           ).",
+            DISCOUNT            =". $db->qstr( $discount                ).",    
+            TAX_RATE            =". $db->qstr( $tax_rate                ).",
+            TAX                 =". $db->qstr( $tax_amount              ).",
+            SUB_TOTAL           =". $db->qstr( $sub_total               ).", 
+            TOTAL               =". $db->qstr( $total                   ).",              
+                    
+            IS_PAID             =". $db->qstr( $is_paid                 ).",
+            PAID_DATE           =". $db->qstr( $paid_date               ).",
+            PAID_AMOUNT         =". $db->qstr( $paid_amount             ).",
+            BALANCE             =". $db->qstr( $balance                 )."            
+            
+            WHERE INVOICE_ID    =". $db->qstr( $invoice_id              );
+
+    if(!$rs = $db->Execute($sql)){
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
+        exit;
+    }    
+    
+*/

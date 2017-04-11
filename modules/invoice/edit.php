@@ -3,26 +3,7 @@
 require_once ('include.php');
 require(INCLUDES_DIR.'modules/customer.php');
 require(INCLUDES_DIR.'modules/workorder.php');
-
-/* Date Format Handling */
-
-// Stripping out the percentage from DATE_FORMAT signs so php can render it correctly
-$Dformat = str_replace('%', "", DATE_FORMAT);
-
-// Now lets display the right date format
-if($Dformat == 'd/m/Y' || $Dformat == 'd/m/y') {
-    $current_schedule_date = $d."/".$m."/".$y;    
-}
-elseif($Dformat == 'm/d/Y' || $Dformat == 'm/d/y' ) {
-    $current_schedule_date = $m."/".$d."/".$y;    
-}
-
-// Assign it to Smarty
-$smarty->assign('current_schedule_date', $current_schedule_date);
-
-
-/*-- --*/
-
+require('modules/payment/include.php');
 
 // check if we have a workorder_id and the retrieve the status
 if($workorder_id == '' && $workorder_id != '0') {    
@@ -31,7 +12,6 @@ if($workorder_id == '' && $workorder_id != '0') {
     $smarty->assign('wo_status', get_workorder_status($db, $workorder_id)); 
 }
 
-
 // check if we have a customer_id and the retrieve the details
 if($customer_id == '' || $customer_id == '0'){
         force_page('core', 'error&error_msg=No Customer ID - remove this check no customer id should be passed - invoice:edit - &menu=1');
@@ -39,11 +19,6 @@ if($customer_id == '' || $customer_id == '0'){
 } else {
     $smarty->assign('customer_details', display_customer_info($db, $customer_id));
 }
-
-
-
-
-
 
 
 ##################################
@@ -154,7 +129,7 @@ if(isset($submit)){
     }
     $invoice_balance = $invoice_total - $paid_amount;
 
-    // update database
+    // update invoice
     $sql = "UPDATE ".PRFX."TABLE_INVOICE SET
             INVOICE_DATE        =". $db->qstr( $date                                            ).",
             CUSTOMER_ID         =". $db->qstr( $customer_id                                     ).",
@@ -174,33 +149,10 @@ if(isset($submit)){
         exit;
     }
     
-    // if discount makes the item free, mark the workorder 'payment made'
+    // if discount makes the item free, mark the workorder 'payment made' and the invoice paid
     if( $VAR['discount'] >= 100){
-        $sql = "UPDATE ".PRFX."TABLE_WORK_ORDER SET
-                WORK_ORDER_STATUS           = '8'        
-                WHERE WORK_ORDER_ID         =". $db->qstr( $workorder_id    );
-        
-        if(!$rs = $db->execute($sql)) {
-            force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
-            exit;
-        }
-        
-    }
-    
-    // if discount makes the item free, make the invoice paid
-    if( $VAR['discount'] >= 100){
-        /* update the invoice */    
-        $sql = "UPDATE ".PRFX."TABLE_INVOICE SET
-                PAID_DATE               = ". $db->qstr( time()      ).", 
-                PAID_AMOUNT             = '0',
-                INVOICE_PAID            = '1'
-                WHERE INVOICE_ID        = ". $db->qstr( $invoice_id );
-
-        if(!$rs = $db->execute($sql)) {
-            force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
-            exit;
-        }
-        
+        update_workorder_status($db, $workorder_id, 8);
+        transaction_update_invoice($db, $invoice_id, 1, time(), 0, 0);
     }
 
     // reload the invoice page
@@ -217,48 +169,26 @@ if(isset($submit)){
     // if no invoice exists for this workorder_id or it is an 'invoice only'
     if(!check_workorder_has_invoice($db, $workorder_id) || ($workorder_id == '0' && $VAR['invoice_type'] == 'invoice-only')) {
 
-        $sql = "INSERT INTO ".PRFX."TABLE_INVOICE SET
-                INVOICE_DATE            =".$db->qstr(time()).",
-                CUSTOMER_ID             =".$db->qstr($customer_id).",
-                WORKORDER_ID            =".$db->qstr($workorder_id ).",
-                EMPLOYEE_ID             =".$db->qstr($_SESSION['login_id']).",
-                INVOICE_PAID            ='0',
-                INVOICE_AMOUNT          ='0.00'";
+        // inserts the invoice and returns the new invoice_id
+        $invoice_id = insert_invoice($db, $customer_id, $workorder_id, $amount_paid, $invoice_total);
 
-        if(!$rs = $db->Execute($sql)) {
-            force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
-            exit;
+        // When invoices have attached work orders, Update Work Order status and record invoice created
+        if($count == 0 && $workorder_id > 0) {            
+            insert_new_workorder_history_note($db, $workorder_id, 'Invoice Created ID: '.$invoice_id);            
         }
+        
+        // Reload 
+        force_page('invoice', 'edit', 'workorder_id='.$workorder_id.'&customer_id='.$customer_id.'&invoice_id='.$invoice_id);
+        exit;
+        
 
-        $invoice_id = $db->insert_id();
-
-        // Update Work Order status and record invoice created
-        $msg = "Invoice Created ID: ".$invoice_id;
-
-        // This runs when invoices have attached work orders
-        if($count == 0 && $workorder_id > 0) {
-            $sql = "INSERT INTO ".PRFX."TABLE_WORK_ORDER_HISTORY SET
-                WORK_ORDER_ID       =".$db->qstr($workorder_id).",
-                DATE                =".$db->qstr(time()).",
-                NOTE                =".$db->qstr($msg).",
-                ENTERED_BY          =".$db->qstr($_SESSION['login_id']);
-
-            if(!$result = $db->Execute($sql)) {
-                force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-                exit;
-            } else {
-                force_page('invoice', 'edit', 'workorder_id='.$workorder_id.'&customer_id='.$customer_id.'&invoice_id='.$invoice_id);
-            }
-
-        } else {
-            force_page('invoice', 'edit', 'workorder_id='.$workorder_id.'&customer_id='.$customer_id.'&invoice_id='.$invoice_id);    
-        }
-
-    // if an invoice exists for this work order id - this loads invoice data and employee display name
-    } elseif($count == 1 || ($workorder_id == "0" && $VAR['invoice_id'] != '')) {
-        $sql = "SELECT  ".PRFX."TABLE_INVOICE.*, ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_DISPLAY_NAME FROM  ".PRFX."TABLE_INVOICE
+    // if an invoice exists for this workorder_id, Load invoice data and employee display name
+    } elseif($count == 1 || ($workorder_id == '0' && $invoice_id != '')) {
+        
+        $sql = "SELECT ".PRFX."TABLE_INVOICE.*, ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_DISPLAY_NAME 
+            FROM ".PRFX."TABLE_INVOICE
             LEFT JOIN ".PRFX."TABLE_EMPLOYEE ON (".PRFX."TABLE_INVOICE.EMPLOYEE_ID = ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_ID)
-            WHERE INVOICE_ID=".$VAR['invoice_id'];
+            WHERE INVOICE_ID=".$invoice_id;
 
         $rs = $db->execute($sql);
         $invoice = $rs->FetchRow();
@@ -277,91 +207,50 @@ if(isset($submit)){
     // add } else { here for another error ie undefined to allow fail gracefully
 
 
-    // get any labor details
-    $sql = "SELECT * FROM ".PRFX."TABLE_INVOICE_LABOR WHERE INVOICE_ID=".$db->qstr($invoice['INVOICE_ID']);
-    $rs = $db->execute($sql);
-    $labor = $rs->GetArray();
-
-    if(empty($labor)){
-        $smarty->assign('labor', 0);
+    // Get any labour details    
+    $labour = get_invoice_labour_details($db, $invoice_id);
+    if(empty($labour)){
+        $smarty->assign('labour', 0);
     } else {
-        $smarty->assign('labor', $labor);
+        $smarty->assign('labour', $labour);
     }
 
-    // get any parts
-    $sql = "SELECT * FROM ".PRFX."TABLE_INVOICE_PARTS WHERE INVOICE_ID=".$db->qstr($invoice['INVOICE_ID']);
-    $rs = $db->execute($sql);
-    $parts = $rs->GetArray();
-
+    // Get any parts details   
+    $parts = get_invoice_parts_details($db, $invoice_id);
     if(empty($parts)){
-            $smarty->assign('parts', 0);
+        $smarty->assign('parts', 0);
     } else {
-            $smarty->assign('parts', $parts);
+        $smarty->assign('parts', $parts);
     }
 
-    if($invoice['balance'] > 0){
-        $sql ="SELECT * FROM ".PRFX."TABLE_TRANSACTION WHERE INVOICE_ID =".$db->qstr($invoice['INVOICE_ID']);
-        $rs = $db->execute($sql);
-        $trans = $rs->GetArray();
-        $smarty->assign('trans', $trans);
-    }
+    // load transactions    
+    $smarty->assign('trans', get_invoice_transactions($db, $invoice_id));
 
-    // load labor rate into array
-    $sql = "SELECT * FROM ".PRFX."TABLE_LABOR_RATE WHERE LABOR_RATE_ACTIVE='1'";
-    $rs = $db->execute($sql);
-    $rate = $rs->GetArray();
-    $smarty->assign('rate', $rate);
+    // load active labour rate items    
+    $smarty->assign('rate', get_active_labour_rate_items($db));
 
-    // Assign company information
-    $sql = "SELECT * FROM ".PRFX."TABLE_COMPANY";
-    $rs = $db->Execute($sql);
-    $company = $rs->GetArray();
-    $smarty->assign('company', $company);
-    $smarty->assign('invoice',$invoice);
+    // Assign company information    
+    $smarty->assign('company', get_company_details($db));
+    $smarty->assign('invoice', $invoice);
 
-    // Sub_total results
-    $labour_sub_total_sum = labour_sub_total_sum($db, $invoice['INVOICE_ID']);
-    $parts_sub_total_sum = parts_sub_total_sum($db, $invoice['INVOICE_ID']);
-    $smarty->assign('labour_sub_total_sum', $labour_sub_total_sum);
-    $smarty->assign('parts_sub_total_sum', $parts_sub_total_sum);
+    // Sub_total results    
+    $smarty->assign('labour_sub_total_sum', labour_sub_total_sum($db, $invoice['INVOICE_ID']));
+    $smarty->assign('parts_sub_total_sum', parts_sub_total_sum($db, $invoice['INVOICE_ID']));
 
     $BuildPage .= $smarty->fetch('invoice'.SEP.'edit.tpl');
 
-    // If discount is greate than 100% then these close WO and mark the invoice as paid
+    // if discount makes the item free, mark the workorder 'payment made' and the invoice paid
     if($VAR['discount'] >= 100) {
-        $sql = "UPDATE ".PRFX."TABLE_WORK_ORDER SET
-                WORK_ORDER_STATUS       = '8'            
-                WHERE WORK_ORDER_ID     =". $db->qstr( $workorder_id );
-        if(!$rs = $db->execute($sql)) {
-            force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
-            exit;
-        }
+        update_workorder_status($db, $workorder_id, 8);
+        transaction_update_invoice($db, $invoice_id, 1, time(), 0, 0);
     }
-    
-    if($VAR['discount'] >= 100) {    
-        $sql = "UPDATE ".PRFX."TABLE_INVOICE SET
-            PAID_DATE           = ". $db->qstr( time()      ).",
-            PAID_AMOUNT         = '0',
-            INVOICE_PAID        = '1'
-            WHERE INVOICE_ID    = ". $db->qstr( $invoice    );
 
-        if(!$rs = $db->execute($sql)) {
-            force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
-            exit;
-        }
-    }
 }
 
 ##################################
 # If We have a Submit2           #
 ##################################
 
-if(isset($submit2) && $workorder_id != '0'){
-    $sql = "UPDATE ".PRFX."TABLE_WORK_ORDER SET
-            WORK_ORDER_STATUS       = '8'        
-            WHERE WORK_ORDER_ID     =". $db->qstr( $workorder_id );
-    if(!$rs = $db->execute($sql)) {
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
-        exit;
-    }
+if(isset($submit2) && $workorder_id != '0'){    
+    update_workorder_status($db, $workorder_id, 8);
 }
