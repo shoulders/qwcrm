@@ -50,8 +50,8 @@
                                                         <td class="olohead">{$translate_invoice_amount}</td>
                                                     </tr>
                                                     {section name=q loop=$invoice}                                            
-                                                        <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=invoice:view&invoice_id={$invoice[q].INVOICE_ID}';" class="row1">
-                                                            <td class="olotd4" nowrap><a href="?page=invoice:view&invoice_id={$invoice[q].INVOICE_ID}">{$invoice[q].INVOICE_ID}</a></td>
+                                                        <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=invoice:details&invoice_id={$invoice[q].INVOICE_ID}';" class="row1">
+                                                            <td class="olotd4" nowrap><a href="?page=invoice:details&invoice_id={$invoice[q].INVOICE_ID}">{$invoice[q].INVOICE_ID}</a></td>
                                                             <td class="olotd4" nowrap>{$invoice[q].DATE|date_format:$date_format}</td>
                                                             <td class="olotd4" nowrap>{$invoice[q].DUE_DATE|date_format:$date_format}</td>
                                                             <td class="olotd4" nowrap><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" onMouseOver="ddrivetip('<b>{$translate_invoice_phone} </b>{$invoice[q].CUSTOMER_PHONE}<br><b>Work: </b>{$invoice[q].CUSTOMER_WORK_PHONE}<br><b>Moile: </b>{$invoice[q].CUSTOMER_MOBILE_PHONE}<br><br>{$invoice[q].CUSTOMER_ADDRESS}<br>{$invoice[q].CUSTOMER_CITY}, {$invoice[q].CUSTOMER_STATE}<br>{$invoice[q].CUSTOMER_ZIP}');" onMouseOut="hideddrivetip();"><a href="?page=customer:customer_details&customer_id={$invoice[q].CUSTOMER_ID}&page_title={$invoice[q].CUSTOMER_DISPLAY_NAME}">{$invoice[q].CUSTOMER_DISPLAY_NAME}</a></td>

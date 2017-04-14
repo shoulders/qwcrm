@@ -416,11 +416,11 @@ function insert_new_workorder_history_note($db, $workorder_id, $workorder_histor
  * supply the required field name or all to return all of them as an array
  */
 
-function get_workorder_details($db, $item = null){
+function get_workorder_details($db, $workorder_id, $item = null){
     
     global $smarty;
 
-    $sql = 'SELECT * FROM '.PRFX.'TABLE_WORK_ORDER';
+    $sql = "SELECT * FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_ID=".$db->qstr($workorder_id);
     
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_include_error_message_function_'.__FUNCTION__.'_failed'));

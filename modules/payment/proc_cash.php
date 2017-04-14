@@ -50,7 +50,7 @@ if($new_balance != 0 ) {
     insert_transaction($db, 3, $invoice_id, $workorder_id, $customer_id, $cash_amount, $memo);
 
     // Now load the invoice to view
-    force_page('invoice', 'view', 'invoice_id='.$invoice_id);
+    force_page('invoice', 'details', 'invoice_id='.$invoice_id);
 
 }
 
@@ -79,6 +79,6 @@ if($new_balance == 0 ) {
     insert_transaction($db, 3, $invoice_id, $workorder_id, $customer_id, $cash_amount, $memo);
 
     // Now load the invoice to view
-    force_page('invoice', 'view', 'invoice_id='.$invoice_id);   
+    force_page('invoice', 'details', 'invoice_id='.$invoice_id);   
    
 }

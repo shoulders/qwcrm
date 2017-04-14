@@ -394,8 +394,6 @@ function delete_invoice($db, $invoice_id)
 #   Delete Labour Record            #
 #####################################
 
-$labour_id = $VAR['labour_id'];
-
 function delete_invoice_labour_item($db, $labour_id)
 {
     $sql = "DELETE FROM " . PRFX . "TABLE_INVOICE_LABOUR WHERE INVOICE_LABOUR_ID=" . $db->qstr($labour_id);
@@ -431,8 +429,8 @@ function delete_invoice_parts_item($db, $parts_id)
 #   Sum Labour Sub Totals           #
 #####################################
 
-function labour_sub_total($db, $invoice_id)
-{
+function labour_sub_total($db, $invoice_id) {
+    
     $sql = "SELECT SUM(INVOICE_LABOUR_SUBTOTAL) AS labour_sub_total_sum FROM " . PRFX . "TABLE_INVOICE_LABOUR WHERE INVOICE_ID=" . $db->qstr($invoice_id);
     if (!$rs = $db->Execute($sql)) {
         echo 'Error: ' . $db->ErrorMsg();
@@ -446,8 +444,8 @@ function labour_sub_total($db, $invoice_id)
 #   Sum Parts Sub Total             #
 #####################################
 
-function parts_sub_total($db, $invoice_id)
-{
+function parts_sub_total($db, $invoice_id) {
+    
     $sql = "SELECT SUM(INVOICE_PARTS_SUBTOTAL) AS parts_sub_total_sum FROM " . PRFX . "TABLE_INVOICE_PARTS WHERE INVOICE_ID=" . $db->qstr($invoice_id);
     if (!$rs = $db->Execute($sql)) {
         echo 'Error: ' . $db->ErrorMsg();
@@ -458,7 +456,7 @@ function parts_sub_total($db, $invoice_id)
 }
 
 #####################################
-#   Recalculate invoice totals      #
+#   Recalculate Invoice Totals      #
 #####################################
 
 function recalculate_invoice_totals($db, $invoice_id) {    
@@ -482,20 +480,5 @@ function recalculate_invoice_totals($db, $invoice_id) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
         exit;
     }
-    
-    /*// if discount makes the item free, mark the workorder 'payment made' and the invoice paid
-    if( $VAR['discount_rate'] >= 100){
-        update_workorder_status($db, $workorder_id, 8);
-        transaction_update_invoice($db, $invoice_id, 1, time(), 0, 0);
-        
-        force_page('invoice', 'edit', 'invoice_id='.$invoice_id);
-        exit;        
-    
-    // Just reload the view/edit page    
-    } else {
-        
-        force_page('invoice', 'edit', 'invoice_id='.$invoice_id);
-        exit;
-    }*/
     
 }
