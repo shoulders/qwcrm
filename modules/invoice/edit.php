@@ -56,8 +56,8 @@ if(isset($VAR['deleteType']) && $VAR['deleteType'] == 'partsRecord') {
 if(isset($VAR['submit'])){
         
     // This is all that is need now to update    
-    insert_labour_items($db, $invoice_id, $labour_items);
-    insert_parts_items($db, $invoice_id, $parts_items);
+    insert_labour_items($db, $invoice_id, $VAR['labour_description'], $VAR['labour_rate'], $VAR['labour_hour']);
+    insert_parts_items($db, $invoice_id, $VAR['parts_description'], $VAR['parts_price'], $VAR['parts_qty']);
     update_invoice_small($db, $invoice_id, $VAR['date'], $VAR['due_date'], $VAR['discount_rate']);    
     recalculate_invoice_totals($db, $invoice_id);
     

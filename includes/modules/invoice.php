@@ -154,23 +154,24 @@ function create_invoice($db, $customer_id, $workorder_id, $discount_rate, $tax_r
 #     Insert Labour Items           #
 #####################################
 
-function insert_labour_items($db, $invoice_id, $labour_items) {
+function insert_labour_items($db, $invoice_id, $labour_description, $labour_rate, $labour_hour) {
+    
     // Insert Labour Items into database (if any)
-    if($VAR['labour_hour'] > 0 ) {
+    if($labour_hour > 0 ) {
         
         $i = 1;
         
         $sql = "INSERT INTO ".PRFX."TABLE_INVOICE_LABOUR (INVOICE_ID, INVOICE_LABOUR_DESCRIPTION, INVOICE_LABOUR_RATE, INVOICE_LABOUR_UNIT, INVOICE_LABOUR_SUBTOTAL) VALUES ";
         
-        foreach($VAR['labour_hour'] as $key => $hours) {
+        foreach($labour_hour as $key) {
             
             $sql .="(".
                     
-                    $db->qstr( $invoice_id                                          ).",".                    
-                    $db->qstr( $VAR['labour_description'][$i]                       ).",".
-                    $db->qstr( $VAR['labour_rate'][$i]                              ).",".
-                    $db->qstr( $VAR['labour_hour'][$i]                              ).",".
-                    $db->qstr( $VAR['labour_hour'][$i] * $VAR['labour_rate'][$i]    ).
+                    $db->qstr( $invoice_id                          ).",".                    
+                    $db->qstr( $labour_description[$i]              ).",".
+                    $db->qstr( $labour_rate[$i]                     ).",".
+                    $db->qstr( $labour_hour[$i]                     ).",".
+                    $db->qstr( $labour_hour[$i] * $labour_rate[$i]  ).
                     
                     "),";
             
@@ -193,24 +194,24 @@ function insert_labour_items($db, $invoice_id, $labour_items) {
 #     Insert Parts Items            #
 #####################################
 
-function insert_parts_items($db, $invoice_id, $parts_items) {
+function insert_parts_items($db, $invoice_id, $parts_description, $parts_price, $parts_qty) {
     
     // Insert Parts Items into database (if any)
-    if($VAR['parts_qty'] > 0 ) {
+    if($parts_qty > 0 ) {
         
         $i = 1;
         
         $sql = "INSERT INTO ".PRFX."TABLE_INVOICE_PARTS (INVOICE_ID, INVOICE_PARTS_DESCRIPTION, INVOICE_PARTS_AMOUNT, INVOICE_PARTS_COUNT, INVOICE_PARTS_SUBTOTAL) VALUES ";
         
-        foreach($VAR['parts_qty'] as $key) {
+        foreach($parts_qty as $key) {
             
             $sql .="(".
                     
-                    $db->qstr( $invoice_id                                      ).",".                    
-                    $db->qstr( $VAR['parts_description'][$i]                    ).",".                  
-                    $db->qstr( $VAR['parts_price'][$i]                          ).",".
-                    $db->qstr( $VAR['parts_qty'][$i]                            ).",".
-                    $db->qstr( $VAR['parts_qty'][$i] * $VAR['parts_price'][$i]  ).
+                    $db->qstr( $invoice_id                          ).",".                    
+                    $db->qstr( $parts_description[$i]               ).",".                  
+                    $db->qstr( $parts_price[$i]                     ).",".
+                    $db->qstr( $parts_qty[$i]                       ).",".
+                    $db->qstr( $parts_qty[$i] * $parts_price[$i]    ).
                     
                     "),";
             
@@ -309,20 +310,11 @@ function get_invoice_parts_items($db, $invoice_id) {
 
 function update_invoice_small($db, $invoice_id, $date, $due_date, $discount_rate) {
     
-    // Date
-    $date = date_to_timestamp($VAR['date']);
-    
-    // Due Date
-    $due_date = date_to_timestamp($VAR['due_date']);
-    
-    // Discount Rate
-    $discount_rate = $VAR['discount_rate'];
-    
-        $sql = "UPDATE ".PRFX."TABLE_INVOICE SET
-                DATE                =". $db->qstr( $date            ).",
-                DUE_DATE            =". $db->qstr( $due_date        ).",
-                DISCOUNT_RATE       =". $db->qstr( $discount_rate   )."
-                WHERE INVOICE_ID    =". $db->qstr( $invoice_id      );
+    $sql = "UPDATE ".PRFX."TABLE_INVOICE SET
+            DATE                =". $db->qstr( date_to_timestamp($date)     ).",
+            DUE_DATE            =". $db->qstr( date_to_timestamp($due_date) ).",
+            DISCOUNT_RATE       =". $db->qstr( $discount_rate               )."
+            WHERE INVOICE_ID    =". $db->qstr( $invoice_id                  );
 
     if(!$rs = $db->Execute($sql)){
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
@@ -420,7 +412,7 @@ function delete_invoice_labour_item($db, $labour_id)
 #   Delete Parts Record             #
 #####################################
 
-function delete_parts_record($db, $parts_id)
+function delete_invoice_parts_item($db, $parts_id)
 {
     $sql = "DELETE FROM " . PRFX . "TABLE_INVOICE_PARTS WHERE INVOICE_PARTS_ID=" . $db->qstr($parts_id);
 

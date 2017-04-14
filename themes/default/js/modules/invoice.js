@@ -5,10 +5,10 @@ function confirmLabourDelete(labour_id, invoice_id, workorder_id, customer_id) {
 
     var answer = confirm ("{/literal}{$translate_invoice_labour_delete_mes_confirmation}{literal}")
     if (answer) {
-        window.location='?page=invoice:delete&deleteType=labourRecord&labour_id=' + labour_id + '&invoice_id=' + invoice_id + '&workorder_id=' + workorder_id + '&customer_id=' + customer_id
-        alert("{/literal}{$translate_invoice_delete_mes_recorddeleted}{literal}")            
+        window.location='?page=invoice:edit&invoice_id=' + invoice_id + '&deleteType=labourRecord&labour_id=' + labour_id;
+        alert("{/literal}{$translate_invoice_delete_mes_recorddeleted}{literal}");         
     } else {
-        alert("{/literal}{$translate_invoice_delete_mes_recordnotdeleted}{literal}")
+        alert("{/literal}{$translate_invoice_delete_mes_recordnotdeleted}{literal}");
     }
     
 }
@@ -18,10 +18,10 @@ function confirmPartsDelete(parts_id, invoice_id, workorder_id, customer_id) {
 
     var answer = confirm ("{/literal}{$translate_invoice_parts_delete_mes_confirmation}{literal}")
     if (answer){
-        window.location='?page=invoice:delete&deleteType=partsRecord&parts_id=' + parts_id + '&invoice_id=' + invoice_id + '&workorder_id=' + workorder_id + '&customer_id=' + customer_id
-        alert("{/literal}{$translate_invoice_delete_mes_recorddeleted}{literal}")            
+        window.location='?page=invoice:edit&invoice_id=' + invoice_id + '&deleteType=partsRecord&parts_id=' + parts_id;
+        alert("{/literal}{$translate_invoice_delete_mes_recorddeleted}{literal}");      
     } else {
-        alert("{/literal}{$translate_invoice_delete_mes_recordnotdeleted}{literal}")
+        alert("{/literal}{$translate_invoice_delete_mes_recordnotdeleted}{literal}");
     }    
     
 }
