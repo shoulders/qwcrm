@@ -49,7 +49,7 @@ function display_single_workorder($db, $workorder_id){
             ".PRFX."TABLE_CUSTOMER.CUSTOMER_FIRST_NAME,
             ".PRFX."TABLE_CUSTOMER.CUSTOMER_LAST_NAME,
             ".PRFX."TABLE_CUSTOMER.CUSTOMER_WWW,
-            ".PRFX."TABLE_CUSTOMER.DISCOUNT,
+            ".PRFX."TABLE_CUSTOMER.DISCOUNT_RATE,
             ".PRFX."TABLE_CUSTOMER.CREDIT_TERMS,
             ".PRFX."TABLE_CUSTOMER.CUSTOMER_NOTES,
             ".PRFX."TABLE_CUSTOMER.CREATE_DATE,
@@ -92,7 +92,7 @@ function display_single_workorder($db, $workorder_id){
 # Display all open Work orders for the given status #
 #####################################################
 
-function display_workorders($db, $status, $direction = 'DESC', $use_pages = false, $page_no = 1, $max_records = 25){
+function display_workorders($db, $status, $direction = 'DESC', $use_pages = false, $page_no = 1, $records_per_page = 25){
     
     global $smarty;
     
@@ -100,11 +100,11 @@ function display_workorders($db, $status, $direction = 'DESC', $use_pages = fals
     
     if($use_pages == true) {
     
-        $start_record = (($page_no * $max_records) - $max_records);
+        // Get Start Record
+        $start_record = (($page_no * $records_per_page) - $records_per_page);
         
-        // Figure out the total number of closed work orders in the database 
+        // Figure out the total number of workorders in the database for the given status
         $sql = "SELECT COUNT(*) as Num FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_STATUS=".$db->qstr($status);
-
         if(!$rs = $db->Execute($sql)) {
             force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_count'));
             exit;
@@ -114,7 +114,7 @@ function display_workorders($db, $status, $direction = 'DESC', $use_pages = fals
         }        
 
         // Figure out the total number of pages. Always round up using ceil()
-        $total_pages = ceil($total_results['Num'] / $max_records);
+        $total_pages = ceil($total_results['Num'] / $records_per_page);
         $smarty->assign('total_pages', $total_pages);
         
         // Set the page number
@@ -132,29 +132,24 @@ function display_workorders($db, $status, $direction = 'DESC', $use_pages = fals
             $smarty->assign('next', $next);
         }       
         
-        // set SQL strings for record restriction
-        $whereTheseRecords = " WHERE ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_STATUS= ".$db->qstr($status);
-        $limitTheseRecords = " LIMIT ".$start_record.", ".$max_records;
-        
+        // Restrict the results to the selected page for the select status
+        $whereTheseRecords = " WHERE ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_STATUS=".$db->qstr($status);
+        $limitTheseRecords = " LIMIT ".$start_record.", ".$records_per_page;        
         
     /* Get all workorders (unrestricted) */
         
     } else {
+        
+        // Return all invoices for the selected status (no pages)
         $whereTheseRecords = " WHERE ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_STATUS= ".$db->qstr($status);
     }
     
     /* Get the records */
     
     $sql = "SELECT 
-            ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_ID, 
-            ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_OPEN_DATE,
-            ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_CLOSE_DATE,   
-            ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_ASSIGN_TO,
-            ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_SCOPE,
-            ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_STATUS,
-            ".PRFX."TABLE_CUSTOMER.CUSTOMER_ID,
-            ".PRFX."TABLE_CUSTOMER.CUSTOMER_DISPLAY_NAME,            
-            ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_DISPLAY_NAME            
+            ".PRFX."TABLE_WORK_ORDER.   WORK_ORDER_ID, WORK_ORDER_OPEN_DATE, WORK_ORDER_CLOSE_DATE, WORK_ORDER_ASSIGN_TO, WORK_ORDER_SCOPE, WORK_ORDER_STATUS,            
+            ".PRFX."TABLE_CUSTOMER.     CUSTOMER_ID, CUSTOMER_DISPLAY_NAME,                    
+            ".PRFX."TABLE_EMPLOYEE.     EMPLOYEE_DISPLAY_NAME            
             FROM ".PRFX."TABLE_WORK_ORDER
             LEFT JOIN ".PRFX."TABLE_CUSTOMER ON ".PRFX."TABLE_WORK_ORDER.CUSTOMER_ID            = ".PRFX."TABLE_CUSTOMER.CUSTOMER_ID
             LEFT JOIN ".PRFX."TABLE_EMPLOYEE ON ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_ASSIGN_TO   = ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_ID".      
@@ -166,15 +161,17 @@ function display_workorders($db, $status, $direction = 'DESC', $use_pages = fals
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
-    } else {       
+    } else {
+        
+        $records = $rs->GetArray();   // do i need to add the check empty
 
-        if(empty($rs->GetArray())) {
+        if(empty($records)){
             
             return false;
             
         } else {
             
-            return $rs;
+            return $records;
             
         }
         
@@ -183,7 +180,7 @@ function display_workorders($db, $status, $direction = 'DESC', $use_pages = fals
 }
 
 ######################
-# Display Resolution #
+# Display Resolution # // should this be get and is all this information needed
 ######################
 
 function display_resolution($db, $workorder_id){
@@ -408,10 +405,41 @@ function insert_new_workorder_history_note($db, $workorder_id, $workorder_histor
 /** Get Functions **/
 
 ########################################
-# Get single Work Order record    ?     #
+#   Get single Work Order record       # // needs translating
 ########################################
 
 
+
+/*
+ * This combined function allows you to pull any of the company information individually
+ * or return them all as an array
+ * supply the required field name or all to return all of them as an array
+ */
+
+function get_workorder_details($db, $item = null){
+    
+    global $smarty;
+
+    $sql = 'SELECT * FROM '.PRFX.'TABLE_WORK_ORDER';
+    
+    if(!$rs = $db->execute($sql)){        
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_include_error_message_function_'.__FUNCTION__.'_failed'));
+        exit;
+    } else {
+        
+        if($item === null){
+            
+            return $rs->GetArray(); 
+            
+        } else {
+            
+            return $rs->fields[$item];   
+            
+        } 
+        
+    }
+    
+}
 
 ########################################
 # Get Work Order Scope and Description #
@@ -879,7 +907,7 @@ function delete_workorder($db, $workorder_id) {
 /** Other Functions **/
 
 ##################################
-# Does workorder have an invoice #
+# Does workorder have an invoice # // does this work
 ##################################
 
 function check_workorder_has_invoice($db, $workorder_id) {
@@ -1016,7 +1044,7 @@ function resolution_edit_status_check($db, $workorder_id) {
 }
 
 ###############################################
-#      Check if a workorder is open           #
+#      Check if a workorder is open           #  //this can be partial repalces with the get function
 ###############################################
 
 function check_workorder_is_open($db, $workorder_id) {

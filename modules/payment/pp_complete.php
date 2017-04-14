@@ -35,7 +35,7 @@ if($VAR['submit']) {
         $q = "UPDATE ".PRFX."TABLE_INVOICE SET
             PAID_DATE              = ".$db->qstr(time()).", 
             PAID_AMOUNT             = ".$db->qstr($amount).",
-            INVOICE_PAID            = '1',
+            IS_PAID            = '1',
             BALANCE             = ".$db->qstr(0.00)."
             WHERE INVOICE_ID                = ".$db->qstr($invoice_id);
             
@@ -100,7 +100,7 @@ if($VAR['submit2']) {
         $q = "UPDATE ".PRFX."TABLE_INVOICE SET
             PAID_DATE          = ".$db->qstr(time()).", 
             PAID_AMOUNT         = '0',
-            INVOICE_PAID        = '0'
+            IS_PAID        = '0'
             WHERE INVOICE_ID     = ".$db->qstr($invoice_id);
             
         if(!$rs = $db->execute($q)) {

@@ -7,7 +7,7 @@ if(isset($VAR['submit'])) {
                 $smarty->assign('error_msg', 'Falied to insert customer');
                 $BuildPage .= $smarty->fetch('core'.SEP.'error.tpl');
             } else {
-                force_page('customer', 'customer_details&customer_id='.$customer_id.'&msg=Added New Customer '.$VAR["displayName"].' &page_title='.$VAR["displayName"]);
+                force_page('customer', 'details', '&customer_id='.$customer_id.'&msg=Added New Customer '.$VAR["displayName"].' &page_title='.$VAR["displayName"]);
                 exit;    
             }            
         

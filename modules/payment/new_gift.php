@@ -103,7 +103,7 @@ if(isset($VAR['submit'])) {
             exit;
         } else {
             /* go back to customer page */
-            force_page('customer','customer_details&customer_id='.$customer_id);
+            force_page('customer','details', '&customer_id='.$customer_id);
             exit;
         }
     }

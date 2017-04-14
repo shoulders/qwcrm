@@ -19,12 +19,10 @@
                         <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0" >
                             <tr>
                                 <td width="100%" valign="top">                                    
-                                    <form action="index.php?page=workorder:details_edit_resolution" method="POST" name="close_workorder" id="close_workorder">
+                                    <form action="?page=workorder:details_edit_resolution" method="POST" name="close_workorder" id="close_workorder">
                                         <b>{$translate_workorder_details_resolution_title}</b><br>
                                         <textarea class="olotd4" rows="15" cols="70" name="workorder_resolution">{$workorder_resolution}</textarea>
-                                        <br>
-                                        <input name="page" value="workorder:details_edit_resolution" type="hidden" >
-                                        <input name="created_by" value="{$login_display_name}" type="hidden">
+                                        <br>                                        
                                         <input name="workorder_id" value="{$workorder_id}" type="hidden">                                        
                                         <input name="submitchangesonly" value="{$translate_workorder_details_edit_resolution_submit_changes_only}" type="submit">
                                         <input name="closewithoutinvoice" value="{$translate_workorder_details_edit_resolution_close_without_invoice}" type="submit">

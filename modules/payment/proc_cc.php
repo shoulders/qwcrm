@@ -190,14 +190,14 @@ if($result[0] == "1") {
          if($balance == 0 ) {
             $q = "UPDATE ".PRFX."TABLE_INVOICE SET 
               PAID_DATE      = ".$db->qstr(time()).",
-              INVOICE_PAID    = ".$db->qstr($flag).",
+              IS_PAID    = ".$db->qstr($flag).",
               PAID_AMOUNT     = ".$db->qstr($paid_amount).",
               balance     = ".$db->qstr($balance).",
-            INVOICE_PAID    ='1' WHERE INVOICE_ID = ".$db->qstr($invoice_id);
+            IS_PAID    ='1' WHERE INVOICE_ID = ".$db->qstr($invoice_id);
     } else {
         $q = "UPDATE ".PRFX."TABLE_INVOICE SET 
               PAID_DATE      = ".$db->qstr(time()).",
-              INVOICE_PAID    = ".$db->qstr($flag).",
+              IS_PAID    = ".$db->qstr($flag).",
               PAID_AMOUNT     = ".$db->qstr($paid_amount).",
               balance     = ".$db->qstr($balance)." WHERE INVOICE_ID = ".$db->qstr($invoice_id);
     }
@@ -257,7 +257,7 @@ if($result[0] == "1") {
             $q = "UPDATE ".PRFX."TABLE_INVOICE SET
                 PAID_DATE              = ".$db->qstr(time()).", 
                 PAID_AMOUNT             = ".$db->qstr($cc_amount).",
-                INVOICE_PAID            = '1',
+                IS_PAID            = '1',
                 EMPLOYEE_ID            = ".$db->qstr($_SESSION['login_id'])."
                 WHERE INVOICE_ID     = ".$db->qstr($invoice_id);
                 

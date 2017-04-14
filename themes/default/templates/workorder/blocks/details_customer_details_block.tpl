@@ -83,15 +83,15 @@
                         {if $single_workorder[i].CUSTOMER_TYPE ==10}{$translate_workorder_customer_type_10}{/if}
                     </td>
                     <td class="menutd"><b>{$translate_workorder_discount}</b></td>
-                    <td class="menutd">{$single_workorder[i].DISCOUNT}%</td>
+                    <td class="menutd">{$single_workorder[i].DISCOUNT_RATE|string_format:"%.2f"}%</td>
                 <tr class="row2">
                     <td class="menutd" colspan="4"></td>
                 </tr>
                 <tr>
                     <td><b>{$translate_workorder_created}</b></td>
-                    <td>{$single_workorder[i].CREATE_DATE|date_format:"$date_format"}</td>
+                    <td>{$single_workorder[i].CREATE_DATE|date_format:$date_format}</td>
                     <td><b>{$translate_workorder_last_activity}</b></td>
-                    <td>{$single_workorder[i].LAST_ACTIVE|date_format:"$date_format"}</td>
+                    <td>{$single_workorder[i].LAST_ACTIVE|date_format:$date_format}</td>
                 </tr>
                 <tr class="row2">
                     <td class="menutd" colspan="4"></td>

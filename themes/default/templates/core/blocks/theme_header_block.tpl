@@ -17,8 +17,8 @@
     {literal}    
         var myMenu;
         window.onload = function() {
-            myMenu = new SDMenu("my_menu");
-            myMenu.init();
+            mainMenu = new SDMenu('main_menu');
+            mainMenu.init();
         };
     {/literal}   
     </script>    

@@ -1,6 +1,6 @@
 <?php
-require_once ('include.php');
 
+require(INCLUDES_DIR.'modules/invoice.php');
 
 /* Assign company information */
 $q = 'SELECT * FROM '.PRFX.'TABLE_COMPANY';

@@ -7,15 +7,15 @@
 <script src="{$theme_js_dir}dhtmlxcombo/dhtmlxcombo.js"></script>
 <link rel="stylesheet" href="{$theme_js_dir}dhtmlxcombo/fonts/font_roboto/roboto.css"/>
 <link rel="stylesheet" href="{$theme_js_dir}dhtmlxcombo/dhtmlxcombo.css">
-{include file="invoice/javascripts.js"}
+<script>{include file="`$theme_js_dir_finc`modules/invoice.js"}</script>
 <script>
 {literal}
  
 /**--  LABOUR  --**/
 
 //// Add Row to Labour Table    
-function addRowToTableLabor(){
-    var tbl = document.getElementById('labor');
+function addRowToTableLabour(){
+    var tbl = document.getElementById('labour_items');
     var lastRow = tbl.rows.length;
 
     // Insert Row - if there's no header row in the table, then iteration = lastRow + 1
@@ -76,7 +76,7 @@ function addRowToTableLabor(){
 
     // Description Cell - Populate the Select Options
     {section loop=$rate name=i}
-        el.options[{$smarty.section.i.index}] = new Option('{$rate[i].LABOR_RATE_NAME}', '{$rate[i].LABOR_RATE_NAME}');
+        el.options[{$smarty.section.i.index}] = new Option('{$rate[i].LABOUR_RATE_NAME}', '{$rate[i].LABOUR_RATE_NAME}');
     {/section}
 
     {literal} 
@@ -120,7 +120,7 @@ function addRowToTableLabor(){
 
     // Rate Cell - Populate the Select Options
     {section loop=$rate name=i}
-        el.options[{$smarty.section.i.index}] = new Option('{$rate[i].LABOR_RATE_AMOUNT}', '{$rate[i].LABOR_RATE_AMOUNT}');
+        el.options[{$smarty.section.i.index}] = new Option('{$rate[i].LABOUR_RATE_AMOUNT}', '{$rate[i].LABOUR_RATE_AMOUNT}');
     {/section}
 
     // Rate Cell - Add some HTML to add the Currency Symbol to the left of the Rate Box      
@@ -149,8 +149,8 @@ function addRowToTableLabor(){
 }
 
 //// Remove row from Labour table
-function removeRowFromTableLabor(){
-    var tbl = document.getElementById('labor');
+function removeRowFromTableLabour(){
+    var tbl = document.getElementById('labour_items');
     var lastRow = tbl.rows.length;
     if (lastRow > 1) tbl.deleteRow(lastRow - 1);
 }
@@ -162,7 +162,7 @@ function removeRowFromTableLabor(){
 
 //// Add Row to Parts Table
 function addRowToTableParts(){
-    var tbl = document.getElementById('parts');
+    var tbl = document.getElementById('parts_items');
     var lastRow = tbl.rows.length;
 
     // Insert Row - if there's no header row in the table, then iteration = lastRow + 1
@@ -247,7 +247,7 @@ function addRowToTableParts(){
 
 //// Remove row from Parts table
 function removeRowFromTableParts(){
-    var tbl = document.getElementById('parts');
+    var tbl = document.getElementById('parts_items');
     var lastRow = tbl.rows.length;
     if (lastRow > 1) tbl.deleteRow(lastRow - 1);
 }
@@ -255,340 +255,378 @@ function removeRowFromTableParts(){
 {/literal}
 </script>
 
-<table width="100%" border="0" cellpadding="20" cellspacing="5">
-    <tr>
-        <td>
-            <table width="700" cellpadding="4" cellspacing="0" border="0" >
-                <tr>
-                    <td class="menuhead2" width="80%">&nbsp;{$translate_invoice_for}{$workorder_id}</td>
-                    <td class="menuhead2" width="20%" align="right" valign="middle">
-                        <a>
-                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{$translate_invoice_new_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_invoice_new_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();">
-                        </a>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="menutd2" colspan="2">
-                        <table class="olotable" width="100%" border="0" cellpadding="5" cellspacing="0">
-                            <tr>
-                                <td class="menutd">
-                                    {literal}
-                                    <form action="index.php?page=invoice:edit" method="POST" name="new_invoice" id="new_invoice" onsubmit="try { var myValidator = validate_new_invoice; } catch(e) { return true; } return myValidator(this);">
-                                    {/literal}
-                                        <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
-                                            <tr class="olotd4">
-                                                <td class="row2"><b>{$translate_invoice_id}</b></td>
-                                                <td class="row2"><b>{$translate_invoice_date}</b></td>
-                                                <td class="row2"><b>{$translate_invoice_due}</b></td>
-                                                <td class="row2"><b>{$translate_invoice_amount}</b></td>
-                                                <td class="row2"><b>{$translate_invoice_tech}</b></td>
-                                                <td class="row2"><b>{$translate_invoice_work_order}</b></td>
-                                                <td class="row2"><b>{$translate_invoice_balance}</b></td>
-                                            </tr>
-                                            <tr class="olotd4">
-                                                <td>{$invoice.INVOICE_ID}</td>
-                                                <td>
-                                                    <input id="date" name="date" class="olotd4" size="10" value="{$invoice.INVOICE_DATE|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
-                                                    <input id="date_button" value="+" type="button">                                                    
-                                                    <script>
-                                                    {literal}  
-                                                        Calendar.setup({
-                                                            trigger     : "date_button",
-                                                            inputField  : "date",
-                                                            dateFormat  : "{/literal}{$date_format}{literal}"                                                                                            
-                                                        });
-                                                    {/literal} 
-                                                    </script>                                                    
-                                                </td>
-                                                <td>{$item.INVOICE_DUE}
-                                                    <input id="due_date" name="due_date" class="olotd4" size="10"  value="{$invoice.INVOICE_DUE|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
-                                                    <input id="due_date_button" value="+" type="button">                                                    
-                                                    <script>
-                                                    {literal}
-                                                       Calendar.setup({
-                                                           trigger     : "due_date_button",
-                                                           inputField  : "due_date",
-                                                           dateFormat  : "{/literal}{$date_format}{literal}"                                                                                            
-                                                       });
-                                                    {/literal}  
-                                                    </script>                                                   
-                                                </td>
-                                                <td>{$currency_sym}{$invoice.INVOICE_AMOUNT|string_format:"%.2f"}</td>
-                                                <td>{$invoice.EMPLOYEE_DISPLAY_NAME}</td>
-                                                <td><a href="?page=workorder:details&workorder_id={$invoice.WORKORDER_ID}&page_title={$translate_invoice_workorder_id} {$invoice.WORKORDER_ID}">{$invoice.WORKORDER_ID}</a></td>
-                                                <td><font color="#CC0000">{$currency_sym}{$invoice.BALANCE|string_format:"%.2f"}</font></td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="3" valign="top" align="left">
-                                                    <b>{$translate_invoice_bill}</b>
-                                                    {foreach item=item from=$customer_details}
-                                                        <table cellpadding="0" cellspacing="0">
+{section name=a loop=$invoice}
+    <table width="100%" border="0" cellpadding="20" cellspacing="5">
+        <tr>
+            <td>
+                <table width="700" cellpadding="4" cellspacing="0" border="0" >
+                    <tr>
+                        <td class="menuhead2" width="80%">&nbsp;{$translate_invoice_for}{$workorder_id}</td>
+                        <td class="menuhead2" width="20%" align="right" valign="middle">
+                            <a>
+                                <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{$translate_invoice_new_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_invoice_new_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();">
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="menutd2" colspan="2">
+                            <table class="olotable" width="100%" border="0" cellpadding="5" cellspacing="0">
+                                <tr>
+                                    <td class="menutd">
+                                        {literal}
+                                        <form action="index.php?page=invoice:edit" method="POST" name="new_invoice" id="new_invoice" onsubmit="try { var myValidator = validate_new_invoice; } catch(e) { return true; } return myValidator(this);">
+                                        {/literal}
+
+                                            <!-- Invoice Information -->
+                                            <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
+                                                <tr class="olotd4">
+                                                    <td class="row2"><b>{$translate_invoice_id}</b></td>
+                                                    <td class="row2"><b>{$translate_invoice_date}</b></td>
+                                                    <td class="row2"><b>{$translate_invoice_due}</b></td>
+                                                    <td class="row2"><b>{$translate_invoice_amount}</b></td>
+                                                    <td class="row2"><b>{$translate_invoice_tech}</b></td>
+                                                    <td class="row2"><b>{$translate_invoice_work_order}</b></td>
+                                                    <td class="row2"><b>{$translate_invoice_balance}</b></td>
+                                                </tr>
+                                                <tr class="olotd4">
+                                                    <td>{$invoice[a].INVOICE_ID}</td>
+                                                    <td>
+                                                        <input id="date" name="date" class="olotd4" size="10" value="{$invoice[a].DATE|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
+                                                        <input id="date_button" value="+" type="button">                                                    
+                                                        <script>
+                                                        {literal}  
+                                                            Calendar.setup({
+                                                                trigger     : "date_button",
+                                                                inputField  : "date",
+                                                                dateFormat  : "{/literal}{$date_format}{literal}"                                                                                            
+                                                            });
+                                                        {/literal} 
+                                                        </script>                                                    
+                                                    </td>
+                                                    <td>{$invoice[a].INVOICE_DUE}
+                                                        <input id="due_date" name="due_date" class="olotd4" size="10"  value="{$invoice[a].DUE_DATE|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
+                                                        <input id="due_date_button" value="+" type="button">                                                    
+                                                        <script>
+                                                        {literal}
+                                                           Calendar.setup({
+                                                               trigger     : "due_date_button",
+                                                               inputField  : "due_date",
+                                                               dateFormat  : "{/literal}{$date_format}{literal}"                                                                                            
+                                                           });
+                                                        {/literal}  
+                                                        </script>                                                   
+                                                    </td>
+                                                    <td>{$currency_sym}{$invoice[a].TOTAL|string_format:"%.2f"}</td>
+                                                    <td><a href="?page=employee:details&employee_id={$invoice[a].EMPLOYEE_ID}">{$employee_display_name}</a></td>
+                                                    <td><a href="?page=workorder:details&workorder_id={$invoice[a].WORKORDER_ID}&page_title={$translate_invoice_workorder_id} {$invoice[a].WORKORDER_ID}">{$invoice[a].WORKORDER_ID}</a></td>
+                                                    <td><font color="#CC0000">{$currency_sym}{$invoice[a].BALANCE|string_format:"%.2f"}</font></td>
+                                                </tr>
+
+                                                
+                                                <tr>
+                                                    
+                                                    <!-- Customer Details -->
+                                                    <td colspan="3" valign="top" align="left">
+                                                        <b>{$translate_invoice_bill}</b>
+                                                        {section name=c loop=$customer}
+                                                            <table cellpadding="0" cellspacing="0">
+                                                                <tr>
+                                                                    <td valign="top">
+                                                                        <a href="?page=customer:details&customer_id={$customer[c].CUSTOMER_ID}&page_title={$customer[c].CUSTOMER_DISPLAY_NAME}">{$customer[c].CUSTOMER_DISPLAY_NAME}</a><br>
+                                                                        {$customer[c].CUSTOMER_ADDRESS|nl2br}<br>
+                                                                        {$customer[c].CUSTOMER_CITY}, {$customer[c].CUSTOMER_STATE} {$customer[c].CUSTOMER_ZIP}<br>
+                                                                        {$customer[c].CUSTOMER_PHONE}<br>
+                                                                        {$customer[c].CUSTOMER_EMAIL}                                                                        
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        {/section}
+                                                    </td>
+                                                    
+                                                    <!-- Company Details -->
+                                                    <td colspan="4" valign="top" >
+                                                        <b>{$translate_invoice_pay}</b>
+                                                        <table cellpadding="0" cellspacing="0" width="100%">
                                                             <tr>
                                                                 <td valign="top">
-                                                                    <a href="?page=customer:customer_details&customer_id={$item.CUSTOMER_ID}&page_title={$item.CUSTOMER_DISPLAY_NAME}">{$item.CUSTOMER_DISPLAY_NAME}</a><br>
-                                                                    {$item.CUSTOMER_ADDRESS|nl2br}<br>
-                                                                    {$item.CUSTOMER_CITY}, {$item.CUSTOMER_STATE} {$item.CUSTOMER_ZIP}<br>
-                                                                    {$item.CUSTOMER_PHONE}<br>
-                                                                    {$item.CUSTOMER_EMAIL}<br>
-                                                                    <br>
-                                                                    TERMS: <FONT color="red" size="+1">{$item.CREDIT_TERMS}</FONT><br><br><br>
-                                                                    Current customer discount rate is :
-                                                                    <input type="hidden" name="customer_id" value="{$item.CUSTOMER_ID}">
-                                                                    <input type="text" class="olotd4" size="4" name="discount" value="{$item.DISCOUNT}"> % <br>
-                                                                    <b>**Change this if you want to temporarily override the discount rate for this invoice ONLY **</b>
+                                                                    {section name=q loop=$company}
+                                                                        {$company[q].NAME} <br>
+                                                                        {$company[q].ADDRESS}<br>
+                                                                        {$company[q].CITY}, {$company[q].STATE} {$company[q].ZIP}<br>
+                                                                        {$company[q].PHONE}<br>
+                                                                    {/section}
                                                                 </td>
                                                             </tr>
                                                         </table>
-                                                    {/foreach}
-                                                </td>
-                                                <td colspan="4" valign="top" >
-                                                    <b>{$translate_invoice_pay}</b>
-                                                    <table cellpadding="0" cellspacing="0" width="100%">
-                                                        <tr>
-                                                            <td valign="top">
-                                                                {section name=x loop=$company}
-                                                                    {$company[x].COMPANY_NAME} <br>
-                                                                    {$company[x].COMPANY_ADDRESS}<br>
-                                                                    {$company[x].COMPANY_CITY}, {$company[x].COMPANY_STATE} {$company[x].COMPANY_ZIP}<br>
-                                                                    {$company[x].COMPANY_PHONE}<br>
-                                                                {/section}
-                                                            </td>
-                                                        </tr>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                        </table>                                                         
-                                        <br>                                        
-                                        <!-- if there is a balance -->
-                                        {if $invoice.balance > 0}
-                                            <!-- Trans Log -->
-                                            <table width="100%" cellpadding="4" cellspacing="0" border="0" id="trans_log">
+                                                    </td>
+                                                    
+                                                </tr>
+                                                
+                                                <!-- Terms and Discount -->
                                                 <tr>
-                                                    <td class="menuhead2">&nbsp;{$translate_invoice_trans_log}</td>
+                                                    <td colspan="7" valign="top" align="left">
+                                                        {section name=c loop=$customer}
+                                                            TERMS: <FONT color="red" size="+1">{$customer[c].CREDIT_TERMS}</FONT><br>
+                                                            Current customer discount rate is : 
+                                                            <input type="text" class="olotd4" size="4" name="discount_rate" value="{$invoice[a].DISCOUNT_RATE|string_format:"%.2f"}"> %<br>
+                                                            <b>**Change this if you want to temporarily override the discount rate for this invoice ONLY **</b>
+                                                        {/section}
+                                                    </td>
+                                                </tr>
+                                                
+                                            </table>                                                         
+                                            <br>
+
+                                            <!-- Transaction Log -->
+                                            {if $invoice[a].BALANCE > 0}                                            
+                                                <table width="100%" cellpadding="4" cellspacing="0" border="0" id="transaction_log">
+                                                    <tr>
+                                                        <td class="menuhead2">&nbsp;{$translate_invoice_transaction_log}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="menutd2">
+                                                            <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
+                                                                <tr class="olotd4">
+                                                                    <td class="row2"><b>{$translate_invoice_trans_id}</b></td>
+                                                                    <td class="row2"><b>{$translate_invoice_date}</b></td>
+                                                                    <td class="row2"><b>{$translate_invoice_amount}</b></td>
+                                                                    <td class="row2"><b>{$translate_invoice_type}</b></td>
+                                                                </tr>                                                            
+                                                                {section name=t loop=$transactions}
+                                                                    <tr class="olotd4">
+                                                                        <td>{$transactions[t].TRANSACTION_ID}</td>
+                                                                        <td>{$transactions[t].DATE|date_format:"$date_format"}</td>
+                                                                        <td><b>{$currency_symbol}</b>{$transactions[t].AMOUNT|string_format:"%.2f"}</td>
+                                                                        <td>
+                                                                            {if $transactions[t].TYPE == 1}{$translate_invoice_cc}
+                                                                            {elseif $transactions[t].TYPE == 2}{$translate_invoice_check}
+                                                                            {elseif $transactions[t].TYPE == 3}{$translate_invoice_cash}
+                                                                            {elseif $transactions[t].TYPE == 4}{$translate_invoice_gift}
+                                                                            {elseif $transactions[t].TYPE == 5}{$translate_invoice_paypal}
+                                                                            {/if}
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr class="olotd4">
+                                                                        <td><b>{$translate_invoice_memo}</b></td>
+                                                                        <td colspan="3">{$transactions[t].MEMO}</td>
+                                                                    </tr>
+                                                                {/section}
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                                <br>
+                                            {/if}
+                                            
+                                            <!-- Function Buttons -->
+                                            <table width="100%" cellpadding="4" cellspacing="0" border="0" id="transaction_log">
+                                                <tr>
+                                                    <td class="menuhead2">&nbsp;Function Buttons</td>
                                                 </tr>
                                                 <tr>
                                                     <td class="menutd2">
-                                                        <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
+                                            
+                                                        <!-- if invoice has an amount -->
+                                                        {if $invoice[a].TOTAL > 0 }
+
+                                                            <!-- Print Buttons -->   
+                                                            <button type="button" name="{$translate_invoice_print}" onClick="window.open('?page=invoice:print&print_type=print_html&print_content=invoice&workorder_id={$invoice[a].WORKORDER_ID}&customer_id={$invoice[a].CUSTOMER_ID}&invoice_id={$invoice[a].INVOICE_ID}&theme=print');">{$translate_invoice_print}</button>
+                                                            <button type="button" name="{$translate_invoice_pdf}" onClick="window.open('?page=invoice:print&print_type=print_pdf&print_content=invoice&workorder_id={$invoice[a].WORKORDER_ID}&customer_id={$invoice[a].CUSTOMER_ID}&invoice_id={$invoice[a].INVOICE_ID}&theme=print');"><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">{$translate_invoice_pdf}</button>
+                                                            <button type="button" name="Print Address Only" onClick="window.open('?page=invoice:print&print_type=print_html&print_content=invoice&workorder_id={$invoice[a].WORKORDER_ID}&customer_id={$invoice[a].CUSTOMER_ID}&invoice_id={$invoice[a].INVOICE_ID}&theme=print');">Print Address Only</button>                                            
+
+                                                            <!-- Receive Payment Button -->
+                                                            <button type="button" name="{$translate_invoice_bill_customer}" onClick="location.href='?page=payment:new&invoice_id={$invoice[a].INVOICE_ID}';">{$translate_invoice_bill_customer}</button>
+
+                                                        {else}
+
+                                                            <!-- Delete Button -->
+                                                            <button type="button" name="{$translate_invoice_delete}" onClick="location.href='?page=invoice:delete&customer_id={$invoice[a].CUSTOMER_ID}&invoice_id={$invoice[a].INVOICE_ID}&page_title=Deleting&nbsp;Invoice&nbsp;-{$invoice[a].INVOICE_ID}';">{$translate_invoice_delete}</button>
+
+                                                            {if $workorder_status == '9' && $workorder_id != '0'}
+                                                                <!-- Close Button -->
+                                                                <button type="button" name="Close Work Order" onClick="location.href='?page=workorder:details_edit_resolution&workorder_id={$invoice[a].WORKORDER_ID}&page_title=Closing%20Work%20Order{$invoice[a].WORKORDER_ID}';">{$translate_invoice_close_wo}</button>
+                                                            {/if}
+
+                                                            <!-- Work Order must be closed before payment can be received. -->
+                                                            {$translate_invoice_edit_invoice_delete_invoice_msg}
+
+                                                        {/if} 
+                                            
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            <br>
+
+                                            <!-- Labour Items -->
+                                            <table width="100%" cellpadding="4" cellspacing="0" border="0" >
+                                                <tr>
+                                                    <td class="menuhead2">&nbsp;{$translate_invoice_labour}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="menutd2">
+                                                        {if $labour_items != '0'}
+                                                            <table width="100%" cellpadding="3" cellspacing="0" border="0" class="olotable">
+                                                                <tr  class="olotd4">
+                                                                    <td class="row2"><b>{$translate_invoice_no}</b></td>
+                                                                    <td class="row2" width="12"><b>{$translate_invoice_hours}</b></td>
+                                                                    <td class="row2"><b>{$translate_invoice_description}</b></td>
+                                                                    <td class="row2"><b>{$translate_invoice_rate}</b></td>
+                                                                    <td class="row2"><b>{$translate_invoice_total}</b></td>
+                                                                    <td class="row2"><b>{$translate_invoice_actions}</b></td>
+                                                                </tr>
+                                                                {section name=l loop=$labour_items}
+                                                                    <tr class="olotd4">
+                                                                        <td>{$smarty.section.q.index+1}</td>
+                                                                        <td>{$labour_items[l].INVOICE_LABOUR_UNIT}</td>
+                                                                        <td>{$labour_items[l].INVOICE_LABOUR_DESCRIPTION}</td>
+                                                                        <td>{$currency_sym}{$labour_items[l].INVOICE_LABOUR_RATE|string_format:"%.2f"}</td>
+                                                                        <td>{$currency_sym}{$labour_items[l].INVOICE_LABOUR_SUBTOTAL|string_format:"%.2f"}</td>
+                                                                        <td>
+                                                                            <a href="javascript:void(0)" onclick="confirmLabourDelete({$labour_items[l].INVOICE_LABOUR_ID}, {$invoice[a].INVOICE_ID}, {$workorder_id}, {$customer_id});">
+                                                                                <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{$translate_invoice_delete_invoice_labour_item|nl2br|regex_replace:"/[\r\t\n]/":" "}</b>');" onMouseOut="hideddrivetip();">
+                                                                            </a>
+                                                                        </td>
+                                                                    </tr>
+                                                                {/section}
+                                                                <tr>
+                                                                    <td colspan="5" style="text-align:right;"><b>{$translate_invoice_labour_total}</b></td>
+                                                                    <td style="text-align:left;">{$currency_sym}{$labour_sub_total|string_format:"%.2f"}</td>
+                                                                </tr>
+                                                            </table>
+                                                        {/if}
+                                                        <br>
+                                                        <!-- Additional Javascript Labour Table -->
+                                                        <table width="100%" cellpadding="3" cellspacing="0" border="0" class="olotable" id="labour_items">
                                                             <tr class="olotd4">
-                                                                <td class="row2"><b>{$translate_invoice_trans_id}</b></td>
-                                                                <td class="row2"><b>{$translate_invoice_date}</b></td>
-                                                                <td class="row2"><b>{$translate_invoice_amount}</b></td>
-                                                                <td class="row2"><b>{$translate_invoice_type}</b></td>
+                                                                <td class="row2"><b>{$translate_invoice_no}</b></td>
+                                                                <td class="row2"><b>{$translate_invoice_hours}</b></td>
+                                                                <td class="row2"><b>{$translate_invoice_description}</b></td>
+                                                                <td class="row2"><b>&nbsp;&nbsp;{$translate_invoice_rate}</b></td>
                                                             </tr>
-                                                            {section name=r loop=$trans}
+                                                            
+                                                            <!-- Additional Rows are added here -->
+                                                            
+                                                        </table>
+                                                        <p>
+                                                            <input type="button" value="{$translate_invoice_add}" onclick="addRowToTableLabour();" />
+                                                            <input type="button" value="{$translate_invoice_remove}" onclick="removeRowFromTableLabour();" />
+                                                        </p>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            <br>
+
+                                            <!-- Parts Items -->
+                                            <table width="100%" cellpadding="4" cellspacing="0" border="0" >
+                                                <tr>
+                                                    <td class="menuhead2">&nbsp;{$translate_invoice_parts}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="menutd2">
+                                                        {if $parts_items != '0'}
+                                                            <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
                                                                 <tr class="olotd4">
-                                                                    <td>{$trans[r].TRANSACTION_ID}</td>
-                                                                    <td>{$trans[r].DATE|date_format:"$date_format"}</td>
-                                                                    <td><b>{$currency_symbol}</b>{$trans[r].AMOUNT|string_format:"%.2f"}</td>
-                                                                    <td>
-                                                                        {if $trans[r].TYPE == 1}{$translate_invoice_cc}
-                                                                        {elseif $trans[r].TYPE == 2}{$translate_invoice_check}
-                                                                        {elseif $trans[r].TYPE == 3}{$translate_invoice_cash}
-                                                                        {elseif $trans[r].TYPE == 4}{$translate_invoice_gift}
-                                                                        {elseif $trans[r].TYPE == 5}{$translate_invoice_paypal}
-                                                                        {/if}
-                                                                    </td>
+                                                                    <td class="row2"><b>{$translate_invoice_no}</b></td>
+                                                                    <td class="row2"><b>{$translate_invoice_count}</b></td>
+                                                                    <td class="row2"><b>{$translate_invoice_description}</b></td>
+                                                                    <td class="row2"><b>{$translate_invoice_price}</b></td>
+                                                                    <td class="row2"><b>{$translate_invoice_total}</b></td>
+                                                                    <td class="row2"><b>{$translate_invoice_actions}</b></td>
                                                                 </tr>
-                                                                <tr class="olotd4">
-                                                                    <td><b>{$translate_invoice_memo}</b></td>
-                                                                    <td colspan="3">{$trans[r].MEMO}</td>
+                                                                {section name=p loop=$parts_items}
+                                                                    <tr class="olotd4">
+                                                                        <td>{$smarty.section.w.index+1}</td>
+                                                                        <td>{$parts_items[p].INVOICE_PARTS_COUNT}</td>
+                                                                        <td>{$parts_items[p].INVOICE_PARTS_DESCRIPTION}</td>
+                                                                        <td>{$currency_sym}{$parts_items[p].INVOICE_PARTS_AMOUNT|string_format:"%.2f"}</td>
+                                                                        <td>{$currency_sym}{$parts_items[p].INVOICE_PARTS_SUBTOTAL|string_format:"%.2f"}</td>
+                                                                        <td>
+                                                                            <a href="javascript:void(0)" onclick="confirmPartsDelete({$parts_items[p].INVOICE_PARTS_ID}, {$invoice[a].INVOICE_ID}, {$workorder_id}, {$customer_id});">
+                                                                                <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{$translate_invoice_delete_parts_record|nl2br|regex_replace:"/[\r\t\n]/":" "}</b>');" onMouseOut="hideddrivetip();">
+                                                                            </a>
+                                                                        </td>
+                                                                    </tr>
+                                                                 {/section}
+                                                                <tr>
+                                                                    <td colspan="5" style="text-align:right;"><b>{$translate_invoice_parts_total}</b></td>
+                                                                    <td style="text-align:left;">{$currency_sym}{$parts_sub_total|string_format:"%.2f"}</td>
                                                                 </tr>
-                                                            {/section}
+                                                            </table>
+                                                        {/if}
+                                                        <br>
+                                                        <!-- Additional Javascript Parts Table -->
+                                                        <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable" id="parts_items">
+                                                            <tr class="olotd4">
+                                                                <td class="row2"><b>{$translate_invoice_no}</b></td>
+                                                                <td class="row2"><b>{$translate_invoice_count}-QTY</b></td>
+                                                                <td class="row2"><b>{$translate_invoice_description}</b></td>
+                                                                <td class="row2"><b>{$translate_invoice_price}</b></td>
+                                                            </tr>
+                                                            
+                                                            <!-- Additional Rows are added here -->
+                                                            
+                                                        </table>
+                                                        <p>
+                                                            <input type="button" value="{$translate_invoice_add}" onclick="addRowToTableParts();" />
+                                                            <input type="button" value="{$translate_invoice_remove}" onclick="removeRowFromTableParts();" />
+                                                        </p>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            <br>
+
+                                            <!-- Totals Section -->
+                                            <table width="100%" cellpadding="4" cellspacing="0" border="0" >
+                                                <tr>
+                                                    <td class="menuhead2">&nbsp;{$translate_invoice_total}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="menutd2">
+                                                        <table width="100%" border="1" cellpadding="3" cellspacing="0" class="olotable">
+                                                            <tr>
+                                                                <td class="olotd4" width="80%" align="right"><b>{$translate_invoice_sub_total}</b></td>
+                                                                <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice[a].SUB_TOTAL|string_format:"%.2f"}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="olotd4" width="80%" align="right"><b>{$translate_invoice_discount} (@ {$invoice[a].DISCOUNT_RATE|string_format:"%.2f"}%)</b></td>
+                                                                <td class="olotd4" width="20%" align="right">- {$currency_sym}{$invoice[a].DISCOUNT|string_format:"%.2f"}</td>
+                                                            </tr>                                                        
+                                                            <tr>
+                                                                {section name=q loop=$company}
+                                                                    <td class="olotd4" width="80%" align="right"><b>{$translate_invoice_tax} (@ {$invoice[a].TAX_RATE}%)</b></td>
+                                                                    <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice[a].TAX|string_format:"%.2f"}</td>
+                                                                {/section}
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="olotd4" width="80%" align="right"><b>{$translate_invoice_total}</b></td>
+                                                                <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice[a].TOTAL|string_format:"%.2f"}</td>
+                                                            </tr>
                                                         </table>
                                                     </td>
                                                 </tr>
                                             </table>
-                                        {/if}                                
-                                        <!-- if pending or $workorder_id = zero for invoice only -->
-                                        {if $wo_status == '9' || $workorder_id == '0'}
-                                            <p>
-                                                <!-- if invoice has an amount -->
-                                                {if $invoice.INVOICE_AMOUNT > 0 }
+                                            <br>
+                                            
+                                            <!-- Button and Hidden Section -->
+                                            <table width="100%"  cellpadding="3" cellspacing="0" border="0">
+                                                <tr>
+                                                    <td align="left" valign="top" width="25%">                                                        
+                                                        <input type="hidden" name="invoice_id" value="{$invoice[a].INVOICE_ID}">
+                                                        <input type="hidden" name="sub_total" value="{$invoice[a].SUB_TOTAL|string_format:"%.2f"}">
+                                                        <button type="submit" name="submit" value="submit">{$translate_invoice_submit}</button>
+                                                    </td>
+                                                    <td align="right" width="75%"></td>
+                                                </tr>
+                                            </table>                                            
                                                     
-                                                    <!-- Print Buttons -->   
-                                                    <button type="button" name="{$translate_invoice_print}" onClick="window.open('?page=invoice:print&print_type=print_html&print_content=invoice&workorder_id={$invoice.WORKORDER_ID}&customer_id={$invoice.CUSTOMER_ID}&invoice_id={$invoice.INVOICE_ID}&theme=print');">{$translate_invoice_print}</button>
-                                                    <button type="button" name="{$translate_invoice_pdf}" onClick="window.open('?page=invoice:print&print_type=print_pdf&print_content=invoice&workorder_id={$invoice.WORKORDER_ID}&customer_id={$invoice.CUSTOMER_ID}&invoice_id={$invoice.INVOICE_ID}&theme=print');"><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">{$translate_invoice_pdf}</button>
-                                                    <button type="button" name="Print Address Only" onClick="window.open('?page=invoice:print&print_type=print_html&print_content=invoice&workorder_id={$invoice.WORKORDER_ID}&customer_id={$invoice.CUSTOMER_ID}&invoice_id={$invoice.INVOICE_ID}&theme=print');">Print Address Only</button>                                            
-                                                    
-                                                    <!-- Receive Payment Button -->
-                                                    <button type="button" name="{$translate_invoice_bill_customer}" onClick="location.href='?page=payment:new&invoice_id={$invoice.INVOICE_ID}';">{$translate_invoice_bill_customer}</button>
-                                                
-                                                {else}
-                                                    
-                                                    <!-- Delete Button -->
-                                                    <button type="button" name="{$translate_invoice_delete}" onClick="location.href='?page=invoice:delete&customer_id={$invoice.CUSTOMER_ID}&invoice_id={$invoice.INVOICE_ID}&page_title=Deleting&nbsp;Invoice&nbsp;-{$invoice.INVOICE_ID}';">{$translate_invoice_delete}</button>
-                                                    
-                                                    <!-- Close Button -->
-                                                    <button type="button" name="Close Work Order" onClick="location.href='?page=workorder:details_edit_resolution&workorder_id={$invoice.WORKORDER_ID}&page_title=Closing%20Work%20Order{$invoice.WORKORDER_ID}';">{$translate_invoice_close_wo}</button>
-                                                    
-                                                    <!-- Work Order must be closed before payment can be received. -->
-                                                    {$translate_invoice_msg}
-                                                    
-                                                {/if} 
-                                            </p>
-                                        {/if}
-                                        <br>
-                                        <table width="100%" cellpadding="4" cellspacing="0" border="0" >
-                                            <tr>
-                                                <td class="menuhead2">&nbsp;{$translate_invoice_labor}</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="menutd2">
-                                                    {if $labor != '0'}
-                                                        <table width="100%" cellpadding="3" cellspacing="0" border="0" class="olotable">
-                                                            <tr  class="olotd4">
-                                                                <td class="row2"><b>{$translate_invoice_no}</b></td>
-                                                                <td class="row2" width="12"><b>{$translate_invoice_hours}</b></td>
-                                                                <td class="row2"><b>{$translate_invoice_description}</b></td>
-                                                                <td class="row2"><b>{$translate_invoice_rate}</b></td>
-                                                                <td class="row2"><b>{$translate_invoice_total}</b></td>
-                                                                <td class="row2"><b>{$translate_invoice_actions}</b></td>
-                                                            </tr>
-                                                            {section name=q loop=$labor}
-                                                                <tr class="olotd4">
-                                                                    <td>{$smarty.section.q.index+1}</td>
-                                                                    <td>{$labor[q].INVOICE_LABOR_UNIT}</td>
-                                                                    <td>{$labor[q].INVOICE_LABOR_DESCRIPTION}</td>
-                                                                    <td>{$currency_sym}{$labor[q].INVOICE_LABOR_RATE|string_format:"%.2f"}</td>
-                                                                    <td>{$currency_sym}{$labor[q].INVOICE_LABOR_SUBTOTAL|string_format:"%.2f"}</td>
-                                                                    <td>
-                                                                        <a href="javascript:void(0)" onclick="confirmLabourDelete({$labor[q].INVOICE_LABOR_ID}, {$invoice.INVOICE_ID}, {$workorder_id}, {$customer_id});">
-                                                                            <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{$translate_invoice_delete_labour_record|nl2br|regex_replace:"/[\r\t\n]/":" "}</b>');" onMouseOut="hideddrivetip();">
-                                                                        </a>
-                                                                    </td>
-                                                                </tr>
-                                                            {/section}
-                                                            <tr>
-                                                                <td colspan="5" style="text-align:right;"><b>{$translate_invoice_labour_total}</b></td>
-                                                                <td style="text-align:left;">{$currency_sym}{$labour_sub_total_sum}</td>
-                                                            </tr>
-                                                        </table>
-                                                    {/if}
-                                                    <br>
-                                                    <!-- Additional Javascript Labour Table -->
-                                                    <table width="100%" cellpadding="3" cellspacing="0" border="0" class="olotable" id="labor">
-                                                        <tr class="olotd4">
-                                                            <td class="row2"><b>{$translate_invoice_no}</b></td>
-                                                            <td class="row2"><b>{$translate_invoice_hours}</b></td>
-                                                            <td class="row2"><b>{$translate_invoice_description}</b></td>
-                                                            <td class="row2"><b>&nbsp;&nbsp;{$translate_invoice_rate}</b></td>
-                                                        </tr>
-                                                    </table>
-                                                    <p>
-                                                        <input type="button" value="{$translate_invoice_add}" onclick="addRowToTableLabor();" />
-                                                        <input type="button" value="{$translate_invoice_remove}" onclick="removeRowFromTableLabor();" />
-                                                    </p>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                        <br>
-                                        <table width="100%" cellpadding="4" cellspacing="0" border="0" >
-                                            <tr>
-                                                <td class="menuhead2">&nbsp;{$translate_invoice_parts}</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="menutd2">
-                                                    {if $parts != '0'}
-                                                        <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
-                                                            <tr class="olotd4">
-                                                                <td class="row2"><b>{$translate_invoice_no}</b></td>
-                                                                <td class="row2"><b>{$translate_invoice_count}</b></td>
-                                                                <td class="row2"><b>{$translate_invoice_description}</b></td>
-                                                                <td class="row2"><b>{$translate_invoice_price}</b></td>
-                                                                <td class="row2"><b>{$translate_invoice_total}</b></td>
-                                                                <td class="row2"><b>{$translate_invoice_actions}</b></td>
-                                                            </tr>
-                                                            {section name=w loop=$parts}
-                                                                <tr class="olotd4">
-                                                                    <td>{$smarty.section.w.index+1}</td>
-                                                                    <td>{$parts[w].INVOICE_PARTS_COUNT}</td>
-                                                                    <td>{$parts[w].INVOICE_PARTS_DESCRIPTION}</td>
-                                                                    <td>{$currency_sym}{$parts[w].INVOICE_PARTS_AMOUNT|string_format:"%.2f"}</td>
-                                                                    <td>{$currency_sym}{$parts[w].INVOICE_PARTS_SUBTOTAL|string_format:"%.2f"}</td>
-                                                                    <td>
-                                                                        <a href="javascript:void(0)" onclick="confirmPartsDelete({$parts[w].INVOICE_PARTS_ID}, {$invoice.INVOICE_ID}, {$workorder_id}, {$customer_id});">
-                                                                            <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{$translate_invoice_delete_parts_record|nl2br|regex_replace:"/[\r\t\n]/":" "}</b>');" onMouseOut="hideddrivetip();">
-                                                                        </a>
-                                                                    </td>
-                                                                </tr>
-                                                             {/section}
-                                                            <tr>
-                                                                <td colspan="5" style="text-align:right;"><b>{$translate_invoice_parts_total}</b></td>
-                                                                <td style="text-align:left;">{$currency_sym}{$parts_sub_total_sum}</td>
-                                                            </tr>
-                                                        </table>
-                                                    {/if}
-                                                    <br>
-                                                    <!-- Additional Javascript Parts Table -->
-                                                    <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable" id="parts">
-                                                        <tr class="olotd4">
-                                                            <td class="row2"><b>{$translate_invoice_no}</b></td>
-                                                            <td class="row2"><b>{$translate_invoice_count}-QTY</b></td>
-                                                            <td class="row2"><b>{$translate_invoice_description}</b></td>
-                                                            <td class="row2"><b>{$translate_invoice_price}</b></td>
-                                                        </tr>
-                                                    </table>
-                                                    <p>
-                                                        <input type="button" value="{$translate_invoice_add}" onclick="addRowToTableParts();" />
-                                                        <input type="button" value="{$translate_invoice_remove}" onclick="removeRowFromTableParts();" />
-                                                    </p>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                        <br>
-                                        <table width="100%" cellpadding="4" cellspacing="0" border="0" >
-                                            <tr>
-                                                <td class="menuhead2">&nbsp;{$translate_invoice_total}</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="menutd2">
-                                                    <table width="100%" border="1"  cellpadding="3" cellspacing="0" class="olotable">
-                                                        <tr>
-                                                            <td class="olotd4" width="80%" align="right"><b>{$translate_invoice_sub_total}</b></td>
-                                                            <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice.SUB_TOTAL}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="olotd4" width="80%" align="right"><b>{$translate_invoice_discount}</b></td>
-                                                            <td class="olotd4" width="20%" align="right">- {$currency_sym}{$invoice.DISCOUNT|string_format:"%.2f"}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="olotd4" width="80%" align="right"><b>{$translate_invoice_shipping}</b></td>
-                                                            <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice.SHIPPING}<input type="hidden" name="shipping"  value="{$invoice.SHIPPING|string_format:"%.2f"}"></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="olotd4" width="80%" align="right"><b>{$translate_invoice_tax}</b></td>
-                                                            <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice.TAX}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="olotd4" width="80%" align="right"><b>{$translate_invoice_total}</b></td>
-                                                            <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice.INVOICE_AMOUNT}</td>
-                                                        </tr>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                        <br>
-                                        <table width="100%"  cellpadding="3" cellspacing="0" border="0">
-                                            <tr>
-                                                <td align="left" valign="top" width="25%">
-                                                    <input type="hidden" name="chkValidateOnKeyPress" value="checked">
-                                                    <input type="hidden" name="invoice_id"    value="{$invoice.INVOICE_ID}">
-                                                    <input type="hidden" name="sub_total"     value="{$invoice.SUB_TOTAL|string_format:"%.2f"}">
-                                                    <input type="hidden" name="page"          value="invoice:edit">
-                                                    <input type="hidden" name="create_by"     value="{$login_id}">
-                                                    <input type="hidden" name="workorder_id"         value="{$workorder_id}">
-                                                    <input type="submit" name="submit"        value="{$translate_invoice_submit}">
-                                                </td>
-                                                <td align="right" width="75%"></td>
-                                            </tr>
-                                        </table>
-                                    </form>                         
-                                 </td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-            </table>
-        </td>
-    </tr>
-</table>
+                                        </form>                         
+                                     </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+{/section}

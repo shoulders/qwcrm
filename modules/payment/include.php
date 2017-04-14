@@ -204,7 +204,7 @@ function get_single_invoice_details($db, $invoice_id) {
 
 $sql = "SELECT count(*) as count,
     INVOICE_AMOUNT, INVOICE_DATE, INVOICE_DUE, INVOICE_ID, PAID_AMOUNT, BALANCE, WORKORDER_ID, CUSTOMER_ID
-    FROM ".PRFX."TABLE_INVOICE WHERE INVOICE_PAID='0'
+    FROM ".PRFX."TABLE_INVOICE WHERE IS_PAID='0'
     AND INVOICE_ID=".$db->qstr($invoice_id)."
     GROUP BY INVOICE_ID";
 
@@ -307,7 +307,7 @@ function insert_transaction($db, $type, $invoice_id, $workorder_id, $customer_id
 function transaction_update_invoice($db, $invoice_id, $paid_status, $paid_date, $paid_amount, $balance) {
     
     $sql = "UPDATE ".PRFX."TABLE_INVOICE SET
-            INVOICE_PAID        =". $db->qstr( $paid_status ).",
+            IS_PAID        =". $db->qstr( $paid_status ).",
             PAID_DATE           =". $db->qstr( $paid_date   ).",        
             PAID_AMOUNT         =". $db->qstr( $paid_amount ).",                    
             BALANCE             =". $db->qstr( $balance     ).",

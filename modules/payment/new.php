@@ -19,7 +19,7 @@ $smarty->assign('credit_cards',     get_active_credit_cards($db)                
 
 // assigned in template
 $smarty->assign('invoice_amount',       $invoice_details['1']['INVOICE_AMOUNT']                         );
-$smarty->assign('invoice_paid_amount',  $invoice_details['1']['PAID_AMOUNT']                            );
+$smarty->assign('IS_PAID_amount',  $invoice_details['1']['PAID_AMOUNT']                            );
 $smarty->assign('invoice_id',           $invoice_id                                                     );
 $smarty->assign('workorder_id',         $invoice_details['1']['WORKORDER_ID']                           );
 $smarty->assign('balance',              $invoice_details['1']['BALANCE']                                );

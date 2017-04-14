@@ -7,7 +7,7 @@
 <script src="{$theme_js_dir}dhtmlxcombo/dhtmlxcombo.js"></script>
 <link rel="stylesheet" href="{$theme_js_dir}dhtmlxcombo/fonts/font_roboto/roboto.css"/>
 <link rel="stylesheet" href="{$theme_js_dir}dhtmlxcombo/dhtmlxcombo.css">
-{include file="invoice/javascripts.js"}
+<script>{include file="`$theme_js_dir_finc`modules/invoice.js"}</script>
 <script>
 {literal}
  
@@ -453,7 +453,7 @@ function removeRowFromTableParts(){
                                                                     <td>{$currency_sym}{$labor[q].INVOICE_LABOR_SUBTOTAL|string_format:"%.2f"}</td>
                                                                     <td>
                                                                         <a href="javascript:void(0)" onclick="confirmLabourDelete({$labor[q].INVOICE_LABOR_ID}, {$invoice.INVOICE_ID}, {$workorder_id}, {$customer_id});">
-                                                                            <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{$translate_invoice_delete_labour_record|nl2br|regex_replace:"/[\r\t\n]/":" "}</b>');" onMouseOut="hideddrivetip();">
+                                                                            <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{$translate_invoice_delete_invoice_labour_item|nl2br|regex_replace:"/[\r\t\n]/":" "}</b>');" onMouseOut="hideddrivetip();">
                                                                         </a>
                                                                     </td>
                                                                 </tr>

@@ -13,7 +13,7 @@ if(isset($VAR['submit'])) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
         exit;
     }
-    force_page('customer', 'customer_details&page_title='.$VAR['customer_name'].'&customer_id='.$VAR['customer_id']);
+    force_page('customer', 'details' ,'&page_title='.$VAR['customer_name'].'&customer_id='.$VAR['customer_id']);
 } else {
 
     if($VAR['action'] == 'delete') {
@@ -24,7 +24,7 @@ if(isset($VAR['submit'])) {
             exit;
         }
 
-    force_page('customer', 'customer_details&page_title='.$VAR['customer_name'].'&customer_id='.$VAR['customer_id']);
+    force_page('customer', 'details', 'page_title='.$VAR['customer_name'].'&customer_id='.$VAR['customer_id']);
 
     } else {
 

@@ -170,6 +170,35 @@ function insert_new_employee($db, $employee_record){
 /* Get functions */
 
 #####################################
+#     Get Employee Details          #  // not actually used anywhere
+#####################################
+
+function get_employee_details($db, $employee_id, $item = null) {
+    
+    global $smarty;
+
+    $sql = "SELECT * FROM ".PRFX."TABLE_EMPLOYEE WHERE EMPLOYEE_ID =".$employee_id;
+    
+    if(!$rs = $db->execute($sql)){        
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
+        exit;
+    } else {
+        
+        if($item === null){
+            
+            return $rs->GetArray(); 
+            
+        } else {
+            
+            return $rs->fields[$item];   
+            
+        } 
+        
+    }
+        
+}
+
+#####################################
 # Get Employee Display Name from ID #  // not actually used anywhere
 #####################################
 
@@ -368,7 +397,7 @@ function count_employee_invoices_with_status($db, $employee_id, $invoice_status)
     
     $sql = "SELECT COUNT(*) AS EMPLOYEE_INVOICE_COUNT
          FROM ".PRFX."TABLE_INVOICE
-         WHERE INVOICE_PAID=".$db->qstr($invoice_status)."
+         WHERE IS_PAID=".$db->qstr($invoice_status)."
          AND EMPLOYEE_ID=".$db->qstr($employee_id);
     
     if(!$rs = $db->Execute($sql)) {

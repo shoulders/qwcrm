@@ -20,6 +20,14 @@ $(document).ready(function(){
     });
 });
 
+/* - not used globally yet - use this to add later like below
+ * 
+// Performs a redirect to the new Search Page Number - takes the inputted value and adds it to the end
+function GotoPageNumber() {
+    document.page_select.action='?page=supplier:view&submit=submit&pagetitle={}page_no=' + document.page_select.page_select_number.value;
+    return true;
+
+*/
 
 // Change page when user selects with a dropdown menu - must be put in the <select>
 function changePage() { 

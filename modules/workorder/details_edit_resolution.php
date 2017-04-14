@@ -24,14 +24,14 @@ if(isset($VAR['submitchangesonly'])) {
 // Close without invoice
 if(isset($VAR['closewithoutinvoice'])) {
     close_workorder_without_invoice($db, $workorder_id, $VAR['workorder_resolution']);
-    force_page('workorder', 'details','workorder_id='.$workorder_id.'&information_msg='.$smarty->get_template_vars('translate_workorder_advisory_message_details_edit_resolution_workorderclosedwithoutinvoice'));
+    force_page('workorder', 'details', 'workorder_id='.$workorder_id.'&information_msg='.$smarty->get_template_vars('translate_workorder_advisory_message_details_edit_resolution_workorderclosedwithoutinvoice'));
     exit; 
 }
 
 // Close with invoice
 if(isset($VAR['closewithinvoice'])) {
     close_workorder_with_invoice($db, $workorder_id, $VAR['workorder_resolution']);       
-    force_page('invoice', 'edit','workorder_id='.$workorder_id.'&customer_id='.$customer_id.'&information_msg='.$smarty->get_template_vars('translate_workorder_advisory_message_details_edit_resolution_workorderclosedwithinvoice'));
+    force_page('invoice', 'new', 'workorder_id='.$workorder_id.'&information_msg='.$smarty->get_template_vars('translate_workorder_advisory_message_details_edit_resolution_workorderclosedwithinvoice'));
     exit;
 }
         

@@ -89,7 +89,7 @@
                                                             </tr>                                                                                                              
                                                             <tr>
                                                                 <td align="right"><b>Tax Amount:</b></td>
-                                                                <td><input name="company_invoice_tax_rate" class="olotd5" size="6" value="{$company[i].INVOICE_TAX_RATE}" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumbersPeriod(event);"/>%</td>
+                                                                <td><input name="company_tax_rate" class="olotd5" size="6" value="{$company[i].TAX_RATE}" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumbersPeriod(event);"/>%</td>
                                                             </tr>
                                                             <tr>
                                                                 <td><b>Company Welcome Message:</b><br>(home page)</td>

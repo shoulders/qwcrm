@@ -153,7 +153,7 @@ $sql = "SELECT ".PRFX."TABLE_WORK_ORDER.*,
 function display_unpaid_invoices($db,$customer_id){
     $q = "SELECT ".PRFX."TABLE_INVOICE.*, ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_DISPLAY_NAME 
             FROM ".PRFX."TABLE_INVOICE
-            LEFT JOIN ".PRFX."TABLE_EMPLOYEE ON (".PRFX."TABLE_INVOICE.EMPLOYEE_ID = ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_ID) WHERE CUSTOMER_ID=".$db->qstr($customer_id)." AND INVOICE_PAID='0' ORDER BY ".PRFX."TABLE_INVOICE.INVOICE_ID DESC";
+            LEFT JOIN ".PRFX."TABLE_EMPLOYEE ON (".PRFX."TABLE_INVOICE.EMPLOYEE_ID = ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_ID) WHERE CUSTOMER_ID=".$db->qstr($customer_id)." AND IS_PAID='0' ORDER BY ".PRFX."TABLE_INVOICE.INVOICE_ID DESC";
     
     if(!$rs = $db->execute($q)){
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
@@ -173,7 +173,7 @@ function display_paid_invoices($db,$customer_id){
     $q = "SELECT ".PRFX."TABLE_INVOICE.*, ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_DISPLAY_NAME 
             FROM ".PRFX."TABLE_INVOICE
             LEFT JOIN ".PRFX."TABLE_EMPLOYEE ON (".PRFX."TABLE_INVOICE.EMPLOYEE_ID = ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_ID)
-            WHERE CUSTOMER_ID=".$db->qstr($customer_id)." AND INVOICE_PAID='1' ORDER BY ".PRFX."TABLE_INVOICE.INVOICE_ID DESC";
+            WHERE CUSTOMER_ID=".$db->qstr($customer_id)." AND IS_PAID='1' ORDER BY ".PRFX."TABLE_INVOICE.INVOICE_ID DESC";
     
     if(!$rs = $db->execute($q)){
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
@@ -268,7 +268,7 @@ $displayname =$VAR["displayName"] ;
             CREATE_DATE            = ". $db->qstr( time()               ).",
             LAST_ACTIVE            = ". $db->qstr( time()               ).",
             CUSTOMER_FIRST_NAME        = ". $db->qstr( $VAR["firstName"]    ).", 
-            DISCOUNT             = ". $db->qstr( $VAR['discount']     ).",
+            DISCOUNT_RATE             = ". $db->qstr( $VAR['discount_rate']     ).",
             CUSTOMER_LAST_NAME        = ". $db->qstr( $VAR['lastName']     ).",
             CREDIT_TERMS                    = ". $db->qstr( $VAR['creditterms']  ).",
                         CUSTOMER_WWW                    = ". $db->qstr( $VAR['customerWww']  ).",
@@ -326,7 +326,7 @@ $customerNotes_string = stripslashes($customerNotes_string);
             CUSTOMER_TYPE            = ". $db->qstr( $VAR["customerType"]    ).", 
             CUSTOMER_FIRST_NAME        = ". $db->qstr( $VAR["firstName"]    ).", 
             CUSTOMER_LAST_NAME        = ". $db->qstr( $VAR["lastName"]    ).",
-            DISCOUNT                        = ". $db->qstr( $VAR['discount']    ).",
+            DISCOUNT_RATE                        = ". $db->qstr( $VAR['discount_rate']    ).",
                         CREDIT_TERMS                    = ". $db->qstr( $VAR['creditterms']     ).",
                         CUSTOMER_WWW                    = ". $db->qstr( $VAR['customerWww']     ).",
                         CUSTOMER_NOTES                  = ". $db->qstr( $customerNotes_string   )."

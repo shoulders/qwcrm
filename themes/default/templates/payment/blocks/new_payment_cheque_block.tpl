@@ -15,7 +15,7 @@
                     <tr class="olotd4">
                         <td></td>
                         <td><input type="text" name="cheque_recieved" size="8" class="olotd4"></td>
-                        <td>{$currency_sym}<input type="text" name="cheque_amount" size="8" {if $balance > 0}value="{$invoice_amount-$invoice_paid_amount|string_format:"%.2f"}"{else}value="{$invoice_amount|string_format:"%.2f"}"{/if} class="olotd4"></td>
+                        <td>{$currency_sym}<input type="text" name="cheque_amount" size="8" {if $balance > 0}value="{$invoice_amount-$IS_PAID_amount|string_format:"%.2f"}"{else}value="{$invoice_amount|string_format:"%.2f"}"{/if} class="olotd4"></td>
                     </tr>
                     <tr>
                         <td valign="top"><b>{$translate_payment_memo}</b></td>

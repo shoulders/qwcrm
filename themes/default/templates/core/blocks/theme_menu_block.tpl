@@ -2,7 +2,7 @@
 <table width="150" border="2" cellspacing="0" cellpadding="0">
     <tr>
         <td>
-            <div style="float: left" id="my_menu" class="sdmenu">
+            <div style="float: left" id="main_menu" class="sdmenu">
 
                 <!-- Main -->
                 <div>                
@@ -17,7 +17,7 @@
                     <a href="?page=customer:new"><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_add_new}</a>
                     <a href="?page=customer:search"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_view}- tns me search</a>
                     {if $customer_id > 0 }
-                        <a href="?page=customer:details_edit&customer_id={$customer_id}"><img src="{$theme_images_dir}icons/edit_employee.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_edit_customer}</a>
+                        <a href="?page=customer:edit&customer_id={$customer_id}"><img src="{$theme_images_dir}icons/edit_employee.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_edit_customer}</a>
                         <a href="?page=payment:new_gift&customer_id={$customer_id}"><img src="{$theme_images_dir}icons/gift.png" alt="" border="0" height="14" width="14" /> {$translate_core_menu_new_gift_certificate}</a>
                         <a href="?page=customer:delete&customer_id={$customer_id}"><img src="{$theme_images_dir}icons/delete_employees.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_delete_customer}</a>
                         <a href="?page=customer:email&customer_id={$customer_id}"><img src="{$theme_images_dir}icons/16x16/email.jpg" alt="" border="0" height="14" width="14" /> {$translate_core_menu_email_customer}</a>
@@ -43,7 +43,7 @@
                     {/if}
                     {if $customer_id > 0 }
                         <a href="?page=workorder:new&customer_id={$customer_id}"><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_create_new_wo}</a>
-                        <a href="?page=invoice:edit&invoice_type=invoice-only&workorder_id=0&customer_id={$customer_id}"><img src="{$theme_images_dir}icons/invoice.png" alt="" border="0" height="14" width="14" /> {$translate_core_menu_invoice_only}</a>
+                        <a href="?page=invoice:new&customer_id={$customer_id}&workorder_id=0&invoice_type=invoice-only"><img src="{$theme_images_dir}icons/invoice.png" alt="" border="0" height="14" width="14" /> {$translate_core_menu_invoice_only}</a>
                     {/if}
                     <a href="index.php?page=schedule:day"><img src="{$theme_images_dir}icons/16x16/Calendar.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_schedules}</a>
                 </div>
@@ -51,8 +51,8 @@
                 <!-- Invoices -->
                 <div>
                     <span>{$translate_core_menu_invoices}</span>
-                    <a href="?page=invoice:view_paid"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_paid_invoices} <b><font color="RED">{if $menu_workorders_paid_count > 0} ({$menu_workorders_paid_count}){/if}{if $menu_workorders_paid_count < 1}{/if}</font></b></a>
-                    <a href="?page=invoice:view_unpaid"><img src="{$theme_images_dir}icons/warning.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_unpaid_invoices} <b><font color="RED">{if $menu_workorders_unpaid_count > 0} ({$menu_workorders_unpaid_count}){/if}{if $menu_workorders_unpaid_count < 1}{/if}</font></b></a>
+                    <a href="?page=invoice:paid"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_paid_invoices} <b><font color="RED">{if $menu_workorders_paid_count > 0} ({$menu_workorders_paid_count}){/if}{if $menu_workorders_paid_count < 1}{/if}</font></b></a>
+                    <a href="?page=invoice:unpaid"><img src="{$theme_images_dir}icons/warning.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_unpaid_invoices} <b><font color="RED">{if $menu_workorders_unpaid_count > 0} ({$menu_workorders_unpaid_count}){/if}{if $menu_workorders_unpaid_count < 1}{/if}</font></b></a>
                 </div>
 
                 <!-- General Ledger -->

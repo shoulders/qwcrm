@@ -172,7 +172,7 @@ function update_company_details($db, $record) {
                 OPENING_MINUTE      = '. $db->qstr( $record['company_opening_minute']     ).',
                 CLOSING_HOUR        = '. $db->qstr( $record['company_closing_hour']       ).',
                 CLOSING_MINUTE      = '. $db->qstr( $record['company_closing_minute']     ).',  
-                INVOICE_TAX_RATE    = '. $db->qstr( $record['company_invoice_tax_rate']   ).',
+                TAX_RATE            = '. $db->qstr( $record['company_tax_rate']   ).',
                 WELCOME_MSG         = '. $db->qstr( $record['company_welcome_msg']        ).',      
                 INVOICE_MSG         = '. $db->qstr( $record['company_invoice_msg']        );             
     

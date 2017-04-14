@@ -70,7 +70,7 @@ function menu_count_invoices_with_status($db, $invoice_status){
     
     global $smarty;
     
-    $sql ="SELECT COUNT(*) AS INVOICE_COUNT FROM ".PRFX."TABLE_INVOICE WHERE INVOICE_PAID=".$db->qstr($invoice_status);
+    $sql ="SELECT COUNT(*) AS INVOICE_COUNT FROM ".PRFX."TABLE_INVOICE WHERE IS_PAID=".$db->qstr($invoice_status);
     
     if(!$rs = $db->Execute($sql)) {
         force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_core_menu_error_message_function_'.__FUNCTION__.'_failed'));

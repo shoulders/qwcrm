@@ -679,7 +679,7 @@
         
 
         // Invoice Templates
-        <invoice_view_paid>Paid Invoices</invoice_view_paid>
+        <invoice_paid>Paid Invoices</invoice_paid>
         <invoice_view_un_paid>Un-Paid Invoices</invoice_view_un_paid>
         <invoice_for>Invoice For Work Order ID #</invoice_for>
         <invoice_invoice>Invoice</invoice_invoice>
@@ -706,8 +706,8 @@
         <invoice_pdf>Print PDF</invoice_pdf>
         <invoice_bill_customer>Receive Payment</invoice_bill_customer>
         <invoice_close_wo>Close Work Order</invoice_close_wo>
-        <invoice_msg>Work Order must be closed before payment can be received.</invoice_msg>
-        <invoice_labor>Labor</invoice_labor>
+        <invoice_edit_invoice_delete_invoice_msg>You can only delete an invoice when there is no transactions or amounts on the inovice.</invoice_edit_invoice_delete_invoice_msg>
+        <invoice_labour>Labour</invoice_labour>
         <invoice_no>No</invoice_no>
         <invoice_hours>QTY</invoice_hours>
         <invoice_description>Description</invoice_description>
@@ -719,8 +719,8 @@
         <invoice_price>Price</invoice_price>
         <invoice_sub_total>Sub Total</invoice_sub_total>
         <invoice_shipping>Shipping</invoice_shipping>        
-        <invoice_trans_log>Transaction Log</invoice_trans_log>
-        <invoice_trans_id>Trans Id</invoice_trans_id>
+        <invoice_transaction_log>Transaction Log</invoice_transaction_log>
+        <invoice_transaction_id>Trans Id</invoice_transaction_id>
         <invoice_type>Type</invoice_type>
         <invoice_cc>Credit Card</invoice_cc>
         <invoice_check>Cheque</invoice_check>
@@ -783,7 +783,7 @@
         <invoice_prn_accepted_payments>We accept the following payment types</invoice_prn_accepted_payments>
         <invoice_prn_discuss_payments>Please call us to discuss payment options</invoice_prn_discuss_payments>
         // -- Validators
-        <invoice_delete_labour_record>Delete Labour Record</invoice_delete_labour_record>
+        <invoice_delete_invoice_labour_item>Delete Labour Record</invoice_delete_invoice_labour_item>
         <invoice_delete_parts_record>Delete Parts Record</invoice_delete_parts_record>
         <invoice_labour_delete_mes_confirmation>Are you Sure you want to delete this Labour Record ? This will permanently remove the record from the database.</invoice_labour_delete_mes_confirmation>
         <invoice_parts_delete_mes_confirmation>Are you Sure you want to delete this Parts Record ? This will permanently remove the record from the database.</invoice_parts_delete_mes_confirmation>

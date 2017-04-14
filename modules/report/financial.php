@@ -60,8 +60,8 @@ if(isset($VAR['submit'])){
                         $smarty->assign('new_invoices', $new_invoices);
 
                         /* Count Paid Invoices in selected period */
-                        //$q = "SELECT count(*) AS count FROM ".PRFX."TABLE_INVOICE WHERE INVOICE_DUE  >= '$start_date' AND INVOICE_DUE  <= '$end_date' AND INVOICE_PAID = 1";
-                        $q = "SELECT count(*) AS count FROM ".PRFX."TABLE_INVOICE WHERE INVOICE_DATE  >= '$start_date' AND INVOICE_DATE  <= '$end_date' AND INVOICE_PAID = 1";
+                        //$q = "SELECT count(*) AS count FROM ".PRFX."TABLE_INVOICE WHERE INVOICE_DUE  >= '$start_date' AND INVOICE_DUE  <= '$end_date' AND IS_PAID = 1";
+                        $q = "SELECT count(*) AS count FROM ".PRFX."TABLE_INVOICE WHERE INVOICE_DATE  >= '$start_date' AND INVOICE_DATE  <= '$end_date' AND IS_PAID = 1";
                         if(!$rs = $db->Execute($q)){
                                 echo 'Error: '. $db->ErrorMsg();
                                 die;

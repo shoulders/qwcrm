@@ -25,7 +25,7 @@
                                         <table width="100%" cellpadding="4" cellspacing="0" border="0" >
                                             <tr>
                                                 <td class="menuhead2" width="80%">&nbsp;{$translate_customer_details} {$customer_details[i].CUSTOMER_FIRST_NAME}&nbsp;{$customer_details[i].CUSTOMER_LAST_NAME}</td>
-                                                <td class="menuhead2" width="20%" align="right" valign="middle"><a href="?page=customer:details_edit&customer_id={$customer_details[i].CUSTOMER_ID}&page_title=Edit%20Customer%20Information" ><img src="{$theme_images_dir}icons/edit.gif"  alt="" height="16" border="0"> Edit</a></td>
+                                                <td class="menuhead2" width="20%" align="right" valign="middle"><a href="?page=customer:edit&customer_id={$customer_details[i].CUSTOMER_ID}&page_title=Edit%20Customer%20Information" ><img src="{$theme_images_dir}icons/edit.gif"  alt="" height="16" border="0"> Edit</a></td>
                                             </tr>
                                             <tr>
                                                 <td class="menutd2" colspan="2">
@@ -86,7 +86,7 @@
                                                                         <td class="menutd"><b>{$translate_customer_type}</b></td>
                                                                         <td class="menutd"> {if $customer_details[i].CUSTOMER_TYPE ==1} {$translate_customer_type_1} {/if} {if $customer_details[i].CUSTOMER_TYPE ==2} {$translate_customer_type_2} {/if} {if $customer_details[i].CUSTOMER_TYPE ==3} {$translate_customer_type_3} {/if} {if $customer_details[i].CUSTOMER_TYPE ==4} {$translate_customer_type_4} {/if}</td>
                                                                         <td class="menutd"><b>{$translate_customer_discount}</b></td>
-                                                                        <td class="menutd">{$customer_details[i].DISCOUNT}%</td>
+                                                                        <td class="menutd">{$customer_details[i].DISCOUNT_RATE}%</td>
                                                                     </tr>
                                                                     <tr class="row2">
                                                                         <td class="menutd" colspan="4"></td>

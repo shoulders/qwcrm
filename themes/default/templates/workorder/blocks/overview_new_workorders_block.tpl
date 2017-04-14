@@ -23,7 +23,7 @@
                 <!-- Customer -->
                 <td class="olotd4" nowrap>
                     <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<b><center>{$translate_workorder_contact_info_tooltip_title}</b></center><hr><b>{$translate_workorder_phone}: </b>{$new.CUSTOMER_PHONE}<br> <b>{$translate_workorder_fax}: </b>{$new.CUSTOMER_WORK_PHONE}<br><b>{$translate_workorder_mobile}: </b>{$new.CUSTOMER_MOBILE_PHONE}<br><b>{$translate_workorder_address}:</b><br>{$new.CUSTOMER_ADDRESS}<br>{$new.CUSTOMER_CITY}, {$new.CUSTOMER_STATE}<br>{$new.CUSTOMER_ZIP}');" onMouseOut="hideddrivetip();">                         
-                    <a class="link1" href="?page=customer:customer_details&customer_id={$new.CUSTOMER_ID}&page_title={$new.CUSTOMER_DISPLAY_NAME}">{$new.CUSTOMER_DISPLAY_NAME}</a>
+                    <a class="link1" href="?page=customer:details&customer_id={$new.CUSTOMER_ID}&page_title={$new.CUSTOMER_DISPLAY_NAME}">{$new.CUSTOMER_DISPLAY_NAME}</a>
                 </td>
                 
                 <!-- Scope -->

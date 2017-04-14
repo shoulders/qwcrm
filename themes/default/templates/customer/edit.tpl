@@ -19,7 +19,7 @@
                                             <td class="menutd">
                                                 {section name=q loop=$customer}
                                                     {literal}
-                                                    <form action="index.php?page=customer:details_edit" method="POST" name="edit_customer" id="edit_customer">
+                                                    <form action="index.php?page=customer:edit" method="POST" name="edit_customer" id="edit_customer">
                                                     {/literal}
                                                         <input type="hidden" name="customer_id" value="{$customer[q].CUSTOMER_ID}">
                                                         <table width="100%" cellpadding="2" cellspacing="2" border="0">
@@ -69,7 +69,7 @@
                                                                             </tr>
                                                                             <tr>
                                                                                 <td align="right"><b>{$translate_customer_discount}</b><span style="color: #ff0000">*</span></td>
-                                                                                <td><input name="discount" class="olotd5" size="4" value="{$customer[q].DISCOUNT}" type="text" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumbersPeriod(event);"/><b>%</b></td>
+                                                                                <td><input name="discount_rate" class="olotd5" size="4" value="{$customer[q].DISCOUNT_RATE|string_format:"%.2f"}" type="text" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumbersPeriod(event);"/><b>%</b></td>
                                                                             </tr>
                                                                         </tbody>
                                                                     </table>

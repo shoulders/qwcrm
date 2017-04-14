@@ -90,14 +90,14 @@ if($invoice_details['INVOICE_AMOUNT'] > $gift_amount){
       if($balance == 0 ) {
             $q = "UPDATE ".PRFX."TABLE_INVOICE SET 
               PAID_DATE      = ".$db->qstr(time()).",
-              INVOICE_PAID    = ".$db->qstr($flag).",
+              IS_PAID    = ".$db->qstr($flag).",
               PAID_AMOUNT     = ".$db->qstr($paid_amount).",
               balance     = ".$db->qstr($balance).",
-            INVOICE_PAID    ='1' WHERE INVOICE_ID = ".$db->qstr($invoice_id);
+            IS_PAID    ='1' WHERE INVOICE_ID = ".$db->qstr($invoice_id);
     } else {
         $q = "UPDATE ".PRFX."TABLE_INVOICE SET 
               PAID_DATE      = ".$db->qstr(time()).",
-              INVOICE_PAID    = ".$db->qstr($flag).",
+              IS_PAID    = ".$db->qstr($flag).",
               PAID_AMOUNT     = ".$db->qstr($paid_amount).",
               balance     = ".$db->qstr($balance)." WHERE INVOICE_ID = ".$db->qstr($invoice_id);
     }
@@ -169,7 +169,7 @@ if($invoice_details['INVOICE_AMOUNT'] > $gift_amount){
         $q = "UPDATE ".PRFX."TABLE_INVOICE SET
             PAID_DATE              = ".$db->qstr(time()).", 
             PAID_AMOUNT             = ".$db->qstr($gift_amount).",
-            INVOICE_PAID            = '1',
+            IS_PAID            = '1',
             balance             = ".$db->qstr(0.00)."
             WHERE INVOICE_ID                = ".$db->qstr($invoice_id);
             
