@@ -1,6 +1,8 @@
 <?php
 
+require(INCLUDES_DIR.'modules/customer.php');
 require(INCLUDES_DIR.'modules/invoice.php');
+require(INCLUDES_DIR.'modules/payment.php');
 
 /* check if we have a customer id and if so get details */
 if($invoice_id == '' || $invoice_id == '0'){

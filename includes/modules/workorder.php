@@ -907,7 +907,7 @@ function delete_workorder($db, $workorder_id) {
 /** Other Functions **/
 
 ##################################
-# Does workorder have an invoice # // does this work
+# Does workorder have an invoice # // does this work?
 ##################################
 
 function check_workorder_has_invoice($db, $workorder_id) {

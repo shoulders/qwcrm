@@ -241,7 +241,7 @@ function get_invoice_details($db, $invoice_id, $item = null) {
     
     global $smarty;
 
-    $sql = "SELECT * FROM ".PRFX."TABLE_INVOICE WHERE INVOICE_ID =".$invoice_id;
+    $sql = "SELECT * FROM ".PRFX."TABLE_INVOICE WHERE INVOICE_ID =".$db->qstr($invoice_id);
     
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
@@ -317,6 +317,26 @@ function update_invoice_small($db, $invoice_id, $date, $due_date, $discount_rate
             WHERE INVOICE_ID    =". $db->qstr( $invoice_id                  );
 
     if(!$rs = $db->Execute($sql)){
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
+        exit;
+    }
+    
+}
+
+########################################################
+#   update invoice after a transaction has been added  #
+########################################################
+
+function update_invoice_transaction_only($db, $invoice_id, $paid_status, $paid_date, $paid_amount, $balance) {
+    
+    $sql = "UPDATE ".PRFX."TABLE_INVOICE SET
+            IS_PAID             =". $db->qstr( $paid_status ).",
+            PAID_DATE           =". $db->qstr( $paid_date   ).",        
+            PAID_AMOUNT         =". $db->qstr( $paid_amount ).",                    
+            BALANCE             =". $db->qstr( $balance     )."
+            WHERE INVOICE_ID    =". $db->qstr( $invoice_id  );
+
+    if(!$rs = $db->execute($sql)) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
         exit;
     }
@@ -479,6 +499,37 @@ function recalculate_invoice_totals($db, $invoice_id) {
     if(!$rs = $db->Execute($sql)){
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
         exit;
+    }
+    
+}
+
+###################################
+#  Does invoice have a workorder  #
+###################################
+
+function check_invoice_has_workorder($db, $invoice_id) {
+    
+    global $smarty;
+    
+    $sql = "SELECT WORKORDER_ID FROM ".PRFX."TABLE_INVOICE WHERE INVOICE_ID=".$invoice_id;
+    
+    if(!$rs = $db->Execute($sql)) {        
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
+        exit;
+    } else {        
+        
+        $temp = $rs->Fields('WORKORDER_ID');
+        
+        if($temp == 0) {
+            
+            return false;
+            
+        } else {          
+            
+            return true;
+            
+        }
+        
     }
     
 }

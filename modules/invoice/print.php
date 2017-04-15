@@ -33,17 +33,7 @@ $parts_sub_total_sum =  parts_sub_total($db, $invoice_id);
 
 ////////////////////////////////////////////////////////////////
     
-//$html_print = $rs->fields['HTML_PRINT'];
-//$pdf_print  = $rs->fields['PDF_PRINT'];
-$CHECK_PAYABLE  =  $rs->fields['CHECK_PAYABLE'];
-$DD_NAME  =  $rs->fields['DD_NAME'];
-$DD_BANK  =  $rs->fields['DD_BANK'];
-$DD_BSB  =  $rs->fields['DD_BSB'];
-$DD_ACC  =  $rs->fields['DD_ACC'];
-$DD_INS  =  $rs->fields['DD_INS'];
-$PP_ID  =  $rs->fields['PP_ID'];
-$PAYMATE_LOGIN  =  $rs->fields['PAYMATE_LOGIN'];
-$PAYMATE_FEES  =  $rs->fields['PAYMATE_FEES'];
+
 
 
 //Company Details
@@ -101,6 +91,19 @@ if(empty($stats)){$smarty->assign('stats', 0);} else {$smarty->assign('stats', $
 if(empty($stats2)){$smarty->assign('stats2', 0);} else {$smarty->assign('stats2', $stats2);}
 if(empty($payments)){$smarty->assign('payments', 0);} else {$smarty->assign('payments', $payments);}
 if(empty($paid)){$smarty->assign('paid', 0);} else {$smarty->assign('paid', $paid);}
+
+
+//$html_print = $rs->fields['HTML_PRINT'];
+//$pdf_print  = $rs->fields['PDF_PRINT'];
+$CHECK_PAYABLE  =  $rs->fields['CHECK_PAYABLE'];
+$DD_NAME  =  $rs->fields['DD_NAME'];
+$DD_BANK  =  $rs->fields['DD_BANK'];
+$DD_BSB  =  $rs->fields['DD_BSB'];
+$DD_ACC  =  $rs->fields['DD_ACC'];
+$DD_INS  =  $rs->fields['DD_INS'];
+$PP_ID  =  $rs->fields['PP_ID'];
+$PAYMATE_LOGIN  =  $rs->fields['PAYMATE_LOGIN'];
+$PAYMATE_FEES  =  $rs->fields['PAYMATE_FEES'];
 
 $smarty->assign('thank_you',$thank_you);
 $smarty->assign('trans',$trans);

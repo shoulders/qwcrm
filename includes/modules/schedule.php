@@ -28,7 +28,9 @@
 
 function display_single_schedule($db, $schedule_id) {
 
-    $sql = "SELECT ".PRFX."TABLE_SCHEDULE.*, ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_DISPLAY_NAME FROM ".PRFX."TABLE_SCHEDULE 
+    $sql = "SELECT ".PRFX."TABLE_SCHEDULE.*, ".
+            PRFX."TABLE_EMPLOYEE.EMPLOYEE_DISPLAY_NAME ".
+            "FROM ".PRFX."TABLE_SCHEDULE 
             LEFT JOIN ".PRFX."TABLE_EMPLOYEE ON (".PRFX."TABLE_SCHEDULE.EMPLOYEE_ID=".PRFX."TABLE_EMPLOYEE.EMPLOYEE_ID )
             WHERE SCHEDULE_ID='".$schedule_id."'";
 

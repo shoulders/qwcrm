@@ -15,7 +15,7 @@
                 {section name=r loop=$transactions}                                                
                     <tr class="olotd4">
                         <td>{$transactions[r].TRANSACTION_ID}</td>
-                        <td>{$transactions[r].DATE|date_format:"$date_format"}</td>
+                        <td>{$transactions[r].DATE|date_format:$date_format}</td>
                         <td><b>{$currency_sym}</b>{$transactions[r].AMOUNT|string_format:"%.2f"}</td>
                         <td>
                             {if $transactions[r].TYPE == 1}{$translate_payment_credit_card}

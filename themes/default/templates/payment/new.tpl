@@ -80,15 +80,6 @@
                                     </td>
                                 </tr>
                             {/if}
-
-                            <!-- Paymate -->
-                            {if $payment_options.paymate_active == '1'}
-                                <tr>
-                                    <td>
-                                        {include file='payment/blocks/new_payment_paymate_block.tpl'}
-                                    </td>
-                                </tr>
-                            {/if}
                             
                         </table>                        
                     </td>

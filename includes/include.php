@@ -522,7 +522,7 @@ function get_company_details($db, $item = null){
         
         if($item === null){
             
-            return $rs->GetArray(); 
+            return $rs->GetArray();            
             
         } else {
             
@@ -535,7 +535,7 @@ function get_company_details($db, $item = null){
 }
 
 ####################################################################
-#  Encryption Routine using the secret key from configuration.php  #
+#  Encryption Routine using the secret key from configuration.php  #  // not sure this is used anywhere
 ####################################################################
 
 function encrypt($strString, $secretKey){
@@ -554,7 +554,7 @@ function encrypt($strString, $secretKey){
 }
 
 ####################################################################
-#  Deryption Routine using the secret key from configuration.php   #
+#  Deryption Routine using the secret key from configuration.php   # // not sure this is used anywhere
 ####################################################################
 
 function decrypt($strString, $secretKey){

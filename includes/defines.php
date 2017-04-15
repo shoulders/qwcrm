@@ -12,6 +12,7 @@ define('PRFX',                      $db_prefix                  );
 define('CACHE_DIR',                 'cache/'                    );
 define('INCLUDES_DIR',              'includes/'                 );
 define('MEDIA_DIR',                 'media/'                    );
+define('MODULES_DIR',               'modules/'                  );
 define('LANGUAGE_DIR',              'language/'                 );
 define('LIBRARIES_DIR',             'libraries/'                );
 define('LOGS_DIR',                  'logs/'                     );

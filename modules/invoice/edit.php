@@ -3,8 +3,7 @@
 require(INCLUDES_DIR.'modules/customer.php');
 require(INCLUDES_DIR.'modules/employee.php');
 require(INCLUDES_DIR.'modules/invoice.php');
-//require(INCLUDES_DIR.'modules/payment.php');
-require('modules/payment/include.php');
+require(INCLUDES_DIR.'modules/payment.php');
 require(INCLUDES_DIR.'modules/workorder.php');
 
 // Check if we have an invoice_id and the retrieve the status

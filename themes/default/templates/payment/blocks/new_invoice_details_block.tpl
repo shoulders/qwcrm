@@ -8,11 +8,11 @@
         <td class="menuhead2"><b>{$translate_payment_workorder_id}</b></td>
         <td class="menuhead2"><b>{$translate_payment_balance}</b></td>
     </tr>
-    <tr class="olotd4">        
+    <tr>        
         <td>{$invoice_id}</td>
         <td>{$invoice_date|date_format:$date_format}</td>
         <td>{$invoice_due|date_format:$date_format}</td>
-        <td>{$currency_sym}{$invoice_amount|string_format:"%.2f"}</td>
+        <td>{$currency_sym}{$invoice_total|string_format:"%.2f"}</td>
         <td>{$workorder_id}</td>
         <td><font color="#CC0000"><b>{$currency_sym}{$balance|string_format:"%.2f"}</b></font></td>      
     </tr>
