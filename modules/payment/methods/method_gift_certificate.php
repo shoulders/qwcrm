@@ -2,8 +2,6 @@
 
 /* Pre-Processing */
 // goes here
-// validate gift certificate is valid - cannot split gift cards between inoices
-//validate_giftcert_code();
 
 // Check the Gift Certificate exists and return the details
 if(!$giftcert_id = get_giftcert_id_by_code($db, $VAR['giftcert_code'])) {

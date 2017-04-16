@@ -3,6 +3,8 @@
 /* Pre-Processing */
 // goes here
 
+/* Invoice Processing */
+
 // Validate the basic invoice totals after the transaction is applied, then if successful return the results
 if(!$new_invoice_totals = validate_payment_method_totals($db, $invoice_id, $VAR['amount'])) {
     

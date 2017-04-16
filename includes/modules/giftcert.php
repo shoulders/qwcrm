@@ -74,18 +74,19 @@ function validate_giftcert_code($db, $giftcert_id) {
 
     // check is active
     if(get_giftcert_details($db, $giftcert_id['ACTIVE']) != 1) {
-        force_page('core','error', 'error_msg=This gift certificate is not active');
-        exit;
+        //force_page('core','error', 'error_msg=This gift certificate is not active');
+        //exit;
+        return false;
     }
 
     // check if expired
     if(get_giftcert_details($db, $giftcert_id['DATE_EXPIRES']) < time()) {
-        force_page('core', 'error', 'error_msg=This gift certificate is expired.');
-        exit;
+        //force_page('core', 'error', 'error_msg=This gift certificate is expired.');
+        //exit;
+        return false;
     }
-
     
-    $VAR['amount'] = get_giftcert_details($db, $giftcert_id['AMOUNT']);
+    return true;
     
 }
 
