@@ -1,53 +1,32 @@
 <?php
-$amount            = $VAR['gift_amount'];
-$gift_code        = $VAR['gift_code'];
-$customer_id        = $VAR['customer_id'];
-$invoice_id        = $VAR['invoice_id'];
-$workorder_id           = $VAR['workorder_id'];
-$date = time();
 
-/* check for valid code */
-$q = "SELECT * FROM ".PRFX."GIFT_CERT WHERE GIFT_CODE LIKE".$db->qstr( $gift_code );
-    if(!$rs = $db->execute($q)) {
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-        exit;
-    }
-
-if($rs->fields['GIFT_ID'] == '') {
-    force_page('payment','new&workorder_id='.$workorder_id.'&customer_id='.$customer_id.'&invoice_id='.$invoice_id.'&page_title=Billing&error_msg=Not a valid gift code.');
-}
-
-$gift_expire        = $rs->fields['EXPIRE'];
-$gift_amount        = $rs->fields['AMOUNT'];
-$gift_active        = $rs->fields['ACTIVE'];
-$gift_id        = $rs->fields['GIFT_ID'];
-
-/* do some checks to see if it is a valid gift certificate */
-
-/* check active */
-if($gift_active != 1) {
-    force_page('payment','new&workorder_id='.$workorder_id.'&customer_id='.$customer_id.'&invoice_id='.$invoice_id.'&page_title=Billing&error_msg=This gift certificate is not active');
-    exit;
-}
-
-/* check if expired */
-if($gift_expire < $date) {
-    force_page('payment','new&workorder_id='.$workorder_id.'&customer_id='.$customer_id.'&invoice_id='.$invoice_id.'&page_title=Billing&error_msg=This gift certificate is expired.');
-    exit;
-}
+require(INCLUDES_DIR.'modules/giftcert.php');
+require(INCLUDES_DIR.'modules/invoice.php');
 
 
-/* get invoice details */
-$q = "SELECT * FROM ".PRFX."TABLE_INVOICE WHERE INVOICE_ID=".$db->qstr($invoice_id);
-if(!$rs = $db->execute($q)) {
-    force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
-    exit;
-}
 
-$invoice_details = $rs->FetchRow();
-//Check to see if we are processing more then required
-if($invoice_details['BALANCE'] < $gift_amount){
-        force_page('payment', 'new&workorder_id='.$workorder_id.'&customer_id='.$customer_id.'    &invoice_id='.$invoice_id.'&error_msg= You can not bill more than the amount of the invoice.');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Get invoice details
+$invoice_details = get_invoice_details($db, $invoice_id);
+
+// Check to see if we are processing more then required
+if($invoice_details['0']['BALANCE'] < $gift_amount){
+        force_page('core', 'error', 'error_msg=You can not bill more than the amount of the invoice.');
             exit;
     }
 
@@ -60,7 +39,7 @@ if($invoice_details['INVOICE_AMOUNT'] > $gift_amount){
         $balance = $invoice_details['INVOICE_AMOUNT'] - $gift_amount; 
     }    
     $paid_amount = $gift_amount + $invoice_details['PAID_AMOUNT'];
-        $balance = sprintf("%01.2f", $balance);
+        $balance = sprintf("%.2f", $balance);
     
     if($balance == 0 ) {
         $flag  = 1;
@@ -137,7 +116,7 @@ if($invoice_details['INVOICE_AMOUNT'] > $gift_amount){
             /* update gift amnount and set paid amount full */
             $remain_gift = $gift_amount - $invoice_details['INVOICE_AMOUNT'];
             
-            $q = "UPDATE ".PRFX."GIFT_CERT SET AMOUNT=".$db->qstr( $remain_gift )." WHERE GIFT_ID=".$db->qstr( $gift_id );
+            $q = "UPDATE ".PRFX."GIFTCERT SET AMOUNT=".$db->qstr( $remain_gift )." WHERE GIFT_ID=".$db->qstr( $gift_id );
             if(!$rs = $db->execute($q)) {
                 force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
                 exit;
@@ -201,19 +180,12 @@ if($invoice_details['INVOICE_AMOUNT'] > $gift_amount){
 }
 
 
-/* update gift certificate */
-$q = "UPDATE ".PRFX."GIFT_CERT SET";
-if($flag != 1) {
-    $q .= "ACTIVE        =". $db->qstr( 0 ).",";
-} else {
-    $q .= "DATE_REDEMED    =". $db->qstr( time() ).",
-        INVOICE_ID    =". $db->qstr( $invoice_id )."
-        WHERE GIFT_ID=".$db->qstr( $gift_id );
-}
 
-    if(!$rs = $db->execute($q)) {
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-        exit;
-    }
 
-force_page('invoice', "view&invoice_id=$invoice_id&customer_id=$customer_id");
+
+
+
+
+
+
+

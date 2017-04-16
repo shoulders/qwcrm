@@ -15,13 +15,13 @@ if(!$new_invoice_totals = validate_payment_method_totals($db, $invoice_id, $VAR[
     // Live processing goes here
 
     // Create a specific memo string (if applicable)
-    $method_memo = '';
+    $method_memo = 'Card Type: '.$VAR['card_type'].', Name on Card: '.$VAR['name_on_card'];
 
     // Insert the transaction with the calculated information
     insert_payment_method_transaction($db, $invoice_id, $VAR['amount'], $method, $VAR['type'], $method_memo, $VAR['memo']);
     
     // Assign Success message
-    $smarty->assign('information_msg', 'Cash payment added successfully');
+    $smarty->assign('information_msg', 'Credit Card payment added successfully');
     
     /* Post-Processing */
     // goes here    

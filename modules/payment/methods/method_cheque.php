@@ -15,13 +15,13 @@ if(!$new_invoice_totals = validate_payment_method_totals($db, $invoice_id, $VAR[
     // Live processing goes here
 
     // Create a specific memo string (if applicable)
-    $method_memo = '';
+    $method_memo = 'Cheque Number: '.$VAR['cheque_number'];
 
     // Insert the transaction with the calculated information
     insert_payment_method_transaction($db, $invoice_id, $VAR['amount'], $method, $VAR['type'], $method_memo, $VAR['memo']);
     
     // Assign Success message
-    $smarty->assign('information_msg', 'Cash payment added successfully');
+    $smarty->assign('information_msg', 'Cheque payment added successfully');
     
     /* Post-Processing */
     // goes here    

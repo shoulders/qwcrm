@@ -8,7 +8,7 @@
             <td class="menutd2">
                 <table width="100%" cellpadding="4" cellspacing="0" border="0" width="100%" class="olotable">
                     <tr class="olotd4">
-                        <td class="row2"><b>{$translate_payment_cash}</b></td>
+                        <td class="row2"></td>
                         <td class="row2"><b>{$translate_payment_amount}</b></td>
                     </tr>
                     <tr class="olotd4">
@@ -21,9 +21,7 @@
                     </tr>
                 </table>
                 <p>                    
-                    <input type="hidden" name="invoice_id" value="{$invoice_id}">
-                    <input type="hidden" name="type" value="3">
-                    <input type="hidden" name="method" value="Cash">
+                    <input type="hidden" name="type" value="3">                    
                     <button type="submit" name="submit" value="submit">Submit Cash Payment</button>
                 </p>
             </td>

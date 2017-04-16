@@ -3,6 +3,8 @@
 /* Pre-Processing */
 // goes here
 
+//$VAR['pp_invoice']
+
 // Validate the basic invoice totals after the transaction is applied, then if successful return the results
 if(!$new_invoice_totals = validate_payment_method_totals($db, $invoice_id, $VAR['amount'])) {
     
@@ -15,13 +17,13 @@ if(!$new_invoice_totals = validate_payment_method_totals($db, $invoice_id, $VAR[
     // Live processing goes here
 
     // Create a specific memo string (if applicable)
-    $method_memo = '';
+    $method_memo = "PayPal ID ".$VAR['pp_invoice'];
 
     // Insert the transaction with the calculated information
     insert_payment_method_transaction($db, $invoice_id, $VAR['amount'], $method, $VAR['type'], $method_memo, $VAR['memo']);
     
     // Assign Success message
-    $smarty->assign('information_msg', 'Cash payment added successfully');
+    $smarty->assign('information_msg', 'PayPal payment added successfully');
     
     /* Post-Processing */
     // goes here    

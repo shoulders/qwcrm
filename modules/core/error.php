@@ -10,6 +10,10 @@ $database_error     = $VAR['database_error'];
 $sql_query          = $VAR['sql_query'];
 $error_msg          = $VAR['error_msg'];
 
+// Prepare the SQL statement for the error log
+$sql_query_for_log = str_replace('<br>', '', $sql_query);
+
+
 /* This logs errors to the error log (does not record the SQL Query */
 if($qwcrm_error_log == true){    
     

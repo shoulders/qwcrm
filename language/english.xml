@@ -348,40 +348,37 @@
         
 
         // Billing Templates
-        <payment_invoice_id>Invoice ID</payment_invoice_id>
-        <payment_pp_invoice_id>PayPal Transaction/receipt #</payment_pp_invoice_id>
+        <payment_invoice_id>Invoice ID</payment_invoice_id>        
         <payment_title>Billing For Work Order ID #</payment_title>
         <payment_date>Date</payment_date>
         <payment_due_date>Invoice Due Date</payment_due_date>
-        <payment_amount>Amount:</payment_amount>
+        <payment_amount>Amount</payment_amount>
         <payment_workorder_id>Workorder ID</payment_workorder_id>
         <payment_balance>Balance</payment_balance>
-        <payment_email>Email:</payment_email>
-        <payment_phone>Phone:</payment_phone>
+        <payment_email>Email</payment_email>
+        <payment_phone>Phone</payment_phone>
         <payment_trans_log>Transaction Log</payment_trans_log>
         <payment_trans>Trans Id</payment_trans>
         <payment_type>Type</payment_type>
         <payment_credit_card>Credit Card</payment_credit_card>
         <payment_check>Cheque</payment_check>
         <payment_deposit>Direct Deposit</payment_deposit>
-        <payment_deposit_id>Direct Deposit ID#</payment_deposit_id>
+        <payment_deposit_id>Direct Deposit ID</payment_deposit_id>
         <payment_deposit_payment>Submit Direct Deposit Payment</payment_deposit_payment>
-        <payment_paymate>Paymate</payment_paymate>
-        <payment_paymate_trans>Paymate Transaction ID#</payment_paymate_trans>
+        <payment_paymate>Paymate</payment_paymate>        
         <payment_paymate_submit>Submit Paymate Payment</payment_paymate_submit>
         <payment_cash>Cash</payment_cash>
         <payment_gift>Gift Certificate</payment_gift>
-        <payment_paypal>Pay Pal</payment_paypal>
+        <payment_paypal>PayPal</payment_paypal>
         <payment_memo>Memo:</payment_memo>
-        <payment_cc_num>Card Number</payment_cc_num>        
-        <payment_ccv>CCV</payment_ccv>
+        <payment_name_on_card>Name on Card</payment_name_on_card>        
         <payment_exp>Expiration</payment_exp>
-        <payment_cheque_no>Document #</payment_cheque_no>
+        <payment_cheque_no>Cheque Number</payment_cheque_no>
         <payment_gift_code>Gift Code</payment_gift_code>
         <payment_gift_code_2>Enter the 16 digit code</payment_gift_code_2>
-        <payment_gift_code_3>Redemption Code:</payment_gift_code_3>
-        <payment_created>Created:</payment_created>
-        <payment_expires>Expires:</payment_expires>
+        <payment_gift_code_3>Redemption Code</payment_gift_code_3>
+        <payment_created>Created</payment_created>
+        <payment_expires>Expires</payment_expires>
         <payment_cancel>Cancel</payment_cancel>
         <payment_gift_note_1>Redeem this on your next repair to save</payment_gift_note_1>
         <payment_gift_note_2>on parts and service.</payment_gift_note_2>

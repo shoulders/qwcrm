@@ -171,14 +171,15 @@ $refund_id          = $VAR['refund_id'];
 $supplier_id        = $VAR['supplier_id'];
 $invoice_id         = $VAR['invoice_id'];
 $schedule_id        = $VAR['schedule_id'];
+$giftcert_id        = $VAR['giftcert_id'];
 
-// If not schedule year set use todays year
+// If no schedule year set, use today's year
 if(isset($VAR['schedule_start_year'])) {$schedule_start_year = $VAR['schedule_start_year'];} else {$schedule_start_year = date('Y');}
 
-// If not schedule month set use todays month
+// If no schedule month set, use today's month
 if(isset($VAR['schedule_start_month'])) {$schedule_start_month = $VAR['schedule_start_month'];} else {$schedule_start_month = date('m');}
 
-// If not schedule day set use todays day
+// If no schedule day set, use today's day
 if(isset($VAR['schedule_start_day'])) {$schedule_start_day = $VAR['schedule_start_day'];} else {$schedule_start_day = date('d');}
 
 // Make sure an employee is always set - if no employee is set use the logged in user
@@ -227,6 +228,7 @@ $smarty->assign('schedule_id',              $schedule_id                );
 $smarty->assign('schedule_start_year',      $schedule_start_year        );
 $smarty->assign('schedule_start_month',     $schedule_start_month       );
 $smarty->assign('schedule_start_day',       $schedule_start_day         );
+$smarty->assign('giftcert_id',              $giftcert_id                );
 
 // Used throughout the site
 $smarty->assign('currency_sym', get_company_details($db,    'CURRENCY_SYMBOL')  );

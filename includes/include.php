@@ -153,7 +153,7 @@ function force_page($module, $page_tpl = Null, $variables = Null, $method = 'ses
 #     Perform a Browser Redirect           #
 ############################################
 
-function perform_redirect($url, $type = 'header') {
+function perform_redirect($url, $type = 'javascript') {
     
     // Redirect using Headers (cant always use this method in QWcrm)
     if($type == 'header') {
@@ -176,22 +176,19 @@ function perform_redirect($url, $type = 'header') {
 #           force_error_page               #
 ############################################
 
-// Old Method Example (26-11-16) - use for text replace
-// fo rce_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
- 
-// New Method - Example to use
+// Example to use
 // If a function needs more than 1 error notification - add after _failed - this keeps it easy to swapp stuff out : i.e _failed --> _failed_notfound ?
 //force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
 
 function force_error_page($error_page, $error_type, $error_location, $php_function, $database_error, $sql_query, $error_msg) {    
     
-    // New method of passing varibles with preperation
+    // Pass varibles to the error page after preperation
     postEmulation('error_page',         prepare_error_data('error_page', $error_page)           );
     postEmulation('error_type',         $error_type                                             );
     postEmulation('error_location',     prepare_error_data('error_location', $error_location)   );
     postEmulation('php_function',       prepare_error_data('php_function', $php_function)       );
     postEmulation('database_error',     $database_error                                         );
-    postEmulation('sql_query',          $sql_query                                              );
+    postEmulation('sql_query',          prepare_error_data('sql_query', $sql_query)             );
     postEmulation('error_msg',          $error_msg                                              );    
     
     // Load Error Page
@@ -278,7 +275,7 @@ function prepare_error_data($type, $data = Null){
     if($type === 'php_function'){
 
         // add () to the end of the php function name
-        if($data != ''){$data.= '()';}        
+        if($data != '') {$data.= '()';}        
         return $data;
     }
     
@@ -286,10 +283,20 @@ function prepare_error_data($type, $data = Null){
     if($type === 'database_error'){
 
         // remove newlines from the database string
-        if($data != ''){$data = str_replace("\n",'',$data);}  
+        if($data != '') {$data = str_replace("\n", '', $data);}
         return $data;
         
     }
+    
+    /* SQL Query */
+    if($type === 'sql_query'){
+
+        // change newlines to <br>
+        if($data != '') {$data = str_replace("\n", '<br>', $data);}        
+        return $data;
+        
+    }    
+    
 }
 
 ############################################

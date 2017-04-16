@@ -2,7 +2,9 @@
 
 require(INCLUDES_DIR.'modules/customer.php');
 require(INCLUDES_DIR.'modules/invoice.php');
+require(INCLUDES_DIR.'modules/giftcert.php');
 require(INCLUDES_DIR.'modules/payment.php');
+require(INCLUDES_DIR.'modules/workorder.php');
 
 // make sure we have an invoice id
 if($invoice_id == '' || $invoice_id == '0') {
@@ -13,37 +15,37 @@ if($invoice_id == '' || $invoice_id == '0') {
 // Enter the transaction in to the database - not currently using
 if(isset($VAR['submit'])) { 
     
-    // Load the method specific code processor
+    // Load the method specific processor
     switch($VAR['type']) {
 
         case 1:
-        //$method = 'Credit Card';
-        require(MODULES_DIR.'payment/methods/payment.php');
+        $method = 'Credit Card';
+        require(MODULES_DIR.'payment/methods/method_credit_card.php');
         break;
 
         case 2:
-        //$method = 'Cheque';        
-        require(MODULES_DIR.'payment/methods/payment.php');
+        $method = 'Cheque';        
+        require(MODULES_DIR.'payment/methods/method_cheque.php');
         break;
 
         case 3:
-        //$method = 'Cash';
+        $method = 'Cash';
         require(MODULES_DIR.'payment/methods/method_cash.php');
         break;
 
         case 4:
-        //$method = 'Gift Certificate';
-        require(MODULES_DIR.'payment/methods/payment.php');
+        $method = 'Gift Certificate';
+        require(MODULES_DIR.'payment/methods/method_gift_certificate.php');
         break;
 
         case 5:
-        //$method = 'PayPal';
-        require(MODULES_DIR.'payment/methods/payment.php');
+        $method = 'PayPal';
+        require(MODULES_DIR.'payment/methods/method_paypal.php');
         break;
 
         case 6:
-        //$method = 'Direct Deposit';
-        require(MODULES_DIR.'payment/methods/payment.php');
+        $method = 'Direct Deposit';
+        require(MODULES_DIR.'payment/methods/method_direct_deposit.php');
         break;    
 
     }

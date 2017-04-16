@@ -521,13 +521,13 @@ echo("<tr>\n
 }
 if(!create_gift($db)) {
 echo("<tr>\n
-                <td>CREATE TABLE IF NOT EXISTS ".PRFX."GIFT_CERT</td>\n
+                <td>CREATE TABLE IF NOT EXISTS ".PRFX."GIFTCERT</td>\n
                 <td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
             </tr>\n");
     $error_flag = true;
 } else {
     echo("<tr>\n
-                <td>CREATE TABLE IF NOT EXISTS ".PRFX."GIFT_CERT</td>\n
+                <td>CREATE TABLE IF NOT EXISTS ".PRFX."GIFTCERT</td>\n
                 <td><font color=\"green\"><b>OK</b></font></td>\n
             </tr>\n");
 }
@@ -581,7 +581,7 @@ echo("<tr>\n
 # Functions                      #
 ##################################
 function create_gift($db) {
-    $q="CREATE TABLE IF NOT EXISTS `".PRFX."GIFT_CERT` (
+    $q="CREATE TABLE IF NOT EXISTS `".PRFX."GIFTCERT` (
     `GIFT_ID` int(20) NOT NULL auto_increment,
     `MEMO` text NOT NULL,
     `DATE_CREATE` int(20) NOT NULL default '0',
