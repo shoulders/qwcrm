@@ -42,11 +42,9 @@ if(isset($VAR['submit'])) {
 #     Load invoice edit page     #
 ################################## 
     
-$invoice = get_invoice_details($db, $invoice_id);
-
 $smarty->assign('company',              get_company_details($db)                                    );
-$smarty->assign('customer',             display_customer_info($db, $invoice['0']['CUSTOMER_ID'])    );      
-$smarty->assign('invoice',              $invoice                                                    );
+$smarty->assign('customer',             display_customer_info($db, get_invoice_details($db, $invoice_id, 'CUSTOMER_ID'))    );      
+$smarty->assign('invoice',              get_invoice_details($db, $invoice_id)                       );
 $smarty->assign('labour_rate_items',    get_active_labour_rate_items($db)                           );    
 $smarty->assign('labour_items',         get_invoice_labour_items($db, $invoice_id)                  );
 $smarty->assign('parts_items',          get_invoice_parts_items($db, $invoice_id)                   );
@@ -54,20 +52,11 @@ $smarty->assign('labour_sub_total',     labour_sub_total($db, $invoice_id)      
 $smarty->assign('parts_sub_total',      parts_sub_total($db, $invoice_id)                           );
 $smarty->assign('transactions',         get_invoice_transactions($db, $invoice_id)                  ); 
 $smarty->assign('workorder_status',     get_workorder_status($db, $workorder_id)                    ); 
-$smarty->assign('employee_display_name', get_employee_details($db, $invoice['0']['EMPLOYEE_ID'],'EMPLOYEE_DISPLAY_NAME')    );
+$smarty->assign('employee_display_name', get_employee_details($db, get_invoice_details($db, $invoice_id, 'EMPLOYEE_ID'),'EMPLOYEE_DISPLAY_NAME')    );
 
 // temp - these are needed for the record deltion routines - consider making all fields editable
-$smarty->assign('workorder_id',             $invoice['0']['WORKORDER_ID']                           );
-$smarty->assign('customer_id',              $invoice['0']['CUSTOMER_ID']                            );
+$smarty->assign('workorder_id',         get_invoice_details($db, $invoice_id, 'WORKORDER_ID')       );
+$smarty->assign('customer_id',          get_invoice_details($db, $invoice_id, 'CUSTOMER_ID')        );
 
 // Fetch Page
 $BuildPage .= $smarty->fetch('invoice/edit.tpl');
-
-
-##################################
-# If We have a Submit2           #  // something to do with the paypal payment method
-##################################
-
-if(isset($submit2) && $workorder_id != '0'){    
-    update_workorder_status($db, $workorder_id, 8);
-}

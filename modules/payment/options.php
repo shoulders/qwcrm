@@ -1,6 +1,6 @@
 <?php
 
-require(INCLUDES_DIR.'modules/company.php');
+require(INCLUDES_DIR.'modules/payment.php');
 
 // If changes submited
 if(isset($VAR['submit'])) {
@@ -18,7 +18,7 @@ if(isset($VAR['submit'])) {
 
 // Assign variables
 $smarty->assign( 'payment_methods_status', get_payment_methods_status($db) );
-$smarty->assign( 'payment_settings', get_payment_settings($db));
+$smarty->assign( 'payment_settings', get_payment_details($db));
 
 // Fetch page
-$BuildPage .= $smarty->fetch('company/payment_options.tpl');
+$BuildPage .= $smarty->fetch('payment/options.tpl');

@@ -10,8 +10,10 @@
 <script>{include file="`$theme_js_dir_finc`modules/invoice.js"}</script>
 <script>
 {literal}
+    
  
 /**--  LABOUR  --**/
+
 
 //// Add Row to Labour Table    
 function addRowToTableLabour(){
@@ -75,8 +77,8 @@ function addRowToTableLabour(){
     {/literal}
 
     // Description Cell - Populate the Select Options
-    {section loop=$rate name=i}
-        el.options[{$smarty.section.i.index}] = new Option('{$rate[i].LABOUR_RATE_NAME}', '{$rate[i].LABOUR_RATE_NAME}');
+    {section loop=$labour_rate_items name=i}
+        el.options[{$smarty.section.i.index}] = new Option('{$labour_rate_items[i].LABOUR_RATE_NAME}', '{$labour_rate_items[i].LABOUR_RATE_NAME}');
     {/section}
 
     {literal} 
@@ -86,7 +88,7 @@ function addRowToTableLabour(){
     // Description Cell - Set Combobox settings
     combo.setSize(400);    
     combo.DOMelem_input.maxLength = 50;    
-    combo.DOMelem_input.required = true;    
+    combo.DOMelem_input.required = true;   
     
     // Description Cell - Apply Key restriction to the virtual combobox
     dhtmlxEvent(combo.DOMelem_input, "keypress", function(e){
@@ -119,8 +121,8 @@ function addRowToTableLabour(){
     {/literal}
 
     // Rate Cell - Populate the Select Options
-    {section loop=$rate name=i}
-        el.options[{$smarty.section.i.index}] = new Option('{$rate[i].LABOUR_RATE_AMOUNT}', '{$rate[i].LABOUR_RATE_AMOUNT}');
+    {section loop=$labour_rate_items name=i}
+        el.options[{$smarty.section.i.index}] = new Option('{$labour_rate_items[i].LABOUR_RATE_AMOUNT}', '{$labour_rate_items[i].LABOUR_RATE_AMOUNT}');
     {/section}
 
     // Rate Cell - Add some HTML to add the Currency Symbol to the left of the Rate Box      
@@ -157,7 +159,6 @@ function removeRowFromTableLabour(){
 
 
 /**--  PARTS  --**/
-
 
 
 //// Add Row to Parts Table
@@ -213,7 +214,8 @@ function addRowToTableParts(){
     //el.setAttribute('class', 'olotd4');
     el.setAttribute('size', '62');
     //el.setAttribute('value', '1');
-    el.setAttribute('maxlength', '6');
+    el.setAttribute('type', 'text');
+    el.setAttribute('maxlength', '50');
     el.required = true;
     el.setAttribute('onkeydown','return onlyAlphaNumeric(event)');
     buildRow.appendChild(el);
@@ -303,7 +305,7 @@ function removeRowFromTableParts(){
                                                         {/literal} 
                                                         </script>                                                    
                                                     </td>
-                                                    <td>{$invoice[a].INVOICE_DUE}
+                                                    <td>
                                                         <input id="due_date" name="due_date" class="olotd4" size="10"  value="{$invoice[a].DUE_DATE|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
                                                         <input id="due_date_button" value="+" type="button">                                                    
                                                         <script>
@@ -375,10 +377,49 @@ function removeRowFromTableParts(){
                                                 </tr>
                                                 
                                             </table>                                                         
+                                            <br>                                            
+                                            
+                                            <!-- Function Buttons -->
+                                            <table width="100%" cellpadding="4" cellspacing="0" border="0" id="transaction_log">
+                                                <tr>
+                                                    <td class="menuhead2">&nbsp;Function Buttons</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="menutd2">
+                                            
+                                                        <!-- if invoice has an amount -->
+                                                        {if $invoice[a].TOTAL > 0 }
+
+                                                            <!-- Print Buttons -->   
+                                                            <button type="button" name="{$translate_invoice_print}" onClick="window.open('index.php?page=invoice:print&invoice_id={$invoice[a].INVOICE_ID}&print_type=print_html&print_content=invoice&theme=print');">{$translate_invoice_print}</button>
+                                                            <button type="button" name="{$translate_invoice_pdf}" onClick="window.open('index.php?page=invoice:print&invoice_id={$invoice[a].INVOICE_ID}&print_type=print_pdf&print_content=invoice&theme=print');"><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">{$translate_invoice_pdf}</button>
+                                                            <button type="button" name="Print Address Only" onClick="window.open('index.php?page=invoice:print&invoice_id={$invoice[a].INVOICE_ID}&print_type=print_html&print_content=invoice&theme=print');">Print Address Only</button>                                            
+
+                                                            <!-- Receive Payment Button -->
+                                                            <button type="button" name="{$translate_invoice_bill_customer}" onClick="location.href='index.php?page=payment:new&invoice_id={$invoice[a].INVOICE_ID}';">{$translate_invoice_bill_customer}</button>
+
+                                                        {else}
+
+                                                            <!-- Delete Button -->
+                                                            <button type="button" name="{$translate_invoice_delete}" onClick="location.href='index.php?page=invoice:delete&customer_id={$invoice[a].CUSTOMER_ID}&invoice_id={$invoice[a].INVOICE_ID}&page_title=Deleting&nbsp;Invoice&nbsp;-{$invoice[a].INVOICE_ID}';">{$translate_invoice_delete}</button>
+
+                                                            {if $workorder_status == '9' && $workorder_id != '0'}
+                                                                <!-- Close Button -->
+                                                                <button type="button" name="Close Work Order" onClick="location.href='index.php?page=workorder:details_edit_resolution&workorder_id={$invoice[a].WORKORDER_ID}&page_title=Closing%20Work%20Order{$invoice[a].WORKORDER_ID}';">{$translate_invoice_close_wo}</button>
+                                                            {/if}
+
+                                                            <!-- Work Order must be closed before payment can be received. -->
+                                                            {$translate_invoice_edit_invoice_delete_invoice_msg}
+
+                                                        {/if} 
+                                            
+                                                    </td>
+                                                </tr>
+                                            </table>
                                             <br>
 
                                             <!-- Transaction Log -->
-                                            {if $invoice[a].BALANCE > 0}                                            
+                                            {if $transactions != null}                                            
                                                 <table width="100%" cellpadding="4" cellspacing="0" border="0" id="transaction_log">
                                                     <tr>
                                                         <td class="menuhead2">&nbsp;{$translate_invoice_transaction_log}</td>
@@ -416,46 +457,7 @@ function removeRowFromTableParts(){
                                                     </tr>
                                                 </table>
                                                 <br>
-                                            {/if}
-                                            
-                                            <!-- Function Buttons -->
-                                            <table width="100%" cellpadding="4" cellspacing="0" border="0" id="transaction_log">
-                                                <tr>
-                                                    <td class="menuhead2">&nbsp;Function Buttons</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="menutd2">
-                                            
-                                                        <!-- if invoice has an amount -->
-                                                        {if $invoice[a].TOTAL > 0 }
-
-                                                            <!-- Print Buttons -->   
-                                                            <button type="button" name="{$translate_invoice_print}" onClick="window.open('?page=invoice:print&print_type=print_html&print_content=invoice&workorder_id={$invoice[a].WORKORDER_ID}&customer_id={$invoice[a].CUSTOMER_ID}&invoice_id={$invoice[a].INVOICE_ID}&theme=print');">{$translate_invoice_print}</button>
-                                                            <button type="button" name="{$translate_invoice_pdf}" onClick="window.open('?page=invoice:print&print_type=print_pdf&print_content=invoice&workorder_id={$invoice[a].WORKORDER_ID}&customer_id={$invoice[a].CUSTOMER_ID}&invoice_id={$invoice[a].INVOICE_ID}&theme=print');"><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">{$translate_invoice_pdf}</button>
-                                                            <button type="button" name="Print Address Only" onClick="window.open('?page=invoice:print&print_type=print_html&print_content=invoice&workorder_id={$invoice[a].WORKORDER_ID}&customer_id={$invoice[a].CUSTOMER_ID}&invoice_id={$invoice[a].INVOICE_ID}&theme=print');">Print Address Only</button>                                            
-
-                                                            <!-- Receive Payment Button -->
-                                                            <button type="button" name="{$translate_invoice_bill_customer}" onClick="location.href='?page=payment:new&invoice_id={$invoice[a].INVOICE_ID}';">{$translate_invoice_bill_customer}</button>
-
-                                                        {else}
-
-                                                            <!-- Delete Button -->
-                                                            <button type="button" name="{$translate_invoice_delete}" onClick="location.href='?page=invoice:delete&customer_id={$invoice[a].CUSTOMER_ID}&invoice_id={$invoice[a].INVOICE_ID}&page_title=Deleting&nbsp;Invoice&nbsp;-{$invoice[a].INVOICE_ID}';">{$translate_invoice_delete}</button>
-
-                                                            {if $workorder_status == '9' && $workorder_id != '0'}
-                                                                <!-- Close Button -->
-                                                                <button type="button" name="Close Work Order" onClick="location.href='?page=workorder:details_edit_resolution&workorder_id={$invoice[a].WORKORDER_ID}&page_title=Closing%20Work%20Order{$invoice[a].WORKORDER_ID}';">{$translate_invoice_close_wo}</button>
-                                                            {/if}
-
-                                                            <!-- Work Order must be closed before payment can be received. -->
-                                                            {$translate_invoice_edit_invoice_delete_invoice_msg}
-
-                                                        {/if} 
-                                            
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                            <br>
+                                            {/if}                                            
 
                                             <!-- Labour Items -->
                                             <table width="100%" cellpadding="4" cellspacing="0" border="0" >

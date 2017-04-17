@@ -172,9 +172,8 @@ function update_company_details($db, $record) {
                 OPENING_MINUTE      = '. $db->qstr( $record['company_opening_minute']     ).',
                 CLOSING_HOUR        = '. $db->qstr( $record['company_closing_hour']       ).',
                 CLOSING_MINUTE      = '. $db->qstr( $record['company_closing_minute']     ).',  
-                TAX_RATE            = '. $db->qstr( $record['company_tax_rate']   ).',
-                WELCOME_MSG         = '. $db->qstr( $record['company_welcome_msg']        ).',      
-                INVOICE_MSG         = '. $db->qstr( $record['company_invoice_msg']        );             
+                TAX_RATE            = '. $db->qstr( $record['company_tax_rate']           ).',
+                WELCOME_MSG         = '. $db->qstr( $record['company_welcome_msg']        );                           
     
     if(!$rs = $db->execute($sql)) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
@@ -186,119 +185,6 @@ function update_company_details($db, $record) {
         return;
         
     }
-    
-}
-
-################################################
-#  Get payment info - individual items         #  // sort translation
-################################################
-
-/*
- * This combined function allows you to pull any of the setup information individually
- * or return them all as an array
- * supply the required field name or all to return all of them as an array
- */
-
-function get_payment_settings($db, $item = null) {
-    
-    global $smarty;
-
-    $sql = 'SELECT * FROM '.PRFX.'PAYMENT';
-    
-    if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
-        exit;
-    } else {        
-        if($item === null){
-            
-            return $rs->GetArray(); 
-            
-        } else {
-            
-            return $rs->fields[$item]; 
-            
-        }    
-        
-    }
-    
-}
-
-#####################################
-#    Update Payment details         #
-#####################################
-
-function update_payment_settings($db, $record) {
-    
-    $sql = "UPDATE ".PRFX."PAYMENT SET 
-            
-            BANK_ACCOUNT_NAME       =". $db->qstr( $record['bank_account_name']        ).",
-            BANK_NAME               =". $db->qstr( $record['bank_name']                ).",
-            BANK_ACCOUNT_NUMBER     =". $db->qstr( $record['bank_account_number']      ).",
-            BANK_SORT_CODE          =". $db->qstr( $record['bank_sort_code']           ).",
-            BANK_IBAN               =". $db->qstr( $record['bank_iban']                ).",        
-            BANK_TRANSACTION_MSG    =". $db->qstr( $record['bank_transaction_message'] ).",
-            CHECK_PAYABLE_TO_MSG    =". $db->qstr( $record['check_payable_to_msg']     ).",
-            PAYPAL_EMAIL            =". $db->qstr( $record['paypal_email']             );
-
-    if(!$rs = $db->execute($sql)) {
-        echo $db->ErrorMsg();
-    } else {
-        
-        return;
-        
-    }
-    
-}
-
-#####################################
-#   Update Payment Methods status   #
-#####################################
-
-function update_payment_methods_status($db, $record) {
-    
-    global $smarty;
-
-    // Array of all valid payment methods
-    $payment_methods = array(
-                                array('smarty_tpl_key'=>'credit_card_active',       'payment_method_status'=>$record['credit_card_active']      ),
-                                array('smarty_tpl_key'=>'cheque_active',            'payment_method_status'=>$record['cheque_active']           ),
-                                array('smarty_tpl_key'=>'cash_active',              'payment_method_status'=>$record['cash_active']             ),
-                                array('smarty_tpl_key'=>'gift_certificate_active',  'payment_method_status'=>$record['gift_certificate_active'] ),
-                                array('smarty_tpl_key'=>'paypal_active',            'payment_method_status'=>$record['paypal_active']           ),
-                                array('smarty_tpl_key'=>'direct_deposit_active',    'payment_method_status'=>$record['direct_deposit_active']   )    
-                            );
-   
-    // Loop throught the various payment methods and update the database
-    foreach($payment_methods as $payment_method) {
-        
-        // make empty status = zero (not nessasary but neater)
-        if ($payment_method['payment_method_status'] == ''){$payment_method['payment_method_status'] = '0';}
-        
-        $sql = "UPDATE ".PRFX."PAYMENT_METHODS SET ACTIVE=". $db->qstr( $payment_method['payment_method_status'] )." WHERE SMARTY_TPL_KEY=". $db->qstr( $payment_method['smarty_tpl_key'] ); 
-        
-        if(!$rs = $db->execute($sql)) {
-            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_company_error_message_function_'.__FUNCTION__.'_failed'));
-            exit;
-        }
-    }
-    
-}
-    
-
-#####################################
-#    Get Payment methods status     #
-#####################################
-
-function get_payment_methods_status($db) {
-    
-    $sql = "SELECT * FROM ".PRFX."PAYMENT_METHODS";
-
-    if(!$rs = $db->execute($sql)) {
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-        exit;
-    }
-
-    return $rs->GetArray();
     
 }
 

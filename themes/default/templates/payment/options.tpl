@@ -1,4 +1,7 @@
 <!-- payment_options.tpl -->
+<script src="{$theme_js_dir}tinymce/tinymce.min.js"></script>
+<script src="{$theme_js_dir}editor-config.js"></script>
+
 <table width="100%" border="0" cellpadding="20" cellspacing="0">
     <tr>
         <td>
@@ -11,7 +14,7 @@
                         <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0" >
                             <tr>
                                 <td width="100%" valign="top" class="menutd">                                    
-                                    <form method="POST" action="?page=company:payment_options">
+                                    <form method="POST" action="index.php?page=payment:options">
                                         <table>
                                             <caption><b><font color="red">Available Payment types</font></b></caption>
                                             {section name=q loop=$payment_methods_status}
@@ -24,12 +27,10 @@
                                         {section name=w loop=$payment_settings}                                            
                                             <table>
                                                 
-                                                <!-- Printing Notification -->
+                                                <!-- Bank Details -->  
                                                 <tr>
-                                                    <td colspan="2"><font color="red"><b>Payment Instructions printed on Invoices</b></font></td>
+                                                    <td colspan="2"><font color="red"><b>Bank Details</b></font></td>
                                                 </tr>
-                                                
-                                                <!-- Bank Details -->                                                
                                                 <tr>
                                                     <td><b>Bank Account Name:</b></td>
                                                     <td><input class="olotd5" type="text" name="bank_account_name" value="{$payment_settings[w].BANK_ACCOUNT_NAME}"></td>
@@ -51,20 +52,6 @@
                                                     <td><input class="olotd5" type="text" name="bank_iban" value="{$payment_settings[w].BANK_IBAN}"></td>
                                                 </tr>
                                                 
-                                                <tr>
-                                                    <td><b>Bank Transaction Message</b></td>
-                                                    <td><textarea class="olotd5" name="bank_transaction_message" cols="50" rows="2" >{$payment_settings[w].BANK_TRANSACTION_MSG}</textarea></td>
-                                                </tr>
-                                                
-                                                <!-- Cheques -->                                                
-                                                <tr>
-                                                    <td colspan="2"><b>Check/Cheque Details:</b></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><b>Checks payable to:</b></td>
-                                                    <td><textarea class="olotd5" name="check_payable_to_msg" cols="50" rows="2" >{$payment_settings[w].CHECK_PAYABLE_TO_MSG}</textarea></td>
-                                                </tr>                                                
-                                                
                                                 <!-- PayPal -->
                                                 <tr>
                                                     <td colspan="2"><b><font color="red">Paypal Information</font></b></td>                                                    
@@ -75,8 +62,24 @@
                                                 <tr>
                                                     <td><b>Paypal Email</b></td>
                                                     <td><input type="text" name="paypal_email" value="{$payment_settings[w].PAYPAL_EMAIL}" size="50" class="olotd5"></td>
-                                                </tr>                                                
+                                                </tr> 
                                                 
+                                                <!-- Invoice Messages -->
+                                                <tr>
+                                                    <td colspan="2"><font color="red"><b>Invoice Messages</b></font></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><b>Bank Transaction Message</b></td>
+                                                    <td><textarea class="olotd5" name="bank_transaction_message" cols="50" rows="2" >{$payment_settings[w].BANK_TRANSACTION_MSG}</textarea><br></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><b>Checks payable to:</b></td>
+                                                    <td><textarea class="olotd5" name="cheque_payable_to_msg" cols="50" rows="2" >{$payment_settings[w].CHEQUE_PAYABLE_TO_MSG}</textarea><br></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><b>Invoice Footer Message:</b></td>
+                                                    <td><textarea class="olotd5" name="invoice_footer_msg" cols="50" rows="2" >{$payment_settings[w].INVOICE_FOOTER_MSG}</textarea><br></td>
+                                                </tr>
                                                 
                                             </table>                                            
                                             <input type="submit" name="submit" value="Submit">

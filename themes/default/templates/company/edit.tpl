@@ -70,7 +70,7 @@
                                                                 <td>
                                                                     <select name="company_country" class="olotd5">
                                                                         {section name=c loop=$country}
-                                                                            <option value="{$country[c].code}" {if $company[c].COUNTRY == $country[c].code} selected {/if}>{$country[c].name}</option>
+                                                                            <option value="{$country[c].code}" {if $country[c].code == $company[i].COUNTRY}selected{/if}>{$country[c].name}</option>
                                                                         {/section}
                                                                     </select>
                                                                 </td>
@@ -86,9 +86,17 @@
                                                             <tr>
                                                                 <td align="right"><b>Fax:</b></td>
                                                                 <td><input name="company_fax" class="olotd5" value="{$company[i].FAX}" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"></td>
-                                                            </tr>                                                                                                              
+                                                            </tr>
                                                             <tr>
-                                                                <td align="right"><b>Tax Amount:</b></td>
+                                                                <td align="right"><b>Email:</b></td>                                                                
+                                                                <td><input name="company_email" class="olotd5" value="{$company[i].EMAIL}" size="50" type="email" maxlength="50" placeholder="no-reply@quantumwarp.com" onkeydown="return onlyEmail(event);"/></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td align="right"><b>Website:</b></td>                                                                
+                                                                <td><input name="company_www" class="olotd5" value="{$company[i].WWW}" size="50" type="url" maxlength="50" placeholder="https://quantumwarp.com/" pattern="^https?://.+" onkeydown="return onlyURL(event);"/></td>
+                                                            </tr> 
+                                                            <tr>
+                                                                <td align="right"><b>Tax Rate:</b></td>
                                                                 <td><input name="company_tax_rate" class="olotd5" size="6" value="{$company[i].TAX_RATE}" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumbersPeriod(event);"/>%</td>
                                                             </tr>
                                                             <tr>
@@ -96,13 +104,7 @@
                                                             </tr>
                                                             <tr>
                                                                 <td colspan="2"><textarea class="olotd5" cols="80" rows="5" name="company_welcome_msg">{$company[i].WELCOME_MSG}</textarea></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td colspan="2"><b>Invoice Thank You Message:</b><br>Displays at the bottom of each invoice.</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td colspan="2"><textarea class="olotd5" cols="80" rows="5" name="company_invoice_msg">{$company[i].INVOICE_MSG}</textarea></td>
-                                                            </tr>                                                            
+                                                            </tr>                                                                                                                      
                                                             <tr>
                                                                 <td colspan="2"><input class="olotd5" type="submit" name="submit" value="Update"></td>
                                                             </tr>                                                    

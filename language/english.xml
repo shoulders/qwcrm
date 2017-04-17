@@ -748,7 +748,8 @@
         // -- Printable Invoice Templates
         <invoice_prn_address>Address</invoice_prn_address>
         <invoice_prn_phone>Phone</invoice_prn_phone>
-        <invoice_prn_abn>ABN</invoice_prn_abn>
+        <invoice_prn_company_number>Company Number</invoice_prn_company_number>
+        <invoice_prn_website>Website</invoice_prn_website>
         <invoice_prn_email>Email</invoice_prn_email>
         <invoice_prn_invoice_id>Invoice ID</invoice_prn_invoice_id>
         <invoice_prn_invoice_status>Invoice Status</invoice_prn_invoice_status>

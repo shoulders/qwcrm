@@ -7,8 +7,11 @@ require(INCLUDES_DIR.'modules/workorder.php');
 // Create an invoice for the supplied workorder
 if($workorder_id != '0' && !check_workorder_has_invoice($db, $workorder_id)) {
 
+    // Get Customer_id from the workorder
+    $customer_id = get_workorder_details($db, $workorder_id, 'CUSTOMER_ID');    
+    
     // Create the invoice and return the new invoice_id
-    $invoice_id = create_invoice($db, get_workorder_details($db, 'CUSTOMER_ID'), $workorder_id, display_customer_info($db, $customer_id, 'DISCOUNT_RATE'), get_company_details($db,'TAX_RATE'));
+    $invoice_id = create_invoice($db, $customer_id, $workorder_id, display_customer_info($db, $customer_id, 'DISCOUNT_RATE'), get_company_details($db,'TAX_RATE'));
 
     // Update Work Order Status (to waiting for payment)
     update_workorder_status($db, $workorder_id, 7);

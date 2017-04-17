@@ -1,11 +1,16 @@
 <!-- print_invoice_template.tpl -->
+{section name=q loop=$company_details}
+{section name=c loop=$customer_details}
+{section name=i loop=$invoice_details}
+{section name=w loop=$workorder_details}
+    
 <!DOCTYPE html>
 <html lang="en-GB">
 <head>
     <meta charset="utf-8">
     
     <!-- PDF Title -->
-    <title>{$translate_invoice_invoice}#{$invoice.INVOICE_ID}</title>   
+    <title>{$translate_invoice_invoice}#{$invoice_details[i].INVOICE_ID}</title>   
         
     <!-- PDF Subject -->
     <meta name="description" content="{$meta_description}needs translating">
@@ -20,266 +25,290 @@
     <link rel="stylesheet" href="{$theme_css_dir}template.css">    
 </head>
 
-<body>    
-    <!-- Top Row Section -->
+<body>
+    
+    <!-- Header Section -->
+    
     <table  width="800px" height="125" border="0" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
         <tr>
+            
             <!-- COMPANY DETAILS -->
-            <td valign="top" align="left" width="200px">
-                {foreach item=item from=$company}
-                    <table border="0" cellpadding="0" cellspacing="0">
-                        <tr>
-                            <td valign="top"><b>{$translate_invoice_prn_address} :&nbsp;</b></td>
-                            <td>{$item.COMPANY_ADDRESS|nl2br|regex_replace:"/[\r\t\n]/":" "}<br />{$item.COMPANY_CITY},<br />{$item.COMPANY_STATE},<br />{$item.COMPANY_ZIP}</td>
-                        </tr>
-                        <tr>
-                            <td><b>{$translate_invoice_prn_phone} :&nbsp;</b></td>
-                            <td>{$item.COMPANY_PHONE}</td>
-                        </tr>
-                        <tr>
-                            <td><b>{$translate_invoice_prn_email} :&nbsp;</b></td>
-                            <td>{$item.COMPANY_EMAIL}</td>
-                        </tr>
-                        <tr>
-                            <td><b>{$translate_invoice_prn_abn} :&nbsp;</b></td>
-                            <td>{$item.COMPANY_ABN}</td>
-                        </tr>
-                    </table>
-                {/foreach}
+            <td valign="top" align="left" width="200px">                
+                <table border="0" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td valign="top"><b>{$translate_invoice_prn_address} :&nbsp;</b></td>
+                        <td>
+                            {$company_details[q].ADDRESS|nl2br|regex_replace:"/[\r\t\n]/":" "}<br>
+                            {$company_details[q].CITY},<br>
+                            {$company_details[q].STATE},<br>
+                            {$company_details[q].ZIP}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><b>{$translate_invoice_prn_phone} :&nbsp;</b></td>
+                        <td>{$company_details[q].PHONE}</td>
+                    </tr>
+                    <tr>
+                        <td><b>{$translate_invoice_prn_website} :&nbsp;</b></td>
+                        <td>{$company_details[q].WWW}</td>
+                    </tr>
+                    <tr>
+                        <td><b>{$translate_invoice_prn_email} :&nbsp;</b></td>
+                        <td>{$company_details[q].EMAIL}</td>
+                    </tr>
+                    <tr>
+                        <td><b>{$translate_invoice_prn_company_number} :&nbsp;</b></td>
+                        <td>{$company_details[q].NUMBER}</td>
+                    </tr>
+                </table>     
             </td>
 
-                <!-- LOGO and Company Name-->
-                <td valign="top" align="center" width="300px">
-                    <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
-                        <tr>
-                            <td width="100%" align="center"><img src="{$theme_images_dir}logo.png" height="100px" alt="" border="0"></td>
-                        </tr>
-                        <tr><td style="text-align:center"><b>{$item.COMPANY_NAME}</b></td></tr>
-                    </table>
-                </td>
+            <!-- LOGO and Company Name-->
+            <td valign="top" align="center" width="300px">
+                <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
+                    <tr>
+                        <td width="100%" align="center"><img src="{$theme_images_dir}logo.png" height="100px" alt="" border="0"></td>
+                    </tr>
+                    <tr><td style="text-align:center"><b>{$company_details[q].NAME}</b></td></tr>
+                </table>
+            </td>
 
-                <!-- Invoice details -->
-                <td valign="top" align="right" width="200px">
-                    <table border="0" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
-                        <tr>
-                            <td valign="top" width="90%" align="right"></td>
-                            <td align="top" class="olotd5" width="200" >
-                                <table width="180" border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
-                                    <tr>
-                                        <td>
-                                            <b>{$translate_invoice_prn_invoice_id} - </b>{$invoice.INVOICE_ID}<br>
-                                            <b>{$translate_invoice_prn_invoice_status} - </b>{$stats2.WORK_ORDER_STATUS}<br>
-                                            <b>{$translate_invoice_prn_invoice_date} - </b>  {$invoice.INVOICE_DATE|date_format:"$date_format"} <br>
-                                            <b>{$translate_invoice_prn_invoice_due_date} - </b>  {$invoice.INVOICE_DUE|date_format:"$date_format"}<br>
-                                            <b>{$translate_invoice_prn_work_order} - </b>{$invoice.WORKORDER_ID}<br>
-                                            <b>{$translate_invoice_prn_technician} - </b>{$invoice.EMPLOYEE_DISPLAY_NAME}<br>
-                                            {foreach item=item from=$customer_details}
-                                                <b>{$translate_invoice_prn_credit_terms} - </b>{$item.CREDIT_TERMS}<br>
-                                            {/foreach}
-                                        </td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
-        <br />
-        
-        <!-- Address Row -->
+            <!-- Invoice details -->
+            <td valign="top" align="right" width="200px">
+                <table border="0" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
+                    <tr>
+                        <td valign="top" width="90%" align="right"></td>
+                        <td align="top" class="olotd5" width="200" >
+                            <table width="180" border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
+                                <tr>
+                                    <td>
+                                        <b>{$translate_invoice_prn_invoice_id} - </b>{$invoice_details[i].INVOICE_ID}<br>
+                                        <b>{$translate_invoice_prn_invoice_status} - </b>{$workorder_details[w].WORK_ORDER_STATUS}<br>
+                                        <b>{$translate_invoice_prn_invoice_date} - </b>{$invoice_details[i].DATE|date_format:$date_format} <br>
+                                        <b>{$translate_invoice_prn_invoice_due_date} - </b>{$invoice_details[i].DUE_DATE|date_format:$date_format}<br>
+                                        <b>{$translate_invoice_prn_work_order} - </b>{$invoice_details[i].WORKORDER_ID}<br>
+                                        <b>{$translate_invoice_prn_technician} - </b>{$employee_display_name}<br>                                        
+                                        <b>{$translate_invoice_prn_credit_terms} - </b>{$customer_details[c].CREDIT_TERMS}<br>                                       
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <br>
+    
+    <!-- Workorder and Customer Section -->
+    
+    <!-- Customer Address -->
+    <table width="800" border="0" cellpadding="3" cellspacing="0" >
+        <tr>
+            <td valign="top" width="10%" align="left"></td>
+            <td>
+                <p>Customer Details:</p>
+                {$customer_details[c].CUSTOMER_DISPLAY_NAME}<br>
+                {$customer_details[c].CUSTOMER_ADDRESS|nl2br|regex_replace:"/[\r\t\n]/":" "}<br>
+                {$customer_details[c].CUSTOMER_CITY},<br>
+                {$customer_details[c].CUSTOMER_STATE}<br>
+                {$customer_details[c].CUSTOMER_ZIP}                
+            </td>
+        </tr>
+    </table>
+
+    <!-- Workorder Row -->
+    {if $workorder_details[w].WORK_ORDER_DESCRIPTION > NULL}
         <table  width="800" border="0" cellpadding="3" cellspacing="0" >
             <tr>
-                <td valign="top" width="10%" align="left"></td>
-                <td>
-                    <p style="font:12px bold;">{$translate_invoice_prn_bill_to} :</p>
-                    {foreach item=item from=$customer_details}
-                        {$item.CUSTOMER_DISPLAY_NAME}<br />
-                        {$item.CUSTOMER_ADDRESS|nl2br|regex_replace:"/[\r\t\n]/":" "}<br />
-                        {$item.CUSTOMER_CITY},<br />
-                        {$item.CUSTOMER_STATE} {$item.CUSTOMER_ZIP}
-                    {/foreach}
-                </td>
+                <td><b>{$translate_invoice_prn_work_order}</b></td>
+                <td><b>{$translate_invoice_prn_work_order_resolution}</b></td>
+            </tr>
+            <tr>
+                <td width="50%" valign="top">{$workorder_details[w].WORK_ORDER_DESCRIPTION}</td>
+                <td width="50%" valign="top" style="border-left: 1px solid;">{$workorder_details[w].WORK_ORDER_RESOLUTION}</td>
             </tr>
         </table>
+    {/if}
+    <br>
 
+    <!-- Invoice To Box -->
+    <table width="800" border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
+        <tr>
+            <td align="center" class="olotd5" ><font size="+2">{$translate_invoice_prn_invoice_details} {$customer_details[c].CUSTOMER_DISPLAY_NAME}</font></td>
+        </tr>
+    </table>
+    <br>
 
-        <!-- Work Order Row -->
-        {if $wo_description > NULL}
-            <table  width="800" border="0" cellpadding="3" cellspacing="0" >
-                <tr>
-                    <td><b>{$translate_invoice_prn_work_order}</b></td>
-                    <td><b>{$translate_invoice_prn_work_order_resolution}</b></td>
-                </tr>
-                <tr>
-                    <td width="50%" valign="top">{$wo_description}</td>
-                    <td width="50%" valign="top" style="border-left: 1px solid;">{$wo_resolution}</td>
-                </tr>
-            </table>
-        {/if}
-        <br />
-        
-        <!-- Invoice Details Row -->
-        <table width="800" border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
-            <tr>
-                <td align="center" class="olotd5" ><font size="+2">{$translate_invoice_prn_invoice_details} {$item.CUSTOMER_DISPLAY_NAME}</font></td>
-            </tr>
-        </table>
-        <br />
-        
-        <!-- Items Table Section -->
-
-        <!-- Labour Table -->
-        <table width="800" border="1" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
-            <tr>
-                <td width="40" class="olohead"><b>{$translate_invoice_prn_qty}</b></td>
-                <td class="olohead"><b>{$translate_invoice_prn_labour_items}</b></td>
-                <td class="olohead" width="60" align="right"><b>{$translate_invoice_prn_unit_price}</b></td>
-                <td class="olohead" width="80" align="right"><b>{$translate_invoice_prn_subtotal}</b></td>
-            </tr>
-            {section name=q loop=$labor}
-                <tr>
-                    <td class="olotd4" width="40">{$labor[q].INVOICE_LABOR_UNIT}</td>
-                    <td class="olotd4" >{$labor[q].INVOICE_LABOR_DESCRIPTION}</td>
-                    <td class="olotd4" width="60" align="right">{$currency_sym}{$labor[q].INVOICE_LABOR_RATE|string_format:"%.2f"}</td>
-                    <td class="olotd4" width="80" align="right">{$currency_sym}{$labor[q].INVOICE_LABOR_SUBTOTAL|string_format:"%.2f"}</td>
-                </tr>
-            {/section}
-            <tr>
-                <td colspan="3" style="text-align:right;">{$translate_invoice_prn_labour_total}</td>
-                <td class="olotd4" width="80" align="right">{$currency_sym}{$labour_sub_total_sum|default:"0.00"}</td>
-            </tr>
-        </table>
-        <br />
-
-         <!-- Parts Table -->
-        <table width="800" border="1" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
-            <tr>
-                <td width="40" class="olohead"><b>{$translate_invoice_prn_qty}</b></td>
-                <td class="olohead"><b>{$translate_invoice_prn_parts_items}</b></td>
-                <td class="olohead" width="60" align="right"><b>{$translate_invoice_prn_unit_price}</b></td>
-                <td class="olohead" width="80" align="right"><b>{$translate_invoice_prn_subtotal}</b></td>
-            </tr>
-            {section name=w loop=$parts}        
-                <tr class="olotd4">
-                    <td width="40" class="olotd4">{$parts[w].INVOICE_PARTS_COUNT}</td>
-                    <td class="olotd4">{$parts[w].INVOICE_PARTS_DESCRIPTION}</td>
-                    <td width="60" class="olotd4" align="right">{$currency_sym}{$parts[w].INVOICE_PARTS_AMOUNT|string_format:"%.2f"}</td>
-                    <td width="80" class="olotd4" align="right">{$currency_sym}{$parts[w].INVOICE_PARTS_SUBTOTAL|string_format:"%.2f"}</td>
-                </tr>
-            {/section}
-            <tr>           
-                <td colspan="3" style="text-align:right;">{$translate_invoice_prn_parts_total}</td>
-                <td class="olotd4" width="80" align="right">{$currency_sym}{$parts_sub_total_sum|default:"0.00"}</td>
-            </tr>
-        </table>
-        <br />
-        
     <!-- Items Table Section -->
-         
-        <!-- Totals Box and Payments Section Row -->
-        <table width="800" border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
+
+    <!-- Labour Table -->
+    <table width="800" border="1" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
+        <tr>
+            <td width="40" class="olohead"><b>{$translate_invoice_prn_qty}</b></td>
+            <td class="olohead"><b>{$translate_invoice_prn_labour_items}</b></td>
+            <td class="olohead" width="60" align="right"><b>{$translate_invoice_prn_unit_price}</b></td>
+            <td class="olohead" width="80" align="right"><b>{$translate_invoice_prn_subtotal}</b></td>
+        </tr>
+        {section name=l loop=$labour_details}
             <tr>
-                <td colspan="1" valign="TOP">
+                <td class="olotd4" width="40">{$labour_details[l].INVOICE_LABOUR_UNIT}</td>
+                <td class="olotd4" >{$labour_details[l].INVOICE_LABOUR_DESCRIPTION}</td>
+                <td class="olotd4" width="60" align="right">{$currency_sym}{$labour_details[l].INVOICE_LABOUR_RATE|string_format:"%.2f"}</td>
+                <td class="olotd4" width="80" align="right">{$currency_sym}{$labour_details[l].INVOICE_LABOUR_SUBTOTAL|string_format:"%.2f"}</td>
+            </tr>
+        {/section}
+        <tr>
+            <td colspan="3" style="text-align:right;"><b>{$translate_invoice_prn_labour_total}</b></td>
+            <td class="olotd4" width="80" align="right">{$currency_sym}{$labour_sub_total|string_format:"%.2f"}</td>
+        </tr>
+    </table>
+    <br>
+
+    <!-- Parts Table -->
+    <table width="800" border="1" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
+        <tr>
+            <td width="40" class="olohead"><b>{$translate_invoice_prn_qty}</b></td>
+            <td class="olohead"><b>{$translate_invoice_prn_parts_items}</b></td>
+            <td class="olohead" width="60" align="right"><b>{$translate_invoice_prn_unit_price}</b></td>
+            <td class="olohead" width="80" align="right"><b>{$translate_invoice_prn_subtotal}</b></td>
+        </tr>
+        {section name=p loop=$parts_details}        
+            <tr class="olotd4">
+                <td width="40" class="olotd4">{$parts_details[p].INVOICE_PARTS_COUNT}</td>
+                <td class="olotd4">{$parts_details[p].INVOICE_PARTS_DESCRIPTION}</td>
+                <td width="60" class="olotd4" align="right">{$currency_sym}{$parts_details[p].INVOICE_PARTS_AMOUNT|string_format:"%.2f"}</td>
+                <td width="80" class="olotd4" align="right">{$currency_sym}{$parts_details[p].INVOICE_PARTS_SUBTOTAL|string_format:"%.2f"}</td>
+            </tr>
+        {/section}
+        <tr>           
+            <td colspan="3" style="text-align:right;"><b>{$translate_invoice_prn_parts_total}</b></td>
+            <td class="olotd4" width="80" align="right">{$currency_sym}{$parts_sub_total|string_format:"%.2f"}</td>
+        </tr>
+    </table>
+    <br>
+
+    <!-- Financial Section -->         
+    
+    <table width="800" border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
+        <tr>
+            
+            <!-- Payments Methods -->
+            {section name=a loop=$active_payment_methods max=1}
+            {section name=t loop=$payment_details}
+                <td colspan="1" valign="top">
                     <table width="600" border="0" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
                         <tr>
                             <td align="left" ><font size="-1"><b>{$translate_invoice_prn_payment_instructions}</b></font></td>
                         </tr>
-                        <!-- payments not fully Translated Below -->                        
-                        {if $CHECK_PAYABLE <> ""}
+                        
+                        <!-- Cheque -->                        
+                        {if $active_payment_methods.cheque_active == '1'}
                             <tr>
-                                <td><img src="{$theme_images_dir}icons/cheque.jpeg" alt="" height="20">&nbsp;- Please make {$translate_invoice_cheque} payable to {$CHECK_PAYABLE}<br /></td>
+                                <td>                                    
+                                    <img src="{$theme_images_dir}icons/cheque.jpeg" alt="" height="20"><br>
+                                    <b>Cheques</b><br>
+                                    Please make {$translate_invoice_cheque} payable to:
+                                </td>                                
                             </tr>
-                        {/if}                    
-                        {if $DD_NAME <> ""}
                             <tr>
-                                <td>
-                                    <img src="{$theme_images_dir}icons/deposit.jpeg" alt="" height="20">
-                                    Direct deposit details:-
-                                    <br>Bank: {$DD_BANK}
-                                    <br>Name: {$DD_NAME}
-                                    <br>Branch/BSB: {$DD_BSB}
-                                    <br>Account: {$DD_ACC}
-                                    <br>{$DD_INS}
+                                <td>{$payment_details[t].CHEQUE_PAYABLE_TO_MSG}</td>
+                            </tr>
+                        {/if}
+                        
+                        <!-- Direct Deposit -->
+                        {if $active_payment_methods.direct_deposit_active == '1'}
+                            <tr>
+                                <td>                                    
+                                    <img src="{$theme_images_dir}icons/deposit.jpeg" alt="" height="20"><br>
+                                    <b>Direct deposit details</b><br>
+                                    Bank Account Name: {$payment_details[t].BANK_ACCOUNT_NAME}<br>
+                                    Bank Name: {$payment_details[t].BANK_NAME}<br>
+                                    Account Number: {$payment_details[t].BANK_ACCOUNT_NUMBER}<br>
+                                    Sort Code: {$payment_details[t].BANK_SORT_CODE}<br>
+                                    IBAN: {$payment_details[t].BANK_IBAN}<br>
+                                    Note: {$payment_details[t].BANK_TRANSACTION_MSG}
                                 </td>
                             </tr>
                         {/if}
-                        {if $PP_ID <> ""}
+                        
+                        <!-- PayPal -->
+                        {if $active_payment_methods.paypal_active == '1'}
                         <tr>
                             <td>
-                                <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business={$PP_ID}&item_name=Payment%20for%20invoice%20{$invoice.INVOICE_ID}&item_number={$invoice.INVOICE_ID}&description=Invoice%20for%20{$invoice.INVOICE_ID}&amount={$pamount}&no_note=Thankyou%20for%20your%20buisness.&currency_code={$currency_code}&lc='.$country." target="_blank" >
-                                    <img src="{$theme_images_dir}paypal/pay_now.gif" height="20"  alt="PayPal - The safer, easier way to pay online">&nbsp;<< Click on "Pay Now" to pay this invoice via PayPal using a valid Credit Card.<br />
-                                    <i><b><font size="-0.5">* A 1.5% surcharge applies.</font></b></i><br>
-                                </a>
+                                <img src="{$theme_images_dir}paypal/pay_now.gif" height="20"  alt="PayPal - The safer, easier way to pay online"><br>
+                                <b>PayPal</b><br>
+                                <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business={$PP_ID}&item_name=Payment%20for%20invoice%20{$invoice_details[i].INVOICE_ID}&item_number={$invoice_details[i].INVOICE_ID}&description=Invoice%20for%20{$invoice_details[i].INVOICE_ID}&amount={$pamount}&no_note=Thankyou%20for%20your%20buisness.&currency_code={$currency_code}&lc='.$country." target="_blank">
+                                   Click here to pay this invoice via PayPal using a valid Credit Card.
+                                 </a><br>
+                                <i><b>* A 3.5% surcharge applies.</b></i>                               
                             </td>
                         </tr>
                         {/if}
-                        {if $PAYMATE_LOGIN <> ""}
-                            <tr valign="top">
-                                <td>
-                                    <a href="https://www.paymate.com/PayMate/ExpressPayment?mid={$PAYMATE_LOGIN}&amt={$paymate_amt}&ref=Payment%20for%20invoice%20{$invoice.INVOICE_ID}&currency={$currency_code}&amt_editable=N&pmt_sender_email={$customer1.CUSTOMER_EMAIL}&pmt_contact_firstname={$customer1.CUSTOMER_FIRST_NAME}&pmt_contact_surname={$customer1.CUSTOMER_LAST_NAME}&pmt_contact_phone={$customer1.CUSTOMER_PHONE}&regindi_state={$customer1.CUSTOMER_STATE}&regindi_address1={$customer1.CUSTOMER_ADDRESS}&regindi_sub={$customer1.CUSTOMER_CITY}&regindi_pcode={$customer1.CUSTOMER_ZIP}" target="_blank" >
-                                        <img src="{$theme_images_dir}paymate/paymate_cc.gif" height="20"  alt="Paymate provides secure, reliable and innovative Internet-based payment services to buyers in 57 countries around the world and sellers in Australia, New Zealand and the USA.">&nbsp;<< Click to pay this invoice via Paymate using a valid Credit Card.<br>
-                                        <i><b><font size="-0.5">* A {$PAYMATE_FEES}% surcharge applies.</font></b></i><br>
-                                    </a>
-                                </td>
-                            </tr>
-                        {/if}
-                        {if $PP_ID == "" & $CHECK_PAYABLE == "" & $DD_NAME == "" & $PAYMATE_LOGIN ==""}
+
+                        <!-- If none of the above are enabled then display this message -->                        
+                        {if $active_payment_methods.cheque_active != '1' && $active_payment_methods.direct_deposit_active != '1' && $active_payment_methods.direct_deposit_active != '1'}
                             <tr>
                                 <td>{$translate_invoice_prn_discuss_payments}</td>
                             </tr>
                         {/if}
-                    </table>
-                </td>         
-                <td colspan="2" valign="TOP">
-                    <table width="200" border="1" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
-                        <tr>
-                            <td class="olotd4" align="left"><b>{$translate_invoice_prn_subtotal}</b></td>
-                            <td class="olotd4" width="80" align="right">{$currency_sym} {$invoice.SUB_TOTAL|string_format:"%.2f"}</td>
-                        </tr>
-                        <tr>
-                            <td class="olotd4"><b>{$translate_invoice_prn_discount}</b></td>
-                            <td class="olotd4" width="80" align="right">- {$currency_sym} {$invoice.DISCOUNT|string_format:"%.2f"}</td>
-                        </tr>
-                        <tr>
-                            <td class="olotd4"><b>{$translate_invoice_prn_shipping}</b></td>
-                            <td class="olotd4" width="80" align="right">{$currency_sym} {$invoice.SHIPPING|string_format:"%.2f"}</td>
-                        </tr>
-                        <tr>
-                            <td class="olotd4"><b>{$translate_invoice_prn_tax}</b></td>
-                            <td class="olotd4" width="80" align="right">{$currency_sym} {$invoice.TAX|string_format:"%.2f"}</td>
-                        </tr>
-                        <tr>
-                            <td class="olotd4"><b>{$translate_invoice_prn_invoice_total}</b></td>
-                            <td class="olotd4" width="80" align="right"><b>{$currency_sym} {$invoice.INVOICE_AMOUNT|string_format:"%.2f"}</b></td>
-                        </tr>
-                        <tr>
-                            <td class="olotd4"><b>{$translate_invoice_prn_paid}</b></td>
-                            <td class="olotd4" width="80" align="right">{$currency_sym} {$invoice.PAID_AMOUNT|string_format:"%.2f"}</td>
-                        </tr>
-                        <tr>
-                            <td class="olotd4"><b>{$translate_invoice_prn_balance}</b></td>
-                            {if $invoice.BALANCE == 0}
-                                <td class="olotd4" width="80" align="right"><b><font color="#CC0000">{$currency_sym} {$invoice.BALANCE|string_format:"%.2f"}</font></b></td>
-                            {else}
-                                <td class="olotd4" width="80" align="right"><b><font color="#CC0000">{$currency_sym} {$invoice.BALANCE|string_format:"%.2f"}</font></b></td>
-                            {/if}
-                        </tr>
+                        
                     </table>
                 </td>
+            {/section}
+            {/section}
+            
+            <!-- Totals Box -->
+            <td colspan="2" valign="TOP">
+                <table width="200" border="1" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
+                    <tr>
+                        <td class="olotd4" align="left"><b>{$translate_invoice_prn_subtotal}</b></td>
+                        <td class="olotd4" width="80" align="right">{$currency_sym} {$invoice_details[i].SUB_TOTAL|string_format:"%.2f"}</td>
+                    </tr>
+                    <tr>
+                        <td class="olotd4"><b>{$translate_invoice_prn_discount}</b></td>
+                        <td class="olotd4" width="80" align="right">{$currency_sym}{$invoice_details[i].DISCOUNT|string_format:"%.2f"}</td>
+                    </tr>                    
+                    <tr>
+                        <td class="olotd4"><b>{$translate_invoice_prn_tax}</b></td>
+                        <td class="olotd4" width="80" align="right">{$currency_sym}{$invoice_details[i].TAX|string_format:"%.2f"}</td>
+                    </tr>
+                    <tr>
+                        <td class="olotd4"><b>{$translate_invoice_prn_invoice_total}</b></td>
+                        <td class="olotd4" width="80" align="right"><b>{$currency_sym}{$invoice_details[i].TOTAL|string_format:"%.2f"}</b></td>
+                    </tr>
+                    <tr>
+                        <td class="olotd4"><b>{$translate_invoice_prn_paid}</b></td>
+                        <td class="olotd4" width="80" align="right">{$currency_sym}{$invoice_details[i].PAID_AMOUNT|string_format:"%.2f"}</td>
+                    </tr>
+                    <tr>
+                        <td class="olotd4"><b>{$translate_invoice_prn_balance}</b></td>
+                        {if $invoice_details[i].BALANCE == 0}
+                            <td class="olotd4" width="80" align="right"><b><font color="#CC0000">{$currency_sym} {$invoice_details[i].BALANCE|string_format:"%.2f"}</font></b></td>
+                        {else}
+                            <td class="olotd4" width="80" align="right"><b><font color="#CC0000">{$currency_sym} {$invoice_details[i].BALANCE|string_format:"%.2f"}</font></b></td>
+                        {/if}
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <br>
+    <br>
+                        
+    <!-- Footer Section -->
+    {section name=t loop=$payment_details}
+        <table width="800" border="0" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
+            <tr>
+                <td align="center">{$payment_details[t].INVOICE_FOOTER_MSG}</td>
             </tr>
         </table>
-                        
-        <!-- Footer Section -->
-        
-        <br />
-        <br />
-        {if $thank_you > ''}
-            <table width="800" border="0" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
-                <tr>
-                    <td  align="center"><font size="-1">{$thank_you}</font></td>
-                </tr>
-            </table>
-        {/if}
-    </body>
+    {/section}
+  
+    
+</body>
 </html>
+{/section}
+{/section}
+{/section}
+{/section}
