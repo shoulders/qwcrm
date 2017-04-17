@@ -4,7 +4,7 @@
 // goes here
 
 // Check the Gift Certificate exists and return the details
-if(!$giftcert_id = get_giftcert_id_by_code($db, $VAR['giftcert_code'])) {
+if(!$giftcert_id = get_giftcert_id_by_gifcert_code($db, $VAR['giftcert_code'])) {
     force_page('core', 'error', 'error_msg=There is no Gift certificate with that code');
     exit;    
 }

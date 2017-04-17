@@ -126,7 +126,7 @@ function insert_giftcert($db, $customer_id, $date_expires, $giftcert_code, $amou
             DATE_EXPIRES    =". $db->qstr( $date_expires            ).",
             DATE_REDEEMED   =". $db->qstr( 0                        ).",
             IS_REDEEMED     =". $db->qstr( 0                        ).",   
-            CODE            =". $db->qstr( $giftcert_code           ).",                
+            GIFTCERT_CODE   =". $db->qstr( $giftcert_code           ).",                
             AMOUNT          =". $db->qstr( $amount                  ).",
             ACTIVE          =". $db->qstr( 1                        ).",                
             MEMO            =". $db->qstr( $memo                    );
@@ -146,11 +146,11 @@ function insert_giftcert($db, $customer_id, $date_expires, $giftcert_code, $amou
 #   get giftcert_id by giftcert_code    #
 #########################################
 
-function get_giftcert_id_by_code($db, $giftcert_code) {
+function get_giftcert_id_by_gifcert_code($db, $giftcert_code) {
     
     global $smarty;
     
-    $sql = "SELECT * FROM ".PRFX."GIFTCERT WHERE CODE=".$db->qstr( $giftcert_code );
+    $sql = "SELECT * FROM ".PRFX."GIFTCERT WHERE GIFTCERT_CODE=".$db->qstr( $giftcert_code );
 
     if(!$rs = $db->execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_giftcert_error_message_function_'.__FUNCTION__.'_failed'));

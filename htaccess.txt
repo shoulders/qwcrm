@@ -15,7 +15,9 @@ RewriteRule .* index.php [L]
 #
 ## End - QWcrm! core SEF Section.
 
-
+<FilesMatch "\.tpl$">
+    Deny from all
+</FilesMatch>
 
 ## Caching Rules
 

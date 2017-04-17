@@ -1,4 +1,4 @@
-<!-- display_gift.tpl -->
+<!-- search_gift.tpl -->
 <table width="700" border="0" cellpadding="20" cellspacing="5">
     <tr>
         <td>
@@ -42,13 +42,13 @@
                                                                     <td>${$amount|string_format:"%.2f"}</td>
                                                                 </tr><tr>
                                                                     <td><b>{$translate_payment_gift_code_3}</b></td>
-                                                                    <td>{$gift_code}</td>
+                                                                    <td>{$giftcert_code}</td>
                                                                 </tr><tr>
                                                                     <td><b>{$translate_payment_created}</b></td>
-                                                                    <td>{$create|date_format:"$date_format"}</td>
+                                                                    <td>{$create|date_format:$date_format}</td>
                                                                 </tr><tr>
                                                                     <td><b>{$translate_payment_expires}</b></td>
-                                                                    <td>{$expire|date_format:"$date_format"}</td>
+                                                                    <td>{$expire|date_format:$date_format}</td>
                                                                 </tr>
                                                             </table>
                                                             <table cellpadding="3" cellspacing="0" border="0" width="100%">
@@ -59,14 +59,14 @@
                                                         <td>
                                                     </tr>
                                                 </table>
-                                                {$translate_payment_gift_note_1} ${$amount} {$translate_payment_gift_note_2}
+                                                {$translate_payment_gift_note_1} {$currency_sym}{$amount} {$translate_payment_gift_note_2}
                                             </td>
                                         </tr>
                                     </table>                            
                                 </td>
                             </tr>
                         </table>
-                        <a href="?page=payment:new_gift&gift_id={$gift_id}&customer_id={$customer_id}&action=print&submit=1&theme=off" target="new"><img src="{$theme_images_dir}icons/16x16/fileprint.gif" border="0" onMouseOver="ddrivetip('Print')" onMouseOut="hideddrivetip()"></a>&nbsp;<a href="?page=customer:customer_details&customer_id={$customer_id}">{$translate_payment_back}</a>
+                        <a href="?page=payment:details&giftcert_id={$giftcert_id}&action=print&submit=1&theme=off" target="new"><img src="{$theme_images_dir}icons/16x16/fileprint.gif" border="0" onMouseOver="ddrivetip('Print');" onMouseOut="hideddrivetip();"></a>&nbsp;<a href="?page=customer:details&customer_id={$customer_id}">{$translate_payment_back}</a>
                     </td>
                 </tr>
             </table>

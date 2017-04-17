@@ -14,7 +14,7 @@
  * Define the application's minimum supported PHP version as a constant so it can be referenced within the application.
  */
 
-define('QWCRM_MINIMUM_PHP', '5.3.10'); // i think composer needs 5.5
+define('QWCRM_MINIMUM_PHP', '5.4.0');
 
 if (version_compare(PHP_VERSION, QWCRM_MINIMUM_PHP, '<')){
     die('Your host needs to use PHP ' . QWCRM_MINIMUM_PHP . ' or higher to run this version of QWCRM!');

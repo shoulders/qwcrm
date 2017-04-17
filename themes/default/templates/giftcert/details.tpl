@@ -32,12 +32,16 @@
                                     {section name=g loop=$giftcert_details}
                                         <table cellpadding="0" cellspacing="0" border="0" width="100%">
                                             <tr>
-                                                <td><b>{$translate_payment_amount}</b></td>
-                                                <td>{$currency_sym}{$giftcert_details[g].AMOUNT|string_format:"%.2f"}</td>
-                                            </tr>
+                                                <td><b>Giftcert ID</b></td>
+                                                <td>{$giftcert_details[g].GIFTCERT_ID}</td>
+                                            </tr>                                            
                                             <tr>
                                                 <td><b>{$translate_payment_gift_code_3}</b></td>
-                                                <td>{$giftcert_details[g].CODE}</td>
+                                                <td>{$giftcert_details[g].GIFTCERT_CODE}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><b>{$translate_payment_amount}</b></td>
+                                                <td>{$currency_sym}{$giftcert_details[g].AMOUNT|string_format:"%.2f"}</td>
                                             </tr>
                                             <tr>
                                                 <td><b>{$translate_payment_created}</b></td>
