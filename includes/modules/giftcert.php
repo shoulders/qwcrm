@@ -7,6 +7,23 @@
  * @license   GNU/GPLv3 or later; https://www.gnu.org/licenses/gpl.html
  */
 
+#####################################################
+#   Display Gift Certificates for the customer_id   #
+#####################################################
+
+function display_giftcerts($db, $customer_id) {
+    
+    $q = "SELECT * FROM ".PRFX."GIFTCERT WHERE CUSTOMER_ID=".$db->qstr( $customer_id );
+    
+    if(!$rs = $db->execute($q)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
+    }
+        
+    return $rs->GetArray();
+
+}
+
 ##############################
 #  Delete Gift Certificate   #
 ##############################

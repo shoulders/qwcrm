@@ -15,6 +15,6 @@ if(isset($VAR['submit'])) {
 
 } else {    
 
-    $smarty->assign('customer', display_customer_info($db, $VAR['customer_id']));
+    $smarty->assign('customer', get_customer_details($db, $VAR['customer_id']));
     $BuildPage .= $smarty->fetch('customer/edit.tpl');
 }

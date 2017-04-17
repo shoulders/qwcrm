@@ -131,9 +131,9 @@
                                                                                             <td colspan="3">
                                                                                                 <strong>{$translate_employee_based}&nbsp&nbsp</strong>
                                                                                                 <select name="employee_based" class="olotd5" value="{$employee_details[a].employee_based}">                                                                                                
-                                                                                                    <option value="0" selected>Office</option>
-                                                                                                    <option value="1">Home</option>
-                                                                                                    <option value="2">OnSite</option>
+                                                                                                    <option value="1" selected>Office</option>
+                                                                                                    <option value="2">Home</option>
+                                                                                                    <option value="3">OnSite</option>
                                                                                                 </select>
                                                                                             </td>
                                                                                         </tr>

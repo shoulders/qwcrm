@@ -27,7 +27,7 @@
 #     Display Invoices                  # // Status = IS_PAID  0 = unpaid, 1 = paid
 #########################################
 
-function display_invoices($db, $status, $direction = 'DESC', $use_pages = false, $page_no = 1, $records_per_page = 25) {
+function display_invoices($db, $status, $direction = 'DESC', $use_pages = false, $page_no = 1, $records_per_page = 25, $customer_id = null, $employee_id = null) {
 
     global $smarty;
     
@@ -67,8 +67,20 @@ function display_invoices($db, $status, $direction = 'DESC', $use_pages = false,
             $smarty->assign('next', $next);
         }  
         
-        // Restrict the results to the selected page for the select status
+        // Restrict the results to the selected status
         $whereTheseRecords = " WHERE ".PRFX."TABLE_INVOICE.IS_PAID=".$db->qstr($status);
+        
+        // Restrict by Customer
+        if($customer_id != null){
+            $whereTheseRecords .= " AND ".PRFX."TABLE_CUSTOMER.CUSTOMER_ID=".$db->qstr($customer_id);
+        }
+        
+        // Restrict by Employee
+        if($employee_id != null){
+            $whereTheseRecords .= " AND ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_ID=".$db->qstr($employee_id);
+        }
+        
+        // Only return the given page records
         $limitTheseRecords = " LIMIT ".$start_record.", ".$records_per_page;   
         
     

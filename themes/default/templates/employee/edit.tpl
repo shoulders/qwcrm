@@ -132,9 +132,9 @@
                                                                                             <td colspan="3">
                                                                                                 <strong>{$translate_employee_based}&nbsp&nbsp</strong>
                                                                                                 <select name="employee_based" class="olotd5">                                                                                                    
-                                                                                                    <option value="0" {if $employee_details[a].employee_based == 0 } selected{/if}>Office</option>
-                                                                                                    <option value="1" {if $employee_details[a].employee_based == 1 } selected{/if}>Home</option>
-                                                                                                    <option value="2" {if $employee_details[a].employee_based == 2 } selected{/if}>OnSite</option>
+                                                                                                    <option value="1" {if $employee_details[a].employee_based == 1 } selected{/if}>Office</option>
+                                                                                                    <option value="2" {if $employee_details[a].employee_based == 2 } selected{/if}>Home</option>
+                                                                                                    <option value="3" {if $employee_details[a].employee_based == 3 } selected{/if}>OnSite</option>
                                                                                                 </select>
                                                                                             </td>
                                                                                         </tr>

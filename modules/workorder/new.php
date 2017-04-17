@@ -20,7 +20,7 @@ if(isset($VAR['submit'])){
 // Fetch the page ready for a workorder submission   
 } else {
 
-    $smarty->assign('customer_details', display_customer_info($db, $customer_id));
+    $smarty->assign('customer_details', get_customer_details($db, $customer_id));
 
     $BuildPage .= $smarty->fetch('workorder/new.tpl');
     

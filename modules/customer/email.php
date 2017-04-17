@@ -44,13 +44,13 @@ $smarty->assign('employee_details', $employee_details);
 // assign the arrays
 $smarty->assign('open_work_orders',    display_open_workorders($db, $customer_id));
 $smarty->assign('closed_work_orders',    display_closed_workorders($db, $customer_id));
-//$smarty->assign('customer_details',    display_customer_info($db, $customer_id));
+//$smarty->assign('customer_details',    get_customer_details($db, $customer_id));
 $smarty->assign('customer_details',$customer_details);
 $smarty->assign('unpaid_invoices', display_unpaid_invoices($db,$customer_id));
 $smarty->assign('paid_invoices', display_paid_invoices($db,$customer_id));
 $smarty->assign('memo',    display_memo($db,$customer_id));
 $smarty->assign('gift',    display_gift($db, $customer_id));
-$smarty->assign('company_details',display_company_info($db, $company_id));
+$smarty->assign('company_details',get_company_details($db));
 
 //Lets Get the file downloaded to have a look at it from the database
 if(isset ($download_id)){

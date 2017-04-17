@@ -57,7 +57,7 @@ $invoice_details = get_invoice_details($db, $invoice_id);
 
 // Fetch page and assign variables
 $smarty->assign('invoice_details',  $invoice_details                                                    );
-$smarty->assign('customer_details', display_customer_info($db, $invoice_details['1']['CUSTOMER_ID'])    );
+$smarty->assign('customer_details', get_customer_details($db, $invoice_details['1']['CUSTOMER_ID'])    );
 $smarty->assign('transactions',     get_invoice_transactions($db, $invoice_id)                          );  
 $smarty->assign('payment_options',  get_active_payment_methods($db)                                     );
 $smarty->assign('credit_cards',     get_active_credit_cards($db)                                        );

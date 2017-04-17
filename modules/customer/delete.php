@@ -1,10 +1,10 @@
 <?php
+
+require(INCLUDES_DIR.'modules/customer.php');
 require('include.php');
-$customer_id = $VAR['customer_id'];
 
-
-/* make sure we got an ID number */
-if(!isset($customer_id) || $customer_id =="") { 
+// check for a customer_id
+if($customer_id == '') { 
     $smarty->assign('results', 'Please go back and select a customer');
     die;
 }    

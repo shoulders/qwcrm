@@ -13,7 +13,7 @@ if($invoice_id == '') {
 }
 
 $smarty->assign('company_details', get_company_details($db));
-$smarty->assign('customer_details', display_customer_info($db, get_invoice_details($db, $invoice_id, 'CUSTOMER_ID')));
+$smarty->assign('customer_details', get_customer_details($db, get_invoice_details($db, $invoice_id, 'CUSTOMER_ID')));
 $smarty->assign('invoice_details', get_invoice_details($db, $invoice_id));
 $smarty->assign('workorder_details', get_workorder_details($db, get_invoice_details($db, $invoice_id, 'WORKORDER_ID')));
 $smarty->assign('payment_details', get_payment_details($db));

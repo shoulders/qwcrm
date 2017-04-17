@@ -43,7 +43,7 @@ if(isset($VAR['submit'])) {
 ################################## 
     
 $smarty->assign('company',              get_company_details($db)                                    );
-$smarty->assign('customer',             display_customer_info($db, get_invoice_details($db, $invoice_id, 'CUSTOMER_ID'))    );      
+$smarty->assign('customer',             get_customer_details($db, get_invoice_details($db, $invoice_id, 'CUSTOMER_ID'))    );      
 $smarty->assign('invoice',              get_invoice_details($db, $invoice_id)                       );
 $smarty->assign('labour_rate_items',    get_active_labour_rate_items($db)                           );    
 $smarty->assign('labour_items',         get_invoice_labour_items($db, $invoice_id)                  );
