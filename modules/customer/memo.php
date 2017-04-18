@@ -1,33 +1,31 @@
 <?php
-$smarty->assign('customer_id',     $VAR['customer_id']);
-$smarty->assign('customer_name',     $VAR['customer_name']);
+
+require(INCLUDES_DIR.'modules/customer.php');
+
+// check if we have a customer_id
+if($customer_id == ''){
+    force_page('core', 'error', 'error_msg=No Customer ID supplied.');
+    exit;
+}
 
 if(isset($VAR['submit'])) {
-
-    $q = "INSERT INTO ".PRFX."CUSTOMER_NOTES SET
-            CUSTOMER_ID    =". $db->qstr( $VAR['customer_id']    ) .",
-            DATE            =". $db->qstr(    time()                     ) .",
-            NOTE            =". $db->qstr( $VAR['memo']                );
-
-    if(!$rs = $db->execute($q)) {
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-        exit;
-    }
-    force_page('customer', 'details' ,'&page_title='.$VAR['customer_name'].'&customer_id='.$VAR['customer_id']);
+    
+    insert_customer_memo($db, $customer_id, $memo);
+    force_page('customer', 'details&customer_id='.$customer_id);
+    
+    
+    
 } else {
-
+    
+    // Delete Memo
     if($VAR['action'] == 'delete') {
-        $q = "DELETE FROM ".PRFX."CUSTOMER_NOTES WHERE ID=".$db->qstr( $VAR['note_id'] );
+        
+        delete_customer_memo($db, $VAR['note_id']);
+        force_page('customer', 'details&customer_id='.$customer_id);
 
-        if(!$rs = $db->execute($q)) {
-            force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-            exit;
-        }
+    } 
 
-    force_page('customer', 'details', 'page_title='.$VAR['customer_name'].'&customer_id='.$VAR['customer_id']);
+    $BuildPage .= $smarty->fetch('customer/memo.tpl');
 
-    } else {
-
-        $BuildPage .= $smarty->fetch('customer'.SEP.'memo.tpl');
-    }
 }
+

@@ -1,9 +1,8 @@
 <?php
-require_once("include.php");
-require(INCLUDES_DIR.'modules/customer.php');
 
-//Required for swift mailer
-require_once (LIBRARIES_DIR.'swift/swift_required.php');
+require(INCLUDES_DIR.'modules/customer.php');
+require(INCLUDES_DIR.'modules/employee.php');
+require(LIBRARIES_DIR.'swift/swift_required.php');
 
 // Lets grab some variables we need
 $email_username = $VAR['email_username'];
@@ -29,28 +28,17 @@ $rs = $db->Execute($q);
 $customer_emails = $rs->GetArray();
 $smarty->assign('customer_emails', $customer_emails);*/
 
-/*Get Customer Info */
-$q = "SELECT * FROM ".PRFX."TABLE_CUSTOMER WHERE CUSTOMER_ID ='".$customer_id."'" ;
-$rs = $db->Execute($q);
-$customer_details = $rs->GetArray();
-$smarty->assign('customer_details', $customer_details);
-
-/*Get Employee Info */
-$q = "SELECT * FROM ".PRFX."TABLE_EMPLOYEE WHERE EMPLOYEE_DISPLAY_NAME ='".$login_usr."'" ;
-$rs = $db->Execute($q);
-$employee_details = $rs->FetchRow();
-$smarty->assign('employee_details', $employee_details);
-
 // assign the arrays
-$smarty->assign('open_work_orders',    display_open_workorders($db, $customer_id));
-$smarty->assign('closed_work_orders',    display_closed_workorders($db, $customer_id));
-//$smarty->assign('customer_details',    get_customer_details($db, $customer_id));
-$smarty->assign('customer_details',$customer_details);
-$smarty->assign('unpaid_invoices', display_unpaid_invoices($db,$customer_id));
-$smarty->assign('paid_invoices', display_paid_invoices($db,$customer_id));
-$smarty->assign('memo',    display_memo($db,$customer_id));
-$smarty->assign('gift',    display_gift($db, $customer_id));
-$smarty->assign('company_details',get_company_details($db));
+$smarty->assign('company_details',      get_company_details($db)                                                );
+$smarty->assign('customer_details',     get_customer_details($db, $customer_id)                                 );
+$smarty->assign('open_work_orders',     display_workorders($db, 10, 'DESC', false, 1, 25, NULL, $customer_id)   );
+$smarty->assign('closed_work_orders',   display_workorders($db, 6, 'DESC', false, 1, 25, NULL, $customer_id)    );
+$smarty->assign('unpaid_invoices',      display_invoices($db, 0, 'DESC', false, 1, 25, NULL, $customer_id)      );
+$smarty->assign('paid_invoices',        display_invoices($db, 1, 'DESC', false, 1, 25, NULL, $customer_id)      );
+$smarty->assign('giftcert_details',     display_giftcerts($db, $customer_id)                                    );
+$smarty->assign('GoogleMapString',      build_googlemap_directions_string($db, $customer_id, $login_id)         );
+
+$smarty->assign('memo',                 display_memo($db,$customer_id)                                          ); // what is this
 
 //Lets Get the file downloaded to have a look at it from the database
 if(isset ($download_id)){
@@ -101,92 +89,98 @@ if(isset ($submit)){
 $transport = Swift_smtpTransport::newInstance( "$email_server" , $email_server_port );
 $mailer = Swift_Mailer::newInstance($transport);
 
-//Do we have an attachment to include and upload?
-if($_FILES['attachment1']['size'] >  0 ){
-$target_path = "upload/";
-$target_path = $target_path . basename( $_FILES['attachment1']['name']);
+    //Do we have an attachment to include and upload?
+    if($_FILES['attachment1']['size'] >  0 ){
+    $target_path = "upload/";
+    $target_path = $target_path . basename( $_FILES['attachment1']['name']);
 
-        if(move_uploaded_file($_FILES['attachment1']['tmp_name'], $target_path)){
-            echo "The file ".  basename( $_FILES['attachment1']['name']).
-            " has been uploaded";
-        } else {
-            echo "There was an error uploading the file, please try again!";
-        }
-$fname2 = QWCRM_PHYSICAL_PATH.$target_path ;
-$strip = stripslashes($message_body);
-//$mailer = Swift_Mailer::newInstance($transport);
-
-//Create a message
-$message = Swift_Message::newInstance($email_subject)
-  ->setFrom(array($email_from => $employee_details['EMPLOYEE_FIRST_NAME']))
-  ->setTo(array($email_to => $cus_name))
-  ->setBody($strip )
-  ->addPart('Hello '.$cus_name , 'text/html')
-  ->addPart($message_body, 'text/plain')
-  ->attach(Swift_Attachment::fromPath($target_path))
-  ;
-
-//Send the message
-$numSent = $mailer->send($message);
-
-//Display how many messages were sent
-echo "<script>alert('Email Information')</script>";
-echo "Sent %d messages\n", $numSent;
-exit(); 
-
-//Show what file was uploaded
-//printf("File Location", $fname2);
-//Assign the variables with smarty
-$smarty->assign('email_subject',$email_subject);
-$smarty->assign('email_from',$email_from);
-$smarty->assign('email_to',$email_to);
-$smarty->assign('message_body',$message_body);
-$smarty->assign('attachment1',$attachment1);
-
-// EOF Email Message details
-force_page('customer' ,"view&page_title=Customers");
-//Delete uploaded files
-/*
-chown($target_path , 777);
-unset($target_path);
-unlink($target_path);*/
-} else {
-$users = array($email_from => $employee_details['EMPLOYEE_FIRST_NAME']);
-//Generate Replacements
-    $replacements = array();
-   foreach($users as $email => $user) {
-      $replacements[$email] = array(
-        '{name}' => $employee_details['EMPLOYEE_FIRST_NAME'],
-        '{sig}' => $sig
-      );
+    if(move_uploaded_file($_FILES['attachment1']['tmp_name'], $target_path)){
+        echo "The file ".  basename( $_FILES['attachment1']['name'])." has been uploaded";
+    } else {
+        echo "There was an error uploading the file, please try again!";
     }
-    $decorator = new Swift_Plugins_DecoratorPlugin($replacements);
-    $mailer->registerPlugin($decorator);
-$message = Swift_Message::newInstance($email_subject)
-  ->setFrom(array($email_from => $employee_details['EMPLOYEE_FIRST_NAME']))
-  ->setTo($users)
-  ->setBody($message_body, 'text/html')
-  //->addPart($message_body, 'text/plain')
-  ;
-
-//Send the message
-    $numSent = $mailer->send($message);
     
-//Display how many messages were sent
-    echo "<script>alert('Successfully Sent $numSent message')</script>";
-    echo "<script>navigate('?page=customer:email&customer_id=".$c2."&page_title=Email Customer')</script>"; 
-//Show what file was uploaded
-//printf("File Location", $fname2);
-//
-//Assign the variables with smarty
+    $fname2 = QWCRM_PHYSICAL_PATH.$target_path ;
+    $strip = stripslashes($message_body);
+    //$mailer = Swift_Mailer::newInstance($transport);
+
+    //Create a message
+    $message = Swift_Message::newInstance($email_subject)
+        ->setFrom(array($email_from => $employee_details['EMPLOYEE_FIRST_NAME']))
+        ->setTo(array($email_to => $cus_name))
+        ->setBody($strip )
+        ->addPart('Hello '.$cus_name , 'text/html')
+        ->addPart($message_body, 'text/plain')
+        ->attach(Swift_Attachment::fromPath($target_path))
+        ;
+
+    //Send the message
+    $numSent = $mailer->send($message);
+
+    //Display how many messages were sent
+    echo "<script>alert('Email Information')</script>";
+    echo "Sent %d messages\n", $numSent;
+    exit(); 
+
+    //Show what file was uploaded
+    //printf("File Location", $fname2);
+    //Assign the variables with smarty
     $smarty->assign('email_subject',$email_subject);
     $smarty->assign('email_from',$email_from);
     $smarty->assign('email_to',$email_to);
     $smarty->assign('message_body',$message_body);
-    $smarty->assign('rr',$rr);
-    $smarty->assign('file_download',$file_download);
-// EOF Email Message details
-    force_page('customer' ,"email&customer_id=".$c2."&page_title=Email Customer");
+    $smarty->assign('attachment1',$attachment1);
+
+    // EOF Email Message details
+    force_page('customer' ,"view&page_title=Customers");
+    //Delete uploaded files
+    /*
+    chown($target_path , 777);
+    unset($target_path);
+    unlink($target_path);*/
+    } else {
+
+        $users = array($email_from => $employee_details['EMPLOYEE_FIRST_NAME']);
+
+        // Generate Replacements
+        $replacements = array();
+        foreach($users as $email => $user) {
+            $replacements[$email] = array(
+                                            '{name}' => $employee_details['EMPLOYEE_FIRST_NAME'],
+                                            '{sig}' => $sig
+                                        );
+        }
+
+        $decorator = new Swift_Plugins_DecoratorPlugin($replacements);
+        $mailer->registerPlugin($decorator);
+        $message = Swift_Message::newInstance($email_subject)
+            ->setFrom(array($email_from => $employee_details['EMPLOYEE_FIRST_NAME']))
+            ->setTo($users)
+            ->setBody($message_body, 'text/html')
+            //->addPart($message_body, 'text/plain')
+            ;
+
+        // Send the message
+        $numSent = $mailer->send($message);
+
+        //Display how many messages were sent
+        echo "<script>alert('Successfully Sent $numSent message')</script>";
+        echo "<script>navigate('?page=customer:email&customer_id=".$c2."&page_title=Email Customer')</script>"; 
+        //Show what file was uploaded
+        //printf("File Location", $fname2);
+
+        //Assign the variables with smarty
+        $smarty->assign('email_subject',$email_subject);
+        $smarty->assign('email_from',$email_from);
+        $smarty->assign('email_to',$email_to);
+        $smarty->assign('message_body',$message_body);
+        $smarty->assign('rr',$rr);
+        $smarty->assign('file_download',$file_download);
+
+        // EOF Email Message details
+        force_page('customer' ,"email&customer_id=".$c2."&page_title=Email Customer");
+    }
 }
-}///Display the template we will use
-    $BuildPage .= $smarty->fetch('customer'.SEP.'email.tpl');
+
+// Display the template we will use
+$BuildPage .= $smarty->fetch('customer/email.tpl');

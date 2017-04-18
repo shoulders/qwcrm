@@ -24,7 +24,7 @@
 /** Display Functions **/
 
 ####################################
-# Display a single open work order #
+# Display a single open work order # // is this needed? the display invoices could be resticted to one ?
 ####################################
 
 // this returns all the relevant data for a single work order from the different database sections of QWcrm
@@ -92,29 +92,63 @@ function display_single_workorder($db, $workorder_id){
 # Display all Work orders for the given status      #
 #####################################################
 
-function display_workorders($db, $status, $direction = 'DESC', $use_pages = false, $page_no = 1, $records_per_page = 25, $customer_id = null, $employee_id = null) {
+function display_workorders($db, $status = 'all', $direction = 'DESC', $use_pages = false, $page_no = 1, $records_per_page = 25, $employee_id = null, $customer_id = null) {
     
-    global $smarty;
+    global $smarty;  
     
-    /* Get workorders restricted by pages */
+   
+    /* Filter the Records */
+    
+    // Status Restriction
+    if($status != 'all') {
+        // Restrict by status
+        $whereTheseRecords = " WHERE ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_STATUS= ".$db->qstr($status);       
+    } else {            
+        // Do not restrict by status
+        $whereTheseRecords = " WHERE ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_ID = *";
+    }        
+
+    // Restrict by Employee
+    if($employee_id != null){
+        $whereTheseRecords .= " AND ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_ID=".$db->qstr($employee_id);
+    }
+
+    // Restrict by Customer
+    if($customer_id != null){
+        $whereTheseRecords .= " AND ".PRFX."TABLE_CUSTOMER.CUSTOMER_ID=".$db->qstr($customer_id);
+    }
+    
+    /* The SQL code */
+    
+    $sql =  "SELECT
+            ".PRFX."TABLE_EMPLOYEE.     EMPLOYEE_DISPLAY_NAME,
+            ".PRFX."TABLE_CUSTOMER.     CUSTOMER_ID, CUSTOMER_DISPLAY_NAME,
+            ".PRFX."TABLE_WORK_ORDER.   WORK_ORDER_ID, WORK_ORDER_OPEN_DATE, WORK_ORDER_CLOSE_DATE, WORK_ORDER_ASSIGN_TO, WORK_ORDER_SCOPE, WORK_ORDER_STATUS            
+            FROM ".PRFX."TABLE_WORK_ORDER
+            LEFT JOIN ".PRFX."TABLE_EMPLOYEE ON ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_ASSIGN_TO   = ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_ID   
+            LEFT JOIN ".PRFX."TABLE_CUSTOMER ON ".PRFX."TABLE_WORK_ORDER.CUSTOMER_ID            = ".PRFX."TABLE_CUSTOMER.CUSTOMER_ID".                 
+            $whereTheseRecords.            
+            " GROUP BY ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_ID".
+            " ORDER BY ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_ID ".$direction;            
+    
+    /* Restrict by pages */
     
     if($use_pages == true) {
     
         // Get Start Record
         $start_record = (($page_no * $records_per_page) - $records_per_page);
         
-        // Figure out the total number of workorders in the database for the given status
-        $sql = "SELECT COUNT(*) as Num FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_STATUS=".$db->qstr($status);
+        // Figure out the total number of records in the database for the given search        
         if(!$rs = $db->Execute($sql)) {
             force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_count'));
             exit;
         } else {        
-            $total_results = $rs->FetchRow();          
-            $smarty->assign('total_results', $total_results['Num']);
+            $total_results = $rs->RecordCount();            
+            $smarty->assign('total_results', $total_results);
         }        
 
         // Figure out the total number of pages. Always round up using ceil()
-        $total_pages = ceil($total_results['Num'] / $records_per_page);
+        $total_pages = ceil($total_results / $records_per_page);
         $smarty->assign('total_pages', $total_pages);
         
         // Set the page number
@@ -130,45 +164,22 @@ function display_workorders($db, $status, $direction = 'DESC', $use_pages = fals
         if($page_no < $total_pages){
             $next = ($page_no + 1);
             $smarty->assign('next', $next);
-        }       
+        }      
         
-        // Restrict the results to the selected status
-        $whereTheseRecords = " WHERE ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_STATUS=".$db->qstr($status);
+        // Only return the given page's records
+        $limitTheseRecords = " LIMIT ".$start_record.", ".$records_per_page;
         
-        // Restrict by Customer
-        if($customer_id != null){
-            $whereTheseRecords .= " AND ".PRFX."TABLE_CUSTOMER.CUSTOMER_ID=".$db->qstr($customer_id);
-        }
-        
-        // Restrict by Employee
-        if($employee_id != null){
-            $whereTheseRecords .= " AND ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_ID=".$db->qstr($employee_id);
-        }
-        
-        // Only return the given page records
-        $limitTheseRecords = " LIMIT ".$start_record.", ".$records_per_page;        
-        
-    /* Get all workorders (unrestricted) */
+        // add the restriction on to the SQL
+        $sql .= $limitTheseRecords;
         
     } else {
         
-        // Return all invoices for the selected status (no pages)
-        $whereTheseRecords = " WHERE ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_STATUS= ".$db->qstr($status);
+        // This make the drop down menu look correct
+        $smarty->assign('total_pages', 1);
+        
     }
-    
-    /* Get the records */
-    
-    $sql = "SELECT 
-            ".PRFX."TABLE_WORK_ORDER.   WORK_ORDER_ID, WORK_ORDER_OPEN_DATE, WORK_ORDER_CLOSE_DATE, WORK_ORDER_ASSIGN_TO, WORK_ORDER_SCOPE, WORK_ORDER_STATUS,            
-            ".PRFX."TABLE_CUSTOMER.     CUSTOMER_ID, CUSTOMER_DISPLAY_NAME,                    
-            ".PRFX."TABLE_EMPLOYEE.     EMPLOYEE_DISPLAY_NAME            
-            FROM ".PRFX."TABLE_WORK_ORDER
-            LEFT JOIN ".PRFX."TABLE_CUSTOMER ON ".PRFX."TABLE_WORK_ORDER.CUSTOMER_ID            = ".PRFX."TABLE_CUSTOMER.CUSTOMER_ID
-            LEFT JOIN ".PRFX."TABLE_EMPLOYEE ON ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_ASSIGN_TO   = ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_ID".      
-            $whereTheseRecords.            
-            " GROUP BY ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_ID".
-            " ORDER BY ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_ID ".$direction.
-            $limitTheseRecords;    
+  
+    /* Return the records */
          
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));

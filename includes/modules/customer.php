@@ -36,15 +36,133 @@ function get_customer_details($db, $customer_id, $item = null){
 }
 
 #####################################
-#    Search                         #
+#   Display Customers               #
 #####################################
 
-function display_customer_search($db, $name, $page_no) {
+function display_customers($db, $status = 'all', $direction = 'DESC', $use_pages = false, $page_no = 1, $records_per_page = 25, $workorder_id = null, $invoice_id = null) {
+
+    global $smarty;    
     
-    global $smarty;
+    /* Filter the Records */
     
-    $safe_name = strip_tags($name);
+    // Status Restriction
+    if($status != 'all') {
+        // Restrict by status
+        $whereTheseRecords = " WHERE ".PRFX."TABLE_CUSTOMER.ACTIVE=".$db->qstr($status);        
+    } else {            
+        // Do not restrict by status
+        $whereTheseRecords = " WHERE ".PRFX."TABLE_CUSTOMER.CUSTOMER_ID = *";
+    }
+
+    // Restrict by Workorder
+    if($workorder_id != null){
+        $whereTheseRecords .= " AND ".PRFX."TABLE_WORK_ORDER.WORKORDER_ID=".$db->qstr($workorder_id);
+    }
+
+    // Restrict by Invoice
+    if($invoice_id != null){
+        $whereTheseRecords .= " AND ".PRFX."TABLE_INVOICE.INVOICE_ID=".$db->qstr($invoice_id);
+    }    
     
+    /* The SQL code */
+    
+    $sql = "SELECT
+        ".PRFX."TABLE_EMPLOYEE.     EMPLOYEE_ID
+        ".PRFX."TABLE_CUSTOMER.     *,
+        ".PRFX."TABLE_INVOICE.      INVOICE_ID
+        FROM ".PRFX."TABLE_CUSTOMER
+        LEFT JOIN ".PRFX."TABLE_WORK_ORDER ON ".PRFX."TABLE_CUSTOMER.WORKORDER_ID = ".PRFX."TABLE_WORK_ORDER.WORKORDER_ID
+        LEFT JOIN ".PRFX."TABLE_INVOICE ON ".PRFX."TABLE_CUSTOMER.INVOICE_ID = ".PRFX."TABLE_INVOICE.INVOICE_ID".
+        $whereTheseRecords.
+        " GROUP BY ".PRFX."TABLE_CUSTOMER.CUSTOMER_ID".            
+        " ORDER BY ".PRFX."TABLE_CUSTOMER.CUSTOMER_ID ".$direction;
+   
+    /* Restrict by pages */
+        
+    if($use_pages == true) {
+        
+        // Get the start Record
+        $start_record = (($page_no * $records_per_page) - $records_per_page);        
+        
+        // Figure out the total number of records in the database for the given search        
+        if(!$rs = $db->Execute($sql)) {
+            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_customer_error_message_function_'.__FUNCTION__.'_count'));
+            exit;
+        } else {        
+            $total_results = $rs->RecordCount();            
+            $smarty->assign('total_results', $total_results);
+        }  
+        
+        // Figure out the total number of pages. Always round up using ceil()
+        $total_pages = ceil($total_results / $records_per_page);
+        $smarty->assign('total_pages', $total_pages);
+
+        // Set the page number
+        $smarty->assign('page_no', $page_no);
+
+        // Assign the Previous page
+        if($page_no > 1){
+            $prev = ($page_no - 1);
+            $smarty->assign('previous', $prev);
+        } 
+        
+        // Assign the next page
+        if($page_no < $total_pages){
+            $next = ($page_no + 1);
+            $smarty->assign('next', $next);
+        }  
+        
+       // Only return the given page's records
+        $limitTheseRecords = " LIMIT ".$start_record.", ".$records_per_page;
+        
+        // add the restriction on to the SQL
+        $sql .= $limitTheseRecords;
+    
+    } else {
+        
+        // This make the drop down menu look correct
+        $smarty->assign('total_pages', 1);
+        
+    }
+  
+    /* Return the records */
+         
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_customer_error_message_function_'.__FUNCTION__.'_failed'));
+        exit;
+        
+    } else {
+        
+        $records = $rs->GetArray();   // do i need to add the check empty
+
+        if(empty($records)){
+            
+            return false;
+            
+        } else {
+            
+            return $records;
+            
+        }
+        
+    }
+    
+}
+
+
+
+
+
+
+
+#####################################
+#    Search Customers               #
+#####################################
+
+function search_customers($db, $search_term, $page_no) {
+    
+    global $smarty;    
+      
     // Define the number of results per page
     $max_results = 25;
     
@@ -52,7 +170,7 @@ function display_customer_search($db, $name, $page_no) {
     // on the current page number.
     $from = (($page_no * $max_results) - $max_results);
     
-    $sql = "SELECT * FROM ".PRFX."TABLE_CUSTOMER WHERE CUSTOMER_DISPLAY_NAME LIKE '%$safe_name%' ORDER BY CUSTOMER_DISPLAY_NAME LIMIT $from, $max_results";
+    $sql = "SELECT * FROM ".PRFX."TABLE_CUSTOMER WHERE CUSTOMER_DISPLAY_NAME LIKE '%$search_term%' ORDER BY CUSTOMER_DISPLAY_NAME LIMIT $from, $max_results";
     
     //print $sql;
     
@@ -68,7 +186,7 @@ function display_customer_search($db, $name, $page_no) {
     }
     
     // Figure out the total number of results in DB: 
-    $results = $db->Execute("SELECT COUNT(*) as Num FROM ".PRFX."TABLE_CUSTOMER WHERE CUSTOMER_DISPLAY_NAME LIKE ".$db->qstr("%$safe_name%") );
+    $results = $db->Execute("SELECT COUNT(*) as Num FROM ".PRFX."TABLE_CUSTOMER WHERE CUSTOMER_DISPLAY_NAME LIKE ".$db->qstr("%$search_term%") );
     
     if(!$total_results = $results->FetchRow()) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
@@ -91,10 +209,10 @@ function display_customer_search($db, $name, $page_no) {
         $next = ($page_no + 1); 
     }
     
-    $smarty->assign('name', strip_tags($name));
+    $smarty->assign('name', strip_tags($search_term));
     $smarty->assign('page_no', strip_tags($page_no));
-    $smarty->assign("previous", strip_tags($prev));
-    $smarty->assign("next", strip_tags($next));
+    $smarty->assign('previous', strip_tags($prev));
+    $smarty->assign('next', strip_tags($next));
     
     return $customer_search_result;
 }
@@ -102,9 +220,13 @@ function display_customer_search($db, $name, $page_no) {
 
 
 
-#####################################
-#    Duplicate                      #
-#####################################
+
+
+
+
+#########################################
+#    check for Duplicate display name   #
+#########################################
     
 function check_customer_ex($db, $displayName) {
     $sql = "SELECT COUNT(*) AS num_users FROM ".PRFX."TABLE_CUSTOMER WHERE CUSTOMER_DISPLAY_NAME=".$db->qstr($displayName);
@@ -129,52 +251,42 @@ function check_customer_ex($db, $displayName) {
 
 function insert_new_customer($db,$VAR) {
 
-//Remove Extra Slashes caused by Magic Quotes
-$address_string = $VAR['address'];
-$address_string = stripslashes($address_string);
-
-$customerNotes_string = $VAR['customerNotes'];
-$customerNotes_string = stripslashes($customerNotes_string);
-
-//Display Name Logic
-if ($VAR["displayName"] ==""){
- $displayname = $VAR["lastName"].", ".$VAR["firstName"] ;
-} else {
-$displayname =$VAR["displayName"] ;
-}
+    // If the display name is empty on submission, create it using the customer's name
+    if ($VAR['displayName'] == ''){
+        $displayname = $VAR['lastName'].', '.$VAR['firstName'];
+    }
 
     $sql = "INSERT INTO ".PRFX."TABLE_CUSTOMER SET
-            CUSTOMER_DISPLAY_NAME           = ". $db->qstr( $displayname         ).",
-            CUSTOMER_ADDRESS        = ". $db->qstr( $address_string      ).",
-            CUSTOMER_CITY            = ". $db->qstr( $VAR["city"]         ).", 
-            CUSTOMER_STATE            = ". $db->qstr( $VAR["state"]        ).", 
-            CUSTOMER_ZIP            = ". $db->qstr( $VAR["zip"]          ).",
-            CUSTOMER_PHONE            = ". $db->qstr( $VAR["homePhone"]    ).",
-            CUSTOMER_WORK_PHONE             = ". $db->qstr( $VAR["workPhone"]    ).",
-            CUSTOMER_MOBILE_PHONE           = ". $db->qstr( $VAR["mobilePhone"]  ).",
-            CUSTOMER_EMAIL            = ". $db->qstr( $VAR["email"]        ).", 
-            CUSTOMER_TYPE            = ". $db->qstr( $VAR["customerType"] ).", 
-            CREATE_DATE            = ". $db->qstr( time()               ).",
-            LAST_ACTIVE            = ". $db->qstr( time()               ).",
-            CUSTOMER_FIRST_NAME        = ". $db->qstr( $VAR["firstName"]    ).", 
-            DISCOUNT_RATE             = ". $db->qstr( $VAR['discount_rate']     ).",
-            CUSTOMER_LAST_NAME        = ". $db->qstr( $VAR['lastName']     ).",
-            CREDIT_TERMS                    = ". $db->qstr( $VAR['creditterms']  ).",
-                        CUSTOMER_WWW                    = ". $db->qstr( $VAR['customerWww']  ).",
-                        CUSTOMER_NOTES                  = ". $db->qstr( $customerNotes_string);
+            CUSTOMER_DISPLAY_NAME   =". $db->qstr( $displayname             ).",
+            CUSTOMER_ADDRESS        =". $db->qstr( $VAR['address']          ).",
+            CUSTOMER_CITY           =". $db->qstr( $VAR['city']             ).", 
+            CUSTOMER_STATE          =". $db->qstr( $VAR['state']            ).", 
+            CUSTOMER_ZIP            =". $db->qstr( $VAR['zip']              ).",
+            CUSTOMER_PHONE          =". $db->qstr( $VAR['homePhone']        ).",
+            CUSTOMER_WORK_PHONE     =". $db->qstr( $VAR['workPhone']        ).",
+            CUSTOMER_MOBILE_PHONE   =". $db->qstr( $VAR['mobilePhone']      ).",
+            CUSTOMER_EMAIL          =". $db->qstr( $VAR['email']            ).", 
+            CUSTOMER_TYPE           =". $db->qstr( $VAR['customerType']     ).", 
+            CREATE_DATE             =". $db->qstr( time()                   ).",
+            LAST_ACTIVE             =". $db->qstr( time()                   ).",
+            CUSTOMER_FIRST_NAME     =". $db->qstr( $VAR['firstName']        ).", 
+            DISCOUNT_RATE           =". $db->qstr( $VAR['discount_rate']    ).",
+            CUSTOMER_LAST_NAME      =". $db->qstr( $VAR['lastName']         ).",
+            CREDIT_TERMS            =". $db->qstr( $VAR['creditterms']      ).",
+            CUSTOMER_WWW            =". $db->qstr( $VAR['customerWww']      ).",
+            CUSTOMER_NOTES          =". $db->qstr( $VAR['customerNotes']    );
             
     if(!$result = $db->Execute($sql)) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
         exit;
     } else {
-        $customer_id = $db->Insert_ID();
-        return  $customer_id;
+        return $db->Insert_ID();       
     }
     
 } 
 
 #####################################
-#    Edit Customer          #
+#    Edit Customer                  #
 #####################################
 
 function edit_info($db, $customer_id){
@@ -193,33 +305,26 @@ function edit_info($db, $customer_id){
 #    Update Customer                #
 #####################################
 
-function update_customer($db,$VAR) {
-
-//Remove Extra Slashes caused by Magic Quotes
-$address_string = $VAR['address'];
-$address_string = stripslashes($address_string);
-
-$customerNotes_string = $VAR['customerNotes'];
-$customerNotes_string = stripslashes($customerNotes_string);
-
+function update_customer($db, $VAR) {
+    
     $sql = "UPDATE ".PRFX."TABLE_CUSTOMER SET
-            CUSTOMER_DISPLAY_NAME           = ". $db->qstr( $VAR["displayName"]    ).",
-            CUSTOMER_ADDRESS        = ". $db->qstr( $address_string        ).",
-            CUSTOMER_CITY            = ". $db->qstr( $VAR["city"]        ).", 
-            CUSTOMER_STATE            = ". $db->qstr( $VAR["state"]        ).", 
-            CUSTOMER_ZIP            = ". $db->qstr( $VAR["zip"]        ).",
-            CUSTOMER_PHONE            = ". $db->qstr( $VAR["homePhone"]    ).",
-            CUSTOMER_WORK_PHONE             = ". $db->qstr( $VAR["workPhone"]    ).",
-            CUSTOMER_MOBILE_PHONE           = ". $db->qstr( $VAR["mobilePhone"]    ).",
-            CUSTOMER_EMAIL            = ". $db->qstr( $VAR["email"]        ).", 
-            CUSTOMER_TYPE            = ". $db->qstr( $VAR["customerType"]    ).", 
-            CUSTOMER_FIRST_NAME        = ". $db->qstr( $VAR["firstName"]    ).", 
-            CUSTOMER_LAST_NAME        = ". $db->qstr( $VAR["lastName"]    ).",
-            DISCOUNT_RATE                        = ". $db->qstr( $VAR['discount_rate']    ).",
-                        CREDIT_TERMS                    = ". $db->qstr( $VAR['creditterms']     ).",
-                        CUSTOMER_WWW                    = ". $db->qstr( $VAR['customerWww']     ).",
-                        CUSTOMER_NOTES                  = ". $db->qstr( $customerNotes_string   )."
-            WHERE CUSTOMER_ID        = ". $db->qstr( $VAR['customer_id']    );
+            CUSTOMER_DISPLAY_NAME   = ". $db->qstr( $VAR['displayName']    ).",
+            CUSTOMER_ADDRESS        = ". $db->qstr( $VAR['address']        ).",
+            CUSTOMER_CITY           = ". $db->qstr( $VAR['city']            ).", 
+            CUSTOMER_STATE          = ". $db->qstr( $VAR['state']           ).", 
+            CUSTOMER_ZIP            = ". $db->qstr( $VAR['zip']             ).",
+            CUSTOMER_PHONE          = ". $db->qstr( $VAR['homePhone']       ).",
+            CUSTOMER_WORK_PHONE     = ". $db->qstr( $VAR['workPhone']       ).",
+            CUSTOMER_MOBILE_PHONE   = ". $db->qstr( $VAR['mobilePhone']     ).",
+            CUSTOMER_EMAIL          = ". $db->qstr( $VAR['email']           ).", 
+            CUSTOMER_TYPE           = ". $db->qstr( $VAR['customerType']    ).", 
+            CUSTOMER_FIRST_NAME     = ". $db->qstr( $VAR['firstName']       ).", 
+            CUSTOMER_LAST_NAME      = ". $db->qstr( $VAR['lastName']        ).",
+            DISCOUNT_RATE           = ". $db->qstr( $VAR['discount_rate']   ).",
+            CREDIT_TERMS            = ". $db->qstr( $VAR['creditterms']     ).",
+            CUSTOMER_WWW            = ". $db->qstr( $VAR['customerWww']     ).",
+            CUSTOMER_NOTES          = ". $db->qstr( $VAR['customerNotes']   )."
+            WHERE CUSTOMER_ID       = ". $db->qstr( $VAR['customer_id']     );
             
     if(!$result = $db->Execute($sql)) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
@@ -231,12 +336,79 @@ $customerNotes_string = stripslashes($customerNotes_string);
 } 
 
 #####################################
-#    Delete Customer                #
+#    Delete Customer                # // this needs inproving check for invoices, workorders etc.. giftcerts
 #####################################
 
-function delete_customer($db,$customer_id){
-    $sql = "DELETE FROM ".PRFX."TABLE_CUSTOMER WHERE CUSTOMER_ID=".$db->qstr($customer_id);
+function delete_customer($db, $customer_id){
     
+    // Check if customer has any workorders
+    $sql = "SELECT count(*) as count FROM ".PRFX."TABLE_WORK_ORDER            
+            WHERE CUSTOMER_ID=".$db->qstr($customer_id);
+    if(!$rs = $db->execute($sql)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
+    }    
+    if($rs->fields['count'] > 0 ) {
+        //force_page('customer', 'view&page_title=Customers&error_msg=You can not delete a customer who has work orders.');
+        //exit;
+        return false;
+    }
+    
+    // Check if customer has any invoices
+    $sql = "SELECT count(*) as count FROM ".PRFX."TABLE_INVOICE            
+            WHERE CUSTOMER_ID=".$db->qstr($customer_id);
+    if(!$rs = $db->execute($sql)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
+    }    
+    if($rs->fields['count'] > 0 ) {
+        //force_page('customer', 'view&page_title=Customers&error_msg=You can not delete a customer who has invoices.');
+        //exit;
+        return false;
+    }
+    
+    
+    // Check if customer has any gift certificates
+    $sql = "SELECT count(*) as count FROM ".PRFX."GIFTCERT            
+            WHERE CUSTOMER_ID=".$db->qstr($customer_id);
+    if(!$rs = $db->execute($sql)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
+    }    
+    if($rs->fields['count'] > 0 ) {
+        //force_page('customer', 'view&page_title=Customers&error_msg=You can not delete a customer who has gift certificates.');
+        //exit;
+        return false;
+    }
+    
+    // Check if customer has any customer notes
+    $sql = "SELECT count(*) as count FROM ".PRFX."CUSTOMER_NOTES            
+            WHERE CUSTOMER_ID=".$db->qstr($customer_id);
+    if(!$rs = $db->execute($sql)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
+    }    
+    if($rs->fields['count'] > 0 ) {
+        //force_page('customer', 'view&page_title=Customers&error_msg=You can not delete a customer who has customer notes.');
+        //exit;
+        return false;
+    }
+    
+    // Check if customer has any customer notes
+    $sql = "SELECT count(*) as count FROM ".PRFX."CUSTOMER_MEMO           
+            WHERE CUSTOMER_ID=".$db->qstr($customer_id);
+    if(!$rs = $db->execute($sql)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
+    }    
+    if($rs->fields['count'] > 0 ) {
+        //force_page('customer', 'view&page_title=Customers&error_msg=You can not delete a customer who has memos.');
+        //exit;
+        return false;
+    } 
+        
+    // Delete Customer
+    $sql = "DELETE FROM ".PRFX."TABLE_CUSTOMER WHERE CUSTOMER_ID=".$db->qstr($customer_id);    
     if(!$rs = $db->Execute($sql)) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
         exit;    
@@ -245,22 +417,21 @@ function delete_customer($db,$customer_id){
     }    
 }
 
+
 ##################################################################
 # The select array we will change this to database options later #  // what is this?
 ##################################################################
 
     $customer_type = array('Residential'=>'Residential', 'Comercial'=>'Comercial');
 
-
-
 #####################################
-#     Display the cusomters memo    #
+#     Display the customers memo    #  //this seems to be unused
 #####################################
 
 function display_memo($db,$customer_id) {
     
-    $q = "SELECT * FROM ".PRFX."CUSTOMER_NOTES WHERE CUSTOMER_ID=".$db->qstr( $customer_id );
-    if(!$rs = $db->execute($q)) {
+    $sql = "SELECT * FROM ".PRFX."CUSTOMER_NOTES WHERE CUSTOMER_ID=".$db->qstr( $customer_id );
+    if(!$rs = $db->execute($sql)) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
         exit;
     }
@@ -308,3 +479,37 @@ function build_googlemap_directions_string($db, $customer_id, $employee_id)  {
     return "$google_server/maps?f=d&source=s_d&hl=en&geocode=&saddr=$employee_address,$employee_city,$employee_zip&daddr=$customer_address,$customer_city,$customer_zip";
    
 }
+
+#############################
+#    insert customer memo   #
+#############################
+
+function insert_customer_memo($db, $customer_id, $memo) {
+    
+    $sql = "INSERT INTO ".PRFX."CUSTOMER_NOTES SET
+            CUSTOMER_ID =". $db->qstr( $customer_id ) .",
+            DATE        =". $db->qstr( time()       ) .",
+            NOTE        =". $db->qstr( $memo        );
+
+    if(!$rs = $db->execute($sql)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
+    }
+    
+}
+
+##############################
+#    delete customer memo    #
+##############################
+
+function delete_customer_memo($db, $memo_id) {
+    
+    $sql = "DELETE FROM ".PRFX."CUSTOMER_NOTES WHERE ID=".$db->qstr( $memo_id );
+
+    if(!$rs = $db->execute($sql)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
+    }
+    
+}
+

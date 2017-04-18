@@ -1,19 +1,21 @@
 <?php
-require_once ("include.php");
+
+require(INCLUDES_DIR.'modules/customer.php');
 
 if(isset($VAR['submit'])) {
 
-    if (!$customer_id = insert_new_customer($db,$VAR)){
-                $smarty->assign('error_msg', 'Falied to insert customer');
-                $BuildPage .= $smarty->fetch('core'.SEP.'error.tpl');
-            } else {
-                force_page('customer', 'details', '&customer_id='.$customer_id.'&msg=Added New Customer '.$VAR["displayName"].' &page_title='.$VAR["displayName"]);
-                exit;    
-            }            
+    if (!$customer_id = insert_new_customer($db, $VAR)){
         
+        $smarty->assign('error_msg', 'Failed to insert customer');
+        $BuildPage .= $smarty->fetch('core/error.tpl');
+        
+    } else {
+        force_page('customer', 'details&customer_id='.$customer_id, 'information_msg=Added New Customer successfully');
+        exit;    
+    }            
     
 } else {
     
-    $BuildPage .= $smarty->fetch('customer'.SEP.'new.tpl');
+    $BuildPage .= $smarty->fetch('customer/new.tpl');
 
 }

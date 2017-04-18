@@ -4,9 +4,9 @@ require(INCLUDES_DIR.'modules/customer.php');
 require(INCLUDES_DIR.'modules/invoice.php');
 require(INCLUDES_DIR.'modules/payment.php');
 
-// check if we have a customer id and if so get details
+// check if we have a invoice_id and if so get details
 if($invoice_id == '' || $invoice_id == '0'){
-    force_page('core', 'error&error_msg=Invoice Not found: Invoice ID: '.$invoice_id.'&menu=1');
+    force_page('core', 'error', 'error_msg=Invoice Not found: Invoice ID: '.$invoice_id.'&menu=1');
     exit;
 }
     

@@ -27,29 +27,62 @@
 #     Display Invoices                  # // Status = IS_PAID  0 = unpaid, 1 = paid
 #########################################
 
-function display_invoices($db, $status, $direction = 'DESC', $use_pages = false, $page_no = 1, $records_per_page = 25, $customer_id = null, $employee_id = null) {
+function display_invoices($db, $status = 'all', $direction = 'DESC', $use_pages = false, $page_no = 1, $records_per_page = 25, $employee_id = null, $customer_id = null) {
 
     global $smarty;
     
-    /* Get invoices restricted by pages */
+    /* Filter the Records */
+    
+    // Status Restriction
+    if($status != 'all') {
+        // Restrict by status
+        $whereTheseRecords = " WHERE ".PRFX."TABLE_INVOICE.IS_PAID=".$db->qstr($status);       
+    } else {            
+        // Do not restrict by status
+        $whereTheseRecords = " WHERE ".PRFX."TABLE_INVOICE.INVOICE_ID = *";
+    } 
+
+    // Restrict by Employee
+    if($employee_id != null){
+        $whereTheseRecords .= " AND ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_ID=".$db->qstr($employee_id);
+    }        
+
+    // Restrict by Customer
+    if($customer_id != null){
+        $whereTheseRecords .= " AND ".PRFX."TABLE_CUSTOMER.CUSTOMER_ID=".$db->qstr($customer_id);
+    }
+    
+    /* The SQL code */
+    
+    $sql = "SELECT
+        ".PRFX."TABLE_EMPLOYEE.     *,
+        ".PRFX."TABLE_CUSTOMER.     CUSTOMER_DISPLAY_NAME, CUSTOMER_ADDRESS, CUSTOMER_CITY, CUSTOMER_STATE, CUSTOMER_ZIP, CUSTOMER_PHONE, CUSTOMER_WORK_PHONE, CUSTOMER_MOBILE_PHONE, CUSTOMER_EMAIL, CUSTOMER_TYPE, CUSTOMER_FIRST_NAME, CUSTOMER_LAST_NAME, CREATE_DATE, LAST_ACTIVE,
+        ".PRFX."TABLE_INVOICE.      *
+        FROM ".PRFX."TABLE_INVOICE
+        LEFT JOIN ".PRFX."TABLE_EMPLOYEE ON ".PRFX."TABLE_INVOICE.EMPLOYEE_ID = ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_ID
+        LEFT JOIN ".PRFX."TABLE_CUSTOMER ON ".PRFX."TABLE_INVOICE.CUSTOMER_ID = ".PRFX."TABLE_CUSTOMER.CUSTOMER_ID".
+        $whereTheseRecords.
+        " GROUP BY ".PRFX."TABLE_INVOICE.INVOICE_ID".            
+        " ORDER BY ".PRFX."TABLE_INVOICE.INVOICE_ID ".$direction;
+            
+    /* Restrict by pages */
     
     if($use_pages == true) {
         
         // Get the start Record
         $start_record = (($page_no * $records_per_page) - $records_per_page);        
         
-        // Figure out the total number of invoices in the database for the given status
-        $sql = "SELECT COUNT(*) as Num FROM ".PRFX."TABLE_INVOICE WHERE IS_PAID=" . $db->qstr($status);
-        if (!$rs = $db->Execute($sql)) {
-            force_page('core', 'error&error_msg=MySQL Error: ' . $db->ErrorMsg() . '&menu=1&type=database');
+        // Figure out the total number of records in the database for the given search        
+        if(!$rs = $db->Execute($sql)) {
+            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_invoice_error_message_function_'.__FUNCTION__.'_count'));
             exit;
         } else {        
-            $total_results = $rs->FetchRow();
-            $smarty->assign('total_results', $total_results['Num']);
-        }
+            $total_results = $rs->RecordCount();            
+            $smarty->assign('total_results', $total_results);
+        } 
         
         // Figure out the total number of pages. Always round up using ceil()
-        $total_pages = ceil($total_results['Num'] / $records_per_page);
+        $total_pages = ceil($total_results / $records_per_page);
         $smarty->assign('total_pages', $total_pages);
 
         // Set the page number
@@ -67,51 +100,37 @@ function display_invoices($db, $status, $direction = 'DESC', $use_pages = false,
             $smarty->assign('next', $next);
         }  
         
-        // Restrict the results to the selected status
-        $whereTheseRecords = " WHERE ".PRFX."TABLE_INVOICE.IS_PAID=".$db->qstr($status);
+        // Only return the given page's records
+        $limitTheseRecords = " LIMIT ".$start_record.", ".$records_per_page;
         
-        // Restrict by Customer
-        if($customer_id != null){
-            $whereTheseRecords .= " AND ".PRFX."TABLE_CUSTOMER.CUSTOMER_ID=".$db->qstr($customer_id);
-        }
-        
-        // Restrict by Employee
-        if($employee_id != null){
-            $whereTheseRecords .= " AND ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_ID=".$db->qstr($employee_id);
-        }
-        
-        // Only return the given page records
-        $limitTheseRecords = " LIMIT ".$start_record.", ".$records_per_page;   
-        
-    
-    /* Get all workorders (unrestricted) */
+        // add the restriction on to the SQL
+        $sql .= $limitTheseRecords;
         
     } else {
         
-        // Return all invoices for the selected status (no pages)
-        $whereTheseRecords = " WHERE ".PRFX."TABLE_INVOICE.IS_PAID= ".$db->qstr($status);
+        // This make the drop down menu look correct
+        $smarty->assign('total_pages', 1);
+        
     }
-    
-    /* Get the records */
 
-    $sql = "SELECT
-            ".PRFX."TABLE_INVOICE.      *,
-            ".PRFX."TABLE_CUSTOMER.     CUSTOMER_DISPLAY_NAME, CUSTOMER_ADDRESS, CUSTOMER_CITY, CUSTOMER_STATE, CUSTOMER_ZIP, CUSTOMER_PHONE, CUSTOMER_WORK_PHONE, CUSTOMER_MOBILE_PHONE, CUSTOMER_EMAIL, CUSTOMER_TYPE, CUSTOMER_FIRST_NAME, CUSTOMER_LAST_NAME, CREATE_DATE, LAST_ACTIVE,
-            ".PRFX."TABLE_EMPLOYEE.     *
-            FROM ".PRFX."TABLE_INVOICE
-            LEFT JOIN ".PRFX."TABLE_CUSTOMER ON ".PRFX."TABLE_INVOICE.CUSTOMER_ID = ".PRFX."TABLE_CUSTOMER.CUSTOMER_ID
-            LEFT JOIN ".PRFX."TABLE_EMPLOYEE ON ".PRFX."TABLE_INVOICE.EMPLOYEE_ID = ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_ID".
-            $whereTheseRecords.
-            " GROUP BY ".PRFX."TABLE_INVOICE.INVOICE_ID".            
-            " ORDER BY ".PRFX."TABLE_INVOICE.INVOICE_ID ".$direction.
-            $limitTheseRecords;
-
+    /* Return the records */
+         
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_invoice_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
-    } else {      
+    } else {
         
-        return $rs->GetArray();   // do i need to add the check empty        
+        $records = $rs->GetArray();   // do i need to add the check empty
+
+        if(empty($records)){
+            
+            return false;
+            
+        } else {
+            
+            return $records;
+            
+        }
         
     }
     

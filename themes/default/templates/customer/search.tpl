@@ -30,7 +30,7 @@
                                                             </tr>
                                                             <tr>
                                                                 <td align="left" valign="top"><b>{$translate_display}</b>
-                                                                    <input name="name" class="olotd4" type="text" maxlength="20" required onkeydown="return onlyAlphaNumeric(event);">
+                                                                    <input name="search_term" class="olotd4" type="text" maxlength="20" required onkeydown="return onlyAlphaNumeric(event);">
                                                                     <input class="olotd4" name="submit" value="Search" type="submit">
                                                                 </td>
                                                             </tr>                                    
@@ -58,14 +58,7 @@
                                                     {$total_results} {$translate_records_found}.
                                                 </form>
                                             </td>
-                                        </tr>
-                                        <tr>
-                                            <td valign="top" colspan="2">
-                                                {foreach  from=$alpha item=alpha}
-                                                    &nbsp;<a href="?page=customer:search&name={$alpha}&submit=submit">{$alpha}</a>&nbsp;
-                                                {/foreach}
-                                            </td>
-                                        </tr>
+                                        </tr>                                       
                                         <tr>
                                             <td valign="top" colspan="2">
                                                 <table class="olotable" width="100%" border="0" cellpadding="5" cellspacing="0">

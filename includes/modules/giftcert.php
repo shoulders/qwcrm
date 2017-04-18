@@ -11,7 +11,7 @@
 #   Display Gift Certificates for the customer_id   #
 #####################################################
 
-function display_giftcerts($db, $customer_id) {
+function Ddisplay_giftcerts($db, $customer_id) {
     
     $q = "SELECT * FROM ".PRFX."GIFTCERT WHERE CUSTOMER_ID=".$db->qstr( $customer_id );
     
@@ -201,6 +201,107 @@ function update_giftcert_as_redeemed($db, $giftcert_id, $invoice_id) {
     if(!$rs = $db->execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_giftcert_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
+    }
+    
+}
+
+#########################################
+#     Display Gift Certificates         #
+#########################################
+
+function display_giftcerts($db, $status, $direction = 'DESC', $use_pages = false, $page_no = 1, $records_per_page = 25, $employee_id = null, $customer_id = null, $invoice_id = null) {
+
+    global $smarty;
+    
+    /* Get invoices restricted by pages */
+    
+    if($use_pages == true) {
+        
+        // Get the start Record
+        $start_record = (($page_no * $records_per_page) - $records_per_page);        
+        
+        // Figure out the total number of invoices in the database for the given status
+        $sql = "SELECT COUNT(*) as Num FROM ".PRFX."GIFTCERT WHERE ACTIVE=" . $db->qstr($status);
+        if (!$rs = $db->Execute($sql)) {
+            force_page('core', 'error&error_msg=MySQL Error: ' . $db->ErrorMsg() . '&menu=1&type=database');
+            exit;
+        } else {        
+            $total_results = $rs->FetchRow();
+            $smarty->assign('total_results', $total_results['Num']);
+        }
+        
+        // Figure out the total number of pages. Always round up using ceil()
+        $total_pages = ceil($total_results['Num'] / $records_per_page);
+        $smarty->assign('total_pages', $total_pages);
+
+        // Set the page number
+        $smarty->assign('page_no', $page_no);
+
+        // Assign the Previous page
+        if($page_no > 1){
+            $prev = ($page_no - 1);
+            $smarty->assign('previous', $prev);
+        } 
+        
+        // Assign the next page
+        if($page_no < $total_pages){
+            $next = ($page_no + 1);
+            $smarty->assign('next', $next);
+        }  
+        
+        // Restrict the results to the selected status
+        $whereTheseRecords = " WHERE ".PRFX."GIFTCERT.ACTIVE=".$db->qstr($status);
+        
+        // Restrict by Employee
+        if($employee_id != null){
+            $whereTheseRecords .= " AND ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_ID=".$db->qstr($employee_id);
+        }
+        
+        // Restrict by Customer
+        if($customer_id != null){
+            $whereTheseRecords .= " AND ".PRFX."TABLE_CUSTOMER.CUSTOMER_ID=".$db->qstr($customer_id);
+        }
+        
+        // Restrict by Invoice
+        if($invoice_id != null){
+            $whereTheseRecords .= " AND ".PRFX."TABLE_INVOICE.INVOICE_ID=".$db->qstr($customer_id);
+        } 
+        
+        // Only return the given page records
+        $limitTheseRecords = " LIMIT ".$start_record.", ".$records_per_page;   
+        
+    
+    /* Get all workorders (unrestricted) */
+        
+    } else {
+        
+        // Return all invoices for the selected status (no pages)
+        $whereTheseRecords = " WHERE ".PRFX."GIFTCERT.ACTIVE= ".$db->qstr($status);
+    }
+    
+    /* Get the records */
+
+    $sql = "SELECT
+            ".PRFX."GIFTCERT.           *,
+            ".PRFX."TABLE_EMPLOYEE.     EMPLOYEE_ID, EMPLOYEE_DISPLAY_NAME,
+            ".PRFX."TABLE_CUSTOMER.     CUSTOMER_ID,
+            ".PRFX."TABLE_INVOICE.      INVOICE_ID           
+            FROM ".PRFX."GIFTCERT
+            LEFT JOIN ".PRFX."TABLE_EMPLOYEE ON ".PRFX."GIFTCERT.EMPLOYEE_ID = ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_ID
+            LEFT JOIN ".PRFX."TABLE_CUSTOMER ON ".PRFX."GIFTCERT.CUSTOMER_ID = ".PRFX."TABLE_CUSTOMER.CUSTOMER_ID
+            LEFT JOIN ".PRFX."TABLE_INVOICE ON ".PRFX."GIFTCERT.INVOICE_ID = ".PRFX."TABLE_INVOICE.INVOICE_ID". 
+            $whereTheseRecords.
+            " GROUP BY ".PRFX."GIFTCERT.GIFTCERT_ID".            
+            " ORDER BY ".PRFX."GIFTCERT.GIFTCERT_ID ".$direction.
+            $limitTheseRecords;
+
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_giftcert_error_message_function_'.__FUNCTION__.'_failed'));
+        exit;
+    } else {      
+        
+        return $rs->GetArray();
+        
     }
     
 }
