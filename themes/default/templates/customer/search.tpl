@@ -30,8 +30,9 @@
                                                             </tr>
                                                             <tr>
                                                                 <td align="left" valign="top"><b>{$translate_display}</b>
-                                                                    <input name="search_term" class="olotd4" type="text" maxlength="20" required onkeydown="return onlyAlphaNumeric(event);">
+                                                                    <input name="search_term" class="olotd4" value="{$search_term}" type="text" maxlength="20" required onkeydown="return onlyAlphaNumeric(event);">
                                                                     <input class="olotd4" name="submit" value="Search" type="submit">
+                                                                    <input type="button" class="olotd4" value="Reset" onclick="window.location.href='index.php?page=customer:search';">
                                                                 </td>
                                                             </tr>                                    
                                                         </table>

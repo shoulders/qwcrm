@@ -36,46 +36,43 @@ function get_customer_details($db, $customer_id, $item = null){
 }
 
 #####################################
-#   Display Customers               #
+#   Display Customers               #  // is also used for searches
 #####################################
 
-function display_customers($db, $status = 'all', $direction = 'DESC', $use_pages = false, $page_no = 1, $records_per_page = 25, $workorder_id = null, $invoice_id = null) {
+function display_customers($db, $status = 'all', $direction = 'DESC', $use_pages = false, $page_no = 1, $records_per_page = 25, $search_type = null, $search_term = null) {
 
     global $smarty;    
     
     /* Filter the Records */
     
-    // Status Restriction
-    if($status != 'all') {
+    // Perform Standard Search
+    if($search_type != null) {
+        
         // Restrict by status
-        $whereTheseRecords = " WHERE ".PRFX."TABLE_CUSTOMER.ACTIVE=".$db->qstr($status);        
-    } else {            
-        // Do not restrict by status
-        $whereTheseRecords = " WHERE ".PRFX."TABLE_CUSTOMER.CUSTOMER_ID = *";
-    }
-
-    // Restrict by Workorder
-    if($workorder_id != null){
-        $whereTheseRecords .= " AND ".PRFX."TABLE_WORK_ORDER.WORKORDER_ID=".$db->qstr($workorder_id);
-    }
-
-    // Restrict by Invoice
-    if($invoice_id != null){
-        $whereTheseRecords .= " AND ".PRFX."TABLE_INVOICE.INVOICE_ID=".$db->qstr($invoice_id);
-    }    
+        $whereTheseRecords = " WHERE CUSTOMER_DISPLAY_NAME LIKE '%$search_term%'";
+        
     
-    /* The SQL code */
+    // Display Records with filters    
+    } else {
+
+        // Status Restriction
+        if($status != 'all') {
+            // Restrict by status
+            $whereTheseRecords = " WHERE ".PRFX."TABLE_CUSTOMER.ACTIVE=".$db->qstr($status);        
+        } else {            
+            // Do not restrict by status
+            $whereTheseRecords = " WHERE ".PRFX."TABLE_CUSTOMER.CUSTOMER_ID = *";
+        }
     
-    $sql = "SELECT
-        ".PRFX."TABLE_EMPLOYEE.     EMPLOYEE_ID
-        ".PRFX."TABLE_CUSTOMER.     *,
-        ".PRFX."TABLE_INVOICE.      INVOICE_ID
-        FROM ".PRFX."TABLE_CUSTOMER
-        LEFT JOIN ".PRFX."TABLE_WORK_ORDER ON ".PRFX."TABLE_CUSTOMER.WORKORDER_ID = ".PRFX."TABLE_WORK_ORDER.WORKORDER_ID
-        LEFT JOIN ".PRFX."TABLE_INVOICE ON ".PRFX."TABLE_CUSTOMER.INVOICE_ID = ".PRFX."TABLE_INVOICE.INVOICE_ID".
+    }
+    
+    /* The SQL code */    
+    
+    $sql = "SELECT *              
+        FROM ".PRFX."TABLE_CUSTOMER".        
         $whereTheseRecords.
         " GROUP BY ".PRFX."TABLE_CUSTOMER.CUSTOMER_ID".            
-        " ORDER BY ".PRFX."TABLE_CUSTOMER.CUSTOMER_ID ".$direction;
+        " ORDER BY ".PRFX."TABLE_CUSTOMER.CUSTOMER_ID ".$direction;  
    
     /* Restrict by pages */
         
@@ -117,6 +114,7 @@ function display_customers($db, $status = 'all', $direction = 'DESC', $use_pages
         
         // add the restriction on to the SQL
         $sql .= $limitTheseRecords;
+        $rs = '';
     
     } else {
         
@@ -154,7 +152,7 @@ function display_customers($db, $status = 'all', $direction = 'DESC', $use_pages
 
 
 
-
+/*
 #####################################
 #    Search Customers               #
 #####################################
@@ -216,7 +214,7 @@ function search_customers($db, $search_term, $page_no) {
     
     return $customer_search_result;
 }
-
+*/
 
 
 
