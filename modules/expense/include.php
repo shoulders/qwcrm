@@ -49,17 +49,17 @@ $expenseItems_string = stripslashes($expenseItems_string);
 
     $sql = "INSERT INTO ".PRFX."TABLE_EXPENSE SET
 
-            EXPENSE_ID            = ". $db->qstr( $VAR['expense_id']           ).",
-            EXPENSE_PAYEE            = ". $db->qstr( $VAR['expensePayee']        ).",
+            EXPENSE_ID              = ". $db->qstr( $VAR['expense_id']           ).",
+            EXPENSE_PAYEE           = ". $db->qstr( $VAR['expensePayee']        ).",
             EXPENSE_DATE            = ". $db->qstr( $checked_date               ).",
             EXPENSE_TYPE            = ". $db->qstr( $VAR['expenseType']         ).",
-            EXPENSE_PAYMENT_METHOD          = ". $db->qstr( $VAR['expensePaymentMethod']).",
-            EXPENSE_NET_AMOUNT        = ". $db->qstr( $VAR['expenseNetAmount']    ).",
-                        EXPENSE_TAX_RATE                = ". $db->qstr( $VAR['expenseTaxRate']      ).",
-                        EXPENSE_TAX_AMOUNT              = ". $db->qstr( $VAR['expenseTaxAmount']    ).",
-                        EXPENSE_GROSS_AMOUNT            = ". $db->qstr( $VAR['expenseGrossAmount']  ).",
-                        EXPENSE_NOTES                   = ". $db->qstr( $expenseNotes_string        ).",
-                        EXPENSE_ITEMS                   = ". $db->qstr( $expenseItems_string        );
+            EXPENSE_PAYMENT_METHOD  = ". $db->qstr( $VAR['expensePaymentMethod']).",
+            EXPENSE_NET_AMOUNT      = ". $db->qstr( $VAR['expenseNetAmount']    ).",
+            EXPENSE_TAX_RATE        = ". $db->qstr( $VAR['expenseTaxRate']      ).",
+            EXPENSE_TAX_AMOUNT      = ". $db->qstr( $VAR['expenseTaxAmount']    ).",
+            EXPENSE_GROSS_AMOUNT    = ". $db->qstr( $VAR['expenseGrossAmount']  ).",
+            EXPENSE_NOTES           = ". $db->qstr( $expenseNotes_string        ).",
+            EXPENSE_ITEMS           = ". $db->qstr( $expenseItems_string        );
 
     if(!$result = $db->Execute($sql)) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
@@ -108,12 +108,12 @@ $expenseItems_string = stripslashes($expenseItems_string);
             EXPENSE_TYPE            = ". $db->qstr( $VAR['expenseType']         ).",
             EXPENSE_PAYMENT_METHOD          = ". $db->qstr( $VAR['expensePaymentMethod']).",
             EXPENSE_NET_AMOUNT        = ". $db->qstr( $VAR['expenseNetAmount']    ).",
-                        EXPENSE_TAX_RATE                = ". $db->qstr( $VAR['expenseTaxRate']      ).",
-                        EXPENSE_TAX_AMOUNT              = ". $db->qstr( $VAR['expenseTaxAmount']    ).",
-                        EXPENSE_GROSS_AMOUNT            = ". $db->qstr( $VAR['expenseGrossAmount']  ).",
-                        EXPENSE_NOTES                   = ". $db->qstr( $expenseNotes_string        ).",
-                        EXPENSE_ITEMS                   = ". $db->qstr( $expenseItems_string        )."
-                        WHERE EXPENSE_ID        = ". $db->qstr( $VAR['expense_id']           );
+            EXPENSE_TAX_RATE                = ". $db->qstr( $VAR['expenseTaxRate']      ).",
+            EXPENSE_TAX_AMOUNT              = ". $db->qstr( $VAR['expenseTaxAmount']    ).",
+            EXPENSE_GROSS_AMOUNT            = ". $db->qstr( $VAR['expenseGrossAmount']  ).",
+            EXPENSE_NOTES                   = ". $db->qstr( $expenseNotes_string        ).",
+            EXPENSE_ITEMS                   = ". $db->qstr( $expenseItems_string        )."
+            WHERE EXPENSE_ID        = ". $db->qstr( $VAR['expense_id']           );
                         
             
     if(!$result = $db->Execute($sql)) {
@@ -458,8 +458,8 @@ function display_expense_search($db, $expense_search_category, $expense_search_t
     $smarty->assign('page_no', $page_no);
     $smarty->assign('previous', $prev);
     $smarty->assign('next', $next);
-        $smarty->assign('expense_search_category', $expense_search_category);
-        $smarty->assign('expense_search_term', $expense_search_term);
+    $smarty->assign('expense_search_category', $expense_search_category);
+    $smarty->assign('expense_search_term', $expense_search_term);
 
     return $expense_search_result;
 }

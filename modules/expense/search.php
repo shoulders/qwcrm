@@ -1,7 +1,6 @@
 <?php
 
-// Load the Expense Functions
-require_once('include.php');
+require(INCLUDES_DIR.'modules/workorder.php');
 
 // This sets page to number. goto_page-->page--> sets as 1 if no value
 if(isset($VAR['goto_page_no'])){$page_no = $VAR['goto_page_no'];}
@@ -21,4 +20,4 @@ $expense_search_result = display_expense_search($db, $expense_search_category, $
 
 $smarty->assign('expense_search_term', $expense_search_term);
 $smarty->assign('expense_search_result', $expense_search_result);
-$BuildPage .= $smarty->fetch('expense'.SEP.'search.tpl');
+$BuildPage .= $smarty->fetch('expense/search.tpl');

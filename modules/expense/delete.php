@@ -1,17 +1,12 @@
 <?php
 
-// Load the Expense Functions
-require_once('include.php');
-
-
-
-$expense_id = $VAR['expense_id'];
+require(INCLUDES_DIR.'modules/workorder.php');
 
 // Load PHP Language Translations
-$langvals = gateway_xml2php('expense');
+$langvals = gateway_xml2php();
 
 // Make sure we got an Expense ID number
-if(!isset($expense_id) || $expense_id =="") {
+if($expense_id == '') {
     $smarty->assign('results', 'Please go back and select an expense record');
     die;
 }    
