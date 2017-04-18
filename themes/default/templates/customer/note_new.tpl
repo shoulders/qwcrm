@@ -14,18 +14,17 @@
                         <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0" >
                             <tr>
                                 <td width="100%" valign="top" >                                  
-                                    <form  action="index.php?page=customer:memo" method="POST" >
-                                        <input type="hidden" name="customer_id" value="{$customer_id}">
+                                    <form method="post" action="index.php?page=customer:memo_new&customer_id={$customer_id}">                                        
                                         <table class="olotable" width="100%" border="0" >
                                             <tr>
                                                 <td class="olohead"></td>
                                             </tr>
                                             <tr>
-                                                <td class="olotd"><textarea name="memo" class="olotd4" rows="15" cols="70" required></textarea></td>
+                                                <td class="olotd"><textarea name="customer_note" class="olotd4 mceCheckForContent" rows="15" cols="70"></textarea></td>
                                             </tr>
                                         </table>
                                         <br>
-                                        <input class="olotd4" name="submit" value="submit" type="submit" />    
+                                        <input class="olotd4" name="submit" value="submit" type="submit">    
                                     </form>
                                     <br>
                                 </td>

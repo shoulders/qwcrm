@@ -7,7 +7,7 @@
  */
 
 ################################
-# Display Customer Details     #
+#  Get  Customer Details       #
 ################################
 
 function get_customer_details($db, $customer_id, $item = null){
@@ -146,81 +146,6 @@ function display_customers($db, $status = 'all', $direction = 'DESC', $use_pages
     }
     
 }
-
-
-
-
-
-
-/*
-#####################################
-#    Search Customers               #
-#####################################
-
-function search_customers($db, $search_term, $page_no) {
-    
-    global $smarty;    
-      
-    // Define the number of results per page
-    $max_results = 25;
-    
-    // Figure out the limit for the Execute based
-    // on the current page number.
-    $from = (($page_no * $max_results) - $max_results);
-    
-    $sql = "SELECT * FROM ".PRFX."TABLE_CUSTOMER WHERE CUSTOMER_DISPLAY_NAME LIKE '%$search_term%' ORDER BY CUSTOMER_DISPLAY_NAME LIMIT $from, $max_results";
-    
-    //print $sql;
-    
-    if(!$result = $db->Execute($sql)) {
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-        exit;
-    } else {
-        $customer_search_result = array();
-    }
-    
-    while($row = $result->FetchRow()){
-         array_push($customer_search_result, $row);
-    }
-    
-    // Figure out the total number of results in DB: 
-    $results = $db->Execute("SELECT COUNT(*) as Num FROM ".PRFX."TABLE_CUSTOMER WHERE CUSTOMER_DISPLAY_NAME LIKE ".$db->qstr("%$search_term%") );
-    
-    if(!$total_results = $results->FetchRow()) {
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-        exit;
-    } else {
-        $smarty->assign('total_results', strip_tags($total_results['Num']));
-    }
-        
-    // Figure out the total number of pages. Always round up using ceil()
-    $total_pages = ceil($total_results["Num"] / $max_results); 
-    $smarty->assign('total_pages', strip_tags($total_pages));
-    
-    // Assign the first page
-    if($page_no > 1) {
-        $prev = ($page_no - 1);     
-    }     
-
-    // Build Next Link
-    if($page_no < $total_pages){
-        $next = ($page_no + 1); 
-    }
-    
-    $smarty->assign('name', strip_tags($search_term));
-    $smarty->assign('page_no', strip_tags($page_no));
-    $smarty->assign('previous', strip_tags($prev));
-    $smarty->assign('next', strip_tags($next));
-    
-    return $customer_search_result;
-}
-*/
-
-
-
-
-
-
 
 #########################################
 #    check for Duplicate display name   #
@@ -416,28 +341,6 @@ function delete_customer($db, $customer_id){
 }
 
 
-##################################################################
-# The select array we will change this to database options later #  // what is this?
-##################################################################
-
-    $customer_type = array('Residential'=>'Residential', 'Comercial'=>'Comercial');
-
-#####################################
-#     Display the customers memo    #  //this seems to be unused
-#####################################
-
-function display_memo($db,$customer_id) {
-    
-    $sql = "SELECT * FROM ".PRFX."CUSTOMER_NOTES WHERE CUSTOMER_ID=".$db->qstr( $customer_id );
-    if(!$rs = $db->execute($sql)) {
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-        exit;
-    }
-        
-    return $rs->GetArray(); 
-    
-}
-
 #####################################
 #    Build a Google map string      #
 #####################################
@@ -478,16 +381,63 @@ function build_googlemap_directions_string($db, $customer_id, $employee_id)  {
    
 }
 
+#####################################
+#  Get a single customer's note     #
+#####################################
+
+function get_customer_note($db, $customer_note_id, $item = null){
+    
+    global $smarty;
+    
+    $sql = "SELECT * FROM ".PRFX."CUSTOMER_NOTE WHERE CUSTOMER_NOTE_ID=".$db->qstr( $customer_note_id );    
+    
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_customer_error_message_function_'.__FUNCTION__.'_failed'));
+        exit;
+    } else { 
+        
+        if($item === null){
+            
+            return $rs->GetRowAssoc(); 
+            
+        } else {
+            
+            return $rs->fields[$item];   
+            
+        } 
+        
+    }
+    
+}
+
+#####################################
+#  Get ALL customer's noteS         #
+#####################################
+
+function get_customer_notes($db, $customer_id) {
+    
+    $sql = "SELECT * FROM ".PRFX."CUSTOMER_NOTE WHERE CUSTOMER_ID=".$db->qstr( $customer_id );
+    
+    if(!$rs = $db->execute($sql)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
+    }
+        
+    return $rs->GetArray(); 
+    
+}
+
 #############################
 #    insert customer memo   #
 #############################
 
-function insert_customer_memo($db, $customer_id, $memo) {
+function insert_customer_note($db, $customer_id, $note) {
     
-    $sql = "INSERT INTO ".PRFX."CUSTOMER_NOTES SET
-            CUSTOMER_ID =". $db->qstr( $customer_id ) .",
-            DATE        =". $db->qstr( time()       ) .",
-            NOTE        =". $db->qstr( $memo        );
+    $sql = "INSERT INTO ".PRFX."CUSTOMER_NOTE SET
+            CUSTOMER_ID =". $db->qstr( $customer_id             ).",
+            EMPLOYEE_ID =". $db->qstr( $_SESSION['LOGIN_ID']    ).",
+            DATE        =". $db->qstr( time()                   ).",
+            NOTE        =". $db->qstr( $note                    );
 
     if(!$rs = $db->execute($sql)) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
@@ -496,13 +446,33 @@ function insert_customer_memo($db, $customer_id, $memo) {
     
 }
 
+#############################
+#    update customer memo   #
+#############################
+
+function update_customer_note($db, $customer_note_id, $date, $note) {
+    
+    $sql = "UPDATE ".PRFX."CUSTOMER_NOTE SET
+            EMPLOYEE_ID             =". $db->qstr( $_SESSION['LOGIN_ID']    ).",
+            DATE                    =". $db->qstr( $date                    ).",
+            NOTE                    =". $db->qstr( $note                    )."
+            WHERE CUSTOMER_NOTE_ID  =". $db->qstr( $customer_note_id        );
+
+    if(!$rs = $db->execute($sql)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;        
+    }   
+    
+}
+
+
 ##############################
 #    delete customer memo    #
 ##############################
 
-function delete_customer_memo($db, $memo_id) {
+function delete_customer_note($db, $memo_id) {
     
-    $sql = "DELETE FROM ".PRFX."CUSTOMER_NOTES WHERE ID=".$db->qstr( $memo_id );
+    $sql = "DELETE FROM ".PRFX."CUSTOMER_NOTE WHERE CUSTOMER_NOTE_ID=".$db->qstr( $memo_id );
 
     if(!$rs = $db->execute($sql)) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');

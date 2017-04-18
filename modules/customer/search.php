@@ -2,8 +2,6 @@
 
 require(INCLUDES_DIR.'modules/customer.php');
 
-//$smarty->assign('customer_search_result', search_customers($db, $VAR['search_term'], $page_no));
-
 $smarty->assign('customer_search_result', display_customers($db, 'all', 'DESC', true, $page_no, 25, 'display_name', $VAR['search_term']));
 $smarty->assign('search_term', $VAR['search_term']);
 
