@@ -1,4 +1,4 @@
 <?php
 
-$BuildPage .= $smarty->fetch('help'.SEP.'attribution.tpl');
+$BuildPage .= $smarty->fetch('help/attribution.tpl');
 

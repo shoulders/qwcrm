@@ -1,23 +1,13 @@
 <?php
 
-require(INCLUDES_DIR.'modules/workorder.php');
+require(INCLUDES_DIR.'modules/expense.php');
 
-// This sets page to number. goto_page-->page--> sets as 1 if no value
-if(isset($VAR['goto_page_no'])){$page_no = $VAR['goto_page_no'];}
-        else {if(isset($VAR['page_no'])) {$page_no = $VAR['page_no'];} else {$page_no = 1;}}
+// This sets page to number. goto_page-->page--> sets as 1 if no value  - do i have a better script, also just change this ti set $page_no instead of goto_page_no
+if(isset($VAR['goto_page_no'])) {
+    $page_no = $VAR['goto_page_no'];
+}
 
-// this allows the intial page display which is a search
-if(!isset($VAR['expense_search_category'])) {$expense_search_category = "ID";}
-        else { $expense_search_category = $VAR['expense_search_category'];}
-
-$expense_search_term = $VAR['expense_search_term'];
-
-// Search term validator (expense gateway), changes some variables appropiate to database values
-$expense_gateway_search_term = expense_search_gateway($db, $expense_search_category, $expense_search_term);
-
-// perform search with modified search term value - WORKS -for view page
-$expense_search_result = display_expense_search($db, $expense_search_category, $expense_gateway_search_term, $page_no, $smarty);
-
-$smarty->assign('expense_search_term', $expense_search_term);
-$smarty->assign('expense_search_result', $expense_search_result);
+$smarty->assign('search_category', $VAR['search_category']);
+$smarty->assign('search_term', $VAR['search_term']);
+$smarty->assign('search_result', display_expenses($db, 'DESC', true, $page_no, 2, $VAR['search_category'], $VAR['search_term']));
 $BuildPage .= $smarty->fetch('expense/search.tpl');

@@ -11,6 +11,7 @@
 #########################################################
 /* set start date */
 
+// add this to the other time sttements for refernce? jon
 $today_start = mktime(0,0,0,date("m"), date("d"), date("Y"));
 $today_end      = mktime(23,59,59,date("m"), date("d"), date("Y"));
 

@@ -52,6 +52,11 @@ function onlyAlphaNumeric(e) {
     return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", true);
 }
 
+// Numbers, Letters and date
+function onlyAlphaNumericAndDate(e) {
+    return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", true);
+}
+
 // Numbers Only
 function onlyNumbers(e) {
     return keyRestriction(e, "0123456789", false);

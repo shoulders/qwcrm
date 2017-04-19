@@ -1,12 +1,9 @@
 <?php
 
-require(INCLUDES_DIR.'modules/workorder.php');
+require(INCLUDES_DIR.'modules/expense.php');
 
 // Load PHP Language Translations
-$langvals = gateway_xml2php();
-
-// Load expense details
-$expense_details = display_expense_info($db, $expense_id);
+$langvals = gateway_xml2php('expense');
 
 // If details submitted run update values, if not set load edit.tpl and populate values
 if(isset($VAR['submit'])) {    
@@ -24,7 +21,7 @@ if(isset($VAR['submit'])) {
 
 } else {
     
-    $smarty->assign('expense_details', $expense_details);
+    $smarty->assign('expense_details', get_expense_details($db, $expense_id));
     $BuildPage .= $smarty->fetch('expense/edit.tpl');
     
 }

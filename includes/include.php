@@ -1055,7 +1055,6 @@ function gateway_xml2php($module) {
 
             $ttag = strtolower($things['tag']);
             $tvalue = $things['value'];
-
             $xmlarray[$ttag] = $tvalue;
 
         }

@@ -1,9 +1,9 @@
 <?php
 
-require(INCLUDES_DIR.'modules/workorder.php');
+require(INCLUDES_DIR.'modules/expense.php');
 
 // Load PHP Language Translations
-$langvals = gateway_xml2php();
+$langvals = gateway_xml2php('expense');
 
 // Make sure we got an Expense ID number
 if($expense_id == '') {

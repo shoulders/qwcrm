@@ -1,3 +1,3 @@
 <?php
 
-$BuildPage .= $smarty->fetch('help'.SEP.'about.tpl');
+$BuildPage .= $smarty->fetch('help/about.tpl');

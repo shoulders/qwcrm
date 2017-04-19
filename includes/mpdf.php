@@ -14,4 +14,6 @@ $mpdf = new mPDF('c');
 $mpdf->WriteHTML($pdf_output);
 $mpdf->Output(); // outputs to the screen
 // $mpdf->Output('invoice.pdf'); outputs to a file but does not prompt
+
+// I think this exit prevents issues
 exit;

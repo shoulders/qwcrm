@@ -435,7 +435,7 @@ function insert_customer_note($db, $customer_id, $note) {
     
     $sql = "INSERT INTO ".PRFX."CUSTOMER_NOTE SET
             CUSTOMER_ID =". $db->qstr( $customer_id             ).",
-            EMPLOYEE_ID =". $db->qstr( $_SESSION['LOGIN_ID']    ).",
+            EMPLOYEE_ID =". $db->qstr( $_SESSION['login_id']    ).",
             DATE        =". $db->qstr( time()                   ).",
             NOTE        =". $db->qstr( $note                    );
 
@@ -453,7 +453,7 @@ function insert_customer_note($db, $customer_id, $note) {
 function update_customer_note($db, $customer_note_id, $date, $note) {
     
     $sql = "UPDATE ".PRFX."CUSTOMER_NOTE SET
-            EMPLOYEE_ID             =". $db->qstr( $_SESSION['LOGIN_ID']    ).",
+            EMPLOYEE_ID             =". $db->qstr( $_SESSION['login_id']    ).",
             DATE                    =". $db->qstr( $date                    ).",
             NOTE                    =". $db->qstr( $note                    )."
             WHERE CUSTOMER_NOTE_ID  =". $db->qstr( $customer_note_id        );
