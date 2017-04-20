@@ -280,7 +280,7 @@ function get_invoice_details($db, $invoice_id, $item = null) {
 }
 
 #####################################
-#   Get Labour Rate Items           #
+#   Get All Labour Rate Items       #
 #####################################
 
 function get_active_labour_rate_items($db) {
@@ -296,9 +296,9 @@ function get_active_labour_rate_items($db) {
     
 }
 
-#####################################
-#   Get invoice labour details      #
-#####################################
+#########################################
+#   Get All invoice labour details      #
+#########################################
 
 function get_invoice_labour_items($db, $invoice_id) {
     
@@ -313,8 +313,37 @@ function get_invoice_labour_items($db, $invoice_id) {
     
 }
 
+#######################################
+#   Get invoice labour item details   #
+#######################################
+
+function get_invoice_labour_item_details($db, $labour_id, $item = null) {
+    
+    global $smarty;
+
+    $sql = "SELECT * FROM ".PRFX."TABLE_INVOICE_LABOUR WHERE INVOICE_LABOUR_ID =".$db->qstr($labour_id);
+    
+    if(!$rs = $db->execute($sql)){        
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
+        exit;
+    } else {
+        
+        if($item === null){
+            
+            return $rs->GetArray(); 
+            
+        } else {
+            
+            return $rs->fields[$item];   
+            
+        } 
+        
+    }
+        
+}
+
 #####################################
-#   Get invoice parts details       #
+#   Get All invoice parts details   #
 #####################################
 
 function get_invoice_parts_items($db, $invoice_id) {
@@ -328,6 +357,35 @@ function get_invoice_parts_items($db, $invoice_id) {
         
     }
     
+}
+
+#######################################
+#   Get invoice parts item details    #
+#######################################
+
+function get_invoice_parts_item_details($db, $parts_id, $item = null) {
+    
+    global $smarty;
+
+    $sql = "SELECT * FROM ".PRFX."TABLE_INVOICE_PARTS WHERE INVOICE_PARTS_ID =".$db->qstr($parts_id);
+    
+    if(!$rs = $db->execute($sql)){        
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
+        exit;
+    } else {
+        
+        if($item === null){
+            
+            return $rs->GetArray(); 
+            
+        } else {
+            
+            return $rs->fields[$item];   
+            
+        } 
+        
+    }
+        
 }
 
 /** Update Functions **/
@@ -403,6 +461,27 @@ function update_invoice_full($db, $invoice_id, $customer_id, $workorder_id, $emp
     
 }
 
+#####################################
+#     update invoice rate item      #
+#####################################
+
+function update_invoice_labour_rates_item($db, $labour_rate_id, $VAR){
+    
+    $sql = "UPDATE ".PRFX."TABLE_LABOUR_RATE SET
+        LABOUR_RATE_NAME     =". $db->qstr( $VAR['display']         ).",
+        LABOUR_RATE_AMOUNT   =". $db->qstr( $VAR['amount']          ).",
+        LABOUR_RATE_COST     =". $db->qstr( $VAR['cost']            ).",
+        LABOUR_RATE_ACTIVE   =". $db->qstr( $VAR['active']          ).",
+        LABOUR_TYPE          =". $db->qstr( $VAR['type']            ).",
+        LABOUR_MANUF         =". $db->qstr( $VAR['manufacturer']    )."
+        WHERE LABOUR_RATE_ID =". $db->qstr( $labour_rate_id         );
+
+    if(!$rs = $db->execute($sql)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
+    }
+    
+}
 
 /** Close Functions **/
 
@@ -428,7 +507,7 @@ function delete_invoice($db, $invoice_id)
 }
 
 #####################################
-#   Delete Labour Record            #
+#   Delete Labour Item              #
 #####################################
 
 function delete_invoice_labour_item($db, $labour_id)
@@ -446,7 +525,7 @@ function delete_invoice_labour_item($db, $labour_id)
 }
 
 #####################################
-#   Delete Parts Record             #
+#   Delete Parts Item               #
 #####################################
 
 function delete_invoice_parts_item($db, $parts_id)
@@ -462,6 +541,21 @@ function delete_invoice_parts_item($db, $parts_id)
         
     }
 
+}
+
+#####################################
+#     delete invoice rate item      #
+#####################################
+
+function delete_invoice_rates_item($db, $labour_rate_id){
+    
+    $sql = "DELETE FROM ".PRFX."TABLE_LABOUR_RATE WHERE LABOUR_RATE_ID =".$labour_rate_id;
+
+    if(!$rs = $db->execute($sql)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
+    }
+    
 }
 
 /** Other Functions **/
@@ -567,43 +661,10 @@ function check_invoice_has_workorder($db, $invoice_id) {
 ##################################
 
 
-#####################################
-#     update invoice rate item      #
-#####################################
-
-function update_invoice_labour_rates_item($db, $VAR){
-    
-    $sql = "UPDATE ".PRFX."TABLE_LABOUR_RATE SET
-        LABOUR_RATE_NAME     =". $db->qstr( $VAR['display']      ).",
-        LABOUR_RATE_AMOUNT   =". $db->qstr( $VAR['amount']       ).",
-        LABOUR_RATE_COST     =". $db->qstr( $VAR['cost']         ).",
-        LABOUR_RATE_ACTIVE   =". $db->qstr( $VAR['active']       ).",
-        LABOUR_TYPE          =". $db->qstr( $VAR['type']         ).",
-        LABOUR_MANUF         =". $db->qstr( $VAR['manufacturer'] )."
-        WHERE LABOUR_RATE_ID =". $db->qstr( $VAR['id']           );
-
-    if(!$rs = $db->execute($sql)) {
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-        exit;
-    }
-    
-}
 
 
-#####################################
-#     delete invoice rate item      #
-#####################################
 
-function delete_invoice_rates_item($db, $VAR){
-    
-    $sql = "DELETE FROM ".PRFX."TABLE_LABOUR_RATE WHERE LABOUR_RATE_ID =".$db->qstr($VAR['id']);
 
-    if(!$rs = $db->execute($sql)) {
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-        exit;
-    }
-    
-}
 
 #####################################
 #     New invoice rate item         #
@@ -719,3 +780,4 @@ function upload_invoice_rates_csv($db, $VAR) {
     }
     
 }
+

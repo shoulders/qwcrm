@@ -34,10 +34,7 @@
 
 /** Other Functions **/
 
-
-
-
-/* General Section */
+/** General Section */
 
 ###############################################
 #  Count open work orders in selected period  #
@@ -194,7 +191,7 @@ function sum_parts_sub_total_in_selected_period($db, $start_date, $end_date) {
     
 }
 
-/* Labour Section */
+/** Labour Section **/
 
 ##########################################################################
 #  Count Total number of different labour items in selected period       #
@@ -246,7 +243,7 @@ function sum_labour_sub_totals_in_selected_period($db, $start_date, $end_date) {
     
 }
 
-/* Expense Section */
+/** Expense Section **/
 
 ##################################################
 #  Sum Expenses Net Amount in selected period    #
@@ -298,7 +295,7 @@ function sum_expenses_gross_amount_in_selected_period($db, $start_date, $end_dat
     
 }
 
-/* Refunds Section */
+/** Refunds Section **/
 
 ###################################################
 #  Sum Refunds Net Amount in selected period      #
@@ -350,7 +347,7 @@ function sum_refunds_gross_amount_in_selected_period($db, $start_date, $end_date
     return $rs->fields['refund_gross_amount_sum'];
 }
 
-/* Invoice Section */
+/** Invoice Section **/
 
 ########################################################################################
 #  Sum of Invoice Sub totals (before tax and discounts are added) in selected period   #
@@ -420,10 +417,10 @@ function sum_of_invoice_total_amounts_gross_in_selected_period($db, $start_date,
     
 }
 
-/* Calculations Section */
+/** Calculations Section **/
 
 ###########################
-#  Taxable Profit Amount  #
+#  Taxable Profit Amount  # // not used
 ###########################
 
 function taxable_profit_amount_for_the_selected_period() {

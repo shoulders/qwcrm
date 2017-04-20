@@ -28,27 +28,27 @@
                                                     </tr>
                                                     <tr>
                                                         {section name=q loop=$invoice_rates_items}
-                                                            <form method="POST" action="?page=company:invoice_rates">
+                                                            <form method="POST" action="?page=invoice:invoice_rates">
                                                                 <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" class="row1">
-                                                                    <td class="olotd4" nowrap>{$invoice_rates_items[q].LABOR_RATE_ID}</td>
-                                                                    <td class="olotd4" nowrap><input name="display" class="olotd5" size="50" value="{$invoice_rates_items[q].LABOR_RATE_NAME}" type="text" maxlength="50" required onkeydown="return onlyAlphaNumeric(event);"></td>
-                                                                    <td class="olotd4" nowrap>{$currency_sym}<input name="amount" class="olotd5" size="10" value="{$invoice_rates_items[q].LABOR_RATE_AMOUNT}" type="text" maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumbersPeriod(event);"></td>
-                                                                    <td class="olotd4" nowrap>{$currency_sym}<input name="cost" class="olotd5" size="10" value="{$invoice_rates_items[q].LABOR_RATE_COST}" type="text" maxlength="10" pattern="{literal}[[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumbersPeriod(event);"></td>
+                                                                    <td class="olotd4" nowrap>{$invoice_rates_items[q].LABOUR_RATE_ID}</td>
+                                                                    <td class="olotd4" nowrap><input name="display" class="olotd5" size="50" value="{$invoice_rates_items[q].LABOUR_RATE_NAME}" type="text" maxlength="50" required onkeydown="return onlyAlphaNumeric(event);"></td>
+                                                                    <td class="olotd4" nowrap>{$currency_sym}<input name="amount" class="olotd5" size="10" value="{$invoice_rates_items[q].LABOUR_RATE_AMOUNT}" type="text" maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumbersPeriod(event);"></td>
+                                                                    <td class="olotd4" nowrap>{$currency_sym}<input name="cost" class="olotd5" size="10" value="{$invoice_rates_items[q].LABOUR_RATE_COST}" type="text" maxlength="10" pattern="{literal}[[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumbersPeriod(event);"></td>
                                                                     <td class="olotd4" nowrap>
                                                                         <select class="olotd5" name="active">
-                                                                            <option value="0" {if $invoice_rates_items[q].LABOR_RATE_ACTIVE == 0} selected{/if}>No</option>
-                                                                            <option value="1" {if $invoice_rates_items[q].LABOR_RATE_ACTIVE == 1} selected{/if}>Yes</option>
+                                                                            <option value="0" {if $invoice_rates_items[q].LABOUR_RATE_ACTIVE == 0} selected{/if}>No</option>
+                                                                            <option value="1" {if $invoice_rates_items[q].LABOUR_RATE_ACTIVE == 1} selected{/if}>Yes</option>
                                                                         </select>
                                                                     </td>
                                                                     <td class="olotd4" nowrap>
                                                                         <select class="olotd5" name="type">
-                                                                            <option value="Parts" {if $invoice_rates_items[q].LABOR_TYPE == "Parts"} selected{/if}>Parts</option>
-                                                                            <option value="Service" {if $invoice_rates_items[q].LABOR_TYPE == "Service"} selected{/if}>Service</option>
+                                                                            <option value="Parts" {if $invoice_rates_items[q].LABOUR_TYPE == "Parts"} selected{/if}>Parts</option>
+                                                                            <option value="Service" {if $invoice_rates_items[q].LABOUR_TYPE == "Service"} selected{/if}>Service</option>
                                                                         </select>
                                                                     </td>
-                                                                    <td class="olotd4" nowrap><input name="manufacturer" class="olotd5" size="20" value="{$invoice_rates_items[q].LABOR_MANUF}" type="text" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"></td>
+                                                                    <td class="olotd4" nowrap><input name="manufacturer" class="olotd5" size="20" value="{$invoice_rates_items[q].LABOUR_MANUF}" type="text" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"></td>
                                                                     <td class="olotd4" nowrap>
-                                                                        <input type="hidden" name="id" value="{$invoice_rates_items[q].LABOR_RATE_ID}">
+                                                                        <input type="hidden" name="labour_rate_id" value="{$invoice_rates_items[q].LABOUR_RATE_ID}">
                                                                         <button type="submit" name="submit" value="delete">Delete</button>
                                                                         <button type="submit" name="submit" value="update">Update</button>
                                                                     </td>
@@ -58,7 +58,7 @@
                                                     </tr>                                                    
                                                 </table>
                                                 <b>Add New</b>
-                                                <form method="POST" action="?page=company:invoice_rates">
+                                                <form method="POST" action="?page=invoice:invoice_rates">
                                                     <table class="olotable" width="100%" border="0" cellpadding="5" cellspacing="0">
                                                         <tr>
                                                             <td class="olohead">Display</td>
@@ -109,7 +109,7 @@
                                                             </tr>
                                                             <tr>
                                                                 <td>
-                                                                    <form action="?page=company:invoice_rates" method="post" enctype="multipart/form-data">
+                                                                    <form action="?page=invoice:invoice_rates" method="post" enctype="multipart/form-data">
                                                                         <table width="350" border="0" cellpadding="1" cellspacing="1" class="box">
                                                                             <tr>
                                                                                 <td width="246">                                                                                    

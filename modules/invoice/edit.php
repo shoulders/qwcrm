@@ -12,22 +12,6 @@ if($invoice_id == '' && $invoice_id != '0') {
     exit;
 }
 
-########################################################
-#    Javascript Labour and Parts Deletion Endpoints    #
-########################################################
-
-// Delete Invoice Labour item
-if(isset($VAR['deleteType']) && $VAR['deleteType'] == 'labourRecord') {
-    delete_invoice_labour_item($db, $VAR['labour_id']);
-    recalculate_invoice_totals($db, $invoice_id);
-}
-
-// Delete Parts Item Record
-if(isset($VAR['deleteType']) && $VAR['deleteType'] == 'partsRecord') {
-    delete_invoice_parts_item($db, $VAR['parts_id']);
-    recalculate_invoice_totals($db, $invoice_id);
-}
-
 ##################################
 #      Update Invoice            #
 ##################################

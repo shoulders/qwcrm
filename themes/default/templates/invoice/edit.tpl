@@ -7,7 +7,6 @@
 <script src="{$theme_js_dir}dhtmlxcombo/dhtmlxcombo.js"></script>
 <link rel="stylesheet" href="{$theme_js_dir}dhtmlxcombo/fonts/font_roboto/roboto.css"/>
 <link rel="stylesheet" href="{$theme_js_dir}dhtmlxcombo/dhtmlxcombo.css">
-<script>{include file="`$theme_js_dir_finc`modules/invoice.js"}</script>
 <script>
 {literal}
     
@@ -484,7 +483,7 @@ function removeRowFromTableParts(){
                                                                         <td>{$currency_sym}{$labour_items[l].INVOICE_LABOUR_RATE|string_format:"%.2f"}</td>
                                                                         <td>{$currency_sym}{$labour_items[l].INVOICE_LABOUR_SUBTOTAL|string_format:"%.2f"}</td>
                                                                         <td>
-                                                                            <a href="javascript:void(0)" onclick="confirmLabourDelete({$labour_items[l].INVOICE_LABOUR_ID}, {$invoice[a].INVOICE_ID}, {$workorder_id}, {$customer_id});">
+                                                                            <a href="index.php?page=invoice:delete_labour&labour_id={$labour_items[l].INVOICE_LABOUR_ID}" onclick="return confirmDelete('{$translate_invoice_labour_delete_mes_confirmation}');">
                                                                                 <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{$translate_invoice_delete_invoice_labour_item|nl2br|regex_replace:"/[\r\t\n]/":" "}</b>');" onMouseOut="hideddrivetip();">
                                                                             </a>
                                                                         </td>
@@ -543,7 +542,7 @@ function removeRowFromTableParts(){
                                                                         <td>{$currency_sym}{$parts_items[p].INVOICE_PARTS_AMOUNT|string_format:"%.2f"}</td>
                                                                         <td>{$currency_sym}{$parts_items[p].INVOICE_PARTS_SUBTOTAL|string_format:"%.2f"}</td>
                                                                         <td>
-                                                                            <a href="javascript:void(0)" onclick="confirmPartsDelete({$parts_items[p].INVOICE_PARTS_ID}, {$invoice[a].INVOICE_ID}, {$workorder_id}, {$customer_id});">
+                                                                            <a href="index.php?page=invoice:delete_parts&parts_id={$parts_items[p].INVOICE_PARTS_ID}" onclick="return confirmDelete('{$translate_invoice_parts_delete_mes_confirmation}');">
                                                                                 <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{$translate_invoice_delete_parts_record|nl2br|regex_replace:"/[\r\t\n]/":" "}</b>');" onMouseOut="hideddrivetip();">
                                                                             </a>
                                                                         </td>

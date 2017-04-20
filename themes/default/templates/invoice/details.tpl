@@ -1,4 +1,4 @@
-<!-- view.tpl -->
+<!-- details.tpl -->
 <table width="100%" border="0" cellpadding="20" cellspacing="5">
     <tr>
         <td>
