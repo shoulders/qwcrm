@@ -106,19 +106,19 @@
                                         <table>
                                             <tr>
                                                 <td><b>{$translate_stats_total_invoiced}:</b></td>
-                                                <td><font color="red"<b>{$currency_sym}{$invoice_amount_sum}</b></font></td>
+                                                <td><font color="red"<b>{$currency_sym}{$invoice_amount_sum|string_format:"%.2f"}</b></font></td>
                                             </tr>
                                             <tr>
                                                 <td><b>{$translate_stats_total_expenses}:</b></td>
-                                                <td><font color="red"<b>{$currency_sym}{$expense_gross_amount_sum}</b></font></td>
+                                                <td><font color="red"<b>{$currency_sym}{$expense_gross_amount_sum|string_format:"%.2f"}</b></font></td>
                                             </tr>
                                             <tr>
                                                 <td> <b>{$translate_stats_total_refunds}:</b></td>
-                                                <td><font color="red"<b>{$currency_sym}{$refund_gross_amount_sum}</b></font></td>
+                                                <td><font color="red"<b>{$currency_sym}{$refund_gross_amount_sum|string_format:"%.2f"}</b></font></td>
                                             </tr>
                                             <tr>
                                                 <td><b>{$translate_stats_taxable_profit}:</b></td>
-                                                <td><font color="red"<b>{$currency_sym}{$taxable_profit_amount}</b></font></td>
+                                                <td><font color="red"<b>{$currency_sym}{$taxable_profit_amount|string_format:"%.2f"}</b></font></td>
                                             </tr>
                                         </table>
                                     </td>
@@ -167,7 +167,7 @@
                                             </tr>
                                             <tr>
                                                 <td><b>Sub:</b></td>
-                                                <td><font color="red"<b>{$currency_sym}{$parts_sub_total_sum}</b></font></td>
+                                                <td><font color="red"<b>{$currency_sym}{$parts_sub_total_sum|string_format:"%.2f"}</b></font></td>
                                             </tr>
                                         </table>
                                     </td>
@@ -183,7 +183,7 @@
                                             </tr>
                                             <tr>
                                                 <td><b>Sub:</b></td>
-                                                <td><font color="red"<b>{$currency_sym}{$labour_sub_total_sum}</b></font></td>
+                                                <td><font color="red"<b>{$currency_sym}{$labour_sub_total_sum|string_format:"%.2f"}</b></font></td>
                                             </tr>
                                         </table>
                                     </td>
@@ -191,15 +191,15 @@
                                         <table>
                                             <tr>
                                                 <td><b>Net:</b></td>
-                                                <td><font color="red"<b>{$currency_sym}{$expense_net_amount_sum}</b></font></td>
+                                                <td><font color="red"<b>{$currency_sym}{$expense_net_amount_sum|string_format:"%.2f"}</b></font></td>
                                             </tr>
                                             <tr>
                                                 <td><b>Tax:</b></td>
-                                                <td><font color="red"<b>{$currency_sym}{$expense_tax_amount_sum}</b></font></td>
+                                                <td><font color="red"<b>{$currency_sym}{$expense_tax_amount_sum|string_format:"%.2f"}</b></font></td>
                                             </tr>
                                             <tr>
                                                 <td><b>Gross:</b></td>
-                                                <td><font color="red"<b>{$currency_sym}{$expense_gross_amount_sum}</b></font></td>
+                                                <td><font color="red"<b>{$currency_sym}{$expense_gross_amount_sum|string_format:"%.2f"}</b></font></td>
                                             </tr>
                                         </table>
                                     </td>
@@ -207,15 +207,15 @@
                                         <table>
                                             <tr>
                                                 <td><b>Net:</b></td>
-                                                <td><font color="red"<b>{$currency_sym}{$refund_net_amount_sum}</b></font></td>
+                                                <td><font color="red"<b>{$currency_sym}{$refund_net_amount_sum|string_format:"%.2f"}</b></font></td>
                                             </tr>
                                             <tr>
                                                 <td><b>Tax:</b></td>
-                                                <td><font color="red"<b>{$currency_sym}{$refund_tax_amount_sum}</b></font></td>
+                                                <td><font color="red"<b>{$currency_sym}{$refund_tax_amount_sum|string_format:"%.2f"}</b></font></td>
                                             </tr>
                                             <tr>
                                                 <td><b>Gross:</b></td>
-                                                <td><font color="red"<b>{$currency_sym}{$refund_gross_amount_sum}</b></font></td>
+                                                <td><font color="red"<b>{$currency_sym}{$refund_gross_amount_sum|string_format:"%.2f"}</b></font></td>
                                             </tr>
                                         </table>
                                     </td>
@@ -223,23 +223,19 @@
                                         <table>
                                             <tr>
                                                 <td><b>Sub:</b></td>
-                                                <td><font color="red"<b>{$currency_sym}{$invoice_sub_total_sum}</b></font></td>
+                                                <td><font color="red"<b>{$currency_sym}{$invoice_sub_total_sum|string_format:"%.2f"}</b></font></td>
                                             </tr>
                                             <tr>
                                                 <td><b>Discount:</b></td>
-                                                <td><font color="red"<b>{$currency_sym}{$invoice_discount_sum}</b></font></td>
-                                            </tr>
-                                            <tr>
-                                                <td><b>Shipping:</b></td>
-                                                <td><font color="red"<b>{$currency_sym}{$invoice_shipping_sum}</b></font></td>
-                                            </tr>
+                                                <td><font color="red"<b>{$currency_sym}{$invoice_discount_sum|string_format:"%.2f"}</b></font></td>
+                                            </tr>                                            
                                             <tr>
                                                 <td><b>Tax:</b></td>
-                                                <td><font color="red"<b>{$currency_sym}{$invoice_tax_sum}</b></font></td>
+                                                <td><font color="red"<b>{$currency_sym}{$invoice_tax_sum|string_format:"%.2f"}</b></font></td>
                                             </tr>
                                             <tr>
                                                 <td><b>Gross:</b></td>
-                                                <td><font color="red"<b>{$currency_sym}{$invoice_amount_sum}</b></font></td>
+                                                <td><font color="red"<b>{$currency_sym}{$invoice_amount_sum|string_format:"%.2f"}</b></font></td>
                                             </tr>
                                         </table>
                                     </td>

@@ -10,6 +10,8 @@
 #                                                        #
 #########################################################
 
+//require(INCLUDES_DIR.'modules/stats.php');
+
 $q = "SELECT * FROM ".PRFX."TRACKER WHERE ip=". $db->qstr( $VAR['ip'] ) ."ORDER BY date";
 if(!$rs = $db->execute($q)) {
     force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');

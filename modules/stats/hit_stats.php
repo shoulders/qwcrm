@@ -1,14 +1,7 @@
 <?php
-#########################################################
-#                 #    
-#                     #
-#  www.citecrm.com  dev@onsitecrm.com                    #
-#  This program is distributed under the terms and         #
-#  conditions of the GPL                                #
-#  stats.php                                            #
-#  Version 0.0.1    Fri Sep 30 09:30:10 PDT 2005        #
-#                                                        #
-#########################################################
+
+require(INCLUDES_DIR.'modules/supplier.php');
+
 /* set start date */
 
 // add this to the other time sttements for refernce? jon
