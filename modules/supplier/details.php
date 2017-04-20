@@ -1,8 +1,7 @@
 <?php
 
-// Load the Supplier classes
-require_once('include.php');
+require(INCLUDES_DIR.'modules/expense.php');
 
 // Assign the arrays
-$smarty->assign('supplier_details', display_supplier_info($db, $VAR['supplier_id']));
-$BuildPage .= $smarty->fetch('supplier'.SEP.'details.tpl');
+$smarty->assign('supplier_details', get_supplier_details($db, $supplier_id));
+$BuildPage .= $smarty->fetch('supplier/details.tpl');

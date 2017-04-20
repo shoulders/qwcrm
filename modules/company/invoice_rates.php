@@ -12,7 +12,7 @@ if(isset($VAR['submit'])) {
     
     // edit invoice rate item
     if($VAR['submit'] == 'update') {            
-        edit_invoice_rates_item($db, $VAR);        
+        update_invoice_labour_rates_item($db, $VAR);        
     }
     
     // delete invoice rate rate
@@ -22,12 +22,11 @@ if(isset($VAR['submit'])) {
 
     // New invoice rate rate
     if($VAR['submit'] == 'new') {
-        new_invoice_rates_item($db, $VAR);
+        new_invoice_labour_rates_item($db, $VAR);
     }
     
 }
 
 // Fetch Page
-$smarty->assign('invoice_rates_items', get_invoice_rates_item($db));
+$smarty->assign('invoice_rates_items', get_invoice_labour_rates_item($db));
 $BuildPage .= $smarty->fetch('company/invoice_rates.tpl');
-    

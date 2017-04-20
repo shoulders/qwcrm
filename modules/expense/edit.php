@@ -8,14 +8,14 @@ $langvals = gateway_xml2php('expense');
 // If details submitted run update values, if not set load edit.tpl and populate values
 if(isset($VAR['submit'])) {    
         
-    if (!update_expense($db, $VAR)){
+    if (!update_expense($db, $expense_id, $VAR)){
 
         force_page('expense', 'edit','error_msg=Falied to Update Expense Information&expense_id='.$expense_id);
         exit;
                 
     } else {
             
-        force_page('expense', 'expense_details&expense_id='.$expense_id);
+        force_page('expense', 'details&expense_id='.$expense_id);
         exit;
     }
 

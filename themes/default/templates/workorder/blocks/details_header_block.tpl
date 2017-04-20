@@ -38,7 +38,7 @@
         </td>
         
         <!-- Last Change -->
-        <td class="olotd4" align="center">{$single_workorder[i].LAST_ACTIVE|date_format:"$date_format"}</td>  
+        <td class="olotd4" align="center">{$single_workorder[i].LAST_ACTIVE|date_format:$date_format}</td>  
         
      </tr>
 </table>

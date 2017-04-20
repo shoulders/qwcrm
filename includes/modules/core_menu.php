@@ -7,6 +7,20 @@
  * @license   GNU/GPLv3 or later; https://www.gnu.org/licenses/gpl.html
  */
 
+/*
+ * Mandatory Code - Code that is run upon the file being loaded
+ * Workorders - functions for wokorders
+ * Invoices - functions for invoices
+ * Customers - functions for customersd
+ */
+
+/* 
+ * These are copied from includes/core_home.php but with menu added on the front of the name
+ * These are only used to show numbers in the menu and could be removed 
+ */
+
+
+
 /** Mandatory Code **/
 
 /** Workorders **/ 
@@ -32,11 +46,18 @@ function menu_get_single_workorder_status($db, $workorder_id){
     
 }
 
-/* 
- * These are copied from includes/core_home.php but with menu added on the front of the name
- * These are only used to show numbers in the menu and could be removed
- * 
- */
+#########################################
+# Count Work Orders that are unassigned #
+#########################################
+
+// Open - Assigned
+// This might not be 100% correct
+
+function menu_count_unassigned_workorders($db){
+    
+    return (menu_count_workorders_with_status($db, 10) - menu_count_workorders_with_status($db, 2));
+    
+}
 
 #########################################
 # Count Work Orders for a given status  #
@@ -80,18 +101,6 @@ function menu_count_invoices_with_status($db, $invoice_status){
        
         return $rs->fields['INVOICE_COUNT'];
         
-    }    
-}
-
-#########################################
-# Count Work Orders that are unassigned #
-#########################################
-
-// Open - Assigned
-// This might not be 100% correct
-
-function menu_count_unassigned_workorders($db){
-    
-    return (menu_count_workorders_with_status($db, 10) - menu_count_workorders_with_status($db, 2));
+    }
     
 }

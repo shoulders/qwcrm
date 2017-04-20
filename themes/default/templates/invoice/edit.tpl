@@ -436,7 +436,7 @@ function removeRowFromTableParts(){
                                                                 {section name=t loop=$transactions}
                                                                     <tr class="olotd4">
                                                                         <td>{$transactions[t].TRANSACTION_ID}</td>
-                                                                        <td>{$transactions[t].DATE|date_format:"$date_format"}</td>
+                                                                        <td>{$transactions[t].DATE|date_format:$date_format}</td>
                                                                         <td><b>{$currency_symbol}</b>{$transactions[t].AMOUNT|string_format:"%.2f"}</td>
                                                                         <td>
                                                                             {if $transactions[t].TYPE == 1}{$translate_invoice_cc}

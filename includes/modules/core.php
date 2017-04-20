@@ -7,9 +7,15 @@
  * @license   GNU/GPLv3 or later; https://www.gnu.org/licenses/gpl.html
  */
 
-// will only be needed by main when stuff is moved. get functions in header working first, then move
+/*
+ * Mandatory Code - Code that is run upon the file being loaded
+ * Workorders - functions for wokorders
+ * Invoices - functions for invoices
+ * Customers - functions for customersd
+ */
 
-/** Mandatory Code **/
+
+/** Home Page **/
 
 #########################################
 # Display Welcome Note                  #
@@ -33,7 +39,7 @@ function display_welcome_msg($db){
     
 }
 
-/** Work Orders **/
+/** Workorders **/
 
 #########################################
 # Count Work Orders for a given status  #

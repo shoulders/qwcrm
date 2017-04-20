@@ -1,8 +1,7 @@
 <?php
 
-// Load the Refund Functions
-require_once('include.php');
+require(INCLUDES_DIR.'modules/refund.php');
 
 // Assign the arrays
-$smarty->assign('refund_details', display_refund_info($db, $VAR['refund_id']));
-$BuildPage .= $smarty->fetch('refund'.SEP.'details.tpl');
+$smarty->assign('refund_details', get_refund_details($db, $refund_id));
+$BuildPage .= $smarty->fetch('refund/details.tpl');

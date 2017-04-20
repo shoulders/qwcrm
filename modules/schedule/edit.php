@@ -37,7 +37,7 @@ if(isset($VAR['submit'])) {
 } else {
     
     // Get the Schedule Record
-    $schedule_item = display_single_schedule($db, $schedule_id);
+    $schedule_item = get_schedule_details($db, $schedule_id);
     
     // Corrects the extra time segment issue    
     $schedule_end_time = $schedule_item['0']['SCHEDULE_END'] + 1;      

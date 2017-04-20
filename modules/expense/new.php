@@ -11,9 +11,9 @@ $new_record_id = last_expense_id_lookup($db) +1;
 // If details submitted insert record, if non submitted load new.tpl and populate values
     if((isset($VAR['submit'])) || (isset($VAR['submitandnew']))) {
         
-        if($run != insert_expense($db, $VAR)){
+        if(!$expense_id = insert_expense($db, $VAR)){
             $smarty->assign('error_msg', 'Falied to insert Expense');
-            $BuildPage .= $smarty->fetch('core'.SEP.'error.tpl');
+            $BuildPage .= $smarty->fetch('core/error.tpl');
             echo "expense insert error";
 
             } else {
@@ -21,13 +21,13 @@ $new_record_id = last_expense_id_lookup($db) +1;
                 if (isset($VAR['submitandnew'])){
 
                      // Submit New Expense and reload page
-                     force_page('expense', 'new&page_title=');
+                     force_page('expense', 'new');
                      exit;
 
                 } else {
 
                     // Submit and load Expense View Details
-                    force_page('expense', 'expense_details&expense_id='.$new_record_id.'&page_title='.$langvals['expense_details_title']);
+                    force_page('expense', 'details&expense_id='.$expense_id);
                     exit;
 
                  }

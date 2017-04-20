@@ -6,7 +6,6 @@
 <script src="{$theme_js_dir}jscal2/jscal2.js"></script>
 <script src="{$theme_js_dir}jscal2/unicode-letter.js"></script>
 <script>{include file="`$theme_js_dir_finc`jscal2/language.js"}</script>
-<script>{include file="expense/javascripts.js"}</script>
 
 <table width="100%" border="0" cellpadding="20" cellspacing="0">
     <tr>
@@ -30,7 +29,7 @@
                                          <td>
                                             {section name=q loop=$expense_details}
                                                 {literal}
-                                                <form  action="index.php?page=expense:edit" method="POST" name="edit_expense" id="edit_expense">
+                                                <form  method="post" action="index.php?page=expense:edit" name="edit_expense" id="edit_expense">
                                                 {/literal}
                                                     <table width="100%" cellpadding="2" cellspacing="2" border="0">                                             
                                                         <tr>
@@ -65,45 +64,45 @@
                                                             <td align="right"><b>{$translate_expense_type}</b><span style="color: #ff0000"> *</span></td>
                                                             <td>
                                                                 <select id="expenseType" name="expenseType" class="olotd5" col="30" style="width: 150px;" value="{$expense_details[q].EXPENSE_TYPE}"/>
-                                                                    <option value="1">{$translate_expense_type_1}</option>
-                                                                    <option value="2">{$translate_expense_type_2}</option>
-                                                                    <option value="3">{$translate_expense_type_3}</option>
-                                                                    <option value="4">{$translate_expense_type_4}</option>
-                                                                    <option value="5">{$translate_expense_type_5}</option>
-                                                                    <option value="6">{$translate_expense_type_6}</option>
-                                                                    <option value="7">{$translate_expense_type_7}</option>
-                                                                    <option value="8">{$translate_expense_type_8}</option>
-                                                                    <option value="9">{$translate_expense_type_9}</option>
-                                                                    <option value="10">{$translate_expense_type_10}</option>
-                                                                    <option value="11">{$translate_expense_type_11}</option>
-                                                                    <option value="12">{$translate_expense_type_12}</option>
-                                                                    <option value="13">{$translate_expense_type_13}</option>
-                                                                    <option value="14">{$translate_expense_type_14}</option>
-                                                                    <option value="15">{$translate_expense_type_15}</option>
-                                                                    <option value="16">{$translate_expense_type_16}</option>
-                                                                    <option value="17">{$translate_expense_type_17}</option>
-                                                                    <option value="18">{$translate_expense_type_18}</option>
-                                                                    <option value="19">{$translate_expense_type_19}</option>
-                                                                    <option value="20">{$translate_expense_type_20}</option>
-                                                                    <option value="21">{$translate_expense_type_21}</option>
+                                                                    <option value="1">{$translate_expense_type_1}{if $expense_details[q].EXPENSE_TYPE == '1'} selected{/if}</option>
+                                                                    <option value="2">{$translate_expense_type_2}{if $expense_details[q].EXPENSE_TYPE == '2'} selected{/if}</option>
+                                                                    <option value="3">{$translate_expense_type_3}{if $expense_details[q].EXPENSE_TYPE == '3'} selected{/if}</option>
+                                                                    <option value="4">{$translate_expense_type_4}{if $expense_details[q].EXPENSE_TYPE == '4'} selected{/if}</option>
+                                                                    <option value="5">{$translate_expense_type_5}{if $expense_details[q].EXPENSE_TYPE == '5'} selected{/if}</option>
+                                                                    <option value="6">{$translate_expense_type_6}{if $expense_details[q].EXPENSE_TYPE == '6'} selected{/if}</option>
+                                                                    <option value="7">{$translate_expense_type_7}{if $expense_details[q].EXPENSE_TYPE == '7'} selected{/if}</option>
+                                                                    <option value="8">{$translate_expense_type_8}{if $expense_details[q].EXPENSE_TYPE == '8'} selected{/if}</option>
+                                                                    <option value="9">{$translate_expense_type_9}{if $expense_details[q].EXPENSE_TYPE == '9'} selected{/if}</option>
+                                                                    <option value="10">{$translate_expense_type_10}{if $expense_details[q].EXPENSE_TYPE == '10'} selected{/if}</option>
+                                                                    <option value="11">{$translate_expense_type_11}{if $expense_details[q].EXPENSE_TYPE == '11'} selected{/if}</option>
+                                                                    <option value="12">{$translate_expense_type_12}{if $expense_details[q].EXPENSE_TYPE == '12'} selected{/if}</option>
+                                                                    <option value="13">{$translate_expense_type_13}{if $expense_details[q].EXPENSE_TYPE == '13'} selected{/if}</option>
+                                                                    <option value="14">{$translate_expense_type_14}{if $expense_details[q].EXPENSE_TYPE == '14'} selected{/if}</option>
+                                                                    <option value="15">{$translate_expense_type_15}{if $expense_details[q].EXPENSE_TYPE == '15'} selected{/if}</option>
+                                                                    <option value="16">{$translate_expense_type_16}{if $expense_details[q].EXPENSE_TYPE == '16'} selected{/if}</option>
+                                                                    <option value="17">{$translate_expense_type_17}{if $expense_details[q].EXPENSE_TYPE == '17'} selected{/if}</option>
+                                                                    <option value="18">{$translate_expense_type_18}{if $expense_details[q].EXPENSE_TYPE == '18'} selected{/if}</option>
+                                                                    <option value="19">{$translate_expense_type_19}{if $expense_details[q].EXPENSE_TYPE == '19'} selected{/if}</option>
+                                                                    <option value="20">{$translate_expense_type_20}{if $expense_details[q].EXPENSE_TYPE == '20'} selected{/if}</option>
+                                                                    <option value="21">{$translate_expense_type_21}{if $expense_details[q].EXPENSE_TYPE == '21'} selected{/if}</option>
                                                                 </select>
                                                             </td>                                                            
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{$translate_expense_payment_method}</b><span style="color: #ff0000"> *</span></td>
                                                             <td>
-                                                                <select id="expensePaymentMethod" name="expensePaymentMethod" class="olotd5" style="width: 150px;" value="{$expense_details[q].EXPENSE_PAYMENT_METHOD}"/>
-                                                                    <option value="1">{$translate_expense_payment_method_1}</option>
-                                                                    <option value="2">{$translate_expense_payment_method_2}</option>
-                                                                    <option value="3">{$translate_expense_payment_method_3}</option>
-                                                                    <option value="4">{$translate_expense_payment_method_4}</option>
-                                                                    <option value="5">{$translate_expense_payment_method_5}</option>
-                                                                    <option value="6">{$translate_expense_payment_method_6}</option>
-                                                                    <option value="7">{$translate_expense_payment_method_7}</option>
-                                                                    <option value="8">{$translate_expense_payment_method_8}</option>
-                                                                    <option value="9">{$translate_expense_payment_method_9}</option>
-                                                                    <option value="10">{$translate_expense_payment_method_10}</option>
-                                                                    <option value="11">{$translate_expense_payment_method_11}</option>
+                                                                <select id="expensePaymentMethod" name="expensePaymentMethod" class="olotd5" style="width: 150px;" value="{$$expense_details[q].EXPENSE_PAYMENT_METHOD}"/>
+                                                                    <option value="1">{$translate_expense_payment_method_1}{if $expense_details[q].EXPENSE_METHOD == '1'} selected{/if}</option>
+                                                                    <option value="2">{$translate_expense_payment_method_2}{if $expense_details[q].EXPENSE_METHOD == '2'} selected{/if}</option>
+                                                                    <option value="3">{$translate_expense_payment_method_3}{if $expense_details[q].EXPENSE_METHOD == '3'} selected{/if}</option>
+                                                                    <option value="4">{$translate_expense_payment_method_4}{if $expense_details[q].EXPENSE_METHOD == '4'} selected{/if}</option>
+                                                                    <option value="5">{$translate_expense_payment_method_5}{if $expense_details[q].EXPENSE_METHOD == '5'} selected{/if}</option>
+                                                                    <option value="6">{$translate_expense_payment_method_6}{if $expense_details[q].EXPENSE_METHOD == '6'} selected{/if}</option>
+                                                                    <option value="7">{$translate_expense_payment_method_7}{if $expense_details[q].EXPENSE_METHOD == '7'} selected{/if}</option>
+                                                                    <option value="8">{$translate_expense_payment_method_8}{if $expense_details[q].EXPENSE_METHOD == '8'} selected{/if}</option>
+                                                                    <option value="9">{$translate_expense_payment_method_9}{if $expense_details[q].EXPENSE_METHOD == '9'} selected{/if}</option>
+                                                                    <option value="10">{$translate_expense_payment_method_10}{if $expense_details[q].EXPENSE_METHOD == '10'} selected{/if}</option>
+                                                                    <option value="11">{$translate_expense_payment_method_11}{if $expense_details[q].EXPENSE_METHOD == '11'} selected{/if}</option>
                                                                 </select>
                                                             </td>
                                                         </tr>
@@ -137,13 +136,6 @@
                                                         </tr>                                        
                                                     </table>
                                                 </form>
-
-                                                <!-- This script sets the dropdown Expense Type to the correct item -->
-                                                <script>dropdown_select_edit_type("{$expense_details[q].EXPENSE_TYPE}");</script>
-
-                                                <!-- This script sets the dropdown Expense Type to the correct item -->
-                                                <script>dropdown_select_edit_payment_method("{$expense_details[q].EXPENSE_PAYMENT_METHOD}");</script>
-                                                
                                             {/section}
                                          </td>
                                      </tr>

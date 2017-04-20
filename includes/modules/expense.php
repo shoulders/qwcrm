@@ -1,26 +1,185 @@
 <?php
 
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/*
+ * @package   QWcrm
+ * @author    Jon Brown https://quantumwarp.com/
+ * @copyright Copyright (C) 2016 - 2017 Jon Brown, All rights reserved.
+ * @license   GNU/GPLv3 or later; https://www.gnu.org/licenses/gpl.html
  */
 
-##########################################
-#      Last Record Look Up               #
-##########################################
+/*
+ * Mandatory Code - Code that is run upon the file being loaded
+ * Display Functions - Code that is used to primarily display records - linked tables
+ * New/Insert Functions - Creation of new records
+ * Get Functions - Grabs specific records/fields ready for update - no table linking
+ * Update Functions - For updating records/fields
+ * Close Functions - Closing Work Orders code
+ * Delete Functions - Deleting Work Orders
+ * Other Functions - All other functions not covered above
+ */
 
-function last_expense_id_lookup($db){
+/** Mandatory Code **/
 
-$q = 'SELECT * FROM '.PRFX.'TABLE_EXPENSE ORDER BY EXPENSE_ID DESC LIMIT 1';
-    if(!$rs = $db->execute($q)) {
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-        exit;
-    } else {
-        return $rs->fields['EXPENSE_ID'];
+/** Display Functions **/
+
+
+#####################################################
+#         Display expenses                          #
+#####################################################
+
+function display_expenses($db, $direction = 'DESC', $use_pages = false, $page_no = 1, $records_per_page = 25, $search_category, $search_term) {
+    
+    global $smarty;
+    
+    // Prepare the search terms where needed
+    $prepared_search_term = prepare_expense_search_terms($search_category, $search_term);
+    
+    /* Filter the Records */    
+    
+    // Restrict by Search Category
+    if($search_category != '') {
+        
+        switch ($search_category) {
+
+            case 'id':            
+                $whereTheseRecords = " WHERE EXPENSE_ID";
+                break;
+
+            case 'payee':          
+                $whereTheseRecords = " WHERE EXPENSE_PAYEE";
+                break;
+
+            case 'date':          
+                $whereTheseRecords = " WHERE EXPENSE_DATE";
+                break;
+            
+            case 'type':          
+                $whereTheseRecords = " WHERE EXPENSE_TYPE";
+                break;
+
+            case 'payement_method':          
+                $whereTheseRecords = " WHERE EXPENSE_PAYMENT_METHOD";
+                break;
+
+            case 'net_amount':          
+                $whereTheseRecords = " WHERE EXPENSE_NET_AMOUNT";
+                break;
+
+            case 'tax_rate':         
+                $whereTheseRecords = " WHERE EXPENSE_TAX_RATE";
+                break;
+                
+            case 'tax':      
+                $whereTheseRecords = " WHERE EXPENSE_TAX_AMOUNT";
+                break;
+                
+            case 'total':           
+                $whereTheseRecords = " WHERE EXPENSE_GROSS_AMOUNT";
+                break;
+            
+            case 'notes':        
+                $whereTheseRecords = " WHERE EXPENSE_NOTES";
+                break;
+            
+            case 'items':        
+                $whereTheseRecords = " WHERE EXPENSE_ITEMS";
+                break;
+            
+            default:           
+                $whereTheseRecords = " WHERE EXPENSE_ID";
+
+        }
+        
+        // Set the search term restrictor when a category has been set
+        $likeTheseRecords = " LIKE '%".$prepared_search_term."%'";
         
     }
+    
+    /* The SQL code */
+    
+    $sql =  "SELECT * 
+            FROM ".PRFX."TABLE_EXPENSE".                                                   
+            $whereTheseRecords.            
+            $likeTheseRecords.
+            " GROUP BY ".PRFX."TABLE_EXPENSE.EXPENSE_ID".
+            " ORDER BY ".PRFX."TABLE_EXPENSE.EXPENSE_ID ".$direction;            
+    
+    /* Restrict by pages */
+    
+    if($use_pages == true) {
+    
+        // Get Start Record
+        $start_record = (($page_no * $records_per_page) - $records_per_page);
+        
+        // Figure out the total number of records in the database for the given search        
+        if(!$rs = $db->Execute($sql)) {
+            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_count'));
+            exit;
+        } else {        
+            $total_results = $rs->RecordCount();            
+            $smarty->assign('total_results', $total_results);
+        }        
+
+        // Figure out the total number of pages. Always round up using ceil()
+        $total_pages = ceil($total_results / $records_per_page);
+        $smarty->assign('total_pages', $total_pages);
+        
+        // Set the page number
+        $smarty->assign('page_no', $page_no);
+        
+        // Assign the Previous page
+        if($page_no > 1) {
+            $previous = ($page_no - 1);            
+        } else { 
+            $previous = 1;            
+        }
+        $smarty->assign('previous', $previous);        
+        
+        // Assign the next page
+        if($page_no < $total_pages){
+            $next = ($page_no + 1);            
+        } else {
+            $next = $total_pages;
+        }
+        $smarty->assign('next', $next);
+        
+        // Only return the given page's records
+        $limitTheseRecords = " LIMIT ".$start_record.", ".$records_per_page;
+        
+        // add the restriction on to the SQL
+        $sql .= $limitTheseRecords;
+        
+    } else {
+        
+        // This make the drop down menu look correct
+        $smarty->assign('total_pages', 1);
+        
+    }
+
+    /* Return the records */
+         
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
+        exit;
+    } else {
+        
+        $records = $rs->GetArray();   // do i need to add the check empty
+
+        if(empty($records)){
+            
+            return false;
+            
+        } else {
+            
+            return $records;
+            
+        }
+        
+    }
+    
 }
+
+/** New/Insert Functions **/
 
 ##########################################
 #      Insert Expense                    #
@@ -28,8 +187,7 @@ $q = 'SELECT * FROM '.PRFX.'TABLE_EXPENSE ORDER BY EXPENSE_ID DESC LIMIT 1';
 
 function insert_expense($db, $VAR) {
 
-    $sql = "INSERT INTO ".PRFX."TABLE_EXPENSE SET
-            EXPENSE_ID              = ". $db->qstr( $VAR['expense_id']                      ).",
+    $sql = "INSERT INTO ".PRFX."TABLE_EXPENSE SET            
             EXPENSE_PAYEE           = ". $db->qstr( $VAR['expensePayee']                    ).",
             EXPENSE_DATE            = ". $db->qstr( date_to_timestamp($VAR['expenseDate'])  ).",
             EXPENSE_TYPE            = ". $db->qstr( $VAR['expenseType']                     ).",
@@ -44,63 +202,19 @@ function insert_expense($db, $VAR) {
     if(!$result = $db->Execute($sql)) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
         exit;
+    } else {
+    
+        return $db->Insert_ID();
+        
     }
     
 } 
 
-#####################################
-#     Update Expense                #
-#####################################
-
-function update_expense($db, $VAR) {
-
-    $sql = "UPDATE ".PRFX."TABLE_EXPENSE SET
-            EXPENSE_PAYEE           = ". $db->qstr( $VAR['expensePayee']                    ).",
-            EXPENSE_DATE            = ". $db->qstr( date_to_timestamp($VAR['expenseDate'])  ).",
-            EXPENSE_TYPE            = ". $db->qstr( $VAR['expenseType']                     ).",
-            EXPENSE_PAYMENT_METHOD  = ". $db->qstr( $VAR['expensePaymentMethod']            ).",
-            EXPENSE_NET_AMOUNT      = ". $db->qstr( $VAR['expenseNetAmount']                ).",
-            EXPENSE_TAX_RATE        = ". $db->qstr( $VAR['expenseTaxRate']                  ).",
-            EXPENSE_TAX_AMOUNT      = ". $db->qstr( $VAR['expenseTaxAmount']                ).",
-            EXPENSE_GROSS_AMOUNT    = ". $db->qstr( $VAR['expenseGrossAmount']              ).",
-            EXPENSE_NOTES           = ". $db->qstr( $VAR['expenseNotes']                    ).",
-            EXPENSE_ITEMS           = ". $db->qstr( $VAR['expenseItems']                    )."
-            WHERE EXPENSE_ID        = ". $db->qstr( $VAR['expense_id']                      );                        
-            
-    if(!$result = $db->Execute($sql)) {
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-        exit;
-    } else {
-      return true;
-    }
-    
-} 
-
-#####################################
-#    Delete Record                  #
-#####################################
-
-function delete_expense($db, $expense_id){
-    
-    $sql = "DELETE FROM ".PRFX."TABLE_EXPENSE WHERE EXPENSE_ID=".$db->qstr($expense_id);
-    
-    if(!$rs = $db->Execute($sql)) {
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-        exit;    
-    } else {
-        return true;
-    }    
-}
+/** Get Functions **/
 
 ##########################
 #  Get Expense Details   #
 ##########################
-
-/*
- * This combined function allows you to pull any of the company information individually
- * or return them all as an array
- * supply the required field name or all to return all of them as an array
- */
 
 function get_expense_details($db, $expense_id, $item = null){
     
@@ -127,11 +241,64 @@ function get_expense_details($db, $expense_id, $item = null){
     
 }
 
+/** Update Functions **/
 
-######################################################
-#               Expense Gateway                      # // Converts the numeric values storde in the database to their display names
-#      Manipulates search data for server submission #
-######################################################
+#####################################
+#     Update Expense                #
+#####################################
+
+function update_expense($db, $expense_id, $VAR) {
+
+    $sql = "UPDATE ".PRFX."TABLE_EXPENSE SET
+            EXPENSE_PAYEE           = ". $db->qstr( $VAR['expensePayee']                    ).",
+            EXPENSE_DATE            = ". $db->qstr( date_to_timestamp($VAR['expenseDate'])  ).",
+            EXPENSE_TYPE            = ". $db->qstr( $VAR['expenseType']                     ).",
+            EXPENSE_PAYMENT_METHOD  = ". $db->qstr( $VAR['expensePaymentMethod']            ).",
+            EXPENSE_NET_AMOUNT      = ". $db->qstr( $VAR['expenseNetAmount']                ).",
+            EXPENSE_TAX_RATE        = ". $db->qstr( $VAR['expenseTaxRate']                  ).",
+            EXPENSE_TAX_AMOUNT      = ". $db->qstr( $VAR['expenseTaxAmount']                ).",
+            EXPENSE_GROSS_AMOUNT    = ". $db->qstr( $VAR['expenseGrossAmount']              ).",
+            EXPENSE_NOTES           = ". $db->qstr( $VAR['expenseNotes']                    ).",
+            EXPENSE_ITEMS           = ". $db->qstr( $VAR['expenseItems']                    )."
+            WHERE EXPENSE_ID        = ". $db->qstr( $expense_id                             );                        
+            
+    if(!$result = $db->Execute($sql)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
+    } else {
+      return true;
+    }
+    
+} 
+
+/** Close Functions **/
+
+/** Delete Functions **/
+
+#####################################
+#    Delete Record                  #
+#####################################
+
+function delete_expense($db, $expense_id){
+    
+    $sql = "DELETE FROM ".PRFX."TABLE_EXPENSE WHERE EXPENSE_ID=".$db->qstr($expense_id);
+    
+    if(!$rs = $db->Execute($sql)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;    
+    } else {
+        
+        return true;
+        
+    } 
+    
+}
+
+/** Other Functions **/
+
+################################################################
+#  Prepare Search Terms - compensates for smarty translations  #
+################################################################
 
 function prepare_expense_search_terms($search_category, $search_term) {
 
@@ -271,249 +438,21 @@ function prepare_expense_search_terms($search_category, $search_term) {
     
 }
 
-#####################################################
-#         Display all expenses                      #
-#####################################################
+##########################################
+#      Last Record Look Up               #
+##########################################
 
-function display_expenses($db, $direction = 'DESC', $use_pages = false, $page_no = 1, $records_per_page = 25, $search_category, $search_term) {
+function last_expense_id_lookup($db){
+
+    $sql = 'SELECT * FROM '.PRFX.'TABLE_EXPENSE ORDER BY EXPENSE_ID DESC LIMIT 1';
     
-    global $smarty;
-    
-    // Prepare the search terms where needed
-    $prepared_search_term = prepare_expense_search_terms($search_category, $search_term);
-    
-    /* Filter the Records */
-    
-    /* Status Restriction
-    if($status != 'all') {
-        // Restrict by status
-        $whereTheseRecords = " WHERE ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_STATUS= ".$db->qstr($status);       
-    } else {            
-        // Do not restrict by status
-        $whereTheseRecords = " WHERE ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_ID = *";
-    }        
-
-    // Restrict by Employee
-    if($employee_id != null) {
-        $whereTheseRecords .= " AND ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_ID=".$db->qstr($employee_id);
-    }
-
-    // Restrict by Customer
-    if($customer_id != null) {
-        $whereTheseRecords .= " AND ".PRFX."TABLE_CUSTOMER.CUSTOMER_ID=".$db->qstr($customer_id);
-    }*/
-    
-    // Restrict by Search Category
-    if($search_category != '') {
-        
-        switch ($search_category) {
-
-            case 'expense_id':            
-                $whereTheseRecords = " WHERE EXPENSE_ID";
-                break;
-
-            case 'payee':          
-                $whereTheseRecords = " WHERE EXPENSE_PAYEE";
-                break;
-
-            case 'date':          
-                $whereTheseRecords = " WHERE EXPENSE_DATE";
-                break;
-            
-            case 'type':          
-                $whereTheseRecords = " WHERE EXPENSE_TYPE";
-                break;
-
-            case 'payement_method':          
-                $whereTheseRecords = " WHERE EXPENSE_PAYMENT_METHOD";
-                break;
-
-            case 'net_amount':          
-                $whereTheseRecords = " WHERE EXPENSE_NET_AMOUNT";
-                break;
-
-            case 'tax_rate':         
-                $whereTheseRecords = " WHERE EXPENSE_TAX_RATE";
-                break;
-                
-            case 'tax':      
-                $whereTheseRecords = " WHERE EXPENSE_TAX_AMOUNT";
-                break;
-                
-            case 'total':           
-                $whereTheseRecords = " WHERE EXPENSE_GROSS_AMOUNT";
-                break;
-            
-            case 'notes':        
-                $whereTheseRecords = " WHERE EXPENSE_NOTES";
-                break;
-            
-            case 'items':        
-                $whereTheseRecords = " WHERE EXPENSE_ITEMS";
-                break;
-            
-            default:           
-                $whereTheseRecords = " WHERE EXPENSE_ID";
-
-        }
-        
-        // Set the search term restrictor when a category has been set
-        $likeTheseRecords = " LIKE '%".$prepared_search_term."%'";
-        
-    } else {
-        
-        // if category has been set, this is the default
-        //$likeTheseRecords = " LIKE '%".$search_term."%'";
-        
-    }
-    
-    /* The SQL code */
-    
-    $sql =  "SELECT * 
-            FROM ".PRFX."TABLE_EXPENSE".                                                   
-            $whereTheseRecords.            
-            $likeTheseRecords.
-            " GROUP BY ".PRFX."TABLE_EXPENSE.EXPENSE_ID".
-            " ORDER BY ".PRFX."TABLE_EXPENSE.EXPENSE_ID ".$direction;            
-    
-    /* Restrict by pages */
-    
-    if($use_pages == true) {
-    
-        // Get Start Record
-        $start_record = (($page_no * $records_per_page) - $records_per_page);
-        
-        // Figure out the total number of records in the database for the given search        
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_count'));
-            exit;
-        } else {        
-            $total_results = $rs->RecordCount();            
-            $smarty->assign('total_results', $total_results);
-        }        
-
-        // Figure out the total number of pages. Always round up using ceil()
-        $total_pages = ceil($total_results / $records_per_page);
-        $smarty->assign('total_pages', $total_pages);
-        
-        // Set the page number
-        $smarty->assign('page_no', $page_no);
-        
-        // Assign the Previous page
-        if($page_no > 1) {
-            $previous = ($page_no - 1);            
-        } else { 
-            $previous = 1;            
-        }
-        $smarty->assign('previous', $previous);        
-        
-        // Assign the next page
-        if($page_no < $total_pages){
-            $next = ($page_no + 1);            
-        } else {
-            $next = $total_pages;
-        }
-        $smarty->assign('next', $next);
-        
-        // Only return the given page's records
-        $limitTheseRecords = " LIMIT ".$start_record.", ".$records_per_page;
-        
-        // add the restriction on to the SQL
-        $sql .= $limitTheseRecords;
-        
-    } else {
-        
-        // This make the drop down menu look correct
-        $smarty->assign('total_pages', 1);
-        
-    }
-
-    /* Return the records */
-         
-    if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
-        exit;
-    } else {
-        
-        $records = $rs->GetArray();   // do i need to add the check empty
-
-        if(empty($records)){
-            
-            return false;
-            
-        } else {
-            
-            return $records;
-            
-        }
-        
-    }
-    
-}
-
-
-
-
-######################################################
-# Search - Also returns records for intial view page #
-######################################################
-
-function ORIGdisplay_expenses($db, $search_category, $search_term, $page_no) {
-    
-    global $smarty;
-
-    // Define the number of results per page
-    $max_results = 25;
-
-    // Figure out the limit for the Execute based
-    // on the current page number.
-    $from = (($page_no * $max_results) - $max_results);
-
-    $sql = "SELECT * FROM ".PRFX."TABLE_EXPENSE WHERE EXPENSE_$search_category LIKE '$search_term' ORDER BY EXPENSE_ID DESC LIMIT $from, $max_results";
-
-    //print $sql;
-
-    if(!$result = $db->Execute($sql)) {
+    if(!$rs = $db->execute($sql)) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
         exit;
     } else {
-        $expense_search_result = array();
+        
+        return $rs->fields['EXPENSE_ID'];
+        
     }
-
-    while($row = $result->FetchRow()){
-         array_push($expense_search_result, $row);
-    }
-
-    // Figure out the total number of results in DB:
-    $results = $db->Execute("SELECT COUNT(*) as Num FROM ".PRFX."TABLE_EXPENSE WHERE EXPENSE_$search_category LIKE ".$db->qstr("$search_term") );
-
-    if(!$total_results = $results->FetchRow()) {
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-        exit;
-    } else {
-        $smarty->assign('total_results', $total_results['Num']);
-    }
-
-    // Figure out the total number of pages. Always round up using ceil()
-    $total_pages = ceil($total_results["Num"] / $max_results);
-    $smarty->assign('total_pages', $total_pages);
-
-    // Assign the first page
-    if($page_no > 1) {
-        $prev = ($page_no - 1);
-    }
-
-    // Build Next Link
-    if($page_no < $total_pages){
-        $next = ($page_no + 1);
-    }
-
-    $smarty->assign('items', $items);
-    $smarty->assign('page_no', $page_no);
-    $smarty->assign('previous', $prev);
-    $smarty->assign('next', $next);
-    $smarty->assign('search_category', $search_category);
-    $smarty->assign('search_term', $search_term);
-
-    return $search_result;
+    
 }

@@ -7,67 +7,26 @@
  * @license   GNU/GPLv3 or later; https://www.gnu.org/licenses/gpl.html
  */
 
-/* Display functions */
+/*
+ * Mandatory Code - Code that is run upon the file being loaded
+ * Display Functions - Code that is used to primarily display records - linked tables
+ * New/Insert Functions - Creation of new records
+ * Get Functions - Grabs specific records/fields ready for update - no table linking
+ * Update Functions - For updating records/fields
+ * Close Functions - Closing Work Orders code
+ * Delete Functions - Deleting Work Orders
+ * Other Functions - All other functions not covered above
+ */
 
-#####################################
-#    Display Employee Info          #
-#####################################
+/** Mandatory Code **/
 
-function display_single_employee($db, $employee_id) {
-    
-    global $smarty;
-
-    $sql = "SELECT ".PRFX."TABLE_EMPLOYEE.*,
-            ".PRFX."CONFIG_EMPLOYEE_TYPE.TYPE_NAME
-            FROM ".PRFX."TABLE_EMPLOYEE
-            LEFT JOIN ".PRFX."CONFIG_EMPLOYEE_TYPE ON (".PRFX."TABLE_EMPLOYEE. EMPLOYEE_TYPE = ".PRFX."CONFIG_EMPLOYEE_TYPE.TYPE_ID)
-            WHERE EMPLOYEE_ID=". $db->qstr($employee_id);    
-
-    if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
-        exit;
-    } else {
-        
-        return $rs->GetArray();
-        
-    }
-    
-}
-
-################################################
-# Display all open Work orders for an employee # not used
-################################################
-
-// this was taken from workorders/include.php and I could not find it used anywhere
-
-function display_employee_info_version2($db){
-    
-    global $smarty;
-    
-    $sql = "SELECT EMPLOYEE_ID, EMPLOYEE_LOGIN FROM ".PRFX."TABLE_EMPLOYEE";
-    
-    if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
-        exit;
-    } else { 
-    
-        while($row = $rs->FetchRow()){
-            $employee_id                    = $row["EMPLOYEE_ID"];
-            $employee_login                 = $row["EMPLOYEE_LOGIN"];        
-            $employee_array[$employee_id]   = $employee_login;
-        }
-
-        return $employee_array;
-    
-    }
-    
-}
+/** Display Functions **/
 
 #####################################
 #    display Search                 #
 #####################################
 
-function display_employee_search($db, $search_term, $page_no) {
+function display_employees($db, $search_term, $page_no) {
 
     global $smarty;    
     
@@ -108,15 +67,21 @@ function display_employee_search($db, $search_term, $page_no) {
     // Assign Total number of pages
     $smarty->assign('total_pages', $total_pages);
     
-    // Assign the first page
+    // Assign the Previous page
     if($page_no > 1) {
-        $prev = ($page_no - 1);         
-    }     
-
-    // Build Next Link
-    if($page_no < $total_pages){
-        $next = ($page_no + 1); 
+        $previous = ($page_no - 1);            
+    } else { 
+        $previous = 1;            
     }
+    $smarty->assign('previous', $previous);        
+
+    // Assign the next page
+    if($page_no < $total_pages){
+        $next = ($page_no + 1);            
+    } else {
+        $next = $total_pages;
+    }
+    $smarty->assign('next', $next);
     
     // Assign remaining variables
     $smarty->assign('employee_searchTerm', $search_term);
@@ -128,34 +93,34 @@ function display_employee_search($db, $search_term, $page_no) {
     
 }
 
-/* New/Insert Functions  */
+/** New/Insert Functions **/
 
 #####################################
 #    insert new Employee            #
 #####################################
 
-function insert_new_employee($db, $employee_record){
+function insert_employee($db, $VAR){
     
     global $smarty;
     
     $sql = "INSERT INTO ".PRFX."TABLE_EMPLOYEE SET
-            EMPLOYEE_LOGIN          =". $db->qstr( $employee_record['employee_usr']             ).",
-            EMPLOYEE_PASSWD         =". $db->qstr( md5($employee_record['employee_pwd'])        ).",
-            EMPLOYEE_EMAIL          =". $db->qstr( $employee_record['employee_email']           ).", 
-            EMPLOYEE_FIRST_NAME     =". $db->qstr( $employee_record['employee_firstName']       ).",
-            EMPLOYEE_LAST_NAME      =". $db->qstr( $employee_record['employee_lastName']        ).",
-            EMPLOYEE_DISPLAY_NAME   =". $db->qstr( $employee_record['employee_displayName']     ).",
-            EMPLOYEE_ADDRESS        =". $db->qstr( $employee_record['employee_address']         ).",
-            EMPLOYEE_CITY           =". $db->qstr( $employee_record['employee_city']            ).",
-            EMPLOYEE_STATE          =". $db->qstr( $employee_record['employee_state']           ).", 
-            EMPLOYEE_ZIP            =". $db->qstr( $employee_record['employee_zip']             ).",
-            EMPLOYEE_TYPE           =". $db->qstr( $employee_record['employee_type']            ).",                    
-            EMPLOYEE_WORK_PHONE     =". $db->qstr( $employee_record['employee_workPhone']       ).",
-            EMPLOYEE_HOME_PHONE     =". $db->qstr( $employee_record['employee_homePhone']       ).",
-            EMPLOYEE_MOBILE_PHONE   =". $db->qstr( $employee_record['employee_mobilePhone']     ).",
-            EMPLOYEE_BASED          =". $db->qstr( $employee_record['employee_based']           ).",
-            EMPLOYEE_ACL            =". $db->qstr( $employee_record['employee_acl']             ).",    
-            EMPLOYEE_STATUS         =". $db->qstr( $employee_record['employee_status']          );          
+            EMPLOYEE_LOGIN          =". $db->qstr( $VAR['employee_usr']             ).",
+            EMPLOYEE_PASSWD         =". $db->qstr( md5($VAR['employee_pwd'])        ).",
+            EMPLOYEE_EMAIL          =". $db->qstr( $VAR['employee_email']           ).", 
+            EMPLOYEE_FIRST_NAME     =". $db->qstr( $VAR['employee_firstName']       ).",
+            EMPLOYEE_LAST_NAME      =". $db->qstr( $VAR['employee_lastName']        ).",
+            EMPLOYEE_DISPLAY_NAME   =". $db->qstr( $VAR['employee_displayName']     ).",
+            EMPLOYEE_ADDRESS        =". $db->qstr( $VAR['employee_address']         ).",
+            EMPLOYEE_CITY           =". $db->qstr( $VAR['employee_city']            ).",
+            EMPLOYEE_STATE          =". $db->qstr( $VAR['employee_state']           ).", 
+            EMPLOYEE_ZIP            =". $db->qstr( $VAR['employee_zip']             ).",
+            EMPLOYEE_TYPE           =". $db->qstr( $VAR['employee_type']            ).",                    
+            EMPLOYEE_WORK_PHONE     =". $db->qstr( $VAR['employee_workPhone']       ).",
+            EMPLOYEE_HOME_PHONE     =". $db->qstr( $VAR['employee_homePhone']       ).",
+            EMPLOYEE_MOBILE_PHONE   =". $db->qstr( $VAR['employee_mobilePhone']     ).",
+            EMPLOYEE_BASED          =". $db->qstr( $VAR['employee_based']           ).",
+            EMPLOYEE_ACL            =". $db->qstr( $VAR['employee_acl']             ).",    
+            EMPLOYEE_STATUS         =". $db->qstr( $VAR['employee_status']          );          
           
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
@@ -168,10 +133,10 @@ function insert_new_employee($db, $employee_record){
     
 }
 
-/* Get functions */
+/** Get Functions **/
 
 #####################################
-#     Get Employee Details          #  // not actually used anywhere
+#     Get Employee Details          #
 #####################################
 
 function get_employee_details($db, $employee_id, $item = null) {
@@ -314,40 +279,40 @@ function get_active_employees($db) {
     
 }
 
-/* Update Functions */
+/** Update Functions **/
 
 #########################
 #   Update Employee     #
 #########################
 
-function update_employee($db, $employee_record) {
+function update_employee($db, $employee_id, $VAR) {
     
     global $smarty;
     
         $set .="    SET
-                    EMPLOYEE_LOGIN          =". $db->qstr( $employee_record['employee_usr']             ).",";
+                    EMPLOYEE_LOGIN          =". $db->qstr( $VAR['employee_usr']             ).",";
 
-    if($employee_record['login_pwd'] != '') {
-        $set .="    EMPLOYEE_PASSWD         =". $db->qstr( md5($employee_record['employee_pwd'])        ).",";
+    if($VAR['login_pwd'] != '') {
+        $set .="    EMPLOYEE_PASSWD         =". $db->qstr( md5($VAR['employee_pwd'])        ).",";
     }
 
-        $set .="    EMPLOYEE_EMAIL          =". $db->qstr( $employee_record['employee_email']           ).", 
-                    EMPLOYEE_FIRST_NAME     =". $db->qstr( $employee_record['employee_firstName']       ).",
-                    EMPLOYEE_LAST_NAME      =". $db->qstr( $employee_record['employee_lastName']        ).",
-                    EMPLOYEE_DISPLAY_NAME   =". $db->qstr( $employee_record['employee_displayName']     ).",
-                    EMPLOYEE_ADDRESS        =". $db->qstr( $employee_record['employee_address']         ).",
-                    EMPLOYEE_CITY           =". $db->qstr( $employee_record['employee_city']            ).",
-                    EMPLOYEE_STATE          =". $db->qstr( $employee_record['employee_state']           ).", 
-                    EMPLOYEE_ZIP            =". $db->qstr( $employee_record['employee_zip']             ).",
-                    EMPLOYEE_TYPE           =". $db->qstr( $employee_record['employee_type']            ).",                    
-                    EMPLOYEE_WORK_PHONE     =". $db->qstr( $employee_record['employee_workPhone']       ).",
-                    EMPLOYEE_HOME_PHONE     =". $db->qstr( $employee_record['employee_homePhone']       ).",
-                    EMPLOYEE_MOBILE_PHONE   =". $db->qstr( $employee_record['employee_mobilePhone']     ).",
-                    EMPLOYEE_BASED          =". $db->qstr( $employee_record['employee_based']           ).",
-                    EMPLOYEE_ACL            =". $db->qstr( $employee_record['employee_acl']             ).",    
-                    EMPLOYEE_STATUS         =". $db->qstr( $employee_record['employee_status']          );
+        $set .="    EMPLOYEE_EMAIL          =". $db->qstr( $VAR['employee_email']           ).", 
+                    EMPLOYEE_FIRST_NAME     =". $db->qstr( $VAR['employee_firstName']       ).",
+                    EMPLOYEE_LAST_NAME      =". $db->qstr( $VAR['employee_lastName']        ).",
+                    EMPLOYEE_DISPLAY_NAME   =". $db->qstr( $VAR['employee_displayName']     ).",
+                    EMPLOYEE_ADDRESS        =". $db->qstr( $VAR['employee_address']         ).",
+                    EMPLOYEE_CITY           =". $db->qstr( $VAR['employee_city']            ).",
+                    EMPLOYEE_STATE          =". $db->qstr( $VAR['employee_state']           ).", 
+                    EMPLOYEE_ZIP            =". $db->qstr( $VAR['employee_zip']             ).",
+                    EMPLOYEE_TYPE           =". $db->qstr( $VAR['employee_type']            ).",                    
+                    EMPLOYEE_WORK_PHONE     =". $db->qstr( $VAR['employee_workPhone']       ).",
+                    EMPLOYEE_HOME_PHONE     =". $db->qstr( $VAR['employee_homePhone']       ).",
+                    EMPLOYEE_MOBILE_PHONE   =". $db->qstr( $VAR['employee_mobilePhone']     ).",
+                    EMPLOYEE_BASED          =". $db->qstr( $VAR['employee_based']           ).",
+                    EMPLOYEE_ACL            =". $db->qstr( $VAR['employee_acl']             ).",    
+                    EMPLOYEE_STATUS         =". $db->qstr( $VAR['employee_status']          );
 
-    $sql = "UPDATE ".PRFX."TABLE_EMPLOYEE ". $set ." WHERE EMPLOYEE_ID= ".$db->qstr($employee_record['employee_id']);
+    $sql = "UPDATE ".PRFX."TABLE_EMPLOYEE ". $set ." WHERE EMPLOYEE_ID= ".$db->qstr($employee_id);
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
@@ -360,9 +325,11 @@ function update_employee($db, $employee_record) {
     
 }
 
-/* Delete Functions */
+/** Close Functions **/
 
-/* Other Functions */
+/** Delete Functions **/
+
+/** Other Functions **/
 
 #################################################
 # Count Employee Work Orders for a given status #

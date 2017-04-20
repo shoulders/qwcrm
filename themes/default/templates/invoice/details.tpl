@@ -30,12 +30,12 @@
                                         </tr>
                                         <tr class="olotd4">
                                             <td>{$invoice.INVOICE_ID}</td>
-                                            <td>{$invoice.INVOICE_DATE|date_format:"$date_format"}</td>
-                                            <td>{$invoice.INVOICE_DUE|date_format:"$date_format"}</td>
+                                            <td>{$invoice.INVOICE_DATE|date_format:$date_format}</td>
+                                            <td>{$invoice.INVOICE_DUE|date_format:$date_format}</td>
                                             <td>{$currency_sym}{$invoice.INVOICE_AMOUNT|string_format:"%.2f"}</td>
                                             <td>{$invoice.EMPLOYEE_DISPLAY_NAME}</td>
                                             <td><a href="?page=workorder:details&amp;workorder_id={$invoice.WORKORDER_ID}&amp;page_title={$translate_invoice_workorder_id}&amp;{$invoice.WORKORDER_ID}">{$invoice.WORKORDER_ID}</a></td>
-                                            <td>{$invoice.PAID_DATE|date_format:"$date_format"}</td>
+                                            <td>{$invoice.PAID_DATE|date_format:$date_format}</td>
                                             <td>{$currency_sym}{$invoice.PAID_AMOUNT|string_format:"%.2f"}</td>
                                             <td>
                                                 {if $invoice.BALANCE > 0}
@@ -213,7 +213,7 @@
                                                     {section name=r loop=$trans}
                                                         <tr class="olotd4">
                                                             <td>{$trans[r].TRANSACTION_ID}</td>
-                                                            <td>{$trans[r].DATE|date_format:"$date_format"}</td>
+                                                            <td>{$trans[r].DATE|date_format:$date_format}</td>
                                                             <td><b>{$currency_sym}</b>{$trans[r].AMOUNT}</td>
                                                             <td>
                                                                 {if $trans[r].TYPE == 1}{$translate_invoice_cc}

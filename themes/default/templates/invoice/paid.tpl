@@ -14,25 +14,53 @@
                                 <td class="menutd">                                    
                                     <table class="menutable" width="100%" border="0" cellpadding="5" cellspacing="0">
                                         <tr>
-                                            <td valign="top"></td>
+                                            
+                                            <!-- Navigation -->
                                             <td valign="top" nowrap align="right">
-                                                <form id="1" action="">
-                                                    <a href="?page=invoice:paid&submit=submit&page_no=1"><img src="{$theme_images_dir}rewnd_24.gif" alt="" border="0"></a>&nbsp;
-                                                    {if $previous != ''}
-                                                    <a href="?page=invoice:paid&submit=submit&page_no={$previous}"><img src="{$theme_images_dir}back_24.gif" alt="" border="0"></a>&nbsp;
-                                                    {/if}
-                                                    <select id="changeThisPage" onChange="changePage();">
-                                                        {section name=page loop=$total_pages start=1}
-                                                            <option value="?page=invoice:paid&submit=submit&page_no={$smarty.section.page.index}" {if $page_no == $smarty.section.page.index } Selected {/if}>{$translate_invoice_page} {$smarty.section.page.index} {$translate_invoice_of} {$total_pages}</option>
-                                                        {/section}
-                                                        <option value="?page=invoice:paid&submit=submit&page_no={$total_pages}" {if $page_no == $total_pages} selected {/if}>{$translate_invoice_page}  {$total_pages} {$translate_invoice_of} {$total_pages}</option>
-                                                    </select>
-                                                    {if $next != ''}
-                                                        <a href="?page=invoice:paid&submit=submit&page_no={$next}"><img src="{$theme_images_dir}forwd_24.gif" alt="" border="0"></a>
-                                                    {/if}
-                                                    <a href="?page=invoice:paid&submit=submit&page_no={$total_pages}"><img src="{$theme_images_dir}fastf_24.gif" alt="" border="0"></a>
-                                                </form>
+                                                <form id="navigation">                                                    
+                                                    <table>
+                                                        <tr>
+                                                            
+                                                            <!-- Left buttons -->
+                                                            <td>                                                                
+                                                                <a href="index.php?page=invoice:paid&search_category={$search_category}&search_term={$search_term}&page_no=1"><img src="{$theme_images_dir}rewnd_24.gif" border="0" alt=""></a>&nbsp;                                                    
+                                                                <a href="index.php?page=invoice:paid&search_category={$search_category}&search_term={$search_term}&page_no={$previous}"><img src="{$theme_images_dir}back_24.gif" border="0" alt=""></a>&nbsp;
+                                                            </td>                                                   
+                                                    
+                                                            <!-- Dropdown Menu -->
+                                                            <td>                                                                    
+                                                                <select id="changeThisPage" onChange="changePage();">
+                                                                    {section name=page loop=$total_pages start=1}
+                                                                        <option value="index.php?page=invoice:paid&search_category={$search_category}&search_term={$search_term}&page_no={$smarty.section.page.index}" {if $page_no == $smarty.section.page.index } Selected {/if}>
+                                                                            {$translate_workorder_page} {$smarty.section.page.index} {$translate_workorder_of} {$total_pages} 
+                                                                        </option>
+                                                                    {/section}
+                                                                    <option value="index.php?page=invoice:paid&search_category={$search_category}&search_term={$search_term}&page_no={$total_pages}" {if $page_no == $total_pages} selected {/if}>
+                                                                        {$translate_workorder_page} {$total_pages} {$translate_workorder_of} {$total_pages}
+                                                                    </option>
+                                                                </select>
+                                                            </td>
+                                                            
+                                                            <!-- Right Side Buttons --> 
+                                                            <td>
+                                                                <a href="index.php?page=invoice:paid&search_category={$search_category}&search_term={$search_term}&page_no={$next}"><img src="{$theme_images_dir}forwd_24.gif" border="0" alt=""></a>                                                   
+                                                                <a href="index.php?page=invoice:paid&search_category={$search_category}&search_term={$search_term}&page_no={$total_pages}"><img src="{$theme_images_dir}fastf_24.gif" border="0" alt=""></a>
+                                                            </td>                                                                                             
+                                                    
+                                                        </tr>
+                                                        <tr>
+
+                                                            <!-- Page Number Display -->
+                                                            <td></td>
+                                                            <td>
+                                                                <p style="text-align: center;">{$total_results} {$translate_records_found}.</p>
+                                                            </td>
+                                                            
+                                                        </tr>                                                    
+                                                    </table>                                                    
+                                                </form>                                                
                                             </td>
+                                            
                                         </tr>
                                         <tr>
                                             <td valign="top" colspan="2">

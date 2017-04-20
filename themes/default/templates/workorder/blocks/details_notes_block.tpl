@@ -30,7 +30,7 @@
                     <td>
                         {section name=i loop=$workorder_notes}
                             <b>{$translate_workorder_employee}: </b>{$workorder_notes[i].EMPLOYEE_DISPLAY_NAME}<br>                           
-                            <b>{$translate_workorder_date}: </b>{$workorder_notes[i].WORK_ORDER_NOTES_DATE|date_format:"$date_format"}<br>
+                            <b>{$translate_workorder_date}: </b>{$workorder_notes[i].WORK_ORDER_NOTES_DATE|date_format:$date_format}<br>
                             <b>{$translate_workorder_time}: </b>{$workorder_notes[i].WORK_ORDER_NOTES_DATE|date_format:"%H:%M"}<br>
                             <b>{$translate_workorder_details_history_notes}:</b>
                             <div>{$workorder_notes[i].WORK_ORDER_NOTES_DESCRIPTION}</div>                            

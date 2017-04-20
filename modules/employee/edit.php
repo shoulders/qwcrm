@@ -14,7 +14,7 @@ if(empty($employee_id)) {
 if(isset($VAR['submit'])) {
             
     // Insert the record if the username does not exist or reload the page for correction
-    if (check_employee_username_exists($db, $VAR['employee_usr'], display_single_employee($db, $employee_id)[0]['EMPLOYEE_LOGIN'])) {        
+    if (check_employee_username_exists($db, $VAR['employee_usr'], get_employee_details($db, $employee_id, 'EMPLOYEE_LOGIN'))) {        
 
         // Make the $VAR array have the correct format for a smarty loop and assign
         $employee_details = array();
@@ -29,7 +29,7 @@ if(isset($VAR['submit'])) {
         } else {    
             
             // Insert employee record
-            update_employee($db, $VAR);
+            update_employee($db, $employee_id, $VAR);
             
             // Redirect to the new employee's details page
             force_page('employee', 'details&employee_id='.$employee_id);
@@ -41,7 +41,7 @@ if(isset($VAR['submit'])) {
 } else {    
     
     // Load employee's details into $VAR
-    $employee_record = display_single_employee($db, $employee_id);    
+    $employee_record = get_employee_details($db, $employee_id);    
     $VAR['employee_id']             = $employee_id;
     $VAR['employee_usr']            = $employee_record['0']['EMPLOYEE_LOGIN'];
     $VAR['employee_pwd']            = $employee_record['0']['EMPLOYEE_PASSWD'];

@@ -18,7 +18,7 @@
                 <td class="olotd4"><a href="?page=workorder:details&workorder_id={$new.WORK_ORDER_ID}&customer_id={$new.CUSTOMER_ID}&page_title={$translate_workorder_work_order_id} {$new.WORK_ORDER_ID}">{$new.WORK_ORDER_ID}</a></td>
                 
                 <!-- Opened -->
-                <td class="olotd4"> {$new.WORK_ORDER_OPEN_DATE|date_format:"$date_format"}</td>
+                <td class="olotd4"> {$new.WORK_ORDER_OPEN_DATE|date_format:$date_format}</td>
                 
                 <!-- Customer -->
                 <td class="olotd4" nowrap>

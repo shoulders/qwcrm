@@ -50,7 +50,7 @@
                                                                 <td class="olohead">{$translate_workorder_entered_by}</td>
                                                             </tr>
                                                             <tr>
-                                                                <td class="olotd4">{$smarty.now|date_format:"$date_format"}</td>
+                                                                <td class="olotd4">{$smarty.now|date_format:$date_format}</td>
                                                                 <td class="olotd4">{$customer_details[i].CUSTOMER_DISPLAY_NAME}</td>
                                                                 <td class="olotd4">
                                                                     <input id="workorder_scope" name="workorder_scope" size="40" type="text" maxlength="80" required onkeydown="return onlyAlphaNumeric(event);" onkeyup="lookupSuggestions(this.value);" onblur="closeSuggestions();">
@@ -107,7 +107,7 @@
                                     <td class="olohead" colspan="4">
                                         <table width="100%">
                                             <tr>
-                                                <td class="menuhead2" width="80%">{$translate_workorder_cutomer_contact_title}</td>
+                                                <td class="menuhead2" width="80%">{$translate_workorder_customer_contact_title}</td>
                                                 <td class="menuhead2" width="20%" align="right">
                                                     <a href="?page=customer:edit&amp;customer_id={$customer_details[i].CUSTOMER_ID}"<img src="{$theme_images_dir}icons/16x16/small_edit.gif" border="0" alt="" /></a>
                                                 </td>

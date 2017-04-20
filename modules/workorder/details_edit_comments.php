@@ -18,7 +18,7 @@ if(isset($VAR['submit'])) {
 // Fetch the page with the comments from the database    
 } else {
     
-    $smarty->assign('workorder_comments', get_workorder_comments($db, $workorder_id));
+    $smarty->assign('workorder_comments', get_workorder_details($db, $workorder_id, 'WORK_ORDER_COMMENT'));
 
     $BuildPage .= $smarty->fetch('workorder/details_edit_comments.tpl');
     

@@ -4,7 +4,7 @@ hit_stats_view.tpl
         <td>
             <table width="100%" cellpadding="4" cellspacing="0" border="0" >
                 <tr>
-                    <td class="menuhead2" width="80%">&nbsp;Stats for {$smarty.now|date_format:"$date_format"}</td>
+                    <td class="menuhead2" width="80%">&nbsp;Stats for {$smarty.now|date_format:$date_format}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle"><img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<b>Help Menu</b><hr><p></p>');" onMouseOut="hideddrivetip();"></td>
                 </tr>
                 <tr>

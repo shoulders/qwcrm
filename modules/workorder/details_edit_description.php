@@ -17,12 +17,10 @@ if(isset($VAR['submit'])) {
 
 // Fetch the page with the scope and description from the database 
 } else {
-
-    $workorder_scope_description = get_workorder_scope_and_description($db, $workorder_id);
     
-    $smarty->assign('workorder_id',             $workorder_id                                                   );    
-    $smarty->assign('workorder_scope',          $workorder_scope_description->fields['WORK_ORDER_SCOPE']        );
-    $smarty->assign('workorder_description',    $workorder_scope_description->fields['WORK_ORDER_DESCRIPTION']  );
+    $smarty->assign('workorder_id',             $workorder_id                                                       );    
+    $smarty->assign('workorder_scope',          get_workorder_details($db, $workorder_id, 'WORK_ORDER_SCOPE')       );
+    $smarty->assign('workorder_description',    get_workorder_details($db, $workorder_id, 'WORK_ORDER_RESOLUTION')  );
     
     $BuildPage .= $smarty->fetch('workorder/details_edit_description.tpl');
 

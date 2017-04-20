@@ -173,7 +173,7 @@ $supplier_id        = $VAR['supplier_id'];
 $invoice_id         = $VAR['invoice_id'];
 $schedule_id        = $VAR['schedule_id'];
 $giftcert_id        = $VAR['giftcert_id'];
-$customer_note_id   = $VAR['customer_note_id'];
+$customer_note_id   = $VAR['customer_note_id']; // check if i need this as it is not a module primary
 
 // If no schedule year set, use today's year
 if(isset($VAR['schedule_start_year'])) {$schedule_start_year = $VAR['schedule_start_year'];} else {$schedule_start_year = date('Y');}

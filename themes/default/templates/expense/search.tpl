@@ -1,6 +1,4 @@
 <!-- search.tpl -->
-<script>{include file="expense/javascripts.js"}</script>
-
 <table width="100%" border="0" cellpadding="20" cellspacing="5">
     <tr>
         <td>
@@ -28,7 +26,7 @@
                                                                 <td align="left" valign="top"><b>{$translate_expense_search}</b>
                                                                    <br />
                                                                     <select class="olotd5" id="search_category" name="search_category">
-                                                                        <option value="expense_id"{if $search_category == 'expense_id'} selected{/if}>{$translate_expense_id}</option>
+                                                                        <option value="id"{if $search_category == 'id'} selected{/if}>{$translate_expense_id}</option>
                                                                         <option value="payee"{if $search_category == 'payee'} selected{/if}>{$translate_expense_payee}</option>
                                                                         <option value="date"{if $search_category == 'date'} selected{/if}>{$translate_expense_date}</option>
                                                                         <option value="type"{if $search_category == 'type'} selected{/if}>{$translate_expense_type}</option>
@@ -54,53 +52,55 @@
                                                         </table>
                                                     </div>
                                                 </form>
-
-                                                <!-- This script sets the dropdown to the correct item -->
-                                                <script>dropdown_select_view_category("{$search_category}");</script>
                                                 
                                             </td>
 
-                                            <!-- Navigation Section  -->
+                                            <!-- Navigation -->
                                             <td valign="top" nowrap>
-                                                <form id="1">
+                                                <form id="navigation">                                                    
+                                                    <table>
+                                                        <tr>
+                                                            
+                                                            <!-- Left buttons -->
+                                                            <td>                                                                
+                                                                <a href="index.php?page=expense:search&search_category={$search_category}&search_term={$search_term}&page_no=1"><img src="{$theme_images_dir}rewnd_24.gif" border="0" alt=""></a>&nbsp;                                                    
+                                                                <a href="index.php?page=expense:search&search_category={$search_category}&search_term={$search_term}&page_no={$previous}"><img src="{$theme_images_dir}back_24.gif" border="0" alt=""></a>&nbsp;
+                                                            </td>                                                   
+                                                    
+                                                            <!-- Dropdown Menu -->
+                                                            <td>                                                                    
+                                                                <select id="changeThisPage" onChange="changePage();">
+                                                                    {section name=page loop=$total_pages start=1}
+                                                                        <option value="index.php?page=expense:search&search_category={$search_category}&search_term={$search_term}&page_no={$smarty.section.page.index}" {if $page_no == $smarty.section.page.index } Selected {/if}>
+                                                                            {$translate_workorder_page} {$smarty.section.page.index} {$translate_workorder_of} {$total_pages} 
+                                                                        </option>
+                                                                    {/section}
+                                                                    <option value="index.php?page=expense:search&search_category={$search_category}&search_term={$search_term}&page_no={$total_pages}" {if $page_no == $total_pages} selected {/if}>
+                                                                        {$translate_workorder_page} {$total_pages} {$translate_workorder_of} {$total_pages}
+                                                                    </option>
+                                                                </select>
+                                                            </td>
+                                                            
+                                                            <!-- Right Side Buttons --> 
+                                                            <td>
+                                                                <a href="index.php?page=expense:search&search_category={$search_category}&search_term={$search_term}&page_no={$next}"><img src="{$theme_images_dir}forwd_24.gif" border="0" alt=""></a>                                                   
+                                                                <a href="index.php?page=expense:search&search_category={$search_category}&search_term={$search_term}&page_no={$total_pages}"><img src="{$theme_images_dir}fastf_24.gif" border="0" alt=""></a>
+                                                            </td>                                                                                             
+                                                    
+                                                        </tr>
+                                                        <tr>
 
-                                                    <!-- Left buttons -->
-                                                    <a href="index.php?page=expense:search&search_category={$search_category}&search_term={$search_term}&page_no=1"><img src="{$theme_images_dir}rewnd_24.gif" border="0" alt=""></a>&nbsp;                                                    
-                                                    <a href="index.php?page=expense:search&search_category={$search_category}&search_term={$search_term}&page_no={$previous}"><img src="{$theme_images_dir}back_24.gif" border="0" alt=""></a>&nbsp;
-                                                    
-                                                    <!-- Dropdown Menu -->
-                                                    <select id="changeThisPage" onChange="changePage();">
-                                                        {section name=page loop=$total_pages start=1}
-                                                            <option value="index.php?page=expense:search&search_category={$search_category}&search_term={$search_term}&page_no={$smarty.section.page.index}" {if $page_no == $smarty.section.page.index } Selected {/if}>
-                                                                {$translate_workorder_page} {$smarty.section.page.index} {$translate_workorder_of} {$total_pages} 
-                                                            </option>
-                                                        {/section}
-                                                        <option value="index.php?page=expense:search&search_category={$search_category}&search_term={$search_term}&page_no={$total_pages}" {if $page_no == $total_pages} selected {/if}>
-                                                            {$translate_workorder_page} {$total_pages} {$translate_workorder_of} {$total_pages}
-                                                        </option>
-                                                    </select>
-                                                    
-                                                    <!-- Right Side Buttons -->                                                   
-                                                    <a href="index.php?page=expense:search&search_category={$search_category}&search_term={$search_term}&page_no={$next}"><img src="{$theme_images_dir}forwd_24.gif" border="0" alt=""></a>                                                   
-                                                    <a href="index.php?page=expense:search&search_category={$search_category}&search_term={$search_term}&page_no={$total_pages}"><img src="{$theme_images_dir}fastf_24.gif" border="0" alt=""></a>
-                                                    
-                                                    <!-- Page Number Display -->
-                                                    <br>
-                                                    {$translate_page} {$page_no} {$translate_of} {$total_pages}
-                                                    <br>
-                                                    {$total_results} {$translate_records_found}.                                                    
-                                                    
-                                                </form>                                           
-
-                                                <!-- Goto Page Form -->
-                                                {literal}
-                                                <form method="post" name="goto_page" id="goto_page" autocomplete="off">
-                                                {/literal}
-                                                    <input class="olotd5" size="10" id="goto_page_no" name="goto_page_no" type="text" maxlength="6" required onkeydown="return onlyNumbers(event);">
-                                                    <input class="olotd5" name="submit" value="{$translate_expense_search_goto_page_button}" type="submit" />
-                                                </form>
-                                                
+                                                            <!-- Page Number Display -->
+                                                            <td></td>
+                                                            <td>
+                                                                <p style="text-align: center;">{$total_results} {$translate_records_found}.</p>
+                                                            </td>
+                                                            
+                                                        </tr>                                                    
+                                                    </table>                                                    
+                                                </form>                                                
                                             </td>
+                                            
                                         </tr>
                                         <tr>
                                             <!-- Records Table -->
@@ -166,8 +166,10 @@
                                                             <td class="olotd4" nowrap>{$search_result[i].EXPENSE_TAX_RATE} %</td>
                                                             <td class="olotd4" nowrap>{$currency_sym} {$search_result[i].EXPENSE_TAX_AMOUNT}</td>
                                                             <td class="olotd4" nowrap>{$currency_sym} {$search_result[i].EXPENSE_GROSS_AMOUNT}</td>
-                                                            <td class="olotd4" nowrap>{if !$search_result[i].EXPENSE_NOTES == ""}
-                                                                <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{$translate_expense_notes}</b><hr><p>{$search_result[i].EXPENSE_NOTES|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();">{/if}
+                                                            <td class="olotd4" nowrap>
+                                                                {if !$search_result[i].EXPENSE_NOTES == ''}
+                                                                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{$translate_expense_notes}</b><hr><p>{$search_result[i].EXPENSE_NOTES|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();">
+                                                                {/if}
                                                             </td>
                                                             <td class="olotd4" nowrap><img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{$translate_expense_items}</b><hr><p>{$search_result[i].EXPENSE_ITEMS|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();"></td>
                                                             <td class="olotd4" nowrap>
@@ -177,7 +179,7 @@
                                                                 <a href="?page=expense:edit&expense_id={$search_result[i].EXPENSE_ID}&page_title={$translate_expense_edit_title}">
                                                                     <img src="{$theme_images_dir}icons/16x16/small_edit.gif" alt=""  border="0" onMouseOver="ddrivetip('<b>{$translate_expense_search_edit_details|nl2br|regex_replace:"/[\r\t\n]/":" "}</b>');" onMouseOut="hideddrivetip();">
                                                                 </a>
-                                                                <a href="?page=expense:search&amp;page_title={$translate_expense_search_title}" onclick="confirmDelete({$search_result[i].EXPENSE_ID});">
+                                                                <a href="?page=expense:delete&expense_id={$search_result[i].EXPENSE_ID}" onclick="return confirmDelete('{$translate_expense_delete_mes_confirmation}');">
                                                                     <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{$translate_expense_search_delete_record|nl2br|regex_replace:"/[\r\t\n]/":" "}</b>');" onMouseOut="hideddrivetip();">
                                                                 </a>
                                                             </td>

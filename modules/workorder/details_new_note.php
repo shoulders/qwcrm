@@ -11,7 +11,7 @@ if($workorder_id == '') {
 // If a note is submitted
 if(isset($VAR['submit'])){
     
-    insert_new_note($db, $workorder_id, $VAR['workorder_note']);    
+    insert_workorder_note($db, $workorder_id, $VAR['workorder_note']);    
     force_page('workorder', 'details', 'workorder_id='.$workorder_id.'information_msg='.$smarty->get_template_vars('translate_workorder_error_message_details_new_note_inserted'));
     exit;
     

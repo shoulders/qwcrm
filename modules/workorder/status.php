@@ -9,11 +9,8 @@ if(empty($workorder_id)){
     exit;
 }
 
-// Load the specifed workorder details
-$single_work_order = display_single_workorder($db, $workorder_id);
-
-// Get the Id of the employee assigned to the work order
-$assigned_employee_id = $single_work_order['0']['WORK_ORDER_ASSIGN_TO'];
+// Get the Id of the employee assigned to the workorder
+$assigned_employee_id = get_workorder_details($db, $workorder_id, 'WORK_ORDER_ASSIGN_TO');
 
 // Update Work Order Status
 if(isset($VAR['change_status'])){
@@ -38,9 +35,9 @@ if(isset($VAR['delete'])) {
 }
 
 // Fetch the page with the current status from the database
-$smarty->assign('active_employees',     get_active_employees($db)                       );
-$smarty->assign('assigned_employee',    $assigned_employee_id                           );
-$smarty->assign('single_workorder',     $single_work_order                              );
-$smarty->assign('workorder_id',         $workorder_id                                   );
+$smarty->assign('active_employees',                 get_active_employees($db)                                                   );
+$smarty->assign('workorder_status',                 get_workorder_details($db, $workorder_id, 'WORK_ORDER_STATUS')              );
+$smarty->assign('assigned_employee',                $assigned_employee_id                                                       );
+$smarty->assign('assigned_employee_display_name',   get_employee_details($db, $assigned_employee_id, 'EMPLOYEE_DISPLAY_NAME')   );
 
 $BuildPage .= $smarty->fetch('workorder/status.tpl');

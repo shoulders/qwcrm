@@ -1,29 +1,22 @@
 <?php
 
-// Load the Supplier classes
-require_once('include.php');
-
-// Load PHP Language Translations
-$langvals = gateway_xml2php('supplier');
-
-// Load supplier details
-$supplier_details = display_supplier_info($db, $VAR['supplier_id']);
+require(INCLUDES_DIR.'modules/expense.php');
 
 // If details submitted run update values, if not set load edit.tpl and populate values
 if(isset($VAR['submit'])) {    
         
-    if (!update_supplier($db, $VAR)){
+    if (!update_supplier($db, $supplier_id, $VAR)){
 
-        force_page('supplier', 'edit','error_msg=Falied to Update Supplier Information&supplier_id='.$VAR['supplier_id']);
+        force_page('supplier', 'edit','error_msg=Falied to Update Supplier Information&supplier_id='.$supplier_id);
         exit;
                 
     } else {
             
-        force_page('supplier', 'details','supplier_id='.$VAR['supplier_id'].'&page_title='.$langvals['supplier_details_title']);
+        force_page('supplier', 'details&supplier_id='.$supplier_id);
         exit;
     }
 
 } else {
-    $smarty->assign('supplier_details', $supplier_details);
-    $BuildPage .= $smarty->fetch('supplier'.SEP.'edit.tpl');
-       }
+    $smarty->assign('supplier_details', get_supplier_details($db, $supplier_id));
+    $BuildPage .= $smarty->fetch('supplier/edit.tpl');
+}

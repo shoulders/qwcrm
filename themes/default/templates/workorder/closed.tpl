@@ -18,29 +18,53 @@
                                 <td class="menutd">                                 
                                     <table class="menutable" width="100%" border="0" cellpadding="5" cellspacing="0">
                                         <tr>
-                                            <td valign="top"></td>
+                                            
+                                            <!-- Navigation -->
                                             <td valign="top" nowrap align="right">
-                                                <form id="1" action="">
-                                                    <a href="?page=workorder:closed&submit=submit&page_no=1"><img src="{$theme_images_dir}rewnd_24.gif" alt="" border="0"></a>&nbsp;
-                                                    {if $previous != ''}
-                                                        <a href="?page=workorder:closed&submit=submit&page_no={$previous}"><img src="{$theme_images_dir}back_24.gif" alt="" border="0"></a>&nbsp;
-                                                    {/if}
-                                                    <select id="changeThisPage" onChange="changePage();">
-                                                        {section name=page loop=$total_pages start=1}
-                                                            <option value="?page=workorder:closed&submit=submit&page_no={$smarty.section.page.index}" {if $page_no == $smarty.section.page.index } Selected {/if}>
-                                                                {$translate_workorder_page} {$smarty.section.page.index} {$translate_workorder_of} {$total_pages} 
-                                                            </option>
-                                                        {/section}
-                                                        <option value="?page=workorder:closed&submit=submit&page_no={$total_pages}" {if $page_no == $total_pages} selected {/if}>
-                                                            {$translate_workorder_page} {$total_pages} {$translate_workorder_of} {$total_pages}
-                                                        </option>
-                                                    </select>
-                                                    {if $next != ''}
-                                                        <a href="?page=workorder:closed&submit=submit&page_no={$next}"><img src="{$theme_images_dir}forwd_24.gif" alt="" border="0"></a>
-                                                    {/if}
-                                                    <a href="?page=workorder:closed&submit=submit&page_no={$total_pages}"><img src="{$theme_images_dir}fastf_24.gif" alt="" border="0"></a>
-                                                </form>
+                                                <form id="navigation">                                                    
+                                                    <table>
+                                                        <tr>
+                                                            
+                                                            <!-- Left buttons -->
+                                                            <td>                                                                
+                                                                <a href="index.php?page=workorder:closed&search_category={$search_category}&search_term={$search_term}&page_no=1"><img src="{$theme_images_dir}rewnd_24.gif" border="0" alt=""></a>&nbsp;                                                    
+                                                                <a href="index.php?page=workorder:closed&search_category={$search_category}&search_term={$search_term}&page_no={$previous}"><img src="{$theme_images_dir}back_24.gif" border="0" alt=""></a>&nbsp;
+                                                            </td>                                                   
+                                                    
+                                                            <!-- Dropdown Menu -->
+                                                            <td>                                                                    
+                                                                <select id="changeThisPage" onChange="changePage();">
+                                                                    {section name=page loop=$total_pages start=1}
+                                                                        <option value="index.php?page=workorder:closed&search_category={$search_category}&search_term={$search_term}&page_no={$smarty.section.page.index}" {if $page_no == $smarty.section.page.index } Selected {/if}>
+                                                                            {$translate_workorder_page} {$smarty.section.page.index} {$translate_workorder_of} {$total_pages} 
+                                                                        </option>
+                                                                    {/section}
+                                                                    <option value="index.php?page=workorder:closed&search_category={$search_category}&search_term={$search_term}&page_no={$total_pages}" {if $page_no == $total_pages} selected {/if}>
+                                                                        {$translate_workorder_page} {$total_pages} {$translate_workorder_of} {$total_pages}
+                                                                    </option>
+                                                                </select>
+                                                            </td>
+                                                            
+                                                            <!-- Right Side Buttons --> 
+                                                            <td>
+                                                                <a href="index.php?page=workorder:closed&search_category={$search_category}&search_term={$search_term}&page_no={$next}"><img src="{$theme_images_dir}forwd_24.gif" border="0" alt=""></a>                                                   
+                                                                <a href="index.php?page=workorder:closed&search_category={$search_category}&search_term={$search_term}&page_no={$total_pages}"><img src="{$theme_images_dir}fastf_24.gif" border="0" alt=""></a>
+                                                            </td>                                                                                             
+                                                    
+                                                        </tr>
+                                                        <tr>
+
+                                                            <!-- Page Number Display -->
+                                                            <td></td>
+                                                            <td>
+                                                                <p style="text-align: center;">{$total_results} {$translate_records_found}.</p>
+                                                            </td>
+                                                            
+                                                        </tr>                                                    
+                                                    </table>                                                    
+                                                </form>                                                
                                             </td>
+                                            
                                         </tr>
                                         <tr>
                                             <td valign="top" colspan="2">
@@ -58,8 +82,8 @@
                                                         {if $single_workorder.WORK_ORDER_ID  != ""}
                                                             <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='?page=workorder:details&workorder_id={$single_workorder.WORK_ORDER_ID}&customer_id={$single_workorder.CUSTOMER_ID}&page_title={$translate_workorder_work_order_id} {$single_workorder.WORK_ORDER_ID}';" class="row1">
                                                                 <td class="olotd4"><a href="?page=workorder:details&workorder_id={$single_workorder.WORK_ORDER_ID}&customer_id={$single_workorder.CUSTOMER_ID}&page_title={$translate_workorder_work_order_id} {$single_workorder.WORK_ORDER_ID}">{$single_workorder.WORK_ORDER_ID}</a></td>
-                                                                <td class="olotd4"> {$single_workorder.WORK_ORDER_OPEN_DATE|date_format:"$date_format"}</td>
-                                                                <td class="olotd4">{$single_workorder.WORK_ORDER_CLOSE_DATE|date_format:"$date_format"}</td>
+                                                                <td class="olotd4"> {$single_workorder.WORK_ORDER_OPEN_DATE|date_format:$date_format}</td>
+                                                                <td class="olotd4">{$single_workorder.WORK_ORDER_CLOSE_DATE|date_format:$date_format}</td>
                                                                 <td class="olotd4" nowrap>
                                                                     <img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" onMouseOver="ddrivetip('<b><center>{$translate_workorder_contact_info_tooltip_title}</b></center><hr><b>{$translate_workorder_phone}: </b>{$single_workorder.CUSTOMER_PHONE}<br> <b>{$translate_workorder_fax}: </b>{$single_workorder.CUSTOMER_WORK_PHONE}<br><b>{$translate_workorder_mobile}: </b>{$single_workorder.CUSTOMER_MOBILE_PHONE}<br><b>{$translate_workorder_address}:</b><br>{$single_workorder.CUSTOMER_ADDRESS}<br>{$single_workorder.CUSTOMER_CITY}, {$single_workorder.CUSTOMER_STATE}<br>{$single_workorder.CUSTOMER_ZIP}');" onMouseOut="hideddrivetip();">                                                                         
                                                                     <a class="link1" href="?page=customer:details&customer_id={$single_workorder.CUSTOMER_ID}&page_title={$single_workorder.CUSTOMER_DISPLAY_NAME}">{$single_workorder.CUSTOMER_DISPLAY_NAME}</a>

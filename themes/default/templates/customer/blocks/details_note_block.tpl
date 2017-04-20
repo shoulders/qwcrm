@@ -21,7 +21,7 @@
                     <tr style="border: 1px black solid; background-color: #ededed;">
                         <td><b>{$customer_notes[i].DATE|date_format:$date_format}</b></td>
                         <td width="33%" align="right">
-                            {if $login_id == 1}
+                            {if $login_account_type_id == 1}
                                 <a href="index.php?page=customer:note_edit&customer_note_id={$customer_notes[i].CUSTOMER_NOTE_ID}">
                                     <img src="{$theme_images_dir}icons/16x16/small_edit.gif" onMouseOver="ddrivetip('Edit the Note');" onMouseOut="hideddrivetip();">                                                 
                                 </a>

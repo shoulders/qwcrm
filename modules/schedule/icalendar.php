@@ -1,5 +1,6 @@
 <?php
 
+require(INCLUDES_DIR.'modules/customer.php');
 require(INCLUDES_DIR.'modules/schedule.php');
 require(INCLUDES_DIR.'modules/workorder.php');
 
@@ -12,7 +13,6 @@ if($VAR['ics_type'] == 'day') {
     //$filename   = str_replace(' ', '_', $single_workorder['0']['CUSTOMER_DISPLAY_NAME']).'-Workorder-'.$single_schedule['0']['WORKORDER_ID'].'-Schedule-'.$schedule_id.'.ics';
     $filename   = 'schedule.ics';    
 }
-
 
 // Set the correct headers for this file
 header('Content-type: text/calendar; charset=utf-8');

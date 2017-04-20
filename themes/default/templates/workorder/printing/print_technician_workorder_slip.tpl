@@ -204,7 +204,7 @@
                     </tr>
                     <tr>
                         <td><b>{$translate_workorder_last_change}:</b></td>
-                        <td>{$single_work_order[i].LAST_ACTIVE|date_format:"$date_format"}</td>
+                        <td>{$single_work_order[i].LAST_ACTIVE|date_format:$date_format}</td>
                     </tr>
                 </table>
 

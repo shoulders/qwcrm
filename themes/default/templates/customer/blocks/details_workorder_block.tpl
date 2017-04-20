@@ -13,7 +13,7 @@
     {section name=a loop=$open_work_orders}
         <tr onmouseover="this.className='row2'" onmouseout="this.className='row1'" onDblClick="window.location='?page=workorder:details&workorder_id={$open_work_orders[a].WORK_ORDER_ID}&customer_id={$open_work_orders[a].CUSTOMER_ID}&page_title={$translate_customer_work_order_id} {$open_work_orders[a].WORK_ORDER_ID},';" class="row1">
             <td class="olotd4"><a href="?page=workorder:details&workorder_id={$open_work_orders[a].WORK_ORDER_ID}&customer_id={$open_work_orders[a].CUSTOMER_ID}&page_title={$translate_customer_work_order_id} {$open_work_orders[a].WORK_ORDER_ID}">{$open_work_orders[a].WORK_ORDER_ID}</a></td>
-            <td class="olotd4">{$open_work_orders[a].WORK_ORDER_OPEN_DATE|date_format:"$date_format"}</td>
+            <td class="olotd4">{$open_work_orders[a].WORK_ORDER_OPEN_DATE|date_format:$date_format}</td>
             <td class="olotd4">{section name=i loop=$customer_details}{$customer_details[i].CUSTOMER_DISPLAY_NAME}{/section}</td>
             <td class="olotd4">{$open_work_orders[a].WORK_ORDER_SCOPE}</td>
             <td class="olotd4">{$open_work_orders[a].WORK_ORDER_STATUS}</td>
@@ -54,7 +54,7 @@
     {section name=b loop=$closed_work_orders}
         <tr onmouseover="this.className='row2'" onmouseout="this.className='row1'" onDblClick="window.location='?page=workorder:details&workorder_id={$closed_work_orders[b].WORK_ORDER_ID}&customer_id={$closed_work_orders[b].CUSTOMER_ID}&page_title={$translate_customer_work_order_id} {$closed_work_orders[b].WORK_ORDER_ID},';" class="row1">
             <td class="olotd4"><a href="?page=workorder:details&workorder_id={$closed_work_orders[b].WORK_ORDER_ID}&customer_id={$closed_work_orders[b].CUSTOMER_ID}&page_title={$translate_customer_work_order_id} {$closed_work_orders[b].WORK_ORDER_ID}">{$closed_work_orders[b].WORK_ORDER_ID}</a></td>
-            <td class="olotd4">{$closed_work_orders[b].WORK_ORDER_OPEN_DATE|date_format:"$date_format"}</td>
+            <td class="olotd4">{$closed_work_orders[b].WORK_ORDER_OPEN_DATE|date_format:$date_format}</td>
             <td class="olotd4">{section name=i loop=$customer_details}{$customer_details[i].CUSTOMER_DISPLAY_NAME}{/section}</td>
             <td class="olotd4">{$closed_work_orders[b].WORK_ORDER_SCOPE}</td>
             <td class="olotd4">{$closed_work_orders[b].WORK_ORDER_STATUS}</td>

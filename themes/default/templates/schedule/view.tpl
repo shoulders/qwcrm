@@ -5,7 +5,7 @@
             {section name=a loop=$single_schedule}
                 <table width="700" cellpadding="4" cellspacing="0" border="0" >
                     <tr>
-                        <td class="menuhead2" width="80%">&nbsp;Scheduled ID {$single_schedule[a].SCHEDULE_ID} on {$single_schedule[a].SCHEDULE_START|date_format:"$date_format"}</td>
+                        <td class="menuhead2" width="80%">&nbsp;Scheduled ID {$single_schedule[a].SCHEDULE_ID} on {$single_schedule[a].SCHEDULE_START|date_format:$date_format}</td>
                     </tr>
                     <tr>
                         <td class="menutd2">
@@ -15,7 +15,7 @@
                                         <table width="100%" cellpadding="5" cellspacing="5">
                                             <tr>
                                                 <td>
-                                                    <p><b>Date: </b>{$single_schedule[a].SCHEDULE_START|date_format:"$date_format"}</p>
+                                                    <p><b>Date: </b>{$single_schedule[a].SCHEDULE_START|date_format:$date_format}</p>
                                                     <p>
                                                         <b>{$translate_schedule_start}: </b>{$single_schedule[a].SCHEDULE_START|date_format:"%H:%M"}<br>
                                                         <b>{$translate_schedule_end}: </b>{$single_schedule[a].SCHEDULE_END|date_format:"%H:%M"}

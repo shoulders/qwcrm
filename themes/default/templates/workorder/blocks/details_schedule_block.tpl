@@ -72,7 +72,7 @@
                                     <td>                                        
                                         <table width="700" cellpadding="4" cellspacing="0" border="0" >
                                             <tr>
-                                                <td class="menuhead2" width="80%">&nbsp;{$translate_workorder_schedule} {$workorder_schedule[i].SCHEDULE_ID} - {$workorder_schedule[i].SCHEDULE_START|date_format:"$date_format"}</td>
+                                                <td class="menuhead2" width="80%">&nbsp;{$translate_workorder_schedule} {$workorder_schedule[i].SCHEDULE_ID} - {$workorder_schedule[i].SCHEDULE_START|date_format:$date_format}</td>
                                             </tr>
                                             <tr>
                                                 <td class="menutd2">
@@ -82,7 +82,7 @@
                                                                 <table width="100%" cellpadding="5" cellspacing="5">
                                                                     <tr>
                                                                         <td>
-                                                                            <p><b>{$translate_workorder_date}: </b>{$workorder_schedule[i].SCHEDULE_START|date_format:"$date_format"}</p>
+                                                                            <p><b>{$translate_workorder_date}: </b>{$workorder_schedule[i].SCHEDULE_START|date_format:$date_format}</p>
                                                                             <p>
                                                                                 <b>{$translate_workorder_start_time}: </b>{$workorder_schedule[i].SCHEDULE_START|date_format:"%H:%M"}<br>
                                                                                 <b>{$translate_workorder_end_time}: </b>{$workorder_schedule[i].SCHEDULE_END|date_format:"%H:%M"}

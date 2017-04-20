@@ -66,11 +66,11 @@
                                                                 <td align="right"><b>{$translate_refund_type}</b><span style="color: #ff0000"> *</span></td>
                                                                 <td>
                                                                     <select id="refundType" name="refundType" class="olotd5" col="30" style="width: 150px" value="{$refund_details[q].REFUND_TYPE}"/>
-                                                                        <option value="1">{$translate_refund_type_1}</option>
-                                                                        <option value="2">{$translate_refund_type_2}</option>
-                                                                        <option value="3">{$translate_refund_type_3}</option>
-                                                                        <option value="4">{$translate_refund_type_4}</option>
-                                                                        <option value="5">{$translate_refund_type_5}</option>                                                                        
+                                                                        <option value="1"{if $refund_details[q].REFUND_TYPE== '1'} selected{/if}>{$translate_refund_type_1}</option>
+                                                                        <option value="2"{if $refund_details[q].REFUND_TYPE== '2'} selected{/if}>{$translate_refund_type_2}</option>
+                                                                        <option value="3"{if $refund_details[q].REFUND_TYPE== '3'} selected{/if}>{$translate_refund_type_3}</option>
+                                                                        <option value="4"{if $refund_details[q].REFUND_TYPE== '4'} selected{/if}>{$translate_refund_type_4}</option>
+                                                                        <option value="5"{if $refund_details[q].REFUND_TYPE== '5'} selected{/if}>{$translate_refund_type_5}</option>                                                                        
                                                                     </select>
                                                                 </td>
                                                             </tr>
@@ -78,17 +78,17 @@
                                                                 <td align="right"><b>{$translate_refund_payment_method}</b><span style="color: #ff0000"> *</span></td>
                                                                 <td>
                                                                     <select id="refundPaymentMethod" name="refundPaymentMethod" class="olotd5" style="width: 150px" value="{$refund_details[q].REFUND_PAYMENT_METHOD}"/>
-                                                                        <option value="1">{$translate_refund_payment_method_1}</option>
-                                                                        <option value="2">{$translate_refund_payment_method_2}</option>
-                                                                        <option value="3">{$translate_refund_payment_method_3}</option>
-                                                                        <option value="4">{$translate_refund_payment_method_4}</option>
-                                                                        <option value="5">{$translate_refund_payment_method_5}</option>
-                                                                        <option value="6">{$translate_refund_payment_method_6}</option>
-                                                                        <option value="7">{$translate_refund_payment_method_7}</option>
-                                                                        <option value="8">{$translate_refund_payment_method_8}</option>
-                                                                        <option value="9">{$translate_refund_payment_method_9}</option>
-                                                                        <option value="10">{$translate_refund_payment_method_10}</option>
-                                                                        <option value="11">{$translate_refund_payment_method_11}</option>
+                                                                        <option value="1"{if $refund_details[q].REFUND_METHOD == '1'} selected{/if}>{$translate_refund_payment_method_1}</option>
+                                                                        <option value="2"{if $refund_details[q].REFUND_METHOD == '2'} selected{/if}>{$translate_refund_payment_method_2}</option>
+                                                                        <option value="3"{if $refund_details[q].REFUND_METHOD == '3'} selected{/if}>{$translate_refund_payment_method_3}</option>
+                                                                        <option value="4"{if $refund_details[q].REFUND_METHOD == '4'} selected{/if}>{$translate_refund_payment_method_4}</option>
+                                                                        <option value="5"{if $refund_details[q].REFUND_METHOD == '5'} selected{/if}>{$translate_refund_payment_method_5}</option>
+                                                                        <option value="6"{if $refund_details[q].REFUND_METHOD == '6'} selected{/if}>{$translate_refund_payment_method_6}</option>
+                                                                        <option value="7"{if $refund_details[q].REFUND_METHOD == '7'} selected{/if}>{$translate_refund_payment_method_7}</option>
+                                                                        <option value="8"{if $refund_details[q].REFUND_METHOD == '8'} selected{/if}>{$translate_refund_payment_method_8}</option>
+                                                                        <option value="9"{if $refund_details[q].REFUND_METHOD == '9'} selected{/if}>{$translate_refund_payment_method_9}</option>
+                                                                        <option value="10"{if $refund_details[q].REFUND_METHOD == '10'} selected{/if}>{$translate_refund_payment_method_10}</option>
+                                                                        <option value="11"{if $refund_details[q].REFUND_METHOD == '11'} selected{/if}>{$translate_refund_payment_method_11}</option>
                                                                     </select>
                                                                 </td>
                                                             </tr>

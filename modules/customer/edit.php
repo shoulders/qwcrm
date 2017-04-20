@@ -10,7 +10,7 @@ if($customer_id == ''){
 
 if(isset($VAR['submit'])) {    
         
-    if (!update_customer($db, $VAR)){
+    if (!update_customer($db, $customer_id, $VAR)){
         force_page('customer', 'edit&customer_id='.$customer_id, 'error_msg=Failed to Update Customer Information');
         exit;
     } else {

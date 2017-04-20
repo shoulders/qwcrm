@@ -4,7 +4,7 @@ require(INCLUDES_DIR.'modules/customer.php');
 
 if(isset($VAR['submit'])) {
 
-    if (!$customer_id = insert_new_customer($db, $VAR)){
+    if (!$customer_id = insert_customer($db, $VAR)){
         
         $smarty->assign('error_msg', 'Failed to insert customer');
         $BuildPage .= $smarty->fetch('core/error.tpl');

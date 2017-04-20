@@ -10,7 +10,7 @@
         <td>
             <table width="700" cellpadding="4" cellspacing="0" border="0">
                 <tr>
-                    <td class="menuhead2" width="100%" align="center">&nbsp;{$translate_schedule_view} {$current_schedule_date|date_format:"$date_format"}</td>                    
+                    <td class="menuhead2" width="100%" align="center">&nbsp;{$translate_schedule_view} {$current_schedule_date|date_format:$date_format}</td>                    
                 </tr>
                 <tr>
                     <td class="menutd2" colspan="3">

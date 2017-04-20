@@ -37,7 +37,7 @@ if(isset($VAR['closewithinvoice'])) {
         
 // Fetch the page with the resolution from the database 
 $smarty->assign('workorder_id', $workorder_id);
-$smarty->assign('workorder_resolution', get_workorder_resolution($db, $workorder_id));
+$smarty->assign('workorder_resolution', get_workorder_details($db, $workorder_id, 'WORK_ORDER_RESOLUTION'));
 
 $BuildPage .= $smarty->fetch('workorder/details_edit_resolution.tpl');
 

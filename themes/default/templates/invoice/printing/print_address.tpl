@@ -76,8 +76,8 @@
                                     <td>
                                         <b>{$translate_invoice_prn_invoice_id} - </b>{$invoice.INVOICE_ID}<br>
                                         <b>{$translate_invoice_prn_invoice_status} - </b>{$stats2.WORK_ORDER_STATUS}<br>
-                                        <b>{$translate_invoice_prn_invoice_date} - </b>  {$invoice.INVOICE_DATE|date_format:"$date_format"} <br>
-                                        <b>{$translate_invoice_prn_invoice_due_date} - </b>  {$invoice.INVOICE_DUE|date_format:"$date_format"}<br>
+                                        <b>{$translate_invoice_prn_invoice_date} - </b>  {$invoice.INVOICE_DATE|date_format:$date_format} <br>
+                                        <b>{$translate_invoice_prn_invoice_due_date} - </b>  {$invoice.INVOICE_DUE|date_format:$date_format}<br>
                                         <b>{$translate_invoice_prn_work_order} - </b>{$invoice.WORKORDER_ID}<br>
                                         <b>{$translate_invoice_prn_technician} - </b>{$invoice.EMPLOYEE_DISPLAY_NAME}<br>
                                         {foreach item=item from=$customer_details}

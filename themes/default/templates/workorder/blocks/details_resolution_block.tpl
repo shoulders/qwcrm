@@ -26,16 +26,14 @@
         <td class="menutd">
             <table width="100%" cellpadding="4" cellspacing="0" border="0">
                 <tr>
-                    <td>
-                        {section name=v loop=$workorder_resolution}
-                            {if $single_workorder[i].WORK_ORDER_CLOSE_BY != "" }
-                                <p>
-                                    <b>{$translate_workorder_closed_by}: </b>{$workorder_resolution[v].EMPLOYEE_DISPLAY_NAME}<br>
-                                    <b>{$translate_workorder_date}: </b>{$workorder_resolution[v].WORK_ORDER_CLOSE_DATE|date_format:"$date_format"}<br>
-                                </p>
-                            {/if}
-                            <div>{$workorder_resolution[v].WORK_ORDER_RESOLUTION}</div>                            
-                        {/section}
+                    <td>                        
+                        {if $single_workorder[i].WORK_ORDER_CLOSE_BY != "" }
+                            <p>
+                                <b>{$translate_workorder_closed_by}: </b>{$single_workorder[i].EMPLOYEE_DISPLAY_NAME}<br>
+                                <b>{$translate_workorder_date}: </b>{$single_workorder[i].WORK_ORDER_CLOSE_DATE|date_format:$date_format}<br>
+                            </p>
+                        {/if}
+                        <div>{$single_workorder[i].WORK_ORDER_RESOLUTION}</div>                        
                     </td>
                 </tr>
             </table>

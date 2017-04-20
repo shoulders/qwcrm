@@ -6,7 +6,6 @@
 <script src="{$theme_js_dir}jscal2/jscal2.js"></script>
 <script src="{$theme_js_dir}jscal2/unicode-letter.js"></script>
 <script>{include file="`$theme_js_dir_finc`jscal2/language.js"}</script>
-<script>{include file="supplier/javascripts.js"}</script>
 
 <table width="100%" border="0" cellpadding="20" cellspacing="0">
     <tr>
@@ -54,17 +53,17 @@
                                                                 <td align="right"><b>{$translate_supplier_type}</b><span style="color: #ff0000"> *</span></td>
                                                                 <td>
                                                                     <select id="supplierType" name="supplierType" class="olotd5" style="width: 150px" col="30" value="{$supplier_details[q].SUPPLIER_TYPE}">
-                                                                        <option value="1">{$translate_supplier_type_1}</option>
-                                                                        <option value="2">{$translate_supplier_type_2}</option>
-                                                                        <option value="3">{$translate_supplier_type_3}</option>
-                                                                        <option value="4">{$translate_supplier_type_4}</option>
-                                                                        <option value="5">{$translate_supplier_type_5}</option>
-                                                                        <option value="6">{$translate_supplier_type_6}</option>
-                                                                        <option value="7">{$translate_supplier_type_7}</option>
-                                                                        <option value="8">{$translate_supplier_type_8}</option>
-                                                                        <option value="9">{$translate_supplier_type_9}</option>
-                                                                        <option value="10">{$translate_supplier_type_10}</option>
-                                                                        <option value="11">{$translate_supplier_type_11}</option>                                                                                       
+                                                                        <option value="1"{if $supplier_details[q].SUPPLIER_TYPE == '1'} selected{/if}>{$translate_supplier_type_1}</option>
+                                                                        <option value="2"{if $supplier_details[q].SUPPLIER_TYPE == '2'} selected{/if}>{$translate_supplier_type_2}</option>
+                                                                        <option value="3"{if $supplier_details[q].SUPPLIER_TYPE == '3'} selected{/if}>{$translate_supplier_type_3}</option>
+                                                                        <option value="4"{if $supplier_details[q].SUPPLIER_TYPE == '4'} selected{/if}>{$translate_supplier_type_4}</option>
+                                                                        <option value="5"{if $supplier_details[q].SUPPLIER_TYPE == '5'} selected{/if}>{$translate_supplier_type_5}</option>
+                                                                        <option value="6"{if $supplier_details[q].SUPPLIER_TYPE == '6'} selected{/if}>{$translate_supplier_type_6}</option>
+                                                                        <option value="7"{if $supplier_details[q].SUPPLIER_TYPE == '7'} selected{/if}>{$translate_supplier_type_7}</option>
+                                                                        <option value="8"{if $supplier_details[q].SUPPLIER_TYPE == '8'} selected{/if}>{$translate_supplier_type_8}</option>
+                                                                        <option value="9"{if $supplier_details[q].SUPPLIER_TYPE == '9'} selected{/if}>{$translate_supplier_type_9}</option>
+                                                                        <option value="10"{if $supplier_details[q].SUPPLIER_TYPE == '10'} selected{/if}>{$translate_supplier_type_10}</option>
+                                                                        <option value="11"{if $supplier_details[q].SUPPLIER_TYPE == '11'} selected{/if}>{$translate_supplier_type_11}</option>                                                                                       
                                                                     </select>
                                                                 </td>
                                                             </tr>                                                                            

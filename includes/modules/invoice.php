@@ -7,8 +7,6 @@
  * @license   GNU/GPLv3 or later; https://www.gnu.org/licenses/gpl.html
  */
 
-/** Workorder Include File **/
-
 /*
  * Mandatory Code - Code that is run upon the file being loaded
  * Display Functions - Code that is used to primarily display records - linked tables
@@ -90,16 +88,20 @@ function display_invoices($db, $status = 'all', $direction = 'DESC', $use_pages 
         $smarty->assign('page_no', $page_no);
 
         // Assign the Previous page
-        if($page_no > 1){
-            $prev = ($page_no - 1);
-            $smarty->assign('previous', $prev);
-        } 
+        if($page_no > 1) {
+            $previous = ($page_no - 1);            
+        } else { 
+            $previous = 1;            
+        }
+        $smarty->assign('previous', $previous);        
         
         // Assign the next page
         if($page_no < $total_pages){
-            $next = ($page_no + 1);
-            $smarty->assign('next', $next);
-        }  
+            $next = ($page_no + 1);            
+        } else {
+            $next = $total_pages;
+        }
+        $smarty->assign('next', $next);
         
         // Only return the given page's records
         $limitTheseRecords = " LIMIT ".$start_record.", ".$records_per_page;
@@ -137,14 +139,13 @@ function display_invoices($db, $status = 'all', $direction = 'DESC', $use_pages 
     
 }
 
-
-/** New/Insert Functions  **/
+/** New/Insert Functions **/
 
 #####################################
-#     create invoice                #
+#     insert invoice                #
 #####################################
 
-function create_invoice($db, $customer_id, $workorder_id, $discount_rate, $tax_rate) {
+function insert_invoice($db, $customer_id, $workorder_id, $discount_rate, $tax_rate) {
     
     $sql = "INSERT INTO ".PRFX."TABLE_INVOICE SET
             
@@ -155,23 +156,6 @@ function create_invoice($db, $customer_id, $workorder_id, $discount_rate, $tax_r
             DUE_DATE        =". $db->qstr( time()                   ).",            
             DISCOUNT_RATE   =". $db->qstr( $discount_rate           ).",            
             TAX_RATE        =". $db->qstr( $tax_rate                );            
-            
-    /*
-            CUSTOMER_ID     =". $db->qstr( $customer_id             ).",
-            WORKORDER_ID    =". $db->qstr( $workorder_id            ).",
-            EMPLOYEE_ID     =". $db->qstr( $_SESSION['login_id']    ).",
-            DATE            =". $db->qstr( time()                   ).",
-            DUE_DATE        =". $db->qstr( time()                   ).",
-            SUB_TOTAL       =". $db->qstr( 0                        ).",
-            DISCOUNT_RATE   =". $db->qstr( $discount_rate           ).",
-            DISCOUNT        =". $db->qstr( 0                        ).",
-            TAX_RATE        =". $db->qstr( $tax_rate                ).",
-            TAX             =". $db->qstr( 0                        ).",
-            TOTAL           =". $db->qstr( 0                        ).",
-            IS_PAID         =". $db->qstr( 0                        ).",
-            PAID_AMOUNT     =". $db->qstr( 0                        ).",
-            BALANCE         =". $db->qstr( 0                        );
-     */
 
     if(!$rs = $db->Execute($sql)) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
@@ -217,7 +201,8 @@ function insert_labour_items($db, $invoice_id, $labour_description, $labour_rate
         if(!$rs = $db->Execute($sql)) {
             force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
             exit;
-            }
+        }
+        
     }
         
 }
@@ -301,9 +286,12 @@ function get_invoice_details($db, $invoice_id, $item = null) {
 function get_active_labour_rate_items($db) {
     
     $sql = "SELECT * FROM ".PRFX."TABLE_LABOUR_RATE WHERE LABOUR_RATE_ACTIVE='1'";
+    
     $rs = $db->execute($sql);
     if(!empty($rs)) {
+        
         return $rs->GetArray();
+        
     }
     
 }
@@ -315,10 +303,12 @@ function get_active_labour_rate_items($db) {
 function get_invoice_labour_items($db, $invoice_id) {
     
     $sql = "SELECT * FROM ".PRFX."TABLE_INVOICE_LABOUR WHERE INVOICE_ID=".$db->qstr( $invoice_id );
-    $rs = $db->execute($sql);
     
+    $rs = $db->execute($sql);    
     if(!empty($rs)) {
+        
         return $rs->GetArray();
+        
     }
     
 }
@@ -330,17 +320,23 @@ function get_invoice_labour_items($db, $invoice_id) {
 function get_invoice_parts_items($db, $invoice_id) {
     
     $sql = "SELECT * FROM ".PRFX."TABLE_INVOICE_PARTS WHERE INVOICE_ID=".$db->qstr( $invoice_id );
-    $rs = $db->execute($sql);
     
+    $rs = $db->execute($sql);    
     if(!empty($rs)) {
+        
         return $rs->GetArray();
+        
     }
     
 }
 
 /** Update Functions **/
 
-function update_invoice_small($db, $invoice_id, $date, $due_date, $discount_rate) {
+######################
+#   update invoice   #
+######################
+
+function update_invoice($db, $invoice_id, $date, $due_date, $discount_rate) {
     
     $sql = "UPDATE ".PRFX."TABLE_INVOICE SET
             DATE                =". $db->qstr( date_to_timestamp($date)     ).",
@@ -385,23 +381,19 @@ function update_invoice_full($db, $invoice_id, $customer_id, $workorder_id, $emp
         
             CUSTOMER_ID         =". $db->qstr( $customer_id     ).",
             WORKORDER_ID        =". $db->qstr( $workorder_id    ).",
-            EMPLOYEE_ID         =". $db->qstr( $employee_id     ).",
-                
+            EMPLOYEE_ID         =". $db->qstr( $employee_id     ).",                
             DATE                =". $db->qstr( $date            ).",
-            DUE_DATE            =". $db->qstr( $due_date        ).",
-                
+            DUE_DATE            =". $db->qstr( $due_date        ).",                
             SUB_TOTAL           =". $db->qstr( $sub_total       ).",
             DISCOUNT_RATE       =". $db->qstr( $discount_rate   ).",
             DISCOUNT            =". $db->qstr( $discount        ).",    
             TAX_RATE            =". $db->qstr( $tax_rate        ).",
             TAX                 =". $db->qstr( $tax_amount      ).",             
-            TOTAL               =". $db->qstr( $total           ).",              
-                    
+            TOTAL               =". $db->qstr( $total           ).",                    
             IS_PAID             =". $db->qstr( $is_paid         ).",
             PAID_DATE           =". $db->qstr( $paid_date       ).",
             PAID_AMOUNT         =". $db->qstr( $paid_amount     ).",
             BALANCE             =". $db->qstr( $balance         )."            
-            
             WHERE INVOICE_ID    =". $db->qstr( $invoice_id      );
 
     if(!$rs = $db->Execute($sql)){
@@ -410,6 +402,7 @@ function update_invoice_full($db, $invoice_id, $customer_id, $workorder_id, $emp
     }    
     
 }
+
 
 /** Close Functions **/
 
@@ -421,24 +414,16 @@ function update_invoice_full($db, $invoice_id, $customer_id, $workorder_id, $emp
 
 function delete_invoice($db, $invoice_id)
 {
-      //Actual Deletion Function from Invoice Table
     $sql = "DELETE FROM ".PRFX."TABLE_INVOICE WHERE INVOICE_ID=".$db->qstr($invoice_id);
 
     if (!$rs = $db->Execute($sql)) {
         force_page('core', 'error&error_msg=MySQL Error: ' . $db->ErrorMsg() . '&menu=1&type=database');
         exit;
     } else {
+        
         return true;
+        
     }
-    // TODO - Add transaction log to database
-/*
-    $sql = "INSERT INTO ".PRFX."TABLE_TRANSACTION ( TRANSACTION_ID, DATE, TYPE, INVOICE_ID, WORKORDER_ID, CUSTOMER_ID, MEMO, AMOUNT ) VALUES,
-         ( NULL, ".$db->qstr(time()).",'6',".$db->qstr($invoice_id).",'0',".$db->qstr($customer_id).",'Invoice Deleted By ".$db->qstr($login_usr).",'0.00');";
-
-    if (!$rs = $db->Execute($sql)) {
-        force_page('core', 'error&error_msg=MySQL Error: ' . $db->ErrorMsg() . '&menu=1&type=database');
-        exit;
-    }*/
     
 }
 
@@ -454,7 +439,9 @@ function delete_invoice_labour_item($db, $labour_id)
         force_page('core', 'error&error_msg=MySQL Error: ' . $db->ErrorMsg() . '&menu=1&type=database');
         exit;
     } else {
+        
         return true;
+        
     }
 }
 
@@ -470,7 +457,9 @@ function delete_invoice_parts_item($db, $parts_id)
         force_page('core', 'error&error_msg=MySQL Error: ' . $db->ErrorMsg() . '&menu=1&type=database');
         exit;
     } else {
+        
         return true;
+        
     }
 
 }
@@ -484,11 +473,15 @@ function delete_invoice_parts_item($db, $parts_id)
 function labour_sub_total($db, $invoice_id) {
     
     $sql = "SELECT SUM(INVOICE_LABOUR_SUBTOTAL) AS labour_sub_total_sum FROM " . PRFX . "TABLE_INVOICE_LABOUR WHERE INVOICE_ID=" . $db->qstr($invoice_id);
+    
     if (!$rs = $db->Execute($sql)) {
-        echo 'Error: ' . $db->ErrorMsg();
-        die;
-    }
-    return $rs->fields['labour_sub_total_sum'];
+        force_page('core', 'error&error_msg=MySQL Error: ' . $db->ErrorMsg() . '&menu=1&type=database');
+        exit;
+    } else {
+        
+        return $rs->fields['labour_sub_total_sum'];
+        
+    }    
     
 }
 
@@ -499,11 +492,15 @@ function labour_sub_total($db, $invoice_id) {
 function parts_sub_total($db, $invoice_id) {
     
     $sql = "SELECT SUM(INVOICE_PARTS_SUBTOTAL) AS parts_sub_total_sum FROM " . PRFX . "TABLE_INVOICE_PARTS WHERE INVOICE_ID=" . $db->qstr($invoice_id);
+    
     if (!$rs = $db->Execute($sql)) {
-        echo 'Error: ' . $db->ErrorMsg();
-        die;
+        force_page('core', 'error&error_msg=MySQL Error: ' . $db->ErrorMsg() . '&menu=1&type=database');
+        exit;
+    } else {
+        
+        return  $rs->fields['parts_sub_total_sum'];
+        
     }
-    return  $rs->fields['parts_sub_total_sum'];
   
 }
 
@@ -562,6 +559,163 @@ function check_invoice_has_workorder($db, $invoice_id) {
             
         }
         
+    }
+    
+}
+
+
+##################################
+
+
+#####################################
+#     update invoice rate item      #
+#####################################
+
+function update_invoice_labour_rates_item($db, $VAR){
+    
+    $sql = "UPDATE ".PRFX."TABLE_LABOUR_RATE SET
+        LABOUR_RATE_NAME     =". $db->qstr( $VAR['display']      ).",
+        LABOUR_RATE_AMOUNT   =". $db->qstr( $VAR['amount']       ).",
+        LABOUR_RATE_COST     =". $db->qstr( $VAR['cost']         ).",
+        LABOUR_RATE_ACTIVE   =". $db->qstr( $VAR['active']       ).",
+        LABOUR_TYPE          =". $db->qstr( $VAR['type']         ).",
+        LABOUR_MANUF         =". $db->qstr( $VAR['manufacturer'] )."
+        WHERE LABOUR_RATE_ID =". $db->qstr( $VAR['id']           );
+
+    if(!$rs = $db->execute($sql)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
+    }
+    
+}
+
+
+#####################################
+#     delete invoice rate item      #
+#####################################
+
+function delete_invoice_rates_item($db, $VAR){
+    
+    $sql = "DELETE FROM ".PRFX."TABLE_LABOUR_RATE WHERE LABOUR_RATE_ID =".$db->qstr($VAR['id']);
+
+    if(!$rs = $db->execute($sql)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
+    }
+    
+}
+
+#####################################
+#     New invoice rate item         #
+#####################################
+
+function new_invoice_labour_rates_item($db, $VAR){
+    
+    $sql = "INSERT INTO ".PRFX."TABLE_LABOUR_RATE SET
+        LABOUR_RATE_NAME     =". $db->qstr( $VAR['display']      ).",
+        LABOUR_RATE_AMOUNT   =". $db->qstr( $VAR['amount']       ).",
+        LABOUR_RATE_COST     =". $db->qstr( $VAR['cost']         ).",
+        LABOUR_TYPE          =". $db->qstr( $VAR['type']         ).",
+        LABOUR_MANUF         =". $db->qstr( $VAR['manufacturer'] ).",
+        LABOUR_RATE_ACTIVE   =". $db->qstr( 1                    );
+
+    if(!$rs = $db->execute($sql)) {
+    force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+    exit;
+    }
+    
+}
+
+#####################################
+#     Get invoice rates item        #
+#####################################
+
+function get_invoice_labour_rates_item($db){
+    
+    // Loads rates from database
+    $sql = "SELECT * FROM ".PRFX."TABLE_LABOUR_RATE ORDER BY LABOUR_RATE_ID ASC";
+    
+    if(!$rs = $db->execute($sql)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
+    }    
+    
+    return $rs->GetArray();
+    
+}
+
+#####################################
+#   Upload invoice rate CSV file    #
+#####################################
+
+function upload_invoice_rates_csv($db, $VAR) {
+
+    // Allowed extensions
+    $allowedExts = array('csv');
+    
+    // Get file extension
+    $filename_info = pathinfo($_FILES['invoice_rates_csv']['name']);
+    $extension = $filename_info['extension'];
+    
+    // Validate the uploaded file is allowed (extension, mime type, 0 - 2mb)
+    if ((($_FILES['invoice_rates_csv']['type'] == 'text/csv'))            
+            || ($_FILES['invoice_rates_csv']['type'] == 'application/vnd.ms-excel') // CSV files created by excel - i might remove this
+            //|| ($_FILES['invoice_rates_csv']['type'] == 'text/plain')               // this seems a bit dangerous   
+            && ($_FILES['invoice_rates_csv']['size'] > 0)   
+            && ($_FILES['invoice_rates_csv']['size'] < 2048000)
+            && in_array($extension, $allowedExts)) {
+
+        // Check for file submission errors and echo them
+        if ($_FILES['invoice_rates_csv']['error'] > 0 ) {
+            echo 'Return Code: ' . $_FILES['invoice_rates_csv']['error'] . '<br />';                
+
+        // If no errors then move the file from the PHP temporary storage to the logo location
+        } else {        
+
+            // Empty Current Invoice Rates Table (if set)
+            if($VAR['empty_invoice_rates'] === '1'){
+                
+                $sql = "TRUNCATE ".PRFX."TABLE_LABOUR_RATE";
+                
+                if(!$rs = $db->execute($sql)) {
+                force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+                exit;}
+            }
+            
+            // Open CSV file            
+            $handle = fopen($_FILES['invoice_rates_csv']['tmp_name'], 'r');
+
+            // Read CSV data and insert into database
+            while (($data = fgetcsv($handle, 1000, ',')) !== FALSE) {
+
+                $sql = "INSERT INTO ".PRFX."TABLE_LABOUR_RATE(LABOUR_RATE_NAME,LABOUR_RATE_AMOUNT,LABOUR_RATE_COST,LABOUR_RATE_ACTIVE,LABOUR_TYPE,LABOUR_MANUF) VALUES ('$data[1]','$data[2]','$data[3]','$data[4]','$data[5]','$data[6]')";
+
+                if(!$rs = $db->execute($sql)) {
+                force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+                exit;}
+
+            }
+
+            // Close CSV file
+            fclose($handle);
+
+            // Delete CSV file - not sure this is needed becaus eit is temp
+            unlink($_FILES['invoice_rates_csv']['tmp_name']);
+
+        }
+
+    // If file is invalid then load the error page  
+    } else {
+        
+        /*
+        echo "Upload: "    . $_FILES['invoice_rates_csv']['name']           . '<br />';
+        echo "Type: "      . $_FILES['invoice_rates_csv']['type']           . '<br />';
+        echo "Size: "      . ($_FILES['invoice_rates_csv']['size'] / 1024)  . ' Kb<br />';
+        echo "Temp file: " . $_FILES['invoice_rates_csv']['tmp_name']       . '<br />';
+        echo "Stored in: " . MEDIA_DIR . $_FILES['file']['name']       ;
+         */
+        force_page('core', 'error&error_msg=Invalid File');
+
     }
     
 }

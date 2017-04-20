@@ -7,42 +7,21 @@
  * @license   GNU/GPLv3 or later; https://www.gnu.org/licenses/gpl.html
  */
 
-/** Schedule Include File **/
-
 /*
  * Mandatory Code - Code that is run upon the file being loaded
- * Display Functions - Code that is used to primarily display records
+ * Display Functions - Code that is used to primarily display records - linked tables
  * New/Insert Functions - Creation of new records
  * Get Functions - Grabs specific records/fields ready for update - no table linking
  * Update Functions - For updating records/fields
  * Close Functions - Closing Work Orders code
  * Delete Functions - Deleting Work Orders
- * iCalendar Functions - for creation of .ics files
+ * iCalendar Functions - code for creating and manipulation iCalendar .ics format
  * Other Functions - All other functions not covered above
  */
 
+/** Mandatory Code **/
+
 /** Display Functions **/
-
-################################################
-#   Display Schedule with attached employee    #
-################################################
-
-function display_single_schedule($db, $schedule_id) {
-
-    $sql = "SELECT ".PRFX."TABLE_SCHEDULE.*, ".
-            PRFX."TABLE_EMPLOYEE.EMPLOYEE_DISPLAY_NAME ".
-            "FROM ".PRFX."TABLE_SCHEDULE 
-            LEFT JOIN ".PRFX."TABLE_EMPLOYEE ON (".PRFX."TABLE_SCHEDULE.EMPLOYEE_ID=".PRFX."TABLE_EMPLOYEE.EMPLOYEE_ID )
-            WHERE SCHEDULE_ID='".$schedule_id."'";
-
-    if(!$rs = $db->Execute($sql)) {
-        force_page('core', 'error', 'error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-        exit;
-    }
-
-    return $rs->GetArray();    
-
-}
 
 ###############################
 # Display Work Order Schedule #
@@ -62,6 +41,7 @@ function display_workorder_schedule($db, $workorder_id){
         return $rs->GetArray();  
         
     }
+    
 }
 
 /** New/Insert Functions **/
@@ -107,19 +87,19 @@ function insert_new_schedule($db, $schedule_start_date, $scheduleStartTime, $sch
         $schedule_id = $db->Insert_ID();
         
         // Assign the workorder to the scheduled employee        
-        assign_workorder_to_employee($db, $workorder_id, $_SESSION['login_id'], get_workorder_employee($db, $workorder_id), $employee_id);
+        assign_workorder_to_employee($db, $workorder_id, $_SESSION['login_id'], get_workorder_details($db, $workorder_id, 'WORK_ORDER_ASSIGN_TO'), $employee_id);
     
         // Change the Workorders Status
         update_workorder_status($db, $workorder_id, 2); 
         
         // Insert Work Order History Note
-        insert_new_workorder_history_note($db, $workorder_id, 'Schdule 51 added');              
+        insert_workorder_history_note($db, $workorder_id, 'Schdule 51 added');              
         
         // Log activity 
         write_record_to_activity_log('Schedule'.' '.$schedule_id.' '.'has been created and added to work order'.' '.$workorder_id);        
         
         // Update Workorder last activity record
-        update_last_active($db, $workorder_id);
+        update_workorder_last_active($db, $workorder_id);
     
         return true;
         
@@ -128,6 +108,35 @@ function insert_new_schedule($db, $schedule_start_date, $scheduleStartTime, $sch
 }
 
 /** Get Functions **/
+
+################################
+#  Get Schedule Details        #
+################################
+
+function get_schedule_details($db, $schedule_id, $item = null){
+    
+    global $smarty;
+    
+    $sql = "SELECT * FROM ".PRFX."TABLE_SCHEDULE WHERE SCHEDULE_ID=".$db->qstr($schedule_id);
+    
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_schedule_error_message_function_'.__FUNCTION__.'_failed'));
+        exit;
+    } else { 
+        
+        if($item === null){
+            
+            return $rs->GetArray(); 
+            
+        } else {
+            
+            return $rs->fields[$item];   
+            
+        } 
+        
+    }
+    
+}
 
 ###############################################
 #    Get a workorder ID from a schedule ID    #
@@ -158,8 +167,8 @@ function get_workorder_id_from_schedule($db, $schedule_id) {
 function get_schedule_ids_for_employee_on_date($db, $employee_id, $schedule_start_year, $schedule_start_month, $schedule_start_day) {
     
     // Get the start and end time of the calendar schedule to be displayed, Office hours only - (unix timestamp)
-    $company_day_start = mktime(get_setup_info($db, 'OPENING_HOUR'), get_setup_info($db, 'OPENING_MINUTE'), 0, $schedule_start_month, $schedule_start_day, $schedule_start_year);
-    $company_day_end   = mktime(get_setup_info($db, 'CLOSING_HOUR'), get_setup_info($db, 'CLOSING_MINUTE'), 59, $schedule_start_month, $schedule_start_day, $schedule_start_year);    
+    $company_day_start = mktime(get_company_details($db, 'OPENING_HOUR'), get_company_details($db, 'OPENING_MINUTE'), 0, $schedule_start_month, $schedule_start_day, $schedule_start_year);
+    $company_day_end   = mktime(get_company_details($db, 'CLOSING_HOUR'), get_company_details($db, 'CLOSING_MINUTE'), 59, $schedule_start_month, $schedule_start_day, $schedule_start_year);    
       
     // Look in the database for a scheduled events for the current schedule day (within business hours)
     $sql = "SELECT SCHEDULE_ID FROM ".PRFX."TABLE_SCHEDULE       
@@ -176,7 +185,7 @@ function get_schedule_ids_for_employee_on_date($db, $employee_id, $schedule_star
     
 }
 
-/** Update functions **/
+/** Update Functions **/
 
 ######################################
 #      Update New schedule           #
@@ -221,6 +230,8 @@ function update_schedule($db, $schedule_start_date, $scheduleStartTime, $schedul
     
 }
 
+/** Close Functions **/
+
 /** Delete Functions **/
 
 ##################################
@@ -239,6 +250,7 @@ function delete_schedule($db, $schedule_id) {
         return true;
         
     }
+    
 }
 
 /** iCalendar Functions **/
@@ -257,6 +269,7 @@ function ics_header_settings() {
         'METHOD:PUBLISH'."\r\n";        // does this force events to be added rather than create a new calendar
     
     return $ics_header_settings;
+    
 }
 
 #####################################################
@@ -266,19 +279,19 @@ function ics_header_settings() {
 function build_single_schedule_ics($db, $schedule_id, $ics_type = 'single') {
     
     // Get the schedule information
-    $single_schedule    = display_single_schedule($db, $schedule_id);
-    $single_workorder   = display_single_workorder($db, $single_schedule['0']['WORKORDER_ID']);
-    //$single_customer   = display_single_customer($db, $single_workorder['0']['CUSTOMER_ID']);
+    $single_schedule    = get_schedule_details($db, $schedule_id);
+    $workorder          = get_workorder_details($db, $single_schedule['WORKORDER_ID']);
+    $customer           = get_customer_details($db, $workorder['0']['CUSTOMER_ID']);
     
     $start_datetime     = timestamp_to_ics_datetime($single_schedule['0']['SCHEDULE_START']);
     $end_datetime       = timestamp_to_ics_datetime($single_schedule['0']['SCHEDULE_END']);
     $current_datetime   = timestamp_to_ics_datetime(time());
 
-    $summary            = prepare_ics_strings('SUMMARY', $single_workorder['0']['CUSTOMER_DISPLAY_NAME'].' - Workorder '.$single_schedule['0']['WORKORDER_ID'].' - Schedule '.$schedule_id);
-    $description        = prepare_ics_strings('DESCRIPTION', build_ics_description('textarea', $single_schedule, $single_workorder));
-    $x_alt_desc         = prepare_ics_strings('X-ALT-DESC;FMTTYPE=text/html', build_ics_description('html', $single_schedule, $single_workorder));
+    $summary            = prepare_ics_strings('SUMMARY', $customer['0']['CUSTOMER_DISPLAY_NAME'].' - Workorder '.$single_schedule['0']['WORKORDER_ID'].' - Schedule '.$schedule_id);
+    $description        = prepare_ics_strings('DESCRIPTION', build_ics_description('textarea', $single_schedule, $customer, $workorder));
+    $x_alt_desc         = prepare_ics_strings('X-ALT-DESC;FMTTYPE=text/html', build_ics_description('html', $single_schedule, $customer, $workorder));
     
-    $location           = prepare_ics_strings('LOCATION', build_single_line_address($single_workorder['0']['CUSTOMER_ADDRESS'], $single_workorder['0']['CUSTOMER_CITY'], $single_workorder['0']['CUSTOMER_STATE'], $single_workorder['0']['CUSTOMER_ZIP']));
+    $location           = prepare_ics_strings('LOCATION', build_single_line_address($customer['0']['CUSTOMER_ADDRESS'], $customer['0']['CUSTOMER_CITY'], $customer['0']['CUSTOMER_STATE'], $customer['0']['CUSTOMER_ZIP']));
     $uniqid             = 'QWcrm-'.$single_schedule['0']['SCHEDULE_ID'].'-'.$single_schedule['0']['SCHEDULE_START'];    
   
     // Build the Schedule .ics content
@@ -363,27 +376,27 @@ function build_html_adddress($address, $city, $state, $postcode){
 #    Build description for ics                   #
 ##################################################
 
-function build_ics_description($type, $single_schedule, $single_workorder) {     
+function build_ics_description($type, $single_schedule, $customer, $workorder) {     
     
     if($type == 'textarea') {      
 
         // Workorder and Schedule Information
         $description =  'Scope: \n\n'.
-                        $single_workorder['0']['WORK_ORDER_SCOPE'].'\n\n'.
+                        $workorder['0']['WORK_ORDER_SCOPE'].'\n\n'.
                         'Description: \n\n'.
-                        html_to_textarea($single_workorder['0']['WORK_ORDER_DESCRIPTION']).'\n\n'.
+                        html_to_textarea($workorder['0']['WORK_ORDER_DESCRIPTION']).'\n\n'.
                         'Schedule Notes: \n\n'.
                         html_to_textarea($single_schedule['0']['SCHEDULE_NOTES']);
 
         // Contact Information
         $description .= 'Contact Information'.'\n\n'.
-                        'Company: ' .$single_workorder['0']['CUSTOMER_DISPLAY_NAME'].'\n\n'.
-                        'Contact: ' .$single_workorder['0']['CUSTOMER_FIRST_NAME'].' '.$single_workorder['0']['CUSTOMER_LAST_NAME'].'\n\n'.
-                        'Phone: '   .$single_workorder['0']['CUSTOMER_PHONE'].'\n\n'.
-                        'Mobile: '  .$single_workorder['0']['CUSTOMER_MOBILE_PHONE'].'\n\n'.
-                        'Email: '   .$single_workorder['0']['CUSTOMER_EMAIL'].'\n\n'.
-                        'Website: ' .$single_workorder['0']['CUSTOMER_WWW'].'\n\n'.
-                        'Address: ' .build_single_line_address($single_workorder['0']['CUSTOMER_ADDRESS'], $single_workorder['0']['CUSTOMER_CITY'], $single_workorder['0']['CUSTOMER_STATE'], $single_workorder['0']['CUSTOMER_ZIP']).'\n\n';                        
+                        'Company: ' .$customer['0']['CUSTOMER_DISPLAY_NAME'].'\n\n'.
+                        'Contact: ' .$customer['0']['CUSTOMER_FIRST_NAME'].' '.$customer['0']['CUSTOMER_LAST_NAME'].'\n\n'.
+                        'Phone: '   .$customer['0']['CUSTOMER_PHONE'].'\n\n'.
+                        'Mobile: '  .$customer['0']['CUSTOMER_MOBILE_PHONE'].'\n\n'.
+                        'Email: '   .$customer['0']['CUSTOMER_EMAIL'].'\n\n'.
+                        'Website: ' .$customer['0']['CUSTOMER_WWW'].'\n\n'.
+                        'Address: ' .build_single_line_address($customer['0']['CUSTOMER_ADDRESS'], $customer['0']['CUSTOMER_CITY'], $customer['0']['CUSTOMER_STATE'], $customer['0']['CUSTOMER_ZIP']).'\n\n';                        
     
     }
     
@@ -400,24 +413,24 @@ function build_ics_description($type, $single_schedule, $single_workorder) {
     
         // Workorder and Schedule Information
         $description .= '<p><strong>Scope: </strong></p>'.
-                        '<p>'.$single_workorder['0']['WORK_ORDER_SCOPE'].'</p>'.
+                        '<p>'.$workorder['0']['WORK_ORDER_SCOPE'].'</p>'.
                         '<p><strong>Description: </strong></p>'.
-                        '<div>'.$single_workorder['0']['WORK_ORDER_DESCRIPTION'].'</div>'.
+                        '<div>'.$workorder['0']['WORK_ORDER_DESCRIPTION'].'</div>'.
                         '<p><strong>Schedule Notes: </strong></p>'.
                         '<div>'.$single_schedule['0']['SCHEDULE_NOTES'].'</div>';        
 
         // Contact Information
         $description .= '<p><strong>Contact Information:</strong></p>'.
                         '<p>'.
-                        '<strong>Company:</strong> ' .$single_workorder['0']['CUSTOMER_DISPLAY_NAME'].'<br>'.
-                        '<strong>Contact:</strong> ' .$single_workorder['0']['CUSTOMER_FIRST_NAME'].' '.$single_workorder['0']['CUSTOMER_LAST_NAME'].'<br>'.              
-                        '<strong>Phone:</strong> '   .$single_workorder['0']['CUSTOMER_PHONE'].'<br>'.
-                        '<strong>Mobile:</strong> '  .$single_workorder['0']['CUSTOMER_MOBILE_PHONE'].'<br>'.
-                        '<strong>Email:</strong> '   .$single_workorder['0']['CUSTOMER_EMAIL'].'<br>'.
-                        '<strong>Website:</strong> ' .$single_workorder['0']['CUSTOMER_WWW'].
+                        '<strong>Company:</strong> ' .$customer['0']['CUSTOMER_DISPLAY_NAME'].'<br>'.
+                        '<strong>Contact:</strong> ' .$customer['0']['CUSTOMER_FIRST_NAME'].' '.$customer['0']['CUSTOMER_LAST_NAME'].'<br>'.              
+                        '<strong>Phone:</strong> '   .$customer['0']['CUSTOMER_PHONE'].'<br>'.
+                        '<strong>Mobile:</strong> '  .$customer['0']['CUSTOMER_MOBILE_PHONE'].'<br>'.
+                        '<strong>Email:</strong> '   .$customer['0']['CUSTOMER_EMAIL'].'<br>'.
+                        '<strong>Website:</strong> ' .$customer['0']['CUSTOMER_WWW'].
                         '</p>'.                
                         '<p><strong>Address: </strong></p>'.
-                        build_html_adddress($single_workorder['0']['CUSTOMER_ADDRESS'], $single_workorder['0']['CUSTOMER_CITY'], $single_workorder['0']['CUSTOMER_STATE'], $single_workorder['0']['CUSTOMER_ZIP']);
+                        build_html_adddress($customer['0']['CUSTOMER_ADDRESS'], $customer['0']['CUSTOMER_CITY'], $customer['0']['CUSTOMER_STATE'], $customer['0']['CUSTOMER_ZIP']);
         
         // Close HTML Wrapper
         $description .= '</BODY>\n'.
@@ -550,11 +563,11 @@ function ics_string_octet_split($ics_keyname, $ics_string) {
 function build_calendar_matrix($db, $schedule_start_year, $schedule_start_month, $schedule_start_day, $employee_id, $workorder_id = null) {
             
     // Get the start and end time of the calendar schedule to be displayed, Office hours only - (unix timestamp)
-    $company_day_start = mktime(get_setup_info($db, 'OPENING_HOUR'), get_setup_info($db, 'OPENING_MINUTE'), 0, $schedule_start_month, $schedule_start_day, $schedule_start_year);
-    $company_day_end   = mktime(get_setup_info($db, 'CLOSING_HOUR'), get_setup_info($db, 'CLOSING_MINUTE'), 59, $schedule_start_month, $schedule_start_day, $schedule_start_year);    
+    $company_day_start = mktime(get_company_details($db, 'OPENING_HOUR'), get_company_details($db, 'OPENING_MINUTE'), 0, $schedule_start_month, $schedule_start_day, $schedule_start_year);
+    $company_day_end   = mktime(get_company_details($db, 'CLOSING_HOUR'), get_company_details($db, 'CLOSING_MINUTE'), 59, $schedule_start_month, $schedule_start_day, $schedule_start_year);    
     /* Same as above but my code - Get the start and end time of the calendar schedule to be displayed, Office hours only - (unix timestamp)
-    $company_day_start = datetime_to_timestamp($current_schedule_date, get_setup_info($db, 'OPENING_HOUR'), 0, 0, $clock = '24');
-    $company_day_end   = datetime_to_timestamp($current_schedule_date, get_setup_info($db, 'CLOSING_HOUR'), 59, 0, $clock = '24');*/
+    $company_day_start = datetime_to_timestamp($current_schedule_date, get_company_details($db, 'OPENING_HOUR'), 0, 0, $clock = '24');
+    $company_day_end   = datetime_to_timestamp($current_schedule_date, get_company_details($db, 'CLOSING_HOUR'), 59, 0, $clock = '24');*/
       
     // Look in the database for a scheduled events for the current schedule day (within business hours)
     $sql = "SELECT ".PRFX."TABLE_SCHEDULE.*,
@@ -715,8 +728,8 @@ function validate_schedule_times($db, $schedule_start_date, $schedule_start_time
     
     global $smarty;
     
-    $company_day_start = datetime_to_timestamp($schedule_start_date, get_setup_info($db, 'OPENING_HOUR'), get_setup_info($db, 'OPENING_MINUTE'), '0', '24');
-    $company_day_end   = datetime_to_timestamp($schedule_start_date, get_setup_info($db, 'CLOSING_HOUR'), get_setup_info($db, 'CLOSING_MINUTE'), '0', '24');
+    $company_day_start = datetime_to_timestamp($schedule_start_date, get_company_details($db, 'OPENING_HOUR'), get_company_details($db, 'OPENING_MINUTE'), '0', '24');
+    $company_day_end   = datetime_to_timestamp($schedule_start_date, get_company_details($db, 'CLOSING_HOUR'), get_company_details($db, 'CLOSING_MINUTE'), '0', '24');
     
     // Add the second I removed to correct extra segment issue
     $schedule_end_timestamp += 1;

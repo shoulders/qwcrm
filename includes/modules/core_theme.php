@@ -7,8 +7,6 @@
  * @license   GNU/GPLv3 or later; https://www.gnu.org/licenses/gpl.html
  */
 
-/** Mandatory Code **/
-
 /** Misc **/
 
 #########################################

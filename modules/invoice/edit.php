@@ -34,7 +34,7 @@ if(isset($VAR['deleteType']) && $VAR['deleteType'] == 'partsRecord') {
 if(isset($VAR['submit'])) {
     insert_labour_items($db, $invoice_id, $VAR['labour_description'], $VAR['labour_rate'], $VAR['labour_hour']);
     insert_parts_items($db, $invoice_id, $VAR['parts_description'], $VAR['parts_price'], $VAR['parts_qty']);
-    update_invoice_small($db, $invoice_id, $VAR['date'], $VAR['due_date'], $VAR['discount_rate']);    
+    update_invoice($db, $invoice_id, $VAR['date'], $VAR['due_date'], $VAR['discount_rate']);    
     recalculate_invoice_totals($db, $invoice_id);
 }
     
@@ -42,21 +42,21 @@ if(isset($VAR['submit'])) {
 #     Load invoice edit page     #
 ################################## 
     
-$smarty->assign('company',              get_company_details($db)                                    );
-$smarty->assign('customer',             get_customer_details($db, get_invoice_details($db, $invoice_id, 'CUSTOMER_ID'))    );      
-$smarty->assign('invoice',              get_invoice_details($db, $invoice_id)                       );
-$smarty->assign('labour_rate_items',    get_active_labour_rate_items($db)                           );    
-$smarty->assign('labour_items',         get_invoice_labour_items($db, $invoice_id)                  );
-$smarty->assign('parts_items',          get_invoice_parts_items($db, $invoice_id)                   );
-$smarty->assign('labour_sub_total',     labour_sub_total($db, $invoice_id)                          );
-$smarty->assign('parts_sub_total',      parts_sub_total($db, $invoice_id)                           );
-$smarty->assign('transactions',         get_invoice_transactions($db, $invoice_id)                  ); 
-$smarty->assign('workorder_status',     get_workorder_status($db, $workorder_id)                    ); 
+$smarty->assign('company',              get_company_details($db)                                                                                    );
+$smarty->assign('customer',             get_customer_details($db, get_invoice_details($db, $invoice_id, 'CUSTOMER_ID'))                             );      
+$smarty->assign('invoice',              get_invoice_details($db, $invoice_id)                                                                       );
+$smarty->assign('labour_rate_items',    get_active_labour_rate_items($db)                                                                           );    
+$smarty->assign('labour_items',         get_invoice_labour_items($db, $invoice_id)                                                                  );
+$smarty->assign('parts_items',          get_invoice_parts_items($db, $invoice_id)                                                                   );
+$smarty->assign('labour_sub_total',     labour_sub_total($db, $invoice_id)                                                                          );
+$smarty->assign('parts_sub_total',      parts_sub_total($db, $invoice_id)                                                                           );
+$smarty->assign('transactions',         get_invoice_transactions($db, $invoice_id)                                                                  ); 
+$smarty->assign('workorder_status',     get_workorder_details($db, $workorder_id, 'WORK_ORDER_STATUS')                                              ); 
 $smarty->assign('employee_display_name', get_employee_details($db, get_invoice_details($db, $invoice_id, 'EMPLOYEE_ID'),'EMPLOYEE_DISPLAY_NAME')    );
 
 // temp - these are needed for the record deltion routines - consider making all fields editable
-$smarty->assign('workorder_id',         get_invoice_details($db, $invoice_id, 'WORKORDER_ID')       );
-$smarty->assign('customer_id',          get_invoice_details($db, $invoice_id, 'CUSTOMER_ID')        );
+$smarty->assign('workorder_id',         get_invoice_details($db, $invoice_id, 'WORKORDER_ID')                                                       );
+$smarty->assign('customer_id',          get_invoice_details($db, $invoice_id, 'CUSTOMER_ID')                                                        );
 
 // Fetch Page
 $BuildPage .= $smarty->fetch('invoice/edit.tpl');
