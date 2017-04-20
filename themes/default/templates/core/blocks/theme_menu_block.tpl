@@ -126,7 +126,7 @@
                         
                         <!-- Stats -->
                         <a href="?page=stats:hit_stats"><img src="{$theme_images_dir}icons/reports.png" alt="" border="0" height="14" width="14" /> {$translate_core_menu_hit_stats}</a>
-                        <a href="?page=stats:hit_stats_view"><img src="{$theme_images_dir}icons/reports.png" alt="" border="0" height="14" width="14" /> {$translate_core_menu_hit_stats_view}</a>
+                        <a href="?page=stats:hit_stats_by_ip"><img src="{$theme_images_dir}icons/reports.png" alt="" border="0" height="14" width="14" /> {$translate_core_menu_hit_stats_by_ip}</a>
                         
                         <!-- System -->
                         <a href="?page=administrator:php_info"><img src="{$theme_images_dir}icons/php.png" alt="" border="0" height="14" width="14" /> {$translate_core_menu_php_info}</a>

@@ -205,7 +205,7 @@
     <core_menu_edit_employee>Edit Employee</core_menu_edit_employee>    
     <core_menu_permissions>Permissions</core_menu_permissions>
     <core_menu_hit_stats>Hit Stat</core_menu_hit_stats>
-    <core_menu_hit_stats_view>Hit Stats View</core_menu_hit_stats_view>    
+    <core_menu_hit_stats_by_ip>Hit Stats By IP</core_menu_hit_stats_by_ip>    
     <core_menu_php_info>PHP Info</core_menu_php_info>
     <core_menu_update>Update</core_menu_update>
     <core_menu_help>Help</core_menu_help>

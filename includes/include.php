@@ -629,18 +629,19 @@ function decrypt($strString, $secretKey){
  */
 
 function get_ip_address(){
-    if(getenv('HTTP_CLIENT_IP')){
-        $ip = getenv('HTTP_CLIENT_IP');        
-    }
-    elseif(getenv('HTTP_X_FORWARDED_FOR')){
-        $ip = getenv('HTTP_X_FORWARDED_FOR');        
-    }
-    elseif(getenv('REMOTE_ADDR')){
-        $ip = getenv('REMOTE_ADDR');        
-    }
-    else {$ip = 'UNKNOWN';}
     
-    return $ip;
+    if(getenv('HTTP_CLIENT_IP')) {
+        $ip_address = getenv('HTTP_CLIENT_IP');        
+    }
+    elseif(getenv('HTTP_X_FORWARDED_FOR')) {
+        $ip_address = getenv('HTTP_X_FORWARDED_FOR');        
+    }
+    elseif(getenv('REMOTE_ADDR')) {
+        $ip_address = getenv('REMOTE_ADDR');        
+    }
+    else {$ip_address = 'UNKNOWN';}
+    
+    return $ip_address;
     
 }
 
@@ -674,7 +675,7 @@ function write_record_to_tracker_table($db, $page_display_controller, $module, $
     
    $sql = 'INSERT into '.PRFX.'TRACKER SET
    date          = '. $db->qstr( time()                     ).',
-   ip            = '. $db->qstr( getIP()                    ).',
+   ip            = '. $db->qstr( get_ip_address()           ).',
    uagent        = '. $db->qstr( getenv('HTTP_USER_AGENT')  ).',
    full_page     = '. $db->qstr( $page_display_controller   ).',
    module        = '. $db->qstr( $module                    ).',

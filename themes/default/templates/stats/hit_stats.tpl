@@ -20,8 +20,8 @@
                                              <td class="olohead">Monthly Hits</td>
                                          </tr><tr>
                                              <td class="olotd4">{$daily_total}</td>
-                                             <td class="olotd4"></td>
-                                             <td class="olotd4">{$month_hit}</td>
+                                             <td class="olotd4">Add Something here</td>
+                                             <td class="olotd4">{$month_hits}</td>
                                          </tr>
                                      </table>
                                     <br>
@@ -36,12 +36,12 @@
                                 <td class="olohead">User Agent</td>
                                 <td class="olohead">Hits</td>
                             </tr>
-                            {section name=i loop=$hit}
-                                <tr onmouseover="this.className='row2';" onmouseout="this.className='row1'" onDblClick="window.location='index.php?page=stats:hit_stats_view&ip={$hit[i].ip}&page_title=Hits For {$hit[i].ip}';" class="row1">                                
-                                    <td class="olotd4">{$hit[i].date|date_format:" %H:%M:%S"}</td>
-                                    <td class="olotd4">{$hit[i].ip}</td>
-                                    <td class="olotd4">{$hit[i].uagent}</td>
-                                    <td class="olotd4">{$hit[i].count}</td>
+                            {section name=i loop=$hits}
+                                <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=stats:hit_stats_by_ip&ip_address={$hits[i].ip}';" class="row1">                                
+                                    <td class="olotd4">{$hits[i].date|date_format:$date_format}</td>
+                                    <td class="olotd4">{$hits[i].ip}</td>
+                                    <td class="olotd4">{$hits[i].uagent}</td>
+                                    <td class="olotd4">{$hits[i].count}</td>
                                 </tr>
                             {/section}
                         </table>                            

@@ -1,53 +1,29 @@
 <?php
 
-require(INCLUDES_DIR.'modules/supplier.php');
+require(INCLUDES_DIR.'modules/stats.php');
 
-/* set start date */
-
-// add this to the other time sttements for refernce? jon
-$today_start = mktime(0,0,0,date("m"), date("d"), date("Y"));
+// Set start and and end date - see schedule
+$today_start    = mktime(0,0,0,date("m"), date("d"), date("Y"));
 $today_end      = mktime(23,59,59,date("m"), date("d"), date("Y"));
 
-$month_start = mktime(0,0,0,date("m"), 1, date("Y"));
-$month_end     = mktime(0,0,0,date("m")+1, 0, date("Y"));
+// Set month start and end
+$month_start    = mktime(0,0,0,date("m"), 1, date("Y"));
+$month_end      = mktime(0,0,0,date("m")+1, 0, date("Y"));
 
-/* local ip's we do not want to watch*/
+// IP addressesto exlude from the results
 $filter_ips = array('71.32.223.153');
-
-/* build and */
 foreach($filter_ips as $ip) {
     $where .=" AND ip !='$ip' ";
 }
-//print $where;
 
-/* total Hits for the day */
-$q= "SELECT count(*) as count FROM ".PRFX."TRACKER WHERE date >= '$today_start' AND date <= '$today_end' ".$where;
-if(!$rs = $db->Execute($q)) {
-    echo 'Error: '. $db->ErrorMsg();
-}
-$count = $rs->fields['count'];
-$smarty->assign('daily_total', $count);
+// Hits for the day
+$smarty->assign('daily_total', day_hits($db, $today_start, $today_end, $where));
 
-/* load all stats for the day */
-$q = "SELECT   date, uagent, count(*) as count, ip FROM ".PRFX."TRACKER WHERE date >= '$today_start' AND date <= '$today_end' ".$where." GROUP BY ip ORDER BY date  ";
-if(!$rs = $db->Execute($q)){
-    echo 'Error: '. $db->ErrorMsg();
-    die;
-}
-$arr = $rs->GetArray();
-$smarty->assign('hit', $arr);
+// All stats for the day
+$smarty->assign('hits', get_day_all_stats($db, $today_start, $today_end, $where));
 
+// Hits for the month
+$smarty->assign('month_hits', get_month_hits($db, $month_start, $month_end, $where));
 
-/* load stats for the month */
-$q= "SELECT count(*) as count FROM ".PRFX."TRACKER WHERE date >= '$month_start' AND date <= '$month_end' ".$where;
-if(!$rs = $db->Execute($q)) {
-    echo 'Error: '. $db->ErrorMsg();
-}
-
-$count = $rs->fields['count'];
-$smarty->assign('month_hit', $count);
-
-
-//print_r($arr);
-
-$BuildPage .= $smarty->fetch('stats'.SEP.'hit_stats.tpl');
+// fetch and build the page
+$BuildPage .= $smarty->fetch('stats/hit_stats.tpl');
