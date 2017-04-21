@@ -2,31 +2,31 @@
 
 require(INCLUDES_DIR.'modules/invoice.php');
 
-// Upload CSV file if submitted
-if(isset($VAR['csv_upload'])) {
-    upload_invoice_labour_rates_csv($db, $VAR);
-}
-
-// Now if we edit/add a new item
+// if something submitted
 if(isset($VAR['submit'])) {
+
+    // New invoice labour rates item
+    if($VAR['submit'] == 'new') {
+        insert_invoice_labour_rates_item($db, $VAR);
+    }    
     
-    // edit invoice rate item
+    // Update invoice labour rates item
     if($VAR['submit'] == 'update') {            
         update_invoice_labour_rates_item($db, $VAR['labour_rate_id'], $VAR);        
     }
     
-    // delete invoice rate rate
+    // Delete invoice labour rates item
     if($VAR['submit'] == 'delete') {        
         delete_invoice_rates_item($db, $VAR['labour_rate_id']);
     }
-
-    // New invoice rate rate
-    if($VAR['submit'] == 'new') {
-        insert_invoice_labour_rates_item($db, $VAR);
+    
+    // Upload CSV file of invoice labour rates items
+    if($VAR['submit'] == 'csv_upload') {
+        upload_invoice_labour_rates_csv($db, $VAR);
     }
     
 }
 
 // Fetch Page
-$smarty->assign('invoice_rates_items', get_invoice_labour_rates_items($db));
+$smarty->assign('invoice_labour_rates_items', get_invoice_labour_rates_items($db));
 $BuildPage .= $smarty->fetch('invoice/labour_rates.tpl');
