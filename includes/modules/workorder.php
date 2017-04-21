@@ -184,10 +184,14 @@ function display_workorder_notes($db, $workorder_id){
     
     global $smarty;
     
-    $sql = "SELECT ".PRFX."TABLE_WORK_ORDER_NOTES.*, ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_DISPLAY_NAME
-            FROM ".PRFX."TABLE_WORK_ORDER_NOTES, ".PRFX."TABLE_EMPLOYEE
+    $sql = "SELECT
+            ".PRFX."TABLE_WORK_ORDER_NOTES.                 *,
+            ".PRFX."TABLE_EMPLOYEE.                         EMPLOYEE_DISPLAY_NAME
+            FROM
+            ".PRFX."TABLE_WORK_ORDER_NOTES,
+            ".PRFX."TABLE_EMPLOYEE
             WHERE WORK_ORDER_ID=".$db->qstr($workorder_id)."
-            AND ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_ID = ".PRFX."TABLE_WORK_ORDER_NOTES.WORK_ORDER_NOTES_ENTER_BY ";
+            AND ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_ID = ".PRFX."TABLE_WORK_ORDER_NOTES.WORK_ORDER_EMPLOYEE_ID";
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
@@ -208,8 +212,12 @@ function display_workorder_history($db, $workorder_id){
     
     global $smarty;
     
-    $sql = "SELECT ".PRFX."TABLE_WORK_ORDER_HISTORY.*, ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_DISPLAY_NAME 
-            FROM ".PRFX."TABLE_WORK_ORDER_HISTORY, ".PRFX."TABLE_EMPLOYEE 
+    $sql = "SELECT 
+            ".PRFX."TABLE_WORK_ORDER_HISTORY.*,
+            ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_DISPLAY_NAME 
+            FROM 
+            ".PRFX."TABLE_WORK_ORDER_HISTORY, 
+            ".PRFX."TABLE_EMPLOYEE 
             WHERE ".PRFX."TABLE_WORK_ORDER_HISTORY.WORK_ORDER_ID=".$db->qstr($workorder_id)." 
             AND ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_ID = ".PRFX."TABLE_WORK_ORDER_HISTORY.ENTERED_BY
             ORDER BY ".PRFX."TABLE_WORK_ORDER_HISTORY.HISTORY_ID";
@@ -272,48 +280,7 @@ function insert_workorder($db, $customer_id, $created_by, $scope, $workorder_des
     
 }
 
-###################
-# Insert New Note #
-###################
 
-function insert_workorder_note($db, $workorder_id, $workorder_note){
-    
-    global $smarty;
-
-    // Remove Extra Slashes caused by Magic Quotes    
-    stripslashes($workorder_note);
-
-    $sql = "INSERT INTO ".PRFX."TABLE_WORK_ORDER_NOTES SET 
-             WORK_ORDER_ID                  =". $db->qstr( $workorder_id            ).",
-             WORK_ORDER_NOTES_DESCRIPTION   =". $db->qstr( $workorder_note          ).",
-             WORK_ORDER_NOTES_ENTER_BY      =". $db->qstr( $_SESSION['login_id']    ).",
-             WORK_ORDER_NOTES_DATE          =". $db->qstr( time()                   );
-
-    if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
-        exit;
-        
-    } else {
-        
-        // Get the new Note ID
-        $note_id = $db->Insert_ID();
-        
-        // Creates a History record for the new work order
-        //insert_workorder_history_note($db, $workorder_id, $smarty->get_template_vars('translate_workorder_log_message_function_insert_new_workorder'));
-        insert_workorder_history_note($db, $workorder_id, $smarty->get_template_vars('translate_workorder_log_message_note').' '.$smarty->get_template_vars('translate_workorder_log_message_added').' '.$smarty->get_template_vars('translate_workorder_log_message_by').' '.$_SESSION['login_display_name']);
-        
-        // Log activity
-        //write_record_to_activity_log($smarty->get_template_vars('translate_workorder_log_message_note').' '.$note_id.' '.$smarty->get_template_vars('translate_workorder_log_message_added'));
-        write_record_to_activity_log($smarty->get_template_vars('translate_workorder_log_message_work_order').' '.$workorder_id.' '.$smarty->get_template_vars('translate_workorder_log_message_note').' '.$note_id.' '.$smarty->get_template_vars('translate_workorder_log_message_added').' '.$smarty->get_template_vars('translate_workorder_log_message_by').' '.$_SESSION['login_display_name']);
-        
-        // Update Workorder last activity record
-        update_workorder_last_active($db, $workorder_id);
-        
-        return true;
-        
-    }
-    
-}
 
 ######################################
 # Insert New Work Order History Note #
@@ -340,6 +307,49 @@ function insert_workorder_history_note($db, $workorder_id, $workorder_history_no
         return true;
         
     }  
+    
+}
+
+##############################
+#    insert workorder note   #
+##############################
+
+function insert_workorder_note($db, $workorder_id, $workorder_note){
+    
+    global $smarty;
+
+    // Remove Extra Slashes caused by Magic Quotes    
+    stripslashes($workorder_note);
+
+    $sql = "INSERT INTO ".PRFX."TABLE_WORK_ORDER_NOTES SET 
+            WORK_ORDER_ID                  =". $db->qstr( $workorder_id            ).",             
+            WORK_ORDER_EMPLOYEE_ID         =". $db->qstr( $_SESSION['login_id']    ).",
+            WORK_ORDER_NOTES_DATE          =". $db->qstr( time()                   ).",
+            WORK_ORDER_NOTES_DESCRIPTION   =". $db->qstr( $workorder_note          );
+
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
+        exit;
+        
+    } else {
+        
+        // Get the new Note ID
+        $note_id = $db->Insert_ID();
+        
+        // Creates a History record for the new work order
+        //insert_workorder_history_note($db, $workorder_id, $smarty->get_template_vars('translate_workorder_log_message_function_insert_new_workorder'));
+        insert_workorder_history_note($db, $workorder_id, $smarty->get_template_vars('translate_workorder_log_message_note').' '.$smarty->get_template_vars('translate_workorder_log_message_added').' '.$smarty->get_template_vars('translate_workorder_log_message_by').' '.$_SESSION['login_display_name']);
+        
+        // Log activity
+        //write_record_to_activity_log($smarty->get_template_vars('translate_workorder_log_message_note').' '.$note_id.' '.$smarty->get_template_vars('translate_workorder_log_message_added'));
+        write_record_to_activity_log($smarty->get_template_vars('translate_workorder_log_message_work_order').' '.$workorder_id.' '.$smarty->get_template_vars('translate_workorder_log_message_note').' '.$note_id.' '.$smarty->get_template_vars('translate_workorder_log_message_added').' '.$smarty->get_template_vars('translate_workorder_log_message_by').' '.$_SESSION['login_display_name']);
+        
+        // Update Workorder last activity record
+        update_workorder_last_active($db, $workorder_id);
+        
+        return true;
+        
+    }
     
 }
 
@@ -371,6 +381,53 @@ function get_workorder_details($db, $workorder_id, $item = null){
         } 
         
     }
+    
+}
+
+
+#####################################
+#  Get a single workorder note      #
+#####################################
+
+function get_workorder_note($db, $workorder_note_id, $item = null){
+    
+    global $smarty;
+    
+    $sql = "SELECT * FROM ".PRFX."TABLE_WORK_ORDER_NOTES WHERE WORK_ORDER_NOTES_ID=".$db->qstr( $workorder_note_id );    
+    
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_customer_error_message_function_'.__FUNCTION__.'_failed'));
+        exit;
+    } else { 
+        
+        if($item === null){
+            
+            return $rs->GetRowAssoc(); 
+            
+        } else {
+            
+            return $rs->fields[$item];   
+            
+        } 
+        
+    }
+    
+}
+
+#####################################
+#  Get ALL of a workorder's notes   #
+#####################################
+
+function get_workorder_notes($db, $workorder_id) {
+    
+    $sql = "SELECT * FROM ".PRFX."CUSTOMER_NOTE WHERE CUSTOMER_ID=".$db->qstr( $workorder_id );
+    
+    if(!$rs = $db->execute($sql)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
+    }
+        
+    return $rs->GetArray(); 
     
 }
 
@@ -569,6 +626,25 @@ function update_workorder_last_active($db, $workorder_id){
     
 }
 
+##############################
+#    update workorder note   #
+##############################
+
+function update_workorder_note($db, $workorder_note_id, $date, $note) {
+    
+    $sql = "UPDATE ".PRFX."TABLE_WORK_ORDER_NOTES SET
+            WORK_ORDER_EMPLOYEE_ID          =". $db->qstr( $_SESSION['login_id']    ).",
+            WORK_ORDER_NOTES_DATE           =". $db->qstr( $date                    ).",
+            WORK_ORDER_NOTES_DESCRIPTION    =". $db->qstr( $note                    )."
+            WHERE WORK_ORDER_NOTES_ID       =". $db->qstr( $workorder_note_id       );
+
+    if(!$rs = $db->execute($sql)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;        
+    }   
+    
+}
+
 /** Close Functions **/
 
 #################################
@@ -755,6 +831,21 @@ function check_workorder_status_is_allowed_for_deletion($db, $workorder_id) {
             
         }
         
+    }
+    
+}
+
+####################################
+#    delete a workorders's note    #
+####################################
+
+function delete_workorder_note($db, $workorder_note_id) {
+    
+    $sql = "DELETE FROM ".PRFX."TABLE_WORK_ORDER_NOTES WHERE WORK_ORDER_NOTES_ID=".$db->qstr( $workorder_note_id );
+
+    if(!$rs = $db->execute($sql)) {
+        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        exit;
     }
     
 }

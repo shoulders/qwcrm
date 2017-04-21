@@ -230,7 +230,7 @@ function get_customer_details($db, $customer_id, $item = null){
 }
 
 #####################################
-#  Get a single customer's note     #
+#  Get a single customer note       #
 #####################################
 
 function get_customer_note($db, $customer_note_id, $item = null){
@@ -259,7 +259,7 @@ function get_customer_note($db, $customer_note_id, $item = null){
 }
 
 #####################################
-#  Get ALL customer's notes         #
+#  Get ALL of a customer's notes    #
 #####################################
 
 function get_customer_notes($db, $customer_id) {
@@ -420,9 +420,9 @@ function delete_customer($db, $customer_id){
 #    delete a customer's note    #
 ##################################
 
-function delete_customer_note($db, $memo_id) {
+function delete_customer_note($db, $customer_note_id) {
     
-    $sql = "DELETE FROM ".PRFX."CUSTOMER_NOTE WHERE CUSTOMER_NOTE_ID=".$db->qstr( $memo_id );
+    $sql = "DELETE FROM ".PRFX."CUSTOMER_NOTE WHERE CUSTOMER_NOTE_ID=".$db->qstr( $customer_note_id );
 
     if(!$rs = $db->execute($sql)) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');

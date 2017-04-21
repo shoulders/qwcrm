@@ -18,7 +18,7 @@ if(isset($VAR['submit'])){
 // Fetch the page ready for a note submission 
 } else {
     
-    $smarty->assign('workorder_id', $VAR['workorder_id']);
+    $smarty->assign('workorder_id', $VAR['workorder_id']);    
+    $BuildPage .= $smarty->fetch('workorder/note_new.tpl');
     
-    $BuildPage .= $smarty->fetch('workorder/details_new_note.tpl');
 }

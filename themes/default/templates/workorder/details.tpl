@@ -172,7 +172,7 @@
                                                         <tr>
                                                             <td width="100%" valign="top">                                                            
                                                                 <!-- Display Work Order Notes -->
-                                                                {include file="workorder/blocks/details_notes_block.tpl"}
+                                                                {include file="workorder/blocks/details_note_block.tpl"}
                                                                 <br>
                                                             </td>
                                                         </tr>

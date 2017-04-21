@@ -14,8 +14,7 @@
                         <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0">
                             <tr>
                                 <td width="100%" valign="top">                                                                     
-                                    <form action="index.php?page=workorder:details_new_note" method="POST" name="new_workorder_note" id="new_workorder_note">
-                                        <input type="hidden" name="page" value="workorder:details_new_note">
+                                    <form action="index.php?page=workorder:note_new" method="post" name="new_workorder_note" id="new_workorder_note">                                        
                                         <input type="hidden" name="workorder_id" value="{$workorder_id}">
                                         <table class="olotable" width="100%" border="0" summary="Work order display">
                                             <tr>

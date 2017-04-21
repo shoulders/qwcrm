@@ -181,7 +181,7 @@ function perform_redirect($url, $type = 'header') {
 //force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
 
 function force_error_page($error_page, $error_type, $error_location, $php_function, $database_error, $sql_query, $error_msg) {    
-    
+   
     // Pass varibles to the error page after preperation
     postEmulation('error_page',         prepare_error_data('error_page', $error_page)           );
     postEmulation('error_type',         $error_type                                             );
