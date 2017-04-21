@@ -38,12 +38,14 @@ function update_company_hours($db, $openingTime, $closingTime) {
             CLOSING_HOUR    ='. $db->qstr( $closingTime['Time_Hour']     ).',
             CLOSING_MINUTE  ='. $db->qstr( $closingTime['Time_Minute']   );
 
-    if(!$rs = $db->execute($sql)) {
-        force_page('core', 'error','error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_company_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
-    } else {            
+    } else {
+        
         $smarty->assign('information_msg','Business hours have been updated.');
         return true;
+        
     }
     
 }
@@ -63,22 +65,27 @@ function update_company_hours($db, $openingTime, $closingTime) {
 
 function get_company_start_end_times($db, $time_event) {
     
+    global $smarty;
+    
     $sql = 'SELECT OPENING_HOUR, OPENING_MINUTE, CLOSING_HOUR, CLOSING_MINUTE FROM '.PRFX.'TABLE_COMPANY';
 
-    if(!$rs = $db->execute($sql)) {
-        force_page('core', 'error','error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+   if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_company_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
-    }
-    $companyTime = $rs->GetArray();
+    } else {        
     
-    // return opening time in correct format for smarty time builder
-    if($time_event == 'opening_time') {
-        return $companyTime['0']['OPENING_HOUR'].':'.$companyTime['0']['OPENING_MINUTE'].':00';
-    }
-    
-    // return closing time in correct format for smarty time builder
-    if($time_event == 'closing_time') {
-        return $companyTime['0']['CLOSING_HOUR'].':'.$companyTime['0']['CLOSING_MINUTE'].':00';
+        $companyTime = $rs->GetArray();
+
+        // return opening time in correct format for smarty time builder
+        if($time_event == 'opening_time') {
+            return $companyTime['0']['OPENING_HOUR'].':'.$companyTime['0']['OPENING_MINUTE'].':00';
+        }
+
+        // return closing time in correct format for smarty time builder
+        if($time_event == 'closing_time') {
+            return $companyTime['0']['CLOSING_HOUR'].':'.$companyTime['0']['CLOSING_MINUTE'].':00';
+        }
+        
     }
     
 }
@@ -93,21 +100,21 @@ function update_company_details($db, $record) {
     
     global $smarty;
     
-        $sql .= 'UPDATE '.PRFX.'TABLE_COMPANY SET
-                NAME                = '. $db->qstr( $record['company_name']               ).',
-                NUMBER              = '. $db->qstr( $record['company_number']             ).',
-                ADDRESS             = '. $db->qstr( $record['company_address']            ).',
-                CITY                = '. $db->qstr( $record['company_city']               ).',
-                STATE               = '. $db->qstr( $record['company_state']              ).',
-                ZIP                 = '. $db->qstr( $record['company_zip']                ).',
-                COUNTRY             = '. $db->qstr( $record['company_country']            ).',
-                PHONE               = '. $db->qstr( $record['company_phone']              ).',
-                MOBILE              = '. $db->qstr( $record['company_mobile']             ).',
-                FAX                 = '. $db->qstr( $record['company_fax']                ).',
-                EMAIL               = '. $db->qstr( $record['company_email']              ).',    
-                CURRENCY_SYMBOL     = '. $db->qstr( $record['company_currency_sym']       ).',
-                CURRENCY_CODE       = '. $db->qstr( $record['company_currency_code']      ).',
-                DATE_FORMAT         = '. $db->qstr( $record['company_date_format']        ).',';
+    $sql .= 'UPDATE '.PRFX.'TABLE_COMPANY SET
+            NAME                = '. $db->qstr( $record['company_name']               ).',
+            NUMBER              = '. $db->qstr( $record['company_number']             ).',
+            ADDRESS             = '. $db->qstr( $record['company_address']            ).',
+            CITY                = '. $db->qstr( $record['company_city']               ).',
+            STATE               = '. $db->qstr( $record['company_state']              ).',
+            ZIP                 = '. $db->qstr( $record['company_zip']                ).',
+            COUNTRY             = '. $db->qstr( $record['company_country']            ).',
+            PHONE               = '. $db->qstr( $record['company_phone']              ).',
+            MOBILE              = '. $db->qstr( $record['company_mobile']             ).',
+            FAX                 = '. $db->qstr( $record['company_fax']                ).',
+            EMAIL               = '. $db->qstr( $record['company_email']              ).',    
+            CURRENCY_SYMBOL     = '. $db->qstr( $record['company_currency_sym']       ).',
+            CURRENCY_CODE       = '. $db->qstr( $record['company_currency_code']      ).',
+            DATE_FORMAT         = '. $db->qstr( $record['company_date_format']        ).',';
     
     if(!empty($_FILES['company_logo']['name'])) {
         $sql .='LOGO                = '. $db->qstr( MEDIA_DIR . $new_logo_filename        ).',';
@@ -120,8 +127,8 @@ function update_company_details($db, $record) {
                 TAX_RATE            = '. $db->qstr( $record['company_tax_rate']           ).',
                 WELCOME_MSG         = '. $db->qstr( $record['company_welcome_msg']        );                           
     
-    if(!$rs = $db->execute($sql)) {
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_company_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -132,8 +139,6 @@ function update_company_details($db, $record) {
     }
     
 }
-
-
 
 /** Close Functions **/
 

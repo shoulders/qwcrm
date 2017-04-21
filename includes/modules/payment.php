@@ -28,20 +28,22 @@
 #   insert transaction     #
 ############################
 
-function insert_transaction($db, $invoice_id, $workorder_id, $customer_id, $type, $amount, $memo) {    
+function insert_transaction($db, $invoice_id, $workorder_id, $customer_id, $type, $amount, $memo) {
+    
+    global $smarty;
     
     $sql = "INSERT INTO ".PRFX."TABLE_TRANSACTION SET
-        DATE            = ".$db->qstr(time()                    ).",
-        TYPE            = ".$db->qstr( $type                    ).",
-        INVOICE_ID      = ".$db->qstr( $invoice_id              ).",
-        WORKORDER_ID    = ".$db->qstr( $workorder_id            ).",
-        CUSTOMER_ID     = ".$db->qstr( $customer_id             ).",
-        EMPLOYEE_ID     = ".$db->qstr( $_SESSION['login_id']    ).",
-        AMOUNT          = ".$db->qstr( $amount                  ).",
-        MEMO            = ".$db->qstr( $memo                    );
+            DATE            = ".$db->qstr(time()                    ).",
+            TYPE            = ".$db->qstr( $type                    ).",
+            INVOICE_ID      = ".$db->qstr( $invoice_id              ).",
+            WORKORDER_ID    = ".$db->qstr( $workorder_id            ).",
+            CUSTOMER_ID     = ".$db->qstr( $customer_id             ).",
+            EMPLOYEE_ID     = ".$db->qstr( $_SESSION['login_id']    ).",
+            AMOUNT          = ".$db->qstr( $amount                  ).",
+            MEMO            = ".$db->qstr( $memo                    );
 
-    if(!$rs = $db->execute($sql)) {
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
+    if(!$rs = $db->execute($sql)){        
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_payment_include_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     }
     
@@ -174,14 +176,20 @@ function get_payment_details($db, $item = null){
 
 function get_active_payment_methods($db) {
     
+    global $smarty;
+    
     $sql = "SELECT SMARTY_TPL_KEY, ACTIVE FROM ".PRFX."PAYMENT_METHODS WHERE ACTIVE='1'";    
     
-    if(!$rs = $db->execute($sql)) {
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
+    if(!$rs = $db->execute($sql)){        
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_payment_include_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
+    } else {
+        
+            return $rs->GetAssoc();
+        
     }
     
-    return $rs->GetAssoc();
+    
     
 }
 
@@ -191,14 +199,18 @@ function get_active_payment_methods($db) {
 
 function get_payment_methods_status($db) {
     
+    global $smarty;
+    
     $sql = "SELECT * FROM ".PRFX."PAYMENT_METHODS";
 
-    if(!$rs = $db->execute($sql)) {
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+    if(!$rs = $db->execute($sql)){        
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_payment_include_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
-    }
-
-    return $rs->GetArray();
+    } else {
+        
+        return $rs->GetArray();
+        
+    }    
     
 }
 
@@ -206,22 +218,20 @@ function get_payment_methods_status($db) {
 #   Get get active credit cards         #
 #########################################
 
-function get_active_credit_cards($db){
+function get_active_credit_cards($db) {
+    
+    global $smarty;
     
     $sql = "SELECT CARD_TYPE, CARD_NAME FROM ".PRFX."CONFIG_CC_CARDS WHERE ACTIVE='1'";
     
-    if(!$rs = $db->execute($sql)) {
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1');
+    if(!$rs = $db->execute($sql)){        
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_payment_include_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
-    }
-    
-    // you can call $rs->GetArray twice
-    /*if(empty($rs->GetAssoc())) {
-        force_page('core', 'error&error_msg=Credit Card Billing is Set on but no cards are active. Please enable at least on credit card in the control panel&menu=1');
-        exit;
-    }*/
-
-    return $rs->GetAssoc();
+    } else {
+        
+        return $rs->GetAssoc();
+        
+    }  
     
 }
 
@@ -230,6 +240,8 @@ function get_active_credit_cards($db){
 #########################################
 
 function get_invoice_transactions($db, $invoice_id){
+    
+    global $smarty;
     
     $sql ="SELECT * FROM ".PRFX."TABLE_TRANSACTION WHERE INVOICE_ID =".$db->qstr($invoice_id);
     
@@ -251,6 +263,8 @@ function get_invoice_transactions($db, $invoice_id){
 
 function update_payment_settings($db, $VAR) {
     
+    global $smarty;
+    
     $sql = "UPDATE ".PRFX."PAYMENT SET 
             
             BANK_ACCOUNT_NAME       =". $db->qstr( $VAR['bank_account_name']        ).",
@@ -261,11 +275,11 @@ function update_payment_settings($db, $VAR) {
             PAYPAL_EMAIL            =". $db->qstr( $VAR['paypal_email']             ).",        
             BANK_TRANSACTION_MSG    =". $db->qstr( $VAR['bank_transaction_message'] ).",
             CHEQUE_PAYABLE_TO_MSG   =". $db->qstr( $VAR['cheque_payable_to_msg']    ).",
-            INVOICE_FOOTER_MSG      =". $db->qstr( $VAR['invoice_footer_msg']       );
-            
+            INVOICE_FOOTER_MSG      =". $db->qstr( $VAR['invoice_footer_msg']       );            
 
-    if(!$rs = $db->execute($sql)) {
-        echo $db->ErrorMsg();
+    if(!$rs = $db->execute($sql)){        
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_payment_include_error_message_function_'.__FUNCTION__.'_failed'));
+        exit;
     } else {
         
         return;
@@ -304,6 +318,7 @@ function update_payment_methods_status($db, $VAR) {
             force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_company_error_message_function_'.__FUNCTION__.'_failed'));
             exit;
         }
+        
     }
     
 }

@@ -96,7 +96,7 @@ function display_suppliers($db, $direction = 'DESC', $use_pages = false, $page_n
         
         // Figure out the total number of records in the database for the given search        
         if(!$rs = $db->Execute($sql)) {
-            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_count'));
+            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_supplier_error_message_function_'.__FUNCTION__.'_count'));
             exit;
         } else {        
             $total_results = $rs->RecordCount();            
@@ -142,7 +142,7 @@ function display_suppliers($db, $direction = 'DESC', $use_pages = false, $page_n
     /* Return the records */
          
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_supplier_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -169,6 +169,8 @@ function display_suppliers($db, $direction = 'DESC', $use_pages = false, $page_n
 ##########################################
 
 function insert_supplier($db, $VAR) {
+    
+    global $smarty;
 
     $sql = "INSERT INTO ".PRFX."TABLE_SUPPLIER SET            
             SUPPLIER_NAME           = ". $db->qstr( $VAR['supplierName']        ).",
@@ -186,8 +188,8 @@ function insert_supplier($db, $VAR) {
             SUPPLIER_NOTES          = ". $db->qstr( $VAR['supplierNotes']       ).",
             SUPPLIER_DESCRIPTION    = ". $db->qstr( $VAR['supplierDescription'] );
 
-    if(!$result = $db->Execute($sql)) {
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_supplier_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -235,6 +237,8 @@ function get_supplier_details($db, $supplier_id, $item = null){
 #####################################
 
 function update_supplier($db, $supplier_id, $VAR) {
+    
+    global $smarty;
 
     $sql = "UPDATE ".PRFX."TABLE_SUPPLIER SET
             SUPPLIER_NAME           = ". $db->qstr( $VAR['supplierName']        ).",
@@ -253,8 +257,8 @@ function update_supplier($db, $supplier_id, $VAR) {
             SUPPLIER_DESCRIPTION    = ". $db->qstr( $VAR['supplierDescription'] )."
             WHERE SUPPLIER_ID       = ". $db->qstr( $supplier_id                );                        
             
-    if(!$result = $db->Execute($sql)) {
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_supplier_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -274,11 +278,13 @@ function update_supplier($db, $supplier_id, $VAR) {
 
 function delete_supplier($db, $supplier_id){
     
+    global $smarty;
+    
     $sql = "DELETE FROM ".PRFX."TABLE_SUPPLIER WHERE SUPPLIER_ID=".$db->qstr($supplier_id);
     
     if(!$rs = $db->Execute($sql)) {
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-        exit;    
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_supplier_error_message_function_'.__FUNCTION__.'_failed'));
+        exit;
     } else {
         
         return true;
@@ -351,19 +357,19 @@ function prepare_supplier_search_terms($search_category, $search_term) {
 #      Last supplier Record ID Look Up     #
 ############################################
 
-function last_supplier_id_lookup($db){
+function last_supplier_id_lookup($db) {
+    
+    global $smarty;
 
     $sql = 'SELECT * FROM '.PRFX.'TABLE_SUPPLIER ORDER BY SUPPLIER_ID DESC LIMIT 1';
 
-    if(!$rs = $db->execute($sql)) {
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_supplier_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
+        
         return $rs->fields['SUPPLIER_ID'];
         
     }
     
 }
-
-
-

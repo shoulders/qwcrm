@@ -52,7 +52,7 @@ function display_workorder_schedule($db, $workorder_id){
 
 function insert_new_schedule($db, $schedule_start_date, $scheduleStartTime, $schedule_end_date, $scheduleEndTime, $schedule_notes, $employee_id, $workorder_id){
 
-    //global $smarty;    
+    global $smarty;    
 
     // Get Full Timestamps for the schedule item (date/hour/minute/second) - 12 Hour
     //$schedule_start_timestamp = datetime_to_timestamp($schedule_start_date, $scheduleStartTime['Time_Hour'], $scheduleStartTime['Time_Minute'], '0', '12', $scheduleStartTime['Time_Meridian']);
@@ -77,10 +77,8 @@ function insert_new_schedule($db, $schedule_start_date, $scheduleStartTime, $sch
             SCHEDULE_NOTES     = ". $db->qstr( $schedule_notes            );            
 
     if(!$rs = $db->Execute($sql)) {
-        
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_schedule_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
-        
     } else {
         
         // Get the new Workorders ID
@@ -151,12 +149,14 @@ function get_workorder_id_from_schedule($db, $schedule_id) {
      
     $sql = "SELECT WORKORDER_ID FROM ".PRFX."TABLE_SCHEDULE WHERE SCHEDULE_ID=".$db->qstr($schedule_id);
     
-    if(!$rs = $db->execute($sql)) {
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_schedule_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
-    }  
-
-    return $rs->fields['SCHEDULE_ID'];
+    } else {
+        
+        return $rs->fields['SCHEDULE_ID'];
+        
+    }    
 
 }
 
@@ -165,6 +165,8 @@ function get_workorder_id_from_schedule($db, $schedule_id) {
 ##########################################################
 
 function get_schedule_ids_for_employee_on_date($db, $employee_id, $schedule_start_year, $schedule_start_month, $schedule_start_day) {
+    
+    global $smarty;
     
     // Get the start and end time of the calendar schedule to be displayed, Office hours only - (unix timestamp)
     $company_day_start = mktime(get_company_details($db, 'OPENING_HOUR'), get_company_details($db, 'OPENING_MINUTE'), 0, $schedule_start_month, $schedule_start_day, $schedule_start_year);
@@ -177,11 +179,13 @@ function get_schedule_ids_for_employee_on_date($db, $employee_id, $schedule_star
             "' ORDER BY SCHEDULE_START ASC";
     
     if(!$rs = $db->Execute($sql)) {
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_schedule_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
-    }
-    
-    return $rs->GetArray();    
+    } else {
+        
+        return $rs->GetArray();  
+        
+    }     
     
 }
 
@@ -218,9 +222,8 @@ function update_schedule($db, $schedule_start_date, $scheduleStartTime, $schedul
         SCHEDULE_NOTES      =". $db->qstr( $schedule_notes              )."
         WHERE SCHEDULE_ID   =". $db->qstr( $schedule_id                 );
    
-    if(!$rs = $db->execute($sql)) {
-        // error message need translating
-        force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_schedule_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {       
          
@@ -240,10 +243,12 @@ function update_schedule($db, $schedule_start_date, $scheduleStartTime, $schedul
 
 function delete_schedule($db, $schedule_id) {
     
+    global $smarty;
+    
     $sql = "DELETE FROM ".PRFX."TABLE_SCHEDULE WHERE SCHEDULE_ID =".$db->qstr($schedule_id);
 
-    if(!$rs = $db->execute($sql)) {
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_schedule_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -561,6 +566,8 @@ function ics_string_octet_split($ics_keyname, $ics_string) {
 #####################################################
 
 function build_calendar_matrix($db, $schedule_start_year, $schedule_start_month, $schedule_start_day, $employee_id, $workorder_id = null) {
+    
+    global $smarty;
             
     // Get the start and end time of the calendar schedule to be displayed, Office hours only - (unix timestamp)
     $company_day_start = mktime(get_company_details($db, 'OPENING_HOUR'), get_company_details($db, 'OPENING_MINUTE'), 0, $schedule_start_month, $schedule_start_day, $schedule_start_year);
@@ -581,7 +588,7 @@ function build_calendar_matrix($db, $schedule_start_year, $schedule_start_month,
         AND ".PRFX."TABLE_SCHEDULE.EMPLOYEE_ID ='".$employee_id."' ORDER BY ".PRFX."TABLE_SCHEDULE.SCHEDULE_START ASC";
     
     if(!$rs = $db->Execute($sql)) {
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_schedule_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     }
 
@@ -761,9 +768,9 @@ function validate_schedule_times($db, $schedule_start_date, $schedule_start_time
             ORDER BY SCHEDULE_START ASC";
     
     if(!$rs = $db->Execute($sql)) {
-        force_page('core', 'error', 'error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_schedule_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
-    }    
+    }   
     
     // Loop through all schedule items in the database (for the selected day and employee) and validate that schedule item can be inserted with no conflict.
     while (!$rs->EOF){

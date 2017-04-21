@@ -186,6 +186,8 @@ function display_expenses($db, $direction = 'DESC', $use_pages = false, $page_no
 ##########################################
 
 function insert_expense($db, $VAR) {
+    
+    global $smarty;
 
     $sql = "INSERT INTO ".PRFX."TABLE_EXPENSE SET            
             EXPENSE_PAYEE           = ". $db->qstr( $VAR['expensePayee']                    ).",
@@ -199,8 +201,8 @@ function insert_expense($db, $VAR) {
             EXPENSE_NOTES           = ". $db->qstr( $VAR['expenseNotes']                    ).",
             EXPENSE_ITEMS           = ". $db->qstr( $VAR['expenseItems']                    );
 
-    if(!$result = $db->Execute($sql)) {
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
     
@@ -248,6 +250,8 @@ function get_expense_details($db, $expense_id, $item = null){
 #####################################
 
 function update_expense($db, $expense_id, $VAR) {
+    
+    global $smarty;
 
     $sql = "UPDATE ".PRFX."TABLE_EXPENSE SET
             EXPENSE_PAYEE           = ". $db->qstr( $VAR['expensePayee']                    ).",
@@ -262,8 +266,8 @@ function update_expense($db, $expense_id, $VAR) {
             EXPENSE_ITEMS           = ". $db->qstr( $VAR['expenseItems']                    )."
             WHERE EXPENSE_ID        = ". $db->qstr( $expense_id                             );                        
             
-    if(!$result = $db->Execute($sql)) {
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
       return true;
@@ -281,11 +285,13 @@ function update_expense($db, $expense_id, $VAR) {
 
 function delete_expense($db, $expense_id){
     
+    global $smarty;
+    
     $sql = "DELETE FROM ".PRFX."TABLE_EXPENSE WHERE EXPENSE_ID=".$db->qstr($expense_id);
     
     if(!$rs = $db->Execute($sql)) {
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-        exit;    
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
+        exit;
     } else {
         
         return true;
@@ -443,11 +449,13 @@ function prepare_expense_search_terms($search_category, $search_term) {
 ##########################################
 
 function last_expense_id_lookup($db){
+    
+    global $smarty;
 
     $sql = 'SELECT * FROM '.PRFX.'TABLE_EXPENSE ORDER BY EXPENSE_ID DESC LIMIT 1';
     
-    if(!$rs = $db->execute($sql)) {
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         

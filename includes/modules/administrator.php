@@ -122,6 +122,8 @@ function checkForQWcrmUpdate() {
 
 function loadACL($db) {
     
+    global $smarty;
+    
     $sql = "SELECT * FROM ".PRFX."ACL ORDER BY page";
     
     if(!$rs = $db->execute($sql)) {
@@ -138,6 +140,8 @@ function loadACL($db) {
 #################################
 
 function updateACL($db, $permissions) {
+    
+    global $smarty;
     
     // Cycle through $_POST and parse the submitted data
     foreach($permissions as $ACLpage => $ACLrow){
@@ -180,8 +184,10 @@ function updateACL($db, $permissions) {
     if(!$rs = $db->execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_administrtor_error_message_function_'.__FUNCTION__.'_failed'));
         exit;    
-    }   
+    } else {
         
-    return;
+        return;
+        
+    }
 
 }

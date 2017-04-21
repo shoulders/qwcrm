@@ -14,7 +14,6 @@
  * Customers - functions for customersd
  */
 
-
 /** Home Page **/
 
 #########################################
@@ -28,8 +27,8 @@ function display_welcome_msg($db){
     $sql = 'SELECT WELCOME_MSG FROM '.PRFX.'TABLE_COMPANY';
     //echo __FILE__;die;
     
-    if(!$rs = $db->execute($sql)){
-        force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else { 
         
@@ -53,8 +52,8 @@ function count_workorders_with_status($db, $workorder_status){
             FROM ".PRFX."TABLE_WORK_ORDER
             WHERE WORK_ORDER_STATUS=".$db->qstr($workorder_status);
     
-    if(!$rs = $db->Execute($sql)){
-        force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {      
         
@@ -87,8 +86,8 @@ function count_all_workorders($db){
         
     $sql = 'SELECT COUNT(*) AS WORKORDER_TOTAL_COUNT FROM '.PRFX.'TABLE_WORK_ORDER';
     
-    if(!$rs = $db->execute($sql)){
-        force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {       
         
@@ -110,8 +109,8 @@ function count_invoices_with_status($db, $invoice_status){
     
     $sql ="SELECT COUNT(*) AS INVOICE_COUNT FROM ".PRFX."TABLE_INVOICE WHERE IS_PAID=".$db->qstr($invoice_status);
     
-    if(!$rs = $db->execute($sql)){
-        force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -134,8 +133,8 @@ function sum_of_discounts_on_unpaid_invoices($db){
             FROM ".PRFX."TABLE_INVOICE
             WHERE IS_PAID=".$db->qstr(0)." AND BALANCE=".$db->qstr(0); 
     
-    if(!$rs = $db->Execute($sql)){
-        force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -157,8 +156,8 @@ function sum_of_discounts_on_paid_invoices($db){
         FROM ".PRFX."TABLE_INVOICE
         WHERE IS_PAID=".$db->qstr(1);
     
-    if(!$rs = $db->Execute($sql)){
-        force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -180,9 +179,9 @@ function sum_of_discounts_on_partially_paid_invoices($db){
         FROM ".PRFX."TABLE_INVOICE
         WHERE IS_PAID=".$db->qstr(0)." AND BALANCE >".$db->qstr(0);
     
-    if(!$rs = $db->Execute($sql)){
-        force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
-        die;
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
+        exit;
     } else {
         
         return $rs->fields['DISCOUNT_SUM'];
@@ -201,8 +200,8 @@ function count_upaid_invoices($db){
     
     $sql = 'SELECT COUNT(*) AS INVOICE_COUNT FROM '.PRFX.'TABLE_INVOICE WHERE IS_PAID='.$db->qstr(0);
     
-    if(!$rs = $db->execute($sql)){
-        force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -222,8 +221,8 @@ function sum_outstanding_balances_unpaid_invoices($db){
     
     $sql = 'SELECT SUM(BALANCE) AS BALANCE_SUM FROM '.PRFX.'TABLE_INVOICE WHERE IS_PAID='.$db->qstr(0).' AND BALANCE >'.$db->qstr(0);
     
-    if(!$rs = $db->execute($sql)){
-        force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -243,8 +242,8 @@ function count_partially_paid_invoices($db){
     
     $sql = 'SELECT COUNT(*) AS BALANCE_COUNT FROM '.PRFX.'TABLE_INVOICE WHERE IS_PAID='.$db->qstr(0).' AND BALANCE <> TOTAL';
     
-    if(!$rs = $db->execute($sql)){
-        force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -264,8 +263,8 @@ function sum_outstanding_balances_partially_paid_invoices($db){
     
     $sql = 'SELECT SUM(BALANCE) AS BALANCE_SUM FROM '.PRFX.'TABLE_INVOICE WHERE IS_PAID='.$db->qstr(0).' AND BALANCE <> TOTAL';
     
-    if(!$rs = $db->execute($sql)){
-        force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -285,8 +284,8 @@ function count_all_paid_invoices($db){
     
     $sql = 'SELECT COUNT(*) AS INVOICE_COUNT FROM '.PRFX.'TABLE_INVOICE WHERE IS_PAID='.$db->qstr(1);
     
-    if(!$rs = $db->execute($sql)){
-        force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -306,8 +305,8 @@ function sum_invoiceamounts_paid_invoices($db){
     
     $sql = 'SELECT SUM(TOTAL) AS TOTAL_SUM FROM '.PRFX.'TABLE_INVOICE WHERE IS_PAID='.$db->qstr(1);
     
-    if(!$rs = $db->execute($sql)){
-        force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -332,8 +331,8 @@ function new_customers_during_period($db, $requested_period){
     
     $sql = 'SELECT COUNT(*) AS CUSTOMER_COUNT FROM '.PRFX.'TABLE_CUSTOMER WHERE CREATE_DATE >= '.$db->qstr($period);
     
-    if(!$rs = $db->execute($sql)){
-        force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -353,8 +352,8 @@ function count_all_customers($db){
     
     $sql = 'SELECT COUNT(*) AS CUSTOMER_COUNT FROM '.PRFX.'TABLE_CUSTOMER';
     
-    if(!$rs = $db->execute($sql)){
-        force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=database&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         

@@ -364,9 +364,9 @@ function count_employee_invoices_with_status($db, $employee_id, $invoice_status)
     global $smarty;
     
     $sql = "SELECT COUNT(*) AS EMPLOYEE_INVOICE_COUNT
-         FROM ".PRFX."TABLE_INVOICE
-         WHERE IS_PAID=".$db->qstr($invoice_status)."
-         AND EMPLOYEE_ID=".$db->qstr($employee_id);
+            FROM ".PRFX."TABLE_INVOICE
+            WHERE IS_PAID=".$db->qstr($invoice_status)."
+            AND EMPLOYEE_ID=".$db->qstr($employee_id);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));

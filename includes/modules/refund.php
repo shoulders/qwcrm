@@ -185,6 +185,8 @@ function display_refunds($db, $direction = 'DESC', $use_pages = false, $page_no 
 ##########################################
 
 function insert_new_refund($db, $VAR) {
+    
+    global $smarty;
 
     $sql = "INSERT INTO ".PRFX."TABLE_REFUND SET            
             REFUND_PAYEE            = ". $db->qstr( $VAR['refundPayee']                     ).",
@@ -198,8 +200,8 @@ function insert_new_refund($db, $VAR) {
             REFUND_NOTES            = ". $db->qstr( $VAR['refundNotes']                     ).",
             REFUND_ITEMS            = ". $db->qstr( $VAR['refundItems']                     );
 
-    if(!$result = $db->Execute($sql)) {
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_refund_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -247,6 +249,8 @@ function get_refund_details($db, $refund_id, $item = null){
 #####################################
 
 function update_refund($db, $refund_id, $VAR) {
+    
+    global $smarty;
 
     $sql = "UPDATE ".PRFX."TABLE_REFUND SET
             REFUND_PAYEE            = ". $db->qstr( $VAR['refundPayee']                     ).",
@@ -261,8 +265,8 @@ function update_refund($db, $refund_id, $VAR) {
             REFUND_ITEMS            = ". $db->qstr( $VAR['refundItems']                     )."
             WHERE REFUND_ID         = ". $db->qstr( $refund_id                              );                        
             
-    if(!$result = $db->Execute($sql)) {
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_refund_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -280,13 +284,15 @@ function update_refund($db, $refund_id, $VAR) {
 #    Delete Record                  #
 #####################################
 
-function delete_refund($db, $refund_id){
+function delete_refund($db, $refund_id) {
+    
+    global $smarty;
     
     $sql = "DELETE FROM ".PRFX."TABLE_REFUND WHERE REFUND_ID=".$db->qstr($refund_id);
     
     if(!$rs = $db->Execute($sql)) {
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-        exit;    
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_refund_error_message_function_'.__FUNCTION__.'_failed'));
+        exit;
     } else {
         
         return true;
@@ -395,12 +401,14 @@ function prepare_refund_search_terms($search_category, $search_term) {
 #      Last Record Look Up               #
 ##########################################
 
-function last_refund_id_lookup($db){
+function last_refund_id_lookup($db) {
+    
+    global $smarty;
 
     $sql = 'SELECT * FROM '.PRFX.'TABLE_REFUND ORDER BY REFUND_ID DESC LIMIT 1';
 
-    if(!$rs = $db->execute($sql)) {
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_refund_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         

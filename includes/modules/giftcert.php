@@ -39,8 +39,8 @@ function display_giftcerts($db, $status, $direction = 'DESC', $use_pages = false
         
         // Figure out the total number of invoices in the database for the given status
         $sql = "SELECT COUNT(*) as Num FROM ".PRFX."GIFTCERT WHERE ACTIVE=" . $db->qstr($status);
-        if (!$rs = $db->Execute($sql)) {
-            force_page('core', 'error&error_msg=MySQL Error: ' . $db->ErrorMsg() . '&menu=1&type=database');
+        if(!$rs = $db->Execute($sql)) {
+            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_giftcert_error_message_function_'.__FUNCTION__.'_failed'));
             exit;
         } else {        
             $total_results = $rs->FetchRow();

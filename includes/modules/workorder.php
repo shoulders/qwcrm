@@ -280,8 +280,6 @@ function insert_workorder($db, $customer_id, $created_by, $scope, $workorder_des
     
 }
 
-
-
 ######################################
 # Insert New Work Order History Note #
 ######################################
@@ -420,14 +418,28 @@ function get_workorder_note($db, $workorder_note_id, $item = null){
 
 function get_workorder_notes($db, $workorder_id) {
     
+    global $smarty;
+    
     $sql = "SELECT * FROM ".PRFX."CUSTOMER_NOTE WHERE CUSTOMER_ID=".$db->qstr( $workorder_id );
     
-    if(!$rs = $db->execute($sql)) {
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
-    }
+    } else {
         
-    return $rs->GetArray(); 
+        $records = $rs->GetArray();   // do i need to add the check empty
+
+        if(empty($records)){
+            
+            return false;
+            
+        } else {
+            
+             return $rs->GetArray(); 
+            
+        }
+        
+    }
     
 }
 
@@ -619,7 +631,7 @@ function update_workorder_last_active($db, $workorder_id){
     
     $sql = "UPDATE ".PRFX."TABLE_WORK_ORDER SET LAST_ACTIVE=".$db->qstr(time())." WHERE WORK_ORDER_ID=".$db->qstr($workorder_id);
     
-    if(!$rs = $db->execute($sql)) {    
+    if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     }
@@ -632,16 +644,18 @@ function update_workorder_last_active($db, $workorder_id){
 
 function update_workorder_note($db, $workorder_note_id, $date, $note) {
     
+    global $smarty;
+    
     $sql = "UPDATE ".PRFX."TABLE_WORK_ORDER_NOTES SET
             WORK_ORDER_EMPLOYEE_ID          =". $db->qstr( $_SESSION['login_id']    ).",
             WORK_ORDER_NOTES_DATE           =". $db->qstr( $date                    ).",
             WORK_ORDER_NOTES_DESCRIPTION    =". $db->qstr( $note                    )."
             WHERE WORK_ORDER_NOTES_ID       =". $db->qstr( $workorder_note_id       );
 
-    if(!$rs = $db->execute($sql)) {
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-        exit;        
-    }   
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
+        exit;
+    }
     
 }
 
@@ -841,10 +855,12 @@ function check_workorder_status_is_allowed_for_deletion($db, $workorder_id) {
 
 function delete_workorder_note($db, $workorder_note_id) {
     
+    global $smarty;
+    
     $sql = "DELETE FROM ".PRFX."TABLE_WORK_ORDER_NOTES WHERE WORK_ORDER_NOTES_ID=".$db->qstr( $workorder_note_id );
 
-    if(!$rs = $db->execute($sql)) {
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     }
     
@@ -965,6 +981,8 @@ function resolution_edit_status_check($db, $workorder_id) {
 ###############################################
 
 function check_workorder_is_open($db, $workorder_id) {
+    
+    global $smarty;
        
     if(!$workorder_id){return false;}
     
