@@ -256,6 +256,29 @@ function insert_parts_items($db, $invoice_id, $parts_description, $parts_price, 
 
 }
 
+#####################################
+#    insert invoice rate item       #
+#####################################
+
+function insert_invoice_labour_rates_item($db, $VAR){
+    
+    global $smarty;
+    
+    $sql = "INSERT INTO ".PRFX."TABLE_LABOUR_RATE SET
+            LABOUR_RATE_NAME     =". $db->qstr( $VAR['display']      ).",
+            LABOUR_RATE_AMOUNT   =". $db->qstr( $VAR['amount']       ).",
+            LABOUR_RATE_COST     =". $db->qstr( $VAR['cost']         ).",
+            LABOUR_TYPE          =". $db->qstr( $VAR['type']         ).",
+            LABOUR_MANUF         =". $db->qstr( $VAR['manufacturer'] ).",
+            LABOUR_RATE_ACTIVE   =". $db->qstr( 1                    );
+
+    if(!$rs = $db->execute($sql)){        
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_invoice_include_error_message_function_'.__FUNCTION__.'_failed'));
+        exit;
+    }
+    
+}
+
 /** Get Functions **/
 
 #####################################
@@ -415,6 +438,26 @@ function get_invoice_parts_item_details($db, $parts_id, $item = null) {
         
     }
         
+}
+
+####################################
+#     Get labour rates item        #
+####################################
+
+function get_invoice_labour_rates_items($db) {
+    
+    global $smarty;
+    
+    // Loads rates from database
+    $sql = "SELECT * FROM ".PRFX."TABLE_LABOUR_RATE ORDER BY LABOUR_RATE_ID ASC";
+    
+    if(!$rs = $db->execute($sql)){        
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_invoice_include_error_message_function_'.__FUNCTION__.'_failed'));
+        exit;
+    }   
+    
+    return $rs->GetArray();
+    
 }
 
 /** Update Functions **/
@@ -708,63 +751,11 @@ function check_invoice_has_workorder($db, $invoice_id) {
     
 }
 
-
-##################################these need sorting##############
-
-
-
-
-
-
-
 #####################################
-#     New invoice rate item         #
+#   Upload labour rates CSV file    #
 #####################################
 
-function new_invoice_labour_rates_item($db, $VAR){
-    
-    global $smarty;
-    
-    $sql = "INSERT INTO ".PRFX."TABLE_LABOUR_RATE SET
-            LABOUR_RATE_NAME     =". $db->qstr( $VAR['display']      ).",
-            LABOUR_RATE_AMOUNT   =". $db->qstr( $VAR['amount']       ).",
-            LABOUR_RATE_COST     =". $db->qstr( $VAR['cost']         ).",
-            LABOUR_TYPE          =". $db->qstr( $VAR['type']         ).",
-            LABOUR_MANUF         =". $db->qstr( $VAR['manufacturer'] ).",
-            LABOUR_RATE_ACTIVE   =". $db->qstr( 1                    );
-
-    if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_invoice_include_error_message_function_'.__FUNCTION__.'_failed'));
-        exit;
-    }
-    
-}
-
-#####################################
-#     Get invoice rates item        #
-#####################################
-
-function get_invoice_labour_rates_item($db){
-    
-    global $smarty;
-    
-    // Loads rates from database
-    $sql = "SELECT * FROM ".PRFX."TABLE_LABOUR_RATE ORDER BY LABOUR_RATE_ID ASC";
-    
-    if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_invoice_include_error_message_function_'.__FUNCTION__.'_failed'));
-        exit;
-    }   
-    
-    return $rs->GetArray();
-    
-}
-
-#####################################
-#   Upload invoice rate CSV file    #
-#####################################
-
-function upload_invoice_rates_csv($db, $VAR) {
+function upload_invoice_labour_rates_csv($db, $VAR) {
 
     // Allowed extensions
     $allowedExts = array('csv');

@@ -47,10 +47,10 @@ function display_workorder_schedule($db, $workorder_id){
 /** New/Insert Functions **/
 
 ######################################
-# Insert New schedule                #
+#  Insert schedule                   #
 ######################################
 
-function insert_new_schedule($db, $schedule_start_date, $scheduleStartTime, $schedule_end_date, $scheduleEndTime, $schedule_notes, $employee_id, $workorder_id){
+function insert_schedule($db, $schedule_start_date, $scheduleStartTime, $schedule_end_date, $scheduleEndTime, $schedule_notes, $employee_id, $customer_id, $workorder_id){
 
     global $smarty;    
 
@@ -71,9 +71,10 @@ function insert_new_schedule($db, $schedule_start_date, $scheduleStartTime, $sch
     // Insert schedule item into the database
     $sql = "INSERT INTO ".PRFX."TABLE_SCHEDULE SET
             SCHEDULE_START     = ". $db->qstr( $schedule_start_timestamp  ).",
-            SCHEDULE_END       = ". $db->qstr( $schedule_end_timestamp    ).",
-            WORKORDER_ID       = ". $db->qstr( $workorder_id              ).",
+            SCHEDULE_END       = ". $db->qstr( $schedule_end_timestamp    ).",            
             EMPLOYEE_ID        = ". $db->qstr( $employee_id               ).",
+            CUSTOMER_ID        = ". $db->qstr( $customer_id               ).",   
+            WORKORDER_ID       = ". $db->qstr( $workorder_id              ).",
             SCHEDULE_NOTES     = ". $db->qstr( $schedule_notes            );            
 
     if(!$rs = $db->Execute($sql)) {
@@ -192,10 +193,10 @@ function get_schedule_ids_for_employee_on_date($db, $employee_id, $schedule_star
 /** Update Functions **/
 
 ######################################
-#      Update New schedule           #
+#      Update schedule               #
 ######################################
 
-function update_schedule($db, $schedule_start_date, $scheduleStartTime, $schedule_end_date, $scheduleEndTime, $schedule_notes, $schedule_id, $employee_id, $workorder_id) {
+function update_schedule($db, $schedule_start_date, $scheduleStartTime, $schedule_end_date, $scheduleEndTime, $schedule_notes, $schedule_id, $employee_id, $customer_id, $workorder_id) {
     
     global $smarty;
 
@@ -217,8 +218,9 @@ function update_schedule($db, $schedule_start_date, $scheduleStartTime, $schedul
         SCHEDULE_ID         =". $db->qstr( $schedule_id                 ).",
         SCHEDULE_START      =". $db->qstr( $schedule_start_timestamp    ).",
         SCHEDULE_END        =". $db->qstr( $schedule_end_timestamp      ).",
-        WORKORDER_ID        =". $db->qstr( $workorder_id                ).",   
         EMPLOYEE_ID         =". $db->qstr( $employee_id                 ).",
+        CUSTOMER_ID         =". $db->qstr( $customer_id                 ).",
+        WORKORDER_ID        =". $db->qstr( $workorder_id                ).",        
         SCHEDULE_NOTES      =". $db->qstr( $schedule_notes              )."
         WHERE SCHEDULE_ID   =". $db->qstr( $schedule_id                 );
    

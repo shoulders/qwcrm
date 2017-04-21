@@ -23,10 +23,7 @@
                                     <table class="menutable" width="100%" border="0" cellpadding="5" cellspacing="0">
                                         <tr>
                                             <td>                                                
-                                                <form method="POST" action="?page=schedule:edit">
-                                                    <!--<input type="hidden" name="page" value="schedule:edit">-->
-                                                    <input type="hidden" name="schedule_id" value="{$schedule_id}">
-                                                    <input type="hidden" name="workorder_id" value="{$workorder_id}">                                                    
+                                                <form method="POST" action="index.php?page=schedule:edit&schedule_id={$schedule_id}">                                                                                                       
                                                     <table class="olotable" width="100%" border="0">
                                                         <tr>
                                                             <td class="olohead">{$translate_schedule_set}</td>
@@ -92,7 +89,9 @@
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td colspan="2">                                                                                
+                                                                        <td colspan="2">
+                                                                            <input type="hidden" name="customer_id" value="{$customer_id}"> 
+                                                                            <input type="hidden" name="workorder_id" value="{$workorder_id}"> 
                                                                             <input type="submit" name="submit" value="{$translate_schedule_submit}">
                                                                         </td>
                                                                     </tr>

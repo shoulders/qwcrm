@@ -105,7 +105,7 @@
                         <span>{$translate_core_menu_company}</span>
                         <a href="?page=company:edit"><img src="{$theme_images_dir}icons/key.png" alt="" border="0" height="14" width="14" /> {$translate_core_menu_edit_company}</a>
                         <a href="?page=company:business_hours"><img src="{$theme_images_dir}icons/clock.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_business_hours}</a>                        
-                        <a href="?page=invoice:invoice_rates"><img src="{$theme_images_dir}icons/money.png" alt="" border="0" height="14" width="14" /> {$translate_core_menu_invoice_rates}</a>
+                        <a href="?page=invoice:labour_rates"><img src="{$theme_images_dir}icons/money.png" alt="" border="0" height="14" width="14" /> {$translate_core_menu_invoice_rates}</a>
                         <a href="?page=payment:options"><img src="{$theme_images_dir}icons/money.png" alt="" border="0" height="14" width="14" /> {$translate_core_menu_payment_options}</a>
                     </div>
                 {/if}

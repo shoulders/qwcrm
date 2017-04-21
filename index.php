@@ -173,7 +173,6 @@ $supplier_id        = $VAR['supplier_id'];
 $invoice_id         = $VAR['invoice_id'];
 $schedule_id        = $VAR['schedule_id'];
 $giftcert_id        = $VAR['giftcert_id'];
-$customer_note_id   = $VAR['customer_note_id']; // check if i need this as it is not a module primary
 
 // If no schedule year set, use today's year
 if(isset($VAR['schedule_start_year'])) {$schedule_start_year = $VAR['schedule_start_year'];} else {$schedule_start_year = date('Y');}
@@ -231,7 +230,6 @@ $smarty->assign('schedule_start_year',      $schedule_start_year        );
 $smarty->assign('schedule_start_month',     $schedule_start_month       );
 $smarty->assign('schedule_start_day',       $schedule_start_day         );
 $smarty->assign('giftcert_id',              $giftcert_id                );
-$smarty->assign('customer_note_id',         $customer_note_id           );
 
 // Used throughout the site
 $smarty->assign('currency_sym', get_company_details($db,    'CURRENCY_SYMBOL')  );

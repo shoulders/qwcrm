@@ -28,7 +28,7 @@
                                                     </tr>
                                                     <tr>
                                                         {section name=q loop=$invoice_rates_items}
-                                                            <form method="POST" action="?page=invoice:invoice_rates">
+                                                            <form method="POST" action="index.php?page=invoice:labour_rates">
                                                                 <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" class="row1">
                                                                     <td class="olotd4" nowrap>{$invoice_rates_items[q].LABOUR_RATE_ID}</td>
                                                                     <td class="olotd4" nowrap><input name="display" class="olotd5" size="50" value="{$invoice_rates_items[q].LABOUR_RATE_NAME}" type="text" maxlength="50" required onkeydown="return onlyAlphaNumeric(event);"></td>
@@ -49,8 +49,8 @@
                                                                     <td class="olotd4" nowrap><input name="manufacturer" class="olotd5" size="20" value="{$invoice_rates_items[q].LABOUR_MANUF}" type="text" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"></td>
                                                                     <td class="olotd4" nowrap>
                                                                         <input type="hidden" name="labour_rate_id" value="{$invoice_rates_items[q].LABOUR_RATE_ID}">
-                                                                        <button type="submit" name="submit" value="delete">Delete</button>
-                                                                        <button type="submit" name="submit" value="update">Update</button>
+                                                                        <button type="submit" name="submit" value="delete" onClick="return confirmDelete('Are You sure you want to delete this labour rate item.');">Delete</button>
+                                                                        <button type="submit" name="submit" value="update" onClick="return confirmDelete('Are You sure you want to update this labour rate item.');">Update</button>
                                                                     </td>
                                                                 </tr>
                                                             </form>
@@ -58,7 +58,7 @@
                                                     </tr>                                                    
                                                 </table>
                                                 <b>Add New</b>
-                                                <form method="POST" action="?page=invoice:invoice_rates">
+                                                <form method="POST" action="index.php?page=invoice:labour_rates">
                                                     <table class="olotable" width="100%" border="0" cellpadding="5" cellspacing="0">
                                                         <tr>
                                                             <td class="olohead">Display</td>
@@ -109,13 +109,13 @@
                                                             </tr>
                                                             <tr>
                                                                 <td>
-                                                                    <form action="?page=invoice:invoice_rates" method="post" enctype="multipart/form-data">
+                                                                    <form action="index.php?page=invoice:labour_rates" method="post" enctype="multipart/form-data">
                                                                         <table width="350" border="0" cellpadding="1" cellspacing="1" class="box">
                                                                             <tr>
                                                                                 <td width="246">                                                                                    
                                                                                     <input name="invoice_rates_csv" type="file" id="invoice_rates_csv">
                                                                                 </td>
-                                                                                <td width="80"><button id="csv_upload" name="csv_upload" type="submit" class="box" value="csv_upload">CSV Upload</button></td>
+                                                                                <td width="80"><button id="csv_upload" name="csv_upload" type="submit" class="box" value="csv_upload" onClick="return confirmDelete('Are You sure you want to upload this CSV file with new labour rate items.');">CSV Upload</button></td>
                                                                             </tr>
                                                                             <tr>
                                                                                 <td width="246"><input id="empty_invoice_rates" name="empty_invoice_rates" type="checkbox" value="1">Empty Invoice Rates Table</td>                                                                                
