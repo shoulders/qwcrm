@@ -1,25 +1,25 @@
 <?php
 
 require(INCLUDES_DIR.'modules/workorder.php');
+require(INCLUDES_DIR.'modules/schedule.php');
 
 // Check that there is a workorder_id set
 if($workorder_id == '') {
-    force_page('workorder', 'overview', 'warning_msg='.$smarty->get_template_vars('translate_workorder_advisory_message_print_noworkorderid'));
+    force_page('workorder', 'overview', 'warning_msg='.$smarty->getTemplateVars('translate_workorder_advisory_message_print_noworkorderid'));
     exit;
 }
 
 // Check there is a print content and print type set
 if($VAR['print_content'] == '' || $VAR['print_type'] == '') {
-    force_page('workorder', 'overview', 'warning_msg='.$smarty->get_template_vars('translate_workorder_advisory_message_print_noprintoptions'));
+    force_page('workorder', 'overview', 'warning_msg='.$smarty->getTemplateVars('translate_workorder_advisory_message_print_noprintoptions'));
     exit;
 }
 
 // Assign Variables
-$smarty->assign('company',                  get_company_info($db)                                               );
-$smarty->assign('single_work_order',        display_single_workorder($db, $workorder_id)                        );
-$smarty->assign('work_order_notes',         display_workorder_notes($db, $workorder_id)                         );
-$smarty->assign('work_order_schedule',      display_workorder_schedule($db, $workorder_id)                      );
-$smarty->assign('work_order_resolution',    get_workorder_details($db, $workorder_id, 'WORK_ORDER_RESOLUTION')  );
+$smarty->assign('company_details',      get_company_details($db)                        );
+$smarty->assign('single_workorder',     display_single_workorder($db, $workorder_id)    );
+$smarty->assign('workorder_notes',      display_workorder_notes($db, $workorder_id)     );
+$smarty->assign('workorder_schedule',   display_workorder_schedule($db, $workorder_id)  );
 
 /* Display Page */
 

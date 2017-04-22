@@ -15,7 +15,7 @@ if(isset($VAR['submit'])) {
                 
     } else {
             
-        force_page('refund', 'refund_details&refund_id='.$refund_id);
+        force_page('refund', 'details&refund_id='.$refund_id);
         exit;
     }
 

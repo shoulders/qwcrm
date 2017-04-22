@@ -24,7 +24,7 @@
                         <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0">
                             <tr>
                                 <td width="100%" valign="top">                                    
-                                    <form method="post" action="index.php?page=customer:note_edit&customer_note_id={$customer_note_id}">
+                                    <form method="post" action="index.php?page=customer:note_edit&customer_note_id={$customer_note.CUSTOMER_NOTE_ID}">
                                         <b>Edit Customer Note</b><br>                                        
                                         <div>
                                             <b>Date:<b><br>

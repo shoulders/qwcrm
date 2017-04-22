@@ -78,30 +78,30 @@
                                                         <td class="olohead"><b>{$translate_workorder_status}</b></td>
                                                         <td class="olohead"><b>{$translate_workorder_tech}</b></td>
                                                     </tr>
-                                                    {foreach from=$single_workorder item=single_workorder}
-                                                        {if $single_workorder.WORK_ORDER_ID  != ""}
-                                                            <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='?page=workorder:details&workorder_id={$single_workorder.WORK_ORDER_ID}&customer_id={$single_workorder.CUSTOMER_ID}&page_title={$translate_workorder_work_order_id} {$single_workorder.WORK_ORDER_ID}';" class="row1">
-                                                                <td class="olotd4"><a href="?page=workorder:details&workorder_id={$single_workorder.WORK_ORDER_ID}&customer_id={$single_workorder.CUSTOMER_ID}&page_title={$translate_workorder_work_order_id} {$single_workorder.WORK_ORDER_ID}">{$single_workorder.WORK_ORDER_ID}</a></td>
-                                                                <td class="olotd4"> {$single_workorder.WORK_ORDER_OPEN_DATE|date_format:$date_format}</td>
-                                                                <td class="olotd4">{$single_workorder.WORK_ORDER_CLOSE_DATE|date_format:$date_format}</td>
+                                                    {section name=i loop=$workorders}                                                    
+                                                        {if $workorders[i].WORK_ORDER_ID != ''}
+                                                            <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='?page=workorder:details&workorder_id={$workorders[i].WORK_ORDER_ID}&customer_id={$workorders[i].CUSTOMER_ID}&page_title={$translate_workorder_work_order_id} {$workorders[i].WORK_ORDER_ID}';" class="row1">
+                                                                <td class="olotd4"><a href="?page=workorder:details&workorder_id={$workorders[i].WORK_ORDER_ID}&customer_id={$workorders[i].CUSTOMER_ID}&page_title={$translate_workorder_work_order_id} {$workorders[i].WORK_ORDER_ID}">{$workorders[i].WORK_ORDER_ID}</a></td>
+                                                                <td class="olotd4"> {$workorders[i].WORK_ORDER_OPEN_DATE|date_format:$date_format}</td>
+                                                                <td class="olotd4">{$workorders[i].WORK_ORDER_CLOSE_DATE|date_format:$date_format}</td>
                                                                 <td class="olotd4" nowrap>
-                                                                    <img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" onMouseOver="ddrivetip('<b><center>{$translate_workorder_contact_info_tooltip_title}</b></center><hr><b>{$translate_workorder_phone}: </b>{$single_workorder.CUSTOMER_PHONE}<br> <b>{$translate_workorder_fax}: </b>{$single_workorder.CUSTOMER_WORK_PHONE}<br><b>{$translate_workorder_mobile}: </b>{$single_workorder.CUSTOMER_MOBILE_PHONE}<br><b>{$translate_workorder_address}:</b><br>{$single_workorder.CUSTOMER_ADDRESS}<br>{$single_workorder.CUSTOMER_CITY}, {$single_workorder.CUSTOMER_STATE}<br>{$single_workorder.CUSTOMER_ZIP}');" onMouseOut="hideddrivetip();">                                                                         
-                                                                    <a class="link1" href="?page=customer:details&customer_id={$single_workorder.CUSTOMER_ID}&page_title={$single_workorder.CUSTOMER_DISPLAY_NAME}">{$single_workorder.CUSTOMER_DISPLAY_NAME}</a>
+                                                                    <img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" onMouseOver="ddrivetip('<b><center>{$translate_workorder_contact_info_tooltip_title}</b></center><hr><b>{$translate_workorder_phone}: </b>{$workorders[i].CUSTOMER_PHONE}<br> <b>{$translate_workorder_fax}: </b>{$workorders[i].CUSTOMER_WORK_PHONE}<br><b>{$translate_workorder_mobile}: </b>{$workorders[i].CUSTOMER_MOBILE_PHONE}<br><b>{$translate_workorder_address}:</b><br>{$workorders[i].CUSTOMER_ADDRESS}<br>{$workorders[i].CUSTOMER_CITY}, {$workorders[i].CUSTOMER_STATE}<br>{$workorders[i].CUSTOMER_ZIP}');" onMouseOut="hideddrivetip();">                                                                         
+                                                                    <a class="link1" href="?page=customer:details&customer_id={$workorders[i].CUSTOMER_ID}&page_title={$workorders[i].CUSTOMER_DISPLAY_NAME}">{$workorders[i].CUSTOMER_DISPLAY_NAME}</a>
                                                                 </td>
-                                                                <td class="olotd4" nowrap>{$single_workorder.WORK_ORDER_SCOPE}</td>
+                                                                <td class="olotd4" nowrap>{$workorders[i].WORK_ORDER_SCOPE}</td>
                                                                 <td class="olotd4" align="center">
-                                                                    {if $single_workorder.WORK_ORDER_STATUS == '1'}{$translate_workorder_created}{/if}
-                                                                    {if $single_workorder.WORK_ORDER_STATUS == '2'}{$translate_workorder_assigned}{/if}
-                                                                    {if $single_workorder.WORK_ORDER_STATUS == '3'}{$translate_workorder_waiting_for_parts}{/if}
-                                                                    {if $single_workorder.WORK_ORDER_STATUS == '6'}{$translate_workorder_closed}{/if}
-                                                                    {if $single_workorder.WORK_ORDER_STATUS == '7'}{$translate_workorder_waiting_for_payment}{/if}
-                                                                    {if $single_workorder.WORK_ORDER_STATUS == '8'}{$translate_workorder_payment_made}{/if}
-                                                                    {if $single_workorder.WORK_ORDER_STATUS == '9'}{$translate_workorder_pending}{/if}
-                                                                    {if $single_workorder.WORK_ORDER_STATUS == '10'}{$translate_workorder_open}{/if}
+                                                                    {if $workorders[i].WORK_ORDER_STATUS == '1'}{$translate_workorder_created}{/if}
+                                                                    {if $workorders[i].WORK_ORDER_STATUS == '2'}{$translate_workorder_assigned}{/if}
+                                                                    {if $workorders[i].WORK_ORDER_STATUS == '3'}{$translate_workorder_waiting_for_parts}{/if}
+                                                                    {if $workorders[i].WORK_ORDER_STATUS == '6'}{$translate_workorder_closed}{/if}
+                                                                    {if $workorders[i].WORK_ORDER_STATUS == '7'}{$translate_workorder_waiting_for_payment}{/if}
+                                                                    {if $workorders[i].WORK_ORDER_STATUS == '8'}{$translate_workorder_payment_made}{/if}
+                                                                    {if $workorders[i].WORK_ORDER_STATUS == '9'}{$translate_workorder_pending}{/if}
+                                                                    {if $workorders[i].WORK_ORDER_STATUS == '10'}{$translate_workorder_open}{/if}
                                                                 </td>  
                                                                 <td class="olotd4" nowrap>
-                                                                    <img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" onMouseOver="ddrivetip('<center><b>{$translate_workorder_contact_info_tooltip_title}</b></center><hr><b>{$translate_workorder_fax}: </b>{$single_workorder.EMPLOYEE_WORK_PHONE}<br><b>{$translate_workorder_mobile}: </b>{$single_workorder.EMPLOYEE_MOBILE_PHONE}<br><b>{$translate_workorder_home}: </b>{$single_workorder.EMPLOYEE_HOME_PHONE}');" onMouseOut="hideddrivetip();">                                                                         
-                                                                    <a class="link1" href="?page=employee:details&employee_id={$single_workorder.EMPLOYEE_ID}&page_title={$single_workorder.EMPLOYEE_DISPLAY_NAME}">{$single_workorder.EMPLOYEE_DISPLAY_NAME}</a>
+                                                                    <img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" onMouseOver="ddrivetip('<center><b>{$translate_workorder_contact_info_tooltip_title}</b></center><hr><b>{$translate_workorder_fax}: </b>{$workorders[i].EMPLOYEE_WORK_PHONE}<br><b>{$translate_workorder_mobile}: </b>{$workorders[i].EMPLOYEE_MOBILE_PHONE}<br><b>{$translate_workorder_home}: </b>{$workorders[i].EMPLOYEE_HOME_PHONE}');" onMouseOut="hideddrivetip();">                                                                         
+                                                                    <a class="link1" href="?page=employee:details&employee_id={$workorders[i].EMPLOYEE_ID}&page_title={$workorders[i].EMPLOYEE_DISPLAY_NAME}">{$workorders[i].EMPLOYEE_DISPLAY_NAME}</a>
                                                                 </td>
                                                             </tr>
                                                         {else}
@@ -109,7 +109,7 @@
                                                                 <td colspan="6" class="error">{$translate_workorder_msg_there_are_no_closed_work_orders}</td>
                                                             </tr>
                                                         {/if}
-                                                    {/foreach}
+                                                    {/section}
                                                 </table>
                                             </td>
                                         </tr>

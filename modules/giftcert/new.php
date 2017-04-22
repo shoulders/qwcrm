@@ -19,7 +19,7 @@ if(!check_payment_method_is_active($db, 'gift_certificate_active')) {
 if(isset($VAR['submit'])) {   
         
     // Create a new gift certificate
-    $giftcert_id = insert_giftcert($db, $customer_id, date_to_timestamp($VAR['date_expires']), generate_giftcert_code(), $VAR['amount'], $var['memo']);
+    $giftcert_id = insert_giftcert($db, $customer_id, date_to_timestamp($VAR['date_expires']), generate_giftcert_code(), $VAR['amount'], $VAR['note']);
 
     // Load the new Gift Certificate's Details page
     force_page('giftcert', 'details&giftcert_id='.$giftcert_id);

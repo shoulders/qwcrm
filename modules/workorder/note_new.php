@@ -4,7 +4,7 @@ require(INCLUDES_DIR.'modules/workorder.php');
 
 // Check that there is a workorder_id set
 if($workorder_id == '') {
-    force_page('workorder', 'overview', 'warning_msg='.$smarty->get_template_vars('translate_workorder_error_message_details_new_note_noworkorderid'));
+    force_page('workorder', 'overview', 'warning_msg='.$smarty->getTemplateVars('translate_workorder_error_message_details_new_note_noworkorderid'));
     exit;
 }
 
@@ -12,7 +12,7 @@ if($workorder_id == '') {
 if(isset($VAR['submit'])){
     
     insert_workorder_note($db, $workorder_id, $VAR['workorder_note']);    
-    force_page('workorder', 'details', 'workorder_id='.$workorder_id.'information_msg='.$smarty->get_template_vars('translate_workorder_error_message_details_new_note_inserted'));
+    force_page('workorder', 'details', 'workorder_id='.$workorder_id.'information_msg='.$smarty->getTemplateVars('translate_workorder_error_message_details_new_note_inserted'));
     exit;
     
 // Fetch the page ready for a note submission 

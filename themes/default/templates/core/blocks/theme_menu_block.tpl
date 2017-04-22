@@ -67,7 +67,7 @@
                         {if $expense_id > 0 }
                             <a href="?page=expense:details&expense_id={$expense_id}"><img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_expense_details}</a>
                             <a href="?page=expense:edit&expense_id={$expense_id}"><img src="{$theme_images_dir}icons/edit.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_edit_expense}</a>
-                            <a href="?page=expense:delete&expense_di={$expense_id}" onclick="return confirmDelete('{$expense_id}');"><img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_delete_expense}</a>
+                            <a href="?page=expense:delete&expense_di={$expense_id}" onclick="return confirmDelete('{$translate_expense_delete_mes_confirmation}');"><img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_delete_expense}</a>
                         {/if}
 
                         <!-- Refunds -->
@@ -76,7 +76,7 @@
                         {if $refund_id > 0 }
                             <a href="?page=refund:details&refund_id={$refund_id}"><img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_refund_details}</a>
                             <a href="?page=refund:edit&refund_id={$refund_id}"><img src="{$theme_images_dir}icons/edit.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_edit_refund}</a>
-                            <a href="?page=refund:delete&refund_id={$refund_id}" onclick="return confirmDelete('{$refund_id}');"><img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_delete_refund}</a>
+                            <a href="?page=refund:delete&refund_id={$refund_id}" onclick="return confirmDelete('{$translate_refund_delete_mes_confirmation}');"><img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_delete_refund}</a>
                         {/if}
                         <a href="?page=report:financial"><img src="{$theme_images_dir}icons/reports.png" alt="" border="0" height="14" width="14" /> {$translate_core_menu_financial_report}</a>
                         

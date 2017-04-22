@@ -370,7 +370,7 @@
         <payment_cash>Cash</payment_cash>
         <payment_gift>Gift Certificate</payment_gift>
         <payment_paypal>PayPal</payment_paypal>
-        <payment_memo>Memo:</payment_memo>
+        <payment_note>Note</payment_note>
         <payment_name_on_card>Name on Card</payment_name_on_card>        
         <payment_exp>Expiration</payment_exp>
         <payment_cheque_no>Cheque Number</payment_cheque_no>

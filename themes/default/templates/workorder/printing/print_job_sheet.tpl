@@ -1,5 +1,5 @@
 <!-- print_job_sheet.tpl - Job Sheet Print Template -->
-{section name=i loop=$single_work_order}
+{section name=i loop=$single_workorder}
     
     <!-- Header -->
     <table width="900" border="0" cellpadding="2" cellspacing="0" style="border-collapse: collapse;">
@@ -32,13 +32,13 @@
                             <b>{$translate_workorder_email}: <b><br>                        
                         </td>
                         <td>
-                            {$single_work_order[i].CUSTOMER_FIRST_NAME} {$single_work_order[i].CUSTOMER_LAST_NAME}<br>
-                            {$single_work_order[i].WORK_ORDER_ID}<br>
+                            {$single_workorder[i].CUSTOMER_FIRST_NAME} {$single_workorder[i].CUSTOMER_LAST_NAME}<br>
+                            {$single_workorder[i].WORK_ORDER_ID}<br>
                             {$smarty.now|date_format:$date_format}<br>
-                            {$single_work_order[i].WORK_ORDER_OPEN_DATE|date_format:$date_format}<br>
-                            {$single_work_order[i].CUSTOMER_WORK_PHONE}<br>
-                            {$single_work_order[i].CUSTOMER_MOBILE_PHONE}<br>
-                            {$single_work_order[i].CUSTOMER_EMAIL}<br>
+                            {$single_workorder[i].WORK_ORDER_OPEN_DATE|date_format:$date_format}<br>
+                            {$single_workorder[i].CUSTOMER_WORK_PHONE}<br>
+                            {$single_workorder[i].CUSTOMER_MOBILE_PHONE}<br>
+                            {$single_workorder[i].CUSTOMER_EMAIL}<br>
                         </td>        
                     </tr>    
                 </table>
@@ -53,10 +53,10 @@
                             <b>{$translate_workorder_address}: <b><br><br>
                         </td>
                         <td>
-                            {$single_work_order[i].CUSTOMER_ADDRESS}<br>
-                            {$single_work_order[i].CUSTOMER_CITY}<br>
-                            {$single_work_order[i].CUSTOMER_STATE}<br>
-                            {$single_work_order[i].CUSTOMER_ZIP}<br />
+                            {$single_workorder[i].CUSTOMER_ADDRESS}<br>
+                            {$single_workorder[i].CUSTOMER_CITY}<br>
+                            {$single_workorder[i].CUSTOMER_STATE}<br>
+                            {$single_workorder[i].CUSTOMER_ZIP}<br />
                         </td>        
                     </tr>    
                 </table>
@@ -71,7 +71,7 @@
             <td><b>{$translate_workorder_details_description_title}:<b></td>       
         </tr>
         <tr>
-            <td><div style="min-height: 140px;">{$single_work_order[i].WORK_ORDER_DESCRIPTION}</div></td>
+            <td><div style="min-height: 140px;">{$single_workorder[i].WORK_ORDER_DESCRIPTION}</div></td>
         </tr>
         <tr>
             <td><b>{$translate_workorder_print_required_passwords}:</b><br /><br /></td>

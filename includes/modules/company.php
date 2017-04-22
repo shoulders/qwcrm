@@ -39,7 +39,7 @@ function update_company_hours($db, $openingTime, $closingTime) {
             CLOSING_MINUTE  ='. $db->qstr( $closingTime['Time_Minute']   );
 
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_company_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_company_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -70,7 +70,7 @@ function get_company_start_end_times($db, $time_event) {
     $sql = 'SELECT OPENING_HOUR, OPENING_MINUTE, CLOSING_HOUR, CLOSING_MINUTE FROM '.PRFX.'COMPANY';
 
    if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_company_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_company_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {        
     
@@ -119,16 +119,12 @@ function update_company_details($db, $record) {
     if(!empty($_FILES['company_logo']['name'])) {
         $sql .='LOGO                = '. $db->qstr( MEDIA_DIR . $new_logo_filename        ).',';
     }         
-        $sql .='WWW                 = '. $db->qstr( $record['company_www']                ).',
-                OPENING_HOUR        = '. $db->qstr( $record['company_opening_hour']       ).',  
-                OPENING_MINUTE      = '. $db->qstr( $record['company_opening_minute']     ).',
-                CLOSING_HOUR        = '. $db->qstr( $record['company_closing_hour']       ).',
-                CLOSING_MINUTE      = '. $db->qstr( $record['company_closing_minute']     ).',  
+        $sql .='WWW                 = '. $db->qstr( $record['company_www']                ).',  
                 TAX_RATE            = '. $db->qstr( $record['company_tax_rate']           ).',
                 WELCOME_MSG         = '. $db->qstr( $record['company_welcome_msg']        );                           
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_company_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_company_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         

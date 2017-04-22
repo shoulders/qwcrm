@@ -73,7 +73,7 @@ function display_invoices($db, $status = 'all', $direction = 'DESC', $use_pages 
         
         // Figure out the total number of records in the database for the given search        
         if(!$rs = $db->Execute($sql)) {
-            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_invoice_error_message_function_'.__FUNCTION__.'_count'));
+            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_invoice_error_message_function_'.__FUNCTION__.'_count'));
             exit;
         } else {        
             $total_results = $rs->RecordCount();            
@@ -119,7 +119,7 @@ function display_invoices($db, $status = 'all', $direction = 'DESC', $use_pages 
     /* Return the records */
          
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_invoice_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_invoice_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -160,7 +160,7 @@ function insert_invoice($db, $customer_id, $workorder_id, $discount_rate, $tax_r
             TAX_RATE        =". $db->qstr( $tax_rate                );            
 
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_invoice_error_message_function_'.__FUNCTION__.'_count'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_invoice_error_message_function_'.__FUNCTION__.'_count'));
         exit;
     } else {
         
@@ -205,7 +205,7 @@ function insert_labour_items($db, $invoice_id, $labour_description, $labour_rate
         $sql = substr($sql , 0, -1);
         
         if(!$rs = $db->Execute($sql)) {
-            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_invoice_error_message_function_'.__FUNCTION__.'_count'));
+            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_invoice_error_message_function_'.__FUNCTION__.'_count'));
             exit;
         }
         
@@ -248,7 +248,7 @@ function insert_parts_items($db, $invoice_id, $parts_description, $parts_price, 
         $sql = substr($sql ,0,-1);
         
         if(!$rs = $db->Execute($sql)) {
-            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_invoice_error_message_function_'.__FUNCTION__.'_count'));
+            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_invoice_error_message_function_'.__FUNCTION__.'_count'));
             exit;
         }
         
@@ -273,7 +273,7 @@ function insert_invoice_labour_rates_item($db, $VAR){
             LABOUR_RATE_ACTIVE   =". $db->qstr( 1                    );
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_invoice_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_invoice_include_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     }
     
@@ -292,7 +292,7 @@ function get_invoice_details($db, $invoice_id, $item = null) {
     $sql = "SELECT * FROM ".PRFX."INVOICE WHERE INVOICE_ID =".$db->qstr($invoice_id);
     
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_invoice_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_invoice_include_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -319,7 +319,7 @@ function get_active_labour_rate_items($db) {
     $sql = "SELECT * FROM ".PRFX."INVOICE_LABOUR_RATES WHERE LABOUR_RATE_ACTIVE='1'";
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_invoice_error_message_function_'.__FUNCTION__.'_count'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_invoice_error_message_function_'.__FUNCTION__.'_count'));
         exit;
     } else {
         
@@ -344,7 +344,7 @@ function get_invoice_labour_items($db, $invoice_id) {
     $sql = "SELECT * FROM ".PRFX."INVOICE_LABOUR WHERE INVOICE_ID=".$db->qstr( $invoice_id );
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_invoice_error_message_function_'.__FUNCTION__.'_count'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_invoice_error_message_function_'.__FUNCTION__.'_count'));
         exit;
     } else {
         
@@ -368,7 +368,7 @@ function get_invoice_labour_item_details($db, $labour_id, $item = null) {
     $sql = "SELECT * FROM ".PRFX."INVOICE_LABOUR WHERE INVOICE_LABOUR_ID =".$db->qstr($labour_id);
     
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_invoice_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_invoice_include_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -397,7 +397,7 @@ function get_invoice_parts_items($db, $invoice_id) {
     $sql = "SELECT * FROM ".PRFX."INVOICE_PARTS WHERE INVOICE_ID=".$db->qstr( $invoice_id );
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_invoice_error_message_function_'.__FUNCTION__.'_count'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_invoice_error_message_function_'.__FUNCTION__.'_count'));
         exit;
     } else {
         
@@ -422,7 +422,7 @@ function get_invoice_parts_item_details($db, $parts_id, $item = null) {
     $sql = "SELECT * FROM ".PRFX."INVOICE_PARTS WHERE INVOICE_PARTS_ID =".$db->qstr($parts_id);
     
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_invoice_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_invoice_include_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -452,7 +452,7 @@ function get_invoice_labour_rates_items($db) {
     $sql = "SELECT * FROM ".PRFX."INVOICE_LABOUR_RATES ORDER BY LABOUR_RATE_ID ASC";
     
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_invoice_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_invoice_include_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     }   
     
@@ -477,7 +477,7 @@ function update_invoice($db, $invoice_id, $date, $due_date, $discount_rate) {
             WHERE INVOICE_ID    =". $db->qstr( $invoice_id                  );
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_invoice_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_invoice_include_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     }
     
@@ -499,7 +499,7 @@ function update_invoice_transaction_only($db, $invoice_id, $paid_status, $paid_d
             WHERE INVOICE_ID    =". $db->qstr( $invoice_id  );
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_invoice_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_invoice_include_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     }
     
@@ -533,7 +533,7 @@ function update_invoice_full($db, $invoice_id, $customer_id, $workorder_id, $emp
             WHERE INVOICE_ID    =". $db->qstr( $invoice_id      );
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_invoice_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_invoice_include_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     }    
     
@@ -557,7 +557,7 @@ function update_invoice_labour_rates_item($db, $labour_rate_id, $VAR){
         WHERE LABOUR_RATE_ID =". $db->qstr( $labour_rate_id         );
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_invoice_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_invoice_include_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     }
     
@@ -578,7 +578,7 @@ function delete_invoice($db, $invoice_id) {
     $sql = "DELETE FROM ".PRFX."INVOICE WHERE INVOICE_ID=".$db->qstr($invoice_id);
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_invoice_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_invoice_include_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -599,7 +599,7 @@ function delete_invoice_labour_item($db, $labour_id) {
     $sql = "DELETE FROM " . PRFX . "INVOICE_LABOUR WHERE INVOICE_LABOUR_ID=" . $db->qstr($labour_id);
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_invoice_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_invoice_include_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -619,7 +619,7 @@ function delete_invoice_parts_item($db, $parts_id) {
     $sql = "DELETE FROM " . PRFX . "INVOICE_PARTS WHERE INVOICE_PARTS_ID=" . $db->qstr($parts_id);
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_invoice_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_invoice_include_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -640,7 +640,7 @@ function delete_invoice_rates_item($db, $labour_rate_id){
     $sql = "DELETE FROM ".PRFX."INVOICE_LABOUR_RATES WHERE LABOUR_RATE_ID =".$labour_rate_id;
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_invoice_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_invoice_include_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     }
     
@@ -659,7 +659,7 @@ function labour_sub_total($db, $invoice_id) {
     $sql = "SELECT SUM(INVOICE_LABOUR_SUBTOTAL) AS labour_sub_total_sum FROM " . PRFX . "INVOICE_LABOUR WHERE INVOICE_ID=" . $db->qstr($invoice_id);
     
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_invoice_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_invoice_include_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -680,7 +680,7 @@ function parts_sub_total($db, $invoice_id) {
     $sql = "SELECT SUM(INVOICE_PARTS_SUBTOTAL) AS parts_sub_total_sum FROM " . PRFX . "INVOICE_PARTS WHERE INVOICE_ID=" . $db->qstr($invoice_id);
     
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_invoice_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_invoice_include_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -714,7 +714,7 @@ function recalculate_invoice_totals($db, $invoice_id) {
             WHERE INVOICE_ID    =". $db->qstr( $invoice_id      );
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_invoice_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_invoice_include_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     }
     
@@ -731,7 +731,7 @@ function check_invoice_has_workorder($db, $invoice_id) {
     $sql = "SELECT WORKORDER_ID FROM ".PRFX."INVOICE WHERE INVOICE_ID=".$invoice_id;
     
     if(!$rs = $db->Execute($sql)) {        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {        
         

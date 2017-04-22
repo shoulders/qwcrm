@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="{$theme_js_dir}jscal2/css/steel/steel.css" />
 <script src="{$theme_js_dir}jscal2/jscal2.js"></script>
 <script src="{$theme_js_dir}jscal2/unicode-letter.js"></script>
-<script>{include file="`$theme_js_dir_finc`jscal2/language.js"}</script>
+<script>{include file="../`$theme_js_dir_finc`jscal2/language.js"}</script>
 
 <table class="olotable" width="100%" border="0" cellpadding="0" cellspacing="0">
     <tr>

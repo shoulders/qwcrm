@@ -178,7 +178,7 @@ function perform_redirect($url, $type = 'header') {
 
 // Example to use
 // If a function needs more than 1 error notification - add after _failed - this keeps it easy to swapp stuff out : i.e _failed --> _failed_notfound ?
-//force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
+//force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
 
 function force_error_page($error_page, $error_type, $error_location, $php_function, $database_error, $sql_query, $error_msg) {    
    
@@ -383,12 +383,12 @@ function set_page_header_and_meta_data($module, $page_tpl, $page_title_from_var 
     if ($page_title_from_var != Null){
         $smarty->assign('page_title', $page_title_from_var); 
     } else {
-        $smarty->assign('page_title', $smarty->get_template_vars('translate_'.$module.'_'.$page_tpl.'_header_page_title'));
+        $smarty->assign('page_title', $smarty->getTemplateVars('translate_'.$module.'_'.$page_tpl.'_header_page_title'));
     }    
     
     // Meta Tags
-    $smarty->assign('meta_description', $smarty->get_template_vars('translate_'.$module.'_'.$page_tpl.'_header_meta_description')   );
-    $smarty->assign('meta_keywords',    $smarty->get_template_vars('translate_'.$module.'_'.$page_tpl.'_header_meta_keywords')      );
+    $smarty->assign('meta_description', $smarty->getTemplateVars('translate_'.$module.'_'.$page_tpl.'_header_meta_description')   );
+    $smarty->assign('meta_keywords',    $smarty->getTemplateVars('translate_'.$module.'_'.$page_tpl.'_header_meta_keywords')      );
     
     return;
     
@@ -404,7 +404,7 @@ function check_acl($db, $login_account_type_id, $module, $page_tpl){
     
     /* error catching - you cannot use normal error logging as it will cause a loop */
     if($login_account_type_id == ''){
-        echo $smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_no_account_type_id');
+        echo $smarty->getTemplateVars('translate_system_include_error_message_function_'.__FUNCTION__.'_no_account_type_id');
         die;        
     }
 
@@ -414,7 +414,7 @@ function check_acl($db, $login_account_type_id, $module, $page_tpl){
             WHERE TYPE_ID ='.$db->qstr($login_account_type_id);
     
     if(!$rs = $db->execute($sql)) {        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_group_name_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_system_include_error_message_function_'.__FUNCTION__.'_group_name_failed'));
         exit;
     } else {
         $employee_acl_account_type_display_name = $rs->fields['TYPE_NAME'];
@@ -427,7 +427,7 @@ function check_acl($db, $login_account_type_id, $module, $page_tpl){
     $sql = "SELECT ".$employee_acl_account_type_display_name." AS PAGE_ACL FROM ".PRFX."EMPLOYEE_ACL WHERE page=".$db->qstr($module_page);
 
     if(!$rs = $db->execute($sql)) {       
-        force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=authentication&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_get_page_acl_failed'));
+        force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=authentication&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->getTemplateVars('translate_system_include_error_message_function_'.__FUNCTION__.'_get_page_acl_failed'));
         exit;
     } else {
         $acl = $rs->fields['PAGE_ACL'];
@@ -435,7 +435,7 @@ function check_acl($db, $login_account_type_id, $module, $page_tpl){
         // Add if guest (6) rules here if there are errors
         
         if($acl != 1) {            
-            force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=authentication&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_no_page_permission'));
+            force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=authentication&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->getTemplateVars('translate_system_include_error_message_function_'.__FUNCTION__.'_no_page_permission'));
             exit;
         } else {
             
@@ -464,7 +464,7 @@ function verify_qwcrm_is_installed_correctly($db){
     if(version_compare(get_qwcrm_database_version_number($db), QWCRM_VERSION, '!=')){
         
         // I have not decided whether to use a message or automatic redirect to the upgrade folder        
-        echo('<div style="color: red;">'.$smarty->get_template_vars('translate_system_include_advisory_message_function_verify_qwcrm_is_installed_correctly_file_database_versions_dont_match').'</div>');
+        echo('<div style="color: red;">'.$smarty->getTemplateVars('translate_system_include_advisory_message_function_verify_qwcrm_is_installed_correctly_file_database_versions_dont_match').'</div>');
         die;
                 
         //force_page('upgrade');         
@@ -473,13 +473,13 @@ function verify_qwcrm_is_installed_correctly($db){
     
     // has been installed but the installion directory is still present  
     if(is_dir('install') ) {
-        echo('<div style="color: red;">'.$smarty->get_template_vars('translate_system_include_advisory_message_function_verify_qwcrm_is_installed_correctly_install_directory_exists').'</div>');
+        echo('<div style="color: red;">'.$smarty->getTemplateVars('translate_system_include_advisory_message_function_verify_qwcrm_is_installed_correctly_install_directory_exists').'</div>');
         die;
     }
     
     // has been installed but the upgrade directory is still present  
     if(is_dir('upgrade') ) {
-        echo('<div style="color: red;">'.$smarty->get_template_vars('translate_system_include_advisory_message_function_verify_qwcrm_is_installed_correctly_upgrade_directory_exists').'</div>');
+        echo('<div style="color: red;">'.$smarty->getTemplateVars('translate_system_include_advisory_message_function_verify_qwcrm_is_installed_correctly_upgrade_directory_exists').'</div>');
         die;
     }  
     
@@ -496,7 +496,7 @@ function get_qwcrm_database_version_number($db){
     $sql = 'SELECT * FROM '.PRFX.'QWCRM_VERSION ORDER BY '.PRFX.'QWCRM_VERSION.`VERSION_INSTALLED` DESC LIMIT 1';
     
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -523,7 +523,7 @@ function get_company_details($db, $item = null){
     $sql = 'SELECT * FROM '.PRFX.'COMPANY';
     
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -683,7 +683,7 @@ function write_record_to_tracker_table($db, $page_display_controller, $module, $
    referer       = '. $db->qstr( getenv('HTTP_REFERER')     );
 
    if(!$rs = $db->Execute($sql)) {
-      force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
+      force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
       exit;      
    }
    
@@ -715,7 +715,7 @@ function write_record_to_activity_log($record){
     
     // Write log entry to access log    
     if(!$fp = fopen(ACTIVITY_LOG,'a')) {        
-        force_error_page($_GET['page'], 'file', __FILE__, __FUNCTION__, '', '', $smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'file', __FILE__, __FUNCTION__, '', '', $smarty->getTemplateVars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     }
     
@@ -782,7 +782,7 @@ function write_record_to_access_log($login_usr = Null){
     
     // Write log entry to access log    
     if(!$fp = fopen(ACCESS_LOG,'a')) {        
-        force_error_page($_GET['page'], 'file', __FILE__, __FUNCTION__, '', '', $smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'file', __FILE__, __FUNCTION__, '', '', $smarty->getTemplateVars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     }
     
@@ -811,7 +811,7 @@ function write_record_to_error_log($login_usr = '-', $error_page, $error_type, $
 
     // Write log entry to error.log    
     if(!$fp = fopen(ERROR_LOG,'a')) {        
-        force_error_page($_GET['page'], 'file', __FILE__, __FUNCTION__, '', '', $smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'file', __FILE__, __FUNCTION__, '', '', $smarty->getTemplateVars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     }
     
@@ -1021,7 +1021,7 @@ function get_country_codes($db) {
     $sql = 'SELECT * FROM '.PRFX.'COMPANY_COUNTRY_LIST';
 
     if(!$rs = $db->execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
         exit;        
     } else {
         

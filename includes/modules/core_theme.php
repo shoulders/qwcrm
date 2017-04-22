@@ -17,12 +17,12 @@ function greeting_message_based_on_time($employee_name){
     
     global $smarty;
     
-    $morning    = $smarty->get_template_vars('translate_core_theme_function_greeting_message_based_on_time_morning_message').' '.$employee_name;
-    $afternoon  = $smarty->get_template_vars('translate_core_theme_function_greeting_message_based_on_time_afternoon_message').' '.$employee_name;
-    $evening    = $smarty->get_template_vars('translate_core_theme_function_greeting_message_based_on_time_evening_message').' '.$employee_name;
-    $night      = $smarty->get_template_vars('translate_core_theme_function_greeting_message_based_on_time_night_message').' '.$employee_name;
+    $morning    = $smarty->getTemplateVars('translate_core_theme_function_greeting_message_based_on_time_morning_message').' '.$employee_name;
+    $afternoon  = $smarty->getTemplateVars('translate_core_theme_function_greeting_message_based_on_time_afternoon_message').' '.$employee_name;
+    $evening    = $smarty->getTemplateVars('translate_core_theme_function_greeting_message_based_on_time_evening_message').' '.$employee_name;
+    $night      = $smarty->getTemplateVars('translate_core_theme_function_greeting_message_based_on_time_night_message').' '.$employee_name;
     
-    $friday     = $smarty->get_template_vars('translate_core_theme_function_greeting_message_based_on_time_friday_message');
+    $friday     = $smarty->getTemplateVars('translate_core_theme_function_greeting_message_based_on_time_friday_message');
     
     // Get the current hour
     $current_time = date('H');

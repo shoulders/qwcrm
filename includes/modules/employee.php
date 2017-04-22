@@ -44,7 +44,7 @@ function display_employees($db, $search_term, $page_no) {
             ORDER BY EMPLOYEE_DISPLAY_NAME";
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {        
         $employee_search_result = $rs->GetArray();        
@@ -54,7 +54,7 @@ function display_employees($db, $search_term, $page_no) {
     $sql = "SELECT COUNT(*) as Num FROM ".PRFX."EMPLOYEE WHERE EMPLOYEE_DISPLAY_NAME LIKE '%$search_term%'";
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {        
         $total_results = $rs->fields['Num'];
@@ -123,7 +123,7 @@ function insert_employee($db, $VAR){
             EMPLOYEE_STATUS         =". $db->qstr( $VAR['employee_status']          );          
           
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -146,7 +146,7 @@ function get_employee_details($db, $employee_id, $item = null) {
     $sql = "SELECT * FROM ".PRFX."EMPLOYEE WHERE EMPLOYEE_ID =".$employee_id;
     
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -178,7 +178,7 @@ function get_employee_display_name_by_id($db, $employee_id) {
             WHERE EMPLOYEE_ID=". $db->qstr($employee_id);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {        
 
@@ -207,7 +207,7 @@ function get_employee_id_by_username($db, $employee_usr){
     
     $sql = 'SELECT EMPLOYEE_ID FROM '.PRFX.'EMPLOYEE WHERE EMPLOYEE_LOGIN ='.$db->qstr($employee_usr);    
     if(!$rs = $db->execute($sql)){
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -227,7 +227,7 @@ function get_employee_record_by_username($db, $employee_usr){
     
     $sql = "SELECT * FROM ".PRFX."EMPLOYEE WHERE EMPLOYEE_LOGIN =".$db->qstr($employee_usr);    
     if(!$rs = $db->execute($sql)){
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -248,7 +248,7 @@ function get_employee_types($db) {
     $sql = "SELECT * FROM ".PRFX."EMPLOYEE_ACCOUNT_TYPES";
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -269,7 +269,7 @@ function get_active_employees($db) {
     $sql = "SELECT EMPLOYEE_ID, EMPLOYEE_DISPLAY_NAME FROM ".PRFX."EMPLOYEE WHERE EMPLOYEE_STATUS=1";
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {    
         
@@ -315,7 +315,7 @@ function update_employee($db, $employee_id, $VAR) {
     $sql = "UPDATE ".PRFX."EMPLOYEE ". $set ." WHERE EMPLOYEE_ID= ".$db->qstr($employee_id);
 
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else{
         
@@ -345,7 +345,7 @@ function count_employee_workorders_with_status($db, $employee_id, $workorder_sta
             AND WORK_ORDER_STATUS=".$db->qstr($workorder_status);
     
     if(!$rs = $db->Execute($sql)){
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
    } else {
        
@@ -369,7 +369,7 @@ function count_employee_invoices_with_status($db, $employee_id, $invoice_status)
             AND EMPLOYEE_ID=".$db->qstr($employee_id);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
    } else {
        
@@ -402,7 +402,7 @@ function build_active_employee_form_option_list($db, $assigned_employee_id){
     $sql = "SELECT EMPLOYEE_DISPLAY_NAME, EMPLOYEE_ID FROM ".PRFX."EMPLOYEE WHERE EMPLOYEE_STATUS=1";
     
     if(!$rs = $db->execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -427,7 +427,7 @@ function check_employee_username_exists($db, $username, $current_username){
     $sql = "SELECT COUNT(*) AS num_users FROM ".PRFX."EMPLOYEE WHERE EMPLOYEE_LOGIN =". $db->qstr($username);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         

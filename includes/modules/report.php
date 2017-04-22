@@ -47,7 +47,7 @@ function count_open_workorders_in_seleceted_period($db, $start_date, $end_date) 
     $sql = "SELECT count(*) AS count FROM ".PRFX."WORKORDER WHERE WORK_ORDER_OPEN_DATE >= ".$db->qstr($start_date)." AND WORK_ORDER_OPEN_DATE <= ".$db->qstr($end_date);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_report_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_report_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -65,10 +65,10 @@ function count_open_workorders_in_selected_period($db, $start_date, $end_date) {
     
     global $smarty;
     
-    $sql = "SELECT count(*) AS count FROM ".PRFX."WORK_ORDER WHERE WORKORDER_CLOSE_DATE >= ".$db->qstr($start_date)." AND WORK_ORDER_CLOSE_DATE <= ".$db->qstr($end_date);
+    $sql = "SELECT count(*) AS count FROM ".PRFX."WORKORDER WHERE WORK_ORDER_CLOSE_DATE >= ".$db->qstr($start_date)." AND WORK_ORDER_CLOSE_DATE <= ".$db->qstr($end_date);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_report_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_report_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -89,7 +89,7 @@ function count_new_customers_in_selected_period($db, $start_date, $end_date) {
     $sql = "SELECT count(*) AS count FROM ".PRFX."CUSTOMER WHERE CREATE_DATE >= ".$db->qstr($start_date)." AND CREATE_DATE <= ".$db->qstr($end_date);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_report_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_report_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -110,7 +110,7 @@ function count_total_customers_in_qwcrm($db) {
     $sql = "SELECT COUNT(*) AS count FROM ".PRFX."CUSTOMER";
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_report_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_report_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -131,7 +131,7 @@ function count_created_invoices_in_selected_period($db, $start_date, $end_date) 
     $sql = "SELECT count(*) AS count FROM ".PRFX."INVOICE WHERE DATE >= ".$db->qstr($start_date)." AND DATE <= ".$db->qstr($end_date);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_report_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_report_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -152,7 +152,7 @@ function count_paid_invoices_in_selected_period($db, $start_date, $end_date) {
     $sql = "SELECT count(*) AS count FROM ".PRFX."INVOICE WHERE DATE >= ".$db->qstr($start_date)." AND DATE <= ".$db->qstr($end_date)." AND IS_PAID = 1";
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_report_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_report_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -175,7 +175,7 @@ function count_total_number_of_different_part_items_ordered_in_selected_period($
     $sql = "SELECT COUNT(*) AS count FROM ".PRFX."INVOICE_PARTS INNER JOIN ".PRFX."INVOICE ON ".PRFX."INVOICE.INVOICE_ID = ".PRFX."INVOICE_PARTS.INVOICE_ID WHERE ".PRFX."INVOICE.DATE >= ".$db->qstr($start_date)." AND ".PRFX."INVOICE.DATE <= ".$db->qstr($end_date);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_report_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_report_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -196,7 +196,7 @@ function sum_total_quantity_of_part_items_ordered_in_selected_period($db, $start
     $sql = "SELECT SUM(INVOICE_PARTS_COUNT) AS sum FROM ".PRFX."INVOICE_PARTS INNER JOIN ".PRFX."INVOICE ON ".PRFX."INVOICE.INVOICE_ID = ".PRFX."INVOICE_PARTS.INVOICE_ID WHERE ".PRFX."INVOICE.DATE >= ".$db->qstr($start_date)." AND ".PRFX."INVOICE.DATE <= ".$db->qstr($end_date);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_report_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_report_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -217,7 +217,7 @@ function sum_parts_sub_total_in_selected_period($db, $start_date, $end_date) {
     $sql = "SELECT SUM(INVOICE_PARTS_SUBTOTAL) AS sum FROM ".PRFX."INVOICE_PARTS INNER JOIN ".PRFX."INVOICE ON ".PRFX."INVOICE.INVOICE_ID = ".PRFX."INVOICE_PARTS.INVOICE_ID WHERE ".PRFX."INVOICE.DATE >= ".$db->qstr($start_date)." AND ".PRFX."INVOICE.DATE <= ".$db->qstr($end_date);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_report_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_report_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -240,7 +240,7 @@ function count_total_number_of_different_labour_items_in_selected_period($db, $s
     $sql = "SELECT COUNT(*) AS count FROM ".PRFX."INVOICE_LABOUR INNER JOIN ".PRFX."INVOICE ON ".PRFX."INVOICE.INVOICE_ID = ".PRFX."INVOICE_LABOUR.INVOICE_ID WHERE ".PRFX."INVOICE.DATE >= ".$db->qstr($start_date)." AND ".PRFX."INVOICE.DATE <= ".$db->qstr($end_date);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_report_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_report_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -260,7 +260,7 @@ function sum_total_quantity_of_labour_items_in_selected_period($db, $start_date,
     $sql = "SELECT SUM(INVOICE_LABOUR_UNIT) AS sum FROM ".PRFX."INVOICE_LABOUR INNER JOIN ".PRFX."INVOICE ON ".PRFX."INVOICE.INVOICE_ID = ".PRFX."INVOICE_LABOUR.INVOICE_ID WHERE ".PRFX."INVOICE.DATE >= ".$db->qstr($start_date)." AND ".PRFX."INVOICE.DATE <= ".$db->qstr($end_date);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_report_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_report_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -281,7 +281,7 @@ function sum_labour_sub_totals_in_selected_period($db, $start_date, $end_date) {
     $sql = "SELECT SUM(INVOICE_LABOUR_SUBTOTAL) AS sum FROM ".PRFX."INVOICE_LABOUR INNER JOIN ".PRFX."INVOICE ON ".PRFX."INVOICE.INVOICE_ID = ".PRFX."INVOICE_LABOUR.INVOICE_ID WHERE ".PRFX."INVOICE.DATE >= ".$db->qstr($start_date)." AND ".PRFX."INVOICE.DATE <= ".$db->qstr($end_date);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_report_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_report_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -304,7 +304,7 @@ function sum_expenses_net_amount_in_selected_period($db, $start_date, $end_date)
     $sql = "SELECT SUM(EXPENSE_NET_AMOUNT) AS sum FROM ".PRFX."EXPENSE WHERE EXPENSE_DATE  >= ".$db->qstr($start_date)." AND EXPENSE_DATE  <= ".$db->qstr($end_date);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_report_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_report_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -324,7 +324,7 @@ function sum_expenses_tax_amount_in_selected_period($db, $start_date, $end_date)
     $sql = "SELECT SUM(EXPENSE_TAX_AMOUNT) AS sum FROM ".PRFX."EXPENSE WHERE EXPENSE_DATE  >= ".$db->qstr($start_date)." AND EXPENSE_DATE  <= ".$db->qstr($end_date);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_report_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_report_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -345,7 +345,7 @@ function sum_expenses_gross_amount_in_selected_period($db, $start_date, $end_dat
     $sql = "SELECT SUM(EXPENSE_GROSS_AMOUNT) AS sum FROM ".PRFX."EXPENSE WHERE EXPENSE_DATE  >= ".$db->qstr($start_date)." AND EXPENSE_DATE  <= ".$db->qstr($end_date);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_report_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_report_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -368,7 +368,7 @@ function sum_refunds_net_amount_in_selected_period($db, $start_date, $end_date) 
     $sql = "SELECT SUM(REFUND_NET_AMOUNT) AS sum FROM ".PRFX."REFUND WHERE REFUND_DATE  >= ".$db->qstr($start_date)." AND REFUND_DATE  <= ".$db->qstr($end_date);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_report_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_report_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -389,7 +389,7 @@ function sum_refunds_tax_amount_in_selected_period($db, $start_date, $end_date) 
     $sql = "SELECT SUM(REFUND_TAX_AMOUNT) AS sum FROM ".PRFX."REFUND WHERE REFUND_DATE  >= ".$db->qstr($start_date)." AND REFUND_DATE  <= ".$db->qstr($end_date);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_report_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_report_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -410,7 +410,7 @@ function sum_refunds_gross_amount_in_selected_period($db, $start_date, $end_date
     $sql = "SELECT SUM(REFUND_GROSS_AMOUNT) AS sum FROM ".PRFX."REFUND WHERE REFUND_DATE  >= ".$db->qstr($start_date)." AND REFUND_DATE  <= ".$db->qstr($end_date);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_report_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_report_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -433,7 +433,7 @@ function sum_of_invoice_sub_totals_before_tax_and_disacounts_are_added_in_select
     $sql = "SELECT SUM(SUB_TOTAL) AS sum FROM ".PRFX."INVOICE WHERE DATE  >= ".$db->qstr($start_date)." AND DATE  <= ".$db->qstr($end_date);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_report_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_report_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -454,7 +454,7 @@ function sum_of_discount_amounts_in_selected_period($db, $start_date, $end_date)
     $sql = "SELECT SUM(DISCOUNT) AS sum FROM ".PRFX."INVOICE WHERE DATE  >= ".$db->qstr($start_date)." AND DATE  <= ".$db->qstr($end_date);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_report_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_report_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -475,7 +475,7 @@ function sum_of_tax_amounts_in_selected_period($db, $start_date, $end_date) {
     $sql = "SELECT SUM(TAX) AS sum FROM ".PRFX."INVOICE WHERE DATE  >= ".$db->qstr($start_date)." AND DATE  <= ".$db->qstr($end_date);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_report_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_report_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -496,7 +496,7 @@ function sum_of_invoice_total_amounts_gross_in_selected_period($db, $start_date,
     $sql = "SELECT SUM(TOTAL) AS sum FROM ".PRFX."INVOICE WHERE DATE  >= ".$db->qstr($start_date)." AND DATE  <= ".$db->qstr($end_date);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_report_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_report_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         

@@ -393,9 +393,11 @@ function removeRowFromTableParts(){
                                                             <button type="button" name="{$translate_invoice_print}" onClick="window.open('index.php?page=invoice:print&invoice_id={$invoice[a].INVOICE_ID}&print_type=print_html&print_content=invoice&theme=print');">{$translate_invoice_print}</button>
                                                             <button type="button" name="{$translate_invoice_pdf}" onClick="window.open('index.php?page=invoice:print&invoice_id={$invoice[a].INVOICE_ID}&print_type=print_pdf&print_content=invoice&theme=print');"><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">{$translate_invoice_pdf}</button>
                                                             <button type="button" name="Print Address Only" onClick="window.open('index.php?page=invoice:print&invoice_id={$invoice[a].INVOICE_ID}&print_type=print_html&print_content=invoice&theme=print');">Print Address Only</button>                                            
-
-                                                            <!-- Receive Payment Button -->
-                                                            <button type="button" name="{$translate_invoice_bill_customer}" onClick="location.href='index.php?page=payment:new&invoice_id={$invoice[a].INVOICE_ID}';">{$translate_invoice_bill_customer}</button>
+                                                            
+                                                            {if $invoice[a].BALANCE > 0}
+                                                                <!-- Receive Payment Button -->
+                                                                <button type="button" name="{$translate_invoice_bill_customer}" onClick="location.href='index.php?page=payment:new&invoice_id={$invoice[a].INVOICE_ID}';">{$translate_invoice_bill_customer}</button>
+                                                            {/if}
 
                                                         {else}
 

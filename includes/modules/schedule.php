@@ -34,7 +34,7 @@ function display_workorder_schedule($db, $workorder_id){
     $sql = "SELECT * FROM ".PRFX."SCHEDULE WHERE WORKORDER_ID=".$db->qstr($workorder_id);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_schedule_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_schedule_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -78,7 +78,7 @@ function insert_schedule($db, $schedule_start_date, $scheduleStartTime, $schedul
             SCHEDULE_NOTES     = ". $db->qstr( $schedule_notes            );            
 
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_schedule_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_schedule_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -119,7 +119,7 @@ function get_schedule_details($db, $schedule_id, $item = null){
     $sql = "SELECT * FROM ".PRFX."SCHEDULE WHERE SCHEDULE_ID=".$db->qstr($schedule_id);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_schedule_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_schedule_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else { 
         
@@ -151,7 +151,7 @@ function get_workorder_id_from_schedule($db, $schedule_id) {
     $sql = "SELECT WORKORDER_ID FROM ".PRFX."SCHEDULE WHERE SCHEDULE_ID=".$db->qstr($schedule_id);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_schedule_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_schedule_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -180,7 +180,7 @@ function get_schedule_ids_for_employee_on_date($db, $employee_id, $schedule_star
             "' ORDER BY SCHEDULE_START ASC";
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_schedule_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_schedule_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -225,7 +225,7 @@ function update_schedule($db, $schedule_start_date, $scheduleStartTime, $schedul
         WHERE SCHEDULE_ID   =". $db->qstr( $schedule_id                 );
    
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_schedule_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_schedule_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {       
          
@@ -250,7 +250,7 @@ function delete_schedule($db, $schedule_id) {
     $sql = "DELETE FROM ".PRFX."SCHEDULE WHERE SCHEDULE_ID =".$db->qstr($schedule_id);
 
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_schedule_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_schedule_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -590,7 +590,7 @@ function build_calendar_matrix($db, $schedule_start_year, $schedule_start_month,
         AND ".PRFX."SCHEDULE.EMPLOYEE_ID ='".$employee_id."' ORDER BY ".PRFX."SCHEDULE.SCHEDULE_START ASC";
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_schedule_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_schedule_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     }
 
@@ -770,7 +770,7 @@ function validate_schedule_times($db, $schedule_start_date, $schedule_start_time
             ORDER BY SCHEDULE_START ASC";
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_schedule_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_schedule_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     }   
     

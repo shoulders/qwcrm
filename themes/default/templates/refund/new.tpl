@@ -27,7 +27,6 @@
                                     <table class="menutable" width="100%" border="0" cellpadding="2" cellspacing="2" >
                                         <tr>
                                             <td>                                                
-                                                <input type="hidden" name="page" value="refund:edit">
                                                 {literal}
                                                 <form action="index.php?page=refund:new" method="POST" name="new_refund" id="new_refund" autocomplete="off">
                                                 {/literal}

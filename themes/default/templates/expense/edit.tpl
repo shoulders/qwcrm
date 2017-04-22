@@ -27,10 +27,8 @@
                                     <table class="menutable" width="100%" border="0" cellpadding="0" cellspacing="0" >
                                      <tr>
                                          <td>
-                                            {section name=q loop=$expense_details}
-                                                {literal}
-                                                <form  method="post" action="index.php?page=expense:edit" name="edit_expense" id="edit_expense">
-                                                {/literal}
+                                            {section name=q loop=$expense_details}                                                
+                                                <form method="post" action="index.php?page=expense:edit" name="edit_expense" id="edit_expense">                                                
                                                     <table width="100%" cellpadding="2" cellspacing="2" border="0">                                             
                                                         <tr>
                                                             <td colspan="2" align="left">
@@ -47,16 +45,14 @@
                                                         </tr><tr>
                                                             <td align="right"><b>{$translate_expense_date}</b><span style="color: #ff0000"> *</span></td>
                                                             <td>
-                                                                <input id="expenseDate" name="expenseDate" class="olotd5" size="10" value="{$expense_details[q].EXPENSE_DATE|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
+                                                                <input id="expenseDate" name="expenseDate" class="olotd5" size="10" value="{$expense_details[q].EXPENSE_DATE|date_format:$date_format}" type="text" maxlength="10" {literal}pattern="^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?$"{/literal} required onkeydown="return onlyDate(event);">
                                                                 <input id="expenseDate_button" value="+" type="button">                                                            
-                                                                <script>
-                                                                {literal}
-                                                                    Calendar.setup({
+                                                                <script>                                                                
+                                                                    Calendar.setup( {
                                                                         trigger     : "expenseDate_button",
                                                                         inputField  : "expenseDate",
-                                                                        dateFormat  : "{/literal}{$date_format}{literal}"                                                                                            
-                                                                    });
-                                                                {/literal}  
+                                                                        dateFormat  : "{$date_format}"                                                                                            
+                                                                    } );                                                                  
                                                                 </script>                                                            
                                                             </td>
                                                         </tr>
@@ -91,7 +87,7 @@
                                                         <tr>
                                                             <td align="right"><b>{$translate_expense_payment_method}</b><span style="color: #ff0000"> *</span></td>
                                                             <td>
-                                                                <select id="expensePaymentMethod" name="expensePaymentMethod" class="olotd5" style="width: 150px;" value="{$$expense_details[q].EXPENSE_PAYMENT_METHOD}"/>
+                                                                <select id="expensePaymentMethod" name="expensePaymentMethod" class="olotd5" style="width: 150px;" value="{$expense_details[q].EXPENSE_PAYMENT_METHOD}"/>
                                                                     <option value="1">{$translate_expense_payment_method_1}{if $expense_details[q].EXPENSE_METHOD == '1'} selected{/if}</option>
                                                                     <option value="2">{$translate_expense_payment_method_2}{if $expense_details[q].EXPENSE_METHOD == '2'} selected{/if}</option>
                                                                     <option value="3">{$translate_expense_payment_method_3}{if $expense_details[q].EXPENSE_METHOD == '3'} selected{/if}</option>
@@ -108,19 +104,19 @@
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{$translate_expense_net_amount}</b></td>
-                                                            <td><input name="expenseNetAmount" class="olotd5" size="10" value="{$expense_details[q].EXPENSE_NET_AMOUNT}" type="text" maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumbersPeriod(event);"></td>
+                                                            <td><input name="expenseNetAmount" class="olotd5" size="10" value="{$expense_details[q].EXPENSE_NET_AMOUNT}" type="text" maxlength="10" {literal}pattern="[0-9]{1,7}(.[0-9]{0,2})?"{/literal} required onkeydown="return onlyNumbersPeriod(event);"></td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><span style="color: #ff0000"></span><b>{$translate_expense_tax_rate}</b></td>
-                                                            <td><input name="expenseTaxRate" class="olotd5" size="4" value="{$expense_details[q].EXPENSE_TAX_RATE}" type="text" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumbersPeriod(event);"/><b>%</b></td>
+                                                            <td><input name="expenseTaxRate" class="olotd5" size="4" value="{$expense_details[q].EXPENSE_TAX_RATE}" type="text" maxlength="5" {literal}pattern="^[0-9]{0,2}(\.[0-9]{0,2})?$"{/literal} required onkeydown="return onlyNumbersPeriod(event);"/><b>%</b></td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{$translate_expense_tax_amount}</b></td>
-                                                            <td><input name="expenseTaxAmount" class="olotd5" size="10" value="{$expense_details[q].EXPENSE_TAX_AMOUNT}" type="text" maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumbersPeriod(event);"/></td>
+                                                            <td><input name="expenseTaxAmount" class="olotd5" size="10" value="{$expense_details[q].EXPENSE_TAX_AMOUNT}" type="text" maxlength="10" {literal}pattern="[0-9]{1,7}(.[0-9]{0,2})?"{/literal} required onkeydown="return onlyNumbersPeriod(event);"/></td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{$translate_expense_gross_amount}</b><span style="color: #ff0000"> *</span></td>
-                                                            <td><input name="expenseGrossAmount" class="olotd5" size="10" value="{$expense_details[q].EXPENSE_GROSS_AMOUNT}" type="text" maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumbersPeriod(event);"/></td>
+                                                            <td><input name="expenseGrossAmount" class="olotd5" size="10" value="{$expense_details[q].EXPENSE_GROSS_AMOUNT}" type="text" maxlength="10" {literal}pattern="[0-9]{1,7}(.[0-9]{0,2})?"{/literal} required onkeydown="return onlyNumbersPeriod(event);"/></td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{$translate_expense_notes}</b></td>

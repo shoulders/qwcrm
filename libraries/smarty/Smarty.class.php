@@ -1051,7 +1051,7 @@ class Smarty
      * @param string $type
      * @return array
      */
-    function &get_template_vars($name=null)
+    function &getTemplateVars($name=null)
     {
         if(!isset($name)) {
             return $this->_tpl_vars;

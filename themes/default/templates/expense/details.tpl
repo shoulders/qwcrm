@@ -1,6 +1,4 @@
 <!-- details.tpl -->
-<script>{include file="expense/javascripts.js"}</script>
-
 {section name=i loop=$expense_details}
     <table width="700" border="0" cellpadding="20" cellspacing="5">
         <tr>

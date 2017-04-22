@@ -1,6 +1,6 @@
 <?php
 
-require(INCLUDES_DIR.'modules/expense.php');
+require(INCLUDES_DIR.'modules/supplier.php');
 
 // If details submitted run update values, if not set load edit.tpl and populate values
 if(isset($VAR['submit'])) {    

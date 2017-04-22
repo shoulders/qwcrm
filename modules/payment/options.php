@@ -12,13 +12,13 @@ if(isset($VAR['submit'])) {
     update_payment_settings($db, $VAR);
 
     // Assign success message    
-    $smarty->assign( 'information_msg', 'Payement Options Updated.' );    
+    $smarty->assign( 'information_msg', 'Payment Options Updated.' );    
     
 }
 
 // Assign variables
-$smarty->assign( 'payment_methods_status', get_payment_methods_status($db) );
-$smarty->assign( 'payment_settings', get_payment_details($db));
+$smarty->assign( 'payment_methods_status',  get_payment_methods_status($db) );
+$smarty->assign( 'payment_settings',        get_payment_details($db)        );
 
 // Fetch page
 $BuildPage .= $smarty->fetch('payment/options.tpl');

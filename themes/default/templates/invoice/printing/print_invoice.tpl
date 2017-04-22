@@ -2,8 +2,6 @@
 {section name=q loop=$company_details}
 {section name=c loop=$customer_details}
 {section name=i loop=$invoice_details}
-{section name=w loop=$workorder_details}
-    
 <!DOCTYPE html>
 <html lang="en-GB">
 <head>
@@ -16,7 +14,7 @@
     <meta name="description" content="{$meta_description}needs translating">
     
     <!-- PDF Keywords -->
-    <meta name="keywords" content="{$meta_keywords}needds translating">
+    <meta name="keywords" content="{$meta_keywords}needs translating">
     
     <!-- PDF Author -->
     <meta name="author" content="QWcrm - QuantumWarp.com">       
@@ -83,7 +81,7 @@
                                 <tr>
                                     <td>
                                         <b>{$translate_invoice_prn_invoice_id} - </b>{$invoice_details[i].INVOICE_ID}<br>
-                                        <b>{$translate_invoice_prn_invoice_status} - </b>{$workorder_details[w].WORK_ORDER_STATUS}<br>
+                                        <b>{$translate_invoice_prn_invoice_status} - </b>{section name=w loop=$workorder_details}{$workorder_details[w].WORK_ORDER_STATUS}{/section}<br>
                                         <b>{$translate_invoice_prn_invoice_date} - </b>{$invoice_details[i].DATE|date_format:$date_format} <br>
                                         <b>{$translate_invoice_prn_invoice_due_date} - </b>{$invoice_details[i].DUE_DATE|date_format:$date_format}<br>
                                         <b>{$translate_invoice_prn_work_order} - </b>{$invoice_details[i].WORKORDER_ID}<br>
@@ -116,7 +114,8 @@
             </td>
         </tr>
     </table>
-
+    
+    {section name=w loop=$workorder_details}
     <!-- Workorder Row -->
     {if $workorder_details[w].WORK_ORDER_DESCRIPTION > NULL}
         <table  width="800" border="0" cellpadding="3" cellspacing="0" >
@@ -131,6 +130,7 @@
         </table>
     {/if}
     <br>
+    {/section}
 
     <!-- Invoice To Box -->
     <table width="800" border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
@@ -193,70 +193,68 @@
     <table width="800" border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
         <tr>
             
-            <!-- Payments Methods -->
-            {section name=a loop=$active_payment_methods max=1}
-            {section name=t loop=$payment_details}
-                <td colspan="1" valign="top">
-                    <table width="600" border="0" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
+            <!-- Payments Methods -->            
+            
+            <td colspan="1" valign="top">
+                <table width="600" border="0" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
+                    <tr>
+                        <td align="left" ><font size="-1"><b>{$translate_invoice_prn_payment_instructions}</b></font></td>
+                    </tr>
+
+                    <!-- Cheque -->                        
+                    {if $active_payment_methods.cheque_active == '1'}
                         <tr>
-                            <td align="left" ><font size="-1"><b>{$translate_invoice_prn_payment_instructions}</b></font></td>
+                            <td>                                    
+                                <img src="{$theme_images_dir}icons/cheque.jpeg" alt="" height="20"><br>
+                                <b>Cheques</b><br>
+                                Please make {$translate_invoice_cheque} payable to:
+                            </td>                                
                         </tr>
-                        
-                        <!-- Cheque -->                        
-                        {if $active_payment_methods.cheque_active == '1'}
-                            <tr>
-                                <td>                                    
-                                    <img src="{$theme_images_dir}icons/cheque.jpeg" alt="" height="20"><br>
-                                    <b>Cheques</b><br>
-                                    Please make {$translate_invoice_cheque} payable to:
-                                </td>                                
-                            </tr>
-                            <tr>
-                                <td>{$payment_details[t].CHEQUE_PAYABLE_TO_MSG}</td>
-                            </tr>
-                        {/if}
-                        
-                        <!-- Direct Deposit -->
-                        {if $active_payment_methods.direct_deposit_active == '1'}
-                            <tr>
-                                <td>                                    
-                                    <img src="{$theme_images_dir}icons/deposit.jpeg" alt="" height="20"><br>
-                                    <b>Direct deposit details</b><br>
-                                    Bank Account Name: {$payment_details[t].BANK_ACCOUNT_NAME}<br>
-                                    Bank Name: {$payment_details[t].BANK_NAME}<br>
-                                    Account Number: {$payment_details[t].BANK_ACCOUNT_NUMBER}<br>
-                                    Sort Code: {$payment_details[t].BANK_SORT_CODE}<br>
-                                    IBAN: {$payment_details[t].BANK_IBAN}<br>
-                                    Note: {$payment_details[t].BANK_TRANSACTION_MSG}
-                                </td>
-                            </tr>
-                        {/if}
-                        
-                        <!-- PayPal -->
-                        {if $active_payment_methods.paypal_active == '1'}
                         <tr>
-                            <td>
-                                <img src="{$theme_images_dir}paypal/pay_now.gif" height="20"  alt="PayPal - The safer, easier way to pay online"><br>
-                                <b>PayPal</b><br>
-                                <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business={$PP_ID}&item_name=Payment%20for%20invoice%20{$invoice_details[i].INVOICE_ID}&item_number={$invoice_details[i].INVOICE_ID}&description=Invoice%20for%20{$invoice_details[i].INVOICE_ID}&amount={$pamount}&no_note=Thankyou%20for%20your%20buisness.&currency_code={$currency_code}&lc='.$country." target="_blank">
-                                   Click here to pay this invoice via PayPal using a valid Credit Card.
-                                 </a><br>
-                                <i><b>* A 3.5% surcharge applies.</b></i>                               
+                            <td>{$payment_details.CHEQUE_PAYABLE_TO_MSG}</td>
+                        </tr>
+                    {/if}
+
+                    <!-- Direct Deposit -->
+                    {if $active_payment_methods.direct_deposit_active == '1'}
+                        <tr>
+                            <td>                                    
+                                <img src="{$theme_images_dir}icons/deposit.jpeg" alt="" height="20"><br>
+                                <b>Direct deposit details</b><br>
+                                Bank Account Name: {$payment_details.BANK_ACCOUNT_NAME}<br>
+                                Bank Name: {$payment_details.BANK_NAME}<br>
+                                Account Number: {$payment_details.BANK_ACCOUNT_NUMBER}<br>
+                                Sort Code: {$payment_details.BANK_SORT_CODE}<br>
+                                IBAN: {$payment_details.BANK_IBAN}<br>
+                                Note: {$payment_details.BANK_TRANSACTION_MSG}
                             </td>
                         </tr>
-                        {/if}
+                    {/if}
 
-                        <!-- If none of the above are enabled then display this message -->                        
-                        {if $active_payment_methods.cheque_active != '1' && $active_payment_methods.direct_deposit_active != '1' && $active_payment_methods.direct_deposit_active != '1'}
-                            <tr>
-                                <td>{$translate_invoice_prn_discuss_payments}</td>
-                            </tr>
-                        {/if}
-                        
-                    </table>
-                </td>
-            {/section}
-            {/section}
+                    <!-- PayPal -->
+                    {if $active_payment_methods.paypal_active == '1'}
+                    <tr>
+                        <td>
+                            <img src="{$theme_images_dir}paypal/pay_now.gif" height="20"  alt="PayPal - The safer, easier way to pay online"><br>
+                            <b>PayPal</b><br>
+                            <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business={$PP_ID}&item_name=Payment%20for%20invoice%20{$invoice_details[i].INVOICE_ID}&item_number={$invoice_details[i].INVOICE_ID}&description=Invoice%20for%20{$invoice_details[i].INVOICE_ID}&amount={$pamount}&no_note=Thankyou%20for%20your%20buisness.&currency_code={$currency_code}&lc='.$country." target="_blank">
+                               Click here to pay this invoice via PayPal using a valid Credit Card.
+                             </a><br>
+                            <i><b>* A 3.5% surcharge applies.</b></i>                               
+                        </td>
+                    </tr>
+                    {/if}
+
+                    <!-- If none of the above are enabled then display this message -->                        
+                    {if $active_payment_methods.cheque_active != '1' && $active_payment_methods.direct_deposit_active != '1' && $active_payment_methods.direct_deposit_active != '1'}
+                        <tr>
+                            <td>{$translate_invoice_prn_discuss_payments}</td>
+                        </tr>
+                    {/if}
+
+                </table>
+            </td>
+                  
             
             <!-- Totals Box -->
             <td colspan="2" valign="TOP">
@@ -300,7 +298,7 @@
     {section name=t loop=$payment_details}
         <table width="800" border="0" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
             <tr>
-                <td align="center">{$payment_details[t].INVOICE_FOOTER_MSG}</td>
+                <td align="center">{$payment_details.INVOICE_FOOTER_MSG}</td>
             </tr>
         </table>
     {/section}
@@ -308,7 +306,6 @@
     
 </body>
 </html>
-{/section}
 {/section}
 {/section}
 {/section}

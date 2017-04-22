@@ -34,7 +34,11 @@
                                             <tr>
                                                 <td><b>Giftcert ID</b></td>
                                                 <td>{$giftcert_details[g].GIFTCERT_ID}</td>
-                                            </tr>                                            
+                                            </tr>
+                                            <tr>
+                                                <td><b>Is Active/Deleted</b></td>
+                                                <td>{$giftcert_details[g].ACTIVE}</td>
+                                            </tr>  
                                             <tr>
                                                 <td><b>{$translate_payment_gift_code_3}</b></td>
                                                 <td>{$giftcert_details[g].GIFTCERT_CODE}</td>

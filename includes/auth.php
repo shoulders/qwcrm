@@ -41,7 +41,7 @@ class Auth {
             
             // If username or password is missing, redirect
             if (!isset($_POST['login_usr']) || $_POST['login_usr'] === '' || !isset($_POST['login_pwd']) || $_POST['login_pwd'] === ''){
-                force_page('core', 'login', 'warning_msg='.$this->smarty->get_template_vars('translate_system_auth_advisory_message_username_or_password_missing'));
+                force_page('core', 'login', 'warning_msg='.$this->smarty->getTemplateVars('translate_system_auth_advisory_message_username_or_password_missing'));
                 exit;
             }
 
@@ -68,10 +68,10 @@ class Auth {
             if ($row['NUM_USERS'] == 0) {    
 
                 // Log activity    
-                write_record_to_activity_log($this->smarty->get_template_vars('translate_system_auth_log_message_login_failed_username_password_dont_match_for').' '.$login_usr);  
+                write_record_to_activity_log($this->smarty->getTemplateVars('translate_system_auth_log_message_login_failed_username_password_dont_match_for').' '.$login_usr);  
 
                 // Reload with 'Login Failed' message
-                force_page('core', 'login', 'warning_msg='.$this->smarty->get_template_vars('translate_system_auth_advisory_message_login_failed'));
+                force_page('core', 'login', 'warning_msg='.$this->smarty->getTemplateVars('translate_system_auth_advisory_message_login_failed'));
                 exit;
                 
             }
@@ -80,10 +80,10 @@ class Auth {
             elseif ($row['NUM_USERS'] > 1) {    
 
                 // Log activity
-                write_record_to_activity_log($this->smarty->get_template_vars('translate_system_auth_log_message_login_failed_duplicate_username_and_password_for').' '.$login_usr);  
+                write_record_to_activity_log($this->smarty->getTemplateVars('translate_system_auth_log_message_login_failed_duplicate_username_and_password_for').' '.$login_usr);  
 
                 // Reload with 'Login Failed' message
-                force_page('core', 'login', 'warning_msg='.$this->smarty->get_template_vars('translate_system_auth_advisory_message_login_failed'));
+                force_page('core', 'login', 'warning_msg='.$this->smarty->getTemplateVars('translate_system_auth_advisory_message_login_failed'));
                 exit;
 
             // Else if there is a single valid user, set the session variables
@@ -102,10 +102,10 @@ class Auth {
                 if (!isset($row['EMPLOYEE_ID'])){          
 
                     // Log activity       
-                    write_record_to_activity_log($this->smarty->get_template_vars('translate_system_auth_log_message_login_failed_no_active_login_id_for').' '.$login_usr);
+                    write_record_to_activity_log($this->smarty->getTemplateVars('translate_system_auth_log_message_login_failed_no_active_login_id_for').' '.$login_usr);
 
                     // Reload with 'Login Failed' message
-                    force_page('core', 'login', 'warning_msg='.$this->smarty->get_template_vars('translate_system_auth_advisory_message_login_failed'));
+                    force_page('core', 'login', 'warning_msg='.$this->smarty->getTemplateVars('translate_system_auth_advisory_message_login_failed'));
                     exit;
 
 
@@ -126,10 +126,10 @@ class Auth {
             $this->storeAuth($login_usr, $login_pwd, $login_id, $login_account_type_id, $login_display_name);
             
             // Log activity       
-            write_record_to_activity_log($this->smarty->get_template_vars('translate_system_auth_log_message_login_successful_for').' '.$login_usr); 
+            write_record_to_activity_log($this->smarty->getTemplateVars('translate_system_auth_log_message_login_successful_for').' '.$login_usr); 
             
             // Reload with 'Login Successful' message
-            force_page('core', 'home', 'information_msg='.$this->smarty->get_template_vars('translate_system_auth_advisory_message_login_successful'));
+            force_page('core', 'home', 'information_msg='.$this->smarty->getTemplateVars('translate_system_auth_advisory_message_login_successful'));
             exit;
 
             }
@@ -167,7 +167,7 @@ class Auth {
     function logout(){
         
         // Log activity       
-        write_record_to_activity_log($this->smarty->get_template_vars('translate_system_auth_log_message_logout_successful_for').' '.$this->session->get('login_usr'));
+        write_record_to_activity_log($this->smarty->getTemplateVars('translate_system_auth_log_message_logout_successful_for').' '.$this->session->get('login_usr'));
         
         $this->session->del('login_usr');
         $this->session->del('login_pwd');
@@ -177,7 +177,7 @@ class Auth {
         $this->session->del('login_display_name');   
         
         // Reload with 'Logout Successful' message
-        force_page('core', 'login', 'information_msg='.$this->smarty->get_template_vars('translate_system_auth_advisory_message_logout_successful'));
+        force_page('core', 'login', 'information_msg='.$this->smarty->getTemplateVars('translate_system_auth_advisory_message_logout_successful'));
         exit;
         
     }

@@ -43,7 +43,7 @@ function insert_transaction($db, $invoice_id, $workorder_id, $customer_id, $type
             MEMO            = ".$db->qstr( $memo                    );
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_payment_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_payment_include_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     }
     
@@ -86,7 +86,7 @@ function insert_payment_method_transaction($db, $invoice_id, $amount, $method, $
         if(check_invoice_has_workorder($db, $invoice_id)) {
 
             // Creates a History record for the new workorder
-            insert_workorder_history_note($db, $workorder_id, $smarty->get_template_vars('translate_workorder_log_message_created').' '.$smarty->get_template_vars('translate_workorder_log_message_by').' '.$_SESSION['login_display_name'].$log_msg);
+            insert_workorder_history_note($db, $workorder_id, $smarty->getTemplateVars('translate_workorder_log_message_created').' '.$smarty->getTemplateVars('translate_workorder_log_message_by').' '.$_SESSION['login_display_name'].$log_msg);
 
         }    
 
@@ -123,7 +123,7 @@ function insert_payment_method_transaction($db, $invoice_id, $amount, $method, $
             update_workorder_status($db, $workorder_id, 8);   
 
             // Creates a History record for the new work order
-            insert_workorder_history_note($db, $workorder_id, $smarty->get_template_vars('translate_workorder_log_message_created').' '.$smarty->get_template_vars('translate_workorder_log_message_by').' '.$_SESSION['login_display_name'].$memo);
+            insert_workorder_history_note($db, $workorder_id, $smarty->getTemplateVars('translate_workorder_log_message_created').' '.$smarty->getTemplateVars('translate_workorder_log_message_by').' '.$_SESSION['login_display_name'].$memo);
 
         }    
 
@@ -142,7 +142,7 @@ function insert_payment_method_transaction($db, $invoice_id, $amount, $method, $
 /** Get Functions **/
 
 ##########################
-#  Get payment details   # // this gets payment options (not transactions)
+#  Get payment details   # // this gets payment details like bank details, not transactions
 ##########################
 
 function get_payment_details($db, $item = null){
@@ -152,13 +152,13 @@ function get_payment_details($db, $item = null){
     $sql = 'SELECT * FROM '.PRFX.'PAYMENT';
     
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
         if($item === null){
             
-            return $rs->GetArray();            
+            return $rs->GetRowAssoc();            
             
         } else {
             
@@ -171,25 +171,26 @@ function get_payment_details($db, $item = null){
 }
 
 #########################################
-#   Get get active payment methods      #
+#   Get get active payment methods      # // If i dont have METHOD in the select the array is not built corretly
 #########################################
 
 function get_active_payment_methods($db) {
     
     global $smarty;
     
-    $sql = "SELECT SMARTY_TPL_KEY, ACTIVE FROM ".PRFX."PAYMENT_METHODS WHERE ACTIVE='1'";    
+    $sql = "SELECT
+            SMARTY_TPL_KEY, ACTIVE
+            FROM ".PRFX."PAYMENT_METHODS
+            WHERE ACTIVE='1'";    
     
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_payment_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_payment_include_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
-            return $rs->GetAssoc();
+        return $rs->GetAssoc();
         
     }
-    
-    
     
 }
 
@@ -204,7 +205,7 @@ function get_payment_methods_status($db) {
     $sql = "SELECT * FROM ".PRFX."PAYMENT_METHODS";
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_payment_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_payment_include_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -225,7 +226,7 @@ function get_active_credit_cards($db) {
     $sql = "SELECT CARD_TYPE, CARD_NAME FROM ".PRFX."PAYMENT_CREDIT_CARDS WHERE ACTIVE='1'";
     
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_payment_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_payment_include_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -246,7 +247,7 @@ function get_invoice_transactions($db, $invoice_id){
     $sql ="SELECT * FROM ".PRFX."PAYMENT_TRANSACTIONS WHERE INVOICE_ID =".$db->qstr($invoice_id);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_payment_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_payment_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {      
         
@@ -278,7 +279,7 @@ function update_payment_settings($db, $VAR) {
             INVOICE_FOOTER_MSG      =". $db->qstr( $VAR['invoice_footer_msg']       );            
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_payment_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_payment_include_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -315,7 +316,7 @@ function update_payment_methods_status($db, $VAR) {
         $sql = "UPDATE ".PRFX."PAYMENT_METHODS SET ACTIVE=". $db->qstr( $payment_method['payment_method_status'] )." WHERE SMARTY_TPL_KEY=". $db->qstr( $payment_method['smarty_tpl_key'] ); 
         
         if(!$rs = $db->execute($sql)) {
-            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_company_error_message_function_'.__FUNCTION__.'_failed'));
+            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_company_error_message_function_'.__FUNCTION__.'_failed'));
             exit;
         }
         
@@ -340,7 +341,7 @@ function check_payment_method_is_active($db, $method) {
     $sql = "SELECT ACTIVE FROM ".PRFX."PAYMENT_METHODS WHERE SMARTY_TPL_KEY=".$db->qstr($method);   
     
     if(!$rs = $db->execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_payment_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_payment_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     }
     

@@ -127,7 +127,7 @@ function loadACL($db) {
     $sql = "SELECT * FROM ".PRFX."EMPLOYEE_ACL ORDER BY page";
     
     if(!$rs = $db->execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_administrtor_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_administrtor_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     }
     
@@ -162,7 +162,7 @@ function updateACL($db, $permissions) {
             $sql = "UPDATE ".PRFX."EMPLOYEE_ACL SET ".$values."WHERE page='".$ACLpage."'";
 
             if(!$rs = $db->execute($sql)) {
-                force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_administrtor_error_message_function_'.__FUNCTION__.'_failed'));
+                force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_administrtor_error_message_function_'.__FUNCTION__.'_failed'));
                 exit;    
             }
 
@@ -182,7 +182,7 @@ function updateACL($db, $permissions) {
             ";            
 
     if(!$rs = $db->execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_administrtor_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_administrtor_error_message_function_'.__FUNCTION__.'_failed'));
         exit;    
     } else {
         

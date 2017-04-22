@@ -99,18 +99,17 @@
                                         <tr>
                                             <!-- Records Table -->
                                             <td valign="top" colspan="2">
-                                                <table class="olotable" width="100%" border="0" cellpadding="5" cellspacing="0">
+                                                <table class="olotable" width="100%" border="0" cellpadding="5" cellspacing="0">                                                    
+                                                    <tr>
+                                                        <td class="olohead">{$translate_supplier_id}</td>
+                                                        <td class="olohead">{$translate_supplier_name}</td>
+                                                        <td class="olohead">{$translate_supplier_contact}</td>
+                                                        <td class="olohead">{$translate_supplier_type}</td>
+                                                        <td class="olohead">{$translate_supplier_notes}</td>
+                                                        <td class="olohead">{$translate_supplier_description}</td>
+                                                        <td class="olohead">{$translate_action}</td>
+                                                    </tr>                                                    
                                                     {section name=i loop=$search_result}
-                                                        <tr>
-                                                            <td class="olohead">{$translate_supplier_id}</td>
-                                                            <td class="olohead">{$translate_supplier_name}</td>
-                                                            <td class="olohead">{$translate_supplier_contact}</td>
-                                                            <td class="olohead">{$translate_supplier_type}</td>
-                                                            <td class="olohead">{$translate_supplier_notes}</td>
-                                                            <td class="olohead">{$translate_supplier_description}</td>
-                                                            <td class="olohead">{$translate_action}</td>
-                                                        </tr>                                                    
-
                                                         <!-- This allows double clicking on a row and opens the corresponding supplier view details -->
                                                         <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=supplier:details&supplier_id={$search_result[i].SUPPLIER_ID}&page_title={$translate_supplier_details_title}';" class="row1">                                                           
                                                             <td class="olotd4" nowrap><a href="index.php?page=supplier:details&supplier_id={$search_result[i].SUPPLIER_ID}&page_title={$translate_supplier_details_title}">{$search_result[i].SUPPLIER_ID}</a></td>                                                            

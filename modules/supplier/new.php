@@ -1,18 +1,16 @@
 <?php
 
-require(INCLUDES_DIR.'modules/expense.php');
+require(INCLUDES_DIR.'modules/supplier.php');
 
-// Predict the next expense_id
-$new_record_id = last_expense_id_lookup($db) +1;
+// Predict the next supplier_id
+$new_record_id = last_supplier_id_lookup($db) +1;
 
 // If details submitted insert record, if non submitted load new.tpl and populate values
 if((isset($VAR['submit'])) || (isset($VAR['submitandnew']))) {
         
-    if($supplier_id = insert_supplier($db, $VAR)){
+    if(!$supplier_id = insert_supplier($db, $VAR)){
             $smarty->assign('error_msg', 'Falied to insert Supplier');
-            $BuildPage .= $smarty->fetch('core'.SEP.'error.tpl');
-            echo "supplier insert error";
-
+            $BuildPage .= $smarty->fetch('core/error.tpl');
     } else {
 
         if (isset($VAR['submitandnew'])) {

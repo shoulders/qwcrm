@@ -29,7 +29,7 @@ function display_hits_by_ip($db, $ip_address) {
     $sql = "SELECT * FROM ".PRFX."TRACKER WHERE ip=". $db->qstr( $ip_address ) ."ORDER BY date";
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_stats_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_stats_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -63,7 +63,7 @@ function day_hits($db, $today_start, $today_end, $where) {
     $sql = "SELECT count(*) as count FROM ".PRFX."TRACKER WHERE date >= ".$db->qstr( $today_start )." AND date <= ".$db->qstr( $today_end ).$db->qstr( $where );
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_stats_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_stats_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -84,7 +84,7 @@ function get_day_all_stats($db, $today_start, $today_end, $where){
     $sql = "SELECT date, uagent, count(*) as count, ip FROM ".PRFX."TRACKER WHERE date >= ".$db->qstr( $today_start )." AND date <= ".$db->qstr( $today_end )." ".$db->qstr( $where )." GROUP BY ip ORDER BY date";
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_stats_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_stats_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -105,7 +105,7 @@ function get_month_hits($db, $month_start, $month_end, $where) {
     $sql = "SELECT count(*) as count FROM ".PRFX."TRACKER WHERE date >= ".$db->qstr( $month_start )." AND date <= ".$db->qstr( $month_end )." ".$db->qstr( $where );
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_stats_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_stats_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         

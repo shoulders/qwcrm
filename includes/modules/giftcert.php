@@ -40,7 +40,7 @@ function display_giftcerts($db, $status, $direction = 'DESC', $use_pages = false
         // Figure out the total number of invoices in the database for the given status
         $sql = "SELECT COUNT(*) as Num FROM ".PRFX."GIFTCERT WHERE ACTIVE=" . $db->qstr($status);
         if(!$rs = $db->Execute($sql)) {
-            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_giftcert_error_message_function_'.__FUNCTION__.'_failed'));
+            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_giftcert_error_message_function_'.__FUNCTION__.'_failed'));
             exit;
         } else {        
             $total_results = $rs->FetchRow();
@@ -117,7 +117,7 @@ function display_giftcerts($db, $status, $direction = 'DESC', $use_pages = false
             $limitTheseRecords;
 
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_giftcert_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_giftcert_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {      
         
@@ -133,7 +133,7 @@ function display_giftcerts($db, $status, $direction = 'DESC', $use_pages = false
 #   insert Gift Certificate     #
 #################################
 
-function insert_giftcert($db, $customer_id, $date_expires, $giftcert_code, $amount, $memo) {
+function insert_giftcert($db, $customer_id, $date_expires, $giftcert_code, $amount, $note) {
     
     global $smarty;
 
@@ -148,10 +148,10 @@ function insert_giftcert($db, $customer_id, $date_expires, $giftcert_code, $amou
             GIFTCERT_CODE   =". $db->qstr( $giftcert_code           ).",                
             AMOUNT          =". $db->qstr( $amount                  ).",
             ACTIVE          =". $db->qstr( 1                        ).",                
-            MEMO            =". $db->qstr( $memo                    );
+            NOTE            =". $db->qstr( $note                    );
 
     if(!$db->execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_giftcert_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_giftcert_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
 
     } else {
@@ -174,7 +174,7 @@ function get_giftcert_details($db, $giftcert_id, $item = null){
     $sql = "SELECT * FROM ".PRFX."GIFTCERT WHERE GIFTCERT_ID=".$db->qstr($giftcert_id);
     
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_giftcert_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_giftcert_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -203,7 +203,7 @@ function get_giftcert_id_by_gifcert_code($db, $giftcert_code) {
     $sql = "SELECT * FROM ".PRFX."GIFTCERT WHERE GIFTCERT_CODE=".$db->qstr( $giftcert_code );
 
     if(!$rs = $db->execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_giftcert_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_giftcert_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     }
     
@@ -231,10 +231,10 @@ function delete_giftcert($db, $giftcert_id) {
 
     // update and set non-active as you cannot really delete an issues gift certificate
 
-    $sql = "UPDATE ".PRFX."GIFTCERT SET ACTIVE=". $db->qstr(0)."WHERE GIFTCERT_ID=".$db->qstr($giftcert_id);
+    $sql = "UPDATE ".PRFX."GIFTCERT SET ACTIVE='0' WHERE GIFTCERT_ID=".$db->qstr($giftcert_id);
 
     if(!$db->execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_giftcert_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_giftcert_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
 
@@ -306,7 +306,7 @@ function update_giftcert_as_redeemed($db, $giftcert_id, $invoice_id) {
             WHERE GIFTCERT_ID   =". $db->qstr( $giftcert_id );
     
     if(!$rs = $db->execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_giftcert_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_giftcert_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     }
     

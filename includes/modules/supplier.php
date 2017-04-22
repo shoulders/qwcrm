@@ -96,7 +96,7 @@ function display_suppliers($db, $direction = 'DESC', $use_pages = false, $page_n
         
         // Figure out the total number of records in the database for the given search        
         if(!$rs = $db->Execute($sql)) {
-            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_supplier_error_message_function_'.__FUNCTION__.'_count'));
+            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_supplier_error_message_function_'.__FUNCTION__.'_count'));
             exit;
         } else {        
             $total_results = $rs->RecordCount();            
@@ -142,7 +142,7 @@ function display_suppliers($db, $direction = 'DESC', $use_pages = false, $page_n
     /* Return the records */
          
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_supplier_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_supplier_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -189,7 +189,7 @@ function insert_supplier($db, $VAR) {
             SUPPLIER_DESCRIPTION    = ". $db->qstr( $VAR['supplierDescription'] );
 
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_supplier_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_supplier_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -212,7 +212,7 @@ function get_supplier_details($db, $supplier_id, $item = null){
     $sql = "SELECT * FROM ".PRFX."SUPPLIER WHERE SUPPLIER_ID=".$db->qstr($supplier_id);
     
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -258,7 +258,7 @@ function update_supplier($db, $supplier_id, $VAR) {
             WHERE SUPPLIER_ID       = ". $db->qstr( $supplier_id                );                        
             
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_supplier_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_supplier_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -283,7 +283,7 @@ function delete_supplier($db, $supplier_id){
     $sql = "DELETE FROM ".PRFX."SUPPLIER WHERE SUPPLIER_ID=".$db->qstr($supplier_id);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_supplier_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_supplier_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -364,7 +364,7 @@ function last_supplier_id_lookup($db) {
     $sql = 'SELECT * FROM '.PRFX.'SUPPLIER ORDER BY SUPPLIER_ID DESC LIMIT 1';
 
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_supplier_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_supplier_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         

@@ -1,5 +1,5 @@
 <!-- print_customer_workorder_slip.tpl - Customer Work Order Slip Print Template -->
-{section name=i loop=$single_work_order}
+{section name=i loop=$single_workorder}
     
     <!-- Header -->
     <table width="900" border="0" cellpadding="2" cellspacing="0" style="border-collapse: collapse;">
@@ -7,7 +7,7 @@
             <td width="20%" valign="middle" align="center"><img src="{$company_logo}" alt="" height="50"></td>
             <td valign="top" align="center">            
                 <font size="+3">{$translate_workorder_print_customer_workorder_slip_title}</font><br />
-                {$translate_workorder_work_order_id} {$single_work_order[i].WORK_ORDER_ID}
+                {$translate_workorder_work_order_id} {$single_workorder[i].WORK_ORDER_ID}
             </td>
             <td width="20%" valign="middle" align="center"></td>
         </tr>
@@ -26,31 +26,31 @@
                 <table border="0" cellpadding="4" cellspacing="0">
                     <tr>
                         <td>
-                            <p><b><font size="+1">{$single_work_order[i].CUSTOMER_DISPLAY_NAME}</font></b></p>
+                            <p><b><font size="+1">{$single_workorder[i].CUSTOMER_DISPLAY_NAME}</font></b></p>
                             <p>                            
                                 <b>{$translate_workorder_address}:</b><br>
-                                {$single_work_order[i].CUSTOMER_ADDRESS}<br>
-                                {$single_work_order[i].CUSTOMER_CITY}, {$single_work_order[i].CUSTOMER_STATE} {$single_work_order[i].CUSTOMER_ZIP}
+                                {$single_workorder[i].CUSTOMER_ADDRESS}<br>
+                                {$single_workorder[i].CUSTOMER_CITY}, {$single_workorder[i].CUSTOMER_STATE} {$single_workorder[i].CUSTOMER_ZIP}
                             </p>
                             <p>
-                                <b>{$translate_workorder_contact}: </b>{$single_work_order[i].CUSTOMER_FIRST_NAME} {$single_work_order[i].CUSTOMER_LAST_NAME}<br />
-                                <b>{$translate_workorder_primary_phone}: </b>{$single_work_order[i].CUSTOMER_PHONE}<br>
-                                <b>{$translate_workorder_work}: </b>{$single_work_order[i].CUSTOMER_WORK_PHONE}<br>
-                                <b>{$translate_workorder_mobile}: </b>{$single_work_order[i].CUSTOMER_MOBILE_PHONE}<br>
-                                <b>{$translate_workorder_email}: </b>{$single_work_order[i].CUSTOMER_EMAIL}<br>                            
+                                <b>{$translate_workorder_contact}: </b>{$single_workorder[i].CUSTOMER_FIRST_NAME} {$single_workorder[i].CUSTOMER_LAST_NAME}<br />
+                                <b>{$translate_workorder_primary_phone}: </b>{$single_workorder[i].CUSTOMER_PHONE}<br>
+                                <b>{$translate_workorder_work}: </b>{$single_workorder[i].CUSTOMER_WORK_PHONE}<br>
+                                <b>{$translate_workorder_mobile}: </b>{$single_workorder[i].CUSTOMER_MOBILE_PHONE}<br>
+                                <b>{$translate_workorder_email}: </b>{$single_workorder[i].CUSTOMER_EMAIL}<br>                            
                             </p>
                             <p>
                                 <b>{$translate_workorder_type}: </b> 
-                                {if $single_work_order[i].CUSTOMER_TYPE == '1'}{$translate_workorder_customer_type_1}{/if} 
-                                {if $single_work_order[i].CUSTOMER_TYPE == '2'}{$translate_workorder_customer_type_2}{/if} 
-                                {if $single_work_order[i].CUSTOMER_TYPE == '3'}{$translate_workorder_customer_type_3}{/if} 
-                                {if $single_work_order[i].CUSTOMER_TYPE == '4'}{$translate_workorder_customer_type_4}{/if} 
-                                {if $single_work_order[i].CUSTOMER_TYPE == '5'}{$translate_workorder_customer_type_4}{/if} 
-                                {if $single_work_order[i].CUSTOMER_TYPE == '6'}{$translate_workorder_customer_type_4}{/if} 
-                                {if $single_work_order[i].CUSTOMER_TYPE == '7'}{$translate_workorder_customer_type_4}{/if}
-                                {if $single_work_order[i].CUSTOMER_TYPE == '8'}{$translate_workorder_customer_type_4}{/if}
-                                {if $single_work_order[i].CUSTOMER_TYPE == '9'}{$translate_workorder_customer_type_4}{/if} 
-                                {if $single_work_order[i].CUSTOMER_TYPE == '10'}{$translate_workorder_customer_type_4}{/if}                            
+                                {if $single_workorder[i].CUSTOMER_TYPE == '1'}{$translate_workorder_customer_type_1}{/if} 
+                                {if $single_workorder[i].CUSTOMER_TYPE == '2'}{$translate_workorder_customer_type_2}{/if} 
+                                {if $single_workorder[i].CUSTOMER_TYPE == '3'}{$translate_workorder_customer_type_3}{/if} 
+                                {if $single_workorder[i].CUSTOMER_TYPE == '4'}{$translate_workorder_customer_type_4}{/if} 
+                                {if $single_workorder[i].CUSTOMER_TYPE == '5'}{$translate_workorder_customer_type_4}{/if} 
+                                {if $single_workorder[i].CUSTOMER_TYPE == '6'}{$translate_workorder_customer_type_4}{/if} 
+                                {if $single_workorder[i].CUSTOMER_TYPE == '7'}{$translate_workorder_customer_type_4}{/if}
+                                {if $single_workorder[i].CUSTOMER_TYPE == '8'}{$translate_workorder_customer_type_4}{/if}
+                                {if $single_workorder[i].CUSTOMER_TYPE == '9'}{$translate_workorder_customer_type_4}{/if} 
+                                {if $single_workorder[i].CUSTOMER_TYPE == '10'}{$translate_workorder_customer_type_4}{/if}                            
                             </p>
                         </td>
                     </tr>
@@ -70,7 +70,7 @@
                                     {$company[d].COMPANY_CITY}, {$company[d].COMPANY_STATE} {$company[d].COMPANY_ZIP}
                                 </p>
                                 <p>
-                                    <b>{$translate_workorder_phone}: </b>{$single_work_order[i].EMPLOYEE_WORK_PHONE}<br>                        
+                                    <b>{$translate_workorder_phone}: </b>{$single_workorder[i].EMPLOYEE_WORK_PHONE}<br>                        
                                     <b>{$translate_workorder_mobile}: </b>{$company[d].COMPANY_MOBILE}<br>
                                     <b>{$translate_workorder_fax}: </b>{$company[d].COMPANY_FAX}<br>
                                     <b>{$translate_workorder_website}: </b>{$company[d].COMPANY_WWW}<br>   
@@ -100,7 +100,7 @@
                         <td valign="top" nowrap><b>{$translate_workorder_scope}:</td>
                     </tr>
                     <tr>
-                        <td valign="top" nowrap>{$single_work_order[i].WORK_ORDER_SCOPE}</td>
+                        <td valign="top" nowrap>{$single_workorder[i].WORK_ORDER_SCOPE}</td>
                     </tr>
                 </table>
 
@@ -110,7 +110,7 @@
                         <td><b>{$translate_workorder_details_description_title}:</b></td>
                     </tr>
                     <tr>
-                        <td><div>{$single_work_order[i].WORK_ORDER_DESCRIPTION}</div></td>
+                        <td><div>{$single_workorder[i].WORK_ORDER_DESCRIPTION}</div></td>
                     </tr>
                 </table>
 
@@ -121,7 +121,7 @@
                 <table border="0" cellpadding="4" cellspacing="0">
                     <tr>
                         <td valign="top" width="50%"><b>{$translate_workorder_work_order_id}</b></td>
-                        <td valign="top">{$single_work_order[i].WORK_ORDER_ID}</td>
+                        <td valign="top">{$single_workorder[i].WORK_ORDER_ID}</td>
                     </tr>
                     <tr>
                         <td valign="top"><b>{$translate_workorder_todays_display_date}</b></td>
@@ -129,11 +129,11 @@
                     </tr>
                     <tr>
                         <td valign="top" nowrap><b>{$translate_workorder_opened}</b></td>
-                        <td valign="top">{$single_work_order[i].WORK_ORDER_OPEN_DATE|date_format:$date_format}</td>
+                        <td valign="top">{$single_workorder[i].WORK_ORDER_OPEN_DATE|date_format:$date_format}</td>
                     </tr>                
                     <tr>
                         <td valign="top" nowrap><b>{$translate_workorder_technician}</b></td>
-                        <td valign="top">{$single_work_order[i].EMPLOYEE_DISPLAY_NAME}</td>
+                        <td valign="top">{$single_workorder[i].EMPLOYEE_DISPLAY_NAME}</td>
                     </tr>
                     <tr>
                         <td valign="top"><b>{$translate_workorder_status}</b></td>
@@ -150,7 +150,7 @@
                     </tr>
                     <tr>
                         <td><b>{$translate_workorder_last_change}:</b></td>
-                        <td>{$single_work_order[i].LAST_ACTIVE|date_format:$date_format}</td>
+                        <td>{$single_workorder[i].LAST_ACTIVE|date_format:$date_format}</td>
                     </tr>
                 </table>                
 

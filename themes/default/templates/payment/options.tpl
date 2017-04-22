@@ -23,67 +23,65 @@
                                                     <td>Active: <input type="checkbox" name="{$payment_methods_status[q].SMARTY_TPL_KEY}" {if $payment_methods_status[q].ACTIVE == 1} checked {/if} value=1 class="olotd5"></td>
                                                 </tr>
                                             {/section}
-                                        </table>                                        
-                                        {section name=w loop=$payment_settings}                                            
-                                            <table>
-                                                
-                                                <!-- Bank Details -->  
-                                                <tr>
-                                                    <td colspan="2"><font color="red"><b>Bank Details</b></font></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><b>Bank Account Name:</b></td>
-                                                    <td><input class="olotd5" type="text" name="bank_account_name" value="{$payment_settings[w].BANK_ACCOUNT_NAME}"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><b>Bank Name:</b></td>
-                                                    <td><input class="olotd5" type="text" name="bank_name" value="{$payment_settings[w].BANK_NAME}"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><b>Bank Account Number:</b></td>
-                                                    <td><input class="olotd5" type="text" name="bank_account_number" value="{$payment_settings[w].BANK_ACCOUNT_NUMBER}"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><b>Bank Sort Code</b></td>
-                                                    <td><input class="olotd5" type="text" name="bank_sort_code" value="{$payment_settings[w].BANK_SORT_CODE}"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><b>Bank IBAN</b></td>
-                                                    <td><input class="olotd5" type="text" name="bank_iban" value="{$payment_settings[w].BANK_IBAN}"></td>
-                                                </tr>
-                                                
-                                                <!-- PayPal -->
-                                                <tr>
-                                                    <td colspan="2"><b><font color="red">Paypal Information</font></b></td>                                                    
-                                                </tr>
-                                                <tr>
-                                                    <td colspan="2">You must have a Paypal Merchant account set and working. Please see https://www.paypal.com/ for more information.</td>
-                                                </tr>
-                                                <tr>
-                                                    <td><b>Paypal Email</b></td>
-                                                    <td><input type="text" name="paypal_email" value="{$payment_settings[w].PAYPAL_EMAIL}" size="50" class="olotd5"></td>
-                                                </tr> 
-                                                
-                                                <!-- Invoice Messages -->
-                                                <tr>
-                                                    <td colspan="2"><font color="red"><b>Invoice Messages</b></font></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><b>Bank Transaction Message</b></td>
-                                                    <td><textarea class="olotd5" name="bank_transaction_message" cols="50" rows="2" >{$payment_settings[w].BANK_TRANSACTION_MSG}</textarea><br></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><b>Checks payable to:</b></td>
-                                                    <td><textarea class="olotd5" name="cheque_payable_to_msg" cols="50" rows="2" >{$payment_settings[w].CHEQUE_PAYABLE_TO_MSG}</textarea><br></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><b>Invoice Footer Message:</b></td>
-                                                    <td><textarea class="olotd5" name="invoice_footer_msg" cols="50" rows="2" >{$payment_settings[w].INVOICE_FOOTER_MSG}</textarea><br></td>
-                                                </tr>
-                                                
-                                            </table>                                            
-                                            <input type="submit" name="submit" value="Submit">
-                                        {/section}
+                                        </table>
+                                        <table>
+
+                                            <!-- Bank Details -->  
+                                            <tr>
+                                                <td colspan="2"><font color="red"><b>Bank Details</b></font></td>
+                                            </tr>
+                                            <tr>
+                                                <td><b>Bank Account Name:</b></td>
+                                                <td><input class="olotd5" type="text" name="bank_account_name" value="{$payment_settings.BANK_ACCOUNT_NAME}"></td>
+                                            </tr>
+                                            <tr>
+                                                <td><b>Bank Name:</b></td>
+                                                <td><input class="olotd5" type="text" name="bank_name" value="{$payment_settings.BANK_NAME}"></td>
+                                            </tr>
+                                            <tr>
+                                                <td><b>Bank Account Number:</b></td>
+                                                <td><input class="olotd5" type="text" name="bank_account_number" value="{$payment_settings.BANK_ACCOUNT_NUMBER}"></td>
+                                            </tr>
+                                            <tr>
+                                                <td><b>Bank Sort Code</b></td>
+                                                <td><input class="olotd5" type="text" name="bank_sort_code" value="{$payment_settings.BANK_SORT_CODE}"></td>
+                                            </tr>
+                                            <tr>
+                                                <td><b>Bank IBAN</b></td>
+                                                <td><input class="olotd5" type="text" name="bank_iban" value="{$payment_settings.BANK_IBAN}"></td>
+                                            </tr>
+
+                                            <!-- PayPal -->
+                                            <tr>
+                                                <td colspan="2"><b><font color="red">Paypal Information</font></b></td>                                                    
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2">You must have a Paypal Merchant account set and working. Please see https://www.paypal.com/ for more information.</td>
+                                            </tr>
+                                            <tr>
+                                                <td><b>Paypal Email</b></td>
+                                                <td><input type="text" name="paypal_email" value="{$payment_settings.PAYPAL_EMAIL}" size="50" class="olotd5"></td>
+                                            </tr> 
+
+                                            <!-- Invoice Messages -->
+                                            <tr>
+                                                <td colspan="2"><font color="red"><b>Invoice Messages</b></font></td>
+                                            </tr>
+                                            <tr>
+                                                <td><b>Bank Transaction Message</b></td>
+                                                <td><textarea class="olotd5" name="bank_transaction_message" cols="50" rows="2" >{$payment_settings.BANK_TRANSACTION_MSG}</textarea><br></td>
+                                            </tr>
+                                            <tr>
+                                                <td><b>Checks payable to:</b></td>
+                                                <td><textarea class="olotd5" name="cheque_payable_to_msg" cols="50" rows="2" >{$payment_settings.CHEQUE_PAYABLE_TO_MSG}</textarea><br></td>
+                                            </tr>
+                                            <tr>
+                                                <td><b>Invoice Footer Message:</b></td>
+                                                <td><textarea class="olotd5" name="invoice_footer_msg" cols="50" rows="2" >{$payment_settings.INVOICE_FOOTER_MSG}</textarea><br></td>
+                                            </tr>
+
+                                        </table>                                            
+                                        <input type="submit" name="submit" value="Submit">                                        
                                     </form>   
                                 </td>
                             </tr>

@@ -9,7 +9,7 @@
                         <table cellpadding="2" cellspacing="2" border="0">
                             <tr> 
                                 <td width="33%" align="right">                    
-                                    <a href="index.php?page=customer:note_new&customer_id={$customer_notes[i].CUSTOMER_ID}">
+                                    <a href="index.php?page=customer:note_new&customer_id={$customer_id}">
                                         <img src="{$theme_images_dir}icons/16x16/small_edit.gif" onMouseOver="ddrivetip('Add New Customer Note');" onMouseOut="hideddrivetip();">                                                 
                                     </a>                    
                                 </td>  
@@ -35,7 +35,7 @@
                                             <a href="index.php?page=customer:note_edit&customer_note_id={$customer_notes[n].CUSTOMER_NOTE_ID}">
                                                 <img src="{$theme_images_dir}icons/16x16/small_edit.gif" onMouseOver="ddrivetip('Edit the Note');" onMouseOut="hideddrivetip();">                                                 
                                             </a>
-                                            <a href="index.php?page=customer:note_delete&customer_note_id={$customer_notes[n].CUSTOMER_NOTE_ID}">
+                                            <a href="index.php?page=customer:note_delete&customer_note_id={$customer_notes[n].CUSTOMER_NOTE_ID}" oNclick="return confirmDelete('Are you sure you want to delete this customer note?');">
                                                 <img src="{$theme_images_dir}icons/16x16/small_edit.gif" onMouseOver="ddrivetip('Delete the Note');" onMouseOut="hideddrivetip();">                                                 
                                             </a>
                                         {/if}

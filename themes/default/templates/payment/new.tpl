@@ -25,28 +25,28 @@
                                 <td>                                                
                                     {include file='payment/blocks/new_transactions_log_block.tpl'}
                                 </td>
-                            </tr>
-
+                            </tr>                            
+                                
                             <!-- Cash -->
-                            {if $payment_options.cash_active == '1'}
+                            {if $active_payment_methods.cash_active == '1'}
                                 <tr>
                                     <td>                                    
                                         {include file='payment/blocks/new_payment_cash_block.tpl'}                                    
                                     </td>
                                 </tr>
                             {/if}                            
-                            
+
                             <!-- Cheques -->
-                            {if $payment_options.cheque_active == '1'}  
+                            {if $active_payment_methods.cheque_active == '1'}  
                                 <tr>
                                     <td>                                                                              
                                         {include file='payment/blocks/new_payment_cheque_block.tpl'}                                    
                                     </td>
                                 </tr>
                             {/if}                            
-                            
+
                             <!-- Credit Cards -->
-                            {if $payment_options.credit_card_active == '1'}
+                            {if $active_payment_methods.credit_card_active == '1'}
                                 <tr>
                                     <td>
                                         {include file='payment/blocks/new_payment_credit_card_block.tpl'}
@@ -55,7 +55,7 @@
                             {/if}                            
 
                             <!-- Direct Deposit -->
-                            {if $payment_options.direct_deposit_active == '1'}
+                            {if $active_payment_methods.direct_deposit_active == '1'}
                                 <tr>
                                     <td>                                    
                                         {include file='payment/blocks/new_payment_direct_deposit_block.tpl'}                                    
@@ -64,7 +64,7 @@
                             {/if}                            
 
                             <!-- Gift Certificates -->
-                            {if $payment_options.gift_certificate_active == '1'}
+                            {if $active_payment_methods.gift_certificate_active == '1'}
                                 <tr>
                                     <td>
                                         {include file='payment/blocks/new_payment_gift_certificate_block.tpl'}
@@ -73,13 +73,13 @@
                             {/if}
 
                             <!-- Paypal -->
-                            {if $payment_options.paypal_active == '1'}
+                            {if $active_payment_methods.paypal_active == '1'}
                                 <tr>
                                     <td>                                    
                                         {include file='payment/blocks/new_payment_paypal_block.tpl'}                                    
                                     </td>
                                 </tr>
-                            {/if}
+                            {/if}                            
                             
                         </table>                        
                     </td>

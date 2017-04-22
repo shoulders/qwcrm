@@ -112,7 +112,7 @@ function display_refunds($db, $direction = 'DESC', $use_pages = false, $page_no 
         
         // Figure out the total number of records in the database for the given search        
         if(!$rs = $db->Execute($sql)) {
-            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_count'));
+            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_workorder_error_message_function_'.__FUNCTION__.'_count'));
             exit;
         } else {        
             $total_results = $rs->RecordCount();            
@@ -158,7 +158,7 @@ function display_refunds($db, $direction = 'DESC', $use_pages = false, $page_no 
     /* Return the records */
          
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_refund_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_refund_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -184,7 +184,7 @@ function display_refunds($db, $direction = 'DESC', $use_pages = false, $page_no 
 #      Insert New Record                 #
 ##########################################
 
-function insert_new_refund($db, $VAR) {
+function insert_refund($db, $VAR) {
     
     global $smarty;
 
@@ -201,7 +201,7 @@ function insert_new_refund($db, $VAR) {
             REFUND_ITEMS            = ". $db->qstr( $VAR['refundItems']                     );
 
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_refund_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_refund_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -224,7 +224,7 @@ function get_refund_details($db, $refund_id, $item = null){
     $sql = "SELECT * FROM ".PRFX."REFUND WHERE REFUND_ID=".$db->qstr($refund_id);
     
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -266,7 +266,7 @@ function update_refund($db, $refund_id, $VAR) {
             WHERE REFUND_ID         = ". $db->qstr( $refund_id                              );                        
             
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_refund_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_refund_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -291,7 +291,7 @@ function delete_refund($db, $refund_id) {
     $sql = "DELETE FROM ".PRFX."REFUND WHERE REFUND_ID=".$db->qstr($refund_id);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_refund_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_refund_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
@@ -408,7 +408,7 @@ function last_refund_id_lookup($db) {
     $sql = 'SELECT * FROM '.PRFX.'REFUND ORDER BY REFUND_ID DESC LIMIT 1';
 
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_refund_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_refund_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else {
         
