@@ -14,7 +14,7 @@
 /**
 	\mainpage
 
-	@version   v5.20.9  21-Dec-2016
+	@version   v5.21.0-dev  ??-???-2016
 	@copyright (c) 2000-2013 John Lim (jlim#natsoft.com). All rights reserved.
 	@copyright (c) 2014      Damien Regad, Mark Newnham and the ADOdb community
 
@@ -36,21 +36,6 @@
 
 if (!defined('_ADODB_LAYER')) {
 	define('_ADODB_LAYER',1);
-
-	// The ADOdb extension is no longer maintained and effectively unsupported
-	// since v5.04. The library will not function properly if it is present.
-	if(defined('ADODB_EXTENSION')) {
-		$msg = "Unsupported ADOdb Extension (v" . ADODB_EXTENSION . ") detected! "
-			. "Disable it to use ADOdb";
-
-		$errorfn = defined('ADODB_ERROR_HANDLER') ? ADODB_ERROR_HANDLER : false;
-		if ($errorfn) {
-			$conn = false;
-			$errorfn('ADOdb', basename(__FILE__), -9999, $msg, null, null, $conn);
-		} else {
-			die($msg . PHP_EOL);
-		}
-	}
 
 	//==============================================================================================
 	// CONSTANT DEFINITIONS
@@ -102,6 +87,21 @@ if (!defined('_ADODB_LAYER')) {
 		define('ADODB_FORCE_VALUE',3);
 	// ********************************************************
 
+
+	/**
+	 * Constants for returned values from the charMax and textMax methods.
+	 * If not specifically defined in the driver, methods return the NOTSET value.
+	 */
+	define ('ADODB_STRINGMAX_NOTSET', -1);
+	define ('ADODB_STRINGMAX_NOLIMIT',-2);
+
+	/*
+	* Defines the the default meta type returned
+	* when ADOdb encounters a type that it is not
+	* defined in the metaTypes.
+	*/
+	if (!defined('ADODB_DEFAULT_METATYPE'))
+		define ('ADODB_DEFAULT_METATYPE','N');
 
 	if (!$ADODB_EXTENSION || ADODB_EXTENSION < 4.0) {
 
@@ -232,7 +232,7 @@ if (!defined('_ADODB_LAYER')) {
 		/**
 		 * ADODB version as a string.
 		 */
-		$ADODB_vers = 'v5.20.9  21-Dec-2016';
+		$ADODB_vers = 'v5.21.0-dev  ??-???-2016';
 
 		/**
 		 * Determines whether recordset->RecordCount() is used.
@@ -521,6 +521,17 @@ if (!defined('_ADODB_LAYER')) {
 	var $_logsql = false;
 	var $_transmode = ''; // transaction mode
 
+
+	/**
+	 * Default Constructor.
+	 * We define it even though it does not actually do anything. This avoids
+	 * getting a PHP Fatal error:  Cannot call constructor if a subclass tries
+	 * to call its parent constructor.
+	 */
+	public function __construct()
+	{
+	}
+
 	/*
 	 * Additional parameters that may be passed to drivers in the connect string
 	 * Driver must be coded to accept the parameters
@@ -543,7 +554,7 @@ if (!defined('_ADODB_LAYER')) {
 	final public function setConnectionParameter($parameter,$value)
 	{
 
-		$this->connectionParameters[$parameter] = $value;
+		$this->connectionParameters[] = array($parameter=>$value);
 
 	}
 
@@ -673,23 +684,23 @@ if (!defined('_ADODB_LAYER')) {
 		}
 		if (isset($rez)) {
 			$err = $this->ErrorMsg();
-			$errno = $this->ErrorNo();
 			if (empty($err)) {
 				$err = "Connection error to server '$argHostname' with user '$argUsername'";
 			}
+			$ret = false;
 		} else {
 			$err = "Missing extension for ".$this->dataProvider;
-			$errno = 0;
+			$ret = 0;
 		}
 		if ($fn = $this->raiseErrorFn) {
-			$fn($this->databaseType, 'CONNECT', $errno, $err, $this->host, $this->database, $this);
+			$fn($this->databaseType,'CONNECT',$this->ErrorNo(),$err,$this->host,$this->database,$this);
 		}
 
 		$this->_connectionID = false;
 		if ($this->debug) {
 			ADOConnection::outp( $this->host.': '.$err);
 		}
-		return false;
+		return $ret;
 	}
 
 	function _nconnect($argHostname, $argUsername, $argPassword, $argDatabaseName) {
@@ -1157,7 +1168,7 @@ if (!defined('_ADODB_LAYER')) {
 					);
 					return false;
 				}
-
+				
 				// clean memory
 				unset($element0);
 
@@ -1497,6 +1508,9 @@ if (!defined('_ADODB_LAYER')) {
 	 * @return		the recordset ($rs->databaseType == 'array')
 	 */
 	function SelectLimit($sql,$nrows=-1,$offset=-1, $inputarr=false,$secs2cache=0) {
+		$nrows = (int)$nrows;
+		$offset = (int)$offset;
+
 		if ($this->hasTop && $nrows > 0) {
 			// suggested by Reinhard Balling. Access requires top after distinct
 			// Informix requires first before distinct - F Riosa
@@ -1508,32 +1522,47 @@ if (!defined('_ADODB_LAYER')) {
 			}
 
 			if ($offset <= 0) {
-					// access includes ties in result
-					if ($isaccess) {
-						$sql = preg_replace(
-						'/(^\s*select\s+(distinctrow|distinct)?)/i','\\1 '.$this->hasTop.' '.((integer)$nrows).' ',$sql);
+				// access includes ties in result
+				if ($isaccess) {
+					$sql = preg_replace(
+						'/(^\s*select\s+(distinctrow|distinct)?)/i',
+						'\\1 '.$this->hasTop.' '.$nrows.' ',
+						$sql
+					);
 
-						if ($secs2cache != 0) {
-							$ret = $this->CacheExecute($secs2cache, $sql,$inputarr);
-						} else {
-							$ret = $this->Execute($sql,$inputarr);
-						}
-						return $ret; // PHP5 fix
-					} else if ($ismssql){
-						$sql = preg_replace(
-						'/(^\s*select\s+(distinctrow|distinct)?)/i','\\1 '.$this->hasTop.' '.((integer)$nrows).' ',$sql);
+					if ($secs2cache != 0) {
+						$ret = $this->CacheExecute($secs2cache, $sql,$inputarr);
 					} else {
-						$sql = preg_replace(
-						'/(^\s*select\s)/i','\\1 '.$this->hasTop.' '.((integer)$nrows).' ',$sql);
+						$ret = $this->Execute($sql,$inputarr);
 					}
+					return $ret; // PHP5 fix
+				} else if ($ismssql){
+					$sql = preg_replace(
+						'/(^\s*select\s+(distinctrow|distinct)?)/i',
+						'\\1 '.$this->hasTop.' '.$nrows.' ',
+						$sql
+					);
+				} else {
+					$sql = preg_replace(
+						'/(^\s*select\s)/i',
+						'\\1 '.$this->hasTop.' '.$nrows.' ',
+						$sql
+					);
+				}
 			} else {
 				$nn = $nrows + $offset;
 				if ($isaccess || $ismssql) {
 					$sql = preg_replace(
-					'/(^\s*select\s+(distinctrow|distinct)?)/i','\\1 '.$this->hasTop.' '.$nn.' ',$sql);
+						'/(^\s*select\s+(distinctrow|distinct)?)/i',
+						'\\1 '.$this->hasTop.' '.$nn.' ',
+						$sql
+					);
 				} else {
 					$sql = preg_replace(
-					'/(^\s*select\s)/i','\\1 '.$this->hasTop.' '.$nn.' ',$sql);
+						'/(^\s*select\s)/i',
+						'\\1 '.$this->hasTop.' '.$nn.' ',
+						$sql
+					);
 				}
 			}
 		}
@@ -1628,12 +1657,17 @@ if (!defined('_ADODB_LAYER')) {
 	}
 
 	function GetAssoc($sql, $inputarr=false,$force_array = false, $first2cols = false) {
+		global $ADODB_FETCH_MODE;
+
 		$rs = $this->Execute($sql, $inputarr);
+
 		if (!$rs) {
+			/*
+			* Execution failure
+			*/
 			return false;
 		}
-		$arr = $rs->GetAssoc($force_array,$first2cols);
-		return $arr;
+		return $rs->GetAssoc($force_array, $first2cols);
 	}
 
 	function CacheGetAssoc($secs2cache, $sql=false, $inputarr=false,$force_array = false, $first2cols = false) {
@@ -2129,6 +2163,10 @@ if (!defined('_ADODB_LAYER')) {
 		$forceUpdate means that even if the data has not changed, perform update.
 	 */
 	function AutoExecute($table, $fields_values, $mode = 'INSERT', $where = false, $forceUpdate = true, $magicq = false) {
+		if (empty($fields_values)) {
+			$this->outp_throw('AutoExecute: Empty fields array', 'AutoExecute');
+			return false;
+		}
 		if ($where === false && ($mode == 'UPDATE' || $mode == 2 /* DB_AUTOQUERY_UPDATE */) ) {
 			$this->outp_throw('AutoExecute: Illegal mode=UPDATE with empty WHERE clause', 'AutoExecute');
 			return false;
@@ -2988,7 +3026,7 @@ http://www.stanford.edu/dept/itss/docs/oracle/10g/server.101/b10759/statements_1
 	/**
 	* Will select the supplied $page number from a recordset, given that it is paginated in pages of
 	* $nrows rows per page. It also saves two boolean values saying if the given page is the first
-	* and/or last one of the recordset. Added by IvÃ¡n Oliva to provide recordset pagination.
+	* and/or last one of the recordset. Added by Iván Oliva to provide recordset pagination.
 	*
 	* See docs-adodb.htm#ex8 for an example of usage.
 	*
@@ -3019,7 +3057,7 @@ http://www.stanford.edu/dept/itss/docs/oracle/10g/server.101/b10759/statements_1
 	/**
 	* Will select the supplied $page number from a recordset, given that it is paginated in pages of
 	* $nrows rows per page. It also saves two boolean values saying if the given page is the first
-	* and/or last one of the recordset. Added by IvÃ¡n Oliva to provide recordset pagination.
+	* and/or last one of the recordset. Added by Iván Oliva to provide recordset pagination.
 	*
 	* @param secs2cache	seconds to cache data, set to 0 to force query
 	* @param sql
@@ -3037,6 +3075,28 @@ http://www.stanford.edu/dept/itss/docs/oracle/10g/server.101/b10759/statements_1
 		}*/
 		$rs = $this->PageExecute($sql,$nrows,$page,$inputarr,$secs2cache);
 		return $rs;
+	}
+
+	/**
+	* Returns the maximum size of a MetaType C field. If the method
+	* is not defined in the driver returns ADODB_STRINGMAX_NOTSET
+	*
+	* @return int
+	*/
+	function charMax()
+	{
+		return ADODB_STRINGMAX_NOTSET;
+	}
+
+	/**
+	* Returns the maximum size of a MetaType X field. If the method
+	* is not defined in the driver returns ADODB_STRINGMAX_NOTSET
+	*
+	* @return int
+	*/
+	function textMax()
+	{
+		return ADODB_STRINGMAX_NOTSET;
 	}
 
 } // end class ADOConnection
@@ -3261,9 +3321,9 @@ http://www.stanford.edu/dept/itss/docs/oracle/10g/server.101/b10759/statements_1
 	var $_obj;				/** Used by FetchObj */
 	var $_names;			/** Used by FetchObj */
 
-	var $_currentPage = -1;	/** Added by IvÃ¡n Oliva to implement recordset pagination */
-	var $_atFirstPage = false;	/** Added by IvÃ¡n Oliva to implement recordset pagination */
-	var $_atLastPage = false;	/** Added by IvÃ¡n Oliva to implement recordset pagination */
+	var $_currentPage = -1;	/** Added by Iván Oliva to implement recordset pagination */
+	var $_atFirstPage = false;	/** Added by Iván Oliva to implement recordset pagination */
+	var $_atLastPage = false;	/** Added by Iván Oliva to implement recordset pagination */
 	var $_lastPageNo = -1;
 	var $_maxRecordCount = 0;
 	var $datetime = false;
@@ -3448,38 +3508,19 @@ http://www.stanford.edu/dept/itss/docs/oracle/10g/server.101/b10759/statements_1
 		return $arr;
 	}
 
-	/**
-	 * return whole recordset as a 2-dimensional associative array if there are more than 2 columns.
-	 * The first column is treated as the key and is not included in the array.
-	 * If there is only 2 columns, it will return a 1 dimensional array of key-value pairs unless
-	 * $force_array == true.
-	 *
-	 * @param [force_array] has only meaning if we have 2 data columns. If false, a 1 dimensional
-	 * array is returned, otherwise a 2 dimensional array is returned. If this sounds confusing,
-	 * read the source.
-	 *
-	 * @param [first2cols] means if there are more than 2 cols, ignore the remaining cols and
-	 * instead of returning array[col0] => array(remaining cols), return array[col0] => col1
-	 *
-	 * @return an associative array indexed by the first column of the array,
-	 * or false if the  data has less than 2 cols.
-	 */
-	function GetAssoc($force_array = false, $first2cols = false) {
-		global $ADODB_EXTENSION;
+	function vGetAssoc($force_array = false, $first2cols = false)
+	{
+	global $ADODB_EXTENSION;
+
+		print_r($this);
+		exit;
 
 		$cols = $this->_numOfFields;
 		if ($cols < 2) {
-			return false;
+			$false = false;
+			return $false;
 		}
-
-		// Empty recordset
-		if (!$this->fields) {
-			return array();
-		}
-
-		// Determine whether the array is associative or 0-based numeric
-		$numIndex = array_keys($this->fields) == range(0, count($this->fields) - 1);
-
+		$numIndex = is_array($this->fields) && array_key_exists(0, $this->fields);
 		$results = array();
 
 		if (!$first2cols && ($cols > 2 || $force_array)) {
@@ -3564,7 +3605,161 @@ http://www.stanford.edu/dept/itss/docs/oracle/10g/server.101/b10759/statements_1
 		$ref = $results; # workaround accelerator incompat with PHP 4.4 :(
 		return $ref;
 	}
+	/**
+	 * return whole recordset as a 2-dimensional associative array if
+	 * there are more than 2 columns. The first column is treated as the
+	 * key and is not included in the array. If there is only 2 columns,
+	 * it will return a 1 dimensional array of key-value pairs unless
+	 * $force_array == true. This recordset method is currently part of
+	 * the API, but may not be in later versions of ADOdb. By preference, use
+	 * ADOconnnection::getAssoc()
+	 *
+	 * @param bool	$force_array	(optional) Has only meaning if we have 2 data
+	 *								columns. If false, a 1 dimensional
+	 * 								array is returned, otherwise a 2 dimensional
+	 *								array is returned. If this sounds confusing,
+	 * 								read the source.
+	 *
+	 * @param bool	$first2cols 	(optional) Means if there are more than
+	 *								2 cols, ignore the remaining cols and
+	 * 								instead of returning
+	 *								array[col0] => array(remaining cols),
+	 *								return array[col0] => col1
+	 *
+	 * @return mixed
+	 *
+	 */
+	function getAssoc($force_array = false, $first2cols = false)
+	{
 
+		global $ADODB_EXTENSION;
+
+		/*
+		* Insufficient rows to show data
+		*/
+		if ($this->_numOfFields < 2)
+			  return;
+
+		/*
+		* Empty recordset
+		*/
+		if (!$this->fields) {
+			return array();
+		}
+
+		$numberOfFields = $this->_numOfFields;
+		$fetchMode      = $this->fetchMode;
+
+		if ($fetchMode == ADODB_FETCH_BOTH)
+		{
+			/*
+			* build a template of numeric keys. you could improve the
+			* speed by caching this, indexed by number of keys
+			*/
+			$testKeys = array_fill(0,$numberOfFields,0);
+
+			/*
+			* We use the associative method if ADODB_FETCH_BOTH
+			*/
+			$fetchMode = ADODB_FETCH_ASSOC;
+		}
+
+		$showArrayMethod = 0;
+
+		if ($numberOfFields == 2)
+			/*
+			* Key is always value of first element
+			* Value is alway value of second element
+			*/
+			$showArrayMethod = 1;
+
+		if ($force_array)
+			$showArrayMethod = 0;
+
+		if ($first2cols)
+			$showArrayMethod = 1;
+
+		$results  = array();
+
+		while (!$this->EOF){
+
+			$myFields = $this->fields;
+
+			if ($this->fetchMode == ADODB_FETCH_BOTH)
+			{
+				/*
+				* extract the associative keys
+				*/
+				$myFields = array_diff_key($myFields,$testKeys);
+			}
+
+			/*
+			* key is value of first element, rest is data,
+			* casing is already handled by the driver (but see below)
+			*/
+			$key = array_shift($myFields);
+			if (ADODB_ASSOC_CASE == ADODB_ASSOC_CASE_UPPER)
+				$key = strtoupper($key);
+			elseif (ADODB_ASSOC_CASE == ADODB_ASSOC_CASE_LOWER)
+				$key = strtolower($key);
+
+			switch ($showArrayMethod)
+			{
+			case 0:
+
+				if ($fetchMode == ADODB_FETCH_ASSOC)
+				{
+					/*
+					* The driver should have already handled the key
+					* casing, but in case it did not. We will check and force
+					* this in later versions of ADOdb
+					*/
+					if (ADODB_ASSOC_CASE == ADODB_ASSOC_CASE_UPPER)
+						$myFields = array_change_key_case($myFields,CASE_UPPER);
+
+					elseif (ADODB_ASSOC_CASE == ADODB_ASSOC_CASE_LOWER)
+						$myFields = array_change_key_case($myFields,CASE_LOWER);
+
+					/*
+					* We have already shifted the key off
+					* the front, so the rest is the value
+					*/
+					$results[$key] = $myFields;
+
+				}
+				else
+					/*
+					 * I want the values in a numeric array,
+					 * nicely re-indexed from zero
+					 */
+					$results[$key] = array_values($myFields);
+				break;
+
+			case 1:
+
+				/*
+				 * Don't care how long the array is,
+				 * I just want value of second column, and it doesn't
+				 * matter whether the array is associative or numeric
+				 */
+				$results[$key] = array_shift($myFields);
+				break;
+			}
+
+			if ($ADODB_EXTENSION)
+				/*
+				 * Don't really need this either except for
+				 * old version compatibility
+				 */
+				adodb_movenext($this);
+			else
+			   $this->MoveNext();
+		}
+		/*
+		 * Done
+		 */
+		return $results;
+	}
 
 	/**
 	 *
@@ -4134,6 +4329,7 @@ http://www.stanford.edu/dept/itss/docs/oracle/10g/server.101/b10759/statements_1
 			$len = $fieldobj->max_length;
 		}
 
+
 		// changed in 2.32 to hashing instead of switch stmt for speed...
 		static $typeMap = array(
 			'VARCHAR' => 'C',
@@ -4240,9 +4436,10 @@ http://www.stanford.edu/dept/itss/docs/oracle/10g/server.101/b10759/statements_1
 			"SQLBOOL" => 'L'
 		);
 
+
 		$tmap = false;
 		$t = strtoupper($t);
-		$tmap = (isset($typeMap[$t])) ? $typeMap[$t] : 'N';
+		$tmap = (isset($typeMap[$t])) ? $typeMap[$t] : ADODB_DEFAULT_METATYPE;
 		switch ($tmap) {
 			case 'C':
 				// is the char field is too long, return as text field...
