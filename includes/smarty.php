@@ -1,7 +1,7 @@
 <?php
 
 // Set Path for SMARTY in the php include path
-set_include_path(get_include_path() . PATH_SEPARATOR . LIBRARIES_DIR.'smarty3'.SEP);
+set_include_path(get_include_path() . PATH_SEPARATOR . LIBRARIES_DIR.'smarty'.SEP);
 require_once('Smarty.class.php');
 
 // Load Smarty template engine
