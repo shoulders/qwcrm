@@ -44,24 +44,21 @@
                             <tr>
                                 <td height="81" align="center">
                                     <div id="calendar-container"></div>                                    
-                                    <script>                                
-                                    {literal} 
-                                        Calendar.setup({
+                                    <script>                                        
+                                        Calendar.setup( {
                                             cont: 'calendar-container',
-                                            selection     : {/literal}{$selected_date}{literal},
-                                            onSelect : function(calendar){                                                                        
+                                            selection     : {$selected_date},
+                                            onSelect : function(calendar) {                                                                        
                                                             var selectedDate = calendar.selection.get();            // get the selected date
                                                             var dateForLink = Calendar.intToDate(selectedDate);     // converts into a JavaScript date object
-
                                                             var y = dateForLink.getFullYear();
                                                             var M = dateForLink.getMonth();                         // integer, 0..11
                                                             var m = M + 1;                                          // Correction for assignment issue above
                                                             var d = dateForLink.getDate();                          // integer, 1..31
                                                             // redirect...
-                                                            window.location = "?page=schedule:day&schedule_start_year="+y+"&schedule_start_month="+m+"&schedule_start_day="+d+"&customer_id={/literal}{$login_id}{literal}&employee_id={/literal}{$login_id}{literal}&workorder_id={/literal}{$workorder_id}{literal}";
+                                                            window.location = "?page=schedule:day&schedule_start_year="+y+"&schedule_start_month="+m+"&schedule_start_day="+d+"&customer_id={$customer_id}&employee_id={$login_id}&workorder_id={$workorder_id}";
                                                         }
-                                        });
-                                    {/literal}
+                                        } );                                    
                                     </script>
                                 </td>
                             </tr>

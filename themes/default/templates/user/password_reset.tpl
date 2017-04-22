@@ -12,7 +12,7 @@
             <table  cellspacing="5" border="0" cellpadding="5" align="center">
                 <tr>
                     <td>
-                        <form method="POST" action="password.php" {literal} onsubmit="try  { var myValidator = validate_submit; } catch(e) { return true; } return myValidator(this);"{/literal} >
+                        <form method="POST" action="password.php" onsubmit="try  { var myValidator = validate_submit; } catch(e) { return true; } return myValidator(this);">
                             <table width="25%" cellspacing="0" border="0" cellpadding="5" align="center">
                                 <tr>
                                     <td align="right">Email Address</td>

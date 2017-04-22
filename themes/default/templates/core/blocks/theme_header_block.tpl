@@ -13,14 +13,12 @@
     <link rel="stylesheet" href="{$theme_css_dir}template.css">    
     <script src="{$theme_js_dir}jquery-3.1.1.min.js"></script>
     <script src="{$theme_js_dir}sdmenu.js"></script>    
-    <script>
-    {literal}    
+    <script>      
         var myMenu;
         window.onload = function() {
             mainMenu = new SDMenu('main_menu');
             mainMenu.init();
-        };
-    {/literal}   
+        } ;     
     </script>    
     <script src="{$theme_js_dir}template.js"></script>    
 </head>

@@ -26,10 +26,8 @@
                                 <td class="menutd">
                                     <table class="menutable" width="100%" border="0" cellpadding="2" cellspacing="2" >
                                         <tr>
-                                            <td>                                                
-                                                {literal}
-                                                <form action="index.php?page=refund:new" method="POST" name="new_refund" id="new_refund" autocomplete="off">
-                                                {/literal}
+                                            <td>                                               
+                                                <form action="index.php?page=refund:new" method="POST" name="new_refund" id="new_refund" autocomplete="off">                                                
                                                     <table width="100%" cellpadding="3" cellspacing="0" border="0">
                                                         <tr>
                                                             <td colspan="2" align="left">
@@ -51,14 +49,12 @@
                                                                             <td>
                                                                                 <input id="refundDate" name="refundDate" class="olotd5" size="10" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
                                                                                 <input id="refundDate_button" value="+" type="button">                                                                                
-                                                                                <script>
-                                                                                {literal}
-                                                                                    Calendar.setup({
+                                                                                <script>                                                                                
+                                                                                    Calendar.setup( {
                                                                                         trigger     : "refundDate_button",
                                                                                         inputField  : "refundDate",
-                                                                                        dateFormat  : "{/literal}{$date_format}{literal}"                                                                                            
-                                                                                    });
-                                                                                {/literal}   
+                                                                                        dateFormat  : "{$date_format}"
+                                                                                    } );                                                                                  
                                                                                 </script>                                                                                
                                                                             </td>
                                                                         </tr>

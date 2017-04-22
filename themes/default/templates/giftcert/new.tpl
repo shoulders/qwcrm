@@ -21,7 +21,7 @@
                             <tr>
                                 <td class="olotd4">
                                     {$translate_payment_gift_note_3} {$customer_name} {$translate_payment_gift_note_4}
-                                    <form method="post" action="index.php?page=giftcert:new&customer_id={$customer_id}" name="gift" id="gift" onsubmit="try {literal}{ var myValidator = validate_gift; } catch(e) { return true; } return myValidator(this){/literal};">
+                                    <form method="post" action="index.php?page=giftcert:new&customer_id={$customer_id}" name="gift" id="gift" onsubmit="try { var myValidator = validate_gift; } catch(e) { return true; } return myValidator(this);">
                                         <table>
                                             <tr>
                                                 <td><b>{$translate_payment_customer_name}</b></td>
@@ -32,14 +32,12 @@
                                                 <td>
                                                     <input class="olotd5" size="10" name="date_expires" type="text" id="date_expires" class="olotd4"/>
                                                     <input type="button" id="date_expires_button" value="+">
-                                                    <script>
-                                                    {literal}    
-                                                        Calendar.setup({
+                                                    <script>                                                       
+                                                        Calendar.setup( {
                                                             trigger     : "date_expires_button",
                                                             inputField  : "date_expires",
-                                                            dateFormat  : "{/literal}{$date_format}{literal}"                                                                                            
-                                                        });
-                                                    {/literal}   
+                                                            dateFormat  : "{$date_format}"
+                                                        } );                                                     
                                                     </script>                                                                                                        
                                                 </td>
                                             </tr>

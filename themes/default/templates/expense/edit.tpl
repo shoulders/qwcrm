@@ -45,7 +45,7 @@
                                                         </tr><tr>
                                                             <td align="right"><b>{$translate_expense_date}</b><span style="color: #ff0000"> *</span></td>
                                                             <td>
-                                                                <input id="expenseDate" name="expenseDate" class="olotd5" size="10" value="{$expense_details[q].EXPENSE_DATE|date_format:$date_format}" type="text" maxlength="10" {literal}pattern="^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?$"{/literal} required onkeydown="return onlyDate(event);">
+                                                                <input id="expenseDate" name="expenseDate" class="olotd5" size="10" value="{$expense_details[q].EXPENSE_DATE|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
                                                                 <input id="expenseDate_button" value="+" type="button">                                                            
                                                                 <script>                                                                
                                                                     Calendar.setup( {
@@ -104,19 +104,19 @@
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{$translate_expense_net_amount}</b></td>
-                                                            <td><input name="expenseNetAmount" class="olotd5" size="10" value="{$expense_details[q].EXPENSE_NET_AMOUNT}" type="text" maxlength="10" {literal}pattern="[0-9]{1,7}(.[0-9]{0,2})?"{/literal} required onkeydown="return onlyNumbersPeriod(event);"></td>
+                                                            <td><input name="expenseNetAmount" class="olotd5" size="10" value="{$expense_details[q].EXPENSE_NET_AMOUNT}" type="text" maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumbersPeriod(event);"></td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><span style="color: #ff0000"></span><b>{$translate_expense_tax_rate}</b></td>
-                                                            <td><input name="expenseTaxRate" class="olotd5" size="4" value="{$expense_details[q].EXPENSE_TAX_RATE}" type="text" maxlength="5" {literal}pattern="^[0-9]{0,2}(\.[0-9]{0,2})?$"{/literal} required onkeydown="return onlyNumbersPeriod(event);"/><b>%</b></td>
+                                                            <td><input name="expenseTaxRate" class="olotd5" size="4" value="{$expense_details[q].EXPENSE_TAX_RATE}" type="text" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumbersPeriod(event);"/><b>%</b></td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{$translate_expense_tax_amount}</b></td>
-                                                            <td><input name="expenseTaxAmount" class="olotd5" size="10" value="{$expense_details[q].EXPENSE_TAX_AMOUNT}" type="text" maxlength="10" {literal}pattern="[0-9]{1,7}(.[0-9]{0,2})?"{/literal} required onkeydown="return onlyNumbersPeriod(event);"/></td>
+                                                            <td><input name="expenseTaxAmount" class="olotd5" size="10" value="{$expense_details[q].EXPENSE_TAX_AMOUNT}" type="text" maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumbersPeriod(event);"/></td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{$translate_expense_gross_amount}</b><span style="color: #ff0000"> *</span></td>
-                                                            <td><input name="expenseGrossAmount" class="olotd5" size="10" value="{$expense_details[q].EXPENSE_GROSS_AMOUNT}" type="text" maxlength="10" {literal}pattern="[0-9]{1,7}(.[0-9]{0,2})?"{/literal} required onkeydown="return onlyNumbersPeriod(event);"/></td>
+                                                            <td><input name="expenseGrossAmount" class="olotd5" size="10" value="{$expense_details[q].EXPENSE_GROSS_AMOUNT}" type="text" maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumbersPeriod(event);"/></td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{$translate_expense_notes}</b></td>

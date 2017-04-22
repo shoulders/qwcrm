@@ -21,10 +21,8 @@
                                 <td class="menutd">
                                     <table class="menutable" width="100%" border="0" cellpadding="2" cellspacing="2" >
                                         <tr>
-                                            <td>                                               
-                                                {literal}
-                                                <form  action="index.php?page=customer:new" method="POST" name="new_customer" id="new_customer">
-                                                {/literal}
+                                            <td>                                                
+                                                <form action="index.php?page=customer:new" method="POST" name="new_customer" id="new_customer">                                                
                                                     <table width="100%" cellpadding="3" cellspacing="0" border="0">
                                                         <tr>
                                                             <td colspan="2" align="left">

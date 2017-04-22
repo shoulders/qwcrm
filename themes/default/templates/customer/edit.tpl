@@ -17,10 +17,8 @@
                                     <table class="menutable" width="100%" border="0" cellpadding="0" cellspacing="0">
                                         <tr>
                                             <td class="menutd">
-                                                {section name=q loop=$customer_details}
-                                                    {literal}
-                                                    <form action="index.php?page=customer:edit" method="POST" name="edit_customer" id="edit_customer">
-                                                    {/literal}
+                                                {section name=q loop=$customer_details}                                                    
+                                                    <form action="index.php?page=customer:edit" method="POST" name="edit_customer" id="edit_customer">                                                    
                                                         <input type="hidden" name="customer_id" value="{$customer_details[q].CUSTOMER_ID}">
                                                         <table width="100%" cellpadding="2" cellspacing="2" border="0">
                                                             <tr>

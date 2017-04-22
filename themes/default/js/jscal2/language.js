@@ -1,64 +1,62 @@
-{literal}
-Calendar.LANG("{/literal}{$translate_jscal2_language_shortcode}{literal}", "{/literal}{$translate_jscal2_language_name}{literal}", {
 
-        fdow: {/literal}{$translate_jscal2_fdow}{literal},                  // first day of week for this locale; 0 = Sunday, 1 = Monday, etc.
+Calendar.LANG("{$translate_jscal2_language_shortcode}", "{$translate_jscal2_language_name}", {
 
-        goToday: "{/literal}{$translate_jscal2_gotoday}{literal}",
+        fdow: {$translate_jscal2_fdow},                  // first day of week for this locale; 0 = Sunday, 1 = Monday, etc.
 
-        today: "{/literal}{$translate_jscal2_today}{literal}",              // appears in bottom bar
+        goToday: "{$translate_jscal2_gotoday}",
 
-        wk: "{/literal}{$translate_jscal2_wk}{literal}",
+        today: "{$translate_jscal2_today}",              // appears in bottom bar
 
-        weekend: "{/literal}{$translate_jscal2_weekend}{literal}",          // 0 = Sunday, 1 = Monday, etc.
+        wk: "{$translate_jscal2_wk}",
 
-        AM: "{/literal}{$translate_jscal2_am}{literal}",
+        weekend: "{$translate_jscal2_weekend}",          // 0 = Sunday, 1 = Monday, etc.
 
-        PM: "{/literal}{$translate_jscal2_pm}{literal}",
+        AM: "{$translate_jscal2_am}",
 
-        mn : [ "{/literal}{$translate_jscal2_january}{literal}",
-               "{/literal}{$translate_jscal2_february}{literal}",
-               "{/literal}{$translate_jscal2_march}{literal}",
-               "{/literal}{$translate_jscal2_april}{literal}",
-               "{/literal}{$translate_jscal2_may}{literal}",
-               "{/literal}{$translate_jscal2_june}{literal}",
-               "{/literal}{$translate_jscal2_july}{literal}",
-               "{/literal}{$translate_jscal2_august}{literal}",
-               "{/literal}{$translate_jscal2_september}{literal}",
-               "{/literal}{$translate_jscal2_october}{literal}",
-               "{/literal}{$translate_jscal2_november}{literal}",
-               "{/literal}{$translate_jscal2_december}{literal}" ],
+        PM: "{$translate_jscal2_pm}",
 
-        smn : [ "{/literal}{$translate_jscal2_jan}{literal}",
-                "{/literal}{$translate_jscal2_feb}{literal}",
-                "{/literal}{$translate_jscal2_mar}{literal}",
-                "{/literal}{$translate_jscal2_apr}{literal}",
-                "{/literal}{$translate_jscal2_may}{literal}",
-                "{/literal}{$translate_jscal2_jun}{literal}",
-                "{/literal}{$translate_jscal2_jul}{literal}",
-                "{/literal}{$translate_jscal2_aug}{literal}",
-                "{/literal}{$translate_jscal2_sep}{literal}",
-                "{/literal}{$translate_jscal2_oct}{literal}",
-                "{/literal}{$translate_jscal2_nov}{literal}",
-                "{/literal}{$translate_jscal2_dec}{literal}" ],
+        mn : [ "{$translate_jscal2_january}",
+               "{$translate_jscal2_february}",
+               "{$translate_jscal2_march}",
+               "{$translate_jscal2_april}",
+               "{$translate_jscal2_may}",
+               "{$translate_jscal2_june}",
+               "{$translate_jscal2_july}",
+               "{$translate_jscal2_august}",
+               "{$translate_jscal2_september}",
+               "{$translate_jscal2_october}",
+               "{$translate_jscal2_november}",
+               "{$translate_jscal2_december}" ],
 
-        dn : [ "{/literal}{$translate_jscal2_sunday}{literal}",
-               "{/literal}{$translate_jscal2_monday}{literal}",
-               "{/literal}{$translate_jscal2_tuesday}{literal}",
-               "{/literal}{$translate_jscal2_wednesday}{literal}",
-               "{/literal}{$translate_jscal2_thursday}{literal}",
-               "{/literal}{$translate_jscal2_friday}{literal}",
-               "{/literal}{$translate_jscal2_saturday}{literal}",
-               "{/literal}{$translate_jscal2_sunday}{literal}" ],
+        smn : [ "{$translate_jscal2_jan}",
+                "{$translate_jscal2_feb}",
+                "{$translate_jscal2_mar}",
+                "{$translate_jscal2_apr}",
+                "{$translate_jscal2_may}",
+                "{$translate_jscal2_jun}",
+                "{$translate_jscal2_jul}",
+                "{$translate_jscal2_aug}",
+                "{$translate_jscal2_sep}",
+                "{$translate_jscal2_oct}",
+                "{$translate_jscal2_nov}",
+                "{$translate_jscal2_dec}" ],
 
-        sdn : [ "{/literal}{$translate_jscal2_su}{literal}",
-                "{/literal}{$translate_jscal2_mo}{literal}",
-                "{/literal}{$translate_jscal2_tu}{literal}",
-                "{/literal}{$translate_jscal2_we}{literal}",
-                "{/literal}{$translate_jscal2_th}{literal}",
-                "{/literal}{$translate_jscal2_fr}{literal}",
-                "{/literal}{$translate_jscal2_sa}{literal}",
-                "{/literal}{$translate_jscal2_su}{literal}" ]
+        dn : [ "{$translate_jscal2_sunday}",
+               "{$translate_jscal2_monday}",
+               "{$translate_jscal2_tuesday}",
+               "{$translate_jscal2_wednesday}",
+               "{$translate_jscal2_thursday}",
+               "{$translate_jscal2_friday}",
+               "{$translate_jscal2_saturday}",
+               "{$translate_jscal2_sunday}" ],
 
-});
-{/literal}
-    
+        sdn : [ "{$translate_jscal2_su}",
+                "{$translate_jscal2_mo}",
+                "{$translate_jscal2_tu}",
+                "{$translate_jscal2_we}",
+                "{$translate_jscal2_th}",
+                "{$translate_jscal2_fr}",
+                "{$translate_jscal2_sa}",
+                "{$translate_jscal2_su}" ]
+
+} );

@@ -84,19 +84,17 @@
                                                     </table>
                                                 </form>
                                                 {if $login_account_type_id == 1 || $login_account_type_id == 2}                                                  
-                                                    <script>
-                                                    {literal} 
-                                                        $(function(){
+                                                    <script>                                                    
+                                                        $(function() {
                                                             $("#newfile").click(function(event) {
                                                                 event.preventDefault();
                                                                 $("#newuserform").slideToggle();
-                                                            });
+                                                            } );
                                                             $("#newuserform a").click(function(event) {
                                                                 event.preventDefault();
                                                                 $("#newuserform").slideUp();
-                                                            });
-                                                        });
-                                                    {/literal}   
+                                                            } );
+                                                        } );                                                    
                                                     </script>                                                    
                                                     <a href="#" id="newfile">{$translate_invoice_rates_add_file}</a>
                                                     <div id="newuserform">

@@ -19,10 +19,8 @@
                     <td class="menutd2" colspan="2">                        
                         <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0">
                             <tr>
-                                <td width="100%" valign="top">                                    
-                                    {literal}                                    
-                                    <form method="POST" action="index.php?page=workorder:details_edit_description" name="new_refund" id="new_refund">
-                                    {/literal}
+                                <td width="100%" valign="top">                                                                      
+                                    <form method="POST" action="index.php?page=workorder:details_edit_description" name="new_refund" id="new_refund">                                    
                                         <b>{$translate_workorder_scope}</b></br>
                                         <input name="workorder_scope" class="olotd4" size="20" value="{$workorder_scope}" type="text" maxlength="80" required onkeydown="return onlyAlphaNumeric(event);">
                                         <br>

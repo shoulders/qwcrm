@@ -54,22 +54,18 @@
                                     <br>
                                     
                                     <!-- Invoice Stats -->                                    
-                                    <script>
-                                    {literal}    
-                                        $(function(){
+                                    <script>                                      
+                                        $(function() {
                                             $("#hidden_stats").click(function(event) {
                                             event.preventDefault();
-
                                             $("#hide_stats").slideToggle();
-                                            });
+                                            } );
 
                                             $("#hide_stats a").click(function(event) {
                                             event.preventDefault();
-
                                             $("#hide_stats").slideUp();
-                                            });
-                                        });
-                                    {/literal}    
+                                            } );
+                                        } );                                       
                                     </script>                                     
                                     <a href="#" id="hidden_stats">{$translate_core_home_invoice_stats_title}</a>
                                     <div id="hide_stats">

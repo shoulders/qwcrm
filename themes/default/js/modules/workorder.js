@@ -1,4 +1,4 @@
-{literal}
+
 /* workorder.js */
 
 // New Workorder Scope Autosuggest
@@ -10,12 +10,12 @@ function lookupSuggestions(scope) {
     
     // Lookup Records and return list - workorder_new_scope_autosuggest.php returns <li></li> suggestions with onclick="fill(value)" added
     } else {        
-        $.post("{/literal}{$includes_dir}{literal}autosuggest/workorder_new_scope_autosuggest.php", {queryString: ""+scope+""}, function(data){
+        $.post("{$includes_dir}autosuggest/workorder_new_scope_autosuggest.php", {queryString: ""+scope+""}, function(data) {
             if(data.length > 0) {
                 $('#suggestions').show();
                 $('#autoSuggestionsList').html(data);
             }
-        });
+        } );
     }
 }
 
@@ -29,4 +29,3 @@ function fill(clickedSuggestion) {
 function closeSuggestions() {
     setTimeout("$('#suggestions').hide();", 200);
 }
-{/literal}

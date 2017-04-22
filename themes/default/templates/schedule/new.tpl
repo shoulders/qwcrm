@@ -42,28 +42,24 @@
                                                                         <td>
                                                                             <input id="schedule_start_date" name="schedule_start_date" size="10" value="{$schedule_start_date}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
                                                                             <input id="schedule_start_date_button" value="+" type="button">                                                                                
-                                                                            <script>
-                                                                            {literal} 
-                                                                                Calendar.setup({
+                                                                            <script>                                                                            
+                                                                                Calendar.setup( {
                                                                                     trigger     : "schedule_start_date_button",
                                                                                     inputField  : "schedule_start_date",
-                                                                                    dateFormat  : "{/literal}{$date_format}{literal}"                                                                                        
-                                                                                });
-                                                                            {/literal}
+                                                                                    dateFormat  : "{$date_format}"                                                                                        
+                                                                                } );                                                                            
                                                                             </script>                                                                            
                                                                             {html_select_time use_24_hours=true minute_interval=15 display_seconds=false field_array=scheduleStartTime time=$schedule_start_time}
                                                                         </td>
                                                                         <td>
                                                                             <input id="schedule_end_date" name="schedule_end_date" size="10" value="{$schedule_end_date}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
                                                                             <input id="schedule_end_date_button" value="+" type="button">                                                                                
-                                                                            <script>
-                                                                            {literal}
-                                                                                Calendar.setup({
+                                                                            <script>                                                                            
+                                                                                Calendar.setup( {
                                                                                     trigger     : "schedule_end_date_button",
                                                                                     inputField  : "schedule_end_date",
-                                                                                    dateFormat  : "{/literal}{$date_format}{literal}"                                                                                        
-                                                                                });
-                                                                            {/literal}
+                                                                                    dateFormat  : "{$date_format}"
+                                                                                } );                                                                            
                                                                             </script>                                                                            
                                                                             {html_select_time use_24_hours=true minute_interval=15 display_seconds=false field_array=scheduleEndTime time=$schedule_end_time}
                                                                         </td>

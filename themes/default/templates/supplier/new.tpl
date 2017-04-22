@@ -26,10 +26,8 @@
                                 <td class="menutd">                                   
                                     <table class="menutable" width="100%" border="0" cellpadding="2" cellspacing="2" >
                                         <tr>
-                                            <td>                                           
-                                                {literal}
-                                                <form  action="index.php?page=supplier:new" method="POST" name="new_supplier" id="new_supplier" autocomplete="off">
-                                                {/literal}
+                                            <td>                                                
+                                                <form action="index.php?page=supplier:new" method="POST" name="new_supplier" id="new_supplier" autocomplete="off">                                                
                                                     <table width="100%" cellpadding="3" cellspacing="0" border="0">
                                                         <tr>
                                                             <td colspan="2" align="left">

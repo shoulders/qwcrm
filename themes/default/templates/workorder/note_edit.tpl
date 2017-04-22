@@ -30,14 +30,12 @@
                                             <b>Date:<b><br>
                                             <input id="date" name="date" class="olotd4" size="10" value="{$workorder_note.WORK_ORDER_NOTES_DATE|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
                                             <input id="date_button" value="+" type="button">                                                    
-                                            <script>
-                                            {literal}  
-                                                Calendar.setup({
+                                            <script>                                            
+                                                Calendar.setup( {
                                                     trigger     : "date_button",
                                                     inputField  : "date",
-                                                    dateFormat  : "{/literal}{$date_format}{literal}"                                                                                            
-                                                });
-                                            {/literal} 
+                                                    dateFormat  : "{$date_format}"                                                                                            
+                                                } );                                            
                                             </script>                                                    
                                         </div>
                                         <b>Note:</b><br>

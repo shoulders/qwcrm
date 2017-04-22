@@ -11,10 +11,8 @@
                         <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0">
                             <tr>
                                 <td width="100%" valign="top">
-                                    {section name=a loop=$employee_details}
-                                        {literal}
-                                        <form action="?page=employee:new" method="POST" name="new_employee" id="edit_employee" onsubmit="return confirmPasswordsMatch();">
-                                        {/literal}
+                                    {section name=a loop=$employee_details}                                        
+                                        <form action="?page=employee:new" method="POST" name="new_employee" id="edit_employee" onsubmit="return confirmPasswordsMatch();">                                        
                                             <table class="menutable" width="100%" border="0" cellpadding="0" cellspacing="0">
                                                 <tr>
                                                     <td class="menutd">

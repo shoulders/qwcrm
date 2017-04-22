@@ -26,10 +26,8 @@
                                 <td width="100%" valign="top" >
                                     <table class="menutable" width="100%" border="0" cellpadding="0" cellspacing="0" >
                                         <tr>
-                                            <td>
-                                                {literal}
-                                                <form  action="index.php?page=supplier:edit" method="POST" name="edit_supplier" id="edit_supplier" autocomplete="off">
-                                                {/literal}
+                                            <td>                                                
+                                                <form action="index.php?page=supplier:edit" method="POST" name="edit_supplier" id="edit_supplier" autocomplete="off">                                                
                                                     <table width="100%" cellpadding="2" cellspacing="2" border="0">
                                                         {section name=q loop=$supplier_details}
                                                             <tr>

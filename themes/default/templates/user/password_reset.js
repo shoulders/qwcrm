@@ -1,5 +1,4 @@
-{literal}
-<script type="text/javascript">
+
 function validate_submit(frm) {
   var value = '';
   var errFlag = new Array();
@@ -36,5 +35,4 @@ function validate_submit(frm) {
   }
   return true;
 }
-</script>
-{/literal}
+

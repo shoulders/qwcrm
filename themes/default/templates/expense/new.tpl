@@ -27,10 +27,8 @@
                                     <table class="menutable" width="100%" border="0" cellpadding="2" cellspacing="2" >
                                         <tr>
                                             <td>                                                
-                                                <input type="hidden" name="page" value="expense:edit">
-                                                {literal}
-                                                <form action="index.php?page=expense:new" method="POST" name="new_expense" id="new_expense">
-                                                {/literal}
+                                                <input type="hidden" name="page" value="expense:edit">                                                
+                                                <form action="index.php?page=expense:new" method="POST" name="new_expense" id="new_expense">                                                
                                                     <table width="100%" cellpadding="3" cellspacing="0" border="0">
                                                         <tr>
                                                             <td colspan="2" align="left">
@@ -53,14 +51,12 @@
                                                                             <td>
                                                                                 <input id="expenseDate" name="expenseDate" class="olotd5" size="10" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
                                                                                 <input id="expenseDate_button" type="button" value="+">                                                                                
-                                                                                <script>
-                                                                                {literal}
-                                                                                    Calendar.setup({
+                                                                                <script>                                                                                
+                                                                                    Calendar.setup( {
                                                                                         trigger     : "expenseDate_button",
                                                                                         inputField  : "expenseDate",
-                                                                                        dateFormat  : "{/literal}{$date_format}{literal}"                                                                                            
-                                                                                    });
-                                                                                {/literal}
+                                                                                        dateFormat  : "{$date_format}"                                                                      
+                                                                                    } );                                                                                
                                                                                 </script>                                                                                
                                                                             </td>
                                                                         </tr>

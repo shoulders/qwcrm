@@ -35,10 +35,8 @@
                                     <td class="menutd2" colspan="2">
                                         <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0" >
                                             <tr>
-                                                <td width="100%" valign="top">                                                                                                   
-                                                    {literal}
-                                                    <form method="POST" action="index.php?page=workorder:new" name="new_workorder" id="new_workorder">
-                                                    {/literal}
+                                                <td width="100%" valign="top">                                                    
+                                                    <form method="POST" action="index.php?page=workorder:new" name="new_workorder" id="new_workorder">                                                    
                                                         <input name="customer_id" value="{$customer_details[i].CUSTOMER_ID}" type="hidden">                                                    
                                                         <input name="created_by" value="{$login_id}" type="hidden" >                                                    
                                                         <table class="olotable" width="100%" border="0"  cellpadding="4" cellspacing="0" summary="Work order display">

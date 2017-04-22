@@ -18,10 +18,8 @@
                                         <tr>
                                             
                                             <!-- Search Box -->
-                                            <td>
-                                                {literal}
-                                                <form method="post" action="?page=employee:search">
-                                                {/literal}
+                                            <td>                                                
+                                                <form method="post" action="?page=employee:search">                                                
                                                     <table border="0">
                                                         <tr>
                                                             <td colspan="2"><font color="red">{$translate_employee_display_name_criteria}</font></td>

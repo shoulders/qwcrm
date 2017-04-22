@@ -18,10 +18,8 @@
                                 <td class="menutd">
                                     <table class="menutable" width="100%" border="0" cellpadding="5" cellspacing="0">
                                         <tr>
-                                            <td valign="top">
-                                                {literal}
-                                                <form action="index.php?page=customer:view" method="get" name="customer_search" id="customer_search">
-                                                {/literal}
+                                            <td valign="top">                                                
+                                                <form action="index.php?page=customer:view" method="get" name="customer_search" id="customer_search">                                                
                                                     <div>
                                                         <input name="page" type="hidden" value="customer:search" />
                                                         <table border="0">
