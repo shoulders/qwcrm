@@ -13,6 +13,6 @@
     <li>JSCal2 v1.9 (2011/03/13) | permissive? | http://www.dynarch.com/jscal/</li>
     <li>TCPDF v6.2.13 | LGPL v3 | http://www.tcpdf.org - no longer used?</li>
     <li>mPDF v6.1.0 | GPLv2 | https://github.com/mpdf/mpdf</li>    
-    <li>ADODB V4.66</li>
+    <li>ADODB V5.20.9 | ADOdb is dual licensed under BSD and LGPL | http://adodb.org/dokuwiki/doku.php | PHP Database Abstraction layer allowing use of different databases whilest using the same SQL code and other database related things.</li>
     <li>Smarty v2.6.9</li>
 </ul>
