@@ -54,7 +54,7 @@ class Auth {
             /* Username and Password Verification Section */
 
             // Query to count number of users with this combination
-            $sql    = "SELECT COUNT(*) AS NUM_USERS FROM ".PRFX."TABLE_EMPLOYEE
+            $sql    = "SELECT COUNT(*) AS NUM_USERS FROM ".PRFX."EMPLOYEE
                         WHERE EMPLOYEE_STATUS = '1'
                         AND EMPLOYEE_LOGIN=".$this->db->qstr($login_usr)."
                         AND EMPLOYEE_PASSWD=".$this->db->qstr($login_pwd);
@@ -91,7 +91,7 @@ class Auth {
 
                 // Grab their login ID for tracking purposes (Employee Must be Active)
                 $sql = "SELECT EMPLOYEE_ID, EMPLOYEE_TYPE, EMPLOYEE_DISPLAY_NAME
-                        FROM ".PRFX."TABLE_EMPLOYEE
+                        FROM ".PRFX."EMPLOYEE
                         WHERE EMPLOYEE_STATUS = '1'
                         AND EMPLOYEE_LOGIN=".$this->db->qstr($login_usr);
 

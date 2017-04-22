@@ -36,10 +36,10 @@ function display_employees($db, $search_term, $page_no) {
     // Figure out the limit for the query based on the current page number. 
     $from = (($page_no * $max_results) - $max_results);    
     
-    $sql = "SELECT ".PRFX."TABLE_EMPLOYEE.*,
-            ".PRFX."CONFIG_EMPLOYEE_TYPE.TYPE_NAME
-            FROM ".PRFX."TABLE_EMPLOYEE 
-            LEFT JOIN ".PRFX."CONFIG_EMPLOYEE_TYPE ON (".PRFX."TABLE_EMPLOYEE. EMPLOYEE_TYPE = ".PRFX."CONFIG_EMPLOYEE_TYPE.TYPE_ID)    
+    $sql = "SELECT ".PRFX."EMPLOYEE.*,
+            ".PRFX."EMPLOYEE_ACCOUNT_TYPES.TYPE_NAME
+            FROM ".PRFX."EMPLOYEE 
+            LEFT JOIN ".PRFX."EMPLOYEE_ACCOUNT_TYPES ON (".PRFX."EMPLOYEE. EMPLOYEE_TYPE = ".PRFX."EMPLOYEE_ACCOUNT_TYPES.TYPE_ID)    
             WHERE EMPLOYEE_DISPLAY_NAME LIKE '%$search_term%'
             ORDER BY EMPLOYEE_DISPLAY_NAME";
     
@@ -51,7 +51,7 @@ function display_employees($db, $search_term, $page_no) {
     }    
 
     // Figure out the total number of results in DB: 
-    $sql = "SELECT COUNT(*) as Num FROM ".PRFX."TABLE_EMPLOYEE WHERE EMPLOYEE_DISPLAY_NAME LIKE '%$search_term%'";
+    $sql = "SELECT COUNT(*) as Num FROM ".PRFX."EMPLOYEE WHERE EMPLOYEE_DISPLAY_NAME LIKE '%$search_term%'";
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
@@ -103,7 +103,7 @@ function insert_employee($db, $VAR){
     
     global $smarty;
     
-    $sql = "INSERT INTO ".PRFX."TABLE_EMPLOYEE SET
+    $sql = "INSERT INTO ".PRFX."EMPLOYEE SET
             EMPLOYEE_LOGIN          =". $db->qstr( $VAR['employee_usr']             ).",
             EMPLOYEE_PASSWD         =". $db->qstr( md5($VAR['employee_pwd'])        ).",
             EMPLOYEE_EMAIL          =". $db->qstr( $VAR['employee_email']           ).", 
@@ -143,7 +143,7 @@ function get_employee_details($db, $employee_id, $item = null) {
     
     global $smarty;
 
-    $sql = "SELECT * FROM ".PRFX."TABLE_EMPLOYEE WHERE EMPLOYEE_ID =".$employee_id;
+    $sql = "SELECT * FROM ".PRFX."EMPLOYEE WHERE EMPLOYEE_ID =".$employee_id;
     
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
@@ -172,9 +172,9 @@ function get_employee_display_name_by_id($db, $employee_id) {
     
     global $smarty;
     
-    $sql = "SELECT ".PRFX."TABLE_EMPLOYEE.*, ".PRFX."CONFIG_EMPLOYEE_TYPE.TYPE_NAME
-            FROM ".PRFX."TABLE_EMPLOYEE
-            LEFT JOIN ".PRFX."CONFIG_EMPLOYEE_TYPE ON (".PRFX."TABLE_EMPLOYEE.EMPLOYEE_TYPE = ".PRFX."CONFIG_EMPLOYEE_TYPE.TYPE_ID)
+    $sql = "SELECT ".PRFX."EMPLOYEE.*, ".PRFX."EMPLOYEE_ACCOUNT_TYPES.TYPE_NAME
+            FROM ".PRFX."EMPLOYEE
+            LEFT JOIN ".PRFX."EMPLOYEE_ACCOUNT_TYPES ON (".PRFX."EMPLOYEE.EMPLOYEE_TYPE = ".PRFX."EMPLOYEE_ACCOUNT_TYPES.TYPE_ID)
             WHERE EMPLOYEE_ID=". $db->qstr($employee_id);
     
     if(!$rs = $db->Execute($sql)) {
@@ -205,7 +205,7 @@ function get_employee_id_by_username($db, $employee_usr){
     
     global $smarty;
     
-    $sql = 'SELECT EMPLOYEE_ID FROM '.PRFX.'TABLE_EMPLOYEE WHERE EMPLOYEE_LOGIN ='.$db->qstr($employee_usr);    
+    $sql = 'SELECT EMPLOYEE_ID FROM '.PRFX.'EMPLOYEE WHERE EMPLOYEE_LOGIN ='.$db->qstr($employee_usr);    
     if(!$rs = $db->execute($sql)){
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
@@ -225,7 +225,7 @@ function get_employee_record_by_username($db, $employee_usr){
     
     global $smarty;
     
-    $sql = "SELECT * FROM ".PRFX."TABLE_EMPLOYEE WHERE EMPLOYEE_LOGIN =".$db->qstr($employee_usr);    
+    $sql = "SELECT * FROM ".PRFX."EMPLOYEE WHERE EMPLOYEE_LOGIN =".$db->qstr($employee_usr);    
     if(!$rs = $db->execute($sql)){
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
@@ -245,7 +245,7 @@ function get_employee_types($db) {
     
     global $smarty;
     
-    $sql = "SELECT * FROM ".PRFX."CONFIG_EMPLOYEE_TYPE";
+    $sql = "SELECT * FROM ".PRFX."EMPLOYEE_ACCOUNT_TYPES";
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
@@ -266,7 +266,7 @@ function get_active_employees($db) {
         
     global $smarty;
     
-    $sql = "SELECT EMPLOYEE_ID, EMPLOYEE_DISPLAY_NAME FROM ".PRFX."TABLE_EMPLOYEE WHERE EMPLOYEE_STATUS=1";
+    $sql = "SELECT EMPLOYEE_ID, EMPLOYEE_DISPLAY_NAME FROM ".PRFX."EMPLOYEE WHERE EMPLOYEE_STATUS=1";
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
@@ -312,7 +312,7 @@ function update_employee($db, $employee_id, $VAR) {
                     EMPLOYEE_ACL            =". $db->qstr( $VAR['employee_acl']             ).",    
                     EMPLOYEE_STATUS         =". $db->qstr( $VAR['employee_status']          );
 
-    $sql = "UPDATE ".PRFX."TABLE_EMPLOYEE ". $set ." WHERE EMPLOYEE_ID= ".$db->qstr($employee_id);
+    $sql = "UPDATE ".PRFX."EMPLOYEE ". $set ." WHERE EMPLOYEE_ID= ".$db->qstr($employee_id);
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
@@ -340,7 +340,7 @@ function count_employee_workorders_with_status($db, $employee_id, $workorder_sta
     global $smarty;
     
     $sql = "SELECT COUNT(*) AS EMPLOYEE_WORKORDER_STATUS_COUNT
-            FROM ".PRFX."TABLE_WORK_ORDER
+            FROM ".PRFX."WORKORDER
             WHERE WORK_ORDER_ASSIGN_TO=".$db->qstr($employee_id)."
             AND WORK_ORDER_STATUS=".$db->qstr($workorder_status);
     
@@ -364,7 +364,7 @@ function count_employee_invoices_with_status($db, $employee_id, $invoice_status)
     global $smarty;
     
     $sql = "SELECT COUNT(*) AS EMPLOYEE_INVOICE_COUNT
-            FROM ".PRFX."TABLE_INVOICE
+            FROM ".PRFX."INVOICE
             WHERE IS_PAID=".$db->qstr($invoice_status)."
             AND EMPLOYEE_ID=".$db->qstr($employee_id);
     
@@ -399,7 +399,7 @@ function build_active_employee_form_option_list($db, $assigned_employee_id){
     global $smarty;
     
     // select all employees and return their display name and ID as an array
-    $sql = "SELECT EMPLOYEE_DISPLAY_NAME, EMPLOYEE_ID FROM ".PRFX."TABLE_EMPLOYEE WHERE EMPLOYEE_STATUS=1";
+    $sql = "SELECT EMPLOYEE_DISPLAY_NAME, EMPLOYEE_ID FROM ".PRFX."EMPLOYEE WHERE EMPLOYEE_STATUS=1";
     
     if(!$rs = $db->execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
@@ -424,7 +424,7 @@ function check_employee_username_exists($db, $username, $current_username){
     // This prevents self-checking of the current username of the record being edited
     if ($username === $current_username) {return false;}
     
-    $sql = "SELECT COUNT(*) AS num_users FROM ".PRFX."TABLE_EMPLOYEE WHERE EMPLOYEE_LOGIN =". $db->qstr($username);
+    $sql = "SELECT COUNT(*) AS num_users FROM ".PRFX."EMPLOYEE WHERE EMPLOYEE_LOGIN =". $db->qstr($username);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));

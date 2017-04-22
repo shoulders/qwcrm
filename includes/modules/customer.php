@@ -45,10 +45,10 @@ function display_customers($db, $status = 'all', $direction = 'DESC', $use_pages
         // Status Restriction
         if($status != 'all') {
             // Restrict by status
-            $whereTheseRecords = " WHERE ".PRFX."TABLE_CUSTOMER.ACTIVE=".$db->qstr($status);        
+            $whereTheseRecords = " WHERE ".PRFX."CUSTOMER.ACTIVE=".$db->qstr($status);        
         } else {            
             // Do not restrict by status
-            $whereTheseRecords = " WHERE ".PRFX."TABLE_CUSTOMER.CUSTOMER_ID = *";
+            $whereTheseRecords = " WHERE ".PRFX."CUSTOMER.CUSTOMER_ID = *";
         }
     
     }
@@ -56,10 +56,10 @@ function display_customers($db, $status = 'all', $direction = 'DESC', $use_pages
     /* The SQL code */    
     
     $sql = "SELECT *              
-        FROM ".PRFX."TABLE_CUSTOMER".        
+        FROM ".PRFX."CUSTOMER".        
         $whereTheseRecords.
-        " GROUP BY ".PRFX."TABLE_CUSTOMER.CUSTOMER_ID".            
-        " ORDER BY ".PRFX."TABLE_CUSTOMER.CUSTOMER_ID ".$direction;  
+        " GROUP BY ".PRFX."CUSTOMER.CUSTOMER_ID".            
+        " ORDER BY ".PRFX."CUSTOMER.CUSTOMER_ID ".$direction;  
    
     /* Restrict by pages */
         
@@ -148,7 +148,7 @@ function insert_customer($db, $VAR) {
         $displayname = $VAR['lastName'].', '.$VAR['firstName'];
     }
 
-    $sql = "INSERT INTO ".PRFX."TABLE_CUSTOMER SET
+    $sql = "INSERT INTO ".PRFX."CUSTOMER SET
             CUSTOMER_DISPLAY_NAME   =". $db->qstr( $displayname             ).",
             CUSTOMER_ADDRESS        =". $db->qstr( $VAR['address']          ).",
             CUSTOMER_CITY           =". $db->qstr( $VAR['city']             ).", 
@@ -185,7 +185,7 @@ function insert_customer($db, $VAR) {
 
 function insert_customer_note($db, $customer_id, $note) {
     
-    $sql = "INSERT INTO ".PRFX."CUSTOMER_NOTE SET
+    $sql = "INSERT INTO ".PRFX."CUSTOMER_NOTES SET
             CUSTOMER_ID =". $db->qstr( $customer_id             ).",
             EMPLOYEE_ID =". $db->qstr( $_SESSION['login_id']    ).",
             DATE        =". $db->qstr( time()                   ).",
@@ -208,7 +208,7 @@ function get_customer_details($db, $customer_id, $item = null){
     
     global $smarty;
     
-    $sql = "SELECT * FROM ".PRFX."TABLE_CUSTOMER WHERE CUSTOMER_ID=".$db->qstr($customer_id);
+    $sql = "SELECT * FROM ".PRFX."CUSTOMER WHERE CUSTOMER_ID=".$db->qstr($customer_id);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_customer_error_message_function_'.__FUNCTION__.'_failed'));
@@ -237,7 +237,7 @@ function get_customer_note($db, $customer_note_id, $item = null){
     
     global $smarty;
     
-    $sql = "SELECT * FROM ".PRFX."CUSTOMER_NOTE WHERE CUSTOMER_NOTE_ID=".$db->qstr( $customer_note_id );    
+    $sql = "SELECT * FROM ".PRFX."CUSTOMER_NOTES WHERE CUSTOMER_NOTE_ID=".$db->qstr( $customer_note_id );    
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_customer_error_message_function_'.__FUNCTION__.'_failed'));
@@ -266,7 +266,7 @@ function get_customer_notes($db, $customer_id) {
     
     global $smarty;
     
-    $sql = "SELECT * FROM ".PRFX."CUSTOMER_NOTE WHERE CUSTOMER_ID=".$db->qstr( $customer_id );
+    $sql = "SELECT * FROM ".PRFX."CUSTOMER_NOTES WHERE CUSTOMER_ID=".$db->qstr( $customer_id );
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_customer_error_message_function_'.__FUNCTION__.'_failed'));
@@ -289,7 +289,7 @@ function update_customer($db, $customer_id, $VAR) {
     
     global $smarty;
     
-    $sql = "UPDATE ".PRFX."TABLE_CUSTOMER SET
+    $sql = "UPDATE ".PRFX."CUSTOMER SET
             CUSTOMER_DISPLAY_NAME   = ". $db->qstr( $VAR['displayName']    ).",
             CUSTOMER_ADDRESS        = ". $db->qstr( $VAR['address']        ).",
             CUSTOMER_CITY           = ". $db->qstr( $VAR['city']            ).", 
@@ -327,7 +327,7 @@ function update_customer_note($db, $customer_note_id, $date, $note) {
     
     global $smarty;
     
-    $sql = "UPDATE ".PRFX."CUSTOMER_NOTE SET
+    $sql = "UPDATE ".PRFX."CUSTOMER_NOTES SET
             EMPLOYEE_ID             =". $db->qstr( $_SESSION['login_id']    ).",
             DATE                    =". $db->qstr( $date                    ).",
             NOTE                    =". $db->qstr( $note                    )."
@@ -353,7 +353,7 @@ function delete_customer($db, $customer_id){
     global $smarty;
     
     // Check if customer has any workorders
-    $sql = "SELECT count(*) as count FROM ".PRFX."TABLE_WORK_ORDER WHERE CUSTOMER_ID=".$db->qstr($customer_id);    
+    $sql = "SELECT count(*) as count FROM ".PRFX."WORKORDER WHERE CUSTOMER_ID=".$db->qstr($customer_id);    
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_customer_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
@@ -365,7 +365,7 @@ function delete_customer($db, $customer_id){
     }
     
     // Check if customer has any invoices
-    $sql = "SELECT count(*) as count FROM ".PRFX."TABLE_INVOICE WHERE CUSTOMER_ID=".$db->qstr($customer_id);    
+    $sql = "SELECT count(*) as count FROM ".PRFX."INVOICE WHERE CUSTOMER_ID=".$db->qstr($customer_id);    
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_customer_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
@@ -390,7 +390,7 @@ function delete_customer($db, $customer_id){
     }
     
     // Check if customer has any customer notes
-    $sql = "SELECT count(*) as count FROM ".PRFX."CUSTOMER_NOTES WHERE CUSTOMER_ID=".$db->qstr($customer_id);
+    $sql = "SELECT count(*) as count FROM ".PRFX."CUSTOMER_NOTESS WHERE CUSTOMER_ID=".$db->qstr($customer_id);
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_customer_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
@@ -414,7 +414,7 @@ function delete_customer($db, $customer_id){
     } 
         
     // Delete Customer
-    $sql = "DELETE FROM ".PRFX."TABLE_CUSTOMER WHERE CUSTOMER_ID=".$db->qstr($customer_id);    
+    $sql = "DELETE FROM ".PRFX."CUSTOMER WHERE CUSTOMER_ID=".$db->qstr($customer_id);    
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_customer_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
@@ -434,7 +434,7 @@ function delete_customer_note($db, $customer_note_id) {
     
     global $smarty;
     
-    $sql = "DELETE FROM ".PRFX."CUSTOMER_NOTE WHERE CUSTOMER_NOTE_ID=".$db->qstr( $customer_note_id );
+    $sql = "DELETE FROM ".PRFX."CUSTOMER_NOTES WHERE CUSTOMER_NOTE_ID=".$db->qstr( $customer_note_id );
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_customer_error_message_function_'.__FUNCTION__.'_failed'));
@@ -453,7 +453,7 @@ function check_customer_ex($db, $displayName) {
     
     global $smarty;
     
-    $sql = "SELECT COUNT(*) AS num_users FROM ".PRFX."TABLE_CUSTOMER WHERE CUSTOMER_DISPLAY_NAME=".$db->qstr($displayName);
+    $sql = "SELECT COUNT(*) AS num_users FROM ".PRFX."CUSTOMER WHERE CUSTOMER_DISPLAY_NAME=".$db->qstr($displayName);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_customer_error_message_function_'.__FUNCTION__.'_failed'));

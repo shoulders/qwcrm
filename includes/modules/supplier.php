@@ -81,11 +81,11 @@ function display_suppliers($db, $direction = 'DESC', $use_pages = false, $page_n
     /* The SQL code */
     
     $sql =  "SELECT * 
-            FROM ".PRFX."TABLE_SUPPLIER".                                                   
+            FROM ".PRFX."SUPPLIER".                                                   
             $whereTheseRecords.            
             $likeTheseRecords.
-            " GROUP BY ".PRFX."TABLE_SUPPLIER.SUPPLIER_ID".
-            " ORDER BY ".PRFX."TABLE_SUPPLIER.SUPPLIER_ID ".$direction;            
+            " GROUP BY ".PRFX."SUPPLIER.SUPPLIER_ID".
+            " ORDER BY ".PRFX."SUPPLIER.SUPPLIER_ID ".$direction;            
     
     /* Restrict by pages */
     
@@ -172,7 +172,7 @@ function insert_supplier($db, $VAR) {
     
     global $smarty;
 
-    $sql = "INSERT INTO ".PRFX."TABLE_SUPPLIER SET            
+    $sql = "INSERT INTO ".PRFX."SUPPLIER SET            
             SUPPLIER_NAME           = ". $db->qstr( $VAR['supplierName']        ).",
             SUPPLIER_CONTACT        = ". $db->qstr( $VAR['supplierContact']     ).",
             SUPPLIER_TYPE           = ". $db->qstr( $VAR['supplierType']        ).",
@@ -209,7 +209,7 @@ function get_supplier_details($db, $supplier_id, $item = null){
     
     global $smarty;
 
-    $sql = "SELECT * FROM ".PRFX."TABLE_SUPPLIER WHERE SUPPLIER_ID=".$db->qstr($supplier_id);
+    $sql = "SELECT * FROM ".PRFX."SUPPLIER WHERE SUPPLIER_ID=".$db->qstr($supplier_id);
     
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
@@ -240,7 +240,7 @@ function update_supplier($db, $supplier_id, $VAR) {
     
     global $smarty;
 
-    $sql = "UPDATE ".PRFX."TABLE_SUPPLIER SET
+    $sql = "UPDATE ".PRFX."SUPPLIER SET
             SUPPLIER_NAME           = ". $db->qstr( $VAR['supplierName']        ).",
             SUPPLIER_CONTACT        = ". $db->qstr( $VAR['supplierContact']     ).",
             SUPPLIER_TYPE           = ". $db->qstr( $VAR['supplierType']        ).",
@@ -280,7 +280,7 @@ function delete_supplier($db, $supplier_id){
     
     global $smarty;
     
-    $sql = "DELETE FROM ".PRFX."TABLE_SUPPLIER WHERE SUPPLIER_ID=".$db->qstr($supplier_id);
+    $sql = "DELETE FROM ".PRFX."SUPPLIER WHERE SUPPLIER_ID=".$db->qstr($supplier_id);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_supplier_error_message_function_'.__FUNCTION__.'_failed'));
@@ -361,7 +361,7 @@ function last_supplier_id_lookup($db) {
     
     global $smarty;
 
-    $sql = 'SELECT * FROM '.PRFX.'TABLE_SUPPLIER ORDER BY SUPPLIER_ID DESC LIMIT 1';
+    $sql = 'SELECT * FROM '.PRFX.'SUPPLIER ORDER BY SUPPLIER_ID DESC LIMIT 1';
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_supplier_error_message_function_'.__FUNCTION__.'_failed'));

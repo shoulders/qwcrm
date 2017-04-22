@@ -32,7 +32,7 @@ function update_company_hours($db, $openingTime, $closingTime) {
     
     global $smarty;
     
-    $sql = 'UPDATE '.PRFX.'TABLE_COMPANY SET
+    $sql = 'UPDATE '.PRFX.'COMPANY SET
             OPENING_HOUR    ='. $db->qstr( $openingTime['Time_Hour']     ).',
             OPENING_MINUTE  ='. $db->qstr( $openingTime['Time_Minute']   ).',
             CLOSING_HOUR    ='. $db->qstr( $closingTime['Time_Hour']     ).',
@@ -67,7 +67,7 @@ function get_company_start_end_times($db, $time_event) {
     
     global $smarty;
     
-    $sql = 'SELECT OPENING_HOUR, OPENING_MINUTE, CLOSING_HOUR, CLOSING_MINUTE FROM '.PRFX.'TABLE_COMPANY';
+    $sql = 'SELECT OPENING_HOUR, OPENING_MINUTE, CLOSING_HOUR, CLOSING_MINUTE FROM '.PRFX.'COMPANY';
 
    if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_company_error_message_function_'.__FUNCTION__.'_failed'));
@@ -100,7 +100,7 @@ function update_company_details($db, $record) {
     
     global $smarty;
     
-    $sql .= 'UPDATE '.PRFX.'TABLE_COMPANY SET
+    $sql .= 'UPDATE '.PRFX.'COMPANY SET
             NAME                = '. $db->qstr( $record['company_name']               ).',
             NUMBER              = '. $db->qstr( $record['company_number']             ).',
             ADDRESS             = '. $db->qstr( $record['company_address']            ).',

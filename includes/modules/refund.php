@@ -97,11 +97,11 @@ function display_refunds($db, $direction = 'DESC', $use_pages = false, $page_no 
     /* The SQL code */
     
     $sql =  "SELECT * 
-            FROM ".PRFX."TABLE_REFUND".                                                   
+            FROM ".PRFX."REFUND".                                                   
             $whereTheseRecords.            
             $likeTheseRecords.
-            " GROUP BY ".PRFX."TABLE_REFUND.REFUND_ID".
-            " ORDER BY ".PRFX."TABLE_REFUND.REFUND_ID ".$direction;            
+            " GROUP BY ".PRFX."REFUND.REFUND_ID".
+            " ORDER BY ".PRFX."REFUND.REFUND_ID ".$direction;            
     
     /* Restrict by pages */
     
@@ -188,7 +188,7 @@ function insert_new_refund($db, $VAR) {
     
     global $smarty;
 
-    $sql = "INSERT INTO ".PRFX."TABLE_REFUND SET            
+    $sql = "INSERT INTO ".PRFX."REFUND SET            
             REFUND_PAYEE            = ". $db->qstr( $VAR['refundPayee']                     ).",
             REFUND_DATE             = ". $db->qstr( date_to_timestamp($VAR['refundDate'])   ).",
             REFUND_TYPE             = ". $db->qstr( $VAR['refundType']                      ).",
@@ -221,7 +221,7 @@ function get_refund_details($db, $refund_id, $item = null){
     
     global $smarty;
 
-    $sql = "SELECT * FROM ".PRFX."TABLE_REFUND WHERE REFUND_ID=".$db->qstr($refund_id);
+    $sql = "SELECT * FROM ".PRFX."REFUND WHERE REFUND_ID=".$db->qstr($refund_id);
     
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
@@ -252,7 +252,7 @@ function update_refund($db, $refund_id, $VAR) {
     
     global $smarty;
 
-    $sql = "UPDATE ".PRFX."TABLE_REFUND SET
+    $sql = "UPDATE ".PRFX."REFUND SET
             REFUND_PAYEE            = ". $db->qstr( $VAR['refundPayee']                     ).",
             REFUND_DATE             = ". $db->qstr( date_to_timestamp($VAR['refundDate'])   ).",
             REFUND_TYPE             = ". $db->qstr( $VAR['refundType']                      ).",
@@ -288,7 +288,7 @@ function delete_refund($db, $refund_id) {
     
     global $smarty;
     
-    $sql = "DELETE FROM ".PRFX."TABLE_REFUND WHERE REFUND_ID=".$db->qstr($refund_id);
+    $sql = "DELETE FROM ".PRFX."REFUND WHERE REFUND_ID=".$db->qstr($refund_id);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_refund_error_message_function_'.__FUNCTION__.'_failed'));
@@ -405,7 +405,7 @@ function last_refund_id_lookup($db) {
     
     global $smarty;
 
-    $sql = 'SELECT * FROM '.PRFX.'TABLE_REFUND ORDER BY REFUND_ID DESC LIMIT 1';
+    $sql = 'SELECT * FROM '.PRFX.'REFUND ORDER BY REFUND_ID DESC LIMIT 1';
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_refund_error_message_function_'.__FUNCTION__.'_failed'));

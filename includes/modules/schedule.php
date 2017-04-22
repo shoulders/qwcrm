@@ -31,7 +31,7 @@ function display_workorder_schedule($db, $workorder_id){
     
     global $smarty;
     
-    $sql = "SELECT * FROM ".PRFX."TABLE_SCHEDULE WHERE WORKORDER_ID=".$db->qstr($workorder_id);
+    $sql = "SELECT * FROM ".PRFX."SCHEDULE WHERE WORKORDER_ID=".$db->qstr($workorder_id);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_schedule_error_message_function_'.__FUNCTION__.'_failed'));
@@ -69,7 +69,7 @@ function insert_schedule($db, $schedule_start_date, $scheduleStartTime, $schedul
     if(!validate_schedule_times($db, $schedule_start_date, $schedule_start_timestamp, $schedule_end_timestamp, $employee_id)) {return false;}        
 
     // Insert schedule item into the database
-    $sql = "INSERT INTO ".PRFX."TABLE_SCHEDULE SET
+    $sql = "INSERT INTO ".PRFX."SCHEDULE SET
             SCHEDULE_START     = ". $db->qstr( $schedule_start_timestamp  ).",
             SCHEDULE_END       = ". $db->qstr( $schedule_end_timestamp    ).",            
             EMPLOYEE_ID        = ". $db->qstr( $employee_id               ).",
@@ -116,7 +116,7 @@ function get_schedule_details($db, $schedule_id, $item = null){
     
     global $smarty;
     
-    $sql = "SELECT * FROM ".PRFX."TABLE_SCHEDULE WHERE SCHEDULE_ID=".$db->qstr($schedule_id);
+    $sql = "SELECT * FROM ".PRFX."SCHEDULE WHERE SCHEDULE_ID=".$db->qstr($schedule_id);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_schedule_error_message_function_'.__FUNCTION__.'_failed'));
@@ -148,7 +148,7 @@ function get_workorder_id_from_schedule($db, $schedule_id) {
     
     global $smarty;    
      
-    $sql = "SELECT WORKORDER_ID FROM ".PRFX."TABLE_SCHEDULE WHERE SCHEDULE_ID=".$db->qstr($schedule_id);
+    $sql = "SELECT WORKORDER_ID FROM ".PRFX."SCHEDULE WHERE SCHEDULE_ID=".$db->qstr($schedule_id);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_schedule_error_message_function_'.__FUNCTION__.'_failed'));
@@ -174,7 +174,7 @@ function get_schedule_ids_for_employee_on_date($db, $employee_id, $schedule_star
     $company_day_end   = mktime(get_company_details($db, 'CLOSING_HOUR'), get_company_details($db, 'CLOSING_MINUTE'), 59, $schedule_start_month, $schedule_start_day, $schedule_start_year);    
       
     // Look in the database for a scheduled events for the current schedule day (within business hours)
-    $sql = "SELECT SCHEDULE_ID FROM ".PRFX."TABLE_SCHEDULE       
+    $sql = "SELECT SCHEDULE_ID FROM ".PRFX."SCHEDULE       
             WHERE SCHEDULE_START >= ".$company_day_start." AND SCHEDULE_START <= ".$company_day_end."
             AND EMPLOYEE_ID ='".$employee_id.
             "' ORDER BY SCHEDULE_START ASC";
@@ -214,7 +214,7 @@ function update_schedule($db, $schedule_start_date, $scheduleStartTime, $schedul
     // Validate the submitted dates
     if(!validate_schedule_times($db, $schedule_start_date, $schedule_start_timestamp, $schedule_end_timestamp, $employee_id, $schedule_id)) {return false;}        
     
-    $sql = "UPDATE ".PRFX."TABLE_SCHEDULE SET
+    $sql = "UPDATE ".PRFX."SCHEDULE SET
         SCHEDULE_ID         =". $db->qstr( $schedule_id                 ).",
         SCHEDULE_START      =". $db->qstr( $schedule_start_timestamp    ).",
         SCHEDULE_END        =". $db->qstr( $schedule_end_timestamp      ).",
@@ -247,7 +247,7 @@ function delete_schedule($db, $schedule_id) {
     
     global $smarty;
     
-    $sql = "DELETE FROM ".PRFX."TABLE_SCHEDULE WHERE SCHEDULE_ID =".$db->qstr($schedule_id);
+    $sql = "DELETE FROM ".PRFX."SCHEDULE WHERE SCHEDULE_ID =".$db->qstr($schedule_id);
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_schedule_error_message_function_'.__FUNCTION__.'_failed'));
@@ -579,15 +579,15 @@ function build_calendar_matrix($db, $schedule_start_year, $schedule_start_month,
     $company_day_end   = datetime_to_timestamp($current_schedule_date, get_company_details($db, 'CLOSING_HOUR'), 59, 0, $clock = '24');*/
       
     // Look in the database for a scheduled events for the current schedule day (within business hours)
-    $sql = "SELECT ".PRFX."TABLE_SCHEDULE.*,
-        ".PRFX."TABLE_CUSTOMER.CUSTOMER_DISPLAY_NAME
-        FROM ".PRFX."TABLE_SCHEDULE
-        INNER JOIN ".PRFX."TABLE_WORK_ORDER
-        ON ".PRFX."TABLE_SCHEDULE.WORKORDER_ID = ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_ID
-        INNER JOIN ".PRFX."TABLE_CUSTOMER
-        ON ".PRFX."TABLE_WORK_ORDER.CUSTOMER_ID = ".PRFX."TABLE_CUSTOMER.CUSTOMER_ID
-        WHERE ".PRFX."TABLE_SCHEDULE.SCHEDULE_START >= ".$company_day_start." AND ".PRFX."TABLE_SCHEDULE.SCHEDULE_START <= ".$company_day_end."
-        AND ".PRFX."TABLE_SCHEDULE.EMPLOYEE_ID ='".$employee_id."' ORDER BY ".PRFX."TABLE_SCHEDULE.SCHEDULE_START ASC";
+    $sql = "SELECT ".PRFX."SCHEDULE.*,
+        ".PRFX."CUSTOMER.CUSTOMER_DISPLAY_NAME
+        FROM ".PRFX."SCHEDULE
+        INNER JOIN ".PRFX."WORKORDER
+        ON ".PRFX."SCHEDULE.WORKORDER_ID = ".PRFX."WORKORDER.WORK_ORDER_ID
+        INNER JOIN ".PRFX."CUSTOMER
+        ON ".PRFX."WORKORDER.CUSTOMER_ID = ".PRFX."CUSTOMER.CUSTOMER_ID
+        WHERE ".PRFX."SCHEDULE.SCHEDULE_START >= ".$company_day_start." AND ".PRFX."SCHEDULE.SCHEDULE_START <= ".$company_day_end."
+        AND ".PRFX."SCHEDULE.EMPLOYEE_ID ='".$employee_id."' ORDER BY ".PRFX."SCHEDULE.SCHEDULE_START ASC";
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_schedule_error_message_function_'.__FUNCTION__.'_failed'));
@@ -763,7 +763,7 @@ function validate_schedule_times($db, $schedule_start_date, $schedule_start_time
 
     // Load all schedule items from the database for the supplied employee for the specified day (this currently ignores company hours)
     $sql = "SELECT SCHEDULE_START, SCHEDULE_END, SCHEDULE_ID
-            FROM ".PRFX."TABLE_SCHEDULE
+            FROM ".PRFX."SCHEDULE
             WHERE SCHEDULE_START >= ".$company_day_start."
             AND SCHEDULE_END <=".$company_day_end."
             AND EMPLOYEE_ID ='".$employee_id."'

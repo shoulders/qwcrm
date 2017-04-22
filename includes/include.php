@@ -154,7 +154,7 @@ function force_page($module, $page_tpl = Null, $variables = Null, $method = 'ses
 ############################################
 
 function perform_redirect($url, $type = 'header') {
-    
+   
     // Redirect using Headers (cant always use this method in QWcrm)
     if($type == 'header') {
         header('Location: ' . $url);
@@ -409,8 +409,8 @@ function check_acl($db, $login_account_type_id, $module, $page_tpl){
     }
 
     /* Get user's Group Name by login_account_type_id */
-    $sql = 'SELECT '.PRFX.'CONFIG_EMPLOYEE_TYPE.TYPE_NAME
-            FROM '.PRFX.'CONFIG_EMPLOYEE_TYPE 
+    $sql = 'SELECT '.PRFX.'EMPLOYEE_ACCOUNT_TYPES.TYPE_NAME
+            FROM '.PRFX.'EMPLOYEE_ACCOUNT_TYPES 
             WHERE TYPE_ID ='.$db->qstr($login_account_type_id);
     
     if(!$rs = $db->execute($sql)) {        
@@ -424,7 +424,7 @@ function check_acl($db, $login_account_type_id, $module, $page_tpl){
     $module_page = $module.':'.$page_tpl;
     
     /* Check Page to see if we have access */
-    $sql = "SELECT ".$employee_acl_account_type_display_name." AS PAGE_ACL FROM ".PRFX."ACL WHERE page=".$db->qstr($module_page);
+    $sql = "SELECT ".$employee_acl_account_type_display_name." AS PAGE_ACL FROM ".PRFX."EMPLOYEE_ACL WHERE page=".$db->qstr($module_page);
 
     if(!$rs = $db->execute($sql)) {       
         force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=authentication&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_get_page_acl_failed'));
@@ -493,7 +493,7 @@ function get_qwcrm_database_version_number($db){
     
     global $smarty;
 
-    $sql = 'SELECT * FROM '.PRFX.'VERSION ORDER BY '.PRFX.'VERSION.`VERSION_INSTALLED` DESC LIMIT 1';
+    $sql = 'SELECT * FROM '.PRFX.'QWCRM_VERSION ORDER BY '.PRFX.'QWCRM_VERSION.`VERSION_INSTALLED` DESC LIMIT 1';
     
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
@@ -520,7 +520,7 @@ function get_company_details($db, $item = null){
     
     global $smarty;
 
-    $sql = 'SELECT * FROM '.PRFX.'TABLE_COMPANY';
+    $sql = 'SELECT * FROM '.PRFX.'COMPANY';
     
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
@@ -1018,7 +1018,7 @@ function timestamp_to_calendar_format($timestamp) {
 
 function get_country_codes($db) {
 
-    $sql = 'SELECT * FROM '.PRFX.'COUNTRY';
+    $sql = 'SELECT * FROM '.PRFX.'COMPANY_COUNTRY_LIST';
 
     if(!$rs = $db->execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));

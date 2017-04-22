@@ -75,17 +75,17 @@ function display_giftcerts($db, $status, $direction = 'DESC', $use_pages = false
         
         // Restrict by Employee
         if($employee_id != null){
-            $whereTheseRecords .= " AND ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_ID=".$db->qstr($employee_id);
+            $whereTheseRecords .= " AND ".PRFX."EMPLOYEE.EMPLOYEE_ID=".$db->qstr($employee_id);
         }
         
         // Restrict by Customer
         if($customer_id != null){
-            $whereTheseRecords .= " AND ".PRFX."TABLE_CUSTOMER.CUSTOMER_ID=".$db->qstr($customer_id);
+            $whereTheseRecords .= " AND ".PRFX."CUSTOMER.CUSTOMER_ID=".$db->qstr($customer_id);
         }
         
         // Restrict by Invoice
         if($invoice_id != null){
-            $whereTheseRecords .= " AND ".PRFX."TABLE_INVOICE.INVOICE_ID=".$db->qstr($customer_id);
+            $whereTheseRecords .= " AND ".PRFX."INVOICE.INVOICE_ID=".$db->qstr($customer_id);
         } 
         
         // Only return the given page records
@@ -104,13 +104,13 @@ function display_giftcerts($db, $status, $direction = 'DESC', $use_pages = false
 
     $sql = "SELECT
             ".PRFX."GIFTCERT.           *,
-            ".PRFX."TABLE_EMPLOYEE.     EMPLOYEE_ID, EMPLOYEE_DISPLAY_NAME,
-            ".PRFX."TABLE_CUSTOMER.     CUSTOMER_ID,
-            ".PRFX."TABLE_INVOICE.      INVOICE_ID           
+            ".PRFX."EMPLOYEE.     EMPLOYEE_ID, EMPLOYEE_DISPLAY_NAME,
+            ".PRFX."CUSTOMER.     CUSTOMER_ID,
+            ".PRFX."INVOICE.      INVOICE_ID           
             FROM ".PRFX."GIFTCERT
-            LEFT JOIN ".PRFX."TABLE_EMPLOYEE ON ".PRFX."GIFTCERT.EMPLOYEE_ID = ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_ID
-            LEFT JOIN ".PRFX."TABLE_CUSTOMER ON ".PRFX."GIFTCERT.CUSTOMER_ID = ".PRFX."TABLE_CUSTOMER.CUSTOMER_ID
-            LEFT JOIN ".PRFX."TABLE_INVOICE ON ".PRFX."GIFTCERT.INVOICE_ID = ".PRFX."TABLE_INVOICE.INVOICE_ID". 
+            LEFT JOIN ".PRFX."EMPLOYEE ON ".PRFX."GIFTCERT.EMPLOYEE_ID = ".PRFX."EMPLOYEE.EMPLOYEE_ID
+            LEFT JOIN ".PRFX."CUSTOMER ON ".PRFX."GIFTCERT.CUSTOMER_ID = ".PRFX."CUSTOMER.CUSTOMER_ID
+            LEFT JOIN ".PRFX."INVOICE ON ".PRFX."GIFTCERT.INVOICE_ID = ".PRFX."INVOICE.INVOICE_ID". 
             $whereTheseRecords.
             " GROUP BY ".PRFX."GIFTCERT.GIFTCERT_ID".            
             " ORDER BY ".PRFX."GIFTCERT.GIFTCERT_ID ".$direction.

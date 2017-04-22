@@ -32,7 +32,7 @@ function insert_transaction($db, $invoice_id, $workorder_id, $customer_id, $type
     
     global $smarty;
     
-    $sql = "INSERT INTO ".PRFX."TABLE_TRANSACTION SET
+    $sql = "INSERT INTO ".PRFX."PAYMENT_TRANSACTIONS SET
             DATE            = ".$db->qstr(time()                    ).",
             TYPE            = ".$db->qstr( $type                    ).",
             INVOICE_ID      = ".$db->qstr( $invoice_id              ).",
@@ -222,7 +222,7 @@ function get_active_credit_cards($db) {
     
     global $smarty;
     
-    $sql = "SELECT CARD_TYPE, CARD_NAME FROM ".PRFX."CONFIG_CC_CARDS WHERE ACTIVE='1'";
+    $sql = "SELECT CARD_TYPE, CARD_NAME FROM ".PRFX."PAYMENT_CREDIT_CARDS WHERE ACTIVE='1'";
     
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_payment_include_error_message_function_'.__FUNCTION__.'_failed'));
@@ -243,7 +243,7 @@ function get_invoice_transactions($db, $invoice_id){
     
     global $smarty;
     
-    $sql ="SELECT * FROM ".PRFX."TABLE_TRANSACTION WHERE INVOICE_ID =".$db->qstr($invoice_id);
+    $sql ="SELECT * FROM ".PRFX."PAYMENT_TRANSACTIONS WHERE INVOICE_ID =".$db->qstr($invoice_id);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_payment_error_message_function_'.__FUNCTION__.'_failed'));

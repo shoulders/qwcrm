@@ -98,11 +98,11 @@ function display_expenses($db, $direction = 'DESC', $use_pages = false, $page_no
     /* The SQL code */
     
     $sql =  "SELECT * 
-            FROM ".PRFX."TABLE_EXPENSE".                                                   
+            FROM ".PRFX."EXPENSE".                                                   
             $whereTheseRecords.            
             $likeTheseRecords.
-            " GROUP BY ".PRFX."TABLE_EXPENSE.EXPENSE_ID".
-            " ORDER BY ".PRFX."TABLE_EXPENSE.EXPENSE_ID ".$direction;            
+            " GROUP BY ".PRFX."EXPENSE.EXPENSE_ID".
+            " ORDER BY ".PRFX."EXPENSE.EXPENSE_ID ".$direction;            
     
     /* Restrict by pages */
     
@@ -189,7 +189,7 @@ function insert_expense($db, $VAR) {
     
     global $smarty;
 
-    $sql = "INSERT INTO ".PRFX."TABLE_EXPENSE SET            
+    $sql = "INSERT INTO ".PRFX."EXPENSE SET            
             EXPENSE_PAYEE           = ". $db->qstr( $VAR['expensePayee']                    ).",
             EXPENSE_DATE            = ". $db->qstr( date_to_timestamp($VAR['expenseDate'])  ).",
             EXPENSE_TYPE            = ". $db->qstr( $VAR['expenseType']                     ).",
@@ -222,7 +222,7 @@ function get_expense_details($db, $expense_id, $item = null){
     
     global $smarty;
 
-    $sql = "SELECT * FROM ".PRFX."TABLE_EXPENSE WHERE EXPENSE_ID=".$db->qstr($expense_id);
+    $sql = "SELECT * FROM ".PRFX."EXPENSE WHERE EXPENSE_ID=".$db->qstr($expense_id);
     
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
@@ -253,7 +253,7 @@ function update_expense($db, $expense_id, $VAR) {
     
     global $smarty;
 
-    $sql = "UPDATE ".PRFX."TABLE_EXPENSE SET
+    $sql = "UPDATE ".PRFX."EXPENSE SET
             EXPENSE_PAYEE           = ". $db->qstr( $VAR['expensePayee']                    ).",
             EXPENSE_DATE            = ". $db->qstr( date_to_timestamp($VAR['expenseDate'])  ).",
             EXPENSE_TYPE            = ". $db->qstr( $VAR['expenseType']                     ).",
@@ -287,7 +287,7 @@ function delete_expense($db, $expense_id){
     
     global $smarty;
     
-    $sql = "DELETE FROM ".PRFX."TABLE_EXPENSE WHERE EXPENSE_ID=".$db->qstr($expense_id);
+    $sql = "DELETE FROM ".PRFX."EXPENSE WHERE EXPENSE_ID=".$db->qstr($expense_id);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
@@ -452,7 +452,7 @@ function last_expense_id_lookup($db){
     
     global $smarty;
 
-    $sql = 'SELECT * FROM '.PRFX.'TABLE_EXPENSE ORDER BY EXPENSE_ID DESC LIMIT 1';
+    $sql = 'SELECT * FROM '.PRFX.'EXPENSE ORDER BY EXPENSE_ID DESC LIMIT 1';
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));

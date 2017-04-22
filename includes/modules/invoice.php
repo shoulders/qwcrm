@@ -35,34 +35,34 @@ function display_invoices($db, $status = 'all', $direction = 'DESC', $use_pages 
     // Status Restriction
     if($status != 'all') {
         // Restrict by status
-        $whereTheseRecords = " WHERE ".PRFX."TABLE_INVOICE.IS_PAID=".$db->qstr($status);       
+        $whereTheseRecords = " WHERE ".PRFX."INVOICE.IS_PAID=".$db->qstr($status);       
     } else {            
         // Do not restrict by status
-        $whereTheseRecords = " WHERE ".PRFX."TABLE_INVOICE.INVOICE_ID = *";
+        $whereTheseRecords = " WHERE ".PRFX."INVOICE.INVOICE_ID = *";
     } 
 
     // Restrict by Employee
     if($employee_id != null){
-        $whereTheseRecords .= " AND ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_ID=".$db->qstr($employee_id);
+        $whereTheseRecords .= " AND ".PRFX."EMPLOYEE.EMPLOYEE_ID=".$db->qstr($employee_id);
     }        
 
     // Restrict by Customer
     if($customer_id != null){
-        $whereTheseRecords .= " AND ".PRFX."TABLE_CUSTOMER.CUSTOMER_ID=".$db->qstr($customer_id);
+        $whereTheseRecords .= " AND ".PRFX."CUSTOMER.CUSTOMER_ID=".$db->qstr($customer_id);
     }
     
     /* The SQL code */
     
     $sql = "SELECT
-        ".PRFX."TABLE_EMPLOYEE.     *,
-        ".PRFX."TABLE_CUSTOMER.     CUSTOMER_DISPLAY_NAME, CUSTOMER_ADDRESS, CUSTOMER_CITY, CUSTOMER_STATE, CUSTOMER_ZIP, CUSTOMER_PHONE, CUSTOMER_WORK_PHONE, CUSTOMER_MOBILE_PHONE, CUSTOMER_EMAIL, CUSTOMER_TYPE, CUSTOMER_FIRST_NAME, CUSTOMER_LAST_NAME, CREATE_DATE, LAST_ACTIVE,
-        ".PRFX."TABLE_INVOICE.      *
-        FROM ".PRFX."TABLE_INVOICE
-        LEFT JOIN ".PRFX."TABLE_EMPLOYEE ON ".PRFX."TABLE_INVOICE.EMPLOYEE_ID = ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_ID
-        LEFT JOIN ".PRFX."TABLE_CUSTOMER ON ".PRFX."TABLE_INVOICE.CUSTOMER_ID = ".PRFX."TABLE_CUSTOMER.CUSTOMER_ID".
+        ".PRFX."EMPLOYEE.     *,
+        ".PRFX."CUSTOMER.     CUSTOMER_DISPLAY_NAME, CUSTOMER_ADDRESS, CUSTOMER_CITY, CUSTOMER_STATE, CUSTOMER_ZIP, CUSTOMER_PHONE, CUSTOMER_WORK_PHONE, CUSTOMER_MOBILE_PHONE, CUSTOMER_EMAIL, CUSTOMER_TYPE, CUSTOMER_FIRST_NAME, CUSTOMER_LAST_NAME, CREATE_DATE, LAST_ACTIVE,
+        ".PRFX."INVOICE.      *
+        FROM ".PRFX."INVOICE
+        LEFT JOIN ".PRFX."EMPLOYEE ON ".PRFX."INVOICE.EMPLOYEE_ID = ".PRFX."EMPLOYEE.EMPLOYEE_ID
+        LEFT JOIN ".PRFX."CUSTOMER ON ".PRFX."INVOICE.CUSTOMER_ID = ".PRFX."CUSTOMER.CUSTOMER_ID".
         $whereTheseRecords.
-        " GROUP BY ".PRFX."TABLE_INVOICE.INVOICE_ID".            
-        " ORDER BY ".PRFX."TABLE_INVOICE.INVOICE_ID ".$direction;
+        " GROUP BY ".PRFX."INVOICE.INVOICE_ID".            
+        " ORDER BY ".PRFX."INVOICE.INVOICE_ID ".$direction;
             
     /* Restrict by pages */
     
@@ -149,7 +149,7 @@ function insert_invoice($db, $customer_id, $workorder_id, $discount_rate, $tax_r
     
     global $smarty;
     
-    $sql = "INSERT INTO ".PRFX."TABLE_INVOICE SET
+    $sql = "INSERT INTO ".PRFX."INVOICE SET
             
             CUSTOMER_ID     =". $db->qstr( $customer_id             ).",
             WORKORDER_ID    =". $db->qstr( $workorder_id            ).",
@@ -183,7 +183,7 @@ function insert_labour_items($db, $invoice_id, $labour_description, $labour_rate
         
         $i = 1;
         
-        $sql = "INSERT INTO ".PRFX."TABLE_INVOICE_LABOUR (INVOICE_ID, INVOICE_LABOUR_DESCRIPTION, INVOICE_LABOUR_RATE, INVOICE_LABOUR_UNIT, INVOICE_LABOUR_SUBTOTAL) VALUES ";
+        $sql = "INSERT INTO ".PRFX."INVOICE_LABOUR (INVOICE_ID, INVOICE_LABOUR_DESCRIPTION, INVOICE_LABOUR_RATE, INVOICE_LABOUR_UNIT, INVOICE_LABOUR_SUBTOTAL) VALUES ";
         
         foreach($labour_hour as $key) {
             
@@ -226,7 +226,7 @@ function insert_parts_items($db, $invoice_id, $parts_description, $parts_price, 
         
         $i = 1;
         
-        $sql = "INSERT INTO ".PRFX."TABLE_INVOICE_PARTS (INVOICE_ID, INVOICE_PARTS_DESCRIPTION, INVOICE_PARTS_AMOUNT, INVOICE_PARTS_COUNT, INVOICE_PARTS_SUBTOTAL) VALUES ";
+        $sql = "INSERT INTO ".PRFX."INVOICE_PARTS (INVOICE_ID, INVOICE_PARTS_DESCRIPTION, INVOICE_PARTS_AMOUNT, INVOICE_PARTS_COUNT, INVOICE_PARTS_SUBTOTAL) VALUES ";
         
         foreach($parts_qty as $key) {
             
@@ -264,7 +264,7 @@ function insert_invoice_labour_rates_item($db, $VAR){
     
     global $smarty;
     
-    $sql = "INSERT INTO ".PRFX."TABLE_LABOUR_RATE SET
+    $sql = "INSERT INTO ".PRFX."INVOICE_LABOUR_RATES SET
             LABOUR_RATE_NAME     =". $db->qstr( $VAR['display']      ).",
             LABOUR_RATE_AMOUNT   =". $db->qstr( $VAR['amount']       ).",
             LABOUR_RATE_COST     =". $db->qstr( $VAR['cost']         ).",
@@ -289,7 +289,7 @@ function get_invoice_details($db, $invoice_id, $item = null) {
     
     global $smarty;
 
-    $sql = "SELECT * FROM ".PRFX."TABLE_INVOICE WHERE INVOICE_ID =".$db->qstr($invoice_id);
+    $sql = "SELECT * FROM ".PRFX."INVOICE WHERE INVOICE_ID =".$db->qstr($invoice_id);
     
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_invoice_include_error_message_function_'.__FUNCTION__.'_failed'));
@@ -316,7 +316,7 @@ function get_invoice_details($db, $invoice_id, $item = null) {
 
 function get_active_labour_rate_items($db) {
     
-    $sql = "SELECT * FROM ".PRFX."TABLE_LABOUR_RATE WHERE LABOUR_RATE_ACTIVE='1'";
+    $sql = "SELECT * FROM ".PRFX."INVOICE_LABOUR_RATES WHERE LABOUR_RATE_ACTIVE='1'";
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_invoice_error_message_function_'.__FUNCTION__.'_count'));
@@ -341,7 +341,7 @@ function get_invoice_labour_items($db, $invoice_id) {
     
     global $smarty;
     
-    $sql = "SELECT * FROM ".PRFX."TABLE_INVOICE_LABOUR WHERE INVOICE_ID=".$db->qstr( $invoice_id );
+    $sql = "SELECT * FROM ".PRFX."INVOICE_LABOUR WHERE INVOICE_ID=".$db->qstr( $invoice_id );
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_invoice_error_message_function_'.__FUNCTION__.'_count'));
@@ -365,7 +365,7 @@ function get_invoice_labour_item_details($db, $labour_id, $item = null) {
     
     global $smarty;
 
-    $sql = "SELECT * FROM ".PRFX."TABLE_INVOICE_LABOUR WHERE INVOICE_LABOUR_ID =".$db->qstr($labour_id);
+    $sql = "SELECT * FROM ".PRFX."INVOICE_LABOUR WHERE INVOICE_LABOUR_ID =".$db->qstr($labour_id);
     
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_invoice_include_error_message_function_'.__FUNCTION__.'_failed'));
@@ -394,7 +394,7 @@ function get_invoice_parts_items($db, $invoice_id) {
     
     global $smarty;
     
-    $sql = "SELECT * FROM ".PRFX."TABLE_INVOICE_PARTS WHERE INVOICE_ID=".$db->qstr( $invoice_id );
+    $sql = "SELECT * FROM ".PRFX."INVOICE_PARTS WHERE INVOICE_ID=".$db->qstr( $invoice_id );
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_invoice_error_message_function_'.__FUNCTION__.'_count'));
@@ -419,7 +419,7 @@ function get_invoice_parts_item_details($db, $parts_id, $item = null) {
     
     global $smarty;
 
-    $sql = "SELECT * FROM ".PRFX."TABLE_INVOICE_PARTS WHERE INVOICE_PARTS_ID =".$db->qstr($parts_id);
+    $sql = "SELECT * FROM ".PRFX."INVOICE_PARTS WHERE INVOICE_PARTS_ID =".$db->qstr($parts_id);
     
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_invoice_include_error_message_function_'.__FUNCTION__.'_failed'));
@@ -449,7 +449,7 @@ function get_invoice_labour_rates_items($db) {
     global $smarty;
     
     // Loads rates from database
-    $sql = "SELECT * FROM ".PRFX."TABLE_LABOUR_RATE ORDER BY LABOUR_RATE_ID ASC";
+    $sql = "SELECT * FROM ".PRFX."INVOICE_LABOUR_RATES ORDER BY LABOUR_RATE_ID ASC";
     
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_invoice_include_error_message_function_'.__FUNCTION__.'_failed'));
@@ -470,7 +470,7 @@ function update_invoice($db, $invoice_id, $date, $due_date, $discount_rate) {
     
     global $smarty;
     
-    $sql = "UPDATE ".PRFX."TABLE_INVOICE SET
+    $sql = "UPDATE ".PRFX."INVOICE SET
             DATE                =". $db->qstr( date_to_timestamp($date)     ).",
             DUE_DATE            =". $db->qstr( date_to_timestamp($due_date) ).",
             DISCOUNT_RATE       =". $db->qstr( $discount_rate               )."
@@ -491,7 +491,7 @@ function update_invoice_transaction_only($db, $invoice_id, $paid_status, $paid_d
     
     global $smarty;
     
-    $sql = "UPDATE ".PRFX."TABLE_INVOICE SET
+    $sql = "UPDATE ".PRFX."INVOICE SET
             IS_PAID             =". $db->qstr( $paid_status ).",
             PAID_DATE           =". $db->qstr( $paid_date   ).",        
             PAID_AMOUNT         =". $db->qstr( $paid_amount ).",                    
@@ -513,7 +513,7 @@ function update_invoice_full($db, $invoice_id, $customer_id, $workorder_id, $emp
     
     global $smarty;
     
-    $sql = "UPDATE ".PRFX."TABLE_INVOICE SET
+    $sql = "UPDATE ".PRFX."INVOICE SET
         
             CUSTOMER_ID         =". $db->qstr( $customer_id     ).",
             WORKORDER_ID        =". $db->qstr( $workorder_id    ).",
@@ -547,7 +547,7 @@ function update_invoice_labour_rates_item($db, $labour_rate_id, $VAR){
     
     global $smarty;
     
-    $sql = "UPDATE ".PRFX."TABLE_LABOUR_RATE SET
+    $sql = "UPDATE ".PRFX."INVOICE_LABOUR_RATES SET
         LABOUR_RATE_NAME     =". $db->qstr( $VAR['display']         ).",
         LABOUR_RATE_AMOUNT   =". $db->qstr( $VAR['amount']          ).",
         LABOUR_RATE_COST     =". $db->qstr( $VAR['cost']            ).",
@@ -575,7 +575,7 @@ function delete_invoice($db, $invoice_id) {
     
     global $smarty;
     
-    $sql = "DELETE FROM ".PRFX."TABLE_INVOICE WHERE INVOICE_ID=".$db->qstr($invoice_id);
+    $sql = "DELETE FROM ".PRFX."INVOICE WHERE INVOICE_ID=".$db->qstr($invoice_id);
 
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_invoice_include_error_message_function_'.__FUNCTION__.'_failed'));
@@ -596,7 +596,7 @@ function delete_invoice_labour_item($db, $labour_id) {
     
     global $smarty;
     
-    $sql = "DELETE FROM " . PRFX . "TABLE_INVOICE_LABOUR WHERE INVOICE_LABOUR_ID=" . $db->qstr($labour_id);
+    $sql = "DELETE FROM " . PRFX . "INVOICE_LABOUR WHERE INVOICE_LABOUR_ID=" . $db->qstr($labour_id);
 
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_invoice_include_error_message_function_'.__FUNCTION__.'_failed'));
@@ -616,7 +616,7 @@ function delete_invoice_parts_item($db, $parts_id) {
     
     global $smarty;
     
-    $sql = "DELETE FROM " . PRFX . "TABLE_INVOICE_PARTS WHERE INVOICE_PARTS_ID=" . $db->qstr($parts_id);
+    $sql = "DELETE FROM " . PRFX . "INVOICE_PARTS WHERE INVOICE_PARTS_ID=" . $db->qstr($parts_id);
 
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_invoice_include_error_message_function_'.__FUNCTION__.'_failed'));
@@ -637,7 +637,7 @@ function delete_invoice_rates_item($db, $labour_rate_id){
     
     global $smarty;
     
-    $sql = "DELETE FROM ".PRFX."TABLE_LABOUR_RATE WHERE LABOUR_RATE_ID =".$labour_rate_id;
+    $sql = "DELETE FROM ".PRFX."INVOICE_LABOUR_RATES WHERE LABOUR_RATE_ID =".$labour_rate_id;
 
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_invoice_include_error_message_function_'.__FUNCTION__.'_failed'));
@@ -656,7 +656,7 @@ function labour_sub_total($db, $invoice_id) {
     
     global $smarty;
     
-    $sql = "SELECT SUM(INVOICE_LABOUR_SUBTOTAL) AS labour_sub_total_sum FROM " . PRFX . "TABLE_INVOICE_LABOUR WHERE INVOICE_ID=" . $db->qstr($invoice_id);
+    $sql = "SELECT SUM(INVOICE_LABOUR_SUBTOTAL) AS labour_sub_total_sum FROM " . PRFX . "INVOICE_LABOUR WHERE INVOICE_ID=" . $db->qstr($invoice_id);
     
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_invoice_include_error_message_function_'.__FUNCTION__.'_failed'));
@@ -677,7 +677,7 @@ function parts_sub_total($db, $invoice_id) {
     
     global $smarty;
     
-    $sql = "SELECT SUM(INVOICE_PARTS_SUBTOTAL) AS parts_sub_total_sum FROM " . PRFX . "TABLE_INVOICE_PARTS WHERE INVOICE_ID=" . $db->qstr($invoice_id);
+    $sql = "SELECT SUM(INVOICE_PARTS_SUBTOTAL) AS parts_sub_total_sum FROM " . PRFX . "INVOICE_PARTS WHERE INVOICE_ID=" . $db->qstr($invoice_id);
     
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_invoice_include_error_message_function_'.__FUNCTION__.'_failed'));
@@ -705,7 +705,7 @@ function recalculate_invoice_totals($db, $invoice_id) {
     $total = ($sub_total - $discount) + $tax;    
     $balance = $total - $paid_amount = get_invoice_details($db, $invoice_id, 'PAID_AMOUNT');
 
-    $sql = "UPDATE ".PRFX."TABLE_INVOICE SET        
+    $sql = "UPDATE ".PRFX."INVOICE SET        
             SUB_TOTAL           =". $db->qstr( $sub_total       ).",            
             DISCOUNT            =". $db->qstr( $discount        ).",
             TAX                 =". $db->qstr( $tax             ).",             
@@ -728,7 +728,7 @@ function check_invoice_has_workorder($db, $invoice_id) {
     
     global $smarty;
     
-    $sql = "SELECT WORKORDER_ID FROM ".PRFX."TABLE_INVOICE WHERE INVOICE_ID=".$invoice_id;
+    $sql = "SELECT WORKORDER_ID FROM ".PRFX."INVOICE WHERE INVOICE_ID=".$invoice_id;
     
     if(!$rs = $db->Execute($sql)) {        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
@@ -782,7 +782,7 @@ function upload_invoice_labour_rates_csv($db, $VAR) {
             // Empty Current Invoice Rates Table (if set)
             if($VAR['empty_invoice_rates'] === '1'){
                 
-                $sql = "TRUNCATE ".PRFX."TABLE_LABOUR_RATE";
+                $sql = "TRUNCATE ".PRFX."INVOICE_LABOUR_RATES";
                 
                 if(!$rs = $db->execute($sql)) {
                 force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
@@ -795,7 +795,7 @@ function upload_invoice_labour_rates_csv($db, $VAR) {
             // Read CSV data and insert into database
             while (($data = fgetcsv($handle, 1000, ',')) !== FALSE) {
 
-                $sql = "INSERT INTO ".PRFX."TABLE_LABOUR_RATE(LABOUR_RATE_NAME,LABOUR_RATE_AMOUNT,LABOUR_RATE_COST,LABOUR_RATE_ACTIVE,LABOUR_TYPE,LABOUR_MANUF) VALUES ('$data[1]','$data[2]','$data[3]','$data[4]','$data[5]','$data[6]')";
+                $sql = "INSERT INTO ".PRFX."INVOICE_LABOUR_RATES(LABOUR_RATE_NAME,LABOUR_RATE_AMOUNT,LABOUR_RATE_COST,LABOUR_RATE_ACTIVE,LABOUR_TYPE,LABOUR_MANUF) VALUES ('$data[1]','$data[2]','$data[3]','$data[4]','$data[5]','$data[6]')";
 
                 if(!$rs = $db->execute($sql)) {
                 force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');

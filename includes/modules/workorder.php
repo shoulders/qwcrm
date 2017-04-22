@@ -30,14 +30,14 @@ function display_single_workorder($db, $workorder_id){
     
     global $smarty;
     
-     $sql = "SELECT ".PRFX."TABLE_WORK_ORDER.*,
-            ".PRFX."TABLE_WORK_ORDER.   WORK_ORDER_STATUS,
-            ".PRFX."TABLE_CUSTOMER.     *,            
-            ".PRFX."TABLE_EMPLOYEE.     EMPLOYEE_ID, EMPLOYEE_EMAIL, EMPLOYEE_DISPLAY_NAME, EMPLOYEE_TYPE, EMPLOYEE_WORK_PHONE, EMPLOYEE_HOME_PHONE, EMPLOYEE_MOBILE_PHONE            
-            FROM ".PRFX."TABLE_WORK_ORDER
-            LEFT JOIN ".PRFX."TABLE_CUSTOMER ON ".PRFX."TABLE_WORK_ORDER.CUSTOMER_ID           = ".PRFX."TABLE_CUSTOMER.CUSTOMER_ID
-            LEFT JOIN ".PRFX."TABLE_EMPLOYEE ON ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_ASSIGN_TO  = ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_ID             
-            WHERE ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_ID =".$db->qstr($workorder_id);
+     $sql = "SELECT ".PRFX."WORKORDER.*,
+            ".PRFX."WORKORDER.   WORK_ORDER_STATUS,
+            ".PRFX."CUSTOMER.     *,            
+            ".PRFX."EMPLOYEE.     EMPLOYEE_ID, EMPLOYEE_EMAIL, EMPLOYEE_DISPLAY_NAME, EMPLOYEE_TYPE, EMPLOYEE_WORK_PHONE, EMPLOYEE_HOME_PHONE, EMPLOYEE_MOBILE_PHONE            
+            FROM ".PRFX."WORKORDER
+            LEFT JOIN ".PRFX."CUSTOMER ON ".PRFX."WORKORDER.CUSTOMER_ID           = ".PRFX."CUSTOMER.CUSTOMER_ID
+            LEFT JOIN ".PRFX."EMPLOYEE ON ".PRFX."WORKORDER.WORK_ORDER_ASSIGN_TO  = ".PRFX."EMPLOYEE.EMPLOYEE_ID             
+            WHERE ".PRFX."WORKORDER.WORK_ORDER_ID =".$db->qstr($workorder_id);
 
     if(!$rs = $db->Execute($sql)) {        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
@@ -71,34 +71,34 @@ function display_workorders($db, $status = 'all', $direction = 'DESC', $use_page
     // Status Restriction
     if($status != 'all') {
         // Restrict by status
-        $whereTheseRecords = " WHERE ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_STATUS= ".$db->qstr($status);       
+        $whereTheseRecords = " WHERE ".PRFX."WORKORDER.WORK_ORDER_STATUS= ".$db->qstr($status);       
     } else {            
         // Do not restrict by status
-        $whereTheseRecords = " WHERE ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_ID = *";
+        $whereTheseRecords = " WHERE ".PRFX."WORKORDER.WORK_ORDER_ID = *";
     }        
 
     // Restrict by Employee
     if($employee_id != null){
-        $whereTheseRecords .= " AND ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_ID=".$db->qstr($employee_id);
+        $whereTheseRecords .= " AND ".PRFX."EMPLOYEE.EMPLOYEE_ID=".$db->qstr($employee_id);
     }
 
     // Restrict by Customer
     if($customer_id != null){
-        $whereTheseRecords .= " AND ".PRFX."TABLE_CUSTOMER.CUSTOMER_ID=".$db->qstr($customer_id);
+        $whereTheseRecords .= " AND ".PRFX."CUSTOMER.CUSTOMER_ID=".$db->qstr($customer_id);
     }
     
     /* The SQL code */
     
     $sql =  "SELECT
-            ".PRFX."TABLE_EMPLOYEE.     EMPLOYEE_DISPLAY_NAME,
-            ".PRFX."TABLE_CUSTOMER.     CUSTOMER_ID, CUSTOMER_DISPLAY_NAME,
-            ".PRFX."TABLE_WORK_ORDER.   WORK_ORDER_ID, WORK_ORDER_OPEN_DATE, WORK_ORDER_CLOSE_DATE, WORK_ORDER_ASSIGN_TO, WORK_ORDER_SCOPE, WORK_ORDER_STATUS            
-            FROM ".PRFX."TABLE_WORK_ORDER
-            LEFT JOIN ".PRFX."TABLE_EMPLOYEE ON ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_ASSIGN_TO   = ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_ID   
-            LEFT JOIN ".PRFX."TABLE_CUSTOMER ON ".PRFX."TABLE_WORK_ORDER.CUSTOMER_ID            = ".PRFX."TABLE_CUSTOMER.CUSTOMER_ID".                 
+            ".PRFX."EMPLOYEE.     EMPLOYEE_DISPLAY_NAME,
+            ".PRFX."CUSTOMER.     CUSTOMER_ID, CUSTOMER_DISPLAY_NAME,
+            ".PRFX."WORKORDER.   WORK_ORDER_ID, WORK_ORDER_OPEN_DATE, WORK_ORDER_CLOSE_DATE, WORK_ORDER_ASSIGN_TO, WORK_ORDER_SCOPE, WORK_ORDER_STATUS            
+            FROM ".PRFX."WORKORDER
+            LEFT JOIN ".PRFX."EMPLOYEE ON ".PRFX."WORKORDER.WORK_ORDER_ASSIGN_TO   = ".PRFX."EMPLOYEE.EMPLOYEE_ID   
+            LEFT JOIN ".PRFX."CUSTOMER ON ".PRFX."WORKORDER.CUSTOMER_ID            = ".PRFX."CUSTOMER.CUSTOMER_ID".                 
             $whereTheseRecords.            
-            " GROUP BY ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_ID".
-            " ORDER BY ".PRFX."TABLE_WORK_ORDER.WORK_ORDER_ID ".$direction;            
+            " GROUP BY ".PRFX."WORKORDER.WORK_ORDER_ID".
+            " ORDER BY ".PRFX."WORKORDER.WORK_ORDER_ID ".$direction;            
     
     /* Restrict by pages */
     
@@ -185,13 +185,13 @@ function display_workorder_notes($db, $workorder_id){
     global $smarty;
     
     $sql = "SELECT
-            ".PRFX."TABLE_WORK_ORDER_NOTES.                 *,
-            ".PRFX."TABLE_EMPLOYEE.                         EMPLOYEE_DISPLAY_NAME
+            ".PRFX."WORKORDER_NOTES.                 *,
+            ".PRFX."EMPLOYEE.                         EMPLOYEE_DISPLAY_NAME
             FROM
-            ".PRFX."TABLE_WORK_ORDER_NOTES,
-            ".PRFX."TABLE_EMPLOYEE
+            ".PRFX."WORKORDER_NOTES,
+            ".PRFX."EMPLOYEE
             WHERE WORK_ORDER_ID=".$db->qstr($workorder_id)."
-            AND ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_ID = ".PRFX."TABLE_WORK_ORDER_NOTES.WORK_ORDER_EMPLOYEE_ID";
+            AND ".PRFX."EMPLOYEE.EMPLOYEE_ID = ".PRFX."WORKORDER_NOTES.WORK_ORDER_EMPLOYEE_ID";
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
@@ -213,14 +213,14 @@ function display_workorder_history($db, $workorder_id){
     global $smarty;
     
     $sql = "SELECT 
-            ".PRFX."TABLE_WORK_ORDER_HISTORY.*,
-            ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_DISPLAY_NAME 
+            ".PRFX."WORKORDER_HISTORY.*,
+            ".PRFX."EMPLOYEE.EMPLOYEE_DISPLAY_NAME 
             FROM 
-            ".PRFX."TABLE_WORK_ORDER_HISTORY, 
-            ".PRFX."TABLE_EMPLOYEE 
-            WHERE ".PRFX."TABLE_WORK_ORDER_HISTORY.WORK_ORDER_ID=".$db->qstr($workorder_id)." 
-            AND ".PRFX."TABLE_EMPLOYEE.EMPLOYEE_ID = ".PRFX."TABLE_WORK_ORDER_HISTORY.ENTERED_BY
-            ORDER BY ".PRFX."TABLE_WORK_ORDER_HISTORY.HISTORY_ID";
+            ".PRFX."WORKORDER_HISTORY, 
+            ".PRFX."EMPLOYEE 
+            WHERE ".PRFX."WORKORDER_HISTORY.WORK_ORDER_ID=".$db->qstr($workorder_id)." 
+            AND ".PRFX."EMPLOYEE.EMPLOYEE_ID = ".PRFX."WORKORDER_HISTORY.ENTERED_BY
+            ORDER BY ".PRFX."WORKORDER_HISTORY.HISTORY_ID";
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
@@ -247,7 +247,7 @@ function insert_workorder($db, $customer_id, $created_by, $scope, $workorder_des
     stripslashes($workorder_description);
     stripslashes($workorder_comments);    
 
-    $sql = "INSERT INTO ".PRFX."TABLE_WORK_ORDER SET 
+    $sql = "INSERT INTO ".PRFX."WORKORDER SET 
             CUSTOMER_ID                                 = " . $db->qstr( $customer_id           ).",
             WORK_ORDER_OPEN_DATE                        = " . $db->qstr( time()                 ).",
             WORK_ORDER_STATUS                           = " . $db->qstr( 1                      ).",            
@@ -290,7 +290,7 @@ function insert_workorder_history_note($db, $workorder_id, $workorder_history_no
     
     global $smarty;
     
-    $sql = "INSERT INTO ".PRFX."TABLE_WORK_ORDER_HISTORY SET
+    $sql = "INSERT INTO ".PRFX."WORKORDER_HISTORY SET
         WORK_ORDER_ID   = " . $db->qstr( $workorder_id              ).",
         DATE            = " . $db->qstr( time()                     ).",
         NOTE            = " . $db->qstr( $workorder_history_note    ).",
@@ -319,7 +319,7 @@ function insert_workorder_note($db, $workorder_id, $workorder_note){
     // Remove Extra Slashes caused by Magic Quotes    
     stripslashes($workorder_note);
 
-    $sql = "INSERT INTO ".PRFX."TABLE_WORK_ORDER_NOTES SET 
+    $sql = "INSERT INTO ".PRFX."WORKORDER_NOTES SET 
             WORK_ORDER_ID                  =". $db->qstr( $workorder_id            ).",             
             WORK_ORDER_EMPLOYEE_ID         =". $db->qstr( $_SESSION['login_id']    ).",
             WORK_ORDER_NOTES_DATE          =". $db->qstr( time()                   ).",
@@ -361,7 +361,7 @@ function get_workorder_details($db, $workorder_id, $item = null){
     
     global $smarty;
 
-    $sql = "SELECT * FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_ID=".$db->qstr($workorder_id);
+    $sql = "SELECT * FROM ".PRFX."WORKORDER WHERE WORK_ORDER_ID=".$db->qstr($workorder_id);
     
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_include_error_message_function_'.__FUNCTION__.'_failed'));
@@ -391,7 +391,7 @@ function get_workorder_note($db, $workorder_note_id, $item = null){
     
     global $smarty;
     
-    $sql = "SELECT * FROM ".PRFX."TABLE_WORK_ORDER_NOTES WHERE WORK_ORDER_NOTES_ID=".$db->qstr( $workorder_note_id );    
+    $sql = "SELECT * FROM ".PRFX."WORKORDER_NOTES WHERE WORK_ORDER_NOTES_ID=".$db->qstr( $workorder_note_id );    
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_customer_error_message_function_'.__FUNCTION__.'_failed'));
@@ -420,7 +420,7 @@ function get_workorder_notes($db, $workorder_id) {
     
     global $smarty;
     
-    $sql = "SELECT * FROM ".PRFX."CUSTOMER_NOTE WHERE CUSTOMER_ID=".$db->qstr( $workorder_id );
+    $sql = "SELECT * FROM ".PRFX."CUSTOMER_NOTES WHERE CUSTOMER_ID=".$db->qstr( $workorder_id );
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
@@ -456,7 +456,7 @@ function update_workorder_scope_and_description($db, $workorder_id, $workorder_s
     // Remove Extra Slashes caused by Magic Quotes    
     stripslashes($workorder_description);
 
-    $sql = "UPDATE ".PRFX."TABLE_WORK_ORDER SET
+    $sql = "UPDATE ".PRFX."WORKORDER SET
             WORK_ORDER_SCOPE        =".$db->qstr( $workorder_scope          ).",
             WORK_ORDER_DESCRIPTION  =".$db->qstr( $workorder_description    ).",
             LAST_ACTIVE             =".$db->qstr( time()                    )."
@@ -495,7 +495,7 @@ function update_workorder_comments($db, $workorder_id, $workorder_comments){
     // Remove Extra Slashes caused by Magic Quotes    
     stripslashes($workorder_comments);
 
-    $sql = "UPDATE ".PRFX."TABLE_WORK_ORDER SET
+    $sql = "UPDATE ".PRFX."WORKORDER SET
             WORK_ORDER_COMMENT              =".$db->qstr( $workorder_comments   ).",
             LAST_ACTIVE                     =".$db->qstr( time()                )."
             WHERE WORK_ORDER_ID             =".$db->qstr( $workorder_id         );
@@ -533,7 +533,7 @@ function update_workorder_resolution($db, $workorder_id, $workorder_resolution){
     // Remove Extra Slashes caused by Magic Quotes    
     stripslashes($workorder_resolution);
 
-    $sql = "UPDATE ".PRFX."TABLE_WORK_ORDER SET
+    $sql = "UPDATE ".PRFX."WORKORDER SET
             WORK_ORDER_RESOLUTION   = " . $db->qstr( $workorder_resolution ).",
             LAST_ACTIVE             = " . $db->qstr( time()                )."
             WHERE  WORK_ORDER_ID    = " . $db->qstr( $workorder_id         );
@@ -568,7 +568,7 @@ function update_workorder_status($db, $workorder_id, $assign_status){
     
     global $smarty;
 
-    $sql = "UPDATE ".PRFX."TABLE_WORK_ORDER SET
+    $sql = "UPDATE ".PRFX."WORKORDER SET
             WORK_ORDER_STATUS       = " . $db->qstr( $assign_status     ).",
             LAST_ACTIVE             = " . $db->qstr( time()             )."
             WHERE WORK_ORDER_ID     = " . $db->qstr( $workorder_id      );
@@ -581,7 +581,7 @@ function update_workorder_status($db, $workorder_id, $assign_status){
         
         if ($assign_status == '0'){
             
-            $sql = "UPDATE ".PRFX."TABLE_WORK_ORDER SET 
+            $sql = "UPDATE ".PRFX."WORKORDER SET 
                     WORK_ORDER_STATUS       = '1',
                     WORK_ORDER_ASSIGN_TO    = '0'                    
                     WHERE WORK_ORDER_ID     = " . $workorder_id;
@@ -629,7 +629,7 @@ function update_workorder_last_active($db, $workorder_id){
     
     global $smarty;
     
-    $sql = "UPDATE ".PRFX."TABLE_WORK_ORDER SET LAST_ACTIVE=".$db->qstr(time())." WHERE WORK_ORDER_ID=".$db->qstr($workorder_id);
+    $sql = "UPDATE ".PRFX."WORKORDER SET LAST_ACTIVE=".$db->qstr(time())." WHERE WORK_ORDER_ID=".$db->qstr($workorder_id);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
@@ -646,7 +646,7 @@ function update_workorder_note($db, $workorder_note_id, $date, $note) {
     
     global $smarty;
     
-    $sql = "UPDATE ".PRFX."TABLE_WORK_ORDER_NOTES SET
+    $sql = "UPDATE ".PRFX."WORKORDER_NOTES SET
             WORK_ORDER_EMPLOYEE_ID          =". $db->qstr( $_SESSION['login_id']    ).",
             WORK_ORDER_NOTES_DATE           =". $db->qstr( $date                    ).",
             WORK_ORDER_NOTES_DESCRIPTION    =". $db->qstr( $note                    )."
@@ -673,7 +673,7 @@ function close_workorder_with_invoice($db, $workorder_id, $workorder_resolution)
     stripslashes($workorder_resolution);
 
     /* Insert resolution and close information */
-    $sql = "UPDATE ".PRFX."TABLE_WORK_ORDER SET
+    $sql = "UPDATE ".PRFX."WORKORDER SET
             WORK_ORDER_STATUS          = ". $db->qstr( 9                       ).",
             WORK_ORDER_CLOSE_DATE      = ". $db->qstr( time()                  ).",
             WORK_ORDER_RESOLUTION      = ". $db->qstr( $workorder_resolution   ).",
@@ -715,7 +715,7 @@ function close_workorder_without_invoice($db, $workorder_id, $workorder_resoluti
     stripslashes($workorder_resolution);
 
     /* Insert resolution and close information */
-    $sql = "UPDATE ".PRFX."TABLE_WORK_ORDER SET
+    $sql = "UPDATE ".PRFX."WORKORDER SET
             WORK_ORDER_STATUS          = ". $db->qstr( 6                       ).",
             WORK_ORDER_CLOSE_DATE      = ". $db->qstr( time()                  ).",
             WORK_ORDER_RESOLUTION      = ". $db->qstr( $workorder_resolution   ).",
@@ -768,7 +768,7 @@ function delete_workorder($db, $workorder_id) {
     }
     
     // Delete the workorder primary record
-    $sql = "DELETE FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_ID=".$db->qstr($workorder_id);
+    $sql = "DELETE FROM ".PRFX."WORKORDER WHERE WORK_ORDER_ID=".$db->qstr($workorder_id);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
@@ -777,7 +777,7 @@ function delete_workorder($db, $workorder_id) {
     // Delete the workorder history
     } else {        
        
-        $sql = "DELETE FROM ".PRFX."TABLE_WORK_ORDER_HISTORY WHERE WORK_ORDER_ID=".$db->qstr($workorder_id);
+        $sql = "DELETE FROM ".PRFX."WORKORDER_HISTORY WHERE WORK_ORDER_ID=".$db->qstr($workorder_id);
 
         if(!$rs = $db->Execute($sql)) {
             force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
@@ -786,7 +786,7 @@ function delete_workorder($db, $workorder_id) {
         // Delete the workorder notes    
         } else {
             
-            $sql = "DELETE FROM ".PRFX."TABLE_WORK_ORDER_NOTES WHERE WORK_ORDER_ID=".$db->qstr($workorder_id);
+            $sql = "DELETE FROM ".PRFX."WORKORDER_NOTES WHERE WORK_ORDER_ID=".$db->qstr($workorder_id);
 
             if(!$rs = $db->Execute($sql)) {
                 force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
@@ -796,7 +796,7 @@ function delete_workorder($db, $workorder_id) {
             // Delete the workorder schedule events     
             } else {
 
-                $sql = "DELETE FROM ".PRFX."TABLE_SCHEDULE WHERE WORKORDER_ID=".$db->qstr($workorder_id);
+                $sql = "DELETE FROM ".PRFX."SCHEDULE WHERE WORKORDER_ID=".$db->qstr($workorder_id);
 
                 if(!$rs = $db->Execute($sql)) {
                     force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
@@ -828,7 +828,7 @@ function check_workorder_status_is_allowed_for_deletion($db, $workorder_id) {
     
     global $smarty;
     
-    $sql = "SELECT WORK_ORDER_STATUS FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_ID=".$workorder_id;
+    $sql = "SELECT WORK_ORDER_STATUS FROM ".PRFX."WORKORDER WHERE WORK_ORDER_ID=".$workorder_id;
     
     if(!$rs = $db->Execute($sql)) {        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
@@ -857,7 +857,7 @@ function delete_workorder_note($db, $workorder_note_id) {
     
     global $smarty;
     
-    $sql = "DELETE FROM ".PRFX."TABLE_WORK_ORDER_NOTES WHERE WORK_ORDER_NOTES_ID=".$db->qstr( $workorder_note_id );
+    $sql = "DELETE FROM ".PRFX."WORKORDER_NOTES WHERE WORK_ORDER_NOTES_ID=".$db->qstr( $workorder_note_id );
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
@@ -876,7 +876,7 @@ function check_workorder_has_invoice($db, $workorder_id) {
     
     global $smarty;
     
-    $sql = "SELECT * FROM ".PRFX."TABLE_INVOICE WHERE WORKORDER_ID=".$workorder_id;
+    $sql = "SELECT * FROM ".PRFX."INVOICE WHERE WORKORDER_ID=".$workorder_id;
     
     if(!$rs = $db->Execute($sql)) {        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
@@ -905,7 +905,7 @@ function assign_workorder_to_employee($db, $workorder_id, $logged_in_employee_id
     
     global $smarty;
     
-    $sql = "UPDATE ".PRFX."TABLE_WORK_ORDER SET WORK_ORDER_ASSIGN_TO=".$db->qstr($target_employee_id).",
+    $sql = "UPDATE ".PRFX."WORKORDER SET WORK_ORDER_ASSIGN_TO=".$db->qstr($target_employee_id).",
             WORK_ORDER_STATUS=2
             WHERE WORK_ORDER_ID=".$db->qstr($workorder_id) ;
     
@@ -947,7 +947,7 @@ function resolution_edit_status_check($db, $workorder_id) {
     
     global $smarty;
     
-    $sql = "SELECT WORK_ORDER_STATUS FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_ID=".$db->qstr($workorder_id);
+    $sql = "SELECT WORK_ORDER_STATUS FROM ".PRFX."WORKORDER WHERE WORK_ORDER_ID=".$db->qstr($workorder_id);
     
     if(!$rs = $db->execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
@@ -986,7 +986,7 @@ function check_workorder_is_open($db, $workorder_id) {
        
     if(!$workorder_id){return false;}
     
-    $sql = "SELECT WORK_ORDER_STATUS FROM ".PRFX."TABLE_WORK_ORDER WHERE WORK_ORDER_ID=".$db->qstr($workorder_id);
+    $sql = "SELECT WORK_ORDER_STATUS FROM ".PRFX."WORKORDER WHERE WORK_ORDER_ID=".$db->qstr($workorder_id);
     
     if(!$rs = $db->execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->get_template_vars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
