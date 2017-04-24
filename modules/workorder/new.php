@@ -12,8 +12,8 @@ if($VAR['customer_id'] == '' ) {
 // If a workorder is submitted
 if(isset($VAR['submit'])){
     
-    insert_workorder($db, $customer_id, $VAR['created_by'], $VAR['workorder_scope'], $VAR['workorder_description'], $VAR['workorder_comments']);      
-    force_page('workorder', 'overview', 'information_msg='.$smarty->getTemplateVars('translate_workorder_advisory_message_new_created'));
+    $workorder_id = insert_workorder($db, $customer_id, $VAR['created_by'], $VAR['workorder_scope'], $VAR['workorder_description'], $VAR['workorder_comments']);      
+    force_page('workorder', 'details&workorder_id='.$workorder_id, 'information_msg='.$smarty->getTemplateVars('translate_workorder_advisory_message_new_created'));
     exit;
         
    

@@ -11,7 +11,7 @@ if($customer_id == ''){
     force_page('core', 'error', 'error_msg=No Customer ID supplied.');
     exit;
 }
-//print_r(display_workorders($db, '10', 'DESC', false, 1, 25, NULL, $customer_id));die;
+
 // assign the arrays
 $smarty->assign('company_details',      get_company_details($db)                                                );
 $smarty->assign('customer_details',     get_customer_details($db, $customer_id)                                 );

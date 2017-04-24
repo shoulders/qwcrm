@@ -25,8 +25,7 @@ function display_welcome_msg($db){
     global $smarty;
     
     $sql = 'SELECT WELCOME_MSG FROM '.PRFX.'COMPANY';
-    //echo __FILE__;die;
-    
+       
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_core_error_message_function_'.__FUNCTION__.'_failed'));
         exit;

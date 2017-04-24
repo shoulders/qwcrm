@@ -3,7 +3,7 @@
 require(INCLUDES_DIR.'modules/customer.php');
 
 if(isset($VAR['submit'])) {
-//print_r($VAR);die;
+
     if (!$customer_id = insert_customer($db, $VAR)){
         
         $smarty->assign('error_msg', 'Failed to insert customer');

@@ -243,10 +243,6 @@ function insert_workorder($db, $customer_id, $created_by, $scope, $workorder_des
     
     global $smarty;
 
-    // Remove Extra Slashes caused by Magic Quotes    
-    stripslashes($workorder_description);
-    stripslashes($workorder_comments);    
-
     $sql = "INSERT INTO ".PRFX."WORKORDER SET 
             CUSTOMER_ID                                 = " . $db->qstr( $customer_id           ).",
             WORK_ORDER_OPEN_DATE                        = " . $db->qstr( time()                 ).",
@@ -274,7 +270,7 @@ function insert_workorder($db, $customer_id, $created_by, $scope, $workorder_des
         //write_record_to_activity_log($smarty->getTemplateVars('translate_workorder_log_message_work_order').' '.$workorder_id.' '.$smarty->getTemplateVars('translate_workorder_log_message_created'));
         write_record_to_activity_log($smarty->getTemplateVars('translate_workorder_log_message_work_order').' '.$workorder_id.' '.$smarty->getTemplateVars('translate_workorder_log_message_created').' '.$smarty->getTemplateVars('translate_workorder_log_message_by').' '.$_SESSION['login_display_name']);
 
-        return true;
+        return $workorder_id;
         
     }
     
@@ -357,9 +353,7 @@ function insert_workorder_note($db, $workorder_id, $workorder_note){
 #   Get single Workorder record        #
 ########################################
 
-function get_workorder_details($db, $workorder_id, $item = null) {
-    
-    return '0';
+function get_workorder_details($db, $workorder_id, $item = null) {   
 
     // compensate for some invoices having no workorder    
     if($workorder_id == '') { return array(); }
@@ -672,10 +666,7 @@ function update_workorder_note($db, $workorder_note_id, $date, $note) {
 
 function close_workorder_with_invoice($db, $workorder_id, $workorder_resolution){
     
-    global $smarty;
-    
-    // Remove Extra Slashes caused by Magic Quotes    
-    stripslashes($workorder_resolution);
+    global $smarty;   
 
     /* Insert resolution and close information */
     $sql = "UPDATE ".PRFX."WORKORDER SET
