@@ -142,6 +142,8 @@ function display_customers($db, $status = 'all', $direction = 'DESC', $use_pages
 #####################################
 
 function insert_customer($db, $VAR) {
+    
+    global $smarty;
 
     // If the display name is empty on submission, create it using the customer's name
     if ($VAR['displayName'] == ''){
@@ -186,6 +188,8 @@ function insert_customer($db, $VAR) {
 #############################
 
 function insert_customer_note($db, $customer_id, $note) {
+    
+    global $smarty;
     
     $sql = "INSERT INTO ".PRFX."CUSTOMER_NOTES SET
             CUSTOMER_ID =". $db->qstr( $customer_id             ).",
