@@ -146,6 +146,8 @@ function insert_customer($db, $VAR) {
     // If the display name is empty on submission, create it using the customer's name
     if ($VAR['displayName'] == ''){
         $displayname = $VAR['lastName'].', '.$VAR['firstName'];
+    } else {
+        $displayname = $VAR['displayName'];
     }
 
     $sql = "INSERT INTO ".PRFX."CUSTOMER SET
