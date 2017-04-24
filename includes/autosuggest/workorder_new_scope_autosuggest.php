@@ -1,5 +1,6 @@
 <?php
 
+// Seperate Session is required
 session_start();
 
 // Logged in and not Public or Guest
@@ -15,6 +16,7 @@ if ($_SESSION['login_hash'] && $_SESSION['login_account_type_id'] != '8' && $_SE
         // Is there a posted query string?
         if(isset($_POST['queryString'])) {
 
+            // This might not be needed if passed through security
             $queryString = $db->real_escape_string($_POST['queryString']);
 
             // Is the string length greater than 0?
@@ -30,7 +32,7 @@ if ($_SESSION['login_hash'] && $_SESSION['login_account_type_id'] != '8' && $_SE
                  * 
                  */
 
-                $query = $db->query("SELECT WORK_ORDER_SCOPE FROM ".PRFX."WORK_ORDER WHERE WORK_ORDER_SCOPE LIKE '$queryString%' LIMIT 10");
+                $query = $db->query("SELECT WORK_ORDER_SCOPE FROM ".PRFX."WORKORDER WHERE WORK_ORDER_SCOPE LIKE '$queryString%' LIMIT 10");
 
                 if($query) {
 
