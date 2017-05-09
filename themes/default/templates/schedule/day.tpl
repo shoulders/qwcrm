@@ -41,7 +41,7 @@
                                                                         var m = M + 1;                                          // Correction for assignment issue above
                                                                         var d = dateForLink.getDate();                          // integer, 1..31
                                                                         // redirect...
-                                                                        window.location = "?page=schedule:day&schedule_start_year="+y+"&schedule_start_month="+m+"&schedule_start_day="+d+"&workorder_id={$workorder_id}";
+                                                                        window.location = "index.php?page=schedule:day&schedule_start_year="+y+"&schedule_start_month="+m+"&schedule_start_day="+d+"&workorder_id={$workorder_id}";
                                                                     }
                                                     } );                                                
                                                 </script>                                                
@@ -51,15 +51,15 @@
                                     <table width="100%" cellpadding="4" cellspacing="0" border="0">
                                         <tr>
                                             <td>
-                                                <button type="submit" name="{$translate_schedule_print}" OnClick=location.href="?page=schedule:day&schedule_start_year={$schedule_start_year}&schedule_start_month={$schedule_start_month}&schedule_start_day={$schedule_start_day}&theme=off";>{$translate_schedule_print}</button>
-                                                <button type="submit" name="ics-schedule" OnClick=location.href="?page=schedule:icalendar&schedule_start_year={$schedule_start_year}&schedule_start_month={$schedule_start_month}&schedule_start_day={$schedule_start_day}&employee_id={$employee_id}&theme=print&ics_type=day";>ICS Schedule</button>
+                                                <button type="submit" name="{$translate_schedule_print}" OnClick=location.href="index.php?page=schedule:day&schedule_start_year={$schedule_start_year}&schedule_start_month={$schedule_start_month}&schedule_start_day={$schedule_start_day}&theme=off";>{$translate_schedule_print}</button>
+                                                <button type="submit" name="ics-schedule" OnClick=location.href="index.php?page=schedule:icalendar&schedule_start_year={$schedule_start_year}&schedule_start_month={$schedule_start_month}&schedule_start_day={$schedule_start_day}&employee_id={$employee_id}&theme=print&ics_type=day";>ICS Schedule</button>
                                             </td>
                                             <td valign="top" align="right" valign="middle">
                                                 {if $login_account_type_id <= 3 }
                                                     <form>
                                                         <select id="changeThisPage" onChange="changePage();">
                                                             {section name=i loop=$employees}
-                                                                <option value="?page=schedule:day&schedule_start_year={$schedule_start_year}&schedule_start_month={$schedule_start_month}&schedule_start_day={$schedule_start_day}&employee_id={$employees[i].EMPLOYEE_ID}&page_title=schedule" {if $selected_employee == $employees[i].EMPLOYEE_ID} selected {/if}>{$employees[i].EMPLOYEE_DISPLAY_NAME}</option>
+                                                                <option value="index.php?page=schedule:day&schedule_start_year={$schedule_start_year}&schedule_start_month={$schedule_start_month}&schedule_start_day={$schedule_start_day}&employee_id={$employees[i].EMPLOYEE_ID}&page_title=schedule" {if $selected_employee == $employees[i].EMPLOYEE_ID} selected {/if}>{$employees[i].EMPLOYEE_DISPLAY_NAME}</option>
                                                             {/section}
                                                         </select>
                                                     </form>

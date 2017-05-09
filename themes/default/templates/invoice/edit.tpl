@@ -308,8 +308,8 @@
                                                     </script>                                                   
                                                 </td>
                                                 <td>{$currency_sym}{$invoice_details.TOTAL|string_format:"%.2f"}</td>
-                                                <td><a href="?page=employee:details&employee_id={$invoice_details.EMPLOYEE_ID}">{$employee_display_name}</a></td>
-                                                <td><a href="?page=workorder:details&workorder_id={$invoice_details.WORKORDER_ID}&page_title={$translate_invoice_workorder_id} {$invoice_details.WORKORDER_ID}">{$invoice_details.WORKORDER_ID}</a></td>
+                                                <td><a href="index.php?page=employee:details&employee_id={$invoice_details.EMPLOYEE_ID}">{$employee_display_name}</a></td>
+                                                <td><a href="index.php?page=workorder:details&workorder_id={$invoice_details.WORKORDER_ID}&page_title={$translate_invoice_workorder_id} {$invoice_details.WORKORDER_ID}">{$invoice_details.WORKORDER_ID}</a></td>
                                                 <td><font color="#CC0000">{$currency_sym}{$invoice_details.BALANCE|string_format:"%.2f"}</font></td>
                                             </tr>
 
@@ -322,7 +322,7 @@
                                                     <table cellpadding="0" cellspacing="0">
                                                         <tr>
                                                             <td valign="top">
-                                                                <a href="?page=customer:details&customer_id={$customer_details.CUSTOMER_ID}&page_title={$customer_details.CUSTOMER_DISPLAY_NAME}">{$customer_details.CUSTOMER_DISPLAY_NAME}</a><br>
+                                                                <a href="index.php?page=customer:details&customer_id={$customer_details.CUSTOMER_ID}&page_title={$customer_details.CUSTOMER_DISPLAY_NAME}">{$customer_details.CUSTOMER_DISPLAY_NAME}</a><br>
                                                                 {$customer_details.CUSTOMER_ADDRESS|nl2br}<br>
                                                                 {$customer_details.CUSTOMER_CITY}, {$customer_details.CUSTOMER_STATE} {$customer_details.CUSTOMER_ZIP}<br>
                                                                 {$customer_details.CUSTOMER_PHONE}<br>

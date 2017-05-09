@@ -136,10 +136,10 @@
                                                                 <a href="index.php?page=supplier:details&supplier_id={$search_result[i].SUPPLIER_ID}&page_title={$translate_supplier_details_title}">
                                                                     <img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" onMouseOver="ddrivetip('<b>{$translate_supplier_search_details|nl2br|regex_replace:"/[\r\t\n]/":" "}</b>');" onMouseOut="hideddrivetip();">
                                                                 </a>
-                                                                <a href="?page=supplier:edit&supplier_id={$search_result[i].SUPPLIER_ID}&page_title={$translate_supplier_edit_title}">
+                                                                <a href="index.php?page=supplier:edit&supplier_id={$search_result[i].SUPPLIER_ID}&page_title={$translate_supplier_edit_title}">
                                                                     <img src="{$theme_images_dir}icons/16x16/small_edit.gif" alt=""  border="0" onMouseOver="ddrivetip('<b>{$translate_supplier_search_edit_details|nl2br|regex_replace:"/[\r\t\n]/":" "}</b>');" onMouseOut="hideddrivetip();">
                                                                 </a>
-                                                                <a href="?page=supplier:delete&supplier_id={$search_result[i].SUPPLIER_ID}" onclick="return confirmDelete('{$translate_supplier_delete_mes_confirmation}');">
+                                                                <a href="index.php?page=supplier:delete&supplier_id={$search_result[i].SUPPLIER_ID}" onclick="return confirmDelete('{$translate_supplier_delete_mes_confirmation}');">
                                                                     <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{$translate_supplier_search_delete_record|nl2br|regex_replace:"/[\r\t\n]/":" "}</b>');" onMouseOut="hideddrivetip();">
                                                                 </a>
                                                             </td>

@@ -9,7 +9,7 @@
                         <table cellpadding="2" cellspacing="2" border="0">
                             <tr>
                                 <td width="33%" align="right">
-                                    <a href="?page=customer:edit&customer_id={$single_workorder.CUSTOMER_ID}&page_title={$single_workorder.CUSTOMER_DISPLAY_NAME}">
+                                    <a href="index.php?page=customer:edit&customer_id={$single_workorder.CUSTOMER_ID}&page_title={$single_workorder.CUSTOMER_DISPLAY_NAME}">
                                         <img src="{$theme_images_dir}icons/16x16/small_edit.gif" border="0" onMouseOver="ddrivetip('{$translate_workorder_details_edit_customer_details_button_tooltip}');" onMouseOut="hideddrivetip();">                                            
                                     </a>
                                 </td>
@@ -25,7 +25,7 @@
             <table class="olotable" border="0" cellpadding="5" cellspacing="5" width="100%" summary="Customer Contact">
                 <tr>
                     <td class="menutd"><b>{$translate_workorder_contact}</b></td>
-                    <td class="menutd"><a href="?page=customer:customer_details&customer_id={$single_workorder.CUSTOMER_ID}&page_title={$single_workorder.CUSTOMER_FIRST_NAME} {$single_workorder.CUSTOMER_LAST_NAME} ">{$single_workorder.CUSTOMER_DISPLAY_NAME}</a></td>                
+                    <td class="menutd"><a href="index.php?page=customer:customer_details&customer_id={$single_workorder.CUSTOMER_ID}&page_title={$single_workorder.CUSTOMER_FIRST_NAME} {$single_workorder.CUSTOMER_LAST_NAME} ">{$single_workorder.CUSTOMER_DISPLAY_NAME}</a></td>                
                     <td class="menutd"><b>{$translate_workorder_www}</b></td>
                     <td class="menutd">{$single_workorder.CUSTOMER_WWW}</td>
                 </tr>
@@ -33,7 +33,7 @@
                     <td class="menutd"></td>
                     <td class="menutd"></td>
                     <td class="menutd"><b>{$translate_workorder_email}</b></td>
-                    <td class="menutd"><a href="?page=customer:email&customer_id={$single_workorder.CUSTOMER_ID}&page_title=Email%20Customer"> {$single_workorder.CUSTOMER_EMAIL}</a></td>
+                    <td class="menutd"><a href="index.php?page=customer:email&customer_id={$single_workorder.CUSTOMER_ID}&page_title=Email%20Customer"> {$single_workorder.CUSTOMER_EMAIL}</a></td>
                 </tr>
                 <tr>
                     <td class="menutd"><b>{$translate_workorder_credit_terms}</b></td>

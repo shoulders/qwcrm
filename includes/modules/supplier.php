@@ -146,7 +146,7 @@ function display_suppliers($db, $direction = 'DESC', $use_pages = false, $page_n
         exit;
     } else {
         
-        $records = $rs->GetArray();   // do i need to add the check empty
+        $records = $rs->GetArray();
 
         if(empty($records)){
             

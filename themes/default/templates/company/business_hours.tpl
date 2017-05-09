@@ -11,7 +11,7 @@
                         <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0" >
                         <tr>
                             <td width="100%" valign="top" class="menutd">
-                                <form method="POST" action="?page=company:business_hours">                                
+                                <form method="POST" action="index.php?page=company:business_hours">                                
                                     <table>
                                         <tr>
                                             <td><b>Opening Time</b></td>

@@ -43,11 +43,11 @@
                                             <td class="row2"><b>{$translate_core_home_total}</b></td>
                                         </tr>
                                         <tr class="olotd4">
-                                            <td><a href="?page=workorder:overview#new">{$workorders_open_count}</a></td>
-                                            <td><a href="?page=workorder:overview#assigned">{$workorders_assigned_count}</a></td>
-                                            <td><a href="?page=workorder:overview#awaiting">{$workorders_waiting_for_parts_count}</a></td>
-                                            <td><a href="?page=workorder:overview#payment">{$workorders_awaiting_payment_count}</a></td>
-                                            <td><a href="?page=workorder:closed">{$workorders_closed_count}</a></td>
+                                            <td><a href="index.php?page=workorder:overview#new">{$workorders_open_count}</a></td>
+                                            <td><a href="index.php?page=workorder:overview#assigned">{$workorders_assigned_count}</a></td>
+                                            <td><a href="index.php?page=workorder:overview#awaiting">{$workorders_waiting_for_parts_count}</a></td>
+                                            <td><a href="index.php?page=workorder:overview#payment">{$workorders_awaiting_payment_count}</a></td>
+                                            <td><a href="index.php?page=workorder:closed">{$workorders_closed_count}</a></td>
                                             <td>{$wo_total_count}</td>
                                         </tr>
                                     </table>
@@ -81,11 +81,11 @@
                                                     <td class="row2"><b>{$translate_core_home_invoiced_total}</b></td>
                                                 </tr>
                                                 <tr class="olotd4">
-                                                    <td><a href="?page=invoice:paid&amp;page_title=Un-Paid%20Invoices">{$in_unpaid_count}</a></td>
+                                                    <td><a href="index.php?page=invoice:paid&amp;page_title=Un-Paid%20Invoices">{$in_unpaid_count}</a></td>
                                                     <td><font color="#cc0000">{$currency_sym}{$in_unpaid_bal|string_format:"%.2f"}</font></td>
-                                                    <td><a href="?page=invoice:paid&amp;page_title=Un-Paid%20Invoices">{$in_part_count}</a></td>
+                                                    <td><a href="index.php?page=invoice:paid&amp;page_title=Un-Paid%20Invoices">{$in_part_count}</a></td>
                                                     <td><font color="#cc0000">{$currency_sym}{$in_part_bal|string_format:"%.2f"}</font></td>
-                                                    <td><a href="?page=invoice:paid&amp;page_title=Paid%20Invoices">{$in_paid_count}</a></td>
+                                                    <td><a href="index.php?page=invoice:paid&amp;page_title=Paid%20Invoices">{$in_paid_count}</a></td>
                                                     <td><font color="green">{$currency_sym}{$in_total_bal|string_format:"%.2f"}</font></td>
                                                     <td><font color="green">{$currency_sym}{$in_total2|string_format:"%.2f"}</font></td>
                                                 </tr>
@@ -124,11 +124,11 @@
                                             <td class="row2"><b>{$translate_core_home_total}</b></td>
                                         </tr>
                                         <tr class="olotd4">
-                                            <td><a href="?page=workorder:overview#new">{$employee_workorders_open_count}</a></td>
-                                            <td><a href="?page=workorder:overview#assigned">{$employee_workorders_assigned_count}</a></td>
-                                            <td><a href="?page=workorder:overview#awaiting">{$employeee_workorders_waiting_for_parts_count}</a></td>
-                                            <td><a href="?page=workorder:overview#payment">{$employee_workorders_awaiting_payment_count}</a></td>
-                                            <td><a href="?page=workorder:closed">{$workorders_closed_count}</a></td>
+                                            <td><a href="index.php?page=workorder:overview#new">{$employee_workorders_open_count}</a></td>
+                                            <td><a href="index.php?page=workorder:overview#assigned">{$employee_workorders_assigned_count}</a></td>
+                                            <td><a href="index.php?page=workorder:overview#awaiting">{$employeee_workorders_waiting_for_parts_count}</a></td>
+                                            <td><a href="index.php?page=workorder:overview#payment">{$employee_workorders_awaiting_payment_count}</a></td>
+                                            <td><a href="index.php?page=workorder:closed">{$workorders_closed_count}</a></td>
                                             <td>{$wo_total_count}</td>
                                         </tr>
                                     </table>

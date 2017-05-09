@@ -39,20 +39,20 @@
                                             </td>
                                             <td valign="top" nowrap>
                                                 <form id="1">
-                                                    <a href="?page=customer:search&name={$name|escape}&submit=submit&page_no=1"><img src="{$theme_images_dir}rewnd_24.gif" border="0" alt=""></a>&nbsp;
+                                                    <a href="index.php?page=customer:search&name={$name|escape}&submit=submit&page_no=1"><img src="{$theme_images_dir}rewnd_24.gif" border="0" alt=""></a>&nbsp;
                                                     {if $previous != ''}
-                                                        <a href="?page=customer:search&name={$name|escape}&submit=submit&page_no={$previous}"><img src="{$theme_images_dir}back_24.gif" border="0" alt=""></a>&nbsp;
+                                                        <a href="index.php?page=customer:search&name={$name|escape}&submit=submit&page_no={$previous}"><img src="{$theme_images_dir}back_24.gif" border="0" alt=""></a>&nbsp;
                                                     {/if}
                                                     <select id="changeThisPage" onChange="changePage();">
                                                         {section name=page loop=$total_pages start=1}
-                                                            <option value="?page=customer:search&name={$name|escape}&submit=submit&page_no={$smarty.section.page.index}" {if $page_no == $smarty.section.page.index } selected {/if}>{$translate_page} {$smarty.section.page.index} {$translate_of} {$total_pages}</option>
+                                                            <option value="index.php?page=customer:search&name={$name|escape}&submit=submit&page_no={$smarty.section.page.index}" {if $page_no == $smarty.section.page.index } selected {/if}>{$translate_page} {$smarty.section.page.index} {$translate_of} {$total_pages}</option>
                                                         {/section}
-                                                        <option value="?page=customer:search&name={$name|escape}&submit=submit&page_no={$total_pages}" {if $page_no == $total_pages} selected {/if}>{$translate_page} {$total_pages} {$translate_of} {$total_pages}</option>
+                                                        <option value="index.php?page=customer:search&name={$name|escape}&submit=submit&page_no={$total_pages}" {if $page_no == $total_pages} selected {/if}>{$translate_page} {$total_pages} {$translate_of} {$total_pages}</option>
                                                     </select>
                                                     {if $next != ''}
-                                                        <a href="?page=customer:search&name={$name|escape}&submit=submit&page_no={$next}"><img src="{$theme_images_dir}forwd_24.gif" border="0" alt=""></a>
+                                                        <a href="index.php?page=customer:search&name={$name|escape}&submit=submit&page_no={$next}"><img src="{$theme_images_dir}forwd_24.gif" border="0" alt=""></a>
                                                     {/if}
-                                                    <a href="?page=customer:search&name={$name|escape}&submit=submit&page_no={$total_pages}"><img src="{$theme_images_dir}fastf_24.gif" border="0" alt=""></a>
+                                                    <a href="index.php?page=customer:search&name={$name|escape}&submit=submit&page_no={$total_pages}"><img src="{$theme_images_dir}fastf_24.gif" border="0" alt=""></a>
                                                     <br>
                                                     {$total_results} {$translate_records_found}.
                                                 </form>
@@ -74,9 +74,9 @@
                                                     {section name=i loop=$customer_search_result}
                                                         <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=customer:details&customer_id={$customer_search_result[i].CUSTOMER_ID}&page_title={$customer_search_result[i].CUSTOMER_FIRST_NAME}';" class="row1">
                                                             <td class="olotd4" nowrap>
-                                                                <a href="?page=customer:details&customer_id={$customer_search_result[i].CUSTOMER_ID}&page_title={$customer_search_result[i].CUSTOMER_FIRST_NAME}%20{$customer_search_result[i].CUSTOMER_LAST_NAME}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" onMouseOver="ddrivetip('View Customer Details')" onMouseOut="hideddrivetip()"></a>&nbsp;
-                                                                <a href="?page=workorder:new&customer_id={$customer_search_result[i].CUSTOMER_ID}&page_title=New Work Order"><img src="{$theme_images_dir}icons/16x16/small_new_work_order.gif" alt="" border="0" onMouseOver="ddrivetip('New Work Order');" onMouseOut="hideddrivetip();" alt=""></a>&nbsp;
-                                                                <a href="?page=invoice:edit&invoice_type=invoice-only&workorder_id=0&customer_id={$customer_search_result[i].CUSTOMER_ID}&page_title=Invoice Only"><img src="{$theme_images_dir}icons/16x16/small_new_invoice_only.gif" alt="" border="0" onMouseOver="ddrivetip('New Invoice Only');" onMouseOut="hideddrivetip();" alt=""></a>
+                                                                <a href="index.php?page=customer:details&customer_id={$customer_search_result[i].CUSTOMER_ID}&page_title={$customer_search_result[i].CUSTOMER_FIRST_NAME}%20{$customer_search_result[i].CUSTOMER_LAST_NAME}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" onMouseOver="ddrivetip('View Customer Details')" onMouseOut="hideddrivetip()"></a>&nbsp;
+                                                                <a href="index.php?page=workorder:new&customer_id={$customer_search_result[i].CUSTOMER_ID}&page_title=New Work Order"><img src="{$theme_images_dir}icons/16x16/small_new_work_order.gif" alt="" border="0" onMouseOver="ddrivetip('New Work Order');" onMouseOut="hideddrivetip();" alt=""></a>&nbsp;
+                                                                <a href="index.php?page=invoice:edit&invoice_type=invoice-only&workorder_id=0&customer_id={$customer_search_result[i].CUSTOMER_ID}&page_title=Invoice Only"><img src="{$theme_images_dir}icons/16x16/small_new_invoice_only.gif" alt="" border="0" onMouseOver="ddrivetip('New Invoice Only');" onMouseOut="hideddrivetip();" alt=""></a>
                                                             </td>
                                                             <td class="olotd4" nowrap><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" onMouseOver="ddrivetip('{$customer_search_result[i].CUSTOMER_ADDRESS}<br>{$customer_search_result[i].CUSTOMER_CITY}, {$customer_search_result[i].CUSTOMER_STATE}  {$customer_search_result[i].CUSTOMER_ZIP}');" onMouseOut="hideddrivetip();">&nbsp;{$customer_search_result[i].CUSTOMER_DISPLAY_NAME}</td>
                                                             <td class="olotd4" nowrap>{$customer_search_result[i].CUSTOMER_FIRST_NAME}</td>

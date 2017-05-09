@@ -10,7 +10,7 @@
                             <tr>
                                 <td width="33%" align="right">
                                     {if $single_workorder.WORK_ORDER_STATUS != 6}
-                                        <a href="?page=workorder:details_edit_resolution&workorder_id={$single_workorder.WORK_ORDER_ID}&page_title={$translate_workorder_details_resolution_title}">
+                                        <a href="index.php?page=workorder:details_edit_resolution&workorder_id={$single_workorder.WORK_ORDER_ID}&page_title={$translate_workorder_details_resolution_title}">
                                             <img src="{$theme_images_dir}icons/16x16/small_edit.gif" border="0" onMouseOver="ddrivetip('{$translate_workorder_details_edit_resolution_button_tooltip}');" onMouseOut="hideddrivetip();">
                                         </a>
                                     {/if}

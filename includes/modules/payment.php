@@ -230,15 +230,17 @@ function get_active_credit_cards($db) {
         exit;
     } else {
         
-        if(empty($rs->GetArray())){
+        $records = $rs->GetArray();
+
+        if(empty($records)){
             
             return false;
             
         } else {
             
-            return $rs->GetArray();
+            return $records;
             
-        }        
+        }
         
     }  
     

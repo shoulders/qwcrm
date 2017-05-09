@@ -56,7 +56,7 @@
                                                             var m = M + 1;                                          // Correction for assignment issue above
                                                             var d = dateForLink.getDate();                          // integer, 1..31
                                                             // redirect...
-                                                            window.location = "?page=schedule:day&schedule_start_year="+y+"&schedule_start_month="+m+"&schedule_start_day="+d+"&customer_id={$customer_id}&employee_id={$login_id}&workorder_id={$workorder_id}";
+                                                            window.location = "index.php?page=schedule:day&schedule_start_year="+y+"&schedule_start_month="+m+"&schedule_start_day="+d+"&customer_id={$customer_id}&employee_id={$login_id}&workorder_id={$workorder_id}";
                                                         }
                                         } );                                    
                                     </script>
@@ -86,9 +86,9 @@
                                                                             </p>                                                                            
                                                                             <b>{$translate_workorder_notes}:</b><br />
                                                                             <div>{$workorder_schedules[i].SCHEDULE_NOTES}</div><br>
-                                                                            <button type="button" onClick="window.location='?page=schedule:edit&schedule_id={$workorder_schedules[i].SCHEDULE_ID}';">{$translate_workorder_details_schedule_edit}</button>
-                                                                            <a href="?page=schedule:delete&schedule_id={$workorder_schedules[i].SCHEDULE_ID}" onclick="return confirmDelete('{$translate_workorder_details_schedule_confirmdelete}');"><button type="button">{$translate_workorder_details_schedule_delete}</button></a>                                                                            
-                                                                            <button type="button" onClick="window.location='?page=schedule:icalendar&schedule_id={$workorder_schedules[i].SCHEDULE_ID}&theme=print';">{$translate_workorder_details_schedule_export}</button>                                                                                                                                 
+                                                                            <button type="button" onClick="window.location='index.php?page=schedule:edit&schedule_id={$workorder_schedules[i].SCHEDULE_ID}';">{$translate_workorder_details_schedule_edit}</button>
+                                                                            <a href="index.php?page=schedule:delete&schedule_id={$workorder_schedules[i].SCHEDULE_ID}" onclick="return confirmDelete('{$translate_workorder_details_schedule_confirmdelete}');"><button type="button">{$translate_workorder_details_schedule_delete}</button></a>                                                                            
+                                                                            <button type="button" onClick="window.location='index.php?page=schedule:icalendar&schedule_id={$workorder_schedules[i].SCHEDULE_ID}&theme=print';">{$translate_workorder_details_schedule_export}</button>                                                                                                                                 
                                                                         </td>
                                                                     </tr>
                                                                 </table>

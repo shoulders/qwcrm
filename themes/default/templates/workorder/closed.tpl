@@ -80,13 +80,13 @@
                                                     </tr>
                                                     {section name=i loop=$workorders}                                                    
                                                         {if $workorders[i].WORK_ORDER_ID != ''}
-                                                            <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='?page=workorder:details&workorder_id={$workorders[i].WORK_ORDER_ID}&customer_id={$workorders[i].CUSTOMER_ID}&page_title={$translate_workorder_work_order_id} {$workorders[i].WORK_ORDER_ID}';" class="row1">
-                                                                <td class="olotd4"><a href="?page=workorder:details&workorder_id={$workorders[i].WORK_ORDER_ID}&customer_id={$workorders[i].CUSTOMER_ID}&page_title={$translate_workorder_work_order_id} {$workorders[i].WORK_ORDER_ID}">{$workorders[i].WORK_ORDER_ID}</a></td>
+                                                            <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=workorder:details&workorder_id={$workorders[i].WORK_ORDER_ID}&customer_id={$workorders[i].CUSTOMER_ID}&page_title={$translate_workorder_work_order_id} {$workorders[i].WORK_ORDER_ID}';" class="row1">
+                                                                <td class="olotd4"><a href="index.php?page=workorder:details&workorder_id={$workorders[i].WORK_ORDER_ID}&customer_id={$workorders[i].CUSTOMER_ID}&page_title={$translate_workorder_work_order_id} {$workorders[i].WORK_ORDER_ID}">{$workorders[i].WORK_ORDER_ID}</a></td>
                                                                 <td class="olotd4"> {$workorders[i].WORK_ORDER_OPEN_DATE|date_format:$date_format}</td>
                                                                 <td class="olotd4">{$workorders[i].WORK_ORDER_CLOSE_DATE|date_format:$date_format}</td>
                                                                 <td class="olotd4" nowrap>
                                                                     <img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" onMouseOver="ddrivetip('<b><center>{$translate_workorder_contact_info_tooltip_title}</b></center><hr><b>{$translate_workorder_phone}: </b>{$workorders[i].CUSTOMER_PHONE}<br> <b>{$translate_workorder_fax}: </b>{$workorders[i].CUSTOMER_WORK_PHONE}<br><b>{$translate_workorder_mobile}: </b>{$workorders[i].CUSTOMER_MOBILE_PHONE}<br><b>{$translate_workorder_address}:</b><br>{$workorders[i].CUSTOMER_ADDRESS}<br>{$workorders[i].CUSTOMER_CITY}, {$workorders[i].CUSTOMER_STATE}<br>{$workorders[i].CUSTOMER_ZIP}');" onMouseOut="hideddrivetip();">                                                                         
-                                                                    <a class="link1" href="?page=customer:details&customer_id={$workorders[i].CUSTOMER_ID}&page_title={$workorders[i].CUSTOMER_DISPLAY_NAME}">{$workorders[i].CUSTOMER_DISPLAY_NAME}</a>
+                                                                    <a class="link1" href="index.php?page=customer:details&customer_id={$workorders[i].CUSTOMER_ID}&page_title={$workorders[i].CUSTOMER_DISPLAY_NAME}">{$workorders[i].CUSTOMER_DISPLAY_NAME}</a>
                                                                 </td>
                                                                 <td class="olotd4" nowrap>{$workorders[i].WORK_ORDER_SCOPE}</td>
                                                                 <td class="olotd4" align="center">
@@ -101,7 +101,7 @@
                                                                 </td>  
                                                                 <td class="olotd4" nowrap>
                                                                     <img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" onMouseOver="ddrivetip('<center><b>{$translate_workorder_contact_info_tooltip_title}</b></center><hr><b>{$translate_workorder_fax}: </b>{$workorders[i].EMPLOYEE_WORK_PHONE}<br><b>{$translate_workorder_mobile}: </b>{$workorders[i].EMPLOYEE_MOBILE_PHONE}<br><b>{$translate_workorder_home}: </b>{$workorders[i].EMPLOYEE_HOME_PHONE}');" onMouseOut="hideddrivetip();">                                                                         
-                                                                    <a class="link1" href="?page=employee:details&employee_id={$workorders[i].EMPLOYEE_ID}&page_title={$workorders[i].EMPLOYEE_DISPLAY_NAME}">{$workorders[i].EMPLOYEE_DISPLAY_NAME}</a>
+                                                                    <a class="link1" href="index.php?page=employee:details&employee_id={$workorders[i].EMPLOYEE_ID}&page_title={$workorders[i].EMPLOYEE_DISPLAY_NAME}">{$workorders[i].EMPLOYEE_DISPLAY_NAME}</a>
                                                                 </td>
                                                             </tr>
                                                         {else}

@@ -8,7 +8,7 @@
             <table class="olotable" width="100%" align="center" border ="0">
                 <tr>
                     <td valign="middle" colspan="1" width="50%">
-                        <img src="{$theme_images_dir}request.png" alt="Submit Request" align="middle" hspace="3"><a href="?page=client:ticket_new" ><font size="+1">Submit a New Support Request</font></a>
+                        <img src="{$theme_images_dir}request.png" alt="Submit Request" align="middle" hspace="3"><a href="index.php?page=client:ticket_new" ><font size="+1">Submit a New Support Request</font></a>
                         <br> This is were you can submit your support request through of Helpdesk system
                         <br>
                         <br>

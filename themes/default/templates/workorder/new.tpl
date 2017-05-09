@@ -106,7 +106,7 @@
                                         <tr>
                                             <td class="menuhead2" width="80%">{$translate_workorder_customer_contact_title}</td>
                                             <td class="menuhead2" width="20%" align="right">
-                                                <a href="?page=customer:edit&amp;customer_id={$customer_details.CUSTOMER_ID}"<img src="{$theme_images_dir}icons/16x16/small_edit.gif" border="0" alt="" /></a>
+                                                <a href="index.php?page=customer:edit&amp;customer_id={$customer_details.CUSTOMER_ID}"<img src="{$theme_images_dir}icons/16x16/small_edit.gif" border="0" alt="" /></a>
                                             </td>
                                         </tr>
                                     </table>

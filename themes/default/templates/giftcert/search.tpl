@@ -64,7 +64,7 @@
                                 </td>
                             </tr>
                         </table>
-                        <a href="?page=payment:details&giftcert_id={$giftcert_id}&action=print&submit=1&theme=off" target="new"><img src="{$theme_images_dir}icons/16x16/fileprint.gif" border="0" onMouseOver="ddrivetip('Print');" onMouseOut="hideddrivetip();"></a>&nbsp;<a href="?page=customer:details&customer_id={$customer_id}">{$translate_payment_back}</a>
+                        <a href="index.php?page=payment:details&giftcert_id={$giftcert_id}&action=print&submit=1&theme=off" target="new"><img src="{$theme_images_dir}icons/16x16/fileprint.gif" border="0" onMouseOver="ddrivetip('Print');" onMouseOut="hideddrivetip();"></a>&nbsp;<a href="index.php?page=customer:details&customer_id={$customer_id}">{$translate_payment_back}</a>
                     </td>
                 </tr>
             </table>

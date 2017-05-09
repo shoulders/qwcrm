@@ -7,7 +7,7 @@
                     <td class="menuhead2" width="80%">&nbsp;{$translate_employee_details_for} {$employee_details.EMPLOYEE_DISPLAY_NAME} {$translate_employee_add_new_employee}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
                         <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{$translate_employee_details_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_employee_details_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();">
-                        <a href="?page=employee:edit&employee_id={$employee_details.EMPLOYEE_ID}">
+                        <a href="index.php?page=employee:edit&employee_id={$employee_details.EMPLOYEE_ID}">
                             <img src="{$theme_images_dir}icons/16x16/small_edit.gif" border="0" onMouseOver="ddrivetip('{$translate_employee_details_edit_employee_details_button_tooltip}');" onMouseOut="hideddrivetip();">                                            
                         </a>
                     </td>

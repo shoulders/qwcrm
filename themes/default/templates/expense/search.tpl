@@ -176,10 +176,10 @@
                                                                 <a href="index.php?page=expense:details&expense_id={$search_result[i].EXPENSE_ID}&page_title={$translate_expense_details_title}">
                                                                     <img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" onMouseOver="ddrivetip('<b>{$translate_expense_search_details|nl2br|regex_replace:"/[\r\t\n]/":" "}</b>');" onMouseOut="hideddrivetip();">
                                                                 </a>
-                                                                <a href="?page=expense:edit&expense_id={$search_result[i].EXPENSE_ID}&page_title={$translate_expense_edit_title}">
+                                                                <a href="index.php?page=expense:edit&expense_id={$search_result[i].EXPENSE_ID}&page_title={$translate_expense_edit_title}">
                                                                     <img src="{$theme_images_dir}icons/16x16/small_edit.gif" alt=""  border="0" onMouseOver="ddrivetip('<b>{$translate_expense_search_edit_details|nl2br|regex_replace:"/[\r\t\n]/":" "}</b>');" onMouseOut="hideddrivetip();">
                                                                 </a>
-                                                                <a href="?page=expense:delete&expense_id={$search_result[i].EXPENSE_ID}" onclick="return confirmDelete('{$translate_expense_delete_mes_confirmation}');">
+                                                                <a href="index.php?page=expense:delete&expense_id={$search_result[i].EXPENSE_ID}" onclick="return confirmDelete('{$translate_expense_delete_mes_confirmation}');">
                                                                     <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{$translate_expense_search_delete_record|nl2br|regex_replace:"/[\r\t\n]/":" "}</b>');" onMouseOut="hideddrivetip();">
                                                                 </a>
                                                             </td>

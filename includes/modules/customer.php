@@ -117,15 +117,17 @@ function display_customers($db, $status = 'all', $direction = 'DESC', $use_pages
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_customer_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
         
-    } else {
+    } else {        
         
-        if(empty($rs->GetArray())){
+        $records = $rs->GetArray();   // If I call this twice for this search, no results are shown on the TPL
+
+        if(empty($records)){
             
             return false;
             
         } else {
             
-            return $rs->GetArray();
+            return $records;
             
         }
         

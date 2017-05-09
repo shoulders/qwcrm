@@ -11,7 +11,7 @@
                         <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0">
                             <tr>
                                 <td width="100%" valign="top">                                                                      
-                                    <form action="?page=employee:edit&employee_id={$employee_id}" method="POST" name="edit_employee" id="edit_employee" onsubmit="return checkPasswordsMatch('{$translate_core_theme_passwords_match}', '{$translate_core_theme_passwords_do_not_match}');">
+                                    <form action="index.php?page=employee:edit&employee_id={$employee_id}" method="POST" name="edit_employee" id="edit_employee" onsubmit="return checkPasswordsMatch('{$translate_core_theme_passwords_match}', '{$translate_core_theme_passwords_do_not_match}');">
                                         <table class="menutable" width="100%" border="0" cellpadding="0" cellspacing="0">
                                             <tr>
                                                 <td class="menutd">

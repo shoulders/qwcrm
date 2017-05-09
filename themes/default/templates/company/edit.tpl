@@ -2,7 +2,7 @@
 <script src="{$theme_js_dir}tinymce/tinymce.min.js"></script>
 <script src="{$theme_js_dir}editor-config.js"></script>
 
-<form method="post" action="?page=company:edit" enctype="multipart/form-data">
+<form method="post" action="index.php?page=company:edit" enctype="multipart/form-data">
     <table width="100%" border="0" cellpadding="20" cellspacing="0">
         <tr>
             <td>

@@ -19,7 +19,7 @@
                                             
                                             <!-- Search Box -->
                                             <td>                                                
-                                                <form method="post" action="?page=employee:search">                                                
+                                                <form method="post" action="index.php?page=employee:search">                                                
                                                     <table border="0">
                                                         <tr>
                                                             <td colspan="2"><font color="red">{$translate_employee_display_name_criteria}</font></td>
@@ -103,7 +103,7 @@
                                                     </tr>
                                                     {section name=i loop=$search_result}
                                                         <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=employee:details&employee_id={$search_result[i].EMPLOYEE_ID}&page_title={$translate_employee_details_for} {$search_result[i].EMPLOYEE_DISPLAY_NAME}';" class="row1">
-                                                            <td class="olotd4"><a href="?page=employee:details&employee_id={$search_result[i].EMPLOYEE_ID}&page_title={$translate_employee_details_for} {$search_result[i].EMPLOYEE_DISPLAY_NAME}">{$search_result[i].EMPLOYEE_ID}</a></td>
+                                                            <td class="olotd4"><a href="index.php?page=employee:details&employee_id={$search_result[i].EMPLOYEE_ID}&page_title={$translate_employee_details_for} {$search_result[i].EMPLOYEE_DISPLAY_NAME}">{$search_result[i].EMPLOYEE_ID}</a></td>
                                                             <td class="olotd4">
                                                                 <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('{$search_result[i].EMPLOYEE_ADDRESS}<br>{$search_result[i].EMPLOYEE_CITY}, {$search_result[i].EMPLOYEE_SATE}  {$search_result[i].EMPLOYEE_ZIP}');" onMouseOut="hideddrivetip();">
                                                                 {$search_result[i].EMPLOYEE_DISPLAY_NAME}
@@ -116,7 +116,7 @@
                                                             </td>
                                                             <td class="olotd4">{$search_result[i].TYPE_NAME}</td>
                                                             <td class="olotd4"><a href="mailto: {$search_result[i].EMPLOYEE_EMAIL}"><font class="blueLink">{$search_result[i].EMPLOYEE_EMAIL}</font></a></td>
-                                                            <td class="olotd4"><a href="?page=employee:details&employee_id={$search_result[i].EMPLOYEE_ID}&page_title={$translate_employee_details_for} {$search_result[i].EMPLOYEE_DISPLAY_NAME}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif"  border="0" onMouseOver="ddrivetip('View Employees Details');" onMouseOut="hideddrivetip();"></a>&nbsp;<a href="?page=employee:edit&employee_id={$search_result[i].EMPLOYEE_ID}&page_title={$translate_employee_edit} {$search_result[i].EMPLOYEE_DISPLAY_NAME}"><img src="{$theme_images_dir}icons/16x16/small_edit_employee.gif" border="0" onMouseOver="ddrivetip('Edit');" onMouseOut="hideddrivetip();"></a></td>                                                        
+                                                            <td class="olotd4"><a href="index.php?page=employee:details&employee_id={$search_result[i].EMPLOYEE_ID}&page_title={$translate_employee_details_for} {$search_result[i].EMPLOYEE_DISPLAY_NAME}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif"  border="0" onMouseOver="ddrivetip('View Employees Details');" onMouseOut="hideddrivetip();"></a>&nbsp;<a href="index.php?page=employee:edit&employee_id={$search_result[i].EMPLOYEE_ID}&page_title={$translate_employee_edit} {$search_result[i].EMPLOYEE_DISPLAY_NAME}"><img src="{$theme_images_dir}icons/16x16/small_edit_employee.gif" border="0" onMouseOver="ddrivetip('Edit');" onMouseOut="hideddrivetip();"></a></td>                                                        
                                                         </tr>
                                                     {/section}
                                                 </table>

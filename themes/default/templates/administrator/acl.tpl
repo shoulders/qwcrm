@@ -16,7 +16,7 @@
                         <table class="olotable" width="100%" border="0" cellpadding="5" cellspacing="0">
                             <tr>
                                 <td class="menutd">
-                                    <form method="post" action="?page=administrator:acl">
+                                    <form method="post" action="index.php?page=administrator:acl">
                                         <table class="olotable" cellpadding="5" cellspacing="0" border="0">
                                             <tr>
                                                 <td class="olohead">Module:Page</td>
