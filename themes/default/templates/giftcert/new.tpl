@@ -21,7 +21,7 @@
                             <tr>
                                 <td class="olotd4">
                                     {$translate_payment_gift_note_3} {$customer_name} {$translate_payment_gift_note_4}
-                                    <form method="post" action="index.php?page=giftcert:new&customer_id={$customer_id}" name="gift" id="gift" onsubmit="try { var myValidator = validate_gift; } catch(e) { return true; } return myValidator(this);">
+                                    <form method="post" action="index.php?page=giftcert:new&customer_id={$customer_id}" name="gift" id="gift">
                                         <table>
                                             <tr>
                                                 <td><b>{$translate_payment_customer_name}</b></td>

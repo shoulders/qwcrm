@@ -32,23 +32,23 @@
                                             </tr>
                                             <tr>
                                                 <td><b>Bank Account Name:</b></td>
-                                                <td><input class="olotd5" type="text" name="bank_account_name" value="{$payment_settings.BANK_ACCOUNT_NAME}"></td>
+                                                <td><input name="bank_account_name" class="olotd5" value="{$payment_settings.BANK_ACCOUNT_NAME}" type="text" maxlength="30" onkeydown="return onlyAlphaNumeric(event);"></td>
                                             </tr>
                                             <tr>
                                                 <td><b>Bank Name:</b></td>
-                                                <td><input class="olotd5" type="text" name="bank_name" value="{$payment_settings.BANK_NAME}"></td>
+                                                <td><input name="bank_name" class="olotd5" value="{$payment_settings.BANK_NAME}" type="text" maxlength="30" onkeydown="return onlyAlphaNumeric(event);"></td>
                                             </tr>
                                             <tr>
                                                 <td><b>Bank Account Number:</b></td>
-                                                <td><input class="olotd5" type="text" name="bank_account_number" value="{$payment_settings.BANK_ACCOUNT_NUMBER}"></td>
+                                                <td><input name="bank_account_number" class="olotd5" value="{$payment_settings.BANK_ACCOUNT_NUMBER}" type="text" maxlength="15" onkeydown="return onlyNumbers(event);"></td>
                                             </tr>
                                             <tr>
                                                 <td><b>Bank Sort Code</b></td>
-                                                <td><input class="olotd5" type="text" name="bank_sort_code" value="{$payment_settings.BANK_SORT_CODE}"></td>
+                                                <td><input name="bank_sort_code" class="olotd5" value="{$payment_settings.BANK_SORT_CODE}" type="text" maxlength="10" onkeydown="return onlyNumbers(event);"></td>
                                             </tr>
                                             <tr>
                                                 <td><b>Bank IBAN</b></td>
-                                                <td><input class="olotd5" type="text" name="bank_iban" value="{$payment_settings.BANK_IBAN}"></td>
+                                                <td><input name="bank_iban" class="olotd5" value="{$payment_settings.BANK_IBAN}" type="text" maxlength="34" placeholder="GB15MIDL40051512345678" onkeydown="return onlyAlphaNumeric(event);"></td>
                                             </tr>
 
                                             <!-- PayPal -->
@@ -60,8 +60,7 @@
                                             </tr>
                                             <tr>
                                                 <td><b>Paypal Email</b></td>
-                                                <td><input type="text" name="paypal_email" value="{$payment_settings.PAYPAL_EMAIL}" size="50" class="olotd5"></td>
-                                            </tr> 
+                                                <td><input name="paypal_email" class="olotd5" value="{$payment_settings.PAYPAL_EMAIL}" size="50" type="email" maxlength="50" placeholder="no-reply@quantumwarp.com" onkeydown="return onlyEmail(event);"/></td>
 
                                             <!-- Invoice Messages -->
                                             <tr>

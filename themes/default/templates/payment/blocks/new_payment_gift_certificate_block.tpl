@@ -13,7 +13,7 @@
                     </tr>
                     <tr class="olotd4">
                         <td></td>                        
-                        <td><input type="text" name="giftcert_code" size="16" class="olotd4"><br>{$translate_payment_gift_code_2}</td>
+                        <td><input name="giftcert_code" class="olotd5" type="text" maxlength="16" onkeydown="return onlyAlphaNumeric(event);"></td> 
                     </tr>
                     <tr>
                         <td valign="top"><b>{$translate_payment_note}</b></td>

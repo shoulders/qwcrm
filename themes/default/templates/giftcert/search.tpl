@@ -29,7 +29,7 @@
                                                             <b>To:</b>                                                            
                                                             {$customer_details.CUSTOMER_DISPLAY_NAME}<br>
                                                             {$customer_details.CUSTOMER_ADDRESS}<br>
-                                                            {$customer_details.CUSTOMER_CITY} {$customer_details.CUSTOMER_STATE} .{$customer_details.CUSTOMER_ZIP}<br>
+                                                            {$customer_details.CUSTOMER_CITY} {$customer_details.CUSTOMER_STATE}, {$customer_details.CUSTOMER_ZIP}<br>
                                                             <b>Customer ID: </b>{$customer_details.CUSTOMER_ID}
                                                             {assign var="customer_id" value=$customer_details.CUSTOMER_ID}                                                                                                                       
                                                         </td>

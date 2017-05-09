@@ -12,8 +12,8 @@
                         <td class="row2"><b>{$translate_payment_amount}</b></td>
                     </tr>
                     <tr class="olotd4">
-                        <td></td>
-                        <td>{$currency_sym}<input type="text" name="amount" size="8" value="{$balance|string_format:"%.2f"}" class="olotd4"></td>
+                        <td></td>                        
+                        <td>{$currency_sym}<input name="amount" class="olotd5" size="10" value="{$balance|string_format:"%.2f"}" type="text" maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumbersPeriod(event);"/></td>
                     </tr>
                     <tr>
                         <td valign="top"><b>{$translate_payment_note}</b></td>
