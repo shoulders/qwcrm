@@ -18,8 +18,8 @@
                         <td>{$currency_sym}<input type="text" name="amount" size="8" value="{$balance|string_format:"%.2f"}" class="olotd4"></td>
                     </tr>
                     <tr>
-                        <td valign="top"><b>{$translate_payment_memo}</b></td>
-                        <td colspan="2" ><textarea name="memo" cols="60" rows="4" class="olotd4"></textarea></td>
+                        <td valign="top"><b>{$translate_payment_note}</b></td>
+                        <td colspan="2" ><textarea name="note" cols="60" rows="4" class="olotd4"></textarea></td>
                     </tr>
                 </table>
                 <p>

@@ -1,4 +1,4 @@
-<!-- memo.tpl -->
+<!-- note_new.tpl -->
 <script src="{$theme_js_dir}tinymce/tinymce.min.js"></script>
 <script src="{$theme_js_dir}editor-config.js"></script>
 
@@ -7,7 +7,7 @@
         <td>
             <table width="700" cellpadding="5" cellspacing="0" border="0" >
                 <tr>
-                    <td class="menuhead2" width="80%">New Memo</td>
+                    <td class="menuhead2" width="80%">New Note</td>
                 </tr>
                 <tr>
                     <td class="menutd2">                        

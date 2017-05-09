@@ -394,7 +394,7 @@ function delete_customer($db, $customer_id){
     }
     
     // Check if customer has any customer notes
-    $sql = "SELECT count(*) as count FROM ".PRFX."CUSTOMER_NOTESS WHERE CUSTOMER_ID=".$db->qstr($customer_id);
+    $sql = "SELECT count(*) as count FROM ".PRFX."CUSTOMER_NOTES WHERE CUSTOMER_ID=".$db->qstr($customer_id);
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_customer_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
@@ -406,13 +406,13 @@ function delete_customer($db, $customer_id){
     }
     
     // Check if customer has any customer notes
-    $sql = "SELECT count(*) as count FROM ".PRFX."CUSTOMER_MEMO WHERE CUSTOMER_ID=".$db->qstr($customer_id);
+    $sql = "SELECT count(*) as count FROM ".PRFX."CUSTOMER_NOTES WHERE CUSTOMER_ID=".$db->qstr($customer_id);
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_customer_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     }    
     if($rs->fields['count'] > 0 ) {
-        //force_page('customer', 'view&page_title=Customers&error_msg=You can not delete a customer who has memos.');
+        //force_page('customer', 'view&page_title=Customers&error_msg=You can not delete a customer who has notes.');
         //exit;
         return false;
     } 

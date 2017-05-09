@@ -724,7 +724,7 @@
         <invoice_cash>Cash</invoice_cash>
         <invoice_gift>Gift Certificate</invoice_gift>
         <invoice_paypal>Pay Pal</invoice_paypal>
-        <invoice_memo>Memo</invoice_memo>
+        <invoice_note>Memo</invoice_note>
         <invoice_phone>Phone:</invoice_phone>
         <invoice_work>Work:</invoice_work>
         <invoice_mobile>Mobile</invoice_mobile>

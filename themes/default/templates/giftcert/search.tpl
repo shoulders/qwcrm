@@ -51,7 +51,7 @@
                                                             </table>
                                                             <table cellpadding="3" cellspacing="0" border="0" width="100%">
                                                                 <tr>
-                                                                    <td>{$memo}</td>
+                                                                    <td>{$note}</td>
                                                                 </tr>
                                                             </table>
                                                         <td>

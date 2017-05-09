@@ -28,7 +28,7 @@
 #   insert transaction     #
 ############################
 
-function insert_transaction($db, $invoice_id, $workorder_id, $customer_id, $type, $amount, $memo) {
+function insert_transaction($db, $invoice_id, $workorder_id, $customer_id, $type, $amount, $note) {
     
     global $smarty;
     
@@ -40,7 +40,7 @@ function insert_transaction($db, $invoice_id, $workorder_id, $customer_id, $type
             CUSTOMER_ID     = ".$db->qstr( $customer_id             ).",
             EMPLOYEE_ID     = ".$db->qstr( $_SESSION['login_id']    ).",
             AMOUNT          = ".$db->qstr( $amount                  ).",
-            MEMO            = ".$db->qstr( $memo                    );
+            NOTE            = ".$db->qstr( $note                    );
 
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_payment_include_error_message_function_'.__FUNCTION__.'_failed'));
@@ -53,7 +53,7 @@ function insert_transaction($db, $invoice_id, $workorder_id, $customer_id, $type
 #   Insert transaction created by a payment method  #
 #####################################################
 
-function insert_payment_method_transaction($db, $invoice_id, $amount, $method, $type, $method_memo, $memo) {
+function insert_payment_method_transaction($db, $invoice_id, $amount, $method, $type, $method_note, $note) {
     
     global $smarty;
 
@@ -80,7 +80,7 @@ function insert_payment_method_transaction($db, $invoice_id, $amount, $method, $
         update_invoice_transaction_only($db, $invoice_id, 0, 0, $new_invoice_paid_amount, $new_invoice_balance);
 
         // Transaction log        
-        $log_msg = "Partial Payment made by $method for $currency_sym$formatted_amount, Balance due: $currency_sym$new_invoice_balance, $method_memo, Memo: $memo";
+        $log_msg = "Partial Payment made by $method for $currency_sym$formatted_amount, Balance due: $currency_sym$new_invoice_balance, $method_note, Note: $note";
 
         // If the invoice has a workorder update it
         if(check_invoice_has_workorder($db, $invoice_id)) {
@@ -110,10 +110,10 @@ function insert_payment_method_transaction($db, $invoice_id, $amount, $method, $
         // log message   
         if($amount < $invoice_details['TOTAL']) {
             // Transaction is a partial payment
-            $memo = "Partial Payment made by $method for $currency_sym$formatted_amount, closing the invoice. $method_memo, Memo: $memo";
+            $note = "Partial Payment made by $method for $currency_sym$formatted_amount, closing the invoice. $method_note, Note: $note";
         } else {
             // Transaction is payment for the full amount
-            $memo = "Full Payment made by $method for $currency_sym$formatted_amount, closing the invoice. $method_memo, Memo: $memo";
+            $note = "Full Payment made by $method for $currency_sym$formatted_amount, closing the invoice. $method_note, Note: $note";
         }
 
         // If the invoice has a workorder update it
@@ -123,12 +123,12 @@ function insert_payment_method_transaction($db, $invoice_id, $amount, $method, $
             update_workorder_status($db, $workorder_id, 8);   
 
             // Creates a History record for the new work order
-            insert_workorder_history_note($db, $workorder_id, $smarty->getTemplateVars('translate_workorder_log_message_created').' '.$smarty->getTemplateVars('translate_workorder_log_message_by').' '.$_SESSION['login_display_name'].$memo);
+            insert_workorder_history_note($db, $workorder_id, $smarty->getTemplateVars('translate_workorder_log_message_created').' '.$smarty->getTemplateVars('translate_workorder_log_message_by').' '.$_SESSION['login_display_name'].$note);
 
         }    
 
         // Insert Transaction into log       
-        insert_transaction($db, $invoice_id, $workorder_id, $customer_id, $type, $amount, $memo);
+        insert_transaction($db, $invoice_id, $workorder_id, $customer_id, $type, $amount, $note);
 
         // Now load the invoice to view
         //force_page('invoice', 'details&invoice_id='.$invoice_id, 'information_msg=Full Payment made successfully'); 

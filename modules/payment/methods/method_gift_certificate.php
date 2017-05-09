@@ -30,11 +30,11 @@ if(!$new_invoice_totals = validate_payment_method_totals($db, $invoice_id, $VAR[
 
     // Live processing goes here
 
-    // Create a specific memo string (if applicable)
-    $method_memo = 'Gift Certificate Code: '.$VAR['giftcert_code'];    
+    // Create a specific note string (if applicable)
+    $method_note = 'Gift Certificate Code: '.$VAR['giftcert_code'];    
 
     // Insert the transaction with the calculated information
-    insert_payment_method_transaction($db, $invoice_id, $VAR['amount'], $method, $VAR['type'], $method_memo, $VAR['memo']);
+    insert_payment_method_transaction($db, $invoice_id, $VAR['amount'], $method, $VAR['type'], $method_note, $VAR['note']);
     
     // Assign Success message
     $smarty->assign('information_msg', 'Gift Certificate applied successfully');

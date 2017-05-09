@@ -433,8 +433,8 @@
                                                                     </td>
                                                                 </tr>
                                                                 <tr class="olotd4">
-                                                                    <td><b>{$translate_invoice_memo}</b></td>
-                                                                    <td colspan="3">{$transactions[t].MEMO}</td>
+                                                                    <td><b>{$translate_invoice_note}</b></td>
+                                                                    <td colspan="3">{$transactions[t].NOTE}</td>
                                                                 </tr>
                                                             {/section}
                                                         </table>

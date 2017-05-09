@@ -27,8 +27,8 @@
                         </td>
                     </tr>
                     <tr class="olotd4">
-                        <td><b>{$translate_payment_memo}</b></td>
-                        <td colspan="3">{$transactions[r].MEMO}</td>
+                        <td><b>{$translate_payment_note}</b></td>
+                        <td colspan="3">{$transactions[r].NOTE}</td>
                     </tr>                                                
                 {/section}                                            
             </table>

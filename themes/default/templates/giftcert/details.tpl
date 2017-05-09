@@ -70,10 +70,10 @@
                         </table>                           
                         <table cellpadding="3" cellspacing="0" border="0" width="100%">
                             <tr>
-                                <td><b>Memo:</b></td>
+                                <td><b>Note:</b></td>
                             </tr>
                             <tr>
-                                <td>{$giftcert_details.MEMO}</td>
+                                <td>{$giftcert_details.NOTE}</td>
                             </tr>
                             <tr>
                                 <td>
