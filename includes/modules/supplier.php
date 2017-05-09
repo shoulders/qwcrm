@@ -218,7 +218,7 @@ function get_supplier_details($db, $supplier_id, $item = null){
         
         if($item === null){
             
-            return $rs->GetArray();            
+            return $rs->GetRowAssoc();            
             
         } else {
             

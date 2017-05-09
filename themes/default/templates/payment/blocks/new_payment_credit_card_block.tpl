@@ -16,10 +16,10 @@
                     <tr class="olotd4">
                         <td></td>
                         <td>
-                            <select name="card_type" class="olotd4">
-                                {foreach key=key item=item from=$credit_cards}
-                                    <option value="{$item}">{$item}</option>
-                                {/foreach}
+                            <select name="card_type" class="olotd4">                     
+                                {section name=c loop=$active_credit_cards}
+                                    <option value="{$active_credit_cards[c].CARD_TYPE}">{$active_credit_cards[c].CARD_NAME}</option>
+                                {/section}
                             </select>
                         </td>
                         <td><input type="text" name="name_on_card" size="20" class="olotd4"></td>                        

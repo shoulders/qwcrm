@@ -24,10 +24,10 @@
 /** Display Functions **/
 
 ###############################
-# Display Work Order Schedule #
+# Display Workorder Schedules #
 ###############################
 
-function display_workorder_schedule($db, $workorder_id){
+function display_workorder_schedules($db, $workorder_id){
     
     global $smarty;
     
@@ -125,7 +125,7 @@ function get_schedule_details($db, $schedule_id, $item = null){
         
         if($item === null){
             
-            return $rs->GetArray(); 
+            return $rs->GetRowAssoc(); 
             
         } else {
             
@@ -288,18 +288,18 @@ function build_single_schedule_ics($db, $schedule_id, $ics_type = 'single') {
     // Get the schedule information
     $single_schedule    = get_schedule_details($db, $schedule_id);
     $workorder          = get_workorder_details($db, $single_schedule['WORKORDER_ID']);
-    $customer           = get_customer_details($db, $workorder['0']['CUSTOMER_ID']);
+    $customer           = get_customer_details($db, $workorder['CUSTOMER_ID']);
     
-    $start_datetime     = timestamp_to_ics_datetime($single_schedule['0']['SCHEDULE_START']);
-    $end_datetime       = timestamp_to_ics_datetime($single_schedule['0']['SCHEDULE_END']);
+    $start_datetime     = timestamp_to_ics_datetime($single_schedule['SCHEDULE_START']);
+    $end_datetime       = timestamp_to_ics_datetime($single_schedule['SCHEDULE_END']);
     $current_datetime   = timestamp_to_ics_datetime(time());
 
-    $summary            = prepare_ics_strings('SUMMARY', $customer['0']['CUSTOMER_DISPLAY_NAME'].' - Workorder '.$single_schedule['0']['WORKORDER_ID'].' - Schedule '.$schedule_id);
+    $summary            = prepare_ics_strings('SUMMARY', $customer['CUSTOMER_DISPLAY_NAME'].' - Workorder '.$single_schedule['WORKORDER_ID'].' - Schedule '.$schedule_id);
     $description        = prepare_ics_strings('DESCRIPTION', build_ics_description('textarea', $single_schedule, $customer, $workorder));
     $x_alt_desc         = prepare_ics_strings('X-ALT-DESC;FMTTYPE=text/html', build_ics_description('html', $single_schedule, $customer, $workorder));
     
-    $location           = prepare_ics_strings('LOCATION', build_single_line_address($customer['0']['CUSTOMER_ADDRESS'], $customer['0']['CUSTOMER_CITY'], $customer['0']['CUSTOMER_STATE'], $customer['0']['CUSTOMER_ZIP']));
-    $uniqid             = 'QWcrm-'.$single_schedule['0']['SCHEDULE_ID'].'-'.$single_schedule['0']['SCHEDULE_START'];    
+    $location           = prepare_ics_strings('LOCATION', build_single_line_address($customer['CUSTOMER_ADDRESS'], $customer['CUSTOMER_CITY'], $customer['CUSTOMER_STATE'], $customer['CUSTOMER_ZIP']));
+    $uniqid             = 'QWcrm-'.$single_schedule['SCHEDULE_ID'].'-'.$single_schedule['SCHEDULE_START'];    
   
     // Build the Schedule .ics content
     
@@ -389,21 +389,21 @@ function build_ics_description($type, $single_schedule, $customer, $workorder) {
 
         // Workorder and Schedule Information
         $description =  'Scope: \n\n'.
-                        $workorder['0']['WORK_ORDER_SCOPE'].'\n\n'.
+                        $workorder['WORK_ORDER_SCOPE'].'\n\n'.
                         'Description: \n\n'.
-                        html_to_textarea($workorder['0']['WORK_ORDER_DESCRIPTION']).'\n\n'.
+                        html_to_textarea($workorder['WORK_ORDER_DESCRIPTION']).'\n\n'.
                         'Schedule Notes: \n\n'.
-                        html_to_textarea($single_schedule['0']['SCHEDULE_NOTES']);
+                        html_to_textarea($single_schedule['SCHEDULE_NOTES']);
 
         // Contact Information
         $description .= 'Contact Information'.'\n\n'.
-                        'Company: ' .$customer['0']['CUSTOMER_DISPLAY_NAME'].'\n\n'.
-                        'Contact: ' .$customer['0']['CUSTOMER_FIRST_NAME'].' '.$customer['0']['CUSTOMER_LAST_NAME'].'\n\n'.
-                        'Phone: '   .$customer['0']['CUSTOMER_PHONE'].'\n\n'.
-                        'Mobile: '  .$customer['0']['CUSTOMER_MOBILE_PHONE'].'\n\n'.
-                        'Email: '   .$customer['0']['CUSTOMER_EMAIL'].'\n\n'.
-                        'Website: ' .$customer['0']['CUSTOMER_WWW'].'\n\n'.
-                        'Address: ' .build_single_line_address($customer['0']['CUSTOMER_ADDRESS'], $customer['0']['CUSTOMER_CITY'], $customer['0']['CUSTOMER_STATE'], $customer['0']['CUSTOMER_ZIP']).'\n\n';                        
+                        'Company: ' .$customer['CUSTOMER_DISPLAY_NAME'].'\n\n'.
+                        'Contact: ' .$customer['CUSTOMER_FIRST_NAME'].' '.$customer['CUSTOMER_LAST_NAME'].'\n\n'.
+                        'Phone: '   .$customer['CUSTOMER_PHONE'].'\n\n'.
+                        'Mobile: '  .$customer['CUSTOMER_MOBILE_PHONE'].'\n\n'.
+                        'Email: '   .$customer['CUSTOMER_EMAIL'].'\n\n'.
+                        'Website: ' .$customer['CUSTOMER_WWW'].'\n\n'.
+                        'Address: ' .build_single_line_address($customer['CUSTOMER_ADDRESS'], $customer['CUSTOMER_CITY'], $customer['CUSTOMER_STATE'], $customer['CUSTOMER_ZIP']).'\n\n';                        
     
     }
     
@@ -420,24 +420,24 @@ function build_ics_description($type, $single_schedule, $customer, $workorder) {
     
         // Workorder and Schedule Information
         $description .= '<p><strong>Scope: </strong></p>'.
-                        '<p>'.$workorder['0']['WORK_ORDER_SCOPE'].'</p>'.
+                        '<p>'.$workorder['WORK_ORDER_SCOPE'].'</p>'.
                         '<p><strong>Description: </strong></p>'.
-                        '<div>'.$workorder['0']['WORK_ORDER_DESCRIPTION'].'</div>'.
+                        '<div>'.$workorder['WORK_ORDER_DESCRIPTION'].'</div>'.
                         '<p><strong>Schedule Notes: </strong></p>'.
-                        '<div>'.$single_schedule['0']['SCHEDULE_NOTES'].'</div>';        
+                        '<div>'.$single_schedule['SCHEDULE_NOTES'].'</div>';        
 
         // Contact Information
         $description .= '<p><strong>Contact Information:</strong></p>'.
                         '<p>'.
-                        '<strong>Company:</strong> ' .$customer['0']['CUSTOMER_DISPLAY_NAME'].'<br>'.
-                        '<strong>Contact:</strong> ' .$customer['0']['CUSTOMER_FIRST_NAME'].' '.$customer['0']['CUSTOMER_LAST_NAME'].'<br>'.              
-                        '<strong>Phone:</strong> '   .$customer['0']['CUSTOMER_PHONE'].'<br>'.
-                        '<strong>Mobile:</strong> '  .$customer['0']['CUSTOMER_MOBILE_PHONE'].'<br>'.
-                        '<strong>Email:</strong> '   .$customer['0']['CUSTOMER_EMAIL'].'<br>'.
-                        '<strong>Website:</strong> ' .$customer['0']['CUSTOMER_WWW'].
+                        '<strong>Company:</strong> ' .$customer['CUSTOMER_DISPLAY_NAME'].'<br>'.
+                        '<strong>Contact:</strong> ' .$customer['CUSTOMER_FIRST_NAME'].' '.$customer['CUSTOMER_LAST_NAME'].'<br>'.              
+                        '<strong>Phone:</strong> '   .$customer['CUSTOMER_PHONE'].'<br>'.
+                        '<strong>Mobile:</strong> '  .$customer['CUSTOMER_MOBILE_PHONE'].'<br>'.
+                        '<strong>Email:</strong> '   .$customer['CUSTOMER_EMAIL'].'<br>'.
+                        '<strong>Website:</strong> ' .$customer['CUSTOMER_WWW'].
                         '</p>'.                
                         '<p><strong>Address: </strong></p>'.
-                        build_html_adddress($customer['0']['CUSTOMER_ADDRESS'], $customer['0']['CUSTOMER_CITY'], $customer['0']['CUSTOMER_STATE'], $customer['0']['CUSTOMER_ZIP']);
+                        build_html_adddress($customer['CUSTOMER_ADDRESS'], $customer['CUSTOMER_CITY'], $customer['CUSTOMER_STATE'], $customer['CUSTOMER_ZIP']);
         
         // Close HTML Wrapper
         $description .= '</BODY>\n'.

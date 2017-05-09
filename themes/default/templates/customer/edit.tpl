@@ -16,123 +16,121 @@
                                 <td width="100%" valign="top">                                   
                                     <table class="menutable" width="100%" border="0" cellpadding="0" cellspacing="0">
                                         <tr>
-                                            <td class="menutd">
-                                                {section name=q loop=$customer_details}                                                    
-                                                    <form action="index.php?page=customer:edit" method="POST" name="edit_customer" id="edit_customer">                                                    
-                                                        <input type="hidden" name="customer_id" value="{$customer_details[q].CUSTOMER_ID}">
-                                                        <table width="100%" cellpadding="2" cellspacing="2" border="0">
-                                                            <tr>
-                                                                <td colspan="2" align="left">
-                                                                    <table>
-                                                                        <tbody align="left">
-                                                                            <tr>
-                                                                                <td align="right"><strong>{$translate_display}</strong><span style="color: #ff0000">*</span></td>
-                                                                                <td colspan="3"><input name="displayName" class="olotd5" size="50" value="{$customer_details[q].CUSTOMER_DISPLAY_NAME}" type="text" maxlength="50" required onkeydown="return onlyAlpha(event);"/></td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td align="right"><strong>{$translate_first}</strong></td>
-                                                                                <td><input name="firstName" class="olotd5" value="{$customer_details[q].CUSTOMER_FIRST_NAME}" type="text" maxlength="20" onkeydown="return onlyAlpha(event);"/></td>
-                                                                            <tr>
-                                                                                <td align="right"><strong>{$translate_last}</strong></td>
-                                                                                <td><input name="lastName" class="olotd5" value="{$customer_details[q].CUSTOMER_LAST_NAME}" type="text" maxlength="20" onkeydown="return onlyAlpha(event);"/></td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td align="right"><span style="color: #ff0000"></span><b>{$translate_customer_www}</b></td>
-                                                                                <td><input name="customerWww" class="olotd5" value="{$customer_details[q].CUSTOMER_WWW}" size="50" type="url" maxlength="50" placeholder="https://quantumwarp.com/" pattern="^https?://.+" onkeydown="return onlyURL(event);"/></td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td align="right"><strong>{$translate_email}</strong></td>
-                                                                                <td><input name="email" class="olotd5" value="{$customer_details[q].CUSTOMER_EMAIL}" size="50" type="email" maxlength="50" placeholder="no-reply@quantumwarp.com" onkeydown="return onlyEmail(event);"/></td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td align="right"><strong>{$translate_credit_terms}</strong></td>
-                                                                                <td><input name="creditterms" class="olotd5" value="{$customer_details[q].CREDIT_TERMS}" size="50" type="text" maxlength="50" onkeydown="return onlyAlphaNumeric(event);"/></td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td align="right"><strong>{$translate_type}</strong><span style="color: #ff0000">*</span></td>
-                                                                                <td>
-                                                                                    <select class="olotd5" name="customerType">
-                                                                                        <option value="1"{if $customer_details[q].CUSTOMER_TYPE == 1} selected{/if}>{$translate_customer_type_1}</option>
-                                                                                        <option value="2"{if $customer_details[q].CUSTOMER_TYPE == 2} selected{/if}>{$translate_customer_type_2}</option>
-                                                                                        <option value="3"{if $customer_details[q].CUSTOMER_TYPE == 3} selected{/if}>{$translate_customer_type_3}</option>
-                                                                                        <option value="4"{if $customer_details[q].CUSTOMER_TYPE == 4} selected{/if}>{$translate_customer_type_4}</option>
-                                                                                        <option value="5"{if $customer_details[q].CUSTOMER_TYPE == 5} selected{/if}>{$translate_customer_type_5}</option>
-                                                                                        <option value="6"{if $customer_details[q].CUSTOMER_TYPE == 6} selected{/if}>{$translate_customer_type_6}</option>
-                                                                                        <option value="7"{if $customer_details[q].CUSTOMER_TYPE == 7} selected{/if}>{$translate_customer_type_7}</option>
-                                                                                        <option value="8"{if $customer_details[q].CUSTOMER_TYPE == 8} selected{/if}>{$translate_customer_type_8}</option>
-                                                                                        <option value="9"{if $customer_details[q].CUSTOMER_TYPE == 9} selected{/if}>{$translate_customer_type_9}</option>
-                                                                                        <option value="10"{if $customer_details[q].CUSTOMER_TYPE == 10} selected{/if}>{$translate_customer_type_10}</option>
-                                                                                    </select>                                                                                    
-                                                                                </td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td align="right"><b>{$translate_customer_discount}</b><span style="color: #ff0000">*</span></td>
-                                                                                <td><input name="discount_rate" class="olotd5" size="4" value="{$customer_details[q].DISCOUNT_RATE|string_format:"%.2f"}" type="text" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumbersPeriod(event);"/><b>%</b></td>
-                                                                            </tr>
-                                                                        </tbody>
-                                                                    </table>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="menuhead" colspan="2">{$translate_phone}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td colspan="2">
-                                                                    <table>
+                                            <td class="menutd">                                                                                                 
+                                                <form action="index.php?page=customer:edit" method="POST" name="edit_customer" id="edit_customer">                                                    
+                                                    <input type="hidden" name="customer_id" value="{$customer_details.CUSTOMER_ID}">
+                                                    <table width="100%" cellpadding="2" cellspacing="2" border="0">
+                                                        <tr>
+                                                            <td colspan="2" align="left">
+                                                                <table>
+                                                                    <tbody align="left">
                                                                         <tr>
-                                                                            <td align="right"><strong>{$translate_customer_home}</strong></td>
-                                                                            <td><input name="homePhone" class="olotd5" value="{$customer_details[q].CUSTOMER_PHONE}" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"/></td>
+                                                                            <td align="right"><strong>{$translate_display}</strong><span style="color: #ff0000">*</span></td>
+                                                                            <td colspan="3"><input name="displayName" class="olotd5" size="50" value="{$customer_details.CUSTOMER_DISPLAY_NAME}" type="text" maxlength="50" required onkeydown="return onlyAlpha(event);"/></td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td align="right"><strong>{$translate_customer_work}</strong></td>
-                                                                            <td><input name="workPhone" class="olotd5" value="{$customer_details[q].CUSTOMER_WORK_PHONE}" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"/></td>
+                                                                            <td align="right"><strong>{$translate_first}</strong></td>
+                                                                            <td><input name="firstName" class="olotd5" value="{$customer_details.CUSTOMER_FIRST_NAME}" type="text" maxlength="20" onkeydown="return onlyAlpha(event);"/></td>
+                                                                        <tr>
+                                                                            <td align="right"><strong>{$translate_last}</strong></td>
+                                                                            <td><input name="lastName" class="olotd5" value="{$customer_details.CUSTOMER_LAST_NAME}" type="text" maxlength="20" onkeydown="return onlyAlpha(event);"/></td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td align="right"><strong>{$translate_customer_mobile}</strong></td>
-                                                                            <td><input name="mobilePhone" class="olotd5" value="{$customer_details[q].CUSTOMER_MOBILE_PHONE}" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"/></td>
-                                                                        </tr>
-                                                                    </table>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="menuhead" colspan="2">{$translate_customer_address}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td colspan="2">
-                                                                    <table>
-                                                                        <tr>
-                                                                            <td align="right"><strong>{$translate_customer_address}</strong></td>
-                                                                            <td colspan="3"><textarea name="address" class="olotd5 mceNoEditor" cols="30" rows="3" maxlength="100" onkeydown="return onlyAddress(event);"/>{$customer_details[q].CUSTOMER_ADDRESS}</textarea></td>
+                                                                            <td align="right"><span style="color: #ff0000"></span><b>{$translate_customer_www}</b></td>
+                                                                            <td><input name="customerWww" class="olotd5" value="{$customer_details.CUSTOMER_WWW}" size="50" type="url" maxlength="50" placeholder="https://quantumwarp.com/" pattern="^https?://.+" onkeydown="return onlyURL(event);"/></td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td align="right"><strong>{$translate_customer_city}</strong></td>
-                                                                            <td><input name="city" class="olotd5" value="{$customer_details[q].CUSTOMER_CITY}" type="text" onkeydown="return onlyAlpha(event);"/></td>
+                                                                            <td align="right"><strong>{$translate_email}</strong></td>
+                                                                            <td><input name="email" class="olotd5" value="{$customer_details.CUSTOMER_EMAIL}" size="50" type="email" maxlength="50" placeholder="no-reply@quantumwarp.com" onkeydown="return onlyEmail(event);"/></td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td align="right"><strong>{$translate_customer_state}</strong></td>
-                                                                            <td><input name="state" class="olotd5" value="{$customer_details[q].CUSTOMER_STATE}" type="text" onkeydown="return onlyAlpha(event);"/></td>
+                                                                            <td align="right"><strong>{$translate_credit_terms}</strong></td>
+                                                                            <td><input name="creditterms" class="olotd5" value="{$customer_details.CREDIT_TERMS}" size="50" type="text" maxlength="50" onkeydown="return onlyAlphaNumeric(event);"/></td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td align="right"><strong>{$translate_customer_zip}</strong></td>
-                                                                            <td colspan="2"><input name="zip" class="olotd5" value="{$customer_details[q].CUSTOMER_ZIP}" type="text" onkeydown="return onlyAlphaNumeric(event);"/></td>
+                                                                            <td align="right"><strong>{$translate_type}</strong><span style="color: #ff0000">*</span></td>
+                                                                            <td>
+                                                                                <select class="olotd5" name="customerType">
+                                                                                    <option value="1"{if $customer_details.CUSTOMER_TYPE == 1} selected{/if}>{$translate_customer_type_1}</option>
+                                                                                    <option value="2"{if $customer_details.CUSTOMER_TYPE == 2} selected{/if}>{$translate_customer_type_2}</option>
+                                                                                    <option value="3"{if $customer_details.CUSTOMER_TYPE == 3} selected{/if}>{$translate_customer_type_3}</option>
+                                                                                    <option value="4"{if $customer_details.CUSTOMER_TYPE == 4} selected{/if}>{$translate_customer_type_4}</option>
+                                                                                    <option value="5"{if $customer_details.CUSTOMER_TYPE == 5} selected{/if}>{$translate_customer_type_5}</option>
+                                                                                    <option value="6"{if $customer_details.CUSTOMER_TYPE == 6} selected{/if}>{$translate_customer_type_6}</option>
+                                                                                    <option value="7"{if $customer_details.CUSTOMER_TYPE == 7} selected{/if}>{$translate_customer_type_7}</option>
+                                                                                    <option value="8"{if $customer_details.CUSTOMER_TYPE == 8} selected{/if}>{$translate_customer_type_8}</option>
+                                                                                    <option value="9"{if $customer_details.CUSTOMER_TYPE == 9} selected{/if}>{$translate_customer_type_9}</option>
+                                                                                    <option value="10"{if $customer_details.CUSTOMER_TYPE == 10} selected{/if}>{$translate_customer_type_10}</option>
+                                                                                </select>                                                                                    
+                                                                            </td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td class="menuhead"><b>{$translate_customer_notes}</b></td>
+                                                                            <td align="right"><b>{$translate_customer_discount}</b><span style="color: #ff0000">*</span></td>
+                                                                            <td><input name="discount_rate" class="olotd5" size="4" value="{$customer_details.DISCOUNT_RATE|string_format:"%.2f"}" type="text" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumbersPeriod(event);"/><b>%</b></td>
                                                                         </tr>
-                                                                        <tr>
-                                                                            <td></td>
-                                                                            <td colspan="2"><textarea name="customerNotes" class="olotd5" cols="50" rows="20">{$customer_details[q].CUSTOMER_NOTES}</textarea></td>
-                                                                        </tr>
-                                                                    </table>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td></td>
-                                                                <td><input class="olotd5" name="submit" value="Update" type="submit"></td>
-                                                            </tr>
-                                                        </table>                                                    
-                                                    </form>
-                                                {/section} 
+                                                                    </tbody>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="menuhead" colspan="2">{$translate_phone}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="2">
+                                                                <table>
+                                                                    <tr>
+                                                                        <td align="right"><strong>{$translate_customer_home}</strong></td>
+                                                                        <td><input name="homePhone" class="olotd5" value="{$customer_details.CUSTOMER_PHONE}" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"/></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td align="right"><strong>{$translate_customer_work}</strong></td>
+                                                                        <td><input name="workPhone" class="olotd5" value="{$customer_details.CUSTOMER_WORK_PHONE}" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"/></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td align="right"><strong>{$translate_customer_mobile}</strong></td>
+                                                                        <td><input name="mobilePhone" class="olotd5" value="{$customer_details.CUSTOMER_MOBILE_PHONE}" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"/></td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="menuhead" colspan="2">{$translate_customer_address}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="2">
+                                                                <table>
+                                                                    <tr>
+                                                                        <td align="right"><strong>{$translate_customer_address}</strong></td>
+                                                                        <td colspan="3"><textarea name="address" class="olotd5 mceNoEditor" cols="30" rows="3" maxlength="100" onkeydown="return onlyAddress(event);"/>{$customer_details.CUSTOMER_ADDRESS}</textarea></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td align="right"><strong>{$translate_customer_city}</strong></td>
+                                                                        <td><input name="city" class="olotd5" value="{$customer_details.CUSTOMER_CITY}" type="text" onkeydown="return onlyAlpha(event);"/></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td align="right"><strong>{$translate_customer_state}</strong></td>
+                                                                        <td><input name="state" class="olotd5" value="{$customer_details.CUSTOMER_STATE}" type="text" onkeydown="return onlyAlpha(event);"/></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td align="right"><strong>{$translate_customer_zip}</strong></td>
+                                                                        <td colspan="2"><input name="zip" class="olotd5" value="{$customer_details.CUSTOMER_ZIP}" type="text" onkeydown="return onlyAlphaNumeric(event);"/></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="menuhead"><b>{$translate_customer_notes}</b></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td></td>
+                                                                        <td colspan="2"><textarea name="customerNotes" class="olotd5" cols="50" rows="20">{$customer_details.CUSTOMER_NOTES}</textarea></td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td></td>
+                                                            <td><input class="olotd5" name="submit" value="Update" type="submit"></td>
+                                                        </tr>
+                                                    </table>                                                    
+                                                </form>                                                
                                             </td>
                                         </tr>
                                     </table>

@@ -10,7 +10,7 @@ require(INCLUDES_DIR.'modules/workorder.php');
 if($VAR['ics_type'] == 'day') {
     $filename = 'EmployeeID-'.$employee_id.'-Date-'.$schedule_start_year.$schedule_start_month.$schedule_start_day.'.ics';
 } else {
-    //$filename   = str_replace(' ', '_', $single_workorder['0']['CUSTOMER_DISPLAY_NAME']).'-Workorder-'.$single_schedule['0']['WORKORDER_ID'].'-Schedule-'.$schedule_id.'.ics';
+    //$filename   = str_replace(' ', '_', $single_workorder['CUSTOMER_DISPLAY_NAME']).'-Workorder-'.$single_schedule['WORKORDER_ID'].'-Schedule-'.$schedule_id.'.ics';
     $filename   = 'schedule.ics';    
 }
 

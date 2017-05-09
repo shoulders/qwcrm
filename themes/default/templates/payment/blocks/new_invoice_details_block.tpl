@@ -17,28 +17,26 @@
         <td><font color="#CC0000"><b>{$currency_sym}{$balance|string_format:"%.2f"}</b></font></td>      
     </tr>
     <tr>
-        <td colspan="6" valign="top">
-            {foreach item=customer_item from=$customer_details}
-                <table cellpadding="0" cellspacing="0">
-                    <tr>
-                        <td valign="top">
-                            {$customer_item.CUSTOMER_DISPLAY_NAME}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            {$customer_item.CUSTOMER_ADDRESS}<br>
-                            {$customer_item.CUSTOMER_CITY}, {$customer_item.CUSTOMER_STATE} {$customer_item.CUSTOMER_ZIP}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><b>{$translate_payment_email}</b> {$customer_item.CUSTOMER_EMAIL}</td>
-                    </tr>
-                    <tr>
-                        <td><b>{$translate_payment_phone}</b> {$customer_item.CUSTOMER_PHONE}</td>
-                </table>
-                {assign var="customer_id" value=$customer_item.CUSTOMER_ID}
-            {/foreach}        
+        <td colspan="6" valign="top">            
+            <table cellpadding="0" cellspacing="0">
+                <tr>
+                    <td valign="top">
+                        {$customer_details.CUSTOMER_DISPLAY_NAME}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        {$customer_details.CUSTOMER_ADDRESS}<br>
+                        {$customer_details.CUSTOMER_CITY}, {$customer_details.CUSTOMER_STATE} {$customer_details.CUSTOMER_ZIP}
+                    </td>
+                </tr>
+                <tr>
+                    <td><b>{$translate_payment_email}</b> {$customer_details.CUSTOMER_EMAIL}</td>
+                </tr>
+                <tr>
+                    <td><b>{$translate_payment_phone}</b> {$customer_details.CUSTOMER_PHONE}</td>
+            </table>
+            {assign var="customer_id" value=$customer_details.CUSTOMER_ID}                
         </td>
     </tr>
 </table>

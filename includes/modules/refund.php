@@ -230,7 +230,7 @@ function get_refund_details($db, $refund_id, $item = null){
         
         if($item === null){
             
-            return $rs->GetArray();            
+            return $rs->GetRowAssoc();            
             
         } else {
             

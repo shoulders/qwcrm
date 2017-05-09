@@ -46,7 +46,7 @@
                             {/if}                            
 
                             <!-- Credit Cards -->
-                            {if $active_payment_methods.credit_card_active == '1'}
+                            {if $active_payment_methods.credit_card_active == '1' && $active_credit_cards != ''}
                                 <tr>
                                     <td>
                                         {include file='payment/blocks/new_payment_credit_card_block.tpl'}

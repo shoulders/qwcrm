@@ -74,16 +74,16 @@ function get_company_start_end_times($db, $time_event) {
         exit;
     } else {        
     
-        $companyTime = $rs->GetArray();
+        $companyTime = $rs->GetRowAssoc();
 
         // return opening time in correct format for smarty time builder
         if($time_event == 'opening_time') {
-            return $companyTime['0']['OPENING_HOUR'].':'.$companyTime['0']['OPENING_MINUTE'].':00';
+            return $companyTime['OPENING_HOUR'].':'.$companyTime['OPENING_MINUTE'].':00';
         }
 
         // return closing time in correct format for smarty time builder
         if($time_event == 'closing_time') {
-            return $companyTime['0']['CLOSING_HOUR'].':'.$companyTime['0']['CLOSING_MINUTE'].':00';
+            return $companyTime['CLOSING_HOUR'].':'.$companyTime['CLOSING_MINUTE'].':00';
         }
         
     }

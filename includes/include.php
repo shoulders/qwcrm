@@ -529,7 +529,7 @@ function get_company_details($db, $item = null){
         
         if($item === null){
             
-            return $rs->GetArray();            
+            return $rs->GetRowAssoc();            
             
         } else {
             

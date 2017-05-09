@@ -79,7 +79,7 @@
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{$translate_supplier_www}</b></td>
-                                                                            <td><input name="supplierWww" class="olotd5" size="50" type="url" maxlength="50" pattern="{literal}^https?://.+{/literal}" placeholder="https://quantumwarp.com/" onkeydown="return onlyURL(event);"></td>
+                                                                            <td><input name="supplierWww" class="olotd5" size="50" type="url" maxlength="50" pattern="^https?://.+" placeholder="https://quantumwarp.com/" onkeydown="return onlyURL(event);"></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{$translate_supplier_email}</b></td>

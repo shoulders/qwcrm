@@ -180,7 +180,7 @@ function get_giftcert_details($db, $giftcert_id, $item = null){
         
         if($item === null){
             
-            return $rs->GetArray();            
+            return $rs->GetRowAssoc();            
             
         } else {
             

@@ -19,7 +19,7 @@ if($VAR['print_content'] == '' || $VAR['print_type'] == '') {
 $smarty->assign('company_details',      get_company_details($db)                        );
 $smarty->assign('single_workorder',     display_single_workorder($db, $workorder_id)    );
 $smarty->assign('workorder_notes',      display_workorder_notes($db, $workorder_id)     );
-$smarty->assign('workorder_schedule',   display_workorder_schedule($db, $workorder_id)  );
+$smarty->assign('workorder_schedules',  display_workorder_schedules($db, $workorder_id) );
 
 /* Display Page */
 

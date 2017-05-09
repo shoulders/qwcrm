@@ -152,7 +152,7 @@ function get_employee_details($db, $employee_id, $item = null) {
         
         if($item === null){
             
-            return $rs->GetArray(); 
+            return $rs->GetRowAssoc();
             
         } else {
             
@@ -434,6 +434,7 @@ function check_employee_username_exists($db, $username, $current_username){
         if ($rs->fields['num_users'] >= 1) {
             
             $smarty->assign('warning_msg', 'The employees Username, '.$username.',  already exists! Please use a different one.');
+            
             return true;
             
         } else {

@@ -231,7 +231,7 @@ function get_expense_details($db, $expense_id, $item = null){
         
         if($item === null){
             
-            return $rs->GetArray();            
+            return $rs->GetRowAssoc();            
             
         } else {
             

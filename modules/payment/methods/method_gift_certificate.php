@@ -11,7 +11,7 @@ if(!$giftcert_id = get_giftcert_id_by_gifcert_code($db, $VAR['giftcert_code'])) 
 
 // Make sure the Gift Certificate is valid and then pass the amount to the next process
 if(validate_giftcert_code($db, $giftcert_id)) {
-    $VAR['amount'] = get_giftcert_details($db, $giftcert_id['AMOUNT']);
+    $VAR['amount'] = get_giftcert_details($db, $giftcert_id, 'AMOUNT');
 } else {
     force_page('core', 'error', 'error_msg=This is not a valid Gift Certificate');
     exit;

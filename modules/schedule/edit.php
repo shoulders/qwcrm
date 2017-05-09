@@ -36,18 +36,18 @@ if(isset($VAR['submit'])) {
     $schedule_item = get_schedule_details($db, $schedule_id);
     
     // Corrects the extra time segment issue    
-    $schedule_end_time = $schedule_item['0']['SCHEDULE_END'] + 1;      
+    $schedule_end_time = $schedule_item['SCHEDULE_END'] + 1;      
     
-    $smarty->assign('schedule_start_date',      timestamp_to_date($schedule_item['0']['SCHEDULE_START'])    );       
-    $smarty->assign('schedule_start_time',      date('H:i', $schedule_item['0']['SCHEDULE_START'])          );         
-    $smarty->assign('schedule_end_date',        timestamp_to_date($schedule_item['0']['SCHEDULE_END'])      );         
-    $smarty->assign('schedule_end_time',        date('H:i', $schedule_end_time)                             );   
-    $smarty->assign('schedule_notes',           $schedule_item['0']['SCHEDULE_NOTES']                       );
-    $smarty->assign('schedule_id',              $schedule_item['0']['SCHEDULE_ID']                          );
-    $smarty->assign('customer_id',              $schedule_item['0']['CUSTOMER_ID']                          );
-    $smarty->assign('employee_id',              $schedule_item['0']['EMPLOYEE_ID']                          );
-    $smarty->assign('active_employees',         get_active_employees($db)                                   );
-    $smarty->assign('workorder_id',             $schedule_item['0']['WORKORDER_ID']                         ); 
+    $smarty->assign('schedule_start_date',      timestamp_to_date($schedule_item['SCHEDULE_START'])    );       
+    $smarty->assign('schedule_start_time',      date('H:i', $schedule_item['SCHEDULE_START'])          );         
+    $smarty->assign('schedule_end_date',        timestamp_to_date($schedule_item['SCHEDULE_END'])      );         
+    $smarty->assign('schedule_end_time',        date('H:i', $schedule_end_time)                        );   
+    $smarty->assign('schedule_notes',           $schedule_item['SCHEDULE_NOTES']                       );
+    $smarty->assign('schedule_id',              $schedule_item['SCHEDULE_ID']                          );
+    $smarty->assign('customer_id',              $schedule_item['CUSTOMER_ID']                          );
+    $smarty->assign('employee_id',              $schedule_item['EMPLOYEE_ID']                          );
+    $smarty->assign('active_employees',         get_active_employees($db)                              );
+    $smarty->assign('workorder_id',             $schedule_item['WORKORDER_ID']                         ); 
     
 }
 

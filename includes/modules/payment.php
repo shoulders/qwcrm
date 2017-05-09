@@ -65,12 +65,12 @@ function insert_payment_method_transaction($db, $invoice_id, $amount, $method, $
            
     // Other Variables
     $currency_sym   = get_company_details($db, 'CURRENCY_SYMBOL');
-    $workorder_id   = $invoice_details['0']['WORKORDER_ID'];
-    $customer_id    = $invoice_details['0']['CUSTOMER_ID'];
+    $workorder_id   = $invoice_details['WORKORDER_ID'];
+    $customer_id    = $invoice_details['CUSTOMER_ID'];
     
     // Calculate the new balance and paid amount    
-    $new_invoice_paid_amount    = $invoice_details['0']['PAID_AMOUNT'] + $amount;
-    $new_invoice_balance        = $invoice_details['0']['BALANCE'] - $amount;
+    $new_invoice_paid_amount    = $invoice_details['PAID_AMOUNT'] + $amount;
+    $new_invoice_balance        = $invoice_details['BALANCE'] - $amount;
             
     /* Partial Payment Transaction */
     
@@ -108,7 +108,7 @@ function insert_payment_method_transaction($db, $invoice_id, $amount, $method, $
         update_invoice_transaction_only($db, $invoice_id, 1, time(), $new_invoice_paid_amount, $new_invoice_balance);   
 
         // log message   
-        if($amount < $invoice_details['0']['TOTAL']) {
+        if($amount < $invoice_details['TOTAL']) {
             // Transaction is a partial payment
             $memo = "Partial Payment made by $method for $currency_sym$formatted_amount, closing the invoice. $method_memo, Memo: $memo";
         } else {
@@ -230,7 +230,15 @@ function get_active_credit_cards($db) {
         exit;
     } else {
         
-        return $rs->GetAssoc();
+        if(empty($rs->GetArray())){
+            
+            return false;
+            
+        } else {
+            
+            return $rs->GetArray();
+            
+        }        
         
     }  
     
@@ -364,9 +372,6 @@ function check_payment_method_is_active($db, $method) {
 function validate_payment_method_totals($db, $invoice_id, $amount) {
     
     global $smarty;
-    
-    // Get invoice details
-    $invoice_details = get_invoice_details($db, $invoice_id);
 
     // Has a zero amount been submitted, this is not allowed
     if($amount == 0){
@@ -378,7 +383,7 @@ function validate_payment_method_totals($db, $invoice_id, $amount) {
     }
 
     // Is the transaction larger than the outstanding invoice balance, this is not allowed
-    if($amount > $invoice_details['0']['BALANCE']){
+    if($amount > get_invoice_details($db, $invoice_id, 'BALANCE')){
         //force_page('payment', 'new&invoice_id='.$invoice_id, 'warning_msg=You can not enter more than the outstanding balance of the invoice.');
         //exit;
         $smarty->assign('warning_msg', 'You can not enter more than the outstanding balance of the invoice');

@@ -47,13 +47,13 @@
 
                                 <!-- Update Assigned Employee -->
                                 <td class="olotd4" align="center" width="33%"> 
-                                    <!-- If the employee is assigned to this workorder and it is not closed, or no one is assigned, or the user is an admin show a dropdown list and update button, else show the employee details instead -->
-                                    {if ($assigned_employee == $login_id && $workorder_status != 6) || $assigned_employee == '' || $login_account_type_id <= 3}
+                                    <!-- If the employee is assigned to this workorder and it is not closed, or no one is assigned, or the user is an admin - show a dropdown list and update button, else show the assigned employee details instead -->
+                                    {if ($assigned_employee_id == $login_id && $workorder_status != 6) || $assigned_employee_id == '' || $login_account_type_id <= 3}
                                         <p>&nbsp;</p>  
                                         <form method="POST" action="index.php?page=workorder:status">
                                             <select name="target_employee_id">
                                                 {section name=i loop=$active_employees}
-                                                    <option value="{$active_employees[i].EMPLOYEE_ID}" {if $assigned_employee == $active_employees[i].EMPLOYEE_ID} selected {/if}>{$active_employees[i].EMPLOYEE_DISPLAY_NAME}</option>
+                                                    <option value="{$active_employees[i].EMPLOYEE_ID}" {if $assigned_employee_id == $active_employees[i].EMPLOYEE_ID} selected {/if}>{$active_employees[i].EMPLOYEE_DISPLAY_NAME}</option>
                                                 {/section}
                                             </select>
                                             <p>&nbsp;</p>
@@ -61,8 +61,8 @@
                                             <input name="change_employee" value="{$translate_workorder_update}" type="submit">
                                         </form>                                       
                                     {else}    
-                                        <img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" onMouseOver="ddrivetip('<center><b>{$translate_workorder_contact}</b></center><hr><b>{$translate_workorder_fax}: </b>{$single_workorder[i].EMPLOYEE_WORK_PHONE}<br><b>{$translate_workorder_mobile}: </b>{$single_workorder[i].EMPLOYEE_MOBILE_PHONE}<br><b>{$translate_workorder_home}: </b>{$single_workorder[i].EMPLOYEE_HOME_PHONE}');" onMouseOut="hideddrivetip();">                                                 
-                                        <a class="link1" href="?page=employee:details&employee_id={$assigned_employee}">{$assigned_employee_display_name}</a>
+                                        <img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" onMouseOver="ddrivetip('<center><b>{$translate_workorder_contact}</b></center><hr><b>{$translate_workorder_fax}: </b>{$assigned_employee_details.EMPLOYEE_WORK_PHONE}<br><b>{$translate_workorder_mobile}: </b>{$assigned_employee_details.EMPLOYEE_MOBILE_PHONE}<br><b>{$translate_workorder_home}: </b>{$assigned_employee_details.EMPLOYEE_HOME_PHONE}');" onMouseOut="hideddrivetip();">                                                 
+                                        <a class="link1" href="?page=employee:details&employee_id={$assigned_employee_id}">{$assigned_employee_details.EMPLOYEE_DISPLAY_NAME}</a>
                                     {/if}
                                 </td>
 

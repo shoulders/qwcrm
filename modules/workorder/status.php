@@ -37,7 +37,7 @@ if(isset($VAR['delete'])) {
 // Fetch the page with the current status from the database
 $smarty->assign('active_employees',                 get_active_employees($db)                                                   );
 $smarty->assign('workorder_status',                 get_workorder_details($db, $workorder_id, 'WORK_ORDER_STATUS')              );
-$smarty->assign('assigned_employee',                $assigned_employee_id                                                       );
-$smarty->assign('assigned_employee_display_name',   get_employee_details($db, $assigned_employee_id, 'EMPLOYEE_DISPLAY_NAME')   );
+$smarty->assign('assigned_employee_id',             $assigned_employee_id                                                       );
+$smarty->assign('assigned_employee_details',       get_employee_details($db, $assigned_employee_id)                             );
 
 $BuildPage .= $smarty->fetch('workorder/status.tpl');

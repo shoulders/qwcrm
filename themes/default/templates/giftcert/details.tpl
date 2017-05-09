@@ -18,77 +18,70 @@
                                 
                                 <!-- Customer Details -->
                                 <td valign="top" width="50%">
-                                    <b>To:</b>
-                                    {section name=q loop=$customer_details}
-                                        {$customer_details[q].CUSTOMER_DISPLAY_NAME}<br>
-                                        {$customer_details[q].CUSTOMER_ADDRESS}<br>
-                                        {$customer_details[q].CUSTOMER_CITY} {$customer_details[q].CUSTOMER_STATE} .{$customer_details[q].CUSTOMER_ZIP}<br>
-                                        <b>Customer ID: </b>{$customer_details[q].CUSTOMER_ID}                                        
-                                    {/section}
+                                    <b>To:</b>                                    
+                                    {$customer_details.CUSTOMER_DISPLAY_NAME}<br>
+                                    {$customer_details.CUSTOMER_ADDRESS}<br>
+                                    {$customer_details.CUSTOMER_CITY} {$customer_details.CUSTOMER_STATE} .{$customer_details.CUSTOMER_ZIP}<br>
+                                    <b>Customer ID: </b>{$customer_details.CUSTOMER_ID}                                    
                                 </td>
                                 
                                 <!-- Gift Certificate Details -->
-                                <td valign="top" width="50%">
-                                    {section name=g loop=$giftcert_details}
-                                        <table cellpadding="0" cellspacing="0" border="0" width="100%">
-                                            <tr>
-                                                <td><b>Giftcert ID</b></td>
-                                                <td>{$giftcert_details[g].GIFTCERT_ID}</td>
-                                            </tr>
-                                            <tr>
-                                                <td><b>Is Active/Deleted</b></td>
-                                                <td>{$giftcert_details[g].ACTIVE}</td>
-                                            </tr>  
-                                            <tr>
-                                                <td><b>{$translate_payment_gift_code_3}</b></td>
-                                                <td>{$giftcert_details[g].GIFTCERT_CODE}</td>
-                                            </tr>
-                                            <tr>
-                                                <td><b>{$translate_payment_amount}</b></td>
-                                                <td>{$currency_sym}{$giftcert_details[g].AMOUNT|string_format:"%.2f"}</td>
-                                            </tr>
-                                            <tr>
-                                                <td><b>{$translate_payment_created}</b></td>
-                                                <td>{$giftcert_details[g].DATE_CREATED|date_format:$date_format}</td>
-                                            </tr>
-                                            <tr>
-                                                <td><b>Created By</b></td>
-                                                <td>{$giftcert_details[g].EMPLOYEE_ID}</td>
-                                            </tr>
-                                            <tr>
-                                                <td><b>{$translate_payment_expires}</b></td>
-                                                <td>{$giftcert_details[g].DATE_EXPIRES|date_format:$date_format}</td>
-                                            </tr>
-                                            <tr>
-                                                <td><b>Redeemed on</b></td>
-                                                <td>{$giftcert_details[g].DATE_REDEEMED|date_format:$date_format}</td>
-                                            </tr>
-                                            <tr>
-                                                <td><b>Is Redeemed</b></td>
-                                                <td>{$giftcert_details[g].IS_REDEEMED}</td>
-                                            </tr>
-                                        </table>
-                                    {/section}
-                                </td>
-                                
+                                <td valign="top" width="50%">                                    
+                                    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                                        <tr>
+                                            <td><b>Giftcert ID</b></td>
+                                            <td>{$giftcert_details.GIFTCERT_ID}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Is Active/Deleted</b></td>
+                                            <td>{$giftcert_details.ACTIVE}</td>
+                                        </tr>  
+                                        <tr>
+                                            <td><b>{$translate_payment_gift_code_3}</b></td>
+                                            <td>{$giftcert_details.GIFTCERT_CODE}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>{$translate_payment_amount}</b></td>
+                                            <td>{$currency_sym}{$giftcert_details.AMOUNT|string_format:"%.2f"}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>{$translate_payment_created}</b></td>
+                                            <td>{$giftcert_details.DATE_CREATED|date_format:$date_format}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Created By</b></td>
+                                            <td>{$giftcert_details.EMPLOYEE_ID}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>{$translate_payment_expires}</b></td>
+                                            <td>{$giftcert_details.DATE_EXPIRES|date_format:$date_format}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Redeemed on</b></td>
+                                            <td>{$giftcert_details.DATE_REDEEMED|date_format:$date_format}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Is Redeemed</b></td>
+                                            <td>{$giftcert_details.IS_REDEEMED}</td>
+                                        </tr>
+                                    </table>                                   
+                                </td>                                
                             </tr>
-                        </table>
-                        {section name=g loop=$giftcert_details}      
-                            <table cellpadding="3" cellspacing="0" border="0" width="100%">
-                                <tr>
-                                    <td><b>Memo:</b></td>
-                                </tr>
-                                <tr>
-                                    <td>{$giftcert_details[g].MEMO}</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                         <p><b>System Message</b><p>                        
-                                         <p>{$translate_payment_gift_note_1} {$currency_sym}{$giftcert_details[g].AMOUNT|string_format:"%.2f"} {$translate_payment_gift_note_2}</p>                        
-                                    </td>
-                                </tr>
-                            </table>                                            
-                        {/section}   
+                        </table>                           
+                        <table cellpadding="3" cellspacing="0" border="0" width="100%">
+                            <tr>
+                                <td><b>Memo:</b></td>
+                            </tr>
+                            <tr>
+                                <td>{$giftcert_details.MEMO}</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                     <p><b>System Message</b><p>                        
+                                     <p>{$translate_payment_gift_note_1} {$currency_sym}{$giftcert_details.AMOUNT|string_format:"%.2f"} {$translate_payment_gift_note_2}</p>                        
+                                </td>
+                            </tr>
+                        </table>                        
                     </td>
                 </tr>
             </table>

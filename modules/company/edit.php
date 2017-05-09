@@ -15,5 +15,5 @@ if(isset($VAR['submit'])) {
      
 // Fetch page
 $smarty->assign('country', get_country_codes($db));
-$smarty->assign('company', get_company_details($db));
+$smarty->assign('company_details', get_company_details($db));
 $BuildPage .= $smarty->fetch('company/edit.tpl');

@@ -18,8 +18,8 @@ $smarty->assign('invoice_details',          get_invoice_details($db, $invoice_id
 $smarty->assign('workorder_details',        get_workorder_details($db, get_invoice_details($db, $invoice_id, 'WORKORDER_ID'))                           );
 $smarty->assign('payment_details',          get_payment_details($db)                                                                                    );
 $smarty->assign('active_payment_methods',   get_active_payment_methods($db)                                                                             );
-$smarty->assign('labour_details',           get_invoice_labour_items($db, $invoice_id)                                                                  );
-$smarty->assign('parts_details',            get_invoice_parts_items($db, $invoice_id)                                                                   );
+$smarty->assign('labour_items',             get_invoice_labour_items($db, $invoice_id)                                                                  );
+$smarty->assign('parts_items',              get_invoice_parts_items($db, $invoice_id)                                                                   );
 $smarty->assign('labour_sub_total',         labour_sub_total($db, $invoice_id)                                                                          );
 $smarty->assign('parts_sub_total',          parts_sub_total($db, $invoice_id)                                                                           );
 $smarty->assign('employee_display_name',    get_employee_details($db, get_invoice_details($db, $invoice_id, 'EMPLOYEE_ID'), 'EMPLOYEE_DISPLAY_NAME')    );

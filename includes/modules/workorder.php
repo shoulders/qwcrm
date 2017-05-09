@@ -43,7 +43,7 @@ function display_single_workorder($db, $workorder_id){
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
         exit;
     } else { 
-        $single_workorder = $rs->GetArray();
+        $single_workorder = $rs->GetRowAssoc();
         
         if(empty($single_workorder)) {
             force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_workorder_error_message_function_'.__FUNCTION__.'_notfound'));
@@ -369,7 +369,7 @@ function get_workorder_details($db, $workorder_id, $item = null) {
         
         if($item === null){
             
-            return $rs->GetArray(); 
+            return $rs->GetRowAssoc(); 
             
         } else {
             

@@ -52,20 +52,17 @@ if(isset($VAR['submit'])) {
 
 }  
 
-// Get invoice Details      
-$invoice_details = get_invoice_details($db, $invoice_id);
-
 // Fetch page and assign variables
-$smarty->assign('invoice_details',          $invoice_details                                                    );
-$smarty->assign('customer_details',         get_customer_details($db, $invoice_details['1']['CUSTOMER_ID'])     );
-$smarty->assign('transactions',             get_invoice_transactions($db, $invoice_id)                          );  
-$smarty->assign('active_payment_methods',   get_active_payment_methods($db)                                     );
-$smarty->assign('credit_cards',             get_active_credit_cards($db)                                        );
-$smarty->assign('invoice_total',            $invoice_details['0']['TOTAL']                                      );
-$smarty->assign('IS_PAID_amount',           $invoice_details['0']['PAID_AMOUNT']                                );
-$smarty->assign('workorder_id',             $invoice_details['0']['WORKORDER_ID']                               );
-$smarty->assign('balance',                  $invoice_details['0']['BALANCE']                                    );
-$smarty->assign('invoice_date',             $invoice_details['0']['DATE']                                       );
-$smarty->assign('invoice_due',              $invoice_details['0']['DUE_DATE']                                   );
+$smarty->assign('customer_details',         get_customer_details($db, get_invoice_details($db, $invoice_id , 'CUSTOMER_ID'))    );
+$smarty->assign('transactions',             get_invoice_transactions($db, $invoice_id)                                          );  
+$smarty->assign('active_payment_methods',   get_active_payment_methods($db)                                                     );
+$smarty->assign('active_credit_cards',      get_active_credit_cards($db)                                                        );
+
+$smarty->assign('invoice_total',            get_invoice_details($db, $invoice_id , 'TOTAL')                                     );
+$smarty->assign('IS_PAID_amount',           get_invoice_details($db, $invoice_id , 'PAID_AMOUNT')                               );
+$smarty->assign('workorder_id',             get_invoice_details($db, $invoice_id , 'WORKORDER_ID')                              );
+$smarty->assign('balance',                  get_invoice_details($db, $invoice_id , 'BALANCE')                                   );
+$smarty->assign('invoice_date',             get_invoice_details($db, $invoice_id , 'DATE')                                      );
+$smarty->assign('invoice_due',              get_invoice_details($db, $invoice_id , 'DUE_DATE')                                  );
 
 $BuildPage .= $smarty->fetch('payment/new.tpl');

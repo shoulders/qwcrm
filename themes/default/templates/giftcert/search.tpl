@@ -26,14 +26,12 @@
                                                 <table cellpadding="3" cellspacing="0" border="0" width="100%">
                                                     <tr>
                                                         <td valign="top" width="50%">
-                                                            <b>To:</b>
-                                                            {section name=q loop=$customer}
-                                                                {$customer[q].CUSTOMER_DISPLAY_NAME}<br>
-                                                                {$customer[q].CUSTOMER_ADDRESS}<br>
-                                                                {$customer[q].CUSTOMER_CITY} {$customer[q].CUSTOMER_STATE} .{$customer[q].CUSTOMER_ZIP}<br>
-                                                                <b>Customer ID: </b>{$customer[q].CUSTOMER_ID}
-                                                                {assign var="customer_id" value=$customer[q].CUSTOMER_ID}
-                                                            {/section}                                                            
+                                                            <b>To:</b>                                                            
+                                                            {$customer_details.CUSTOMER_DISPLAY_NAME}<br>
+                                                            {$customer_details.CUSTOMER_ADDRESS}<br>
+                                                            {$customer_details.CUSTOMER_CITY} {$customer_details.CUSTOMER_STATE} .{$customer_details.CUSTOMER_ZIP}<br>
+                                                            <b>Customer ID: </b>{$customer_details.CUSTOMER_ID}
+                                                            {assign var="customer_id" value=$customer_details.CUSTOMER_ID}                                                                                                                       
                                                         </td>
                                                         <td valign="top" width="50%">
                                                             <table cellpadding="0" cellspacing="0" border="0" width="100%">

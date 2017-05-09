@@ -30,7 +30,7 @@
             <table width="100%" cellpadding="4" cellspacing="0">
                 <tr>
                     <td>
-                        {section name=i loop=$workorder_schedule}
+                        {section name=i loop=$workorder_schedules}
                         {sectionelse}
                             <table class="olotablered" width="100%" border="0" cellpadding="5" cellspacing="0">
                                 <tr>
@@ -63,13 +63,13 @@
                                 </td>
                             </tr>
                         </table>
-                        {section name=i loop=$workorder_schedule}                            
+                        {section name=i loop=$workorder_schedules}                            
                             <table width="100%" border="0" cellpadding="20" cellspacing="5">
                                 <tr>
                                     <td>                                        
                                         <table width="700" cellpadding="4" cellspacing="0" border="0" >
                                             <tr>
-                                                <td class="menuhead2" width="80%">&nbsp;{$translate_workorder_schedule} {$workorder_schedule[i].SCHEDULE_ID} - {$workorder_schedule[i].SCHEDULE_START|date_format:$date_format}</td>
+                                                <td class="menuhead2" width="80%">&nbsp;{$translate_workorder_schedule} {$workorder_schedules[i].SCHEDULE_ID} - {$workorder_schedules[i].SCHEDULE_START|date_format:$date_format}</td>
                                             </tr>
                                             <tr>
                                                 <td class="menutd2">
@@ -79,16 +79,16 @@
                                                                 <table width="100%" cellpadding="5" cellspacing="5">
                                                                     <tr>
                                                                         <td>
-                                                                            <p><b>{$translate_workorder_date}: </b>{$workorder_schedule[i].SCHEDULE_START|date_format:$date_format}</p>
+                                                                            <p><b>{$translate_workorder_date}: </b>{$workorder_schedules[i].SCHEDULE_START|date_format:$date_format}</p>
                                                                             <p>
-                                                                                <b>{$translate_workorder_start_time}: </b>{$workorder_schedule[i].SCHEDULE_START|date_format:"%H:%M"}<br>
-                                                                                <b>{$translate_workorder_end_time}: </b>{$workorder_schedule[i].SCHEDULE_END|date_format:"%H:%M"}
+                                                                                <b>{$translate_workorder_start_time}: </b>{$workorder_schedules[i].SCHEDULE_START|date_format:"%H:%M"}<br>
+                                                                                <b>{$translate_workorder_end_time}: </b>{$workorder_schedules[i].SCHEDULE_END|date_format:"%H:%M"}
                                                                             </p>                                                                            
                                                                             <b>{$translate_workorder_notes}:</b><br />
-                                                                            <div>{$workorder_schedule[i].SCHEDULE_NOTES}</div><br>
-                                                                            <button type="button" onClick="window.location='?page=schedule:edit&schedule_id={$workorder_schedule[i].SCHEDULE_ID}';">{$translate_workorder_details_schedule_edit}</button>
-                                                                            <a href="?page=schedule:delete&schedule_id={$workorder_schedule[i].SCHEDULE_ID}" onclick="return confirmDelete('{$translate_workorder_details_schedule_confirmdelete}');"><button type="button">{$translate_workorder_details_schedule_delete}</button></a>                                                                            
-                                                                            <button type="button" onClick="window.location='?page=schedule:icalendar&schedule_id={$workorder_schedule[i].SCHEDULE_ID}&theme=print';">{$translate_workorder_details_schedule_export}</button>                                                                                                                                 
+                                                                            <div>{$workorder_schedules[i].SCHEDULE_NOTES}</div><br>
+                                                                            <button type="button" onClick="window.location='?page=schedule:edit&schedule_id={$workorder_schedules[i].SCHEDULE_ID}';">{$translate_workorder_details_schedule_edit}</button>
+                                                                            <a href="?page=schedule:delete&schedule_id={$workorder_schedules[i].SCHEDULE_ID}" onclick="return confirmDelete('{$translate_workorder_details_schedule_confirmdelete}');"><button type="button">{$translate_workorder_details_schedule_delete}</button></a>                                                                            
+                                                                            <button type="button" onClick="window.location='?page=schedule:icalendar&schedule_id={$workorder_schedules[i].SCHEDULE_ID}&theme=print';">{$translate_workorder_details_schedule_export}</button>                                                                                                                                 
                                                                         </td>
                                                                     </tr>
                                                                 </table>

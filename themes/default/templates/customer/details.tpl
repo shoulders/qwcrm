@@ -1,6 +1,6 @@
 <!-- details.tpl -->
 <table width="100%">
-       <tr>
+    <tr>
         <td>
             <div id="tabs_container">
                 <ul class="tabs">

@@ -27,30 +27,28 @@
     <table  width="700" height="125" border="0" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
         <tr>            
             <!-- COMPANY DETAILS -->
-            <td valign="top" align="left" width="35%">
-                {foreach item=item from=$company}
-                    <table border="0" cellpadding="0" cellspacing="0">
-                        <tr>
-                            <td colspan="2"><b>{$item.COMPANY_NAME}</b></td>
-                        </tr>
-                        <tr>
-                            <td valign="top"><b>{$translate_invoice_prn_address} :&nbsp;</b></td>
-                            <td>{$item.COMPANY_ADDRESS|nl2br|regex_replace:"/[\r\t\n]/":" "}<br />{$item.COMPANY_CITY},<br />{$item.COMPANY_STATE},<br />{$item.COMPANY_ZIP}</td>
-                        </tr>
-                        <tr>
-                            <td><b>{$translate_invoice_prn_phone} :&nbsp;</b></td>
-                            <td>{$item.COMPANY_PHONE}</td>
-                        </tr>
-                        <tr>
-                            <td><b>{$translate_invoice_prn_email} :&nbsp;</b></td>
-                            <td>{$item.COMPANY_EMAIL}</td>
-                        </tr>
-                        <tr>
-                            <td><b>{$translate_invoice_prn_abn} :&nbsp;</b></td>
-                            <td>{$item.COMPANY_ABN}</td>
-                        </tr>
-                    </table>
-                {/foreach}
+            <td valign="top" align="left" width="35%">                
+                <table border="0" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td colspan="2"><b>{$company_details.COMPANY_NAME}</b></td>
+                    </tr>
+                    <tr>
+                        <td valign="top"><b>{$translate_invoice_prn_address} :&nbsp;</b></td>
+                        <td>{$company_details.COMPANY_ADDRESS|nl2br|regex_replace:"/[\r\t\n]/":" "}<br />{$company_details.COMPANY_CITY},<br />{$company_details.COMPANY_STATE},<br />{$company_details.COMPANY_ZIP}</td>
+                    </tr>
+                    <tr>
+                        <td><b>{$translate_invoice_prn_phone} :&nbsp;</b></td>
+                        <td>{$company_details.COMPANY_PHONE}</td>
+                    </tr>
+                    <tr>
+                        <td><b>{$translate_invoice_prn_email} :&nbsp;</b></td>
+                        <td>{$company_details.COMPANY_EMAIL}</td>
+                    </tr>
+                    <tr>
+                        <td><b>{$translate_invoice_prn_abn} :&nbsp;</b></td>
+                        <td>{$company_details.COMPANY_NUMBER}</td>
+                    </tr>
+                </table>                
             </td>
 
             <!-- LOGO and Company Name-->
@@ -60,7 +58,7 @@
                         <td width="100%"><img src="{$theme_images_dir}logo.png" alt="" border="0"></td>
                     </tr>
                     <tr>
-                        <td style="text-align:center"><font size="+0"><b>{$item.COMPANY_NAME}</b></font></td>
+                        <td style="text-align:center"><font size="+0"><b>{$company_details.COMPANY_NAME}</b></font></td>
                     </tr>
                 </table>
             </td>
@@ -79,10 +77,8 @@
                                         <b>{$translate_invoice_prn_invoice_date} - </b>  {$invoice.INVOICE_DATE|date_format:$date_format} <br>
                                         <b>{$translate_invoice_prn_invoice_due_date} - </b>  {$invoice.INVOICE_DUE|date_format:$date_format}<br>
                                         <b>{$translate_invoice_prn_work_order} - </b>{$invoice.WORKORDER_ID}<br>
-                                        <b>{$translate_invoice_prn_technician} - </b>{$invoice.EMPLOYEE_DISPLAY_NAME}<br>
-                                        {foreach item=item from=$customer_details}
-                                            <b>{$translate_invoice_prn_credit_terms} - </b>{$item.CREDIT_TERMS}<br>
-                                        {/foreach}
+                                        <b>{$translate_invoice_prn_technician} - </b>{$invoice.EMPLOYEE_DISPLAY_NAME}<br>                                        
+                                        <b>{$translate_invoice_prn_credit_terms} - </b>{$customer_details.CREDIT_TERMS}<br>                                        
                                     </td>
                                 </tr>
                             </table>
@@ -99,13 +95,11 @@
         <tr>
             <td valign="top" width="10%" align="left"></td>
             <td>
-                <font size="-1"><b>{$translate_invoice_prn_bill_to} :</b></font><br />
-                {foreach item=item from=$customer_details}
-                    <font size="+0">{$item.CUSTOMER_DISPLAY_NAME}</font><br />
-                    <font size="+0">{$item.CUSTOMER_ADDRESS|nl2br|regex_replace:"/[\r\t\n]/":" "}</font><br />
-                    <font size="+0">{$item.CUSTOMER_CITY},</font><br />
-                    <font size="+0">{$item.CUSTOMER_STATE} {$item.CUSTOMER_ZIP}</font>
-                {/foreach}
+                <font size="-1"><b>{$translate_invoice_prn_bill_to} :</b></font><br />                
+                <font size="+0">{$customer_details.CUSTOMER_DISPLAY_NAME}</font><br />
+                <font size="+0">{$customer_details.CUSTOMER_ADDRESS|nl2br|regex_replace:"/[\r\t\n]/":" "}</font><br />
+                <font size="+0">{$customer_details.CUSTOMER_CITY},</font><br />
+                <font size="+0">{$customer_details.CUSTOMER_STATE} {$customer_details.CUSTOMER_ZIP}</font>
             </td>
         </tr>
     </table>
@@ -114,7 +108,7 @@
     <!-- Invoice Details Row -->
     <table width="700" border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
         <tr>
-            <td align="center" class="olotd5" ><font size="+2">{$translate_invoice_prn_invoice_details} {$item.CUSTOMER_DISPLAY_NAME}</font></td>
+            <td align="center" class="olotd5" ><font size="+2">{$translate_invoice_prn_invoice_details} {$customer_details.CUSTOMER_DISPLAY_NAME}</font></td>
         </tr>
     </table>
     <br />
@@ -129,7 +123,7 @@
                 <td class="olohead" width="60" align="right"><b>{$translate_invoice_prn_unit_price}</b></td>
                 <td class="olohead" width="80" align="right"><b>{$translate_invoice_prn_subtotal}</b></td>
             </tr>
-            {section name=q loop=$labor}
+            {section name=q loop=$labour_items}
                 <tr>
                     <td class="olotd4" width="40">{$labor[q].INVOICE_LABOR_UNIT}</td>
                     <td class="olotd4" >{$labor[q].INVOICE_LABOR_DESCRIPTION}</td>
@@ -152,7 +146,7 @@
                 <td class="olohead" width="60" align="right"><b>{$translate_invoice_prn_unit_price}</b></td>
                 <td class="olohead" width="80" align="right"><b>{$translate_invoice_prn_subtotal}</b></td>
             </tr>
-            {section name=w loop=$parts}        
+            {section name=w loop=$parts_items}        
                 <tr class="olotd4">
                     <td width="40" class="olotd4">{$parts[w].INVOICE_PARTS_COUNT}</td>
                     <td class="olotd4">{$parts[w].INVOICE_PARTS_DESCRIPTION}</td>
@@ -209,7 +203,7 @@
                         {if $PAYMATE_LOGIN <> ""}
                             <tr valign="top">
                                 <td>
-                                    <a href="https://www.paymate.com/PayMate/ExpressPayment?mid={$PAYMATE_LOGIN}&amt={$paymate_amt}&ref=Payment%20for%20invoice%20{$invoice.INVOICE_ID}&currency={$currency_sym}&amt_editable=N&pmt_sender_email={$customer1.CUSTOMER_EMAIL}&pmt_contact_firstname={$customer1.CUSTOMER_FIRST_NAME}&pmt_contact_surname={$customer1.CUSTOMER_LAST_NAME}&pmt_contact_phone={$customer1.CUSTOMER_PHONE}&regindi_state={$customer1.CUSTOMER_STATE}&regindi_address1={$customer1.CUSTOMER_ADDRESS}&regindi_sub={$customer1.CUSTOMER_CITY}&regindi_pcode={$customer1.CUSTOMER_ZIP}" target="_blank">
+                                    <a href="https://www.paymate.com/PayMate/ExpressPayment?mid={$PAYMATE_LOGIN}&amt={$paymate_amt}&ref=Payment%20for%20invoice%20{$invoice.INVOICE_ID}&currency={$currency_sym}&amt_editable=N&pmt_sender_email={$customer_details.CUSTOMER_EMAIL}&pmt_contact_firstname={$customer_details.CUSTOMER_FIRST_NAME}&pmt_contact_surname={$customer_details.CUSTOMER_LAST_NAME}&pmt_contact_phone={$customer_details.CUSTOMER_PHONE}&regindi_state={$customer_details.CUSTOMER_STATE}&regindi_address1={$customer_details.CUSTOMER_ADDRESS}&regindi_sub={$customer_details.CUSTOMER_CITY}&regindi_pcode={$customer_details.CUSTOMER_ZIP}" target="_blank">
                                         <img src="{$theme_images_dir}paymate/paymate_cc.gif" height="20"  alt="Paymate provides secure, reliable and innovative Internet-based payment services to buyers in 57 countries around the world and sellers in Australia, New Zealand and the USA.">&nbsp;<< Click to pay this invoice via Paymate using a valid Credit Card.<br>
                                         <i><b><font size="-0.5">* A {$PAYMATE_FEES}% surcharge applies.</font></b></io><br />
                                     </a>

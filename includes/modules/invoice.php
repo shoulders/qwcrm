@@ -298,7 +298,7 @@ function get_invoice_details($db, $invoice_id, $item = null) {
         
         if($item === null){
             
-            return $rs->GetArray(); 
+            return $rs->GetRowAssoc(); 
             
         } else {
             

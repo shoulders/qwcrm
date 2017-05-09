@@ -119,15 +119,13 @@ function display_customers($db, $status = 'all', $direction = 'DESC', $use_pages
         
     } else {
         
-        $records = $rs->GetArray();   // do i need to add the check empty
-
-        if(empty($records)){
+        if(empty($rs->GetArray())){
             
             return false;
             
         } else {
             
-            return $records;
+            return $rs->GetArray();
             
         }
         
@@ -223,7 +221,7 @@ function get_customer_details($db, $customer_id, $item = null){
         
         if($item === null){
             
-            return $rs->GetArray(); 
+            return $rs->GetRowAssoc(); 
             
         } else {
             
@@ -494,26 +492,26 @@ function build_googlemap_directions_string($db, $customer_id, $employee_id)  {
     $google_server = "https://maps.google.com";
     
     // Determine the employee's start location (home or office)
-    if ($employee_details['0']['EMPLOYEE_BASED'] == 1){
+    if ($employee_details['EMPLOYEE_BASED'] == 1){
         
         // Works from the office
-        $employee_address  = preg_replace('/(\r|\n|\r\n){2,}/', ', ', $company_details['0']['ADDRESS']);
-        $employee_city     = $company_details['0']['CITY'];
-        $employee_zip      = $company_details['0']['ZIP'];
+        $employee_address  = preg_replace('/(\r|\n|\r\n){2,}/', ', ', $company_details['ADDRESS']);
+        $employee_city     = $company_details['CITY'];
+        $employee_zip      = $company_details['ZIP'];
         
     } else {        
         
         // Works from home
-        $employee_address  = preg_replace('/(\r|\n|\r\n){2,}/', ', ', $employee_details['0']['EMPLOYEE_ADDRESS']);
-        $employee_city     = $employee_details['0']['EMPLOYEE_CITY'];
-        $employee_zip      = $employee_details['0']['EMPLOYEE_ZIP'];
+        $employee_address  = preg_replace('/(\r|\n|\r\n){2,}/', ', ', $employee_details['EMPLOYEE_ADDRESS']);
+        $employee_city     = $employee_details['EMPLOYEE_CITY'];
+        $employee_zip      = $employee_details['EMPLOYEE_ZIP'];
         
     }
     
     // Get Customer's Address    
-    $customer_address   = preg_replace('/(\r|\n|\r\n){2,}/', ', ', $customer_details['0']['CUSTOMER_ADDRESS']);
-    $customer_city      = $customer_details['0']['CUSTOMER_CITY'];
-    $customer_zip       = $customer_details['0']['CUSTOMER_ZIP'];
+    $customer_address   = preg_replace('/(\r|\n|\r\n){2,}/', ', ', $customer_details['CUSTOMER_ADDRESS']);
+    $customer_city      = $customer_details['CUSTOMER_CITY'];
+    $customer_zip       = $customer_details['CUSTOMER_ZIP'];
     
     // return the built google map string
     return "$google_server/maps?f=d&source=s_d&hl=en&geocode=&saddr=$employee_address,$employee_city,$employee_zip&daddr=$customer_address,$customer_city,$customer_zip";
