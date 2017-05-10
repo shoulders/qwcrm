@@ -312,9 +312,6 @@ function insert_workorder_note($db, $workorder_id, $workorder_note){
     
     global $smarty;
 
-    // Remove Extra Slashes caused by Magic Quotes    
-    stripslashes($workorder_note);
-
     $sql = "INSERT INTO ".PRFX."WORKORDER_NOTES SET 
             WORK_ORDER_ID                  =". $db->qstr( $workorder_id            ).",             
             WORK_ORDER_EMPLOYEE_ID         =". $db->qstr( $_SESSION['login_id']    ).",
@@ -452,9 +449,6 @@ function update_workorder_scope_and_description($db, $workorder_id, $workorder_s
     
     global $smarty;
     
-    // Remove Extra Slashes caused by Magic Quotes    
-    stripslashes($workorder_description);
-
     $sql = "UPDATE ".PRFX."WORKORDER SET
             WORK_ORDER_SCOPE        =".$db->qstr( $workorder_scope          ).",
             WORK_ORDER_DESCRIPTION  =".$db->qstr( $workorder_description    ).",
@@ -491,9 +485,6 @@ function update_workorder_comments($db, $workorder_id, $workorder_comments){
     
     global $smarty;
     
-    // Remove Extra Slashes caused by Magic Quotes    
-    stripslashes($workorder_comments);
-
     $sql = "UPDATE ".PRFX."WORKORDER SET
             WORK_ORDER_COMMENT              =".$db->qstr( $workorder_comments   ).",
             LAST_ACTIVE                     =".$db->qstr( time()                )."
@@ -528,9 +519,6 @@ function update_workorder_comments($db, $workorder_id, $workorder_comments){
 function update_workorder_resolution($db, $workorder_id, $workorder_resolution){
     
     global $smarty;
-    
-    // Remove Extra Slashes caused by Magic Quotes    
-    stripslashes($workorder_resolution);
 
     $sql = "UPDATE ".PRFX."WORKORDER SET
             WORK_ORDER_RESOLUTION   = " . $db->qstr( $workorder_resolution ).",
@@ -707,9 +695,6 @@ function close_workorder_without_invoice($db, $workorder_id, $workorder_resoluti
     
     global $smarty;
     
-    // Remove Extra Slashes caused by Magic Quotes    
-    stripslashes($workorder_resolution);
-
     /* Insert resolution and close information */
     $sql = "UPDATE ".PRFX."WORKORDER SET
             WORK_ORDER_STATUS          = ". $db->qstr( 6                       ).",
