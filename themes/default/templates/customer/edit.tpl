@@ -7,7 +7,7 @@
         <td>            
             <table width="700" cellpadding="5" cellspacing="0" border="0">
                 <tr>
-                    <td class="menuhead2" width="80%">&nbsp;{$translate_customer_edit}</td>
+                    <td class="menuhead2" width="80%">&nbsp;{$translate_customer_edit} - {$customer_details.CUSTOMER_DISPLAY_NAME}</td>
                 </tr>
                 <tr>
                     <td class="menutd2">                    
