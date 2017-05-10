@@ -86,8 +86,7 @@
                                                             <td class="olotd"><textarea class="olotd4" rows="15" cols="70" name="workorder_comments"></textarea></td>
                                                         </tr>
                                                     </table>
-                                                    <br>
-                                                    <input type="submit" name="submit" value="{$translate_workorder_submit}">                                                                                                             
+                                                    <br>                                                                                                                                                              
                                                 </form>                                                    
                                             </td>
                                         </tr>
