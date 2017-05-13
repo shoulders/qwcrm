@@ -127,7 +127,7 @@ if(!load_language()) {$smarty->assign('error_msg', 'Error in system language fil
 #          Authentication                      #
 ################################################
 
-$auth = new Auth($db, $smarty, $secretKey);
+if(!$auth = new Auth($db, $smarty, $secretKey)) {die;}
 
 $login_id   = $_SESSION['login_id'];
 $login_usr  = $_SESSION['login_usr'];
@@ -265,7 +265,7 @@ if($maintenance == true){
     $VAR['theme'] = 'off';   
     
     // If user logged in, then log user off    
-    if(isset($_SESSION['login_hash'])) {    
+    if(isset($_SESSION['login_id'])) {    
         $auth->logout('index.php');
     }
     
@@ -297,7 +297,7 @@ elseif(isset($VAR['page']) && $VAR['page'] != ''){
 // if no page specified load a default landing page   
 } else {        
 
-    if(isset($_SESSION['login_hash'])){
+    if(isset($_SESSION['login_id'])){
         // If logged in
         $page_display_controller    = 'modules'.SEP.'core'.SEP.'home.php';
         $module                     = 'core';
@@ -340,7 +340,7 @@ if(check_acl($db, $login_account_type_id, $module, $page_tpl)){
     }
 
     // Fetch Header Legacy Template Code and Menu Block - Customers, Guests and Public users will not see the menu
-    if($VAR['theme'] != 'off' && isset($_SESSION['login_hash']) && $login_account_type_id != 7 && $login_account_type_id != 8 && $login_account_type_id != 9){       
+    if($VAR['theme'] != 'off' && isset($_SESSION['login_id']) && $login_account_type_id != 7 && $login_account_type_id != 8 && $login_account_type_id != 9){       
         $BuildPage .= $smarty->fetch('core'.SEP.'blocks'.SEP.'theme_header_legacy_supplement_block.tpl');
         require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_menu_block.php');        
     }    
@@ -349,7 +349,7 @@ if(check_acl($db, $login_account_type_id, $module, $page_tpl)){
     require($page_display_controller);    
 
     // Fetch Footer Legacy Template code Block (closes content table)
-    if($VAR['theme'] != 'off' && isset($_SESSION['login_hash']) && $login_account_type_id != 7 && $login_account_type_id != 8 && $login_account_type_id != 9){
+    if($VAR['theme'] != 'off' && isset($_SESSION['login_id']) && $login_account_type_id != 7 && $login_account_type_id != 8 && $login_account_type_id != 9){
         $BuildPage .= $smarty->fetch('core'.SEP.'blocks'.SEP.'theme_footer_legacy_supplement_block.tpl');             
     }
 

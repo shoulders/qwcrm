@@ -14,61 +14,73 @@ class Auth {
     
     /** 
      * This function is always called when the class is invoked
-     *  I dont know the difference between this and the constructor
+     *  I don't know the difference between this and the constructor
      */
-    function Auth($db, $smarty, $secretKey){             
+    function Auth($db, $smarty, $secretKey) {       
         
         // Make variables available throught the class        
         $this->db           = $db;
         $this->smarty       = $smarty;
         $this->secretKey    = $secretKey;        
         $this->session      = new Session();        
-        $this->login();
+        $this->login(); 
         
     }    
     
-    // Login User
-    function login(){
+    // Intial User Login
+    function login() {           
         
-        // See if we have values already stored in the session - if hash matches return to index.php code to process
-        if ($this->session->get('login_hash')) {
-            $this->confirmAuth();
-            return;
+        // If there is a session confirm details so no further processing is required
+        if ($this->session->get('login_id')) {            
+                        
+            if($this->confirmAuth()) {
+                return;
+            }
+            
         }
         
         // If this is a Fresh Login
-        if(isset($_POST['action']) && $_POST['action'] === 'login'){
+        if(isset($_POST['action']) && $_POST['action'] === 'login' && !$_SESSION['login_id']) {
+                        
             
-            // If username or password is missing, redirect
-            if (!isset($_POST['login_usr']) || $_POST['login_usr'] === '' || !isset($_POST['login_pwd']) || $_POST['login_pwd'] === ''){
-                force_page('core', 'login', 'warning_msg='.$this->smarty->getTemplateVars('translate_system_auth_advisory_message_username_or_password_missing'));
-                exit;
-            }
-
-            // Hash the POST'ed password with MD5 and store it as $login_pwd - after this point the password is always encrypted
-            $login_pwd = md5($_POST['login_pwd']);           
-
-            // This is required unless I use the escaping code above
+            /* Get Submitted Values Section */
+            
+                        
+            // Get the username
             $login_usr = $_POST['login_usr'];
             
-            /* Username and Password Verification Section */
-
-            // Query to count number of users with this combination
-            $sql    = "SELECT COUNT(*) AS NUM_USERS FROM ".PRFX."EMPLOYEE
+            // Get the password
+            $login_pwd = $_POST['login_pwd'];
+            
+            // If username or password is missing, redirect
+            if (!isset($login_usr) || $login_usr == '' || !isset($login_pwd) || $login_pwd == ''){
+                force_page('core', 'login', 'warning_msg='.$this->smarty->getTemplateVars('translate_system_auth_advisory_message_username_or_password_missing'));
+                exit;
+            } 
+            
+            
+            /* SQL Section */
+            
+                
+            // load matching records from the database
+            $sql    = "SELECT EMPLOYEE_ID, EMPLOYEE_TYPE, EMPLOYEE_DISPLAY_NAME, EMPLOYEE_HASH
+                        FROM ".PRFX."EMPLOYEE
                         WHERE EMPLOYEE_STATUS = '1'
-                        AND EMPLOYEE_LOGIN=".$this->db->qstr($login_usr)."
-                        AND EMPLOYEE_PASSWD=".$this->db->qstr($login_pwd);
+                        AND EMPLOYEE_LOGIN=".$this->db->qstr($login_usr);
 
-            $result = $this->db->Execute($sql);
-            $row    = $result->FetchRow();
-
-            /* Validate the POST'ed username - check to see if there is a matching username and password pair */
-
-            // If there are no matching username and password pairs
-            if ($row['NUM_USERS'] == 0) {    
+            $rs             = $this->db->Execute($sql);            
+            $row            = $rs->FetchRow();
+            $record_count   = $rs->RecordCount();
+            
+                        
+            /* Verification Section */
+            
+                        
+            // If there are no matching records
+            if ($record_count == 0) {    
 
                 // Log activity    
-                write_record_to_activity_log($this->smarty->getTemplateVars('translate_system_auth_log_message_login_failed_username_password_dont_match_for').' '.$login_usr);  
+                write_record_to_activity_log($this->smarty->getTemplateVars('translate_system_auth_log_message_login_failed_username_does_not_exist').' '.$login_usr);  
 
                 // Reload with 'Login Failed' message
                 force_page('core', 'login', 'warning_msg='.$this->smarty->getTemplateVars('translate_system_auth_advisory_message_login_failed'));
@@ -76,8 +88,8 @@ class Auth {
                 
             }
 
-            // If there is more than one matching username and password pair (catches errors)
-            elseif ($row['NUM_USERS'] > 1) {    
+            // If there is more than one matching record
+            if ($record_count > 1) {    
 
                 // Log activity
                 write_record_to_activity_log($this->smarty->getTemplateVars('translate_system_auth_log_message_login_failed_duplicate_username_and_password_for').' '.$login_usr);  
@@ -85,20 +97,12 @@ class Auth {
                 // Reload with 'Login Failed' message
                 force_page('core', 'login', 'warning_msg='.$this->smarty->getTemplateVars('translate_system_auth_advisory_message_login_failed'));
                 exit;
-
-            // Else if there is a single valid user, set the session variables
-            } else {
-
-                // Grab their login ID for tracking purposes (Employee Must be Active)
-                $sql = "SELECT EMPLOYEE_ID, EMPLOYEE_TYPE, EMPLOYEE_DISPLAY_NAME
-                        FROM ".PRFX."EMPLOYEE
-                        WHERE EMPLOYEE_STATUS = '1'
-                        AND EMPLOYEE_LOGIN=".$this->db->qstr($login_usr);
-
-                $result = $this->db->Execute($sql);
-                $row = $result->FetchRow();
-
-                // If we did not get a login ID
+            }
+           
+            // if there is a single valid user, set the session variables
+            if ($record_count == 1) {
+                
+                /* If we did not get a login ID
                 if (!isset($row['EMPLOYEE_ID'])){          
 
                     // Log activity       
@@ -106,62 +110,100 @@ class Auth {
 
                     // Reload with 'Login Failed' message
                     force_page('core', 'login', 'warning_msg='.$this->smarty->getTemplateVars('translate_system_auth_advisory_message_login_failed'));
-                    exit;
+                    exit;                
+                }*/       
+                
+                // Get the Hashed Password
+                $hashed_login_pwd = $this->hashPassword($login_pwd);
+                
+                // Verify the password against that in the database
+                if ($hashed_login_pwd === $row['EMPLOYEE_HASH']) {
+                    
+                    
+                    /* Verification Complete - Create Logged in session section */
+                    
 
-
-                // We have a login_id, now add the employee details to the session    
-                } else {
-
-                    // Sets the Employees ID number
+                    // Set the Employees ID number
                     $login_id = $row['EMPLOYEE_ID'];
 
-                    // Set the account type
+                    // Set the Account Type
                     $login_account_type_id = $row['EMPLOYEE_TYPE'];
 
-                    // Set the display name
+                    // Set the Display Name
                     $login_display_name = $row['EMPLOYEE_DISPLAY_NAME'];
+                    
+                    // Store user data in the session - these are used throughout QWcrm and is used for validating the session
+                    $this->storeAuth($login_usr, $hashed_login_pwd, $login_id, $login_account_type_id, $login_display_name);
+
+                    // Log activity       
+                    write_record_to_activity_log($this->smarty->getTemplateVars('translate_system_auth_log_message_login_successful_for').' '.$login_usr); 
+
+                    // Reload with 'Login Successful' message
+                    force_page('core', 'home', 'information_msg='.$this->smarty->getTemplateVars('translate_system_auth_advisory_message_login_successful'));
+                    exit;
+
+                
+                // The password is wronglog and display error    
+                } else {
+                    
+                    // Log activity    
+                    write_record_to_activity_log($this->smarty->getTemplateVars('translate_system_auth_log_message_login_password_does_not_match_for').' '.$login_usr);  
+
+                    // Reload with 'Login Failed' message
+                    force_page('core', 'login', 'warning_msg='.$this->smarty->getTemplateVars('translate_system_auth_advisory_message_login_failed'));
+                    exit;
                 }
+                    
+            }            
 
-            // Store user data in the session - these are used throughout QWcrm and is used for validating the session
-            $this->storeAuth($login_usr, $login_pwd, $login_id, $login_account_type_id, $login_display_name);
-            
-            // Log activity       
-            write_record_to_activity_log($this->smarty->getTemplateVars('translate_system_auth_log_message_login_successful_for').' '.$login_usr); 
-            
-            // Reload with 'Login Successful' message
-            force_page('core', 'home', 'information_msg='.$this->smarty->getTemplateVars('translate_system_auth_advisory_message_login_successful'));
-            exit;
-
-            }
-            
-        }  
-        
-    }
-        
-    // Store variables in the session
-    function storeAuth($login_usr, $login_pwd, $login_id, $login_account_type_id, $login_display_name){
-        
-        $this->session->set('login_usr',                $login_usr                                      );
-        $this->session->set('login_pwd',                $login_pwd                                      );
-        $this->session->set('login_id',                 $login_id                                       );        
-        $this->session->set('login_account_type_id',    $login_account_type_id                          );
-        $this->session->set('login_display_name',       $login_display_name                             );
-        
-        // This is used to validate session authentication - maybe not use this as makes confirm auth pointless
-        $this->session->set('login_hash',               md5($this->secretKey . $login_usr . $login_pwd) );
-
-    } 
-    
-    // verify the user is logged in by checking session varibles and validating the credentials
-    function confirmAuth(){
-        
-        if (md5($this->secretKey . $this->session->get('login_usr') . $this->session->get('login_pwd')) != $this->session->get('login_hash')){
-            $this->logout();            
-        } else {
-            return true;            
         }
         
     }  
+    
+
+    /* Functions Section */
+    
+        
+    // Store variables in the session
+    function storeAuth($login_usr, $hashed_login_pwd, $login_id, $login_account_type_id, $login_display_name){
+        
+        $this->session->set('login_usr',                $login_usr                                      );        
+        $this->session->set('login_id',                 $login_id                                       );  // Use this to validate the session - $_SESSION['login_id'] 
+        $this->session->set('login_account_type_id',    $login_account_type_id                          );
+        $this->session->set('login_display_name',       $login_display_name                             );
+        
+        // This is used to validate the logged in user's session
+        $this->session->set('login_hash',               $hashed_login_pwd                               );
+
+    } 
+    
+    // Verify the User's details are valid by comparing the Session Hash against the stored hash for the User in the database
+    function confirmAuth() {
+        
+        // Get user information form the database
+        $sql = "SELECT EMPLOYEE_HASH
+                FROM ".PRFX."EMPLOYEE
+                WHERE EMPLOYEE_STATUS = '1'
+                AND EMPLOYEE_LOGIN=".$this->db->qstr($this->session->get('login_usr'));
+                
+        $rs = $this->db->Execute($sql);
+        $row = $rs->FetchRow();
+        
+        if ($this->session->get('login_hash') != $row['EMPLOYEE_HASH']) {            
+            $this->logout();
+            //return false;
+        } else {            
+            return true;            
+        }
+        
+    }
+     
+    // Hash the password
+    function hashPassword($login_pwd) {
+        
+        return hash('sha256', $this->secretKey.$login_pwd);
+        
+    }
  
     // Logout from the session
     function logout(){

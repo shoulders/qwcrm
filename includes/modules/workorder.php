@@ -250,7 +250,7 @@ function insert_workorder($db, $customer_id, $created_by, $scope, $workorder_des
             WORK_ORDER_CREATE_BY                        = " . $db->qstr( $created_by            ).",
             WORK_ORDER_SCOPE                            = " . $db->qstr( $scope                 ).",
             WORK_ORDER_DESCRIPTION                      = " . $db->qstr( $workorder_description ).",
-            LAST_ACTIVE                                 = " . $db->qstr( time()                 ).",
+            LAST_ACTIVE                                 = " . $db->qstr( NULL                   ).",
             WORK_ORDER_COMMENT                          = " . $db->qstr( $workorder_comments    );
 
     if(!$rs = $db->Execute($sql)) {

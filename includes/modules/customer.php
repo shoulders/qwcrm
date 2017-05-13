@@ -157,7 +157,7 @@ function insert_customer($db, $VAR) {
             CUSTOMER_EMAIL          =". $db->qstr( $VAR['email']            ).", 
             CUSTOMER_TYPE           =". $db->qstr( $VAR['customerType']     ).", 
             CREATE_DATE             =". $db->qstr( time()                   ).",
-            LAST_ACTIVE             =". $db->qstr( time()                   ).",
+            LAST_ACTIVE             =". $db->qstr( NULL                     ).",
             CUSTOMER_FIRST_NAME     =". $db->qstr( $VAR['firstName']        ).", 
             DISCOUNT_RATE           =". $db->qstr( $VAR['discount_rate']    ).",
             CUSTOMER_LAST_NAME      =". $db->qstr( $VAR['lastName']         ).",

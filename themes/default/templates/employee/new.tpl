@@ -67,12 +67,12 @@
                                                                                     </tr>
                                                                                     <tr>
                                                                                         <td align="right"><strong>{$translate_employee_password}</strong></td>
-                                                                                        <td><input id="password" name="employee_pwd" class="olotd5" value="{$employee_details.EMPLOYEE_PASSWD}" type="password" maxlength="20" required onkeydown="return onlyPassword(event);"></td>
+                                                                                        <td><input id="password" name="employee_pwd" class="olotd5" type="password" maxlength="20" required onkeydown="return onlyPassword(event);"></td>
                                                                                     </tr>
                                                                                     <tr>
                                                                                         <td align="right"><strong>{$translate_employee_password_confirm}</strong></td>
                                                                                         <td>
-                                                                                            <input id="confirmPassword" name="employee_confirmPassword" class="olotd5" value="{$employee_details.EMPLOYEE_PASSWD}" type="password" maxlength="20" required onkeyup="checkPasswordsMatch('{$translate_core_theme_passwords_match}', '{$translate_core_theme_passwords_do_not_match}');" onkeydown="return onlyPassword(event);">
+                                                                                            <input id="confirmPassword" name="employee_confirmPassword" class="olotd5" type="password" maxlength="20" required onkeyup="checkPasswordsMatch('{$translate_core_theme_passwords_match}', '{$translate_core_theme_passwords_do_not_match}');" onkeydown="return onlyPassword(event);">
                                                                                             <div id="passwordMessage" style="min-height: 5px;"></div>
                                                                                         </td>
                                                                                     </tr>

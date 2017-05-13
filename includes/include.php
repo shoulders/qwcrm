@@ -221,7 +221,7 @@ function prepare_error_data($type, $data = Null){
       /*  // compensate for home and login pages
         if($page_string[1] == ''){     
             // Must be Login or Home
-            if(isset($_SESSION['login_hash'])){
+            if(isset($_SESSION['login_id'])){
                 $error_page = 'home';
             } else {
                 $error_page = 'login';
@@ -239,7 +239,7 @@ function prepare_error_data($type, $data = Null){
         // compensate for home and login pages
         if($data == ''){     
             // Must be Login or Home
-            if(isset($_SESSION['login_hash'])){
+            if(isset($_SESSION['login_id'])){
                 $error_page = 'home';
             } else {
                 $error_page = 'login';

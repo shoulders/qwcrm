@@ -99,28 +99,28 @@ function display_employees($db, $search_term, $page_no) {
 #    insert new Employee            #
 #####################################
 
-function insert_employee($db, $VAR){
+function insert_employee($db, $auth, $VAR){
     
     global $smarty;
     
     $sql = "INSERT INTO ".PRFX."EMPLOYEE SET
-            EMPLOYEE_LOGIN          =". $db->qstr( $VAR['employee_usr']             ).",
-            EMPLOYEE_PASSWD         =". $db->qstr( md5($VAR['employee_pwd'])        ).",
-            EMPLOYEE_EMAIL          =". $db->qstr( $VAR['employee_email']           ).", 
-            EMPLOYEE_FIRST_NAME     =". $db->qstr( $VAR['employee_firstName']       ).",
-            EMPLOYEE_LAST_NAME      =". $db->qstr( $VAR['employee_lastName']        ).",
-            EMPLOYEE_DISPLAY_NAME   =". $db->qstr( $VAR['employee_displayName']     ).",
-            EMPLOYEE_ADDRESS        =". $db->qstr( $VAR['employee_address']         ).",
-            EMPLOYEE_CITY           =". $db->qstr( $VAR['employee_city']            ).",
-            EMPLOYEE_STATE          =". $db->qstr( $VAR['employee_state']           ).", 
-            EMPLOYEE_ZIP            =". $db->qstr( $VAR['employee_zip']             ).",
-            EMPLOYEE_TYPE           =". $db->qstr( $VAR['employee_type']            ).",                    
-            EMPLOYEE_WORK_PHONE     =". $db->qstr( $VAR['employee_workPhone']       ).",
-            EMPLOYEE_HOME_PHONE     =". $db->qstr( $VAR['employee_homePhone']       ).",
-            EMPLOYEE_MOBILE_PHONE   =". $db->qstr( $VAR['employee_mobilePhone']     ).",
-            EMPLOYEE_BASED          =". $db->qstr( $VAR['employee_based']           ).",
-            EMPLOYEE_ACL            =". $db->qstr( $VAR['employee_acl']             ).",    
-            EMPLOYEE_STATUS         =". $db->qstr( $VAR['employee_status']          );          
+            EMPLOYEE_LOGIN          =". $db->qstr( $VAR['employee_usr']                         ).",
+            EMPLOYEE_HASH           =". $db->qstr( $auth->hashPassword($VAR['employee_pwd'])    ).",
+            EMPLOYEE_EMAIL          =". $db->qstr( $VAR['employee_email']                       ).", 
+            EMPLOYEE_FIRST_NAME     =". $db->qstr( $VAR['employee_firstName']                   ).",
+            EMPLOYEE_LAST_NAME      =". $db->qstr( $VAR['employee_lastName']                    ).",
+            EMPLOYEE_DISPLAY_NAME   =". $db->qstr( $VAR['employee_displayName']                 ).",
+            EMPLOYEE_ADDRESS        =". $db->qstr( $VAR['employee_address']                     ).",
+            EMPLOYEE_CITY           =". $db->qstr( $VAR['employee_city']                        ).",
+            EMPLOYEE_STATE          =". $db->qstr( $VAR['employee_state']                       ).", 
+            EMPLOYEE_ZIP            =". $db->qstr( $VAR['employee_zip']                         ).",
+            EMPLOYEE_TYPE           =". $db->qstr( $VAR['employee_type']                        ).",                    
+            EMPLOYEE_WORK_PHONE     =". $db->qstr( $VAR['employee_workPhone']                   ).",
+            EMPLOYEE_HOME_PHONE     =". $db->qstr( $VAR['employee_homePhone']                   ).",
+            EMPLOYEE_MOBILE_PHONE   =". $db->qstr( $VAR['employee_mobilePhone']                 ).",
+            EMPLOYEE_BASED          =". $db->qstr( $VAR['employee_based']                       ).",
+            EMPLOYEE_ACL            =". $db->qstr( $VAR['employee_acl']                         ).",    
+            EMPLOYEE_STATUS         =". $db->qstr( $VAR['employee_status']                      );          
           
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
@@ -285,32 +285,32 @@ function get_active_employees($db) {
 #   Update Employee     #
 #########################
 
-function update_employee($db, $employee_id, $VAR) {
+function update_employee($db, $auth, $employee_id, $VAR) {
     
     global $smarty;
     
         $set .="    SET
-                    EMPLOYEE_LOGIN          =". $db->qstr( $VAR['employee_usr']             ).",";
+                    EMPLOYEE_LOGIN          =". $db->qstr( $VAR['employee_usr']                         ).",";
 
     if($VAR['login_pwd'] != '') {
-        $set .="    EMPLOYEE_PASSWD         =". $db->qstr( md5($VAR['employee_pwd'])        ).",";
+        $set .="    EMPLOYEE_HASH           =". $db->qstr( $auth->hashPassword($VAR['employee_pwd'])    ).",";
     }
 
-        $set .="    EMPLOYEE_EMAIL          =". $db->qstr( $VAR['employee_email']           ).", 
-                    EMPLOYEE_FIRST_NAME     =". $db->qstr( $VAR['employee_firstName']       ).",
-                    EMPLOYEE_LAST_NAME      =". $db->qstr( $VAR['employee_lastName']        ).",
-                    EMPLOYEE_DISPLAY_NAME   =". $db->qstr( $VAR['employee_displayName']     ).",
-                    EMPLOYEE_ADDRESS        =". $db->qstr( $VAR['employee_address']         ).",
-                    EMPLOYEE_CITY           =". $db->qstr( $VAR['employee_city']            ).",
-                    EMPLOYEE_STATE          =". $db->qstr( $VAR['employee_state']           ).", 
-                    EMPLOYEE_ZIP            =". $db->qstr( $VAR['employee_zip']             ).",
-                    EMPLOYEE_TYPE           =". $db->qstr( $VAR['employee_type']            ).",                    
-                    EMPLOYEE_WORK_PHONE     =". $db->qstr( $VAR['employee_workPhone']       ).",
-                    EMPLOYEE_HOME_PHONE     =". $db->qstr( $VAR['employee_homePhone']       ).",
-                    EMPLOYEE_MOBILE_PHONE   =". $db->qstr( $VAR['employee_mobilePhone']     ).",
-                    EMPLOYEE_BASED          =". $db->qstr( $VAR['employee_based']           ).",
-                    EMPLOYEE_ACL            =". $db->qstr( $VAR['employee_acl']             ).",    
-                    EMPLOYEE_STATUS         =". $db->qstr( $VAR['employee_status']          );
+        $set .="    EMPLOYEE_EMAIL          =". $db->qstr( $VAR['employee_email']                       ).", 
+                    EMPLOYEE_FIRST_NAME     =". $db->qstr( $VAR['employee_firstName']                   ).",
+                    EMPLOYEE_LAST_NAME      =". $db->qstr( $VAR['employee_lastName']                    ).",
+                    EMPLOYEE_DISPLAY_NAME   =". $db->qstr( $VAR['employee_displayName']                 ).",
+                    EMPLOYEE_ADDRESS        =". $db->qstr( $VAR['employee_address']                     ).",
+                    EMPLOYEE_CITY           =". $db->qstr( $VAR['employee_city']                        ).",
+                    EMPLOYEE_STATE          =". $db->qstr( $VAR['employee_state']                       ).", 
+                    EMPLOYEE_ZIP            =". $db->qstr( $VAR['employee_zip']                         ).",
+                    EMPLOYEE_TYPE           =". $db->qstr( $VAR['employee_type']                        ).",                    
+                    EMPLOYEE_WORK_PHONE     =". $db->qstr( $VAR['employee_workPhone']                   ).",
+                    EMPLOYEE_HOME_PHONE     =". $db->qstr( $VAR['employee_homePhone']                   ).",
+                    EMPLOYEE_MOBILE_PHONE   =". $db->qstr( $VAR['employee_mobilePhone']                 ).",
+                    EMPLOYEE_BASED          =". $db->qstr( $VAR['employee_based']                       ).",
+                    EMPLOYEE_ACL            =". $db->qstr( $VAR['employee_acl']                         ).",    
+                    EMPLOYEE_STATUS         =". $db->qstr( $VAR['employee_status']                      );
 
     $sql = "UPDATE ".PRFX."EMPLOYEE ". $set ." WHERE EMPLOYEE_ID= ".$db->qstr($employee_id);
 

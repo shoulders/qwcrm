@@ -98,9 +98,10 @@
     // Specific Messages
     
         // includes/auth.php
-        <system_auth_log_message_login_failed_username_password_dont_match_for>Login Failed - Username and password do not match for</system_auth_log_message_login_failed_username_password_dont_match_for>
+        <system_auth_log_message_login_failed_username_does_not_exist>Login Failed - This username does not exist:</system_auth_log_message_login_failed_username_does_not_exist>
         <system_auth_log_message_login_failed_duplicate_username_and_password_for>Login Failed - There is more than one matching username password pair in the database for</system_auth_log_message_login_failed_duplicate_username_and_password_for>
         <system_auth_log_message_login_failed_no_active_login_id_for>Login Failed - No active login ID found for</system_auth_log_message_login_failed_no_active_login_id_for>
+        <system_auth_log_message_login_password_does_not_match_for>Login Failed - Wrong password submitted for</system_auth_log_message_login_password_does_not_match_for>        
         <system_auth_log_message_login_successful_for>Login successful for</system_auth_log_message_login_successful_for> 
         <system_auth_log_message_logout_successful_for>Logout successful for</system_auth_log_message_logout_successful_for>
 

@@ -20,7 +20,7 @@ if(isset($VAR['submit'])) {
         } else {    
             
             // Insert employee record (and return the new ID)
-            $employee_id = insert_employee($db, $VAR);
+            $employee_id = insert_employee($db, $auth, $VAR);
             
             // Redirect to the new employee's details page
             force_page('employee', 'details&employee_id='.$employee_id);

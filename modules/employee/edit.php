@@ -18,7 +18,7 @@ if(isset($VAR['submit'])) {
 
         // Load the incorrect varibles for editing        
         $employee_details['EMPLOYEE_LOGIN']         = $VAR['employee_usr'];
-        $employee_details['EMPLOYEE_PASSWD']        = $VAR['employee_pwd'];
+        $employee_details['EMPLOYEE_HASH']        = $VAR['employee_pwd'];
         $employee_details['EMPLOYEE_EMAIL']         = $VAR['employee_email'];
         $employee_details['EMPLOYEE_FIRST_NAME']    = $VAR['employee_firstName'];      
         $employee_details['EMPLOYEE_LAST_NAME']     = $VAR['employee_lastName'];
@@ -44,7 +44,7 @@ if(isset($VAR['submit'])) {
     } else {    
             
             // Insert employee record
-            update_employee($db, $employee_id, $VAR);
+            update_employee($db, $auth, $employee_id, $VAR);
             
             // Redirect to the new employee's details page
             force_page('employee', 'details&employee_id='.$employee_id);
