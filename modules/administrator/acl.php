@@ -4,8 +4,9 @@ require(INCLUDES_DIR.'modules/administrator.php');
 
 // Update the ACL permissions if submitted
 if(isset($VAR['submit'])) {
-    updateACL($db, $_POST);    
+    updateACL($db, $VAR);    
     $smarty->assign('information_msg', 'Permisions Updated');
+    //print_r($_POST);echo'<br>';print_r($VAR);
 }
     
 // Fetch the page with the permissions from the database 

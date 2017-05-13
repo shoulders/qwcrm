@@ -148,8 +148,8 @@ function updateACL($db, $permissions) {
         
         //print_r($val);// val is users / 01
         
-        // if not the submit button
-        if($ACLpage != 'submit') {            
+        // Compensate for the page and submit variables being sent in $VAR
+        if($ACLpage != 'page' && $ACLpage != 'submit') {            
                 
             foreach($ACLrow as $ACLgroup => $ACLstatus) {
                 
