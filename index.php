@@ -396,9 +396,18 @@ if($qwcrm_access_log == true){
 ################################################
 
 // Send Headers if 'print' mode is not set
-if ($VAR['theme'] !== 'print'){        
+if ($VAR['theme'] !== 'print') {        
+    
+}
 
-    // add headers here
+################################################
+#         Page Compression                     #
+################################################
+
+// Compress page and send correct compression headers
+if ($gzip == true && $VAR['theme'] !== 'print') {
+
+    $BuildPage = compress_page_output($BuildPage);
     
 }
     

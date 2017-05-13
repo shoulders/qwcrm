@@ -14,7 +14,7 @@
  *
  * @since   1.6
  * 
- * from joomla sysinfo.php - it strips dodgy formatting
+ * From {Joomla}administrator/components/com_admin/models/sysinfo.php - it strips dodgy formatting
  */
 
 /**

@@ -1064,3 +1064,92 @@ function gateway_xml2php($module) {
     return $xmlarray;
     
 }
+
+
+###########################################
+#  Compress page output and send headers  #
+###########################################
+
+/**
+ * Checks the accept encoding of the browser and compresses the data before
+ * sending it to the client if possible.
+ *
+ * @return  void
+ *
+ * @since   11.3
+ *
+ * From {Joomla}libraries/joomla/application/web.php
+ */
+
+/**
+ * @package     Joomla.Platform
+ * @subpackage  Application
+ *
+ * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2017 - Jon Brown / Quantumwarp.com
+ * @license     GNU General Public License version 2 or later; see LICENSE
+ */
+
+function compress_page_output($BuildPage)
+{
+    // Supported compression encodings.
+    $supported = array(
+        'x-gzip'    => 'gz',
+        'gzip'      => 'gz',
+        'deflate'   => 'deflate'
+    );
+
+    // Get the supported encoding.
+    $encodings = array_intersect(browserSupportedCompressionEncodings(), array_keys($supported));
+
+    // If no supported encoding is detected do nothing and return.
+    if (empty($encodings))
+    {
+        return $BuildPage;
+    }
+
+    // Verify that headers have not yet been sent, and that our connection is still alive.
+    if (headers_sent() || (connection_status() !== CONNECTION_NORMAL))
+    {
+        return $BuildPage;
+    }
+
+    // Iterate through the encodings and attempt to compress the data using any found supported encodings.
+    foreach ($encodings as $encoding)
+    {
+        if (($supported[$encoding] == 'gz') || ($supported[$encoding] == 'deflate'))
+        {
+            // Verify that the server supports gzip compression before we attempt to gzip encode the data.            
+            if (!extension_loaded('zlib') || ini_get('zlib.output_compression'))
+            {
+                continue;
+            }           
+
+            // Attempt to gzip encode the page with an optimal level 4.            
+            $gzBuildPage = gzencode($BuildPage, 4, ($supported[$encoding] == 'gz') ? FORCE_GZIP : FORCE_DEFLATE);
+
+            // If there was a problem encoding the data just try the next encoding scheme.            
+            if ($gzBuildPage === false)
+            {
+                continue;
+            }            
+
+            // Set the encoding headers.
+            header("Content-Encoding: $encoding");
+
+            // Replace the output with the encoded data.            
+            return $gzBuildPage;
+            
+        }
+    }
+}
+
+####################################################################
+#  Get the supported compression algorithms in the client browser  #
+####################################################################
+
+function browserSupportedCompressionEncodings() {
+        
+    return array_map('trim', (array) explode(',', $_SERVER['HTTP_ACCEPT_ENCODING']));
+
+}
