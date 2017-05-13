@@ -270,7 +270,7 @@
                         <table class="olotable" width="100%" border="0" cellpadding="5" cellspacing="0">
                             <tr>
                                 <td class="menutd">                                        
-                                    <form action="index.php?page=invoice:edit" method="POST" name="new_invoice" id="new_invoice" onsubmit="try { var myValidator = validate_new_invoice; } catch(e) { return true; } return myValidator(this);">
+                                    <form action="index.php?page=invoice:edit" method="POST" name="new_invoice" id="new_invoice">
 
                                         <!-- Invoice Information -->
                                         <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">

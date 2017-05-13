@@ -457,7 +457,8 @@ function verify_qwcrm_is_installed_correctly($db){
     
     // If no configuration file - redirect to the installation directory
     if(!is_file('configuration.php')){        
-        force_page('install');        
+        force_page('install/index.php');
+        exit;
     }
     
     // Compare the version number of the file system against the database - if mismatch load upgrade for further instructions?

@@ -167,13 +167,11 @@ class Auth {
     // Store variables in the session
     function storeAuth($login_usr, $hashed_login_pwd, $login_id, $login_account_type_id, $login_display_name){
         
-        $this->session->set('login_usr',                $login_usr                                      );        
+        $this->session->set('login_usr',                $login_usr                                      );
+        $this->session->set('login_hash',               $hashed_login_pwd                               );  // This is used to validate the logged in user's session
         $this->session->set('login_id',                 $login_id                                       );  // Use this to validate the session - $_SESSION['login_id'] 
         $this->session->set('login_account_type_id',    $login_account_type_id                          );
-        $this->session->set('login_display_name',       $login_display_name                             );
-        
-        // This is used to validate the logged in user's session
-        $this->session->set('login_hash',               $hashed_login_pwd                               );
+        $this->session->set('login_display_name',       $login_display_name                             );        
 
     } 
     
