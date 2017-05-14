@@ -6,7 +6,7 @@
                 <tr>
                     <td class="menuhead2" width="80%">{$translate_supplier_details_title}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
-                        <a href="index.php?page=supplier:edit&supplier_id={$supplier_details.SUPPLIER_ID}&page_title={$translate_supplier_edit_title}">
+                        <a href="index.php?page=supplier:edit&supplier_id={$supplier_details.SUPPLIER_ID}">
                             <img src="{$theme_images_dir}icons/edit.gif"  alt="" height="16" border="0">{$translate_supplier_details_edit}
                         </a>&nbsp;
                         <a>

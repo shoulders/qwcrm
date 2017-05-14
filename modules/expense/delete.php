@@ -18,6 +18,6 @@ if(!delete_expense($db,$expense_id)) {
         force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
         exit;
 } else {
-        force_page('expense', 'search&page_title='.$langvals['expense_search_title']);
+        force_page('expense', 'search');
         exit;
 }

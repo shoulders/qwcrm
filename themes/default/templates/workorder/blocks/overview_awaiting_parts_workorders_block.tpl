@@ -11,10 +11,10 @@
         <td class="olohead"><b>{$translate_workorder_action}</b></td>
     </tr>
     {section name=p loop=$awaiting_workorders}        
-        <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=workorder:details&workorder_id={$awaiting_workorders[p].WORK_ORDER_ID}&customer_id={$awaiting_workorders[p].CUSTOMER_ID}&page_title={$translate_workorder_work_order_id} {$awaiting_workorders[p].WORK_ORDER_ID}';" class="row1">
+        <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=workorder:details&workorder_id={$awaiting_workorders[p].WORK_ORDER_ID}&customer_id={$awaiting_workorders[p].CUSTOMER_ID}';" class="row1">
 
             <!-- ID -->
-            <td class="olotd4"><a href="index.php?page=workorder:details&workorder_id={$awaiting_workorders[p].WORK_ORDER_ID}&customer_id={$awaiting_workorders[p].CUSTOMER_ID}&page_title={$translate_workorder_work_order_id} {$awaiting_workorders[p].WORK_ORDER_ID}">{$awaiting_workorders[p].WORK_ORDER_ID}</a></td>
+            <td class="olotd4"><a href="index.php?page=workorder:details&workorder_id={$awaiting_workorders[p].WORK_ORDER_ID}&customer_id={$awaiting_workorders[p].CUSTOMER_ID}">{$awaiting_workorders[p].WORK_ORDER_ID}</a></td>
 
             <!-- Opened -->
             <td class="olotd4"> {$awaiting_workorders[p].WORK_ORDER_OPEN_DATE|date_format:$date_format}</td>
@@ -22,7 +22,7 @@
             <!-- Customer -->
             <td class="olotd4" nowrap>
                 <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<b><center>{$translate_workorder_contact_info_tooltip_title}</b></center><hr><b>{$translate_workorder_phone}: </b>{$awaiting_workorders[p].CUSTOMER_PHONE}<br> <b>{$translate_workorder_fax}: </b>{$awaiting_workorders[p].CUSTOMER_WORK_PHONE}<br><b>{$translate_workorder_mobile}: </b>{$awaiting_workorders[p].CUSTOMER_MOBILE_PHONE}<br><b>{$translate_workorder_address}:</b><br>{$awaiting_workorders[p].CUSTOMER_ADDRESS}<br>{$awaiting_workorders[p].CUSTOMER_CITY}, {$awaiting_workorders[p].CUSTOMER_STATE}<br>{$awaiting_workorders[p].CUSTOMER_ZIP}');" onMouseOut="hideddrivetip();">                         
-                <a class="link1" href="index.php?page=customer:details&customer_id={$awaiting_workorders[p].CUSTOMER_ID}&page_title={$awaiting_workorders[p].CUSTOMER_DISPLAY_NAME}">{$awaiting_workorders[p].CUSTOMER_DISPLAY_NAME}</a>
+                <a class="link1" href="index.php?page=customer:details&customer_id={$awaiting_workorders[p].CUSTOMER_ID}">{$awaiting_workorders[p].CUSTOMER_DISPLAY_NAME}</a>
             </td>
 
             <!-- Scope -->
@@ -46,16 +46,16 @@
                     {$translate_workorder_not_assigned}
                 {else}
                     <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<center><b>{$translate_workorder_contact_info_tooltip_title}</b></center><hr><b>{$translate_workorder_fax}: </b>{$awaiting_workorders[p].EMPLOYEE_WORK_PHONE}<br><b>{$translate_workorder_mobile}: </b>{$awaiting_workorders[p].EMPLOYEE_MOBILE_PHONE}<br><b>{$translate_workorder_home}: </b>{$awaiting_workorders[p].EMPLOYEE_HOME_PHONE}');" onMouseOut="hideddrivetip();">                             
-                    <a class="link1" href="index.php?page=employee:details&employee_id={$awaiting_workorders[p].EMPLOYEE_ID}&page_title={$awaiting_workorders[p].EMPLOYEE_DISPLAY_NAME}">{$awaiting_workorders[p].EMPLOYEE_DISPLAY_NAME}</a>
+                    <a class="link1" href="index.php?page=employee:details&employee_id={$awaiting_workorders[p].EMPLOYEE_ID}">{$awaiting_workorders[p].EMPLOYEE_DISPLAY_NAME}</a>
                 {/if}
             </td>
 
             <!-- Action -->
             <td class="olotd4" align="center" nowrap>
-                <a href="index.php?page=workorder:print&workorder_id={$awaiting_workorders[p].WORK_ORDER_ID}&customer_id={$awaiting_workorders[p].CUSTOMER_ID}&page_title=$translate_workorder_print_work_order_id} {$awaiting_workorders[p].WORK_ORDER_ID}&theme=off">
+                <a href="index.php?page=workorder:print&workorder_id={$awaiting_workorders[p].WORK_ORDER_ID}&customer_id={$awaiting_workorders[p].CUSTOMER_ID}&theme=off">
                     <img src="{$theme_images_dir}icons/16x16/fileprint.gif" border="0" onMouseOver="ddrivetip('{$translate_workorder_print_the_work_order_button_tooltip}');" onMouseOut="hideddrivetip();">
                 </a>
-                <a href="index.php?page=workorder:details&workorder_id={$awaiting_workorders[p].WORK_ORDER_ID}&customer_id={$awaiting_workorders[p].CUSTOMER_ID}&page_title={$translate_workorder_work_order_id} {$awaiting_workorders[p].WORK_ORDER_ID}">
+                <a href="index.php?page=workorder:details&workorder_id={$awaiting_workorders[p].WORK_ORDER_ID}&customer_id={$awaiting_workorders[p].CUSTOMER_ID}">
                     <img src="{$theme_images_dir}icons/16x16/viewmag.gif"  border="0" onMouseOver="ddrivetip('{$translate_workorder_view_the_work_order_button_tooltip}');" onMouseOut="hideddrivetip();">
                 </a>                                        
             </td>

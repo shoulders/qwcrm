@@ -15,7 +15,7 @@
                 <table width="100%" cellpadding="4" cellspacing="0" border="0">
                     <tr>
                         <td>
-                            <b>{$translate_workorder_employee}: </b><a href="index.php?page=employee:details&employee_id={$workorder_history[i].ENTERED_BY}&page_title={$translate_workorder_employee} {$workorder_history[i].EMPLOYEE_DISPLAY_NAME}">{$workorder_history[i].EMPLOYEE_DISPLAY_NAME}</a><br>
+                            <b>{$translate_workorder_employee}: </b><a href="index.php?page=employee:details&employee_id={$workorder_history[i].ENTERED_BY}">{$workorder_history[i].EMPLOYEE_DISPLAY_NAME}</a><br>
                             <b>{$translate_workorder_date}: </b>{$workorder_history[i].DATE|date_format:$date_format}<br>
                             <b>{$translate_workorder_time}: </b>{$workorder_history[i].DATE|date_format:"%H:%M"}<br>
                             <b>{$translate_workorder_event}: </b>{$workorder_history[i].NOTE}                            

@@ -122,8 +122,8 @@
                                                     </tr>
                                                     {section name=i loop=$search_result}
                                                         <!-- This allows double clicking on a row and opens the corresponding expense view details -->
-                                                        <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=expense:details&expense_id={$search_result[i].EXPENSE_ID}&page_title={$translate_expense_details_title}';" class="row1">
-                                                            <td class="olotd4" nowrap><a href="index.php?page=expense:details&expense_id={$search_result[i].EXPENSE_ID}&page_title={$translate_expense_details_title}">{$search_result[i].EXPENSE_ID}</a></td>
+                                                        <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=expense:details&expense_id={$search_result[i].EXPENSE_ID}';" class="row1">
+                                                            <td class="olotd4" nowrap><a href="index.php?page=expense:details&expense_id={$search_result[i].EXPENSE_ID}">{$search_result[i].EXPENSE_ID}</a></td>
                                                             <td class="olotd4" nowrap>{$search_result[i].EXPENSE_PAYEE}</td>
                                                             <td class="olotd4" nowrap>{$search_result[i].EXPENSE_DATE|date_format:$date_format}</td>                                                                
                                                             <td class="olotd4" nowrap>
@@ -173,10 +173,10 @@
                                                             </td>
                                                             <td class="olotd4" nowrap><img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{$translate_expense_items}</b><hr><p>{$search_result[i].EXPENSE_ITEMS|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();"></td>
                                                             <td class="olotd4" nowrap>
-                                                                <a href="index.php?page=expense:details&expense_id={$search_result[i].EXPENSE_ID}&page_title={$translate_expense_details_title}">
+                                                                <a href="index.php?page=expense:details&expense_id={$search_result[i].EXPENSE_ID}">
                                                                     <img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" onMouseOver="ddrivetip('<b>{$translate_expense_search_details|nl2br|regex_replace:"/[\r\t\n]/":" "}</b>');" onMouseOut="hideddrivetip();">
                                                                 </a>
-                                                                <a href="index.php?page=expense:edit&expense_id={$search_result[i].EXPENSE_ID}&page_title={$translate_expense_edit_title}">
+                                                                <a href="index.php?page=expense:edit&expense_id={$search_result[i].EXPENSE_ID}">
                                                                     <img src="{$theme_images_dir}icons/16x16/small_edit.gif" alt=""  border="0" onMouseOver="ddrivetip('<b>{$translate_expense_search_edit_details|nl2br|regex_replace:"/[\r\t\n]/":" "}</b>');" onMouseOut="hideddrivetip();">
                                                                 </a>
                                                                 <a href="index.php?page=expense:delete&expense_id={$search_result[i].EXPENSE_ID}" onclick="return confirmDelete('{$translate_expense_delete_mes_confirmation}');">

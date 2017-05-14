@@ -309,7 +309,7 @@
                                                 </td>
                                                 <td>{$currency_sym}{$invoice_details.TOTAL|string_format:"%.2f"}</td>
                                                 <td><a href="index.php?page=employee:details&employee_id={$invoice_details.EMPLOYEE_ID}">{$employee_display_name}</a></td>
-                                                <td><a href="index.php?page=workorder:details&workorder_id={$invoice_details.WORKORDER_ID}&page_title={$translate_invoice_workorder_id} {$invoice_details.WORKORDER_ID}">{$invoice_details.WORKORDER_ID}</a></td>
+                                                <td><a href="index.php?page=workorder:details&workorder_id={$invoice_details.WORKORDER_ID}">{$invoice_details.WORKORDER_ID}</a></td>
                                                 <td><font color="#CC0000">{$currency_sym}{$invoice_details.BALANCE|string_format:"%.2f"}</font></td>
                                             </tr>
 
@@ -322,7 +322,7 @@
                                                     <table cellpadding="0" cellspacing="0">
                                                         <tr>
                                                             <td valign="top">
-                                                                <a href="index.php?page=customer:details&customer_id={$customer_details.CUSTOMER_ID}&page_title={$customer_details.CUSTOMER_DISPLAY_NAME}">{$customer_details.CUSTOMER_DISPLAY_NAME}</a><br>
+                                                                <a href="index.php?page=customer:details&customer_id={$customer_details.CUSTOMER_ID}">{$customer_details.CUSTOMER_DISPLAY_NAME}</a><br>
                                                                 {$customer_details.CUSTOMER_ADDRESS|nl2br}<br>
                                                                 {$customer_details.CUSTOMER_CITY}, {$customer_details.CUSTOMER_STATE} {$customer_details.CUSTOMER_ZIP}<br>
                                                                 {$customer_details.CUSTOMER_PHONE}<br>
@@ -386,11 +386,11 @@
                                                     {else}
 
                                                         <!-- Delete Button -->
-                                                        <button type="button" name="{$translate_invoice_delete}" onClick="location.href='index.php?page=invoice:delete&customer_id={$invoice_details.CUSTOMER_ID}&invoice_id={$invoice_details.INVOICE_ID}&page_title=Deleting&nbsp;Invoice&nbsp;-{$invoice_details.INVOICE_ID}';">{$translate_invoice_delete}</button>
+                                                        <button type="button" name="{$translate_invoice_delete}" onClick="location.href='index.php?page=invoice:delete&customer_id={$invoice_details.CUSTOMER_ID}&invoice_id={$invoice_details.INVOICE_ID}';">{$translate_invoice_delete}</button>
 
                                                         {if $workorder_status == '9' && $workorder_id != '0'}
                                                             <!-- Close Button -->
-                                                            <button type="button" name="Close Work Order" onClick="location.href='index.php?page=workorder:details_edit_resolution&workorder_id={$invoice_details.WORKORDER_ID}&page_title=Closing%20Work%20Order{$invoice_details.WORKORDER_ID}';">{$translate_invoice_close_wo}</button>
+                                                            <button type="button" name="Close Work Order" onClick="location.href='index.php?page=workorder:details_edit_resolution&workorder_id={$invoice_details.WORKORDER_ID}';">{$translate_invoice_close_wo}</button>
                                                         {/if}
 
                                                         <!-- Work Order must be closed before payment can be received. -->

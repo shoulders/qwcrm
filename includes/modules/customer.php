@@ -360,7 +360,7 @@ function delete_customer($db, $customer_id){
         exit;
     }  
     if($rs->fields['count'] > 0 ) {
-        //force_page('customer', 'view&page_title=Customers&error_msg=You can not delete a customer who has work orders.');
+        //force_page('customer', 'view&error_msg=You can not delete a customer who has work orders.');
         //exit;
         return false;
     }
@@ -372,7 +372,7 @@ function delete_customer($db, $customer_id){
         exit;
     }    
     if($rs->fields['count'] > 0 ) {
-        //force_page('customer', 'view&page_title=Customers&error_msg=You can not delete a customer who has invoices.');
+        //force_page('customer', 'view&error_msg=You can not delete a customer who has invoices.');
         //exit;
         return false;
     }
@@ -385,7 +385,7 @@ function delete_customer($db, $customer_id){
         exit;
     }  
     if($rs->fields['count'] > 0 ) {
-        //force_page('customer', 'view&page_title=Customers&error_msg=You can not delete a customer who has gift certificates.');
+        //force_page('customer', 'view&error_msg=You can not delete a customer who has gift certificates.');
         //exit;
         return false;
     }
@@ -397,7 +397,7 @@ function delete_customer($db, $customer_id){
         exit;
     }    
     if($rs->fields['count'] > 0 ) {
-        //force_page('customer', 'view&page_title=Customers&error_msg=You can not delete a customer who has customer notes.');
+        //force_page('customer', 'view&error_msg=You can not delete a customer who has customer notes.');
         //exit;
         return false;
     }
@@ -409,7 +409,7 @@ function delete_customer($db, $customer_id){
         exit;
     }    
     if($rs->fields['count'] > 0 ) {
-        //force_page('customer', 'view&page_title=Customers&error_msg=You can not delete a customer who has notes.');
+        //force_page('customer', 'view&error_msg=You can not delete a customer who has notes.');
         //exit;
         return false;
     } 

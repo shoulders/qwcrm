@@ -20,7 +20,7 @@
                                             <td class="olohead">Referer</td>
                                         </tr>
                                         {section name=i loop=$hits}
-                                            <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=stats:hit_stats_view&ip={$hits[i].ip}&page_title=Hits For {$hits[i].ip}';" class="row1">
+                                            <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=stats:hit_stats_view&ip={$hits[i].ip}';" class="row1">
                                                 <td class="olotd4">{$hits[i].date|date_format:" %H:%M:%S"}</td>
                                                 <td class="olotd4">{$hits[i].full_page}</td>
                                                 <td class="olotd4">{$hits[i].uagent}</td>

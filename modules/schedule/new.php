@@ -36,7 +36,7 @@ if(isset($VAR['submit'])) {
         $schedule_start_day             = date('d', date_to_timestamp($VAR['schedule_start_date'])  );    
     
         // Load the schedule day with the newly submitted schedule item
-        force_page('schedule', 'day', 'schedule_start_year='.$schedule_start_year.'&schedule_start_month='.$schedule_start_month.'&schedule_start_day='.$schedule_start_day.'&employee_id='.$employee_id.'&workorder_id='.$workorder_id.'&page_title=schedule&information_msg=Schedule Successfully Created');
+        force_page('schedule', 'day', 'schedule_start_year='.$schedule_start_year.'&schedule_start_month='.$schedule_start_month.'&schedule_start_day='.$schedule_start_day.'&employee_id='.$employee_id.'&workorder_id='.$workorder_id.'&information_msg=Schedule Successfully Created');
         exit;
     }
 

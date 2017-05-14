@@ -72,7 +72,7 @@
 
                         <!-- Refunds -->
                         <a href="index.php?page=refund:new"><img src="{$theme_images_dir}icons/new.gif" alt="" border="0" height="14" width="14" />{$translate_core_menu_new_refund}</a>
-                        <a href="index.php?page=refund:search&page_title={$translate_core_menu_search_refunds}"><img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" />{$translate_core_menu_search_refunds}</a>
+                        <a href="index.php?page=refund:search"><img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" />{$translate_core_menu_search_refunds}</a>
                         {if $refund_id > 0 }
                             <a href="index.php?page=refund:details&refund_id={$refund_id}"><img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_refund_details}</a>
                             <a href="index.php?page=refund:edit&refund_id={$refund_id}"><img src="{$theme_images_dir}icons/edit.gif" alt="" border="0" height="14" width="14" /> {$translate_core_menu_edit_refund}</a>

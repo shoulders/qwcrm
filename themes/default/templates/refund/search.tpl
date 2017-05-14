@@ -121,8 +121,8 @@
                                                     </tr>
                                                     {section name=i loop=$search_result}                                                            
                                                         <!-- This allows double clicking on a row and opens the corresponding refund view details -->
-                                                        <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=refund:details&refund_id={$search_result[i].REFUND_ID}&page_title={$translate_refund_details_title}';" class="row1">                                                                
-                                                            <td class="olotd4" nowrap><a href="index.php?page=refund:details&refund_id={$search_result[i].REFUND_ID}&page_title={$translate_refund_details_title}">{$search_result[i].REFUND_ID}</a></td>                                                                
+                                                        <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=refund:details&refund_id={$search_result[i].REFUND_ID}';" class="row1">                                                                
+                                                            <td class="olotd4" nowrap><a href="index.php?page=refund:details&refund_id={$search_result[i].REFUND_ID}">{$search_result[i].REFUND_ID}</a></td>                                                                
                                                             <td class="olotd4" nowrap>{$search_result[i].REFUND_PAYEE}</td>                                                                
                                                             <td class="olotd4" nowrap>{$search_result[i].REFUND_DATE|date_format:$date_format}</td>                                                                
                                                             <td class="olotd4" nowrap>
@@ -152,10 +152,10 @@
                                                             <td class="olotd4" nowrap>{if $search_result[i].REFUND_NOTES != ''}<img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{$translate_refund_notes}</b><hr><p>{$search_result[i].REFUND_NOTES|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();">{/if}</td>                                                            
                                                             <td class="olotd4" nowrap><img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{$translate_refund_items}</b><hr><p>{$search_result[i].REFUND_ITEMS|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();"></td>                                                                
                                                             <td class="olotd4" nowrap>
-                                                                <a href="index.php?page=refund:details&refund_id={$search_result[i].REFUND_ID}&page_title={$translate_refund_details_title}">
+                                                                <a href="index.php?page=refund:details&refund_id={$search_result[i].REFUND_ID}">
                                                                     <img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" onMouseOver="ddrivetip('<b>{$translate_refund_search_details|nl2br|regex_replace:"/[\r\t\n]/":" "}</b>');" onMouseOut="hideddrivetip();">
                                                                 </a>
-                                                                <a href="index.php?page=refund:edit&refund_id={$search_result[i].REFUND_ID}&page_title={$translate_refund_edit_title}">
+                                                                <a href="index.php?page=refund:edit&refund_id={$search_result[i].REFUND_ID}">
                                                                     <img src="{$theme_images_dir}icons/16x16/small_edit.gif" alt=""  border="0" onMouseOver="ddrivetip('<b>{$translate_refund_search_edit_details|nl2br|regex_replace:"/[\r\t\n]/":" "}</b>');" onMouseOut="hideddrivetip();">
                                                                 </a>
                                                                 <a href="index.php?page=refund:delete&refund_id={$search_result[i].REFUND_ID}" onclick="return confirmDelete('{$translate_refund_delete_mes_confirmation}');">

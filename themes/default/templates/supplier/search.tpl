@@ -111,8 +111,8 @@
                                                     </tr>                                                    
                                                     {section name=i loop=$search_result}
                                                         <!-- This allows double clicking on a row and opens the corresponding supplier view details -->
-                                                        <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=supplier:details&supplier_id={$search_result[i].SUPPLIER_ID}&page_title={$translate_supplier_details_title}';" class="row1">                                                           
-                                                            <td class="olotd4" nowrap><a href="index.php?page=supplier:details&supplier_id={$search_result[i].SUPPLIER_ID}&page_title={$translate_supplier_details_title}">{$search_result[i].SUPPLIER_ID}</a></td>                                                            
+                                                        <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=supplier:details&supplier_id={$search_result[i].SUPPLIER_ID}';" class="row1">                                                           
+                                                            <td class="olotd4" nowrap><a href="index.php?page=supplier:details&supplier_id={$search_result[i].SUPPLIER_ID}">{$search_result[i].SUPPLIER_ID}</a></td>                                                            
                                                             <td class="olotd4" nowrap>{$search_result[i].SUPPLIER_NAME}</td>                                                            
                                                             <td class="olotd4" nowrap>{$search_result[i].SUPPLIER_CONTACT}</td>                                                            
                                                             <td class="olotd4" nowrap>
@@ -133,10 +133,10 @@
                                                             </td>                                                            
                                                             <td class="olotd4" nowrap><img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{$translate_supplier_description}</b><hr><p>{$search_result[i].SUPPLIER_DESCRIPTION|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();"></td>                                                            
                                                             <td class="olotd4" nowrap>
-                                                                <a href="index.php?page=supplier:details&supplier_id={$search_result[i].SUPPLIER_ID}&page_title={$translate_supplier_details_title}">
+                                                                <a href="index.php?page=supplier:details&supplier_id={$search_result[i].SUPPLIER_ID}">
                                                                     <img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" onMouseOver="ddrivetip('<b>{$translate_supplier_search_details|nl2br|regex_replace:"/[\r\t\n]/":" "}</b>');" onMouseOut="hideddrivetip();">
                                                                 </a>
-                                                                <a href="index.php?page=supplier:edit&supplier_id={$search_result[i].SUPPLIER_ID}&page_title={$translate_supplier_edit_title}">
+                                                                <a href="index.php?page=supplier:edit&supplier_id={$search_result[i].SUPPLIER_ID}">
                                                                     <img src="{$theme_images_dir}icons/16x16/small_edit.gif" alt=""  border="0" onMouseOver="ddrivetip('<b>{$translate_supplier_search_edit_details|nl2br|regex_replace:"/[\r\t\n]/":" "}</b>');" onMouseOut="hideddrivetip();">
                                                                 </a>
                                                                 <a href="index.php?page=supplier:delete&supplier_id={$search_result[i].SUPPLIER_ID}" onclick="return confirmDelete('{$translate_supplier_delete_mes_confirmation}');">
