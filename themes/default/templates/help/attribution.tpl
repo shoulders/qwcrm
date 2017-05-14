@@ -15,4 +15,5 @@
     <li>mPDF v6.1.0 | GPLv2 | https://github.com/mpdf/mpdf</li>    
     <li>ADODB V5.20.9 | ADOdb is dual licensed under BSD and LGPL | http://adodb.org/dokuwiki/doku.php | PHP Database Abstraction layer allowing use of different databases whilest using the same SQL code and other database related things.</li>
     <li>Smarty v3.1.30 | LGPL 2.1 or later</li>
+    <li>reCAPTCHA PHP library | BSD-3-Clause | https://github.com/google/recaptcha/blob/1.0.0/php/recaptchalib.php</li>
 </ul>

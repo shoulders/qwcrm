@@ -1,4 +1,6 @@
-<!-- login_form_block.tpl -->        
+<!-- login_form_block.tpl -->
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
 <table width="900" border="0" cellspacing="0" cellpadding="2">
     <tr>
         <td align="center"><img src="{$company_logo}" alt="" height="114"></td>
@@ -26,7 +28,7 @@
                                                 <td><input name="login_pwd" class="olotd5" size="25" alt="password" type="password" required onkeydown="return onlyPassword(event);"></td>
                                             </tr>
                                             <tr align="center">
-                                                <td colspan="2"><button type="submit" name="action" value="login"><img src="{$theme_images_dir}tick.png" alt=""> {$translate_core_login_login}</button></td>
+                                                <td colspan="2"><button id="login_button" type="submit" name="action" value="login"><img src="{$theme_images_dir}tick.png" alt=""> {$translate_core_login_login}</button></td>
                                             </tr>                            
 
                                             <!-- Information Message -->
@@ -48,6 +50,23 @@
                                                 <td colspan="2"><a href="index.php?page=user:password_reset">{$translate_core_login_forgot_your_password}</a></td>
                                             </tr>
                                         </table>
+                                        
+                                        {if $captcha}
+                                            <!-- Google reCaptcha -->
+                                            <script>
+                                                
+                                                // Disable the submit button
+                                                document.getElementById('login_button').disabled = true;
+                                                
+                                                // Enable the submit button when ReCaptcha is verified
+                                                function enableSubmitButton() {
+                                                    document.getElementById('login_button').disabled = false;
+                                                }
+                                                
+                                            </script>
+                                            <div class="g-recaptcha" data-sitekey="{$recaptcha_site_key}" data-callback="enableSubmitButton"></div>
+                                        {/if}
+
                                     </form>
                                 </td>
                             </tr>

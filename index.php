@@ -92,6 +92,7 @@ require(INCLUDES_DIR.'include.php');
 require(INCLUDES_DIR.'adodb.php');
 require(INCLUDES_DIR.'smarty.php');
 require(INCLUDES_DIR.'session.php');
+require(LIBRARIES_DIR.'recaptchalib.php');
 require(INCLUDES_DIR.'auth.php');
 
 #################################################
@@ -127,7 +128,24 @@ if(!load_language()) {$smarty->assign('error_msg', 'Error in system language fil
 #          Authentication                      #
 ################################################
 
-if(!$auth = new Auth($db, $smarty, $secretKey)) {die;}
+$auth = new Auth($db, $smarty, $secretKey);
+
+if($captcha && !isset($_SESSION['login_id']) && $_POST['action'] === 'login') {
+    
+    $reCaptcha = new ReCaptcha($recaptcha_secret_key);
+    
+    // Get response from Google and if successfull authenticate
+    $response = $reCaptcha->verifyResponse($_SERVER['REMOTE_ADDR'], $_POST['g-recaptcha-response']);    
+    if ($response != null && $response->success) {
+        $auth->login();
+    } else {        
+        force_page('core', 'login', 'warning_msg=Google ReCaptcha Verification Failed');
+        exit;
+    }   
+    
+} elseif ($_POST['action'] === 'login') {
+    $auth->login();
+}
 
 $login_id   = $_SESSION['login_id'];
 $login_usr  = $_SESSION['login_usr'];

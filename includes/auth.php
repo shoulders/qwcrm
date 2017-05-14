@@ -25,7 +25,6 @@ class Auth {
         $this->smarty       = $smarty;
         $this->secretKey    = $secretKey;        
         $this->session      = new Session();        
-        $this->login(); 
         
     }    
     
