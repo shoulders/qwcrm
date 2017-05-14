@@ -114,7 +114,7 @@ function force_page($module, $page_tpl = Null, $variables = Null, $method = 'ses
                 }               
 
                 // Build the URL and perform the redirect
-                perform_redirect('index.php');               
+                perform_redirect('index.php');
 
             }
             
@@ -428,8 +428,8 @@ function check_acl($db, $login_account_type_id, $module, $page_tpl){
     /* Check Page to see if we have access */
     $sql = "SELECT ".$employee_acl_account_type_display_name." AS PAGE_ACL FROM ".PRFX."EMPLOYEE_ACL WHERE page=".$db->qstr($module_page);
 
-    if(!$rs = $db->execute($sql)) {       
-        force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=authentication&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->getTemplateVars('translate_system_include_error_message_function_'.__FUNCTION__.'_get_page_acl_failed'));
+    if(!$rs = $db->execute($sql)) {        
+        force_error_page($_GET['page'], 'authentication', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_system_include_error_message_function_'.__FUNCTION__.'_get_page_acl_failed'));
         exit;
     } else {
         
@@ -437,8 +437,12 @@ function check_acl($db, $login_account_type_id, $module, $page_tpl){
         
         // Add if guest (8) rules here if there are errors
         
-        if($acl != 1) {            
-            force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=authentication&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->getTemplateVars('translate_system_include_error_message_function_'.__FUNCTION__.'_no_page_permission'));
+        if($acl != 1) {
+            
+            // should this just be an access error message
+            //force_error_page($_GET['page'], 'authentication', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_system_include_error_message_function_'.__FUNCTION__.'_no_page_permission'));
+            // x $smarty->assign('warning_msg', $smarty->getTemplateVars('translate_system_include_error_message_function_'.__FUNCTION__.'_no_page_permission'));
+            force_page('core', 'login', 'warning_msg='.$smarty->getTemplateVars('translate_system_include_error_message_function_'.__FUNCTION__.'_no_page_permission').' '.$module.':'.$page_tpl);            
             exit;
         } else {
             

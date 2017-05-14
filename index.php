@@ -131,7 +131,10 @@ if(!load_language()) {$smarty->assign('error_msg', 'Error in system language fil
 $auth = new Auth($db, $smarty, $secretKey);
 
 // Has the session been inactive to long
-if(isset($_SESSION['login_id'])){$auth->sessionTimeOut($session_lifetime);}
+if(isset($_SESSION['login_id'])) {$auth->sessionTimeOut($session_lifetime);}
+
+// Allow the session to be persitent - session lifetime has to be set i.e. not '0'
+if($session_persistent) {ini_set('session.cookie_lifetime', $session_lifetime);}
 
 // If captcha is enabled
 if($captcha && !isset($_SESSION['login_id']) && $_POST['action'] === 'login') {
@@ -186,7 +189,7 @@ if(!is_array($_SESSION['post_emulation'])){$_SESSION['post_emulation'] = array()
 // Merge the $_GET, $_POST and emulated $_POST
 $VAR = array_merge($_GET, $_POST, $_SESSION['post_emulation']);
 
-// Delete the force_page array as varibles stored there are no longer needed
+// Delete the post_emulation array as varibles stored there are no longer needed
 unset($_SESSION['post_emulation']);
 
 // These are used globally

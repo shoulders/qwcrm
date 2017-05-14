@@ -101,6 +101,7 @@ class Auth {
                 // Reload with 'Login Failed' message
                 force_page('core', 'login', 'warning_msg='.$this->smarty->getTemplateVars('translate_system_auth_advisory_message_login_failed'));
                 exit;
+                
             }
            
             // if there is a single valid user, set the session variables
@@ -209,29 +210,39 @@ class Auth {
     }
  
     // Logout from the session
-    function logout(){
+    function logout() {
         
         // Log activity       
         write_record_to_activity_log($this->smarty->getTemplateVars('translate_system_auth_log_message_logout_successful_for').' '.$this->session->get('login_usr'));
         
         // Regenerates the session ID and moves over the session data to a new ID and deletes the old one (Prevent Session Attacks)
-        session_regenerate_id(true); 
+        //session_regenerate_id(true); 
         
         // Destroy Session
         $this->session->destroy();
         
-        // Reload with 'Logout Successful' message
-        force_page('core', 'login', 'information_msg='.$this->smarty->getTemplateVars('translate_system_auth_advisory_message_logout_successful'), 'get');
+        
+        // to get auth message sent through logout
+        // once you have destory the session you need to restart ot, you must also must NOT destroy the session cookie, this will not work if you regenerate_id() before the session restart probably because the browser is not informed of the change
+        // or i can use force_page 'get'
+        // Restart Session
+        session_start();
+        
+        // Regenerates the session ID and moves over the session data to a new ID and deletes the old one (Prevent Session Attacks)
+        //session_regenerate_id(true); 
+        session_regenerate_id(true); 
+                
+        // Reload with 'Logout Successful' message        
+        force_page('core', 'login', 'information_msg='.$this->smarty->getTemplateVars('translate_system_auth_advisory_message_logout_successful'));
         exit;
         
-    }
-    
+    }    
 
     // Session Inactivity Control
     function sessionTimeOut($session_lifetime) {
 
         // If session lifetime is set to unlimited
-        if($session_lifetime == '') { return; }
+        if($session_lifetime == '0') { return; }
 
         // Verify if the user is still active
         if ($_SESSION['timeout'] + $session_lifetime > time()) {
@@ -247,25 +258,25 @@ class Auth {
 
             // Log activity       
             write_record_to_activity_log('This user has been logged out because of inactivity '.$this->session->get('login_usr'));
+
+            // Destroy Session
+            $this->session->destroy();
+            
+            // Restart Session
+            session_start();
             
             // Regenerates the session ID and moves over the session data to a new ID and deletes the old one (Prevent Session Attacks)
             session_regenerate_id(true);
 
-            // Destroy Session
-            $this->session->destroy();
-
-            // Reload with 'Session Timeout' message
-            //force_page('core', 'login', 'warning_msg=You have been logged out because of inactivity');
-            //force_page('core', 'login', 'warning_msg=You have been logged out because of inactivity', 'get');
-            //exit;
-            $this->smarty->assign('warning_msg', 'You have been logged out because of inactivity');
-            return;
+            // Reload with 'Session Timeout' message            
+            force_page('core', 'login', 'warning_msg=You have been logged out because of inactivity');
+            exit;            
 
         }    
     
     }    
     
-    // Destroy the Login Only
+    // Destroy the Login Only (not currently used)
     function deleteLogin() {
         
         $this->session->del('login_usr');
@@ -279,8 +290,4 @@ class Auth {
         
     }
     
-    
-    
-    
-   
 }
