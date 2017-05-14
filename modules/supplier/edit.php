@@ -1,5 +1,7 @@
 <?php
 
+defined('_QWEXEC') or die;
+
 require(INCLUDES_DIR.'modules/supplier.php');
 
 // If details submitted run update values, if not set load edit.tpl and populate values

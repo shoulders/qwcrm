@@ -1,5 +1,7 @@
 <?php
 
+defined('_QWEXEC') or die;
+
 // Define mPDF Config
 //define('_MPDF_TEMP_PATH', '../../common/templfiles'); // Folders for temporary files
 //define('_MPDF_RRFONTDATAPATH', '../../common/templfiles'); // if you wish to use a different folder for temporaary files you should define this constant

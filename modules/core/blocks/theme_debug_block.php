@@ -1,5 +1,7 @@
 <?php
 
+defined('_QWEXEC') or die;
+
 // The header might be disabled but the wrapper include is still needed
 require_once(INCLUDES_DIR.'modules/core_theme.php');
 

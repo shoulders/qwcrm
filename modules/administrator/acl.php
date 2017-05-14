@@ -1,5 +1,7 @@
 <?php
 
+defined('_QWEXEC') or die;
+
 require(INCLUDES_DIR.'modules/administrator.php');
 
 // Update the ACL permissions if submitted

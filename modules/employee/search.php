@@ -1,5 +1,7 @@
 <?php
 
+defined('_QWEXEC') or die;
+
 require(INCLUDES_DIR.'modules/employee.php');    
 
 // Fetch the page with the results for the current search (if there is no search term, all results are returned)

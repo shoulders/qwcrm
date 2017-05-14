@@ -1,5 +1,7 @@
 <?php
 
+defined('_QWEXEC') or die;
+
 require(INCLUDES_DIR.'modules/customer.php');
 
 // check if we have a customer_note_id

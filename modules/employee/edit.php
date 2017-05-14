@@ -1,5 +1,7 @@
 <?php
 
+defined('_QWEXEC') or die;
+
 // employee type is done different in new than edit i.e. function
 
 require(INCLUDES_DIR.'modules/employee.php');

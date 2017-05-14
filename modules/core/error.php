@@ -1,5 +1,7 @@
 <?php
 
+defined('_QWEXEC') or die;
+
 /* Grab and Process Values befor sending to the log and displaying */
 //$error_page         = prepare_error_data('error_page'); // only needed when using referrer
 $error_page         = $VAR['error_page'];

@@ -1,5 +1,7 @@
 <?php
 
+defined('_QWEXEC') or die;
+
 /* Pre-Processing */
 // goes here
 

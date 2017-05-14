@@ -1,5 +1,7 @@
 <?php
 
+defined('_QWEXEC') or die;
+
 class Session {
 
     function Session(){

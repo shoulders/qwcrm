@@ -17,6 +17,8 @@
  * From {Joomla}administrator/components/com_admin/models/sysinfo.php - it strips dodgy formatting
  */
 
+defined('_QWEXEC') or die;
+
 /**
  * @package     Joomla.Administrator
  * @subpackage  com_admin

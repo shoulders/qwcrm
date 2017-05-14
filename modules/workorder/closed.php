@@ -1,5 +1,7 @@
 <?php
 
+defined('_QWEXEC') or die;
+
 require(INCLUDES_DIR.'modules/workorder.php');
 
 $smarty->assign('workorders', display_workorders($db, '6', 'DESC', true, $page_no));

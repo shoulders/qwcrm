@@ -1,5 +1,7 @@
 <?php
 
+defined('_QWEXEC') or die;
+
 require(INCLUDES_DIR.'modules/invoice.php');
 
 // check if we have a invoice_id and if so get details

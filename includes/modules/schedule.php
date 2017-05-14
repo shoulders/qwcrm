@@ -19,6 +19,8 @@
  * Other Functions - All other functions not covered above
  */
 
+defined('_QWEXEC') or die;
+
 /** Mandatory Code **/
 
 /** Display Functions **/

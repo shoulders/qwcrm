@@ -1,7 +1,8 @@
 <?php
 
-require(INCLUDES_DIR.'modules/refund.php');
+defined('_QWEXEC') or die;
 
+require(INCLUDES_DIR.'modules/refund.php');
 
 // Make sure we got an Refund ID number
 if($refund_id == '') {

@@ -1,5 +1,7 @@
 <?php
 
+defined('_QWEXEC') or die;
+
 require_once(INCLUDES_DIR.'modules/core_menu.php');
  
 // Get Workorder Status

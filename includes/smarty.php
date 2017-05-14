@@ -1,5 +1,7 @@
 <?php
 
+defined('_QWEXEC') or die;
+
 // Set Path for SMARTY in the php include path
 set_include_path(get_include_path() . PATH_SEPARATOR . LIBRARIES_DIR.'smarty'.SEP);
 require_once('Smarty.class.php');

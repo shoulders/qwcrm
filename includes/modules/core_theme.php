@@ -7,6 +7,8 @@
  * @license   GNU/GPLv3 or later; https://www.gnu.org/licenses/gpl.html
  */
 
+defined('_QWEXEC') or die;
+
 /** Misc **/
 
 #########################################

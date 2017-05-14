@@ -1,5 +1,7 @@
 <?php
 
+defined('_QWEXEC') or die;
+
 // Misc
 //define('SEP',                       DIRECTORY_SEPARATOR         );          // on windows = '\'
 define('SEP',                       '/'                         );

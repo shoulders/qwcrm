@@ -1,5 +1,7 @@
 <?php
 
+defined('_QWEXEC') or die;
+
 require(INCLUDES_DIR.'modules/customer.php');
 require(INCLUDES_DIR.'modules/employee.php');
 require(INCLUDES_DIR.'modules/invoice.php');

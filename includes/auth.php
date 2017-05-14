@@ -6,6 +6,8 @@
  * @license   GNU/GPLv3 or later; https://www.gnu.org/licenses/gpl.html
  */
 
+defined('_QWEXEC') or die;
+
 class Auth {
     
     // varibles if not declared, are by default public - so i am forcing them private

@@ -14,6 +14,8 @@
  * Customers - functions for customersd
  */
 
+defined('_QWEXEC') or die;
+
 /** Home Page **/
 
 #########################################

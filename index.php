@@ -11,10 +11,7 @@
 #   Minimum PHP Version                        #
 ################################################
 
-/*
- * Define the application's minimum supported PHP version as a constant so it can be referenced within the application.
- */
-
+// Define the application's minimum supported PHP version as a constant so it can be referenced within the application.
 define('QWCRM_MINIMUM_PHP', '5.4.0');
 
 if (version_compare(PHP_VERSION, QWCRM_MINIMUM_PHP, '<')){
@@ -85,6 +82,9 @@ define('QWCRM_PATH', str_replace('index.php', '', $_SERVER['PHP_SELF']));
 #         Initialise QWCRM                     #
 ################################################
 
+// Constant that is checked in included files to prevent direct access
+define('_QWEXEC', 1);
+
 if(is_file('configuration.php')) {require('configuration.php');}
 require('includes/defines.php');
 require(INCLUDES_DIR.'security.php');
@@ -98,7 +98,7 @@ require(INCLUDES_DIR.'auth.php');
 #          Security                             #
 #################################################
 
-// it is called by including the file - security php will have some aut run code aswell as functions - this section might not be needed
+// it is called by including the file - security php will have some auto run code aswell as functions - this section might not be needed
 
 // should this be run before smarty?
 

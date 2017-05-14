@@ -1,5 +1,7 @@
 <?php
 
+defined('_QWEXEC') or die;
+
 require(INCLUDES_DIR.'modules/giftcert.php');
 
 // Make sure there is a giftcert_id

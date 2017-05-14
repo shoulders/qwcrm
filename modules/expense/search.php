@@ -1,5 +1,7 @@
 <?php
 
+defined('_QWEXEC') or die;
+
 require(INCLUDES_DIR.'modules/expense.php');
 
 $smarty->assign('search_category', $VAR['search_category']);

@@ -19,7 +19,7 @@
  * These are only used to show numbers in the menu and could be removed 
  */
 
-
+defined('_QWEXEC') or die;
 
 /** Mandatory Code **/
 
