@@ -4,7 +4,7 @@
         <td>
             <table width="100%" cellpadding="4" cellspacing="0" border="0">
                 <tr>
-                    <td class="menuhead2" width="80%">&nbsp;{$translate_payment_title}{$workorder_id}</td>
+                    <td class="menuhead2" width="80%">&nbsp;{$translate_payment_title}{$invoice_details.WORKORDER_ID}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
                         <img src="{$theme_images_dir}icons/16x16/help.gif" alt="" border="0" onMouseOver="ddrivetip('<b>New Invoice</b><hr><p></p>');" onMouseOut="hideddrivetip();">
                     </td>

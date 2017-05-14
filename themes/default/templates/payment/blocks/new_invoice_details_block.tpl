@@ -10,11 +10,11 @@
     </tr>
     <tr>        
         <td>{$invoice_id}</td>
-        <td>{$invoice_date|date_format:$date_format}</td>
-        <td>{$invoice_due|date_format:$date_format}</td>
-        <td>{$currency_sym}{$invoice_total|string_format:"%.2f"}</td>
-        <td>{$workorder_id}</td>
-        <td><font color="#CC0000"><b>{$currency_sym}{$balance|string_format:"%.2f"}</b></font></td>      
+        <td>{$invoice_details.DATE|date_format:$date_format}</td>
+        <td>{$invoice_details.DUE_DATE|date_format:$date_format}</td>
+        <td>{$currency_sym}{$invoice_details.TOTAL|string_format:"%.2f"}</td>
+        <td>{$invoice_details.WORKORDER_ID}</td>
+        <td><font color="#CC0000"><b>{$currency_sym}{$invoice_details.BALANCE|string_format:"%.2f"}</b></font></td>      
     </tr>
     <tr>
         <td colspan="6" valign="top">            

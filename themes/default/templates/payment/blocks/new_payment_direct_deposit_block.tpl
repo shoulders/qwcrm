@@ -15,7 +15,7 @@
                     <tr class="olotd4">
                         <td></td>                        
                         <td><input name="deposit_reference" class="olotd5" type="text" maxlength="15" required onkeydown="return onlyAlphaNumeric(event);"></td>
-                        <td>{$currency_sym}<input name="amount" class="olotd5" size="10" value="{$balance|string_format:"%.2f"}" type="text" required maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumbersPeriod(event);"/></td>
+                        <td>{$currency_sym}<input name="amount" class="olotd5" size="10" value="{$invoice_details.BALANCE|string_format:"%.2f"}" type="text" required maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumbersPeriod(event);"/></td>
                     </tr>
                     <tr>
                         <td valign="top"><b>{$translate_payment_note}</b></td>
