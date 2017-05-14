@@ -147,6 +147,8 @@ if($captcha && !isset($_SESSION['login_id']) && $_POST['action'] === 'login') {
     $auth->login();
 }
 
+/* Assign Logged in User's Variables to PHP and Smarty */
+
 $login_id   = $_SESSION['login_id'];
 $login_usr  = $_SESSION['login_usr'];
 

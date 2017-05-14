@@ -432,9 +432,10 @@ function check_acl($db, $login_account_type_id, $module, $page_tpl){
         force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=authentication&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->getTemplateVars('translate_system_include_error_message_function_'.__FUNCTION__.'_get_page_acl_failed'));
         exit;
     } else {
+        
         $acl = $rs->fields['PAGE_ACL'];
         
-        // Add if guest (6) rules here if there are errors
+        // Add if guest (8) rules here if there are errors
         
         if($acl != 1) {            
             force_page('core', 'error', 'error_page='.prepare_error_data('error_page', $_GET['page']).'&error_type=authentication&error_location='.prepare_error_data('error_location', __FILE__).'&php_function='.prepare_error_data('php_function', __FUNCTION__).'&database_error='.prepare_error_data('database_error',$db->ErrorMsg()).'&error_msg='.$smarty->getTemplateVars('translate_system_include_error_message_function_'.__FUNCTION__.'_no_page_permission'));
