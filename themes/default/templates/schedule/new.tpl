@@ -23,8 +23,7 @@
                                     <table class="menutable" width="100%" border="0" cellpadding="5" cellspacing="0">
                                         <tr>
                                             <td>                                                
-                                                <form method="POST" action="index.php?page=schedule:new">
-                                                    <input type="hidden" name="page" value="schedule:new">                                                        
+                                                <form method="POST" action="index.php?page=schedule:new">                                                                                                           
                                                     <input type="hidden" name="workorder_id" value="{$workorder_id}">
                                                     <input type="hidden" name="employee_id" value="{$employee_id}">
                                                     <table class="olotable" width="100%" border="0">

@@ -26,8 +26,7 @@
                                 <td class="menutd">
                                     <table class="menutable" width="100%" border="0" cellpadding="2" cellspacing="2" >
                                         <tr>
-                                            <td>                                                
-                                                <input type="hidden" name="page" value="expense:edit">                                                
+                                            <td>                                                                                             
                                                 <form action="index.php?page=expense:new" method="POST" name="new_expense" id="new_expense">                                                
                                                     <table width="100%" cellpadding="3" cellspacing="0" border="0">
                                                         <tr>

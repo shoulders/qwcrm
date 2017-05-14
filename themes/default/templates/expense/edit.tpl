@@ -28,12 +28,7 @@
                                      <tr>
                                          <td>                                                                                           
                                             <form method="post" action="index.php?page=expense:edit" name="edit_expense" id="edit_expense">                                                
-                                                <table width="100%" cellpadding="2" cellspacing="2" border="0">                                             
-                                                    <tr>
-                                                        <td colspan="2" align="left">
-                                                    <tr>
-                                                        <td><input type="hidden" name="page" value="expense:edit"></td>
-                                                    </tr>
+                                                <table width="100%" cellpadding="2" cellspacing="2" border="0">                                                    
                                                     <tr>
                                                         <td align="right"><b>{$translate_expense_id}</b></td>
                                                         <td colspan="3"><input name="expense_id" value="{$expense_details.EXPENSE_ID}" type="hidden">{$expense_details.EXPENSE_ID}</td>

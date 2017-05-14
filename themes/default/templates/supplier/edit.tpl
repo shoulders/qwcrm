@@ -28,12 +28,7 @@
                                         <tr>
                                             <td>                                                
                                                 <form action="index.php?page=supplier:edit" method="POST" name="edit_supplier" id="edit_supplier" autocomplete="off">                                                
-                                                    <table width="100%" cellpadding="2" cellspacing="2" border="0">                                                        
-                                                        <tr>
-                                                            <td colspan="2" align="left">
-                                                        <tr>
-                                                            <td><input type="hidden" name="page" value="supplier:edit"></td>
-                                                        </tr>                                                                            
+                                                    <table width="100%" cellpadding="2" cellspacing="2" border="0">                                                                                                                                  
                                                         <tr>
                                                             <td align="right"><b>{$translate_supplier_id}</b></td>
                                                             <td colspan="3"><input name="supplier_id" type="hidden" value="{$supplier_details.SUPPLIER_ID}"/>{$supplier_details.SUPPLIER_ID}</td>

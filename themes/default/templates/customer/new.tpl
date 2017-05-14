@@ -66,8 +66,7 @@
                                                                                     <option value="8">{$translate_customer_type_8}</option>
                                                                                     <option value="9">{$translate_customer_type_9}</option>
                                                                                     <option value="10">{$translate_customer_type_10}</option>
-                                                                                </select>
-                                                                                <input name="page" value="customer:new" type="hidden">
+                                                                                </select>                                                                                
                                                                             </td>
                                                                         </tr>
                                                                         <tr>

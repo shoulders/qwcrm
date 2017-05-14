@@ -27,14 +27,9 @@
                                     <table class="menutable" width="100%" border="0" cellpadding="0" cellspacing="0" >
                                         <tr>
                                             <td>                                          
-                                                <table width="100%" cellpadding="2" cellspacing="2" border="0">
+                                                <table width="100%" cellpadding="2" cellspacing="2" border="0">  
                                                     
-                                                    <form  action="index.php?page=refund:edit" method="POST" name="edit_refund" id="edit_refund" autocomplete="off">                                                                                                               
-                                                        <tr>
-                                                            <td colspan="2" align="left">
-                                                        <tr>
-                                                            <td><input type="hidden" name="page" value="refund:edit"></td>
-                                                        </tr>
+                                                    <form action="index.php?page=refund:edit" method="POST" name="edit_refund" id="edit_refund" autocomplete="off">                                                        
                                                         <tr>
                                                             <td align="right"><b>{$translate_refund_id}</b></td>
                                                             <td colspan="3"><input name="refund_id" type="hidden" value="{$refund_details.REFUND_ID}"/>{$refund_details.REFUND_ID}</td>
