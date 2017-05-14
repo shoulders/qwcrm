@@ -41,8 +41,11 @@ class Auth {
         }
         
         // If this is a Fresh Login
-        if(isset($_POST['action']) && $_POST['action'] === 'login' && !$_SESSION['login_id']) {
-                        
+        if(isset($_POST['action']) && $_POST['action'] === 'login' && !$_SESSION['login_id']) {        
+            
+            // Regenerates the session ID and moves over the session data to a new ID and deletes the old one (Prevent Session Attacks)
+            session_regenerate_id(true);       
+            
             
             /* Get Submitted Values Section */
             
@@ -172,7 +175,8 @@ class Auth {
         $this->session->set('login_hash',               $hashed_login_pwd                               );  // This is used to validate the logged in user's session
         $this->session->set('login_id',                 $login_id                                       );  // Use this to validate the session - $_SESSION['login_id'] 
         $this->session->set('login_account_type_id',    $login_account_type_id                          );
-        $this->session->set('login_display_name',       $login_display_name                             );        
+        $this->session->set('login_display_name',       $login_display_name                             );
+        $this->session->set('timeout',                  time()                                          );  // This is used to control inactive session timeout
 
     } 
     
@@ -210,17 +214,73 @@ class Auth {
         // Log activity       
         write_record_to_activity_log($this->smarty->getTemplateVars('translate_system_auth_log_message_logout_successful_for').' '.$this->session->get('login_usr'));
         
+        // Regenerates the session ID and moves over the session data to a new ID and deletes the old one (Prevent Session Attacks)
+        session_regenerate_id(true); 
+        
+        // Destroy Session
+        $this->session->destroy();
+        
+        // Reload with 'Logout Successful' message
+        force_page('core', 'login', 'information_msg='.$this->smarty->getTemplateVars('translate_system_auth_advisory_message_logout_successful'), 'get');
+        exit;
+        
+    }
+    
+
+    // Session Inactivity Control
+    function sessionTimeOut($session_lifetime) {
+
+        // If session lifetime is set to unlimited
+        if($session_lifetime == '') { return; }
+
+        // Verify if the user is still active
+        if ($_SESSION['timeout'] + $session_lifetime > time()) {
+
+            // User is still active so reset session counter
+            $_SESSION['timeout'] = time();
+
+            return;
+
+        
+        // if the session is timed out then logout and redirect to the login page
+        } else {          
+
+            // Log activity       
+            write_record_to_activity_log('This user has been logged out because of inactivity '.$this->session->get('login_usr'));
+            
+            // Regenerates the session ID and moves over the session data to a new ID and deletes the old one (Prevent Session Attacks)
+            session_regenerate_id(true);
+
+            // Destroy Session
+            $this->session->destroy();
+
+            // Reload with 'Session Timeout' message
+            //force_page('core', 'login', 'warning_msg=You have been logged out because of inactivity');
+            //force_page('core', 'login', 'warning_msg=You have been logged out because of inactivity', 'get');
+            //exit;
+            $this->smarty->assign('warning_msg', 'You have been logged out because of inactivity');
+            return;
+
+        }    
+    
+    }    
+    
+    // Destroy the Login Only
+    function deleteLogin() {
+        
         $this->session->del('login_usr');
         $this->session->del('login_pwd');
         $this->session->del('login_hash');        
         $this->session->del('login_id');
         $this->session->del('login_account_type_id');
-        $this->session->del('login_display_name');   
+        $this->session->del('login_display_name');       
         
-        // Reload with 'Logout Successful' message
-        force_page('core', 'login', 'information_msg='.$this->smarty->getTemplateVars('translate_system_auth_advisory_message_logout_successful'));
-        exit;
+        return;
         
     }
+    
+    
+    
+    
    
 }

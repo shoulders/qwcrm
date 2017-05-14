@@ -34,14 +34,14 @@
                                             <!-- Information Message -->
                                             {if $information_msg != '' }
                                                 <tr align="center">
-                                                    <td colspan="2" class="olotablegreen" style="text-align: center;">{$information_msg}</td>
+                                                    <td colspan="2" class="information_msg" style="text-align: center;">{$information_msg}</td>
                                                 </tr>
                                             {/if}
 
                                             <!-- Warning Message -->
                                             {if $warning_msg != '' }
                                                 <tr align="center">
-                                                    <td colspan="2" class="error">{$warning_msg}</td>
+                                                    <td colspan="2" class="warning_msg">{$warning_msg}</td>
                                                 </tr>
                                             {/if}                            
 

@@ -130,6 +130,10 @@ if(!load_language()) {$smarty->assign('error_msg', 'Error in system language fil
 
 $auth = new Auth($db, $smarty, $secretKey);
 
+// Has the session been inactive to long
+if(isset($_SESSION['login_id'])){$auth->sessionTimeOut($session_lifetime);}
+
+// If captcha is enabled
 if($captcha && !isset($_SESSION['login_id']) && $_POST['action'] === 'login') {
     
     $reCaptcha = new ReCaptcha($recaptcha_secret_key);
@@ -142,7 +146,8 @@ if($captcha && !isset($_SESSION['login_id']) && $_POST['action'] === 'login') {
         force_page('core', 'login', 'warning_msg=Google ReCaptcha Verification Failed');
         exit;
     }   
-    
+
+// Normal login with no captcha
 } elseif ($_POST['action'] === 'login') {
     $auth->login();
 }
@@ -168,7 +173,7 @@ $smarty->assign('login_display_name',       $login_display_name     );
 
 // If logout is set, then log user off
 if (isset($_GET['action']) && $_GET['action'] == 'logout') {    
-    $auth->logout('index.php');
+    $auth->logout();
 }
 
 ################################
@@ -286,7 +291,7 @@ if($maintenance == true){
     
     // If user logged in, then log user off    
     if(isset($_SESSION['login_id'])) {    
-        $auth->logout('index.php');
+        $auth->logout();
     }
     
 }

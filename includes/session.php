@@ -25,7 +25,15 @@ class Session {
     }
 
     function destroy(){
-        $_SESSION = array();
+        
+        // Destroy Session Cookie
+        $params = session_get_cookie_params();
+        setcookie(session_name(), '', time() - 42000,
+            $params["path"], $params["domain"],
+            $params["secure"], $params["httponly"]
+        );
+        
+        // Destroy Session - removes session data stored on the server for that session id and requests the client to delete that cookie
         session_destroy();
     }
     

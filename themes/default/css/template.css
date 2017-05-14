@@ -266,7 +266,7 @@ a.menuhead2 { color:#ffffff; font-weight:bolder; font-size: 12px; text-decoratio
 
 /* System Messages */
 
-#information_msg {
+.information_msg {
     color: #006600;
     text-align: center;
     font-weight: bold;
@@ -276,7 +276,7 @@ a.menuhead2 { color:#ffffff; font-weight:bolder; font-size: 12px; text-decoratio
     background-color: #ECECEC;
 }
 
-#warning_msg {
+.warning_msg {
     color: #CC0000;
     text-align: center;    
     font-weight: bold;    
@@ -471,10 +471,10 @@ p.smlcentr
   text-align:center;
 }
 
-p.error
+/*p.error
 { color:#FF0000;
   font-weight:bold;
-}
+}*/
 
 p.success
 { color:#00DD00;
