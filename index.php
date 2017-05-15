@@ -128,13 +128,11 @@ if(!load_language()) {$smarty->assign('error_msg', 'Error in system language fil
 #          Authentication                      #
 ################################################
 
-$auth = new Auth($db, $smarty, $secretKey);
+// Create a new Login Object
+$auth = new Auth($db, $smarty, $secretKey, $session_lifetime);
 
-// Has the session been inactive to long
-if(isset($_SESSION['login_id'])) {$auth->sessionTimeOut($session_lifetime);}
-
-// Allow the session to be persitent - session lifetime has to be set i.e. not '0'
-if($session_persistent) {ini_set('session.cookie_lifetime', $session_lifetime);}
+// Has the session been inactive to long (This works in $_SESSION for both non-persistent and persitant sessions)
+if(isset($_SESSION['login_id'])) { $auth->sessionTimeOut(); }
 
 // If captcha is enabled
 if($captcha && !isset($_SESSION['login_id']) && $_POST['action'] === 'login') {
@@ -154,6 +152,14 @@ if($captcha && !isset($_SESSION['login_id']) && $_POST['action'] === 'login') {
 } elseif ($_POST['action'] === 'login') {
     $auth->login();
 }
+
+
+
+
+
+
+
+
 
 /* Assign Logged in User's Variables to PHP and Smarty */
 

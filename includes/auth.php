@@ -18,13 +18,14 @@ class Auth {
      * This function is always called when the class is invoked
      *  I don't know the difference between this and the constructor
      */
-    function Auth($db, $smarty, $secretKey) {       
+    function Auth($db, $smarty, $secretKey, $session_lifetime) {       
         
         // Make variables available throught the class        
-        $this->db           = $db;
-        $this->smarty       = $smarty;
-        $this->secretKey    = $secretKey;        
-        $this->session      = new Session();        
+        $this->db               = $db;
+        $this->smarty           = $smarty;        
+        $this->secretKey        = $secretKey;
+        $this->session_lifetime = $session_lifetime;
+        $this->session          = new Session($this->session_lifetime);        
         
     }    
     
@@ -43,7 +44,7 @@ class Auth {
         // If this is a Fresh Login
         if(isset($_POST['action']) && $_POST['action'] === 'login' && !$_SESSION['login_id']) {        
             
-            // Regenerates the session ID and moves over the session data to a new ID and deletes the old one (Prevent Session Attacks)
+            // Regenerates the session ID and moves over the session data to a new ID and deletes the old one (Prevents Session Attacks)
             session_regenerate_id(true);       
             
             
@@ -177,7 +178,7 @@ class Auth {
         $this->session->set('login_id',                 $login_id                                       );  // Use this to validate the session - $_SESSION['login_id'] 
         $this->session->set('login_account_type_id',    $login_account_type_id                          );
         $this->session->set('login_display_name',       $login_display_name                             );
-        $this->session->set('timeout',                  time()                                          );  // This is used to control inactive session timeout
+        $this->session->set('last_active',              time()                                          );  // This is used to control inactive session last_active
 
     } 
     
@@ -209,82 +210,137 @@ class Auth {
         
     }
  
-    // Logout from the session
-    function logout() {
-        
-        // Log activity       
-        write_record_to_activity_log($this->smarty->getTemplateVars('translate_system_auth_log_message_logout_successful_for').' '.$this->session->get('login_usr'));
-        
-        // Regenerates the session ID and moves over the session data to a new ID and deletes the old one (Prevent Session Attacks)
-        //session_regenerate_id(true); 
-        
-        // Destroy Session
-        $this->session->destroy();
-        
-        
-        // to get auth message sent through logout
-        // once you have destory the session you need to restart ot, you must also must NOT destroy the session cookie, this will not work if you regenerate_id() before the session restart probably because the browser is not informed of the change
-        // or i can use force_page 'get'
-        // Restart Session
-        session_start();
-        
-        // Regenerates the session ID and moves over the session data to a new ID and deletes the old one (Prevent Session Attacks)
-        //session_regenerate_id(true); 
-        session_regenerate_id(true); 
-                
-        // Reload with 'Logout Successful' message        
-        force_page('core', 'login', 'information_msg='.$this->smarty->getTemplateVars('translate_system_auth_advisory_message_logout_successful'));
-        exit;
-        
-    }    
-
-    // Session Inactivity Control
-    function sessionTimeOut($session_lifetime) {
+     // Session Inactivity Control
+    function sessionTimeOut($logout_type = 'logoutRestartSession') {
 
         // If session lifetime is set to unlimited
-        if($session_lifetime == '0') { return; }
+        if($this->session_lifetime == '0') { return; }
 
         // Verify if the user is still active
-        if ($_SESSION['timeout'] + $session_lifetime > time()) {
+        if ($_SESSION['last_active'] + $this->session_lifetime > time()) {
 
-            // User is still active so reset session counter
-            $_SESSION['timeout'] = time();
-
+            // Current Time - Declared here to keep cookie and session last_active in sync
+            $current_time = time();
+            
+            // Set the session last_active
+            $_SESSION['last_active'] = $current_time;           
+                
+            // Update the Session Cookie expiry time
+            $cookie_params = session_get_cookie_params();                
+            setcookie(session_name(), session_id(), $current_time + $this->session_lifetime, $cookie_params['path'], $cookie_params['secure'], $cookie_params['httponly']);            
+            
             return;
-
-        
+            
         // if the session is timed out then logout and redirect to the login page
-        } else {          
+        } else {
+            
+            // Destroy Login Only
+            if($logout_type == 'logoutOnly') {
+                $this->logoutOnly();
+                $message_transfer_method = 'session';
+            }        
+
+            // Logout by wiping and restarting the session
+            if($logout_type == 'logoutRestartSession') {
+                $this->logoutRestartSession();
+                $message_transfer_method = 'session';
+            }
+
+            // Full logout - The most complete logout, no session restart, all data destroyed (add 'get' parameter to force_page)
+            if($logout_type == 'logoutFull') {
+                $this->logoutFull();
+                $message_transfer_method = 'get';
+            }
 
             // Log activity       
             write_record_to_activity_log('This user has been logged out because of inactivity '.$this->session->get('login_usr'));
-
-            // Destroy Session
-            $this->session->destroy();
             
-            // Restart Session
-            session_start();
-            
-            // Regenerates the session ID and moves over the session data to a new ID and deletes the old one (Prevent Session Attacks)
-            session_regenerate_id(true);
-
             // Reload with 'Session Timeout' message            
-            force_page('core', 'login', 'warning_msg=You have been logged out because of inactivity');
+            force_page('core', 'login', 'warning_msg=You have been logged out because of inactivity', $message_transfer_method);
             exit;            
 
         }    
     
     }    
     
-    // Destroy the Login Only (not currently used)
-    function deleteLogin() {
+    // Logout from QWcrm
+    function logout($logout_type = 'logoutRestartSession') {
         
+        // Destroy Login Only
+        if($logout_type == 'logoutOnly') {
+            $this->logoutOnly();
+            $message_transfer_method = 'session';
+        }        
+
+        // Logout by wiping and restarting the session
+        if($logout_type == 'logoutRestartSession') {
+            $this->logoutRestartSession();
+            $message_transfer_method = 'session';
+        }
+
+        // Full logout - The most complete logout, no session restart, all data destroyed (add 'get' parameter to force_page)
+        if($logout_type == 'logoutFull') {
+            $this->logoutFull();
+            $message_transfer_method = 'get';
+        }
+        
+        // Log activity       
+        write_record_to_activity_log($this->smarty->getTemplateVars('translate_system_auth_log_message_logout_successful_for').' '.$this->session->get('login_usr'));        
+                
+        // Reload with 'Logout Successful' message        
+        force_page('core', 'login', 'information_msg='.$this->smarty->getTemplateVars('translate_system_auth_advisory_message_logout_successful'), $message_transfer_method);
+        exit;
+        
+    } 
+ 
+    // Logout from QWcrm only, session is maintained and none login data in the session is kept i.e. 'post_emulation'
+    private function logoutOnly() {        
+                
+        // Regenerates the session ID and moves over the session data to a new ID and deletes the old one (Prevents Session Attacks)        
+        session_regenerate_id(true); 
+        
+        // Unset all the login details
         $this->session->del('login_usr');
         $this->session->del('login_pwd');
         $this->session->del('login_hash');        
         $this->session->del('login_id');
         $this->session->del('login_account_type_id');
-        $this->session->del('login_display_name');       
+        $this->session->del('login_display_name');
+        
+        // Expire the Cookie
+        $cookie_params = session_get_cookie_params();            
+        setcookie(session_name(), session_id(), 0, $cookie_params['path'], $cookie_params['domain'], $cookie_params['secure'], $cookie_params['httponly']);            
+        
+        return;
+        
+    }
+    
+    // Logout - Destroy all data in the session and then restart the session
+    private function logoutRestartSession() {      
+     
+        // Expire the Cookie
+        $cookie_params = session_get_cookie_params();            
+        setcookie(session_name(), session_id(), 0, $cookie_params['path'], $cookie_params['domain'], $cookie_params['secure'], $cookie_params['httponly']);            
+        
+        // Destroy Session (Keeping Session Cookie to allow messages to be sent by $_SESSION)
+        $this->session->destroy(true);        
+
+        // Restart Session
+        $this->session->start();
+        
+        // Regenerates the session ID and moves over the session data to a new ID and deletes the old one (Prevents Session Attacks)
+        // This will NOT work if runbefore the session restarts, probably because the browser is not informed of the change
+        session_regenerate_id(true);  
+        
+        return;
+        
+    }
+    
+    // Full logout - The most complete logout, no session restart, all data destroyed
+    private function logoutFull() {                      
+        
+        // Destroy Session - A new session id will be created by the browser on the next page load so we do not need to run 'session_regenerate_id(true)'
+        $this->session->destroy();
         
         return;
         
