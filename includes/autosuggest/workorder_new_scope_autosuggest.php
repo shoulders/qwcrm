@@ -4,7 +4,7 @@
 session_start();
 
 // Logged in and not Public or Guest
-if ($_SESSION['login_id'] && $_SESSION['login_account_type_id'] != '8' && $_SESSION['login_account_type_id'] != '9'){    
+if ($_SESSION['login_token'] && $_SESSION['login_account_type_id'] != '8' && $_SESSION['login_account_type_id'] != '9'){    
 
     require ('../../configuration.php');
     require ('../../includes/defines.php');

@@ -42,7 +42,7 @@ class Auth {
         }
         
         // If this is a Fresh Login
-        if(isset($_POST['action']) && $_POST['action'] === 'login' && !$_SESSION['login_id']) {        
+        if(isset($_POST['action']) && $_POST['action'] === 'login' && !$_SESSION['login_token']) {        
             
             // Regenerates the session ID and moves over the session data to a new ID and deletes the old one (Prevents Session Attacks)
             session_regenerate_id(true);       
@@ -175,10 +175,11 @@ class Auth {
         
         $this->session->set('login_usr',                $login_usr                                      );
         $this->session->set('login_hash',               $hashed_login_pwd                               );  // This is used to validate the logged in user's session
-        $this->session->set('login_id',                 $login_id                                       );  // Use this to validate the session - $_SESSION['login_id'] 
+        $this->session->set('login_id',                 $login_id                                       );
         $this->session->set('login_account_type_id',    $login_account_type_id                          );
         $this->session->set('login_display_name',       $login_display_name                             );
         $this->session->set('last_active',              time()                                          );  // This is used to control inactive session last_active
+        $this->session->set('login_token',              'login_verified'                                );  // Use this for a test for user logged in
 
     } 
     
@@ -346,4 +347,9 @@ class Auth {
         
     }
     
+}
+
+// make the cookie/session persitient
+function makeCookieSessionPersistent() {
+    //add cookie setting stuff here
 }
