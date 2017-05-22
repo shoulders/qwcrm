@@ -19,48 +19,19 @@ if (version_compare(PHP_VERSION, QWCRM_MINIMUM_PHP, '<')){
 }
 
 #################################################
+#   PHP enviromental settings                   #
+#################################################
+
+// disable magic quotes
+ini_set('magic_quotes_runtime', 0);
+
+#################################################
 # Debuging Information Start Varible Acqusition #
 #################################################
 
 // Saves the start time and memory usage.
 $startTime = microtime(1);
 $startMem  = memory_get_usage();
-
-################################################
-#         Error Reporting                      #
-################################################
-
-/* Used to suppress PHP error Notices - this will overide php.ini settings */
-
-// Turn off all error reporting
-//error_reporting(0);
-
-// Report simple running errors
-//error_reporting(E_ERROR | E_WARNING | E_PARSE);
-
-// Reporting E_NOTICE can be good too (to report uninitialized
-// variables or catch variable name misspellings ...)
-//error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
-
-// Report all errors except E_NOTICE
-//error_reporting(E_ALL & ~E_NOTICE); // This will only show major errors (default)
-
-// Report all PHP errors (see changelog)
-//error_reporting(E_ALL);
-
-// Report all PHP errors
-//error_reporting(-1);
-
-// Same as error_reporting(E_ALL);
-//ini_set('error_reporting', E_ALL);
-
-// sme as one of the above
-//ini_set('track_errors', 1); 
-
-// no E_NOTICE errors, this one works
-//error_reporting(E_ERROR | E_WARNING | E_PARSE);
-
-// ~ does not seem to work/exclude
 
 ################################################
 #    Get Root Folder and Physical path info    #
@@ -85,15 +56,67 @@ define('QWCRM_PATH', str_replace('index.php', '', $_SERVER['PHP_SELF']));
 // Constant that is checked in included files to prevent direct access
 define('_QWEXEC', 1);
 
-if(is_file('configuration.php')) {require('configuration.php');}
+if(is_file('configuration.php')) {
+    require('configuration.php');    
+} else {
+    //verify_qwcrm_is_installed_correctly($db); // I do not need this twice ?
+}
+
+// Create config object for global scope (temp + for error reporting)
+$GConfig = new GConfig;
+
+// need to add error control here ie skipt strait to
 require('includes/defines.php');
 require(INCLUDES_DIR.'security.php');
 require(INCLUDES_DIR.'include.php');
 require(INCLUDES_DIR.'adodb.php');
 require(INCLUDES_DIR.'smarty.php');
-require(INCLUDES_DIR.'session.php');
-require(LIBRARIES_DIR.'recaptchalib.php');
-require(INCLUDES_DIR.'auth.php');
+require(INCLUDES_DIR.'qframework.php');
+
+################################################
+#         Error Reporting                      #
+################################################
+
+// Set the error_reporting
+switch ('verysimple')
+{
+    case 'default':
+    case '-1':
+        break;
+
+    case 'none':
+    case '0':
+        error_reporting(0);
+        break;
+            
+    case 'verysimple':
+        error_reporting(E_ERROR | E_WARNING | E_PARSE | ~E_NOTICE);
+        ini_set('display_errors', 1);
+        break;            
+
+    case 'simple':
+        error_reporting(E_ERROR | E_WARNING | E_PARSE);
+        ini_set('display_errors', 1);
+        break;
+
+    case 'maximum':
+        error_reporting(E_ALL);
+        ini_set('display_errors', 1);
+        break;
+
+    case 'development':
+        error_reporting(-1);
+        ini_set('display_errors', 1);
+        break;
+
+    default:
+        error_reporting($config->error_reporting);
+        ini_set('display_errors', 1);
+        break;
+}
+
+// remove this variable
+//unset($config);
 
 #################################################
 #          Security                             #
@@ -125,17 +148,21 @@ if(!load_language()) {$smarty->assign('error_msg', 'Error in system language fil
 //verify_qwcrm_is_installed_correctly($db);
 
 ################################################
-#          Authentication                      #
+#         Framework                            #
 ################################################
 
-// Create a new Login Object
-$auth = new Auth($db, $smarty, $secretKey, $session_lifetime);
+// Initiate QFramework
+$app = new QFactory($db);
 
-// Has the session been inactive to long (This works in $_SESSION for both non-persistent and persitant sessions)
-if(isset($_SESSION['login_token'])) { $auth->sessionTimeOut(); }
+################################################
+#           Authentication                     #
+################################################
+
+// sort where I load this library from (Do i want to load it on every page load? maybe build into my new framework)
+require(LIBRARIES_DIR.'recaptchalib.php');
 
 // If captcha is enabled
-if($captcha && !isset($_SESSION['login_token']) && $_POST['action'] === 'login') {
+if($GConfig->captcha && !isset($_SESSION['login_token']) && $_POST['action'] === 'login') {
     
     $reCaptcha = new ReCaptcha($recaptcha_secret_key);
     
@@ -146,19 +173,16 @@ if($captcha && !isset($_SESSION['login_token']) && $_POST['action'] === 'login')
     } else {        
         force_page('core', 'login', 'warning_msg=Google ReCaptcha Verification Failed');
         exit;
-    }   
+    }  
 
 // Normal login with no captcha
-} elseif ($_POST['action'] === 'login') {
-    $auth->login();
+} elseif (!isset($_SESSION['login_token']) && $_POST['action'] === 'login') {
+    //$app->login();
+        
+    $credentials['username'] = $_POST['login_usr'];
+    $credentials['password'] = $_POST['login_pwd'];
+    $app->login($credentials);
 }
-
-
-
-
-
-
-
 
 
 /* Assign Logged in User's Variables to PHP and Smarty */
@@ -182,8 +206,20 @@ $smarty->assign('login_display_name',       $login_display_name     );
 
 // If logout is set, then log user off
 if (isset($_GET['action']) && $_GET['action'] == 'logout') {    
-    $auth->logout();
+    $app->logout();
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 ################################
 #   Set Global PHP Values      #
@@ -290,7 +326,7 @@ if(isset($VAR['warning_msg'])){
 #  the page exists ready for building      #
 ############################################   
 
-if($maintenance == true){
+if($GConfig->maintenance == true){
     
     // set to the maintenance page    
     $page_display_controller = 'modules'.SEP.'core'.SEP.'maintenance.php'; 
@@ -300,7 +336,7 @@ if($maintenance == true){
     
     // If user logged in, then log user off    
     if(isset($_SESSION['login_token'])) {    
-        $auth->logout();
+        $app->logout();
     }
     
 }
@@ -409,12 +445,12 @@ if(check_acl($db, $login_account_type_id, $module, $page_tpl)){
 ################################################
 
 // This logs access details to the stats tracker table in the database
-if($qwcrm_tracker == true){
+if($GConfig->qwcrm_tracker == true){
     write_record_to_tracker_table($db, $page_display_controller, $module, $page_tpl);
 }
 
 // This logs access details to the access log
-if($qwcrm_access_log == true){
+if($GConfig->qwcrm_access_log == true){
     write_record_to_access_log($login_usr);
 }
 
@@ -439,7 +475,7 @@ if ($VAR['theme'] !== 'print') {
 ################################################
 
 // Compress page and send correct compression headers
-if ($gzip == true && $VAR['theme'] !== 'print') {
+if ($GConfig->gzip == true && $VAR['theme'] !== 'print') {
 
     $BuildPage = compress_page_output($BuildPage);
     

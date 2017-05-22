@@ -8,38 +8,35 @@
  */
 
 // D:\websites\htdocs\quantumwarp.com\administrator\components\com_config\model\application.php
+
+// The config object loads the standard configuration and then also holds other settings for QWcrm
         
 
 /**
  * Model for the global configuration
  */
-class Config
+class QConfig
 {
     
-    private $config;
+    private $data;
     
     public function __construct() {
-        $this->config = new QConfig;
+        $this->config = new GConfig;
+        //return new GConfig;
     }
     
-    /**
-     * Method to set a registry setting - this is a hangover from joomla Create a temp registry
-     */    
-    public function set($key) {
-        return;
-    }
-   
+  
     /**
      * Method to get the configuration data.
      * @return    array  An array containg all config
-     */
+     
     public function get($key = null)
     {       
         // Get the current configuration.
         
         $current_config = get_object_vars($this->config);
         
-        // return all values as an array
+        // return all data as an array
         if($key === null) {
             return $current_config;
         
@@ -48,15 +45,62 @@ class Config
             return array_search($key, $current_config);            
         }
         
+    }*/
+    
+        /**
+     * Method to get the value from the data array
+     *
+     * @param   string  $key           Key to search for in the data array
+     * @param   mixed   $defaultValue  Default value to return if the key is not set
+     *
+     * @return  mixed   Value from the data array | defaultValue if doesn't exist
+     *
+     * @since   3.5
+     */
+    public function get($key, $defaultValue = null)
+    {
+        return isset($this->data[$key]) ? $this->data[$key] : $defaultValue;
     }
+    
+    /**
+     * Get all the data being rendered
+     *
+     * @return  array
+     *
+     * @since   3.5
+     */
+    public function getData()
+    {
+        return $this->data;
+    }
+
+  /**
+     * Method to set a value in the data array. Example: $layout->set('items', $items);
+     *
+     * @param   string  $key    Key for the data array
+     * @param   mixed   $value  Value to assign to the key
+     *
+     * @return  self
+     *
+     * @since   3.5
+     */
+    public function set($key, $value)
+    {
+        $this->data[(string) $key] = $value;
+
+        return $this;
+    }    
+      
+    
+    
 
     /**
      * Method to save the configuration data.
      */
     public function save($new_config)
     {
-        // Get the current configuration as an array        
-        $current_config = get_object_vars($current_config);        
+        // Get a fresh copy of the standard settings as an array        
+        $current_config = get_object_vars(new QConfig);        
 
         // Merge the new submitted config and the old one. We do this to preserve values that were not in the submitted form but are in the config.
         $config_data = array_merge($current_config, $new_config);

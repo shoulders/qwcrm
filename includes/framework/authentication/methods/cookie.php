@@ -1,121 +1,4 @@
 <?php
-
-/*
- * @package   QWcrm
- * @author    Jon Brown https://quantumwarp.com/
- * @copyright Copyright (C) 2016 - 2017 Jon Brown, All rights reserved.
- * @license   GNU/GPLv3 or later; https://www.gnu.org/licenses/gpl.html
- */
-
-
-
-
-// D:\websites\htdocs\quantumwarp.com\libraries\joomla\input\cookie.php
-/**
- * @package     Joomla.Platform
- * @subpackage  Input
- *
- * @copyright   Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE
- */
-
-defined('_QWEXEC') or die;
-
-/**
- * Joomla! Input Cookie Class
- *
- * @since  11.1
- */
-class JInputCookie extends JInput
-{
-    /**
-     * Constructor.
-     *
-     * @param   array  $source   Ignored.
-     * @param   array  $options  Array of configuration parameters (Optional)
-     *
-     * @since   11.1
-     */
-    public function __construct(array $source = null, array $options = array())
-    {
-        if (isset($options['filter']))
-        {
-            $this->filter = $options['filter'];
-        }
-        else
-        {
-            $this->filter = JFilterInput::getInstance();
-        }
-
-        // Set the data source.
-        $this->data = & $_COOKIE;
-
-        // Set the options for the class.
-        $this->options = $options;
-    }
-
-    /**
-     * Sets a value
-     *
-     * @param   string   $name      Name of the value to set.
-     * @param   mixed    $value     Value to assign to the input.
-     * @param   integer  $expire    The time the cookie expires. This is a Unix timestamp so is in number
-     *                              of seconds since the epoch. In other words, you'll most likely set this
-     *                              with the time() function plus the number of seconds before you want it
-     *                              to expire. Or you might use mktime(). time()+60*60*24*30 will set the
-     *                              cookie to expire in 30 days. If set to 0, or omitted, the cookie will
-     *                              expire at the end of the session (when the browser closes).
-     * @param   string   $path      The path on the server in which the cookie will be available on. If set
-     *                              to '/', the cookie will be available within the entire domain. If set to
-     *                              '/foo/', the cookie will only be available within the /foo/ directory and
-     *                              all sub-directories such as /foo/bar/ of domain. The default value is the
-     *                              current directory that the cookie is being set in.
-     * @param   string   $domain    The domain that the cookie is available to. To make the cookie available
-     *                              on all subdomains of example.com (including example.com itself) then you'd
-     *                              set it to '.example.com'. Although some browsers will accept cookies without
-     *                              the initial ., RFC 2109 requires it to be included. Setting the domain to
-     *                              'www.example.com' or '.www.example.com' will make the cookie only available
-     *                              in the www subdomain.
-     * @param   boolean  $secure    Indicates that the cookie should only be transmitted over a secure HTTPS
-     *                              connection from the client. When set to TRUE, the cookie will only be set
-     *                              if a secure connection exists. On the server-side, it's on the programmer
-     *                              to send this kind of cookie only on secure connection (e.g. with respect
-     *                              to $_SERVER["HTTPS"]).
-     * @param   boolean  $httpOnly  When TRUE the cookie will be made accessible only through the HTTP protocol.
-     *                              This means that the cookie won't be accessible by scripting languages, such
-     *                              as JavaScript. This setting can effectively help to reduce identity theft
-     *                              through XSS attacks (although it is not supported by all browsers).
-     *
-     * @return  void
-     *
-     * @link    http://www.ietf.org/rfc/rfc2109.txt
-     * @see     setcookie()
-     * @since   11.1
-     */
-    public function set($name, $value, $expire = 0, $path = '', $domain = '', $secure = false, $httpOnly = false)
-    {
-        if (is_array($value))
-        {
-            foreach ($value as $key => $val)
-            {
-                setcookie($name . "[$key]", $val, $expire, $path, $domain, $secure, $httpOnly);
-            }
-        }
-        else
-        {
-            setcookie($name, $value, $expire, $path, $domain, $secure, $httpOnly);
-        }
-
-        $this->data[$name] = $value;
-    }
-}
-
-
-
-
-
-// This handles the login cookie/ cookie authentication
-
 // D:\websites\htdocs\quantumwarp.com\plugins\authentication\cookie\cookie.php
 /**
  * @package     Joomla.Plugin
@@ -125,7 +8,7 @@ class JInputCookie extends JInput
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('_JEXEC') or die;
+defined('_QWEXEC') or die;
 
 /**
  * Joomla Authentication plugin
@@ -134,27 +17,55 @@ defined('_JEXEC') or die;
  * @note   Code based on http://jaspan.com/improved_persistent_login_cookie_best_practice
  *         and http://fishbowl.pastiche.org/2004/01/19/persistent_login_cookie_best_practice/
  */
-class Cookie
+class PlgAuthenticationCookie //extends QFramework
 {
+    /**
+     * Application object
+     *
+     * @var    JApplicationCms
+     * @since  3.2
+     */
+    protected $app;
 
+    /**
+     * Database object
+     *
+     * @var    JDatabaseDriver
+     * @since  3.2
+     */
+    protected $db;
+    
+    private $cookie;
+
+    
+    public function __construct()
+    {
+        $this->db       = QFactory::getDbo();
+        $this->cookieData   = new QCookie;
+        
+    }
+    /**
+     * This method should handle any authentication and report back to the subject
+     *
+     * @param   array   $credentials  Array holding the user credentials
+     * @param   array   $options      Array of extra options
+     * @param   object  &$response    Authentication response object
+     *
+     * @return  boolean
+     *
+     * @since   3.2
+     */
     public function onUserAuthenticate($credentials, $options, &$response)
     {
         // No remember me for admin
-        if ($this->app->isClient('administrator'))
+        if (QFactory::isClient('administrator'))
         {
             return false;
         }
 
         // Get cookie
-        $cookieName  = 'joomla_remember_me_' . JUserHelper::getShortHashedUserAgent();
-        $cookieValue = $this->app->input->cookie->get($cookieName);
-
-        // Try with old cookieName (pre 3.6.0) if not found
-        if (!$cookieValue)
-        {
-            $cookieName  = JUserHelper::getShortHashedUserAgent();
-            $cookieValue = $this->app->input->cookie->get($cookieName);
-        }
+        $cookieName  = 'joomla_remember_me_' . QUserHelper::getShortHashedUserAgent();
+        $cookieValue = $this->cookieData->get($cookieName);
 
         if (!$cookieValue)
         {
@@ -167,7 +78,7 @@ class Cookie
         if (count($cookieArray) != 2)
         {
             // Destroy the cookie in the browser.
-            $this->app->input->cookie->set($cookieName, false, time() - 42000, $this->app->get('cookie_path', '/'), $this->app->get('cookie_domain'));
+            $this->cookieData->set($cookieName, false, time() - 42000, $this->app->get('cookie_path', '/'), $this->app->get('cookie_domain'));
             JLog::add('Invalid cookie detected.', JLog::WARNING, 'error');
 
             return false;
@@ -176,14 +87,14 @@ class Cookie
         $response->type = 'Cookie';
 
         // Filter series since we're going to use it in the query
-        $filter = new JFilterInput;
+        $filter = new QFilterInput;
         $series = $filter->clean($cookieArray[1], 'ALNUM');
 
-        // Remove expired tokens
+        /* Remove expired tokens
         $query = $this->db->getQuery(true)
             ->delete('#__user_keys')
             ->where($this->db->quoteName('time') . ' < ' . $this->db->quote(time()));
-
+        
         try
         {
             $this->db->setQuery($query)->execute();
@@ -191,9 +102,13 @@ class Cookie
         catch (RuntimeException $e)
         {
             // We aren't concerned with errors from this query, carry on
-        }
+        }*/
+        
+        // Remove expired tokens
+        $sql = "DELETE FROM ".PRFX."user_keys WHERE time < ".$db->qstr(time());
+        $rs = $db->Execute($sql);
 
-        // Find the matching record if it exists.
+        /* Find the matching record if it exists.
         $query = $this->db->getQuery(true)
             ->select($this->db->quoteName(array('user_id', 'token', 'series', 'time')))
             ->from($this->db->quoteName('#__user_keys'))
@@ -207,22 +122,34 @@ class Cookie
         }
         catch (RuntimeException $e)
         {
-            $response->status = JAuthentication::STATUS_FAILURE;
+            $response->status = QAuthentication::STATUS_FAILURE;
 
             return false;
+        }*/
+        
+        // Find the matching record if it exists.
+        $sql = "SELECT user_id, token, series, time FROM ".PRFX."user_keys WHERE series = ".$db->qstr($series)." AND uastring = ".$db->qstr($series)." ORDER BY time DESC";
+        if(!$rs = $db->Execute($sql))
+        {
+            $response->status = QAuthentication::STATUS_FAILURE;
+            return false; 
+            
+        } else {
+           $results = $rs->RecordCount; 
         }
-
-        if (count($results) !== 1)
+        
+        // If there is not exactly 1 record
+        if ($results !== 1)
         {
             // Destroy the cookie in the browser.
-            $this->app->input->cookie->set($cookieName, false, time() - 42000, $this->app->get('cookie_path', '/'), $this->app->get('cookie_domain'));
-            $response->status = JAuthentication::STATUS_FAILURE;
+            $this->cookieData->set($cookieName, false, time() - 42000, $this->app->get('cookie_path', '/'), $this->app->get('cookie_domain'));
+            $response->status = QAuthentication::STATUS_FAILURE;
 
             return false;
         }
 
         // We have a user with one cookie with a valid series and a corresponding record in the database.
-        if (!JUserHelper::verifyPassword($cookieArray[0], $results[0]->token))
+        if (!QUserHelper::verifyPassword($cookieArray[0], $results[0]->token))
         {
             /*
              * This is a real attack! Either the series was guessed correctly or a cookie was stolen and used twice (once by attacker and once by victim).
@@ -251,7 +178,7 @@ class Cookie
 
             // Issue warning by email to user and/or admin?
             JLog::add(JText::sprintf('PLG_AUTH_COOKIE_ERROR_LOG_LOGIN_FAILED', $results[0]->user_id), JLog::WARNING, 'security');
-            $response->status = JAuthentication::STATUS_FAILURE;
+            $response->status = QAuthentication::STATUS_FAILURE;
 
             return false;
         }
@@ -269,7 +196,7 @@ class Cookie
         }
         catch (RuntimeException $e)
         {
-            $response->status = JAuthentication::STATUS_FAILURE;
+            $response->status = QAuthentication::STATUS_FAILURE;
 
             return false;
         }
@@ -287,12 +214,12 @@ class Cookie
             $response->language = $user->getParam('language');
 
             // Set response status.
-            $response->status        = JAuthentication::STATUS_SUCCESS;
+            $response->status        = QAuthentication::STATUS_SUCCESS;
             $response->error_message = '';
         }
         else
         {
-            $response->status        = JAuthentication::STATUS_FAILURE;
+            $response->status        = QAuthentication::STATUS_FAILURE;
             $response->error_message = JText::_('JGLOBAL_AUTH_NO_USER');
         }
     }
@@ -319,7 +246,7 @@ class Cookie
         if (isset($options['responseType']) && $options['responseType'] === 'Cookie')
         {
             // Logged in using a cookie
-            $cookieName = 'joomla_remember_me_' . JUserHelper::getShortHashedUserAgent();
+            $cookieName = 'joomla_remember_me_' . QUserHelper::getShortHashedUserAgent();
 
             // We need the old data to get the existing series
             $cookieValue = $this->app->input->cookie->get($cookieName);
@@ -327,7 +254,7 @@ class Cookie
             // Try with old cookieName (pre 3.6.0) if not found
             if (!$cookieValue)
             {
-                $oldCookieName = JUserHelper::getShortHashedUserAgent();
+                $oldCookieName = QUserHelper::getShortHashedUserAgent();
                 $cookieValue   = $this->app->input->cookie->get($oldCookieName);
 
                 // Destroy the old cookie in the browser
@@ -343,7 +270,7 @@ class Cookie
         elseif (!empty($options['remember']))
         {
             // Remember checkbox is set
-            $cookieName = 'joomla_remember_me_' . JUserHelper::getShortHashedUserAgent();
+            $cookieName = 'joomla_remember_me_' . QUserHelper::getShortHashedUserAgent();
 
             // Create a unique series which will be used over the lifespan of the cookie
             $unique     = false;
@@ -351,7 +278,7 @@ class Cookie
 
             do
             {
-                $series = JUserHelper::genRandomPassword(20);
+                $series = QUserHelper::genRandomPassword(20);
                 $query  = $this->db->getQuery(true)
                     ->select($this->db->quoteName('series'))
                     ->from($this->db->quoteName('#__user_keys'))
@@ -390,7 +317,7 @@ class Cookie
         $length   = $this->params->get('key_length', '16');
 
         // Generate new cookie
-        $token       = JUserHelper::genRandomPassword($length);
+        $token       = QUserHelper::genRandomPassword($length);
         $cookieValue = $token . '.' . $series;
 
         // Overwrite existing cookie with new value
@@ -423,7 +350,7 @@ class Cookie
                 ->where($this->db->quoteName('uastring') . ' = ' . $this->db->quote($cookieName));
         }
 
-        $hashed_token = JUserHelper::hashPassword($token);
+        $hashed_token = QUserHelper::hashPassword($token);
 
         $query->set($this->db->quoteName('token') . ' = ' . $this->db->quote($hashed_token));
 
@@ -456,7 +383,7 @@ class Cookie
             return false;
         }
 
-        $cookieName  = 'joomla_remember_me_' . JUserHelper::getShortHashedUserAgent();
+        $cookieName  = 'joomla_remember_me_' . QUserHelper::getShortHashedUserAgent();
         $cookieValue = $this->app->input->cookie->get($cookieName);
 
         // There are no cookies to delete.
@@ -496,4 +423,5 @@ class Cookie
 
         return true;
     }
+        
 }

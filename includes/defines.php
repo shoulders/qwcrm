@@ -8,7 +8,7 @@ define('SEP',                       '/'                         );
 
 // Information and Configuration
 define('QWCRM_VERSION' ,            '3.0.0'                     );
-define('PRFX',                      $db_prefix                  );
+define('PRFX',                      $GConfig->db_prefix         );
 
 // System Folders
 define('CACHE_DIR',                 'cache/'                    );
@@ -24,8 +24,8 @@ define('SMARTY_CACHE_DIR',          CACHE_DIR.'smarty/cache/'   );
 define('SMARTY_COMPILE_DIR',        CACHE_DIR.'smarty/compile/' );
 
 // Theme
-define('THEME_NAME',                $theme_name                 );
-define('THEME_LANGUAGE',            $theme_language.'.xml'      );
+define('THEME_NAME',                $GConfig->theme_name                 );
+define('THEME_LANGUAGE',            $GConfig->theme_language.'.xml'      );
 define('THEME_DIR',                 'themes/'.THEME_NAME.'/'    );
 define('THEME_IMAGES_DIR',          THEME_DIR.'images/'         );
 define('THEME_CSS_DIR',             THEME_DIR.'css/'            );

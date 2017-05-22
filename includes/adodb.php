@@ -8,4 +8,4 @@ require('adodb.inc.php');
 
 // create adodb database connection
 $db = ADONewConnection('mysqli');
-$db->Connect($db_host, $db_user, $db_pass, $db_name);
+$db->Connect($GConfig->db_host, $GConfig->db_user, $GConfig->db_pass, $GConfig->db_name);

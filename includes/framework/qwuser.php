@@ -11,6 +11,33 @@ defined('_QWEXEC') or die;
 
 class QUser {
     
+    // This holds the account data for the requested user
+    private $data;
+    
+    public function __construct($user_id = null) {
+        
+        //if(!$user_id) { loadUserData($user_id); }
+
+        
+    }
+    
+    // load the user data from the database into the user object - similiar to get_employee_details()        
+    private function loadUserData($user_id) {
+
+        $sql = "SELECT * FROM ".PRFX."EMPLOYEE WHERE EMPLOYEE_ID =".$user_id;
+
+        if(!$rs = $this->db->execute($sql)){        
+            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, $this->smarty->getTemplateVars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
+            exit;
+        } else {
+
+            $this->data = $rs->GetRowAssoc();
+            return;
+
+        }
+
+    }
+        
     /**
      * Method to get the value from the data array
      *
@@ -132,35 +159,5 @@ class QUser {
         return;
     }
     
-    /**
-     * Get a user object.
-     *
-     * Returns the global {@link JUser} object, only creating it if it doesn't already exist.
-     *
-     * @param   integer  $id  The user to load - Can be an integer or string - If string, it is converted to ID automatically.
-     *
-     * @return  JUser object
-     *
-     * @see     JUser
-     * @since   11.1
-     */
-    public static function getUser($id = null)
-    {
-        $instance = self::getSession()->get('user');
-
-        if (is_null($id))
-        {
-            if (!($instance instanceof JUser))
-            {
-                $instance = JUser::getInstance();
-            }
-        }
-        // Check if we have a string as the id or if the numeric id is the current instance
-        elseif (!($instance instanceof JUser) || is_string($id) || $instance->id !== $id)
-        {
-            $instance = JUser::getInstance($id);
-        }
-
-        return $instance;
-    }    
+  
 }
