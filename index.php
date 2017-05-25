@@ -71,7 +71,7 @@ require(INCLUDES_DIR.'security.php');
 require(INCLUDES_DIR.'include.php');
 require(INCLUDES_DIR.'adodb.php');
 require(INCLUDES_DIR.'smarty.php');
-require(INCLUDES_DIR.'qframework.php');
+require(FRAMEWORK_DIR.'qframework.php');
 
 ################################################
 #         Error Reporting                      #
@@ -152,7 +152,7 @@ if(!load_language()) {$smarty->assign('error_msg', 'Error in system language fil
 ################################################
 
 // Initiate QFramework
-$app = new QFactory($db);
+$app = new QFactory();
 
 ################################################
 #           Authentication                     #
@@ -181,7 +181,8 @@ if($GConfig->captcha && !isset($_SESSION['login_token']) && $_POST['action'] ===
         
     $credentials['username'] = $_POST['login_usr'];
     $credentials['password'] = $_POST['login_pwd'];
-    $app->login($credentials);
+    $options['remember'] = 1;
+    $app->login($credentials, $options);
 }
 
 

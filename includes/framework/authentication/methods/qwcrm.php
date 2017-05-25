@@ -42,14 +42,8 @@ class PlgAuthenticationQwcrm //extends JFramework
 
         // Get a database object
         $db    = QFactory::getDbo();
-                
-        /*$query = $db->getQuery(true)
-            ->select('id, password')
-            ->from('#__users')
-            ->where('username=' . $db->quote($credentials['username']));
-        $db->setQuery($query);
-        $result = $db->loadObject();*/
-        
+
+        // Load the relevant user record form the database
         $sql = "SELECT EMPLOYEE_ID, EMPLOYEE_PASSWORD FROM ".PRFX."EMPLOYEE WHERE EMPLOYEE_LOGIN = ".$db->qstr($credentials['username']);        
         $rs = $db->Execute($sql);
         $result = $rs->GetRowAssoc();   // If I call this twice for this search, no results are shown on the TPL

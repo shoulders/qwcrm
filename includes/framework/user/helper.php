@@ -665,15 +665,26 @@ class QUserHelper
          * distribution is even, and randomize the start shift so it's not
          * predictable.
          */
-        $random = JCrypt::genRandomBytes($length + 1);
-        $shift = ord($random[0]);
+        
+        // This is php 7 only. the JCrpyt function returns after failing
+        //$random = JCrypt::genRandomBytes($length + 1);
+        //$random = random_bytes($length + 1);        
+        
+        /*$shift = ord($random[0]);
 
         for ($i = 1; $i <= $length; ++$i)
         {
             $makepass .= $salt[($shift + ord($random[$i])) % $base];
             $shift += ord($random[$i]);
+        }*/
+                     
+        // this is a workaround
+        for ($i = 1; $i <= $length; ++$i)
+        {
+            $makepass .= $salt[rand(0, strlen($salt)-1)];
+            
         }
-
+        
         return $makepass;
     }
 

@@ -31,8 +31,9 @@ defined('_QWEXEC') or die;
 // include class files
 require INCLUDES_DIR . 'framework/config.php';                          // This gets the standard config settings ONLY
 
-require INCLUDES_DIR . 'framework/session/cookie.php';                  // This handles the basic cookie manipulation
+
 require INCLUDES_DIR . 'framework/session/session.php';                 // This handeles the user session (mainly php but utilises cookes) - update thhis description
+require INCLUDES_DIR . 'framework/session/cookie.php';                  // This handles the basic cookie manipulation
 
 require INCLUDES_DIR . 'framework/general/registry.php';                // This class is used to create/edit/read a JSON compatible register than can be stored in the database i.e. user paremeters or used within the various classes for data manipulation (set/get/ckear)
 
@@ -42,6 +43,7 @@ require INCLUDES_DIR . 'framework/authentication/input.php';            // this 
 require INCLUDES_DIR . 'framework/authentication/Webclient.php';        // this libary gets the browser details from the session (used in cookie creation)
 require INCLUDES_DIR . 'framework/authentication/methods/cookie.php';   // This allos the user to be be authenticated by a coookie (persitent session)
 require INCLUDES_DIR . 'framework/authentication/methods/qwcrm.php';    // This is the standard username and password authorisation
+require INCLUDES_DIR . 'framework/authentication/methods/remember.php'; // This is the standard username and password authorisation
 
 require INCLUDES_DIR . 'framework/user/user.php';                       // This is the object/thing that hols the user data objectr
 require INCLUDES_DIR . 'framework/user/helper.php';                     // This contains password hassing functions etc..
@@ -58,12 +60,22 @@ class QFactory
     //public $session         = null;     // Global session object
     public $db              = null;     // Global database object   
     private $smarty;                    // Global smarty object
-    //public $cookie = null;            // Global cookie object
-    public $user            = null;     // Global user object (should be functions and logged in user details)
+    public $cookiePlg = null;            // Global cookie object
+    public $user            = null;     // Global user object (should be functions and logged in user details) - i will use this to store the logged in user (when authenticated)
     public $auth            = null;     // Global authentication object (performs login etc..)
     public $ACLAuthorise    = false;    // The user has access to this resource
     //protected $clientId;     // The client identifier (client/employee || site/admin  || client_Id = 0 means frontend access / client_Id = 1 means admin access)
     public $registry = null;   // my temporary registry object replace some config
+    
+    
+    /**
+     * Global application object
+     *
+     * @var    JApplicationCms
+     * @since  11.1
+     */
+    //public static $application = null;
+    //public static $instance = null;
     
     /**
      * Global configuraiton object
@@ -123,7 +135,7 @@ class QFactory
      * @deprecated  4.0  Will be renamed $clientId
      */
     //protected $clientId = null;
-    protected $clientId = '1';
+    protected $clientId = '0';
 
 
     /**
@@ -144,11 +156,10 @@ class QFactory
      */
     protected $data = array();
        
-    public function __construct($db, Registry $config = null)
-    {
-        
+    public function __construct(Registry $config = null)
+    {       
                 
-        // If a config object is given use it.
+        // If a config object is given use it.  - not sure I need this as it is the root
         if ($config instanceof Registry)
         {
             self::$config = $config;           
@@ -156,57 +167,125 @@ class QFactory
         // Instantiate a new configuration object.
         else
         {
-            //self::$config = new Registry;
-            self::$config = self::getConfig();
+            $conf = self::getConfig();
         }
         
         // load config/registry object for this function
-        $conf = self::getConfig();      
-        
+        //$conf = self::getConfig();
+        //$session = self::$session;
         
         // Populate Global Objects
-        $this->db = $db;
+        $this->db = QFactory::getDbo();
         global $smarty;                     // I am passing global smarty to keep 1 instance
+       
         $this->smarty = $smarty;        
-        //$this->config   = new QConfig;
-        //$this->session  = new QSession;
-        //$this->cookie   = new QCookie;
-        //$this->registry = new Registry;   // I might add this
-        //$this->auth     = new Auth;
-        //$this->user     = QUser::getInstance();
+        $this->cookiePlg   = new PlgAuthenticationCookie;
+        $this->user     = QUser::getInstance();
         
                 
-        /* Load session */        
-
-        // Enable sessions by default.
-        if (is_null($conf->get('session')))
-        {
-            $conf->set('session', true);            
-        }
+        /* Load session */ // sort session loading
         
+        // Create the session based on the application logic.
+        /*if ($session !== false)
+        {echo 'cheese';
+            $this->loadSession($session);
+        }*/
+
         // Enable sessions by default.
         if (is_null($conf->get('session')))
         {            
             $conf->set('session', true);
         }
 
-        // Set the session default name.
+        // Set the session default name. (site /admin)
         if (is_null($conf->get('session_name')))
         {
-            $conf->set('session_name', $this->getName());
+            $conf->set('session_name', self::getName());
         }
 
         // Create the session if a session name is passed.
         if ($conf->get('session') !== false)
-        {
-            //$temp_session = $this->session;
-            //$this->loadSession(self::$session);   
-            $this->loadSession(); 
+        {            
+            //$this->loadSession($session); 
+            $this->loadsession();
         }
+        
+        // Perfomr auto login via cookie/remember me
+        //$autoCookieLogin = new PlgSystemRemember;
+        //$autoCookieLogin->onAfterInitialise();
    
+        
        
     }
+/****************************Temp**************************************************************/
+// D:\websites\htdocs\quantumwarp.com\libraries\cms\plugin\plugin.php
+    /**
+     * Constructor
+     *
+     * @param   object  &$subject  The object to observe
+     * @param   array   $config    An optional associative array of configuration settings.
+     *                             Recognized key values include 'name', 'group', 'params', 'language'
+     *                             (this list is not meant to be comprehensive).
+     *
+     * @since   1.5
+     *
+    public function __construct(&$subject, $config = array())
+    {
+        // Get the parameters.
+        if (isset($config['params']))
+        {
+            if ($config['params'] instanceof Registry)
+            {
+                $this->params = $config['params'];
+            }
+            else
+            {
+                $this->params = new Registry($config['params']);
+            }
+        }
 
+        // Get the plugin name.
+        if (isset($config['name']))
+        {
+            $this->_name = $config['name'];
+        }
+
+        // Get the plugin type.
+        if (isset($config['type']))
+        {
+            $this->_type = $config['type'];
+        }
+
+        // Load the language files if needed.
+        if ($this->autoloadLanguage)
+        {
+            $this->loadLanguage();
+        }
+
+        if (property_exists($this, 'app'))
+        {
+            $reflection = new ReflectionClass($this);
+            $appProperty = $reflection->getProperty('app');
+
+            if ($appProperty->isPrivate() === false && is_null($this->app))
+            {
+                $this->app = JFactory::getApplication();
+            }
+        }
+
+        if (property_exists($this, 'db'))
+        {
+            $reflection = new ReflectionClass($this);
+            $dbProperty = $reflection->getProperty('db');
+
+            if ($dbProperty->isPrivate() === false && is_null($this->db))
+            {
+                $this->db = JFactory::getDbo();
+            }
+        }
+
+        parent::__construct($subject);
+    }*/
 
 /******************************************************************************************/
     
@@ -226,7 +305,7 @@ class QFactory
     //public function loadSession(QSession $session)   - is the 'QSession $session = null' needed or just ($session)
     public function loadSession(QSession $session = null)
     {
-       $conf = self::$config;
+       $conf = QFactory::getConfig();
        
        if ($session !== null)
         {
@@ -260,7 +339,7 @@ class QFactory
 
                 break;
 
-            // If 'admin' and eithe 'Admin Only' or 'Entire Site'
+            // If 'admin' and either 'Admin Only' or 'Entire Site'
             case 1:
                 if ($conf->get('force_ssl') >= 1)
                 {
@@ -384,7 +463,7 @@ class QFactory
         $handler = $conf->get('session_handler', 'none');   
 
         // Config time is in minutes - this is already handles in get session
-        //$options['expire'] = ($conf->get('session_lifetime')) ? $conf->get('session_lifetime') * 60 : 900;
+        $options['expire'] = ($conf->get('session_lifetime')) ? $conf->get('session_lifetime') * 60 : 900;
 
         // The session handler needs a JInput object, we can inject it without having a hard dependency to an application instance
         //$input = self::$application ? self::getApplication()->input : new JInput;
@@ -402,22 +481,6 @@ class QFactory
 
         return $session;
     }
-
-
-    /**
-     * Provides a secure hash based on a seed
-     *
-     * @param   string  $seed  Seed string.
-     *
-     * @return  string  A secure hash
-     *
-     * @since   3.2
-     */
-    public static function getHash($seed)
-    {
-        $conf = QFactory::$config;
-        return md5($conf->get('secretKey') . $seed);
-    } 
     
     /**
      * Checks the user session.
@@ -457,19 +520,18 @@ class QFactory
             if (!$conf->get('shared_session', '0'))
             {
                 $record['client_id'] = $this->db->qstr((int) $this->getClientId());
-            }
-            
-            $this->db->AutoExecute(PRFX.'session', $record,'INSERT');
+            }            
 
-            /* If the insert failed, exit the application.
+            // If the insert failed, exit the application.
             try
             {
-                $db->execute();
+                //$db->execute();
+                $this->db->AutoExecute(PRFX.'session', $record, 'INSERT');
             }
             catch (RuntimeException $e)
             {
                 throw new RuntimeException(JText::_('JERROR_SESSION_STARTUP'), $e->getCode(), $e);
-            }*/
+            }
         }
     }
     
@@ -501,9 +563,9 @@ class QFactory
     {
         // Get the global QAuthentication object.
         $authenticate = QAuthentication::getInstance();
-        $response = $authenticate->authenticate($credentials, $options);
+        $response = $authenticate->authenticate($credentials, $options); // this cycles through the plugins (qwcrm.php cookie.php methods) and collates the responses in a 'reponse class' and then returns it
 
-        // Import the user plugin group.
+        // Import the user plugin group. // not sure what this is for
         //JPluginHelper::importPlugin('user');
 
         if ($response->status === QAuthentication::STATUS_SUCCESS)
@@ -511,6 +573,7 @@ class QFactory
             /*
              * Validate that the user should be able to login (different to being authenticated).
              * This permits authentication plugins blocking the user.
+             * This cycle through plugins responses (cookie.php and qwcrm.php) and then executes their login failures routine (if any) or continue
              */
             $authorisations = $authenticate->authorise($response, $options);
             $denied_states = QAuthentication::STATUS_EXPIRED | QAuthentication::STATUS_DENIED;
@@ -543,9 +606,10 @@ class QFactory
                 }
             }
 
-            // OK, the credentials are authenticated and user is authorised.  Let's fire the onLogin event.
-            $results = $this->triggerEvent('onUserLogin', array((array) $response, $options));
-
+            // OK, the credentials are authenticated and user is authorised.  Let's fire the onLogin event. (stored qwcrm.php and cookie.php methods)
+            //$results = $this->triggerEvent('onUserLogin', array((array) $response, $options));
+            $results = array();
+            
             /*
              * If any of the user plugins did not successfully complete the login routine
              * then the whole method fails.
@@ -565,15 +629,17 @@ class QFactory
                 $options['user'] = $user;
                 $options['responseType'] = $response->type;
 
-                // The user is successfully logged in. Run the after login events
-                $this->triggerEvent('onUserAfterLogin', array($options));
+                // The user is successfully logged in. Run the after login events  (stored qwcrm.php and cookie.php methods)
+                //$this->triggerEvent('onUserAfterLogin', array($options));
+                $this->cookiePlg->onUserAfterLogin($options);
+                
             }
 
             return true;
         }
 
         // Trigger onUserLoginFailure Event.
-        //$this->triggerEvent('onUserLoginFailure', array((array) $response));
+        //$this->triggerEvent('onUserLoginFailure', array((array) $response));   (stored qwcrm.php and cookie.php methods)
 
         // If silent is set, just return false.
         if (isset($options['silent']) && $options['silent'])
@@ -626,24 +692,105 @@ class QFactory
         JPluginHelper::importPlugin('user');
 
         // OK, the credentials are built. Lets fire the onLogout event.
-        $results = $this->triggerEvent('onUserLogout', array($parameters, $options));
+        $results = $this->triggerEvent('onUserLogout', array($parameters, $options));   //(stored qwcrm.php and cookie.php methods)
 
         // Check if any of the plugins failed. If none did, success.
         if (!in_array(false, $results, true))
         {
             $options['username'] = $user->get('username');
-            $this->triggerEvent('onUserAfterLogout', array($options));
+            $this->triggerEvent('onUserAfterLogout', array($options));          // (stored qwcrm.php and cookie.php methods)
 
             return true;
         }
 
         // Trigger onUserLoginFailure Event.
-        $this->triggerEvent('onUserLogoutFailure', array($parameters));
+        $this->triggerEvent('onUserLogoutFailure', array($parameters));         // (stored qwcrm.php and cookie.php methods)
 
         return false;
     }
     
-     
+    /**************************************QFamework / App ****************************************************/     
+    /**
+     * Get an application object.
+     *
+     * Returns the global {@link JApplicationCms} object, only creating it if it doesn't already exist.
+     *
+     * @param   mixed   $id      A client identifier or name.
+     * @param   array   $config  An optional associative array of configuration settings.
+     * @param   string  $prefix  Application prefix
+     *
+     * @return  JApplicationCms object
+     *
+     * @see     JApplication
+     * @since   11.1
+     * @throws  Exception
+     */
+    public static function OFFgetApplication($id = null, array $config = array(), $prefix = 'J')
+    {
+        if (!self::$application)
+        {
+            if (!$id)
+            {
+                throw new Exception('Application Instantiation Error', 500);
+            }
+
+            self::$application = JApplicationCms::getInstance($id);
+        }
+
+        return self::$application;
+    }
+    
+    /**
+     * Returns a reference to the global JApplicationCms object, only creating it if it doesn't already exist.
+     *
+     * This method must be invoked as: $web = JApplicationCms::getInstance();
+     *
+     * @param   string  $name  The name (optional) of the JApplicationCms class to instantiate.
+     *
+     * @return  JApplicationCms
+     *
+     * @since   3.2
+     * @throws  RuntimeException
+     */
+    public static function OFFgetInstance($name = null)
+    {
+        if (empty(static::$instances[$name]))
+        {
+            // Create a JApplicationCms object.
+            $classname = 'JApplication' . ucfirst($name);
+
+            if (!class_exists($classname))
+            {
+                throw new RuntimeException(JText::sprintf('JLIB_APPLICATION_ERROR_APPLICATION_LOAD', $name), 500);
+            }
+
+            static::$instances[$name] = new $classname;
+        }
+
+        return static::$instances[$name];
+    }    
+    
+        /**
+     * Returns the global App object, only creating it if it doesn't already exist.
+     *
+     * @param   string                    $store             The type of storage for the session.
+     * @param   array                     $options           An array of configuration options.
+     * @param   QSessionHandlerInterface  $handlerInterface  The session handler
+     *
+     * @return  QSession  The Session object.
+     *
+     * @since   11.1
+     */
+    public static function getApplication()
+    {
+        if (!is_object(self::$instance))
+        {
+            self::$instance = new QFactory();
+        }
+
+        return self::$instance;
+    }   
+    
     
     /*********************************user**********************************************************/
     
@@ -660,7 +807,7 @@ class QFactory
      * @see     QUser
      * @since   11.1
      */
-    public function getUser($id = null)
+    public static function getUser($id = null)
     {
         $instance = self::getSession()->get('user');        
 
@@ -692,7 +839,7 @@ class QFactory
      *
      * @since   3.2
      */
-    public function getUserState($key, $default = null)
+    public static function getUserState($key, $default = null)
     {
         $session = QFactory::getSession();
         $registry = $session->get('registry');
@@ -715,7 +862,7 @@ class QFactory
      *
      * @since   3.2
      */
-    public function setUserState($key, $value)
+    public static function setUserState($key, $value)
     {
         $session = QFactory::getSession();
         $registry = $session->get('registry');
@@ -739,7 +886,7 @@ class QFactory
      *
      * @since   3.2
      *
-    public function getUserStateFromRequest($key, $request, $default = null, $type = 'none')
+    public static function getUserStateFromRequest($key, $request, $default = null, $type = 'none')
     {
         $cur_state = $this->getUserState($key, $default);
         $new_state = $this->input->get($request, null, $type);
@@ -889,7 +1036,7 @@ class QFactory
     }    
 
 
-/**********************************/
+/*************config*********************/
     
     /**
      * Get a configuration object - this allows the use in non object context
@@ -1164,6 +1311,58 @@ class QFactory
         $this->data = $data;
 
         return $this;
-    }    
+    }
+    
+/*******************************this object******************************/
+    
+    
+    /**
+     * Get a user object.
+     *
+     * Returns the global {@link QUser} object, only creating it if it doesn't already exist.
+     *
+     * @param   integer  $id  The user to load - Can be an integer or string - If string, it is converted to ID automatically.
+     *
+     * @return  QUser object
+     *
+     * @see     QUser
+     * @since   11.1
+     */
+    public function getApp()
+    {
+        $instance = self::getInstance();        
+
+        if (is_null($id))
+        {
+            if (!($instance instanceof QFactory))
+            {
+                $instance = self::getInstance();
+            }
+        }
+        // Check if we have a string as the id or if the numeric id is the current instance
+        elseif (!($instance instanceof QFactory))
+        {
+            $instance = QUser::getInstance();
+        }
+
+        return $instance;
+    }
+
+    /*************************************other********************************************/
+    
+    /**
+     * Provides a secure hash based on a seed
+     *
+     * @param   string  $seed  Seed string.
+     *
+     * @return  string  A secure hash
+     *
+     * @since   3.2
+     */
+    public static function getHash($seed)
+    {
+        $conf = QFactory::$config;
+        return md5($conf->get('secretKey') . $seed);
+    } 
     
 }

@@ -344,7 +344,12 @@ class QAuthentication
     public static function authorise($response, $options = array())
     {
         
-        // if user has been blocked or deactivates return the result
+        // this is suppose to cycle through auth plugins that ahve this event and process them
+        // cookie.php and qwcrm.php do not have this
+        
+    
+        
+        // if user has been blocked or deactivates return the result - i can add stuff here
         
         
         // Get plugins in case they haven't been imported already
@@ -353,7 +358,7 @@ class QAuthentication
         //$dispatcher = JEventDispatcher::getInstance();
         //$results = $dispatcher->trigger('onUserAuthorisation', array($response, $options));
         
-        echo 'user is authorised';
+        $results = array();
 
         return $results;
     }
