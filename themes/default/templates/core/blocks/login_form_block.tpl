@@ -1,5 +1,5 @@
 <!-- login_form_block.tpl -->
-<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+{if $captcha}<script src="https://www.google.com/recaptcha/api.js" async defer></script>{/if}
 
 <table width="900" border="0" cellspacing="0" cellpadding="2">
     <tr>

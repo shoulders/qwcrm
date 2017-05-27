@@ -43,7 +43,7 @@ class QSession
     protected $_expire = 900;
 
     /**
-     * The session store object. none(php)/database
+     * The session store object.   none(php)/database
      *
      * @var    QSessionStorage
      * @since  11.1
@@ -88,7 +88,7 @@ class QSession
     private $_input = null;
 
     /**
-     * Internal data store for the session data
+     * Internal data store for the session data  (i.e. those values stored in the cookie or session temp file)
      *
      * @var  \Joomla\Registry\Registry
      */
@@ -118,7 +118,6 @@ class QSession
     public function __construct($store = 'none', array $options = array())
     {   
         // Initialize the data variable, let's avoid fatal error if the session is not corretly started (ie in CLI). - this object is eventually iterated into a json and thenm loaded into the databse 'data'
-        //$this->data = new \Joomla\Registry\Registry;
         $this->data = new Registry;
                 
         // Clear any existing sessions
@@ -133,8 +132,8 @@ class QSession
         $this->storeName = $store; //(php or database)
 
         $this->_setOptions($options);
-
-        $this->_state = 'inactive';
+        
+        
     }
     
     
@@ -187,7 +186,7 @@ class QSession
         
     }
 
-    /**
+    /**                            - this reads the stored 'registry' from the php session file
      * Start a session.
      *
      * Creates a session (or resumes the current one based on the state of the session)
@@ -205,16 +204,16 @@ class QSession
 
         // Ok let's unserialize the whole thing
         // Try loading data from the session into $this->data
-        if (isset($_SESSION['joomla']) && !empty($_SESSION['joomla']))
+        if (isset($_SESSION['qwcrm']) && !empty($_SESSION['qwcrm']))
         {
-            $data = $_SESSION['joomla'];
+            $data = $_SESSION['qwcrm'];
 
             $data = base64_decode($data);
 
             $this->data = unserialize($data);
         }
 
-        /* Temporary, PARTIAL, data migration of existing session data to avoid logout on update from J < 3.4.7
+        // Temporary, PARTIAL, data migration of existing session data to avoid logout on update from J < 3.4.7
         if (isset($_SESSION['__default']) && !empty($_SESSION['__default']))
         {
             $migratableKeys = array(
@@ -246,8 +245,8 @@ class QSession
              * for the administrator/components/com_admin/script.php to detect upgraded sessions and perform a full
              * session cleanup.
              */
-            /*$_SESSION['__default'] = array();
-        }*/
+            $_SESSION['__default'] = array();
+        }
 
         return true;
     }    
@@ -262,9 +261,9 @@ class QSession
      */
     private function doSessionStart()
     {
-        // Register our function as shutdown method, so we can manipulate it
-        register_shutdown_function(array($this, 'save'));
-
+        // Register our function as shutdown method, so we can manipulate it - this will run the save() as the last operation
+        //register_shutdown_function(array($this, 'save'));
+        
         // Disable the cache limiter
         session_cache_limiter('none');
 
@@ -359,7 +358,7 @@ class QSession
         $cookie = session_get_cookie_params();
 
         // Re-register the session store after a session has been destroyed, to avoid PHP bug
-        $this->_store->register();
+        //$this->_store->register();
 
         // Restore config
         session_set_cookie_params($cookie['lifetime'], $cookie['path'], $cookie['domain'], $cookie['secure'], true);
@@ -392,7 +391,7 @@ class QSession
         $this->_state = 'inactive';
     }
     
-        /**
+    /**              this writes 'registry' to the php session file
      * Force the session to be saved and closed.
      *
      * This method must invoke session_write_close() unless this interface is used for a storage object design for unit or functional testing where
@@ -412,7 +411,7 @@ class QSession
             $data    = $this->getData();
 
             // Before storing it, let's serialize and encode the Registry object
-            $_SESSION['joomla'] = base64_encode(serialize($data));
+            $_SESSION['qwcrm'] = base64_encode(serialize($data));
 
             session_write_close();
 
@@ -1238,9 +1237,6 @@ class QSession
         }
     }
   
-
-
-    
 
     
 }

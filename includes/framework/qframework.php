@@ -60,10 +60,10 @@ class QFactory
     //public $session         = null;     // Global session object
     public $db              = null;     // Global database object   
     private $smarty;                    // Global smarty object
-    public $cookiePlg = null;            // Global cookie object
+    public $cookiePlg       = null;            // cookie authentication object
     public $user            = null;     // Global user object (should be functions and logged in user details) - i will use this to store the logged in user (when authenticated)
     public $auth            = null;     // Global authentication object (performs login etc..)
-    public $ACLAuthorise    = false;    // The user has access to this resource
+    //public $ACLAuthorise    = false;    // The user has access to this resource
     //protected $clientId;     // The client identifier (client/employee || site/admin  || client_Id = 0 means frontend access / client_Id = 1 means admin access)
     public $registry = null;   // my temporary registry object replace some config
     
@@ -78,7 +78,7 @@ class QFactory
     //public static $instance = null;
     
     /**
-     * Global configuraiton object
+     * Global configuration object
      *
      * @var    JConfig
      * @since  11.1
@@ -135,7 +135,7 @@ class QFactory
      * @deprecated  4.0  Will be renamed $clientId
      */
     //protected $clientId = null;
-    protected $clientId = '0';
+    protected $clientId = 0;
 
 
     /**
@@ -156,31 +156,16 @@ class QFactory
      */
     protected $data = array();
        
-    public function __construct(Registry $config = null)
+    public function __construct()   // I dont need to pass $config here?
     {       
-                
-        // If a config object is given use it.  - not sure I need this as it is the root
-        if ($config instanceof Registry)
-        {
-            self::$config = $config;           
-        }
-        // Instantiate a new configuration object.
-        else
-        {
-            $conf = self::getConfig();
-        }
-        
-        // load config/registry object for this function
-        //$conf = self::getConfig();
-        //$session = self::$session;
         
         // Populate Global Objects
         $this->db = QFactory::getDbo();
-        global $smarty;                     // I am passing global smarty to keep 1 instance
-       
+        global $smarty;                     // I am passing global smarty to keep 1 instance       
         $this->smarty = $smarty;        
-        $this->cookiePlg   = new PlgAuthenticationCookie;
-        $this->user     = QUser::getInstance();
+        $this->user         = QUser::getInstance();
+        $conf               = QFactory::getConfig();
+        $this->cookiePlg    = new PlgAuthenticationCookie;
         
                 
         /* Load session */ // sort session loading
