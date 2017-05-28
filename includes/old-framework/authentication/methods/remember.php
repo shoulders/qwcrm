@@ -61,14 +61,13 @@ class PlgSystemRemember //extends JPlugin
             }*/
 
             $cookieData = new QCookie;
-            echo $cookieData->get($cookieName);
+            echo $cookieData->get($cookieName);die('remember plugin');
             
             // Check for the cookie
             //if ($this->app->input->cookie->get($cookieName))
             if ($cookieData->get($cookieName))
             {
-                $auth = QFactory::getAuth();
-                $auth->login(array('username' => ''), array('silent' => true));
+                $this->app->login(array('username' => ''), array('silent' => true));
             }
         }
     }

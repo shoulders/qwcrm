@@ -67,7 +67,7 @@ class PlgAuthenticationQwcrm //extends JFramework
             {
                 // Invalid password
                 $response->status        = QAuthentication::STATUS_FAILURE;
-                //$response->error_message = JText::_('JGLOBAL_AUTH_INVALID_PASS');
+                $response->error_message = JText::_('JGLOBAL_AUTH_INVALID_PASS');
             }
         }
         else

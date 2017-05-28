@@ -27,7 +27,7 @@ defined('_QWEXEC') or die;
  * @since       3.5
  * @deprecated  4.0  The CMS' Session classes will be replaced with the `joomla/session` package
  */
-class QCookie extends QSession
+class QCookieSession extends QSession
 {
     /**
      * The input object

@@ -116,7 +116,7 @@ class QAuthentication
      * @return  QAuthentication  The global QAuthentication object
      *
      * @since   11.1
-     *
+     */
     public static function getInstance()
     {
         if (empty(self::$instance))
@@ -125,7 +125,7 @@ class QAuthentication
         }
 
         return self::$instance;
-    }*/
+    }
 
     /**
      * Get the state of the QAuthentication object
@@ -147,7 +147,7 @@ class QAuthentication
      * @return  void
      *
      * @since   11.1
-     *
+     */
     public function attach($observer)
     {
         if (is_array($observer))
@@ -205,7 +205,7 @@ class QAuthentication
 
             $this->methods[$method][] = $key;
         }
-    }*/
+    }
 
     /**
      * Detach an observer object
@@ -215,7 +215,7 @@ class QAuthentication
      * @return  boolean  True if the observer object was detached.
      *
      * @since   11.1
-     *
+     */
     public function detach($observer)
     {
         $retval = false;
@@ -239,7 +239,7 @@ class QAuthentication
         }
 
         return $retval;
-    }*/
+    }
 
     /**
      * Finds out if a set of login credentials are valid by asking all observing
@@ -362,180 +362,4 @@ class QAuthentication
 
         return $results;
     }
-    
-    /**************************************login/authentication****************************************************/
-    
-    
-    /**
-     * Login authentication function.
-     *
-     * Username and encoded password are passed the onUserLogin event which
-     * is responsible for the user validation. A successful validation updates
-     * the current session record with the user's details.
-     *
-     * Username and encoded password are sent as credentials (along with other
-     * possibilities) to each observer (authentication plugin) for user
-     * validation.  Successful validation will update the current session with
-     * the user details.
-     *
-     * @param   array  $credentials  Array('username' => string, 'password' => string)
-     * @param   array  $options      Array('remember' => boolean)
-     *
-     * @return  boolean|JException  True on success, false if failed or silent handling is configured, or a JException object on authentication error.
-     *
-     * @since   3.2
-     */
-    public function login($credentials, $options = array())
-    {
-        // Get the global QAuthentication object.
-        //$authenticate = QAuthentication::getInstance();
-        //$response = $authenticate->authenticate($credentials, $options); // this cycles through the plugins (qwcrm.php cookie.php methods) and collates the responses in a 'reponse class' and then returns it
-        $response = $this->authenticate($credentials, $options); // this cycles through the plugins (qwcrm.php cookie.php methods) and collates the responses in a 'reponse class' and then returns it
-
-        // Import the user plugin group. // not sure what this is for
-        //QPluginHelper::importPlugin('user');
-
-        if ($response->status === QAuthentication::STATUS_SUCCESS)
-        {
-            /*
-             * Validate that the user should be able to login (different to being authenticated).
-             * This permits authentication plugins blocking the user.
-             * This cycle through plugins responses (cookie.php and qwcrm.php) and then executes their login failures routine (if any) or continue
-             */
-            $authorisations = $this->authorise($response, $options);
-            $denied_states = QAuthentication::STATUS_EXPIRED | QAuthentication::STATUS_DENIED;
-
-            foreach ($authorisations as $authorisation)
-            {
-                if ((int) $authorisation->status & $denied_states)
-                {
-                    // Trigger onUserAuthorisationFailure Event.
-                    //$this->triggerEvent('onUserAuthorisationFailure', array((array) $authorisation));
-
-                    // If silent is set, just return false.
-                    if (isset($options['silent']) && $options['silent'])
-                    {
-                        return false;
-                    }
-
-                    // Return the error.
-                    switch ($authorisation->status)
-                    {
-                        case QAuthentication::STATUS_EXPIRED:
-                            return JError::raiseWarning('102002', JText::_('JLIB_LOGIN_EXPIRED'));
-
-                        case QAuthentication::STATUS_DENIED:
-                            return JError::raiseWarning('102003', JText::_('JLIB_LOGIN_DENIED'));
-
-                        default:
-                            return JError::raiseWarning('102004', JText::_('JLIB_LOGIN_AUTHORISATION'));
-                    }
-                }
-            }
-
-            // OK, the credentials are authenticated and user is authorised.  Let's fire the onLogin event. (stored qwcrm.php and cookie.php methods)
-            //$results = $this->triggerEvent('onUserLogin', array((array) $response, $options));
-            $results = array();
-            
-            /*
-             * If any of the user plugins did not successfully complete the login routine
-             * then the whole method fails.
-             *
-             * Any errors raised should be done in the plugin as this provides the ability
-             * to provide much more information about why the routine may have failed.
-             */
-            $user = QFactory::getUser();
-
-            if ($response->type == 'Cookie')
-            {
-                $user->set('cookieLogin', true);
-            }
-
-            if (in_array(false, $results, true) == false)
-            {
-                $options['user'] = $user;
-                $options['responseType'] = $response->type;
-
-                // The user is successfully logged in. Run the after login events  (stored qwcrm.php and cookie.php methods)
-                //$this->triggerEvent('onUserAfterLogin', array($options));
-                
-                // Trigger Cookie operations for onUserAfterLogin
-                $cookiePlg    = new PlgAuthenticationCookie;
-                $cookiePlg->onUserAfterLogin($options);                
-            }
-
-            return true;
-        }
-
-        // Trigger onUserLoginFailure Event.
-        //$this->triggerEvent('onUserLoginFailure', array((array) $response));   (stored qwcrm.php and cookie.php methods)
-
-        // If silent is set, just return false.
-        if (isset($options['silent']) && $options['silent'])
-        {
-            return false;
-        }
-
-        // If status is success, any error will have been raised by the user plugin
-        if ($response->status !== QAuthentication::STATUS_SUCCESS)
-        {
-            //JLog::add($response->error_message, JLog::WARNING, 'jerror');
-        }
-
-        return false;
-    }
-
-    /**
-     * Logout authentication function.
-     *
-     * Passed the current user information to the onUserLogout event and reverts the current
-     * session record back to 'anonymous' parameters.
-     * If any of the authentication plugins did not successfully complete
-     * the logout routine then the whole method fails. Any errors raised
-     * should be done in the plugin as this provides the ability to give
-     * much more information about why the routine may have failed.
-     *
-     * @param   integer  $userid   The user to load - Can be an integer or string - If string, it is converted to ID automatically
-     * @param   array    $options  Array('clientid' => array of client id's)
-     *
-     * @return  boolean  True on success
-     *
-     * @since   3.2
-     */
-    public function logout($userid = null, $options = array())
-    {
-        // Get a user object from the JApplication.
-        $user = QFactory::getUser($userid);
-
-        // Build the credentials array.
-        $parameters['username'] = $user->get('username');
-        $parameters['id'] = $user->get('id');
-
-        // Set clientid in the options array if it hasn't been set already and shared sessions are not enabled.
-        if (!$this->get('shared_session', '0') && !isset($options['clientid']))
-        {
-            $options['clientid'] = $this->getClientId();
-        }
-
-        // Import the user plugin group.
-        QPluginHelper::importPlugin('user');
-
-        // OK, the credentials are built. Lets fire the onLogout event.
-        $results = $this->triggerEvent('onUserLogout', array($parameters, $options));   //(stored qwcrm.php and cookie.php methods)
-
-        // Check if any of the plugins failed. If none did, success.
-        if (!in_array(false, $results, true))
-        {
-            $options['username'] = $user->get('username');
-            $this->triggerEvent('onUserAfterLogout', array($options));          // (stored qwcrm.php and cookie.php methods)
-
-            return true;
-        }
-
-        // Trigger onUserLoginFailure Event.
-        $this->triggerEvent('onUserLogoutFailure', array($parameters));         // (stored qwcrm.php and cookie.php methods)
-
-        return false;
-    }
-    
 }

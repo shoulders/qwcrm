@@ -21,8 +21,7 @@ class QConfig
     private $data;
     
     public function __construct() {
-        
-        //$this->conf = new GConfig;
+        $this->config = new GConfig;
         //return new GConfig;
     }
     
@@ -35,7 +34,7 @@ class QConfig
     {       
         // Get the current configuration.
         
-        $current_config = get_object_vars($this->conf);
+        $current_config = get_object_vars($this->config);
         
         // return all data as an array
         if($key === null) {

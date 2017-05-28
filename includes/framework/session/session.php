@@ -1,29 +1,29 @@
 <?php
-// D:\websites\htdocs\quantumwarp.com\libraries\joomla\session\session.php
-// D:\websites\htdocs\quantumwarp.com\libraries\joomla\session\handler\interface.php
-// D:\websites\htdocs\quantumwarp.com\libraries\joomla\session\handler\native.php
 /**
- * @package     Joomla.Platform
- * @subpackage  Session
- *
- * @copyright   Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE
+ * @package   QWcrm
+ * @author    Jon Brown https://quantumwarp.com/
+ * @copyright Copyright (C) 2016 - 2017 Jon Brown, All rights reserved.
+ * @license   GNU/GPLv3 or later; https://www.gnu.org/licenses/gpl.html
  */
 
 defined('_QWEXEC') or die;
 
-/**
- * Class for managing HTTP sessions
- *
- * Provides access to session-state values as well as session-level
- * settings and lifetime management methods.
- * Based on the standard PHP session handling mechanism it provides
- * more advanced features such as expire timeouts.
- *
- * @since  11.1
- */
-class QSession
-{
+//class QSession extends QFactory {    
+class QSession {     
+
+    protected $db = null;
+    protected $config = null;
+    protected $user = null; 
+    
+   // protected $data;
+    private $_force_ssl;
+    //protected $_security = null;
+    
+    //protected $_expire = 900;    
+    //protected $_state = 'inactive';    
+    //private $started = false;
+    //private $closed = false;
+    
     /**
      * Internal state.
      * One of 'inactive'|'active'|'expired'|'destroyed'|'error'
@@ -64,28 +64,12 @@ class QSession
     protected $_security = array('fix_browser');
 
     /**
-     * QSession instances container.
-     *
-     * @var    QSession
-     * @since  11.3
-     */
-    protected static $instance;
-
-    /**
      * The type of storage for the session.
      *
      * @var    string
      * @since  12.2
      */
     protected $storeName;
-
-    /**
-     * Holds the JInput object
-     *
-     * @var    JInput
-     * @since  12.2
-     */
-    private $_input = null;
 
     /**
      * Internal data store for the session data  (i.e. those values stored in the cookie or session temp file)
@@ -108,38 +92,85 @@ class QSession
      * @var    boolean
      * @since  3.5
      */
-    private $closed = false;
+    private $closed = false;    
     
+ 
+    
+    public function __construct(array $options = null)
+    {
+        $this->db       = QFactory::getDbo();
+        $this->config   = QFactory::getConfig();
+        $this->user     = QFactory::getUser();
+        
+        // sessionname = PHPSESSID - this is used also for the cookie name
+        // sessionID   = q1r4unbg4rnubkmocidcu37qg5 - not given until session started (SID) - this is stored within the sesion cookie
+        // the temp file on the server =   sessionname . sessionID :   PHPSESSIDq1r4unbg4rnubkmocidcu37qg5
+        // data can be stored within it.
+        
+        // If no options supplied used the default settings
+        if($options === null) { $options = $this->buildSessionOptions(); }
+       
+        // set session options passed by array (session name, session id, expiry time, security? + set session.gc_maxlifetime)
+        $this->_setOptions($options);
 
-    /**
-     * Constructor
-     */
-    
-    public function __construct($store = 'none', array $options = array())
-    {   
         // Initialize the data variable, let's avoid fatal error if the session is not corretly started (ie in CLI). - this object is eventually iterated into a json and thenm loaded into the databse 'data'
         $this->data = new Registry;
-                
-        // Clear any existing sessions
-        if ($this->getId())
+
+        // Add the session name to the registry. (site /admin) - The Session name is the name of the cookie/url param stores the session_id. By default when you create a session, a special cookie will be created normally with the name PHPSESSID, the session_id, is the value of that cookie that later identifies you. 
+        if (is_null($this->data->get('session_name')))
+        {
+            $this->data->set('session_name', $this->getName());
+        }      
+      
+        // Clear any existing sessions - Need to destroy any existing sessions started with session.auto_start
+        /*if ($this->getId())
         {
             $this->allClear();
-        }
-
-        // Create handler 
-        //$this->_store = QSessionStorage::getInstance($store, $options);
-
-        $this->storeName = $store; //(php or database)
-
-        $this->_setOptions($options);
+        }*/
         
+        // Remove expired sessions for the session table
+        $this->removeExpiredSessions();
         
+        // Starts the session
+        $this->start();
+        
+        // If the #__session record doesn't exist, add it to the database - after session started otherwise you dont get a session_id();
+        $this->checkSessionDbExists();
     }
     
     
-    /**   Session Operations   **/
-    
-    /**
+/******************* Start Operations *******************/    
+ 
+    /**                             - builds the options array - this can be overriden by supplying the parameters or just moving the function out of session
+     * Build the session options
+     *
+     * @return  session options
+     *
+     */
+   public function buildSessionOptions() {    
+        
+        // Use client name (site/admin) for the session name (this does get hashed to something else in $session _setOptions())
+        $name = QFactory::$siteName;
+
+        // Calculate the session lifetime. - this just changes minutes into seconds and could be removed
+        $expire = ($this->config->get('session_lifetime') ? $this->config->get('session_lifetime') * 60 : 900);
+
+        // Initialization the options for QSession.
+        $options = array(
+            'name'   => $name,
+            'expire' => $expire,
+        );
+        
+        // Set force_ssl for the session and cookie to be SSL
+        if($this->config->get('force_ssl'))    
+        {
+            $options['force_ssl'] = true;
+        }
+       
+        return $options;
+   } 
+   
+    /**                             - does some checks on the session before passing it to the next stage : start()|_start()|doSessionStart()
      * Start a session.
      *
      * @return  void
@@ -179,14 +210,14 @@ class QSession
         /*if ($this->_dispatcher instanceof JEventDispatcher)
         {
             $this->_dispatcher->trigger('onAfterSessionStart');
-        }*/
+        }*/        
         
-        
-        //// onAfterSessionStart
+        //// onAfterSessionStart - inserts a Registry and User object into the data - might
+        $this->afterSessionStart();
         
     }
 
-    /**                            - this reads the stored 'registry' from the php session file
+    /**                            - this reads the stored 'registry' data from the php session file - // DO I NEED THIS - this get the data out of the session file and places it in the registry
      * Start a session.
      *
      * Creates a session (or resumes the current one based on the state of the session)
@@ -213,7 +244,7 @@ class QSession
             $this->data = unserialize($data);
         }
 
-        // Temporary, PARTIAL, data migration of existing session data to avoid logout on update from J < 3.4.7
+        // Temporary, PARTIAL, data migration of existing session data to avoid logout on update from J < 3.4.7        
         if (isset($_SESSION['__default']) && !empty($_SESSION['__default']))
         {
             $migratableKeys = array(
@@ -251,7 +282,7 @@ class QSession
         return true;
     }    
     
-    /**
+    /**                                       - this checks to make sure the session is not already running and then starts it
      * Performs the session start mechanism
      *
      * @return  void
@@ -261,8 +292,8 @@ class QSession
      */
     private function doSessionStart()
     {
-        // Register our function as shutdown method, so we can manipulate it - this will run the save() as the last operation
-        //register_shutdown_function(array($this, 'save'));
+        // Register our function as shutdown method, so we can manipulate it - this will run $this->save() as the last operation
+        register_shutdown_function(array($this, 'save'));
         
         // Disable the cache limiter
         session_cache_limiter('none');
@@ -292,11 +323,59 @@ class QSession
         // Mark ourselves as started
         $this->started = true;
     }
-   
     
    
-    
-    
+     /**
+     * Checks the user session.
+     *
+     * If the session record doesn't exist, initialise it.
+     * If session is new, create session variables
+     *
+     * @return  void
+     *
+     * @since   3.2
+     * @throws  RuntimeException
+     */
+    public function checkSessionDbExists()
+    {          
+        $sql = "SELECT session_id FROM ".PRFX."session WHERE session_id = " . $this->db->qstr( $this->getId() );        
+        $rs = $this->db->Execute($sql);
+        $exists = $rs->RecordCount();
+                
+        // If the session record doesn't exist initialise it.
+        if (!$exists)
+        {
+            $time = $this->isNew() ? time() : $this->data->get('session.timer.start');
+
+            // Set up the record to insert            
+            $record['session_id']  = $this->getId()  ;
+            $record['guest']       = (int) $this->user->guest;
+            $record['time']        = (int) $time;
+            $record['userid']      = (int) $this->user->id;
+            $record['username']    = $this->user->username;                 
+           
+            // if login not shared between site and admin (joomla thing)
+            if (!$this->config->get('shared_session', '0'))
+            {
+                $record['client_id'] = (int) QFactory::getClientId();
+            }            
+
+            // If the insert failed, exit the application.
+            try
+            {
+                $this->db->AutoExecute(PRFX.'session', $record, 'INSERT');                
+            }
+            catch (RuntimeException $e)
+            {
+                throw new RuntimeException(JText::_('JERROR_SESSION_STARTUP'), $e->getCode(), $e);
+            }
+        }
+    } 
+       
+      
+   
+/******************* State Operations *******************/      
+
     /**
      * Restart an expired or locked session.
      *
@@ -339,7 +418,7 @@ class QSession
         return true;
     }
 
-    /**
+    /**                                                                     - I dont thing this is used anywhere
      * Create a new session and copy variables from the old one
      *
      * @return  boolean $result true on success
@@ -371,6 +450,49 @@ class QSession
     }
     
     /**
+     * Regenerates ID that represents this storage.
+     *
+     * Note regenerate+destroy should not clear the session data in memory only delete the session data from persistent storage.
+     *
+     * @param   boolean  $destroy   Destroy session when regenerating?
+     * @param   integer  $lifetime  Sets the cookie lifetime for the session cookie. A null value will leave the system settings unchanged,
+     *                              0 sets the cookie to expire with browser session. Time is in seconds, and is not a Unix timestamp.
+     *
+     * @return  boolean  True if session regenerated, false if error
+     *
+     * @since   3.5
+     */
+    public function regenerate($destroy = false, $lifetime = null)
+    {
+        if (null !== $lifetime)
+        {
+            ini_set('session.cookie_lifetime', $lifetime);
+        }
+
+        $return = session_regenerate_id($destroy);
+
+        // Workaround for https://bugs.php.net/bug.php?id=61470 as suggested by David Grudl
+        session_write_close();
+        $this->closed = true;
+
+        if (isset($_SESSION))
+        {
+            $backup = $_SESSION;
+            $this->doSessionStart();
+            $_SESSION = $backup;
+        }
+        else
+        {
+            $this->doSessionStart();
+        }
+
+        return $return;
+    }
+
+    
+/******************* Close Operations *******************/    
+  
+    /**
      * Writes session data and ends session
      *
      * Session data is usually stored after your script terminated without the need
@@ -391,7 +513,7 @@ class QSession
         $this->_state = 'inactive';
     }
     
-    /**              this writes 'registry' to the php session file
+    /**                                                                -  this writes 'registry' to the php session file
      * Force the session to be saved and closed.
      *
      * This method must invoke session_write_close() unless this interface is used for a storage object design for unit or functional testing where
@@ -419,8 +541,10 @@ class QSession
             $this->started = false;
         }
     }
+
+/******************* Delete Operations *******************/    
     
-    /** session.php
+    /** session.php                                                       - not sure this is used anywhere
      * 
      * Unset data from the session store
      *
@@ -449,9 +573,9 @@ class QSession
         }
 
         return $this->data->set($namespace . '.' . $name, null);
-    }
+    }    
     
-    /**
+       /**
      * Frees all session variables and destroys all data registered to a session
      *
      * This method resets the data pointer and destroys all of the data associated
@@ -483,7 +607,7 @@ class QSession
         return true;
     }
 
-    /** native.php
+    /** native.php                  - is this needed check logic
      * 
      * Clear all session data in memory.
      *
@@ -504,114 +628,12 @@ class QSession
 
         $this->closed  = true;
         $this->started = false;
-    }    
-    
+    }   
 
-    /**   GET    **/
-    
-    
-    /**
-     * Get data from the session store
-     *
-     * @param   string  $name       Name of a variable
-     * @param   mixed   $default    Default value of a variable if not set
-     * @param   string  $namespace  Namespace to use, default to 'default'
-     *
-     * @return  mixed  Value of a variable
-     *
-     * @since   11.1
-     */
-    public function get($name, $default = null, $namespace = 'default')
-    {
-        if (!$this->isActive())
-        {
-            $this->start();
-        }
+/******************* Token Operations *******************/
 
-        // Add prefix to namespace to avoid collisions
-        $namespace = '__' . $namespace;
-
-        if ($this->getState() === 'destroyed')
-        {
-            // @TODO :: generated error here
-            $error = null;
-
-            return $error;
-        }
-
-        return $this->data->get($namespace . '.' . $name, $default);
-    }    
-
-    /**
-     * Magic method to get read-only access to properties.
-     *
-     * @param   string  $name  Name of property to retrieve
-     *
-     * @return  mixed   The value of the property
-     *
-     * @since   12.2
-     */
-    public function __get($name)
-    {
-        if ($name === 'storeName')
-        {
-            return $this->$name;
-        }
-
-        if ($name === 'state' || $name === 'expire')
-        {
-            $property = '_' . $name;
-
-            return $this->$property;
-        }
-    }
-
-    /**
-     * Returns the global Session object, only creating it if it doesn't already exist.
-     *
-     * @param   string                    $store             The type of storage for the session.
-     * @param   array                     $options           An array of configuration options.
-     * @param   QSessionHandlerInterface  $handlerInterface  The session handler
-     *
-     * @return  QSession  The Session object.
-     *
-     * @since   11.1
-     */
-    public static function getInstance($store, $options)
-    {
-        if (!is_object(self::$instance))
-        {
-            self::$instance = new QSession($store, $options);
-        }
-
-        return self::$instance;
-    }
-
-    /**
-     * Get current state of session
-     *
-     * @return  string  The session state
-     *
-     * @since   11.1
-     */
-    public function getState()
-    {
-        return $this->_state;
-    }
-
-    /**
-     * Get expiration time in seconds
-     *
-     * @return  integer  The session expiration time in seconds
-     *
-     * @since   11.1
-     */
-    public function getExpire()
-    {
-        return $this->_expire;
-    }
-
-    /**
+     
+   /**
      * Get a session token, if a token isn't set yet one will be generated.
      *
      * Tokens are used to secure forms from spamming attacks. Once a token
@@ -638,8 +660,6 @@ class QSession
         return $token;
     }
 
-
-
     /**
      * Method to determine a hash for anti-spoofing variable names
      *
@@ -655,313 +675,9 @@ class QSession
         $session = QFactory::getSession();
 
         return QFactory::getHash($user->get('id', 0) . $session->getToken($forceNew));
-    }
+    } 
 
-    /**
-     * Retrieve an external iterator.
-     *
-     * @return  ArrayIterator
-     *
-     * @since   12.2
-     */
-    public function getIterator()
-    {
-        return new ArrayIterator($this->getData());
-    }
 
-    /**
-     * Get session name
-     *
-     * @return  string  The session name
-     *
-     * @since   11.1
-     */
-    public function getName()
-    {
-        if ($this->getState() === 'destroyed')
-        {
-            // @TODO : raise error
-            return;
-        }
-
-        return session_name();
-    }
-
-    /**
-     * Get session id
-     *
-     * @return  string  The session name
-     *
-     * @since   11.1
-     */
-    public function getId()
-    {
-        if ($this->getState() === 'destroyed')
-        {
-            // @TODO : raise error
-            return;
-        }
-
-        return session_id();
-    }
-
-    /**
-     * Returns a clone of the internal data pointer
-     *
-     * @return  Registry
-     */
-    public function getData()
-    {
-        return $this->data;
-    }
-
-    /**
-     * Get the session handlers
-     *
-     * @return  array  An array of available session handlers
-     *
-     * @since   11.1
-     *
-    public static function getStores()
-    {
-        $connectors = array();
-
-        // Get an iterator and loop trough the driver classes.
-        $iterator = new DirectoryIterator(__DIR__ . '/storage');
-
-        /* @type  $file  DirectoryIterator *
-        foreach ($iterator as $file)
-        {
-            $fileName = $file->getFilename();
-
-            // Only load for php files.
-            if (!$file->isFile() || $file->getExtension() != 'php')
-            {
-                continue;
-            }
-
-            // Derive the class name from the type.
-            $class = str_ireplace('.php', '', 'SessionStorage' . ucfirst(trim($fileName)));
-
-            // If the class doesn't exist we have nothing left to do but look at the next type. We did our best.
-            if (!class_exists($class))
-            {
-                continue;
-            }
-
-            // Sweet!  Our class exists, so now we just need to know if it passes its test method.
-            if ($class::isSupported())
-            {
-                // Connector names should not have file extensions.
-                $connectors[] = str_ireplace('.php', '', $fileName);
-            }
-        }
-
-        return $connectors;
-    }*/
-    
-    
-    /**   SET    **/
-    
-    
-    /**
-     * Set data into the session store.
-     *
-     * @param   string  $name       Name of a variable.
-     * @param   mixed   $value      Value of a variable.
-     * @param   string  $namespace  Namespace to use, default to 'default'.
-     *
-     * @return  mixed  Old value of a variable.
-     *
-     * @since   11.1
-     */
-    public function set($name, $value = null, $namespace = 'default')
-    {
-        if (!$this->isActive())
-        {
-            $this->start();
-        }
-
-        // Add prefix to namespace to avoid collisions
-        $namespace = '__' . $namespace;
-
-        if ($this->getState() !== 'active')
-        {
-            // @TODO :: generated error here
-            return;
-        }
-
-        $prev = $this->data->get($namespace . '.' . $name, null);
-        $this->data->set($namespace . '.' . $name, $value);
-
-        return $prev;        
-    }
-
-    /**
-     * Sets the session ID
-     *
-     * @param   string  $id  The session ID
-     *
-     * @return  void
-     *
-     * @since   3.5
-     * @throws  LogicException
-     */
-    public function setId($id)
-    {
-        if ($this->isStarted())
-        {
-            throw new LogicException('Cannot change the ID of an active session');
-        }
-
-        session_id($id);
-    }    
-
-    /**
-     * Sets the session name
-     *
-     * @param   string  $name  The name of the session
-     *
-     * @return  void
-     *
-     * @since   3.5
-     * @throws  LogicException
-     */
-    public function setName($name)
-    {
-        if ($this->isStarted())
-        {
-            throw new LogicException('Cannot change the name of an active session');
-        }
-
-        session_name($name);
-    }
-    
-    /**
-     * Set counter of session usage
-     *
-     * @return  boolean  True on success
-     *
-     * @since   11.1
-     */
-    protected function _setCounter()
-    {
-        $counter = $this->get('session.counter', 0);
-        ++$counter;
-
-        $this->set('session.counter', $counter);
-
-        return true;
-    }
-
-    /**
-     * Set the session timers
-     *
-     * @return  boolean  True on success
-     *
-     * @since   11.1
-     */
-    protected function _setTimers()
-    {
-        if (!$this->has('session.timer.start'))
-        {
-            $start = time();
-
-            $this->set('session.timer.start', $start);
-            $this->set('session.timer.last', $start);
-            $this->set('session.timer.now', $start);
-        }
-
-        $this->set('session.timer.last', $this->get('session.timer.now'));
-        $this->set('session.timer.now', time());
-
-        return true;
-    }
-
-    /**
-     * Set additional session options
-     *
-     * @param   array  $options  List of parameter
-     *
-     * @return  boolean  True on success
-     *
-     * @since   11.1
-     */
-    protected function _setOptions(array $options)
-    {
-        // Set name
-        if (isset($options['name']))
-        {
-            $this->setName(md5($options['name']));
-        }
-
-        // Set id
-        if (isset($options['id']))
-        {
-            $this->setId($options['id']);
-        }
-
-        // Set expire time
-        if (isset($options['expire']))
-        {
-            $this->_expire = $options['expire'];
-        }
-
-        // Get security options
-        if (isset($options['security']))
-        {
-            $this->_security = explode(',', $options['security']);
-        }
-
-        // Sync the session maxlifetime
-        ini_set('session.gc_maxlifetime', $this->_expire);
-
-        return true;
-    }    
-    
-    /**
-     * Set the session handler
-     *
-     * @param   QSessionHandlerInterface  $handler  The session handler
-     *
-     * @return  void
-     
-    public function setHandler(QSessionHandlerInterface $handler)
-    {
-        $this->_handler = $handler;
-    }*/
-    
-    /**   checks   **/
-    
-        /**
-     * Check whether data exists in the session store
-     *
-     * @param   string  $name       Name of variable
-     * @param   string  $namespace  Namespace to use, default to 'default'
-     *
-     * @return  boolean  True if the variable exists
-     *
-     * @since   11.1
-     */
-    public function has($name, $namespace = 'default')
-    {
-        if (!$this->isActive())
-        {
-            $this->start();
-        }
-
-        // Add prefix to namespace to avoid collisions.
-        $namespace = '__' . $namespace;
-
-        if ($this->getState() !== 'active')
-        {
-            // @TODO :: generated error here
-            return;
-        }
-
-        return !is_null($this->data->get($namespace . '.' . $name, null));
-    }
-    
     /**
      * Checks for a form token in the request.
      *
@@ -1024,59 +740,6 @@ class QSession
         return true;
     }
     
-
-    /**
-     * Shorthand to check if the session is active
-     *
-     * @return  boolean
-     *
-     * @since   12.2
-     */
-    public function isActive()
-    {
-        return (bool) ($this->getState() == 'active');
-    }
-
-    /**
-     * Check whether this session is currently created
-     *
-     * @return  boolean  True on success.
-     *
-     * @since   11.1
-     */
-    public function isNew()
-    {
-        return (bool) ($this->get('session.counter') === 1);
-    }
-
-    /**
-     * Check whether this session is currently created
-     *
-     * @param   JInput            $input       JInput object for the session to use.
-     * @param   JEventDispatcher  $dispatcher  Dispatcher object for the session to use.
-     *
-     * @return  void.
-     *
-     * @since   12.2
-     
-    public function initialise(JInput $input, JEventDispatcher $dispatcher = null)
-    {
-        // With the introduction of the handler class this variable is no longer required
-        // however we keep setting it for b/c
-        $this->_input      = $input;
-
-        // Nasty workaround to deal in a b/c way with JInput being required in the 3.4+ Handler class.
-        if ($this->_handler instanceof QSessionHandlerJoomla)
-        {
-            $this->_handler->input = $input;
-        }
-
-        $this->_dispatcher = $dispatcher;
-    }*/
-
-
-
-
     /**
      * Create a token-string
      *
@@ -1090,9 +753,339 @@ class QSession
     {
         return JUserHelper::genRandomPassword($length);
     }
+    
+/******************* Get Operations *******************/
 
+    /**
+     * Get data from the session store
+     *
+     * @param   string  $name       Name of a variable
+     * @param   mixed   $default    Default value of a variable if not set
+     * @param   string  $namespace  Namespace to use, default to 'default'
+     *
+     * @return  mixed  Value of a variable
+     *
+     * @since   11.1
+     */
+    public function get($name, $default = null, $namespace = 'default')
+    {
+        if (!$this->isActive())
+        {
+            $this->start();
+        }
 
+        // Add prefix to namespace to avoid collisions
+        $namespace = '__' . $namespace;
 
+        if ($this->getState() === 'destroyed')
+        {
+            // @TODO :: generated error here
+            $error = null;
+
+            return $error;
+        }
+
+        return $this->data->get($namespace . '.' . $name, $default);
+    }    
+
+    /**
+     * Magic method to get read-only access to properties.
+     *
+     * @param   string  $name  Name of property to retrieve
+     *
+     * @return  mixed   The value of the property
+     *
+     * @since   12.2
+     */
+    public function __get($name)
+    {
+        if ($name === 'storeName')
+        {
+            return $this->$name;
+        }
+
+        if ($name === 'state' || $name === 'expire')
+        {
+            $property = '_' . $name;
+
+            return $this->$property;
+        }
+    }
+
+    /**
+     * Returns a clone of the internal data pointer
+     *
+     * @return  Registry
+     */
+    public function getData()
+    {
+        return $this->data;
+    }    
+    
+    /**
+     * Get session name
+     *
+     * @return  string  The session name
+     *
+     * @since   11.1
+     */
+    public function getName()
+    {
+        if ($this->getState() === 'destroyed')
+        {
+            // @TODO : raise error
+            return;
+        }
+
+        return session_name();
+    }
+
+    /**
+     * Get session id
+     *
+     * @return  string  The session name
+     *
+     * @since   11.1
+     */
+    public function getId()
+    {
+        if ($this->getState() === 'destroyed')
+        {
+            // @TODO : raise error
+            return;
+        }
+
+        return session_id();
+    }  
+  
+    /**
+     * Get current state of session
+     *
+     * @return  string  The session state
+     *
+     * @since   11.1
+     */
+    public function getState()
+    {
+        return $this->_state;
+    }
+
+    /**
+     * Get expiration time in seconds
+     *
+     * @return  integer  The session expiration time in seconds
+     *
+     * @since   11.1
+     */
+    public function getExpire()
+    {
+        return $this->_expire;
+    }       
+   
+    
+/******************* Set Operations *******************/    
+    
+    /**
+     * Set data into the session store.
+     *
+     * @param   string  $name       Name of a variable.
+     * @param   mixed   $value      Value of a variable.
+     * @param   string  $namespace  Namespace to use, default to 'default'.
+     *
+     * @return  mixed  Old value of a variable.
+     *
+     * @since   11.1
+     */
+    public function set($name, $value = null, $namespace = 'default')
+    {
+        if (!$this->isActive())
+        {
+            $this->start();
+        }
+
+        // Add prefix to namespace to avoid collisions
+        $namespace = '__' . $namespace;
+
+        if ($this->getState() !== 'active')
+        {
+            // @TODO :: generated error here
+            return;
+        }
+
+        $prev = $this->data->get($namespace . '.' . $name, null);
+        $this->data->set($namespace . '.' . $name, $value);
+
+        return $prev;        
+    } 
+    
+    
+    /**
+     * Sets the session ID
+     *
+     * @param   string  $id  The session ID
+     *
+     * @return  void
+     *
+     * @since   3.5
+     * @throws  LogicException
+     */
+    public function setId($id)
+    {
+        if ($this->isStarted())
+        {
+            throw new LogicException('Cannot change the ID of an active session');
+        }
+
+        session_id($id);
+    }    
+
+    /**
+     * Sets the session name
+     *
+     * @param   string  $name  The name of the session
+     *
+     * @return  void
+     *
+     * @since   3.5
+     * @throws  LogicException
+     */
+    public function setName($name)
+    {
+        if ($this->isStarted())
+        {
+            throw new LogicException('Cannot change the name of an active session');
+        }
+
+        session_name($name);
+    }      
+    
+    /**
+     * Set additional session options
+     *
+     * @param   array  $options  List of parameter
+     *
+     * @return  boolean  True on success
+     *
+     * @since   11.1
+     */
+    protected function _setOptions(array $options)
+    {
+        //print_r($options);
+        
+        // Set name
+        if (isset($options['name']))
+        {        
+            // Generate a 'random'/hashed session name
+            //$this->setName(md5(md5($options['name'])));
+            
+            // Generate a 'random' session name (md5 hash) using a seed/secret key            
+            $this->setName(md5(QFactory::getHash($options['name'])));            
+            
+        }
+
+        // Set id
+        if (isset($options['id']))
+        {
+            $this->setId($options['id']);
+        }
+
+        // Set expire time
+        if (isset($options['expire']))
+        {
+            $this->_expire = $options['expire'];
+        }
+        
+        // Set Force SSL
+        if (isset($options['force_ssl']))
+        {
+            $this->_force_ssl = $options['force_ssl'];
+        }        
+
+        /* Get security options
+        if (isset($options['security']))
+        {
+            $this->_security = explode(',', $options['security']);
+        }*/
+
+        // Sync the session maxlifetime
+        ini_set('session.gc_maxlifetime', $this->_expire);
+
+        return true;
+    } 
+
+    
+    /**
+     * Set counter of session usage
+     *
+     * @return  boolean  True on success
+     *
+     * @since   11.1
+     */
+    protected function _setCounter()
+    {
+        $counter = $this->get('session.counter', 0);
+        ++$counter;
+
+        $this->set('session.counter', $counter);
+
+        return true;
+    }
+
+    /**
+     * Set the session timers
+     *
+     * @return  boolean  True on success
+     *
+     * @since   11.1
+     */
+    protected function _setTimers()
+    {
+        if (!$this->has('session.timer.start'))
+        {
+            $start = time();
+
+            $this->set('session.timer.start', $start);
+            $this->set('session.timer.last', $start);
+            $this->set('session.timer.now', $start);
+        }
+
+        $this->set('session.timer.last', $this->get('session.timer.now'));
+        $this->set('session.timer.now', time());
+
+        return true;
+    }
+
+/******************* Other Checks *******************/      
+    
+    /**
+     * Check whether data exists in the session store
+     *
+     * @param   string  $name       Name of variable
+     * @param   string  $namespace  Namespace to use, default to 'default'
+     *
+     * @return  boolean  True if the variable exists
+     *
+     * @since   11.1
+     */
+    public function has($name, $namespace = 'default')
+    {
+        if (!$this->isActive())
+        {
+            $this->start();
+        }
+
+        // Add prefix to namespace to avoid collisions.
+        $namespace = '__' . $namespace;
+
+        if ($this->getState() !== 'active')
+        {
+            // @TODO :: generated error here
+            return;
+        }
+
+        return !is_null($this->data->get($namespace . '.' . $name, null));
+    }
+    
     /**
      * Do some checks for security reason
      *
@@ -1162,7 +1155,34 @@ class QSession
         }
 
         return true;
+    } 
+    
+/******************* State is Checks *******************/      
+
+   
+    /**
+     * Shorthand to check if the session is active
+     *
+     * @return  boolean
+     *
+     * @since   12.2
+     */
+    public function isActive()
+    {
+        return (bool) ($this->getState() == 'active');
     }
+
+    /**
+     * Check whether this session is currently created
+     *
+     * @return  boolean  True on success.
+     *
+     * @since   11.1
+     */
+    public function isNew()
+    {
+        return (bool) ($this->data->get('session.counter') === 1);
+    }    
     
     
     /**
@@ -1175,50 +1195,32 @@ class QSession
     public function isStarted()
     {
         return $this->started;
-    }    
+    }       
     
-    /**
-     * Regenerates ID that represents this storage.
-     *
-     * Note regenerate+destroy should not clear the session data in memory only delete the session data from persistent storage.
-     *
-     * @param   boolean  $destroy   Destroy session when regenerating?
-     * @param   integer  $lifetime  Sets the cookie lifetime for the session cookie. A null value will leave the system settings unchanged,
-     *                              0 sets the cookie to expire with browser session. Time is in seconds, and is not a Unix timestamp.
-     *
-     * @return  boolean  True if session regenerated, false if error
-     *
-     * @since   3.5
-     */
-    public function regenerate($destroy = false, $lifetime = null)
+
+
+/******************* Misc *******************/
+    
+    /*
+    * Check the session table for stale entries
+    * 
+    */
+    public function removeExpiredSessions()
     {
-        if (null !== $lifetime)
-        {
-            ini_set('session.cookie_lifetime', $lifetime);
-        }
+      // Get the current Time
+       $time = time();
 
-        $return = session_regenerate_id($destroy);
-
-        // Workaround for https://bugs.php.net/bug.php?id=61470 as suggested by David Grudl
-        session_write_close();
-        $this->closed = true;
-
-        if (isset($_SESSION))
-        {
-            $backup = $_SESSION;
-            $this->doSessionStart();
-            $_SESSION = $backup;
-        }
-        else
-        {
-            $this->doSessionStart();
-        }
-
-        return $return;
+       // Remove expired sessions from the database.
+       if ($time % 2)
+       {
+           // The modulus '% 2' introduces a little entropy, making the flushing less accurate
+           // by firing the query less than half the time.
+           $sql = "DELETE FROM ".PRFX."session WHERE time < " . ($time - $this->getExpire());            
+           $this->db->Execute($sql);
+       }  
     }
-
-
-
+ 
+ 
     /**
      * After the session has been started we need to populate it with some default values.
      *
@@ -1228,15 +1230,13 @@ class QSession
      */
     public function afterSessionStart()
     {
-        $session = QFactory::getSession();
+        //$session = QFactory::getSession();
 
-        if ($session->isNew())
+        if ($this->isNew())
         {
-            $session->set('registry', new Registry);
-            $session->set('user', new JUser);
+            $this->data->set('registry', new Registry);
+            $this->data->set('user', new QUser);
         }
     }
-  
-
-    
+ 
 }

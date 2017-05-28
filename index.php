@@ -161,6 +161,14 @@ $app = new QFactory();
 // sort where I load this library from (Do i want to load it on every page load? maybe build into my new framework)
 require(LIBRARIES_DIR.'recaptchalib.php');
 
+// Get variables in correct format for login()
+$credentials['username'] = $_POST['login_usr'];
+$credentials['password'] = $_POST['login_pwd'];
+// This is inplace of the 'remember me' check box
+if(isset($_POST['remember']) && $_POST['remember'] == 1) {
+    $options['remember'] = 1;
+}
+
 // If captcha is enabled
 if($GConfig->captcha && !isset($_SESSION['login_token']) && $_POST['action'] === 'login') {
     
@@ -169,22 +177,21 @@ if($GConfig->captcha && !isset($_SESSION['login_token']) && $_POST['action'] ===
     // Get response from Google and if successfull authenticate
     $response = $reCaptcha->verifyResponse($_SERVER['REMOTE_ADDR'], $_POST['g-recaptcha-response']);    
     if ($response != null && $response->success) {
-        $auth->login();
+        $app->login();
     } else {        
         force_page('core', 'login', 'warning_msg=Google ReCaptcha Verification Failed');
         exit;
     }  
 
 // Normal login with no captcha
-} elseif (!isset($_SESSION['login_token']) && $_POST['action'] === 'login') {
-    //$app->login();
-        
-    $credentials['username'] = $_POST['login_usr'];
-    $credentials['password'] = $_POST['login_pwd'];
-    $options['remember'] = 1;
+} elseif (!isset($_SESSION['login_token']) && $_POST['action'] === 'login') {    
     $app->login($credentials, $options);
 }
 
+// remove credentials
+//unset($credentials);
+
+//print_r($app);
 
 /* Assign Logged in User's Variables to PHP and Smarty */
 
