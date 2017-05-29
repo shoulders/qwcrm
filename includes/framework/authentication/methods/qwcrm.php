@@ -56,7 +56,9 @@ class PlgAuthenticationQwcrm //extends JFramework
             if ($match === true)
             {
                 // Bring this in line with the rest of the system
-                $user               = QUser::getInstance($result['EMPLOYEE_ID']);
+                //$user               = QUser::getInstance($result['EMPLOYEE_ID']);
+                $user = QFactory::getUser($result['EMPLOYEE_ID']);
+                
                 $response->email    = $user->email;
                 $response->fullname = $user->name;
 

@@ -158,19 +158,18 @@ $app = new QFactory();
 #           Authentication                     #
 ################################################
 
+// $user->login_token cannot be used for login validation routines below
+
 // sort where I load this library from (Do i want to load it on every page load? maybe build into my new framework)
 require(LIBRARIES_DIR.'recaptchalib.php');
 
 // Get variables in correct format for login()
-$credentials['username'] = $_POST['login_usr'];
-$credentials['password'] = $_POST['login_pwd'];
-// This is inplace of the 'remember me' check box
-if(isset($_POST['remember']) && $_POST['remember'] == 1) {
-    $options['remember'] = 1;
-}
+if(isset($_POST['login_usr'])) { $credentials['username'] = $_POST['login_usr']; }
+if(isset($_POST['login_pwd'])) { $credentials['password'] = $_POST['login_pwd']; }
+if(isset($_POST['remember'])) { $options['remember'] = $_POST['remember']; }
 
 // If captcha is enabled
-if($GConfig->captcha && !isset($_SESSION['login_token']) && $_POST['action'] === 'login') {
+if($GConfig->captcha && !isset($user->login_token) && $_POST['action'] === 'login') {
     
     $reCaptcha = new ReCaptcha($recaptcha_secret_key);
     
@@ -184,33 +183,41 @@ if($GConfig->captcha && !isset($_SESSION['login_token']) && $_POST['action'] ===
     }  
 
 // Normal login with no captcha
-} elseif (!isset($_SESSION['login_token']) && $_POST['action'] === 'login') {    
+} elseif (!isset($user->login_token) && $_POST['action'] === 'login') {    
     $app->login($credentials, $options);
 }
 
 // remove credentials
-//unset($credentials);
+unset($credentials);
 
-//print_r($app);
+
 
 /* Assign Logged in User's Variables to PHP and Smarty */
 
-$login_id   = $_SESSION['login_id'];
-$login_usr  = $_SESSION['login_usr'];
+$user = QFactory::getUser();
+
+$login_id   = $user->login_id;
+$login_usr  = $user->login_usr;
 
 // If there is no account type details, set to Public (This can caus elooping - invvestigate)
-if(!isset($_SESSION['login_account_type_id'])){
+if(!isset($user->login_account_type_id)){
     $login_account_type_id = 9;
 } else {
-    $login_account_type_id = $_SESSION['login_account_type_id'];   
+    $login_account_type_id = $user->login_account_type_id;   
 }
 
-$login_display_name = $_SESSION['login_display_name'];
+$login_display_name = $user->login_display_name;
 
 $smarty->assign('login_id',                 $login_id               );
 $smarty->assign('login_usr',                $login_usr              );
 $smarty->assign('login_account_type_id',    $login_account_type_id  );
 $smarty->assign('login_display_name',       $login_display_name     );
+
+// unset the user object as no longer needed?
+//unset($user);
+
+
+
 
 // If logout is set, then log user off
 if (isset($_GET['action']) && $_GET['action'] == 'logout') {    
@@ -343,7 +350,7 @@ if($GConfig->maintenance == true){
     $VAR['theme'] = 'off';   
     
     // If user logged in, then log user off    
-    if(isset($_SESSION['login_token'])) {    
+    if(isset($user->login_token)) {    
         $app->logout();
     }
     
@@ -375,7 +382,7 @@ elseif(isset($VAR['page']) && $VAR['page'] != ''){
 // if no page specified load a default landing page   
 } else {        
 
-    if(isset($_SESSION['login_token'])){
+    if(isset($user->login_token)){
         // If logged in
         $page_display_controller    = 'modules'.SEP.'core'.SEP.'home.php';
         $module                     = 'core';
@@ -418,7 +425,7 @@ if(check_acl($db, $login_account_type_id, $module, $page_tpl)){
     }
 
     // Fetch Header Legacy Template Code and Menu Block - Customers, Guests and Public users will not see the menu
-    if($VAR['theme'] != 'off' && isset($_SESSION['login_token']) && $login_account_type_id != 7 && $login_account_type_id != 8 && $login_account_type_id != 9){       
+    if($VAR['theme'] != 'off' && isset($user->login_token) && $login_account_type_id != 7 && $login_account_type_id != 8 && $login_account_type_id != 9){       
         $BuildPage .= $smarty->fetch('core'.SEP.'blocks'.SEP.'theme_header_legacy_supplement_block.tpl');
         require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_menu_block.php');        
     }    
@@ -427,7 +434,7 @@ if(check_acl($db, $login_account_type_id, $module, $page_tpl)){
     require($page_display_controller);    
 
     // Fetch Footer Legacy Template code Block (closes content table)
-    if($VAR['theme'] != 'off' && isset($_SESSION['login_token']) && $login_account_type_id != 7 && $login_account_type_id != 8 && $login_account_type_id != 9){
+    if($VAR['theme'] != 'off' && isset($user->login_token) && $login_account_type_id != 7 && $login_account_type_id != 8 && $login_account_type_id != 9){
         $BuildPage .= $smarty->fetch('core'.SEP.'blocks'.SEP.'theme_footer_legacy_supplement_block.tpl');             
     }
 

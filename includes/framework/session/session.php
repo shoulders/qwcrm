@@ -142,28 +142,22 @@ class QSession {
      * @return  session options
      *
      */
-   public function buildSessionOptions() {    
-        
-        
-        
+   public function buildSessionOptions() {        
         
         // Add the session name to the registry. (site /admin)
         // The Session name is the name of the cookie/url param that stores the session_id.
         
-        // Get the session name from the config, if there is not set use the default session name
+        // Set the session default name. - Get the session name from the config, if there is none set use the default session name and set it
         if (is_null($this->config->get('session_name')))
         {
-            $this->set('session_name', $this->getName());
-        }   
-        // Generate a session name.
-	$name = md5($this->get('secretKey') . $this->get('session_name', get_class($this)));
+            $this->config->set('session_name', $this->getName());
+        }
         
-        
+        // Generate a session name. - I have added $sitename to give different session names for site/admin (not on orginally)
+	$name = md5($this->config->get('secretKey') . $this->config->get('session_name') . QFactory::$siteName);        
 
-        // Use client name (site/admin) for the session name (this does get hashed to something else in $session _setOptions())
-        $name = QFactory::$siteName;
-        
-        
+        /* Use client name (site/admin) for the session name (this does get hashed to something else in $session _setOptions())
+        $name = QFactory::$siteName;*/        
 
         // Calculate the session lifetime. - this just changes minutes into seconds and could be removed
         $lifetime = ($this->config->get('session_lifetime') ? $this->config->get('session_lifetime') * 60 : 900);
@@ -996,10 +990,10 @@ class QSession {
         if (isset($options['name']))
         {        
             // Generate a 'random'/hashed session name
-            //$this->setName(md5(md5($options['name'])));
+            $this->setName(md5($options['name']));
             
             // Generate a 'random' session name (md5 hash) using a seed/secret key            
-            $this->setName(md5(QFactory::getHash($options['name'])));            
+            //$this->setName(md5(QFactory::getHash($options['name'])));            
             
         }
 

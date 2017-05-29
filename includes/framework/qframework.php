@@ -25,10 +25,12 @@ require INCLUDES_DIR . 'framework/authentication/Webclient.php';        // this 
 require INCLUDES_DIR . 'framework/authentication/methods/cookie.php';   // This allos the user to be be authenticated by a coookie (persitent session)
 require INCLUDES_DIR . 'framework/authentication/methods/qwcrm.php';    // This is the standard username and password authorisation
 require INCLUDES_DIR . 'framework/authentication/methods/remember.php'; // This is the standard username and password authorisation
+require INCLUDES_DIR . 'framework/authentication/StringHelper.php'; // This is the standard username and password authorisation
 
 require INCLUDES_DIR . 'framework/user/user.php';                       // This is the object/thing that hols the user data objectr
 require INCLUDES_DIR . 'framework/user/helper.php';                     // This contains password hassing functions etc..
 
+//require INCLUDES_DIR . 'framework/session/phpsession.php';  
 
 
 class QFactory {
@@ -46,6 +48,7 @@ class QFactory {
     public $smarty              = null;     // Global smarty object
     public $conf                = null;
     public $session             = null;
+    public $phpsession          = null;     // old php session for compatability - could be removed after testing
     
     // Might not keep this  
     //public $cookiePlg       = null;         // cookie authentication object
@@ -54,7 +57,10 @@ class QFactory {
     {
         $this->conf     = QFactory::getConfig();
         $this->db       = QFactory::getDbo();
-        $this->session  = new QSession();        
+        global $smarty;
+        $this->smarty   = $smarty;
+        $this->session  = new QSession();        // make this an object
+        //$this->phpsession = new phpsession;     // for compatability
         
         // Try to automatically login - i,e, using the remember me cookie
         $rememberMePlg = new PlgSystemRemember;
@@ -71,10 +77,42 @@ class QFactory {
      *
      */
     public function login($credentials, $options = array())
-    {    
+    {   
+        // If username or password is missing, redirect
+        if (!isset($credentials['username']) || $credentials['username'] == '' || !isset($credentials['password']) || $credentials['password'] == ''){
+            force_page('core', 'login', 'warning_msg='.$this->smarty->getTemplateVars('translate_system_auth_advisory_message_username_or_password_missing'));
+            exit;
+        } 
+            
         $auth = QFactory::getAuth();
-        return $auth->login($credentials, $options);
+        
+        if($auth->login($credentials, $options)) {
+            
+            /* Login true */
+            
+            $user = QFactory::getUser();
+
+            // Log activity       
+            write_record_to_activity_log($this->smarty->getTemplateVars('translate_system_auth_log_message_login_successful_for').' '.$user->login_usr); 
+
+            // Reload with 'Login Successful' message
+            //force_page('core', 'home', 'information_msg='.$this->smarty->getTemplateVars('translate_system_auth_advisory_message_login_successful'));            
+            //exit;
+            
+            return true;
+        
+        
+        } else {
+            
+            /* Login failed */
+            
+            // Reload with 'Login Failed' message
+            force_page('core', 'login', 'warning_msg='.$this->smarty->getTemplateVars('translate_system_auth_advisory_message_login_failed'));
+            exit;
+            //return false;
+        }
     }
+
     
     /**
      * Login authentication function.
@@ -82,10 +120,18 @@ class QFactory {
      */
     public function logout($userid = null, $options = array())
     {    
+        
         $auth = QFactory::getAuth();
-        return $auth->login($userid, $options);
-    }
-    
+        $auth->logout($userid, $options);
+        
+        // Log activity       
+        write_record_to_activity_log($this->smarty->getTemplateVars('translate_system_auth_log_message_logout_successful_for').' '.$this->session->get('login_usr'));        
+                
+        // Reload with 'Logout Successful' message        
+        force_page('core', 'login', 'information_msg='.$this->smarty->getTemplateVars('translate_system_auth_advisory_message_logout_successful'), 'get');
+        exit;
+    } 
+   
 /********************************** Object Grabbers ********************************************/
     
     /**

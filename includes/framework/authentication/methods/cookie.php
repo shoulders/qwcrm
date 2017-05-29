@@ -25,7 +25,7 @@ class PlgAuthenticationCookie //extends QFramework
      * @var    JApplicationCms
      * @since  3.2
      */
-    protected $app;
+    //protected $app;
 
     /**
      * Database object
@@ -69,8 +69,7 @@ class PlgAuthenticationCookie //extends QFramework
 
         // Get cookie
         $cookieName  = 'qwcrm_remember_me_' . QUserHelper::getShortHashedUserAgent();
-        $cookieValue = $this->cookie->get($cookieName);
-        //$cookieValue = $_COOKIE[$cookieName];
+        $cookieValue = $this->cookie->get($cookieName);        
 
         if (!$cookieValue)
         {
@@ -183,7 +182,7 @@ class PlgAuthenticationCookie //extends QFramework
             
 
             // Destroy the cookie in the browser.
-            $this->cookieData->set($cookieName, false, time() - 42000, $this->app->get('cookie_path', '/'), $this->app->get('cookie_domain'));
+            $this->cookie->set($cookieName, false, time() - 42000, $this->app->get('cookie_path', '/'), $this->app->get('cookie_domain'));
 
             // Issue warning by email to user and/or admin?
             JLog::add(JText::sprintf('PLG_AUTH_COOKIE_ERROR_LOG_LOGIN_FAILED', $results[0]->user_id), JLog::WARNING, 'security');
@@ -218,8 +217,9 @@ class PlgAuthenticationCookie //extends QFramework
         if ($result)
         {
             // Bring this in line with the rest of the system
-            $user = qUser::getInstance($result['EMPLOYEE_ID']);
-
+            //$user = QUser::getInstance($result['EMPLOYEE_ID']);
+            $user = QFactory::getUser($result['EMPLOYEE_ID']);
+            
             // Set response data.
             $response->username = $result['EMPLOYEE_LOGIN'];
             $response->email    = $user->email;
@@ -263,16 +263,16 @@ class PlgAuthenticationCookie //extends QFramework
             $cookieName = 'qwcrm_remember_me_' . QUserHelper::getShortHashedUserAgent();
 
             // We need the old data to get the existing series
-            $cookieValue = $this->cookieData->get($cookieName);
+            $cookieValue = $this->cookie->get($cookieName);
 
             /* Try with old cookieName (pre 3.6.0) if not found
             if (!$cookieValue)
             {
                 $oldCookieName = QUserHelper::getShortHashedUserAgent();
-                $cookieValue   = $this->cookieData->get($oldCookieName);
+                $cookieValue   = $this->cookie->get($oldCookieName);
 
                 // Destroy the old cookie in the browser
-                $this->cookieData->set($oldCookieName, false, time() - 42000, $this->app->get('cookie_path', '/'), $this->conf->get('cookie_domain'));
+                $this->cookie->set($oldCookieName, false, time() - 42000, $this->app->get('cookie_path', '/'), $this->conf->get('cookie_domain'));
             }*/
 
             $cookieArray = explode('.', $cookieValue);
@@ -429,7 +429,8 @@ class PlgAuthenticationCookie //extends QFramework
      *
      * @since   3.2
      */
-    public function onUserAfterLogout($options)
+    //public function onUserAfterLogout($options)
+    public function onUserAfterLogout()
     {
         // No remember me for admin
         if (QFactory::isClient('administrator'))

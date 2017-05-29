@@ -180,10 +180,18 @@ class QUser
      */
     protected static $instances = array();
     
-   // This holds the account data for the requested user
-    //private $data;
+   // This holds the account data for the requested user (currently an array of the record) - might not need this
+   private $data;
+   
+    //$this->username             = $record['EMPLOYEE_USERNAME'];
+    //$this->id                   = $record['EMPLOYEE_ID'];
+    public $login_usr          = null;
+    public $login_id           = null;
+    public $login_account_type = null;
+    public $login_display_name = null;
+    public $login_token        = null;
     
-    //holds the database object
+    // holds the database object
     private $db = null;    
 
     /**
@@ -221,8 +229,7 @@ class QUser
             $this->sendEmail = 0;
             $this->aid = 0;
             $this->guest = 1;
-        }
-        
+        }   
         
         
     }
@@ -679,8 +686,20 @@ class QUser
             return false;
             
         } else {
+            
+            $record = $rs->GetRowAssoc();
 
-            $this->data = $rs->GetRowAssoc();            
+            $this->data = $record; // not sure this is correct or needed
+            
+            $this->username             = $record['EMPLOYEE_LOGIN'];
+            $this->id                   = $record['EMPLOYEE_ID'];
+            
+            // Yes I have doubled up - this should be temporary but makes it easy to might to new system
+            $this->login_usr            = $record['EMPLOYEE_LOGIN'];
+            $this->login_id             = $record['EMPLOYEE_ID'];
+            $this->login_account_type   = $record['EMPLOYEE_TYPE'];
+            $this->login_display_name   = $record['EMPLOYEE_DISPLAY_NAME'];
+            $this->login_token          = 'login_verified';
 
         }
 

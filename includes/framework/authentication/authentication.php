@@ -506,18 +506,21 @@ class QAuthentication
     {
         // Get a user object from the JApplication.
         $user = QFactory::getUser($userid);
+        
+        // Get config
+        $config = QFactory::getConfig();
 
         // Build the credentials array.
         $parameters['username'] = $user->get('username');
         $parameters['id'] = $user->get('id');
 
         // Set clientid in the options array if it hasn't been set already and shared sessions are not enabled.
-        if (!$this->get('shared_session', '0') && !isset($options['clientid']))
+        if (!$config->get('shared_session', '0') && !isset($options['clientid']))
         {
-            $options['clientid'] = $this->getClientId();
+            $options['clientid'] = QFactory::getClientId();
         }
 
-        // Import the user plugin group.
+        /* Import the user plugin group.
         QPluginHelper::importPlugin('user');
 
         // OK, the credentials are built. Lets fire the onLogout event.
@@ -534,7 +537,12 @@ class QAuthentication
 
         // Trigger onUserLoginFailure Event.
         $this->triggerEvent('onUserLogoutFailure', array($parameters));         // (stored qwcrm.php and cookie.php methods)
-
+        */
+        
+        // Trigger Cookie operations for onUserAfterLogout
+        $cookiePlg    = new PlgAuthenticationCookie;
+        if($cookiePlg->onUserAfterLogout()) { return true; }
+        
         return false;
     }
     

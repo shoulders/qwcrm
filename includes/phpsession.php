@@ -1,5 +1,7 @@
 <?php
 
+// This is just for compatability wil my old session handling and post emulation or do i?
+
 /*
  * @package   QWcrm
  * @author    Jon Brown https://quantumwarp.com/
@@ -9,10 +11,15 @@
 
 defined('_QWEXEC') or die;
 
-class Session {
+class phpsession {
+    
+    public function __construct()
+    {
+        //intialise($session_lifetime);
+    }
 
     // Start the class
-    function Session($session_lifetime) {
+    function intialise($session_lifetime) {
         
         // Make variables available throught the class        
         $this->session_lifetime = $session_lifetime;
@@ -32,7 +39,7 @@ class Session {
         
         // Set the paremeters for the session cookie
         session_set_cookie_params($current_time + $this->session_lifetime); // Set intial session lifetime
-        session_name('QWCRM');                                              // Set session cookie name
+        session_name('qwcrm');                                              // Set session cookie name
         
         // Start session with set paremeters
         session_start();                                                
@@ -83,16 +90,6 @@ class Session {
         session_destroy();
         
     }
-    
-    
-    
-    
-    
-    
-
-    
-    
-    
-    
+   
     
 }
