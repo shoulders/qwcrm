@@ -35,18 +35,17 @@ class PlgAuthenticationCookie //extends QFramework
      */
     protected $db;
     
-    private $cookieData;
-    
-    private $conf;
-
+    private $cookie;   // the cookie obj 
+    private $config;
     public $response;
     
     public function __construct()
     {
         $this->db           = QFactory::getDbo();
-        $this->conf         = QFactory::getConfig();
-        //$this->cookieData   = new QCookie;
-        $this->response     = new QAuthenticationResponse;
+        $this->config       = QFactory::getConfig();
+        $this->cookie       = new QCookie;
+        $this->response     = new QAuthenticationResponse;  // does this need to be an object?
+        $this->filter       = new QFilterInput;
         
     }
     /**
@@ -70,8 +69,8 @@ class PlgAuthenticationCookie //extends QFramework
 
         // Get cookie
         $cookieName  = 'qwcrm_remember_me_' . QUserHelper::getShortHashedUserAgent();
-        //$cookieValue = $this->cookieData->get($cookieName);
-        $cookieValue = $_COOKIE[$cookieName];
+        $cookieValue = $this->cookie->get($cookieName);
+        //$cookieValue = $_COOKIE[$cookieName];
 
         if (!$cookieValue)
         {
@@ -84,8 +83,8 @@ class PlgAuthenticationCookie //extends QFramework
         if (count($cookieArray) != 2)
         {
             // Destroy the cookie in the browser.
-            //$this->cookieData->set($cookieName, false, time() - 42000, $this->app->get('cookie_path', '/'), $this->app->get('cookie_domain'));
-            setcookie($cookieName, false, time() - 42000, $this->app->get('cookie_path', '/'), $this->app->get('cookie_domain'));
+            $this->cookie->set($cookieName, false, time() - 42000, $this->config->get('cookie_path', '/'), $this->config->get('cookie_domain'));
+            //setcookie($cookieName, false, time() - 42000, $this->app->get('cookie_path', '/'), $this->app->get('cookie_domain'));
             //JLog::add('Invalid cookie detected.', JLog::WARNING, 'error');
 
             return false;
@@ -146,7 +145,8 @@ class PlgAuthenticationCookie //extends QFramework
         if (count($results) !== 1)
         {
             // Destroy the cookie in the browser.
-            setcookie($cookieName, false, time() - 42000, $this->conf->get('cookie_path', '/'), $this->conf->get('cookie_domain'));
+            //setcookie($cookieName, false, time() - 42000, $this->conf->get('cookie_path', '/'), $this->conf->get('cookie_domain'));
+            set($cookieName, false, time() - 42000, $this->config->get('cookie_path', '/'), $this->config->get('cookie_domain'));
             $response->status = QAuthentication::STATUS_FAILURE;
 
             return false;
@@ -333,17 +333,20 @@ class PlgAuthenticationCookie //extends QFramework
             return false;
         }
 
-        // Get the parameter values
-        $lifetime = $this->conf->get('cookie_lifetime', '60') * 24 * 60 * 60;
-        $length   = $this->conf->get('key_length', '16');
+        // Get the parameter values - this are settings from within the cookie plugin (now added to my config for now)
+        //$lifetime = $this->params->get('cookie_lifetime', '60') * 24 * 60 * 60;
+        //$length   = $this->params->get('key_length', '16');
+        $lifetime = $this->config->get('cookie_lifetime', '60') * 24 * 60 * 60;
+        $length   = $this->config->get('cookie_key_length', '16');
 
         // Generate new cookie
         $token       = QUserHelper::genRandomPassword($length);
         $cookieValue = $token . '.' . $series;
 
         // Overwrite existing cookie with new value
-        setcookie($cookieName, $cookieValue, time() + $lifetime, $this->conf->get('cookie_path', '/'), $this->conf->get('cookie_domain'), $this->isSSLConnection()            
-        );
+        //setcookie($cookieName, $cookieValue, time() + $lifetime, $this->config->get('cookie_path', '/'), $this->config->get('cookie_domain'), $this->isSSLConnection());
+        $this->cookie->set($cookieName, $cookieValue, time() + $lifetime, $this->config->get('cookie_path', '/'), $this->config->get('cookie_domain'), $this->isSSLConnection());
+        
         
         // not sure what this does - possibly clears query
         //$query = $this->db->getQuery(true);
@@ -403,7 +406,8 @@ class PlgAuthenticationCookie //extends QFramework
              if (!empty($options['remember']))
              {
                  $this->db->AutoExecute(PRFX.'user_keys', $record, 'INSERT');
-             } else
+             } 
+             else
              {
                 $this->db->AutoExecute(PRFX.'user_keys', $record, 'UPDATE', $where);
              }
@@ -434,7 +438,7 @@ class PlgAuthenticationCookie //extends QFramework
         }
 
         $cookieName  = 'qwcrm_remember_me_' . QUserHelper::getShortHashedUserAgent();
-        $cookieValue = $this->cookieData->get($cookieName);
+        $cookieValue = $this->cookie->get($cookieName);
 
         // There are no cookies to delete.
         if (!$cookieValue)
@@ -444,9 +448,8 @@ class PlgAuthenticationCookie //extends QFramework
 
         $cookieArray = explode('.', $cookieValue);
 
-        // Filter series since we're going to use it in the query
-        $filter = new QFilterInput;
-        $series = $filter->clean($cookieArray[1], 'ALNUM');
+        // Filter series since we're going to use it in the query        
+        $series = $this->filter->clean($cookieArray[1], 'ALNUM');
 
         // Remove the record from the database
         /*$query = $this->db->getQuery(true)
@@ -466,13 +469,7 @@ class PlgAuthenticationCookie //extends QFramework
         }
 
         // Destroy the cookie
-        $this->cookieData->set(
-            $cookieName,
-            false,
-            time() - 42000,
-            $this->app->get('cookie_path', '/'),
-            $this->app->get('cookie_domain')
-        );
+        $this->cookie->set($cookieName, false, time() - 42000, $this->config->get('cookie_path', '/'), $this->config->get('cookie_domain'));
 
         return true;
     }

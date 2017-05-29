@@ -1,4 +1,5 @@
 <?php
+// D:\websites\htdocs\quantumwarp.com\libraries\joomla\session\session.php
 /**
  * @package   QWcrm
  * @author    Jon Brown https://quantumwarp.com/
@@ -64,7 +65,7 @@ class QSession {
     protected $_security = array('fix_browser');
 
     /**
-     * The type of storage for the session.
+     * The type of storage for the session.  where to store the session registry (php session file / database)
      *
      * @var    string
      * @since  12.2
@@ -114,13 +115,7 @@ class QSession {
         $this->_setOptions($options);
 
         // Initialize the data variable, let's avoid fatal error if the session is not corretly started (ie in CLI). - this object is eventually iterated into a json and thenm loaded into the databse 'data'
-        $this->data = new Registry;
-
-        // Add the session name to the registry. (site /admin) - The Session name is the name of the cookie/url param stores the session_id. By default when you create a session, a special cookie will be created normally with the name PHPSESSID, the session_id, is the value of that cookie that later identifies you. 
-        if (is_null($this->data->get('session_name')))
-        {
-            $this->data->set('session_name', $this->getName());
-        }      
+        $this->data = new Registry;   
       
         // Clear any existing sessions - Need to destroy any existing sessions started with session.auto_start
         /*if ($this->getId())
@@ -149,16 +144,37 @@ class QSession {
      */
    public function buildSessionOptions() {    
         
+        
+        
+        
+        // Add the session name to the registry. (site /admin)
+        // The Session name is the name of the cookie/url param that stores the session_id.
+        
+        // Get the session name from the config, if there is not set use the default session name
+        if (is_null($this->config->get('session_name')))
+        {
+            $this->set('session_name', $this->getName());
+        }   
+        // Generate a session name.
+	$name = md5($this->get('secretKey') . $this->get('session_name', get_class($this)));
+        
+        
+
         // Use client name (site/admin) for the session name (this does get hashed to something else in $session _setOptions())
         $name = QFactory::$siteName;
+        
+        
 
         // Calculate the session lifetime. - this just changes minutes into seconds and could be removed
-        $expire = ($this->config->get('session_lifetime') ? $this->config->get('session_lifetime') * 60 : 900);
+        $lifetime = ($this->config->get('session_lifetime') ? $this->config->get('session_lifetime') * 60 : 900);
+        
+        // Get the session handler from the configuration.
+	//$handler = $this->get('sess_handler', 'none');
 
         // Initialization the options for QSession.
         $options = array(
             'name'   => $name,
-            'expire' => $expire,
+            'expire' => $lifetime,
         );
         
         // Set force_ssl for the session and cookie to be SSL
@@ -345,7 +361,7 @@ class QSession {
         // If the session record doesn't exist initialise it.
         if (!$exists)
         {
-            $time = $this->isNew() ? time() : $this->data->get('session.timer.start');
+            $time = $this->isNew() ? time() : $this->get('session.timer.start');            
 
             // Set up the record to insert            
             $record['session_id']  = $this->getId()  ;
@@ -544,6 +560,7 @@ class QSession {
 
 /******************* Delete Operations *******************/    
     
+    // D:\websites\htdocs\quantumwarp.com\libraries\joomla\session\session.php
     /** session.php                                                       - not sure this is used anywhere
      * 
      * Unset data from the session store
@@ -596,8 +613,10 @@ class QSession {
             return true;
         }
 
+        // D:\websites\htdocs\quantumwarp.com\libraries\joomla\session\session.php        
         // Kill session
         $this->allClear();
+        //$this->_handler->clear(); I think thjis depends on cookie or php ie.e all clear
 
         // Create new data storage
         $this->data = new Registry;
@@ -693,6 +712,7 @@ class QSession {
     {
         $token = self::getFormToken();
         $app = QFactory::getApplication();
+        $filter = new QFilterInput;
 
         if (!$app->input->$method->get($token, '', 'alnum'))
         {
@@ -751,7 +771,7 @@ class QSession {
      */
     protected function _createToken($length = 32)
     {
-        return JUserHelper::genRandomPassword($length);
+        return QUserHelper::genRandomPassword($length);
     }
     
 /******************* Get Operations *******************/
@@ -1001,11 +1021,11 @@ class QSession {
             $this->_force_ssl = $options['force_ssl'];
         }        
 
-        /* Get security options
+        // Get security options - not sure what this is for?
         if (isset($options['security']))
         {
             $this->_security = explode(',', $options['security']);
-        }*/
+        }
 
         // Sync the session maxlifetime
         ini_set('session.gc_maxlifetime', $this->_expire);
@@ -1181,7 +1201,7 @@ class QSession {
      */
     public function isNew()
     {
-        return (bool) ($this->data->get('session.counter') === 1);
+        return (bool) ($this->get('session.counter') === 1);
     }    
     
     
@@ -1234,8 +1254,8 @@ class QSession {
 
         if ($this->isNew())
         {
-            $this->data->set('registry', new Registry);
-            $this->data->set('user', new QUser);
+            $this->set('registry', new Registry);
+            $this->set('user', new QUser);
         }
     }
  

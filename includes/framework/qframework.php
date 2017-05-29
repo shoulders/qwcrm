@@ -11,13 +11,16 @@ defined('_QWEXEC') or die;
 // include class files
 require INCLUDES_DIR . 'framework/config.php';                          // This gets the standard config settings ONLY
 require INCLUDES_DIR . 'framework/general/registry.php';                // This class is used to create/edit/read a JSON compatible register than can be stored in the database i.e. user paremeters or used within the various classes for data manipulation (set/get/ckear)
+require INCLUDES_DIR . 'framework/general/FilterInput.php';            // this is used to clean/filter strings to suitable formats i.e. ALUM = alpha numeric - used for QCookie and authenticatin
 
-require INCLUDES_DIR . 'framework/session.php';                 // This handeles the user session (mainly php but utilises cookes) - update thhis description
+require INCLUDES_DIR . 'framework/session/session.php';                 // This handeles the user session (mainly php but utilises cookes) - update thhis description
 //require INCLUDES_DIR . 'framework/session/cookiesession.php';                  // This handles the basic cookie manipulation
+//require INCLUDES_DIR . 'framework/cookie/Input.php'; only used get so i have put that in cookie
+require INCLUDES_DIR . 'framework/cookie/Cookie.php'; // cookie object with set and get extends Input.php
 
 require INCLUDES_DIR . 'framework/authentication/authentication.php';   // This is used to facilitate the authorization process
 require INCLUDES_DIR . 'framework/authentication/response.php';         // this is used to store the responses from the qwcrm.php and cookie.php authorisation plugins
-require INCLUDES_DIR . 'framework/authentication/input.php';            // this is used to clean/filter strings to suitable formats i.e. ALUM = alpha numeric
+
 require INCLUDES_DIR . 'framework/authentication/Webclient.php';        // this libary gets the browser details from the session (used in cookie creation)
 require INCLUDES_DIR . 'framework/authentication/methods/cookie.php';   // This allos the user to be be authenticated by a coookie (persitent session)
 require INCLUDES_DIR . 'framework/authentication/methods/qwcrm.php';    // This is the standard username and password authorisation
