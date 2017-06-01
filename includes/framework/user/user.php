@@ -185,11 +185,11 @@ class QUser
    
     //$this->username             = $record['EMPLOYEE_USERNAME'];
     //$this->id                   = $record['EMPLOYEE_ID'];
-    public $login_usr          = null;
-    public $login_id           = null;
-    public $login_account_type = null;
-    public $login_display_name = null;
-    public $login_token        = null;
+    public $login_usr               = null;
+    public $login_id                = null;
+    public $login_account_type_id   = null;
+    public $login_display_name      = null;
+    public $login_token             = null;
     
     // holds the database object
     private $db = null;    
@@ -341,6 +341,7 @@ class QUser
     public function authorise($action, $assetname = null)
     {
         JAccess::check($this->id, $action, $assetname);
+        return;
     }
 
 
@@ -357,11 +358,16 @@ class QUser
      */
     public function setLastVisit($timestamp = null)
     {
-        // Create the user table object
+        /*// Create the user table object
         $table = $this->getTable();
         $table->load($this->id);
 
-        return $table->setLastVisit($timestamp);
+        return $table->setLastVisit($timestamp);*/
+        
+        $sql = "UPDATE ".PRFX."EMPLOYEE SET EMPLOYEE_LASTVISIT = ".time();
+        $this->db->Execute($sql);
+        
+        return;
     }
 
 
@@ -673,7 +679,7 @@ class QUser
     public function load($id)
     {       
         
-        $sql = "SELECT * FROM ".PRFX."EMPLOYEE WHERE EMPLOYEE_ID =".$this->db->qstr($id);
+        $sql = "SELECT * FROM ".PRFX."EMPLOYEE WHERE EMPLOYEE_ID = " . $this->db->qstr($id);
         
         if(!$rs = $this->db->execute($sql)){
             
@@ -691,15 +697,15 @@ class QUser
 
             $this->data = $record; // not sure this is correct or needed
             
-            $this->username             = $record['EMPLOYEE_LOGIN'];
-            $this->id                   = $record['EMPLOYEE_ID'];
+            $this->username                 = $record['EMPLOYEE_LOGIN'];
+            $this->id                       = $record['EMPLOYEE_ID'];
             
             // Yes I have doubled up - this should be temporary but makes it easy to might to new system
-            $this->login_usr            = $record['EMPLOYEE_LOGIN'];
-            $this->login_id             = $record['EMPLOYEE_ID'];
-            $this->login_account_type   = $record['EMPLOYEE_TYPE'];
-            $this->login_display_name   = $record['EMPLOYEE_DISPLAY_NAME'];
-            $this->login_token          = 'login_verified';
+            $this->login_usr                = $record['EMPLOYEE_LOGIN'];
+            $this->login_id                 = $record['EMPLOYEE_ID'];
+            $this->login_account_type_id    = $record['EMPLOYEE_TYPE'];
+            $this->login_display_name       = $record['EMPLOYEE_DISPLAY_NAME'];
+            $this->login_token              = 'login_verified';
 
         }
 
@@ -745,7 +751,7 @@ class QUser
      *
      * @since   3.6.0
      */
-    public function __wakeup()
+    public function _5_wakeup()
     {
         // Initialise some variables
         $this->userHelper = new QUserHelper;

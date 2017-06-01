@@ -131,9 +131,9 @@ class QCookie //extends Input
     public function get($name, $default = null, $filter = 'cmd')
     {
         if (isset($this->data[$name]))
-        {
-            $filter = new QFilterInput;
-            return $filter->clean($this->data[$name], $filter);
+        {           
+            $filterObj = new QFilterInput;
+            return $filterObj->clean($this->data[$name], $filter);
         }
 
         return $default;

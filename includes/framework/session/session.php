@@ -251,7 +251,7 @@ class QSession {
 
             $data = base64_decode($data);
 
-            $this->data = unserialize($data);
+            $this->data = unserialize($data); // From php manual - If the variable being unserialized is an object, after successfully reconstructing the object PHP will automatically attempt to call the __wakeup() member function (if it exists).
         }
 
         // Temporary, PARTIAL, data migration of existing session data to avoid logout on update from J < 3.4.7        

@@ -195,9 +195,13 @@ unset($credentials);
 /* Assign Logged in User's Variables to PHP and Smarty */
 
 $user = QFactory::getUser();
+//print_r(QFactory::$user->login_display_name);
+//print_r($user->login_display_name);
+// unset the user object as no longer needed?
+//unset($user);
 
-$login_id   = $user->login_id;
-$login_usr  = $user->login_usr;
+//$login_id   = $user->login_id;
+//$login_usr  = $user->login_usr;
 
 // If there is no account type details, set to Public (This can caus elooping - invvestigate)
 if(!isset($user->login_account_type_id)){
@@ -213,28 +217,10 @@ $smarty->assign('login_usr',                $login_usr              );
 $smarty->assign('login_account_type_id',    $login_account_type_id  );
 $smarty->assign('login_display_name',       $login_display_name     );
 
-// unset the user object as no longer needed?
-//unset($user);
-
-
-
-
 // If logout is set, then log user off
 if (isset($_GET['action']) && $_GET['action'] == 'logout') {    
     $app->logout();
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 ################################
 #   Set Global PHP Values      #
@@ -405,7 +391,7 @@ elseif(isset($VAR['page']) && $VAR['page'] != ''){
 $BuildPage = '';
 
 /* Check the requested page with 'logged in' user against the ACL for authorisation - if allowed, display */
-if(check_acl($db, $login_account_type_id, $module, $page_tpl)){
+if(QAuthentication::check_acl($db, $login_account_type_id, $module, $page_tpl)){
     
     // If theme is set to Print mode then fetch the Page Content - Print system will output with its own format without need for headers and footers here
     if ($VAR['theme'] === 'print'){        

@@ -98,8 +98,21 @@ class QAuthentication
      *
      * @since   11.1
      */
+    
+    // Authentication plugins that I added
+    protected $cookieAuthPlg = null;
+    protected $qwcrmAuthPlg = null;
+    
+    
+    
+    
     public function __construct()
     {
+        
+        // Authentication plugins that I added
+        $this->cookieAuthPlg  = new PlgAuthenticationCookie;
+        $this->qwcrmAuthPlg   = new PlgAuthenticationQwcrm;
+        
         /*
         $isLoaded = QPluginHelper::importPlugin('authentication');
 
@@ -258,20 +271,22 @@ class QAuthentication
     public function authenticate($credentials, $options = array())
     {
         // Get plugins
-        //$plugins = QPluginHelper::getPlugin('authentication');
+        // $plugins = QPluginHelper::getPlugin('authentication');
         // this checks to see if a cookie can authenticate
-        $plugins = array(array ('className' => 'PlgAuthenticationCookie',
+        $plugins = array(
+                        array ('className' => 'PlgAuthenticationCookie',
                                 'type' => 'Authentication',
                                 'name' => 'Cookie'),
-                         array ('className' => 'PlgAuthenticationQwcrm',
+                        array ('className' => 'PlgAuthenticationQwcrm',
                                 'type' => 'Authentication',
-                                'name' => 'Qwcrm'));
+                                'name' => 'Qwcrm')
+                        );
         
         
         
         // Create authentication response - holds the response(s)
         $response = new QAuthenticationResponse;
-
+        
         /*
          * Loop through the plugins and check if the credentials can be used to authenticate
          * the user
@@ -296,8 +311,7 @@ class QAuthentication
             }
 
             // Try to authenticate
-            $plugin->onUserAuthenticate($credentials, $options, $response);
-            //print_r($plugin);die;
+            $plugin->onUserAuthenticate($credentials, $options, $response);            
             
             // If authentication is successful break out of the loop
             if ($response->status === self::STATUS_SUCCESS)
@@ -325,9 +339,8 @@ class QAuthentication
         if (empty($response->password) && isset($credentials['password']))
         {
             $response->password = $credentials['password'];
-        }
+        }        
         
-        //echo 'coocck';print_r($response);die;
         return $response;
     }
 
@@ -395,6 +408,7 @@ class QAuthentication
         // Import the user plugin group. // not sure what this is for
         //QPluginHelper::importPlugin('user');
 
+        // This 'if' does the traditional login mechanism and then does the code below if user is validated (cooie||username and password), this code is not used currently but i could use it to block users
         if ($response->status === QAuthentication::STATUS_SUCCESS)
         {
             /*
@@ -409,7 +423,7 @@ class QAuthentication
             {
                 if ((int) $authorisation->status & $denied_states)
                 {
-                    // Trigger onUserAuthorisationFailure Event.
+                    ////// Trigger onUserAuthorisationFailure Event.
                     //$this->triggerEvent('onUserAuthorisationFailure', array((array) $authorisation));
 
                     // If silent is set, just return false.
@@ -433,9 +447,15 @@ class QAuthentication
                 }
             }
 
-            // OK, the credentials are authenticated and user is authorised.  Let's fire the onLogin event. (stored qwcrm.php and cookie.php methods)
+            ////// OK, the credentials are authenticated and user is authorised.  Let's fire the onLogin event. (stored qwcrm.php and cookie.php methods)
             //$results = $this->triggerEvent('onUserLogin', array((array) $response, $options));
-            $results = array();
+            //$results = array($this->qwcrmAuthPlg->onUserLogin(array((array) $response, $options)));
+            
+            $user['username'] = $response->username;
+            $user['fullname'] = $response->fullname;
+            $user['password_clear'] = $response->password_clear;            
+            $user['email'] = $response->email;            
+            $results = array($this->qwcrmAuthPlg->onUserLogin($user, $options));
             
             /*
              * If any of the user plugins did not successfully complete the login routine
@@ -456,12 +476,11 @@ class QAuthentication
                 $options['user'] = $user;
                 $options['responseType'] = $response->type;
 
-                // The user is successfully logged in. Run the after login events  (stored qwcrm.php and cookie.php methods)
+                ////// The user is successfully logged in. Run the after login events  (stored qwcrm.php and cookie.php methods)
                 //$this->triggerEvent('onUserAfterLogin', array($options));
                 
-                // Trigger Cookie operations for onUserAfterLogin
-                $cookiePlg    = new PlgAuthenticationCookie;
-                $cookiePlg->onUserAfterLogin($options);                
+                // Trigger Cookie operations for onUserAfterLogin                
+                $this->cookieAuthPlg->onUserAfterLogin($options);                
             }
 
             return true;
@@ -505,6 +524,7 @@ class QAuthentication
     public function logout($userid = null, $options = array())
     {
         // Get a user object from the JApplication.
+        //$user = QFactory::getUser($userid);
         $user = QFactory::getUser($userid);
         
         // Get config
@@ -520,30 +540,90 @@ class QAuthentication
             $options['clientid'] = QFactory::getClientId();
         }
 
-        /* Import the user plugin group.
-        QPluginHelper::importPlugin('user');
+        // Import the user plugin group.
+        //QPluginHelper::importPlugin('user');
 
-        // OK, the credentials are built. Lets fire the onLogout event.
-        $results = $this->triggerEvent('onUserLogout', array($parameters, $options));   //(stored qwcrm.php and cookie.php methods)
+        ////// OK, the credentials are built. Lets fire the onLogout event.
+        //$results = $this->triggerEvent('onUserLogout', array($parameters, $options));   //(stored qwcrm.php and cookie.php methods)
+        $results = array(
+                        $this->cookieAuthPlg->onUserLogout($parameters, $options),
+                        $this->qwcrmAuthPlg->onUserLogout($parameters, $options)       
+                        );        
 
         // Check if any of the plugins failed. If none did, success.
         if (!in_array(false, $results, true))
         {
             $options['username'] = $user->get('username');
-            $this->triggerEvent('onUserAfterLogout', array($options));          // (stored qwcrm.php and cookie.php methods)
+            //$this->triggerEvent('onUserAfterLogout', array($options));          // (stored qwcrm.php and cookie.php methods)
+            $this->cookieAuthPlg->onUserAfterLogout($options);
+            $this->qwcrmAuthPlg->onUserAfterLogout($options);
 
             return true;
         }
 
-        // Trigger onUserLoginFailure Event.
-        $this->triggerEvent('onUserLogoutFailure', array($parameters));         // (stored qwcrm.php and cookie.php methods)
-        */
-        
-        // Trigger Cookie operations for onUserAfterLogout
-        $cookiePlg    = new PlgAuthenticationCookie;
-        if($cookiePlg->onUserAfterLogout()) { return true; }
+        ////// Trigger onUserLoginFailure Event.
+        //$this->triggerEvent('onUserLogoutFailure', array($parameters));         // (stored qwcrm.php and cookie.php methods)
         
         return false;
     }
+    
+
+##########################################################
+#  Verify User's authorization for a specific page       #
+##########################################################
+
+public static function check_acl($db, $login_account_type_id, $module, $page_tpl){
+    
+    global $smarty;
+    
+    /* error catching - you cannot use normal error logging as it will cause a loop */
+    if($login_account_type_id == ''){
+        echo $smarty->getTemplateVars('translate_system_include_error_message_function_'.__FUNCTION__.'_no_account_type_id');
+        die;        
+    }
+
+    /* Get user's Group Name by login_account_type_id */
+    $sql = 'SELECT '.PRFX.'EMPLOYEE_ACCOUNT_TYPES.TYPE_NAME
+            FROM '.PRFX.'EMPLOYEE_ACCOUNT_TYPES 
+            WHERE TYPE_ID ='.$db->qstr($login_account_type_id);
+    
+    if(!$rs = $db->execute($sql)) {        
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_system_include_error_message_function_'.__FUNCTION__.'_group_name_failed'));
+        exit;
+    } else {
+        $employee_acl_account_type_display_name = $rs->fields['TYPE_NAME'];
+    } 
+    
+    // Build the page name for the ACL lookup
+    $module_page = $module.':'.$page_tpl;
+    
+    /* Check Page to see if we have access */
+    $sql = "SELECT ".$employee_acl_account_type_display_name." AS PAGE_ACL FROM ".PRFX."EMPLOYEE_ACL WHERE page=".$db->qstr($module_page);
+
+    if(!$rs = $db->execute($sql)) {        
+        force_error_page($_GET['page'], 'authentication', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_system_include_error_message_function_'.__FUNCTION__.'_get_page_acl_failed'));
+        exit;
+    } else {
+        
+        $acl = $rs->fields['PAGE_ACL'];
+        
+        // Add if guest (8) rules here if there are errors
+        
+        if($acl != 1) {
+            
+            // should this just be an access error message
+            //force_error_page($_GET['page'], 'authentication', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_system_include_error_message_function_'.__FUNCTION__.'_no_page_permission'));
+            // x $smarty->assign('warning_msg', $smarty->getTemplateVars('translate_system_include_error_message_function_'.__FUNCTION__.'_no_page_permission'));
+            force_page('core', 'login', 'warning_msg='.$smarty->getTemplateVars('translate_system_include_error_message_function_'.__FUNCTION__.'_no_page_permission').' '.$module.':'.$page_tpl);            
+            exit;
+        } else {
+            
+            return true;
+            
+        }
+        
+    }
+    
+}    
     
 }

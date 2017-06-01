@@ -1,102 +1,4 @@
 <?php
-/**
- * @package     Joomla.Plugin
- * @subpackage  Authentication.joomla
- *
- * @copyright   Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
- */
-
-// add these routines
-// D:\websites\htdocs\quantumwarp.com\plugins\authentication\joomla\joomla.php
-
-
-// rename this user.php as it makes more sense
-
-defined('_QWEXEC') or die;
-
-/**
- * Joomla Authentication plugin
- *
- * @since  1.5
- */
-class PlgAuthenticationQwcrm //extends QFramework
-{
-    private $db;
-    
-    public function __construct()
-    {
-        $this->db = QFactory::getDbo();
-        
-    }
-    /**
-     * This method should handle any authentication and report back to the subject
-     *
-     * @param   array   $credentials  Array holding the user credentials
-     * @param   array   $options      Array of extra options
-     * @param   object  &$response    Authentication response object
-     *
-     * @return  void
-     *
-     * @since   1.5
-     */
-    public function onUserAuthenticate($credentials, $options, &$response)
-    {
-        $response->type = 'Qwcrm';
-
-        // Joomla does not like blank passwords
-        if (empty($credentials['password']))
-        {
-            $response->status        = QAuthentication::STATUS_FAILURE;
-            $response->error_message = JText::_('JGLOBAL_AUTH_EMPTY_PASS_NOT_ALLOWED');
-
-            return;
-        }
-
-        // Load the relevant user record form the database
-        $sql = "SELECT EMPLOYEE_ID, EMPLOYEE_PASSWORD FROM ".PRFX."EMPLOYEE WHERE EMPLOYEE_LOGIN = ".$this->db->qstr($credentials['username']);        
-        $rs = $this->db->Execute($sql);
-        $result = $rs->GetRowAssoc();   // If I call this twice for this search, no results are shown on the TPL
-              
-        // if there is a match, verify it
-        if ($result)
-        {
-            $match = QUserHelper::verifyPassword($credentials['password'], $result['EMPLOYEE_PASSWORD'], $result['EMPLOYEE_ID']);
-
-            if ($match === true)
-            {
-                // Bring this in line with the rest of the system
-                $user               = QUser::getInstance($result['EMPLOYEE_ID']);
-                //$user = QFactory::getUser($result['EMPLOYEE_ID']);
-                
-                $response->email    = $user->email;
-                $response->fullname = $user->name;
-
-                $response->status        = QAuthentication::STATUS_SUCCESS;
-                $response->error_message = '';
-            }
-            else
-            {
-                // Invalid password
-                $response->status        = QAuthentication::STATUS_FAILURE;
-                //$response->error_message = JText::_('JGLOBAL_AUTH_INVALID_PASS');
-            }
-        }
-        else
-        {
-            // Let's hash the entered password even if we don't have a matching user for some extra response time
-            // By doing so, we mitigate side channel user enumeration attacks
-            QUserHelper::hashPassword($credentials['password']);
-
-            // Invalid user
-            $response->status        = QAuthentication::STATUS_FAILURE;
-            //$response->error_message = JText::_('JGLOBAL_AUTH_NO_USER');
-        }
-
-        return;
-        
-    }
-    
 // D:\websites\htdocs\quantumwarp.com\plugins\user\joomla\joomla.php
 /**
  * @package     Joomla.Plugin
@@ -106,13 +8,24 @@ class PlgAuthenticationQwcrm //extends QFramework
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-   /**
+defined('_JEXEC') or die;
+
+use Joomla\Registry\Registry;
+
+/**
+ * Joomla User plugin
+ *
+ * @since  1.5
+ */
+class PlgUserJoomla extends JPlugin
+{
+    /**
      * Application object
      *
      * @var    JApplicationCms
      * @since  3.2
      */
-    //protected $app;
+    protected $app;
 
     /**
      * Database object
@@ -120,7 +33,7 @@ class PlgAuthenticationQwcrm //extends QFramework
      * @var    JDatabaseDriver
      * @since  3.2
      */
-    //protected $db;
+    protected $db;
 
     /**
      * Remove all sessions for the user name
@@ -142,23 +55,20 @@ class PlgAuthenticationQwcrm //extends QFramework
             return false;
         }
 
-        /*$query = $this->db->getQuery(true)
+        $query = $this->db->getQuery(true)
             ->delete($this->db->quoteName('#__session'))
-            ->where($this->db->quoteName('userid') . ' = ' . (int) $user['id']);*/
-        
-        $sql = "DELETE FROM ".PRFX."session WHERE userid = ". (int) $user['id'];
+            ->where($this->db->quoteName('userid') . ' = ' . (int) $user['id']);
 
         try
         {
-            //$this->db->setQuery($query)->execute();
-            $this->db->Execute($sql);
+            $this->db->setQuery($query)->execute();
         }
         catch (JDatabaseExceptionExecuting $e)
         {
             return false;
         }
 
-        /*$query = $this->db->getQuery(true)
+        $query = $this->db->getQuery(true)
             ->delete($this->db->quoteName('#__messages'))
             ->where($this->db->quoteName('user_id_from') . ' = ' . (int) $user['id']);
 
@@ -169,7 +79,7 @@ class PlgAuthenticationQwcrm //extends QFramework
         catch (JDatabaseExceptionExecuting $e)
         {
             return false;
-        }*/
+        }
 
         return true;
     }
@@ -187,7 +97,7 @@ class PlgAuthenticationQwcrm //extends QFramework
      * @return  void
      *
      * @since   1.6
-     *
+     */
     public function onUserAfterSave($user, $isnew, $success, $msg)
     {
         $mail_to_user = $this->params->get('mail_to_user', 1);
@@ -207,7 +117,7 @@ class PlgAuthenticationQwcrm //extends QFramework
                      * Look for user language. Priority:
                      *     1. User frontend language
                      *     2. User backend language
-                     *
+                     */
                     $userParams = new Registry($user['params']);
                     $userLocale = $userParams->get('language', $userParams->get('admin_language', $defaultLocale));
 
@@ -264,7 +174,7 @@ class PlgAuthenticationQwcrm //extends QFramework
         {
             // Existing user - nothing to do...yet.
         }
-    }*/
+    }
 
     /**
      * This method should handle any login logic and report back to the subject
@@ -300,7 +210,7 @@ class PlgAuthenticationQwcrm //extends QFramework
             $options['group'] = 'USERS';
         }
 
-        /* Check the user can login.
+        // Check the user can login.
         $result = $instance->authorise($options['action']);
 
         if (!$result)
@@ -308,12 +218,12 @@ class PlgAuthenticationQwcrm //extends QFramework
             $this->app->enqueueMessage(JText::_('JERROR_LOGIN_DENIED'), 'warning');
 
             return false;
-        }*/
+        }
 
         // Mark the user as logged in
         $instance->guest = 0;
 
-        $session = QFactory::getSession();
+        $session = JFactory::getSession();
 
         // Grab the current session ID
         $oldSessionId = $session->getId();
@@ -321,23 +231,19 @@ class PlgAuthenticationQwcrm //extends QFramework
         // Fork the session
         $session->fork();
 
-        // install the logged in user's object into the session
         $session->set('user', $instance);
 
         // Ensure the new session's metadata is written to the database
-        $session->checkSessionDbExists();
+        $this->app->checkSession();
 
-        /* Purge the old session
+        // Purge the old session
         $query = $this->db->getQuery(true)
             ->delete('#__session')
-            ->where($this->db->quoteName('session_id') . ' = ' . $this->db->quote($oldSessionId));*/
-        
-        $sql = "DELETE FROM ".PFRX."session WHERE session_if = " . $this->db->qstr($oldSessionId);
+            ->where($this->db->quoteName('session_id') . ' = ' . $this->db->quote($oldSessionId));
 
         try
         {
-            //$this->db->setQuery($query)->execute();
-            $this->db->Execute($sql);
+            $this->db->setQuery($query)->execute();
         }
         catch (RuntimeException $e)
         {
@@ -348,14 +254,12 @@ class PlgAuthenticationQwcrm //extends QFramework
         $instance->setLastVisit();
 
         // Add "user state" cookie used for reverse caching proxies like Varnish, Nginx etc.
-        $config = new QConfig;
-        $cookie_domain = $config->get('cookie_domain', '');
-        $cookie_path   = $config->get('cookie_path', '/');
+        $cookie_domain = $this->app->get('cookie_domain', '');
+        $cookie_path   = $this->app->get('cookie_path', '/');
 
-        if (QFactory::isClient('site'))
+        if ($this->app->isClient('site'))
         {
-            $cookie = new QCookie;
-            $cookie->set('joomla_user_state', 'logged_in', 0, $cookie_path, $cookie_domain, 0);
+            $this->app->input->cookie->set('joomla_user_state', 'logged_in', 0, $cookie_path, $cookie_domain, 0);
         }
 
         return true;
@@ -373,10 +277,8 @@ class PlgAuthenticationQwcrm //extends QFramework
      */
     public function onUserLogout($user, $options = array())
     {
-        $my      = QFactory::getUser();
-        $session = QFactory::getSession();
-        $config  = QFactory::getConfig();
-        $cookie  = new QCookie;
+        $my      = JFactory::getUser();
+        $session = JFactory::getSession();
 
         // Make sure we're a valid user first
         if ($user['id'] == 0 && !$my->get('tmp_user'))
@@ -384,10 +286,10 @@ class PlgAuthenticationQwcrm //extends QFramework
             return true;
         }
 
-        $sharedSessions = $config->get('shared_session', '0');
+        $sharedSessions = $this->app->get('shared_session', '0');
 
         // Check to see if we're deleting the current session
-        if ($my->id == $user['id'] && ($sharedSessions || (!$sharedSessions && $options['clientid'] == QFactory::getClientId())))
+        if ($my->id == $user['id'] && ($sharedSessions || (!$sharedSessions && $options['clientid'] == $this->app->getClientId())))
         {
             // Hit the user last visit field
             $my->setLastVisit();
@@ -396,7 +298,7 @@ class PlgAuthenticationQwcrm //extends QFramework
             $session->destroy();
         }
 
-        /* Enable / Disable Forcing logout all users with same userid
+        // Enable / Disable Forcing logout all users with same userid
         $forceLogout = $this->params->get('forceLogout', 1);
 
         if ($forceLogout)
@@ -418,15 +320,15 @@ class PlgAuthenticationQwcrm //extends QFramework
             {
                 return false;
             }
-        }*/
+        }
 
         // Delete "user state" cookie used for reverse caching proxies like Varnish, Nginx etc.
-        $cookie_domain = $config->get('cookie_domain', '');
-        $cookie_path   = $config->get('cookie_path', '/');
+        $cookie_domain = $this->app->get('cookie_domain', '');
+        $cookie_path   = $this->app->get('cookie_path', '/');
 
-        if (QFactory::isClient('site'))
+        if ($this->app->isClient('site'))
         {
-            $cookie->set('joomla_user_state', '', time() - 86400, $cookie_path, $cookie_domain, 0);
+            $this->app->input->cookie->set('joomla_user_state', '', time() - 86400, $cookie_path, $cookie_domain, 0);
         }
 
         return true;
@@ -446,8 +348,8 @@ class PlgAuthenticationQwcrm //extends QFramework
      */
     protected function _getUser($user, $options = array())
     {
-        $instance = QUser::getInstance();
-        $id = (int) QUserHelper::getUserId($user['username']);
+        $instance = JUser::getInstance();
+        $id = (int) JUserHelper::getUserId($user['username']);
 
         if ($id)
         {
@@ -457,10 +359,10 @@ class PlgAuthenticationQwcrm //extends QFramework
         }
 
         // TODO : move this out of the plugin
-        //$config = JComponentHelper::getParams('com_users');
+        $config = JComponentHelper::getParams('com_users');
 
         // Hard coded default to match the default value from com_users.
-        //$defaultUserGroup = $config->get('new_usertype', 2);
+        $defaultUserGroup = $config->get('new_usertype', 2);
 
         $instance->id = 0;
         $instance->name = $user['fullname'];
@@ -469,9 +371,9 @@ class PlgAuthenticationQwcrm //extends QFramework
 
         // Result should contain an email (check).
         $instance->email = $user['email'];
-        //$instance->groups = array($defaultUserGroup);
+        $instance->groups = array($defaultUserGroup);
 
-        /* If autoregister is set let's register the user
+        // If autoregister is set let's register the user
         $autoregister = isset($options['autoregister']) ? $options['autoregister'] : $this->params->get('autoregister', 1);
 
         if ($autoregister)
@@ -485,9 +387,8 @@ class PlgAuthenticationQwcrm //extends QFramework
         {
             // No existing user and autoregister off, this is a temporary user.
             $instance->set('tmp_user', true);
-        }*/
+        }
 
         return $instance;
-    }    
-    
+    }
 }

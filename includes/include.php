@@ -396,64 +396,6 @@ function set_page_header_and_meta_data($module, $page_tpl, $page_title_from_var 
     
 }
 
-##########################################################
-#  Verify User's authorization for a specific page       #
-##########################################################
-
-function check_acl($db, $login_account_type_id, $module, $page_tpl){
-    
-    global $smarty;
-    
-    /* error catching - you cannot use normal error logging as it will cause a loop */
-    if($login_account_type_id == ''){
-        echo $smarty->getTemplateVars('translate_system_include_error_message_function_'.__FUNCTION__.'_no_account_type_id');
-        die;        
-    }
-
-    /* Get user's Group Name by login_account_type_id */
-    $sql = 'SELECT '.PRFX.'EMPLOYEE_ACCOUNT_TYPES.TYPE_NAME
-            FROM '.PRFX.'EMPLOYEE_ACCOUNT_TYPES 
-            WHERE TYPE_ID ='.$db->qstr($login_account_type_id);
-    
-    if(!$rs = $db->execute($sql)) {        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_system_include_error_message_function_'.__FUNCTION__.'_group_name_failed'));
-        exit;
-    } else {
-        $employee_acl_account_type_display_name = $rs->fields['TYPE_NAME'];
-    } 
-    
-    // Build the page name for the ACL lookup
-    $module_page = $module.':'.$page_tpl;
-    
-    /* Check Page to see if we have access */
-    $sql = "SELECT ".$employee_acl_account_type_display_name." AS PAGE_ACL FROM ".PRFX."EMPLOYEE_ACL WHERE page=".$db->qstr($module_page);
-
-    if(!$rs = $db->execute($sql)) {        
-        force_error_page($_GET['page'], 'authentication', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_system_include_error_message_function_'.__FUNCTION__.'_get_page_acl_failed'));
-        exit;
-    } else {
-        
-        $acl = $rs->fields['PAGE_ACL'];
-        
-        // Add if guest (8) rules here if there are errors
-        
-        if($acl != 1) {
-            
-            // should this just be an access error message
-            //force_error_page($_GET['page'], 'authentication', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_system_include_error_message_function_'.__FUNCTION__.'_no_page_permission'));
-            // x $smarty->assign('warning_msg', $smarty->getTemplateVars('translate_system_include_error_message_function_'.__FUNCTION__.'_no_page_permission'));
-            force_page('core', 'login', 'warning_msg='.$smarty->getTemplateVars('translate_system_include_error_message_function_'.__FUNCTION__.'_no_page_permission').' '.$module.':'.$page_tpl);            
-            exit;
-        } else {
-            
-            return true;
-            
-        }
-        
-    }
-    
-}
-
 ############################################
 #  Verify QWcrm is installed correctly     #
 ############################################

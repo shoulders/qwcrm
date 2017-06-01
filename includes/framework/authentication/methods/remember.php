@@ -60,12 +60,11 @@ class PlgSystemRemember //extends JPlugin
                 $cookieName = QUserHelper::getShortHashedUserAgent();
             }*/
 
-            $cookieData = new QCookie;
-            echo $cookieData->get($cookieName);
+            $cookie = new QCookie;            
             
             // Check for the cookie
             //if ($this->app->input->cookie->get($cookieName))
-            if ($cookieData->get($cookieName))
+            if ($cookie->get($cookieName))
             {
                 $auth = QFactory::getAuth();
                 $auth->login(array('username' => ''), array('silent' => true));
@@ -92,8 +91,8 @@ class PlgSystemRemember //extends JPlugin
         $cookieName = 'qwcrm_remember_me_' . QUserHelper::getShortHashedUserAgent();
 
         // Check for the cookie
-        $conf = QFactory::getConfig();
-        if ($conf->get($cookieName))
+        $config = QFactory::getConfig();
+        if ($config->get($cookieName))
         {
             // Make sure authentication group is loaded to process onUserAfterLogout event
             //JPluginHelper::importPlugin('authentication');

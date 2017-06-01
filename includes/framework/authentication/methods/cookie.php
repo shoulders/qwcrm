@@ -1,5 +1,7 @@
 <?php
 // D:\websites\htdocs\quantumwarp.com\plugins\authentication\cookie\cookie.php
+//also
+// D:\websites\htdocs\quantumwarp.com\plugins\system\remember\remember.php
 /**
  * @package     Joomla.Plugin
  * @subpackage  Authentication.cookie
@@ -17,7 +19,7 @@ defined('_QWEXEC') or die;
  * @note   Code based on http://jaspan.com/improved_persistent_login_cookie_best_practice
  *         and http://fishbowl.pastiche.org/2004/01/19/persistent_login_cookie_best_practice/
  */
-class PlgAuthenticationCookie //extends QFramework
+class PlgAuthenticationCookie //extends QFramework //class PlgSystemRemember //extends JPlugin
 {
     /**
      * Application object
@@ -47,7 +49,54 @@ class PlgAuthenticationCookie //extends QFramework
         $this->response     = new QAuthenticationResponse;  // does this need to be an object?
         $this->filter       = new QFilterInput;
         
+    }   
+    
+    /**
+     * Remember me method to run onAfterInitialise
+     * Only purpose is to initialise the login authentication process if a cookie is present - this allows a silent login with the remember_me cookie
+     *
+     * @return  void
+     *
+     * @since   1.5
+     * @throws  InvalidArgumentException
+     */
+    public function onAfterInitialise()
+    {
+        // Get the application if not done by JPlugin. This may happen during upgrades from Joomla 2.5.
+        /*if (!$this->app)
+        {
+            $this->app = QFactory::getApplication();
+        }*/
+
+        // No remember me for admin.
+        if (QFactory::isClient('administrator'))
+        {
+            return;
+        }
+        
+        // Check for a cookie if user is not logged in - (guests are not log in)        
+        if (QFactory::getUser()->get('guest'))
+        {
+            $cookieName = 'qwcrm_remember_me_' . QUserHelper::getShortHashedUserAgent();
+
+            /* Try with old cookieName (pre 3.6.0) if not found
+            if (!$this->app->input->cookie->get($cookieName))
+            {
+                $cookieName = QUserHelper::getShortHashedUserAgent();
+            }*/
+
+            $cookie = new QCookie;            
+            
+            // Check for the cookie
+            //if ($this->app->input->cookie->get($cookieName))
+            if ($cookie->get($cookieName))
+            {
+                $auth = QFactory::getAuth();
+                $auth->login(array('username' => ''), array('silent' => true));
+            }
+        }
     }
+    
     /**
      * This method should handle any authentication and report back to the subject
      *
@@ -112,9 +161,6 @@ class PlgAuthenticationCookie //extends QFramework
         {
             // We aren't concerned with errors from this query, carry on
         }
-        
-        
-        
 
         /* Find the matching record if it exists.
         $query = $this->db->getQuery(true)
@@ -124,8 +170,9 @@ class PlgAuthenticationCookie //extends QFramework
             ->where($this->db->quoteName('uastring') . ' = ' . $this->db->quote($cookieName))
             ->order($this->db->quoteName('time') . ' DESC');*/
         
-       // Find the matching record if it exists.
-       $sql = "SELECT user_id, token, series, time FROM ".PRFX."user_keys WHERE series = ".$this->db->qstr($series)." AND uastring = ".$this->db->qstr($series)." ORDER BY time DESC";
+        // Find the matching record if it exists.
+        $sql = "SELECT user_id, token, series, time FROM ".PRFX."user_keys WHERE series = ".$this->db->qstr($series)." AND uastring = ".$this->db->qstr($series)." ORDER BY time DESC";
+        
         try
         {
             //$results = $this->db->setQuery($query)->loadObjectList();
@@ -145,7 +192,7 @@ class PlgAuthenticationCookie //extends QFramework
         {
             // Destroy the cookie in the browser.
             //setcookie($cookieName, false, time() - 42000, $this->conf->get('cookie_path', '/'), $this->conf->get('cookie_domain'));
-            set($cookieName, false, time() - 42000, $this->config->get('cookie_path', '/'), $this->config->get('cookie_domain'));
+            $this->cookie->set($cookieName, false, time() - 42000, $this->config->get('cookie_path', '/'), $this->config->get('cookie_domain'));
             $response->status = QAuthentication::STATUS_FAILURE;
 
             return false;
@@ -179,10 +226,8 @@ class PlgAuthenticationCookie //extends QFramework
                 );
             }
             
-            
-
             // Destroy the cookie in the browser.
-            $this->cookie->set($cookieName, false, time() - 42000, $this->app->get('cookie_path', '/'), $this->app->get('cookie_domain'));
+            $this->cookie->set($cookieName, false, time() - 42000, $this->config->get('cookie_path', '/'), $this->config->get('cookie_domain'));
 
             // Issue warning by email to user and/or admin?
             JLog::add(JText::sprintf('PLG_AUTH_COOKIE_ERROR_LOG_LOGIN_FAILED', $results[0]->user_id), JLog::WARNING, 'security');
@@ -204,8 +249,7 @@ class PlgAuthenticationCookie //extends QFramework
         {
             //$result = $this->db->setQuery($query)->loadObject();
             $rs = $this->db->Execute($sql);
-            $result = $rs->GetRowAssoc;
-            
+            $result = $rs->GetRowAssoc;            
         }
         catch (RuntimeException $e)
         {
@@ -217,8 +261,8 @@ class PlgAuthenticationCookie //extends QFramework
         if ($result)
         {
             // Bring this in line with the rest of the system
-            //$user = QUser::getInstance($result['EMPLOYEE_ID']);
-            $user = QFactory::getUser($result['EMPLOYEE_ID']);
+            $user = QUser::getInstance($result['EMPLOYEE_ID']);
+            //$user = QFactory::getUser($result['EMPLOYEE_ID']);  // or use load() - i shuld use get instances for the data but use the response for authentication?
             
             // Set response data.
             $response->username = $result['EMPLOYEE_LOGIN'];
@@ -420,6 +464,35 @@ class PlgAuthenticationCookie //extends QFramework
         return true;
     }
 
+    /**
+     * Imports the authentication plugin on user logout to make sure that the cookie is destroyed.
+     *
+     * @param   array  $user     Holds the user data.
+     * @param   array  $options  Array holding options (remember, autoregister, group).
+     *
+     * @return  boolean
+     */
+    public function onUserLogout($user, $options)
+    {
+        // No remember me for admin
+        if (QFactory::isClient('administrator'))
+        {
+            return true;
+        }
+
+        $cookieName = 'qwcrm_remember_me_' . QUserHelper::getShortHashedUserAgent();
+
+        // Check for the cookie
+        $config = QFactory::getConfig();
+        if ($config->get($cookieName))
+        {
+            // Make sure authentication group is loaded to process onUserAfterLogout event
+            //JPluginHelper::importPlugin('authentication');
+        }
+
+        return true;
+    }
+    
     /**
      * This is where we delete any authentication cookie when a user logs out
      *

@@ -24,8 +24,8 @@ require INCLUDES_DIR . 'framework/authentication/response.php';         // this 
 require INCLUDES_DIR . 'framework/authentication/Webclient.php';        // this libary gets the browser details from the session (used in cookie creation)
 require INCLUDES_DIR . 'framework/authentication/methods/cookie.php';   // This allos the user to be be authenticated by a coookie (persitent session)
 require INCLUDES_DIR . 'framework/authentication/methods/qwcrm.php';    // This is the standard username and password authorisation
-require INCLUDES_DIR . 'framework/authentication/methods/remember.php'; // This is the standard username and password authorisation
-require INCLUDES_DIR . 'framework/authentication/StringHelper.php'; // This is the standard username and password authorisation
+require INCLUDES_DIR . 'framework/authentication/methods/remember.php'; // instigates a silent login if a remember_me cookie is found
+require INCLUDES_DIR . 'framework/authentication/StringHelper.php';     // 
 
 require INCLUDES_DIR . 'framework/user/user.php';                       // This is the object/thing that hols the user data objectr
 require INCLUDES_DIR . 'framework/user/helper.php';                     // This contains password hassing functions etc..
@@ -42,12 +42,13 @@ class QFactory {
     public static $siteName     = 'site';   // Site name ('site' or 'administrator' )
     public static $database     = null;     // Global Databse object
     public static $auth         = null;     // Global authetication object
+    public static $session      = null;
     
     // Context Variables
     public $db                  = null;     // Global database object   
     public $smarty              = null;     // Global smarty object
     public $conf                = null;
-    public $session             = null;
+    
     public $phpsession          = null;     // old php session for compatability - could be removed after testing
     
     // Might not keep this  
@@ -59,13 +60,17 @@ class QFactory {
         $this->db       = QFactory::getDbo();
         global $smarty;
         $this->smarty   = $smarty;
-        $this->session  = new QSession();        // make this an object
-        //$this->phpsession = new phpsession;     // for compatability
         
-        // Try to automatically login - i,e, using the remember me cookie
-        $rememberMePlg = new PlgSystemRemember;
+        // start/load the session
+        QFactory::getSession();       
+        
+        // Try to automatically login - i,e, using the remember me cookie - instigates a silent login if a remembe_me cookie is found
+        /*$rememberMePlg = new PlgSystemRemember;
         $rememberMePlg->onAfterInitialise();
-        unset($rememberMePlg);
+        unset($rememberMePlg);*/
+        $rememberMe = new PlgAuthenticationCookie;  // this allows silent login using remember me cookie after checking it exists
+        $rememberMe->onAfterInitialise();
+        unset($rememberMe);
         
     }
 
@@ -120,12 +125,13 @@ class QFactory {
      */
     public function logout($userid = null, $options = array())
     {    
+        $session = QFactory::getSession();
         
         $auth = QFactory::getAuth();
         $auth->logout($userid, $options);
         
         // Log activity       
-        write_record_to_activity_log($this->smarty->getTemplateVars('translate_system_auth_log_message_logout_successful_for').' '.$this->session->get('login_usr'));        
+        write_record_to_activity_log($this->smarty->getTemplateVars('translate_system_auth_log_message_logout_successful_for').' '.$session->get('login_usr'));        
                 
         // Reload with 'Logout Successful' message        
         force_page('core', 'login', 'information_msg='.$this->smarty->getTemplateVars('translate_system_auth_advisory_message_logout_successful'), 'get');
@@ -133,6 +139,26 @@ class QFactory {
     } 
    
 /********************************** Object Grabbers ********************************************/
+    
+    /**
+     * Get a database object.
+     *
+     * Returns the global {@link JDatabaseDriver} object, only creating it if it doesn't already exist.
+     *
+     * @return  JDatabaseDriver
+     *
+     * @see     JDatabaseDriver
+     * @since   11.1
+     */
+    public static function getSession()
+    {
+        if (!self::$session)
+        {
+            self::$session = new QSession;
+        }
+
+        return self::$session;
+    } 
     
     /**
      * Get a database object.
@@ -249,7 +275,9 @@ class QFactory {
     
     
     
-
+// change get user model back to not overriding the whole thing when an ID is set ? this is neater
+    
+    
     /**
      * Get a user object.
      *
@@ -263,8 +291,15 @@ class QFactory {
      * @since   11.1
      */       
     public static function getUser($id = null)
-    {        
-        if(self::$user && $id !== null)
+    {    
+        
+        if(!self::$user)
+        {
+            self::$user = new QUser($id);            
+        }
+        return self::$user;
+        
+        /*if(self::$user && $id !== null)
         {
             self::$user = new QUser($id);
             return self::$user;
@@ -279,20 +314,20 @@ class QFactory {
         {
             self::$user = new QUser($id);
             return self::$user;
-        }
+        }*/
 
     }
 
      /**
-     * Get a user object.
+     * Get authentication object.
      *
      * Returns the global {@link QUser} object, only creating it if it doesn't already exist.
      *
      * @param   integer  $id  The user to load - Can be an integer or string - If string, it is converted to ID automatically.
      *
-     * @return  QUser object
+     * @return  QAuthentication object
      *
-     * @see     QUser
+     * @see     QAuthentication
      * @since   11.1
      */       
     public static function getAuth()
@@ -330,7 +365,6 @@ class QFactory {
     {
         return self::$siteName;
     }
-
 
     /**
      * Check the client interface by name.

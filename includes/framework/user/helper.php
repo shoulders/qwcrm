@@ -287,13 +287,18 @@ class QUserHelper
     {
         // Initialise some variables
         $db = QFactory::getDbo();
-        $query = $db->getQuery(true)
+        
+        /**$query = $db->getQuery(true)
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__users'))
             ->where($db->quoteName('username') . ' = ' . $db->quote($username));
-        $db->setQuery($query, 0, 1);
+        $db->setQuery($query, 0, 1);*/
+        
+        $sql = "SELECT EMPLOYEE_ID FROM ".PRFX."EMPLOYEE WHERE EMPLOYEE_LOGIN = ".$db->qstr($username);
+        $rs = $db->Execute($sql);        
 
-        return $db->loadResult();
+        //return $db->loadResult();
+        return $rs->fields['EMPLOYEE_ID'];        
     }
 
     /**
