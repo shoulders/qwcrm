@@ -42,7 +42,7 @@ class QUserHelper
         if (!in_array($groupId, $user->groups))
         {
             // Get the title of the group.
-            $db = QFactory::getDbo();
+            $db = JFactory::getDbo();
             $query = $db->getQuery(true)
                 ->select($db->quoteName('title'))
                 ->from($db->quoteName('#__usergroups'))
@@ -67,10 +67,10 @@ class QUserHelper
         $temp         = JUser::getInstance((int) $userId);
         $temp->groups = $user->groups;
 
-        if (QFactory::getSession()->getId())
+        if (JFactory::getSession()->getId())
         {
             // Set the group data for the user object in the session.
-            $temp = QFactory::getUser();
+            $temp = JFactory::getUser();
 
             if ($temp->id == $userId)
             {
@@ -126,11 +126,11 @@ class QUserHelper
         }
 
         // Set the group data for any preloaded user objects.
-        $temp = QFactory::getUser((int) $userId);
+        $temp = JFactory::getUser((int) $userId);
         $temp->groups = $user->groups;
 
         // Set the group data for the user object in the session.
-        $temp = QFactory::getUser();
+        $temp = JFactory::getUser();
 
         if ($temp->id == $userId)
         {
@@ -160,7 +160,7 @@ class QUserHelper
         $user->groups = $groups;
 
         // Get the titles for the user groups.
-        $db = QFactory::getDbo();
+        $db = JFactory::getDbo();
         $query = $db->getQuery(true)
             ->select($db->quoteName('id') . ', ' . $db->quoteName('title'))
             ->from($db->quoteName('#__usergroups'))
@@ -180,11 +180,11 @@ class QUserHelper
         if (session_id())
         {
             // Set the group data for any preloaded user objects.
-            $temp = QFactory::getUser((int) $userId);
+            $temp = JFactory::getUser((int) $userId);
             $temp->groups = $user->groups;
 
             // Set the group data for the user object in the session.
-            $temp = QFactory::getUser();
+            $temp = JFactory::getUser();
 
             if ($temp->id == $userId)
             {
@@ -208,7 +208,7 @@ class QUserHelper
     {
         if ($userId == 0)
         {
-            $user   = QFactory::getUser();
+            $user   = JFactory::getUser();
             $userId = $user->id;
         }
 
@@ -236,7 +236,7 @@ class QUserHelper
      */
     public static function activateUser($activation)
     {
-        $db = QFactory::getDbo();
+        $db = JFactory::getDbo();
 
         // Let's get the id of the user we want to activate
         $query = $db->getQuery(true)
@@ -286,7 +286,7 @@ class QUserHelper
     public static function getUserId($username)
     {
         // Initialise some variables
-        $db = QFactory::getDbo();
+        $db = JFactory::getDbo();
         
         /**$query = $db->getQuery(true)
             ->select($db->quoteName('id'))
@@ -756,7 +756,7 @@ class QUserHelper
      */
     public static function invalidateCookie($userId, $cookieName)
     {
-        $db = QFactory::getDbo();
+        $db = JFactory::getDbo();
         $query = $db->getQuery(true);
 
         // Invalidate cookie in the database
@@ -786,7 +786,7 @@ class QUserHelper
     {
         $now = time();
 
-        $db = QFactory::getDbo();
+        $db = JFactory::getDbo();
         $query = $db->getQuery(true)
         ->delete('#__user_keys')
         ->where($db->quoteName('time') . ' < ' . $db->quote($now));
@@ -831,7 +831,7 @@ class QUserHelper
      */
     public static function getShortHashedUserAgent()
     {
-        //$ua = QFactory::getApplication()->client;  // this is to load the browser details
+        //$ua = JFactory::getApplication()->client;  // this is to load the browser details
         $ua = new WebClient;                        // this is to load the browser details
         $uaString = $ua->userAgent;
         $browserVersion = $ua->browserVersion;

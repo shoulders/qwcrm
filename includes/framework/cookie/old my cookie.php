@@ -127,7 +127,7 @@ class getCookieData
         }
         else
         {
-            $this->filter = QFilterInput::getInstance();
+            $this->filter = JFilterInput::getInstance();
         }
             /* sort these - You cannot change the session module's ini settings at this time
                 // D:\websites\htdocs\quantumwarp.com\libraries\joomla\session\handler\joomla.php

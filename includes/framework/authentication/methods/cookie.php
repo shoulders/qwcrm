@@ -43,11 +43,11 @@ class PlgAuthenticationCookie //extends QFramework //class PlgSystemRemember //e
     
     public function __construct()
     {
-        $this->db           = QFactory::getDbo();
-        $this->config       = QFactory::getConfig();
-        $this->cookie       = new QCookie;
+        $this->db           = JFactory::getDbo();
+        $this->config       = JFactory::getConfig();
+        $this->cookie       = new Cookie;
         $this->response     = new QAuthenticationResponse;  // does this need to be an object?
-        $this->filter       = new QFilterInput;
+        $this->filter       = new JFilterInput;
         
     }   
     
@@ -65,17 +65,17 @@ class PlgAuthenticationCookie //extends QFramework //class PlgSystemRemember //e
         // Get the application if not done by JPlugin. This may happen during upgrades from Joomla 2.5.
         /*if (!$this->app)
         {
-            $this->app = QFactory::getApplication();
+            $this->app = JFactory::getApplication();
         }*/
 
         // No remember me for admin.
-        if (QFactory::isClient('administrator'))
+        if (JFactory::isClient('administrator'))
         {
             return;
         }
         
         // Check for a cookie if user is not logged in - (guests are not log in)        
-        if (QFactory::getUser()->get('guest'))
+        if (JFactory::getUser()->get('guest'))
         {
             $cookieName = 'qwcrm_remember_me_' . QUserHelper::getShortHashedUserAgent();
 
@@ -85,13 +85,13 @@ class PlgAuthenticationCookie //extends QFramework //class PlgSystemRemember //e
                 $cookieName = QUserHelper::getShortHashedUserAgent();
             }*/
 
-            $cookie = new QCookie;            
+            $cookie = new Cookie;            
             
             // Check for the cookie
             //if ($this->app->input->cookie->get($cookieName))
             if ($cookie->get($cookieName))
             {
-                $auth = QFactory::getAuth();
+                $auth = JFactory::getAuth();
                 $auth->login(array('username' => ''), array('silent' => true));
             }
         }
@@ -111,7 +111,7 @@ class PlgAuthenticationCookie //extends QFramework //class PlgSystemRemember //e
     public function onUserAuthenticate($credentials, $options, &$response)
     {
         // No remember me for admin
-        if (QFactory::isClient('administrator'))
+        if (JFactory::isClient('administrator'))
         {
             return false;
         }
@@ -141,7 +141,7 @@ class PlgAuthenticationCookie //extends QFramework //class PlgSystemRemember //e
         $response->type = 'Cookie';
 
         // Filter series since we're going to use it in the query
-        $filter = new QFilterInput;
+        $filter = new JFilterInput;
         $series = $filter->clean($cookieArray[1], 'ALNUM');
 
         /* Remove expired tokens
@@ -262,7 +262,7 @@ class PlgAuthenticationCookie //extends QFramework //class PlgSystemRemember //e
         {
             // Bring this in line with the rest of the system
             $user = QUser::getInstance($result['EMPLOYEE_ID']);
-            //$user = QFactory::getUser($result['EMPLOYEE_ID']);  // or use load() - i shuld use get instances for the data but use the response for authentication?
+            //$user = JFactory::getUser($result['EMPLOYEE_ID']);  // or use load() - i shuld use get instances for the data but use the response for authentication?
             
             // Set response data.
             $response->username = $result['EMPLOYEE_LOGIN'];
@@ -296,7 +296,7 @@ class PlgAuthenticationCookie //extends QFramework //class PlgSystemRemember //e
     public function onUserAfterLogin($options)
     {
         // No remember me for admin
-        if (QFactory::isClient('administrator'))
+        if (JFactory::isClient('administrator'))
         {
             return false;
         }
@@ -322,7 +322,7 @@ class PlgAuthenticationCookie //extends QFramework //class PlgSystemRemember //e
             $cookieArray = explode('.', $cookieValue);
 
             // Filter series since we're going to use it in the query
-            $filter = new QFilterInput;
+            $filter = new JFilterInput;
             $series = $filter->clean($cookieArray[1], 'ALNUM');
         }
         elseif (!empty($options['remember']))
@@ -475,7 +475,7 @@ class PlgAuthenticationCookie //extends QFramework //class PlgSystemRemember //e
     public function onUserLogout($user, $options)
     {
         // No remember me for admin
-        if (QFactory::isClient('administrator'))
+        if (JFactory::isClient('administrator'))
         {
             return true;
         }
@@ -483,7 +483,7 @@ class PlgAuthenticationCookie //extends QFramework //class PlgSystemRemember //e
         $cookieName = 'qwcrm_remember_me_' . QUserHelper::getShortHashedUserAgent();
 
         // Check for the cookie
-        $config = QFactory::getConfig();
+        $config = JFactory::getConfig();
         if ($config->get($cookieName))
         {
             // Make sure authentication group is loaded to process onUserAfterLogout event
@@ -506,7 +506,7 @@ class PlgAuthenticationCookie //extends QFramework //class PlgSystemRemember //e
     public function onUserAfterLogout()
     {
         // No remember me for admin
-        if (QFactory::isClient('administrator'))
+        if (JFactory::isClient('administrator'))
         {
             return false;
         }

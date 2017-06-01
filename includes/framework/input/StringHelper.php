@@ -7,7 +7,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
-namespace Joomla\String;
+//namespace Joomla\String;
 
 // PHP mbstring and iconv local configuration
 if (version_compare(PHP_VERSION, '5.6', '>='))

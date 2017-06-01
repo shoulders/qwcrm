@@ -464,7 +464,7 @@ class QAuthentication
              * Any errors raised should be done in the plugin as this provides the ability
              * to provide much more information about why the routine may have failed.
              */
-            $user = QFactory::getUser();
+            $user = JFactory::getUser();
 
             if ($response->type == 'Cookie')
             {
@@ -524,11 +524,11 @@ class QAuthentication
     public function logout($userid = null, $options = array())
     {
         // Get a user object from the JApplication.
-        //$user = QFactory::getUser($userid);
-        $user = QFactory::getUser($userid);
+        //$user = JFactory::getUser($userid);
+        $user = JFactory::getUser($userid);
         
         // Get config
-        $config = QFactory::getConfig();
+        $config = JFactory::getConfig();
 
         // Build the credentials array.
         $parameters['username'] = $user->get('username');
@@ -537,7 +537,7 @@ class QAuthentication
         // Set clientid in the options array if it hasn't been set already and shared sessions are not enabled.
         if (!$config->get('shared_session', '0') && !isset($options['clientid']))
         {
-            $options['clientid'] = QFactory::getClientId();
+            $options['clientid'] = JFactory::getClientId();
         }
 
         // Import the user plugin group.
@@ -554,9 +554,9 @@ class QAuthentication
         if (!in_array(false, $results, true))
         {
             $options['username'] = $user->get('username');
-            //$this->triggerEvent('onUserAfterLogout', array($options));          // (stored qwcrm.php and cookie.php methods)
+            //$this->triggerEvent('onUserAfterLogout', array($options));          // (stored qwcrm.php and cookie.php methods)            
+            $this->qwcrmAuthPlg->onUserLogout($parameters, $options);  //onUserLogout($user, $options = array()
             $this->cookieAuthPlg->onUserAfterLogout($options);
-            $this->qwcrmAuthPlg->onUserAfterLogout($options);
 
             return true;
         }

@@ -152,7 +152,7 @@ if(!load_language()) {$smarty->assign('error_msg', 'Error in system language fil
 ################################################
 
 // Initiate QFramework
-$app = new QFactory();
+$app = new JFactory;
 
 ################################################
 #           Authentication                     #
@@ -194,7 +194,7 @@ unset($credentials);
 
 /* Assign Logged in User's Variables to PHP and Smarty */
 
-$user = QFactory::getUser();
+$user = JFactory::getUser();
 //print_r(QFactory::$user->login_display_name);
 //print_r($user->login_display_name);
 // unset the user object as no longer needed?

@@ -1,6 +1,6 @@
 <?php
 
-// this overrrides key function in QSession and then runs the corresponding parent function so the cookie is set and so is the session in tandom
+// this overrrides key function in JSession and then runs the corresponding parent function so the cookie is set and so is the session in tandom
 
 
 // D:\websites\htdocs\quantumwarp.com\libraries\joomla\session\handler\joomla.php
@@ -27,7 +27,7 @@ defined('_QWEXEC') or die;
  * @since       3.5
  * @deprecated  4.0  The CMS' Session classes will be replaced with the `joomla/session` package
  */
-class QCookieSession extends QSession
+class QCookieSession extends JSession
 {
     /**
      * The input object
@@ -147,7 +147,7 @@ class QCookieSession extends QSession
                 $cookie['secure'] = true;
             }
 
-            //$config = QFactory::getConfig();
+            //$config = JFactory::getConfig();
 
             if ($this->config->get('cookie_domain', '') != '')
             {

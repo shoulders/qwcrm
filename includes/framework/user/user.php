@@ -205,7 +205,7 @@ class QUser
     public function __construct($identifier = 0, QUserHelper $userHelper = null)
     {    
         // Load database connection
-        $this->db = QFactory::getDbo();        
+        $this->db = JFactory::getDbo();        
         
         if (null === $userHelper)
         {
@@ -447,7 +447,7 @@ class QUser
             // Hence this code is required:
             if (isset($array['password2']) && $array['password'] != $array['password2'])
             {
-                QFactory::getApplication()->enqueueMessage(JText::_('JLIB_USER_ERROR_PASSWORD_NOT_MATCH'), 'error');
+                JFactory::getApplication()->enqueueMessage(JText::_('JLIB_USER_ERROR_PASSWORD_NOT_MATCH'), 'error');
 
                 return false;
             }
@@ -457,7 +457,7 @@ class QUser
             $array['password'] = $this->userHelper->hashPassword($array['password']);
 
             // Set the registration timestamp
-            $this->set('registerDate', QFactory::getDate()->toSql());
+            $this->set('registerDate', JFactory::getDate()->toSql());
 
             // Check that username is not greater than 150 characters
             $username = $this->get('username');
@@ -564,7 +564,7 @@ class QUser
 
             // @todo ACL - this needs to be acl checked
 
-            $my = QFactory::getUser();
+            $my = JFactory::getUser();
 
             // Are we creating a new user
             $isNew = empty($this->id);
@@ -751,7 +751,7 @@ class QUser
      *
      * @since   3.6.0
      */
-    public function _5_wakeup()
+    public function __wakeup()
     {
         // Initialise some variables
         $this->userHelper = new QUserHelper;

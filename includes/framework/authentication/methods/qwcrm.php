@@ -26,7 +26,7 @@ class PlgAuthenticationQwcrm //extends QFramework
     
     public function __construct()
     {
-        $this->db = QFactory::getDbo();
+        $this->db = JFactory::getDbo();
         
     }
     /**
@@ -67,7 +67,7 @@ class PlgAuthenticationQwcrm //extends QFramework
             {
                 // Bring this in line with the rest of the system
                 $user               = QUser::getInstance($result['EMPLOYEE_ID']);
-                //$user = QFactory::getUser($result['EMPLOYEE_ID']);
+                //$user = JFactory::getUser($result['EMPLOYEE_ID']);
                 
                 $response->email    = $user->email;
                 $response->fullname = $user->name;
@@ -313,19 +313,20 @@ class PlgAuthenticationQwcrm //extends QFramework
         // Mark the user as logged in
         $instance->guest = 0;
 
-        $session = QFactory::getSession();
+        $session = JFactory::getSession();
 
         // Grab the current session ID
         $oldSessionId = $session->getId();
 
-        // Fork the session
+        // Fork the session - regenerates it
         $session->fork();
 
         // install the logged in user's object into the session
         $session->set('user', $instance);
 
         // Ensure the new session's metadata is written to the database
-        $session->checkSessionDbExists();
+        $session->checkSession();
+        //JFactory::checkSession();
 
         /* Purge the old session
         $query = $this->db->getQuery(true)
@@ -352,9 +353,9 @@ class PlgAuthenticationQwcrm //extends QFramework
         $cookie_domain = $config->get('cookie_domain', '');
         $cookie_path   = $config->get('cookie_path', '/');
 
-        if (QFactory::isClient('site'))
+        if (JFactory::isClient('site'))
         {
-            $cookie = new QCookie;
+            $cookie = new Cookie;
             $cookie->set('joomla_user_state', 'logged_in', 0, $cookie_path, $cookie_domain, 0);
         }
 
@@ -373,10 +374,10 @@ class PlgAuthenticationQwcrm //extends QFramework
      */
     public function onUserLogout($user, $options = array())
     {
-        $my      = QFactory::getUser();
-        $session = QFactory::getSession();
-        $config  = QFactory::getConfig();
-        $cookie  = new QCookie;
+        $my      = JFactory::getUser();
+        $session = JFactory::getSession();
+        $config  = JFactory::getConfig();
+        $cookie  = new Cookie;
 
         // Make sure we're a valid user first
         if ($user['id'] == 0 && !$my->get('tmp_user'))
@@ -387,7 +388,7 @@ class PlgAuthenticationQwcrm //extends QFramework
         $sharedSessions = $config->get('shared_session', '0');
 
         // Check to see if we're deleting the current session
-        if ($my->id == $user['id'] && ($sharedSessions || (!$sharedSessions && $options['clientid'] == QFactory::getClientId())))
+        if ($my->id == $user['id'] && ($sharedSessions || (!$sharedSessions && $options['clientid'] == JFactory::getClientId())))
         {
             // Hit the user last visit field
             $my->setLastVisit();
@@ -424,7 +425,7 @@ class PlgAuthenticationQwcrm //extends QFramework
         $cookie_domain = $config->get('cookie_domain', '');
         $cookie_path   = $config->get('cookie_path', '/');
 
-        if (QFactory::isClient('site'))
+        if (JFactory::isClient('site'))
         {
             $cookie->set('joomla_user_state', '', time() - 86400, $cookie_path, $cookie_domain, 0);
         }

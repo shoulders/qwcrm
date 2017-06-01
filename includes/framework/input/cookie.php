@@ -1,72 +1,46 @@
 <?php
-// D:\websites\htdocs\quantumwarp.com\libraries\vendor\joomla\input\src\Cookie.php
+// D:\websites\htdocs\quantumwarp.com\libraries\joomla\input\cookie.php
 /**
- * Part of the Joomla Framework Input Package
+ * @package     Joomla.Platform
+ * @subpackage  Input
  *
- * @copyright  Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE
+ * @copyright   Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
-//namespace Joomla\Input;
-
-//use Joomla\Filter;
+defined('_QWEXEC') or die;
 
 /**
  * Joomla! Input Cookie Class
  *
- * @since  1.0
+ * @since  11.1
  */
-class Cookie //extends Input
+class JInputCookie extends JInput
 {
-    /**
-     * Options array for the Input instance.
-     *
-     * @var    array
-     * @since  1.0
-     */
-    protected $options = array();
-    
-    /**
-     * Filter object to use.
-     *
-     * @var    Filter\InputFilter
-     * @since  1.0
-     */
-    protected $filter = null;
-
-    /**
-     * Input data.
-     *
-     * @var    array
-     * @since  1.0
-     */
-    protected $data = array();
-    
     /**
      * Constructor.
      *
      * @param   array  $source   Ignored.
      * @param   array  $options  Array of configuration parameters (Optional)
      *
-     * @since   1.0
+     * @since   11.1
      */
     public function __construct(array $source = null, array $options = array())
     {
-            if (isset($options['filter']))
-            {
-                $this->filter = $options['filter'];
-            }
-            else
-            {
-                //$this->filter = new Filter\InputFilter;
-                $this->filter = new JFilterInput;
-            }
+        if (isset($options['filter']))
+        {
+            $this->filter = $options['filter'];
+        }
+        else
+        {
+            $this->filter = JFilterInput::getInstance();
+        }
 
-            // Set the data source.
-            $this->data = & $_COOKIE;
+        // Set the data source.
+        $this->data = & $_COOKIE;
 
-            // Set the options for the class.
-            $this->options = $options;
+        // Set the options for the class.
+        $this->options = $options;
     }
 
     /**
@@ -105,38 +79,22 @@ class Cookie //extends Input
      *
      * @link    http://www.ietf.org/rfc/rfc2109.txt
      * @see     setcookie()
-     * @since   1.0
+     * @since   11.1
      */
     public function set($name, $value, $expire = 0, $path = '', $domain = '', $secure = false, $httpOnly = false)
     {
-        setcookie($name, $value, $expire, $path, $domain, $secure, $httpOnly);
-
-        // Set the submitted cookie payload
-        $this->data[$name] = $value;
-    }
-
-    // D:\websites\htdocs\quantumwarp.com\libraries\vendor\joomla\input\src\Input.php
-    /**
-     * Gets a value from the input data.
-     *
-     * @param   string  $name     Name of the value to get.
-     * @param   mixed   $default  Default value to return if variable does not exist.
-     * @param   string  $filter   Filter to apply to the value.
-     *
-     * @return  mixed  The filtered input value.
-     *
-     * @see     \Joomla\Filter\InputFilter::clean()
-     * @since   1.0
-     */
-    public function get($name, $default = null, $filter = 'cmd')
-    {
-        if (isset($this->data[$name]))
-        {           
-            $filterObj = new JFilterInput;
-            return $filterObj->clean($this->data[$name], $filter);
+        if (is_array($value))
+        {
+            foreach ($value as $key => $val)
+            {
+                setcookie($name . "[$key]", $val, $expire, $path, $domain, $secure, $httpOnly);
+            }
+        }
+        else
+        {
+            setcookie($name, $value, $expire, $path, $domain, $secure, $httpOnly);
         }
 
-        return $default;
+        $this->data[$name] = $value;
     }
-    
-}    
+}

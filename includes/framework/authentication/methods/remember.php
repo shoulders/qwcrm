@@ -40,17 +40,17 @@ class PlgSystemRemember //extends JPlugin
         // Get the application if not done by JPlugin. This may happen during upgrades from Joomla 2.5.
         /*if (!$this->app)
         {
-            $this->app = QFactory::getApplication();
+            $this->app = JFactory::getApplication();
         }*/
 
         // No remember me for admin.
-        if (QFactory::isClient('administrator'))
+        if (JFactory::isClient('administrator'))
         {
             return;
         }
         
         // Check for a cookie if user is not logged in - (guests are not log in)        
-        if (QFactory::getUser()->get('guest'))
+        if (JFactory::getUser()->get('guest'))
         {
             $cookieName = 'qwcrm_remember_me_' . QUserHelper::getShortHashedUserAgent();
 
@@ -60,13 +60,13 @@ class PlgSystemRemember //extends JPlugin
                 $cookieName = QUserHelper::getShortHashedUserAgent();
             }*/
 
-            $cookie = new QCookie;            
+            $cookie = new Cookie;            
             
             // Check for the cookie
             //if ($this->app->input->cookie->get($cookieName))
             if ($cookie->get($cookieName))
             {
-                $auth = QFactory::getAuth();
+                $auth = JFactory::getAuth();
                 $auth->login(array('username' => ''), array('silent' => true));
             }
         }
@@ -83,7 +83,7 @@ class PlgSystemRemember //extends JPlugin
     public function onUserLogout($user, $options)
     {
         // No remember me for admin
-        if (QFactory::isClient('administrator'))
+        if (JFactory::isClient('administrator'))
         {
             return true;
         }
@@ -91,7 +91,7 @@ class PlgSystemRemember //extends JPlugin
         $cookieName = 'qwcrm_remember_me_' . QUserHelper::getShortHashedUserAgent();
 
         // Check for the cookie
-        $config = QFactory::getConfig();
+        $config = JFactory::getConfig();
         if ($config->get($cookieName))
         {
             // Make sure authentication group is loaded to process onUserAfterLogout event
