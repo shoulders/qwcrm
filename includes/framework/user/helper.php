@@ -20,7 +20,7 @@ use Joomla\Utilities\ArrayHelper;
  *
  * @since  11.1
  */
-class QUserHelper
+class JUserHelper
 {
     /**
      * Method to add a user to a group.
@@ -396,7 +396,7 @@ class QUserHelper
         // If we have a match and rehash = true, rehash the password with the current algorithm.
         if ((int) $user_id > 0 && $match && $rehash)
         {
-            $user = new QUser($user_id);
+            $user = new JUser($user_id);
             $user->password = static::hashPassword($password);
             $user->save();
         }
@@ -836,8 +836,9 @@ class QUserHelper
         $uaString = $ua->userAgent;
         $browserVersion = $ua->browserVersion;
         $uaShort = str_replace($browserVersion, 'abcd', $uaString);
+        //return md5(JUri::base() . $uaShort);
 
-        return md5(QWCRM_PROTOCOL . QWCRM_DOMAIN . QWCRM_PATH . $uaShort);
+        return md5(QWCRM_DOMAIN . QWCRM_PATH . $uaShort);
     }
 
     /**

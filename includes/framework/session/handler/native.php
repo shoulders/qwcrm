@@ -190,7 +190,7 @@ class JSessionHandlerNative implements JSessionHandlerInterface
             $data    = $session->getData();
 
             // Before storing it, let's serialize and encode the Registry object
-            $_SESSION['joomla'] = base64_encode(serialize($data));
+            $_SESSION['qwcrm'] = base64_encode(serialize($data));
 
             session_write_close();
 

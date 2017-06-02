@@ -77,12 +77,12 @@ class PlgAuthenticationCookie //extends QFramework //class PlgSystemRemember //e
         // Check for a cookie if user is not logged in - (guests are not log in)        
         if (JFactory::getUser()->get('guest'))
         {
-            $cookieName = 'qwcrm_remember_me_' . QUserHelper::getShortHashedUserAgent();
+            $cookieName = 'qwcrm_remember_me_' . JUserHelper::getShortHashedUserAgent();
 
             /* Try with old cookieName (pre 3.6.0) if not found
             if (!$this->app->input->cookie->get($cookieName))
             {
-                $cookieName = QUserHelper::getShortHashedUserAgent();
+                $cookieName = JUserHelper::getShortHashedUserAgent();
             }*/
 
             $cookie = new Cookie;            
@@ -117,7 +117,7 @@ class PlgAuthenticationCookie //extends QFramework //class PlgSystemRemember //e
         }
 
         // Get cookie
-        $cookieName  = 'qwcrm_remember_me_' . QUserHelper::getShortHashedUserAgent();
+        $cookieName  = 'qwcrm_remember_me_' . JUserHelper::getShortHashedUserAgent();
         $cookieValue = $this->cookie->get($cookieName);        
 
         if (!$cookieValue)
@@ -199,7 +199,7 @@ class PlgAuthenticationCookie //extends QFramework //class PlgSystemRemember //e
         }
 
         // We have a user with one cookie with a valid series and a corresponding record in the database.
-        if (!QUserHelper::verifyPassword($cookieArray[0], $results[0]['token']))
+        if (!JUserHelper::verifyPassword($cookieArray[0], $results[0]['token']))
         {
             /*
              * This is a real attack! Either the series was guessed correctly or a cookie was stolen and used twice (once by attacker and once by victim).
@@ -261,7 +261,7 @@ class PlgAuthenticationCookie //extends QFramework //class PlgSystemRemember //e
         if ($result)
         {
             // Bring this in line with the rest of the system
-            $user = QUser::getInstance($result['EMPLOYEE_ID']);
+            $user = JUser::getInstance($result['EMPLOYEE_ID']);
             //$user = JFactory::getUser($result['EMPLOYEE_ID']);  // or use load() - i shuld use get instances for the data but use the response for authentication?
             
             // Set response data.
@@ -304,7 +304,7 @@ class PlgAuthenticationCookie //extends QFramework //class PlgSystemRemember //e
         if (isset($options['responseType']) && $options['responseType'] === 'Cookie')
         {
             // Logged in using a cookie
-            $cookieName = 'qwcrm_remember_me_' . QUserHelper::getShortHashedUserAgent();
+            $cookieName = 'qwcrm_remember_me_' . JUserHelper::getShortHashedUserAgent();
 
             // We need the old data to get the existing series
             $cookieValue = $this->cookie->get($cookieName);
@@ -312,7 +312,7 @@ class PlgAuthenticationCookie //extends QFramework //class PlgSystemRemember //e
             /* Try with old cookieName (pre 3.6.0) if not found
             if (!$cookieValue)
             {
-                $oldCookieName = QUserHelper::getShortHashedUserAgent();
+                $oldCookieName = JUserHelper::getShortHashedUserAgent();
                 $cookieValue   = $this->cookie->get($oldCookieName);
 
                 // Destroy the old cookie in the browser
@@ -328,7 +328,7 @@ class PlgAuthenticationCookie //extends QFramework //class PlgSystemRemember //e
         elseif (!empty($options['remember']))
         {
             // Remember checkbox is set
-            $cookieName = 'qwcrm_remember_me_' . QUserHelper::getShortHashedUserAgent();
+            $cookieName = 'qwcrm_remember_me_' . JUserHelper::getShortHashedUserAgent();
 
             // Create a unique series which will be used over the lifespan of the cookie
             $unique     = false;
@@ -336,7 +336,7 @@ class PlgAuthenticationCookie //extends QFramework //class PlgSystemRemember //e
 
             do
             {
-                $series = QUserHelper::genRandomPassword(20);
+                $series = JUserHelper::genRandomPassword(20);
                 
                 /*
                 $query  = $this->db->getQuery(true)
@@ -384,7 +384,7 @@ class PlgAuthenticationCookie //extends QFramework //class PlgSystemRemember //e
         $length   = $this->config->get('cookie_key_length', '16');
 
         // Generate new cookie
-        $token       = QUserHelper::genRandomPassword($length);
+        $token       = JUserHelper::genRandomPassword($length);
         $cookieValue = $token . '.' . $series;
 
         // Overwrite existing cookie with new value
@@ -411,9 +411,9 @@ class PlgAuthenticationCookie //extends QFramework //class PlgSystemRemember //e
                     uastring    =". $this->db->qstr( $cookieName                ).",
                     time        =". ( time() + $lifetime                        );*/
             
-            $record['user_id']  = $this->db->qstr( $options['user']->username );
-            $record['series']   = $this->db->qstr( $series);
-            $record['uastring'] = $this->db->qstr( $cookieName );
+            $record['user_id']  = $options['user']->username;
+            $record['series']   = $series;
+            $record['uastring'] = $cookieName;
             $record['time']     = time() + $lifetime;
                 
 
@@ -432,17 +432,17 @@ class PlgAuthenticationCookie //extends QFramework //class PlgSystemRemember //e
                     series      =". $this->db->qstr( $series                    ).",
                     uastring    =". $this->db->qstr( $cookieName                );*/
                    
-            $where['user_id']  = $this->db->qstr( $options['user']->username );
-            $where['series']   = $this->db->qstr( $series );
-            $where['uastring'] = $this->db->qstr( $cookieName );
+            $where['user_id']  = $options['user']->username;
+            $where['series']   = $series;
+            $where['uastring'] = $cookieName;
             
         }
 
         // Get hashed token
-        $hashed_token = QUserHelper::hashPassword($token);        
+        $hashed_token = JUserHelper::hashPassword($token);        
 
         //query->set($this->db->quoteName('token') . ' = ' . $this->db->quote($hashed_token));
-        $record['token'] = $this->db->qstr( $hashed_token );
+        $record['token'] = $hashed_token;
         
         try
         {
@@ -480,7 +480,7 @@ class PlgAuthenticationCookie //extends QFramework //class PlgSystemRemember //e
             return true;
         }
 
-        $cookieName = 'qwcrm_remember_me_' . QUserHelper::getShortHashedUserAgent();
+        $cookieName = 'qwcrm_remember_me_' . JUserHelper::getShortHashedUserAgent();
 
         // Check for the cookie
         $config = JFactory::getConfig();
@@ -511,7 +511,7 @@ class PlgAuthenticationCookie //extends QFramework //class PlgSystemRemember //e
             return false;
         }
 
-        $cookieName  = 'qwcrm_remember_me_' . QUserHelper::getShortHashedUserAgent();
+        $cookieName  = 'qwcrm_remember_me_' . JUserHelper::getShortHashedUserAgent();
         $cookieValue = $this->cookie->get($cookieName);
 
         // There are no cookies to delete.

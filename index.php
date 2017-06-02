@@ -194,7 +194,7 @@ unset($credentials);
 
 /* Assign Logged in User's Variables to PHP and Smarty */
 
-$user = JFactory::getUser();
+$user = JFactory::getUser();                         // I could unset this after use but create a $login_token
 //print_r(QFactory::$user->login_display_name);
 //print_r($user->login_display_name);
 // unset the user object as no longer needed?
@@ -391,7 +391,7 @@ elseif(isset($VAR['page']) && $VAR['page'] != ''){
 $BuildPage = '';
 
 /* Check the requested page with 'logged in' user against the ACL for authorisation - if allowed, display */
-if(QAuthentication::check_acl($db, $login_account_type_id, $module, $page_tpl)){
+if(check_acl($db, $login_account_type_id, $module, $page_tpl)){
     
     // If theme is set to Print mode then fetch the Page Content - Print system will output with its own format without need for headers and footers here
     if ($VAR['theme'] === 'print'){        
@@ -485,5 +485,6 @@ if ($GConfig->gzip == true && $VAR['theme'] !== 'print') {
 ################################################
 #    Display the Built Page                    #
 ################################################
-
+//print_r($app);
+//print_r(JFactory::getUser());
 echo $BuildPage;

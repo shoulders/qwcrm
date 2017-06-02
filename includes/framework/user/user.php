@@ -18,7 +18,7 @@ defined('_QWEXEC') or die;
  *
  * @since  11.1
  */
-class QUser
+class JUser
 {
 
     /**
@@ -163,53 +163,47 @@ class QUser
      *
      * @var    string
      * @since  11.1
-     *
-    protected $_errorMsg = null;*/
+     */
+    protected $_errorMsg = null;
 
     /**
-     * QUserHelper object
+     * JUserHelper object
      *
-     * @var    QUserHelper
+     * @var    JUserHelper
      * @since  3.4
      */
     protected $userHelper = null;
 
     /**
-     * @var    array  QUser instances container.
+     * @var    array  JUser instances container.
      * @since  11.3
      */
     protected static $instances = array();
     
-   // This holds the account data for the requested user (currently an array of the record) - might not need this
-   private $data;
-   
-    //$this->username             = $record['EMPLOYEE_USERNAME'];
-    //$this->id                   = $record['EMPLOYEE_ID'];
+    /**
+     * @var    array QWcrm User variables
+     * 
+     */    
     public $login_usr               = null;
     public $login_id                = null;
     public $login_account_type_id   = null;
     public $login_display_name      = null;
     public $login_token             = null;
-    
-    // holds the database object
-    private $db = null;    
 
     /**
      * Constructor activating the default information of the language
      *
      * @param   integer             $identifier  The primary key of the user to load (optional).
-     * @param   QUserHelper  $userHelper  The QUserHelper for the static methods.
+     * @param   JUserHelper  $userHelper  The JUserHelper for the static methods.
      *
      * @since   11.1
      */
-    public function __construct($identifier = 0, QUserHelper $userHelper = null)
+    public function __construct($identifier = 0, JUserHelper $userHelper = null)
     {    
-        // Load database connection
-        $this->db = JFactory::getDbo();        
         
         if (null === $userHelper)
         {
-            $userHelper = new QUserHelper;
+            $userHelper = new JUserHelper;
         }
 
         $this->userHelper = $userHelper;
@@ -229,8 +223,7 @@ class QUser
             $this->sendEmail = 0;
             $this->aid = 0;
             $this->guest = 1;
-        }   
-        
+        }
         
     }
 
@@ -238,17 +231,17 @@ class QUser
      * Returns the global User object, only creating it if it doesn't already exist.
      *
      * @param   integer             $identifier  The primary key of the user to load (optional).
-     * @param   QUserHelper  $userHelper  The QUserHelper for the static methods.
+     * @param   JUserHelper  $userHelper  The JUserHelper for the static methods.
      *
-     * @return  QUser  The User object.
+     * @return  JUser  The User object.
      *
      * @since   11.1
      */
-    public static function getInstance($identifier = 0, QUserHelper $userHelper = null)
+    public static function getInstance($identifier = 0, JUserHelper $userHelper = null)
     {
         if (null === $userHelper)
         {
-            $userHelper = new QUserHelper;
+            $userHelper = new JUserHelper;
         }
 
         // Find the user id
@@ -256,8 +249,8 @@ class QUser
         {
             if (!$id = $userHelper->getUserId($identifier))
             {
-                // If the $identifier doesn't match with any id, just return an empty QUser.
-                return new QUser;
+                // If the $identifier doesn't match with any id, just return an empty JUser.
+                return new JUser;
             }
         }
         else
@@ -265,17 +258,17 @@ class QUser
             $id = $identifier;
         }
 
-        // If the $id is zero, just return an empty QUser.
+        // If the $id is zero, just return an empty JUser.
         // Note: don't cache this user because it'll have a new ID on save!
         if ($id === 0)
         {
-            return new QUser;
+            return new JUser;
         }
 
         // Check if the user ID is already cached.
         if (empty(self::$instances[$id]))
         {
-            $user = new QUser($id, $userHelper);
+            $user = new JUser($id, $userHelper);
             self::$instances[$id] = $user;
         }
 
@@ -328,7 +321,7 @@ class QUser
     }
 
     /**
-     * Method to check QUser object authorisation against an access control
+     * Method to check JUser object authorisation against an access control
      * object and optionally an access extension object
      *
      * @param   string  $action     The name of the action to check for permission.
@@ -343,10 +336,7 @@ class QUser
         JAccess::check($this->id, $action, $assetname);
         return;
     }
-
-
-
-
+    
     /**
      * Pass through method to the table for setting the last visit date
      *
@@ -364,8 +354,9 @@ class QUser
 
         return $table->setLastVisit($timestamp);*/
         
-        $sql = "UPDATE ".PRFX."EMPLOYEE SET EMPLOYEE_LASTVISIT = ".time();
-        $this->db->Execute($sql);
+        $db = JFactory::getDbo();        
+        $sql = "UPDATE ".PRFX."EMPLOYEE SET EMPLOYEE_LASTVISIT = ".time()." WHERE EMPLOYEE_ID = " . $this->id;
+        $db->Execute($sql);
         
         return;
     }
@@ -532,7 +523,7 @@ class QUser
     }
 
     /**
-     * Method to save the QUser object to the database
+     * Method to save the JUser object to the database
      *
      * @param   boolean  $updateOnly  Save the object only if not a new user
      *                                Currently only used in the user reset password method.
@@ -576,7 +567,7 @@ class QUser
             }
 
             // Get the old user
-            $oldUser = new QUser($this->id);
+            $oldUser = new JUser($this->id);
 
             // Access Checks
 
@@ -630,7 +621,7 @@ class QUser
             // Store the user data in the database
             $result = $table->store();
 
-            // Set the id for the QUser object in case we created a new user.
+            // Set the id for the JUser object in case we created a new user.
             if (empty($this->id))
             {
                 $this->id = $table->get('id');
@@ -656,7 +647,7 @@ class QUser
     }
 
     /**
-     * Method to delete the QUser object from the database
+     * Method to delete the JUser object from the database
      *
      * @return  boolean  True on success
      *
@@ -668,7 +659,7 @@ class QUser
     }
 
     /**
-     * Method to load a QUser object by user id number
+     * Method to load a JUser object by user id number
      *
      * @param   mixed  $id  The user id of the user to load
      *
@@ -678,10 +669,11 @@ class QUser
      */
     public function load($id)
     {       
+        $db = JFactory::getDbo();
         
-        $sql = "SELECT * FROM ".PRFX."EMPLOYEE WHERE EMPLOYEE_ID = " . $this->db->qstr($id);
+        $sql = "SELECT * FROM ".PRFX."EMPLOYEE WHERE EMPLOYEE_ID = " . $db->qstr($id);        
         
-        if(!$rs = $this->db->execute($sql)){
+        if(!$rs = $db->execute($sql)){
             
             // Reset to guest user
             $this->guest = 1;
@@ -693,14 +685,13 @@ class QUser
             
         } else {
             
-            $record = $rs->GetRowAssoc();
-
-            $this->data = $record; // not sure this is correct or needed
+            // Load the user record into an array
+            $record = $rs->GetRowAssoc();            
             
             $this->username                 = $record['EMPLOYEE_LOGIN'];
             $this->id                       = $record['EMPLOYEE_ID'];
             
-            // Yes I have doubled up - this should be temporary but makes it easy to might to new system
+            // This is not normally used - everything is instance based i think
             $this->login_usr                = $record['EMPLOYEE_LOGIN'];
             $this->login_id                 = $record['EMPLOYEE_ID'];
             $this->login_account_type_id    = $record['EMPLOYEE_TYPE'];
@@ -754,7 +745,7 @@ class QUser
     public function __wakeup()
     {
         // Initialise some variables
-        $this->userHelper = new QUserHelper;
+        $this->userHelper = new JUserHelper;
         $this->_params    = new Registry;
 
         // Load the user if it exists
@@ -817,17 +808,6 @@ class QUser
 
         return $this;
     }     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     
 }

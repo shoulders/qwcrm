@@ -10,17 +10,20 @@
 defined('_QWEXEC') or die;
 
 // include class files
-require INCLUDES_DIR . 'framework/config.php';                          // This gets the standard config settings ONLY
+require INCLUDES_DIR . 'framework/general/config.php';                          // This gets the standard config settings ONLY
 require INCLUDES_DIR . 'framework/general/registry.php';                // This class is used to create/edit/read a JSON compatible register than can be stored in the database i.e. user paremeters or used within the various classes for data manipulation (set/get/ckear)
+require INCLUDES_DIR . 'framework/general/Webclient.php';        // this libary gets the browser details from the session (used in cookie creation)
+
 require INCLUDES_DIR . 'framework/input/StringHelper.php';
 require INCLUDES_DIR . 'framework/input/JFilterInput.php';            // this is used to clean/filter strings to suitable formats i.e. ALUM = alpha numeric - used for QCookie and authenticatin
 require INCLUDES_DIR . 'framework/input/core.php';                      // this is weired little fiel just for function utf8_strpos() from JFilterInput
 
+//
 //require INCLUDES_DIR . 'framework/session/session.php';                 // This handeles the user session (mainly php but utilises cookes) - update thhis description
 //require INCLUDES_DIR . 'framework/session/cookiesession.php';                  // This handles the basic cookie manipulation
 //require INCLUDES_DIR . 'framework/cookie/Input.php'; only used get so i have put that in cookie
 
-require INCLUDES_DIR . 'framework/cookie/Cookie.php'; // cookie object with set and get extends Input.php
+require INCLUDES_DIR . 'framework/general/Cookie.php'; // cookie object with set and get extends Input.php
 
 require INCLUDES_DIR . 'framework/input/input.php';
 require INCLUDES_DIR . 'framework/input/cookie.php';
@@ -34,16 +37,13 @@ require INCLUDES_DIR . 'framework/session/handler/native.php';
 require INCLUDES_DIR . 'framework/session/handler/joomla.php';
 
 
-
-
-
 require INCLUDES_DIR . 'framework/authentication/authentication.php';   // This is used to facilitate the authorization process
 require INCLUDES_DIR . 'framework/authentication/response.php';         // this is used to store the responses from the qwcrm.php and cookie.php authorisation plugins
 
-require INCLUDES_DIR . 'framework/authentication/Webclient.php';        // this libary gets the browser details from the session (used in cookie creation)
+
 require INCLUDES_DIR . 'framework/authentication/methods/cookie.php';   // This allos the user to be be authenticated by a coookie (persitent session)
 require INCLUDES_DIR . 'framework/authentication/methods/qwcrm.php';    // This is the standard username and password authorisation
-require INCLUDES_DIR . 'framework/authentication/methods/remember.php'; // instigates a silent login if a remember_me cookie is found
+//require INCLUDES_DIR . 'framework/authentication/methods/remember.php'; // instigates a silent login if a remember_me cookie is found
 
 
 require INCLUDES_DIR . 'framework/user/user.php';                       // This is the object/thing that hols the user data objectr
@@ -105,18 +105,21 @@ class JFactory {
             $this->conf->set('session', true);
         }
 
-        // Set the session default name.
+        // Set the session default name from the config file            - i need to make a random/hashed name here
         if (is_null($this->conf->get('session_name')))
         {
-            $this->conf->set('session_name', $this->getName());
+            //$this->conf->set('session_name', $this->getName());
+            $this->conf->set('session_name', session_name());
         }
 
         // Create the session if a session name is passed.
         if ($this->conf->get('session') !== false)
         {
             $this->loadSession();
-        }        
+        } 
         
+        // if you dont logon the user and registry are not loaded
+        $turnip = '555';
     }
 
  /**************************************login/authentication****************************************************/
@@ -140,7 +143,7 @@ class JFactory {
             
             /* Login true */
             
-            $user = self::getUser();
+            //$user = self::getUser();
 
             // Log activity       
             write_record_to_activity_log($this->smarty->getTemplateVars('translate_system_auth_log_message_login_successful_for').' '.$user->login_usr); 
@@ -165,28 +168,179 @@ class JFactory {
 
     
     /**
-     * Login authentication function.
+     * Login authentication function. - could add silent to logout?
      *
      */
     public function logout($userid = null, $options = array())
     {    
-        $session = self::getSession();
-        
+                
+        $user = self::getUser();  
         $auth = self::getAuth();
-        $auth->logout($userid, $options);
+
+        
+        // these all work
+        //$auth->logout();
+        //$auth->logout($userid = null, $options = array());
+        //$auth->logout($user->id, $options);
+        //$auth->logout(1, array());
+        
+        $auth->logout();
         
         // Log activity       
-        write_record_to_activity_log($this->smarty->getTemplateVars('translate_system_auth_log_message_logout_successful_for').' '.$session->get('login_usr'));        
+        write_record_to_activity_log($this->smarty->getTemplateVars('translate_system_auth_log_message_logout_successful_for').' '.$user->get('login_usr'));        
                 
         // Reload with 'Logout Successful' message        
         force_page('core', 'login', 'information_msg='.$this->smarty->getTemplateVars('translate_system_auth_advisory_message_logout_successful'), 'get');
         exit;
     } 
-   
-/********************************** Object Grabbers ********************************************/
+
+ /************************************** session ****************************************************/
+
+    /**
+     * Allows the application to load a custom or default session.
+     *
+     * The logic and options for creating this object are adequately generic for default cases
+     * but for many applications it will make sense to override this method and create a session,
+     * if required, based on more specific needs.
+     *
+     * @param   JSession  $session  An optional session object. If omitted, the session is created.
+     *
+     * @return  JApplicationCms  This method is chainable.
+     *
+     * @since   3.2
+     */
+    public function loadSession(JSession $session = null)
+    {
+        if ($session !== null)
+        {
+            $this->session = $session;
+
+            return $this;
+        }
+
+        // Generate a session name.
+        //$name = JApplicationHelper::getHash($this->get('session_name', get_class($this)));
+        $name = JFactory::getHash($this->conf->get('session_name', get_class($this)));
+
+        // Calculate the session lifetime.
+        $lifetime = ($this->conf->get('lifetime') ? $this->conf->get('lifetime') * 60 : 900);
+
+        // Initialize the options for JSession.
+        $options = array(
+            'name'   => $name,
+            'expire' => $lifetime,
+        );
+
+        switch (JFactory::getClientId())
+        {
+            case 0:
+                if ($this->conf->get('force_ssl') == 2)
+                {
+                    $options['force_ssl'] = true;
+                }
+
+                break;
+
+            case 1:
+                if ($this->conf->get('force_ssl') >= 1)
+                {
+                    $options['force_ssl'] = true;
+                }
+
+                break;
+        }
+
+        //////$this->registerEvent('onAfterSessionStart', array($this, 'afterSessionStart'));
+
+        /*
+         * Note: The below code CANNOT change from instantiating a session via JFactory until there is a proper dependency injection container supported
+         * by the application. The current default behaviours result in this method being called each time an application class is instantiated.
+         * https://github.com/joomla/joomla-cms/issues/12108 explains why things will crash and burn if you ever attempt to make this change
+         * without a proper dependency injection container.
+         */
+
+        $session = JFactory::getSession($options);
+        //$session->initialise($this->input, $this->dispatcher);
+
+        // TODO: At some point we need to get away from having session data always in the db.
+        $db = JFactory::getDbo();
+
+        // Remove expired sessions from the database.
+        $time = time();
+
+        // Check the session table for stale entries
+        $session->removeExpiredSessions();
+
+        // Get the session handler from the configuration.
+        $handler = $this->conf->get('session_handler', 'none');
+
+        if (($handler != 'database' && ($time % 2 || $session->isNew())) || ($handler == 'database' && $session->isNew()))
+        {
+            $session->checkSession();
+        }
+
+        // Set the session object.
+        //$this->session = $session;
+        self::$session = $session;
+
+        return $this;
+    }   
+
     
-    /**                             - mine
-     * Get a database object.
+   /**
+     * Get a session object.
+     *
+     * Returns the global {@link JSession} object, only creating it if it doesn't already exist.
+     *
+     * @param   array  $options  An array containing session options
+     *
+     * @return  JSession object
+     *
+     * @see     JSession
+     * @since   11.1
+     */
+    public static function getSession(array $options = array())
+    {
+        if (!self::$session)
+        {
+            self::$session = self::createSession($options);
+        }
+
+        return self::$session;
+    }
+  
+    /**
+     * Create a session object
+     *
+     * @param   array  $options  An array containing session options
+     *
+     * @return  JSession object
+     *
+     * @since   11.1
+     */
+    protected static function createSession(array $options = array())
+    {
+        // Get the Joomla configuration settings
+        $conf    = self::getConfig();
+        $handler = $conf->get('session_handler', 'none');
+
+        // Config time is in minutes
+        $options['expire'] = ($conf->get('lifetime')) ? $conf->get('lifetime') * 60 : 900;  // this is already stated in load session
+
+        $sessionHandler = new JSessionHandlerJoomla($options);
+        $session        = JSession::getInstance($handler, $options, $sessionHandler);
+
+        if ($session->getState() == 'expired')
+        {
+            $session->restart();
+        }
+
+        return $session;
+    }    
+    
+    
+   /**                             - mine
+     * Get a session object.
      *
      * Returns the global {@link JDatabaseDriver} object, only creating it if it doesn't already exist.
      *
@@ -245,276 +399,11 @@ class JFactory {
     }*/
     
     
-     
-    
-    
-    
-    
+
     
 
     
-    
-        /**
-     * Get a session object.
-     *
-     * Returns the global {@link JSession} object, only creating it if it doesn't already exist.
-     *
-     * @param   array  $options  An array containing session options
-     *
-     * @return  JSession object
-     *
-     * @see     JSession
-     * @since   11.1
-     */
-    public static function getSession(array $options = array())
-    {
-        if (!self::$session)
-        {
-            self::$session = self::createSession($options);
-        }
-
-        return self::$session;
-    }
-  
-    /**
-     * Create a session object
-     *
-     * @param   array  $options  An array containing session options
-     *
-     * @return  JSession object
-     *
-     * @since   11.1
-     */
-    protected static function createSession(array $options = array())
-    {
-        // Get the Joomla configuration settings
-        $conf    = self::getConfig();
-        $handler = $conf->get('session_handler', 'none');
-
-        // Config time is in minutes
-        $options['expire'] = ($conf->get('lifetime')) ? $conf->get('lifetime') * 60 : 900;
-
-        $sessionHandler = new JSessionHandlerJoomla($options);
-        $session        = JSession::getInstance($handler, $options, $sessionHandler);
-
-        if ($session->getState() == 'expired')
-        {
-            $session->restart();
-        }
-
-        return $session;
-    }    
-    
-    
-    /**
-     * Allows the application to load a custom or default session.
-     *
-     * The logic and options for creating this object are adequately generic for default cases
-     * but for many applications it will make sense to override this method and create a session,
-     * if required, based on more specific needs.
-     *
-     * @param   JSession  $session  An optional session object. If omitted, the session is created.
-     *
-     * @return  JApplicationCms  This method is chainable.
-     *
-     * @since   3.2
-     */
-    public function loadSession(JSession $session = null)
-    {
-        if ($session !== null)
-        {
-            $this->session = $session;
-
-            return $this;
-        }
-
-        // Generate a session name.
-        //$name = JApplicationHelper::getHash($this->get('session_name', get_class($this)));
-        $name = JFactory::getHash($this->conf->get('session_name', get_class($this)));
-
-        // Calculate the session lifetime.
-        $lifetime = ($this->conf->get('lifetime') ? $this->conf->get('lifetime') * 60 : 900);
-
-        // Initialize the options for JSession.
-        $options = array(
-            'name'   => $name,
-            'expire' => $lifetime,
-        );
-
-        switch ($this->getClientId())
-        {
-            case 0:
-                if ($this->conf->get('force_ssl') == 2)
-                {
-                    $options['force_ssl'] = true;
-                }
-
-                break;
-
-            case 1:
-                if ($this->conf->get('force_ssl') >= 1)
-                {
-                    $options['force_ssl'] = true;
-                }
-
-                break;
-        }
-
-        //////$this->registerEvent('onAfterSessionStart', array($this, 'afterSessionStart'));
-
-        /*
-         * Note: The below code CANNOT change from instantiating a session via JFactory until there is a proper dependency injection container supported
-         * by the application. The current default behaviours result in this method being called each time an application class is instantiated.
-         * https://github.com/joomla/joomla-cms/issues/12108 explains why things will crash and burn if you ever attempt to make this change
-         * without a proper dependency injection container.
-         */
-
-        $session = JFactory::getSession($options);
-        //$session->initialise($this->input, $this->dispatcher);
-
-        // TODO: At some point we need to get away from having session data always in the db.
-        $db = JFactory::getDbo();
-
-        // Remove expired sessions from the database.
-        $time = time();
-
-        // Check the session table for stale entries
-        $session->removeExpiredSessions();
-
-        // Get the session handler from the configuration.
-        $handler = $this->conf->get('session_handler', 'none');
-
-        if (($handler != 'database' && ($time % 2 || $session->isNew())) || ($handler == 'database' && $session->isNew()))
-        {
-            $session->checkSession();
-        }
-
-        // Set the session object.
-        //$this->session = $session;
-        self::$session = $session;
-
-        return $this;
-    }   
-
-          
-    
-    
-    
-    /**
-     * Get a database object.
-     *
-     * Returns the global {@link JDatabaseDriver} object, only creating it if it doesn't already exist.
-     *
-     * @return  JDatabaseDriver
-     *
-     * @see     JDatabaseDriver
-     * @since   11.1
-     */
-    public static function getDbo()
-    {
-        if (!self::$database)
-        {
-            self::$database = self::createDbo();
-        }
-
-        return self::$database;
-    }       
-    
-    
-    /**
-     * Create an database object
-     *
-     * @return  JDatabaseDriver
-     *
-     * @see     JDatabaseDriver
-     * @since   11.1
-     */
-    protected static function createDbo()
-    {
-          
-        $conf = self::getConfig();       
-        
-        // create adodb database connection
-        $db = ADONewConnection('mysqli');
-        $db->Connect($conf->get('db_host'), $conf->get('db_user'), $conf->get('db_pass'), $conf->get('db_name'));
-                
-        return $db;        
-    
-    }
-    
-    /**
-     * Get a configuration object - this allows the use in non object context
-     *
-     * Returns the global {@link GConfig} object, only creating it if it doesn't already exist.
-     *
-     * @param   string  $file       The path to the configuration file
-     * @param   string  $type       The type of the configuration file
-     * @param   string  $namespace  The namespace of the configuration file
-     *
-     * @return  Registry
-     *
-     * @see     Registry
-     * @since   11.1
-     */
-    public static function getConfig($file = null, $type = 'PHP', $namespace = '')
-    {
-        if (!self::$config)
-        {
-            if ($file === null)
-            {
-                $file = 'configuration.php';
-            }
-
-            self::$config = self::createConfig($file, $type, $namespace);            
-            
-        }
-
-        return self::$config;
-    }
-
-    /**
-     * Create a configuration object
-     *
-     * @param   string  $file       The path to the configuration file.
-     * @param   string  $type       The type of the configuration file.
-     * @param   string  $namespace  The namespace of the configuration file.
-     *
-     * @return  Registry
-     *
-     * @see     Registry
-     * @since   11.1
-     */
-    protected static function createConfig($file, $type = 'PHP', $namespace = '')
-    {
-        if (is_file($file))
-        {
-            include_once $file;
-        }
-
-        // Create the registry with a default namespace of config
-        $registry = new Registry;
-
-        // Sanitize the namespace.
-        $namespace = ucfirst((string) preg_replace('/[^A-Z_]/i', '', $namespace));
-
-        // Build the config name.
-        $name = 'GConfig' . $namespace;
-
-        // Handle the PHP configuration type.
-        if ($type == 'PHP' && class_exists($name))
-        {
-            // Create the GConfig object
-            $config = new $name;
-
-            // Load the configuration values into the registry
-            $registry->loadObject($config);
-        }
-
-        return $registry;
-    }  
-    
-    
-/***user Object Grabbers *******/   
+/********************************** User Object ********************************************/
 
 
    /**
@@ -523,13 +412,13 @@ class JFactory {
     * 
      * Get a user object.
      *
-     * Returns the global {@link QUser} object, only creating it if it doesn't already exist.
+     * Returns the global {@link JUser} object, only creating it if it doesn't already exist.
      *
      * @param   integer  $id  The user to load - Can be an integer or string - If string, it is converted to ID automatically.
      *
-     * @return  QUser object
+     * @return  JUser object
      *
-     * @see     QUser
+     * @see     JUser
      * @since   11.1
      */
     public static function getUser($id = null)
@@ -538,21 +427,19 @@ class JFactory {
 
         if (is_null($id))
         {
-            if (!($instance instanceof QUser))
+            if (!($instance instanceof JUser))
             {
-                $instance = QUser::getInstance();
+                $instance = JUser::getInstance();
             }
         }
         // Check if we have a string as the id or if the numeric id is the current instance
-        elseif (!($instance instanceof QUser) || is_string($id) || $instance->id !== $id)
+        elseif (!($instance instanceof JUser) || is_string($id) || $instance->id !== $id)
         {
-            $instance = QUser::getInstance($id);
+            $instance = JUser::getInstance($id);
         }
 
         return $instance;
     }
-    
-
     
     /**
      * Gets a user state.
@@ -636,13 +523,13 @@ class JFactory {
     /**
      * Get a user object.
      *
-     * Returns the global {@link QUser} object, only creating it if it doesn't already exist.
+     * Returns the global {@link JUser} object, only creating it if it doesn't already exist.
      *
      * @param   integer  $id  The user to load - Can be an integer or string - If string, it is converted to ID automatically.
      *
-     * @return  QUser object
+     * @return  JUser object
      *
-     * @see     QUser
+     * @see     JUser
      * @since   11.1
      *      
     public static function getUser($id = null)
@@ -650,13 +537,13 @@ class JFactory {
         
         if(!self::$user)
         {
-            self::$user = new QUser($id);            
+            self::$user = new JUser($id);            
         }
         return self::$user;
         
         /*if(self::$user && $id !== null)
         {
-            self::$user = new QUser($id);
+            self::$user = new JUser($id);
             return self::$user;
         }
         
@@ -667,18 +554,136 @@ class JFactory {
         
         if(!self::$user)
         {
-            self::$user = new QUser($id);
+            self::$user = new JUser($id);
             return self::$user;
         }**
 
     }*/
 
- /*****************/
+    
+/********************************** Other Object Grabbers ********************************************/
+    
+    /**
+     * Get a database object.
+     *
+     * Returns the global {@link JDatabaseDriver} object, only creating it if it doesn't already exist.
+     *
+     * @return  JDatabaseDriver
+     *
+     * @see     JDatabaseDriver
+     * @since   11.1
+     */
+    public static function getDbo()
+    {
+        if (!self::$database)
+        {
+            self::$database = self::createDbo();
+        }
+
+        return self::$database;
+    }       
+    
+    
+    /**
+     * Create an database object
+     *
+     * @return  JDatabaseDriver
+     *
+     * @see     JDatabaseDriver
+     * @since   11.1
+     */
+    protected static function createDbo()
+    {
+          
+        $conf = self::getConfig();       
+        
+        // create adodb database connection
+        $db = ADONewConnection('mysqli');
+        $db->Connect($conf->get('db_host'), $conf->get('db_user'), $conf->get('db_pass'), $conf->get('db_name'));
+                
+        return $db;        
+    
+    }
+  
+    
+    /**
+     * Get a configuration object - this allows the use in non object context
+     *
+     * Returns the global {@link GConfig} object, only creating it if it doesn't already exist.
+     *
+     * @param   string  $file       The path to the configuration file
+     * @param   string  $type       The type of the configuration file
+     * @param   string  $namespace  The namespace of the configuration file
+     *
+     * @return  Registry
+     *
+     * @see     Registry
+     * @since   11.1
+     */
+    public static function getConfig($file = null, $type = 'PHP', $namespace = '')
+    {
+        if (!self::$config)
+        {
+            if ($file === null)
+            {
+                $file = 'configuration.php';
+            }
+
+            self::$config = self::createConfig($file, $type, $namespace);            
+            
+        }
+
+        return self::$config;
+    }
+
+    /**
+     * Create a configuration object
+     *
+     * @param   string  $file       The path to the configuration file.
+     * @param   string  $type       The type of the configuration file.
+     * @param   string  $namespace  The namespace of the configuration file.
+     *
+     * @return  Registry
+     *
+     * @see     Registry
+     * @since   11.1
+     */
+    protected static function createConfig($file, $type = 'PHP', $namespace = '')
+    {
+        if (is_file($file))
+        {
+            include_once $file;
+        }
+
+        // Create the registry with a default namespace of config
+        $registry = new Registry;
+
+        // Sanitize the namespace.
+        $namespace = ucfirst((string) preg_replace('/[^A-Z_]/i', '', $namespace));
+
+        // Build the config name.
+        $name = 'GConfig' . $namespace;
+
+        // Handle the PHP configuration type.
+        if ($type == 'PHP' && class_exists($name))
+        {
+            // Create the GConfig object
+            $config = new $name;
+
+            // Load the configuration values into the registry
+            $registry->loadObject($config);
+        }
+
+        return $registry;
+    }  
+    
+
+
     
      /**
      * Get authentication object.
      *
-     * Returns the global {@link QUser} object, only creating it if it doesn't already exist.
+     * Returns the global {@link JUser} object, only creating it if it doesn't already exist.
      *
      * @param   integer  $id  The user to load - Can be an integer or string - If string, it is converted to ID automatically.
      *
@@ -712,7 +717,7 @@ class JFactory {
      * @see     JApplication
      * @since   11.1
      * @throws  Exception
-     */
+     *
     public static function getApplication($id = null, array $config = array(), $prefix = 'J')
     {
         if (!self::$application)
@@ -726,7 +731,7 @@ class JFactory {
         }
 
         return self::$application;
-    }    
+    }*/
 
 /********************************** Client and Site checks ********************************************/
 

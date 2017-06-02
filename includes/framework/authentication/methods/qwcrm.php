@@ -61,12 +61,12 @@ class PlgAuthenticationQwcrm //extends QFramework
         // if there is a match, verify it
         if ($result)
         {
-            $match = QUserHelper::verifyPassword($credentials['password'], $result['EMPLOYEE_PASSWORD'], $result['EMPLOYEE_ID']);
+            $match = JUserHelper::verifyPassword($credentials['password'], $result['EMPLOYEE_PASSWORD'], $result['EMPLOYEE_ID']);
 
             if ($match === true)
             {
                 // Bring this in line with the rest of the system
-                $user               = QUser::getInstance($result['EMPLOYEE_ID']);
+                $user               = JUser::getInstance($result['EMPLOYEE_ID']);
                 //$user = JFactory::getUser($result['EMPLOYEE_ID']);
                 
                 $response->email    = $user->email;
@@ -86,7 +86,7 @@ class PlgAuthenticationQwcrm //extends QFramework
         {
             // Let's hash the entered password even if we don't have a matching user for some extra response time
             // By doing so, we mitigate side channel user enumeration attacks
-            QUserHelper::hashPassword($credentials['password']);
+            JUserHelper::hashPassword($credentials['password']);
 
             // Invalid user
             $response->status        = QAuthentication::STATUS_FAILURE;
@@ -325,15 +325,16 @@ class PlgAuthenticationQwcrm //extends QFramework
         $session->set('user', $instance);
 
         // Ensure the new session's metadata is written to the database
-        $session->checkSession();
         //JFactory::checkSession();
+        $session->checkSession();
+        
 
         /* Purge the old session
         $query = $this->db->getQuery(true)
             ->delete('#__session')
             ->where($this->db->quoteName('session_id') . ' = ' . $this->db->quote($oldSessionId));*/
         
-        $sql = "DELETE FROM ".PFRX."session WHERE session_if = " . $this->db->qstr($oldSessionId);
+        $sql = "DELETE FROM ".PFRX."session WHERE session_id = " . $this->db->qstr($oldSessionId);
 
         try
         {
@@ -356,7 +357,7 @@ class PlgAuthenticationQwcrm //extends QFramework
         if (JFactory::isClient('site'))
         {
             $cookie = new Cookie;
-            $cookie->set('joomla_user_state', 'logged_in', 0, $cookie_path, $cookie_domain, 0);
+            $cookie->set('qwcrm_user_state', 'logged_in', 0, $cookie_path, $cookie_domain, 0);
         }
 
         return true;
@@ -397,29 +398,36 @@ class PlgAuthenticationQwcrm //extends QFramework
             $session->destroy();
         }
 
-        /* Enable / Disable Forcing logout all users with same userid
-        $forceLogout = $this->params->get('forceLogout', 1);
+        // Enable / Disable Forcing logout all users with same userid
+        //$forceLogout = $this->params->get('forceLogout', 1);
+        $forceLogout = 1;
 
         if ($forceLogout)
         {
-            $query = $this->db->getQuery(true)
+            /*$query = $this->db->getQuery(true)
                 ->delete($this->db->quoteName('#__session'))
-                ->where($this->db->quoteName('userid') . ' = ' . (int) $user['id']);
+                ->where($this->db->quoteName('userid') . ' = ' . (int) $user['id']);*/
+            
+            $sql = "DELETE FROM ".PRFX."session WHERE userid = " . $this->db->qstr((int) $user['id']);
 
             if (!$sharedSessions)
             {
-                $query->where($this->db->quoteName('client_id') . ' = ' . (int) $options['clientid']);
+                //$query->where($this->db->quoteName('client_id') . ' = ' . (int) $options['clientid']);
+                
+                $sql .= "AND client_id = " . $this->db->qstr((int) $options['clientid']);
             }
 
             try
             {
-                $this->db->setQuery($query)->execute();
+                //$this->db->setQuery($query)->execute();
+                
+                $this->db->Execute($sql);
             }
             catch (RuntimeException $e)
             {
                 return false;
             }
-        }*/
+        }
 
         // Delete "user state" cookie used for reverse caching proxies like Varnish, Nginx etc.
         $cookie_domain = $config->get('cookie_domain', '');
@@ -427,7 +435,8 @@ class PlgAuthenticationQwcrm //extends QFramework
 
         if (JFactory::isClient('site'))
         {
-            $cookie->set('joomla_user_state', '', time() - 86400, $cookie_path, $cookie_domain, 0);
+            $cookie->set('qwcrm_user_state', '', time() - 86400, $cookie_path, $cookie_domain, 0);
+            echo 'die cookie';
         }
 
         return true;
@@ -447,8 +456,8 @@ class PlgAuthenticationQwcrm //extends QFramework
      */
     protected function _getUser($user, $options = array())
     {
-        $instance = QUser::getInstance();
-        $id = (int) QUserHelper::getUserId($user['username']);
+        $instance = JUser::getInstance();
+        $id = (int) JUserHelper::getUserId($user['username']);
 
         if ($id)
         {

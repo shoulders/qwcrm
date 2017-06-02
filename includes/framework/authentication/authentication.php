@@ -357,7 +357,7 @@ class QAuthentication
     public static function authorise($response, $options = array())
     {
         
-        // this is suppose to cycle through auth plugins that ahve this event and process them
+        // this is suppose to cycle through auth plugins that have this event and process them
         // cookie.php and qwcrm.php do not have this
         
     
@@ -449,8 +449,7 @@ class QAuthentication
 
             ////// OK, the credentials are authenticated and user is authorised.  Let's fire the onLogin event. (stored qwcrm.php and cookie.php methods)
             //$results = $this->triggerEvent('onUserLogin', array((array) $response, $options));
-            //$results = array($this->qwcrmAuthPlg->onUserLogin(array((array) $response, $options)));
-            
+            //$results = array($this->qwcrmAuthPlg->onUserLogin(array((array) $response, $options)));            
             $user['username'] = $response->username;
             $user['fullname'] = $response->fullname;
             $user['password_clear'] = $response->password_clear;            
@@ -523,16 +522,17 @@ class QAuthentication
      */
     public function logout($userid = null, $options = array())
     {
-        // Get a user object from the JApplication.
-        //$user = JFactory::getUser($userid);
-        $user = JFactory::getUser($userid);
+        // Get a user object from the JApplication.       
+        $user = JFactory::getUser($userid);       
         
         // Get config
         $config = JFactory::getConfig();
 
         // Build the credentials array.
-        $parameters['username'] = $user->get('username');
-        $parameters['id'] = $user->get('id');
+        /*$parameters['username'] = $user->get('username');
+        $parameters['id'] = $user->get('id');*/
+        $parameters['username'] = $user->username;
+        $parameters['id'] = $user->id;
 
         // Set clientid in the options array if it hasn't been set already and shared sessions are not enabled.
         if (!$config->get('shared_session', '0') && !isset($options['clientid']))
@@ -557,7 +557,7 @@ class QAuthentication
             //$this->triggerEvent('onUserAfterLogout', array($options));          // (stored qwcrm.php and cookie.php methods)            
             $this->qwcrmAuthPlg->onUserLogout($parameters, $options);  //onUserLogout($user, $options = array()
             $this->cookieAuthPlg->onUserAfterLogout($options);
-
+            
             return true;
         }
 
@@ -566,64 +566,5 @@ class QAuthentication
         
         return false;
     }
-    
-
-##########################################################
-#  Verify User's authorization for a specific page       #
-##########################################################
-
-public static function check_acl($db, $login_account_type_id, $module, $page_tpl){
-    
-    global $smarty;
-    
-    /* error catching - you cannot use normal error logging as it will cause a loop */
-    if($login_account_type_id == ''){
-        echo $smarty->getTemplateVars('translate_system_include_error_message_function_'.__FUNCTION__.'_no_account_type_id');
-        die;        
-    }
-
-    /* Get user's Group Name by login_account_type_id */
-    $sql = 'SELECT '.PRFX.'EMPLOYEE_ACCOUNT_TYPES.TYPE_NAME
-            FROM '.PRFX.'EMPLOYEE_ACCOUNT_TYPES 
-            WHERE TYPE_ID ='.$db->qstr($login_account_type_id);
-    
-    if(!$rs = $db->execute($sql)) {        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_system_include_error_message_function_'.__FUNCTION__.'_group_name_failed'));
-        exit;
-    } else {
-        $employee_acl_account_type_display_name = $rs->fields['TYPE_NAME'];
-    } 
-    
-    // Build the page name for the ACL lookup
-    $module_page = $module.':'.$page_tpl;
-    
-    /* Check Page to see if we have access */
-    $sql = "SELECT ".$employee_acl_account_type_display_name." AS PAGE_ACL FROM ".PRFX."EMPLOYEE_ACL WHERE page=".$db->qstr($module_page);
-
-    if(!$rs = $db->execute($sql)) {        
-        force_error_page($_GET['page'], 'authentication', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_system_include_error_message_function_'.__FUNCTION__.'_get_page_acl_failed'));
-        exit;
-    } else {
         
-        $acl = $rs->fields['PAGE_ACL'];
-        
-        // Add if guest (8) rules here if there are errors
-        
-        if($acl != 1) {
-            
-            // should this just be an access error message
-            //force_error_page($_GET['page'], 'authentication', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_system_include_error_message_function_'.__FUNCTION__.'_no_page_permission'));
-            // x $smarty->assign('warning_msg', $smarty->getTemplateVars('translate_system_include_error_message_function_'.__FUNCTION__.'_no_page_permission'));
-            force_page('core', 'login', 'warning_msg='.$smarty->getTemplateVars('translate_system_include_error_message_function_'.__FUNCTION__.'_no_page_permission').' '.$module.':'.$page_tpl);            
-            exit;
-        } else {
-            
-            return true;
-            
-        }
-        
-    }
-    
-}    
-    
 }

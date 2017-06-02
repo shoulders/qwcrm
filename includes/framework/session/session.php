@@ -630,9 +630,15 @@ class JSession implements IteratorAggregate
             }
         }
 
-        if ($this->_dispatcher instanceof JEventDispatcher)
+        ////// AfterSessionStart event
+        /*if ($this->_dispatcher instanceof JEventDispatcher)
         {
             $this->_dispatcher->trigger('onAfterSessionStart');
+        }*/
+        if ($this->isNew())
+        {
+            $this->set('registry', new Registry);
+            $this->set('user', new JUser);
         }
     }
 
@@ -651,9 +657,9 @@ class JSession implements IteratorAggregate
 
         // Ok let's unserialize the whole thing
         // Try loading data from the session
-        if (isset($_SESSION['joomla']) && !empty($_SESSION['joomla']))
+        if (isset($_SESSION['qwcrm']) && !empty($_SESSION['qwcrm']))
         {
-            $data = $_SESSION['joomla'];
+            $data = $_SESSION['qwcrm'];
 
             $data = base64_decode($data);
 
@@ -1036,7 +1042,7 @@ class JSession implements IteratorAggregate
             $record['session_id']  = $this->getId()  ;
             $record['guest']       = (int) $user->guest;
             $record['time']        = (int) $time;
-            $record['userid']      = (int) $this->id;
+            $record['userid']      = (int) $user->id;
             $record['username']    = $user->username;                 
            
             // if login not shared between site and admin (joomla thing)
