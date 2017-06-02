@@ -16,7 +16,7 @@ defined('_QWEXEC') or die;
  *
  * @since  11.1
  */
-class QAuthentication
+class JAuthentication
 {
     // Shared success status
     /**
@@ -88,7 +88,7 @@ class QAuthentication
     protected $methods = array();
 
     /**
-     * @var    QAuthentication  QAuthentication instances container.
+     * @var    JAuthentication  JAuthentication instances container.
      * @since  11.3
      */
     protected static $instance;
@@ -102,9 +102,7 @@ class QAuthentication
     // Authentication plugins that I added
     protected $cookieAuthPlg = null;
     protected $qwcrmAuthPlg = null;
-    
-    
-    
+
     
     public function __construct()
     {
@@ -122,26 +120,26 @@ class QAuthentication
         }*/
     }
 
-    /**
+    /**                                                             - not sure i am using this anywhere
      * Returns the global authentication object, only creating it
      * if it doesn't already exist.
      *
-     * @return  QAuthentication  The global QAuthentication object
+     * @return  JAuthentication  The global JAuthentication object
      *
      * @since   11.1
-     *
+     */
     public static function getInstance()
     {
         if (empty(self::$instance))
         {
-            self::$instance = new QAuthentication;
+            self::$instance = new JAuthentication;
         }
 
         return self::$instance;
-    }*/
+    }
 
     /**
-     * Get the state of the QAuthentication object
+     * Get the state of the JAuthentication object
      *
      * @return  mixed    The state of the object.
      *
@@ -185,7 +183,7 @@ class QAuthentication
         }
         else
         {
-            if (!($observer instanceof QAuthentication))
+            if (!($observer instanceof JAuthentication))
             {
                 return;
             }
@@ -261,9 +259,9 @@ class QAuthentication
      * @param   array  $credentials  Array holding the user credentials.
      * @param   array  $options      Array holding user options.
      *
-     * @return  QAuthenticationResponse  Response object with status variable filled in for last plugin or first successful plugin.
+     * @return  JAuthenticationResponse  Response object with status variable filled in for last plugin or first successful plugin.
      *
-     * @see     QAuthenticationResponse
+     * @see     JAuthenticationResponse
      * @since   11.1
      * 
      * will read cookie and then qwcrm standard username and password
@@ -285,13 +283,13 @@ class QAuthentication
         
         
         // Create authentication response - holds the response(s)
-        $response = new QAuthenticationResponse;
+        $response = new JAuthenticationResponse;
         
         /*
          * Loop through the plugins and check if the credentials can be used to authenticate
          * the user
          *
-         * Any errors raised in the plugin should be returned via the QAuthenticationResponse
+         * Any errors raised in the plugin should be returned via the JAuthenticationResponse
          * and handled appropriately.
          */
         foreach ($plugins as $plugin)
@@ -347,10 +345,10 @@ class QAuthentication
     /**
      * Authorises that a particular user should be able to login
      *
-     * @param   QAuthenticationResponse  $response  response including username of the user to authorise
+     * @param   JAuthenticationResponse  $response  response including username of the user to authorise
      * @param   array                    $options   list of options
      *
-     * @return  array[QAuthenticationResponse]  results of authorisation
+     * @return  array[JAuthenticationResponse]  results of authorisation
      *
      * @since  11.2
      */
@@ -400,8 +398,8 @@ class QAuthentication
      */
     public function login($credentials, $options = array())
     {
-        // Get the global QAuthentication object.
-        //$authenticate = QAuthentication::getInstance();
+        // Get the global JAuthentication object.
+        //$authenticate = JAuthentication::getInstance();
         //$response = $authenticate->authenticate($credentials, $options); // this cycles through the plugins (qwcrm.php cookie.php methods) and collates the responses in a 'reponse class' and then returns it
         $response = $this->authenticate($credentials, $options); // this cycles through the plugins (qwcrm.php cookie.php methods) and collates the responses in a 'reponse class' and then returns it
 
@@ -409,7 +407,7 @@ class QAuthentication
         //QPluginHelper::importPlugin('user');
 
         // This 'if' does the traditional login mechanism and then does the code below if user is validated (cooie||username and password), this code is not used currently but i could use it to block users
-        if ($response->status === QAuthentication::STATUS_SUCCESS)
+        if ($response->status === JAuthentication::STATUS_SUCCESS)
         {
             /*
              * Validate that the user should be able to login (different to being authenticated).
@@ -417,7 +415,7 @@ class QAuthentication
              * This cycle through plugins responses (cookie.php and qwcrm.php) and then executes their login failures routine (if any) or continue
              */
             $authorisations = $this->authorise($response, $options);
-            $denied_states = QAuthentication::STATUS_EXPIRED | QAuthentication::STATUS_DENIED;
+            $denied_states = JAuthentication::STATUS_EXPIRED | JAuthentication::STATUS_DENIED;
 
             foreach ($authorisations as $authorisation)
             {
@@ -435,10 +433,10 @@ class QAuthentication
                     // Return the error.
                     switch ($authorisation->status)
                     {
-                        case QAuthentication::STATUS_EXPIRED:
+                        case JAuthentication::STATUS_EXPIRED:
                             return JError::raiseWarning('102002', JText::_('JLIB_LOGIN_EXPIRED'));
 
-                        case QAuthentication::STATUS_DENIED:
+                        case JAuthentication::STATUS_DENIED:
                             return JError::raiseWarning('102003', JText::_('JLIB_LOGIN_DENIED'));
 
                         default:
@@ -495,7 +493,7 @@ class QAuthentication
         }
 
         // If status is success, any error will have been raised by the user plugin
-        if ($response->status !== QAuthentication::STATUS_SUCCESS)
+        if ($response->status !== JAuthentication::STATUS_SUCCESS)
         {
             //JLog::add($response->error_message, JLog::WARNING, 'jerror');
         }

@@ -76,28 +76,18 @@ class JFactory {
     public static $session      = null;
     
     // Context Variables
-    public $db                  = null;     // Global database object   
     public $smarty              = null;     // Global smarty object
     public $conf                = null;
 
             
     public function __construct()
     {
-        $this->conf     = self::getConfig();
-        //$this->db       = self::getDbo();
+        $this->conf     = self::getConfig();       
         global $smarty;
         $this->smarty   = $smarty;
+     
         
-        // start/load the session
-        //self::getSession();       
-        
-        // Try to automatically login - i,e, using the remember me cookie - instigates a silent login if a remembe_me cookie is found
-        /*$rememberMePlg = new PlgSystemRemember;
-        $rememberMePlg->onAfterInitialise();
-        unset($rememberMePlg);*/
-        $rememberMe = new PlgAuthenticationCookie;  // this allows silent login using remember me cookie after checking it exists
-        $rememberMe->onAfterInitialise();
-        unset($rememberMe);
+
         
         // Enable sessions by default.
         if (is_null($this->conf->get('session')))
@@ -117,9 +107,14 @@ class JFactory {
         {
             $this->loadSession();
         } 
-        
-        // if you dont logon the user and registry are not loaded
-        $turnip = '555';
+
+        // Try to automatically login - i,e, using the remember me cookie - instigates a silent login if a remembe_me cookie is found
+        /*$rememberMePlg = new PlgSystemRemember;
+        $rememberMePlg->onAfterInitialise();
+        unset($rememberMePlg);*/
+        $rememberMe = new PlgAuthenticationCookie;  // this allows silent login using remember me cookie after checking it exists - need to mnake sure it does not logon if already logged on
+        $rememberMe->onAfterInitialise();
+        unset($rememberMe);        
     }
 
  /**************************************login/authentication****************************************************/
@@ -687,16 +682,16 @@ class JFactory {
      *
      * @param   integer  $id  The user to load - Can be an integer or string - If string, it is converted to ID automatically.
      *
-     * @return  QAuthentication object
+     * @return  JAuthentication object
      *
-     * @see     QAuthentication
+     * @see     JAuthentication
      * @since   11.1
      */       
     public static function getAuth()
     {        
         if(!self::$auth)
         {
-            self::$auth = new QAuthentication;
+            self::$auth = new JAuthentication;
             
         }
         return self::$auth;

@@ -46,7 +46,7 @@ class PlgAuthenticationCookie //extends QFramework //class PlgSystemRemember //e
         $this->db           = JFactory::getDbo();
         $this->config       = JFactory::getConfig();
         $this->cookie       = new Cookie;
-        $this->response     = new QAuthenticationResponse;  // does this need to be an object?
+        $this->response     = new JAuthenticationResponse;  // does this need to be an object?
         $this->filter       = new JFilterInput;
         
     }   
@@ -71,11 +71,16 @@ class PlgAuthenticationCookie //extends QFramework //class PlgSystemRemember //e
         // No remember me for admin.
         if (JFactory::isClient('administrator'))
         {
+            echo 'is admin';
             return;
         }
         
+        
+        
         // Check for a cookie if user is not logged in - (guests are not log in)        
-        if (JFactory::getUser()->get('guest'))
+       //if (JFactory::getUser()->get('guest'))
+        $user = JFactory::getUser();
+        if ($user->guest)
         {
             $cookieName = 'qwcrm_remember_me_' . JUserHelper::getShortHashedUserAgent();
 
@@ -83,13 +88,10 @@ class PlgAuthenticationCookie //extends QFramework //class PlgSystemRemember //e
             if (!$this->app->input->cookie->get($cookieName))
             {
                 $cookieName = JUserHelper::getShortHashedUserAgent();
-            }*/
-
-            $cookie = new Cookie;            
+            }*/          
             
-            // Check for the cookie
-            //if ($this->app->input->cookie->get($cookieName))
-            if ($cookie->get($cookieName))
+            // Check for the cookie - by seeing if there is any content            
+            if ($this->cookie->get($cookieName))
             {
                 $auth = JFactory::getAuth();
                 $auth->login(array('username' => ''), array('silent' => true));
@@ -125,9 +127,10 @@ class PlgAuthenticationCookie //extends QFramework //class PlgSystemRemember //e
             return false;
         }
 
+        // The cookie content is seperaters into 2 values by a period '.'
         $cookieArray = explode('.', $cookieValue);
 
-        // Check for valid cookie value
+        // Check for valid cookie value (must be 2 values in content)
         if (count($cookieArray) != 2)
         {
             // Destroy the cookie in the browser.
@@ -150,7 +153,7 @@ class PlgAuthenticationCookie //extends QFramework //class PlgSystemRemember //e
             ->where($this->db->quoteName('time') . ' < ' . $this->db->quote(time()));*/
         
         // Remove expired tokens
-        $sql = "DELETE FROM ".PRFX."user_keys WHERE time < ".$this->db->qstr(time());
+        $sql = "DELETE FROM ".PRFX."user_keys WHERE time < ".time();
         
         try
         {
@@ -171,17 +174,17 @@ class PlgAuthenticationCookie //extends QFramework //class PlgSystemRemember //e
             ->order($this->db->quoteName('time') . ' DESC');*/
         
         // Find the matching record if it exists.
-        $sql = "SELECT user_id, token, series, time FROM ".PRFX."user_keys WHERE series = ".$this->db->qstr($series)." AND uastring = ".$this->db->qstr($series)." ORDER BY time DESC";
+        $sql = "SELECT user_id, token, series, time FROM ".PRFX."user_keys WHERE series = ".$this->db->qstr($series)." AND uastring = ".$this->db->qstr($cookieName)." ORDER BY time DESC";
         
         try
         {
             //$results = $this->db->setQuery($query)->loadObjectList();
             $rs = $this->db->Execute($sql);
-            $results = $rs->GetArray; 
+            $results = $rs->GetArray(); 
         }
         catch (RuntimeException $e)
         {
-            $response->status = QAuthentication::STATUS_FAILURE;
+            $response->status = JAuthentication::STATUS_FAILURE;
 
             return false;
         }
@@ -193,7 +196,7 @@ class PlgAuthenticationCookie //extends QFramework //class PlgSystemRemember //e
             // Destroy the cookie in the browser.
             //setcookie($cookieName, false, time() - 42000, $this->conf->get('cookie_path', '/'), $this->conf->get('cookie_domain'));
             $this->cookie->set($cookieName, false, time() - 42000, $this->config->get('cookie_path', '/'), $this->config->get('cookie_domain'));
-            $response->status = QAuthentication::STATUS_FAILURE;
+            $response->status = JAuthentication::STATUS_FAILURE;
 
             return false;
         }
@@ -231,7 +234,7 @@ class PlgAuthenticationCookie //extends QFramework //class PlgSystemRemember //e
 
             // Issue warning by email to user and/or admin?
             JLog::add(JText::sprintf('PLG_AUTH_COOKIE_ERROR_LOG_LOGIN_FAILED', $results[0]->user_id), JLog::WARNING, 'security');
-            $response->status = QAuthentication::STATUS_FAILURE;
+            $response->status = JAuthentication::STATUS_FAILURE;
 
             return false;
         }
@@ -253,7 +256,7 @@ class PlgAuthenticationCookie //extends QFramework //class PlgSystemRemember //e
         }
         catch (RuntimeException $e)
         {
-            $response->status = QAuthentication::STATUS_FAILURE;
+            $response->status = JAuthentication::STATUS_FAILURE;
 
             return false;
         }
@@ -272,12 +275,12 @@ class PlgAuthenticationCookie //extends QFramework //class PlgSystemRemember //e
             //$response->language = $user->getParam('language');
 
             // Set response status.
-            $response->status        = QAuthentication::STATUS_SUCCESS;
+            $response->status        = JAuthentication::STATUS_SUCCESS;
             $response->error_message = '';
         }
         else
         {
-            $response->status        = QAuthentication::STATUS_FAILURE;
+            $response->status        = JAuthentication::STATUS_FAILURE;
             $response->error_message = JText::_('JGLOBAL_AUTH_NO_USER');
         }
     }

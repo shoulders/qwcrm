@@ -10,7 +10,7 @@
 
 defined('_QWEXEC') or die;
 
-use Joomla\Utilities\ArrayHelper;
+//use Joomla\Utilities\ArrayHelper;
 
 /**
  * Authorisation helper class, provides static methods to perform various tasks relevant

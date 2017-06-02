@@ -15,7 +15,7 @@
  *
  * @since  11.1
  */
-class QAuthenticationResponse
+class JAuthenticationResponse
 {
     /**
      * Response status (see status codes)
@@ -23,7 +23,7 @@ class QAuthenticationResponse
      * @var    string
      * @since  11.1
      */
-    public $status = QAuthentication::STATUS_FAILURE;
+    public $status = JAuthentication::STATUS_FAILURE;
 
     /**
      * The type of authentication that was successful

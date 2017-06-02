@@ -20,7 +20,7 @@ defined('_QWEXEC') or die;
  *
  * @since  1.5
  */
-class PlgAuthenticationQwcrm //extends QFramework
+class PlgAuthenticationQwcrm
 {
     private $db;
     
@@ -47,8 +47,8 @@ class PlgAuthenticationQwcrm //extends QFramework
         // Joomla does not like blank passwords
         if (empty($credentials['password']))
         {
-            $response->status        = QAuthentication::STATUS_FAILURE;
-            $response->error_message = JText::_('JGLOBAL_AUTH_EMPTY_PASS_NOT_ALLOWED');
+            $response->status        = JAuthentication::STATUS_FAILURE;
+            //$response->error_message = JText::_('JGLOBAL_AUTH_EMPTY_PASS_NOT_ALLOWED');
 
             return;
         }
@@ -72,13 +72,13 @@ class PlgAuthenticationQwcrm //extends QFramework
                 $response->email    = $user->email;
                 $response->fullname = $user->name;
 
-                $response->status        = QAuthentication::STATUS_SUCCESS;
+                $response->status        = JAuthentication::STATUS_SUCCESS;
                 $response->error_message = '';
             }
             else
             {
                 // Invalid password
-                $response->status        = QAuthentication::STATUS_FAILURE;
+                $response->status        = JAuthentication::STATUS_FAILURE;
                 //$response->error_message = JText::_('JGLOBAL_AUTH_INVALID_PASS');
             }
         }
@@ -89,7 +89,7 @@ class PlgAuthenticationQwcrm //extends QFramework
             JUserHelper::hashPassword($credentials['password']);
 
             // Invalid user
-            $response->status        = QAuthentication::STATUS_FAILURE;
+            $response->status        = JAuthentication::STATUS_FAILURE;
             //$response->error_message = JText::_('JGLOBAL_AUTH_NO_USER');
         }
 
@@ -435,8 +435,7 @@ class PlgAuthenticationQwcrm //extends QFramework
 
         if (JFactory::isClient('site'))
         {
-            $cookie->set('qwcrm_user_state', '', time() - 86400, $cookie_path, $cookie_domain, 0);
-            echo 'die cookie';
+            $cookie->set('qwcrm_user_state', '', time() - 86400, $cookie_path, $cookie_domain, 0);            
         }
 
         return true;
