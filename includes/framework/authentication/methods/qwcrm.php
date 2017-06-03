@@ -1,4 +1,5 @@
 <?php
+// joomla\plugins\authentication\joomla\joomla.php
 /**
  * @package     Joomla.Plugin
  * @subpackage  Authentication.joomla
@@ -6,12 +7,6 @@
  * @copyright   Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
-
-// add these routines
-// joomla\plugins\authentication\joomla\joomla.php
-
-
-// rename this user.php as it makes more sense
 
 defined('_QWEXEC') or die;
 
@@ -26,7 +21,7 @@ class PlgAuthenticationQwcrm
     
     public function __construct()
     {
-        $this->db = JFactory::getDbo();
+        $this->db = QFactory::getDbo();
         
     }
     /**
@@ -66,12 +61,10 @@ class PlgAuthenticationQwcrm
             if ($match === true)
             {
                 // Bring this in line with the rest of the system
-                $user               = JUser::getInstance($result['EMPLOYEE_ID']);
-                //$user = JFactory::getUser($result['EMPLOYEE_ID']);
+                $user                    = JUser::getInstance($result['EMPLOYEE_ID']);               
                 
-                $response->email    = $user->email;
-                $response->fullname = $user->name;
-
+                $response->email         = $user->email;
+                $response->fullname      = $user->name;
                 $response->status        = JAuthentication::STATUS_SUCCESS;
                 $response->error_message = '';
             }
@@ -97,30 +90,14 @@ class PlgAuthenticationQwcrm
         
     }
     
-// joomla\plugins\user\joomla\joomla.php
-/**
- * @package     Joomla.Plugin
- * @subpackage  User.joomla
- *
- * @copyright   Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
- */
-
-   /**
-     * Application object
-     *
-     * @var    JApplicationCms
-     * @since  3.2
-     */
-    //protected $app;
-
+    // joomla\plugins\user\joomla\joomla.php
     /**
-     * Database object
+     * @package     Joomla.Plugin
+     * @subpackage  User.joomla
      *
-     * @var    JDatabaseDriver
-     * @since  3.2
+     * @copyright   Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
+     * @license     GNU General Public License version 2 or later; see LICENSE.txt
      */
-    //protected $db;
 
     /**
      * Remove all sessions for the user name
@@ -142,34 +119,16 @@ class PlgAuthenticationQwcrm
             return false;
         }
 
-        /*$query = $this->db->getQuery(true)
-            ->delete($this->db->quoteName('#__session'))
-            ->where($this->db->quoteName('userid') . ' = ' . (int) $user['id']);*/
-        
         $sql = "DELETE FROM ".PRFX."session WHERE userid = ". (int) $user['id'];
 
         try
-        {
-            //$this->db->setQuery($query)->execute();
+        {            
             $this->db->Execute($sql);
         }
         catch (JDatabaseExceptionExecuting $e)
         {
             return false;
         }
-
-        /*$query = $this->db->getQuery(true)
-            ->delete($this->db->quoteName('#__messages'))
-            ->where($this->db->quoteName('user_id_from') . ' = ' . (int) $user['id']);
-
-        try
-        {
-            $this->db->setQuery($query)->execute();
-        }
-        catch (JDatabaseExceptionExecuting $e)
-        {
-            return false;
-        }*/
 
         return true;
     }
@@ -200,7 +159,7 @@ class PlgAuthenticationQwcrm
             {
                 if ($mail_to_user)
                 {
-                    $lang = JFactory::getLanguage();
+                    $lang = QFactory::getLanguage();
                     $defaultLocale = $lang->getTag();
 
                     /**
@@ -236,7 +195,7 @@ class PlgAuthenticationQwcrm
                     );
 
                     // Assemble the email data...the sexy way!
-                    $mail = JFactory::getMailer()
+                    $mail = QFactory::getMailer()
                         ->setSender(
                             array(
                                 $this->app->get('mailfrom'),
@@ -313,7 +272,7 @@ class PlgAuthenticationQwcrm
         // Mark the user as logged in
         $instance->guest = 0;
 
-        $session = JFactory::getSession();
+        $session = QFactory::getSession();
 
         // Grab the current session ID
         $oldSessionId = $session->getId();
@@ -324,21 +283,15 @@ class PlgAuthenticationQwcrm
         // install the logged in user's object into the session
         $session->set('user', $instance);
 
-        // Ensure the new session's metadata is written to the database
-        //JFactory::checkSession();
+        // Ensure the new session's metadata is written to the database        
         $session->checkSession();
         
 
-        /* Purge the old session
-        $query = $this->db->getQuery(true)
-            ->delete('#__session')
-            ->where($this->db->quoteName('session_id') . ' = ' . $this->db->quote($oldSessionId));*/
-        
+        // Purge the old session
         $sql = "DELETE FROM ".PFRX."session WHERE session_id = " . $this->db->qstr($oldSessionId);
 
         try
-        {
-            //$this->db->setQuery($query)->execute();
+        {            
             $this->db->Execute($sql);
         }
         catch (RuntimeException $e)
@@ -354,7 +307,7 @@ class PlgAuthenticationQwcrm
         $cookie_domain = $config->get('cookie_domain', '');
         $cookie_path   = $config->get('cookie_path', '/');
 
-        if (JFactory::isClient('site'))
+        if (QFactory::isClient('site'))
         {
             $cookie = new Cookie;
             $cookie->set('qwcrm_user_state', 'logged_in', 0, $cookie_path, $cookie_domain, 0);
@@ -375,9 +328,9 @@ class PlgAuthenticationQwcrm
      */
     public function onUserLogout($user, $options = array())
     {
-        $my      = JFactory::getUser();
-        $session = JFactory::getSession();
-        $config  = JFactory::getConfig();
+        $my      = QFactory::getUser();
+        $session = QFactory::getSession();
+        $config  = QFactory::getConfig();
         $cookie  = new Cookie;
 
         // Make sure we're a valid user first
@@ -389,7 +342,7 @@ class PlgAuthenticationQwcrm
         $sharedSessions = $config->get('shared_session', '0');
 
         // Check to see if we're deleting the current session
-        if ($my->id == $user['id'] && ($sharedSessions || (!$sharedSessions && $options['clientid'] == JFactory::getClientId())))
+        if ($my->id == $user['id'] && ($sharedSessions || (!$sharedSessions && $options['clientid'] == QFactory::getClientId())))
         {
             // Hit the user last visit field
             $my->setLastVisit();
@@ -404,23 +357,15 @@ class PlgAuthenticationQwcrm
 
         if ($forceLogout)
         {
-            /*$query = $this->db->getQuery(true)
-                ->delete($this->db->quoteName('#__session'))
-                ->where($this->db->quoteName('userid') . ' = ' . (int) $user['id']);*/
-            
             $sql = "DELETE FROM ".PRFX."session WHERE userid = " . $this->db->qstr((int) $user['id']);
 
             if (!$sharedSessions)
             {
-                //$query->where($this->db->quoteName('client_id') . ' = ' . (int) $options['clientid']);
-                
                 $sql .= "AND client_id = " . $this->db->qstr((int) $options['clientid']);
             }
 
             try
             {
-                //$this->db->setQuery($query)->execute();
-                
                 $this->db->Execute($sql);
             }
             catch (RuntimeException $e)
@@ -433,7 +378,7 @@ class PlgAuthenticationQwcrm
         $cookie_domain = $config->get('cookie_domain', '');
         $cookie_path   = $config->get('cookie_path', '/');
 
-        if (JFactory::isClient('site'))
+        if (QFactory::isClient('site'))
         {
             $cookie->set('qwcrm_user_state', '', time() - 86400, $cookie_path, $cookie_domain, 0);            
         }

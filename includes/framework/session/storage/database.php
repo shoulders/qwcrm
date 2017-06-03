@@ -31,7 +31,7 @@ class JSessionStorageDatabase extends JSessionStorage
     public function read($id)
     {
         // Get the database connection object and verify its connected.
-        $db = JFactory::getDbo();
+        $db = QFactory::getDbo();
 
         try
         {
@@ -72,7 +72,7 @@ class JSessionStorageDatabase extends JSessionStorage
     public function write($id, $data)
     {
         // Get the database connection object and verify its connected.
-        $db = JFactory::getDbo();
+        $db = QFactory::getDbo();
 
         $data = str_replace(chr(0) . '*' . chr(0), '\0\0\0', $data);
 
@@ -120,7 +120,7 @@ class JSessionStorageDatabase extends JSessionStorage
     public function destroy($id)
     {
         // Get the database connection object and verify its connected.
-        $db = JFactory::getDbo();
+        $db = QFactory::getDbo();
 
         try
         {
@@ -155,7 +155,7 @@ class JSessionStorageDatabase extends JSessionStorage
     public function gc($lifetime = 1440)
     {
         // Get the database connection object and verify its connected.
-        $db = JFactory::getDbo();
+        $db = QFactory::getDbo();
 
         // Determine the timestamp threshold with which to purge old sessions.
         $past = time() - $lifetime;

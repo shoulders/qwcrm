@@ -279,8 +279,8 @@ class JSession implements IteratorAggregate
      */
     public static function getFormToken($forceNew = false)
     {
-        $user    = JFactory::getUser();
-        $session = JFactory::getSession();
+        $user    = QFactory::getUser();
+        $session = QFactory::getSession();
 
         return JApplicationHelper::getHash($user->get('id', 0) . $session->getToken($forceNew));
     }
@@ -311,11 +311,11 @@ class JSession implements IteratorAggregate
     public static function checkToken($method = 'post')
     {
         $token = self::getFormToken();
-        $app = JFactory::getApplication();
+        $app = QFactory::getApplication();
 
         if (!$app->input->$method->get($token, '', 'alnum'))
         {
-            if (JFactory::getSession()->isNew())
+            if (QFactory::getSession()->isNew())
             {
                 // Redirect to login screen.
                 $app->enqueueMessage(JText::_('JLIB_ENVIRONMENT_SESSION_EXPIRED'), 'warning');
@@ -630,16 +630,9 @@ class JSession implements IteratorAggregate
             }
         }
 
-        ////// AfterSessionStart event
-        /*if ($this->_dispatcher instanceof JEventDispatcher)
-        {
-            $this->_dispatcher->trigger('onAfterSessionStart');
-        }*/
-        if ($this->isNew())
-        {
-            $this->set('registry', new Registry);
-            $this->set('user', new JUser);
-        }
+        ////// onAfterSessionStart event
+        $this->onAfterSessionStart();
+       
     }
 
     /**
@@ -1025,9 +1018,9 @@ class JSession implements IteratorAggregate
      */
     public function checkSession()
     {   
-        $user     = JFactory::getUser();    // this gets the user from the session
-        $db     = JFactory::getDbo();
-        $config = JFactory::getConfig();
+        $user     = QFactory::getUser();    // this gets the user from the session
+        $db     = QFactory::getDbo();
+        $config = QFactory::getConfig();
         
         $sql = "SELECT session_id FROM ".PRFX."session WHERE session_id = " . $db->qstr( $this->getId() );        
         $rs = $db->Execute($sql);
@@ -1048,7 +1041,7 @@ class JSession implements IteratorAggregate
             // if login not shared between site and admin (joomla thing)
             if (!$config->get('shared_session', '0'))
             {
-                $record['client_id'] = (int) JFactory::getClientId();
+                $record['client_id'] = (int) QFactory::getClientId();
             }            
 
             // If the insert failed, exit the application.
@@ -1065,7 +1058,7 @@ class JSession implements IteratorAggregate
     
     public function removeExpiredSessions()
     {
-       $db = JFactory::getDbo();
+       $db = QFactory::getDbo();
 
         // Get the current Time
        $time = time();
@@ -1078,5 +1071,14 @@ class JSession implements IteratorAggregate
            $sql = "DELETE FROM ".PRFX."session WHERE time < " . ($time - $this->getExpire());            
            $db->Execute($sql);
        }  
-    }    
+    }
+    
+    public function onAfterSessionStart()
+    {
+        if ($this->isNew())
+        {
+            $this->set('registry', new Registry);
+            $this->set('user', new JUser);
+        }
+    }
 }

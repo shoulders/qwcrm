@@ -186,7 +186,7 @@ class JSessionHandlerNative implements JSessionHandlerInterface
         if ((version_compare(PHP_VERSION, '5.4', 'ge') && PHP_SESSION_ACTIVE === session_status())
             || (version_compare(PHP_VERSION, '5.4', 'lt') && $this->started && isset($_SESSION) && $this->getId()))
         {
-            $session = JFactory::getSession();
+            $session = QFactory::getSession();
             $data    = $session->getData();
 
             // Before storing it, let's serialize and encode the Registry object

@@ -354,7 +354,7 @@ class JUser
 
         return $table->setLastVisit($timestamp);*/
         
-        $db = JFactory::getDbo();        
+        $db = QFactory::getDbo();        
         $sql = "UPDATE ".PRFX."EMPLOYEE SET EMPLOYEE_LASTVISIT = ".time()." WHERE EMPLOYEE_ID = " . $this->id;
         $db->Execute($sql);
         
@@ -438,7 +438,7 @@ class JUser
             // Hence this code is required:
             if (isset($array['password2']) && $array['password'] != $array['password2'])
             {
-                JFactory::getApplication()->enqueueMessage(JText::_('JLIB_USER_ERROR_PASSWORD_NOT_MATCH'), 'error');
+                QFactory::getApplication()->enqueueMessage(JText::_('JLIB_USER_ERROR_PASSWORD_NOT_MATCH'), 'error');
 
                 return false;
             }
@@ -448,7 +448,7 @@ class JUser
             $array['password'] = $this->userHelper->hashPassword($array['password']);
 
             // Set the registration timestamp
-            $this->set('registerDate', JFactory::getDate()->toSql());
+            $this->set('registerDate', QFactory::getDate()->toSql());
 
             // Check that username is not greater than 150 characters
             $username = $this->get('username');
@@ -555,7 +555,7 @@ class JUser
 
             // @todo ACL - this needs to be acl checked
 
-            $my = JFactory::getUser();
+            $my = QFactory::getUser();
 
             // Are we creating a new user
             $isNew = empty($this->id);
@@ -669,7 +669,7 @@ class JUser
      */
     public function load($id)
     {       
-        $db = JFactory::getDbo();
+        $db = QFactory::getDbo();
         
         $sql = "SELECT * FROM ".PRFX."EMPLOYEE WHERE EMPLOYEE_ID = " . $db->qstr($id);        
         

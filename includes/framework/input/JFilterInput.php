@@ -70,7 +70,7 @@ class JFilterInput //extends InputFilter
             try
             {
                 // Get the database driver
-                $db = JFactory::getDbo();
+                $db = QFactory::getDbo();
 
                 // This trick is required to let the driver determine the utf-8 multibyte support
                 $db->connect();

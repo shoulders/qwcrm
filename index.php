@@ -1,5 +1,4 @@
 <?php
-
 /*
  * @package   QWcrm
  * @author    Jon Brown https://quantumwarp.com/
@@ -62,7 +61,7 @@ if(is_file('configuration.php')) {
     //verify_qwcrm_is_installed_correctly($db); // I do not need this twice ?
 }
 
-// Create config object for global scope (temp + for error reporting)
+// Create config object for global scope (temp & for error reporting)
 $GConfig = new GConfig;
 
 // need to add error control here ie skipt strait to
@@ -71,7 +70,7 @@ require(INCLUDES_DIR.'security.php');
 require(INCLUDES_DIR.'include.php');
 require(INCLUDES_DIR.'adodb.php');
 require(INCLUDES_DIR.'smarty.php');
-require(FRAMEWORK_DIR.'qframework.php');
+require(FRAMEWORK_DIR.'qwframework.php');
 
 ################################################
 #         Error Reporting                      #
@@ -152,16 +151,11 @@ if(!load_language()) {$smarty->assign('error_msg', 'Error in system language fil
 ################################################
 
 // Initiate QFramework
-$app = new JFactory;
+$app = new QFactory;
 
 ################################################
 #           Authentication                     #
 ################################################
-
-// $user->login_token cannot be used for login validation routines below
-
-// sort where I load this library from (Do i want to load it on every page load? maybe build into my new framework)
-require(LIBRARIES_DIR.'recaptchalib.php');
 
 // Get variables in correct format for login()
 if(isset($_POST['login_usr'])) { $credentials['username'] = $_POST['login_usr']; }
@@ -169,8 +163,10 @@ if(isset($_POST['login_pwd'])) { $credentials['password'] = $_POST['login_pwd'];
 if(isset($_POST['remember'])) { $options['remember'] = $_POST['remember']; }
 
 // If captcha is enabled
-if($GConfig->captcha && !isset($user->login_token) && $_POST['action'] === 'login') {
+if($_POST['action'] === 'login' && $GConfig->captcha) {
     
+    // Load ReCaptcha library
+    require(LIBRARIES_DIR.'recaptchalib.php');    
     $reCaptcha = new ReCaptcha($recaptcha_secret_key);
     
     // Get response from Google and if successfull authenticate
@@ -183,44 +179,46 @@ if($GConfig->captcha && !isset($user->login_token) && $_POST['action'] === 'logi
     }  
 
 // Normal login with no captcha
-} elseif (!isset($user->login_token) && $_POST['action'] === 'login') {    
+} elseif ($_POST['action'] === 'login') {    
     $app->login($credentials, $options);
 }
 
-// remove credentials
+// remove credentials as no longer needed
 unset($credentials);
 
+// If logout is set, then log user off
+if (isset($_GET['action']) && $_GET['action'] == 'logout') {    
+    $app->logout();
+}
 
+################################################
+#   Assign User's Variables to PHP and Smarty  #
+################################################
 
-/* Assign Logged in User's Variables to PHP and Smarty */
+// Load current user object
+$user = QFactory::getUser();
 
-$user = JFactory::getUser();                         // I could unset this after use but create a $login_token
-//print_r(QFactory::$user->login_display_name);
-//print_r($user->login_display_name);
-// unset the user object as no longer needed?
-//unset($user);
+// Set user PHP variables
+$login_id               = $user->login_id;
+$login_usr              = $user->login_usr;
+$login_display_name     = $user->login_display_name;
+$login_token            = $user->login_token; 
 
-//$login_id   = $user->login_id;
-//$login_usr  = $user->login_usr;
-
-// If there is no account type details, set to Public (This can caus elooping - invvestigate)
+// If there is no account type details, set to Public (This can cause looping if not present)
 if(!isset($user->login_account_type_id)){
     $login_account_type_id = 9;
 } else {
     $login_account_type_id = $user->login_account_type_id;   
 }
 
-$login_display_name = $user->login_display_name;
+// Remove User object as no longer needed
+unset($user);
 
+// Assign user varibles to smarty
 $smarty->assign('login_id',                 $login_id               );
 $smarty->assign('login_usr',                $login_usr              );
 $smarty->assign('login_account_type_id',    $login_account_type_id  );
 $smarty->assign('login_display_name',       $login_display_name     );
-
-// If logout is set, then log user off
-if (isset($_GET['action']) && $_GET['action'] == 'logout') {    
-    $app->logout();
-}
 
 ################################
 #   Set Global PHP Values      #
@@ -271,9 +269,6 @@ define('DATE_FORMAT', get_company_details($db, 'DATE_FORMAT'));
 ##########################################################################
 #   Assign variables into smarty for use by all native module templates  #
 ##########################################################################
-
-// QWcrm System Directory Variables
-//$smarty->assign('media_dir',   MEDIA_DIR                );      // not currently used
 
 // QWcrm System Folders
 $smarty->assign('includes_dir',             INCLUDES_DIR                );      // set includes directory  //do i need this one
@@ -329,14 +324,14 @@ if(isset($VAR['warning_msg'])){
 
 if($GConfig->maintenance == true){
     
-    // set to the maintenance page    
+    // Set to the maintenance page    
     $page_display_controller = 'modules'.SEP.'core'.SEP.'maintenance.php'; 
     $module     = 'core';
     $page_tpl   = 'maintenance';
     $VAR['theme'] = 'off';   
     
     // If user logged in, then log user off    
-    if(isset($user->login_token)) {    
+    if(isset($login_token)) {    
         $app->logout();
     }
     
@@ -365,10 +360,10 @@ elseif(isset($VAR['page']) && $VAR['page'] != ''){
         
     }        
 
-// if no page specified load a default landing page   
+// If no page specified load a default landing page   
 } else {        
 
-    if(isset($user->login_token)){
+    if(isset($login_token)){
         // If logged in
         $page_display_controller    = 'modules'.SEP.'core'.SEP.'home.php';
         $module                     = 'core';
@@ -411,7 +406,7 @@ if(check_acl($db, $login_account_type_id, $module, $page_tpl)){
     }
 
     // Fetch Header Legacy Template Code and Menu Block - Customers, Guests and Public users will not see the menu
-    if($VAR['theme'] != 'off' && isset($user->login_token) && $login_account_type_id != 7 && $login_account_type_id != 8 && $login_account_type_id != 9){       
+    if($VAR['theme'] != 'off' && isset($login_token) && $login_account_type_id != 7 && $login_account_type_id != 8 && $login_account_type_id != 9){       
         $BuildPage .= $smarty->fetch('core'.SEP.'blocks'.SEP.'theme_header_legacy_supplement_block.tpl');
         require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_menu_block.php');        
     }    
@@ -420,7 +415,7 @@ if(check_acl($db, $login_account_type_id, $module, $page_tpl)){
     require($page_display_controller);    
 
     // Fetch Footer Legacy Template code Block (closes content table)
-    if($VAR['theme'] != 'off' && isset($user->login_token) && $login_account_type_id != 7 && $login_account_type_id != 8 && $login_account_type_id != 9){
+    if($VAR['theme'] != 'off' && isset($login_token) && $login_account_type_id != 7 && $login_account_type_id != 8 && $login_account_type_id != 9){
         $BuildPage .= $smarty->fetch('core'.SEP.'blocks'.SEP.'theme_footer_legacy_supplement_block.tpl');             
     }
 
@@ -485,6 +480,5 @@ if ($GConfig->gzip == true && $VAR['theme'] !== 'print') {
 ################################################
 #    Display the Built Page                    #
 ################################################
-//print_r($app);
-//print_r(JFactory::getUser());
+
 echo $BuildPage;
