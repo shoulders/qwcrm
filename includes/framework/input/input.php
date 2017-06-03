@@ -1,5 +1,5 @@
 <?php
-// D:\websites\htdocs\quantumwarp.com\libraries\joomla\input\input.php
+// joomla\libraries\joomla\input\input.php
 /**
  * @package     Joomla.Platform
  * @subpackage  Input

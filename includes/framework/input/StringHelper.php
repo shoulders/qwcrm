@@ -1,5 +1,5 @@
 <?php
-// D:\websites\htdocs\quantumwarp.com\libraries\vendor\joomla\string\src\StringHelper.php
+// joomla\libraries\vendor\joomla\string\src\StringHelper.php
 /**
  * Part of the Joomla Framework String Package
  *

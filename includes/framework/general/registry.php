@@ -1,5 +1,5 @@
 <?php
-// D:\websites\htdocs\quantumwarp.com\libraries\vendor\joomla\registry\src\Registry.php
+// joomla\libraries\vendor\joomla\registry\src\Registry.php
 /**
  * Part of the Joomla Framework Registry Package
  *

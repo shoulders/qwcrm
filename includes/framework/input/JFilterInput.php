@@ -1,5 +1,5 @@
 <?php
-// D:\websites\htdocs\quantumwarp.com\libraries\joomla\filter\input.php
+// joomla\libraries\joomla\filter\input.php
 /**
  * @package     Joomla.Platform
  * @subpackage  Filter

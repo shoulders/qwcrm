@@ -7,7 +7,7 @@
  * @license   GNU/GPLv3 or later; https://www.gnu.org/licenses/gpl.html
  */
 
-// D:\websites\htdocs\quantumwarp.com\administrator\components\com_config\model\application.php
+// joomla\administrator\components\com_config\model\application.php
 
 // The config object loads the standard configuration and then also holds other settings for QWcrm
         

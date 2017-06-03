@@ -1,5 +1,5 @@
 <?php
-// D:\websites\htdocs\quantumwarp.com\libraries\joomla\session\storage\none.php
+// joomla\libraries\joomla\session\storage\none.php
 /**
  * @package     Joomla.Platform
  * @subpackage  Session

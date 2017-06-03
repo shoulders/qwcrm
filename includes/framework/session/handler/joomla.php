@@ -1,5 +1,5 @@
 <?php
-// D:\websites\htdocs\quantumwarp.com\libraries\joomla\session\handler\joomla.php
+// joomla\libraries\joomla\session\handler\joomla.php
 /**
  * @package     Joomla.Platform
  * @subpackage  Session

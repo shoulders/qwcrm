@@ -1,5 +1,5 @@
 <?php
-// D:\websites\htdocs\quantumwarp.com\libraries\vendor\joomla\input\src\Cookie.php
+// joomla\libraries\vendor\joomla\input\src\Cookie.php
 /**
  * Part of the Joomla Framework Input Package
  *
@@ -115,7 +115,7 @@ class Cookie //extends Input
         $this->data[$name] = $value;
     }
 
-    // D:\websites\htdocs\quantumwarp.com\libraries\vendor\joomla\input\src\Input.php
+    // joomla\libraries\vendor\joomla\input\src\Input.php
     /**
      * Gets a value from the input data.
      *

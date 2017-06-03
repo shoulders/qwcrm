@@ -1,5 +1,5 @@
 <?php
-// D:\websites\htdocs\quantumwarp.com\libraries\joomla\authentication\response.php
+// joomla\libraries\joomla\authentication\response.php
 /**
  * @package     Joomla.Platform
  * @subpackage  Authentication

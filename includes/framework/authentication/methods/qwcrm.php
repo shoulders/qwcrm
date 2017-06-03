@@ -8,7 +8,7 @@
  */
 
 // add these routines
-// D:\websites\htdocs\quantumwarp.com\plugins\authentication\joomla\joomla.php
+// joomla\plugins\authentication\joomla\joomla.php
 
 
 // rename this user.php as it makes more sense
@@ -97,7 +97,7 @@ class PlgAuthenticationQwcrm
         
     }
     
-// D:\websites\htdocs\quantumwarp.com\plugins\user\joomla\joomla.php
+// joomla\plugins\user\joomla\joomla.php
 /**
  * @package     Joomla.Plugin
  * @subpackage  User.joomla

@@ -1,7 +1,6 @@
 <?php
-// D:\websites\htdocs\quantumwarp.com\plugins\authentication\cookie\cookie.php
-//also
-// D:\websites\htdocs\quantumwarp.com\plugins\system\remember\remember.php
+// joomla\plugins\authentication\cookie\cookie.php
+// joomla\plugins\system\remember\remember.php
 /**
  * @package     Joomla.Plugin
  * @subpackage  Authentication.cookie
@@ -21,23 +20,9 @@ defined('_QWEXEC') or die;
  */
 class PlgAuthenticationCookie //extends QFramework //class PlgSystemRemember //extends JPlugin
 {
-    /**
-     * Application object
-     *
-     * @var    JApplicationCms
-     * @since  3.2
-     */
-    //protected $app;
 
-    /**
-     * Database object
-     *
-     * @var    JDatabaseDriver
-     * @since  3.2
-     */
-    protected $db;
-    
-    private $cookie;   // the cookie obj 
+    protected $db;    
+    private $cookie;
     private $config;
     public $response;
     
@@ -130,7 +115,7 @@ class PlgAuthenticationCookie //extends QFramework //class PlgSystemRemember //e
         // The cookie content is seperaters into 2 values by a period '.'
         $cookieArray = explode('.', $cookieValue);
 
-        // Check for valid cookie value (must be 2 values in content)
+        // Check for valid cookie value (must be 2 values seperated by a period '.' in cookie content/value)
         if (count($cookieArray) != 2)
         {
             // Destroy the cookie in the browser.
@@ -174,14 +159,16 @@ class PlgAuthenticationCookie //extends QFramework //class PlgSystemRemember //e
             ->order($this->db->quoteName('time') . ' DESC');*/
         
         // Find the matching record if it exists.
+        //$sql = "SELECT user_id, token, series, time FROM ".PRFX."user_keys WHERE series = ".$this->db->qstr($series)." AND uastring = ".$this->db->qstr($cookieName)." ORDER BY time DESC";
         $sql = "SELECT user_id, token, series, time FROM ".PRFX."user_keys WHERE series = ".$this->db->qstr($series)." AND uastring = ".$this->db->qstr($cookieName)." ORDER BY time DESC";
         
         try
         {
             //$results = $this->db->setQuery($query)->loadObjectList();
             $rs = $this->db->Execute($sql);
-            $results = $rs->GetArray(); 
+            $results = $rs->GetArray();            
         }
+        
         catch (RuntimeException $e)
         {
             $response->status = JAuthentication::STATUS_FAILURE;
@@ -189,12 +176,10 @@ class PlgAuthenticationCookie //extends QFramework //class PlgSystemRemember //e
             return false;
         }
 
-        
         // If there is not exactly 1 record found
         if (count($results) !== 1)
         {
-            // Destroy the cookie in the browser.
-            //setcookie($cookieName, false, time() - 42000, $this->conf->get('cookie_path', '/'), $this->conf->get('cookie_domain'));
+            // Destroy the cookie in the browser.            
             $this->cookie->set($cookieName, false, time() - 42000, $this->config->get('cookie_path', '/'), $this->config->get('cookie_domain'));
             $response->status = JAuthentication::STATUS_FAILURE;
 
@@ -212,12 +197,13 @@ class PlgAuthenticationCookie //extends QFramework //class PlgSystemRemember //e
                 ->delete('#__user_keys')
                 ->where($this->db->quoteName('user_id') . ' = ' . $this->db->quote($results[0]->user_id));*/
             
-             $sql = "DELETE FROM ".PRFX."user_keys WHERE user_id = ".$this->db->qstr($results[0]['user_id']);
+            //die('shit dont match');
+            $sql = "DELETE FROM ".PRFX."user_keys WHERE user_id = ".$this->db->qstr($results[0]['user_id']);
 
             try
             {
                 //$this->db->setQuery($query)->execute();
-                $rs = $this->db->Execute($sql);
+                $this->db->Execute($sql);
             }
             catch (RuntimeException $e)
             {
@@ -233,7 +219,7 @@ class PlgAuthenticationCookie //extends QFramework //class PlgSystemRemember //e
             $this->cookie->set($cookieName, false, time() - 42000, $this->config->get('cookie_path', '/'), $this->config->get('cookie_domain'));
 
             // Issue warning by email to user and/or admin?
-            JLog::add(JText::sprintf('PLG_AUTH_COOKIE_ERROR_LOG_LOGIN_FAILED', $results[0]->user_id), JLog::WARNING, 'security');
+            //JLog::add(JText::sprintf('PLG_AUTH_COOKIE_ERROR_LOG_LOGIN_FAILED', $results[0]['user_id']), JLog::WARNING, 'security');
             $response->status = JAuthentication::STATUS_FAILURE;
 
             return false;
@@ -246,13 +232,13 @@ class PlgAuthenticationCookie //extends QFramework //class PlgSystemRemember //e
             ->where($this->db->quoteName('username') . ' = ' . $this->db->quote($results[0]->user_id))
             ->where($this->db->quoteName('requireReset') . ' = 0');*/
         
-        $sql = "SELECT EMPLOYEE_ID, EMPLOYEE_LOGIN, EMPLOYEE_PASSWORD WHERE REQUIRE_RESET = 0";
+        $sql = "SELECT EMPLOYEE_ID, EMPLOYEE_LOGIN, EMPLOYEE_PASSWORD FROM ".PRFX."EMPLOYEE WHERE EMPLOYEE_LOGIN = ".$this->db->qstr($results[0]['user_id'])." AND REQUIRE_RESET = 0";
 
         try
         {
             //$result = $this->db->setQuery($query)->loadObject();
             $rs = $this->db->Execute($sql);
-            $result = $rs->GetRowAssoc;            
+            $result = $rs->GetRowAssoc();  
         }
         catch (RuntimeException $e)
         {
@@ -264,8 +250,7 @@ class PlgAuthenticationCookie //extends QFramework //class PlgSystemRemember //e
         if ($result)
         {
             // Bring this in line with the rest of the system
-            $user = JUser::getInstance($result['EMPLOYEE_ID']);
-            //$user = JFactory::getUser($result['EMPLOYEE_ID']);  // or use load() - i shuld use get instances for the data but use the response for authentication?
+            $user = JUser::getInstance($result['EMPLOYEE_ID']);            
             
             // Set response data.
             $response->username = $result['EMPLOYEE_LOGIN'];
@@ -286,7 +271,7 @@ class PlgAuthenticationCookie //extends QFramework //class PlgSystemRemember //e
     }
 
     /**
-     * We set the authentication cookie only after login is successfullly finished.
+     * We set the authentication (remember me) cookie only after login is successfully finished.
      * We set a new cookie either for a user with no cookies or one
      * where the user used a cookie to authenticate.
      *
@@ -304,9 +289,10 @@ class PlgAuthenticationCookie //extends QFramework //class PlgSystemRemember //e
             return false;
         }
 
+        // If the user has been logged in using a 'remember me' Cookie
         if (isset($options['responseType']) && $options['responseType'] === 'Cookie')
         {
-            // Logged in using a cookie
+            // Get the cookie name
             $cookieName = 'qwcrm_remember_me_' . JUserHelper::getShortHashedUserAgent();
 
             // We need the old data to get the existing series
@@ -328,9 +314,12 @@ class PlgAuthenticationCookie //extends QFramework //class PlgSystemRemember //e
             $filter = new JFilterInput;
             $series = $filter->clean($cookieArray[1], 'ALNUM');
         }
+        
+        
+        // If login is submitted with the 'Remember me' checkbox set
         elseif (!empty($options['remember']))
         {
-            // Remember checkbox is set
+            // Get the cookie name
             $cookieName = 'qwcrm_remember_me_' . JUserHelper::getShortHashedUserAgent();
 
             // Create a unique series which will be used over the lifespan of the cookie
@@ -352,11 +341,11 @@ class PlgAuthenticationCookie //extends QFramework //class PlgSystemRemember //e
                 try
                 {
                     $rs = $this->db->Execute($sql);
-                    $results = $rs->GetRowAssoc;
+                    $results = $rs->RecordCount();
                             
                     //$results = $this->db->setQuery($query)->loadResult();
 
-                    if (is_null($results))
+                    if ($results === 0)
                     {
                         $unique = true;
                     }
@@ -377,27 +366,35 @@ class PlgAuthenticationCookie //extends QFramework //class PlgSystemRemember //e
         }
         else
         {
+            // If not authenticated by 'Remember me' cookie and 'Remember me' has not been checked
             return false;
         }
+        
+        
+        // create/overwrite cookie
+        
 
-        // Get the parameter values - this are settings from within the cookie plugin (now added to my config for now)
+        // Get the parameter values - this are settings from within the cookie plugin (now added to main config)
         //$lifetime = $this->params->get('cookie_lifetime', '60') * 24 * 60 * 60;
         //$length   = $this->params->get('key_length', '16');
         $lifetime = $this->config->get('cookie_lifetime', '60') * 24 * 60 * 60;
-        $length   = $this->config->get('cookie_key_length', '16');
+        $length   = $this->config->get('cookie_token_length', '16');
 
         // Generate new cookie
         $token       = JUserHelper::genRandomPassword($length);
         $cookieValue = $token . '.' . $series;
 
-        // Overwrite existing cookie with new value
+        // Create/Overwrite 'remember me' cookie with new value
         //setcookie($cookieName, $cookieValue, time() + $lifetime, $this->config->get('cookie_path', '/'), $this->config->get('cookie_domain'), $this->isSSLConnection());
         $this->cookie->set($cookieName, $cookieValue, time() + $lifetime, $this->config->get('cookie_path', '/'), $this->config->get('cookie_domain'), $this->isSSLConnection());
-        
-        
+                
         // not sure what this does - possibly clears query
         //$query = $this->db->getQuery(true);
-
+        
+        
+        
+        
+        // If the 'Remember me' box is ticked
         if (!empty($options['remember']))
         {
             // Create new record
@@ -417,10 +414,11 @@ class PlgAuthenticationCookie //extends QFramework //class PlgSystemRemember //e
             $record['user_id']  = $options['user']->username;
             $record['series']   = $series;
             $record['uastring'] = $cookieName;
-            $record['time']     = time() + $lifetime;
-                
+            $record['time']     = time() + $lifetime;                
 
         }
+        
+        // Silent login
         else
         {
             /* Update existing record with new token
@@ -435,9 +433,11 @@ class PlgAuthenticationCookie //extends QFramework //class PlgSystemRemember //e
                     series      =". $this->db->qstr( $series                    ).",
                     uastring    =". $this->db->qstr( $cookieName                );*/
                    
-            $where['user_id']  = $options['user']->username;
+           /* $where['user_id']  = $options['user']->username;
             $where['series']   = $series;
-            $where['uastring'] = $cookieName;
+            $where['uastring'] = $cookieName;*/
+            
+            $where = "user_id = ".$this->db->qstr($options['user']->username)." AND series = ".$this->db->qstr($series)." AND uastring = ".$this->db->qstr($cookieName);
             
         }
 
@@ -447,6 +447,7 @@ class PlgAuthenticationCookie //extends QFramework //class PlgSystemRemember //e
         //query->set($this->db->quoteName('token') . ' = ' . $this->db->quote($hashed_token));
         $record['token'] = $hashed_token;
         
+        // Add new record or update exist record in #__user_keys        
         try
         {
             //$this->db->setQuery($query)->execute();
@@ -551,7 +552,7 @@ class PlgAuthenticationCookie //extends QFramework //class PlgSystemRemember //e
         return true;
     }
     
-    // D:\websites\htdocs\quantumwarp.com\libraries\joomla\application\web.php
+    // joomla\libraries\joomla\application\web.php
     /**
      * Determine if we are using a secure (SSL) connection.
      *

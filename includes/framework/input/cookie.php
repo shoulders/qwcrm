@@ -1,5 +1,5 @@
 <?php
-// D:\websites\htdocs\quantumwarp.com\libraries\joomla\input\cookie.php
+// joomla\libraries\joomla\input\cookie.php
 /**
  * @package     Joomla.Platform
  * @subpackage  Input

@@ -1,5 +1,5 @@
 <?php
-// D:\websites\htdocs\quantumwarp.com\includes\framework.php
+// joomla\includes\framework.php
 /**
  * @package   QWcrm
  * @author    Jon Brown https://quantumwarp.com/
@@ -41,9 +41,9 @@ require INCLUDES_DIR . 'framework/authentication/authentication.php';   // This 
 require INCLUDES_DIR . 'framework/authentication/response.php';         // this is used to store the responses from the qwcrm.php and cookie.php authorisation plugins
 
 
-require INCLUDES_DIR . 'framework/authentication/methods/cookie.php';   // This allos the user to be be authenticated by a coookie (persitent session)
+require INCLUDES_DIR . 'framework/authentication/methods/remember.php';   // This controls all aspects of the 'Remember me' cookie
 require INCLUDES_DIR . 'framework/authentication/methods/qwcrm.php';    // This is the standard username and password authorisation
-//require INCLUDES_DIR . 'framework/authentication/methods/remember.php'; // instigates a silent login if a remember_me cookie is found
+
 
 
 require INCLUDES_DIR . 'framework/user/user.php';                       // This is the object/thing that hols the user data objectr
@@ -85,9 +85,6 @@ class JFactory {
         $this->conf     = self::getConfig();       
         global $smarty;
         $this->smarty   = $smarty;
-     
-        
-
         
         // Enable sessions by default.
         if (is_null($this->conf->get('session')))
@@ -99,22 +96,23 @@ class JFactory {
         if (is_null($this->conf->get('session_name')))
         {
             //$this->conf->set('session_name', $this->getName());
-            $this->conf->set('session_name', session_name());
+            $this->conf->set('session_name', JUserHelper::genRandomPassword(16));
         }
 
         // Create the session if a session name is passed.
         if ($this->conf->get('session') !== false)
         {
             $this->loadSession();
-        } 
-
+        }        
+     
         // Try to automatically login - i,e, using the remember me cookie - instigates a silent login if a remembe_me cookie is found
         /*$rememberMePlg = new PlgSystemRemember;
         $rememberMePlg->onAfterInitialise();
         unset($rememberMePlg);*/
         $rememberMe = new PlgAuthenticationCookie;  // this allows silent login using remember me cookie after checking it exists - need to mnake sure it does not logon if already logged on
         $rememberMe->onAfterInitialise();
-        unset($rememberMe);        
+        unset($rememberMe);
+    
     }
 
  /**************************************login/authentication****************************************************/
@@ -147,8 +145,7 @@ class JFactory {
             //force_page('core', 'home', 'information_msg='.$this->smarty->getTemplateVars('translate_system_auth_advisory_message_login_successful'));            
             //exit;
             
-            return true;
-        
+            return true;        
         
         } else {
             
@@ -770,7 +767,7 @@ class JFactory {
 
 /********************************** Misc ********************************************/
     
-   // D:\websites\htdocs\quantumwarp.com\libraries\cms\application\helper.php
+   // joomla\libraries\cms\application\helper.php
    /**
      * Provides a secure hash based on a seed
      *

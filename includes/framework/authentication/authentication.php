@@ -1,5 +1,5 @@
 <?php
-// D:\websites\htdocs\quantumwarp.com\libraries\joomla\authentication\authentication.php
+// joomla\libraries\joomla\authentication\authentication.php
 /**
  * @package     Joomla.Platform
  * @subpackage  Authentication
@@ -483,7 +483,7 @@ class JAuthentication
             return true;
         }
 
-        // Trigger onUserLoginFailure Event.
+        ////// Trigger onUserLoginFailure Event.
         //$this->triggerEvent('onUserLoginFailure', array((array) $response));   (stored qwcrm.php and cookie.php methods)
 
         // If silent is set, just return false.

@@ -1,5 +1,5 @@
 <?php
-// D:\websites\htdocs\quantumwarp.com\libraries\joomla\user\user.php
+// joomla\libraries\joomla\user\user.php
 /**
  * @package     Joomla.Platform
  * @subpackage  User

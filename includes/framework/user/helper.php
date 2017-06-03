@@ -1,5 +1,5 @@
 <?php
-// D:\websites\htdocs\quantumwarp.com\libraries\joomla\user\helper.php
+// joomla\libraries\joomla\user\helper.php
 /**
  * @package     Joomla.Platform
  * @subpackage  User
@@ -340,7 +340,7 @@ class JUserHelper
             //JCrypt::hasStrongPasswordSupport();
             $match = password_verify($password, $hash);
 
-            // Uncomment this line if we actually move to bcrypt. - this get the password and rehashes it to this algorithym
+            // Uncomment this line if we actually move to bcrypt. - this gets the password and rehashes it to this algorithym
             // $rehash = true;
             //$rehash = password_needs_rehash($hash, PASSWORD_DEFAULT);
         }
@@ -669,13 +669,11 @@ class JUserHelper
          * Shift the base conversion on each character so the character
          * distribution is even, and randomize the start shift so it's not
          * predictable.
-         */
+         *
         
         // This is php 7 only. the JCrpyt function returns after failing
-        //$random = JCrypt::genRandomBytes($length + 1);
-        //$random = random_bytes($length + 1);        
-        
-        /*$shift = ord($random[0]);
+        $random = JCrypt::genRandomBytes($length + 1);  // or direct - $random = random_bytes($length + 1);  
+        $shift = ord($random[0]);
 
         for ($i = 1; $i <= $length; ++$i)
         {
