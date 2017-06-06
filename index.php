@@ -77,7 +77,7 @@ require(FRAMEWORK_DIR.'qwframework.php');
 ################################################
 
 // Set the error_reporting
-switch ('verysimple')
+switch ($GConfig->error_reporting)
 {
     case 'default':
     case '-1':
@@ -160,7 +160,7 @@ $app = new QFactory;
 // Get variables in correct format for login()
 if(isset($_POST['login_usr'])) { $credentials['username'] = $_POST['login_usr']; }
 if(isset($_POST['login_pwd'])) { $credentials['password'] = $_POST['login_pwd']; }
-if(isset($_POST['remember'])) { $options['remember'] = $_POST['remember']; }
+if($GConfig->remember_me && isset($_POST['remember'])) { $options['remember'] = $_POST['remember']; }    
 
 // If captcha is enabled
 if($_POST['action'] === 'login' && $GConfig->captcha) {

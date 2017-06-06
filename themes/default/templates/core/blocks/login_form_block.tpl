@@ -27,10 +27,12 @@
                                                 <td>{$translate_core_login_password}</td>
                                                 <td><input name="login_pwd" class="olotd5" size="25" alt="password" type="password" required onkeydown="return onlyPassword(event);"></td>
                                             </tr>
-                                            <tr>
-                                                <td>Remember me</td>
-                                                <td><input type="checkbox" name="remember" value="1"></td>                                                
-                                            </tr>                                               
+                                            {if $remember_me}
+                                                <tr>
+                                                    <td>Remember me</td>
+                                                    <td><input type="checkbox" name="remember" value="1"></td>                                                
+                                                </tr>
+                                            {/if}
                                             <tr align="center">
                                                 <td colspan="2"><button id="login_button" type="submit" name="action" value="login"><img src="{$theme_images_dir}tick.png" alt=""> {$translate_core_login_login}</button></td>
                                             </tr>                            

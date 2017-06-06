@@ -659,7 +659,7 @@ class JSession implements IteratorAggregate
             $this->data = unserialize($data);
         }
 
-        // Temporary, PARTIAL, data migration of existing session data to avoid logout on update from J < 3.4.7
+        /* Temporary, PARTIAL, data migration of existing session data to avoid logout on update from J < 3.4.7   - delete this when ready as i dont think i need this
         if (isset($_SESSION['__default']) && !empty($_SESSION['__default']))
         {
             $migratableKeys = array(
@@ -690,9 +690,9 @@ class JSession implements IteratorAggregate
              * Finally, empty the __default key since we no longer need it. Don't unset it completely, we need this
              * for the administrator/components/com_admin/script.php to detect upgraded sessions and perform a full
              * session cleanup.
-             */
+             *
             $_SESSION['__default'] = array();
-        }
+        }*/
 
         return true;
     }
