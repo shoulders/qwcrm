@@ -463,12 +463,17 @@ function verify_qwcrm_is_installed_correctly($db){
 
     global $smarty;
     
+    // Is gettext install (for translations)
+    if(!function_exists('gettext')) {
+        die('Gettext is not installed which is required for the transaltion system.');
+    }
+    
     // If no configuration file - redirect to the installation directory
     if(!is_file('configuration.php')){        
         force_page('install/index.php');
         exit;
     }
-    
+        
     // Compare the version number of the file system against the database - if mismatch load upgrade for further instructions?
     if(version_compare(get_qwcrm_database_version_number($db), QWCRM_VERSION, '!=')){
         

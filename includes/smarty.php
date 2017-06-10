@@ -20,6 +20,7 @@ $smarty->cache_modified_check   = $GConfig->smarty_cache_modified_check;        
 //$smarty->load_filter('output','trimwhitespace');
 //$smarty->error_unassigned = true; // to enable notices.
 //$smarty->error_reporting = E_ALL | E_STRICT;  // Uses standard PHP error levels.
+//$smarty->compileAllTemplates();  // this is a really cool feature and useful for translations
 
 // Debugging
 

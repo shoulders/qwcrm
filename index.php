@@ -36,6 +36,8 @@ $startMem  = memory_get_usage();
 #    Get Root Folder and Physical path info    #
 ################################################
 
+// could i use realpath() here in anyway?
+
 // QWcrm Physical Path  - D:\websites\htdocs\develop\qwcrm\
 define('QWCRM_PHYSICAL_PATH', __DIR__.DIRECTORY_SEPARATOR);
 
@@ -134,11 +136,42 @@ switch ($GConfig->error_reporting)
 #         Load Language                        #
 ################################################
 
+// when i remove the old laguage system perhaps keep the xml lookup code , and the control statements
+
 // Load Language Specifc Settings from language file
 //if(!xml2php('settings')){$smarty->assign('error_msg', 'Error in system language file');}
 
 // Load Language Translations
-if(!load_language()) {$smarty->assign('error_msg', 'Error in system language file');}
+//if(!load_language()) {$smarty->assign('error_msg', 'Error in system language file');}
+
+/* new system */
+
+// Autodetect Language - I18N support information here
+if($GConfig->autodetect_language) {
+    if(!$language = locale_accept_from_http($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
+        $language = $GConfig->default_language; 
+    }
+} else {
+    $language = $GConfig->default_language; 
+}
+
+// here we define the global system locale given the found language
+putenv("LANG=$language");
+
+// this might be useful for date functions (LC_TIME) or money formatting (LC_MONETARY), for instance
+setlocale(LC_ALL, $language);
+
+// Set the text domain
+$textdomain = 'site';
+
+// this will make Gettext look for ../language/<lang>/LC_MESSAGES/site.mo
+bindtextdomain($textdomain, 'language');
+
+// indicates in what encoding the file should be read
+bind_textdomain_codeset($textdomain, 'UTF-8');
+
+// here we indicate the default domain the gettext() calls will respond to
+textdomain($textdomain);
 
 ################################################
 #    Verify QWcrm is installed correctly       #

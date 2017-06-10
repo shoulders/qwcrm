@@ -1,0 +1,71 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2017-06-09 22:17+0100\n"
+"PO-Revision-Date: 2017-06-09 22:17+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: en_GB\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.13\n"
+"X-Poedit-Basepath: ../../..\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-KeywordsList: _\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPath-1: themes/default/js/jscal2/language.js\n"
+"X-Poedit-SearchPathExcluded-0: cache\n"
+"X-Poedit-SearchPathExcluded-1: install2\n"
+"X-Poedit-SearchPathExcluded-2: nbproject\n"
+"X-Poedit-SearchPathExcluded-3: upgrade\n"
+"X-Poedit-SearchPathExcluded-4: themes/default/js\n"
+
+#: includes/framework/authentication/authentication.php:430
+msgid "JLIB_LOGIN_EXPIRED"
+msgstr ""
+
+#: includes/framework/authentication/authentication.php:433
+msgid "JLIB_LOGIN_DENIED"
+msgstr ""
+
+#: includes/framework/authentication/authentication.php:436
+msgid "JLIB_LOGIN_AUTHORISATION"
+msgstr ""
+
+#: includes/framework/authentication/methods/qwcrm.php:251
+msgid "JERROR_NOLOGIN_BLOCKED"
+msgstr ""
+
+#: includes/framework/authentication/methods/remember.php:227
+msgid "JGLOBAL_AUTH_NO_USER"
+msgstr ""
+
+#: includes/framework/session/session.php:321
+msgid "JLIB_ENVIRONMENT_SESSION_EXPIRED"
+msgstr ""
+
+#: includes/framework/session/session.php:322
+msgid "index.php"
+msgstr ""
+
+#: includes/framework/session/session.php:1054
+msgid "JERROR_SESSION_STARTUP"
+msgstr ""
+
+#: includes/framework/user/helper.php:269
+msgid "JLIB_USER_ERROR_UNABLE_TO_FIND_USER"
+msgstr ""
+
+#: includes/framework/user/user.php:441 includes/framework/user/user.php:469
+msgid "JLIB_USER_ERROR_PASSWORD_NOT_MATCH"
+msgstr ""
+
+#: includes/framework/user/user.php:479
+msgid "JLIB_USER_ERROR_CANNOT_REUSE_PASSWORD"
+msgstr ""
+
+#: includes/framework/user/user.php:514
+msgid "JLIB_USER_ERROR_BIND_ARRAY"
+msgstr ""

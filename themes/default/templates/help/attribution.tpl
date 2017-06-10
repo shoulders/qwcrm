@@ -16,4 +16,5 @@
     <li>ADODB V5.20.9 | ADOdb is dual licensed under BSD and LGPL | http://adodb.org/dokuwiki/doku.php | PHP Database Abstraction layer allowing use of different databases whilest using the same SQL code and other database related things.</li>
     <li>Smarty v3.1.30 | LGPL 2.1 or later</li>
     <li>reCAPTCHA PHP library | BSD-3-Clause | https://github.com/google/recaptcha/blob/1.0.0/php/recaptchalib.php</li>
+    <li>Gettext support for Smarty2/Smarty3 (08-06-17) | LGPL-2.1 | https://github.com/smarty-gettext/smarty-gettext</li>
 </ul>

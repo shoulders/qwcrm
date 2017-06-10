@@ -29,7 +29,7 @@
                                             </tr>
                                             {if $remember_me}
                                                 <tr>
-                                                    <td>Remember me</td>
+                                                    <td>{gettext("Remember me")}</td>
                                                     <td><input type="checkbox" name="remember" value="1"></td>                                                
                                                 </tr>
                                             {/if}
