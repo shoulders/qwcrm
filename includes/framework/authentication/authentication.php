@@ -301,7 +301,7 @@ class JAuthentication
             else
             {
                 // Bail here if the plugin can't be created
-                //JLog::add(JText::sprintf('JLIB_USER_ERROR_AUTHENTICATION_FAILED_LOAD_PLUGIN', $className), JLog::WARNING, 'jerror');
+                //JLog::add(JText::sprintf('JLIB_USER_ERROR_AUTHENTICATION_FAILED_LOAD_PLUGIN', $className), JLog::WARNING, 'jerror');                
                 continue;
             }
 
@@ -427,13 +427,16 @@ class JAuthentication
                     switch ($authorisation->status)
                     {
                         case JAuthentication::STATUS_EXPIRED:
-                            return JError::raiseWarning('102002', JText::_('JLIB_LOGIN_EXPIRED'));
-
+                            //return JError::raiseWarning('102002', JText::_('JLIB_LOGIN_EXPIRED'));
+                            return gettext("Login Expired");
+                            
                         case JAuthentication::STATUS_DENIED:
-                            return JError::raiseWarning('102003', JText::_('JLIB_LOGIN_DENIED'));
+                            //return JError::raiseWarning('102003', JText::_('JLIB_LOGIN_DENIED'));
+                            return gettext("Login Denied");
 
                         default:
-                            return JError::raiseWarning('102004', JText::_('JLIB_LOGIN_AUTHORISATION'));
+                            //return JError::raiseWarning('102004', JText::_('JLIB_LOGIN_AUTHORISATION'));
+                            return gettext("Username and password do not match or you do not have an account yet.");  // this is a guess
                     }
                 }
             }

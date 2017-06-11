@@ -1,6 +1,6 @@
 <?php
 
-// Seperate Session is required
+// Session instance is required
 session_start();
 
 // Logged in and not Public or Guest
@@ -58,6 +58,6 @@ if ($_SESSION['login_token'] && $_SESSION['login_account_type_id'] != '8' && $_S
         }
     }
 } else {
-    //echo '<!DOCTYPE html><title></title>'; Joomla Version
+    //echo '<!DOCTYPE html><title></title>'; //Joomla Version
     header('HTTP/1.1 404 Not Found');
 }

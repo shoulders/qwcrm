@@ -114,7 +114,7 @@ function display_refunds($db, $direction = 'DESC', $use_pages = false, $page_no 
         
         // Figure out the total number of records in the database for the given search        
         if(!$rs = $db->Execute($sql)) {
-            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_workorder_error_message_function_'.__FUNCTION__.'_count'));
+            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count the matching refund records."));
             exit;
         } else {        
             $total_results = $rs->RecordCount();            
@@ -160,7 +160,7 @@ function display_refunds($db, $direction = 'DESC', $use_pages = false, $page_no 
     /* Return the records */
          
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_refund_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to return the matching refund records."));
         exit;
     } else {
         
@@ -188,8 +188,6 @@ function display_refunds($db, $direction = 'DESC', $use_pages = false, $page_no 
 
 function insert_refund($db, $VAR) {
     
-    global $smarty;
-
     $sql = "INSERT INTO ".PRFX."REFUND SET            
             REFUND_PAYEE            = ". $db->qstr( $VAR['refundPayee']                     ).",
             REFUND_DATE             = ". $db->qstr( date_to_timestamp($VAR['refundDate'])   ).",
@@ -203,7 +201,7 @@ function insert_refund($db, $VAR) {
             REFUND_ITEMS            = ". $db->qstr( $VAR['refundItems']                     );
 
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_refund_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to insert the refund record into the database."));
         exit;
     } else {
         
@@ -221,12 +219,10 @@ function insert_refund($db, $VAR) {
 
 function get_refund_details($db, $refund_id, $item = null){
     
-    global $smarty;
-
     $sql = "SELECT * FROM ".PRFX."REFUND WHERE REFUND_ID=".$db->qstr($refund_id);
     
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the refund details."));
         exit;
     } else {
         
@@ -252,8 +248,6 @@ function get_refund_details($db, $refund_id, $item = null){
 
 function update_refund($db, $refund_id, $VAR) {
     
-    global $smarty;
-
     $sql = "UPDATE ".PRFX."REFUND SET
             REFUND_PAYEE            = ". $db->qstr( $VAR['refundPayee']                     ).",
             REFUND_DATE             = ". $db->qstr( date_to_timestamp($VAR['refundDate'])   ).",
@@ -268,7 +262,7 @@ function update_refund($db, $refund_id, $VAR) {
             WHERE REFUND_ID         = ". $db->qstr( $refund_id                              );                        
             
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_refund_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the refund details."));
         exit;
     } else {
         
@@ -288,12 +282,10 @@ function update_refund($db, $refund_id, $VAR) {
 
 function delete_refund($db, $refund_id) {
     
-    global $smarty;
-    
     $sql = "DELETE FROM ".PRFX."REFUND WHERE REFUND_ID=".$db->qstr($refund_id);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_refund_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete the refund records."));
         exit;
     } else {
         
@@ -311,8 +303,6 @@ function delete_refund($db, $refund_id) {
 
 function prepare_refund_search_terms($search_category, $search_term) {
 
-    $langvals = gateway_xml2php('expense');
-
     switch ($search_category) {
 
         case 'date':           
@@ -322,19 +312,19 @@ function prepare_refund_search_terms($search_category, $search_term) {
             
             switch ($search_term) {
 
-                case ($langvals['refund_type_1']):
+                case gettext("REFUND_TYPE_1"):
                     return '1';                    
 
-                case ($langvals['refund_type_2']):
+                case gettext("REFUND_TYPE_2"):
                     return '2';                   
 
-                case ($langvals['refund_type_3']):
+                case gettext("REFUND_TYPE_3"):
                     return '3';                    
 
-                case ($langvals['refund_type_4']):
+                case gettext("REFUND_TYPE_4"):
                     return '4';
 
-                case ($langvals['refund_type_5']):
+                case gettext("REFUND_TYPE_5"):
                     return '5';
                
                 default:                   
@@ -348,37 +338,37 @@ function prepare_refund_search_terms($search_category, $search_term) {
             
             switch ($search_term) {
 
-                case ($langvals['refund_payment_method_1']):
+                case gettext("REFUND_PAYMENT_METHOD_1"):
                     return '1';
 
-                case ($langvals['refund_payment_method_2']):
+                case gettext("REFUND_PAYMENT_METHOD_2"):
                     return '2';
 
-                case ($langvals['refund_payment_method_3']):
+                case gettext("REFUND_PAYMENT_METHOD_3"):
                     return '3';
 
-                case ($langvals['refund_payment_method_4']):
+                case gettext("REFUND_PAYMENT_METHOD_4"):
                     return '4';
 
-                case ($langvals['refund_payment_method_5']):
+                case gettext("REFUND_PAYMENT_METHOD_5"):
                     return '5';
 
-                case ($langvals['refund_payment_method_6']):
+                case gettext("REFUND_PAYMENT_METHOD_6"):
                     return '6';
 
-                case ($langvals['refund_payment_method_7']):
+                case gettext("REFUND_PAYMENT_METHOD_7"):
                     return '7';
 
-                case ($langvals['refund_payment_method_8']):
+                case gettext("REFUND_PAYMENT_METHOD_8"):
                     return '8';
 
-                case ($langvals['refund_payment_method_9']):
+                case gettext("REFUND_PAYMENT_METHOD_9"):
                     return '9';
 
-                case ($langvals['refund_payment_method_10']):
+                case gettext("REFUND_PAYMENT_METHOD_10"):
                     return '10';
 
-                case ($langvals['refund_payment_method_11']):
+                case gettext("REFUND_PAYMENT_METHOD_11"):
                     return '11';
                     
                 default:                   
@@ -405,12 +395,10 @@ function prepare_refund_search_terms($search_category, $search_term) {
 
 function last_refund_id_lookup($db) {
     
-    global $smarty;
-
     $sql = 'SELECT * FROM '.PRFX.'REFUND ORDER BY REFUND_ID DESC LIMIT 1';
 
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_refund_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to lookup the last refund record ID."));
         exit;
     } else {
         

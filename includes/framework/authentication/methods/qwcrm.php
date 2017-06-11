@@ -42,8 +42,8 @@ class PlgAuthenticationQwcrm
         // Joomla does not like blank passwords
         if (empty($credentials['password']))
         {
-            $response->status        = JAuthentication::STATUS_FAILURE;
-            //$response->error_message = JText::_('JGLOBAL_AUTH_EMPTY_PASS_NOT_ALLOWED');
+            $response->status        = JAuthentication::STATUS_FAILURE;            
+            $response->error_message = gettext("Empty password not allowed.");
 
             return;
         }
@@ -71,8 +71,8 @@ class PlgAuthenticationQwcrm
             else
             {
                 // Invalid password
-                $response->status        = JAuthentication::STATUS_FAILURE;
-                //$response->error_message = JText::_('JGLOBAL_AUTH_INVALID_PASS');
+                $response->status        = JAuthentication::STATUS_FAILURE;                
+                $response->error_message = gettext("Username and password do not match or you do not have an account yet.");
             }
         }
         else
@@ -82,8 +82,8 @@ class PlgAuthenticationQwcrm
             JUserHelper::hashPassword($credentials['password']);
 
             // Invalid user
-            $response->status        = JAuthentication::STATUS_FAILURE;
-            //$response->error_message = JText::_('JGLOBAL_AUTH_NO_USER');
+            $response->status        = JAuthentication::STATUS_FAILURE;            
+            $response->error_message = gettext("Username and password do not match or you do not have an account yet.");
         }
 
         return;
@@ -248,24 +248,23 @@ class PlgAuthenticationQwcrm
         // If the user is blocked, redirect with an error
         if ($instance->block == 1)
         {
-            $this->app->enqueueMessage(JText::_('JERROR_NOLOGIN_BLOCKED'), 'warning');
-
+            //$this->app->enqueueMessage(gettext("Login denied! Your account has either been blocked or you have not activated it yet."), 'warning');            
+            gettext("Login denied! Your account has either been blocked or you have not activated it yet.");
             return false;
         }
 
-        // Authorise the user based on the group information
+        /* Authorise the user based on the group information
         if (!isset($options['group']))
         {
             $options['group'] = 'USERS';
         }
-
-        /* Check the user can login.
+        
+        // Check the user can login.
         $result = $instance->authorise($options['action']);
 
         if (!$result)
         {
-            $this->app->enqueueMessage(JText::_('JERROR_LOGIN_DENIED'), 'warning');
-
+            $this->app->enqueueMessage(gettext("Login denied! Your account has either been blocked or you have not activated it yet."), 'warning');            
             return false;
         }*/
 

@@ -17,14 +17,12 @@ defined('_QWEXEC') or die;
 
 function greeting_message_based_on_time($employee_name){
     
-    global $smarty;
+    $morning    = gettext("Good morning").' '.$employee_name;
+    $afternoon  = gettext("Good afternoon").' '.$employee_name;
+    $evening    = gettext("Good evening").' '.$employee_name;
+    $night      = gettext("Working late").' '.$employee_name;
     
-    $morning    = $smarty->getTemplateVars('translate_core_theme_function_greeting_message_based_on_time_morning_message').' '.$employee_name;
-    $afternoon  = $smarty->getTemplateVars('translate_core_theme_function_greeting_message_based_on_time_afternoon_message').' '.$employee_name;
-    $evening    = $smarty->getTemplateVars('translate_core_theme_function_greeting_message_based_on_time_evening_message').' '.$employee_name;
-    $night      = $smarty->getTemplateVars('translate_core_theme_function_greeting_message_based_on_time_night_message').' '.$employee_name;
-    
-    $friday     = $smarty->getTemplateVars('translate_core_theme_function_greeting_message_based_on_time_friday_message');
+    $friday     = gettext("Get ready for the weekend!");
     
     // Get the current hour
     $current_time = date('H');

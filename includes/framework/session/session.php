@@ -317,9 +317,9 @@ class JSession implements IteratorAggregate
         {
             if (QFactory::getSession()->isNew())
             {
-                // Redirect to login screen.
-                $app->enqueueMessage(JText::_('JLIB_ENVIRONMENT_SESSION_EXPIRED'), 'warning');
-                $app->redirect(JRoute::_('index.php'));
+                // Redirect to login screen.                
+                $app->enqueueMessage(gettext("Your session has expired. Please log in again."), 'warning');
+                //$app->redirect(JRoute::_('index.php')); // remmed out to prevent poedit finding it
 
                 return true;
             }
@@ -1051,7 +1051,7 @@ class JSession implements IteratorAggregate
             }
             catch (RuntimeException $e)
             {
-                throw new RuntimeException(JText::_('JERROR_SESSION_STARTUP'), $e->getCode(), $e);
+                throw new RuntimeException(gettext("Error initialising the session."), $e->getCode(), $e);
             }
         }
     } 

@@ -30,8 +30,6 @@ defined('_QWEXEC') or die;
 
 function display_customers($db, $status = 'all', $direction = 'DESC', $use_pages = false, $page_no = 1, $records_per_page = 25, $search_type = null, $search_term = null) {
 
-    global $smarty;    
-    
     /* Filter the Records */
     
     // Perform Standard Search
@@ -72,7 +70,7 @@ function display_customers($db, $status = 'all', $direction = 'DESC', $use_pages
         
         // Figure out the total number of records in the database for the given search        
         if(!$rs = $db->Execute($sql)) {
-            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_customer_error_message_function_'.__FUNCTION__.'_count'));
+            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count the number of matching customer records."));
             exit;
         } else {        
             $total_results = $rs->RecordCount();            
@@ -116,7 +114,7 @@ function display_customers($db, $status = 'all', $direction = 'DESC', $use_pages
     /* Return the records */
          
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_customer_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to return the matching customer records."));
         exit;
         
     } else {        
@@ -145,8 +143,6 @@ function display_customers($db, $status = 'all', $direction = 'DESC', $use_pages
 
 function insert_customer($db, $VAR) {
     
-    global $smarty;
-
     $sql = "INSERT INTO ".PRFX."CUSTOMER SET
             CUSTOMER_DISPLAY_NAME   =". $db->qstr( $VAR['displayName']      ).",
             CUSTOMER_ADDRESS        =". $db->qstr( $VAR['address']          ).",
@@ -168,7 +164,7 @@ function insert_customer($db, $VAR) {
             CUSTOMER_NOTES          =". $db->qstr( $VAR['customerNotes']    );
             
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_customer_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to insert the customer record into the database."));
         exit;
     } else {
         
@@ -184,8 +180,6 @@ function insert_customer($db, $VAR) {
 
 function insert_customer_note($db, $customer_id, $note) {
     
-    global $smarty;
-    
     $sql = "INSERT INTO ".PRFX."CUSTOMER_NOTES SET
             CUSTOMER_ID =". $db->qstr( $customer_id             ).",
             EMPLOYEE_ID =". $db->qstr( $_SESSION['login_id']    ).",
@@ -193,7 +187,7 @@ function insert_customer_note($db, $customer_id, $note) {
             NOTE        =". $db->qstr( $note                    );
 
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_customer_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to insert the customer note into the database."));
         exit;
     }
     
@@ -207,12 +201,10 @@ function insert_customer_note($db, $customer_id, $note) {
 
 function get_customer_details($db, $customer_id, $item = null){
     
-    global $smarty;
-    
     $sql = "SELECT * FROM ".PRFX."CUSTOMER WHERE CUSTOMER_ID=".$db->qstr($customer_id);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_customer_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the customer's details."));
         exit;
     } else { 
         
@@ -236,12 +228,10 @@ function get_customer_details($db, $customer_id, $item = null){
 
 function get_customer_note($db, $customer_note_id, $item = null){
     
-    global $smarty;
-    
     $sql = "SELECT * FROM ".PRFX."CUSTOMER_NOTES WHERE CUSTOMER_NOTE_ID=".$db->qstr( $customer_note_id );    
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_customer_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the customer note."));
         exit;
     } else { 
         
@@ -265,12 +255,10 @@ function get_customer_note($db, $customer_note_id, $item = null){
 
 function get_customer_notes($db, $customer_id) {
     
-    global $smarty;
-    
     $sql = "SELECT * FROM ".PRFX."CUSTOMER_NOTES WHERE CUSTOMER_ID=".$db->qstr( $customer_id );
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_customer_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the customer's notes."));
         exit;
     } else {
         
@@ -287,8 +275,6 @@ function get_customer_notes($db, $customer_id) {
 #####################################
 
 function update_customer($db, $customer_id, $VAR) {
-    
-    global $smarty;
     
     $sql = "UPDATE ".PRFX."CUSTOMER SET
             CUSTOMER_DISPLAY_NAME   = ". $db->qstr( $VAR['displayName']    ).",
@@ -310,7 +296,7 @@ function update_customer($db, $customer_id, $VAR) {
             WHERE CUSTOMER_ID       = ". $db->qstr( $customer_id            );
             
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_customer_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the customer's details."));
         exit;
     } else {
         
@@ -335,7 +321,7 @@ function update_customer_note($db, $customer_note_id, $date, $note) {
             WHERE CUSTOMER_NOTE_ID  =". $db->qstr( $customer_note_id        );
 
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_customer_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the customer note."));
         exit;
     }   
     
@@ -351,12 +337,10 @@ function update_customer_note($db, $customer_note_id, $date, $note) {
 
 function delete_customer($db, $customer_id){
     
-    global $smarty;
-    
     // Check if customer has any workorders
     $sql = "SELECT count(*) as count FROM ".PRFX."WORKORDER WHERE CUSTOMER_ID=".$db->qstr($customer_id);    
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_customer_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count the customer's Workorders in the database."));
         exit;
     }  
     if($rs->fields['count'] > 0 ) {
@@ -368,20 +352,19 @@ function delete_customer($db, $customer_id){
     // Check if customer has any invoices
     $sql = "SELECT count(*) as count FROM ".PRFX."INVOICE WHERE CUSTOMER_ID=".$db->qstr($customer_id);    
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_customer_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count the customer's Invoices in the database."));
         exit;
     }    
     if($rs->fields['count'] > 0 ) {
         //force_page('customer', 'view&error_msg=You can not delete a customer who has invoices.');
         //exit;
         return false;
-    }
-    
+    }    
     
     // Check if customer has any gift certificates
     $sql = "SELECT count(*) as count FROM ".PRFX."GIFTCERT WHERE CUSTOMER_ID=".$db->qstr($customer_id);
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_customer_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count the customer's Gift Certificates in the database."));
         exit;
     }  
     if($rs->fields['count'] > 0 ) {
@@ -393,7 +376,7 @@ function delete_customer($db, $customer_id){
     // Check if customer has any customer notes
     $sql = "SELECT count(*) as count FROM ".PRFX."CUSTOMER_NOTES WHERE CUSTOMER_ID=".$db->qstr($customer_id);
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_customer_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count the customer's Notes in the database."));
         exit;
     }    
     if($rs->fields['count'] > 0 ) {
@@ -402,22 +385,12 @@ function delete_customer($db, $customer_id){
         return false;
     }
     
-    // Check if customer has any customer notes
-    $sql = "SELECT count(*) as count FROM ".PRFX."CUSTOMER_NOTES WHERE CUSTOMER_ID=".$db->qstr($customer_id);
-    if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_customer_error_message_function_'.__FUNCTION__.'_failed'));
-        exit;
-    }    
-    if($rs->fields['count'] > 0 ) {
-        //force_page('customer', 'view&error_msg=You can not delete a customer who has notes.');
-        //exit;
-        return false;
-    } 
-        
+    /* we can now delete the customer */
+    
     // Delete Customer
     $sql = "DELETE FROM ".PRFX."CUSTOMER WHERE CUSTOMER_ID=".$db->qstr($customer_id);    
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_customer_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete the customer from the database."));
         exit;
     } else {
         
@@ -433,12 +406,10 @@ function delete_customer($db, $customer_id){
 
 function delete_customer_note($db, $customer_note_id) {
     
-    global $smarty;
-    
     $sql = "DELETE FROM ".PRFX."CUSTOMER_NOTES WHERE CUSTOMER_NOTE_ID=".$db->qstr( $customer_note_id );
 
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_customer_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete the customer note."));
         exit;
     }
     
@@ -452,12 +423,10 @@ function delete_customer_note($db, $customer_note_id) {
     
 function check_customer_ex($db, $displayName) {
     
-    global $smarty;
-    
     $sql = "SELECT COUNT(*) AS num_users FROM ".PRFX."CUSTOMER WHERE CUSTOMER_DISPLAY_NAME=".$db->qstr($displayName);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_customer_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to check the submitted Display Name for duplicates in the database."));
         exit;
     } else {
         $row = $rs->FetchRow();

@@ -25,7 +25,7 @@ defined('_QWEXEC') or die;
 /** Display Functions **/
 
 ###############################
-#         Display expenses    #
+#     Display expenses        #
 ###############################
 
 function display_suppliers($db, $direction = 'DESC', $use_pages = false, $page_no = 1, $records_per_page = 25, $search_category, $search_term) {
@@ -98,7 +98,7 @@ function display_suppliers($db, $direction = 'DESC', $use_pages = false, $page_n
         
         // Figure out the total number of records in the database for the given search        
         if(!$rs = $db->Execute($sql)) {
-            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_supplier_error_message_function_'.__FUNCTION__.'_count'));
+            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count the matching supplier records."));
             exit;
         } else {        
             $total_results = $rs->RecordCount();            
@@ -144,7 +144,7 @@ function display_suppliers($db, $direction = 'DESC', $use_pages = false, $page_n
     /* Return the records */
          
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_supplier_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to return the matching supplier records."));
         exit;
     } else {
         
@@ -172,8 +172,6 @@ function display_suppliers($db, $direction = 'DESC', $use_pages = false, $page_n
 
 function insert_supplier($db, $VAR) {
     
-    global $smarty;
-
     $sql = "INSERT INTO ".PRFX."SUPPLIER SET            
             SUPPLIER_NAME           = ". $db->qstr( $VAR['supplierName']        ).",
             SUPPLIER_CONTACT        = ". $db->qstr( $VAR['supplierContact']     ).",
@@ -191,7 +189,7 @@ function insert_supplier($db, $VAR) {
             SUPPLIER_DESCRIPTION    = ". $db->qstr( $VAR['supplierDescription'] );
 
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_supplier_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to insert the supplier record into the database."));
         exit;
     } else {
         
@@ -209,12 +207,10 @@ function insert_supplier($db, $VAR) {
 
 function get_supplier_details($db, $supplier_id, $item = null){
     
-    global $smarty;
-
     $sql = "SELECT * FROM ".PRFX."SUPPLIER WHERE SUPPLIER_ID=".$db->qstr($supplier_id);
     
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the supplier details."));
         exit;
     } else {
         
@@ -240,8 +236,6 @@ function get_supplier_details($db, $supplier_id, $item = null){
 
 function update_supplier($db, $supplier_id, $VAR) {
     
-    global $smarty;
-
     $sql = "UPDATE ".PRFX."SUPPLIER SET
             SUPPLIER_NAME           = ". $db->qstr( $VAR['supplierName']        ).",
             SUPPLIER_CONTACT        = ". $db->qstr( $VAR['supplierContact']     ).",
@@ -260,7 +254,7 @@ function update_supplier($db, $supplier_id, $VAR) {
             WHERE SUPPLIER_ID       = ". $db->qstr( $supplier_id                );                        
             
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_supplier_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the supplier details."));
         exit;
     } else {
         
@@ -280,12 +274,10 @@ function update_supplier($db, $supplier_id, $VAR) {
 
 function delete_supplier($db, $supplier_id){
     
-    global $smarty;
-    
     $sql = "DELETE FROM ".PRFX."SUPPLIER WHERE SUPPLIER_ID=".$db->qstr($supplier_id);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_supplier_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete the supplier record."));
         exit;
     } else {
         
@@ -303,45 +295,43 @@ function delete_supplier($db, $supplier_id){
 
 function prepare_supplier_search_terms($search_category, $search_term) {
 
-    $langvals = gateway_xml2php('supplier');
-
     switch ($supplier_search_category) {
 
         case 'type': {
             
             switch ($supplier_search_term) {
 
-                case ($langvals['supplier_type_1']):
+                case gettext("SUPPLIER_TYPE_1"):
                     return '1';
 
-                case ($langvals['supplier_type_2']):
+                case gettext("SUPPLIER_TYPE_2"):
                     return '2';
 
-                case ($langvals['supplier_type_3']):
+                case gettext("SUPPLIER_TYPE_3"):
                     return '3';
 
-                case ($langvals['supplier_type_4']):
+                case gettext("SUPPLIER_TYPE_4"):
                     return '4';
 
-                case ($langvals['supplier_type_5']):
+                case gettext("SUPPLIER_TYPE_5"):
                     return '5';
 
-                case ($langvals['supplier_type_6']):
+                case gettext("SUPPLIER_TYPE_6"):
                     return '6';
 
-                case ($langvals['supplier_type_7']):
+                case gettext("SUPPLIER_TYPE_7"):
                     return '7';
 
-                case ($langvals['supplier_type_8']):
+                case gettext("SUPPLIER_TYPE_8"):
                     return '8';
 
-                case ($langvals['supplier_type_9']):
+                case gettext("SUPPLIER_TYPE_9"):
                     return '9';
 
-                case ($langvals['supplier_type_10']):
+                case gettext("SUPPLIER_TYPE_10"):
                     return '10';
 
-                case ($langvals['supplier_type_11']):
+                case gettext("SUPPLIER_TYPE_11"):
                     return'11';
 
             }
@@ -361,12 +351,10 @@ function prepare_supplier_search_terms($search_category, $search_term) {
 
 function last_supplier_id_lookup($db) {
     
-    global $smarty;
-
     $sql = 'SELECT * FROM '.PRFX.'SUPPLIER ORDER BY SUPPLIER_ID DESC LIMIT 1';
 
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_supplier_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to lookup the last supplier record ID."));
         exit;
     } else {
         

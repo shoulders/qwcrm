@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2017-06-09 22:17+0100\n"
-"PO-Revision-Date: 2017-06-09 22:17+0100\n"
+"POT-Creation-Date: 2017-06-10 20:24+0100\n"
+"PO-Revision-Date: 2017-06-10 20:26+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en_GB\n"
@@ -22,50 +22,144 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-3: upgrade\n"
 "X-Poedit-SearchPathExcluded-4: themes/default/js\n"
 
-#: includes/framework/authentication/authentication.php:430
-msgid "JLIB_LOGIN_EXPIRED"
+#: includes/framework/authentication/authentication.php:431
+msgid "Login Expired"
 msgstr ""
 
-#: includes/framework/authentication/authentication.php:433
-msgid "JLIB_LOGIN_DENIED"
+#: includes/framework/authentication/authentication.php:435
+msgid "Login Denied"
 msgstr ""
 
-#: includes/framework/authentication/authentication.php:436
-msgid "JLIB_LOGIN_AUTHORISATION"
+#: includes/framework/authentication/authentication.php:439
+#: includes/framework/authentication/methods/qwcrm.php:75
+#: includes/framework/authentication/methods/qwcrm.php:86
+#: includes/framework/authentication/methods/remember.php:228
+msgid "Username and password do not match or you do not have an account yet."
 msgstr ""
 
-#: includes/framework/authentication/methods/qwcrm.php:251
-msgid "JERROR_NOLOGIN_BLOCKED"
+#: includes/framework/authentication/methods/qwcrm.php:46
+msgid "Empty password not allowed."
 msgstr ""
 
-#: includes/framework/authentication/methods/remember.php:227
-msgid "JGLOBAL_AUTH_NO_USER"
+#: includes/framework/authentication/methods/qwcrm.php:252
+msgid ""
+"Login denied! Your account has either been blocked or you have not activated "
+"it yet."
+msgstr ""
+
+#: includes/framework/authentication/methods/remember.php:188
+msgid "Cookie login failed for user "
 msgstr ""
 
 #: includes/framework/session/session.php:321
-msgid "JLIB_ENVIRONMENT_SESSION_EXPIRED"
-msgstr ""
-
-#: includes/framework/session/session.php:322
-msgid "index.php"
+msgid "Your session has expired. Please log in again."
 msgstr ""
 
 #: includes/framework/session/session.php:1054
-msgid "JERROR_SESSION_STARTUP"
+msgid "Error initialising the session."
 msgstr ""
 
-#: includes/framework/user/helper.php:269
-msgid "JLIB_USER_ERROR_UNABLE_TO_FIND_USER"
+#: includes/framework/user/helper.php:270
+msgid "Unable to find a user with given activation string."
 msgstr ""
 
 #: includes/framework/user/user.php:441 includes/framework/user/user.php:469
-msgid "JLIB_USER_ERROR_PASSWORD_NOT_MATCH"
+msgid "Passwords do not match. Please re-enter password."
 msgstr ""
 
 #: includes/framework/user/user.php:479
-msgid "JLIB_USER_ERROR_CANNOT_REUSE_PASSWORD"
+msgid "You can't reuse your current password, please enter a new password."
 msgstr ""
 
 #: includes/framework/user/user.php:514
-msgid "JLIB_USER_ERROR_BIND_ARRAY"
+msgid "Unable to bind array to user object."
+msgstr ""
+
+#: includes/include.php:392 includes/include.php:399 includes/include.php:400
+msgid "_"
+msgstr ""
+
+#: language/_gettext_only/page_meta.php:17
+msgid "CORE_LOGIN_HEADER_PAGE_TITLE"
+msgstr ""
+
+#: language/_gettext_only/page_meta.php:18
+msgid "CORE_LOGIN_HEADER_META_DESCRIPTION"
+msgstr ""
+
+#: language/_gettext_only/page_meta.php:19
+msgid "CORE_LOGIN_HEADER_META_KEYWORDS"
+msgstr ""
+
+#: language/_gettext_only/page_meta.php:20
+msgid "CORE_LOGIN_HELP_TITLE"
+msgstr ""
+
+#: language/_gettext_only/page_meta.php:21
+msgid "CORE_LOGIN_HELP_CONTENT"
+msgstr ""
+
+#: language/_gettext_only/page_meta.php:24
+msgid "CORE_HOME_HEADER_PAGE_TITLE"
+msgstr ""
+
+#: language/_gettext_only/page_meta.php:25
+msgid "CORE_HOME_HEADER_META_DESCRIPTION"
+msgstr ""
+
+#: language/_gettext_only/page_meta.php:26
+msgid "CORE_HOME_HEADER_META_KEYWORDS"
+msgstr ""
+
+#: language/_gettext_only/page_meta.php:27
+msgid "CORE_HOME_HELP_TITLE"
+msgstr ""
+
+#: language/_gettext_only/page_meta.php:28
+msgid "CORE_HOME_HELP_CONTENT"
+msgstr ""
+
+#: language/_gettext_only/page_meta.php:31
+msgid "CORE_MAINTENANCE_HEADER_PAGE_TITLE"
+msgstr ""
+
+#: language/_gettext_only/page_meta.php:32
+msgid "CORE_MAINTENANCE_HEADER_META_DESCRIPTION"
+msgstr ""
+
+#: language/_gettext_only/page_meta.php:33
+msgid "CORE_MAINTENANCE_HEADER_META_KEYWORDS"
+msgstr ""
+
+#: language/_gettext_only/page_meta.php:34
+msgid "CORE_MAINTENANCE_HELP_TITLE"
+msgstr ""
+
+#: language/_gettext_only/page_meta.php:35
+msgid "CORE_MAINTENANCE_HELP_CONTENT"
+msgstr ""
+
+#: themes/default/templates/core/blocks/login_dashboard_block.tpl:4
+msgid "Dashboard"
+msgstr ""
+
+#: themes/default/templates/core/blocks/login_dashboard_block.tpl:11
+msgid "Submit a New Support Request"
+msgstr ""
+
+#: themes/default/templates/core/blocks/login_dashboard_block.tpl:12
+msgid ""
+"This is were you can submit your support request through of Helpdesk system"
+msgstr ""
+
+#: themes/default/templates/core/blocks/login_dashboard_block.tpl:17
+msgid "Latest News Coming Soon!!"
+msgstr ""
+
+#: themes/default/templates/core/blocks/login_dashboard_block.tpl:23
+msgid "Knowledge Base and Troubleshooter Coming Soon!!"
+msgstr ""
+
+#: themes/default/templates/core/blocks/login_form_block.tpl:32
+msgid "Remember me"
 msgstr ""

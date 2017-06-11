@@ -9,7 +9,7 @@
 
 defined('_QWEXEC') or die;
 
-// General Helper
+// General Helpers
 require FRAMEWORK_DIR . 'general/config.php';                      // Gets the standard config settings Only and handles saving of them
 require FRAMEWORK_DIR . 'general/registry.php';                    // Used to create a register for the class which can be manipulated (set/get/clear) and can be serialised into JSON compatible string for storage in the session
 require FRAMEWORK_DIR . 'general/Webclient.php';                   // Gets the browser details from the session (used in cookie creation)
@@ -99,10 +99,12 @@ class QFactory {
      */
     public function login($credentials, $options = array())
     {   
-        // If username or password is missing, redirect
+        // If username or password is missing
         if (!isset($credentials['username']) || $credentials['username'] == '' || !isset($credentials['password']) || $credentials['password'] == ''){
-            force_page('core', 'login', 'warning_msg='.$this->smarty->getTemplateVars('translate_system_auth_advisory_message_username_or_password_missing'));
-            exit;
+            //force_page('core', 'login', 'warning_msg='.gettext("Username or Password Missing."));
+            //exit;
+            $this->smarty->assign('information_msg', gettext("Username or Password Missing"));
+            return false;
         } 
             
         $auth = self::getAuth();
@@ -114,11 +116,12 @@ class QFactory {
             $user = self::getUser();
 
             // Log activity       
-            write_record_to_activity_log($this->smarty->getTemplateVars('translate_system_auth_log_message_login_successful_for').' '.$user->login_usr); 
+            write_record_to_activity_log(gettext("Login successful for").' '.$user->login_usr); 
 
             // Reload with 'Login Successful' message
-            force_page('core', 'home', 'information_msg='.$this->smarty->getTemplateVars('translate_system_auth_advisory_message_login_successful'));            
-            exit;
+            //force_page('core', 'home', 'information_msg='.gettext("Login successful."));            
+            //exit;
+            $this->smarty->assign('information_msg', gettext("Login successful"));
             
             return true;        
         
@@ -127,8 +130,10 @@ class QFactory {
             /* Login failed */
             
             // Reload with 'Login Failed' message
-            force_page('core', 'login', 'warning_msg='.$this->smarty->getTemplateVars('translate_system_auth_advisory_message_login_failed'));
-            exit;
+            //force_page('core', 'login', 'warning_msg='.gettext("Login Failed"));
+            //exit;
+            $this->smarty->assign('information_msg', gettext("Login Failed"));
+            return false;
             
         }
     }
@@ -146,11 +151,12 @@ class QFactory {
         $auth->logout();
         
         // Log activity       
-        write_record_to_activity_log($this->smarty->getTemplateVars('translate_system_auth_log_message_logout_successful_for').' '.$user->get('login_usr'));        
+        write_record_to_activity_log(gettext("Logout successful for").' '.$user->get('login_usr'));        
                 
         // Reload with 'Logout Successful' message        
-        force_page('core', 'login', 'information_msg='.$this->smarty->getTemplateVars('translate_system_auth_advisory_message_logout_successful'), 'get');
-        exit;
+        //force_page('core', 'login', 'information_msg='.gettext("Logout successful"), 'get');
+        //exit;
+        $this->smarty->assign('information_msg', gettext("Logout successful"));
     } 
 
 /****************** Configuration Object ******************/
@@ -247,7 +253,7 @@ class QFactory {
     {
         if ($session !== null)
         {
-            $this->session = $session;
+            self::$session = $session;
 
             return $this;
         }
@@ -298,7 +304,7 @@ class QFactory {
         $session = QFactory::getSession($options);        
 
         // TODO: At some point we need to get away from having session data always in the db.
-        $db = QFactory::getDbo();
+        //$db = QFactory::getDbo();
 
         // Remove expired sessions from the database.
         $time = time();
@@ -309,6 +315,7 @@ class QFactory {
         // Get the session handler from the configuration.
         $handler = $this->conf->get('session_handler', 'none');
 
+        // Check the session is in the database, if not create it else load it
         if (($handler != 'database' && ($time % 2 || $session->isNew())) || ($handler == 'database' && $session->isNew()))
         {
             $session->checkSession();

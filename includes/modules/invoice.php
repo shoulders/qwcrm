@@ -75,7 +75,7 @@ function display_invoices($db, $status = 'all', $direction = 'DESC', $use_pages 
         
         // Figure out the total number of records in the database for the given search        
         if(!$rs = $db->Execute($sql)) {
-            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_invoice_error_message_function_'.__FUNCTION__.'_count'));
+            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count the matching Invoice records."));
             exit;
         } else {        
             $total_results = $rs->RecordCount();            
@@ -121,7 +121,7 @@ function display_invoices($db, $status = 'all', $direction = 'DESC', $use_pages 
     /* Return the records */
          
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_invoice_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to return the matching Invoice records."));
         exit;
     } else {
         
@@ -149,10 +149,7 @@ function display_invoices($db, $status = 'all', $direction = 'DESC', $use_pages 
 
 function insert_invoice($db, $customer_id, $workorder_id, $discount_rate, $tax_rate) {
     
-    global $smarty;
-    
-    $sql = "INSERT INTO ".PRFX."INVOICE SET
-            
+    $sql = "INSERT INTO ".PRFX."INVOICE SET            
             CUSTOMER_ID     =". $db->qstr( $customer_id             ).",
             WORKORDER_ID    =". $db->qstr( $workorder_id            ).",
             EMPLOYEE_ID     =". $db->qstr( $_SESSION['login_id']    ).",
@@ -162,7 +159,7 @@ function insert_invoice($db, $customer_id, $workorder_id, $discount_rate, $tax_r
             TAX_RATE        =". $db->qstr( $tax_rate                );            
 
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_invoice_error_message_function_'.__FUNCTION__.'_count'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to insert the invoice record into the database."));
         exit;
     } else {
         
@@ -177,8 +174,6 @@ function insert_invoice($db, $customer_id, $workorder_id, $discount_rate, $tax_r
 #####################################
 
 function insert_labour_items($db, $invoice_id, $labour_description, $labour_rate, $labour_hour) {
-    
-    global $smarty;
     
     // Insert Labour Items into database (if any)
     if($labour_hour > 0 ) {
@@ -207,7 +202,7 @@ function insert_labour_items($db, $invoice_id, $labour_description, $labour_rate
         $sql = substr($sql , 0, -1);
         
         if(!$rs = $db->Execute($sql)) {
-            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_invoice_error_message_function_'.__FUNCTION__.'_count'));
+            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to insert Labour item into the database."));
             exit;
         }
         
@@ -220,8 +215,6 @@ function insert_labour_items($db, $invoice_id, $labour_description, $labour_rate
 #####################################
 
 function insert_parts_items($db, $invoice_id, $parts_description, $parts_price, $parts_qty) {
-    
-    global $smarty;
     
     // Insert Parts Items into database (if any)
     if($parts_qty > 0 ) {
@@ -250,7 +243,7 @@ function insert_parts_items($db, $invoice_id, $parts_description, $parts_price, 
         $sql = substr($sql ,0,-1);
         
         if(!$rs = $db->Execute($sql)) {
-            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_invoice_error_message_function_'.__FUNCTION__.'_count'));
+            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to insert Parts item into the database."));
             exit;
         }
         
@@ -275,7 +268,7 @@ function insert_invoice_labour_rates_item($db, $VAR){
             LABOUR_RATE_ACTIVE   =". $db->qstr( 1                    );
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_invoice_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to insert Labour invoice rate item into the database."));
         exit;
     }
     
@@ -289,12 +282,10 @@ function insert_invoice_labour_rates_item($db, $VAR){
 
 function get_invoice_details($db, $invoice_id, $item = null) {
     
-    global $smarty;
-
     $sql = "SELECT * FROM ".PRFX."INVOICE WHERE INVOICE_ID =".$db->qstr($invoice_id);
     
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_invoice_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get invoice details."));
         exit;
     } else {
         
@@ -321,7 +312,7 @@ function get_active_labour_rate_items($db) {
     $sql = "SELECT * FROM ".PRFX."INVOICE_LABOUR_RATES WHERE LABOUR_RATE_ACTIVE='1'";
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_invoice_error_message_function_'.__FUNCTION__.'_count'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get active labour rate items."));
         exit;
     } else {
         
@@ -341,12 +332,10 @@ function get_active_labour_rate_items($db) {
 
 function get_invoice_labour_items($db, $invoice_id) {
     
-    global $smarty;
-    
     $sql = "SELECT * FROM ".PRFX."INVOICE_LABOUR WHERE INVOICE_ID=".$db->qstr( $invoice_id );
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_invoice_error_message_function_'.__FUNCTION__.'_count'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get invoice labour items."));
         exit;
     } else {
         
@@ -365,12 +354,10 @@ function get_invoice_labour_items($db, $invoice_id) {
 
 function get_invoice_labour_item_details($db, $labour_id, $item = null) {
     
-    global $smarty;
-
     $sql = "SELECT * FROM ".PRFX."INVOICE_LABOUR WHERE INVOICE_LABOUR_ID =".$db->qstr($labour_id);
     
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_invoice_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get invoice labour item details."));
         exit;
     } else {
         
@@ -394,12 +381,10 @@ function get_invoice_labour_item_details($db, $labour_id, $item = null) {
 
 function get_invoice_parts_items($db, $invoice_id) {
     
-    global $smarty;
-    
     $sql = "SELECT * FROM ".PRFX."INVOICE_PARTS WHERE INVOICE_ID=".$db->qstr( $invoice_id );
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_invoice_error_message_function_'.__FUNCTION__.'_count'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get invoice parts items."));
         exit;
     } else {
         
@@ -419,12 +404,10 @@ function get_invoice_parts_items($db, $invoice_id) {
 
 function get_invoice_parts_item_details($db, $parts_id, $item = null) {
     
-    global $smarty;
-
     $sql = "SELECT * FROM ".PRFX."INVOICE_PARTS WHERE INVOICE_PARTS_ID =".$db->qstr($parts_id);
     
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_invoice_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get invoice parts item details."));
         exit;
     } else {
         
@@ -448,13 +431,11 @@ function get_invoice_parts_item_details($db, $parts_id, $item = null) {
 
 function get_invoice_labour_rates_items($db) {
     
-    global $smarty;
-    
     // Loads rates from database
     $sql = "SELECT * FROM ".PRFX."INVOICE_LABOUR_RATES ORDER BY LABOUR_RATE_ID ASC";
     
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_invoice_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get invoice labour rates items."));
         exit;
     }   
     
@@ -470,8 +451,6 @@ function get_invoice_labour_rates_items($db) {
 
 function update_invoice($db, $invoice_id, $date, $due_date, $discount_rate) {
     
-    global $smarty;
-    
     $sql = "UPDATE ".PRFX."INVOICE SET
             DATE                =". $db->qstr( date_to_timestamp($date)     ).",
             DUE_DATE            =". $db->qstr( date_to_timestamp($due_date) ).",
@@ -479,7 +458,7 @@ function update_invoice($db, $invoice_id, $date, $due_date, $discount_rate) {
             WHERE INVOICE_ID    =". $db->qstr( $invoice_id                  );
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_invoice_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the invoice dates and discount rate."));
         exit;
     }
     
@@ -491,8 +470,6 @@ function update_invoice($db, $invoice_id, $date, $due_date, $discount_rate) {
 
 function update_invoice_transaction_only($db, $invoice_id, $paid_status, $paid_date, $paid_amount, $balance) {
     
-    global $smarty;
-    
     $sql = "UPDATE ".PRFX."INVOICE SET
             IS_PAID             =". $db->qstr( $paid_status ).",
             PAID_DATE           =". $db->qstr( $paid_date   ).",        
@@ -501,7 +478,7 @@ function update_invoice_transaction_only($db, $invoice_id, $paid_status, $paid_d
             WHERE INVOICE_ID    =". $db->qstr( $invoice_id  );
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_invoice_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the invoice's financial totals."));
         exit;
     }
     
@@ -513,10 +490,7 @@ function update_invoice_transaction_only($db, $invoice_id, $paid_status, $paid_d
 
 function update_invoice_full($db, $invoice_id, $customer_id, $workorder_id, $employee_id, $date, $due_date, $discount_rate, $discount, $tax_rate, $tax_amount, $sub_total, $total, $is_paid, $paid_date, $paid_amount, $balance) {
     
-    global $smarty;
-    
-    $sql = "UPDATE ".PRFX."INVOICE SET
-        
+    $sql = "UPDATE ".PRFX."INVOICE SET        
             CUSTOMER_ID         =". $db->qstr( $customer_id     ).",
             WORKORDER_ID        =". $db->qstr( $workorder_id    ).",
             EMPLOYEE_ID         =". $db->qstr( $employee_id     ).",                
@@ -535,7 +509,7 @@ function update_invoice_full($db, $invoice_id, $customer_id, $workorder_id, $emp
             WHERE INVOICE_ID    =". $db->qstr( $invoice_id      );
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_invoice_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the invoice."));
         exit;
     }    
     
@@ -547,8 +521,6 @@ function update_invoice_full($db, $invoice_id, $customer_id, $workorder_id, $emp
 
 function update_invoice_labour_rates_item($db, $labour_rate_id, $VAR){
     
-    global $smarty;
-    
     $sql = "UPDATE ".PRFX."INVOICE_LABOUR_RATES SET
         LABOUR_RATE_NAME     =". $db->qstr( $VAR['display']         ).",
         LABOUR_RATE_AMOUNT   =". $db->qstr( $VAR['amount']          ).",
@@ -559,7 +531,7 @@ function update_invoice_labour_rates_item($db, $labour_rate_id, $VAR){
         WHERE LABOUR_RATE_ID =". $db->qstr( $labour_rate_id         );
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_invoice_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update an invoice labour rates item."));
         exit;
     }
     
@@ -575,12 +547,10 @@ function update_invoice_labour_rates_item($db, $labour_rate_id, $VAR){
 
 function delete_invoice($db, $invoice_id) {
     
-    global $smarty;
-    
     $sql = "DELETE FROM ".PRFX."INVOICE WHERE INVOICE_ID=".$db->qstr($invoice_id);
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_invoice_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete the invoice."));
         exit;
     } else {
         
@@ -596,12 +566,10 @@ function delete_invoice($db, $invoice_id) {
 
 function delete_invoice_labour_item($db, $labour_id) {
     
-    global $smarty;
-    
     $sql = "DELETE FROM " . PRFX . "INVOICE_LABOUR WHERE INVOICE_LABOUR_ID=" . $db->qstr($labour_id);
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_invoice_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete an invoice labour item."));
         exit;
     } else {
         
@@ -616,12 +584,10 @@ function delete_invoice_labour_item($db, $labour_id) {
 
 function delete_invoice_parts_item($db, $parts_id) {
     
-    global $smarty;
-    
     $sql = "DELETE FROM " . PRFX . "INVOICE_PARTS WHERE INVOICE_PARTS_ID=" . $db->qstr($parts_id);
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_invoice_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete an invoice parts item."));
         exit;
     } else {
         
@@ -637,12 +603,10 @@ function delete_invoice_parts_item($db, $parts_id) {
 
 function delete_invoice_rates_item($db, $labour_rate_id){
     
-    global $smarty;
-    
     $sql = "DELETE FROM ".PRFX."INVOICE_LABOUR_RATES WHERE LABOUR_RATE_ID =".$labour_rate_id;
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_invoice_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete an invoice rates item."));
         exit;
     }
     
@@ -656,12 +620,10 @@ function delete_invoice_rates_item($db, $labour_rate_id){
 
 function labour_sub_total($db, $invoice_id) {
     
-    global $smarty;
-    
     $sql = "SELECT SUM(INVOICE_LABOUR_SUBTOTAL) AS labour_sub_total_sum FROM " . PRFX . "INVOICE_LABOUR WHERE INVOICE_ID=" . $db->qstr($invoice_id);
     
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_invoice_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to calculate the invoice labour sub total."));
         exit;
     } else {
         
@@ -677,12 +639,10 @@ function labour_sub_total($db, $invoice_id) {
 
 function parts_sub_total($db, $invoice_id) {
     
-    global $smarty;
-    
     $sql = "SELECT SUM(INVOICE_PARTS_SUBTOTAL) AS parts_sub_total_sum FROM " . PRFX . "INVOICE_PARTS WHERE INVOICE_ID=" . $db->qstr($invoice_id);
     
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_invoice_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to calculate the invoice parts sub total."));
         exit;
     } else {
         
@@ -697,8 +657,6 @@ function parts_sub_total($db, $invoice_id) {
 #####################################
 
 function recalculate_invoice_totals($db, $invoice_id) {
-    
-    global $smarty;
     
     $sub_total = labour_sub_total($db, $invoice_id) + parts_sub_total($db, $invoice_id);    
     $discount_rate = get_invoice_details($db, $invoice_id, 'DISCOUNT_RATE');
@@ -716,7 +674,7 @@ function recalculate_invoice_totals($db, $invoice_id) {
             WHERE INVOICE_ID    =". $db->qstr( $invoice_id      );
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_invoice_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed update the invoice totals."));
         exit;
     }
     
@@ -728,12 +686,10 @@ function recalculate_invoice_totals($db, $invoice_id) {
 
 function check_invoice_has_workorder($db, $invoice_id) {
     
-    global $smarty;
-    
     $sql = "SELECT WORKORDER_ID FROM ".PRFX."INVOICE WHERE INVOICE_ID=".$invoice_id;
     
     if(!$rs = $db->Execute($sql)) {        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to chack if the invoice has a work order."));
         exit;
     } else {        
         
@@ -768,8 +724,8 @@ function upload_invoice_labour_rates_csv($db, $VAR) {
     
     // Validate the uploaded file is allowed (extension, mime type, 0 - 2mb)
     if ((($_FILES['invoice_rates_csv']['type'] == 'text/csv'))            
-            || ($_FILES['invoice_rates_csv']['type'] == 'application/vnd.ms-excel') // CSV files created by excel - i might remove this
-            //|| ($_FILES['invoice_rates_csv']['type'] == 'text/plain')               // this seems a bit dangerous   
+            || ($_FILES['invoice_rates_csv']['type'] == 'application/vnd.ms-excel')     // CSV files created by excel - i might remove this
+                //|| ($_FILES['invoice_rates_csv']['type'] == 'text/plain')             // this seems a bit dangerous   
             && ($_FILES['invoice_rates_csv']['size'] > 0)   
             && ($_FILES['invoice_rates_csv']['size'] < 2048000)
             && in_array($extension, $allowedExts)) {
@@ -787,8 +743,9 @@ function upload_invoice_labour_rates_csv($db, $VAR) {
                 $sql = "TRUNCATE ".PRFX."INVOICE_LABOUR_RATES";
                 
                 if(!$rs = $db->execute($sql)) {
-                force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-                exit;}
+                    force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to empty the invoice labour rates table."));
+                    exit;                    
+                }
             }
             
             // Open CSV file            
@@ -800,8 +757,9 @@ function upload_invoice_labour_rates_csv($db, $VAR) {
                 $sql = "INSERT INTO ".PRFX."INVOICE_LABOUR_RATES(LABOUR_RATE_NAME,LABOUR_RATE_AMOUNT,LABOUR_RATE_COST,LABOUR_RATE_ACTIVE,LABOUR_TYPE,LABOUR_MANUF) VALUES ('$data[1]','$data[2]','$data[3]','$data[4]','$data[5]','$data[6]')";
 
                 if(!$rs = $db->execute($sql)) {
-                force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-                exit;}
+                    force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to insert the new invoice labour rates into the database."));
+                    exit;                    
+                }
 
             }
 
@@ -823,7 +781,7 @@ function upload_invoice_labour_rates_csv($db, $VAR) {
         echo "Temp file: " . $_FILES['invoice_rates_csv']['tmp_name']       . '<br />';
         echo "Stored in: " . MEDIA_DIR . $_FILES['file']['name']       ;
          */
-        force_page('core', 'error&error_msg=Invalid File');
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the invoice labour rates because the submitted file was invalid."));
 
     }
     

@@ -41,7 +41,7 @@ function update_company_hours($db, $openingTime, $closingTime) {
             CLOSING_MINUTE  ='. $db->qstr( $closingTime['Time_Minute']   );
 
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_company_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the company hours."));
         exit;
     } else {
         
@@ -67,12 +67,10 @@ function update_company_hours($db, $openingTime, $closingTime) {
 
 function get_company_start_end_times($db, $time_event) {
     
-    global $smarty;
-    
     $sql = 'SELECT OPENING_HOUR, OPENING_MINUTE, CLOSING_HOUR, CLOSING_MINUTE FROM '.PRFX.'COMPANY';
 
    if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_company_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the company start and end times."));
         exit;
     } else {        
     
@@ -126,7 +124,7 @@ function update_company_details($db, $record) {
                 WELCOME_MSG         = '. $db->qstr( $record['company_welcome_msg']        );                           
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_company_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the company details."));
         exit;
     } else {
         
@@ -154,13 +152,13 @@ function check_start_end_times($start_time, $end_time) {
     
     // If start time is before end time
     if($start_time > $end_time) {        
-        $smarty->assign('warning_msg', 'Start Time is after End Time');
+        $smarty->assign('warning_msg', gettext("Start Time is after End Time."));
         return false;
     }
         
     // If the start and end time are the same    
     if($start_time ==  $end_time) {        
-        $smarty->assign('warning_msg', 'Start Time is the same as End Time');
+        $smarty->assign('warning_msg', gettext("Start Time is the same as End Time."));
         return false;
     }
     
@@ -219,7 +217,8 @@ function upload_company_logo($db) {
             echo "Temp file: " . $_FILES['company_logo']['tmp_name']       . '<br />';
             echo "Stored in: " . MEDIA_DIR . $_FILES['file']['name']       ;
              */   
-            force_page('core', 'error&error_msg=Invalid File');
+            
+            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update logo because the submitted file was invalid."));
             
         }
         

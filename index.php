@@ -63,7 +63,7 @@ if(is_file('configuration.php')) {
     //verify_qwcrm_is_installed_correctly($db); // I do not need this twice ?
 }
 
-// Create config object for global scope (temp & for error reporting)
+// Create config object for global scope
 $GConfig = new GConfig;
 
 // need to add error control here ie skipt strait to

@@ -180,7 +180,8 @@ function perform_redirect($url, $type = 'header') {
 
 // Example to use
 // If a function needs more than 1 error notification - add after _failed - this keeps it easy to swapp stuff out : i.e _failed --> _failed_notfound ?
-//force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
+// old - force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
+// new - force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Could not display the Work Order record requested"));
 
 function force_error_page($error_page, $error_type, $error_location, $php_function, $database_error, $sql_query, $error_msg) {    
    
@@ -235,13 +236,16 @@ function prepare_error_data($type, $data = Null){
     }
     */
         
-    /* Error Page (by using $_GET['page'] */
-    if($type === 'error_page'){
+    /* Error Page (by using $_GET['page'] */    
+    if($type === 'error_page') {
         
         // compensate for home and login pages
-        if($data == ''){     
+        if($data == '') {
+            
+            $user = QFactory::getUser();
+            
             // Must be Login or Home
-            if(isset($_SESSION['login_token'])){
+            if(isset($user->login_token)){
                 $error_page = 'home';
             } else {
                 $error_page = 'login';
@@ -302,7 +306,7 @@ function prepare_error_data($type, $data = Null){
 }
 
 ############################################
-#  Language Translation Function           #
+#  Language Translation Function           #    // this is depreceated
 ############################################
 
 function load_language() {
@@ -384,13 +388,13 @@ function set_page_header_and_meta_data($module, $page_tpl, $page_title_from_var 
      */
     if ($page_title_from_var != Null){
         $smarty->assign('page_title', $page_title_from_var); 
-    } else {
-        $smarty->assign('page_title', $smarty->getTemplateVars('translate_'.$module.'_'.$page_tpl.'_header_page_title'));
+    } else {        
+        $smarty->assign('page_title', gettext(strtoupper($module).'_'.strtoupper($page_tpl).'_HEADER_PAGE_TITLE'));
     }    
     
     // Meta Tags
-    $smarty->assign('meta_description', $smarty->getTemplateVars('translate_'.$module.'_'.$page_tpl.'_header_meta_description')   );
-    $smarty->assign('meta_keywords',    $smarty->getTemplateVars('translate_'.$module.'_'.$page_tpl.'_header_meta_keywords')      );
+    $smarty->assign('meta_description', gettext(strtoupper($module).'_'.strtoupper($page_tpl).'_HEADER_META_DESCRIPTION')   );
+    $smarty->assign('meta_keywords',    gettext(strtoupper($module).'_'.strtoupper($page_tpl).'_HEADER_META_KEYWORDS')      );
     
     return;
     
@@ -403,12 +407,9 @@ function set_page_header_and_meta_data($module, $page_tpl, $page_title_from_var 
 
 function check_acl($db, $login_account_type_id, $module, $page_tpl) {
     
-    global $smarty;
-    
     /* error catching - you cannot use normal error logging as it will cause a loop */
     if($login_account_type_id == ''){
-        echo $smarty->getTemplateVars('translate_system_include_error_message_function_'.__FUNCTION__.'_no_account_type_id');
-        die;        
+        die(gettext("The ACL has been supplied with no account type ID - I will now die."));                
     }
 
     /* Get user's Group Name by login_account_type_id */
@@ -417,7 +418,7 @@ function check_acl($db, $login_account_type_id, $module, $page_tpl) {
             WHERE TYPE_ID ='.$db->qstr($login_account_type_id);
     
     if(!$rs = $db->execute($sql)) {        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_system_include_error_message_function_'.__FUNCTION__.'_group_name_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Could not get the user's Group Name by login_account_type_id."));
         exit;
     } else {
         $employee_acl_account_type_display_name = $rs->fields['TYPE_NAME'];
@@ -430,7 +431,7 @@ function check_acl($db, $login_account_type_id, $module, $page_tpl) {
     $sql = "SELECT ".$employee_acl_account_type_display_name." AS PAGE_ACL FROM ".PRFX."EMPLOYEE_ACL WHERE page=".$db->qstr($module_page);
 
     if(!$rs = $db->execute($sql)) {        
-        force_error_page($_GET['page'], 'authentication', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_system_include_error_message_function_'.__FUNCTION__.'_get_page_acl_failed'));
+        force_error_page($_GET['page'], 'authentication', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Could not get the Page's ACL."));
         exit;
     } else {
         
@@ -441,9 +442,8 @@ function check_acl($db, $login_account_type_id, $module, $page_tpl) {
         if($acl != 1) {
             
             // should this just be an access error message
-            //force_error_page($_GET['page'], 'authentication', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_system_include_error_message_function_'.__FUNCTION__.'_no_page_permission'));
-            // x $smarty->assign('warning_msg', $smarty->getTemplateVars('translate_system_include_error_message_function_'.__FUNCTION__.'_no_page_permission'));
-            force_page('core', 'login', 'warning_msg='.$smarty->getTemplateVars('translate_system_include_error_message_function_'.__FUNCTION__.'_no_page_permission').' '.$module.':'.$page_tpl);            
+            //force_error_page($_GET['page'], 'authentication', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("You do not have permission to access this page."));            
+            force_page('core', 'login', 'warning_msg='.gettext("You do not have permission to access this page.").' '.$module.':'.$page_tpl);            
             exit;
         } else {
             
@@ -461,11 +461,9 @@ function check_acl($db, $login_account_type_id, $module, $page_tpl) {
 
 function verify_qwcrm_is_installed_correctly($db){
 
-    global $smarty;
-    
     // Is gettext install (for translations)
     if(!function_exists('gettext')) {
-        die('Gettext is not installed which is required for the transaltion system.');
+        die('Gettext is not installed which is required for the translation system.');
     }
     
     // If no configuration file - redirect to the installation directory
@@ -478,7 +476,7 @@ function verify_qwcrm_is_installed_correctly($db){
     if(version_compare(get_qwcrm_database_version_number($db), QWCRM_VERSION, '!=')){
         
         // I have not decided whether to use a message or automatic redirect to the upgrade folder        
-        echo('<div style="color: red;">'.$smarty->getTemplateVars('translate_system_include_advisory_message_function_verify_qwcrm_is_installed_correctly_file_database_versions_dont_match').'</div>');
+        echo('<div style="color: red;">'.gettext("The File System and Database versions do not match, run the upgrade routine.").'</div>');
         die;
                 
         //force_page('upgrade');         
@@ -487,13 +485,13 @@ function verify_qwcrm_is_installed_correctly($db){
     
     // has been installed but the installion directory is still present  
     if(is_dir('install') ) {
-        echo('<div style="color: red;">'.$smarty->getTemplateVars('translate_system_include_advisory_message_function_verify_qwcrm_is_installed_correctly_install_directory_exists').'</div>');
+        echo('<div style="color: red;">'.gettext("The install Directory Exists!! Please Rename or remove the install directory.").'</div>');
         die;
     }
     
     // has been installed but the upgrade directory is still present  
     if(is_dir('upgrade') ) {
-        echo('<div style="color: red;">'.$smarty->getTemplateVars('translate_system_include_advisory_message_function_verify_qwcrm_is_installed_correctly_upgrade_directory_exists').'</div>');
+        echo('<div style="color: red;">'.gettext("The Upgrade Directory Exists!! Please Rename or remove the upgrade directory.").'</div>');
         die;
     }  
     
@@ -505,12 +503,10 @@ function verify_qwcrm_is_installed_correctly($db){
 
 function get_qwcrm_database_version_number($db){
     
-    global $smarty;
-
     $sql = 'SELECT * FROM '.PRFX.'QWCRM_VERSION ORDER BY '.PRFX.'QWCRM_VERSION.`VERSION_INSTALLED` DESC LIMIT 1';
     
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Could not compare the version of the file system and databases to verify they match."));
         exit;
     } else {
         
@@ -532,12 +528,10 @@ function get_qwcrm_database_version_number($db){
 
 function get_company_details($db, $item = null){
     
-    global $smarty;
-
     $sql = 'SELECT * FROM '.PRFX.'COMPANY';
     
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get company details."));
         exit;
     } else {
         
@@ -685,8 +679,6 @@ echo ('My real IP is:'.$ip);
 
 function write_record_to_tracker_table($db, $page_display_controller, $module, $page_tpl){
     
-   global $smarty;
-    
    $sql = 'INSERT into '.PRFX.'TRACKER SET
    date          = '. $db->qstr( time()                     ).',
    ip            = '. $db->qstr( get_ip_address()           ).',
@@ -697,7 +689,7 @@ function write_record_to_tracker_table($db, $page_display_controller, $module, $
    referer       = '. $db->qstr( getenv('HTTP_REFERER')     );
 
    if(!$rs = $db->Execute($sql)) {
-      force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
+      force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Error inserting item into tracker database."));
       exit;      
    }
    
@@ -718,18 +710,17 @@ function write_record_to_tracker_table($db, $page_display_controller, $module, $
 
 function write_record_to_activity_log($record){
     
-    global $smarty;
-    global $qwcrm_activity_log;
+    global $GConfig;
 
     // if activity logging not enabled exit
-    if($qwcrm_activity_log != true){return;}
+    if($GConfig->qwcrm_activity_log != true){return;}
     
     // Build log entry - perhaps use the apache time stamp below
     $log_entry = $_SERVER['REMOTE_ADDR'] . ',' . $_SESSION['login_usr'] . ',' . date("[d/M/Y:H:i:s O]", time()) . ',' . $record . "\n";
     
     // Write log entry to access log    
     if(!$fp = fopen(ACTIVITY_LOG,'a')) {        
-        force_error_page($_GET['page'], 'file', __FILE__, __FUNCTION__, '', '', $smarty->getTemplateVars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'file', __FILE__, __FUNCTION__, '', '', gettext("Could not open activity.log to save the record."));
         exit;
     }
     
@@ -755,8 +746,6 @@ function write_record_to_access_log($login_usr = Null){
     // http://docstore.mik.ua/orelly/webprog/pcook/ch11_14.htm
     // Combined Log Format - LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\"" combined
     // $remote_host, $logname, $user, $time, $method, $request, $protocol, $status, $bytes, $referer, $user_agent
-    
-    global $smarty;
     
     $remote_ip      = $_SERVER['REMOTE_ADDR'];                              // only using IP - not hostname lookup
     $logname        = '-';                                                  //  This is the RFC 1413 identity of the client determined by identd on the clients machine. This information is highly unreliable and should almost never be used except on tightly controlled internal networks.
@@ -796,7 +785,7 @@ function write_record_to_access_log($login_usr = Null){
     
     // Write log entry to access log    
     if(!$fp = fopen(ACCESS_LOG,'a')) {        
-        force_error_page($_GET['page'], 'file', __FILE__, __FUNCTION__, '', '', $smarty->getTemplateVars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'file', __FILE__, __FUNCTION__, '', '', gettext("Could not open access.log to save the record."));
         exit;
     }
     
@@ -811,21 +800,19 @@ function write_record_to_access_log($login_usr = Null){
 #  Write a record to the error.log file    #
 ############################################
 
-function write_record_to_error_log($login_usr = '-', $error_page, $error_type, $error_location, $php_function, $database_error, $error_msg){
+function write_record_to_error_log($login_usr, $error_page, $error_type, $error_location, $php_function, $database_error, $error_msg){
     
-    global $smarty;
-    
-    /* If no logged in user
-    if($login_usr == ''){
+    // If no logged in user
+    if($login_usr == '') {
         $login_usr = '-';        
-    }*/    
+    }   
 
     // Build log entry - perhaps use the apache time stamp below
     $log_entry = $_SERVER['REMOTE_ADDR'].','.$login_usr.','.date("[d/M/Y:H:i:s O]", $_SERVER['REQUEST_TIME']).','.$error_page.','.$error_type.','.$error_location.','.$php_function.','.$database_error.','.$error_msg."\n";
 
     // Write log entry to error.log    
     if(!$fp = fopen(ERROR_LOG,'a')) {        
-        force_error_page($_GET['page'], 'file', __FILE__, __FUNCTION__, '', '', $smarty->getTemplateVars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'file', __FILE__, __FUNCTION__, '', '', gettext("Could not open error.log to save the record."));
         exit;
     }
     
@@ -1035,7 +1022,7 @@ function get_country_codes($db) {
     $sql = 'SELECT * FROM '.PRFX.'COMPANY_COUNTRY_LIST';
 
     if(!$rs = $db->execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Could not retrieve country codes from the database."));
         exit;        
     } else {
         

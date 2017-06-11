@@ -333,7 +333,7 @@ class JUser
      */
     public function authorise($action, $assetname = null)
     {
-        JAccess::check($this->id, $action, $assetname);
+        //JAccess::check($this->id, $action, $assetname);
         return;
     }
     
@@ -438,7 +438,7 @@ class JUser
             // Hence this code is required:
             if (isset($array['password2']) && $array['password'] != $array['password2'])
             {
-                QFactory::getApplication()->enqueueMessage(JText::_('JLIB_USER_ERROR_PASSWORD_NOT_MATCH'), 'error');
+                QFactory::getApplication()->enqueueMessage(gettext("Passwords do not match. Please re-enter password."), 'error');             
 
                 return false;
             }
@@ -466,7 +466,7 @@ class JUser
             {
                 if ($array['password'] != $array['password2'])
                 {
-                    $this->setError(JText::_('JLIB_USER_ERROR_PASSWORD_NOT_MATCH'));
+                    $this->setError(gettext("Passwords do not match. Please re-enter password."));
 
                     return false;
                 }
@@ -476,7 +476,7 @@ class JUser
                 // Check if the user is reusing the current password if required to reset their password
                 if ($this->requireReset == 1 && $this->userHelper->verifyPassword($this->password_clear, $this->password))
                 {
-                    $this->setError(JText::_('JLIB_USER_ERROR_CANNOT_REUSE_PASSWORD'));
+                    $this->setError(gettext("You can't reuse your current password, please enter a new password."));
 
                     return false;
                 }
@@ -511,7 +511,7 @@ class JUser
         // Bind the array
         if (!$this->setProperties($array))
         {
-            $this->setError(JText::_('JLIB_USER_ERROR_BIND_ARRAY'));
+            $this->setError(gettext("Unable to bind array to user object."));
 
             return false;
         }
@@ -678,7 +678,7 @@ class JUser
             // Reset to guest user
             $this->guest = 1;
             
-            //force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, $this->smarty->getTemplateVars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
+            //force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, gettext("Failed to load an Employee."));
             //exit;
             
             return false;

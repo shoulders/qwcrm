@@ -38,7 +38,8 @@ function display_employees($db, $search_term, $page_no) {
     // Figure out the limit for the query based on the current page number. 
     $from = (($page_no * $max_results) - $max_results);    
     
-    $sql = "SELECT ".PRFX."EMPLOYEE.*,
+    $sql = "SELECT 
+            ".PRFX."EMPLOYEE.*,
             ".PRFX."EMPLOYEE_ACCOUNT_TYPES.TYPE_NAME
             FROM ".PRFX."EMPLOYEE 
             LEFT JOIN ".PRFX."EMPLOYEE_ACCOUNT_TYPES ON (".PRFX."EMPLOYEE. EMPLOYEE_TYPE = ".PRFX."EMPLOYEE_ACCOUNT_TYPES.TYPE_ID)    
@@ -46,7 +47,7 @@ function display_employees($db, $search_term, $page_no) {
             ORDER BY EMPLOYEE_DISPLAY_NAME";
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to return the matching employee records."));
         exit;
     } else {        
         $employee_search_result = $rs->GetArray();        
@@ -56,7 +57,7 @@ function display_employees($db, $search_term, $page_no) {
     $sql = "SELECT COUNT(*) as Num FROM ".PRFX."EMPLOYEE WHERE EMPLOYEE_DISPLAY_NAME LIKE '%$search_term%'";
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count the matching employee records."));
         exit;
     } else {        
         $total_results = $rs->fields['Num'];
@@ -103,8 +104,6 @@ function display_employees($db, $search_term, $page_no) {
 
 function insert_employee($db, $auth, $VAR){
     
-    global $smarty;
-    
     $sql = "INSERT INTO ".PRFX."EMPLOYEE SET
             EMPLOYEE_LOGIN          =". $db->qstr( $VAR['employee_usr']                         ).",
             EMPLOYEE_HASH           =". $db->qstr( $auth->hashPassword($VAR['employee_pwd'])    ).",
@@ -125,7 +124,7 @@ function insert_employee($db, $auth, $VAR){
             EMPLOYEE_STATUS         =". $db->qstr( $VAR['employee_status']                      );          
           
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to insert the employee record into the database."));
         exit;
     } else {
         
@@ -143,12 +142,10 @@ function insert_employee($db, $auth, $VAR){
 
 function get_employee_details($db, $employee_id, $item = null) {
     
-    global $smarty;
-
     $sql = "SELECT * FROM ".PRFX."EMPLOYEE WHERE EMPLOYEE_ID =".$employee_id;
     
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the employee details."));
         exit;
     } else {
         
@@ -172,15 +169,15 @@ function get_employee_details($db, $employee_id, $item = null) {
 
 function get_employee_display_name_by_id($db, $employee_id) {
     
-    global $smarty;
-    
-    $sql = "SELECT ".PRFX."EMPLOYEE.*, ".PRFX."EMPLOYEE_ACCOUNT_TYPES.TYPE_NAME
+    $sql = "SELECT 
+            ".PRFX."EMPLOYEE.*,
+            ".PRFX."EMPLOYEE_ACCOUNT_TYPES.TYPE_NAME
             FROM ".PRFX."EMPLOYEE
             LEFT JOIN ".PRFX."EMPLOYEE_ACCOUNT_TYPES ON (".PRFX."EMPLOYEE.EMPLOYEE_TYPE = ".PRFX."EMPLOYEE_ACCOUNT_TYPES.TYPE_ID)
             WHERE EMPLOYEE_ID=". $db->qstr($employee_id);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the Employee Display Name by ID."));
         exit;
     } else {        
 
@@ -205,11 +202,9 @@ function get_employee_display_name_by_id($db, $employee_id) {
 
 function get_employee_id_by_username($db, $employee_usr){
     
-    global $smarty;
-    
     $sql = 'SELECT EMPLOYEE_ID FROM '.PRFX.'EMPLOYEE WHERE EMPLOYEE_LOGIN ='.$db->qstr($employee_usr);    
     if(!$rs = $db->execute($sql)){
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the Employee ID by their username."));
         exit;
     } else {
         
@@ -225,11 +220,9 @@ function get_employee_id_by_username($db, $employee_usr){
 
 function get_employee_record_by_username($db, $employee_usr){
     
-    global $smarty;
-    
     $sql = "SELECT * FROM ".PRFX."EMPLOYEE WHERE EMPLOYEE_LOGIN =".$db->qstr($employee_usr);    
     if(!$rs = $db->execute($sql)){
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the employee record by username"));
         exit;
     } else {
         
@@ -245,12 +238,10 @@ function get_employee_record_by_username($db, $employee_usr){
 
 function get_employee_types($db) {
     
-    global $smarty;
-    
     $sql = "SELECT * FROM ".PRFX."EMPLOYEE_ACCOUNT_TYPES";
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the employee types."));
         exit;
     } else {
         
@@ -266,12 +257,10 @@ function get_employee_types($db) {
     
 function get_active_employees($db) {
         
-    global $smarty;
-    
     $sql = "SELECT EMPLOYEE_ID, EMPLOYEE_DISPLAY_NAME FROM ".PRFX."EMPLOYEE WHERE EMPLOYEE_STATUS=1";
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the active employees."));
         exit;
     } else {    
         
@@ -317,7 +306,7 @@ function update_employee($db, $auth, $employee_id, $VAR) {
     $sql = "UPDATE ".PRFX."EMPLOYEE ". $set ." WHERE EMPLOYEE_ID= ".$db->qstr($employee_id);
 
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the employee record."));
         exit;
     } else{
         
@@ -347,7 +336,7 @@ function count_employee_workorders_with_status($db, $employee_id, $workorder_sta
             AND WORK_ORDER_STATUS=".$db->qstr($workorder_status);
     
     if(!$rs = $db->Execute($sql)){
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count the number of Work Orders for the employees for the defined status"));
         exit;
    } else {
        
@@ -371,7 +360,7 @@ function count_employee_invoices_with_status($db, $employee_id, $invoice_status)
             AND EMPLOYEE_ID=".$db->qstr($employee_id);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed count the number of invoices for the employee for the defined status."));
         exit;
    } else {
        
@@ -404,7 +393,7 @@ function build_active_employee_form_option_list($db, $assigned_employee_id){
     $sql = "SELECT EMPLOYEE_DISPLAY_NAME, EMPLOYEE_ID FROM ".PRFX."EMPLOYEE WHERE EMPLOYEE_STATUS=1";
     
     if(!$rs = $db->execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed build and return and Employee list."));
         exit;
     } else {
         
@@ -429,7 +418,7 @@ function check_employee_username_exists($db, $username, $current_username){
     $sql = "SELECT COUNT(*) AS num_users FROM ".PRFX."EMPLOYEE WHERE EMPLOYEE_LOGIN =". $db->qstr($username);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_employee_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to check if the employee username exists."));
         exit;
     } else {
         

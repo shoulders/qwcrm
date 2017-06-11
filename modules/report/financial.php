@@ -51,7 +51,7 @@ if(isset($VAR['submit'])) {
 
     /* invoice section */
       
-    $smarty->assign('invoice_sub_total_sum', sum_of_invoice_sub_totals_before_tax_and_disacounts_are_added_in_selected_period($db, $start_date, $end_date));       
+    $smarty->assign('invoice_sub_total_sum', sum_of_invoice_sub_totals_before_tax_and_discounts_are_added_in_selected_period($db, $start_date, $end_date));       
     $smarty->assign('invoice_discount_sum', sum_of_discount_amounts_in_selected_period($db, $start_date, $end_date));    
     $smarty->assign('invoice_tax_sum', sum_of_tax_amounts_in_selected_period($db, $start_date, $end_date));    
     $invoice_amount_sum = sum_of_invoice_total_amounts_gross_in_selected_period($db, $start_date, $end_date);

@@ -115,7 +115,7 @@ function display_expenses($db, $direction = 'DESC', $use_pages = false, $page_no
         
         // Figure out the total number of records in the database for the given search        
         if(!$rs = $db->Execute($sql)) {
-            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_workorder_error_message_function_'.__FUNCTION__.'_count'));
+            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count the matching expense records."));
             exit;
         } else {        
             $total_results = $rs->RecordCount();            
@@ -161,7 +161,7 @@ function display_expenses($db, $direction = 'DESC', $use_pages = false, $page_no
     /* Return the records */
          
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to return the matching expense records."));
         exit;
     } else {
         
@@ -189,8 +189,6 @@ function display_expenses($db, $direction = 'DESC', $use_pages = false, $page_no
 
 function insert_expense($db, $VAR) {
     
-    global $smarty;
-
     $sql = "INSERT INTO ".PRFX."EXPENSE SET            
             EXPENSE_PAYEE           = ". $db->qstr( $VAR['expensePayee']                    ).",
             EXPENSE_DATE            = ". $db->qstr( date_to_timestamp($VAR['expenseDate'])  ).",
@@ -204,7 +202,7 @@ function insert_expense($db, $VAR) {
             EXPENSE_ITEMS           = ". $db->qstr( $VAR['expenseItems']                    );
 
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to insert the expense record into the database."));
         exit;
     } else {
     
@@ -222,12 +220,10 @@ function insert_expense($db, $VAR) {
 
 function get_expense_details($db, $expense_id, $item = null){
     
-    global $smarty;
-
     $sql = "SELECT * FROM ".PRFX."EXPENSE WHERE EXPENSE_ID=".$db->qstr($expense_id);
     
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_system_include_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the expense details."));
         exit;
     } else {
         
@@ -253,8 +249,6 @@ function get_expense_details($db, $expense_id, $item = null){
 
 function update_expense($db, $expense_id, $VAR) {
     
-    global $smarty;
-
     $sql = "UPDATE ".PRFX."EXPENSE SET
             EXPENSE_PAYEE           = ". $db->qstr( $VAR['expensePayee']                    ).",
             EXPENSE_DATE            = ". $db->qstr( date_to_timestamp($VAR['expenseDate'])  ).",
@@ -269,10 +263,10 @@ function update_expense($db, $expense_id, $VAR) {
             WHERE EXPENSE_ID        = ". $db->qstr( $expense_id                             );                        
             
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the expense details."));
         exit;
     } else {
-      return true;
+        return true;
     }
     
 } 
@@ -287,12 +281,10 @@ function update_expense($db, $expense_id, $VAR) {
 
 function delete_expense($db, $expense_id){
     
-    global $smarty;
-    
     $sql = "DELETE FROM ".PRFX."EXPENSE WHERE EXPENSE_ID=".$db->qstr($expense_id);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete the expense record."));
         exit;
     } else {
         
@@ -310,8 +302,6 @@ function delete_expense($db, $expense_id){
 
 function prepare_expense_search_terms($search_category, $search_term) {
 
-    $langvals = gateway_xml2php('expense');
-
     switch ($search_category) {
 
         case 'date':           
@@ -321,67 +311,67 @@ function prepare_expense_search_terms($search_category, $search_term) {
             
             switch ($search_term) {
 
-                case ($langvals['expense_type_1']):
+                case gettext("EXPENSE_TYPE_1"):
                     return '1';                    
 
-                case ($langvals['expense_type_2']):
+                case gettext("EXPENSE_TYPE_2"):
                     return '2';                   
 
-                case ($langvals['expense_type_3']):
+                case gettext("EXPENSE_TYPE_3"):
                     return '3';                    
 
-                case ($langvals['expense_type_4']):
+                case gettext("EXPENSE_TYPE_4"):
                     return '4';
 
-                case ($langvals['expense_type_5']):
+                case gettext("EXPENSE_TYPE_5"):
                     return '5';
                     
-                case ($langvals['expense_type_6']):
+                case gettext("EXPENSE_TYPE_6"):
                     return '6';
 
-                case ($langvals['expense_type_7']):
+                case gettext("EXPENSE_TYPE_7"):
                     return '7';
 
-                case ($langvals['expense_type_8']):
+                case gettext("EXPENSE_TYPE_8"):
                     return '8';
 
-                case ($langvals['expense_type_9']):
+                case gettext("EXPENSE_TYPE_9"):
                     return '9';
 
-                case ($langvals['expense_type_10']):
+                case gettext("EXPENSE_TYPE_10"):
                     return '10';
 
-                case ($langvals['expense_type_11']):
+                case gettext("EXPENSE_TYPE_11"):
                     return '11';
 
-                case ($langvals['expense_type_12']):
+                case gettext("EXPENSE_TYPE_12"):
                     return '12';
 
-                case ($langvals['expense_type_13']):
+                case gettext("EXPENSE_TYPE_13"):
                     return '13';
 
-                case ($langvals['expense_type_14']):
+                case gettext("EXPENSE_TYPE_14"):
                     return '14';
 
-                case ($langvals['expense_type_15']):
+                case gettext("EXPENSE_TYPE_15"):
                     return '15';
 
-                case ($langvals['expense_type_16']):
+                case gettext("EXPENSE_TYPE_16"):
                     return '16';
 
-                case ($langvals['expense_type_17']):
+                case gettext("EXPENSE_TYPE_17"):
                     return '17';
 
-                case ($langvals['expense_type_18']):
+                case gettext("EXPENSE_TYPE_18"):
                     return '18';
 
-                case ($langvals['expense_type_19']):
+                case gettext("EXPENSE_TYPE_19"):
                     return '19';
 
-                case ($langvals['expense_type_20']):
+                case gettext("EXPENSE_TYPE_20"):
                     return '20';
 
-                case ($langvals['expense_type_21']):
+                case gettext("EXPENSE_TYPE_21"):
                     return '21';
 
                 default:                   
@@ -395,37 +385,37 @@ function prepare_expense_search_terms($search_category, $search_term) {
             
             switch ($search_term) {
 
-                case ($langvals['expense_payment_method_1']):
+                case gettext("EXPENSE_PAYMENT_METHOD_1"):
                     return '1';
 
-                case ($langvals['expense_payment_method_2']):
+                case gettext("EXPENSE_PAYMENT_METHOD_2"):
                     return '2';
 
-                case ($langvals['expense_payment_method_3']):
+                case gettext("EXPENSE_PAYMENT_METHOD_3"):
                     return '3';
 
-                case ($langvals['expense_payment_method_4']):
+                case gettext("EXPENSE_PAYMENT_METHOD_4"):
                     return '4';
 
-                case ($langvals['expense_payment_method_5']):
+                case gettext("EXPENSE_PAYMENT_METHOD_5"):
                     return '5';
 
-                case ($langvals['expense_payment_method_6']):
+                case gettext("EXPENSE_PAYMENT_METHOD_6"):
                     return '6';
 
-                case ($langvals['expense_payment_method_7']):
+                case gettext("EXPENSE_PAYMENT_METHOD_7"):
                     return '7';
 
-                case ($langvals['expense_payment_method_8']):
+                case gettext("EXPENSE_PAYMENT_METHOD_8"):
                     return '8';
 
-                case ($langvals['expense_payment_method_9']):
+                case gettext("EXPENSE_PAYMENT_METHOD_9"):
                     return '9';
 
-                case ($langvals['expense_payment_method_10']):
+                case gettext("EXPENSE_PAYMENT_METHOD_10"):
                     return '10';
 
-                case ($langvals['expense_payment_method_11']):
+                case gettext("EXPENSE_PAYMENT_METHOD_11"):
                     return '11';
                     
                 default:                   
@@ -452,12 +442,10 @@ function prepare_expense_search_terms($search_category, $search_term) {
 
 function last_expense_id_lookup($db){
     
-    global $smarty;
-
     $sql = 'SELECT * FROM '.PRFX.'EXPENSE ORDER BY EXPENSE_ID DESC LIMIT 1';
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to lookup the last expense record ID."));
         exit;
     } else {
         
