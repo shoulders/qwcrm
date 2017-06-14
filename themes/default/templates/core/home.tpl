@@ -2,14 +2,12 @@
 <table width="700" border="0" cellpadding="2" cellspacing="5">
     <tr>
         <td>
-            <table width="700" cellpadding="4" cellspacing="0" border="0" >
+            <table width="700" cellpadding="4" cellspacing="0" border="0">
                 <tr>
-                    <td class="menuhead2" width="80%">&nbsp;{$translate_core_home_title}</td>
+                    <td class="menuhead2" width="80%">&nbsp;{t}QWcrm - Welcome to your Online Office{/t}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
                         <a>
-                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" 
-                            onMouseOver="ddrivetip('<b>{$translate_core_home_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_core_home_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" 
-                            onMouseOut="hideddrivetip();">
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}CORE_HOME_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}CORE_HOME_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
                         </a>
                     </td>
                 </tr>
@@ -22,7 +20,7 @@
                                     <!-- Company Notes - Welcome Message -->
                                     <table width="700" cellpadding="4" cellspacing="0" border="0" class="olotable">
                                         <tr class="olotd4">
-                                            <td class="row2"><b>{$translate_core_home_welcome_msg_title}</b></td>
+                                            <td class="row2"><b>{t}Company Welcome Message{/t}</b></td>
                                         </tr>
                                         <tr class="olotd4">
                                             <td>{$welcome_note}</td>
@@ -31,16 +29,16 @@
                                     <br>
                                     
                                     <!-- Work Order Stats -->
-                                    <b>{$translate_core_home_workorder_stats_title}</b>
+                                    <b>{t}Work Order Stats{/t}</b>
                                     <br>
                                     <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
                                         <tr class="olotd4">
-                                            <td class="row2"><b>{$translate_core_home_new}</b></td>
-                                            <td class="row2"><b>{$translate_core_home_assigned}</b></td>
-                                            <td class="row2"><b>{$translate_core_home_waiting}</b></td>
-                                            <td class="row2"><b>{$translate_core_home_payment}</b></td>
-                                            <td class="row2"><b>{$translate_core_home_closed}</b></td>
-                                            <td class="row2"><b>{$translate_core_home_total}</b></td>
+                                            <td class="row2"><b>{t}New{/t}</b></td>
+                                            <td class="row2"><b>{t}Assigned{/t}</b></td>
+                                            <td class="row2"><b>{t}Waiting For Parts{/t}</b></td>
+                                            <td class="row2"><b>{t}Awaiting Payment{/t}</b></td>
+                                            <td class="row2"><b>{t}Closed{/t}</b></td>
+                                            <td class="row2"><b>{t}Total{/t}</b></td>
                                         </tr>
                                         <tr class="olotd4">
                                             <td><a href="index.php?page=workorder:overview#new">{$workorders_open_count}</a></td>
@@ -67,18 +65,18 @@
                                             } );
                                         } );                                       
                                     </script>                                     
-                                    <a href="#" id="hidden_stats">{$translate_core_home_invoice_stats_title}</a>
+                                    <a href="#" id="hidden_stats">{t}Invoice Stats{/t}</a>
                                     <div id="hide_stats">
                                         {if $login_account_type_id == 1 || $login_account_type_id == 4 }
                                             <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
                                                 <tr class="olotd4">
-                                                    <td class="row2"><b>{$translate_core_home_unpaid}</b></td>
-                                                    <td class="row2"><b>{$translate_core_home_balance}</b></td>
-                                                    <td class="row2"><b>{$translate_core_home_partial_paid}</b></td>
-                                                    <td class="row2"><b>{$translate_core_home_partial_paid_balance}</b></td>
-                                                    <td class="row2"><b>{$translate_core_home_paid_in_full}</b></td>
-                                                    <td class="row2"><b>{$translate_core_home_received_total}</b></td>
-                                                    <td class="row2"><b>{$translate_core_home_invoiced_total}</b></td>
+                                                    <td class="row2"><b>{t}Unpaid{/t}</b></td>
+                                                    <td class="row2"><b>{t}Balance{/t}</b></td>
+                                                    <td class="row2"><b>{t}Partial Paid{/t}</b></td>
+                                                    <td class="row2"><b>{t}Partial Paid Balance{/t}</b></td>
+                                                    <td class="row2"><b>{t}Paid In Full{/t}</b></td>
+                                                    <td class="row2"><b>{t}Received Monies Total{/t}</b></td>
+                                                    <td class="row2"><b>{t}Invoiced Total{/t}</b></td>
                                                 </tr>
                                                 <tr class="olotd4">
                                                     <td><a href="index.php?page=invoice:paid">{$in_unpaid_count}</a></td>
@@ -95,13 +93,13 @@
                                     </div>                                    
                                     
                                     <!-- Customer Stats -->
-                                    <b>{$translate_core_home_customer_stats_title}</b>
+                                    <b>{t}Customer Stats{/t}</b>
                                     <br>
                                     <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
                                         <tr class="olotd4">
-                                            <td class="row2"><b>{$translate_core_home_new_this_month}</b></td>
-                                            <td class="row2"><b>{$translate_core_home_new_this_year}</b></td>
-                                            <td class="row2"><b>{$translate_core_home_total}</b></td>
+                                            <td class="row2"><b>{t}New This Month{/t}</b></td>
+                                            <td class="row2"><b>{t}New This Year{/t}</b></td>
+                                            <td class="row2"><b>{t}Total{/t}</b></td>
                                         </tr>
                                         <tr class="olotd4">
                                             <td>{$cu_month_count}</td>
@@ -112,16 +110,16 @@
                                     <br />
                                         
                                     <!-- Currently Logged In Employee Stats -->                                    
-                                    <b>{$translate_core_home_workorder_stats_title} ({$login_display_name})</b>
+                                    <b>{t}Work Order Stats{/t} ({$login_display_name})</b>
                                     <br>
                                     <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
                                         <tr class="olotd4">
-                                            <td class="row2"><b>{$translate_core_home_new}</b></td>
-                                            <td class="row2"><b>{$translate_core_home_assigned}</b></td>
-                                            <td class="row2"><b>{$translate_core_home_waiting}</b></td>
-                                            <td class="row2"><b>{$translate_core_home_payment}</b></td>
-                                            <td class="row2"><b>{$translate_core_home_closed}</b></td>
-                                            <td class="row2"><b>{$translate_core_home_total}</b></td>
+                                            <td class="row2"><b>{t}New{/t}</b></td>
+                                            <td class="row2"><b>{t}Assigned{/t}</b></td>
+                                            <td class="row2"><b>{t}Waiting For Parts{/t}</b></td>
+                                            <td class="row2"><b>{t}Awaiting Payment{/t}</b></td>
+                                            <td class="row2"><b>{t}Closed{/t}</b></td>
+                                            <td class="row2"><b>{t}Total{/t}</b></td>
                                         </tr>
                                         <tr class="olotd4">
                                             <td><a href="index.php?page=workorder:overview#new">{$employee_workorders_open_count}</a></td>

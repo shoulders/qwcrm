@@ -4,44 +4,44 @@
 <div style="width: 900px; margin-bottom: 20px;">
     <table width="300" border="0" cellspacing="0" cellpadding="0" style="margin: auto auto;">
         <tr>
-            <td align="center" colspan="2"><p><strong>{$translate_core_debug_qwcrm_debug_section_title}</span></p></td>        
+            <td align="center" colspan="2"><p><strong>{t}QWcrm Debug Section{/t}</span></p></td>        
         </tr>
 
         <!-- Visitor Details -->
         <tr>
-            <td width="50%"><b><span class="text3">{$translate_core_debug_ip_address}:</span></b></td>
+            <td width="50%"><b><span class="text3">{t}IP Address{/t}:</span></b></td>
             <td>{$IPaddress}</td>
         </tr>
 
         <!-- Page -->
         <tr>
-            <td><b><span class="text3">{$translate_core_debug_page_load_time}:</span></b></td>
+            <td><b><span class="text3">{t}Page Load Time{/t}:</span></b></td>
             <td>{$pageLoadTime} s</td>
         </tr>
         <tr>
-            <td><b><span class="text3">{$translate_core_debug_page_controller}:</span></b></td>
+            <td><b><span class="text3">{t}Page Controller{/t}:</span></b></td>
             <td>{$pageDisplayController}</td>
         </tr>
         <tr>
-            <td><b><span class="text3">{$translate_core_debug_module}:</span></b></td>
+            <td><b><span class="text3">{t}Module{/t}:</span></b></td>
             <td>{$loadedModule}</td>
         </tr>
         <tr>
-            <td><b><span class="text3">{$translate_core_debug_page}:</span></b></td>
+            <td><b><span class="text3">{t}Page{/t}:</span></b></td>
             <td>{$loadedPageTpl}</td>
         </tr>    
 
         <!-- Memory Usage -->
         <tr>
-            <td><b><span class="text3">{$translate_core_debug_start_php_memory}:</span></b></td>
+            <td><b><span class="text3">{t}Start PHP Memory{/t}:</span></b></td>
             <td>{$startMem} MB</td>
         </tr>
         <tr>
-            <td><b><span class="text3">{$translate_core_debug_current_php_memory}:</span></b></td>
+            <td><b><span class="text3">{t}Current PHP Memory{/t}:</span></b></td>
             <td>{$currentMem} MB</td>
         </tr>
         <tr>
-            <td><b><span class="text3">{$translate_core_debug_peak_php_memory}:</span></b></td>
+            <td><b><span class="text3">{t}Peak PHP Memory{/t}:</span></b></td>
             <td>{$peakMem} MB</td>
         </tr>
         

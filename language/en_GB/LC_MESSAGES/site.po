@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2017-06-10 20:24+0100\n"
-"PO-Revision-Date: 2017-06-10 20:26+0100\n"
+"POT-Creation-Date: 2017-06-14 17:54+0100\n"
+"PO-Revision-Date: 2017-06-14 17:55+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en_GB\n"
@@ -15,12 +15,19 @@ msgstr ""
 "X-Poedit-KeywordsList: _\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-SearchPath-0: .\n"
-"X-Poedit-SearchPath-1: themes/default/js/jscal2/language.js\n"
 "X-Poedit-SearchPathExcluded-0: cache\n"
 "X-Poedit-SearchPathExcluded-1: install2\n"
 "X-Poedit-SearchPathExcluded-2: nbproject\n"
 "X-Poedit-SearchPathExcluded-3: upgrade\n"
-"X-Poedit-SearchPathExcluded-4: themes/default/js\n"
+"X-Poedit-SearchPathExcluded-4: libraries\n"
+"X-Poedit-SearchPathExcluded-5: logs\n"
+"X-Poedit-SearchPathExcluded-6: media\n"
+"X-Poedit-SearchPathExcluded-7: language\n"
+"X-Poedit-SearchPathExcluded-8: themes/default/js/dhtmlxcombo\n"
+"X-Poedit-SearchPathExcluded-9: themes/default/js/tinymce\n"
+"X-Poedit-SearchPathExcluded-10: themes/default/js/jscal2/jscal2.js\n"
+"X-Poedit-SearchPathExcluded-11: themes/default/js/jscal2/unicode-letter.js\n"
+"X-Poedit-SearchPathExcluded-12: themes/default/js/jscal2/css\n"
 
 #: includes/framework/authentication/authentication.php:431
 msgid "Login Expired"
@@ -51,6 +58,30 @@ msgstr ""
 msgid "Cookie login failed for user "
 msgstr ""
 
+#: includes/framework/qwframework.php:106
+msgid "Username or Password Missing"
+msgstr ""
+
+#: includes/framework/qwframework.php:119
+msgid "Login successful for"
+msgstr ""
+
+#: includes/framework/qwframework.php:124
+msgid "Login successful"
+msgstr ""
+
+#: includes/framework/qwframework.php:135
+msgid "Login Failed"
+msgstr ""
+
+#: includes/framework/qwframework.php:154
+msgid "Logout successful for"
+msgstr ""
+
+#: includes/framework/qwframework.php:159
+msgid "Logout successful"
+msgstr ""
+
 #: includes/framework/session/session.php:321
 msgid "Your session has expired. Please log in again."
 msgstr ""
@@ -75,68 +106,1593 @@ msgstr ""
 msgid "Unable to bind array to user object."
 msgstr ""
 
-#: includes/include.php:392 includes/include.php:399 includes/include.php:400
+#: includes/include.php:392 includes/include.php:396 includes/include.php:397
 msgid "_"
 msgstr ""
 
-#: language/_gettext_only/page_meta.php:17
-msgid "CORE_LOGIN_HEADER_PAGE_TITLE"
+#: includes/include.php:412
+msgid "The ACL has been supplied with no account type ID - I will now die."
 msgstr ""
 
-#: language/_gettext_only/page_meta.php:18
-msgid "CORE_LOGIN_HEADER_META_DESCRIPTION"
+#: includes/include.php:421
+msgid "Could not get the user's Group Name by login_account_type_id."
 msgstr ""
 
-#: language/_gettext_only/page_meta.php:19
-msgid "CORE_LOGIN_HEADER_META_KEYWORDS"
+#: includes/include.php:434
+msgid "Could not get the Page's ACL."
 msgstr ""
 
-#: language/_gettext_only/page_meta.php:20
-msgid "CORE_LOGIN_HELP_TITLE"
+#: includes/include.php:446
+msgid "You do not have permission to access this page."
 msgstr ""
 
-#: language/_gettext_only/page_meta.php:21
-msgid "CORE_LOGIN_HELP_CONTENT"
+#: includes/include.php:479
+msgid ""
+"The File System and Database versions do not match, run the upgrade routine."
 msgstr ""
 
-#: language/_gettext_only/page_meta.php:24
-msgid "CORE_HOME_HEADER_PAGE_TITLE"
+#: includes/include.php:488
+msgid ""
+"The install Directory Exists!! Please Rename or remove the install directory."
 msgstr ""
 
-#: language/_gettext_only/page_meta.php:25
-msgid "CORE_HOME_HEADER_META_DESCRIPTION"
+#: includes/include.php:494
+msgid ""
+"The Upgrade Directory Exists!! Please Rename or remove the upgrade directory."
 msgstr ""
 
-#: language/_gettext_only/page_meta.php:26
-msgid "CORE_HOME_HEADER_META_KEYWORDS"
+#: includes/include.php:509
+msgid ""
+"Could not compare the version of the file system and databases to verify "
+"they match."
 msgstr ""
 
-#: language/_gettext_only/page_meta.php:27
-msgid "CORE_HOME_HELP_TITLE"
+#: includes/include.php:534
+msgid "Failed to get company details."
 msgstr ""
 
-#: language/_gettext_only/page_meta.php:28
-msgid "CORE_HOME_HELP_CONTENT"
+#: includes/include.php:692
+msgid "Error inserting item into tracker database."
 msgstr ""
 
-#: language/_gettext_only/page_meta.php:31
-msgid "CORE_MAINTENANCE_HEADER_PAGE_TITLE"
+#: includes/include.php:723
+msgid "Could not open activity.log to save the record."
 msgstr ""
 
-#: language/_gettext_only/page_meta.php:32
-msgid "CORE_MAINTENANCE_HEADER_META_DESCRIPTION"
+#: includes/modules/administrator.php:130
+msgid "Failed to load the Page ACL permissions from the database."
 msgstr ""
 
-#: language/_gettext_only/page_meta.php:33
-msgid "CORE_MAINTENANCE_HEADER_META_KEYWORDS"
+#: includes/modules/administrator.php:163
+msgid "Failed to enforce administrators to always have access to all pages."
 msgstr ""
 
-#: language/_gettext_only/page_meta.php:34
-msgid "CORE_MAINTENANCE_HELP_TITLE"
+#: includes/modules/administrator.php:183
+msgid "Failed to update teh Page ACL permissions."
 msgstr ""
 
-#: language/_gettext_only/page_meta.php:35
-msgid "CORE_MAINTENANCE_HELP_CONTENT"
+#: includes/modules/company.php:44
+msgid "Failed to update the company hours."
+msgstr ""
+
+#: includes/modules/company.php:73
+msgid "Failed to get the company start and end times."
+msgstr ""
+
+#: includes/modules/company.php:127
+msgid "Failed to update the company details."
+msgstr ""
+
+#: includes/modules/company.php:155
+msgid "Start Time is after End Time."
+msgstr ""
+
+#: includes/modules/company.php:161
+msgid "Start Time is the same as End Time."
+msgstr ""
+
+#: includes/modules/company.php:221
+msgid "Failed to update logo because the submitted file was invalid."
+msgstr ""
+
+#: includes/modules/core.php:30
+msgid "Could not display the welcome note."
+msgstr ""
+
+#: includes/modules/core.php:53
+msgid "Could not count Work Orders for the defined status."
+msgstr ""
+
+#: includes/modules/core.php:85
+msgid "Could not count all Work Orders."
+msgstr ""
+
+#: includes/modules/core.php:106
+msgid "Could not count the number of Invoices for the defined status."
+msgstr ""
+
+#: includes/modules/core.php:128
+msgid "Could not sum the discounts of unpaid invoices."
+msgstr ""
+
+#: includes/modules/core.php:149
+msgid "Could not sum the discounts of paid invoices."
+msgstr ""
+
+#: includes/modules/core.php:170
+msgid "Could not sum the discounts of partially paid invoices."
+msgstr ""
+
+#: includes/modules/core.php:189
+msgid "Could not count the number of unpaid invoices."
+msgstr ""
+
+#: includes/modules/core.php:208
+msgid "Could not sum the outstanding balances for unpaid invoices."
+msgstr ""
+
+#: includes/modules/core.php:227
+msgid "Could not count the number of invoices with partially paid invoices."
+msgstr ""
+
+#: includes/modules/core.php:246
+msgid "Could not sum the outstanding balances for partially paid invoices."
+msgstr ""
+
+#: includes/modules/core.php:265
+msgid "Could not count the number of paid invoices."
+msgstr ""
+
+#: includes/modules/core.php:284
+msgid "Could not sum the total amount of paid invoices."
+msgstr ""
+
+#: includes/modules/core.php:308
+msgid "Could not count the number of new customers during the defined period."
+msgstr ""
+
+#: includes/modules/core.php:327
+msgid "Could not count the total number of customers."
+msgstr ""
+
+#: includes/modules/core_menu.php:37
+msgid "Failed to a get a single workorder status."
+msgstr ""
+
+#: includes/modules/core_menu.php:73
+msgid "Failed to count workorders with a defined status."
+msgstr ""
+
+#: includes/modules/core_menu.php:94
+msgid "Failed to count invoices with a defined status."
+msgstr ""
+
+#: includes/modules/core_theme.php:20
+msgid "Good morning"
+msgstr ""
+
+#: includes/modules/core_theme.php:21
+msgid "Good afternoon"
+msgstr ""
+
+#: includes/modules/core_theme.php:22
+msgid "Good evening"
+msgstr ""
+
+#: includes/modules/core_theme.php:23
+msgid "Working late"
+msgstr ""
+
+#: includes/modules/core_theme.php:25
+msgid "Get ready for the weekend!"
+msgstr ""
+
+#: includes/modules/customer.php:75
+msgid "Failed to count the number of matching customer records."
+msgstr ""
+
+#: includes/modules/customer.php:119
+msgid "Failed to return the matching customer records."
+msgstr ""
+
+#: includes/modules/customer.php:169
+msgid "Failed to insert the customer record into the database."
+msgstr ""
+
+#: includes/modules/customer.php:192
+msgid "Failed to insert the customer note into the database."
+msgstr ""
+
+#: includes/modules/customer.php:209
+msgid "Failed to get the customer's details."
+msgstr ""
+
+#: includes/modules/customer.php:236
+msgid "Failed to get the customer note."
+msgstr ""
+
+#: includes/modules/customer.php:263
+msgid "Failed to get the customer's notes."
+msgstr ""
+
+#: includes/modules/customer.php:301
+msgid "Failed to update the customer's details."
+msgstr ""
+
+#: includes/modules/customer.php:326
+msgid "Failed to update the customer note."
+msgstr ""
+
+#: includes/modules/customer.php:345
+msgid "Failed to count the customer's Workorders in the database."
+msgstr ""
+
+#: includes/modules/customer.php:357
+msgid "Failed to count the customer's Invoices in the database."
+msgstr ""
+
+#: includes/modules/customer.php:369
+msgid "Failed to count the customer's Gift Certificates in the database."
+msgstr ""
+
+#: includes/modules/customer.php:381
+msgid "Failed to count the customer's Notes in the database."
+msgstr ""
+
+#: includes/modules/customer.php:395
+msgid "Failed to delete the customer from the database."
+msgstr ""
+
+#: includes/modules/customer.php:414
+msgid "Failed to delete the customer note."
+msgstr ""
+
+#: includes/modules/customer.php:431
+msgid ""
+"Failed to check the submitted Display Name for duplicates in the database."
+msgstr ""
+
+#: includes/modules/employee.php:50
+msgid "Failed to return the matching employee records."
+msgstr ""
+
+#: includes/modules/employee.php:60
+msgid "Failed to count the matching employee records."
+msgstr ""
+
+#: includes/modules/employee.php:127
+msgid "Failed to insert the employee record into the database."
+msgstr ""
+
+#: includes/modules/employee.php:148
+msgid "Failed to get the employee details."
+msgstr ""
+
+#: includes/modules/employee.php:180
+msgid "Failed to get the Employee Display Name by ID."
+msgstr ""
+
+#: includes/modules/employee.php:207
+msgid "Failed to get the Employee ID by their username."
+msgstr ""
+
+#: includes/modules/employee.php:225
+msgid "Failed to get the employee record by username"
+msgstr ""
+
+#: includes/modules/employee.php:244
+msgid "Failed to get the employee types."
+msgstr ""
+
+#: includes/modules/employee.php:263
+msgid "Failed to get the active employees."
+msgstr ""
+
+#: includes/modules/employee.php:309
+msgid "Failed to update the employee record."
+msgstr ""
+
+#: includes/modules/employee.php:339
+msgid ""
+"Failed to count the number of Work Orders for the employees for the defined "
+"status"
+msgstr ""
+
+#: includes/modules/employee.php:363
+msgid ""
+"Failed count the number of invoices for the employee for the defined status."
+msgstr ""
+
+#: includes/modules/employee.php:396
+msgid "Failed build and return and Employee list."
+msgstr ""
+
+#: includes/modules/employee.php:421
+msgid "Failed to check if the employee username exists."
+msgstr ""
+
+#: includes/modules/expense.php:118
+msgid "Failed to count the matching expense records."
+msgstr ""
+
+#: includes/modules/expense.php:164
+msgid "Failed to return the matching expense records."
+msgstr ""
+
+#: includes/modules/expense.php:205
+msgid "Failed to insert the expense record into the database."
+msgstr ""
+
+#: includes/modules/expense.php:226
+msgid "Failed to get the expense details."
+msgstr ""
+
+#: includes/modules/expense.php:266
+msgid "Failed to update the expense details."
+msgstr ""
+
+#: includes/modules/expense.php:287
+msgid "Failed to delete the expense record."
+msgstr ""
+
+#: includes/modules/expense.php:314
+msgid "EXPENSE_TYPE_1"
+msgstr ""
+
+#: includes/modules/expense.php:317
+msgid "EXPENSE_TYPE_2"
+msgstr ""
+
+#: includes/modules/expense.php:320
+msgid "EXPENSE_TYPE_3"
+msgstr ""
+
+#: includes/modules/expense.php:323
+msgid "EXPENSE_TYPE_4"
+msgstr ""
+
+#: includes/modules/expense.php:326
+msgid "EXPENSE_TYPE_5"
+msgstr ""
+
+#: includes/modules/expense.php:329
+msgid "EXPENSE_TYPE_6"
+msgstr ""
+
+#: includes/modules/expense.php:332
+msgid "EXPENSE_TYPE_7"
+msgstr ""
+
+#: includes/modules/expense.php:335
+msgid "EXPENSE_TYPE_8"
+msgstr ""
+
+#: includes/modules/expense.php:338
+msgid "EXPENSE_TYPE_9"
+msgstr ""
+
+#: includes/modules/expense.php:341
+msgid "EXPENSE_TYPE_10"
+msgstr ""
+
+#: includes/modules/expense.php:344
+msgid "EXPENSE_TYPE_11"
+msgstr ""
+
+#: includes/modules/expense.php:347
+msgid "EXPENSE_TYPE_12"
+msgstr ""
+
+#: includes/modules/expense.php:350
+msgid "EXPENSE_TYPE_13"
+msgstr ""
+
+#: includes/modules/expense.php:353
+msgid "EXPENSE_TYPE_14"
+msgstr ""
+
+#: includes/modules/expense.php:356
+msgid "EXPENSE_TYPE_15"
+msgstr ""
+
+#: includes/modules/expense.php:359
+msgid "EXPENSE_TYPE_16"
+msgstr ""
+
+#: includes/modules/expense.php:362
+msgid "EXPENSE_TYPE_17"
+msgstr ""
+
+#: includes/modules/expense.php:365
+msgid "EXPENSE_TYPE_18"
+msgstr ""
+
+#: includes/modules/expense.php:368
+msgid "EXPENSE_TYPE_19"
+msgstr ""
+
+#: includes/modules/expense.php:371
+msgid "EXPENSE_TYPE_20"
+msgstr ""
+
+#: includes/modules/expense.php:374
+msgid "EXPENSE_TYPE_21"
+msgstr ""
+
+#: includes/modules/expense.php:388
+msgid "EXPENSE_PAYMENT_METHOD_1"
+msgstr ""
+
+#: includes/modules/expense.php:391
+msgid "EXPENSE_PAYMENT_METHOD_2"
+msgstr ""
+
+#: includes/modules/expense.php:394
+msgid "EXPENSE_PAYMENT_METHOD_3"
+msgstr ""
+
+#: includes/modules/expense.php:397
+msgid "EXPENSE_PAYMENT_METHOD_4"
+msgstr ""
+
+#: includes/modules/expense.php:400
+msgid "EXPENSE_PAYMENT_METHOD_5"
+msgstr ""
+
+#: includes/modules/expense.php:403
+msgid "EXPENSE_PAYMENT_METHOD_6"
+msgstr ""
+
+#: includes/modules/expense.php:406
+msgid "EXPENSE_PAYMENT_METHOD_7"
+msgstr ""
+
+#: includes/modules/expense.php:409
+msgid "EXPENSE_PAYMENT_METHOD_8"
+msgstr ""
+
+#: includes/modules/expense.php:412
+msgid "EXPENSE_PAYMENT_METHOD_9"
+msgstr ""
+
+#: includes/modules/expense.php:415
+msgid "EXPENSE_PAYMENT_METHOD_10"
+msgstr ""
+
+#: includes/modules/expense.php:418
+msgid "EXPENSE_PAYMENT_METHOD_11"
+msgstr ""
+
+#: includes/modules/expense.php:448
+msgid "Failed to lookup the last expense record ID."
+msgstr ""
+
+#: includes/modules/giftcert.php:45
+msgid "Failed to count the matching Gift Certificate records."
+msgstr ""
+
+#: includes/modules/giftcert.php:122
+msgid "Failed to return the matching Gift Certificate records."
+msgstr ""
+
+#: includes/modules/giftcert.php:154
+msgid "Failed to insert the Gift Certificate into the database."
+msgstr ""
+
+#: includes/modules/giftcert.php:175
+msgid "Failed to get the Gift Certificate details."
+msgstr ""
+
+#: includes/modules/giftcert.php:202
+msgid "Failed to get the Gift Certificate ID by the Gift Certificate code."
+msgstr ""
+
+#: includes/modules/giftcert.php:231
+msgid "Failed to delete the Gift Certificate."
+msgstr ""
+
+#: includes/modules/giftcert.php:301
+msgid "Failed to update the Gift Certificate as redeemed."
+msgstr ""
+
+#: includes/modules/invoice.php:78
+msgid "Failed to count the matching Invoice records."
+msgstr ""
+
+#: includes/modules/invoice.php:124
+msgid "Failed to return the matching Invoice records."
+msgstr ""
+
+#: includes/modules/invoice.php:162
+msgid "Failed to insert the invoice record into the database."
+msgstr ""
+
+#: includes/modules/invoice.php:205
+msgid "Failed to insert Labour item into the database."
+msgstr ""
+
+#: includes/modules/invoice.php:246
+msgid "Failed to insert Parts item into the database."
+msgstr ""
+
+#: includes/modules/invoice.php:271
+msgid "Failed to insert Labour invoice rate item into the database."
+msgstr ""
+
+#: includes/modules/invoice.php:288
+msgid "Failed to get invoice details."
+msgstr ""
+
+#: includes/modules/invoice.php:315
+msgid "Failed to get active labour rate items."
+msgstr ""
+
+#: includes/modules/invoice.php:338
+msgid "Failed to get invoice labour items."
+msgstr ""
+
+#: includes/modules/invoice.php:360
+msgid "Failed to get invoice labour item details."
+msgstr ""
+
+#: includes/modules/invoice.php:387
+msgid "Failed to get invoice parts items."
+msgstr ""
+
+#: includes/modules/invoice.php:410
+msgid "Failed to get invoice parts item details."
+msgstr ""
+
+#: includes/modules/invoice.php:438
+msgid "Failed to get invoice labour rates items."
+msgstr ""
+
+#: includes/modules/invoice.php:461
+msgid "Failed to update the invoice dates and discount rate."
+msgstr ""
+
+#: includes/modules/invoice.php:481
+msgid "Failed to update the invoice's financial totals."
+msgstr ""
+
+#: includes/modules/invoice.php:512
+msgid "Failed to update the invoice."
+msgstr ""
+
+#: includes/modules/invoice.php:534
+msgid "Failed to update an invoice labour rates item."
+msgstr ""
+
+#: includes/modules/invoice.php:553
+msgid "Failed to delete the invoice."
+msgstr ""
+
+#: includes/modules/invoice.php:572
+msgid "Failed to delete an invoice labour item."
+msgstr ""
+
+#: includes/modules/invoice.php:590
+msgid "Failed to delete an invoice parts item."
+msgstr ""
+
+#: includes/modules/invoice.php:609
+msgid "Failed to delete an invoice rates item."
+msgstr ""
+
+#: includes/modules/invoice.php:626
+msgid "Failed to calculate the invoice labour sub total."
+msgstr ""
+
+#: includes/modules/invoice.php:645
+msgid "Failed to calculate the invoice parts sub total."
+msgstr ""
+
+#: includes/modules/invoice.php:677
+msgid "Failed update the invoice totals."
+msgstr ""
+
+#: includes/modules/invoice.php:692
+msgid "Failed to chack if the invoice has a work order."
+msgstr ""
+
+#: includes/modules/invoice.php:746
+msgid "Failed to empty the invoice labour rates table."
+msgstr ""
+
+#: includes/modules/invoice.php:760
+msgid "Failed to insert the new invoice labour rates into the database."
+msgstr ""
+
+#: includes/modules/invoice.php:784
+msgid ""
+"Failed to update the invoice labour rates because the submitted file was "
+"invalid."
+msgstr ""
+
+#: includes/modules/payment.php:46
+msgid "Failed to insert transaction into the database."
+msgstr ""
+
+#: includes/modules/payment.php:87 includes/modules/payment.php:123
+#: includes/modules/workorder.php:260 includes/modules/workorder.php:263
+msgid "Created by"
+msgstr ""
+
+#: includes/modules/payment.php:149
+msgid "Failed to get payment details."
+msgstr ""
+
+#: includes/modules/payment.php:179
+msgid "Failed to get active payment methods."
+msgstr ""
+
+#: includes/modules/payment.php:198
+msgid "Failed to get payment methods status."
+msgstr ""
+
+#: includes/modules/payment.php:217
+msgid "Failed to get the active credit cards."
+msgstr ""
+
+#: includes/modules/payment.php:246
+msgid "Failed to get the invoice's transactions."
+msgstr ""
+
+#: includes/modules/payment.php:275
+msgid "Failed to update payment settings."
+msgstr ""
+
+#: includes/modules/payment.php:310
+msgid "Failed to update a payment method status."
+msgstr ""
+
+#: includes/modules/payment.php:333
+msgid "Failed to check if the payment method is active."
+msgstr ""
+
+#: includes/modules/payment.php:361
+msgid "You can not enter a transaction with a zero (0.00) amount"
+msgstr ""
+
+#: includes/modules/payment.php:370
+msgid "You can not enter more than the outstanding balance of the invoice"
+msgstr ""
+
+#: includes/modules/refund.php:117
+msgid "Failed to count the matching refund records."
+msgstr ""
+
+#: includes/modules/refund.php:163
+msgid "Failed to return the matching refund records."
+msgstr ""
+
+#: includes/modules/refund.php:204
+msgid "Failed to insert the refund record into the database."
+msgstr ""
+
+#: includes/modules/refund.php:225
+msgid "Failed to get the refund details."
+msgstr ""
+
+#: includes/modules/refund.php:265
+msgid "Failed to update the refund details."
+msgstr ""
+
+#: includes/modules/refund.php:288
+msgid "Failed to delete the refund records."
+msgstr ""
+
+#: includes/modules/refund.php:315
+msgid "REFUND_TYPE_1"
+msgstr ""
+
+#: includes/modules/refund.php:318
+msgid "REFUND_TYPE_2"
+msgstr ""
+
+#: includes/modules/refund.php:321
+msgid "REFUND_TYPE_3"
+msgstr ""
+
+#: includes/modules/refund.php:324
+msgid "REFUND_TYPE_4"
+msgstr ""
+
+#: includes/modules/refund.php:327
+msgid "REFUND_TYPE_5"
+msgstr ""
+
+#: includes/modules/refund.php:341
+msgid "REFUND_PAYMENT_METHOD_1"
+msgstr ""
+
+#: includes/modules/refund.php:344
+msgid "REFUND_PAYMENT_METHOD_2"
+msgstr ""
+
+#: includes/modules/refund.php:347
+msgid "REFUND_PAYMENT_METHOD_3"
+msgstr ""
+
+#: includes/modules/refund.php:350
+msgid "REFUND_PAYMENT_METHOD_4"
+msgstr ""
+
+#: includes/modules/refund.php:353
+msgid "REFUND_PAYMENT_METHOD_5"
+msgstr ""
+
+#: includes/modules/refund.php:356
+msgid "REFUND_PAYMENT_METHOD_6"
+msgstr ""
+
+#: includes/modules/refund.php:359
+msgid "REFUND_PAYMENT_METHOD_7"
+msgstr ""
+
+#: includes/modules/refund.php:362
+msgid "REFUND_PAYMENT_METHOD_8"
+msgstr ""
+
+#: includes/modules/refund.php:365
+msgid "REFUND_PAYMENT_METHOD_9"
+msgstr ""
+
+#: includes/modules/refund.php:368
+msgid "REFUND_PAYMENT_METHOD_10"
+msgstr ""
+
+#: includes/modules/refund.php:371
+msgid "REFUND_PAYMENT_METHOD_11"
+msgstr ""
+
+#: includes/modules/refund.php:401
+msgid "Failed to lookup the last refund record ID."
+msgstr ""
+
+#: includes/modules/report.php:50
+msgid "Failed to count open work orders in the selected period."
+msgstr ""
+
+#: includes/modules/report.php:69
+msgid "Failed to count closed work orders in the selected period."
+msgstr ""
+
+#: includes/modules/report.php:88
+msgid "Failed to count new customers in the selected period."
+msgstr ""
+
+#: includes/modules/report.php:107
+msgid "Failed to count the total number customers in QWcrm."
+msgstr ""
+
+#: includes/modules/report.php:126
+msgid "Failed to count created invoices in the selected period."
+msgstr ""
+
+#: includes/modules/report.php:145
+msgid "Failed to count paid invoices in the selected period."
+msgstr ""
+
+#: includes/modules/report.php:166
+msgid ""
+"Failed to count the total number of parts items ordered in the selected "
+"period."
+msgstr ""
+
+#: includes/modules/report.php:185
+msgid ""
+"Failed to return the total number of parts items ordered in the selected "
+"period."
+msgstr ""
+
+#: includes/modules/report.php:204
+msgid ""
+"Failed to return the sub total of parts items ordered in the selected period."
+msgstr ""
+
+#: includes/modules/report.php:225
+msgid ""
+"Failed to count the total number of labour items ordered in the selected "
+"period."
+msgstr ""
+
+#: includes/modules/report.php:243
+msgid ""
+"Failed to return the total number of labour items ordered in the selected "
+"period."
+msgstr ""
+
+#: includes/modules/report.php:262
+msgid ""
+"Failed to return the sub total of labour items ordered in the selected "
+"period."
+msgstr ""
+
+#: includes/modules/report.php:283
+msgid "Failed to return the expenses net total for the selected period."
+msgstr ""
+
+#: includes/modules/report.php:301
+msgid "Failed to return the expenses tax total for the selected period."
+msgstr ""
+
+#: includes/modules/report.php:320
+msgid "Failed to return the expenses Gross total for the selected period."
+msgstr ""
+
+#: includes/modules/report.php:341
+msgid "Failed to return the refunds net total for the selected period."
+msgstr ""
+
+#: includes/modules/report.php:360
+msgid "Failed to return the refunds tax total for the selected period."
+msgstr ""
+
+#: includes/modules/report.php:379
+msgid "Failed to return the refunds Gross total for the selected period."
+msgstr ""
+
+#: includes/modules/report.php:400
+msgid "Failed to return invoice sub totals before tax and discounts."
+msgstr ""
+
+#: includes/modules/report.php:419
+msgid "Failed to return the sum of discounts in the selected period."
+msgstr ""
+
+#: includes/modules/report.php:438
+msgid "Failed to return the sum of tax in the selected period."
+msgstr ""
+
+#: includes/modules/report.php:457
+msgid ""
+"Failed to return the sum of invoice gross amounts in the selected period."
+msgstr ""
+
+#: includes/modules/schedule.php:37
+msgid "Failed to return the work order schedules."
+msgstr ""
+
+#: includes/modules/schedule.php:79
+msgid "Failed to insert the schedule record into the database."
+msgstr ""
+
+#: includes/modules/schedule.php:93 includes/modules/schedule.php:96
+msgid "Schedule"
+msgstr ""
+
+#: includes/modules/schedule.php:93
+msgid "added"
+msgstr ""
+
+#: includes/modules/schedule.php:96
+msgid "has been created and added to work order"
+msgstr ""
+
+#: includes/modules/schedule.php:118
+msgid "Failed to get the schedule details."
+msgstr ""
+
+#: includes/modules/schedule.php:148
+msgid "Failed to get the work order ID from a schedule."
+msgstr ""
+
+#: includes/modules/schedule.php:176
+msgid "Failed to get all schedule IDs belonging to an employee."
+msgstr ""
+
+#: includes/modules/schedule.php:219
+msgid "Failed to update a schedule record."
+msgstr ""
+
+#: includes/modules/schedule.php:242
+msgid "Failed to delete a schedule record."
+msgstr ""
+
+#: includes/modules/schedule.php:581 includes/modules/schedule.php:762
+msgid "Failed to return the selected schedules."
+msgstr ""
+
+#: includes/modules/schedule.php:736
+msgid "Schedule ends before it starts."
+msgstr ""
+
+#: includes/modules/schedule.php:742
+msgid "Start Time and End Time are the Same."
+msgstr ""
+
+#: includes/modules/schedule.php:748
+msgid "You cannot book work outside of company hours"
+msgstr ""
+
+#: includes/modules/schedule.php:774
+msgid ""
+"Schedule conflict - This schedule item ends after another schedule has "
+"started."
+msgstr ""
+
+#: includes/modules/schedule.php:780
+msgid ""
+"Schedule conflict - This schedule item starts before another schedule ends."
+msgstr ""
+
+#: includes/modules/stats.php:32
+msgid "Failed to return hits by IP."
+msgstr ""
+
+#: includes/modules/stats.php:64
+msgid "Failed to return hits for the day."
+msgstr ""
+
+#: includes/modules/stats.php:83
+msgid "Faild to get all stats for the specified day."
+msgstr ""
+
+#: includes/modules/stats.php:102
+msgid "Failed to get all the hits for the month."
+msgstr ""
+
+#: includes/modules/supplier.php:101
+msgid "Failed to count the matching supplier records."
+msgstr ""
+
+#: includes/modules/supplier.php:147
+msgid "Failed to return the matching supplier records."
+msgstr ""
+
+#: includes/modules/supplier.php:192
+msgid "Failed to insert the supplier record into the database."
+msgstr ""
+
+#: includes/modules/supplier.php:213
+msgid "Failed to get the supplier details."
+msgstr ""
+
+#: includes/modules/supplier.php:257
+msgid "Failed to update the supplier details."
+msgstr ""
+
+#: includes/modules/supplier.php:280
+msgid "Failed to delete the supplier record."
+msgstr ""
+
+#: includes/modules/supplier.php:304
+msgid "SUPPLIER_TYPE_1"
+msgstr ""
+
+#: includes/modules/supplier.php:307
+msgid "SUPPLIER_TYPE_2"
+msgstr ""
+
+#: includes/modules/supplier.php:310
+msgid "SUPPLIER_TYPE_3"
+msgstr ""
+
+#: includes/modules/supplier.php:313
+msgid "SUPPLIER_TYPE_4"
+msgstr ""
+
+#: includes/modules/supplier.php:316
+msgid "SUPPLIER_TYPE_5"
+msgstr ""
+
+#: includes/modules/supplier.php:319
+msgid "SUPPLIER_TYPE_6"
+msgstr ""
+
+#: includes/modules/supplier.php:322
+msgid "SUPPLIER_TYPE_7"
+msgstr ""
+
+#: includes/modules/supplier.php:325
+msgid "SUPPLIER_TYPE_8"
+msgstr ""
+
+#: includes/modules/supplier.php:328
+msgid "SUPPLIER_TYPE_9"
+msgstr ""
+
+#: includes/modules/supplier.php:331
+msgid "SUPPLIER_TYPE_10"
+msgstr ""
+
+#: includes/modules/supplier.php:334
+msgid "SUPPLIER_TYPE_11"
+msgstr ""
+
+#: includes/modules/supplier.php:357
+msgid "Failed to lookup the last supplier record ID."
+msgstr ""
+
+#: includes/modules/workorder.php:43
+msgid "Failed to return the Work Order record requested."
+msgstr ""
+
+#: includes/modules/workorder.php:49
+msgid "Failed to find the requested Work Order."
+msgstr ""
+
+#: includes/modules/workorder.php:112
+msgid "Failed to count the matching Work Orders."
+msgstr ""
+
+#: includes/modules/workorder.php:158
+msgid "Failed to return the matching Work Orders."
+msgstr ""
+
+#: includes/modules/workorder.php:195
+msgid "Failed to return notes for the Work Order."
+msgstr ""
+
+#: includes/modules/workorder.php:222
+msgid "Failed to return history records for the Work Order."
+msgstr ""
+
+#: includes/modules/workorder.php:251
+msgid "Failed to insert the Work Order Record into the database."
+msgstr ""
+
+#: includes/modules/workorder.php:263 includes/modules/workorder.php:445
+#: includes/modules/workorder.php:477 includes/modules/workorder.php:508
+#: includes/modules/workorder.php:565 includes/modules/workorder.php:636
+#: includes/modules/workorder.php:671 includes/modules/workorder.php:741
+#: includes/modules/workorder.php:856 includes/modules/workorder.php:859
+msgid "Work Order"
+msgstr ""
+
+#: includes/modules/workorder.php:286
+msgid "Failed to insert a Work Order history note."
+msgstr ""
+
+#: includes/modules/workorder.php:310
+msgid "Failed to insert a Work Order note."
+msgstr ""
+
+#: includes/modules/workorder.php:319 includes/modules/workorder.php:322
+msgid "Work Order Note"
+msgstr ""
+
+#: includes/modules/workorder.php:319
+msgid "added by"
+msgstr ""
+
+#: includes/modules/workorder.php:322
+msgid "added to Work Order"
+msgstr ""
+
+#: includes/modules/workorder.php:322 includes/modules/workorder.php:562
+#: includes/modules/workorder.php:565 includes/modules/workorder.php:856
+#: includes/modules/workorder.php:859
+msgid "by"
+msgstr ""
+
+#: includes/modules/workorder.php:347
+msgid "Failed to get Work Order details."
+msgstr ""
+
+#: includes/modules/workorder.php:375
+msgid "Failed to get a Work Order Note."
+msgstr ""
+
+#: includes/modules/workorder.php:402
+msgid "Failed to get all Notes for a Work Order."
+msgstr ""
+
+#: includes/modules/workorder.php:437
+msgid "Failed to update a Work Order Scope and Description."
+msgstr ""
+
+#: includes/modules/workorder.php:442 includes/modules/workorder.php:445
+msgid "Scope and Description updated by"
+msgstr ""
+
+#: includes/modules/workorder.php:468
+msgid "Failed to update a Work Order Comments"
+msgstr ""
+
+#: includes/modules/workorder.php:473 includes/modules/workorder.php:477
+msgid "Comments updated by"
+msgstr ""
+
+#: includes/modules/workorder.php:500
+msgid "Failed to update a Work Order resolution."
+msgstr ""
+
+#: includes/modules/workorder.php:505 includes/modules/workorder.php:508
+msgid "Resolution updated by"
+msgstr ""
+
+#: includes/modules/workorder.php:531
+msgid "Failed to update a Work Order Status."
+msgstr ""
+
+#: includes/modules/workorder.php:544
+msgid "Failed to set Work Order status to unassigned."
+msgstr ""
+
+#: includes/modules/workorder.php:551
+msgid "Created"
+msgstr ""
+
+#: includes/modules/workorder.php:552 themes/default/templates/core/home.tpl:37
+#: themes/default/templates/core/home.tpl:118
+msgid "Assigned"
+msgstr ""
+
+#: includes/modules/workorder.php:553 themes/default/templates/core/home.tpl:38
+#: themes/default/templates/core/home.tpl:119
+msgid "Waiting For Parts"
+msgstr ""
+
+#: includes/modules/workorder.php:554
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:35
+#: themes/default/templates/core/home.tpl:40
+#: themes/default/templates/core/home.tpl:121
+msgid "Closed"
+msgstr ""
+
+#: includes/modules/workorder.php:555
+msgid "Waiting For Payment"
+msgstr ""
+
+#: includes/modules/workorder.php:556
+msgid "Payment Made"
+msgstr ""
+
+#: includes/modules/workorder.php:557
+msgid "Pending"
+msgstr ""
+
+#: includes/modules/workorder.php:558
+msgid "Open"
+msgstr ""
+
+#: includes/modules/workorder.php:562 includes/modules/workorder.php:565
+msgid "Status updated to"
+msgstr ""
+
+#: includes/modules/workorder.php:585
+msgid "Failed to update a Work Order's last active time."
+msgstr ""
+
+#: includes/modules/workorder.php:604
+msgid "Failed to update a Work Order note."
+msgstr ""
+
+#: includes/modules/workorder.php:628
+msgid "Failed to close a Work Order with an invoice."
+msgstr ""
+
+#: includes/modules/workorder.php:633
+msgid "Closed with Invoice by"
+msgstr ""
+
+#: includes/modules/workorder.php:636
+msgid "has been closed with invoice by"
+msgstr ""
+
+#: includes/modules/workorder.php:663
+msgid "Failed to close a Work Order without an invoice."
+msgstr ""
+
+#: includes/modules/workorder.php:668
+msgid "Closed without Invoice by"
+msgstr ""
+
+#: includes/modules/workorder.php:671
+msgid "has been closed without invoice by"
+msgstr ""
+
+#: includes/modules/workorder.php:692
+msgid "This workorder cannot be deleted because it has an invoice."
+msgstr ""
+
+#: includes/modules/workorder.php:698
+msgid "This workorder cannot be deleted because its status does not allow it."
+msgstr ""
+
+#: includes/modules/workorder.php:706
+msgid "Failed to delete the Work Order"
+msgstr ""
+
+#: includes/modules/workorder.php:715
+msgid "Failed to delete the history notes for Work Order"
+msgstr ""
+
+#: includes/modules/workorder.php:724
+msgid "Failed to delete the notes for Work Order"
+msgstr ""
+
+#: includes/modules/workorder.php:734
+msgid "Failed to delete the schedules for Work Order"
+msgstr ""
+
+#: includes/modules/workorder.php:741
+msgid "has been deleted by"
+msgstr ""
+
+#: includes/modules/workorder.php:764
+msgid "Failed to check if a Work Order is allowed to be deleted."
+msgstr ""
+
+#: includes/modules/workorder.php:791
+msgid "Failed to delete a Work Order note."
+msgstr ""
+
+#: includes/modules/workorder.php:808
+msgid "Failed to check if a Work Order has an invoice."
+msgstr ""
+
+#: includes/modules/workorder.php:838
+msgid "Failed to assign a Work Order to an employee."
+msgstr ""
+
+#: includes/modules/workorder.php:847
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:33
+msgid "Unassigned"
+msgstr ""
+
+#: includes/modules/workorder.php:856 includes/modules/workorder.php:859
+msgid "has been assigned to"
+msgstr ""
+
+#: includes/modules/workorder.php:856 includes/modules/workorder.php:859
+msgid "from"
+msgstr ""
+
+#: includes/modules/workorder.php:876
+msgid "Failed to edit a Work Order status."
+msgstr ""
+
+#: includes/modules/workorder.php:884
+msgid ""
+"Can not close a work order if it is Waiting For Parts. Please Adjust the "
+"status."
+msgstr ""
+
+#: includes/modules/workorder.php:892
+msgid "Work Order Is already Closed. Please Create an Invoice."
+msgstr ""
+
+#: includes/modules/workorder.php:913
+msgid "Failed to check if a Work Order is open."
+msgstr ""
+
+#: themes/default/templates/administrator/acl.tpl:7
+msgid "Update Permissions for Users"
+msgstr ""
+
+#: themes/default/templates/administrator/acl.tpl:9
+msgid "ADMINISTRATOR_ACL_HELP_TITLE"
+msgstr ""
+
+#: themes/default/templates/administrator/acl.tpl:9
+msgid "ADMINISTRATOR_ACL_HELP_CONTENT"
+msgstr ""
+
+#: themes/default/templates/administrator/acl.tpl:20
+msgid "Module:Page"
+msgstr ""
+
+#: themes/default/templates/administrator/acl.tpl:21
+msgid "Administrator"
+msgstr ""
+
+#: themes/default/templates/administrator/acl.tpl:22
+msgid "Manager"
+msgstr ""
+
+#: themes/default/templates/administrator/acl.tpl:23
+msgid "Supervisor"
+msgstr ""
+
+#: themes/default/templates/administrator/acl.tpl:24
+msgid "Technician"
+msgstr ""
+
+#: themes/default/templates/administrator/acl.tpl:25
+msgid "Clerical"
+msgstr ""
+
+#: themes/default/templates/administrator/acl.tpl:26
+msgid "Counter"
+msgstr ""
+
+#: themes/default/templates/administrator/acl.tpl:27
+#: themes/default/templates/customer/blocks/details_workorder_block.tpl:7
+#: themes/default/templates/customer/blocks/details_workorder_block.tpl:44
+msgid "Customer"
+msgstr ""
+
+#: themes/default/templates/administrator/acl.tpl:28
+msgid "Guest"
+msgstr ""
+
+#: themes/default/templates/administrator/acl.tpl:29
+msgid "Public"
+msgstr ""
+
+#: themes/default/templates/administrator/acl.tpl:40
+#: themes/default/templates/administrator/acl.tpl:47
+#: themes/default/templates/administrator/acl.tpl:55
+#: themes/default/templates/administrator/acl.tpl:63
+#: themes/default/templates/administrator/acl.tpl:71
+#: themes/default/templates/administrator/acl.tpl:79
+#: themes/default/templates/administrator/acl.tpl:87
+#: themes/default/templates/administrator/acl.tpl:95
+#: themes/default/templates/administrator/acl.tpl:103
+#: themes/default/templates/company/edit.tpl:233
+#: themes/default/templates/company/edit.tpl:252
+msgid "Yes"
+msgstr ""
+
+#: themes/default/templates/administrator/acl.tpl:48
+#: themes/default/templates/administrator/acl.tpl:56
+#: themes/default/templates/administrator/acl.tpl:64
+#: themes/default/templates/administrator/acl.tpl:72
+#: themes/default/templates/administrator/acl.tpl:80
+#: themes/default/templates/administrator/acl.tpl:88
+#: themes/default/templates/administrator/acl.tpl:96
+#: themes/default/templates/administrator/acl.tpl:104
+#: themes/default/templates/company/edit.tpl:234
+#: themes/default/templates/company/edit.tpl:253
+msgid "No"
+msgstr ""
+
+#: themes/default/templates/administrator/update.tpl:7
+msgid "Update Status"
+msgstr ""
+
+#: themes/default/templates/administrator/update.tpl:10
+msgid "ADMINISTRATOR_UPDATE_HELP_TITLE"
+msgstr ""
+
+#: themes/default/templates/administrator/update.tpl:10
+msgid "ADMINISTRATOR_UPDATE_HELP_CONTENT"
+msgstr ""
+
+#: themes/default/templates/administrator/update.tpl:19
+msgid "This page will show you updates for QWcrm"
+msgstr ""
+
+#: themes/default/templates/administrator/update.tpl:21
+msgid "Updates are available."
+msgstr ""
+
+#: themes/default/templates/administrator/update.tpl:21
+msgid "Please download"
+msgstr ""
+
+#: themes/default/templates/administrator/update.tpl:25
+msgid "Addtional information"
+msgstr ""
+
+#: themes/default/templates/administrator/update.tpl:26
+msgid "Current Version"
+msgstr ""
+
+#: themes/default/templates/administrator/update.tpl:27
+msgid "Latest Version"
+msgstr ""
+
+#: themes/default/templates/administrator/update.tpl:28
+#: themes/default/templates/customer/blocks/details_invoice_block.tpl:7
+#: themes/default/templates/customer/blocks/details_invoice_block.tpl:40
+#: themes/default/templates/customer/blocks/details_note_block.tpl:50
+#: themes/default/templates/customer/note_edit.tpl:30
+msgid "Date"
+msgstr ""
+
+#: themes/default/templates/administrator/update.tpl:29
+msgid "File"
+msgstr ""
+
+#: themes/default/templates/administrator/update.tpl:32
+msgid "No Updates Available"
+msgstr ""
+
+#: themes/default/templates/company/business_hours.tpl:7
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:107
+msgid "Business Hours"
+msgstr ""
+
+#: themes/default/templates/company/business_hours.tpl:9
+msgid "ADMINISTRATOR_BUSINESS_HOURS_HELP_TITLE"
+msgstr ""
+
+#: themes/default/templates/company/business_hours.tpl:9
+msgid "ADMINISTRATOR_BUSINESS_HOURS_HELP_CONTENT"
+msgstr ""
+
+#: themes/default/templates/company/business_hours.tpl:20
+msgid "Opening Time"
+msgstr ""
+
+#: themes/default/templates/company/business_hours.tpl:26
+msgid "Closing Time"
+msgstr ""
+
+#: themes/default/templates/company/business_hours.tpl:35
+msgid ""
+"These settings are used to display the start and stop times of the schedule."
+msgstr ""
+
+#: themes/default/templates/company/edit.tpl:11
+msgid "Company Details"
+msgstr ""
+
+#: themes/default/templates/company/edit.tpl:12
+msgid "Localisation Setup"
+msgstr ""
+
+#: themes/default/templates/company/edit.tpl:13
+msgid "Email Setup"
+msgstr ""
+
+#: themes/default/templates/company/edit.tpl:14
+msgid "Email Messages"
+msgstr ""
+
+#: themes/default/templates/company/edit.tpl:27
+msgid "Edit The Company Information"
+msgstr ""
+
+#: themes/default/templates/company/edit.tpl:37
+msgid "Company Name"
+msgstr ""
+
+#: themes/default/templates/company/edit.tpl:41
+msgid "Logo Filename"
+msgstr ""
+
+#: themes/default/templates/company/edit.tpl:48
+msgid "Company Number"
+msgstr ""
+
+#: themes/default/templates/company/edit.tpl:52
+#: themes/default/templates/customer/blocks/details_customer_details_block.tpl:45
+#: themes/default/templates/customer/edit.tpl:100
+#: themes/default/templates/customer/edit.tpl:106
+#: themes/default/templates/customer/new.tpl:102
+#: themes/default/templates/customer/new.tpl:109
+msgid "Address"
+msgstr ""
+
+#: themes/default/templates/company/edit.tpl:56
+#: themes/default/templates/customer/edit.tpl:110
+#: themes/default/templates/customer/new.tpl:113
+msgid "City"
+msgstr ""
+
+#: themes/default/templates/company/edit.tpl:60
+#: themes/default/templates/customer/edit.tpl:114
+#: themes/default/templates/customer/new.tpl:117
+msgid "State"
+msgstr ""
+
+#: themes/default/templates/company/edit.tpl:64
+#: themes/default/templates/customer/edit.tpl:118
+#: themes/default/templates/customer/new.tpl:121
+msgid "Zip"
+msgstr ""
+
+#: themes/default/templates/company/edit.tpl:68
+msgid "Country"
+msgstr ""
+
+#: themes/default/templates/company/edit.tpl:78
+#: themes/default/templates/customer/edit.tpl:79
+#: themes/default/templates/customer/new.tpl:81
+#: themes/default/templates/customer/search.tpl:69
+msgid "Phone"
+msgstr ""
+
+#: themes/default/templates/company/edit.tpl:82
+#: themes/default/templates/customer/blocks/details_customer_details_block.tpl:59
+msgid "Mobile Phone"
+msgstr ""
+
+#: themes/default/templates/company/edit.tpl:86
+msgid "Fax"
+msgstr ""
+
+#: themes/default/templates/company/edit.tpl:90
+#: themes/default/templates/customer/blocks/details_customer_details_block.tpl:34
+#: themes/default/templates/customer/edit.tpl:46
+#: themes/default/templates/customer/new.tpl:48
+#: themes/default/templates/customer/search.tpl:71
+msgid "Email"
+msgstr ""
+
+#: themes/default/templates/company/edit.tpl:94
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:144
+#: themes/default/templates/customer/blocks/details_customer_details_block.tpl:28
+#: themes/default/templates/customer/edit.tpl:42
+#: themes/default/templates/customer/new.tpl:44
+msgid "Website"
+msgstr ""
+
+#: themes/default/templates/company/edit.tpl:98
+msgid "Tax Rate"
+msgstr ""
+
+#: themes/default/templates/company/edit.tpl:102
+#: themes/default/templates/core/home.tpl:23
+msgid "Company Welcome Message"
+msgstr ""
+
+#: themes/default/templates/company/edit.tpl:102
+msgid "(home page)"
+msgstr ""
+
+#: themes/default/templates/company/edit.tpl:123
+msgid "Edit your Companies Currency Settings"
+msgstr ""
+
+#: themes/default/templates/company/edit.tpl:132
+msgid "Currency Symbol"
+msgstr ""
+
+#: themes/default/templates/company/edit.tpl:136
+msgid "Currency Code"
+msgstr ""
+
+#: themes/default/templates/company/edit.tpl:140
+msgid "Date Formatting"
+msgstr ""
+
+#: themes/default/templates/company/edit.tpl:166
+msgid "Edit your Companies Email Settings"
+msgstr ""
+
+#: themes/default/templates/company/edit.tpl:175
+msgid "Default No-Reply Email"
+msgstr ""
+
+#: themes/default/templates/company/edit.tpl:179
+msgid "Email SMTP Server"
+msgstr ""
+
+#: themes/default/templates/company/edit.tpl:183
+msgid "Email Port"
+msgstr ""
+
+#: themes/default/templates/company/edit.tpl:187
+msgid "Connection Type"
+msgstr ""
+
+#: themes/default/templates/company/edit.tpl:191
+msgid "None"
+msgstr ""
+
+#: themes/default/templates/company/edit.tpl:196
+msgid "SMTP Login Name"
+msgstr ""
+
+#: themes/default/templates/company/edit.tpl:200
+msgid "SMTP Server Password"
+msgstr ""
+
+#: themes/default/templates/company/edit.tpl:219
+msgid "Edit Email Messaging functions"
+msgstr ""
+
+#: themes/default/templates/company/edit.tpl:228
+msgid "New Work Order Created Message"
+msgstr ""
+
+#: themes/default/templates/company/edit.tpl:231
+#: themes/default/templates/company/edit.tpl:250
+msgid "Enabled"
+msgstr ""
+
+#: themes/default/templates/company/edit.tpl:247
+msgid "New Invoice Message"
+msgstr ""
+
+#: themes/default/templates/core/404.tpl:7
+msgid "404 - The requested page was not found on our system."
 msgstr ""
 
 #: themes/default/templates/core/blocks/login_dashboard_block.tpl:4
@@ -160,6 +1716,851 @@ msgstr ""
 msgid "Knowledge Base and Troubleshooter Coming Soon!!"
 msgstr ""
 
+#: themes/default/templates/core/blocks/login_form_block.tpl:13
+#: themes/default/templates/core/blocks/login_form_block.tpl:23
+#: themes/default/templates/core/blocks/login_form_block.tpl:37
+msgid "Login"
+msgstr ""
+
+#: themes/default/templates/core/blocks/login_form_block.tpl:27
+msgid "Password"
+msgstr ""
+
 #: themes/default/templates/core/blocks/login_form_block.tpl:32
 msgid "Remember me"
+msgstr ""
+
+#: themes/default/templates/core/blocks/login_form_block.tpl:56
+msgid "Forgot your password?"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_debug_block.tpl:7
+msgid "QWcrm Debug Section"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_debug_block.tpl:12
+msgid "IP Address"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_debug_block.tpl:18
+msgid "Page Load Time"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_debug_block.tpl:22
+msgid "Page Controller"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_debug_block.tpl:26
+msgid "Module"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_debug_block.tpl:30
+#: themes/default/templates/customer/search.tpl:50
+msgid "Page"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_debug_block.tpl:36
+msgid "Start PHP Memory"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_debug_block.tpl:40
+msgid "Current PHP Memory"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_debug_block.tpl:44
+msgid "Peak PHP Memory"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_footer_block.tpl:7
+msgid "This software is distributed under the GNU GPL3"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_footer_block.tpl:10
+msgid "Software Version"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:9
+msgid "Main Menu"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:10
+#: themes/default/templates/customer/blocks/details_workorder_block.tpl:22
+#: themes/default/templates/customer/blocks/details_workorder_block.tpl:59
+#: themes/default/templates/customer/edit.tpl:85
+#: themes/default/templates/customer/new.tpl:87
+msgid "Home"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:11
+msgid "Logout"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:16
+msgid "Customers"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:17
+msgid "Add New"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:18
+msgid "View"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:20
+msgid "Edit Customer"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:21
+msgid "New Gift Certificate"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:22
+msgid "Delete Customer"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:23
+msgid "Email Customer"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:24
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:39
+#: themes/default/templates/customer/note_new.tpl:10
+msgid "New Note"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:30
+msgid "Work Orders"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:31
+msgid "Overview"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:38
+msgid "Close"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:41
+msgid "Print WO"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:42
+#: themes/default/templates/customer/blocks/details_workorder_block.tpl:9
+#: themes/default/templates/customer/blocks/details_workorder_block.tpl:46
+msgid "Status"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:45
+msgid "Create New WO"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:46
+msgid "Invoice Only"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:48
+msgid "Schedules"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:53
+#: themes/default/templates/customer/details.tpl:9
+msgid "Invoices"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:54
+msgid "Paid Invoices"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:55
+#: themes/default/templates/customer/blocks/details_invoice_block.tpl:2
+msgid "Unpaid Invoices"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:62
+msgid "General Ledger"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:65
+msgid "New Expense"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:66
+msgid "Search Expenses"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:68
+msgid "Expense Details"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:69
+msgid "Edit Expense"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:70
+msgid ""
+"Are you Sure you want to delete this Expense Record? This will permanently "
+"remove the record from the database."
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:70
+msgid "Delete Expense"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:74
+msgid "New Refund"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:75
+msgid "Search Refunds"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:77
+msgid "Refund Details"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:78
+msgid "Edit Refund"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:79
+msgid ""
+"Are you Sure you want to delete this Refund Record? This will permanently "
+"remove the record from the database."
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:79
+msgid "Delete Refund"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:81
+msgid "Financial Report"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:90
+msgid "Suppliers"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:91
+msgid "New Supplier"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:92
+msgid "Search Suppliers"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:94
+msgid "Supplier Details"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:95
+msgid "Edit Supplier"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:96
+msgid ""
+"Are you Sure you want to delete this Supplier Record? This will permanently "
+"remove the record from the database."
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:96
+msgid "Delete Supplier"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:105
+msgid "Company"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:106
+msgid "Edit Company"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:108
+msgid "Invoice Rates"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:109
+msgid "Payment Options"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:117
+msgid "Administration"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:120
+msgid "Search Employees"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:121
+msgid "New Employee"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:123
+msgid "Edit Employee"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:125
+msgid "Permissions"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:128
+msgid "Hit Stats"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:129
+msgid "Hit Stats By IP"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:132
+msgid "PHP Info"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:133
+msgid "Update"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:140
+msgid "Help"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:141
+msgid "About"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:142
+msgid "Attribution"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:143
+msgid "License"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:145
+msgid "Documentation"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:146
+msgid "Bug Tracker"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:147
+msgid "Forum"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:148
+msgid "Support this Software!"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:152
+msgid "PayPal - The safer, easier way to pay online."
+msgstr ""
+
+#: themes/default/templates/core/error.tpl:3
+msgid "Error Page"
+msgstr ""
+
+#: themes/default/templates/core/error.tpl:4
+msgid "Error Type"
+msgstr ""
+
+#: themes/default/templates/core/error.tpl:6
+msgid "Error Location"
+msgstr ""
+
+#: themes/default/templates/core/error.tpl:7
+msgid "PHP Function"
+msgstr ""
+
+#: themes/default/templates/core/error.tpl:9
+msgid "Database Error"
+msgstr ""
+
+#: themes/default/templates/core/error.tpl:10
+msgid "SQL Query"
+msgstr ""
+
+#: themes/default/templates/core/error.tpl:12
+msgid "Error Message"
+msgstr ""
+
+#: themes/default/templates/core/home.tpl:7
+msgid "QWcrm - Welcome to your Online Office"
+msgstr ""
+
+#: themes/default/templates/core/home.tpl:10
+msgid "CORE_HOME_HELP_TITLE"
+msgstr ""
+"This home page gives you an overview of your activities\n"
+"cock holed<p>adasdasd</p>"
+
+#: themes/default/templates/core/home.tpl:10
+msgid "CORE_HOME_HELP_CONTENT"
+msgstr ""
+"This home page gives you an overview of your activities\n"
+"cock holed"
+
+#: themes/default/templates/core/home.tpl:32
+#: themes/default/templates/core/home.tpl:113
+msgid "Work Order Stats"
+msgstr ""
+
+#: themes/default/templates/core/home.tpl:36
+#: themes/default/templates/core/home.tpl:117
+msgid "New"
+msgstr ""
+
+#: themes/default/templates/core/home.tpl:39
+#: themes/default/templates/core/home.tpl:120
+msgid "Awaiting Payment"
+msgstr ""
+
+#: themes/default/templates/core/home.tpl:41
+#: themes/default/templates/core/home.tpl:102
+#: themes/default/templates/core/home.tpl:122
+msgid "Total"
+msgstr ""
+
+#: themes/default/templates/core/home.tpl:68
+msgid "Invoice Stats"
+msgstr ""
+
+#: themes/default/templates/core/home.tpl:73
+msgid "Unpaid"
+msgstr ""
+
+#: themes/default/templates/core/home.tpl:74
+#: themes/default/templates/customer/blocks/details_invoice_block.tpl:10
+#: themes/default/templates/customer/blocks/details_invoice_block.tpl:43
+msgid "Balance"
+msgstr ""
+
+#: themes/default/templates/core/home.tpl:75
+msgid "Partial Paid"
+msgstr ""
+
+#: themes/default/templates/core/home.tpl:76
+msgid "Partial Paid Balance"
+msgstr ""
+
+#: themes/default/templates/core/home.tpl:77
+msgid "Paid In Full"
+msgstr ""
+
+#: themes/default/templates/core/home.tpl:78
+msgid "Received Monies Total"
+msgstr ""
+
+#: themes/default/templates/core/home.tpl:79
+msgid "Invoiced Total"
+msgstr ""
+
+#: themes/default/templates/core/home.tpl:96
+msgid "Customer Stats"
+msgstr ""
+
+#: themes/default/templates/core/home.tpl:100
+msgid "New This Month"
+msgstr ""
+
+#: themes/default/templates/core/home.tpl:101
+msgid "New This Year"
+msgstr ""
+
+#: themes/default/templates/customer/blocks/details_customer_details_block.tpl:7
+#: themes/default/templates/customer/blocks/details_customer_details_block.tpl:20
+#: themes/default/templates/customer/details.tpl:7
+msgid "Customer Details"
+msgstr ""
+
+#: themes/default/templates/customer/blocks/details_customer_details_block.tpl:7
+msgid "for"
+msgstr ""
+
+#: themes/default/templates/customer/blocks/details_customer_details_block.tpl:8
+#: themes/default/templates/customer/edit.tpl:10
+msgid "Edit"
+msgstr ""
+
+#: themes/default/templates/customer/blocks/details_customer_details_block.tpl:26
+#: themes/default/templates/customer/blocks/details_workorder_block.tpl:22
+#: themes/default/templates/customer/blocks/details_workorder_block.tpl:59
+msgid "Contact"
+msgstr ""
+
+#: themes/default/templates/customer/blocks/details_customer_details_block.tpl:38
+#: themes/default/templates/customer/edit.tpl:50
+#: themes/default/templates/customer/new.tpl:52
+msgid "Credit Terms"
+msgstr ""
+
+#: themes/default/templates/customer/blocks/details_customer_details_block.tpl:45
+msgid "Get Directions"
+msgstr ""
+
+#: themes/default/templates/customer/blocks/details_customer_details_block.tpl:47
+msgid "Home Phone"
+msgstr ""
+
+#: themes/default/templates/customer/blocks/details_customer_details_block.tpl:53
+msgid "Work Phone"
+msgstr ""
+
+#: themes/default/templates/customer/blocks/details_customer_details_block.tpl:66
+msgid "Customer Type"
+msgstr ""
+
+#: themes/default/templates/customer/blocks/details_customer_details_block.tpl:68
+#: themes/default/templates/customer/edit.tpl:57
+#: themes/default/templates/customer/new.tpl:59
+#: themes/default/templates/customer/search.tpl:86
+msgid "CUSTOMER_TYPE_1"
+msgstr ""
+
+#: themes/default/templates/customer/blocks/details_customer_details_block.tpl:69
+#: themes/default/templates/customer/edit.tpl:58
+#: themes/default/templates/customer/new.tpl:60
+#: themes/default/templates/customer/search.tpl:87
+msgid "CUSTOMER_TYPE_2"
+msgstr ""
+
+#: themes/default/templates/customer/blocks/details_customer_details_block.tpl:70
+#: themes/default/templates/customer/edit.tpl:59
+#: themes/default/templates/customer/new.tpl:61
+#: themes/default/templates/customer/search.tpl:88
+msgid "CUSTOMER_TYPE_3"
+msgstr ""
+
+#: themes/default/templates/customer/blocks/details_customer_details_block.tpl:71
+#: themes/default/templates/customer/edit.tpl:60
+#: themes/default/templates/customer/new.tpl:62
+#: themes/default/templates/customer/search.tpl:89
+msgid "CUSTOMER_TYPE_4"
+msgstr ""
+
+#: themes/default/templates/customer/blocks/details_customer_details_block.tpl:72
+#: themes/default/templates/customer/edit.tpl:61
+#: themes/default/templates/customer/new.tpl:63
+msgid "CUSTOMER_TYPE_5"
+msgstr ""
+
+#: themes/default/templates/customer/blocks/details_customer_details_block.tpl:73
+#: themes/default/templates/customer/edit.tpl:62
+#: themes/default/templates/customer/new.tpl:64
+msgid "CUSTOMER_TYPE_6"
+msgstr ""
+
+#: themes/default/templates/customer/blocks/details_customer_details_block.tpl:74
+#: themes/default/templates/customer/edit.tpl:63
+#: themes/default/templates/customer/new.tpl:65
+msgid "CUSTOMER_TYPE_7"
+msgstr ""
+
+#: themes/default/templates/customer/blocks/details_customer_details_block.tpl:75
+#: themes/default/templates/customer/edit.tpl:64
+#: themes/default/templates/customer/new.tpl:66
+msgid "CUSTOMER_TYPE_8"
+msgstr ""
+
+#: themes/default/templates/customer/blocks/details_customer_details_block.tpl:76
+#: themes/default/templates/customer/edit.tpl:65
+#: themes/default/templates/customer/new.tpl:67
+msgid "CUSTOMER_TYPE_9"
+msgstr ""
+
+#: themes/default/templates/customer/blocks/details_customer_details_block.tpl:77
+#: themes/default/templates/customer/edit.tpl:66
+#: themes/default/templates/customer/new.tpl:68
+msgid "CUSTOMER_TYPE_10"
+msgstr ""
+
+#: themes/default/templates/customer/blocks/details_customer_details_block.tpl:79
+#: themes/default/templates/customer/edit.tpl:71
+#: themes/default/templates/customer/new.tpl:73
+msgid "Discount"
+msgstr ""
+
+#: themes/default/templates/customer/blocks/details_customer_details_block.tpl:86
+msgid "Account Created"
+msgstr ""
+
+#: themes/default/templates/customer/blocks/details_customer_details_block.tpl:88
+msgid "Last Active"
+msgstr ""
+
+#: themes/default/templates/customer/blocks/details_customer_details_block.tpl:95
+#: themes/default/templates/customer/blocks/details_note_block.tpl:7
+#: themes/default/templates/customer/blocks/details_note_block.tpl:52
+#: themes/default/templates/customer/details.tpl:11
+#: themes/default/templates/customer/edit.tpl:122
+#: themes/default/templates/customer/new.tpl:125
+msgid "Notes"
+msgstr ""
+
+#: themes/default/templates/customer/blocks/details_giftcert_block.tpl:7
+#: themes/default/templates/customer/details.tpl:10
+msgid "Gift Certificates"
+msgstr ""
+
+#: themes/default/templates/customer/blocks/details_giftcert_block.tpl:14
+msgid "giftcert_tooltip"
+msgstr ""
+
+#: themes/default/templates/customer/blocks/details_invoice_block.tpl:5
+#: themes/default/templates/customer/blocks/details_invoice_block.tpl:38
+msgid "INV ID"
+msgstr ""
+
+#: themes/default/templates/customer/blocks/details_invoice_block.tpl:6
+#: themes/default/templates/customer/blocks/details_invoice_block.tpl:39
+#: themes/default/templates/customer/blocks/details_workorder_block.tpl:5
+#: themes/default/templates/customer/blocks/details_workorder_block.tpl:42
+msgid "WO ID"
+msgstr ""
+
+#: themes/default/templates/customer/blocks/details_invoice_block.tpl:8
+#: themes/default/templates/customer/blocks/details_invoice_block.tpl:41
+msgid "Amount"
+msgstr ""
+
+#: themes/default/templates/customer/blocks/details_invoice_block.tpl:9
+#: themes/default/templates/customer/blocks/details_invoice_block.tpl:42
+msgid "Paid"
+msgstr ""
+
+#: themes/default/templates/customer/blocks/details_invoice_block.tpl:11
+#: themes/default/templates/customer/blocks/details_invoice_block.tpl:44
+msgid "Date Paid"
+msgstr ""
+
+#: themes/default/templates/customer/blocks/details_invoice_block.tpl:12
+#: themes/default/templates/customer/blocks/details_invoice_block.tpl:45
+#: themes/default/templates/customer/blocks/details_note_block.tpl:49
+msgid "Employee"
+msgstr ""
+
+#: themes/default/templates/customer/blocks/details_invoice_block.tpl:13
+#: themes/default/templates/customer/blocks/details_invoice_block.tpl:46
+#: themes/default/templates/customer/blocks/details_workorder_block.tpl:11
+#: themes/default/templates/customer/blocks/details_workorder_block.tpl:48
+#: themes/default/templates/customer/search.tpl:65
+msgid "Action"
+msgstr ""
+
+#: themes/default/templates/customer/blocks/details_invoice_block.tpl:26
+#: themes/default/templates/customer/blocks/details_invoice_block.tpl:59
+msgid "customer_print_pdf"
+msgstr ""
+
+#: themes/default/templates/customer/blocks/details_invoice_block.tpl:27
+#: themes/default/templates/customer/blocks/details_invoice_block.tpl:60
+msgid "customer_print"
+msgstr ""
+
+#: themes/default/templates/customer/blocks/details_invoice_block.tpl:28
+#: themes/default/templates/customer/blocks/details_invoice_block.tpl:61
+msgid "customer_view"
+msgstr ""
+
+#: themes/default/templates/customer/blocks/details_invoice_block.tpl:35
+msgid "Paid Invoices<"
+msgstr ""
+
+#: themes/default/templates/customer/blocks/details_note_block.tpl:13
+msgid "Add New Customer Note"
+msgstr ""
+
+#: themes/default/templates/customer/blocks/details_note_block.tpl:32
+msgid "Customer Note ID"
+msgstr ""
+
+#: themes/default/templates/customer/blocks/details_note_block.tpl:36
+msgid "Edit the Note"
+msgstr ""
+
+#: themes/default/templates/customer/blocks/details_note_block.tpl:38
+msgid "Are you sure you want to delete this customer note?"
+msgstr ""
+
+#: themes/default/templates/customer/blocks/details_note_block.tpl:39
+msgid "Delete the Note"
+msgstr ""
+
+#: themes/default/templates/customer/blocks/details_note_block.tpl:51
+msgid "Time"
+msgstr ""
+
+#: themes/default/templates/customer/blocks/details_workorder_block.tpl:2
+msgid "customer_open_work_orders"
+msgstr ""
+
+#: themes/default/templates/customer/blocks/details_workorder_block.tpl:6
+#: themes/default/templates/customer/blocks/details_workorder_block.tpl:43
+msgid "Date Opened"
+msgstr ""
+
+#: themes/default/templates/customer/blocks/details_workorder_block.tpl:8
+#: themes/default/templates/customer/blocks/details_workorder_block.tpl:45
+msgid "Scope"
+msgstr ""
+
+#: themes/default/templates/customer/blocks/details_workorder_block.tpl:10
+#: themes/default/templates/customer/blocks/details_workorder_block.tpl:47
+msgid "Tech"
+msgstr ""
+
+#: themes/default/templates/customer/blocks/details_workorder_block.tpl:22
+#: themes/default/templates/customer/blocks/details_workorder_block.tpl:59
+#: themes/default/templates/customer/edit.tpl:89
+#: themes/default/templates/customer/new.tpl:91
+#: themes/default/templates/customer/search.tpl:84
+msgid "Work"
+msgstr ""
+
+#: themes/default/templates/customer/blocks/details_workorder_block.tpl:22
+#: themes/default/templates/customer/blocks/details_workorder_block.tpl:59
+#: themes/default/templates/customer/edit.tpl:93
+#: themes/default/templates/customer/new.tpl:95
+#: themes/default/templates/customer/search.tpl:84
+msgid "Mobile"
+msgstr ""
+
+#: themes/default/templates/customer/blocks/details_workorder_block.tpl:24
+#: themes/default/templates/customer/blocks/details_workorder_block.tpl:62
+msgid "Not Assigned"
+msgstr ""
+
+#: themes/default/templates/customer/blocks/details_workorder_block.tpl:29
+#: themes/default/templates/customer/blocks/details_workorder_block.tpl:67
+msgid "Print"
+msgstr ""
+
+#: themes/default/templates/customer/blocks/details_workorder_block.tpl:32
+#: themes/default/templates/customer/blocks/details_workorder_block.tpl:70
+msgid "View Work Order"
+msgstr ""
+
+#: themes/default/templates/customer/blocks/details_workorder_block.tpl:39
+msgid "Closed Work Orders"
+msgstr ""
+
+#: themes/default/templates/customer/details.tpl:8
+msgid "Works Orders"
+msgstr ""
+
+#: themes/default/templates/customer/edit.tpl:12
+msgid "CUSTOMER_EDIT_HELP_TITLE"
+msgstr ""
+
+#: themes/default/templates/customer/edit.tpl:12
+msgid "CUSTOMER_EDIT_HELP_CONTENT"
+msgstr ""
+
+#: themes/default/templates/customer/edit.tpl:31
+#: themes/default/templates/customer/new.tpl:32
+#: themes/default/templates/customer/search.tpl:30
+#: themes/default/templates/customer/search.tpl:66
+msgid "Display Name"
+msgstr ""
+
+#: themes/default/templates/customer/edit.tpl:35
+#: themes/default/templates/customer/new.tpl:36
+#: themes/default/templates/customer/search.tpl:67
+msgid "First Name"
+msgstr ""
+
+#: themes/default/templates/customer/edit.tpl:38
+#: themes/default/templates/customer/new.tpl:40
+#: themes/default/templates/customer/search.tpl:68
+msgid "Last Name"
+msgstr ""
+
+#: themes/default/templates/customer/edit.tpl:54
+#: themes/default/templates/customer/new.tpl:56
+#: themes/default/templates/customer/search.tpl:70
+msgid "Type"
+msgstr ""
+
+#: themes/default/templates/customer/new.tpl:10
+msgid "Add Customer"
+msgstr ""
+
+#: themes/default/templates/customer/new.tpl:13
+msgid "CUSTOMER_NEW_HELP_TITLE"
+msgstr ""
+
+#: themes/default/templates/customer/new.tpl:13
+msgid "CUSTOMER_NEW_HELP_CONTENT"
+msgstr ""
+
+#: themes/default/templates/customer/note_edit.tpl:15
+msgid "Edit Comments"
+msgstr ""
+
+#: themes/default/templates/customer/note_edit.tpl:18
+msgid "WORKORDER_DETAILS_EDIT_HELP_TITLE"
+msgstr ""
+
+#: themes/default/templates/customer/note_edit.tpl:18
+msgid "WORKORDER_DETAILS_EDIT_HELP_CONTENT"
+msgstr ""
+
+#: themes/default/templates/customer/note_edit.tpl:28
+msgid "Edit Customer Note"
+msgstr ""
+
+#: themes/default/templates/customer/note_edit.tpl:41
+msgid "Note"
+msgstr ""
+
+#: themes/default/templates/customer/note_edit.tpl:45
+msgid "Submit"
+msgstr ""
+
+#: themes/default/templates/customer/note_new.tpl:12
+msgid "CUSTOMER_NOTE_NEW_HELP_TITLE"
+msgstr ""
+
+#: themes/default/templates/customer/note_new.tpl:12
+msgid "CUSTOMER_NOTE_NEW_HELP_CONTENT"
+msgstr ""
+
+#: themes/default/templates/customer/search.tpl:7
+msgid "main_title"
+msgstr ""
+
+#: themes/default/templates/customer/search.tpl:11
+msgid "CUSTOMER_SEARCH_HELP_TITLE"
+msgstr ""
+
+#: themes/default/templates/customer/search.tpl:11
+msgid "CUSTOMER_SEARCH_HELP_CONTENT"
+msgstr ""
+
+#: themes/default/templates/customer/search.tpl:27
+msgid "NO special characters like !@#$%^*()"
+msgstr ""
+
+#: themes/default/templates/customer/search.tpl:48
+msgid "page"
+msgstr ""
+
+#: themes/default/templates/customer/search.tpl:48
+#: themes/default/templates/customer/search.tpl:50
+msgid "of"
+msgstr ""
+
+#: themes/default/templates/customer/search.tpl:57
+msgid "records found."
+msgstr ""
+
+#: themes/default/templates/customer/search.tpl:77
+msgid "View Customer Details"
+msgstr ""
+
+#: themes/default/templates/customer/search.tpl:78
+msgid "New Work Order"
+msgstr ""
+
+#: themes/default/templates/customer/search.tpl:79
+msgid "New Invoice Only"
 msgstr ""

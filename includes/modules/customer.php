@@ -29,6 +29,8 @@ defined('_QWEXEC') or die;
 #####################################
 
 function display_customers($db, $status = 'all', $direction = 'DESC', $use_pages = false, $page_no = 1, $records_per_page = 25, $search_type = null, $search_term = null) {
+    
+    global $smarty;
 
     /* Filter the Records */
     

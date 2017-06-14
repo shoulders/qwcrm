@@ -4,7 +4,7 @@
         <td>
             <img src="{$company_logo}" alt="">            
             <hr>
-            <font size="+1">{$translate_core_404_error_message}</font>            
+            <font size="+1">{t}404 - The requested page was not found on our system.{/t}</font>            
             <p>&nbsp;</p>
             <p>&nbsp;</p>
             <p>&nbsp;</p>

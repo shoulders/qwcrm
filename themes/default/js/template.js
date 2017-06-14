@@ -1,9 +1,10 @@
+
 // Tabs
-$(document).ready(function(){
+$(document).ready(function() {
 
     // Set up a listener so that when anything with a class of 'tab'
     // is clicked, this function is run.
-    $(".tab").click(function(){
+    $(".tab").click(function() {
 
         // Remove the 'active' class from the active tab.
         $("#tabs_container > .tabs > li.active").removeClass("active");
@@ -17,8 +18,8 @@ $(document).ready(function(){
         // Add the 'tab_contents_active' class to the associated tab contents.
         $(this.rel).addClass("tab_contents_active");
 
-    });
-});
+    } );
+} );
 
 /* - not used globally yet - use this to add later like below
  * 

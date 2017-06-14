@@ -4,10 +4,10 @@
         <td>
             <table width="700" cellpadding="4" cellspacing="0" border="0" >
                 <tr>
-                    <td class="menuhead2" width="80%">&nbsp;&nbsp;{$translate_supplier_search_title}</td>
+                    <td class="menuhead2" width="80%">&nbsp;&nbsp;{t}Supplier Search{/t}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
                         <a>
-                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{$translate_supplier_search_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_supplier_search_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();">
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}SUPPLIER_SEARCH_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}SUPPLIER_SEARCH_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
                         </a>
                     </td>
                 </tr>
@@ -23,27 +23,27 @@
                                                 <form method="post" action="index.php?page=supplier:search" name="supplier_search" id="supplier_search" autocomplete="off">                                                        
                                                     <table border="0">
                                                         <tr>
-                                                            <td align="left" valign="top"><b>{$translate_supplier_search}</b>
+                                                            <td align="left" valign="top"><b>{t}Supplier Search{/t}</b>
                                                                 <br />
                                                                 <select class="olotd5" id="search_category" name="search_category">
-                                                                    <option value="id"{if $search_category == 'id'} selected{/if}>{$translate_supplier_id}</option>
-                                                                    <option value="name"{if $search_category == 'name'} selected{/if}>{$translate_supplier_name}</option>
-                                                                    <option value="contact"{if $search_category == 'contact'} selected{/if}>{$translate_supplier_contact}</option>
-                                                                    <option value="type"{if $search_category == 'type'} selected{/if}>{$translate_supplier_type}</option>
-                                                                    <option value="zip"{if $search_category == 'zip'} selected{/if}>{$translate_supplier_zip}</option>
-                                                                    <option value="notes"{if $search_category == 'notes'} selected{/if}>{$translate_supplier_notes}</option>
-                                                                    <option value="description"{if $search_category == 'description'} selected{/if}>{$translate_supplier_description}</option>
+                                                                    <option value="id"{if $search_category == 'id'} selected{/if}>{t}Supplier ID{/t}</option>
+                                                                    <option value="name"{if $search_category == 'name'} selected{/if}>{t}Name{/t}</option>
+                                                                    <option value="contact"{if $search_category == 'contact'} selected{/if}>{t}Contact{/t}</option>
+                                                                    <option value="type"{if $search_category == 'type'} selected{/if}>{t}Type{/t}</option>
+                                                                    <option value="zip"{if $search_category == 'zip'} selected{/if}>{t}Zip{/t}</option>
+                                                                    <option value="notes"{if $search_category == 'notes'} selected{/if}>{t}Notes{/t}</option>
+                                                                    <option value="description"{if $search_category == 'description'} selected{/if}>{t}Description{/t}</option>
                                                                 </select>
                                                                 <br />
-                                                                <b>{$translate_supplier_for}</b>
+                                                                <b>{t}for{/t}</b>
                                                                 <br />
                                                                 <input name="search_term" class="olotd4" value="{$search_term}" type="text" maxlength="20" required onkeydown="return onlyAlphaNumeric(event);" />
-                                                                <input name="submit" class="olotd4" value="{$translate_supplier_search_button}" type="submit" />
-                                                                <input type="button" class="olotd4" value="{$translate_supplier_reset_button}" onclick="window.location.href='index.php?page=supplier:search';">
+                                                                <input name="submit" class="olotd4" value="{t}Search{/t}" type="submit" />
+                                                                <input type="button" class="olotd4" value="{t}Reset{/t}" onclick="window.location.href='index.php?page=supplier:search';">
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td><font color="red">{$translate_supplier_search_criteria_warning}</font></td>
+                                                            <td><font color="red">{t}NO special characters like !@#$%^*(){/t}</font></td>
                                                         </tr>
                                                     </table>                                                        
                                                 </form>                                          
@@ -66,11 +66,11 @@
                                                                 <select id="changeThisPage" onChange="changePage();">
                                                                     {section name=page loop=$total_pages start=1}
                                                                         <option value="index.php?page=supplier:search&search_category={$search_category}&search_term={$search_term}&page_no={$smarty.section.page.index}" {if $page_no == $smarty.section.page.index } Selected {/if}>
-                                                                            {$translate_workorder_page} {$smarty.section.page.index} {$translate_workorder_of} {$total_pages} 
+                                                                            {t}Page{/t} {$smarty.section.page.index} {t}of{/t} {$total_pages} 
                                                                         </option>
                                                                     {/section}
                                                                     <option value="index.php?page=supplier:search&search_category={$search_category}&search_term={$search_term}&page_no={$total_pages}" {if $page_no == $total_pages} selected {/if}>
-                                                                        {$translate_workorder_page} {$total_pages} {$translate_workorder_of} {$total_pages}
+                                                                        {t}Page{/t} {$total_pages} {t}of{/t} {$total_pages}
                                                                     </option>
                                                                 </select>
                                                             </td>
@@ -87,7 +87,7 @@
                                                             <!-- Page Number Display -->
                                                             <td></td>
                                                             <td>
-                                                                <p style="text-align: center;">{$total_results} {$translate_records_found}.</p>
+                                                                <p style="text-align: center;">{$total_results} {t}records found.{/t}</p>
                                                             </td>
                                                             
                                                         </tr>                                                    
@@ -101,13 +101,13 @@
                                             <td valign="top" colspan="2">
                                                 <table class="olotable" width="100%" border="0" cellpadding="5" cellspacing="0">                                                    
                                                     <tr>
-                                                        <td class="olohead">{$translate_supplier_id}</td>
-                                                        <td class="olohead">{$translate_supplier_name}</td>
-                                                        <td class="olohead">{$translate_supplier_contact}</td>
-                                                        <td class="olohead">{$translate_supplier_type}</td>
-                                                        <td class="olohead">{$translate_supplier_notes}</td>
-                                                        <td class="olohead">{$translate_supplier_description}</td>
-                                                        <td class="olohead">{$translate_action}</td>
+                                                        <td class="olohead">{t}Supplier ID{/t}</td>
+                                                        <td class="olohead">{t}Name{/t}</td>
+                                                        <td class="olohead">{t}Contact{/t}</td>
+                                                        <td class="olohead">{t}Type{/t}</td>
+                                                        <td class="olohead">{t}Notes{/t}</td>
+                                                        <td class="olohead">{t}Description{/t}</td>
+                                                        <td class="olohead">{t}Action{/t}</td>
                                                     </tr>                                                    
                                                     {section name=i loop=$search_result}
                                                         <!-- This allows double clicking on a row and opens the corresponding supplier view details -->
@@ -116,31 +116,31 @@
                                                             <td class="olotd4" nowrap>{$search_result[i].SUPPLIER_NAME}</td>                                                            
                                                             <td class="olotd4" nowrap>{$search_result[i].SUPPLIER_CONTACT}</td>                                                            
                                                             <td class="olotd4" nowrap>
-                                                                {if $search_result[i].SUPPLIER_TYPE ==1}{$translate_supplier_type_1}{/if}
-                                                                {if $search_result[i].SUPPLIER_TYPE ==2}{$translate_supplier_type_2}{/if}
-                                                                {if $search_result[i].SUPPLIER_TYPE ==3}{$translate_supplier_type_3}{/if}
-                                                                {if $search_result[i].SUPPLIER_TYPE ==4}{$translate_supplier_type_4}{/if}
-                                                                {if $search_result[i].SUPPLIER_TYPE ==5}{$translate_supplier_type_5}{/if}
-                                                                {if $search_result[i].SUPPLIER_TYPE ==6}{$translate_supplier_type_6}{/if}
-                                                                {if $search_result[i].SUPPLIER_TYPE ==7}{$translate_supplier_type_7}{/if}
-                                                                {if $search_result[i].SUPPLIER_TYPE ==8}{$translate_supplier_type_8}{/if}
-                                                                {if $search_result[i].SUPPLIER_TYPE ==9}{$translate_supplier_type_9}{/if}
-                                                                {if $search_result[i].SUPPLIER_TYPE ==10}{$translate_supplier_type_10}{/if}
-                                                                {if $search_result[i].SUPPLIER_TYPE ==11}{$translate_supplier_type_11}{/if}
+                                                                {if $search_result[i].SUPPLIER_TYPE ==1}{t}SUPPLIER_TYPE_1{/t}{/if}
+                                                                {if $search_result[i].SUPPLIER_TYPE ==2}{t}SUPPLIER_TYPE_2{/t}{/if}
+                                                                {if $search_result[i].SUPPLIER_TYPE ==3}{t}SUPPLIER_TYPE_3{/t}{/if}
+                                                                {if $search_result[i].SUPPLIER_TYPE ==4}{t}SUPPLIER_TYPE_4{/t}{/if}
+                                                                {if $search_result[i].SUPPLIER_TYPE ==5}{t}SUPPLIER_TYPE_5{/t}{/if}
+                                                                {if $search_result[i].SUPPLIER_TYPE ==6}{t}SUPPLIER_TYPE_6{/t}{/if}
+                                                                {if $search_result[i].SUPPLIER_TYPE ==7}{t}SUPPLIER_TYPE_7{/t}{/if}
+                                                                {if $search_result[i].SUPPLIER_TYPE ==8}{t}SUPPLIER_TYPE_8{/t}{/if}
+                                                                {if $search_result[i].SUPPLIER_TYPE ==9}{t}SUPPLIER_TYPE_9{/t}{/if}
+                                                                {if $search_result[i].SUPPLIER_TYPE ==10}{t}SUPPLIER_TYPE_10{/t}{/if}
+                                                                {if $search_result[i].SUPPLIER_TYPE ==11}{t}SUPPLIER_TYPE_11{/t}{/if}
                                                             </td>
                                                             <td class="olotd4" nowrap>{if !$search_result[i].SUPPLIER_NOTES == ""}
-                                                                <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{$translate_supplier_notes}</b><hr><p>{$search_result[i].SUPPLIER_NOTES|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();">{/if}
+                                                                <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{t}Notes{/t}</b><hr><p>{$search_result[i].SUPPLIER_NOTES|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();">{/if}
                                                             </td>                                                            
-                                                            <td class="olotd4" nowrap><img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{$translate_supplier_description}</b><hr><p>{$search_result[i].SUPPLIER_DESCRIPTION|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();"></td>                                                            
+                                                            <td class="olotd4" nowrap><img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{t}Description{/t}</b><hr><p>{$search_result[i].SUPPLIER_DESCRIPTION|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();"></td>                                                            
                                                             <td class="olotd4" nowrap>
                                                                 <a href="index.php?page=supplier:details&supplier_id={$search_result[i].SUPPLIER_ID}">
-                                                                    <img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" onMouseOver="ddrivetip('<b>{$translate_supplier_search_details|nl2br|regex_replace:"/[\r\t\n]/":" "}</b>');" onMouseOut="hideddrivetip();">
+                                                                    <img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" onMouseOver="ddrivetip('<b>{t}View Supplier Details{/t}</b>') onMouseOut="hideddrivetip();">
                                                                 </a>
                                                                 <a href="index.php?page=supplier:edit&supplier_id={$search_result[i].SUPPLIER_ID}">
-                                                                    <img src="{$theme_images_dir}icons/16x16/small_edit.gif" alt=""  border="0" onMouseOver="ddrivetip('<b>{$translate_supplier_search_edit_details|nl2br|regex_replace:"/[\r\t\n]/":" "}</b>');" onMouseOut="hideddrivetip();">
+                                                                    <img src="{$theme_images_dir}icons/16x16/small_edit.gif" alt=""  border="0" onMouseOver="ddrivetip('<b>{t}Edit Supplier Details{/t}</b>');" onMouseOut="hideddrivetip();">
                                                                 </a>
-                                                                <a href="index.php?page=supplier:delete&supplier_id={$search_result[i].SUPPLIER_ID}" onclick="return confirmDelete('{$translate_supplier_delete_mes_confirmation}');">
-                                                                    <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{$translate_supplier_search_delete_record|nl2br|regex_replace:"/[\r\t\n]/":" "}</b>');" onMouseOut="hideddrivetip();">
+                                                                <a href="index.php?page=supplier:delete&supplier_id={$search_result[i].SUPPLIER_ID}" onclick="return confirmDelete('{t}Are you Sure you want to delete this Supplier Record? This will permanently remove the record from the database.{/t}');">
+                                                                    <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{t}Delete Supplier Record{/t}</b>');" onMouseOut="hideddrivetip();">
                                                                 </a>
                                                             </td>
                                                         </tr>

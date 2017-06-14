@@ -4,13 +4,13 @@
         <td>            
             <table width="100%" cellpadding="4" cellspacing="0" border="0" >
                 <tr>
-                    <td class="menuhead2" width="80%">{$translate_supplier_details_title}</td>
+                    <td class="menuhead2" width="80%">{t}Supplier Details{/t}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
                         <a href="index.php?page=supplier:edit&supplier_id={$supplier_details.SUPPLIER_ID}">
-                            <img src="{$theme_images_dir}icons/edit.gif"  alt="" height="16" border="0">{$translate_supplier_details_edit}
+                            <img src="{$theme_images_dir}icons/edit.gif"  alt="" height="16" border="0">{t}Edit{/t}
                         </a>&nbsp;
                         <a>
-                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{$translate_supplier_details_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_supplier_details_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();">
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}SUPPLIER_DETAILS_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}SUPPLIER_DETAILS_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
                         </a>
                     </td>
                 </tr>
@@ -24,67 +24,67 @@
                                             <td class="olohead" colspan="4">
                                                 <table width="100%" cellpadding="0" cellspacing="0" border="0">
                                                     <tr>
-                                                        <td class="menuhead2">&nbsp;{$translate_supplier_id} {$supplier_details.SUPPLIER_ID}</td>
+                                                        <td class="menuhead2">&nbsp;{t}Supplier ID{/t} {$supplier_details.SUPPLIER_ID}</td>
                                                     </tr>
                                                 </table>
                                             </td>
                                         </tr>                                        
                                         <tr>
-                                            <td class="menutd"><b>{$translate_supplier_name}</b></td>
+                                            <td class="menutd"><b>{t}Name{/t}</b></td>
                                             <td class="menutd">{$supplier_details.SUPPLIER_NAME}</td>
-                                            <td class="menutd"><b>{$translate_supplier_phone}</b></td>
+                                            <td class="menutd"><b>{t}Phone{/t}</b></td>
                                             <td class="menutd">{$supplier_details.SUPPLIER_PHONE}</td>
                                         </tr>                                        
                                         <tr>
-                                            <td class="menutd"><b>{$translate_supplier_contact}</b></td>
+                                            <td class="menutd"><b>{t}Contact{/t}</b></td>
                                             <td class="menutd" >{$supplier_details.SUPPLIER_CONTACT}</td>
-                                            <td class="menutd" ><b>{$translate_supplier_fax}</b></td>
+                                            <td class="menutd" ><b>{t}Fax{/t}</b></td>
                                             <td class="menutd">{$supplier_details.SUPPLIER_FAX}</td>
                                         </tr>                                      
                                         <tr>
-                                            <td class="menutd"><b>{$translate_supplier_type}</b></td>
+                                            <td class="menutd"><b>{t}Type{/t}</b></td>
                                             <td class="menutd">
-                                                {if $supplier_details.SUPPLIER_TYPE ==1}{$translate_supplier_type_1}{/if}
-                                                {if $supplier_details.SUPPLIER_TYPE ==2}{$translate_supplier_type_2}{/if}
-                                                {if $supplier_details.SUPPLIER_TYPE ==3}{$translate_supplier_type_3}{/if}
-                                                {if $supplier_details.SUPPLIER_TYPE ==4}{$translate_supplier_type_4}{/if}
-                                                {if $supplier_details.SUPPLIER_TYPE ==5}{$translate_supplier_type_5}{/if}
-                                                {if $supplier_details.SUPPLIER_TYPE ==6}{$translate_supplier_type_6}{/if}
-                                                {if $supplier_details.SUPPLIER_TYPE ==7}{$translate_supplier_type_7}{/if}
-                                                {if $supplier_details.SUPPLIER_TYPE ==8}{$translate_supplier_type_8}{/if}
-                                                {if $supplier_details.SUPPLIER_TYPE ==9}{$translate_supplier_type_9}{/if}
-                                                {if $supplier_details.SUPPLIER_TYPE ==10}{$translate_supplier_type_10}{/if}
-                                                {if $supplier_details.SUPPLIER_TYPE ==11}{$translate_supplier_type_11}{/if}
+                                                {if $supplier_details.SUPPLIER_TYPE ==1}{t}SUPPLIER_TYPE_1{/t}{/if}
+                                                {if $supplier_details.SUPPLIER_TYPE ==2}{t}SUPPLIER_TYPE_2{/t}{/if}
+                                                {if $supplier_details.SUPPLIER_TYPE ==3}{t}SUPPLIER_TYPE_3{/t}{/if}
+                                                {if $supplier_details.SUPPLIER_TYPE ==4}{t}SUPPLIER_TYPE_4{/t}{/if}
+                                                {if $supplier_details.SUPPLIER_TYPE ==5}{t}SUPPLIER_TYPE_5{/t}{/if}
+                                                {if $supplier_details.SUPPLIER_TYPE ==6}{t}SUPPLIER_TYPE_6{/t}{/if}
+                                                {if $supplier_details.SUPPLIER_TYPE ==7}{t}SUPPLIER_TYPE_7{/t}{/if}
+                                                {if $supplier_details.SUPPLIER_TYPE ==8}{t}SUPPLIER_TYPE_8{/t}{/if}
+                                                {if $supplier_details.SUPPLIER_TYPE ==9}{t}SUPPLIER_TYPE_9{/t}{/if}
+                                                {if $supplier_details.SUPPLIER_TYPE ==10}{t}SUPPLIER_TYPE_10{/t}{/if}
+                                                {if $supplier_details.SUPPLIER_TYPE ==11}{t}SUPPLIER_TYPE_11{/t}{/if}
                                             </td>
-                                            <td class="menutd"><b>{$translate_supplier_mobile}</b></td>
+                                            <td class="menutd"><b>{t}Mobile{/t}</b></td>
                                             <td class="menutd">{$supplier_details.SUPPLIER_MOBILE}</td>
                                         </tr>                                    
                                         <tr>
-                                            <td class="menutd"><b>{$translate_supplier_www}</b></td>
+                                            <td class="menutd"><b>{t}Website{/t}</b></td>
                                             <td class="menutd"><a href="http://{$supplier_details.SUPPLIER_WWW}" target="_blank">{$supplier_details.SUPPLIER_WWW}</a></td>
-                                            <td class="menutd"><b>{$translate_supplier_email}</b></td>
+                                            <td class="menutd"><b>{t}Email{/t}</b></td>
                                             <td class="menutd"><a href="mailto: {$supplier_details.SUPPLIER_EMAIL}">{$supplier_details.SUPPLIER_EMAIL}</a></td>
                                         </tr>
                                         <tr class="row2">
                                             <td class="menutd" colspan="4"></td>
                                         </tr>                                      
                                         <tr>
-                                            <td class="menutd"><b>{$translate_supplier_address}</b></td>
+                                            <td class="menutd"><b>{t}Address{/t}</b></td>
                                             <td class="menutd">{$supplier_details.SUPPLIER_ADDRESS|nl2br}</td>
                                             <td class="menutd" colspan="2"></td>
                                         </tr>                                      
                                         <tr>
-                                            <td class="menutd"><b>{$translate_supplier_city}</b></td>
+                                            <td class="menutd"><b>{t}City{/t}</b></td>
                                             <td class="menutd">{$supplier_details.SUPPLIER_CITY}</td>
                                             <td class="menutd" colspan="2"></td>
                                         </tr>                                       
                                         <tr>
-                                            <td class="menutd"><b>{$translate_supplier_state}</b></td>
+                                            <td class="menutd"><b>{t}State{/t}</b></td>
                                             <td class="menutd">{$supplier_details.SUPPLIER_STATE}</td>
                                             <td class="menutd" colspan="2"></td>
                                         </tr>                                    
                                         <tr>
-                                            <td class="menutd"><b>{$translate_supplier_zip}</b></td>
+                                            <td class="menutd"><b>{t}Zip{/t}</b></td>
                                             <td class="menutd">{$supplier_details.SUPPLIER_ZIP}</td>
                                             <td class="menutd" colspan="2"></td>
                                         </tr>
@@ -92,7 +92,7 @@
                                             <td class="menutd" colspan="4"></td>
                                         </tr>                                       
                                         <tr>
-                                            <td class="menutd"><b>{$translate_supplier_notes}</b></td>
+                                            <td class="menutd"><b>{t}Notes{/t}</b></td>
                                             <td class="menutd" colspan="3"></td>
                                         </tr>
                                         <tr>
@@ -103,7 +103,7 @@
                                             <td class="menutd" colspan="4"></td>
                                         </tr>                                          
                                         <tr>
-                                            <td class="menutd"><b>{$translate_supplier_description}</b></td>
+                                            <td class="menutd"><b>{t}Description{/t}</b></td>
                                             <td class="menutd" colspan="3"></td>
                                         </tr>
                                         <tr>

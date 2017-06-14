@@ -12,23 +12,24 @@
         <td>
             <table width="100%" cellpadding="4" cellspacing="0" border="0">
                 <tr>
-                    <td class="menuhead2" width="80%">&nbsp;{$translate_payment_new_gift} {$customer_id}</td>
-                    <td class="menuhead2" width="20%" align="right" valign="middle"></td>
+                    <td class="menuhead2" width="80%">&nbsp;{t}New Gift Certificate for{/t} {$customer_id}</td>
+                    <td class="menuhead2" width="20%" align="right" valign="middle">
+                        <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}GIFTCERT_SEARCH_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}GIFTCERT_SEARCH_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
+                    </td>
                 </tr>
                 <tr>
                     <td class="olotd5" colspan="2">     
                         <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
                             <tr>
-                                <td class="olotd4">
-                                    {$translate_payment_gift_note_3} {$customer_name} {$translate_payment_gift_note_4}
+                                <td class="olotd4">                                    
                                     <form method="post" action="index.php?page=giftcert:new&customer_id={$customer_id}" name="gift" id="gift">
                                         <table>
                                             <tr>
-                                                <td><b>{$translate_payment_customer_name}</b></td>
+                                                <td><b>{t}Customer Name{/t}</b></td>
                                                 <td>{$customer_id}</td>
                                             </tr>
                                             <tr>
-                                                <td><b>{$translate_payment_exp}</b></td>
+                                                <td><b>{t}Expires<{/t}</b></td>
                                                 <td>
                                                     <input class="olotd5" size="10" name="date_expires" type="text" id="date_expires" class="olotd4"/>
                                                     <input type="button" id="date_expires_button" value="+">
@@ -42,11 +43,11 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td><b>{$translate_payment_amount}</b></td>
+                                                <td><b>{t}Amount{/t}</b></td>
                                                 <td>{$currency_sym}<input type="text" name="amount" class="olotd5" size="6" ></td>
                                             </tr>
                                             <tr>
-                                                <td colspan="2"><b>{$translate_payment_note}:</b></td>
+                                                <td colspan="2"><b>{t}Note{/t}:</b></td>
                                             </tr>
                                             <tr>
                                                 <td colspan="2"><textarea class="olotd5" rows="15" cols="70" name="note"></textarea></td>

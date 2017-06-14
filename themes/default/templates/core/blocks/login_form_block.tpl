@@ -10,7 +10,7 @@
         <td>       
             <table class="olotable" border="0" align="center" style="margin: 20px;">
                 <tr>
-                    <td class="olohead"> {$translate_core_login_login}</td>
+                    <td class="olohead">{t}Login{/t}</td>
                 </tr>
                 <tr>
                     <td class="olotd">
@@ -20,21 +20,21 @@
                                     <form action="index.php" method="POST">
                                         <table width="25%" cellspacing="0" border="0" cellpadding="5" align="center">
                                             <tr>
-                                                <td>{$translate_core_login_login}</td>
+                                                <td>{t}Login{/t}</td>
                                                 <td><input name="login_usr" class="olotd5" size="25" alt="login" type="text" required onkeydown="return onlyUsername(event);"></td>
                                             </tr>
                                             <tr>
-                                                <td>{$translate_core_login_password}</td>
+                                                <td>{t}Password{/t}</td>
                                                 <td><input name="login_pwd" class="olotd5" size="25" alt="password" type="password" required onkeydown="return onlyPassword(event);"></td>
                                             </tr>
                                             {if $remember_me}
                                                 <tr>
-                                                    <td>{gettext("Remember me")}</td>
+                                                    <td>{t}Remember me{/t}</td>
                                                     <td><input type="checkbox" name="remember" value="1"></td>                                                
                                                 </tr>
                                             {/if}
                                             <tr align="center">
-                                                <td colspan="2"><button id="login_button" type="submit" name="action" value="login"><img src="{$theme_images_dir}tick.png" alt=""> {$translate_core_login_login}</button></td>
+                                                <td colspan="2"><button id="login_button" type="submit" name="action" value="login"><img src="{$theme_images_dir}tick.png" alt=""> {t}Login{/t}</button></td>
                                             </tr>                            
 
                                             <!-- Information Message -->
@@ -53,7 +53,7 @@
 
                                             <!-- Forgotten Password -->
                                             <tr align="center">
-                                                <td colspan="2"><a href="index.php?page=user:password_reset">{$translate_core_login_forgot_your_password}</a></td>
+                                                <td colspan="2"><a href="index.php?page=user:password_reset">{t}Forgot your password?{/t}</a></td>
                                             </tr>
                                         </table>
                                         

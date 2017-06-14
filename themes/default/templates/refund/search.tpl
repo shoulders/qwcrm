@@ -4,10 +4,10 @@
         <td>
             <table width="700" cellpadding="4" cellspacing="0" border="0" >
                 <tr>
-                    <td class="menuhead2" width="80%">&nbsp;&nbsp;{$translate_refund_view_title}</td>
+                    <td class="menuhead2" width="80%">&nbsp;&nbsp;{t}Search Refunds{/t}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
                         <a>
-                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{$translate_refund_search_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_refund_search_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();">
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}REFUND_SEARCH_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}REFUND_SEARCH_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
                         </a>
                     </td>
                 </tr>
@@ -24,30 +24,30 @@
                                                     <div>                                                       
                                                         <table border="0">
                                                             <tr>
-                                                                <td align="left" valign="top"><b>{$translate_refund_search}</b>
+                                                                <td align="left" valign="top"><b>{t}refund_search{/t}</b>
                                                                     <br />
                                                                     <select class="olotd5" id="search_category" name="search_category">
-                                                                        <option value="id"{if $search_category == 'id'} selected{/if}>{$translate_refund_id}</option>
-                                                                        <option value="payee"{if $search_category == 'payee'} selected{/if}>{$translate_refund_payee}</option>
-                                                                        <option value="date"{if $search_category == 'date'} selected{/if}>{$translate_refund_date}</option>
-                                                                        <option value="type"{if $search_category == 'type'} selected{/if}>{$translate_refund_type}</option>
-                                                                        <option value="payment_amount"{if $search_category == 'payment_amount'} selected{/if}>{$translate_refund_payment_method}</option>
-                                                                        <option value="net_amount"{if $search_category == 'net_amount'} selected{/if}>{$translate_refund_net_amount}</option>
-                                                                        <option value="tax_rate"{if $search_category == 'tax_rate'} selected{/if}>{$translate_refund_tax_rate}</option>
-                                                                        <option value="tax_amount"{if $search_category == 'tax_amount'} selected{/if}>{$translate_refund_tax_amount}</option>
-                                                                        <option value="gross_amount"{if $search_category == 'gross_amount'} selected{/if}>{$translate_refund_gross_amount}</option>
-                                                                        <option value="notes"{if $search_category == 'notes'} selected{/if}>{$translate_refund_notes}</option>
-                                                                        <option value="items"{if $search_category == 'items'} selected{/if}>{$translate_refund_items}</option>
+                                                                        <option value="id"{if $search_category == 'id'} selected{/if}>{t}Refund ID{/t}</option>
+                                                                        <option value="payee"{if $search_category == 'payee'} selected{/if}>{t}Payee{/t}</option>
+                                                                        <option value="date"{if $search_category == 'date'} selected{/if}>{t}Date{/t}</option>
+                                                                        <option value="type"{if $search_category == 'type'} selected{/if}>{t}Type{/t}</option>
+                                                                        <option value="payment_amount"{if $search_category == 'payment_amount'} selected{/if}>{t}Payment Method{/t}</option>
+                                                                        <option value="net_amount"{if $search_category == 'net_amount'} selected{/if}>{t}Net Amount{/t}</option>
+                                                                        <option value="tax_rate"{if $search_category == 'tax_rate'} selected{/if}>{t}Tax Rate{/t}</option>
+                                                                        <option value="tax_amount"{if $search_category == 'tax_amount'} selected{/if}>{t}Tax Amount{/t}</option>
+                                                                        <option value="gross_amount"{if $search_category == 'gross_amount'} selected{/if}>{t}Gross Amount{/t}</option>
+                                                                        <option value="notes"{if $search_category == 'notes'} selected{/if}>{t}Notes{/t}</option>
+                                                                        <option value="items"{if $search_category == 'items'} selected{/if}>{t}Items{/t}</option>
                                                                     </select>
                                                                    <br />
-                                                                   <b>{$translate_refund_for}</b>
+                                                                   <b>{t}for{/t}</b>
                                                                    <br />
                                                                    <input class="olotd4" name="search_term" value="{$search_term}" type="text" maxlength="20" required onkeydown="return onlyAlphaNumeric(event);" />
-                                                                   <input class="olotd4" name="submit" value="{$translate_refund_search_button}" type="submit" />
-                                                                   <input class="olotd4" type="button" value="{$translate_refund_reset_button}" onclick="window.location.href='index.php?page=refund:search';" type="button">                                                                                      </td>
+                                                                   <input class="olotd4" name="submit" value="{t}Search{/t}" type="submit" />
+                                                                   <input class="olotd4" type="button" value="{t}Reset{/t}" onclick="window.location.href='index.php?page=refund:search';" type="button">                                                                                      </td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td><font color="red">{$translate_refund_search_criteria_warning}</font></td>
+                                                                    <td><font color="red">{t}NO special characters like !@#$%^*(){/t}</font></td>
                                                                 </tr>
                                                         </table>
                                                     </div>
@@ -71,11 +71,11 @@
                                                                 <select id="changeThisPage" onChange="changePage();">
                                                                     {section name=page loop=$total_pages start=1}
                                                                         <option value="index.php?page=refund:search&search_category={$search_category}&search_term={$search_term}&page_no={$smarty.section.page.index}" {if $page_no == $smarty.section.page.index } Selected {/if}>
-                                                                            {$translate_workorder_page} {$smarty.section.page.index} {$translate_workorder_of} {$total_pages} 
+                                                                            {t}Page{/t} {$smarty.section.page.index} {t}of{/t} {$total_pages} 
                                                                         </option>
                                                                     {/section}
                                                                     <option value="index.php?page=refund:search&search_category={$search_category}&search_term={$search_term}&page_no={$total_pages}" {if $page_no == $total_pages} selected {/if}>
-                                                                        {$translate_workorder_page} {$total_pages} {$translate_workorder_of} {$total_pages}
+                                                                        {t}Page{/t} {$total_pages} {t}of{/t} {$total_pages}
                                                                     </option>
                                                                 </select>
                                                             </td>
@@ -92,7 +92,7 @@
                                                             <!-- Page Number Display -->
                                                             <td></td>
                                                             <td>
-                                                                <p style="text-align: center;">{$total_results} {$translate_records_found}.</p>
+                                                                <p style="text-align: center;">{$total_results} {t}records found.{/t}</p>
                                                             </td>
                                                             
                                                         </tr>                                                    
@@ -106,18 +106,18 @@
                                                 <!-- Records Table -->
                                                 <table class="olotable" width="100%" border="0" cellpadding="5" cellspacing="0">
                                                     <tr>
-                                                        <td class="olohead">{$translate_refund_id}</td>
-                                                        <td class="olohead">{$translate_refund_payee}</td>
-                                                        <td class="olohead">{$translate_refund_date}</td>
-                                                        <td class="olohead">{$translate_refund_type}</td>
-                                                        <td class="olohead">{$translate_refund_payment_method}</td>
-                                                        <td class="olohead">{$translate_refund_net_amount}</td>
-                                                        <td class="olohead">{$translate_refund_tax_rate}</td>
-                                                        <td class="olohead">{$translate_refund_tax_amount}</td>
-                                                        <td class="olohead">{$translate_refund_gross_amount}</td>
-                                                        <td class="olohead">{$translate_refund_notes}</td>
-                                                        <td class="olohead">{$translate_refund_items}</td>
-                                                        <td class="olohead">{$translate_action}</td>
+                                                        <td class="olohead">{t}Refund ID{/t}</td>
+                                                        <td class="olohead">{t}Payee{/t}</td>
+                                                        <td class="olohead">{t}Date{/t}</td>
+                                                        <td class="olohead">{t}Type{/t}</td>
+                                                        <td class="olohead">{t}Payment Method{/t}</td>
+                                                        <td class="olohead">{t}Net Amount{/t}</td>
+                                                        <td class="olohead">{t}Tax Rate{/t}</td>
+                                                        <td class="olohead">{t}Tax Amount{/t}</td>
+                                                        <td class="olohead">{t}Gross Amount{/t}</td>
+                                                        <td class="olohead">{t}Notes{/t}</td>
+                                                        <td class="olohead">{t}Items{/t}</td>
+                                                        <td class="olohead">{t}Action{/t}</td>
                                                     </tr>
                                                     {section name=i loop=$search_result}                                                            
                                                         <!-- This allows double clicking on a row and opens the corresponding refund view details -->
@@ -126,40 +126,40 @@
                                                             <td class="olotd4" nowrap>{$search_result[i].REFUND_PAYEE}</td>                                                                
                                                             <td class="olotd4" nowrap>{$search_result[i].REFUND_DATE|date_format:$date_format}</td>                                                                
                                                             <td class="olotd4" nowrap>
-                                                                {if $search_result[i].REFUND_TYPE ==1}{$translate_refund_type_1}{/if}
-                                                                {if $search_result[i].REFUND_TYPE ==2}{$translate_refund_type_2}{/if}
-                                                                {if $search_result[i].REFUND_TYPE ==3}{$translate_refund_type_3}{/if}
-                                                                {if $search_result[i].REFUND_TYPE ==4}{$translate_refund_type_4}{/if}
-                                                                {if $search_result[i].REFUND_TYPE ==5}{$translate_refund_type_5}{/if}
+                                                                {if $search_result[i].REFUND_TYPE ==1}{t}REFUND_TYPE_1{/t}{/if}
+                                                                {if $search_result[i].REFUND_TYPE ==2}{t}REFUND_TYPE_2{/t}{/if}
+                                                                {if $search_result[i].REFUND_TYPE ==3}{t}REFUND_TYPE_3{/t}{/if}
+                                                                {if $search_result[i].REFUND_TYPE ==4}{t}REFUND_TYPE_4{/t}{/if}
+                                                                {if $search_result[i].REFUND_TYPE ==5}{t}REFUND_TYPE_5{/t}{/if}
                                                             </td>                                                                
                                                             <td class="olotd4" nowrap>
-                                                                {if $search_result[i].REFUND_PAYMENT_METHOD ==1}{$translate_refund_payment_method_1}{/if}
-                                                                {if $search_result[i].REFUND_PAYMENT_METHOD ==2}{$translate_refund_payment_method_2}{/if}
-                                                                {if $search_result[i].REFUND_PAYMENT_METHOD ==3}{$translate_refund_payment_method_3}{/if}
-                                                                {if $search_result[i].REFUND_PAYMENT_METHOD ==4}{$translate_refund_payment_method_4}{/if}
-                                                                {if $search_result[i].REFUND_PAYMENT_METHOD ==5}{$translate_refund_payment_method_5}{/if}
-                                                                {if $search_result[i].REFUND_PAYMENT_METHOD ==6}{$translate_refund_payment_method_6}{/if}
-                                                                {if $search_result[i].REFUND_PAYMENT_METHOD ==7}{$translate_refund_payment_method_7}{/if}
-                                                                {if $search_result[i].REFUND_PAYMENT_METHOD ==8}{$translate_refund_payment_method_8}{/if}
-                                                                {if $search_result[i].REFUND_PAYMENT_METHOD ==9}{$translate_refund_payment_method_9}{/if}
-                                                                {if $search_result[i].REFUND_PAYMENT_METHOD ==10}{$translate_refund_payment_method_10}{/if}
-                                                                {if $search_result[i].REFUND_PAYMENT_METHOD ==11}{$translate_refund_payment_method_11}{/if}
+                                                                {if $search_result[i].REFUND_PAYMENT_METHOD ==1}{t}REFUND_PAYMENT_METHOD_1{/t}{/if}
+                                                                {if $search_result[i].REFUND_PAYMENT_METHOD ==2}{t}REFUND_PAYMENT_METHOD_2{/t}{/if}
+                                                                {if $search_result[i].REFUND_PAYMENT_METHOD ==3}{t}REFUND_PAYMENT_METHOD_3{/t}{/if}
+                                                                {if $search_result[i].REFUND_PAYMENT_METHOD ==4}{t}REFUND_PAYMENT_METHOD_4{/t}{/if}
+                                                                {if $search_result[i].REFUND_PAYMENT_METHOD ==5}{t}REFUND_PAYMENT_METHOD_5{/t}{/if}
+                                                                {if $search_result[i].REFUND_PAYMENT_METHOD ==6}{t}REFUND_PAYMENT_METHOD_6{/t}{/if}
+                                                                {if $search_result[i].REFUND_PAYMENT_METHOD ==7}{t}REFUND_PAYMENT_METHOD_7{/t}{/if}
+                                                                {if $search_result[i].REFUND_PAYMENT_METHOD ==8}{t}REFUND_PAYMENT_METHOD_8{/t}{/if}
+                                                                {if $search_result[i].REFUND_PAYMENT_METHOD ==9}{t}REFUND_PAYMENT_METHOD_9{/t}{/if}
+                                                                {if $search_result[i].REFUND_PAYMENT_METHOD ==10}{t}REFUND_PAYMENT_METHOD_10{/t}{/if}
+                                                                {if $search_result[i].REFUND_PAYMENT_METHOD ==11}{t}REFUND_PAYMENT_METHOD_11{/t}{/if}
                                                             </td>                                                                
                                                             <td class="olotd4" nowrap>{$currency_sym} {$search_result[i].REFUND_NET_AMOUNT}</td>                                                               
                                                             <td class="olotd4" nowrap>{$search_result[i].REFUND_TAX_RATE} %</td>                                                                
                                                             <td class="olotd4" nowrap>{$currency_sym} {$search_result[i].REFUND_TAX_AMOUNT}</td>                                                            
                                                             <td class="olotd4" nowrap>{$currency_sym} {$search_result[i].REFUND_GROSS_AMOUNT}</td>                                                                
-                                                            <td class="olotd4" nowrap>{if $search_result[i].REFUND_NOTES != ''}<img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{$translate_refund_notes}</b><hr><p>{$search_result[i].REFUND_NOTES|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();">{/if}</td>                                                            
-                                                            <td class="olotd4" nowrap><img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{$translate_refund_items}</b><hr><p>{$search_result[i].REFUND_ITEMS|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();"></td>                                                                
+                                                            <td class="olotd4" nowrap>{if $search_result[i].REFUND_NOTES != ''}<img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{t}Notes{/t}</b><hr><p>{$search_result[i].REFUND_NOTES|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();">{/if}</td>                                                            
+                                                            <td class="olotd4" nowrap><img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{t}Items{/t}</b><hr><p>{$search_result[i].REFUND_ITEMS|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();"></td>                                                                
                                                             <td class="olotd4" nowrap>
                                                                 <a href="index.php?page=refund:details&refund_id={$search_result[i].REFUND_ID}">
-                                                                    <img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" onMouseOver="ddrivetip('<b>{$translate_refund_search_details|nl2br|regex_replace:"/[\r\t\n]/":" "}</b>');" onMouseOut="hideddrivetip();">
+                                                                    <img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" onMouseOver="ddrivetip('<b>{t}View Refund Details{/t}') onMouseOut="hideddrivetip();">
                                                                 </a>
                                                                 <a href="index.php?page=refund:edit&refund_id={$search_result[i].REFUND_ID}">
-                                                                    <img src="{$theme_images_dir}icons/16x16/small_edit.gif" alt=""  border="0" onMouseOver="ddrivetip('<b>{$translate_refund_search_edit_details|nl2br|regex_replace:"/[\r\t\n]/":" "}</b>');" onMouseOut="hideddrivetip();">
+                                                                    <img src="{$theme_images_dir}icons/16x16/small_edit.gif" alt=""  border="0" onMouseOver="ddrivetip('<b>{t}Edit Refund Details{/t}</b>');" onMouseOut="hideddrivetip();">
                                                                 </a>
-                                                                <a href="index.php?page=refund:delete&refund_id={$search_result[i].REFUND_ID}" onclick="return confirmDelete('{$translate_refund_delete_mes_confirmation}');">
-                                                                    <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{$translate_refund_search_delete_record|nl2br|regex_replace:"/[\r\t\n]/":" "}</b>');" onMouseOut="hideddrivetip();">
+                                                                <a href="index.php?page=refund:delete&refund_id={$search_result[i].REFUND_ID}" onclick="return confirmDelete('{t}Are you Sure you want to delete this Refund Record? This will permanently remove the record from the database.{/t}');">
+                                                                    <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{t}Delete Refund Record{/t}</b>');" onMouseOut="hideddrivetip();">
                                                                 </a>
                                                             </td>
                                                         </tr>

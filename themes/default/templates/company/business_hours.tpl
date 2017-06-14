@@ -2,38 +2,42 @@
 <table width="100%" border="0" cellpadding="20" cellspacing="0">
     <tr>
         <td>
-            <table width="700" cellpadding="5" cellspacing="0" border="0" >
+            <table width="700" cellpadding="5" cellspacing="0" border="0">
                 <tr>
-                    <td class="menuhead2" width="80%">&nbsp;Business Hours</td>
-                </tr>
+                    <td class="menuhead2" width="80%">&nbsp;{t}Business Hours{/t}</td>
+                    <td class="menuhead2" width="20%" align="right" valign="middle">
+                        <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}ADMINISTRATOR_BUSINESS_HOURS_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}ADMINISTRATOR_BUSINESS_HOURS_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
+                    </td>
+                </tr>                
                 <tr>
-                    <td class="menutd2" >
+                    <td class="menutd2">
                         <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0" >
-                        <tr>
-                            <td width="100%" valign="top" class="menutd">
-                                <form method="POST" action="index.php?page=company:business_hours">                                
-                                    <table>
-                                        <tr>
-                                            <td><b>Opening Time</b></td>
-                                            <td align="left">
-                                                {html_select_time use_24_hours=true minute_interval=15 display_seconds=false field_array=openingTime time=$opening_time}
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><b>Closing Time</b></td>
-                                            <td align="left">
-                                                {html_select_time use_24_hours=true minute_interval=15 display_seconds=false field_array=closingTime time=$closing_time}                                                    
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><input type="submit" name="submit" value="Submit"></td>
-                                        </tr>    
-                                    </table>
-                                    These settings are used to display the start and stop times of the schedule.                                                                
-                                </form>    
-                            </td>
-                        </tr>
-                    </table>
+                            <tr>
+                                <td width="100%" valign="top" class="menutd">
+                                    <form method="POST" action="index.php?page=company:business_hours">                                
+                                        <table>
+                                            <tr>
+                                                <td><b>{t}Opening Time{/t}</b></td>
+                                                <td align="left">
+                                                    {html_select_time use_24_hours=true minute_interval=15 display_seconds=false field_array=openingTime time=$opening_time}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><b>{t}Closing Time{/t}</b></td>
+                                                <td align="left">
+                                                    {html_select_time use_24_hours=true minute_interval=15 display_seconds=false field_array=closingTime time=$closing_time}                                                    
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><input type="submit" name="submit" value="Submit"></td>
+                                            </tr>    
+                                        </table>
+                                        {t}These settings are used to display the start and stop times of the schedule.{/t}
+                                    </form>    
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
                 </tr>
             </table>
         </td>

@@ -11,8 +11,8 @@
             <td class="olotd">
                 <table width="100%" cellpadding="4" cellspacing="0" border="0" >
                     <tr align="left">
-                        <td><b>{$translate_stats_report_from}: </b></td>
-                        <td><b>{$translate_stats_report_to}: </b></td>
+                        <td><b>{t}Report Date From{/t}: </b></td>
+                        <td><b>{t}Report Date To{/t}: </b></td>
                     </tr>
                     <tr>
                         <td align="left">
@@ -42,7 +42,7 @@
             </td>
         </tr>
         <tr>
-            <td align="center"><input type="submit" name="submit" value="{$translate_stats_submit}"></td>
+            <td align="center"><input type="submit" name="submit" value="{t}stats_submit{/t}"></td>
         </tr>
     </table>
     <table width="650px" class="olotable"  border="0" cellpadding="4" cellspacing="0">
@@ -50,9 +50,9 @@
             <td class="olotd">
                 <table width="100%" cellpadding="4" cellspacing="0" border="0" >
                     <tr>
-                        <td class="menuhead2" width="100%">&nbsp;{$translate_stats_basic_statistics}
-                            <a style="float:right;">
-                                <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{$translate_stats_basic_statistics_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_stats_basic_statistics_help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();">
+                        <td class="menuhead2" width="100%">&nbsp;{t}Basic Statisitics{/t}
+                            <a style="float:right;">                                
+                                <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}REPORT_FINANCIAL_BASIC_STATS_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}REPORT_FINANCIAL_BASIC_STATS_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
                             </a>
                         </td>
                     </tr>
@@ -60,16 +60,16 @@
                         <td class="olotd5" colspan="2">
                             <table width="100%"class="olotable"  border="0" cellpadding="5" cellspacing="0">
                                 <tr>
-                                    <td class="olohead">{$translate_stats_customers}</td>
-                                    <td class="olohead">{$translate_stats_work_orders}</td>
-                                    <td class="olohead">{$translate_stats_invoices}</td>
-                                    <td class="olohead">{$translate_stats_revenue_gross}</td>
+                                    <td class="olohead">{t}Custoemrs{/t}</td>
+                                    <td class="olohead">{t}Work Orders{/t}</td>
+                                    <td class="olohead">{t}Invoices{/t}</td>
+                                    <td class="olohead">{t}Revenue (Gross){/t}</td>
                                 </tr>
                                 <tr>
                                     <td class="olotd4" valign="top">
                                         <table>
                                             <tr>
-                                                <td><b>{$translate_stats_new}:</b></td>
+                                                <td><b>{t}New{/t}:</b></td>
                                                 <td><font color="red"<b> {$new_customers}</b></font></td>
                                             </tr>
                                         </table>
@@ -77,11 +77,11 @@
                                     <td class="olotd4" valign="top">
                                         <table >
                                             <tr>
-                                                <td><b>{$translate_stats_opened}:</b></td>
+                                                <td><b>{t}Opened{/t}:</b></td>
                                                 <td><font color="red"<b> {$wo_opened}</b></font></td>
                                             </tr>
                                             <tr>
-                                                <td><b>{$translate_stats_closed}:</b></td>
+                                                <td><b>{t}Closed{/t}:</b></td>
                                                 <td><font color="red"<b> {$wo_closed}</b></font></td>
                                             </tr>
                                         </table>
@@ -89,11 +89,11 @@
                                     <td class="olotd4" valign="top">
                                         <table>
                                             <tr>
-                                                <td><b>{$translate_stats_new}:</b></td>
+                                                <td><b>{t}New{/t}:</b></td>
                                                 <td><font color="red"<b> {$new_invoices}</b></font></td>
                                             </tr>
                                             <tr>
-                                                <td><b>{$translate_stats_paid}:</b></td>
+                                                <td><b>{t}Paid{/t}:</b></td>
                                                 <td><font color="red"<b> {$paid_invoices}</b></font></td>
                                             </tr>
                                         </table>
@@ -101,19 +101,19 @@
                                     <td class="olotd4" valign="top">
                                         <table>
                                             <tr>
-                                                <td><b>{$translate_stats_total_invoiced}:</b></td>
+                                                <td><b>{t}Total Invoiced{/t}:</b></td>
                                                 <td><font color="red"<b>{$currency_sym}{$invoice_amount_sum|string_format:"%.2f"}</b></font></td>
                                             </tr>
                                             <tr>
-                                                <td><b>{$translate_stats_total_expenses}:</b></td>
+                                                <td><b>{t}Total Expenses{/t}:</b></td>
                                                 <td><font color="red"<b>{$currency_sym}{$expense_gross_amount_sum|string_format:"%.2f"}</b></font></td>
                                             </tr>
                                             <tr>
-                                                <td> <b>{$translate_stats_total_refunds}:</b></td>
+                                                <td> <b>{t}Total Refunds{/t}:</b></td>
                                                 <td><font color="red"<b>{$currency_sym}{$refund_gross_amount_sum|string_format:"%.2f"}</b></font></td>
                                             </tr>
                                             <tr>
-                                                <td><b>{$translate_stats_taxable_profit}:</b></td>
+                                                <td><b>{t}Taxable Profit{/t}:</b></td>
                                                 <td><font color="red"<b>{$currency_sym}{$taxable_profit_amount|string_format:"%.2f"}</b></font></td>
                                             </tr>
                                         </table>
@@ -127,16 +127,16 @@
         </tr>
     </table>
     <br />
-    <div style="width: 65%; text-align: center;">Taxable Profit = Invoiced - (Expenses - Refunds)</div>
+    <div style="width: 65%; text-align: center;">{t}Taxable Profit = Invoiced - (Expenses - Refunds){/t}</div>
     <br />
     <table width="650px" class="olotable"  border="0" cellpadding="4" cellspacing="0">
         <tr>
             <td class="olotd">
                 <table width="100%" cellpadding="4" cellspacing="0" border="0" >
                     <tr>
-                        <td class="menuhead2" width="100%">&nbsp;{$translate_stats_advanced_statistics}
-                            <a style="float:right;">
-                                <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{$translate_stats_advanced_statistics_help_title|nl2br|regex_replace:"/[\r\t\n]/":" "}</b><hr><p>{$translate_stats_advanced_statistics__help_content|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();">
+                        <td class="menuhead2" width="100%">&nbsp;{t}Advanced Statistics{/t}
+                            <a style="float:right;">                                
+                                <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}REPORT_FINANCIAL_ADVANCED_STATS_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}REPORT_FINANCIAL_ADVANCED_STATS_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
                             </a>
                         </td>
                     </tr>
@@ -144,25 +144,25 @@
                         <td class="olotd5" colspan="2">
                             <table width="100%"class="olotable"  border="0" cellpadding="5" cellspacing="0">
                                 <tr>
-                                    <td class="olohead">Parts</td>
-                                    <td class="olohead">Labour</td>
-                                    <td class="olohead">Expenses</td>
-                                    <td class="olohead">Refunds</td>
-                                    <td class="olohead">Invoices</td>
+                                    <td class="olohead">{t}Parts{/t}</td>
+                                    <td class="olohead">{t}Labour{/t}</td>
+                                    <td class="olohead">{t}Expenses{/t}</td>
+                                    <td class="olohead">{t}Refunds{/t}</td>
+                                    <td class="olohead">{t}Invoices{/t}</td>
                                 </tr>
                                 <tr>
                                     <td class="olotd4" valign="top">
                                         <table>
                                             <tr>
-                                                <td><b>Items:</b></td>
+                                                <td><b>{t}Items{/t}:</b></td>
                                                 <td><font color="red"<b> {$parts_different_items_count}</b></font></td>
                                             </tr>
                                             <tr>
-                                                <td><b>Qty:</b></td>
+                                                <td><b>{t}Qty{/t}:</b></td>
                                                 <td><font color="red"<b> {$parts_items_sum}</b></font></td>
                                             </tr>
                                             <tr>
-                                                <td><b>Sub:</b></td>
+                                                <td><b>{t}Sub{/t}:</b></td>
                                                 <td><font color="red"<b>{$currency_sym}{$parts_sub_total_sum|string_format:"%.2f"}</b></font></td>
                                             </tr>
                                         </table>
@@ -170,15 +170,15 @@
                                     <td class="olotd4" valign="top">
                                         <table>
                                             <tr>
-                                                <td><b>Items:</b></td>
+                                                <td><b>{t}Items{/t}:</b></td>
                                                 <td><font color="red"<b> {$labour_different_items_count}</b></font></td>
                                             </tr>
                                             <tr>
-                                                <td><b>Qty:</b></td>
+                                                <td><b>{t}Qty{/t}:</b></td>
                                                 <td><font color="red"<b>{$labour_items_sum}</b></font></td>
                                             </tr>
                                             <tr>
-                                                <td><b>Sub:</b></td>
+                                                <td><b>{t}Sub{/t}:</b></td>
                                                 <td><font color="red"<b>{$currency_sym}{$labour_sub_total_sum|string_format:"%.2f"}</b></font></td>
                                             </tr>
                                         </table>
@@ -186,15 +186,15 @@
                                     <td class="olotd4" valign="top">
                                         <table>
                                             <tr>
-                                                <td><b>Net:</b></td>
+                                                <td><b>{t}Net{/t}:</b></td>
                                                 <td><font color="red"<b>{$currency_sym}{$expense_net_amount_sum|string_format:"%.2f"}</b></font></td>
                                             </tr>
                                             <tr>
-                                                <td><b>Tax:</b></td>
+                                                <td><b>{t}Tax{/t}:</b></td>
                                                 <td><font color="red"<b>{$currency_sym}{$expense_tax_amount_sum|string_format:"%.2f"}</b></font></td>
                                             </tr>
                                             <tr>
-                                                <td><b>Gross:</b></td>
+                                                <td><b>{t}Gross{/t}:</b></td>
                                                 <td><font color="red"<b>{$currency_sym}{$expense_gross_amount_sum|string_format:"%.2f"}</b></font></td>
                                             </tr>
                                         </table>
@@ -202,15 +202,15 @@
                                     <td class="olotd4" valign="top">
                                         <table>
                                             <tr>
-                                                <td><b>Net:</b></td>
+                                                <td><b>{t}Net{/t}:</b></td>
                                                 <td><font color="red"<b>{$currency_sym}{$refund_net_amount_sum|string_format:"%.2f"}</b></font></td>
                                             </tr>
                                             <tr>
-                                                <td><b>Tax:</b></td>
+                                                <td><b>{t}Tax{/t}:</b></td>
                                                 <td><font color="red"<b>{$currency_sym}{$refund_tax_amount_sum|string_format:"%.2f"}</b></font></td>
                                             </tr>
                                             <tr>
-                                                <td><b>Gross:</b></td>
+                                                <td><b>{t}Gross{/t}:</b></td>
                                                 <td><font color="red"<b>{$currency_sym}{$refund_gross_amount_sum|string_format:"%.2f"}</b></font></td>
                                             </tr>
                                         </table>
@@ -218,19 +218,19 @@
                                     <td class="olotd4" valign="top">
                                         <table>
                                             <tr>
-                                                <td><b>Sub:</b></td>
+                                                <td><b>{t}Sub{/t}:</b></td>
                                                 <td><font color="red"<b>{$currency_sym}{$invoice_sub_total_sum|string_format:"%.2f"}</b></font></td>
                                             </tr>
                                             <tr>
-                                                <td><b>Discount:</b></td>
+                                                <td><b>{t}Discount{/t}:</b></td>
                                                 <td><font color="red"<b>{$currency_sym}{$invoice_discount_sum|string_format:"%.2f"}</b></font></td>
                                             </tr>                                            
                                             <tr>
-                                                <td><b>Tax:</b></td>
+                                                <td><b>{t}Tax{/t}:</b></td>
                                                 <td><font color="red"<b>{$currency_sym}{$invoice_tax_sum|string_format:"%.2f"}</b></font></td>
                                             </tr>
                                             <tr>
-                                                <td><b>Gross:</b></td>
+                                                <td><b>{t}Gross{/t}:</b></td>
                                                 <td><font color="red"<b>{$currency_sym}{$invoice_amount_sum|string_format:"%.2f"}</b></font></td>
                                             </tr>
                                         </table>

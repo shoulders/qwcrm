@@ -11,10 +11,12 @@
     <tr>
         <td>
             <table width="700" cellpadding="4" cellspacing="0" border="0">
-                <tr>
-                    <td class="menuhead2" width="80%">&nbsp;{$translate_schedule_new}</td>
-                    <td class="menuhead2" width="10%" align="right"></td>
-                </tr>
+                 <tr>
+                    <td class="menuhead2" width="80%">&nbsp;{t}Edit Schedule{/t}</td>
+                    <td class="menuhead2" width="20%" align="right" valign="middle">                        
+                        <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}SCHEDULE_EDIT_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}SCHEDULE_EDIT_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
+                    </td>
+                </tr>                
                 <tr>
                     <td class="menutd2" colspan="2">
                         <table class="olotable" width="100%" border="0" cellpadding="5" cellspacing="0">
@@ -26,14 +28,14 @@
                                                 <form method="POST" action="index.php?page=schedule:edit&schedule_id={$schedule_id}">                                                                                                       
                                                     <table class="olotable" width="100%" border="0">
                                                         <tr>
-                                                            <td class="olohead">{$translate_schedule_set}</td>
+                                                            <td class="olohead">{t}Set Schedule{/t}</td>
                                                         </tr>
                                                         <tr>
                                                             <td class="olotd">
                                                                 <table width="100%" cellpadding="5" cellspacing="5">
                                                                     <tr>                                                                        
                                                                         <td>
-                                                                            <p><b>Assigned Employee</b></p>
+                                                                            <p><b>{t}Assigned Employee{/t}</b></p>
                                                                             {if $login_account_type_id <= 3 }                                                                                
                                                                                 <select name="employee_id">
                                                                                     {section name=i loop=$active_employees}
@@ -47,8 +49,8 @@
                                                                         <td></td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td><b>{$translate_schedule_start}</b></td>
-                                                                        <td><b>{$translate_schedule_end}</b></td>
+                                                                        <td><b>{t}Start Time{/t}</b></td>
+                                                                        <td><b>{t}end Time{/t}</b></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td>
@@ -79,7 +81,7 @@
                                                                     
                                                                     <tr>
                                                                         <td colspan="2">
-                                                                            <b>{$translate_schedule_notes}</b>
+                                                                            <b>{t}Notes{/t}</b>
                                                                             <br>
                                                                             <textarea name="schedule_notes" class="olotd5 mceCheckForContent" rows="15" cols="70">{$schedule_notes}</textarea>
                                                                         </td>
@@ -88,7 +90,7 @@
                                                                         <td colspan="2">
                                                                             <input type="hidden" name="customer_id" value="{$customer_id}"> 
                                                                             <input type="hidden" name="workorder_id" value="{$workorder_id}"> 
-                                                                            <input type="submit" name="submit" value="{$translate_schedule_submit}">
+                                                                            <input type="submit" name="submit" value="{t}Submit{/t}">
                                                                         </td>
                                                                     </tr>
                                                                 </table>

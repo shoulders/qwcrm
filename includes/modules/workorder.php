@@ -465,7 +465,7 @@ function update_workorder_comments($db, $workorder_id, $workorder_comments){
             WHERE WORK_ORDER_ID             =".$db->qstr( $workorder_id         );
 
     if(!$rs = $db->execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext(""));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update a Work Order Comments"));
         exit;
     } else {
         

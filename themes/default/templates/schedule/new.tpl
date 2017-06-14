@@ -12,9 +12,11 @@
         <td>
             <table width="700" cellpadding="4" cellspacing="0" border="0">
                 <tr>
-                    <td class="menuhead2" width="80%">&nbsp;{$translate_schedule_new}</td>
-                    <td class="menuhead2" width="10%" align="right"></td>
-                </tr>
+                    <td class="menuhead2" width="80%">&nbsp;{t}New Schedule{/t}</td>
+                    <td class="menuhead2" width="20%" align="right" valign="middle">                        
+                        <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}SCHEDULE_NEW_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}SCHEDULE_NEW_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
+                    </td>
+                </tr>                
                 <tr>
                     <td class="menutd2" colspan="2">
                         <table class="olotable" width="100%" border="0" cellpadding="5" cellspacing="0">
@@ -28,14 +30,14 @@
                                                     <input type="hidden" name="employee_id" value="{$employee_id}">
                                                     <table class="olotable" width="100%" border="0">
                                                         <tr>
-                                                            <td class="olohead">{$translate_schedule_set}</td>
+                                                            <td class="olohead">{t}Set Schedule{/t}</td>
                                                         </tr>
                                                         <tr>
                                                             <td class="olotd">
                                                                 <table width="100%" cellpadding="5" cellspacing="5">                                          
                                                                     <tr>
-                                                                        <td><b>{$translate_schedule_start}</b></td>
-                                                                        <td><b>{$translate_schedule_end}</b></td>
+                                                                        <td><b>{t}Start Time{/t}</b></td>
+                                                                        <td><b>{t}End Time{/t}</b></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td>
@@ -65,14 +67,14 @@
                                                                     </tr>
                                                                     <tr>
                                                                         <td colspan="2">
-                                                                            <b>{$translate_schedule_notes}</b>
+                                                                            <b>{t}Notes{/t}</b>
                                                                             <br>
                                                                             <textarea name="schedule_notes" class="olotd5 mceCheckForContent" rows="15" cols="70">{$schedule_notes}</textarea>
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td colspan="2">                                                                                
-                                                                            <input type="submit" name="submit" value="{$translate_schedule_submit}">
+                                                                            <input type="submit" name="submit" value="{t}Submit{/t}">
                                                                         </td>
                                                                     </tr>
                                                                 </table>

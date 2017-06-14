@@ -1,12 +1,12 @@
 <!-- new_invoice_details_block.tpl -->
 <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
     <tr class="olotd4">
-        <td class="menuhead2"><b>{$translate_payment_invoice_id}</b></td>
-        <td class="menuhead2"><b>{$translate_payment_date}</b></td>
-        <td class="menuhead2"><b>{$translate_payment_due_date}</b></td>
-        <td class="menuhead2"><b>{$translate_payment_amount}</b></td>
-        <td class="menuhead2"><b>{$translate_payment_workorder_id}</b></td>
-        <td class="menuhead2"><b>{$translate_payment_balance}</b></td>
+        <td class="menuhead2"><b>{t}Invoice Id{/t}</b></td>
+        <td class="menuhead2"><b>{t}Date{/t}</b></td>
+        <td class="menuhead2"><b>{t}Due Date{/t}</b></td>
+        <td class="menuhead2"><b>{t}Amount{/t}</b></td>
+        <td class="menuhead2"><b>{t}Work Order ID{/t}</b></td>
+        <td class="menuhead2"><b>{t}Balance{/t}</b></td>
     </tr>
     <tr>        
         <td>{$invoice_id}</td>
@@ -31,10 +31,10 @@
                     </td>
                 </tr>
                 <tr>
-                    <td><b>{$translate_payment_email}</b> {$customer_details.CUSTOMER_EMAIL}</td>
+                    <td><b>{t}Email{/t}</b> {$customer_details.CUSTOMER_EMAIL}</td>
                 </tr>
                 <tr>
-                    <td><b>{$translate_payment_phone}</b> {$customer_details.CUSTOMER_PHONE}</td>
+                    <td><b>{t}Phone{/t}</b> {$customer_details.CUSTOMER_PHONE}</td>
             </table>
             {assign var="customer_id" value=$customer_details.CUSTOMER_ID}                
         </td>

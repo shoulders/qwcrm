@@ -4,9 +4,9 @@
         <td>
             <table width="700" cellpadding="4" cellspacing="0" border="0" >
                 <tr>
-                    <td class="menuhead2" width="80%">&nbsp;{$translate_employee_search}</td>
-                    <td class="menuhead2" width="20%" align="right" valign="middle">
-                        <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<b>Employee Search</b><hr><p>You can search by the employees full display name or just their first name. If you wish to see all the employees for just one letter like A enter the letter a only.</p> <p>To find employees whos name starts with Ja enter just ja. The system will intelegently look for the corect employee that matches.</p>');" onMouseOut="hideddrivetip();">
+                    <td class="menuhead2" width="80%">&nbsp;{t}Employee Search{/t}</td>
+                    <td class="menuhead2" width="20%" align="right" valign="middle">                        
+                        <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}EMPLOYEE_SEARCH_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}EMPLOYEE_SEARCH_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
                     </td>
                 </tr>
                 <tr>
@@ -22,17 +22,17 @@
                                                 <form method="post" action="index.php?page=employee:search">                                                
                                                     <table border="0">
                                                         <tr>
-                                                            <td colspan="2"><font color="red">{$translate_employee_display_name_criteria}</font></td>
+                                                            <td colspan="2"><font color="red">{t}NO special characters like !@#$%^*(){/t}</font></td>
                                                         </tr>                                                     
                                                         <tr>
-                                                            <td align="right" valign="top"><b>{$translate_employee_display_name}</b></td>
+                                                            <td align="right" valign="top"><b>{t}Display Name{/t}</b></td>
                                                             <td valign="top" align="left"><input name="search_term" value="{$search_term}" class="olotd4" size="20" type="text" maxlength="20" required onkeydown="return onlyAlphaNumeric(event);"></td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right" valign="top"></td>
                                                             <td valign="top" align="left">
                                                                 <input class="olotd4" name="submit" value="submit" type="submit" />
-                                                                <input class="olotd4" type="button" value="{$translate_refund_reset_button}" onclick="window.location.href='index.php?page=employee:search';">
+                                                                <input class="olotd4" type="button" value="{t}Reset{/t}" onclick="window.location.href='index.php?page=employee:search';">
                                                             </td>
                                                         </tr>
                                                     </table>
@@ -56,11 +56,11 @@
                                                                 <select id="changeThisPage" onChange="changePage();">
                                                                     {section name=page loop=$total_pages start=1}
                                                                         <option value="index.php?page=employee:search&search_category={$search_category}&search_term={$search_term}&page_no={$smarty.section.page.index}" {if $page_no == $smarty.section.page.index } Selected {/if}>
-                                                                            {$translate_workorder_page} {$smarty.section.page.index} {$translate_workorder_of} {$total_pages} 
+                                                                            {t}Page{/t} {$smarty.section.page.index} {t}of{/t} {$total_pages} 
                                                                         </option>
                                                                     {/section}
                                                                     <option value="index.php?page=employee:search&search_category={$search_category}&search_term={$search_term}&page_no={$total_pages}" {if $page_no == $total_pages} selected {/if}>
-                                                                        {$translate_workorder_page} {$total_pages} {$translate_workorder_of} {$total_pages}
+                                                                        {t}Page{/t} {$total_pages} {t}of{/t} {$total_pages}
                                                                     </option>
                                                                 </select>
                                                             </td>
@@ -77,7 +77,7 @@
                                                             <!-- Page Number Display -->
                                                             <td></td>
                                                             <td>
-                                                                <p style="text-align: center;">{$total_results} {$translate_records_found}.</p>
+                                                                <p style="text-align: center;">{$total_results} {t}records found.{/t}</p>
                                                             </td>
                                                             
                                                         </tr>                                                    
@@ -92,14 +92,14 @@
                                             <td valign="top" colspan="2">
                                                 <table class="olotable" width="100%" cellpadding="5" celspacing="0" border="0" summary="Work order display">
                                                     <tr>
-                                                        <td class="olohead">{$translate_employee_id}</td>
-                                                        <td class="olohead">{$translate_employee_display}</td>
-                                                        <td class="olohead">{$translate_employee_first}</td>
-                                                        <td class="olohead">{$translate_employee_last}</td>
-                                                        <td class="olohead">{$translate_employee_work_phone}</td>
-                                                        <td class="olohead">{$translate_employee_type}</td>
-                                                        <td class="olohead">{$translate_employee_email}</td>
-                                                        <td class="olohead">{$translate_employee_action}</td>
+                                                        <td class="olohead">{t}ID{/t}</td>
+                                                        <td class="olohead">{t}Display Name{/t}</td>
+                                                        <td class="olohead">{t}First Name{/t}</td>
+                                                        <td class="olohead">{t}Last Name{/t}</td>
+                                                        <td class="olohead">{t}Work Phone{/t}</td>
+                                                        <td class="olohead">{t}Type{/t}</td>
+                                                        <td class="olohead">{t}Email{/t}</td>
+                                                        <td class="olohead">{t}Action{/t}</td>
                                                     </tr>
                                                     {section name=i loop=$search_result}
                                                         <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=employee:details&employee_id={$search_result[i].EMPLOYEE_ID}';" class="row1">
@@ -111,12 +111,12 @@
                                                             <td class="olotd4">{$search_result[i].EMPLOYEE_FIRST_NAME}</td>
                                                             <td class="olotd4">{$search_result[i].EMPLOYEE_LAST_NAME}</td>
                                                             <td class="olotd4">
-                                                                <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<b>{$translate_employee_home} </b>{$search_result[i].EMPLOYEE_HOME_PHONE}<br><b>{$translate_employee_mobile} </b>{$search_result[i].EMPLOYEE_MOBILE_PHONE}');" onMouseOut="hideddrivetip();">
+                                                                <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<b>{t}Home{/t} </b>{$search_result[i].EMPLOYEE_HOME_PHONE}<br><b>{t}Mobile{/t} </b>{$search_result[i].EMPLOYEE_MOBILE_PHONE}');" onMouseOut="hideddrivetip();">
                                                                 {$search_result[i].EMPLOYEE_WORK_PHONE}
                                                             </td>
                                                             <td class="olotd4">{$search_result[i].TYPE_NAME}</td>
                                                             <td class="olotd4"><a href="mailto: {$search_result[i].EMPLOYEE_EMAIL}"><font class="blueLink">{$search_result[i].EMPLOYEE_EMAIL}</font></a></td>
-                                                            <td class="olotd4"><a href="index.php?page=employee:details&employee_id={$search_result[i].EMPLOYEE_ID}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif"  border="0" onMouseOver="ddrivetip('View Employees Details');" onMouseOut="hideddrivetip();"></a>&nbsp;<a href="index.php?page=employee:edit&employee_id={$search_result[i].EMPLOYEE_ID}"><img src="{$theme_images_dir}icons/16x16/small_edit_employee.gif" border="0" onMouseOver="ddrivetip('Edit');" onMouseOut="hideddrivetip();"></a></td>                                                        
+                                                            <td class="olotd4"><a href="index.php?page=employee:details&employee_id={$search_result[i].EMPLOYEE_ID}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif"  border="0" onMouseOver="ddrivetip('{t}View Employees Details{/t}');" onMouseOut="hideddrivetip();"></a>&nbsp;<a href="index.php?page=employee:edit&employee_id={$search_result[i].EMPLOYEE_ID}"><img src="{$theme_images_dir}icons/16x16/small_edit_employee.gif" border="0" onMouseOver="ddrivetip('{t}Edit{/t}');" onMouseOut="hideddrivetip();"></a></td>                                                        
                                                         </tr>
                                                     {/section}
                                                 </table>

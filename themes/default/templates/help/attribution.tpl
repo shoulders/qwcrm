@@ -1,6 +1,5 @@
 <!-- attribution.tpl -->
-<p>This page will show the used software, their version and where i got them from. This will should cover any attributions that are needed or a particular license</p>
-<p>This also assumes you are usign the default template.</p>
+<p>This page will show the used software, their version and where i got them from. This will should cover any attributions that are needed or a particular license.</p>
 <ul>
     <li><strong>Name and version | License | URL | What it does?</strong></li>
     <li>TinyMCE - Version 4.5.0 (2016-11-23) | LGPL v2.1 (or later)</li>

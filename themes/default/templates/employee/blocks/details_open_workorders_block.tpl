@@ -1,32 +1,32 @@
 <!-- details_open_workorders_block.tpl -->
 <table class="olotable" width="100%" border="0" cellpadding="5">
     <tr>
-        <td class="olohead">{$translate_employee_workorder_id}</td>
-        <td class="olohead">{$translate_employee_date_open}</td>
-        <td class="olohead">{$translate_employee_customer}</td>
-        <td class="olohead">{$translate_employee_scope}</td>
-        <td class="olohead">{$translate_employee_status}</td>
-        <td class="olohead">Action</td>
+        <td class="olohead">{t}WO ID{/t}</td>
+        <td class="olohead">{t}Date Opened{/t}</td>
+        <td class="olohead">{t}Customer{/t}</td>
+        <td class="olohead">{t}Scope{/t}</td>
+        <td class="olohead">{t}Status{/t}</td>
+        <td class="olohead">{t}Action{/t}</td>
     </tr>
     {section name=a loop=$open_workorders}
         <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=workorder:details&workorder_id={$open_workorders[a].WORK_ORDER_ID}';" class="row1">
             <td class="olotd4"><a href="index.php?page=workorder:details&workorder_id={$open_workorders[a].WORK_ORDER_ID}">{$open_workorders[a].WORK_ORDER_ID}</a></td>
             <td class="olotd4">{$open_workorders[a].WORK_ORDER_OPEN_DATE|date_format:$date_format}</td>
-            <td class="olotd4"><img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<center><b>Customer Contact</b><hr></center><b>Home: </b>{$open_workorders[a].CUSTOMER_PHONE}<br><b>Work: </b>{$open_workorders[a].CUSTOMER_WORK_PHONE}<br><b>Mobile: </b>{$open_workorders[a].CUSTOMER_MOBILE_PHONE}');"onMouseOut="hideddrivetip();">{$open_workorders[a].CUSTOMER_DISPLAY_NAME}</td>                                                        
-            <td class="olotd4"><img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<center><b> Description</b><hr></center>{$open_workorders[a].WORK_ORDER_DESCRIPTION}');" onMouseOut="hideddrivetip();">{$open_workorders[a].WORK_ORDER_SCOPE}</td>
+            <td class="olotd4"><img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<center><b>Customer Contact</b><hr></center><b>Home: </b>{$open_workorders[a].CUSTOMER_PHONE}<br><b>{t}Work{/t}: </b>{$open_workorders[a].CUSTOMER_WORK_PHONE}<br><b>{t}Mobile{/t}: </b>{$open_workorders[a].CUSTOMER_MOBILE_PHONE}');"onMouseOut="hideddrivetip();">{$open_workorders[a].CUSTOMER_DISPLAY_NAME}</td>                                                        
+            <td class="olotd4"><img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<center><b>{t}Description{/t}</b><hr></center>{$open_workorders[a].WORK_ORDER_DESCRIPTION}');" onMouseOut="hideddrivetip();">{$open_workorders[a].WORK_ORDER_SCOPE}</td>
             <td class="olotd4">
-                {if $open_workorders[a].WORK_ORDER_STATUS == '1'}{$translate_workorder_created}{/if}
-                {if $open_workorders[a].WORK_ORDER_STATUS == '2'}{$translate_workorder_assigned}{/if}
-                {if $open_workorders[a].WORK_ORDER_STATUS == '3'}{$translate_workorder_waiting_for_parts}{/if}
-                {if $open_workorders[a].WORK_ORDER_STATUS == '6'}{$translate_workorder_closed}{/if}
-                {if $open_workorders[a].WORK_ORDER_STATUS == '7'}{$translate_workorder_waiting_for_payment}{/if}
-                {if $open_workorders[a].WORK_ORDER_STATUS == '8'}{$translate_workorder_payment_made}{/if}
-                {if $open_workorders[a].WORK_ORDER_STATUS == '9'}{$translate_workorder_pending}{/if}
-                {if $open_workorders[a].WORK_ORDER_STATUS == '10'}{$translate_workorder_open}{/if}           
+                {if $open_workorders[a].WORK_ORDER_STATUS == '1'}{t}Created{/t}{/if}
+                {if $open_workorders[a].WORK_ORDER_STATUS == '2'}{t}Assigned{/t}{/if}
+                {if $open_workorders[a].WORK_ORDER_STATUS == '3'}{t}Waiting For Parts{/t}{/if}
+                {if $open_workorders[a].WORK_ORDER_STATUS == '6'}{t}Closed{/t}{/if}
+                {if $open_workorders[a].WORK_ORDER_STATUS == '7'}{t}Waiting For Payment<{/t}{/if}
+                {if $open_workorders[a].WORK_ORDER_STATUS == '8'}{t}Payment Made{/t}{/if}
+                {if $open_workorders[a].WORK_ORDER_STATUS == '9'}{t}Pending{/t}{/if}
+                {if $open_workorders[a].WORK_ORDER_STATUS == '10'}{t}Open{/t}{/if}           
             </td>            
             <td class="olotd4" align="center">
-                <a href="index.php?page=workorder:print&workorder_id={$open_workorders[a].WORK_ORDER_ID}&customer_id={$open_workorders[a].CUSTOMER_ID}&theme=off" target="new"><img src="{$theme_images_dir}icons/16x16/fileprint.gif" border="0" onMouseOver="ddrivetip('Print The Work Order');" onMouseOut="hideddrivetip();"></a>
-                <a href="index.php?page=workorder:details&workorder_id={$open_workorders[a].WORK_ORDER_ID}&customer_id={$open_workorders[a].CUSTOMER_ID}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif"  border="0" onMouseOver="ddrivetip('View The Work Order');" onMouseOut="hideddrivetip();"></a>
+                <a href="index.php?page=workorder:print&workorder_id={$open_workorders[a].WORK_ORDER_ID}&customer_id={$open_workorders[a].CUSTOMER_ID}&theme=off" target="new"><img src="{$theme_images_dir}icons/16x16/fileprint.gif" border="0" onMouseOver="ddrivetip('{t}Print The Work Order{/t}');" onMouseOut="hideddrivetip();"></a>
+                <a href="index.php?page=workorder:details&workorder_id={$open_workorders[a].WORK_ORDER_ID}&customer_id={$open_workorders[a].CUSTOMER_ID}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif"  border="0" onMouseOver="ddrivetip('{t}View The Work Order{/t}');" onMouseOut="hideddrivetip();"></a>
             </td>
         </tr>
     {/section}
