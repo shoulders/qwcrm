@@ -32,7 +32,7 @@
 </table>
 <br>
 <br>
-<b>{t}Paid Invoices<{/t}</b>
+<b>{t}Paid Invoices{/t}</b>
 <table class="olotable" width="100%" border="0" cellpadding="3" cellspacing="0" >
     <tr>
         <td class="olohead">{t}INV ID{/t}</td>

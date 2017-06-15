@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2017-06-15 17:19+0100\n"
-"PO-Revision-Date: 2017-06-15 17:33+0100\n"
+"PO-Revision-Date: 2017-06-15 18:22+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en_GB\n"
@@ -1777,15 +1777,17 @@ msgstr ""
 
 #: language/_gettext_only/pages.php:58
 msgid "CORE_404_HEADER_PAGE_TITLE"
-msgstr ""
+msgstr "404 - Page Not Found"
 
 #: language/_gettext_only/pages.php:59
 msgid "CORE_404_HEADER_META_DESCRIPTION"
-msgstr ""
+msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
 
 #: language/_gettext_only/pages.php:60
 msgid "CORE_404_HEADER_META_KEYWORDS"
 msgstr ""
+"CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment "
+"Processing, Simple to use"
 
 #: language/_gettext_only/pages.php:61
 msgid "CORE_404_HELP_TITLE"
@@ -1797,7 +1799,7 @@ msgstr ""
 
 #: language/_gettext_only/pages.php:65
 msgid "CORE_ERROR_HEADER_PAGE_TITLE"
-msgstr ""
+msgstr "QWcrm Error Page"
 
 #: language/_gettext_only/pages.php:66
 msgid "CORE_ERROR_HEADER_META_DESCRIPTION"
@@ -1817,15 +1819,17 @@ msgstr ""
 
 #: language/_gettext_only/pages.php:72
 msgid "CORE_HOME_HEADER_PAGE_TITLE"
-msgstr ""
+msgstr "QWcrm - Home Page"
 
 #: language/_gettext_only/pages.php:73
 msgid "CORE_HOME_HEADER_META_DESCRIPTION"
-msgstr ""
+msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
 
 #: language/_gettext_only/pages.php:74
 msgid "CORE_HOME_HEADER_META_KEYWORDS"
 msgstr ""
+"CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment "
+"Processing, Simple to use"
 
 #: language/_gettext_only/pages.php:75
 #: themes/default/templates/core/home.tpl:10
@@ -1839,15 +1843,17 @@ msgstr ""
 
 #: language/_gettext_only/pages.php:79
 msgid "CORE_LOGIN_HEADER_PAGE_TITLE"
-msgstr ""
+msgstr "Login To QWcrm"
 
 #: language/_gettext_only/pages.php:80
 msgid "CORE_LOGIN_HEADER_META_DESCRIPTION"
-msgstr ""
+msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
 
 #: language/_gettext_only/pages.php:81
 msgid "CORE_LOGIN_HEADER_META_KEYWORDS"
 msgstr ""
+"CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment "
+"Processing, Simple to use"
 
 #: language/_gettext_only/pages.php:82
 msgid "CORE_LOGIN_HELP_TITLE"
@@ -1863,11 +1869,13 @@ msgstr ""
 
 #: language/_gettext_only/pages.php:87
 msgid "CORE_MAINTENANCE_HEADER_META_DESCRIPTION"
-msgstr ""
+msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
 
 #: language/_gettext_only/pages.php:88
 msgid "CORE_MAINTENANCE_HEADER_META_KEYWORDS"
 msgstr ""
+"CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment "
+"Processing, Simple to use"
 
 #: language/_gettext_only/pages.php:89
 msgid "CORE_MAINTENANCE_HELP_TITLE"
@@ -1912,12 +1920,12 @@ msgstr ""
 #: language/_gettext_only/pages.php:105
 #: themes/default/templates/customer/edit.tpl:12
 msgid "CUSTOMER_EDIT_HELP_TITLE"
-msgstr ""
+msgstr "Edit Customer Contact Help"
 
 #: language/_gettext_only/pages.php:106
 #: themes/default/templates/customer/edit.tpl:12
 msgid "CUSTOMER_EDIT_HELP_CONTENT"
-msgstr ""
+msgstr "You can edit the customers details attached to the work order here."
 
 #: language/_gettext_only/pages.php:109
 msgid "CUSTOMER_NEW_HEADER_PAGE_TITLE"
@@ -2020,12 +2028,12 @@ msgstr ""
 #: language/_gettext_only/pages.php:142
 #: themes/default/templates/employee/details.tpl:9
 msgid "EMPLOYEE_DETAILS_HELP_TITLE"
-msgstr ""
+msgstr "Employee Details Help"
 
 #: language/_gettext_only/pages.php:143
 #: themes/default/templates/employee/details.tpl:9
 msgid "EMPLOYEE_DETAILS_HELP_CONTENT"
-msgstr ""
+msgstr "You can see the selected employees details and jobs he has worked on"
 
 #: language/_gettext_only/pages.php:146
 msgid "EMPLOYEE_EDIT_HEADER_PAGE_TITLE"
@@ -2051,7 +2059,7 @@ msgstr ""
 
 #: language/_gettext_only/pages.php:153
 msgid "EMPLOYEE_NEW_HEADER_PAGE_TITLE"
-msgstr ""
+msgstr "New Expense Page"
 
 #: language/_gettext_only/pages.php:154
 msgid "EMPLOYEE_NEW_HEADER_META_DESCRIPTION"
@@ -2095,7 +2103,7 @@ msgstr ""
 
 #: language/_gettext_only/pages.php:169
 msgid "EXPENSE_DETAILS_HEADER_PAGE_TITLE"
-msgstr ""
+msgstr "Expense Details Page"
 
 #: language/_gettext_only/pages.php:170
 msgid "EXPENSE_DETAILS_HEADER_META_DESCRIPTION"
@@ -2108,16 +2116,19 @@ msgstr ""
 #: language/_gettext_only/pages.php:172
 #: themes/default/templates/expense/details.tpl:11
 msgid "EXPENSE_DETAILS_HELP_TITLE"
-msgstr ""
+msgstr "Expense Details Help"
 
 #: language/_gettext_only/pages.php:173
 #: themes/default/templates/expense/details.tpl:11
 msgid "EXPENSE_DETAILS_HELP_CONTENT"
 msgstr ""
+"This page allows you to view an Expense Record without having to edit it."
+"<br /><br /> To edit this record you can click on the <b>Edit Details</b> "
+"next to this Tooltip or on the Edit link in the Main Nav Menu on the left."
 
 #: language/_gettext_only/pages.php:176
 msgid "EXPENSE_EDIT_HEADER_PAGE_TITLE"
-msgstr ""
+msgstr "Expense Edit Page"
 
 #: language/_gettext_only/pages.php:177
 msgid "EXPENSE_EDIT_HEADER_META_DESCRIPTION"
@@ -2130,16 +2141,19 @@ msgstr ""
 #: language/_gettext_only/pages.php:179
 #: themes/default/templates/expense/edit.tpl:18
 msgid "EXPENSE_EDIT_HELP_TITLE"
-msgstr ""
+msgstr "Expense Edit Help"
 
 #: language/_gettext_only/pages.php:180
 #: themes/default/templates/expense/edit.tpl:18
 msgid "EXPENSE_EDIT_HELP_CONTENT"
 msgstr ""
+"This page allows you to edit an Expense Record. Once you have made your "
+"changes, click on the <b>Update</b> Button and the changes will be submitted "
+"to the database."
 
 #: language/_gettext_only/pages.php:183
 msgid "EXPENSE_NEW_HEADER_PAGE_TITLE"
-msgstr ""
+msgstr "New Expense Page"
 
 #: language/_gettext_only/pages.php:184
 msgid "EXPENSE_NEW_HEADER_META_DESCRIPTION"
@@ -2152,16 +2166,22 @@ msgstr ""
 #: language/_gettext_only/pages.php:186
 #: themes/default/templates/expense/new.tpl:18
 msgid "EXPENSE_NEW_HELP_TITLE"
-msgstr ""
+msgstr "New Expense Help"
 
 #: language/_gettext_only/pages.php:187
 #: themes/default/templates/expense/new.tpl:18
 msgid "EXPENSE_NEW_HELP_CONTENT"
 msgstr ""
+"This page is used to add a new Expense Record for your company.<br /><br /"
+">When you have entered your data if you click on the <b>Submit</b> button "
+"the details will be sent to the database and then the details page of the "
+"New Expense Record will be shown for you to check.<br /><br />However if you "
+"click on the <b>Submit, Then New Record</b> button the record will be sent "
+"to the database and this page reloaded ready for another entry."
 
 #: language/_gettext_only/pages.php:190
 msgid "EXPENSE_SEARCH_HEADER_PAGE_TITLE"
-msgstr ""
+msgstr "Expense Search Page"
 
 #: language/_gettext_only/pages.php:191
 msgid "EXPENSE_SEARCH_HEADER_META_DESCRIPTION"
@@ -2174,12 +2194,22 @@ msgstr ""
 #: language/_gettext_only/pages.php:193
 #: themes/default/templates/expense/search.tpl:10
 msgid "EXPENSE_SEARCH_HELP_TITLE"
-msgstr ""
+msgstr "Expense Search Help"
 
 #: language/_gettext_only/pages.php:194
 #: themes/default/templates/expense/search.tpl:10
 msgid "EXPENSE_SEARCH_HELP_CONTENT"
 msgstr ""
+"You can search by any category by using the dropdown box. Apart from Expense "
+"Type and Payment Method you can search by partial name.<br /><br />The reset "
+"button will wipe your search so you can start again.<br /<br />The arrows in "
+"the navigation section on the right are a simple method of changing pages, "
+"however you can also go directely to a specific page.<br /><br /> If you "
+"double click on a row the appropiate Expense Record Details Page will load."
+"<br /><br />The Notes and Item(s) are not directely displayed but if you "
+"hover over the Magnifying Glass they will then be displayed similiar to this "
+"Tooltip.<br /><br />On the right of each Record Row there are icons for "
+"viewing, editing and deleting the record."
 
 #: language/_gettext_only/pages.php:199
 msgid "GIFTCERT_DETAILS_HEADER_PAGE_TITLE"
@@ -2344,12 +2374,17 @@ msgstr ""
 #: language/_gettext_only/pages.php:255
 #: themes/default/templates/invoice/edit.tpl:264
 msgid "INVOICE_EDIT_HELP_TITLE"
-msgstr ""
+msgstr "Edit Invoice Help"
 
 #: language/_gettext_only/pages.php:256
 #: themes/default/templates/invoice/edit.tpl:264
 msgid "INVOICE_EDIT_HELP_CONTENT"
 msgstr ""
+"This page allows you to create invoices for your clients.<br /><br /"
+">Whenever you change the date, add or remove an item you must press the "
+"<b>Submit / Recalculate</b> </b></b>button to apply those changes before you "
+"print the invoice otherwise you will get an incorrect invoice and the "
+"changes will also not be applied to the database."
 
 #: language/_gettext_only/pages.php:259
 msgid "INVOICE_LABOUR_RATES_HEADER_PAGE_TITLE"
@@ -2419,27 +2454,31 @@ msgstr ""
 
 #: language/_gettext_only/pages.php:280
 msgid "INVOICE_PRINT_ADDRESS_HEADER_PAGE_TITLE"
-msgstr ""
+msgstr "Invoice Address Template"
 
 #: language/_gettext_only/pages.php:281
 msgid "INVOICE_PRINT_ADDRESS_HEADER_META_DESCRIPTION"
-msgstr ""
+msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
 
 #: language/_gettext_only/pages.php:282
 msgid "INVOICE_PRINT_ADDRESS_HEADER_META_KEYWORDS"
 msgstr ""
+"CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment "
+"Processing, Simple to use"
 
 #: language/_gettext_only/pages.php:287
 msgid "INVOICE_PRINT_INVOICE_HEADER_PAGE_TITLE"
-msgstr ""
+msgstr "Invoice Template"
 
 #: language/_gettext_only/pages.php:288
 msgid "INVOICE_PRINT_INVOICE_HEADER_META_DESCRIPTION"
-msgstr ""
+msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
 
 #: language/_gettext_only/pages.php:289
 msgid "INVOICE_PRINT_INVOICE_HEADER_META_KEYWORDS"
 msgstr ""
+"CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment "
+"Processing, Simple to use"
 
 #: language/_gettext_only/pages.php:296
 msgid "PAYMENT_NEW_HEADER_PAGE_TITLE"
@@ -2487,7 +2526,7 @@ msgstr ""
 
 #: language/_gettext_only/pages.php:312
 msgid "REFUND_DETAILS_HEADER_PAGE_TITLE"
-msgstr ""
+msgstr "Refund Details Page"
 
 #: language/_gettext_only/pages.php:313
 msgid "REFUND_DETAILS_HEADER_META_DESCRIPTION"
@@ -2500,16 +2539,19 @@ msgstr ""
 #: language/_gettext_only/pages.php:315
 #: themes/default/templates/refund/details.tpl:11
 msgid "REFUND_DETAILS_HELP_TITLE"
-msgstr ""
+msgstr "Refund Details Help"
 
 #: language/_gettext_only/pages.php:316
 #: themes/default/templates/refund/details.tpl:11
 msgid "REFUND_DETAILS_HELP_CONTENT"
 msgstr ""
+"This page allows you to view an Refund Record without having to edit it.<br /"
+"><br /> To edit this record you can click on the <b>Edit Details</b> next to "
+"this Tooltip or on the Edit link in the Main Nav Menu on the left."
 
 #: language/_gettext_only/pages.php:319
 msgid "REFUND_EDIT_HEADER_PAGE_TITLE"
-msgstr ""
+msgstr "Refund Edit Page"
 
 #: language/_gettext_only/pages.php:320
 msgid "REFUND_EDIT_HEADER_META_DESCRIPTION"
@@ -2522,16 +2564,19 @@ msgstr ""
 #: language/_gettext_only/pages.php:322
 #: themes/default/templates/refund/edit.tpl:18
 msgid "REFUND_EDIT_HELP_TITLE"
-msgstr ""
+msgstr "Refund Edit Help"
 
 #: language/_gettext_only/pages.php:323
 #: themes/default/templates/refund/edit.tpl:18
 msgid "REFUND_EDIT_HELP_CONTENT"
 msgstr ""
+"This page allows you to edit an Refund Record. Once you have made your "
+"changes, click on the <b>Update</b> Button and the changes will be submitted "
+"to the database."
 
 #: language/_gettext_only/pages.php:326
 msgid "REFUND_NEW_HEADER_PAGE_TITLE"
-msgstr ""
+msgstr "New Refund Page"
 
 #: language/_gettext_only/pages.php:327
 msgid "REFUND_NEW_HEADER_META_DESCRIPTION"
@@ -2544,16 +2589,22 @@ msgstr ""
 #: language/_gettext_only/pages.php:329
 #: themes/default/templates/refund/new.tpl:18
 msgid "REFUND_NEW_HELP_TITLE"
-msgstr ""
+msgstr "New Refund Help"
 
 #: language/_gettext_only/pages.php:330
 #: themes/default/templates/refund/new.tpl:18
 msgid "REFUND_NEW_HELP_CONTENT"
 msgstr ""
+"This page is used to add a new Refund Record for your company.<br /><br /"
+">When you have entered your data if you click on the <b>Submit</b> button "
+"the details will be sent to the database and then the details page of the "
+"New Refund Record will be shown for you to check.<br /><br />However if you "
+"click on the <b>Submit, Then New Record</b> button the record will be sent "
+"to the database and this page reloaded ready for another entry."
 
 #: language/_gettext_only/pages.php:333
 msgid "REFUND_SEARCH_HEADER_PAGE_TITLE"
-msgstr ""
+msgstr "Refund Search Page"
 
 #: language/_gettext_only/pages.php:334
 msgid "REFUND_SEARCH_HEADER_META_DESCRIPTION"
@@ -2566,12 +2617,22 @@ msgstr ""
 #: language/_gettext_only/pages.php:336
 #: themes/default/templates/refund/search.tpl:10
 msgid "REFUND_SEARCH_HELP_TITLE"
-msgstr ""
+msgstr "Refund Search Help"
 
 #: language/_gettext_only/pages.php:337
 #: themes/default/templates/refund/search.tpl:10
 msgid "REFUND_SEARCH_HELP_CONTENT"
 msgstr ""
+"You can search by any category by using the dropdown box. Apart from Refund "
+"Type and Payment Method you can search by partial name.<br /><br />The reset "
+"button will wipe your search so you can start again.<br /<br />The arrows in "
+"the navigation section on the right are a simple method of changing pages, "
+"however you can also go directely to a specific page.<br /><br /> If you "
+"double click on a row the appropiate Refund Record Details Page will load."
+"<br /><br />The Notes and Item(s) are not directely displayed but if you "
+"hover over the Magnifying Glass they will then be displayed similiar to this "
+"Tooltip.<br /><br />On the right of each Record Row there are icons for "
+"viewing, editing and deleting the record."
 
 #: language/_gettext_only/pages.php:342
 msgid "REPORT_FINANCIAL_HEADER_PAGE_TITLE"
@@ -2703,7 +2764,7 @@ msgstr ""
 
 #: language/_gettext_only/pages.php:387
 msgid "SUPPLIER_DETAILS_HEADER_PAGE_TITLE"
-msgstr ""
+msgstr "Supplier Details Page"
 
 #: language/_gettext_only/pages.php:388
 msgid "SUPPLIER_DETAILS_HEADER_META_DESCRIPTION"
@@ -2716,16 +2777,19 @@ msgstr ""
 #: language/_gettext_only/pages.php:390
 #: themes/default/templates/supplier/details.tpl:13
 msgid "SUPPLIER_DETAILS_HELP_TITLE"
-msgstr ""
+msgstr "Supplier Details Help"
 
 #: language/_gettext_only/pages.php:391
 #: themes/default/templates/supplier/details.tpl:13
 msgid "SUPPLIER_DETAILS_HELP_CONTENT"
 msgstr ""
+"This page allows you to view an Supplier Record without having to edit it."
+"<br /><br /> To edit this record you can click on the <b>Edit Details</b> "
+"next to this Tooltip or on the Edit link in the Main Nav Menu on the left."
 
 #: language/_gettext_only/pages.php:394
 msgid "SUPPLIER_EDIT_HEADER_PAGE_TITLE"
-msgstr ""
+msgstr "Supplier Edit Page"
 
 #: language/_gettext_only/pages.php:395
 msgid "SUPPLIER_EDIT_HEADER_META_DESCRIPTION"
@@ -2738,16 +2802,19 @@ msgstr ""
 #: language/_gettext_only/pages.php:397
 #: themes/default/templates/supplier/edit.tpl:18
 msgid "SUPPLIER_EDIT_HELP_TITLE"
-msgstr ""
+msgstr "Supplier Edit Help"
 
 #: language/_gettext_only/pages.php:398
 #: themes/default/templates/supplier/edit.tpl:18
 msgid "SUPPLIER_EDIT_HELP_CONTENT"
 msgstr ""
+"This page allows you to edit an Supplier Record. Once you have made your "
+"changes, click on the <b>Update</b> Button and the changes will be submitted "
+"to the database."
 
 #: language/_gettext_only/pages.php:401
 msgid "SUPPLIER_NEW_HEADER_PAGE_TITLE"
-msgstr ""
+msgstr "New Supplier Page"
 
 #: language/_gettext_only/pages.php:402
 msgid "SUPPLIER_NEW_HEADER_META_DESCRIPTION"
@@ -2760,16 +2827,22 @@ msgstr ""
 #: language/_gettext_only/pages.php:404
 #: themes/default/templates/supplier/new.tpl:18
 msgid "SUPPLIER_NEW_HELP_TITLE"
-msgstr ""
+msgstr "New Supplier Help"
 
 #: language/_gettext_only/pages.php:405
 #: themes/default/templates/supplier/new.tpl:18
 msgid "SUPPLIER_NEW_HELP_CONTENT"
 msgstr ""
+"This page is used to add a New Supplier Record for your company.<br /><br /"
+">When you have entered your data if you click on the <b>Submit</b> button "
+"the details will be sent to the database and then the details page of the "
+"new Supplier Record will be shown for you to check.<br /><br />However if "
+"you click on the <b>Submit, Then New Record</b> button the record will be "
+"sent to the database and this page reloaded ready for another entry."
 
 #: language/_gettext_only/pages.php:408
 msgid "SUPPLIER_SEARCH_HEADER_PAGE_TITLE"
-msgstr ""
+msgstr "Supplier Search Page"
 
 #: language/_gettext_only/pages.php:409
 msgid "SUPPLIER_SEARCH_HEADER_META_DESCRIPTION"
@@ -2782,16 +2855,26 @@ msgstr ""
 #: language/_gettext_only/pages.php:411
 #: themes/default/templates/supplier/search.tpl:10
 msgid "SUPPLIER_SEARCH_HELP_TITLE"
-msgstr ""
+msgstr "Supplier Search Help"
 
 #: language/_gettext_only/pages.php:412
 #: themes/default/templates/supplier/search.tpl:10
 msgid "SUPPLIER_SEARCH_HELP_CONTENT"
 msgstr ""
+"You can search by any category by using the dropdown box. Apart from "
+"Supplier Type you can search by partial name.<br /><br />The reset button "
+"will wipe your search so you can start again.<br /<br />The arrows in the "
+"navigation section on the right are a simple method of changing pages, "
+"however you can also go directely to a specific page.<br /><br /> If you "
+"double click on a row the appropiate Supplier Record Details Page will load."
+"<br /><br />The Notes are not directely displayed but if you hover over the "
+"Magnifying Glass they will then be displayed similiar to this Tooltip.<br /"
+"><br />On the right of each Record Row there are icons for viewing, editing "
+"and deleting the record."
 
 #: language/_gettext_only/pages.php:419
 msgid "WORKORDER_CLOSED_HEADER_PAGE_TITLE"
-msgstr ""
+msgstr "Closed Work Orders"
 
 #: language/_gettext_only/pages.php:420
 msgid "WORKORDER_CLOSED_HEADER_META_DESCRIPTION"
@@ -2804,16 +2887,16 @@ msgstr ""
 #: language/_gettext_only/pages.php:422
 #: themes/default/templates/workorder/closed.tpl:10
 msgid "WORKORDER_CLOSED_HELP_TITLE"
-msgstr ""
+msgstr "Closed Work Orders Help"
 
 #: language/_gettext_only/pages.php:423
 #: themes/default/templates/workorder/closed.tpl:10
 msgid "WORKORDER_CLOSED_HELP_CONTENT"
-msgstr ""
+msgstr "You can view all closed work orders here."
 
 #: language/_gettext_only/pages.php:426
 msgid "WORKORDER_DETAILS_HEADER_PAGE_TITLE"
-msgstr ""
+msgstr "Work Order Details"
 
 #: language/_gettext_only/pages.php:427
 msgid "WORKORDER_DETAILS_HEADER_META_DESCRIPTION"
@@ -2826,16 +2909,26 @@ msgstr ""
 #: language/_gettext_only/pages.php:429
 #: themes/default/templates/workorder/details.tpl:22
 msgid "WORKORDER_DETAILS_HELP_TITLE"
-msgstr ""
+msgstr "Work Order Details Help"
 
 #: language/_gettext_only/pages.php:430
 #: themes/default/templates/workorder/details.tpl:22
 msgid "WORKORDER_DETAILS_HELP_CONTENT"
 msgstr ""
+"You can edit the Work order commments, notes, and set schedule by clicking "
+"the icon on the right of each window<br><br>You can navigate to the customer "
+"by clicking their name. Hover over the Magnifing glass by the customer name "
+"to view Quick Contact Information. <br><br>If you need to edit the Customers "
+"Contact Information click the Edit Icon by their contact details."
+"<br><br>Click on the Employee name to go to the employees details. Hover "
+"over the Magnifing glass to view the employees Quick Contact Information."
+"<br><br>Click the Print link on the Quick Bar to generate a printable PDF of "
+"this work order. Click the Close link on the Quick Bar to complete the order "
+"and start the invoicing processes."
 
 #: language/_gettext_only/pages.php:433
 msgid "WORKORDER_DETAILS_EDIT_COMMENTS_HEADER_PAGE_TITLE"
-msgstr ""
+msgstr "Edit Comments"
 
 #: language/_gettext_only/pages.php:434
 msgid "WORKORDER_DETAILS_EDIT_COMMENTS_HEADER_META_DESCRIPTION"
@@ -2848,16 +2941,16 @@ msgstr ""
 #: language/_gettext_only/pages.php:436
 #: themes/default/templates/workorder/details_edit_comments.tpl:13
 msgid "WORKORDER_DETAILS_EDIT_COMMENTS_HELP_TITLE"
-msgstr ""
+msgstr "Edit Comments Help"
 
 #: language/_gettext_only/pages.php:437
 #: themes/default/templates/workorder/details_edit_comments.tpl:13
 msgid "WORKORDER_DETAILS_EDIT_COMMENTS_HELP_CONTENT"
-msgstr ""
+msgstr "You can edit the comments attached to the work order here."
 
 #: language/_gettext_only/pages.php:440
 msgid "WORKORDER_DETAILS_EDIT_DESCRIPTION_HEADER_PAGE_TITLE"
-msgstr ""
+msgstr "Edit Description"
 
 #: language/_gettext_only/pages.php:441
 msgid "WORKORDER_DETAILS_EDIT_DESCRIPTION_HEADER_META_DESCRIPTION"
@@ -2870,16 +2963,16 @@ msgstr ""
 #: language/_gettext_only/pages.php:443
 #: themes/default/templates/workorder/details_edit_description.tpl:14
 msgid "WORKORDER_DETAILS_EDIT_DESCRIPTION_HELP_TITLE"
-msgstr ""
+msgstr "Edit Description Help"
 
 #: language/_gettext_only/pages.php:444
 #: themes/default/templates/workorder/details_edit_description.tpl:14
 msgid "WORKORDER_DETAILS_EDIT_DESCRIPTION_HELP_CONTENT"
-msgstr ""
+msgstr "You can edit the description attached to the work order here."
 
 #: language/_gettext_only/pages.php:447
 msgid "WORKORDER_DETAILS_EDIT_RESOLUTION_HEADER_PAGE_TITLE"
-msgstr ""
+msgstr "Edit Resolution"
 
 #: language/_gettext_only/pages.php:448
 msgid "WORKORDER_DETAILS_EDIT_RESOLUTION_HEADER_META_DESCRIPTION"
@@ -2892,16 +2985,16 @@ msgstr ""
 #: language/_gettext_only/pages.php:450
 #: themes/default/templates/workorder/details_edit_resolution.tpl:13
 msgid "WORKORDER_DETAILS_EDIT_RESOLUTION_HELP_TITLE"
-msgstr ""
+msgstr "Edit Resolution Help"
 
 #: language/_gettext_only/pages.php:451
 #: themes/default/templates/workorder/details_edit_resolution.tpl:13
 msgid "WORKORDER_DETAILS_EDIT_RESOLUTION_HELP_CONTENT"
-msgstr ""
+msgstr "You can edit or close the resolution attached to the work order here."
 
 #: language/_gettext_only/pages.php:454
 msgid "WORKORDER_NEW_HEADER_PAGE_TITLE"
-msgstr ""
+msgstr "New Workorder"
 
 #: language/_gettext_only/pages.php:455
 msgid "WORKORDER_NEW_HEADER_META_DESCRIPTION"
@@ -2914,12 +3007,12 @@ msgstr ""
 #: language/_gettext_only/pages.php:457
 #: themes/default/templates/workorder/new.tpl:14
 msgid "WORKORDER_NEW_HELP_TITLE"
-msgstr ""
+msgstr "New Workorder Help"
 
 #: language/_gettext_only/pages.php:458
 #: themes/default/templates/workorder/new.tpl:14
 msgid "WORKORDER_NEW_HELP_CONTENT"
-msgstr ""
+msgstr "Create new Workorders here."
 
 #: language/_gettext_only/pages.php:461
 msgid "WORKORDER_NOTE_EDIT_HEADER_PAGE_TITLE"
@@ -2969,7 +3062,7 @@ msgstr ""
 
 #: language/_gettext_only/pages.php:475
 msgid "WORKORDER_OVERVIEW_HEADER_PAGE_TITLE"
-msgstr ""
+msgstr "Work Orders Overview"
 
 #: language/_gettext_only/pages.php:476
 msgid "WORKORDER_OVERVIEW_HEADER_META_DESCRIPTION"
@@ -2982,16 +3075,26 @@ msgstr ""
 #: language/_gettext_only/pages.php:478
 #: themes/default/templates/workorder/overview.tpl:10
 msgid "WORKORDER_OVERVIEW_HELP_TITLE"
-msgstr ""
+msgstr "Workorders Overview Help"
 
 #: language/_gettext_only/pages.php:479
 #: themes/default/templates/workorder/overview.tpl:10
 msgid "WORKORDER_OVERVIEW_HELP_CONTENT"
 msgstr ""
+"Double Click on an empty space in each row to go directly to the work order. "
+"<br><br>Hover over the magnifying glass under Customer to view the Quick "
+"Contact Information. Click on the Customers name to view the customers "
+"details.<br><br>Click on the status of each workorder listed to update the "
+"curent workorder status.<br><br>Hover over the Magnifying Glass under the "
+"Employee to view the Quick Contact Information for the assigned employee. "
+"Click on the employees name to view the details.<br><br>Under Action click "
+"the Printer Icon to print the workorder. Click the Magnifying Glass to view "
+"the workorder. Click the Red Stop sign to close the workorder and start the "
+"invoicing."
 
 #: language/_gettext_only/pages.php:482
 msgid "WORKORDER_STATUS_HEADER_PAGE_TITLE"
-msgstr ""
+msgstr "Status for Workorder"
 
 #: language/_gettext_only/pages.php:483
 msgid "WORKORDER_STATUS_HEADER_META_DESCRIPTION"
@@ -3004,24 +3107,26 @@ msgstr ""
 #: language/_gettext_only/pages.php:485
 #: themes/default/templates/workorder/status.tpl:10
 msgid "WORKORDER_STATUS_HELP_TITLE"
-msgstr ""
+msgstr "Status Help"
 
 #: language/_gettext_only/pages.php:486
 #: themes/default/templates/workorder/status.tpl:10
 msgid "WORKORDER_STATUS_HELP_CONTENT"
-msgstr ""
+msgstr "You can change the status of a work order here."
 
 #: language/_gettext_only/pages.php:489
 msgid "WORKORDER_PRINT_CUSTOMER_WORKORDER_SLIP_HEADER_PAGE_TITLE"
-msgstr ""
+msgstr "Customer Workorder Slip"
 
 #: language/_gettext_only/pages.php:490
 msgid "WORKORDER_PRINT_CUSTOMER_WORKORDER_SLIP_HEADER_META_DESCRIPTION"
-msgstr ""
+msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
 
 #: language/_gettext_only/pages.php:491
 msgid "WORKORDER_PRINT_CUSTOMER_WORKORDER_SLIP_HEADER_META_KEYWORDS"
 msgstr ""
+"CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment "
+"Processing, Simple to use"
 
 #: language/_gettext_only/pages.php:496
 msgid "WORKORDER_PRINT_JOB_SHEET_HEADER_PAGE_TITLE"
@@ -3037,15 +3142,17 @@ msgstr ""
 
 #: language/_gettext_only/pages.php:503
 msgid "WORKORDER_PRINT_TECHNICIAN_WORKORDER_SLIP_HEADER_PAGE_TITLE"
-msgstr ""
+msgstr "Technician Workorder Slip"
 
 #: language/_gettext_only/pages.php:504
 msgid "WORKORDER_PRINT_TECHNICIAN_WORKORDER_SLIP_HEADER_META_DESCRIPTION"
-msgstr ""
+msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
 
 #: language/_gettext_only/pages.php:505
 msgid "WORKORDER_PRINT_TECHNICIAN_WORKORDER_SLIP_HEADER_META_KEYWORDS"
 msgstr ""
+"CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment "
+"Processing, Simple to use"
 
 #: language/_gettext_only/system_varibles.php:16
 #: themes/default/templates/core/home.tpl:117

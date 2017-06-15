@@ -43,7 +43,7 @@
                                             <td>{$giftcert_details.ACTIVE}</td>
                                         </tr>  
                                         <tr>
-                                            <td><b>{t}payment_gift_code_3{/t}</b></td>
+                                            <td><b>{t}Redemption Code{/t}</b></td>
                                             <td>{$giftcert_details.GIFTCERT_CODE}</td>
                                         </tr>
                                         <tr>
@@ -55,7 +55,7 @@
                                             <td>{$giftcert_details.DATE_CREATED|date_format:$date_format}</td>
                                         </tr>
                                         <tr>
-                                            <td><b>{t}Created By{/t}</b></td>
+                                            <td><b>{t}Created by{/t}</b></td>
                                             <td>{$giftcert_details.EMPLOYEE_ID}</td>
                                         </tr>
                                         <tr>

@@ -74,7 +74,7 @@
                                                         <td class="olohead"><b>{t}Opened{/t}</b></td>
                                                         <td class="olohead"><b>{t}Closed{/t}</b></td>
                                                         <td class="olohead"><b>{t}Customer{/t}</b></td>
-                                                        <td class="olohead"><b>{t}Ccope{/t}</b></td>
+                                                        <td class="olohead"><b>{t}Scope{/t}</b></td>
                                                         <td class="olohead"><b>{t}Status{/t}</b></td>
                                                         <td class="olohead"><b>{t}Technician{/t}</b></td>
                                                     </tr>

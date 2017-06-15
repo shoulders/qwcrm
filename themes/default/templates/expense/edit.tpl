@@ -117,7 +117,7 @@
                                                         <td><textarea name="expenseNotes" class="olotd5" cols="50" rows="15">{$expense_details.EXPENSE_NOTES}</textarea></td>
                                                     </tr>
                                                     <tr>
-                                                        <td align="right"><b>{t}Otems{/t}</b><span style="color: #ff0000"> *</span></td>
+                                                        <td align="right"><b>{t}Items{/t}</b><span style="color: #ff0000"> *</span></td>
                                                         <td><textarea name="expenseItems" class="olotd5 mceCheckForContent" cols="50" rows="15">{$expense_details.EXPENSE_ITEMS}</textarea></td>
                                                     </tr>
                                                     <tr>

@@ -258,7 +258,7 @@
         <td>
             <table width="700" cellpadding="4" cellspacing="0" border="0" >
                 <tr>
-                    <td class="menuhead2" width="80%">&nbsp;{t}invoice_for{/t}{$workorder_id}</td>
+                    <td class="menuhead2" width="80%">&nbsp;{t}Invoice For Workorder ID{/t} {$workorder_id}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
                         <a>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}INVOICE_EDIT_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}INVOICE_EDIT_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
@@ -380,13 +380,13 @@
 
                                                         {if $invoice_details.BALANCE > 0}
                                                             <!-- Receive Payment Button -->
-                                                            <button type="button" name="{t}invoice_bill_customer{/t}" onClick="location.href='index.php?page=payment:new&invoice_id={$invoice_details.INVOICE_ID}';">{t}Receive Payment{/t}</button>
+                                                            <button type="button" name="{t}Receive Payment{/t}" onClick="location.href='index.php?page=payment:new&invoice_id={$invoice_details.INVOICE_ID}';">{t}Receive Payment{/t}</button>
                                                         {/if}
 
                                                     {else}
 
                                                         <!-- Delete Button -->
-                                                        <button type="button" name="{t}invoice_delete{/t}" onClick="location.href='index.php?page=invoice:delete&customer_id={$invoice_details.CUSTOMER_ID}&invoice_id={$invoice_details.INVOICE_ID}';">{t}Delete{/t}</button>
+                                                        <button type="button" name="{t}Delete{/t}" onClick="location.href='index.php?page=invoice:delete&customer_id={$invoice_details.CUSTOMER_ID}&invoice_id={$invoice_details.INVOICE_ID}';">{t}Delete{/t}</button>
 
                                                         {if $workorder_status == '9' && $workorder_id != '0'}
                                                             <!-- Close Button -->
@@ -424,11 +424,11 @@
                                                                     <td>{$transactions[t].DATE|date_format:$date_format}</td>
                                                                     <td><b>{$currency_symbol}</b>{$transactions[t].AMOUNT|string_format:"%.2f"}</td>
                                                                     <td>
-                                                                        {if $transactions[t].TYPE == 1}{t}invoice_cc{/t}
-                                                                        {elseif $transactions[t].TYPE == 2}{t}invoice_check{/t}
-                                                                        {elseif $transactions[t].TYPE == 3}{t}invoice_cash{/t}
-                                                                        {elseif $transactions[t].TYPE == 4}{t}invoice_gift{/t}
-                                                                        {elseif $transactions[t].TYPE == 5}{t}invoice_paypal{/t}
+                                                                        {if $transactions[t].TYPE == 1}{t}Credit Card{/t}
+                                                                        {elseif $transactions[t].TYPE == 2}{t}Cheque{/t}
+                                                                        {elseif $transactions[t].TYPE == 3}{t}Cash{/t}
+                                                                        {elseif $transactions[t].TYPE == 4}{t}Gift Certificate{/t}
+                                                                        {elseif $transactions[t].TYPE == 5}{t}PayPal{/t}
                                                                         {/if}
                                                                     </td>
                                                                 </tr>
@@ -455,7 +455,7 @@
                                                         <table width="100%" cellpadding="3" cellspacing="0" border="0" class="olotable">
                                                             <tr  class="olotd4">
                                                                 <td class="row2"><b>{t}No.{/t}</b></td>
-                                                                <td class="row2" width="12"><b>{t}qty{/t}</b></td>
+                                                                <td class="row2" width="12"><b>{t}Qty{/t}</b></td>
                                                                 <td class="row2"><b>{t}Description{/t}</b></td>
                                                                 <td class="row2"><b>{t}Rate{/t}</b></td>
                                                                 <td class="row2"><b>{t}Total{/t}</b></td>
@@ -514,7 +514,7 @@
                                                         <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
                                                             <tr class="olotd4">
                                                                 <td class="row2"><b>{t}No.{/t}</b></td>
-                                                                <td class="row2"><b>{t}Count{/t}</b></td>
+                                                                <td class="row2"><b>{t}Qty{/t}</b></td>
                                                                 <td class="row2"><b>{t}Description{/t}</b></td>
                                                                 <td class="row2"><b>{t}Price{/t}</b></td>
                                                                 <td class="row2"><b>{t}Total{/t}</b></td>
@@ -545,7 +545,7 @@
                                                     <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable" id="parts_items">
                                                         <tr class="olotd4">
                                                             <td class="row2"><b>{t}No{/t}</b></td>
-                                                            <td class="row2"><b>{t}Count-qty{/t}</b></td>
+                                                            <td class="row2"><b>{t}Qty{/t}</b></td>
                                                             <td class="row2"><b>{t}Description{/t}</b></td>
                                                             <td class="row2"><b>{t}Price{/t}</b></td>
                                                         </tr>

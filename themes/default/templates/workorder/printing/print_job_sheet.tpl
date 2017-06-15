@@ -29,7 +29,7 @@
             <td width="60%" align="center">                
                 <p><b><font size="+3">{$company_details.COMPANY_NAME}</font></b><br></p>                
             </td>
-            <td width="20%" valign="middle" align="center">{t}workorder_print_job_sheet_title{/t}</font></td>
+            <td width="20%" valign="middle" align="center">{t}Job Sheet{/t}</font></td>
         </tr>
     </table>
 

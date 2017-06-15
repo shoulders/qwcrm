@@ -1,5 +1,5 @@
 <!-- details_workorder_block.tpl -->
-<b>{t}customer_open_work_orders{/t}</b>
+<b>{t}Open Work Orders{/t}</b>
 <table class="olotable" width="100%" border="0" cellpadding="1" cellspacing="0">
     <tr>
         <td class="olohead">{t}WO ID{/t}</td>

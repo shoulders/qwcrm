@@ -43,7 +43,7 @@
             <!-- Employee -->
             <td class="olotd4" nowrap>
                 {if $new_workorders[n].EMPLOYEE_DISPLAY_NAME == ""}
-                    {t}workorder_not_assigned{/t}
+                    {t}Not Assigned{/t}
                 {else}
                     <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<center><b>{t}Contact Info{/t}</b></center><hr><b>{t}Fax{/t}: </b>{$new_workorders[n].EMPLOYEE_WORK_PHONE}<br><b>{t}Mobile{/t}: </b>{$new_workorders[n].EMPLOYEE_MOBILE_PHONE}<br><b>{t}Home{/t}: </b>{$new_workorders[n].EMPLOYEE_HOME_PHONE}');" onMouseOut="hideddrivetip();">                              
                     <a class="link1" href="index.php?page=employee:details&employee_id={$new_workorders[n].EMPLOYEE_ID}">{$new_workorders[n].EMPLOYEE_DISPLAY_NAME}</a>

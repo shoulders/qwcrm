@@ -25,7 +25,7 @@
                                 <td class="olotd4" align="center" width="33%"> 
                                     <p>&nbsp;</p>                                    
                                     <form action="index.php?page=workorder:status" method="POST" name="new_workorder_status" id="new_workorder_status">
-                                        <b>{t}workorder_status_new_status{/t}: </b>
+                                        <b>{t}New Status{/t}: </b>
                                         <select class="olotd4" name="assign_status">
                                             <option value="1"{if $workorder_status == 1} selected{/if}>{t}WORKORDER_STATUS_1{/t}</option>
                                             <option value="2"{if $workorder_status == 2} selected{/if}>{t}WORKORDER_STATUS_2{/t}</option>
@@ -69,7 +69,7 @@
                                     <!-- if work order is created and open, you can delete it, otherwise you cannot -->                                        
                                     {if $workorder_status == 1 || $workorder_status == 10}
                                         <form method="POST" action="index.php?page=workorder:status">
-                                            <input name="delete" value="{t}workorder_delete{/t}" type="submit" onClick="return confirmDelete('{t}Are you sure you want to delete this Workorder?{/t}');">
+                                            <input name="delete" value="{t}Delete{/t}" type="submit" onClick="return confirmDelete('{t}Are you sure you want to delete this Workorder?{/t}');">
                                             <input type="hidden" name="workorder_id" value="{$workorder_id}">
                                         </form>                                            
                                     {else}

@@ -42,7 +42,7 @@
             </td>
         </tr>
         <tr>
-            <td align="center"><input type="submit" name="submit" value="{t}stats_submit{/t}"></td>
+            <td align="center"><button type="submit" name="submit" value="submit">{t}Submit{/t}</button></td>
         </tr>
     </table>
     <table width="650px" class="olotable"  border="0" cellpadding="4" cellspacing="0">
@@ -60,7 +60,7 @@
                         <td class="olotd5" colspan="2">
                             <table width="100%"class="olotable"  border="0" cellpadding="5" cellspacing="0">
                                 <tr>
-                                    <td class="olohead">{t}Custoemrs{/t}</td>
+                                    <td class="olohead">{t}Customers{/t}</td>
                                     <td class="olohead">{t}Work Orders{/t}</td>
                                     <td class="olohead">{t}Invoices{/t}</td>
                                     <td class="olohead">{t}Revenue (Gross){/t}</td>

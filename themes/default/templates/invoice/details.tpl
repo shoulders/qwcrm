@@ -104,7 +104,7 @@
 
                                                     <!-- Print Buttons -->   
                                                     <button type="button" name="{t}Print{/t}" onClick="window.open('index.php?page=invoice:print&invoice_id={$invoice_details.INVOICE_ID}&print_type=print_html&print_content=invoice&theme=print');">{t}Print{/t}</button>
-                                                    <button type="button" name="{t}Print PDF{/t}" onClick="window.open('index.php?page=invoice:print&invoice_id={$invoice_details.INVOICE_ID}&print_type=print_pdf&print_content=invoice&theme=print');"><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">{t}rint PDF{/t}</button>
+                                                    <button type="button" name="{t}Print PDF{/t}" onClick="window.open('index.php?page=invoice:print&invoice_id={$invoice_details.INVOICE_ID}&print_type=print_pdf&print_content=invoice&theme=print');"><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">{t}Print PDF{/t}</button>
                                                     <button type="button" name="{t}Print Address Only{/t}" onClick="window.open('index.php?page=invoice:print&invoice_id={$invoice_details.INVOICE_ID}&print_type=print_html&print_content=invoice&theme=print');">{t}Print Address Only{/t}</button>                                            
 
                                                 </td>
@@ -135,11 +135,11 @@
                                                                 <td>{$transactions[t].DATE|date_format:$date_format}</td>
                                                                 <td><b>{$currency_symbol}</b>{$transactions[t].AMOUNT|string_format:"%.2f"}</td>
                                                                 <td>
-                                                                    {if $transactions[t].TYPE == 1}{t}invoice_cc{/t}
+                                                                    {if $transactions[t].TYPE == 1}{t}Credit Card{/t}
                                                                     {elseif $transactions[t].TYPE == 2}{t}Cheque{/t}
                                                                     {elseif $transactions[t].TYPE == 3}{t}Cash{/t}
                                                                     {elseif $transactions[t].TYPE == 4}{t}Gift Certificate{/t}
-                                                                    {elseif $transactions[t].TYPE == 5}{t}Paypal{/t}
+                                                                    {elseif $transactions[t].TYPE == 5}{t}PayPal{/t}
                                                                     {/if}
                                                                 </td>
                                                             </tr>
@@ -197,7 +197,7 @@
                                                 <table width="100%" cellpadding="3" cellspacing="0" border="0" class="olotable" id="labour_items">
                                                     <tr class="olotd4">
                                                         <td class="row2"><b>{t}No.{/t}</b></td>
-                                                        <td class="row2"><b>{t}qty{/t}</b></td>
+                                                        <td class="row2"><b>{t}Qty{/t</b></td>
                                                         <td class="row2"><b>{t}Description{/t}</b></td>
                                                         <td class="row2"><b>&nbsp;&nbsp;{t}Rate{/t}</b></td>
                                                     </tr>

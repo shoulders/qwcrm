@@ -28,7 +28,7 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="menutd"><b>{t}pAYEE{/t}</b></td>
+                                            <td class="menutd"><b>{t}Payee{/t}</b></td>
                                             <td class="menutd">{$expense_details.EXPENSE_PAYEE}</td>
                                             <td class="menutd"><b>{t}Net Amount{/t}</b></td>
                                             <td class="menutd">{$currency_sym} {$expense_details.EXPENSE_NET_AMOUNT}</td>

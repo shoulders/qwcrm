@@ -45,7 +45,7 @@ if($qwcrm_advanced_debug == true) {
     /* 
      * All defined PHP Constants
      */    
-    $BuildPage .= "<div><p><strong>".gettext(">All Defined PHP Constants").":</strong></p></div>\r\n";
+    $BuildPage .= "<div><p><strong>".gettext("All Defined PHP Constants").":</strong></p></div>\r\n";
     $BuildPage .= '<pre>'.print_r(get_defined_constants(), true).'</pre>';
 
     /* 

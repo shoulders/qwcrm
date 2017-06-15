@@ -6,7 +6,7 @@
                 <tr>                    
                     <td class="menuhead2" width="80%">{t}Refund Details {/t}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
-                        <a href="index.php?page=refund:edit&refund_id={$refund_details.REFUND_ID}" ><img src="{$theme_images_dir}icons/edit.gif"  alt="" height="16" border="0">{t}refund_details_edit{/t}</a>&nbsp;
+                        <a href="index.php?page=refund:edit&refund_id={$refund_details.REFUND_ID}" ><img src="{$theme_images_dir}icons/edit.gif"  alt="" height="16" border="0">{t}Edit Refund Details{/t}</a>&nbsp;
                         <a>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}REFUND_DETAILS_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}REFUND_DETAILS_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
                         </a>
@@ -52,7 +52,7 @@
                                             <td class="menutd">{$currency_sym} {$refund_details.REFUND_TAX_AMOUNT}</td>
                                         </tr>                                        
                                         <tr>
-                                            <td class="menutd"><b>{t}refund_payment_method{/t}</b></td>
+                                            <td class="menutd"><b>{t}Refund Payment Method{/t}</b></td>
                                             <td class="menutd">
                                                 {if $refund_details.REFUND_PAYMENT_METHOD ==1}{t}REFUND_PAYMENT_METHOD_1{/t}{/if}
                                                 {if $refund_details.REFUND_PAYMENT_METHOD ==2}{t}REFUND_PAYMENT_METHOD_2{/t}{/if}

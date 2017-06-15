@@ -61,7 +61,7 @@
                                 <b>{t}Email{/t}: </b>{$single_workorder[i].CUSTOMER_EMAIL}<br>                            
                             </p>
                             <p>
-                                <b>{t}workorder_type{/t}: </b> 
+                                <b>{t}Type{/t}: </b> 
                                 {if $single_workorder[i].CUSTOMER_TYPE == '1'}{t}CUSTOMER_TYPE_1{/t}{/if} 
                                 {if $single_workorder[i].CUSTOMER_TYPE == '2'}{t}CUSTOMER_TYPE_2{/t}{/if} 
                                 {if $single_workorder[i].CUSTOMER_TYPE == '3'}{t}CUSTOMER_TYPE_3{/t}{/if} 
@@ -152,7 +152,7 @@
                     </tr>                    
                     <tr>                                    
                         {if $single_workorder[i].EMPLOYEE_DISPLAY_NAME != ''}                            
-                            <td><b>{t}Closed By{/t}:</b>{$single_workorder[i].EMPLOYEE_DISPLAY_NAME} on <b>{t}workorder_date{/t}: </b>{$workorder_resolution[r].WORK_ORDER_CLOSE_DATE|date_format:$date_format}</td>                                                       
+                            <td><b>{t}Closed by{/t}:</b>{$single_workorder[i].EMPLOYEE_DISPLAY_NAME} on <b>{t}Date{/t}: </b>{$workorder_resolution[r].WORK_ORDER_CLOSE_DATE|date_format:$date_format}</td>                                                       
                         {/if}
                     </tr>
                     <tr>

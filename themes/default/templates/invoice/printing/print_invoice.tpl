@@ -140,7 +140,7 @@
     <!-- Labour Table -->
     <table width="800" border="1" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
         <tr>
-            <td width="40" class="olohead"><b>{t}qty{/t}</b></td>
+            <td width="40" class="olohead"><b>{t}Qty{/t</b></td>
             <td class="olohead"><b>{t}Labour Items{/t}</b></td>
             <td class="olohead" width="60" align="right"><b>{t}Unit Price{/t}</b></td>
             <td class="olohead" width="80" align="right"><b>{t}Sub Total{/t}</b></td>
@@ -163,7 +163,7 @@
     <!-- Parts Table -->
     <table width="800" border="1" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
         <tr>
-            <td width="40" class="olohead"><b>{t}qty{/t}</b></td>
+            <td width="40" class="olohead"><b>{t}Qty{/t</b></td>
             <td class="olohead"><b>{t}Parts Items{/t}</b></td>
             <td class="olohead" width="60" align="right"><b>{t}Unit Price{/t}</b></td>
             <td class="olohead" width="80" align="right"><b>{t}Sub Total{/t}</b></td>

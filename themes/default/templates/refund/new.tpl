@@ -59,7 +59,7 @@
                                                                             </td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td align="right"><b>{t}refund_type{/t}</b><span style="color: #ff0000"> *</span></td>
+                                                                            <td align="right"><b>{t}Type{/t}</b><span style="color: #ff0000"> *</span></td>
                                                                             <td>
                                                                                 <select name="refundType" class="olotd5" col="30" style="width: 150px"/>
                                                                                     <option value="1">{t}REFUND_TYPE_1{/t}</option>

@@ -53,7 +53,7 @@
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td align="right"><b>{t}refund_type{/t}</b><span style="color: #ff0000"> *</span></td>
+                                                            <td align="right"><b>{t}Type{/t}</b><span style="color: #ff0000"> *</span></td>
                                                             <td>
                                                                 <select id="refundType" name="refundType" class="olotd5" col="30" style="width: 150px" value="{$refund_details.REFUND_TYPE}"/>
                                                                     <option value="1"{if $refund_details.REFUND_TYPE== '1'} selected{/if}>{t}REFUND_TYPE_1{/t}</option>
@@ -108,7 +108,8 @@
                                                         </tr>
                                                         <tr>
                                                             <td></td>
-                                                            <td><input class="olotd5" name="submit" type="submit" value="{t}refund_update_button{/t}" /></td>
+                                                            <td><button type="submit" name="submit" value="update">{t}Update{/t}</button></td>
+                                                            
                                                         </tr>
                                                     </form>
                                                     

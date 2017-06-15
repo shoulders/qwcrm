@@ -29,7 +29,7 @@
                     <td>                        
                         {if $single_workorder.WORK_ORDER_CLOSE_BY != "" }
                             <p>
-                                <b>{t}Closed By{/t}: </b>{$single_workorder.EMPLOYEE_DISPLAY_NAME}<br>
+                                <b>{t}Closed by{/t}: </b>{$single_workorder.EMPLOYEE_DISPLAY_NAME}<br>
                                 <b>{t}Date{/t}: </b>{$single_workorder.WORK_ORDER_CLOSE_DATE|date_format:$date_format}<br>
                             </p>
                         {/if}

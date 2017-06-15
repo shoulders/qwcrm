@@ -50,7 +50,7 @@
                                                                     </tr>
                                                                     <tr>
                                                                         <td><b>{t}Start Time{/t}</b></td>
-                                                                        <td><b>{t}end Time{/t}</b></td>
+                                                                        <td><b>{t}End Time{/t}</b></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td>

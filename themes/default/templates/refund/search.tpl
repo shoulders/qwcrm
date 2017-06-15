@@ -24,7 +24,7 @@
                                                     <div>                                                       
                                                         <table border="0">
                                                             <tr>
-                                                                <td align="left" valign="top"><b>{t}refund_search{/t}</b>
+                                                                <td align="left" valign="top"><b>{t}Refund Search{/t}</b>
                                                                     <br />
                                                                     <select class="olotd5" id="search_category" name="search_category">
                                                                         <option value="id"{if $search_category == 'id'} selected{/if}>{t}Refund ID{/t}</option>

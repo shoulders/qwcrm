@@ -29,7 +29,7 @@
                                                 <td>{$customer_id}</td>
                                             </tr>
                                             <tr>
-                                                <td><b>{t}Expires<{/t}</b></td>
+                                                <td><b>{t}Expires{/t}</b></td>
                                                 <td>
                                                     <input class="olotd5" size="10" name="date_expires" type="text" id="date_expires" class="olotd4"/>
                                                     <input type="button" id="date_expires_button" value="+">

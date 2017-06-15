@@ -18,11 +18,11 @@
                         <td>{$transactions[r].DATE|date_format:$date_format}</td>
                         <td><b>{$currency_sym}</b>{$transactions[r].AMOUNT|string_format:"%.2f"}</td>
                         <td>
-                            {if $transactions[r].TYPE == 1}{t}payment_credit_card{/t}
-                            {elseif $transactions[r].TYPE == 2}{t}payment_check{/t}
-                            {elseif $transactions[r].TYPE == 3}{t}payment_cash{/t}
-                            {elseif $transactions[r].TYPE == 4}{t}payment_gift{/t}
-                            {elseif $transactions[r].TYPE == 5}{t}payment_paypal{/t}
+                            {if $transactions[r].TYPE == 1}{t}Credit Card{/t}
+                            {elseif $transactions[r].TYPE == 2}{t}Cheque{/t}
+                            {elseif $transactions[r].TYPE == 3}{t}Cash{/t}
+                            {elseif $transactions[r].TYPE == 4}{t}Gift Certificate{/t}
+                            {elseif $transactions[r].TYPE == 5}{t}PayPal{/t}
                             {/if}
                         </td>
                     </tr>

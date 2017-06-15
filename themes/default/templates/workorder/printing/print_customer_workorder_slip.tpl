@@ -65,7 +65,7 @@
                                 {if $single_workorder.CUSTOMER_TYPE == '1'}{t}CUSTOMER_TYPE_1{/t}{/if} 
                                 {if $single_workorder.CUSTOMER_TYPE == '2'}{t}CUSTOMER_TYPE_2{/t}{/if} 
                                 {if $single_workorder.CUSTOMER_TYPE == '3'}{t}CUSTOMER_TYPE_3{/t}{/if} 
-                                {if $single_workorder.CUSTOMER_TYPE == '4'}{t}wCUSTOMER_TYPE_4{/t}{/if} 
+                                {if $single_workorder.CUSTOMER_TYPE == '4'}{t}CUSTOMER_TYPE_4{/t}{/if} 
                                 {if $single_workorder.CUSTOMER_TYPE == '5'}{t}CUSTOMER_TYPE_5{/t}{/if} 
                                 {if $single_workorder.CUSTOMER_TYPE == '6'}{t}CUSTOMER_TYPE_6{/t}{/if} 
                                 {if $single_workorder.CUSTOMER_TYPE == '7'}{t}CUSTOMER_TYPE_7{/t}{/if}
