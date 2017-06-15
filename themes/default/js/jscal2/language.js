@@ -1,7 +1,7 @@
 
 Calendar.LANG("{$translate_jscal2_language_shortcode}", "{$translate_jscal2_language_name}", {
 
-        fdow: {$translate_jscal2_fdow},                  // first day of week for this locale; 0 = Sunday, 1 = Monday, etc.
+        fdow: "{$translate_jscal2_fdow}",                  // first day of week for this locale; 0 = Sunday, 1 = Monday, etc.
 
         goToday: "{$translate_jscal2_gotoday}",
 

@@ -1,14 +1,14 @@
 <!-- overview_unpaid_workorders_block.tpl -->
-<b>{$translate_workorder_unpaid}</b>
+<b>{t}Unpaid{/t}</b>
 <table class="olotable" width="100%" border="0" cellpadding="4" cellspacing="0">
     <tr>
-        <td class="olohead" width="6"><b>{$translate_workorder_id}</b></td>
-        <td class="olohead"><b>{$translate_workorder_opened}</b></td>
-        <td class="olohead"><b>{$translate_workorder_customer}</b></td>
-        <td class="olohead"><b>{$translate_workorder_scope}</b></td>
-        <td class="olohead"><b>{$translate_workorder_status}</b></td>
-        <td class="olohead"><b>{$translate_workorder_tech}</b></td>
-        <td class="olohead"><b>{$translate_workorder_action}</b></td>
+        <td class="olohead" width="6"><b>{t}Workorder ID{/t}</b></td>
+        <td class="olohead"><b>{t}Opened{/t}</b></td>
+        <td class="olohead"><b>{t}Customer{/t}</b></td>
+        <td class="olohead"><b>{t}Scope{/t}</b></td>
+        <td class="olohead"><b>{t}Status{/t}</b></td>
+        <td class="olohead"><b>{t}Technician{/t}</b></td>
+        <td class="olohead"><b>{t}Action{/t}</b></td>
     </tr>
     {section name=u loop=$unpaid_workorders}
         <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=workorder:details&workorder_id={$unpaid_workorders[u].WORK_ORDER_ID}&customer_id={$unpaid_workorders[u].CUSTOMER_ID}';" class="row1">
@@ -21,7 +21,7 @@
 
             <!-- Customer -->
             <td class="olotd4" nowrap>
-                <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<b><center>{$translate_workorder_contact_info}</b></center><hr><b>{$translate_workorder_phone}: </b>{$unpaid_workorders[u].CUSTOMER_PHONE}<br> <b>{$translate_workorder_fax}: </b>{$unpaid_workorders[u].CUSTOMER_WORK_PHONE}<br><b>{$translate_workorder_mobile}: </b>{$unpaid_workorders[u].CUSTOMER_MOBILE_PHONE}<br><b>{$translate_workorder_address}:</b><br>{$unpaid_workorders[u].CUSTOMER_ADDRESS}<br>{$unpaid_workorders[u].CUSTOMER_CITY}, {$unpaid_workorders[u].CUSTOMER_STATE}<br>{$unpaid_workorders[u].CUSTOMER_ZIP}');" onMouseOut="hideddrivetip();">                         
+                <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<b><center>{t}Contact Info{/t}</b></center><hr><b>{t}Phone{/t}: </b>{$unpaid_workorders[u].CUSTOMER_PHONE}<br><b>{t}Fax{/t}: </b>{$unpaid_workorders[u].CUSTOMER_WORK_PHONE}<br><b>{t}Mobile{/t}: </b>{$unpaid_workorders[u].CUSTOMER_MOBILE_PHONE}<br><b>{t}Address{/t}: </b><br>{$unpaid_workorders[u].CUSTOMER_ADDRESS}<br>{$unpaid_workorders[u].CUSTOMER_CITY}, {$unpaid_workorders[u].CUSTOMER_STATE}<br>{$unpaid_workorders[u].CUSTOMER_ZIP}');" onMouseOut="hideddrivetip();">                         
                 <a class="link1" href="index.php?page=customer:details&customer_id={$unpaid_workorders[u].CUSTOMER_ID}">{$unpaid_workorders[u].CUSTOMER_DISPLAY_NAME}</a>
             </td>
 
@@ -30,22 +30,22 @@
 
             <!-- Status -->
             <td class="olotd4" align="center">
-                {if $unpaid_workorders[u].WORK_ORDER_STATUS == '1'}{$translate_workorder_created}{/if}
-                {if $unpaid_workorders[u].WORK_ORDER_STATUS == '2'}{$translate_workorder_assigned}{/if}
-                {if $unpaid_workorders[u].WORK_ORDER_STATUS == '3'}{$translate_workorder_waiting_for_parts}{/if}
-                {if $unpaid_workorders[u].WORK_ORDER_STATUS == '6'}{$translate_workorder_closed}{/if}
-                {if $unpaid_workorders[u].WORK_ORDER_STATUS == '7'}{$translate_workorder_waiting_for_payment}{/if}
-                {if $unpaid_workorders[u].WORK_ORDER_STATUS == '8'}{$translate_workorder_payment_made}{/if}
-                {if $unpaid_workorders[u].WORK_ORDER_STATUS == '9'}{$translate_workorder_pending}{/if}
-                {if $unpaid_workorders[u].WORK_ORDER_STATUS == '10'}{$translate_workorder_open}{/if}
+                {if $unpaid_workorders[u].WORK_ORDER_STATUS == '1'}{t}Created{/t}{/if}
+                {if $unpaid_workorders[u].WORK_ORDER_STATUS == '2'}{t}Assigned{/t}{/if}
+                {if $unpaid_workorders[u].WORK_ORDER_STATUS == '3'}{t}Waiting For Parts{/t}{/if}
+                {if $unpaid_workorders[u].WORK_ORDER_STATUS == '6'}{t}Closed{/t}{/if}
+                {if $unpaid_workorders[u].WORK_ORDER_STATUS == '7'}{t}Waiting For Payment{/t}{/if}
+                {if $unpaid_workorders[u].WORK_ORDER_STATUS == '8'}{t}Payment Made{/t}{/if}
+                {if $unpaid_workorders[u].WORK_ORDER_STATUS == '9'}{t}Pending{/t}{/if}
+                {if $unpaid_workorders[u].WORK_ORDER_STATUS == '10'}{t}Open{/t}{/if}
             </td>
 
             <!-- Employee -->
             <td class="olotd4" nowrap>
                 {if $unpaid_workorders[u].EMPLOYEE_DISPLAY_NAME == ""}
-                    {$translate_workorder_not_assigned}
+                    {t}Not Assigned<{/t}
                 {else}
-                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<center><b>{$translate_workorder_contact_info}</b></center><hr><b>{$translate_workorder_fax}: </b>{$unpaid_workorders[u].EMPLOYEE_WORK_PHONE}<br><b>{$translate_workorder_mobile}: </b>{$unpaid_workorders[u].EMPLOYEE_MOBILE_PHONE}<br><b>{$translate_workorder_home}: </b>{$unpaid_workorders[u].EMPLOYEE_HOME_PHONE}');" onMouseOut="hideddrivetip();">                          
+                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<center><b>{t}Contact Info{/t}</b></center><hr><b>{t}Fax{/t}: </b>{$unpaid_workorders[u].EMPLOYEE_WORK_PHONE}<br><b>{t}Mobile{/t}: </b>{$unpaid_workorders[u].EMPLOYEE_MOBILE_PHONE}<br><b>{t}Home{/t}: </b>{$unpaid_workorders[u].EMPLOYEE_HOME_PHONE}');" onMouseOut="hideddrivetip();">                          
                     <a class="link1" href="index.php?page=employee:details&employee_id={$unpaid_workorders[u].EMPLOYEE_ID}">{$unpaid_workorders[u].EMPLOYEE_DISPLAY_NAME}</a>
                 {/if}
             </td>
@@ -53,16 +53,16 @@
             <!-- Action -->
             <td class="olotd4" align="center" nowrap>
                 <a href="index.php?page=workorder:print&workorder_id={$unpaid_workorders[u].WORK_ORDER_ID}&customer_id={$unpaid_workorders[u].CUSTOMER_ID}&theme=off">
-                    <img src="{$theme_images_dir}icons/16x16/fileprint.gif" border="0" onMouseOver="ddrivetip('{$translate_workorder_print_the_work_order_button_tooltip}');" onMouseOut="hideddrivetip();">
+                    <img src="{$theme_images_dir}icons/16x16/fileprint.gif" border="0" onMouseOver="ddrivetip('{t}Print The Work Order{/t}');" onMouseOut="hideddrivetip();">
                 </a>
                 <a href="index.php?page=workorder:details&workorder_id={$unpaid_workorders[u].WORK_ORDER_ID}&customer_id={$unpaid_workorders[u].CUSTOMER_ID}">
-                    <img src="{$theme_images_dir}icons/16x16/viewmag.gif"  border="0" onMouseOver="ddrivetip('{$translate_workorder_view_the_work_order_button_tooltip}');" onMouseOut="hideddrivetip();">
+                    <img src="{$theme_images_dir}icons/16x16/viewmag.gif"  border="0" onMouseOver="ddrivetip('{t}View The Work Order{/t}');" onMouseOut="hideddrivetip();">
                 </a>                                        
             </td>
         </tr>
     {sectionelse}
         <tr>
-            <td colspan="7" class="error">{$translate_workorder_msg_there_are_no_unpaid_work_orders}</td>
+            <td colspan="7" class="error">{t}There are No Unpaid Work Orders{/t}</td>
         </tr>
     {/section}
 </table>

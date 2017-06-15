@@ -62,7 +62,7 @@
                                                 <td colspan="2"><b><font color="red">{t}Paypal Information{/t}</font></b></td>                                                    
                                             </tr>
                                             <tr>
-                                                <td colspan="2">{t}You must have a Paypal Merchant account set and working. Please see https://www.paypal.com/ for more information.{/t}</td>
+                                                <td colspan="2">{t}You must have a PayPal Merchant account set and working. Please see https://www.paypal.com/ for more information.{/t}</td>
                                             </tr>
                                             <tr>
                                                 <td><b>{t}Paypal Email{/t}</b></td>

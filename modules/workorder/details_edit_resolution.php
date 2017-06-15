@@ -6,34 +6,34 @@ require(INCLUDES_DIR.'modules/workorder.php');
 
 // Check that there is a workorder_id set
 if($workorder_id == ''){
-    force_page('workorder', 'overview', 'warning_msg='.$smarty->getTemplateVars('translate_workorder_advisory_message_details_edit_resolution_noworkorderid'));
+    force_page('workorder', 'overview', 'warning_msg='.gettext("Cannot update the resolution as there is no Work Order ID set."));
     exit;
 }
 
 // Check if we can edit the workorder resolution
 if(!resolution_edit_status_check($db, $workorder_id)) {
-    force_page('workorder', 'details&workorder_id='.$workorder_id, 'warning_msg='.$smarty->getTemplateVars('translate_workorder_advisory_message_details_edit_resolution_cannotedit'));
+    force_page('workorder', 'details&workorder_id='.$workorder_id, 'warning_msg='.gettext("Cannot edit the resolution as workorder status does not allow it."));
     exit;
 }
     
 // Update Work Resolution Only
 if(isset($VAR['submitchangesonly'])) {
     update_workorder_resolution($db, $workorder_id, $VAR['workorder_resolution']);
-    force_page('workorder', 'details&workorder_id='.$workorder_id, 'information_msg='.$smarty->getTemplateVars('translate_workorder_advisory_message_details_edit_resolution_updated'));
+    force_page('workorder', 'details&workorder_id='.$workorder_id, 'information_msg='.gettext("Resolution has been updated."));
     exit;
 }
 
 // Close without invoice
 if(isset($VAR['closewithoutinvoice'])) {
     close_workorder_without_invoice($db, $workorder_id, $VAR['workorder_resolution']);
-    force_page('workorder', 'detailsworkorder_id='.$workorder_id, 'information_msg='.$smarty->getTemplateVars('translate_workorder_advisory_message_details_edit_resolution_workorderclosedwithoutinvoice'));
+    force_page('workorder', 'detailsworkorder_id='.$workorder_id, 'information_msg='.gettext("Work Order has been closed without an invoice."));
     exit; 
 }
 
 // Close with invoice
 if(isset($VAR['closewithinvoice'])) {
     close_workorder_with_invoice($db, $workorder_id, $VAR['workorder_resolution']);       
-    force_page('invoice', 'new&workorder_id='.$workorder_id, 'information_msg='.$smarty->getTemplateVars('translate_workorder_advisory_message_details_edit_resolution_workorderclosedwithinvoice'));
+    force_page('invoice', 'new&workorder_id='.$workorder_id, 'information_msg='.gettext("Work Order has been closed with an invoice."));
     exit;
 }
         

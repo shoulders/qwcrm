@@ -472,8 +472,7 @@ function update_workorder_comments($db, $workorder_id, $workorder_comments){
         // Create a History record        
         insert_workorder_history_note($db, $workorder_id, gettext("Comments updated by").' '.$_SESSION['login_display_name']);
         
-        // Log activity
-        //write_record_to_activity_log(gettext("translate_workorder_log_message_work_order').' '.$workorder_id.' '.gettext("translate_workorder_log_message_comments').' '.gettext("translate_workorder_log_message_has_been_updated'));
+        // Log activity        
         write_record_to_activity_log(gettext("Work Order").' '.$workorder_id.' '.gettext("Comments updated by").' '.$_SESSION['login_display_name']);
         
         // Update Workorder last activity record

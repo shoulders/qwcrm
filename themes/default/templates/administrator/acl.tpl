@@ -108,7 +108,7 @@
                                                 </tr>
                                             {/section}
                                         </table>
-                                        <input type="submit" name="submit" value="Submit">
+                                        <button type="submit" name="submit" value="submit">{t}Submit{/t}</button>
                                     </form>                                    
                                 </td>
                             </tr>

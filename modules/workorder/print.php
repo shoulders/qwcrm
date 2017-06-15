@@ -7,13 +7,13 @@ require(INCLUDES_DIR.'modules/schedule.php');
 
 // Check that there is a workorder_id set
 if($workorder_id == '') {
-    force_page('workorder', 'overview', 'warning_msg='.$smarty->getTemplateVars('translate_workorder_advisory_message_print_noworkorderid'));
+    force_page('workorder', 'overview', 'warning_msg='.gettext("You cannot print as there is no Workorder ID set."));
     exit;
 }
 
 // Check there is a print content and print type set
 if($VAR['print_content'] == '' || $VAR['print_type'] == '') {
-    force_page('workorder', 'overview', 'warning_msg='.$smarty->getTemplateVars('translate_workorder_advisory_message_print_noprintoptions'));
+    force_page('workorder', 'overview', 'warning_msg='.gettext("Some or all of the Printing Options are not set."));
     exit;
 }
 

@@ -10,13 +10,13 @@
         <td class="olohead">
             <table width="100%" cellpadding="0" cellspacing="0" border="0">
                 <tr>
-                    <td class="menuhead2" width="80%">&nbsp;{$translate_workorder_details_schedule_title}</td>
+                    <td class="menuhead2" width="80%">&nbsp;{t}Schedule{/t}</td>
                     <td class="menuhead2" width="20%" align="right">
                         <table cellpadding="2" cellspacing="2" border="0">
                             <tr>
                                 <td width="33%" align="right" >
                                     <a>
-                                        <img src="{$theme_images_dir}icons/16x16/small_new_work_order.gif" border="0" onMouseOver="ddrivetip('{$translate_workorder_details_schedule_button_tooltip}');" onMouseOut="hideddrivetip();">
+                                        <img src="{$theme_images_dir}icons/16x16/small_new_work_order.gif" border="0" onMouseOver="ddrivetip('{t}Create a New Schedule{/t}');" onMouseOut="hideddrivetip();">
                                     </a>
                                 </td>
                             </tr>
@@ -35,7 +35,7 @@
                             <table class="olotablered" width="100%" border="0" cellpadding="5" cellspacing="0">
                                 <tr>
                                     <td>
-                                        <span class="error_font">{$translate_workorder_warning}: </span> {$translate_workorder_msg_no_schedule_has_been_set}
+                                        <span class="error_font">{t}No schedule has been set. Click the day on the calendar you wish to set the schedule.{/t}</span>
                                     </td>
                                 </tr>
                             </table>    
@@ -69,7 +69,7 @@
                                     <td>                                        
                                         <table width="700" cellpadding="4" cellspacing="0" border="0" >
                                             <tr>
-                                                <td class="menuhead2" width="80%">&nbsp;{$translate_workorder_schedule} {$workorder_schedules[i].SCHEDULE_ID} - {$workorder_schedules[i].SCHEDULE_START|date_format:$date_format}</td>
+                                                <td class="menuhead2" width="80%">&nbsp;{t}Schedule{/t} {$workorder_schedules[i].SCHEDULE_ID} - {$workorder_schedules[i].SCHEDULE_START|date_format:$date_format}</td>
                                             </tr>
                                             <tr>
                                                 <td class="menutd2">
@@ -79,16 +79,16 @@
                                                                 <table width="100%" cellpadding="5" cellspacing="5">
                                                                     <tr>
                                                                         <td>
-                                                                            <p><b>{$translate_workorder_date}: </b>{$workorder_schedules[i].SCHEDULE_START|date_format:$date_format}</p>
+                                                                            <p><b>{t}Date{/t}: </b>{$workorder_schedules[i].SCHEDULE_START|date_format:$date_format}</p>
                                                                             <p>
-                                                                                <b>{$translate_workorder_start_time}: </b>{$workorder_schedules[i].SCHEDULE_START|date_format:"%H:%M"}<br>
-                                                                                <b>{$translate_workorder_end_time}: </b>{$workorder_schedules[i].SCHEDULE_END|date_format:"%H:%M"}
+                                                                                <b>{t}Start Time{/t}: </b>{$workorder_schedules[i].SCHEDULE_START|date_format:"%H:%M"}<br>
+                                                                                <b>{t}End Time{/t}: </b>{$workorder_schedules[i].SCHEDULE_END|date_format:"%H:%M"}
                                                                             </p>                                                                            
-                                                                            <b>{$translate_workorder_notes}:</b><br />
+                                                                            <b>{t}Notes{/t}:</b><br />
                                                                             <div>{$workorder_schedules[i].SCHEDULE_NOTES}</div><br>
-                                                                            <button type="button" onClick="window.location='index.php?page=schedule:edit&schedule_id={$workorder_schedules[i].SCHEDULE_ID}';">{$translate_workorder_details_schedule_edit}</button>
-                                                                            <a href="index.php?page=schedule:delete&schedule_id={$workorder_schedules[i].SCHEDULE_ID}" onclick="return confirmDelete('{$translate_workorder_details_schedule_confirmdelete}');"><button type="button">{$translate_workorder_details_schedule_delete}</button></a>                                                                            
-                                                                            <button type="button" onClick="window.location='index.php?page=schedule:icalendar&schedule_id={$workorder_schedules[i].SCHEDULE_ID}&theme=print';">{$translate_workorder_details_schedule_export}</button>                                                                                                                                 
+                                                                            <button type="button" onClick="window.location='index.php?page=schedule:edit&schedule_id={$workorder_schedules[i].SCHEDULE_ID}';">{t}Edit{/t}</button>
+                                                                            <a href="index.php?page=schedule:delete&schedule_id={$workorder_schedules[i].SCHEDULE_ID}" onclick="return confirmDelete('{t}Are you sure you want to delete this Schedule?{/t}');"><button type="button">{t}Delete{/t}</button></a>                                                                            
+                                                                            <button type="button" onClick="window.location='index.php?page=schedule:icalendar&schedule_id={$workorder_schedules[i].SCHEDULE_ID}&theme=print';">{t}Export{/t}</button>                                                                                                                                 
                                                                         </td>
                                                                     </tr>
                                                                 </table>

@@ -4,7 +4,7 @@
         <td class="olohead">
             <table width="100%" cellpadding="0" cellspacing="0" border="0">
                 <tr>
-                    <td class="menuhead2" width="80%">{$translate_workorder_details_history_title}</td>
+                    <td class="menuhead2" width="80%">{t}History{/t}</td>
                 </tr>
             </table>
         </td>
@@ -15,10 +15,10 @@
                 <table width="100%" cellpadding="4" cellspacing="0" border="0">
                     <tr>
                         <td>
-                            <b>{$translate_workorder_employee}: </b><a href="index.php?page=employee:details&employee_id={$workorder_history[i].ENTERED_BY}">{$workorder_history[i].EMPLOYEE_DISPLAY_NAME}</a><br>
-                            <b>{$translate_workorder_date}: </b>{$workorder_history[i].DATE|date_format:$date_format}<br>
-                            <b>{$translate_workorder_time}: </b>{$workorder_history[i].DATE|date_format:"%H:%M"}<br>
-                            <b>{$translate_workorder_event}: </b>{$workorder_history[i].NOTE}                            
+                            <b>{t}Employee{/t}: </b><a href="index.php?page=employee:details&employee_id={$workorder_history[i].ENTERED_BY}">{$workorder_history[i].EMPLOYEE_DISPLAY_NAME}</a><br>
+                            <b>{t}Date{/t}: </b>{$workorder_history[i].DATE|date_format:$date_format}<br>
+                            <b>{t}Time{/t}: </b>{$workorder_history[i].DATE|date_format:"%H:%M"}<br>
+                            <b>{t}Event{/t}: </b>{$workorder_history[i].NOTE}                            
                         </td>
                     </tr>
                 </table>

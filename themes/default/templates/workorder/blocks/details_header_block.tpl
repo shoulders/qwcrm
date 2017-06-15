@@ -1,12 +1,12 @@
 <!-- details_header_block.tpl -->
 <table class="olotable" width="100%" border="0" cellpadding="2" cellspacing="0" >
     <tr>
-        <td class="olohead" align="center">{$translate_workorder_id}</td>
-        <td class="olohead" align="center">{$translate_workorder_opened}</td>        
-        <td class="olohead" align="center">{$translate_workorder_scope}</td>                
-        <td class="olohead" align="center">{$translate_workorder_status}</td>
-        <td class="olohead" align="center">{$translate_workorder_assigned_to}</td>
-        <td class="olohead" align="center">{$translate_workorder_last_change}</td>
+        <td class="olohead" align="center">{t}Workorder ID{/t}</td>
+        <td class="olohead" align="center">{t}Opened{/t}</td>        
+        <td class="olohead" align="center">{t}Scope{/t}</td>                
+        <td class="olohead" align="center">{t}Status{/t}</td>
+        <td class="olohead" align="center">{t}Assigned To{/t}</td>
+        <td class="olohead" align="center">{t}Last Change{/t}</td>
     </tr>
     <tr>
         
@@ -21,19 +21,19 @@
         
         <!-- Status -->
         <td class="olotd4" align="center">
-            {if $single_workorder.WORK_ORDER_STATUS == '1'}{$translate_workorder_created}{/if}
-            {if $single_workorder.WORK_ORDER_STATUS == '2'}{$translate_workorder_assigned}{/if}
-            {if $single_workorder.WORK_ORDER_STATUS == '3'}{$translate_workorder_waiting_for_parts}{/if}
-            {if $single_workorder.WORK_ORDER_STATUS == '6'}{$translate_workorder_closed}{/if}
-            {if $single_workorder.WORK_ORDER_STATUS == '7'}{$translate_workorder_waiting_for_payment}{/if}
-            {if $single_workorder.WORK_ORDER_STATUS == '8'}{$translate_workorder_payment_made}{/if}
-            {if $single_workorder.WORK_ORDER_STATUS == '9'}{$translate_workorder_pending}{/if}
-            {if $single_workorder.WORK_ORDER_STATUS == '10'}{$translate_workorder_open}{/if}
+            {if $single_workorder.WORK_ORDER_STATUS == '1'}{t}Created{/t}{/if}
+            {if $single_workorder.WORK_ORDER_STATUS == '2'}{t}Assigned{/t}{/if}
+            {if $single_workorder.WORK_ORDER_STATUS == '3'}{t}Waiting For Parts{/t}{/if}
+            {if $single_workorder.WORK_ORDER_STATUS == '6'}{t}Closed{/t}{/if}
+            {if $single_workorder.WORK_ORDER_STATUS == '7'}{t}Waiting For Payment{/t}{/if}
+            {if $single_workorder.WORK_ORDER_STATUS == '8'}{t}Payment Made{/t}{/if}
+            {if $single_workorder.WORK_ORDER_STATUS == '9'}{t}Pending{/t}{/if}
+            {if $single_workorder.WORK_ORDER_STATUS == '10'}{t}Open{/t}{/if}
         </td>
         
         <!-- Assigned To -->
         <td class="olotd4" align="center">
-            <img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" onMouseOver="ddrivetip('<center><b>{$translate_workorder_contact}</b></center><hr><b>{$translate_workorder_fax}: </b>{$single_workorder.EMPLOYEE_WORK_PHONE}<br><b>{$translate_workorder_mobile}: </b>{$single_workorder.EMPLOYEE_MOBILE_PHONE}<br><b>{$translate_workorder_home}: </b>{$single_workorder.EMPLOYEE_HOME_PHONE}');" onMouseOut="hideddrivetip();">                
+            <img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" onMouseOver="ddrivetip('<center><b>{t}Contact{/t}</b></center><hr><b>{t}Fax{/t}: </b>{$single_workorder.EMPLOYEE_WORK_PHONE}<br><b>{t}Mobile{/t}: </b>{$single_workorder.EMPLOYEE_MOBILE_PHONE}<br><b>{t}Home{/t}: </b>{$single_workorder.EMPLOYEE_HOME_PHONE}');" onMouseOut="hideddrivetip();">                
            <a class="link1" href="index.php?page=employee:details&employee_id={$single_workorder.EMPLOYEE_ID}">{$single_workorder.EMPLOYEE_DISPLAY_NAME}</a>
         </td>
         

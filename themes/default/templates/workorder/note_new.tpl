@@ -4,10 +4,16 @@
 
 <table width="100%" border="0" cellpadding="20" cellspacing="0">
     <tr>
+        <td class="menuhead2" width="80%">&nbsp;{t}Work Order New Note{/t}</td>
+        <td class="menuhead2" width="20%" align="right" valign="middle">
+            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}WORKORDER_NOTE_NEW_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}WORKORDER_NOTE_NEW_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
+        </td>
+    </tr>    
+    <tr>
         <td>
             <table width="700" cellpadding="5" cellspacing="0" border="0" >
                 <tr>
-                    <td class="menuhead2" width="80%">{$translate_workorder_details_new_note_title} {$workorder_id}</td>
+                    <td class="menuhead2" width="80%">{t}Add A New Note For Work Order ID{/t} {$workorder_id}</td>
                 </tr>
                 <tr>
                     <td class="menutd2">                        
@@ -18,14 +24,14 @@
                                         <input type="hidden" name="workorder_id" value="{$workorder_id}">
                                         <table class="olotable" width="100%" border="0" summary="Work order display">
                                             <tr>
-                                                <td class="olohead">{$translate_workorder_details_notes_title}</td>
+                                                <td class="olohead">{t}Notes{/t}</td>
                                             </tr>
                                             <tr>
                                                 <td class="olotd"><textarea name="workorder_note" class="olotd4 mceCheckForContent" rows="15" cols="70"></textarea></td>
                                             </tr>
                                         </table>
                                         <br>
-                                        <input name="submit" class="olotd4"  value="{$translate_workorder_submit}" type="submit" />    
+                                        <button type="submit" name="submit" value="submit">{t}Submit{/t}</button>    
                                     </form>
                                     <br>
                                 </td>

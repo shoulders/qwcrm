@@ -6,7 +6,7 @@ require(INCLUDES_DIR.'modules/workorder.php');
 
 // Check that there is a workorder_id set
 if($workorder_id == '') {
-    force_page('workorder', 'overview', 'warning_msg='.$smarty->getTemplateVars('translate_workorder_advisory_message_details_edit_description_noworkorderid'));
+    force_page('workorder', 'overview', 'warning_msg='.gettext("You cannot edit the scope or description as there is no Workorder ID set."));
     exit;
 }
 
@@ -14,7 +14,7 @@ if($workorder_id == '') {
 if(isset($VAR['submit'])) {
     
     update_workorder_scope_and_description($db, $workorder_id, $VAR['workorder_scope'], $VAR['workorder_description']);
-    force_page('workorder', 'details', 'workorder_id='.$workorder_id.'information_msg='.$smarty->getTemplateVars('translate_workorder_advisory_message_details_edit_description_updated'));
+    force_page('workorder', 'details', 'workorder_id='.$workorder_id.'information_msg='.gettext("Description has been updated."));
     exit;
 
 // Fetch the page with the scope and description from the database 
