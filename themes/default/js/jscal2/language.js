@@ -1,62 +1,62 @@
 
-Calendar.LANG("{$translate_jscal2_language_shortcode}", "{$translate_jscal2_language_name}", {
+Calendar.LANG("{t}JSCAL2_LANGUAGE_SHORTCODE{/t}", "{t}JSCAL2_LANGUAGE_NAME{/t}", {
 
-        fdow: "{$translate_jscal2_fdow}",                  // first day of week for this locale; 0 = Sunday, 1 = Monday, etc.
+        fdow: "{t}JSCAL2_FDOW{/t}",                  // first day of week for this locale; 0 = Sunday, 1 = Monday, etc.
 
-        goToday: "{$translate_jscal2_gotoday}",
+        goToday: "{t}JSCAL2_GOTODAY{/t}",
 
-        today: "{$translate_jscal2_today}",              // appears in bottom bar
+        today: "{t}JSCAL2_TODAY{/t}",              // appears in bottom bar
 
-        wk: "{$translate_jscal2_wk}",
+        wk: "{t}JSCAL2_WK{/t}",
 
-        weekend: "{$translate_jscal2_weekend}",          // 0 = Sunday, 1 = Monday, etc.
+        weekend: "{t}JSCAL2_WEEKEND{/t}",          // 0 = Sunday, 1 = Monday, etc.
 
-        AM: "{$translate_jscal2_am}",
+        AM: "{t}JSCAL2_AM{/t}",
 
-        PM: "{$translate_jscal2_pm}",
+        PM: "{t}JSCAL2_PM{/t}",
 
-        mn : [ "{$translate_jscal2_january}",
-               "{$translate_jscal2_february}",
-               "{$translate_jscal2_march}",
-               "{$translate_jscal2_april}",
-               "{$translate_jscal2_may}",
-               "{$translate_jscal2_june}",
-               "{$translate_jscal2_july}",
-               "{$translate_jscal2_august}",
-               "{$translate_jscal2_september}",
-               "{$translate_jscal2_october}",
-               "{$translate_jscal2_november}",
-               "{$translate_jscal2_december}" ],
+        mn : [ "{t}JSCAL2_JANUARY{/t}",
+               "{t}JSCAL2_FEBRUARY{/t}",
+               "{t}JSCAL2_MARCH{/t}",
+               "{t}JSCAL2_APRIL{/t}",
+               "{t}JSCAL2_MAY{/t}",
+               "{t}JSCAL2_JUNE{/t}",
+               "{t}JSCAL2_JULY{/t}",
+               "{t}JSCAL2_AUGUST{/t}",
+               "{t}JSCAL2_SEPTEMBER{/t}",
+               "{t}JSCAL2_OCTOBER{/t}",
+               "{t}JSCAL2_NOVEMBER{/t}",
+               "{t}JSCAL2_DECEMBER{/t}" ],
 
-        smn : [ "{$translate_jscal2_jan}",
-                "{$translate_jscal2_feb}",
-                "{$translate_jscal2_mar}",
-                "{$translate_jscal2_apr}",
-                "{$translate_jscal2_may}",
-                "{$translate_jscal2_jun}",
-                "{$translate_jscal2_jul}",
-                "{$translate_jscal2_aug}",
-                "{$translate_jscal2_sep}",
-                "{$translate_jscal2_oct}",
-                "{$translate_jscal2_nov}",
-                "{$translate_jscal2_dec}" ],
+        smn : [ "{t}JSCAL2_JAN{/t}",
+                "{t}JSCAL2_FEB{/t}",
+                "{t}JSCAL2_MAR{/t}",
+                "{t}JSCAL2_APR{/t}",
+                "{t}JSCAL2_MAY{/t}",
+                "{t}JSCAL2_JUN{/t}",
+                "{t}JSCAL2_JUL{/t}",
+                "{t}JSCAL2_AUG{/t}",
+                "{t}JSCAL2_SEP{/t}",
+                "{t}JSCAL2_OCT{/t}",
+                "{t}JSCAL2_NOV{/t}",
+                "{t}JSCAL2_DEC{/t}" ],
 
-        dn : [ "{$translate_jscal2_sunday}",
-               "{$translate_jscal2_monday}",
-               "{$translate_jscal2_tuesday}",
-               "{$translate_jscal2_wednesday}",
-               "{$translate_jscal2_thursday}",
-               "{$translate_jscal2_friday}",
-               "{$translate_jscal2_saturday}",
-               "{$translate_jscal2_sunday}" ],
+        dn : [ "{t}JSCAL2_SUNDAY{/t}",
+               "{t}JSCAL2_MONDAY{/t}",
+               "{t}JSCAL2_TUESDAY{/t}",
+               "{t}JSCAL2_WEDNESDAY{/t}",
+               "{t}JSCAL2_THURSDAY{/t}",
+               "{t}JSCAL2_FRIDAY{/t}",
+               "{t}JSCAL2_SATURDAY{/t}",
+               "{t}JSCAL2_SUNDAY{/t}" ],
 
-        sdn : [ "{$translate_jscal2_su}",
-                "{$translate_jscal2_mo}",
-                "{$translate_jscal2_tu}",
-                "{$translate_jscal2_we}",
-                "{$translate_jscal2_th}",
-                "{$translate_jscal2_fr}",
-                "{$translate_jscal2_sa}",
-                "{$translate_jscal2_su}" ]
+        sdn : [ "{t}JSCAL2_SU{/t}",
+                "{t}JSCAL2_MO{/t}",
+                "{t}JSCAL2_TU{/t}",
+                "{t}JSCAL2_WE{/t}",
+                "{t}JSCAL2_TH{/t}",
+                "{t}JSCAL2_FR{/t}",
+                "{t}JSCAL2_SA{/t}",
+                "{t}JSCAL2_SU{/t}" ]
 
 } );
