@@ -90,14 +90,14 @@
                                                                 </td>
                                                                 <td class="olotd4" nowrap>{$workorders[i].WORK_ORDER_SCOPE}</td>
                                                                 <td class="olotd4" align="center">
-                                                                    {if $workorders[i].WORK_ORDER_STATUS == '1'}{t}Ceated{/t}{/if}
-                                                                    {if $workorders[i].WORK_ORDER_STATUS == '2'}{t}Assigned{/t}{/if}
-                                                                    {if $workorders[i].WORK_ORDER_STATUS == '3'}{t}Waiting For Parts{/t}{/if}
-                                                                    {if $workorders[i].WORK_ORDER_STATUS == '6'}{t}Closed{/t}{/if}
-                                                                    {if $workorders[i].WORK_ORDER_STATUS == '7'}{t}Waiting For Payment{/t}{/if}
-                                                                    {if $workorders[i].WORK_ORDER_STATUS == '8'}{t}Payment Made{/t}{/if}
-                                                                    {if $workorders[i].WORK_ORDER_STATUS == '9'}{t}Pending{/t}{/if}
-                                                                    {if $workorders[i].WORK_ORDER_STATUS == '10'}{t}Open{/t}{/if}
+                                                                    {if $workorders[i].WORK_ORDER_STATUS == '1'}{t}WORKORDER_STATUS_1{/t}{/if}
+                                                                    {if $workorders[i].WORK_ORDER_STATUS == '2'}{t}WORKORDER_STATUS_2{/t}{/if}
+                                                                    {if $workorders[i].WORK_ORDER_STATUS == '3'}{t}WORKORDER_STATUS_3{/t}{/if}
+                                                                    {if $workorders[i].WORK_ORDER_STATUS == '6'}{t}WORKORDER_STATUS_6{/t}{/if}
+                                                                    {if $workorders[i].WORK_ORDER_STATUS == '7'}{t}WORKORDER_STATUS_7{/t}{/if}
+                                                                    {if $workorders[i].WORK_ORDER_STATUS == '8'}{t}WORKORDER_STATUS_8{/t}{/if}
+                                                                    {if $workorders[i].WORK_ORDER_STATUS == '9'}{t}WORKORDER_STATUS_9{/t}{/if}
+                                                                    {if $workorders[i].WORK_ORDER_STATUS == '10'}{t}WORKORDER_STATUS_10{/t}{/if}
                                                                 </td>  
                                                                 <td class="olotd4" nowrap>
                                                                     <img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" onMouseOver="ddrivetip('<center><b>{t}Contact Info{/t}</b></center><hr><b>{t}Fax{/t}: </b>{$workorders[i].EMPLOYEE_WORK_PHONE}<br><b>{t}Mobile{/t}: </b>{$workorders[i].EMPLOYEE_MOBILE_PHONE}<br><b>{t}Home{/t}: </b>{$workorders[i].EMPLOYEE_HOME_PHONE}');" onMouseOut="hideddrivetip();">                                                                         

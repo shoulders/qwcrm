@@ -15,14 +15,14 @@
             <td class="olotd4"><img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<center><b>Customer Contact</b><hr></center><b>Home: </b>{$open_workorders[a].CUSTOMER_PHONE}<br><b>{t}Work{/t}: </b>{$open_workorders[a].CUSTOMER_WORK_PHONE}<br><b>{t}Mobile{/t}: </b>{$open_workorders[a].CUSTOMER_MOBILE_PHONE}');"onMouseOut="hideddrivetip();">{$open_workorders[a].CUSTOMER_DISPLAY_NAME}</td>                                                        
             <td class="olotd4"><img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<center><b>{t}Description{/t}</b><hr></center>{$open_workorders[a].WORK_ORDER_DESCRIPTION}');" onMouseOut="hideddrivetip();">{$open_workorders[a].WORK_ORDER_SCOPE}</td>
             <td class="olotd4">
-                {if $open_workorders[a].WORK_ORDER_STATUS == '1'}{t}Created{/t}{/if}
-                {if $open_workorders[a].WORK_ORDER_STATUS == '2'}{t}Assigned{/t}{/if}
-                {if $open_workorders[a].WORK_ORDER_STATUS == '3'}{t}Waiting For Parts{/t}{/if}
-                {if $open_workorders[a].WORK_ORDER_STATUS == '6'}{t}Closed{/t}{/if}
-                {if $open_workorders[a].WORK_ORDER_STATUS == '7'}{t}Waiting For Payment<{/t}{/if}
-                {if $open_workorders[a].WORK_ORDER_STATUS == '8'}{t}Payment Made{/t}{/if}
-                {if $open_workorders[a].WORK_ORDER_STATUS == '9'}{t}Pending{/t}{/if}
-                {if $open_workorders[a].WORK_ORDER_STATUS == '10'}{t}Open{/t}{/if}           
+                {if $open_workorders[a].WORK_ORDER_STATUS == '1'}WORKORDER_STATUS_1{/if}
+                {if $open_workorders[a].WORK_ORDER_STATUS == '2'}WORKORDER_STATUS_2{/if}
+                {if $open_workorders[a].WORK_ORDER_STATUS == '3'}WORKORDER_STATUS_3{/if}
+                {if $open_workorders[a].WORK_ORDER_STATUS == '6'}{t}WORKORDER_STATUS_6{/t}{/if}
+                {if $open_workorders[a].WORK_ORDER_STATUS == '7'}{t}WORKORDER_STATUS_7{/t}{/if}
+                {if $open_workorders[a].WORK_ORDER_STATUS == '8'}{t}WORKORDER_STATUS_8{/t}{/if}
+                {if $open_workorders[a].WORK_ORDER_STATUS == '9'}{t}WORKORDER_STATUS_9{/t}{/if}
+                {if $open_workorders[a].WORK_ORDER_STATUS == '10'}{t}WORKORDER_STATUS_10{/t}{/if}           
             </td>            
             <td class="olotd4" align="center">
                 <a href="index.php?page=workorder:print&workorder_id={$open_workorders[a].WORK_ORDER_ID}&customer_id={$open_workorders[a].CUSTOMER_ID}&theme=off" target="new"><img src="{$theme_images_dir}icons/16x16/fileprint.gif" border="0" onMouseOver="ddrivetip('{t}Print The Work Order{/t}');" onMouseOut="hideddrivetip();"></a>

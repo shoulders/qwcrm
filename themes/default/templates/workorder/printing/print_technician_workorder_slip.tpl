@@ -210,14 +210,14 @@
                     <tr>
                         <td valign="top"><b>{t}Status{/t}</b></td>
                         <td valign="top">
-                            {if $single_workorder[i].WORK_ORDER_STATUS == '1'}{t}Created{/t}{/if}
-                            {if $single_workorder[i].WORK_ORDER_STATUS == '2'}{t}Assigned{/t}{/if}
-                            {if $single_workorder[i].WORK_ORDER_STATUS == '3'}{t}Waiting For Parts<{/t}{/if}
-                            {if $single_workorder[i].WORK_ORDER_STATUS == '6'}{t}Closed{/t}{/if}
-                            {if $single_workorder[i].WORK_ORDER_STATUS == '7'}{t}Waiting For Payment{/t}{/if}
-                            {if $single_workorder[i].WORK_ORDER_STATUS == '8'}{t}Payment Made{/t}{/if}
-                            {if $single_workorder[i].WORK_ORDER_STATUS == '9'}{t}Pending{/t}{/if}
-                            {if $single_workorder[i].WORK_ORDER_STATUS == '10'}{t}Open{/t}{/if}
+                            {if $single_workorder[i].WORK_ORDER_STATUS == '1'}{t}WORKORDER_STATUS_1{/t}{/if}
+                            {if $single_workorder[i].WORK_ORDER_STATUS == '2'}{t}WORKORDER_STATUS_2{/t}{/if}
+                            {if $single_workorder[i].WORK_ORDER_STATUS == '3'}{t}Waiting For Parts{/t}{/if}
+                            {if $single_workorder[i].WORK_ORDER_STATUS == '6'}{t}WORKORDER_STATUS_6{/t}{/if}
+                            {if $single_workorder[i].WORK_ORDER_STATUS == '7'}{t}WORKORDER_STATUS_7{/t}{/if}
+                            {if $single_workorder[i].WORK_ORDER_STATUS == '8'}{t}WORKORDER_STATUS_8{/t}{/if}
+                            {if $single_workorder[i].WORK_ORDER_STATUS == '9'}{t}WORKORDER_STATUS_9{/t}{/if}
+                            {if $single_workorder[i].WORK_ORDER_STATUS == '10'}{t}WORKORDER_STATUS_10{/t}{/if}
                         </td>
                     </tr>
                     <tr>
