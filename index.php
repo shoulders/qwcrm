@@ -398,14 +398,14 @@ elseif(isset($VAR['page']) && $VAR['page'] != ''){
 
     if(isset($login_token)){
         // If logged in
-        $page_display_controller    = 'modules'.SEP.'core'.SEP.'home.php';
+        $page_display_controller    = 'modules'.SEP.'core'.SEP.'dashboard.php';
         $module                     = 'core';
-        $page_tpl                   = 'home';       
+        $page_tpl                   = 'dashboard';       
     } else {
         // If NOT logged in
-        $page_display_controller    = 'modules'.SEP.'core'.SEP.'login.php';
+        $page_display_controller    = 'modules'.SEP.'core'.SEP.'home.php';
         $module                     = 'core';
-        $page_tpl                   = 'login';            
+        $page_tpl                   = 'home';            
     }
 
 }
