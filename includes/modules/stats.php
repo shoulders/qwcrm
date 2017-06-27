@@ -80,7 +80,7 @@ function get_day_all_stats($db, $today_start, $today_end, $where){
     $sql = "SELECT date, uagent, count(*) as count, ip FROM ".PRFX."TRACKER WHERE date >= ".$db->qstr( $today_start )." AND date <= ".$db->qstr( $today_end )." ".$db->qstr( $where )." GROUP BY ip ORDER BY date";
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Faild to get all stats for the specified day."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get all stats for the specified day."));
         exit;
     } else {
         

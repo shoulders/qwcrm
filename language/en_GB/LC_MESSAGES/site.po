@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2017-06-15 17:19+0100\n"
-"PO-Revision-Date: 2017-06-15 18:22+0100\n"
+"PO-Revision-Date: 2017-06-16 15:33+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en_GB\n"
@@ -957,7 +957,7 @@ msgstr "Credit Note"
 #: themes/default/templates/refund/new.tpl:66
 #: themes/default/templates/refund/search.tpl:130
 msgid "REFUND_TYPE_2"
-msgstr "Proxy Invoic"
+msgstr "Proxy Invoice"
 
 #: includes/modules/refund.php:321
 #: language/_gettext_only/system_varibles.php:80
@@ -1670,37 +1670,37 @@ msgid "Failed to check if a Work Order is open."
 msgstr ""
 
 #: language/_gettext_only/pages.php:19
-msgid "ADMINISTRATOR_ACL_HEADER_PAGE_TITLE"
-msgstr ""
+msgid "ADMINISTRATOR_ACL_PAGE_TITLE"
+msgstr "Update User Permissions"
 
 #: language/_gettext_only/pages.php:20
-msgid "ADMINISTRATOR_ACL_META_DESCRIPTION"
-msgstr ""
+msgid "ADMINISTRATOR_ACL_PAGE_META_DESCRIPTION"
+msgstr "-"
 
 #: language/_gettext_only/pages.php:21
-msgid "ADMINISTRATOR_ACL_META_KEYWORDS"
-msgstr ""
+msgid "ADMINISTRATOR_ACL_PAGE_META_KEYWORDS"
+msgstr "-"
 
 #: language/_gettext_only/pages.php:22
 #: themes/default/templates/administrator/acl.tpl:9
 msgid "ADMINISTRATOR_ACL_HELP_TITLE"
-msgstr ""
+msgstr "-"
 
 #: language/_gettext_only/pages.php:23
 #: themes/default/templates/administrator/acl.tpl:9
 msgid "ADMINISTRATOR_ACL_HELP_CONTENT"
-msgstr ""
+msgstr "-"
 
 #: language/_gettext_only/pages.php:26
-msgid "ADMINISTRATOR_PHPINFO_HEADER_PAGE_TITLE"
+msgid "ADMINISTRATOR_PHPINFO_PAGE_TITLE"
 msgstr ""
 
 #: language/_gettext_only/pages.php:27
-msgid "ADMINISTRATOR_PHPINFO_META_DESCRIPTION"
+msgid "ADMINISTRATOR_PHPINFO_PAGE_META_DESCRIPTION"
 msgstr ""
 
 #: language/_gettext_only/pages.php:28
-msgid "ADMINISTRATOR_PHPINFO_META_KEYWORDS"
+msgid "ADMINISTRATOR_PHPINFO_PAGE_META_KEYWORDS"
 msgstr ""
 
 #: language/_gettext_only/pages.php:29
@@ -1712,15 +1712,15 @@ msgid "ADMINISTRATOR_PHPINFO_HELP_CONTENT"
 msgstr ""
 
 #: language/_gettext_only/pages.php:33
-msgid "ADMINISTRATOR_UPDATE_HEADER_PAGE_TITLE"
+msgid "ADMINISTRATOR_UPDATE_PAGE_TITLE"
 msgstr ""
 
 #: language/_gettext_only/pages.php:34
-msgid "ADMINISTRATOR_UPDATE_META_DESCRIPTION"
+msgid "ADMINISTRATOR_UPDATE_PAGE_META_DESCRIPTION"
 msgstr ""
 
 #: language/_gettext_only/pages.php:35
-msgid "ADMINISTRATOR_UPDATE_META_KEYWORDS"
+msgid "ADMINISTRATOR_UPDATE_PAGE_META_KEYWORDS"
 msgstr ""
 
 #: language/_gettext_only/pages.php:36
@@ -1734,15 +1734,15 @@ msgid "ADMINISTRATOR_UPDATE_HELP_CONTENT"
 msgstr ""
 
 #: language/_gettext_only/pages.php:42
-msgid "COMPANY_BUSINESS_HOURS_HEADER_PAGE_TITLE"
+msgid "COMPANY_BUSINESS_HOURS_PAGE_TITLE"
 msgstr ""
 
 #: language/_gettext_only/pages.php:43
-msgid "COMPANY_BUSINESS_HOURS_META_DESCRIPTION"
+msgid "COMPANY_BUSINESS_HOURS_PAGE_META_DESCRIPTION"
 msgstr ""
 
 #: language/_gettext_only/pages.php:44
-msgid "COMPANY_BUSINESS_HOURS_META_KEYWORDS"
+msgid "COMPANY_BUSINESS_HOURS_PAGE_META_KEYWORDS"
 msgstr ""
 
 #: language/_gettext_only/pages.php:45
@@ -1756,15 +1756,15 @@ msgid "COMPANY_BUSINESS_HOURS_HELP_CONTENT"
 msgstr ""
 
 #: language/_gettext_only/pages.php:49
-msgid "COMPANY_EDIT_HEADER_PAGE_TITLE"
+msgid "COMPANY_EDIT_PAGE_TITLE"
 msgstr ""
 
 #: language/_gettext_only/pages.php:50
-msgid "COMPANY_EDIT_META_DESCRIPTION"
+msgid "COMPANY_EDIT_PAGE_META_DESCRIPTION"
 msgstr ""
 
 #: language/_gettext_only/pages.php:51
-msgid "COMPANY_EDIT_META_KEYWORDS"
+msgid "COMPANY_EDIT_PAGE_META_KEYWORDS"
 msgstr ""
 
 #: language/_gettext_only/pages.php:52
@@ -1776,57 +1776,59 @@ msgid "COMPANY_EDIT_HELP_CONTENT"
 msgstr ""
 
 #: language/_gettext_only/pages.php:58
-msgid "CORE_404_HEADER_PAGE_TITLE"
+msgid "CORE_404_PAGE_TITLE"
 msgstr "404 - Page Not Found"
 
 #: language/_gettext_only/pages.php:59
-msgid "CORE_404_HEADER_META_DESCRIPTION"
+msgid "CORE_404_PAGE_META_DESCRIPTION"
 msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
 
 #: language/_gettext_only/pages.php:60
-msgid "CORE_404_HEADER_META_KEYWORDS"
+msgid "CORE_404_PAGE_META_KEYWORDS"
 msgstr ""
 "CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment "
 "Processing, Simple to use"
 
 #: language/_gettext_only/pages.php:61
 msgid "CORE_404_HELP_TITLE"
-msgstr ""
+msgstr "-"
 
 #: language/_gettext_only/pages.php:62
 msgid "CORE_404_HELP_CONTENT"
-msgstr ""
+msgstr "-"
 
 #: language/_gettext_only/pages.php:65
-msgid "CORE_ERROR_HEADER_PAGE_TITLE"
+msgid "CORE_ERROR_PAGE_TITLE"
 msgstr "QWcrm Error Page"
 
 #: language/_gettext_only/pages.php:66
-msgid "CORE_ERROR_HEADER_META_DESCRIPTION"
-msgstr ""
+msgid "CORE_ERROR_PAGE_META_DESCRIPTION"
+msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
 
 #: language/_gettext_only/pages.php:67
-msgid "CORE_ERROR_HEADER_META_KEYWORDS"
+msgid "CORE_ERROR_PAGE_META_KEYWORDS"
 msgstr ""
+"CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment "
+"Processing, Simple to use"
 
 #: language/_gettext_only/pages.php:68
 msgid "CORE_ERROR_HELP_TITLE"
-msgstr ""
+msgstr "-"
 
 #: language/_gettext_only/pages.php:69
 msgid "CORE_ERROR_HELP_CONTENT"
-msgstr ""
+msgstr "-"
 
 #: language/_gettext_only/pages.php:72
-msgid "CORE_HOME_HEADER_PAGE_TITLE"
+msgid "CORE_HOME_PAGE_TITLE"
 msgstr "QWcrm - Home Page"
 
 #: language/_gettext_only/pages.php:73
-msgid "CORE_HOME_HEADER_META_DESCRIPTION"
+msgid "CORE_HOME_PAGE_META_DESCRIPTION"
 msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
 
 #: language/_gettext_only/pages.php:74
-msgid "CORE_HOME_HEADER_META_KEYWORDS"
+msgid "CORE_HOME_PAGE_META_KEYWORDS"
 msgstr ""
 "CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment "
 "Processing, Simple to use"
@@ -1834,23 +1836,23 @@ msgstr ""
 #: language/_gettext_only/pages.php:75
 #: themes/default/templates/core/home.tpl:10
 msgid "CORE_HOME_HELP_TITLE"
-msgstr ""
+msgstr "-"
 
 #: language/_gettext_only/pages.php:76
 #: themes/default/templates/core/home.tpl:10
 msgid "CORE_HOME_HELP_CONTENT"
-msgstr ""
+msgstr "-"
 
 #: language/_gettext_only/pages.php:79
-msgid "CORE_LOGIN_HEADER_PAGE_TITLE"
+msgid "CORE_LOGIN_PAGE_TITLE"
 msgstr "Login To QWcrm"
 
 #: language/_gettext_only/pages.php:80
-msgid "CORE_LOGIN_HEADER_META_DESCRIPTION"
+msgid "CORE_LOGIN_PAGE_META_DESCRIPTION"
 msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
 
 #: language/_gettext_only/pages.php:81
-msgid "CORE_LOGIN_HEADER_META_KEYWORDS"
+msgid "CORE_LOGIN_PAGE_META_KEYWORDS"
 msgstr ""
 "CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment "
 "Processing, Simple to use"
@@ -1864,37 +1866,37 @@ msgid "CORE_LOGIN_HELP_CONTENT"
 msgstr ""
 
 #: language/_gettext_only/pages.php:86
-msgid "CORE_MAINTENANCE_HEADER_PAGE_TITLE"
-msgstr ""
+msgid "CORE_MAINTENANCE_PAGE_TITLE"
+msgstr "QWcrm - Maintenance Mode"
 
 #: language/_gettext_only/pages.php:87
-msgid "CORE_MAINTENANCE_HEADER_META_DESCRIPTION"
+msgid "CORE_MAINTENANCE_PAGE_META_DESCRIPTION"
 msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
 
 #: language/_gettext_only/pages.php:88
-msgid "CORE_MAINTENANCE_HEADER_META_KEYWORDS"
+msgid "CORE_MAINTENANCE_PAGE_META_KEYWORDS"
 msgstr ""
 "CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment "
 "Processing, Simple to use"
 
 #: language/_gettext_only/pages.php:89
 msgid "CORE_MAINTENANCE_HELP_TITLE"
-msgstr ""
+msgstr "-"
 
 #: language/_gettext_only/pages.php:90
 msgid "CORE_MAINTENANCE_HELP_CONTENT"
-msgstr ""
+msgstr "-"
 
 #: language/_gettext_only/pages.php:95
-msgid "CUSTOMER_DETAILS_HEADER_PAGE_TITLE"
+msgid "CUSTOMER_DETAILS_PAGE_TITLE"
 msgstr ""
 
 #: language/_gettext_only/pages.php:96
-msgid "CUSTOMER_DETAILS_HEADER_META_DESCRIPTION"
+msgid "CUSTOMER_DETAILS_PAGE_META_DESCRIPTION"
 msgstr ""
 
 #: language/_gettext_only/pages.php:97
-msgid "CUSTOMER_DETAILS_HEADER_META_KEYWORDS"
+msgid "CUSTOMER_DETAILS_PAGE_META_KEYWORDS"
 msgstr ""
 
 #: language/_gettext_only/pages.php:98
@@ -1906,15 +1908,15 @@ msgid "CUSTOMER_DETAILS_HELP_CONTENT"
 msgstr ""
 
 #: language/_gettext_only/pages.php:102
-msgid "CUSTOMER_EDIT_HEADER_PAGE_TITLE"
+msgid "CUSTOMER_EDIT_PAGE_TITLE"
 msgstr ""
 
 #: language/_gettext_only/pages.php:103
-msgid "CUSTOMER_EDIT_HEADER_META_DESCRIPTION"
+msgid "CUSTOMER_EDIT_PAGE_META_DESCRIPTION"
 msgstr ""
 
 #: language/_gettext_only/pages.php:104
-msgid "CUSTOMER_EDIT_HEADER_META_KEYWORDS"
+msgid "CUSTOMER_EDIT_PAGE_META_KEYWORDS"
 msgstr ""
 
 #: language/_gettext_only/pages.php:105
@@ -1928,37 +1930,42 @@ msgid "CUSTOMER_EDIT_HELP_CONTENT"
 msgstr "You can edit the customers details attached to the work order here."
 
 #: language/_gettext_only/pages.php:109
-msgid "CUSTOMER_NEW_HEADER_PAGE_TITLE"
-msgstr ""
+msgid "CUSTOMER_NEW_PAGE_TITLE"
+msgstr "Add New Customer"
 
 #: language/_gettext_only/pages.php:110
-msgid "CUSTOMER_NEW_HEADER_META_DESCRIPTION"
-msgstr ""
+msgid "CUSTOMER_NEW_PAGE_META_DESCRIPTION"
+msgstr "-"
 
 #: language/_gettext_only/pages.php:111
-msgid "CUSTOMER_NEW_HEADER_META_KEYWORDS"
-msgstr ""
+msgid "CUSTOMER_NEW_PAGE_META_KEYWORDS"
+msgstr "-"
 
 #: language/_gettext_only/pages.php:112
 #: themes/default/templates/customer/new.tpl:13
 msgid "CUSTOMER_NEW_HELP_TITLE"
-msgstr ""
+msgstr "Add New Customer"
 
 #: language/_gettext_only/pages.php:113
 #: themes/default/templates/customer/new.tpl:13
 msgid "CUSTOMER_NEW_HELP_CONTENT"
 msgstr ""
+"<p><i>Display Name:</i>This is the customers display name. It will show up "
+"on all pertaining pages. This can be a company name or the customers First "
+"name and last name.<br><br> <i>First Name:</i>This is the customers first "
+"name or if this is a bussiness this is the main contacts first name for the "
+"bussiness.</p>"
 
 #: language/_gettext_only/pages.php:116
-msgid "CUSTOMER_NOTE_EDIT_HEADER_PAGE_TITLE"
+msgid "CUSTOMER_NOTE_EDIT_PAGE_TITLE"
 msgstr ""
 
 #: language/_gettext_only/pages.php:117
-msgid "CUSTOMER_NOTE_EDIT_HEADER_META_DESCRIPTION"
+msgid "CUSTOMER_NOTE_EDIT_PAGE_META_DESCRIPTION"
 msgstr ""
 
 #: language/_gettext_only/pages.php:118
-msgid "CUSTOMER_NOTE_EDIT_HEADER_META_KEYWORDS"
+msgid "CUSTOMER_NOTE_EDIT_PAGE_META_KEYWORDS"
 msgstr ""
 
 #: language/_gettext_only/pages.php:119
@@ -1970,15 +1977,15 @@ msgid "CUSTOMER_NOTE_EDIT_HELP_CONTENT"
 msgstr ""
 
 #: language/_gettext_only/pages.php:123
-msgid "CUSTOMER_NOTE_NEW_HEADER_PAGE_TITLE"
+msgid "CUSTOMER_NOTE_NEW_PAGE_TITLE"
 msgstr ""
 
 #: language/_gettext_only/pages.php:124
-msgid "CUSTOMER_NOTE_NEW_HEADER_META_DESCRIPTION"
+msgid "CUSTOMER_NOTE_NEW_PAGE_META_DESCRIPTION"
 msgstr ""
 
 #: language/_gettext_only/pages.php:125
-msgid "CUSTOMER_NOTE_NEW_HEADER_META_KEYWORDS"
+msgid "CUSTOMER_NOTE_NEW_PAGE_META_KEYWORDS"
 msgstr ""
 
 #: language/_gettext_only/pages.php:126
@@ -1992,37 +1999,42 @@ msgid "CUSTOMER_NOTE_NEW_HELP_CONTENT"
 msgstr ""
 
 #: language/_gettext_only/pages.php:130
-msgid "CUSTOMER_SEARCH_HEADER_PAGE_TITLE"
-msgstr ""
+msgid "CUSTOMER_SEARCH_PAGE_TITLE"
+msgstr "Customer Search"
 
 #: language/_gettext_only/pages.php:131
-msgid "CUSTOMER_SEARCH_HEADER_META_DESCRIPTION"
+msgid "CUSTOMER_SEARCH_PAGE_META_DESCRIPTION"
 msgstr ""
 
 #: language/_gettext_only/pages.php:132
-msgid "CUSTOMER_SEARCH_HEADER_META_KEYWORDS"
+msgid "CUSTOMER_SEARCH_PAGE_META_KEYWORDS"
 msgstr ""
 
 #: language/_gettext_only/pages.php:133
 #: themes/default/templates/customer/search.tpl:11
 msgid "CUSTOMER_SEARCH_HELP_TITLE"
-msgstr ""
+msgstr "Customer Search Help"
 
 #: language/_gettext_only/pages.php:134
 #: themes/default/templates/customer/search.tpl:11
 msgid "CUSTOMER_SEARCH_HELP_CONTENT"
 msgstr ""
+"You can search by the customers full display name or just their first name. "
+"If you wish to see all the customers for just one letter like A Click the "
+"letter A.</p> <p>To find customers who's name starts with Ja enter just ja. "
+"The system will intelligently look for the correct customers that match. To "
+"view all customers leave the name field blank and click view.</p>"
 
 #: language/_gettext_only/pages.php:139
-msgid "EMPLOYEE_DETAILS_HEADER_PAGE_TITLE"
+msgid "EMPLOYEE_DETAILS_PAGE_TITLE"
 msgstr ""
 
 #: language/_gettext_only/pages.php:140
-msgid "EMPLOYEE_DETAILS_HEADER_META_DESCRIPTION"
+msgid "EMPLOYEE_DETAILS_PAGE_META_DESCRIPTION"
 msgstr ""
 
 #: language/_gettext_only/pages.php:141
-msgid "EMPLOYEE_DETAILS_HEADER_META_KEYWORDS"
+msgid "EMPLOYEE_DETAILS_PAGE_META_KEYWORDS"
 msgstr ""
 
 #: language/_gettext_only/pages.php:142
@@ -2036,15 +2048,15 @@ msgid "EMPLOYEE_DETAILS_HELP_CONTENT"
 msgstr "You can see the selected employees details and jobs he has worked on"
 
 #: language/_gettext_only/pages.php:146
-msgid "EMPLOYEE_EDIT_HEADER_PAGE_TITLE"
+msgid "EMPLOYEE_EDIT_PAGE_TITLE"
 msgstr ""
 
 #: language/_gettext_only/pages.php:147
-msgid "EMPLOYEE_EDIT_HEADER_META_DESCRIPTION"
+msgid "EMPLOYEE_EDIT_PAGE_META_DESCRIPTION"
 msgstr ""
 
 #: language/_gettext_only/pages.php:148
-msgid "EMPLOYEE_EDIT_HEADER_META_KEYWORDS"
+msgid "EMPLOYEE_EDIT_PAGE_META_KEYWORDS"
 msgstr ""
 
 #: language/_gettext_only/pages.php:149
@@ -2058,15 +2070,15 @@ msgid "EMPLOYEE_EDIT_HELP_CONTENT"
 msgstr ""
 
 #: language/_gettext_only/pages.php:153
-msgid "EMPLOYEE_NEW_HEADER_PAGE_TITLE"
+msgid "EMPLOYEE_NEW_PAGE_TITLE"
 msgstr "New Expense Page"
 
 #: language/_gettext_only/pages.php:154
-msgid "EMPLOYEE_NEW_HEADER_META_DESCRIPTION"
+msgid "EMPLOYEE_NEW_PAGE_META_DESCRIPTION"
 msgstr ""
 
 #: language/_gettext_only/pages.php:155
-msgid "EMPLOYEE_NEW_HEADER_META_KEYWORDS"
+msgid "EMPLOYEE_NEW_PAGE_META_KEYWORDS"
 msgstr ""
 
 #: language/_gettext_only/pages.php:156
@@ -2080,37 +2092,42 @@ msgid "EMPLOYEE_NEW_HELP_CONTENT"
 msgstr ""
 
 #: language/_gettext_only/pages.php:160
-msgid "EMPLOYEE_SEARCH_HEADER_PAGE_TITLE"
-msgstr ""
+msgid "EMPLOYEE_SEARCH_PAGE_TITLE"
+msgstr "Employee Search"
 
 #: language/_gettext_only/pages.php:161
-msgid "EMPLOYEE_SEARCH_HEADER_META_DESCRIPTION"
+msgid "EMPLOYEE_SEARCH_PAGE_META_DESCRIPTION"
 msgstr ""
 
 #: language/_gettext_only/pages.php:162
-msgid "EMPLOYEE_SEARCH_HEADER_META_KEYWORDS"
+msgid "EMPLOYEE_SEARCH_PAGE_META_KEYWORDS"
 msgstr ""
 
 #: language/_gettext_only/pages.php:163
 #: themes/default/templates/employee/search.tpl:9
 msgid "EMPLOYEE_SEARCH_HELP_TITLE"
-msgstr ""
+msgstr "Employee Search Help"
 
 #: language/_gettext_only/pages.php:164
 #: themes/default/templates/employee/search.tpl:9
 msgid "EMPLOYEE_SEARCH_HELP_CONTENT"
 msgstr ""
+"<p>You can search by the employees full display name or just their first "
+"name. If you wish to see all the employees for just one letter like A enter "
+"the letter a only.</p> <p>To find employees whos name starts with Ja enter "
+"just ja. The system will intelligently look for the correct employee that "
+"matches.</p>"
 
 #: language/_gettext_only/pages.php:169
-msgid "EXPENSE_DETAILS_HEADER_PAGE_TITLE"
+msgid "EXPENSE_DETAILS_PAGE_TITLE"
 msgstr "Expense Details Page"
 
 #: language/_gettext_only/pages.php:170
-msgid "EXPENSE_DETAILS_HEADER_META_DESCRIPTION"
+msgid "EXPENSE_DETAILS_PAGE_META_DESCRIPTION"
 msgstr ""
 
 #: language/_gettext_only/pages.php:171
-msgid "EXPENSE_DETAILS_HEADER_META_KEYWORDS"
+msgid "EXPENSE_DETAILS_PAGE_META_KEYWORDS"
 msgstr ""
 
 #: language/_gettext_only/pages.php:172
@@ -2127,15 +2144,15 @@ msgstr ""
 "next to this Tooltip or on the Edit link in the Main Nav Menu on the left."
 
 #: language/_gettext_only/pages.php:176
-msgid "EXPENSE_EDIT_HEADER_PAGE_TITLE"
+msgid "EXPENSE_EDIT_PAGE_TITLE"
 msgstr "Expense Edit Page"
 
 #: language/_gettext_only/pages.php:177
-msgid "EXPENSE_EDIT_HEADER_META_DESCRIPTION"
+msgid "EXPENSE_EDIT_PAGE_META_DESCRIPTION"
 msgstr ""
 
 #: language/_gettext_only/pages.php:178
-msgid "EXPENSE_EDIT_HEADER_META_KEYWORDS"
+msgid "EXPENSE_EDIT_PAGE_META_KEYWORDS"
 msgstr ""
 
 #: language/_gettext_only/pages.php:179
@@ -2152,15 +2169,15 @@ msgstr ""
 "to the database."
 
 #: language/_gettext_only/pages.php:183
-msgid "EXPENSE_NEW_HEADER_PAGE_TITLE"
+msgid "EXPENSE_NEW_PAGE_TITLE"
 msgstr "New Expense Page"
 
 #: language/_gettext_only/pages.php:184
-msgid "EXPENSE_NEW_HEADER_META_DESCRIPTION"
+msgid "EXPENSE_NEW_PAGE_META_DESCRIPTION"
 msgstr ""
 
 #: language/_gettext_only/pages.php:185
-msgid "EXPENSE_NEW_HEADER_META_KEYWORDS"
+msgid "EXPENSE_NEW_PAGE_META_KEYWORDS"
 msgstr ""
 
 #: language/_gettext_only/pages.php:186
@@ -2180,15 +2197,15 @@ msgstr ""
 "to the database and this page reloaded ready for another entry."
 
 #: language/_gettext_only/pages.php:190
-msgid "EXPENSE_SEARCH_HEADER_PAGE_TITLE"
+msgid "EXPENSE_SEARCH_PAGE_TITLE"
 msgstr "Expense Search Page"
 
 #: language/_gettext_only/pages.php:191
-msgid "EXPENSE_SEARCH_HEADER_META_DESCRIPTION"
+msgid "EXPENSE_SEARCH_PAGE_META_DESCRIPTION"
 msgstr ""
 
 #: language/_gettext_only/pages.php:192
-msgid "EXPENSE_SEARCH_HEADER_META_KEYWORDS"
+msgid "EXPENSE_SEARCH_PAGE_META_KEYWORDS"
 msgstr ""
 
 #: language/_gettext_only/pages.php:193
@@ -2212,15 +2229,15 @@ msgstr ""
 "viewing, editing and deleting the record."
 
 #: language/_gettext_only/pages.php:199
-msgid "GIFTCERT_DETAILS_HEADER_PAGE_TITLE"
+msgid "GIFTCERT_DETAILS_PAGE_TITLE"
 msgstr ""
 
 #: language/_gettext_only/pages.php:200
-msgid "GIFTCERT_DETAILS_HEADER_META_DESCRIPTION"
+msgid "GIFTCERT_DETAILS_PAGE_META_DESCRIPTION"
 msgstr ""
 
 #: language/_gettext_only/pages.php:201
-msgid "GIFTCERT_DETAILS_HEADER_META_KEYWORDS"
+msgid "GIFTCERT_DETAILS_PAGE_META_KEYWORDS"
 msgstr ""
 
 #: language/_gettext_only/pages.php:202
@@ -2234,15 +2251,15 @@ msgid "GIFTCERT_DETAILS_HELP_CONTENT"
 msgstr ""
 
 #: language/_gettext_only/pages.php:206
-msgid "GIFTCERT_NEW_HEADER_PAGE_TITLE"
+msgid "GIFTCERT_NEW_PAGE_TITLE"
 msgstr ""
 
 #: language/_gettext_only/pages.php:207
-msgid "GIFTCERT_NEW_HEADER_META_DESCRIPTION"
+msgid "GIFTCERT_NEW_PAGE_META_DESCRIPTION"
 msgstr ""
 
 #: language/_gettext_only/pages.php:208
-msgid "GIFTCERT_NEW_HEADER_META_KEYWORDS"
+msgid "GIFTCERT_NEW_PAGE_META_KEYWORDS"
 msgstr ""
 
 #: language/_gettext_only/pages.php:209
@@ -2254,15 +2271,15 @@ msgid "GIFTCERT_NEW_HELP_CONTENT"
 msgstr ""
 
 #: language/_gettext_only/pages.php:213
-msgid "GIFTCERT_SEARCH_HEADER_PAGE_TITLE"
+msgid "GIFTCERT_SEARCH_PAGE_TITLE"
 msgstr ""
 
 #: language/_gettext_only/pages.php:214
-msgid "GIFTCERT_SEARCH_HEADER_META_DESCRIPTION"
+msgid "GIFTCERT_SEARCH_PAGE_META_DESCRIPTION"
 msgstr ""
 
 #: language/_gettext_only/pages.php:215
-msgid "GIFTCERT_SEARCH_HEADER_META_KEYWORDS"
+msgid "GIFTCERT_SEARCH_PAGE_META_KEYWORDS"
 msgstr ""
 
 #: language/_gettext_only/pages.php:216
@@ -2278,15 +2295,15 @@ msgid "GIFTCERT_SEARCH_HELP_CONTENT"
 msgstr ""
 
 #: language/_gettext_only/pages.php:222
-msgid "HELP_ABOUT_HEADER_PAGE_TITLE"
+msgid "HELP_ABOUT_PAGE_TITLE"
 msgstr ""
 
 #: language/_gettext_only/pages.php:223
-msgid "HELP_ABOUT_HEADER_META_DESCRIPTION"
+msgid "HELP_ABOUT_PAGE_META_DESCRIPTION"
 msgstr ""
 
 #: language/_gettext_only/pages.php:224
-msgid "HELP_ABOUT_HEADER_META_KEYWORDS"
+msgid "HELP_ABOUT_PAGE_META_KEYWORDS"
 msgstr ""
 
 #: language/_gettext_only/pages.php:225
@@ -2298,15 +2315,15 @@ msgid "HELP_ABOUT_DETAILS_HELP_CONTENT"
 msgstr ""
 
 #: language/_gettext_only/pages.php:229
-msgid "HELP_ATTRIBUTION_HEADER_PAGE_TITLE"
+msgid "HELP_ATTRIBUTION_PAGE_TITLE"
 msgstr ""
 
 #: language/_gettext_only/pages.php:230
-msgid "HELP_ATTRIBUTION_HEADER_META_DESCRIPTION"
+msgid "HELP_ATTRIBUTION_PAGE_META_DESCRIPTION"
 msgstr ""
 
 #: language/_gettext_only/pages.php:231
-msgid "HELP_ATTRIBUTION_HEADER_META_KEYWORDS"
+msgid "HELP_ATTRIBUTION_PAGE_META_KEYWORDS"
 msgstr ""
 
 #: language/_gettext_only/pages.php:232
@@ -2318,15 +2335,15 @@ msgid "HELP_ATTRIBUTION_DETAILS_HELP_CONTENT"
 msgstr ""
 
 #: language/_gettext_only/pages.php:236
-msgid "HELP_LICENSE_HEADER_PAGE_TITLE"
+msgid "HELP_LICENSE_PAGE_TITLE"
 msgstr ""
 
 #: language/_gettext_only/pages.php:237
-msgid "HELP_LICENSE_HEADER_META_DESCRIPTION"
+msgid "HELP_LICENSE_PAGE_META_DESCRIPTION"
 msgstr ""
 
 #: language/_gettext_only/pages.php:238
-msgid "HELP_LICENSE_HEADER_META_KEYWORDS"
+msgid "HELP_LICENSE_PAGE_META_KEYWORDS"
 msgstr ""
 
 #: language/_gettext_only/pages.php:239
@@ -2338,15 +2355,15 @@ msgid "HELP_LICENSE_DETAILS_HELP_CONTENT"
 msgstr ""
 
 #: language/_gettext_only/pages.php:245
-msgid "INVOICE_DETAILS_HEADER_PAGE_TITLE"
+msgid "INVOICE_DETAILS_PAGE_TITLE"
 msgstr ""
 
 #: language/_gettext_only/pages.php:246
-msgid "INVOICE_DETAILS_HEADER_META_DESCRIPTION"
+msgid "INVOICE_DETAILS_PAGE_META_DESCRIPTION"
 msgstr ""
 
 #: language/_gettext_only/pages.php:247
-msgid "INVOICE_DETAILS_HEADER_META_KEYWORDS"
+msgid "INVOICE_DETAILS_PAGE_META_KEYWORDS"
 msgstr ""
 
 #: language/_gettext_only/pages.php:248
@@ -2360,15 +2377,15 @@ msgid "INVOICE_DETAILS_HELP_CONTENT"
 msgstr ""
 
 #: language/_gettext_only/pages.php:252
-msgid "INVOICE_EDIT_HEADER_PAGE_TITLE"
+msgid "INVOICE_EDIT_PAGE_TITLE"
 msgstr ""
 
 #: language/_gettext_only/pages.php:253
-msgid "INVOICE_EDIT_HEADER_META_DESCRIPTION"
+msgid "INVOICE_EDIT_PAGE_META_DESCRIPTION"
 msgstr ""
 
 #: language/_gettext_only/pages.php:254
-msgid "INVOICE_EDIT_HEADER_META_KEYWORDS"
+msgid "INVOICE_EDIT_PAGE_META_KEYWORDS"
 msgstr ""
 
 #: language/_gettext_only/pages.php:255
@@ -2387,15 +2404,15 @@ msgstr ""
 "changes will also not be applied to the database."
 
 #: language/_gettext_only/pages.php:259
-msgid "INVOICE_LABOUR_RATES_HEADER_PAGE_TITLE"
+msgid "INVOICE_LABOUR_RATES_PAGE_TITLE"
 msgstr ""
 
 #: language/_gettext_only/pages.php:260
-msgid "INVOICE_LABOUR_RATES_HEADER_META_DESCRIPTION"
+msgid "INVOICE_LABOUR_RATES_PAGE_META_DESCRIPTION"
 msgstr ""
 
 #: language/_gettext_only/pages.php:261
-msgid "INVOICE_LABOUR_RATES_HEADER_META_KEYWORDS"
+msgid "INVOICE_LABOUR_RATES_PAGE_META_KEYWORDS"
 msgstr ""
 
 #: language/_gettext_only/pages.php:262
@@ -2409,15 +2426,15 @@ msgid "INVOICE_LABOUR_RATES_HELP_CONTENT"
 msgstr ""
 
 #: language/_gettext_only/pages.php:266
-msgid "INVOICE_PAID_HEADER_PAGE_TITLE"
+msgid "INVOICE_PAID_PAGE_TITLE"
 msgstr ""
 
 #: language/_gettext_only/pages.php:267
-msgid "INVOICE_PAID_HEADER_META_DESCRIPTION"
+msgid "INVOICE_PAID_PAGE_META_DESCRIPTION"
 msgstr ""
 
 #: language/_gettext_only/pages.php:268
-msgid "INVOICE_PAID_HEADER_META_KEYWORDS"
+msgid "INVOICE_PAID_PAGE_META_KEYWORDS"
 msgstr ""
 
 #: language/_gettext_only/pages.php:269
@@ -2431,15 +2448,15 @@ msgid "INVOICE_PAID_HELP_CONTENT"
 msgstr ""
 
 #: language/_gettext_only/pages.php:273
-msgid "INVOICE_UNPAID_HEADER_PAGE_TITLE"
+msgid "INVOICE_UNPAID_PAGE_TITLE"
 msgstr ""
 
 #: language/_gettext_only/pages.php:274
-msgid "INVOICE_UNPAID_HEADER_META_DESCRIPTION"
+msgid "INVOICE_UNPAID_PAGE_META_DESCRIPTION"
 msgstr ""
 
 #: language/_gettext_only/pages.php:275
-msgid "INVOICE_UNPAID_HEADER_META_KEYWORDS"
+msgid "INVOICE_UNPAID_PAGE_META_KEYWORDS"
 msgstr ""
 
 #: language/_gettext_only/pages.php:276
@@ -2453,43 +2470,43 @@ msgid "INVOICE_UNPAID_HELP_CONTENT"
 msgstr ""
 
 #: language/_gettext_only/pages.php:280
-msgid "INVOICE_PRINT_ADDRESS_HEADER_PAGE_TITLE"
+msgid "INVOICE_PRINT_ADDRESS_PAGE_TITLE"
 msgstr "Invoice Address Template"
 
 #: language/_gettext_only/pages.php:281
-msgid "INVOICE_PRINT_ADDRESS_HEADER_META_DESCRIPTION"
+msgid "INVOICE_PRINT_ADDRESS_PAGE_META_DESCRIPTION"
 msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
 
 #: language/_gettext_only/pages.php:282
-msgid "INVOICE_PRINT_ADDRESS_HEADER_META_KEYWORDS"
+msgid "INVOICE_PRINT_ADDRESS_PAGE_META_KEYWORDS"
 msgstr ""
 "CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment "
 "Processing, Simple to use"
 
 #: language/_gettext_only/pages.php:287
-msgid "INVOICE_PRINT_INVOICE_HEADER_PAGE_TITLE"
+msgid "INVOICE_PRINT_INVOICE_PAGE_TITLE"
 msgstr "Invoice Template"
 
 #: language/_gettext_only/pages.php:288
-msgid "INVOICE_PRINT_INVOICE_HEADER_META_DESCRIPTION"
+msgid "INVOICE_PRINT_INVOICE_PAGE_META_DESCRIPTION"
 msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
 
 #: language/_gettext_only/pages.php:289
-msgid "INVOICE_PRINT_INVOICE_HEADER_META_KEYWORDS"
+msgid "INVOICE_PRINT_INVOICE_PAGE_META_KEYWORDS"
 msgstr ""
 "CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment "
 "Processing, Simple to use"
 
 #: language/_gettext_only/pages.php:296
-msgid "PAYMENT_NEW_HEADER_PAGE_TITLE"
+msgid "PAYMENT_NEW_PAGE_TITLE"
 msgstr ""
 
 #: language/_gettext_only/pages.php:297
-msgid "PAYMENT_NEW_HEADER_META_DESCRIPTION"
+msgid "PAYMENT_NEW_PAGE_META_DESCRIPTION"
 msgstr ""
 
 #: language/_gettext_only/pages.php:298
-msgid "PAYMENT_NEW_HEADER_META_KEYWORDS"
+msgid "PAYMENT_NEW_PAGE_META_KEYWORDS"
 msgstr ""
 
 #: language/_gettext_only/pages.php:299
@@ -2503,15 +2520,15 @@ msgid "PAYMENT_NEW_HELP_CONTENT"
 msgstr ""
 
 #: language/_gettext_only/pages.php:303
-msgid "PAYMENT_OPTIONS_HEADER_PAGE_TITLE"
+msgid "PAYMENT_OPTIONS_PAGE_TITLE"
 msgstr ""
 
 #: language/_gettext_only/pages.php:304
-msgid "PAYMENT_OPTIONS_HEADER_META_DESCRIPTION"
+msgid "PAYMENT_OPTIONS_PAGE_META_DESCRIPTION"
 msgstr ""
 
 #: language/_gettext_only/pages.php:305
-msgid "PAYMENT_OPTIONS_HEADER_META_KEYWORDS"
+msgid "PAYMENT_OPTIONS_PAGE_META_KEYWORDS"
 msgstr ""
 
 #: language/_gettext_only/pages.php:306
@@ -2525,15 +2542,15 @@ msgid "PAYMENT_OPTIONS_HELP_CONTENT"
 msgstr ""
 
 #: language/_gettext_only/pages.php:312
-msgid "REFUND_DETAILS_HEADER_PAGE_TITLE"
+msgid "REFUND_DETAILS_PAGE_TITLE"
 msgstr "Refund Details Page"
 
 #: language/_gettext_only/pages.php:313
-msgid "REFUND_DETAILS_HEADER_META_DESCRIPTION"
+msgid "REFUND_DETAILS_PAGE_META_DESCRIPTION"
 msgstr ""
 
 #: language/_gettext_only/pages.php:314
-msgid "REFUND_DETAILS_HEADER_META_KEYWORDS"
+msgid "REFUND_DETAILS_PAGE_META_KEYWORDS"
 msgstr ""
 
 #: language/_gettext_only/pages.php:315
@@ -2550,15 +2567,15 @@ msgstr ""
 "this Tooltip or on the Edit link in the Main Nav Menu on the left."
 
 #: language/_gettext_only/pages.php:319
-msgid "REFUND_EDIT_HEADER_PAGE_TITLE"
+msgid "REFUND_EDIT_PAGE_TITLE"
 msgstr "Refund Edit Page"
 
 #: language/_gettext_only/pages.php:320
-msgid "REFUND_EDIT_HEADER_META_DESCRIPTION"
+msgid "REFUND_EDIT_PAGE_META_DESCRIPTION"
 msgstr ""
 
 #: language/_gettext_only/pages.php:321
-msgid "REFUND_EDIT_HEADER_META_KEYWORDS"
+msgid "REFUND_EDIT_PAGE_META_KEYWORDS"
 msgstr ""
 
 #: language/_gettext_only/pages.php:322
@@ -2575,15 +2592,15 @@ msgstr ""
 "to the database."
 
 #: language/_gettext_only/pages.php:326
-msgid "REFUND_NEW_HEADER_PAGE_TITLE"
+msgid "REFUND_NEW_PAGE_TITLE"
 msgstr "New Refund Page"
 
 #: language/_gettext_only/pages.php:327
-msgid "REFUND_NEW_HEADER_META_DESCRIPTION"
+msgid "REFUND_NEW_PAGE_META_DESCRIPTION"
 msgstr ""
 
 #: language/_gettext_only/pages.php:328
-msgid "REFUND_NEW_HEADER_META_KEYWORDS"
+msgid "REFUND_NEW_PAGE_META_KEYWORDS"
 msgstr ""
 
 #: language/_gettext_only/pages.php:329
@@ -2603,15 +2620,15 @@ msgstr ""
 "to the database and this page reloaded ready for another entry."
 
 #: language/_gettext_only/pages.php:333
-msgid "REFUND_SEARCH_HEADER_PAGE_TITLE"
+msgid "REFUND_SEARCH_PAGE_TITLE"
 msgstr "Refund Search Page"
 
 #: language/_gettext_only/pages.php:334
-msgid "REFUND_SEARCH_HEADER_META_DESCRIPTION"
+msgid "REFUND_SEARCH_PAGE_META_DESCRIPTION"
 msgstr ""
 
 #: language/_gettext_only/pages.php:335
-msgid "REFUND_SEARCH_HEADER_META_KEYWORDS"
+msgid "REFUND_SEARCH_PAGE_META_KEYWORDS"
 msgstr ""
 
 #: language/_gettext_only/pages.php:336
@@ -2635,15 +2652,15 @@ msgstr ""
 "viewing, editing and deleting the record."
 
 #: language/_gettext_only/pages.php:342
-msgid "REPORT_FINANCIAL_HEADER_PAGE_TITLE"
+msgid "REPORT_FINANCIAL_PAGE_TITLE"
 msgstr ""
 
 #: language/_gettext_only/pages.php:343
-msgid "REPORT_FINANCIAL_HEADER_META_DESCRIPTION"
+msgid "REPORT_FINANCIAL_PAGE_META_DESCRIPTION"
 msgstr ""
 
 #: language/_gettext_only/pages.php:344
-msgid "REPORT_FINANCIAL_HEADER_META_KEYWORDS"
+msgid "REPORT_FINANCIAL_PAGE_META_KEYWORDS"
 msgstr ""
 
 #: language/_gettext_only/pages.php:345
@@ -2675,15 +2692,15 @@ msgid "REPORT_FINANCIAL_ADVANCED_STATS_HELP_CONTENT"
 msgstr ""
 
 #: language/_gettext_only/pages.php:357
-msgid "SCHEDULE_DAY_HEADER_PAGE_TITLE"
+msgid "SCHEDULE_DAY_PAGE_TITLE"
 msgstr ""
 
 #: language/_gettext_only/pages.php:358
-msgid "SCHEDULE_DAY_HEADER_META_DESCRIPTION"
+msgid "SCHEDULE_DAY_PAGE_META_DESCRIPTION"
 msgstr ""
 
 #: language/_gettext_only/pages.php:359
-msgid "SCHEDULE_DAY_HEADER_META_KEYWORDS"
+msgid "SCHEDULE_DAY_PAGE_META_KEYWORDS"
 msgstr ""
 
 #: language/_gettext_only/pages.php:360
@@ -2697,15 +2714,15 @@ msgid "SCHEDULE_DAY_HELP_CONTENT"
 msgstr ""
 
 #: language/_gettext_only/pages.php:364
-msgid "SCHEDULE_DETAILS_HEADER_PAGE_TITLE"
+msgid "SCHEDULE_DETAILS_PAGE_TITLE"
 msgstr ""
 
 #: language/_gettext_only/pages.php:365
-msgid "SCHEDULE_DETAILS_HEADER_META_DESCRIPTION"
+msgid "SCHEDULE_DETAILS_PAGE_META_DESCRIPTION"
 msgstr ""
 
 #: language/_gettext_only/pages.php:366
-msgid "SCHEDULE_DETAILS_HEADER_META_KEYWORDS"
+msgid "SCHEDULE_DETAILS_PAGE_META_KEYWORDS"
 msgstr ""
 
 #: language/_gettext_only/pages.php:367
@@ -2719,15 +2736,15 @@ msgid "SCHEDULE_DETAILS_HELP_CONTENT"
 msgstr ""
 
 #: language/_gettext_only/pages.php:371
-msgid "SCHEDULE_EDIT_HEADER_PAGE_TITLE"
+msgid "SCHEDULE_EDIT_PAGE_TITLE"
 msgstr ""
 
 #: language/_gettext_only/pages.php:372
-msgid "SCHEDULE_EDIT_HEADER_META_DESCRIPTION"
+msgid "SCHEDULE_EDIT_PAGE_META_DESCRIPTION"
 msgstr ""
 
 #: language/_gettext_only/pages.php:373
-msgid "SCHEDULE_EDIT_HEADER_META_KEYWORDS"
+msgid "SCHEDULE_EDIT_PAGE_META_KEYWORDS"
 msgstr ""
 
 #: language/_gettext_only/pages.php:374
@@ -2741,15 +2758,15 @@ msgid "SCHEDULE_EDIT_HELP_CONTENT"
 msgstr ""
 
 #: language/_gettext_only/pages.php:378
-msgid "SCHEDULE_NEW_HEADER_PAGE_TITLE"
+msgid "SCHEDULE_NEW_PAGE_TITLE"
 msgstr ""
 
 #: language/_gettext_only/pages.php:379
-msgid "SCHEDULE_NEW_HEADER_META_DESCRIPTION"
+msgid "SCHEDULE_NEW_PAGE_META_DESCRIPTION"
 msgstr ""
 
 #: language/_gettext_only/pages.php:380
-msgid "SCHEDULE_NEW_HEADER_META_KEYWORDS"
+msgid "SCHEDULE_NEW_PAGE_META_KEYWORDS"
 msgstr ""
 
 #: language/_gettext_only/pages.php:381
@@ -2763,15 +2780,15 @@ msgid "SCHEDULE_NEW_HELP_CONTENT"
 msgstr ""
 
 #: language/_gettext_only/pages.php:387
-msgid "SUPPLIER_DETAILS_HEADER_PAGE_TITLE"
+msgid "SUPPLIER_DETAILS_PAGE_TITLE"
 msgstr "Supplier Details Page"
 
 #: language/_gettext_only/pages.php:388
-msgid "SUPPLIER_DETAILS_HEADER_META_DESCRIPTION"
+msgid "SUPPLIER_DETAILS_PAGE_META_DESCRIPTION"
 msgstr ""
 
 #: language/_gettext_only/pages.php:389
-msgid "SUPPLIER_DETAILS_HEADER_META_KEYWORDS"
+msgid "SUPPLIER_DETAILS_PAGE_META_KEYWORDS"
 msgstr ""
 
 #: language/_gettext_only/pages.php:390
@@ -2788,15 +2805,15 @@ msgstr ""
 "next to this Tooltip or on the Edit link in the Main Nav Menu on the left."
 
 #: language/_gettext_only/pages.php:394
-msgid "SUPPLIER_EDIT_HEADER_PAGE_TITLE"
+msgid "SUPPLIER_EDIT_PAGE_TITLE"
 msgstr "Supplier Edit Page"
 
 #: language/_gettext_only/pages.php:395
-msgid "SUPPLIER_EDIT_HEADER_META_DESCRIPTION"
+msgid "SUPPLIER_EDIT_PAGE_META_DESCRIPTION"
 msgstr ""
 
 #: language/_gettext_only/pages.php:396
-msgid "SUPPLIER_EDIT_HEADER_META_KEYWORDS"
+msgid "SUPPLIER_EDIT_PAGE_META_KEYWORDS"
 msgstr ""
 
 #: language/_gettext_only/pages.php:397
@@ -2813,15 +2830,15 @@ msgstr ""
 "to the database."
 
 #: language/_gettext_only/pages.php:401
-msgid "SUPPLIER_NEW_HEADER_PAGE_TITLE"
+msgid "SUPPLIER_NEW_PAGE_TITLE"
 msgstr "New Supplier Page"
 
 #: language/_gettext_only/pages.php:402
-msgid "SUPPLIER_NEW_HEADER_META_DESCRIPTION"
+msgid "SUPPLIER_NEW_PAGE_META_DESCRIPTION"
 msgstr ""
 
 #: language/_gettext_only/pages.php:403
-msgid "SUPPLIER_NEW_HEADER_META_KEYWORDS"
+msgid "SUPPLIER_NEW_PAGE_META_KEYWORDS"
 msgstr ""
 
 #: language/_gettext_only/pages.php:404
@@ -2841,15 +2858,15 @@ msgstr ""
 "sent to the database and this page reloaded ready for another entry."
 
 #: language/_gettext_only/pages.php:408
-msgid "SUPPLIER_SEARCH_HEADER_PAGE_TITLE"
+msgid "SUPPLIER_SEARCH_PAGE_TITLE"
 msgstr "Supplier Search Page"
 
 #: language/_gettext_only/pages.php:409
-msgid "SUPPLIER_SEARCH_HEADER_META_DESCRIPTION"
+msgid "SUPPLIER_SEARCH_PAGE_META_DESCRIPTION"
 msgstr ""
 
 #: language/_gettext_only/pages.php:410
-msgid "SUPPLIER_SEARCH_HEADER_META_KEYWORDS"
+msgid "SUPPLIER_SEARCH_PAGE_META_KEYWORDS"
 msgstr ""
 
 #: language/_gettext_only/pages.php:411
@@ -2873,15 +2890,15 @@ msgstr ""
 "and deleting the record."
 
 #: language/_gettext_only/pages.php:419
-msgid "WORKORDER_CLOSED_HEADER_PAGE_TITLE"
+msgid "WORKORDER_CLOSED_PAGE_TITLE"
 msgstr "Closed Work Orders"
 
 #: language/_gettext_only/pages.php:420
-msgid "WORKORDER_CLOSED_HEADER_META_DESCRIPTION"
+msgid "WORKORDER_CLOSED_PAGE_META_DESCRIPTION"
 msgstr ""
 
 #: language/_gettext_only/pages.php:421
-msgid "WORKORDER_CLOSED_HEADER_META_KEYWORDS"
+msgid "WORKORDER_CLOSED_PAGE_META_KEYWORDS"
 msgstr ""
 
 #: language/_gettext_only/pages.php:422
@@ -2895,15 +2912,15 @@ msgid "WORKORDER_CLOSED_HELP_CONTENT"
 msgstr "You can view all closed work orders here."
 
 #: language/_gettext_only/pages.php:426
-msgid "WORKORDER_DETAILS_HEADER_PAGE_TITLE"
+msgid "WORKORDER_DETAILS_PAGE_TITLE"
 msgstr "Work Order Details"
 
 #: language/_gettext_only/pages.php:427
-msgid "WORKORDER_DETAILS_HEADER_META_DESCRIPTION"
+msgid "WORKORDER_DETAILS_PAGE_META_DESCRIPTION"
 msgstr ""
 
 #: language/_gettext_only/pages.php:428
-msgid "WORKORDER_DETAILS_HEADER_META_KEYWORDS"
+msgid "WORKORDER_DETAILS_PAGE_META_KEYWORDS"
 msgstr ""
 
 #: language/_gettext_only/pages.php:429
@@ -2927,15 +2944,15 @@ msgstr ""
 "and start the invoicing processes."
 
 #: language/_gettext_only/pages.php:433
-msgid "WORKORDER_DETAILS_EDIT_COMMENTS_HEADER_PAGE_TITLE"
+msgid "WORKORDER_DETAILS_EDIT_COMMENTS_PAGE_TITLE"
 msgstr "Edit Comments"
 
 #: language/_gettext_only/pages.php:434
-msgid "WORKORDER_DETAILS_EDIT_COMMENTS_HEADER_META_DESCRIPTION"
+msgid "WORKORDER_DETAILS_EDIT_COMMENTS_PAGE_META_DESCRIPTION"
 msgstr ""
 
 #: language/_gettext_only/pages.php:435
-msgid "WORKORDER_DETAILS_EDIT_COMMENTS_HEADER_META_KEYWORDS"
+msgid "WORKORDER_DETAILS_EDIT_COMMENTS_PAGE_META_KEYWORDS"
 msgstr ""
 
 #: language/_gettext_only/pages.php:436
@@ -2949,15 +2966,15 @@ msgid "WORKORDER_DETAILS_EDIT_COMMENTS_HELP_CONTENT"
 msgstr "You can edit the comments attached to the work order here."
 
 #: language/_gettext_only/pages.php:440
-msgid "WORKORDER_DETAILS_EDIT_DESCRIPTION_HEADER_PAGE_TITLE"
+msgid "WORKORDER_DETAILS_EDIT_DESCRIPTION_PAGE_TITLE"
 msgstr "Edit Description"
 
 #: language/_gettext_only/pages.php:441
-msgid "WORKORDER_DETAILS_EDIT_DESCRIPTION_HEADER_META_DESCRIPTION"
+msgid "WORKORDER_DETAILS_EDIT_DESCRIPTION_PAGE_META_DESCRIPTION"
 msgstr ""
 
 #: language/_gettext_only/pages.php:442
-msgid "WORKORDER_DETAILS_EDIT_DESCRIPTION_HEADER_META_KEYWORDS"
+msgid "WORKORDER_DETAILS_EDIT_DESCRIPTION_PAGE_META_KEYWORDS"
 msgstr ""
 
 #: language/_gettext_only/pages.php:443
@@ -2971,15 +2988,15 @@ msgid "WORKORDER_DETAILS_EDIT_DESCRIPTION_HELP_CONTENT"
 msgstr "You can edit the description attached to the work order here."
 
 #: language/_gettext_only/pages.php:447
-msgid "WORKORDER_DETAILS_EDIT_RESOLUTION_HEADER_PAGE_TITLE"
+msgid "WORKORDER_DETAILS_EDIT_RESOLUTION_PAGE_TITLE"
 msgstr "Edit Resolution"
 
 #: language/_gettext_only/pages.php:448
-msgid "WORKORDER_DETAILS_EDIT_RESOLUTION_HEADER_META_DESCRIPTION"
+msgid "WORKORDER_DETAILS_EDIT_RESOLUTION_PAGE_META_DESCRIPTION"
 msgstr ""
 
 #: language/_gettext_only/pages.php:449
-msgid "WORKORDER_DETAILS_EDIT_RESOLUTION_HEADER_META_KEYWORDS"
+msgid "WORKORDER_DETAILS_EDIT_RESOLUTION_PAGE_META_KEYWORDS"
 msgstr ""
 
 #: language/_gettext_only/pages.php:450
@@ -2993,15 +3010,15 @@ msgid "WORKORDER_DETAILS_EDIT_RESOLUTION_HELP_CONTENT"
 msgstr "You can edit or close the resolution attached to the work order here."
 
 #: language/_gettext_only/pages.php:454
-msgid "WORKORDER_NEW_HEADER_PAGE_TITLE"
+msgid "WORKORDER_NEW_PAGE_TITLE"
 msgstr "New Workorder"
 
 #: language/_gettext_only/pages.php:455
-msgid "WORKORDER_NEW_HEADER_META_DESCRIPTION"
+msgid "WORKORDER_NEW_PAGE_META_DESCRIPTION"
 msgstr ""
 
 #: language/_gettext_only/pages.php:456
-msgid "WORKORDER_NEW_HEADER_META_KEYWORDS"
+msgid "WORKORDER_NEW_PAGE_META_KEYWORDS"
 msgstr ""
 
 #: language/_gettext_only/pages.php:457
@@ -3015,15 +3032,15 @@ msgid "WORKORDER_NEW_HELP_CONTENT"
 msgstr "Create new Workorders here."
 
 #: language/_gettext_only/pages.php:461
-msgid "WORKORDER_NOTE_EDIT_HEADER_PAGE_TITLE"
+msgid "WORKORDER_NOTE_EDIT_PAGE_TITLE"
 msgstr ""
 
 #: language/_gettext_only/pages.php:462
-msgid "WORKORDER_NOTE_EDIT_HEADER_META_DESCRIPTION"
+msgid "WORKORDER_NOTE_EDIT_PAGE_META_DESCRIPTION"
 msgstr ""
 
 #: language/_gettext_only/pages.php:463
-msgid "WORKORDER_NOTE_EDIT_HEADER_META_KEYWORDS"
+msgid "WORKORDER_NOTE_EDIT_PAGE_META_KEYWORDS"
 msgstr ""
 
 #: language/_gettext_only/pages.php:464
@@ -3039,15 +3056,15 @@ msgid "WORKORDER_NOTE_EDIT_HELP_CONTENT"
 msgstr ""
 
 #: language/_gettext_only/pages.php:468
-msgid "WORKORDER_NOTE_NEW_HEADER_PAGE_TITLE"
+msgid "WORKORDER_NOTE_NEW_PAGE_TITLE"
 msgstr ""
 
 #: language/_gettext_only/pages.php:469
-msgid "WORKORDER_NOTE_NEW_HEADER_META_DESCRIPTION"
+msgid "WORKORDER_NOTE_NEW_PAGE_META_DESCRIPTION"
 msgstr ""
 
 #: language/_gettext_only/pages.php:470
-msgid "WORKORDER_NOTE_NEW_HEADER_META_KEYWORDS"
+msgid "WORKORDER_NOTE_NEW_PAGE_META_KEYWORDS"
 msgstr ""
 
 #: language/_gettext_only/pages.php:471
@@ -3061,15 +3078,15 @@ msgid "WORKORDER_NOTE_NEW_HELP_CONTENT"
 msgstr ""
 
 #: language/_gettext_only/pages.php:475
-msgid "WORKORDER_OVERVIEW_HEADER_PAGE_TITLE"
+msgid "WORKORDER_OVERVIEW_PAGE_TITLE"
 msgstr "Work Orders Overview"
 
 #: language/_gettext_only/pages.php:476
-msgid "WORKORDER_OVERVIEW_HEADER_META_DESCRIPTION"
+msgid "WORKORDER_OVERVIEW_PAGE_META_DESCRIPTION"
 msgstr ""
 
 #: language/_gettext_only/pages.php:477
-msgid "WORKORDER_OVERVIEW_HEADER_META_KEYWORDS"
+msgid "WORKORDER_OVERVIEW_PAGE_META_KEYWORDS"
 msgstr ""
 
 #: language/_gettext_only/pages.php:478
@@ -3093,15 +3110,15 @@ msgstr ""
 "invoicing."
 
 #: language/_gettext_only/pages.php:482
-msgid "WORKORDER_STATUS_HEADER_PAGE_TITLE"
+msgid "WORKORDER_STATUS_PAGE_TITLE"
 msgstr "Status for Workorder"
 
 #: language/_gettext_only/pages.php:483
-msgid "WORKORDER_STATUS_HEADER_META_DESCRIPTION"
+msgid "WORKORDER_STATUS_PAGE_META_DESCRIPTION"
 msgstr ""
 
 #: language/_gettext_only/pages.php:484
-msgid "WORKORDER_STATUS_HEADER_META_KEYWORDS"
+msgid "WORKORDER_STATUS_PAGE_META_KEYWORDS"
 msgstr ""
 
 #: language/_gettext_only/pages.php:485
@@ -3115,41 +3132,41 @@ msgid "WORKORDER_STATUS_HELP_CONTENT"
 msgstr "You can change the status of a work order here."
 
 #: language/_gettext_only/pages.php:489
-msgid "WORKORDER_PRINT_CUSTOMER_WORKORDER_SLIP_HEADER_PAGE_TITLE"
+msgid "WORKORDER_PRINT_CUSTOMER_WORKORDER_SLIP_PAGE_TITLE"
 msgstr "Customer Workorder Slip"
 
 #: language/_gettext_only/pages.php:490
-msgid "WORKORDER_PRINT_CUSTOMER_WORKORDER_SLIP_HEADER_META_DESCRIPTION"
+msgid "WORKORDER_PRINT_CUSTOMER_WORKORDER_SLIP_PAGE_META_DESCRIPTION"
 msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
 
 #: language/_gettext_only/pages.php:491
-msgid "WORKORDER_PRINT_CUSTOMER_WORKORDER_SLIP_HEADER_META_KEYWORDS"
+msgid "WORKORDER_PRINT_CUSTOMER_WORKORDER_SLIP_PAGE_META_KEYWORDS"
 msgstr ""
 "CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment "
 "Processing, Simple to use"
 
 #: language/_gettext_only/pages.php:496
-msgid "WORKORDER_PRINT_JOB_SHEET_HEADER_PAGE_TITLE"
+msgid "WORKORDER_PRINT_JOB_SHEET_PAGE_TITLE"
 msgstr ""
 
 #: language/_gettext_only/pages.php:497
-msgid "WORKORDER_PRINT_JOB_SHEET_HEADER_META_DESCRIPTION"
+msgid "WORKORDER_PRINT_JOB_SHEET_PAGE_META_DESCRIPTION"
 msgstr ""
 
 #: language/_gettext_only/pages.php:498
-msgid "WORKORDER_PRINT_JOB_SHEET_HEADER_META_KEYWORDS"
+msgid "WORKORDER_PRINT_JOB_SHEET_PAGE_META_KEYWORDS"
 msgstr ""
 
 #: language/_gettext_only/pages.php:503
-msgid "WORKORDER_PRINT_TECHNICIAN_WORKORDER_SLIP_HEADER_PAGE_TITLE"
+msgid "WORKORDER_PRINT_TECHNICIAN_WORKORDER_SLIP_PAGE_TITLE"
 msgstr "Technician Workorder Slip"
 
 #: language/_gettext_only/pages.php:504
-msgid "WORKORDER_PRINT_TECHNICIAN_WORKORDER_SLIP_HEADER_META_DESCRIPTION"
+msgid "WORKORDER_PRINT_TECHNICIAN_WORKORDER_SLIP_PAGE_META_DESCRIPTION"
 msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
 
 #: language/_gettext_only/pages.php:505
-msgid "WORKORDER_PRINT_TECHNICIAN_WORKORDER_SLIP_HEADER_META_KEYWORDS"
+msgid "WORKORDER_PRINT_TECHNICIAN_WORKORDER_SLIP_PAGE_META_KEYWORDS"
 msgstr ""
 "CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment "
 "Processing, Simple to use"

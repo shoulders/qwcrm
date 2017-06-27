@@ -27,7 +27,7 @@ function display_welcome_msg($db){
     $sql = 'SELECT WELCOME_MSG FROM '.PRFX.'COMPANY';
        
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Could not display the welcome note."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Could not display the welcome message."));
         exit;
     } else { 
         

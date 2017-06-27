@@ -1,4 +1,4 @@
-<!-- edit.tpl -->
+<!-- details.tpl -->
 <table width="100%" border="0" cellpadding="20" cellspacing="5">
     <tr>
         <td>
@@ -179,11 +179,7 @@
                                                                 <td>{$labour_items[l].INVOICE_LABOUR_DESCRIPTION}</td>
                                                                 <td>{$currency_sym}{$labour_items[l].INVOICE_LABOUR_RATE|string_format:"%.2f"}</td>
                                                                 <td>{$currency_sym}{$labour_items[l].INVOICE_LABOUR_SUBTOTAL|string_format:"%.2f"}</td>
-                                                                <td>
-                                                                    <a href="index.php?page=invoice:delete_labour&labour_id={$labour_items[l].INVOICE_LABOUR_ID}" onclick="return confirmDelete('{t}Are you Sure you want to delete this Labour Record? This will permanently remove the record from the database.{/t}');">
-                                                                        <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{t}Delete Labour Record{/t}</b>');" onMouseOut="hideddrivetip();">
-                                                                    </a>
-                                                                </td>
+                                                                <td>-</td>
                                                             </tr>
                                                         {/section}
                                                         <tr>
@@ -193,18 +189,6 @@
                                                     </table>
                                                 {/if}
                                                 <br>
-                                                <!-- Additional Javascript Labour Table -->
-                                                <table width="100%" cellpadding="3" cellspacing="0" border="0" class="olotable" id="labour_items">
-                                                    <tr class="olotd4">
-                                                        <td class="row2"><b>{t}No.{/t}</b></td>
-                                                        <td class="row2"><b>{t}Qty{/t</b></td>
-                                                        <td class="row2"><b>{t}Description{/t}</b></td>
-                                                        <td class="row2"><b>&nbsp;&nbsp;{t}Rate{/t}</b></td>
-                                                    </tr>
-
-                                                    <!-- Additional Rows are added here -->
-
-                                                </table>
                                             </td>
                                         </tr>
                                     </table>
@@ -234,11 +218,7 @@
                                                                 <td>{$parts_items[p].INVOICE_PARTS_DESCRIPTION}</td>
                                                                 <td>{$currency_sym}{$parts_items[p].INVOICE_PARTS_AMOUNT|string_format:"%.2f"}</td>
                                                                 <td>{$currency_sym}{$parts_items[p].INVOICE_PARTS_SUBTOTAL|string_format:"%.2f"}</td>
-                                                                <td>
-                                                                    <a href="index.php?page=invoice:delete_parts&parts_id={$parts_items[p].INVOICE_PARTS_ID}" onclick="return confirmDelete('{t}Are you Sure you want to delete this Parts Record? This will permanently remove the record from the database.{/t}');">
-                                                                        <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{t}Delete Parts Record{/t}</b>');" onMouseOut="hideddrivetip();">
-                                                                    </a>
-                                                                </td>
+                                                                <td>-</td>
                                                             </tr>
                                                          {/section}
                                                         <tr>
@@ -246,20 +226,7 @@
                                                             <td style="text-align:left;">{$currency_sym}{$parts_sub_total|string_format:"%.2f"}</td>
                                                         </tr>
                                                     </table>
-                                                {/if}
-                                                <br>
-                                                <!-- Additional Javascript Parts Table -->
-                                                <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable" id="parts_items">
-                                                    <tr class="olotd4">
-                                                        <td class="row2"><b>{t}No.{/t}</b></td>
-                                                        <td class="row2"><b>{t}Count{/t}-qty</b></td>
-                                                        <td class="row2"><b>{t}Description{/t}</b></td>
-                                                        <td class="row2"><b>{t}Price{/t}</b></td>
-                                                    </tr>
-
-                                                    <!-- Additional Rows are added here -->
-
-                                                </table>
+                                                {/if}                                                
                                             </td>
                                         </tr>
                                     </table>

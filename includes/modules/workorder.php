@@ -547,14 +547,14 @@ function update_workorder_status($db, $workorder_id, $assign_status){
         }
     
         // for writing message to log file - this needs translating
-        if($assign_status == '1') {$wo_status = gettext("Created");
-        } elseif ($assign_status == '2') {$wo_status = gettext("Assigned");   
-        } elseif ($assign_status == '3') {$wo_status = gettext("Waiting For Parts");
-        } elseif ($assign_status == '6') {$wo_status = gettext("Closed"); 
-        } elseif ($assign_status == '7') {$wo_status = gettext("Waiting For Payment");
-        } elseif ($assign_status == '8') {$wo_status = gettext("Payment Made");
-        } elseif ($assign_status == '9') {$wo_status = gettext("Pending");
-        } elseif ($assign_status == '10') {$wo_status = gettext("Open");    
+        if($assign_status == '1') {$wo_status = gettext("WORKORDER_STATUS_1");
+        } elseif ($assign_status == '2') {$wo_status = gettext("WORKORDER_STATUS_2");   
+        } elseif ($assign_status == '3') {$wo_status = gettext("WORKORDER_STATUS_3");
+        } elseif ($assign_status == '6') {$wo_status = gettext("WORKORDER_STATUS_6"); 
+        } elseif ($assign_status == '7') {$wo_status = gettext("WORKORDER_STATUS_7");
+        } elseif ($assign_status == '8') {$wo_status = gettext("WORKORDER_STATUS_8");
+        } elseif ($assign_status == '9') {$wo_status = gettext("WORKORDER_STATUS_9");
+        } elseif ($assign_status == '10') {$wo_status = gettext("WORKORDER_STATUS_10");    
         }
         
         // Create a History record        

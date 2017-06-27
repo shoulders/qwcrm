@@ -389,12 +389,12 @@ function set_page_header_and_meta_data($module, $page_tpl, $page_title_from_var 
     if ($page_title_from_var != Null){
         $smarty->assign('page_title', $page_title_from_var); 
     } else {        
-        $smarty->assign('page_title', gettext(strtoupper($module).'_'.strtoupper($page_tpl).'_HEADER_PAGE_TITLE'));
+        $smarty->assign('page_title', gettext(strtoupper($module).'_'.strtoupper($page_tpl).'_PAGE_TITLE'));
     }    
     
     // Meta Tags
-    $smarty->assign('meta_description', gettext(strtoupper($module).'_'.strtoupper($page_tpl).'_HEADER_META_DESCRIPTION')   );
-    $smarty->assign('meta_keywords',    gettext(strtoupper($module).'_'.strtoupper($page_tpl).'_HEADER_META_KEYWORDS')      );
+    $smarty->assign('meta_description', gettext(strtoupper($module).'_'.strtoupper($page_tpl).'_PAGE_META_DESCRIPTION')   );
+    $smarty->assign('meta_keywords',    gettext(strtoupper($module).'_'.strtoupper($page_tpl).'_PAGE_META_KEYWORDS')      );
     
     return;
     
