@@ -418,7 +418,7 @@ function check_acl($db, $login_account_type_id, $module, $page_tpl) {
             WHERE TYPE_ID ='.$db->qstr($login_account_type_id);
     
     if(!$rs = $db->execute($sql)) {        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Could not get the user's Group Name by login_account_type_id."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Could not get the user's Group Name by Login Account Type ID."));
         exit;
     } else {
         $employee_acl_account_type_display_name = $rs->fields['TYPE_NAME'];

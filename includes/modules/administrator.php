@@ -174,9 +174,8 @@ function updateACL($db, $permissions) {
     $sql = "UPDATE ".PRFX."EMPLOYEE_ACL SET `Administrator`= 1, `Manager`=1, `Supervisor`=1,`Technician`=1, `Clerical`=1, `Counter`=1, `Customer`=1, `Guest`=1, `Public`=1
             WHERE `page`= 'core:error'
             OR `page`= 'core:404'
-            OR `page`= 'core:login'
-            OR `page`= 'core:maintenance'
-            OR `page`= 'user:password_reset'            
+            OR `page`= 'core:home'
+            OR `page`= 'core:maintenance'                      
             ";            
 
     if(!$rs = $db->execute($sql)) {

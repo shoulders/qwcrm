@@ -17,7 +17,7 @@
                                     <table width="100%" cellpadding="5" cellspacing="5">
                                         <tr>
                                             <td>
-                                                <b>{t}Billing rates per Unit.</b>                                                
+                                                <b>{t}Billing rates per Unit{/t}</b>                                                
                                                 <table class="olotable" width="100%" border="0" cellpadding="5" cellspacing="0">
                                                     <tr>
                                                         <td class="olohead">{t}SKU{/t}</td>
