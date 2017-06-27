@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2017-06-27 14:44+0100\n"
-"PO-Revision-Date: 2017-06-27 17:25+0100\n"
+"POT-Creation-Date: 2017-06-27 17:29+0100\n"
+"PO-Revision-Date: 2017-06-27 17:30+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en_GB\n"
@@ -165,7 +165,7 @@ msgstr ""
 msgid "Failed to enforce administrators to always have access to all pages."
 msgstr ""
 
-#: includes/modules/administrator.php:183
+#: includes/modules/administrator.php:182
 msgid "Failed to update teh Page ACL permissions."
 msgstr ""
 
@@ -2766,54 +2766,36 @@ msgid "REPORT_FINANCIAL_META_KEYWORDS"
 msgstr "-"
 
 #: language/_gettext_only/pages.php:345
+#: themes/default/templates/report/financial.tpl:15
 msgid "REPORT_FINANCIAL_HELP_TITLE"
 msgstr "Help"
 
 #: language/_gettext_only/pages.php:346
+#: themes/default/templates/report/financial.tpl:15
 msgid "REPORT_FINANCIAL_HELP_CONTENT"
 msgstr ""
 "Set a start and end date and then click submit. A financial report for the "
 "date range you have set will be returned. This is great for getting a simple "
 "report for you company and can be used to fill in simple tax returns."
 
-#: language/_gettext_only/pages.php:348
-#: themes/default/templates/report/financial.tpl:55
-msgid "REPORT_FINANCIAL_BASIC_STATS_HELP_TITLE"
-msgstr ""
-
-#: language/_gettext_only/pages.php:349
-#: themes/default/templates/report/financial.tpl:55
-msgid "REPORT_FINANCIAL_BASIC_STATS_HELP_CONTENT"
-msgstr ""
-
-#: language/_gettext_only/pages.php:350
-#: themes/default/templates/report/financial.tpl:139
-msgid "REPORT_FINANCIAL_ADVANCED_STATS_HELP_TITLE"
-msgstr ""
-
 #: language/_gettext_only/pages.php:351
-#: themes/default/templates/report/financial.tpl:139
-msgid "REPORT_FINANCIAL_ADVANCED_STATS_HELP_CONTENT"
-msgstr ""
-
-#: language/_gettext_only/pages.php:357
 msgid "SCHEDULE_DAY_PAGE_TITLE"
 msgstr "Daily Schedules"
 
-#: language/_gettext_only/pages.php:358
+#: language/_gettext_only/pages.php:352
 msgid "SCHEDULE_DAY_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:359
+#: language/_gettext_only/pages.php:353
 msgid "SCHEDULE_DAY_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:360
+#: language/_gettext_only/pages.php:354
 #: themes/default/templates/schedule/day.tpl:15
 msgid "SCHEDULE_DAY_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:361
+#: language/_gettext_only/pages.php:355
 #: themes/default/templates/schedule/day.tpl:15
 msgid "SCHEDULE_DAY_HELP_CONTENT"
 msgstr ""
@@ -2821,72 +2803,72 @@ msgstr ""
 "employee on that day  within the business hours will be shown. You are able "
 "then to view the schedule and jobn details if you have permissions."
 
-#: language/_gettext_only/pages.php:364
+#: language/_gettext_only/pages.php:358
 msgid "SCHEDULE_DETAILS_PAGE_TITLE"
 msgstr "Schedule Details"
 
-#: language/_gettext_only/pages.php:365
+#: language/_gettext_only/pages.php:359
 msgid "SCHEDULE_DETAILS_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:366
+#: language/_gettext_only/pages.php:360
 msgid "SCHEDULE_DETAILS_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:367
+#: language/_gettext_only/pages.php:361
 #: themes/default/templates/schedule/details.tpl:12
 msgid "SCHEDULE_DETAILS_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:368
+#: language/_gettext_only/pages.php:362
 #: themes/default/templates/schedule/details.tpl:12
 msgid "SCHEDULE_DETAILS_HELP_CONTENT"
 msgstr ""
 "This page shows you the details for one schedule item. There are also action "
 "buttons that can be used."
 
-#: language/_gettext_only/pages.php:371
+#: language/_gettext_only/pages.php:365
 msgid "SCHEDULE_EDIT_PAGE_TITLE"
 msgstr "Edit Schedule"
 
-#: language/_gettext_only/pages.php:372
+#: language/_gettext_only/pages.php:366
 msgid "SCHEDULE_EDIT_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:373
+#: language/_gettext_only/pages.php:367
 msgid "SCHEDULE_EDIT_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:374
+#: language/_gettext_only/pages.php:368
 #: themes/default/templates/schedule/edit.tpl:17
 msgid "SCHEDULE_EDIT_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:375
+#: language/_gettext_only/pages.php:369
 #: themes/default/templates/schedule/edit.tpl:17
 msgid "SCHEDULE_EDIT_HELP_CONTENT"
 msgstr ""
 "When editing a schedule item you can change the time of the job, the notes "
 "and even change the assigned employee."
 
-#: language/_gettext_only/pages.php:378
+#: language/_gettext_only/pages.php:372
 msgid "SCHEDULE_NEW_PAGE_TITLE"
 msgstr "New Schedule"
 
-#: language/_gettext_only/pages.php:379
+#: language/_gettext_only/pages.php:373
 msgid "SCHEDULE_NEW_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:380
+#: language/_gettext_only/pages.php:374
 msgid "SCHEDULE_NEW_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:381
+#: language/_gettext_only/pages.php:375
 #: themes/default/templates/schedule/new.tpl:17
 msgid "SCHEDULE_NEW_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:382
+#: language/_gettext_only/pages.php:376
 #: themes/default/templates/schedule/new.tpl:17
 msgid "SCHEDULE_NEW_HELP_CONTENT"
 msgstr ""
@@ -2894,24 +2876,24 @@ msgstr ""
 "schedule item that is not within the business hours or if its time range is "
 "invalid."
 
-#: language/_gettext_only/pages.php:387
+#: language/_gettext_only/pages.php:381
 msgid "SUPPLIER_DETAILS_PAGE_TITLE"
 msgstr "Supplier Details"
 
-#: language/_gettext_only/pages.php:388
+#: language/_gettext_only/pages.php:382
 msgid "SUPPLIER_DETAILS_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:389
+#: language/_gettext_only/pages.php:383
 msgid "SUPPLIER_DETAILS_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:390
+#: language/_gettext_only/pages.php:384
 #: themes/default/templates/supplier/details.tpl:13
 msgid "SUPPLIER_DETAILS_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:391
+#: language/_gettext_only/pages.php:385
 #: themes/default/templates/supplier/details.tpl:13
 msgid "SUPPLIER_DETAILS_HELP_CONTENT"
 msgstr ""
@@ -2919,24 +2901,24 @@ msgstr ""
 "<br /><br /> To edit this record you can click on the <b>Edit Details</b> "
 "next to this Tooltip or on the Edit link in the Main Nav Menu on the left."
 
-#: language/_gettext_only/pages.php:394
+#: language/_gettext_only/pages.php:388
 msgid "SUPPLIER_EDIT_PAGE_TITLE"
 msgstr "Edit Supplier"
 
-#: language/_gettext_only/pages.php:395
+#: language/_gettext_only/pages.php:389
 msgid "SUPPLIER_EDIT_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:396
+#: language/_gettext_only/pages.php:390
 msgid "SUPPLIER_EDIT_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:397
+#: language/_gettext_only/pages.php:391
 #: themes/default/templates/supplier/edit.tpl:18
 msgid "SUPPLIER_EDIT_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:398
+#: language/_gettext_only/pages.php:392
 #: themes/default/templates/supplier/edit.tpl:18
 msgid "SUPPLIER_EDIT_HELP_CONTENT"
 msgstr ""
@@ -2944,24 +2926,24 @@ msgstr ""
 "changes, click on the <b>Update</b> Button and the changes will be submitted "
 "to the database."
 
-#: language/_gettext_only/pages.php:401
+#: language/_gettext_only/pages.php:395
 msgid "SUPPLIER_NEW_PAGE_TITLE"
 msgstr "New Supplier"
 
-#: language/_gettext_only/pages.php:402
+#: language/_gettext_only/pages.php:396
 msgid "SUPPLIER_NEW_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:403
+#: language/_gettext_only/pages.php:397
 msgid "SUPPLIER_NEW_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:404
+#: language/_gettext_only/pages.php:398
 #: themes/default/templates/supplier/new.tpl:18
 msgid "SUPPLIER_NEW_HELP_TITLE"
 msgstr "New Supplier"
 
-#: language/_gettext_only/pages.php:405
+#: language/_gettext_only/pages.php:399
 #: themes/default/templates/supplier/new.tpl:18
 msgid "SUPPLIER_NEW_HELP_CONTENT"
 msgstr ""
@@ -2972,24 +2954,24 @@ msgstr ""
 "you click on the <b>Submit, Then New Record</b> button the record will be "
 "sent to the database and this page reloaded ready for another entry."
 
-#: language/_gettext_only/pages.php:408
+#: language/_gettext_only/pages.php:402
 msgid "SUPPLIER_SEARCH_PAGE_TITLE"
 msgstr "Search Suppliers"
 
-#: language/_gettext_only/pages.php:409
+#: language/_gettext_only/pages.php:403
 msgid "SUPPLIER_SEARCH_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:410
+#: language/_gettext_only/pages.php:404
 msgid "SUPPLIER_SEARCH_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:411
+#: language/_gettext_only/pages.php:405
 #: themes/default/templates/supplier/search.tpl:10
 msgid "SUPPLIER_SEARCH_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:412
+#: language/_gettext_only/pages.php:406
 #: themes/default/templates/supplier/search.tpl:10
 msgid "SUPPLIER_SEARCH_HELP_CONTENT"
 msgstr ""
@@ -3004,46 +2986,46 @@ msgstr ""
 "><br />On the right of each Record Row there are icons for viewing, editing "
 "and deleting the record."
 
-#: language/_gettext_only/pages.php:419
+#: language/_gettext_only/pages.php:413
 msgid "WORKORDER_CLOSED_PAGE_TITLE"
 msgstr "Closed Work Orders"
 
-#: language/_gettext_only/pages.php:420
+#: language/_gettext_only/pages.php:414
 msgid "WORKORDER_CLOSED_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:421
+#: language/_gettext_only/pages.php:415
 msgid "WORKORDER_CLOSED_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:422
+#: language/_gettext_only/pages.php:416
 #: themes/default/templates/workorder/closed.tpl:10
 msgid "WORKORDER_CLOSED_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:423
+#: language/_gettext_only/pages.php:417
 #: themes/default/templates/workorder/closed.tpl:10
 msgid "WORKORDER_CLOSED_HELP_CONTENT"
 msgstr "You can view all closed work orders here."
 
-#: language/_gettext_only/pages.php:426
+#: language/_gettext_only/pages.php:420
 msgid "WORKORDER_DETAILS_PAGE_TITLE"
 msgstr "Work Order Details"
 
-#: language/_gettext_only/pages.php:427
+#: language/_gettext_only/pages.php:421
 msgid "WORKORDER_DETAILS_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:428
+#: language/_gettext_only/pages.php:422
 msgid "WORKORDER_DETAILS_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:429
+#: language/_gettext_only/pages.php:423
 #: themes/default/templates/workorder/details.tpl:22
 msgid "WORKORDER_DETAILS_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:430
+#: language/_gettext_only/pages.php:424
 #: themes/default/templates/workorder/details.tpl:22
 msgid "WORKORDER_DETAILS_HELP_CONTENT"
 msgstr ""
@@ -3058,158 +3040,158 @@ msgstr ""
 "this work order. Click the Close link on the Quick Bar to complete the order "
 "and start the invoicing processes."
 
-#: language/_gettext_only/pages.php:433
+#: language/_gettext_only/pages.php:427
 msgid "WORKORDER_DETAILS_EDIT_COMMENTS_PAGE_TITLE"
 msgstr "Edit Work Order Comments"
 
-#: language/_gettext_only/pages.php:434
+#: language/_gettext_only/pages.php:428
 msgid "WORKORDER_DETAILS_EDIT_COMMENTS_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:435
+#: language/_gettext_only/pages.php:429
 msgid "WORKORDER_DETAILS_EDIT_COMMENTS_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:436
+#: language/_gettext_only/pages.php:430
 #: themes/default/templates/workorder/details_edit_comments.tpl:13
 msgid "WORKORDER_DETAILS_EDIT_COMMENTS_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:437
+#: language/_gettext_only/pages.php:431
 #: themes/default/templates/workorder/details_edit_comments.tpl:13
 msgid "WORKORDER_DETAILS_EDIT_COMMENTS_HELP_CONTENT"
 msgstr "You can edit the comments attached to the work order here."
 
-#: language/_gettext_only/pages.php:440
+#: language/_gettext_only/pages.php:434
 msgid "WORKORDER_DETAILS_EDIT_DESCRIPTION_PAGE_TITLE"
 msgstr "Edit Work Order Description"
 
-#: language/_gettext_only/pages.php:441
+#: language/_gettext_only/pages.php:435
 msgid "WORKORDER_DETAILS_EDIT_DESCRIPTION_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:442
+#: language/_gettext_only/pages.php:436
 msgid "WORKORDER_DETAILS_EDIT_DESCRIPTION_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:443
+#: language/_gettext_only/pages.php:437
 #: themes/default/templates/workorder/details_edit_description.tpl:14
 msgid "WORKORDER_DETAILS_EDIT_DESCRIPTION_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:444
+#: language/_gettext_only/pages.php:438
 #: themes/default/templates/workorder/details_edit_description.tpl:14
 msgid "WORKORDER_DETAILS_EDIT_DESCRIPTION_HELP_CONTENT"
 msgstr "You can edit the description attached to the work order here."
 
-#: language/_gettext_only/pages.php:447
+#: language/_gettext_only/pages.php:441
 msgid "WORKORDER_DETAILS_EDIT_RESOLUTION_PAGE_TITLE"
 msgstr "Edit Work Order Resolution"
 
-#: language/_gettext_only/pages.php:448
+#: language/_gettext_only/pages.php:442
 msgid "WORKORDER_DETAILS_EDIT_RESOLUTION_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:449
+#: language/_gettext_only/pages.php:443
 msgid "WORKORDER_DETAILS_EDIT_RESOLUTION_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:450
+#: language/_gettext_only/pages.php:444
 #: themes/default/templates/workorder/details_edit_resolution.tpl:13
 msgid "WORKORDER_DETAILS_EDIT_RESOLUTION_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:451
+#: language/_gettext_only/pages.php:445
 #: themes/default/templates/workorder/details_edit_resolution.tpl:13
 msgid "WORKORDER_DETAILS_EDIT_RESOLUTION_HELP_CONTENT"
 msgstr "You can edit or close the resolution attached to the work order here."
 
-#: language/_gettext_only/pages.php:454
+#: language/_gettext_only/pages.php:448
 msgid "WORKORDER_NEW_PAGE_TITLE"
 msgstr "New Workorder"
 
-#: language/_gettext_only/pages.php:455
+#: language/_gettext_only/pages.php:449
 msgid "WORKORDER_NEW_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:456
+#: language/_gettext_only/pages.php:450
 msgid "WORKORDER_NEW_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:457
+#: language/_gettext_only/pages.php:451
 #: themes/default/templates/workorder/new.tpl:14
 msgid "WORKORDER_NEW_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:458
+#: language/_gettext_only/pages.php:452
 #: themes/default/templates/workorder/new.tpl:14
 msgid "WORKORDER_NEW_HELP_CONTENT"
 msgstr "Create new Work Orders here."
 
-#: language/_gettext_only/pages.php:461
+#: language/_gettext_only/pages.php:455
 msgid "WORKORDER_NOTE_EDIT_PAGE_TITLE"
 msgstr "Edit a Work Order Note"
 
-#: language/_gettext_only/pages.php:462
+#: language/_gettext_only/pages.php:456
 msgid "WORKORDER_NOTE_EDIT_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:463
+#: language/_gettext_only/pages.php:457
 msgid "WORKORDER_NOTE_EDIT_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:464
+#: language/_gettext_only/pages.php:458
 #: themes/default/templates/customer/note_edit.tpl:18
 #: themes/default/templates/workorder/note_edit.tpl:18
 msgid "WORKORDER_NOTE_EDIT_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:465
+#: language/_gettext_only/pages.php:459
 #: themes/default/templates/customer/note_edit.tpl:18
 #: themes/default/templates/workorder/note_edit.tpl:18
 msgid "WORKORDER_NOTE_EDIT_HELP_CONTENT"
 msgstr "You can edit a work order note here."
 
-#: language/_gettext_only/pages.php:468
+#: language/_gettext_only/pages.php:462
 msgid "WORKORDER_NOTE_NEW_PAGE_TITLE"
 msgstr "New Work Order Note"
 
-#: language/_gettext_only/pages.php:469
+#: language/_gettext_only/pages.php:463
 msgid "WORKORDER_NOTE_NEW_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:470
+#: language/_gettext_only/pages.php:464
 msgid "WORKORDER_NOTE_NEW_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:471
+#: language/_gettext_only/pages.php:465
 #: themes/default/templates/workorder/note_new.tpl:9
 msgid "WORKORDER_NOTE_NEW_HELP_TITLE"
 msgstr "New Work Order Note"
 
-#: language/_gettext_only/pages.php:472
+#: language/_gettext_only/pages.php:466
 #: themes/default/templates/workorder/note_new.tpl:9
 msgid "WORKORDER_NOTE_NEW_HELP_CONTENT"
 msgstr "You can create a single work order note here."
 
-#: language/_gettext_only/pages.php:475
+#: language/_gettext_only/pages.php:469
 msgid "WORKORDER_OVERVIEW_PAGE_TITLE"
 msgstr "Work Orders Overview"
 
-#: language/_gettext_only/pages.php:476
+#: language/_gettext_only/pages.php:470
 msgid "WORKORDER_OVERVIEW_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:477
+#: language/_gettext_only/pages.php:471
 msgid "WORKORDER_OVERVIEW_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:478
+#: language/_gettext_only/pages.php:472
 #: themes/default/templates/workorder/overview.tpl:10
 msgid "WORKORDER_OVERVIEW_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:479
+#: language/_gettext_only/pages.php:473
 #: themes/default/templates/workorder/overview.tpl:10
 msgid "WORKORDER_OVERVIEW_HELP_CONTENT"
 msgstr ""
@@ -3224,24 +3206,24 @@ msgstr ""
 "the workorder. Click the Red Stop sign to close the workorder and start the "
 "invoicing."
 
-#: language/_gettext_only/pages.php:482
+#: language/_gettext_only/pages.php:476
 msgid "WORKORDER_STATUS_PAGE_TITLE"
 msgstr "Work Order Status"
 
-#: language/_gettext_only/pages.php:483
+#: language/_gettext_only/pages.php:477
 msgid "WORKORDER_STATUS_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:484
+#: language/_gettext_only/pages.php:478
 msgid "WORKORDER_STATUS_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:485
+#: language/_gettext_only/pages.php:479
 #: themes/default/templates/workorder/status.tpl:10
 msgid "WORKORDER_STATUS_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:486
+#: language/_gettext_only/pages.php:480
 #: themes/default/templates/workorder/status.tpl:10
 msgid "WORKORDER_STATUS_HELP_CONTENT"
 msgstr ""
@@ -3249,43 +3231,43 @@ msgstr ""
 "too. If needed this page will allow you to delete the work order if it is "
 "possible."
 
-#: language/_gettext_only/pages.php:489
+#: language/_gettext_only/pages.php:483
 msgid "WORKORDER_PRINT_CUSTOMER_WORKORDER_SLIP_PAGE_TITLE"
 msgstr "QWcrm - Customer Work Order Slip Template"
 
-#: language/_gettext_only/pages.php:490
+#: language/_gettext_only/pages.php:484
 msgid "WORKORDER_PRINT_CUSTOMER_WORKORDER_SLIP_META_DESCRIPTION"
 msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
 
-#: language/_gettext_only/pages.php:491
+#: language/_gettext_only/pages.php:485
 msgid "WORKORDER_PRINT_CUSTOMER_WORKORDER_SLIP_META_KEYWORDS"
 msgstr ""
 "CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment "
 "Processing, Simple to use"
 
-#: language/_gettext_only/pages.php:496
+#: language/_gettext_only/pages.php:490
 msgid "WORKORDER_PRINT_JOB_SHEET_PAGE_TITLE"
 msgstr "QWcrm - Job Sheet Template"
 
-#: language/_gettext_only/pages.php:497
+#: language/_gettext_only/pages.php:491
 msgid "WORKORDER_PRINT_JOB_SHEET_META_DESCRIPTION"
 msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
 
-#: language/_gettext_only/pages.php:498
+#: language/_gettext_only/pages.php:492
 msgid "WORKORDER_PRINT_JOB_SHEET_META_KEYWORDS"
 msgstr ""
 "CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment "
 "Processing, Simple to use"
 
-#: language/_gettext_only/pages.php:503
+#: language/_gettext_only/pages.php:497
 msgid "WORKORDER_PRINT_TECHNICIAN_WORKORDER_SLIP_PAGE_TITLE"
 msgstr "QWcrm - Technician Work Order Slip Template"
 
-#: language/_gettext_only/pages.php:504
+#: language/_gettext_only/pages.php:498
 msgid "WORKORDER_PRINT_TECHNICIAN_WORKORDER_SLIP_META_DESCRIPTION"
 msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
 
-#: language/_gettext_only/pages.php:505
+#: language/_gettext_only/pages.php:499
 msgid "WORKORDER_PRINT_TECHNICIAN_WORKORDER_SLIP_META_KEYWORDS"
 msgstr ""
 "CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment "
@@ -3612,7 +3594,7 @@ msgstr ""
 #: themes/default/templates/expense/new.tpl:145
 #: themes/default/templates/invoice/edit.tpl:601
 #: themes/default/templates/refund/new.tpl:130
-#: themes/default/templates/report/financial.tpl:45
+#: themes/default/templates/report/financial.tpl:72
 #: themes/default/templates/schedule/edit.tpl:93
 #: themes/default/templates/schedule/new.tpl:77
 #: themes/default/templates/supplier/new.tpl:127
@@ -4140,7 +4122,7 @@ msgid "Logout"
 msgstr ""
 
 #: themes/default/templates/core/blocks/theme_menu_block.tpl:16
-#: themes/default/templates/report/financial.tpl:63
+#: themes/default/templates/report/financial.tpl:89
 msgid "Customers"
 msgstr ""
 
@@ -4176,7 +4158,7 @@ msgid "New Note"
 msgstr ""
 
 #: themes/default/templates/core/blocks/theme_menu_block.tpl:30
-#: themes/default/templates/report/financial.tpl:64
+#: themes/default/templates/report/financial.tpl:90
 msgid "Work Orders"
 msgstr ""
 
@@ -4185,7 +4167,7 @@ msgid "Overview"
 msgstr ""
 
 #: themes/default/templates/core/blocks/theme_menu_block.tpl:35
-#: themes/default/templates/report/financial.tpl:84
+#: themes/default/templates/report/financial.tpl:110
 #: themes/default/templates/workorder/closed.tpl:75
 #: themes/default/templates/workorder/printing/print_job_sheet.tpl:138
 msgid "Closed"
@@ -4231,8 +4213,8 @@ msgstr ""
 
 #: themes/default/templates/core/blocks/theme_menu_block.tpl:53
 #: themes/default/templates/customer/details.tpl:9
-#: themes/default/templates/report/financial.tpl:65
-#: themes/default/templates/report/financial.tpl:151
+#: themes/default/templates/report/financial.tpl:91
+#: themes/default/templates/report/financial.tpl:177
 msgid "Invoices"
 msgstr ""
 
@@ -4308,6 +4290,7 @@ msgid "Delete Refund"
 msgstr ""
 
 #: themes/default/templates/core/blocks/theme_menu_block.tpl:81
+#: themes/default/templates/report/financial.tpl:13
 msgid "Financial Report"
 msgstr ""
 
@@ -4633,7 +4616,7 @@ msgstr ""
 #: themes/default/templates/invoice/printing/print_address.tpl:262
 #: themes/default/templates/invoice/printing/print_invoice.tpl:262
 #: themes/default/templates/invoice/unpaid.tpl:78
-#: themes/default/templates/report/financial.tpl:225
+#: themes/default/templates/report/financial.tpl:251
 #: themes/default/templates/workorder/blocks/details_customer_details_block.tpl:85
 msgid "Discount"
 msgstr ""
@@ -4732,7 +4715,7 @@ msgstr ""
 #: themes/default/templates/customer/blocks/details_invoice_block.tpl:42
 #: themes/default/templates/invoice/printing/print_address.tpl:274
 #: themes/default/templates/invoice/printing/print_invoice.tpl:274
-#: themes/default/templates/report/financial.tpl:96
+#: themes/default/templates/report/financial.tpl:122
 msgid "Paid"
 msgstr ""
 
@@ -5330,8 +5313,8 @@ msgstr ""
 #: themes/default/templates/refund/search.tpl:40
 #: themes/default/templates/refund/search.tpl:119
 #: themes/default/templates/refund/search.tpl:153
-#: themes/default/templates/report/financial.tpl:157
-#: themes/default/templates/report/financial.tpl:173
+#: themes/default/templates/report/financial.tpl:183
+#: themes/default/templates/report/financial.tpl:199
 msgid "Items"
 msgstr ""
 
@@ -5571,7 +5554,7 @@ msgstr ""
 
 #: themes/default/templates/invoice/details.tpl:161
 #: themes/default/templates/invoice/edit.tpl:450
-#: themes/default/templates/report/financial.tpl:148
+#: themes/default/templates/report/financial.tpl:174
 msgid "Labour"
 msgstr ""
 
@@ -5591,8 +5574,8 @@ msgstr ""
 #: themes/default/templates/invoice/printing/print_address.tpl:166
 #: themes/default/templates/invoice/printing/print_invoice.tpl:143
 #: themes/default/templates/invoice/printing/print_invoice.tpl:166
-#: themes/default/templates/report/financial.tpl:161
-#: themes/default/templates/report/financial.tpl:177
+#: themes/default/templates/report/financial.tpl:187
+#: themes/default/templates/report/financial.tpl:203
 #: themes/default/templates/workorder/printing/print_customer_workorder_slip.tpl:235
 #: themes/default/templates/workorder/printing/print_customer_workorder_slip.tpl:236
 #: themes/default/templates/workorder/printing/print_customer_workorder_slip.tpl:237
@@ -5625,7 +5608,7 @@ msgstr ""
 #: themes/default/templates/invoice/edit.tpl:509
 #: themes/default/templates/invoice/labour_rates.tpl:48
 #: themes/default/templates/invoice/labour_rates.tpl:80
-#: themes/default/templates/report/financial.tpl:147
+#: themes/default/templates/report/financial.tpl:173
 msgid "Parts"
 msgstr ""
 
@@ -5669,9 +5652,9 @@ msgstr ""
 #: themes/default/templates/invoice/printing/print_address.tpl:266
 #: themes/default/templates/invoice/printing/print_invoice.tpl:266
 #: themes/default/templates/invoice/unpaid.tpl:79
-#: themes/default/templates/report/financial.tpl:193
-#: themes/default/templates/report/financial.tpl:209
-#: themes/default/templates/report/financial.tpl:229
+#: themes/default/templates/report/financial.tpl:219
+#: themes/default/templates/report/financial.tpl:235
+#: themes/default/templates/report/financial.tpl:255
 msgid "Tax"
 msgstr ""
 
@@ -5754,6 +5737,10 @@ msgstr ""
 msgid "Edit Labour Rates"
 msgstr ""
 
+#: themes/default/templates/invoice/labour_rates.tpl:20
+msgid "Billing rates per Unit"
+msgstr ""
+
 #: themes/default/templates/invoice/labour_rates.tpl:23
 msgid "SKU"
 msgstr ""
@@ -5786,8 +5773,8 @@ msgid "Display"
 msgstr ""
 
 #: themes/default/templates/invoice/labour_rates.tpl:85
-#: themes/default/templates/report/financial.tpl:72
-#: themes/default/templates/report/financial.tpl:92
+#: themes/default/templates/report/financial.tpl:98
+#: themes/default/templates/report/financial.tpl:118
 #: themes/default/templates/workorder/blocks/overview_new_workorders_block.tpl:2
 msgid "New"
 msgstr ""
@@ -6074,23 +6061,27 @@ msgstr ""
 msgid "Delete Refund Record"
 msgstr ""
 
-#: themes/default/templates/report/financial.tpl:14
+#: themes/default/templates/report/financial.tpl:29
+msgid "Date Range"
+msgstr ""
+
+#: themes/default/templates/report/financial.tpl:35
 msgid "Report Date From"
 msgstr ""
 
-#: themes/default/templates/report/financial.tpl:15
+#: themes/default/templates/report/financial.tpl:36
 msgid "Report Date To"
 msgstr ""
 
-#: themes/default/templates/report/financial.tpl:53
+#: themes/default/templates/report/financial.tpl:83
 msgid "Basic Statisitics"
 msgstr ""
 
-#: themes/default/templates/report/financial.tpl:66
+#: themes/default/templates/report/financial.tpl:92
 msgid "Revenue (Gross)"
 msgstr ""
 
-#: themes/default/templates/report/financial.tpl:80
+#: themes/default/templates/report/financial.tpl:106
 #: themes/default/templates/workorder/blocks/details_header_block.tpl:5
 #: themes/default/templates/workorder/blocks/overview_assigned_workorders_block.tpl:6
 #: themes/default/templates/workorder/blocks/overview_awaiting_parts_workorders_block.tpl:6
@@ -6104,52 +6095,52 @@ msgstr ""
 msgid "Opened"
 msgstr ""
 
-#: themes/default/templates/report/financial.tpl:104
+#: themes/default/templates/report/financial.tpl:130
 msgid "Total Invoiced"
 msgstr ""
 
-#: themes/default/templates/report/financial.tpl:108
+#: themes/default/templates/report/financial.tpl:134
 msgid "Total Expenses"
 msgstr ""
 
-#: themes/default/templates/report/financial.tpl:112
+#: themes/default/templates/report/financial.tpl:138
 msgid "Total Refunds"
 msgstr ""
 
-#: themes/default/templates/report/financial.tpl:116
+#: themes/default/templates/report/financial.tpl:142
 msgid "Taxable Profit"
 msgstr ""
 
-#: themes/default/templates/report/financial.tpl:130
+#: themes/default/templates/report/financial.tpl:158
 msgid "Taxable Profit = Invoiced - (Expenses - Refunds)"
 msgstr ""
 
-#: themes/default/templates/report/financial.tpl:137
+#: themes/default/templates/report/financial.tpl:167
 msgid "Advanced Statistics"
 msgstr ""
 
-#: themes/default/templates/report/financial.tpl:149
+#: themes/default/templates/report/financial.tpl:175
 msgid "Expenses"
 msgstr ""
 
-#: themes/default/templates/report/financial.tpl:150
+#: themes/default/templates/report/financial.tpl:176
 msgid "Refunds"
 msgstr ""
 
-#: themes/default/templates/report/financial.tpl:165
-#: themes/default/templates/report/financial.tpl:181
-#: themes/default/templates/report/financial.tpl:221
+#: themes/default/templates/report/financial.tpl:191
+#: themes/default/templates/report/financial.tpl:207
+#: themes/default/templates/report/financial.tpl:247
 msgid "Sub"
 msgstr ""
 
-#: themes/default/templates/report/financial.tpl:189
-#: themes/default/templates/report/financial.tpl:205
+#: themes/default/templates/report/financial.tpl:215
+#: themes/default/templates/report/financial.tpl:231
 msgid "Net"
 msgstr ""
 
-#: themes/default/templates/report/financial.tpl:197
-#: themes/default/templates/report/financial.tpl:213
-#: themes/default/templates/report/financial.tpl:233
+#: themes/default/templates/report/financial.tpl:223
+#: themes/default/templates/report/financial.tpl:239
+#: themes/default/templates/report/financial.tpl:259
 msgid "Gross"
 msgstr ""
 
