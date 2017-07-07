@@ -1018,16 +1018,15 @@ class JSession implements IteratorAggregate
      */
     public function checkSession()
     {   
-        $user     = QFactory::getUser();    // this gets the user from the session
+        $user   = QFactory::getUser();      // this gets the user from the session
         $db     = QFactory::getDbo();
         $config = QFactory::getConfig();
         
-        $sql = "SELECT session_id FROM ".PRFX."session WHERE session_id = " . $db->qstr( $this->getId() );        
-        $rs = $db->Execute($sql);
-        $exists = $rs->RecordCount();
-                
+        $sql    = "SELECT session_id FROM ".PRFX."session WHERE session_id = " . $db->qstr( $this->getId() );        
+        $rs     = $db->Execute($sql);       // If no rows found then $rs will not be created
+        
         // If the session record doesn't exist initialise it.
-        if (!$exists)
+        if (!$rs)        
         {
             $time = $this->isNew() ? time() : $this->get('session.timer.start');            
 

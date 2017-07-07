@@ -829,7 +829,7 @@ function create_table_employee($db) {
         `EMPLOYEE_HOME_PHONE` varchar(13) NOT NULL default '',
         `EMPLOYEE_MOBILE_PHONE` varchar(13) NOT NULL default '',        
         `EMPLOYEE_BASED` varchar(10) NOT NULL default '1' ,
-        `EMPLOYEE_ACL` int(11) NOT NULL default '0',
+        `EMPLOYEE_GROUP` int(11) NOT NULL default '0',
         `EMPLOYEE_STATUS` varchar(20) NOT NULL default '',
         PRIMARY KEY  (`EMPLOYEE_ID`),
         UNIQUE KEY `EMPLOYEE_LOGIN` (`EMPLOYEE_LOGIN`)

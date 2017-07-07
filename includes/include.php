@@ -413,22 +413,22 @@ function check_acl($db, $login_account_type_id, $module, $page_tpl) {
     }
 
     /* Get user's Group Name by login_account_type_id */
-    $sql = 'SELECT '.PRFX.'EMPLOYEE_ACCOUNT_TYPES.TYPE_NAME
-            FROM '.PRFX.'EMPLOYEE_ACCOUNT_TYPES 
+    $sql = 'SELECT '.PRFX.'USER_ACCOUNT_TYPES.TYPE_NAME
+            FROM '.PRFX.'USER_ACCOUNT_TYPES 
             WHERE TYPE_ID ='.$db->qstr($login_account_type_id);
     
     if(!$rs = $db->execute($sql)) {        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Could not get the user's Group Name by Login Account Type ID."));
         exit;
     } else {
-        $employee_acl_account_type_display_name = $rs->fields['TYPE_NAME'];
+        $employee_group_display_name = $rs->fields['TYPE_NAME'];
     } 
     
     // Build the page name for the ACL lookup
     $module_page = $module.':'.$page_tpl;
     
     /* Check Page to see if we have access */
-    $sql = "SELECT ".$employee_acl_account_type_display_name." AS PAGE_ACL FROM ".PRFX."EMPLOYEE_ACL WHERE page=".$db->qstr($module_page);
+    $sql = "SELECT ".$employee_group_display_name." AS PAGE_ACL FROM ".PRFX."USER_ACL WHERE page=".$db->qstr($module_page);
 
     if(!$rs = $db->execute($sql)) {        
         force_error_page($_GET['page'], 'authentication', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Could not get the Page's ACL."));

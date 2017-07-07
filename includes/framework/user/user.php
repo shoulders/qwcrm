@@ -355,7 +355,7 @@ class JUser
         return $table->setLastVisit($timestamp);*/
         
         $db = QFactory::getDbo();        
-        $sql = "UPDATE ".PRFX."EMPLOYEE SET EMPLOYEE_LASTVISIT = ".time()." WHERE EMPLOYEE_ID = " . $this->id;
+        $sql = "UPDATE ".PRFX."employee SET EMPLOYEE_LASTVISIT = ".time()." WHERE EMPLOYEE_ID = " . $this->id;
         $db->Execute($sql);
         
         return;
@@ -671,7 +671,7 @@ class JUser
     {       
         $db = QFactory::getDbo();
         
-        $sql = "SELECT * FROM ".PRFX."EMPLOYEE WHERE EMPLOYEE_ID = " . $db->qstr($id);        
+        $sql = "SELECT * FROM ".PRFX."employee WHERE EMPLOYEE_ID = " . $db->qstr($id);        
         
         if(!$rs = $db->execute($sql)){
             

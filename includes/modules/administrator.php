@@ -124,7 +124,7 @@ function checkForQWcrmUpdate() {
 
 function loadACL($db) {
     
-    $sql = "SELECT * FROM ".PRFX."EMPLOYEE_ACL ORDER BY page";
+    $sql = "SELECT * FROM ".PRFX."USER_ACL ORDER BY page";
     
     if(!$rs = $db->execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to load the Page ACL permissions from the database."));
@@ -157,7 +157,7 @@ function updateACL($db, $permissions) {
             // Enforce Administrators always have access to everything
             $values .= "Administrator='1' ";
 
-            $sql = "UPDATE ".PRFX."EMPLOYEE_ACL SET ".$values."WHERE page='".$ACLpage."'";
+            $sql = "UPDATE ".PRFX."USER_ACL SET ".$values."WHERE page='".$ACLpage."'";
 
             if(!$rs = $db->execute($sql)) {
                 force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to enforce administrators to always have access to all pages."));
@@ -171,7 +171,7 @@ function updateACL($db, $permissions) {
     }    
    
     // Make these pages permissions available to all User Account Types - This prevents systems errors
-    $sql = "UPDATE ".PRFX."EMPLOYEE_ACL SET `Administrator`= 1, `Manager`=1, `Supervisor`=1,`Technician`=1, `Clerical`=1, `Counter`=1, `Customer`=1, `Guest`=1, `Public`=1
+    $sql = "UPDATE ".PRFX."USER_ACL SET `Administrator`= 1, `Manager`=1, `Supervisor`=1,`Technician`=1, `Clerical`=1, `Counter`=1, `Customer`=1, `Guest`=1, `Public`=1
             WHERE `page`= 'core:error'
             OR `page`= 'core:404'
             OR `page`= 'core:home'

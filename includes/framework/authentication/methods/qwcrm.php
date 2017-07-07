@@ -49,7 +49,7 @@ class PlgAuthenticationQwcrm
         }
 
         // Load the relevant user record form the database
-        $sql = "SELECT EMPLOYEE_ID, EMPLOYEE_PASSWORD FROM ".PRFX."EMPLOYEE WHERE EMPLOYEE_LOGIN = ".$this->db->qstr($credentials['username']);        
+        $sql = "SELECT EMPLOYEE_ID, EMPLOYEE_PASSWORD FROM ".PRFX."employee WHERE EMPLOYEE_LOGIN = ".$this->db->qstr($credentials['username']);        
         $rs = $this->db->Execute($sql);
         $result = $rs->GetRowAssoc();   // If I call this twice for this search, no results are shown on the TPL
               

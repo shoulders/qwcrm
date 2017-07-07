@@ -32,7 +32,7 @@ if ($_SESSION['login_token'] && $_SESSION['login_account_type_id'] != '8' && $_S
                  * 
                  */
 
-                $query = $db->query("SELECT WORK_ORDER_SCOPE FROM ".PRFX."WORKORDER WHERE WORK_ORDER_SCOPE LIKE '$queryString%' LIMIT 10");
+                $query = $db->query("SELECT WORK_ORDER_SCOPE FROM ".PRFX."workorder WHERE WORK_ORDER_SCOPE LIKE '$queryString%' LIMIT 10");
 
                 if($query) {
 

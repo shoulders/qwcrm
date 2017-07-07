@@ -40,9 +40,9 @@ function display_employees($db, $search_term, $page_no) {
     
     $sql = "SELECT 
             ".PRFX."EMPLOYEE.*,
-            ".PRFX."EMPLOYEE_ACCOUNT_TYPES.TYPE_NAME
+            ".PRFX."USER_ACCOUNT_TYPES.TYPE_NAME
             FROM ".PRFX."EMPLOYEE 
-            LEFT JOIN ".PRFX."EMPLOYEE_ACCOUNT_TYPES ON (".PRFX."EMPLOYEE. EMPLOYEE_TYPE = ".PRFX."EMPLOYEE_ACCOUNT_TYPES.TYPE_ID)    
+            LEFT JOIN ".PRFX."USER_ACCOUNT_TYPES ON (".PRFX."EMPLOYEE. EMPLOYEE_TYPE = ".PRFX."USER_ACCOUNT_TYPES.TYPE_ID)    
             WHERE EMPLOYEE_DISPLAY_NAME LIKE '%$search_term%'
             ORDER BY EMPLOYEE_DISPLAY_NAME";
     
@@ -120,7 +120,7 @@ function insert_employee($db, $auth, $VAR){
             EMPLOYEE_HOME_PHONE     =". $db->qstr( $VAR['employee_homePhone']                   ).",
             EMPLOYEE_MOBILE_PHONE   =". $db->qstr( $VAR['employee_mobilePhone']                 ).",
             EMPLOYEE_BASED          =". $db->qstr( $VAR['employee_based']                       ).",
-            EMPLOYEE_ACL            =". $db->qstr( $VAR['employee_acl']                         ).",    
+            EMPLOYEE_GROUP          =". $db->qstr( $VAR['employee_group']                       ).",    
             EMPLOYEE_STATUS         =". $db->qstr( $VAR['employee_status']                      );          
           
     if(!$rs = $db->Execute($sql)) {
@@ -171,9 +171,9 @@ function get_employee_display_name_by_id($db, $employee_id) {
     
     $sql = "SELECT 
             ".PRFX."EMPLOYEE.*,
-            ".PRFX."EMPLOYEE_ACCOUNT_TYPES.TYPE_NAME
+            ".PRFX."USER_ACCOUNT_TYPES.TYPE_NAME
             FROM ".PRFX."EMPLOYEE
-            LEFT JOIN ".PRFX."EMPLOYEE_ACCOUNT_TYPES ON (".PRFX."EMPLOYEE.EMPLOYEE_TYPE = ".PRFX."EMPLOYEE_ACCOUNT_TYPES.TYPE_ID)
+            LEFT JOIN ".PRFX."USER_ACCOUNT_TYPES ON (".PRFX."EMPLOYEE.EMPLOYEE_TYPE = ".PRFX."USER_ACCOUNT_TYPES.TYPE_ID)
             WHERE EMPLOYEE_ID=". $db->qstr($employee_id);
     
     if(!$rs = $db->Execute($sql)) {
@@ -238,7 +238,7 @@ function get_employee_record_by_username($db, $employee_usr){
 
 function get_employee_types($db) {
     
-    $sql = "SELECT * FROM ".PRFX."EMPLOYEE_ACCOUNT_TYPES";
+    $sql = "SELECT * FROM ".PRFX."USER_ACCOUNT_TYPES";
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the employee types."));
@@ -300,7 +300,7 @@ function update_employee($db, $auth, $employee_id, $VAR) {
                     EMPLOYEE_HOME_PHONE     =". $db->qstr( $VAR['employee_homePhone']                   ).",
                     EMPLOYEE_MOBILE_PHONE   =". $db->qstr( $VAR['employee_mobilePhone']                 ).",
                     EMPLOYEE_BASED          =". $db->qstr( $VAR['employee_based']                       ).",
-                    EMPLOYEE_ACL            =". $db->qstr( $VAR['employee_acl']                         ).",    
+                    EMPLOYEE_GROUP          =". $db->qstr( $VAR['employee_group']                      ).",    
                     EMPLOYEE_STATUS         =". $db->qstr( $VAR['employee_status']                      );
 
     $sql = "UPDATE ".PRFX."EMPLOYEE ". $set ." WHERE EMPLOYEE_ID= ".$db->qstr($employee_id);

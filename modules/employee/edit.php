@@ -20,7 +20,7 @@ if(isset($VAR['submit'])) {
 
         // Load the incorrect varibles for editing        
         $employee_details['EMPLOYEE_LOGIN']         = $VAR['employee_usr'];
-        $employee_details['EMPLOYEE_HASH']        = $VAR['employee_pwd'];
+        $employee_details['EMPLOYEE_HASH']          = $VAR['employee_pwd'];
         $employee_details['EMPLOYEE_EMAIL']         = $VAR['employee_email'];
         $employee_details['EMPLOYEE_FIRST_NAME']    = $VAR['employee_firstName'];      
         $employee_details['EMPLOYEE_LAST_NAME']     = $VAR['employee_lastName'];
@@ -34,7 +34,7 @@ if(isset($VAR['submit'])) {
         $employee_details['EMPLOYEE_HOME_PHONE']    = $VAR['employee_homePhone'];
         $employee_details['EMPLOYEE_MOBILE_PHONE']  = $VAR['employee_mobilePhone'];        
         $employee_details['EMPLOYEE_BASED']         = $VAR['employee_based'];   
-        $employee_details['EMPLOYEE_ACL']           = $VAR['employee_acl'];      
+        $employee_details['EMPLOYEE_GROUP']         = $VAR['employee_group'];      
         $employee_details['EMPLOYEE_STATUS']        = $VAR['employee_status'];
         
         // Reload the page with the POST'ed data

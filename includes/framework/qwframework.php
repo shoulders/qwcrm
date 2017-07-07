@@ -11,8 +11,8 @@ defined('_QWEXEC') or die;
 
 // General Helpers
 require FRAMEWORK_DIR . 'general/config.php';                      // Gets the standard config settings Only and handles saving of them
-require FRAMEWORK_DIR . 'general/registry.php';                    // Used to create a register for the class which can be manipulated (set/get/clear) and can be serialised into JSON compatible string for storage in the session
-require FRAMEWORK_DIR . 'general/Webclient.php';                   // Gets the browser details from the session (used in cookie creation)
+require FRAMEWORK_DIR . 'general/Registry.php';                    // Used to create a register for the class which can be manipulated (set/get/clear) and can be serialised into JSON compatible string for storage in the session
+require FRAMEWORK_DIR . 'general/WebClient.php';                   // Gets the browser details from the session (used in cookie creation)
 require FRAMEWORK_DIR . 'general/Cookie.php';                      // Cookie Object with set and get
 
 // Input
