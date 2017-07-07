@@ -99,11 +99,11 @@ function display_refunds($db, $direction = 'DESC', $use_pages = false, $page_no 
     /* The SQL code */
     
     $sql =  "SELECT * 
-            FROM ".PRFX."REFUND".                                                   
+            FROM ".PRFX."refund".                                                   
             $whereTheseRecords.            
             $likeTheseRecords.
-            " GROUP BY ".PRFX."REFUND.REFUND_ID".
-            " ORDER BY ".PRFX."REFUND.REFUND_ID ".$direction;            
+            " GROUP BY ".PRFX."refund.REFUND_ID".
+            " ORDER BY ".PRFX."refund.REFUND_ID ".$direction;            
     
     /* Restrict by pages */
     
@@ -188,7 +188,7 @@ function display_refunds($db, $direction = 'DESC', $use_pages = false, $page_no 
 
 function insert_refund($db, $VAR) {
     
-    $sql = "INSERT INTO ".PRFX."REFUND SET            
+    $sql = "INSERT INTO ".PRFX."refund SET            
             REFUND_PAYEE            = ". $db->qstr( $VAR['refundPayee']                     ).",
             REFUND_DATE             = ". $db->qstr( date_to_timestamp($VAR['refundDate'])   ).",
             REFUND_TYPE             = ". $db->qstr( $VAR['refundType']                      ).",
@@ -219,7 +219,7 @@ function insert_refund($db, $VAR) {
 
 function get_refund_details($db, $refund_id, $item = null){
     
-    $sql = "SELECT * FROM ".PRFX."REFUND WHERE REFUND_ID=".$db->qstr($refund_id);
+    $sql = "SELECT * FROM ".PRFX."refund WHERE REFUND_ID=".$db->qstr($refund_id);
     
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the refund details."));
@@ -248,7 +248,7 @@ function get_refund_details($db, $refund_id, $item = null){
 
 function update_refund($db, $refund_id, $VAR) {
     
-    $sql = "UPDATE ".PRFX."REFUND SET
+    $sql = "UPDATE ".PRFX."refund SET
             REFUND_PAYEE            = ". $db->qstr( $VAR['refundPayee']                     ).",
             REFUND_DATE             = ". $db->qstr( date_to_timestamp($VAR['refundDate'])   ).",
             REFUND_TYPE             = ". $db->qstr( $VAR['refundType']                      ).",
@@ -282,7 +282,7 @@ function update_refund($db, $refund_id, $VAR) {
 
 function delete_refund($db, $refund_id) {
     
-    $sql = "DELETE FROM ".PRFX."REFUND WHERE REFUND_ID=".$db->qstr($refund_id);
+    $sql = "DELETE FROM ".PRFX."refund WHERE REFUND_ID=".$db->qstr($refund_id);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete the refund records."));
@@ -395,7 +395,7 @@ function prepare_refund_search_terms($search_category, $search_term) {
 
 function last_refund_id_lookup($db) {
     
-    $sql = 'SELECT * FROM '.PRFX.'REFUND ORDER BY REFUND_ID DESC LIMIT 1';
+    $sql = "SELECT * FROM ".PRFX."refund ORDER BY REFUND_ID DESC LIMIT 1";
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to lookup the last refund record ID."));

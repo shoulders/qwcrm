@@ -413,9 +413,9 @@ function check_acl($db, $login_account_type_id, $module, $page_tpl) {
     }
 
     /* Get user's Group Name by login_account_type_id */
-    $sql = 'SELECT '.PRFX.'USER_ACCOUNT_TYPES.TYPE_NAME
-            FROM '.PRFX.'USER_ACCOUNT_TYPES 
-            WHERE TYPE_ID ='.$db->qstr($login_account_type_id);
+    $sql = "SELECT ".PRFX."user_account_types.TYPE_NAME
+            FROM ".PRFX."user_account_types 
+            WHERE TYPE_ID =".$db->qstr($login_account_type_id);
     
     if(!$rs = $db->execute($sql)) {        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Could not get the user's Group Name by Login Account Type ID."));
@@ -428,7 +428,7 @@ function check_acl($db, $login_account_type_id, $module, $page_tpl) {
     $module_page = $module.':'.$page_tpl;
     
     /* Check Page to see if we have access */
-    $sql = "SELECT ".$employee_group_display_name." AS PAGE_ACL FROM ".PRFX."USER_ACL WHERE page=".$db->qstr($module_page);
+    $sql = "SELECT ".$employee_group_display_name." AS PAGE_ACL FROM ".PRFX."user_acl WHERE page=".$db->qstr($module_page);
 
     if(!$rs = $db->execute($sql)) {        
         force_error_page($_GET['page'], 'authentication', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Could not get the Page's ACL."));
@@ -503,7 +503,7 @@ function verify_qwcrm_is_installed_correctly($db){
 
 function get_qwcrm_database_version_number($db){
     
-    $sql = 'SELECT * FROM '.PRFX.'QWCRM_VERSION ORDER BY '.PRFX.'QWCRM_VERSION.`VERSION_INSTALLED` DESC LIMIT 1';
+    $sql = "SELECT * FROM ".PRFX."qwcrm_version ORDER BY ".PRFX."qwcrm_version.`VERSION_INSTALLED` DESC LIMIT 1";
     
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Could not compare the version of the file system and databases to verify they match."));
@@ -528,10 +528,12 @@ function get_qwcrm_database_version_number($db){
 
 function get_company_details($db, $item = null){
     
-    $sql = 'SELECT * FROM '.PRFX.'COMPANY';
+    $sql = "SELECT * FROM ".PRFX."company";
     
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get company details."));
+        //force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get company details."));
+        echo $sql.'<br>';
+        echo $db->ErrorMsg();
         exit;
     } else {
         
@@ -679,14 +681,14 @@ echo ('My real IP is:'.$ip);
 
 function write_record_to_tracker_table($db, $page_display_controller, $module, $page_tpl){
     
-   $sql = 'INSERT into '.PRFX.'TRACKER SET
-   date          = '. $db->qstr( time()                     ).',
-   ip            = '. $db->qstr( get_ip_address()           ).',
-   uagent        = '. $db->qstr( getenv('HTTP_USER_AGENT')  ).',
-   full_page     = '. $db->qstr( $page_display_controller   ).',
-   module        = '. $db->qstr( $module                    ).',
-   page          = '. $db->qstr( $page_tpl                  ).',
-   referer       = '. $db->qstr( getenv('HTTP_REFERER')     );
+   $sql = "INSERT into ".PRFX."tracker SET
+   date          = ". $db->qstr( time()                     ).",
+   ip            = ". $db->qstr( get_ip_address()           ).",
+   uagent        = ". $db->qstr( getenv('HTTP_USER_AGENT')  ).",
+   full_page     = ". $db->qstr( $page_display_controller   ).",
+   module        = ". $db->qstr( $module                    ).",
+   page          = ". $db->qstr( $page_tpl                  ).",
+   referer       = ". $db->qstr( getenv('HTTP_REFERER')     );
 
    if(!$rs = $db->Execute($sql)) {
       force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Error inserting item into tracker database."));
@@ -1019,7 +1021,7 @@ function timestamp_to_calendar_format($timestamp) {
 
 function get_country_codes($db) {
 
-    $sql = 'SELECT * FROM '.PRFX.'COMPANY_COUNTRY_LIST';
+    $sql = "SELECT * FROM ".PRFX."company_country_list";
 
     if(!$rs = $db->execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Could not retrieve country codes from the database."));

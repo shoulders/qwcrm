@@ -24,7 +24,7 @@ defined('_QWEXEC') or die;
 
 function display_welcome_msg($db){
     
-    $sql = 'SELECT WELCOME_MSG FROM '.PRFX.'COMPANY';
+    $sql = "SELECT WELCOME_MSG FROM ".PRFX."company";
        
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Could not display the welcome message."));
@@ -46,7 +46,7 @@ function display_welcome_msg($db){
 function count_workorders_with_status($db, $workorder_status){
     
     $sql = "SELECT COUNT(*) AS WORKORDER_STATUS_COUNT
-            FROM ".PRFX."WORKORDER
+            FROM ".PRFX."workorder
             WHERE WORK_ORDER_STATUS=".$db->qstr($workorder_status);
     
     if(!$rs = $db->Execute($sql)) {
@@ -79,7 +79,7 @@ function count_unassigned_workorders($db){
 
 function count_all_workorders($db){
     
-    $sql = 'SELECT COUNT(*) AS WORKORDER_TOTAL_COUNT FROM '.PRFX.'WORKORDER';
+    $sql = "SELECT COUNT(*) AS WORKORDER_TOTAL_COUNT FROM ".PRFX."workorder";
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Could not count all Work Orders."));
@@ -100,7 +100,7 @@ function count_all_workorders($db){
 
 function count_invoices_with_status($db, $invoice_status){
     
-    $sql ="SELECT COUNT(*) AS INVOICE_COUNT FROM ".PRFX."INVOICE WHERE IS_PAID=".$db->qstr($invoice_status);
+    $sql ="SELECT COUNT(*) AS INVOICE_COUNT FROM ".PRFX."invoice WHERE IS_PAID=".$db->qstr($invoice_status);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Could not count the number of Invoices for the defined status."));
@@ -121,7 +121,7 @@ function count_invoices_with_status($db, $invoice_status){
 function sum_of_discounts_on_unpaid_invoices($db){
     
     $sql = "SELECT SUM(DISCOUNT) AS DISCOUNT_SUM
-            FROM ".PRFX."INVOICE
+            FROM ".PRFX."invoice
             WHERE IS_PAID=".$db->qstr(0)." AND BALANCE=".$db->qstr(0); 
     
     if(!$rs = $db->Execute($sql)) {
@@ -142,7 +142,7 @@ function sum_of_discounts_on_unpaid_invoices($db){
 function sum_of_discounts_on_paid_invoices($db){
     
     $sql = "SELECT SUM(DISCOUNT) AS DISCOUNT_SUM
-        FROM ".PRFX."INVOICE
+        FROM ".PRFX."invoice
         WHERE IS_PAID=".$db->qstr(1);
     
     if(!$rs = $db->Execute($sql)) {
@@ -163,7 +163,7 @@ function sum_of_discounts_on_paid_invoices($db){
 function sum_of_discounts_on_partially_paid_invoices($db){
     
     $sql = "SELECT SUM(DISCOUNT) AS DISCOUNT_SUM
-        FROM ".PRFX."INVOICE
+        FROM ".PRFX."invoice
         WHERE IS_PAID=".$db->qstr(0)." AND BALANCE >".$db->qstr(0);
     
     if(!$rs = $db->Execute($sql)) {
@@ -183,7 +183,7 @@ function sum_of_discounts_on_partially_paid_invoices($db){
 
 function count_upaid_invoices($db){
     
-    $sql = 'SELECT COUNT(*) AS INVOICE_COUNT FROM '.PRFX.'INVOICE WHERE IS_PAID='.$db->qstr(0);
+    $sql = "SELECT COUNT(*) AS INVOICE_COUNT FROM ".PRFX."invoice WHERE IS_PAID=".$db->qstr(0);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Could not count the number of unpaid invoices."));
@@ -202,7 +202,7 @@ function count_upaid_invoices($db){
 
 function sum_outstanding_balances_unpaid_invoices($db){
     
-    $sql = 'SELECT SUM(BALANCE) AS BALANCE_SUM FROM '.PRFX.'INVOICE WHERE IS_PAID='.$db->qstr(0).' AND BALANCE >'.$db->qstr(0);
+    $sql = "SELECT SUM(BALANCE) AS BALANCE_SUM FROM ".PRFX."invoice WHERE IS_PAID=".$db->qstr(0)." AND BALANCE >".$db->qstr(0);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Could not sum the outstanding balances for unpaid invoices."));
@@ -221,7 +221,7 @@ function sum_outstanding_balances_unpaid_invoices($db){
 
 function count_partially_paid_invoices($db){
     
-    $sql = 'SELECT COUNT(*) AS BALANCE_COUNT FROM '.PRFX.'INVOICE WHERE IS_PAID='.$db->qstr(0).' AND BALANCE <> TOTAL';
+    $sql = "SELECT COUNT(*) AS BALANCE_COUNT FROM ".PRFX."invoice WHERE IS_PAID=".$db->qstr(0)." AND BALANCE <> TOTAL";
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Could not count the number of invoices with partially paid invoices."));
@@ -240,7 +240,7 @@ function count_partially_paid_invoices($db){
 
 function sum_outstanding_balances_partially_paid_invoices($db){
     
-    $sql = 'SELECT SUM(BALANCE) AS BALANCE_SUM FROM '.PRFX.'INVOICE WHERE IS_PAID='.$db->qstr(0).' AND BALANCE <> TOTAL';
+    $sql = "SELECT SUM(BALANCE) AS BALANCE_SUM FROM ".PRFX."invoice WHERE IS_PAID=".$db->qstr(0)." AND BALANCE <> TOTAL";
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Could not sum the outstanding balances for partially paid invoices."));
@@ -259,7 +259,7 @@ function sum_outstanding_balances_partially_paid_invoices($db){
 
 function count_all_paid_invoices($db){
     
-    $sql = 'SELECT COUNT(*) AS INVOICE_COUNT FROM '.PRFX.'INVOICE WHERE IS_PAID='.$db->qstr(1);
+    $sql = "SELECT COUNT(*) AS INVOICE_COUNT FROM ".PRFX."invoice WHERE IS_PAID=".$db->qstr(1);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Could not count the number of paid invoices."));
@@ -278,7 +278,7 @@ function count_all_paid_invoices($db){
 
 function sum_invoiceamounts_paid_invoices($db){
     
-    $sql = 'SELECT SUM(TOTAL) AS TOTAL_SUM FROM '.PRFX.'INVOICE WHERE IS_PAID='.$db->qstr(1);
+    $sql = "SELECT SUM(TOTAL) AS TOTAL_SUM FROM ".PRFX."invoice WHERE IS_PAID=".$db->qstr(1);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Could not sum the total amount of paid invoices."));
@@ -302,7 +302,7 @@ function new_customers_during_period($db, $requested_period){
     if($requested_period === 'month')   {$period = mktime(0,0,0,date('m'),0,date('Y'));}
     if($requested_period === 'year')    {$period = mktime(0,0,0,0,0,date('Y'));}
     
-    $sql = 'SELECT COUNT(*) AS CUSTOMER_COUNT FROM '.PRFX.'CUSTOMER WHERE CREATE_DATE >= '.$db->qstr($period);
+    $sql = "SELECT COUNT(*) AS CUSTOMER_COUNT FROM ".PRFX."customer WHERE CREATE_DATE >= ".$db->qstr($period);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Could not count the number of new customers during the defined period."));
@@ -321,7 +321,7 @@ function new_customers_during_period($db, $requested_period){
 
 function count_all_customers($db){
     
-    $sql = 'SELECT COUNT(*) AS CUSTOMER_COUNT FROM '.PRFX.'CUSTOMER';
+    $sql = "SELECT COUNT(*) AS CUSTOMER_COUNT FROM ".PRFX."customer";
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Could not count the total number of customers."));

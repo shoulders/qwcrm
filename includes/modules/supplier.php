@@ -83,11 +83,11 @@ function display_suppliers($db, $direction = 'DESC', $use_pages = false, $page_n
     /* The SQL code */
     
     $sql =  "SELECT * 
-            FROM ".PRFX."SUPPLIER".                                                   
+            FROM ".PRFX."supplier".                                                   
             $whereTheseRecords.            
             $likeTheseRecords.
-            " GROUP BY ".PRFX."SUPPLIER.SUPPLIER_ID".
-            " ORDER BY ".PRFX."SUPPLIER.SUPPLIER_ID ".$direction;            
+            " GROUP BY ".PRFX."supplier.SUPPLIER_ID".
+            " ORDER BY ".PRFX."supplier.SUPPLIER_ID ".$direction;            
     
     /* Restrict by pages */
     
@@ -172,7 +172,7 @@ function display_suppliers($db, $direction = 'DESC', $use_pages = false, $page_n
 
 function insert_supplier($db, $VAR) {
     
-    $sql = "INSERT INTO ".PRFX."SUPPLIER SET            
+    $sql = "INSERT INTO ".PRFX."supplier SET            
             SUPPLIER_NAME           = ". $db->qstr( $VAR['supplierName']        ).",
             SUPPLIER_CONTACT        = ". $db->qstr( $VAR['supplierContact']     ).",
             SUPPLIER_TYPE           = ". $db->qstr( $VAR['supplierType']        ).",
@@ -207,7 +207,7 @@ function insert_supplier($db, $VAR) {
 
 function get_supplier_details($db, $supplier_id, $item = null){
     
-    $sql = "SELECT * FROM ".PRFX."SUPPLIER WHERE SUPPLIER_ID=".$db->qstr($supplier_id);
+    $sql = "SELECT * FROM ".PRFX."supplier WHERE SUPPLIER_ID=".$db->qstr($supplier_id);
     
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the supplier details."));
@@ -236,7 +236,7 @@ function get_supplier_details($db, $supplier_id, $item = null){
 
 function update_supplier($db, $supplier_id, $VAR) {
     
-    $sql = "UPDATE ".PRFX."SUPPLIER SET
+    $sql = "UPDATE ".PRFX."supplier SET
             SUPPLIER_NAME           = ". $db->qstr( $VAR['supplierName']        ).",
             SUPPLIER_CONTACT        = ". $db->qstr( $VAR['supplierContact']     ).",
             SUPPLIER_TYPE           = ". $db->qstr( $VAR['supplierType']        ).",
@@ -274,7 +274,7 @@ function update_supplier($db, $supplier_id, $VAR) {
 
 function delete_supplier($db, $supplier_id){
     
-    $sql = "DELETE FROM ".PRFX."SUPPLIER WHERE SUPPLIER_ID=".$db->qstr($supplier_id);
+    $sql = "DELETE FROM ".PRFX."supplier WHERE SUPPLIER_ID=".$db->qstr($supplier_id);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete the supplier record."));
@@ -351,7 +351,7 @@ function prepare_supplier_search_terms($search_category, $search_term) {
 
 function last_supplier_id_lookup($db) {
     
-    $sql = 'SELECT * FROM '.PRFX.'SUPPLIER ORDER BY SUPPLIER_ID DESC LIMIT 1';
+    $sql = "SELECT * FROM ".PRFX."supplier ORDER BY SUPPLIER_ID DESC LIMIT 1";
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to lookup the last supplier record ID."));

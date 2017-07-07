@@ -32,7 +32,7 @@ defined('_QWEXEC') or die;
 
 function insert_transaction($db, $invoice_id, $workorder_id, $customer_id, $type, $amount, $note) {
     
-    $sql = "INSERT INTO ".PRFX."PAYMENT_TRANSACTIONS SET
+    $sql = "INSERT INTO ".PRFX."payment_transactions SET
             DATE            = ".$db->qstr(time()                    ).",
             TYPE            = ".$db->qstr( $type                    ).",
             INVOICE_ID      = ".$db->qstr( $invoice_id              ).",
@@ -143,7 +143,7 @@ function insert_payment_method_transaction($db, $invoice_id, $amount, $method, $
 
 function get_payment_details($db, $item = null){
     
-    $sql = 'SELECT * FROM '.PRFX.'PAYMENT';
+    $sql = "SELECT * FROM ".PRFX."payment";
     
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get payment details."));
@@ -172,7 +172,7 @@ function get_active_payment_methods($db) {
     
     $sql = "SELECT
             SMARTY_TPL_KEY, ACTIVE
-            FROM ".PRFX."PAYMENT_METHODS
+            FROM ".PRFX."payment_methods
             WHERE ACTIVE='1'";    
     
     if(!$rs = $db->execute($sql)){        
@@ -192,7 +192,7 @@ function get_active_payment_methods($db) {
 
 function get_payment_methods_status($db) {
     
-    $sql = "SELECT * FROM ".PRFX."PAYMENT_METHODS";
+    $sql = "SELECT * FROM ".PRFX."payment_methods";
 
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get payment methods status."));
@@ -211,7 +211,7 @@ function get_payment_methods_status($db) {
 
 function get_active_credit_cards($db) {
     
-    $sql = "SELECT CARD_TYPE, CARD_NAME FROM ".PRFX."PAYMENT_CREDIT_CARDS WHERE ACTIVE='1'";
+    $sql = "SELECT CARD_TYPE, CARD_NAME FROM ".PRFX."payment_credit_cards WHERE ACTIVE='1'";
     
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the active credit cards."));
@@ -240,7 +240,7 @@ function get_active_credit_cards($db) {
 
 function get_invoice_transactions($db, $invoice_id){
     
-    $sql ="SELECT * FROM ".PRFX."PAYMENT_TRANSACTIONS WHERE INVOICE_ID =".$db->qstr($invoice_id);
+    $sql ="SELECT * FROM ".PRFX."payment_transactions WHERE INVOICE_ID =".$db->qstr($invoice_id);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the invoice's transactions."));
@@ -260,7 +260,7 @@ function get_invoice_transactions($db, $invoice_id){
 
 function update_payment_settings($db, $VAR) {
     
-    $sql = "UPDATE ".PRFX."PAYMENT SET            
+    $sql = "UPDATE ".PRFX."payment SET            
             BANK_ACCOUNT_NAME       =". $db->qstr( $VAR['bank_account_name']        ).",
             BANK_NAME               =". $db->qstr( $VAR['bank_name']                ).",
             BANK_ACCOUNT_NUMBER     =". $db->qstr( $VAR['bank_account_number']      ).",
@@ -304,7 +304,7 @@ function update_payment_methods_status($db, $VAR) {
         // make empty status = zero (not nessasary but neater)
         if ($payment_method['payment_method_status'] == ''){$payment_method['payment_method_status'] = '0';}
         
-        $sql = "UPDATE ".PRFX."PAYMENT_METHODS SET ACTIVE=". $db->qstr( $payment_method['payment_method_status'] )." WHERE SMARTY_TPL_KEY=". $db->qstr( $payment_method['smarty_tpl_key'] ); 
+        $sql = "UPDATE ".PRFX."payment_methods SET ACTIVE=". $db->qstr( $payment_method['payment_method_status'] )." WHERE SMARTY_TPL_KEY=". $db->qstr( $payment_method['smarty_tpl_key'] ); 
         
         if(!$rs = $db->execute($sql)) {
             force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update a payment method status."));
@@ -327,7 +327,7 @@ function update_payment_methods_status($db, $VAR) {
 
 function check_payment_method_is_active($db, $method) {
     
-    $sql = "SELECT ACTIVE FROM ".PRFX."PAYMENT_METHODS WHERE SMARTY_TPL_KEY=".$db->qstr($method);   
+    $sql = "SELECT ACTIVE FROM ".PRFX."payment_methods WHERE SMARTY_TPL_KEY=".$db->qstr($method);   
     
     if(!$rs = $db->execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to check if the payment method is active."));

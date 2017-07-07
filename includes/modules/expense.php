@@ -100,11 +100,11 @@ function display_expenses($db, $direction = 'DESC', $use_pages = false, $page_no
     /* The SQL code */
     
     $sql =  "SELECT * 
-            FROM ".PRFX."EXPENSE".                                                   
+            FROM ".PRFX."expense".                                                   
             $whereTheseRecords.            
             $likeTheseRecords.
-            " GROUP BY ".PRFX."EXPENSE.EXPENSE_ID".
-            " ORDER BY ".PRFX."EXPENSE.EXPENSE_ID ".$direction;            
+            " GROUP BY ".PRFX."expense.EXPENSE_ID".
+            " ORDER BY ".PRFX."expense.EXPENSE_ID ".$direction;            
     
     /* Restrict by pages */
     
@@ -189,7 +189,7 @@ function display_expenses($db, $direction = 'DESC', $use_pages = false, $page_no
 
 function insert_expense($db, $VAR) {
     
-    $sql = "INSERT INTO ".PRFX."EXPENSE SET            
+    $sql = "INSERT INTO ".PRFX."expense SET            
             EXPENSE_PAYEE           = ". $db->qstr( $VAR['expensePayee']                    ).",
             EXPENSE_DATE            = ". $db->qstr( date_to_timestamp($VAR['expenseDate'])  ).",
             EXPENSE_TYPE            = ". $db->qstr( $VAR['expenseType']                     ).",
@@ -220,7 +220,7 @@ function insert_expense($db, $VAR) {
 
 function get_expense_details($db, $expense_id, $item = null){
     
-    $sql = "SELECT * FROM ".PRFX."EXPENSE WHERE EXPENSE_ID=".$db->qstr($expense_id);
+    $sql = "SELECT * FROM ".PRFX."expense WHERE EXPENSE_ID=".$db->qstr($expense_id);
     
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the expense details."));
@@ -249,7 +249,7 @@ function get_expense_details($db, $expense_id, $item = null){
 
 function update_expense($db, $expense_id, $VAR) {
     
-    $sql = "UPDATE ".PRFX."EXPENSE SET
+    $sql = "UPDATE ".PRFX."expense SET
             EXPENSE_PAYEE           = ". $db->qstr( $VAR['expensePayee']                    ).",
             EXPENSE_DATE            = ". $db->qstr( date_to_timestamp($VAR['expenseDate'])  ).",
             EXPENSE_TYPE            = ". $db->qstr( $VAR['expenseType']                     ).",
@@ -281,7 +281,7 @@ function update_expense($db, $expense_id, $VAR) {
 
 function delete_expense($db, $expense_id){
     
-    $sql = "DELETE FROM ".PRFX."EXPENSE WHERE EXPENSE_ID=".$db->qstr($expense_id);
+    $sql = "DELETE FROM ".PRFX."expense WHERE EXPENSE_ID=".$db->qstr($expense_id);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete the expense record."));
@@ -442,7 +442,7 @@ function prepare_expense_search_terms($search_category, $search_term) {
 
 function last_expense_id_lookup($db){
     
-    $sql = 'SELECT * FROM '.PRFX.'EXPENSE ORDER BY EXPENSE_ID DESC LIMIT 1';
+    $sql = "SELECT * FROM ".PRFX."expense ORDER BY EXPENSE_ID DESC LIMIT 1";
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to lookup the last expense record ID."));

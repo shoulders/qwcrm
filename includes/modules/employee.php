@@ -39,10 +39,10 @@ function display_employees($db, $search_term, $page_no) {
     $from = (($page_no * $max_results) - $max_results);    
     
     $sql = "SELECT 
-            ".PRFX."EMPLOYEE.*,
-            ".PRFX."USER_ACCOUNT_TYPES.TYPE_NAME
-            FROM ".PRFX."EMPLOYEE 
-            LEFT JOIN ".PRFX."USER_ACCOUNT_TYPES ON (".PRFX."EMPLOYEE. EMPLOYEE_TYPE = ".PRFX."USER_ACCOUNT_TYPES.TYPE_ID)    
+            ".PRFX."employee.*,
+            ".PRFX."user_account_types.TYPE_NAME
+            FROM ".PRFX."employee 
+            LEFT JOIN ".PRFX."user_account_types ON (".PRFX."employee. EMPLOYEE_TYPE = ".PRFX."user_account_types.TYPE_ID)    
             WHERE EMPLOYEE_DISPLAY_NAME LIKE '%$search_term%'
             ORDER BY EMPLOYEE_DISPLAY_NAME";
     
@@ -54,7 +54,7 @@ function display_employees($db, $search_term, $page_no) {
     }    
 
     // Figure out the total number of results in DB: 
-    $sql = "SELECT COUNT(*) as Num FROM ".PRFX."EMPLOYEE WHERE EMPLOYEE_DISPLAY_NAME LIKE '%$search_term%'";
+    $sql = "SELECT COUNT(*) as Num FROM ".PRFX."employee WHERE EMPLOYEE_DISPLAY_NAME LIKE '%$search_term%'";
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count the matching employee records."));
@@ -104,7 +104,7 @@ function display_employees($db, $search_term, $page_no) {
 
 function insert_employee($db, $auth, $VAR){
     
-    $sql = "INSERT INTO ".PRFX."EMPLOYEE SET
+    $sql = "INSERT INTO ".PRFX."employee SET
             EMPLOYEE_LOGIN          =". $db->qstr( $VAR['employee_usr']                         ).",
             EMPLOYEE_HASH           =". $db->qstr( $auth->hashPassword($VAR['employee_pwd'])    ).",
             EMPLOYEE_EMAIL          =". $db->qstr( $VAR['employee_email']                       ).", 
@@ -142,7 +142,7 @@ function insert_employee($db, $auth, $VAR){
 
 function get_employee_details($db, $employee_id, $item = null) {
     
-    $sql = "SELECT * FROM ".PRFX."EMPLOYEE WHERE EMPLOYEE_ID =".$employee_id;
+    $sql = "SELECT * FROM ".PRFX."employee WHERE EMPLOYEE_ID =".$employee_id;
     
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the employee details."));
@@ -170,10 +170,10 @@ function get_employee_details($db, $employee_id, $item = null) {
 function get_employee_display_name_by_id($db, $employee_id) {
     
     $sql = "SELECT 
-            ".PRFX."EMPLOYEE.*,
-            ".PRFX."USER_ACCOUNT_TYPES.TYPE_NAME
-            FROM ".PRFX."EMPLOYEE
-            LEFT JOIN ".PRFX."USER_ACCOUNT_TYPES ON (".PRFX."EMPLOYEE.EMPLOYEE_TYPE = ".PRFX."USER_ACCOUNT_TYPES.TYPE_ID)
+            ".PRFX."employee.*,
+            ".PRFX."user_account_types.TYPE_NAME
+            FROM ".PRFX."employee
+            LEFT JOIN ".PRFX."user_account_types ON (".PRFX."employee.EMPLOYEE_TYPE = ".PRFX."user_account_types.TYPE_ID)
             WHERE EMPLOYEE_ID=". $db->qstr($employee_id);
     
     if(!$rs = $db->Execute($sql)) {
@@ -202,7 +202,7 @@ function get_employee_display_name_by_id($db, $employee_id) {
 
 function get_employee_id_by_username($db, $employee_usr){
     
-    $sql = 'SELECT EMPLOYEE_ID FROM '.PRFX.'EMPLOYEE WHERE EMPLOYEE_LOGIN ='.$db->qstr($employee_usr);    
+    $sql = "SELECT EMPLOYEE_ID FROM ".PRFX."employee WHERE EMPLOYEE_LOGIN =".$db->qstr($employee_usr);    
     if(!$rs = $db->execute($sql)){
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the Employee ID by their username."));
         exit;
@@ -220,7 +220,7 @@ function get_employee_id_by_username($db, $employee_usr){
 
 function get_employee_record_by_username($db, $employee_usr){
     
-    $sql = "SELECT * FROM ".PRFX."EMPLOYEE WHERE EMPLOYEE_LOGIN =".$db->qstr($employee_usr);    
+    $sql = "SELECT * FROM ".PRFX."employee WHERE EMPLOYEE_LOGIN =".$db->qstr($employee_usr);    
     if(!$rs = $db->execute($sql)){
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the employee record by username"));
         exit;
@@ -238,7 +238,7 @@ function get_employee_record_by_username($db, $employee_usr){
 
 function get_employee_types($db) {
     
-    $sql = "SELECT * FROM ".PRFX."USER_ACCOUNT_TYPES";
+    $sql = "SELECT * FROM ".PRFX."user_account_types";
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the employee types."));
@@ -257,7 +257,7 @@ function get_employee_types($db) {
     
 function get_active_employees($db) {
         
-    $sql = "SELECT EMPLOYEE_ID, EMPLOYEE_DISPLAY_NAME FROM ".PRFX."EMPLOYEE WHERE EMPLOYEE_STATUS=1";
+    $sql = "SELECT EMPLOYEE_ID, EMPLOYEE_DISPLAY_NAME FROM ".PRFX."employee WHERE EMPLOYEE_STATUS=1";
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the active employees."));
@@ -277,8 +277,6 @@ function get_active_employees($db) {
 #########################
 
 function update_employee($db, $auth, $employee_id, $VAR) {
-    
-    global $smarty;
     
         $set .="    SET
                     EMPLOYEE_LOGIN          =". $db->qstr( $VAR['employee_usr']                         ).",";
@@ -303,7 +301,7 @@ function update_employee($db, $auth, $employee_id, $VAR) {
                     EMPLOYEE_GROUP          =". $db->qstr( $VAR['employee_group']                      ).",    
                     EMPLOYEE_STATUS         =". $db->qstr( $VAR['employee_status']                      );
 
-    $sql = "UPDATE ".PRFX."EMPLOYEE ". $set ." WHERE EMPLOYEE_ID= ".$db->qstr($employee_id);
+    $sql = "UPDATE ".PRFX."employee ". $set ." WHERE EMPLOYEE_ID= ".$db->qstr($employee_id);
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the employee record."));
@@ -328,10 +326,8 @@ function update_employee($db, $auth, $employee_id, $VAR) {
 
 function count_employee_workorders_with_status($db, $employee_id, $workorder_status){
     
-    global $smarty;
-    
     $sql = "SELECT COUNT(*) AS EMPLOYEE_WORKORDER_STATUS_COUNT
-            FROM ".PRFX."WORKORDER
+            FROM ".PRFX."workorder
             WHERE WORK_ORDER_ASSIGN_TO=".$db->qstr($employee_id)."
             AND WORK_ORDER_STATUS=".$db->qstr($workorder_status);
     
@@ -352,10 +348,8 @@ function count_employee_workorders_with_status($db, $employee_id, $workorder_sta
 
 function count_employee_invoices_with_status($db, $employee_id, $invoice_status){
     
-    global $smarty;
-    
     $sql = "SELECT COUNT(*) AS EMPLOYEE_INVOICE_COUNT
-            FROM ".PRFX."INVOICE
+            FROM ".PRFX."invoice
             WHERE IS_PAID=".$db->qstr($invoice_status)."
             AND EMPLOYEE_ID=".$db->qstr($employee_id);
     
@@ -387,10 +381,8 @@ function count_employee_invoices_with_status($db, $employee_id, $invoice_status)
 
 function build_active_employee_form_option_list($db, $assigned_employee_id){
     
-    global $smarty;
-    
     // select all employees and return their display name and ID as an array
-    $sql = "SELECT EMPLOYEE_DISPLAY_NAME, EMPLOYEE_ID FROM ".PRFX."EMPLOYEE WHERE EMPLOYEE_STATUS=1";
+    $sql = "SELECT EMPLOYEE_DISPLAY_NAME, EMPLOYEE_ID FROM ".PRFX."employee WHERE EMPLOYEE_STATUS=1";
     
     if(!$rs = $db->execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed build and return and Employee list."));
@@ -415,7 +407,7 @@ function check_employee_username_exists($db, $username, $current_username){
     // This prevents self-checking of the current username of the record being edited
     if ($username === $current_username) {return false;}
     
-    $sql = "SELECT COUNT(*) AS num_users FROM ".PRFX."EMPLOYEE WHERE EMPLOYEE_LOGIN =". $db->qstr($username);
+    $sql = "SELECT COUNT(*) AS num_users FROM ".PRFX."employee WHERE EMPLOYEE_LOGIN =". $db->qstr($username);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to check if the employee username exists."));

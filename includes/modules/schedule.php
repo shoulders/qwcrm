@@ -31,7 +31,7 @@ defined('_QWEXEC') or die;
 
 function display_workorder_schedules($db, $workorder_id){
     
-    $sql = "SELECT * FROM ".PRFX."SCHEDULE WHERE WORKORDER_ID=".$db->qstr($workorder_id);
+    $sql = "SELECT * FROM ".PRFX."schedule WHERE WORKORDER_ID=".$db->qstr($workorder_id);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to return the work order schedules."));
@@ -67,7 +67,7 @@ function insert_schedule($db, $schedule_start_date, $scheduleStartTime, $schedul
     if(!validate_schedule_times($db, $schedule_start_date, $schedule_start_timestamp, $schedule_end_timestamp, $employee_id)) {return false;}        
 
     // Insert schedule item into the database
-    $sql = "INSERT INTO ".PRFX."SCHEDULE SET
+    $sql = "INSERT INTO ".PRFX."schedule SET
             SCHEDULE_START     = ". $db->qstr( $schedule_start_timestamp  ).",
             SCHEDULE_END       = ". $db->qstr( $schedule_end_timestamp    ).",            
             EMPLOYEE_ID        = ". $db->qstr( $employee_id               ).",
@@ -112,7 +112,7 @@ function insert_schedule($db, $schedule_start_date, $scheduleStartTime, $schedul
 
 function get_schedule_details($db, $schedule_id, $item = null){
     
-    $sql = "SELECT * FROM ".PRFX."SCHEDULE WHERE SCHEDULE_ID=".$db->qstr($schedule_id);
+    $sql = "SELECT * FROM ".PRFX."schedule WHERE SCHEDULE_ID=".$db->qstr($schedule_id);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the schedule details."));
@@ -142,7 +142,7 @@ function get_schedule_details($db, $schedule_id, $item = null){
 
 function get_workorder_id_from_schedule($db, $schedule_id) {
     
-    $sql = "SELECT WORKORDER_ID FROM ".PRFX."SCHEDULE WHERE SCHEDULE_ID=".$db->qstr($schedule_id);
+    $sql = "SELECT WORKORDER_ID FROM ".PRFX."schedule WHERE SCHEDULE_ID=".$db->qstr($schedule_id);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the work order ID from a schedule."));
@@ -167,7 +167,7 @@ function get_schedule_ids_for_employee_on_date($db, $employee_id, $schedule_star
       
     // Look in the database for a scheduled events for the current schedule day (within business hours)
     $sql = "SELECT SCHEDULE_ID
-            FROM ".PRFX."SCHEDULE       
+            FROM ".PRFX."schedule       
             WHERE SCHEDULE_START >= ".$company_day_start." AND SCHEDULE_START <= ".$company_day_end."
             AND EMPLOYEE_ID ='".$employee_id.
             "' ORDER BY SCHEDULE_START ASC";
@@ -205,7 +205,7 @@ function update_schedule($db, $schedule_start_date, $scheduleStartTime, $schedul
     // Validate the submitted dates
     if(!validate_schedule_times($db, $schedule_start_date, $schedule_start_timestamp, $schedule_end_timestamp, $employee_id, $schedule_id)) {return false;}        
     
-    $sql = "UPDATE ".PRFX."SCHEDULE SET
+    $sql = "UPDATE ".PRFX."schedule SET
         SCHEDULE_ID         =". $db->qstr( $schedule_id                 ).",
         SCHEDULE_START      =". $db->qstr( $schedule_start_timestamp    ).",
         SCHEDULE_END        =". $db->qstr( $schedule_end_timestamp      ).",
@@ -236,7 +236,7 @@ function update_schedule($db, $schedule_start_date, $scheduleStartTime, $schedul
 
 function delete_schedule($db, $schedule_id) {
     
-    $sql = "DELETE FROM ".PRFX."SCHEDULE WHERE SCHEDULE_ID =".$db->qstr($schedule_id);
+    $sql = "DELETE FROM ".PRFX."schedule WHERE SCHEDULE_ID =".$db->qstr($schedule_id);
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete a schedule record."));
@@ -567,15 +567,15 @@ function build_calendar_matrix($db, $schedule_start_year, $schedule_start_month,
       
     // Look in the database for a scheduled events for the current schedule day (within business hours)
     $sql = "SELECT 
-        ".PRFX."SCHEDULE.*,
-        ".PRFX."CUSTOMER.CUSTOMER_DISPLAY_NAME
-        FROM ".PRFX."SCHEDULE
-        INNER JOIN ".PRFX."WORKORDER
-        ON ".PRFX."SCHEDULE.WORKORDER_ID = ".PRFX."WORKORDER.WORK_ORDER_ID
-        INNER JOIN ".PRFX."CUSTOMER
-        ON ".PRFX."WORKORDER.CUSTOMER_ID = ".PRFX."CUSTOMER.CUSTOMER_ID
-        WHERE ".PRFX."SCHEDULE.SCHEDULE_START >= ".$company_day_start." AND ".PRFX."SCHEDULE.SCHEDULE_START <= ".$company_day_end."
-        AND ".PRFX."SCHEDULE.EMPLOYEE_ID ='".$employee_id."' ORDER BY ".PRFX."SCHEDULE.SCHEDULE_START ASC";
+        ".PRFX."schedule.*,
+        ".PRFX."customer.CUSTOMER_DISPLAY_NAME
+        FROM ".PRFX."schedule
+        INNER JOIN ".PRFX."workorder
+        ON ".PRFX."schedule.WORKORDER_ID = ".PRFX."workorder.WORK_ORDER_ID
+        INNER JOIN ".PRFX."customer
+        ON ".PRFX."workorder.CUSTOMER_ID = ".PRFX."customer.CUSTOMER_ID
+        WHERE ".PRFX."schedule.SCHEDULE_START >= ".$company_day_start." AND ".PRFX."schedule.SCHEDULE_START <= ".$company_day_end."
+        AND ".PRFX."schedule.EMPLOYEE_ID ='".$employee_id."' ORDER BY ".PRFX."schedule.SCHEDULE_START ASC";
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to return the selected schedules."));
@@ -752,7 +752,7 @@ function validate_schedule_times($db, $schedule_start_date, $schedule_start_time
     // Load all schedule items from the database for the supplied employee for the specified day (this currently ignores company hours)
     $sql = "SELECT
             SCHEDULE_START, SCHEDULE_END, SCHEDULE_ID
-            FROM ".PRFX."SCHEDULE
+            FROM ".PRFX."schedule
             WHERE SCHEDULE_START >= ".$company_day_start."
             AND SCHEDULE_END <=".$company_day_end."
             AND EMPLOYEE_ID ='".$employee_id."'

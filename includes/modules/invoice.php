@@ -37,34 +37,34 @@ function display_invoices($db, $status = 'all', $direction = 'DESC', $use_pages 
     // Status Restriction
     if($status != 'all') {
         // Restrict by status
-        $whereTheseRecords = " WHERE ".PRFX."INVOICE.IS_PAID=".$db->qstr($status);       
+        $whereTheseRecords = " WHERE ".PRFX."invoice.IS_PAID=".$db->qstr($status);       
     } else {            
         // Do not restrict by status
-        $whereTheseRecords = " WHERE ".PRFX."INVOICE.INVOICE_ID = *";
+        $whereTheseRecords = " WHERE ".PRFX."invoice.INVOICE_ID = *";
     } 
 
     // Restrict by Employee
     if($employee_id != null){
-        $whereTheseRecords .= " AND ".PRFX."EMPLOYEE.EMPLOYEE_ID=".$db->qstr($employee_id);
+        $whereTheseRecords .= " AND ".PRFX."employee.EMPLOYEE_ID=".$db->qstr($employee_id);
     }        
 
     // Restrict by Customer
     if($customer_id != null){
-        $whereTheseRecords .= " AND ".PRFX."CUSTOMER.CUSTOMER_ID=".$db->qstr($customer_id);
+        $whereTheseRecords .= " AND ".PRFX."customer.CUSTOMER_ID=".$db->qstr($customer_id);
     }
     
     /* The SQL code */
     
     $sql = "SELECT
-        ".PRFX."EMPLOYEE.     *,
-        ".PRFX."CUSTOMER.     CUSTOMER_DISPLAY_NAME, CUSTOMER_ADDRESS, CUSTOMER_CITY, CUSTOMER_STATE, CUSTOMER_ZIP, CUSTOMER_PHONE, CUSTOMER_WORK_PHONE, CUSTOMER_MOBILE_PHONE, CUSTOMER_EMAIL, CUSTOMER_TYPE, CUSTOMER_FIRST_NAME, CUSTOMER_LAST_NAME, CREATE_DATE, LAST_ACTIVE,
-        ".PRFX."INVOICE.      *
-        FROM ".PRFX."INVOICE
-        LEFT JOIN ".PRFX."EMPLOYEE ON ".PRFX."INVOICE.EMPLOYEE_ID = ".PRFX."EMPLOYEE.EMPLOYEE_ID
-        LEFT JOIN ".PRFX."CUSTOMER ON ".PRFX."INVOICE.CUSTOMER_ID = ".PRFX."CUSTOMER.CUSTOMER_ID".
+        ".PRFX."employee.     *,
+        ".PRFX."customer.     CUSTOMER_DISPLAY_NAME, CUSTOMER_ADDRESS, CUSTOMER_CITY, CUSTOMER_STATE, CUSTOMER_ZIP, CUSTOMER_PHONE, CUSTOMER_WORK_PHONE, CUSTOMER_MOBILE_PHONE, CUSTOMER_EMAIL, CUSTOMER_TYPE, CUSTOMER_FIRST_NAME, CUSTOMER_LAST_NAME, CREATE_DATE, LAST_ACTIVE,
+        ".PRFX."invoice.      *
+        FROM ".PRFX."invoice
+        LEFT JOIN ".PRFX."employee ON ".PRFX."invoice.EMPLOYEE_ID = ".PRFX."employee.EMPLOYEE_ID
+        LEFT JOIN ".PRFX."customer ON ".PRFX."invoice.CUSTOMER_ID = ".PRFX."customer.CUSTOMER_ID".
         $whereTheseRecords.
-        " GROUP BY ".PRFX."INVOICE.INVOICE_ID".            
-        " ORDER BY ".PRFX."INVOICE.INVOICE_ID ".$direction;
+        " GROUP BY ".PRFX."invoice.INVOICE_ID".            
+        " ORDER BY ".PRFX."invoice.INVOICE_ID ".$direction;
             
     /* Restrict by pages */
     
@@ -149,7 +149,7 @@ function display_invoices($db, $status = 'all', $direction = 'DESC', $use_pages 
 
 function insert_invoice($db, $customer_id, $workorder_id, $discount_rate, $tax_rate) {
     
-    $sql = "INSERT INTO ".PRFX."INVOICE SET            
+    $sql = "INSERT INTO ".PRFX."invoice SET            
             CUSTOMER_ID     =". $db->qstr( $customer_id             ).",
             WORKORDER_ID    =". $db->qstr( $workorder_id            ).",
             EMPLOYEE_ID     =". $db->qstr( $_SESSION['login_id']    ).",
@@ -180,7 +180,7 @@ function insert_labour_items($db, $invoice_id, $labour_description, $labour_rate
         
         $i = 1;
         
-        $sql = "INSERT INTO ".PRFX."INVOICE_LABOUR (INVOICE_ID, INVOICE_LABOUR_DESCRIPTION, INVOICE_LABOUR_RATE, INVOICE_LABOUR_UNIT, INVOICE_LABOUR_SUBTOTAL) VALUES ";
+        $sql = "INSERT INTO ".PRFX."invoice_labour (INVOICE_ID, INVOICE_LABOUR_DESCRIPTION, INVOICE_LABOUR_RATE, INVOICE_LABOUR_UNIT, INVOICE_LABOUR_SUBTOTAL) VALUES ";
         
         foreach($labour_hour as $key) {
             
@@ -221,7 +221,7 @@ function insert_parts_items($db, $invoice_id, $parts_description, $parts_price, 
         
         $i = 1;
         
-        $sql = "INSERT INTO ".PRFX."INVOICE_PARTS (INVOICE_ID, INVOICE_PARTS_DESCRIPTION, INVOICE_PARTS_AMOUNT, INVOICE_PARTS_COUNT, INVOICE_PARTS_SUBTOTAL) VALUES ";
+        $sql = "INSERT INTO ".PRFX."invoice_parts (INVOICE_ID, INVOICE_PARTS_DESCRIPTION, INVOICE_PARTS_AMOUNT, INVOICE_PARTS_COUNT, INVOICE_PARTS_SUBTOTAL) VALUES ";
         
         foreach($parts_qty as $key) {
             
@@ -259,7 +259,7 @@ function insert_invoice_labour_rates_item($db, $VAR){
     
     global $smarty;
     
-    $sql = "INSERT INTO ".PRFX."INVOICE_LABOUR_RATES SET
+    $sql = "INSERT INTO ".PRFX."invoice_labour_rates SET
             LABOUR_RATE_NAME     =". $db->qstr( $VAR['display']      ).",
             LABOUR_RATE_AMOUNT   =". $db->qstr( $VAR['amount']       ).",
             LABOUR_RATE_COST     =". $db->qstr( $VAR['cost']         ).",
@@ -282,7 +282,7 @@ function insert_invoice_labour_rates_item($db, $VAR){
 
 function get_invoice_details($db, $invoice_id, $item = null) {
     
-    $sql = "SELECT * FROM ".PRFX."INVOICE WHERE INVOICE_ID =".$db->qstr($invoice_id);
+    $sql = "SELECT * FROM ".PRFX."invoice WHERE INVOICE_ID =".$db->qstr($invoice_id);
     
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get invoice details."));
@@ -309,7 +309,7 @@ function get_invoice_details($db, $invoice_id, $item = null) {
 
 function get_active_labour_rate_items($db) {
     
-    $sql = "SELECT * FROM ".PRFX."INVOICE_LABOUR_RATES WHERE LABOUR_RATE_ACTIVE='1'";
+    $sql = "SELECT * FROM ".PRFX."invoice_labour_rates WHERE LABOUR_RATE_ACTIVE='1'";
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get active labour rate items."));
@@ -332,7 +332,7 @@ function get_active_labour_rate_items($db) {
 
 function get_invoice_labour_items($db, $invoice_id) {
     
-    $sql = "SELECT * FROM ".PRFX."INVOICE_LABOUR WHERE INVOICE_ID=".$db->qstr( $invoice_id );
+    $sql = "SELECT * FROM ".PRFX."invoice_labour WHERE INVOICE_ID=".$db->qstr( $invoice_id );
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get invoice labour items."));
@@ -354,7 +354,7 @@ function get_invoice_labour_items($db, $invoice_id) {
 
 function get_invoice_labour_item_details($db, $labour_id, $item = null) {
     
-    $sql = "SELECT * FROM ".PRFX."INVOICE_LABOUR WHERE INVOICE_LABOUR_ID =".$db->qstr($labour_id);
+    $sql = "SELECT * FROM ".PRFX."invoice_labour WHERE INVOICE_LABOUR_ID =".$db->qstr($labour_id);
     
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get invoice labour item details."));
@@ -381,7 +381,7 @@ function get_invoice_labour_item_details($db, $labour_id, $item = null) {
 
 function get_invoice_parts_items($db, $invoice_id) {
     
-    $sql = "SELECT * FROM ".PRFX."INVOICE_PARTS WHERE INVOICE_ID=".$db->qstr( $invoice_id );
+    $sql = "SELECT * FROM ".PRFX."invoice_parts WHERE INVOICE_ID=".$db->qstr( $invoice_id );
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get invoice parts items."));
@@ -404,7 +404,7 @@ function get_invoice_parts_items($db, $invoice_id) {
 
 function get_invoice_parts_item_details($db, $parts_id, $item = null) {
     
-    $sql = "SELECT * FROM ".PRFX."INVOICE_PARTS WHERE INVOICE_PARTS_ID =".$db->qstr($parts_id);
+    $sql = "SELECT * FROM ".PRFX."invoice_parts WHERE INVOICE_PARTS_ID =".$db->qstr($parts_id);
     
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get invoice parts item details."));
@@ -432,7 +432,7 @@ function get_invoice_parts_item_details($db, $parts_id, $item = null) {
 function get_invoice_labour_rates_items($db) {
     
     // Loads rates from database
-    $sql = "SELECT * FROM ".PRFX."INVOICE_LABOUR_RATES ORDER BY LABOUR_RATE_ID ASC";
+    $sql = "SELECT * FROM ".PRFX."invoice_labour_rates ORDER BY LABOUR_RATE_ID ASC";
     
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get invoice labour rates items."));
@@ -451,7 +451,7 @@ function get_invoice_labour_rates_items($db) {
 
 function update_invoice($db, $invoice_id, $date, $due_date, $discount_rate) {
     
-    $sql = "UPDATE ".PRFX."INVOICE SET
+    $sql = "UPDATE ".PRFX."invoice SET
             DATE                =". $db->qstr( date_to_timestamp($date)     ).",
             DUE_DATE            =". $db->qstr( date_to_timestamp($due_date) ).",
             DISCOUNT_RATE       =". $db->qstr( $discount_rate               )."
@@ -470,7 +470,7 @@ function update_invoice($db, $invoice_id, $date, $due_date, $discount_rate) {
 
 function update_invoice_transaction_only($db, $invoice_id, $paid_status, $paid_date, $paid_amount, $balance) {
     
-    $sql = "UPDATE ".PRFX."INVOICE SET
+    $sql = "UPDATE ".PRFX."invoice SET
             IS_PAID             =". $db->qstr( $paid_status ).",
             PAID_DATE           =". $db->qstr( $paid_date   ).",        
             PAID_AMOUNT         =". $db->qstr( $paid_amount ).",                    
@@ -490,7 +490,7 @@ function update_invoice_transaction_only($db, $invoice_id, $paid_status, $paid_d
 
 function update_invoice_full($db, $invoice_id, $customer_id, $workorder_id, $employee_id, $date, $due_date, $discount_rate, $discount, $tax_rate, $tax_amount, $sub_total, $total, $is_paid, $paid_date, $paid_amount, $balance) {
     
-    $sql = "UPDATE ".PRFX."INVOICE SET        
+    $sql = "UPDATE ".PRFX."invoice SET        
             CUSTOMER_ID         =". $db->qstr( $customer_id     ).",
             WORKORDER_ID        =". $db->qstr( $workorder_id    ).",
             EMPLOYEE_ID         =". $db->qstr( $employee_id     ).",                
@@ -521,7 +521,7 @@ function update_invoice_full($db, $invoice_id, $customer_id, $workorder_id, $emp
 
 function update_invoice_labour_rates_item($db, $labour_rate_id, $VAR){
     
-    $sql = "UPDATE ".PRFX."INVOICE_LABOUR_RATES SET
+    $sql = "UPDATE ".PRFX."invoice_labour_rates SET
         LABOUR_RATE_NAME     =". $db->qstr( $VAR['display']         ).",
         LABOUR_RATE_AMOUNT   =". $db->qstr( $VAR['amount']          ).",
         LABOUR_RATE_COST     =". $db->qstr( $VAR['cost']            ).",
@@ -547,7 +547,7 @@ function update_invoice_labour_rates_item($db, $labour_rate_id, $VAR){
 
 function delete_invoice($db, $invoice_id) {
     
-    $sql = "DELETE FROM ".PRFX."INVOICE WHERE INVOICE_ID=".$db->qstr($invoice_id);
+    $sql = "DELETE FROM ".PRFX."invoice WHERE INVOICE_ID=".$db->qstr($invoice_id);
 
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete the invoice."));
@@ -566,7 +566,7 @@ function delete_invoice($db, $invoice_id) {
 
 function delete_invoice_labour_item($db, $labour_id) {
     
-    $sql = "DELETE FROM " . PRFX . "INVOICE_LABOUR WHERE INVOICE_LABOUR_ID=" . $db->qstr($labour_id);
+    $sql = "DELETE FROM ".PRFX."invoice_labour WHERE INVOICE_LABOUR_ID=" . $db->qstr($labour_id);
 
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete an invoice labour item."));
@@ -584,7 +584,7 @@ function delete_invoice_labour_item($db, $labour_id) {
 
 function delete_invoice_parts_item($db, $parts_id) {
     
-    $sql = "DELETE FROM " . PRFX . "INVOICE_PARTS WHERE INVOICE_PARTS_ID=" . $db->qstr($parts_id);
+    $sql = "DELETE FROM ".PRFX."invoice_parts WHERE INVOICE_PARTS_ID=" . $db->qstr($parts_id);
 
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete an invoice parts item."));
@@ -603,7 +603,7 @@ function delete_invoice_parts_item($db, $parts_id) {
 
 function delete_invoice_rates_item($db, $labour_rate_id){
     
-    $sql = "DELETE FROM ".PRFX."INVOICE_LABOUR_RATES WHERE LABOUR_RATE_ID =".$labour_rate_id;
+    $sql = "DELETE FROM ".PRFX."invoice_labour_rates WHERE LABOUR_RATE_ID =".$labour_rate_id;
 
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete an invoice rates item."));
@@ -620,7 +620,7 @@ function delete_invoice_rates_item($db, $labour_rate_id){
 
 function labour_sub_total($db, $invoice_id) {
     
-    $sql = "SELECT SUM(INVOICE_LABOUR_SUBTOTAL) AS labour_sub_total_sum FROM " . PRFX . "INVOICE_LABOUR WHERE INVOICE_ID=" . $db->qstr($invoice_id);
+    $sql = "SELECT SUM(INVOICE_LABOUR_SUBTOTAL) AS labour_sub_total_sum FROM ".PRFX."invoice_labour WHERE INVOICE_ID=" . $db->qstr($invoice_id);
     
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to calculate the invoice labour sub total."));
@@ -639,7 +639,7 @@ function labour_sub_total($db, $invoice_id) {
 
 function parts_sub_total($db, $invoice_id) {
     
-    $sql = "SELECT SUM(INVOICE_PARTS_SUBTOTAL) AS parts_sub_total_sum FROM " . PRFX . "INVOICE_PARTS WHERE INVOICE_ID=" . $db->qstr($invoice_id);
+    $sql = "SELECT SUM(INVOICE_PARTS_SUBTOTAL) AS parts_sub_total_sum FROM ".PRFX."invoice_parts WHERE INVOICE_ID=" . $db->qstr($invoice_id);
     
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to calculate the invoice parts sub total."));
@@ -665,7 +665,7 @@ function recalculate_invoice_totals($db, $invoice_id) {
     $total = ($sub_total - $discount) + $tax;    
     $balance = $total - $paid_amount = get_invoice_details($db, $invoice_id, 'PAID_AMOUNT');
 
-    $sql = "UPDATE ".PRFX."INVOICE SET        
+    $sql = "UPDATE ".PRFX."invoice SET        
             SUB_TOTAL           =". $db->qstr( $sub_total       ).",            
             DISCOUNT            =". $db->qstr( $discount        ).",
             TAX                 =". $db->qstr( $tax             ).",             
@@ -686,7 +686,7 @@ function recalculate_invoice_totals($db, $invoice_id) {
 
 function check_invoice_has_workorder($db, $invoice_id) {
     
-    $sql = "SELECT WORKORDER_ID FROM ".PRFX."INVOICE WHERE INVOICE_ID=".$invoice_id;
+    $sql = "SELECT WORKORDER_ID FROM ".PRFX."invoice WHERE INVOICE_ID=".$invoice_id;
     
     if(!$rs = $db->Execute($sql)) {        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to chack if the invoice has a work order."));
@@ -740,7 +740,7 @@ function upload_invoice_labour_rates_csv($db, $VAR) {
             // Empty Current Invoice Rates Table (if set)
             if($VAR['empty_invoice_rates'] === '1'){
                 
-                $sql = "TRUNCATE ".PRFX."INVOICE_LABOUR_RATES";
+                $sql = "TRUNCATE ".PRFX."invoice_labour_rates";
                 
                 if(!$rs = $db->execute($sql)) {
                     force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to empty the invoice labour rates table."));
@@ -754,7 +754,7 @@ function upload_invoice_labour_rates_csv($db, $VAR) {
             // Read CSV data and insert into database
             while (($data = fgetcsv($handle, 1000, ',')) !== FALSE) {
 
-                $sql = "INSERT INTO ".PRFX."INVOICE_LABOUR_RATES(LABOUR_RATE_NAME,LABOUR_RATE_AMOUNT,LABOUR_RATE_COST,LABOUR_RATE_ACTIVE,LABOUR_TYPE,LABOUR_MANUF) VALUES ('$data[1]','$data[2]','$data[3]','$data[4]','$data[5]','$data[6]')";
+                $sql = "INSERT INTO ".PRFX."invoice_labour_rates(LABOUR_RATE_NAME,LABOUR_RATE_AMOUNT,LABOUR_RATE_COST,LABOUR_RATE_ACTIVE,LABOUR_TYPE,LABOUR_MANUF) VALUES ('$data[1]','$data[2]','$data[3]','$data[4]','$data[5]','$data[6]')";
 
                 if(!$rs = $db->execute($sql)) {
                     force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to insert the new invoice labour rates into the database."));
