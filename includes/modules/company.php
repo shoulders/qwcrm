@@ -100,7 +100,7 @@ function update_company_details($db, $record) {
     
     global $smarty;
     
-    $sql .= "UPDATE ".PRFX."COMPANY SET
+    $sql .= "UPDATE ".PRFX."company SET
             NAME                = ". $db->qstr( $record['company_name']               ).",
             NUMBER              = ". $db->qstr( $record['company_number']             ).",
             ADDRESS             = ". $db->qstr( $record['company_address']            ).",

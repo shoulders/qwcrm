@@ -472,12 +472,17 @@ function verify_qwcrm_is_installed_correctly($db){
         exit;
     }
         
+    // check the databse can actually be read and retrieve the QWcrm database verion for the next function
+    if(!$qwcrm_database_version = get_qwcrm_database_version_number($db)) {
+        die(gettext("Cannot read the QWcrm version number from the database. This could be a database connection issue."));
+    }
+
+
     // Compare the version number of the file system against the database - if mismatch load upgrade for further instructions?
-    if(version_compare(get_qwcrm_database_version_number($db), QWCRM_VERSION, '!=')){
+    if(version_compare($qwcrm_database_version, QWCRM_VERSION, '!=')){
         
         // I have not decided whether to use a message or automatic redirect to the upgrade folder        
-        echo('<div style="color: red;">'.gettext("The File System and Database versions do not match, run the upgrade routine.").'</div>');
-        die;
+        die('<div style="color: red;">'.gettext("The File System and Database versions do not match, run the upgrade routine.").'</div>');    
                 
         //force_page('upgrade');         
         
@@ -485,14 +490,12 @@ function verify_qwcrm_is_installed_correctly($db){
     
     // has been installed but the installion directory is still present  
     if(is_dir('install') ) {
-        echo('<div style="color: red;">'.gettext("The install Directory Exists!! Please Rename or remove the install directory.").'</div>');
-        die;
+        die('<div style="color: red;">'.gettext("The install Directory Exists!! Please Rename or remove the install directory.").'</div>');       
     }
     
     // has been installed but the upgrade directory is still present  
     if(is_dir('upgrade') ) {
-        echo('<div style="color: red;">'.gettext("The Upgrade Directory Exists!! Please Rename or remove the upgrade directory.").'</div>');
-        die;
+        die('<div style="color: red;">'.gettext("The Upgrade Directory Exists!! Please Rename or remove the upgrade directory.").'</div>');     
     }  
     
 }

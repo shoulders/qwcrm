@@ -297,7 +297,7 @@ if(isset($VAR['page_no'])) {$page_no = $VAR['page_no'];} else {$page_no = 1;}
 ##########################################
 
 // Set Date Format
-define('DATE_FORMAT', get_company_details($db, 'DATE_FORMAT'));                 // If there are DATABASE ERRORS, they will present here
+define('DATE_FORMAT', get_company_details($db, 'DATE_FORMAT'));                 // If there are DATABASE ERRORS, they will present here (white screen) when verify QWcrm function is not on 
 
 ##########################################################################
 #   Assign variables into smarty for use by all native module templates  #
