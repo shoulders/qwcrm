@@ -183,20 +183,51 @@ function perform_redirect($url, $type = 'header') {
 // old - force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
 // new - force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Could not display the Work Order record requested"));
 
-function force_error_page($error_page, $error_type, $error_location, $php_function, $database_error, $sql_query, $error_msg) {    
-   
-    // Pass varibles to the error page after preperation
-    postEmulation('error_page',         prepare_error_data('error_page', $error_page)           );
-    postEmulation('error_type',         $error_type                                             );
-    postEmulation('error_location',     prepare_error_data('error_location', $error_location)   );
-    postEmulation('php_function',       prepare_error_data('php_function', $php_function)       );
-    postEmulation('database_error',     $database_error                                         );
-    postEmulation('sql_query',          prepare_error_data('sql_query', $sql_query)             );
-    postEmulation('error_msg',          $error_msg                                              );    
+function force_error_page($error_page, $error_type, $error_location, $php_function, $database_error, $sql_query, $error_msg) { 
     
-    // Load Error Page
-    force_page('core', 'error');
-    exit;
+    // Load config settigns
+    $GConfig = new GConfig;
+   
+    // raw_output mode is very basic, error logging still works, bootloops are prevented, page tracking and compression are skipped
+    if($GConfig->error_page_raw_output) {
+        
+        // required for some smarty operations in the error page
+        global $smarty;
+
+        // make sure the page object is empty
+        $BuildPage = '';
+
+        $VAR['error_page']      = prepare_error_data('error_page', $error_page);
+        $VAR['error_type']      = $error_type;
+        $VAR['error_location']  = prepare_error_data('error_location', $error_location);
+        $VAR['php_function']    = prepare_error_data('php_function', $php_function);
+        $VAR['database_error']  = $database_error ;
+        $VAR['sql_query']       = prepare_error_data('sql_query', $sql_query);
+        $VAR['error_msg']       = $error_msg;
+
+        // Error page main content and processing logic
+        require(MODULES_DIR.'core/error.php');
+
+        // output the error page
+        echo $BuildPage;
+        exit;
+    
+    // This will show errors within the template as normal - but occassionaly can cause boot loops during development
+    } else {
+        
+        // Pass varibles to the error page after preperation
+        postEmulation('error_page',         prepare_error_data('error_page', $error_page)           );
+        postEmulation('error_type',         $error_type                                             );
+        postEmulation('error_location',     prepare_error_data('error_location', $error_location)   );
+        postEmulation('php_function',       prepare_error_data('php_function', $php_function)       );
+        postEmulation('database_error',     $database_error                                         );
+        postEmulation('sql_query',          prepare_error_data('sql_query', $sql_query)             );
+        postEmulation('error_msg',          $error_msg                                              );    
+
+        // Load Error Page
+        force_page('core', 'error');
+        exit;
+    }
     
 }
 
@@ -401,50 +432,50 @@ function set_page_header_and_meta_data($module, $page_tpl, $page_title_from_var 
 }
 
 
-##########################################################
-#  Verify User's authorization for a specific page       #
-##########################################################
+#####################################################################
+#  Verify User's authorization for a specific page / operation      #
+#####################################################################
 
-function check_acl($db, $login_account_type_id, $module, $page_tpl) {
+function check_acl($db, $login_usergroup_id, $module, $page_tpl) {
     
     /* error catching - you cannot use normal error logging as it will cause a loop */
-    if($login_account_type_id == ''){
+    if($login_usergroup_id == ''){
         die(gettext("The ACL has been supplied with no account type ID - I will now die."));                
     }
 
-    /* Get user's Group Name by login_account_type_id */
-    $sql = "SELECT ".PRFX."user_account_types.TYPE_NAME
-            FROM ".PRFX."user_account_types 
-            WHERE TYPE_ID =".$db->qstr($login_account_type_id);
+    /* Get user's Group Name by login_usergroup_id */
+    $sql = "SELECT ".PRFX."user_usergroups.usergroup_display_name
+            FROM ".PRFX."user_usergroups
+            WHERE usergroup_id =".$db->qstr($login_usergroup_id);
     
     if(!$rs = $db->execute($sql)) {        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Could not get the user's Group Name by Login Account Type ID."));
         exit;
     } else {
-        $employee_group_display_name = $rs->fields['TYPE_NAME'];
+        $usergroup_display_name = $rs->fields['usergroup_display_name'];
     } 
     
     // Build the page name for the ACL lookup
     $module_page = $module.':'.$page_tpl;
     
     /* Check Page to see if we have access */
-    $sql = "SELECT ".$employee_group_display_name." AS PAGE_ACL FROM ".PRFX."user_acl WHERE page=".$db->qstr($module_page);
+    $sql = "SELECT ".$usergroup_display_name." AS acl FROM ".PRFX."user_acl WHERE page=".$db->qstr($module_page);
 
     if(!$rs = $db->execute($sql)) {        
         force_error_page($_GET['page'], 'authentication', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Could not get the Page's ACL."));
         exit;
     } else {
         
-        $acl = $rs->fields['PAGE_ACL'];
+        $acl = $rs->fields['acl'];
         
         // Add if guest (8) rules here if there are errors
         
         if($acl != 1) {
             
-            // should this just be an access error message
-            //force_error_page($_GET['page'], 'authentication', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("You do not have permission to access this page."));            
-            force_page('core', 'login', 'warning_msg='.gettext("You do not have permission to access this page.").' '.$module.':'.$page_tpl);            
+            //force_error_page($_GET['page'], 'authentication', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("You do not have permission to access the page - ").' '.$module.':'.$page_tpl);             
+            force_page('core', 'login', 'warning_msg='.gettext("You do not have permission to access the page - ").' '.$module.':'.$page_tpl);            
             exit;
+            
         } else {
             
             return true;
@@ -484,7 +515,7 @@ function verify_qwcrm_is_installed_correctly($db){
         // I have not decided whether to use a message or automatic redirect to the upgrade folder        
         die('<div style="color: red;">'.gettext("The File System and Database versions do not match, run the upgrade routine.").'</div>');    
                 
-        //force_page('upgrade');         
+        //force_page('upgrade');
         
     }
     

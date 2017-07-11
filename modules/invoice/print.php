@@ -3,7 +3,7 @@
 defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'modules/customer.php');
-require(INCLUDES_DIR.'modules/employee.php');
+require(INCLUDES_DIR.'modules/user.php');
 require(INCLUDES_DIR.'modules/invoice.php');
 require(INCLUDES_DIR.'modules/payment.php');
 require(INCLUDES_DIR.'modules/workorder.php');
@@ -24,7 +24,7 @@ $smarty->assign('labour_items',             get_invoice_labour_items($db, $invoi
 $smarty->assign('parts_items',              get_invoice_parts_items($db, $invoice_id)                                                                   );
 $smarty->assign('labour_sub_total',         labour_sub_total($db, $invoice_id)                                                                          );
 $smarty->assign('parts_sub_total',          parts_sub_total($db, $invoice_id)                                                                           );
-$smarty->assign('employee_display_name',    get_employee_details($db, get_invoice_details($db, $invoice_id, 'EMPLOYEE_ID'), 'EMPLOYEE_DISPLAY_NAME')    );
+$smarty->assign('employee_display_name',    get_user_details($db, get_invoice_details($db, $invoice_id, 'EMPLOYEE_ID'), 'EMPLOYEE_DISPLAY_NAME')    );
 
 
 /* Invoice Print Routine */

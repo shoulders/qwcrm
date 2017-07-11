@@ -67,7 +67,7 @@
                                     </script>                                     
                                     <a href="#" id="hidden_stats">{t}Invoice Stats{/t}</a>
                                     <div id="hide_stats">
-                                        {if $login_account_type_id == 1 || $login_account_type_id == 4 }
+                                        {if $login_usergroup_id == 1 || $login_usergroup_id == 4 }
                                             <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
                                                 <tr class="olotd4">
                                                     <td class="row2"><b>{t}Unpaid{/t}</b></td>

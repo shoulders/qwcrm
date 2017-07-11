@@ -31,7 +31,7 @@
                                 <tr style="border: 1px black solid; background-color: #ededed;">
                                     <td><b>{t}Workorder Note ID{/t}: {$workorder_notes[n].WORK_ORDER_NOTES_ID}</b></td>
                                     <td width="33%" align="right">
-                                        {if $login_account_type_id == 1}
+                                        {if $login_usergroup_id == 1}
                                             <a href="index.php?page=workorder:note_edit&workorder_note_id={$workorder_notes[n].WORK_ORDER_NOTES_ID}">
                                                 <img src="{$theme_images_dir}icons/16x16/small_edit.gif" onMouseOver="ddrivetip('{t}Edit the Note{/t}');" onMouseOut="hideddrivetip();">                                                 
                                             </a>

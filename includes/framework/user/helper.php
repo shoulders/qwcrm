@@ -295,11 +295,11 @@ class JUserHelper
             ->where($db->quoteName('username') . ' = ' . $db->quote($username));
         $db->setQuery($query, 0, 1);*/
         
-        $sql = "SELECT EMPLOYEE_ID FROM ".PRFX."employee WHERE EMPLOYEE_LOGIN = ".$db->qstr($username);
+        $sql = "SELECT user_id FROM ".PRFX."user WHERE username = ".$db->qstr($username);
         $rs = $db->Execute($sql);        
 
         //return $db->loadResult();
-        return $rs->fields['EMPLOYEE_ID'];        
+        return $rs->fields['user_id'];        
     }
 
     /**

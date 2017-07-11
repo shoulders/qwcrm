@@ -3,7 +3,7 @@
 defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'modules/customer.php');
-require(INCLUDES_DIR.'modules/employee.php');
+require(INCLUDES_DIR.'modules/user.php');
 require(INCLUDES_DIR.'modules/invoice.php');
 require(INCLUDES_DIR.'modules/payment.php');
 
@@ -22,6 +22,6 @@ $smarty->assign('parts_items', get_invoice_parts_items($db, $invoice_id));
 $smarty->assign('transactions', get_invoice_transactions($db, $invoice_id));
 $smarty->assign('labour_sub_total_sum', labour_sub_total($db, $invoice_id));
 $smarty->assign('parts_sub_total_sum', parts_sub_total($db, $invoice_id));
-$smarty->assign('employee_display_name',get_employee_details($db, get_invoice_details($db, $invoice_id, 'EMPLOYEE_ID'),'EMPLOYEE_DISPLAY_NAME')     );
+$smarty->assign('employee_display_name',get_user_details($db, get_invoice_details($db, $invoice_id, 'EMPLOYEE_ID'),'EMPLOYEE_DISPLAY_NAME')     );
      
 $BuildPage .= $smarty->fetch('invoice/details.tpl');

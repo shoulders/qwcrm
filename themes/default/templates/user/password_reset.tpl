@@ -15,7 +15,7 @@
                             <table width="25%" cellspacing="0" border="0" cellpadding="5" align="center">
                                 <tr>
                                     <td align="right">Email Address</td>
-                                    <td><input type="text" name="employee_email" id="employee_email" size="50"></td>
+                                    <td><input type="text" name="user_email" id="user_email" size="50"></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2" align="right"><b><font color="RED" >There's</font></b><b><font color="RED" ><input type="text" name="human" id="human" size ="2"> months in a Year. (AntiSpam Test)</font></b></td>

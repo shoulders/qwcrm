@@ -186,7 +186,7 @@ class JUser
      */    
     public $login_usr               = null;
     public $login_id                = null;
-    public $login_account_type_id   = null;
+    public $login_usergroup_id      = null;
     public $login_display_name      = null;
     public $login_token             = null;
 
@@ -355,7 +355,7 @@ class JUser
         return $table->setLastVisit($timestamp);*/
         
         $db = QFactory::getDbo();        
-        $sql = "UPDATE ".PRFX."employee SET EMPLOYEE_LASTVISIT = ".time()." WHERE EMPLOYEE_ID = " . $this->id;
+        $sql = "UPDATE ".PRFX."user SET last_active = ".time()." WHERE user_id = " . $this->id;
         $db->Execute($sql);
         
         return;
@@ -671,7 +671,7 @@ class JUser
     {       
         $db = QFactory::getDbo();
         
-        $sql = "SELECT * FROM ".PRFX."employee WHERE EMPLOYEE_ID = " . $db->qstr($id);        
+        $sql = "SELECT * FROM ".PRFX."user WHERE user_id = " . $db->qstr($id);        
         
         if(!$rs = $db->execute($sql)){
             
@@ -688,14 +688,14 @@ class JUser
             // Load the user record into an array
             $record = $rs->GetRowAssoc();            
             
-            $this->username                 = $record['EMPLOYEE_LOGIN'];
-            $this->id                       = $record['EMPLOYEE_ID'];
+            $this->username                 = $record['username'];
+            $this->id                       = $record['user_id'];
             
             // This is not normally used - everything is instance based i think
-            $this->login_usr                = $record['EMPLOYEE_LOGIN'];
-            $this->login_id                 = $record['EMPLOYEE_ID'];
-            $this->login_account_type_id    = $record['EMPLOYEE_TYPE'];
-            $this->login_display_name       = $record['EMPLOYEE_DISPLAY_NAME'];
+            $this->login_usr                = $record['username'];
+            $this->login_id                 = $record['user_id'];
+            $this->login_usergroup_id       = $record['usergroup'];
+            $this->login_display_name       = $record['display_name'];
             $this->login_token              = 'login_verified';
 
         }

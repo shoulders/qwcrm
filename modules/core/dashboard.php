@@ -3,7 +3,7 @@
 defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'modules/core.php');
-require(INCLUDES_DIR.'modules/employee.php');
+require(INCLUDES_DIR.'modules/user.php');
 
 /** Misc **/
 
@@ -100,21 +100,21 @@ $smarty->assign('cu_total_count', count_all_customers($db));
 /** Employee **/
 
 /* Logged in Employee - Open Work Orders count */
-$smarty->assign('employee_workorders_open_count', count_employee_workorders_with_status($db, $login_id, 10));
+$smarty->assign('employee_workorders_open_count', count_user_workorders_with_status($db, $login_id, 10));
 
 /* Logged in Employee - Assigned Work Orders count */
-$smarty->assign('employee_workorders_assigned_count', count_employee_workorders_with_status($db, $login_id, 2));
+$smarty->assign('employee_workorders_assigned_count', count_user_workorders_with_status($db, $login_id, 2));
 
 /* Logged in Employee - Work Orders Waiting For Parts count */
-$smarty->assign('employeee_workorders_waiting_for_parts_count', count_employee_workorders_with_status($db, $login_id, 3));
+$smarty->assign('employeee_workorders_waiting_for_parts_count', count_user_workorders_with_status($db, $login_id, 3));
 
 /* Logged in Employee - Work Orders Awaiting Payment count */
-$smarty->assign('employee_workorders_awaiting_payment_count', count_employee_workorders_with_status($db, $login_id, 7));
+$smarty->assign('employee_workorders_awaiting_payment_count', count_user_workorders_with_status($db, $login_id, 7));
 
 /* Logged in Employee - Closed Work Orders Awaiting Payment count */
-$smarty->assign('employee_workorders_awaiting_payment_count', count_employee_workorders_with_status($db, $login_id, 6));
+$smarty->assign('employee_workorders_awaiting_payment_count', count_user_workorders_with_status($db, $login_id, 6));
 
 /* Logged in Employee - Unpaid Invoices count - NOT USED*/
-$smarty->assign('employee_invoices_unpaid_count', count_employee_invoices_with_status($db, $login_id, 0));
+$smarty->assign('employee_invoices_unpaid_count', count_user_invoices_with_status($db, $login_id, 0));
 
 $BuildPage .= $smarty->fetch('core/dashboard.tpl');

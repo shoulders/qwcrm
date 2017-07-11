@@ -3,7 +3,7 @@
 defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'modules/customer.php');
-require(INCLUDES_DIR.'modules/employee.php');
+require(INCLUDES_DIR.'modules/user.php');
 require(INCLUDES_DIR.'modules/invoice.php');
 require(INCLUDES_DIR.'modules/payment.php');
 require(INCLUDES_DIR.'modules/workorder.php');
@@ -39,7 +39,7 @@ $smarty->assign('labour_sub_total',     labour_sub_total($db, $invoice_id)      
 $smarty->assign('parts_sub_total',      parts_sub_total($db, $invoice_id)                                                                           );
 $smarty->assign('transactions',         get_invoice_transactions($db, $invoice_id)                                                                  ); 
 $smarty->assign('workorder_status',     get_workorder_details($db, $workorder_id, 'WORK_ORDER_STATUS')                                              ); 
-$smarty->assign('employee_display_name',get_employee_details($db, get_invoice_details($db, $invoice_id, 'EMPLOYEE_ID'),'EMPLOYEE_DISPLAY_NAME')     );
+$smarty->assign('employee_display_name',get_user_details($db, get_invoice_details($db, $invoice_id, 'EMPLOYEE_ID'),'EMPLOYEE_DISPLAY_NAME')     );
 
 // temp - these are needed for the record deltion routines - consider making all fields editable
 $smarty->assign('workorder_id',         get_invoice_details($db, $invoice_id, 'WORKORDER_ID')                                                       );

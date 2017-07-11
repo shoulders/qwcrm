@@ -57,7 +57,7 @@
 
                 <!-- General Ledger -->
                 <!-- Menu limited to Administrators and Managers -->
-                {if $login_account_type_id == 1 || $login_account_type_id == 2}
+                {if $login_usergroup_id == 1 || $login_usergroup_id == 2}
                     <div>
                         <span>{t}General Ledger{/t}</span>
                         
@@ -85,7 +85,7 @@
 
                 <!-- Suppliers -->
                 <!-- Menu limited to Administrators and Managers -->
-                {if $login_account_type_id == 1 || $login_account_type_id == 2}
+                {if $login_usergroup_id == 1 || $login_usergroup_id == 2}
                     <div>
                         <span>{t}Suppliers{/t}</span> 
                         <a href="index.php?page=supplier:new"><img src="{$theme_images_dir}icons/new.gif" alt="" border="0" height="14" width="14" />{t}New Supplier{/t}</a>
@@ -100,7 +100,7 @@
 
                 <!-- Company -->
                 <!-- Menu limited to Administrators -->
-                {if $login_account_type_id == 1}
+                {if $login_usergroup_id == 1}
                     <div>
                         <span>{t}Company{/t}</span>
                         <a href="index.php?page=company:edit"><img src="{$theme_images_dir}icons/key.png" alt="" border="0" height="14" width="14" /> {t}Edit Company{/t}</a>
@@ -112,15 +112,15 @@
 
                 <!-- Administration -->
                 <!-- Menu limited to Administrators and Managers -->
-                {if $login_account_type_id == 1 || $login_account_type_id == 4}
+                {if $login_usergroup_id == 1 || $login_usergroup_id == 4}
                     <div>
                         <span>{t}Administration{/t}</span>
                         
-                        <!-- Employees -->
-                        <a href="index.php?page=employee:search" ><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {t}Search Employees{/t}</a>
-                        <a href="index.php?page=employee:new"><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" height="14" width="14" /> {t}New Employee{/t}</a>
-                        {if $employee_id > '' || $employee_id > 0 }
-                            <a href="index.php?page=employee:edit&employee_id={$employee_id}"><img src="{$theme_images_dir}icons/edit_employee.gif" alt="" border="0" height="14" width="14" /> {t}Edit Employee{/t}</a>
+                        <!-- Users -->
+                        <a href="index.php?page=user:search"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {t}Search Users{/t}</a>
+                        <a href="index.php?page=user:new"><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" height="14" width="14" /> {t}New User{/t}</a>
+                        {if $user_id > '' || $user_id > 0 }
+                            <a href="index.php?page=user:edit&user_id={$user_id}"><img src="{$theme_images_dir}icons/edit_employee.gif" alt="" border="0" height="14" width="14" /> {t}Edit User{/t}</a>
                         {/if}
                         <a href="index.php?page=administrator:acl"><img src="{$theme_images_dir}icons/encrypted.png" alt="" border="0" height="14" width="14" /> {t}Permissions{/t}</a>
                         
@@ -152,6 +152,7 @@
                         <input type="image" src="{$theme_images_dir}paypal/donate.gif" border="0" name="submit" alt="{t}PayPal - The safer, easier way to pay online.{/t}">
                     </form>   
                 </div>
+                    
             </div>    
         </td>        
     </tr>     

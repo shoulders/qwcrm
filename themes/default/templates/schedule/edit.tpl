@@ -36,7 +36,7 @@
                                                                     <tr>                                                                        
                                                                         <td>
                                                                             <p><b>{t}Assigned Employee{/t}</b></p>
-                                                                            {if $login_account_type_id <= 3 }                                                                                
+                                                                            {if $login_usergroup_id <= 3 }                                                                                
                                                                                 <select name="employee_id">
                                                                                     {section name=i loop=$active_employees}
                                                                                         <option value="{$active_employees[i].EMPLOYEE_ID}" {if $employee_id == $active_employees[i].EMPLOYEE_ID} selected {/if}>{$active_employees[i].EMPLOYEE_DISPLAY_NAME}</option>

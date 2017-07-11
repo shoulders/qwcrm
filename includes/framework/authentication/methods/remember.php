@@ -192,7 +192,7 @@ class PlgAuthenticationCookie //extends QFramework //class PlgSystemRemember //e
         }
 
         // Make sure there really is a user with this name and get the data for the session.
-        $sql = "SELECT EMPLOYEE_ID, EMPLOYEE_LOGIN, EMPLOYEE_PASSWORD FROM ".PRFX."employee WHERE EMPLOYEE_LOGIN = ".$this->db->qstr($results[0]['user_id'])." AND REQUIRE_RESET = 0";
+        $sql = "SELECT user_id, username, password FROM ".PRFX."user WHERE username = ".$this->db->qstr($results[0]['user_id'])." AND require_reset = 0";
 
         try
         {            
@@ -209,13 +209,13 @@ class PlgAuthenticationCookie //extends QFramework //class PlgSystemRemember //e
         if ($result)
         {
             // Bring this in line with the rest of the system
-            $user = JUser::getInstance($result['EMPLOYEE_ID']);            
+            $user = JUser::getInstance($result['user_id']);            
             
             // Set response data.
-            $response->username = $result['EMPLOYEE_LOGIN'];
+            $response->username = $result['username'];
             $response->email    = $user->email;
             $response->fullname = $user->name;
-            $response->password = $result['EMPLOYEE_PASSWORD'];
+            $response->password = $result['password'];
             //$response->language = $user->getParam('language');
 
             // Set response status.

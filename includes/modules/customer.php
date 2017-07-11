@@ -58,10 +58,11 @@ function display_customers($db, $status = 'all', $direction = 'DESC', $use_pages
     /* The SQL code */    
     
     $sql = "SELECT *              
-        FROM ".PRFX."customer".        
-        $whereTheseRecords.
-        " GROUP BY ".PRFX."customer.CUSTOMER_ID".            
-        " ORDER BY ".PRFX."customer.CUSTOMER_ID ".$direction;  
+        FROM ".PRFX."customer       
+        ".$whereTheseRecords.
+        " GROUP BY ".PRFX."customer.CUSTOMER_ID            
+        ORDER BY ".PRFX."customer.CUSTOMER_ID
+        ".$direction;  
    
     /* Restrict by pages */
         
@@ -454,7 +455,7 @@ function build_googlemap_directions_string($db, $customer_id, $employee_id)  {
     
     $company_details    = get_company_details($db);
     $customer_details   = get_customer_details($db, $customer_id);
-    $employee_details   = get_employee_details($db, $employee_id);
+    $employee_details   = get_user_details($db, $employee_id);
     
     // Make the google string country aware - if needed
     $google_server = "https://maps.google.com";

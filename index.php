@@ -60,7 +60,7 @@ define('_QWEXEC', 1);
 if(is_file('configuration.php')) {
     require('configuration.php');    
 } else {
-    //verify_qwcrm_is_installed_correctly($db); // I do not need this twice ?
+    verify_qwcrm_is_installed_correctly($db); // I do not need this twice ?
 }
 
 // Create config object for global scope
@@ -238,10 +238,10 @@ $login_display_name     = $user->login_display_name;
 $login_token            = $user->login_token; 
 
 // If there is no account type details, set to Public (This can cause looping if not present)
-if(!isset($user->login_account_type_id)){
-    $login_account_type_id = 9;
+if(!isset($user->login_usergroup_id)){
+    $login_usergroup_id = 9;
 } else {
-    $login_account_type_id = $user->login_account_type_id;   
+    $login_usergroup_id = $user->login_usergroup_id;   
 }
 
 // Remove User object as no longer needed
@@ -250,7 +250,7 @@ unset($user);
 // Assign user varibles to smarty
 $smarty->assign('login_id',                 $login_id               );
 $smarty->assign('login_usr',                $login_usr              );
-$smarty->assign('login_account_type_id',    $login_account_type_id  );
+$smarty->assign('login_usergroup_id',       $login_usergroup_id     );
 $smarty->assign('login_display_name',       $login_display_name     );
 
 ################################
@@ -285,9 +285,9 @@ if(isset($VAR['schedule_start_month'])) {$schedule_start_month = $VAR['schedule_
 // If no schedule day set, use today's day
 if(isset($VAR['schedule_start_day'])) {$schedule_start_day = $VAR['schedule_start_day'];} else {$schedule_start_day = date('d');}
 
-// Make sure an employee is always set - if no employee is set use the logged in user
+// Make sure an user_id is always set - if no user is set use the logged in user
 //if(isset($VAR['employee_id'])) {$employee_id = $VAR['employee_id'];} else {$employee_id = $_SESSION['login_id'];}  // this might not be required
-$employee_id        = $VAR['employee_id'];
+$user_id            = $VAR['user_id'];
 
 // Get the page number if it exists or set to page number to 1 if not
 if(isset($VAR['page_no'])) {$page_no = $VAR['page_no'];} else {$page_no = 1;}
@@ -319,16 +319,17 @@ $smarty->assign('theme_js_dir_finc',        THEME_JS_DIR_FINC           );
 // These are used globally but mainly for the menu !!
 $smarty->assign('workorder_id',             $workorder_id               );
 $smarty->assign('customer_id',              $customer_id                );
-$smarty->assign('employee_id',              $employee_id                );
 $smarty->assign('expense_id',               $expense_id                 );
+$smarty->assign('giftcert_id',              $giftcert_id                );
+$smarty->assign('invoice_id',               $invoice_id                 );
 $smarty->assign('refund_id',                $refund_id                  );
 $smarty->assign('supplier_id',              $supplier_id                );
-$smarty->assign('invoice_id',               $invoice_id                 );
 $smarty->assign('schedule_id',              $schedule_id                );
 $smarty->assign('schedule_start_year',      $schedule_start_year        );
 $smarty->assign('schedule_start_month',     $schedule_start_month       );
 $smarty->assign('schedule_start_day',       $schedule_start_day         );
-$smarty->assign('giftcert_id',              $giftcert_id                );
+$smarty->assign('user_id',                  $user_id                    );
+
 
 // Used throughout the site
 $smarty->assign('currency_sym', get_company_details($db,    'CURRENCY_SYMBOL')  );
@@ -419,7 +420,7 @@ elseif(isset($VAR['page']) && $VAR['page'] != ''){
 $BuildPage = '';
 
 /* Check the requested page with 'logged in' user against the ACL for authorisation - if allowed, display */
-if(check_acl($db, $login_account_type_id, $module, $page_tpl)){
+if(check_acl($db, $login_usergroup_id, $module, $page_tpl)){
     
     // If theme is set to Print mode then fetch the Page Content - Print system will output with its own format without need for headers and footers here
     if ($VAR['theme'] === 'print'){        
@@ -439,7 +440,7 @@ if(check_acl($db, $login_account_type_id, $module, $page_tpl)){
     }
 
     // Fetch Header Legacy Template Code and Menu Block - Customers, Guests and Public users will not see the menu
-    if($VAR['theme'] != 'off' && isset($login_token) && $login_account_type_id != 7 && $login_account_type_id != 8 && $login_account_type_id != 9){       
+    if($VAR['theme'] != 'off' && isset($login_token) && $login_usergroup_id != 7 && $login_usergroup_id != 8 && $login_usergroup_id != 9){       
         $BuildPage .= $smarty->fetch('core'.SEP.'blocks'.SEP.'theme_header_legacy_supplement_block.tpl');
         require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_menu_block.php');        
     }    
@@ -448,7 +449,7 @@ if(check_acl($db, $login_account_type_id, $module, $page_tpl)){
     require($page_display_controller);    
 
     // Fetch Footer Legacy Template code Block (closes content table)
-    if($VAR['theme'] != 'off' && isset($login_token) && $login_account_type_id != 7 && $login_account_type_id != 8 && $login_account_type_id != 9){
+    if($VAR['theme'] != 'off' && isset($login_token) && $login_usergroup_id != 7 && $login_usergroup_id != 8 && $login_usergroup_id != 9){
         $BuildPage .= $smarty->fetch('core'.SEP.'blocks'.SEP.'theme_footer_legacy_supplement_block.tpl');             
     }
 

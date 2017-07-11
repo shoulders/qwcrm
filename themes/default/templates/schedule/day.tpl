@@ -58,7 +58,7 @@
                                                 <button type="submit" name="ics-schedule" OnClick=location.href="index.php?page=schedule:icalendar&schedule_start_year={$schedule_start_year}&schedule_start_month={$schedule_start_month}&schedule_start_day={$schedule_start_day}&employee_id={$employee_id}&theme=print&ics_type=day";>{t}ICS Schedule{/t}</button>
                                             </td>
                                             <td valign="top" align="right" valign="middle">
-                                                {if $login_account_type_id <= 3 }
+                                                {if $login_usergroup_id <= 3 }
                                                     <form>
                                                         <select id="changeThisPage" onChange="changePage();">
                                                             {section name=i loop=$employees}

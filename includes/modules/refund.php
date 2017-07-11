@@ -99,11 +99,12 @@ function display_refunds($db, $direction = 'DESC', $use_pages = false, $page_no 
     /* The SQL code */
     
     $sql =  "SELECT * 
-            FROM ".PRFX."refund".                                                   
-            $whereTheseRecords.            
-            $likeTheseRecords.
-            " GROUP BY ".PRFX."refund.REFUND_ID".
-            " ORDER BY ".PRFX."refund.REFUND_ID ".$direction;            
+            FROM ".PRFX."refund                                                   
+            ".$whereTheseRecords."
+            ".$likeTheseRecords."
+            GROUP BY ".PRFX."refund.REFUND_ID
+            ORDER BY ".PRFX."refund.REFUND_ID
+            ".$direction;            
     
     /* Restrict by pages */
     

@@ -86,7 +86,7 @@
                                                         </tr>
                                                     </table>
                                                 </form>
-                                                {if $login_account_type_id == 1 || $login_account_type_id == 2}                                                  
+                                                {if $login_usergroup_id == 1 || $login_usergroup_id == 2}                                                  
                                                     <script>                                                    
                                                         $(function() {
                                                             $("#newfile").click(function(event) {

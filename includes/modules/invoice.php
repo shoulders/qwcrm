@@ -61,10 +61,11 @@ function display_invoices($db, $status = 'all', $direction = 'DESC', $use_pages 
         ".PRFX."invoice.      *
         FROM ".PRFX."invoice
         LEFT JOIN ".PRFX."employee ON ".PRFX."invoice.EMPLOYEE_ID = ".PRFX."employee.EMPLOYEE_ID
-        LEFT JOIN ".PRFX."customer ON ".PRFX."invoice.CUSTOMER_ID = ".PRFX."customer.CUSTOMER_ID".
-        $whereTheseRecords.
-        " GROUP BY ".PRFX."invoice.INVOICE_ID".            
-        " ORDER BY ".PRFX."invoice.INVOICE_ID ".$direction;
+        LEFT JOIN ".PRFX."customer ON ".PRFX."invoice.CUSTOMER_ID = ".PRFX."customer.CUSTOMER_ID
+        ".$whereTheseRecords."
+        GROUP BY ".PRFX."invoice.INVOICE_ID           
+        ORDER BY ".PRFX."invoice.INVOICE_ID
+        ".$direction;
             
     /* Restrict by pages */
     

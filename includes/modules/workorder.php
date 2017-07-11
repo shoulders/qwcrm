@@ -95,10 +95,11 @@ function display_workorders($db, $status = 'all', $direction = 'DESC', $use_page
             ".PRFX."workorder.   WORK_ORDER_ID, WORK_ORDER_OPEN_DATE, WORK_ORDER_CLOSE_DATE, WORK_ORDER_ASSIGN_TO, WORK_ORDER_SCOPE, WORK_ORDER_STATUS            
             FROM ".PRFX."workorder
             LEFT JOIN ".PRFX."employee ON ".PRFX."workorder.WORK_ORDER_ASSIGN_TO   = ".PRFX."employee.EMPLOYEE_ID   
-            LEFT JOIN ".PRFX."customer ON ".PRFX."workorder.CUSTOMER_ID            = ".PRFX."customer.CUSTOMER_ID".                 
-            $whereTheseRecords.            
-            " GROUP BY ".PRFX."workorder.WORK_ORDER_ID".
-            " ORDER BY ".PRFX."workorder.WORK_ORDER_ID ".$direction;            
+            LEFT JOIN ".PRFX."customer ON ".PRFX."workorder.CUSTOMER_ID            = ".PRFX."customer.CUSTOMER_ID                 
+            ".$whereTheseRecords."
+            GROUP BY ".PRFX."workorder.WORK_ORDER_ID
+            ORDER BY ".PRFX."workorder.WORK_ORDER_ID
+            ".$direction;            
     
     /* Restrict by pages */
     
@@ -839,17 +840,17 @@ function assign_workorder_to_employee($db, $workorder_id, $logged_in_employee_id
     } else {
         
         // Get Logged in Employee's Display Name
-        $logged_in_employee_display_name = get_employee_display_name_by_id($db, $logged_in_employee_id);        
+        $logged_in_employee_display_name = get_user_display_name_by_id($db, $logged_in_employee_id);        
         
         // Get the Display Name of the currently Assigned Employee
         if($assigned_employee_id === '0'){
             $assigned_employee_display_name = gettext("Unassigned");            
         } else {
-            $assigned_employee_display_name = get_employee_display_name_by_id($db, $assigned_employee_id);            
+            $assigned_employee_display_name = get_user_display_name_by_id($db, $assigned_employee_id);            
         }
         
         // Get the Display Name of the Target Employee
-        $target_employee_display_name = get_employee_display_name_by_id($db, $target_employee_id);
+        $target_employee_display_name = get_user_display_name_by_id($db, $target_employee_id);
         
         // Creates a History record
         insert_workorder_history_note($db, $workorder_id, gettext("Work Order").' '.gettext("has been assigned to").' '.$target_employee_display_name.' '.gettext("from").' '.$assigned_employee_display_name.' '.gettext("by").' '. $logged_in_employee_display_name);

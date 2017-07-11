@@ -129,10 +129,7 @@ class QFactory {
             
             /* Login failed */
             
-            // Reload with 'Login Failed' message
-            //force_page('core', 'login', 'warning_msg='.gettext("Login Failed"));
-            //exit;
-            $this->smarty->assign('information_msg', gettext("Login Failed"));
+            $this->smarty->assign('warning_msg', gettext("Login Failed"));
             return false;
             
         }

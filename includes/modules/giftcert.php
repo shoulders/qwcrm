@@ -77,7 +77,7 @@ function display_giftcerts($db, $status, $direction = 'DESC', $use_pages = false
         
         // Restrict by Employee
         if($employee_id != null){
-            $whereTheseRecords .= " AND ".PRFX."employee.EMPLOYEE_ID=".$db->qstr($employee_id);
+            $whereTheseRecords .= " AND ".PRFX."user.user_id=".$db->qstr($employee_id);
         }
         
         // Restrict by Customer
@@ -106,17 +106,18 @@ function display_giftcerts($db, $status, $direction = 'DESC', $use_pages = false
 
     $sql = "SELECT
             ".PRFX."giftcert.           *,
-            ".PRFX."employee.     EMPLOYEE_ID, EMPLOYEE_DISPLAY_NAME,
+            ".PRFX."user.         user_id, display_name,
             ".PRFX."customer.     CUSTOMER_ID,
             ".PRFX."invoice.      INVOICE_ID           
             FROM ".PRFX."giftcert
-            LEFT JOIN ".PRFX."employee ON ".PRFX."giftcert.EMPLOYEE_ID = ".PRFX."employee.EMPLOYEE_ID
+            LEFT JOIN ".PRFX."employee ON ".PRFX."giftcert.EMPLOYEE_ID = ".PRFX."user.user_id
             LEFT JOIN ".PRFX."customer ON ".PRFX."giftcert.CUSTOMER_ID = ".PRFX."customer.CUSTOMER_ID
-            LEFT JOIN ".PRFX."invoice ON ".PRFX."giftcert.INVOICE_ID = ".PRFX."invoice.INVOICE_ID". 
-            $whereTheseRecords.
-            " GROUP BY ".PRFX."giftcert.GIFTCERT_ID".            
-            " ORDER BY ".PRFX."giftcert.GIFTCERT_ID ".$direction.
-            $limitTheseRecords;
+            LEFT JOIN ".PRFX."invoice ON ".PRFX."giftcert.INVOICE_ID = ".PRFX."invoice.INVOICE_ID 
+            ".$whereTheseRecords.
+            " GROUP BY ".PRFX."giftcert.GIFTCERT_ID           
+            ORDER BY ".PRFX."giftcert.GIFTCERT_ID
+            ".$direction."
+            ".$limitTheseRecords;
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to return the matching Gift Certificate records."));

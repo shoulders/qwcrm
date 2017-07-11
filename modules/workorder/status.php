@@ -3,7 +3,7 @@
 defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'modules/workorder.php');
-require(INCLUDES_DIR.'modules/employee.php');
+require(INCLUDES_DIR.'modules/user.php');
 
 // Check that there is a workorder_id set
 if(empty($workorder_id)){
@@ -35,9 +35,9 @@ if(isset($VAR['delete'])) {
 }
 
 // Fetch the page with the current status from the database
-$smarty->assign('active_employees',                 get_active_employees($db)                                                   );
+$smarty->assign('active_employees',                 get_active_users($db)                                                   );
 $smarty->assign('workorder_status',                 get_workorder_details($db, $workorder_id, 'WORK_ORDER_STATUS')              );
 $smarty->assign('assigned_employee_id',             $assigned_employee_id                                                       );
-$smarty->assign('assigned_employee_details',       get_employee_details($db, $assigned_employee_id)                             );
+$smarty->assign('assigned_employee_details',       get_user_details($db, $assigned_employee_id)                             );
 
 $BuildPage .= $smarty->fetch('workorder/status.tpl');

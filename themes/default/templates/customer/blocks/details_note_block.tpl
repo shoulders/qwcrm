@@ -31,7 +31,7 @@
                                 <tr style="border: 1px black solid; background-color: #ededed;">
                                     <td><b>{t}Customer Note ID{/t}: {$customer_notes[n].CUSTOMER_NOTE_ID}</b></td>
                                     <td width="33%" align="right">
-                                        {if $login_account_type_id == 1}
+                                        {if $login_usergroup_id == 1}
                                             <a href="index.php?page=customer:note_edit&customer_note_id={$customer_notes[n].CUSTOMER_NOTE_ID}">
                                                 <img src="{$theme_images_dir}icons/16x16/small_edit.gif" onMouseOver="ddrivetip('{t}Edit the Note{/t}');" onMouseOut="hideddrivetip();">                                                 
                                             </a>

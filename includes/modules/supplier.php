@@ -83,11 +83,12 @@ function display_suppliers($db, $direction = 'DESC', $use_pages = false, $page_n
     /* The SQL code */
     
     $sql =  "SELECT * 
-            FROM ".PRFX."supplier".                                                   
-            $whereTheseRecords.            
-            $likeTheseRecords.
-            " GROUP BY ".PRFX."supplier.SUPPLIER_ID".
-            " ORDER BY ".PRFX."supplier.SUPPLIER_ID ".$direction;            
+            FROM ".PRFX."supplier                                                   
+            ".$whereTheseRecords."
+            ".$likeTheseRecords."
+            GROUP BY ".PRFX."supplier.SUPPLIER_ID
+            ORDER BY ".PRFX."supplier.SUPPLIER_ID
+            ".$direction;            
     
     /* Restrict by pages */
     
