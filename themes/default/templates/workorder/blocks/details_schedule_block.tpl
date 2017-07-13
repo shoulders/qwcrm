@@ -56,7 +56,7 @@
                                                             var m = M + 1;                                          // Correction for assignment issue above
                                                             var d = dateForLink.getDate();                          // integer, 1..31
                                                             // redirect...
-                                                            window.location = "index.php?page=schedule:day&schedule_start_year="+y+"&schedule_start_month="+m+"&schedule_start_day="+d+"&customer_id={$customer_id}&employee_id={$login_id}&workorder_id={$workorder_id}";
+                                                            window.location = "index.php?page=schedule:day&schedule_start_year="+y+"&schedule_start_month="+m+"&schedule_start_day="+d+"&customer_id={$customer_id}&employee_id={$login_user_id}&workorder_id={$workorder_id}";
                                                         }
                                         } );                                    
                                     </script>

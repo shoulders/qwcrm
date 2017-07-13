@@ -33,14 +33,14 @@ defined('_QWEXEC') or die;
 function insert_transaction($db, $invoice_id, $workorder_id, $customer_id, $type, $amount, $note) {
     
     $sql = "INSERT INTO ".PRFX."payment_transactions SET
-            DATE            = ".$db->qstr(time()                    ).",
-            TYPE            = ".$db->qstr( $type                    ).",
-            INVOICE_ID      = ".$db->qstr( $invoice_id              ).",
-            WORKORDER_ID    = ".$db->qstr( $workorder_id            ).",
-            CUSTOMER_ID     = ".$db->qstr( $customer_id             ).",
-            EMPLOYEE_ID     = ".$db->qstr( $_SESSION['login_id']    ).",
-            AMOUNT          = ".$db->qstr( $amount                  ).",
-            NOTE            = ".$db->qstr( $note                    );
+            DATE            = ".$db->qstr(time()                                ).",
+            TYPE            = ".$db->qstr( $type                                ).",
+            INVOICE_ID      = ".$db->qstr( $invoice_id                          ).",
+            WORKORDER_ID    = ".$db->qstr( $workorder_id                        ).",
+            CUSTOMER_ID     = ".$db->qstr( $customer_id                         ).",
+            EMPLOYEE_ID     = ".$db->qstr( QFactory::getUser()->login_user_id   ).",
+            AMOUNT          = ".$db->qstr( $amount                              ).",
+            NOTE            = ".$db->qstr( $note                                );
 
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to insert transaction into the database."));

@@ -28,11 +28,19 @@ defined('_QWEXEC') or die;
 #     Display Gift Certificates         #
 #########################################
 
-function display_giftcerts($db, $status, $direction = 'DESC', $use_pages = false, $page_no = 1, $records_per_page = 25, $employee_id = null, $customer_id = null, $invoice_id = null) {
+function display_giftcerts($db, $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $employee_id = null, $customer_id = null, $invoice_id = null, $status = null) {
 
     global $smarty;
     
-    /* Get invoices restricted by pages */
+    /* Filter the Records */
+        
+    // Default Action
+    $whereTheseRecords = "WHERE ".PRFX."user.user_id";    
+    
+    // Restrict results by search category and search term
+    if($search_term != null) {$whereTheseRecords .= " AND ".PRFX."user.$search_category LIKE '%$search_term%'";}    
+    
+    /* Restrict by pages */
     
     if($use_pages == true) {
         
@@ -105,16 +113,16 @@ function display_giftcerts($db, $status, $direction = 'DESC', $use_pages = false
     /* Get the records */
 
     $sql = "SELECT
-            ".PRFX."giftcert.           *,
+            ".PRFX."giftcert.     *,
             ".PRFX."user.         user_id, display_name,
             ".PRFX."customer.     CUSTOMER_ID,
             ".PRFX."invoice.      INVOICE_ID           
             FROM ".PRFX."giftcert
-            LEFT JOIN ".PRFX."employee ON ".PRFX."giftcert.EMPLOYEE_ID = ".PRFX."user.user_id
+            LEFT JOIN ".PRFX."user ON ".PRFX."giftcert.EMPLOYEE_ID = ".PRFX."user.user_id
             LEFT JOIN ".PRFX."customer ON ".PRFX."giftcert.CUSTOMER_ID = ".PRFX."customer.CUSTOMER_ID
             LEFT JOIN ".PRFX."invoice ON ".PRFX."giftcert.INVOICE_ID = ".PRFX."invoice.INVOICE_ID 
-            ".$whereTheseRecords.
-            " GROUP BY ".PRFX."giftcert.GIFTCERT_ID           
+            ".$whereTheseRecords."
+            GROUP BY ".PRFX."giftcert.GIFTCERT_ID           
             ORDER BY ".PRFX."giftcert.GIFTCERT_ID
             ".$direction."
             ".$limitTheseRecords;
@@ -139,17 +147,17 @@ function display_giftcerts($db, $status, $direction = 'DESC', $use_pages = false
 function insert_giftcert($db, $customer_id, $date_expires, $giftcert_code, $amount, $note) {
     
     $sql = "INSERT INTO ".PRFX."giftcert SET 
-            CUSTOMER_ID     =". $db->qstr( $customer_id             ).",               
-            INVOICE_ID      =". $db->qstr( 0                        ).",
-            EMPLOYEE_ID     =". $db->qstr( $_SESSION['login_id']    ).",
-            DATE_CREATED    =". $db->qstr( time()                   ).",
-            DATE_EXPIRES    =". $db->qstr( $date_expires            ).",
-            DATE_REDEEMED   =". $db->qstr( 0                        ).",
-            IS_REDEEMED     =". $db->qstr( 0                        ).",   
-            GIFTCERT_CODE   =". $db->qstr( $giftcert_code           ).",                
-            AMOUNT          =". $db->qstr( $amount                  ).",
-            ACTIVE          =". $db->qstr( 1                        ).",                
-            NOTE            =". $db->qstr( $note                    );
+            CUSTOMER_ID     =". $db->qstr( $customer_id                         ).",               
+            INVOICE_ID      =". $db->qstr( 0                                    ).",
+            EMPLOYEE_ID     =". $db->qstr( QFactory::getUser()->login_user_id   ).",
+            DATE_CREATED    =". $db->qstr( time()                               ).",
+            DATE_EXPIRES    =". $db->qstr( $date_expires                        ).",
+            DATE_REDEEMED   =". $db->qstr( 0                                    ).",
+            IS_REDEEMED     =". $db->qstr( 0                                    ).",   
+            GIFTCERT_CODE   =". $db->qstr( $giftcert_code                       ).",                
+            AMOUNT          =". $db->qstr( $amount                              ).",
+            ACTIVE          =". $db->qstr( 1                                    ).",                
+            NOTE            =". $db->qstr( $note                                );
 
     if(!$db->execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to insert the Gift Certificate into the database."));

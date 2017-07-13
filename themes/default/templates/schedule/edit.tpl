@@ -39,7 +39,7 @@
                                                                             {if $login_usergroup_id <= 3 }                                                                                
                                                                                 <select name="employee_id">
                                                                                     {section name=i loop=$active_employees}
-                                                                                        <option value="{$active_employees[i].EMPLOYEE_ID}" {if $employee_id == $active_employees[i].EMPLOYEE_ID} selected {/if}>{$active_employees[i].EMPLOYEE_DISPLAY_NAME}</option>
+                                                                                        <option value="{$active_employees[i].user_id}" {if $employee_id == $active_employees[i].user_id} selected {/if}>{$active_employees[i].display_name}</option>
                                                                                     {/section}
                                                                                 </select>                                                                                
                                                                             {else}

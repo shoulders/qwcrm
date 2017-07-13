@@ -4,7 +4,7 @@
         <td>
             <table width="700" cellpadding="4" cellspacing="0" border="0" >
                 <tr>
-                    <td class="menuhead2" width="80%">&nbsp;&nbsp;{t}Expense Search Page{/t}</td>
+                    <td class="menuhead2" width="80%">&nbsp;&nbsp;{t}Expense Search{/t}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
                         <a>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}EXPENSE_SEARCH_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}EXPENSE_SEARCH_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
@@ -53,8 +53,7 @@
                                                             </tr>
                                                         </table>
                                                     </div>
-                                                </form>
-                                                
+                                                </form>                                                
                                             </td>
 
                                             <!-- Navigation -->

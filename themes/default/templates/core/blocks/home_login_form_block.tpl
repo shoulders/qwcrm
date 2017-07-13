@@ -21,7 +21,7 @@
                                         <table width="25%" cellspacing="0" border="0" cellpadding="5" align="center">
                                             <tr>
                                                 <td>{t}Login{/t}</td>
-                                                <td><input name="login_usr" class="olotd5" size="25" alt="login" type="text" required onkeydown="return onlyUsername(event);"></td>
+                                                <td><input name="login_username" class="olotd5" size="25" alt="login" type="text" required onkeydown="return onlyUsername(event);"></td>
                                             </tr>
                                             <tr>
                                                 <td>{t}Password{/t}</td>

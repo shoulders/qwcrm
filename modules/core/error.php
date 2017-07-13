@@ -21,7 +21,7 @@ if($qwcrm_error_log == true){
     
     // Error page when logged in - these variables have just been set in the error.php controller
     if(isset($_SESSION['login_token']) && isset($error_type) && $module === 'core' && $page_tpl === 'error'){
-        write_record_to_error_log($login_usr, $error_page, $error_type, $error_location, $php_function, $database_error, $error_msg);
+        write_record_to_error_log($login_username, $error_page, $error_type, $error_location, $php_function, $database_error, $error_msg);
     }
     
     // Error page when NOT logged in - find out which ones are missing and perhaps do coding on them - most of these variables are not set

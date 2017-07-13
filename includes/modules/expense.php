@@ -29,7 +29,7 @@ defined('_QWEXEC') or die;
 #         Display expenses                          #
 #####################################################
 
-function display_expenses($db, $direction = 'DESC', $use_pages = false, $page_no = 1, $records_per_page = 25, $search_category, $search_term) {
+function display_expenses($db, $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null) {
     
     global $smarty;
     
@@ -102,8 +102,8 @@ function display_expenses($db, $direction = 'DESC', $use_pages = false, $page_no
     $sql =  "SELECT * 
             FROM ".PRFX."expense                                                   
             ".$whereTheseRecords."
-            ".$likeTheseRecords.
-            " GROUP BY ".PRFX."expense.EXPENSE_ID
+            ".$likeTheseRecords."
+            GROUP BY ".PRFX."expense.EXPENSE_ID
             ORDER BY ".PRFX."expense.EXPENSE_ID
             ".$direction;            
     

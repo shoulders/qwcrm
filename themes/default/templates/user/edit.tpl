@@ -9,7 +9,7 @@
                 <tr>
                     <td class="menuhead2" width="80%">&nbsp;{t}Edit User{/t}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">                        
-                        <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}USER_EDIT_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}USER_EDIT_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
+                        <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}USER_EDIT_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}USER_EDIT_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">                        
                     </td>
                 </tr>
                 <tr>
@@ -85,7 +85,7 @@
                                                                                         <td>                                                                                                
                                                                                             <select name="usergroup" class="olotd5">
                                                                                                 {section name=b loop=$usergroups}
-                                                                                                    <option value="{$user_details.usergroup}" {if $user_details.usergroup == $usergroups[b].usergroup_id} selected{/if}>{$usergroups[b].usergroup_display_name}</option>
+                                                                                                    <option value="{$user_details.usergroup_id}" {if $user_details.usergroup_id == $usergroups[b].usergroup_id} selected{/if}>{$usergroups[b].usergroup_display_name}</option>
                                                                                                 {/section}
                                                                                             </select>                                                                                            
                                                                                         </td>

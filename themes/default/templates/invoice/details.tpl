@@ -36,7 +36,7 @@
                                             <td>{$invoice_details.DATE|date_format:$date_format}</td>                                            
                                             <td>{$invoice_details.DUE_DATE|date_format:$date_format}</td>
                                             <td>{$currency_sym}{$invoice_details.TOTAL|string_format:"%.2f"}</td>
-                                            <td><a href="index.php?page=employee:details&employee_id={$invoice_details.EMPLOYEE_ID}">{$employee_display_name}</a></td>
+                                            <td><a href="index.php?page=user:details&user_id={$invoice_details.EMPLOYEE_ID}">{$employee_display_name}</a></td>
                                             <td><a href="index.php?page=workorder:details&workorder_id={$invoice_details.WORKORDER_ID}">{$invoice_details.WORKORDER_ID}</a></td>
                                             <td>{$invoice_details.PAID_DATE|date_format:$date_format}</td>
                                             <td>{$currency_sym}{$invoice_details.PAID_AMOUNT|string_format:"%.2f"}</td>

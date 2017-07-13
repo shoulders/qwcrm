@@ -44,7 +44,7 @@
                                                         <td valign="top">                                                    
                                                             <form method="POST" action="index.php?page=workorder:new" name="new_workorder" id="new_workorder">                                                    
                                                                 <input name="customer_id" value="{$customer_details.CUSTOMER_ID}" type="hidden">                                                    
-                                                                <input name="created_by" value="{$login_id}" type="hidden" >                                                    
+                                                                <input name="created_by" value="{$login_user_id}" type="hidden" >                                                    
                                                                 <table class="olotable" width="100%" border="0"  cellpadding="4" cellspacing="0" summary="Work order display">
                                                                     <tr>
                                                                         <td class="olohead">{t}Opened{/t}</td>
@@ -66,7 +66,7 @@
                                                                             </div>    
                                                                         </td>
                                                                         <td class="olotd4">{t}Created{/t}</td>
-                                                                        <td class="olotd4">{$login_usr}</td>
+                                                                        <td class="olotd4">{$login_username}</td>
                                                                     </tr>
                                                                 </table>
                                                                 <br>

@@ -31,7 +31,7 @@
                                                 <button type="button" onClick="window.location='index.php?page=schedule:edit&schedule_id={$schedule_details.SCHEDULE_ID}';">{t}Edit{/t}</button>
                                                 <a href="index.php?page=schedule:delete&schedule_id={$workorder_schedule[a].SCHEDULE_ID}" onclick="return confirmDelete('are you sure you want to delete the schedule item');"><button type="button">{t}Delete{/t}</button></a>                                                    
                                                 <button type="button" onClick="window.location='index.php?page=schedule:icalendar&schedule_id={$schedule_details.SCHEDULE_ID}&theme=print';">{t}Export{/t}</button>                                         
-                                                <button type="button" onClick="window.location='index.php?page=workorder:details&workorder_id={$schedule_details.WORKORDER_ID}';">{t}View Work Order{/t}</button>
+                                                <button type="button" onClick="window.location='index.php?page=workorder:details&workorder_id={$schedule_details.WORKORDER_ID}';">{t}Work Order Details{/t}</button>
                                             </td>
                                         </tr>
                                     </table>

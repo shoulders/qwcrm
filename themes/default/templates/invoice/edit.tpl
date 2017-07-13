@@ -308,7 +308,7 @@
                                                     </script>                                                   
                                                 </td>
                                                 <td>{$currency_sym}{$invoice_details.TOTAL|string_format:"%.2f"}</td>
-                                                <td><a href="index.php?page=employee:details&employee_id={$invoice_details.EMPLOYEE_ID}">{$employee_display_name}</a></td>
+                                                <td><a href="index.php?page=user:details&user_id={$invoice_details.EMPLOYEE_ID}">{$employee_display_name}</a></td>
                                                 <td><a href="index.php?page=workorder:details&workorder_id={$invoice_details.WORKORDER_ID}">{$invoice_details.WORKORDER_ID}</a></td>
                                                 <td><font color="#CC0000">{$currency_sym}{$invoice_details.BALANCE|string_format:"%.2f"}</font></td>
                                             </tr>

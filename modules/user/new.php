@@ -37,7 +37,7 @@ if(isset($VAR['submit'])) {
     $smarty->assign('user_details', array(array()));  
     
     // Fetch the page from the database
-    $smarty->assign('usergroups', get_usergroups($db));    
+    $smarty->assign('usergroups', get_usergroups($db, 'employees'));    
     $BuildPage .= $smarty->fetch('user/new.tpl');
     
 } 

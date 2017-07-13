@@ -25,10 +25,10 @@ defined('_QWEXEC') or die;
 /** Display Functions **/
 
 ###############################
-#     Display expenses        #
+#     Display Suppliers       #
 ###############################
 
-function display_suppliers($db, $direction = 'DESC', $use_pages = false, $page_no = 1, $records_per_page = 25, $search_category, $search_term) {
+function display_suppliers($db, $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null) {
     
     global $smarty;
     

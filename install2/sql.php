@@ -1279,7 +1279,7 @@ function create_acl($db) {
 (41, 'parts:main', 1, 1, 1, 1, 0),
 (42, 'parts:checkout', 1, 1, 1, 1, 0),
 (43, 'schedule:icalendar', 1, 1, 1, 1, 0),
-(44, 'schedule:view', 1, 1, 1, 1, 0),
+(44, 'schedule:details', 1, 1, 1, 1, 0),
 (45, 'schedule:print', 1, 1, 1, 1, 0),
 (46, 'schedule:edit ', 1, 1, 1, 1, 0),
 (47, 'schedule:delete', 1, 1, 1, 1, 0),

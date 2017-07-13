@@ -43,7 +43,7 @@
             <!-- Employee -->
             <td class="olotd4" nowrap>
                 <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<center><b>{t}Contact Info{/t}</b></center><hr><b>{t}Fax{/t}: </b>{$assigned_workorders[a].EMPLOYEE_WORK_PHONE}<br><b>{t}Mobile{/t}: </b>{$assigned_workorders[a].EMPLOYEE_MOBILE_PHONE}<br><b>{t}Home{/t}: </b>{$assigned_workorders[a].EMPLOYEE_HOME_PHONE}');" onMouseOut="hideddrivetip();">                                                  
-                <a class="link1" href="index.php?page=employee:details&employee_id={$assigned_workorders[a].EMPLOYEE_ID}">{$assigned_workorders[a].EMPLOYEE_DISPLAY_NAME}</a>
+                <a class="link1" href="index.php?page=user:details&user_id={$assigned_workorders[a].EMPLOYEE_ID}">{$assigned_workorders[a].EMPLOYEE_DISPLAY_NAME}</a>
             </td>
 
             <!-- Action -->

@@ -34,7 +34,7 @@
         <!-- Assigned To -->
         <td class="olotd4" align="center">
             <img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" onMouseOver="ddrivetip('<center><b>{t}Contact{/t}</b></center><hr><b>{t}Fax{/t}: </b>{$single_workorder.EMPLOYEE_WORK_PHONE}<br><b>{t}Mobile{/t}: </b>{$single_workorder.EMPLOYEE_MOBILE_PHONE}<br><b>{t}Home{/t}: </b>{$single_workorder.EMPLOYEE_HOME_PHONE}');" onMouseOut="hideddrivetip();">                
-           <a class="link1" href="index.php?page=employee:details&employee_id={$single_workorder.EMPLOYEE_ID}">{$single_workorder.EMPLOYEE_DISPLAY_NAME}</a>
+           <a class="link1" href="index.php?page=user:details&user_id={$single_workorder.EMPLOYEE_ID}">{$single_workorder.EMPLOYEE_DISPLAY_NAME}</a>
         </td>
         
         <!-- Last Change -->

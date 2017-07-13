@@ -116,7 +116,7 @@ class QFactory {
             $user = self::getUser();
 
             // Log activity       
-            write_record_to_activity_log(gettext("Login successful for").' '.$user->login_usr); 
+            write_record_to_activity_log(gettext("Login successful for").' '.$user->login_username); 
 
             // Reload with 'Login Successful' message
             //force_page('core', 'home', 'information_msg='.gettext("Login successful."));            
@@ -148,7 +148,7 @@ class QFactory {
         $auth->logout();
         
         // Log activity       
-        write_record_to_activity_log(gettext("Logout successful for").' '.$user->get('login_usr'));        
+        write_record_to_activity_log(gettext("Logout successful for").' '.$user->get('login_username'));        
                 
         // Reload with 'Logout Successful' message        
         //force_page('core', 'login', 'information_msg='.gettext("Logout successful"), 'get');

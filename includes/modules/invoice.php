@@ -28,39 +28,35 @@ defined('_QWEXEC') or die;
 #     Display Invoices                  # // Status = IS_PAID  0 = unpaid, 1 = paid
 #########################################
 
-function display_invoices($db, $status = 'all', $direction = 'DESC', $use_pages = false, $page_no = 1, $records_per_page = 25, $employee_id = null, $customer_id = null) {
+function display_invoices($db, $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $status = null, $employee_id = null, $customer_id = null) {
 
     global $smarty;
     
     /* Filter the Records */
     
-    // Status Restriction
-    if($status != 'all') {
-        // Restrict by status
-        $whereTheseRecords = " WHERE ".PRFX."invoice.IS_PAID=".$db->qstr($status);       
-    } else {            
-        // Do not restrict by status
-        $whereTheseRecords = " WHERE ".PRFX."invoice.INVOICE_ID = *";
-    } 
+    // Default Action
+    $whereTheseRecords = " WHERE ".PRFX."invoice.INVOICE_ID";
+    
+    // Restrict results by search category and search term
+    if($search_term != null) {$whereTheseRecords .= " AND ".PRFX."invoice.$search_category LIKE '%$search_term%'";} 
+    
+    // Restrict by Status
+    if($status != null) {$whereTheseRecords = " AND ".PRFX."invoice.IS_PAID=".$db->qstr($status);} 
 
     // Restrict by Employee
-    if($employee_id != null){
-        $whereTheseRecords .= " AND ".PRFX."employee.EMPLOYEE_ID=".$db->qstr($employee_id);
-    }        
+    if($employee_id != null) {$whereTheseRecords .= " AND ".PRFX."invoice.EMPLOYEE_ID=".$db->qstr($employee_id);}        
 
     // Restrict by Customer
-    if($customer_id != null){
-        $whereTheseRecords .= " AND ".PRFX."customer.CUSTOMER_ID=".$db->qstr($customer_id);
-    }
+    if($customer_id != null) {$whereTheseRecords .= " AND ".PRFX."invoice.CUSTOMER_ID=".$db->qstr($customer_id);}
     
     /* The SQL code */
     
     $sql = "SELECT
-        ".PRFX."employee.     *,
-        ".PRFX."customer.     CUSTOMER_DISPLAY_NAME, CUSTOMER_ADDRESS, CUSTOMER_CITY, CUSTOMER_STATE, CUSTOMER_ZIP, CUSTOMER_PHONE, CUSTOMER_WORK_PHONE, CUSTOMER_MOBILE_PHONE, CUSTOMER_EMAIL, CUSTOMER_TYPE, CUSTOMER_FIRST_NAME, CUSTOMER_LAST_NAME, CREATE_DATE, LAST_ACTIVE,
+        ".PRFX."user.         *,
+        ".PRFX."customer.     *,
         ".PRFX."invoice.      *
         FROM ".PRFX."invoice
-        LEFT JOIN ".PRFX."employee ON ".PRFX."invoice.EMPLOYEE_ID = ".PRFX."employee.EMPLOYEE_ID
+        LEFT JOIN ".PRFX."user ON ".PRFX."invoice.EMPLOYEE_ID = ".PRFX."user.user_id
         LEFT JOIN ".PRFX."customer ON ".PRFX."invoice.CUSTOMER_ID = ".PRFX."customer.CUSTOMER_ID
         ".$whereTheseRecords."
         GROUP BY ".PRFX."invoice.INVOICE_ID           
@@ -151,13 +147,13 @@ function display_invoices($db, $status = 'all', $direction = 'DESC', $use_pages 
 function insert_invoice($db, $customer_id, $workorder_id, $discount_rate, $tax_rate) {
     
     $sql = "INSERT INTO ".PRFX."invoice SET            
-            CUSTOMER_ID     =". $db->qstr( $customer_id             ).",
-            WORKORDER_ID    =". $db->qstr( $workorder_id            ).",
-            EMPLOYEE_ID     =". $db->qstr( $_SESSION['login_id']    ).",
-            DATE            =". $db->qstr( time()                   ).",
-            DUE_DATE        =". $db->qstr( time()                   ).",            
-            DISCOUNT_RATE   =". $db->qstr( $discount_rate           ).",            
-            TAX_RATE        =". $db->qstr( $tax_rate                );            
+            CUSTOMER_ID     =". $db->qstr( $customer_id                         ).",
+            WORKORDER_ID    =". $db->qstr( $workorder_id                        ).",
+            EMPLOYEE_ID     =". $db->qstr( QFactory::getUser()->login_user_id   ).",
+            DATE            =". $db->qstr( time()                               ).",
+            DUE_DATE        =". $db->qstr( time()                               ).",            
+            DISCOUNT_RATE   =". $db->qstr( $discount_rate                       ).",            
+            TAX_RATE        =". $db->qstr( $tax_rate                            );            
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to insert the invoice record into the database."));

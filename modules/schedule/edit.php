@@ -16,7 +16,7 @@ if(isset($VAR['submit'])) {
         $smarty->assign('schedule_end_date',        $VAR['schedule_end_date']                                                               );        
         $smarty->assign('schedule_end_time',        $VAR['scheduleEndTime']['Time_Hour'].":".$VAR['scheduleEndTime']['Time_Minute']         );
         $smarty->assign('schedule_notes',           $VAR['schedule_notes']                                                                  );        
-        $smarty->assign('active_employees',         get_active_users($db)                                                               );                      
+        $smarty->assign('active_employees',         get_active_users($db, 'employees')                                                                   );                      
             
     } else {       
         
@@ -48,7 +48,7 @@ if(isset($VAR['submit'])) {
     $smarty->assign('schedule_id',              $schedule_item['SCHEDULE_ID']                          );
     $smarty->assign('customer_id',              $schedule_item['CUSTOMER_ID']                          );
     $smarty->assign('employee_id',              $schedule_item['EMPLOYEE_ID']                          );
-    $smarty->assign('active_employees',         get_active_users($db)                              );
+    $smarty->assign('active_employees',         get_active_users($db, 'employees')                     );
     $smarty->assign('workorder_id',             $schedule_item['WORKORDER_ID']                         ); 
     
 }

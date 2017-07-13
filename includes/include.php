@@ -752,7 +752,7 @@ function write_record_to_activity_log($record){
     if($GConfig->qwcrm_activity_log != true){return;}
     
     // Build log entry - perhaps use the apache time stamp below
-    $log_entry = $_SERVER['REMOTE_ADDR'] . ',' . $_SESSION['login_usr'] . ',' . date("[d/M/Y:H:i:s O]", time()) . ',' . $record . "\n";
+    $log_entry = $_SERVER['REMOTE_ADDR'] . ',' . $_SESSION['login_username'] . ',' . date("[d/M/Y:H:i:s O]", time()) . ',' . $record . "\n";
     
     // Write log entry to access log    
     if(!$fp = fopen(ACTIVITY_LOG,'a')) {        
@@ -775,7 +775,7 @@ function write_record_to_activity_log($record){
  * This will create an apache compatible access.log (Combined Log Format)
  */
 
-function write_record_to_access_log($login_usr = Null){    
+function write_record_to_access_log($login_username = Null){    
     
     // Apache log format
     // https://httpd.apache.org/docs/2.4/logs.html
@@ -787,10 +787,10 @@ function write_record_to_access_log($login_usr = Null){
     $logname        = '-';                                                  //  This is the RFC 1413 identity of the client determined by identd on the clients machine. This information is highly unreliable and should almost never be used except on tightly controlled internal networks.
     
     // Login User - substituting qwcrm user for the traditional apache HTTP Authentication
-    if($login_usr == ''){
+    if($login_username == ''){
         $user = '-';
     } else {
-        $user = $login_usr;  
+        $user = $login_username;  
     }  
     
     $time           = date("[d/M/Y:H:i:s O]", $_SERVER['REQUEST_TIME']);    // Time in apache log format
@@ -836,15 +836,15 @@ function write_record_to_access_log($login_usr = Null){
 #  Write a record to the error.log file    #
 ############################################
 
-function write_record_to_error_log($login_usr, $error_page, $error_type, $error_location, $php_function, $database_error, $error_msg){
+function write_record_to_error_log($login_username, $error_page, $error_type, $error_location, $php_function, $database_error, $error_msg){
     
     // If no logged in user
-    if($login_usr == '') {
-        $login_usr = '-';        
+    if($login_username == '') {
+        $login_username = '-';        
     }   
 
     // Build log entry - perhaps use the apache time stamp below
-    $log_entry = $_SERVER['REMOTE_ADDR'].','.$login_usr.','.date("[d/M/Y:H:i:s O]", $_SERVER['REQUEST_TIME']).','.$error_page.','.$error_type.','.$error_location.','.$php_function.','.$database_error.','.$error_msg."\n";
+    $log_entry = $_SERVER['REMOTE_ADDR'].','.$login_username.','.date("[d/M/Y:H:i:s O]", $_SERVER['REQUEST_TIME']).','.$error_page.','.$error_type.','.$error_location.','.$php_function.','.$database_error.','.$error_msg."\n";
 
     // Write log entry to error.log    
     if(!$fp = fopen(ERROR_LOG,'a')) {        

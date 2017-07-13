@@ -21,7 +21,7 @@ if(isset($VAR['submit'])) {
         $user_details[] = $VAR;
         
         // Reload the page with the POST'ed data
-        $smarty->assign('usergroups', get_usergroups($db));
+        $smarty->assign('usergroups', get_usergroups($db, 'employees'));
         $smarty->assign('user_details', $user_details); 
         
         $BuildPage .= $smarty->fetch('user/new.tpl');        
@@ -41,7 +41,7 @@ if(isset($VAR['submit'])) {
 } else { 
     
     // Fetch the page from the database   
-    $smarty->assign('usergroups', get_usergroups($db));
+    $smarty->assign('usergroups', get_usergroups($db, 'employees'));
     $smarty->assign('user_details', get_user_details($db, $user_id));
     
     $BuildPage .= $smarty->fetch('user/edit.tpl');

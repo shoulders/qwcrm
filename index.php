@@ -191,7 +191,7 @@ $app = new QFactory;
 ################################################
 
 // Get variables in correct format for login()
-if(isset($_POST['login_usr'])) { $credentials['username'] = $_POST['login_usr']; }
+if(isset($_POST['login_username'])) { $credentials['username'] = $_POST['login_username']; }
 if(isset($_POST['login_pwd'])) { $credentials['password'] = $_POST['login_pwd']; }
 if($GConfig->remember_me && isset($_POST['remember'])) { $options['remember'] = $_POST['remember']; }    
 
@@ -232,10 +232,12 @@ if (isset($_GET['action']) && $_GET['action'] == 'logout') {
 $user = QFactory::getUser();
 
 // Set user PHP variables
-$login_id               = $user->login_id;
-$login_usr              = $user->login_usr;
+$login_user_id          = $user->login_user_id;         // QFactory::getUser()->login_user_id; - this also works exactly the same
+$login_username         = $user->login_username;
 $login_display_name     = $user->login_display_name;
-$login_token            = $user->login_token; 
+$login_token            = $user->login_token;
+$login_is_employee      = $user->login_is_employee;
+$login_customer_id      = $user->login_customer_id;     // is only set when there is a customer_id in the user account
 
 // If there is no account type details, set to Public (This can cause looping if not present)
 if(!isset($user->login_usergroup_id)){
@@ -248,10 +250,12 @@ if(!isset($user->login_usergroup_id)){
 unset($user);
 
 // Assign user varibles to smarty
-$smarty->assign('login_id',                 $login_id               );
-$smarty->assign('login_usr',                $login_usr              );
+$smarty->assign('login_user_id',            $login_user_id          );
+$smarty->assign('login_username',           $login_username         );
 $smarty->assign('login_usergroup_id',       $login_usergroup_id     );
 $smarty->assign('login_display_name',       $login_display_name     );
+$smarty->assign('login_is_employee',        $login_is_employee      );
+$smarty->assign('login_customer_id',        $login_customer_id      );
 
 ################################
 #   Set Global PHP Values      #
@@ -276,6 +280,12 @@ $invoice_id         = $VAR['invoice_id'];
 $schedule_id        = $VAR['schedule_id'];
 $giftcert_id        = $VAR['giftcert_id'];
 
+$user_id            = $VAR['user_id'];      // this is the same as $login_user_id ?
+
+// Make sure an employee_id is always set - if no user is set use the logged in user
+//if(isset($VAR['employee_id'])) {$employee_id = $VAR['employee_id'];} else {$employee_id = QFactory::getUser()->login_user_id;}  // this might not be required
+$employee_id        = $VAR['employee_id'];
+
 // If no schedule year set, use today's year
 if(isset($VAR['schedule_start_year'])) {$schedule_start_year = $VAR['schedule_start_year'];} else {$schedule_start_year = date('Y');}
 
@@ -284,10 +294,6 @@ if(isset($VAR['schedule_start_month'])) {$schedule_start_month = $VAR['schedule_
 
 // If no schedule day set, use today's day
 if(isset($VAR['schedule_start_day'])) {$schedule_start_day = $VAR['schedule_start_day'];} else {$schedule_start_day = date('d');}
-
-// Make sure an user_id is always set - if no user is set use the logged in user
-//if(isset($VAR['employee_id'])) {$employee_id = $VAR['employee_id'];} else {$employee_id = $_SESSION['login_id'];}  // this might not be required
-$user_id            = $VAR['user_id'];
 
 // Get the page number if it exists or set to page number to 1 if not
 if(isset($VAR['page_no'])) {$page_no = $VAR['page_no'];} else {$page_no = 1;}
@@ -319,6 +325,7 @@ $smarty->assign('theme_js_dir_finc',        THEME_JS_DIR_FINC           );
 // These are used globally but mainly for the menu !!
 $smarty->assign('workorder_id',             $workorder_id               );
 $smarty->assign('customer_id',              $customer_id                );
+$smarty->assign('employee_id',              $employee_id                );
 $smarty->assign('expense_id',               $expense_id                 );
 $smarty->assign('giftcert_id',              $giftcert_id                );
 $smarty->assign('invoice_id',               $invoice_id                 );
@@ -328,8 +335,8 @@ $smarty->assign('schedule_id',              $schedule_id                );
 $smarty->assign('schedule_start_year',      $schedule_start_year        );
 $smarty->assign('schedule_start_month',     $schedule_start_month       );
 $smarty->assign('schedule_start_day',       $schedule_start_day         );
-$smarty->assign('user_id',                  $user_id                    );
 
+$smarty->assign('user_id',                  $user_id                    );
 
 // Used throughout the site
 $smarty->assign('currency_sym', get_company_details($db,    'CURRENCY_SYMBOL')  );
@@ -459,7 +466,7 @@ if(check_acl($db, $login_usergroup_id, $module, $page_tpl)){
     }    
 
     // Fetch the Debug Block
-    if($qwcrm_debug == true){
+    if($GConfig->qwcrm_debug == true){
         require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_debug_block.php');        
         $BuildPage .= "\r\n</body>\r\n</html>";
     } else {
@@ -481,7 +488,7 @@ if($GConfig->qwcrm_tracker == true){
 
 // This logs access details to the access log
 if($GConfig->qwcrm_access_log == true){
-    write_record_to_access_log($login_usr);
+    write_record_to_access_log($login_username);
 }
 
 ################################################

@@ -84,7 +84,7 @@ function insert_schedule($db, $schedule_start_date, $scheduleStartTime, $schedul
         $schedule_id = $db->Insert_ID();
         
         // Assign the workorder to the scheduled employee        
-        assign_workorder_to_employee($db, $workorder_id, $_SESSION['login_id'], get_workorder_details($db, $workorder_id, 'WORK_ORDER_ASSIGN_TO'), $employee_id);
+        assign_workorder_to_employee($db, $workorder_id, QFactory::getUser()->login_user_id, get_workorder_details($db, $workorder_id, 'WORK_ORDER_ASSIGN_TO'), $employee_id);
     
         // Change the Workorders Status
         update_workorder_status($db, $workorder_id, 2); 
@@ -169,8 +169,9 @@ function get_schedule_ids_for_employee_on_date($db, $employee_id, $schedule_star
     $sql = "SELECT SCHEDULE_ID
             FROM ".PRFX."schedule       
             WHERE SCHEDULE_START >= ".$company_day_start." AND SCHEDULE_START <= ".$company_day_end."
-            AND EMPLOYEE_ID ='".$employee_id.
-            "' ORDER BY SCHEDULE_START ASC";
+            AND EMPLOYEE_ID =".$db->qstr($employee_id)."
+            ORDER BY SCHEDULE_START
+            ASC";
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get all schedule IDs belonging to an employee."));
@@ -377,22 +378,22 @@ function build_ics_description($type, $single_schedule, $customer, $workorder) {
     if($type == 'textarea') {      
 
         // Workorder and Schedule Information
-        $description =  'Scope: \n\n'.
+        $description =  gettext("Scope").': \n\n'.
                         $workorder['WORK_ORDER_SCOPE'].'\n\n'.
-                        'Description: \n\n'.
+                        gettext("Description").': \n\n'.
                         html_to_textarea($workorder['WORK_ORDER_DESCRIPTION']).'\n\n'.
-                        'Schedule Notes: \n\n'.
+                        gettext("Schedule Notes").': \n\n'.
                         html_to_textarea($single_schedule['SCHEDULE_NOTES']);
 
         // Contact Information
-        $description .= 'Contact Information'.'\n\n'.
-                        'Company: ' .$customer['CUSTOMER_DISPLAY_NAME'].'\n\n'.
-                        'Contact: ' .$customer['CUSTOMER_FIRST_NAME'].' '.$customer['CUSTOMER_LAST_NAME'].'\n\n'.
-                        'Phone: '   .$customer['CUSTOMER_PHONE'].'\n\n'.
-                        'Mobile: '  .$customer['CUSTOMER_MOBILE_PHONE'].'\n\n'.
-                        'Email: '   .$customer['CUSTOMER_EMAIL'].'\n\n'.
-                        'Website: ' .$customer['CUSTOMER_WWW'].'\n\n'.
-                        'Address: ' .build_single_line_address($customer['CUSTOMER_ADDRESS'], $customer['CUSTOMER_CITY'], $customer['CUSTOMER_STATE'], $customer['CUSTOMER_ZIP']).'\n\n';                        
+        $description .= gettext("Contact Information").''.'\n\n'.
+                        gettext("Company")  .': '   .$customer['CUSTOMER_DISPLAY_NAME'].'\n\n'.
+                        gettext("Contact")  .': '   .$customer['CUSTOMER_FIRST_NAME'].' '.$customer['CUSTOMER_LAST_NAME'].'\n\n'.
+                        gettext("Phone")    .': '   .$customer['CUSTOMER_PHONE'].'\n\n'.
+                        gettext("Mobile")   .': '   .$customer['CUSTOMER_MOBILE_PHONE'].'\n\n'.
+                        gettext("Email")    .': '   .$customer['CUSTOMER_EMAIL'].'\n\n'.
+                        gettext("Website")  .': '   .$customer['CUSTOMER_WWW'].'\n\n'.
+                        gettext("Address")  .': '   .build_single_line_address($customer['CUSTOMER_ADDRESS'], $customer['CUSTOMER_CITY'], $customer['CUSTOMER_STATE'], $customer['CUSTOMER_ZIP']).'\n\n';                        
     
     }
     
@@ -408,24 +409,24 @@ function build_ics_description($type, $single_schedule, $customer, $workorder) {
                         '<BODY>\n';
     
         // Workorder and Schedule Information
-        $description .= '<p><strong>Scope: </strong></p>'.
+        $description .= '<p><strong>'.gettext("Scope").': </strong></p>'.
                         '<p>'.$workorder['WORK_ORDER_SCOPE'].'</p>'.
-                        '<p><strong>Description: </strong></p>'.
+                        '<p><strong>'.gettext("Description").': </strong></p>'.
                         '<div>'.$workorder['WORK_ORDER_DESCRIPTION'].'</div>'.
-                        '<p><strong>Schedule Notes: </strong></p>'.
+                        '<p><strong>'.gettext("Schedule Notes").': </strong></p>'.
                         '<div>'.$single_schedule['SCHEDULE_NOTES'].'</div>';        
 
         // Contact Information
-        $description .= '<p><strong>Contact Information:</strong></p>'.
+        $description .= '<p><strong>'.gettext("Contact Information").'</strong></p>'.
                         '<p>'.
-                        '<strong>Company:</strong> ' .$customer['CUSTOMER_DISPLAY_NAME'].'<br>'.
-                        '<strong>Contact:</strong> ' .$customer['CUSTOMER_FIRST_NAME'].' '.$customer['CUSTOMER_LAST_NAME'].'<br>'.              
-                        '<strong>Phone:</strong> '   .$customer['CUSTOMER_PHONE'].'<br>'.
-                        '<strong>Mobile:</strong> '  .$customer['CUSTOMER_MOBILE_PHONE'].'<br>'.
-                        '<strong>Email:</strong> '   .$customer['CUSTOMER_EMAIL'].'<br>'.
-                        '<strong>Website:</strong> ' .$customer['CUSTOMER_WWW'].
+                        '<strong>'.gettext("Company")   .':</strong> '  .$customer['CUSTOMER_DISPLAY_NAME'].'<br>'.
+                        '<strong>'.gettext("Contact")   .':</strong> '  .$customer['CUSTOMER_FIRST_NAME'].' '.$customer['CUSTOMER_LAST_NAME'].'<br>'.              
+                        '<strong>'.gettext("Phone")     .':</strong> '  .$customer['CUSTOMER_PHONE'].'<br>'.
+                        '<strong>'.gettext("Mobile")    .':</strong> '  .$customer['CUSTOMER_MOBILE_PHONE'].'<br>'.
+                        '<strong>'.gettext("Email")     .':</strong> '  .$customer['CUSTOMER_EMAIL'].'<br>'.
+                        '<strong>'.gettext("Website")   .':</strong> '  .$customer['CUSTOMER_WWW'].
                         '</p>'.                
-                        '<p><strong>Address: </strong></p>'.
+                        '<p><strong>'.gettext("Contact Information").'Address: </strong></p>'.
                         build_html_adddress($customer['CUSTOMER_ADDRESS'], $customer['CUSTOMER_CITY'], $customer['CUSTOMER_STATE'], $customer['CUSTOMER_ZIP']);
         
         // Close HTML Wrapper
@@ -566,7 +567,7 @@ function build_calendar_matrix($db, $schedule_start_year, $schedule_start_month,
     $company_day_end   = datetime_to_timestamp($current_schedule_date, get_company_details($db, 'CLOSING_HOUR'), 59, 0, $clock = '24');*/
       
     // Look in the database for a scheduled events for the current schedule day (within business hours)
-    $sql = "SELECT 
+    $sql ="SELECT 
         ".PRFX."schedule.*,
         ".PRFX."customer.CUSTOMER_DISPLAY_NAME
         FROM ".PRFX."schedule
@@ -574,8 +575,11 @@ function build_calendar_matrix($db, $schedule_start_year, $schedule_start_month,
         ON ".PRFX."schedule.WORKORDER_ID = ".PRFX."workorder.WORK_ORDER_ID
         INNER JOIN ".PRFX."customer
         ON ".PRFX."workorder.CUSTOMER_ID = ".PRFX."customer.CUSTOMER_ID
-        WHERE ".PRFX."schedule.SCHEDULE_START >= ".$company_day_start." AND ".PRFX."schedule.SCHEDULE_START <= ".$company_day_end."
-        AND ".PRFX."schedule.EMPLOYEE_ID ='".$employee_id."' ORDER BY ".PRFX."schedule.SCHEDULE_START ASC";
+        WHERE ".PRFX."schedule.SCHEDULE_START >= ".$company_day_start."
+        AND ".PRFX."schedule.SCHEDULE_START <= ".$company_day_end."
+        AND ".PRFX."schedule.EMPLOYEE_ID =".$db->qstr($employee_id)."
+        ORDER BY ".PRFX."schedule.SCHEDULE_START
+        ASC";
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to return the selected schedules."));
@@ -647,21 +651,21 @@ function build_calendar_matrix($db, $schedule_start_year, $schedule_start_month,
                 $calendar .= "<td class=\"menutd2\" align=\"center\" >\n";
 
                 // Schedule Item Title
-                $calendar .= "<b><font color=\"red\">Work Order ".$scheduleObject[$i]['WORKORDER_ID']." for ". $scheduleObject[$i]['CUSTOMER_NAME']."</font></b><br>\n";
+                $calendar .= "<b><font color=\"red\">".gettext("Work Order")." ".$scheduleObject[$i]['WORKORDER_ID']." ".gettext("for")." ". $scheduleObject[$i]['CUSTOMER_NAME']."</font></b><br>\n";
 
                 // Time period of schedule
                 $calendar .= "<b><font color=\"red\">".date("H:i",$scheduleObject[$i]['SCHEDULE_START'])." - ".date("H:i",$scheduleObject[$i]['SCHEDULE_END'])."</font></b><br>\n";
 
                 // Schedule Notes
-                $calendar .= "<div style=\"color: blue; font-weight: bold;\">NOTES:  ".$scheduleObject[$i]['SCHEDULE_NOTES']."</div><br>\n";
+                $calendar .= "<div style=\"color: blue; font-weight: bold;\">".gettext("Notes").":  ".$scheduleObject[$i]['SCHEDULE_NOTES']."</div><br>\n";
 
                 // Links for schedule
-                $calendar .= "<b><a href=\"index.php?page=workorder:details&workorder_id=".$scheduleObject[$i]['WORKORDER_ID']."\">View Work Order</a> - </b>";
-                $calendar .= "<b><a href=\"index.php?page=schedule:view&schedule_id=".$scheduleObject[$i]['SCHEDULE_ID']."\">View Schedule Item</a></b>";
+                $calendar .= "<b><a href=\"index.php?page=workorder:details&workorder_id=".$scheduleObject[$i]['WORKORDER_ID']."\">".gettext("Work Order")."</a> - </b>";
+                $calendar .= "<b><a href=\"index.php?page=schedule:details&schedule_id=".$scheduleObject[$i]['SCHEDULE_ID']."\">".gettext("Details")."</a></b>";
                 if(check_workorder_is_open($db, $scheduleObject[$i]['WORKORDER_ID'])) {                    
-                    $calendar .= " - <b><a href=\"index.php?page=schedule:edit&schedule_id=".$scheduleObject[$i]['SCHEDULE_ID']."\">Edit Schedule Item</a></b> - ".
-                                    "<b><a href=\"index.php?page=schedule:icalendar&schedule_id=".$scheduleObject[$i]['SCHEDULE_ID']."&theme=print\">iCalendar</a></b> - ".
-                                    "<b><a href=\"index.php?page=schedule:delete&schedule_id=".$scheduleObject[$i]['SCHEDULE_ID']."\" onclick=\"return confirmDelete('are you sure');\">Delete</a></b>\n";                                    
+                    $calendar .= " - <b><a href=\"index.php?page=schedule:edit&schedule_id=".$scheduleObject[$i]['SCHEDULE_ID']."\">".gettext("Edit")."</a></b> - ".
+                                    "<b><a href=\"index.php?page=schedule:icalendar&schedule_id=".$scheduleObject[$i]['SCHEDULE_ID']."&theme=print\">".gettext("iCalendar")."</a></b> - ".
+                                    "<b><a href=\"index.php?page=schedule:delete&schedule_id=".$scheduleObject[$i]['SCHEDULE_ID']."\" onclick=\"return confirmDelete('".gettext("Are you sure you want to delete this schedule?")."');\">".gettext("Delete")."</a></b>\n";                                    
                 }
 
                 // Close CELL

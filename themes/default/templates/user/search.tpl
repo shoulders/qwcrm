@@ -17,22 +17,25 @@
                                     <table class="menutable" width="100%" border="0" cellpadding="5" cellspacing="0">
                                         <tr>
                                             
-                                            <!-- Search Box -->
-                                            <td>                                                
-                                                <form method="post" action="index.php?page=user:search">                                                
-                                                    <table border="0">
-                                                        <tr>
-                                                            <td align="right" valign="top"><b>{t}Display Name{/t}</b></td>
-                                                            <td valign="top" align="left"><input name="search_term" value="{$search_term}" class="olotd4" size="20" type="text" maxlength="20" required onkeydown="return onlyAlphaNumeric(event);"></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td align="right" valign="top"></td>
-                                                            <td valign="top" align="left">
-                                                                <input class="olotd4" name="submit" value="submit" type="submit" />
-                                                                <input class="olotd4" type="button" value="{t}Reset{/t}" onclick="window.location.href='index.php?page=user:search';">
-                                                            </td>
-                                                        </tr>
-                                                    </table>
+                                            <!-- Category Search -->
+                                            <td valign="top">                                                
+                                                <form action="index.php?page=user:search" method="post" name="user_search" id="user_search">
+                                                    <div>
+                                                        <table border="0">
+                                                            <tr>
+                                                                <td align="right" valign="top">
+                                                                    <b>{t}Display Name{/t}</b>
+                                                                    <input name="search_term" value="{$search_term}" class="olotd4" size="20" type="text" maxlength="20" required onkeydown="return onlyAlphaNumeric(event);">                                                            
+                                                                    <input name="search_category" value="{$search_category}" type="hidden" />
+                                                                    <input name="submit" class="olotd4" value="{t}Search{/t}" type="submit" />
+                                                                    <input type="button" class="olotd4" value="{t}Reset{/t}" onclick="window.location.href='index.php?page=user:search';">
+                                                                </td>
+                                                            </tr>
+                                                            <tr>                                                                
+                                                                <td><font color="red">{t}NO special characters like !@#$%^*(){/t}</font></td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
                                                 </form>
                                             </td>
                                             
@@ -94,7 +97,7 @@
                                                         <td class="olohead">{t}First Name{/t}</td>
                                                         <td class="olohead">{t}Last Name{/t}</td>
                                                         <td class="olohead">{t}Work Phone{/t}</td>
-                                                        <td class="olohead">{t}Type{/t}</td>
+                                                        <td class="olohead">{t}Usergroup{/t}</td>
                                                         <td class="olohead">{t}Email{/t}</td>
                                                         <td class="olohead">{t}Action{/t}</td>
                                                     </tr>
@@ -111,7 +114,11 @@
                                                                 <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<b>{t}Home{/t} </b>{$search_result[i].home_phone}<br><b>{t}Mobile{/t} </b>{$search_result[i].work_mobile_phone}');" onMouseOut="hideddrivetip();">
                                                                 {$search_result[i].work_phone}
                                                             </td>
-                                                            <td class="olotd4">{$search_result[i].usergroup}</td>
+                                                            <td class="olotd4">
+                                                                {section name=b loop=$usergroups}
+                                                                    {if $search_result[i].usergroup == $usergroups[b].usergroup_id}{$usergroups[b].usergroup_display_name}{/if}
+                                                                {/section}   
+                                                            </td>
                                                             <td class="olotd4"><a href="mailto: {$search_result[i].email}"><font class="blueLink">{$search_result[i].email}</font></a></td>
                                                             <td class="olotd4"><a href="index.php?page=user:details&user_id={$search_result[i].user_id}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif"  border="0" onMouseOver="ddrivetip('{t}View Users Details{/t}');" onMouseOut="hideddrivetip();"></a>&nbsp;<a href="index.php?page=user:edit&user_id={$search_result[i].user_id}"><img src="{$theme_images_dir}icons/16x16/small_edit_employee.gif" border="0" onMouseOver="ddrivetip('{t}Edit{/t}');" onMouseOut="hideddrivetip();"></a></td>                                                        
                                                         </tr>

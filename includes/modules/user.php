@@ -25,34 +25,47 @@ defined('_QWEXEC') or die;
 /** Display Functions **/
 
 #####################################
-#    display Search                 #
+#    Display Users                  #
 #####################################
 
-function display_users($db, $status = 'all', $direction = 'DESC', $use_pages = false, $page_no = 1, $records_per_page = 25, $search_type = null, $search_term = null) {
+function display_users($db, $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $status = null, $user_type = null, $usergroup = null) {
+    
+    // should status and usergroup be at the end of the variables supplied?
+    
     
     global $smarty;
 
     /* Filter the Records */
-    
-    // Perform Standard Search
-    if($search_type != null) {
         
-        // Restrict by status
-        $whereTheseRecords = " WHERE ".PRFX."user.display_name LIKE '%$search_term%'";        
+    // Default Action
+    $whereTheseRecords = "WHERE ".PRFX."user.user_id";    
     
-    // Display Records with filters    
-    } else {
-
-        // Status Restriction
-        if($status != 'all') {
-            // Restrict by status
-            $whereTheseRecords = " WHERE ".PRFX."user.status=".$db->qstr($status);        
-        } else {            
-            // Do not restrict by status
-            $whereTheseRecords = " WHERE ".PRFX."user.user_id = *";
+    // Restrict results by search category and search term
+    if($search_term != null) {$whereTheseRecords .= " AND ".PRFX."user.$search_category LIKE '%$search_term%'";}    
+        
+    // Restrict by Status
+    if($status != null) {$whereTheseRecords .= " AND ".PRFX."user.status=".$db->qstr($status);}  
+    
+    // Restrict results by user type
+    if($user_type != null) {
+        
+        if($user_type == 'customers') { 
+            $whereTheseRecords .= " AND ".PRFX."user.usergroup =".$db->qstr('7');}            
+        
+        if($user_type == 'employees') {
+            
+            $whereTheseRecords .= " AND ".PRFX."user.usergroup =".$db->qstr('1');
+            $whereTheseRecords .= " AND ".PRFX."user.usergroup =".$db->qstr('2');
+            $whereTheseRecords .= " AND ".PRFX."user.usergroup =".$db->qstr('3');
+            $whereTheseRecords .= " AND ".PRFX."user.usergroup =".$db->qstr('4');
+            $whereTheseRecords .= " AND ".PRFX."user.usergroup =".$db->qstr('5');
+            $whereTheseRecords .= " AND ".PRFX."user.usergroup =".$db->qstr('6');
+            
         }
-    
     }
+         
+    // Restrict results by usergroup
+    if($usergroup != null) {$whereTheseRecords .= " AND ".PRFX."user.usergroup =".$db->qstr($usergroup);}
     
     /* The SQL code */    
     
@@ -223,9 +236,9 @@ function get_user_display_name_by_id($db, $user_id) {
     $sql = "SELECT 
             ".PRFX."user.*,
             ".PRFX."user_usergroups.usergroup_display_name
-            FROM ".PRFX."employee
+            FROM ".PRFX."user
             LEFT JOIN ".PRFX."user_usergroups ON (".PRFX."user.usergroup = ".PRFX."user_usergroups.usergroup_id)
-            WHERE EMPLOYEE_ID=". $db->qstr($user_id);
+            WHERE user_id=". $db->qstr($user_id);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the User Display Name by ID."));
@@ -245,7 +258,7 @@ function get_user_display_name_by_id($db, $user_id) {
 /* 
  * Not used in core anywhere
  * it was used for getting user specific stats in theme_header_block.php
- * $login_id / $login_usr is not set via the auth session
+ * $login_user_id / $login_username is not set via the auth session
  * i will leave this here just for now
  * no longer needed as I stored the id in the session
  * 
@@ -266,7 +279,7 @@ function get_user_id_by_username($db, $username){
 }
 
 #########################################
-# Get user record by username       #  // does not seem to be used anywhere
+# Get user record by username           #  // does not seem to be used anywhere
 #########################################
 
 function get_user_record_by_username($db, $username){
@@ -287,9 +300,14 @@ function get_user_record_by_username($db, $username){
 # Get the usergroups             #
 ##################################
 
-function get_usergroups($db) {
+function get_usergroups($db, $user_type = null) {
     
     $sql = "SELECT * FROM ".PRFX."user_usergroups";
+    
+    // Filter the results by user type customer/employee
+    if($user_type === 'employees') {$sql .= " WHERE user_type='1'";}
+    if($user_type === 'customers') {$sql .= " WHERE user_type='2'";}    
+    if($user_type === 'other')     {$sql .= " WHERE user_type='3'";}
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the usergroups."));
@@ -306,10 +324,15 @@ function get_usergroups($db) {
 # Get all active employees display name and ID   #
 ##################################################
     
-function get_active_users($db) {
-        
+function get_active_users($db, $user_type = null) {
+    
+    
     $sql = "SELECT user_id, display_name FROM ".PRFX."user WHERE status=1";
     
+    // Filter the results by user type customer/employee
+    if($user_type === 'customers') {$sql .= " AND is_employee='0'";}
+    if($user_type === 'employees') {$sql .= " AND is_employee='1'";}
+       
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the active users."));
         exit;
@@ -436,10 +459,10 @@ function count_user_invoices_with_status($db, $user_id, $invoice_status){
  * 
  */
 
-function build_active_user_form_option_list($db, $assigned_user_id){
+function build_active_employee_form_option_list($db, $assigned_user_id){
     
     // select all employees and return their display name and ID as an array
-    $sql = "SELECT display_name, user_id FROM ".PRFX."user WHERE status=1";
+    $sql = "SELECT display_name, user_id FROM ".PRFX."user WHERE status=1 AND is_employee=1";
     
     if(!$rs = $db->execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed build and return and User list."));
@@ -454,7 +477,7 @@ function build_active_user_form_option_list($db, $assigned_user_id){
 }
 
 #################################################
-#    Check if username already exists  #
+#    Check if username already exists           #
 #################################################
 
 function check_user_username_exists($db, $username, $current_username){
@@ -485,8 +508,19 @@ function check_user_username_exists($db, $username, $current_username){
         
     } 
     
+}
+
+    
 #################################################
-#    Check if user is an employee or customer   #
-#################################################    
+#    Check if user is an employee or customer   #  // is this needed as it is just a boolean
+#################################################
+
+function check_user_is_employee($db, $user_id) {
+    
+    if(get_user_details($db, $user_id, 'is_employee')) {
+        return true;
+    } else {
+        return false;
+    }    
     
 }

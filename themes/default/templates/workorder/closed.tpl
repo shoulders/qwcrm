@@ -101,7 +101,7 @@
                                                                 </td>  
                                                                 <td class="olotd4" nowrap>
                                                                     <img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" onMouseOver="ddrivetip('<center><b>{t}Contact Info{/t}</b></center><hr><b>{t}Fax{/t}: </b>{$workorders[i].EMPLOYEE_WORK_PHONE}<br><b>{t}Mobile{/t}: </b>{$workorders[i].EMPLOYEE_MOBILE_PHONE}<br><b>{t}Home{/t}: </b>{$workorders[i].EMPLOYEE_HOME_PHONE}');" onMouseOut="hideddrivetip();">                                                                         
-                                                                    <a class="link1" href="index.php?page=employee:details&employee_id={$workorders[i].EMPLOYEE_ID}">{$workorders[i].EMPLOYEE_DISPLAY_NAME}</a>
+                                                                    <a class="link1" href="index.php?page=user:details&user_id={$workorders[i].EMPLOYEE_ID}">{$workorders[i].EMPLOYEE_DISPLAY_NAME}</a>
                                                                 </td>
                                                             </tr>
                                                         {else}

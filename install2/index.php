@@ -60,7 +60,7 @@ echo ("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http:/
                                                 <table width=\"100%\"  class=\"menutd\" cellpadding=\"5\" cellspacing=\"0\" border=\"0\" >\n
                                     ");    
         
-                            $login_usr    = $_POST['display_name'];
+                            $login_username    = $_POST['display_name'];
                             $path2    = $_POST['default_site_name'];
 
                             /* write the need configs */
@@ -121,7 +121,7 @@ echo ("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http:/
 # Add Admin                      #
 ##################################
         $q = "REPLACE INTO ".PRFX."TABLE_EMPLOYEE SET
-            EMPLOYEE_LOGIN                =". $db->qstr( $login_usr          ).", 
+            EMPLOYEE_LOGIN                =". $db->qstr( $login_username          ).", 
             EMPLOYEE_FIRST_NAME            =". $db->qstr( $_POST['first_name']            ).",
             EMPLOYEE_LAST_NAME         =". $db->qstr( $_POST['last_name']             ).",
             EMPLOYEE_DISPLAY_NAME         =". $db->qstr( $_POST['display_name']          ).",
@@ -204,7 +204,7 @@ if($error_flag == true) {
                     this way if you need to reinstall the CRM you can move the directory back. You will not be able to login until this directory is removed.<br>
                 2. You need to <a href=\"$path2\">login as the admin</a> and finish setting up the CRM by editing the settings in the Control Center.
                 <br><br>
-                The Admin login is: ".$login_usr ." and the password you supplied in the previous page.<br><br>
+                The Admin login is: ".$login_username ." and the password you supplied in the previous page.<br><br>
                 Where to find help:<br>
                 The user Documentation is at <a href=\"http://wiki.myitcrm.com\">http://wiki.myitcrm.com</a><br>
                 Bug/Feature Reporting is at <a href=\"http://forum.myitcrm.com\">Forum Bug/Feature Requests</a><br>

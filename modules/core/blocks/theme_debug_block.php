@@ -17,12 +17,12 @@ $smarty->assign('peakMem',                  memory_get_peak_usage() / 1048576   
 $BuildPage .= $smarty->fetch('core/blocks/theme_debug_block.tpl');
 
 // Smarty Debugging - Done this way because $smarty_debugging is not supported when using fetch()
-if($smarty_debug == true) {
+if($GConfig->smarty_debug == true) {
     $BuildPage .= $smarty->fetch('core/blocks/theme_debug_smarty_debug_block.tpl');
 }
 
 // Advanced Debug - Only use in offline sites and for developement only
-if($qwcrm_advanced_debug == true) {
+if($GConfig->qwcrm_advanced_debug == true) {
 
     $BuildPage .= "\r\n\r\n<div><p><strong>".gettext("QWcrm Advanced Debug Section")."</strong></p></div>\r\n";
  

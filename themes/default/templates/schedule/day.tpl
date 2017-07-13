@@ -62,7 +62,7 @@
                                                     <form>
                                                         <select id="changeThisPage" onChange="changePage();">
                                                             {section name=i loop=$employees}
-                                                                <option value="index.php?page=schedule:day&schedule_start_year={$schedule_start_year}&schedule_start_month={$schedule_start_month}&schedule_start_day={$schedule_start_day}&employee_id={$employees[i].EMPLOYEE_ID}" {if $selected_employee == $employees[i].EMPLOYEE_ID} selected {/if}>{$employees[i].EMPLOYEE_DISPLAY_NAME}</option>
+                                                                <option value="index.php?page=schedule:day&schedule_start_year={$schedule_start_year}&schedule_start_month={$schedule_start_month}&schedule_start_day={$schedule_start_day}&employee_id={$employees[i].user_id}" {if $selected_employee == $employees[i].user_id}} selected {/if}>{$employees[i].display_name}</option>
                                                             {/section}
                                                         </select>
                                                     </form>

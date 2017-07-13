@@ -28,39 +28,27 @@ defined('_QWEXEC') or die;
 #   Display Customers               #
 #####################################
 
-function display_customers($db, $status = 'all', $direction = 'DESC', $use_pages = false, $page_no = 1, $records_per_page = 25, $search_type = null, $search_term = null) {
+function display_customers($db, $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $status = null) {
     
     global $smarty;
 
     /* Filter the Records */
     
-    // Perform Standard Search
-    if($search_type != null) {
-        
-        // Restrict by status
-        $whereTheseRecords = " WHERE CUSTOMER_DISPLAY_NAME LIKE '%$search_term%'";
-        
+    // Default Action    
+    $whereTheseRecords = " WHERE ".PRFX."customer.CUSTOMER_ID";
     
-    // Display Records with filters    
-    } else {
+    // Restrict results by search category and search term
+    if($search_term != null) {$whereTheseRecords .= " AND ".PRFX."user.$search_category LIKE '%$search_term%'";} 
+        
+    // Restrict by Status
+    if($status != null) {$whereTheseRecords = " WHERE ".PRFX."customer.ACTIVE=".$db->qstr($status);}
 
-        // Status Restriction
-        if($status != 'all') {
-            // Restrict by status
-            $whereTheseRecords = " WHERE ".PRFX."customer.ACTIVE=".$db->qstr($status);        
-        } else {            
-            // Do not restrict by status
-            $whereTheseRecords = " WHERE ".PRFX."customer.CUSTOMER_ID = *";
-        }
-    
-    }
-    
     /* The SQL code */    
     
     $sql = "SELECT *              
         FROM ".PRFX."customer       
-        ".$whereTheseRecords.
-        " GROUP BY ".PRFX."customer.CUSTOMER_ID            
+        ".$whereTheseRecords."
+        GROUP BY ".PRFX."customer.CUSTOMER_ID            
         ORDER BY ".PRFX."customer.CUSTOMER_ID
         ".$direction;  
    
@@ -184,10 +172,10 @@ function insert_customer($db, $VAR) {
 function insert_customer_note($db, $customer_id, $note) {
     
     $sql = "INSERT INTO ".PRFX."customer_notes SET
-            CUSTOMER_ID =". $db->qstr( $customer_id             ).",
-            EMPLOYEE_ID =". $db->qstr( $_SESSION['login_id']    ).",
-            DATE        =". $db->qstr( time()                   ).",
-            NOTE        =". $db->qstr( $note                    );
+            CUSTOMER_ID =". $db->qstr( $customer_id                         ).",
+            EMPLOYEE_ID =". $db->qstr( QFactory::getUser()->login_user_id   ).",
+            DATE        =". $db->qstr( time()                               ).",
+            NOTE        =". $db->qstr( $note                                );
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to insert the customer note into the database."));
@@ -280,8 +268,8 @@ function get_customer_notes($db, $customer_id) {
 function update_customer($db, $customer_id, $VAR) {
     
     $sql = "UPDATE ".PRFX."customer SET
-            CUSTOMER_DISPLAY_NAME   = ". $db->qstr( $VAR['displayName']    ).",
-            CUSTOMER_ADDRESS        = ". $db->qstr( $VAR['address']        ).",
+            CUSTOMER_DISPLAY_NAME   = ". $db->qstr( $VAR['displayName']     ).",
+            CUSTOMER_ADDRESS        = ". $db->qstr( $VAR['address']         ).",
             CUSTOMER_CITY           = ". $db->qstr( $VAR['city']            ).", 
             CUSTOMER_STATE          = ". $db->qstr( $VAR['state']           ).", 
             CUSTOMER_ZIP            = ". $db->qstr( $VAR['zip']             ).",
@@ -318,10 +306,10 @@ function update_customer_note($db, $customer_note_id, $date, $note) {
     global $smarty;
     
     $sql = "UPDATE ".PRFX."customer_notes SET
-            EMPLOYEE_ID             =". $db->qstr( $_SESSION['login_id']    ).",
-            DATE                    =". $db->qstr( $date                    ).",
-            NOTE                    =". $db->qstr( $note                    )."
-            WHERE CUSTOMER_NOTE_ID  =". $db->qstr( $customer_note_id        );
+            EMPLOYEE_ID             =". $db->qstr( QFactory::getUser()->login_user_id   ).",
+            DATE                    =". $db->qstr( $date                                ).",
+            NOTE                    =". $db->qstr( $note                                )."
+            WHERE CUSTOMER_NOTE_ID  =". $db->qstr( $customer_note_id                    );
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the customer note."));

@@ -36,7 +36,7 @@
                                             <option value="9"{if $workorder_status == 9} selected{/if}>{t}WORKORDER_STATUS_9{/t}</option>
                                             <option value="10"{if $workorder_status == 10} selected{/if}>{t}WORKORDER_STATUS_10{/t}</option>  
                                         </select>                                        
-                                        <input type="hidden" name="updated_by" value="{$login_id}">
+                                        <input type="hidden" name="updated_by" value="{$login_user_id}">
                                         <input type="hidden" name="workorder_id" value="{$workorder_id}">
                                         <p>&nbsp;</p>                                        
                                         <input class="olotd4" name="change_status" value="{t}Uupdate{/t}" type="submit" />                                                                      
@@ -46,12 +46,12 @@
                                 <!-- Update Assigned Employee -->
                                 <td class="olotd4" align="center" width="33%"> 
                                     <!-- If the employee is assigned to this workorder and it is not closed, or no one is assigned, or the user is an admin - show a dropdown list and update button, else show the assigned employee details instead -->
-                                    {if ($assigned_employee_id == $login_id && $workorder_status != 6) || $assigned_employee_id == '' || $login_usergroup_id <= 3}
+                                    {if ($assigned_employee_id == $login_user_id && $workorder_status != 6) || $assigned_employee_id == '' || $login_usergroup_id <= 3}
                                         <p>&nbsp;</p>  
                                         <form method="POST" action="index.php?page=workorder:status">
                                             <select name="target_employee_id">
                                                 {section name=i loop=$active_employees}
-                                                    <option value="{$active_employees[i].EMPLOYEE_ID}" {if $assigned_employee_id == $active_employees[i].EMPLOYEE_ID} selected {/if}>{$active_employees[i].EMPLOYEE_DISPLAY_NAME}</option>
+                                                    <option value="{$active_employees[i].user_id}" {if $assigned_employee_id == $active_employees[i].user_id} selected {/if}>{$active_employees[i].display_name}</option>
                                                 {/section}
                                             </select>
                                             <p>&nbsp;</p>
@@ -60,7 +60,7 @@
                                         </form>                                       
                                     {else}    
                                         <img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" onMouseOver="ddrivetip('<center><b>{t}Contact{/t}</b></center><hr><b>{t}Fax{/t}: </b>{$assigned_employee_details.EMPLOYEE_WORK_PHONE}<br><b>{t}Mobile{/t}: </b>{$assigned_employee_details.EMPLOYEE_MOBILE_PHONE}<br><b>{t}Home{/t}: </b>{$assigned_employee_details.EMPLOYEE_HOME_PHONE}');" onMouseOut="hideddrivetip();">                                                 
-                                        <a class="link1" href="index.php?page=employee:details&employee_id={$assigned_employee_id}">{$assigned_employee_details.EMPLOYEE_DISPLAY_NAME}</a>
+                                        <a class="link1" href="index.php?page=user:details&user_id={$assigned_employee_id}">{$assigned_employee_details.EMPLOYEE_DISPLAY_NAME}</a>
                                     {/if}
                                 </td>
 

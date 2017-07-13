@@ -184,11 +184,13 @@ class JUser
      * @var    array QWcrm User variables
      * 
      */    
-    public $login_usr               = null;
-    public $login_id                = null;
+    public $login_user_id           = null;    
+    public $login_username          = null;
     public $login_usergroup_id      = null;
     public $login_display_name      = null;
-    public $login_token             = null;
+    public $login_token             = null;    
+    public $login_is_employee       = null;
+    public $login_customer_id       = null;
 
     /**
      * Constructor activating the default information of the language
@@ -691,12 +693,14 @@ class JUser
             $this->username                 = $record['username'];
             $this->id                       = $record['user_id'];
             
-            // This is not normally used - everything is instance based i think
-            $this->login_usr                = $record['username'];
-            $this->login_id                 = $record['user_id'];
+            // Added for QWcrm
+            $this->login_user_id            = $record['user_id'];
+            $this->login_username           = $record['username'];            
             $this->login_usergroup_id       = $record['usergroup'];
             $this->login_display_name       = $record['display_name'];
             $this->login_token              = 'login_verified';
+            $this->login_is_employee        = $record['is_employee'];
+            $this->login_customer_id        = $record['customer_id'];
 
         }
 
@@ -808,6 +812,5 @@ class JUser
 
         return $this;
     }     
-    
     
 }
