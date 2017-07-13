@@ -55,11 +55,11 @@ function display_users($db, $direction = 'DESC', $use_pages = false, $page_no = 
         if($user_type == 'employees') {
             
             $whereTheseRecords .= " AND ".PRFX."user.usergroup =".$db->qstr('1');
-            $whereTheseRecords .= " AND ".PRFX."user.usergroup =".$db->qstr('2');
-            $whereTheseRecords .= " AND ".PRFX."user.usergroup =".$db->qstr('3');
-            $whereTheseRecords .= " AND ".PRFX."user.usergroup =".$db->qstr('4');
-            $whereTheseRecords .= " AND ".PRFX."user.usergroup =".$db->qstr('5');
-            $whereTheseRecords .= " AND ".PRFX."user.usergroup =".$db->qstr('6');
+            $whereTheseRecords .= " OR ".PRFX."user.usergroup =".$db->qstr('2');
+            $whereTheseRecords .= " OR ".PRFX."user.usergroup =".$db->qstr('3');
+            $whereTheseRecords .= " OR ".PRFX."user.usergroup =".$db->qstr('4');
+            $whereTheseRecords .= " OR ".PRFX."user.usergroup =".$db->qstr('5');
+            $whereTheseRecords .= " OR ".PRFX."user.usergroup =".$db->qstr('6');
             
         }
     }

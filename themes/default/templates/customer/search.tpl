@@ -25,8 +25,8 @@
                                                     <div>                                                        
                                                         <table border="0">
                                                            <tr>
-                                                                <td align="left" valign="top">
-                                                                    <b>{t}Display Name{/t}</b>
+                                                                <td>
+                                                                    <b>{t}Display Name{/t}</b><br>
                                                                     <input name="search_term" class="olotd4" value="{$search_term}" type="text" maxlength="50" required onkeydown="return onlyAlphaNumeric(event);">
                                                                     <input name="search_category" value="{$search_category}" type="hidden" />
                                                                     <input name="submit" class="olotd4" value="{t}Search{/t}" type="submit" />
@@ -35,6 +35,16 @@
                                                             </tr> 
                                                             <tr>
                                                                 <td><font color="red">{t}NO special characters like !@#$%^*(){/t}</font></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <b>{t}Filter By Status{/t}</b><br>
+                                                                    <select class="olotd5" id="status" name="status">
+                                                                        <option value=""{if $status == ''} selected{/if}>{t}None{/t}</option>                                                                        
+                                                                        <option value="1"{if $status == '1'} selected{/if}>{t}Active{/t}</option>
+                                                                        <option value="0"{if $status == '0'} selected{/if}>{t}Blocked{/t}</option>
+                                                                    </select>
+                                                                </td>
                                                             </tr>
                                                         </table>
                                                     </div>

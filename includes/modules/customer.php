@@ -38,10 +38,10 @@ function display_customers($db, $direction = 'DESC', $use_pages = false, $page_n
     $whereTheseRecords = " WHERE ".PRFX."customer.CUSTOMER_ID";
     
     // Restrict results by search category and search term
-    if($search_term != null) {$whereTheseRecords .= " AND ".PRFX."user.$search_category LIKE '%$search_term%'";} 
+    if($search_term != null) {$whereTheseRecords .= " AND ".PRFX."customer.$search_category LIKE '%$search_term%'";} 
         
     // Restrict by Status
-    if($status != null) {$whereTheseRecords = " WHERE ".PRFX."customer.ACTIVE=".$db->qstr($status);}
+    if($status != null) {$whereTheseRecords .= " AND ".PRFX."customer.ACTIVE=".$db->qstr($status);}
 
     /* The SQL code */    
     

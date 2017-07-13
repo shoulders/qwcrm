@@ -23,8 +23,8 @@
                                                     <div>
                                                         <table border="0">
                                                             <tr>
-                                                                <td align="right" valign="top">
-                                                                    <b>{t}Display Name{/t}</b>
+                                                                <td>
+                                                                    <b>{t}Display Name{/t}</b><br>
                                                                     <input name="search_term" value="{$search_term}" class="olotd4" size="20" type="text" maxlength="20" required onkeydown="return onlyAlphaNumeric(event);">                                                            
                                                                     <input name="search_category" value="{$search_category}" type="hidden" />
                                                                     <input name="submit" class="olotd4" value="{t}Search{/t}" type="submit" />
@@ -33,6 +33,26 @@
                                                             </tr>
                                                             <tr>                                                                
                                                                 <td><font color="red">{t}NO special characters like !@#$%^*(){/t}</font></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <b>{t}Filter By User Type{/t}</b><br>
+                                                                    <select class="olotd5" id="user_type" name="user_type">
+                                                                        <option value=""{if $user_type == ''} selected{/if}>{t}None{/t}</option>                                                                        
+                                                                        <option value="employees"{if $user_type == 'employees'} selected{/if}>{t}Employees{/t}</option>
+                                                                        <option value="customers"{if $user_type == 'customers'} selected{/if}>{t}Customers{/t}</option>
+                                                                    </select>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <b>{t}Filter By Status{/t}</b><br>
+                                                                    <select class="olotd5" id="status" name="status">
+                                                                        <option value=""{if $status == ''} selected{/if}>{t}None{/t}</option>                                                                        
+                                                                        <option value="1"{if $status == '1'} selected{/if}>{t}Active{/t}</option>
+                                                                        <option value="0"{if $status == '0'} selected{/if}>{t}Blocked{/t}</option>
+                                                                    </select>
+                                                                </td>
                                                             </tr>
                                                         </table>
                                                     </div>
