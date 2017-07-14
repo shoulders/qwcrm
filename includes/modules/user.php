@@ -158,8 +158,7 @@ function display_users($db, $direction = 'DESC', $use_pages = false, $page_no = 
 
 function insert_user($db, $VAR){
     
-    $sql = "INSERT INTO ".PRFX."user SET
-            user_id             =". $db->qstr( $VAR['user_id']                              ).",
+    $sql = "INSERT INTO ".PRFX."user SET           
             username            =". $db->qstr( $VAR['username']                             ).",
             password            =". $db->qstr( JUserHelper::hashPassword($VAR['password'])  ).",
             email               =". $db->qstr( $VAR['email']                                ).",
@@ -224,30 +223,6 @@ function get_user_details($db, $user_id, $item = null) {
         
 }
 
-#####################################
-# Get User Display Name from ID #  // not actually used anywhere
-#####################################
-
-function get_user_display_name_by_id($db, $user_id) {
-    
-    $sql = "SELECT 
-            ".PRFX."user.*,
-            ".PRFX."user_usergroups.usergroup_display_name
-            FROM ".PRFX."user
-            LEFT JOIN ".PRFX."user_usergroups ON (".PRFX."user.usergroup = ".PRFX."user_usergroups.usergroup_id)
-            WHERE user_id=". $db->qstr($user_id);
-    
-    if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the User Display Name by ID."));
-        exit;
-    } else {        
-
-        return $rs->fields['display_name'];
-        
-    }
-    
-}
-
 #########################################
 # Get User ID by username               # // moved from core
 #########################################
@@ -275,24 +250,6 @@ function get_user_id_by_username($db, $username){
         
 }
 
-#########################################
-# Get user record by username           #  // does not seem to be used anywhere
-#########################################
-
-function get_user_record_by_username($db, $username){
-    
-    $sql = "SELECT * FROM ".PRFX."user WHERE username =".$db->qstr($username);    
-    if(!$rs = $db->execute($sql)){
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the user record by username"));
-        exit;
-    } else {
-        
-        return $rs->FetchRow();
-        
-    }
-    
-}
-
 ##################################
 # Get the usergroups             #
 ##################################
@@ -318,11 +275,10 @@ function get_usergroups($db, $user_type = null) {
 }
 
 ##################################################
-# Get all active employees display name and ID   #
+# Get all active users display name and ID       #
 ##################################################
     
-function get_active_users($db, $user_type = null) {
-    
+function get_active_users($db, $user_type = null) {    
     
     $sql = "SELECT user_id, display_name FROM ".PRFX."user WHERE status=1";
     
@@ -477,12 +433,12 @@ function build_active_employee_form_option_list($db, $assigned_user_id){
 #    Check if username already exists           #
 #################################################
 
-function check_user_username_exists($db, $username, $current_username){
+function check_user_username_exists($db, $username, $current_username = null){
     
     global $smarty;
     
     // This prevents self-checking of the current username of the record being edited
-    if ($username === $current_username) {return false;}
+    if ($current_username != null && $username === $current_username) {return false;}
     
     $sql = "SELECT COUNT(*) AS num_users FROM ".PRFX."user WHERE username =". $db->qstr($username);
     
@@ -493,7 +449,7 @@ function check_user_username_exists($db, $username, $current_username){
         
         if ($rs->fields['num_users'] >= 1) {
             
-            $smarty->assign('warning_msg', 'The Username, '.$username.',  already exists! Please use a different one.');
+            $smarty->assign('warning_msg', gettext("The Username").', '.$username.' ,'.gettext("already exists! Please use a different one."));
             
             return true;
             
@@ -506,7 +462,6 @@ function check_user_username_exists($db, $username, $current_username){
     } 
     
 }
-
     
 #################################################
 #    Check if user is an employee or customer   #  // is this needed as it is just a boolean
@@ -519,5 +474,36 @@ function check_user_is_employee($db, $user_id) {
     } else {
         return false;
     }    
+    
+}
+
+#################################################
+#    Check if customer already has login        #
+#################################################
+
+function check_customer_already_has_login($db, $customer_id) {
+    
+    //global $smarty;
+        
+    $sql = "SELECT COUNT(*) AS num_users FROM ".PRFX."user WHERE customer_id =". $db->qstr($customer_id);
+    
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to check if the customer already has a login."));
+        exit;
+    } else {
+        
+        if ($rs->fields['num_users'] >= 1) {
+            
+            //$smarty->assign('warning_msg', gettext("The customer already has a login."));           
+            
+            return true;
+            
+        } else {
+            
+            return false;
+            
+        }        
+        
+    }     
     
 }

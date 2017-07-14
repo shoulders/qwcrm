@@ -50,8 +50,14 @@
             {if $user_details.is_employee == '0'}{t}Customer{/t}{/if}
             {if $user_details.is_employee == '1'}{t}Employee{/t}{/if}
         </td>
-        <td class="menutd"><b>{t}Customer ID{/t}</b></td>
-        <td class="menutd">{if $user_details.customer_id == ''}{t}n/a{/t}{else}{$user_details.customer_id}{/if}</td>
+        <td class="menutd"><b>{t}Customer{/t}</b></td>
+        <td class="menutd">
+            {if $user_details.customer_id == ''}
+                {t}n/a{/t}
+            {else}                
+                <a href="index.php?page=customer:details&customer_id={$user_details.customer_id}">{$customer_display_name}</a>
+            {/if}
+        </td>
     </tr>
     <tr>                                
         <td class="menutd"><b>{t}Usergroup{/t}</b></td>

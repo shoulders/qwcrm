@@ -33,10 +33,10 @@ function display_single_workorder($db, $workorder_id){
     $sql = "SELECT ".PRFX."workorder.*,
             ".PRFX."workorder.   WORK_ORDER_STATUS,
             ".PRFX."customer.     *,            
-            ".PRFX."user.     EMPLOYEE_ID, EMPLOYEE_EMAIL, EMPLOYEE_DISPLAY_NAME, EMPLOYEE_TYPE, EMPLOYEE_WORK_PHONE, EMPLOYEE_HOME_PHONE, EMPLOYEE_MOBILE_PHONE            
+            ".PRFX."user.     user_id, email, display_name, usergroup, work_phone, home_phone, work_mobile_phone            
             FROM ".PRFX."workorder
             LEFT JOIN ".PRFX."customer ON ".PRFX."workorder.CUSTOMER_ID           = ".PRFX."customer.CUSTOMER_ID
-            LEFT JOIN ".PRFX."user ON ".PRFX."workorder.WORK_ORDER_ASSIGN_TO  = ".PRFX."user.EMPLOYEE_ID             
+            LEFT JOIN ".PRFX."user ON ".PRFX."workorder.WORK_ORDER_ASSIGN_TO  = ".PRFX."user.user_id             
             WHERE ".PRFX."workorder.WORK_ORDER_ID =".$db->qstr($workorder_id);
 
     if(!$rs = $db->Execute($sql)) {        
@@ -75,7 +75,7 @@ function display_workorders($db, $direction = 'DESC', $use_pages = false, $page_
     if($search_term != null) {$whereTheseRecords .= " AND ".PRFX."user.$search_category LIKE '%$search_term%'";} 
     
     // Restrict by Status
-    if($status != null) {$whereTheseRecords = " AND ".PRFX."workorder.WORK_ORDER_STATUS= ".$db->qstr($status);}        
+    if($status != null) {$whereTheseRecords .= " AND ".PRFX."workorder.WORK_ORDER_STATUS= ".$db->qstr($status);}        
 
     // Restrict by Employee
     if($employee_id != null) {$whereTheseRecords .= " AND ".PRFX."user.user_id=".$db->qstr($employee_id);}
@@ -91,7 +91,7 @@ function display_workorders($db, $direction = 'DESC', $use_pages = false, $page_
             ".PRFX."workorder.    WORK_ORDER_ID, WORK_ORDER_OPEN_DATE, WORK_ORDER_CLOSE_DATE, WORK_ORDER_ASSIGN_TO, WORK_ORDER_SCOPE, WORK_ORDER_STATUS            
             FROM ".PRFX."workorder
             LEFT JOIN ".PRFX."user ON ".PRFX."workorder.WORK_ORDER_ASSIGN_TO   = ".PRFX."user.user_id
-            LEFT JOIN ".PRFX."customer ON ".PRFX."workorder.CUSTOMER_ID            = ".PRFX."customer.CUSTOMER_ID                 
+            LEFT JOIN ".PRFX."customer ON ".PRFX."workorder.CUSTOMER_ID        = ".PRFX."customer.CUSTOMER_ID                 
             ".$whereTheseRecords."
             GROUP BY ".PRFX."workorder.WORK_ORDER_ID
             ORDER BY ".PRFX."workorder.WORK_ORDER_ID
@@ -181,12 +181,12 @@ function display_workorder_notes($db, $workorder_id){
     
     $sql = "SELECT
             ".PRFX."workorder_notes.*,
-            ".PRFX."user.EMPLOYEE_DISPLAY_NAME
+            ".PRFX."user.display_name
             FROM
             ".PRFX."workorder_notes,
             ".PRFX."user
             WHERE WORK_ORDER_ID=".$db->qstr($workorder_id)."
-            AND ".PRFX."user.EMPLOYEE_ID = ".PRFX."workorder_notes.WORK_ORDER_EMPLOYEE_ID";
+            AND ".PRFX."user.user_id = ".PRFX."workorder_notes.WORK_ORDER_EMPLOYEE_ID";
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to return notes for the Work Order."));
@@ -207,12 +207,12 @@ function display_workorder_history($db, $workorder_id){
     
     $sql = "SELECT 
             ".PRFX."workorder_history.*,
-            ".PRFX."user.EMPLOYEE_DISPLAY_NAME 
+            ".PRFX."user.display_name
             FROM 
             ".PRFX."workorder_history, 
             ".PRFX."user 
             WHERE ".PRFX."workorder_history.WORK_ORDER_ID=".$db->qstr($workorder_id)." 
-            AND ".PRFX."user.EMPLOYEE_ID = ".PRFX."workorder_history.ENTERED_BY
+            AND ".PRFX."user.user_id = ".PRFX."workorder_history.ENTERED_BY
             ORDER BY ".PRFX."workorder_history.HISTORY_ID";
     
     if(!$rs = $db->Execute($sql)) {
@@ -835,18 +835,18 @@ function assign_workorder_to_employee($db, $workorder_id, $logged_in_employee_id
         exit;
     } else {
         
-        // Get Logged in Employee's Display Name
-        $logged_in_employee_display_name = get_user_display_name_by_id($db, $logged_in_employee_id);        
+        // Get Logged in Employee's Display Name        
+        $logged_in_employee_display_name = get_user_details($db, $logged_in_employee_id, 'display_name');
         
         // Get the Display Name of the currently Assigned Employee
         if($assigned_employee_id === '0'){
             $assigned_employee_display_name = gettext("Unassigned");            
-        } else {
-            $assigned_employee_display_name = get_user_display_name_by_id($db, $assigned_employee_id);            
+        } else {            
+            $assigned_employee_display_name = get_user_details($db, $assigned_employee_id, 'display_name');
         }
         
-        // Get the Display Name of the Target Employee
-        $target_employee_display_name = get_user_display_name_by_id($db, $target_employee_id);
+        // Get the Display Name of the Target Employee        
+        $target_employee_display_name = get_user_details($db, $target_employee_id, 'display_name');
         
         // Creates a History record
         insert_workorder_history_note($db, $workorder_id, gettext("Work Order").' '.gettext("has been assigned to").' '.$target_employee_display_name.' '.gettext("from").' '.$assigned_employee_display_name.' '.gettext("by").' '. $logged_in_employee_display_name);

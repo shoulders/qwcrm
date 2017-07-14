@@ -129,6 +129,7 @@
                                                                 <a href="index.php?page=customer:details&customer_id={$search_result[i].CUSTOMER_ID}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" onMouseOver="ddrivetip('{t}View Customer Details{/t}');" onMouseOut="hideddrivetip()"></a>&nbsp;
                                                                 <a href="index.php?page=workorder:new&customer_id={$search_result[i].CUSTOMER_ID}"><img src="{$theme_images_dir}icons/16x16/small_new_work_order.gif" alt="" border="0" onMouseOver="ddrivetip('{t}New Work Order{/t}');" onMouseOut="hideddrivetip();" alt=""></a>&nbsp;
                                                                 <a href="index.php?page=invoice:edit&invoice_type=invoice-only&workorder_id=0&customer_id={$search_result[i].CUSTOMER_ID}"><img src="{$theme_images_dir}icons/16x16/small_new_invoice_only.gif" alt="" border="0" onMouseOver="ddrivetip('{t}New Invoice Only{/t}');" onMouseOut="hideddrivetip();" alt=""></a>
+                                                                <a href="index.php?page=user:new&customer_id={$search_result[i].CUSTOMER_ID}"><img src="{$theme_images_dir}icons/16x16/small_new_customer.gif" alt="" border="0" onMouseOver="ddrivetip('{t}New Customer Login{/t}');" onMouseOut="hideddrivetip();" alt=""></a>
                                                             </td>
                                                         </tr>
                                                     {/section}

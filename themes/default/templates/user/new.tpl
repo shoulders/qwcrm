@@ -17,7 +17,7 @@
                         <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0">
                             <tr>
                                 <td width="100%" valign="top">                                    
-                                    <form action="index.php?page=user:new" method="POST" name="new_user" id="edit_user" onsubmit="return confirmPasswordsMatch();"> 
+                                    <form action="index.php?page=user:new" method="POST" name="new_user" id="new_user" onsubmit="return confirmPasswordsMatch();"> 
                                         <table class="menutable" width="100%" border="0" cellpadding="0" cellspacing="0">
                                             <tr>
                                                 <td class="menutd">
@@ -47,6 +47,40 @@
                                                                                         <td align="right"><strong>{t}Last Name{/t}</strong><span style="color: #ff0000">*</span></td>
                                                                                         <td><input name="last_name" class="olotd5" value="{$user_details.last_name}" type="text" maxlength="20" required onkeydown="return onlyAlpha(event);"></td>
                                                                                     </tr>
+                                                                                    <tr>
+                                                                                        <td align="right"><strong>{t}User Type{/t}</strong><span style="color: #ff0000">*</span></td>                                                                                        
+                                                                                        <td>
+                                                                                            {if !$is_employee}
+                                                                                                <span style="color: red; font-weight: 900;">{t}Customer{/t}</span>
+                                                                                                <input type="hidden" name="is_employee" value="0">
+                                                                                            {else}
+                                                                                                <span style="color: red; font-weight: 900;">{t}Employee{/t}</span>
+                                                                                                <input type="hidden" name="is_employee" value="1">
+                                                                                            {/if}
+                                                                                            &nbsp;-&nbsp;{t}The user type cannot be changed.{/t}
+                                                                                        </td>                                                                                        
+                                                                                    </tr>
+                                                                                    <tr{if $is_employee} style="display: none;"{/if}>
+                                                                                        <td align="right"><strong>{t}Customer{/t}</strong><span style="color: #ff0000">*</span></td>                                                                                        
+                                                                                        <td>
+                                                                                            {if !$is_employee}
+                                                                                                <a href="index.php?page=customer:details&customer_id={$customer_id}">{$customer_display_name}</a>
+                                                                                                <input type="hidden" name="customer_id" value="{$customer_id}">
+                                                                                            {else}                                                                                                
+                                                                                                <input type="hidden" name="customer_id" value="">
+                                                                                            {/if}
+                                                                                        </td>                                                                                        
+                                                                                    </tr>
+                                                                                    <tr{if !$is_employee} style="display: none;"{/if}>
+                                                                                        <td align="right"><strong>{t}Based{/t}</strong><span style="color: #ff0000">*</span></td>
+                                                                                        <td>
+                                                                                            <select name="based" class="olotd5">                                                                                                    
+                                                                                                <option value="1" {if $user_details.based == 1 } selected{/if}>{t}Office{/t}</option>
+                                                                                                <option value="2" {if $user_details.based == 2 } selected{/if}>{t}Home{/t}</option>
+                                                                                                <option value="3" {if $user_details.based == 3 } selected{/if}>{t}OnSite{/t}</option>
+                                                                                            </select>
+                                                                                        </td>
+                                                                                    </tr>
                                                                                 </tbody>
                                                                             </table>
                                                                         </td>
@@ -71,7 +105,7 @@
                                                                                     </tr>
                                                                                     <tr>
                                                                                         <td align="right"><strong>{t}Password{/t}</strong></td>
-                                                                                        <td><input id="password" name="password" class="olotd5" type="password" maxlength="20" onkeydown="return onlyPassword(event);"></td>
+                                                                                        <td><input id="password" name="password" class="olotd5" type="password" maxlength="20" required onkeydown="return onlyPassword(event);"></td>
                                                                                     </tr>
                                                                                     <tr>
                                                                                         <td align="right"><strong>{t}Confirm Password{/t}</strong></td>
@@ -85,7 +119,7 @@
                                                                                         <td>                                                                                                
                                                                                             <select name="usergroup" class="olotd5">
                                                                                                 {section name=b loop=$usergroups}
-                                                                                                    <option value="{$user_details.usergroup}" {if $user_details.usergroup == $usergroups[b].usergroup_id} selected{/if}>{$usergroups[b].usergroup_display_name}</option>
+                                                                                                    <option value="{$usergroups[b].usergroup_id}" {if $user_details.usergroup == $usergroups[b].usergroup_id} selected{/if}>{$usergroups[b].usergroup_display_name}</option>
                                                                                                 {/section}
                                                                                             </select>                                                                                            
                                                                                         </td>
@@ -107,26 +141,7 @@
                                                                                                 <option value="1" {if $user_details.require_reset == '1'} selected {/if}>{t}Yes{/t}</option>
                                                                                             </select>
                                                                                         </td>
-                                                                                    </tr>
-                                                                                    <tr>
-                                                                                        <td colspan="1" align="right"><b>{t}Is Employee{/t}</b></td>
-                                                                                        <td>
-                                                                                            <select name="is_employee" class="olotd5">
-                                                                                                <option value="0">{t}Customer{/t}</option>
-                                                                                                <option value="1">{t}Employee{/t}</option>
-                                                                                            </select>
-                                                                                        </td>                                                                                       
-                                                                                    </tr>
-                                                                                    <tr>                                                                                        
-                                                                                        <td colspan="1" align="right"><b>{t}Based{/t}</b></td>
-                                                                                        <td>
-                                                                                            <select name="based" class="olotd5">                                                                                                    
-                                                                                                <option value="1" {if $user_details.based == 1 } selected{/if}>{t}Office{/t}</option>
-                                                                                                <option value="2" {if $user_details.based == 2 } selected{/if}>{t}Home{/t}</option>
-                                                                                                <option value="3" {if $user_details.based == 3 } selected{/if}>{t}OnSite{/t}</option>
-                                                                                            </select>
-                                                                                        </td>
-                                                                                    </tr>                                                                                                                                                                      
+                                                                                    </tr>                                                                                    
                                                                                     
                                                                                 </tbody>
                                                                             </table>
@@ -135,10 +150,10 @@
                                                                     
                                                                     <!-- Work -->
                                                                     
-                                                                    <tr class="row2">
+                                                                    <tr class="row2"{if !$is_employee} style="display: none;"{/if}>
                                                                         <td class="menuhead" colspan="2">&nbsp;{t}Work{/t}</td>
                                                                     </tr>
-                                                                    <tr>
+                                                                    <tr{if !$is_employee} style="display: none;"{/if}>
                                                                         <td colspan="2" align="left">
                                                                             <table>
                                                                                 <tr>
@@ -152,17 +167,17 @@
                                                                                 <tr>
                                                                                     <td align="right"><strong>{t}Work Fax{/t}</strong></td>
                                                                                     <td><input name="work_fax" class="olotd5" value="{$user_details.work_fax}" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"></td>
-                                                                                </tr>
+                                                                                </tr>                                                                                
                                                                             </table>
                                                                         </td>
                                                                     </tr>
                                                                     
                                                                     <!-- Home -->
                                                                     
-                                                                    <tr class="row2">
+                                                                    <tr class="row2"{if !$is_employee} style="display: none;"{/if}>
                                                                         <td class="menuhead" colspan="2">&nbsp;{t}Home{/t}</td>
                                                                     </tr>
-                                                                    <tr>
+                                                                    <tr{if !$is_employee} style="display: none;"{/if}>
                                                                         <td colspan="2" align="left">
                                                                             <table>
                                                                                 <tr>

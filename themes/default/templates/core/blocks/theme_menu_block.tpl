@@ -21,6 +21,7 @@
                         <a href="index.php?page=giftcert:new&customer_id={$customer_id}"><img src="{$theme_images_dir}icons/gift.png" alt="" border="0" height="14" width="14" /> {t}New Gift Certificate{/t}</a>
                         <a href="index.php?page=customer:delete&customer_id={$customer_id}"><img src="{$theme_images_dir}icons/delete_employees.gif" alt="" border="0" height="14" width="14" /> {t}Delete Customer{/t}</a>
                         <a href="index.php?page=customer:email&customer_id={$customer_id}"><img src="{$theme_images_dir}icons/16x16/email.jpg" alt="" border="0" height="14" width="14" /> {t}Email Customer{/t}</a>
+                        <a href="index.php?page=user:new&customer_id={$customer_id}"><img src="{$theme_images_dir}icons/16x16/email.jpg" alt="" border="0" height="14" width="14" /> {t}New Customer Login{/t}</a>
                         <a href="index.php?page=customer:note_new&customer_id={$customer_id}"><img src="{$theme_images_dir}icons/16x16/email.jpg" alt="" border="0" height="14" width="14" />{t}New Note{/t}</a>
                     {/if}        
                 </div>
@@ -118,7 +119,7 @@
                         
                         <!-- Users -->
                         <a href="index.php?page=user:search"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {t}Search Users{/t}</a>
-                        <a href="index.php?page=user:new"><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" height="14" width="14" /> {t}New User{/t}</a>
+                        <a href="index.php?page=user:new"><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" height="14" width="14" /> {t}New Employee{/t}</a>
                         {if $user_id > '' || $user_id > 0 }
                             <a href="index.php?page=user:edit&user_id={$user_id}"><img src="{$theme_images_dir}icons/edit_employee.gif" alt="" border="0" height="14" width="14" /> {t}Edit User{/t}</a>
                         {/if}
