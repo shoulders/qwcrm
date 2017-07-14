@@ -335,7 +335,7 @@ function delete_customer($db, $customer_id){
         exit;
     }  
     if($rs->fields['count'] > 0 ) {
-        //force_page('customer', 'view&error_msg=You can not delete a customer who has work orders.');
+        //force_page('customer', 'search&error_msg=You can not delete a customer who has work orders.');
         //exit;
         return false;
     }
@@ -347,7 +347,7 @@ function delete_customer($db, $customer_id){
         exit;
     }    
     if($rs->fields['count'] > 0 ) {
-        //force_page('customer', 'view&error_msg=You can not delete a customer who has invoices.');
+        //force_page('customer', 'search&error_msg=You can not delete a customer who has invoices.');
         //exit;
         return false;
     }    
@@ -359,7 +359,7 @@ function delete_customer($db, $customer_id){
         exit;
     }  
     if($rs->fields['count'] > 0 ) {
-        //force_page('customer', 'view&error_msg=You can not delete a customer who has gift certificates.');
+        //force_page('customer', 'search&error_msg=You can not delete a customer who has gift certificates.');
         //exit;
         return false;
     }
@@ -371,10 +371,15 @@ function delete_customer($db, $customer_id){
         exit;
     }    
     if($rs->fields['count'] > 0 ) {
-        //force_page('customer', 'view&error_msg=You can not delete a customer who has customer notes.');
+        //force_page('customer', 'search&error_msg=You can not delete a customer who has customer notes.');
         //exit;
         return false;
     }
+    
+    // add deleting any users in user table + make the errors work
+    //.......................................
+    
+    
     
     /* we can now delete the customer */
     

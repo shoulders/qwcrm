@@ -120,8 +120,9 @@
                         <!-- Users -->
                         <a href="index.php?page=user:search"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {t}Search Users{/t}</a>
                         <a href="index.php?page=user:new"><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" height="14" width="14" /> {t}New Employee{/t}</a>
-                        {if $user_id > '' || $user_id > 0 }
+                        {if $user_id > 0 }
                             <a href="index.php?page=user:edit&user_id={$user_id}"><img src="{$theme_images_dir}icons/edit_employee.gif" alt="" border="0" height="14" width="14" /> {t}Edit User{/t}</a>
+                            <a href="index.php?page=user:delete&user_id={$user_id}"><img src="{$theme_images_dir}icons/delete_employees.gif" alt="" border="0" height="14" width="14" /> {t}Delete User{/t}</a>
                         {/if}
                         <a href="index.php?page=administrator:acl"><img src="{$theme_images_dir}icons/encrypted.png" alt="" border="0" height="14" width="14" /> {t}Permissions{/t}</a>
                         

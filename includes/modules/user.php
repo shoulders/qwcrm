@@ -351,6 +351,75 @@ function update_user($db, $user_id, $VAR) {
 
 /** Delete Functions **/
 
+#####################################
+#    Delete User                    #
+#####################################
+
+function delete_user($db, $user_id){
+    
+    // Check if user has created any active workorders
+    $sql = "SELECT count(*) as count FROM ".PRFX."workorder WHERE WORK_ORDER_CREATE_BY=".$db->qstr($user_id);    
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count the user's Workorders in the database."));
+        exit;
+    }  
+    if($rs->fields['count'] > 0 ) {
+        //force_page('user', 'search&error_msg=You can not delete a user who has work orders.');
+        //exit;
+        return false;
+    }
+    
+    // Check if user has any active workorders
+    $sql = "SELECT count(*) as count FROM ".PRFX."workorder WHERE WORK_ORDER_ASSIGN_TO=".$db->qstr($user_id);    
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count the user's Workorders in the database."));
+        exit;
+    }  
+    if($rs->fields['count'] > 0 ) {
+        //force_page('user', 'search&error_msg=You can not delete a user who has work orders.');
+        //exit;
+        return false;
+    }
+    
+    // Check if user has any invoices
+    $sql = "SELECT count(*) as count FROM ".PRFX."invoice WHERE EMPLOYEE_ID=".$db->qstr($user_id);    
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count the user's Invoices in the database."));
+        exit;
+    }    
+    if($rs->fields['count'] > 0 ) {
+        //force_page('user', 'search&error_msg=You can not delete a user who has invoices.');
+        //exit;
+        return false;
+    }    
+    
+    // Check if user is assigned to any gift certificates
+    $sql = "SELECT count(*) as count FROM ".PRFX."giftcert WHERE EMPLOYEE_ID=".$db->qstr($user_id);
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count the user's Gift Certificates in the database."));
+        exit;
+    }  
+    if($rs->fields['count'] > 0 ) {
+        //force_page('user', 'search&error_msg=You can not delete a user who has gift certificates.');
+        //exit;
+        return false;
+    }
+    
+    /* we can now delete the user */
+    
+    // Delete Customer
+    $sql = "DELETE FROM ".PRFX."user WHERE USER_ID=".$db->qstr($user_id);    
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete the user from the database."));
+        exit;
+    } else {
+        
+        return true;
+        
+    }
+    
+}
+
 /** Other Functions **/
 
 #################################################
