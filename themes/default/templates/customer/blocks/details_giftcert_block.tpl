@@ -1,34 +1,89 @@
 <!-- details_giftcert_block.tpl -->
-<table class="olotable" width="100%" border="0"  cellpadding="0" cellspacing="0" summary="Customer Notes">
+<b>{t}Active Gift Certificates{/t}</b>
+<table class="olotable" width="100%" cellpadding="5" celspacing="0" border="0" summary="Work order display">
     <tr>
-        <td class="olohead">
-            <table width="100%" cellpadding="0" cellspacing="0" border="0">
-                <tr>
-                    <td class="menuhead2" width="80%">&nbsp;{t}Gift Certificates{/t}</td>
-                    <td class="menuhead2" width="20%" align="right">
-                        <table cellpadding="2" cellspacing="2" border="0">
-                            <tr>
-                                <td width="33%" align="right">
-                                    {if $single_workorder[i].WORK_ORDER_STATUS != 6}
-                                        <a href="index.php?page=workorder:details_edit_comments&workorder_id={$single_workorder[i].WORK_ORDER_ID}">
-                                            <img src="{$theme_images_dir}icons/16x16/small_edit.gif" onMouseOver="ddrivetip('{t}giftcert_tooltip{/t}');" onMouseOut="hideddrivetip();">                                                 
-                                        </a>
-                                    {/if}
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-            </table>
-        </td>
+        <td class="olohead">{t}ID{/t}</td>
+        <td class="olohead">{t}Code{/t}</td>
+        <td class="olohead">{t}Customer{/t}</td>
+        <td class="olohead">{t}Expires{/t}</td>
+        <td class="olohead">{t}Date Redeemed{/t}</td>
+        <td class="olohead">{t}Status{/t}</td>
+        <td class="olohead">{t}Amount{/t}</td>
+        <td class="olohead">{t}Notes{/t}</td> 
+        <td class="olohead">{t}Action{/t}</td>
     </tr>
+    {section name=i loop=$active_giftcerts}
+        <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=giftcert:details&giftcert_id={$active_giftcerts[i].user_id}';" class="row1">
+            <td class="olotd4"><a href="index.php?page=giftcert:details&giftcert_id={$active_giftcerts[i].GIFTCERT_ID}">{$active_giftcerts[i].GIFTCERT_ID}</a></td>
+            <td class="olotd4">{$active_giftcerts[i].GIFTCERT_CODE}</td>
+            <td class="olotd4"><a href="index.php?page=customer:details&customer_id={$active_giftcerts[i].CUSTOMER_ID}">{$active_giftcerts[i].CUSTOMER_DISPLAY_NAME}</a></td>
+            <td class="olotd4">{$active_giftcerts[i].DATE_EXPIRES|date_format:$date_format}</td>
+            <td class="olotd4">
+                {if !$active_giftcerts[i].DATE_REDEEMED == ''}
+                    {$active_giftcerts[i].DATE_REDEEMED|date_format:$date_format}
+                {/if}
+            </td>
+            <td class="olotd4">
+                {if $active_giftcerts[i].STATUS == '1'}{t}Active{/t}{/if}
+                {if $active_giftcerts[i].STATUS == '0'}{t}Blocked{/t}{/if}
+            </td> 
+            <td class="olotd4">{$currency_sym} {$active_giftcerts[i].AMOUNT}</td>                                                            
+            <td class="olotd4" nowrap>
+                {if !$active_giftcerts[i].NOTES == ''}
+                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{t}Notes{/t}</b><hr><p>{$active_giftcerts[i].NOTES|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();">
+                {/if}
+            </td>
+            <td class="olotd4">
+                <a href="index.php?page=giftcert:details&giftcert_id={$active_giftcerts[i].GIFTCERT_ID}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif"  border="0" onMouseOver="ddrivetip('{t}View Details{/t}');" onMouseOut="hideddrivetip();"></a>&nbsp;
+                <a href="index.php?page=giftcert:edit&giftcert_id={$active_giftcerts[i].GIFTCERT_ID}"><img src="{$theme_images_dir}icons/16x16/small_edit_employee.gif" border="0" onMouseOver="ddrivetip('{t}Edit{/t}');" onMouseOut="hideddrivetip();"></a>&nbsp;
+                <a href="index.php?page=giftcert:delete&giftcert_id={$active_giftcerts[i].GIFTCERT_ID}" onclick="return confirmDelete('{t}Are you Sure you want to delete this Gift Certificate?{/t}');">
+                    <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{t}Delete Gift Certificate{/t}</b>');" onMouseOut="hideddrivetip();">
+                </a>
+            </td>
+        </tr>
+    {/section}
+</table>
+<b>{t}Redeemed Gift Certificates{/t}</b>
+<table class="olotable" width="100%" cellpadding="5" celspacing="0" border="0" summary="Work order display">
     <tr>
-        <td class="menutd">
-            <table width="100%" cellpadding="4" cellspacing="0">
-                <tr>
-                    <td>{$single_workorder[i].WORK_ORDER_COMMENT}<br></td>
-                </tr>
-            </table>    
-        </td>    
+        <td class="olohead">{t}ID{/t}</td>
+        <td class="olohead">{t}Code{/t}</td>
+        <td class="olohead">{t}Customer{/t}</td>
+        <td class="olohead">{t}Expires{/t}</td>
+        <td class="olohead">{t}Date Redeemed{/t}</td>
+        <td class="olohead">{t}Status{/t}</td>
+        <td class="olohead">{t}Amount{/t}</td>
+        <td class="olohead">{t}Notes{/t}</td> 
+        <td class="olohead">{t}Action{/t}</td>
     </tr>
+    {section name=i loop=$redeemed_giftcerts}
+        <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=giftcert:details&giftcert_id={$redeemed_giftcerts[i].user_id}';" class="row1">
+            <td class="olotd4"><a href="index.php?page=giftcert:details&giftcert_id={$redeemed_giftcerts[i].GIFTCERT_ID}">{$redeemed_giftcerts[i].GIFTCERT_ID}</a></td>
+            <td class="olotd4">{$redeemed_giftcerts[i].GIFTCERT_CODE}</td>
+            <td class="olotd4"><a href="index.php?page=customer:details&customer_id={$redeemed_giftcerts[i].CUSTOMER_ID}">{$redeemed_giftcerts[i].CUSTOMER_DISPLAY_NAME}</a></td>
+            <td class="olotd4">{$redeemed_giftcerts[i].DATE_EXPIRES|date_format:$date_format}</td>
+            <td class="olotd4">
+                {if !$redeemed_giftcerts[i].DATE_REDEEMED == ''}
+                    {$redeemed_giftcerts[i].DATE_REDEEMED|date_format:$date_format}
+                {/if}
+            </td>
+            <td class="olotd4">
+                {if $redeemed_giftcerts[i].STATUS == '1'}{t}Active{/t}{/if}
+                {if $redeemed_giftcerts[i].STATUS == '0'}{t}Blocked{/t}{/if}
+            </td> 
+            <td class="olotd4">{$currency_sym} {$redeemed_giftcerts[i].AMOUNT}</td>                                                            
+            <td class="olotd4" nowrap>
+                {if !$redeemed_giftcerts[i].NOTES == ''}
+                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{t}Notes{/t}</b><hr><p>{$redeemed_giftcerts[i].NOTES|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();">
+                {/if}
+            </td>
+            <td class="olotd4">
+                <a href="index.php?page=giftcert:details&giftcert_id={$redeemed_giftcerts[i].GIFTCERT_ID}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif"  border="0" onMouseOver="ddrivetip('{t}View Details{/t}');" onMouseOut="hideddrivetip();"></a>&nbsp;
+                <a href="index.php?page=giftcert:edit&giftcert_id={$redeemed_giftcerts[i].GIFTCERT_ID}"><img src="{$theme_images_dir}icons/16x16/small_edit_employee.gif" border="0" onMouseOver="ddrivetip('{t}Edit{/t}');" onMouseOut="hideddrivetip();"></a>&nbsp;
+                <a href="index.php?page=giftcert:delete&giftcert_id={$redeemed_giftcerts[i].GIFTCERT_ID}" onclick="return confirmDelete('{t}Are you Sure you want to delete this Gift Certificate?{/t}');">
+                    <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{t}Delete Gift Certificate{/t}</b>');" onMouseOut="hideddrivetip();">
+                </a>
+            </td>
+        </tr>
+    {/section}
 </table>
