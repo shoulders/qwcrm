@@ -28,41 +28,66 @@ defined('_QWEXEC') or die;
 #     Display Gift Certificates         #
 #########################################
 
-function display_giftcerts($db, $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $employee_id = null, $customer_id = null, $invoice_id = null, $status = null) {
+function display_giftcerts($db, $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $status = null, $is_redeemed = null, $employee_id = null, $customer_id = null, $invoice_id = null) {
 
     global $smarty;
     
     /* Filter the Records */
         
     // Default Action
-    $whereTheseRecords = "WHERE ".PRFX."user.user_id";    
+    $whereTheseRecords = "WHERE ".PRFX."giftcert.giftcert_id";    
     
     // Restrict results by search category and search term
-    if($search_term != null) {$whereTheseRecords .= " AND ".PRFX."user.$search_category LIKE '%$search_term%'";}    
+    if($search_term != null) {$whereTheseRecords .= " AND ".PRFX."giftcert.$search_category LIKE '%$search_term%'";}
     
+    // Restrict by Status
+    if($status != null) {$whereTheseRecords .= " AND ".PRFX."giftcert.STATUS=".$db->qstr($status);} 
+    
+    // Restrict by redmption Status
+    if($is_redeemed != null) {$whereTheseRecords .= " AND ".PRFX."giftcert.IS_REDEEMED=".$db->qstr($is_redeemed);}
+    
+    // Restrict by Employee
+    if($employee_id != null) {$whereTheseRecords .= " AND ".PRFX."giftcert.EMPLOYEE_ID=".$db->qstr($employee_id);}
+    
+    // Restrict by Customer
+    if($customer_id != null) {$whereTheseRecords .= " AND ".PRFX."giftcert.CUSTOMER_ID=".$db->qstr($customer_id);}
+    
+    // Restrict by Invoice
+    if($invoice_id != null) {$whereTheseRecords .= " AND ".PRFX."giftcert.INVOICE_ID=".$db->qstr($invoice_id);}
+    
+    /* The SQL code */
+    
+    $sql = "SELECT
+            ".PRFX."giftcert.     *,
+            ".PRFX."user.         display_name,
+            ".PRFX."customer.     CUSTOMER_DISPLAY_NAME               
+            FROM ".PRFX."giftcert
+            LEFT JOIN ".PRFX."user ON ".PRFX."giftcert.EMPLOYEE_ID = ".PRFX."user.user_id
+            LEFT JOIN ".PRFX."customer ON ".PRFX."giftcert.CUSTOMER_ID = ".PRFX."customer.CUSTOMER_ID            
+            ".$whereTheseRecords."
+            GROUP BY ".PRFX."giftcert.GIFTCERT_ID           
+            ORDER BY ".PRFX."giftcert.GIFTCERT_ID
+            ".$direction;           
+
     /* Restrict by pages */
-    
+        
     if($use_pages == true) {
         
         // Get the start Record
         $start_record = (($page_no * $records_per_page) - $records_per_page);        
         
-        // Figure out the total number of invoices in the database for the given status
-        $sql = "SELECT COUNT(*) as Num FROM ".PRFX."giftcert WHERE ACTIVE=" . $db->qstr($status);
+        // Figure out the total number of records in the database for the given search        
         if(!$rs = $db->Execute($sql)) {
             force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count the matching Gift Certificate records."));
             exit;
         } else {        
-            $total_results = $rs->FetchRow();
-            $smarty->assign('total_results', $total_results['Num']);
-        }
+            $total_results = $rs->RecordCount();            
+            $smarty->assign('total_results', $total_results);
+        }  
         
         // Figure out the total number of pages. Always round up using ceil()
-        $total_pages = ceil($total_results['Num'] / $records_per_page);
+        $total_pages = ceil($total_results / $records_per_page);
         $smarty->assign('total_pages', $total_pages);
-
-        // Set the page number
-        $smarty->assign('page_no', $page_no);
 
         // Assign the Previous page
         if($page_no > 1) {
@@ -78,61 +103,41 @@ function display_giftcerts($db, $direction = 'DESC', $use_pages = false, $page_n
         } else {
             $next = $total_pages;
         }
-        $smarty->assign('next', $next);
+        $smarty->assign('next', $next); 
         
-        // Restrict the results to the selected status
-        $whereTheseRecords = " WHERE ".PRFX."giftcert.ACTIVE=".$db->qstr($status);
+       // Only return the given page's records
+        $limitTheseRecords = " LIMIT ".$start_record.", ".$records_per_page;
         
-        // Restrict by Employee
-        if($employee_id != null){
-            $whereTheseRecords .= " AND ".PRFX."user.user_id=".$db->qstr($employee_id);
-        }
-        
-        // Restrict by Customer
-        if($customer_id != null){
-            $whereTheseRecords .= " AND ".PRFX."customer.CUSTOMER_ID=".$db->qstr($customer_id);
-        }
-        
-        // Restrict by Invoice
-        if($invoice_id != null){
-            $whereTheseRecords .= " AND ".PRFX."invoice.INVOICE_ID=".$db->qstr($customer_id);
-        } 
-        
-        // Only return the given page records
-        $limitTheseRecords = " LIMIT ".$start_record.", ".$records_per_page;   
-        
+        // add the restriction on to the SQL
+        $sql .= $limitTheseRecords;
+        $rs = '';
     
-    /* Get all workorders (unrestricted) */
-        
     } else {
         
-        // Return all invoices for the selected status (no pages)
-        $whereTheseRecords = " WHERE ".PRFX."giftcert.ACTIVE= ".$db->qstr($status);
-    }
+        // This make the drop down menu look correct
+        $smarty->assign('total_pages', 1);
+        
+    }        
     
-    /* Get the records */
-
-    $sql = "SELECT
-            ".PRFX."giftcert.     *,
-            ".PRFX."user.         user_id, display_name,
-            ".PRFX."customer.     CUSTOMER_ID,
-            ".PRFX."invoice.      INVOICE_ID           
-            FROM ".PRFX."giftcert
-            LEFT JOIN ".PRFX."user ON ".PRFX."giftcert.EMPLOYEE_ID = ".PRFX."user.user_id
-            LEFT JOIN ".PRFX."customer ON ".PRFX."giftcert.CUSTOMER_ID = ".PRFX."customer.CUSTOMER_ID
-            LEFT JOIN ".PRFX."invoice ON ".PRFX."giftcert.INVOICE_ID = ".PRFX."invoice.INVOICE_ID 
-            ".$whereTheseRecords."
-            GROUP BY ".PRFX."giftcert.GIFTCERT_ID           
-            ORDER BY ".PRFX."giftcert.GIFTCERT_ID
-            ".$direction."
-            ".$limitTheseRecords;
-
+    /* Return the records */
+         
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to return the matching Gift Certificate records."));
         exit;
-    } else {      
         
-        return $rs->GetArray();
+    } else {        
+        
+        $records = $rs->GetArray();   // If I call this twice for this search, no results are shown on the TPL
+
+        if(empty($records)){
+            
+            return false;
+            
+        } else {
+            
+            return $records;
+            
+        }
         
     }
     
@@ -144,7 +149,7 @@ function display_giftcerts($db, $direction = 'DESC', $use_pages = false, $page_n
 #   insert Gift Certificate     #
 #################################
 
-function insert_giftcert($db, $customer_id, $date_expires, $giftcert_code, $amount, $note) {
+function insert_giftcert($db, $customer_id, $date_expires, $giftcert_code, $amount, $notes) {
     
     $sql = "INSERT INTO ".PRFX."giftcert SET 
             CUSTOMER_ID     =". $db->qstr( $customer_id                         ).",               
@@ -156,8 +161,8 @@ function insert_giftcert($db, $customer_id, $date_expires, $giftcert_code, $amou
             IS_REDEEMED     =". $db->qstr( 0                                    ).",   
             GIFTCERT_CODE   =". $db->qstr( $giftcert_code                       ).",                
             AMOUNT          =". $db->qstr( $amount                              ).",
-            ACTIVE          =". $db->qstr( 1                                    ).",                
-            NOTE            =". $db->qstr( $note                                );
+            STATUS          =". $db->qstr( 1                                    ).",                
+            NOTES           =". $db->qstr( $notes                               );
 
     if(!$db->execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to insert the Gift Certificate into the database."));
@@ -234,7 +239,7 @@ function delete_giftcert($db, $giftcert_id) {
     
     // update and set non-active as you cannot really delete an issues gift certificate
 
-    $sql = "UPDATE ".PRFX."giftcert SET ACTIVE='0' WHERE GIFTCERT_ID=".$db->qstr($giftcert_id);
+    $sql = "UPDATE ".PRFX."giftcert SET STATUS='0' WHERE GIFTCERT_ID=".$db->qstr($giftcert_id);
 
     if(!$db->execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete the Gift Certificate."));
@@ -256,7 +261,7 @@ function delete_giftcert($db, $giftcert_id) {
 function validate_giftcert_code($db, $giftcert_id) {
 
     // check is active
-    if(get_giftcert_details($db, $giftcert_id['ACTIVE']) != 1) {
+    if(get_giftcert_details($db, $giftcert_id['STATUS']) != 1) {
         //force_page('core','error', 'error_msg=This gift certificate is not active');
         //exit;
         return false;
@@ -303,7 +308,7 @@ function update_giftcert_as_redeemed($db, $giftcert_id, $invoice_id) {
             DATE_REDEEMED       =". $db->qstr( time()       ).",
             IS_REDEEMED         =". $db->qstr( 1            ).",   
             INVOICE_ID          =". $db->qstr( $invoice_id  ).",
-            ACTIVE              =". $db->qstr( 0            )."
+            STATUS              =". $db->qstr( 0            )."
             WHERE GIFTCERT_ID   =". $db->qstr( $giftcert_id );
     
     if(!$rs = $db->execute($sql)) {

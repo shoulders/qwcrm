@@ -47,10 +47,10 @@
                                                 <td>{$currency_sym}<input type="text" name="amount" class="olotd5" size="6" ></td>
                                             </tr>
                                             <tr>
-                                                <td colspan="2"><b>{t}Note{/t}:</b></td>
+                                                <td colspan="2"><b>{t}Notes{/t}:</b></td>
                                             </tr>
                                             <tr>
-                                                <td colspan="2"><textarea class="olotd5" rows="15" cols="70" name="note"></textarea></td>
+                                                <td colspan="2"><textarea class="olotd5" rows="15" cols="70" name="notes"></textarea></td>
                                             </tr>
                                             <tr>
                                                 <td colspan="2">                                                    

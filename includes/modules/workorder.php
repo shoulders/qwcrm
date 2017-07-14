@@ -33,10 +33,10 @@ function display_single_workorder($db, $workorder_id){
     $sql = "SELECT ".PRFX."workorder.*,
             ".PRFX."workorder.   WORK_ORDER_STATUS,
             ".PRFX."customer.     *,            
-            ".PRFX."employee.     EMPLOYEE_ID, EMPLOYEE_EMAIL, EMPLOYEE_DISPLAY_NAME, EMPLOYEE_TYPE, EMPLOYEE_WORK_PHONE, EMPLOYEE_HOME_PHONE, EMPLOYEE_MOBILE_PHONE            
+            ".PRFX."user.     EMPLOYEE_ID, EMPLOYEE_EMAIL, EMPLOYEE_DISPLAY_NAME, EMPLOYEE_TYPE, EMPLOYEE_WORK_PHONE, EMPLOYEE_HOME_PHONE, EMPLOYEE_MOBILE_PHONE            
             FROM ".PRFX."workorder
             LEFT JOIN ".PRFX."customer ON ".PRFX."workorder.CUSTOMER_ID           = ".PRFX."customer.CUSTOMER_ID
-            LEFT JOIN ".PRFX."employee ON ".PRFX."workorder.WORK_ORDER_ASSIGN_TO  = ".PRFX."employee.EMPLOYEE_ID             
+            LEFT JOIN ".PRFX."user ON ".PRFX."workorder.WORK_ORDER_ASSIGN_TO  = ".PRFX."user.EMPLOYEE_ID             
             WHERE ".PRFX."workorder.WORK_ORDER_ID =".$db->qstr($workorder_id);
 
     if(!$rs = $db->Execute($sql)) {        
@@ -86,7 +86,7 @@ function display_workorders($db, $direction = 'DESC', $use_pages = false, $page_
     /* The SQL code */
     
     $sql =  "SELECT
-            ".PRFX."employee.     user_id, email, display_name, usergroup, work_phone, home_phone, work_mobile_phone,
+            ".PRFX."user.     user_id, email, display_name, usergroup, work_phone, home_phone, work_mobile_phone,
             ".PRFX."customer.     CUSTOMER_ID, CUSTOMER_DISPLAY_NAME,
             ".PRFX."workorder.    WORK_ORDER_ID, WORK_ORDER_OPEN_DATE, WORK_ORDER_CLOSE_DATE, WORK_ORDER_ASSIGN_TO, WORK_ORDER_SCOPE, WORK_ORDER_STATUS            
             FROM ".PRFX."workorder
@@ -181,12 +181,12 @@ function display_workorder_notes($db, $workorder_id){
     
     $sql = "SELECT
             ".PRFX."workorder_notes.*,
-            ".PRFX."employee.EMPLOYEE_DISPLAY_NAME
+            ".PRFX."user.EMPLOYEE_DISPLAY_NAME
             FROM
             ".PRFX."workorder_notes,
-            ".PRFX."employee
+            ".PRFX."user
             WHERE WORK_ORDER_ID=".$db->qstr($workorder_id)."
-            AND ".PRFX."employee.EMPLOYEE_ID = ".PRFX."workorder_notes.WORK_ORDER_EMPLOYEE_ID";
+            AND ".PRFX."user.EMPLOYEE_ID = ".PRFX."workorder_notes.WORK_ORDER_EMPLOYEE_ID";
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to return notes for the Work Order."));
@@ -207,12 +207,12 @@ function display_workorder_history($db, $workorder_id){
     
     $sql = "SELECT 
             ".PRFX."workorder_history.*,
-            ".PRFX."employee.EMPLOYEE_DISPLAY_NAME 
+            ".PRFX."user.EMPLOYEE_DISPLAY_NAME 
             FROM 
             ".PRFX."workorder_history, 
-            ".PRFX."employee 
+            ".PRFX."user 
             WHERE ".PRFX."workorder_history.WORK_ORDER_ID=".$db->qstr($workorder_id)." 
-            AND ".PRFX."employee.EMPLOYEE_ID = ".PRFX."workorder_history.ENTERED_BY
+            AND ".PRFX."user.EMPLOYEE_ID = ".PRFX."workorder_history.ENTERED_BY
             ORDER BY ".PRFX."workorder_history.HISTORY_ID";
     
     if(!$rs = $db->Execute($sql)) {

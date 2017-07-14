@@ -40,7 +40,7 @@
                                         </tr>
                                         <tr>
                                             <td><b>{t}Is Active/Deleted{/t}</b></td>
-                                            <td>{$giftcert_details.ACTIVE}</td>
+                                            <td>{$giftcert_details.STATUS}</td>
                                         </tr>  
                                         <tr>
                                             <td><b>{t}Redemption Code{/t}</b></td>
@@ -76,10 +76,10 @@
                         </table>                           
                         <table cellpadding="3" cellspacing="0" border="0" width="100%">
                             <tr>
-                                <td><b>{t}Note{/t}:</b></td>
+                                <td><b>{t}Notes{/t}:</b></td>
                             </tr>
                             <tr>
-                                <td>{$giftcert_details.NOTE}</td>
+                                <td>{$giftcert_details.NOTES}</td>
                             </tr>
                         </table>                        
                     </td>

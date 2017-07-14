@@ -30,9 +30,6 @@ defined('_QWEXEC') or die;
 
 function display_users($db, $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $status = null, $user_type = null, $usergroup = null) {
     
-    // should status and usergroup be at the end of the variables supplied?
-    
-    
     global $smarty;
 
     /* Filter the Records */

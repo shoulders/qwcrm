@@ -102,22 +102,18 @@
                                             <td valign="top" colspan="2">
                                                 <table class="olotable" width="100%" border="0" cellpadding="5" cellspacing="0">
                                                     <tr>
-                                                        <td class="olohead">{t}Action{/t}</td>
+                                                        <td class="olohead">ID</td>
                                                         <td class="olohead">{t}Display Name{/t}</td>
                                                         <td class="olohead">{t}First Name{/t}</td>
                                                         <td class="olohead">{t}Last Name{/t}</td>
                                                         <td class="olohead">{t}Phone{/t}</td>
                                                         <td class="olohead">{t}Type{/t}</td>
                                                         <td class="olohead">{t}Email{/t}</td>
-                                                        <td class="olohead">ID</td>
+                                                        <td class="olohead">{t}Action{/t}</td>
                                                     </tr>
                                                     {section name=i loop=$search_result}
                                                         <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=customer:details&customer_id={$search_result[i].CUSTOMER_ID}';" class="row1">
-                                                            <td class="olotd4" nowrap>
-                                                                <a href="index.php?page=customer:details&customer_id={$search_result[i].CUSTOMER_ID}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" onMouseOver="ddrivetip('{t}View Customer Details{/t}');" onMouseOut="hideddrivetip()"></a>&nbsp;
-                                                                <a href="index.php?page=workorder:new&customer_id={$search_result[i].CUSTOMER_ID}"><img src="{$theme_images_dir}icons/16x16/small_new_work_order.gif" alt="" border="0" onMouseOver="ddrivetip('{t}New Work Order{/t}');" onMouseOut="hideddrivetip();" alt=""></a>&nbsp;
-                                                                <a href="index.php?page=invoice:edit&invoice_type=invoice-only&workorder_id=0&customer_id={$search_result[i].CUSTOMER_ID}"><img src="{$theme_images_dir}icons/16x16/small_new_invoice_only.gif" alt="" border="0" onMouseOver="ddrivetip('{t}New Invoice Only{/t}');" onMouseOut="hideddrivetip();" alt=""></a>
-                                                            </td>
+                                                            <td class="olotd4" nowrap><a href="index.php?page=customer:details&customer_id={$search_result[i].CUSTOMER_ID}">{$search_result[i].CUSTOMER_ID}</a></td>
                                                             <td class="olotd4" nowrap><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" onMouseOver="ddrivetip('{$search_result[i].CUSTOMER_ADDRESS}<br>{$search_result[i].CUSTOMER_CITY}, {$search_result[i].CUSTOMER_STATE}  {$search_result[i].CUSTOMER_ZIP}');" onMouseOut="hideddrivetip();">&nbsp;{$search_result[i].CUSTOMER_DISPLAY_NAME}</td>
                                                             <td class="olotd4" nowrap>{$search_result[i].CUSTOMER_FIRST_NAME}</td>
                                                             <td class="olotd4" nowrap>{$search_result[i].CUSTOMER_LAST_NAME}</td>
@@ -128,8 +124,12 @@
                                                                 {if $search_result[i].CUSTOMER_TYPE ==3}{t}CUSTOMER_TYPE_3{/t}{/if}
                                                                 {if $search_result[i].CUSTOMER_TYPE ==4}{t}CUSTOMER_TYPE_4{/t}{/if}
                                                             </td>
-                                                            <td class="olotd4" nowrap><a href="mailto:{$search_result[i].CUSTOMER_EMAIL}"><font class="blueLink">{$search_result[i].CUSTOMER_EMAIL}</font></a></td>
-                                                            <td class="olotd4" nowrap><a href="index.php?page=customer:details&customer_id={$search_result[i].CUSTOMER_ID}">{$search_result[i].CUSTOMER_ID}</a></td>
+                                                            <td class="olotd4" nowrap><a href="mailto:{$search_result[i].CUSTOMER_EMAIL}"><font class="blueLink">{$search_result[i].CUSTOMER_EMAIL}</font></a></td>                                                            
+                                                            <td class="olotd4" nowrap>
+                                                                <a href="index.php?page=customer:details&customer_id={$search_result[i].CUSTOMER_ID}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" onMouseOver="ddrivetip('{t}View Customer Details{/t}');" onMouseOut="hideddrivetip()"></a>&nbsp;
+                                                                <a href="index.php?page=workorder:new&customer_id={$search_result[i].CUSTOMER_ID}"><img src="{$theme_images_dir}icons/16x16/small_new_work_order.gif" alt="" border="0" onMouseOver="ddrivetip('{t}New Work Order{/t}');" onMouseOut="hideddrivetip();" alt=""></a>&nbsp;
+                                                                <a href="index.php?page=invoice:edit&invoice_type=invoice-only&workorder_id=0&customer_id={$search_result[i].CUSTOMER_ID}"><img src="{$theme_images_dir}icons/16x16/small_new_invoice_only.gif" alt="" border="0" onMouseOver="ddrivetip('{t}New Invoice Only{/t}');" onMouseOut="hideddrivetip();" alt=""></a>
+                                                            </td>
                                                         </tr>
                                                     {/section}
                                                 </table>
