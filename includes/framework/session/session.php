@@ -107,6 +107,12 @@ class JSession implements IteratorAggregate
      * @var  \Joomla\Registry\Registry
      */
     protected $data;
+    
+    /**
+     * POST Emulation
+     *
+     */    
+    public $post_emulation_store;    
 
     /**
      * Constructor
@@ -1023,10 +1029,10 @@ class JSession implements IteratorAggregate
         $config = QFactory::getConfig();
         
         $sql    = "SELECT session_id FROM ".PRFX."session WHERE session_id = " . $db->qstr( $this->getId() );        
-        $rs     = $db->Execute($sql);       // If no rows found then $rs will not be created
+        $rs     = $db->Execute($sql);
         
         // If the session record doesn't exist initialise it.
-        if (!$rs)        
+        if (!$rs->RecordCount())        
         {
             $time = $this->isNew() ? time() : $this->get('session.timer.start');            
 
@@ -1077,7 +1083,7 @@ class JSession implements IteratorAggregate
         if ($this->isNew())
         {
             $this->set('registry', new Registry);
-            $this->set('user', new JUser);
+            $this->set('user', new JUser);            
         }
     }
 }

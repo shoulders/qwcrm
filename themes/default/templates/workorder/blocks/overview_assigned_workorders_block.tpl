@@ -1,5 +1,5 @@
 <!-- overview_assigned_workorders_block.tpl -->
-<b>{t}workorder_assigned{/t}</b>
+<b>{t}Assigned{/t}</b>
 <table class="olotable" width="100%" border="0" cellpadding="4" cellspacing="0">
     <tr>
         <td class="olohead" width="6"><b>{t}Workorder ID{/t}</b></td>

@@ -405,6 +405,7 @@ class QFactory {
     
 /****************** User Object ******************/
 
+    // this handles user data stored in the user section of the session data blob
 
    /**
      * 
@@ -618,6 +619,5 @@ class QFactory {
         //return md5($this->config->get('secretKey') . $seed);
         return md5(self::getConfig()->get('secretKey') . $seed);
     }      
-    
+      
 }
-

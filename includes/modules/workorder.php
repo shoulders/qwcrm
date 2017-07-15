@@ -31,9 +31,9 @@ defined('_QWEXEC') or die;
 function display_single_workorder($db, $workorder_id){
     
     $sql = "SELECT ".PRFX."workorder.*,
-            ".PRFX."workorder.   WORK_ORDER_STATUS,
+            ".PRFX."workorder.    WORK_ORDER_STATUS,
             ".PRFX."customer.     *,            
-            ".PRFX."user.     user_id, email, display_name, usergroup, work_phone, home_phone, work_mobile_phone            
+            ".PRFX."user.         user_id, email, display_name, usergroup, work_phone, home_phone, work_mobile_phone            
             FROM ".PRFX."workorder
             LEFT JOIN ".PRFX."customer ON ".PRFX."workorder.CUSTOMER_ID           = ".PRFX."customer.CUSTOMER_ID
             LEFT JOIN ".PRFX."user ON ".PRFX."workorder.WORK_ORDER_ASSIGN_TO  = ".PRFX."user.user_id             
@@ -86,7 +86,7 @@ function display_workorders($db, $direction = 'DESC', $use_pages = false, $page_
     /* The SQL code */
     
     $sql =  "SELECT
-            ".PRFX."user.     user_id, email, display_name, usergroup, work_phone, home_phone, work_mobile_phone,
+            ".PRFX."user.         user_id, email, display_name, usergroup, work_phone, home_phone, work_mobile_phone,
             ".PRFX."customer.     CUSTOMER_ID, CUSTOMER_DISPLAY_NAME,
             ".PRFX."workorder.    WORK_ORDER_ID, WORK_ORDER_OPEN_DATE, WORK_ORDER_CLOSE_DATE, WORK_ORDER_ASSIGN_TO, WORK_ORDER_SCOPE, WORK_ORDER_STATUS            
             FROM ".PRFX."workorder
@@ -685,13 +685,13 @@ function delete_workorder($db, $workorder_id) {
     
     // Does the workorder have an invoice
     if(check_workorder_has_invoice($db, $workorder_id)) {        
-        postEmulation('warning_msg', gettext("This workorder cannot be deleted because it has an invoice."));
+        postEmulationWrite('warning_msg', gettext("This workorder cannot be deleted because it has an invoice."));
         return false;
     }
     
     // Is the workorder in an allowed state to be deleted
     if(!check_workorder_status_is_allowed_for_deletion($db, $workorder_id)) {        
-        postEmulation('warning_msg', gettext("This workorder cannot be deleted because its status does not allow it."));
+        postEmulationWrite('warning_msg', gettext("This workorder cannot be deleted because its status does not allow it."));
         return false;
     }
     
@@ -877,7 +877,7 @@ function resolution_edit_status_check($db, $workorder_id) {
         // waiting for parts
         if ($rs->fields['WORK_ORDER_STATUS'] == 3) {           
             
-            postEmulation('warning_msg', gettext("Can not close a work order if it is Waiting For Parts. Please Adjust the status."));
+            postEmulationWrite('warning_msg', gettext("Can not close a work order if it is Waiting For Parts. Please Adjust the status."));
             return false;
             
         }
@@ -885,7 +885,7 @@ function resolution_edit_status_check($db, $workorder_id) {
         // closed
         if($rs->fields['WORK_ORDER_STATUS'] == 6) {
             
-            postEmulation('warning_msg', gettext("Work Order Is already Closed. Please Create an Invoice."));
+            postEmulationWrite('warning_msg', gettext("Work Order Is already Closed. Please Create an Invoice."));
             return false;
         }
         

@@ -259,16 +259,10 @@ $smarty->assign('login_customer_id',        $login_customer_id      );
 
 ################################
 #   Set Global PHP Values      #
-################################
+################################ 
 
-// Prevents errors if there is no $_SESSION varibles set via force_page
-if(!is_array($_SESSION['post_emulation'])){$_SESSION['post_emulation'] = array();}
- 
 // Merge the $_GET, $_POST and emulated $_POST
-$VAR = array_merge($_GET, $_POST, $_SESSION['post_emulation']);
-
-// Delete the post_emulation array as varibles stored there are no longer needed
-unset($_SESSION['post_emulation']);
+$VAR = array_merge($_GET, $_POST, postEmulationReturnStore());
 
 // These are used globally
 $workorder_id       = $VAR['workorder_id'];
@@ -279,8 +273,7 @@ $supplier_id        = $VAR['supplier_id'];
 $invoice_id         = $VAR['invoice_id'];
 $schedule_id        = $VAR['schedule_id'];
 $giftcert_id        = $VAR['giftcert_id'];
-
-$user_id            = $VAR['user_id'];      // this is the same as $login_user_id ?
+$user_id            = $VAR['user_id'];
 
 // Make sure an employee_id is always set - if no user is set use the logged in user
 //if(isset($VAR['employee_id'])) {$employee_id = $VAR['employee_id'];} else {$employee_id = QFactory::getUser()->login_user_id;}  // this might not be required

@@ -39,7 +39,7 @@
                                         <input type="hidden" name="updated_by" value="{$login_user_id}">
                                         <input type="hidden" name="workorder_id" value="{$workorder_id}">
                                         <p>&nbsp;</p>                                        
-                                        <input class="olotd4" name="change_status" value="{t}Uupdate{/t}" type="submit" />                                                                      
+                                        <input class="olotd4" name="change_status" value="{t}Update{/t}" type="submit" />                                                                      
                                     </form>
                                 </td>
 

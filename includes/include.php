@@ -86,7 +86,7 @@ function force_page($module, $page_tpl = Null, $variables = Null, $method = 'ses
         
     }
     
-    /* Send Varibles via $_SESSION */    
+    /* Session - Send Varibles via POST Emulation (was $_SESSION but now using Joomla session store)*/    
     
     if($method == 'session') {
         
@@ -110,7 +110,7 @@ function force_page($module, $page_tpl = Null, $variables = Null, $method = 'ses
 
                 // Set the page varible in the session - it does not matter page varible is set twice 1 in $_SESSION and 1 in $_GET the array merge will fix that
                 foreach($variable_array as $key => $value) {                    
-                    postEmulation($key, $value);
+                    postEmulationWrite($key, $value);
                 }               
 
                 // Build the URL and perform the redirect
@@ -137,7 +137,7 @@ function force_page($module, $page_tpl = Null, $variables = Null, $method = 'ses
 
                 // Set the page varible in the session - it does not matter page varible is set twice 1 in $_SESSION and 1 in $_GET the array merge will fix that
                 foreach($variable_array as $key => $value) {                    
-                    postEmulation($key, $value);
+                    postEmulationWrite($key, $value);
                 }
 
                 // Build the URL and perform the redirect
@@ -191,7 +191,7 @@ function force_error_page($error_page, $error_type, $error_location, $php_functi
     // raw_output mode is very basic, error logging still works, bootloops are prevented, page tracking and compression are skipped
     if($GConfig->error_page_raw_output) {
         
-        // required for some smarty operations in the error page
+        // required for some smarty operations in the error page (this is used in the included page)
         global $smarty;
 
         // make sure the page object is empty
@@ -216,13 +216,13 @@ function force_error_page($error_page, $error_type, $error_location, $php_functi
     } else {
         
         // Pass varibles to the error page after preperation
-        postEmulation('error_page',         prepare_error_data('error_page', $error_page)           );
-        postEmulation('error_type',         $error_type                                             );
-        postEmulation('error_location',     prepare_error_data('error_location', $error_location)   );
-        postEmulation('php_function',       prepare_error_data('php_function', $php_function)       );
-        postEmulation('database_error',     $database_error                                         );
-        postEmulation('sql_query',          prepare_error_data('sql_query', $sql_query)             );
-        postEmulation('error_msg',          $error_msg                                              );    
+        postEmulationWrite('error_page',         prepare_error_data('error_page', $error_page)           );
+        postEmulationWrite('error_type',         $error_type                                             );
+        postEmulationWrite('error_location',     prepare_error_data('error_location', $error_location)   );
+        postEmulationWrite('php_function',       prepare_error_data('php_function', $php_function)       );
+        postEmulationWrite('database_error',     $database_error                                         );
+        postEmulationWrite('sql_query',          prepare_error_data('sql_query', $sql_query)             );
+        postEmulationWrite('error_msg',          $error_msg                                              );    
 
         // Load Error Page
         force_page('core', 'error');
@@ -235,8 +235,56 @@ function force_error_page($error_page, $error_type, $error_location, $php_functi
 #  POST Emulation - for server to server  #
 ###########################################
 
-function postEmulation($key, $value) {
-    $_SESSION['post_emulation'][$key] = $value;
+/*
+ * this writes into the session registry/$data
+ * the register_shutdown_function() in native.php registers teh save()function to be run as the last thing run by the script
+ * $post_emulation_varible to registry code in the save() function in native.php - does work but i cannot control if the post varibles stay in the databse store
+ */
+
+// this writes to the $post_emulation_varible and then the varible to the store
+function postEmulationWrite($key, $value) {
+    
+    // Refresh the store timer to keep it fresh
+    QFactory::getSession()->set('post_emulation_timer', time());
+    
+    // Set the varible in the $post_emulation_store variable
+    QFactory::getSession()->post_emulation_store[$key] = $value;
+    
+    // Save the whole $post_emulation_store varible into the registry (does this for every variable write)
+    QFactory::getSession()->set('post_emulation_store', QFactory::getSession()->post_emulation_store);
+    
+}
+
+// This reads the data from $post_emulation_varible
+function postEmulationRead($key) {
+    
+    // Refresh the store timer to keep it fresh
+    QFactory::getSession()->set('post_emulation_timer', time());
+    
+    // Read a varible from the store and return it
+    return QFactory::getSession()->post_emulation_store[$key];
+    
+}
+
+function postEmulationReturnStore($keep_store = false) {
+    
+    // Stale entries - make sure the entries are not too old
+    if($keep_store === false && (time() - QFactory::getSession()->get('post_emulation_timer') > 15 )) {        
+        
+        // Set the store timer to zero
+        QFactory::getSession()->set('post_emulation_timer', '0');
+        
+        // Empty the $post_emulation_store - not 100% i need this
+        QFactory::getSession()->post_emulation_store = array();
+
+        // Empty the registry store -  but keep it as an array
+        QFactory::getSession()->set('post_emulation_store', array());
+        
+    }
+    
+    // Return the store
+    return QFactory::getSession()->get('post_emulation_store');
+        
 }
 
 ############################################

@@ -359,7 +359,7 @@ function validate_payment_method_totals($db, $invoice_id, $amount) {
         //force_page('payment', 'new&invoice_id='.$invoice_id, 'warning_msg=You can not enter a transaction with a zero (0.00) amount');
         //exit;
         $smarty->assign('warning_msg', gettext("You can not enter a transaction with a zero (0.00) amount"));
-        //postEmulation('warning_msg', 'You can not enter a transaction with a zero (0.00) amount');
+        //postEmulationWrite('warning_msg', 'You can not enter a transaction with a zero (0.00) amount');
         return false;
     }
 
@@ -368,7 +368,7 @@ function validate_payment_method_totals($db, $invoice_id, $amount) {
         //force_page('payment', 'new&invoice_id='.$invoice_id, 'warning_msg=You can not enter more than the outstanding balance of the invoice.');
         //exit;
         $smarty->assign('warning_msg', gettext("You can not enter more than the outstanding balance of the invoice"));
-        //postEmulation('warning_msg', 'You can not enter more than the outstanding balance of the invoice');
+        //postEmulationWrite('warning_msg', 'You can not enter more than the outstanding balance of the invoice');
         return false;
     }
     

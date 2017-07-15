@@ -187,6 +187,7 @@ class JSessionHandlerNative implements JSessionHandlerInterface
             || (version_compare(PHP_VERSION, '5.4', 'lt') && $this->started && isset($_SESSION) && $this->getId()))
         {
             $session = QFactory::getSession();
+            //$session->set('post_emulation_store', $session->post_emulation_store); // Save the whole $post_emulation_store variable into the registry - in the databse the post_emulation_store always appears to be empty
             $data    = $session->getData();
 
             // Before storing it, let's serialize and encode the Registry object
