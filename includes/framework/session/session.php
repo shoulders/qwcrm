@@ -112,7 +112,7 @@ class JSession implements IteratorAggregate
      * POST Emulation
      *
      */    
-    public $post_emulation_store;    
+    public $post_emulation_store = array();    
 
     /**
      * Constructor

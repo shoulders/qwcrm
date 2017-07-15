@@ -232,7 +232,7 @@ function force_error_page($error_page, $error_type, $error_location, $php_functi
 }
 
 ###########################################
-#  POST Emulation - for server to server  #
+#  POST Emulation - for server to server  #  // might only work for logged in users, need to check, but fails on logout because session data is destroyed?
 ###########################################
 
 /*
@@ -277,22 +277,26 @@ function postEmulationReturnStore($keep_store = false) {
         // Empty the registry store -  but keep it as an array
         QFactory::getSession()->set('post_emulation_store', array());
         
+        // Empty the $post_emulation_store - not 100% i need this
+        QFactory::getSession()->post_emulation_store = array();
+        
     }
     
     // This is used for testing that the varibles get stored
     if($keep_store === true) {
         QFactory::getSession()->set('post_emulation_store', $post_store);
-    }
-    
-    // Empty the $post_emulation_store - not 100% i need this
-    QFactory::getSession()->post_emulation_store = array();
+    }    
     
     // Set the store timer to zero
     QFactory::getSession()->set('post_emulation_timer', '0');
     
-    // Return the post store
-    return $post_store;
-        
+    // Return the post store - this compensates for logout
+    if(!is_array($post_store)) {
+        return array();
+    } else {
+        return $post_store;
+    }
+    
 }
 
 ############################################
