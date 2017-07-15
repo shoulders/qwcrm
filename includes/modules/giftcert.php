@@ -149,7 +149,7 @@ function display_giftcerts($db, $direction = 'DESC', $use_pages = false, $page_n
 #   insert Gift Certificate     #
 #################################
 
-function insert_giftcert($db, $customer_id, $date_expires, $giftcert_code, $amount, $notes) {
+function insert_giftcert($db, $customer_id, $date_expires, $giftcert_code, $amount, $status, $notes) {
     
     $sql = "INSERT INTO ".PRFX."giftcert SET 
             CUSTOMER_ID     =". $db->qstr( $customer_id                         ).",               
@@ -161,7 +161,7 @@ function insert_giftcert($db, $customer_id, $date_expires, $giftcert_code, $amou
             IS_REDEEMED     =". $db->qstr( 0                                    ).",   
             GIFTCERT_CODE   =". $db->qstr( $giftcert_code                       ).",                
             AMOUNT          =". $db->qstr( $amount                              ).",
-            STATUS          =". $db->qstr( 1                                    ).",                
+            STATUS          =". $db->qstr( $status                              ).",                
             NOTES           =". $db->qstr( $notes                               );
 
     if(!$db->execute($sql)) {
@@ -226,6 +226,32 @@ function get_giftcert_id_by_gifcert_code($db, $giftcert_code) {
 }
 
 /** Update Functions **/
+
+#################################
+#   update Gift Certificate     #
+#################################
+
+function update_giftcert($db, $giftcert_id, $date_expires, $amount, $status, $notes) {
+    
+    $sql = "UPDATE ".PRFX."giftcert SET
+            EMPLOYEE_ID     =". $db->qstr( QFactory::getUser()->login_user_id   ).",
+            DATE_EXPIRES    =". $db->qstr( $date_expires                        ).",
+            AMOUNT          =". $db->qstr( $amount                              ).",
+            STATUS          =". $db->qstr( $status                              ).",                
+            NOTES           =". $db->qstr( $notes                               )."
+            WHERE GIFTCERT_ID=".$giftcert_id;
+
+    if(!$db->execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the Gift Certificate record in the database."));
+        exit;
+
+    } else {
+
+        return;
+        
+    }
+    
+}
 
 /** Close Functions **/
 

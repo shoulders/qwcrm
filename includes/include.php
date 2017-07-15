@@ -268,22 +268,30 @@ function postEmulationRead($key) {
 
 function postEmulationReturnStore($keep_store = false) {
     
-    // Stale entries - make sure the entries are not too old
-    if($keep_store === false && (time() - QFactory::getSession()->get('post_emulation_timer') > 15 )) {        
+    // Make temporary copy of the post store
+    $post_store = QFactory::getSession()->get('post_emulation_store');
+    
+    // Delete Stale Post Store - make sure the store is not an old one by putting a time limit on the validity
+    if(time() - QFactory::getSession()->get('post_emulation_timer') > 15 ) {        
         
-        // Set the store timer to zero
-        QFactory::getSession()->set('post_emulation_timer', '0');
-        
-        // Empty the $post_emulation_store - not 100% i need this
-        QFactory::getSession()->post_emulation_store = array();
-
         // Empty the registry store -  but keep it as an array
         QFactory::getSession()->set('post_emulation_store', array());
         
     }
     
-    // Return the store
-    return QFactory::getSession()->get('post_emulation_store');
+    // This is used for testing that the varibles get stored
+    if($keep_store === true) {
+        QFactory::getSession()->set('post_emulation_store', $post_store);
+    }
+    
+    // Empty the $post_emulation_store - not 100% i need this
+    QFactory::getSession()->post_emulation_store = array();
+    
+    // Set the store timer to zero
+    QFactory::getSession()->set('post_emulation_timer', '0');
+    
+    // Return the post store
+    return $post_store;
         
 }
 

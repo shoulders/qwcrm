@@ -25,8 +25,12 @@
                                     <form method="post" action="index.php?page=giftcert:new&customer_id={$customer_id}" name="gift" id="gift">
                                         <table>
                                             <tr>
+                                                <td><b>{t}Gift Certificate Code{/t}</b></td>
+                                                <td>{$giftcert_details.GIFTCERT_CODE}</td>
+                                            </tr>
+                                            <tr>
                                                 <td><b>{t}Customer{/t}</b></td>
-                                                <td><a href="index.php?page=customer:details&customer_id={$customer_id}">{$customer_details.CUSTOMER_DISPLAY_NAME}</a></td>
+                                                <td><a href="index.php?page=customer:details&customer_id={$giftcert_details.CUSTOMER_ID}">{$customer_details.CUSTOMER_DISPLAY_NAME}</a></td>
                                             </tr>
                                             <tr>
                                                 <td><b>{t}Expires{/t}</b></td>
@@ -43,7 +47,7 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td><b>{t}Amount{/t}</b></td>                                                
+                                                <td><b>{t}Amount{/t}</b></td>
                                                 <td>{$currency_sym}<input name="amount" class="olotd5" size="10" value="{$giftcert_details.AMOUNT|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumbersPeriod(event);"/></td>
                                             </tr>
                                             <tr>
