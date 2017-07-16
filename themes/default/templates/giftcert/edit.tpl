@@ -12,9 +12,9 @@
         <td>
             <table width="100%" cellpadding="4" cellspacing="0" border="0">
                 <tr>
-                    <td class="menuhead2" width="80%">&nbsp;{t}New Gift Certificate for{/t} {$customer_id}</td>
+                    <td class="menuhead2" width="80%">&nbsp;{t}Edit Gift Certificate{/t}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
-                        <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}GIFTCERT_SEARCH_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}GIFTCERT_SEARCH_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
+                        <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}GIFTCERT_EDIT_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}GIFTCERT_EDIT_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
                     </td>
                 </tr>
                 <tr>
@@ -22,7 +22,7 @@
                         <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
                             <tr>
                                 <td class="olotd4">                                    
-                                    <form method="post" action="index.php?page=giftcert:new&customer_id={$customer_id}" name="gift" id="gift">
+                                    <form method="post" action="index.php?page=giftcert:edit&giftcert_id={$giftcert_id}" name="giftcert_edit" id="giftcert_edit">
                                         <table>
                                             <tr>
                                                 <td><b>{t}Gift Certificate Code{/t}</b></td>
@@ -54,8 +54,8 @@
                                                 <td><b>{t}Status{/t}</b></td>
                                                 <td>
                                                     <select name="status">
-                                                        <option value="1" {if $giftcert_details.status == '1'}selected{/if}>{t}Active{/t}</option>
-                                                        <option value="0" {if $giftcert_details.status == '0'}selected{/if}>{t}Blocked{/t}</option>
+                                                        <option value="1" {if $giftcert_details.STATUS == '1'}selected{/if}>{t}Active{/t}</option>
+                                                        <option value="0" {if $giftcert_details.STATUS == '0'}selected{/if}>{t}Blocked{/t}</option>
                                                     </select>
                                                 </td>
                                             </tr>

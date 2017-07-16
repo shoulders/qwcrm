@@ -335,8 +335,7 @@ function delete_customer($db, $customer_id){
         exit;
     }  
     if($rs->fields['count'] > 0 ) {
-        //force_page('customer', 'search&error_msg=You can not delete a customer who has work orders.');
-        //exit;
+        postEmulationWrite('warning_msg', 'You can not delete a customer who has work orders.');
         return false;
     }
     
@@ -347,8 +346,7 @@ function delete_customer($db, $customer_id){
         exit;
     }    
     if($rs->fields['count'] > 0 ) {
-        //force_page('customer', 'search&error_msg=You can not delete a customer who has invoices.');
-        //exit;
+        postEmulationWrite('warning_msg', 'You can not delete a customer who has invoices.');
         return false;
     }    
     
@@ -359,8 +357,7 @@ function delete_customer($db, $customer_id){
         exit;
     }  
     if($rs->fields['count'] > 0 ) {
-        //force_page('customer', 'search&error_msg=You can not delete a customer who has gift certificates.');
-        //exit;
+        postEmulationWrite('warning_msg', 'You can not delete a customer who has gift certificates.');
         return false;
     }
     
@@ -371,28 +368,27 @@ function delete_customer($db, $customer_id){
         exit;
     }    
     if($rs->fields['count'] > 0 ) {
-        //force_page('customer', 'search&error_msg=You can not delete a customer who has customer notes.');
-        //exit;
+        postEmulationWrite('warning_msg', 'You can not delete a customer who has customer notes.');
         return false;
     }
     
-    // add deleting any users in user table + make the errors work
-    //.......................................
-    
-    
-    
     /* we can now delete the customer */
+    
+    // Delete any Customer use accounts
+    $sql = "DELETE FROM ".PRFX."user WHERE customer_id=".$db->qstr($customer_id);    
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete the customer's users from the database."));
+        exit;
+    }
     
     // Delete Customer
     $sql = "DELETE FROM ".PRFX."customer WHERE CUSTOMER_ID=".$db->qstr($customer_id);    
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete the customer from the database."));
         exit;
-    } else {
-        
-        return true;
-        
     }
+    
+    return true;
     
 }
 

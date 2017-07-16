@@ -14,7 +14,7 @@
 defined('_QWEXEC') or die;
 
 // Force SSL/HTTPS if enabled - add base path stuff here
-if($GConfig->force_ssl == 1 && !isset($_SERVER['HTTPS'])) {   
+if($QConfig->force_ssl == 1 && !isset($_SERVER['HTTPS'])) {   
     force_page('https://' . QWCRM_DOMAIN . QWCRM_PATH );
     exit;
 }

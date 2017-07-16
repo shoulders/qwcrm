@@ -22,7 +22,7 @@
                         <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
                             <tr>
                                 <td class="olotd4">                                    
-                                    <form method="post" action="index.php?page=giftcert:new&customer_id={$customer_id}" name="gift" id="gift">
+                                    <form method="post" action="index.php?page=giftcert:new" name="giftcert_new" id="giftcert_new">
                                         <table>
                                             <tr>
                                                 <td><b>{t}Customer{/t}</b></td>
@@ -62,7 +62,8 @@
                                                 <td colspan="2"><textarea class="olotd5" rows="15" cols="70" name="notes">{$giftcert_details.NOTES}</textarea></td>
                                             </tr>
                                             <tr>
-                                                <td colspan="2">                                                    
+                                                <td colspan="2">
+                                                    <input name="customer_id" value="{$customer_id}" type="hidden" />
                                                     <input type="submit" name="submit" value="Submit">
                                                 </td>
                                             </tr>

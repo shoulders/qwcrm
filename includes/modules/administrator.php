@@ -188,3 +188,106 @@ function updateACL($db, $permissions) {
     }
 
 }
+
+
+##################################              ####################                  ###############
+
+
+
+############################################
+#   Update the QWcrm settings file         #
+############################################
+
+function update_qwcrm_config($new_config) {
+    
+    // process the data to make it valid
+    $new_config = prepare_config_data($new_config);
+
+    // Get a fresh copy of the standard settings as an array        
+    $current_config = get_qwcrm_config();        
+
+    // Merge the new submitted config and the old one. We do this to preserve values that were not in the submitted form but are in the config.
+    $merged_config_data = array_merge($current_config, $new_config);
+
+    // Prepare the data
+    $merged_config_data = build_config_file_content($merged_config_data);
+
+    // Write the configuration file.
+    write_config_file($merged_config_data);
+
+    return true;
+    
+}
+
+############################################
+#   load current config details            #
+############################################
+
+function get_qwcrm_config() {
+    
+    return get_object_vars(new QConfig);
+    
+}
+
+############################################
+#   Prepare the Config file data layout    #
+############################################
+
+function build_config_file_content($config_data)
+{
+    $output = "<?php\n";
+    $output .= "class QConfig {\n";
+
+    foreach ($config_data as $key => $value)
+    {
+        $output .= "    public $$key = '$value';\n";
+    }
+
+   $output .= "}";
+
+   return $output;   
+}    
+
+
+
+############################################
+#      Write data to config file           #
+############################################
+
+function write_config_file($content)
+{
+    // Set the configuration file path.
+    $file = 'configuration.php';
+
+    // Check file is writable
+    chmod($file, '0644');
+
+    // Write file
+    $fp = fopen($file, 'w');
+    fwrite($fp, $content);
+    fclose($fp);
+
+    // Make file 444
+    chmod($file, '0444');      
+
+    return true;
+}    
+
+
+############################################
+#   Process config data before saving      #
+############################################
+
+function prepare_config_data($data) {
+    
+    // remove unwanted varibles
+    unset($data['page']);
+    unset($data['submit']);
+    
+    // setting updates - as per that joomla file - see old config.php file
+    
+    // joomla\administrator\components\com_config\model\application.php
+    
+    return $data;
+    
+}

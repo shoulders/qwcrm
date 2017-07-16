@@ -233,8 +233,7 @@ function get_giftcert_id_by_gifcert_code($db, $giftcert_code) {
 
 function update_giftcert($db, $giftcert_id, $date_expires, $amount, $status, $notes) {
     
-    $sql = "UPDATE ".PRFX."giftcert SET
-            EMPLOYEE_ID     =". $db->qstr( QFactory::getUser()->login_user_id   ).",
+    $sql = "UPDATE ".PRFX."giftcert SET            
             DATE_EXPIRES    =". $db->qstr( $date_expires                        ).",
             AMOUNT          =". $db->qstr( $amount                              ).",
             STATUS          =". $db->qstr( $status                              ).",                
@@ -280,27 +279,44 @@ function delete_giftcert($db, $giftcert_id) {
 
 /** Other Functions **/
 
-################################################
-#  Validate the Gift Certificate can be used   #
-################################################
+##############################################################
+#  Validate the Gift Certificate can be used for a payemnt   #
+##############################################################
 
-function validate_giftcert_code($db, $giftcert_id) {
+function validate_giftcert_for_payment($db, $giftcert_id) {
 
     // check is active
-    if(get_giftcert_details($db, $giftcert_id['STATUS']) != 1) {
+    if(get_giftcert_details($db, $giftcert_id, 'STATUS') != 1) {
         //force_page('core','error', 'error_msg=This gift certificate is not active');
         //exit;
         return false;
     }
 
     // check if expired
-    if(get_giftcert_details($db, $giftcert_id['DATE_EXPIRES']) < time()) {
+    if(get_giftcert_details($db, $giftcert_id, 'DATE_EXPIRES') < time()) {
         //force_page('core', 'error', 'error_msg=This gift certificate is expired.');
         //exit;
         return false;
     }
     
     return true;
+    
+}
+
+############################################
+#  Check if the giftcert is redeemed       #
+############################################
+
+function check_giftcert_redeemed($db, $giftcert_id) {
+
+    // check if redeemed
+    if(get_giftcert_details($db, $giftcert_id, 'IS_REDEEMED') == 1) {
+        //force_page('core','error', 'error_msg=This gift certificate has been redeemed');
+        //exit;
+        return true;
+    }
+    
+    return false;
     
 }
 

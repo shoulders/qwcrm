@@ -10,7 +10,6 @@
 defined('_QWEXEC') or die;
 
 // General Helpers
-require FRAMEWORK_DIR . 'general/config.php';                      // Gets the standard config settings Only and handles saving of them
 require FRAMEWORK_DIR . 'general/Registry.php';                    // Used to create a register for the class which can be manipulated (set/get/clear) and can be serialised into JSON compatible string for storage in the session
 require FRAMEWORK_DIR . 'general/WebClient.php';                   // Gets the browser details from the session (used in cookie creation)
 require FRAMEWORK_DIR . 'general/Cookie.php';                      // Cookie Object with set and get
@@ -162,7 +161,7 @@ class QFactory {
     /**
      * Get a configuration object - this allows the use in non object context
      *
-     * Returns the global {@link GConfig} object, only creating it if it doesn't already exist.
+     * Returns the global {@link QConfig} object, only creating it if it doesn't already exist.
      *
      * @param   string  $file       The path to the configuration file
      * @param   string  $type       The type of the configuration file
@@ -215,12 +214,12 @@ class QFactory {
         $namespace = ucfirst((string) preg_replace('/[^A-Z_]/i', '', $namespace));
 
         // Build the config name.
-        $name = 'GConfig' . $namespace;
+        $name = 'QConfig' . $namespace;
 
         // Handle the PHP configuration type.
         if ($type == 'PHP' && class_exists($name))
         {
-            // Create the GConfig object
+            // Create the QConfig object
             $config = new $name;
 
             // Load the configuration values into the registry
@@ -404,6 +403,9 @@ class QFactory {
         
     
 /****************** User Object ******************/
+    
+    // Check for data in the session.
+    // $temp = JFactory::getApplication()->getUserState('com_config.config.global.data');  - administrator/components/com_config/model/application.php
 
     // this handles user data stored in the user section of the session data blob
 
@@ -616,8 +618,8 @@ class QFactory {
      */
     public static function getHash($seed)
     {        
-        //return md5($this->config->get('secretKey') . $seed);
-        return md5(self::getConfig()->get('secretKey') . $seed);
+        //return md5($this->config->get('secret_key') . $seed);
+        return md5(self::getConfig()->get('secret_key') . $seed);
     }      
       
 }

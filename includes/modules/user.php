@@ -357,27 +357,25 @@ function update_user($db, $user_id, $VAR) {
 
 function delete_user($db, $user_id){
     
-    // Check if user has created any active workorders
+    // Check if user has created any workorders
     $sql = "SELECT count(*) as count FROM ".PRFX."workorder WHERE WORK_ORDER_CREATE_BY=".$db->qstr($user_id);    
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count the user's Workorders in the database."));
         exit;
     }  
     if($rs->fields['count'] > 0 ) {
-        //force_page('user', 'search&error_msg=You can not delete a user who has work orders.');
-        //exit;
+        postEmulationWrite('warning_msg', 'You can not delete a user who has created work orders.');        
         return false;
     }
     
-    // Check if user has any active workorders
+    // Check if user has any assigned workorders
     $sql = "SELECT count(*) as count FROM ".PRFX."workorder WHERE WORK_ORDER_ASSIGN_TO=".$db->qstr($user_id);    
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count the user's Workorders in the database."));
         exit;
     }  
     if($rs->fields['count'] > 0 ) {
-        //force_page('user', 'search&error_msg=You can not delete a user who has work orders.');
-        //exit;
+        postEmulationWrite('warning_msg', 'You can not delete a user who has assigned work orders.');
         return false;
     }
     
@@ -388,8 +386,7 @@ function delete_user($db, $user_id){
         exit;
     }    
     if($rs->fields['count'] > 0 ) {
-        //force_page('user', 'search&error_msg=You can not delete a user who has invoices.');
-        //exit;
+        postEmulationWrite('warning_msg', 'You can not delete a user who has invoices.');
         return false;
     }    
     
@@ -400,23 +397,20 @@ function delete_user($db, $user_id){
         exit;
     }  
     if($rs->fields['count'] > 0 ) {
-        //force_page('user', 'search&error_msg=You can not delete a user who has gift certificates.');
-        //exit;
+        postEmulationWrite('warning_msg', 'You can not delete a user who has gift certificates.');
         return false;
     }
     
     /* we can now delete the user */
     
-    // Delete Customer
-    $sql = "DELETE FROM ".PRFX."user WHERE USER_ID=".$db->qstr($user_id);    
+    // Delete User account
+    $sql = "DELETE FROM ".PRFX."user WHERE user_id=".$db->qstr($user_id);    
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete the user from the database."));
         exit;
-    } else {
-        
-        return true;
-        
     }
+        
+    return true;
     
 }
 

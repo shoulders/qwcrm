@@ -64,7 +64,7 @@ if(is_file('configuration.php')) {
 }
 
 // Create config object for global scope
-$GConfig = new GConfig;
+$QConfig = new QConfig;
 
 // need to add error control here ie skipt strait to
 require('includes/defines.php');
@@ -79,7 +79,7 @@ require(FRAMEWORK_DIR.'qwframework.php');
 ################################################
 
 // Set the error_reporting
-switch ($GConfig->error_reporting)
+switch ($QConfig->error_reporting)
 {
     case 'default':
     case '-1':
@@ -111,7 +111,7 @@ switch ($GConfig->error_reporting)
         break;
 
     default:
-        error_reporting($config->error_reporting);
+        error_reporting($QConfig->error_reporting);
         ini_set('display_errors', 1);
         break;
 }
@@ -147,12 +147,12 @@ switch ($GConfig->error_reporting)
 /* new system */
 
 // Autodetect Language - I18N support information here
-if($GConfig->autodetect_language) {
+if($QConfig->autodetect_language) {
     if(!$language = locale_accept_from_http($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
-        $language = $GConfig->default_language; 
+        $language = $QConfig->default_language; 
     }
 } else {
-    $language = $GConfig->default_language; 
+    $language = $QConfig->default_language; 
 }
 
 // here we define the global system locale given the found language
@@ -193,10 +193,10 @@ $app = new QFactory;
 // Get variables in correct format for login()
 if(isset($_POST['login_username'])) { $credentials['username'] = $_POST['login_username']; }
 if(isset($_POST['login_pwd'])) { $credentials['password'] = $_POST['login_pwd']; }
-if($GConfig->remember_me && isset($_POST['remember'])) { $options['remember'] = $_POST['remember']; }    
+if($QConfig->remember_me && isset($_POST['remember'])) { $options['remember'] = $_POST['remember']; }    
 
 // If captcha is enabled
-if($_POST['action'] === 'login' && $GConfig->captcha) {
+if($_POST['action'] === 'login' && $QConfig->recaptcha) {
     
     // Load ReCaptcha library
     require(LIBRARIES_DIR.'recaptchalib.php');    
@@ -356,7 +356,7 @@ if(isset($VAR['warning_msg'])){
 #  the page exists ready for building      #
 ############################################   
 
-if($GConfig->maintenance == true){
+if($QConfig->maintenance == true){
     
     // Set to the maintenance page    
     $page_display_controller = 'modules'.SEP.'core'.SEP.'maintenance.php'; 
@@ -459,7 +459,7 @@ if(check_acl($db, $login_usergroup_id, $module, $page_tpl)){
     }    
 
     // Fetch the Debug Block
-    if($GConfig->qwcrm_debug == true){
+    if($QConfig->qwcrm_debug == true){
         require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_debug_block.php');        
         $BuildPage .= "\r\n</body>\r\n</html>";
     } else {
@@ -475,12 +475,12 @@ if(check_acl($db, $login_usergroup_id, $module, $page_tpl)){
 ################################################
 
 // This logs access details to the stats tracker table in the database
-if($GConfig->qwcrm_tracker == true){
+if($QConfig->qwcrm_tracker == true){
     write_record_to_tracker_table($db, $page_display_controller, $module, $page_tpl);
 }
 
 // This logs access details to the access log
-if($GConfig->qwcrm_access_log == true){
+if($QConfig->qwcrm_access_log == true){
     write_record_to_access_log($login_username);
 }
 
@@ -505,7 +505,7 @@ if ($VAR['theme'] !== 'print') {
 ################################################
 
 // Compress page and send correct compression headers
-if ($GConfig->gzip == true && $VAR['theme'] !== 'print') {
+if ($QConfig->gzip == true && $VAR['theme'] !== 'print') {
 
     $BuildPage = compress_page_output($BuildPage);
     

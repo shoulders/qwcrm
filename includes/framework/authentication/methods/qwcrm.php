@@ -302,7 +302,7 @@ class PlgAuthenticationQwcrm
         $instance->setLastVisit();
 
         // Add "user state" cookie used for reverse caching proxies like Varnish, Nginx etc.
-        $config = new QConfig;
+        $config = QFactory::getConfig();
         $cookie_domain = $config->get('cookie_domain', '');
         $cookie_path   = $config->get('cookie_path', '/');
 

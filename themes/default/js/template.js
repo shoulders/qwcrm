@@ -119,6 +119,11 @@ function onlyDate(e) {
    return keyRestriction(e, "0123456789\/", false); 
 }
 
+// Only MySQL
+function onlyMysqlDatabaseName(e) {
+    return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$_", false);
+}
+
 // Common Function for Key Input Restriction
 function keyRestriction(e, allowedCharacters, spacesAllowed) {    
     

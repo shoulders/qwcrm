@@ -186,10 +186,10 @@ function perform_redirect($url, $type = 'header') {
 function force_error_page($error_page, $error_type, $error_location, $php_function, $database_error, $sql_query, $error_msg) { 
     
     // Load config settigns
-    $GConfig = new GConfig;
+    $QConfig = new QConfig;
    
     // raw_output mode is very basic, error logging still works, bootloops are prevented, page tracking and compression are skipped
-    if($GConfig->error_page_raw_output) {
+    if($QConfig->error_page_raw_output) {
         
         // required for some smarty operations in the error page (this is used in the included page)
         global $smarty;
@@ -284,8 +284,18 @@ function postEmulationReturnStore($keep_store = false) {
     
     // This is used for testing that the varibles get stored
     if($keep_store === true) {
+        
         QFactory::getSession()->set('post_emulation_store', $post_store);
-    }    
+        
+    } else {
+        
+        // Empty the registry store -  but keep it as an array
+        QFactory::getSession()->set('post_emulation_store', array());
+        
+        // Empty the $post_emulation_store - not 100% i need this
+        QFactory::getSession()->post_emulation_store = array();
+        
+    }
     
     // Set the store timer to zero
     QFactory::getSession()->set('post_emulation_timer', '0');
@@ -649,13 +659,13 @@ function get_company_details($db, $item = null){
 #  Encryption Routine using the secret key from configuration.php  #  // not sure this is used anywhere
 ####################################################################
 
-function encrypt($strString, $secretKey){
+function encrypt($strString, $secret_key){
     
     $deresult = '';
     
     for($i=0; $i<strlen($strString); $i++){
         $char       =   substr($strString, $i, 1);
-        $keychar    =   substr($secretKey, ($i % strlen($secretKey))-1, 1);
+        $keychar    =   substr($secret_key, ($i % strlen($secret_key))-1, 1);
         $char       =   chr(ord($char)+ord($keychar));
         $deresult  .=   $char;
     }    
@@ -668,14 +678,14 @@ function encrypt($strString, $secretKey){
 #  Deryption Routine using the secret key from configuration.php   # // not sure this is used anywhere
 ####################################################################
 
-function decrypt($strString, $secretKey){
+function decrypt($strString, $secret_key){
      
     $deresult = '';
     base64_decode($strstring);
     
     for($i=0; $i<strlen($strString); $i++){
         $char       =   substr($strString, $i, 1);
-        $keychar    =   substr($secretKey, ($i % strlen($secretKey))-1, 1);
+        $keychar    =   substr($secret_key, ($i % strlen($secret_key))-1, 1);
         $char       =   chr(ord($char)-ord($keychar));
         $deresult  .=   $char;
     }
@@ -689,14 +699,14 @@ function decrypt($strString, $secretKey){
 ###################################################################################
 
 /*
-function encrypt($strString, $secretKey){
+function encrypt($strString, $secret_key){
 
 	if ($strString == '') {
             return $strString;
 	}
         
 	$iv         = mcrypt_create_iv (mcrypt_get_iv_size (MCRYPT_BLOWFISH, MCRYPT_MODE_ECB), MCRYPT_RAND);
-	$enString   = mcrypt_ecb(MCRYPT_BLOWFISH, $secretKey, $strString, MCRYPT_ENCRYPT, $iv);
+	$enString   = mcrypt_ecb(MCRYPT_BLOWFISH, $secret_key, $strString, MCRYPT_ENCRYPT, $iv);
 	$enString   = bin2hex($enString);
 
 	return ($enString);
@@ -709,7 +719,7 @@ function encrypt($strString, $secretKey){
 ###################################################################################
 
 /*
-function decrypt($strString, $secretKey){
+function decrypt($strString, $secret_key){
 	
 	if ($strString == '') {
             return $strString;
@@ -717,7 +727,7 @@ function decrypt($strString, $secretKey){
         
 	$iv         = mcrypt_create_iv (mcrypt_get_iv_size (MCRYPT_BLOWFISH, MCRYPT_MODE_ECB), MCRYPT_RAND);
 	$strString  = hex2bin($strString);
-	$deString   = mcrypt_ecb(MCRYPT_BLOWFISH, $secretKey, $strString, MCRYPT_DECRYPT, $iv);
+	$deString   = mcrypt_ecb(MCRYPT_BLOWFISH, $secret_key, $strString, MCRYPT_DECRYPT, $iv);
 
 	return ($deString);
 
@@ -806,10 +816,10 @@ function write_record_to_tracker_table($db, $page_display_controller, $module, $
 
 function write_record_to_activity_log($record){
     
-    global $GConfig;
+    global $QConfig;
 
     // if activity logging not enabled exit
-    if($GConfig->qwcrm_activity_log != true){return;}
+    if($QConfig->qwcrm_activity_log != true){return;}
     
     // Build log entry - perhaps use the apache time stamp below
     $log_entry = $_SERVER['REMOTE_ADDR'] . ',' . $_SESSION['login_username'] . ',' . date("[d/M/Y:H:i:s O]", time()) . ',' . $record . "\n";

@@ -11,4 +11,4 @@ require('adodb.inc.php');
 
 // create adodb database connection
 $db = ADONewConnection('mysqli');
-$db->Connect($GConfig->db_host, $GConfig->db_user, $GConfig->db_pass, $GConfig->db_name);
+$db->Connect($QConfig->db_host, $QConfig->db_user, $QConfig->db_pass, $QConfig->db_name);
