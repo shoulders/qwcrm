@@ -272,7 +272,7 @@ function postEmulationReturnStore($keep_store = false) {
     $post_store = QFactory::getSession()->get('post_emulation_store');
     
     // Delete Stale Post Store - make sure the store is not an old one by putting a time limit on the validity
-    if(time() - QFactory::getSession()->get('post_emulation_timer') > 15 ) {        
+    if(time() - QFactory::getSession()->get('post_emulation_timer') > 5 ) {        
         
         // Empty the registry store -  but keep it as an array
         QFactory::getSession()->set('post_emulation_store', array());

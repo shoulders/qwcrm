@@ -189,10 +189,16 @@ function updateACL($db, $permissions) {
 
 }
 
+############################################
+#   load current config details            #
+############################################
 
-##################################              ####################                  ###############
-
-
+function get_qwcrm_config() {
+    
+    // Return the config values
+    return get_object_vars(new QConfig);
+    
+}
 
 ############################################
 #   Update the QWcrm settings file         #
@@ -200,32 +206,22 @@ function updateACL($db, $permissions) {
 
 function update_qwcrm_config($new_config) {
     
-    // process the data to make it valid
+    // Get a fresh copy of the current settings as an array        
+    $current_config = get_qwcrm_config();
+    
+    // Perform miscellaneous options based on configuration settings/changes.
     $new_config = prepare_config_data($new_config);
-
-    // Get a fresh copy of the standard settings as an array        
-    $current_config = get_qwcrm_config();        
-
+    
     // Merge the new submitted config and the old one. We do this to preserve values that were not in the submitted form but are in the config.
-    $merged_config_data = array_merge($current_config, $new_config);
-
-    // Prepare the data
-    $merged_config_data = build_config_file_content($merged_config_data);
+    $merged_config = array_merge($current_config, $new_config);
+    
+    // Prepare the config file content
+    $merged_config = build_config_file_content($merged_config);
 
     // Write the configuration file.
-    write_config_file($merged_config_data);
+    write_config_file($merged_config);
 
     return true;
-    
-}
-
-############################################
-#   load current config details            #
-############################################
-
-function get_qwcrm_config() {
-    
-    return get_object_vars(new QConfig);
     
 }
 
@@ -275,19 +271,55 @@ function write_config_file($content)
 
 
 ############################################
-#   Process config data before saving      #
+#   Process config data before saving      #  - // joomla\administrator\components\com_config\model\application.php  -  public function save($data)
 ############################################
 
-function prepare_config_data($data) {
+function prepare_config_data($new_config) {
     
-    // remove unwanted varibles
-    unset($data['page']);
-    unset($data['submit']);
+    // Get the database object
+    $db = QFactory::getDbo();
     
-    // setting updates - as per that joomla file - see old config.php file
+    // remove unwanted varibles from the new_config
+    unset($new_config['page']);
+    unset($new_config['submit']);
     
-    // joomla\administrator\components\com_config\model\application.php
+    // Get a fresh copy of the current settings as an array        
+    $current_config = get_qwcrm_config();
     
-    return $data;
+    // Purge the database session table if we are changing to the database handler.
+    if ($current_config['session_handler'] != 'database' && $new_config['session_handler'] == 'database')
+    {
+        $sql = "TRUNCATE ".PRFX."session";                    
+          
+        if(!$rs = $db->Execute($sql)) {
+            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to empty the databse session table."));
+            exit;
+            
+        }
+    
+    }
+                
+    // Set the shared session configuration
+    if (isset($new_config['shared_session']))
+    {
+        $currentShared = isset($current_config['shared_session']) ? $current_config['shared_session'] : '0';
+
+        // Has the user enabled shared sessions?
+        if ($new_config['shared_session'] == 1 && $currentShared == 0)
+        {
+            // Generate a random shared session name
+            $new_config['session_name'] = JUserHelper::genRandomPassword(16);
+        }
+
+        // Has the user disabled shared sessions?
+        if ($new_config['shared_session'] == 0 && $currentShared == 1)
+        {
+            // Remove the session name value
+            unset($new_config['session_name']);
+        }
+    } 
+    
+    // Return the processed config   
+    return $new_config;
     
 }

@@ -22,24 +22,36 @@
                         <td align="right"><b>{t}Host{/t}</b> <span style="color: #ff0000">*</span></td>
                         <td>
                             <input name="db_host" class="olotd5" value="{$qwcrm_config.db_host}" type="text" maxlength="20" required onkeydown="return onlyAlphaNumeric(event);"/>
-                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}INVOICE_LABOUR_RATES_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}INVOICE_LABOUR_RATES_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Host{/t}</strong></div><hr><div>{t escape=tooltip}The hostname for your database entered during the installation process. Do not edit this field unless absolutely necessary (eg the transfer of the database to a new hosting provider).{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
                     <tr>
                         <td align="right"><b>{t}Database Name{/t}</b> <span style="color: #ff0000">*</span></td>
-                        <td><input name="db_name" class="olotd5" value="{$qwcrm_config.db_name}" type="text" maxlength="20" required onkeydown="return onlyMysqlDatabaseName(event);"/></td>
+                        <td>
+                            <input name="db_name" class="olotd5" value="{$qwcrm_config.db_name}" type="text" maxlength="20" required onkeydown="return onlyMysqlDatabaseName(event);"/>
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Database Name{/t}</strong></div><hr><div>{t escape=tooltip}The name for your database entered during the installation process. Do not edit this field unless absolutely necessary (eg the transfer of the database to a new hosting provider).{/t}</div>');" onMouseOut="hideddrivetip();">
+                        </td>
                     </tr>                    
                     <tr>
                         <td align="right"><b>{t}Database Username{/t}</b> <span style="color: #ff0000">*</span></td>
-                        <td><input name="db_user" class="olotd5" value="{$qwcrm_config.db_user}" type="text" maxlength="20" required onkeydown="return onlyAlphaNumeric(event);"/></td>
-                    </tr>
-                    {* <tr>
+                        <td>
+                            <input name="db_user" class="olotd5" value="{$qwcrm_config.db_user}" type="text" maxlength="20" required onkeydown="return onlyAlphaNumeric(event);"/>
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Database Username{/t}</strong></div><hr><div>{t escape=tooltip}The username for access to your database entered during the installation process. Do not edit this field unless absolutely necessary (eg the transfer of the database to a new hosting provider).{/t}</div>');" onMouseOut="hideddrivetip();">
+                        </td>
+                    </tr>                    
+                    {*<tr>
                         <td align="right"><b>{t}Database Password{/t}</b></td>
-                        <td><input name="db_pass" class="olotd5" value="{$qwcrm_config.db_pass}" type="password" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"/></td>
-                    </tr> *}
+                        <td>
+                            <input name="db_pass" class="olotd5" value="{$qwcrm_config.db_pass}" type="password" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"/>
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Database Password{/t}</strong></div><hr><div>{t escape=tooltip}The password for access to your database entered during the installation process. Do not edit this field unless absolutely necessary (eg the transfer of the database to a new hosting provider).{/t}</div>');" onMouseOut="hideddrivetip();">
+                        </td>
+                    </tr>*}                    
                     <tr>
                         <td align="right"><b>{t}Database Tables Prefix{/t}</b> <span style="color: #ff0000">*</span></td>
-                        <td><input name="db_prefix" class="olotd5" value="{$qwcrm_config.db_prefix}" type="text" maxlength="20" required onkeydown="return onlyAlphaNumeric(event);"/></td>
+                        <td>
+                            <input name="db_prefix" class="olotd5" value="{$qwcrm_config.db_prefix}" type="text" maxlength="20" required onkeydown="return onlyAlphaNumeric(event);"/>
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Database Tables Prefix{/t}</strong></div><hr><div>{t escape=tooltip}The prefix used for your database tables, created during the installation process. Do not edit this field unless absolutely necessary (eg the transfer of the database to a new hosting provider).{/t}</div>');" onMouseOut="hideddrivetip();">
+                        </td>
                     </tr>
                     
                     
@@ -56,7 +68,8 @@
                                 <option value="0"{if $qwcrm_config.gzip == '0'} selected{/if}>{t}No{/t}</option>
                                 <option value="1"{if $qwcrm_config.gzip == '1'} selected{/if}>{t}Yes{/t}</option>
                             </select>
-                        </td>
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Gzip Page Compression{/t}</strong></div><hr><div>{t escape=tooltip}Compress buffered output if supported.{/t}</div>');" onMouseOut="hideddrivetip();">
+                        </td>                        
                     </tr>                    
                     <tr>
                         <td align="right"><b>{t}Site Maintenance{/t}</b></td>
@@ -65,6 +78,7 @@
                                 <option value="0"{if $qwcrm_config.maintenance == '0'} selected{/if}>{t}No{/t}</option>
                                 <option value="1"{if $qwcrm_config.maintenance == '1'} selected{/if}>{t}Yes{/t}</option>
                             </select>
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Site Maintenance{/t}</strong></div><hr><div>{t escape=tooltip}Select if access to the Site Frontend is available. If Yes, the Frontend will display a message via the maintenance page.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
                     <tr>
@@ -72,6 +86,7 @@
                         <td>
                             {$qwcrm_config.theme_name}
                             <input name="theme_name" class="olotd5" value="{$qwcrm_config.theme_name}" type="hidden" maxlength="20" required onkeydown="return onlyAlphaNumeric(event);"/>
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Theme Name{/t}</strong></div><hr><div>{t escape=tooltip}This is theme QWcrm is using. Currently this option is not available, although the templating code is all present.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
                     <tr>
@@ -80,6 +95,7 @@
                             <select class="olotd5" id="default_language" name="default_language">                                                       
                                 <option value="en_GB"{if $qwcrm_config.default_language == 'en_GB'} selected{/if}>{t}English{/t}</option>                                
                             </select>
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Default Language{/t}</strong></div><hr><div>{t escape=tooltip}This is the default language QWcrm uses. If \'Autodetect Language\' is disabled or the user\'s language is not availabe then this language will be used to display translations. If for some reson this fails, the language will default to english.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
                     <tr>
@@ -89,6 +105,7 @@
                                 <option value="0"{if $qwcrm_config.autodetect_language == '0'} selected{/if}>{t}No{/t}</option>
                                 <option value="1"{if $qwcrm_config.autodetect_language == '1'} selected{/if}>{t}Yes{/t}</option>
                             </select>
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Autodetect Language{/t}</strong></div><hr><div>{t escape=tooltip}If enabled QWcrm will try to set the language based on your browser. If your language is not available then the default language will be used.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
                     
@@ -102,9 +119,11 @@
                         <td align="right"><b>{t}Force SSL/HTTPS{/t}</b></td>
                         <td>
                             <select class="olotd5" id="force_ssl" name="force_ssl">                                                       
-                                <option value="0"{if $qwcrm_config.force_ssl == '0'} selected{/if}>{t}No{/t}</option>
-                                <option value="1"{if $qwcrm_config.force_ssl == '1'} selected{/if}>{t}Yes{/t}</option>
+                                <option value="0"{if $qwcrm_config.force_ssl == '0'} selected{/if}>{t}None{/t}</option>
+                                {*<option value="1"{if $qwcrm_config.force_ssl == '1'} selected{/if}>{t}Administrator Only{/t}</option>*}
+                                <option value="1"{if $qwcrm_config.force_ssl == '2'} selected{/if}>{t}Entire Site{/t}</option>
                             </select>
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Force SSL/HTTPS{/t}</strong></div><hr><div>{t escape=tooltip}Force site access in the selected areas to occur only with HTTPS (encrypted HTTP connections with the https:// protocol prefix) and also force the use of secure cookies. Note, you must have HTTPS enabled on your server to utilise this option.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
                     <tr>
@@ -114,15 +133,22 @@
                                 <option value="0"{if $qwcrm_config.recaptcha == '0'} selected{/if}>{t}No{/t}</option>
                                 <option value="1"{if $qwcrm_config.recaptcha == '1'} selected{/if}>{t}Yes{/t}</option>
                             </select>
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}reCAPTCHA{/t}</strong></div><hr><div>{t escape=tooltip}eeeeeeeeeeeeeeeeeeeeeeeeeeeeee{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
                     <tr>
                         <td align="right"><b>{t}reCAPTCHA Site Key{/t}</b></td>
-                        <td><input name="recaptcha_site_key" class="olotd5" value="{$qwcrm_config.recaptcha_site_key}" type="text" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"/></td>
+                        <td>
+                            <input name="recaptcha_site_key" class="olotd5" value="{$qwcrm_config.recaptcha_site_key}" type="text" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"/>
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}reCAPTCHA Site Key{/t}</strong></div><hr><div>{t escape=tooltip}eeeeeeeeeeeeeeeeeeeeeeeeeeeeee{/t}</div>');" onMouseOut="hideddrivetip();">
+                        </td>
                     </tr>
                     <tr>
                         <td align="right"><b>{t}reCAPTCHA Secret Key{/t}</b></td>
-                        <td><input name="recaptcha_secret_key" class="olotd5" value="{$qwcrm_config.recaptcha_secret_key}" type="text" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"/></td>
+                        <td>
+                            <input name="recaptcha_secret_key" class="olotd5" value="{$qwcrm_config.recaptcha_secret_key}" type="text" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"/>
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}reCAPTCHA Secret Key{/t}</strong></div><hr><div>{t escape=tooltip}eeeeeeeeeeeeeeeeeeeeeeeeeeeeee{/t}</div>');" onMouseOut="hideddrivetip();">
+                        </td>
                     </tr>
                     
                     <!-- Session -->
@@ -132,9 +158,39 @@
                     </tr>
                     
                     <tr>
+                        <td align="right"><b>{t}Session Handler{/t}</b></td>
+                        <td>
+                            <select class="olotd5" id="session_handler" name="session_handler">                                                       
+                                <option value="none"{if $qwcrm_config.session_handler == 'none'} selected{/if}>{t}None{/t}</option>
+                                <option value="database"{if $qwcrm_config.session_handler == 'database'} selected{/if}>{t}Database{/t}</option>
+                            </select>
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Session Handler{/t}</strong></div><hr><div>{t escape=tooltip}The mechanism by which QWcrm identifies a User once they are connected to the website using non-persistent cookies. None/PHP is susceptible to garbage collection usually every 1440 seconds which means that inactive users after 1440 will be logged out and can loose data. The PHP garbage collection time is set by the server in php.ini by several settings, but the main one is \'session.gc_maxlifetime = 1440\'. {/t}</div>');" onMouseOut="hideddrivetip();">
+                        </td>
+                    </tr>
+                    <tr>
                         <td align="right"><b>{t}Session Lifetime{/t}</b> <span style="color: #ff0000">*</span></td>
-                        <td><input name="session_lifetime" class="olotd5" value="{$qwcrm_config.session_lifetime}" type="text" maxlength="20" required onkeydown="return onlyNumbers(event);"/></td>
+                        <td>
+                            <input name="session_lifetime" class="olotd5" value="{$qwcrm_config.session_lifetime}" type="text" maxlength="20" required onkeydown="return onlyNumbers(event);"/>
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Session Lifetime{/t}</strong></div><hr><div>{t escape=tooltip}Auto log out a User after they have been inactive for the entered number of minutes. Do not set too high.{/t}</div>');" onMouseOut="hideddrivetip();">
+                        </td>
                     </tr>                    
+                    {*<tr>
+                        <td align="right"><b>{t}Shared Session{/t}</b></td>
+                        <td>
+                            <select class="olotd5" id="shared_session" name="shared_session">                                                       
+                                <option value="0"{if $qwcrm_config.shared_session == '0'} selected{/if}>{t}No{/t}</option>
+                                <option value="1"{if $qwcrm_config.shared_session == '1'} selected{/if}>{t}Yes{/t}</option>
+                            </select>
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Shared Session{/t}</strong></div><hr><div>{t escape=tooltip}When enabled, a user\'s session is shared between the frontend and administrator sections of the site. Note that changing this value will invalidate all existing sessions on the site. This is not available when the \'Force HTTPS\' option is set to \'Administrator Only\'.{/t}</div>');" onMouseOut="hideddrivetip();">
+                        </td>
+                    </tr>*}                    
+                    
+                    <!-- Remember Me -->
+                    
+                    <tr class="row2">
+                        <td class="menuhead" colspan="5" width="100%">&nbsp;{t}Remember Me{/t}</td>
+                    </tr>
+                                        
                     <tr>
                         <td align="right"><b>{t}Remember Me{/t}</b></td>
                         <td>
@@ -142,48 +198,43 @@
                                 <option value="0"{if $qwcrm_config.remember_me == '0'} selected{/if}>{t}No{/t}</option>
                                 <option value="1"{if $qwcrm_config.remember_me == '1'} selected{/if}>{t}Yes{/t}</option>
                             </select>
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Remember Me{/t}</strong></div><hr><div>{t escape=tooltip}Provides remember me functionality so when a user logs in to QWcrm they can stay logged in even if they close the browser. This works by generatating an authentication cookie which has an Expiry Date set by the \'Cookie Lifetime\'.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
-                    <tr>
-                        <td align="right"><b>{t}Shared Session{/t}</b></td>
-                        <td>
-                            <select class="olotd5" id="shared_session" name="shared_session">                                                       
-                                <option value="0"{if $qwcrm_config.shared_session == '0'} selected{/if}>{t}No{/t}</option>
-                                <option value="1"{if $qwcrm_config.shared_session == '1'} selected{/if}>{t}Yes{/t}</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td align="right"><b>{t}Session Handler{/t}</b></td>
-                        <td>
-                            <select class="olotd5" id="session_handler" name="session_handler">                                                       
-                                <option value="none"{if $qwcrm_config.session_handler == 'none'} selected{/if}>{t}None{/t}</option>
-                                <option value="database"{if $qwcrm_config.session_handler == 'database'} selected{/if}>{t}Database{/t}</option>
-                            </select>
-                        </td>
-                    </tr>
-                    
-                    <!-- Cookie -->
-                    
-                    <tr class="row2">
-                        <td class="menuhead" colspan="5" width="100%">&nbsp;{t}Cookie{/t}</td>
-                    </tr>
-                                        
                     <tr>
                         <td align="right"><b>{t}Cookie Lifetime{/t}</b> <span style="color: #ff0000">*</span></td>
-                        <td><input name="cookie_lifetime" class="olotd5" value="{$qwcrm_config.cookie_lifetime}" type="text" maxlength="20" required onkeydown="return onlyNumbers(event);"/></td>
+                        <td>
+                            <input name="cookie_lifetime" class="olotd5" value="{$qwcrm_config.cookie_lifetime}" type="text" maxlength="20" required onkeydown="return onlyNumbers(event);"/>
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Cookie Lifetime{/t}</strong></div><hr><div>{t escape=tooltip}The number of days until the authentication cookie will expire. Other factors may cause it to expire before this. Longer lengths are less secure.{/t}</div>');" onMouseOut="hideddrivetip();">
+                        </td>
                     </tr>
                     <tr>
                         <td align="right"><b>{t}Cookie Token Length{/t}</b> <span style="color: #ff0000">*</span></td>
-                        <td><input name="cookie_token_length" class="olotd5" value="{$qwcrm_config.cookie_token_length}" type="text" maxlength="20" required onkeydown="return onlyNumbers(event);"/></td>
+                        <td>
+                            <input name="cookie_token_length" class="olotd5" value="{$qwcrm_config.cookie_token_length}" type="text" maxlength="20" required onkeydown="return onlyNumbers(event);"/>
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Cookie Token Length{/t}</strong></div><hr><div>{t escape=tooltip}The length of the key to use to encrypt the cookie. Longer lengths are more secure, but they will slow performance.{/t}</div>');" onMouseOut="hideddrivetip();">
+                        </td>
                     </tr>
+                    
+                    <!-- Cookies -->
+                    
+                    <tr class="row2">
+                        <td class="menuhead" colspan="5" width="100%">&nbsp;{t}Cookies{/t}</td>
+                    </tr>
+                    
                     <tr>
                         <td align="right"><b>{t}Cookie Domain{/t}</b></td>
-                        <td><input name="cookie_domain" class="olotd5" value="{$qwcrm_config.cookie_domain}" type="text" maxlength="20" onkeydown="return onlyURL(event);"/></td>
+                        <td>
+                            <input name="cookie_domain" class="olotd5" value="{$qwcrm_config.cookie_domain}" type="text" maxlength="20" onkeydown="return onlyURL(event);"/>
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Cookie Domain{/t}</strong></div><hr><div>{t escape=tooltip}Domain to use when setting session cookies. Precede domain with \'.\' if cookie should be valid for all subdomains.{/t}</div>');" onMouseOut="hideddrivetip();">
+                        </td>
                     </tr>
                     <tr>
                         <td align="right"><b>{t}Cookie Path{/t}</b></td>
-                        <td><input name="cookie_path" class="olotd5" value="{$qwcrm_config.cookie_path}" type="text" maxlength="20" onkeydown="return onlyURL(event);"/></td>
+                        <td>
+                            <input name="cookie_path" class="olotd5" value="{$qwcrm_config.cookie_path}" type="text" maxlength="20" onkeydown="return onlyURL(event);"/>
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Cookie Path{/t}</strong></div><hr><div>{t escape=tooltip}Path the cookie should be valid for.{/t}</div>');" onMouseOut="hideddrivetip();">
+                        </td>
                     </tr>
                     
                     <!-- Logging -->
@@ -199,6 +250,7 @@
                                 <option value="0"{if $qwcrm_config.qwcrm_tracker == '0'} selected{/if}>{t}No{/t}</option>
                                 <option value="1"{if $qwcrm_config.qwcrm_tracker == '1'} selected{/if}>{t}Yes{/t}</option>
                             </select>
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}QWcrm Tracker{/t}</strong></div><hr><div>{t escape=tooltip}Legacy Tracking system. This system is depreceated.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
                     <tr>
@@ -208,6 +260,7 @@
                                 <option value="0"{if $qwcrm_config.qwcrm_access_log == '0'} selected{/if}>{t}No{/t}</option>
                                 <option value="1"{if $qwcrm_config.qwcrm_access_log == '1'} selected{/if}>{t}Yes{/t}</option>
                             </select>
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}QWcrm Access Log{/t}</strong></div><hr><div>{t escape=tooltip}Enable access logging for QWcrm. This will log all page accesses and store the data in the log file \'access.log\'. This log file is in apache log format and can be found in the logs folder.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
                     <tr>
@@ -217,6 +270,7 @@
                                 <option value="0"{if $qwcrm_config.qwcrm_activity_log == '0'} selected{/if}>{t}No{/t}</option>
                                 <option value="1"{if $qwcrm_config.qwcrm_activity_log == '1'} selected{/if}>{t}Yes{/t}</option>
                             </select>
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}QWcrm Activity Log{/t}</strong></div><hr><div>{t escape=tooltip}Enable activity logging for QWcrm. This will log all user activity within QWcrm and store the data in the log file \'activity.log\'. This log file is in apache log format and can be found in the logs folder.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
                     <tr>
@@ -226,6 +280,7 @@
                                 <option value="0"{if $qwcrm_config.qwcrm_error_log == '0'} selected{/if}>{t}No{/t}</option>
                                 <option value="1"{if $qwcrm_config.qwcrm_error_log == '1'} selected{/if}>{t}Yes{/t}</option>
                             </select>
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}QWcrm Error Log{/t}</strong></div><hr><div>{t escape=tooltip}Enable error logging for QWcrm. This will log all errors and store the data in the log file \'error.log\'. This log file is in apache log format and can be found in the logs folder.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr> 
                     
@@ -246,6 +301,7 @@
                                 <option value="maximum"{if $qwcrm_config.error_reporting == 'maximum'} selected{/if}>{t}Maximum{/t}</option>
                                 <option value="development"{if $qwcrm_config.error_reporting == 'development'} selected{/if}>{t}Development{/t}</option>                                
                             </select>
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Error Reporting{/t}</strong></div><hr><div>{t escape=tooltip}Select the level of PHP reporting for your needs. Do not leave error reporting on for live sites as this can be a security risk.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
                     <tr>
@@ -255,6 +311,7 @@
                                 <option value="0"{if $qwcrm_config.error_page_raw_output == '0'} selected{/if}>{t}No{/t}</option>
                                 <option value="1"{if $qwcrm_config.error_page_raw_output == '1'} selected{/if}>{t}Yes{/t}</option>
                             </select>
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Error Page Raw Output{/t}</strong></div><hr><div>{t escape=tooltip}Normally when an error occurs the error page is display with the relevant information, however sometimes looping or white screens can occur and this option strips back all uneeded functionality so just the error data is shown to negate these issues. This is only needed for development or unless otherwise instructed. QWcrm Debug does not need to be enabled.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>                    
                     
@@ -271,6 +328,7 @@
                                 <option value="0"{if $qwcrm_config.qwcrm_debug == '0'} selected{/if}>{t}No{/t}</option>
                                 <option value="1"{if $qwcrm_config.qwcrm_debug == '1'} selected{/if}>{t}Yes{/t}</option>
                             </select>
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}QWcrm Debug{/t}</strong></div><hr><div>{t escape=tooltip}This on it\'s own gives basic infomration such as the page and module names aswell as their load time. QWcrm Debug needs to be enabled to access the rest of the debugging options.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>                    
                     <tr>
@@ -280,6 +338,7 @@
                                 <option value="0"{if $qwcrm_config.qwcrm_advanced_debug == '0'} selected{/if}>{t}No{/t}</option>
                                 <option value="1"{if $qwcrm_config.qwcrm_advanced_debug == '1'} selected{/if}>{t}Yes{/t}</option>
                             </select>
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}QWcrm Advanced Debug{/t}</strong></div><hr><div>{t escape=tooltip}This does a full varible and class dump from PHP. This is a security risk and should only be used for QWcrm development.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
                     <tr>
@@ -289,6 +348,7 @@
                                 <option value="0"{if $qwcrm_config.qwcrm_smarty_debugging == '0'} selected{/if}>{t}No{/t}</option>
                                 <option value="1"{if $qwcrm_config.qwcrm_smarty_debugging == '1'} selected{/if}>{t}Yes{/t}</option>
                             </select>
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Smarty Debugging (QWcrm){/t}</strong></div><hr><div>{t escape=tooltip}Because of the way QWcrm is structured I needed to implement a custom method to call the Smarty Debugging template.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
                     <tr>
@@ -298,6 +358,7 @@
                                 <option value="0"{if $qwcrm_config.smarty_debugging == '0'} selected{/if}>{t}No{/t}</option>
                                 <option value="1"{if $qwcrm_config.smarty_debugging == '1'} selected{/if}>{t}Yes{/t}</option>
                             </select>
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Smarty Debugging{/t}</strong></div><hr><div>{t escape=tooltip}This is the standard way to enable Smarty Debugging. This currently does not work.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
                     
@@ -314,20 +375,26 @@
                                 <option value="0"{if $qwcrm_config.smarty_force_compile == '0'} selected{/if}>{t}No{/t}</option>
                                 <option value="1"{if $qwcrm_config.smarty_force_compile == '1'} selected{/if}>{t}Yes{/t}</option>
                             </select>
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Force Compile{/t}</strong></div><hr><div>{t escape=tooltip}This forces Smarty to (re)compile templates on every invocation. This setting overrides \'compile_check\'. By default this is FALSE. This is handy for development and debugging. It should never be used in a production environment. If \'caching\' is enabled, the cache file(s) will be regenerated every time. Compiling referenced here is the process of converting the Smarty templates into pure PHP code.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
                     <tr>
-                        <td align="right"><b>{t}Template Caching{/t}</b></td>
+                        <td align="right"><b>{t}Caching{/t}</b></td>
                         <td>
                             <select class="olotd5" id="smarty_caching" name="smarty_caching">                                                       
-                                <option value="0"{if $qwcrm_config.smarty_caching == '0'} selected{/if}>{t}No{/t}</option>
-                                <option value="1"{if $qwcrm_config.smarty_caching == '1'} selected{/if}>{t}Yes{/t}</option>
+                                <option value="0"{if $qwcrm_config.smarty_caching == '0'} selected{/if}>{t}None{/t}</option>
+                                <option value="1"{if $qwcrm_config.smarty_caching == '1'} selected{/if}>{t}Current{/t}</option>
+                                <option value="2"{if $qwcrm_config.smarty_caching == '2'} selected{/if}>{t}Saved{/t}</option>
                             </select>
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Caching{/t}</strong></div><hr><div>{t escape=tooltip}This tells Smarty whether or not to cache the output of the templates to the Cache Directory. This is untested with QWcrm.<hr>A value of Smarty::CACHING_LIFETIME_CURRENT tells Smarty to use the current $cache_lifetime variable to determine if the cache has expired.<br><br>A value of Smarty::CACHING_LIFETIME_SAVED tells Smarty to use the $cache_lifetime value at the time the cache was generated. This way you can set the $cache_lifetime just before fetching the template to have granular control over when that particular cache expires.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
                     <tr>
                         <td align="right"><b>{t}Cache Lifetime{/t}</b> <span style="color: #ff0000">*</span></td>
-                        <td><input name="smarty_cache_lifetime" class="olotd5" value="{$qwcrm_config.smarty_cache_lifetime}" type="text" maxlength="20" required onkeydown="return onlyNumbers(event);"/></td>
+                        <td>
+                            <input name="smarty_cache_lifetime" class="olotd5" value="{$qwcrm_config.smarty_cache_lifetime}" type="text" maxlength="20" required onkeydown="return onlyNumbers(event);"/>
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Cache Lifetime{/t}</strong></div><hr><div>{t escape=tooltip}This is the length of time in seconds that a template cache is valid. Once this time has expired, the cache will be regenerated.{/t}</div>');" onMouseOut="hideddrivetip();">
+                        </td>
                     </tr>
                     <tr>
                         <td align="right"><b>{t}Cache Modified Check{/t}</b></td>
@@ -336,6 +403,7 @@
                                 <option value="0"{if $qwcrm_config.smarty_cache_modified_check == '0'} selected{/if}>{t}No{/t}</option>
                                 <option value="1"{if $qwcrm_config.smarty_cache_modified_check == '1'} selected{/if}>{t}Yes{/t}</option>
                             </select>
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Cache Modified Check{/t}</strong></div><hr><div>{t escape=tooltip}Smarty will respect the \'If-Modified-Since\' header sent from the client. Only works with caching enabled.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr> 
                     

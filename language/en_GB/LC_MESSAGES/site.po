@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2017-07-16 12:28+0100\n"
-"PO-Revision-Date: 2017-07-16 12:30+0100\n"
+"POT-Creation-Date: 2017-07-16 18:58+0100\n"
+"PO-Revision-Date: 2017-07-16 19:00+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en_GB\n"
@@ -56,27 +56,27 @@ msgstr ""
 msgid "Cookie login failed for user "
 msgstr ""
 
-#: includes/framework/qwframework.php:106
+#: includes/framework/qwframework.php:105
 msgid "Username or Password Missing"
 msgstr ""
 
-#: includes/framework/qwframework.php:119
+#: includes/framework/qwframework.php:118
 msgid "Login successful for"
 msgstr ""
 
-#: includes/framework/qwframework.php:124
+#: includes/framework/qwframework.php:123
 msgid "Login successful"
 msgstr ""
 
-#: includes/framework/qwframework.php:132
+#: includes/framework/qwframework.php:131
 msgid "Login Failed"
 msgstr ""
 
-#: includes/framework/qwframework.php:151
+#: includes/framework/qwframework.php:150
 msgid "Logout successful for"
 msgstr ""
 
-#: includes/framework/qwframework.php:156
+#: includes/framework/qwframework.php:155
 msgid "Logout successful"
 msgstr ""
 
@@ -104,58 +104,58 @@ msgstr ""
 msgid "Unable to bind array to user object."
 msgstr ""
 
-#: includes/include.php:483 includes/include.php:487 includes/include.php:488
+#: includes/include.php:493 includes/include.php:497 includes/include.php:498
 msgid "_"
 msgstr ""
 
-#: includes/include.php:503
+#: includes/include.php:513
 msgid "The ACL has been supplied with no account type ID - I will now die."
 msgstr ""
 
-#: includes/include.php:512
+#: includes/include.php:522
 msgid "Could not get the user's Group Name by Login Account Type ID."
 msgstr ""
 
-#: includes/include.php:525
+#: includes/include.php:535
 msgid "Could not get the Page's ACL."
 msgstr ""
 
-#: includes/include.php:536
+#: includes/include.php:546
 msgid "You do not have permission to access the page - "
 msgstr ""
 
-#: includes/include.php:568
+#: includes/include.php:578
 msgid ""
 "Cannot read the QWcrm version number from the database. This could be a "
 "database connection issue."
 msgstr ""
 
-#: includes/include.php:576
+#: includes/include.php:586
 msgid ""
 "The File System and Database versions do not match, run the upgrade routine."
 msgstr ""
 
-#: includes/include.php:584
+#: includes/include.php:594
 msgid ""
 "The install Directory Exists!! Please Rename or remove the install directory."
 msgstr ""
 
-#: includes/include.php:589
+#: includes/include.php:599
 msgid ""
 "The Upgrade Directory Exists!! Please Rename or remove the upgrade directory."
 msgstr ""
 
-#: includes/include.php:603
+#: includes/include.php:613
 msgid ""
 "Could not compare the version of the file system and databases to verify "
 "they match."
 msgstr ""
 
-#: includes/include.php:788
+#: includes/include.php:798
 msgid "Error inserting item into tracker database."
 msgstr ""
 
-#: includes/include.php:819
+#: includes/include.php:829
 msgid "Could not open activity.log to save the record."
 msgstr ""
 
@@ -327,27 +327,31 @@ msgstr ""
 msgid "Failed to count the customer's Workorders in the database."
 msgstr ""
 
-#: includes/modules/customer.php:346
+#: includes/modules/customer.php:345
 msgid "Failed to count the customer's Invoices in the database."
 msgstr ""
 
-#: includes/modules/customer.php:358
+#: includes/modules/customer.php:356
 msgid "Failed to count the customer's Gift Certificates in the database."
 msgstr ""
 
-#: includes/modules/customer.php:370
+#: includes/modules/customer.php:367
 msgid "Failed to count the customer's Notes in the database."
 msgstr ""
 
-#: includes/modules/customer.php:389
+#: includes/modules/customer.php:380
+msgid "Failed to delete the customer's users from the database."
+msgstr ""
+
+#: includes/modules/customer.php:387
 msgid "Failed to delete the customer from the database."
 msgstr ""
 
-#: includes/modules/customer.php:408
+#: includes/modules/customer.php:404
 msgid "Failed to delete the customer note."
 msgstr ""
 
-#: includes/modules/customer.php:425
+#: includes/modules/customer.php:421
 msgid ""
 "Failed to check the submitted Display Name for duplicates in the database."
 msgstr ""
@@ -1717,49 +1721,49 @@ msgstr ""
 msgid "Failed to update the user record."
 msgstr ""
 
-#: includes/modules/user.php:363 includes/modules/user.php:375
+#: includes/modules/user.php:363 includes/modules/user.php:374
 msgid "Failed to count the user's Workorders in the database."
 msgstr ""
 
-#: includes/modules/user.php:387
+#: includes/modules/user.php:385
 msgid "Failed to count the user's Invoices in the database."
 msgstr ""
 
-#: includes/modules/user.php:399
+#: includes/modules/user.php:396
 msgid "Failed to count the user's Gift Certificates in the database."
 msgstr ""
 
-#: includes/modules/user.php:413
+#: includes/modules/user.php:409
 msgid "Failed to delete the user from the database."
 msgstr ""
 
-#: includes/modules/user.php:437
+#: includes/modules/user.php:431
 msgid ""
 "Failed to count the number of Work Orders for the user for the defined status"
 msgstr ""
 
-#: includes/modules/user.php:459
+#: includes/modules/user.php:453
 msgid ""
 "Failed count the number of invoices for the user for the defined status."
 msgstr ""
 
-#: includes/modules/user.php:490
+#: includes/modules/user.php:484
 msgid "Failed build and return and User list."
 msgstr ""
 
-#: includes/modules/user.php:515
+#: includes/modules/user.php:509
 msgid "Failed to check if the username exists."
 msgstr ""
 
-#: includes/modules/user.php:521
+#: includes/modules/user.php:515
 msgid "The Username"
 msgstr ""
 
-#: includes/modules/user.php:521
+#: includes/modules/user.php:515
 msgid "already exists! Please use a different one."
 msgstr ""
 
-#: includes/modules/user.php:560
+#: includes/modules/user.php:554
 msgid "Failed to check if the customer already has a login."
 msgstr ""
 
@@ -2122,355 +2126,381 @@ msgid "ADMINISTRATOR_ACL_HELP_CONTENT"
 msgstr "Configure what features and pages users can access."
 
 #: language/_gettext_only/pages.php:26
-msgid "ADMINISTRATOR_PHPINFO_PAGE_TITLE"
-msgstr "PHP Information"
+msgid "ADMINISTRATOR_CONFIG_PAGE_TITLE"
+msgstr "QWcrm Config Settings"
 
 #: language/_gettext_only/pages.php:27
-msgid "ADMINISTRATOR_PHPINFO_META_DESCRIPTION"
+msgid "ADMINISTRATOR_CONFIG_META_DESCRIPTION"
 msgstr "-"
 
 #: language/_gettext_only/pages.php:28
-msgid "ADMINISTRATOR_PHPINFO_META_KEYWORDS"
+msgid "ADMINISTRATOR_CONFIG_META_KEYWORDS"
 msgstr "-"
 
 #: language/_gettext_only/pages.php:29
-msgid "ADMINISTRATOR_PHPINFO_HELP_TITLE"
-msgstr "-"
+#: themes/default/templates/administrator/config.tpl:9
+msgid "ADMINISTRATOR_CONFIG_HELP_TITLE"
+msgstr "Help"
 
 #: language/_gettext_only/pages.php:30
-msgid "ADMINISTRATOR_PHPINFO_HELP_CONTENT"
-msgstr "-"
-
-#: language/_gettext_only/pages.php:33
-msgid "ADMINISTRATOR_UPDATE_PAGE_TITLE"
-msgstr "Check for QWcrm Updates"
+#: themes/default/templates/administrator/config.tpl:9
+msgid "ADMINISTRATOR_CONFIG_HELP_CONTENT"
+msgstr ""
+"On this page you can set most of QWcrm system settings. If you break "
+"anything you can always edit the configuration file directly. Each setting "
+"has a description about what it does and this can be accessed by hovering "
+"over the help icon next each setting."
 
 #: language/_gettext_only/pages.php:34
-msgid "ADMINISTRATOR_UPDATE_META_DESCRIPTION"
-msgstr "-"
+msgid "ADMINISTRATOR_PHPINFO_PAGE_TITLE"
+msgstr "PHP Information"
 
 #: language/_gettext_only/pages.php:35
-msgid "ADMINISTRATOR_UPDATE_META_KEYWORDS"
+msgid "ADMINISTRATOR_PHPINFO_META_DESCRIPTION"
 msgstr "-"
 
 #: language/_gettext_only/pages.php:36
+msgid "ADMINISTRATOR_PHPINFO_META_KEYWORDS"
+msgstr "-"
+
+#: language/_gettext_only/pages.php:37
+msgid "ADMINISTRATOR_PHPINFO_HELP_TITLE"
+msgstr "-"
+
+#: language/_gettext_only/pages.php:38
+msgid "ADMINISTRATOR_PHPINFO_HELP_CONTENT"
+msgstr "-"
+
+#: language/_gettext_only/pages.php:41
+msgid "ADMINISTRATOR_UPDATE_PAGE_TITLE"
+msgstr "Check for QWcrm Updates"
+
+#: language/_gettext_only/pages.php:42
+msgid "ADMINISTRATOR_UPDATE_META_DESCRIPTION"
+msgstr "-"
+
+#: language/_gettext_only/pages.php:43
+msgid "ADMINISTRATOR_UPDATE_META_KEYWORDS"
+msgstr "-"
+
+#: language/_gettext_only/pages.php:44
 #: themes/default/templates/administrator/update.tpl:10
 msgid "ADMINISTRATOR_UPDATE_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:37
+#: language/_gettext_only/pages.php:45
 #: themes/default/templates/administrator/update.tpl:10
 msgid "ADMINISTRATOR_UPDATE_HELP_CONTENT"
 msgstr ""
 "Check for updates to QWcrm. Click the button to check if you are running the "
 "latest version. OTA updates are not currently supported."
 
-#: language/_gettext_only/pages.php:42
+#: language/_gettext_only/pages.php:50
 msgid "COMPANY_BUSINESS_HOURS_PAGE_TITLE"
 msgstr "Business Hours"
 
-#: language/_gettext_only/pages.php:43
+#: language/_gettext_only/pages.php:51
 msgid "COMPANY_BUSINESS_HOURS_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:44
+#: language/_gettext_only/pages.php:52
 msgid "COMPANY_BUSINESS_HOURS_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:45
+#: language/_gettext_only/pages.php:53
 #: themes/default/templates/company/business_hours.tpl:9
 msgid "COMPANY_BUSINESS_HOURS_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:46
+#: language/_gettext_only/pages.php:54
 #: themes/default/templates/company/business_hours.tpl:9
 msgid "COMPANY_BUSINESS_HOURS_HELP_CONTENT"
 msgstr "Configure your business hours. This affects your schedules."
 
-#: language/_gettext_only/pages.php:49
+#: language/_gettext_only/pages.php:57
 msgid "COMPANY_EDIT_PAGE_TITLE"
 msgstr "Edit Company Information"
 
-#: language/_gettext_only/pages.php:50
+#: language/_gettext_only/pages.php:58
 msgid "COMPANY_EDIT_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:51
+#: language/_gettext_only/pages.php:59
 msgid "COMPANY_EDIT_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:52
+#: language/_gettext_only/pages.php:60
 msgid "COMPANY_EDIT_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:53
+#: language/_gettext_only/pages.php:61
 msgid "COMPANY_EDIT_HELP_CONTENT"
 msgstr "Configure your company information."
 
-#: language/_gettext_only/pages.php:58
+#: language/_gettext_only/pages.php:66
 msgid "CORE_404_PAGE_TITLE"
 msgstr ""
 "404 - Page Not Found - QWcrm - The Best Open Source Repairs Business CRM "
 "program available!"
 
-#: language/_gettext_only/pages.php:59
+#: language/_gettext_only/pages.php:67
 msgid "CORE_404_META_DESCRIPTION"
 msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
 
-#: language/_gettext_only/pages.php:60
+#: language/_gettext_only/pages.php:68
 msgid "CORE_404_META_KEYWORDS"
 msgstr ""
 "CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment "
 "Processing, Simple to use"
 
-#: language/_gettext_only/pages.php:61
+#: language/_gettext_only/pages.php:69
 msgid "CORE_404_HELP_TITLE"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:62
+#: language/_gettext_only/pages.php:70
 msgid "CORE_404_HELP_CONTENT"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:65
+#: language/_gettext_only/pages.php:73
 msgid "CORE_DASHBOARD_PAGE_TITLE"
 msgstr "QWcrm Dashboard"
 
-#: language/_gettext_only/pages.php:66
+#: language/_gettext_only/pages.php:74
 msgid "CORE_DASHBOARD_META_DESCRIPTION"
 msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
 
-#: language/_gettext_only/pages.php:67
+#: language/_gettext_only/pages.php:75
 msgid "CORE_DASHBOARD_META_KEYWORDS"
 msgstr ""
 "CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment "
 "Processing, Simple to use"
 
-#: language/_gettext_only/pages.php:68
+#: language/_gettext_only/pages.php:76
 #: themes/default/templates/core/dashboard.tpl:10
 msgid "CORE_DASHBOARD_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:69
+#: language/_gettext_only/pages.php:77
 #: themes/default/templates/core/dashboard.tpl:10
 msgid "CORE_DASHBOARD_HELP_CONTENT"
 msgstr ""
 "This page gives you an overview of what is going on in QWcrm and is also "
 "where you will see messages from management."
 
-#: language/_gettext_only/pages.php:72
+#: language/_gettext_only/pages.php:80
 msgid "CORE_ERROR_PAGE_TITLE"
 msgstr "QWcrm Error Page"
 
-#: language/_gettext_only/pages.php:73
+#: language/_gettext_only/pages.php:81
 msgid "CORE_ERROR_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:74
+#: language/_gettext_only/pages.php:82
 msgid "CORE_ERROR_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:75
+#: language/_gettext_only/pages.php:83
 msgid "CORE_ERROR_HELP_TITLE"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:76
+#: language/_gettext_only/pages.php:84
 msgid "CORE_ERROR_HELP_CONTENT"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:79
+#: language/_gettext_only/pages.php:87
 msgid "CORE_HOME_PAGE_TITLE"
 msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
 
-#: language/_gettext_only/pages.php:80
+#: language/_gettext_only/pages.php:88
 msgid "CORE_HOME_META_DESCRIPTION"
 msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
 
-#: language/_gettext_only/pages.php:81
+#: language/_gettext_only/pages.php:89
 msgid "CORE_HOME_META_KEYWORDS"
 msgstr ""
 "CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment "
 "Processing, Simple to use"
 
-#: language/_gettext_only/pages.php:82
+#: language/_gettext_only/pages.php:90
 msgid "CORE_HOME_HELP_TITLE"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:83
+#: language/_gettext_only/pages.php:91
 msgid "CORE_HOME_HELP_CONTENT"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:86
+#: language/_gettext_only/pages.php:94
 msgid "CORE_MAINTENANCE_PAGE_TITLE"
 msgstr "QWcrm - Maintenance Mode"
 
-#: language/_gettext_only/pages.php:87
+#: language/_gettext_only/pages.php:95
 msgid "CORE_MAINTENANCE_META_DESCRIPTION"
 msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
 
-#: language/_gettext_only/pages.php:88
+#: language/_gettext_only/pages.php:96
 msgid "CORE_MAINTENANCE_META_KEYWORDS"
 msgstr ""
 "CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment "
 "Processing, Simple to use"
 
-#: language/_gettext_only/pages.php:89
+#: language/_gettext_only/pages.php:97
 msgid "CORE_MAINTENANCE_HELP_TITLE"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:90
+#: language/_gettext_only/pages.php:98
 msgid "CORE_MAINTENANCE_HELP_CONTENT"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:95
+#: language/_gettext_only/pages.php:103
 msgid "CUSTOMER_DETAILS_PAGE_TITLE"
 msgstr "Customer Details"
 
-#: language/_gettext_only/pages.php:96
+#: language/_gettext_only/pages.php:104
 msgid "CUSTOMER_DETAILS_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:97
+#: language/_gettext_only/pages.php:105
 msgid "CUSTOMER_DETAILS_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:98
+#: language/_gettext_only/pages.php:106
 msgid "CUSTOMER_DETAILS_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:99
+#: language/_gettext_only/pages.php:107
 msgid "CUSTOMER_DETAILS_HELP_CONTENT"
 msgstr ""
 "View a customers details including related Gift Certificates, Work Orders "
 "and invoices."
 
-#: language/_gettext_only/pages.php:102
+#: language/_gettext_only/pages.php:110
 msgid "CUSTOMER_EDIT_PAGE_TITLE"
 msgstr "Edit Customer"
 
-#: language/_gettext_only/pages.php:103
+#: language/_gettext_only/pages.php:111
 msgid "CUSTOMER_EDIT_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:104
+#: language/_gettext_only/pages.php:112
 msgid "CUSTOMER_EDIT_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:105
+#: language/_gettext_only/pages.php:113
 #: themes/default/templates/customer/edit.tpl:12
 msgid "CUSTOMER_EDIT_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:106
+#: language/_gettext_only/pages.php:114
 #: themes/default/templates/customer/edit.tpl:12
 msgid "CUSTOMER_EDIT_HELP_CONTENT"
 msgstr "Edit the customer's details as required and then hit update."
 
-#: language/_gettext_only/pages.php:109
+#: language/_gettext_only/pages.php:117
 msgid "CUSTOMER_NEW_PAGE_TITLE"
 msgstr "New Customer"
 
-#: language/_gettext_only/pages.php:110
+#: language/_gettext_only/pages.php:118
 msgid "CUSTOMER_NEW_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:111
+#: language/_gettext_only/pages.php:119
 msgid "CUSTOMER_NEW_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:112
+#: language/_gettext_only/pages.php:120
 #: themes/default/templates/customer/new.tpl:13
 msgid "CUSTOMER_NEW_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:113
+#: language/_gettext_only/pages.php:121
 #: themes/default/templates/customer/new.tpl:13
 msgid "CUSTOMER_NEW_HELP_CONTENT"
 msgstr "Fill in the new customer's details and then hit submit."
 
-#: language/_gettext_only/pages.php:116
+#: language/_gettext_only/pages.php:124
 msgid "CUSTOMER_NOTE_EDIT_PAGE_TITLE"
 msgstr "Edit a customer's note"
 
-#: language/_gettext_only/pages.php:117
+#: language/_gettext_only/pages.php:125
 msgid "CUSTOMER_NOTE_EDIT_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:118
+#: language/_gettext_only/pages.php:126
 msgid "CUSTOMER_NOTE_EDIT_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:119
+#: language/_gettext_only/pages.php:127
 msgid "CUSTOMER_NOTE_EDIT_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:120
+#: language/_gettext_only/pages.php:128
 msgid "CUSTOMER_NOTE_EDIT_HELP_CONTENT"
 msgstr "Edit the content as required and then hit update."
 
-#: language/_gettext_only/pages.php:123
+#: language/_gettext_only/pages.php:131
 msgid "CUSTOMER_NOTE_NEW_PAGE_TITLE"
 msgstr "New Customer Note"
 
-#: language/_gettext_only/pages.php:124
+#: language/_gettext_only/pages.php:132
 msgid "CUSTOMER_NOTE_NEW_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:125
+#: language/_gettext_only/pages.php:133
 msgid "CUSTOMER_NOTE_NEW_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:126
+#: language/_gettext_only/pages.php:134
 #: themes/default/templates/customer/note_new.tpl:12
 msgid "CUSTOMER_NOTE_NEW_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:127
+#: language/_gettext_only/pages.php:135
 #: themes/default/templates/customer/note_new.tpl:12
 msgid "CUSTOMER_NOTE_NEW_HELP_CONTENT"
 msgstr "Add a new note here."
 
-#: language/_gettext_only/pages.php:130
+#: language/_gettext_only/pages.php:138
 msgid "CUSTOMER_SEARCH_PAGE_TITLE"
 msgstr "Search Customers"
 
-#: language/_gettext_only/pages.php:131
+#: language/_gettext_only/pages.php:139
 msgid "CUSTOMER_SEARCH_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:132
+#: language/_gettext_only/pages.php:140
 msgid "CUSTOMER_SEARCH_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:133
+#: language/_gettext_only/pages.php:141
 #: themes/default/templates/customer/search.tpl:10
 msgid "CUSTOMER_SEARCH_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:134
+#: language/_gettext_only/pages.php:142
 #: themes/default/templates/customer/search.tpl:10
 msgid "CUSTOMER_SEARCH_HELP_CONTENT"
 msgstr ""
 "You can search by the customer's name only. By default all customers are "
 "listed. You can browse the results using the navigation arrows."
 
-#: language/_gettext_only/pages.php:139
+#: language/_gettext_only/pages.php:147
 msgid "EXPENSE_DETAILS_PAGE_TITLE"
 msgstr "Expense Details"
 
-#: language/_gettext_only/pages.php:140
+#: language/_gettext_only/pages.php:148
 msgid "EXPENSE_DETAILS_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:141
+#: language/_gettext_only/pages.php:149
 msgid "EXPENSE_DETAILS_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:142
+#: language/_gettext_only/pages.php:150
 #: themes/default/templates/expense/details.tpl:11
 msgid "EXPENSE_DETAILS_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:143
+#: language/_gettext_only/pages.php:151
 #: themes/default/templates/expense/details.tpl:11
 msgid "EXPENSE_DETAILS_HELP_CONTENT"
 msgstr ""
@@ -2478,24 +2508,24 @@ msgstr ""
 "<br /><br /> To edit this record you can click on the <b>Edit Details</b> "
 "next to this Tooltip or on the Edit link in the Main Nav Menu on the left."
 
-#: language/_gettext_only/pages.php:146
+#: language/_gettext_only/pages.php:154
 msgid "EXPENSE_EDIT_PAGE_TITLE"
 msgstr "Edit Expense"
 
-#: language/_gettext_only/pages.php:147
+#: language/_gettext_only/pages.php:155
 msgid "EXPENSE_EDIT_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:148
+#: language/_gettext_only/pages.php:156
 msgid "EXPENSE_EDIT_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:149
+#: language/_gettext_only/pages.php:157
 #: themes/default/templates/expense/edit.tpl:18
 msgid "EXPENSE_EDIT_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:150
+#: language/_gettext_only/pages.php:158
 #: themes/default/templates/expense/edit.tpl:18
 msgid "EXPENSE_EDIT_HELP_CONTENT"
 msgstr ""
@@ -2503,24 +2533,24 @@ msgstr ""
 "changes, click on the <b>Update</b> Button and the changes will be submitted "
 "to the database."
 
-#: language/_gettext_only/pages.php:153
+#: language/_gettext_only/pages.php:161
 msgid "EXPENSE_NEW_PAGE_TITLE"
 msgstr "New Expense"
 
-#: language/_gettext_only/pages.php:154
+#: language/_gettext_only/pages.php:162
 msgid "EXPENSE_NEW_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:155
+#: language/_gettext_only/pages.php:163
 msgid "EXPENSE_NEW_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:156
+#: language/_gettext_only/pages.php:164
 #: themes/default/templates/expense/new.tpl:18
 msgid "EXPENSE_NEW_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:157
+#: language/_gettext_only/pages.php:165
 #: themes/default/templates/expense/new.tpl:18
 msgid "EXPENSE_NEW_HELP_CONTENT"
 msgstr ""
@@ -2531,24 +2561,24 @@ msgstr ""
 "click on the <b>Submit, Then New Record</b> button the record will be sent "
 "to the database and this page reloaded ready for another entry."
 
-#: language/_gettext_only/pages.php:160
+#: language/_gettext_only/pages.php:168
 msgid "EXPENSE_SEARCH_PAGE_TITLE"
 msgstr "Search Expenses"
 
-#: language/_gettext_only/pages.php:161
+#: language/_gettext_only/pages.php:169
 msgid "EXPENSE_SEARCH_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:162
+#: language/_gettext_only/pages.php:170
 msgid "EXPENSE_SEARCH_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:163
+#: language/_gettext_only/pages.php:171
 #: themes/default/templates/expense/search.tpl:10
 msgid "EXPENSE_SEARCH_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:164
+#: language/_gettext_only/pages.php:172
 #: themes/default/templates/expense/search.tpl:10
 msgid "EXPENSE_SEARCH_HELP_CONTENT"
 msgstr ""
@@ -2563,177 +2593,177 @@ msgstr ""
 "Tooltip.<br /><br />On the right of each Record Row there are icons for "
 "viewing, editing and deleting the record."
 
-#: language/_gettext_only/pages.php:169
+#: language/_gettext_only/pages.php:177
 msgid "GIFTCERT_DETAILS_PAGE_TITLE"
 msgstr "Gift Certificate Details"
 
-#: language/_gettext_only/pages.php:170
+#: language/_gettext_only/pages.php:178
 msgid "GIFTCERT_DETAILS_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:171
+#: language/_gettext_only/pages.php:179
 msgid "GIFTCERT_DETAILS_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:172
+#: language/_gettext_only/pages.php:180
 #: themes/default/templates/giftcert/details.tpl:10
 msgid "GIFTCERT_DETAILS_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:173
+#: language/_gettext_only/pages.php:181
 #: themes/default/templates/giftcert/details.tpl:10
 msgid "GIFTCERT_DETAILS_HELP_CONTENT"
 msgstr "This page shows you the details for the selected Gift Certificate."
 
-#: language/_gettext_only/pages.php:176
+#: language/_gettext_only/pages.php:184
 msgid "GIFTCERT_EDIT_PAGE_TITLE"
 msgstr "Edit Gift Certificate"
 
-#: language/_gettext_only/pages.php:177
+#: language/_gettext_only/pages.php:185
 msgid "GIFTCERT_EDIT_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:178
+#: language/_gettext_only/pages.php:186
 msgid "GIFTCERT_EDIT_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:179
+#: language/_gettext_only/pages.php:187
 #: themes/default/templates/giftcert/edit.tpl:17
 msgid "GIFTCERT_EDIT_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:180
+#: language/_gettext_only/pages.php:188
 #: themes/default/templates/giftcert/edit.tpl:17
 msgid "GIFTCERT_EDIT_HELP_CONTENT"
 msgstr ""
 "Edit the gift certificate. You can only change some options so the gift "
 "certificate stays valid."
 
-#: language/_gettext_only/pages.php:183
+#: language/_gettext_only/pages.php:191
 msgid "GIFTCERT_NEW_PAGE_TITLE"
 msgstr "New Gift Certificate"
 
-#: language/_gettext_only/pages.php:184
+#: language/_gettext_only/pages.php:192
 msgid "GIFTCERT_NEW_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:185
+#: language/_gettext_only/pages.php:193
 msgid "GIFTCERT_NEW_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:186
+#: language/_gettext_only/pages.php:194
 msgid "GIFTCERT_NEW_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:187
+#: language/_gettext_only/pages.php:195
 msgid "GIFTCERT_NEW_HELP_CONTENT"
 msgstr "Create a new Gift Certificate."
 
-#: language/_gettext_only/pages.php:190
+#: language/_gettext_only/pages.php:198
 msgid "GIFTCERT_SEARCH_PAGE_TITLE"
 msgstr "Search Gift Certificates"
 
-#: language/_gettext_only/pages.php:191
+#: language/_gettext_only/pages.php:199
 msgid "GIFTCERT_SEARCH_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:192
+#: language/_gettext_only/pages.php:200
 msgid "GIFTCERT_SEARCH_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:193
+#: language/_gettext_only/pages.php:201
 #: themes/default/templates/giftcert/new.tpl:17
 msgid "GIFTCERT_SEARCH_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:194
+#: language/_gettext_only/pages.php:202
 #: themes/default/templates/giftcert/new.tpl:17
 msgid "GIFTCERT_SEARCH_HELP_CONTENT"
 msgstr ""
 "You can search the Gift Certificates on this page. You can browse the "
 "results using the navigation arrows."
 
-#: language/_gettext_only/pages.php:199
+#: language/_gettext_only/pages.php:207
 msgid "HELP_ABOUT_PAGE_TITLE"
 msgstr "About QWcrm"
 
-#: language/_gettext_only/pages.php:200
+#: language/_gettext_only/pages.php:208
 msgid "HELP_ABOUT_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:201
+#: language/_gettext_only/pages.php:209
 msgid "HELP_ABOUT_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:202
+#: language/_gettext_only/pages.php:210
 msgid "HELP_ABOUT_DETAILS_HELP_TITLE"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:203
+#: language/_gettext_only/pages.php:211
 msgid "HELP_ABOUT_DETAILS_HELP_CONTENT"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:206
+#: language/_gettext_only/pages.php:214
 msgid "HELP_ATTRIBUTION_PAGE_TITLE"
 msgstr "QWcrm Attributions"
 
-#: language/_gettext_only/pages.php:207
+#: language/_gettext_only/pages.php:215
 msgid "HELP_ATTRIBUTION_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:208
+#: language/_gettext_only/pages.php:216
 msgid "HELP_ATTRIBUTION_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:209
+#: language/_gettext_only/pages.php:217
 msgid "HELP_ATTRIBUTION_DETAILS_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:210
+#: language/_gettext_only/pages.php:218
 msgid "HELP_ATTRIBUTION_DETAILS_HELP_CONTENT"
 msgstr ""
 "This page list all attributions for software I have used to make QWcrm a "
 "great piece of software. I have also included where possible version number, "
 "author and website where you can get the latest version."
 
-#: language/_gettext_only/pages.php:213
+#: language/_gettext_only/pages.php:221
 msgid "HELP_LICENSE_PAGE_TITLE"
 msgstr "QWcrm License"
 
-#: language/_gettext_only/pages.php:214
+#: language/_gettext_only/pages.php:222
 msgid "HELP_LICENSE_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:215
+#: language/_gettext_only/pages.php:223
 msgid "HELP_LICENSE_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:216
+#: language/_gettext_only/pages.php:224
 msgid "HELP_LICENSE_DETAILS_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:217
+#: language/_gettext_only/pages.php:225
 msgid "HELP_LICENSE_DETAILS_HELP_CONTENT"
 msgstr "This is the license that QWcrm is released under."
 
-#: language/_gettext_only/pages.php:222
+#: language/_gettext_only/pages.php:230
 msgid "INVOICE_DETAILS_PAGE_TITLE"
 msgstr "Invoice Details"
 
-#: language/_gettext_only/pages.php:223
+#: language/_gettext_only/pages.php:231
 msgid "INVOICE_DETAILS_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:224
+#: language/_gettext_only/pages.php:232
 msgid "INVOICE_DETAILS_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:225
+#: language/_gettext_only/pages.php:233
 #: themes/default/templates/invoice/details.tpl:10
 msgid "INVOICE_DETAILS_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:226
+#: language/_gettext_only/pages.php:234
 #: themes/default/templates/invoice/details.tpl:10
 msgid "INVOICE_DETAILS_HELP_CONTENT"
 msgstr ""
@@ -2741,24 +2771,24 @@ msgstr ""
 "email the invoice if you have the required permissions but you cannot edit "
 "the invoice here."
 
-#: language/_gettext_only/pages.php:229
+#: language/_gettext_only/pages.php:237
 msgid "INVOICE_EDIT_PAGE_TITLE"
 msgstr "Edit Invoice"
 
-#: language/_gettext_only/pages.php:230
+#: language/_gettext_only/pages.php:238
 msgid "INVOICE_EDIT_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:231
+#: language/_gettext_only/pages.php:239
 msgid "INVOICE_EDIT_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:232
+#: language/_gettext_only/pages.php:240
 #: themes/default/templates/invoice/edit.tpl:264
 msgid "INVOICE_EDIT_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:233
+#: language/_gettext_only/pages.php:241
 #: themes/default/templates/invoice/edit.tpl:264
 msgid "INVOICE_EDIT_HELP_CONTENT"
 msgstr ""
@@ -2767,24 +2797,26 @@ msgstr ""
 "the submit button to make the changes to the invoice in the database. You "
 "are then able to print or email the invoice."
 
-#: language/_gettext_only/pages.php:236
+#: language/_gettext_only/pages.php:244
 msgid "INVOICE_LABOUR_RATES_PAGE_TITLE"
 msgstr "Invoice Labour Rates"
 
-#: language/_gettext_only/pages.php:237
+#: language/_gettext_only/pages.php:245
 msgid "INVOICE_LABOUR_RATES_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:238
+#: language/_gettext_only/pages.php:246
 msgid "INVOICE_LABOUR_RATES_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:239
+#: language/_gettext_only/pages.php:247
+#: themes/default/templates/administrator/config.tpl:25
 #: themes/default/templates/invoice/labour_rates.tpl:9
 msgid "INVOICE_LABOUR_RATES_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:240
+#: language/_gettext_only/pages.php:248
+#: themes/default/templates/administrator/config.tpl:25
 #: themes/default/templates/invoice/labour_rates.tpl:9
 msgid "INVOICE_LABOUR_RATES_HELP_CONTENT"
 msgstr ""
@@ -2795,96 +2827,96 @@ msgstr ""
 "are already there. This will not affect invoices that have already been "
 "created."
 
-#: language/_gettext_only/pages.php:243
+#: language/_gettext_only/pages.php:251
 msgid "INVOICE_PAID_PAGE_TITLE"
 msgstr "Paid Invoices"
 
-#: language/_gettext_only/pages.php:244
+#: language/_gettext_only/pages.php:252
 msgid "INVOICE_PAID_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:245
+#: language/_gettext_only/pages.php:253
 msgid "INVOICE_PAID_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:246
+#: language/_gettext_only/pages.php:254
 #: themes/default/templates/invoice/paid.tpl:9
 msgid "INVOICE_PAID_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:247
+#: language/_gettext_only/pages.php:255
 #: themes/default/templates/invoice/paid.tpl:9
 msgid "INVOICE_PAID_HELP_CONTENT"
 msgstr "Navigate through the paid invoices by using the navigation arrows."
 
-#: language/_gettext_only/pages.php:250
+#: language/_gettext_only/pages.php:258
 msgid "INVOICE_UNPAID_PAGE_TITLE"
 msgstr "Unpaid Invoices"
 
-#: language/_gettext_only/pages.php:251
+#: language/_gettext_only/pages.php:259
 msgid "INVOICE_UNPAID_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:252
+#: language/_gettext_only/pages.php:260
 msgid "INVOICE_UNPAID_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:253
+#: language/_gettext_only/pages.php:261
 #: themes/default/templates/invoice/unpaid.tpl:9
 msgid "INVOICE_UNPAID_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:254
+#: language/_gettext_only/pages.php:262
 #: themes/default/templates/invoice/unpaid.tpl:9
 msgid "INVOICE_UNPAID_HELP_CONTENT"
 msgstr "Navigate through the unpaid invoices by using the navigation arrows."
 
-#: language/_gettext_only/pages.php:257
+#: language/_gettext_only/pages.php:265
 msgid "INVOICE_PRINT_ADDRESS_PAGE_TITLE"
 msgstr "QWcrm - Address Template"
 
-#: language/_gettext_only/pages.php:258
+#: language/_gettext_only/pages.php:266
 msgid "INVOICE_PRINT_ADDRESS_META_DESCRIPTION"
 msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
 
-#: language/_gettext_only/pages.php:259
+#: language/_gettext_only/pages.php:267
 msgid "INVOICE_PRINT_ADDRESS_META_KEYWORDS"
 msgstr ""
 "CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment "
 "Processing, Simple to use"
 
-#: language/_gettext_only/pages.php:264
+#: language/_gettext_only/pages.php:272
 msgid "INVOICE_PRINT_INVOICE_PAGE_TITLE"
 msgstr "QWCRM - Invoice Template"
 
-#: language/_gettext_only/pages.php:265
+#: language/_gettext_only/pages.php:273
 msgid "INVOICE_PRINT_INVOICE_META_DESCRIPTION"
 msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
 
-#: language/_gettext_only/pages.php:266
+#: language/_gettext_only/pages.php:274
 msgid "INVOICE_PRINT_INVOICE_META_KEYWORDS"
 msgstr ""
 "CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment "
 "Processing, Simple to use"
 
-#: language/_gettext_only/pages.php:273
+#: language/_gettext_only/pages.php:281
 msgid "PAYMENT_NEW_PAGE_TITLE"
 msgstr "New Payment"
 
-#: language/_gettext_only/pages.php:274
+#: language/_gettext_only/pages.php:282
 msgid "PAYMENT_NEW_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:275
+#: language/_gettext_only/pages.php:283
 msgid "PAYMENT_NEW_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:276
+#: language/_gettext_only/pages.php:284
 #: themes/default/templates/payment/new.tpl:9
 msgid "PAYMENT_NEW_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:277
+#: language/_gettext_only/pages.php:285
 #: themes/default/templates/payment/new.tpl:9
 msgid "PAYMENT_NEW_HELP_CONTENT"
 msgstr ""
@@ -2893,24 +2925,24 @@ msgstr ""
 "logged and applied to the invoice. If you do not see the payment type you "
 "need, contact the your management."
 
-#: language/_gettext_only/pages.php:280
+#: language/_gettext_only/pages.php:288
 msgid "PAYMENT_OPTIONS_PAGE_TITLE"
 msgstr "Payment Options"
 
-#: language/_gettext_only/pages.php:281
+#: language/_gettext_only/pages.php:289
 msgid "PAYMENT_OPTIONS_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:282
+#: language/_gettext_only/pages.php:290
 msgid "PAYMENT_OPTIONS_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:283
+#: language/_gettext_only/pages.php:291
 #: themes/default/templates/payment/options.tpl:9
 msgid "PAYMENT_OPTIONS_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:284
+#: language/_gettext_only/pages.php:292
 #: themes/default/templates/payment/options.tpl:9
 msgid "PAYMENT_OPTIONS_HELP_CONTENT"
 msgstr ""
@@ -2918,24 +2950,24 @@ msgstr ""
 "payment options have information that will appear on invoices and this is "
 "also configured here. The invoice footer message is optional."
 
-#: language/_gettext_only/pages.php:289
+#: language/_gettext_only/pages.php:297
 msgid "REFUND_DETAILS_PAGE_TITLE"
 msgstr "Refund Details"
 
-#: language/_gettext_only/pages.php:290
+#: language/_gettext_only/pages.php:298
 msgid "REFUND_DETAILS_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:291
+#: language/_gettext_only/pages.php:299
 msgid "REFUND_DETAILS_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:292
+#: language/_gettext_only/pages.php:300
 #: themes/default/templates/refund/details.tpl:11
 msgid "REFUND_DETAILS_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:293
+#: language/_gettext_only/pages.php:301
 #: themes/default/templates/refund/details.tpl:11
 msgid "REFUND_DETAILS_HELP_CONTENT"
 msgstr ""
@@ -2943,24 +2975,24 @@ msgstr ""
 "><br /> To edit this record you can click on the <b>Edit Details</b> next to "
 "this Tooltip or on the Edit link in the Main Nav Menu on the left."
 
-#: language/_gettext_only/pages.php:296
+#: language/_gettext_only/pages.php:304
 msgid "REFUND_EDIT_PAGE_TITLE"
 msgstr "Edit Refund"
 
-#: language/_gettext_only/pages.php:297
+#: language/_gettext_only/pages.php:305
 msgid "REFUND_EDIT_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:298
+#: language/_gettext_only/pages.php:306
 msgid "REFUND_EDIT_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:299
+#: language/_gettext_only/pages.php:307
 #: themes/default/templates/refund/edit.tpl:18
 msgid "REFUND_EDIT_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:300
+#: language/_gettext_only/pages.php:308
 #: themes/default/templates/refund/edit.tpl:18
 msgid "REFUND_EDIT_HELP_CONTENT"
 msgstr ""
@@ -2968,24 +3000,24 @@ msgstr ""
 "changes, click on the <b>Update</b> Button and the changes will be submitted "
 "to the database."
 
-#: language/_gettext_only/pages.php:303
+#: language/_gettext_only/pages.php:311
 msgid "REFUND_NEW_PAGE_TITLE"
 msgstr "New Refund"
 
-#: language/_gettext_only/pages.php:304
+#: language/_gettext_only/pages.php:312
 msgid "REFUND_NEW_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:305
+#: language/_gettext_only/pages.php:313
 msgid "REFUND_NEW_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:306
+#: language/_gettext_only/pages.php:314
 #: themes/default/templates/refund/new.tpl:18
 msgid "REFUND_NEW_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:307
+#: language/_gettext_only/pages.php:315
 #: themes/default/templates/refund/new.tpl:18
 msgid "REFUND_NEW_HELP_CONTENT"
 msgstr ""
@@ -2996,24 +3028,24 @@ msgstr ""
 "click on the <b>Submit, Then New Record</b> button the record will be sent "
 "to the database and this page reloaded ready for another entry."
 
-#: language/_gettext_only/pages.php:310
+#: language/_gettext_only/pages.php:318
 msgid "REFUND_SEARCH_PAGE_TITLE"
 msgstr "Search Refunds"
 
-#: language/_gettext_only/pages.php:311
+#: language/_gettext_only/pages.php:319
 msgid "REFUND_SEARCH_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:312
+#: language/_gettext_only/pages.php:320
 msgid "REFUND_SEARCH_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:313
+#: language/_gettext_only/pages.php:321
 #: themes/default/templates/refund/search.tpl:10
 msgid "REFUND_SEARCH_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:314
+#: language/_gettext_only/pages.php:322
 #: themes/default/templates/refund/search.tpl:10
 msgid "REFUND_SEARCH_HELP_CONTENT"
 msgstr ""
@@ -3028,24 +3060,24 @@ msgstr ""
 "Tooltip.<br /><br />On the right of each Record Row there are icons for "
 "viewing, editing and deleting the record."
 
-#: language/_gettext_only/pages.php:319
+#: language/_gettext_only/pages.php:327
 msgid "REPORT_FINANCIAL_PAGE_TITLE"
 msgstr "Financial Report"
 
-#: language/_gettext_only/pages.php:320
+#: language/_gettext_only/pages.php:328
 msgid "REPORT_FINANCIAL_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:321
+#: language/_gettext_only/pages.php:329
 msgid "REPORT_FINANCIAL_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:322
+#: language/_gettext_only/pages.php:330
 #: themes/default/templates/report/financial.tpl:15
 msgid "REPORT_FINANCIAL_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:323
+#: language/_gettext_only/pages.php:331
 #: themes/default/templates/report/financial.tpl:15
 msgid "REPORT_FINANCIAL_HELP_CONTENT"
 msgstr ""
@@ -3053,24 +3085,24 @@ msgstr ""
 "date range you have set will be returned. This is great for getting a simple "
 "report for you company and can be used to fill in simple tax returns."
 
-#: language/_gettext_only/pages.php:328
+#: language/_gettext_only/pages.php:336
 msgid "SCHEDULE_DAY_PAGE_TITLE"
 msgstr "Daily Schedules"
 
-#: language/_gettext_only/pages.php:329
+#: language/_gettext_only/pages.php:337
 msgid "SCHEDULE_DAY_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:330
+#: language/_gettext_only/pages.php:338
 msgid "SCHEDULE_DAY_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:331
+#: language/_gettext_only/pages.php:339
 #: themes/default/templates/schedule/day.tpl:15
 msgid "SCHEDULE_DAY_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:332
+#: language/_gettext_only/pages.php:340
 #: themes/default/templates/schedule/day.tpl:15
 msgid "SCHEDULE_DAY_HELP_CONTENT"
 msgstr ""
@@ -3078,72 +3110,72 @@ msgstr ""
 "employee on that day  within the business hours will be shown. You are able "
 "then to view the schedule and jobn details if you have permissions."
 
-#: language/_gettext_only/pages.php:335
+#: language/_gettext_only/pages.php:343
 msgid "SCHEDULE_DETAILS_PAGE_TITLE"
 msgstr "Schedule Details"
 
-#: language/_gettext_only/pages.php:336
+#: language/_gettext_only/pages.php:344
 msgid "SCHEDULE_DETAILS_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:337
+#: language/_gettext_only/pages.php:345
 msgid "SCHEDULE_DETAILS_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:338
+#: language/_gettext_only/pages.php:346
 #: themes/default/templates/schedule/details.tpl:12
 msgid "SCHEDULE_DETAILS_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:339
+#: language/_gettext_only/pages.php:347
 #: themes/default/templates/schedule/details.tpl:12
 msgid "SCHEDULE_DETAILS_HELP_CONTENT"
 msgstr ""
 "This page shows you the details for one schedule item. There are also action "
 "buttons that can be used."
 
-#: language/_gettext_only/pages.php:342
+#: language/_gettext_only/pages.php:350
 msgid "SCHEDULE_EDIT_PAGE_TITLE"
 msgstr "Edit Schedule"
 
-#: language/_gettext_only/pages.php:343
+#: language/_gettext_only/pages.php:351
 msgid "SCHEDULE_EDIT_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:344
+#: language/_gettext_only/pages.php:352
 msgid "SCHEDULE_EDIT_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:345
+#: language/_gettext_only/pages.php:353
 #: themes/default/templates/schedule/edit.tpl:17
 msgid "SCHEDULE_EDIT_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:346
+#: language/_gettext_only/pages.php:354
 #: themes/default/templates/schedule/edit.tpl:17
 msgid "SCHEDULE_EDIT_HELP_CONTENT"
 msgstr ""
 "When editing a schedule item you can change the time of the job, the notes "
 "and even change the assigned employee."
 
-#: language/_gettext_only/pages.php:349
+#: language/_gettext_only/pages.php:357
 msgid "SCHEDULE_NEW_PAGE_TITLE"
 msgstr "New Schedule"
 
-#: language/_gettext_only/pages.php:350
+#: language/_gettext_only/pages.php:358
 msgid "SCHEDULE_NEW_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:351
+#: language/_gettext_only/pages.php:359
 msgid "SCHEDULE_NEW_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:352
+#: language/_gettext_only/pages.php:360
 #: themes/default/templates/schedule/new.tpl:17
 msgid "SCHEDULE_NEW_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:353
+#: language/_gettext_only/pages.php:361
 #: themes/default/templates/schedule/new.tpl:17
 msgid "SCHEDULE_NEW_HELP_CONTENT"
 msgstr ""
@@ -3151,24 +3183,24 @@ msgstr ""
 "schedule item that is not within the business hours or if its time range is "
 "invalid."
 
-#: language/_gettext_only/pages.php:358
+#: language/_gettext_only/pages.php:366
 msgid "SUPPLIER_DETAILS_PAGE_TITLE"
 msgstr "Supplier Details"
 
-#: language/_gettext_only/pages.php:359
+#: language/_gettext_only/pages.php:367
 msgid "SUPPLIER_DETAILS_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:360
+#: language/_gettext_only/pages.php:368
 msgid "SUPPLIER_DETAILS_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:361
+#: language/_gettext_only/pages.php:369
 #: themes/default/templates/supplier/details.tpl:13
 msgid "SUPPLIER_DETAILS_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:362
+#: language/_gettext_only/pages.php:370
 #: themes/default/templates/supplier/details.tpl:13
 msgid "SUPPLIER_DETAILS_HELP_CONTENT"
 msgstr ""
@@ -3176,24 +3208,24 @@ msgstr ""
 "<br /><br /> To edit this record you can click on the <b>Edit Details</b> "
 "next to this Tooltip or on the Edit link in the Main Nav Menu on the left."
 
-#: language/_gettext_only/pages.php:365
+#: language/_gettext_only/pages.php:373
 msgid "SUPPLIER_EDIT_PAGE_TITLE"
 msgstr "Edit Supplier"
 
-#: language/_gettext_only/pages.php:366
+#: language/_gettext_only/pages.php:374
 msgid "SUPPLIER_EDIT_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:367
+#: language/_gettext_only/pages.php:375
 msgid "SUPPLIER_EDIT_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:368
+#: language/_gettext_only/pages.php:376
 #: themes/default/templates/supplier/edit.tpl:18
 msgid "SUPPLIER_EDIT_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:369
+#: language/_gettext_only/pages.php:377
 #: themes/default/templates/supplier/edit.tpl:18
 msgid "SUPPLIER_EDIT_HELP_CONTENT"
 msgstr ""
@@ -3201,24 +3233,24 @@ msgstr ""
 "changes, click on the <b>Update</b> Button and the changes will be submitted "
 "to the database."
 
-#: language/_gettext_only/pages.php:372
+#: language/_gettext_only/pages.php:380
 msgid "SUPPLIER_NEW_PAGE_TITLE"
 msgstr "New Supplier"
 
-#: language/_gettext_only/pages.php:373
+#: language/_gettext_only/pages.php:381
 msgid "SUPPLIER_NEW_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:374
+#: language/_gettext_only/pages.php:382
 msgid "SUPPLIER_NEW_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:375
+#: language/_gettext_only/pages.php:383
 #: themes/default/templates/supplier/new.tpl:18
 msgid "SUPPLIER_NEW_HELP_TITLE"
 msgstr "New Supplier"
 
-#: language/_gettext_only/pages.php:376
+#: language/_gettext_only/pages.php:384
 #: themes/default/templates/supplier/new.tpl:18
 msgid "SUPPLIER_NEW_HELP_CONTENT"
 msgstr ""
@@ -3229,24 +3261,24 @@ msgstr ""
 "you click on the <b>Submit, Then New Record</b> button the record will be "
 "sent to the database and this page reloaded ready for another entry."
 
-#: language/_gettext_only/pages.php:379
+#: language/_gettext_only/pages.php:387
 msgid "SUPPLIER_SEARCH_PAGE_TITLE"
 msgstr "Search Suppliers"
 
-#: language/_gettext_only/pages.php:380
+#: language/_gettext_only/pages.php:388
 msgid "SUPPLIER_SEARCH_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:381
+#: language/_gettext_only/pages.php:389
 msgid "SUPPLIER_SEARCH_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:382
+#: language/_gettext_only/pages.php:390
 #: themes/default/templates/supplier/search.tpl:10
 msgid "SUPPLIER_SEARCH_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:383
+#: language/_gettext_only/pages.php:391
 #: themes/default/templates/supplier/search.tpl:10
 msgid "SUPPLIER_SEARCH_HELP_CONTENT"
 msgstr ""
@@ -3261,95 +3293,95 @@ msgstr ""
 "><br />On the right of each Record Row there are icons for viewing, editing "
 "and deleting the record."
 
-#: language/_gettext_only/pages.php:388
+#: language/_gettext_only/pages.php:396
 msgid "USER_DETAILS_PAGE_TITLE"
 msgstr "User Details"
 
-#: language/_gettext_only/pages.php:389
+#: language/_gettext_only/pages.php:397
 msgid "USER_DETAILS_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:390
+#: language/_gettext_only/pages.php:398
 msgid "USER_DETAILS_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:391
+#: language/_gettext_only/pages.php:399
 #: themes/default/templates/user/details.tpl:9
 msgid "USER_DETAILS_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:392
+#: language/_gettext_only/pages.php:400
 #: themes/default/templates/user/details.tpl:9
 msgid "USER_DETAILS_HELP_CONTENT"
 msgstr ""
 "You can see the selected employees details and what  jobs he has worked on."
 
-#: language/_gettext_only/pages.php:395
+#: language/_gettext_only/pages.php:403
 msgid "USER_EDIT_PAGE_TITLE"
 msgstr "Edit User"
 
-#: language/_gettext_only/pages.php:396
+#: language/_gettext_only/pages.php:404
 msgid "USER_EDIT_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:397
+#: language/_gettext_only/pages.php:405
 msgid "USER_EDIT_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:398
+#: language/_gettext_only/pages.php:406
 msgid "USER_EDIT_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:399
+#: language/_gettext_only/pages.php:407
 msgid "USER_EDIT_HELP_CONTENT"
 msgstr ""
 "You can edit an users's details here as well as resetting their password if "
 "required."
 
-#: language/_gettext_only/pages.php:402
+#: language/_gettext_only/pages.php:410
 msgid "USER_NEW_PAGE_TITLE"
 msgstr "New User"
 
-#: language/_gettext_only/pages.php:403
+#: language/_gettext_only/pages.php:411
 msgid "USER_NEW_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:404
+#: language/_gettext_only/pages.php:412
 msgid "USER_NEW_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:405
+#: language/_gettext_only/pages.php:413
 #: themes/default/templates/user/edit.tpl:12
 #: themes/default/templates/user/new.tpl:12
 msgid "USER_NEW_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:406
+#: language/_gettext_only/pages.php:414
 #: themes/default/templates/user/edit.tpl:12
 #: themes/default/templates/user/new.tpl:12
 msgid "USER_NEW_HELP_CONTENT"
 msgstr ""
 "Create a new user by filling in the details and then by clicking submit."
 
-#: language/_gettext_only/pages.php:409
+#: language/_gettext_only/pages.php:417
 msgid "USER_SEARCH_PAGE_TITLE"
 msgstr "Search Users"
 
-#: language/_gettext_only/pages.php:410
+#: language/_gettext_only/pages.php:418
 msgid "USER_SEARCH_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:411
+#: language/_gettext_only/pages.php:419
 msgid "USER_SEARCH_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:412
+#: language/_gettext_only/pages.php:420
 #: themes/default/templates/giftcert/search.tpl:9
 #: themes/default/templates/user/search.tpl:9
 msgid "USER_SEARCH_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:413
+#: language/_gettext_only/pages.php:421
 #: themes/default/templates/giftcert/search.tpl:9
 #: themes/default/templates/user/search.tpl:9
 msgid "USER_SEARCH_HELP_CONTENT"
@@ -3357,46 +3389,46 @@ msgstr ""
 "You can search by the user's name only. By default all employees are listed. "
 "You can browse the results using the navigation arrows."
 
-#: language/_gettext_only/pages.php:418
+#: language/_gettext_only/pages.php:426
 msgid "WORKORDER_CLOSED_PAGE_TITLE"
 msgstr "Closed Work Orders"
 
-#: language/_gettext_only/pages.php:419
+#: language/_gettext_only/pages.php:427
 msgid "WORKORDER_CLOSED_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:420
+#: language/_gettext_only/pages.php:428
 msgid "WORKORDER_CLOSED_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:421
+#: language/_gettext_only/pages.php:429
 #: themes/default/templates/workorder/closed.tpl:10
 msgid "WORKORDER_CLOSED_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:422
+#: language/_gettext_only/pages.php:430
 #: themes/default/templates/workorder/closed.tpl:10
 msgid "WORKORDER_CLOSED_HELP_CONTENT"
 msgstr "You can view all closed work orders here."
 
-#: language/_gettext_only/pages.php:425
+#: language/_gettext_only/pages.php:433
 msgid "WORKORDER_DETAILS_PAGE_TITLE"
 msgstr "Work Order Details"
 
-#: language/_gettext_only/pages.php:426
+#: language/_gettext_only/pages.php:434
 msgid "WORKORDER_DETAILS_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:427
+#: language/_gettext_only/pages.php:435
 msgid "WORKORDER_DETAILS_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:428
+#: language/_gettext_only/pages.php:436
 #: themes/default/templates/workorder/details.tpl:22
 msgid "WORKORDER_DETAILS_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:429
+#: language/_gettext_only/pages.php:437
 #: themes/default/templates/workorder/details.tpl:22
 msgid "WORKORDER_DETAILS_HELP_CONTENT"
 msgstr ""
@@ -3411,158 +3443,158 @@ msgstr ""
 "this work order. Click the Close link on the Quick Bar to complete the order "
 "and start the invoicing processes."
 
-#: language/_gettext_only/pages.php:432
+#: language/_gettext_only/pages.php:440
 msgid "WORKORDER_DETAILS_EDIT_COMMENTS_PAGE_TITLE"
 msgstr "Edit Work Order Comments"
 
-#: language/_gettext_only/pages.php:433
+#: language/_gettext_only/pages.php:441
 msgid "WORKORDER_DETAILS_EDIT_COMMENTS_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:434
+#: language/_gettext_only/pages.php:442
 msgid "WORKORDER_DETAILS_EDIT_COMMENTS_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:435
+#: language/_gettext_only/pages.php:443
 #: themes/default/templates/workorder/details_edit_comments.tpl:13
 msgid "WORKORDER_DETAILS_EDIT_COMMENTS_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:436
+#: language/_gettext_only/pages.php:444
 #: themes/default/templates/workorder/details_edit_comments.tpl:13
 msgid "WORKORDER_DETAILS_EDIT_COMMENTS_HELP_CONTENT"
 msgstr "You can edit the comments attached to the work order here."
 
-#: language/_gettext_only/pages.php:439
+#: language/_gettext_only/pages.php:447
 msgid "WORKORDER_DETAILS_EDIT_DESCRIPTION_PAGE_TITLE"
 msgstr "Edit Work Order Description"
 
-#: language/_gettext_only/pages.php:440
+#: language/_gettext_only/pages.php:448
 msgid "WORKORDER_DETAILS_EDIT_DESCRIPTION_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:441
+#: language/_gettext_only/pages.php:449
 msgid "WORKORDER_DETAILS_EDIT_DESCRIPTION_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:442
+#: language/_gettext_only/pages.php:450
 #: themes/default/templates/workorder/details_edit_description.tpl:14
 msgid "WORKORDER_DETAILS_EDIT_DESCRIPTION_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:443
+#: language/_gettext_only/pages.php:451
 #: themes/default/templates/workorder/details_edit_description.tpl:14
 msgid "WORKORDER_DETAILS_EDIT_DESCRIPTION_HELP_CONTENT"
 msgstr "You can edit the description attached to the work order here."
 
-#: language/_gettext_only/pages.php:446
+#: language/_gettext_only/pages.php:454
 msgid "WORKORDER_DETAILS_EDIT_RESOLUTION_PAGE_TITLE"
 msgstr "Edit Work Order Resolution"
 
-#: language/_gettext_only/pages.php:447
+#: language/_gettext_only/pages.php:455
 msgid "WORKORDER_DETAILS_EDIT_RESOLUTION_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:448
+#: language/_gettext_only/pages.php:456
 msgid "WORKORDER_DETAILS_EDIT_RESOLUTION_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:449
+#: language/_gettext_only/pages.php:457
 #: themes/default/templates/workorder/details_edit_resolution.tpl:13
 msgid "WORKORDER_DETAILS_EDIT_RESOLUTION_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:450
+#: language/_gettext_only/pages.php:458
 #: themes/default/templates/workorder/details_edit_resolution.tpl:13
 msgid "WORKORDER_DETAILS_EDIT_RESOLUTION_HELP_CONTENT"
 msgstr "You can edit or close the resolution attached to the work order here."
 
-#: language/_gettext_only/pages.php:453
+#: language/_gettext_only/pages.php:461
 msgid "WORKORDER_NEW_PAGE_TITLE"
 msgstr "New Workorder"
 
-#: language/_gettext_only/pages.php:454
+#: language/_gettext_only/pages.php:462
 msgid "WORKORDER_NEW_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:455
+#: language/_gettext_only/pages.php:463
 msgid "WORKORDER_NEW_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:456
+#: language/_gettext_only/pages.php:464
 #: themes/default/templates/workorder/new.tpl:14
 msgid "WORKORDER_NEW_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:457
+#: language/_gettext_only/pages.php:465
 #: themes/default/templates/workorder/new.tpl:14
 msgid "WORKORDER_NEW_HELP_CONTENT"
 msgstr "Create new Work Orders here."
 
-#: language/_gettext_only/pages.php:460
+#: language/_gettext_only/pages.php:468
 msgid "WORKORDER_NOTE_EDIT_PAGE_TITLE"
 msgstr "Edit a Work Order Note"
 
-#: language/_gettext_only/pages.php:461
+#: language/_gettext_only/pages.php:469
 msgid "WORKORDER_NOTE_EDIT_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:462
+#: language/_gettext_only/pages.php:470
 msgid "WORKORDER_NOTE_EDIT_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:463
+#: language/_gettext_only/pages.php:471
 #: themes/default/templates/customer/note_edit.tpl:18
 #: themes/default/templates/workorder/note_edit.tpl:18
 msgid "WORKORDER_NOTE_EDIT_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:464
+#: language/_gettext_only/pages.php:472
 #: themes/default/templates/customer/note_edit.tpl:18
 #: themes/default/templates/workorder/note_edit.tpl:18
 msgid "WORKORDER_NOTE_EDIT_HELP_CONTENT"
 msgstr "You can edit a work order note here."
 
-#: language/_gettext_only/pages.php:467
+#: language/_gettext_only/pages.php:475
 msgid "WORKORDER_NOTE_NEW_PAGE_TITLE"
 msgstr "New Work Order Note"
 
-#: language/_gettext_only/pages.php:468
+#: language/_gettext_only/pages.php:476
 msgid "WORKORDER_NOTE_NEW_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:469
+#: language/_gettext_only/pages.php:477
 msgid "WORKORDER_NOTE_NEW_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:470
+#: language/_gettext_only/pages.php:478
 #: themes/default/templates/workorder/note_new.tpl:9
 msgid "WORKORDER_NOTE_NEW_HELP_TITLE"
 msgstr "New Work Order Note"
 
-#: language/_gettext_only/pages.php:471
+#: language/_gettext_only/pages.php:479
 #: themes/default/templates/workorder/note_new.tpl:9
 msgid "WORKORDER_NOTE_NEW_HELP_CONTENT"
 msgstr "You can create a single work order note here."
 
-#: language/_gettext_only/pages.php:474
+#: language/_gettext_only/pages.php:482
 msgid "WORKORDER_OVERVIEW_PAGE_TITLE"
 msgstr "Work Orders Overview"
 
-#: language/_gettext_only/pages.php:475
+#: language/_gettext_only/pages.php:483
 msgid "WORKORDER_OVERVIEW_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:476
+#: language/_gettext_only/pages.php:484
 msgid "WORKORDER_OVERVIEW_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:477
+#: language/_gettext_only/pages.php:485
 #: themes/default/templates/workorder/overview.tpl:10
 msgid "WORKORDER_OVERVIEW_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:478
+#: language/_gettext_only/pages.php:486
 #: themes/default/templates/workorder/overview.tpl:10
 msgid "WORKORDER_OVERVIEW_HELP_CONTENT"
 msgstr ""
@@ -3577,24 +3609,24 @@ msgstr ""
 "the workorder. Click the Red Stop sign to close the workorder and start the "
 "invoicing."
 
-#: language/_gettext_only/pages.php:481
+#: language/_gettext_only/pages.php:489
 msgid "WORKORDER_STATUS_PAGE_TITLE"
 msgstr "Work Order Status"
 
-#: language/_gettext_only/pages.php:482
+#: language/_gettext_only/pages.php:490
 msgid "WORKORDER_STATUS_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:483
+#: language/_gettext_only/pages.php:491
 msgid "WORKORDER_STATUS_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:484
+#: language/_gettext_only/pages.php:492
 #: themes/default/templates/workorder/status.tpl:10
 msgid "WORKORDER_STATUS_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:485
+#: language/_gettext_only/pages.php:493
 #: themes/default/templates/workorder/status.tpl:10
 msgid "WORKORDER_STATUS_HELP_CONTENT"
 msgstr ""
@@ -3602,43 +3634,43 @@ msgstr ""
 "too. If needed this page will allow you to delete the work order if it is "
 "possible."
 
-#: language/_gettext_only/pages.php:488
+#: language/_gettext_only/pages.php:496
 msgid "WORKORDER_PRINT_CUSTOMER_WORKORDER_SLIP_PAGE_TITLE"
 msgstr "QWcrm - Customer Work Order Slip Template"
 
-#: language/_gettext_only/pages.php:489
+#: language/_gettext_only/pages.php:497
 msgid "WORKORDER_PRINT_CUSTOMER_WORKORDER_SLIP_META_DESCRIPTION"
 msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
 
-#: language/_gettext_only/pages.php:490
+#: language/_gettext_only/pages.php:498
 msgid "WORKORDER_PRINT_CUSTOMER_WORKORDER_SLIP_META_KEYWORDS"
 msgstr ""
 "CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment "
 "Processing, Simple to use"
 
-#: language/_gettext_only/pages.php:495
+#: language/_gettext_only/pages.php:503
 msgid "WORKORDER_PRINT_JOB_SHEET_PAGE_TITLE"
 msgstr "QWcrm - Job Sheet Template"
 
-#: language/_gettext_only/pages.php:496
+#: language/_gettext_only/pages.php:504
 msgid "WORKORDER_PRINT_JOB_SHEET_META_DESCRIPTION"
 msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
 
-#: language/_gettext_only/pages.php:497
+#: language/_gettext_only/pages.php:505
 msgid "WORKORDER_PRINT_JOB_SHEET_META_KEYWORDS"
 msgstr ""
 "CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment "
 "Processing, Simple to use"
 
-#: language/_gettext_only/pages.php:502
+#: language/_gettext_only/pages.php:510
 msgid "WORKORDER_PRINT_TECHNICIAN_WORKORDER_SLIP_PAGE_TITLE"
 msgstr "QWcrm - Technician Work Order Slip Template"
 
-#: language/_gettext_only/pages.php:503
+#: language/_gettext_only/pages.php:511
 msgid "WORKORDER_PRINT_TECHNICIAN_WORKORDER_SLIP_META_DESCRIPTION"
 msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
 
-#: language/_gettext_only/pages.php:504
+#: language/_gettext_only/pages.php:512
 msgid "WORKORDER_PRINT_TECHNICIAN_WORKORDER_SLIP_META_KEYWORDS"
 msgstr ""
 "CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment "
@@ -3757,6 +3789,14 @@ msgstr "-"
 #: themes/default/templates/workorder/printing/print_technician_workorder_slip.tpl:74
 msgid "CUSTOMER_TYPE_10"
 msgstr "-"
+
+#: modules/administrator/config.php:14
+msgid "Config settings updated successfully."
+msgstr ""
+
+#: modules/administrator/config.php:18
+msgid "Some information was invalid, please check for erros and try again."
+msgstr ""
 
 #: modules/core/blocks/theme_debug_block.php:27
 msgid "QWcrm Advanced Debug Section"
@@ -3957,6 +3997,25 @@ msgstr ""
 #: themes/default/templates/administrator/acl.tpl:87
 #: themes/default/templates/administrator/acl.tpl:95
 #: themes/default/templates/administrator/acl.tpl:103
+#: themes/default/templates/administrator/config.tpl:57
+#: themes/default/templates/administrator/config.tpl:66
+#: themes/default/templates/administrator/config.tpl:90
+#: themes/default/templates/administrator/config.tpl:106
+#: themes/default/templates/administrator/config.tpl:115
+#: themes/default/templates/administrator/config.tpl:143
+#: themes/default/templates/administrator/config.tpl:152
+#: themes/default/templates/administrator/config.tpl:200
+#: themes/default/templates/administrator/config.tpl:209
+#: themes/default/templates/administrator/config.tpl:218
+#: themes/default/templates/administrator/config.tpl:227
+#: themes/default/templates/administrator/config.tpl:256
+#: themes/default/templates/administrator/config.tpl:272
+#: themes/default/templates/administrator/config.tpl:281
+#: themes/default/templates/administrator/config.tpl:290
+#: themes/default/templates/administrator/config.tpl:299
+#: themes/default/templates/administrator/config.tpl:315
+#: themes/default/templates/administrator/config.tpl:324
+#: themes/default/templates/administrator/config.tpl:337
 #: themes/default/templates/company/edit.tpl:233
 #: themes/default/templates/company/edit.tpl:252
 #: themes/default/templates/invoice/labour_rates.tpl:43
@@ -3974,6 +4033,25 @@ msgstr ""
 #: themes/default/templates/administrator/acl.tpl:88
 #: themes/default/templates/administrator/acl.tpl:96
 #: themes/default/templates/administrator/acl.tpl:104
+#: themes/default/templates/administrator/config.tpl:56
+#: themes/default/templates/administrator/config.tpl:65
+#: themes/default/templates/administrator/config.tpl:89
+#: themes/default/templates/administrator/config.tpl:105
+#: themes/default/templates/administrator/config.tpl:114
+#: themes/default/templates/administrator/config.tpl:142
+#: themes/default/templates/administrator/config.tpl:151
+#: themes/default/templates/administrator/config.tpl:199
+#: themes/default/templates/administrator/config.tpl:208
+#: themes/default/templates/administrator/config.tpl:217
+#: themes/default/templates/administrator/config.tpl:226
+#: themes/default/templates/administrator/config.tpl:255
+#: themes/default/templates/administrator/config.tpl:271
+#: themes/default/templates/administrator/config.tpl:280
+#: themes/default/templates/administrator/config.tpl:289
+#: themes/default/templates/administrator/config.tpl:298
+#: themes/default/templates/administrator/config.tpl:314
+#: themes/default/templates/administrator/config.tpl:323
+#: themes/default/templates/administrator/config.tpl:336
 #: themes/default/templates/company/edit.tpl:234
 #: themes/default/templates/company/edit.tpl:253
 #: themes/default/templates/invoice/edit.tpl:547
@@ -4001,6 +4079,234 @@ msgstr ""
 #: themes/default/templates/workorder/note_edit.tpl:45
 #: themes/default/templates/workorder/note_new.tpl:34
 msgid "Submit"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:8
+msgid "QWcrm Config Settings"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:18
+#: themes/default/templates/administrator/config.tpl:161
+msgid "Database"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:22
+msgid "Host"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:29
+msgid "Database Name"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:33
+msgid "Database Username"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:37
+msgid "Database Password"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:41
+msgid "Database Tables Prefix"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:49
+msgid "Other"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:53
+msgid "Gzip Page Compression"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:62
+msgid "Site Maintenance"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:71
+msgid "Theme Name"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:78
+msgid "Default Language"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:81
+msgid "English"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:86
+msgid "Autodetect Language"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:98
+msgid "Security"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:102
+msgid "Force SSL/HTTPS"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:111
+msgid "reCAPTCHA"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:120
+msgid "reCAPTCHA Site Key"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:124
+msgid "reCAPTCHA Secret Key"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:131
+msgid "Session"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:135
+msgid "Session Lifetime"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:139
+msgid "Remember Me"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:148
+msgid "Shared Session"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:157
+msgid "Session Handler"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:160
+#: themes/default/templates/administrator/config.tpl:243
+#: themes/default/templates/company/edit.tpl:191
+#: themes/default/templates/customer/search.tpl:43
+#: themes/default/templates/giftcert/search.tpl:41
+#: themes/default/templates/giftcert/search.tpl:51
+#: themes/default/templates/user/search.tpl:41
+#: themes/default/templates/user/search.tpl:51
+msgid "None"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:169
+msgid "Cookie"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:173
+msgid "Cookie Lifetime"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:177
+msgid "Cookie Token Length"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:181
+msgid "Cookie Domain"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:185
+msgid "Cookie Path"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:192
+msgid "Logging"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:196
+msgid "QWcrm Tracker"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:205
+msgid "QWcrm Access Log"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:214
+msgid "QWcrm Activity Log"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:223
+msgid "QWcrm Error Log"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:235
+#: themes/default/templates/administrator/config.tpl:239
+msgid "Error Reporting"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:242
+msgid "System Default"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:244
+msgid "Very Simple"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:245
+msgid "Simple"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:246
+msgid "Maximum"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:247
+msgid "Development"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:252
+msgid "Error Page Raw Output"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:264
+msgid "Debugging"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:268
+msgid "QWcrm Debug"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:277
+msgid "QWcrm Advanced Debug"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:286
+msgid "Smarty Debugging (QWcrm)"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:295
+msgid "Smarty Debugging"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:307
+msgid "Smarty"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:311
+msgid "Force Compile"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:320
+msgid "Template Caching"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:329
+msgid "Cache Lifetime"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:333
+msgid "Cache Modified Check"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:349
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:139
+#: themes/default/templates/expense/edit.tpl:125
+#: themes/default/templates/invoice/labour_rates.tpl:56
+#: themes/default/templates/refund/edit.tpl:111
+#: themes/default/templates/supplier/edit.tpl:108
+#: themes/default/templates/workorder/status.tpl:42
+#: themes/default/templates/workorder/status.tpl:59
+msgid "Update"
 msgstr ""
 
 #: themes/default/templates/administrator/update.tpl:7
@@ -4255,15 +4561,6 @@ msgstr ""
 msgid "Connection Type"
 msgstr ""
 
-#: themes/default/templates/company/edit.tpl:191
-#: themes/default/templates/customer/search.tpl:43
-#: themes/default/templates/giftcert/search.tpl:41
-#: themes/default/templates/giftcert/search.tpl:51
-#: themes/default/templates/user/search.tpl:41
-#: themes/default/templates/user/search.tpl:51
-msgid "None"
-msgstr ""
-
 #: themes/default/templates/company/edit.tpl:196
 msgid "SMTP Login Name"
 msgstr ""
@@ -4446,6 +4743,10 @@ msgid "Edit Customer"
 msgstr ""
 
 #: themes/default/templates/core/blocks/theme_menu_block.tpl:21
+msgid "Are you sure you want to delete this customer?"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:21
 msgid "Delete Customer"
 msgstr ""
 
@@ -4577,10 +4878,7 @@ msgid "Edit Expense"
 msgstr ""
 
 #: themes/default/templates/core/blocks/theme_menu_block.tpl:75
-#: themes/default/templates/expense/search.tpl:183
-msgid ""
-"Are you Sure you want to delete this Expense Record? This will permanently "
-"remove the record from the database."
+msgid "Are you sure you want to delete this Expense Record?"
 msgstr ""
 
 #: themes/default/templates/core/blocks/theme_menu_block.tpl:75
@@ -4606,10 +4904,7 @@ msgid "Edit Refund"
 msgstr ""
 
 #: themes/default/templates/core/blocks/theme_menu_block.tpl:84
-#: themes/default/templates/refund/search.tpl:161
-msgid ""
-"Are you Sure you want to delete this Refund Record? This will permanently "
-"remove the record from the database."
+msgid "Are you sure you want to delete this Refund Record?"
 msgstr ""
 
 #: themes/default/templates/core/blocks/theme_menu_block.tpl:84
@@ -4644,10 +4939,7 @@ msgid "Edit Supplier"
 msgstr ""
 
 #: themes/default/templates/core/blocks/theme_menu_block.tpl:101
-#: themes/default/templates/supplier/search.tpl:142
-msgid ""
-"Are you Sure you want to delete this Supplier Record? This will permanently "
-"remove the record from the database."
+msgid "Are you Sure you want to delete this Supplier?"
 msgstr ""
 
 #: themes/default/templates/core/blocks/theme_menu_block.tpl:101
@@ -4684,6 +4976,10 @@ msgid "Edit User"
 msgstr ""
 
 #: themes/default/templates/core/blocks/theme_menu_block.tpl:129
+msgid "Are you sure you want to delete this user?"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:129
 msgid "Delete User"
 msgstr ""
 
@@ -4701,16 +4997,6 @@ msgstr ""
 
 #: themes/default/templates/core/blocks/theme_menu_block.tpl:138
 msgid "PHP Info"
-msgstr ""
-
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:139
-#: themes/default/templates/expense/edit.tpl:125
-#: themes/default/templates/invoice/labour_rates.tpl:56
-#: themes/default/templates/refund/edit.tpl:111
-#: themes/default/templates/supplier/edit.tpl:108
-#: themes/default/templates/workorder/status.tpl:42
-#: themes/default/templates/workorder/status.tpl:59
-msgid "Update"
 msgstr ""
 
 #: themes/default/templates/core/blocks/theme_menu_block.tpl:146
@@ -5533,6 +5819,12 @@ msgstr ""
 msgid "Edit Expense Details"
 msgstr ""
 
+#: themes/default/templates/expense/search.tpl:183
+msgid ""
+"Are you Sure you want to delete this Expense Record? This will permanently "
+"remove the record from the database."
+msgstr ""
+
 #: themes/default/templates/expense/search.tpl:184
 msgid "Delete Expense Record"
 msgstr ""
@@ -6201,6 +6493,12 @@ msgstr ""
 msgid "View Refund Details"
 msgstr ""
 
+#: themes/default/templates/refund/search.tpl:161
+msgid ""
+"Are you Sure you want to delete this Refund Record? This will permanently "
+"remove the record from the database."
+msgstr ""
+
 #: themes/default/templates/refund/search.tpl:162
 msgid "Delete Refund Record"
 msgstr ""
@@ -6394,6 +6692,12 @@ msgstr ""
 
 #: themes/default/templates/supplier/search.tpl:140
 msgid "Edit Supplier Details"
+msgstr ""
+
+#: themes/default/templates/supplier/search.tpl:142
+msgid ""
+"Are you Sure you want to delete this Supplier Record? This will permanently "
+"remove the record from the database."
 msgstr ""
 
 #: themes/default/templates/supplier/search.tpl:143
