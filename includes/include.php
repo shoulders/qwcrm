@@ -21,6 +21,26 @@
 
 defined('_QWEXEC') or die;
 
+/* Update Functions */
+
+
+#######################################
+#    Update User's Last Active Date   #
+#######################################
+
+function update_user_last_active($db, $user_id) {
+    
+    $sql = "UPDATE ".PRFX."user SET LAST_ACTIVE=".$db->qstr(time())." WHERE USER_ID=".$db->qstr($user_id);
+    
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update a User's last active time."));
+        exit;
+    }
+    
+}
+
+/* Other Functions */
+
 #####################################
 #   force_page - Page Redirector    #
 #####################################

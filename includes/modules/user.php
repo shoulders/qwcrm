@@ -163,7 +163,8 @@ function insert_user($db, $VAR){
             password            =". $db->qstr( JUserHelper::hashPassword($VAR['password'])  ).",
             email               =". $db->qstr( $VAR['email']                                ).",
             usergroup           =". $db->qstr( $VAR['usergroup']                            ).",
-            status              =". $db->qstr( $VAR['status']                               ).",            
+            status              =". $db->qstr( $VAR['status']                               ).",
+            register_date       =". $db->qstr( time()                                       ).",   
             require_reset       =". $db->qstr( $VAR['require_reset']                        ).",
             is_employee         =". $db->qstr( $VAR['is_employee']                          ).", 
             customer_id         =". $db->qstr( $VAR['customer_id']                          ).",   
@@ -346,6 +347,21 @@ function update_user($db, $user_id, $VAR) {
     }
     
 }
+
+#######################################
+#    Update User's Last Active Date   #  // This is in include.php
+#######################################
+
+/*function update_user_last_active($db, $user_id) {
+    
+    $sql = "UPDATE ".PRFX."user SET LAST_ACTIVE=".$db->qstr(time())." WHERE USER_ID=".$db->qstr($user_id);
+    
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update a User's last active time."));
+        exit;
+    }
+    
+}*/
 
 /** Close Functions **/
 

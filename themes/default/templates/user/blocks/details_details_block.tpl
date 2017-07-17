@@ -5,11 +5,11 @@
         <td class="olohead" colspan="4">{t}Contact Information{/t}</td>
     </tr>
     
+    <!-- Common -->
+    
     <tr class="row2">
         <td class="menutd" colspan="4">&nbsp;</td>
     </tr>    
-        
-    <!-- Common -->
     
     <tr>                        
         <td class="menutd"><b>{t}Display Name{/t}</b></td>
@@ -22,12 +22,12 @@
         <td class="menutd">{$user_details.last_name}</td>
     </tr>
     
+    <!-- Account -->
+    
     <tr class="row2">
         <td class="menutd" colspan="4">&nbsp;</td>
     </tr>
 
-    <!-- Account -->
-    
     <tr>
         <td class="menutd"><b>{t}Username{/t}</b></td>
         <td class="menutd">{$user_details.username}</td>
@@ -75,18 +75,31 @@
     <tr>
         <td class="menutd"><b>{t}Last Active{/t}</b></td>
         <td class="menutd">{$user_details.last_active|date_format:$date_format}</td>
+        <td class="menutd"><b>{t}Register Date{/t}</b></td>
+        <td class="menutd">{$user_details.register_date|date_format:$date_format}</td>
+    </tr>
+    <tr>        
         <td class="menutd"><b>{t}Require Reset{/t}</b></td>
         <td class="menutd">
             {if $user_details.require_reset == '0'}{t}No{/t}{/if}
             {if $user_details.require_reset == '1'}{t}Yes{/t}{/if}
         </td>
+        <td class="menutd">&nbsp;</td>
+        <td class="menutd">&nbsp;</td>
     </tr>
+    <tr>        
+        <td class="menutd"><b>{t}Last Reset Time{/t}</b></td>
+        <td class="menutd">{$user_details.last_reset_time|date_format:$date_format}</td>
+        <td class="menutd"><b>{t}Count of password resets since Last Reset Time{/t}</b></td>
+        <td class="menutd">{$user_details.reset_count}</td>
+    </tr>
+
+    
+    <!-- Work -->
     
     <tr class="row2">
         <td class="menutd" colspan="4">&nbsp;</td>
     </tr>
-    
-    <!-- Work -->
     
     <tr>
         <td class="menutd"><b>{t}Work Phone{/t}</b></td>
@@ -99,12 +112,11 @@
         <td class="menutd">{$user_details.work_fax}</td>
     </tr>
     
+    <!-- Home -->
+    
     <tr class="row2">
         <td class="menutd" colspan="4">&nbsp;</td>
     </tr>
-    
-    
-    <!-- Home -->
     
     <tr>
         <td class="menutd"><b>{t}Home Phone{/t}</b></td>
@@ -126,16 +138,11 @@
         </td>
     </tr>
     
-    <tr class="row2">
-        <td class="menutd" colspan="4">&nbsp;</td>
-    </tr>    
-    
     <!-- Notes -->
     
     <tr class="row2">
         <td class="menutd" colspan="4">&nbsp;</td>
-    </tr>
-    
+    </tr>    
     <tr>
         <td class="menutd"><b>{t}Notes{/t}:</b></td>
         <td class="menutd">{$user_details.notes}</td>

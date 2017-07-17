@@ -14,7 +14,7 @@
 define('QWCRM_MINIMUM_PHP', '5.4.0');
 
 if (version_compare(PHP_VERSION, QWCRM_MINIMUM_PHP, '<')){
-    die('Your host needs to use PHP ' . QWCRM_MINIMUM_PHP . ' or higher to run this version of QWCRM!');
+    die(gettext("Your host needs to use PHP"). ' ' . QWCRM_MINIMUM_PHP . ' ' . gettext("or higher to run this version of QWCRM!"));
 }
 
 #################################################
@@ -256,6 +256,13 @@ $smarty->assign('login_usergroup_id',       $login_usergroup_id     );
 $smarty->assign('login_display_name',       $login_display_name     );
 $smarty->assign('login_is_employee',        $login_is_employee      );
 $smarty->assign('login_customer_id',        $login_customer_id      );
+
+################################################
+#   Update Last Active Times                   #
+################################################
+
+// Logged in Users
+if($login_user_id) {update_user_last_active($db, $login_user_id);}
 
 ################################
 #   Set Global PHP Values      #
