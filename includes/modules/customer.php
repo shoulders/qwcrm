@@ -449,8 +449,8 @@ function build_googlemap_directions_string($db, $customer_id, $employee_id)  {
     // Make the google string country aware - if needed
     $google_server = "https://maps.google.com";
     
-    // Determine the employee's start location (home or office)
-    if ($employee_details['EMPLOYEE_BASED'] == 1){
+    // Determine the employee's start location (1 = Office, 2 = Home, Onsite = 3)
+    if ($employee_details['based'] == 1 || $employee_details['based'] == 3){
         
         // Works from the office
         $employee_address  = preg_replace('/(\r|\n|\r\n){2,}/', ', ', $company_details['ADDRESS']);
@@ -460,9 +460,9 @@ function build_googlemap_directions_string($db, $customer_id, $employee_id)  {
     } else {        
         
         // Works from home
-        $employee_address  = preg_replace('/(\r|\n|\r\n){2,}/', ', ', $employee_details['EMPLOYEE_ADDRESS']);
-        $employee_city     = $employee_details['EMPLOYEE_CITY'];
-        $employee_zip      = $employee_details['EMPLOYEE_ZIP'];
+        $employee_address  = preg_replace('/(\r|\n|\r\n){2,}/', ', ', $employee_details['home_address']);
+        $employee_city     = $employee_details['home_city'];
+        $employee_zip      = $employee_details['home_zip'];
         
     }
     

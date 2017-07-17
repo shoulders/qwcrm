@@ -42,7 +42,7 @@
                                             <td class="menutd" colspan="4"></td>
                                         </tr>
                                         <tr>
-                                            <td class="menutd"> <b>{t}Address{/t}</b> <a style="color:red" href="{$GoogleMapString}" target="_blank" ><img src="{$theme_images_dir}icons/map.png" alt="" border="0" height="14" width="14" />[{t}Get Directions{/t}]</a></td>
+                                            <td class="menutd"> <b>{t}Address{/t}</b> <a style="color:red" href="{$GoogleMapString}" target="_blank" ><img src="{$theme_images_dir}icons/map.png" alt="" border="0" height="14" width="14" />{t}Get Directions{/t}</a></td>
                                             <td class="menutd"></td>
                                             <td class="menutd"><b>{t}Home Phone{/t}</b></td>
                                             <td class="menutd">{$customer_details.CUSTOMER_PHONE}</td>
