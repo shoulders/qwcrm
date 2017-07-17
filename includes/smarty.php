@@ -6,7 +6,7 @@ defined('_QWEXEC') or die;
 set_include_path(get_include_path() . PATH_SEPARATOR . LIBRARIES_DIR.'smarty'.SEP);
 require_once('Smarty.class.php');
 
-// Load Smarty template engine
+// Load Smarty template engine - http://www.smarty.net/docs/en/api.variables.tpl
 
 $smarty = new smarty;
 
@@ -19,16 +19,19 @@ $smarty->force_compile          = $QConfig->smarty_force_compile;
 if($QConfig->smarty_caching == '1') { $smarty->caching = Smarty::CACHING_LIFETIME_CURRENT;}
 if($QConfig->smarty_caching == '2') { $smarty->caching = Smarty::CACHING_LIFETIME_SAVED;}
 
-// Other Cahcing settings
+// Other Caching settings
+$smarty->force_cache            = $QConfig->smarty_force_cache;
 $smarty->cache_lifetime         = $QConfig->smarty_cache_lifetime;
-$smarty->cache_modified_check   = $QConfig->smarty_cache_modified_check;         // Smarty will respect the If-Modified-Since header sent from the client. Only works with caching enabled
+$smarty->cache_modified_check   = $QConfig->smarty_cache_modified_check;
+$smarty->cache_locking          = $QConfig->cache_locking;
 
 
 // Debugging
 
 $smarty->debugging              = $QConfig->smarty_debugging;                                     // Does not work with fetch()
-//$smarty->debug_tpl              = LIBRARIES_DIR.'smarty/debug.tpl';                             // By default it is in the Smarty directory
+$smarty->debugging_ctrl         = $QConfig->smarty_debugging_ctrl;
 //$smarty->debugging_ctrl         = ($_SERVER['SERVER_NAME'] == 'localhost') ? 'URL' : 'NONE';    // Restrict debugging URL to work only on localhost
+//$smarty->debug_tpl              = LIBRARIES_DIR.'smarty/debug.tpl';                             // By default it is in the Smarty directory
 
 // Other Settings
 
@@ -36,6 +39,5 @@ $smarty->debugging              = $QConfig->smarty_debugging;                   
 //$smarty->error_unassigned = true;                 // to enable notices.
 //$smarty->error_reporting = E_ALL | E_STRICT;      // Uses standard PHP error levels.
 //$smarty->compileAllTemplates();                   // this is a really cool feature and useful for translations
-
-
-// You can clear all the cache files with the clear_all_cache() function, or individual cache files (or groups) with the clear_cache() function. 
+//$smarty->clear_all_cache();                       // clears all of the cache
+//$smarty->clear_cache()();                         // clear individual cache files (or groups)
