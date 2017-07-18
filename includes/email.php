@@ -23,7 +23,7 @@ defined('_QWEXEC') or die;
 
 // Check if we have a customer_id
 if($customer_id == '') {
-    force_page('core', 'dashboard', 'warning_msg='.gettext("No Custoemr ID supplied."));
+    force_page('core', 'dashboard', 'warning_msg='.gettext("No Customer ID supplied."));
     exit;
 }  
 
