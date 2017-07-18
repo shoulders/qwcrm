@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2017-07-16 18:58+0100\n"
-"PO-Revision-Date: 2017-07-16 19:00+0100\n"
+"POT-Creation-Date: 2017-07-18 21:04+0100\n"
+"PO-Revision-Date: 2017-07-18 21:08+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en_GB\n"
@@ -104,58 +104,62 @@ msgstr ""
 msgid "Unable to bind array to user object."
 msgstr ""
 
-#: includes/include.php:493 includes/include.php:497 includes/include.php:498
+#: includes/include.php:36
+msgid "Failed to update a User's last active time."
+msgstr ""
+
+#: includes/include.php:513 includes/include.php:517 includes/include.php:518
 msgid "_"
 msgstr ""
 
-#: includes/include.php:513
+#: includes/include.php:533
 msgid "The ACL has been supplied with no account type ID - I will now die."
 msgstr ""
 
-#: includes/include.php:522
+#: includes/include.php:542
 msgid "Could not get the user's Group Name by Login Account Type ID."
 msgstr ""
 
-#: includes/include.php:535
+#: includes/include.php:555
 msgid "Could not get the Page's ACL."
 msgstr ""
 
-#: includes/include.php:546
+#: includes/include.php:566
 msgid "You do not have permission to access the page - "
 msgstr ""
 
-#: includes/include.php:578
+#: includes/include.php:598
 msgid ""
 "Cannot read the QWcrm version number from the database. This could be a "
 "database connection issue."
 msgstr ""
 
-#: includes/include.php:586
+#: includes/include.php:606
 msgid ""
 "The File System and Database versions do not match, run the upgrade routine."
 msgstr ""
 
-#: includes/include.php:594
+#: includes/include.php:614
 msgid ""
 "The install Directory Exists!! Please Rename or remove the install directory."
 msgstr ""
 
-#: includes/include.php:599
+#: includes/include.php:619
 msgid ""
 "The Upgrade Directory Exists!! Please Rename or remove the upgrade directory."
 msgstr ""
 
-#: includes/include.php:613
+#: includes/include.php:633
 msgid ""
 "Could not compare the version of the file system and databases to verify "
 "they match."
 msgstr ""
 
-#: includes/include.php:798
+#: includes/include.php:818
 msgid "Error inserting item into tracker database."
 msgstr ""
 
-#: includes/include.php:829
+#: includes/include.php:849
 msgid "Could not open activity.log to save the record."
 msgstr ""
 
@@ -169,6 +173,10 @@ msgstr ""
 
 #: includes/modules/administrator.php:182
 msgid "Failed to update teh Page ACL permissions."
+msgstr ""
+
+#: includes/modules/administrator.php:295
+msgid "Failed to empty the databse session table."
 msgstr ""
 
 #: includes/modules/company.php:44
@@ -295,63 +303,63 @@ msgstr ""
 msgid "Failed to return the matching customer records."
 msgstr ""
 
-#: includes/modules/customer.php:158
+#: includes/modules/customer.php:157
 msgid "Failed to insert the customer record into the database."
 msgstr ""
 
-#: includes/modules/customer.php:181
+#: includes/modules/customer.php:180
 msgid "Failed to insert the customer note into the database."
 msgstr ""
 
-#: includes/modules/customer.php:198
+#: includes/modules/customer.php:197
 msgid "Failed to get the customer's details."
 msgstr ""
 
-#: includes/modules/customer.php:225
+#: includes/modules/customer.php:224
 msgid "Failed to get the customer note."
 msgstr ""
 
-#: includes/modules/customer.php:252
+#: includes/modules/customer.php:251
 msgid "Failed to get the customer's notes."
 msgstr ""
 
-#: includes/modules/customer.php:290
-msgid "Failed to update the customer's details."
+#: includes/modules/customer.php:289
+msgid "Failed to update the Customer's details."
 msgstr ""
 
-#: includes/modules/customer.php:315
+#: includes/modules/customer.php:314
 msgid "Failed to update the customer note."
 msgstr ""
 
-#: includes/modules/customer.php:334
+#: includes/modules/customer.php:333
 msgid "Failed to count the customer's Workorders in the database."
 msgstr ""
 
-#: includes/modules/customer.php:345
+#: includes/modules/customer.php:344
 msgid "Failed to count the customer's Invoices in the database."
 msgstr ""
 
-#: includes/modules/customer.php:356
+#: includes/modules/customer.php:355
 msgid "Failed to count the customer's Gift Certificates in the database."
 msgstr ""
 
-#: includes/modules/customer.php:367
+#: includes/modules/customer.php:366
 msgid "Failed to count the customer's Notes in the database."
 msgstr ""
 
-#: includes/modules/customer.php:380
+#: includes/modules/customer.php:379
 msgid "Failed to delete the customer's users from the database."
 msgstr ""
 
-#: includes/modules/customer.php:387
+#: includes/modules/customer.php:386
 msgid "Failed to delete the customer from the database."
 msgstr ""
 
-#: includes/modules/customer.php:404
+#: includes/modules/customer.php:403
 msgid "Failed to delete the customer note."
 msgstr ""
 
-#: includes/modules/customer.php:421
+#: includes/modules/customer.php:420
 msgid ""
 "Failed to check the submitted Display Name for duplicates in the database."
 msgstr ""
@@ -386,6 +394,9 @@ msgstr ""
 #: themes/default/templates/expense/edit.tpl:57
 #: themes/default/templates/expense/new.tpl:66
 #: themes/default/templates/expense/search.tpl:131
+#: themes/default/templates/invoice/search.tpl:132
+#: themes/default/templates/schedule/search.tpl:132
+#: themes/default/templates/workorder/search.tpl:132
 msgid "EXPENSE_TYPE_1"
 msgstr "Advertising"
 
@@ -395,6 +406,9 @@ msgstr "Advertising"
 #: themes/default/templates/expense/edit.tpl:58
 #: themes/default/templates/expense/new.tpl:67
 #: themes/default/templates/expense/search.tpl:132
+#: themes/default/templates/invoice/search.tpl:133
+#: themes/default/templates/schedule/search.tpl:133
+#: themes/default/templates/workorder/search.tpl:133
 msgid "EXPENSE_TYPE_2"
 msgstr "Bank Charges"
 
@@ -404,6 +418,9 @@ msgstr "Bank Charges"
 #: themes/default/templates/expense/edit.tpl:59
 #: themes/default/templates/expense/new.tpl:68
 #: themes/default/templates/expense/search.tpl:133
+#: themes/default/templates/invoice/search.tpl:134
+#: themes/default/templates/schedule/search.tpl:134
+#: themes/default/templates/workorder/search.tpl:134
 msgid "EXPENSE_TYPE_3"
 msgstr "Broadband"
 
@@ -413,6 +430,9 @@ msgstr "Broadband"
 #: themes/default/templates/expense/edit.tpl:60
 #: themes/default/templates/expense/new.tpl:69
 #: themes/default/templates/expense/search.tpl:134
+#: themes/default/templates/invoice/search.tpl:135
+#: themes/default/templates/schedule/search.tpl:135
+#: themes/default/templates/workorder/search.tpl:135
 msgid "EXPENSE_TYPE_4"
 msgstr "Credit"
 
@@ -422,6 +442,9 @@ msgstr "Credit"
 #: themes/default/templates/expense/edit.tpl:61
 #: themes/default/templates/expense/new.tpl:70
 #: themes/default/templates/expense/search.tpl:135
+#: themes/default/templates/invoice/search.tpl:136
+#: themes/default/templates/schedule/search.tpl:136
+#: themes/default/templates/workorder/search.tpl:136
 msgid "EXPENSE_TYPE_5"
 msgstr "Customer Full Refund"
 
@@ -431,6 +454,9 @@ msgstr "Customer Full Refund"
 #: themes/default/templates/expense/edit.tpl:62
 #: themes/default/templates/expense/new.tpl:71
 #: themes/default/templates/expense/search.tpl:136
+#: themes/default/templates/invoice/search.tpl:137
+#: themes/default/templates/schedule/search.tpl:137
+#: themes/default/templates/workorder/search.tpl:137
 msgid "EXPENSE_TYPE_6"
 msgstr "Customer Partial Refund"
 
@@ -440,6 +466,9 @@ msgstr "Customer Partial Refund"
 #: themes/default/templates/expense/edit.tpl:63
 #: themes/default/templates/expense/new.tpl:72
 #: themes/default/templates/expense/search.tpl:137
+#: themes/default/templates/invoice/search.tpl:138
+#: themes/default/templates/schedule/search.tpl:138
+#: themes/default/templates/workorder/search.tpl:138
 msgid "EXPENSE_TYPE_7"
 msgstr "Equipment"
 
@@ -449,6 +478,9 @@ msgstr "Equipment"
 #: themes/default/templates/expense/edit.tpl:64
 #: themes/default/templates/expense/new.tpl:73
 #: themes/default/templates/expense/search.tpl:138
+#: themes/default/templates/invoice/search.tpl:139
+#: themes/default/templates/schedule/search.tpl:139
+#: themes/default/templates/workorder/search.tpl:139
 msgid "EXPENSE_TYPE_8"
 msgstr "Gift Certificate"
 
@@ -458,6 +490,9 @@ msgstr "Gift Certificate"
 #: themes/default/templates/expense/edit.tpl:65
 #: themes/default/templates/expense/new.tpl:74
 #: themes/default/templates/expense/search.tpl:139
+#: themes/default/templates/invoice/search.tpl:140
+#: themes/default/templates/schedule/search.tpl:140
+#: themes/default/templates/workorder/search.tpl:140
 msgid "EXPENSE_TYPE_9"
 msgstr "Landline"
 
@@ -467,6 +502,9 @@ msgstr "Landline"
 #: themes/default/templates/expense/edit.tpl:66
 #: themes/default/templates/expense/new.tpl:75
 #: themes/default/templates/expense/search.tpl:140
+#: themes/default/templates/invoice/search.tpl:141
+#: themes/default/templates/schedule/search.tpl:141
+#: themes/default/templates/workorder/search.tpl:141
 msgid "EXPENSE_TYPE_10"
 msgstr "Mobile Phone"
 
@@ -476,6 +514,9 @@ msgstr "Mobile Phone"
 #: themes/default/templates/expense/edit.tpl:67
 #: themes/default/templates/expense/new.tpl:76
 #: themes/default/templates/expense/search.tpl:141
+#: themes/default/templates/invoice/search.tpl:142
+#: themes/default/templates/schedule/search.tpl:142
+#: themes/default/templates/workorder/search.tpl:142
 msgid "EXPENSE_TYPE_11"
 msgstr "Office Supplies"
 
@@ -485,6 +526,9 @@ msgstr "Office Supplies"
 #: themes/default/templates/expense/edit.tpl:68
 #: themes/default/templates/expense/new.tpl:77
 #: themes/default/templates/expense/search.tpl:142
+#: themes/default/templates/invoice/search.tpl:143
+#: themes/default/templates/schedule/search.tpl:143
+#: themes/default/templates/workorder/search.tpl:143
 msgid "EXPENSE_TYPE_12"
 msgstr "Parts"
 
@@ -494,6 +538,9 @@ msgstr "Parts"
 #: themes/default/templates/expense/edit.tpl:69
 #: themes/default/templates/expense/new.tpl:78
 #: themes/default/templates/expense/search.tpl:143
+#: themes/default/templates/invoice/search.tpl:144
+#: themes/default/templates/schedule/search.tpl:144
+#: themes/default/templates/workorder/search.tpl:144
 msgid "EXPENSE_TYPE_13"
 msgstr "Fuel"
 
@@ -503,6 +550,9 @@ msgstr "Fuel"
 #: themes/default/templates/expense/edit.tpl:70
 #: themes/default/templates/expense/new.tpl:79
 #: themes/default/templates/expense/search.tpl:144
+#: themes/default/templates/invoice/search.tpl:145
+#: themes/default/templates/schedule/search.tpl:145
+#: themes/default/templates/workorder/search.tpl:145
 msgid "EXPENSE_TYPE_14"
 msgstr "Postage"
 
@@ -512,6 +562,9 @@ msgstr "Postage"
 #: themes/default/templates/expense/edit.tpl:71
 #: themes/default/templates/expense/new.tpl:80
 #: themes/default/templates/expense/search.tpl:145
+#: themes/default/templates/invoice/search.tpl:146
+#: themes/default/templates/schedule/search.tpl:146
+#: themes/default/templates/workorder/search.tpl:146
 msgid "EXPENSE_TYPE_15"
 msgstr "Rates"
 
@@ -521,6 +574,9 @@ msgstr "Rates"
 #: themes/default/templates/expense/edit.tpl:72
 #: themes/default/templates/expense/new.tpl:81
 #: themes/default/templates/expense/search.tpl:146
+#: themes/default/templates/invoice/search.tpl:147
+#: themes/default/templates/schedule/search.tpl:147
+#: themes/default/templates/workorder/search.tpl:147
 msgid "EXPENSE_TYPE_16"
 msgstr "Rent"
 
@@ -530,6 +586,9 @@ msgstr "Rent"
 #: themes/default/templates/expense/edit.tpl:73
 #: themes/default/templates/expense/new.tpl:82
 #: themes/default/templates/expense/search.tpl:147
+#: themes/default/templates/invoice/search.tpl:148
+#: themes/default/templates/schedule/search.tpl:148
+#: themes/default/templates/workorder/search.tpl:148
 msgid "EXPENSE_TYPE_17"
 msgstr "Transport"
 
@@ -539,6 +598,9 @@ msgstr "Transport"
 #: themes/default/templates/expense/edit.tpl:74
 #: themes/default/templates/expense/new.tpl:83
 #: themes/default/templates/expense/search.tpl:148
+#: themes/default/templates/invoice/search.tpl:149
+#: themes/default/templates/schedule/search.tpl:149
+#: themes/default/templates/workorder/search.tpl:149
 msgid "EXPENSE_TYPE_18"
 msgstr "Utilities"
 
@@ -548,6 +610,9 @@ msgstr "Utilities"
 #: themes/default/templates/expense/edit.tpl:75
 #: themes/default/templates/expense/new.tpl:84
 #: themes/default/templates/expense/search.tpl:149
+#: themes/default/templates/invoice/search.tpl:150
+#: themes/default/templates/schedule/search.tpl:150
+#: themes/default/templates/workorder/search.tpl:150
 msgid "EXPENSE_TYPE_19"
 msgstr "Voucher"
 
@@ -557,6 +622,9 @@ msgstr "Voucher"
 #: themes/default/templates/expense/edit.tpl:76
 #: themes/default/templates/expense/new.tpl:85
 #: themes/default/templates/expense/search.tpl:150
+#: themes/default/templates/invoice/search.tpl:151
+#: themes/default/templates/schedule/search.tpl:151
+#: themes/default/templates/workorder/search.tpl:151
 msgid "EXPENSE_TYPE_20"
 msgstr "Wages"
 
@@ -566,6 +634,9 @@ msgstr "Wages"
 #: themes/default/templates/expense/edit.tpl:77
 #: themes/default/templates/expense/new.tpl:86
 #: themes/default/templates/expense/search.tpl:151
+#: themes/default/templates/invoice/search.tpl:152
+#: themes/default/templates/schedule/search.tpl:152
+#: themes/default/templates/workorder/search.tpl:152
 msgid "EXPENSE_TYPE_21"
 msgstr "Other"
 
@@ -575,6 +646,9 @@ msgstr "Other"
 #: themes/default/templates/expense/edit.tpl:85
 #: themes/default/templates/expense/new.tpl:94
 #: themes/default/templates/expense/search.tpl:154
+#: themes/default/templates/invoice/search.tpl:155
+#: themes/default/templates/schedule/search.tpl:155
+#: themes/default/templates/workorder/search.tpl:155
 msgid "EXPENSE_PAYMENT_METHOD_1"
 msgstr "Bank Transfer"
 
@@ -584,6 +658,9 @@ msgstr "Bank Transfer"
 #: themes/default/templates/expense/edit.tpl:86
 #: themes/default/templates/expense/new.tpl:95
 #: themes/default/templates/expense/search.tpl:155
+#: themes/default/templates/invoice/search.tpl:156
+#: themes/default/templates/schedule/search.tpl:156
+#: themes/default/templates/workorder/search.tpl:156
 msgid "EXPENSE_PAYMENT_METHOD_2"
 msgstr "Card"
 
@@ -593,6 +670,9 @@ msgstr "Card"
 #: themes/default/templates/expense/edit.tpl:87
 #: themes/default/templates/expense/new.tpl:96
 #: themes/default/templates/expense/search.tpl:156
+#: themes/default/templates/invoice/search.tpl:157
+#: themes/default/templates/schedule/search.tpl:157
+#: themes/default/templates/workorder/search.tpl:157
 msgid "EXPENSE_PAYMENT_METHOD_3"
 msgstr "Cash"
 
@@ -602,6 +682,9 @@ msgstr "Cash"
 #: themes/default/templates/expense/edit.tpl:88
 #: themes/default/templates/expense/new.tpl:97
 #: themes/default/templates/expense/search.tpl:157
+#: themes/default/templates/invoice/search.tpl:158
+#: themes/default/templates/schedule/search.tpl:158
+#: themes/default/templates/workorder/search.tpl:158
 msgid "EXPENSE_PAYMENT_METHOD_4"
 msgstr "Cheque"
 
@@ -611,6 +694,9 @@ msgstr "Cheque"
 #: themes/default/templates/expense/edit.tpl:89
 #: themes/default/templates/expense/new.tpl:98
 #: themes/default/templates/expense/search.tpl:158
+#: themes/default/templates/invoice/search.tpl:159
+#: themes/default/templates/schedule/search.tpl:159
+#: themes/default/templates/workorder/search.tpl:159
 msgid "EXPENSE_PAYMENT_METHOD_5"
 msgstr "Credit"
 
@@ -620,6 +706,9 @@ msgstr "Credit"
 #: themes/default/templates/expense/edit.tpl:90
 #: themes/default/templates/expense/new.tpl:99
 #: themes/default/templates/expense/search.tpl:159
+#: themes/default/templates/invoice/search.tpl:160
+#: themes/default/templates/schedule/search.tpl:160
+#: themes/default/templates/workorder/search.tpl:160
 msgid "EXPENSE_PAYMENT_METHOD_6"
 msgstr "Direct Debit"
 
@@ -629,6 +718,9 @@ msgstr "Direct Debit"
 #: themes/default/templates/expense/edit.tpl:91
 #: themes/default/templates/expense/new.tpl:100
 #: themes/default/templates/expense/search.tpl:160
+#: themes/default/templates/invoice/search.tpl:161
+#: themes/default/templates/schedule/search.tpl:161
+#: themes/default/templates/workorder/search.tpl:161
 msgid "EXPENSE_PAYMENT_METHOD_7"
 msgstr "Gift Certificate"
 
@@ -638,6 +730,9 @@ msgstr "Gift Certificate"
 #: themes/default/templates/expense/edit.tpl:92
 #: themes/default/templates/expense/new.tpl:101
 #: themes/default/templates/expense/search.tpl:161
+#: themes/default/templates/invoice/search.tpl:162
+#: themes/default/templates/schedule/search.tpl:162
+#: themes/default/templates/workorder/search.tpl:162
 msgid "EXPENSE_PAYMENT_METHOD_8"
 msgstr "Google Checkout"
 
@@ -647,6 +742,9 @@ msgstr "Google Checkout"
 #: themes/default/templates/expense/edit.tpl:93
 #: themes/default/templates/expense/new.tpl:102
 #: themes/default/templates/expense/search.tpl:162
+#: themes/default/templates/invoice/search.tpl:163
+#: themes/default/templates/schedule/search.tpl:163
+#: themes/default/templates/workorder/search.tpl:163
 msgid "EXPENSE_PAYMENT_METHOD_9"
 msgstr "PayPal"
 
@@ -656,6 +754,9 @@ msgstr "PayPal"
 #: themes/default/templates/expense/edit.tpl:94
 #: themes/default/templates/expense/new.tpl:103
 #: themes/default/templates/expense/search.tpl:163
+#: themes/default/templates/invoice/search.tpl:164
+#: themes/default/templates/schedule/search.tpl:164
+#: themes/default/templates/workorder/search.tpl:164
 msgid "EXPENSE_PAYMENT_METHOD_10"
 msgstr "Voucher"
 
@@ -665,6 +766,9 @@ msgstr "Voucher"
 #: themes/default/templates/expense/edit.tpl:95
 #: themes/default/templates/expense/new.tpl:104
 #: themes/default/templates/expense/search.tpl:164
+#: themes/default/templates/invoice/search.tpl:165
+#: themes/default/templates/schedule/search.tpl:165
+#: themes/default/templates/workorder/search.tpl:165
 msgid "EXPENSE_PAYMENT_METHOD_11"
 msgstr "Other"
 
@@ -822,50 +926,96 @@ msgstr ""
 msgid "Failed to insert transaction into the database."
 msgstr ""
 
-#: includes/modules/payment.php:87 includes/modules/payment.php:123
+#: includes/modules/payment.php:81 includes/modules/payment.php:111
+msgid "Partial Payment made by"
+msgstr ""
+
+#: includes/modules/payment.php:81 includes/modules/payment.php:111
+#: includes/modules/payment.php:117 includes/modules/schedule.php:654
+#: themes/default/templates/customer/blocks/details_customer_details_block.tpl:7
+#: themes/default/templates/expense/search.tpl:44
+#: themes/default/templates/invoice/search.tpl:45
+#: themes/default/templates/refund/search.tpl:43
+#: themes/default/templates/schedule/search.tpl:45
+#: themes/default/templates/supplier/search.tpl:38
+#: themes/default/templates/workorder/search.tpl:45
+msgid "for"
+msgstr ""
+
+#: includes/modules/payment.php:81
+msgid "Balance due"
+msgstr ""
+
+#: includes/modules/payment.php:81 includes/modules/payment.php:111
+#: includes/modules/payment.php:117
+#: themes/default/templates/customer/note_edit.tpl:41
+#: themes/default/templates/invoice/details.tpl:147
+#: themes/default/templates/invoice/edit.tpl:436
+#: themes/default/templates/invoice/printing/print_address.tpl:224
+#: themes/default/templates/invoice/printing/print_invoice.tpl:224
+#: themes/default/templates/payment/blocks/new_payment_cash_block.tpl:19
+#: themes/default/templates/payment/blocks/new_payment_cheque_block.tpl:21
+#: themes/default/templates/payment/blocks/new_payment_credit_card_block.tpl:29
+#: themes/default/templates/payment/blocks/new_payment_direct_deposit_block.tpl:21
+#: themes/default/templates/payment/blocks/new_payment_gift_certificate_block.tpl:19
+#: themes/default/templates/payment/blocks/new_payment_paypal_block.tpl:21
+#: themes/default/templates/payment/blocks/new_transactions_log_block.tpl:30
+#: themes/default/templates/workorder/note_edit.tpl:41
+msgid "Note"
+msgstr ""
+
+#: includes/modules/payment.php:87 includes/modules/payment.php:128
 #: includes/modules/workorder.php:257 includes/modules/workorder.php:260
 #: themes/default/templates/giftcert/details.tpl:65
 msgid "Created by"
 msgstr ""
 
-#: includes/modules/payment.php:149
+#: includes/modules/payment.php:111 includes/modules/payment.php:117
+msgid "closing the invoice."
+msgstr ""
+
+#: includes/modules/payment.php:117
+msgid "Full Payment made by"
+msgstr ""
+
+#: includes/modules/payment.php:154
 msgid "Failed to get payment details."
 msgstr ""
 
-#: includes/modules/payment.php:179
+#: includes/modules/payment.php:184
 msgid "Failed to get active payment methods."
 msgstr ""
 
-#: includes/modules/payment.php:198
+#: includes/modules/payment.php:203
 msgid "Failed to get payment methods status."
 msgstr ""
 
-#: includes/modules/payment.php:217
+#: includes/modules/payment.php:222
 msgid "Failed to get the active credit cards."
 msgstr ""
 
-#: includes/modules/payment.php:246
+#: includes/modules/payment.php:251
 msgid "Failed to get the invoice's transactions."
 msgstr ""
 
-#: includes/modules/payment.php:275
+#: includes/modules/payment.php:280
 msgid "Failed to update payment settings."
 msgstr ""
 
-#: includes/modules/payment.php:310
+#: includes/modules/payment.php:315
 msgid "Failed to update a payment method status."
 msgstr ""
 
-#: includes/modules/payment.php:333
+#: includes/modules/payment.php:338
 msgid "Failed to check if the payment method is active."
 msgstr ""
 
-#: includes/modules/payment.php:361
-msgid "You can not enter a transaction with a zero (0.00) amount"
+#: includes/modules/payment.php:366
+msgid "You can not enter a transaction with a zero (0.00) amount."
 msgstr ""
 
-#: includes/modules/payment.php:370
-msgid "You can not enter more than the outstanding balance of the invoice"
+#: includes/modules/payment.php:375
+msgid "You can not enter more than the outstanding balance of the invoice."
 msgstr ""
 
 #: includes/modules/refund.php:118
@@ -1357,7 +1507,7 @@ msgstr ""
 
 #: includes/modules/schedule.php:395 includes/modules/schedule.php:427
 #: themes/default/templates/company/edit.tpl:94
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:150
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:152
 #: themes/default/templates/customer/blocks/details_customer_details_block.tpl:28
 #: themes/default/templates/customer/edit.tpl:42
 #: themes/default/templates/customer/new.tpl:44
@@ -1385,7 +1535,7 @@ msgstr ""
 #: themes/default/templates/supplier/details.tpl:72
 #: themes/default/templates/supplier/edit.tpl:83
 #: themes/default/templates/supplier/new.tpl:89
-#: themes/default/templates/user/blocks/details_details_block.tpl:120
+#: themes/default/templates/user/blocks/details_details_block.tpl:132
 #: themes/default/templates/user/edit.tpl:197
 #: themes/default/templates/user/new.tpl:197
 #: themes/default/templates/workorder/blocks/details_customer_details_block.tpl:46
@@ -1425,14 +1575,6 @@ msgstr ""
 msgid "Work Order"
 msgstr ""
 
-#: includes/modules/schedule.php:654
-#: themes/default/templates/customer/blocks/details_customer_details_block.tpl:7
-#: themes/default/templates/expense/search.tpl:44
-#: themes/default/templates/refund/search.tpl:43
-#: themes/default/templates/supplier/search.tpl:38
-msgid "for"
-msgstr ""
-
 #: includes/modules/schedule.php:660
 #: themes/default/templates/customer/blocks/details_customer_details_block.tpl:95
 #: themes/default/templates/customer/blocks/details_giftcert_block.tpl:12
@@ -1455,6 +1597,9 @@ msgstr ""
 #: themes/default/templates/giftcert/new.tpl:59
 #: themes/default/templates/giftcert/search.tpl:122
 #: themes/default/templates/giftcert/search.tpl:143
+#: themes/default/templates/invoice/search.tpl:41
+#: themes/default/templates/invoice/search.tpl:121
+#: themes/default/templates/invoice/search.tpl:173
 #: themes/default/templates/refund/details.tpl:76
 #: themes/default/templates/refund/edit.tpl:102
 #: themes/default/templates/refund/new.tpl:119
@@ -1464,13 +1609,16 @@ msgstr ""
 #: themes/default/templates/schedule/details.tpl:29
 #: themes/default/templates/schedule/edit.tpl:84
 #: themes/default/templates/schedule/new.tpl:70
+#: themes/default/templates/schedule/search.tpl:41
+#: themes/default/templates/schedule/search.tpl:121
+#: themes/default/templates/schedule/search.tpl:173
 #: themes/default/templates/supplier/details.tpl:95
 #: themes/default/templates/supplier/edit.tpl:99
 #: themes/default/templates/supplier/new.tpl:116
 #: themes/default/templates/supplier/search.tpl:34
 #: themes/default/templates/supplier/search.tpl:108
 #: themes/default/templates/supplier/search.tpl:132
-#: themes/default/templates/user/blocks/details_details_block.tpl:140
+#: themes/default/templates/user/blocks/details_details_block.tpl:147
 #: themes/default/templates/user/edit.tpl:219
 #: themes/default/templates/user/edit.tpl:225
 #: themes/default/templates/user/new.tpl:219
@@ -1484,6 +1632,9 @@ msgstr ""
 #: themes/default/templates/workorder/printing/print_job_sheet.tpl:107
 #: themes/default/templates/workorder/printing/print_technician_workorder_slip.tpl:167
 #: themes/default/templates/workorder/printing/print_technician_workorder_slip.tpl:263
+#: themes/default/templates/workorder/search.tpl:41
+#: themes/default/templates/workorder/search.tpl:121
+#: themes/default/templates/workorder/search.tpl:173
 msgid "Notes"
 msgstr ""
 
@@ -1697,73 +1848,89 @@ msgstr ""
 msgid "Failed to return the matching user records."
 msgstr ""
 
-#: includes/modules/user.php:187
+#: includes/modules/user.php:188
 msgid "Failed to insert the user record into the database."
 msgstr ""
 
-#: includes/modules/user.php:208
+#: includes/modules/user.php:209
 msgid "Failed to get the user details."
 msgstr ""
 
-#: includes/modules/user.php:243
+#: includes/modules/user.php:244
 msgid "Failed to get the User ID by their username."
 msgstr ""
 
-#: includes/modules/user.php:267
+#: includes/modules/user.php:268
 msgid "Failed to get the usergroups."
 msgstr ""
 
-#: includes/modules/user.php:290
+#: includes/modules/user.php:291
 msgid "Failed to get the active users."
 msgstr ""
 
-#: includes/modules/user.php:340
+#: includes/modules/user.php:341
 msgid "Failed to update the user record."
 msgstr ""
 
-#: includes/modules/user.php:363 includes/modules/user.php:374
+#: includes/modules/user.php:379 includes/modules/user.php:390
 msgid "Failed to count the user's Workorders in the database."
 msgstr ""
 
-#: includes/modules/user.php:385
+#: includes/modules/user.php:383
+msgid "You can not delete a user who has created work orders."
+msgstr ""
+
+#: includes/modules/user.php:394
+msgid "You can not delete a user who has assigned work orders."
+msgstr ""
+
+#: includes/modules/user.php:401
 msgid "Failed to count the user's Invoices in the database."
 msgstr ""
 
-#: includes/modules/user.php:396
+#: includes/modules/user.php:405
+msgid "You can not delete a user who has invoices."
+msgstr ""
+
+#: includes/modules/user.php:412
 msgid "Failed to count the user's Gift Certificates in the database."
 msgstr ""
 
-#: includes/modules/user.php:409
+#: includes/modules/user.php:416
+msgid "You can not delete a user who has gift certificates."
+msgstr ""
+
+#: includes/modules/user.php:425
 msgid "Failed to delete the user from the database."
 msgstr ""
 
-#: includes/modules/user.php:431
+#: includes/modules/user.php:447
 msgid ""
 "Failed to count the number of Work Orders for the user for the defined status"
 msgstr ""
 
-#: includes/modules/user.php:453
+#: includes/modules/user.php:469
 msgid ""
 "Failed count the number of invoices for the user for the defined status."
 msgstr ""
 
-#: includes/modules/user.php:484
+#: includes/modules/user.php:500
 msgid "Failed build and return and User list."
 msgstr ""
 
-#: includes/modules/user.php:509
+#: includes/modules/user.php:525
 msgid "Failed to check if the username exists."
 msgstr ""
 
-#: includes/modules/user.php:515
+#: includes/modules/user.php:531
 msgid "The Username"
 msgstr ""
 
-#: includes/modules/user.php:515
+#: includes/modules/user.php:531
 msgid "already exists! Please use a different one."
 msgstr ""
 
-#: includes/modules/user.php:554
+#: includes/modules/user.php:570
 msgid "Failed to check if the customer already has a login."
 msgstr ""
 
@@ -2101,6 +2268,14 @@ msgstr ""
 
 #: includes/modules/workorder.php:909
 msgid "Failed to check if a Work Order is open."
+msgstr ""
+
+#: index.php:17
+msgid "Your host needs to use PHP"
+msgstr ""
+
+#: index.php:17
+msgid "or higher to run this version of QWCRM!"
 msgstr ""
 
 #: language/_gettext_only/pages.php:19
@@ -2575,11 +2750,17 @@ msgstr "-"
 
 #: language/_gettext_only/pages.php:171
 #: themes/default/templates/expense/search.tpl:10
+#: themes/default/templates/invoice/search.tpl:11
+#: themes/default/templates/schedule/search.tpl:11
+#: themes/default/templates/workorder/search.tpl:11
 msgid "EXPENSE_SEARCH_HELP_TITLE"
 msgstr "Help"
 
 #: language/_gettext_only/pages.php:172
 #: themes/default/templates/expense/search.tpl:10
+#: themes/default/templates/invoice/search.tpl:11
+#: themes/default/templates/schedule/search.tpl:11
+#: themes/default/templates/workorder/search.tpl:11
 msgid "EXPENSE_SEARCH_HELP_CONTENT"
 msgstr ""
 "You can search by any category by using the dropdown box. Apart from Expense "
@@ -2810,13 +2991,11 @@ msgid "INVOICE_LABOUR_RATES_META_KEYWORDS"
 msgstr "-"
 
 #: language/_gettext_only/pages.php:247
-#: themes/default/templates/administrator/config.tpl:25
 #: themes/default/templates/invoice/labour_rates.tpl:9
 msgid "INVOICE_LABOUR_RATES_HELP_TITLE"
 msgstr "Help"
 
 #: language/_gettext_only/pages.php:248
-#: themes/default/templates/administrator/config.tpl:25
 #: themes/default/templates/invoice/labour_rates.tpl:9
 msgid "INVOICE_LABOUR_RATES_HELP_CONTENT"
 msgstr ""
@@ -2850,73 +3029,93 @@ msgid "INVOICE_PAID_HELP_CONTENT"
 msgstr "Navigate through the paid invoices by using the navigation arrows."
 
 #: language/_gettext_only/pages.php:258
-msgid "INVOICE_UNPAID_PAGE_TITLE"
-msgstr "Unpaid Invoices"
-
-#: language/_gettext_only/pages.php:259
-msgid "INVOICE_UNPAID_META_DESCRIPTION"
-msgstr "-"
-
-#: language/_gettext_only/pages.php:260
-msgid "INVOICE_UNPAID_META_KEYWORDS"
-msgstr "-"
-
-#: language/_gettext_only/pages.php:261
-#: themes/default/templates/invoice/unpaid.tpl:9
-msgid "INVOICE_UNPAID_HELP_TITLE"
-msgstr "Help"
-
-#: language/_gettext_only/pages.php:262
-#: themes/default/templates/invoice/unpaid.tpl:9
-msgid "INVOICE_UNPAID_HELP_CONTENT"
-msgstr "Navigate through the unpaid invoices by using the navigation arrows."
-
-#: language/_gettext_only/pages.php:265
 msgid "INVOICE_PRINT_ADDRESS_PAGE_TITLE"
 msgstr "QWcrm - Address Template"
 
-#: language/_gettext_only/pages.php:266
+#: language/_gettext_only/pages.php:259
 msgid "INVOICE_PRINT_ADDRESS_META_DESCRIPTION"
 msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
 
-#: language/_gettext_only/pages.php:267
+#: language/_gettext_only/pages.php:260
 msgid "INVOICE_PRINT_ADDRESS_META_KEYWORDS"
 msgstr ""
 "CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment "
 "Processing, Simple to use"
 
-#: language/_gettext_only/pages.php:272
+#: language/_gettext_only/pages.php:265
 msgid "INVOICE_PRINT_INVOICE_PAGE_TITLE"
 msgstr "QWCRM - Invoice Template"
 
-#: language/_gettext_only/pages.php:273
+#: language/_gettext_only/pages.php:266
 msgid "INVOICE_PRINT_INVOICE_META_DESCRIPTION"
 msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
 
-#: language/_gettext_only/pages.php:274
+#: language/_gettext_only/pages.php:267
 msgid "INVOICE_PRINT_INVOICE_META_KEYWORDS"
 msgstr ""
 "CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment "
 "Processing, Simple to use"
 
+#: language/_gettext_only/pages.php:272
+msgid "INVOICE_UNPAID_PAGE_TITLE"
+msgstr "Unpaid Invoices"
+
+#: language/_gettext_only/pages.php:273
+msgid "INVOICE_UNPAID_META_DESCRIPTION"
+msgstr "-"
+
+#: language/_gettext_only/pages.php:274
+msgid "INVOICE_UNPAID_META_KEYWORDS"
+msgstr "-"
+
+#: language/_gettext_only/pages.php:275
+#: themes/default/templates/invoice/unpaid.tpl:9
+msgid "INVOICE_UNPAID_HELP_TITLE"
+msgstr "Help"
+
+#: language/_gettext_only/pages.php:276
+#: themes/default/templates/invoice/unpaid.tpl:9
+msgid "INVOICE_UNPAID_HELP_CONTENT"
+msgstr "Navigate through the unpaid invoices by using the navigation arrows."
+
+#: language/_gettext_only/pages.php:279
+msgid "INVOICE_SEARCH_PAGE_TITLE"
+msgstr "Search Invoices"
+
+#: language/_gettext_only/pages.php:280
+msgid "INVOICE_SEARCH_META_DESCRIPTION"
+msgstr "-"
+
 #: language/_gettext_only/pages.php:281
+msgid "INVOICE_SEARCH_META_KEYWORDS"
+msgstr "-"
+
+#: language/_gettext_only/pages.php:282
+msgid "INVOICE_SEARCH_HELP_TITLE"
+msgstr "Help"
+
+#: language/_gettext_only/pages.php:283
+msgid "INVOICE_SEARCH_HELP_CONTENT"
+msgstr "nothing to help with yet!"
+
+#: language/_gettext_only/pages.php:288
 msgid "PAYMENT_NEW_PAGE_TITLE"
 msgstr "New Payment"
 
-#: language/_gettext_only/pages.php:282
+#: language/_gettext_only/pages.php:289
 msgid "PAYMENT_NEW_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:283
+#: language/_gettext_only/pages.php:290
 msgid "PAYMENT_NEW_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:284
+#: language/_gettext_only/pages.php:291
 #: themes/default/templates/payment/new.tpl:9
 msgid "PAYMENT_NEW_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:285
+#: language/_gettext_only/pages.php:292
 #: themes/default/templates/payment/new.tpl:9
 msgid "PAYMENT_NEW_HELP_CONTENT"
 msgstr ""
@@ -2925,24 +3124,24 @@ msgstr ""
 "logged and applied to the invoice. If you do not see the payment type you "
 "need, contact the your management."
 
-#: language/_gettext_only/pages.php:288
+#: language/_gettext_only/pages.php:295
 msgid "PAYMENT_OPTIONS_PAGE_TITLE"
 msgstr "Payment Options"
 
-#: language/_gettext_only/pages.php:289
+#: language/_gettext_only/pages.php:296
 msgid "PAYMENT_OPTIONS_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:290
+#: language/_gettext_only/pages.php:297
 msgid "PAYMENT_OPTIONS_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:291
+#: language/_gettext_only/pages.php:298
 #: themes/default/templates/payment/options.tpl:9
 msgid "PAYMENT_OPTIONS_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:292
+#: language/_gettext_only/pages.php:299
 #: themes/default/templates/payment/options.tpl:9
 msgid "PAYMENT_OPTIONS_HELP_CONTENT"
 msgstr ""
@@ -2950,24 +3149,24 @@ msgstr ""
 "payment options have information that will appear on invoices and this is "
 "also configured here. The invoice footer message is optional."
 
-#: language/_gettext_only/pages.php:297
+#: language/_gettext_only/pages.php:304
 msgid "REFUND_DETAILS_PAGE_TITLE"
 msgstr "Refund Details"
 
-#: language/_gettext_only/pages.php:298
+#: language/_gettext_only/pages.php:305
 msgid "REFUND_DETAILS_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:299
+#: language/_gettext_only/pages.php:306
 msgid "REFUND_DETAILS_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:300
+#: language/_gettext_only/pages.php:307
 #: themes/default/templates/refund/details.tpl:11
 msgid "REFUND_DETAILS_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:301
+#: language/_gettext_only/pages.php:308
 #: themes/default/templates/refund/details.tpl:11
 msgid "REFUND_DETAILS_HELP_CONTENT"
 msgstr ""
@@ -2975,24 +3174,24 @@ msgstr ""
 "><br /> To edit this record you can click on the <b>Edit Details</b> next to "
 "this Tooltip or on the Edit link in the Main Nav Menu on the left."
 
-#: language/_gettext_only/pages.php:304
+#: language/_gettext_only/pages.php:311
 msgid "REFUND_EDIT_PAGE_TITLE"
 msgstr "Edit Refund"
 
-#: language/_gettext_only/pages.php:305
+#: language/_gettext_only/pages.php:312
 msgid "REFUND_EDIT_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:306
+#: language/_gettext_only/pages.php:313
 msgid "REFUND_EDIT_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:307
+#: language/_gettext_only/pages.php:314
 #: themes/default/templates/refund/edit.tpl:18
 msgid "REFUND_EDIT_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:308
+#: language/_gettext_only/pages.php:315
 #: themes/default/templates/refund/edit.tpl:18
 msgid "REFUND_EDIT_HELP_CONTENT"
 msgstr ""
@@ -3000,24 +3199,24 @@ msgstr ""
 "changes, click on the <b>Update</b> Button and the changes will be submitted "
 "to the database."
 
-#: language/_gettext_only/pages.php:311
+#: language/_gettext_only/pages.php:318
 msgid "REFUND_NEW_PAGE_TITLE"
 msgstr "New Refund"
 
-#: language/_gettext_only/pages.php:312
+#: language/_gettext_only/pages.php:319
 msgid "REFUND_NEW_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:313
+#: language/_gettext_only/pages.php:320
 msgid "REFUND_NEW_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:314
+#: language/_gettext_only/pages.php:321
 #: themes/default/templates/refund/new.tpl:18
 msgid "REFUND_NEW_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:315
+#: language/_gettext_only/pages.php:322
 #: themes/default/templates/refund/new.tpl:18
 msgid "REFUND_NEW_HELP_CONTENT"
 msgstr ""
@@ -3028,24 +3227,24 @@ msgstr ""
 "click on the <b>Submit, Then New Record</b> button the record will be sent "
 "to the database and this page reloaded ready for another entry."
 
-#: language/_gettext_only/pages.php:318
+#: language/_gettext_only/pages.php:325
 msgid "REFUND_SEARCH_PAGE_TITLE"
 msgstr "Search Refunds"
 
-#: language/_gettext_only/pages.php:319
+#: language/_gettext_only/pages.php:326
 msgid "REFUND_SEARCH_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:320
+#: language/_gettext_only/pages.php:327
 msgid "REFUND_SEARCH_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:321
+#: language/_gettext_only/pages.php:328
 #: themes/default/templates/refund/search.tpl:10
 msgid "REFUND_SEARCH_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:322
+#: language/_gettext_only/pages.php:329
 #: themes/default/templates/refund/search.tpl:10
 msgid "REFUND_SEARCH_HELP_CONTENT"
 msgstr ""
@@ -3060,24 +3259,24 @@ msgstr ""
 "Tooltip.<br /><br />On the right of each Record Row there are icons for "
 "viewing, editing and deleting the record."
 
-#: language/_gettext_only/pages.php:327
+#: language/_gettext_only/pages.php:334
 msgid "REPORT_FINANCIAL_PAGE_TITLE"
 msgstr "Financial Report"
 
-#: language/_gettext_only/pages.php:328
+#: language/_gettext_only/pages.php:335
 msgid "REPORT_FINANCIAL_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:329
+#: language/_gettext_only/pages.php:336
 msgid "REPORT_FINANCIAL_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:330
+#: language/_gettext_only/pages.php:337
 #: themes/default/templates/report/financial.tpl:15
 msgid "REPORT_FINANCIAL_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:331
+#: language/_gettext_only/pages.php:338
 #: themes/default/templates/report/financial.tpl:15
 msgid "REPORT_FINANCIAL_HELP_CONTENT"
 msgstr ""
@@ -3085,24 +3284,24 @@ msgstr ""
 "date range you have set will be returned. This is great for getting a simple "
 "report for you company and can be used to fill in simple tax returns."
 
-#: language/_gettext_only/pages.php:336
+#: language/_gettext_only/pages.php:343
 msgid "SCHEDULE_DAY_PAGE_TITLE"
 msgstr "Daily Schedules"
 
-#: language/_gettext_only/pages.php:337
+#: language/_gettext_only/pages.php:344
 msgid "SCHEDULE_DAY_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:338
+#: language/_gettext_only/pages.php:345
 msgid "SCHEDULE_DAY_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:339
+#: language/_gettext_only/pages.php:346
 #: themes/default/templates/schedule/day.tpl:15
 msgid "SCHEDULE_DAY_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:340
+#: language/_gettext_only/pages.php:347
 #: themes/default/templates/schedule/day.tpl:15
 msgid "SCHEDULE_DAY_HELP_CONTENT"
 msgstr ""
@@ -3110,72 +3309,72 @@ msgstr ""
 "employee on that day  within the business hours will be shown. You are able "
 "then to view the schedule and jobn details if you have permissions."
 
-#: language/_gettext_only/pages.php:343
+#: language/_gettext_only/pages.php:350
 msgid "SCHEDULE_DETAILS_PAGE_TITLE"
 msgstr "Schedule Details"
 
-#: language/_gettext_only/pages.php:344
+#: language/_gettext_only/pages.php:351
 msgid "SCHEDULE_DETAILS_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:345
+#: language/_gettext_only/pages.php:352
 msgid "SCHEDULE_DETAILS_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:346
+#: language/_gettext_only/pages.php:353
 #: themes/default/templates/schedule/details.tpl:12
 msgid "SCHEDULE_DETAILS_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:347
+#: language/_gettext_only/pages.php:354
 #: themes/default/templates/schedule/details.tpl:12
 msgid "SCHEDULE_DETAILS_HELP_CONTENT"
 msgstr ""
 "This page shows you the details for one schedule item. There are also action "
 "buttons that can be used."
 
-#: language/_gettext_only/pages.php:350
+#: language/_gettext_only/pages.php:357
 msgid "SCHEDULE_EDIT_PAGE_TITLE"
 msgstr "Edit Schedule"
 
-#: language/_gettext_only/pages.php:351
+#: language/_gettext_only/pages.php:358
 msgid "SCHEDULE_EDIT_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:352
+#: language/_gettext_only/pages.php:359
 msgid "SCHEDULE_EDIT_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:353
+#: language/_gettext_only/pages.php:360
 #: themes/default/templates/schedule/edit.tpl:17
 msgid "SCHEDULE_EDIT_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:354
+#: language/_gettext_only/pages.php:361
 #: themes/default/templates/schedule/edit.tpl:17
 msgid "SCHEDULE_EDIT_HELP_CONTENT"
 msgstr ""
 "When editing a schedule item you can change the time of the job, the notes "
 "and even change the assigned employee."
 
-#: language/_gettext_only/pages.php:357
+#: language/_gettext_only/pages.php:364
 msgid "SCHEDULE_NEW_PAGE_TITLE"
 msgstr "New Schedule"
 
-#: language/_gettext_only/pages.php:358
+#: language/_gettext_only/pages.php:365
 msgid "SCHEDULE_NEW_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:359
+#: language/_gettext_only/pages.php:366
 msgid "SCHEDULE_NEW_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:360
+#: language/_gettext_only/pages.php:367
 #: themes/default/templates/schedule/new.tpl:17
 msgid "SCHEDULE_NEW_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:361
+#: language/_gettext_only/pages.php:368
 #: themes/default/templates/schedule/new.tpl:17
 msgid "SCHEDULE_NEW_HELP_CONTENT"
 msgstr ""
@@ -3183,24 +3382,44 @@ msgstr ""
 "schedule item that is not within the business hours or if its time range is "
 "invalid."
 
-#: language/_gettext_only/pages.php:366
+#: language/_gettext_only/pages.php:371
+msgid "SCHEDULE_SEARCH_PAGE_TITLE"
+msgstr "Search Schedules"
+
+#: language/_gettext_only/pages.php:372
+msgid "SCHEDULE_SEARCH_META_DESCRIPTION"
+msgstr "-"
+
+#: language/_gettext_only/pages.php:373
+msgid "SCHEDULE_SEARCH_META_KEYWORDS"
+msgstr "-"
+
+#: language/_gettext_only/pages.php:374
+msgid "SCHEDULE_SEARCH_HELP_TITLE"
+msgstr "Help"
+
+#: language/_gettext_only/pages.php:375
+msgid "SCHEDULE_SEARCH_HELP_CONTENT"
+msgstr "nothing to help with yet!"
+
+#: language/_gettext_only/pages.php:380
 msgid "SUPPLIER_DETAILS_PAGE_TITLE"
 msgstr "Supplier Details"
 
-#: language/_gettext_only/pages.php:367
+#: language/_gettext_only/pages.php:381
 msgid "SUPPLIER_DETAILS_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:368
+#: language/_gettext_only/pages.php:382
 msgid "SUPPLIER_DETAILS_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:369
+#: language/_gettext_only/pages.php:383
 #: themes/default/templates/supplier/details.tpl:13
 msgid "SUPPLIER_DETAILS_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:370
+#: language/_gettext_only/pages.php:384
 #: themes/default/templates/supplier/details.tpl:13
 msgid "SUPPLIER_DETAILS_HELP_CONTENT"
 msgstr ""
@@ -3208,24 +3427,24 @@ msgstr ""
 "<br /><br /> To edit this record you can click on the <b>Edit Details</b> "
 "next to this Tooltip or on the Edit link in the Main Nav Menu on the left."
 
-#: language/_gettext_only/pages.php:373
+#: language/_gettext_only/pages.php:387
 msgid "SUPPLIER_EDIT_PAGE_TITLE"
 msgstr "Edit Supplier"
 
-#: language/_gettext_only/pages.php:374
+#: language/_gettext_only/pages.php:388
 msgid "SUPPLIER_EDIT_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:375
+#: language/_gettext_only/pages.php:389
 msgid "SUPPLIER_EDIT_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:376
+#: language/_gettext_only/pages.php:390
 #: themes/default/templates/supplier/edit.tpl:18
 msgid "SUPPLIER_EDIT_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:377
+#: language/_gettext_only/pages.php:391
 #: themes/default/templates/supplier/edit.tpl:18
 msgid "SUPPLIER_EDIT_HELP_CONTENT"
 msgstr ""
@@ -3233,24 +3452,24 @@ msgstr ""
 "changes, click on the <b>Update</b> Button and the changes will be submitted "
 "to the database."
 
-#: language/_gettext_only/pages.php:380
+#: language/_gettext_only/pages.php:394
 msgid "SUPPLIER_NEW_PAGE_TITLE"
 msgstr "New Supplier"
 
-#: language/_gettext_only/pages.php:381
+#: language/_gettext_only/pages.php:395
 msgid "SUPPLIER_NEW_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:382
+#: language/_gettext_only/pages.php:396
 msgid "SUPPLIER_NEW_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:383
+#: language/_gettext_only/pages.php:397
 #: themes/default/templates/supplier/new.tpl:18
 msgid "SUPPLIER_NEW_HELP_TITLE"
 msgstr "New Supplier"
 
-#: language/_gettext_only/pages.php:384
+#: language/_gettext_only/pages.php:398
 #: themes/default/templates/supplier/new.tpl:18
 msgid "SUPPLIER_NEW_HELP_CONTENT"
 msgstr ""
@@ -3261,24 +3480,24 @@ msgstr ""
 "you click on the <b>Submit, Then New Record</b> button the record will be "
 "sent to the database and this page reloaded ready for another entry."
 
-#: language/_gettext_only/pages.php:387
+#: language/_gettext_only/pages.php:401
 msgid "SUPPLIER_SEARCH_PAGE_TITLE"
 msgstr "Search Suppliers"
 
-#: language/_gettext_only/pages.php:388
+#: language/_gettext_only/pages.php:402
 msgid "SUPPLIER_SEARCH_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:389
+#: language/_gettext_only/pages.php:403
 msgid "SUPPLIER_SEARCH_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:390
+#: language/_gettext_only/pages.php:404
 #: themes/default/templates/supplier/search.tpl:10
 msgid "SUPPLIER_SEARCH_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:391
+#: language/_gettext_only/pages.php:405
 #: themes/default/templates/supplier/search.tpl:10
 msgid "SUPPLIER_SEARCH_HELP_CONTENT"
 msgstr ""
@@ -3293,95 +3512,95 @@ msgstr ""
 "><br />On the right of each Record Row there are icons for viewing, editing "
 "and deleting the record."
 
-#: language/_gettext_only/pages.php:396
+#: language/_gettext_only/pages.php:410
 msgid "USER_DETAILS_PAGE_TITLE"
 msgstr "User Details"
 
-#: language/_gettext_only/pages.php:397
+#: language/_gettext_only/pages.php:411
 msgid "USER_DETAILS_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:398
+#: language/_gettext_only/pages.php:412
 msgid "USER_DETAILS_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:399
+#: language/_gettext_only/pages.php:413
 #: themes/default/templates/user/details.tpl:9
 msgid "USER_DETAILS_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:400
+#: language/_gettext_only/pages.php:414
 #: themes/default/templates/user/details.tpl:9
 msgid "USER_DETAILS_HELP_CONTENT"
 msgstr ""
 "You can see the selected employees details and what  jobs he has worked on."
 
-#: language/_gettext_only/pages.php:403
+#: language/_gettext_only/pages.php:417
 msgid "USER_EDIT_PAGE_TITLE"
 msgstr "Edit User"
 
-#: language/_gettext_only/pages.php:404
+#: language/_gettext_only/pages.php:418
 msgid "USER_EDIT_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:405
+#: language/_gettext_only/pages.php:419
 msgid "USER_EDIT_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:406
+#: language/_gettext_only/pages.php:420
 msgid "USER_EDIT_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:407
+#: language/_gettext_only/pages.php:421
 msgid "USER_EDIT_HELP_CONTENT"
 msgstr ""
 "You can edit an users's details here as well as resetting their password if "
 "required."
 
-#: language/_gettext_only/pages.php:410
+#: language/_gettext_only/pages.php:424
 msgid "USER_NEW_PAGE_TITLE"
 msgstr "New User"
 
-#: language/_gettext_only/pages.php:411
+#: language/_gettext_only/pages.php:425
 msgid "USER_NEW_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:412
+#: language/_gettext_only/pages.php:426
 msgid "USER_NEW_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:413
+#: language/_gettext_only/pages.php:427
 #: themes/default/templates/user/edit.tpl:12
 #: themes/default/templates/user/new.tpl:12
 msgid "USER_NEW_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:414
+#: language/_gettext_only/pages.php:428
 #: themes/default/templates/user/edit.tpl:12
 #: themes/default/templates/user/new.tpl:12
 msgid "USER_NEW_HELP_CONTENT"
 msgstr ""
 "Create a new user by filling in the details and then by clicking submit."
 
-#: language/_gettext_only/pages.php:417
+#: language/_gettext_only/pages.php:431
 msgid "USER_SEARCH_PAGE_TITLE"
 msgstr "Search Users"
 
-#: language/_gettext_only/pages.php:418
+#: language/_gettext_only/pages.php:432
 msgid "USER_SEARCH_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:419
+#: language/_gettext_only/pages.php:433
 msgid "USER_SEARCH_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:420
+#: language/_gettext_only/pages.php:434
 #: themes/default/templates/giftcert/search.tpl:9
 #: themes/default/templates/user/search.tpl:9
 msgid "USER_SEARCH_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:421
+#: language/_gettext_only/pages.php:435
 #: themes/default/templates/giftcert/search.tpl:9
 #: themes/default/templates/user/search.tpl:9
 msgid "USER_SEARCH_HELP_CONTENT"
@@ -3389,46 +3608,46 @@ msgstr ""
 "You can search by the user's name only. By default all employees are listed. "
 "You can browse the results using the navigation arrows."
 
-#: language/_gettext_only/pages.php:426
+#: language/_gettext_only/pages.php:440
 msgid "WORKORDER_CLOSED_PAGE_TITLE"
 msgstr "Closed Work Orders"
 
-#: language/_gettext_only/pages.php:427
+#: language/_gettext_only/pages.php:441
 msgid "WORKORDER_CLOSED_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:428
+#: language/_gettext_only/pages.php:442
 msgid "WORKORDER_CLOSED_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:429
+#: language/_gettext_only/pages.php:443
 #: themes/default/templates/workorder/closed.tpl:10
 msgid "WORKORDER_CLOSED_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:430
+#: language/_gettext_only/pages.php:444
 #: themes/default/templates/workorder/closed.tpl:10
 msgid "WORKORDER_CLOSED_HELP_CONTENT"
 msgstr "You can view all closed work orders here."
 
-#: language/_gettext_only/pages.php:433
+#: language/_gettext_only/pages.php:447
 msgid "WORKORDER_DETAILS_PAGE_TITLE"
 msgstr "Work Order Details"
 
-#: language/_gettext_only/pages.php:434
+#: language/_gettext_only/pages.php:448
 msgid "WORKORDER_DETAILS_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:435
+#: language/_gettext_only/pages.php:449
 msgid "WORKORDER_DETAILS_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:436
+#: language/_gettext_only/pages.php:450
 #: themes/default/templates/workorder/details.tpl:22
 msgid "WORKORDER_DETAILS_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:437
+#: language/_gettext_only/pages.php:451
 #: themes/default/templates/workorder/details.tpl:22
 msgid "WORKORDER_DETAILS_HELP_CONTENT"
 msgstr ""
@@ -3443,158 +3662,158 @@ msgstr ""
 "this work order. Click the Close link on the Quick Bar to complete the order "
 "and start the invoicing processes."
 
-#: language/_gettext_only/pages.php:440
+#: language/_gettext_only/pages.php:454
 msgid "WORKORDER_DETAILS_EDIT_COMMENTS_PAGE_TITLE"
 msgstr "Edit Work Order Comments"
 
-#: language/_gettext_only/pages.php:441
+#: language/_gettext_only/pages.php:455
 msgid "WORKORDER_DETAILS_EDIT_COMMENTS_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:442
+#: language/_gettext_only/pages.php:456
 msgid "WORKORDER_DETAILS_EDIT_COMMENTS_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:443
+#: language/_gettext_only/pages.php:457
 #: themes/default/templates/workorder/details_edit_comments.tpl:13
 msgid "WORKORDER_DETAILS_EDIT_COMMENTS_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:444
+#: language/_gettext_only/pages.php:458
 #: themes/default/templates/workorder/details_edit_comments.tpl:13
 msgid "WORKORDER_DETAILS_EDIT_COMMENTS_HELP_CONTENT"
 msgstr "You can edit the comments attached to the work order here."
 
-#: language/_gettext_only/pages.php:447
+#: language/_gettext_only/pages.php:461
 msgid "WORKORDER_DETAILS_EDIT_DESCRIPTION_PAGE_TITLE"
 msgstr "Edit Work Order Description"
 
-#: language/_gettext_only/pages.php:448
+#: language/_gettext_only/pages.php:462
 msgid "WORKORDER_DETAILS_EDIT_DESCRIPTION_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:449
+#: language/_gettext_only/pages.php:463
 msgid "WORKORDER_DETAILS_EDIT_DESCRIPTION_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:450
+#: language/_gettext_only/pages.php:464
 #: themes/default/templates/workorder/details_edit_description.tpl:14
 msgid "WORKORDER_DETAILS_EDIT_DESCRIPTION_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:451
+#: language/_gettext_only/pages.php:465
 #: themes/default/templates/workorder/details_edit_description.tpl:14
 msgid "WORKORDER_DETAILS_EDIT_DESCRIPTION_HELP_CONTENT"
 msgstr "You can edit the description attached to the work order here."
 
-#: language/_gettext_only/pages.php:454
+#: language/_gettext_only/pages.php:468
 msgid "WORKORDER_DETAILS_EDIT_RESOLUTION_PAGE_TITLE"
 msgstr "Edit Work Order Resolution"
 
-#: language/_gettext_only/pages.php:455
+#: language/_gettext_only/pages.php:469
 msgid "WORKORDER_DETAILS_EDIT_RESOLUTION_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:456
+#: language/_gettext_only/pages.php:470
 msgid "WORKORDER_DETAILS_EDIT_RESOLUTION_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:457
+#: language/_gettext_only/pages.php:471
 #: themes/default/templates/workorder/details_edit_resolution.tpl:13
 msgid "WORKORDER_DETAILS_EDIT_RESOLUTION_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:458
+#: language/_gettext_only/pages.php:472
 #: themes/default/templates/workorder/details_edit_resolution.tpl:13
 msgid "WORKORDER_DETAILS_EDIT_RESOLUTION_HELP_CONTENT"
 msgstr "You can edit or close the resolution attached to the work order here."
 
-#: language/_gettext_only/pages.php:461
+#: language/_gettext_only/pages.php:475
 msgid "WORKORDER_NEW_PAGE_TITLE"
 msgstr "New Workorder"
 
-#: language/_gettext_only/pages.php:462
+#: language/_gettext_only/pages.php:476
 msgid "WORKORDER_NEW_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:463
+#: language/_gettext_only/pages.php:477
 msgid "WORKORDER_NEW_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:464
+#: language/_gettext_only/pages.php:478
 #: themes/default/templates/workorder/new.tpl:14
 msgid "WORKORDER_NEW_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:465
+#: language/_gettext_only/pages.php:479
 #: themes/default/templates/workorder/new.tpl:14
 msgid "WORKORDER_NEW_HELP_CONTENT"
 msgstr "Create new Work Orders here."
 
-#: language/_gettext_only/pages.php:468
+#: language/_gettext_only/pages.php:482
 msgid "WORKORDER_NOTE_EDIT_PAGE_TITLE"
 msgstr "Edit a Work Order Note"
 
-#: language/_gettext_only/pages.php:469
+#: language/_gettext_only/pages.php:483
 msgid "WORKORDER_NOTE_EDIT_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:470
+#: language/_gettext_only/pages.php:484
 msgid "WORKORDER_NOTE_EDIT_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:471
+#: language/_gettext_only/pages.php:485
 #: themes/default/templates/customer/note_edit.tpl:18
 #: themes/default/templates/workorder/note_edit.tpl:18
 msgid "WORKORDER_NOTE_EDIT_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:472
+#: language/_gettext_only/pages.php:486
 #: themes/default/templates/customer/note_edit.tpl:18
 #: themes/default/templates/workorder/note_edit.tpl:18
 msgid "WORKORDER_NOTE_EDIT_HELP_CONTENT"
 msgstr "You can edit a work order note here."
 
-#: language/_gettext_only/pages.php:475
+#: language/_gettext_only/pages.php:489
 msgid "WORKORDER_NOTE_NEW_PAGE_TITLE"
 msgstr "New Work Order Note"
 
-#: language/_gettext_only/pages.php:476
+#: language/_gettext_only/pages.php:490
 msgid "WORKORDER_NOTE_NEW_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:477
+#: language/_gettext_only/pages.php:491
 msgid "WORKORDER_NOTE_NEW_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:478
+#: language/_gettext_only/pages.php:492
 #: themes/default/templates/workorder/note_new.tpl:9
 msgid "WORKORDER_NOTE_NEW_HELP_TITLE"
 msgstr "New Work Order Note"
 
-#: language/_gettext_only/pages.php:479
+#: language/_gettext_only/pages.php:493
 #: themes/default/templates/workorder/note_new.tpl:9
 msgid "WORKORDER_NOTE_NEW_HELP_CONTENT"
 msgstr "You can create a single work order note here."
 
-#: language/_gettext_only/pages.php:482
+#: language/_gettext_only/pages.php:496
 msgid "WORKORDER_OVERVIEW_PAGE_TITLE"
 msgstr "Work Orders Overview"
 
-#: language/_gettext_only/pages.php:483
+#: language/_gettext_only/pages.php:497
 msgid "WORKORDER_OVERVIEW_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:484
+#: language/_gettext_only/pages.php:498
 msgid "WORKORDER_OVERVIEW_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:485
+#: language/_gettext_only/pages.php:499
 #: themes/default/templates/workorder/overview.tpl:10
 msgid "WORKORDER_OVERVIEW_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:486
+#: language/_gettext_only/pages.php:500
 #: themes/default/templates/workorder/overview.tpl:10
 msgid "WORKORDER_OVERVIEW_HELP_CONTENT"
 msgstr ""
@@ -3609,24 +3828,66 @@ msgstr ""
 "the workorder. Click the Red Stop sign to close the workorder and start the "
 "invoicing."
 
-#: language/_gettext_only/pages.php:489
+#: language/_gettext_only/pages.php:503
+msgid "WORKORDER_PRINT_CUSTOMER_WORKORDER_SLIP_PAGE_TITLE"
+msgstr "QWcrm - Customer Work Order Slip Template"
+
+#: language/_gettext_only/pages.php:504
+msgid "WORKORDER_PRINT_CUSTOMER_WORKORDER_SLIP_META_DESCRIPTION"
+msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
+
+#: language/_gettext_only/pages.php:505
+msgid "WORKORDER_PRINT_CUSTOMER_WORKORDER_SLIP_META_KEYWORDS"
+msgstr ""
+"CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment "
+"Processing, Simple to use"
+
+#: language/_gettext_only/pages.php:510
+msgid "WORKORDER_PRINT_JOB_SHEET_PAGE_TITLE"
+msgstr "QWcrm - Job Sheet Template"
+
+#: language/_gettext_only/pages.php:511
+msgid "WORKORDER_PRINT_JOB_SHEET_META_DESCRIPTION"
+msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
+
+#: language/_gettext_only/pages.php:512
+msgid "WORKORDER_PRINT_JOB_SHEET_META_KEYWORDS"
+msgstr ""
+"CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment "
+"Processing, Simple to use"
+
+#: language/_gettext_only/pages.php:517
+msgid "WORKORDER_PRINT_TECHNICIAN_WORKORDER_SLIP_PAGE_TITLE"
+msgstr "QWcrm - Technician Work Order Slip Template"
+
+#: language/_gettext_only/pages.php:518
+msgid "WORKORDER_PRINT_TECHNICIAN_WORKORDER_SLIP_META_DESCRIPTION"
+msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
+
+#: language/_gettext_only/pages.php:519
+msgid "WORKORDER_PRINT_TECHNICIAN_WORKORDER_SLIP_META_KEYWORDS"
+msgstr ""
+"CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment "
+"Processing, Simple to use"
+
+#: language/_gettext_only/pages.php:524
 msgid "WORKORDER_STATUS_PAGE_TITLE"
 msgstr "Work Order Status"
 
-#: language/_gettext_only/pages.php:490
+#: language/_gettext_only/pages.php:525
 msgid "WORKORDER_STATUS_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:491
+#: language/_gettext_only/pages.php:526
 msgid "WORKORDER_STATUS_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:492
+#: language/_gettext_only/pages.php:527
 #: themes/default/templates/workorder/status.tpl:10
 msgid "WORKORDER_STATUS_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:493
+#: language/_gettext_only/pages.php:528
 #: themes/default/templates/workorder/status.tpl:10
 msgid "WORKORDER_STATUS_HELP_CONTENT"
 msgstr ""
@@ -3634,47 +3895,25 @@ msgstr ""
 "too. If needed this page will allow you to delete the work order if it is "
 "possible."
 
-#: language/_gettext_only/pages.php:496
-msgid "WORKORDER_PRINT_CUSTOMER_WORKORDER_SLIP_PAGE_TITLE"
-msgstr "QWcrm - Customer Work Order Slip Template"
+#: language/_gettext_only/pages.php:531
+msgid "WORKORDER_SEARCH_PAGE_TITLE"
+msgstr "Search Work Orders"
 
-#: language/_gettext_only/pages.php:497
-msgid "WORKORDER_PRINT_CUSTOMER_WORKORDER_SLIP_META_DESCRIPTION"
-msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
+#: language/_gettext_only/pages.php:532
+msgid "WORKORDER_SEARCH_META_DESCRIPTION"
+msgstr "-"
 
-#: language/_gettext_only/pages.php:498
-msgid "WORKORDER_PRINT_CUSTOMER_WORKORDER_SLIP_META_KEYWORDS"
-msgstr ""
-"CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment "
-"Processing, Simple to use"
+#: language/_gettext_only/pages.php:533
+msgid "WORKORDER_SEARCH_META_KEYWORDS"
+msgstr "-"
 
-#: language/_gettext_only/pages.php:503
-msgid "WORKORDER_PRINT_JOB_SHEET_PAGE_TITLE"
-msgstr "QWcrm - Job Sheet Template"
+#: language/_gettext_only/pages.php:534
+msgid "WORKORDER_SEARCH_HELP_TITLE"
+msgstr "Help"
 
-#: language/_gettext_only/pages.php:504
-msgid "WORKORDER_PRINT_JOB_SHEET_META_DESCRIPTION"
-msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
-
-#: language/_gettext_only/pages.php:505
-msgid "WORKORDER_PRINT_JOB_SHEET_META_KEYWORDS"
-msgstr ""
-"CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment "
-"Processing, Simple to use"
-
-#: language/_gettext_only/pages.php:510
-msgid "WORKORDER_PRINT_TECHNICIAN_WORKORDER_SLIP_PAGE_TITLE"
-msgstr "QWcrm - Technician Work Order Slip Template"
-
-#: language/_gettext_only/pages.php:511
-msgid "WORKORDER_PRINT_TECHNICIAN_WORKORDER_SLIP_META_DESCRIPTION"
-msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
-
-#: language/_gettext_only/pages.php:512
-msgid "WORKORDER_PRINT_TECHNICIAN_WORKORDER_SLIP_META_KEYWORDS"
-msgstr ""
-"CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment "
-"Processing, Simple to use"
+#: language/_gettext_only/pages.php:535
+msgid "WORKORDER_SEARCH_HELP_CONTENT"
+msgstr "nothing to help with yet!"
 
 #: language/_gettext_only/system_varibles.php:29
 #: themes/default/templates/customer/blocks/details_customer_details_block.tpl:68
@@ -3790,12 +4029,12 @@ msgstr "-"
 msgid "CUSTOMER_TYPE_10"
 msgstr "-"
 
-#: modules/administrator/config.php:14
+#: modules/administrator/config.php:13
 msgid "Config settings updated successfully."
 msgstr ""
 
 #: modules/administrator/config.php:18
-msgid "Some information was invalid, please check for erros and try again."
+msgid "Some information was invalid, please check for errors and try again."
 msgstr ""
 
 #: modules/core/blocks/theme_debug_block.php:27
@@ -3818,45 +4057,255 @@ msgstr ""
 msgid "All Declared PHP Classes"
 msgstr ""
 
-#: modules/giftcert/edit.php:17
+#: modules/customer/delete.php:9 modules/expense/delete.php:9
+#: modules/giftcert/delete.php:9 modules/invoice/delete.php:9
+#: modules/invoice/delete_labour.php:9 modules/invoice/delete_parts.php:9
+#: modules/refund/delete.php:9 modules/schedule/delete.php:9
+#: modules/supplier/delete.php:9 modules/user/delete.php:9
+#: modules/workorder/delete.php:9 modules/workorder/note_delete.php:9
+msgid "No Direct Access Allowed"
+msgstr ""
+
+#: modules/customer/delete.php:14 modules/customer/details.php:13
+#: modules/customer/edit.php:9 modules/customer/note_edit.php:9
+#: modules/customer/note_new.php:9 modules/giftcert/new.php:11
+#: modules/workorder/new.php:10
+msgid "No Customer ID supplied."
+msgstr ""
+
+#: modules/customer/edit.php:19 modules/expense/edit.php:17
+msgid "The Customer's information was updated."
+msgstr ""
+
+#: modules/customer/note_delete.php:9
+msgid "No Customer Note ID supplied."
+msgstr ""
+
+#: modules/expense/delete.php:14 modules/expense/details.php:9
+#: modules/expense/edit.php:9
+msgid "No Expense ID supplied."
+msgstr ""
+
+#: modules/expense/new.php:25
+msgid "Expense added successfully."
+msgstr ""
+
+#: modules/giftcert/delete.php:14 modules/giftcert/details.php:11
+#: modules/giftcert/edit.php:11
+msgid "No Gift Certificate ID supplied."
+msgstr ""
+
+#: modules/giftcert/delete.php:22
+msgid "Gift Certificate blocked successfully."
+msgstr ""
+
+#: modules/giftcert/edit.php:17 modules/giftcert/new.php:17
+msgid ""
+"Gift Certificate payment method is not enabled. To enable Gift Certificates "
+"go to the Help menu and select Control Center. Then under the menu Billing "
+"Options select Payment Methods and check Gift Certificate."
+msgstr ""
+
+#: modules/giftcert/edit.php:23
 msgid "You cannot edit this Gift Certificate because it has been redeemed."
 msgstr ""
 
+#: modules/invoice/delete.php:14 modules/invoice/details.php:12
+#: modules/invoice/edit.php:13 modules/invoice/print.php:13
+#: modules/payment/new.php:13
+msgid "No Invoice ID supplied."
+msgstr ""
+
+#: modules/invoice/delete.php:28
+msgid "The invoice has been deleted successfully."
+msgstr ""
+
+#: modules/invoice/delete_labour.php:14
+msgid "No Invoice Labour ID supplied."
+msgstr ""
+
+#: modules/invoice/delete_parts.php:14
+msgid "No Invoice Parts ID supplied."
+msgstr ""
+
+#: modules/invoice/new.php:42
+msgid ""
+"You cannot create an invoice by the method you just tried, report to admins"
+msgstr ""
+
+#: modules/invoice/print.php:19 modules/workorder/print.php:16
+msgid "Some or all of the Printing Options are not set."
+msgstr ""
+
+#: modules/payment/methods/method_cash.php:28
+msgid "Cash payment added successfully"
+msgstr ""
+
+#: modules/payment/methods/method_cheque.php:22
+#: themes/default/templates/payment/blocks/new_payment_cheque_block.tpl:12
+msgid "Cheque Number"
+msgstr ""
+
+#: modules/payment/methods/method_cheque.php:28
+msgid "Cheque payment added successfully"
+msgstr ""
+
+#: modules/payment/methods/method_credit_card.php:22
+msgid "Card Type"
+msgstr ""
+
+#: modules/payment/methods/method_credit_card.php:22
+#: themes/default/templates/payment/blocks/new_payment_credit_card_block.tpl:13
+msgid "Name on Card"
+msgstr ""
+
+#: modules/payment/methods/method_credit_card.php:28
+msgid "Credit Card payment added successfully"
+msgstr ""
+
+#: modules/payment/methods/method_direct_deposit.php:22
+msgid "Deposit Reference"
+msgstr ""
+
+#: modules/payment/methods/method_direct_deposit.php:28
+msgid "Direct Deposit payment added successfully"
+msgstr ""
+
+#: modules/payment/methods/method_gift_certificate.php:11
+msgid "There is no Gift certificate with that code."
+msgstr ""
+
+#: modules/payment/methods/method_gift_certificate.php:16
+msgid "This Gift Certificate is not valid."
+msgstr ""
+
+#: modules/payment/methods/method_gift_certificate.php:37
+#: themes/default/templates/giftcert/edit.tpl:28
+#: themes/default/templates/giftcert/search.tpl:27
+msgid "Gift Certificate Code"
+msgstr ""
+
+#: modules/payment/methods/method_gift_certificate.php:43
+msgid "Gift Certificate applied successfully"
+msgstr ""
+
+#: modules/payment/methods/method_paypal.php:22
+msgid "PayPal ID"
+msgstr ""
+
+#: modules/payment/methods/method_paypal.php:28
+msgid "PayPal payment added successfully"
+msgstr ""
+
+#: modules/payment/new.php:24 themes/default/templates/invoice/details.tpl:138
+#: themes/default/templates/invoice/edit.tpl:427
+#: themes/default/templates/payment/blocks/new_payment_credit_card_block.tpl:5
+#: themes/default/templates/payment/blocks/new_transactions_log_block.tpl:21
+msgid "Credit Card"
+msgstr ""
+
+#: modules/payment/new.php:29 themes/default/templates/invoice/details.tpl:139
+#: themes/default/templates/invoice/edit.tpl:428
+#: themes/default/templates/payment/blocks/new_payment_cheque_block.tpl:5
+#: themes/default/templates/payment/blocks/new_transactions_log_block.tpl:22
+msgid "Cheque"
+msgstr ""
+
+#: modules/payment/new.php:34 themes/default/templates/invoice/details.tpl:140
+#: themes/default/templates/invoice/edit.tpl:429
+#: themes/default/templates/payment/blocks/new_payment_cash_block.tpl:5
+#: themes/default/templates/payment/blocks/new_transactions_log_block.tpl:23
+msgid "Cash"
+msgstr ""
+
+#: modules/payment/new.php:39 themes/default/templates/giftcert/details.tpl:7
+#: themes/default/templates/giftcert/details.tpl:17
+#: themes/default/templates/invoice/details.tpl:141
+#: themes/default/templates/invoice/edit.tpl:430
+#: themes/default/templates/payment/blocks/new_payment_gift_certificate_block.tpl:5
+#: themes/default/templates/payment/blocks/new_transactions_log_block.tpl:24
+msgid "Gift Certificate"
+msgstr ""
+
+#: modules/payment/new.php:44 themes/default/templates/invoice/details.tpl:142
+#: themes/default/templates/invoice/edit.tpl:431
+#: themes/default/templates/invoice/printing/print_address.tpl:234
+#: themes/default/templates/invoice/printing/print_invoice.tpl:234
+#: themes/default/templates/payment/blocks/new_transactions_log_block.tpl:25
+msgid "PayPal"
+msgstr ""
+
+#: modules/payment/new.php:49
+#: themes/default/templates/invoice/printing/print_address.tpl:218
+#: themes/default/templates/invoice/printing/print_invoice.tpl:218
+#: themes/default/templates/payment/blocks/new_payment_direct_deposit_block.tpl:5
+msgid "Direct Deposit"
+msgstr ""
+
+#: modules/payment/options.php:17
+msgid "Payment Options Updated."
+msgstr ""
+
+#: modules/refund/delete.php:14 modules/refund/details.php:9
+#: modules/refund/edit.php:9
+msgid "No Refund ID supplied."
+msgstr ""
+
+#: modules/refund/delete.php:22
+msgid "Refund deleted successfully."
+msgstr ""
+
+#: modules/schedule/delete.php:14 modules/schedule/edit.php:10
+#: modules/schedule/icalendar.php:11
+msgid "No Schedule ID supplied."
+msgstr ""
+
+#: modules/schedule/icalendar.php:17 modules/schedule/new.php:11
+msgid "No Employee ID supplied."
+msgstr ""
+
+#: modules/schedule/icalendar.php:23
+msgid "Some date information is missing."
+msgstr ""
+
+#: modules/schedule/new.php:17 modules/workorder/delete.php:14
+#: modules/workorder/details.php:10
+#: modules/workorder/details_edit_comments.php:9
+#: modules/workorder/details_edit_description.php:9
+#: modules/workorder/details_edit_resolution.php:9
+#: modules/workorder/note_new.php:9 modules/workorder/print.php:10
+#: modules/workorder/status.php:10
+msgid "No Workorder ID supplied."
+msgstr ""
+
+#: modules/supplier/delete.php:14 modules/supplier/details.php:9
+#: modules/supplier/edit.php:9
+msgid "No Supplier ID supplied."
+msgstr ""
+
+#: modules/supplier/delete.php:22
+msgid "Supplier deleted successfully."
+msgstr ""
+
+#: modules/user/delete.php:14 modules/user/details.php:11
 #: modules/user/edit.php:10
 msgid "No User ID supplied."
 msgstr ""
 
-#: modules/user/new.php:17
+#: modules/user/new.php:20
 msgid "The customer already has a login."
 msgstr ""
 
-#: modules/workorder/delete.php:9 modules/workorder/status.php:10
-msgid "Cannot update Workorder status because there is no Work Order ID set."
-msgstr ""
-
-#: modules/workorder/delete.php:15
+#: modules/workorder/delete.php:22
 msgid "Work Order has been deleted."
 msgstr ""
 
-#: modules/workorder/details_edit_comments.php:9
-msgid "You cannot edit the comments as there is no Work Order ID set."
-msgstr ""
-
-#: modules/workorder/details_edit_comments.php:17
+#: modules/workorder/details_edit_comments.php:20
 msgid "Comments has been updated."
 msgstr ""
 
-#: modules/workorder/details_edit_description.php:9
-msgid ""
-"You cannot edit the scope or description as there is no Workorder ID set."
-msgstr ""
-
-#: modules/workorder/details_edit_description.php:17
+#: modules/workorder/details_edit_description.php:20
 msgid "Description has been updated."
-msgstr ""
-
-#: modules/workorder/details_edit_resolution.php:9
-msgid "Cannot update the resolution as there is no Work Order ID set."
 msgstr ""
 
 #: modules/workorder/details_edit_resolution.php:15
@@ -3875,28 +4324,16 @@ msgstr ""
 msgid "Work Order has been closed with an invoice."
 msgstr ""
 
-#: modules/workorder/new.php:10
-msgid "Cannot create a New Work Order without a Customer ID."
-msgstr ""
-
-#: modules/workorder/new.php:18
+#: modules/workorder/new.php:21
 msgid "New Work Order created."
 msgstr ""
 
-#: modules/workorder/note_new.php:9
-msgid "You cannot add a note as there is no Workorder ID set."
+#: modules/workorder/note_delete.php:14 modules/workorder/note_edit.php:9
+msgid "No Work Order Note ID supplied."
 msgstr ""
 
-#: modules/workorder/note_new.php:17
+#: modules/workorder/note_new.php:20
 msgid "The note has been inserted."
-msgstr ""
-
-#: modules/workorder/print.php:10
-msgid "You cannot print as there is no Workorder ID set."
-msgstr ""
-
-#: modules/workorder/print.php:16
-msgid "Some or all of the Printing Options are not set."
 msgstr ""
 
 #: modules/workorder/status.php:20
@@ -3997,29 +4434,29 @@ msgstr ""
 #: themes/default/templates/administrator/acl.tpl:87
 #: themes/default/templates/administrator/acl.tpl:95
 #: themes/default/templates/administrator/acl.tpl:103
-#: themes/default/templates/administrator/config.tpl:57
-#: themes/default/templates/administrator/config.tpl:66
-#: themes/default/templates/administrator/config.tpl:90
+#: themes/default/templates/administrator/config.tpl:69
+#: themes/default/templates/administrator/config.tpl:79
 #: themes/default/templates/administrator/config.tpl:106
-#: themes/default/templates/administrator/config.tpl:115
-#: themes/default/templates/administrator/config.tpl:143
-#: themes/default/templates/administrator/config.tpl:152
+#: themes/default/templates/administrator/config.tpl:134
+#: themes/default/templates/administrator/config.tpl:183
 #: themes/default/templates/administrator/config.tpl:200
-#: themes/default/templates/administrator/config.tpl:209
-#: themes/default/templates/administrator/config.tpl:218
-#: themes/default/templates/administrator/config.tpl:227
-#: themes/default/templates/administrator/config.tpl:256
+#: themes/default/templates/administrator/config.tpl:252
+#: themes/default/templates/administrator/config.tpl:262
 #: themes/default/templates/administrator/config.tpl:272
-#: themes/default/templates/administrator/config.tpl:281
-#: themes/default/templates/administrator/config.tpl:290
-#: themes/default/templates/administrator/config.tpl:299
-#: themes/default/templates/administrator/config.tpl:315
-#: themes/default/templates/administrator/config.tpl:324
-#: themes/default/templates/administrator/config.tpl:337
+#: themes/default/templates/administrator/config.tpl:282
+#: themes/default/templates/administrator/config.tpl:313
+#: themes/default/templates/administrator/config.tpl:330
+#: themes/default/templates/administrator/config.tpl:340
+#: themes/default/templates/administrator/config.tpl:350
+#: themes/default/templates/administrator/config.tpl:360
+#: themes/default/templates/administrator/config.tpl:388
+#: themes/default/templates/administrator/config.tpl:398
+#: themes/default/templates/administrator/config.tpl:426
+#: themes/default/templates/administrator/config.tpl:436
 #: themes/default/templates/company/edit.tpl:233
 #: themes/default/templates/company/edit.tpl:252
 #: themes/default/templates/invoice/labour_rates.tpl:43
-#: themes/default/templates/user/blocks/details_details_block.tpl:81
+#: themes/default/templates/user/blocks/details_details_block.tpl:85
 #: themes/default/templates/user/edit.tpl:141
 #: themes/default/templates/user/new.tpl:141
 msgid "Yes"
@@ -4033,30 +4470,30 @@ msgstr ""
 #: themes/default/templates/administrator/acl.tpl:88
 #: themes/default/templates/administrator/acl.tpl:96
 #: themes/default/templates/administrator/acl.tpl:104
-#: themes/default/templates/administrator/config.tpl:56
-#: themes/default/templates/administrator/config.tpl:65
-#: themes/default/templates/administrator/config.tpl:89
+#: themes/default/templates/administrator/config.tpl:68
+#: themes/default/templates/administrator/config.tpl:78
 #: themes/default/templates/administrator/config.tpl:105
-#: themes/default/templates/administrator/config.tpl:114
-#: themes/default/templates/administrator/config.tpl:142
-#: themes/default/templates/administrator/config.tpl:151
+#: themes/default/templates/administrator/config.tpl:133
+#: themes/default/templates/administrator/config.tpl:182
 #: themes/default/templates/administrator/config.tpl:199
-#: themes/default/templates/administrator/config.tpl:208
-#: themes/default/templates/administrator/config.tpl:217
-#: themes/default/templates/administrator/config.tpl:226
-#: themes/default/templates/administrator/config.tpl:255
+#: themes/default/templates/administrator/config.tpl:251
+#: themes/default/templates/administrator/config.tpl:261
 #: themes/default/templates/administrator/config.tpl:271
-#: themes/default/templates/administrator/config.tpl:280
-#: themes/default/templates/administrator/config.tpl:289
-#: themes/default/templates/administrator/config.tpl:298
-#: themes/default/templates/administrator/config.tpl:314
-#: themes/default/templates/administrator/config.tpl:323
-#: themes/default/templates/administrator/config.tpl:336
+#: themes/default/templates/administrator/config.tpl:281
+#: themes/default/templates/administrator/config.tpl:312
+#: themes/default/templates/administrator/config.tpl:329
+#: themes/default/templates/administrator/config.tpl:339
+#: themes/default/templates/administrator/config.tpl:349
+#: themes/default/templates/administrator/config.tpl:359
+#: themes/default/templates/administrator/config.tpl:387
+#: themes/default/templates/administrator/config.tpl:397
+#: themes/default/templates/administrator/config.tpl:425
+#: themes/default/templates/administrator/config.tpl:435
 #: themes/default/templates/company/edit.tpl:234
 #: themes/default/templates/company/edit.tpl:253
 #: themes/default/templates/invoice/edit.tpl:547
 #: themes/default/templates/invoice/labour_rates.tpl:42
-#: themes/default/templates/user/blocks/details_details_block.tpl:80
+#: themes/default/templates/user/blocks/details_details_block.tpl:84
 #: themes/default/templates/user/edit.tpl:140
 #: themes/default/templates/user/new.tpl:140
 msgid "No"
@@ -4086,100 +4523,147 @@ msgid "QWcrm Config Settings"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:18
-#: themes/default/templates/administrator/config.tpl:161
+#: themes/default/templates/administrator/config.tpl:166
 msgid "Database"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:22
+#: themes/default/templates/administrator/config.tpl:25
 msgid "Host"
 msgstr ""
 
+#: themes/default/templates/administrator/config.tpl:25
+msgid ""
+"The hostname for your database entered during the installation process. Do "
+"not edit this field unless absolutely necessary (eg the transfer of the "
+"database to a new hosting provider)."
+msgstr ""
+
 #: themes/default/templates/administrator/config.tpl:29
+#: themes/default/templates/administrator/config.tpl:32
 msgid "Database Name"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:33
+#: themes/default/templates/administrator/config.tpl:32
+msgid ""
+"The name for your database entered during the installation process. Do not "
+"edit this field unless absolutely necessary (eg the transfer of the database "
+"to a new hosting provider)."
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:36
+#: themes/default/templates/administrator/config.tpl:39
 msgid "Database Username"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:37
+#: themes/default/templates/administrator/config.tpl:39
+msgid ""
+"The username for access to your database entered during the installation "
+"process. Do not edit this field unless absolutely necessary (eg the transfer "
+"of the database to a new hosting provider)."
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:43
+#: themes/default/templates/administrator/config.tpl:46
 msgid "Database Password"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:41
+#: themes/default/templates/administrator/config.tpl:46
+msgid ""
+"The password for access to your database entered during the installation "
+"process. Do not edit this field unless absolutely necessary (eg the transfer "
+"of the database to a new hosting provider)."
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:50
+#: themes/default/templates/administrator/config.tpl:53
 msgid "Database Tables Prefix"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:49
+#: themes/default/templates/administrator/config.tpl:53
+msgid ""
+"The prefix used for your database tables, created during the installation "
+"process. Do not edit this field unless absolutely necessary (eg the transfer "
+"of the database to a new hosting provider)."
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:61
 msgid "Other"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:53
+#: themes/default/templates/administrator/config.tpl:65
+#: themes/default/templates/administrator/config.tpl:71
 msgid "Gzip Page Compression"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:62
+#: themes/default/templates/administrator/config.tpl:71
+msgid "Compress buffered output if supported."
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:75
+#: themes/default/templates/administrator/config.tpl:81
 msgid "Site Maintenance"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:71
+#: themes/default/templates/administrator/config.tpl:81
+msgid ""
+"Select if access to the Site Frontend is available. If Yes, the Frontend "
+"will display a message via the maintenance page."
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:85
+#: themes/default/templates/administrator/config.tpl:89
 msgid "Theme Name"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:78
+#: themes/default/templates/administrator/config.tpl:89
+msgid ""
+"This is theme QWcrm is using. Currently this option is not available, "
+"although the templating code is all present."
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:93
+#: themes/default/templates/administrator/config.tpl:98
 msgid "Default Language"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:81
+#: themes/default/templates/administrator/config.tpl:96
 msgid "English"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:86
-msgid "Autodetect Language"
-msgstr ""
-
 #: themes/default/templates/administrator/config.tpl:98
-msgid "Security"
+msgid ""
+"This is the default language QWcrm uses. If 'Autodetect Language' is "
+"disabled or the user's language is not availabe then this language will be "
+"used to display translations. If for some reason this fails, the language "
+"will default to english."
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:102
+#: themes/default/templates/administrator/config.tpl:108
+msgid "Autodetect Language"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:108
+msgid ""
+"If enabled QWcrm will try to set the language based on your browser. If your "
+"language is not available then the default language will be used."
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:115
+msgid "Security"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:119
+#: themes/default/templates/administrator/config.tpl:126
 msgid "Force SSL/HTTPS"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:111
-msgid "reCAPTCHA"
-msgstr ""
-
-#: themes/default/templates/administrator/config.tpl:120
-msgid "reCAPTCHA Site Key"
-msgstr ""
-
-#: themes/default/templates/administrator/config.tpl:124
-msgid "reCAPTCHA Secret Key"
-msgstr ""
-
-#: themes/default/templates/administrator/config.tpl:131
-msgid "Session"
-msgstr ""
-
-#: themes/default/templates/administrator/config.tpl:135
-msgid "Session Lifetime"
-msgstr ""
-
-#: themes/default/templates/administrator/config.tpl:139
-msgid "Remember Me"
-msgstr ""
-
-#: themes/default/templates/administrator/config.tpl:148
-msgid "Shared Session"
-msgstr ""
-
-#: themes/default/templates/administrator/config.tpl:157
-msgid "Session Handler"
-msgstr ""
-
-#: themes/default/templates/administrator/config.tpl:160
-#: themes/default/templates/administrator/config.tpl:243
+#: themes/default/templates/administrator/config.tpl:122
+#: themes/default/templates/administrator/config.tpl:165
+#: themes/default/templates/administrator/config.tpl:299
+#: themes/default/templates/administrator/config.tpl:370
+#: themes/default/templates/administrator/config.tpl:407
 #: themes/default/templates/company/edit.tpl:191
 #: themes/default/templates/customer/search.tpl:43
 #: themes/default/templates/giftcert/search.tpl:41
@@ -4189,117 +4673,410 @@ msgstr ""
 msgid "None"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:169
-msgid "Cookie"
+#: themes/default/templates/administrator/config.tpl:123
+msgid "Administrator Only"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:173
-msgid "Cookie Lifetime"
+#: themes/default/templates/administrator/config.tpl:124
+msgid "Entire Site"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:177
-msgid "Cookie Token Length"
+#: themes/default/templates/administrator/config.tpl:126
+msgid ""
+"Force site access in the selected areas to occur only with HTTPS (encrypted "
+"HTTP connections with the https:// protocol prefix) and also force the use "
+"of secure cookies. Note, you must have HTTPS enabled on your server to "
+"utilise this option."
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:181
-msgid "Cookie Domain"
+#: themes/default/templates/administrator/config.tpl:130
+#: themes/default/templates/administrator/config.tpl:136
+msgid "reCAPTCHA"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:136
+msgid ""
+"Protect the login procedure with Google reCAPTCHA. reCAPTCHA is a free "
+"service that protects your website from spam and abuse. reCAPTCHA uses an "
+"advanced risk analysis engine and adaptive CAPTCHAs to keep automated "
+"software from engaging in abusive activities on your site. It does this "
+"while letting your valid users pass through with ease."
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:137
+msgid "Get Keys"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:141
+#: themes/default/templates/administrator/config.tpl:144
+msgid "reCAPTCHA Site Key"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:144
+msgid ""
+" The site key is used to invoke reCAPTCHA service on your site or mobile "
+"application."
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:148
+#: themes/default/templates/administrator/config.tpl:151
+msgid "reCAPTCHA Secret Key"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:151
+msgid ""
+"The secret key authorizes communication between your application backend and "
+"the reCAPTCHA server to verify the user's response. The secret key needs to "
+"be kept safe for security purposes."
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:158
+msgid "Session"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:162
+#: themes/default/templates/administrator/config.tpl:168
+msgid "Session Handler"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:168
+msgid ""
+"The mechanism by which QWcrm identifies a User once they are connected to "
+"the website using non-persistent cookies. None/PHP is susceptible to garbage "
+"collection usually every 1440 seconds which means that inactive users after "
+"1440 will be logged out and can loose data. The PHP garbage collection time "
+"is set by the server in php.ini by several settings, but the main one is "
+"'session.gc_maxlifetime = 1440'. "
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:172
+#: themes/default/templates/administrator/config.tpl:175
+msgid "Session Lifetime"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:175
+msgid ""
+"Auto log out a User after they have been inactive for the entered number of "
+"minutes. Do not set too high."
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:179
+#: themes/default/templates/administrator/config.tpl:185
+msgid "Shared Session"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:185
-msgid "Cookie Path"
+msgid ""
+"When enabled, a user's session is shared between the frontend and "
+"administrator sections of the site. Note that changing this value will "
+"invalidate all existing sessions on the site. This is not available when the "
+"'Force HTTPS' option is set to 'Administrator Only'."
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:192
-msgid "Logging"
-msgstr ""
-
 #: themes/default/templates/administrator/config.tpl:196
-msgid "QWcrm Tracker"
+#: themes/default/templates/administrator/config.tpl:202
+msgid "Remember Me"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:205
-msgid "QWcrm Access Log"
+#: themes/default/templates/administrator/config.tpl:202
+msgid ""
+"Provides remember me functionality so when a user logs in to QWcrm they can "
+"stay logged in even if they close the browser. This works by generatating an "
+"authentication cookie which has an Expiry Date set by the 'Cookie Lifetime'."
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:214
-msgid "QWcrm Activity Log"
+#: themes/default/templates/administrator/config.tpl:206
+#: themes/default/templates/administrator/config.tpl:209
+msgid "Cookie Lifetime"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:209
+msgid ""
+"The number of days until the authentication cookie will expire. Other "
+"factors may cause it to expire before this. Longer lengths are less secure."
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:213
+#: themes/default/templates/administrator/config.tpl:216
+msgid "Cookie Token Length"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:216
+msgid ""
+"The length of the key to use to encrypt the cookie. Longer lengths are more "
+"secure, but they will slow performance."
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:223
-msgid "QWcrm Error Log"
+msgid "Cookies"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:235
-#: themes/default/templates/administrator/config.tpl:239
-msgid "Error Reporting"
+#: themes/default/templates/administrator/config.tpl:227
+#: themes/default/templates/administrator/config.tpl:230
+msgid "Cookie Domain"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:242
-msgid "System Default"
+#: themes/default/templates/administrator/config.tpl:230
+msgid ""
+"Domain to use when setting session cookies. Precede domain with '.' if "
+"cookie should be valid for all subdomains."
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:234
+#: themes/default/templates/administrator/config.tpl:237
+msgid "Cookie Path"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:237
+msgid "Path the cookie should be valid for."
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:244
-msgid "Very Simple"
+msgid "Logging"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:245
-msgid "Simple"
+#: themes/default/templates/administrator/config.tpl:248
+#: themes/default/templates/administrator/config.tpl:254
+msgid "QWcrm Tracker"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:246
-msgid "Maximum"
+#: themes/default/templates/administrator/config.tpl:254
+msgid "Legacy Tracking system. This system is depreceated."
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:247
-msgid "Development"
-msgstr ""
-
-#: themes/default/templates/administrator/config.tpl:252
-msgid "Error Page Raw Output"
+#: themes/default/templates/administrator/config.tpl:258
+#: themes/default/templates/administrator/config.tpl:264
+msgid "QWcrm Access Log"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:264
-msgid "Debugging"
+msgid ""
+"Enable access logging for QWcrm. This will log all page accesses and store "
+"the data in the log file 'access.log'. This log file is in apache log format "
+"and can be found in the logs folder."
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:268
+#: themes/default/templates/administrator/config.tpl:274
+msgid "QWcrm Activity Log"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:274
+msgid ""
+"Enable activity logging for QWcrm. This will log all user activity within "
+"QWcrm and store the data in the log file 'activity.log'. This log file is in "
+"apache log format and can be found in the logs folder."
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:278
+#: themes/default/templates/administrator/config.tpl:284
+msgid "QWcrm Error Log"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:284
+msgid ""
+"Enable error logging for QWcrm. This will log all errors and store the data "
+"in the log file 'error.log'. This log file is in apache log format and can "
+"be found in the logs folder."
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:291
+#: themes/default/templates/administrator/config.tpl:295
+#: themes/default/templates/administrator/config.tpl:305
+msgid "Error Reporting"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:298
+msgid "System Default"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:300
+msgid "Very Simple"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:301
+msgid "Simple"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:302
+msgid "Maximum"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:303
+msgid "Development"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:305
+msgid ""
+"Select the level of PHP reporting for your needs. Do not leave error "
+"reporting on for live sites as this can be a security risk."
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:309
+#: themes/default/templates/administrator/config.tpl:315
+msgid "Error Page Raw Output"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:315
+msgid ""
+"Normally when an error occurs the error page is display with the relevant "
+"information, however sometimes looping or white screens can occur and this "
+"option strips back all uneeded functionality so just the error data is shown "
+"to negate these issues. This is only needed for development or unless "
+"otherwise instructed. QWcrm Debug does not need to be enabled."
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:322
+msgid "Debugging"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:326
+#: themes/default/templates/administrator/config.tpl:332
 msgid "QWcrm Debug"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:277
+#: themes/default/templates/administrator/config.tpl:332
+msgid ""
+"This on it's own gives basic infomration such as the page and module names "
+"aswell as their load time. QWcrm Debug needs to be enabled to access the "
+"rest of the debugging options."
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:336
+#: themes/default/templates/administrator/config.tpl:342
 msgid "QWcrm Advanced Debug"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:286
+#: themes/default/templates/administrator/config.tpl:342
+msgid ""
+"This does a full varible and class dump from PHP. This is a security risk "
+"and should only be used for QWcrm development."
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:346
+#: themes/default/templates/administrator/config.tpl:352
 msgid "Smarty Debugging (QWcrm)"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:295
+#: themes/default/templates/administrator/config.tpl:352
+msgid ""
+"Because of the way QWcrm is structured I needed to implement a custom method "
+"to call the Smarty Debugging template."
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:356
+#: themes/default/templates/administrator/config.tpl:362
 msgid "Smarty Debugging"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:307
+#: themes/default/templates/administrator/config.tpl:366
+#: themes/default/templates/administrator/config.tpl:373
+msgid "Smarty Debugging Control"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:369
+msgid "No Control"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:371
+msgid "URL"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:373
+msgid ""
+"This allows alternate ways to enable debugging. NONE means no alternate "
+"methods are allowed. URL means when the keyword SMARTY_DEBUG is found in the "
+"QUERY_STRING, debugging is enabled for that invocation of the script. If "
+"$debugging is TRUE, this value is ignored."
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:380
 msgid "Smarty"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:311
+#: themes/default/templates/administrator/config.tpl:384
+#: themes/default/templates/administrator/config.tpl:390
 msgid "Force Compile"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:320
-msgid "Template Caching"
+#: themes/default/templates/administrator/config.tpl:390
+msgid ""
+"This forces Smarty to (re)compile templates on every invocation. This "
+"setting overrides 'compile_check'. By default this is FALSE. This is handy "
+"for development and debugging. It should never be used in a production "
+"environment. If 'caching' is enabled, the cache file(s) will be regenerated "
+"every time. Compiling referenced here is the process of converting the "
+"Smarty templates into pure PHP code."
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:329
+#: themes/default/templates/administrator/config.tpl:394
+#: themes/default/templates/administrator/config.tpl:400
+msgid "Force Cache"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:400
+msgid ""
+"This forces Smarty to (re)cache templates on every invocation. It does not "
+"override the $caching level, but merely pretends the template has never been "
+"cached before. "
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:404
+#: themes/default/templates/administrator/config.tpl:411
+msgid "Caching"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:408
+msgid "Current"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:409
+msgid "Saved"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:411
+msgid ""
+"This tells Smarty whether or not to cache the output of the templates to the "
+"Cache Directory. This is untested with QWcrm.<hr>A value of Smarty::"
+"CACHING_LIFETIME_CURRENT tells Smarty to use the current $cache_lifetime "
+"variable to determine if the cache has expired.<br><br>A value of Smarty::"
+"CACHING_LIFETIME_SAVED tells Smarty to use the $cache_lifetime value at the "
+"time the cache was generated. This way you can set the $cache_lifetime just "
+"before fetching the template to have granular control over when that "
+"particular cache expires."
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:415
+#: themes/default/templates/administrator/config.tpl:418
 msgid "Cache Lifetime"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:333
+#: themes/default/templates/administrator/config.tpl:418
+msgid ""
+"This is the length of time in seconds that a template cache is valid. Once "
+"this time has expired, the cache will be regenerated."
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:422
+#: themes/default/templates/administrator/config.tpl:428
 msgid "Cache Modified Check"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:349
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:139
+#: themes/default/templates/administrator/config.tpl:432
+#: themes/default/templates/administrator/config.tpl:438
+msgid "Cache Locking"
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:438
+msgid ""
+"Cache locking avoids concurrent cache generation. This means resource "
+"intensive pages can be generated only once, even if they've been requested "
+"multiple times in the same moment."
+msgstr ""
+
+#: themes/default/templates/administrator/config.tpl:449
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:140
 #: themes/default/templates/expense/edit.tpl:125
 #: themes/default/templates/invoice/labour_rates.tpl:56
 #: themes/default/templates/refund/edit.tpl:111
@@ -4354,6 +5131,8 @@ msgstr ""
 #: themes/default/templates/invoice/paid.tpl:72
 #: themes/default/templates/invoice/printing/print_address.tpl:82
 #: themes/default/templates/invoice/printing/print_invoice.tpl:82
+#: themes/default/templates/invoice/search.tpl:34
+#: themes/default/templates/invoice/search.tpl:114
 #: themes/default/templates/invoice/unpaid.tpl:72
 #: themes/default/templates/payment/blocks/new_invoice_details_block.tpl:5
 #: themes/default/templates/payment/blocks/new_transactions_log_block.tpl:11
@@ -4363,6 +5142,8 @@ msgstr ""
 #: themes/default/templates/refund/search.tpl:32
 #: themes/default/templates/refund/search.tpl:111
 #: themes/default/templates/schedule/details.tpl:23
+#: themes/default/templates/schedule/search.tpl:34
+#: themes/default/templates/schedule/search.tpl:114
 #: themes/default/templates/workorder/blocks/details_history_block.tpl:19
 #: themes/default/templates/workorder/blocks/details_note_block.tpl:50
 #: themes/default/templates/workorder/blocks/details_resolution_block.tpl:33
@@ -4371,6 +5152,8 @@ msgstr ""
 #: themes/default/templates/workorder/printing/print_job_sheet.tpl:47
 #: themes/default/templates/workorder/printing/print_job_sheet.tpl:104
 #: themes/default/templates/workorder/printing/print_technician_workorder_slip.tpl:155
+#: themes/default/templates/workorder/search.tpl:34
+#: themes/default/templates/workorder/search.tpl:114
 msgid "Date"
 msgstr ""
 
@@ -4508,11 +5291,17 @@ msgstr ""
 #: themes/default/templates/expense/new.tpl:113
 #: themes/default/templates/expense/search.tpl:37
 #: themes/default/templates/expense/search.tpl:117
+#: themes/default/templates/invoice/search.tpl:38
+#: themes/default/templates/invoice/search.tpl:118
 #: themes/default/templates/refund/details.tpl:39
 #: themes/default/templates/refund/edit.tpl:90
 #: themes/default/templates/refund/new.tpl:96
 #: themes/default/templates/refund/search.tpl:36
 #: themes/default/templates/refund/search.tpl:115
+#: themes/default/templates/schedule/search.tpl:38
+#: themes/default/templates/schedule/search.tpl:118
+#: themes/default/templates/workorder/search.tpl:38
+#: themes/default/templates/workorder/search.tpl:118
 msgid "Tax Rate"
 msgstr ""
 
@@ -4660,16 +5449,22 @@ msgstr ""
 #: themes/default/templates/giftcert/search.tpl:83
 #: themes/default/templates/invoice/paid.tpl:37
 #: themes/default/templates/invoice/paid.tpl:41
+#: themes/default/templates/invoice/search.tpl:77
+#: themes/default/templates/invoice/search.tpl:81
 #: themes/default/templates/invoice/unpaid.tpl:37
 #: themes/default/templates/invoice/unpaid.tpl:41
 #: themes/default/templates/refund/search.tpl:74
 #: themes/default/templates/refund/search.tpl:78
+#: themes/default/templates/schedule/search.tpl:77
+#: themes/default/templates/schedule/search.tpl:81
 #: themes/default/templates/supplier/search.tpl:69
 #: themes/default/templates/supplier/search.tpl:73
 #: themes/default/templates/user/search.tpl:79
 #: themes/default/templates/user/search.tpl:83
 #: themes/default/templates/workorder/closed.tpl:39
 #: themes/default/templates/workorder/closed.tpl:43
+#: themes/default/templates/workorder/search.tpl:77
+#: themes/default/templates/workorder/search.tpl:81
 msgid "Page"
 msgstr ""
 
@@ -4911,11 +5706,6 @@ msgstr ""
 msgid "Delete Refund"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:86
-#: themes/default/templates/report/financial.tpl:13
-msgid "Financial Report"
-msgstr ""
-
 #: themes/default/templates/core/blocks/theme_menu_block.tpl:95
 msgid "Suppliers"
 msgstr ""
@@ -4959,79 +5749,88 @@ msgstr ""
 msgid "Payment Options"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:122
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:115
+#: themes/default/templates/report/financial.tpl:13
+msgid "Financial Report"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:123
 msgid "Administration"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:125
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:126
 msgid "Search Users"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:126
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:127
 msgid "New Employee"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:128
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:129
 msgid "Edit User"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:129
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:130
 msgid "Are you sure you want to delete this user?"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:129
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:130
 msgid "Delete User"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:131
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:132
 msgid "Permissions"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:134
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:135
 msgid "Hit Stats"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:135
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:136
 msgid "Hit Stats By IP"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:138
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:139
 msgid "PHP Info"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:146
-msgid "Help"
-msgstr ""
-
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:147
-msgid "About"
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:141
+msgid "Config Settings"
 msgstr ""
 
 #: themes/default/templates/core/blocks/theme_menu_block.tpl:148
-msgid "Attribution"
+msgid "Help"
 msgstr ""
 
 #: themes/default/templates/core/blocks/theme_menu_block.tpl:149
-msgid "License"
+msgid "About"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:150
+msgid "Attribution"
 msgstr ""
 
 #: themes/default/templates/core/blocks/theme_menu_block.tpl:151
-msgid "Documentation"
-msgstr ""
-
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:152
-msgid "Bug Tracker"
+msgid "License"
 msgstr ""
 
 #: themes/default/templates/core/blocks/theme_menu_block.tpl:153
-msgid "Forum"
+msgid "Documentation"
 msgstr ""
 
 #: themes/default/templates/core/blocks/theme_menu_block.tpl:154
+msgid "Bug Tracker"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:155
+msgid "Forum"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:156
 msgid "Support this Software!"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:158
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:160
 msgid "PayPal - The safer, easier way to pay online."
 msgstr ""
 
@@ -5173,14 +5972,14 @@ msgid "Get Directions"
 msgstr ""
 
 #: themes/default/templates/customer/blocks/details_customer_details_block.tpl:47
-#: themes/default/templates/user/blocks/details_details_block.tpl:110
+#: themes/default/templates/user/blocks/details_details_block.tpl:122
 #: themes/default/templates/user/edit.tpl:184
 #: themes/default/templates/user/new.tpl:184
 msgid "Home Phone"
 msgstr ""
 
 #: themes/default/templates/customer/blocks/details_customer_details_block.tpl:53
-#: themes/default/templates/user/blocks/details_details_block.tpl:92
+#: themes/default/templates/user/blocks/details_details_block.tpl:105
 #: themes/default/templates/user/edit.tpl:160
 #: themes/default/templates/user/new.tpl:160
 #: themes/default/templates/user/search.tpl:119
@@ -5283,7 +6082,9 @@ msgstr ""
 #: themes/default/templates/giftcert/search.tpl:123
 #: themes/default/templates/invoice/labour_rates.tpl:30
 #: themes/default/templates/invoice/labour_rates.tpl:72
+#: themes/default/templates/invoice/search.tpl:123
 #: themes/default/templates/refund/search.tpl:120
+#: themes/default/templates/schedule/search.tpl:123
 #: themes/default/templates/supplier/search.tpl:110
 #: themes/default/templates/user/blocks/details_open_workorders_block.tpl:9
 #: themes/default/templates/user/search.tpl:122
@@ -5291,6 +6092,7 @@ msgstr ""
 #: themes/default/templates/workorder/blocks/overview_awaiting_parts_workorders_block.tpl:11
 #: themes/default/templates/workorder/blocks/overview_new_workorders_block.tpl:11
 #: themes/default/templates/workorder/blocks/overview_unpaid_workorders_block.tpl:11
+#: themes/default/templates/workorder/search.tpl:123
 msgid "Action"
 msgstr ""
 
@@ -5547,12 +6349,16 @@ msgstr ""
 #: themes/default/templates/invoice/edit.tpl:419
 #: themes/default/templates/invoice/labour_rates.tpl:28
 #: themes/default/templates/invoice/labour_rates.tpl:70
+#: themes/default/templates/invoice/search.tpl:35
+#: themes/default/templates/invoice/search.tpl:115
 #: themes/default/templates/payment/blocks/new_transactions_log_block.tpl:13
 #: themes/default/templates/refund/details.tpl:43
 #: themes/default/templates/refund/edit.tpl:56
 #: themes/default/templates/refund/new.tpl:62
 #: themes/default/templates/refund/search.tpl:33
 #: themes/default/templates/refund/search.tpl:112
+#: themes/default/templates/schedule/search.tpl:35
+#: themes/default/templates/schedule/search.tpl:115
 #: themes/default/templates/supplier/details.tpl:45
 #: themes/default/templates/supplier/edit.tpl:45
 #: themes/default/templates/supplier/new.tpl:51
@@ -5562,6 +6368,8 @@ msgstr ""
 #: themes/default/templates/workorder/new.tpl:155
 #: themes/default/templates/workorder/printing/print_customer_workorder_slip.tpl:64
 #: themes/default/templates/workorder/printing/print_technician_workorder_slip.tpl:64
+#: themes/default/templates/workorder/search.tpl:35
+#: themes/default/templates/workorder/search.tpl:115
 msgid "Type"
 msgstr ""
 
@@ -5577,22 +6385,6 @@ msgstr ""
 msgid "Edit Customer Note"
 msgstr ""
 
-#: themes/default/templates/customer/note_edit.tpl:41
-#: themes/default/templates/invoice/details.tpl:147
-#: themes/default/templates/invoice/edit.tpl:436
-#: themes/default/templates/invoice/printing/print_address.tpl:224
-#: themes/default/templates/invoice/printing/print_invoice.tpl:224
-#: themes/default/templates/payment/blocks/new_payment_cash_block.tpl:19
-#: themes/default/templates/payment/blocks/new_payment_cheque_block.tpl:21
-#: themes/default/templates/payment/blocks/new_payment_credit_card_block.tpl:29
-#: themes/default/templates/payment/blocks/new_payment_direct_deposit_block.tpl:21
-#: themes/default/templates/payment/blocks/new_payment_gift_certificate_block.tpl:19
-#: themes/default/templates/payment/blocks/new_payment_paypal_block.tpl:21
-#: themes/default/templates/payment/blocks/new_transactions_log_block.tpl:30
-#: themes/default/templates/workorder/note_edit.tpl:41
-msgid "Note"
-msgstr ""
-
 #: themes/default/templates/customer/search.tpl:7
 msgid "Customer Search"
 msgstr ""
@@ -5601,9 +6393,15 @@ msgstr ""
 #: themes/default/templates/expense/search.tpl:28
 #: themes/default/templates/expense/search.tpl:47
 #: themes/default/templates/giftcert/search.tpl:30
+#: themes/default/templates/invoice/search.tpl:29
+#: themes/default/templates/invoice/search.tpl:48
 #: themes/default/templates/refund/search.tpl:46
+#: themes/default/templates/schedule/search.tpl:29
+#: themes/default/templates/schedule/search.tpl:48
 #: themes/default/templates/supplier/search.tpl:41
 #: themes/default/templates/user/search.tpl:30
+#: themes/default/templates/workorder/search.tpl:29
+#: themes/default/templates/workorder/search.tpl:48
 msgid "Search"
 msgstr ""
 
@@ -5618,9 +6416,12 @@ msgstr ""
 #: themes/default/templates/customer/search.tpl:37
 #: themes/default/templates/expense/search.tpl:52
 #: themes/default/templates/giftcert/search.tpl:35
+#: themes/default/templates/invoice/search.tpl:53
 #: themes/default/templates/refund/search.tpl:50
+#: themes/default/templates/schedule/search.tpl:53
 #: themes/default/templates/supplier/search.tpl:46
 #: themes/default/templates/user/search.tpl:35
+#: themes/default/templates/workorder/search.tpl:53
 msgid "NO special characters like !@#$%^*()"
 msgstr ""
 
@@ -5638,16 +6439,22 @@ msgstr ""
 #: themes/default/templates/giftcert/search.tpl:83
 #: themes/default/templates/invoice/paid.tpl:37
 #: themes/default/templates/invoice/paid.tpl:41
+#: themes/default/templates/invoice/search.tpl:77
+#: themes/default/templates/invoice/search.tpl:81
 #: themes/default/templates/invoice/unpaid.tpl:37
 #: themes/default/templates/invoice/unpaid.tpl:41
 #: themes/default/templates/refund/search.tpl:74
 #: themes/default/templates/refund/search.tpl:78
+#: themes/default/templates/schedule/search.tpl:77
+#: themes/default/templates/schedule/search.tpl:81
 #: themes/default/templates/supplier/search.tpl:69
 #: themes/default/templates/supplier/search.tpl:73
 #: themes/default/templates/user/search.tpl:79
 #: themes/default/templates/user/search.tpl:83
 #: themes/default/templates/workorder/closed.tpl:39
 #: themes/default/templates/workorder/closed.tpl:43
+#: themes/default/templates/workorder/search.tpl:77
+#: themes/default/templates/workorder/search.tpl:81
 msgid "of"
 msgstr ""
 
@@ -5656,12 +6463,15 @@ msgstr ""
 #: themes/default/templates/giftcert/search.tpl:100
 #: themes/default/templates/invoice/paid.tpl:7
 #: themes/default/templates/invoice/paid.tpl:58
+#: themes/default/templates/invoice/search.tpl:98
 #: themes/default/templates/invoice/unpaid.tpl:58
 #: themes/default/templates/refund/search.tpl:95
+#: themes/default/templates/schedule/search.tpl:98
 #: themes/default/templates/supplier/search.tpl:90
 #: themes/default/templates/user/search.tpl:100
 #: themes/default/templates/workorder/closed.tpl:7
 #: themes/default/templates/workorder/closed.tpl:60
+#: themes/default/templates/workorder/search.tpl:98
 msgid "records found."
 msgstr ""
 
@@ -5690,6 +6500,12 @@ msgstr ""
 #: themes/default/templates/expense/new.tpl:40
 #: themes/default/templates/expense/search.tpl:31
 #: themes/default/templates/expense/search.tpl:111
+#: themes/default/templates/invoice/search.tpl:32
+#: themes/default/templates/invoice/search.tpl:112
+#: themes/default/templates/schedule/search.tpl:32
+#: themes/default/templates/schedule/search.tpl:112
+#: themes/default/templates/workorder/search.tpl:32
+#: themes/default/templates/workorder/search.tpl:112
 msgid "Expense ID"
 msgstr ""
 
@@ -5698,11 +6514,17 @@ msgstr ""
 #: themes/default/templates/expense/new.tpl:45
 #: themes/default/templates/expense/search.tpl:32
 #: themes/default/templates/expense/search.tpl:112
+#: themes/default/templates/invoice/search.tpl:33
+#: themes/default/templates/invoice/search.tpl:113
 #: themes/default/templates/refund/details.tpl:31
 #: themes/default/templates/refund/edit.tpl:38
 #: themes/default/templates/refund/new.tpl:44
 #: themes/default/templates/refund/search.tpl:31
 #: themes/default/templates/refund/search.tpl:110
+#: themes/default/templates/schedule/search.tpl:33
+#: themes/default/templates/schedule/search.tpl:113
+#: themes/default/templates/workorder/search.tpl:33
+#: themes/default/templates/workorder/search.tpl:113
 msgid "Payee"
 msgstr ""
 
@@ -5711,11 +6533,17 @@ msgstr ""
 #: themes/default/templates/expense/new.tpl:109
 #: themes/default/templates/expense/search.tpl:36
 #: themes/default/templates/expense/search.tpl:116
+#: themes/default/templates/invoice/search.tpl:37
+#: themes/default/templates/invoice/search.tpl:117
 #: themes/default/templates/refund/details.tpl:33
 #: themes/default/templates/refund/edit.tpl:86
 #: themes/default/templates/refund/new.tpl:92
 #: themes/default/templates/refund/search.tpl:35
 #: themes/default/templates/refund/search.tpl:114
+#: themes/default/templates/schedule/search.tpl:37
+#: themes/default/templates/schedule/search.tpl:117
+#: themes/default/templates/workorder/search.tpl:37
+#: themes/default/templates/workorder/search.tpl:117
 msgid "Net Amount"
 msgstr ""
 
@@ -5723,11 +6551,17 @@ msgstr ""
 #: themes/default/templates/expense/new.tpl:117
 #: themes/default/templates/expense/search.tpl:38
 #: themes/default/templates/expense/search.tpl:118
+#: themes/default/templates/invoice/search.tpl:39
+#: themes/default/templates/invoice/search.tpl:119
 #: themes/default/templates/refund/details.tpl:51
 #: themes/default/templates/refund/edit.tpl:94
 #: themes/default/templates/refund/new.tpl:100
 #: themes/default/templates/refund/search.tpl:37
 #: themes/default/templates/refund/search.tpl:116
+#: themes/default/templates/schedule/search.tpl:39
+#: themes/default/templates/schedule/search.tpl:119
+#: themes/default/templates/workorder/search.tpl:39
+#: themes/default/templates/workorder/search.tpl:119
 msgid "Tax Amount"
 msgstr ""
 
@@ -5736,10 +6570,16 @@ msgstr ""
 #: themes/default/templates/expense/new.tpl:91
 #: themes/default/templates/expense/search.tpl:35
 #: themes/default/templates/expense/search.tpl:115
+#: themes/default/templates/invoice/search.tpl:36
+#: themes/default/templates/invoice/search.tpl:116
 #: themes/default/templates/refund/edit.tpl:68
 #: themes/default/templates/refund/new.tpl:74
 #: themes/default/templates/refund/search.tpl:34
 #: themes/default/templates/refund/search.tpl:113
+#: themes/default/templates/schedule/search.tpl:36
+#: themes/default/templates/schedule/search.tpl:116
+#: themes/default/templates/workorder/search.tpl:36
+#: themes/default/templates/workorder/search.tpl:116
 msgid "Payment Method"
 msgstr ""
 
@@ -5748,11 +6588,17 @@ msgstr ""
 #: themes/default/templates/expense/new.tpl:121
 #: themes/default/templates/expense/search.tpl:39
 #: themes/default/templates/expense/search.tpl:119
+#: themes/default/templates/invoice/search.tpl:40
+#: themes/default/templates/invoice/search.tpl:120
 #: themes/default/templates/refund/details.tpl:69
 #: themes/default/templates/refund/edit.tpl:98
 #: themes/default/templates/refund/new.tpl:104
 #: themes/default/templates/refund/search.tpl:38
 #: themes/default/templates/refund/search.tpl:117
+#: themes/default/templates/schedule/search.tpl:40
+#: themes/default/templates/schedule/search.tpl:120
+#: themes/default/templates/workorder/search.tpl:40
+#: themes/default/templates/workorder/search.tpl:120
 msgid "Gross Amount"
 msgstr ""
 
@@ -5762,6 +6608,9 @@ msgstr ""
 #: themes/default/templates/expense/search.tpl:41
 #: themes/default/templates/expense/search.tpl:121
 #: themes/default/templates/expense/search.tpl:175
+#: themes/default/templates/invoice/search.tpl:42
+#: themes/default/templates/invoice/search.tpl:122
+#: themes/default/templates/invoice/search.tpl:176
 #: themes/default/templates/refund/details.tpl:87
 #: themes/default/templates/refund/edit.tpl:106
 #: themes/default/templates/refund/new.tpl:123
@@ -5770,6 +6619,12 @@ msgstr ""
 #: themes/default/templates/refund/search.tpl:153
 #: themes/default/templates/report/financial.tpl:183
 #: themes/default/templates/report/financial.tpl:199
+#: themes/default/templates/schedule/search.tpl:42
+#: themes/default/templates/schedule/search.tpl:122
+#: themes/default/templates/schedule/search.tpl:176
+#: themes/default/templates/workorder/search.tpl:42
+#: themes/default/templates/workorder/search.tpl:122
+#: themes/default/templates/workorder/search.tpl:176
 msgid "Items"
 msgstr ""
 
@@ -5804,38 +6659,47 @@ msgid "Submit and New"
 msgstr ""
 
 #: themes/default/templates/expense/search.tpl:7
+#: themes/default/templates/invoice/search.tpl:8
+#: themes/default/templates/schedule/search.tpl:8
+#: themes/default/templates/workorder/search.tpl:8
 msgid "Expense Search"
 msgstr ""
 
 #: themes/default/templates/expense/search.tpl:48
+#: themes/default/templates/invoice/search.tpl:49
+#: themes/default/templates/schedule/search.tpl:49
+#: themes/default/templates/workorder/search.tpl:49
 msgid "reset"
 msgstr ""
 
 #: themes/default/templates/expense/search.tpl:178
+#: themes/default/templates/invoice/search.tpl:179
+#: themes/default/templates/schedule/search.tpl:179
+#: themes/default/templates/workorder/search.tpl:179
 msgid "View Expense Details"
 msgstr ""
 
 #: themes/default/templates/expense/search.tpl:181
+#: themes/default/templates/invoice/search.tpl:182
+#: themes/default/templates/schedule/search.tpl:182
+#: themes/default/templates/workorder/search.tpl:182
 msgid "Edit Expense Details"
 msgstr ""
 
 #: themes/default/templates/expense/search.tpl:183
+#: themes/default/templates/invoice/search.tpl:184
+#: themes/default/templates/schedule/search.tpl:184
+#: themes/default/templates/workorder/search.tpl:184
 msgid ""
 "Are you Sure you want to delete this Expense Record? This will permanently "
 "remove the record from the database."
 msgstr ""
 
 #: themes/default/templates/expense/search.tpl:184
+#: themes/default/templates/invoice/search.tpl:185
+#: themes/default/templates/schedule/search.tpl:185
+#: themes/default/templates/workorder/search.tpl:185
 msgid "Delete Expense Record"
-msgstr ""
-
-#: themes/default/templates/giftcert/details.tpl:7
-#: themes/default/templates/giftcert/details.tpl:17
-#: themes/default/templates/invoice/details.tpl:141
-#: themes/default/templates/invoice/edit.tpl:430
-#: themes/default/templates/payment/blocks/new_payment_gift_certificate_block.tpl:5
-#: themes/default/templates/payment/blocks/new_transactions_log_block.tpl:24
-msgid "Gift Certificate"
 msgstr ""
 
 #: themes/default/templates/giftcert/details.tpl:42
@@ -5860,11 +6724,6 @@ msgstr ""
 
 #: themes/default/templates/giftcert/edit.tpl:15
 msgid "Edit Gift Certificate"
-msgstr ""
-
-#: themes/default/templates/giftcert/edit.tpl:28
-#: themes/default/templates/giftcert/search.tpl:27
-msgid "Gift Certificate Code"
 msgstr ""
 
 #: themes/default/templates/giftcert/new.tpl:15
@@ -5958,35 +6817,6 @@ msgstr ""
 #: themes/default/templates/invoice/edit.tpl:416
 #: themes/default/templates/payment/blocks/new_transactions_log_block.tpl:10
 msgid "Transaction ID"
-msgstr ""
-
-#: themes/default/templates/invoice/details.tpl:138
-#: themes/default/templates/invoice/edit.tpl:427
-#: themes/default/templates/payment/blocks/new_payment_credit_card_block.tpl:5
-#: themes/default/templates/payment/blocks/new_transactions_log_block.tpl:21
-msgid "Credit Card"
-msgstr ""
-
-#: themes/default/templates/invoice/details.tpl:139
-#: themes/default/templates/invoice/edit.tpl:428
-#: themes/default/templates/payment/blocks/new_payment_cheque_block.tpl:5
-#: themes/default/templates/payment/blocks/new_transactions_log_block.tpl:22
-msgid "Cheque"
-msgstr ""
-
-#: themes/default/templates/invoice/details.tpl:140
-#: themes/default/templates/invoice/edit.tpl:429
-#: themes/default/templates/payment/blocks/new_payment_cash_block.tpl:5
-#: themes/default/templates/payment/blocks/new_transactions_log_block.tpl:23
-msgid "Cash"
-msgstr ""
-
-#: themes/default/templates/invoice/details.tpl:142
-#: themes/default/templates/invoice/edit.tpl:431
-#: themes/default/templates/invoice/printing/print_address.tpl:234
-#: themes/default/templates/invoice/printing/print_invoice.tpl:234
-#: themes/default/templates/payment/blocks/new_transactions_log_block.tpl:25
-msgid "PayPal"
 msgstr ""
 
 #: themes/default/templates/invoice/details.tpl:161
@@ -6277,12 +7107,6 @@ msgstr ""
 msgid "Please make Cheque payable to"
 msgstr ""
 
-#: themes/default/templates/invoice/printing/print_address.tpl:218
-#: themes/default/templates/invoice/printing/print_invoice.tpl:218
-#: themes/default/templates/payment/blocks/new_payment_direct_deposit_block.tpl:5
-msgid "Direct Deposit"
-msgstr ""
-
 #: themes/default/templates/invoice/printing/print_address.tpl:219
 #: themes/default/templates/invoice/printing/print_invoice.tpl:219
 #: themes/default/templates/payment/options.tpl:40
@@ -6325,6 +7149,12 @@ msgstr ""
 msgid "Please call us to discuss payment options."
 msgstr ""
 
+#: themes/default/templates/invoice/search.tpl:2
+#: themes/default/templates/schedule/search.tpl:2
+#: themes/default/templates/workorder/search.tpl:2
+msgid "Coming Soon"
+msgstr ""
+
 #: themes/default/templates/invoice/unpaid.tpl:7
 msgid "UnPaid Invoices"
 msgstr ""
@@ -6354,20 +7184,12 @@ msgstr ""
 msgid "Submit Cash Payment"
 msgstr ""
 
-#: themes/default/templates/payment/blocks/new_payment_cheque_block.tpl:12
-msgid "Cheque Number"
-msgstr ""
-
 #: themes/default/templates/payment/blocks/new_payment_cheque_block.tpl:27
 msgid "Submit Cheque Payment"
 msgstr ""
 
 #: themes/default/templates/payment/blocks/new_payment_credit_card_block.tpl:12
 msgid "type"
-msgstr ""
-
-#: themes/default/templates/payment/blocks/new_payment_credit_card_block.tpl:13
-msgid "Name on Card"
 msgstr ""
 
 #: themes/default/templates/payment/blocks/new_payment_credit_card_block.tpl:35
@@ -6748,30 +7570,42 @@ msgid "Usergroup"
 msgstr ""
 
 #: themes/default/templates/user/blocks/details_details_block.tpl:78
+msgid "Register Date"
+msgstr ""
+
+#: themes/default/templates/user/blocks/details_details_block.tpl:82
 #: themes/default/templates/user/edit.tpl:137
 #: themes/default/templates/user/new.tpl:137
 msgid "Require Reset"
 msgstr ""
 
-#: themes/default/templates/user/blocks/details_details_block.tpl:94
+#: themes/default/templates/user/blocks/details_details_block.tpl:91
+msgid "Last Reset Time"
+msgstr ""
+
+#: themes/default/templates/user/blocks/details_details_block.tpl:93
+msgid "Count of password resets since Last Reset Time"
+msgstr ""
+
+#: themes/default/templates/user/blocks/details_details_block.tpl:107
 #: themes/default/templates/user/edit.tpl:164
 #: themes/default/templates/user/new.tpl:164
 msgid "Work Mobile Phone"
 msgstr ""
 
-#: themes/default/templates/user/blocks/details_details_block.tpl:98
+#: themes/default/templates/user/blocks/details_details_block.tpl:111
 #: themes/default/templates/user/edit.tpl:168
 #: themes/default/templates/user/new.tpl:168
 msgid "Work Fax"
 msgstr ""
 
-#: themes/default/templates/user/blocks/details_details_block.tpl:112
+#: themes/default/templates/user/blocks/details_details_block.tpl:124
 #: themes/default/templates/user/edit.tpl:188
 #: themes/default/templates/user/new.tpl:188
 msgid "Home Mobile Phone"
 msgstr ""
 
-#: themes/default/templates/user/blocks/details_details_block.tpl:116
+#: themes/default/templates/user/blocks/details_details_block.tpl:128
 #: themes/default/templates/user/edit.tpl:192
 #: themes/default/templates/user/new.tpl:192
 msgid "Home Email"
