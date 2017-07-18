@@ -53,7 +53,7 @@ function insert_transaction($db, $invoice_id, $workorder_id, $customer_id, $type
 #   Insert transaction created by a payment method  #
 #####################################################
 
-function insert_payment_method_transaction($db, $invoice_id, $amount, $method, $type, $method_note, $note) {
+function insert_payment_method_transaction($db, $invoice_id, $amount, $method_name, $type, $method_note, $note) {
     
     // Get invoice details
     $invoice_details = get_invoice_details($db, $invoice_id);    
@@ -78,8 +78,8 @@ function insert_payment_method_transaction($db, $invoice_id, $amount, $method, $
         update_invoice_transaction_only($db, $invoice_id, 0, 0, $new_invoice_paid_amount, $new_invoice_balance);
 
         // Transaction log        
-        $log_msg = "Partial Payment made by $method for $currency_sym$formatted_amount, Balance due: $currency_sym$new_invoice_balance, $method_note, Note: $note";
-
+        $log_msg = gettext("Partial Payment made by")." $method_name ".gettext("for")." $currency_sym$formatted_amount, ".gettext("Balance due").": $currency_sym$new_invoice_balance, $method_note, ".gettext("Note").": $note";
+        
         // If the invoice has a workorder update it
         if(check_invoice_has_workorder($db, $invoice_id)) {
 
@@ -106,11 +106,16 @@ function insert_payment_method_transaction($db, $invoice_id, $amount, $method, $
 
         // log message   
         if($amount < $invoice_details['TOTAL']) {
+            
             // Transaction is a partial payment
-            $log_msg = "Partial Payment made by $method for $currency_sym$formatted_amount, closing the invoice. $method_note, Note: $note";
+            $log_msg = gettext("Partial Payment made by")." $method_name ".gettext("for")." $currency_sym$formatted_amount, ".gettext("closing the invoice.")." $method_note, ".gettext("Note").": $note";
+        
+            
         } else {
+            
             // Transaction is payment for the full amount
-            $log_msg = "Full Payment made by $method for $currency_sym$formatted_amount, closing the invoice. $method_note, Note: $note";
+            $log_msg = gettext("Full Payment made by")." $method_name ".gettext("for")." $currency_sym$formatted_amount, ".gettext("closing the invoice.")." $method_note, ".gettext("Note").": $note";
+                    
         }
 
         // If the invoice has a workorder update it
@@ -358,7 +363,7 @@ function validate_payment_method_totals($db, $invoice_id, $amount) {
     if($amount == 0){
         //force_page('payment', 'new&invoice_id='.$invoice_id, 'warning_msg=You can not enter a transaction with a zero (0.00) amount');
         //exit;
-        $smarty->assign('warning_msg', gettext("You can not enter a transaction with a zero (0.00) amount"));
+        $smarty->assign('warning_msg', gettext("You can not enter a transaction with a zero (0.00) amount."));
         //postEmulationWrite('warning_msg', 'You can not enter a transaction with a zero (0.00) amount');
         return false;
     }
@@ -367,7 +372,7 @@ function validate_payment_method_totals($db, $invoice_id, $amount) {
     if($amount > get_invoice_details($db, $invoice_id, 'BALANCE')){
         //force_page('payment', 'new&invoice_id='.$invoice_id, 'warning_msg=You can not enter more than the outstanding balance of the invoice.');
         //exit;
-        $smarty->assign('warning_msg', gettext("You can not enter more than the outstanding balance of the invoice"));
+        $smarty->assign('warning_msg', gettext("You can not enter more than the outstanding balance of the invoice."));
         //postEmulationWrite('warning_msg', 'You can not enter more than the outstanding balance of the invoice');
         return false;
     }

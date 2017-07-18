@@ -6,15 +6,15 @@ require(INCLUDES_DIR.'modules/customer.php');
 require(INCLUDES_DIR.'modules/giftcert.php');
 require(INCLUDES_DIR.'modules/payment.php');
 
-// Make sure there is a customer_id
+// Check if we have a customer_id
 if($customer_id == '') {
-    force_page('core', 'error', 'error_msg=No Customer ID');
+    force_page('customer', 'search', 'warning_msg='.gettext("No Customer ID supplied."));
     exit;
 }
 
-// check if giftcert payment method is enabled
+// Check if giftcert payment method is enabled
 if(!check_payment_method_is_active($db, 'gift_certificate_active')) {
-    force_page('core', 'error','error_msg=Gift Certificate are not enabled. To enable gift certificates go to the Help menu and select Control Center. Then under the menu Billing Options select Payment Methods and check Gift Certificate.');
+    force_page('core', 'dashboard', 'warning_msg='.gettext("Gift Certificate payment method is not enabled. To enable Gift Certificates go to the Help menu and select Control Center. Then under the menu Billing Options select Payment Methods and check Gift Certificate."));
     exit;
 }
 
@@ -26,10 +26,11 @@ if(isset($VAR['submit'])) {
 
     // Load the new Gift Certificate's Details page
     force_page('giftcert', 'details&giftcert_id='.$giftcert_id);
+    exit;
 
 } else {
     
-    // Fetch and display the page
+    // Build the page
     $smarty->assign('customer_details', get_customer_details($db, $customer_id));
     $BuildPage .= $smarty->fetch('giftcert/new.tpl');
 }

@@ -8,9 +8,9 @@ require(INCLUDES_DIR.'modules/giftcert.php');
 require(INCLUDES_DIR.'modules/payment.php');
 require(INCLUDES_DIR.'modules/workorder.php');
 
-// make sure we have an invoice id
-if($invoice_id == '' || $invoice_id == '0') {
-    force_page('core', 'error&error_msg=No Invoice ID&menu=1');
+// Check if we have an invoice_id
+if($invoice_id == '') {
+    force_page('invoice', 'search', 'warning_msg='.gettext("No Invoice ID supplied."));
     exit;
 }
 
@@ -21,40 +21,40 @@ if(isset($VAR['submit'])) {
     switch($VAR['type']) {
 
         case 1:
-        $method = 'Credit Card';
+        $method_name = gettext("Credit Card");
         require(MODULES_DIR.'payment/methods/method_credit_card.php');
         break;
 
         case 2:
-        $method = 'Cheque';        
+        $method_name = gettext("Cheque");        
         require(MODULES_DIR.'payment/methods/method_cheque.php');
         break;
 
         case 3:
-        $method = 'Cash';
+        $method_name = gettext("Cash");
         require(MODULES_DIR.'payment/methods/method_cash.php');
         break;
 
         case 4:
-        $method = 'Gift Certificate';
+        $method_name = gettext("Gift Certificate");
         require(MODULES_DIR.'payment/methods/method_gift_certificate.php');
         break;
 
         case 5:
-        $method = 'PayPal';
+        $method_name = gettext("PayPal");
         require(MODULES_DIR.'payment/methods/method_paypal.php');
         break;
 
         case 6:
-        $method = 'Direct Deposit';
+        $method_name = gettext("Direct Deposit");
         require(MODULES_DIR.'payment/methods/method_direct_deposit.php');
         break;    
 
     }
 
-}  
+}
 
-// Fetch page and assign variables
+// Build page
 $smarty->assign('customer_details',         get_customer_details($db, get_invoice_details($db, $invoice_id , 'CUSTOMER_ID'))    );
 $smarty->assign('invoice_details',          get_invoice_details($db, $invoice_id)                                               );
 $smarty->assign('transactions',             get_invoice_transactions($db, $invoice_id)                                          );  

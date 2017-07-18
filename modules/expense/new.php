@@ -4,39 +4,32 @@ defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'modules/expense.php');
 
-// Load PHP Language Translations
-$langvals = gateway_xml2php('expense');
-
 // Predict the next expense_id
 $new_record_id = last_expense_id_lookup($db) +1;
 
 // If details submitted insert record, if non submitted load new.tpl and populate values
-    if((isset($VAR['submit'])) || (isset($VAR['submitandnew']))) {
-        
-        if(!$expense_id = insert_expense($db, $VAR)){
-            $smarty->assign('error_msg', 'Falied to insert Expense');
-            $BuildPage .= $smarty->fetch('core/error.tpl');
-            echo "expense insert error";
+if((isset($VAR['submit'])) || (isset($VAR['submitandnew']))) {
 
-            } else {
+    // Insert the Expense into the databse
+    $expense_id = insert_expense($db, $VAR);
 
-                if (isset($VAR['submitandnew'])){
+    if (isset($VAR['submitandnew'])){
 
-                     // Submit New Expense and reload page
-                     force_page('expense', 'new');
-                     exit;
+         // Load the new expense page
+         force_page('expense', 'new');
+         exit;
 
-                } else {
+    } else {
 
-                    // Submit and load Expense View Details
-                    force_page('expense', 'details&expense_id='.$expense_id);
-                    exit;
+        // load expense details page
+        force_page('expense', 'details&expense_id='.$expense_id, 'information_msg='.gettext("Expense added successfully."));
+        exit;
 
-                 }
-            }
+     }        
 
 } else {
-            
+    
+    // Build the page
     $smarty->assign('new_record_id', $new_record_id);
     $smarty->assign('tax_rate', get_company_details($db, 'TAX_RATE'));
     $BuildPage .= $smarty->fetch('expense/new.tpl');

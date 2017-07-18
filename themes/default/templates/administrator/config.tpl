@@ -95,7 +95,7 @@
                             <select class="olotd5" id="default_language" name="default_language">                                                       
                                 <option value="en_GB"{if $qwcrm_config.default_language == 'en_GB'} selected{/if}>{t}English{/t}</option>                                
                             </select>
-                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Default Language{/t}</strong></div><hr><div>{t escape=tooltip}This is the default language QWcrm uses. If \'Autodetect Language\' is disabled or the user\'s language is not availabe then this language will be used to display translations. If for some reson this fails, the language will default to english.{/t}</div>');" onMouseOut="hideddrivetip();">
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Default Language{/t}</strong></div><hr><div>{t escape=tooltip}This is the default language QWcrm uses. If \'Autodetect Language\' is disabled or the user\'s language is not availabe then this language will be used to display translations. If for some reason this fails, the language will default to english.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
                     <tr>

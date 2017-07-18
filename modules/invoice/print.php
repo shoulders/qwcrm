@@ -8,10 +8,16 @@ require(INCLUDES_DIR.'modules/invoice.php');
 require(INCLUDES_DIR.'modules/payment.php');
 require(INCLUDES_DIR.'modules/workorder.php');
 
-// check for invoice_id
+// Check if we have an invoice_id
 if($invoice_id == '') {
-    /* If no work order ID then we dont belong here */
-    force_page('core', 'error&error_msg=Invoice Not found: Invoice ID: '.$invoice_id.'&menu=1');
+    force_page('invoice', 'search', 'warning_msg='.gettext("No Invoice ID supplied."));
+    exit;
+}
+
+// Check there is a print content and print type set
+if($VAR['print_content'] == '' || $VAR['print_type'] == '') {
+    force_page('workorder', 'overview', 'warning_msg='.gettext("Some or all of the Printing Options are not set."));
+    exit;
 }
 
 $smarty->assign('company_details',          get_company_details($db)                                                                                    );
@@ -24,7 +30,7 @@ $smarty->assign('labour_items',             get_invoice_labour_items($db, $invoi
 $smarty->assign('parts_items',              get_invoice_parts_items($db, $invoice_id)                                                                   );
 $smarty->assign('labour_sub_total',         labour_sub_total($db, $invoice_id)                                                                          );
 $smarty->assign('parts_sub_total',          parts_sub_total($db, $invoice_id)                                                                           );
-$smarty->assign('employee_display_name',    get_user_details($db, get_invoice_details($db, $invoice_id, 'EMPLOYEE_ID'), 'EMPLOYEE_DISPLAY_NAME')    );
+$smarty->assign('employee_display_name',    get_user_details($db, get_invoice_details($db, $invoice_id, 'EMPLOYEE_ID'), 'EMPLOYEE_DISPLAY_NAME')        );
 
 
 /* Invoice Print Routine */
@@ -43,12 +49,7 @@ if($VAR['print_content'] == 'invoice') {
         
     // Email PDF Invoice
     } elseif($VAR['print_type'] == 'email_pdf') {        
-        // add pdf creation routing here
-    
-    // if print options are set but no valid    
-    } else {            
-        force_page('core', "error&menu=1&error_msg=No Printing Options set. Please set up printing options in the Control Center.&type=error - print content selected but no print type");
-        exit; 
+        // add pdf creation routing here  
     }
 }
 
@@ -58,10 +59,6 @@ if($VAR['print_content'] == 'address') {
     // Print HTML Address
     if ($VAR['print_type'] == 'print_html') {        
         $BuildPage .= $smarty->fetch('invoice/printing/print_address.tpl');     
-
-    // if print options are set but no valid    
-    } else {            
-        force_page('core', "error&menu=1&error_msg=No Printing Options set. Please set up printing options in the Control Center.&type=error - print content selected but no print type");
-        exit; 
     }
+    
 }

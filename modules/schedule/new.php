@@ -6,15 +6,20 @@ require(INCLUDES_DIR.'modules/user.php');
 require(INCLUDES_DIR.'modules/schedule.php');
 require(INCLUDES_DIR.'modules/workorder.php');
 
-// No Workorder Specified
-if ($workorder_id == '') { 
-    // Should this be handled in a function?    
-    force_page('workorder', 'overview','warning_msg=ERROR : There was no Works Order number to schedule specified. Please select the works order from the below list and then schedule.');
-    exit;    
+// Check if we have an employee_id
+if($employee_id == '') {
+    force_page('user', 'search', 'warning_msg='.gettext("No Employee ID supplied."));
+    exit;
 }
 
-// Get customer_id - if not set, might not be needed
-if($customer_id == '') {$customer_id =  get_workorder_details($db, $workorder_id, 'CUSTOMER_ID');}
+// Check if we have a workorder_id
+if($workorder_id == '') {
+    force_page('workorder', 'search', 'warning_msg='.gettext("No Workorder ID supplied."));
+    exit;
+}
+
+// Get customer_id
+$customer_id =  get_workorder_details($db, $workorder_id, 'CUSTOMER_ID');
 
 // If new schedule item submitted
 if(isset($VAR['submit'])) {
@@ -50,5 +55,5 @@ if(isset($VAR['submit'])) {
     
 }
 
-// Fetch the page
+// Build the page
 $BuildPage .= $smarty->fetch('schedule/new.tpl');

@@ -4,24 +4,19 @@ defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'modules/refund.php');
 
-// Load PHP Language Translations
-$langvals = gateway_xml2php('refund');
+// Check if we have a refund_id
+if($refund_id == '') {
+    force_page('refund', 'search', 'warning_msg='.gettext("No Refund ID supplied."));
+    exit;
+} 
 
 // If details submitted run update values, if not set load edit.tpl and populate values
 if(isset($VAR['submit'])) {    
         
-    if (!update_refund($db, $refund_id, $VAR)){
+    // Update the refund in the database
+    update_refund($db, $refund_id, $VAR);
+}   
 
-        force_page('refund', 'edit','error_msg=Falied to Update refund Information&refund_id='.$refund_id);
-        exit;
-                
-    } else {
-            
-        force_page('refund', 'details&refund_id='.$refund_id);
-        exit;
-    }
-
-} else {
-    $smarty->assign('refund_details', get_refund_details($db, $refund_id));
-    $BuildPage .= $smarty->fetch('refund/edit.tpl');
-}
+// Build the page
+$smarty->assign('refund_details', get_refund_details($db, $refund_id));
+$BuildPage .= $smarty->fetch('refund/edit.tpl');

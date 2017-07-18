@@ -4,21 +4,24 @@ defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'modules/supplier.php');
 
+// Check if we have a supplier_id
+if($supplier_id == '') {
+    force_page('supplier', 'search', 'warning_msg='.gettext("No Supplier ID supplied."));
+    exit;
+} 
+
 // If details submitted run update values, if not set load edit.tpl and populate values
 if(isset($VAR['submit'])) {    
         
-    if (!update_supplier($db, $supplier_id, $VAR)){
-
-        force_page('supplier', 'edit','error_msg=Falied to Update Supplier Information&supplier_id='.$supplier_id);
-        exit;
-                
-    } else {
-            
-        force_page('supplier', 'details&supplier_id='.$supplier_id);
-        exit;
-    }
-
-} else {
-    $smarty->assign('supplier_details', get_supplier_details($db, $supplier_id));
-    $BuildPage .= $smarty->fetch('supplier/edit.tpl');
+    // update the supplier record
+    update_supplier($db, $supplier_id, $VAR);
+    
+    // load the supplier details apge
+    force_page('supplier', 'details&supplier_id='.$supplier_id);
+    exit;
+    
 }
+
+// Build the page
+$smarty->assign('supplier_details', get_supplier_details($db, $supplier_id));
+$BuildPage .= $smarty->fetch('supplier/edit.tpl');

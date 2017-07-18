@@ -4,20 +4,15 @@ defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'modules/expense.php');
 
-// Load PHP Language Translations
-$langvals = gateway_xml2php('expense');
-
-// Make sure we got an Expense ID number
+// Check if we have an expense_id
 if($expense_id == '') {
-    $smarty->assign('results', 'Please go back and select an expense record');
-    die;
-}    
+    force_page('expense', 'search', 'warning_msg='.gettext("No Expense ID supplied."));
+    exit;
+}   
 
-// Delete the expense function call
-if(!delete_expense($db,$expense_id)) {
-        force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-        exit;
-} else {
-        force_page('expense', 'search');
-        exit;
-}
+// Delete the expense
+delete_expense($db, $expense_id);
+
+// Load the expense search page
+force_page('expense', 'search');
+exit;

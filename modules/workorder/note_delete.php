@@ -10,6 +10,12 @@ if($VAR['workorder_note_id'] == ''){
     exit;
 }
 
+// Check if we have a workorder_note_id
+if($VAR['workorder_note_id'] == '') {
+    force_page('workorder', 'search', 'warning_msg='.gettext("No Work Order Note ID supplied."));
+    exit;
+}
+
 // Get the workorder_id before we delete the record
 $workorder_id = get_workorder_note($db, $VAR['workorder_note_id'], 'WORK_ORDER_ID');
 

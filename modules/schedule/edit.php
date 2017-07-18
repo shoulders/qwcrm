@@ -5,6 +5,12 @@ defined('_QWEXEC') or die;
 require(INCLUDES_DIR.'modules/schedule.php');
 require(INCLUDES_DIR.'modules/user.php');
 
+// Check if we have a schedule_id
+if($schedule_id == '') {
+    force_page('schedule', 'search', 'warning_msg='.gettext("No Schedule ID supplied."));
+    exit;
+}
+
 // If new schedule item submitted
 if(isset($VAR['submit'])) {    
     
@@ -53,5 +59,5 @@ if(isset($VAR['submit'])) {
     
 }
 
-// Fetch the page
+// Build the page
 $BuildPage .= $smarty->fetch('schedule/edit.tpl');

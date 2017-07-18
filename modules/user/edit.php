@@ -5,9 +5,9 @@ defined('_QWEXEC') or die;
 require(INCLUDES_DIR.'modules/customer.php');
 require(INCLUDES_DIR.'modules/user.php');
 
-// Is there an User ID supplied - prevents incorrect access
-if(empty($user_id)) {    
-    force_error_page($_GET['page'], 'system', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("No User ID supplied."));    
+// Check if we have an user_id
+if($user_id == '') {
+    force_page('user', 'search', 'warning_msg='.gettext("No User ID supplied."));
     exit;
 }
 
@@ -21,14 +21,13 @@ if(get_user_details($db, $user_id, 'is_employee')) {
     $smarty->assign('usergroups', get_usergroups($db, 'customers')); 
 }
 
-
 // If user data has been submitted
 if(isset($VAR['submit'])) {
 
     // Insert the record if the username does not exist or reload the page for correction with POST'd data
     if (check_user_username_exists($db, $VAR['username'], get_user_details($db, $user_id, 'username'))) {        
 
-        // send the posted data back to smarty
+        // Send the posted data back to smarty
         $user_details = $VAR;
         
         // Reload the page with the POST'ed data        
@@ -46,12 +45,10 @@ if(isset($VAR['submit'])) {
             
     }
 
-// Load the requested User's details and display
 } else { 
     
-    // Fetch the page from the database    
-    $smarty->assign('user_details', get_user_details($db, $user_id));
-    
+    // Build the page from the database    
+    $smarty->assign('user_details', get_user_details($db, $user_id));    
     $BuildPage .= $smarty->fetch('user/edit.tpl');
     
 }

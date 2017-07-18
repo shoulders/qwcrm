@@ -286,7 +286,7 @@ function update_customer($db, $customer_id, $VAR) {
             WHERE CUSTOMER_ID       = ". $db->qstr( $customer_id            );
             
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the customer's details."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the Customer's details."));
         exit;
     } else {
         

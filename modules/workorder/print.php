@@ -5,9 +5,9 @@ defined('_QWEXEC') or die;
 require(INCLUDES_DIR.'modules/workorder.php');
 require(INCLUDES_DIR.'modules/schedule.php');
 
-// Check that there is a workorder_id set
+// Check if we have a workorder_id
 if($workorder_id == '') {
-    force_page('workorder', 'overview', 'warning_msg='.gettext("You cannot print as there is no Workorder ID set."));
+    force_page('workorder', 'search', 'warning_msg='.gettext("No Workorder ID supplied."));
     exit;
 }
 

@@ -65,4 +65,5 @@ if(isset($VAR['submit'])) {
     
 }
 
+// Build the page
 $BuildPage .= $smarty->fetch('report/financial.tpl');

@@ -38,6 +38,6 @@ if(($customer_id != '' && $workorder_id == '0' && $VAR['invoice_type'] == 'invoi
     exit;    
 }    
   
-// Error Control 
-force_page('core', 'error', 'error_msg=You cannot create an invoice by the method you just tried, report to admins');
+// Fallback Error Control 
+force_page('workorder', 'search', 'warning_msg='.gettext("You cannot create an invoice by the method you just tried, report to admins"));
 exit;

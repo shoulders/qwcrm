@@ -10,11 +10,15 @@ if($customer_id != '') {
     
     // check if there is already a user for the customer (and error if there is)
     if(!check_customer_already_has_login($db, $customer_id)) {
+        
         $smarty->assign('is_employee', '0');
         $smarty->assign('customer_display_name', get_customer_details($db, $customer_id, 'CUSTOMER_DISPLAY_NAME'));
         $smarty->assign('usergroups', get_usergroups($db, 'customers'));
+        
     } else {
+        
         force_page('customer', 'details', 'customer_id='.$customer_id.'&warning_msg='.gettext("The customer already has a login."));
+        
     }    
     
 } else {
@@ -46,13 +50,9 @@ if(isset($VAR['submit'])) {
             
         }
 
-// Load a blank new user form        
 } else {
     
-    // Empty placeholder nested arrays needed for the smarty loop to keep the page working (this is intentionally empty)
-    //$smarty->assign('user_details', array(array()));  
-    
-    // Fetch the page from the database       
+    // Build the page from the database       
     $BuildPage .= $smarty->fetch('user/new.tpl');
     
-} 
+}

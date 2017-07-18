@@ -27,59 +27,63 @@
                                 </td>
                             </tr>                            
                                 
-                            <!-- Cash -->
-                            {if $active_payment_methods.cash_active == '1'}
-                                <tr>
-                                    <td>                                    
-                                        {include file='payment/blocks/new_payment_cash_block.tpl'}                                    
-                                    </td>
-                                </tr>
-                            {/if}                            
+                            {if $invoice_details.IS_PAID == 0 && $invoice_details.BALANCE > 0 }
+                                
+                                <!-- Cash -->
+                                {if $active_payment_methods.cash_active == '1'}
+                                    <tr>
+                                        <td>                                    
+                                            {include file='payment/blocks/new_payment_cash_block.tpl'}                                    
+                                        </td>
+                                    </tr>
+                                {/if}                            
 
-                            <!-- Cheques -->
-                            {if $active_payment_methods.cheque_active == '1'}  
-                                <tr>
-                                    <td>                                                                              
-                                        {include file='payment/blocks/new_payment_cheque_block.tpl'}                                    
-                                    </td>
-                                </tr>
-                            {/if}                            
+                                <!-- Cheques -->
+                                {if $active_payment_methods.cheque_active == '1'}  
+                                    <tr>
+                                        <td>                                                                              
+                                            {include file='payment/blocks/new_payment_cheque_block.tpl'}                                    
+                                        </td>
+                                    </tr>
+                                {/if}                            
 
-                            <!-- Credit Cards -->
-                            {if $active_payment_methods.credit_card_active == '1' && $active_credit_cards != ''}
-                                <tr>
-                                    <td>
-                                        {include file='payment/blocks/new_payment_credit_card_block.tpl'}
-                                    </td>
-                                </tr>
-                            {/if}                            
+                                <!-- Credit Cards -->
+                                {if $active_payment_methods.credit_card_active == '1' && $active_credit_cards != ''}
+                                    <tr>
+                                        <td>
+                                            {include file='payment/blocks/new_payment_credit_card_block.tpl'}
+                                        </td>
+                                    </tr>
+                                {/if}                            
 
-                            <!-- Direct Deposit -->
-                            {if $active_payment_methods.direct_deposit_active == '1'}
-                                <tr>
-                                    <td>                                    
-                                        {include file='payment/blocks/new_payment_direct_deposit_block.tpl'}                                    
-                                    </td>
-                                </tr>
-                            {/if}                            
+                                <!-- Direct Deposit -->
+                                {if $active_payment_methods.direct_deposit_active == '1'}
+                                    <tr>
+                                        <td>                                    
+                                            {include file='payment/blocks/new_payment_direct_deposit_block.tpl'}                                    
+                                        </td>
+                                    </tr>
+                                {/if}                            
 
-                            <!-- Gift Certificates -->
-                            {if $active_payment_methods.gift_certificate_active == '1'}
-                                <tr>
-                                    <td>
-                                        {include file='payment/blocks/new_payment_gift_certificate_block.tpl'}
-                                    </td>
-                                </tr>
+                                <!-- Gift Certificates -->
+                                {if $active_payment_methods.gift_certificate_active == '1'}
+                                    <tr>
+                                        <td>
+                                            {include file='payment/blocks/new_payment_gift_certificate_block.tpl'}
+                                        </td>
+                                    </tr>
+                                {/if}
+
+                                <!-- Paypal -->
+                                {if $active_payment_methods.paypal_active == '1'}
+                                    <tr>
+                                        <td>                                    
+                                            {include file='payment/blocks/new_payment_paypal_block.tpl'}                                    
+                                        </td>
+                                    </tr>
+                                {/if}
+                                
                             {/if}
-
-                            <!-- Paypal -->
-                            {if $active_payment_methods.paypal_active == '1'}
-                                <tr>
-                                    <td>                                    
-                                        {include file='payment/blocks/new_payment_paypal_block.tpl'}                                    
-                                    </td>
-                                </tr>
-                            {/if}                            
                             
                         </table>                        
                     </td>

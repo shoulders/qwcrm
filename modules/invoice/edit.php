@@ -8,9 +8,9 @@ require(INCLUDES_DIR.'modules/invoice.php');
 require(INCLUDES_DIR.'modules/payment.php');
 require(INCLUDES_DIR.'modules/workorder.php');
 
-// Check if we have an invoice_id and the retrieve the status
-if($invoice_id == '' && $invoice_id != '0') {    
-    force_page('core', 'error', 'error_msg=No Invoice ID');
+// Check if we have an invoice_id
+if($invoice_id == '') {
+    force_page('invoice', 'search', 'warning_msg='.gettext("No Invoice ID supplied."));
     exit;
 }
 
@@ -41,7 +41,7 @@ $smarty->assign('transactions',         get_invoice_transactions($db, $invoice_i
 $smarty->assign('workorder_status',     get_workorder_details($db, $workorder_id, 'WORK_ORDER_STATUS')                                              ); 
 $smarty->assign('employee_display_name',get_user_details($db, get_invoice_details($db, $invoice_id, 'EMPLOYEE_ID'),'EMPLOYEE_DISPLAY_NAME')         );
 
-// temp - these are needed for the record deltion routines - consider making all fields editable
+// these are needed for the record deletion routines - consider making all fields editable
 $smarty->assign('workorder_id',         get_invoice_details($db, $invoice_id, 'WORKORDER_ID')                                                       );
 $smarty->assign('customer_id',          get_invoice_details($db, $invoice_id, 'CUSTOMER_ID')                                                        );
 

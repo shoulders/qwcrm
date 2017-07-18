@@ -4,15 +4,21 @@ defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'modules/invoice.php');
 
+// Check if we have an invoice labour_id
+if($VAR['labour_id'] == '') {
+    force_page('invoice', 'search', 'warning_msg='.gettext("No Invoice Labour ID supplied."));
+    exit;
+}
+
 // Get invoice ID before deletion
 $invoice_id = get_invoice_labour_item_details($db, $VAR['labour_id'], 'INVOICE_ID');
 
 // Delete Invoice Labour item
-if(!delete_invoice_labour_item($db, $VAR['labour_id'])) {
-     force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
-    exit;
-} else {
-    recalculate_invoice_totals($db, $invoice_id);
-    force_page('invoice' , 'edit&invoice_id='.$invoice_id);
-    exit;
-}
+delete_invoice_labour_item($db, $VAR['labour_id']);
+
+// recalculate the invoice totals and update them
+recalculate_invoice_totals($db, $invoice_id);
+
+// load the edit invoice page
+force_page('invoice' , 'edit&invoice_id='.$invoice_id);
+exit;

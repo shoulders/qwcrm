@@ -380,7 +380,7 @@ function delete_user($db, $user_id){
         exit;
     }  
     if($rs->fields['count'] > 0 ) {
-        postEmulationWrite('warning_msg', 'You can not delete a user who has created work orders.');        
+        postEmulationWrite('warning_msg', gettext("You can not delete a user who has created work orders."));        
         return false;
     }
     
@@ -391,7 +391,7 @@ function delete_user($db, $user_id){
         exit;
     }  
     if($rs->fields['count'] > 0 ) {
-        postEmulationWrite('warning_msg', 'You can not delete a user who has assigned work orders.');
+        postEmulationWrite('warning_msg', gettext("You can not delete a user who has assigned work orders."));
         return false;
     }
     
@@ -402,7 +402,7 @@ function delete_user($db, $user_id){
         exit;
     }    
     if($rs->fields['count'] > 0 ) {
-        postEmulationWrite('warning_msg', 'You can not delete a user who has invoices.');
+        postEmulationWrite('warning_msg', gettext("You can not delete a user who has invoices."));
         return false;
     }    
     
@@ -413,7 +413,7 @@ function delete_user($db, $user_id){
         exit;
     }  
     if($rs->fields['count'] > 0 ) {
-        postEmulationWrite('warning_msg', 'You can not delete a user who has gift certificates.');
+        postEmulationWrite('warning_msg', gettext("You can not delete a user who has gift certificates."));
         return false;
     }
     

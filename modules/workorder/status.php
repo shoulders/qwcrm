@@ -5,9 +5,9 @@ defined('_QWEXEC') or die;
 require(INCLUDES_DIR.'modules/workorder.php');
 require(INCLUDES_DIR.'modules/user.php');
 
-// Check that there is a workorder_id set
-if(empty($workorder_id)){
-    force_page('workorder', 'overview', 'warning_msg='.gettext("Cannot update Workorder status because there is no Work Order ID set."));
+// Check if we have a workorder_id
+if($workorder_id == '') {
+    force_page('workorder', 'search', 'warning_msg='.gettext("No Workorder ID supplied."));
     exit;
 }
 
@@ -34,10 +34,10 @@ if(isset($VAR['delete'])) {
     exit;
 }
 
-// Fetch the page with the current status from the database
-$smarty->assign('active_employees',                 get_active_users($db, 'employees')                              );
-$smarty->assign('workorder_status',                 get_workorder_details($db, $workorder_id, 'WORK_ORDER_STATUS')  );
-$smarty->assign('assigned_employee_id',             $assigned_employee_id                                           );
-$smarty->assign('assigned_employee_details',        get_user_details($db, $assigned_employee_id)                    );
+// Build the page with the current status from the database
+$smarty->assign('active_employees',             get_active_users($db, 'employees')                              );
+$smarty->assign('workorder_status',             get_workorder_details($db, $workorder_id, 'WORK_ORDER_STATUS')  );
+$smarty->assign('assigned_employee_id',         $assigned_employee_id                                           );
+$smarty->assign('assigned_employee_details',    get_user_details($db, $assigned_employee_id)                    );
 
 $BuildPage .= $smarty->fetch('workorder/status.tpl');

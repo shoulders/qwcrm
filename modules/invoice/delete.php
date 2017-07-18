@@ -4,17 +4,23 @@ defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'modules/invoice.php');
 
-// check if we have a invoice_id and if so get details
-if($invoice_id == '' || $invoice_id == '0'){
-    force_page('core', 'error', 'error_msg=Invoice Not found: Invoice ID: '.$invoice_id.'&menu=1');
+// Check if we have an invoice_id
+if($invoice_id == '') {
+    force_page('invoice', 'search', 'warning_msg='.gettext("No Invoice ID supplied."));
     exit;
 }
 
 // Delete Invoice
 if(!delete_invoice($db, $invoice_id)) {
-     force_page('core', 'error&error_msg=MySQL Error: '.$db->ErrorMsg().'&menu=1&type=database');
+    
+    // Load the invoice details page with error
+    force_page('invoice', 'details&invoice_id='.$invoice_id);
     exit;
+    
 } else {
-    force_page('invoice' , 'paid');
+    
+    // load the work order invoice page
+    force_page('invoice', 'search', 'information_msg='.gettext("The invoice has been deleted successfully."));
     exit;
+    
 }

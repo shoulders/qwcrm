@@ -4,9 +4,9 @@ defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'modules/workorder.php');
 
-// Check that there is a workorder_id set
-if($workorder_id == ''){
-    force_page('workorder', 'overview', 'warning_msg='.gettext("Cannot update the resolution as there is no Work Order ID set."));
+// Check if we have a workorder_id
+if($workorder_id == '') {
+    force_page('workorder', 'search', 'warning_msg='.gettext("No Workorder ID supplied."));
     exit;
 }
 
@@ -37,10 +37,9 @@ if(isset($VAR['closewithinvoice'])) {
     exit;
 }
         
-// Fetch the page with the resolution from the database 
+// Build the page
 $smarty->assign('workorder_id', $workorder_id);
 $smarty->assign('workorder_resolution', get_workorder_details($db, $workorder_id, 'WORK_ORDER_RESOLUTION'));
-
 $BuildPage .= $smarty->fetch('workorder/details_edit_resolution.tpl');
 
     

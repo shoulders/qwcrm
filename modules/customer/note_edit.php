@@ -5,8 +5,8 @@ defined('_QWEXEC') or die;
 require(INCLUDES_DIR.'modules/customer.php');
 
 // check if we have a customer_note_id
-if($VAR['customer_note_id'] == ''){
-    force_page('core', 'error', 'error_msg=No Customer Note ID supplied.');
+if($VAR['customer_note_id'] == '') {
+    force_page('customer', 'search', 'warning_msg='.gettext("No Customer ID supplied."));
     exit;
 }
 

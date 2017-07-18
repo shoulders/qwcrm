@@ -10,6 +10,6 @@ if(isset($VAR['submit'])) {
     $smarty->assign('information_msg', 'Permisions Updated');    
 }
     
-// Fetch the page with the permissions from the database 
+// Build the page with the permissions from the database 
 $smarty->assign('acl', loadACL($db));
 $BuildPage .= $smarty->fetch('administrator/acl.tpl');
