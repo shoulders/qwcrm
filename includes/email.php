@@ -27,12 +27,14 @@ if($customer_id == '') {
     exit;
 }  
 
+/* Other Functions */
+
 #######################################
 #   Basic email wrapper function      #
 #######################################
 
 function email($customer_id, $email_recipient, $email_subject, $email_content, $email_attachment = null) {
     
-    // this wrapper can be used as an intermedery so i can choose what email platform to use and also logg in the future
+    // this wrapper can be used as an intermedery so i can choose what email platform to use and also logging in the future
     
 }
