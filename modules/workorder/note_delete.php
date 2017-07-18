@@ -4,10 +4,9 @@ defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'modules/workorder.php');
 
-// check if we have a workorder_note_id
-if($VAR['workorder_note_id'] == ''){
-    force_page('core', 'error', 'error_msg=No Workorder Note ID supplied.');
-    exit;
+// Prevent direct access to this file
+if(!check_page_accessed_via_qwcrm()) {
+    force_page('workorder', 'search', 'warning_msg='.gettext("No Direct Access Allowed"));
 }
 
 // Check if we have a workorder_note_id

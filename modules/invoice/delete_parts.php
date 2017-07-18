@@ -4,6 +4,11 @@ defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'modules/invoice.php');
 
+// Prevent direct access to this file
+if(!check_page_accessed_via_qwcrm()) {
+    force_page('invoice', 'search', 'warning_msg='.gettext("No Direct Access Allowed"));
+}
+
 // Check if we have an invoice parts_id
 if($VAR['parts_id'] == '') {
     force_page('invoice', 'search', 'warning_msg='.gettext("No Invoice Parts ID supplied."));

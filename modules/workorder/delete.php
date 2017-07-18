@@ -4,6 +4,11 @@ defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'modules/workorder.php');
 
+// Prevent direct access to this file
+if(!check_page_accessed_via_qwcrm()) {
+    force_page('workorder', 'search', 'warning_msg='.gettext("No Direct Access Allowed"));
+}
+
 // Check if we have a workorder_id
 if($workorder_id == '') {
     force_page('workorder', 'search', 'warning_msg='.gettext("No Workorder ID supplied."));

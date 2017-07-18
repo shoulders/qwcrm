@@ -72,7 +72,7 @@
                         {if $expense_id > 0 }
                             <a href="index.php?page=expense:details&expense_id={$expense_id}"><img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" /> {t}Expense Details{/t}</a>
                             <a href="index.php?page=expense:edit&expense_id={$expense_id}"><img src="{$theme_images_dir}icons/edit.gif" alt="" border="0" height="14" width="14" /> {t}Edit Expense{/t}</a>
-                            <a href="index.php?page=expense:delete&expense_di={$expense_id}" onclick="return confirmDelete('{t}Are you sure you want to delete this Expense Record?{/t}');"><img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" /> {t}Delete Expense{/t}</a>
+                            <a href="index.php?page=expense:delete&expense_id={$expense_id}" onclick="return confirmDelete('{t}Are you sure you want to delete this Expense Record?{/t}');"><img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" /> {t}Delete Expense{/t}</a>
                         {/if}
 
                         <!-- Refunds -->

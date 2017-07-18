@@ -4,6 +4,11 @@ defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'modules/giftcert.php');
 
+// Prevent direct access to this file
+if(!check_page_accessed_via_qwcrm()) {
+    force_page('giftcert', 'search', 'warning_msg='.gettext("No Direct Access Allowed"));
+}
+
 // Check if we have an giftcert_id
 if($giftcert_id == '') {
     force_page('giftcert', 'search', 'warning_msg='.gettext("No Gift Certificate ID supplied."));

@@ -4,6 +4,11 @@ defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'modules/user.php');
 
+// Prevent direct access to this file
+if(!check_page_accessed_via_qwcrm()) {
+    force_page('delete', 'search', 'warning_msg='.gettext("No Direct Access Allowed"));
+}
+
 // Check if we have an user_id
 if($user_id == '') {
     force_page('user', 'search', 'warning_msg='.gettext("No User ID supplied."));
