@@ -420,6 +420,13 @@ gettext("USER_EDIT_META_KEYWORDS");
 gettext("USER_EDIT_HELP_TITLE");
 gettext("USER_EDIT_HELP_CONTENT");
 
+// user:login
+gettext("USER_LOGIN_PAGE_TITLE");
+gettext("USER_LOGIN_META_DESCRIPTION");
+gettext("USER_LOGIN_META_KEYWORDS");
+gettext("USER_LOGIN_HELP_TITLE");
+gettext("USER_LOGIN_HELP_CONTENT");
+
 // user:new
 gettext("USER_NEW_PAGE_TITLE");
 gettext("USER_NEW_META_DESCRIPTION");
@@ -427,6 +434,13 @@ gettext("USER_NEW_META_KEYWORDS");
 gettext("USER_NEW_HELP_TITLE");
 gettext("USER_NEW_HELP_CONTENT");
 
+// user:edit
+gettext("USER_RESET_PAGE_TITLE");
+gettext("USER_RESET_META_DESCRIPTION");
+gettext("USER_RESET_META_KEYWORDS");
+gettext("USER_RESET_HELP_TITLE");
+gettext("USER_RESET_HELP_CONTENT");
+        
 // user:search
 gettext("USER_SEARCH_PAGE_TITLE");
 gettext("USER_SEARCH_META_DESCRIPTION");

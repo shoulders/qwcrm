@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2017-07-18 21:04+0100\n"
-"PO-Revision-Date: 2017-07-18 21:08+0100\n"
+"POT-Creation-Date: 2017-07-20 18:35+0100\n"
+"PO-Revision-Date: 2017-07-20 18:40+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en_GB\n"
@@ -56,30 +56,6 @@ msgstr ""
 msgid "Cookie login failed for user "
 msgstr ""
 
-#: includes/framework/qwframework.php:105
-msgid "Username or Password Missing"
-msgstr ""
-
-#: includes/framework/qwframework.php:118
-msgid "Login successful for"
-msgstr ""
-
-#: includes/framework/qwframework.php:123
-msgid "Login successful"
-msgstr ""
-
-#: includes/framework/qwframework.php:131
-msgid "Login Failed"
-msgstr ""
-
-#: includes/framework/qwframework.php:150
-msgid "Logout successful for"
-msgstr ""
-
-#: includes/framework/qwframework.php:155
-msgid "Logout successful"
-msgstr ""
-
 #: includes/framework/session/session.php:327
 msgid "Your session has expired. Please log in again."
 msgstr ""
@@ -125,7 +101,7 @@ msgid "Could not get the Page's ACL."
 msgstr ""
 
 #: includes/include.php:566
-msgid "You do not have permission to access the page - "
+msgid "You do not have permission to access the page"
 msgstr ""
 
 #: includes/include.php:598
@@ -1840,98 +1816,205 @@ msgstr "Other"
 msgid "Failed to lookup the last supplier record ID."
 msgstr ""
 
-#: includes/modules/user.php:88
+#: includes/modules/user.php:90
 msgid "Failed to count the number of matching user records."
 msgstr ""
 
-#: includes/modules/user.php:132
+#: includes/modules/user.php:134
 msgid "Failed to return the matching user records."
 msgstr ""
 
-#: includes/modules/user.php:188
+#: includes/modules/user.php:190
 msgid "Failed to insert the user record into the database."
 msgstr ""
 
-#: includes/modules/user.php:209
+#: includes/modules/user.php:211
 msgid "Failed to get the user details."
 msgstr ""
 
-#: includes/modules/user.php:244
+#: includes/modules/user.php:246
 msgid "Failed to get the User ID by their username."
 msgstr ""
 
-#: includes/modules/user.php:268
+#: includes/modules/user.php:264
+msgid "Failed to get the User ID by their email."
+msgstr ""
+
+#: includes/modules/user.php:288
 msgid "Failed to get the usergroups."
 msgstr ""
 
-#: includes/modules/user.php:291
+#: includes/modules/user.php:311
 msgid "Failed to get the active users."
 msgstr ""
 
-#: includes/modules/user.php:341
+#: includes/modules/user.php:355
 msgid "Failed to update the user record."
 msgstr ""
 
-#: includes/modules/user.php:379 includes/modules/user.php:390
+#: includes/modules/user.php:398 includes/modules/user.php:409
 msgid "Failed to count the user's Workorders in the database."
 msgstr ""
 
-#: includes/modules/user.php:383
+#: includes/modules/user.php:402
 msgid "You can not delete a user who has created work orders."
 msgstr ""
 
-#: includes/modules/user.php:394
+#: includes/modules/user.php:413
 msgid "You can not delete a user who has assigned work orders."
 msgstr ""
 
-#: includes/modules/user.php:401
+#: includes/modules/user.php:420
 msgid "Failed to count the user's Invoices in the database."
 msgstr ""
 
-#: includes/modules/user.php:405
+#: includes/modules/user.php:424
 msgid "You can not delete a user who has invoices."
 msgstr ""
 
-#: includes/modules/user.php:412
+#: includes/modules/user.php:431
 msgid "Failed to count the user's Gift Certificates in the database."
 msgstr ""
 
-#: includes/modules/user.php:416
+#: includes/modules/user.php:435
 msgid "You can not delete a user who has gift certificates."
 msgstr ""
 
-#: includes/modules/user.php:425
+#: includes/modules/user.php:444
 msgid "Failed to delete the user from the database."
 msgstr ""
 
-#: includes/modules/user.php:447
+#: includes/modules/user.php:466
 msgid ""
 "Failed to count the number of Work Orders for the user for the defined status"
 msgstr ""
 
-#: includes/modules/user.php:469
+#: includes/modules/user.php:488
 msgid ""
 "Failed count the number of invoices for the user for the defined status."
 msgstr ""
 
-#: includes/modules/user.php:500
+#: includes/modules/user.php:519
 msgid "Failed build and return and User list."
 msgstr ""
 
-#: includes/modules/user.php:525
+#: includes/modules/user.php:544
 msgid "Failed to check if the username exists."
 msgstr ""
 
-#: includes/modules/user.php:531
+#: includes/modules/user.php:552
 msgid "The Username"
 msgstr ""
 
-#: includes/modules/user.php:531
+#: includes/modules/user.php:552
 msgid "already exists! Please use a different one."
 msgstr ""
 
-#: includes/modules/user.php:570
+#: includes/modules/user.php:581
+msgid "Failed to check if the email address has been used."
+msgstr ""
+
+#: includes/modules/user.php:590
+msgid "The email address has already been used. Please use a different one."
+msgstr ""
+
+#: includes/modules/user.php:629
 msgid "Failed to check if the customer already has a login."
+msgstr ""
+
+#: includes/modules/user.php:637 modules/user/new.php:20
+msgid "The customer already has a login."
+msgstr ""
+
+#: includes/modules/user.php:680 includes/modules/user.php:868
+#: includes/modules/user.php:1063
+msgid "Failed to add password reset authorization."
+msgstr ""
+
+#: includes/modules/user.php:704
+msgid "Username or Password Missing."
+msgstr ""
+
+#: includes/modules/user.php:718
+msgid "Login successful for"
+msgstr ""
+
+#: includes/modules/user.php:721
+msgid "Login successful."
+msgstr ""
+
+#: includes/modules/user.php:729
+msgid "Login Failed. Check you username and password."
+msgstr ""
+
+#: includes/modules/user.php:747
+msgid "Logout successful for"
+msgstr ""
+
+#: includes/modules/user.php:759
+msgid "Logout successful."
+msgstr ""
+
+#: includes/modules/user.php:791
+msgid "Google reCAPTCHA Verification Failed."
+msgstr ""
+
+#: includes/modules/user.php:826
+msgid "Password Reset - QWcrm"
+msgstr ""
+
+#: includes/modules/user.php:833
+msgid "Hello"
+msgstr ""
+
+#: includes/modules/user.php:835
+msgid "A request has been made to reset your QWcrm account password."
+msgstr ""
+
+#: includes/modules/user.php:836
+msgid ""
+"To reset your password, you will need to submit this verification code in "
+"order to verify that the request was legitimate."
+msgstr ""
+
+#: includes/modules/user.php:838
+msgid "The verification code is"
+msgstr ""
+
+#: includes/modules/user.php:840
+msgid "Select the URL below and proceed with resetting your password."
+msgstr ""
+
+#: includes/modules/user.php:844
+msgid "Thank you."
+msgstr ""
+
+#: includes/modules/user.php:888 includes/modules/user.php:951
+msgid "Failed to check for existing tokens for the submitted user."
+msgstr ""
+
+#: includes/modules/user.php:911
+msgid "Failed to insert the user reset token into the database."
+msgstr ""
+
+#: includes/modules/user.php:929
+msgid "Failed to get the User ID by secret code."
+msgstr ""
+
+#: includes/modules/user.php:974
+msgid "Token Accepted."
+msgstr ""
+
+#: includes/modules/user.php:994
+msgid "Failed to check for the submitted reset code."
+msgstr ""
+
+#: includes/modules/user.php:1011
+msgid "Reset code accepted."
+msgstr ""
+
+#: includes/modules/user.php:1028 includes/modules/user.php:1043
+msgid "Failed to delete existing tokens for the submitted user."
 msgstr ""
 
 #: includes/modules/workorder.php:43
@@ -3548,59 +3631,110 @@ msgid "USER_EDIT_META_KEYWORDS"
 msgstr "-"
 
 #: language/_gettext_only/pages.php:420
+#: themes/default/templates/user/edit.tpl:12
 msgid "USER_EDIT_HELP_TITLE"
 msgstr "Help"
 
 #: language/_gettext_only/pages.php:421
+#: themes/default/templates/user/edit.tpl:12
 msgid "USER_EDIT_HELP_CONTENT"
 msgstr ""
 "You can edit an users's details here as well as resetting their password if "
 "required."
 
 #: language/_gettext_only/pages.php:424
+msgid "USER_LOGIN_PAGE_TITLE"
+msgstr "User Login"
+
+#: language/_gettext_only/pages.php:425
+msgid "USER_LOGIN_META_DESCRIPTION"
+msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
+
+#: language/_gettext_only/pages.php:426
+msgid "USER_LOGIN_META_KEYWORDS"
+msgstr ""
+"CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment "
+"Processing, Simple to use"
+
+#: language/_gettext_only/pages.php:427
+msgid "USER_LOGIN_HELP_TITLE"
+msgstr "Help"
+
+#: language/_gettext_only/pages.php:428
+msgid "USER_LOGIN_HELP_CONTENT"
+msgstr ""
+"Both employees and customers can login in to QWcrm here. Just enter your "
+"username and password, then click submit. If reCAPTCHA has been enabled you "
+"might have to complete a few verification tasks."
+
+#: language/_gettext_only/pages.php:431
 msgid "USER_NEW_PAGE_TITLE"
 msgstr "New User"
 
-#: language/_gettext_only/pages.php:425
+#: language/_gettext_only/pages.php:432
 msgid "USER_NEW_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:426
+#: language/_gettext_only/pages.php:433
 msgid "USER_NEW_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:427
-#: themes/default/templates/user/edit.tpl:12
+#: language/_gettext_only/pages.php:434
 #: themes/default/templates/user/new.tpl:12
 msgid "USER_NEW_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:428
-#: themes/default/templates/user/edit.tpl:12
+#: language/_gettext_only/pages.php:435
 #: themes/default/templates/user/new.tpl:12
 msgid "USER_NEW_HELP_CONTENT"
 msgstr ""
 "Create a new user by filling in the details and then by clicking submit."
 
-#: language/_gettext_only/pages.php:431
+#: language/_gettext_only/pages.php:438
+msgid "USER_RESET_PAGE_TITLE"
+msgstr "Reset Password"
+
+#: language/_gettext_only/pages.php:439
+msgid "USER_RESET_META_DESCRIPTION"
+msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
+
+#: language/_gettext_only/pages.php:440
+msgid "USER_RESET_META_KEYWORDS"
+msgstr ""
+"CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment "
+"Processing, Simple to use"
+
+#: language/_gettext_only/pages.php:441
+msgid "USER_RESET_HELP_TITLE"
+msgstr "Help"
+
+#: language/_gettext_only/pages.php:442
+msgid "USER_RESET_HELP_CONTENT"
+msgstr ""
+"You will be able to reset your user account password if you have forgotten "
+"it. There are few simple steps which will require you to have access to the "
+"email account you used to setup the account. If you are unable to complete "
+"this process you will need to contact an administrator."
+
+#: language/_gettext_only/pages.php:445
 msgid "USER_SEARCH_PAGE_TITLE"
 msgstr "Search Users"
 
-#: language/_gettext_only/pages.php:432
+#: language/_gettext_only/pages.php:446
 msgid "USER_SEARCH_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:433
+#: language/_gettext_only/pages.php:447
 msgid "USER_SEARCH_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:434
+#: language/_gettext_only/pages.php:448
 #: themes/default/templates/giftcert/search.tpl:9
 #: themes/default/templates/user/search.tpl:9
 msgid "USER_SEARCH_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:435
+#: language/_gettext_only/pages.php:449
 #: themes/default/templates/giftcert/search.tpl:9
 #: themes/default/templates/user/search.tpl:9
 msgid "USER_SEARCH_HELP_CONTENT"
@@ -3608,46 +3742,46 @@ msgstr ""
 "You can search by the user's name only. By default all employees are listed. "
 "You can browse the results using the navigation arrows."
 
-#: language/_gettext_only/pages.php:440
+#: language/_gettext_only/pages.php:454
 msgid "WORKORDER_CLOSED_PAGE_TITLE"
 msgstr "Closed Work Orders"
 
-#: language/_gettext_only/pages.php:441
+#: language/_gettext_only/pages.php:455
 msgid "WORKORDER_CLOSED_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:442
+#: language/_gettext_only/pages.php:456
 msgid "WORKORDER_CLOSED_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:443
+#: language/_gettext_only/pages.php:457
 #: themes/default/templates/workorder/closed.tpl:10
 msgid "WORKORDER_CLOSED_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:444
+#: language/_gettext_only/pages.php:458
 #: themes/default/templates/workorder/closed.tpl:10
 msgid "WORKORDER_CLOSED_HELP_CONTENT"
 msgstr "You can view all closed work orders here."
 
-#: language/_gettext_only/pages.php:447
+#: language/_gettext_only/pages.php:461
 msgid "WORKORDER_DETAILS_PAGE_TITLE"
 msgstr "Work Order Details"
 
-#: language/_gettext_only/pages.php:448
+#: language/_gettext_only/pages.php:462
 msgid "WORKORDER_DETAILS_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:449
+#: language/_gettext_only/pages.php:463
 msgid "WORKORDER_DETAILS_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:450
+#: language/_gettext_only/pages.php:464
 #: themes/default/templates/workorder/details.tpl:22
 msgid "WORKORDER_DETAILS_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:451
+#: language/_gettext_only/pages.php:465
 #: themes/default/templates/workorder/details.tpl:22
 msgid "WORKORDER_DETAILS_HELP_CONTENT"
 msgstr ""
@@ -3662,158 +3796,158 @@ msgstr ""
 "this work order. Click the Close link on the Quick Bar to complete the order "
 "and start the invoicing processes."
 
-#: language/_gettext_only/pages.php:454
+#: language/_gettext_only/pages.php:468
 msgid "WORKORDER_DETAILS_EDIT_COMMENTS_PAGE_TITLE"
 msgstr "Edit Work Order Comments"
 
-#: language/_gettext_only/pages.php:455
+#: language/_gettext_only/pages.php:469
 msgid "WORKORDER_DETAILS_EDIT_COMMENTS_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:456
+#: language/_gettext_only/pages.php:470
 msgid "WORKORDER_DETAILS_EDIT_COMMENTS_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:457
+#: language/_gettext_only/pages.php:471
 #: themes/default/templates/workorder/details_edit_comments.tpl:13
 msgid "WORKORDER_DETAILS_EDIT_COMMENTS_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:458
+#: language/_gettext_only/pages.php:472
 #: themes/default/templates/workorder/details_edit_comments.tpl:13
 msgid "WORKORDER_DETAILS_EDIT_COMMENTS_HELP_CONTENT"
 msgstr "You can edit the comments attached to the work order here."
 
-#: language/_gettext_only/pages.php:461
+#: language/_gettext_only/pages.php:475
 msgid "WORKORDER_DETAILS_EDIT_DESCRIPTION_PAGE_TITLE"
 msgstr "Edit Work Order Description"
 
-#: language/_gettext_only/pages.php:462
+#: language/_gettext_only/pages.php:476
 msgid "WORKORDER_DETAILS_EDIT_DESCRIPTION_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:463
+#: language/_gettext_only/pages.php:477
 msgid "WORKORDER_DETAILS_EDIT_DESCRIPTION_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:464
+#: language/_gettext_only/pages.php:478
 #: themes/default/templates/workorder/details_edit_description.tpl:14
 msgid "WORKORDER_DETAILS_EDIT_DESCRIPTION_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:465
+#: language/_gettext_only/pages.php:479
 #: themes/default/templates/workorder/details_edit_description.tpl:14
 msgid "WORKORDER_DETAILS_EDIT_DESCRIPTION_HELP_CONTENT"
 msgstr "You can edit the description attached to the work order here."
 
-#: language/_gettext_only/pages.php:468
+#: language/_gettext_only/pages.php:482
 msgid "WORKORDER_DETAILS_EDIT_RESOLUTION_PAGE_TITLE"
 msgstr "Edit Work Order Resolution"
 
-#: language/_gettext_only/pages.php:469
+#: language/_gettext_only/pages.php:483
 msgid "WORKORDER_DETAILS_EDIT_RESOLUTION_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:470
+#: language/_gettext_only/pages.php:484
 msgid "WORKORDER_DETAILS_EDIT_RESOLUTION_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:471
+#: language/_gettext_only/pages.php:485
 #: themes/default/templates/workorder/details_edit_resolution.tpl:13
 msgid "WORKORDER_DETAILS_EDIT_RESOLUTION_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:472
+#: language/_gettext_only/pages.php:486
 #: themes/default/templates/workorder/details_edit_resolution.tpl:13
 msgid "WORKORDER_DETAILS_EDIT_RESOLUTION_HELP_CONTENT"
 msgstr "You can edit or close the resolution attached to the work order here."
 
-#: language/_gettext_only/pages.php:475
+#: language/_gettext_only/pages.php:489
 msgid "WORKORDER_NEW_PAGE_TITLE"
 msgstr "New Workorder"
 
-#: language/_gettext_only/pages.php:476
+#: language/_gettext_only/pages.php:490
 msgid "WORKORDER_NEW_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:477
+#: language/_gettext_only/pages.php:491
 msgid "WORKORDER_NEW_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:478
+#: language/_gettext_only/pages.php:492
 #: themes/default/templates/workorder/new.tpl:14
 msgid "WORKORDER_NEW_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:479
+#: language/_gettext_only/pages.php:493
 #: themes/default/templates/workorder/new.tpl:14
 msgid "WORKORDER_NEW_HELP_CONTENT"
 msgstr "Create new Work Orders here."
 
-#: language/_gettext_only/pages.php:482
+#: language/_gettext_only/pages.php:496
 msgid "WORKORDER_NOTE_EDIT_PAGE_TITLE"
 msgstr "Edit a Work Order Note"
 
-#: language/_gettext_only/pages.php:483
+#: language/_gettext_only/pages.php:497
 msgid "WORKORDER_NOTE_EDIT_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:484
+#: language/_gettext_only/pages.php:498
 msgid "WORKORDER_NOTE_EDIT_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:485
+#: language/_gettext_only/pages.php:499
 #: themes/default/templates/customer/note_edit.tpl:18
 #: themes/default/templates/workorder/note_edit.tpl:18
 msgid "WORKORDER_NOTE_EDIT_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:486
+#: language/_gettext_only/pages.php:500
 #: themes/default/templates/customer/note_edit.tpl:18
 #: themes/default/templates/workorder/note_edit.tpl:18
 msgid "WORKORDER_NOTE_EDIT_HELP_CONTENT"
 msgstr "You can edit a work order note here."
 
-#: language/_gettext_only/pages.php:489
+#: language/_gettext_only/pages.php:503
 msgid "WORKORDER_NOTE_NEW_PAGE_TITLE"
 msgstr "New Work Order Note"
 
-#: language/_gettext_only/pages.php:490
+#: language/_gettext_only/pages.php:504
 msgid "WORKORDER_NOTE_NEW_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:491
+#: language/_gettext_only/pages.php:505
 msgid "WORKORDER_NOTE_NEW_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:492
+#: language/_gettext_only/pages.php:506
 #: themes/default/templates/workorder/note_new.tpl:9
 msgid "WORKORDER_NOTE_NEW_HELP_TITLE"
 msgstr "New Work Order Note"
 
-#: language/_gettext_only/pages.php:493
+#: language/_gettext_only/pages.php:507
 #: themes/default/templates/workorder/note_new.tpl:9
 msgid "WORKORDER_NOTE_NEW_HELP_CONTENT"
 msgstr "You can create a single work order note here."
 
-#: language/_gettext_only/pages.php:496
+#: language/_gettext_only/pages.php:510
 msgid "WORKORDER_OVERVIEW_PAGE_TITLE"
 msgstr "Work Orders Overview"
 
-#: language/_gettext_only/pages.php:497
+#: language/_gettext_only/pages.php:511
 msgid "WORKORDER_OVERVIEW_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:498
+#: language/_gettext_only/pages.php:512
 msgid "WORKORDER_OVERVIEW_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:499
+#: language/_gettext_only/pages.php:513
 #: themes/default/templates/workorder/overview.tpl:10
 msgid "WORKORDER_OVERVIEW_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:500
+#: language/_gettext_only/pages.php:514
 #: themes/default/templates/workorder/overview.tpl:10
 msgid "WORKORDER_OVERVIEW_HELP_CONTENT"
 msgstr ""
@@ -3828,66 +3962,66 @@ msgstr ""
 "the workorder. Click the Red Stop sign to close the workorder and start the "
 "invoicing."
 
-#: language/_gettext_only/pages.php:503
+#: language/_gettext_only/pages.php:517
 msgid "WORKORDER_PRINT_CUSTOMER_WORKORDER_SLIP_PAGE_TITLE"
 msgstr "QWcrm - Customer Work Order Slip Template"
 
-#: language/_gettext_only/pages.php:504
+#: language/_gettext_only/pages.php:518
 msgid "WORKORDER_PRINT_CUSTOMER_WORKORDER_SLIP_META_DESCRIPTION"
 msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
 
-#: language/_gettext_only/pages.php:505
+#: language/_gettext_only/pages.php:519
 msgid "WORKORDER_PRINT_CUSTOMER_WORKORDER_SLIP_META_KEYWORDS"
 msgstr ""
 "CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment "
 "Processing, Simple to use"
 
-#: language/_gettext_only/pages.php:510
+#: language/_gettext_only/pages.php:524
 msgid "WORKORDER_PRINT_JOB_SHEET_PAGE_TITLE"
 msgstr "QWcrm - Job Sheet Template"
 
-#: language/_gettext_only/pages.php:511
+#: language/_gettext_only/pages.php:525
 msgid "WORKORDER_PRINT_JOB_SHEET_META_DESCRIPTION"
 msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
 
-#: language/_gettext_only/pages.php:512
+#: language/_gettext_only/pages.php:526
 msgid "WORKORDER_PRINT_JOB_SHEET_META_KEYWORDS"
 msgstr ""
 "CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment "
 "Processing, Simple to use"
 
-#: language/_gettext_only/pages.php:517
+#: language/_gettext_only/pages.php:531
 msgid "WORKORDER_PRINT_TECHNICIAN_WORKORDER_SLIP_PAGE_TITLE"
 msgstr "QWcrm - Technician Work Order Slip Template"
 
-#: language/_gettext_only/pages.php:518
+#: language/_gettext_only/pages.php:532
 msgid "WORKORDER_PRINT_TECHNICIAN_WORKORDER_SLIP_META_DESCRIPTION"
 msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
 
-#: language/_gettext_only/pages.php:519
+#: language/_gettext_only/pages.php:533
 msgid "WORKORDER_PRINT_TECHNICIAN_WORKORDER_SLIP_META_KEYWORDS"
 msgstr ""
 "CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment "
 "Processing, Simple to use"
 
-#: language/_gettext_only/pages.php:524
+#: language/_gettext_only/pages.php:538
 msgid "WORKORDER_STATUS_PAGE_TITLE"
 msgstr "Work Order Status"
 
-#: language/_gettext_only/pages.php:525
+#: language/_gettext_only/pages.php:539
 msgid "WORKORDER_STATUS_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:526
+#: language/_gettext_only/pages.php:540
 msgid "WORKORDER_STATUS_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:527
+#: language/_gettext_only/pages.php:541
 #: themes/default/templates/workorder/status.tpl:10
 msgid "WORKORDER_STATUS_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:528
+#: language/_gettext_only/pages.php:542
 #: themes/default/templates/workorder/status.tpl:10
 msgid "WORKORDER_STATUS_HELP_CONTENT"
 msgstr ""
@@ -3895,23 +4029,23 @@ msgstr ""
 "too. If needed this page will allow you to delete the work order if it is "
 "possible."
 
-#: language/_gettext_only/pages.php:531
+#: language/_gettext_only/pages.php:545
 msgid "WORKORDER_SEARCH_PAGE_TITLE"
 msgstr "Search Work Orders"
 
-#: language/_gettext_only/pages.php:532
+#: language/_gettext_only/pages.php:546
 msgid "WORKORDER_SEARCH_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:533
+#: language/_gettext_only/pages.php:547
 msgid "WORKORDER_SEARCH_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:534
+#: language/_gettext_only/pages.php:548
 msgid "WORKORDER_SEARCH_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:535
+#: language/_gettext_only/pages.php:549
 msgid "WORKORDER_SEARCH_HELP_CONTENT"
 msgstr "nothing to help with yet!"
 
@@ -4292,8 +4426,18 @@ msgstr ""
 msgid "No User ID supplied."
 msgstr ""
 
-#: modules/user/new.php:20
-msgid "The customer already has a login."
+#: modules/user/reset.php:43
+msgid ""
+"You cannot reset the password on this account. It either does not exist or "
+"is blocked."
+msgstr ""
+
+#: modules/user/reset.php:117
+msgid "The submitted reset code was invalid."
+msgstr ""
+
+#: modules/user/reset.php:137
+msgid "Password reset successfully."
 msgstr ""
 
 #: modules/workorder/delete.php:22
@@ -4508,7 +4652,10 @@ msgstr ""
 #: themes/default/templates/schedule/edit.tpl:93
 #: themes/default/templates/schedule/new.tpl:77
 #: themes/default/templates/supplier/new.tpl:127
-#: themes/default/templates/user/edit.tpl:237
+#: themes/default/templates/user/blocks/reset_enter_password_block.tpl:40
+#: themes/default/templates/user/blocks/reset_enter_token_block.tpl:31
+#: themes/default/templates/user/blocks/reset_send_email_block.tpl:31
+#: themes/default/templates/user/edit.tpl:236
 #: themes/default/templates/user/new.tpl:235
 #: themes/default/templates/workorder/details_edit_comments.tpl:27
 #: themes/default/templates/workorder/details_edit_description.tpl:33
@@ -5400,26 +5547,6 @@ msgstr ""
 msgid "Knowledge Base and Troubleshooter Coming Soon!!"
 msgstr ""
 
-#: themes/default/templates/core/blocks/home_login_form_block.tpl:13
-#: themes/default/templates/core/blocks/home_login_form_block.tpl:23
-#: themes/default/templates/core/blocks/home_login_form_block.tpl:37
-msgid "Login"
-msgstr ""
-
-#: themes/default/templates/core/blocks/home_login_form_block.tpl:27
-#: themes/default/templates/user/edit.tpl:107
-#: themes/default/templates/user/new.tpl:107
-msgid "Password"
-msgstr ""
-
-#: themes/default/templates/core/blocks/home_login_form_block.tpl:32
-msgid "Remember me"
-msgstr ""
-
-#: themes/default/templates/core/blocks/home_login_form_block.tpl:56
-msgid "Forgot your password?"
-msgstr ""
-
 #: themes/default/templates/core/blocks/theme_debug_block.tpl:7
 msgid "QWcrm Debug Section"
 msgstr ""
@@ -5767,6 +5894,7 @@ msgid "New Employee"
 msgstr ""
 
 #: themes/default/templates/core/blocks/theme_menu_block.tpl:129
+#: themes/default/templates/user/edit.tpl:10
 msgid "Edit User"
 msgstr ""
 
@@ -7627,6 +7755,83 @@ msgstr ""
 msgid "View The Work Order"
 msgstr ""
 
+#: themes/default/templates/user/blocks/login_login_form_block.tpl:13
+#: themes/default/templates/user/blocks/login_login_form_block.tpl:23
+#: themes/default/templates/user/blocks/login_login_form_block.tpl:37
+msgid "Login"
+msgstr ""
+
+#: themes/default/templates/user/blocks/login_login_form_block.tpl:27
+#: themes/default/templates/user/blocks/reset_enter_password_block.tpl:27
+#: themes/default/templates/user/edit.tpl:107
+#: themes/default/templates/user/new.tpl:107
+msgid "Password"
+msgstr ""
+
+#: themes/default/templates/user/blocks/login_login_form_block.tpl:32
+msgid "Remember me"
+msgstr ""
+
+#: themes/default/templates/user/blocks/login_login_form_block.tpl:56
+msgid "Forgot your password?"
+msgstr ""
+
+#: themes/default/templates/user/blocks/reset_enter_password_block.tpl:14
+msgid "Enter a new password"
+msgstr ""
+
+#: themes/default/templates/user/blocks/reset_enter_password_block.tpl:24
+msgid "To complete the password reset process, please enter a new password."
+msgstr ""
+
+#: themes/default/templates/user/blocks/reset_enter_password_block.tpl:31
+#: themes/default/templates/user/edit.tpl:111
+#: themes/default/templates/user/new.tpl:111
+msgid "Confirm Password"
+msgstr ""
+
+#: themes/default/templates/user/blocks/reset_enter_password_block.tpl:33
+#: themes/default/templates/user/edit.tpl:113
+#: themes/default/templates/user/new.tpl:113
+msgid "Passwords Match!"
+msgstr ""
+
+#: themes/default/templates/user/blocks/reset_enter_password_block.tpl:33
+#: themes/default/templates/user/edit.tpl:113
+#: themes/default/templates/user/new.tpl:113
+msgid "Passwords Do Not Match!"
+msgstr ""
+
+#: themes/default/templates/user/blocks/reset_enter_token_block.tpl:14
+msgid "Enter your Verification code"
+msgstr ""
+
+#: themes/default/templates/user/blocks/reset_enter_token_block.tpl:24
+msgid ""
+"An email has been sent to your email address. The email contains a "
+"verification code, please paste the verification code in the field below to "
+"prove that you are the owner of this account."
+msgstr ""
+
+#: themes/default/templates/user/blocks/reset_enter_token_block.tpl:27
+msgid "Verification Code"
+msgstr ""
+
+#: themes/default/templates/user/blocks/reset_send_email_block.tpl:14
+msgid "Enter your account Email"
+msgstr ""
+
+#: themes/default/templates/user/blocks/reset_send_email_block.tpl:24
+msgid ""
+"Please enter the email address for your account. A verification code will be "
+"sent to you. Once you have received the verification code, you will be able "
+"to choose a new password for your account."
+msgstr ""
+
+#: themes/default/templates/user/blocks/reset_send_email_block.tpl:27
+msgid "Email Address"
+msgstr ""
+
 #: themes/default/templates/user/details.tpl:7
 msgid "User Details for"
 msgstr ""
@@ -7637,11 +7842,6 @@ msgstr ""
 
 #: themes/default/templates/user/details.tpl:24
 msgid "User Details"
-msgstr ""
-
-#: themes/default/templates/user/edit.tpl:10
-#: themes/default/templates/user/new.tpl:10
-msgid "New User"
 msgstr ""
 
 #: themes/default/templates/user/edit.tpl:32
@@ -7664,19 +7864,12 @@ msgstr ""
 msgid "Account"
 msgstr ""
 
-#: themes/default/templates/user/edit.tpl:111
-#: themes/default/templates/user/new.tpl:111
-msgid "Confirm Password"
+#: themes/default/templates/user/new.tpl:10
+msgid "New User"
 msgstr ""
 
-#: themes/default/templates/user/edit.tpl:113
-#: themes/default/templates/user/new.tpl:113
-msgid "Passwords Match!"
-msgstr ""
-
-#: themes/default/templates/user/edit.tpl:113
-#: themes/default/templates/user/new.tpl:113
-msgid "Passwords Do Not Match!"
+#: themes/default/templates/user/reset.tpl:13
+msgid "There has been an error"
 msgstr ""
 
 #: themes/default/templates/user/search.tpl:39

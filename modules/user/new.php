@@ -29,8 +29,9 @@ if($customer_id != '') {
 // If user data has been submitted
 if(isset($VAR['submit'])) { 
             
-    // Insert the record if the username does not exist or reload the page for correction with POST'd data
-    if (check_user_username_exists($db, $VAR['username'])) {
+    // Insert the record - if the username or email have not been used
+    if (check_user_username_exists($db, $VAR['username'], get_user_details($db, $user_id, 'username')) ||
+        check_user_email_exists($db, $VAR['email'], get_user_details($db, $user_id, 'email'))) {     
         
         // send the posted data back to smarty
         $user_details = $VAR;

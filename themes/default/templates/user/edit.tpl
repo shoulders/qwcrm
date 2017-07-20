@@ -7,9 +7,9 @@
         <td>
             <table width="900" cellpadding="5" cellspacing="0" border="0">
                 <tr>
-                    <td class="menuhead2" width="80%">&nbsp;{t}New User{/t}</td>
+                    <td class="menuhead2" width="80%">&nbsp;{t}Edit User{/t}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">                        
-                        <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}USER_NEW_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}USER_NEW_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
+                        <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}USER_EDIT_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}USER_EDIT_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
                     </td>
                 </tr>
                 <tr>
@@ -17,7 +17,7 @@
                         <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0">
                             <tr>
                                 <td width="100%" valign="top">                                    
-                                    <form action="index.php?page=user:edit" method="POST" name="new_user" id="new_user" onsubmit="return confirmPasswordsMatch();"> 
+                                    <form action="index.php?page=user:edit&user_id={$user_id}" method="POST" name="edit_user" id="edit_user" onsubmit="return confirmPasswordsMatch();"> 
                                         <table class="menutable" width="100%" border="0" cellpadding="0" cellspacing="0">
                                             <tr>
                                                 <td class="menutd">
@@ -232,8 +232,7 @@
                                                                     <!-- Submit Button -->
                                                                     
                                                                     <tr>
-                                                                        <td colspan="2">
-                                                                            <input type="hidden" name="user_id" value="{$user_id}">
+                                                                        <td colspan="2">                                                                            
                                                                             <input name="submit" class="olotd5" style="margin-left: 40px;" value="{t}Submit{/t}" type="submit">
                                                                         </td>
                                                                     </tr>

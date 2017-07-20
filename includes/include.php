@@ -333,7 +333,9 @@ function postEmulationReturnStore($keep_store = false) {
 #  Error Handling - Data preperation       #
 ############################################
 
-function prepare_error_data($type, $data = Null){
+function prepare_error_data($type, $data = Null) {
+    
+    $user = QFactory::getUser();
 
     /* Error Page (by referring page) - only needed when using referrer - not currently used 
     if($type === 'error_page'){
@@ -345,7 +347,7 @@ function prepare_error_data($type, $data = Null){
       /*  // compensate for home and login pages
         if($page_string[1] == ''){     
             // Must be Login or Home
-            if(isset($_SESSION['login_token'])){
+            if(isset($user->login_token)){
                 $error_page = 'home';
             } else {
                 $error_page = 'login';
@@ -362,8 +364,6 @@ function prepare_error_data($type, $data = Null){
         
         // compensate for home and login pages
         if($data == '') {
-            
-            $user = QFactory::getUser();
             
             // Must be Login or Home
             if(isset($user->login_token)){

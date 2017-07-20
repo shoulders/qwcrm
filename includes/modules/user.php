@@ -327,7 +327,7 @@ function get_active_users($db, $user_type = null) {
 function update_user($db, $user_id, $VAR) {
     
     $sql = "UPDATE ".PRFX."user SET
-        username            =". $db->qstr( $VAR['username']                             ).",;
+        username            =". $db->qstr( $VAR['username']                             ).",
         email               =". $db->qstr( $VAR['email']                                ).",
         usergroup           =". $db->qstr( $VAR['usergroup']                            ).",
         status              =". $db->qstr( $VAR['status']                               ).",                    
@@ -538,14 +538,16 @@ function check_user_username_exists($db, $username, $current_username = null){
     // This prevents self-checking of the current username of the record being edited
     if ($current_username != null && $username === $current_username) {return false;}
     
-    $sql = "SELECT COUNT(*) AS num_users FROM ".PRFX."user WHERE username =". $db->qstr($username);
+    $sql = "SELECT username FROM ".PRFX."user WHERE username =". $db->qstr($username);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to check if the username exists."));
         exit;
     } else {
         
-        if ($rs->fields['num_users'] >= 1) {
+        $result_count = $rs->RecordCount();
+        
+        if($result_count >= 1) {
             
             $smarty->assign('warning_msg', gettext("The Username").', '.$username.' ,'.gettext("already exists! Please use a different one."));
             
@@ -560,7 +562,45 @@ function check_user_username_exists($db, $username, $current_username = null){
     } 
     
 }
+
+######################################################
+#  Check if an email address has already been used   #
+######################################################
+
+function check_user_email_exists($db, $email, $current_email = null){
     
+    global $smarty;
+    
+    // This prevents self-checking of the current username of the record being edited
+    if ($current_email != null && $email === $current_email) {return false;}
+    
+    $sql = "SELECT email FROM ".PRFX."user WHERE email =". $db->qstr($email);
+    
+    if(!$rs = $db->Execute($sql)) {
+        
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to check if the email address has been used."));
+        exit;
+        
+    } else {
+        
+        $result_count = $rs->RecordCount();
+        
+        if($result_count >= 1) {
+            
+            $smarty->assign('warning_msg', gettext("The email address has already been used. Please use a different one."));
+            
+            return true;
+            
+        } else {
+            
+            return false;
+            
+        }        
+        
+    } 
+    
+}
+
 #################################################
 #    Check if user is an employee or customer   #  // is this needed as it is just a boolean
 #################################################
@@ -576,23 +616,25 @@ function check_user_is_employee($db, $user_id) {
 }
 
 #################################################
-#    Check if customer already has login        #
+#    Check if user already has login            #
 #################################################
 
 function check_customer_already_has_login($db, $customer_id) {
     
-    //global $smarty;
-        
-    $sql = "SELECT COUNT(*) AS num_users FROM ".PRFX."user WHERE customer_id =". $db->qstr($customer_id);
+    global $smarty;
+    
+    $sql = "SELECT user_id FROM ".PRFX."user WHERE customer_id =". $db->qstr($customer_id);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to check if the customer already has a login."));
         exit;
     } else {
         
-        if ($rs->fields['num_users'] >= 1) {
+        $result_count = $rs->RecordCount();
+        
+        if($result_count >= 1) {
             
-            //$smarty->assign('warning_msg', gettext("The customer already has a login."));           
+            $smarty->assign('warning_msg', gettext("The customer already has a login."));           
             
             return true;
             
@@ -605,6 +647,7 @@ function check_customer_already_has_login($db, $customer_id) {
     }     
     
 }
+
 
 #################################################
 #    Check if user is active/enabled            #  // If user does nto exist it will return false
@@ -620,23 +663,39 @@ function is_user_active($db, $user_id) {
     
 }
 
+#####################################
+#    reset a user's password        #    
+#####################################
 
+function reset_user_password($db, $user_id, $password) { 
+    
+    $sql = "UPDATE ".PRFX."user SET
+            password        =". $db->qstr( JUserHelper::hashPassword($password) ).",
+            require_reset   =". $db->qstr( 0                                    ).",   
+            last_reset_time =". $db->qstr( time()                               ).",
+            reset_count     =". $db->qstr( 0                                    )."
+            WHERE user_id   =". $db->qstr( $user_id                             );
+    
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to add password reset authorization."));
+        exit;
+    } else{
+        
+        return;
+        
+    }      
+    
+}
 
+#################################################
+#    Check if user must change their password   #
+#################################################
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+function require_password_reset($db, $user_id) {
+    
+    return get_user_details($db, $user_id, 'require_reset');
+    
+}
 
 /* Login */
 
@@ -682,7 +741,6 @@ function login($credentials, $options = array())
 
     }
 }
-
 
 ####################################
 #  Login authentication function   # // could add silent to logout?
@@ -800,6 +858,33 @@ function send_reset_email($db, $email) {
     
 }
 
+###################################################################################
+#   Set time limited reset code to allow new passwords to be submitted securely   #
+###################################################################################
+
+function authorise_password_reset($db, $token) {
+          
+    $reset_code = JUserHelper::genRandomPassword(64);     // 64 character token
+    $reset_code_expiry_time = time() + (60 * 5);          // sets a 5 minute expiry time
+    
+    $sql = "UPDATE ".PRFX."user_reset
+            SET
+            reset_code              =". $db->qstr( $reset_code              ).",
+            reset_code_expiry_time  =". $db->qstr( $reset_code_expiry_time  )."                   
+            
+            WHERE token= ".$db->qstr($token);
+    
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to add password reset authorization."));
+        exit;
+    } else{
+        
+        return $reset_code;
+        
+    }    
+    
+}
+
 #####################################
 #    create a reset user token      #    
 #####################################
@@ -842,6 +927,25 @@ function create_reset_token($db, $user_id) {
     
 }
 
+#########################################
+# Get User ID by reset code             #
+#########################################
+
+function get_user_id_by_reset_code($db, $reset_code) {
+    
+    $sql = "SELECT user_id FROM ".PRFX."user_reset WHERE reset_code =".$db->qstr($reset_code);
+    
+    if(!$rs = $db->execute($sql)){
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the User ID by secret code."));
+        exit;
+    } else {
+        
+        return $rs->fields['user_id'];
+        
+    }
+        
+}
+
 ##############################################
 #    validate the reset token can be used    #    
 ##############################################
@@ -882,33 +986,6 @@ function validate_reset_token($db, $token) {
         
         
     }
-    
-}
-
-###################################################################################
-#   set time limited reset code to allow new passwords to be submitted securely   #
-###################################################################################
-
-function authorise_password_reset($db, $token) {
-          
-    $reset_code = JUserHelper::genRandomPassword(64);     // 64 character token
-    $reset_code_expiry_time = time() + (60 * 5);          // sets a 5 minute expiry time
-    
-    $sql = "UPDATE ".PRFX."user_reset
-            SET
-            reset_code              =". $db->qstr( $reset_code              ).",
-            reset_code_expiry_time  =". $db->qstr( $reset_code_expiry_time  )."                   
-            
-            WHERE token= ".$db->qstr($token);
-    
-    if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to add password reset authorization."));
-        exit;
-    } else{
-        
-        return $reset_code;
-        
-    }    
     
 }
 
@@ -978,24 +1055,7 @@ function delete_expired_reset_codes($db) {
     }
     
 }
-#########################################
-# Get User ID by reset code             #
-#########################################
 
-function get_user_id_by_reset_code($db, $reset_code) {
-    
-    $sql = "SELECT user_id FROM ".PRFX."user_reset WHERE reset_code =".$db->qstr($reset_code);
-    
-    if(!$rs = $db->execute($sql)){
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the User ID by secret code."));
-        exit;
-    } else {
-        
-        return $rs->fields['user_id'];
-        
-    }
-        
-}
 
 #####################################
 #    Update users reset count       #    
@@ -1021,26 +1081,3 @@ function get_user_id_by_reset_code($db, $reset_code) {
      
  }
 
-#####################################
-#    reset a user's password        #    
-#####################################
-
-function reset_user_password($db, $user_id, $password) { 
-    
-    $sql = "UPDATE ".PRFX."user SET
-            password        =". $db->qstr( JUserHelper::hashPassword($password) ).",
-            require_reset   =". $db->qstr( 0                                    ).",   
-            last_reset_time =". $db->qstr( time()                               ).",
-            reset_count     =". $db->qstr( 0                                    )."
-            WHERE user_id   =". $db->qstr( $user_id                             );
-    
-    if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to add password reset authorization."));
-        exit;
-    } else{
-        
-        return;
-        
-    }      
-    
-}

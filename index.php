@@ -204,7 +204,7 @@ $user = QFactory::getUser();
 $login_user_id          = $user->login_user_id;         // QFactory::getUser()->login_user_id; - this also works exactly the same
 $login_username         = $user->login_username;
 $login_display_name     = $user->login_display_name;
-$login_token            = $user->login_token;
+$login_token            = $user->login_token;           // could this be replaced
 $login_is_employee      = $user->login_is_employee;
 $login_customer_id      = $user->login_customer_id;     // is only set when there is a customer_id in the user account
 
@@ -223,6 +223,7 @@ $smarty->assign('login_user_id',            $login_user_id          );
 $smarty->assign('login_username',           $login_username         );
 $smarty->assign('login_usergroup_id',       $login_usergroup_id     );
 $smarty->assign('login_display_name',       $login_display_name     );
+$smarty->assign('login_token',              $login_token            );
 $smarty->assign('login_is_employee',        $login_is_employee      );
 $smarty->assign('login_customer_id',        $login_customer_id      );
 
