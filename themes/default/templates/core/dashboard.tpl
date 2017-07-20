@@ -36,7 +36,7 @@
                                             <td class="row2"><b>{t}WORKORDER_STATUS_1{/t}</b></td>
                                             <td class="row2"><b>{t}WORKORDER_STATUS_2{/t}</b></td>
                                             <td class="row2"><b>{t}WORKORDER_STATUS_3{/t}</b></td>
-                                            <td class="row2"><b>{t}Awaiting Payment{/t}</b></td>
+                                            <td class="row2"><b>{t}WORKORDER_STATUS_7{/t}</b></td>
                                             <td class="row2"><b>{t}WORKORDER_STATUS_6{/t}</b></td>
                                             <td class="row2"><b>{t}Total{/t}</b></td>
                                         </tr>
@@ -117,7 +117,7 @@
                                             <td class="row2"><b>{t}WORKORDER_STATUS_1{/t}</b></td>
                                             <td class="row2"><b>{t}WORKORDER_STATUS_2{/t}</b></td>
                                             <td class="row2"><b>{t}WORKORDER_STATUS_3{/t}</b></td>
-                                            <td class="row2"><b>{t}Awaiting Payment{/t}</b></td>
+                                            <td class="row2"><b>{t}WORKORDER_STATUS_7{/t}</b></td>
                                             <td class="row2"><b>{t}WORKORDER_STATUS_6{/t}</b></td>
                                             <td class="row2"><b>{t}Total{/t}</b></td>
                                         </tr>

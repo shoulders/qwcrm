@@ -10,6 +10,7 @@ require(INCLUDES_DIR.'modules/user.php');
 /* Display Welcome Note */
 $smarty->assign('welcome_note', display_welcome_msg($db));
 
+
 /** Work Orders **/
 
 /* Created - New - Work Orders Count */ //workorders_created_count
@@ -60,9 +61,6 @@ $part_discounts = sum_of_discounts_on_partially_paid_invoices($db);
 /* Sum of Discounts on Unpaid Invoices - NOT USED */
 $unpaid_discounts = sum_of_discounts_on_unpaid_invoices($db);
 
-
-
-
 /* need to check all of these */
 
 /* Sum of Paid Invoices */
@@ -81,8 +79,6 @@ $smarty->assign('in_total2',$in_total2);
 // unknown use
 $in_out_bal = $in_unpaid_bal ;
 $smarty->assign('in_out_bal',$in_out_bal);
-
-
 
 
 /** Customers **/
