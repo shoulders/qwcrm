@@ -1,5 +1,5 @@
 <!-- login_form_block.tpl -->
-{if $captcha}<script src="https://www.google.com/recaptcha/api.js" async defer></script>{/if}
+{if $recaptcha}<script src="https://www.google.com/recaptcha/api.js" async defer></script>{/if}
 
 <table width="900" border="0" cellspacing="0" cellpadding="2">
     <tr>
@@ -17,7 +17,7 @@
                         <table  cellspacing="5" border="0" cellpadding="5" align="center">
                             <tr>
                                 <td>
-                                    <form action="index.php" method="POST">
+                                    <form action="index.php?page=user:login" method="POST">
                                         <table width="25%" cellspacing="0" border="0" cellpadding="5" align="center">
                                             <tr>
                                                 <td>{t}Login{/t}</td>
@@ -53,11 +53,11 @@
 
                                             <!-- Forgotten Password -->
                                             <tr align="center">
-                                                <td colspan="2"><a href="index.php?page=user:password_reset">{t}Forgot your password?{/t}</a></td>
+                                                <td colspan="2"><a href="index.php?page=user:reset">{t}Forgot your password?{/t}</a></td>
                                             </tr>
                                         </table>
                                         
-                                        {if $captcha}
+                                        {if $recaptcha}
                                             <!-- Google reCaptcha -->
                                             <script>
                                                 
@@ -83,3 +83,5 @@
         </td>
     </tr>
 </table>
+                                        
+add if logged in then a logout button is shown, so you cannot double login

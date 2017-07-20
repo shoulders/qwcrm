@@ -21,11 +21,11 @@
 
 defined('_QWEXEC') or die;
 
-// Check if we have a customer_id
+/* Check if we have a customer_id
 if($customer_id == '') {
     force_page('core', 'dashboard', 'warning_msg='.gettext("No Customer ID supplied."));
     exit;
-}  
+}  */
 
 /* Other Functions */
 
@@ -33,8 +33,16 @@ if($customer_id == '') {
 #   Basic email wrapper function      #
 #######################################
 
-function email($customer_id, $email_recipient, $email_subject, $email_content, $email_attachment = null) {
+function send_email($email_recipient, $email_subject, $email_message, $email_attachment = null) {
     
     // this wrapper can be used as an intermedery so i can choose what email platform to use and also logging in the future
+    
+    //  PHP mail()
+    $headers = 'From: webmaster@example.com' . "\r\n" .
+    'Reply-To: webmaster@example.com' . "\r\n" .
+    'X-Mailer: PHP/' . phpversion();
+    
+    //mail($to, $subject, $message, $headers);
+    mail($email_recipient, $email_subject, $email_message, $headers);
     
 }

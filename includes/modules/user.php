@@ -16,6 +16,8 @@
  * Close Functions - Closing Work Orders code
  * Delete Functions - Deleting Work Orders
  * Other Functions - All other functions not covered above
+ * Login
+ * Reset Password
  */
 
 defined('_QWEXEC') or die;
@@ -245,7 +247,25 @@ function get_user_id_by_username($db, $username){
         exit;
     } else {
         
-        return $rs->fields['EMPLOYEE_ID'];
+        return $rs->fields['user_id'];
+        
+    }
+        
+}
+
+#########################################
+# Get User ID by username               # // moved from core
+#########################################
+
+function get_user_id_by_email($db, $email){
+    
+    $sql = "SELECT user_id FROM ".PRFX."user WHERE email =".$db->qstr($email);    
+    if(!$rs = $db->execute($sql)){
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the User ID by their email."));
+        exit;
+    } else {
+        
+        return $rs->fields['user_id'];
         
     }
         
@@ -306,41 +326,40 @@ function get_active_users($db, $user_type = null) {
 
 function update_user($db, $user_id, $VAR) {
     
-        $set .="    SET
-                    username            =". $db->qstr( $VAR['username']                             ).",";
-
-    if($VAR['password'] != '') {
-        $set .="    password           =". $db->qstr( JUserHelper::hashPassword($VAR['password'])   ).",";
-    }
-
-        $set .="    email               =". $db->qstr( $VAR['email']                                ).",
-                    usergroup           =". $db->qstr( $VAR['usergroup']                            ).",
-                    status              =". $db->qstr( $VAR['status']                               ).",                    
-                    require_reset       =". $db->qstr( $VAR['require_reset']                        ).",
-                    is_employee         =". $db->qstr( $VAR['is_employee']                          ).", 
-                    customer_id         =". $db->qstr( $VAR['customer_id']                          ).",          
-                    display_name        =". $db->qstr( $VAR['display_name']                         ).",
-                    first_name          =". $db->qstr( $VAR['first_name']                           ).",
-                    last_name           =". $db->qstr( $VAR['last_name']                            ).",
-                    work_phone          =". $db->qstr( $VAR['work_phone']                           ).",
-                    work_mobile_phone   =". $db->qstr( $VAR['work_mobile_phone']                    ).",
-                    work_fax            =". $db->qstr( $VAR['work_fax']                             ).",                    
-                    home_phone          =". $db->qstr( $VAR['home_phone']                           ).",
-                    home_mobile_phone   =". $db->qstr( $VAR['home_mobile_phone']                    ).",
-                    home_email          =". $db->qstr( $VAR['home_email']                           ).",
-                    home_address        =". $db->qstr( $VAR['home_address']                         ).",
-                    home_city           =". $db->qstr( $VAR['home_city']                            ).",  
-                    home_state          =". $db->qstr( $VAR['home_state']                           ).",
-                    home_zip            =". $db->qstr( $VAR['home_zip']                             ).",
-                    based               =". $db->qstr( $VAR['based']                                ).",  
-                    notes               =". $db->qstr( $VAR['notes']                                );
-
-    $sql = "UPDATE ".PRFX."user ". $set ." WHERE user_id= ".$db->qstr($user_id);
+    $sql = "UPDATE ".PRFX."user SET
+        username            =". $db->qstr( $VAR['username']                             ).",;
+        email               =". $db->qstr( $VAR['email']                                ).",
+        usergroup           =". $db->qstr( $VAR['usergroup']                            ).",
+        status              =". $db->qstr( $VAR['status']                               ).",                    
+        require_reset       =". $db->qstr( $VAR['require_reset']                        ).",
+        is_employee         =". $db->qstr( $VAR['is_employee']                          ).", 
+        customer_id         =". $db->qstr( $VAR['customer_id']                          ).",          
+        display_name        =". $db->qstr( $VAR['display_name']                         ).",
+        first_name          =". $db->qstr( $VAR['first_name']                           ).",
+        last_name           =". $db->qstr( $VAR['last_name']                            ).",
+        work_phone          =". $db->qstr( $VAR['work_phone']                           ).",
+        work_mobile_phone   =". $db->qstr( $VAR['work_mobile_phone']                    ).",
+        work_fax            =". $db->qstr( $VAR['work_fax']                             ).",                    
+        home_phone          =". $db->qstr( $VAR['home_phone']                           ).",
+        home_mobile_phone   =". $db->qstr( $VAR['home_mobile_phone']                    ).",
+        home_email          =". $db->qstr( $VAR['home_email']                           ).",
+        home_address        =". $db->qstr( $VAR['home_address']                         ).",
+        home_city           =". $db->qstr( $VAR['home_city']                            ).",  
+        home_state          =". $db->qstr( $VAR['home_state']                           ).",
+        home_zip            =". $db->qstr( $VAR['home_zip']                             ).",
+        based               =". $db->qstr( $VAR['based']                                ).",  
+        notes               =". $db->qstr( $VAR['notes']                                )."
+        WHERE user_id= ".$db->qstr($user_id);
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the user record."));
         exit;
     } else{
+        
+        // reset user password if required
+        if($VAR['password'] != '') {
+            reset_user_password($db, $user_id, $VAR['password']);
+        }
         
         return true;
         
@@ -584,5 +603,444 @@ function check_customer_already_has_login($db, $customer_id) {
         }        
         
     }     
+    
+}
+
+#################################################
+#    Check if user is active/enabled            #  // If user does nto exist it will return false
+#################################################
+
+function is_user_active($db, $user_id) {   
+        
+    if(get_user_details($db, $user_id, 'status')) {        
+        return true;
+    } else {        
+        return false;
+    }    
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Login */
+
+####################################
+#  Login authentication function   #
+####################################
+
+function login($credentials, $options = array())
+{   
+    
+    global $smarty;
+    
+    // If username or password is missing
+    if (!isset($credentials['username']) || $credentials['username'] == '' || !isset($credentials['password']) || $credentials['password'] == '') {
+        
+        $smarty->assign('warning_msg', gettext("Username or Password Missing."));
+        return false;
+        
+    } 
+
+    $auth = QFactory::getAuth();
+
+    if($auth->login($credentials, $options)) {
+
+        /* Login Successful */
+
+        $user = QFactory::getUser();
+
+        // Log activity       
+        write_record_to_activity_log(gettext("Login successful for").' '.$user->login_username); 
+
+        // set success message to survice the login event
+        postEmulationWrite('information_msg', gettext("Login successful."));
+        
+        return true;
+
+    } else {
+
+        /* Login failed */
+
+        $smarty->assign('warning_msg', gettext("Login Failed. Check you username and password."));
+        return false;
+
+    }
+}
+
+
+####################################
+#  Login authentication function   # // could add silent to logout?
+####################################
+
+function logout($silent = null)
+{                    
+    $user = QFactory::getUser();  
+    $auth = QFactory::getAuth();
+
+    $auth->logout();
+
+    // Log activity       
+    write_record_to_activity_log(gettext("Logout successful for").' '.$user->get('login_username'));        
+
+    // Reload Homepage
+    if($silent) {
+        
+        // Without message
+        force_page('index.php');
+        exit;
+        
+    } else {
+        
+        // With message - only $_get will work because the session store is destroyed (this is good behaviour)
+        force_page('index.php?information_msg='.gettext("Logout successful."));
+        exit;
+        
+    }    
+
+} 
+
+/* Reset Password */
+
+#####################################
+#    Verify submitted reCAPTCHA     #    
+#####################################
+
+function authenticate_recaptcha($recaptcha_secret_key, $recaptcha_response) {
+    
+    // Load ReCaptcha library
+    require_once(LIBRARIES_DIR.'recaptchalib.php');    
+    $reCaptcha = new ReCaptcha($recaptcha_secret_key);
+    
+    // Get response from Google
+    $response = $reCaptcha->verifyResponse($_SERVER['REMOTE_ADDR'], $recaptcha_response);
+    
+    //  and if successfull authenticate
+    if ($response != null && $response->success) {
+        
+        // Success
+        return true;
+        
+    } else {
+        
+        // Failed
+        global $smarty;
+        $smarty->assign('warning_msg', gettext("Google reCAPTCHA Verification Failed."));
+        return false;
+        
+    }  
+    
+}
+
+######################################################################################
+#    Validate that the email submitted belongs to a  valid account and can be reset  #    
+######################################################################################
+
+function validate_reset_email($db, $email) {
+    
+    // get the user_id if the user exists
+    if(!$user_id = get_user_id_by_email($db, $email)) {
+        return false;        
+    }
+    
+    // is the user active
+    if(!is_user_active($db, $user_id)) {
+        return false;
+    } else {
+        return true;
+    }
+    
+}
+
+#####################################
+#    Build and send a reset email   #    
+#####################################
+
+function send_reset_email($db, $email) {
+    
+    // Set Options
+    $recipient = $email;
+    $subject = gettext("Password Reset - QWcrm");    
+    $message = '';
+    
+    // Create Token
+    $token = create_reset_token($db, get_user_id_by_email($db, $email));
+    
+    // Build Email Content
+    $message .= gettext("Hello").','."\r\n\r\n";
+
+    $message .= gettext("A request has been made to reset your QWcrm account password.").' ';
+    $message .= gettext("To reset your password, you will need to submit this verification code in order to verify that the request was legitimate.")."\r\n\r\n";
+
+    $message .= gettext("The verification code is").' '.$token."\r\n\r\n";
+
+    $message .= gettext("Select the URL below and proceed with resetting your password.")."\r\n\r\n";
+
+    $message .= QWCRM_PROTOCOL. QWCRM_DOMAIN . QWCRM_PATH."index.php?page=user:reset&token=".$token."\r\n\r\n";
+        
+    $message .= gettext("Thank you.");    
+    
+    // Send Reset Email    
+    send_email($recipient, $subject, $message);
+    
+}
+
+#####################################
+#    create a reset user token      #    
+#####################################
+
+function create_reset_token($db, $user_id) {
+    
+    // check for previous tokens for this user and delete them
+    $sql = "SELECT * FROM ".PRFX."user_reset WHERE user_id=".$db->qstr($user_id);
+    
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to check for existing tokens for the submitted user."));
+        exit;
+    } else {        
+        $result_count = $rs->RecordCount();       
+    } 
+    
+    // Delete any reset tokens for this user
+    if($result_count >= 1) {
+        
+        delete_user_reset_code($db, $user_id);
+        
+    }
+    
+    // Insert a new token
+    $expiry_time = time() + (60 * 15);              // 15 minute expiry time
+    $token = JUserHelper::genRandomPassword(64);    // 64 character token
+    
+    $sql = "INSERT INTO ".PRFX."user_reset SET              
+            user_id         =". $db->qstr( $user_id     ).", 
+            expiry_time     =". $db->qstr( $expiry_time ).",   
+            token           =". $db->qstr( $token       );                     
+          
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to insert the user reset token into the database."));
+        exit;
+    }
+    
+    // Return the token
+    return $token;    
+    
+}
+
+##############################################
+#    validate the reset token can be used    #    
+##############################################
+
+function validate_reset_token($db, $token) {
+    
+    global $smarty;
+    
+    // check for previous tokens for this user and delete them
+    $sql = "SELECT * FROM ".PRFX."user_reset WHERE token=".$db->qstr($token);
+    
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to check for existing tokens for the submitted user."));
+        exit;
+    } else {
+        
+        // Check there is only 1 record
+        if($rs->RecordCount() != 1) {
+            $smarty->assign('warning_msg', 'The reset token does not exist.');
+            return false;
+        }
+        
+        // check if user is block
+        if(!is_user_active($db, $rs->fields['user_id'])){
+            $smarty->assign('warning_msg', 'The user is blocked.');
+            return false;
+        }
+        
+        // Check not expired
+        if($rs->fields['expiry_time'] < time()){
+            $smarty->assign('warning_msg', 'The reset token has expired.');
+            return false;
+        }
+        
+        // All checked passed
+        $smarty->assign('information_msg', gettext("Token Accepted."));
+        return true;
+        
+        
+    }
+    
+}
+
+###################################################################################
+#   set time limited reset code to allow new passwords to be submitted securely   #
+###################################################################################
+
+function authorise_password_reset($db, $token) {
+          
+    $reset_code = JUserHelper::genRandomPassword(64);     // 64 character token
+    $reset_code_expiry_time = time() + (60 * 5);          // sets a 5 minute expiry time
+    
+    $sql = "UPDATE ".PRFX."user_reset
+            SET
+            reset_code              =". $db->qstr( $reset_code              ).",
+            reset_code_expiry_time  =". $db->qstr( $reset_code_expiry_time  )."                   
+            
+            WHERE token= ".$db->qstr($token);
+    
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to add password reset authorization."));
+        exit;
+    } else{
+        
+        return $reset_code;
+        
+    }    
+    
+}
+
+#########################################################
+#    validate reset code - submitted with password form #
+#########################################################
+
+function validate_reset_code($db, $reset_code) {
+    
+    global $smarty;
+    
+    // Check for previous tokens for this user and delete them
+    $sql = "SELECT * FROM ".PRFX."user_reset WHERE reset_code=".$db->qstr($reset_code);
+    
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to check for the submitted reset code."));
+        exit;
+    } else {
+        
+        // Check there is only 1 record
+        if($rs->RecordCount() != 1) {            
+            $smarty->assign('warning_msg', 'The reset code does not exist.');
+            return false;
+        }
+        
+        // Check not expired
+        if($rs->fields['reset_code_expiry_time'] < time()){
+            $smarty->assign('warning_msg', 'The reset code has expired.');
+            return false;
+        }
+        
+        // All checked passed
+        $smarty->assign('information_msg', gettext("Reset code accepted."));        
+        return true;
+        
+        
+    }
+    
+}
+
+##########################################
+#    Delete user reset codes             #
+##########################################
+
+function delete_user_reset_code($db, $user_id) {    
+
+    $sql = "DELETE FROM ".PRFX."user_reset WHERE user_id = ".$db->qstr($user_id);
+    
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete existing tokens for the submitted user."));
+        exit;
+    }
+    
+}
+
+##########################################
+#    Delete all expired reset codes      #
+##########################################
+
+function delete_expired_reset_codes($db) {    
+
+    $sql = "DELETE FROM ".PRFX."user_reset WHERE expiry_time < ".$db->qstr(time());
+    
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete existing tokens for the submitted user."));
+        exit;
+    }
+    
+}
+#########################################
+# Get User ID by reset code             #
+#########################################
+
+function get_user_id_by_reset_code($db, $reset_code) {
+    
+    $sql = "SELECT user_id FROM ".PRFX."user_reset WHERE reset_code =".$db->qstr($reset_code);
+    
+    if(!$rs = $db->execute($sql)){
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the User ID by secret code."));
+        exit;
+    } else {
+        
+        return $rs->fields['user_id'];
+        
+    }
+        
+}
+
+#####################################
+#    Update users reset count       #    
+#####################################
+
+ function update_user_reset_count($db, $email) {
+     
+    $user_id = get_user_id_by_email($db, $email);
+     
+    $sql = "UPDATE ".PRFX."user SET       
+            reset_count     = reset_count + 1
+            WHERE user_id   =". $db->qstr( $user_id  );
+    
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to add password reset authorization."));
+        exit;
+        
+    } else{
+        
+        return;
+        
+    }
+     
+ }
+
+#####################################
+#    reset a user's password        #    
+#####################################
+
+function reset_user_password($db, $user_id, $password) { 
+    
+    $sql = "UPDATE ".PRFX."user SET
+            password        =". $db->qstr( JUserHelper::hashPassword($password) ).",
+            require_reset   =". $db->qstr( 0                                    ).",   
+            last_reset_time =". $db->qstr( time()                               ).",
+            reset_count     =". $db->qstr( 0                                    )."
+            WHERE user_id   =". $db->qstr( $user_id                             );
+    
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to add password reset authorization."));
+        exit;
+    } else{
+        
+        return;
+        
+    }      
     
 }

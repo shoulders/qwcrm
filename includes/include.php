@@ -563,7 +563,7 @@ function check_acl($db, $login_usergroup_id, $module, $page_tpl) {
         if($acl != 1) {
             
             //force_error_page($_GET['page'], 'authentication', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("You do not have permission to access the page - ").' '.$module.':'.$page_tpl);             
-            force_page('core', 'login', 'warning_msg='.gettext("You do not have permission to access the page - ").' '.$module.':'.$page_tpl);            
+            force_page('core', 'login', 'warning_msg='.gettext("You do not have permission to access the page").' - '.$module.':'.$page_tpl);            
             exit;
             
         } else {

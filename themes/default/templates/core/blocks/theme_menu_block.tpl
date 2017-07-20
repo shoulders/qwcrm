@@ -8,7 +8,7 @@
                 <div>                
                     <span>{t}Main Menu{/t}</span>
                     <a href="index.php"><img src="{$theme_images_dir}icons/home.gif" alt="" border="0" height="14" width="14" /> {t}Home{/t}</a>
-                    <a href="?action=logout"><img src="{$theme_images_dir}icons/logout.gif" alt="" border="0" height="14" width="14" /> {t}Logout{/t}</a>                
+                    <a href="index.php?page=user:login&action=logout"><img src="{$theme_images_dir}icons/logout.gif" alt="" border="0" height="14" width="14" /> {t}Logout{/t}</a>                
                 </div>
 
                 <!-- Customers -->

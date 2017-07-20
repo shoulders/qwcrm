@@ -70,6 +70,7 @@ $QConfig = new QConfig;
 require('includes/defines.php');
 require(INCLUDES_DIR.'security.php');
 require(INCLUDES_DIR.'include.php');
+require(INCLUDES_DIR.'email.php');
 require(INCLUDES_DIR.'adodb.php');
 require(INCLUDES_DIR.'smarty.php');
 require(FRAMEWORK_DIR.'qwframework.php');
@@ -187,46 +188,14 @@ textdomain($textdomain);
 $app = new QFactory;
 
 ################################################
-#           Authentication                     #
+#           Authentication                     #  // movbed to login page
 ################################################
 
-// Get variables in correct format for login()
-if(isset($_POST['login_username'])) { $credentials['username'] = $_POST['login_username']; }
-if(isset($_POST['login_pwd'])) { $credentials['password'] = $_POST['login_pwd']; }
-if($QConfig->remember_me && isset($_POST['remember'])) { $options['remember'] = $_POST['remember']; }    
+////////////////////////
 
-// If captcha is enabled
-if($_POST['action'] === 'login' && $QConfig->recaptcha) {
-    
-    // Load ReCaptcha library
-    require(LIBRARIES_DIR.'recaptchalib.php');    
-    $reCaptcha = new ReCaptcha($recaptcha_secret_key);
-    
-    // Get response from Google and if successfull authenticate
-    $response = $reCaptcha->verifyResponse($_SERVER['REMOTE_ADDR'], $_POST['g-recaptcha-response']);    
-    if ($response != null && $response->success) {
-        $app->login();
-    } else {        
-        force_page('core', 'login', 'warning_msg=Google ReCaptcha Verification Failed');
-        exit;
-    }  
-
-// Normal login with no captcha
-} elseif ($_POST['action'] === 'login') {    
-    $app->login($credentials, $options);
-}
-
-// remove credentials as no longer needed
-unset($credentials);
-
-// If logout is set, then log user off
-if (isset($_GET['action']) && $_GET['action'] == 'logout') {    
-    $app->logout();
-}
-
-################################################
-#   Assign User's Variables to PHP and Smarty  #
-################################################
+##########################################################
+#   Assign Logged in User's Variables to PHP and Smarty  #  // Authentication ?
+##########################################################
 
 // Load current user object
 $user = QFactory::getUser();
