@@ -592,10 +592,16 @@ function verify_qwcrm_is_installed_correctly($db){
         force_page('install/index.php');
         exit;
     }
+    
+    // Test the database connection is valid
+    if(!$db->isConnected()) {
+        echo $db->ErrorMsg().'<br>';
+        die(gettext("There is a database connection issue. Check your settings in the config file."));
+    }
         
     // check the database can actually be read and retrieve the QWcrm database verion for the next function
     if(!$qwcrm_database_version = get_qwcrm_database_version_number($db)) {
-        die(gettext("Cannot read the QWcrm version number from the database. This could be a database connection issue."));
+        die(gettext("Cannot read the QWcrm version number from the database. This could be a database connection or issue."));
     }
 
 
@@ -627,14 +633,14 @@ function verify_qwcrm_is_installed_correctly($db){
 
 function get_qwcrm_database_version_number($db){
     
-    $sql = "SELECT * FROM ".PRFX."qwcrm_version ORDER BY ".PRFX."qwcrm_version.version_installed DESC LIMIT 1";
+    $sql = "SELECT * FROM ".PRFX."version ORDER BY ".PRFX."version.database_version DESC LIMIT 1";
     
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Could not compare the version of the file system and databases to verify they match."));
-        exit;
+        exit;        
     } else {
         
-        return $rs->fields['version_installed'];
+        return $rs->fields['database_version'];
         
     }
     

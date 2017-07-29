@@ -57,10 +57,9 @@ define('QWCRM_PATH', str_replace('index.php', '', $_SERVER['PHP_SELF']));
 // Constant that is checked in included files to prevent direct access
 define('_QWEXEC', 1);
 
+// load the config file if it exists
 if(is_file('configuration.php')) {
     require('configuration.php');    
-} else {
-    verify_qwcrm_is_installed_correctly($db); // I do not need this twice ?
 }
 
 // Create config object for global scope
@@ -187,20 +186,14 @@ textdomain($textdomain);
 // Initiate QFramework
 $app = new QFactory;
 
-################################################
-#           Authentication                     #  // movbed to login page
-################################################
-
-////////////////////////
-
 ##########################################################
-#   Assign Logged in User's Variables to PHP and Smarty  #  // Authentication ?
+#   Assign the User's Variables to PHP and Smarty        #
 ##########################################################
 
-// Load current user object
+// Load current user object (empty if not logged in)
 $user = QFactory::getUser();
 
-// Set user PHP variables
+// Set User PHP variables
 $login_user_id          = $user->login_user_id;         // QFactory::getUser()->login_user_id; - this also works exactly the same
 $login_username         = $user->login_username;
 $login_display_name     = $user->login_display_name;
@@ -208,17 +201,17 @@ $login_token            = $user->login_token;           // could this be replace
 $login_is_employee      = $user->login_is_employee;
 $login_customer_id      = $user->login_customer_id;     // is only set when there is a customer_id in the user account
 
-// If there is no account type details, set to Public (This can cause looping if not present)
-if(!isset($user->login_usergroup_id)){
+// If there is no logged in user, set usergroup to Public (This can cause looping if not present)
+if(!isset($login_token )){
     $login_usergroup_id = 9;
 } else {
     $login_usergroup_id = $user->login_usergroup_id;   
 }
 
-// Remove User object as no longer needed
+// Remove User object as no longer needed (for security)
 unset($user);
 
-// Assign user varibles to smarty
+// Assign User varibles to smarty
 $smarty->assign('login_user_id',            $login_user_id          );
 $smarty->assign('login_username',           $login_username         );
 $smarty->assign('login_usergroup_id',       $login_usergroup_id     );
@@ -273,7 +266,7 @@ if(isset($VAR['page_no'])) {$page_no = $VAR['page_no'];} else {$page_no = 1;}
 ##########################################
 
 // Set Date Format
-define('DATE_FORMAT', get_company_details($db, 'DATE_FORMAT'));                 // If there are DATABASE ERRORS, they will present here (white screen) when verify QWcrm function is not on 
+define('DATE_FORMAT', get_company_details($db, 'date_format'));                 // If there are DATABASE ERRORS, they will present here (white screen) when verify QWcrm function is not on 
 
 ##########################################################################
 #   Assign variables into smarty for use by all native module templates  #
@@ -309,8 +302,8 @@ $smarty->assign('schedule_start_day',       $schedule_start_day         );
 $smarty->assign('user_id',                  $user_id                    );
 
 // Used throughout the site
-$smarty->assign('currency_sym', get_company_details($db,    'CURRENCY_SYMBOL')  );
-$smarty->assign('company_logo', get_company_details($db,    'LOGO')             );
+$smarty->assign('currency_sym', get_company_details($db,    'currency_symbol')  );
+$smarty->assign('company_logo', get_company_details($db,    'logo')             );
 $smarty->assign('date_format',  DATE_FORMAT                                     );
 
 #############################

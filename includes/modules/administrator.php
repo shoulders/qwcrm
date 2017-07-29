@@ -231,19 +231,18 @@ function update_qwcrm_config($new_config) {
 
 function build_config_file_content($config_data)
 {
-    $output = "<?php\n";
-    $output .= "class QConfig {\n";
+    $output = "<?php\r\n";
+    $output .= "class QConfig {\r\n";
 
     foreach ($config_data as $key => $value)
     {
-        $output .= "    public $$key = '$value';\n";
+        $output .= "    public $$key = '$value';\r\n";
     }
 
    $output .= "}";
 
    return $output;   
 }    
-
 
 
 ############################################

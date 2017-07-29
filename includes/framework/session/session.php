@@ -1012,7 +1012,7 @@ class JSession implements IteratorAggregate
     /*********************************************/
     
      /**
-     * Checks the user session.
+     * Checks the user session.                               // if there is a database issue this could error
      *
      * If the session record doesn't exist, initialise it.
      * If session is new, create session variables
