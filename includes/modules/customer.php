@@ -35,21 +35,21 @@ function display_customers($db, $direction = 'DESC', $use_pages = false, $page_n
     /* Filter the Records */
     
     // Default Action    
-    $whereTheseRecords = " WHERE ".PRFX."customer.CUSTOMER_ID";
+    $whereTheseRecords = " WHERE ".PRFX."customer.customer_id";
     
     // Restrict results by search category and search term
     if($search_term != null) {$whereTheseRecords .= " AND ".PRFX."customer.$search_category LIKE '%$search_term%'";} 
         
     // Restrict by Status
-    if($status != null) {$whereTheseRecords .= " AND ".PRFX."customer.ACTIVE=".$db->qstr($status);}
+    if($status != null) {$whereTheseRecords .= " AND ".PRFX."customer.active=".$db->qstr($status);}
 
     /* The SQL code */    
     
     $sql = "SELECT *              
         FROM ".PRFX."customer       
         ".$whereTheseRecords."
-        GROUP BY ".PRFX."customer.CUSTOMER_ID            
-        ORDER BY ".PRFX."customer.CUSTOMER_ID
+        GROUP BY ".PRFX."customer.customer_id            
+        ORDER BY ".PRFX."customer.customer_id
         ".$direction;  
    
     /* Restrict by pages */
@@ -135,23 +135,23 @@ function display_customers($db, $direction = 'DESC', $use_pages = false, $page_n
 function insert_customer($db, $VAR) {
     
     $sql = "INSERT INTO ".PRFX."customer SET
-            CUSTOMER_DISPLAY_NAME   =". $db->qstr( $VAR['displayName']      ).",
-            CUSTOMER_ADDRESS        =". $db->qstr( $VAR['address']          ).",
-            CUSTOMER_CITY           =". $db->qstr( $VAR['city']             ).", 
-            CUSTOMER_STATE          =". $db->qstr( $VAR['state']            ).", 
-            CUSTOMER_ZIP            =". $db->qstr( $VAR['zip']              ).",
-            CUSTOMER_PHONE          =". $db->qstr( $VAR['homePhone']        ).",
-            CUSTOMER_WORK_PHONE     =". $db->qstr( $VAR['workPhone']        ).",
-            CUSTOMER_MOBILE_PHONE   =". $db->qstr( $VAR['mobilePhone']      ).",
-            CUSTOMER_EMAIL          =". $db->qstr( $VAR['email']            ).", 
-            CUSTOMER_TYPE           =". $db->qstr( $VAR['customerType']     ).", 
-            CREATE_DATE             =". $db->qstr( time()                   ).",            
-            CUSTOMER_FIRST_NAME     =". $db->qstr( $VAR['firstName']        ).", 
-            DISCOUNT_RATE           =". $db->qstr( $VAR['discount_rate']    ).",
-            CUSTOMER_LAST_NAME      =". $db->qstr( $VAR['lastName']         ).",
-            CREDIT_TERMS            =". $db->qstr( $VAR['creditterms']      ).",
-            CUSTOMER_WWW            =". $db->qstr( $VAR['customerWww']      ).",
-            CUSTOMER_NOTES          =". $db->qstr( $VAR['customerNotes']    );
+            customer_display_name   =". $db->qstr( $VAR['displayName']      ).",
+            customer_address        =". $db->qstr( $VAR['address']          ).",
+            customer_city           =". $db->qstr( $VAR['city']             ).", 
+            customer_state          =". $db->qstr( $VAR['state']            ).", 
+            customer_zip            =". $db->qstr( $VAR['zip']              ).",
+            customer_phone          =". $db->qstr( $VAR['homePhone']        ).",
+            customer_work_phone     =". $db->qstr( $VAR['workPhone']        ).",
+            customer_mobile_phone   =". $db->qstr( $VAR['mobilePhone']      ).",
+            customer_email          =". $db->qstr( $VAR['email']            ).", 
+            customer_type           =". $db->qstr( $VAR['customerType']     ).", 
+            create_date             =". $db->qstr( time()                   ).",            
+            customer_first_name     =". $db->qstr( $VAR['firstName']        ).", 
+            discount_rate           =". $db->qstr( $VAR['discount_rate']    ).",
+            customer_last_name      =". $db->qstr( $VAR['lastName']         ).",
+            credit_terms            =". $db->qstr( $VAR['creditterms']      ).",
+            customer_www            =". $db->qstr( $VAR['customerWww']      ).",
+            customer_notes          =". $db->qstr( $VAR['customerNotes']    );
             
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to insert the customer record into the database."));
@@ -171,10 +171,10 @@ function insert_customer($db, $VAR) {
 function insert_customer_note($db, $customer_id, $note) {
     
     $sql = "INSERT INTO ".PRFX."customer_notes SET
-            CUSTOMER_ID =". $db->qstr( $customer_id                         ).",
-            EMPLOYEE_ID =". $db->qstr( QFactory::getUser()->login_user_id   ).",
-            DATE        =". $db->qstr( time()                               ).",
-            NOTE        =". $db->qstr( $note                                );
+            customer_id =". $db->qstr( $customer_id                         ).",
+            employee_id =". $db->qstr( QFactory::getUser()->login_user_id   ).",
+            date        =". $db->qstr( time()                               ).",
+            note        =". $db->qstr( $note                                );
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to insert the customer note into the database."));
@@ -191,7 +191,7 @@ function insert_customer_note($db, $customer_id, $note) {
 
 function get_customer_details($db, $customer_id, $item = null){
     
-    $sql = "SELECT * FROM ".PRFX."customer WHERE CUSTOMER_ID=".$db->qstr($customer_id);
+    $sql = "SELECT * FROM ".PRFX."customer WHERE customer_id=".$db->qstr($customer_id);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the customer's details."));
@@ -218,7 +218,7 @@ function get_customer_details($db, $customer_id, $item = null){
 
 function get_customer_note($db, $customer_note_id, $item = null){
     
-    $sql = "SELECT * FROM ".PRFX."customer_notes WHERE CUSTOMER_NOTE_ID=".$db->qstr( $customer_note_id );    
+    $sql = "SELECT * FROM ".PRFX."customer_notes WHERE customer_note_id=".$db->qstr( $customer_note_id );    
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the customer note."));
@@ -245,7 +245,7 @@ function get_customer_note($db, $customer_note_id, $item = null){
 
 function get_customer_notes($db, $customer_id) {
     
-    $sql = "SELECT * FROM ".PRFX."customer_notes WHERE CUSTOMER_ID=".$db->qstr( $customer_id );
+    $sql = "SELECT * FROM ".PRFX."customer_notes WHERE customer_id=".$db->qstr( $customer_id );
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the customer's notes."));
@@ -267,23 +267,23 @@ function get_customer_notes($db, $customer_id) {
 function update_customer($db, $customer_id, $VAR) {
     
     $sql = "UPDATE ".PRFX."customer SET
-            CUSTOMER_DISPLAY_NAME   = ". $db->qstr( $VAR['displayName']     ).",
-            CUSTOMER_ADDRESS        = ". $db->qstr( $VAR['address']         ).",
-            CUSTOMER_CITY           = ". $db->qstr( $VAR['city']            ).", 
-            CUSTOMER_STATE          = ". $db->qstr( $VAR['state']           ).", 
-            CUSTOMER_ZIP            = ". $db->qstr( $VAR['zip']             ).",
-            CUSTOMER_PHONE          = ". $db->qstr( $VAR['homePhone']       ).",
-            CUSTOMER_WORK_PHONE     = ". $db->qstr( $VAR['workPhone']       ).",
-            CUSTOMER_MOBILE_PHONE   = ". $db->qstr( $VAR['mobilePhone']     ).",
-            CUSTOMER_EMAIL          = ". $db->qstr( $VAR['email']           ).", 
-            CUSTOMER_TYPE           = ". $db->qstr( $VAR['customerType']    ).", 
-            CUSTOMER_FIRST_NAME     = ". $db->qstr( $VAR['firstName']       ).", 
-            CUSTOMER_LAST_NAME      = ". $db->qstr( $VAR['lastName']        ).",
-            DISCOUNT_RATE           = ". $db->qstr( $VAR['discount_rate']   ).",
-            CREDIT_TERMS            = ". $db->qstr( $VAR['creditterms']     ).",
-            CUSTOMER_WWW            = ". $db->qstr( $VAR['customerWww']     ).",
-            CUSTOMER_NOTES          = ". $db->qstr( $VAR['customerNotes']   )."
-            WHERE CUSTOMER_ID       = ". $db->qstr( $customer_id            );
+            customer_display_name   = ". $db->qstr( $VAR['displayName']     ).",
+            customer_address        = ". $db->qstr( $VAR['address']         ).",
+            customer_city           = ". $db->qstr( $VAR['city']            ).", 
+            customer_state          = ". $db->qstr( $VAR['state']           ).", 
+            customer_zip            = ". $db->qstr( $VAR['zip']             ).",
+            customer_phone          = ". $db->qstr( $VAR['homePhone']       ).",
+            customer_work_phone     = ". $db->qstr( $VAR['workPhone']       ).",
+            customer_mobile_phone   = ". $db->qstr( $VAR['mobilePhone']     ).",
+            customer_email          = ". $db->qstr( $VAR['email']           ).", 
+            customer_type           = ". $db->qstr( $VAR['customerType']    ).", 
+            customer_first_name     = ". $db->qstr( $VAR['firstName']       ).", 
+            customer_last_name      = ". $db->qstr( $VAR['lastName']        ).",
+            discount_rate           = ". $db->qstr( $VAR['discount_rate']   ).",
+            credit_terms            = ". $db->qstr( $VAR['creditterms']     ).",
+            customer_www            = ". $db->qstr( $VAR['customerWww']     ).",
+            customer_notes          = ". $db->qstr( $VAR['customerNotes']   )."
+            WHERE customer_id       = ". $db->qstr( $customer_id            );
             
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the Customer's details."));
@@ -305,10 +305,10 @@ function update_customer_note($db, $customer_note_id, $date, $note) {
     global $smarty;
     
     $sql = "UPDATE ".PRFX."customer_notes SET
-            EMPLOYEE_ID             =". $db->qstr( QFactory::getUser()->login_user_id   ).",
-            DATE                    =". $db->qstr( $date                                ).",
-            NOTE                    =". $db->qstr( $note                                )."
-            WHERE CUSTOMER_NOTE_ID  =". $db->qstr( $customer_note_id                    );
+            employee_id             =". $db->qstr( QFactory::getUser()->login_user_id   ).",
+            date                    =". $db->qstr( $date                                ).",
+            note                    =". $db->qstr( $note                                )."
+            WHERE customer_note_id  =". $db->qstr( $customer_note_id                    );
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the customer note."));
@@ -328,7 +328,7 @@ function update_customer_note($db, $customer_note_id, $date, $note) {
 function delete_customer($db, $customer_id){
     
     // Check if customer has any workorders
-    $sql = "SELECT count(*) as count FROM ".PRFX."workorder WHERE CUSTOMER_ID=".$db->qstr($customer_id);    
+    $sql = "SELECT count(*) as count FROM ".PRFX."workorder WHERE customer_id=".$db->qstr($customer_id);    
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count the customer's Workorders in the database."));
         exit;
@@ -339,7 +339,7 @@ function delete_customer($db, $customer_id){
     }
     
     // Check if customer has any invoices
-    $sql = "SELECT count(*) as count FROM ".PRFX."invoice WHERE CUSTOMER_ID=".$db->qstr($customer_id);    
+    $sql = "SELECT count(*) as count FROM ".PRFX."invoice WHERE customer_id=".$db->qstr($customer_id);    
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count the customer's Invoices in the database."));
         exit;
@@ -350,7 +350,7 @@ function delete_customer($db, $customer_id){
     }    
     
     // Check if customer has any gift certificates
-    $sql = "SELECT count(*) as count FROM ".PRFX."giftcert WHERE CUSTOMER_ID=".$db->qstr($customer_id);
+    $sql = "SELECT count(*) as count FROM ".PRFX."giftcert WHERE customer_id=".$db->qstr($customer_id);
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count the customer's Gift Certificates in the database."));
         exit;
@@ -361,7 +361,7 @@ function delete_customer($db, $customer_id){
     }
     
     // Check if customer has any customer notes
-    $sql = "SELECT count(*) as count FROM ".PRFX."customer_notes WHERE CUSTOMER_ID=".$db->qstr($customer_id);
+    $sql = "SELECT count(*) as count FROM ".PRFX."customer_notes WHERE customer_id=".$db->qstr($customer_id);
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count the customer's Notes in the database."));
         exit;
@@ -381,7 +381,7 @@ function delete_customer($db, $customer_id){
     }
     
     // Delete Customer
-    $sql = "DELETE FROM ".PRFX."customer WHERE CUSTOMER_ID=".$db->qstr($customer_id);    
+    $sql = "DELETE FROM ".PRFX."customer WHERE customer_id=".$db->qstr($customer_id);    
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete the customer from the database."));
         exit;
@@ -397,7 +397,7 @@ function delete_customer($db, $customer_id){
 
 function delete_customer_note($db, $customer_note_id) {
     
-    $sql = "DELETE FROM ".PRFX."customer_notes WHERE CUSTOMER_NOTE_ID=".$db->qstr( $customer_note_id );
+    $sql = "DELETE FROM ".PRFX."customer_notes WHERE customer_note_id=".$db->qstr( $customer_note_id );
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete the customer note."));
@@ -414,7 +414,7 @@ function delete_customer_note($db, $customer_note_id) {
     
 function check_customer_ex($db, $displayName) {
     
-    $sql = "SELECT COUNT(*) AS num_users FROM ".PRFX."customer WHERE CUSTOMER_DISPLAY_NAME=".$db->qstr($displayName);
+    $sql = "SELECT COUNT(*) AS num_users FROM ".PRFX."customer WHERE customer_display_name=".$db->qstr($displayName);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to check the submitted Display Name for duplicates in the database."));
@@ -452,9 +452,9 @@ function build_googlemap_directions_string($db, $customer_id, $employee_id)  {
     if ($employee_details['based'] == 1 || $employee_details['based'] == 3){
         
         // Works from the office
-        $employee_address  = preg_replace('/(\r|\n|\r\n){2,}/', ', ', $company_details['ADDRESS']);
-        $employee_city     = $company_details['CITY'];
-        $employee_zip      = $company_details['ZIP'];
+        $employee_address  = preg_replace('/(\r|\n|\r\n){2,}/', ', ', $company_details['address']);
+        $employee_city     = $company_details['city'];
+        $employee_zip      = $company_details['zip'];
         
     } else {        
         
@@ -466,9 +466,9 @@ function build_googlemap_directions_string($db, $customer_id, $employee_id)  {
     }
     
     // Get Customer's Address    
-    $customer_address   = preg_replace('/(\r|\n|\r\n){2,}/', ', ', $customer_details['CUSTOMER_ADDRESS']);
-    $customer_city      = $customer_details['CUSTOMER_CITY'];
-    $customer_zip       = $customer_details['CUSTOMER_ZIP'];
+    $customer_address   = preg_replace('/(\r|\n|\r\n){2,}/', ', ', $customer_details['customer_address']);
+    $customer_city      = $customer_details['customer_city'];
+    $customer_zip       = $customer_details['customer_zip'];
     
     // return the built google map string
     return "$google_server/maps?f=d&source=s_d&hl=en&geocode=&saddr=$employee_address,$employee_city,$employee_zip&daddr=$customer_address,$customer_city,$customer_zip";

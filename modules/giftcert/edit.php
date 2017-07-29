@@ -36,7 +36,7 @@ if(isset($VAR['submit'])) {
 } else {
     
     // Build the page    
-    $smarty->assign('customer_details', get_customer_details($db, get_giftcert_details($db, $giftcert_id, 'CUSTOMER_ID')));    
+    $smarty->assign('customer_details', get_customer_details($db, get_giftcert_details($db, $giftcert_id, 'customer_id')));    
     $smarty->assign('giftcert_details', get_giftcert_details($db, $giftcert_id));
     $BuildPage .= $smarty->fetch('giftcert/edit.tpl');
 }

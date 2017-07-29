@@ -25,8 +25,8 @@
                                             <caption><b><font color="red">{t}Available Payment Types{/t}</font></b></caption>
                                             {section name=q loop=$payment_methods_status}
                                                 <tr>
-                                                    <td colspan="2"><b>{$payment_methods_status[q].METHOD}</b></td>
-                                                    <td>{t}Active{/t}: <input type="checkbox" name="{$payment_methods_status[q].SMARTY_TPL_KEY}" {if $payment_methods_status[q].ACTIVE == 1} checked {/if} value=1 class="olotd5"></td>
+                                                    <td colspan="2"><b>{$payment_methods_status[q].method}</b></td>
+                                                    <td>{t}Active{/t}: <input type="checkbox" name="{$payment_methods_status[q].smarty_tpl_key}" {if $payment_methods_status[q].active == 1} checked {/if} value=1 class="olotd5"></td>
                                                 </tr>
                                             {/section}
                                         </table>
@@ -38,23 +38,23 @@
                                             </tr>
                                             <tr>
                                                 <td><b>{t}Bank Account Name{/t}:</b></td>
-                                                <td><input name="bank_account_name" class="olotd5" value="{$payment_settings.BANK_ACCOUNT_NAME}" type="text" maxlength="30" onkeydown="return onlyAlphaNumeric(event);"></td>
+                                                <td><input name="bank_account_name" class="olotd5" value="{$payment_settings.bank_account_name}" type="text" maxlength="30" onkeydown="return onlyAlphaNumeric(event);"></td>
                                             </tr>
                                             <tr>
                                                 <td><b>{t}Bank Name{/t}:</b></td>
-                                                <td><input name="bank_name" class="olotd5" value="{$payment_settings.BANK_NAME}" type="text" maxlength="30" onkeydown="return onlyAlphaNumeric(event);"></td>
+                                                <td><input name="bank_name" class="olotd5" value="{$payment_settings.bank_name}" type="text" maxlength="30" onkeydown="return onlyAlphaNumeric(event);"></td>
                                             </tr>
                                             <tr>
                                                 <td><b>{t}Bank Account Number{/t}:</b></td>
-                                                <td><input name="bank_account_number" class="olotd5" value="{$payment_settings.BANK_ACCOUNT_NUMBER}" type="text" maxlength="15" onkeydown="return onlyNumbers(event);"></td>
+                                                <td><input name="bank_account_number" class="olotd5" value="{$payment_settings.bank_account_number}" type="text" maxlength="15" onkeydown="return onlyNumbers(event);"></td>
                                             </tr>
                                             <tr>
                                                 <td><b>{t}Bank Sort Code{/t}</b></td>
-                                                <td><input name="bank_sort_code" class="olotd5" value="{$payment_settings.BANK_SORT_CODE}" type="text" maxlength="10" onkeydown="return onlyNumbers(event);"></td>
+                                                <td><input name="bank_sort_code" class="olotd5" value="{$payment_settings.bank_sort_code}" type="text" maxlength="10" onkeydown="return onlyNumbers(event);"></td>
                                             </tr>
                                             <tr>
                                                 <td><b>{t}Bank IBAN{/t}</b></td>
-                                                <td><input name="bank_iban" class="olotd5" value="{$payment_settings.BANK_IBAN}" type="text" maxlength="34" placeholder="GB15MIDL40051512345678" onkeydown="return onlyAlphaNumeric(event);"></td>
+                                                <td><input name="bank_iban" class="olotd5" value="{$payment_settings.bank_iban}" type="text" maxlength="34" placeholder="GB15MIDL40051512345678" onkeydown="return onlyAlphaNumeric(event);"></td>
                                             </tr>
 
                                             <!-- PayPal -->
@@ -66,7 +66,7 @@
                                             </tr>
                                             <tr>
                                                 <td><b>{t}Paypal Email{/t}</b></td>
-                                                <td><input name="paypal_email" class="olotd5" value="{$payment_settings.PAYPAL_EMAIL}" size="50" type="email" maxlength="50" placeholder="no-reply@quantumwarp.com" onkeydown="return onlyEmail(event);"/></td>
+                                                <td><input name="paypal_email" class="olotd5" value="{$payment_settings.paypal_email}" size="50" type="email" maxlength="50" placeholder="no-reply@quantumwarp.com" onkeydown="return onlyEmail(event);"/></td>
 
                                             <!-- Invoice Messages -->
                                             <tr>
@@ -74,15 +74,15 @@
                                             </tr>
                                             <tr>
                                                 <td><b>{t}Bank Transaction Message{/t}</b></td>
-                                                <td><textarea class="olotd5" name="bank_transaction_message" cols="50" rows="2" >{$payment_settings.BANK_TRANSACTION_MSG}</textarea><br></td>
+                                                <td><textarea class="olotd5" name="bank_transaction_message" cols="50" rows="2" >{$payment_settings.bank_transaction_msg}</textarea><br></td>
                                             </tr>
                                             <tr>
                                                 <td><b>{t}Checks payable to{/t}:</b></td>
-                                                <td><textarea class="olotd5" name="cheque_payable_to_msg" cols="50" rows="2" >{$payment_settings.CHEQUE_PAYABLE_TO_MSG}</textarea><br></td>
+                                                <td><textarea class="olotd5" name="cheque_payable_to_msg" cols="50" rows="2" >{$payment_settings.cheque_payable_to_msg}</textarea><br></td>
                                             </tr>
                                             <tr>
                                                 <td><b>{t}Invoice Footer Message{/t}:</b></td>
-                                                <td><textarea class="olotd5" name="invoice_footer_msg" cols="50" rows="2" >{$payment_settings.INVOICE_FOOTER_MSG}</textarea><br></td>
+                                                <td><textarea class="olotd5" name="invoice_footer_msg" cols="50" rows="2" >{$payment_settings.invoice_footer_msg}</textarea><br></td>
                                             </tr>
 
                                         </table>                                            

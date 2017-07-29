@@ -44,7 +44,7 @@ defined('_QWEXEC') or die;
 
 function count_open_workorders_in_seleceted_period($db, $start_date, $end_date) {
     
-    $sql = "SELECT count(*) AS count FROM ".PRFX."workorder WHERE WORK_ORDER_OPEN_DATE >= ".$db->qstr($start_date)." AND WORK_ORDER_OPEN_DATE <= ".$db->qstr($end_date);
+    $sql = "SELECT count(*) AS count FROM ".PRFX."workorder WHERE work_order_open_date >= ".$db->qstr($start_date)." AND work_order_open_date <= ".$db->qstr($end_date);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count open work orders in the selected period."));
@@ -63,7 +63,7 @@ function count_open_workorders_in_seleceted_period($db, $start_date, $end_date) 
 
 function count_open_workorders_in_selected_period($db, $start_date, $end_date) {
     
-    $sql = "SELECT count(*) AS count FROM ".PRFX."workorder WHERE WORK_ORDER_CLOSE_DATE >= ".$db->qstr($start_date)." AND WORK_ORDER_CLOSE_DATE <= ".$db->qstr($end_date);
+    $sql = "SELECT count(*) AS count FROM ".PRFX."workorder WHERE work_order_close_date >= ".$db->qstr($start_date)." AND work_order_close_date <= ".$db->qstr($end_date);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count closed work orders in the selected period."));
@@ -82,7 +82,7 @@ function count_open_workorders_in_selected_period($db, $start_date, $end_date) {
 
 function count_new_customers_in_selected_period($db, $start_date, $end_date) {
     
-    $sql = "SELECT count(*) AS count FROM ".PRFX."customer WHERE CREATE_DATE >= ".$db->qstr($start_date)." AND CREATE_DATE <= ".$db->qstr($end_date);
+    $sql = "SELECT count(*) AS count FROM ".PRFX."customer WHERE create_date >= ".$db->qstr($start_date)." AND create_date <= ".$db->qstr($end_date);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count new customers in the selected period."));
@@ -120,7 +120,7 @@ function count_total_customers_in_qwcrm($db) {
 
 function count_created_invoices_in_selected_period($db, $start_date, $end_date) {
     
-    $sql = "SELECT count(*) AS count FROM ".PRFX."invoice WHERE DATE >= ".$db->qstr($start_date)." AND DATE <= ".$db->qstr($end_date);
+    $sql = "SELECT count(*) AS count FROM ".PRFX."invoice WHERE date >= ".$db->qstr($start_date)." AND date <= ".$db->qstr($end_date);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count created invoices in the selected period."));
@@ -139,7 +139,7 @@ function count_created_invoices_in_selected_period($db, $start_date, $end_date) 
 
 function count_paid_invoices_in_selected_period($db, $start_date, $end_date) {
     
-    $sql = "SELECT count(*) AS count FROM ".PRFX."invoice WHERE DATE >= ".$db->qstr($start_date)." AND DATE <= ".$db->qstr($end_date)." AND IS_PAID = 1";
+    $sql = "SELECT count(*) AS count FROM ".PRFX."invoice WHERE date >= ".$db->qstr($start_date)." AND date <= ".$db->qstr($end_date)." AND is_paid = 1";
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count paid invoices in the selected period."));
@@ -160,7 +160,7 @@ function count_paid_invoices_in_selected_period($db, $start_date, $end_date) {
 
 function count_total_number_of_different_part_items_ordered_in_selected_period($db, $start_date, $end_date) {
     
-    $sql = "SELECT COUNT(*) AS count FROM ".PRFX."invoice_parts INNER JOIN ".PRFX."invoice ON ".PRFX."invoice.INVOICE_ID = ".PRFX."invoice_parts.INVOICE_ID WHERE ".PRFX."invoice.DATE >= ".$db->qstr($start_date)." AND ".PRFX."invoice.DATE <= ".$db->qstr($end_date);
+    $sql = "SELECT COUNT(*) AS count FROM ".PRFX."invoice_parts INNER JOIN ".PRFX."invoice ON ".PRFX."invoice.invoice_id = ".PRFX."invoice_parts.invoice_id WHERE ".PRFX."invoice.date >= ".$db->qstr($start_date)." AND ".PRFX."invoice.date <= ".$db->qstr($end_date);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count the total number of parts items ordered in the selected period."));
@@ -179,7 +179,7 @@ function count_total_number_of_different_part_items_ordered_in_selected_period($
 
 function sum_total_quantity_of_part_items_ordered_in_selected_period($db, $start_date, $end_date) {
     
-    $sql = "SELECT SUM(INVOICE_PARTS_COUNT) AS sum FROM ".PRFX."invoice_parts INNER JOIN ".PRFX."invoice ON ".PRFX."invoice.INVOICE_ID = ".PRFX."invoice_parts.INVOICE_ID WHERE ".PRFX."invoice.DATE >= ".$db->qstr($start_date)." AND ".PRFX."invoice.DATE <= ".$db->qstr($end_date);
+    $sql = "SELECT SUM(invoice_parts_count) AS sum FROM ".PRFX."invoice_parts INNER JOIN ".PRFX."invoice ON ".PRFX."invoice.invoice_id = ".PRFX."invoice_parts.invoice_id WHERE ".PRFX."invoice.date >= ".$db->qstr($start_date)." AND ".PRFX."invoice.date <= ".$db->qstr($end_date);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to return the total number of parts items ordered in the selected period."));
@@ -198,7 +198,7 @@ function sum_total_quantity_of_part_items_ordered_in_selected_period($db, $start
 
 function sum_parts_sub_total_in_selected_period($db, $start_date, $end_date) {
     
-    $sql = "SELECT SUM(INVOICE_PARTS_SUBTOTAL) AS sum FROM ".PRFX."invoice_parts INNER JOIN ".PRFX."invoice ON ".PRFX."invoice.INVOICE_ID = ".PRFX."invoice_parts.INVOICE_ID WHERE ".PRFX."invoice.DATE >= ".$db->qstr($start_date)." AND ".PRFX."invoice.DATE <= ".$db->qstr($end_date);
+    $sql = "SELECT SUM(invoice_parts_subtotal) AS sum FROM ".PRFX."invoice_parts INNER JOIN ".PRFX."invoice ON ".PRFX."invoice.invoice_id = ".PRFX."invoice_parts.invoice_id WHERE ".PRFX."invoice.date >= ".$db->qstr($start_date)." AND ".PRFX."invoice.date <= ".$db->qstr($end_date);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to return the sub total of parts items ordered in the selected period."));
@@ -219,7 +219,7 @@ function sum_parts_sub_total_in_selected_period($db, $start_date, $end_date) {
 
 function count_total_number_of_different_labour_items_in_selected_period($db, $start_date, $end_date) {
     
-    $sql = "SELECT COUNT(*) AS count FROM ".PRFX."invoice_labour INNER JOIN ".PRFX."invoice ON ".PRFX."invoice.INVOICE_ID = ".PRFX."invoice_labour.INVOICE_ID WHERE ".PRFX."invoice.DATE >= ".$db->qstr($start_date)." AND ".PRFX."invoice.DATE <= ".$db->qstr($end_date);
+    $sql = "SELECT COUNT(*) AS count FROM ".PRFX."invoice_labour INNER JOIN ".PRFX."invoice ON ".PRFX."invoice.invoice_id = ".PRFX."invoice_labour.invoice_id WHERE ".PRFX."invoice.date >= ".$db->qstr($start_date)." AND ".PRFX."invoice.date <= ".$db->qstr($end_date);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count the total number of labour items ordered in the selected period."));
@@ -237,7 +237,7 @@ function count_total_number_of_different_labour_items_in_selected_period($db, $s
 
 function sum_total_quantity_of_labour_items_in_selected_period($db, $start_date, $end_date) {
     
-    $sql = "SELECT SUM(INVOICE_LABOUR_UNIT) AS sum FROM ".PRFX."invoice_labour INNER JOIN ".PRFX."invoice ON ".PRFX."invoice.INVOICE_ID = ".PRFX."invoice_labour.INVOICE_ID WHERE ".PRFX."invoice.DATE >= ".$db->qstr($start_date)." AND ".PRFX."invoice.DATE <= ".$db->qstr($end_date);
+    $sql = "SELECT SUM(invoice_labour_unit) AS sum FROM ".PRFX."invoice_labour INNER JOIN ".PRFX."invoice ON ".PRFX."invoice.invoice_id = ".PRFX."invoice_labour.invoice_id WHERE ".PRFX."invoice.date >= ".$db->qstr($start_date)." AND ".PRFX."invoice.date <= ".$db->qstr($end_date);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to return the total number of labour items ordered in the selected period."));
@@ -256,7 +256,7 @@ function sum_total_quantity_of_labour_items_in_selected_period($db, $start_date,
 
 function sum_labour_sub_totals_in_selected_period($db, $start_date, $end_date) {
     
-    $sql = "SELECT SUM(INVOICE_LABOUR_SUBTOTAL) AS sum FROM ".PRFX."invoice_labour INNER JOIN ".PRFX."invoice ON ".PRFX."invoice.INVOICE_ID = ".PRFX."invoice_labour.INVOICE_ID WHERE ".PRFX."invoice.DATE >= ".$db->qstr($start_date)." AND ".PRFX."invoice.DATE <= ".$db->qstr($end_date);
+    $sql = "SELECT SUM(invoice_labour_subtotal) AS sum FROM ".PRFX."invoice_labour INNER JOIN ".PRFX."invoice ON ".PRFX."invoice.invoice_id = ".PRFX."invoice_labour.invoice_id WHERE ".PRFX."invoice.date >= ".$db->qstr($start_date)." AND ".PRFX."invoice.date <= ".$db->qstr($end_date);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to return the sub total of labour items ordered in the selected period."));
@@ -277,7 +277,7 @@ function sum_labour_sub_totals_in_selected_period($db, $start_date, $end_date) {
 
 function sum_expenses_net_amount_in_selected_period($db, $start_date, $end_date) {
     
-    $sql = "SELECT SUM(EXPENSE_NET_AMOUNT) AS sum FROM ".PRFX."expense WHERE EXPENSE_DATE  >= ".$db->qstr($start_date)." AND EXPENSE_DATE  <= ".$db->qstr($end_date);
+    $sql = "SELECT SUM(expense_net_amount) AS sum FROM ".PRFX."expense WHERE expense_date  >= ".$db->qstr($start_date)." AND expense_date  <= ".$db->qstr($end_date);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to return the expenses net total for the selected period."));
@@ -295,7 +295,7 @@ function sum_expenses_net_amount_in_selected_period($db, $start_date, $end_date)
 
 function sum_expenses_tax_amount_in_selected_period($db, $start_date, $end_date) {
     
-    $sql = "SELECT SUM(EXPENSE_TAX_AMOUNT) AS sum FROM ".PRFX."expense WHERE EXPENSE_DATE  >= ".$db->qstr($start_date)." AND EXPENSE_DATE  <= ".$db->qstr($end_date);
+    $sql = "SELECT SUM(expense_tax_amount) AS sum FROM ".PRFX."expense WHERE expense_date  >= ".$db->qstr($start_date)." AND expense_date  <= ".$db->qstr($end_date);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to return the expenses tax total for the selected period."));
@@ -314,7 +314,7 @@ function sum_expenses_tax_amount_in_selected_period($db, $start_date, $end_date)
 
 function sum_expenses_gross_amount_in_selected_period($db, $start_date, $end_date) {
     
-    $sql = "SELECT SUM(EXPENSE_GROSS_AMOUNT) AS sum FROM ".PRFX."expense WHERE EXPENSE_DATE  >= ".$db->qstr($start_date)." AND EXPENSE_DATE  <= ".$db->qstr($end_date);
+    $sql = "SELECT SUM(expense_gross_amount) AS sum FROM ".PRFX."expense WHERE expense_date >= ".$db->qstr($start_date)." AND expense_date <= ".$db->qstr($end_date);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to return the expenses Gross total for the selected period."));
@@ -335,7 +335,7 @@ function sum_expenses_gross_amount_in_selected_period($db, $start_date, $end_dat
 
 function sum_refunds_net_amount_in_selected_period($db, $start_date, $end_date) {
     
-    $sql = "SELECT SUM(REFUND_NET_AMOUNT) AS sum FROM ".PRFX."refund WHERE REFUND_DATE  >= ".$db->qstr($start_date)." AND REFUND_DATE  <= ".$db->qstr($end_date);
+    $sql = "SELECT SUM(refund_net_amount) AS sum FROM ".PRFX."refund WHERE refund_date >= ".$db->qstr($start_date)." AND refund_date <= ".$db->qstr($end_date);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to return the refunds net total for the selected period."));
@@ -354,7 +354,7 @@ function sum_refunds_net_amount_in_selected_period($db, $start_date, $end_date) 
 
 function sum_refunds_tax_amount_in_selected_period($db, $start_date, $end_date) {
     
-    $sql = "SELECT SUM(REFUND_TAX_AMOUNT) AS sum FROM ".PRFX."refund WHERE REFUND_DATE  >= ".$db->qstr($start_date)." AND REFUND_DATE  <= ".$db->qstr($end_date);
+    $sql = "SELECT SUM(refund_tax_amount) AS sum FROM ".PRFX."refund WHERE refund_date >= ".$db->qstr($start_date)." AND refund_date <= ".$db->qstr($end_date);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to return the refunds tax total for the selected period."));
@@ -373,7 +373,7 @@ function sum_refunds_tax_amount_in_selected_period($db, $start_date, $end_date) 
 
 function sum_refunds_gross_amount_in_selected_period($db, $start_date, $end_date) {
     
-    $sql = "SELECT SUM(REFUND_GROSS_AMOUNT) AS sum FROM ".PRFX."refund WHERE REFUND_DATE  >= ".$db->qstr($start_date)." AND REFUND_DATE  <= ".$db->qstr($end_date);
+    $sql = "SELECT SUM(refund_gross_amount) AS sum FROM ".PRFX."refund WHERE refund_date >= ".$db->qstr($start_date)." AND refund_date <= ".$db->qstr($end_date);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to return the refunds Gross total for the selected period."));
@@ -394,7 +394,7 @@ function sum_refunds_gross_amount_in_selected_period($db, $start_date, $end_date
 
 function sum_of_invoice_sub_totals_before_tax_and_discounts_are_added_in_selected_period($db, $start_date, $end_date) {
     
-    $sql = "SELECT SUM(SUB_TOTAL) AS sum FROM ".PRFX."invoice WHERE DATE  >= ".$db->qstr($start_date)." AND DATE  <= ".$db->qstr($end_date);
+    $sql = "SELECT SUM(sub_total) AS sum FROM ".PRFX."invoice WHERE date >= ".$db->qstr($start_date)." AND date <= ".$db->qstr($end_date);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to return invoice sub totals before tax and discounts."));
@@ -413,7 +413,7 @@ function sum_of_invoice_sub_totals_before_tax_and_discounts_are_added_in_selecte
 
 function sum_of_discount_amounts_in_selected_period($db, $start_date, $end_date) {
     
-    $sql = "SELECT SUM(DISCOUNT) AS sum FROM ".PRFX."invoice WHERE DATE  >= ".$db->qstr($start_date)." AND DATE  <= ".$db->qstr($end_date);
+    $sql = "SELECT SUM(discount) AS sum FROM ".PRFX."invoice WHERE date >= ".$db->qstr($start_date)." AND date <= ".$db->qstr($end_date);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to return the sum of discounts in the selected period."));
@@ -432,7 +432,7 @@ function sum_of_discount_amounts_in_selected_period($db, $start_date, $end_date)
 
 function sum_of_tax_amounts_in_selected_period($db, $start_date, $end_date) {  
     
-    $sql = "SELECT SUM(TAX) AS sum FROM ".PRFX."invoice WHERE DATE  >= ".$db->qstr($start_date)." AND DATE  <= ".$db->qstr($end_date);
+    $sql = "SELECT SUM(tax) AS sum FROM ".PRFX."invoice WHERE date >= ".$db->qstr($start_date)." AND date <= ".$db->qstr($end_date);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to return the sum of tax in the selected period."));
@@ -451,7 +451,7 @@ function sum_of_tax_amounts_in_selected_period($db, $start_date, $end_date) {
 
 function sum_of_invoice_total_amounts_gross_in_selected_period($db, $start_date, $end_date) { 
     
-    $sql = "SELECT SUM(TOTAL) AS sum FROM ".PRFX."invoice WHERE DATE  >= ".$db->qstr($start_date)." AND DATE  <= ".$db->qstr($end_date);
+    $sql = "SELECT SUM(total) AS sum FROM ".PRFX."invoice WHERE date >= ".$db->qstr($start_date)." AND date <= ".$db->qstr($end_date);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to return the sum of invoice gross amounts in the selected period."));

@@ -17,7 +17,7 @@ if(get_user_details($db, $user_id, 'is_employee')) {
     $smarty->assign('usergroups', get_usergroups($db, 'employees'));
 } else {    
     $smarty->assign('is_employee', '0');
-    $smarty->assign('customer_display_name', get_customer_details($db, get_user_details($db, $user_id, 'customer_id'), 'CUSTOMER_DISPLAY_NAME'));
+    $smarty->assign('customer_display_name', get_customer_details($db, get_user_details($db, $user_id, 'customer_id'), 'customer_display_name'));
     $smarty->assign('usergroups', get_usergroups($db, 'customers')); 
 }
 

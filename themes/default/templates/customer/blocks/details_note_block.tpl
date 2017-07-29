@@ -29,13 +29,13 @@
                         <td class="menutd">
                             <table width="100%" cellpadding="4" cellspacing="0" style="border-collapse: collapse;">                
                                 <tr style="border: 1px black solid; background-color: #ededed;">
-                                    <td><b>{t}Customer Note ID{/t}: {$customer_notes[n].CUSTOMER_NOTE_ID}</b></td>
+                                    <td><b>{t}Customer Note ID{/t}: {$customer_notes[n].customer_note_id}</b></td>
                                     <td width="33%" align="right">
                                         {if $login_usergroup_id == 1}
-                                            <a href="index.php?page=customer:note_edit&customer_note_id={$customer_notes[n].CUSTOMER_NOTE_ID}">
+                                            <a href="index.php?page=customer:note_edit&customer_note_id={$customer_notes[n].customer_note_id}">
                                                 <img src="{$theme_images_dir}icons/16x16/small_edit.gif" onMouseOver="ddrivetip('{t}Edit the Note{/t}');" onMouseOut="hideddrivetip();">                                                 
                                             </a>
-                                            <a href="index.php?page=customer:note_delete&customer_note_id={$customer_notes[n].CUSTOMER_NOTE_ID}" oNclick="return confirmDelete('{t}Are you sure you want to delete this customer note?{/t}');">
+                                            <a href="index.php?page=customer:note_delete&customer_note_id={$customer_notes[n].customer_note_id}" oNclick="return confirmDelete('{t}Are you sure you want to delete this customer note?{/t}');">
                                                 <img src="{$theme_images_dir}icons/16x16/small_edit.gif" onMouseOver="ddrivetip('{t}Delete the Note{/t}');" onMouseOut="hideddrivetip();">                                                 
                                             </a>
                                         {/if}
@@ -46,11 +46,11 @@
                     </tr> 
                     <tr>                    
                         <td>
-                            <b>{t}Employee{/t}: </b>{$customer_notes[n].EMPLOYEE_DISPLAY_NAME}<br>                           
-                            <b>{t}Date{/t}: </b>{$customer_notes[n].DATE|date_format:$date_format}<br>
-                            <b>{t}Time{/t}: </b>{$customer_notes[n].DATE|date_format:"%H:%M"}<br>
+                            <b>{t}Employee{/t}: </b>{$customer_notes[n].employee_display_name}<br>                           
+                            <b>{t}Date{/t}: </b>{$customer_notes[n].date|date_format:$date_format}<br>
+                            <b>{t}Time{/t}: </b>{$customer_notes[n].date|date_format:"%H:%M"}<br>
                             <b>{t}Notes{/t}:</b>
-                            <div>{$customer_notes[n].NOTE}<br></div>
+                            <div>{$customer_notes[n].note}<br></div>
                         </td>
                     </tr>
                 {/section}

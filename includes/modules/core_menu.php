@@ -31,14 +31,14 @@ defined('_QWEXEC') or die;
 
 function menu_get_single_workorder_status($db, $workorder_id){
     
-    $sql = "SELECT WORK_ORDER_STATUS FROM ".PRFX."workorder WHERE WORK_ORDER_ID =".$db->qstr($workorder_id);
+    $sql = "SELECT work_order_status FROM ".PRFX."workorder WHERE work_order_id =".$db->qstr($workorder_id);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to a get a single workorder status."));
         exit;
     } else {
         
-        return $rs->fields['WORK_ORDER_STATUS'];
+        return $rs->fields['work_order_status'];
         
     }
     
@@ -65,16 +65,16 @@ function menu_count_workorders_with_status($db, $workorder_status){
     
     global $smarty;
     
-    $sql = "SELECT COUNT(*) AS WORKORDER_STATUS_COUNT
+    $sql = "SELECT COUNT(*) AS workorder_status_count
             FROM ".PRFX."workorder
-            WHERE WORK_ORDER_STATUS=".$db->qstr($workorder_status);
+            WHERE work_order_status=".$db->qstr($workorder_status);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count workorders with a defined status."));
         exit;
     } else {
        
-       return  $rs->fields['WORKORDER_STATUS_COUNT']; 
+       return  $rs->fields['workorder_status_count']; 
        
     }
     
@@ -88,14 +88,14 @@ function menu_count_workorders_with_status($db, $workorder_status){
 
 function menu_count_invoices_with_status($db, $invoice_status){
     
-    $sql ="SELECT COUNT(*) AS INVOICE_COUNT FROM ".PRFX."invoice WHERE IS_PAID=".$db->qstr($invoice_status);
+    $sql ="SELECT COUNT(*) AS invoice_count FROM ".PRFX."invoice WHERE is_paid=".$db->qstr($invoice_status);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count invoices with a defined status."));
         exit;
     } else {
        
-        return $rs->fields['INVOICE_COUNT'];
+        return $rs->fields['invoice_count'];
         
     }
     

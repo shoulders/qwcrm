@@ -32,7 +32,7 @@ if(isset($VAR['submit'])) {
         $schedule_start_day             = date('d', date_to_timestamp($VAR['schedule_start_date'])  );    
     
         // Load the schedule day with the updated schedule item
-        force_page('schedule', 'day', 'schedule_start_year='.$schedule_start_year.'&schedule_start_month='.$schedule_start_month.'&schedule_start_day='.$schedule_start_day.'&employee_id='.$employee_id.'&workorder_id='.$workorder_id.'&information_msg=Schedule Successfully Updated');
+        force_page('schedule', 'day', 'schedule_start_year='.$schedule_start_year.'&schedule_start_month='.$schedule_start_month.'&schedule_start_day='.$schedule_start_day.'&employee_id='.$employee_id.'&workorder_id='.$workorder_id.'&information_msg='.gettext("Schedule Successfully Updated"));
         exit;
         
     }
@@ -44,18 +44,18 @@ if(isset($VAR['submit'])) {
     $schedule_item = get_schedule_details($db, $schedule_id);
     
     // Corrects the extra time segment issue    
-    $schedule_end_time = $schedule_item['SCHEDULE_END'] + 1;      
+    $schedule_end_time = $schedule_item['schedule_end'] + 1;      
     
-    $smarty->assign('schedule_start_date',      timestamp_to_date($schedule_item['SCHEDULE_START'])    );       
-    $smarty->assign('schedule_start_time',      date('H:i', $schedule_item['SCHEDULE_START'])          );         
-    $smarty->assign('schedule_end_date',        timestamp_to_date($schedule_item['SCHEDULE_END'])      );         
+    $smarty->assign('schedule_start_date',      timestamp_to_date($schedule_item['schedule_start'])    );       
+    $smarty->assign('schedule_start_time',      date('H:i', $schedule_item['schedule_start'])          );         
+    $smarty->assign('schedule_end_date',        timestamp_to_date($schedule_item['schedule_end'])      );         
     $smarty->assign('schedule_end_time',        date('H:i', $schedule_end_time)                        );   
-    $smarty->assign('schedule_notes',           $schedule_item['SCHEDULE_NOTES']                       );
-    $smarty->assign('schedule_id',              $schedule_item['SCHEDULE_ID']                          );
-    $smarty->assign('customer_id',              $schedule_item['CUSTOMER_ID']                          );
-    $smarty->assign('employee_id',              $schedule_item['EMPLOYEE_ID']                          );
+    $smarty->assign('schedule_notes',           $schedule_item['schedule_notes']                       );
+    $smarty->assign('schedule_id',              $schedule_item['schedule_id']                          );
+    $smarty->assign('customer_id',              $schedule_item['customer_id']                          );
+    $smarty->assign('employee_id',              $schedule_item['employee_id']                          );
     $smarty->assign('active_employees',         get_active_users($db, 'employees')                     );
-    $smarty->assign('workorder_id',             $schedule_item['WORKORDER_ID']                         ); 
+    $smarty->assign('workorder_id',             $schedule_item['workorder_id']                         ); 
     
 }
 

@@ -32,7 +32,7 @@ if ($_SESSION['login_token'] && $_SESSION['login_usergroup_id'] != '8' && $_SESS
                  * 
                  */
 
-                $query = $db->query("SELECT WORK_ORDER_SCOPE FROM ".PRFX."workorder WHERE WORK_ORDER_SCOPE LIKE '$queryString%' LIMIT 10");
+                $query = $db->query("SELECT work_order_scope FROM ".PRFX."workorder WHERE work_order_scope LIKE '$queryString%' LIMIT 10");
 
                 if($query) {
 
@@ -44,7 +44,7 @@ if ($_SESSION['login_token'] && $_SESSION['login_usergroup_id'] != '8' && $_SESS
                          * The onClick function fills the textbox with the result.
                          * YOU MUST CHANGE: $result->value to $result->your_column
                          */
-                         echo '<li onClick="fill(\''.$result->WORK_ORDER_SCOPE.'\');">'.$result->WORK_ORDER_SCOPE.'</li>';
+                         echo '<li onClick="fill(\''.$result->work_order_scope.'\');">'.$result->work_order_scope.'</li>';
 
                      }
                 } else {

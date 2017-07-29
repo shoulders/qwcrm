@@ -18,7 +18,7 @@ if(!$giftcert_id = get_giftcert_id_by_gifcert_code($db, $VAR['giftcert_code'])) 
     } else {       
         
         // Set the value of the gift certificate to the amount to be applied
-        $VAR['amount'] = get_giftcert_details($db, $giftcert_id, 'AMOUNT');
+        $VAR['amount'] = get_giftcert_details($db, $giftcert_id, 'amount');
         
         /* Invoice Processing */
 

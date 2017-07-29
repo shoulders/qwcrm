@@ -59,8 +59,8 @@
                                             <input name="change_employee" value="{t}Update{/t}" type="submit">
                                         </form>                                       
                                     {else}    
-                                        <img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" onMouseOver="ddrivetip('<center><b>{t}Contact{/t}</b></center><hr><b>{t}Fax{/t}: </b>{$assigned_employee_details.EMPLOYEE_WORK_PHONE}<br><b>{t}Mobile{/t}: </b>{$assigned_employee_details.EMPLOYEE_MOBILE_PHONE}<br><b>{t}Home{/t}: </b>{$assigned_employee_details.EMPLOYEE_HOME_PHONE}');" onMouseOut="hideddrivetip();">                                                 
-                                        <a class="link1" href="index.php?page=user:details&user_id={$assigned_employee_id}">{$assigned_employee_details.EMPLOYEE_DISPLAY_NAME}</a>
+                                        <img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" onMouseOver="ddrivetip('<center><b>{t}Contact{/t}</b></center><hr><b>{t}Fax{/t}: </b>{$assigned_employee_details.employee_work_phone}<br><b>{t}Mobile{/t}: </b>{$assigned_employee_details.employee_mobile_phone}<br><b>{t}Home{/t}: </b>{$assigned_employee_details.employee_home_phone}');" onMouseOut="hideddrivetip();">                                                 
+                                        <a class="link1" href="index.php?page=user:details&user_id={$assigned_employee_id}">{$assigned_employee_details.employee_display_name}</a>
                                     {/if}
                                 </td>
 

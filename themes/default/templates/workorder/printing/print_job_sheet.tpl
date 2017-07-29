@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     
     <!-- PDF Title -->
-    <title>{t}Invoice{/t} {$invoice_details.INVOICE_ID}</title>   
+    <title>{t}Invoice{/t} {$invoice_details.invoice_id}</title>   
         
     <!-- PDF Subject -->
     <meta name="description" content="{$meta_description}">
@@ -27,7 +27,7 @@
         <tr>
             <td width="20%" valign="middle" align="center"><img src="{$company_logo}" alt="" height="50"></td>
             <td width="60%" align="center">                
-                <p><b><font size="+3">{$company_details.COMPANY_NAME}</font></b><br></p>                
+                <p><b><font size="+3">{$company_details.company_name}</font></b><br></p>                
             </td>
             <td width="20%" valign="middle" align="center">{t}Job Sheet{/t}</font></td>
         </tr>
@@ -51,13 +51,13 @@
                             <b>{t}Email{/t}: <b><br>                        
                         </td>
                         <td>
-                            {$single_workorder[i].CUSTOMER_FIRST_NAME} {$single_workorder[i].CUSTOMER_LAST_NAME}<br>
-                            {$single_workorder[i].WORK_ORDER_ID}<br>
+                            {$single_workorder[i].customer_first_name} {$single_workorder[i].customer_last_name}<br>
+                            {$single_workorder[i].work_order_id}<br>
                             {$smarty.now|date_format:$date_format}<br>
-                            {$single_workorder[i].WORK_ORDER_OPEN_DATE|date_format:$date_format}<br>
-                            {$single_workorder[i].CUSTOMER_WORK_PHONE}<br>
-                            {$single_workorder[i].CUSTOMER_MOBILE_PHONE}<br>
-                            {$single_workorder[i].CUSTOMER_EMAIL}<br>
+                            {$single_workorder[i].work_order_open_date|date_format:$date_format}<br>
+                            {$single_workorder[i].customer_work_phone}<br>
+                            {$single_workorder[i].customer_mobile_phone}<br>
+                            {$single_workorder[i].customer_email}<br>
                         </td>        
                     </tr>    
                 </table>
@@ -72,10 +72,10 @@
                             <b>{t}Address{/t}: <b><br><br>
                         </td>
                         <td>
-                            {$single_workorder[i].CUSTOMER_ADDRESS}<br>
-                            {$single_workorder[i].CUSTOMER_CITY}<br>
-                            {$single_workorder[i].CUSTOMER_STATE}<br>
-                            {$single_workorder[i].CUSTOMER_ZIP}<br />
+                            {$single_workorder[i].customer_address}<br>
+                            {$single_workorder[i].customer_city}<br>
+                            {$single_workorder[i].customer_state}<br>
+                            {$single_workorder[i].customer_zip}<br>
                         </td>        
                     </tr>    
                 </table>
@@ -90,7 +90,7 @@
             <td><b>{t}Description{/t}:<b></td>       
         </tr>
         <tr>
-            <td><div style="min-height: 140px;">{$single_workorder[i].WORK_ORDER_DESCRIPTION}</div></td>
+            <td><div style="min-height: 140px;">{$single_workorder[i].work_order_description}</div></td>
         </tr>
         <tr>
             <td><b>{t}Required Passwords{/t}:</b><br /><br /></td>

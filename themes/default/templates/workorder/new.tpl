@@ -8,7 +8,7 @@
         <td>            
             <table width="700" cellpadding="5" cellspacing="0" border="0">
                 <tr>                                
-                    <td class="menuhead2" width="80%">{t}New Work Order for{/t} {$customer_details.CUSTOMER_DISPLAY_NAME}</td>
+                    <td class="menuhead2" width="80%">{t}New Work Order for{/t} {$customer_details.customer_display_name}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
                         <a>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}WORKORDER_NEW_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}WORKORDER_NEW_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
@@ -30,7 +30,7 @@
                                             <li><a href="#" rel="#tab_2_contents" class="tab">{t}Customer Details{/t}</a></li>
                                         </ul>
 
-                                        <!-- This is used so the contents don't appear to the right of the tabs -->
+                                        <!-- This is used so the contents do not appear to the right of the tabs -->
                                         <div class="clear"></div>
 
                                         <!-- This is a div that hold all the tabbed contents -->
@@ -43,7 +43,7 @@
                                                     <tr>
                                                         <td valign="top">                                                    
                                                             <form method="POST" action="index.php?page=workorder:new" name="new_workorder" id="new_workorder">                                                    
-                                                                <input name="customer_id" value="{$customer_details.CUSTOMER_ID}" type="hidden">                                                    
+                                                                <input name="customer_id" value="{$customer_details.customer_id}" type="hidden">                                                    
                                                                 <input name="created_by" value="{$login_user_id}" type="hidden" >                                                    
                                                                 <table class="olotable" width="100%" border="0"  cellpadding="4" cellspacing="0" summary="Work order display">
                                                                     <tr>
@@ -55,7 +55,7 @@
                                                                     </tr>
                                                                     <tr>
                                                                         <td class="olotd4">{$smarty.now|date_format:$date_format}</td>
-                                                                        <td class="olotd4">{$customer_details.CUSTOMER_DISPLAY_NAME}</td>
+                                                                        <td class="olotd4">{$customer_details.customer_display_name}</td>
                                                                         <td class="olotd4">
                                                                             <input id="workorder_scope" name="workorder_scope" size="40" type="text" maxlength="80" required onkeydown="return onlyAlphaNumeric(event);" onkeyup="lookupSuggestions(this.value);" onblur="closeSuggestions();">
                                                                             <div class="suggestionsBoxWrapper">
@@ -110,7 +110,7 @@
                                                                 <tr>
                                                                     <td class="menuhead2" width="80%">{t}Customer Details{/t}</td>
                                                                     <td class="menuhead2" width="20%" align="right">
-                                                                        <a href="index.php?page=customer:edit&amp;customer_id={$customer_details.CUSTOMER_ID}"<img src="{$theme_images_dir}icons/16x16/small_edit.gif" border="0" alt="" /></a>
+                                                                        <a href="index.php?page=customer:edit&amp;customer_id={$customer_details.customer_id}"<img src="{$theme_images_dir}icons/16x16/small_edit.gif" border="0" alt="" /></a>
                                                                     </td>
                                                                 </tr>
                                                             </table>
@@ -118,15 +118,15 @@
                                                     </tr>
                                                     <tr>
                                                         <td class="menutd"><b>{t}Contact{/t}</b></td>
-                                                        <td class="menutd"> {$customer_details.CUSTOMER_FIRST_NAME} {$customer_details.CUSTOMER_LAST_NAME}</td>
+                                                        <td class="menutd"> {$customer_details.customer_first_name} {$customer_details.customer_last_name}</td>
                                                         <td class="menutd"><b>{t}Email{/t}</b></td>
-                                                        <td class="menutd"> {$customer_details.CUSTOMER_EMAIL}</td>
+                                                        <td class="menutd"> {$customer_details.customer_email}</td>
                                                     </tr>
                                                     <tr>
                                                         <td class="menutd"><b>{t}First Name{/t}</b></td>
-                                                        <td class="menutd">{$customer_details.CUSTOMER_FIRST_NAME}</td>
+                                                        <td class="menutd">{$customer_details.customer_first_name}</td>
                                                         <td class="menutd"><b>{t}Last Name{/t}</b>
-                                                        <td class="menutd">{$customer_details.CUSTOMER_LAST_NAME}</td>
+                                                        <td class="menutd">{$customer_details.customer_last_name}</td>
                                                     </tr>
                                                     <tr>
                                                         <td class="row2" colspan="4">&nbsp;</td>
@@ -135,18 +135,18 @@
                                                         <td class="menutd"><b>{t}Address{/t}</b></td>
                                                         <td class="menutd"></td>
                                                         <td class="menutd"><b>{t}Phone{/t}</b></td>
-                                                        <td class="menutd">{$customer_details.CUSTOMER_PHONE}</td>
+                                                        <td class="menutd">{$customer_details.customer_phone}</td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="menutd" colspan="2">{$customer_details.CUSTOMER_ADDRESS|nl2br}</td>
+                                                        <td class="menutd" colspan="2">{$customer_details.customer_address|nl2br}</td>
                                                         <td class="menutd"><b>{t}Fax{/t}</b></td>
-                                                        <td class="menutd"> {$customer_details.CUSTOMER_WORK_PHONE}</td>
+                                                        <td class="menutd"> {$customer_details.customer_work_phone}</td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="menutd"> {$customer_details.CUSTOMER_CITY},</td>
-                                                        <td class="menutd">{$customer_details.CUSTOMER_STATE} {$customer_details.CUSTOMER_ZIP}</td>
+                                                        <td class="menutd"> {$customer_details.customer_city},</td>
+                                                        <td class="menutd">{$customer_details.customer_state} {$customer_details.customer_zip}</td>
                                                         <td class="menutd"><b>{t}Mobile{/t}</b></td>
-                                                        <td class="menutd"> {$customer_details.CUSTOMER_MOBILE_PHONE}</td>
+                                                        <td class="menutd"> {$customer_details.customer_mobile_phone}</td>
                                                     </tr>
                                                     <tr>
                                                         <td class="row2" colspan="4">&nbsp;</td>
@@ -154,16 +154,16 @@
                                                     <tr>
                                                         <td class="menutd"><b>{t}Type{/t}</b></td>
                                                         <td class="menutd">
-                                                            {if $customer_details.CUSTOMER_TYPE =='1'}{t}CUSTOMER_TYPE_1{/t}{/if}
-                                                            {if $customer_details.CUSTOMER_TYPE =='2'}{t}CUSTOMER_TYPE_2{/t}{/if}
-                                                            {if $customer_details.CUSTOMER_TYPE =='3'}{t}CUSTOMER_TYPE_3{/t}{/if}
-                                                            {if $customer_details.CUSTOMER_TYPE =='4'}{t}CUSTOMER_TYPE_4{/t}{/if}
-                                                            {if $customer_details.CUSTOMER_TYPE =='5'}{t}CUSTOMER_TYPE_5{/t}{/if}
-                                                            {if $customer_details.CUSTOMER_TYPE =='6'}{t}CUSTOMER_TYPE_6{/t}{/if}
-                                                            {if $customer_details.CUSTOMER_TYPE =='7'}{t}CUSTOMER_TYPE_7{/t}{/if}
-                                                            {if $customer_details.CUSTOMER_TYPE =='8'}{t}CUSTOMER_TYPE_8{/t}{/if}
-                                                            {if $customer_details.CUSTOMER_TYPE =='9'}{t}CUSTOMER_TYPE_9{/t}{/if}
-                                                            {if $customer_details.CUSTOMER_TYPE =='10'}{t}CUSTOMER_TYPE_10{/t}{/if}
+                                                            {if $customer_details.customer_type =='1'}{t}CUSTOMER_TYPE_1{/t}{/if}
+                                                            {if $customer_details.customer_type =='2'}{t}CUSTOMER_TYPE_2{/t}{/if}
+                                                            {if $customer_details.customer_type =='3'}{t}CUSTOMER_TYPE_3{/t}{/if}
+                                                            {if $customer_details.customer_type =='4'}{t}CUSTOMER_TYPE_4{/t}{/if}
+                                                            {if $customer_details.customer_type =='5'}{t}CUSTOMER_TYPE_5{/t}{/if}
+                                                            {if $customer_details.customer_type =='6'}{t}CUSTOMER_TYPE_6{/t}{/if}
+                                                            {if $customer_details.customer_type =='7'}{t}CUSTOMER_TYPE_7{/t}{/if}
+                                                            {if $customer_details.customer_type =='8'}{t}CUSTOMER_TYPE_8{/t}{/if}
+                                                            {if $customer_details.customer_type =='9'}{t}CUSTOMER_TYPE_9{/t}{/if}
+                                                            {if $customer_details.customer_type =='10'}{t}CUSTOMER_TYPE_10{/t}{/if}
                                                         </td>
                                                         <td class="menutd"></td>
                                                         <td class="menutd"></td>

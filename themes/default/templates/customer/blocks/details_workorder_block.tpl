@@ -11,24 +11,24 @@
         <td class="olohead">{t}Action{/t}</td>
     </tr>
     {section name=a loop=$open_workorders}
-        <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=workorder:details&workorder_id={$open_workorders[a].WORK_ORDER_ID}&customer_id={$open_workorders[a].CUSTOMER_ID}';" class="row1">
-            <td class="olotd4"><a href="index.php?page=workorder:details&workorder_id={$open_workorders[a].WORK_ORDER_ID}&customer_id={$open_workorders[a].CUSTOMER_ID}">{$open_workorders[a].WORK_ORDER_ID}</a></td>
-            <td class="olotd4">{$open_workorders[a].WORK_ORDER_OPEN_DATE|date_format:$date_format}</td>
-            <td class="olotd4">{$customer_details.CUSTOMER_DISPLAY_NAME}</td>
-            <td class="olotd4">{$open_workorders[a].WORK_ORDER_SCOPE}</td>
-            <td class="olotd4">{$open_workorders[a].WORK_ORDER_STATUS}</td>
+        <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=workorder:details&workorder_id={$open_workorders[a].work_order_id}&customer_id={$open_workorders[a].customer_id}';" class="row1">
+            <td class="olotd4"><a href="index.php?page=workorder:details&workorder_id={$open_workorders[a].work_order_id}&customer_id={$open_workorders[a].customer_id}">{$open_workorders[a].work_order_id}</a></td>
+            <td class="olotd4">{$open_workorders[a].work_order_open_date|date_format:$date_format}</td>
+            <td class="olotd4">{$customer_details.customer_display_name}</td>
+            <td class="olotd4">{$open_workorders[a].work_order_scope}</td>
+            <td class="olotd4">{$open_workorders[a].work_order_status}</td>
             <td class="olotd4">
-                {if $open_workorders[a].EMPLOYEE_ID != ''}
-                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<center><b>{t}Contact{/t}</b></center><hr><b>{t}Work{/t} </b>{$open_workorders[a].EMPLOYEE_WORK_PHONE}<br><b>{t}Mobile{/t} </b>{$open_workorders[a].EMPLOYEE_MOBILE_PHONE}<br><b>{t}Home{/t}:</b> {$open_workorders[a].EMPLOYEE_HOME_PHONE}');" onMouseOut="hideddrivetip();"><a class="link1" href="index.php?page=user:details&user_id={$open_workorders[a].EMPLOYEE_ID}">{$open_workorders[a].EMPLOYEE_DISPLAY_NAME}</a>
+                {if $open_workorders[a].employee_id != ''}
+                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<center><b>{t}Contact{/t}</b></center><hr><b>{t}Work{/t} </b>{$open_workorders[a].employee_work_phone}<br><b>{t}Mobile{/t} </b>{$open_workorders[a].employee_mobile_phone}<br><b>{t}Home{/t}:</b> {$open_workorders[a].employee_home_phone}');" onMouseOut="hideddrivetip();"><a class="link1" href="index.php?page=user:details&user_id={$open_workorders[a].employee_id}">{$open_workorders[a].employee_display_name}</a>
                 {else}
                     {t}Not Assigned{/t}
                 {/if}
             </td>
             <td class="olotd4" align="center">
-                <a href="index.php?page=workorder:print&workorder_id={$open_workorders[a].WORK_ORDER_ID}&customer_id={$open_workorders[a].CUSTOMER_ID}&theme=off" target="new">
+                <a href="index.php?page=workorder:print&workorder_id={$open_workorders[a].work_order_id}&customer_id={$open_workorders[a].customer_id}&theme=off" target="new">
                     <img src="{$theme_images_dir}icons/16x16/fileprint.gif" alt="" border="0" onMouseOver="ddrivetip('{t}Print{/t}');" onMouseOut="hideddrivetip();">
                 </a>
-                <a href="index.php?page=workorder:details&workorder_id={$open_workorders[a].WORK_ORDER_ID}&customer_id={$open_workorders[a].CUSTOMER_ID}">
+                <a href="index.php?page=workorder:details&workorder_id={$open_workorders[a].work_order_id}&customer_id={$open_workorders[a].customer_id}">
                     <img src="{$theme_images_dir}icons/16x16/viewmag.gif"  alt="" border="0" onMouseOver="ddrivetip('{t}View Work Order{/t}');" onMouseOut="hideddrivetip();">
                 </a>
             </td>
@@ -48,25 +48,25 @@
         <td class="olohead">{t}Action{/t}</td>
     </tr>
     {section name=b loop=$closed_workorders}
-        <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=workorder:details&workorder_id={$closed_workorders[b].WORK_ORDER_ID}&customer_id={$closed_workorders[b].CUSTOMER_ID}';" class="row1">
-            <td class="olotd4"><a href="index.php?page=workorder:details&workorder_id={$closed_workorders[b].WORK_ORDER_ID}&customer_id={$closed_workorders[b].CUSTOMER_ID}">{$closed_workorders[b].WORK_ORDER_ID}</a></td>
-            <td class="olotd4">{$closed_workorders[b].WORK_ORDER_OPEN_DATE|date_format:$date_format}</td>
-            <td class="olotd4">{$customer_details.CUSTOMER_DISPLAY_NAME}</td>
-            <td class="olotd4">{$closed_workorders[b].WORK_ORDER_SCOPE}</td>
-            <td class="olotd4">{$closed_workorders[b].WORK_ORDER_STATUS}</td>
+        <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=workorder:details&workorder_id={$closed_workorders[b].work_order_id}&customer_id={$closed_workorders[b].customer_id}';" class="row1">
+            <td class="olotd4"><a href="index.php?page=workorder:details&workorder_id={$closed_workorders[b].work_order_id}&customer_id={$closed_workorders[b].customer_id}">{$closed_workorders[b].work_order_id}</a></td>
+            <td class="olotd4">{$closed_workorders[b].work_order_open_date|date_format:$date_format}</td>
+            <td class="olotd4">{$customer_details.customer_display_name}</td>
+            <td class="olotd4">{$closed_workorders[b].work_order_scope}</td>
+            <td class="olotd4">{$closed_workorders[b].work_order_status}</td>
             <td class="olotd4">
-                {if $closed_workorders[b].EMPLOYEE_ID != ''}
-                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<center><b>{t}Contact{/t}</b></center><hr><b>{t}Work{/t} </b>{$open_workorders[a].EMPLOYEE_WORK_PHONE}<br><b>{t}Mobile{/t} </b>{$open_workorders[a].EMPLOYEE_MOBILE_PHONE}<br><b>{t}Home{/t}</b> {$closed_workorders[a].EMPLOYEE_HOME_PHONE}');" onMouseOut="hideddrivetip();">
-                    <a class="link1" href="index.php?page=user:details&user_id={$closed_workorders[b].EMPLOYEE_ID}">{$closed_workorders[b].EMPLOYEE_DISPLAY_NAME}</a>
+                {if $closed_workorders[b].employee_id != ''}
+                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<center><b>{t}Contact{/t}</b></center><hr><b>{t}Work{/t} </b>{$open_workorders[a].employee_work_phone}<br><b>{t}Mobile{/t} </b>{$open_workorders[a].employee_mobile_phone}<br><b>{t}Home{/t}</b> {$closed_workorders[a].employee_home_phone}');" onMouseOut="hideddrivetip();">
+                    <a class="link1" href="index.php?page=user:details&user_id={$closed_workorders[b].employee_id}">{$closed_workorders[b].employee_display_name}</a>
                 {else}
                     {t}Not Assigned{/t}
                 {/if}
             </td>
             <td class="olotd4" align="center">
-                <a href="index.php?page=workorder:print&workorder_id={$closed_workorders[b].WORK_ORDER_ID}&customer_id={$closed_workorders[b].CUSTOMER_ID}&theme=off" target="new">
+                <a href="index.php?page=workorder:print&workorder_id={$closed_workorders[b].work_order_id}&customer_id={$closed_workorders[b].customer_id}&theme=off" target="new">
                     <img src="{$theme_images_dir}icons/16x16/fileprint.gif" alt="" border="0" onMouseOver="ddrivetip('{t}Print{/t}');" onMouseOut="hideddrivetip();">
                 </a>
-                <a href="index.php?page=workorder:details&workorder_id={$closed_workorders[b].WORK_ORDER_ID}&customer_id={$closed_workorders[b].CUSTOMER_ID}">
+                <a href="index.php?page=workorder:details&workorder_id={$closed_workorders[b].work_order_id}&customer_id={$closed_workorders[b].Customer_id}">
                     <img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" onMouseOver="ddrivetip('{t}View Work Order{/t}');" onMouseOut="hideddrivetip();">
                 </a>
             </td>

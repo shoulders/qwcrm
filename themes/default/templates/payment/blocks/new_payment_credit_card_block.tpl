@@ -18,12 +18,12 @@
                         <td>
                             <select name="card_type" class="olotd4">                     
                                 {section name=c loop=$active_credit_cards}
-                                    <option value="{$active_credit_cards[c].CARD_TYPE}">{$active_credit_cards[c].CARD_NAME}</option>
+                                    <option value="{$active_credit_cards[c].CARD_TYPE}">{$active_credit_cards[c].card_name}</option>
                                 {/section}
                             </select>
                         </td>                        
                         <td><input name="name_on_card" class="olotd5" type="text" maxlength="20" required onkeydown="return onlyAlpha(event);"></td>
-                        <td>{$currency_sym}<input name="amount" class="olotd5" size="10" value="{$invoice_details.BALANCE|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumbersPeriod(event);"/></td>
+                        <td>{$currency_sym}<input name="amount" class="olotd5" size="10" value="{$invoice_details.balance|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumbersPeriod(event);"/></td>
                     </tr>
                     <tr>
                         <td valign="top"><b>{t}Note{/t}</b></td>

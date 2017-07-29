@@ -31,5 +31,5 @@ if((isset($VAR['submit'])) || (isset($VAR['submitandnew']))) {
 
 // Build the page
 $smarty->assign('new_record_id', $new_record_id);
-$smarty->assign('tax_rate', get_company_details($db, 'TAX_RATE'));
+$smarty->assign('tax_rate', get_company_details($db, 'tax_rate'));
 $BuildPage .= $smarty->fetch('refund/new.tpl');

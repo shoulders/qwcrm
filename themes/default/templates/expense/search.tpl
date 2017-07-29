@@ -123,64 +123,64 @@
                                                     </tr>
                                                     {section name=i loop=$search_result}
                                                         <!-- This allows double clicking on a row and opens the corresponding expense view details -->
-                                                        <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=expense:details&expense_id={$search_result[i].EXPENSE_ID}';" class="row1">
-                                                            <td class="olotd4" nowrap><a href="index.php?page=expense:details&expense_id={$search_result[i].EXPENSE_ID}">{$search_result[i].EXPENSE_ID}</a></td>
-                                                            <td class="olotd4" nowrap>{$search_result[i].EXPENSE_PAYEE}</td>
-                                                            <td class="olotd4" nowrap>{$search_result[i].EXPENSE_DATE|date_format:$date_format}</td>                                                                
+                                                        <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=expense:details&expense_id={$search_result[i].expense_id}';" class="row1">
+                                                            <td class="olotd4" nowrap><a href="index.php?page=expense:details&expense_id={$search_result[i].expense_id}">{$search_result[i].expense_id}</a></td>
+                                                            <td class="olotd4" nowrap>{$search_result[i].expense_payee}</td>
+                                                            <td class="olotd4" nowrap>{$search_result[i].expense_date|date_format:$date_format}</td>                                                                
                                                             <td class="olotd4" nowrap>
-                                                                {if $search_result[i].EXPENSE_TYPE ==1}{t}EXPENSE_TYPE_1{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_TYPE ==2}{t}EXPENSE_TYPE_2{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_TYPE ==3}{t}EXPENSE_TYPE_3{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_TYPE ==4}{t}EXPENSE_TYPE_4{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_TYPE ==5}{t}EXPENSE_TYPE_5{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_TYPE ==6}{t}EXPENSE_TYPE_6{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_TYPE ==7}{t}EXPENSE_TYPE_7{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_TYPE ==8}{t}EXPENSE_TYPE_8{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_TYPE ==9}{t}EXPENSE_TYPE_9{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_TYPE ==10}{t}EXPENSE_TYPE_10{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_TYPE ==11}{t}EXPENSE_TYPE_11{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_TYPE ==12}{t}EXPENSE_TYPE_12{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_TYPE ==13}{t}EXPENSE_TYPE_13{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_TYPE ==14}{t}EXPENSE_TYPE_14{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_TYPE ==15}{t}EXPENSE_TYPE_15{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_TYPE ==16}{t}EXPENSE_TYPE_16{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_TYPE ==17}{t}EXPENSE_TYPE_17{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_TYPE ==18}{t}EXPENSE_TYPE_18{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_TYPE ==19}{t}EXPENSE_TYPE_19{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_TYPE ==20}{t}EXPENSE_TYPE_20{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_TYPE ==21}{t}EXPENSE_TYPE_21{/t}{/if}
+                                                                {if $search_result[i].expense_type ==1}{t}EXPENSE_TYPE_1{/t}{/if}
+                                                                {if $search_result[i].expense_type ==2}{t}EXPENSE_TYPE_2{/t}{/if}
+                                                                {if $search_result[i].expense_type ==3}{t}EXPENSE_TYPE_3{/t}{/if}
+                                                                {if $search_result[i].expense_type ==4}{t}EXPENSE_TYPE_4{/t}{/if}
+                                                                {if $search_result[i].expense_type ==5}{t}EXPENSE_TYPE_5{/t}{/if}
+                                                                {if $search_result[i].expense_type ==6}{t}EXPENSE_TYPE_6{/t}{/if}
+                                                                {if $search_result[i].expense_type ==7}{t}EXPENSE_TYPE_7{/t}{/if}
+                                                                {if $search_result[i].expense_type ==8}{t}EXPENSE_TYPE_8{/t}{/if}
+                                                                {if $search_result[i].expense_type ==9}{t}EXPENSE_TYPE_9{/t}{/if}
+                                                                {if $search_result[i].expense_type ==10}{t}EXPENSE_TYPE_10{/t}{/if}
+                                                                {if $search_result[i].expense_type ==11}{t}EXPENSE_TYPE_11{/t}{/if}
+                                                                {if $search_result[i].expense_type ==12}{t}EXPENSE_TYPE_12{/t}{/if}
+                                                                {if $search_result[i].expense_type ==13}{t}EXPENSE_TYPE_13{/t}{/if}
+                                                                {if $search_result[i].expense_type ==14}{t}EXPENSE_TYPE_14{/t}{/if}
+                                                                {if $search_result[i].expense_type ==15}{t}EXPENSE_TYPE_15{/t}{/if}
+                                                                {if $search_result[i].expense_type ==16}{t}EXPENSE_TYPE_16{/t}{/if}
+                                                                {if $search_result[i].expense_type ==17}{t}EXPENSE_TYPE_17{/t}{/if}
+                                                                {if $search_result[i].expense_typE ==18}{t}EXPENSE_TYPE_18{/t}{/if}
+                                                                {if $search_result[i].expense_type ==19}{t}EXPENSE_TYPE_19{/t}{/if}
+                                                                {if $search_result[i].expense_type ==20}{t}EXPENSE_TYPE_20{/t}{/if}
+                                                                {if $search_result[i].expense_type ==21}{t}EXPENSE_TYPE_21{/t}{/if}
                                                             </td>
                                                             <td class="olotd4" nowrap>
-                                                                {if $search_result[i].EXPENSE_PAYMENT_METHOD ==1}{t}EXPENSE_PAYMENT_METHOD_1{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_PAYMENT_METHOD ==2}{t}EXPENSE_PAYMENT_METHOD_2{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_PAYMENT_METHOD ==3}{t}EXPENSE_PAYMENT_METHOD_3{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_PAYMENT_METHOD ==4}{t}EXPENSE_PAYMENT_METHOD_4{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_PAYMENT_METHOD ==5}{t}EXPENSE_PAYMENT_METHOD_5{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_PAYMENT_METHOD ==6}{t}EXPENSE_PAYMENT_METHOD_6{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_PAYMENT_METHOD ==7}{t}EXPENSE_PAYMENT_METHOD_7{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_PAYMENT_METHOD ==8}{t}EXPENSE_PAYMENT_METHOD_8{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_PAYMENT_METHOD ==9}{t}EXPENSE_PAYMENT_METHOD_9{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_PAYMENT_METHOD ==10}{t}EXPENSE_PAYMENT_METHOD_10{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_PAYMENT_METHOD ==11}{t}EXPENSE_PAYMENT_METHOD_11{/t}{/if}
+                                                                {if $search_result[i].expense_payment_method ==1}{t}EXPENSE_PAYMENT_METHOD_1{/t}{/if}
+                                                                {if $search_result[i].expense_payment_method ==2}{t}EXPENSE_PAYMENT_METHOD_2{/t}{/if}
+                                                                {if $search_result[i].expense_payment_method ==3}{t}EXPENSE_PAYMENT_METHOD_3{/t}{/if}
+                                                                {if $search_result[i].expense_payment_method ==4}{t}EXPENSE_PAYMENT_METHOD_4{/t}{/if}
+                                                                {if $search_result[i].expense_payment_method ==5}{t}EXPENSE_PAYMENT_METHOD_5{/t}{/if}
+                                                                {if $search_result[i].expense_payment_method ==6}{t}EXPENSE_PAYMENT_METHOD_6{/t}{/if}
+                                                                {if $search_result[i].expense_payment_method ==7}{t}EXPENSE_PAYMENT_METHOD_7{/t}{/if}
+                                                                {if $search_result[i].expense_payment_method ==8}{t}EXPENSE_PAYMENT_METHOD_8{/t}{/if}
+                                                                {if $search_result[i].expense_payment_method ==9}{t}EXPENSE_PAYMENT_METHOD_9{/t}{/if}
+                                                                {if $search_result[i].expense_payment_method ==10}{t}EXPENSE_PAYMENT_METHOD_10{/t}{/if}
+                                                                {if $search_result[i].expense_payment_method ==11}{t}EXPENSE_PAYMENT_METHOD_11{/t}{/if}
                                                             </td>
-                                                            <td class="olotd4" nowrap>{$currency_sym} {$search_result[i].EXPENSE_NET_AMOUNT}</td>
-                                                            <td class="olotd4" nowrap>{$search_result[i].EXPENSE_TAX_RATE} %</td>
-                                                            <td class="olotd4" nowrap>{$currency_sym} {$search_result[i].EXPENSE_TAX_AMOUNT}</td>
-                                                            <td class="olotd4" nowrap>{$currency_sym} {$search_result[i].EXPENSE_GROSS_AMOUNT}</td>
+                                                            <td class="olotd4" nowrap>{$currency_sym} {$search_result[i].expense_net_amount}</td>
+                                                            <td class="olotd4" nowrap>{$search_result[i].expense_tax_rate} %</td>
+                                                            <td class="olotd4" nowrap>{$currency_sym} {$search_result[i].expense_tax_amount}</td>
+                                                            <td class="olotd4" nowrap>{$currency_sym} {$search_result[i].expense_gross_amount}</td>
                                                             <td class="olotd4" nowrap>
                                                                 {if !$search_result[i].EXPENSE_NOTES == ''}
-                                                                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{t}Notes{/t}</b><hr><p>{$search_result[i].EXPENSE_NOTES|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();">
+                                                                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{t}Notes{/t}</b><hr><p>{$search_result[i].expense_notes|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();">
                                                                 {/if}
                                                             </td>
-                                                            <td class="olotd4" nowrap><img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{t}Items{/t}</b><hr><p>{$search_result[i].EXPENSE_ITEMS|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();"></td>
+                                                            <td class="olotd4" nowrap><img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{t}Items{/t}</b><hr><p>{$search_result[i].expense_items|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();"></td>
                                                             <td class="olotd4" nowrap>
-                                                                <a href="index.php?page=expense:details&expense_id={$search_result[i].EXPENSE_ID}">
+                                                                <a href="index.php?page=expense:details&expense_id={$search_result[i].expense_id}">
                                                                     <img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" onMouseOver="ddrivetip('<b>{t}View Expense Details{/t}</b>');" onMouseOut="hideddrivetip();">
                                                                 </a>
-                                                                <a href="index.php?page=expense:edit&expense_id={$search_result[i].EXPENSE_ID}">
+                                                                <a href="index.php?page=expense:edit&expense_id={$search_result[i].expense_id}">
                                                                     <img src="{$theme_images_dir}icons/16x16/small_edit.gif" alt=""  border="0" onMouseOver="ddrivetip('<b>{t}Edit Expense Details{/t}</b>');" onMouseOut="hideddrivetip();">
                                                                 </a>
-                                                                <a href="index.php?page=expense:delete&expense_id={$search_result[i].EXPENSE_ID}" onclick="return confirmDelete('{t}Are you Sure you want to delete this Expense Record? This will permanently remove the record from the database.{/t}');">
+                                                                <a href="index.php?page=expense:delete&expense_id={$search_result[i].expense_id}" onclick="return confirmDelete('{t}Are you Sure you want to delete this Expense Record? This will permanently remove the record from the database.{/t}');">
                                                                     <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{t}Delete Expense Record{/t}</b>');" onMouseOut="hideddrivetip();">
                                                                 </a>
                                                             </td>

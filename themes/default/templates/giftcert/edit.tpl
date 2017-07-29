@@ -26,16 +26,16 @@
                                         <table>
                                             <tr>
                                                 <td><b>{t}Gift Certificate Code{/t}</b></td>
-                                                <td>{$giftcert_details.GIFTCERT_CODE}</td>
+                                                <td>{$giftcert_details.giftcert_code}</td>
                                             </tr>
                                             <tr>
                                                 <td><b>{t}Customer{/t}</b></td>
-                                                <td><a href="index.php?page=customer:details&customer_id={$giftcert_details.CUSTOMER_ID}">{$customer_details.CUSTOMER_DISPLAY_NAME}</a></td>
+                                                <td><a href="index.php?page=customer:details&customer_id={$giftcert_details.customer_id}">{$customer_details.customer_display_name}</a></td>
                                             </tr>
                                             <tr>
                                                 <td><b>{t}Expires{/t}</b></td>
                                                 <td>
-                                                    <input id="date_expires" name="date_expires" class="olotd4" size="10" value="{$giftcert_details.DATE_EXPIRES|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
+                                                    <input id="date_expires" name="date_expires" class="olotd4" size="10" value="{$giftcert_details.date_expires|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
                                                     <input type="button" id="date_expires_button" value="+">
                                                     <script>                                                       
                                                         Calendar.setup( {
@@ -48,14 +48,14 @@
                                             </tr>
                                             <tr>
                                                 <td><b>{t}Amount{/t}</b></td>
-                                                <td>{$currency_sym}<input name="amount" class="olotd5" size="10" value="{$giftcert_details.AMOUNT|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumbersPeriod(event);"/></td>
+                                                <td>{$currency_sym}<input name="amount" class="olotd5" size="10" value="{$giftcert_details.amount|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumbersPeriod(event);"/></td>
                                             </tr>
                                             <tr>
                                                 <td><b>{t}Status{/t}</b></td>
                                                 <td>
                                                     <select name="status">
-                                                        <option value="1" {if $giftcert_details.STATUS == '1'}selected{/if}>{t}Active{/t}</option>
-                                                        <option value="0" {if $giftcert_details.STATUS == '0'}selected{/if}>{t}Blocked{/t}</option>
+                                                        <option value="1" {if $giftcert_details.status == '1'}selected{/if}>{t}Active{/t}</option>
+                                                        <option value="0" {if $giftcert_details.status == '0'}selected{/if}>{t}Blocked{/t}</option>
                                                     </select>
                                                 </td>
                                             </tr>
@@ -63,7 +63,7 @@
                                                 <td colspan="2"><b>{t}Notes{/t}:</b></td>
                                             </tr>
                                             <tr>
-                                                <td colspan="2"><textarea class="olotd5" rows="15" cols="70" name="notes">{$giftcert_details.NOTES}</textarea></td>
+                                                <td colspan="2"><textarea class="olotd5" rows="15" cols="70" name="notes">{$giftcert_details.notes}</textarea></td>
                                             </tr>
                                             <tr>
                                                 <td colspan="2">                                                    

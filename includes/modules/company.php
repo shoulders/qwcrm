@@ -35,10 +35,10 @@ function update_company_hours($db, $openingTime, $closingTime) {
     global $smarty;
     
     $sql = "UPDATE ".PRFX."company SET
-            OPENING_HOUR    =". $db->qstr( $openingTime['Time_Hour']     ).",
-            OPENING_MINUTE  =". $db->qstr( $openingTime['Time_Minute']   ).",
-            CLOSING_HOUR    =". $db->qstr( $closingTime['Time_Hour']     ).",
-            CLOSING_MINUTE  =". $db->qstr( $closingTime['Time_Minute']   );
+            opening_hour    =". $db->qstr( $openingTime['Time_Hour']     ).",
+            opening_minute  =". $db->qstr( $openingTime['Time_Minute']   ).",
+            closing_hour    =". $db->qstr( $closingTime['Time_Hour']     ).",
+            closing_minute  =". $db->qstr( $closingTime['Time_Minute']   );
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the company hours."));
@@ -67,7 +67,7 @@ function update_company_hours($db, $openingTime, $closingTime) {
 
 function get_company_start_end_times($db, $time_event) {
     
-    $sql = "SELECT OPENING_HOUR, OPENING_MINUTE, CLOSING_HOUR, CLOSING_MINUTE FROM ".PRFX."company";
+    $sql = "SELECT opening_hour, opening_minute, closing_hour, closing_minute FROM ".PRFX."company";
 
    if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the company start and end times."));
@@ -78,12 +78,12 @@ function get_company_start_end_times($db, $time_event) {
 
         // return opening time in correct format for smarty time builder
         if($time_event == 'opening_time') {
-            return $companyTime['OPENING_HOUR'].':'.$companyTime['OPENING_MINUTE'].':00';
+            return $companyTime['opening_hour'].':'.$companyTime['opening_minute'].':00';
         }
 
         // return closing time in correct format for smarty time builder
         if($time_event == 'closing_time') {
-            return $companyTime['CLOSING_HOUR'].':'.$companyTime['CLOSING_MINUTE'].':00';
+            return $companyTime['closing_hour'].':'.$companyTime['closing_minute'].':00';
         }
         
     }
@@ -101,27 +101,27 @@ function update_company_details($db, $record) {
     global $smarty;
     
     $sql .= "UPDATE ".PRFX."company SET
-            NAME                = ". $db->qstr( $record['company_name']               ).",
-            NUMBER              = ". $db->qstr( $record['company_number']             ).",
-            ADDRESS             = ". $db->qstr( $record['company_address']            ).",
-            CITY                = ". $db->qstr( $record['company_city']               ).",
-            STATE               = ". $db->qstr( $record['company_state']              ).",
-            ZIP                 = ". $db->qstr( $record['company_zip']                ).",
-            COUNTRY             = ". $db->qstr( $record['company_country']            ).",
-            PHONE               = ". $db->qstr( $record['company_phone']              ).",
-            MOBILE              = ". $db->qstr( $record['company_mobile']             ).",
-            FAX                 = ". $db->qstr( $record['company_fax']                ).",
-            EMAIL               = ". $db->qstr( $record['company_email']              ).",    
-            CURRENCY_SYMBOL     = ". $db->qstr( $record['company_currency_sym']       ).",
-            CURRENCY_CODE       = ". $db->qstr( $record['company_currency_code']      ).",
-            DATE_FORMAT         = ". $db->qstr( $record['company_date_format']        ).",";
+            name                = ". $db->qstr( $record['company_name']               ).",
+            number              = ". $db->qstr( $record['company_number']             ).",
+            address             = ". $db->qstr( $record['company_address']            ).",
+            city                = ". $db->qstr( $record['company_city']               ).",
+            state               = ". $db->qstr( $record['company_state']              ).",
+            zip                 = ". $db->qstr( $record['company_zip']                ).",
+            country             = ". $db->qstr( $record['company_country']            ).",
+            phone               = ". $db->qstr( $record['company_phone']              ).",
+            mobile              = ". $db->qstr( $record['company_mobile']             ).",
+            fax                 = ". $db->qstr( $record['company_fax']                ).",
+            email               = ". $db->qstr( $record['company_email']              ).",    
+            currency_symbol     = ". $db->qstr( $record['company_currency_sym']       ).",
+            currency_code       = ". $db->qstr( $record['company_currency_code']      ).",
+            date_format         = ". $db->qstr( $record['company_date_format']        ).",";
     
     if(!empty($_FILES["company_logo"]["name"])) {
-        $sql .="LOGO                = ". $db->qstr( MEDIA_DIR . $new_logo_filename        ).",";
+        $sql .="logo                = ". $db->qstr( MEDIA_DIR . $new_logo_filename        ).",";
     }         
-        $sql .="WWW                 = ". $db->qstr( $record['company_www']                ).",  
-                TAX_RATE            = ". $db->qstr( $record['company_tax_rate']           ).",
-                WELCOME_MSG         = ". $db->qstr( $record['company_welcome_msg']        );                           
+        $sql .="www                 = ". $db->qstr( $record['company_www']                ).",  
+                tax_rate            = ". $db->qstr( $record['company_tax_rate']           ).",
+                welcome_msg         = ". $db->qstr( $record['company_welcome_msg']        );                           
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the company details."));
@@ -176,7 +176,7 @@ function upload_company_logo($db) {
     if($_FILES['company_logo']['size'] > 0) {
         
         // Delete current logo
-        unlink(get_company_info($db, 'LOGO'));        
+        unlink(get_company_info($db, 'logo'));        
         
         // Allowed extensions
         $allowedExts = array('jpg', 'jpeg', 'gif', 'png');
@@ -200,7 +200,7 @@ function upload_company_logo($db) {
     
             // Check for file submission errors and echo them
             if ($_FILES['company_logo']['error'] > 0 ) {
-                echo 'Return Code: ' . $_FILES['company_logo']['error'] . '<br />';                
+                echo gettext("Return Code").': ' . $_FILES['company_logo']['error'] . '<br />';                
             
             // If no errors then move the file from the PHP temporary storage to the logo location
             } else {

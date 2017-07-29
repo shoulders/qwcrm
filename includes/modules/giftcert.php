@@ -41,32 +41,32 @@ function display_giftcerts($db, $direction = 'DESC', $use_pages = false, $page_n
     if($search_term != null) {$whereTheseRecords .= " AND ".PRFX."giftcert.$search_category LIKE '%$search_term%'";}
     
     // Restrict by Status
-    if($status != null) {$whereTheseRecords .= " AND ".PRFX."giftcert.STATUS=".$db->qstr($status);} 
+    if($status != null) {$whereTheseRecords .= " AND ".PRFX."giftcert.status=".$db->qstr($status);} 
     
     // Restrict by redmption Status
-    if($is_redeemed != null) {$whereTheseRecords .= " AND ".PRFX."giftcert.IS_REDEEMED=".$db->qstr($is_redeemed);}
+    if($is_redeemed != null) {$whereTheseRecords .= " AND ".PRFX."giftcert.is_redeemed=".$db->qstr($is_redeemed);}
     
     // Restrict by Employee
-    if($employee_id != null) {$whereTheseRecords .= " AND ".PRFX."giftcert.EMPLOYEE_ID=".$db->qstr($employee_id);}
+    if($employee_id != null) {$whereTheseRecords .= " AND ".PRFX."giftcert.employee_id=".$db->qstr($employee_id);}
     
     // Restrict by Customer
-    if($customer_id != null) {$whereTheseRecords .= " AND ".PRFX."giftcert.CUSTOMER_ID=".$db->qstr($customer_id);}
+    if($customer_id != null) {$whereTheseRecords .= " AND ".PRFX."giftcert.customer_id=".$db->qstr($customer_id);}
     
     // Restrict by Invoice
-    if($invoice_id != null) {$whereTheseRecords .= " AND ".PRFX."giftcert.INVOICE_ID=".$db->qstr($invoice_id);}
+    if($invoice_id != null) {$whereTheseRecords .= " AND ".PRFX."giftcert.invoice_id=".$db->qstr($invoice_id);}
     
     /* The SQL code */
     
     $sql = "SELECT
             ".PRFX."giftcert.     *,
             ".PRFX."user.         display_name,
-            ".PRFX."customer.     CUSTOMER_DISPLAY_NAME               
+            ".PRFX."customer.     customer_display_name               
             FROM ".PRFX."giftcert
-            LEFT JOIN ".PRFX."user ON ".PRFX."giftcert.EMPLOYEE_ID = ".PRFX."user.user_id
-            LEFT JOIN ".PRFX."customer ON ".PRFX."giftcert.CUSTOMER_ID = ".PRFX."customer.CUSTOMER_ID            
+            LEFT JOIN ".PRFX."user ON ".PRFX."giftcert.employee_id = ".PRFX."user.user_id
+            LEFT JOIN ".PRFX."customer ON ".PRFX."giftcert.customer_id = ".PRFX."customer.customer_id            
             ".$whereTheseRecords."
-            GROUP BY ".PRFX."giftcert.GIFTCERT_ID           
-            ORDER BY ".PRFX."giftcert.GIFTCERT_ID
+            GROUP BY ".PRFX."giftcert.giftcert_id           
+            ORDER BY ".PRFX."giftcert.giftcert_id
             ".$direction;           
 
     /* Restrict by pages */
@@ -152,17 +152,17 @@ function display_giftcerts($db, $direction = 'DESC', $use_pages = false, $page_n
 function insert_giftcert($db, $customer_id, $date_expires, $giftcert_code, $amount, $status, $notes) {
     
     $sql = "INSERT INTO ".PRFX."giftcert SET 
-            CUSTOMER_ID     =". $db->qstr( $customer_id                         ).",               
-            INVOICE_ID      =". $db->qstr( 0                                    ).",
-            EMPLOYEE_ID     =". $db->qstr( QFactory::getUser()->login_user_id   ).",
-            DATE_CREATED    =". $db->qstr( time()                               ).",
-            DATE_EXPIRES    =". $db->qstr( $date_expires                        ).",
-            DATE_REDEEMED   =". $db->qstr( 0                                    ).",
-            IS_REDEEMED     =". $db->qstr( 0                                    ).",   
-            GIFTCERT_CODE   =". $db->qstr( $giftcert_code                       ).",                
-            AMOUNT          =". $db->qstr( $amount                              ).",
-            STATUS          =". $db->qstr( $status                              ).",                
-            NOTES           =". $db->qstr( $notes                               );
+            customer_id     =". $db->qstr( $customer_id                         ).",               
+            invoice_id      =". $db->qstr( 0                                    ).",
+            employee_id     =". $db->qstr( QFactory::getUser()->login_user_id   ).",
+            date_created    =". $db->qstr( time()                               ).",
+            date_expires    =". $db->qstr( $date_expires                        ).",
+            date_redeemed   =". $db->qstr( 0                                    ).",
+            is_redeemed     =". $db->qstr( 0                                    ).",   
+            giftcert_code   =". $db->qstr( $giftcert_code                       ).",                
+            amount          =". $db->qstr( $amount                              ).",
+            status          =". $db->qstr( $status                              ).",                
+            notes           =". $db->qstr( $notes                               );
 
     if(!$db->execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to insert the Gift Certificate into the database."));
@@ -183,7 +183,7 @@ function insert_giftcert($db, $customer_id, $date_expires, $giftcert_code, $amou
 
 function get_giftcert_details($db, $giftcert_id, $item = null){
     
-    $sql = "SELECT * FROM ".PRFX."giftcert WHERE GIFTCERT_ID=".$db->qstr($giftcert_id);
+    $sql = "SELECT * FROM ".PRFX."giftcert WHERE giftcert_id=".$db->qstr($giftcert_id);
     
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the Gift Certificate details."));
@@ -210,15 +210,15 @@ function get_giftcert_details($db, $giftcert_id, $item = null){
 
 function get_giftcert_id_by_gifcert_code($db, $giftcert_code) {
     
-    $sql = "SELECT * FROM ".PRFX."giftcert WHERE GIFTCERT_CODE=".$db->qstr( $giftcert_code );
+    $sql = "SELECT * FROM ".PRFX."giftcert WHERE giftcert_code=".$db->qstr( $giftcert_code );
 
     if(!$rs = $db->execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the Gift Certificate ID by the Gift Certificate code."));
         exit;
     }
     
-    if($rs->fields['GIFTCERT_ID'] != '') {
-        return $rs->fields['GIFTCERT_ID'];
+    if($rs->fields['giftcert_id'] != '') {
+        return $rs->fields['giftcert_id'];
     } else {
         return false;
     }
@@ -234,11 +234,11 @@ function get_giftcert_id_by_gifcert_code($db, $giftcert_code) {
 function update_giftcert($db, $giftcert_id, $date_expires, $amount, $status, $notes) {
     
     $sql = "UPDATE ".PRFX."giftcert SET            
-            DATE_EXPIRES    =". $db->qstr( $date_expires                        ).",
-            AMOUNT          =". $db->qstr( $amount                              ).",
-            STATUS          =". $db->qstr( $status                              ).",                
-            NOTES           =". $db->qstr( $notes                               )."
-            WHERE GIFTCERT_ID=".$giftcert_id;
+            date_expires    =". $db->qstr( $date_expires                        ).",
+            amount          =". $db->qstr( $amount                              ).",
+            status          =". $db->qstr( $status                              ).",                
+            notes           =". $db->qstr( $notes                               )."
+            WHERE giftcert_id =".$giftcert_id;
 
     if(!$db->execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the Gift Certificate record in the database."));
@@ -264,7 +264,7 @@ function delete_giftcert($db, $giftcert_id) {
     
     // update and set non-active as you cannot really delete an issues gift certificate
 
-    $sql = "UPDATE ".PRFX."giftcert SET STATUS='0' WHERE GIFTCERT_ID=".$db->qstr($giftcert_id);
+    $sql = "UPDATE ".PRFX."giftcert SET status='0' WHERE giftcert_id=".$db->qstr($giftcert_id);
 
     if(!$db->execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete the Gift Certificate."));
@@ -286,14 +286,14 @@ function delete_giftcert($db, $giftcert_id) {
 function validate_giftcert_for_payment($db, $giftcert_id) {
 
     // check is active
-    if(get_giftcert_details($db, $giftcert_id, 'STATUS') != 1) {
+    if(get_giftcert_details($db, $giftcert_id, 'status') != 1) {
         //force_page('core','error', 'error_msg='.gettext("This gift certificate is not active"));
         //exit;
         return false;
     }
 
     // check if expired
-    if(get_giftcert_details($db, $giftcert_id, 'DATE_EXPIRES') < time()) {
+    if(get_giftcert_details($db, $giftcert_id, 'date_expires') < time()) {
         //force_page('core', 'error', 'error_msg='.gettext("This gift certificate is expired."));
         //exit;
         return false;
@@ -310,7 +310,7 @@ function validate_giftcert_for_payment($db, $giftcert_id) {
 function check_giftcert_redeemed($db, $giftcert_id) {
 
     // check if redeemed
-    if(get_giftcert_details($db, $giftcert_id, 'IS_REDEEMED') == 1) {
+    if(get_giftcert_details($db, $giftcert_id, 'is_redeemed') == 1) {
         //force_page('core','error', 'error_msg=This gift certificate has been redeemed');
         //exit;
         return true;
@@ -347,11 +347,11 @@ function generate_giftcert_code() {
 function update_giftcert_as_redeemed($db, $giftcert_id, $invoice_id) {
     
     $sql = "UPDATE ".PRFX."giftcert SET
-            DATE_REDEEMED       =". $db->qstr( time()       ).",
-            IS_REDEEMED         =". $db->qstr( 1            ).",   
-            INVOICE_ID          =". $db->qstr( $invoice_id  ).",
-            STATUS              =". $db->qstr( 0            )."
-            WHERE GIFTCERT_ID   =". $db->qstr( $giftcert_id );
+            date_redeemed       =". $db->qstr( time()       ).",
+            is_redeemed         =". $db->qstr( 1            ).",   
+            invoice_id          =". $db->qstr( $invoice_id  ).",
+            status              =". $db->qstr( 0            )."
+            WHERE giftcert_id   =". $db->qstr( $giftcert_id );
     
     if(!$rs = $db->execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the Gift Certificate as redeemed."));

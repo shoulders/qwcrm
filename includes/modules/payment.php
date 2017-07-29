@@ -33,14 +33,14 @@ defined('_QWEXEC') or die;
 function insert_transaction($db, $invoice_id, $workorder_id, $customer_id, $type, $amount, $note) {
     
     $sql = "INSERT INTO ".PRFX."payment_transactions SET
-            DATE            = ".$db->qstr(time()                                ).",
-            TYPE            = ".$db->qstr( $type                                ).",
-            INVOICE_ID      = ".$db->qstr( $invoice_id                          ).",
-            WORKORDER_ID    = ".$db->qstr( $workorder_id                        ).",
-            CUSTOMER_ID     = ".$db->qstr( $customer_id                         ).",
-            EMPLOYEE_ID     = ".$db->qstr( QFactory::getUser()->login_user_id   ).",
-            AMOUNT          = ".$db->qstr( $amount                              ).",
-            NOTE            = ".$db->qstr( $note                                );
+            date            = ".$db->qstr(time()                                ).",
+            type            = ".$db->qstr( $type                                ).",
+            invoice_id      = ".$db->qstr( $invoice_id                          ).",
+            workorder_id    = ".$db->qstr( $workorder_id                        ).",
+            customer_id     = ".$db->qstr( $customer_id                         ).",
+            employee_id     = ".$db->qstr( QFactory::getUser()->login_user_id   ).",
+            amount          = ".$db->qstr( $amount                              ).",
+            note            = ".$db->qstr( $note                                );
 
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to insert transaction into the database."));
@@ -62,13 +62,13 @@ function insert_payment_method_transaction($db, $invoice_id, $amount, $method_na
     $formatted_amount = sprintf( "%.2f", $amount);
            
     // Other Variables
-    $currency_sym   = get_company_details($db, 'CURRENCY_SYMBOL');
-    $workorder_id   = $invoice_details['WORKORDER_ID'];
-    $customer_id    = $invoice_details['CUSTOMER_ID'];
+    $currency_sym   = get_company_details($db, 'currency_symbol');
+    $workorder_id   = $invoice_details['workorder_id'];
+    $customer_id    = $invoice_details['customer_id'];
     
     // Calculate the new balance and paid amount    
-    $new_invoice_paid_amount    = $invoice_details['PAID_AMOUNT'] + $amount;
-    $new_invoice_balance        = $invoice_details['BALANCE'] - $amount;
+    $new_invoice_paid_amount    = $invoice_details['paid_amount'] + $amount;
+    $new_invoice_balance        = $invoice_details['balance'] - $amount;
             
     /* Partial Payment Transaction */
     
@@ -105,7 +105,7 @@ function insert_payment_method_transaction($db, $invoice_id, $amount, $method_na
         update_invoice_transaction_only($db, $invoice_id, 1, time(), $new_invoice_paid_amount, $new_invoice_balance);   
 
         // log message   
-        if($amount < $invoice_details['TOTAL']) {
+        if($amount < $invoice_details['total']) {
             
             // Transaction is a partial payment
             $log_msg = gettext("Partial Payment made by")." $method_name ".gettext("for")." $currency_sym$formatted_amount, ".gettext("closing the invoice.")." $method_note, ".gettext("Note").": $note";
@@ -176,9 +176,9 @@ function get_payment_details($db, $item = null){
 function get_active_payment_methods($db) {
     
     $sql = "SELECT
-            SMARTY_TPL_KEY, ACTIVE
+            smarty_tpl_key, active
             FROM ".PRFX."payment_methods
-            WHERE ACTIVE='1'";    
+            WHERE active='1'";    
     
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get active payment methods."));
@@ -216,7 +216,7 @@ function get_payment_methods_status($db) {
 
 function get_active_credit_cards($db) {
     
-    $sql = "SELECT CARD_TYPE, CARD_NAME FROM ".PRFX."payment_credit_cards WHERE ACTIVE='1'";
+    $sql = "SELECT card_type, card_name FROM ".PRFX."payment_credit_cards WHERE active='1'";
     
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the active credit cards."));
@@ -245,7 +245,7 @@ function get_active_credit_cards($db) {
 
 function get_invoice_transactions($db, $invoice_id){
     
-    $sql ="SELECT * FROM ".PRFX."payment_transactions WHERE INVOICE_ID =".$db->qstr($invoice_id);
+    $sql ="SELECT * FROM ".PRFX."payment_transactions WHERE invoice_id =".$db->qstr($invoice_id);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the invoice's transactions."));
@@ -266,15 +266,15 @@ function get_invoice_transactions($db, $invoice_id){
 function update_payment_settings($db, $VAR) {
     
     $sql = "UPDATE ".PRFX."payment SET            
-            BANK_ACCOUNT_NAME       =". $db->qstr( $VAR['bank_account_name']        ).",
-            BANK_NAME               =". $db->qstr( $VAR['bank_name']                ).",
-            BANK_ACCOUNT_NUMBER     =". $db->qstr( $VAR['bank_account_number']      ).",
-            BANK_SORT_CODE          =". $db->qstr( $VAR['bank_sort_code']           ).",
-            BANK_IBAN               =". $db->qstr( $VAR['bank_iban']                ).",
-            PAYPAL_EMAIL            =". $db->qstr( $VAR['paypal_email']             ).",        
-            BANK_TRANSACTION_MSG    =". $db->qstr( $VAR['bank_transaction_message'] ).",
-            CHEQUE_PAYABLE_TO_MSG   =". $db->qstr( $VAR['cheque_payable_to_msg']    ).",
-            INVOICE_FOOTER_MSG      =". $db->qstr( $VAR['invoice_footer_msg']       );            
+            bank_account_name       =". $db->qstr( $VAR['bank_account_name']        ).",
+            bank_name               =". $db->qstr( $VAR['bank_name']                ).",
+            bank_account_number     =". $db->qstr( $VAR['bank_account_number']      ).",
+            bank_sort_code          =". $db->qstr( $VAR['bank_sort_code']           ).",
+            bank_iban               =". $db->qstr( $VAR['bank_iban']                ).",
+            paypal_email            =". $db->qstr( $VAR['paypal_email']             ).",        
+            bank_transaction_msg    =". $db->qstr( $VAR['bank_transaction_message'] ).",
+            cheque_payable_to_msg   =". $db->qstr( $VAR['cheque_payable_to_msg']    ).",
+            invoice_footer_msg      =". $db->qstr( $VAR['invoice_footer_msg']       );            
 
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update payment settings."));
@@ -309,7 +309,7 @@ function update_payment_methods_status($db, $VAR) {
         // make empty status = zero (not nessasary but neater)
         if ($payment_method['payment_method_status'] == ''){$payment_method['payment_method_status'] = '0';}
         
-        $sql = "UPDATE ".PRFX."payment_methods SET ACTIVE=". $db->qstr( $payment_method['payment_method_status'] )." WHERE SMARTY_TPL_KEY=". $db->qstr( $payment_method['smarty_tpl_key'] ); 
+        $sql = "UPDATE ".PRFX."payment_methods SET active=". $db->qstr( $payment_method['payment_method_status'] )." WHERE smarty_tpl_key=". $db->qstr( $payment_method['smarty_tpl_key'] ); 
         
         if(!$rs = $db->execute($sql)) {
             force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update a payment method status."));
@@ -332,14 +332,14 @@ function update_payment_methods_status($db, $VAR) {
 
 function check_payment_method_is_active($db, $method) {
     
-    $sql = "SELECT ACTIVE FROM ".PRFX."payment_methods WHERE SMARTY_TPL_KEY=".$db->qstr($method);   
+    $sql = "SELECT active FROM ".PRFX."payment_methods WHERE smarty_tpl_key=".$db->qstr($method);   
     
     if(!$rs = $db->execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to check if the payment method is active."));
         exit;
     }
     
-    if($rs->fields['ACTIVE'] != 1) {
+    if($rs->fields['active'] != 1) {
         
         return false;
         
@@ -369,7 +369,7 @@ function validate_payment_method_totals($db, $invoice_id, $amount) {
     }
 
     // Is the transaction larger than the outstanding invoice balance, this is not allowed
-    if($amount > get_invoice_details($db, $invoice_id, 'BALANCE')){
+    if($amount > get_invoice_details($db, $invoice_id, 'balance')){
         //force_page('payment', 'new&invoice_id='.$invoice_id, 'warning_msg=You can not enter more than the outstanding balance of the invoice.');
         //exit;
         $smarty->assign('warning_msg', gettext("You can not enter more than the outstanding balance of the invoice."));

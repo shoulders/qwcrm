@@ -43,35 +43,35 @@ function display_suppliers($db, $direction = 'DESC', $use_pages = false, $page_n
         switch ($search_category) {
 
             case 'id':            
-                $whereTheseRecords = " WHERE SUPPLIER_ID";
+                $whereTheseRecords = " WHERE supplier_id";
                 break;
 
             case 'name':          
-                $whereTheseRecords = " WHERE SUPPLIER_NAME";
+                $whereTheseRecords = " WHERE supplier_name";
                 break;
 
             case 'contact':          
-                $whereTheseRecords = " WHERE SUPPLIER_CONTACT";
+                $whereTheseRecords = " WHERE supplier_contact";
                 break;
             
             case 'type':          
-                $whereTheseRecords = " WHERE SUPPLIER_TYPE";
+                $whereTheseRecords = " WHERE supplier_type";
                 break;
 
             case 'zip':          
-                $whereTheseRecords = " WHERE SUPPLIER_ZIP";
+                $whereTheseRecords = " WHERE supplier_zip";
                 break;
 
             case 'notes':          
-                $whereTheseRecords = " WHERE SUPPLIER_NOTES";
+                $whereTheseRecords = " WHERE supplier_notes";
                 break;
 
             case 'description':         
-                $whereTheseRecords = " WHERE SUPPLIER_DESCRIPTION";
+                $whereTheseRecords = " WHERE supplier_description";
                 break;
              
             default:           
-                $whereTheseRecords = " WHERE SUPPLIER_ID";
+                $whereTheseRecords = " WHERE supplier_id";
 
         }
         
@@ -86,8 +86,8 @@ function display_suppliers($db, $direction = 'DESC', $use_pages = false, $page_n
             FROM ".PRFX."supplier                                                   
             ".$whereTheseRecords."
             ".$likeTheseRecords."
-            GROUP BY ".PRFX."supplier.SUPPLIER_ID
-            ORDER BY ".PRFX."supplier.SUPPLIER_ID
+            GROUP BY ".PRFX."supplier.supplier_id
+            ORDER BY ".PRFX."supplier.supplier_id
             ".$direction;            
     
     /* Restrict by pages */
@@ -174,20 +174,20 @@ function display_suppliers($db, $direction = 'DESC', $use_pages = false, $page_n
 function insert_supplier($db, $VAR) {
     
     $sql = "INSERT INTO ".PRFX."supplier SET            
-            SUPPLIER_NAME           = ". $db->qstr( $VAR['supplierName']        ).",
-            SUPPLIER_CONTACT        = ". $db->qstr( $VAR['supplierContact']     ).",
-            SUPPLIER_TYPE           = ". $db->qstr( $VAR['supplierType']        ).",
-            SUPPLIER_PHONE          = ". $db->qstr( $VAR['supplierPhone']       ).",
-            SUPPLIER_FAX            = ". $db->qstr( $VAR['supplierFax']         ).",
-            SUPPLIER_MOBILE         = ". $db->qstr( $VAR['supplierMobile']      ).",
-            SUPPLIER_WWW            = ". $db->qstr( $VAR['supplierWww']         ).",
-            SUPPLIER_EMAIL          = ". $db->qstr( $VAR['supplierEmail']       ).",
-            SUPPLIER_ADDRESS        = ". $db->qstr( $VAR['supplierAddress']     ).",
-            SUPPLIER_CITY           = ". $db->qstr( $VAR['supplierCity']        ).",
-            SUPPLIER_STATE          = ". $db->qstr( $VAR['supplierState']       ).",
-            SUPPLIER_ZIP            = ". $db->qstr( $VAR['supplierZip']         ).",
-            SUPPLIER_NOTES          = ". $db->qstr( $VAR['supplierNotes']       ).",
-            SUPPLIER_DESCRIPTION    = ". $db->qstr( $VAR['supplierDescription'] );
+            supplier_name           = ". $db->qstr( $VAR['supplierName']        ).",
+            supplier_contact        = ". $db->qstr( $VAR['supplierContact']     ).",
+            supplier_type           = ". $db->qstr( $VAR['supplierType']        ).",
+            supplier_phone          = ". $db->qstr( $VAR['supplierPhone']       ).",
+            supplier_fax            = ". $db->qstr( $VAR['supplierFax']         ).",
+            supplier_mobile         = ". $db->qstr( $VAR['supplierMobile']      ).",
+            supplier_www            = ". $db->qstr( $VAR['supplierWww']         ).",
+            supplier_email          = ". $db->qstr( $VAR['supplierEmail']       ).",
+            supplier_address        = ". $db->qstr( $VAR['supplierAddress']     ).",
+            supplier_city           = ". $db->qstr( $VAR['supplierCity']        ).",
+            supplier_state          = ". $db->qstr( $VAR['supplierState']       ).",
+            supplier_zip            = ". $db->qstr( $VAR['supplierZip']         ).",
+            supplier_notes          = ". $db->qstr( $VAR['supplierNotes']       ).",
+            supplier_description    = ". $db->qstr( $VAR['supplierDescription'] );
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to insert the supplier record into the database."));
@@ -208,7 +208,7 @@ function insert_supplier($db, $VAR) {
 
 function get_supplier_details($db, $supplier_id, $item = null){
     
-    $sql = "SELECT * FROM ".PRFX."supplier WHERE SUPPLIER_ID=".$db->qstr($supplier_id);
+    $sql = "SELECT * FROM ".PRFX."supplier WHERE supplier_id=".$db->qstr($supplier_id);
     
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the supplier details."));
@@ -238,21 +238,21 @@ function get_supplier_details($db, $supplier_id, $item = null){
 function update_supplier($db, $supplier_id, $VAR) {
     
     $sql = "UPDATE ".PRFX."supplier SET
-            SUPPLIER_NAME           = ". $db->qstr( $VAR['supplierName']        ).",
-            SUPPLIER_CONTACT        = ". $db->qstr( $VAR['supplierContact']     ).",
-            SUPPLIER_TYPE           = ". $db->qstr( $VAR['supplierType']        ).",
-            SUPPLIER_PHONE          = ". $db->qstr( $VAR['supplierPhone']       ).",
-            SUPPLIER_FAX            = ". $db->qstr( $VAR['supplierFax']         ).",
-            SUPPLIER_MOBILE         = ". $db->qstr( $VAR['supplierMobile']      ).",
-            SUPPLIER_WWW            = ". $db->qstr( $VAR['supplierWww']         ).",
-            SUPPLIER_EMAIL          = ". $db->qstr( $VAR['supplierEmail']       ).",
-            SUPPLIER_ADDRESS        = ". $db->qstr( $VAR['supplierAddress']     ).",
-            SUPPLIER_CITY           = ". $db->qstr( $VAR['supplierCity']        ).",
-            SUPPLIER_STATE          = ". $db->qstr( $VAR['supplierState']       ).",
-            SUPPLIER_ZIP            = ". $db->qstr( $VAR['supplierZip']         ).",
-            SUPPLIER_NOTES          = ". $db->qstr( $VAR['supplierNotes']       ).",
-            SUPPLIER_DESCRIPTION    = ". $db->qstr( $VAR['supplierDescription'] )."
-            WHERE SUPPLIER_ID       = ". $db->qstr( $supplier_id                );                        
+            supplier_name           = ". $db->qstr( $VAR['supplierName']        ).",
+            supplier_contact        = ". $db->qstr( $VAR['supplierContact']     ).",
+            supplier_type           = ". $db->qstr( $VAR['supplierType']        ).",
+            supplier_phone          = ". $db->qstr( $VAR['supplierPhone']       ).",
+            supplier_fax            = ". $db->qstr( $VAR['supplierFax']         ).",
+            supplier_mobile         = ". $db->qstr( $VAR['supplierMobile']      ).",
+            supplier_www            = ". $db->qstr( $VAR['supplierWww']         ).",
+            supplier_email          = ". $db->qstr( $VAR['supplierEmail']       ).",
+            supplier_address        = ". $db->qstr( $VAR['supplierAddress']     ).",
+            supplier_city           = ". $db->qstr( $VAR['supplierCity']        ).",
+            supplier_state          = ". $db->qstr( $VAR['supplierState']       ).",
+            supplier_zip            = ". $db->qstr( $VAR['supplierZip']         ).",
+            supplier_notes          = ". $db->qstr( $VAR['supplierNotes']       ).",
+            supplier_description    = ". $db->qstr( $VAR['supplierDescription'] )."
+            WHERE supplier_id       = ". $db->qstr( $supplier_id                );                        
             
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the supplier details."));
@@ -275,7 +275,7 @@ function update_supplier($db, $supplier_id, $VAR) {
 
 function delete_supplier($db, $supplier_id){
     
-    $sql = "DELETE FROM ".PRFX."supplier WHERE SUPPLIER_ID=".$db->qstr($supplier_id);
+    $sql = "DELETE FROM ".PRFX."supplier WHERE supplier_id=".$db->qstr($supplier_id);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete the supplier record."));
@@ -352,14 +352,14 @@ function prepare_supplier_search_terms($search_category, $search_term) {
 
 function last_supplier_id_lookup($db) {
     
-    $sql = "SELECT * FROM ".PRFX."supplier ORDER BY SUPPLIER_ID DESC LIMIT 1";
+    $sql = "SELECT * FROM ".PRFX."supplier ORDER BY supplier_id DESC LIMIT 1";
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to lookup the last supplier record ID."));
         exit;
     } else {
         
-        return $rs->fields['SUPPLIER_ID'];
+        return $rs->fields['supplier_id'];
         
     }
     

@@ -30,7 +30,7 @@ defined('_QWEXEC') or die;
 
 function update_user_last_active($db, $user_id) {
     
-    $sql = "UPDATE ".PRFX."user SET LAST_ACTIVE=".$db->qstr(time())." WHERE USER_ID=".$db->qstr($user_id);
+    $sql = "UPDATE ".PRFX."user SET last_active=".$db->qstr(time())." WHERE user_id=".$db->qstr($user_id);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update a User's last active time."));
@@ -593,7 +593,7 @@ function verify_qwcrm_is_installed_correctly($db){
         exit;
     }
         
-    // check the databse can actually be read and retrieve the QWcrm database verion for the next function
+    // check the database can actually be read and retrieve the QWcrm database verion for the next function
     if(!$qwcrm_database_version = get_qwcrm_database_version_number($db)) {
         die(gettext("Cannot read the QWcrm version number from the database. This could be a database connection issue."));
     }
@@ -627,14 +627,14 @@ function verify_qwcrm_is_installed_correctly($db){
 
 function get_qwcrm_database_version_number($db){
     
-    $sql = "SELECT * FROM ".PRFX."qwcrm_version ORDER BY ".PRFX."qwcrm_version.`VERSION_INSTALLED` DESC LIMIT 1";
+    $sql = "SELECT * FROM ".PRFX."qwcrm_version ORDER BY ".PRFX."qwcrm_version.version_installed DESC LIMIT 1";
     
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Could not compare the version of the file system and databases to verify they match."));
         exit;
     } else {
         
-        return $rs->fields['VERSION_INSTALLED'];
+        return $rs->fields['version_installed'];
         
     }
     
@@ -870,7 +870,7 @@ function write_record_to_access_log($login_username = Null){
     // Apache log format
     // https://httpd.apache.org/docs/2.4/logs.html
     // http://docstore.mik.ua/orelly/webprog/pcook/ch11_14.htm
-    // Combined Log Format - LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\"" combined
+    /* Combined Log Format - LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\"" combined */    
     // $remote_host, $logname, $user, $time, $method, $request, $protocol, $status, $bytes, $referer, $user_agent
     
     $remote_ip      = $_SERVER['REMOTE_ADDR'];                              // only using IP - not hostname lookup

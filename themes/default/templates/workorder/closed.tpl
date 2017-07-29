@@ -80,28 +80,28 @@
                                                     </tr>
                                                     {section name=i loop=$workorders}                                                    
                                                         {if $workorders[i].WORK_ORDER_ID != ''}
-                                                            <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=workorder:details&workorder_id={$workorders[i].WORK_ORDER_ID}&customer_id={$workorders[i].CUSTOMER_ID}';" class="row1">
-                                                                <td class="olotd4"><a href="index.php?page=workorder:details&workorder_id={$workorders[i].WORK_ORDER_ID}&customer_id={$workorders[i].CUSTOMER_ID}">{$workorders[i].WORK_ORDER_ID}</a></td>
-                                                                <td class="olotd4"> {$workorders[i].WORK_ORDER_OPEN_DATE|date_format:$date_format}</td>
-                                                                <td class="olotd4">{$workorders[i].WORK_ORDER_CLOSE_DATE|date_format:$date_format}</td>
+                                                            <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=workorder:details&workorder_id={$workorders[i].work_order_id}&customer_id={$workorders[i].customer_id}';" class="row1">
+                                                                <td class="olotd4"><a href="index.php?page=workorder:details&workorder_id={$workorders[i].work_order_id}&customer_id={$workorders[i].customer_id}">{$workorders[i].work_order_id}</a></td>
+                                                                <td class="olotd4"> {$workorders[i].work_order_open_date|date_format:$date_format}</td>
+                                                                <td class="olotd4">{$workorders[i].work_order_close_date|date_format:$date_format}</td>
                                                                 <td class="olotd4" nowrap>
-                                                                    <img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" onMouseOver="ddrivetip('<b><center>{t}Contact Info{/t}</b></center><hr><b>{t}Phone{/t}: </b>{$workorders[i].CUSTOMER_PHONE}<br> <b>{t}Fax{/t}: </b>{$workorders[i].CUSTOMER_WORK_PHONE}<br><b>{t}Mobile{/t}: </b>{$workorders[i].CUSTOMER_MOBILE_PHONE}<br><b>{t}Address{/t}: </b><br>{$workorders[i].CUSTOMER_ADDRESS}<br>{$workorders[i].CUSTOMER_CITY}, {$workorders[i].CUSTOMER_STATE}<br>{$workorders[i].CUSTOMER_ZIP}');" onMouseOut="hideddrivetip();">                                                                         
-                                                                    <a class="link1" href="index.php?page=customer:details&customer_id={$workorders[i].CUSTOMER_ID}">{$workorders[i].CUSTOMER_DISPLAY_NAME}</a>
+                                                                    <img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" onMouseOver="ddrivetip('<b><center>{t}Contact Info{/t}</b></center><hr><b>{t}Phone{/t}: </b>{$workorders[i].customer_phone}<br> <b>{t}Fax{/t}: </b>{$workorders[i].customer_work_phone}<br><b>{t}Mobile{/t}: </b>{$workorders[i].customer_mobile_phone}<br><b>{t}Address{/t}: </b><br>{$workorders[i].customer_address}<br>{$workorders[i].customer_city}, {$workorders[i].customer_state}<br>{$workorders[i].customer_zip}');" onMouseOut="hideddrivetip();">                                                                         
+                                                                    <a class="link1" href="index.php?page=customer:details&customer_id={$workorders[i].customer_id}">{$workorders[i].customer_display_name}</a>
                                                                 </td>
                                                                 <td class="olotd4" nowrap>{$workorders[i].WORK_ORDER_SCOPE}</td>
                                                                 <td class="olotd4" align="center">
-                                                                    {if $workorders[i].WORK_ORDER_STATUS == '1'}{t}WORKORDER_STATUS_1{/t}{/if}
-                                                                    {if $workorders[i].WORK_ORDER_STATUS == '2'}{t}WORKORDER_STATUS_2{/t}{/if}
-                                                                    {if $workorders[i].WORK_ORDER_STATUS == '3'}{t}WORKORDER_STATUS_3{/t}{/if}
-                                                                    {if $workorders[i].WORK_ORDER_STATUS == '6'}{t}WORKORDER_STATUS_6{/t}{/if}
-                                                                    {if $workorders[i].WORK_ORDER_STATUS == '7'}{t}WORKORDER_STATUS_7{/t}{/if}
-                                                                    {if $workorders[i].WORK_ORDER_STATUS == '8'}{t}WORKORDER_STATUS_8{/t}{/if}
-                                                                    {if $workorders[i].WORK_ORDER_STATUS == '9'}{t}WORKORDER_STATUS_9{/t}{/if}
-                                                                    {if $workorders[i].WORK_ORDER_STATUS == '10'}{t}WORKORDER_STATUS_10{/t}{/if}
+                                                                    {if $workorders[i].work_order_status == '1'}{t}WORKORDER_STATUS_1{/t}{/if}
+                                                                    {if $workorders[i].work_order_status == '2'}{t}WORKORDER_STATUS_2{/t}{/if}
+                                                                    {if $workorders[i].work_order_status == '3'}{t}WORKORDER_STATUS_3{/t}{/if}
+                                                                    {if $workorders[i].work_order_status == '6'}{t}WORKORDER_STATUS_6{/t}{/if}
+                                                                    {if $workorders[i].work_order_status == '7'}{t}WORKORDER_STATUS_7{/t}{/if}
+                                                                    {if $workorders[i].work_order_status == '8'}{t}WORKORDER_STATUS_8{/t}{/if}
+                                                                    {if $workorders[i].work_order_status == '9'}{t}WORKORDER_STATUS_9{/t}{/if}
+                                                                    {if $workorders[i].work_order_status == '10'}{t}WORKORDER_STATUS_10{/t}{/if}
                                                                 </td>  
                                                                 <td class="olotd4" nowrap>
-                                                                    <img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" onMouseOver="ddrivetip('<center><b>{t}Contact Info{/t}</b></center><hr><b>{t}Fax{/t}: </b>{$workorders[i].EMPLOYEE_WORK_PHONE}<br><b>{t}Mobile{/t}: </b>{$workorders[i].EMPLOYEE_MOBILE_PHONE}<br><b>{t}Home{/t}: </b>{$workorders[i].EMPLOYEE_HOME_PHONE}');" onMouseOut="hideddrivetip();">                                                                         
-                                                                    <a class="link1" href="index.php?page=user:details&user_id={$workorders[i].EMPLOYEE_ID}">{$workorders[i].EMPLOYEE_DISPLAY_NAME}</a>
+                                                                    <img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" onMouseOver="ddrivetip('<center><b>{t}Contact Info{/t}</b></center><hr><b>{t}Fax{/t}: </b>{$workorders[i].employee_work_phone}<br><b>{t}Mobile{/t}: </b>{$workorders[i].employee_mobile_phone}<br><b>{t}Home{/t}: </b>{$workorders[i].employee_home_phone}');" onMouseOut="hideddrivetip();">                                                                         
+                                                                    <a class="link1" href="index.php?page=user:details&user_id={$workorders[i].employee_id}">{$workorders[i].employee_display_name}</a>
                                                                 </td>
                                                             </tr>
                                                         {else}

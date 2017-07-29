@@ -292,7 +292,7 @@ function prepare_config_data($new_config) {
         $sql = "TRUNCATE ".PRFX."session";                    
           
         if(!$rs = $db->Execute($sql)) {
-            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to empty the databse session table."));
+            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to empty the database session table."));
             exit;
             
         }

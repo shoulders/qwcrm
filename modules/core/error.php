@@ -44,7 +44,7 @@ $smarty->assign('error_msg',        $error_msg              );
     
 // Prevent Customers/Guests/Public users and scapers accidentally seeing the errors
 if($VAR['theme'] != 'off' && $login_usergroup_id != 8 && $login_usergroup_id != 8 && $login_usergroup_id != 9){
-    $BuildPage .= $smarty->fetch('core'.SEP.'error.tpl');
+    $BuildPage .= $smarty->fetch('core/error.tpl');
 } else {
     echo 'an error has occured but you are not allowed to see it if you are a Customer, Guest or Public user.';
     echo 'Time and date here - Give this to an admin and they can have a look at it for you';

@@ -14,21 +14,21 @@
                 </tr>                                            
                 {section name=r loop=$transactions}                                                
                     <tr class="olotd4">
-                        <td>{$transactions[r].TRANSACTION_ID}</td>
-                        <td>{$transactions[r].DATE|date_format:$date_format}</td>
+                        <td>{$transactions[r].transaction_id}</td>
+                        <td>{$transactions[r].date|date_format:$date_format}</td>
                         <td><b>{$currency_sym}</b>{$transactions[r].AMOUNT|string_format:"%.2f"}</td>
                         <td>
-                            {if $transactions[r].TYPE == 1}{t}Credit Card{/t}
-                            {elseif $transactions[r].TYPE == 2}{t}Cheque{/t}
-                            {elseif $transactions[r].TYPE == 3}{t}Cash{/t}
-                            {elseif $transactions[r].TYPE == 4}{t}Gift Certificate{/t}
-                            {elseif $transactions[r].TYPE == 5}{t}PayPal{/t}
+                            {if $transactions[r].type == 1}{t}Credit Card{/t}
+                            {elseif $transactions[r].type == 2}{t}Cheque{/t}
+                            {elseif $transactions[r].type == 3}{t}Cash{/t}
+                            {elseif $transactions[r].type == 4}{t}Gift Certificate{/t}
+                            {elseif $transactions[r].type == 5}{t}PayPal{/t}
                             {/if}
                         </td>
                     </tr>
                     <tr class="olotd4">
                         <td><b>{t}Note{/t}</b></td>
-                        <td colspan="3">{$transactions[r].NOTE}</td>
+                        <td colspan="3">{$transactions[r].note}</td>
                     </tr>                                                
                 {/section}                                            
             </table>

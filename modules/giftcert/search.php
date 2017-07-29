@@ -5,7 +5,7 @@ defined('_QWEXEC') or die;
 require(INCLUDES_DIR.'modules/giftcert.php');
 
 // a workaround until i add a full type search, this keeps the logic intact
-$VAR['search_category'] = 'GIFTCERT_CODE';
+$VAR['search_category'] = 'giftcert_code';
 
 // Build the page
 $smarty->assign('search_category',  $VAR['search_category']                                                                                                                 );

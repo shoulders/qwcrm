@@ -124,29 +124,29 @@
                                                     </tr>
                                                     {section name=i loop=$search_result}
                                                         <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=giftcert:details&giftcert_id={$search_result[i].user_id}';" class="row1">
-                                                            <td class="olotd4"><a href="index.php?page=giftcert:details&giftcert_id={$search_result[i].GIFTCERT_ID}">{$search_result[i].GIFTCERT_ID}</a></td>
-                                                            <td class="olotd4">{$search_result[i].GIFTCERT_CODE}</td>
-                                                            <td class="olotd4"><a href="index.php?page=customer:details&customer_id={$search_result[i].CUSTOMER_ID}">{$search_result[i].CUSTOMER_DISPLAY_NAME}</a></td>
-                                                            <td class="olotd4">{$search_result[i].DATE_EXPIRES|date_format:$date_format}</td>
+                                                            <td class="olotd4"><a href="index.php?page=giftcert:details&giftcert_id={$search_result[i].giftcert_id}">{$search_result[i].giftcert_id}</a></td>
+                                                            <td class="olotd4">{$search_result[i].giftcert_code}</td>
+                                                            <td class="olotd4"><a href="index.php?page=customer:details&customer_id={$search_result[i].customer_id}">{$search_result[i].customer_display_name}</a></td>
+                                                            <td class="olotd4">{$search_result[i].date_expires|date_format:$date_format}</td>
                                                             <td class="olotd4">
-                                                                {if !$search_result[i].DATE_REDEEMED == ''}
-                                                                    {$search_result[i].DATE_REDEEMED|date_format:$date_format}
+                                                                {if !$search_result[i].date_redeemed == ''}
+                                                                    {$search_result[i].date_redeemed|date_format:$date_format}
                                                                 {/if}
                                                             </td>
                                                             <td class="olotd4">
-                                                                {if $search_result[i].STATUS == '1'}{t}Active{/t}{/if}
-                                                                {if $search_result[i].STATUS == '0'}{t}Blocked{/t}{/if}
+                                                                {if $search_result[i].status == '1'}{t}Active{/t}{/if}
+                                                                {if $search_result[i].status == '0'}{t}Blocked{/t}{/if}
                                                             </td> 
-                                                            <td class="olotd4">{$currency_sym} {$search_result[i].AMOUNT}</td>                                                            
+                                                            <td class="olotd4">{$currency_sym} {$search_result[i].amount}</td>                                                            
                                                             <td class="olotd4" nowrap>
                                                                 {if !$search_result[i].NOTES == ''}
-                                                                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{t}Notes{/t}</b><hr><p>{$search_result[i].NOTES|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();">
+                                                                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{t}Notes{/t}</b><hr><p>{$search_result[i].notes|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();">
                                                                 {/if}
                                                             </td>
                                                             <td class="olotd4">
-                                                                <a href="index.php?page=giftcert:details&giftcert_id={$search_result[i].GIFTCERT_ID}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif"  border="0" onMouseOver="ddrivetip('{t}View Details{/t}');" onMouseOut="hideddrivetip();"></a>&nbsp;
-                                                                <a href="index.php?page=giftcert:edit&giftcert_id={$search_result[i].GIFTCERT_ID}"><img src="{$theme_images_dir}icons/16x16/small_edit_employee.gif" border="0" onMouseOver="ddrivetip('{t}Edit{/t}');" onMouseOut="hideddrivetip();"></a>&nbsp;
-                                                                <a href="index.php?page=giftcert:delete&giftcert_id={$search_result[i].GIFTCERT_ID}" onclick="return confirmDelete('{t}Are you Sure you want to delete this Gift Certificate?{/t}');">
+                                                                <a href="index.php?page=giftcert:details&giftcert_id={$search_result[i].giftcert_id}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif"  border="0" onMouseOver="ddrivetip('{t}View Details{/t}');" onMouseOut="hideddrivetip();"></a>&nbsp;
+                                                                <a href="index.php?page=giftcert:edit&giftcert_id={$search_result[i].giftcert_id}"><img src="{$theme_images_dir}icons/16x16/small_edit_employee.gif" border="0" onMouseOver="ddrivetip('{t}Edit{/t}');" onMouseOut="hideddrivetip();"></a>&nbsp;
+                                                                <a href="index.php?page=giftcert:delete&giftcert_id={$search_result[i].giftcert_id}" onclick="return confirmDelete('{t}Are you Sure you want to delete this Gift Certificate?{/t}');">
                                                                     <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{t}Delete Gift Certificate{/t}</b>');" onMouseOut="hideddrivetip();">
                                                                 </a>
                                                             </td>

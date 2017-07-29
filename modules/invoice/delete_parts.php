@@ -16,7 +16,7 @@ if($VAR['parts_id'] == '') {
 }
 
 // Get Invoice ID before deletion
-$invoice_id = get_invoice_parts_item_details($db, $VAR['parts_id'], 'INVOICE_ID');
+$invoice_id = get_invoice_parts_item_details($db, $VAR['parts_id'], 'invoice_id');
 
 // Delete Invoice Labour item
 delete_invoice_parts_item($db, $VAR['parts_id']);

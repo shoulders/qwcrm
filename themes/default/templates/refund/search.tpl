@@ -121,44 +121,44 @@
                                                     </tr>
                                                     {section name=i loop=$search_result}                                                            
                                                         <!-- This allows double clicking on a row and opens the corresponding refund view details -->
-                                                        <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=refund:details&refund_id={$search_result[i].REFUND_ID}';" class="row1">                                                                
-                                                            <td class="olotd4" nowrap><a href="index.php?page=refund:details&refund_id={$search_result[i].REFUND_ID}">{$search_result[i].REFUND_ID}</a></td>                                                                
-                                                            <td class="olotd4" nowrap>{$search_result[i].REFUND_PAYEE}</td>                                                                
-                                                            <td class="olotd4" nowrap>{$search_result[i].REFUND_DATE|date_format:$date_format}</td>                                                                
+                                                        <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=refund:details&refund_id={$search_result[i].refund_id}';" class="row1">                                                                
+                                                            <td class="olotd4" nowrap><a href="index.php?page=refund:details&refund_id={$search_result[i].REFUND_ID}">{$search_result[i].refund_id}</a></td>                                                                
+                                                            <td class="olotd4" nowrap>{$search_result[i].refund_payee}</td>                                                                
+                                                            <td class="olotd4" nowrap>{$search_result[i].refund_date|date_format:$date_format}</td>                                                                
                                                             <td class="olotd4" nowrap>
-                                                                {if $search_result[i].REFUND_TYPE ==1}{t}REFUND_TYPE_1{/t}{/if}
-                                                                {if $search_result[i].REFUND_TYPE ==2}{t}REFUND_TYPE_2{/t}{/if}
-                                                                {if $search_result[i].REFUND_TYPE ==3}{t}REFUND_TYPE_3{/t}{/if}
-                                                                {if $search_result[i].REFUND_TYPE ==4}{t}REFUND_TYPE_4{/t}{/if}
-                                                                {if $search_result[i].REFUND_TYPE ==5}{t}REFUND_TYPE_5{/t}{/if}
+                                                                {if $search_result[i].refund_type ==1}{t}REFUND_TYPE_1{/t}{/if}
+                                                                {if $search_result[i].refund_type ==2}{t}REFUND_TYPE_2{/t}{/if}
+                                                                {if $search_result[i].refund_type ==3}{t}REFUND_TYPE_3{/t}{/if}
+                                                                {if $search_result[i].refund_type ==4}{t}REFUND_TYPE_4{/t}{/if}
+                                                                {if $search_result[i].refund_type ==5}{t}REFUND_TYPE_5{/t}{/if}
                                                             </td>                                                                
                                                             <td class="olotd4" nowrap>
-                                                                {if $search_result[i].REFUND_PAYMENT_METHOD ==1}{t}REFUND_PAYMENT_METHOD_1{/t}{/if}
-                                                                {if $search_result[i].REFUND_PAYMENT_METHOD ==2}{t}REFUND_PAYMENT_METHOD_2{/t}{/if}
-                                                                {if $search_result[i].REFUND_PAYMENT_METHOD ==3}{t}REFUND_PAYMENT_METHOD_3{/t}{/if}
-                                                                {if $search_result[i].REFUND_PAYMENT_METHOD ==4}{t}REFUND_PAYMENT_METHOD_4{/t}{/if}
-                                                                {if $search_result[i].REFUND_PAYMENT_METHOD ==5}{t}REFUND_PAYMENT_METHOD_5{/t}{/if}
-                                                                {if $search_result[i].REFUND_PAYMENT_METHOD ==6}{t}REFUND_PAYMENT_METHOD_6{/t}{/if}
-                                                                {if $search_result[i].REFUND_PAYMENT_METHOD ==7}{t}REFUND_PAYMENT_METHOD_7{/t}{/if}
-                                                                {if $search_result[i].REFUND_PAYMENT_METHOD ==8}{t}REFUND_PAYMENT_METHOD_8{/t}{/if}
-                                                                {if $search_result[i].REFUND_PAYMENT_METHOD ==9}{t}REFUND_PAYMENT_METHOD_9{/t}{/if}
-                                                                {if $search_result[i].REFUND_PAYMENT_METHOD ==10}{t}REFUND_PAYMENT_METHOD_10{/t}{/if}
-                                                                {if $search_result[i].REFUND_PAYMENT_METHOD ==11}{t}REFUND_PAYMENT_METHOD_11{/t}{/if}
+                                                                {if $search_result[i].refund_payment_method ==1}{t}REFUND_PAYMENT_METHOD_1{/t}{/if}
+                                                                {if $search_result[i].refund_payment_method ==2}{t}REFUND_PAYMENT_METHOD_2{/t}{/if}
+                                                                {if $search_result[i].refund_payment_method ==3}{t}REFUND_PAYMENT_METHOD_3{/t}{/if}
+                                                                {if $search_result[i].refund_payment_method ==4}{t}REFUND_PAYMENT_METHOD_4{/t}{/if}
+                                                                {if $search_result[i].refund_payment_method ==5}{t}REFUND_PAYMENT_METHOD_5{/t}{/if}
+                                                                {if $search_result[i].refund_payment_method ==6}{t}REFUND_PAYMENT_METHOD_6{/t}{/if}
+                                                                {if $search_result[i].refund_payment_method ==7}{t}REFUND_PAYMENT_METHOD_7{/t}{/if}
+                                                                {if $search_result[i].refund_payment_method ==8}{t}REFUND_PAYMENT_METHOD_8{/t}{/if}
+                                                                {if $search_result[i].refund_payment_method ==9}{t}REFUND_PAYMENT_METHOD_9{/t}{/if}
+                                                                {if $search_result[i].refund_payment_method ==10}{t}REFUND_PAYMENT_METHOD_10{/t}{/if}
+                                                                {if $search_result[i].refund_payment_method ==11}{t}REFUND_PAYMENT_METHOD_11{/t}{/if}
                                                             </td>                                                                
-                                                            <td class="olotd4" nowrap>{$currency_sym} {$search_result[i].REFUND_NET_AMOUNT}</td>                                                               
-                                                            <td class="olotd4" nowrap>{$search_result[i].REFUND_TAX_RATE} %</td>                                                                
-                                                            <td class="olotd4" nowrap>{$currency_sym} {$search_result[i].REFUND_TAX_AMOUNT}</td>                                                            
-                                                            <td class="olotd4" nowrap>{$currency_sym} {$search_result[i].REFUND_GROSS_AMOUNT}</td>                                                                
-                                                            <td class="olotd4" nowrap>{if $search_result[i].REFUND_NOTES != ''}<img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{t}Notes{/t}</b><hr><p>{$search_result[i].REFUND_NOTES|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();">{/if}</td>                                                            
-                                                            <td class="olotd4" nowrap><img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{t}Items{/t}</b><hr><p>{$search_result[i].REFUND_ITEMS|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();"></td>                                                                
+                                                            <td class="olotd4" nowrap>{$currency_sym} {$search_result[i].refund_net_amount}</td>                                                               
+                                                            <td class="olotd4" nowrap>{$search_result[i].refund_tax_rate} %</td>                                                                
+                                                            <td class="olotd4" nowrap>{$currency_sym} {$search_result[i].refund_tax_amount}</td>                                                            
+                                                            <td class="olotd4" nowrap>{$currency_sym} {$search_result[i].refund_gross_amount}</td>                                                                
+                                                            <td class="olotd4" nowrap>{if $search_result[i].refund_notes != ''}<img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{t}Notes{/t}</b><hr><p>{$search_result[i].refund_notes|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();">{/if}</td>                                                            
+                                                            <td class="olotd4" nowrap><img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{t}Items{/t}</b><hr><p>{$search_result[i].refund_items|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();"></td>                                                                
                                                             <td class="olotd4" nowrap>
-                                                                <a href="index.php?page=refund:details&refund_id={$search_result[i].REFUND_ID}">
+                                                                <a href="index.php?page=refund:details&refund_id={$search_result[i].refund_id}">
                                                                     <img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" onMouseOver="ddrivetip('<b>{t}View Refund Details{/t}') onMouseOut="hideddrivetip();">
                                                                 </a>
-                                                                <a href="index.php?page=refund:edit&refund_id={$search_result[i].REFUND_ID}">
+                                                                <a href="index.php?page=refund:edit&refund_id={$search_result[i].refund_id}">
                                                                     <img src="{$theme_images_dir}icons/16x16/small_edit.gif" alt=""  border="0" onMouseOver="ddrivetip('<b>{t}Edit Refund Details{/t}</b>');" onMouseOut="hideddrivetip();">
                                                                 </a>
-                                                                <a href="index.php?page=refund:delete&refund_id={$search_result[i].REFUND_ID}" onclick="return confirmDelete('{t}Are you Sure you want to delete this Refund Record? This will permanently remove the record from the database.{/t}');">
+                                                                <a href="index.php?page=refund:delete&refund_id={$search_result[i].refund_id}" onclick="return confirmDelete('{t}Are you Sure you want to delete this Refund Record? This will permanently remove the record from the database.{/t}');">
                                                                     <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{t}Delete Refund Record{/t}</b>');" onMouseOut="hideddrivetip();">
                                                                 </a>
                                                             </td>

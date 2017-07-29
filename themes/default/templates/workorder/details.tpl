@@ -7,7 +7,7 @@
         <td>
             <table width="700" cellpadding="5" cellspacing="0" border="0" >
                 <tr>
-                    <td class="menuhead2" width="80%">&nbsp;{t}Workorder ID{/t} {$single_workorder.WORK_ORDER_ID}</td>
+                    <td class="menuhead2" width="80%">&nbsp;{t}Workorder ID{/t} {$work_order_id}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">                                               
                         <a href="index.php?page=workorder:print&workorder_id={$workorder_id}&print_content=technician_workorder_slip&print_type=print_html&theme=off" target="_blank">                                                    
                             <img src="{$theme_images_dir}icons/print.gif" alt="Print Works Order" border="0" height="14" width="14" onMouseOver="ddrivetip('{t}Print Work Order{/t} <br> {t}Technician{/t}');" onMouseOut="hideddrivetip();" />
@@ -41,7 +41,7 @@
                                             <li><a href="#" rel="#tab_5_contents" class="tab"><img src="{$theme_images_dir}icons/clock.gif" alt="" border="0" height="14" width="14" />&nbsp;{t}History{/t}</a></li>
                                         </ul>
 
-                                        <!-- This is used so the contents don't appear to the right of the tabs -->
+                                        <!-- This is used so the contents do not appear to the right of the tabs -->
                                         <div class="clear"></div>
 
                                         <!-- This is a div that hold all the tabbed contents -->

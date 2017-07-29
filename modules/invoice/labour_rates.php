@@ -29,6 +29,6 @@ if(isset($VAR['submit'])) {
     
 }
 
-// Fetch Page
+// Build Page
 $smarty->assign('invoice_labour_rates_items', get_invoice_labour_rates_items($db));
 $BuildPage .= $smarty->fetch('invoice/labour_rates.tpl');

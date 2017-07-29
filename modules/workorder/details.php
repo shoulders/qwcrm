@@ -11,7 +11,7 @@ if($workorder_id == '') {
     exit;
 }
 
-// Build the page with the workorder details from the database 
+// Build the page with the workorder details from the database
 $smarty->assign('single_workorder',     display_single_workorder($db, $workorder_id)    );
 $smarty->assign('workorder_schedules',  display_workorder_schedules($db, $workorder_id) );
 $smarty->assign('workorder_notes',      display_workorder_notes($db, $workorder_id)     ); 

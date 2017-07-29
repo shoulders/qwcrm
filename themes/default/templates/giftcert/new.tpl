@@ -26,12 +26,12 @@
                                         <table>
                                             <tr>
                                                 <td><b>{t}Customer{/t}</b></td>
-                                                <td><a href="index.php?page=customer:details&customer_id={$customer_id}">{$customer_details.CUSTOMER_DISPLAY_NAME}</a></td>
+                                                <td><a href="index.php?page=customer:details&customer_id={$customer_id}">{$customer_details.customer_display_name}</a></td>
                                             </tr>
                                             <tr>
                                                 <td><b>{t}Expires{/t}</b></td>
                                                 <td>
-                                                    <input id="date_expires" name="date_expires" class="olotd4" size="10" value="{$giftcert_details.DATE_EXPIRES|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
+                                                    <input id="date_expires" name="date_expires" class="olotd4" size="10" value="{$giftcert_details.date_expires|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
                                                     <input type="button" id="date_expires_button" value="+">
                                                     <script>                                                       
                                                         Calendar.setup( {
@@ -44,7 +44,7 @@
                                             </tr>
                                             <tr>
                                                 <td><b>{t}Amount{/t}</b></td>                                                
-                                                <td>{$currency_sym}<input name="amount" class="olotd5" size="10" value="{$giftcert_details.AMOUNT|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumbersPeriod(event);"/></td>
+                                                <td>{$currency_sym}<input name="amount" class="olotd5" size="10" value="{$giftcert_details.amount|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumbersPeriod(event);"/></td>
                                             </tr>
                                             <tr>
                                                 <td><b>{t}Status{/t}</b></td>
@@ -59,7 +59,7 @@
                                                 <td colspan="2"><b>{t}Notes{/t}:</b></td>
                                             </tr>
                                             <tr>
-                                                <td colspan="2"><textarea class="olotd5" rows="15" cols="70" name="notes">{$giftcert_details.NOTES}</textarea></td>
+                                                <td colspan="2"><textarea class="olotd5" rows="15" cols="70" name="notes">{$giftcert_details.notes}</textarea></td>
                                             </tr>
                                             <tr>
                                                 <td colspan="2">

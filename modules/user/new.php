@@ -12,7 +12,7 @@ if($customer_id != '') {
     if(!check_customer_already_has_login($db, $customer_id)) {
         
         $smarty->assign('is_employee', '0');
-        $smarty->assign('customer_display_name', get_customer_details($db, $customer_id, 'CUSTOMER_DISPLAY_NAME'));
+        $smarty->assign('customer_display_name', get_customer_details($db, $customer_id, 'customer_display_name'));
         $smarty->assign('usergroups', get_usergroups($db, 'customers'));
         
     } else {

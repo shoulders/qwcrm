@@ -75,7 +75,7 @@
 
         // Description Cell - Populate the Select Options
         {section loop=$labour_rate_items name=i}
-            el.options[{$smarty.section.i.index}] = new Option('{$labour_rate_items[i].LABOUR_RATE_NAME}', '{$labour_rate_items[i].LABOUR_RATE_NAME}');
+            el.options[{$smarty.section.i.index}] = new Option('{$labour_rate_items[i].LABOUR_RATE_NAME}', '{$labour_rate_items[i].labour_rate_name}');
         {/section}
 
 
@@ -119,7 +119,7 @@
 
         // Rate Cell - Populate the Select Options
         {section loop=$labour_rate_items name=i}
-            el.options[{$smarty.section.i.index}] = new Option('{$labour_rate_items[i].LABOUR_RATE_AMOUNT}', '{$labour_rate_items[i].LABOUR_RATE_AMOUNT}');
+            el.options[{$smarty.section.i.index}] = new Option('{$labour_rate_items[i].labour_rate_amount}', '{$labour_rate_items[i].labour_rate_amount}');
         {/section}
 
         // Rate Cell - Add some HTML to add the Currency Symbol to the left of the Rate Box      
@@ -286,7 +286,7 @@
                                             <tr class="olotd4">
                                                 <td>{$invoice_details.INVOICE_ID}</td>
                                                 <td>
-                                                    <input id="date" name="date" class="olotd4" size="10" value="{$invoice_details.DATE|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
+                                                    <input id="date" name="date" class="olotd4" size="10" value="{$invoice_details.date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
                                                     <input id="date_button" value="+" type="button">                                                    
                                                     <script>                                                        
                                                         Calendar.setup( {
@@ -297,7 +297,7 @@
                                                     </script>                                                    
                                                 </td>
                                                 <td>
-                                                    <input id="due_date" name="due_date" class="olotd4" size="10"  value="{$invoice_details.DUE_DATE|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
+                                                    <input id="due_date" name="due_date" class="olotd4" size="10"  value="{$invoice_details.due_date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
                                                     <input id="due_date_button" value="+" type="button">                                                    
                                                     <script>                                                        
                                                        Calendar.setup({
@@ -307,10 +307,10 @@
                                                        });                                                         
                                                     </script>                                                   
                                                 </td>
-                                                <td>{$currency_sym}{$invoice_details.TOTAL|string_format:"%.2f"}</td>
-                                                <td><a href="index.php?page=user:details&user_id={$invoice_details.EMPLOYEE_ID}">{$employee_display_name}</a></td>
-                                                <td><a href="index.php?page=workorder:details&workorder_id={$invoice_details.WORKORDER_ID}">{$invoice_details.WORKORDER_ID}</a></td>
-                                                <td><font color="#CC0000">{$currency_sym}{$invoice_details.BALANCE|string_format:"%.2f"}</font></td>
+                                                <td>{$currency_sym}{$invoice_details.total|string_format:"%.2f"}</td>
+                                                <td><a href="index.php?page=user:details&user_id={$invoice_details.employee_id}">{$employee_display_name}</a></td>
+                                                <td><a href="index.php?page=workorder:details&workorder_id={$invoice_details.workorder_id}">{$invoice_details.workorder_id}</a></td>
+                                                <td><font color="#CC0000">{$currency_sym}{$invoice_details.balance|string_format:"%.2f"}</font></td>
                                             </tr>
 
 
@@ -322,11 +322,11 @@
                                                     <table cellpadding="0" cellspacing="0">
                                                         <tr>
                                                             <td valign="top">
-                                                                <a href="index.php?page=customer:details&customer_id={$customer_details.CUSTOMER_ID}">{$customer_details.CUSTOMER_DISPLAY_NAME}</a><br>
-                                                                {$customer_details.CUSTOMER_ADDRESS|nl2br}<br>
-                                                                {$customer_details.CUSTOMER_CITY}, {$customer_details.CUSTOMER_STATE} {$customer_details.CUSTOMER_ZIP}<br>
-                                                                {$customer_details.CUSTOMER_PHONE}<br>
-                                                                {$customer_details.CUSTOMER_EMAIL}                                                                        
+                                                                <a href="index.php?page=customer:details&customer_id={$customer_details.customer_id}">{$customer_details.customer_display_name}</a><br>
+                                                                {$customer_details.customer_address|nl2br}<br>
+                                                                {$customer_details.customer_city}, {$customer_details.customer_state} {$customer_details.customer_zip}<br>
+                                                                {$customer_details.customer_phone}<br>
+                                                                {$customer_details.customer_email}                                                                        
                                                             </td>
                                                         </tr>
                                                     </table>                                                        
@@ -338,10 +338,10 @@
                                                     <table cellpadding="0" cellspacing="0" width="100%">
                                                         <tr>
                                                             <td valign="top">                                                                    
-                                                                {$company_details.NAME} <br>
-                                                                {$company_details.ADDRESS}<br>
-                                                                {$company_details.CITY}, {$company_details.STATE} {$company_details.ZIP}<br>
-                                                                {$company_details.PHONE}<br>                                                                    
+                                                                {$company_details.name} <br>
+                                                                {$company_details.address}<br>
+                                                                {$company_details.city}, {$company_details.state} {$company_details.zip}<br>
+                                                                {$company_details.phone}<br>                                                                    
                                                             </td>
                                                         </tr>
                                                     </table>
@@ -352,9 +352,9 @@
                                             <!-- Terms and Discount -->
                                             <tr>
                                                 <td colspan="7" valign="top" align="left">                                                        
-                                                    {t}TERMS{/t}: <FONT color="red" size="+1">{$customer_details.CREDIT_TERMS}</FONT><br>
+                                                    {t}TERMS{/t}: <font color="red" size="+1">{$customer_details.credit_terms}</font><br>
                                                     {t}Current customer discount rate is{/t}: 
-                                                    <input type="text" class="olotd4" size="4" name="discount_rate" value="{$invoice_details.DISCOUNT_RATE|string_format:"%.2f"}"> %<br>
+                                                    <input type="text" class="olotd4" size="4" name="discount_rate" value="{$invoice_details.discount_rate|string_format:"%.2f"}"> %<br>
                                                     <b>** {t}Change this if you want to temporarily override the discount rate for this invoice ONLY{/t} **</b>                                                       
                                                 </td>
                                             </tr>
@@ -371,26 +371,26 @@
                                                 <td class="menutd2">
 
                                                     <!-- if invoice has an amount -->
-                                                    {if $invoice_details.TOTAL > 0 }
+                                                    {if $invoice_details.total > 0 }
 
                                                         <!-- Print Buttons -->   
-                                                        <button type="button" name="{t}Print{/t}" onClick="window.open('index.php?page=invoice:print&invoice_id={$invoice_details.INVOICE_ID}&print_type=print_html&print_content=invoice&theme=print');">{t}Print{/t}</button>
-                                                        <button type="button" name="{t}Print PDF{/t}" onClick="window.open('index.php?page=invoice:print&invoice_id={$invoice_details.INVOICE_ID}&print_type=print_pdf&print_content=invoice&theme=print');"><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">{t}Print PDF{/t}</button>
-                                                        <button type="button" name="{t}Print Address Only{/t}" onClick="window.open('index.php?page=invoice:print&invoice_id={$invoice_details.INVOICE_ID}&print_type=print_html&print_content=invoice&theme=print');">{t}Print Address Only{/t}</button>                                            
+                                                        <button type="button" name="{t}Print{/t}" onClick="window.open('index.php?page=invoice:print&invoice_id={$invoice_details.invoice_id}&print_type=print_html&print_content=invoice&theme=print');">{t}Print{/t}</button>
+                                                        <button type="button" name="{t}Print PDF{/t}" onClick="window.open('index.php?page=invoice:print&invoice_id={$invoice_details.invoice_id}&print_type=print_pdf&print_content=invoice&theme=print');"><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">{t}Print PDF{/t}</button>
+                                                        <button type="button" name="{t}Print Address Only{/t}" onClick="window.open('index.php?page=invoice:print&invoice_id={$invoice_details.invoice_id}&print_type=print_html&print_content=invoice&theme=print');">{t}Print Address Only{/t}</button>                                            
 
-                                                        {if $invoice_details.BALANCE > 0}
+                                                        {if $invoice_details.balance > 0}
                                                             <!-- Receive Payment Button -->
-                                                            <button type="button" name="{t}Receive Payment{/t}" onClick="location.href='index.php?page=payment:new&invoice_id={$invoice_details.INVOICE_ID}';">{t}Receive Payment{/t}</button>
+                                                            <button type="button" name="{t}Receive Payment{/t}" onClick="location.href='index.php?page=payment:new&invoice_id={$invoice_details.invoice_id}';">{t}Receive Payment{/t}</button>
                                                         {/if}
 
                                                     {else}
 
                                                         <!-- Delete Button -->
-                                                        <button type="button" name="{t}Delete{/t}" onClick="location.href='index.php?page=invoice:delete&customer_id={$invoice_details.CUSTOMER_ID}&invoice_id={$invoice_details.INVOICE_ID}';">{t}Delete{/t}</button>
+                                                        <button type="button" name="{t}Delete{/t}" onClick="location.href='index.php?page=invoice:delete&customer_id={$invoice_details.customer_id}&invoice_id={$invoice_details.invoice_id}';">{t}Delete{/t}</button>
 
                                                         {if $workorder_status == '9' && $workorder_id != '0'}
                                                             <!-- Close Button -->
-                                                            <button type="button" name="Close Work Order" onClick="location.href='index.php?page=workorder:details_edit_resolution&workorder_id={$invoice_details.WORKORDER_ID}';">{t}Close Work Order{/t}</button>
+                                                            <button type="button" name="Close Work Order" onClick="location.href='index.php?page=workorder:details_edit_resolution&workorder_id={$invoice_details.workorder_id}';">{t}Close Work Order{/t}</button>
                                                         {/if}
 
                                                         <!-- Work Order must be closed before payment can be received. -->
@@ -420,21 +420,21 @@
                                                             </tr>                                                            
                                                             {section name=t loop=$transactions}
                                                                 <tr class="olotd4">
-                                                                    <td>{$transactions[t].TRANSACTION_ID}</td>
-                                                                    <td>{$transactions[t].DATE|date_format:$date_format}</td>
-                                                                    <td><b>{$currency_symbol}</b>{$transactions[t].AMOUNT|string_format:"%.2f"}</td>
+                                                                    <td>{$transactions[t].transaction_id}</td>
+                                                                    <td>{$transactions[t].date|date_format:$date_format}</td>
+                                                                    <td><b>{$currency_symbol}</b>{$transactions[t].amount|string_format:"%.2f"}</td>
                                                                     <td>
-                                                                        {if $transactions[t].TYPE == 1}{t}Credit Card{/t}
-                                                                        {elseif $transactions[t].TYPE == 2}{t}Cheque{/t}
-                                                                        {elseif $transactions[t].TYPE == 3}{t}Cash{/t}
-                                                                        {elseif $transactions[t].TYPE == 4}{t}Gift Certificate{/t}
-                                                                        {elseif $transactions[t].TYPE == 5}{t}PayPal{/t}
+                                                                        {if $transactions[t].type == 1}{t}Credit Card{/t}
+                                                                        {elseif $transactions[t].type == 2}{t}Cheque{/t}
+                                                                        {elseif $transactions[t].type == 3}{t}Cash{/t}
+                                                                        {elseif $transactions[t].type == 4}{t}Gift Certificate{/t}
+                                                                        {elseif $transactions[t].type == 5}{t}PayPal{/t}
                                                                         {/if}
                                                                     </td>
                                                                 </tr>
                                                                 <tr class="olotd4">
                                                                     <td><b>{t}Note{/t}</b></td>
-                                                                    <td colspan="3">{$transactions[t].NOTE}</td>
+                                                                    <td colspan="3">{$transactions[t].note}</td>
                                                                 </tr>
                                                             {/section}
                                                         </table>
@@ -464,12 +464,12 @@
                                                             {section name=l loop=$labour_items}
                                                                 <tr class="olotd4">
                                                                     <td>{$smarty.section.q.index+1}</td>
-                                                                    <td>{$labour_items[l].INVOICE_LABOUR_UNIT}</td>
-                                                                    <td>{$labour_items[l].INVOICE_LABOUR_DESCRIPTION}</td>
-                                                                    <td>{$currency_sym}{$labour_items[l].INVOICE_LABOUR_RATE|string_format:"%.2f"}</td>
-                                                                    <td>{$currency_sym}{$labour_items[l].INVOICE_LABOUR_SUBTOTAL|string_format:"%.2f"}</td>
+                                                                    <td>{$labour_items[l].invoice_labour_unit}</td>
+                                                                    <td>{$labour_items[l].invoice_labour_description}</td>
+                                                                    <td>{$currency_sym}{$labour_items[l].invoice_labour_rate|string_format:"%.2f"}</td>
+                                                                    <td>{$currency_sym}{$labour_items[l].invoice_labour_subtotal|string_format:"%.2f"}</td>
                                                                     <td>
-                                                                        <a href="index.php?page=invoice:delete_labour&labour_id={$labour_items[l].INVOICE_LABOUR_ID}" onclick="return confirmDelete('{t}Are you Sure you want to delete this Labour Record? This will permanently remove the record from the database.{/t}');">
+                                                                        <a href="index.php?page=invoice:delete_labour&labour_id={$labour_items[l].invoice_labour_id}" onclick="return confirmDelete('{t}Are you Sure you want to delete this Labour Record? This will permanently remove the record from the database.{/t}');">
                                                                             <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{t}Delete Labour Record{/t}</b>');" onMouseOut="hideddrivetip();">
                                                                         </a>
                                                                     </td>
@@ -523,12 +523,12 @@
                                                             {section name=p loop=$parts_items}
                                                                 <tr class="olotd4">
                                                                     <td>{$smarty.section.w.index+1}</td>
-                                                                    <td>{$parts_items[p].INVOICE_PARTS_COUNT}</td>
-                                                                    <td>{$parts_items[p].INVOICE_PARTS_DESCRIPTION}</td>
-                                                                    <td>{$currency_sym}{$parts_items[p].INVOICE_PARTS_AMOUNT|string_format:"%.2f"}</td>
-                                                                    <td>{$currency_sym}{$parts_items[p].INVOICE_PARTS_SUBTOTAL|string_format:"%.2f"}</td>
+                                                                    <td>{$parts_items[p].invoice_parts_count}</td>
+                                                                    <td>{$parts_items[p].invoice_parts_description}</td>
+                                                                    <td>{$currency_sym}{$parts_items[p].invoice_parts_amount|string_format:"%.2f"}</td>
+                                                                    <td>{$currency_sym}{$parts_items[p].invoice_parts_subtotal|string_format:"%.2f"}</td>
                                                                     <td>
-                                                                        <a href="index.php?page=invoice:delete_parts&parts_id={$parts_items[p].INVOICE_PARTS_ID}" onclick="return confirmDelete('{t}Are you Sure you want to delete this Parts Record? This will permanently remove the record from the database.{/t}');">
+                                                                        <a href="index.php?page=invoice:delete_parts&parts_id={$parts_items[p].invoice_parts_id}" onclick="return confirmDelete('{t}Are you Sure you want to delete this Parts Record? This will permanently remove the record from the database.{/t}');">
                                                                             <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{t}Delete Parts Record{/t}</b>');" onMouseOut="hideddrivetip();">
                                                                         </a>
                                                                     </td>
@@ -572,19 +572,19 @@
                                                     <table width="100%" border="1" cellpadding="3" cellspacing="0" class="olotable">
                                                         <tr>
                                                             <td class="olotd4" width="80%" align="right"><b>{t}Sub Total{/t}</b></td>
-                                                            <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice_details.SUB_TOTAL|string_format:"%.2f"}</td>
+                                                            <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice_details.sub_total|string_format:"%.2f"}</td>
                                                         </tr>
                                                         <tr>
-                                                            <td class="olotd4" width="80%" align="right"><b>{t}Discount{/t} (@ {$invoice_details.DISCOUNT_RATE|string_format:"%.2f"}%)</b></td>
-                                                            <td class="olotd4" width="20%" align="right">- {$currency_sym}{$invoice_details.DISCOUNT|string_format:"%.2f"}</td>
+                                                            <td class="olotd4" width="80%" align="right"><b>{t}Discount{/t} (@ {$invoice_details.discount_rate|string_format:"%.2f"}%)</b></td>
+                                                            <td class="olotd4" width="20%" align="right">- {$currency_sym}{$invoice_details.discount|string_format:"%.2f"}</td>
                                                         </tr>                                                        
                                                         <tr>                                                            
-                                                            <td class="olotd4" width="80%" align="right"><b>{t}Tax{/t} (@ {$invoice_details.TAX_RATE}%)</b></td>
-                                                            <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice_details.TAX|string_format:"%.2f"}</td>                                                            
+                                                            <td class="olotd4" width="80%" align="right"><b>{t}Tax{/t} (@ {$invoice_details.tax_rate}%)</b></td>
+                                                            <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice_details.tax|string_format:"%.2f"}</td>                                                            
                                                         </tr>
                                                         <tr>
                                                             <td class="olotd4" width="80%" align="right"><b>{t}Total{/t}</b></td>
-                                                            <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice_details.TOTAL|string_format:"%.2f"}</td>
+                                                            <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice_details.total|string_format:"%.2f"}</td>
                                                         </tr>
                                                     </table>
                                                 </td>
@@ -596,8 +596,8 @@
                                         <table width="100%"  cellpadding="3" cellspacing="0" border="0">
                                             <tr>
                                                 <td align="left" valign="top" width="25%">                                                        
-                                                    <input type="hidden" name="invoice_id" value="{$invoice_details.INVOICE_ID}">
-                                                    <input type="hidden" name="sub_total" value="{$invoice_details.SUB_TOTAL|string_format:"%.2f"}">
+                                                    <input type="hidden" name="invoice_id" value="{$invoice_details.invoice_id}">
+                                                    <input type="hidden" name="sub_total" value="{$invoice_details.sub_total|string_format:"%.2f"}">
                                                     <button type="submit" name="submit" value="submit">{t}Submit{/t}</button>
                                                 </td>
                                                 <td align="right" width="75%"></td>

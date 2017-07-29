@@ -19,7 +19,7 @@ if($workorder_id == '') {
 }
 
 // Get customer_id
-$customer_id =  get_workorder_details($db, $workorder_id, 'CUSTOMER_ID');
+$customer_id =  get_workorder_details($db, $workorder_id, 'customer_id');
 
 // If new schedule item submitted
 if(isset($VAR['submit'])) {
@@ -41,7 +41,7 @@ if(isset($VAR['submit'])) {
         $schedule_start_day             = date('d', date_to_timestamp($VAR['schedule_start_date'])  );    
     
         // Load the schedule day with the newly submitted schedule item
-        force_page('schedule', 'day', 'schedule_start_year='.$schedule_start_year.'&schedule_start_month='.$schedule_start_month.'&schedule_start_day='.$schedule_start_day.'&employee_id='.$employee_id.'&workorder_id='.$workorder_id.'&information_msg=Schedule Successfully Created');
+        force_page('schedule', 'day', 'schedule_start_year='.$schedule_start_year.'&schedule_start_month='.$schedule_start_month.'&schedule_start_day='.$schedule_start_day.'&employee_id='.$employee_id.'&workorder_id='.$workorder_id.'&information_msg='.gettext("Schedule Successfully Created"));
         exit;
     }
 

@@ -43,51 +43,51 @@ function display_refunds($db, $direction = 'DESC', $use_pages = false, $page_no 
         switch ($search_category) {
 
             case 'id':            
-                $whereTheseRecords = " WHERE REFUND_ID";
+                $whereTheseRecords = " WHERE refund_id";
                 break;
 
             case 'payee':          
-                $whereTheseRecords = " WHERE REFUND_PAYEE";
+                $whereTheseRecords = " WHERE refund_payee";
                 break;
 
             case 'date':          
-                $whereTheseRecords = " WHERE REFUND_DATE";
+                $whereTheseRecords = " WHERE refund_date";
                 break;
             
             case 'type':          
-                $whereTheseRecords = " WHERE REFUND_TYPE";
+                $whereTheseRecords = " WHERE refund_type";
                 break;
 
             case 'payement_method':          
-                $whereTheseRecords = " WHERE REFUND_PAYMENT_METHOD";
+                $whereTheseRecords = " WHERE refund_payment_method";
                 break;
 
             case 'net_amount':          
-                $whereTheseRecords = " WHERE REFUND_NET_AMOUNT";
+                $whereTheseRecords = " WHERE refund_net_amount";
                 break;
 
             case 'tax_rate':         
-                $whereTheseRecords = " WHERE REFUND_TAX_RATE";
+                $whereTheseRecords = " WHERE refund_tax_rate";
                 break;
                 
             case 'tax':      
-                $whereTheseRecords = " WHERE REFUND_TAX_AMOUNT";
+                $whereTheseRecords = " WHERE refund_tax_amount";
                 break;
                 
             case 'total':           
-                $whereTheseRecords = " WHERE REFUND_GROSS_AMOUNT";
+                $whereTheseRecords = " WHERE refund_gross_amount";
                 break;
             
             case 'notes':        
-                $whereTheseRecords = " WHERE REFUND_NOTES";
+                $whereTheseRecords = " WHERE refund_notes";
                 break;
             
             case 'items':        
-                $whereTheseRecords = " WHERE REFUND_ITEMS";
+                $whereTheseRecords = " WHERE refund_items";
                 break;
             
             default:           
-                $whereTheseRecords = " WHERE REFUND_ID";
+                $whereTheseRecords = " WHERE refund_id";
 
         }
         
@@ -102,8 +102,8 @@ function display_refunds($db, $direction = 'DESC', $use_pages = false, $page_no 
             FROM ".PRFX."refund                                                   
             ".$whereTheseRecords."
             ".$likeTheseRecords."
-            GROUP BY ".PRFX."refund.REFUND_ID
-            ORDER BY ".PRFX."refund.REFUND_ID
+            GROUP BY ".PRFX."refund.refund_id
+            ORDER BY ".PRFX."refund.refund_id
             ".$direction;            
     
     /* Restrict by pages */
@@ -190,16 +190,16 @@ function display_refunds($db, $direction = 'DESC', $use_pages = false, $page_no 
 function insert_refund($db, $VAR) {
     
     $sql = "INSERT INTO ".PRFX."refund SET            
-            REFUND_PAYEE            = ". $db->qstr( $VAR['refundPayee']                     ).",
-            REFUND_DATE             = ". $db->qstr( date_to_timestamp($VAR['refundDate'])   ).",
-            REFUND_TYPE             = ". $db->qstr( $VAR['refundType']                      ).",
-            REFUND_PAYMENT_METHOD   = ". $db->qstr( $VAR['refundPaymentMethod']             ).",
-            REFUND_NET_AMOUNT       = ". $db->qstr( $VAR['refundNetAmount']                 ).",
-            REFUND_TAX_RATE         = ". $db->qstr( $VAR['refundTaxRate']                   ).",
-            REFUND_TAX_AMOUNT       = ". $db->qstr( $VAR['refundTaxAmount']                 ).",
-            REFUND_GROSS_AMOUNT     = ". $db->qstr( $VAR['refundGrossAmount']               ).",
-            REFUND_NOTES            = ". $db->qstr( $VAR['refundNotes']                     ).",
-            REFUND_ITEMS            = ". $db->qstr( $VAR['refundItems']                     );
+            refund_payee            = ". $db->qstr( $VAR['refundPayee']                     ).",
+            refund_date             = ". $db->qstr( date_to_timestamp($VAR['refundDate'])   ).",
+            refund_type             = ". $db->qstr( $VAR['refundType']                      ).",
+            refund_payment_method   = ". $db->qstr( $VAR['refundPaymentMethod']             ).",
+            refund_net_amount       = ". $db->qstr( $VAR['refundNetAmount']                 ).",
+            refund_tax_rate         = ". $db->qstr( $VAR['refundTaxRate']                   ).",
+            refund_tax_amount       = ". $db->qstr( $VAR['refundTaxAmount']                 ).",
+            refund_gross_amount     = ". $db->qstr( $VAR['refundGrossAmount']               ).",
+            refund_notes            = ". $db->qstr( $VAR['refundNotes']                     ).",
+            refund_items            = ". $db->qstr( $VAR['refundItems']                     );
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to insert the refund record into the database."));
@@ -220,7 +220,7 @@ function insert_refund($db, $VAR) {
 
 function get_refund_details($db, $refund_id, $item = null){
     
-    $sql = "SELECT * FROM ".PRFX."refund WHERE REFUND_ID=".$db->qstr($refund_id);
+    $sql = "SELECT * FROM ".PRFX."refund WHERE refund_id=".$db->qstr($refund_id);
     
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the refund details."));
@@ -250,17 +250,17 @@ function get_refund_details($db, $refund_id, $item = null){
 function update_refund($db, $refund_id, $VAR) {
     
     $sql = "UPDATE ".PRFX."refund SET
-            REFUND_PAYEE            = ". $db->qstr( $VAR['refundPayee']                     ).",
-            REFUND_DATE             = ". $db->qstr( date_to_timestamp($VAR['refundDate'])   ).",
-            REFUND_TYPE             = ". $db->qstr( $VAR['refundType']                      ).",
-            REFUND_PAYMENT_METHOD   = ". $db->qstr( $VAR['refundPaymentMethod']             ).",
-            REFUND_NET_AMOUNT       = ". $db->qstr( $VAR['refundNetAmount']                 ).",
-            REFUND_TAX_RATE         = ". $db->qstr( $VAR['refundTaxRate']                   ).",
-            REFUND_TAX_AMOUNT       = ". $db->qstr( $VAR['refundTaxAmount']                 ).",
-            REFUND_GROSS_AMOUNT     = ". $db->qstr( $VAR['refundGrossAmount']               ).",
-            REFUND_NOTES            = ". $db->qstr( $VAR['refundNotes']                     ).",
-            REFUND_ITEMS            = ". $db->qstr( $VAR['refundItems']                     )."
-            WHERE REFUND_ID         = ". $db->qstr( $refund_id                              );                        
+            refund_payee            = ". $db->qstr( $VAR['refundPayee']                     ).",
+            refund_date             = ". $db->qstr( date_to_timestamp($VAR['refundDate'])   ).",
+            refund_type             = ". $db->qstr( $VAR['refundType']                      ).",
+            refund_payment_method   = ". $db->qstr( $VAR['refundPaymentMethod']             ).",
+            refund_net_amount       = ". $db->qstr( $VAR['refundNetAmount']                 ).",
+            refund_tax_rate         = ". $db->qstr( $VAR['refundTaxRate']                   ).",
+            refund_tax_amount       = ". $db->qstr( $VAR['refundTaxAmount']                 ).",
+            refund_gross_amount     = ". $db->qstr( $VAR['refundGrossAmount']               ).",
+            refund_notes            = ". $db->qstr( $VAR['refundNotes']                     ).",
+            refund_items            = ". $db->qstr( $VAR['refundItems']                     )."
+            WHERE refund_id         = ". $db->qstr( $refund_id                              );                        
             
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the refund details."));
@@ -283,7 +283,7 @@ function update_refund($db, $refund_id, $VAR) {
 
 function delete_refund($db, $refund_id) {
     
-    $sql = "DELETE FROM ".PRFX."refund WHERE REFUND_ID=".$db->qstr($refund_id);
+    $sql = "DELETE FROM ".PRFX."refund WHERE refund_id=".$db->qstr($refund_id);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete the refund records."));
@@ -396,14 +396,14 @@ function prepare_refund_search_terms($search_category, $search_term) {
 
 function last_refund_id_lookup($db) {
     
-    $sql = "SELECT * FROM ".PRFX."refund ORDER BY REFUND_ID DESC LIMIT 1";
+    $sql = "SELECT * FROM ".PRFX."refund ORDER BY refund_id DESC LIMIT 1";
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to lookup the last refund record ID."));
         exit;
     } else {
         
-        return $rs->fields['REFUND_ID'];
+        return $rs->fields['refund_id'];
         
     }
         

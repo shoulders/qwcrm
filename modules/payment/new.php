@@ -55,7 +55,7 @@ if(isset($VAR['submit'])) {
 }
 
 // Build page
-$smarty->assign('customer_details',         get_customer_details($db, get_invoice_details($db, $invoice_id , 'CUSTOMER_ID'))    );
+$smarty->assign('customer_details',         get_customer_details($db, get_invoice_details($db, $invoice_id , 'customer_id'))    );
 $smarty->assign('invoice_details',          get_invoice_details($db, $invoice_id)                                               );
 $smarty->assign('transactions',             get_invoice_transactions($db, $invoice_id)                                          );  
 $smarty->assign('active_payment_methods',   get_active_payment_methods($db)                                                     );

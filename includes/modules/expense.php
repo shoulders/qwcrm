@@ -44,51 +44,51 @@ function display_expenses($db, $direction = 'DESC', $use_pages = false, $page_no
         switch ($search_category) {
 
             case 'id':            
-                $whereTheseRecords = " WHERE EXPENSE_ID";
+                $whereTheseRecords = " WHERE expense_id";
                 break;
 
             case 'payee':          
-                $whereTheseRecords = " WHERE EXPENSE_PAYEE";
+                $whereTheseRecords = " WHERE expense_payee";
                 break;
 
             case 'date':          
-                $whereTheseRecords = " WHERE EXPENSE_DATE";
+                $whereTheseRecords = " WHERE expense_date";
                 break;
             
             case 'type':          
-                $whereTheseRecords = " WHERE EXPENSE_TYPE";
+                $whereTheseRecords = " WHERE expense_type";
                 break;
 
             case 'payement_method':          
-                $whereTheseRecords = " WHERE EXPENSE_PAYMENT_METHOD";
+                $whereTheseRecords = " WHERE expense_payment_method";
                 break;
 
             case 'net_amount':          
-                $whereTheseRecords = " WHERE EXPENSE_NET_AMOUNT";
+                $whereTheseRecords = " WHERE expense_net_amount";
                 break;
 
             case 'tax_rate':         
-                $whereTheseRecords = " WHERE EXPENSE_TAX_RATE";
+                $whereTheseRecords = " WHERE expense_tax_rate";
                 break;
                 
             case 'tax':      
-                $whereTheseRecords = " WHERE EXPENSE_TAX_AMOUNT";
+                $whereTheseRecords = " WHERE expense_tax_amount";
                 break;
                 
             case 'total':           
-                $whereTheseRecords = " WHERE EXPENSE_GROSS_AMOUNT";
+                $whereTheseRecords = " WHERE expense_gross_amount";
                 break;
             
             case 'notes':        
-                $whereTheseRecords = " WHERE EXPENSE_NOTES";
+                $whereTheseRecords = " WHERE expense_notes";
                 break;
             
             case 'items':        
-                $whereTheseRecords = " WHERE EXPENSE_ITEMS";
+                $whereTheseRecords = " WHERE expense_items";
                 break;
             
             default:           
-                $whereTheseRecords = " WHERE EXPENSE_ID";
+                $whereTheseRecords = " WHERE expense_id";
 
         }
         
@@ -103,8 +103,8 @@ function display_expenses($db, $direction = 'DESC', $use_pages = false, $page_no
             FROM ".PRFX."expense                                                   
             ".$whereTheseRecords."
             ".$likeTheseRecords."
-            GROUP BY ".PRFX."expense.EXPENSE_ID
-            ORDER BY ".PRFX."expense.EXPENSE_ID
+            GROUP BY ".PRFX."expense.expense_id
+            ORDER BY ".PRFX."expense.expense_id
             ".$direction;            
     
     /* Restrict by pages */
@@ -191,16 +191,16 @@ function display_expenses($db, $direction = 'DESC', $use_pages = false, $page_no
 function insert_expense($db, $VAR) {
     
     $sql = "INSERT INTO ".PRFX."expense SET            
-            EXPENSE_PAYEE           = ". $db->qstr( $VAR['expensePayee']                    ).",
-            EXPENSE_DATE            = ". $db->qstr( date_to_timestamp($VAR['expenseDate'])  ).",
-            EXPENSE_TYPE            = ". $db->qstr( $VAR['expenseType']                     ).",
-            EXPENSE_PAYMENT_METHOD  = ". $db->qstr( $VAR['expensePaymentMethod']            ).",
-            EXPENSE_NET_AMOUNT      = ". $db->qstr( $VAR['expenseNetAmount']                ).",
-            EXPENSE_TAX_RATE        = ". $db->qstr( $VAR['expenseTaxRate']                  ).",
-            EXPENSE_TAX_AMOUNT      = ". $db->qstr( $VAR['expenseTaxAmount']                ).",
-            EXPENSE_GROSS_AMOUNT    = ". $db->qstr( $VAR['expenseGrossAmount']              ).",
-            EXPENSE_NOTES           = ". $db->qstr( $VAR['expenseNotes']                    ).",
-            EXPENSE_ITEMS           = ". $db->qstr( $VAR['expenseItems']                    );
+            expense_payee           = ". $db->qstr( $VAR['expensePayee']                    ).",
+            expense_date            = ". $db->qstr( date_to_timestamp($VAR['expenseDate'])  ).",
+            expense_type            = ". $db->qstr( $VAR['expenseType']                     ).",
+            expense_payment_method  = ". $db->qstr( $VAR['expensePaymentMethod']            ).",
+            expense_net_amount      = ". $db->qstr( $VAR['expenseNetAmount']                ).",
+            expense_tax_rate        = ". $db->qstr( $VAR['expenseTaxRate']                  ).",
+            expense_tax_amount      = ". $db->qstr( $VAR['expenseTaxAmount']                ).",
+            expense_gross_amount    = ". $db->qstr( $VAR['expenseGrossAmount']              ).",
+            expense_notes           = ". $db->qstr( $VAR['expenseNotes']                    ).",
+            expense_items           = ". $db->qstr( $VAR['expenseItems']                    );
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to insert the expense record into the database."));
@@ -221,7 +221,7 @@ function insert_expense($db, $VAR) {
 
 function get_expense_details($db, $expense_id, $item = null){
     
-    $sql = "SELECT * FROM ".PRFX."expense WHERE EXPENSE_ID=".$db->qstr($expense_id);
+    $sql = "SELECT * FROM ".PRFX."expense WHERE expense_id=".$db->qstr($expense_id);
     
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the expense details."));
@@ -251,17 +251,17 @@ function get_expense_details($db, $expense_id, $item = null){
 function update_expense($db, $expense_id, $VAR) {
     
     $sql = "UPDATE ".PRFX."expense SET
-            EXPENSE_PAYEE           = ". $db->qstr( $VAR['expensePayee']                    ).",
-            EXPENSE_DATE            = ". $db->qstr( date_to_timestamp($VAR['expenseDate'])  ).",
-            EXPENSE_TYPE            = ". $db->qstr( $VAR['expenseType']                     ).",
-            EXPENSE_PAYMENT_METHOD  = ". $db->qstr( $VAR['expensePaymentMethod']            ).",
-            EXPENSE_NET_AMOUNT      = ". $db->qstr( $VAR['expenseNetAmount']                ).",
-            EXPENSE_TAX_RATE        = ". $db->qstr( $VAR['expenseTaxRate']                  ).",
-            EXPENSE_TAX_AMOUNT      = ". $db->qstr( $VAR['expenseTaxAmount']                ).",
-            EXPENSE_GROSS_AMOUNT    = ". $db->qstr( $VAR['expenseGrossAmount']              ).",
-            EXPENSE_NOTES           = ". $db->qstr( $VAR['expenseNotes']                    ).",
-            EXPENSE_ITEMS           = ". $db->qstr( $VAR['expenseItems']                    )."
-            WHERE EXPENSE_ID        = ". $db->qstr( $expense_id                             );                        
+            expense_payee           = ". $db->qstr( $VAR['expensePayee']                    ).",
+            expense_date            = ". $db->qstr( date_to_timestamp($VAR['expenseDate'])  ).",
+            expense_type            = ". $db->qstr( $VAR['expenseType']                     ).",
+            expense_payment_method  = ". $db->qstr( $VAR['expensePaymentMethod']            ).",
+            expense_net_amount      = ". $db->qstr( $VAR['expenseNetAmount']                ).",
+            expense_tax_rate        = ". $db->qstr( $VAR['expenseTaxRate']                  ).",
+            expense_tax_amount      = ". $db->qstr( $VAR['expenseTaxAmount']                ).",
+            expense_gross_amount    = ". $db->qstr( $VAR['expenseGrossAmount']              ).",
+            expense_notes           = ". $db->qstr( $VAR['expenseNotes']                    ).",
+            expense_items           = ". $db->qstr( $VAR['expenseItems']                    )."
+            where expense_id        = ". $db->qstr( $expense_id                             );                        
             
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the expense details."));
@@ -282,7 +282,7 @@ function update_expense($db, $expense_id, $VAR) {
 
 function delete_expense($db, $expense_id){
     
-    $sql = "DELETE FROM ".PRFX."expense WHERE EXPENSE_ID=".$db->qstr($expense_id);
+    $sql = "DELETE FROM ".PRFX."expense WHERE expense_id=".$db->qstr($expense_id);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete the expense record."));
@@ -443,14 +443,14 @@ function prepare_expense_search_terms($search_category, $search_term) {
 
 function last_expense_id_lookup($db){
     
-    $sql = "SELECT * FROM ".PRFX."expense ORDER BY EXPENSE_ID DESC LIMIT 1";
+    $sql = "SELECT * FROM ".PRFX."expense ORDER BY expense_id DESC LIMIT 1";
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to lookup the last expense record ID."));
         exit;
     } else {
         
-        return $rs->fields['EXPENSE_ID'];
+        return $rs->fields['expense_id'];
         
     }
     

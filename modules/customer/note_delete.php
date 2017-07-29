@@ -11,7 +11,7 @@ if($VAR['customer_note_id'] == '') {
 }
 
 // Get the customer_id before we delete the record
-$customer_id = get_customer_note($db, $VAR['customer_note_id'], 'CUSTOMER_ID');
+$customer_id = get_customer_note($db, $VAR['customer_note_id'], 'customer_id');
 
 // Delete the customer note
 delete_customer_note($db, $VAR['customer_note_id']);

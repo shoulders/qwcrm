@@ -393,7 +393,7 @@ function update_user($db, $user_id, $VAR) {
 function delete_user($db, $user_id){
     
     // Check if user has created any workorders
-    $sql = "SELECT count(*) as count FROM ".PRFX."workorder WHERE WORK_ORDER_CREATE_BY=".$db->qstr($user_id);    
+    $sql = "SELECT count(*) as count FROM ".PRFX."workorder WHERE work_order_create_by=".$db->qstr($user_id);    
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count the user's Workorders in the database."));
         exit;
@@ -404,7 +404,7 @@ function delete_user($db, $user_id){
     }
     
     // Check if user has any assigned workorders
-    $sql = "SELECT count(*) as count FROM ".PRFX."workorder WHERE WORK_ORDER_ASSIGN_TO=".$db->qstr($user_id);    
+    $sql = "SELECT count(*) as count FROM ".PRFX."workorder WHERE work_order_assign_to=".$db->qstr($user_id);    
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count the user's Workorders in the database."));
         exit;
@@ -415,7 +415,7 @@ function delete_user($db, $user_id){
     }
     
     // Check if user has any invoices
-    $sql = "SELECT count(*) as count FROM ".PRFX."invoice WHERE EMPLOYEE_ID=".$db->qstr($user_id);    
+    $sql = "SELECT count(*) as count FROM ".PRFX."invoice WHERE employee_id=".$db->qstr($user_id);    
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count the user's Invoices in the database."));
         exit;
@@ -426,7 +426,7 @@ function delete_user($db, $user_id){
     }    
     
     // Check if user is assigned to any gift certificates
-    $sql = "SELECT count(*) as count FROM ".PRFX."giftcert WHERE EMPLOYEE_ID=".$db->qstr($user_id);
+    $sql = "SELECT count(*) as count FROM ".PRFX."giftcert WHERE employee_id=".$db->qstr($user_id);
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count the user's Gift Certificates in the database."));
         exit;
@@ -452,15 +452,15 @@ function delete_user($db, $user_id){
 /** Other Functions **/
 
 #################################################
-# Count a User's Work Orders for a given status #
+# Count a User's Work Orders for a given status #  // should this be in workorders.php ?
 #################################################
 
 function count_user_workorders_with_status($db, $user_id, $workorder_status){
     
     $sql = "SELECT COUNT(*) AS user_workorder_status_count
             FROM ".PRFX."workorder
-            WHERE WORK_ORDER_ASSIGN_TO=".$db->qstr($user_id)."
-            AND WORK_ORDER_STATUS=".$db->qstr($workorder_status);
+            WHERE work_order_assign_to=".$db->qstr($user_id)."
+            AND work_order_status=".$db->qstr($workorder_status);
     
     if(!$rs = $db->Execute($sql)){
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count the number of Work Orders for the user for the defined status"));
@@ -481,8 +481,8 @@ function count_user_invoices_with_status($db, $user_id, $invoice_status){
     
     $sql = "SELECT COUNT(*) AS user_invoice_count
             FROM ".PRFX."invoice
-            WHERE IS_PAID=".$db->qstr($invoice_status)."
-            AND EMPLOYEE_ID=".$db->qstr($user_id);
+            WHERE is_paid=".$db->qstr($invoice_status)."
+            AND employee_id=".$db->qstr($user_id);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed count the number of invoices for the user for the defined status."));

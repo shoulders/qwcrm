@@ -80,17 +80,17 @@
                                                         <td class="olohead">{t}Amount{/t}</td>
                                                     </tr>
                                                     {section name=q loop=$invoices}                                            
-                                                        <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=invoice:details&invoice_id={$invoices[q].INVOICE_ID}';" class="row1">
-                                                            <td class="olotd4" nowrap><a href="index.php?page=invoice:details&invoice_id={$invoices[q].INVOICE_ID}">{$invoices[q].INVOICE_ID}</a></td>
-                                                            <td class="olotd4" nowrap>{$invoices[q].DATE|date_format:$date_format}</td>
-                                                            <td class="olotd4" nowrap>{$invoices[q].DUE_DATE|date_format:$date_format}</td>
-                                                            <td class="olotd4" nowrap><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" onMouseOver="ddrivetip('<b>{t}Phone{/t} </b>{$invoices[q].CUSTOMER_PHONE}<br><b>{t}Work{/t}: </b>{$invoices[q].CUSTOMER_WORK_PHONE}<br><b>{t}Mobile{/t}: </b>{$invoices[q].CUSTOMER_MOBILE_PHONE}<br><br>{$invoices[q].CUSTOMER_ADDRESS}<br>{$invoices[q].CUSTOMER_CITY}, {$invoices[q].CUSTOMER_STATE}<br>{$invoices[q].CUSTOMER_ZIP}');" onMouseOut="hideddrivetip();"><a href="index.php?page=customer:customer_details&customer_id={$invoices[q].CUSTOMER_ID}">{$invoices[q].CUSTOMER_DISPLAY_NAME}</a></td>
-                                                            <td class="olotd4" nowrap><a href="index.php?page=workorder:details&workorder_id={$invoices[q].WORKORDER_ID}">{$invoices[q].WORKORDER_ID}</a></td>
-                                                            <td class="olotd4" nowrap><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" onMouseOver="ddrivetip('<b>{t}Work{/t}: </b>{$invoices[q].EMPLOYEE_WORK_PHONE}<br><b>{t}Mobile{/t}: </b>{$invoices[q].EMPLOYEE_MOBILE_PHONE}<br><b>{t}Home{/t}: </b>{$invoices[q].EMPLOYEE_HOME_PHONE}');" onMouseOut="hideddrivetip();"><a href="index.php?page=user:details&user_id={$invoices[q].EMPLOYEE_ID}">{$invoices[q].EMPLOYEE_DISPLAY_NAME}</a></td>
-                                                            <td class="olotd4" nowrap>{$currency_sym}{$invoices[q].SUB_TOTAL}</td>
-                                                            <td class="olotd4" nowrap>{$currency_sym}{$invoices[q].DISCOUNT}</td>                                                            
-                                                            <td class="olotd4" nowrap>{$currency_sym}{$invoices[q].TAX}</td>
-                                                            <td class="olotd4" nowrap>{$currency_sym}{$invoices[q].TOTAL}</td>
+                                                        <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=invoice:details&invoice_id={$invoices[q].invoice_id}';" class="row1">
+                                                            <td class="olotd4" nowrap><a href="index.php?page=invoice:details&invoice_id={$invoices[q].invoice_id}">{$invoices[q].invoice_id}</a></td>
+                                                            <td class="olotd4" nowrap>{$invoices[q].date|date_format:$date_format}</td>
+                                                            <td class="olotd4" nowrap>{$invoices[q].due_date|date_format:$date_format}</td>
+                                                            <td class="olotd4" nowrap><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" onMouseOver="ddrivetip('<b>{t}Phone{/t} </b>{$invoices[q].customer_phone}<br><b>{t}Work{/t}: </b>{$invoices[q].customer_work_phone}<br><b>{t}Mobile{/t}: </b>{$invoices[q].customer_mobile_phone}<br><br>{$invoices[q].customer_address}<br>{$invoices[q].customer_city}, {$invoices[q].customer_state}<br>{$invoices[q].customer_zip}');" onMouseOut="hideddrivetip();"><a href="index.php?page=customer:customer_details&customer_id={$invoices[q].customer_id}">{$invoices[q].customer_display_name}</a></td>
+                                                            <td class="olotd4" nowrap><a href="index.php?page=workorder:details&workorder_id={$invoices[q].workorder_id}">{$invoices[q].workorder_id}</a></td>
+                                                            <td class="olotd4" nowrap><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" onMouseOver="ddrivetip('<b>{t}Work{/t}: </b>{$invoices[q].employee_work_phone}<br><b>{t}Mobile{/t}: </b>{$invoices[q].employee_mobile_phone}<br><b>{t}Home{/t}: </b>{$invoices[q].employee_home_phone}');" onMouseOut="hideddrivetip();"><a href="index.php?page=user:details&user_id={$invoices[q].employee_id}">{$invoices[q].employee_display_name}</a></td>
+                                                            <td class="olotd4" nowrap>{$currency_sym}{$invoices[q].sub_total}</td>
+                                                            <td class="olotd4" nowrap>{$currency_sym}{$invoices[q].discount}</td>                                                            
+                                                            <td class="olotd4" nowrap>{$currency_sym}{$invoices[q].tax}</td>
+                                                            <td class="olotd4" nowrap>{$currency_sym}{$invoices[q].total}</td>
                                                         </tr>
                                                     {/section}
                                                 </table>
@@ -106,4 +106,3 @@
         </td>
     </tr>
 </table>
-

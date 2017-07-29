@@ -23,5 +23,5 @@ if(isset($VAR['submit'])) {
 }
 
 // Build the page
-$smarty->assign('workorder_comments', get_workorder_details($db, $workorder_id, 'WORK_ORDER_COMMENT'));
+$smarty->assign('workorder_comments', get_workorder_details($db, $workorder_id, 'work_order_comment'));
 $BuildPage .= $smarty->fetch('workorder/details_edit_comments.tpl');

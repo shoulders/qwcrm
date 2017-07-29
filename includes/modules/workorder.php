@@ -31,13 +31,13 @@ defined('_QWEXEC') or die;
 function display_single_workorder($db, $workorder_id){
     
     $sql = "SELECT ".PRFX."workorder.*,
-            ".PRFX."workorder.    WORK_ORDER_STATUS,
+            ".PRFX."workorder.    work_order_status,
             ".PRFX."customer.     *,            
             ".PRFX."user.         user_id, email, display_name, usergroup, work_phone, home_phone, work_mobile_phone            
             FROM ".PRFX."workorder
-            LEFT JOIN ".PRFX."customer ON ".PRFX."workorder.CUSTOMER_ID           = ".PRFX."customer.CUSTOMER_ID
-            LEFT JOIN ".PRFX."user ON ".PRFX."workorder.WORK_ORDER_ASSIGN_TO  = ".PRFX."user.user_id             
-            WHERE ".PRFX."workorder.WORK_ORDER_ID =".$db->qstr($workorder_id);
+            LEFT JOIN ".PRFX."customer ON ".PRFX."workorder.customer_id           = ".PRFX."customer.customer_id
+            LEFT JOIN ".PRFX."user ON ".PRFX."workorder.work_order_assign_to  = ".PRFX."user.user_id             
+            WHERE ".PRFX."workorder.work_order_id =".$db->qstr($workorder_id);
 
     if(!$rs = $db->Execute($sql)) {        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to return the Work Order record requested."));
@@ -69,32 +69,32 @@ function display_workorders($db, $direction = 'DESC', $use_pages = false, $page_
     /* Filter the Records */
     
     // Default Action
-    $whereTheseRecords = " WHERE ".PRFX."workorder.WORK_ORDER_ID"; 
+    $whereTheseRecords = " WHERE ".PRFX."workorder.work_order_id"; 
     
     // Restrict results by search category and search term
     if($search_term != null) {$whereTheseRecords .= " AND ".PRFX."user.$search_category LIKE '%$search_term%'";} 
     
     // Restrict by Status
-    if($status != null) {$whereTheseRecords .= " AND ".PRFX."workorder.WORK_ORDER_STATUS= ".$db->qstr($status);}        
+    if($status != null) {$whereTheseRecords .= " AND ".PRFX."workorder.work_order_status= ".$db->qstr($status);}        
 
     // Restrict by Employee
     if($employee_id != null) {$whereTheseRecords .= " AND ".PRFX."user.user_id=".$db->qstr($employee_id);}
 
     // Restrict by Customer
-    if($customer_id != null) {$whereTheseRecords .= " AND ".PRFX."customer.CUSTOMER_ID=".$db->qstr($customer_id);}
+    if($customer_id != null) {$whereTheseRecords .= " AND ".PRFX."customer.customer_id=".$db->qstr($customer_id);}
     
     /* The SQL code */
     
     $sql =  "SELECT
             ".PRFX."user.         user_id, email, display_name, usergroup, work_phone, home_phone, work_mobile_phone,
-            ".PRFX."customer.     CUSTOMER_ID, CUSTOMER_DISPLAY_NAME,
-            ".PRFX."workorder.    WORK_ORDER_ID, WORK_ORDER_OPEN_DATE, WORK_ORDER_CLOSE_DATE, WORK_ORDER_ASSIGN_TO, WORK_ORDER_SCOPE, WORK_ORDER_STATUS            
+            ".PRFX."customer.     customer_id, customer_display_name,
+            ".PRFX."workorder.    work_order_id, work_order_open_date, work_order_close_date, work_order_assign_to, work_order_scope, work_order_status            
             FROM ".PRFX."workorder
-            LEFT JOIN ".PRFX."user ON ".PRFX."workorder.WORK_ORDER_ASSIGN_TO   = ".PRFX."user.user_id
-            LEFT JOIN ".PRFX."customer ON ".PRFX."workorder.CUSTOMER_ID        = ".PRFX."customer.CUSTOMER_ID                 
+            LEFT JOIN ".PRFX."user ON ".PRFX."workorder.work_order_assign_to   = ".PRFX."user.user_id
+            LEFT JOIN ".PRFX."customer ON ".PRFX."workorder.customer_id        = ".PRFX."customer.customer_id                 
             ".$whereTheseRecords."
-            GROUP BY ".PRFX."workorder.WORK_ORDER_ID
-            ORDER BY ".PRFX."workorder.WORK_ORDER_ID
+            GROUP BY ".PRFX."workorder.work_order_id
+            ORDER BY ".PRFX."workorder.work_order_id
             ".$direction;            
     
     /* Restrict by pages */
@@ -185,8 +185,8 @@ function display_workorder_notes($db, $workorder_id){
             FROM
             ".PRFX."workorder_notes,
             ".PRFX."user
-            WHERE WORK_ORDER_ID=".$db->qstr($workorder_id)."
-            AND ".PRFX."user.user_id = ".PRFX."workorder_notes.WORK_ORDER_EMPLOYEE_ID";
+            WHERE work_order_id=".$db->qstr($workorder_id)."
+            AND ".PRFX."user.user_id = ".PRFX."workorder_notes.work_order_employee_id";
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to return notes for the Work Order."));
@@ -211,9 +211,9 @@ function display_workorder_history($db, $workorder_id){
             FROM 
             ".PRFX."workorder_history, 
             ".PRFX."user 
-            WHERE ".PRFX."workorder_history.WORK_ORDER_ID=".$db->qstr($workorder_id)." 
-            AND ".PRFX."user.user_id = ".PRFX."workorder_history.ENTERED_BY
-            ORDER BY ".PRFX."workorder_history.HISTORY_ID";
+            WHERE ".PRFX."workorder_history.work_order_id=".$db->qstr($workorder_id)." 
+            AND ".PRFX."user.user_id = ".PRFX."workorder_history.entered_by
+            ORDER BY ".PRFX."workorder_history.history_id";
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to return history records for the Work Order."));
@@ -235,14 +235,14 @@ function display_workorder_history($db, $workorder_id){
 function insert_workorder($db, $customer_id, $created_by, $scope, $workorder_description, $workorder_comments){
     
     $sql = "INSERT INTO ".PRFX."workorder SET 
-            CUSTOMER_ID                                 = " . $db->qstr( $customer_id           ).",
-            WORK_ORDER_OPEN_DATE                        = " . $db->qstr( time()                 ).",
-            WORK_ORDER_STATUS                           = " . $db->qstr( 1                      ).",            
-            WORK_ORDER_CREATE_BY                        = " . $db->qstr( $created_by            ).",
-            WORK_ORDER_SCOPE                            = " . $db->qstr( $scope                 ).",
-            WORK_ORDER_DESCRIPTION                      = " . $db->qstr( $workorder_description ).",
-            LAST_ACTIVE                                 = " . $db->qstr( NULL                   ).",
-            WORK_ORDER_COMMENT                          = " . $db->qstr( $workorder_comments    );
+            customer_id                                 = " . $db->qstr( $customer_id           ).",
+            work_order_open_date                        = " . $db->qstr( time()                 ).",
+            work_order_status                           = " . $db->qstr( 1                      ).",            
+            work_order_create_by                        = " . $db->qstr( $created_by            ).",
+            work_order_scope                            = " . $db->qstr( $scope                 ).",
+            work_order_description                      = " . $db->qstr( $workorder_description ).",
+            last_active                                 = " . $db->qstr( NULL                   ).",
+            work_order_comment                          = " . $db->qstr( $workorder_comments    );
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to insert the Work Order Record into the database."));
@@ -274,10 +274,10 @@ function insert_workorder($db, $customer_id, $created_by, $scope, $workorder_des
 function insert_workorder_history_note($db, $workorder_id, $workorder_history_note) {
     
     $sql = "INSERT INTO ".PRFX."workorder_history SET
-        WORK_ORDER_ID   = " . $db->qstr( $workorder_id                      ).",
-        DATE            = " . $db->qstr( time()                             ).",
-        NOTE            = " . $db->qstr( $workorder_history_note            ).",
-        ENTERED_BY      = " . $db->qstr( QFactory::getUser()->login_user_id );
+        work_order_id   = " . $db->qstr( $workorder_id                      ).",
+        date            = " . $db->qstr( time()                             ).",
+        note            = " . $db->qstr( $workorder_history_note            ).",
+        entered_by      = " . $db->qstr( QFactory::getUser()->login_user_id );
     
     if(!$rs = $db->Execute($sql)) {        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to insert a Work Order history note."));
@@ -298,10 +298,10 @@ function insert_workorder_history_note($db, $workorder_id, $workorder_history_no
 function insert_workorder_note($db, $workorder_id, $workorder_note){
     
     $sql = "INSERT INTO ".PRFX."workorder_notes SET 
-            WORK_ORDER_ID                  =". $db->qstr( $workorder_id                         ).",             
-            WORK_ORDER_EMPLOYEE_ID         =". $db->qstr( QFactory::getUser()->login_user_id    ).",
-            WORK_ORDER_NOTES_DATE          =". $db->qstr( time()                                ).",
-            WORK_ORDER_NOTES_DESCRIPTION   =". $db->qstr( $workorder_note                       );
+            work_order_id                  =". $db->qstr( $workorder_id                         ).",             
+            work_order_employee_id         =". $db->qstr( QFactory::getUser()->login_user_id    ).",
+            work_order_notes_date          =". $db->qstr( time()                                ).",
+            work_order_notes_description   =". $db->qstr( $workorder_note                       );
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to insert a Work Order note."));
@@ -338,7 +338,7 @@ function get_workorder_details($db, $workorder_id, $item = null) {
     // compensate for some invoices having no workorder    
     if($workorder_id == '') { return array(); }
     
-    $sql = "SELECT * FROM ".PRFX."workorder WHERE WORK_ORDER_ID=".$db->qstr($workorder_id);
+    $sql = "SELECT * FROM ".PRFX."workorder WHERE work_order_id=".$db->qstr($workorder_id);
     
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get Work Order details."));
@@ -366,7 +366,7 @@ function get_workorder_details($db, $workorder_id, $item = null) {
 
 function get_workorder_note($db, $workorder_note_id, $item = null){
     
-    $sql = "SELECT * FROM ".PRFX."workorder_notes WHERE WORK_ORDER_NOTES_ID=".$db->qstr( $workorder_note_id );    
+    $sql = "SELECT * FROM ".PRFX."workorder_notes WHERE work_order_notes_id=".$db->qstr( $workorder_note_id );    
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get a Work Order Note."));
@@ -393,7 +393,7 @@ function get_workorder_note($db, $workorder_note_id, $item = null){
 
 function get_workorder_notes($db, $workorder_id) {
     
-    $sql = "SELECT * FROM ".PRFX."customer_notes WHERE CUSTOMER_ID=".$db->qstr( $workorder_id );
+    $sql = "SELECT * FROM ".PRFX."customer_notes WHERE customer_id=".$db->qstr( $workorder_id );
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get all Notes for a Work Order."));
@@ -425,10 +425,10 @@ function get_workorder_notes($db, $workorder_id) {
 function update_workorder_scope_and_description($db, $workorder_id, $workorder_scope, $workorder_description){
     
     $sql = "UPDATE ".PRFX."workorder SET
-            WORK_ORDER_SCOPE        =".$db->qstr( $workorder_scope          ).",
-            WORK_ORDER_DESCRIPTION  =".$db->qstr( $workorder_description    ).",
-            LAST_ACTIVE             =".$db->qstr( time()                    )."
-            WHERE WORK_ORDER_ID     =".$db->qstr( $workorder_id             );
+            work_order_scope        =".$db->qstr( $workorder_scope          ).",
+            work_order_description  =".$db->qstr( $workorder_description    ).",
+            last_active             =".$db->qstr( time()                    )."
+            WHERE work_order_id     =".$db->qstr( $workorder_id             );
 
     if(!$rs = $db->execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update a Work Order Scope and Description."));
@@ -457,9 +457,9 @@ function update_workorder_scope_and_description($db, $workorder_id, $workorder_s
 function update_workorder_comments($db, $workorder_id, $workorder_comments){
     
     $sql = "UPDATE ".PRFX."workorder SET
-            WORK_ORDER_COMMENT              =".$db->qstr( $workorder_comments   ).",
-            LAST_ACTIVE                     =".$db->qstr( time()                )."
-            WHERE WORK_ORDER_ID             =".$db->qstr( $workorder_id         );
+            work_order_comment              =".$db->qstr( $workorder_comments   ).",
+            last_active                     =".$db->qstr( time()                )."
+            WHERE work_order_id             =".$db->qstr( $workorder_id         );
 
     if(!$rs = $db->execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update a Work Order Comments"));
@@ -488,9 +488,9 @@ function update_workorder_comments($db, $workorder_id, $workorder_comments){
 function update_workorder_resolution($db, $workorder_id, $workorder_resolution){
     
     $sql = "UPDATE ".PRFX."workorder SET
-            WORK_ORDER_RESOLUTION   = " . $db->qstr( $workorder_resolution ).",
-            LAST_ACTIVE             = " . $db->qstr( time()                )."
-            WHERE  WORK_ORDER_ID    = " . $db->qstr( $workorder_id         );
+            work_order_resolution   = " . $db->qstr( $workorder_resolution ).",
+            last_active             = " . $db->qstr( time()                )."
+            WHERE work_order_id     = " . $db->qstr( $workorder_id         );
 
     if(!$rs = $db->execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update a Work Order resolution."));
@@ -519,9 +519,9 @@ function update_workorder_resolution($db, $workorder_id, $workorder_resolution){
 function update_workorder_status($db, $workorder_id, $assign_status){
     
     $sql = "UPDATE ".PRFX."workorder SET
-            WORK_ORDER_STATUS       = " . $db->qstr( $assign_status     ).",
-            LAST_ACTIVE             = " . $db->qstr( time()             )."
-            WHERE WORK_ORDER_ID     = " . $db->qstr( $workorder_id      );
+            work_order_status       = " . $db->qstr( $assign_status     ).",
+            last_active             = " . $db->qstr( time()             )."
+            WHERE work_order_id     = " . $db->qstr( $workorder_id      );
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update a Work Order Status."));
@@ -532,9 +532,9 @@ function update_workorder_status($db, $workorder_id, $assign_status){
         if ($assign_status == '0'){
             
             $sql = "UPDATE ".PRFX."workorder SET 
-                    WORK_ORDER_STATUS       = '1',
-                    WORK_ORDER_ASSIGN_TO    = '0'                    
-                    WHERE WORK_ORDER_ID     = " . $workorder_id;
+                    work_order_status       = '1',
+                    work_order_assign_to    = '0'                    
+                    WHERE work_order_id     = " . $workorder_id;
             
             if(!$rs = $db->Execute($sql)) {
                 force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to set Work Order status to unassigned."));
@@ -575,7 +575,7 @@ function update_workorder_status($db, $workorder_id, $assign_status){
 
 function update_workorder_last_active($db, $workorder_id){
     
-    $sql = "UPDATE ".PRFX."workorder SET LAST_ACTIVE=".$db->qstr(time())." WHERE WORK_ORDER_ID=".$db->qstr($workorder_id);
+    $sql = "UPDATE ".PRFX."workorder SET last_active=".$db->qstr(time())." WHERE work_order_id=".$db->qstr($workorder_id);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update a Work Order's last active time."));
@@ -591,10 +591,10 @@ function update_workorder_last_active($db, $workorder_id){
 function update_workorder_note($db, $workorder_note_id, $date, $note) {
     
     $sql = "UPDATE ".PRFX."workorder_notes SET
-            WORK_ORDER_EMPLOYEE_ID          =". $db->qstr( QFactory::getUser()->login_user_id   ).",
-            WORK_ORDER_NOTES_DATE           =". $db->qstr( $date                                ).",
-            WORK_ORDER_NOTES_DESCRIPTION    =". $db->qstr( $note                                )."
-            WHERE WORK_ORDER_NOTES_ID       =". $db->qstr( $workorder_note_id                   );
+            work_order_employee_id          =". $db->qstr( QFactory::getUser()->login_user_id   ).",
+            work_order_notes_date           =". $db->qstr( $date                                ).",
+            work_order_notes_description    =". $db->qstr( $note                                )."
+            WHERE work_order_notes_id       =". $db->qstr( $workorder_note_id                   );
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update a Work Order note."));
@@ -613,12 +613,12 @@ function close_workorder_with_invoice($db, $workorder_id, $workorder_resolution)
     
     /* Insert resolution and close information */
     $sql = "UPDATE ".PRFX."workorder SET
-            WORK_ORDER_STATUS          = ". $db->qstr( 9                                    ).",
-            WORK_ORDER_CLOSE_DATE      = ". $db->qstr( time()                               ).",
-            WORK_ORDER_RESOLUTION      = ". $db->qstr( $workorder_resolution                ).",
-            WORK_ORDER_CLOSE_BY        = ". $db->qstr( QFactory::getUser()->login_user_id   ).",
-            WORK_ORDER_ASSIGN_TO       = ". $db->qstr( QFactory::getUser()->login_user_id   )."             
-            WHERE WORK_ORDER_ID        = ". $db->qstr( $workorder_id                        );
+            work_order_status          = ". $db->qstr( 9                                    ).",
+            work_order_close_date      = ". $db->qstr( time()                               ).",
+            work_order_resolution      = ". $db->qstr( $workorder_resolution                ).",
+            work_order_close_by        = ". $db->qstr( QFactory::getUser()->login_user_id   ).",
+            work_order_assign_to       = ". $db->qstr( QFactory::getUser()->login_user_id   )."             
+            WHERE work_order_id        = ". $db->qstr( $workorder_id                        );
     
     if(!$rs = $db->Execute($sql)){ 
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to close a Work Order with an invoice."));
@@ -648,12 +648,12 @@ function close_workorder_without_invoice($db, $workorder_id, $workorder_resoluti
     
     /* Insert resolution and close information */
     $sql = "UPDATE ".PRFX."workorder SET
-            WORK_ORDER_STATUS          = ". $db->qstr( 6                                    ).",
-            WORK_ORDER_CLOSE_DATE      = ". $db->qstr( time()                               ).",
-            WORK_ORDER_RESOLUTION      = ". $db->qstr( $workorder_resolution                ).",
-            WORK_ORDER_CLOSE_BY        = ". $db->qstr( QFactory::getUser()->login_user_id   ).",
-            WORK_ORDER_ASSIGN_TO       = ". $db->qstr( QFactory::getUser()->login_user_id   )."             
-            WHERE WORK_ORDER_ID        = ". $db->qstr( $workorder_id                        );
+            work_order_status          = ". $db->qstr( 6                                    ).",
+            work_order_close_date      = ". $db->qstr( time()                               ).",
+            work_order_resolution      = ". $db->qstr( $workorder_resolution                ).",
+            work_order_close_by        = ". $db->qstr( QFactory::getUser()->login_user_id   ).",
+            work_order_assign_to       = ". $db->qstr( QFactory::getUser()->login_user_id   )."             
+            WHERE work_order_id        = ". $db->qstr( $workorder_id                        );
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to close a Work Order without an invoice."));
@@ -696,7 +696,7 @@ function delete_workorder($db, $workorder_id) {
     }
     
     // Delete the workorder primary record
-    $sql = "DELETE FROM ".PRFX."workorder WHERE WORK_ORDER_ID=".$db->qstr($workorder_id);
+    $sql = "DELETE FROM ".PRFX."workorder WHERE work_order_id=".$db->qstr($workorder_id);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete the Work Order").' '.$workorder_id);
@@ -705,7 +705,7 @@ function delete_workorder($db, $workorder_id) {
     // Delete the workorder history
     } else {        
        
-        $sql = "DELETE FROM ".PRFX."workorder_history WHERE WORK_ORDER_ID=".$db->qstr($workorder_id);
+        $sql = "DELETE FROM ".PRFX."workorder_history WHERE work_order_id=".$db->qstr($workorder_id);
 
         if(!$rs = $db->Execute($sql)) {
             force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete the history notes for Work Order").' '.$workorder_id);
@@ -714,7 +714,7 @@ function delete_workorder($db, $workorder_id) {
         // Delete the workorder notes    
         } else {
             
-            $sql = "DELETE FROM ".PRFX."workorder_notes WHERE WORK_ORDER_ID=".$db->qstr($workorder_id);
+            $sql = "DELETE FROM ".PRFX."workorder_notes WHERE work_order_id=".$db->qstr($workorder_id);
 
             if(!$rs = $db->Execute($sql)) {
                 force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete the notes for Work Order").' '.$workorder_id);
@@ -724,7 +724,7 @@ function delete_workorder($db, $workorder_id) {
             // Delete the workorder schedule events     
             } else {
 
-                $sql = "DELETE FROM ".PRFX."schedule WHERE WORKORDER_ID=".$db->qstr($workorder_id);
+                $sql = "DELETE FROM ".PRFX."schedule WHERE workorder_id=".$db->qstr($workorder_id);
 
                 if(!$rs = $db->Execute($sql)) {
                     force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete the schedules for Work Order").' '.$workorder_id);
@@ -754,14 +754,14 @@ function delete_workorder($db, $workorder_id) {
 
 function check_workorder_status_is_allowed_for_deletion($db, $workorder_id) {
     
-    $sql = "SELECT WORK_ORDER_STATUS FROM ".PRFX."workorder WHERE WORK_ORDER_ID=".$workorder_id;
+    $sql = "SELECT work_order_status FROM ".PRFX."workorder WHERE work_order_id=".$workorder_id;
     
     if(!$rs = $db->Execute($sql)) {        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to check if a Work Order is allowed to be deleted."));
         exit;
     } else {        
         
-        if($rs->fields['WORK_ORDER_STATUS'] == 1 || $rs->fields['WORK_ORDER_STATUS'] == 10) {
+        if($rs->fields['work_order_status'] == 1 || $rs->fields['work_order_status'] == 10) {
             
             return true;
             
@@ -781,7 +781,7 @@ function check_workorder_status_is_allowed_for_deletion($db, $workorder_id) {
 
 function delete_workorder_note($db, $workorder_note_id) {
     
-    $sql = "DELETE FROM ".PRFX."workorder_notes WHERE WORK_ORDER_NOTES_ID=".$db->qstr( $workorder_note_id );
+    $sql = "DELETE FROM ".PRFX."workorder_notes WHERE work_order_notes_id=".$db->qstr( $workorder_note_id );
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete a Work Order note."));
@@ -798,7 +798,7 @@ function delete_workorder_note($db, $workorder_note_id) {
 
 function check_workorder_has_invoice($db, $workorder_id) {
     
-    $sql = "SELECT * FROM ".PRFX."invoice WHERE WORKORDER_ID=".$workorder_id;
+    $sql = "SELECT * FROM ".PRFX."invoice WHERE workorder_id=".$workorder_id;
     
     if(!$rs = $db->Execute($sql)) {        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to check if a Work Order has an invoice."));
@@ -826,9 +826,9 @@ function check_workorder_has_invoice($db, $workorder_id) {
 function assign_workorder_to_employee($db, $workorder_id, $logged_in_employee_id, $assigned_employee_id, $target_employee_id) {
     
     $sql = "UPDATE ".PRFX."workorder SET
-            WORK_ORDER_ASSIGN_TO=".$db->qstr($target_employee_id).",
-            WORK_ORDER_STATUS=2
-            WHERE WORK_ORDER_ID=".$db->qstr($workorder_id) ;
+            work_order_assign_to=".$db->qstr($target_employee_id).",
+            work_order_status=2
+            WHERE work_order_id=".$db->qstr($workorder_id) ;
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to assign a Work Order to an employee."));
@@ -866,7 +866,7 @@ function assign_workorder_to_employee($db, $workorder_id, $logged_in_employee_id
 
 function resolution_edit_status_check($db, $workorder_id) {
     
-    $sql = "SELECT WORK_ORDER_STATUS FROM ".PRFX."workorder WHERE WORK_ORDER_ID=".$db->qstr($workorder_id);
+    $sql = "SELECT work_order_status FROM ".PRFX."workorder WHERE work_order_id=".$db->qstr($workorder_id);
     
     if(!$rs = $db->execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to edit a Work Order status."));
@@ -875,7 +875,7 @@ function resolution_edit_status_check($db, $workorder_id) {
     } else {        
     
         // waiting for parts
-        if ($rs->fields['WORK_ORDER_STATUS'] == 3) {           
+        if ($rs->fields['work_order_status'] == 3) {           
             
             postEmulationWrite('warning_msg', gettext("Can not close a work order if it is Waiting For Parts. Please Adjust the status."));
             return false;
@@ -883,7 +883,7 @@ function resolution_edit_status_check($db, $workorder_id) {
         }
         
         // closed
-        if($rs->fields['WORK_ORDER_STATUS'] == 6) {
+        if($rs->fields['work_order_status'] == 6) {
             
             postEmulationWrite('warning_msg', gettext("Work Order Is already Closed. Please Create an Invoice."));
             return false;
@@ -903,13 +903,13 @@ function check_workorder_is_open($db, $workorder_id) {
     
     if(!$workorder_id){return false;}
     
-    $sql = "SELECT WORK_ORDER_STATUS FROM ".PRFX."workorder WHERE WORK_ORDER_ID=".$db->qstr($workorder_id);
+    $sql = "SELECT work_order_status FROM ".PRFX."workorder WHERE work_order_id=".$db->qstr($workorder_id);
     
     if(!$rs = $db->execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to check if a Work Order is open."));
         exit;
     } else {
-        $status = $rs->fields['WORK_ORDER'];
+        $status = $rs->fields['work_order'];
     }
 
     if($status == '6' || $status == '7' || $status == '8' || $status == '9') {        
