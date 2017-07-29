@@ -18,3 +18,13 @@ if($QConfig->force_ssl == 1 && !isset($_SERVER['HTTPS'])) {
     force_page('https://' . QWCRM_DOMAIN . QWCRM_PATH );
     exit;
 }
+
+#######################################
+#   Prevent direct access to a page   #
+#######################################
+
+function check_page_accessed_via_qwcrm() {
+    
+    return preg_match('/^.*\?page=(.*)&.*/U', getenv('HTTP_REFERER'));
+    
+}

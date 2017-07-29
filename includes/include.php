@@ -1280,13 +1280,3 @@ function browserSupportedCompressionEncodings() {
     return array_map('trim', (array) explode(',', $_SERVER['HTTP_ACCEPT_ENCODING']));
 
 }
-
-#######################################
-#   Prevent direct access to a page   #
-#######################################
-
-function check_page_accessed_via_qwcrm() {
-    
-    return preg_match('/^.*\?page=(.*)&.*/U', getenv('HTTP_REFERER'));
-    
-}

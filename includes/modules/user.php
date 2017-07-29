@@ -833,7 +833,7 @@ function send_reset_email($db, $email) {
     
     // Set Options
     $recipient = $email;
-    $subject = gettext("Password Reset - QWcrm");    
+    $subject = gettext("Your QWcrm password reset request");    
     $message = '';
     
     // Create Token
