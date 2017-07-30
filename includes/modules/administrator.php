@@ -176,7 +176,9 @@ function updateACL($db, $permissions) {
             OR `page`= 'core:404'
             OR `page`= 'core:home'
             OR `page`= 'core:maintenance'                      
-            ";            
+            "; 
+    
+    // make administrator:acl only for administrator becuiase it sets the permissions ? - also make this preset permissions alittle more fluid, i.e. easy to add exceptions - maybe make these ones grey some how
 
     if(!$rs = $db->execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update teh Page ACL permissions."));
