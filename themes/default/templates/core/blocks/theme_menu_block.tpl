@@ -136,7 +136,7 @@
                         <a href="index.php?page=stats:hit_stats_by_ip"><img src="{$theme_images_dir}icons/reports.png" alt="" border="0" height="14" width="14" /> {t}Hit Stats By IP{/t}</a>
                         
                         <!-- System -->
-                        <a href="index.php?page=administrator:php_info"><img src="{$theme_images_dir}icons/php.png" alt="" border="0" height="14" width="14" /> {t}PHP Info{/t}</a>
+                        <a href="index.php?page=administrator:phpinfo"><img src="{$theme_images_dir}icons/php.png" alt="" border="0" height="14" width="14" /> {t}PHPInfo{/t}</a>
                         <a href="index.php?page=administrator:update"><img src="{$theme_images_dir}icons/web.png" alt="" border="0" height="14" width="14" /> {t}Update{/t}</a>
                         <a href="index.php?page=administrator:config"><img src="{$theme_images_dir}icons/web.png" alt="" border="0" height="14" width="14" /> {t}Config Settings{/t}</a>
                         
