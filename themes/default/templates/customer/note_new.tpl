@@ -23,7 +23,7 @@
                                                 <td class="olohead"></td>
                                             </tr>
                                             <tr>
-                                                <td class="olotd"><textarea name="customer_note" class="olotd4 mceCheckForContent" rows="15" cols="70"></textarea></td>
+                                                <td class="olotd"><textarea name="note" class="olotd4 mceCheckForContent" rows="15" cols="70"></textarea></td>
                                             </tr>
                                         </table>
                                         <br>

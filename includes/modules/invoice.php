@@ -51,10 +51,18 @@ function display_invoices($db, $direction = 'DESC', $use_pages = false, $page_no
     
     /* The SQL code */
     
-    $sql = "SELECT
-        ".PRFX."user.         *,
-        ".PRFX."customer.     *,
-        ".PRFX."invoice.      *
+    $sql = "SELECT        
+        ".PRFX."invoice.*,           
+        ".PRFX."user.display_name AS employee_display_name,
+        ".PRFX."user.work_phone AS employee_work_phone,
+        ".PRFX."user.work_mobile_phone AS employee_work_mobile_phone,
+        ".PRFX."user.home_mobile_phone AS employee_home_mobile_phone,
+        ".PRFX."customer.display_name AS customer_display_name,
+        ".PRFX."customer.first_name AS customer_first_name,
+        ".PRFX."customer.last_name AS customer_last_name,
+        ".PRFX."customer.phone AS customer_phone,
+        ".PRFX."customer.mobile_phone AS customer_mobile_phone,
+        ".PRFX."customer.fax AS customer_fax
         FROM ".PRFX."invoice
         LEFT JOIN ".PRFX."user ON ".PRFX."invoice.employee_id = ".PRFX."user.user_id
         LEFT JOIN ".PRFX."customer ON ".PRFX."invoice.customer_id = ".PRFX."customer.customer_id
@@ -146,10 +154,10 @@ function display_invoices($db, $direction = 'DESC', $use_pages = false, $page_no
 
 function insert_invoice($db, $customer_id, $workorder_id, $discount_rate, $tax_rate) {
     
-    $sql = "INSERT INTO ".PRFX."invoice SET            
+    $sql = "INSERT INTO ".PRFX."invoice SET     
+            employee_id     =". $db->qstr( QFactory::getUser()->login_user_id   ).",
             customer_id     =". $db->qstr( $customer_id                         ).",
             workorder_id    =". $db->qstr( $workorder_id                        ).",
-            employee_id     =". $db->qstr( QFactory::getUser()->login_user_id   ).",
             date            =". $db->qstr( time()                               ).",
             due_date        =". $db->qstr( time()                               ).",            
             discount_rate   =". $db->qstr( $discount_rate                       ).",            
@@ -253,8 +261,6 @@ function insert_parts_items($db, $invoice_id, $parts_description, $parts_price, 
 #####################################
 
 function insert_invoice_labour_rates_item($db, $VAR){
-    
-    global $smarty;
     
     $sql = "INSERT INTO ".PRFX."invoice_labour_rates SET
             labour_rate_name     =". $db->qstr( $VAR['display']      ).",
@@ -465,13 +471,13 @@ function update_invoice($db, $invoice_id, $date, $due_date, $discount_rate) {
 #   update invoice after a transaction has been added  #
 ########################################################
 
-function update_invoice_transaction_only($db, $invoice_id, $paid_status, $paid_date, $paid_amount, $balance) {
+function update_invoice_transaction_only($db, $invoice_id, $paid_amount, $balance, $paid_status, $paid_date = '') {
     
     $sql = "UPDATE ".PRFX."invoice SET
+            paid_amount         =". $db->qstr( $paid_amount ).",
+            balance             =". $db->qstr( $balance     ).",
             is_paid             =". $db->qstr( $paid_status ).",
-            paid_date           =". $db->qstr( $paid_date   ).",        
-            paid_amount         =". $db->qstr( $paid_amount ).",                    
-            balance             =". $db->qstr( $balance     )."
+            paid_date           =". $db->qstr( $paid_date   )."                       
             WHERE invoice_id    =". $db->qstr( $invoice_id  );
 
     if(!$rs = $db->execute($sql)){        
@@ -485,25 +491,25 @@ function update_invoice_transaction_only($db, $invoice_id, $paid_status, $paid_d
 #     update invoice (full)         # // not used anywhere
 #####################################
 
-function update_invoice_full($db, $invoice_id, $customer_id, $workorder_id, $employee_id, $date, $due_date, $discount_rate, $discount, $tax_rate, $tax_amount, $sub_total, $total, $is_paid, $paid_date, $paid_amount, $balance) {
+function update_invoice_full($db, $invoice_id, $employee_id, $customer_id, $workorder_id, $date, $due_date, $discount_rate, $discount_amount, $tax_rate, $tax_amount, $sub_total, $total, $paid_amount, $balance, $is_paid, $paid_date) {
     
-    $sql = "UPDATE ".PRFX."invoice SET        
+    $sql = "UPDATE ".PRFX."invoice SET     
+            employee_id         =". $db->qstr( $employee_id     ).", 
             customer_id         =". $db->qstr( $customer_id     ).",
             workorder_id        =". $db->qstr( $workorder_id    ).",
-            employee_id         =". $db->qstr( $employee_id     ).",                
             date                =". $db->qstr( $date            ).",
-            due_date            =". $db->qstr( $due_date        ).",                
-            sub_total           =". $db->qstr( $sub_total       ).",
+            due_date            =". $db->qstr( $due_date        ).", 
             discount_rate       =". $db->qstr( $discount_rate   ).",
-            discount            =". $db->qstr( $discount        ).",    
+            discount_amount     =". $db->qstr( $discount_amount ).",   
             tax_rate            =". $db->qstr( $tax_rate        ).",
-            tax                 =". $db->qstr( $tax_amount      ).",             
-            total               =". $db->qstr( $total           ).",                    
-            is_paid             =". $db->qstr( $is_paid         ).",
-            paid_date           =". $db->qstr( $paid_date       ).",
+            tax_amount          =". $db->qstr( $tax_amount      ).", 
+            sub_total           =". $db->qstr( $sub_total       ).",
+            total               =". $db->qstr( $total           ).", 
             paid_amount         =". $db->qstr( $paid_amount     ).",
-            balance             =". $db->qstr( $balance         )."            
-            where invoice_id    =". $db->qstr( $invoice_id      );
+            balance             =". $db->qstr( $balance         ).",      
+            is_paid             =". $db->qstr( $is_paid         ).",
+            paid_date           =". $db->qstr( $paid_date       )."
+            WHERE invoice_id    =". $db->qstr( $invoice_id      );
 
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the invoice."));
@@ -516,16 +522,16 @@ function update_invoice_full($db, $invoice_id, $customer_id, $workorder_id, $emp
 #     update invoice rate item      #
 #####################################
 
-function update_invoice_labour_rates_item($db, $labour_rate_id, $VAR){
+function update_invoice_labour_rates_item($db, $VAR){
     
     $sql = "UPDATE ".PRFX."invoice_labour_rates SET
-        labour_rate_name     =". $db->qstr( $VAR['display']         ).",
-        labour_rate_amount   =". $db->qstr( $VAR['amount']          ).",
-        labour_rate_cost     =". $db->qstr( $VAR['cost']            ).",
-        labour_rate_active   =". $db->qstr( $VAR['active']          ).",
-        labour_type          =". $db->qstr( $VAR['type']            ).",
-        labour_manuf         =". $db->qstr( $VAR['manufacturer']    )."
-        WHERE labour_rate_id =". $db->qstr( $labour_rate_id         );
+            labour_rate_name     =". $db->qstr( $VAR['display']         ).",
+            labour_rate_amount   =". $db->qstr( $VAR['amount']          ).",
+            labour_rate_cost     =". $db->qstr( $VAR['cost']            ).",
+            labour_rate_active   =". $db->qstr( $VAR['active']          ).",
+            labour_type          =". $db->qstr( $VAR['type']            ).",
+            labour_manuf         =". $db->qstr( $VAR['manufacturer']    )."
+            WHERE labour_rate_id =". $db->qstr( $VAR['labour_rate_id']  );
 
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update an invoice labour rates item."));
@@ -657,17 +663,17 @@ function recalculate_invoice_totals($db, $invoice_id) {
     
     $sub_total = labour_sub_total($db, $invoice_id) + parts_sub_total($db, $invoice_id);    
     $discount_rate = get_invoice_details($db, $invoice_id, 'discount_rate');
-    $discount = $sub_total * ($discount_rate / 100); // divide by 100; turns 17.5 in to 0.17575
-    $tax = ($sub_total - $discount) * ((get_invoice_details($db, $invoice_id, 'tax_rate')/ 100)); // divide by 100; turns 17.5 in to 0.175  
+    $discount_amount = $sub_total * ($discount_rate / 100); // divide by 100; turns 17.5 in to 0.17575
+    $tax_amount = ($sub_total - $discount) * ((get_invoice_details($db, $invoice_id, 'tax_rate')/ 100)); // divide by 100; turns 17.5 in to 0.175  
     $total = ($sub_total - $discount) + $tax;    
     $balance = $total - $paid_amount = get_invoice_details($db, $invoice_id, 'paid_amount');
 
-    $sql = "UPDATE ".PRFX."invoice SET        
-            sub_total           =". $db->qstr( $sub_total       ).",            
-            discount            =". $db->qstr( $discount        ).",
-            tax                 =". $db->qstr( $tax             ).",             
+    $sql = "UPDATE ".PRFX."invoice SET      
+            discount_amount     =". $db->qstr( $discount_amount ).",
+            tax_amount          =". $db->qstr( $tax_amount      ).", 
+            sub_total           =". $db->qstr( $sub_total       ).", 
             total               =". $db->qstr( $total           ).",
-            balance             =". $db->qstr( $balance         )."            
+            balance             =". $db->qstr( $balance         )."                
             WHERE invoice_id    =". $db->qstr( $invoice_id      );
 
     if(!$rs = $db->execute($sql)){        

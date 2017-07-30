@@ -43,17 +43,17 @@
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{t}Payee{/t}</b><span style="color: #ff0000"> *</span></td>
-                                                                            <td colspan="3"><input id="expensePayee" name="expensePayee" class="olotd5" size="50" type="text" maxlength="50" required onkeydown="return onlyAlphaNumeric(event);"></td>
+                                                                            <td colspan="3"><input id="expensePayee" name="payee" class="olotd5" size="50" type="text" maxlength="50" required onkeydown="return onlyAlphaNumeric(event);"></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{t}Date{/t}</b><span style="color: #ff0000"> *</span></td>
                                                                             <td>
-                                                                                <input id="expenseDate" name="expenseDate" class="olotd5" size="10" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
-                                                                                <input id="expenseDate_button" type="button" value="+">                                                                                
+                                                                                <input id="date" name="date" class="olotd5" size="10" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
+                                                                                <input id="date_button" type="button" value="+">                                                                                
                                                                                 <script>                                                                                
                                                                                     Calendar.setup( {
-                                                                                        trigger     : "expenseDate_button",
-                                                                                        inputField  : "expenseDate",
+                                                                                        trigger     : "date_button",
+                                                                                        inputField  : "date",
                                                                                         dateFormat  : "{$date_format}"                                                                      
                                                                                     } );                                                                                
                                                                                 </script>                                                                                
@@ -62,7 +62,7 @@
                                                                         <tr>
                                                                             <td align="right"><b>{t}Type{/t}</b><span style="color: #ff0000"> *</span></td>
                                                                             <td>
-                                                                                <select name="expenseType" class="olotd5" col="30" style="width: 150px;"/>
+                                                                                <select name="type" class="olotd5" col="30" style="width: 150px;"/>
                                                                                     <option value="1">{t}EXPENSE_TYPE_1{/t}</option>
                                                                                     <option value="2">{t}EXPENSE_TYPE_2{/t}</option>
                                                                                     <option value="3">{t}EXPENSE_TYPE_3{/t}</option>
@@ -90,7 +90,7 @@
                                                                         <tr>
                                                                             <td align="right"><b>{t}Payment Method{/t}</b><span style="color: #ff0000"> *</span></td>
                                                                             <td>
-                                                                                <select name="expensePaymentMethod" class="olotd5" style="width: 150px;"/>
+                                                                                <select name="payment_method" class="olotd5" style="width: 150px;"/>
                                                                                     <option value="1">{t}EXPENSE_PAYMENT_METHOD_1{/t}</option>
                                                                                     <option value="2">{t}EXPENSE_PAYMENT_METHOD_2{/t}</option>
                                                                                     <option value="3">{t}EXPENSE_PAYMENT_METHOD_3{/t}</option>
@@ -107,19 +107,19 @@
                                                                         </tr>                                                                                                          
                                                                         <tr>
                                                                             <td align="right"><b>{t}Net Amount{/t}</b></td>
-                                                                            <td><a><input name="expenseNetAmount" class="olotd5" size="10" type="text" maxlength="10" pattern="{literal}^[0-9]{1,7}(.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumbersPeriod(event);"></b></a></td>
+                                                                            <td><a><input name="net_amount" class="olotd5" size="10" type="text" maxlength="10" pattern="{literal}^[0-9]{1,7}(.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumbersPeriod(event);"></b></a></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><span style="color: #ff0000"></span><b>{t}Tax Rate{/t}</td>
-                                                                            <td><input name="expenseTaxRate" class="olotd5" size="5" value="{$tax_rate}" type="text" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumbersPeriod(event);"/><b>%</b></td>
+                                                                            <td><input name="tax_rate" class="olotd5" size="5" value="{$tax_rate}" type="text" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumbersPeriod(event);"/><b>%</b></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{t}Tax Amount{/t}</b></td>
-                                                                            <td><input name="expenseTaxAmount" class="olotd5" size="10" type="text" maxlength="10" pattern="{literal}^[0-9]{1,7}(.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumbersPeriod(event);"/></td>
+                                                                            <td><input name="tax_amount" class="olotd5" size="10" type="text" maxlength="10" pattern="{literal}^[0-9]{1,7}(.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumbersPeriod(event);"/></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{t}Gross Amount{/t}</b><span style="color: #ff0000"> *</span></td>
-                                                                            <td><input name="expenseGrossAmount" class="olotd5" size="10" type="text" maxlength="10" pattern="{literal}^[0-9]{1,7}(.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumbersPeriod(event);"/></td>
+                                                                            <td><input name="gross_amount" class="olotd5" size="10" type="text" maxlength="10" pattern="{literal}^[0-9]{1,7}(.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumbersPeriod(event);"/></td>
                                                                         </tr>
                                                                     </tbody>
                                                                 </table>
@@ -130,15 +130,15 @@
                                                         </tr>
                                                         <tr>
                                                             <td colspan="2">
-                                                                <table>                                                                    
-                                                                    <tr>
-                                                                        <td align="right"><b>{t}Notes{/t}</b></td>
-                                                                        <td><textarea name="expenseNotes" class="olotd5" cols="50" rows="15"></textarea></td>
-                                                                    </tr>
+                                                                <table>
                                                                     <tr>
                                                                         <td align="right"><b>{t}Items{/t}</b><span style="color: #ff0000"> *</span></td>
-                                                                        <td><textarea name="expenseItems" class="olotd5 mceCheckForContent" cols="50" rows="15"></textarea></td>
-                                                                    </tr>                                                                    
+                                                                        <td><textarea name="items" class="olotd5 mceCheckForContent" cols="50" rows="15"></textarea></td>
+                                                                    </tr> 
+                                                                    <tr>
+                                                                        <td align="right"><b>{t}Notes{/t}</b></td>
+                                                                        <td><textarea name="notes" class="olotd5" cols="50" rows="15"></textarea></td>
+                                                                    </tr>                                                                                                                                       
                                                                     <tr>
                                                                         <td></td>
                                                                         <td>

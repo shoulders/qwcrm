@@ -35,39 +35,39 @@
                                                     <table cellpadding="5" cellspacing="0">
                                                         <tr>
                                                             <td align="right"><b>{t}Company Name{/t}:</b></td>
-                                                            <td><input name="company_name" class="olotd5" value="{$company_details.name}" type="text" maxlength="50" required onkeydown="return onlyAlpha(event);"></td>
+                                                            <td><input name="name" class="olotd5" value="{$company_details.name}" type="text" maxlength="50" required onkeydown="return onlyAlpha(event);"></td>
                                                         </tr>
                                                         <tr>
-                                                            <td align="right"><b>{t}Logo Filename{/t}:</b></td>
+                                                            <td align="right"><b>{t}Logo{/t}:</b></td>
                                                             <td>
-                                                                <input type="file" name="company_logo" id="company_logo" />
+                                                                <input type="file" name="logo">
                                                                 <img src="{$company_details.logo}" height="50px" alt="Company Logo"><br>
                                                             </td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{t}Company Number{/t}:</b></td>
-                                                            <td><input name="company_number" class="olotd5" value="{$company_details.number}" type="text" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"/></td>
+                                                            <td><input name="company_number" class="olotd5" value="{$company_details.company_number}" type="text" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"/></td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{t}Address{/t}:</b></td>
-                                                            <td><textarea name="company_address" class="olotd5 mceNoEditor" cols="30" rows="3" maxlength="100" required onkeydown="return onlyAddress(event);">{$company_details.address}</textarea></td>
+                                                            <td><textarea name="address" class="olotd5 mceNoEditor" cols="30" rows="3" maxlength="100" required onkeydown="return onlyAddress(event);">{$company_details.address}</textarea></td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{t}City{/t}:</b></td>
-                                                            <td><input name="company_city" class="olotd5" value="{$company_details.city}" type="text" maxlength="20" required onkeydown="return onlyAlpha(event);"></td>
+                                                            <td><input name="city" class="olotd5" value="{$company_details.city}" type="text" maxlength="20" required onkeydown="return onlyAlpha(event);"></td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{t}State{/t}:</b></td>
-                                                            <td><input name="company_state" class="olotd5" value="{$company_details.state}" type="text" maxlength="20" required onkeydown="return onlyAlpha(event);"></td>
+                                                            <td><input name="state" class="olotd5" value="{$company_details.state}" type="text" maxlength="20" required onkeydown="return onlyAlpha(event);"></td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{t}Zip{/t}:</b></td>
-                                                            <td><input name="company_zip" class="olotd5" value="{$company_details.zip}" type="text" maxlength="20" required onkeydown="return onlyAlphaNumeric(event);"></td>
+                                                            <td><input name="zip" class="olotd5" value="{$company_details.zip}" type="text" maxlength="20" required onkeydown="return onlyAlphaNumeric(event);"></td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{t}Country{/t}:</b></td>
                                                             <td>
-                                                                <select name="company_country" class="olotd5">
+                                                                <select name="country" class="olotd5">
                                                                     {section name=c loop=$country}
                                                                         <option value="{$country[c].code}" {if $country[c].code == $company_details.country}selected{/if}>{$country[c].name}</option>
                                                                     {/section}
@@ -76,33 +76,33 @@
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{t}Phone{/t}:</b></td>
-                                                            <td><input name="company_phone" class="olotd5" value="{$company_details.phone}" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"</td>
+                                                            <td><input name="phone" class="olotd5" value="{$company_details.phone}" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"</td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{t}Mobile Phone{/t}:</b></td>
-                                                            <td><input name="company_mobile" class="olotd5" value="{$company_details.mobile}" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"></td>
+                                                            <td><input name="mobile" class="olotd5" value="{$company_details.mobile}" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"></td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{t}Fax{/t}:</b></td>
-                                                            <td><input name="company_fax" class="olotd5" value="{$company_details.fax}" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"></td>
+                                                            <td><input name="fax" class="olotd5" value="{$company_details.fax}" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"></td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{t}Email{/t}:</b></td>                                                                
-                                                            <td><input name="company_email" class="olotd5" value="{$company_details.email}" size="50" type="email" maxlength="50" placeholder="no-reply@quantumwarp.com" onkeydown="return onlyEmail(event);"/></td>
+                                                            <td><input name="email" class="olotd5" value="{$company_details.email}" size="50" type="email" maxlength="50" placeholder="no-reply@quantumwarp.com" onkeydown="return onlyEmail(event);"/></td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{t}Website{/t}:</b></td>                                                                
-                                                            <td><input name="company_www" class="olotd5" value="{$company_details.www}" size="50" type="url" maxlength="50" placeholder="https://quantumwarp.com/" pattern="^https?://.+" onkeydown="return onlyURL(event);"/></td>
+                                                            <td><input name="website" class="olotd5" value="{$company_details.website}" size="50" type="url" maxlength="50" placeholder="https://quantumwarp.com/" pattern="^https?://.+" onkeydown="return onlyURL(event);"/></td>
                                                         </tr> 
                                                         <tr>
                                                             <td align="right"><b>{t}Tax Rate{/t}:</b></td>
-                                                            <td><input name="company_tax_rate" class="olotd5" size="6" value="{$company_details.tax_rate}" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumbersPeriod(event);"/>%</td>
+                                                            <td><input name="tax_rate" class="olotd5" size="6" value="{$company_details.tax_rate}" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumbersPeriod(event);"/>%</td>
                                                         </tr>
                                                         <tr>
                                                             <td><b>{t}Company Welcome Message{/t}:</b><br>{t}(home page){/t}</td>
                                                         </tr>
                                                         <tr>
-                                                            <td colspan="2"><textarea class="olotd5" cols="80" rows="5" name="company_welcome_msg">{$company_details.welcome_msg}</textarea></td>
+                                                            <td colspan="2"><textarea class="olotd5" cols="80" rows="5" name="welcome_msg">{$company_details.welcome_msg}</textarea></td>
                                                         </tr>                                                                                                                      
                                                         <tr>
                                                             <td colspan="2"><input class="olotd5" type="submit" name="submit" value="Update"></td>
@@ -130,16 +130,16 @@
                                                     <table cellpadding="5" cellspacing="0">                                                        
                                                         <tr>
                                                             <td align="right"><b>{t}Currency Symbol{/t}:</b></td>
-                                                            <td><input name="company_currency_sym" class="olotd5" size="3" value="{$company_details.currency_symbol}" type="text" maxlength="1" required onkeydown="return onlyCurrencySymbol(event);"></td>
+                                                            <td><input name="currency_symbol" class="olotd5" size="3" value="{$company_details.currency_symbol}" type="text" maxlength="1" required onkeydown="return onlyCurrencySymbol(event);"></td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{t}Currency Code{/t}:</b></td>
-                                                            <td><input name="company_currency_code" class="olotd5" size="5" value="{$company_details.currency_code}" type="text" maxlength="3" required onkeydown="return onlyAlpha(event);">{t}eg: "USD" = US Dollars, "AUD" = Australian Dollars, "GBP" = British Pound.{/t}</td>
+                                                            <td><input name="currency_code" class="olotd5" size="5" value="{$company_details.currency_code}" type="text" maxlength="3" required onkeydown="return onlyAlpha(event);">{t}eg: "USD" = US Dollars, "AUD" = Australian Dollars, "GBP" = British Pound.{/t}</td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{t}Date Formatting{/t}:</b></td>
                                                             <td>
-                                                                <select name="company_date_format" class="olotd5">
+                                                                <select name="date_format" class="olotd5">
                                                                     <option value="%d/%m/%Y"{if $company_details.date_format == '%d/%m/%Y'} selected{/if}>dd/mm/yyyy</option>                                                            
                                                                     <option value="%m/%d/%Y"{if $company_details.date_format == '%m/%d/%Y'} selected{/if}>mm/dd/yyyy</option>
                                                                     <option value="%d/%m/%y"{if $company_details.date_format == '%d/%m/%y'} selected{/if}>dd/mm/yy</option>

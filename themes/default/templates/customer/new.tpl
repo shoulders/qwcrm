@@ -30,15 +30,15 @@
                                                                     <tbody align="left">
                                                                         <tr>
                                                                             <td align="right"><b>{t}Display Name{/t}</b><span style="color: #ff0000">*</span></td>
-                                                                            <td colspan="3"><input name="displayName" class="olotd5" size="60" type="text" maxlength="50" required onkeydown="return onlyAlpha(event);"></td>
+                                                                            <td colspan="3"><input name="display_name" class="olotd5" size="60" type="text" maxlength="50" required onkeydown="return onlyAlpha(event);"></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{t}First Name{/t}</b></td>
-                                                                            <td><input name="firstName" class="olotd5" type="text" maxlength="20" onkeydown="return onlyAlpha(event);"></td>
+                                                                            <td><input name="first_name" class="olotd5" type="text" maxlength="20" onkeydown="return onlyAlpha(event);"></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{t}Last Name{/t}</b></td>
-                                                                            <td><input name="lastName" class="olotd5" type="text" maxlength="20" onkeydown="return onlyAlpha(event);"></td>
+                                                                            <td><input name="last_name" class="olotd5" type="text" maxlength="20" onkeydown="return onlyAlpha(event);"></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><span style="color: #ff0000"></span><b>{t}Website{/t}</b></td>
@@ -50,12 +50,12 @@
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><span style="color: #ff0000"></span><b>{t}Credit Terms{/t}</b></td>
-                                                                            <td><input name="creditterms" class="olotd5" size="50" type="text" maxlength="50" onkeydown="return onlyAlphaNumeric(event);"></td>
+                                                                            <td><input name="credit_terms" class="olotd5" size="50" type="text" maxlength="50" onkeydown="return onlyAlphaNumeric(event);"></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{t}Type{/t}</b><span style="color: #ff0000">*</span></td>
                                                                             <td>
-                                                                                <select name="customerType" class="olotd5">
+                                                                                <select name="type" class="olotd5">
                                                                                     <option value="1">{t}CUSTOMER_TYPE_1{/t}</option>
                                                                                     <option value="2">{t}CUSTOMER_TYPE_2{/t}</option>
                                                                                     <option value="3">{t}CUSTOMER_TYPE_3{/t}</option>
@@ -84,16 +84,16 @@
                                                             <td colspan="2">
                                                                 <table>
                                                                     <tr>
-                                                                        <td align="right"><b>{t}Home{/t}</b></td>
-                                                                        <td><input name="homePhone" class="olotd5" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td align="right"><b>{t}Work{/t}</b></td>
-                                                                        <td><input name="workPhone" class="olotd5" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"></td>
+                                                                        <td align="right"><b>{t}Phone{/t}</b></td>
+                                                                        <td><input name="phone" class="olotd5" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td align="right"><b>{t}Mobile{/t}</b></td>
-                                                                        <td><input name="mobilePhone" class="olotd5" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"></td>
+                                                                        <td><input name="work_phone" class="olotd5" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td align="right"><b>{t}Fax{/t}</b></td>
+                                                                        <td><input name="fax" class="olotd5" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"></td>
                                                                     </tr>
                                                                 </table>
                                                             </td>
@@ -126,7 +126,7 @@
                                                                         </tr>
                                                                         <tr>
                                                                             <td></td>                                                                            
-                                                                            <td colspan="2"><textarea name="customerNotes" class="olotd5" cols="50" rows="20"></textarea></td>
+                                                                            <td colspan="2"><textarea name="notes" class="olotd5" cols="50" rows="20"></textarea></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td></td>

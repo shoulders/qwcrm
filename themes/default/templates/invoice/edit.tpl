@@ -270,21 +270,25 @@
                         <table class="olotable" width="100%" border="0" cellpadding="5" cellspacing="0">
                             <tr>
                                 <td class="menutd">                                        
-                                    <form action="index.php?page=invoice:edit" method="POST" name="new_invoice" id="new_invoice">
+                                    <form action="index.php?page=invoice:edit&invoice_id={$invoice_id}" method="POST" name="new_invoice" id="new_invoice">
 
                                         <!-- Invoice Information -->
                                         <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
+                                        <tr class="olotd4">
+                                            <td class="row2"><b>{t}Invoice ID{/t}</b></td>
+                                            <td class="row2"><b>{t}Work Order{/t}</b></td>
+                                            <td class="row2"><b>{t}Technician{/t}</b></td> 
+                                            <td class="row2"><b>{t}Date{/t}</b></td>
+                                            <td class="row2"><b>{t}Due Date{/t}</b></td>                                                                                                                                 
+                                            <td class="row2"><b>{t}Total{/t}</b></td>
+                                            <td class="row2"><b>{t}Amount Paid{/t}</b></td>
+                                            <td class="row2"><b>{t}Balance{/t}</b></td>
+                                            {*<td class="row2"><b>{t}Date Paid{/t}</b></td>*}
+                                        </tr>
                                             <tr class="olotd4">
-                                                <td class="row2"><b>{t}Invoice ID{/t}</b></td>
-                                                <td class="row2"><b>{t}Date{/t}</b></td>
-                                                <td class="row2"><b>{t}Due Date{/t}</b></td>
-                                                <td class="row2"><b>{t}Amount{/t}</b></td>
-                                                <td class="row2"><b>{t}Tech{/t}</b></td>
-                                                <td class="row2"><b>{t}Work Order{/t}</b></td>
-                                                <td class="row2"><b>{t}Balance{/t}</b></td>
-                                            </tr>
-                                            <tr class="olotd4">
-                                                <td>{$invoice_details.INVOICE_ID}</td>
+                                                <td>{$invoice_id}</td>
+                                                <td><a href="index.php?page=workorder:details&workorder_id={$invoice_details.workorder_id}">{$invoice_details.workorder_id}</a></td>
+                                                <td><a href="index.php?page=user:details&user_id={$invoice_details.employee_id}">{$employee_display_name}</a></td> 
                                                 <td>
                                                     <input id="date" name="date" class="olotd4" size="10" value="{$invoice_details.date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
                                                     <input id="date_button" value="+" type="button">                                                    
@@ -308,9 +312,9 @@
                                                     </script>                                                   
                                                 </td>
                                                 <td>{$currency_sym}{$invoice_details.total|string_format:"%.2f"}</td>
-                                                <td><a href="index.php?page=user:details&user_id={$invoice_details.employee_id}">{$employee_display_name}</a></td>
-                                                <td><a href="index.php?page=workorder:details&workorder_id={$invoice_details.workorder_id}">{$invoice_details.workorder_id}</a></td>
-                                                <td><font color="#CC0000">{$currency_sym}{$invoice_details.balance|string_format:"%.2f"}</font></td>
+                                                <td>{$currency_sym}{$invoice_details.paid_amount|string_format:"%.2f"}</td>
+                                                <td><font color="#cc0000">{$currency_sym}{$invoice_details.balance|string_format:"%.2f"}</font></td>
+                                                {*<td>{$invoice_details.paid_date|date_format:$date_format}</td>*}
                                             </tr>
 
 
@@ -322,11 +326,11 @@
                                                     <table cellpadding="0" cellspacing="0">
                                                         <tr>
                                                             <td valign="top">
-                                                                <a href="index.php?page=customer:details&customer_id={$customer_details.customer_id}">{$customer_details.customer_display_name}</a><br>
-                                                                {$customer_details.customer_address|nl2br}<br>
-                                                                {$customer_details.customer_city}, {$customer_details.customer_state} {$customer_details.customer_zip}<br>
-                                                                {$customer_details.customer_phone}<br>
-                                                                {$customer_details.customer_email}                                                                        
+                                                                <a href="index.php?page=customer:details&customer_id={$customer_details.customer_id}">{$customer_details.display_name}</a><br>
+                                                                {$customer_details.address|nl2br}<br>
+                                                                {$customer_details.city}, {$customer_details.state} {$customer_details.zip}<br>
+                                                                {$customer_details.phone}<br>
+                                                                {$customer_details.email}                                                                        
                                                             </td>
                                                         </tr>
                                                     </table>                                                        
@@ -454,7 +458,7 @@
                                                     {if $labour_items != '0'}
                                                         <table width="100%" cellpadding="3" cellspacing="0" border="0" class="olotable">
                                                             <tr  class="olotd4">
-                                                                <td class="row2"><b>{t}No.{/t}</b></td>
+                                                                <td class="row2"><b>{t}No{/t}</b></td>
                                                                 <td class="row2" width="12"><b>{t}Qty{/t}</b></td>
                                                                 <td class="row2"><b>{t}Description{/t}</b></td>
                                                                 <td class="row2"><b>{t}Rate{/t}</b></td>
@@ -485,7 +489,7 @@
                                                     <!-- Additional Javascript Labour Table -->
                                                     <table width="100%" cellpadding="3" cellspacing="0" border="0" class="olotable" id="labour_items">
                                                         <tr class="olotd4">
-                                                            <td class="row2"><b>{t}No.{/t}</b></td>
+                                                            <td class="row2"><b>{t}No{/t}</b></td>
                                                             <td class="row2"><b>{t}Hours{/t}</b></td>
                                                             <td class="row2"><b>{t}Description{/t}</b></td>
                                                             <td class="row2"><b>&nbsp;&nbsp;{t}Rate{/t}</b></td>
@@ -513,7 +517,7 @@
                                                     {if $parts_items != '0'}
                                                         <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
                                                             <tr class="olotd4">
-                                                                <td class="row2"><b>{t}No.{/t}</b></td>
+                                                                <td class="row2"><b>{t}No{/t}</b></td>
                                                                 <td class="row2"><b>{t}Qty{/t}</b></td>
                                                                 <td class="row2"><b>{t}Description{/t}</b></td>
                                                                 <td class="row2"><b>{t}Price{/t}</b></td>
@@ -576,11 +580,11 @@
                                                         </tr>
                                                         <tr>
                                                             <td class="olotd4" width="80%" align="right"><b>{t}Discount{/t} (@ {$invoice_details.discount_rate|string_format:"%.2f"}%)</b></td>
-                                                            <td class="olotd4" width="20%" align="right">- {$currency_sym}{$invoice_details.discount|string_format:"%.2f"}</td>
+                                                            <td class="olotd4" width="20%" align="right">- {$currency_sym}{$invoice_details.discount_amount|string_format:"%.2f"}</td>
                                                         </tr>                                                        
                                                         <tr>                                                            
                                                             <td class="olotd4" width="80%" align="right"><b>{t}Tax{/t} (@ {$invoice_details.tax_rate}%)</b></td>
-                                                            <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice_details.tax|string_format:"%.2f"}</td>                                                            
+                                                            <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice_details.tax_amount|string_format:"%.2f"}</td>                                                            
                                                         </tr>
                                                         <tr>
                                                             <td class="olotd4" width="80%" align="right"><b>{t}Total{/t}</b></td>

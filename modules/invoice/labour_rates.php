@@ -14,7 +14,7 @@ if(isset($VAR['submit'])) {
     
     // Update invoice labour rates item
     if($VAR['submit'] == 'update') {            
-        update_invoice_labour_rates_item($db, $VAR['labour_rate_id'], $VAR);        
+        update_invoice_labour_rates_item($db, $VAR);        
     }
     
     // Delete invoice labour rates item

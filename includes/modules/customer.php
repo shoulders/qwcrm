@@ -135,24 +135,24 @@ function display_customers($db, $direction = 'DESC', $use_pages = false, $page_n
 function insert_customer($db, $VAR) {
     
     $sql = "INSERT INTO ".PRFX."customer SET
-            customer_display_name   =". $db->qstr( $VAR['displayName']      ).",
-            customer_address        =". $db->qstr( $VAR['address']          ).",
-            customer_city           =". $db->qstr( $VAR['city']             ).", 
-            customer_state          =". $db->qstr( $VAR['state']            ).", 
-            customer_zip            =". $db->qstr( $VAR['zip']              ).",
-            customer_phone          =". $db->qstr( $VAR['homePhone']        ).",
-            customer_work_phone     =". $db->qstr( $VAR['workPhone']        ).",
-            customer_mobile_phone   =". $db->qstr( $VAR['mobilePhone']      ).",
-            customer_email          =". $db->qstr( $VAR['email']            ).", 
-            customer_type           =". $db->qstr( $VAR['customerType']     ).", 
-            create_date             =". $db->qstr( time()                   ).",            
-            customer_first_name     =". $db->qstr( $VAR['firstName']        ).", 
-            discount_rate           =". $db->qstr( $VAR['discount_rate']    ).",
-            customer_last_name      =". $db->qstr( $VAR['lastName']         ).",
-            credit_terms            =". $db->qstr( $VAR['creditterms']      ).",
-            customer_www            =". $db->qstr( $VAR['customerWww']      ).",
-            customer_notes          =". $db->qstr( $VAR['customerNotes']    );
-            
+            display_name    =". $db->qstr( $VAR['display_name']     ).",
+            first_name      =". $db->qstr( $VAR['first_name']       ).",
+            last_name       =". $db->qstr( $VAR['last_name']        ).",
+            website         =". $db->qstr( $VAR['website']          ).",
+            email           =". $db->qstr( $VAR['email']            ).",     
+            credit_terms    =". $db->qstr( $VAR['credit_terms']     ).",
+            type            =". $db->qstr( $VAR['type']             ).",    
+            discount_rate   =". $db->qstr( $VAR['discount_rate']    ).",
+            phone           =". $db->qstr( $VAR['phone']            ).",    
+            mobile_phone    =". $db->qstr( $VAR['mobile_phone']     ).",
+            fax             =". $db->qstr( $VAR['fax']              ).",
+            address         =". $db->qstr( $VAR['address']          ).",
+            city            =". $db->qstr( $VAR['city']             ).", 
+            state           =". $db->qstr( $VAR['state']            ).", 
+            zip             =". $db->qstr( $VAR['zip']              ).",
+            notes           =". $db->qstr( $VAR['notes']            ).",
+            create_date     =". $db->qstr( time()                   );          
+                        
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to insert the customer record into the database."));
         exit;
@@ -267,23 +267,23 @@ function get_customer_notes($db, $customer_id) {
 function update_customer($db, $customer_id, $VAR) {
     
     $sql = "UPDATE ".PRFX."customer SET
-            customer_display_name   = ". $db->qstr( $VAR['displayName']     ).",
-            customer_address        = ". $db->qstr( $VAR['address']         ).",
-            customer_city           = ". $db->qstr( $VAR['city']            ).", 
-            customer_state          = ". $db->qstr( $VAR['state']           ).", 
-            customer_zip            = ". $db->qstr( $VAR['zip']             ).",
-            customer_phone          = ". $db->qstr( $VAR['homePhone']       ).",
-            customer_work_phone     = ". $db->qstr( $VAR['workPhone']       ).",
-            customer_mobile_phone   = ". $db->qstr( $VAR['mobilePhone']     ).",
-            customer_email          = ". $db->qstr( $VAR['email']           ).", 
-            customer_type           = ". $db->qstr( $VAR['customerType']    ).", 
-            customer_first_name     = ". $db->qstr( $VAR['firstName']       ).", 
-            customer_last_name      = ". $db->qstr( $VAR['lastName']        ).",
-            discount_rate           = ". $db->qstr( $VAR['discount_rate']   ).",
-            credit_terms            = ". $db->qstr( $VAR['creditterms']     ).",
-            customer_www            = ". $db->qstr( $VAR['customerWww']     ).",
-            customer_notes          = ". $db->qstr( $VAR['customerNotes']   )."
-            WHERE customer_id       = ". $db->qstr( $customer_id            );
+            display_name    =". $db->qstr( $VAR['display_name']     ).",
+            first_name      =". $db->qstr( $VAR['first_name']       ).",
+            last_name       =". $db->qstr( $VAR['last_name']        ).",
+            website         =". $db->qstr( $VAR['website']          ).",
+            email           =". $db->qstr( $VAR['email']            ).",     
+            credit_terms    =". $db->qstr( $VAR['credit_terms']     ).",
+            type            =". $db->qstr( $VAR['type']             ).",    
+            discount_rate   =". $db->qstr( $VAR['discount_rate']    ).",
+            phone           =". $db->qstr( $VAR['phone']            ).",    
+            mobile_phone    =". $db->qstr( $VAR['mobile_phone']     ).",
+            fax             =". $db->qstr( $VAR['fax']              ).",
+            address         =". $db->qstr( $VAR['address']          ).",
+            city            =". $db->qstr( $VAR['city']             ).", 
+            state           =". $db->qstr( $VAR['state']            ).", 
+            zip             =". $db->qstr( $VAR['zip']              ).",
+            notes           =". $db->qstr( $VAR['notes']            )."
+            WHERE customer_id   =". $db->qstr( $customer_id         );
             
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the Customer's details."));
@@ -301,8 +301,6 @@ function update_customer($db, $customer_id, $VAR) {
 #############################
 
 function update_customer_note($db, $customer_note_id, $date, $note) {
-    
-    global $smarty;
     
     $sql = "UPDATE ".PRFX."customer_notes SET
             employee_id             =". $db->qstr( QFactory::getUser()->login_user_id   ).",
@@ -412,9 +410,9 @@ function delete_customer_note($db, $customer_note_id) {
 #    check for Duplicate display name   #
 #########################################
     
-function check_customer_ex($db, $displayName) {
+function check_customer_ex($db, $display_name) {
     
-    $sql = "SELECT COUNT(*) AS num_users FROM ".PRFX."customer WHERE customer_display_name=".$db->qstr($displayName);
+    $sql = "SELECT COUNT(*) AS count FROM ".PRFX."customer WHERE display_name=".$db->qstr($display_name);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to check the submitted Display Name for duplicates in the database."));
@@ -423,7 +421,7 @@ function check_customer_ex($db, $displayName) {
         $row = $rs->FetchRow();
     }
 
-    if ($row['num_users'] == 1) {
+    if ($row['count'] == 1) {
         
         return false;    
         

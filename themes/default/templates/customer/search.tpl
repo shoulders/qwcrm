@@ -114,17 +114,17 @@
                                                     {section name=i loop=$search_result}
                                                         <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=customer:details&customer_id={$search_result[i].customer_id}';" class="row1">
                                                             <td class="olotd4" nowrap><a href="index.php?page=customer:details&customer_id={$search_result[i].customer_id}">{$search_result[i].customer_id}</a></td>
-                                                            <td class="olotd4" nowrap><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" onMouseOver="ddrivetip('{$search_result[i].customer_address}<br>{$search_result[i].customer_city}, {$search_result[i].customer_state}  {$search_result[i].customer_zip}');" onMouseOut="hideddrivetip();">&nbsp;{$search_result[i].customer_display_name}</td>
-                                                            <td class="olotd4" nowrap>{$search_result[i].customer_first_name}</td>
-                                                            <td class="olotd4" nowrap>{$search_result[i].customer_last_name}</td>
-                                                            <td class="olotd4" nowrap><img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{t}Work{/t}: </b>{$search_result[i].customer_work_phone}<br><b>{t}Mobile{/t}:</b>{$search_result[i].customer_mobile_phone}');" onMouseOut="hideddrivetip();">{$search_result[i].customer_phone}</td>                                                            
+                                                            <td class="olotd4" nowrap><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" onMouseOver="ddrivetip('{$search_result[i].address}<br>{$search_result[i].city}, {$search_result[i].state}  {$search_result[i].zip}');" onMouseOut="hideddrivetip();">&nbsp;{$search_result[i].display_name}</td>
+                                                            <td class="olotd4" nowrap>{$search_result[i].first_name}</td>
+                                                            <td class="olotd4" nowrap>{$search_result[i].last_name}</td>
+                                                            <td class="olotd4" nowrap><img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{t}Mobile{/t}: </b>{$search_result[i].mobile_phone}<br><b>{t}Fax{/t}:</b>{$search_result[i].fax}');" onMouseOut="hideddrivetip();">{$search_result[i].phone}</td>                                                            
                                                             <td class="olotd4" nowrap>
-                                                                {if $search_result[i].customer_type ==1}{t}CUSTOMER_TYPE_1{/t}{/if}
-                                                                {if $search_result[i].customer_type ==2}{t}CUSTOMER_TYPE_2{/t}{/if}
-                                                                {if $search_result[i].customer_type ==3}{t}CUSTOMER_TYPE_3{/t}{/if}
-                                                                {if $search_result[i].customer_type ==4}{t}CUSTOMER_TYPE_4{/t}{/if}
+                                                                {if $search_result[i].type ==1}{t}CUSTOMER_TYPE_1{/t}{/if}
+                                                                {if $search_result[i].type ==2}{t}CUSTOMER_TYPE_2{/t}{/if}
+                                                                {if $search_result[i].type ==3}{t}CUSTOMER_TYPE_3{/t}{/if}
+                                                                {if $search_result[i].type ==4}{t}CUSTOMER_TYPE_4{/t}{/if}
                                                             </td>
-                                                            <td class="olotd4" nowrap><a href="mailto:{$search_result[i].customer_email}"><font class="blueLink">{$search_result[i].customer_email}</font></a></td>                                                            
+                                                            <td class="olotd4" nowrap><a href="mailto:{$search_result[i].email}"><font class="blueLink">{$search_result[i].email}</font></a></td>                                                            
                                                             <td class="olotd4" nowrap>
                                                                 <a href="index.php?page=customer:details&customer_id={$search_result[i].customer_id}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" onMouseOver="ddrivetip('{t}View Customer Details{/t}');" onMouseOut="hideddrivetip()"></a>&nbsp;
                                                                 <a href="index.php?page=workorder:new&customer_id={$search_result[i].customer_id}"><img src="{$theme_images_dir}icons/16x16/small_new_work_order.gif" alt="" border="0" onMouseOver="ddrivetip('{t}New Work Order{/t}');" onMouseOut="hideddrivetip();" alt=""></a>&nbsp;

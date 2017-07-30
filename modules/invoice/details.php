@@ -13,15 +13,15 @@ if($invoice_id == '') {
     exit;
 }
     
-$smarty->assign('company_details',          get_company_details($db)                                                                            );
-$smarty->assign('customer_details',         get_customer_details($db, get_invoice_details($db, $invoice_id, 'customer_id'))                     );
-$smarty->assign('invoice_details',          get_invoice_details($db, $invoice_id)                                                               );
-$smarty->assign('workorder_id',             get_invoice_details($db, $invoice_id, 'workorder_id')                                               );
-$smarty->assign('labour_items',             get_invoice_labour_items($db, $invoice_id)                                                          );
-$smarty->assign('parts_items',              get_invoice_parts_items($db, $invoice_id)                                                           );
-$smarty->assign('transactions',             get_invoice_transactions($db, $invoice_id)                                                          );
-$smarty->assign('labour_sub_total_sum',     labour_sub_total($db, $invoice_id)                                                                  );
-$smarty->assign('parts_sub_total_sum',      parts_sub_total($db, $invoice_id)                                                                   );
-$smarty->assign('employee_display_name',    get_user_details($db, get_invoice_details($db, $invoice_id, 'employee_id'),'employee_display_name') );
+$smarty->assign('company_details',          get_company_details($db)                                                                    );
+$smarty->assign('customer_details',         get_customer_details($db, get_invoice_details($db, $invoice_id, 'customer_id'))             );
+$smarty->assign('invoice_details',          get_invoice_details($db, $invoice_id)                                                       );
+$smarty->assign('workorder_id',             get_invoice_details($db, $invoice_id, 'workorder_id')                                       );
+$smarty->assign('labour_items',             get_invoice_labour_items($db, $invoice_id)                                                  );
+$smarty->assign('parts_items',              get_invoice_parts_items($db, $invoice_id)                                                   );
+$smarty->assign('transactions',             get_invoice_transactions($db, $invoice_id)                                                  );
+$smarty->assign('labour_sub_total_sum',     labour_sub_total($db, $invoice_id)                                                          );
+$smarty->assign('parts_sub_total_sum',      parts_sub_total($db, $invoice_id)                                                           );
+$smarty->assign('employee_display_name',    get_user_details($db, get_invoice_details($db, $invoice_id, 'employee_id'),'display_name')  );
      
 $BuildPage .= $smarty->fetch('invoice/details.tpl');

@@ -14,7 +14,7 @@
         <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=workorder:details&workorder_id={$open_workorders[a].work_order_id}&customer_id={$open_workorders[a].customer_id}';" class="row1">
             <td class="olotd4"><a href="index.php?page=workorder:details&workorder_id={$open_workorders[a].work_order_id}&customer_id={$open_workorders[a].customer_id}">{$open_workorders[a].work_order_id}</a></td>
             <td class="olotd4">{$open_workorders[a].work_order_open_date|date_format:$date_format}</td>
-            <td class="olotd4">{$customer_details.customer_display_name}</td>
+            <td class="olotd4">{$open_workorders[a].display_name}</td>
             <td class="olotd4">{$open_workorders[a].work_order_scope}</td>
             <td class="olotd4">{$open_workorders[a].work_order_status}</td>
             <td class="olotd4">
@@ -51,7 +51,7 @@
         <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=workorder:details&workorder_id={$closed_workorders[b].work_order_id}&customer_id={$closed_workorders[b].customer_id}';" class="row1">
             <td class="olotd4"><a href="index.php?page=workorder:details&workorder_id={$closed_workorders[b].work_order_id}&customer_id={$closed_workorders[b].customer_id}">{$closed_workorders[b].work_order_id}</a></td>
             <td class="olotd4">{$closed_workorders[b].work_order_open_date|date_format:$date_format}</td>
-            <td class="olotd4">{$customer_details.customer_display_name}</td>
+            <td class="olotd4">{$closed_workorders[b].display_name}</td>
             <td class="olotd4">{$closed_workorders[b].work_order_scope}</td>
             <td class="olotd4">{$closed_workorders[b].work_order_status}</td>
             <td class="olotd4">

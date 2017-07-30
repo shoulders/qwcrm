@@ -31,61 +31,61 @@
                                         </tr>
                                         <tr>
                                             <td class="menutd"><b>{t}Payee{/t}</b></td>
-                                            <td class="menutd">{$expense_details.expense_payee}</td>
+                                            <td class="menutd">{$expense_details.payee}</td>
                                             <td class="menutd"><b>{t}Net Amount{/t}</b></td>
-                                            <td class="menutd">{$currency_sym} {$expense_details.expense_net_amount}</td>
+                                            <td class="menutd">{$currency_sym} {$expense_details.net_amount}</td>
                                         </tr>
                                         <tr>
                                             <td class="menutd"><b>{t}Date{/t}</b></td>
-                                            <td class="menutd" >{$expense_details.expense_date|date_format:$date_format}</td>
+                                            <td class="menutd" >{$expense_details.date|date_format:$date_format}</td>
                                             <td class="menutd" ><b>{t}Tax Rate{/t}</b></td>
-                                            <td class="menutd">&nbsp;&nbsp;&nbsp;{$expense_details.expense_tax_rate} %</td>
+                                            <td class="menutd">&nbsp;&nbsp;&nbsp;{$expense_details.tax_rate} %</td>
                                         </tr>
                                         <tr>
                                             <td class="menutd"><b>{t}Type{/t}</b></td>
                                             <td class="menutd" >
-                                                {if $expense_details.expense_type ==1}{t}EXPENSE_TYPE_1{/t}{/if}
-                                                {if $expense_details.expense_type ==2}{t}EXPENSE_TYPE_2{/t}{/if}
-                                                {if $expense_details.expense_type ==3}{t}EXPENSE_TYPE_3{/t}{/if}
-                                                {if $expense_details.expense_type ==4}{t}EXPENSE_TYPE_4{/t}{/if}
-                                                {if $expense_details.expense_type ==5}{t}EXPENSE_TYPE_5{/t}{/if}
-                                                {if $expense_details.expense_type ==6}{t}EXPENSE_TYPE_6{/t}{/if}
-                                                {if $expense_details.expense_type ==7}{t}EXPENSE_TYPE_7{/t}{/if}
-                                                {if $expense_details.expense_type ==8}{t}EXPENSE_TYPE_8{/t}{/if}
-                                                {if $expense_details.expense_type ==9}{t}EXPENSE_TYPE_9{/t}{/if}
-                                                {if $expense_details.expense_type ==10}{t}EXPENSE_TYPE_10{/t}{/if}
-                                                {if $expense_details.expense_type ==11}{t}EXPENSE_TYPE_11{/t}{/if}
-                                                {if $expense_details.expense_type ==12}{t}EXPENSE_TYPE_12{/t}{/if}
-                                                {if $expense_details.expense_type ==13}{t}EXPENSE_TYPE_13{/t}{/if}
-                                                {if $expense_details.expense_type ==14}{t}EXPENSE_TYPE_14{/t}{/if}
-                                                {if $expense_details.expense_type ==15}{t}EXPENSE_TYPE_15{/t}{/if}
-                                                {if $expense_details.expense_type ==16}{t}EXPENSE_TYPE_16{/t}{/if}
-                                                {if $expense_details.expense_type ==17}{t}EXPENSE_TYPE_17{/t}{/if}
-                                                {if $expense_details.expense_type ==18}{t}EXPENSE_TYPE_18{/t}{/if}
-                                                {if $expense_details.expense_type ==19}{t}EXPENSE_TYPE_19{/t}{/if}
-                                                {if $expense_details.expense_type ==20}{t}EXPENSE_TYPE_20{/t}{/if}
-                                                {if $expense_details.expense_type ==21}{t}EXPENSE_TYPE_21{/t}{/if}
+                                                {if $expense_details.type == 1}{t}EXPENSE_TYPE_1{/t}{/if}
+                                                {if $expense_details.type == 2}{t}EXPENSE_TYPE_2{/t}{/if}
+                                                {if $expense_details.type == 3}{t}EXPENSE_TYPE_3{/t}{/if}
+                                                {if $expense_details.type == 4}{t}EXPENSE_TYPE_4{/t}{/if}
+                                                {if $expense_details.type == 5}{t}EXPENSE_TYPE_5{/t}{/if}
+                                                {if $expense_details.type == 6}{t}EXPENSE_TYPE_6{/t}{/if}
+                                                {if $expense_details.type == 7}{t}EXPENSE_TYPE_7{/t}{/if}
+                                                {if $expense_details.type == 8}{t}EXPENSE_TYPE_8{/t}{/if}
+                                                {if $expense_details.type == 9}{t}EXPENSE_TYPE_9{/t}{/if}
+                                                {if $expense_details.type == 10}{t}EXPENSE_TYPE_10{/t}{/if}
+                                                {if $expense_details.type == 11}{t}EXPENSE_TYPE_11{/t}{/if}
+                                                {if $expense_details.type == 12}{t}EXPENSE_TYPE_12{/t}{/if}
+                                                {if $expense_details.type == 13}{t}EXPENSE_TYPE_13{/t}{/if}
+                                                {if $expense_details.type == 14}{t}EXPENSE_TYPE_14{/t}{/if}
+                                                {if $expense_details.type == 15}{t}EXPENSE_TYPE_15{/t}{/if}
+                                                {if $expense_details.type == 16}{t}EXPENSE_TYPE_16{/t}{/if}
+                                                {if $expense_details.type == 17}{t}EXPENSE_TYPE_17{/t}{/if}
+                                                {if $expense_details.type == 18}{t}EXPENSE_TYPE_18{/t}{/if}
+                                                {if $expense_details.type == 19}{t}EXPENSE_TYPE_19{/t}{/if}
+                                                {if $expense_details.type == 20}{t}EXPENSE_TYPE_20{/t}{/if}
+                                                {if $expense_details.type == 21}{t}EXPENSE_TYPE_21{/t}{/if}
                                             </td>
                                             <td class="menutd"><b>{t}Tax Amount{/t}</b></td>
-                                            <td class="menutd">{$currency_sym} {$expense_details.expense_tax_amount}</td>
+                                            <td class="menutd">{$currency_sym} {$expense_details.tax_amount}</td>
                                         </tr>                                        
                                         <tr>
                                             <td class="menutd"><b>{t}Payment Method{/t}</b></td>
                                             <td class="menutd">
-                                                {if $expense_details.expense_payment_method ==1}{t}EXPENSE_PAYMENT_METHOD_1{/t}{/if}
-                                                {if $expense_details.expense_payment_method ==2}{t}EXPENSE_PAYMENT_METHOD_2{/t}{/if}
-                                                {if $expense_details.expense_payment_method ==3}{t}EXPENSE_PAYMENT_METHOD_3{/t}{/if}
-                                                {if $expense_details.expense_payment_method ==4}{t}EXPENSE_PAYMENT_METHOD_4{/t}{/if}
-                                                {if $expense_details.expense_payment_method ==5}{t}EXPENSE_PAYMENT_METHOD_5{/t}{/if}
-                                                {if $expense_details.expense_payment_method ==6}{t}EXPENSE_PAYMENT_METHOD_6{/t}{/if}
-                                                {if $expense_details.expense_payment_method ==7}{t}EXPENSE_PAYMENT_METHOD_7{/t}{/if}
-                                                {if $expense_details.expense_payment_method ==8}{t}EXPENSE_PAYMENT_METHOD_8{/t}{/if}
-                                                {if $expense_details.expense_payment_method ==9}{t}EXPENSE_PAYMENT_METHOD_9{/t}{/if}
-                                                {if $expense_details.expense_payment_method ==10}{t}EXPENSE_PAYMENT_METHOD_10{/t}{/if}
-                                                {if $expense_details.expense_payment_method ==11}{t}EXPENSE_PAYMENT_METHOD_11{/t}{/if}
+                                                {if $expense_details.payment_method == 1}{t}EXPENSE_PAYMENT_METHOD_1{/t}{/if}
+                                                {if $expense_details.payment_method == 2}{t}EXPENSE_PAYMENT_METHOD_2{/t}{/if}
+                                                {if $expense_details.payment_method == 3}{t}EXPENSE_PAYMENT_METHOD_3{/t}{/if}
+                                                {if $expense_details.payment_method == 4}{t}EXPENSE_PAYMENT_METHOD_4{/t}{/if}
+                                                {if $expense_details.payment_method == 5}{t}EXPENSE_PAYMENT_METHOD_5{/t}{/if}
+                                                {if $expense_details.payment_method == 6}{t}EXPENSE_PAYMENT_METHOD_6{/t}{/if}
+                                                {if $expense_details.payment_method == 7}{t}EXPENSE_PAYMENT_METHOD_7{/t}{/if}
+                                                {if $expense_details.payment_method == 8}{t}EXPENSE_PAYMENT_METHOD_8{/t}{/if}
+                                                {if $expense_details.payment_method == 9}{t}EXPENSE_PAYMENT_METHOD_9{/t}{/if}
+                                                {if $expense_details.payment_method == 10}{t}EXPENSE_PAYMENT_METHOD_10{/t}{/if}
+                                                {if $expense_details.payment_method == 11}{t}EXPENSE_PAYMENT_METHOD_11{/t}{/if}
                                             </td>
                                             <td class="menutd"><b>{t}Gross Amount{/t}</b></td>
-                                            <td class="menutd">{$currency_sym} {$expense_details.expense_gross_amount}</td>
+                                            <td class="menutd">{$currency_sym} {$expense_details.gross_amount}</td>
                                         </tr>
                                         <tr class="row2">
                                             <td class="menutd" colspan="4"></td>
@@ -95,7 +95,7 @@
                                             <td class="menutd" colspan="3"></td>
                                         </tr>
                                         <tr>
-                                            <td class="menutd" colspan="3">{$expense_details.expense_notes}</td>
+                                            <td class="menutd" colspan="3">{$expense_details.notes}</td>
                                             <td class="menutd"></td>
                                         </tr>
                                         <tr class="row2">
@@ -106,7 +106,7 @@
                                             <td class="menutd" colspan="3"></td>
                                          </tr>
                                         <tr>
-                                            <td class="menutd" colspan="3">{$expense_details.expense_items}</td>
+                                            <td class="menutd" colspan="3">{$expense_details.items}</td>
                                             <td class="menutd"></td>
                                         </tr>
                                         {assign var="expense_id" value=$expense_details.expense_id}

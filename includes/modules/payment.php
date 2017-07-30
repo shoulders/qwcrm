@@ -75,7 +75,7 @@ function insert_payment_method_transaction($db, $invoice_id, $amount, $method_na
     if($new_invoice_balance != 0 ) {
 
         // Update the invoice        
-        update_invoice_transaction_only($db, $invoice_id, 0, 0, $new_invoice_paid_amount, $new_invoice_balance);
+        update_invoice_transaction_only($db, $invoice_id, $new_invoice_paid_amount, $new_invoice_balance, 0);
 
         // Transaction log        
         $log_msg = gettext("Partial Payment made by")." $method_name ".gettext("for")." $currency_sym$formatted_amount, ".gettext("Balance due").": $currency_sym$new_invoice_balance, $method_note, ".gettext("Note").": $note";
@@ -102,7 +102,7 @@ function insert_payment_method_transaction($db, $invoice_id, $amount, $method_na
     if($new_invoice_balance == 0 ) {
 
         // Update the invoice
-        update_invoice_transaction_only($db, $invoice_id, 1, time(), $new_invoice_paid_amount, $new_invoice_balance);   
+        update_invoice_transaction_only($db, $invoice_id, $new_invoice_paid_amount, $new_invoice_balance, 1, time());   
 
         // log message   
         if($amount < $invoice_details['total']) {

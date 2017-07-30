@@ -45,7 +45,7 @@
                     </tr>
                     <tr>
                         <td><b>{t}Website{/t} :&nbsp;</b></td>
-                        <td>{$company_details.www}</td>
+                        <td>{$company_details.website}</td>
                     </tr>
                     <tr>
                         <td><b>{t}Email{/t} :&nbsp;</b></td>
@@ -103,11 +103,11 @@
             <td valign="top" width="10%" align="left"></td>
             <td>
                 <p>{t}Customer Details{/t}:</p>
-                {$customer_details.customer_display_name}<br>
-                {$customer_details.customer_address|nl2br|regex_replace:"/[\r\t\n]/":" "}<br>
-                {$customer_details.customer_city},<br>
-                {$customer_details.customer_state}<br>
-                {$customer_details.customer_zip}                
+                {$customer_details.display_name}<br>
+                {$customer_details.address|nl2br|regex_replace:"/[\r\t\n]/":" "}<br>
+                {$customer_details.city},<br>
+                {$customer_details.state}<br>
+                {$customer_details.zip}                
             </td>
         </tr>
     </table>    
@@ -130,7 +130,7 @@
     <!-- Invoice To Box -->
     <table width="800" border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
         <tr>
-            <td align="center" class="olotd5" ><font size="+2">{t}Invoice Details{/t} {$customer_details.customer_display_name}</font></td>
+            <td align="center" class="olotd5" ><font size="+2">{t}Invoice Details{/t} {$customer_details.display_name}</font></td>
         </tr>
     </table>
     <br>
@@ -260,11 +260,11 @@
                     </tr>
                     <tr>
                         <td class="olotd4"><b>{t}Discount{/t}</b></td>
-                        <td class="olotd4" width="80" align="right">{$currency_sym}{$invoice_details.discount|string_format:"%.2f"}</td>
+                        <td class="olotd4" width="80" align="right">{$currency_sym}{$invoice_details.discount_amount|string_format:"%.2f"}</td>
                     </tr>                    
                     <tr>
                         <td class="olotd4"><b>{t}Tax{/t}</b></td>
-                        <td class="olotd4" width="80" align="right">{$currency_sym}{$invoice_details.tax|string_format:"%.2f"}</td>
+                        <td class="olotd4" width="80" align="right">{$currency_sym}{$invoice_details.tax_amount|string_format:"%.2f"}</td>
                     </tr>
                     <tr>
                         <td class="olotd4"><b>{t}Total{/t}</b></td>

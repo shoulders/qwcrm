@@ -85,9 +85,14 @@ function display_workorders($db, $direction = 'DESC', $use_pages = false, $page_
     
     /* The SQL code */
     
-    $sql =  "SELECT
-            ".PRFX."user.         user_id, email, display_name, usergroup, work_phone, home_phone, work_mobile_phone,
-            ".PRFX."customer.     customer_id, customer_display_name,
+    $sql =  "SELECT            
+            ".PRFX."user.email AS employee_email,
+            ".PRFX."user.display_name AS employee_display_name,
+            ".PRFX."user.work_phone AS employee_work_phone,
+            ".PRFX."user.work_mobile_phone AS employee_work_mobile_phone,
+            ".PRFX."user.home_phone AS employee_home_phone,
+            ".PRFX."customer.customer_id,
+            ".PRFX."customer.display_name AS customer_display_name,            
             ".PRFX."workorder.    work_order_id, work_order_open_date, work_order_close_date, work_order_assign_to, work_order_scope, work_order_status            
             FROM ".PRFX."workorder
             LEFT JOIN ".PRFX."user ON ".PRFX."workorder.work_order_assign_to   = ".PRFX."user.user_id

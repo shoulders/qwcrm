@@ -58,9 +58,9 @@ function display_giftcerts($db, $direction = 'DESC', $use_pages = false, $page_n
     /* The SQL code */
     
     $sql = "SELECT
-            ".PRFX."giftcert.     *,
-            ".PRFX."user.         display_name,
-            ".PRFX."customer.     customer_display_name               
+            ".PRFX."giftcert.*,
+            ".PRFX."user.display_name as employee_display_name,
+            ".PRFX."customer.display_name as customer_display_name         
             FROM ".PRFX."giftcert
             LEFT JOIN ".PRFX."user ON ".PRFX."giftcert.employee_id = ".PRFX."user.user_id
             LEFT JOIN ".PRFX."customer ON ".PRFX."giftcert.customer_id = ".PRFX."customer.customer_id            
@@ -149,17 +149,17 @@ function display_giftcerts($db, $direction = 'DESC', $use_pages = false, $page_n
 #   insert Gift Certificate     #
 #################################
 
-function insert_giftcert($db, $customer_id, $date_expires, $giftcert_code, $amount, $status, $notes) {
+function insert_giftcert($db, $customer_id, $date_expires, $amount, $status, $notes) {
     
     $sql = "INSERT INTO ".PRFX."giftcert SET 
-            customer_id     =". $db->qstr( $customer_id                         ).",               
-            invoice_id      =". $db->qstr( 0                                    ).",
+            giftcert_code   =". $db->qstr( generate_giftcert_code()             ).",  
             employee_id     =". $db->qstr( QFactory::getUser()->login_user_id   ).",
+            customer_id     =". $db->qstr( $customer_id                         ).",               
+            invoice_id      =". $db->qstr( 0                                    ).",            
             date_created    =". $db->qstr( time()                               ).",
             date_expires    =". $db->qstr( $date_expires                        ).",
             date_redeemed   =". $db->qstr( 0                                    ).",
-            is_redeemed     =". $db->qstr( 0                                    ).",   
-            giftcert_code   =". $db->qstr( $giftcert_code                       ).",                
+            is_redeemed     =". $db->qstr( 0                                    ).",                          
             amount          =". $db->qstr( $amount                              ).",
             status          =". $db->qstr( $status                              ).",                
             notes           =". $db->qstr( $notes                               );
@@ -234,10 +234,10 @@ function get_giftcert_id_by_gifcert_code($db, $giftcert_code) {
 function update_giftcert($db, $giftcert_id, $date_expires, $amount, $status, $notes) {
     
     $sql = "UPDATE ".PRFX."giftcert SET            
-            date_expires    =". $db->qstr( $date_expires                        ).",
-            amount          =". $db->qstr( $amount                              ).",
-            status          =". $db->qstr( $status                              ).",                
-            notes           =". $db->qstr( $notes                               )."
+            date_expires    =". $db->qstr( $date_expires    ).",
+            amount          =". $db->qstr( $amount          ).",
+            status          =". $db->qstr( $status          ).",                
+            notes           =". $db->qstr( $notes           )."
             WHERE giftcert_id =".$giftcert_id;
 
     if(!$db->execute($sql)) {
@@ -347,9 +347,9 @@ function generate_giftcert_code() {
 function update_giftcert_as_redeemed($db, $giftcert_id, $invoice_id) {
     
     $sql = "UPDATE ".PRFX."giftcert SET
-            date_redeemed       =". $db->qstr( time()       ).",
-            is_redeemed         =". $db->qstr( 1            ).",   
             invoice_id          =". $db->qstr( $invoice_id  ).",
+            date_redeemed       =". $db->qstr( time()       ).",
+            is_redeemed         =". $db->qstr( 1            ).",            
             status              =". $db->qstr( 0            )."
             WHERE giftcert_id   =". $db->qstr( $giftcert_id );
     

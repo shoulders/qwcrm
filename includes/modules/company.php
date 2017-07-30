@@ -45,7 +45,7 @@ function update_company_hours($db, $openingTime, $closingTime) {
         exit;
     } else {
         
-        $smarty->assign('information_msg','Business hours have been updated.');
+        $smarty->assign('information_msg', gettext("Business hours have been updated."));
         return true;
         
     }
@@ -96,33 +96,35 @@ function get_company_start_end_times($db, $time_event) {
 #  Update Company info   #
 ##########################
 
-function update_company_details($db, $record) {
+function update_company_details($db, $VAR) {
     
     global $smarty;
     
     $sql .= "UPDATE ".PRFX."company SET
-            name                = ". $db->qstr( $record['company_name']               ).",
-            number              = ". $db->qstr( $record['company_number']             ).",
-            address             = ". $db->qstr( $record['company_address']            ).",
-            city                = ". $db->qstr( $record['company_city']               ).",
-            state               = ". $db->qstr( $record['company_state']              ).",
-            zip                 = ". $db->qstr( $record['company_zip']                ).",
-            country             = ". $db->qstr( $record['company_country']            ).",
-            phone               = ". $db->qstr( $record['company_phone']              ).",
-            mobile              = ". $db->qstr( $record['company_mobile']             ).",
-            fax                 = ". $db->qstr( $record['company_fax']                ).",
-            email               = ". $db->qstr( $record['company_email']              ).",    
-            currency_symbol     = ". $db->qstr( $record['company_currency_sym']       ).",
-            currency_code       = ". $db->qstr( $record['company_currency_code']      ).",
-            date_format         = ". $db->qstr( $record['company_date_format']        ).",";
+            name                = ". $db->qstr( $VAR['name']               ).",";
+                
+    if(!empty($_FILES['logo']['name'])) {
+        $sql .="logo                = ". $db->qstr( MEDIA_DIR . $new_logo_filename  ).",";
+    }
     
-    if(!empty($_FILES["company_logo"]["name"])) {
-        $sql .="logo                = ". $db->qstr( MEDIA_DIR . $new_logo_filename        ).",";
-    }         
-        $sql .="www                 = ". $db->qstr( $record['company_www']                ).",  
-                tax_rate            = ". $db->qstr( $record['company_tax_rate']           ).",
-                welcome_msg         = ". $db->qstr( $record['company_welcome_msg']        );                           
-    
+    $sql .="company_number      = ". $db->qstr( $VAR['company_number']     ).",
+            address             = ". $db->qstr( $VAR['address']            ).",
+            city                = ". $db->qstr( $VAR['city']               ).",
+            state               = ". $db->qstr( $VAR['state']              ).",
+            zip                 = ". $db->qstr( $VAR['zip']                ).",
+            country             = ". $db->qstr( $VAR['country']            ).",
+            phone               = ". $db->qstr( $VAR['phone']              ).",
+            mobile              = ". $db->qstr( $VAR['mobile']             ).",
+            fax                 = ". $db->qstr( $VAR['fax']                ).",
+            email               = ". $db->qstr( $VAR['email']              ).",    
+            website             = ". $db->qstr( $VAR['website']            ).",  
+            tax_rate            = ". $db->qstr( $VAR['tax_rate']           ).",
+            welcome_msg         = ". $db->qstr( $VAR['welcome_msg']        ).",
+            currency_symbol     = ". $db->qstr( $VAR['currency_symbol']    ).",
+            currency_code       = ". $db->qstr( $VAR['currency_code']      ).",
+            date_format         = ". $db->qstr( $VAR['date_format']        );
+                          
+
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the company details."));
         exit;

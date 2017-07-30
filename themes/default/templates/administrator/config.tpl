@@ -86,7 +86,7 @@
                         <td>
                             {$qwcrm_config.theme_name}
                             <input name="theme_name" class="olotd5" value="{$qwcrm_config.theme_name}" type="hidden" maxlength="20" required onkeydown="return onlyAlphaNumeric(event);"/>
-                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Theme Name{/t}</strong></div><hr><div>{t escape=tooltip}This is theme QWcrm is using. Currently this option is not available, although the templating code is all present.{/t}</div>');" onMouseOut="hideddrivetip();">
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Theme Name{/t}</strong></div><hr><div>{t escape=tooltip}This is the theme QWcrm is using. The ability to change the theme is not currently available, although the templating code is all present.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
                     <tr>
