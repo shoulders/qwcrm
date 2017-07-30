@@ -34,23 +34,31 @@
                                                                 <table>
                                                                     <tbody align="left">
                                                                         <tr>
-                                                                            <td class="menuhead" colspan="2">{t}First Group{/t}</td>
+                                                                            <td class="menuhead" colspan="2">{t}Contact{/t}</td>
                                                                         <tr>
-                                                                            <td align="right"><b>{t}Supplier ID{/t}</b></td><td>{$new_record_id}</td>
-                                                                            <td colspan="2"></td>
+                                                                            <td align="right"><b>{t}Supplier ID{/t}</b></td>
+                                                                            <td>{$new_record_id}</td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td align="right"><b>{t}Name{/t}</b><span style="color: #ff0000"> *</span></td>
-                                                                            <td colspan="3"><input id="supplierName" name="supplierName" class="olotd5" size="50" type="text" maxlength="20" required onkeydown="return onlyAlphaNumeric(event);"></td>
+                                                                            <td align="right"><b>{t}Display Name{/t}</b><span style="color: #ff0000"> *</span></td>
+                                                                            <td><input name="display_name" class="olotd5" size="50" type="text" maxlength="20" required onkeydown="return onlyAlphaNumeric(event);"></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{t}Contact{/t}</b></td>
-                                                                            <td><input id="supplierContact" name="supplierContact" class="olotd5" size="50" type="text" maxlength="50" onkeydown="return onlyAlpha(event);" /></td>
+                                                                            <td><input name="contact" class="olotd5" size="50" type="text" maxlength="50" onkeydown="return onlyAlpha(event);" /></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td align="right"><b>{t}Website{/t}</b></td>
+                                                                            <td><input name="website" class="olotd5" size="50" type="url" maxlength="50" pattern="^https?://.+" placeholder="https://quantumwarp.com/" onkeydown="return onlyURL(event);"></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td align="right"><b>{t}Email{/t}</b></td>
+                                                                            <td><input name="email" class="olotd5" size="50" type="email" maxlength="50" placeholder="no-reply@quantumwarp.com" onkeydown="return onlyEmail(event);"></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{t}Type{/t}</b><span style="color: #ff0000"> *</span></td>
                                                                             <td>
-                                                                                <select class="olotd5" name="supplierType" col="30" style="width: 150px">
+                                                                                <select class="olotd5" name="type" col="30" style="width: 150px">
                                                                                     <option value="1">{t}SUPPLIER_TYPE_1{/t}</option>
                                                                                     <option value="2">{t}SUPPLIER_TYPE_2{/t}</option>
                                                                                     <option value="3">{t}SUPPLIER_TYPE_3{/t}</option>
@@ -64,63 +72,55 @@
                                                                                     <option value="11">{t}SUPPLIER_TYPE_11{/t}</option>                                                                                  
                                                                                 </select>
                                                                             </td>
-                                                                        </tr>                                                                                                                                                                                
-                                                                        <tr>
-                                                                            <td align="right"><b>{t}Phone{/t}</b></td>
-                                                                            <td><input name="supplierPhone" class="olotd5" size="20" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"></b></td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td align="right"><span style="color: #ff0000"></span><b>{t}Fax{/t}</td>
-                                                                            <td><input name="supplierFax" class="olotd5" size="20" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"></td>
+                                                                            <td class="menuhead" colspan="2">{t}Phone{/t}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td align="right"><b>{t}Phone{/t}</b></td>
+                                                                            <td><input name="phone" class="olotd5" size="20" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"></b></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{t}Mobile{/t}</b></td>
-                                                                            <td><input name="supplierMobile" class="olotd5" size="20" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"></td>
+                                                                            <td><input name="mobile_phone" class="olotd5" size="20" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"></td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td align="right"><b>{t}Website{/t}</b></td>
-                                                                            <td><input name="supplierWww" class="olotd5" size="50" type="url" maxlength="50" pattern="^https?://.+" placeholder="https://quantumwarp.com/" onkeydown="return onlyURL(event);"></td>
+                                                                            <td align="right"><b>{t}Fax{/t}</td>
+                                                                            <td><input name="fax" class="olotd5" size="20" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"></td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td align="right"><b>{t}Email{/t}</b></td>
-                                                                            <td><input name="supplierEmail" class="olotd5" size="50" type="email" maxlength="50" placeholder="no-reply@quantumwarp.com" onkeydown="return onlyEmail(event);"></td>
+                                                                            <td class="menuhead" colspan="2">{t}Address{/t}</td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><strong>{t}Address{/t}</strong></td>
-                                                                            <td><textarea name="supplierAddress" class="olotd5 mceNoEditor" cols="30" rows="3" maxlength="100" onkeydown="return onlyAddress(event);">{$employee_details[a].EMPLOYEE_ADDRESS}</textarea></td>
+                                                                            <td><textarea name="address" class="olotd5 mceNoEditor" cols="30" rows="3" maxlength="100" onkeydown="return onlyAddress(event);">{$employee_details[a].EMPLOYEE_ADDRESS}</textarea></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><strong>{t}City{/t}</strong></td>
-                                                                            <td><input name="supplierCity" class="olotd5" size="20" type="text" maxlength="20" onkeydown="return onlyAlpha(event);"></td>
+                                                                            <td><input name="city" class="olotd5" size="20" type="text" maxlength="20" onkeydown="return onlyAlpha(event);"></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><strong>{t}State{/t}</strong></td>
-                                                                            <td><input name="supplierState" class="olotd5" size="20" type="text" maxlength="20" onkeydown="return onlyAlpha(event);"></td>
+                                                                            <td><input name="state" class="olotd5" size="20" type="text" maxlength="20" onkeydown="return onlyAlpha(event);"></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><strong>{t}Zip{/t}</strong></td>
-                                                                            <td><input name="supplierZip" class="olotd5" size="20" type="text" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"></td>
-                                                                        </tr>
-                                                                    </tbody>
-                                                                </table>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="menuhead" colspan="2">{t}Additional Group{/t}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td colspan="2">
-                                                                <table>
-                                                                    <tbody align="left">
-                                                                        <tr>
-                                                                            <td align="right"><b>{t}Notes{/t}</b></td>
-                                                                            <td><textarea name="supplierNotes" class="olotd5" cols="50" rows="20"></textarea></td>
+                                                                            <td><input name="zip" class="olotd5" size="20" type="text" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"></td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td align="right"><b>{t}Description{/t}</b><span style="color: #ff0000"> *</span></td>
-                                                                            <td><textarea name="supplierDescription" class="olotd5 mceCheckForContent" cols="50" rows="20"></textarea></td>
+                                                                            <td class="menuhead" colspan="2"><b>{t}Description{/t}</b><span style="color: #ff0000"> *</span></td>
                                                                         </tr>
-                                                                    </tbody>
+                                                                        <tr>
+                                                                            <td></td>
+                                                                            <td><textarea name="description" class="olotd5 mceCheckForContent" cols="50" rows="20"></textarea></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="menuhead" colspan="2"><b>{t}Notes{/t}</b</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td align="right"></td>
+                                                                            <td><textarea name="notes" class="olotd5" cols="50" rows="20"></textarea></td>
+                                                                        </tr>                                                                        
                                                                         <tr>
                                                                             <td></td>
                                                                             <td>

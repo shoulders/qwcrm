@@ -113,28 +113,28 @@
                                                         <!-- This allows double clicking on a row and opens the corresponding supplier view details -->
                                                         <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=supplier:details&supplier_id={$search_result[i].supplier_id}';" class="row1">                                                           
                                                             <td class="olotd4" nowrap><a href="index.php?page=supplier:details&supplier_id={$search_result[i].supplier_id}">{$search_result[i].supplier_id}</a></td>                                                            
-                                                            <td class="olotd4" nowrap>{$search_result[i].supplier_name}</td>                                                            
-                                                            <td class="olotd4" nowrap>{$search_result[i].supplier_contact}</td>                                                            
+                                                            <td class="olotd4" nowrap>{$search_result[i].display_name}</td>                                                            
+                                                            <td class="olotd4" nowrap>{$search_result[i].contact}</td>                                                            
                                                             <td class="olotd4" nowrap>
-                                                                {if $search_result[i].supplier_type ==1}{t}SUPPLIER_TYPE_1{/t}{/if}
-                                                                {if $search_result[i].supplier_type ==2}{t}SUPPLIER_TYPE_2{/t}{/if}
-                                                                {if $search_result[i].supplier_type ==3}{t}SUPPLIER_TYPE_3{/t}{/if}
-                                                                {if $search_result[i].supplier_type ==4}{t}SUPPLIER_TYPE_4{/t}{/if}
-                                                                {if $search_result[i].supplier_type ==5}{t}SUPPLIER_TYPE_5{/t}{/if}
-                                                                {if $search_result[i].supplier_type ==6}{t}SUPPLIER_TYPE_6{/t}{/if}
-                                                                {if $search_result[i].supplier_type ==7}{t}SUPPLIER_TYPE_7{/t}{/if}
-                                                                {if $search_result[i].supplier_type ==8}{t}SUPPLIER_TYPE_8{/t}{/if}
-                                                                {if $search_result[i].supplier_type ==9}{t}SUPPLIER_TYPE_9{/t}{/if}
-                                                                {if $search_result[i].supplier_type ==10}{t}SUPPLIER_TYPE_10{/t}{/if}
-                                                                {if $search_result[i].supplier_type ==11}{t}SUPPLIER_TYPE_11{/t}{/if}
+                                                                {if $search_result[i].type == 1}{t}SUPPLIER_TYPE_1{/t}{/if}
+                                                                {if $search_result[i].type == 2}{t}SUPPLIER_TYPE_2{/t}{/if}
+                                                                {if $search_result[i].type == 3}{t}SUPPLIER_TYPE_3{/t}{/if}
+                                                                {if $search_result[i].type == 4}{t}SUPPLIER_TYPE_4{/t}{/if}
+                                                                {if $search_result[i].type == 5}{t}SUPPLIER_TYPE_5{/t}{/if}
+                                                                {if $search_result[i].type == 6}{t}SUPPLIER_TYPE_6{/t}{/if}
+                                                                {if $search_result[i].type == 7}{t}SUPPLIER_TYPE_7{/t}{/if}
+                                                                {if $search_result[i].type == 8}{t}SUPPLIER_TYPE_8{/t}{/if}
+                                                                {if $search_result[i].type == 9}{t}SUPPLIER_TYPE_9{/t}{/if}
+                                                                {if $search_result[i].type == 10}{t}SUPPLIER_TYPE_10{/t}{/if}
+                                                                {if $search_result[i].type == 11}{t}SUPPLIER_TYPE_11{/t}{/if}
                                                             </td>
                                                             <td class="olotd4" nowrap>{if !$search_result[i].SUPPLIER_NOTES == ""}
-                                                                <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{t}Notes{/t}</b><hr><p>{$search_result[i].supplier_notes|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();">{/if}
+                                                                <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{t}Notes{/t}</b><hr><p>{$search_result[i].notes|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();">{/if}
                                                             </td>                                                            
-                                                            <td class="olotd4" nowrap><img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{t}Description{/t}</b><hr><p>{$search_result[i].supplier_description|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();"></td>                                                            
+                                                            <td class="olotd4" nowrap><img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{t}Description{/t}</b><hr><p>{$search_result[i].description|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();"></td>                                                            
                                                             <td class="olotd4" nowrap>
                                                                 <a href="index.php?page=supplier:details&supplier_id={$search_result[i].supplier_id}">
-                                                                    <img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" onMouseOver="ddrivetip('<b>{t}View Supplier Details{/t}</b>') onMouseOut="hideddrivetip();">
+                                                                    <img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" onMouseOver="ddrivetip('<b>{t}View Supplier Details{/t}</b>');" onMouseOut="hideddrivetip();">
                                                                 </a>
                                                                 <a href="index.php?page=supplier:edit&supplier_id={$search_result[i].supplier_id}">
                                                                     <img src="{$theme_images_dir}icons/16x16/small_edit.gif" alt=""  border="0" onMouseOver="ddrivetip('<b>{t}Edit Supplier Details{/t}</b>');" onMouseOut="hideddrivetip();">

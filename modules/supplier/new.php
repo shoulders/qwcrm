@@ -22,7 +22,7 @@ if((isset($VAR['submit'])) || (isset($VAR['submitandnew']))) {
     } else {
 
         // load the supplier details page
-        force_page('supplier', 'detailssupplier_id='.$supplier_id);
+        force_page('supplier', 'details&supplier_id='.$supplier_id);
         exit;
 
     }

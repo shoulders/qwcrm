@@ -120,7 +120,7 @@ function count_invoices_with_status($db, $invoice_status){
 
 function sum_of_discounts_on_unpaid_invoices($db){
     
-    $sql = "SELECT SUM(discount) AS discount_sum
+    $sql = "SELECT SUM(discount_amount) AS discount_amount_sum
             FROM ".PRFX."invoice
             WHERE is_paid=".$db->qstr(0)." AND BALANCE=".$db->qstr(0); 
     
@@ -129,7 +129,7 @@ function sum_of_discounts_on_unpaid_invoices($db){
         exit;
     } else {
         
-        return $rs->fields['discount_sum'];
+        return $rs->fields['discount_amount_sum'];
         
     }    
     
@@ -141,7 +141,7 @@ function sum_of_discounts_on_unpaid_invoices($db){
 
 function sum_of_discounts_on_paid_invoices($db){
     
-    $sql = "SELECT SUM(discount) AS discount_sum
+    $sql = "SELECT SUM(discount_amount) AS discount_amount_sum
         FROM ".PRFX."invoice
         WHERE is_paid=".$db->qstr(1);
     
@@ -150,7 +150,7 @@ function sum_of_discounts_on_paid_invoices($db){
         exit;
     } else {
         
-        return $rs->fields['discount_sum'];
+        return $rs->fields['discount_amount_sum'];
         
     }    
     
@@ -162,7 +162,7 @@ function sum_of_discounts_on_paid_invoices($db){
 
 function sum_of_discounts_on_partially_paid_invoices($db){
     
-    $sql = "SELECT SUM(discount) AS discount_sum
+    $sql = "SELECT SUM(discount_amount) AS discount_amount_sum
         FROM ".PRFX."invoice
         WHERE is_paid=".$db->qstr(0)." AND balance >".$db->qstr(0);
     
@@ -171,7 +171,7 @@ function sum_of_discounts_on_partially_paid_invoices($db){
         exit;
     } else {
         
-        return $rs->fields['discount_sum'];
+        return $rs->fields['discount_amount_sum'];
         
     }
     

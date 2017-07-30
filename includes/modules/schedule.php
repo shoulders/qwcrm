@@ -50,30 +50,30 @@ function display_workorder_schedules($db, $workorder_id){
 #  Insert schedule                   #
 ######################################
 
-function insert_schedule($db, $schedule_start_date, $scheduleStartTime, $schedule_end_date, $scheduleEndTime, $schedule_notes, $employee_id, $customer_id, $workorder_id){
+function insert_schedule($db, $start_date, $StartTime, $end_date, $EndTime, $notes, $employee_id, $customer_id, $workorder_id){
 
     // Get Full Timestamps for the schedule item (date/hour/minute/second) - 12 Hour
-    //$schedule_start_timestamp = datetime_to_timestamp($schedule_start_date, $scheduleStartTime['Time_Hour'], $scheduleStartTime['Time_Minute'], '0', '12', $scheduleStartTime['time_meridian']);
-    //$schedule_end_timestamp   = datetime_to_timestamp($schedule_end_date, $scheduleEndTime['Time_Hour'], $scheduleEndTime['Time_Minute'], '0', '12', $scheduleEndTime['time_meridian']);
+    //$start_timestamp = datetime_to_timestamp($start_date, $start_time['Time_Hour'], $start_time['Time_Minute'], '0', '12', $start_time['time_meridian']);
+    //$end_timestamp   = datetime_to_timestamp($end_date, $end_time['Time_Hour'], $end_time['Time_Minute'], '0', '12', $end_time['time_meridian']);
     
     // Get Full Timestamps for the schedule item (date/hour/minute/second) - 24 Hour
-    $schedule_start_timestamp = datetime_to_timestamp($schedule_start_date, $scheduleStartTime['Time_Hour'], $scheduleStartTime['Time_Minute'], '0', '24');
-    $schedule_end_timestamp   = datetime_to_timestamp($schedule_end_date, $scheduleEndTime['Time_Hour'], $scheduleEndTime['Time_Minute'], '0', '24');
+    $start_timestamp = datetime_to_timestamp($start_date, $StartTime['Time_Hour'], $StartTime['Time_Minute'], '0', '24');
+    $end_timestamp   = datetime_to_timestamp($end_date, $EndTime['Time_Hour'], $EndTime['Time_Minute'], '0', '24');
     
     // Corrects the extra time segment issue
-    $schedule_end_timestamp -= 1;
+    $end_timestamp -= 1;
     
     // Validate the submitted dates
-    if(!validate_schedule_times($db, $schedule_start_date, $schedule_start_timestamp, $schedule_end_timestamp, $employee_id)) {return false;}        
+    if(!validate_schedule_times($db, $start_date, $start_timestamp, $end_timestamp, $employee_id)) {return false;}        
 
     // Insert schedule item into the database
     $sql = "INSERT INTO ".PRFX."schedule SET
-            schedule_start     = ". $db->qstr( $schedule_start_timestamp  ).",
-            schedule_end       = ". $db->qstr( $schedule_end_timestamp    ).",            
-            employee_id        = ". $db->qstr( $employee_id               ).",
-            customer_id        = ". $db->qstr( $customer_id               ).",   
-            workorder_id       = ". $db->qstr( $workorder_id              ).",
-            schedule_notes     = ". $db->qstr( $schedule_notes            );            
+            employee_id     =". $db->qstr( $employee_id     ).",
+            customer_id     =". $db->qstr( $customer_id     ).",   
+            workorder_id    =". $db->qstr( $workorder_id    ).",
+            start_time      =". $db->qstr( $start_timestamp ).",
+            end_time        =". $db->qstr( $end_timestamp   ).",            
+            notes           =". $db->qstr( $notes           );            
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to insert the schedule record into the database."));
@@ -159,18 +159,18 @@ function get_workorder_id_from_schedule($db, $schedule_id) {
 #    Get all schedule IDs for an employee for a date     #
 ##########################################################
 
-function get_schedule_ids_for_employee_on_date($db, $employee_id, $schedule_start_year, $schedule_start_month, $schedule_start_day) {
+function get_schedule_ids_for_employee_on_date($db, $employee_id, $start_year, $start_month, $start_day) {
     
     // Get the start and end time of the calendar schedule to be displayed, Office hours only - (unix timestamp)
-    $company_day_start = mktime(get_company_details($db, 'opening_hour'), get_company_details($db, 'opening_minute'), 0, $schedule_start_month, $schedule_start_day, $schedule_start_year);
-    $company_day_end   = mktime(get_company_details($db, 'closing_hour'), get_company_details($db, 'closing_minute'), 59, $schedule_start_month, $schedule_start_day, $schedule_start_year);    
+    $company_day_start = mktime(get_company_details($db, 'opening_hour'), get_company_details($db, 'opening_minute'), 0, $start_month, $start_day, $start_year);
+    $company_day_end   = mktime(get_company_details($db, 'closing_hour'), get_company_details($db, 'closing_minute'), 59, $start_month, $start_day, $start_year);    
       
     // Look in the database for a scheduled events for the current schedule day (within business hours)
     $sql = "SELECT schedule_id
             FROM ".PRFX."schedule       
-            WHERE schedule_start >= ".$company_day_start." AND schedule_start <= ".$company_day_end."
+            WHERE start_time >= ".$company_day_start." AND start_time <= ".$company_day_end."
             AND employee_id =".$db->qstr($employee_id)."
-            ORDER BY schedule_start
+            ORDER BY start_time
             ASC";
     
     if(!$rs = $db->Execute($sql)) {
@@ -190,31 +190,31 @@ function get_schedule_ids_for_employee_on_date($db, $employee_id, $schedule_star
 #      Update schedule               #
 ######################################
 
-function update_schedule($db, $schedule_start_date, $scheduleStartTime, $schedule_end_date, $scheduleEndTime, $schedule_notes, $schedule_id, $employee_id, $customer_id, $workorder_id) {
+function update_schedule($db, $start_date, $StartTime, $end_date, $EndTime, $notes, $schedule_id, $employee_id, $customer_id, $workorder_id) {
     
     // Get Full Timestamps for the schedule item (date/hour/minute/second) - 12 Hour
-    //$schedule_start_timestamp = datetime_to_timestamp($schedule_start_date, $scheduleStartTime['Time_Hour'], $scheduleStartTime['Time_Minute'], '0', '12', $scheduleStartTime['time_meridian']);
-    //$schedule_end_timestamp   = datetime_to_timestamp($schedule_end_date, $scheduleEndTime['Time_Hour'], $scheduleEndTime['Time_Minute'], '0', '12', $scheduleEndTime['time_meridian']);
+    //$start_timestamp = datetime_to_timestamp($start_date, $start_time['Time_Hour'], $start_time['Time_Minute'], '0', '12', $start_time['time_meridian']);
+    //$end_timestamp   = datetime_to_timestamp($end_date, $end_time['Time_Hour'], $end_time['Time_Minute'], '0', '12', $end_time['time_meridian']);
     
     // Get Full Timestamps for the schedule item (date/hour/minute/second) - 24 Hour
-    $schedule_start_timestamp = datetime_to_timestamp($schedule_start_date, $scheduleStartTime['Time_Hour'], $scheduleStartTime['Time_Minute'], '0', '24');
-    $schedule_end_timestamp   = datetime_to_timestamp($schedule_end_date, $scheduleEndTime['Time_Hour'], $scheduleEndTime['Time_Minute'], '0', '24');
+    $start_timestamp = datetime_to_timestamp($start_date, $StartTime['Time_Hour'], $StartTime['Time_Minute'], '0', '24');
+    $end_timestamp   = datetime_to_timestamp($end_date, $EndTime['Time_Hour'], $EndTime['Time_Minute'], '0', '24');
     
     // Corrects the extra time segment issue
-    $schedule_end_timestamp -= 1;
+    $end_timestamp -= 1;
     
     // Validate the submitted dates
-    if(!validate_schedule_times($db, $schedule_start_date, $schedule_start_timestamp, $schedule_end_timestamp, $employee_id, $schedule_id)) {return false;}        
+    if(!validate_schedule_times($db, $start_date, $start_timestamp, $end_timestamp, $employee_id, $schedule_id)) { return false; }        
     
     $sql = "UPDATE ".PRFX."schedule SET
-        schedule_id         =". $db->qstr( $schedule_id                 ).",
-        schedule_start      =". $db->qstr( $schedule_start_timestamp    ).",
-        schedule_end        =". $db->qstr( $schedule_end_timestamp      ).",
-        employee_id         =". $db->qstr( $employee_id                 ).",
-        customer_id         =". $db->qstr( $customer_id                 ).",
-        workorder_id        =". $db->qstr( $workorder_id                ).",        
-        schedule_notes      =". $db->qstr( $schedule_notes              )."
-        WHERE schedule_id   =". $db->qstr( $schedule_id                 );
+        schedule_id         =". $db->qstr( $schedule_id         ).",
+        employee_id         =". $db->qstr( $employee_id         ).",
+        customer_id         =". $db->qstr( $customer_id         ).",
+        workorder_id        =". $db->qstr( $workorder_id        ).",   
+        start_time          =". $db->qstr( $start_timestamp     ).",
+        end_time            =". $db->qstr( $end_timestamp       ).",                
+        notes               =". $db->qstr( $notes               )."
+        WHERE schedule_id   =". $db->qstr( $schedule_id         );
    
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update a schedule record."));
@@ -280,16 +280,16 @@ function build_single_schedule_ics($db, $schedule_id, $ics_type = 'single') {
     $workorder          = get_workorder_details($db, $single_schedule['workorder_id']);
     $customer           = get_customer_details($db, $workorder['customer_id']);
     
-    $start_datetime     = timestamp_to_ics_datetime($single_schedule['schedule_start']);
-    $end_datetime       = timestamp_to_ics_datetime($single_schedule['schedule_end']);
+    $start_datetime     = timestamp_to_ics_datetime($single_schedule['start_time']);
+    $end_datetime       = timestamp_to_ics_datetime($single_schedule['end_time']);
     $current_datetime   = timestamp_to_ics_datetime(time());
 
-    $summary            = prepare_ics_strings('SUMMARY', $customer['customer_display_name'].' - Workorder '.$single_schedule['workorder_id'].' - Schedule '.$schedule_id);
+    $summary            = prepare_ics_strings('SUMMARY', $customer['display_name'].' - Workorder '.$single_schedule['workorder_id'].' - Schedule '.$schedule_id);
     $description        = prepare_ics_strings('DESCRIPTION', build_ics_description('textarea', $single_schedule, $customer, $workorder));
     $x_alt_desc         = prepare_ics_strings('X-ALT-DESC;FMTTYPE=text/html', build_ics_description('html', $single_schedule, $customer, $workorder));
     
-    $location           = prepare_ics_strings('LOCATION', build_single_line_address($customer['customer_address'], $customer['customer_city'], $customer['customer_state'], $customer['customer_zip']));
-    $uniqid             = 'QWcrm-'.$single_schedule['schedule_id'].'-'.$single_schedule['schedule_start'];    
+    $location           = prepare_ics_strings('LOCATION', build_single_line_address($customer['address'], $customer['city'], $customer['state'], $customer['zip']));
+    $uniqid             = 'QWcrm-'.$single_schedule['schedule_id'].'-'.$single_schedule['start_time'];    
   
     // Build the Schedule .ics content
     
@@ -320,12 +320,12 @@ function build_single_schedule_ics($db, $schedule_id, $ics_type = 'single') {
 #    Build a multi .ics - the employees schedule items for that day     #
 #########################################################################
 
-function build_ics_schedule_day($db, $employee_id, $schedule_start_year, $schedule_start_month, $schedule_start_day) {
+function build_ics_schedule_day($db, $employee_id, $start_year, $start_month, $start_day) {
     
     // fetch all schdule items for this setup
     $schedule_multi_ics = ics_header_settings();
     
-    $schedule_multi_id = get_schedule_ids_for_employee_on_date($db, $employee_id, $schedule_start_year, $schedule_start_month, $schedule_start_day);    
+    $schedule_multi_id = get_schedule_ids_for_employee_on_date($db, $employee_id, $start_year, $start_month, $start_day);    
     
     foreach($schedule_multi_id as $schedule_id) {
         $schedule_multi_ics .= build_single_schedule_ics($db, $schedule_id['schedule_id'], $type = 'multi');
@@ -379,21 +379,21 @@ function build_ics_description($type, $single_schedule, $customer, $workorder) {
 
         // Workorder and Schedule Information
         $description =  gettext("Scope").': \n\n'.
-                        $workorder['WORK_ORDER_SCOPE'].'\n\n'.
+                        $workorder['work_order_scope'].'\n\n'.
                         gettext("Description").': \n\n'.
-                        html_to_textarea($workorder['WORK_ORDER_DESCRIPTION']).'\n\n'.
+                        html_to_textarea($workorder['work_order_description']).'\n\n'.
                         gettext("Schedule Notes").': \n\n'.
-                        html_to_textarea($single_schedule['SCHEDULE_NOTES']);
+                        html_to_textarea($single_schedule['notes']);
 
         // Contact Information
         $description .= gettext("Contact Information").''.'\n\n'.
-                        gettext("Company")  .': '   .$customer['CUSTOMER_DISPLAY_NAME'].'\n\n'.
-                        gettext("Contact")  .': '   .$customer['CUSTOMER_FIRST_NAME'].' '.$customer['CUSTOMER_LAST_NAME'].'\n\n'.
-                        gettext("Phone")    .': '   .$customer['CUSTOMER_PHONE'].'\n\n'.
-                        gettext("Mobile")   .': '   .$customer['CUSTOMER_MOBILE_PHONE'].'\n\n'.
-                        gettext("Email")    .': '   .$customer['CUSTOMER_EMAIL'].'\n\n'.
-                        gettext("Website")  .': '   .$customer['CUSTOMER_WWW'].'\n\n'.
-                        gettext("Address")  .': '   .build_single_line_address($customer['CUSTOMER_ADDRESS'], $customer['CUSTOMER_CITY'], $customer['CUSTOMER_STATE'], $customer['CUSTOMER_ZIP']).'\n\n';                        
+                        gettext("Company")  .': '   .$customer['display_name'].'\n\n'.
+                        gettext("Contact")  .': '   .$customer['first_name'].' '.$customer['last_name'].'\n\n'.
+                        gettext("Phone")    .': '   .$customer['phone'].'\n\n'.
+                        gettext("Mobile")   .': '   .$customer['mobile_phone'].'\n\n'.
+                        gettext("Website")  .': '   .$customer['website'].'\n\n'.
+                        gettext("Email")    .': '   .$customer['email'].'\n\n'.
+                        gettext("Address")  .': '   .build_single_line_address($customer['address'], $customer['city'], $customer['state'], $customer['zip']).'\n\n';                        
     
     }
     
@@ -410,24 +410,24 @@ function build_ics_description($type, $single_schedule, $customer, $workorder) {
     
         // Workorder and Schedule Information
         $description .= '<p><strong>'.gettext("Scope").': </strong></p>'.
-                        '<p>'.$workorder['WORK_ORDER_SCOPE'].'</p>'.
+                        '<p>'.$workorder['work_order_scope'].'</p>'.
                         '<p><strong>'.gettext("Description").': </strong></p>'.
-                        '<div>'.$workorder['WORK_ORDER_DESCRIPTION'].'</div>'.
+                        '<div>'.$workorder['work_order_description'].'</div>'.
                         '<p><strong>'.gettext("Schedule Notes").': </strong></p>'.
-                        '<div>'.$single_schedule['SCHEDULE_NOTES'].'</div>';        
+                        '<div>'.$single_schedule['notes'].'</div>';        
 
         // Contact Information
         $description .= '<p><strong>'.gettext("Contact Information").'</strong></p>'.
                         '<p>'.
-                        '<strong>'.gettext("Company")   .':</strong> '  .$customer['CUSTOMER_DISPLAY_NAME'].'<br>'.
-                        '<strong>'.gettext("Contact")   .':</strong> '  .$customer['CUSTOMER_FIRST_NAME'].' '.$customer['CUSTOMER_LAST_NAME'].'<br>'.              
-                        '<strong>'.gettext("Phone")     .':</strong> '  .$customer['CUSTOMER_PHONE'].'<br>'.
-                        '<strong>'.gettext("Mobile")    .':</strong> '  .$customer['CUSTOMER_MOBILE_PHONE'].'<br>'.
-                        '<strong>'.gettext("Email")     .':</strong> '  .$customer['CUSTOMER_EMAIL'].'<br>'.
-                        '<strong>'.gettext("Website")   .':</strong> '  .$customer['CUSTOMER_WWW'].
+                        '<strong>'.gettext("Company")   .':</strong> '  .$customer['display_name'].'<br>'.
+                        '<strong>'.gettext("Contact")   .':</strong> '  .$customer['first_name'].' '.$customer['last_name'].'<br>'.              
+                        '<strong>'.gettext("Phone")     .':</strong> '  .$customer['phone'].'<br>'.
+                        '<strong>'.gettext("Mobile")    .':</strong> '  .$customer['mobile_phone'].'<br>'.
+                        '<strong>'.gettext("Website")   .':</strong> '  .$customer['website'].
+                        '<strong>'.gettext("Email")     .':</strong> '  .$customer['email'].'<br>'.                        
                         '</p>'.                
                         '<p><strong>'.gettext("Contact Information").'Address: </strong></p>'.
-                        build_html_adddress($customer['CUSTOMER_ADDRESS'], $customer['CUSTOMER_CITY'], $customer['CUSTOMER_STATE'], $customer['CUSTOMER_ZIP']);
+                        build_html_adddress($customer['address'], $customer['city'], $customer['state'], $customer['zip']);
         
         // Close HTML Wrapper
         $description .= '</BODY>\n'.
@@ -557,11 +557,11 @@ function ics_string_octet_split($ics_keyname, $ics_string) {
 #        Build Calendar Matrix                      #
 #####################################################
 
-function build_calendar_matrix($db, $schedule_start_year, $schedule_start_month, $schedule_start_day, $employee_id, $workorder_id = null) {
+function build_calendar_matrix($db, $start_year, $start_month, $start_day, $employee_id, $workorder_id = null) {
     
     // Get the start and end time of the calendar schedule to be displayed, Office hours only - (unix timestamp)
-    $company_day_start = mktime(get_company_details($db, 'opening_hour'), get_company_details($db, 'opening_minute'), 0, $schedule_start_month, $schedule_start_day, $schedule_start_year);
-    $company_day_end   = mktime(get_company_details($db, 'closing_hour'), get_company_details($db, 'closing_minute'), 59, $schedule_start_month, $schedule_start_day, $schedule_start_year);    
+    $company_day_start = mktime(get_company_details($db, 'opening_hour'), get_company_details($db, 'opening_minute'), 0, $start_month, $start_day, $start_year);
+    $company_day_end   = mktime(get_company_details($db, 'closing_hour'), get_company_details($db, 'closing_minute'), 59, $start_month, $start_day, $start_year);    
     /* Same as above but my code - Get the start and end time of the calendar schedule to be displayed, Office hours only - (unix timestamp)
     $company_day_start = datetime_to_timestamp($current_schedule_date, get_company_details($db, 'opening_hour'), 0, 0, $clock = '24');
     $company_day_end   = datetime_to_timestamp($current_schedule_date, get_company_details($db, 'closing_hour'), 59, 0, $clock = '24');*/
@@ -569,16 +569,16 @@ function build_calendar_matrix($db, $schedule_start_year, $schedule_start_month,
     // Look in the database for a scheduled events for the current schedule day (within business hours)
     $sql ="SELECT 
         ".PRFX."schedule.*,
-        ".PRFX."customer.customer_display_name
+        ".PRFX."customer.display_name AS customer_display_name
         FROM ".PRFX."schedule
         INNER JOIN ".PRFX."workorder
         ON ".PRFX."schedule.workorder_id = ".PRFX."workorder.work_order_id
         INNER JOIN ".PRFX."customer
         ON ".PRFX."workorder.customer_id = ".PRFX."customer.customer_id
-        WHERE ".PRFX."schedule.schedule_start >= ".$company_day_start."
-        AND ".PRFX."schedule.schedule_start <= ".$company_day_end."
+        WHERE ".PRFX."schedule.start_time >= ".$company_day_start."
+        AND ".PRFX."schedule.start_time <= ".$company_day_end."
         AND ".PRFX."schedule.employee_id =".$db->qstr($employee_id)."
-        ORDER BY ".PRFX."schedule.schedule_start
+        ORDER BY ".PRFX."schedule.start_time
         ASC";
     
     if(!$rs = $db->Execute($sql)) {
@@ -590,12 +590,12 @@ function build_calendar_matrix($db, $schedule_start_year, $schedule_start_month,
     $scheduleObject = array();
     while (!$rs->EOF ){        
         array_push($scheduleObject, array(
-            "schedule_id"      => $rs->fields["schedule_id"],
-            "schedule_start"   => $rs->fields["schedule_start"],
-            "schedule_end"     => $rs->fields["schedule_end"],
-            "schedule_notes"   => $rs->fields["schedule_notes"],
-            "customer_name"    => $rs->fields["customer_display_name"],
-            "workorder_id"     => $rs->fields["workorder_id"]
+            'schedule_id'           => $rs->fields['schedule_id'],
+            'customer_display_name' => $rs->fields['customer_display_name'],
+            'workorder_id'          => $rs->fields['workorder_id'],
+            'schedule_start'        => $rs->fields['start_time'],
+            'schedule_end'          => $rs->fields['end_time'],
+            'notes'        => $rs->fields['notes']            
             ));
         $rs->MoveNext();
     }
@@ -635,7 +635,7 @@ function build_calendar_matrix($db, $schedule_start_year, $schedule_start_month,
         /* Schedule Block ROW */
         
         // If the ROW is within the time range of the schedule item            
-        if($matrixStartTime >= $scheduleObject[$i]['schedule_start'] && $matrixStartTime <= $scheduleObject[$i]['schedule_end']) {
+        if($matrixStartTime >= $scheduleObject[$i]['start_time'] && $matrixStartTime <= $scheduleObject[$i]['end_time']) {
             
             /* LEFT CELL*/           
             
@@ -645,19 +645,19 @@ function build_calendar_matrix($db, $schedule_start_year, $schedule_start_month,
             /* RIGHT CELL */
             
             // Build the Schedule Block (If the ROW is the same as the schedule item's start time)
-            if($matrixStartTime == $scheduleObject[$i]['schedule_start']){
+            if($matrixStartTime == $scheduleObject[$i]['start_time']){
 
                 // Open CELL and add clickable link (to workorder) for CELL
                 $calendar .= "<td class=\"menutd2\" align=\"center\" >\n";
 
                 // Schedule Item Title
-                $calendar .= "<b><font color=\"red\">".gettext("Work Order")." ".$scheduleObject[$i]['workorder_id']." ".gettext("for")." ". $scheduleObject[$i]['customer_name']."</font></b><br>\n";
+                $calendar .= "<b><font color=\"red\">".gettext("Work Order")." ".$scheduleObject[$i]['workorder_id']." ".gettext("for")." ". $scheduleObject[$i]['customer_display_name']."</font></b><br>\n";
 
                 // Time period of schedule
-                $calendar .= "<b><font color=\"red\">".date("H:i",$scheduleObject[$i]['schedule_start'])." - ".date("H:i",$scheduleObject[$i]['schedule_end'])."</font></b><br>\n";
+                $calendar .= "<b><font color=\"red\">".date("H:i",$scheduleObject[$i]['start_time'])." - ".date("H:i",$scheduleObject[$i]['end_time'])."</font></b><br>\n";
 
                 // Schedule Notes
-                $calendar .= "<div style=\"color: blue; font-weight: bold;\">".gettext("Notes").":  ".$scheduleObject[$i]['schedule_notes']."</div><br>\n";
+                $calendar .= "<div style=\"color: blue; font-weight: bold;\">".gettext("Notes").":  ".$scheduleObject[$i]['notes']."</div><br>\n";
 
                 // Links for schedule
                 $calendar .= "<b><a href=\"index.php?page=workorder:details&workorder_id=".$scheduleObject[$i]['workorder_id']."\">".gettext("Work Order")."</a> - </b>";
@@ -690,11 +690,11 @@ function build_calendar_matrix($db, $schedule_start_year, $schedule_start_month,
             // If workorder_id is present enable clickable links
             } else {            
                 if(date('i',$matrixStartTime) == 0) {
-                    $calendar .= "<td class=\"olotd\" onClick=\"window.location='index.php?page=schedule:new&schedule_start_year={$schedule_start_year}&schedule_start_month={$schedule_start_month}&schedule_start_day={$schedule_start_day}&schedule_start_time=".date("H:i", $matrixStartTime)."&employee_id=".$employee_id."&workorder_id=".$workorder_id."'\"><b>&nbsp;".date("H:i", $matrixStartTime)."</b></td>\n";
-                    $calendar .= "<td class=\"olotd\" onClick=\"window.location='index.php?page=schedule:new&schedule_start_year={$schedule_start_year}&schedule_start_month={$schedule_start_month}&schedule_start_day={$schedule_start_day}&schedule_start_time=".date("H:i", $matrixStartTime)."&employee_id=".$employee_id."&workorder_id=".$workorder_id."'\"></td>\n";
+                    $calendar .= "<td class=\"olotd\" onClick=\"window.location='index.php?page=schedule:new&start_year={$start_year}&start_month={$start_month}&start_day={$start_day}&start_time=".date("H:i", $matrixStartTime)."&employee_id=".$employee_id."&workorder_id=".$workorder_id."'\"><b>&nbsp;".date("H:i", $matrixStartTime)."</b></td>\n";
+                    $calendar .= "<td class=\"olotd\" onClick=\"window.location='index.php?page=schedule:new&start_year={$start_year}&start_month={$start_month}&start_day={$start_day}&start_time=".date("H:i", $matrixStartTime)."&employee_id=".$employee_id."&workorder_id=".$workorder_id."'\"></td>\n";
                 } else {
-                    $calendar .= "<td class=\"olotd4\" onClick=\"window.location='index.php?page=schedule:new&schedule_start_year={$schedule_start_year}&schedule_start_month={$schedule_start_month}&schedule_start_day={$schedule_start_day}&schedule_start_time=".date("H:i", $matrixStartTime)."&employee_id=".$employee_id."&workorder_id=".$workorder_id."'\">&nbsp;".date("H:i", $matrixStartTime)."</td>\n";
-                    $calendar .= "<td class=\"olotd4\" onClick=\"window.location='index.php?page=schedule:new&schedule_start_year={$schedule_start_year}&schedule_start_month={$schedule_start_month}&schedule_start_day={$schedule_start_day}&schedule_start_time=".date("H:i", $matrixStartTime)."&employee_id=".$employee_id."&workorder_id=".$workorder_id."'\"></td>\n";
+                    $calendar .= "<td class=\"olotd4\" onClick=\"window.location='index.php?page=schedule:new&start_year={$start_year}&start_month={$start_month}&start_day={$start_day}&start_time=".date("H:i", $matrixStartTime)."&employee_id=".$employee_id."&workorder_id=".$workorder_id."'\">&nbsp;".date("H:i", $matrixStartTime)."</td>\n";
+                    $calendar .= "<td class=\"olotd4\" onClick=\"window.location='index.php?page=schedule:new&start_year={$start_year}&start_month={$start_month}&start_day={$start_day}&start_time=".date("H:i", $matrixStartTime)."&employee_id=".$employee_id."&workorder_id=".$workorder_id."'\"></td>\n";
                 }                
             }          
             
@@ -706,7 +706,7 @@ function build_calendar_matrix($db, $schedule_start_year, $schedule_start_month,
         /* Loop Advancement */        
         
         // Advance the schedule counter to the next item
-        if($matrixStartTime >= $scheduleObject[$i]['schedule_end']) {$i++;}
+        if($matrixStartTime >= $scheduleObject[$i]['end_time']) {$i++;}
 
         // Advance matrixStartTime by 15 minutes before restarting loop to create 15 minute segements        
         $matrixStartTime += $time_slot_length;      
@@ -725,42 +725,43 @@ function build_calendar_matrix($db, $schedule_start_year, $schedule_start_month,
 #   validate schedule start and end time   #
 ############################################
 
-function validate_schedule_times($db, $schedule_start_date, $schedule_start_timestamp, $schedule_end_timestamp, $employee_id, $schedule_id = null) {
+function validate_schedule_times($db, $start_date, $start_timestamp, $end_timestamp, $employee_id, $schedule_id = null) {
     
     global $smarty;
     
-    $company_day_start = datetime_to_timestamp($schedule_start_date, get_company_details($db, 'opening_hour'), get_company_details($db, 'opening_minute'), '0', '24');
-    $company_day_end   = datetime_to_timestamp($schedule_start_date, get_company_details($db, 'closing_hour'), get_company_details($db, 'closing_minute'), '0', '24');
+    $company_day_start = datetime_to_timestamp($start_date, get_company_details($db, 'opening_hour'), get_company_details($db, 'opening_minute'), '0', '24');
+    $company_day_end   = datetime_to_timestamp($start_date, get_company_details($db, 'closing_hour'), get_company_details($db, 'closing_minute'), '0', '24');
     
     // Add the second I removed to correct extra segment issue
-    $schedule_end_timestamp += 1;
+    $end_timestamp += 1;
      
     // If start time is after end time show message and stop further processing
-    if($schedule_start_timestamp > $schedule_end_timestamp) {        
+    if($start_timestamp > $end_timestamp) {        
         $smarty->assign('warning_msg', gettext("Schedule ends before it starts."));
         return false;
     }
 
     // If the start time is the same as the end time show message and stop further processing
-    if($schedule_start_timestamp == $schedule_end_timestamp) {       
+    if($start_timestamp == $end_timestamp) {       
         $smarty->assign('warning_msg', gettext("Start Time and End Time are the Same."));        
         return false;
     }
 
     // Check the schedule is within Company Hours    
-    if($schedule_start_timestamp < $company_day_start || $schedule_end_timestamp > $company_day_end) {            
+    if($start_timestamp < $company_day_start || $end_timestamp > $company_day_end) {            
         $smarty->assign('warning_msg', gettext("You cannot book work outside of company hours"));    
         return false;
     }    
 
     // Load all schedule items from the database for the supplied employee for the specified day (this currently ignores company hours)
     $sql = "SELECT
-            schedule_start, schedule_end, schedule_id
+             schedule_id, start_time, end_time
             FROM ".PRFX."schedule
-            WHERE schedule_start >= ".$company_day_start."
-            AND schedule_end <=".$company_day_end."
+            WHERE start_time >= ".$company_day_start."
+            AND end_time <=".$company_day_end."
             AND employee_id ='".$employee_id."'
-            ORDER BY schedule_start ASC";
+            ORDER BY start_time
+            ASC";
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to return the selected schedules."));
@@ -774,13 +775,13 @@ function validate_schedule_times($db, $schedule_start_date, $schedule_start_time
         if($schedule_id != $rs->fields['schedule_id']) {
 
             // Check if this schedule item ends after another item has started      
-            if($schedule_start_timestamp <= $rs->fields['schedule_start'] && $schedule_end_timestamp >= $rs->fields['schedule_start']) {                        
+            if($start_timestamp <= $rs->fields['start_time'] && $end_timestamp >= $rs->fields['start_time']) {                        
                 $smarty->assign('warning_msg', gettext("Schedule conflict - This schedule item ends after another schedule has started."));    
                 return false;           
             }
 
             // Check if this schedule item starts before another item has finished
-            if($schedule_start_timestamp >= $rs->fields['schedule_start'] && $schedule_start_timestamp <= $rs->fields['schedule_end']) {                    
+            if($start_timestamp >= $rs->fields['start_time'] && $start_timestamp <= $rs->fields['end_time']) {                    
                 $smarty->assign('warning_msg', gettext("Schedule conflict - This schedule item starts before another schedule ends."));    
                 return false;
             }

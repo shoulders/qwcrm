@@ -27,81 +27,96 @@
                                     <table class="menutable" width="100%" border="0" cellpadding="0" cellspacing="0" >
                                         <tr>
                                             <td>                                                
-                                                <form action="index.php?page=supplier:edit" method="POST" name="edit_supplier" id="edit_supplier" autocomplete="off">                                                
-                                                    <table width="100%" cellpadding="2" cellspacing="2" border="0">                                                                                                                                  
+                                                <form action="index.php?page=supplier:edit&supplier_id={$supplier_id}" method="POST" name="edit_supplier" id="edit_supplier" autocomplete="off">                                                
+                                                    <table width="100%" cellpadding="2" cellspacing="2" border="0">
                                                         <tr>
-                                                            <td align="right"><b>{t}Supplier ID{/t}</b></td>
-                                                            <td colspan="3"><input name="supplier_id" type="hidden" value="{$supplier_details.supplier_id}"/>{$supplier_details.supplier_id}</td>
+                                                            <td class="menuhead" colspan="2">{t}Contact{/t}</td>
                                                         </tr>
                                                         <tr>
-                                                            <td align="right"><b>{t}Name{/t}</b><span style="color: #ff0000"> *</span></td>
-                                                            <td colspan="3"><input name="supplierName" class="olotd5" size="50" value="{$supplier_details.supplier_name}" type="text" maxlength="50" required onkeydown="return onlyAlphaNumeric(event);"></td>
+                                                            <td align="right"><b>{t}Supplier ID{/t}</b></td>
+                                                            <td>{$supplier_id}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td align="right"><b>{t}Display Name{/t}</b><span style="color: #ff0000"> *</span></td>
+                                                            <td><input name="display_name" class="olotd5" size="50" value="{$supplier_details.display_name}" type="text" maxlength="50" required onkeydown="return onlyAlphaNumeric(event);"></td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{t}Contact{/t}</b></td>
-                                                            <td><input id="supplierContact" name="supplierContact" class="olotd5" size="50" value="{$supplier_details.supplier_contact}" type="text" maxlength="50" onkeydown="return onlyAlpha(event);"></td>
+                                                            <td><input name="contact" class="olotd5" size="50" value="{$supplier_details.contact}" type="text" maxlength="50" onkeydown="return onlyAlpha(event);"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td align="right"><b>{t}Website{/t}</b></td>
+                                                            <td><input name="website" class="olotd5" size="50" value="{$supplier_details.website}" type="url"  maxlength="50" pattern="^https?://.+" placeholder="https://quantumwarp.com/" onkeydown="return onlyURL(event);"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td align="right"><b>{t}Email{/t}</b></td>
+                                                            <td><input name="email" class="olotd5" size="50" value="{$supplier_details.email}" type="email" placeholder="no-reply@quantumwarp.com" maxlength="50" onkeydown="return onlyEmail(event);"></td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{t}Type{/t}</b><span style="color: #ff0000"> *</span></td>
                                                             <td>
-                                                                <select id="supplierType" name="supplierType" class="olotd5" style="width: 150px" col="30" value="{$supplier_details.supplier_type}">
-                                                                    <option value="1"{if $supplier_details.supplier_type == '1'} selected{/if}>{t}SUPPLIER_TYPE_1{/t}</option>
-                                                                    <option value="2"{if $supplier_details.supplier_type == '2'} selected{/if}>{t}SUPPLIER_TYPE_2{/t}</option>
-                                                                    <option value="3"{if $supplier_details.supplier_type == '3'} selected{/if}>{t}SUPPLIER_TYPE_3{/t}</option>
-                                                                    <option value="4"{if $supplier_details.supplier_type == '4'} selected{/if}>{t}SUPPLIER_TYPE_4{/t}</option>
-                                                                    <option value="5"{if $supplier_details.supplier_type == '5'} selected{/if}>{t}SUPPLIER_TYPE_5{/t}</option>
-                                                                    <option value="6"{if $supplier_details.supplier_type == '6'} selected{/if}>{t}SUPPLIER_TYPE_6{/t}</option>
-                                                                    <option value="7"{if $supplier_details.supplier_type == '7'} selected{/if}>{t}SUPPLIER_TYPE_7{/t}</option>
-                                                                    <option value="8"{if $supplier_details.supplier_type == '8'} selected{/if}>{t}SUPPLIER_TYPE_8{/t}</option>
-                                                                    <option value="9"{if $supplier_details.supplier_type == '9'} selected{/if}>{t}SUPPLIER_TYPE_9{/t}</option>
-                                                                    <option value="10"{if $supplier_details.supplier_type == '10'} selected{/if}>{t}SUPPLIER_TYPE_10{/t}</option>
-                                                                    <option value="11"{if $supplier_details.supplier_type == '11'} selected{/if}>{t}SUPPLIER_TYPE_11{/t}</option>                                                                                       
+                                                                <select id="type" name="type" class="olotd5" style="width: 150px" col="30" value="{$supplier_details.type}">
+                                                                    <option value="1"{if $supplier_details.type == '1'} selected{/if}>{t}SUPPLIER_TYPE_1{/t}</option>
+                                                                    <option value="2"{if $supplier_details.type == '2'} selected{/if}>{t}SUPPLIER_TYPE_2{/t}</option>
+                                                                    <option value="3"{if $supplier_details.type == '3'} selected{/if}>{t}SUPPLIER_TYPE_3{/t}</option>
+                                                                    <option value="4"{if $supplier_details.type == '4'} selected{/if}>{t}SUPPLIER_TYPE_4{/t}</option>
+                                                                    <option value="5"{if $supplier_details.type == '5'} selected{/if}>{t}SUPPLIER_TYPE_5{/t}</option>
+                                                                    <option value="6"{if $supplier_details.type == '6'} selected{/if}>{t}SUPPLIER_TYPE_6{/t}</option>
+                                                                    <option value="7"{if $supplier_details.type == '7'} selected{/if}>{t}SUPPLIER_TYPE_7{/t}</option>
+                                                                    <option value="8"{if $supplier_details.type == '8'} selected{/if}>{t}SUPPLIER_TYPE_8{/t}</option>
+                                                                    <option value="9"{if $supplier_details.type == '9'} selected{/if}>{t}SUPPLIER_TYPE_9{/t}</option>
+                                                                    <option value="10"{if $supplier_details.type == '10'} selected{/if}>{t}SUPPLIER_TYPE_10{/t}</option>
+                                                                    <option value="11"{if $supplier_details.type == '11'} selected{/if}>{t}SUPPLIER_TYPE_11{/t}</option>                                                                                       
                                                                 </select>
                                                             </td>
-                                                        </tr>                                                                            
-                                                        <tr>
-                                                            <td align="right"><b>{t}Phone{/t}</b></td>
-                                                            <td><input class="olotd5" name="supplierPhone" size="20" value="{$supplier_details.supplier_phone}" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"></td>
                                                         </tr>
                                                         <tr>
-                                                            <td align="right"><b>{t}Fax{/t}</b></td>
-                                                            <td><input name="supplierFax" class="olotd5" size="20" value="{$supplier_details.supplier_fax}" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"></td>
+                                                            <td class="menuhead" colspan="2">{t}Phone{/t}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td align="right"><b>{t}Phone{/t}</b></td>
+                                                            <td><input class="olotd5" name="phone" size="20" value="{$supplier_details.phone}" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"></td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{t}Mobile{/t}</b></td>
-                                                            <td><input class="olotd5" name="supplierMobile" type="tel" size="20" value="{$supplier_details.supplier_mobile}" maxlength="20" onkeydown="return onlyPhoneNumber(event);"></td>
+                                                            <td><input class="olotd5" name="mobile_phone" type="tel" size="20" value="{$supplier_details.mobile_phone}" maxlength="20" onkeydown="return onlyPhoneNumber(event);"></td>
                                                         </tr>
                                                         <tr>
-                                                            <td align="right"><b>{t}Website{/t}</b></td>
-                                                            <td><input name="supplierWww" class="olotd5" size="50" value="{$supplier_details.supplier_www}" type="url"  maxlength="50" pattern="^https?://.+" placeholder="https://quantumwarp.com/" onkeydown="return onlyURL(event);"></td>
-                                                        </tr>
+                                                            <td align="right"><b>{t}Fax{/t}</b></td>
+                                                            <td><input name="fax" class="olotd5" size="20" value="{$supplier_details.fax}" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"></td>
+                                                        </tr>                                                        
                                                         <tr>
-                                                            <td align="right"><b>{t}Email{/t}</b></td>
-                                                            <td><input name="supplierEmail" class="olotd5" size="50" value="{$supplier_details.supplier_email}" type="email" placeholder="no-reply@quantumwarp.com" maxlength="50" onkeydown="return onlyEmail(event);"></td>
-                                                        </tr>
+                                                            <td class="menuhead" colspan="2">{t}Address{/t}</td>
+                                                        </tr>                                                        
                                                         <tr>
                                                             <td align="right"><strong>{t}Address{/t}</strong></td>
-                                                            <td><textarea name="supplierAddress" class="olotd5 mceNoEditor" cols="30" rows="3" maxlength="100" onkeydown="return onlyAddress(event);">{$supplier_details.supplier_address}</textarea></td>
+                                                            <td><textarea name="address" class="olotd5 mceNoEditor" cols="30" rows="3" maxlength="100" onkeydown="return onlyAddress(event);">{$supplier_details.address}</textarea></td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><strong>{t}City{/t}</strong></td>
-                                                            <td><input name="suppliercity" class="olotd5" value="{$supplier_details.supplier_city}" type="text" maxlength="20" onkeydown="return onlyAlpha(event);"></td>
+                                                            <td><input name="city" class="olotd5" value="{$supplier_details.city}" type="text" maxlength="20" onkeydown="return onlyAlpha(event);"></td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><strong>{t}State{/t}</strong></td>
-                                                            <td><input name="supplierstate" class="olotd5" value="{$supplier_details.supplier_state}" type="text" maxlength="20" onkeydown="return onlyAlpha(event);"></td>
+                                                            <td><input name="state" class="olotd5" value="{$supplier_details.state}" type="text" maxlength="20" onkeydown="return onlyAlpha(event);"></td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><strong>{t}Zip{/t}</strong></td>
-                                                            <td colspan="2"><input name="supplierZip" class="olotd5" value="{$supplier_details.supplier_zip}" type="text" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"></td>
+                                                            <td colspan="2"><input name="zip" class="olotd5" value="{$supplier_details.zip}" type="text" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"></td>
                                                         </tr>
                                                         <tr>
-                                                            <td align="right"><b>{t}Notes{/t}</b></td>
-                                                            <td><textarea name="supplierNotes" class="olotd5" cols="50" rows="20">{$supplier_details.supplier_notes}</textarea></td>
+                                                            <td class="menuhead" colspan="2"><b>{t}Description{/t}</b><span style="color: #ff0000"> *</span></td>
+                                                        </tr> 
+                                                        <tr>
+                                                            <td align="right"></td>
+                                                            <td><textarea class="olotd5 mceCheckForContent" name="description" cols="50" rows="20">{$supplier_details.description}</textarea></td>
                                                         </tr>
                                                         <tr>
-                                                            <td align="right"><b>{t}Description{/t}</b><span style="color: #ff0000"> *</span></td>
-                                                            <td><textarea class="olotd5 mceCheckForContent" name="supplierDescription" cols="50" rows="20">{$supplier_details.supplier_description}</textarea></td>
+                                                            <td class="menuhead" colspan="2"><b>{t}Notes{/t}</b></td>
+                                                        </tr> 
+                                                        <tr>
+                                                            <td align="right"></td>
+                                                            <td><textarea name="notes" class="olotd5" cols="50" rows="20">{$supplier_details.notes}</textarea></td>
                                                         </tr>
                                                         <tr>
                                                             <td></td>

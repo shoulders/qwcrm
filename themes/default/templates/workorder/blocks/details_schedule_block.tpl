@@ -56,7 +56,7 @@
                                                             var m = M + 1;                                          // Correction for assignment issue above
                                                             var d = dateForLink.getDate();                          // integer, 1..31
                                                             // redirect...
-                                                            window.location = "index.php?page=schedule:day&schedule_start_year="+y+"&schedule_start_month="+m+"&schedule_start_day="+d+"&customer_id={$customer_id}&employee_id={$login_user_id}&workorder_id={$workorder_id}";
+                                                            window.location = "index.php?page=schedule:day&start_year="+y+"&start_month="+m+"&start_day="+d+"&customer_id={$customer_id}&employee_id={$login_user_id}&workorder_id={$workorder_id}";
                                                         }
                                         } );                                    
                                     </script>
@@ -69,7 +69,7 @@
                                     <td>                                        
                                         <table width="700" cellpadding="4" cellspacing="0" border="0" >
                                             <tr>
-                                                <td class="menuhead2" width="80%">&nbsp;{t}Schedule{/t} {$workorder_schedules[i].schedule_id} - {$workorder_schedules[i].schedule_start|date_format:$date_format}</td>
+                                                <td class="menuhead2" width="80%">&nbsp;{t}Schedule{/t} {$workorder_schedules[i].schedule_id} - {$workorder_schedules[i].start_time|date_format:$date_format}</td>
                                             </tr>
                                             <tr>
                                                 <td class="menutd2">
@@ -79,13 +79,13 @@
                                                                 <table width="100%" cellpadding="5" cellspacing="5">
                                                                     <tr>
                                                                         <td>
-                                                                            <p><b>{t}Date{/t}: </b>{$workorder_schedules[i].schedule_start|date_format:$date_format}</p>
+                                                                            <p><b>{t}Date{/t}: </b>{$workorder_schedules[i].start_time|date_format:$date_format}</p>
                                                                             <p>
-                                                                                <b>{t}Start Time{/t}: </b>{$workorder_schedules[i].schedule_start|date_format:"%H:%M"}<br>
-                                                                                <b>{t}End Time{/t}: </b>{$workorder_schedules[i].schedule_end|date_format:"%H:%M"}
+                                                                                <b>{t}Start Time{/t}: </b>{$workorder_schedules[i].start_time|date_format:"%H:%M"}<br>
+                                                                                <b>{t}End Time{/t}: </b>{$workorder_schedules[i].end_time|date_format:"%H:%M"}
                                                                             </p>                                                                            
                                                                             <b>{t}Notes{/t}:</b><br />
-                                                                            <div>{$workorder_schedules[i].schedule_notes}</div><br>
+                                                                            <div>{$workorder_schedules[i].notes}</div><br>
                                                                             <button type="button" onClick="window.location='index.php?page=schedule:edit&schedule_id={$workorder_schedules[i].schedule_id}';">{t}Edit{/t}</button>
                                                                             <a href="index.php?page=schedule:delete&schedule_id={$workorder_schedules[i].schedule_id}" onclick="return confirmDelete('{t}Are you sure you want to delete this Schedule?{/t}');"><button type="button">{t}Delete{/t}</button></a>                                                                            
                                                                             <button type="button" onClick="window.location='index.php?page=schedule:icalendar&schedule_id={$workorder_schedules[i].schedule_id}&theme=print';">{t}Export{/t}</button>                                                                                                                                 

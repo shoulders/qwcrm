@@ -991,9 +991,9 @@ function convert_year_month_day_to_date($year, $month, $day) {
 #    Get Timestamp from year/month/day      #
 #############################################
 
-function convert_year_month_day_to_timestamp($schedule_start_year, $schedule_start_month, $schedule_start_day) {  
+function convert_year_month_day_to_timestamp($start_year, $start_month, $start_day) {  
             
-        return DateTime::createFromFormat('!Y/m/d', $schedule_start_year.'/'.$schedule_start_month.'/'.$schedule_start_day)->getTimestamp();   
+        return DateTime::createFromFormat('!Y/m/d', $start_year.'/'.$start_month.'/'.$start_day)->getTimestamp();   
         
 }
 

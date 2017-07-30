@@ -261,7 +261,7 @@
                                 <b>{t}Start Time{/t}:</b> {$workorder_schedules[e].schedule_start|date_format:"$date_format %R"}<br>
                                 <b>{t}End Time{/t}:</b> {$workorder_schedules[e].schedule_end|date_format:"$date_format %R"}<br>
                                 <b>{t}Notes{/t}:</b><br>
-                                <div>{$workorder_schedule[e].schedule_notes}</div>
+                                <div>{$workorder_schedule[e].notes}</div>
                             {sectionelse}
                                 {t}No schedule has been set. Click the day on the calendar you want to set the schedule.{/t}
                             {/section}

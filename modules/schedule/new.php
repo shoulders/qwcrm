@@ -25,33 +25,33 @@ $customer_id =  get_workorder_details($db, $workorder_id, 'customer_id');
 if(isset($VAR['submit'])) {
     
     // If db insert fails send them an error and reload the page with submitted info or load the page with the schedule
-    if (!insert_schedule($db, $VAR['schedule_start_date'], $VAR['scheduleStartTime'], $VAR['schedule_end_date'], $VAR['scheduleEndTime'], $VAR['schedule_notes'], $employee_id, $customer_id, $workorder_id)) {        
+    if (!insert_schedule($db, $VAR['start_date'], $VAR['StartTime'], $VAR['end_date'], $VAR['EndTime'], $VAR['notes'], $employee_id, $customer_id, $workorder_id)) {        
                  
-        $smarty->assign('schedule_start_date',      $VAR['schedule_start_date']                                                           );       
-        $smarty->assign('schedule_start_time',      $VAR['scheduleStartTime']['Time_Hour'].":".$VAR['scheduleStartTime']['Time_Minute']   );              
-        $smarty->assign('schedule_end_date',        $VAR['schedule_end_date']                                                             );        
-        $smarty->assign('schedule_end_time',        $VAR['scheduleEndTime']['Time_Hour'].":".$VAR['scheduleEndTime']['Time_Minute']       );
-        $smarty->assign('schedule_notes',           $VAR['schedule_notes']                                                                );                
+        $smarty->assign('start_date',   $VAR['start_date']                                                  );       
+        $smarty->assign('start_time',   $VAR['StartTime']['Time_Hour'].":".$VAR['StartTime']['Time_Minute'] );              
+        $smarty->assign('end_date',     $VAR['end_date']                                                    );        
+        $smarty->assign('end_time',     $VAR['EndTime']['Time_Hour'].":".$VAR['EndTime']['Time_Minute']     );
+        $smarty->assign('notes',        $VAR['notes']                                                       );                
             
     } else {       
             
         // Load the schedule day with the updated schedule item        
-        $schedule_start_year            = date('Y', date_to_timestamp($VAR['schedule_start_date'])  );
-        $schedule_start_month           = date('m', date_to_timestamp($VAR['schedule_start_date'])  );
-        $schedule_start_day             = date('d', date_to_timestamp($VAR['schedule_start_date'])  );    
+        $start_year            = date('Y', date_to_timestamp($VAR['start_date'])  );
+        $start_month           = date('m', date_to_timestamp($VAR['start_date'])  );
+        $start_day             = date('d', date_to_timestamp($VAR['start_date'])  );    
     
         // Load the schedule day with the newly submitted schedule item
-        force_page('schedule', 'day', 'schedule_start_year='.$schedule_start_year.'&schedule_start_month='.$schedule_start_month.'&schedule_start_day='.$schedule_start_day.'&employee_id='.$employee_id.'&workorder_id='.$workorder_id.'&information_msg='.gettext("Schedule Successfully Created"));
+        force_page('schedule', 'day', 'start_year='.$start_year.'&start_month='.$start_month.'&start_day='.$start_day.'&employee_id='.$employee_id.'&workorder_id='.$workorder_id.'&information_msg='.gettext("Schedule Successfully Created"));
         exit;
     }
 
 // If new schedule form is intially loaded, load schedule item from the database and assign
 } else {
     
-    $smarty->assign('schedule_start_date',          convert_year_month_day_to_date($schedule_start_year, $schedule_start_month, $schedule_start_day)    );
-    $smarty->assign('schedule_start_time',          $VAR['schedule_start_time']                                                                         );    
-    $smarty->assign('schedule_end_date',            convert_year_month_day_to_date($schedule_start_year, $schedule_start_month, $schedule_start_day)    );
-    $smarty->assign('schedule_end_time',            $VAR['schedule_start_time']                                                                         ); 
+    $smarty->assign('start_date',          convert_year_month_day_to_date($start_year, $start_month, $start_day)    );
+    $smarty->assign('start_time',          $VAR['start_time']                                                       );    
+    $smarty->assign('end_date',            convert_year_month_day_to_date($start_year, $start_month, $start_day)    );
+    $smarty->assign('end_time',            $VAR['start_time']                                                       ); 
     
 }
 

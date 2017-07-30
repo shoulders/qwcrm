@@ -75,7 +75,7 @@
 
         // Description Cell - Populate the Select Options
         {section loop=$labour_rate_items name=i}
-            el.options[{$smarty.section.i.index}] = new Option('{$labour_rate_items[i].LABOUR_RATE_NAME}', '{$labour_rate_items[i].labour_rate_name}');
+            el.options[{$smarty.section.i.index}] = new Option('{$labour_rate_items[i].labour_rate_item}', '{$labour_rate_items[i].labour_rate_item}');
         {/section}
 
 

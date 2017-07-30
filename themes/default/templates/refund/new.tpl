@@ -42,17 +42,17 @@
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{t}Payee{/t}</b><span style="color: #ff0000"> *</span></td>
-                                                                            <td colspan="3"><input id="refundPayee" name="refundPayee" class="olotd5" size="50" type="text" maxlength="50" required onkeydown="return onlyAlphaNumeric(event);"></td>
+                                                                            <td colspan="3"><input name="payee" class="olotd5" size="50" type="text" maxlength="50" required onkeydown="return onlyAlphaNumeric(event);"></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{t}Date{/t}</b><span style="color: #ff0000"> *</span></td>
                                                                             <td>
-                                                                                <input id="refundDate" name="refundDate" class="olotd5" size="10" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
-                                                                                <input id="refundDate_button" value="+" type="button">                                                                                
+                                                                                <input id="date" name="date" class="olotd5" size="10" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
+                                                                                <input id="date_button" value="+" type="button">                                                                                
                                                                                 <script>                                                                                
                                                                                     Calendar.setup( {
-                                                                                        trigger     : "refundDate_button",
-                                                                                        inputField  : "refundDate",
+                                                                                        trigger     : "date_button",
+                                                                                        inputField  : "date",
                                                                                         dateFormat  : "{$date_format}"
                                                                                     } );                                                                                  
                                                                                 </script>                                                                                
@@ -61,7 +61,7 @@
                                                                         <tr>
                                                                             <td align="right"><b>{t}Type{/t}</b><span style="color: #ff0000"> *</span></td>
                                                                             <td>
-                                                                                <select name="refundType" class="olotd5" col="30" style="width: 150px"/>
+                                                                                <select name="type" class="olotd5" col="30" style="width: 150px"/>
                                                                                     <option value="1">{t}REFUND_TYPE_1{/t}</option>
                                                                                     <option value="2">{t}REFUND_TYPE_2{/t}</option>
                                                                                     <option value="3">{t}REFUND_TYPE_3{/t}</option>
@@ -73,7 +73,7 @@
                                                                         <tr>
                                                                             <td align="right"><b>{t}Payment Method{/t}</b><span style="color: #ff0000"> *</span></td>
                                                                             <td>
-                                                                                <select name="refundPaymentMethod" class="olotd5" style="width: 150px"/>
+                                                                                <select name="payment_method" class="olotd5" style="width: 150px"/>
                                                                                     <option value="1">{t}REFUND_PAYMENT_METHOD_1{/t}</option>
                                                                                     <option value="2">{t}REFUND_PAYMENT_METHOD_2{/t}</option>
                                                                                     <option value="3">{t}REFUND_PAYMENT_METHOD_3{/t}</option>
@@ -90,19 +90,19 @@
                                                                         </tr>                                                                                                          
                                                                         <tr>
                                                                             <td align="right"><b>{t}Net Amount{/t}</b></td>
-                                                                            <td><input name="refundNetAmount" class="olotd5" size="10" type="text" maxlength="10" pattern="{literal}^[0-9]{1,7}(.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumbersPeriod(event);"></b></a></td>
+                                                                            <td><input name="net_amount" class="olotd5" size="10" type="text" maxlength="10" pattern="{literal}^[0-9]{1,7}(.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumbersPeriod(event);"></b></a></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><span style="color: #ff0000"></span><b>{t}Tax Rate{/t}</td>
-                                                                            <td><input name="refundTaxRate" class="olotd5" size="5" value="{$tax_rate}" type="text" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumbersPeriod(event);"/><b>%</b></td>
+                                                                            <td><input name="tax_rate" class="olotd5" size="5" value="{$tax_rate}" type="text" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumbersPeriod(event);"/><b>%</b></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{t}Tax Amount{/t}</b></td>
-                                                                            <td><input name="refundTaxAmount" class="olotd5" size="10" type="text" maxlength="10" pattern="{literal}^[0-9]{1,7}(.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumbersPeriod(event);"/></td>
+                                                                            <td><input name="tax_amount" class="olotd5" size="10" type="text" maxlength="10" pattern="{literal}^[0-9]{1,7}(.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumbersPeriod(event);"/></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{t}Gross Amount{/t}</b><span style="color: #ff0000"> *</span></td>
-                                                                            <td><input name="refundGrossAmount" class="olotd5" size="10" type="text" maxlength="10" pattern="{literal}^[0-9]{1,7}(.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumbersPeriod(event);"/></td>
+                                                                            <td><input name="gross_amount" class="olotd5" size="10" type="text" maxlength="10" pattern="{literal}^[0-9]{1,7}(.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumbersPeriod(event);"/></td>
                                                                         </tr>
                                                                     </tbody>
                                                                 </table>
@@ -116,13 +116,13 @@
                                                                 <table>
                                                                     <tbody align="left">
                                                                         <tr>
-                                                                            <td align="right"><b>{t}Notes{/t}</b></td>
-                                                                            <td><textarea name="refundNotes" class="olotd5" cols="50" rows="15"></textarea></td>
+                                                                            <td align="right"><b>{t}Items{/t}</b><span style="color: #ff0000"> *</span></td>
+                                                                            <td><textarea name="items" class="olotd5 mceCheckForContent" cols="50" rows="15"></textarea></td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td align="right"><b>{t}Items{/t}</b><span style="color: #ff0000"> *</span></td>
-                                                                            <td><textarea name="refundItems" class="olotd5 mceCheckForContent" cols="50" rows="15"></textarea></td>
-                                                                        </tr>
+                                                                            <td align="right"><b>{t}Notes{/t}</b></td>
+                                                                            <td><textarea name="notes" class="olotd5" cols="50" rows="15"></textarea></td>
+                                                                        </tr>                                                                        
                                                                     </tbody>
                                                                         <tr>
                                                                             <td></td>

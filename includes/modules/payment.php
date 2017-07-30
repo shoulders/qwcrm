@@ -33,12 +33,12 @@ defined('_QWEXEC') or die;
 function insert_transaction($db, $invoice_id, $workorder_id, $customer_id, $type, $amount, $note) {
     
     $sql = "INSERT INTO ".PRFX."payment_transactions SET
-            date            = ".$db->qstr(time()                                ).",
-            type            = ".$db->qstr( $type                                ).",
             invoice_id      = ".$db->qstr( $invoice_id                          ).",
-            workorder_id    = ".$db->qstr( $workorder_id                        ).",
-            customer_id     = ".$db->qstr( $customer_id                         ).",
             employee_id     = ".$db->qstr( QFactory::getUser()->login_user_id   ).",
+            customer_id     = ".$db->qstr( $customer_id                         ).",
+            workorder_id    = ".$db->qstr( $workorder_id                        ).",
+            date            = ".$db->qstr( time()                               ).",
+            type            = ".$db->qstr( $type                                ).",
             amount          = ".$db->qstr( $amount                              ).",
             note            = ".$db->qstr( $note                                );
 

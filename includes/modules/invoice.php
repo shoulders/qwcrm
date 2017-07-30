@@ -263,12 +263,10 @@ function insert_parts_items($db, $invoice_id, $parts_description, $parts_price, 
 function insert_invoice_labour_rates_item($db, $VAR){
     
     $sql = "INSERT INTO ".PRFX."invoice_labour_rates SET
-            labour_rate_name     =". $db->qstr( $VAR['display']      ).",
-            labour_rate_amount   =". $db->qstr( $VAR['amount']       ).",
-            labour_rate_cost     =". $db->qstr( $VAR['cost']         ).",
-            labour_type          =". $db->qstr( $VAR['type']         ).",
-            labour_manuf         =". $db->qstr( $VAR['manufacturer'] ).",
-            labour_rate_active   =". $db->qstr( 1                    );
+            description =". $db->qstr( $VAR['description']  ).",
+            type        =". $db->qstr( $VAR['type']         ).",
+            amount      =". $db->qstr( $VAR['amount']       ).",
+            active      =". $db->qstr( $VAR['active']       );
 
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to insert Labour invoice rate item into the database."));
@@ -525,12 +523,10 @@ function update_invoice_full($db, $invoice_id, $employee_id, $customer_id, $work
 function update_invoice_labour_rates_item($db, $VAR){
     
     $sql = "UPDATE ".PRFX."invoice_labour_rates SET
-            labour_rate_name     =". $db->qstr( $VAR['display']         ).",
-            labour_rate_amount   =". $db->qstr( $VAR['amount']          ).",
-            labour_rate_cost     =". $db->qstr( $VAR['cost']            ).",
-            labour_rate_active   =". $db->qstr( $VAR['active']          ).",
-            labour_type          =". $db->qstr( $VAR['type']            ).",
-            labour_manuf         =". $db->qstr( $VAR['manufacturer']    )."
+            description =". $db->qstr( $VAR['description']              ).",
+            type        =". $db->qstr( $VAR['type']                     ).",
+            amount      =". $db->qstr( $VAR['amount']                   ).",
+            active      =". $db->qstr( $VAR['active']                   )."            
             WHERE labour_rate_id =". $db->qstr( $VAR['labour_rate_id']  );
 
     if(!$rs = $db->execute($sql)){        
@@ -601,7 +597,7 @@ function delete_invoice_parts_item($db, $parts_id) {
 }
 
 #####################################
-#     delete invoice rate item      #
+#     delete labour rate item       #
 #####################################
 
 function delete_invoice_rates_item($db, $labour_rate_id){
@@ -757,7 +753,7 @@ function upload_invoice_labour_rates_csv($db, $VAR) {
             // Read CSV data and insert into database
             while (($data = fgetcsv($handle, 1000, ',')) !== FALSE) {
 
-                $sql = "INSERT INTO ".PRFX."invoice_labour_rates(labour_rate_name,labour_rate_amount,labour_rate_cost,labour_rate_active,labour_type,labour_manuf) VALUES ('$data[1]','$data[2]','$data[3]','$data[4]','$data[5]','$data[6]')";
+                $sql = "INSERT INTO ".PRFX."invoice_labour_rates(description, type, amount, active) VALUES ('$data[1]','$data[2]','$data[3]','$data[4]')";
 
                 if(!$rs = $db->execute($sql)) {
                     force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to insert the new invoice labour rates into the database."));

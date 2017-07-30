@@ -20,13 +20,11 @@
                                                 <b>{t}Billing rates per Unit{/t}</b>                                                
                                                 <table class="olotable" width="100%" border="0" cellpadding="5" cellspacing="0">
                                                     <tr>
-                                                        <td class="olohead">{t}SKU{/t}</td>
+                                                        <td class="olohead">{t}ID{/t}</td>
                                                         <td class="olohead">{t}Description{/t}</td>
-                                                        <td class="olohead" align="center">{t}Amount{/t}</td>
-                                                        <td class="olohead" align="center">{t}Cost{/t}</td>
-                                                        <td class="olohead" align="center">{t}Active{/t}</td>
                                                         <td class="olohead" align="center">{t}Type{/t}</td>
-                                                        <td class="olohead" align="center">{t}Manufacturer{/t}</td>
+                                                        <td class="olohead" align="center">{t}Amount{/t}</td>
+                                                        <td class="olohead" align="center">{t}Active{/t}</td>                                                                                                               
                                                         <td class="olohead" align="center">{t}Action{/t}</td>
                                                     </tr>
                                                     <tr>
@@ -34,22 +32,20 @@
                                                             <form method="POST" action="index.php?page=invoice:labour_rates">
                                                                 <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" class="row1">
                                                                     <td class="olotd4" nowrap>{$invoice_labour_rates_items[q].labour_rate_id}</td>
-                                                                    <td class="olotd4" nowrap><input name="display" class="olotd5" size="50" value="{$invoice_labour_rates_items[q].labour_rate_name}" type="text" maxlength="50" required onkeydown="return onlyAlphaNumeric(event);"></td>
-                                                                    <td class="olotd4" nowrap>{$currency_sym}<input name="amount" class="olotd5" size="10" value="{$invoice_labour_rates_items[q].labour_rate_amount}" type="text" maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumbersPeriod(event);"></td>
-                                                                    <td class="olotd4" nowrap>{$currency_sym}<input name="cost" class="olotd5" size="10" value="{$invoice_labour_rates_items[q].labour_rate_cost}" type="text" maxlength="10" pattern="{literal}[[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumbersPeriod(event);"></td>
-                                                                    <td class="olotd4" nowrap>
-                                                                        <select class="olotd5" name="active">
-                                                                            <option value="0" {if $invoice_labour_rates_items[q].labour_rate_active == 0} selected{/if}>{t}No{/t}</option>
-                                                                            <option value="1" {if $invoice_labour_rates_items[q].labour_rate_active == 1} selected{/if}>{t}Yes{/t}</option>
-                                                                        </select>
-                                                                    </td>
+                                                                    <td class="olotd4" nowrap><input name="description" class="olotd5" size="50" value="{$invoice_labour_rates_items[q].description}" type="text" maxlength="50" required onkeydown="return onlyAlphaNumeric(event);"></td>
                                                                     <td class="olotd4" nowrap>
                                                                         <select class="olotd5" name="type">
-                                                                            <option value="Parts" {if $invoice_labour_rates_items[q].labour_type == 'Parts'} selected{/if}>{t}Parts{/t}</option>
-                                                                            <option value="Service" {if $invoice_labour_rates_items[q].labour_type == 'Service'} selected{/if}>{t}Service{/t}</option>
+                                                                            <option value="Parts" {if $invoice_labour_rates_items[q].type == 'Parts'} selected{/if}>{t}Parts{/t}</option>
+                                                                            <option value="Service" {if $invoice_labour_rates_items[q].type == 'Service'} selected{/if}>{t}Service{/t}</option>
                                                                         </select>
                                                                     </td>
-                                                                    <td class="olotd4" nowrap><input name="manufacturer" class="olotd5" size="20" value="{$invoice_labour_rates_items[q].labour_manuf}" type="text" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"></td>
+                                                                    <td class="olotd4" nowrap>{$currency_sym}<input name="amount" class="olotd5" size="10" value="{$invoice_labour_rates_items[q].amount}" type="text" maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumbersPeriod(event);"></td>
+                                                                    <td class="olotd4" nowrap>
+                                                                        <select class="olotd5" name="active">
+                                                                            <option value="0" {if $invoice_labour_rates_items[q].active == 0} selected{/if}>{t}No{/t}</option>
+                                                                            <option value="1" {if $invoice_labour_rates_items[q].active == 1} selected{/if}>{t}Yes{/t}</option>
+                                                                        </select>
+                                                                    </td>
                                                                     <td class="olotd4" nowrap>
                                                                         <input type="hidden" name="labour_rate_id" value="{$invoice_labour_rates_items[q].labour_rate_id}">
                                                                         <button type="submit" name="submit" value="delete" onClick="return confirmDelete('{t}Are You sure you want to delete this labour rate item.{/t}');">{t}Delete{/t}</button>
@@ -64,24 +60,27 @@
                                                 <form method="POST" action="index.php?page=invoice:labour_rates">
                                                     <table class="olotable" width="100%" border="0" cellpadding="5" cellspacing="0">
                                                         <tr>
-                                                            <td class="olohead">{t}Display{/t}</td>
+                                                            <td class="olohead">{t}Description{/t}</td>
+                                                            <td class="olohead">{t}Type{/t}</td>
                                                             <td class="olohead">{t}Amount{/t}</td>
-                                                            <td class="olohead">{t}Cost{/t}</td>
-                                                            <td class="olohead">{t}Type{/t}</td>                                                            
-                                                            <td class="olohead">{t}Manufacturer{/t}</td>
+                                                            <td class="olohead">{t}Active{/t}</td>                                                            
                                                             <td class="olohead">{t}Action{/t}</td>
                                                         </tr>
                                                         <tr>
-                                                            <td class="olotd4"><input name="display" class="olotd5" size="50" type="text" maxlength="50" required onkeydown="return onlyAlphaNumeric(event);"></td>
-                                                            <td class="olotd4">{$currency_sym}<input name="amount" class="olotd5" size="10" type="text" maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumbersPeriod(event);"></td>
-                                                            <td class="olotd4">{$currency_sym}<input name="cost" class="olotd5" size="10" type="text" maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumbersPeriod(event);"></td>
+                                                            <td class="olotd4"><input name="description" class="olotd5" size="50" type="text" maxlength="50" required onkeydown="return onlyAlphaNumeric(event);"></td>
                                                             <td class="olotd4" nowrap>
                                                                 <select class="olotd5" name="type">
                                                                     <option value="Parts">{t}Parts{/t}</option>
                                                                     <option value="Service" selected>{t}Service{/t}</option>
                                                                 </select>
                                                             </td>
-                                                            <td class="olotd4" nowrap><input name="manufacturer" class="olotd5" size="20" type="text" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"></td>
+                                                            <td class="olotd4">{$currency_sym}<input name="amount" class="olotd5" size="10" type="text" maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumbersPeriod(event);"></td>
+                                                            <td class="olotd4" nowrap>
+                                                                <select class="olotd5" name="active">
+                                                                    <option value="0">{t}No{/t}</option>
+                                                                    <option value="1" selected>{t}Yes{/t}</option>
+                                                                </select>
+                                                            </td>
                                                             <td class="olotd4"><button type="submit" name="submit" value="new">{t}New{/t}</button</td>
                                                         </tr>
                                                     </table>

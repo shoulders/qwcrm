@@ -25,9 +25,7 @@
                                     <table class="menutable" width="100%" border="0" cellpadding="5" cellspacing="0">
                                         <tr>
                                             <td>                                                
-                                                <form method="POST" action="index.php?page=schedule:new">                                                                                                           
-                                                    <input type="hidden" name="workorder_id" value="{$workorder_id}">
-                                                    <input type="hidden" name="employee_id" value="{$employee_id}">
+                                                <form method="POST" action="index.php?page=schedule:new">                                                    
                                                     <table class="olotable" width="100%" border="0">
                                                         <tr>
                                                             <td class="olohead">{t}Set Schedule{/t}</td>
@@ -41,39 +39,41 @@
                                                                     </tr>
                                                                     <tr>
                                                                         <td>
-                                                                            <input id="schedule_start_date" name="schedule_start_date" size="10" value="{$schedule_start_date}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
-                                                                            <input id="schedule_start_date_button" value="+" type="button">                                                                                
+                                                                            <input id="start_date" name="start_date" size="10" value="{$start_date}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
+                                                                            <input id="start_date_button" value="+" type="button">                                                                                
                                                                             <script>                                                                            
                                                                                 Calendar.setup( {
-                                                                                    trigger     : "schedule_start_date_button",
-                                                                                    inputField  : "schedule_start_date",
+                                                                                    trigger     : "start_date_button",
+                                                                                    inputField  : "start_date",
                                                                                     dateFormat  : "{$date_format}"                                                                                        
                                                                                 } );                                                                            
                                                                             </script>                                                                            
-                                                                            {html_select_time use_24_hours=true minute_interval=15 display_seconds=false field_array=scheduleStartTime time=$schedule_start_time}
+                                                                            {html_select_time use_24_hours=true minute_interval=15 display_seconds=false field_array=StartTime time=$start_time}
                                                                         </td>
                                                                         <td>
-                                                                            <input id="schedule_end_date" name="schedule_end_date" size="10" value="{$schedule_end_date}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
-                                                                            <input id="schedule_end_date_button" value="+" type="button">                                                                                
+                                                                            <input id="end_date" name="end_date" size="10" value="{$end_date}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
+                                                                            <input id="end_date_button" value="+" type="button">                                                                                
                                                                             <script>                                                                            
                                                                                 Calendar.setup( {
-                                                                                    trigger     : "schedule_end_date_button",
-                                                                                    inputField  : "schedule_end_date",
+                                                                                    trigger     : "end_date_button",
+                                                                                    inputField  : "end_date",
                                                                                     dateFormat  : "{$date_format}"
                                                                                 } );                                                                            
                                                                             </script>                                                                            
-                                                                            {html_select_time use_24_hours=true minute_interval=15 display_seconds=false field_array=scheduleEndTime time=$schedule_end_time}
+                                                                            {html_select_time use_24_hours=true minute_interval=15 display_seconds=false field_array=EndTime time=$end_time}
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td colspan="2">
                                                                             <b>{t}Notes{/t}</b>
                                                                             <br>
-                                                                            <textarea name="schedule_notes" class="olotd5 mceCheckForContent" rows="15" cols="70">{$schedule_notes}</textarea>
+                                                                            <textarea name="notes" class="olotd5 mceCheckForContent" rows="15" cols="70">{$notes}</textarea>
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td colspan="2">                                                                                
+                                                                        <td colspan="2">
+                                                                            <input type="hidden" name="workorder_id" value="{$workorder_id}">
+                                                                            <input type="hidden" name="employee_id" value="{$employee_id}">
                                                                             <input type="submit" name="submit" value="{t}Submit{/t}">
                                                                         </td>
                                                                     </tr>

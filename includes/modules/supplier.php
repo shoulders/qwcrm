@@ -47,27 +47,27 @@ function display_suppliers($db, $direction = 'DESC', $use_pages = false, $page_n
                 break;
 
             case 'name':          
-                $whereTheseRecords = " WHERE supplier_name";
+                $whereTheseRecords = " WHERE display_name";
                 break;
 
             case 'contact':          
-                $whereTheseRecords = " WHERE supplier_contact";
+                $whereTheseRecords = " WHERE contact";
                 break;
             
             case 'type':          
-                $whereTheseRecords = " WHERE supplier_type";
+                $whereTheseRecords = " WHERE type";
                 break;
 
             case 'zip':          
-                $whereTheseRecords = " WHERE supplier_zip";
+                $whereTheseRecords = " WHERE zip";
                 break;
 
             case 'notes':          
-                $whereTheseRecords = " WHERE supplier_notes";
+                $whereTheseRecords = " WHERE notes";
                 break;
 
             case 'description':         
-                $whereTheseRecords = " WHERE supplier_description";
+                $whereTheseRecords = " WHERE description";
                 break;
              
             default:           
@@ -174,20 +174,20 @@ function display_suppliers($db, $direction = 'DESC', $use_pages = false, $page_n
 function insert_supplier($db, $VAR) {
     
     $sql = "INSERT INTO ".PRFX."supplier SET            
-            supplier_name           = ". $db->qstr( $VAR['supplierName']        ).",
-            supplier_contact        = ". $db->qstr( $VAR['supplierContact']     ).",
-            supplier_type           = ". $db->qstr( $VAR['supplierType']        ).",
-            supplier_phone          = ". $db->qstr( $VAR['supplierPhone']       ).",
-            supplier_fax            = ". $db->qstr( $VAR['supplierFax']         ).",
-            supplier_mobile         = ". $db->qstr( $VAR['supplierMobile']      ).",
-            supplier_www            = ". $db->qstr( $VAR['supplierWww']         ).",
-            supplier_email          = ". $db->qstr( $VAR['supplierEmail']       ).",
-            supplier_address        = ". $db->qstr( $VAR['supplierAddress']     ).",
-            supplier_city           = ". $db->qstr( $VAR['supplierCity']        ).",
-            supplier_state          = ". $db->qstr( $VAR['supplierState']       ).",
-            supplier_zip            = ". $db->qstr( $VAR['supplierZip']         ).",
-            supplier_notes          = ". $db->qstr( $VAR['supplierNotes']       ).",
-            supplier_description    = ". $db->qstr( $VAR['supplierDescription'] );
+            display_name   =". $db->qstr( $VAR['display_name']  ).",
+            contact        =". $db->qstr( $VAR['contact']       ).",
+            website        =". $db->qstr( $VAR['website']       ).",
+            email          =". $db->qstr( $VAR['email']         ).",
+            type           =". $db->qstr( $VAR['type']          ).",
+            phone          =". $db->qstr( $VAR['phone']         ).",
+            mobile_phone   =". $db->qstr( $VAR['mobile_phone']  ).",
+            fax            =". $db->qstr( $VAR['fax']           ).",
+            address        =". $db->qstr( $VAR['address']       ).",
+            city           =". $db->qstr( $VAR['city']          ).",
+            state          =". $db->qstr( $VAR['state']         ).",
+            zip            =". $db->qstr( $VAR['zip']           ).",
+            description    =". $db->qstr( $VAR['description']   ).", 
+            notes          =". $db->qstr( $VAR['notes']         );            
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to insert the supplier record into the database."));
@@ -238,21 +238,21 @@ function get_supplier_details($db, $supplier_id, $item = null){
 function update_supplier($db, $supplier_id, $VAR) {
     
     $sql = "UPDATE ".PRFX."supplier SET
-            supplier_name           = ". $db->qstr( $VAR['supplierName']        ).",
-            supplier_contact        = ". $db->qstr( $VAR['supplierContact']     ).",
-            supplier_type           = ". $db->qstr( $VAR['supplierType']        ).",
-            supplier_phone          = ". $db->qstr( $VAR['supplierPhone']       ).",
-            supplier_fax            = ". $db->qstr( $VAR['supplierFax']         ).",
-            supplier_mobile         = ". $db->qstr( $VAR['supplierMobile']      ).",
-            supplier_www            = ". $db->qstr( $VAR['supplierWww']         ).",
-            supplier_email          = ". $db->qstr( $VAR['supplierEmail']       ).",
-            supplier_address        = ". $db->qstr( $VAR['supplierAddress']     ).",
-            supplier_city           = ". $db->qstr( $VAR['supplierCity']        ).",
-            supplier_state          = ". $db->qstr( $VAR['supplierState']       ).",
-            supplier_zip            = ". $db->qstr( $VAR['supplierZip']         ).",
-            supplier_notes          = ". $db->qstr( $VAR['supplierNotes']       ).",
-            supplier_description    = ". $db->qstr( $VAR['supplierDescription'] )."
-            WHERE supplier_id       = ". $db->qstr( $supplier_id                );                        
+            display_name   =". $db->qstr( $VAR['display_name']  ).",
+            contact        =". $db->qstr( $VAR['contact']       ).",
+            website        =". $db->qstr( $VAR['website']       ).",
+            email          =". $db->qstr( $VAR['email']         ).",
+            type           =". $db->qstr( $VAR['type']          ).",
+            phone          =". $db->qstr( $VAR['phone']         ).",
+            mobile_phone   =". $db->qstr( $VAR['mobile_phone']  ).",
+            fax            =". $db->qstr( $VAR['fax']           ).",
+            address        =". $db->qstr( $VAR['address']       ).",
+            city           =". $db->qstr( $VAR['city']          ).",
+            state          =". $db->qstr( $VAR['state']         ).",
+            zip            =". $db->qstr( $VAR['zip']           ).",
+            description    =". $db->qstr( $VAR['description']   ).", 
+            notes          =". $db->qstr( $VAR['notes']         )."
+            WHERE supplier_id = ". $db->qstr( $supplier_id );                        
             
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the supplier details."));
