@@ -25,9 +25,9 @@ defined('_QWEXEC') or die;
 /** Display Functions **/
 
 ####################################
-# Display a single open workorder  # // just used in details.php and print.php
+# Display a single open workorder  # // no longer used
 ####################################
-
+/*
 function display_single_workorder($db, $workorder_id){
     
     $sql = "SELECT ".PRFX."workorder.*,
@@ -56,7 +56,7 @@ function display_single_workorder($db, $workorder_id){
         
     }
     
-}
+}*/
 
 #####################################################
 # Display all Work orders for the given status      #
