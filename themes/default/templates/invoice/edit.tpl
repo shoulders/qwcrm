@@ -287,7 +287,13 @@
                                         </tr>
                                             <tr class="olotd4">
                                                 <td>{$invoice_id}</td>
-                                                <td><a href="index.php?page=workorder:details&workorder_id={$invoice_details.workorder_id}">{$invoice_details.workorder_id}</a></td>
+                                                <td>
+                                                    {if $workorder_id > 0}
+                                                        <a href="index.php?page=workorder:details&workorder_id={$invoice_details.workorder_id}">{$invoice_details.workorder_id}</a>
+                                                    {else}
+                                                        {t}n/a{/t}
+                                                    {/if}
+                                                </td>
                                                 <td><a href="index.php?page=user:details&user_id={$invoice_details.employee_id}">{$employee_display_name}</a></td> 
                                                 <td>
                                                     <input id="date" name="date" class="olotd4" size="10" value="{$invoice_details.date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
