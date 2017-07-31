@@ -19,8 +19,12 @@ if($invoice_id == '') {
 ##################################
 
 if(isset($VAR['submit'])) {
-    insert_labour_items($db, $invoice_id, $VAR['labour_description'], $VAR['labour_rate'], $VAR['labour_hour']);
-    insert_parts_items($db, $invoice_id, $VAR['parts_description'], $VAR['parts_price'], $VAR['parts_qty']);
+    
+    // insert the parts and labour item arrays
+    insert_labour_items($db, $invoice_id, $VAR['labour_description'], $VAR['labour_amount'], $VAR['labour_qty']);
+    insert_parts_items($db, $invoice_id, $VAR['parts_description'], $VAR['parts_amount'], $VAR['parts_qty']);
+    
+    // update and recalculater the invoice
     update_invoice($db, $invoice_id, $VAR['date'], $VAR['due_date'], $VAR['discount_rate']);    
     recalculate_invoice_totals($db, $invoice_id);
 }
@@ -38,7 +42,7 @@ $smarty->assign('parts_items',          get_invoice_parts_items($db, $invoice_id
 $smarty->assign('labour_sub_total',     labour_sub_total($db, $invoice_id)                                                          );
 $smarty->assign('parts_sub_total',      parts_sub_total($db, $invoice_id)                                                           );
 $smarty->assign('transactions',         get_invoice_transactions($db, $invoice_id)                                                  ); 
-$smarty->assign('workorder_status',     get_workorder_details($db, $workorder_id, 'status')                              ); 
+$smarty->assign('workorder_status',     get_workorder_details($db, $workorder_id, 'status')                                         ); 
 $smarty->assign('employee_display_name',get_user_details($db, get_invoice_details($db, $invoice_id, 'employee_id'),'display_name')  );
 
 // these are needed for the record deletion routines - consider making all fields editable

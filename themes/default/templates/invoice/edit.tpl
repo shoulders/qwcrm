@@ -40,8 +40,8 @@
 
         // qty Cell - Create Input Box
         var el = document.createElement('input');
-        el.setAttribute('id', 'labour_hour['+iteration+']');
-        el.setAttribute('name', 'labour_hour['+iteration+']');
+        el.setAttribute('id', 'labour_qty['+iteration+']');
+        el.setAttribute('name', 'labour_qty['+iteration+']');
         //el.setAttribute('class', 'olotd4');
         el.setAttribute('size', '6');        
         el.setAttribute('value', '1');
@@ -74,8 +74,8 @@
 
 
         // Description Cell - Populate the Select Options
-        {section loop=$labour_rate_items name=i}
-            el.options[{$smarty.section.i.index}] = new Option('{$labour_rate_items[i].labour_rate_item}', '{$labour_rate_items[i].labour_rate_item}');
+        {section loop=$labour_amount_items name=i}
+            el.options[{$smarty.section.i.index}] = new Option('{$labour_amount_items[i].labour_amount_item}', '{$labour_amount_items[i].labour_amount_item}');
         {/section}
 
 
@@ -106,8 +106,8 @@
 
         // Rate Cell - Create Select Input
         var el = document.createElement('select');
-        el.setAttribute('id', 'labour_rate['+iteration+']');
-        el.setAttribute('name', 'labour_rate['+iteration+']');
+        el.setAttribute('id', 'labour_amount['+iteration+']');
+        el.setAttribute('name', 'labour_amount['+iteration+']');
         //el.setAttribute('class', 'olotd4');
         //el.setAttribute('size', '6');
         //el.setAttribute('value', '1');
@@ -118,8 +118,8 @@
 
 
         // Rate Cell - Populate the Select Options
-        {section loop=$labour_rate_items name=i}
-            el.options[{$smarty.section.i.index}] = new Option('{$labour_rate_items[i].labour_rate_amount}', '{$labour_rate_items[i].labour_rate_amount}');
+        {section loop=$labour_amount_items name=i}
+            el.options[{$smarty.section.i.index}] = new Option('{$labour_amount_items[i].labour_amount_amount}', '{$labour_amount_items[i].labour_amount_amount}');
         {/section}
 
         // Rate Cell - Add some HTML to add the Currency Symbol to the left of the Rate Box      
@@ -127,7 +127,7 @@
 
 
         // Rate Cell - Convert Select Input to a real Combo Box using dhtmlxcombo - Run after adding currency symbol to the cell otherwise it does not work
-        var combo = dhtmlXComboFromSelect('labour_rate['+iteration+']');         
+        var combo = dhtmlXComboFromSelect('labour_amount['+iteration+']');         
 
         // Rate Cell - Set Combobox settings
         combo.setSize(90);  // This sets the width of the combo box and drop down options width  
@@ -226,8 +226,8 @@
 
         // Price Cell - Create Select Input
         var el = document.createElement('input');
-        el.setAttribute('id', 'parts_price['+iteration+']');
-        el.setAttribute('name', 'parts_price['+iteration+']');
+        el.setAttribute('id', 'parts_amount['+iteration+']');
+        el.setAttribute('name', 'parts_amount['+iteration+']');
         //el.setAttribute('class', 'olotd4');
         el.setAttribute('size', '10');
         //el.setAttribute('value', '1');
@@ -468,10 +468,10 @@
                                                             {section name=l loop=$labour_items}
                                                                 <tr class="olotd4">
                                                                     <td>{$smarty.section.q.index+1}</td>
-                                                                    <td>{$labour_items[l].invoice_labour_unit}</td>
-                                                                    <td>{$labour_items[l].invoice_labour_description}</td>
-                                                                    <td>{$currency_sym}{$labour_items[l].invoice_labour_rate|string_format:"%.2f"}</td>
-                                                                    <td>{$currency_sym}{$labour_items[l].invoice_labour_subtotal|string_format:"%.2f"}</td>
+                                                                    <td>{$labour_items[l].qty}</td>
+                                                                    <td>{$labour_items[l].description}</td>
+                                                                    <td>{$currency_sym}{$labour_items[l].amount|string_format:"%.2f"}</td>
+                                                                    <td>{$currency_sym}{$labour_items[l].sub_total|string_format:"%.2f"}</td>
                                                                     <td>
                                                                         <a href="index.php?page=invoice:delete_labour&labour_id={$labour_items[l].invoice_labour_id}" onclick="return confirmDelete('{t}Are you Sure you want to delete this Labour Record? This will permanently remove the record from the database.{/t}');">
                                                                             <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{t}Delete Labour Record{/t}</b>');" onMouseOut="hideddrivetip();">
@@ -527,10 +527,10 @@
                                                             {section name=p loop=$parts_items}
                                                                 <tr class="olotd4">
                                                                     <td>{$smarty.section.w.index+1}</td>
-                                                                    <td>{$parts_items[p].invoice_parts_count}</td>
-                                                                    <td>{$parts_items[p].invoice_parts_description}</td>
-                                                                    <td>{$currency_sym}{$parts_items[p].invoice_parts_amount|string_format:"%.2f"}</td>
-                                                                    <td>{$currency_sym}{$parts_items[p].invoice_parts_subtotal|string_format:"%.2f"}</td>
+                                                                    <td>{$parts_items[p].qty}</td>
+                                                                    <td>{$parts_items[p].description}</td>
+                                                                    <td>{$currency_sym}{$parts_items[p].amount|string_format:"%.2f"}</td>
+                                                                    <td>{$currency_sym}{$parts_items[p].sub_total|string_format:"%.2f"}</td>
                                                                     <td>
                                                                         <a href="index.php?page=invoice:delete_parts&parts_id={$parts_items[p].invoice_parts_id}" onclick="return confirmDelete('{t}Are you Sure you want to delete this Parts Record? This will permanently remove the record from the database.{/t}');">
                                                                             <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{t}Delete Parts Record{/t}</b>');" onMouseOut="hideddrivetip();">

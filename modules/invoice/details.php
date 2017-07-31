@@ -20,8 +20,8 @@ $smarty->assign('workorder_id',             get_invoice_details($db, $invoice_id
 $smarty->assign('labour_items',             get_invoice_labour_items($db, $invoice_id)                                                  );
 $smarty->assign('parts_items',              get_invoice_parts_items($db, $invoice_id)                                                   );
 $smarty->assign('transactions',             get_invoice_transactions($db, $invoice_id)                                                  );
-$smarty->assign('labour_sub_total_sum',     labour_sub_total($db, $invoice_id)                                                          );
-$smarty->assign('parts_sub_total_sum',      parts_sub_total($db, $invoice_id)                                                           );
+$smarty->assign('labour_sub_total',         labour_sub_total($db, $invoice_id)                                                          );
+$smarty->assign('parts_sub_total',          parts_sub_total($db, $invoice_id)                                                           );
 $smarty->assign('employee_display_name',    get_user_details($db, get_invoice_details($db, $invoice_id, 'employee_id'),'display_name')  );
      
 $BuildPage .= $smarty->fetch('invoice/details.tpl');

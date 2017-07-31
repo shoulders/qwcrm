@@ -179,7 +179,7 @@ function count_total_number_of_different_part_items_ordered_in_selected_period($
 
 function sum_total_quantity_of_part_items_ordered_in_selected_period($db, $start_date, $end_date) {
     
-    $sql = "SELECT SUM(invoice_parts_count) AS sum FROM ".PRFX."invoice_parts INNER JOIN ".PRFX."invoice ON ".PRFX."invoice.invoice_id = ".PRFX."invoice_parts.invoice_id WHERE ".PRFX."invoice.date >= ".$db->qstr($start_date)." AND ".PRFX."invoice.date <= ".$db->qstr($end_date);
+    $sql = "SELECT SUM(qty) AS sum FROM ".PRFX."invoice_parts INNER JOIN ".PRFX."invoice ON ".PRFX."invoice.invoice_id = ".PRFX."invoice_parts.invoice_id WHERE ".PRFX."invoice.date >= ".$db->qstr($start_date)." AND ".PRFX."invoice.date <= ".$db->qstr($end_date);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to return the total number of parts items ordered in the selected period."));
@@ -198,7 +198,7 @@ function sum_total_quantity_of_part_items_ordered_in_selected_period($db, $start
 
 function sum_parts_sub_total_in_selected_period($db, $start_date, $end_date) {
     
-    $sql = "SELECT SUM(invoice_parts_subtotal) AS sum FROM ".PRFX."invoice_parts INNER JOIN ".PRFX."invoice ON ".PRFX."invoice.invoice_id = ".PRFX."invoice_parts.invoice_id WHERE ".PRFX."invoice.date >= ".$db->qstr($start_date)." AND ".PRFX."invoice.date <= ".$db->qstr($end_date);
+    $sql = "SELECT SUM(sub_total) AS sum FROM ".PRFX."invoice_parts INNER JOIN ".PRFX."invoice ON ".PRFX."invoice.invoice_id = ".PRFX."invoice_parts.invoice_id WHERE ".PRFX."invoice.date >= ".$db->qstr($start_date)." AND ".PRFX."invoice.date <= ".$db->qstr($end_date);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to return the sub total of parts items ordered in the selected period."));

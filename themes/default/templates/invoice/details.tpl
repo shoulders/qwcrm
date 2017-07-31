@@ -174,10 +174,10 @@
                                                         {section name=l loop=$labour_items}
                                                             <tr class="olotd4">
                                                                 <td>{$smarty.section.q.index+1}</td>
-                                                                <td>{$labour_items[l].invoice_labour_unit}</td>
-                                                                <td>{$labour_items[l].invoice_labour_description}</td>
-                                                                <td>{$currency_sym}{$labour_items[l].invoice_labour_rate|string_format:"%.2f"}</td>
-                                                                <td>{$currency_sym}{$labour_items[l].invoice_labour_subtotal|string_format:"%.2f"}</td>
+                                                                <td>{$labour_items[l].qty}</td>
+                                                                <td>{$labour_items[l].description}</td>
+                                                                <td>{$currency_sym}{$labour_items[l].amount|string_format:"%.2f"}</td>
+                                                                <td>{$currency_sym}{$labour_items[l].sub_total|string_format:"%.2f"}</td>
                                                                 <td>-</td>
                                                             </tr>
                                                         {/section}
@@ -208,15 +208,15 @@
                                                             <td class="row2"><b>{t}Description{/t}</b></td>
                                                             <td class="row2"><b>{t}Price{/t}</b></td>
                                                             <td class="row2"><b>{t}Total{/t}</b></td>
-                                                            <td class="row2"><b>{t}Actions{/t}</b></td>
+                                                            <td class="row2"><b>{t}Actions{/t}</b></td>invoice_parts_amount
                                                         </tr>
                                                         {section name=p loop=$parts_items}
                                                             <tr class="olotd4">
                                                                 <td>{$smarty.section.w.index+1}</td>
-                                                                <td>{$parts_items[p].invoice_parts_count}</td>
-                                                                <td>{$parts_items[p].invoice_parts_description}</td>
-                                                                <td>{$currency_sym}{$parts_items[p].invoice_parts_amount|string_format:"%.2f"}</td>
-                                                                <td>{$currency_sym}{$parts_items[p].invoice_parts_subtotal|string_format:"%.2f"}</td>
+                                                                <td>{$parts_items[p].qty}</td>
+                                                                <td>{$parts_items[p].description}</td>
+                                                                <td>{$currency_sym}{$parts_items[p].amount|string_format:"%.2f"}</td>
+                                                                <td>{$currency_sym}{$parts_items[p].sub_total|string_format:"%.2f"}</td>
                                                                 <td>-</td>
                                                             </tr>
                                                          {/section}

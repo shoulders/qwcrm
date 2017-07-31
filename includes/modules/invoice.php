@@ -178,24 +178,24 @@ function insert_invoice($db, $customer_id, $workorder_id, $discount_rate, $tax_r
 #     Insert Labour Items           #
 #####################################
 
-function insert_labour_items($db, $invoice_id, $labour_description, $labour_rate, $labour_hour) {
+function insert_labour_items($db, $invoice_id, $description, $amount, $qty) {
     
     // Insert Labour Items into database (if any)
-    if($labour_hour > 0 ) {
+    if($qty > 0 ) {
         
         $i = 1;
         
-        $sql = "INSERT INTO ".PRFX."invoice_labour (invoice_id, invoice_labour_description, invoice_labour_rate, invoice_labour_unit, invoice_labour_subtotal) VALUES ";
+        $sql = "INSERT INTO ".PRFX."invoice_labour (invoice_id, description, amount, qty, sub_total) VALUES ";
         
-        foreach($labour_hour as $key) {
+        foreach($qty as $key) {
             
             $sql .="(".
                     
-                    $db->qstr( $invoice_id                          ).",".                    
-                    $db->qstr( $labour_description[$i]              ).",".
-                    $db->qstr( $labour_rate[$i]                     ).",".
-                    $db->qstr( $labour_hour[$i]                     ).",".
-                    $db->qstr( $labour_hour[$i] * $labour_rate[$i]  ).
+                    $db->qstr( $invoice_id              ).",".                    
+                    $db->qstr( $description[$i]         ).",".
+                    $db->qstr( $amount[$i]              ).",".
+                    $db->qstr( $qty[$i]                 ).",".
+                    $db->qstr( $qty[$i] * $amount[$i]   ).
                     
                     "),";
             
@@ -219,24 +219,24 @@ function insert_labour_items($db, $invoice_id, $labour_description, $labour_rate
 #     Insert Parts Items            #
 #####################################
 
-function insert_parts_items($db, $invoice_id, $parts_description, $parts_price, $parts_qty) {
+function insert_parts_items($db, $invoice_id, $description, $amount, $qty) {
     
     // Insert Parts Items into database (if any)
-    if($parts_qty > 0 ) {
+    if($qty > 0 ) {
         
         $i = 1;
         
-        $sql = "INSERT INTO ".PRFX."invoice_parts (invoice_id, invoice_parts_description, invoice_parts_amount, invoice_parts_count, invoice_parts_subtotal) VALUES ";
+        $sql = "INSERT INTO ".PRFX."invoice_parts (invoice_id, description, amount, qty, sub_total) VALUES ";
         
-        foreach($parts_qty as $key) {
+        foreach($qty as $key) {
             
             $sql .="(".
                     
-                    $db->qstr( $invoice_id                          ).",".                    
-                    $db->qstr( $parts_description[$i]               ).",".                  
-                    $db->qstr( $parts_price[$i]                     ).",".
-                    $db->qstr( $parts_qty[$i]                       ).",".
-                    $db->qstr( $parts_qty[$i] * $parts_price[$i]    ).
+                    $db->qstr( $invoice_id              ).",".                    
+                    $db->qstr( $description[$i]         ).",".                  
+                    $db->qstr( $amount[$i]              ).",".
+                    $db->qstr( $qty[$i]                 ).",".
+                    $db->qstr( $qty[$i] * $amount[$i]   ).
                     
                     "),";
             
@@ -310,7 +310,7 @@ function get_invoice_details($db, $invoice_id, $item = null) {
 
 function get_active_labour_rate_items($db) {
     
-    $sql = "SELECT * FROM ".PRFX."invoice_labour_rates WHERE labour_rate_active='1'";
+    $sql = "SELECT * FROM ".PRFX."invoice_labour_rates WHERE active='1'";
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get active labour rate items."));
@@ -619,14 +619,14 @@ function delete_invoice_rates_item($db, $labour_rate_id){
 
 function labour_sub_total($db, $invoice_id) {
     
-    $sql = "SELECT SUM(invoice_labour_subtotal) AS labour_sub_total_sum FROM ".PRFX."invoice_labour WHERE invoice_id=" . $db->qstr($invoice_id);
+    $sql = "SELECT SUM(sub_total) AS sub_total_sum FROM ".PRFX."invoice_labour WHERE invoice_id=". $db->qstr($invoice_id);
     
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to calculate the invoice labour sub total."));
         exit;
     } else {
         
-        return $rs->fields['labour_sub_total_sum'];
+        return $rs->fields['sub_total_sum'];
         
     }    
     
@@ -638,14 +638,14 @@ function labour_sub_total($db, $invoice_id) {
 
 function parts_sub_total($db, $invoice_id) {
     
-    $sql = "SELECT SUM(invoice_parts_subtotal) AS parts_sub_total_sum FROM ".PRFX."invoice_parts WHERE invoice_id=" . $db->qstr($invoice_id);
+    $sql = "SELECT SUM(sub_total) AS sub_total_sum FROM ".PRFX."invoice_parts WHERE invoice_id=" . $db->qstr($invoice_id);
     
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to calculate the invoice parts sub total."));
         exit;
     } else {
         
-        return  $rs->fields['parts_sub_total_sum'];
+        return  $rs->fields['sub_total_sum'];
         
     }
   

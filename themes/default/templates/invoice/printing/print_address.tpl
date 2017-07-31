@@ -148,7 +148,7 @@
         {section name=l loop=$labour_items}
             <tr>
                 <td class="olotd4" width="40">{$labour_details[l].invoice_labour_unit}</td>
-                <td class="olotd4" >{$labour_details[l].invoice_labour_description}</td>
+                <td class="olotd4" >{$labour_details[l].description}</td>
                 <td class="olotd4" width="60" align="right">{$currency_sym}{$labour_details[l].invoice_labour_rate|string_format:"%.2f"}</td>
                 <td class="olotd4" width="80" align="right">{$currency_sym}{$labour_details[l].invoice_labour_subtotal|string_format:"%.2f"}</td>
             </tr>
@@ -170,10 +170,10 @@
         </tr>
         {section name=p loop=$parts_items}        
             <tr class="olotd4">
-                <td width="40" class="olotd4">{$parts_details[p].invoice_parts_count}</td>
-                <td class="olotd4">{$parts_details[p].invoice_parts_description}</td>
-                <td width="60" class="olotd4" align="right">{$currency_sym}{$parts_details[p].invoice_parts_amount|string_format:"%.2f"}</td>
-                <td width="80" class="olotd4" align="right">{$currency_sym}{$parts_details[p].invoice_parts_subtotal|string_format:"%.2f"}</td>
+                <td width="40" class="olotd4">{$parts_details[p].qty}</td>
+                <td class="olotd4">{$parts_details[p].description}</td>
+                <td width="60" class="olotd4" align="right">{$currency_sym}{$parts_details[p].amount|string_format:"%.2f"}</td>
+                <td width="80" class="olotd4" align="right">{$currency_sym}{$parts_details[p].sub_total|string_format:"%.2f"}</td>
             </tr>
         {/section}
         <tr>           

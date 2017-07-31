@@ -906,12 +906,12 @@ function create_table_invoice_parts($db)
   `INVOICE_ID` int(11) NOT NULL default '0',
   `INVOICE_PARTS_MANUF` varchar(60) NOT NULL default '',
   `INVOICE_PARTS_MFID` varchar(30) NOT NULL default '',
-  `INVOICE_PARTS_DESCRIPTION` varchar(60) NOT NULL default '',
+  `description` varchar(60) NOT NULL default '',
   `INVOICE_PARTS_WARRANTY` varchar(30) NOT NULL default '',
-  `INVOICE_PARTS_AMOUNT` decimal(10,2) NOT NULL default '0.00',
-  `INVOICE_PARTS_SUBTOTAL` decimal(10,2) NOT NULL default '0.00',
+  `amount` decimal(10,2) NOT NULL default '0.00',
+  `sub_total` decimal(10,2) NOT NULL default '0.00',
   `SHIPPING` decimal(10,2) NOT NULL default '0.00',
-  `INVOICE_PARTS_COUNT` decimal(10,2) NOT NULL default '0.00',
+  `qty` decimal(10,2) NOT NULL default '0.00',
   PRIMARY KEY  (`INVOICE_PARTS_ID`),
   KEY `INVOICE_ID` (`INVOICE_ID`)
 ) ENGINE=MyISAM ";
