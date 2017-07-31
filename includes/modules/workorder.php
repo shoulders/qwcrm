@@ -24,40 +24,6 @@ defined('_QWEXEC') or die;
 
 /** Display Functions **/
 
-####################################
-# Display a single open workorder  # // no longer used
-####################################
-/*
-function display_single_workorder($db, $workorder_id){
-    
-    $sql = "SELECT ".PRFX."workorder.*,
-            ".PRFX."workorder.    status,
-            ".PRFX."customer.     *,            
-            ".PRFX."user.         user_id, email, display_name, usergroup, work_phone, home_phone, work_mobile_phone            
-            FROM ".PRFX."workorder
-            LEFT JOIN ".PRFX."customer ON ".PRFX."workorder.customer_id           = ".PRFX."customer.customer_id
-            LEFT JOIN ".PRFX."user ON ".PRFX."workorder.employee_id  = ".PRFX."user.user_id             
-            WHERE ".PRFX."workorder.workorder_id =".$db->qstr($workorder_id);
-
-    if(!$rs = $db->Execute($sql)) {        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to return the Work Order record requested."));
-        exit;
-    } else { 
-        $single_workorder = $rs->GetRowAssoc();
-        
-        if(empty($single_workorder)) {
-            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to find the requested Work Order."));
-            exit;            
-        } else {
-            
-            return $single_workorder;
-            
-        }
-        
-    }
-    
-}*/
-
 #####################################################
 # Display all Work orders for the given status      #
 #####################################################
