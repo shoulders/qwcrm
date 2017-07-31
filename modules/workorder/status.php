@@ -12,7 +12,7 @@ if($workorder_id == '') {
 }
 
 // Get the Id of the employee assigned to the workorder
-$assigned_employee_id = get_workorder_details($db, $workorder_id, 'work_order_assign_to');
+$assigned_employee_id = get_workorder_details($db, $workorder_id, 'employee_id');
 
 // Update Work Order Status
 if(isset($VAR['change_status'])){
@@ -36,7 +36,7 @@ if(isset($VAR['delete'])) {
 
 // Build the page with the current status from the database
 $smarty->assign('active_employees',             get_active_users($db, 'employees')                              );
-$smarty->assign('workorder_status',             get_workorder_details($db, $workorder_id, 'work_order_status')  );
+$smarty->assign('workorder_status',             get_workorder_details($db, $workorder_id, 'status')  );
 $smarty->assign('assigned_employee_id',         $assigned_employee_id                                           );
 $smarty->assign('assigned_employee_details',    get_user_details($db, $assigned_employee_id)                    );
 

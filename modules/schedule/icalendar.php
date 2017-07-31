@@ -30,7 +30,7 @@ if($start_year == '' || $start_month == '' || $start_day == '') {
 if($VAR['ics_type'] == 'day') {
     $filename = 'EmployeeID-'.$employee_id.'-Date-'.$start_year.$start_month.$start_day.'.ics';
 } else {
-    //$filename   = str_replace(' ', '_', $single_workorder['CUSTOMER_DISPLAY_NAME']).'-Workorder-'.$single_schedule['WORKORDER_ID'].'-Schedule-'.$schedule_id.'.ics';
+    //$filename   = str_replace(' ', '_', $customer_details['display_name']).'-Workorder-'.$single_schedule['workorder_id'].'-Schedule-'.$schedule_id.'.ics';
     $filename   = 'schedule.ics';    
 }
 

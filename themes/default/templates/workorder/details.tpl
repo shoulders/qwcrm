@@ -7,7 +7,7 @@
         <td>
             <table width="700" cellpadding="5" cellspacing="0" border="0" >
                 <tr>
-                    <td class="menuhead2" width="80%">&nbsp;{t}Workorder ID{/t} {$work_order_id}</td>
+                    <td class="menuhead2" width="80%">&nbsp;{t}Workorder ID{/t} {$workorder_id}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">                                               
                         <a href="index.php?page=workorder:print&workorder_id={$workorder_id}&print_content=technician_workorder_slip&print_type=print_html&theme=off" target="_blank">                                                    
                             <img src="{$theme_images_dir}icons/print.gif" alt="Print Works Order" border="0" height="14" width="14" onMouseOver="ddrivetip('{t}Print Work Order{/t} <br> {t}Technician{/t}');" onMouseOut="hideddrivetip();" />

@@ -48,9 +48,9 @@ if(!create_config_cc_cards($db)) {
 }
 
 ###################################
-# create_config_work_order_status #
+# create_config_status #
 ###################################
-if(!create_config_work_order_status($db)) {
+if(!create_config_status($db)) {
     echo("<tr>\n
                 <td>CREATE TABLE IF NOT EXISTS ".PRFX."CONFIG_WORK_ORDER_STATUS</td>\n
                 <td><font color=\"red\"><b>Failed:</b></font> ". $db->ErrorMsg() ."</td>\n
@@ -669,7 +669,7 @@ function create_config_cc_cards($db){
 
 }
 
-function create_config_work_order_status($db)
+function create_config_status($db)
 {
     $q="CREATE TABLE IF NOT EXISTS `".PRFX."CONFIG_WORK_ORDER_STATUS` (
         `CONFIG_WORK_ORDER_STATUS_ID` int(11) NOT NULL auto_increment,

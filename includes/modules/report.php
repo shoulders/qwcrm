@@ -44,7 +44,7 @@ defined('_QWEXEC') or die;
 
 function count_open_workorders_in_seleceted_period($db, $start_date, $end_date) {
     
-    $sql = "SELECT count(*) AS count FROM ".PRFX."workorder WHERE work_order_open_date >= ".$db->qstr($start_date)." AND work_order_open_date <= ".$db->qstr($end_date);
+    $sql = "SELECT count(*) AS count FROM ".PRFX."workorder WHERE open_date >= ".$db->qstr($start_date)." AND open_date <= ".$db->qstr($end_date);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count open work orders in the selected period."));
@@ -63,7 +63,7 @@ function count_open_workorders_in_seleceted_period($db, $start_date, $end_date) 
 
 function count_open_workorders_in_selected_period($db, $start_date, $end_date) {
     
-    $sql = "SELECT count(*) AS count FROM ".PRFX."workorder WHERE work_order_close_date >= ".$db->qstr($start_date)." AND work_order_close_date <= ".$db->qstr($end_date);
+    $sql = "SELECT count(*) AS count FROM ".PRFX."workorder WHERE close_date >= ".$db->qstr($start_date)." AND close_date <= ".$db->qstr($end_date);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count closed work orders in the selected period."));

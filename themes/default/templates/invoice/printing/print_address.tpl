@@ -78,7 +78,7 @@
                                 <tr>
                                     <td>
                                         <b>{t}Invoice ID{/t} - </b>{$invoice_details.invoice_id}<br>
-                                        <b>{t}Status{/t} - </b>{$workorder_details.work_order_status}<br>
+                                        <b>{t}Status{/t} - </b>{$workorder_details.status}<br>
                                         <b>{t}Date{/t} - </b>{$invoice_details.date|date_format:$date_format} <br>
                                         <b>{t}Due Date{/t} - </b>{$invoice_details.due_date|date_format:$date_format}<br>
                                         <b>{t}Work Order{/t} - </b>{$invoice_details.workorder_id}<br>
@@ -113,15 +113,15 @@
     </table>    
     
     <!-- Workorder Row -->
-    {if $workorder_details.work_order_description > null}
+    {if $workorder_details.description > null}
         <table  width="800" border="0" cellpadding="3" cellspacing="0" >
             <tr>
                 <td><b>{t}Work Order{/t}</b></td>
                 <td><b>{t}Work Order Resolution{/t}</b></td>
             </tr>
             <tr>
-                <td width="50%" valign="top">{$workorder_details.work_order_description}</td>
-                <td width="50%" valign="top" style="border-left: 1px solid;">{$workorder_details.work_order_resolution}</td>
+                <td width="50%" valign="top">{$workorder_details.description}</td>
+                <td width="50%" valign="top" style="border-left: 1px solid;">{$workorder_details.resolution}</td>
             </tr>
         </table>
     {/if}

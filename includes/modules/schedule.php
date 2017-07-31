@@ -23,6 +23,15 @@ defined('_QWEXEC') or die;
 
 /** Mandatory Code **/
 
+// If no schedule year set, use today's year
+if(isset($VAR['start_year'])) {$start_year = $VAR['start_year'];} else {$start_year = date('Y');}
+
+// If no schedule month set, use today's month
+if(isset($VAR['start_month'])) {$start_month = $VAR['start_month'];} else {$start_month = date('m');}
+
+// If no schedule day set, use today's day
+if(isset($VAR['start_day'])) {$start_day = $VAR['start_day'];} else {$start_day = date('d');}
+
 /** Display Functions **/
 
 ###############################
@@ -84,7 +93,7 @@ function insert_schedule($db, $start_date, $StartTime, $end_date, $EndTime, $not
         $schedule_id = $db->Insert_ID();
         
         // Assign the workorder to the scheduled employee        
-        assign_workorder_to_employee($db, $workorder_id, QFactory::getUser()->login_user_id, get_workorder_details($db, $workorder_id, 'work_order_assign_to'), $employee_id);
+        assign_workorder_to_employee($db, $workorder_id, QFactory::getUser()->login_user_id, get_workorder_details($db, $workorder_id, 'employee_id'), $employee_id);
     
         // Change the Workorders Status
         update_workorder_status($db, $workorder_id, 2); 
@@ -379,9 +388,9 @@ function build_ics_description($type, $single_schedule, $customer, $workorder) {
 
         // Workorder and Schedule Information
         $description =  gettext("Scope").': \n\n'.
-                        $workorder['work_order_scope'].'\n\n'.
+                        $workorder['scope'].'\n\n'.
                         gettext("Description").': \n\n'.
-                        html_to_textarea($workorder['work_order_description']).'\n\n'.
+                        html_to_textarea($workorder['description']).'\n\n'.
                         gettext("Schedule Notes").': \n\n'.
                         html_to_textarea($single_schedule['notes']);
 
@@ -410,9 +419,9 @@ function build_ics_description($type, $single_schedule, $customer, $workorder) {
     
         // Workorder and Schedule Information
         $description .= '<p><strong>'.gettext("Scope").': </strong></p>'.
-                        '<p>'.$workorder['work_order_scope'].'</p>'.
+                        '<p>'.$workorder['scope'].'</p>'.
                         '<p><strong>'.gettext("Description").': </strong></p>'.
-                        '<div>'.$workorder['work_order_description'].'</div>'.
+                        '<div>'.$workorder['description'].'</div>'.
                         '<p><strong>'.gettext("Schedule Notes").': </strong></p>'.
                         '<div>'.$single_schedule['notes'].'</div>';        
 
@@ -572,7 +581,7 @@ function build_calendar_matrix($db, $start_year, $start_month, $start_day, $empl
         ".PRFX."customer.display_name AS customer_display_name
         FROM ".PRFX."schedule
         INNER JOIN ".PRFX."workorder
-        ON ".PRFX."schedule.workorder_id = ".PRFX."workorder.work_order_id
+        ON ".PRFX."schedule.workorder_id = ".PRFX."workorder.workorder_id
         INNER JOIN ".PRFX."customer
         ON ".PRFX."workorder.customer_id = ".PRFX."customer.customer_id
         WHERE ".PRFX."schedule.start_time >= ".$company_day_start."

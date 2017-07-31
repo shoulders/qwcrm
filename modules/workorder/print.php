@@ -2,8 +2,10 @@
 
 defined('_QWEXEC') or die;
 
+require(INCLUDES_DIR.'modules/customer.php');
 require(INCLUDES_DIR.'modules/workorder.php');
 require(INCLUDES_DIR.'modules/schedule.php');
+require(INCLUDES_DIR.'modules/user.php');
 
 // Check if we have a workorder_id
 if($workorder_id == '') {
@@ -18,10 +20,12 @@ if($VAR['print_content'] == '' || $VAR['print_type'] == '') {
 }
 
 // Assign Variables
-$smarty->assign('company_details',      get_company_details($db)                        );
-$smarty->assign('single_workorder',     display_single_workorder($db, $workorder_id)    );
-$smarty->assign('workorder_notes',      display_workorder_notes($db, $workorder_id)     );
-$smarty->assign('workorder_schedules',  display_workorder_schedules($db, $workorder_id) );
+$smarty->assign('company_details',      get_company_details($db)                                                            );
+$smarty->assign('employee_details',     get_user_details($db, get_workorder_details($db, $workorder_id, 'employee_id'))     );
+$smarty->assign('customer_details',     get_customer_details($db, get_workorder_details($db, $workorder_id, 'customer_id')) );
+$smarty->assign('workorder_details',    get_workorder_details($db, $workorder_id)                                           );
+$smarty->assign('workorder_notes',      display_workorder_notes($db, $workorder_id)                                         );
+$smarty->assign('workorder_schedules',  display_workorder_schedules($db, $workorder_id)                                     );
 
 /* Display Page */
 

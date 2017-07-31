@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     
     <!-- PDF Title -->
-    <title>{t}Invoice{/t} {$invoice_details.invoice_id}</title>   
+    <title>{t}Technician Workorder Slip{/t} - {$workorder_details.workorder_id}</title>   
         
     <!-- PDF Subject -->
     <meta name="description" content="{$meta_description}">
@@ -28,7 +28,7 @@
             <td width="20%" valign="middle" align="center"><img src="{$company_logo}" alt="" height="50"></td>
             <td valign="top" align="center">            
                 <font size="+3">{t}Technician Workorder Slip{/t}</font><br />
-                {t}Workorder ID{/t} {$single_workorder[i].work_order_id}
+                {t}Workorder ID{/t} {$workorder_details.workorder_id}
             </td>
             <td width="20%" valign="middle" align="center"></td>
         </tr>
@@ -47,31 +47,31 @@
                 <table border="0" cellpadding="4" cellspacing="0">
                     <tr>
                         <td>
-                            <p><b><font size="+1">{$single_workorder[i].customer_display_name}</font></b></p>
+                            <p><b><font size="+1">{$customer_details.customer_display_name}</font></b></p>
                             <p>                            
                                 <b>{t}Address{/t}:</b><br>
-                                {$single_workorder[i].customer_address}<br>
-                                {$single_workorder[i].customer_city}, {$single_workorder[i].customer_state} {$single_workorder[i].customer_zip}
+                                {$customer_details.address}<br>
+                                {$customer_details.city}, {$customer_details.state} {$customer_details.zip}
                             </p>
                             <p>
-                                <b>{t}Contact{/t}: </b>{$single_workorder[i].customer_first_name} {$single_workorder[i].customer_last_name}<br />
-                                <b>{t}Phone{/t}: </b>{$single_workorder[i].customer_phone}<br>
-                                <b>{t}Work{/t}: </b>{$single_workorder[i].customer_work_phone}<br>
-                                <b>{t}Mobile{/t}: </b>{$single_workorder[i].customer_mobile_phone}<br>
-                                <b>{t}Email{/t}: </b>{$single_workorder[i].customer_email}<br>                            
+                                <b>{t}Contact{/t}: </b>{$customer_details.first_name} {$customer_details.last_name}<br />
+                                <b>{t}Phone{/t}: </b>{$customer_details.phone}<br>
+                                <b>{t}Mobile{/t}: </b>{$customer_details.mobile_phone}<br>
+                                <b>{t}Fax{/t}: </b>{$customer_details.phone}<br>                                
+                                <b>{t}Email{/t}: </b>{$customer_details.email}<br>                            
                             </p>
                             <p>
                                 <b>{t}Type{/t}: </b> 
-                                {if $single_workorder[i].customer_type == '1'}{t}CUSTOMER_TYPE_1{/t}{/if} 
-                                {if $single_workorder[i].customer_type == '2'}{t}CUSTOMER_TYPE_2{/t}{/if} 
-                                {if $single_workorder[i].customer_type == '3'}{t}CUSTOMER_TYPE_3{/t}{/if} 
-                                {if $single_workorder[i].customer_type == '4'}{t}CUSTOMER_TYPE_4{/t}{/if} 
-                                {if $single_workorder[i].customer_type == '5'}{t}CUSTOMER_TYPE_5{/t}{/if} 
-                                {if $single_workorder[i].customer_type == '6'}{t}CUSTOMER_TYPE_6{/t}{/if} 
-                                {if $single_workorder[i].customer_type == '7'}{t}CUSTOMER_TYPE_7{/t}{/if}
-                                {if $single_workorder[i].customer_type == '8'}{t}CUSTOMER_TYPE_8{/t}{/if}
-                                {if $single_workorder[i].customer_type == '9'}{t}CUSTOMER_TYPE_9{/t}{/if} 
-                                {if $single_workorder[i].customer_type == '10'}{t}CUSTOMER_TYPE_10{/t}{/if}                            
+                                {if $customer_details.type == '1'}{t}CUSTOMER_TYPE_1{/t}{/if} 
+                                {if $customer_details.type == '2'}{t}CUSTOMER_TYPE_2{/t}{/if} 
+                                {if $customer_details.type == '3'}{t}CUSTOMER_TYPE_3{/t}{/if} 
+                                {if $customer_details.type == '4'}{t}CUSTOMER_TYPE_4{/t}{/if} 
+                                {if $customer_details.type == '5'}{t}CUSTOMER_TYPE_5{/t}{/if} 
+                                {if $customer_details.type == '6'}{t}CUSTOMER_TYPE_6{/t}{/if} 
+                                {if $customer_details.type == '7'}{t}CUSTOMER_TYPE_7{/t}{/if}
+                                {if $customer_details.type == '8'}{t}CUSTOMER_TYPE_8{/t}{/if}
+                                {if $customer_details.type == '9'}{t}CUSTOMER_TYPE_9{/t}{/if} 
+                                {if $customer_details.type == '10'}{t}CUSTOMER_TYPE_10{/t}{/if}                            
                             </p>
                         </td>
                     </tr>
@@ -83,18 +83,18 @@
                 <table cellpadding="4" cellspacing="0" border="0">                                
                     <tr>
                         <td>
-                            <p><b><font size="+1">{$company_details.company_name}</font></b><br></p>
+                            <p><b><font size="+1">{$company_details.name}</font></b><br></p>
                             <p>
                                 <b>{t}Address{/t}:</b><br>
-                                {$company_details.company_address}<br>
-                                {$company_details.company_city}, {$company_details.company_state} {$company_details.company_zip}
+                                {$company_details.address}<br>
+                                {$company_details.city}, {$company_details.state} {$company_details.zip}
                             </p>
                             <p>
-                                <b>{t}Phone{/t}: </b>{$single_workorder[i].employee_work_phone}<br>                        
-                                <b>{t}Mobile{/t}: </b>{$company_details.company_mobile}<br>
-                                <b>{t}Fax{/t}: </b>{$company_details.company_fax}<br>
-                                <b>{t}Website{/t}: </b>{$company_details.company_www}<br>   
-                                <b>{t}Email{/t}: </b>{$company_details.company_email}
+                                <b>{t}Phone{/t}: </b>{$employee_details.work_phone}<br>                        
+                                <b>{t}Mobile{/t}: </b>{$company_details.mobile}<br>
+                                <b>{t}Fax{/t}: </b>{$company_details.fax}<br>
+                                <b>{t}Website{/t}: </b>{$company_details.website}<br>   
+                                <b>{t}Email{/t}: </b>{$company_details.email}
                             </p>
                         </td>
                     </tr>                               
@@ -119,7 +119,7 @@
                         <td valign="top" nowrap><b>{t}Scope{/t}:</td>
                     </tr>
                     <tr>
-                        <td valign="top" nowrap>{$single_workorder[i].work_order_scope}</td>
+                        <td valign="top" nowrap>{$workorder_details.scope}</td>
                     </tr>
                 </table>
 
@@ -129,7 +129,7 @@
                         <td><b>{t}Description{/t}:</b></td>
                     </tr>
                     <tr>
-                        <td><div>{$single_workorder[i].work_order_description}</div></td>
+                        <td><div>{$workorder_details.description}</div></td>
                     </tr>
                 </table>
 
@@ -140,7 +140,7 @@
                         <td><b>{t}Comments{/t}:</b></td>
                     </tr>
                     <tr>
-                        <td><div style="min-height: 300px;">{$single_workorder[i].work_order_comment}</div></td>
+                        <td><div style="min-height: 300px;">{$workorder_details.comments}</div></td>
                     </tr>
                 </table>
 
@@ -151,12 +151,12 @@
                         <td><b>{t}Resolution{/t}:</b></td>
                     </tr>                    
                     <tr>                                    
-                        {if $single_workorder[i].employee_display_name != ''}                            
-                            <td><b>{t}Closed by{/t}:</b>{$single_workorder[i].employee_display_name} on <b>{t}Date{/t}: </b>{$workorder_resolution[r].work_order_close_date|date_format:$date_format}</td>                                                       
+                        {if $workorder_details.close_date != ''}                            
+                            <td><b>{t}Closed by{/t}:</b>{$employee_details.display_name} on <b>{t}Date{/t}: </b>{$workorder_details.close_date|date_format:$date_format}</td>                                                       
                         {/if}
                     </tr>
                     <tr>
-                        <td><div style="min-height: 150px;">{$single_workorder[i].work_order_resolution}</div></td>                 
+                        <td><div style="min-height: 150px;">{$workorder_details.resolution}</div></td>                 
                     </tr>                     
                 </table>
 
@@ -167,14 +167,14 @@
                         <td><b>{t}Notes{/t}:</b></td>
                     </tr>
                     {section name=b loop=$workorder_notes}                        
-                        {if $workorder_notes[b].work_order_notes_description != ''} 
+                        {if $workorder_notes[b].description != ''} 
                             <tr>
                                 <td>
                                     <p>
                                         ------------------------------------------------------------------------------------<br>
-                                        {t}This note was created by{/t} <b>{t}Technician{/t}: </b>{$workorder_notes[b].employee_display_name} {t}on{/t} </b> {$workorder_notes[b].work_order_notes_date|date_format:"$date_format %R"}
+                                        {t}This note was created by{/t} <b>{t}Technician{/t}: </b>{$workorder_notes[b].employee_display_name} {t}on{/t} </b> {$workorder_notes[b].date|date_format:"$date_format %R"}
                                     </p>
-                                    <div>{$workorder_notes[b].work_order_notes_description}</div>                       
+                                    <div>{$workorder_notes[b].description}</div>                       
                                 </td>
                             </tr>
                         {else}
@@ -193,7 +193,7 @@
                 <table border="0" cellpadding="4" cellspacing="0">
                     <tr>
                         <td valign="top" width="50%"><b>{t}Workorder ID{/t}</b></td>
-                        <td valign="top">{$single_workorder[i].work_order_id}</td>
+                        <td valign="top">{$workorder_details.workorder_id}</td>
                     </tr>
                     <tr>
                         <td valign="top"><b>{t}Today's Date{/t}</b></td>
@@ -201,28 +201,28 @@
                     </tr>
                     <tr>
                         <td valign="top" nowrap><b>{t}Opened{/t}</b></td>
-                        <td valign="top">{$single_workorder[i].work_order_open_date|date_format:$date_format}</td>
+                        <td valign="top">{$workorder_details.open_date|date_format:$date_format}</td>
                     </tr>                
                     <tr>
                         <td valign="top" nowrap><b>{t}Technician{/t}</b></td>
-                        <td valign="top">{$single_workorder[i].employee_display_name}</td>
+                        <td valign="top">{$employee_details.display_name}</td>
                     </tr>
                     <tr>
                         <td valign="top"><b>{t}Status{/t}</b></td>
                         <td valign="top">
-                            {if $single_workorder[i].work_order_status == '1'}{t}WORKORDER_STATUS_1{/t}{/if}
-                            {if $single_workorder[i].work_order_status == '2'}{t}WORKORDER_STATUS_2{/t}{/if}
-                            {if $single_workorder[i].work_order_status == '3'}{t}Waiting For Parts{/t}{/if}
-                            {if $single_workorder[i].work_order_status == '6'}{t}WORKORDER_STATUS_6{/t}{/if}
-                            {if $single_workorder[i].work_order_status == '7'}{t}WORKORDER_STATUS_7{/t}{/if}
-                            {if $single_workorder[i].work_order_status == '8'}{t}WORKORDER_STATUS_8{/t}{/if}
-                            {if $single_workorder[i].work_order_status == '9'}{t}WORKORDER_STATUS_9{/t}{/if}
-                            {if $single_workorder[i].work_order_status == '10'}{t}WORKORDER_STATUS_10{/t}{/if}
+                            {if $workorder_details.status == '1'}{t}WORKORDER_STATUS_1{/t}{/if}
+                            {if $workorder_details.status == '2'}{t}WORKORDER_STATUS_2{/t}{/if}
+                            {if $workorder_details.status == '3'}{t}Waiting For Parts{/t}{/if}
+                            {if $workorder_details.status == '6'}{t}WORKORDER_STATUS_6{/t}{/if}
+                            {if $workorder_details.status == '7'}{t}WORKORDER_STATUS_7{/t}{/if}
+                            {if $workorder_details.status == '8'}{t}WORKORDER_STATUS_8{/t}{/if}
+                            {if $workorder_details.status == '9'}{t}WORKORDER_STATUS_9{/t}{/if}
+                            {if $workorder_details.status == '10'}{t}WORKORDER_STATUS_10{/t}{/if}
                         </td>
                     </tr>
                     <tr>
                         <td><b>{t}Last Activity{/t}:</b></td>
-                        <td>{$single_workorder[i].last_active|date_format:$date_format}</td>
+                        <td>{$workorder_details.last_active|date_format:$date_format}</td>
                     </tr>
                 </table>
 
@@ -257,11 +257,11 @@
                         <td align="center"><b>{t}Schedule{/t}</b></td>
                     </tr><tr>
                         <td>
-                            {section name=e loop=$workorder_schedule}
-                                <b>{t}Start Time{/t}:</b> {$workorder_schedules[e].schedule_start|date_format:"$date_format %R"}<br>
-                                <b>{t}End Time{/t}:</b> {$workorder_schedules[e].schedule_end|date_format:"$date_format %R"}<br>
+                            {section name=e loop=$workorder_schedules}
+                                <b>{t}Start Time{/t}:</b> {$workorder_schedules[e].start_time|date_format:"$date_format %R"}<br>
+                                <b>{t}End Time{/t}:</b> {$workorder_schedules[e].end_time|date_format:"$date_format %R"}<br>
                                 <b>{t}Notes{/t}:</b><br>
-                                <div>{$workorder_schedule[e].notes}</div>
+                                <div>{$workorder_schedules[e].notes}</div>
                             {sectionelse}
                                 {t}No schedule has been set. Click the day on the calendar you want to set the schedule.{/t}
                             {/section}

@@ -249,15 +249,6 @@ $user_id            = $VAR['user_id'];
 //if(isset($VAR['employee_id'])) {$employee_id = $VAR['employee_id'];} else {$employee_id = QFactory::getUser()->login_user_id;}  // this might not be required
 $employee_id        = $VAR['employee_id'];
 
-// If no schedule year set, use today's year
-if(isset($VAR['start_year'])) {$start_year = $VAR['start_year'];} else {$start_year = date('Y');}
-
-// If no schedule month set, use today's month
-if(isset($VAR['start_month'])) {$start_month = $VAR['start_month'];} else {$start_month = date('m');}
-
-// If no schedule day set, use today's day
-if(isset($VAR['start_day'])) {$start_day = $VAR['start_day'];} else {$start_day = date('d');}
-
 // Get the page number if it exists or set to page number to 1 if not
 if(isset($VAR['page_no'])) {$page_no = $VAR['page_no'];} else {$page_no = 1;}
 
@@ -295,10 +286,9 @@ $smarty->assign('invoice_id',               $invoice_id                 );
 $smarty->assign('refund_id',                $refund_id                  );
 $smarty->assign('supplier_id',              $supplier_id                );
 $smarty->assign('schedule_id',              $schedule_id                );
-$smarty->assign('start_year',      $start_year        );
-$smarty->assign('start_month',     $start_month       );
-$smarty->assign('start_day',       $start_day         );
-
+$smarty->assign('start_year',               $start_year                 );
+$smarty->assign('start_month',              $start_month                );
+$smarty->assign('start_day',                $start_day                  );
 $smarty->assign('user_id',                  $user_id                    );
 
 // Used throughout the site

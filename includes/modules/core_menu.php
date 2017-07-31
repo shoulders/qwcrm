@@ -31,14 +31,14 @@ defined('_QWEXEC') or die;
 
 function menu_get_single_workorder_status($db, $workorder_id){
     
-    $sql = "SELECT work_order_status FROM ".PRFX."workorder WHERE work_order_id =".$db->qstr($workorder_id);
+    $sql = "SELECT status FROM ".PRFX."workorder WHERE workorder_id =".$db->qstr($workorder_id);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to a get a single workorder status."));
         exit;
     } else {
         
-        return $rs->fields['work_order_status'];
+        return $rs->fields['status'];
         
     }
     
@@ -67,7 +67,7 @@ function menu_count_workorders_with_status($db, $workorder_status){
     
     $sql = "SELECT COUNT(*) AS workorder_status_count
             FROM ".PRFX."workorder
-            WHERE work_order_status=".$db->qstr($workorder_status);
+            WHERE status=".$db->qstr($workorder_status);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count workorders with a defined status."));

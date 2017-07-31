@@ -38,7 +38,7 @@ $smarty->assign('parts_items',          get_invoice_parts_items($db, $invoice_id
 $smarty->assign('labour_sub_total',     labour_sub_total($db, $invoice_id)                                                          );
 $smarty->assign('parts_sub_total',      parts_sub_total($db, $invoice_id)                                                           );
 $smarty->assign('transactions',         get_invoice_transactions($db, $invoice_id)                                                  ); 
-$smarty->assign('workorder_status',     get_workorder_details($db, $workorder_id, 'work_order_status')                              ); 
+$smarty->assign('workorder_status',     get_workorder_details($db, $workorder_id, 'status')                              ); 
 $smarty->assign('employee_display_name',get_user_details($db, get_invoice_details($db, $invoice_id, 'employee_id'),'display_name')  );
 
 // these are needed for the record deletion routines - consider making all fields editable

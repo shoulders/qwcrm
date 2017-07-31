@@ -24,11 +24,11 @@
                         <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0">
                             <tr>
                                 <td width="100%" valign="top">                                    
-                                    <form method="post" action="index.php?page=workorder:note_edit&workorder_note_id={$workorder_note.work_order_notes_id}">
+                                    <form method="post" action="index.php?page=workorder:note_edit&workorder_note_id={$workorder_note.workorder_note_id}">
                                         <b>{t}Edit Workorder Note{/t}</b><br>                                        
                                         <div>
                                             <b>{t}Date{/t}:<b><br>
-                                            <input id="date" name="date" class="olotd4" size="10" value="{$workorder_note.work_order_notes_date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
+                                            <input id="date" name="date" class="olotd4" size="10" value="{$workorder_note.date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
                                             <input id="date_button" value="+" type="button">                                                    
                                             <script>                                            
                                                 Calendar.setup( {
@@ -39,9 +39,9 @@
                                             </script>                                                    
                                         </div>
                                         <b>{t}Note{/t}:</b><br>
-                                        <textarea class="olotd4" rows="15" cols="70" name="note">{$workorder_note.work_order_notes_description}</textarea>
+                                        <textarea class="olotd4" rows="15" cols="70" name="note">{$workorder_note.description}</textarea>
                                         <br>                                        
-                                        <input type="hidden" name="workorder_id" value="{$workorder_note.work_order_id}">
+                                        <input type="hidden" name="workorder_id" value="{$workorder_note.workorder_id}">
                                         <button type="submit" name="submit" value="submit">{t}Submit{/t}</button>
                                     </form>
                                     <br>

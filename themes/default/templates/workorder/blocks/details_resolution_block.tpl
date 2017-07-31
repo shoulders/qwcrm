@@ -9,8 +9,8 @@
                         <table cellpadding="2" cellspacing="2" border="0">
                             <tr>
                                 <td width="33%" align="right">
-                                    {if $single_workorder.work_order_status != 6}
-                                        <a href="index.php?page=workorder:details_edit_resolution&workorder_id={$single_workorder.work_order_id}">
+                                    {if $workorder_details.status != 6}
+                                        <a href="index.php?page=workorder:details_edit_resolution&workorder_id={$workorder_details.workorder_id}">
                                             <img src="{$theme_images_dir}icons/16x16/small_edit.gif" border="0" onMouseOver="ddrivetip('{t}Click to edit resolution{/t}');" onMouseOut="hideddrivetip();">
                                         </a>
                                     {/if}
@@ -27,13 +27,13 @@
             <table width="100%" cellpadding="4" cellspacing="0" border="0">
                 <tr>
                     <td>                        
-                        {if $single_workorder.work_order_close_by != ''}
+                        {if $workorder_details.closed_by != ''}
                             <p>
-                                <b>{t}Closed by{/t}: </b>{$single_workorder.employee_display_name}<br>
-                                <b>{t}Date{/t}: </b>{$single_workorder.work_order_close_date|date_format:$date_format}<br>
+                                <b>{t}Closed by{/t}: </b>{$employee_details.display_name}<br>
+                                <b>{t}Date{/t}: </b>{$workorder_details.close_date|date_format:$date_format}<br>
                             </p>
                         {/if}
-                        <div>{$single_workorder.work_order_resolution}</div>                        
+                        <div>{$workorder_details.resolution}</div>                        
                     </td>
                 </tr>
             </table>

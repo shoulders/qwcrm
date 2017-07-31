@@ -47,7 +47,7 @@ function count_workorders_with_status($db, $workorder_status){
     
     $sql = "SELECT COUNT(*) AS workorder_status_count
             FROM ".PRFX."workorder
-            WHERE work_order_status=".$db->qstr($workorder_status);
+            WHERE status=".$db->qstr($workorder_status);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Could not count Work Orders for the defined status."));

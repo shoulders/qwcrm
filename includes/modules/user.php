@@ -393,7 +393,7 @@ function update_user($db, $user_id, $VAR) {
 function delete_user($db, $user_id){
     
     // Check if user has created any workorders
-    $sql = "SELECT count(*) as count FROM ".PRFX."workorder WHERE work_order_create_by=".$db->qstr($user_id);    
+    $sql = "SELECT count(*) as count FROM ".PRFX."workorder WHERE created_by=".$db->qstr($user_id);    
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count the user's Workorders in the database."));
         exit;
@@ -404,7 +404,7 @@ function delete_user($db, $user_id){
     }
     
     // Check if user has any assigned workorders
-    $sql = "SELECT count(*) as count FROM ".PRFX."workorder WHERE work_order_assign_to=".$db->qstr($user_id);    
+    $sql = "SELECT count(*) as count FROM ".PRFX."workorder WHERE employee_id=".$db->qstr($user_id);    
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count the user's Workorders in the database."));
         exit;
@@ -459,8 +459,8 @@ function count_user_workorders_with_status($db, $user_id, $workorder_status){
     
     $sql = "SELECT COUNT(*) AS user_workorder_status_count
             FROM ".PRFX."workorder
-            WHERE work_order_assign_to=".$db->qstr($user_id)."
-            AND work_order_status=".$db->qstr($workorder_status);
+            WHERE employee_id=".$db->qstr($user_id)."
+            AND status=".$db->qstr($workorder_status);
     
     if(!$rs = $db->Execute($sql)){
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count the number of Work Orders for the user for the defined status"));
