@@ -404,7 +404,7 @@ function get_invoice_parts_item_details($db, $parts_id, $item = null) {
 }
 
 #######################################
-#   Get active invoice prefill items  #
+#   Get invoice prefill items         #
 #######################################
 
 function get_invoice_prefill_items($db, $type = null, $status = '1') {

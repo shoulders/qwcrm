@@ -85,7 +85,8 @@
         // Description Cell - Set Combobox settings
         combo.setSize(400);    
         combo.DOMelem_input.maxLength = 50;    
-        combo.DOMelem_input.required = true;   
+        combo.DOMelem_input.required = true;
+        combo.setComboText('');                 // by default sets comobobox to empty
 
         // Description Cell - Apply Key restriction to the virtual combobox
         dhtmlxEvent(combo.DOMelem_input, "keypress", function(e) {
@@ -134,6 +135,7 @@
         combo.DOMelem_input.maxLength = 10;
         combo.DOMelem_input.setAttribute('pattern', '{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}');
         combo.DOMelem_input.required = true;
+        combo.setComboText('');                 // by default sets comobobox to empty
 
         // Amount Cell - Apply Key restriction to the virtual combobox
         dhtmlxEvent(combo.DOMelem_input, "keypress", function(e) {
@@ -232,7 +234,8 @@
         // Description Cell - Set Combobox settings
         combo.setSize(400);    
         combo.DOMelem_input.maxLength = 50;    
-        combo.DOMelem_input.required = true;   
+        combo.DOMelem_input.required = true;
+        combo.setComboText('');                 // by default sets comobobox to empty
 
         // Description Cell - Apply Key restriction to the virtual combobox
         dhtmlxEvent(combo.DOMelem_input, "keypress", function(e) {
@@ -282,6 +285,7 @@
         combo.DOMelem_input.maxLength = 10;
         combo.DOMelem_input.setAttribute('pattern', '{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}');
         combo.DOMelem_input.required = true;
+        combo.setComboText('');                 // by default sets comobobox to empty
 
         // Amount Cell - Apply Key restriction to the virtual combobox
         dhtmlxEvent(combo.DOMelem_input, "keypress", function(e) {
