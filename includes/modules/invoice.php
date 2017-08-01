@@ -412,7 +412,7 @@ function get_invoice_prefill_items($db, $type = null, $status = null) {
     $sql = "SELECT * FROM ".PRFX."invoice_prefill_items";
     
     // prepare the sql for the optional filter
-    $sql .= " WHERE prefill_id >= 1";
+    $sql .= " WHERE invoice_prefill_id >= 1";
 
     // filter by type
     if($type) { $sql .= " AND type=".$db->qstr($type);}    
@@ -514,11 +514,11 @@ function update_invoice_full($db, $invoice_id, $employee_id, $customer_id, $work
 function update_invoice_prefill_item($db, $VAR){
     
     $sql = "UPDATE ".PRFX."invoice_prefill_items SET
-            description         =". $db->qstr( $VAR['description']  ).",
-            type                =". $db->qstr( $VAR['type']         ).",
-            amount              =". $db->qstr( $VAR['amount']       ).",
-            active              =". $db->qstr( $VAR['active']       )."            
-            WHERE prefill_id    =". $db->qstr( $VAR['prefill_id']   );
+            description                 =". $db->qstr( $VAR['description']          ).",
+            type                        =". $db->qstr( $VAR['type']                 ).",
+            amount                      =". $db->qstr( $VAR['amount']               ).",
+            active                      =". $db->qstr( $VAR['active']               )."            
+            WHERE invoice_prefill_id    =". $db->qstr( $VAR['invoice_prefill_id']   );
 
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update an invoice labour rates item."));
@@ -591,9 +591,9 @@ function delete_invoice_parts_item($db, $parts_id) {
 #     delete labour rate item       #
 #####################################
 
-function delete_invoice_prefill_item($db, $prefill_id){
+function delete_invoice_prefill_item($db, $invoice_prefill_id){
     
-    $sql = "DELETE FROM ".PRFX."invoice_prefill_items WHERE prefill_id =".$prefill_id;
+    $sql = "DELETE FROM ".PRFX."invoice_prefill_items WHERE invoice_prefill_id =".$invoice_prefill_id;
 
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete an invoice prefill item."));
@@ -745,7 +745,7 @@ function upload_invoice_prefill_items_csv($db, $VAR) {
             $row = 1;
 
             // Read CSV data and insert into database            
-            while (($data = fgetcsv($handle, 1000,',')) !== FALSE) {
+            while (($data = fgetcsv($handle)) !== FALSE) {
                 
                 // Skip the first line with the column names
                 if($row == 1) {                    

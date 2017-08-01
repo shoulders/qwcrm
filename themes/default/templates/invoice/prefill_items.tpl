@@ -31,7 +31,7 @@
                                                         {section name=q loop=$invoice_prefill_items}
                                                             <form method="POST" action="index.php?page=invoice:prefill_items">
                                                                 <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" class="row1">
-                                                                    <td class="olotd4" nowrap>{$invoice_prefill_items[q].prefill_id}</td>
+                                                                    <td class="olotd4" nowrap>{$invoice_prefill_items[q].invoice_prefill_id}</td>
                                                                     <td class="olotd4" nowrap><input name="description" class="olotd5" size="50" value="{$invoice_prefill_items[q].description}" type="text" maxlength="50" required onkeydown="return onlyAlphaNumeric(event);"></td>
                                                                     <td class="olotd4" nowrap>
                                                                         <select class="olotd5" name="type">
@@ -47,7 +47,7 @@
                                                                         </select>
                                                                     </td>
                                                                     <td class="olotd4" nowrap>
-                                                                        <input type="hidden" name="prefill_id" value="{$invoice_prefill_items[q].prefill_id}">
+                                                                        <input type="hidden" name="invoice_prefill_id" value="{$invoice_prefill_items[q].invoice_prefill_id}">
                                                                         <button type="submit" name="submit" value="delete" onClick="return confirmDelete('{t}Are You sure you want to delete this labour rate item.{/t}');">{t}Delete{/t}</button>
                                                                         <button type="submit" name="submit" value="update" onClick="return confirmDelete('{t}Are You sure you want to update this labour rate item.{/t}');">{t}Update{/t}</button>
                                                                     </td>
@@ -88,7 +88,7 @@
                                                 <div>
                                                     <form method="POST" action="index.php?page=invoice:prefill_items">
                                                         <strong><span style="color: green;">{t}Export Prefill Items as a CSV file{/t}</span></strong>
-                                                        <input type="hidden" name="prefill_id" value="{$invoice_prefill_items[q].prefill_id}">
+                                                        <input type="hidden" name="invoice_prefill_id" value="{$invoice_prefill_items[q].invoice_prefill_id}">
                                                         <button type="submit" name="export_invoice_prefill_items" value="export">{t}Export{/t}</button>
                                                     </form>
                                                 </div>

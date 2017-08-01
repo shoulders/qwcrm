@@ -25,7 +25,7 @@ if(isset($VAR['submit'])) {
     
     // Delete invoice labour rates item
     if($VAR['submit'] == 'delete') {        
-        delete_invoice_prefill_item($db, $VAR['prefill_id']);
+        delete_invoice_prefill_item($db, $VAR['invoice_prefill_id']);
     }
     
     // Upload CSV file of invoice labour rates items
