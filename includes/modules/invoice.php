@@ -257,19 +257,19 @@ function insert_parts_items($db, $invoice_id, $description, $amount, $qty) {
 }
 
 #####################################
-#    insert invoice rate item       #
+#   insert invoice prefill item     #
 #####################################
 
-function insert_invoice_labour_rates_item($db, $VAR){
+function insert_invoice_prefill_item($db, $VAR){
     
-    $sql = "INSERT INTO ".PRFX."invoice_labour_rates SET
+    $sql = "INSERT INTO ".PRFX."invoice_prefill_items SET
             description =". $db->qstr( $VAR['description']  ).",
             type        =". $db->qstr( $VAR['type']         ).",
             amount      =". $db->qstr( $VAR['amount']       ).",
             active      =". $db->qstr( $VAR['active']       );
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to insert Labour invoice rate item into the database."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to insert an invoice prefill item into the database."));
         exit;
     }
     
@@ -302,29 +302,6 @@ function get_invoice_details($db, $invoice_id, $item = null) {
         
     }
         
-}
-
-#####################################
-#   Get All Labour Rate Items       #
-#####################################
-
-function get_active_labour_rate_items($db) {
-    
-    $sql = "SELECT * FROM ".PRFX."invoice_labour_rates WHERE active='1'";
-    
-    if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get active labour rate items."));
-        exit;
-    } else {
-        
-        if(!empty($rs)) {
-        
-            return $rs->GetArray();
-        
-        }
-        
-    }    
-    
 }
 
 #########################################
@@ -426,21 +403,37 @@ function get_invoice_parts_item_details($db, $parts_id, $item = null) {
         
 }
 
-####################################
-#     Get labour rates item        #
-####################################
+#######################################
+#   Get active invoice prefill items  #
+#######################################
 
-function get_invoice_labour_rates_items($db) {
+function get_invoice_prefill_items($db, $type = null, $status = '1') {
     
-    // Loads rates from database
-    $sql = "SELECT * FROM ".PRFX."invoice_labour_rates ORDER BY labour_rate_id ASC";
+    $sql = "SELECT * FROM ".PRFX."invoice_prefill_items";
     
-    if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get invoice labour rates items."));
+    // prepare the sql for the optional filter
+    $sql .= " WHERE prefill_id >= 1";
+
+    // filter by status
+    if($status) {" AND active=".$db->qstr($status);}
+    
+    // filter by type
+    if($type) { $sql .= " AND type=".$db->qstr($type);} 
+    //if($type == 'labour') { $sql .= " AND type='labour'";}
+    //if($type == 'parts') { $sql .= " AND type='parts'";} 
+    
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the invoice prefill items for the selected status."));
         exit;
-    }   
-    
-    return $rs->GetArray();
+    } else {
+        
+        if(!empty($rs)) {
+        
+            return $rs->GetArray();
+        
+        }
+        
+    }    
     
 }
 
@@ -520,14 +513,14 @@ function update_invoice_full($db, $invoice_id, $employee_id, $customer_id, $work
 #     update invoice rate item      #
 #####################################
 
-function update_invoice_labour_rates_item($db, $VAR){
+function update_invoice_prefill_item($db, $VAR){
     
-    $sql = "UPDATE ".PRFX."invoice_labour_rates SET
-            description =". $db->qstr( $VAR['description']              ).",
-            type        =". $db->qstr( $VAR['type']                     ).",
-            amount      =". $db->qstr( $VAR['amount']                   ).",
-            active      =". $db->qstr( $VAR['active']                   )."            
-            WHERE labour_rate_id =". $db->qstr( $VAR['labour_rate_id']  );
+    $sql = "UPDATE ".PRFX."invoice_prefill_items SET
+            description         =". $db->qstr( $VAR['description']  ).",
+            type                =". $db->qstr( $VAR['type']         ).",
+            amount              =". $db->qstr( $VAR['amount']       ).",
+            active              =". $db->qstr( $VAR['active']       )."            
+            WHERE prefill_id    =". $db->qstr( $VAR['prefill_id']   );
 
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update an invoice labour rates item."));
@@ -600,12 +593,12 @@ function delete_invoice_parts_item($db, $parts_id) {
 #     delete labour rate item       #
 #####################################
 
-function delete_invoice_rates_item($db, $labour_rate_id){
+function delete_invoice_prefill_item($db, $prefill_id){
     
-    $sql = "DELETE FROM ".PRFX."invoice_labour_rates WHERE labour_rate_id =".$labour_rate_id;
+    $sql = "DELETE FROM ".PRFX."invoice_prefill_items WHERE prefill_id =".$prefill_id;
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete an invoice rates item."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete an invoice prefill item."));
         exit;
     }
     
@@ -712,51 +705,51 @@ function check_invoice_has_workorder($db, $invoice_id) {
 #   Upload labour rates CSV file    #
 #####################################
 
-function upload_invoice_labour_rates_csv($db, $VAR) {
+function upload_invoice_prefill_items_csv($db, $VAR) {
 
     // Allowed extensions
     $allowedExts = array('csv');
     
     // Get file extension
-    $filename_info = pathinfo($_FILES['invoice_rates_csv']['name']);
+    $filename_info = pathinfo($_FILES['invoice_prefill_csv']['name']);
     $extension = $filename_info['extension'];
     
     // Validate the uploaded file is allowed (extension, mime type, 0 - 2mb)
-    if ((($_FILES['invoice_rates_csv']['type'] == 'text/csv'))            
-            || ($_FILES['invoice_rates_csv']['type'] == 'application/vnd.ms-excel')     // CSV files created by excel - i might remove this
-                //|| ($_FILES['invoice_rates_csv']['type'] == 'text/plain')             // this seems a bit dangerous   
-            && ($_FILES['invoice_rates_csv']['size'] > 0)   
-            && ($_FILES['invoice_rates_csv']['size'] < 2048000)
+    if ((($_FILES['invoice_prefill_csv']['type'] == 'text/csv'))            
+            || ($_FILES['invoice_prefill_csv']['type'] == 'application/vnd.ms-excel')     // CSV files created by excel - i might remove this
+                //|| ($_FILES['invoice_prefill_csv']['type'] == 'text/plain')             // this seems a bit dangerous   
+            && ($_FILES['invoice_prefill_csv']['size'] > 0)   
+            && ($_FILES['invoice_prefill_csv']['size'] < 2048000)
             && in_array($extension, $allowedExts)) {
 
         // Check for file submission errors and echo them
-        if ($_FILES['invoice_rates_csv']['error'] > 0 ) {
-            echo gettext("Return Code").': ' . $_FILES['invoice_rates_csv']['error'] . '<br />';                
+        if ($_FILES['invoice_prefill_csv']['error'] > 0 ) {
+            echo gettext("Return Code").': ' . $_FILES['invoice_prefill_csv']['error'] . '<br />';                
 
         // If no errors then move the file from the PHP temporary storage to the logo location
         } else {        
 
             // Empty Current Invoice Rates Table (if set)
-            if($VAR['empty_invoice_rates'] === '1'){
+            if($VAR['empty_prefill_items_table'] === '1'){
                 
-                $sql = "TRUNCATE ".PRFX."invoice_labour_rates";
+                $sql = "TRUNCATE ".PRFX."invoice_prefill_items";
                 
                 if(!$rs = $db->execute($sql)) {
-                    force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to empty the invoice labour rates table."));
+                    force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to empty the prefill items table."));
                     exit;                    
                 }
             }
             
             // Open CSV file            
-            $handle = fopen($_FILES['invoice_rates_csv']['tmp_name'], 'r');
+            $handle = fopen($_FILES['invoice_prefill_csv']['tmp_name'], 'r');
 
             // Read CSV data and insert into database
             while (($data = fgetcsv($handle, 1000, ',')) !== FALSE) {
 
-                $sql = "INSERT INTO ".PRFX."invoice_labour_rates(description, type, amount, active) VALUES ('$data[1]','$data[2]','$data[3]','$data[4]')";
+                $sql = "INSERT INTO ".PRFX."invoice_prefill_items(description, type, amount, active) VALUES ('$data[0]','$data[1]','$data[2]','$data[3]')";
 
                 if(!$rs = $db->execute($sql)) {
-                    force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to insert the new invoice labour rates into the database."));
+                    force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to insert the new prefill items into the database."));
                     exit;                    
                 }
 
@@ -766,7 +759,7 @@ function upload_invoice_labour_rates_csv($db, $VAR) {
             fclose($handle);
 
             // Delete CSV file - not sure this is needed becaus eit is temp
-            unlink($_FILES['invoice_rates_csv']['tmp_name']);
+            unlink($_FILES['invoice_prefill_csv']['tmp_name']);
 
         }
 
@@ -774,10 +767,10 @@ function upload_invoice_labour_rates_csv($db, $VAR) {
     } else {
         
         /*
-        echo "Upload: "    . $_FILES['invoice_rates_csv']['name']           . '<br />';
-        echo "Type: "      . $_FILES['invoice_rates_csv']['type']           . '<br />';
-        echo "Size: "      . ($_FILES['invoice_rates_csv']['size'] / 1024)  . ' Kb<br />';
-        echo "Temp file: " . $_FILES['invoice_rates_csv']['tmp_name']       . '<br />';
+        echo "Upload: "    . $_FILES['invoice_prefill_csv']['name']           . '<br />';
+        echo "Type: "      . $_FILES['invoice_prefill_csv']['type']           . '<br />';
+        echo "Size: "      . ($_FILES['invoice_prefill_csv']['size'] / 1024)  . ' Kb<br />';
+        echo "Temp file: " . $_FILES['invoice_prefill_csv']['tmp_name']       . '<br />';
         echo "Stored in: " . MEDIA_DIR . $_FILES['file']['name']       ;
          */
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the invoice labour rates because the submitted file was invalid."));

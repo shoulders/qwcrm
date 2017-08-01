@@ -74,8 +74,8 @@
 
 
         // Description Cell - Populate the Select Options
-        {section loop=$labour_amount_items name=i}
-            el.options[{$smarty.section.i.index}] = new Option('{$labour_amount_items[i].labour_amount_item}', '{$labour_amount_items[i].labour_amount_item}');
+        {section loop=$labour_prefill_items name=i}
+            el.options[{$smarty.section.i.index}] = new Option('{$labour_prefill_items[i].description}', '{$labour_prefill_items[i].description}');
         {/section}
 
 
@@ -99,12 +99,12 @@
 
 
 
-        // Rate Cell - Create Cell
+        // Amount Cell - Create Cell
         var buildRow = row.insertCell(3);        
         //buildRow.setAttribute('width', '40px');
         //buildRow.setAttribute('class', 'olotd4');
 
-        // Rate Cell - Create Select Input
+        // Amount Cell - Create Select Input
         var el = document.createElement('select');
         el.setAttribute('id', 'labour_amount['+iteration+']');
         el.setAttribute('name', 'labour_amount['+iteration+']');
@@ -117,25 +117,25 @@
         buildRow.appendChild(el);
 
 
-        // Rate Cell - Populate the Select Options
-        {section loop=$labour_amount_items name=i}
-            el.options[{$smarty.section.i.index}] = new Option('{$labour_amount_items[i].labour_amount_amount}', '{$labour_amount_items[i].labour_amount_amount}');
+        // Amount Cell - Populate the Select Options
+        {section loop=$labour_prefill_items name=i}
+            el.options[{$smarty.section.i.index}] = new Option('{$labour_prefill_items[i].amount}', '{$labour_prefill_items[i].amount}');
         {/section}
 
-        // Rate Cell - Add some HTML to add the Currency Symbol to the left of the Rate Box      
+        // Amount Cell - Add some HTML to add the Currency Symbol to the left of the Rate Box      
         buildRow.innerHTML = '<div style="float:left;"><b>{$currency_sym}&nbsp;</b></div><div>' + buildRow.innerHTML + '</div>';
 
 
-        // Rate Cell - Convert Select Input to a real Combo Box using dhtmlxcombo - Run after adding currency symbol to the cell otherwise it does not work
+        // Amount Cell - Convert Select Input to a real Combo Box using dhtmlxcombo - Run after adding currency symbol to the cell otherwise it does not work
         var combo = dhtmlXComboFromSelect('labour_amount['+iteration+']');         
 
-        // Rate Cell - Set Combobox settings
+        // Amount Cell - Set Combobox settings
         combo.setSize(90);  // This sets the width of the combo box and drop down options width  
         combo.DOMelem_input.maxLength = 10;
         combo.DOMelem_input.setAttribute('pattern', '{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}');
         combo.DOMelem_input.required = true;
 
-        // Rate Cell - Apply Key restriction to the virtual combobox
+        // Amount Cell - Apply Key restriction to the virtual combobox
         dhtmlxEvent(combo.DOMelem_input, "keypress", function(e) {
 
             if(onlyNumbersPeriod(e)) { return true; }
@@ -201,45 +201,97 @@
 
         // Description Cell - Create Cell
         var buildRow = row.insertCell(2);        
-        //buildRow.setAttribute('width', '100px');
+        //buildRow.setAttribute('width', '300px');
         //buildRow.setAttribute('class', 'olotd4');
 
         // Description Cell - Create Select Input
-        var el = document.createElement('input');
+        var el = document.createElement('select');
         el.setAttribute('id', 'parts_description['+iteration+']');
         el.setAttribute('name', 'parts_description['+iteration+']');    
         //el.setAttribute('class', 'olotd4');
-        el.setAttribute('size', '62');
+        //el.setAttribute('size', '100');
         //el.setAttribute('value', '1');
-        el.setAttribute('type', 'text');
-        el.setAttribute('maxlength', '50');
+        //el.setAttribute('type', 'text');
+        //el.setAttribute('maxlength', '50');
         el.required = true;
-        el.setAttribute('onkeydown','return onlyAlphaNumeric(event)');
+        //el.onkeypress = function(event) { return onlyAlphaNumeric(event); } ;
+        //el.setAttribute("onkeypress", "return isNumberKeyDecimal(event)");
+        //el.onkeydown = 'return onlyAlphaNumeric(event)';
         buildRow.appendChild(el);
+        
+        
+        // Description Cell - Populate the Select Options
+        {section loop=$parts_prefill_items name=i}
+            el.options[{$smarty.section.i.index}] = new Option('{$parts_prefill_items[i].description}', '{$parts_prefill_items[i].description}');
+        {/section}
+
+
+        // Description Cell - Convert Select Input to a real Combo Box using dhtmlxcombo
+        var combo = dhtmlXComboFromSelect('parts_description['+iteration+']');
+
+        // Description Cell - Set Combobox settings
+        combo.setSize(400);    
+        combo.DOMelem_input.maxLength = 50;    
+        combo.DOMelem_input.required = true;   
+
+        // Description Cell - Apply Key restriction to the virtual combobox
+        dhtmlxEvent(combo.DOMelem_input, "keypress", function(e) {
+
+            if(onlyAlphaNumeric(e)) { return true; }
+
+            e.cancelBubble=true;
+            if (e.preventDefault) e.preventDefault();
+                return false;
+        } );        
 
 
 
-        // Price Cell - Create Cell
+        // Amount Cell - Create Cell
         var buildRow = row.insertCell(3);        
         //buildRow.setAttribute('width', '40px');
         //buildRow.setAttribute('class', 'olotd4');
 
-        // Price Cell - Create Select Input
-        var el = document.createElement('input');
+        // Amount Cell - Create Select Input
+        var el = document.createElement('select');
         el.setAttribute('id', 'parts_amount['+iteration+']');
         el.setAttribute('name', 'parts_amount['+iteration+']');
         //el.setAttribute('class', 'olotd4');
-        el.setAttribute('size', '10');
+        //el.setAttribute('size', '6');
         //el.setAttribute('value', '1');
-        el.setAttribute('maxlength', '10');    
-        el.setAttribute('pattern', '{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}');
-        el.required = true;
-        el.setAttribute('onkeydown','return onlyNumbersPeriod(event)');
+        //el.setAttribute('maxlength', '6');    
+        //el.setAttribute('pattern', '{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}');
+        //el.setAttribute('onkeydown','return onlyNumbersPeriod(event)');
+        //el.required = true;
+        //el.setAttribute('onkeydown','return onlyNumbersPeriod(event)');
         buildRow.appendChild(el);
+        
+        
+        // Amount Cell - Populate the Select Options
+        {section loop=$parts_prefill_items name=i}
+            el.options[{$smarty.section.i.index}] = new Option('{$parts_prefill_items[i].amount}', '{$parts_prefill_items[i].amount}');
+        {/section}
 
+        // Amount Cell - Add some HTML to add the Currency Symbol to the left of the Rate Box      
+        buildRow.innerHTML = '<div style="float:left;"><b>{$currency_sym}&nbsp;</b></div><div>' + buildRow.innerHTML + '</div>';
+        
+        // Amount Cell - Convert Select Input to a real Combo Box using dhtmlxcombo - Run after adding currency symbol to the cell otherwise it does not work
+        var combo = dhtmlXComboFromSelect('parts_amount['+iteration+']');         
 
-        // Price Cell - Add some HTML to add the Currency Symbol        
-        buildRow.innerHTML = '<b>{$currency_sym}&nbsp;</b>' + buildRow.innerHTML;
+        // Amount Cell - Set Combobox settings
+        combo.setSize(90);  // This sets the width of the combo box and drop down options width  
+        combo.DOMelem_input.maxLength = 10;
+        combo.DOMelem_input.setAttribute('pattern', '{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}');
+        combo.DOMelem_input.required = true;
+
+        // Amount Cell - Apply Key restriction to the virtual combobox
+        dhtmlxEvent(combo.DOMelem_input, "keypress", function(e) {
+
+            if(onlyNumbersPeriod(e)) { return true; }
+
+            e.cancelBubble=true;
+            if (e.preventDefault) e.preventDefault();
+                return false;
+        } );
 
     }
 
@@ -467,13 +519,13 @@
                                                                 <td class="row2"><b>{t}No{/t}</b></td>
                                                                 <td class="row2" width="12"><b>{t}Qty{/t}</b></td>
                                                                 <td class="row2"><b>{t}Description{/t}</b></td>
-                                                                <td class="row2"><b>{t}Rate{/t}</b></td>
+                                                                <td class="row2"><b>{t}Amount{/t}</b></td>
                                                                 <td class="row2"><b>{t}Total{/t}</b></td>
                                                                 <td class="row2"><b>{t}Actions{/t}</b></td>
                                                             </tr>
                                                             {section name=l loop=$labour_items}
                                                                 <tr class="olotd4">
-                                                                    <td>{$smarty.section.q.index+1}</td>
+                                                                    <td>{$smarty.section.l.index+1}</td>
                                                                     <td>{$labour_items[l].qty}</td>
                                                                     <td>{$labour_items[l].description}</td>
                                                                     <td>{$currency_sym}{$labour_items[l].amount|string_format:"%.2f"}</td>
@@ -496,9 +548,9 @@
                                                     <table width="100%" cellpadding="3" cellspacing="0" border="0" class="olotable" id="labour_items">
                                                         <tr class="olotd4">
                                                             <td class="row2"><b>{t}No{/t}</b></td>
-                                                            <td class="row2"><b>{t}Hours{/t}</b></td>
+                                                            <td class="row2"><b>{t}Qty{/t}</b></td>
                                                             <td class="row2"><b>{t}Description{/t}</b></td>
-                                                            <td class="row2"><b>&nbsp;&nbsp;{t}Rate{/t}</b></td>
+                                                            <td class="row2"><b>&nbsp;&nbsp;{t}Amount{/t}</b></td>
                                                         </tr>
 
                                                         <!-- Additional Rows are added here -->
@@ -526,13 +578,13 @@
                                                                 <td class="row2"><b>{t}No{/t}</b></td>
                                                                 <td class="row2"><b>{t}Qty{/t}</b></td>
                                                                 <td class="row2"><b>{t}Description{/t}</b></td>
-                                                                <td class="row2"><b>{t}Price{/t}</b></td>
+                                                                <td class="row2"><b>{t}Amount{/t}</b></td>
                                                                 <td class="row2"><b>{t}Total{/t}</b></td>
                                                                 <td class="row2"><b>{t}Actions{/t}</b></td>
                                                             </tr>
                                                             {section name=p loop=$parts_items}
                                                                 <tr class="olotd4">
-                                                                    <td>{$smarty.section.w.index+1}</td>
+                                                                    <td>{$smarty.section.p.index+1}</td>
                                                                     <td>{$parts_items[p].qty}</td>
                                                                     <td>{$parts_items[p].description}</td>
                                                                     <td>{$currency_sym}{$parts_items[p].amount|string_format:"%.2f"}</td>
@@ -557,7 +609,7 @@
                                                             <td class="row2"><b>{t}No{/t}</b></td>
                                                             <td class="row2"><b>{t}Qty{/t}</b></td>
                                                             <td class="row2"><b>{t}Description{/t}</b></td>
-                                                            <td class="row2"><b>{t}Price{/t}</b></td>
+                                                            <td class="row2"><b>{t}Amount{/t}</b></td>
                                                         </tr>
 
                                                         <!-- Additional Rows are added here -->
