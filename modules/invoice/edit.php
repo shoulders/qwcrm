@@ -53,7 +53,7 @@ $smarty->assign('transactions',             get_invoice_transactions($db, $invoi
 
 // Misc
 $smarty->assign('workorder_status',         get_workorder_details($db, $workorder_id, 'status')                                         ); 
-$smarty->assign('employee_display_name',    get_user_details($db, get_invoice_details($db, $invoice_id, 'employee_id'),'display_name')  );
+$smarty->assign('employee_display_name',    get_user_details($db, get_invoice_details($db, $invoice_id, 'employee_id'), 'display_name') );
 
 // these are needed for the record deletion routines - consider making all fields editable
 $smarty->assign('workorder_id',             get_invoice_details($db, $invoice_id, 'workorder_id')                                       );
