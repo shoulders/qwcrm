@@ -70,8 +70,8 @@
                                                             <td class="olotd4"><input name="description" class="olotd5" size="50" type="text" maxlength="50" required onkeydown="return onlyAlphaNumeric(event);"></td>
                                                             <td class="olotd4" nowrap>
                                                                 <select class="olotd5" name="type">
-                                                                    <option value="Labour">{t}Labour{/t}</option>
-                                                                    <option value="Parts" selected>{t}Parts{/t}</option>
+                                                                    <option value="Labour" selected>{t}Labour{/t}</option>
+                                                                    <option value="Parts">{t}Parts{/t}</option>
                                                                 </select>
                                                             </td>
                                                             <td class="olotd4">{$currency_sym}<input name="amount" class="olotd5" size="10" type="text" maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumbersPeriod(event);"></td>
@@ -85,6 +85,13 @@
                                                         </tr>
                                                     </table>
                                                 </form>
+                                                <div>
+                                                    <form method="POST" action="index.php?page=invoice:prefill_items">
+                                                        <strong><span style="color: green;">{t}Export Prefill Items as a CSV file{/t}</span></strong>
+                                                        <input type="hidden" name="prefill_id" value="{$invoice_prefill_items[q].prefill_id}">
+                                                        <button type="submit" name="export_invoice_prefill_items" value="export">{t}Export{/t}</button>
+                                                    </form>
+                                                </div>
                                                 {if $login_usergroup_id == 1 || $login_usergroup_id == 2}                                                  
                                                     <script>                                                    
                                                         $(function() {

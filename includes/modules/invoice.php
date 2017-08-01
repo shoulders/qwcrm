@@ -407,20 +407,18 @@ function get_invoice_parts_item_details($db, $parts_id, $item = null) {
 #   Get invoice prefill items         #
 #######################################
 
-function get_invoice_prefill_items($db, $type = null, $status = '1') {
+function get_invoice_prefill_items($db, $type = null, $status = null) {
     
     $sql = "SELECT * FROM ".PRFX."invoice_prefill_items";
     
     // prepare the sql for the optional filter
     $sql .= " WHERE prefill_id >= 1";
 
-    // filter by status
-    if($status) {" AND active=".$db->qstr($status);}
-    
     // filter by type
-    if($type) { $sql .= " AND type=".$db->qstr($type);} 
-    //if($type == 'labour') { $sql .= " AND type='labour'";}
-    //if($type == 'parts') { $sql .= " AND type='parts'";} 
+    if($type) { $sql .= " AND type=".$db->qstr($type);}    
+    
+    // filter by status
+    if($status) {$sql .= " AND active=".$db->qstr($status);}
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the invoice prefill items for the selected status."));
@@ -681,7 +679,7 @@ function check_invoice_has_workorder($db, $invoice_id) {
     $sql = "SELECT workorder_id FROM ".PRFX."invoice WHERE invoice_id=".$invoice_id;
     
     if(!$rs = $db->Execute($sql)) {        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to chack if the invoice has a work order."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to check if the invoice has a work order."));
         exit;
     } else {        
         
@@ -726,7 +724,7 @@ function upload_invoice_prefill_items_csv($db, $VAR) {
         if ($_FILES['invoice_prefill_csv']['error'] > 0 ) {
             echo gettext("Return Code").': ' . $_FILES['invoice_prefill_csv']['error'] . '<br />';                
 
-        // If no errors then move the file from the PHP temporary storage to the logo location
+        // If no errors then proceed to processing the data
         } else {        
 
             // Empty Current Invoice Rates Table (if set)
@@ -743,8 +741,17 @@ function upload_invoice_prefill_items_csv($db, $VAR) {
             // Open CSV file            
             $handle = fopen($_FILES['invoice_prefill_csv']['tmp_name'], 'r');
 
-            // Read CSV data and insert into database
-            while (($data = fgetcsv($handle, 1000, ',')) !== FALSE) {
+            // Row counter to allow for header line
+            $row = 1;
+
+            // Read CSV data and insert into database            
+            while (($data = fgetcsv($handle, 1000,',')) !== FALSE) {
+                
+                // Skip the first line with the column names
+                if($row == 1) {                    
+                    $row++;
+                    continue;               
+                }
 
                 $sql = "INSERT INTO ".PRFX."invoice_prefill_items(description, type, amount, active) VALUES ('$data[0]','$data[1]','$data[2]','$data[3]')";
 
@@ -752,6 +759,8 @@ function upload_invoice_prefill_items_csv($db, $VAR) {
                     force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to insert the new prefill items into the database."));
                     exit;                    
                 }
+                
+                $row++;
 
             }
 
@@ -776,5 +785,44 @@ function upload_invoice_prefill_items_csv($db, $VAR) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the invoice labour rates because the submitted file was invalid."));
 
     }
+    
+}
+
+##################################################
+#   Export Invoice Prefill Items as a  CSV file  #
+##################################################
+
+function export_invoice_prefill_items_csv($db) {
+    
+    $sql = "SELECT description, type, amount, active FROM ".PRFX."invoice_prefill_items";
+    
+    if(!$rs = $db->Execute($sql)) {        
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get invoice prefill items from the database."));
+        exit;
+    } else {        
+        
+        $prefill_items = $rs->GetArray();
+        
+        // output headers so that the file is downloaded rather than displayed
+        header('Content-Type: text/csv; charset=utf-8');
+        header('Content-Disposition: attachment; filename=qwcrm_invoice_prefill_items.csv');
+        
+        // create a file pointer connected to the output stream
+        $output_stream = fopen('php://output', 'w');
+        
+        // output the column headings
+        fputcsv($output_stream, array(gettext("Description"), gettext("Type"), gettext("Amount"), gettext("Active")));
+
+        // loop over the rows, outputting them
+        foreach($prefill_items as $key => $value) {
+            $row = array($value['description'], $value['type'], $value['amount'], $value['active']);
+            fputcsv($output_stream, $row);
+            
+        }       
+        
+        // close the csv file
+        fclose($output_stream);        
+        
+    }    
     
 }

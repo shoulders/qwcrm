@@ -4,6 +4,12 @@ defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'modules/invoice.php');
 
+// If the export of the invoice prefill items has been requested
+if($VAR['export_invoice_prefill_items'] == 'export') {
+    export_invoice_prefill_items_csv($db);
+    die();
+}
+
 // if something submitted
 if(isset($VAR['submit'])) {
 

@@ -39,8 +39,8 @@ $smarty->assign('customer_details',     get_customer_details($db, get_invoice_de
 $smarty->assign('invoice_details',      get_invoice_details($db, $invoice_id)                                                       );
 
 // prefill
-$smarty->assign('labour_prefill_items', get_invoice_prefill_items($db, 'Labour')                                                    ); 
-$smarty->assign('parts_prefill_items',  get_invoice_prefill_items($db, 'Parts')                                                     ); 
+$smarty->assign('labour_prefill_items', get_invoice_prefill_items($db, 'Labour', '1')                                               ); 
+$smarty->assign('parts_prefill_items',  get_invoice_prefill_items($db, 'Parts', '1')                                                ); 
 
 // Items in the database
 $smarty->assign('labour_items',         get_invoice_labour_items($db, $invoice_id)                                                  );
