@@ -34,11 +34,11 @@
 
                                         <!-- The Actual Tabs -->
                                         <ul class="tabs">
-                                            <li class="active"><a href="#" rel="#tab_1_contents" class="tab"><img src="{$theme_images_dir}icons/workorders.gif" alt="" border="0" height="14" width="14" />&nbsp;{t}Work Order{/t}</a></li>
-                                            <li><a href="#" rel="#tab_2_contents" class="tab"><img src="{$theme_images_dir}icons/customers.gif" alt="" border="0" height="14" width="14" />&nbsp;{t}Customer{/t}</a></li>
-                                            <li><a href="#" rel="#tab_3_contents" class="tab"><img src="{$theme_images_dir}icons/16x16/Calendar.gif" alt="" border="0" height="14" width="14" />&nbsp;{t}Schedule{/t}</a></li>
-                                            <li><a href="#" rel="#tab_4_contents" class="tab"><img src="{$theme_images_dir}icons/note.png" alt="" border="0" height="14" width="14" />&nbsp;{t}Notes{/t}</a></li>                        
-                                            <li><a href="#" rel="#tab_5_contents" class="tab"><img src="{$theme_images_dir}icons/clock.gif" alt="" border="0" height="14" width="14" />&nbsp;{t}History{/t}</a></li>
+                                            <li class="active"><a href="javascript: void(0)" rel="#tab_1_contents" class="tab"><img src="{$theme_images_dir}icons/workorders.gif" alt="" border="0" height="14" width="14" />&nbsp;{t}Work Order{/t}</a></li>
+                                            <li><a href="javascript: void(0)" rel="#tab_2_contents" class="tab"><img src="{$theme_images_dir}icons/customers.gif" alt="" border="0" height="14" width="14" />&nbsp;{t}Customer{/t}</a></li>
+                                            <li><a href="javascript: void(0)" rel="#tab_3_contents" class="tab"><img src="{$theme_images_dir}icons/16x16/Calendar.gif" alt="" border="0" height="14" width="14" />&nbsp;{t}Schedule{/t}</a></li>
+                                            <li><a href="javascript: void(0)" rel="#tab_4_contents" class="tab"><img src="{$theme_images_dir}icons/note.png" alt="" border="0" height="14" width="14" />&nbsp;{t}Notes{/t}</a></li>                        
+                                            <li><a href="javascript: void(0)" rel="#tab_5_contents" class="tab"><img src="{$theme_images_dir}icons/clock.gif" alt="" border="0" height="14" width="14" />&nbsp;{t}History{/t}</a></li>
                                         </ul>
 
                                         <!-- This is used so the contents do not appear to the right of the tabs -->

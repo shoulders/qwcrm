@@ -105,7 +105,7 @@
                                                             } );
                                                         } );                                                    
                                                     </script>                                                    
-                                                    <a href="#" id="newfile">{t}Upload a Prefill Items CSV file{/t}</a>
+                                                    <a href="javascript: void(0)" id="newfile">{t}Upload a Prefill Items CSV file{/t}</a>
                                                     <div id="newuserform">
                                                         <table width="100%">
                                                             <tr>
