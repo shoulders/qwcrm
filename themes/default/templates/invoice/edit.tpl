@@ -48,14 +48,14 @@
         el.setAttribute('type', 'text');
         el.setAttribute('maxlength', '6');
         el.required = true;
-        el.setAttribute('onkeydown','return onlyNumbers(event)');
+        el.setAttribute('onkeydown', 'return onlyNumbers(event)');
         buildRow.appendChild(el);
 
 
 
         // Description Cell - Create Cell
         var buildRow = row.insertCell(2);        
-        //buildRow.setAttribute('width', '300px');
+        //buildRow.setAttribute('width', '100px');
         //buildRow.setAttribute('class', 'olotd4');
 
         // Description Cell - Create Select Input
@@ -63,14 +63,19 @@
         el.setAttribute('id', 'labour_description['+iteration+']');
         el.setAttribute('name', 'labour_description['+iteration+']');
         //el.setAttribute('class', 'olotd4');
-        //el.setAttribute('size', '100');
+        //el.setAttribute('size', '62');
         //el.setAttribute('value', '1');
+        //el.setAttribute('type', 'text');  // only required of 'input'
         //el.setAttribute('maxlength', '50');
         el.required = true;
-        //el.onkeypress = function(event) { return onlyAlphaNumeric(event); } ;
-        //el.setAttribute("onkeypress", "return isNumberKeyDecimal(event)");
         //el.onkeydown = 'return onlyAlphaNumeric(event)';
-        buildRow.appendChild(el);    
+        buildRow.appendChild(el);
+        
+            // Other key press examples - utested, unused
+            //el.setAttribute('onkeypress', 'return onlyAlphaNumeric(event)');
+            //el.setAttribute('onkeydown', 'return onlyAlphaNumeric(event)');
+            //el.onkeypress = function(event) { return onlyAlphaNumeric(event); } ;        
+            //el.onkeydown = 'return onlyAlphaNumeric(event)';
 
 
         // Description Cell - Populate the Select Options
@@ -112,9 +117,10 @@
         //el.setAttribute('class', 'olotd4');
         //el.setAttribute('size', '6');
         //el.setAttribute('value', '1');
+        //el.setAttribute('type', 'text');  // only required of 'input'
         //el.setAttribute('maxlength', '6');
         //el.required = true;
-        //el.setAttribute('onkeydown','return onlyNumbersPeriod(event)');
+        //el.setAttribute('onkeydown', 'return onlyNumbersPeriod(event)');
         buildRow.appendChild(el);
 
 
@@ -196,14 +202,14 @@
         el.setAttribute('type', 'text');
         el.setAttribute('maxlength', '6');
         el.required = true;
-        el.setAttribute('onkeydown','return onlyNumbers(event)');
+        el.setAttribute('onkeydown', 'return onlyNumbers(event)');
         buildRow.appendChild(el);
 
 
 
         // Description Cell - Create Cell
         var buildRow = row.insertCell(2);        
-        //buildRow.setAttribute('width', '300px');
+        //buildRow.setAttribute('width', '100px');
         //buildRow.setAttribute('class', 'olotd4');
 
         // Description Cell - Create Select Input
@@ -211,13 +217,11 @@
         el.setAttribute('id', 'parts_description['+iteration+']');
         el.setAttribute('name', 'parts_description['+iteration+']');    
         //el.setAttribute('class', 'olotd4');
-        //el.setAttribute('size', '100');
+        //el.setAttribute('size', '62');
         //el.setAttribute('value', '1');
         //el.setAttribute('type', 'text');
         //el.setAttribute('maxlength', '50');
-        el.required = true;
-        //el.onkeypress = function(event) { return onlyAlphaNumeric(event); } ;
-        //el.setAttribute("onkeypress", "return isNumberKeyDecimal(event)");
+        el.required = true;       
         //el.onkeydown = 'return onlyAlphaNumeric(event)';
         buildRow.appendChild(el);
         
@@ -259,13 +263,12 @@
         el.setAttribute('id', 'parts_amount['+iteration+']');
         el.setAttribute('name', 'parts_amount['+iteration+']');
         //el.setAttribute('class', 'olotd4');
-        //el.setAttribute('size', '6');
+        //el.setAttribute('size', '10');
         //el.setAttribute('value', '1');
-        //el.setAttribute('maxlength', '6');    
-        //el.setAttribute('pattern', '{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}');
-        //el.setAttribute('onkeydown','return onlyNumbersPeriod(event)');
+        //el.setAttribute('maxlength', '10');    
+        //el.setAttribute('pattern', '{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}');        
         //el.required = true;
-        //el.setAttribute('onkeydown','return onlyNumbersPeriod(event)');
+        //el.setAttribute('onkeydown', 'return onlyNumbersPeriod(event)');
         buildRow.appendChild(el);
         
         
