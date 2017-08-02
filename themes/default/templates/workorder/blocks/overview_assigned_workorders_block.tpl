@@ -7,17 +7,17 @@
         <td class="olohead"><b>{t}Customer{/t}</b></td>
         <td class="olohead"><b>{t}Scope{/t}</b></td>
         <td class="olohead"><b>{t}Status{/t}</b></td>
-        <td class="olohead"><b>{t}Tech{/t}</b></td>
+        <td class="olohead"><b>{t}Techician{/t}</b></td>
         <td class="olohead"><b>{t}Action{/t}</b></td>
     </tr>
     {section name=a loop=$assigned_workorders}    
         <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=workorder:details&workorder_id={$assigned_workorders[a].workorder_id}&customer_id={$assigned_workorders[a].customer_id}';" class="row1">
 
             <!-- ID -->
-            <td class="olotd4"><a href="index.php?page=workorder:details&workorder_id={$assigned_workorders[a].workorder_id}&customer_id={$assigned_workorders[a].customer_id}">{$assigned_workorders[a].workorder_id}</a></td>
+            <td class="olotd4"><a href="index.php?page=workorder:details&workorder_id={$assigned_workorders[a].workorder_id}">{$assigned_workorders[a].workorder_id}</a></td>
 
             <!-- Opened -->
-            <td class="olotd4"> {$assigned_workorders[a].open_date|date_format:$date_format}</td>
+            <td class="olotd4"> {$assigned_workorders[a].workorder_open_date|date_format:$date_format}</td>
 
             <!-- Customer -->
             <td class="olotd4" nowrap>
@@ -26,18 +26,18 @@
             </td>
 
             <!-- Scope -->
-            <td class="olotd4" nowrap>{$assigned_workorders[a].scope}</td>
+            <td class="olotd4" nowrap>{$assigned_workorders[a].workorder_scope}</td>
 
             <!-- Status -->
             <td class="olotd4" align="center">
-                {if $assigned_workorders[a].status == '1'}{t}WORKORDER_STATUS_1{/t}{/if}
-                {if $assigned_workorders[a].status == '2'}{t}WORKORDER_STATUS_2{/t}{/if}
-                {if $assigned_workorders[a].status == '3'}{t}WORKORDER_STATUS_3{/t}{/if}
-                {if $assigned_workorders[a].status == '6'}{t}WORKORDER_STATUS_6{/t}{/if}
-                {if $assigned_workorders[a].status == '7'}{t}WORKORDER_STATUS_7{/t}{/if}
-                {if $assigned_workorders[a].status == '8'}{t}workorder_status_8{/t}{/if}
-                {if $assigned_workorders[a].status == '9'}{t}WORKORDER_STATUS_9{/t}{/if}
-                {if $assigned_workorders[a].work_order_statuS == '10'}{t}WORKORDER_STATUS_10{/t}{/if}
+                {if $assigned_workorders[a].workorder_status == '1'}{t}WORKORDER_STATUS_1{/t}{/if}
+                {if $assigned_workorders[a].workorder_status == '2'}{t}WORKORDER_STATUS_2{/t}{/if}
+                {if $assigned_workorders[a].workorder_status == '3'}{t}WORKORDER_STATUS_3{/t}{/if}
+                {if $assigned_workorders[a].workorder_status == '6'}{t}WORKORDER_STATUS_6{/t}{/if}
+                {if $assigned_workorders[a].workorder_status == '7'}{t}WORKORDER_STATUS_7{/t}{/if}
+                {if $assigned_workorders[a].workorder_status == '8'}{t}WORKORDER_STATUS_8{/t}{/if}
+                {if $assigned_workorders[a].workorder_status == '9'}{t}WORKORDER_STATUS_9{/t}{/if}
+                {if $assigned_workorders[a].workorder_status == '10'}{t}WORKORDER_STATUS_10{/t}{/if}
             </td>
 
             <!-- Employee -->
@@ -55,6 +55,7 @@
                     <img src="{$theme_images_dir}icons/16x16/viewmag.gif" border="0" onMouseOver="ddrivetip('{t}View The Work Order{/t}');" onMouseOut="hideddrivetip();">
                 </a>    
             </td>
+            
         </tr>
     {sectionelse}
         <tr>

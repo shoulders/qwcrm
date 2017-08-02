@@ -61,7 +61,10 @@ function display_workorders($db, $direction = 'DESC', $use_pages = false, $page_
             ".PRFX."customer.customer_id,
             ".PRFX."customer.display_name AS customer_display_name,
                 
-            ".PRFX."workorder.workorder_id, employee_id, open_date, close_date, scope,
+            ".PRFX."workorder.workorder_id, employee_id,
+            ".PRFX."workorder.open_date AS workorder_open_date,
+            ".PRFX."workorder.close_date AS workorder_close_date,
+            ".PRFX."workorder.scope AS workorder_scope,
             ".PRFX."workorder.status AS workorder_status
                
             FROM ".PRFX."workorder

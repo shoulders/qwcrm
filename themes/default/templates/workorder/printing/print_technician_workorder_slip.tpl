@@ -47,7 +47,7 @@
                 <table border="0" cellpadding="4" cellspacing="0">
                     <tr>
                         <td>
-                            <p><b><font size="+1">{$customer_details.customer_display_name}</font></b></p>
+                            <p><b><font size="+1">{$customer_details.display_name}</font></b></p>
                             <p>                            
                                 <b>{t}Address{/t}:</b><br>
                                 {$customer_details.address}<br>
@@ -172,7 +172,7 @@
                                 <td>
                                     <p>
                                         ------------------------------------------------------------------------------------<br>
-                                        {t}This note was created by{/t} <b>{t}Technician{/t}: </b>{$workorder_notes[b].employee_display_name} {t}on{/t} </b> {$workorder_notes[b].date|date_format:"$date_format %R"}
+                                        {t}This note was created by{/t} <b>{t}Technician{/t}: </b>{$workorder_notes[b].employee_id} {t}on{/t} </b> {$workorder_notes[b].date|date_format:"$date_format %R"}
                                     </p>
                                     <div>{$workorder_notes[b].description}</div>                       
                                 </td>

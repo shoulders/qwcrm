@@ -16,8 +16,8 @@
         <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=giftcert:details&giftcert_id={$active_giftcerts[i].user_id}';" class="row1">
             <td class="olotd4"><a href="index.php?page=giftcert:details&giftcert_id={$active_giftcerts[i].giftcert_id}">{$active_giftcerts[i].giftcert_id}</a></td>
             <td class="olotd4">{$active_giftcerts[i].giftcert_code}</td>
-            <td class="olotd4"><a href="index.php?page=customer:details&customer_id={$active_giftcerts[i].customer_id}">{$active_giftcerts[i].display_name}</a></td>
-            <td class="olotd4">{$active_giftcerts[i].DATE_EXPIRES|date_format:$date_format}</td>
+            <td class="olotd4"><a href="index.php?page=customer:details&customer_id={$active_giftcerts[i].customer_id}">{$active_giftcerts[i].customer_display_name}</a></td>
+            <td class="olotd4">{$active_giftcerts[i].date_expires|date_format:$date_format}</td>
             <td class="olotd4">
                 {if !$active_giftcerts[i].date_redeemed == ''}
                     {$active_giftcerts[i].date_redeemed|date_format:$date_format}
@@ -60,7 +60,7 @@
         <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=giftcert:details&giftcert_id={$redeemed_giftcerts[i].user_id}';" class="row1">
             <td class="olotd4"><a href="index.php?page=giftcert:details&giftcert_id={$redeemed_giftcerts[i].giftcert_id}">{$redeemed_giftcerts[i].giftcert_id}</a></td>
             <td class="olotd4">{$redeemed_giftcerts[i].giftcert_code}</td>
-            <td class="olotd4"><a href="index.php?page=customer:details&customer_id={$redeemed_giftcerts[i].customer_id}">{$redeemed_giftcerts[i].display_name}</a></td>
+            <td class="olotd4"><a href="index.php?page=customer:details&customer_id={$redeemed_giftcerts[i].customer_id}">{$redeemed_giftcerts[i].customer_display_name}</a></td>
             <td class="olotd4">{$redeemed_giftcerts[i].date_expires|date_format:$date_format}</td>
             <td class="olotd4">
                 {if !$redeemed_giftcerts[i].date_redeemed == ''}
@@ -73,7 +73,7 @@
             </td> 
             <td class="olotd4">{$currency_sym} {$redeemed_giftcerts[i].amount}</td>                                                            
             <td class="olotd4" nowrap>
-                {if !$redeemed_giftcerts[i].NOTES == ''}
+                {if !$redeemed_giftcerts[i].notes == ''}
                     <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{t}Notes{/t}</b><hr><p>{$redeemed_giftcerts[i].notes|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();">
                 {/if}
             </td>

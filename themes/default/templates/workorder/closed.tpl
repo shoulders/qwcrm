@@ -79,30 +79,45 @@
                                                         <td class="olohead"><b>{t}Technician{/t}</b></td>
                                                     </tr>
                                                     {section name=i loop=$workorders}                                                    
-                                                        {if $workorders[i].WORK_ORDER_ID != ''}
-                                                            <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=workorder:details&workorder_id={$workorders[i].workorder_id}&customer_id={$workorders[i].customer_id}';" class="row1">
+                                                        {if $workorders[i].workorder_id != ''}
+                                                            <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=workorder:details&workorder_id={$workorders[i].workorder_id}';" class="row1">
+                                                                
+                                                                <!-- ID -->
                                                                 <td class="olotd4"><a href="index.php?page=workorder:details&workorder_id={$workorders[i].workorder_id}&customer_id={$workorders[i].customer_id}">{$workorders[i].workorder_id}</a></td>
-                                                                <td class="olotd4"> {$workorders[i].open_date|date_format:$date_format}</td>
-                                                                <td class="olotd4">{$workorders[i].close_date|date_format:$date_format}</td>
+                                                                
+                                                                <!-- Opened -->
+                                                                <td class="olotd4"> {$workorders[i].workorder_open_date|date_format:$date_format}</td>
+                                                                
+                                                                <!-- Closed -->
+                                                                <td class="olotd4">{$workorders[i].workorder_close_date|date_format:$date_format}</td>
+                                                                
+                                                                <!-- Customer -->
                                                                 <td class="olotd4" nowrap>
                                                                     <img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" onMouseOver="ddrivetip('<b><center>{t}Contact Info{/t}</b></center><hr><b>{t}Phone{/t}: </b>{$workorders[i].customer_phone}<br> <b>{t}Fax{/t}: </b>{$workorders[i].customer_work_phone}<br><b>{t}Mobile{/t}: </b>{$workorders[i].customer_mobile_phone}<br><b>{t}Address{/t}: </b><br>{$workorders[i].customer_address}<br>{$workorders[i].customer_city}, {$workorders[i].customer_state}<br>{$workorders[i].customer_zip}');" onMouseOut="hideddrivetip();">                                                                         
                                                                     <a class="link1" href="index.php?page=customer:details&customer_id={$workorders[i].customer_id}">{$workorders[i].customer_display_name}</a>
                                                                 </td>
-                                                                <td class="olotd4" nowrap>{$workorders[i].WORK_ORDER_SCOPE}</td>
+                                                                
+                                                                <!-- Scope -->
+                                                                <td class="olotd4" nowrap>{$workorders[i].workorder_scope}</td>
+                                                                
+                                                                <!-- Status -->
                                                                 <td class="olotd4" align="center">
-                                                                    {if $workorders[i].status == '1'}{t}WORKORDER_STATUS_1{/t}{/if}
-                                                                    {if $workorders[i].status == '2'}{t}WORKORDER_STATUS_2{/t}{/if}
-                                                                    {if $workorders[i].status == '3'}{t}WORKORDER_STATUS_3{/t}{/if}
-                                                                    {if $workorders[i].status == '6'}{t}WORKORDER_STATUS_6{/t}{/if}
-                                                                    {if $workorders[i].status == '7'}{t}WORKORDER_STATUS_7{/t}{/if}
-                                                                    {if $workorders[i].status == '8'}{t}WORKORDER_STATUS_8{/t}{/if}
-                                                                    {if $workorders[i].status == '9'}{t}WORKORDER_STATUS_9{/t}{/if}
-                                                                    {if $workorders[i].status == '10'}{t}WORKORDER_STATUS_10{/t}{/if}
-                                                                </td>  
+                                                                    {if $workorders[i].workorder_status == '1'}{t}WORKORDER_STATUS_1{/t}{/if}
+                                                                    {if $workorders[i].workorder_status == '2'}{t}WORKORDER_STATUS_2{/t}{/if}
+                                                                    {if $workorders[i].workorder_status == '3'}{t}WORKORDER_STATUS_3{/t}{/if}
+                                                                    {if $workorders[i].workorder_status == '6'}{t}WORKORDER_STATUS_6{/t}{/if}
+                                                                    {if $workorders[i].workorder_status == '7'}{t}WORKORDER_STATUS_7{/t}{/if}
+                                                                    {if $workorders[i].workorder_status == '8'}{t}WORKORDER_STATUS_8{/t}{/if}
+                                                                    {if $workorders[i].workorder_status == '9'}{t}WORKORDER_STATUS_9{/t}{/if}
+                                                                    {if $workorders[i].workorder_status == '10'}{t}WORKORDER_STATUS_10{/t}{/if}
+                                                                </td>
+                                                                
+                                                                <!-- Employee -->
                                                                 <td class="olotd4" nowrap>
                                                                     <img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" onMouseOver="ddrivetip('<center><b>{t}Contact Info{/t}</b></center><hr><b>{t}Fax{/t}: </b>{$workorders[i].employee_work_phone}<br><b>{t}Mobile{/t}: </b>{$workorders[i].employee_mobile_phone}<br><b>{t}Home{/t}: </b>{$workorders[i].employee_home_phone}');" onMouseOut="hideddrivetip();">                                                                         
                                                                     <a class="link1" href="index.php?page=user:details&user_id={$workorders[i].employee_id}">{$workorders[i].employee_display_name}</a>
                                                                 </td>
+                                                                
                                                             </tr>
                                                         {else}
                                                             <tr>
