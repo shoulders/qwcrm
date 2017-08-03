@@ -107,22 +107,22 @@ function update_company_details($db, $VAR) {
         $sql .="logo                = ". $db->qstr( MEDIA_DIR . $new_logo_filename  ).",";
     }
     
-    $sql .="company_number      = ". $db->qstr( $VAR['company_number']     ).",
-            address             = ". $db->qstr( $VAR['address']            ).",
-            city                = ". $db->qstr( $VAR['city']               ).",
-            state               = ". $db->qstr( $VAR['state']              ).",
-            zip                 = ". $db->qstr( $VAR['zip']                ).",
-            country             = ". $db->qstr( $VAR['country']            ).",
-            phone               = ". $db->qstr( $VAR['phone']              ).",
-            mobile              = ". $db->qstr( $VAR['mobile']             ).",
-            fax                 = ". $db->qstr( $VAR['fax']                ).",
-            email               = ". $db->qstr( $VAR['email']              ).",    
-            website             = ". $db->qstr( $VAR['website']            ).",  
-            tax_rate            = ". $db->qstr( $VAR['tax_rate']           ).",
-            welcome_msg         = ". $db->qstr( $VAR['welcome_msg']        ).",
-            currency_symbol     = ". $db->qstr( $VAR['currency_symbol']    ).",
-            currency_code       = ". $db->qstr( $VAR['currency_code']      ).",
-            date_format         = ". $db->qstr( $VAR['date_format']        );
+    $sql .="company_number      = ". $db->qstr( $VAR['company_number']                  ).",
+            address             = ". $db->qstr( $VAR['address']                         ).",
+            city                = ". $db->qstr( $VAR['city']                            ).",
+            state               = ". $db->qstr( $VAR['state']                           ).",
+            zip                 = ". $db->qstr( $VAR['zip']                             ).",
+            country             = ". $db->qstr( $VAR['country']                         ).",
+            phone               = ". $db->qstr( $VAR['phone']                           ).",
+            mobile              = ". $db->qstr( $VAR['mobile']                          ).",
+            fax                 = ". $db->qstr( $VAR['fax']                             ).",
+            email               = ". $db->qstr( $VAR['email']                           ).",    
+            website             = ". $db->qstr( $VAR['website']                         ).",  
+            tax_rate            = ". $db->qstr( $VAR['tax_rate']                        ).",
+            welcome_msg         = ". $db->qstr( $VAR['welcome_msg']                     ).",
+            currency_symbol     = ". $db->qstr( htmlentities($VAR['currency_symbol'])   ).",
+            currency_code       = ". $db->qstr( $VAR['currency_code']                   ).",
+            date_format         = ". $db->qstr( $VAR['date_format']                     );
                           
 
     if(!$rs = $db->Execute($sql)) {
