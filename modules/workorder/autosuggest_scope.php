@@ -14,37 +14,32 @@ if(check_page_accessed_via_qwcrm('workorder:new') || check_page_accessed_via_qwc
     die();
     
 }
-
-// Logged in and not Public or Guest
-if (QFactory::getUser()->login_token && QFactory::getUser()->usergroup_id <= 6) {
     
-    // Is there a posted query string and is the string length greater than 0?
-    if(isset($VAR['posted_scope_string']) && strlen($VAR['posted_scope_string']) > 0) {
+// Is there a posted query string and is the string length greater than 0?
+if(isset($VAR['posted_scope_string']) && strlen($VAR['posted_scope_string']) > 0) {
 
-        $posted_scope_string    = $VAR['posted_scope_string'];
-        $sql                    = "SELECT scope FROM ".PRFX."workorder WHERE scope LIKE '$posted_scope_string%' LIMIT 10";
-        $rs                     = $db->Execute($sql);
-        $record_count           = $rs->RecordCount();        
-        
-        if($record_count) {
+    $posted_scope_string    = $VAR['posted_scope_string'];
+    $sql                    = "SELECT scope FROM ".PRFX."workorder WHERE scope LIKE '$posted_scope_string%' LIMIT 10";
+    $rs                     = $db->Execute($sql);
+    $record_count           = $rs->RecordCount();        
 
-            $autosuggest_items = $rs->GetArray(); 
+    if($record_count) {
 
-            // loop over the rows, outputting them to the page object in the required format
-            foreach($autosuggest_items as $key => $value) {
-                $BuildPage .= '<li onClick="fill(\''.$value['scope'].'\');">'.$value['scope'].'</li>';
-            } 
-            
-        } else {
-            
-            // No records found - do nothing            
-            
-        }
-        
+        $autosuggest_items = $rs->GetArray(); 
+
+        // loop over the rows, outputting them to the page object in the required format
+        foreach($autosuggest_items as $key => $value) {
+            $BuildPage .= '<li onClick="fill(\''.$value['scope'].'\');">'.$value['scope'].'</li>';
+        } 
+
     } else {
-        
-        // the string length was zero or not submitted - do nothing
-        
+
+        // No records found - do nothing            
+
     }
+
+} else {
+
+    // the string length was zero or not submitted - do nothing
 
 }
