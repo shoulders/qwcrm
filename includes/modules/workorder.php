@@ -313,9 +313,6 @@ function insert_workorder_note($db, $workorder_id, $note){
 
 function get_workorder_details($db, $workorder_id, $item = null) {   
 
-    // compensate for some invoices having no workorder    
-    if($workorder_id == '') { return array(); }
-    
     $sql = "SELECT * FROM ".PRFX."workorder WHERE workorder_id=".$db->qstr($workorder_id);
     
     if(!$rs = $db->execute($sql)){        
