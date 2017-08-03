@@ -210,13 +210,14 @@ function display_workorder_history($db, $workorder_id){
 # Insert New Work Order #
 #########################
 
-function insert_workorder($db, $customer_id, $created_by, $scope, $description, $comments){
+function insert_workorder($db, $customer_id, $employee_id, $scope, $description, $comments){
     
-    $sql = "INSERT INTO ".PRFX."workorder SET 
+    $sql = "INSERT INTO ".PRFX."workorder SET
+            employee_id     =". $db->qstr( $employee_id    ).",
             customer_id     =". $db->qstr( $customer_id    ).",
             open_date       =". $db->qstr( time()          ).",
             status          =". $db->qstr( 1               ).",            
-            created_by      =". $db->qstr( $created_by     ).",
+            created_by      =". $db->qstr( $employee_id    ).",
             scope           =". $db->qstr( $scope          ).",
             description     =". $db->qstr( $description    ).",            
             comments        =". $db->qstr( $comments       );

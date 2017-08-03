@@ -42,9 +42,7 @@
                                                 <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0">
                                                     <tr>
                                                         <td valign="top">                                                    
-                                                            <form method="POST" action="index.php?page=workorder:new" name="new_workorder" id="new_workorder">                                                    
-                                                                <input name="customer_id" value="{$customer_details.customer_id}" type="hidden">                                                    
-                                                                <input name="created_by" value="{$login_user_id}" type="hidden" >                                                    
+                                                            <form method="POST" action="index.php?page=workorder:new" name="new_workorder" id="new_workorder">                                                                                                                  
                                                                 <table class="olotable" width="100%" border="0"  cellpadding="4" cellspacing="0" summary="Work order display">
                                                                     <tr>
                                                                         <td class="olohead">{t}Opened{/t}</td>
@@ -55,9 +53,9 @@
                                                                     </tr>
                                                                     <tr>
                                                                         <td class="olotd4">{$smarty.now|date_format:$date_format}</td>
-                                                                        <td class="olotd4">{$customer_details.customer_display_name}</td>
+                                                                        <td class="olotd4">{$customer_details.display_name}</td>
                                                                         <td class="olotd4">
-                                                                            <input id="workorder_scope" name="workorder_scope" size="40" type="text" maxlength="80" required onkeydown="return onlyAlphaNumeric(event);" onkeyup="lookupSuggestions(this.value);" onblur="closeSuggestions();">
+                                                                            <input id="workorder_scope" name="scope" size="40" type="text" maxlength="80" required onkeydown="return onlyAlphaNumeric(event);" onkeyup="lookupSuggestions(this.value);" onblur="closeSuggestions();">
                                                                             <div class="suggestionsBoxWrapper">
                                                                                 <div class="suggestionsBox" id="suggestions">
                                                                                     <img src="{$theme_images_dir}upArrow.png" style="position: relative; top: -12px; left: 1px;" alt="upArrow" />
@@ -77,20 +75,22 @@
                                                                     </tr>
                                                                     <tr>
                                                                         <td class="olotd">
-                                                                            <textarea class="olotd4 mceCheckForContent" rows="15" cols="70" name="workorder_description"></textarea>
+                                                                            <textarea class="olotd4 mceCheckForContent" rows="15" cols="70" name="description"></textarea>
                                                                         </td>
                                                                     </tr>
                                                                 </table>
                                                                 <br>
+                                                                <input name="customer_id" value="{$customer_id}" type="hidden">                                                    
+                                                                <input name="employee_id" value="{$login_user_id}" type="hidden">
                                                                 <button type="submit" name="submit" value="submit">{t}Submit{/t}</button>                                                   
                                                                 <br>
                                                                 <br>
-                                                                <table class="olotable" width="100%" border="0" summary="Work order display">
+                                                                <table class="olotable" width="100%" border="0" summary="Work Order display">
                                                                     <tr>
                                                                         <td class="olohead">&nbsp;{t}Comments{/t}</td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td class="olotd"><textarea class="olotd4" rows="15" cols="70" name="workorder_comments"></textarea></td>
+                                                                        <td class="olotd"><textarea class="olotd4" rows="15" cols="70" name="comments"></textarea></td>
                                                                     </tr>
                                                                 </table>
                                                                 <br>                                                                                                                                                              
