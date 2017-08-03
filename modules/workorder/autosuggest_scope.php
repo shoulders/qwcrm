@@ -43,3 +43,6 @@ if(isset($VAR['posted_scope_string']) && strlen($VAR['posted_scope_string']) > 0
     // the string length was zero or not submitted - do nothing
 
 }
+
+// Skip page logging
+$skip_logging = true;
