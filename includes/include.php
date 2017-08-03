@@ -582,14 +582,16 @@ function check_acl($db, $login_usergroup_id, $module, $page_tpl) {
 
 function verify_qwcrm_is_installed_correctly($db){
 
-    // Is gettext install (for translations)
+    /* General Checks */
+
+    // Is gettext installed (for translations)
     if(!function_exists('gettext')) {
         die('Gettext is not installed which is required for the translation system.');
     }
     
-    // If no configuration file - redirect to the installation directory
+    // If there is no configuration file - redirect to the installation routine
     if(!is_file('configuration.php')){        
-        force_page('install/index.php');
+        force_page('setup', 'install');
         exit;
     }
     
@@ -598,24 +600,48 @@ function verify_qwcrm_is_installed_correctly($db){
         echo $db->ErrorMsg().'<br>';
         die(gettext("There is a database connection issue. Check your settings in the config file."));
     }
+    
+    /* MyITCRM Migration */
+    // add the checking routines here
         
-    // check the database can actually be read and retrieve the QWcrm database verion for the next function
-    if(!$qwcrm_database_version = get_qwcrm_database_version_number($db)) {
-        die(gettext("Cannot read the QWcrm version number from the database. This could be a database connection or issue."));
-    }
-
-
-    // Compare the version number of the file system against the database - if mismatch load upgrade for further instructions?
-    if(version_compare($qwcrm_database_version, QWCRM_VERSION, '!=')){
+    /* Compare the QWcrm file system and database versions - if mismatch load upgrade for further instructions? */
+    
+    // get the QWcrm database verion number
+    $qwcrm_database_version = get_qwcrm_database_version_number($db);
         
-        // I have not decided whether to use a message or automatic redirect to the upgrade folder        
-        die('<div style="color: red;">'.gettext("The File System and Database versions do not match, run the upgrade routine.").'</div>');    
-                
-        //force_page('upgrade');
+    // If the versions dont match do further checks
+    if(version_compare($qwcrm_database_version, QWCRM_VERSION, '!=')) {
+        
+        // Never installed - run install
+        if($qwcrm_database_version == '') { 
+            force_page('setup', 'install');
+            exit;
+        }
+        
+        // Failed upgrade
+        if($qwcrm_database_version == '0.0.0') { 
+            die('<div style="color: red;">'.gettext("The upgrade never completed successfully. Check the upgrade and error logs.").'</div>');
+        }
+        
+        // If the file system is older than the database
+        if(version_compare($qwcrm_database_version, QWCRM_VERSION, '>')) {             
+            die('<div style="color: red;">'.gettext("The file system is older than the database. Check the logs and your settings.").'</div>');
+        }
+        
+        // If the file system is newer than the database - run upgrade
+        if(version_compare($qwcrm_database_version, QWCRM_VERSION, '<')) {             
+            force_page('setup', 'upgrade');
+            exit;
+        }      
         
     }
     
-    // has been installed but the installion directory is still present  
+    // Has been installed but the setup directory is still present  
+    /*if(is_dir('setup') ) {
+        die('<div style="color: red;">'.gettext("The setup directory exists!! Please rename or remove the setup directory.").'</div>');       
+    }*/
+    
+    /* has been installed but the installation directory is still present  
     if(is_dir('install') ) {
         die('<div style="color: red;">'.gettext("The install Directory Exists!! Please Rename or remove the install directory.").'</div>');       
     }
@@ -623,7 +649,7 @@ function verify_qwcrm_is_installed_correctly($db){
     // has been installed but the upgrade directory is still present  
     if(is_dir('upgrade') ) {
         die('<div style="color: red;">'.gettext("The Upgrade Directory Exists!! Please Rename or remove the upgrade directory.").'</div>');     
-    }  
+    }  */
     
 }
 
@@ -636,7 +662,7 @@ function get_qwcrm_database_version_number($db){
     $sql = "SELECT * FROM ".PRFX."version ORDER BY ".PRFX."version.database_version DESC LIMIT 1";
     
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Could not compare the version of the file system and databases to verify they match."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Could not retrieve the QWcrm database version."));
         exit;        
     } else {
         

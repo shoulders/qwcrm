@@ -116,9 +116,6 @@ switch ($QConfig->error_reporting)
         break;
 }
 
-// remove this variable
-//unset($config);
-
 #################################################
 #          Security                             #
 #################################################
@@ -135,14 +132,6 @@ switch ($QConfig->error_reporting)
 ################################################
 #         Load Language                        #
 ################################################
-
-// when i remove the old laguage system perhaps keep the xml lookup code , and the control statements
-
-// Load Language Specifc Settings from language file
-//if(!xml2php('settings')){$smarty->assign('error_msg', 'Error in system language file');}
-
-// Load Language Translations
-//if(!load_language()) {$smarty->assign('error_msg', 'Error in system language file');}
 
 /* new system */
 
@@ -177,7 +166,7 @@ textdomain($textdomain);
 #    Verify QWcrm is installed correctly       #
 ################################################
 
-//verify_qwcrm_is_installed_correctly($db);
+verify_qwcrm_is_installed_correctly($db);
 
 ################################################
 #         Framework                            #
