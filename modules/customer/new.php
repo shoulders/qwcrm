@@ -11,8 +11,7 @@ if(isset($VAR['submit'])) {
     
     // Load the new Customer's Details page
     force_page('customer', 'details&customer_id='.$customer_id);
-    exit;  
-              
+    exit;               
     
 } else {
     

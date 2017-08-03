@@ -42,7 +42,7 @@
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><span style="color: #ff0000"></span><b>{t}Website{/t}</b></td>
-                                                                            <td><input name="customerWww" class="olotd5" size="50" type="url" maxlength="50" placeholder="https://quantumwarp.com/" pattern="^^https?://.+" onkeydown="return onlyURL(event);"></td>
+                                                                            <td><input name="website" class="olotd5" size="50" type="url" maxlength="50" placeholder="https://quantumwarp.com/" pattern="^^https?://.+" onkeydown="return onlyURL(event);"></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><span style="color: #ff0000"></span><b>{t}Email{/t}</b></td>
@@ -89,7 +89,7 @@
                                                                     </tr>
                                                                     <tr>
                                                                         <td align="right"><b>{t}Mobile{/t}</b></td>
-                                                                        <td><input name="work_phone" class="olotd5" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"></td>
+                                                                        <td><input name="mobile_phone" class="olotd5" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td align="right"><b>{t}Fax{/t}</b></td>
