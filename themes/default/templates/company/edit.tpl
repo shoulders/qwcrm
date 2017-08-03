@@ -134,7 +134,7 @@
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{t}Currency Code{/t}:</b></td>
-                                                            <td><input name="currency_code" class="olotd5" size="5" value="{$company_details.currency_code}" type="text" maxlength="3" required onkeydown="return onlyAlpha(event);">{t}eg: "USD" = US Dollars, "AUD" = Australian Dollars, "GBP" = British Pound.{/t}</td>
+                                                            <td><input name="currency_code" class="olotd5" size="5" value="{$company_details.currency_code}" type="text" maxlength="3" required onkeydown="return onlyAlpha(event);">{t}eg: British Pound = GBP, Euro = EUR, US Dollars = USD, Australian Dollars = AUD{/t}</td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{t}Date Formatting{/t}:</b></td>
