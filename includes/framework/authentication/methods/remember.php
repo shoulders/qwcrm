@@ -64,8 +64,7 @@ class PlgAuthenticationCookie //extends QFramework //class PlgSystemRemember //e
             // Check for the cookie - by seeing if there is any content            
             if ($this->cookie->get($cookieName))
             {
-                $auth = QFactory::getAuth();
-                $auth->login(array('username' => ''), array('silent' => true));
+                QFactory::getAuth()->login(array('username' => ''), array('silent' => true));
             }
         }
     }
