@@ -23,8 +23,15 @@ if($QConfig->force_ssl == 1 && !isset($_SERVER['HTTPS'])) {
 #   Prevent direct access to a page   #
 #######################################
 
-function check_page_accessed_via_qwcrm() {
-    
-    return preg_match('/^.*\?page=(.*)&.*/U', getenv('HTTP_REFERER'));
+function check_page_accessed_via_qwcrm($qwcrm_page = null) {    
+
+    // check if a specific QWcrm page is the referer
+    if($qwcrm_page != null) {
+        return preg_match('/^.*\?page='.$qwcrm_page.'.*/U', getenv('HTTP_REFERER'));
+        
+    // check if any QWcrm page is the referer   
+    } else {
+        return preg_match('/^.*\?page=(.*)&.*/U', getenv('HTTP_REFERER'));    
+    }
     
 }

@@ -8,7 +8,7 @@
         <td>            
             <table width="700" cellpadding="5" cellspacing="0" border="0">
                 <tr>                                
-                    <td class="menuhead2" width="80%">{t}New Work Order for{/t} {$customer_details.customer_display_name}</td>
+                    <td class="menuhead2" width="80%">{t}New Work Order for{/t} {$customer_details.display_name}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
                         <a>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}WORKORDER_NEW_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}WORKORDER_NEW_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
@@ -55,7 +55,7 @@
                                                                         <td class="olotd4">{$smarty.now|date_format:$date_format}</td>
                                                                         <td class="olotd4">{$customer_details.display_name}</td>
                                                                         <td class="olotd4">
-                                                                            <input id="workorder_scope" name="scope" size="40" type="text" maxlength="80" required onkeydown="return onlyAlphaNumeric(event);" onkeyup="lookupSuggestions(this.value);" onblur="closeSuggestions();">
+                                                                            <input id="scope" name="scope" size="40" type="text" maxlength="80" required onkeydown="return onlyAlphaNumeric(event);" onkeyup="lookupSuggestions(this.value);" onblur="closeSuggestions();">
                                                                             <div class="suggestionsBoxWrapper">
                                                                                 <div class="suggestionsBox" id="suggestions">
                                                                                     <img src="{$theme_images_dir}upArrow.png" style="position: relative; top: -12px; left: 1px;" alt="upArrow" />

@@ -4,7 +4,7 @@
         <td class="olohead">
             <table width="100%" cellpadding="0" cellspacing="0" border="0">
                 <tr>
-                    <td class="menuhead2" width="80%">&nbsp;{t}Descriprion{/t}</td>
+                    <td class="menuhead2" width="80%">&nbsp;{t}Description{/t}</td>
                     <td class="menuhead2" width="20%" align="right">
                         <table cellpadding="2" cellspacing="2" border="0">
                             <tr>

@@ -816,8 +816,7 @@ function export_invoice_prefill_items_csv($db) {
         // loop over the rows, outputting them
         foreach($prefill_items as $key => $value) {
             $row = array($value['description'], $value['type'], $value['amount'], $value['active']);
-            fputcsv($output_stream, $row);
-            
+            fputcsv($output_stream, $row);            
         }       
         
         // close the csv file

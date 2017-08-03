@@ -22,8 +22,7 @@ if(isset($VAR['submit'])) {
 
 }
 
-// Build the page
-$smarty->assign('workorder_id',             $workorder_id                                                       );    
-$smarty->assign('workorder_scope',          get_workorder_details($db, $workorder_id, 'scope')       );
-$smarty->assign('workorder_description',    get_workorder_details($db, $workorder_id, 'resolution')  );    
+// Build the page 
+$smarty->assign('scope',          get_workorder_details($db, $workorder_id, 'scope')       );
+$smarty->assign('description',    get_workorder_details($db, $workorder_id, 'resolution')  );    
 $BuildPage .= $smarty->fetch('workorder/details_edit_description.tpl');

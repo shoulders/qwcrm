@@ -3,24 +3,36 @@
 // New Workorder Scope Autosuggest
 function lookupSuggestions(scope_input_string) {
     
-    // If Scope term is greater than 5, hide the suggestion box. - if people keep typing it will dissapear
-    if(scope_input_string.length > 5) {        
+    // if scope input string is less than 3 do nothing
+    if(scope_input_string.length <= 3) {        
         $('#suggestions').hide();
+        return;
+    }
     
-    // Lookup Records and return list - workorder_new_scope_autosuggest.php returns <li></li> suggestions with onclick="fill(value)" added
-    } else {        
-        $.post('{$includes_dir}autosuggest/workorder_new_scope_autosuggest.php', { queryString: scope_input_string }, function(data) {
+    // If scope input string is greater than 10, hide the suggestion box. - if people keep typing it will dissapear
+    if(scope_input_string.length > 10) {        
+        $('#suggestions').hide();
+        return;
+    }
+    
+    // Lookup Records and return list - returns suggests in a list <li onclick="fill(value)" >(value)</li>
+    $.post('index.php?page=workorder:autosuggest_scope&theme=print', {             
+        posted_scope_string : scope_input_string }, function(data) {
             if(data.length > 0) {
                 $('#suggestions').show();
                 $('#autoSuggestionsList').html(data);
+            } else {
+                $('#suggestions').hide();
+                return;
             }
-        } );
-    }
+        }
+    );
+    
 }
 
 // Fill the selection into the Scope Input Box
 function fill(clickedSuggestion) {
-    $('#workorder_scope').val(clickedSuggestion);
+    $('#scope').val(clickedSuggestion);
     setTimeout("$('#suggestions').hide();", 200);
 }
 

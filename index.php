@@ -62,7 +62,7 @@ if(is_file('configuration.php')) {
     require('configuration.php');    
 }
 
-// Create config object for global scope
+// Create config object for global scope / settings
 $QConfig = new QConfig;
 
 // need to add error control here ie skipt strait to

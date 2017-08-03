@@ -20,14 +20,20 @@
                         <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0">
                             <tr>
                                 <td width="100%" valign="top">                                                                      
-                                    <form method="POST" action="index.php?page=workorder:details_edit_description" name="new_refund" id="new_refund">                                    
+                                    <form method="POST" action="index.php?page=workorder:details_edit_description">                                    
                                         <b>{t}Scope{/t}</b></br>
-                                        <input name="workorder_scope" class="olotd4" size="20" value="{$workorder_scope}" type="text" maxlength="80" required onkeydown="return onlyAlphaNumeric(event);">
+                                        <input id="scope" name="scope" size="40" type="text" maxlength="80" required onkeydown="return onlyAlphaNumeric(event);" onkeyup="lookupSuggestions(this.value);" onblur="closeSuggestions();">
+                                        <div class="suggestionsBoxWrapper">
+                                            <div class="suggestionsBox" id="suggestions">
+                                                <img src="{$theme_images_dir}upArrow.png" style="position: relative; top: -12px; left: 1px;" alt="upArrow" />
+                                                <div class="suggestionList" id="autoSuggestionsList">&nbsp;</div>
+                                            </div>
+                                        </div>
                                         <br>
                                         <br>
                                         <br>
                                         <b>{t}Description{/t}</b><br>
-                                        <textarea name="workorder_description" class="olotd4 mceCheckForContent" rows="15" cols="70">{$workorder_description}</textarea>
+                                        <textarea name="description" class="olotd4 mceCheckForContent" rows="15" cols="70">{$description}</textarea>
                                         <br>
                                         <input type="hidden" name="workorder_id" value="{$workorder_id}">
                                         <button type="submit" name="submit" value="submit">{t}Submit{/t}</button>

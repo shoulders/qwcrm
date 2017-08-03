@@ -23,5 +23,5 @@ if(isset($VAR['submit'])) {
 }   
     
 // Build the page
-$smarty->assign('workorder_note', get_workorder_note($db, $VAR['workorder_note_id']));
+$smarty->assign('workorder_note_details', get_workorder_note($db, $VAR['workorder_note_id']));
 $BuildPage .= $smarty->fetch('workorder/note_edit.tpl');

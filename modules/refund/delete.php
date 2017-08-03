@@ -4,9 +4,10 @@ defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'modules/refund.php');
 
-// Prevent direct access to this file
+// Prevent direct access to this page
 if(!check_page_accessed_via_qwcrm()) {
     force_page('refund', 'search', 'warning_msg='.gettext("No Direct Access Allowed"));
+    exit;
 }
 
 // Check if we have a refund_id
