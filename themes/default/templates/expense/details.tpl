@@ -6,7 +6,7 @@
                 <tr>
                     <td class="menuhead2" width="80%">{t}Expense Details {/t}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
-                        <a href="index.php?page=expense:edit&expense_id={$expense_details.expense_id}">
+                        <a href="index.php?page=expense:edit&expense_id={$expense_id}">
                             <img src="{$theme_images_dir}icons/edit.gif" alt="" height="16" border="0">{t}Edit{/t}
                        </a>&nbsp;
                         <a>                            
@@ -109,7 +109,6 @@
                                             <td class="menutd" colspan="3">{$expense_details.items}</td>
                                             <td class="menutd"></td>
                                         </tr>
-                                        {assign var="expense_id" value=$expense_details.expense_id}
                                     </table>
                                 </td>
                             </tr>

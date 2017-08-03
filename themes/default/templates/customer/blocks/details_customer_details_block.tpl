@@ -95,8 +95,6 @@
                                             <td class="menutd"><b>{t}Notes{/t}</b></td>
                                             <td class="menutd" colspan="3">{$customer_details.notes}</td>
                                         </tr>
-                                        {assign var="customer_id" value=$customer_details.customer_id}
-                                        {assign var="customer_name" value=$customer_details.display_name}
                                     </table>
 
                                 </td>

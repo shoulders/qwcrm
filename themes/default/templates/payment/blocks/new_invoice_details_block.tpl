@@ -36,7 +36,6 @@
                 <tr>
                     <td><b>{t}Phone{/t}</b> {$customer_details.customer_phone}</td>
             </table>
-            {assign var="customer_id" value=$customer_details.customer_id}                
         </td>
     </tr>
 </table>
