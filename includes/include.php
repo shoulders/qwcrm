@@ -601,6 +601,11 @@ function verify_qwcrm_is_installed_correctly($db){
         die(gettext("There is a database connection issue. Check your settings in the config file."));
     }
     
+    // Check the MySQL version is high enough to run QWcrm
+    if (version_compare(get_mysql_version($db), QWCRM_MINIMUM_MYSQL, '<')){
+        die(gettext("QWcrm requires MySQL").' '.QWCRM_MINIMUM_MYSQL.' '.'or later to run.'.' '.gettext("Your current version is").' '.get_mysql_version($db));
+    }
+    
     /* MyITCRM Migration */
     // add the checking routines here
         
@@ -650,6 +655,21 @@ function verify_qwcrm_is_installed_correctly($db){
     if(is_dir('upgrade') ) {
         die('<div style="color: red;">'.gettext("The Upgrade Directory Exists!! Please Rename or remove the upgrade directory.").'</div>');     
     }  */
+    
+}
+
+################################################
+#   Get MySQL version                          #
+################################################
+
+function get_mysql_version($db) {
+    
+    // adodb.org prefered method - does not bring back complete string - [server_info] =&gt; 5.5.5-10.1.13-MariaDB - Array ( [description] => 10.1.13-MariaDB [version] => 10.1.13 ) 
+    //$db->ServerInfo();
+    
+    // Extract and return the MySQL version - print_r($db) this and it gives you all of the values - 5.5.5-10.1.13-MariaDB
+    preg_match('/^[vV]?(\d+\.\d+\.\d+)/', $db->_connectionID->server_info, $matches);
+    return $matches[1];    
     
 }
 

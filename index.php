@@ -13,8 +13,9 @@
 // Define the application's minimum supported PHP version as a constant so it can be referenced within the application.
 define('QWCRM_MINIMUM_PHP', '5.4.0');
 
+// Check the PHP version is high enough to run QWcrm
 if (version_compare(PHP_VERSION, QWCRM_MINIMUM_PHP, '<')){
-    die(gettext("Your host needs to use PHP"). ' ' . QWCRM_MINIMUM_PHP . ' ' . gettext("or higher to run this version of QWCRM!"));
+    die(gettext("QWcrm requires PHP").' '.QWCRM_MINIMUM_PHP.' '.'or later to run.'.' '.gettext("Your current version is").' '.PHP_VERSION);
 }
 
 #################################################
