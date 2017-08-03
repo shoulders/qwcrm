@@ -1,14 +1,30 @@
 <?php
 
-// Session instance is required
-session_start();
+// Set the minmu length before lookups occur
+if(!strlen($_POST['queryString']) >= 4) {
+    die();
+}
+
+// required include files
+require('configuration.php');
+require('includes/defines.php');
+require(INCLUDES_DIR.'security.php');
+//require(INCLUDES_DIR.'include.php');
+//require(INCLUDES_DIR.'email.php');
+require(INCLUDES_DIR.'adodb.php');
+//require(INCLUDES_DIR.'smarty.php');
+//require(FRAMEWORK_DIR.'qwframework.php');
+
+//require ('../../configuration.php');
+//require ('../../includes/defines.php');
+
+$user = QFactory::getUser();
+
 
 // Logged in and not Public or Guest
-if ($_SESSION['login_token'] && $_SESSION['login_usergroup_id'] != '8' && $_SESSION['login_usergroup_id'] != '9'){    
+if (QFactory::getUser()->login_token && QFactory::getUser()->usergroup_id != '8' && QFactory::getUser()->usergroup_id != '9'){    
 
-    require ('../../configuration.php');
-    require ('../../includes/defines.php');
-
+    
     if(!$db = new mysqli( $db_host, $db_user, $db_pass, $db_name)){
         echo 'ERROR: Could not connect to the database.';
     } else {
@@ -16,7 +32,7 @@ if ($_SESSION['login_token'] && $_SESSION['login_usergroup_id'] != '8' && $_SESS
         // Is there a posted query string?
         if(isset($_POST['queryString'])) {
 
-            // This might not be needed if passed through security
+            // This might not be needed if not passed through security
             $queryString = $db->real_escape_string($_POST['queryString']);
 
             // Is the string length greater than 0?
@@ -25,7 +41,7 @@ if ($_SESSION['login_token'] && $_SESSION['login_usergroup_id'] != '8' && $_SESS
                  * Run the query: We use LIKE '$queryString%'
                  * The percentage sign is a wild-card, in my example of countries it works like this...
                  * $queryString = 'Uni';
-                 * Returned data = 'United States, United Kindom';
+                 * Returned data = 'United States, United Kingdom';
 
                  * YOU NEED TO ALTER THE QUERY TO MATCH YOUR DATABASE.
                  * eg: SELECT yourColumnName FROM yourTable WHERE yourColumnName LIKE '$queryString%' LIMIT 10
