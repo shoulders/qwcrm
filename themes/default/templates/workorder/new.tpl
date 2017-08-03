@@ -42,7 +42,7 @@
                                                 <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0">
                                                     <tr>
                                                         <td valign="top">                                                    
-                                                            <form method="POST" action="index.php?page=workorder:new" name="new_workorder" id="new_workorder">                                                                                                                  
+                                                            <form method="post" action="index.php?page=workorder:new" name="new_workorder" id="new_workorder">                                                                                                                  
                                                                 <table class="olotable" width="100%" border="0"  cellpadding="4" cellspacing="0" summary="Work order display">
                                                                     <tr>
                                                                         <td class="olohead">{t}Opened{/t}</td>

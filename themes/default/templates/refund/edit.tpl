@@ -29,7 +29,7 @@
                                             <td>                                          
                                                 <table width="100%" cellpadding="2" cellspacing="2" border="0">  
                                                     
-                                                    <form action="index.php?page=refund:edit&refund_id={$refund_id}" method="POST" name="edit_refund" id="edit_refund" autocomplete="off">                                                        
+                                                    <form action="index.php?page=refund:edit&refund_id={$refund_id}" method="post" name="edit_refund" id="edit_refund" autocomplete="off">                                                        
                                                         <tr>
                                                             <td align="right"><b>{t}Refund ID{/t}</b></td>
                                                             <td colspan="3">{$refund_id}</td>

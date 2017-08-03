@@ -17,7 +17,7 @@
                         <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0">
                             <tr>
                                 <td width="100%" valign="top">                                    
-                                    <form action="index.php?page=user:new" method="POST" name="new_user" id="new_user" onsubmit="return confirmPasswordsMatch();"> 
+                                    <form action="index.php?page=user:new" method="post" name="new_user" id="new_user" onsubmit="return confirmPasswordsMatch();"> 
                                         <table class="menutable" width="100%" border="0" cellpadding="0" cellspacing="0">
                                             <tr>
                                                 <td class="menutd">

@@ -20,7 +20,7 @@
                         <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0" >
                             <tr>
                                 <td width="100%" valign="top" class="menutd">                                    
-                                    <form method="POST" action="index.php?page=payment:options">
+                                    <form method="post" action="index.php?page=payment:options">
                                         <table>
                                             <caption><b><font color="red">{t}Available Payment Types{/t}</font></b></caption>
                                             {section name=q loop=$payment_methods_status}

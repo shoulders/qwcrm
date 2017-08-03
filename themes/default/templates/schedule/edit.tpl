@@ -25,7 +25,7 @@
                                     <table class="menutable" width="100%" border="0" cellpadding="5" cellspacing="0">
                                         <tr>
                                             <td>                                                
-                                                <form method="POST" action="index.php?page=schedule:edit&schedule_id={$schedule_id}">                                                                                                       
+                                                <form method="post" action="index.php?page=schedule:edit&schedule_id={$schedule_id}">                                                                                                       
                                                     <table class="olotable" width="100%" border="0">
                                                         <tr>
                                                             <td class="olohead">{t}Set Schedule{/t}</td>

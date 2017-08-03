@@ -19,7 +19,7 @@
                         <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0" >
                             <tr>
                                 <td width="100%" valign="top">                                    
-                                    <form action="index.php?page=workorder:details_edit_resolution" method="POST" name="close_workorder" id="close_workorder">
+                                    <form action="index.php?page=workorder:details_edit_resolution" method="post" name="close_workorder" id="close_workorder">
                                         <b>{t}Edit Work Order Resolution{/t}</b><br>
                                         <textarea class="olotd4" rows="15" cols="70" name="workorder_resolution">{$workorder_resolution}</textarea>
                                         <br>                                        

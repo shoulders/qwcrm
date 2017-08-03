@@ -19,7 +19,7 @@
                             <table  cellspacing="5" border="0" cellpadding="5" align="center">
                                 <tr>
                                     <td>
-                                        <form action="index.php?page=user:login" method="POST">
+                                        <form action="index.php?page=user:login" method="post">
                                             <table width="25%" cellspacing="0" border="0" cellpadding="5" align="center">
                                                 <tr>
                                                     <td>{t}Login{/t}</td>

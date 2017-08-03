@@ -19,7 +19,7 @@
                         <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0">
                             <tr>
                                 <td width="100%" valign="top">                                    
-                                    <form action="index.php?page=workorder:details_edit_comments" method="POST">
+                                    <form action="index.php?page=workorder:details_edit_comments" method="post">
                                         <b>{t}Comments{/t}</b><br>
                                         <textarea class="olotd4" rows="15" cols="70" name="comments">{$workorder_comments}</textarea>
                                         <br>

@@ -20,7 +20,7 @@
                         <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0">
                             <tr>
                                 <td width="100%" valign="top">                                                                      
-                                    <form method="POST" action="index.php?page=workorder:details_edit_description">                                    
+                                    <form method="post" action="index.php?page=workorder:details_edit_description">                                    
                                         <b>{t}Scope{/t}</b></br>
                                         <input id="scope" name="scope" size="40" type="text" maxlength="80" required onkeydown="return onlyAlphaNumeric(event);" onkeyup="lookupSuggestions(this.value);" onblur="closeSuggestions();">
                                         <div class="suggestionsBoxWrapper">

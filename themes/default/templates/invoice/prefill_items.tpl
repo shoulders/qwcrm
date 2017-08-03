@@ -29,7 +29,7 @@
                                                     </tr>
                                                     <tr>
                                                         {section name=q loop=$invoice_prefill_items}
-                                                            <form method="POST" action="index.php?page=invoice:prefill_items">
+                                                            <form method="post" action="index.php?page=invoice:prefill_items">
                                                                 <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" class="row1">
                                                                     <td class="olotd4" nowrap>{$invoice_prefill_items[q].invoice_prefill_id}</td>
                                                                     <td class="olotd4" nowrap><input name="description" class="olotd5" size="50" value="{$invoice_prefill_items[q].description}" type="text" maxlength="50" required onkeydown="return onlyAlphaNumeric(event);"></td>
@@ -57,7 +57,7 @@
                                                     </tr>                                                    
                                                 </table>
                                                 <b>{t}Add New Prefill Item{/t}</b>
-                                                <form method="POST" action="index.php?page=invoice:prefill_items">
+                                                <form method="post" action="index.php?page=invoice:prefill_items">
                                                     <table class="olotable" width="100%" border="0" cellpadding="5" cellspacing="0">
                                                         <tr>
                                                             <td class="olohead">{t}Description{/t}</td>
@@ -86,7 +86,7 @@
                                                     </table>
                                                 </form>
                                                 <div>
-                                                    <form method="POST" action="index.php?page=invoice:prefill_items">
+                                                    <form method="post" action="index.php?page=invoice:prefill_items">
                                                         <strong><span style="color: green;">{t}Export Prefill Items as a CSV file{/t}</span></strong>
                                                         <input type="hidden" name="invoice_prefill_id" value="{$invoice_prefill_items[q].invoice_prefill_id}">
                                                         <button type="submit" name="export_invoice_prefill_items" value="export">{t}Export{/t}</button>
