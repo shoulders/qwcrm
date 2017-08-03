@@ -748,13 +748,14 @@ function login($credentials, $options = array())
 
 function logout($silent = null)
 {                    
-    $user = QFactory::getUser();  
-    $auth = QFactory::getAuth();
-
-    $auth->logout();
+    // Build logout message while user details exist
+    $message = gettext("Logout successful for").' '.QFactory::getUser()->login_username;
+    
+    // Logout
+    QFactory::getAuth()->logout();    
 
     // Log activity       
-    write_record_to_activity_log(gettext("Logout successful for").' '.$user->get('login_username'));        
+    write_record_to_activity_log($message);        
 
     // Reload Homepage
     if($silent) {
@@ -765,7 +766,7 @@ function logout($silent = null)
         
     } else {
         
-        // With message - only $_get will work because the session store is destroyed (this is good behaviour)
+        // With message - only $_GET will work because the session store is destroyed (this is good behaviour)
         force_page('index.php?information_msg='.gettext("Logout successful."));
         exit;
         

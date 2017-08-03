@@ -231,10 +231,10 @@ function insert_workorder($db, $customer_id, $created_by, $scope, $description, 
         $workorder_id = $db->Insert_ID();
 
         // Creates a History record for the new work order             
-        insert_workorder_history_note($db, $workorder_id, gettext("Created by").' '.$_SESSION['login_display_name']);
+        insert_workorder_history_note($db, $workorder_id, gettext("Created by").' '.QFactory::getUser()->login_display_name);
         
         // Log activity        
-        write_record_to_activity_log(gettext("Work Order").' '.$workorder_id.' '.gettext("Created by").' '.$_SESSION['login_display_name']);
+        write_record_to_activity_log(gettext("Work Order").' '.$workorder_id.' '.gettext("Created by").' '.QFactory::getUser()->login_display_name);
 
         return $workorder_id;
         
@@ -290,10 +290,10 @@ function insert_workorder_note($db, $workorder_id, $note){
         $note_id = $db->Insert_ID();
         
         // Creates a History record for the new work order        
-        insert_workorder_history_note($db, $workorder_id, gettext("Work Order Note").' '.$note_id.' '.gettext("added by").' '.$_SESSION['login_display_name']);
+        insert_workorder_history_note($db, $workorder_id, gettext("Work Order Note").' '.$note_id.' '.gettext("added by").' '.QFactory::getUser()->login_display_name);
         
         // Log activity        
-        write_record_to_activity_log(gettext("Work Order Note").' '.$note_id.' '.gettext("added to Work Order").' '.$workorder_id.' '.gettext("by").' '.$_SESSION['login_display_name']);
+        write_record_to_activity_log(gettext("Work Order Note").' '.$note_id.' '.gettext("added to Work Order").' '.$workorder_id.' '.gettext("by").' '.QFactory::getUser()->login_display_name);
         
         // Update Workorder last activity record
         update_workorder_last_active($db, $workorder_id);
@@ -413,10 +413,10 @@ function update_workorder_scope_and_description($db, $workorder_id, $scope, $des
     } else {
         
         // Creates a History record        
-        insert_workorder_history_note($db, $workorder_id, gettext("Scope and Description updated by").' '.$_SESSION['login_display_name']);
+        insert_workorder_history_note($db, $workorder_id, gettext("Scope and Description updated by").' '.QFactory::getUser()->login_display_name);
         
         // Log activity        
-        write_record_to_activity_log(gettext("Work Order").' '.$workorder_id.' '.gettext("Scope and Description updated by").' '.$_SESSION['login_display_name']);
+        write_record_to_activity_log(gettext("Work Order").' '.$workorder_id.' '.gettext("Scope and Description updated by").' '.QFactory::getUser()->login_display_name);
         
         // Update Workorder last activity record
         update_workorder_last_active($db, $workorder_id);        
@@ -444,10 +444,10 @@ function update_workorder_comments($db, $workorder_id, $comments){
     } else {
         
         // Create a History record        
-        insert_workorder_history_note($db, $workorder_id, gettext("Comments updated by").' '.$_SESSION['login_display_name']);
+        insert_workorder_history_note($db, $workorder_id, gettext("Comments updated by").' '.QFactory::getUser()->login_display_name);
         
         // Log activity        
-        write_record_to_activity_log(gettext("Work Order").' '.$workorder_id.' '.gettext("Comments updated by").' '.$_SESSION['login_display_name']);
+        write_record_to_activity_log(gettext("Work Order").' '.$workorder_id.' '.gettext("Comments updated by").' '.QFactory::getUser()->login_display_name);
         
         // Update Workorder last activity record
         update_workorder_last_active($db, $workorder_id);        
@@ -475,10 +475,10 @@ function update_workorder_resolution($db, $workorder_id, $resolution){
     } else {
         
         // Create a History record        
-        insert_workorder_history_note($db, $workorder_id, gettext("Resolution updated by").' '.$_SESSION['login_display_name']);
+        insert_workorder_history_note($db, $workorder_id, gettext("Resolution updated by").' '.QFactory::getUser()->login_display_name);
         
         // Log activity        
-        write_record_to_activity_log(gettext("Work Order").' '.$workorder_id.' '.gettext("Resolution updated by").' '.$_SESSION['login_display_name']);
+        write_record_to_activity_log(gettext("Work Order").' '.$workorder_id.' '.gettext("Resolution updated by").' '.QFactory::getUser()->login_display_name);
         
         // Update Workorder last activity record
         update_workorder_last_active($db, $workorder_id);        
@@ -532,10 +532,10 @@ function update_workorder_status($db, $workorder_id, $assign_status){
         }
         
         // Create a History record        
-        insert_workorder_history_note($db, $workorder_id, gettext("Status updated to").' '.$wo_status.' '.gettext("by").' '.$_SESSION['login_display_name']);
+        insert_workorder_history_note($db, $workorder_id, gettext("Status updated to").' '.$wo_status.' '.gettext("by").' '.QFactory::getUser()->login_display_name);
         
         // Log activity        
-        write_record_to_activity_log(gettext("Work Order").' '.$workorder_id.' '.gettext("Status updated to").' '.$wo_status.' '.gettext("by").' '.$_SESSION['login_display_name']);
+        write_record_to_activity_log(gettext("Work Order").' '.$workorder_id.' '.gettext("Status updated to").' '.$wo_status.' '.gettext("by").' '.QFactory::getUser()->login_display_name);
         
         // Update Workorder last activity record
         update_workorder_last_active($db, $workorder_id);        
@@ -603,10 +603,10 @@ function close_workorder_with_invoice($db, $workorder_id, $resolution){
     } else {
         
         // Create a History record        
-        insert_workorder_history_note($db, $workorder_id, gettext("Closed with Invoice by").' '.$_SESSION['login_display_name']);
+        insert_workorder_history_note($db, $workorder_id, gettext("Closed with Invoice by").' '.QFactory::getUser()->login_display_name);
         
         // Log activity
-        write_record_to_activity_log(gettext("Work Order").' '.$workorder_id.' '.gettext("has been closed with invoice by").' '.$_SESSION['login_display_name']);
+        write_record_to_activity_log(gettext("Work Order").' '.$workorder_id.' '.gettext("has been closed with invoice by").' '.QFactory::getUser()->login_display_name);
         
         // Update Workorder last activity record
         update_workorder_last_active($db, $workorder_id);        
@@ -638,10 +638,10 @@ function close_workorder_without_invoice($db, $workorder_id, $resolution){
     } else {
         
         // Create a History record
-        insert_workorder_history_note($db, $workorder_id, gettext("Closed without Invoice by").' '.$_SESSION['login_display_name']);
+        insert_workorder_history_note($db, $workorder_id, gettext("Closed without Invoice by").' '.QFactory::getUser()->login_display_name);
             
         // Log activity
-        write_record_to_activity_log(gettext("Work Order").' '.$workorder_id.' '.gettext("has been closed without invoice by").' '.$_SESSION['login_display_name']);
+        write_record_to_activity_log(gettext("Work Order").' '.$workorder_id.' '.gettext("has been closed without invoice by").' '.QFactory::getUser()->login_display_name);
         
         // Update Workorder last activity record
         update_workorder_last_active($db, $workorder_id);        
@@ -711,7 +711,7 @@ function delete_workorder($db, $workorder_id) {
                 } else {
 
                     // Write the record to the activity log                    
-                    write_record_to_activity_log(gettext("Work Order").' '.$workorder_id.' '.gettext("has been deleted by").' '.$_SESSION['login_display_name']);
+                    write_record_to_activity_log(gettext("Work Order").' '.$workorder_id.' '.gettext("has been deleted by").' '.QFactory::getUser()->login_display_name);
 
                     return true;
 

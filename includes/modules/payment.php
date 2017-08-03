@@ -84,7 +84,7 @@ function insert_payment_method_transaction($db, $invoice_id, $amount, $method_na
         if(check_invoice_has_workorder($db, $invoice_id)) {
 
             // Creates a History record for the new workorder            
-            insert_workorder_history_note($db, $workorder_id, gettext("Created by").' '.$_SESSION['login_display_name'].' - '.$log_msg);
+            insert_workorder_history_note($db, $workorder_id, gettext("Created by").' '.QFactory::getUser()->login_display_name.' - '.$log_msg);
         }    
 
         // Insert Transaction into log       
@@ -125,7 +125,7 @@ function insert_payment_method_transaction($db, $invoice_id, $amount, $method_na
             update_workorder_status($db, $workorder_id, 8);   
 
             // Creates a History record for the new work order            
-            insert_workorder_history_note($db, $workorder_id, gettext("Created by").' '.$_SESSION['login_display_name'].' - '.$log_msg);
+            insert_workorder_history_note($db, $workorder_id, gettext("Created by").' '.QFactory::getUser()->login_display_name.' - '.$log_msg);
         }    
 
         // Insert Transaction into log       

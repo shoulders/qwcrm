@@ -848,7 +848,7 @@ function write_record_to_activity_log($record){
     if($QConfig->qwcrm_activity_log != true){return;}
     
     // Build log entry - perhaps use the apache time stamp below
-    $log_entry = $_SERVER['REMOTE_ADDR'] . ',' . $_SESSION['login_username'] . ',' . date("[d/M/Y:H:i:s O]", time()) . ',' . $record . "\n";
+    $log_entry = $_SERVER['REMOTE_ADDR'] . ',' . QFactory::getUser()->login_username . ',' . date("[d/M/Y:H:i:s O]", time()) . ',' . $record . "\n";
     
     // Write log entry to access log    
     if(!$fp = fopen(ACTIVITY_LOG,'a')) {        
