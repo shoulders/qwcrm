@@ -21,35 +21,35 @@
                     <tr>
                         <td align="right"><b>{t}Host{/t}</b> <span style="color: #ff0000">*</span></td>
                         <td>
-                            <input name="db_host" class="olotd5" value="{$qwcrm_config.db_host}" type="text" maxlength="20" required onkeydown="return onlyAlphaNumeric(event);"/>
+                            <input name="db_host" class="olotd5" size="25" value="{$qwcrm_config.db_host}" type="text" maxlength="20" required onkeydown="return onlyAlphaNumeric(event);"/>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Host{/t}</strong></div><hr><div>{t escape=tooltip}The hostname for your database entered during the installation process. Do not edit this field unless absolutely necessary (eg the transfer of the database to a new hosting provider).{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
                     <tr>
                         <td align="right"><b>{t}Database Name{/t}</b> <span style="color: #ff0000">*</span></td>
                         <td>
-                            <input name="db_name" class="olotd5" value="{$qwcrm_config.db_name}" type="text" maxlength="20" required onkeydown="return onlyMysqlDatabaseName(event);"/>
+                            <input name="db_name" class="olotd5" size="25" value="{$qwcrm_config.db_name}" type="text" maxlength="20" required onkeydown="return onlyMysqlDatabaseName(event);"/>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Database Name{/t}</strong></div><hr><div>{t escape=tooltip}The name for your database entered during the installation process. Do not edit this field unless absolutely necessary (eg the transfer of the database to a new hosting provider).{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>                    
                     <tr>
                         <td align="right"><b>{t}Database Username{/t}</b> <span style="color: #ff0000">*</span></td>
                         <td>
-                            <input name="db_user" class="olotd5" value="{$qwcrm_config.db_user}" type="text" maxlength="20" required onkeydown="return onlyAlphaNumeric(event);"/>
+                            <input name="db_user" class="olotd5" size="25" value="{$qwcrm_config.db_user}" type="text" maxlength="20" required onkeydown="return onlyAlphaNumeric(event);"/>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Database Username{/t}</strong></div><hr><div>{t escape=tooltip}The username for access to your database entered during the installation process. Do not edit this field unless absolutely necessary (eg the transfer of the database to a new hosting provider).{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>                    
                     {*<tr>
                         <td align="right"><b>{t}Database Password{/t}</b></td>
                         <td>
-                            <input name="db_pass" class="olotd5" value="{$qwcrm_config.db_pass}" type="password" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"/>
+                            <input name="db_pass" class="olotd5" size="25" value="{$qwcrm_config.db_pass}" type="password" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"/>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Database Password{/t}</strong></div><hr><div>{t escape=tooltip}The password for access to your database entered during the installation process. Do not edit this field unless absolutely necessary (eg the transfer of the database to a new hosting provider).{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>*}                
                     <tr>
                         <td align="right"><b>{t}Database Tables Prefix{/t}</b> <span style="color: #ff0000">*</span></td>
                         <td>
-                            <input name="db_prefix" class="olotd5" value="{$qwcrm_config.db_prefix}" type="text" maxlength="20" required onkeydown="return onlyAlphaNumeric(event);"/>
+                            <input name="db_prefix" class="olotd5" size="6" value="{$qwcrm_config.db_prefix}" type="text" maxlength="6" required onkeydown="return onlyAlphaNumeric(event);"/>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Database Tables Prefix{/t}</strong></div><hr><div>{t escape=tooltip}The prefix used for your database tables, created during the installation process. Do not edit this field unless absolutely necessary (eg the transfer of the database to a new hosting provider).{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
@@ -109,6 +109,134 @@
                         </td>
                     </tr>
                     
+                    <!-- Mail Settings -->
+                    
+                    <tr class="row2">
+                        <td class="menuhead" colspan="2" width="100%">&nbsp;{t}Mail Settings{/t}</td>
+                    </tr>                                                        
+
+                        <!-- Common -->
+                        
+                    <tr>
+                        <td align="right"><b>{t}Send Mail{/t}:</b></td>
+                        <td>
+                            <select class="olotd5" name="email_online">                                                                    
+                                <option value="0" {if $qwcrm_config.email_online == '0' } selected{/if}>No</option>
+                                <option value="1" {if $qwcrm_config.email_online == '1' } selected{/if}>Yes</option>                                                                    
+                            </select>
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Send Mail{/t}</strong></div><hr><div>{t escape=tooltip}Select Yes to turn on mail sending, select No to turn off mail sending. Warning: It is advised to put the site offline when disabling the mail function!{/t}</div>');" onMouseOut="hideddrivetip();">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right"><b>{t}Mailer{/t}:</b></td>
+                        <td>
+                            <select class="olotd5" name="email_mailer">
+                                <option value="phpmail" {if $qwcrm_config.email_mailer != '' } selected{/if}>{t}PHP Mail{/t}</option>
+                                <option value="sendmail" {if $qwcrm_config.email_mailer == 'sendmail' } selected{/if}>Sendmail</option>
+                                <option value="smtp" {if $qwcrm_config.email_mailer == 'smtp' } selected{/if}>SMTP</option>                                                                    
+                            </select>
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Mailer{/t}</strong></div><hr><div>{t escape=tooltip}Select which mailer for the delivery of site email.{/t}</div>');" onMouseOut="hideddrivetip();">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right"><b>{t}From Email{/t}:</b></td>
+                        <td>
+                            <input name="email_mailfrom" class="olotd5" size="55" value="{$qwcrm_config.email_mailfrom}" type="email" maxlength="50" onkeydown="return onlyEmail(event);">
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}From Email{/t}</strong></div><hr><div>{t escape=tooltip}The email address that will be used to send site email.{/t}</div>');" onMouseOut="hideddrivetip();">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right"><b>{t}From Name{/t}:</b></td>
+                        <td>
+                            <input name="email_fromname" class="olotd5" size="25" value="{$qwcrm_config.email_fromname}" type="text" maxlength="20" onkeydown="return onlyAlpha(event);">
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}From Name{/t}</strong></div><hr><div>{t escape=tooltip}Text displayed in the header &quot;From:&quot; field when sending a site email. Usually the site name.{/t}</div>');" onMouseOut="hideddrivetip();">
+                        </td>                        
+                    </tr>
+                    <tr>
+                        <td align="right"><b>{t}Reply To Email{/t}:</b></td>
+                        <td>
+                            <input name="email_replyto" class="olotd5" size="55" value="{$qwcrm_config.email_replyto}" type="email" maxlength="50" onkeydown="return onlyEmail(event);">
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Reply To Email{/t}</strong></div><hr><div>{t escape=tooltip}The email address that will be used to receive end user(s) reply.{/t}</div>');" onMouseOut="hideddrivetip();">
+                        </td>                        
+                    </tr>
+                    <tr>
+                        <td align="right"><b>{t}Reply To Name{/t}:</b></td>
+                        <td>
+                            <input name="email_replytoname" class="olotd5" size="25" value="{$qwcrm_config.email_replytoname}" type="text" maxlength="20" onkeydown="return onlyAlpha(event);">
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Reply To Name{/t}</strong></div><hr><div>{t escape=tooltip}Text displayed in the header &quot;To:&quot; field when end user(s) replying to received email.{/t}</div>');" onMouseOut="hideddrivetip();">
+                        </td>
+                    </tr>                                                        
+
+                        <!-- Sendmail -->
+
+                    <tr>
+                        <td colspan="2" width="100%">&nbsp;</td>
+                    </tr>
+
+                    <tr>
+                        <td align="right"><b>{t}Sendmail Path{/t}:</b></td>
+                        <td>
+                            <input name="email_sendmail" class="olotd5" size="55" value="{$qwcrm_config.email_sendmail}" type="text" maxlength="100" onkeydown="return onlyFilePath(event);">
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Sendmail Path{/t}</strong></div><hr><div>{t escape=tooltip}Enter the path to the sendmail program folder on the host server.<br/>This is only needed when using sendmail and usually does not need to be changed.{/t}</div>');" onMouseOut="hideddrivetip();">
+                        </td>
+                    </tr>
+
+                        <!-- SMTP -->
+
+                    <tr>
+                        <td colspan="2" width="100%">&nbsp;</td>
+                    </tr>
+
+                    <tr>
+                        <td align="right"><b>{t}SMTP Host{/t}:</b></td>
+                        <td>
+                            <input name="email_smtp_host" class="olotd5" size="55" value="{$qwcrm_config.email_smtp_host}" type="text" maxlength="50" onkeydown="return onlyURL(event);">
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}SMTP Host{/t}</strong></div><hr><div>{t escape=tooltip}Enter the name of the SMTP host.{/t}</div>');" onMouseOut="hideddrivetip();">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right"><b>{t}SMTP Port{/t}:</b></td>
+                        <td>
+                            <input name="email_smtp_port" class="olotd5" size="5" value="{$qwcrm_config.email_smtp_port}" type="text" maxlength="50" onkeydown="return onlyNumbers(event);">
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}SMTP Port{/t}</strong></div><hr><div>{t escape=tooltip}Enter the port number of the SMTP server QWcrm will use to send emails. Usually:<br />- 25 when using an unsecure mail server<br />- 465 when using a secure server with SMTPS<br />- 25 or 587 when using a secure server with SMTP with STARTTLS extension.{/t}</div>');" onMouseOut="hideddrivetip();">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right"><b>{t}SMTP Security{/t}:</b></td>
+                        <td>
+                            <select class="olotd5" name="email_smtp_security">
+                                <option value="" {if $qwcrm_config.email_smtp_security != '' } selected{/if}>{t}None{/t}</option>
+                                <option value="ssl" {if $qwcrm_config.email_smtp_security == 'ssl' } selected{/if}>SSL</option>
+                                <option value="tls" {if $qwcrm_config.email_smtp_security == 'tls' } selected{/if}>TLS</option>                                                                    
+                            </select>
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}SMTP Security{/t}</strong></div><hr><div>{t escape=tooltip}Select the security model of the SMTP server Joomla will use to send emails.<br />- None for no encryption<br />- SSL/TLS for SMTPS (usually on port 465)<br />- STARTTLS for SMTP with STARTTLS extension (usually on port 25 or port 587){/t}</div>');" onMouseOut="hideddrivetip();">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right"><b>{t}SMTP Authentication{/t}:</b></td>
+                        <td>
+                            <select class="olotd5" name="email_smtp_auth">                                                                    
+                                <option value="0" {if $qwcrm_config.email_smtp_auth == '0' } selected{/if}>No</option>
+                                <option value="1" {if $qwcrm_config.email_smtp_auth == '1' } selected{/if}>Yes</option>                                                                    
+                            </select>
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}SMTP Authentication{/t}</strong></div><hr><div>{t escape=tooltip}Select Yes if your SMTP Host requires SMTP Authentication.{/t}</div>');" onMouseOut="hideddrivetip();">
+                        </td>
+                    </tr>                                                       
+                    <tr>
+                        <td align="right"><b>{t}SMTP Username{/t}:</b></td>
+                        <td>
+                            <input name="email_smtp_username" class="olotd5" size="55" value="{$qwcrm_config.email_smtp_username}" type="text" maxlength="50" onkeydown="return onlyUsername(event);">
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}SMTP Username{/t}</strong></div><hr><div>{t escape=tooltip}Enter the username for access to the SMTP host.{/t}</div>');" onMouseOut="hideddrivetip();">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right"><b>{t}SMTP Password{/t}:</b></td>
+                        <td>
+                            <input name="email_smtp_password" class="olotd5" size="25" value="{$qwcrm_config.email_smtp_password}" type="password" maxlength="20" onkeydown="return onlyPassword(event);">
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}SMTP Password{/t}</strong></div><hr><div>{t escape=tooltip}Enter the password for the SMTP host.{/t}</div>');" onMouseOut="hideddrivetip();">
+                        </td>
+                    </tr>
+
                     <!-- Security -->
                     
                     <tr class="row2">
@@ -140,14 +268,14 @@
                     <tr>
                         <td align="right"><b>{t}reCAPTCHA Site Key{/t}</b></td>
                         <td>
-                            <input name="recaptcha_site_key" class="olotd5" value="{$qwcrm_config.recaptcha_site_key}" type="text" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"/>
+                            <input name="recaptcha_site_key" class="olotd5" size="45" value="{$qwcrm_config.recaptcha_site_key}" type="text" maxlength="40" onkeydown="return onlyAlphaNumeric(event);"/>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}reCAPTCHA Site Key{/t}</strong></div><hr><div>{t escape=tooltip} The site key is used to invoke reCAPTCHA service on your site or mobile application.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
                     <tr>
                         <td align="right"><b>{t}reCAPTCHA Secret Key{/t}</b></td>
                         <td>
-                            <input name="recaptcha_secret_key" class="olotd5" value="{$qwcrm_config.recaptcha_secret_key}" type="text" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"/>
+                            <input name="recaptcha_secret_key" class="olotd5" size="45" value="{$qwcrm_config.recaptcha_secret_key}" type="text" maxlength="40" onkeydown="return onlyAlphaNumeric(event);"/>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}reCAPTCHA Secret Key{/t}</strong></div><hr><div>{t escape=tooltip}The secret key authorizes communication between your application backend and the reCAPTCHA server to verify the user\'s response. The secret key needs to be kept safe for security purposes.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
@@ -171,7 +299,7 @@
                     <tr>
                         <td align="right"><b>{t}Session Lifetime{/t}</b> <span style="color: #ff0000">*</span></td>
                         <td>
-                            <input name="session_lifetime" class="olotd5" value="{$qwcrm_config.session_lifetime}" type="text" maxlength="20" required onkeydown="return onlyNumbers(event);"/>
+                            <input name="session_lifetime" class="olotd5" size="25" value="{$qwcrm_config.session_lifetime}" type="text" maxlength="20" required onkeydown="return onlyNumbers(event);"/>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Session Lifetime{/t}</strong></div><hr><div>{t escape=tooltip}Auto log out a User after they have been inactive for the entered number of minutes. Do not set too high.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>                    
@@ -205,14 +333,14 @@
                     <tr>
                         <td align="right"><b>{t}Cookie Lifetime{/t}</b> <span style="color: #ff0000">*</span></td>
                         <td>
-                            <input name="cookie_lifetime" class="olotd5" value="{$qwcrm_config.cookie_lifetime}" type="text" maxlength="20" required onkeydown="return onlyNumbers(event);"/>
+                            <input name="cookie_lifetime" class="olotd5" size="25" value="{$qwcrm_config.cookie_lifetime}" type="text" maxlength="20" required onkeydown="return onlyNumbers(event);"/>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Cookie Lifetime{/t}</strong></div><hr><div>{t escape=tooltip}The number of days until the authentication cookie will expire. Other factors may cause it to expire before this. Longer lengths are less secure.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
                     <tr>
                         <td align="right"><b>{t}Cookie Token Length{/t}</b> <span style="color: #ff0000">*</span></td>
                         <td>
-                            <input name="cookie_token_length" class="olotd5" value="{$qwcrm_config.cookie_token_length}" type="text" maxlength="20" required onkeydown="return onlyNumbers(event);"/>
+                            <input name="cookie_token_length" class="olotd5" size="25" value="{$qwcrm_config.cookie_token_length}" type="text" maxlength="20" required onkeydown="return onlyNumbers(event);"/>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Cookie Token Length{/t}</strong></div><hr><div>{t escape=tooltip}The length of the key to use to encrypt the cookie. Longer lengths are more secure, but they will slow performance.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
@@ -226,14 +354,14 @@
                     <tr>
                         <td align="right"><b>{t}Cookie Domain{/t}</b></td>
                         <td>
-                            <input name="cookie_domain" class="olotd5" value="{$qwcrm_config.cookie_domain}" type="text" maxlength="20" onkeydown="return onlyURL(event);"/>
+                            <input name="cookie_domain" class="olotd5" size="55" value="{$qwcrm_config.cookie_domain}" type="text" maxlength="50" onkeydown="return onlyURL(event);"/>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Cookie Domain{/t}</strong></div><hr><div>{t escape=tooltip}Domain to use when setting session cookies. Precede domain with \'.\' if cookie should be valid for all subdomains.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
                     <tr>
                         <td align="right"><b>{t}Cookie Path{/t}</b></td>
                         <td>
-                            <input name="cookie_path" class="olotd5" value="{$qwcrm_config.cookie_path}" type="text" maxlength="20" onkeydown="return onlyURL(event);"/>
+                            <input name="cookie_path" class="olotd5" size="55" value="{$qwcrm_config.cookie_path}" type="text" maxlength="20" onkeydown="return onlyURL(event);"/>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Cookie Path{/t}</strong></div><hr><div>{t escape=tooltip}Path the cookie should be valid for.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>

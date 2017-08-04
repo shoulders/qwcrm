@@ -9,9 +9,8 @@
                 <div id="tabs_container">
                     <ul class="tabs">
                         <li class="active"><a href="javascript: void(0)" rel="#tab_1_contents" class="tab"><img src="{$theme_images_dir}icons/key.png" alt="" border="0" height="14" width="14"/>&nbsp;{t}Company Details{/t}</a></li>
-                        <li><a href="javascript: void(0)" rel="#tab_2_contents" class="tab"><img src="{$theme_images_dir}icons/money.png" alt="" border="0" height="14" width="14"/>&nbsp;{t}Localisation Setup{/t}</a></li>
-                        <li><a href="javascript: void(0)" rel="#tab_3_contents" class="tab"><img src="{$theme_images_dir}icons/16x16/email.jpg" alt="" border="0" height="14" width="14" />&nbsp;{t}Email Setup{/t}</a></li>
-                        <li><a href="javascript: void(0)" rel="#tab_4_contents" class="tab"><img src="{$theme_images_dir}icons/16x16/email.jpg" alt="" border="0" height="14" width="14" />&nbsp;{t}Email Messages{/t}</a></li>
+                        <li><a href="javascript: void(0)" rel="#tab_2_contents" class="tab"><img src="{$theme_images_dir}icons/money.png" alt="" border="0" height="14" width="14"/>&nbsp;{t}Localisation Setup{/t}</a></li>                        
+                        <li><a href="javascript: void(0)" rel="#tab_3_contents" class="tab"><img src="{$theme_images_dir}icons/16x16/email.jpg" alt="" border="0" height="14" width="14" />&nbsp;{t}Email Messages{/t}</a></li>
                     </ul>
 
                     <!-- This is used so the contents don't appear to the right of the tabs -->
@@ -159,61 +158,8 @@
                             </table>
                         </div>
 
-                        <!-- Tab 3 Contents -->
-                        <div id="tab_3_contents" class="tab_contents">                        
-                            <table width="100%" cellpadding="5" cellspacing="0" border="0" >
-                                <tr>
-                                    <td class="menuhead2" width="80%">&nbsp;{t}Edit your Companies Email Settings{/t}</td>
-                                </tr>
-                                <tr>
-                                    <td class="menutd2">
-                                        <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0" >
-                                            <tr>
-                                                <td width="100%" valign="top">                                                    
-                                                    <table cellpadding="5" cellspacing="0">                                                        
-                                                        <tr>
-                                                            <td align="right"><b>{t}Default No-Reply Email{/t}:</b></td>
-                                                            <td><input name="email_from" class="olotd5" size="50" value="{$company_details.email_from}" type="email" onkeydown="return onlyEmail(event);"></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td align="right"><b>{t}Email SMTP Server{/t}:</b></td>
-                                                            <td><input name="email_server" class="olotd5" size="50" value="{$company_details.email_server}" type="url" onkeydown="return onlyURL(event);"></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td align="right"><b>{t}Email Port{/t}:</b></td>
-                                                            <td><input name="email_port" class="olotd5" size="5" value="{$company_details.email_port}" type="text" onkeydown="return onlyNumbers(event);"></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td align="right"><b>{t}Connection Type{/t}:</b></td>
-                                                            <td>
-                                                                <select class="olotd5" name="conn_type">
-                                                                    <option value="SSL" {if $company_details.email_connection_type == 'SSL' } selected{/if}>SSL</option>
-                                                                    <option value="" {if $company_details.email_connection_type != 'SSL' } selected{/if}>{t}None{/t}</option>
-                                                                </select>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td align="right"><b>{t}SMTP Login Name{/t}:</b></td>
-                                                            <td><input name="email_login" class="olotd5" size="50" value="{$company_details.smtp_username}" type="text" maxlength="50" onkeydown="return onlyUsername(event);"><font color="RED">*</font>Only required if authentication is needed</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td align="right"><b>{t}SMTP Server Password{/t}:</b></td>
-                                                            <td><input name="email_password" class="olotd5" size="50" value="{$company_details.smtp_password}" type="password" onkeydown="return onlyPassword(event);"><font color="RED">*</font>Only required if authentication is needed</td>
-                                                        </tr>                                                        
-                                                        <tr>
-                                                             <td colspan="2"><input class="olotd5" type="submit" name="submit" value="Update"></td>
-                                                        </tr>                                                        
-                                                    </table>                                                    
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-
-                        <!-- Tab 4 Contents -->                        
-                        <div id="tab_4_contents" class="tab_contents">
+                        <!-- Tab 3 Contents -->                        
+                        <div id="tab_3_contents" class="tab_contents">
                             <table width="100%" cellpadding="5" cellspacing="0" border="0" >
                                 <tr>
                                     <td class="menuhead2" width="80%">&nbsp;{t}Edit Email Messaging functions{/t}</td>
