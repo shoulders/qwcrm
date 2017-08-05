@@ -108,7 +108,7 @@
                                                 <td class="menutd2">
 
                                                     <!-- Print Buttons -->   
-                                                    <button type="button" onClick="window.open('index.php?page=invoice:print&invoice_id={$invoice_details.invoice_id}&print_type=print_html&print_content=invoice&theme=print');">{t}Print{/t}</button>
+                                                    <button type="button" onClick="window.open('index.php?page=invoice:print&invoice_id={$invoice_details.invoice_id}&print_type=print_html&print_content=invoice&theme=print');">{t}Print HTML{/t}</button>
                                                     <button type="button" onClick="window.open('index.php?page=invoice:print&invoice_id={$invoice_details.invoice_id}&print_type=print_pdf&print_content=invoice&theme=print');"><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">{t}Print PDF{/t}</button>
                                                     <button type="button" onClick="$.ajax( { url:'index.php?page=invoice:print&invoice_id={$invoice_details.invoice_id}&print_type=email_pdf&print_content=invoice&theme=print' } );"><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">{t}Email PDF{/t}</button>
                                                     <button type="button" onClick="window.open('index.php?page=invoice:print&invoice_id={$invoice_details.invoice_id}&print_type=print_html&print_content=invoice&theme=print');">{t}Print Address Only{/t}</button>                                            
@@ -215,7 +215,7 @@
                                                             <td class="row2"><b>{t}Description{/t}</b></td>
                                                             <td class="row2"><b>{t}Price{/t}</b></td>
                                                             <td class="row2"><b>{t}Total{/t}</b></td>
-                                                            <td class="row2"><b>{t}Actions{/t}</b></td>invoice_parts_amount
+                                                            <td class="row2"><b>{t}Actions{/t}</b></td>
                                                         </tr>
                                                         {section name=p loop=$parts_items}
                                                             <tr class="olotd4">
