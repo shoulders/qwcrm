@@ -135,7 +135,7 @@
                                 <option value="sendmail" {if $qwcrm_config.email_mailer == 'sendmail' } selected{/if}>Sendmail</option>
                                 <option value="smtp" {if $qwcrm_config.email_mailer == 'smtp' } selected{/if}>SMTP</option>                                                                    
                             </select>
-                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Mailer{/t}</strong></div><hr><div>{t escape=tooltip}Select which mailer for the delivery of site email.{/t}</div>');" onMouseOut="hideddrivetip();">
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Mailer{/t}</strong></div><hr><div>{t escape=tooltip}Select which mailer for the delivery of site email. Sendmail only works on Linux/UNIX.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
                     <tr>
@@ -176,7 +176,7 @@
                     <tr>
                         <td align="right"><b>{t}Sendmail Path{/t}:</b></td>
                         <td>
-                            <input name="email_sendmail" class="olotd5" size="55" value="{$qwcrm_config.email_sendmail}" type="text" maxlength="100" onkeydown="return onlyFilePath(event);">
+                            <input name="email_sendmail_path" class="olotd5" size="55" value="{$qwcrm_config.email_sendmail_path}" type="text" maxlength="100" onkeydown="return onlyFilePath(event);">
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Sendmail Path{/t}</strong></div><hr><div>{t escape=tooltip}Enter the path to the sendmail program folder on the host server.<br/>This is only needed when using sendmail and usually does not need to be changed.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
@@ -389,7 +389,7 @@
                                 <option value="0"{if $qwcrm_config.qwcrm_access_log == '0'} selected{/if}>{t}No{/t}</option>
                                 <option value="1"{if $qwcrm_config.qwcrm_access_log == '1'} selected{/if}>{t}Yes{/t}</option>
                             </select>
-                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}QWcrm Access Log{/t}</strong></div><hr><div>{t escape=tooltip}Enable access logging for QWcrm. This will log all page accesses and store the data in the log file \'access.log\'. This log file is in apache log format and can be found in the logs folder.{/t}</div>');" onMouseOut="hideddrivetip();">
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}QWcrm Access Log{/t}</strong></div><hr><div>{t escape=tooltip}Enable access logging for QWcrm. This will log all page accesses and store the data in the Access Log. This log file is in apache log format and can be found in the logs folder.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
                     <tr>
@@ -399,7 +399,7 @@
                                 <option value="0"{if $qwcrm_config.qwcrm_activity_log == '0'} selected{/if}>{t}No{/t}</option>
                                 <option value="1"{if $qwcrm_config.qwcrm_activity_log == '1'} selected{/if}>{t}Yes{/t}</option>
                             </select>
-                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}QWcrm Activity Log{/t}</strong></div><hr><div>{t escape=tooltip}Enable activity logging for QWcrm. This will log all user activity within QWcrm and store the data in the log file \'activity.log\'. This log file is in apache log format and can be found in the logs folder.{/t}</div>');" onMouseOut="hideddrivetip();">
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}QWcrm Activity Log{/t}</strong></div><hr><div>{t escape=tooltip}Enable activity logging for QWcrm. This will log all user activity from within QWcrm and store the data in the Activity Log. This log file is in apache log format and can be found in the logs folder.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
                     <tr>
@@ -409,7 +409,27 @@
                                 <option value="0"{if $qwcrm_config.qwcrm_error_log == '0'} selected{/if}>{t}No{/t}</option>
                                 <option value="1"{if $qwcrm_config.qwcrm_error_log == '1'} selected{/if}>{t}Yes{/t}</option>
                             </select>
-                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}QWcrm Error Log{/t}</strong></div><hr><div>{t escape=tooltip}Enable error logging for QWcrm. This will log all errors and store the data in the log file \'error.log\'. This log file is in apache log format and can be found in the logs folder.{/t}</div>');" onMouseOut="hideddrivetip();">
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}QWcrm Error Log{/t}</strong></div><hr><div>{t escape=tooltip}Enable error logging for QWcrm. This will log all errors and store the data in the Error Log. This log file is in apache log format and can be found in the logs folder.{/t}</div>');" onMouseOut="hideddrivetip();">
+                        </td>
+                    </tr>
+                                        <tr>
+                        <td align="right"><b>{t}Email Error Log{/t}</b></td>
+                        <td>
+                            <select class="olotd5" id="qwcrm_email_error_log" name="qwcrm_email_error_log">                                                       
+                                <option value="0"{if $qwcrm_config.qwcrm_email_error_log == '0'} selected{/if}>{t}No{/t}</option>
+                                <option value="1"{if $qwcrm_config.qwcrm_email_error_log == '1'} selected{/if}>{t}Yes{/t}</option>
+                            </select>
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}QWcrm Email Error Log{/t}</strong></div><hr><div>{t escape=tooltip}Enable email error logging for QWcrm. This will log all email system errors from within QWcrm and store the data in the Activity Log. This log file can be found in the logs folder.<br>This should only be used for diagnosing problems because the log file will grow in size quicky.{/t}</div>');" onMouseOut="hideddrivetip();">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right"><b>{t}Email Transport Log{/t}</b></td>
+                        <td>
+                            <select class="olotd5" id="qwcrm_email_transport_log" name="qwcrm_email_transport_log">                                                       
+                                <option value="0"{if $qwcrm_config.qwcrm_email_transport_log == '0'} selected{/if}>{t}No{/t}</option>
+                                <option value="1"{if $qwcrm_config.qwcrm_email_transport_log == '1'} selected{/if}>{t}Yes{/t}</option>
+                            </select>
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}QWcrm Email Transport Log{/t}</strong></div><hr><div>{t escape=tooltip}Enable email transport logging for QWcrm. This will log all email trasnsport transactions from within QWcrm and store the data in the Email Transport Log. This log file can be found in the logs folder.<br>The log will show you the SMTP handshakes and other relevant information.<br>This should only be used for diagnosing problems because the log file will grow in size quicky.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr> 
                     

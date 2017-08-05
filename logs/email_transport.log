@@ -1,0 +1,254 @@
+
+-----------------------------------------------------------------------------
+
+
+-----------------------------------------------------------------------------
+
+::1,jon.brown,[05/Aug/2017:13:35:07 +0100]
+
+++ Starting Swift_SmtpTransport
+<< 220-ruk6.dizinc.com ESMTP Exim 4.89 #1 Sat, 05 Aug 2017 13:35:04 +0100 
+220-We do not authorize the use of this system to transport unsolicited, 
+220 and/or bulk e-mail.
+
+>> EHLO [IPv6:::1]
+
+<< 250-ruk6.dizinc.com Hello 199.85.198.146.dyn.plus.net [146.198.85.199]
+250-SIZE 52428800
+250-8BITMIME
+250-PIPELINING
+250-STARTTLS
+250 HELP
+
+>> STARTTLS
+
+<< 220 TLS go ahead
+
+>> EHLO [IPv6:::1]
+
+<< 250-ruk6.dizinc.com Hello 199.85.198.146.dyn.plus.net [146.198.85.199]
+250-SIZE 52428800
+250-8BITMIME
+250-PIPELINING
+250-AUTH PLAIN LOGIN
+250 HELP
+
+>> AUTH LOGIN
+
+<< 334 VXNlcm5hbWU6
+
+>> am9uQGxhbmNhc3RyaWFuLWl0LmNvLnVr
+
+<< 334 UGFzc3dvcmQ6
+
+>> Iz1EP045Mkt3TjUu
+
+<< 235 Authentication succeeded
+
+++ Swift_SmtpTransport started
+>> MAIL FROM:<jon@lancastrian-it.co.uk>
+
+<< 250 OK
+
+>> RCPT TO:<hosting@lancastrian-it.co.uk>
+
+<< 250 Accepted
+
+>> DATA
+
+<< 354 Enter message, ending with "." on a line by itself
+
+>> 
+.
+
+<< 250 OK id=1ddyIL-0004I7-N7
+
+
+-----------------------------------------------------------------------------
+
+::1,jon.brown,[05/Aug/2017:13:35:16 +0100]
+
+++ Starting Swift_SmtpTransport
+<< 220-ruk6.dizinc.com ESMTP Exim 4.89 #1 Sat, 05 Aug 2017 13:35:14 +0100 
+220-We do not authorize the use of this system to transport unsolicited, 
+220 and/or bulk e-mail.
+
+>> EHLO [IPv6:::1]
+
+<< 250-ruk6.dizinc.com Hello 199.85.198.146.dyn.plus.net [146.198.85.199]
+250-SIZE 52428800
+250-8BITMIME
+250-PIPELINING
+250-STARTTLS
+250 HELP
+
+>> STARTTLS
+
+<< 220 TLS go ahead
+
+>> EHLO [IPv6:::1]
+
+<< 250-ruk6.dizinc.com Hello 199.85.198.146.dyn.plus.net [146.198.85.199]
+250-SIZE 52428800
+250-8BITMIME
+250-PIPELINING
+250-AUTH PLAIN LOGIN
+250 HELP
+
+>> AUTH LOGIN
+
+<< 334 VXNlcm5hbWU6
+
+>> am9uQGxhbmNhc3RyaWFuLWl0LmNvLnVr
+
+<< 334 UGFzc3dvcmQ6
+
+>> Iz1EP045Mkt3TjUu
+
+<< 235 Authentication succeeded
+
+++ Swift_SmtpTransport started
+>> MAIL FROM:<jon@lancastrian-it.co.uk>
+
+<< 250 OK
+
+>> RCPT TO:<hosting@lancastrian-it.co.uk>
+
+<< 250 Accepted
+
+>> DATA
+
+<< 354 Enter message, ending with "." on a line by itself
+
+>> 
+.
+
+<< 250 OK id=1ddyIV-0004KL-D5
+
+
+-----------------------------------------------------------------------------
+
+::1,jon.brown,[05/Aug/2017:13:35:24 +0100]
+
+++ Starting Swift_SmtpTransport
+<< 220-ruk6.dizinc.com ESMTP Exim 4.89 #1 Sat, 05 Aug 2017 13:35:22 +0100 
+220-We do not authorize the use of this system to transport unsolicited, 
+220 and/or bulk e-mail.
+
+>> EHLO [IPv6:::1]
+
+<< 250-ruk6.dizinc.com Hello 199.85.198.146.dyn.plus.net [146.198.85.199]
+250-SIZE 52428800
+250-8BITMIME
+250-PIPELINING
+250-STARTTLS
+250 HELP
+
+>> STARTTLS
+
+<< 220 TLS go ahead
+
+>> EHLO [IPv6:::1]
+
+<< 250-ruk6.dizinc.com Hello 199.85.198.146.dyn.plus.net [146.198.85.199]
+250-SIZE 52428800
+250-8BITMIME
+250-PIPELINING
+250-AUTH PLAIN LOGIN
+250 HELP
+
+>> AUTH LOGIN
+
+<< 334 VXNlcm5hbWU6
+
+>> am9uQGxhbmNhc3RyaWFuLWl0LmNvLnVr
+
+<< 334 UGFzc3dvcmQ6
+
+>> Iz1EP045Mkt3TjUu
+
+<< 235 Authentication succeeded
+
+++ Swift_SmtpTransport started
+>> MAIL FROM:<jon@lancastrian-it.co.uk>
+
+<< 250 OK
+
+>> RCPT TO:<hosting@lancastrian-it.co.uk>
+
+<< 250 Accepted
+
+>> DATA
+
+<< 354 Enter message, ending with "." on a line by itself
+
+>> 
+.
+
+<< 250 OK id=1ddyId-0004Mf-8H
+
+
+-----------------------------------------------------------------------------
+
+::1,jon.brown,[05/Aug/2017:13:36:25 +0100]
+
+++ Starting Swift_SmtpTransport
+<< 220-ruk6.dizinc.com ESMTP Exim 4.89 #1 Sat, 05 Aug 2017 13:36:22 +0100 
+220-We do not authorize the use of this system to transport unsolicited, 
+220 and/or bulk e-mail.
+
+>> EHLO [IPv6:::1]
+
+<< 250-ruk6.dizinc.com Hello 199.85.198.146.dyn.plus.net [146.198.85.199]
+250-SIZE 52428800
+250-8BITMIME
+250-PIPELINING
+250-STARTTLS
+250 HELP
+
+>> STARTTLS
+
+<< 220 TLS go ahead
+
+>> EHLO [IPv6:::1]
+
+<< 250-ruk6.dizinc.com Hello 199.85.198.146.dyn.plus.net [146.198.85.199]
+250-SIZE 52428800
+250-8BITMIME
+250-PIPELINING
+250-AUTH PLAIN LOGIN
+250 HELP
+
+>> AUTH LOGIN
+
+<< 334 VXNlcm5hbWU6
+
+>> am9uQGxhbmNhc3RyaWFuLWl0LmNvLnVr
+
+<< 334 UGFzc3dvcmQ6
+
+>> Iz1EP045Mkt3TjUu
+
+<< 235 Authentication succeeded
+
+++ Swift_SmtpTransport started
+>> MAIL FROM:<jon@lancastrian-it.co.uk>
+
+<< 250 OK
+
+>> RCPT TO:<hosting@lancastrian-it.co.uk>
+
+<< 250 Accepted
+
+>> DATA
+
+<< 354 Enter message, ending with "." on a line by itself
+
+>> 
+.
+
+<< 250 OK id=1ddyJb-0004hG-Uz
+
+
+-----------------------------------------------------------------------------
+

@@ -34,10 +34,10 @@ if($VAR['print_content'] == 'technician_workorder_slip') {
     if ($VAR['print_type'] == 'print_html') {
         $BuildPage .= $smarty->fetch('workorder/printing/print_technician_workorder_slip.tpl');
     } elseif ($VAR['print_type'] == 'print_pdf') {        
-        $pdf_output = $smarty->fetch('workorder/printing/print_technician_workorder_slip.tpl');
+        $pdf_template = $smarty->fetch('workorder/printing/print_technician_workorder_slip.tpl');
         // add pdf creation routing here
     } elseif ($VAR['print_type'] == 'email_pdf') {        
-        $pdf_output = $smarty->fetch('workorder/printing/print_technician_workorder_slip.tpl');
+        $pdf_template = $smarty->fetch('workorder/printing/print_technician_workorder_slip.tpl');
         // add pdf creation routing here
     }
 }
@@ -47,10 +47,10 @@ if($VAR['print_content'] == 'customer_workorder_slip') {
     if ($VAR['print_type'] == 'print_html') {
         $BuildPage .= $smarty->fetch('workorder/printing/print_customer_workorder_slip.tpl');
     } elseif ($VAR['print_type'] == 'print_pdf') {        
-        $pdf_output = $smarty->fetch('workorder/printing/print_customer_workorder_slip.tpl');
+        $pdf_template = $smarty->fetch('workorder/printing/print_customer_workorder_slip.tpl');
         // add pdf creation routing here
     } elseif ($VAR['print_type'] == 'email_pdf') {        
-        $pdf_output = $smarty->fetch('workorder/printing/print_customer_workorder_slip.tpl');
+        $pdf_template = $smarty->fetch('workorder/printing/print_customer_workorder_slip.tpl');
         // add pdf creation routing here
     }
 }
@@ -60,10 +60,10 @@ if($VAR['print_content'] == 'job_sheet') {
     if ($VAR['print_type'] == 'print_html') {
         $BuildPage .= $smarty->fetch('workorder/printing/print_job_sheet.tpl');
     } elseif ($VAR['print_type'] == 'print_pdf') {        
-        $pdf_output = $smarty->fetch('workorder/printing/print_job_sheet.tpl');
+        $pdf_template = $smarty->fetch('workorder/printing/print_job_sheet.tpl');
         // add pdf creation routing here
     } elseif ($VAR['print_type'] == 'email_pdf') {        
-        $pdf_output = $smarty->fetch('workorder/printing/print_job_sheet.tpl');
+        $pdf_template = $smarty->fetch('workorder/printing/print_job_sheet.tpl');
         // add pdf creation routing here
     }
 }

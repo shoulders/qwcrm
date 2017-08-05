@@ -48,7 +48,7 @@
                     {/if}
                     {if $customer_id > 0 }
                         <a href="index.php?page=workorder:new&customer_id={$customer_id}"><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" height="14" width="14" /> {t}Create New WO{/t}</a>
-                        <a href="index.php?page=invoice:new&customer_id={$customer_id}&workorder_id=0&invoice_type=invoice-only"><img src="{$theme_images_dir}icons/invoice.png" alt="" border="0" height="14" width="14" /> {t}Invoice Only{/t}</a>
+                        <a href="index.php?page=invoice:new&customer_id={$customer_id}&invoice_type=invoice-only"><img src="{$theme_images_dir}icons/invoice.png" alt="" border="0" height="14" width="14" /> {t}Invoice Only{/t}</a>
                     {/if}
                     <a href="index.php?page=schedule:day"><img src="{$theme_images_dir}icons/16x16/Calendar.gif" alt="" border="0" height="14" width="14" /> {t}Schedules{/t}</a>
                 </div>

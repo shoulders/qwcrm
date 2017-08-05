@@ -1,0 +1,22 @@
+::1,jon.brown,[05/Aug/2017:12:29:42 +0100]
+
+Connection could not be established with host ruk6.dizinc.com [A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond.
+ #10060]
+Log data:
+++ Starting Swift_SmtpTransport
+!! Connection could not be established with host ruk6.dizinc.com [A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond.
+ #10060] (code: 0)
+
+-----------------------------------------------------------------------------
+
+::1,jon.brown,[05/Aug/2017:12:30:16 +0100]
+
+Connection could not be established with host ruk6.dizinc.com [A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond.
+ #10060]
+Log data:
+++ Starting Swift_SmtpTransport
+!! Connection could not be established with host ruk6.dizinc.com [A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond.
+ #10060] (code: 0)
+
+-----------------------------------------------------------------------------
+

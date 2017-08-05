@@ -876,7 +876,7 @@ function write_record_to_tracker_table($db, $page_display_controller, $module, $
 }
 
 ############################################
-#  Write a record to the activity.log file #
+#  Write a record to the Activity Log      #
 ############################################
 
 /*
@@ -888,17 +888,15 @@ function write_record_to_tracker_table($db, $page_display_controller, $module, $
 
 function write_record_to_activity_log($record){
     
-    global $QConfig;
-
     // if activity logging not enabled exit
-    if($QConfig->qwcrm_activity_log != true){return;}
+    if(QFactory::getConfig()->qwcrm_activity_log != true){return;}
     
     // Build log entry - perhaps use the apache time stamp below
-    $log_entry = $_SERVER['REMOTE_ADDR'] . ',' . QFactory::getUser()->login_username . ',' . date("[d/M/Y:H:i:s O]", time()) . ',' . $record . "\n";
+    $log_entry = $_SERVER['REMOTE_ADDR'] . ',' . QFactory::getUser()->login_username . ',' . date("[d/M/Y:H:i:s O]", time()) . ',' . $record . "\r\n";
     
-    // Write log entry to access log    
-    if(!$fp = fopen(ACTIVITY_LOG,'a')) {        
-        force_error_page($_GET['page'], 'file', __FILE__, __FUNCTION__, '', '', gettext("Could not open activity.log to save the record."));
+    // Write log entry  
+    if(!$fp = fopen(ACTIVITY_LOG, 'a')) {        
+        force_error_page($_GET['page'], 'file', __FILE__, __FUNCTION__, '', '', gettext("Could not open the Activity Log to save the record."));
         exit;
     }
     
@@ -910,11 +908,11 @@ function write_record_to_activity_log($record){
 }
 
 ############################################
-#  Write a record to the access.log file   #
+#  Write a record to the Access Log        #
 ############################################
 
 /*
- * This will create an apache compatible access.log (Combined Log Format)
+ * This will create an apache compatible access log (Combined Log Format)
  */
 
 function write_record_to_access_log($login_username = Null){    
@@ -959,11 +957,11 @@ function write_record_to_access_log($login_username = Null){
         $user_agent = '-';
     } 
    
-    $log_entry = $remote_ip.' '.$logname.' '.$user.' '.$time.' "'.$method.' '.$uri.' '.$protocol.'" '.$status.' '.$bytes.' "'.$referring_url.'" "'.$user_agent.'"'."\n";
+    $log_entry = $remote_ip.' '.$logname.' '.$user.' '.$time.' "'.$method.' '.$uri.' '.$protocol.'" '.$status.' '.$bytes.' "'.$referring_url.'" "'.$user_agent.'"'."\r\n";
     
-    // Write log entry to access log    
-    if(!$fp = fopen(ACCESS_LOG,'a')) {        
-        force_error_page($_GET['page'], 'file', __FILE__, __FUNCTION__, '', '', gettext("Could not open access.log to save the record."));
+    // Write log entry   
+    if(!$fp = fopen(ACCESS_LOG, 'a')) {        
+        force_error_page($_GET['page'], 'file', __FILE__, __FUNCTION__, '', '', gettext("Could not open the Access Log to save the record."));
         exit;
     }
     
@@ -975,22 +973,24 @@ function write_record_to_access_log($login_username = Null){
 }
 
 ############################################
-#  Write a record to the error.log file    #
+#  Write a record to the Error Log         #
 ############################################
 
-function write_record_to_error_log($login_username, $error_page, $error_type, $error_location, $php_function, $database_error, $error_msg){
+function write_record_to_error_log($login_username, $error_page, $error_type, $error_location, $php_function, $database_error, $error_msg) {
     
-    // If no logged in user
+    // it is not - force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count the matching Work Orders."));
+    
+    // If user not logged in (for apache standards)
     if($login_username == '') {
         $login_username = '-';        
     }   
 
     // Build log entry - perhaps use the apache time stamp below
-    $log_entry = $_SERVER['REMOTE_ADDR'].','.$login_username.','.date("[d/M/Y:H:i:s O]", $_SERVER['REQUEST_TIME']).','.$error_page.','.$error_type.','.$error_location.','.$php_function.','.$database_error.','.$error_msg."\n";
+    $log_entry = $_SERVER['REMOTE_ADDR'].','.$login_username.','.date("[d/M/Y:H:i:s O]", $_SERVER['REQUEST_TIME']).','.$error_page.','.$error_type.','.$error_location.','.$php_function.','.$database_error.','.$error_msg."\r\n";
 
-    // Write log entry to error.log    
-    if(!$fp = fopen(ERROR_LOG,'a')) {        
-        force_error_page($_GET['page'], 'file', __FILE__, __FUNCTION__, '', '', gettext("Could not open error.log to save the record."));
+    // Write log entry  
+    if(!$fp = fopen(ERROR_LOG, 'a')) {        
+        force_error_page($_GET['page'], 'file', __FILE__, __FUNCTION__, '', '', gettext("Could not open the Error Log to save the record."));
         exit;
     }
     

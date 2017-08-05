@@ -66,7 +66,7 @@ if(is_file('configuration.php')) {
 // Create config object for global scope / settings
 $QConfig = new QConfig;
 
-// need to add error control here ie skipt strait to
+// need to add error control here ie skip straight to
 require('includes/defines.php');
 require(INCLUDES_DIR.'security.php');
 require(INCLUDES_DIR.'include.php');

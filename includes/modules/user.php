@@ -749,13 +749,13 @@ function login($credentials, $options = array())
 function logout($silent = null)
 {                    
     // Build logout message while user details exist
-    $message = gettext("Logout successful for").' '.QFactory::getUser()->login_username;
+    $record = gettext("Logout successful for").' '.QFactory::getUser()->login_username;
     
     // Logout
     QFactory::getAuth()->logout();    
 
     // Log activity       
-    write_record_to_activity_log($message);        
+    write_record_to_activity_log($record);        
 
     // Reload Homepage
     if($silent) {
@@ -835,27 +835,27 @@ function send_reset_email($db, $email) {
     // Set Options
     $recipient = $email;
     $subject = gettext("Your QWcrm password reset request");    
-    $message = '';
+    $body = '';
     
     // Create Token
     $token = create_reset_token($db, get_user_id_by_email($db, $email));
     
     // Build Email Content
-    $message .= gettext("Hello").','."\r\n\r\n";
+    $body .= gettext("Hello").','."\r\n\r\n";
 
-    $message .= gettext("A request has been made to reset your QWcrm account password.").' ';
-    $message .= gettext("To reset your password, you will need to submit this verification code in order to verify that the request was legitimate.")."\r\n\r\n";
+    $body .= gettext("A request has been made to reset your QWcrm account password.").' ';
+    $body .= gettext("To reset your password, you will need to submit this verification code in order to verify that the request was legitimate.")."\r\n\r\n";
 
-    $message .= gettext("The verification code is").' '.$token."\r\n\r\n";
+    $body .= gettext("The verification code is").' '.$token."\r\n\r\n";
 
-    $message .= gettext("Select the URL below and proceed with resetting your password.")."\r\n\r\n";
+    $body .= gettext("Select the URL below and proceed with resetting your password.")."\r\n\r\n";
 
-    $message .= QWCRM_PROTOCOL. QWCRM_DOMAIN . QWCRM_PATH."index.php?page=user:reset&token=".$token."\r\n\r\n";
+    $body .= QWCRM_PROTOCOL. QWCRM_DOMAIN . QWCRM_PATH."index.php?page=user:reset&token=".$token."\r\n\r\n";
         
-    $message .= gettext("Thank you.");    
+    $body .= gettext("Thank you.");    
     
     // Send Reset Email    
-    send_email($recipient, $subject, $message);
+    send_email($recipient, $subject, $body);
     
 }
 

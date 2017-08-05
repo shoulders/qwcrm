@@ -311,7 +311,12 @@ function insert_workorder_note($db, $workorder_id, $note){
 #   Get single Workorder record        #
 ########################################
 
-function get_workorder_details($db, $workorder_id, $item = null) {   
+function get_workorder_details($db, $workorder_id, $item = null) {  
+    
+    // This covers invoice only
+    if(!$workorder_id){
+        return;        
+    }
 
     $sql = "SELECT * FROM ".PRFX."workorder WHERE workorder_id=".$db->qstr($workorder_id);
     
@@ -333,7 +338,6 @@ function get_workorder_details($db, $workorder_id, $item = null) {
     }
     
 }
-
 
 #####################################
 #  Get a single workorder note      #

@@ -37,6 +37,8 @@ define('THEME_TEMPLATE_DIR',        THEME_DIR.'templates/'      );
 define('THEME_JS_DIR_FINC',         '../../js/'                 );
 
 // Log files
-define('ACTIVITY_LOG',              LOGS_DIR.'activity.log'     );
-define('ACCESS_LOG',                LOGS_DIR.'access.log'       );
-define('ERROR_LOG',                 LOGS_DIR.'error.log'        );
+define('ACCESS_LOG',                LOGS_DIR.'access.log'           );
+define('ACTIVITY_LOG',              LOGS_DIR.'activity.log'         );
+define('EMAIL_ERROR_LOG',           LOGS_DIR.'email_error.log'      );
+define('EMAIL_TRANSPORT_LOG',       LOGS_DIR.'email_transport.log'  );
+define('ERROR_LOG',                 LOGS_DIR.'error.log'            );

@@ -126,7 +126,7 @@ function onlyMysqlDatabaseName(e) {
 
 // Only FilePath - covers unix/linux/windows
 function onlyFilePath(e) {
-    return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789\\\/:_", false);
+    return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789\\\/:_.", false);
 }
 
 // Common Function for Key Input Restriction

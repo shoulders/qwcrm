@@ -5,6 +5,7 @@ defined('_QWEXEC') or die;
 require(INCLUDES_DIR.'modules/customer.php');
 require(INCLUDES_DIR.'modules/user.php');
 require(INCLUDES_DIR.'modules/invoice.php');
+require(INCLUDES_DIR.'mpdf.php');
 require(INCLUDES_DIR.'modules/payment.php');
 require(INCLUDES_DIR.'modules/workorder.php');
 
@@ -32,26 +33,53 @@ $smarty->assign('labour_sub_total',         labour_sub_total($db, $invoice_id)  
 $smarty->assign('parts_sub_total',          parts_sub_total($db, $invoice_id)                                                                           );
 $smarty->assign('employee_display_name',    get_user_details($db, get_invoice_details($db, $invoice_id, 'employee_id'), 'employee_display_name')        );
 
+// Build the PDF filename
+$pdf_filename = gettext("Invoice").'-'.$invoice_id;
 
 /* Invoice Print Routine */
 if($VAR['print_content'] == 'invoice') {
     
     // Print HTML Invoice
     if ($VAR['print_type'] == 'print_html') {        
-        $BuildPage .= $smarty->fetch('invoice/printing/print_invoice.tpl');    
-        
+        $BuildPage .= $smarty->fetch('invoice/printing/print_invoice.tpl'); 
+    }
+    
     // Print PDF Invoice
-    } elseif ($VAR['print_type'] == 'print_pdf') {        
+    if ($VAR['print_type'] == 'print_pdf') {
+        
         // Get Print Invoice as HTML into a variable
-        $pdf_output = $smarty->fetch('invoice/printing/print_invoice.tpl');    
-        // Call mPDF and output as PDF to page      
-        require_once(INCLUDES_DIR.'mpdf.php');         
+        $pdf_template = $smarty->fetch('invoice/printing/print_invoice.tpl');
+        
+        // output PDF in brower
+        mpdf_output_in_browser($pdf_filename, $pdf_template);
+        
+    }        
         
     // Email PDF Invoice
-    } elseif($VAR['print_type'] == 'email_pdf') {        
-        // add pdf creation routing here  
+    if($VAR['print_type'] == 'email_pdf') {  
+        
+        // Get Print Invoice as HTML into a variable
+        $pdf_template = $smarty->fetch('invoice/printing/print_invoice.tpl');
+        
+        // return the PDF in a variable
+        $pdf_as_string = mpdf_output_as_varible($pdf_filename, $pdf_template);
+        
+        // Build the PDF
+        $customer_details = get_customer_details($db, get_invoice_details($db, $invoice_id, 'customer_id'));
+        $attachment['data'] = $pdf_as_string;
+        $attachment['filename'] = $pdf_filename;
+        $attachment['filetype'] = 'application/pdf';        
+        
+        // Email the PDF
+        send_email($customer_details['display_name'], $customer_details['email'], gettext("Invoice").' '.$invoice_id, 'some body shit', $attachment);
+        
+        // End all other processing
+        die();
     }
+    
 }
+
+
 
 /* Address Only Print Routine */
 if($VAR['print_content'] == 'address') {

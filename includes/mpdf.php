@@ -9,13 +9,39 @@ defined('_QWEXEC') or die;
 // Load Dependencies - something to do with Composer
 require_once(LIBRARIES_DIR.'mpdf/vendor/autoload.php');
 
-// Initialize mPDF
-$mpdf = new mPDF('c');
+// Output a PDF in the browser
+function mpdf_output_in_browser($filename, $pdf_template) {
+    
+    // Initialize mPDF
+    $mpdf = new mPDF('c');  // c = only use core fonts - https://mpdf.github.io/fonts-languages/fonts-in-mpdf-6-x.html
 
-//$mpdf->SetTitle('My Title');  //not needed when using full page import, should take it from the page - does not like parsing the header? not HTML5 compliant
-$mpdf->WriteHTML($pdf_output);
-$mpdf->Output(); // outputs to the screen
-// $mpdf->Output('invoice.pdf'); outputs to a file but does not prompt
+    //not needed when using full page import, should take it from the page - does not like parsing the header? not HTML5 compliant
+    //$mpdf->SetTitle('My Title');
+    
+    // Build the PDF
+    $mpdf->WriteHTML($pdf_template);
+    
+    // Output the PDF to the browser
+    $mpdf->Output($filename, 'I');
 
-// I think this exit prevents issues
-exit;
+    // I think this exit prevents issues
+    exit;
+    
+}
+
+// Return a PDF in a vairble
+function mpdf_output_as_varible($filename, $pdf_template) {
+    
+    // Initialize mPDF
+    $mpdf = new mPDF('c');  // c = only use core fonts - https://mpdf.github.io/fonts-languages/fonts-in-mpdf-6-x.html
+
+    // not needed when using full page import, should take it from the page - does not like parsing the header? not HTML5 compliant
+    //$mpdf->SetTitle('My Title');
+    
+    // Output the PDF
+    $mpdf->WriteHTML($pdf_template);
+    
+    // Return the PDF as a string
+    return $mpdf->Output($filename, 'S');
+    
+}
