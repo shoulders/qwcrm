@@ -54,7 +54,7 @@ function force_page($module, $page_tpl = Null, $variables = Null, $method = 'ses
     
     /* Normal URL Redirect */
     
-    if($page_tpl == Null && $variables == Null){       
+    if($page_tpl == Null && $variables == Null) {       
 
         // Build the URL and perform the redirect
         perform_redirect($module);        
@@ -338,16 +338,16 @@ function prepare_error_data($type, $data = Null) {
     $user = QFactory::getUser();
 
     /* Error Page (by referring page) - only needed when using referrer - not currently used 
-    if($type === 'error_page'){
+    if($type === 'error_page') {
      */
         
         // extract the qwcrm page reference from the url      
         // preg_match('/^.*\?page=(.*)&.*/U', getenv('HTTP_REFERER'), $page_string);
                 
       /*  // compensate for home and login pages
-        if($page_string[1] == ''){     
+        if($page_string[1] == '') {     
             // Must be Login or Home
-            if(isset($user->login_token)){
+            if(isset($user->login_token)) {
                 $error_page = 'home';
             } else {
                 $error_page = 'login';
@@ -366,7 +366,7 @@ function prepare_error_data($type, $data = Null) {
         if($data == '') {
             
             // Must be Login or Home
-            if(isset($user->login_token)){
+            if(isset($user->login_token)) {
                 $error_page = 'home';
             } else {
                 $error_page = 'login';
@@ -380,7 +380,7 @@ function prepare_error_data($type, $data = Null) {
     }     
     
     /* Error Location */
-    if($type === 'error_location'){     
+    if($type === 'error_location') {     
                
         // remove qwcrm base physical webroot path
         $data = str_replace(QWCRM_PHYSICAL_PATH, '', $data);
@@ -399,7 +399,7 @@ function prepare_error_data($type, $data = Null) {
     }
    
     /* PHP Function */
-    if($type === 'php_function'){
+    if($type === 'php_function') {
 
         // add () to the end of the php function name
         if($data != '') {$data.= '()';}        
@@ -407,7 +407,7 @@ function prepare_error_data($type, $data = Null) {
     }
     
     /* Database Error */
-    if($type === 'database_error'){
+    if($type === 'database_error') {
 
         // remove newlines from the database string
         if($data != '') {$data = str_replace("\n", '', $data);}
@@ -416,7 +416,7 @@ function prepare_error_data($type, $data = Null) {
     }
     
     /* SQL Query */
-    if($type === 'sql_query'){
+    if($type === 'sql_query') {
 
         // change newlines to <br>
         if($data != '') {$data = str_replace("\n", '<br>', $data);}        
@@ -454,8 +454,8 @@ function load_language() {
     xml_parser_free($xmlparser);    
     
     // Loop through the array key/pairs and make smarty variables
-    foreach($values as $things){
-        if($things['tag'] != 'TRANSLATE' && $things['value'] != ''){
+    foreach($values as $things) {
+        if($things['tag'] != 'TRANSLATE' && $things['value'] != '') {
             $smarty->assign('translate_'.strtolower($things['tag']),$things['value']);
         }
     }    
@@ -498,7 +498,7 @@ function load_language() {
  * This does cause these translations to be loaded/assigned twice but allows me to use 1 file language instead of 2
  */
 
-function set_page_header_and_meta_data($module, $page_tpl, $page_title_from_var = Null){
+function set_page_header_and_meta_data($module, $page_tpl, $page_title_from_var = Null) {
     
     global $smarty;
     
@@ -507,7 +507,7 @@ function set_page_header_and_meta_data($module, $page_tpl, $page_title_from_var 
      * or just use the page title from the language file
      * legacy option will be removed in future
      */
-    if ($page_title_from_var != Null){
+    if ($page_title_from_var != Null) {
         $smarty->assign('page_title', $page_title_from_var); 
     } else {        
         $smarty->assign('page_title', gettext(strtoupper($module).'_'.strtoupper($page_tpl).'_PAGE_TITLE'));
@@ -529,7 +529,7 @@ function set_page_header_and_meta_data($module, $page_tpl, $page_title_from_var 
 function check_acl($db, $login_usergroup_id, $module, $page_tpl) {
     
     /* error catching - you cannot use normal error logging as it will cause a loop */
-    if($login_usergroup_id == ''){
+    if($login_usergroup_id == '') {
         die(gettext("The ACL has been supplied with no account type ID - I will now die."));                
     }
 
@@ -580,7 +580,7 @@ function check_acl($db, $login_usergroup_id, $module, $page_tpl) {
 #  Verify QWcrm is installed correctly     #
 ############################################
 
-function verify_qwcrm_is_installed_correctly($db){
+function verify_qwcrm_is_installed_correctly($db) {
 
     /* General Checks */
 
@@ -590,7 +590,7 @@ function verify_qwcrm_is_installed_correctly($db){
     }
     
     // If there is no configuration file - redirect to the installation routine
-    if(!is_file('configuration.php')){        
+    if(!is_file('configuration.php')) {        
         force_page('setup', 'install');
         exit;
     }
@@ -602,7 +602,7 @@ function verify_qwcrm_is_installed_correctly($db){
     }
     
     // Check the MySQL version is high enough to run QWcrm
-    if (version_compare(get_mysql_version($db), QWCRM_MINIMUM_MYSQL, '<')){
+    if (version_compare(get_mysql_version($db), QWCRM_MINIMUM_MYSQL, '<')) {
         die(gettext("QWcrm requires MySQL").' '.QWCRM_MINIMUM_MYSQL.' '.'or later to run.'.' '.gettext("Your current version is").' '.get_mysql_version($db));
     }
     
@@ -677,11 +677,11 @@ function get_mysql_version($db) {
 #  Get QWcrm version number from the database  #
 ################################################
 
-function get_qwcrm_database_version_number($db){
+function get_qwcrm_database_version_number($db) {
     
     $sql = "SELECT * FROM ".PRFX."version ORDER BY ".PRFX."version.database_version DESC LIMIT 1";
     
-    if(!$rs = $db->execute($sql)){        
+    if(!$rs = $db->execute($sql)) {        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Could not retrieve the QWcrm database version."));
         exit;        
     } else {
@@ -702,18 +702,18 @@ function get_qwcrm_database_version_number($db){
  * supply the required field name or all to return all of them as an array
  */
 
-function get_company_details($db, $item = null){
+function get_company_details($db, $item = null) {
     
     $sql = "SELECT * FROM ".PRFX."company";
     
-    if(!$rs = $db->execute($sql)){        
+    if(!$rs = $db->execute($sql)) {        
         //force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get company details."));
         echo $sql.'<br>';
         echo $db->ErrorMsg();
         exit;
     } else {
         
-        if($item === null){
+        if($item === null) {
             
             return $rs->GetRowAssoc();            
             
@@ -727,15 +727,17 @@ function get_company_details($db, $item = null){
     
 }
 
+
+
 ####################################################################
 #  Encryption Routine using the secret key from configuration.php  #  // not sure this is used anywhere
 ####################################################################
 
-function encrypt($strString, $secret_key){
+function encrypt($strString, $secret_key) {
     
     $deresult = '';
     
-    for($i=0; $i<strlen($strString); $i++){
+    for($i=0; $i<strlen($strString); $i++) {
         $char       =   substr($strString, $i, 1);
         $keychar    =   substr($secret_key, ($i % strlen($secret_key))-1, 1);
         $char       =   chr(ord($char)+ord($keychar));
@@ -750,12 +752,12 @@ function encrypt($strString, $secret_key){
 #  Deryption Routine using the secret key from configuration.php   # // not sure this is used anywhere
 ####################################################################
 
-function decrypt($strString, $secret_key){
+function decrypt($strString, $secret_key) {
      
     $deresult = '';
     base64_decode($strstring);
     
-    for($i=0; $i<strlen($strString); $i++){
+    for($i=0; $i<strlen($strString); $i++) {
         $char       =   substr($strString, $i, 1);
         $keychar    =   substr($secret_key, ($i % strlen($secret_key))-1, 1);
         $char       =   chr(ord($char)-ord($keychar));
@@ -771,7 +773,7 @@ function decrypt($strString, $secret_key){
 ###################################################################################
 
 /*
-function encrypt($strString, $secret_key){
+function encrypt($strString, $secret_key) {
 
 	if ($strString == '') {
             return $strString;
@@ -791,7 +793,7 @@ function encrypt($strString, $secret_key){
 ###################################################################################
 
 /*
-function decrypt($strString, $secret_key){
+function decrypt($strString, $secret_key) {
 	
 	if ($strString == '') {
             return $strString;
@@ -814,7 +816,7 @@ function decrypt($strString, $secret_key){
  * This attempts to get the real IP address of the user 
  */
 
-function get_ip_address(){
+function get_ip_address() {
     
     if(getenv('HTTP_CLIENT_IP')) {
         $ip_address = getenv('HTTP_CLIENT_IP');        
@@ -842,7 +844,7 @@ if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
 }
 
 // To check ip is pass from proxy
-elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])){
+elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
     $ip=$_SERVER['HTTP_X_FORWARDED_FOR'];
 } else {
     $ip=$_SERVER['REMOTE_ADDR'];
@@ -855,7 +857,7 @@ echo ('My real IP is:'.$ip);
 #  Write a record to the Tracker Table         #
 ################################################
 
-function write_record_to_tracker_table($db, $page_display_controller, $module, $page_tpl){
+function write_record_to_tracker_table($db, $page_display_controller, $module, $page_tpl) {
     
    $sql = "INSERT into ".PRFX."tracker SET
    date          = ". $db->qstr( time()                     ).",
@@ -886,10 +888,10 @@ function write_record_to_tracker_table($db, $page_display_controller, $module, $
  * add username and other stuff here? not just the message
  */
 
-function write_record_to_activity_log($record){
+function write_record_to_activity_log($record) {
     
     // if activity logging not enabled exit
-    if(QFactory::getConfig()->qwcrm_activity_log != true){return;}
+    if(QFactory::getConfig()->get('qwcrm_activity_log') != true) { return; }
     
     // Build log entry - perhaps use the apache time stamp below
     $log_entry = $_SERVER['REMOTE_ADDR'] . ',' . QFactory::getUser()->login_username . ',' . date("[d/M/Y:H:i:s O]", time()) . ',' . $record . "\r\n";
@@ -915,7 +917,7 @@ function write_record_to_activity_log($record){
  * This will create an apache compatible access log (Combined Log Format)
  */
 
-function write_record_to_access_log($login_username = Null){    
+function write_record_to_access_log($login_username = Null) {    
     
     // Apache log format
     // https://httpd.apache.org/docs/2.4/logs.html
@@ -927,7 +929,7 @@ function write_record_to_access_log($login_username = Null){
     $logname        = '-';                                                  //  This is the RFC 1413 identity of the client determined by identd on the clients machine. This information is highly unreliable and should almost never be used except on tightly controlled internal networks.
     
     // Login User - substituting qwcrm user for the traditional apache HTTP Authentication
-    if($login_username == ''){
+    if($login_username == '') {
         $user = '-';
     } else {
         $user = $login_username;  
@@ -944,14 +946,14 @@ function write_record_to_access_log($login_username = Null){
     $bytes          = '-';                                                  // cant get this - page size / payload size
     
     // Referring URL
-    if(isset($_SERVER['HTTP_REFERER'])){
+    if(isset($_SERVER['HTTP_REFERER'])) {
         $referring_url = $_SERVER['HTTP_REFERER']; 
     } else {
         $referring_url = '-';
     }   
     
     // User Agent - if there is no user agent or it cannot be detected then apache uses "-"
-    if(isset($_SERVER['HTTP_USER_AGENT']) && ($_SERVER['HTTP_USER_AGENT'] != '')){
+    if(isset($_SERVER['HTTP_USER_AGENT']) && ($_SERVER['HTTP_USER_AGENT'] != '')) {
         $user_agent = $_SERVER['HTTP_USER_AGENT']; 
     } else {
         $user_agent = '-';
@@ -1047,7 +1049,7 @@ function convert_year_month_day_to_timestamp($start_year, $start_month, $start_d
 #   Convert Date into Unix Timestamp     #
 ##########################################
 
-function date_to_timestamp($date_to_convert){   
+function date_to_timestamp($date_to_convert) {   
     
     // this is just returning the current time
     // http://php.net/manual/en/datetime.createfromformat.php
@@ -1074,7 +1076,7 @@ function date_to_timestamp($date_to_convert){
     
     /* Alternate method - keep for now
      * // Invoice Date
-        if(DATE_FORMAT == "%d/%m/%Y"){
+        if(DATE_FORMAT == "%d/%m/%Y") {
             
             // Invoice Date
             $date_part = explode("/",$VAR['date']);
@@ -1086,7 +1088,7 @@ function date_to_timestamp($date_to_convert){
             $timestamp2 = mktime(0,0,0,$date_part2[1],$date_part2[0],$date_part2[2]);
             $datef2 = $timestamp2;
         }
-        if(DATE_FORMAT == "%m/%d/%Y"){
+        if(DATE_FORMAT == "%m/%d/%Y") {
             
             // Invoice Date
             $date_part = explode("/",$VAR['date']);
@@ -1118,10 +1120,10 @@ function datetime_to_timestamp($date, $hour, $minute, $second, $clock, $meridian
         $timestamp = date_to_timestamp($date);
 
         // if hour is 12am set hour as 0 - for correct calculation as no zero hour
-        if($hour == '12' && $meridian == 'am'){$hour = '0';}
+        if($hour == '12' && $meridian == 'am') {$hour = '0';}
 
         // Convert hours into seconds and then add - AM/PM aware
-        if($meridian == 'pm'){$timestamp += ($hour * 60 * 60 + 43200 );} else {$timestamp += ($hour * 60 * 60);}    
+        if($meridian == 'pm') {$timestamp += ($hour * 60 * 60 + 43200 );} else {$timestamp += ($hour * 60 * 60);}    
 
         // Convert minutes into seconds and add
         $timestamp += ($minute * 60);
@@ -1161,7 +1163,7 @@ function datetime_to_timestamp($date, $hour, $minute, $second, $clock, $meridian
 
 // not used anywhere at the minute
 
-function timestamp_to_date($timestamp){    
+function timestamp_to_date($timestamp) {    
 
     switch(DATE_FORMAT) {
         

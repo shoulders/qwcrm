@@ -26,33 +26,6 @@ defined('_QWEXEC') or die;
 
 /** New/Insert Functions **/
 
-##########################################
-#        Insert Company Hours            #
-##########################################
-
-function update_company_hours($db, $openingTime, $closingTime) {
-    
-    global $smarty;
-    
-    $sql = "UPDATE ".PRFX."company SET
-            opening_hour    =". $db->qstr( $openingTime['Time_Hour']     ).",
-            opening_minute  =". $db->qstr( $openingTime['Time_Minute']   ).",
-            closing_hour    =". $db->qstr( $closingTime['Time_Hour']     ).",
-            closing_minute  =". $db->qstr( $closingTime['Time_Minute']   );
-
-    if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the company hours."));
-        exit;
-    } else {
-        
-        $smarty->assign('information_msg', gettext("Business hours have been updated."));
-        return true;
-        
-    }
-    
-}
-
-
 /** Get Functions **/
 
 ##########################################
@@ -90,6 +63,56 @@ function get_company_start_end_times($db, $time_event) {
     
 }
 
+##########################################
+#  Get email signature                   #
+##########################################
+
+function get_email_signature($db, $swift_emailer = null) {
+    
+    // only add email signature if enabled
+    if(!get_company_details($db, 'email_signature_active')) { return; }
+    
+    // Load the signature from the database
+    $email_signature = get_company_details($db, 'email_signature');
+    
+    // If swiftmailer is going to be used to add image via CID
+    if($swift_emailer != null) {         
+        $logo_string = '<img src="'.$swift_emailer->embed(Swift_Image::fromPath(get_company_details($db, 'logo'))).'" alt="'.get_company_details($db, 'name').'" width="150">'; 
+        
+        
+    // Load the logo as a standard base64 string image
+    } else {        
+        $logo_string  = '<img src="data:image/jpeg;base64,'.base64_encode(file_get_contents(get_company_details($db, 'logo'))).'" alt="'.get_company_details($db, 'name').'" width="150">'; 
+    }    
+        
+    // Swap the logo placeholders with the new logo string
+    $email_signature  = replace_placeholder($email_signature, '{logo}', $logo_string);
+        
+    // Return the processed signature
+    return $email_signature ;
+    
+}
+
+##########################################
+#  Get email message body                #
+##########################################
+
+function get_email_message_body($db, $message_name, $customer_details = null) {
+    
+    // get the message from the database
+    $content = get_company_details($db, $message_name);
+    
+    // Process placeholders
+    $content = replace_placeholder($content, '{customer_display_name}', $customer_details['display_name']);
+    $content = replace_placeholder($content, '{customer_first_name}', $customer_details['first_name']);
+    $content = replace_placeholder($content, '{customer_last_name}', $customer_details['last_name']);
+    $content = replace_placeholder($content, '{customer_credit_terms}', $customer_details['credit_terms']);
+    
+    // return the process email
+    return $content;
+    
+}
+
 /** Update Functions **/
 
 ##########################
@@ -107,22 +130,25 @@ function update_company_details($db, $VAR) {
         $sql .="logo                = ". $db->qstr( MEDIA_DIR . $new_logo_filename  ).",";
     }
     
-    $sql .="company_number      = ". $db->qstr( $VAR['company_number']                  ).",
-            address             = ". $db->qstr( $VAR['address']                         ).",
-            city                = ". $db->qstr( $VAR['city']                            ).",
-            state               = ". $db->qstr( $VAR['state']                           ).",
-            zip                 = ". $db->qstr( $VAR['zip']                             ).",
-            country             = ". $db->qstr( $VAR['country']                         ).",
-            phone               = ". $db->qstr( $VAR['phone']                           ).",
-            mobile              = ". $db->qstr( $VAR['mobile']                          ).",
-            fax                 = ". $db->qstr( $VAR['fax']                             ).",
-            email               = ". $db->qstr( $VAR['email']                           ).",    
-            website             = ". $db->qstr( $VAR['website']                         ).",  
-            tax_rate            = ". $db->qstr( $VAR['tax_rate']                        ).",
-            welcome_msg         = ". $db->qstr( $VAR['welcome_msg']                     ).",
-            currency_symbol     = ". $db->qstr( htmlentities($VAR['currency_symbol'])   ).",
-            currency_code       = ". $db->qstr( $VAR['currency_code']                   ).",
-            date_format         = ". $db->qstr( $VAR['date_format']                     );
+    $sql .="company_number          =". $db->qstr( $VAR['company_number']                  ).",
+            address                 =". $db->qstr( $VAR['address']                         ).",
+            city                    =". $db->qstr( $VAR['city']                            ).",
+            state                   =". $db->qstr( $VAR['state']                           ).",
+            zip                     =". $db->qstr( $VAR['zip']                             ).",
+            country                 =". $db->qstr( $VAR['country']                         ).",
+            phone                   =". $db->qstr( $VAR['phone']                           ).",
+            mobile                  =". $db->qstr( $VAR['mobile']                          ).",
+            fax                     =". $db->qstr( $VAR['fax']                             ).",
+            email                   =". $db->qstr( $VAR['email']                           ).",    
+            website                 =". $db->qstr( $VAR['website']                         ).",  
+            tax_rate                =". $db->qstr( $VAR['tax_rate']                        ).",
+            welcome_msg             =". $db->qstr( $VAR['welcome_msg']                     ).",
+            currency_symbol         =". $db->qstr( htmlentities($VAR['currency_symbol'])   ).",
+            currency_code           =". $db->qstr( $VAR['currency_code']                   ).",
+            date_format             =". $db->qstr( $VAR['date_format']                     ).",            
+            email_signature         =". $db->qstr( $VAR['email_signature']                 ).",
+            email_signature_active  =". $db->qstr( $VAR['email_signature_active']          ).",
+            email_msg_invoice       =". $db->qstr( $VAR['email_msg_invoice']               );
                           
 
     if(!$rs = $db->Execute($sql)) {
@@ -133,6 +159,32 @@ function update_company_details($db, $VAR) {
         // Assign success message
         $smarty->assign('information_msg', 'Company Details updated successfully');        
         return;
+        
+    }
+    
+}
+
+##########################################
+#        Update Company Hours            #
+##########################################
+
+function update_company_hours($db, $openingTime, $closingTime) {
+    
+    global $smarty;
+    
+    $sql = "UPDATE ".PRFX."company SET
+            opening_hour    =". $db->qstr( $openingTime['Time_Hour']     ).",
+            opening_minute  =". $db->qstr( $openingTime['Time_Minute']   ).",
+            closing_hour    =". $db->qstr( $closingTime['Time_Hour']     ).",
+            closing_minute  =". $db->qstr( $closingTime['Time_Minute']   );
+
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the company hours."));
+        exit;
+    } else {
+        
+        $smarty->assign('information_msg', gettext("Business hours have been updated."));
+        return true;
         
     }
     
@@ -225,5 +277,15 @@ function upload_company_logo($db) {
         }
         
     }
+    
+}
+
+###########################################
+#  Replace placeholders with new content  #
+###########################################
+
+function replace_placeholder($content, $placeholder, $replacement) {
+    
+    return preg_replace('/'.$placeholder.'/', $replacement, $content);
     
 }

@@ -3,9 +3,9 @@
 defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'modules/customer.php');
+require(INCLUDES_DIR.'modules/company.php');
 require(INCLUDES_DIR.'modules/user.php');
 require(INCLUDES_DIR.'modules/invoice.php');
-require(INCLUDES_DIR.'mpdf.php');
 require(INCLUDES_DIR.'modules/payment.php');
 require(INCLUDES_DIR.'modules/workorder.php');
 
@@ -64,17 +64,21 @@ if($VAR['print_content'] == 'invoice') {
         // return the PDF in a variable
         $pdf_as_string = mpdf_output_as_varible($pdf_filename, $pdf_template);
         
-        // Build the PDF
-        $customer_details = get_customer_details($db, get_invoice_details($db, $invoice_id, 'customer_id'));
+        // Build the PDF        
         $attachment['data'] = $pdf_as_string;
         $attachment['filename'] = $pdf_filename;
-        $attachment['filetype'] = 'application/pdf';        
+        $attachment['filetype'] = 'application/pdf';
         
+        // Build the message body
+        $customer_details = get_customer_details($db, get_invoice_details($db, $invoice_id, 'customer_id'));
+        $body = get_email_message_body($db, 'email_msg_invoice', $customer_details);
+                      
         // Email the PDF
-        send_email($customer_details['display_name'], $customer_details['email'], gettext("Invoice").' '.$invoice_id, 'some body shit', $attachment);
+        send_email($customer_details['display_name'], $customer_details['email'], gettext("Invoice").' '.$invoice_id, $body, $attachment);
         
         // End all other processing
         die();
+        
     }
     
 }

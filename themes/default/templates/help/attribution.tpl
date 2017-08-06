@@ -10,7 +10,6 @@
     <li>Slashdot Menu (SDMenu) (2007-03-22) | no license specified, but seems free | http://dynamicdrive.com/dynamicindex1/slashdot.htm</li>
     <li>Cool DHMTL Tooltip (04-12-16) | Dynamic Drive License http://www.dynamicdrive.com/notice.htm | http://www.dynamicdrive.com/dynamicindex5/dhtmltooltip.htm </li>
     <li>JSCal2 v1.9 (2011/03/13) | permissive? | http://www.dynarch.com/jscal/</li>
-    <li>TCPDF v6.2.13 | LGPL v3 | http://www.tcpdf.org - no longer used?</li>
     <li>mPDF v6.1.0 | GPLv2 | https://github.com/mpdf/mpdf</li>    
     <li>ADODB V5.20.9 | ADOdb is dual licensed under BSD and LGPL | http://adodb.org/dokuwiki/doku.php | PHP Database Abstraction layer allowing use of different databases whilest using the same SQL code and other database related things.</li>
     <li>Smarty v3.1.30 | LGPL 2.1 or later</li>

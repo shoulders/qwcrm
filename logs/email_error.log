@@ -1,22 +1,156 @@
-::1,jon.brown,[05/Aug/2017:12:29:42 +0100]
+::1,jon.brown,[06/Aug/2017:18:51:07 +0100]
 
-Connection could not be established with host ruk6.dizinc.com [A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond.
- #10060]
-Log data:
-++ Starting Swift_SmtpTransport
-!! Connection could not be established with host ruk6.dizinc.com [A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond.
- #10060] (code: 0)
+Address in mailbox given [] does not comply with RFC 2822, 3.6.2.
 
 -----------------------------------------------------------------------------
 
-::1,jon.brown,[05/Aug/2017:12:30:16 +0100]
+::1,jon.brown,[06/Aug/2017:18:53:26 +0100]
 
-Connection could not be established with host ruk6.dizinc.com [A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond.
- #10060]
+Cannot send message without a sender address
 Log data:
 ++ Starting Swift_SmtpTransport
-!! Connection could not be established with host ruk6.dizinc.com [A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond.
- #10060] (code: 0)
+<< 220-ruk6.dizinc.com ESMTP Exim 4.89 #1 Sun, 06 Aug 2017 18:53:25 +0100 
+220-We do not authorize the use of this system to transport unsolicited, 
+220 and/or bulk e-mail.
+
+>> EHLO [IPv6:::1]
+
+<< 250-ruk6.dizinc.com Hello 199.85.198.146.dyn.plus.net [146.198.85.199]
+250-SIZE 52428800
+250-8BITMIME
+250-PIPELINING
+250-STARTTLS
+250 HELP
+
+>> STARTTLS
+
+<< 220 TLS go ahead
+
+>> EHLO [IPv6:::1]
+
+<< 250-ruk6.dizinc.com Hello 199.85.198.146.dyn.plus.net [146.198.85.199]
+250-SIZE 52428800
+250-8BITMIME
+250-PIPELINING
+250-AUTH PLAIN LOGIN
+250 HELP
+
+>> AUTH LOGIN
+
+<< 334 VXNlcm5hbWU6
+
+>> am9uQGxhbmNhc3RyaWFuLWl0LmNvLnVr
+
+<< 334 UGFzc3dvcmQ6
+
+>> Iz1EP045Mkt3TjUu
+
+<< 235 Authentication succeeded
+
+++ Swift_SmtpTransport started
+!! Cannot send message without a sender address (code: 0)
+
+-----------------------------------------------------------------------------
+
+::1,jon.brown,[06/Aug/2017:18:54:44 +0100]
+
+Cannot send message without a sender address
+Log data:
+++ Starting Swift_SmtpTransport
+<< 220-ruk6.dizinc.com ESMTP Exim 4.89 #1 Sun, 06 Aug 2017 18:54:44 +0100 
+220-We do not authorize the use of this system to transport unsolicited, 
+220 and/or bulk e-mail.
+
+>> EHLO [IPv6:::1]
+
+<< 250-ruk6.dizinc.com Hello 199.85.198.146.dyn.plus.net [146.198.85.199]
+250-SIZE 52428800
+250-8BITMIME
+250-PIPELINING
+250-STARTTLS
+250 HELP
+
+>> STARTTLS
+
+<< 220 TLS go ahead
+
+>> EHLO [IPv6:::1]
+
+<< 250-ruk6.dizinc.com Hello 199.85.198.146.dyn.plus.net [146.198.85.199]
+250-SIZE 52428800
+250-8BITMIME
+250-PIPELINING
+250-AUTH PLAIN LOGIN
+250 HELP
+
+>> AUTH LOGIN
+
+<< 334 VXNlcm5hbWU6
+
+>> am9uQGxhbmNhc3RyaWFuLWl0LmNvLnVr
+
+<< 334 UGFzc3dvcmQ6
+
+>> Iz1EP045Mkt3TjUu
+
+<< 235 Authentication succeeded
+
+++ Swift_SmtpTransport started
+!! Cannot send message without a sender address (code: 0)
+
+-----------------------------------------------------------------------------
+
+::1,jon.brown,[06/Aug/2017:18:54:45 +0100]
+
+Cannot send message without a sender address
+Log data:
+++ Starting Swift_SmtpTransport
+<< 220-ruk6.dizinc.com ESMTP Exim 4.89 #1 Sun, 06 Aug 2017 18:54:45 +0100 
+220-We do not authorize the use of this system to transport unsolicited, 
+220 and/or bulk e-mail.
+
+>> EHLO [IPv6:::1]
+
+<< 250-ruk6.dizinc.com Hello 199.85.198.146.dyn.plus.net [146.198.85.199]
+250-SIZE 52428800
+250-8BITMIME
+250-PIPELINING
+250-STARTTLS
+250 HELP
+
+>> STARTTLS
+
+<< 220 TLS go ahead
+
+>> EHLO [IPv6:::1]
+
+<< 250-ruk6.dizinc.com Hello 199.85.198.146.dyn.plus.net [146.198.85.199]
+250-SIZE 52428800
+250-8BITMIME
+250-PIPELINING
+250-AUTH PLAIN LOGIN
+250 HELP
+
+>> AUTH LOGIN
+
+<< 334 VXNlcm5hbWU6
+
+>> am9uQGxhbmNhc3RyaWFuLWl0LmNvLnVr
+
+<< 334 UGFzc3dvcmQ6
+
+>> Iz1EP045Mkt3TjUu
+
+<< 235 Authentication succeeded
+
+++ Swift_SmtpTransport started
+!! Cannot send message without a sender address (code: 0)
+
+-----------------------------------------------------------------------------
+
+::1,,[06/Aug/2017:19:07:30 +0100]
+
+Address in mailbox given [Your QWcrm password reset request] does not comply with RFC 2822, 3.6.2.
 
 -----------------------------------------------------------------------------
 

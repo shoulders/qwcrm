@@ -26,12 +26,14 @@ if(!isset($VAR['submit']) && !isset($VAR['email']) && !isset($VAR['token']) && !
             
             // make sure user account exists and is not blocked
             if(validate_reset_email($db, $VAR['email'])) {
+                
+                // get user_id and thene do the following stages
             
                 // update reset count for the user
                 update_user_reset_count($db, $VAR['email']);
                 
                 // build the email and send it
-                send_reset_email($db, $VAR['email']);
+                send_reset_email($db, '', $VAR['email']);
                 
                 // Load the enter_token page            
                  $stage = 'enter_token';

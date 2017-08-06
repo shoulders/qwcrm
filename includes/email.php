@@ -21,14 +21,8 @@
 
 defined('_QWEXEC') or die;
 
-//
+// Load the swiftmailer library
 require(LIBRARIES_DIR.'swift/swift_required.php');
-
-/* Check if we have a customer_id
-if($customer_id == '') {
-    force_page('core', 'dashboard', 'warning_msg='.gettext("No Customer ID supplied."));
-    exit;
-}  */
 
 /* Other Functions */
 
@@ -58,27 +52,30 @@ function send_email($recipient_name, $recipient_email, $subject, $body, $attachm
     
     global $smarty;
     
-    // Get QWcrm config settings  - or use QFactory::getConfig()->qwcrm_activity_log 1 lookup is ok, many best to do as is
     $config = new QConfig;
+    $db = QFactory::getDbo();
+    
+    // If email is not enabled, do not send emails
+    if($config->email_online != true) { die(); }
     
     /* Create the Transport */
     
     // Use SMTP
     if($config->email_mailer == 'smtp') {        
                  
-            // Create SMTP Object 
-            $transport = new Swift_SmtpTransport($config->email_smtp_host, $config->email_smtp_port);        
-                        
-            // Enable encryption SSL/TLS if set
-            if($config->email_smtp_security != '') {
-                $transport->setEncryption($config->email_smtp_security);
-            }
-                        
-            // SMTP Authentication if set
-            if($config->email_smtp_auth) {
-                $transport->setUsername($config->email_smtp_username);
-                $transport->setPassword($config->email_smtp_password); 
-            }                               
+        // Create SMTP Object 
+        $transport = new Swift_SmtpTransport($config->email_smtp_host, $config->email_smtp_port);        
+
+        // Enable encryption SSL/TLS if set
+        if($config->email_smtp_security != '') {
+            $transport->setEncryption($config->email_smtp_security);
+        }
+
+        // SMTP Authentication if set
+        if($config->email_smtp_auth) {
+            $transport->setUsername($config->email_smtp_username);
+            $transport->setPassword($config->email_smtp_password); 
+        }                               
     
     // Use Sendmail / Locally installed MTA - only works on Linux/Unix
     } elseif($config->email_mailer == 'sendmail') {
@@ -109,7 +106,7 @@ function send_email($recipient_name, $recipient_email, $subject, $body, $attachm
     // When Swift Mailer sends messages it will keep a log of all the interactions with the underlying Transport being used.
     // https://swiftmailer.symfony.com/docs/plugins.html#using-the-logger-plugin
     
-    // To use the ArrayLogger - Keeps a collection of log messages inside an array. The array content can be cleared or dumped out to the screen.
+    // ArrayLogger - Keeps a collection of log messages inside an array. The array content can be cleared or dumped out to the screen.
     $logger = new Swift_Plugins_Loggers_ArrayLogger();
     $mailer->registerPlugin(new Swift_Plugins_LoggerPlugin($logger));
 
@@ -120,16 +117,43 @@ function send_email($recipient_name, $recipient_email, $subject, $body, $attachm
     /* Create a message */
     
     // Mandatory email settings
-    $email = new Swift_Message();    
-    $email->setTo([$recipient_email => $recipient_name]);
-    $email->setFrom([$config->email_mailfrom => $config->email_fromname]);    
-    $email->setReplyTo([$config->email_replyto => $config->email_replytoname]);    
-    $email->setSubject($subject);    
+    $email = new Swift_Message();
     
-    // Build the message
-    $email->setBody($body);                // use a library to change the message into plain text?
-    $email->addPart($body, 'text/html');
-    // add footer message
+    
+    // Verify the supplied emails, then add them to the object
+    try {
+        $email->setTo([$recipient_email => $recipient_name]);
+        $email->setFrom([$config->email_mailfrom => $config->email_fromname]);   
+        
+        // Only add 'Reply To' if the reply email address is present. this to prevents email errors
+        if($config->email_replyto != '') {
+            $email->setReplyTo([$config->email_replyto => $config->email_replytoname]);  
+        }
+        
+    }
+    
+    // This will present any email RFC compliance issues
+    catch(Swift_RfcComplianceException $RfcCompliance_exception) {
+        //var_dump($RfcCompliance_exception);  // gets everything
+        $record = gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';        
+        write_record_to_activity_log($record);
+        write_record_to_email_error_log($RfcCompliance_exception->getMessage());
+        $smarty->assign('warning_msg', $record.'<br>'.$RfcCompliance_exception->getMessage());        
+    }
+    
+    // Subject - prefix with the QWcrm company name to all emails
+    $email->setSubject(get_company_details($db, 'name').' - '.$subject);    
+    
+    /* Build the message body */
+    
+    // Add the signature
+    $body .= get_email_signature($db, $email);
+    
+    // Add Message Body
+    $email->setBody($body, 'text/html');
+    
+    // Optional Alternative Body (useful for text fallback version) - use a library to change the message into plain text?   
+    //$email->addPart('My amazing body in plain text', 'text/plain');    
     
     // Add Optional attachment
    if($attachment != null) {
@@ -176,12 +200,12 @@ function send_email($recipient_name, $recipient_email, $subject, $body, $attachm
     }
     
     // This will present any transport errors
-    catch(Swift_TransportException $transport_exception) {
+    catch(Swift_TransportException $Transport_exception) {
         //var_dump($transport_exception);  // gets everything
         $record = gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';
         write_record_to_activity_log($record);
-        write_record_to_email_error_log($transport_exception->getMessage());
-        $smarty->assign('warning_msg', $record.'<br>'.$transport_exception->getMessage());
+        write_record_to_email_error_log($Transport_exception->getMessage());
+        $smarty->assign('warning_msg', $record.'<br>'.$Transport_exception->getMessage());
     }
     
     // This will present any general swiftmailer issues
@@ -191,7 +215,7 @@ function send_email($recipient_name, $recipient_email, $subject, $body, $attachm
         write_record_to_activity_log($record);
         write_record_to_email_error_log($swift_exception->getMessage());
         $smarty->assign('warning_msg', $record.'<br>'.$swift_exception->getMessage());
-    }    
+    }
     
     // Write the Email Transport Record to the log
     write_record_to_email_transport_log($logger->dump());
@@ -205,7 +229,7 @@ function send_email($recipient_name, $recipient_email, $subject, $body, $attachm
 function write_record_to_email_error_log($record) {
     
     // if email error logging is not enabled exit
-    if(QFactory::getConfig()->qwcrm_email_error_log != true){return;}    
+    if(QFactory::getConfig()->get('qwcrm_email_error_log') != true) { return; }    
     
     // Build log entry    
     $log_entry .= $_SERVER['REMOTE_ADDR'] . ',' . QFactory::getUser()->login_username . ',' . date("[d/M/Y:H:i:s O]", time())."\r\n\r\n";
@@ -232,7 +256,7 @@ function write_record_to_email_error_log($record) {
 function write_record_to_email_transport_log($record) {
     
     // if email transport logging is not enabled exit
-    if(QFactory::getConfig()->qwcrm_email_transport_log != true){return;}
+    if(QFactory::getConfig()->get('qwcrm_email_transport_log') != true) { return; }
     
     // Build log entry
     $log_entry .= $_SERVER['REMOTE_ADDR'] . ',' . QFactory::getUser()->login_username . ',' . date("[d/M/Y:H:i:s O]", time())."\r\n\r\n";

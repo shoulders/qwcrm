@@ -830,17 +830,15 @@ function validate_reset_email($db, $email) {
 #    Build and send a reset email   #    
 #####################################
 
-function send_reset_email($db, $email) {
+function send_reset_email($db, $recipient_name, $recipient_email) {
     
-    // Set Options
-    $recipient = $email;
+    // Set subject  
     $subject = gettext("Your QWcrm password reset request");    
-    $body = '';
-    
+        
     // Create Token
     $token = create_reset_token($db, get_user_id_by_email($db, $email));
     
-    // Build Email Content
+    // Build Email body
     $body .= gettext("Hello").','."\r\n\r\n";
 
     $body .= gettext("A request has been made to reset your QWcrm account password.").' ';
@@ -855,7 +853,7 @@ function send_reset_email($db, $email) {
     $body .= gettext("Thank you.");    
     
     // Send Reset Email    
-    send_email($recipient, $subject, $body);
+    send_email($recipient_name, $recipient_email, $subject, $body);
     
 }
 

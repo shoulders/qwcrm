@@ -98,7 +98,7 @@
                                                             <td><input name="tax_rate" class="olotd5" size="6" value="{$company_details.tax_rate}" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumbersPeriod(event);"/>%</td>
                                                         </tr>
                                                         <tr>
-                                                            <td><b>{t}Company Welcome Message{/t}:</b><br>{t}(home page){/t}</td>
+                                                            <td><b>{t}Company Welcome Message{/t}:</b><br>{t}(Dashboard){/t}</td>
                                                         </tr>
                                                         <tr>
                                                             <td colspan="2"><textarea class="olotd5" cols="80" rows="5" name="welcome_msg">{$company_details.welcome_msg}</textarea></td>
@@ -136,7 +136,7 @@
                                                             <td><input name="currency_code" class="olotd5" size="5" value="{$company_details.currency_code}" type="text" maxlength="3" required onkeydown="return onlyAlpha(event);">{t}eg: British Pound = GBP, Euro = EUR, US Dollars = USD, Australian Dollars = AUD{/t}</td>
                                                         </tr>
                                                         <tr>
-                                                            <td align="right"><b>{t}Date Formatting{/t}:</b></td>
+                                                            <td align="right"><b>{t}Date Format{/t}:</b></td>
                                                             <td>
                                                                 <select name="date_format" class="olotd5">
                                                                     <option value="%d/%m/%Y"{if $company_details.date_format == '%d/%m/%Y'} selected{/if}>dd/mm/yyyy</option>                                                            
@@ -160,58 +160,107 @@
 
                         <!-- Tab 3 Contents -->                        
                         <div id="tab_3_contents" class="tab_contents">
-                            <table width="100%" cellpadding="5" cellspacing="0" border="0" >
+                            <table width="100%" cellpadding="5" cellspacing="0" border="0">                                
                                 <tr>
-                                    <td class="menuhead2" width="80%">&nbsp;{t}Edit Email Messaging functions{/t}</td>
-                                </tr>
-                                <tr>
-                                    <td class="menutd2">
-                                        <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0" >
+                                    <td class="menutd2">                                        
+                                        <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0">                                            
+                                            <tr>
+                                                <td class="menuhead2" width="80%">&nbsp;{t}Edit Email Messaging functions{/t}</td>
+                                            </tr>
+                                                                                        
+                                            {*<!-- New Workorder Created Message -->
+                                            
                                             <tr>
                                                 <td width="100%" valign="top">                                                    
                                                     <table cellpadding="5" cellspacing="0">
                                                         <tr>
-                                                            <td align="left"><b>{t}New Work Order Created Message{/t}:</b></td>
+                                                            <td class="menuhead">{t}New Work Order Created Message{/t}:</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><textarea cols="80" rows="15" class="olotd5" name="email_msg_wo_created" >{$company_details.email_msg_wo_created}</textarea></td>
                                                         </tr>
                                                         <tr>
                                                             <td align="left"><b>{t}Enabled{/t}:</b>
-                                                                <select id="new_wo_enabled">
+                                                                <select id="email_msg_wo_created_active">
                                                                     <option value="1" {if $company_details.email_msg_wo_created_active == '1'} selected{/if}>{t}Yes{/t}</option>
                                                                     <option value="0" {if $company_details.email_msg_wo_created_active == '0'} selected{/if}>{t}No{/t}</option>
                                                                 </select>
                                                             </td>
                                                         </tr>
-                                                        <tr>
-                                                            <td><textarea cols="80" rows="15" class="olotd5" name="new_wo" >{$company_details.email_msg_wo_created}</textarea></td>
-                                                        </tr>                                                            
-                                                        <tr>
-                                                            <td colspan="2"> <input class="olotd5" type="submit" name="submit" value="Update"></td>
-                                                        </tr>                                                            
                                                     </table>
+                                                </td>
+                                            </tr>*}
+                                            
+                                            <!-- Invoice -->
+                                            
+                                            <tr>
+                                                <td>
                                                     <table cellpadding="5" cellspacing="0">
                                                         <tr>
-                                                            <td align="left"><b>{t}New Invoice Message{/t}:</b></td>
+                                                            <td class="menuhead">{t}Invoice Message{/t}:</td>
                                                         </tr>
                                                         <tr>
-                                                            <td align="left"><b>{t}Enabled{/t}:</b>
-                                                                <select id="new_invoice_enabled">
-                                                                    <option value="1" {if $company_details.email_msg_new_invoice_active == '1'} selected{/if}>{t}Yes{/t}</option>
-                                                                    <option value="0" {if $company_details.email_msg_new_invoice_active == '0'} selected{/if}>{t}No{/t}</option>
-                                                                </select>
+                                                            <td>                                                                
+                                                                <strong>Placeholders</strong><br>
+                                                                {literal}{customer_display_name}{/literal} = {t}Customer's name{/t}<br>
+                                                                {literal}{customer_first_name}{/literal} = {t}Customer's contact first name{/t}<br> 
+                                                                {literal}{customer_last_name}{/literal} = {t}Customer's contact last name{/t}<br> 
+                                                                {literal}{customer_credit_terms}{/literal} = {t}Customer's credit terms{/t} 
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td><textarea cols="80" rows="15" class="olotd5" name="new_invoice" >{$company_details.email_msg_new_invoice}</textarea></td>
-                                                        </tr>                                                            
-                                                        <tr>
-                                                            <td colspan="2"> <input class="olotd5" type="submit" name="submit" value="Update"></td>
-                                                        </tr>                                                            
-                                                    </table>                                                    
+                                                            <td><textarea cols="80" rows="15" class="olotd5" name="email_msg_invoice">{$company_details.email_msg_invoice}</textarea></td>
+                                                        </tr>
+                                                        {*<tr>
+                                                            <td align="left"><b>{t}Enabled{/t}:</b>
+                                                                <select name="email_msg_new_invoice_active">                                                                    
+                                                                    <option value="1" {if $company_details.email_msg_invoice_active == '1'} selected{/if}>{t}Yes{/t}</option>
+                                                                    <option value="0" {if $company_details.email_msg_invoice_active == '0'} selected{/if}>{t}No{/t}</option>
+                                                                </select>
+                                                            </td>
+                                                        </tr>*}
+                                                    </table>                                                        
                                                 </td>
-                                            </tr>
+                                            </tr>                                            
+                                            
+                                            <!-- Email Signature -->
+                                            
+                                            <tr>
+                                                <td>
+                                                    <table cellpadding="5" cellspacing="0">
+                                                        <tr>
+                                                            <td class="menuhead">{t}Email Signature{/t}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>                                                                
+                                                                <strong>Placeholders</strong><br>
+                                                                {literal}{logo}{/literal} = {t}Use this to place your logo in the message{/t}                                                               
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><textarea cols="80" rows="15" class="olotd5" name="email_signature">{$company_details.email_signature}</textarea></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td align="left"><b>{t}Enabled{/t}:</b>
+                                                                <select name="email_signature_active">                                                                    
+                                                                    <option value="1" {if $company_details.email_signature_active == '1'} selected{/if}>{t}Yes{/t}</option>
+                                                                    <option value="0" {if $company_details.email_signature_active == '0'} selected{/if}>{t}No{/t}</option>
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                    </table>                                                        
+                                                </td>
+                                            </tr>                                         
+                                            
+                                            <!-- Update Button -->
+                                            
+                                            <tr>
+                                                <td><input class="olotd5" type="submit" name="submit" value="Update"></td>
+                                            </tr>                                            
+                                            
                                         </table>
                                     </td>
-                                </tr>
+                                </tr>                                
                             </table>
                         </div>
 

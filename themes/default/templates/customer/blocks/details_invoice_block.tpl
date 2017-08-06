@@ -23,9 +23,10 @@
             <td class="olotd4">{$unpaid_invoices[w].paid_date|date_format:$date_format}</td>
             <td class="olotd4">{$unpaid_invoices[w].employee_display_name}</td>
             <td class="olotd4" align="center">
-                <a href="index.php?page=invoice:print&print_type=html&invoice_id={$unpaid_invoices[w].invoice_id}&customer_id={$unpaid_invoices[w].customer_id}&theme=off" target="new" ><img src="{$theme_images_dir}icons/16x16/fileprint.gif" alt="" border="0" onMouseOver="ddrivetip('{t}Print HTML{/t}');" onMouseOut="hideddrivetip();"></a>
-                <img src="{$theme_images_dir}icons/16x16/pdf_small.gif" alt="" border="0" style="cursor: pointer !important;" onClick="$.ajax( { url:'index.php?page=invoice:print&invoice_id={$unpaid_invoices[w].invoice_id}&print_type=email_pdf&print_content=invoice&theme=print' } );" onMouseOver="ddrivetip('{t}Print PDF{/t}');" onMouseOut="hideddrivetip();">
-                <a href="index.php?page=workorder:details&workorder_id={$unpaid_invoices[w].workorder_id}&customer_id={$unpaid_invoices[w].customer_id}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" onMouseOver="ddrivetip('{t}Details{/t}');" onMouseOut="hideddrivetip();"></a>
+                <a href="index.php?page=invoice:print&invoice_id={$unpaid_invoices[w].invoice_id}&print_type=print_html&print_content=invoice&theme=print" target="new" ><img src="{$theme_images_dir}icons/16x16/fileprint.gif" alt="" border="0" onMouseOver="ddrivetip('{t}Print HTML{/t}');" onMouseOut="hideddrivetip();"></a>
+                <a href="index.php?page=invoice:print&invoice_id={$unpaid_invoices[w].invoice_id}&print_type=print_pdf&print_content=invoice&theme=print" target="new" ><img src="{$theme_images_dir}icons/16x16/pdf_small.gif" alt="" border="0" onMouseOver="ddrivetip('{t}Print PDF{/t}');" onMouseOut="hideddrivetip();"></a>
+                <img src="{$theme_images_dir}icons/16x16/pdf_small.gif" alt="" border="0" style="cursor: pointer !important;" onClick="$.ajax( { url:'index.php?page=invoice:print&invoice_id={$unpaid_invoices[w].invoice_id}&print_type=email_pdf&print_content=invoice&theme=print' } );" onMouseOver="ddrivetip('{t}Email PDF{/t}');" onMouseOut="hideddrivetip();">
+                <a href="index.php?page=invoice:details&invoice_id={$unpaid_invoices[w].invoice_id}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" onMouseOver="ddrivetip('{t}Details{/t}');" onMouseOut="hideddrivetip();"></a>
             </td>
         </tr>
     {/section}
@@ -56,9 +57,10 @@
             <td class="olotd4">{$paid_invoices[w].paid_date|date_format:$date_format}</td>
             <td class="olotd4">{$paid_invoices[w].employee_display_name}</td>
             <td class="olotd4" align="center">
-                <a href="index.php?page=invoice:print&print_type=pdf&invoice_id={$paid_invoices[w].invoice_id}&customer_id={$paid_invoices[w].customer_id}&theme=off" target="new" ><img src="{$theme_images_dir}icons/16x16/pdf_small.gif" alt="" border="0" onMouseOver="ddrivetip('{t}customer_print_pdf{/t}');" onMouseOut="hideddrivetip();"></a>
-                <a href="index.php?page=invoice:print&print_type=html&invoice_id={$paid_invoices[w].invoice_id}&customer_id={$paid_invoices[w].customer_id}&theme=off" target="new" ><img src="{$theme_images_dir}icons/16x16/fileprint.gif" alt="" border="0" onMouseOver="ddrivetip('{t}customer_print{/t}');" onMouseOut="hideddrivetip();"></a>
-                <a href="index.php?page=invoice:details&invoice_id={$paid_invoices[w].invoice_id}&customer_id={$paid_invoices[w].customer_id}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif"  alt="" border="0" onMouseOver="ddrivetip('{t}customer_view{/t}');" onMouseOut="hideddrivetip();"></a>
+                <a href="index.php?page=invoice:print&invoice_id={$paid_invoices[w].invoice_id}&print_type=print_html&print_content=invoice&theme=print" target="new" ><img src="{$theme_images_dir}icons/16x16/fileprint.gif" alt="" border="0" onMouseOver="ddrivetip('{t}Print HTML{/t}');" onMouseOut="hideddrivetip();"></a>
+                <a href="index.php?page=invoice:print&invoice_id={$paid_invoices[w].invoice_id}&print_type=print_pdf&print_content=invoice&theme=print" target="new" ><img src="{$theme_images_dir}icons/16x16/pdf_small.gif" alt="" border="0" onMouseOver="ddrivetip('{t}Print PDF{/t}');" onMouseOut="hideddrivetip();"></a>
+                <img src="{$theme_images_dir}icons/16x16/pdf_small.gif" alt="" border="0" style="cursor: pointer !important;" onClick="$.ajax( { url:'index.php?page=invoice:print&invoice_id={$paid_invoices[w].invoice_id}&print_type=email_pdf&print_content=invoice&theme=print' } );" onMouseOver="ddrivetip('{t}Email PDF{/t}');" onMouseOut="hideddrivetip();">
+                <a href="index.php?page=invoice:details&invoice_id={$paid_invoices[w].invoice_id}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" onMouseOver="ddrivetip('{t}Details{/t}');" onMouseOut="hideddrivetip();"></a>
             </td>
         </tr>
     {/section}
