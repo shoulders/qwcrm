@@ -830,15 +830,15 @@ function validate_reset_email($db, $email) {
 #    Build and send a reset email   #    
 #####################################
 
-function send_reset_email($db, $recipient_name, $recipient_email) {
+function send_reset_email($db, $recipient_email) {
     
     // Set subject  
     $subject = gettext("Your QWcrm password reset request");    
         
     // Create Token
-    $token = create_reset_token($db, get_user_id_by_email($db, $email));
+    $token = create_reset_token($db, get_user_id_by_email($db, $recipient_email));
     
-    // Build Email body
+    /* Build Email body
     $body .= gettext("Hello").','."\r\n\r\n";
 
     $body .= gettext("A request has been made to reset your QWcrm account password.").' ';
@@ -850,10 +850,25 @@ function send_reset_email($db, $recipient_name, $recipient_email) {
 
     $body .= QWCRM_PROTOCOL. QWCRM_DOMAIN . QWCRM_PATH."index.php?page=user:reset&token=".$token."\r\n\r\n";
         
-    $body .= gettext("Thank you.");    
+    $body .= gettext("Thank you.");*/
+    
+    
+    // Build Email body
+    $body .= '<p>'.gettext("Hello").','.'</p>';
+    
+    $body .= '<p>'.gettext("A request has been made to reset your QWcrm account password.").' ';
+    $body .= gettext("To reset your password, you will need to submit this verification code in order to verify that the request was legitimate.").'</p>';
+    
+    $body .= '<p>'.gettext("The verification code is").' '.$token.'</p>';
+    
+    $body .= '<p>'.gettext("Select the URL below and proceed with resetting your password.").'</p>';
+    
+    $body .= '<p>'. QWCRM_PROTOCOL . QWCRM_DOMAIN . QWCRM_PATH ."index.php?page=user:reset&token=".$token.'</p>';  
+    
+    $body .= '<p>'.gettext("Thank you.").'</p>';    
     
     // Send Reset Email    
-    send_email($recipient_name, $recipient_email, $subject, $body);
+    send_email($recipient_email, $subject, $body);
     
 }
 

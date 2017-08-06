@@ -74,7 +74,7 @@ if($VAR['print_content'] == 'invoice') {
         $body = get_email_message_body($db, 'email_msg_invoice', $customer_details);
                       
         // Email the PDF
-        send_email($customer_details['display_name'], $customer_details['email'], gettext("Invoice").' '.$invoice_id, $body, $attachment);
+        send_email($customer_details['email'], gettext("Invoice").' '.$invoice_id, $body, $customer_details['display_name'], $attachment);
         
         // End all other processing
         die();

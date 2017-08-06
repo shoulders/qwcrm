@@ -48,7 +48,7 @@ function php_mail_fallback($to, $subject, $body, $attachment = null) {
 #   Basic email wrapper function      #
 #######################################
 
-function send_email($recipient_name, $recipient_email, $subject, $body, $attachment = null) {
+function send_email($recipient_email, $subject, $body, $recipient_name = null, $attachment = null) {
     
     global $smarty;
     
@@ -93,7 +93,7 @@ function send_email($recipient_name, $recipient_email, $subject, $body, $attachm
         
     } 
     
-    /* Create the object */
+    /* Create the mailer object */
     
     // If you need to know early whether or not authentication has failed and an Exception is going to be thrown, call the start() method on the created Transport.
     //print_r($transport->start());
@@ -117,8 +117,7 @@ function send_email($recipient_name, $recipient_email, $subject, $body, $attachm
     /* Create a message */
     
     // Mandatory email settings
-    $email = new Swift_Message();
-    
+    $email = new Swift_Message();    
     
     // Verify the supplied emails, then add them to the object
     try {
@@ -146,8 +145,11 @@ function send_email($recipient_name, $recipient_email, $subject, $body, $attachm
     
     /* Build the message body */
     
-    // Add the signature
-    $body .= get_email_signature($db, $email);
+    // Add the email signature (if not a reset email)
+    if(!check_page_accessed_via_qwcrm('user:reset')) {
+        $body .= get_email_signature($db, $email);
+    }
+    
     
     // Add Message Body
     $email->setBody($body, 'text/html');
