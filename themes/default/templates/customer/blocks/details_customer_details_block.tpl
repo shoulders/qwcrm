@@ -4,7 +4,7 @@
         <td>            
             <table width="100%" cellpadding="4" cellspacing="0" border="0" >
                 <tr>
-                    <td class="menuhead2" width="80%">&nbsp;{t}Customer Details{/t} {t}for{/t} - {$customer_details.first_name}&nbsp;{$customer_details.last_name}</td>
+                    <td class="menuhead2" width="80%">&nbsp;{t}Customer Details{/t} {t}for{/t} {$customer_details.display_name}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle"><a href="index.php?page=customer:edit&customer_id={$customer_details.customer_id}" ><img src="{$theme_images_dir}icons/edit.gif"  alt="" height="16" border="0">{t}Edit{/t}</a></td>
                 </tr>
                 <tr>
