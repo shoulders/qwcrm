@@ -1,4 +1,4 @@
-<!-- print_invoice_template.tpl -->
+<!-- print_invoice.tpl -->
 <!DOCTYPE html>
 <html lang="en-GB">
 <head>

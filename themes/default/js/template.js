@@ -208,7 +208,7 @@ function checkPasswordsMatch(passwordsMatchMSG, passwordsDoNotMatchMSG) {
 }
 
 // This function allows me to grab systems messages created during page rendering and display
-function processSytemMessages(information_msg, warning_msg) {    
+function processSystemMessages(information_msg, warning_msg) {    
            
     if(information_msg) {
         var information = document.getElementById('information_msg');
@@ -224,11 +224,32 @@ function processSytemMessages(information_msg, warning_msg) {
     
 }
 
+// Clear any onscreen system messages
+function clearSystemMessages() {
+    
+    // Wipe information messages
+    var information = document.getElementById('information_msg');
+    information.style.display = 'none';
+    information.innerHTML = '';
+
+    // wipe warning messages
+    var warning = document.getElementById('warning_msg'); 
+    warning.style.display = 'none';
+    warning.innerHTML = '';
+    
+    // empty the system_message_functions div
+    //var system_message_functions = document.getElementById('system_message_functions');
+    //system_message_functions.innerHTML = '';
+    
+}
+
 // A standard delete confirmation dialogue - return confirmDelete(msg);
-function confirmDelete(msg) {    
+function confirmDelete(msg) {
+    
     var choice = confirm(msg);
-        if (choice)
-            return true;
-        else
-            return false;
+    if (choice)
+        return true;
+    else
+        return false;
+    
 }

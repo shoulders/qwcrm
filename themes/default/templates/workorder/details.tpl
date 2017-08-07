@@ -9,15 +9,15 @@
                 <tr>
                     <td class="menuhead2" width="80%">&nbsp;{t}Workorder ID{/t} {$workorder_id}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">                                               
-                        <a href="index.php?page=workorder:print&workorder_id={$workorder_id}&print_content=technician_workorder_slip&print_type=print_html&theme=off" target="_blank">                                                    
-                            <img src="{$theme_images_dir}icons/print.gif" alt="Print Works Order" border="0" height="14" width="14" onMouseOver="ddrivetip('{t}Print Work Order{/t} <br> {t}Technician{/t}');" onMouseOut="hideddrivetip();" />
+                        <a href="index.php?page=workorder:print&workorder_id={$workorder_id}&print_content=technician_workorder_slip&print_type=print_html&theme=print" target="_blank">                                                    
+                            <img src="{$theme_images_dir}icons/print.gif" alt="Print Works Order" border="0" height="14" width="14" onMouseOver="ddrivetip('{t}Print{/t}<br>{t}Technician Work Order Slip{/t}');" onMouseOut="hideddrivetip();" />
                         </a>
-                        <a href="index.php?page=workorder:print&workorder_id={$workorder_id}&print_content=customer_workorder_slip&print_type=print_html&theme=off" target="_blank">                                                    
-                            <img src="{$theme_images_dir}icons/print.gif" alt="Print Works Order" border="0" height="14" width="14" onMouseOver="ddrivetip('{t}Print Work Order{/t} <br> {t}Customer{/t}');" onMouseOut="hideddrivetip();" />                                                        
+                        <a href="index.php?page=workorder:print&workorder_id={$workorder_id}&print_content=technician_job_sheet&print_type=print_html&theme=print" target="_blank">                                                    
+                            <img src="{$theme_images_dir}icons/print.gif" alt="Print Works Order" border="0" height="14" width="14" onMouseOver="ddrivetip('{t}Print{/t}<br>{t}Technician Work Order Job Sheet{/t}');" onMouseOut="hideddrivetip();" />
                         </a>
-                        <a href="index.php?page=workorder:print&workorder_id={$workorder_id}&print_content=job_sheet&print_type=print_html&theme=off" target="_blank">                                                    
-                            <img src="{$theme_images_dir}icons/print.gif" alt="Print Works Order" border="0" height="14" width="14" onMouseOver="ddrivetip('{t}Print Work Order{/t} <br> {t}Job sheet{/t}');" onMouseOut="hideddrivetip();" />
-                        </a>
+                        <a href="index.php?page=workorder:print&workorder_id={$workorder_id}&print_content=customer_workorder_slip&print_type=print_html&theme=print" target="_blank">                                                    
+                            <img src="{$theme_images_dir}icons/print.gif" alt="Print Works Order" border="0" height="14" width="14" onMouseOver="ddrivetip('{t}Print{/t}<br>{t}Customer Work Order Slip{/t}');" onMouseOut="hideddrivetip();" />                                                        
+                        </a>                        
                         <a href="" target="new">
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{t}WORKORDER_DETAILS_HELP_TITLE{/t}</b><hr><p>{t}WORKORDER_DETAILS_HELP_CONTENT{/t}</p>');" onMouseOut="hideddrivetip();">                                                        
                         </a>

@@ -11,4 +11,6 @@
             </tr>                
         </table>
     </div>
-    <script>processSytemMessages('{$information_msg}','{$warning_msg}');</script>
+    <div id="system_message_functions">
+        <script>processSystemMessages('{$information_msg}', '{$warning_msg}');</script>
+    </div>

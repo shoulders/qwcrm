@@ -5,13 +5,13 @@
     <meta charset="utf-8">
     
     <!-- PDF Title -->
-    <title>{t}Customer Work Order Slip{/t} - {$workorder_details.workorder_id}</title>   
+    <title>{t}WORKORDER_PRINT_CUSTOMER_WORKORDER_SLIP_PAGE_TITLE{/t}</title>   
         
     <!-- PDF Subject -->
-    <meta name="description" content="{$meta_description}">
+    <meta name="description" content="{t}WORKORDER_PRINT_CUSTOMER_WORKORDER_SLIP_META_DESCRIPTION{/t}">
     
     <!-- PDF Keywords -->
-    <meta name="keywords" content="{$meta_keywords}">
+    <meta name="keywords" content="{t}WORKORDER_PRINT_CUSTOMER_WORKORDER_SLIP_META_KEYWORDS{/t}">
     
     <!-- PDF Author -->
     <meta name="author" content="QWcrm - QuantumWarp.com">       
@@ -261,7 +261,12 @@
                 <b>{t}Important Notes{/t}</b></td>
         </tr>
         <tr>
-            <td border="0">{t}<ul><li>Please hold onto this receipt as proof of service request</li><li>This document (copies will not be accepted) MUST be produce this at time of pickup. If this can't be provided then photo identification is required.</li></ul>{/t}</td>        
+            <td border="0">
+                <ul>
+                    <li>{t}Please hold onto this receipt as proof of service request.{/t}</li>
+                    <li>{t}This document (copies will not be accepted) MUST be produce this at time of pickup. If this can't be provided then photo identification is required.{/t}</li>
+                </ul>
+            </td>        
         </tr>
     </table>
 

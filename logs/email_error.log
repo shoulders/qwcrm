@@ -1,156 +1,39 @@
-::1,jon.brown,[06/Aug/2017:18:51:07 +0100]
+::1,jon.brown,[07/Aug/2017:12:39:06 +0100]
 
-Address in mailbox given [] does not comply with RFC 2822, 3.6.2.
+Failed to authenticate on SMTP server with username "jon@@lancastrian-it.co.uk" using 2 possible authenticators
 
 -----------------------------------------------------------------------------
 
-::1,jon.brown,[06/Aug/2017:18:53:26 +0100]
+::1,jon.brown,[07/Aug/2017:12:40:01 +0100]
 
-Cannot send message without a sender address
+Address in mailbox given [jon@@lancastrian-it.co.uk] does not comply with RFC 2822, 3.6.2.
+
+-----------------------------------------------------------------------------
+
+::1,jon.brown,[07/Aug/2017:12:41:11 +0100]
+
+Connection could not be established with host ruk6.dizinc.com [php_network_getaddresses: getaddrinfo failed: No such host is known.  #0]
 Log data:
 ++ Starting Swift_SmtpTransport
-<< 220-ruk6.dizinc.com ESMTP Exim 4.89 #1 Sun, 06 Aug 2017 18:53:25 +0100 
-220-We do not authorize the use of this system to transport unsolicited, 
-220 and/or bulk e-mail.
-
->> EHLO [IPv6:::1]
-
-<< 250-ruk6.dizinc.com Hello 199.85.198.146.dyn.plus.net [146.198.85.199]
-250-SIZE 52428800
-250-8BITMIME
-250-PIPELINING
-250-STARTTLS
-250 HELP
-
->> STARTTLS
-
-<< 220 TLS go ahead
-
->> EHLO [IPv6:::1]
-
-<< 250-ruk6.dizinc.com Hello 199.85.198.146.dyn.plus.net [146.198.85.199]
-250-SIZE 52428800
-250-8BITMIME
-250-PIPELINING
-250-AUTH PLAIN LOGIN
-250 HELP
-
->> AUTH LOGIN
-
-<< 334 VXNlcm5hbWU6
-
->> am9uQGxhbmNhc3RyaWFuLWl0LmNvLnVr
-
-<< 334 UGFzc3dvcmQ6
-
->> Iz1EP045Mkt3TjUu
-
-<< 235 Authentication succeeded
-
-++ Swift_SmtpTransport started
-!! Cannot send message without a sender address (code: 0)
+!! Connection could not be established with host ruk6.dizinc.com [php_network_getaddresses: getaddrinfo failed: No such host is known.  #0] (code: 0)
 
 -----------------------------------------------------------------------------
 
-::1,jon.brown,[06/Aug/2017:18:54:44 +0100]
+::1,jon.brown,[07/Aug/2017:12:51:43 +0100]
 
-Cannot send message without a sender address
-Log data:
-++ Starting Swift_SmtpTransport
-<< 220-ruk6.dizinc.com ESMTP Exim 4.89 #1 Sun, 06 Aug 2017 18:54:44 +0100 
-220-We do not authorize the use of this system to transport unsolicited, 
-220 and/or bulk e-mail.
-
->> EHLO [IPv6:::1]
-
-<< 250-ruk6.dizinc.com Hello 199.85.198.146.dyn.plus.net [146.198.85.199]
-250-SIZE 52428800
-250-8BITMIME
-250-PIPELINING
-250-STARTTLS
-250 HELP
-
->> STARTTLS
-
-<< 220 TLS go ahead
-
->> EHLO [IPv6:::1]
-
-<< 250-ruk6.dizinc.com Hello 199.85.198.146.dyn.plus.net [146.198.85.199]
-250-SIZE 52428800
-250-8BITMIME
-250-PIPELINING
-250-AUTH PLAIN LOGIN
-250 HELP
-
->> AUTH LOGIN
-
-<< 334 VXNlcm5hbWU6
-
->> am9uQGxhbmNhc3RyaWFuLWl0LmNvLnVr
-
-<< 334 UGFzc3dvcmQ6
-
->> Iz1EP045Mkt3TjUu
-
-<< 235 Authentication succeeded
-
-++ Swift_SmtpTransport started
-!! Cannot send message without a sender address (code: 0)
+Failed to authenticate on SMTP server with username "jon@lancastrian-it.co.uk" using 2 possible authenticators
 
 -----------------------------------------------------------------------------
 
-::1,jon.brown,[06/Aug/2017:18:54:45 +0100]
+::1,jon.brown,[07/Aug/2017:12:53:51 +0100]
 
-Cannot send message without a sender address
-Log data:
-++ Starting Swift_SmtpTransport
-<< 220-ruk6.dizinc.com ESMTP Exim 4.89 #1 Sun, 06 Aug 2017 18:54:45 +0100 
-220-We do not authorize the use of this system to transport unsolicited, 
-220 and/or bulk e-mail.
-
->> EHLO [IPv6:::1]
-
-<< 250-ruk6.dizinc.com Hello 199.85.198.146.dyn.plus.net [146.198.85.199]
-250-SIZE 52428800
-250-8BITMIME
-250-PIPELINING
-250-STARTTLS
-250 HELP
-
->> STARTTLS
-
-<< 220 TLS go ahead
-
->> EHLO [IPv6:::1]
-
-<< 250-ruk6.dizinc.com Hello 199.85.198.146.dyn.plus.net [146.198.85.199]
-250-SIZE 52428800
-250-8BITMIME
-250-PIPELINING
-250-AUTH PLAIN LOGIN
-250 HELP
-
->> AUTH LOGIN
-
-<< 334 VXNlcm5hbWU6
-
->> am9uQGxhbmNhc3RyaWFuLWl0LmNvLnVr
-
-<< 334 UGFzc3dvcmQ6
-
->> Iz1EP045Mkt3TjUu
-
-<< 235 Authentication succeeded
-
-++ Swift_SmtpTransport started
-!! Cannot send message without a sender address (code: 0)
+Failed to authenticate on SMTP server with username "jon@lancastrian-it.co.uk" using 2 possible authenticators
 
 -----------------------------------------------------------------------------
 
-::1,,[06/Aug/2017:19:07:30 +0100]
+::1,jon.brown,[07/Aug/2017:12:57:56 +0100]
 
-Address in mailbox given [Your QWcrm password reset request] does not comply with RFC 2822, 3.6.2.
+Failed to authenticate on SMTP server with username "jon@lancastrian-it.co.uk" using 2 possible authenticators
 
 -----------------------------------------------------------------------------
 

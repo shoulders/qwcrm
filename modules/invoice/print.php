@@ -8,6 +8,7 @@ require(INCLUDES_DIR.'modules/user.php');
 require(INCLUDES_DIR.'modules/invoice.php');
 require(INCLUDES_DIR.'modules/payment.php');
 require(INCLUDES_DIR.'modules/workorder.php');
+require(INCLUDES_DIR.'mpdf.php');
 
 // Check if we have an invoice_id
 if($invoice_id == '') {
@@ -33,11 +34,12 @@ $smarty->assign('labour_sub_total',         labour_sub_total($db, $invoice_id)  
 $smarty->assign('parts_sub_total',          parts_sub_total($db, $invoice_id)                                                                           );
 $smarty->assign('employee_display_name',    get_user_details($db, get_invoice_details($db, $invoice_id, 'employee_id'), 'employee_display_name')        );
 
-// Build the PDF filename
-$pdf_filename = gettext("Invoice").'-'.$invoice_id;
 
-/* Invoice Print Routine */
+// Invoice Print Routine
 if($VAR['print_content'] == 'invoice') {
+    
+    // Build the PDF filename
+    $pdf_filename = gettext("Invoice").'-'.$invoice_id;
     
     // Print HTML Invoice
     if ($VAR['print_type'] == 'print_html') {        
@@ -83,14 +85,12 @@ if($VAR['print_content'] == 'invoice') {
     
 }
 
-
-
-/* Address Only Print Routine */
-if($VAR['print_content'] == 'address') {
+// Customer Envelope Print Routine
+if($VAR['print_content'] == 'customer_envelope') {
     
-    // Print HTML Address
+    // Print HTML Customer Envelope
     if ($VAR['print_type'] == 'print_html') {        
-        $BuildPage .= $smarty->fetch('invoice/printing/print_address.tpl');     
+        $BuildPage .= $smarty->fetch('invoice/printing/print_customer_envelope.tpl');     
     }
     
 }

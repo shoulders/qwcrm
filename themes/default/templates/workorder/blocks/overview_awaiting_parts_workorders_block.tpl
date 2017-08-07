@@ -52,7 +52,7 @@
 
             <!-- Action -->
             <td class="olotd4" align="center" nowrap>
-                <a href="index.php?page=workorder:print&workorder_id={$awaiting_workorders[p].workorder_id}&customer_id={$awaiting_workorders[p].customer_id}&theme=off">
+                <a href="index.php?page=workorder:print&workorder_id={$awaiting_workorders[p].workorder_id}&customer_id={$awaiting_workorders[p].customer_id}&theme=print">
                     <img src="{$theme_images_dir}icons/16x16/fileprint.gif" border="0" onMouseOver="ddrivetip('{t}Print The Work Order{/t}');" onMouseOut="hideddrivetip();">
                 </a>
                 <a href="index.php?page=workorder:details&workorder_id={$awaiting_workorders[p].workorder_id}&customer_id={$awaiting_workorders[p].customer_id}">

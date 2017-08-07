@@ -6,6 +6,7 @@ require(INCLUDES_DIR.'modules/customer.php');
 require(INCLUDES_DIR.'modules/workorder.php');
 require(INCLUDES_DIR.'modules/schedule.php');
 require(INCLUDES_DIR.'modules/user.php');
+require(INCLUDES_DIR.'mpdf.php');
 
 // Check if we have a workorder_id
 if($workorder_id == '') {
@@ -27,43 +28,141 @@ $smarty->assign('workorder_details',    get_workorder_details($db, $workorder_id
 $smarty->assign('workorder_notes',      display_workorder_notes($db, $workorder_id)                                         );
 $smarty->assign('workorder_schedules',  display_workorder_schedules($db, $workorder_id)                                     );
 
-/* Display Page */
 
 // Technician Workorder Slip Print Routine
-if($VAR['print_content'] == 'technician_workorder_slip') {
+if($VAR['print_content'] == 'technician_workorder_slip') {    
+    
+    // Build the PDF filename
+    $pdf_filename = gettext("Technician Workorder Slip").' '.$workorder_id;
+    
+    // Print HTML
     if ($VAR['print_type'] == 'print_html') {
         $BuildPage .= $smarty->fetch('workorder/printing/print_technician_workorder_slip.tpl');
+    
+    // Print PDF
     } elseif ($VAR['print_type'] == 'print_pdf') {        
+        
+        // Get Print Invoice as HTML into a variable
         $pdf_template = $smarty->fetch('workorder/printing/print_technician_workorder_slip.tpl');
-        // add pdf creation routing here
-    } elseif ($VAR['print_type'] == 'email_pdf') {        
+        
+        // output PDF in brower
+        mpdf_output_in_browser($pdf_filename, $pdf_template);
+        
+    // Email PDF
+    } elseif ($VAR['print_type'] == 'email_pdf') {
+        
+        // Get Print Invoice as HTML into a variable
         $pdf_template = $smarty->fetch('workorder/printing/print_technician_workorder_slip.tpl');
-        // add pdf creation routing here
+        
+        // return the PDF in a variable
+        $pdf_as_string = mpdf_output_as_varible($pdf_filename, $pdf_template);
+        
+        // Build the PDF        
+        $attachment['data'] = $pdf_as_string;
+        $attachment['filename'] = $pdf_filename;
+        $attachment['filetype'] = 'application/pdf';
+        
+        // Build the message body
+        $customer_details = get_customer_details($db, get_workorder_details($db, $workorder_id, 'customer_id'));
+        $body = get_email_message_body($db, 'email_msg_workorder', $customer_details);
+                      
+        // Email the PDF
+        send_email($customer_details['email'], gettext("Work Order").' '.$workorder_id, $body, $customer_details['display_name'], $attachment);
+        
+        // End all other processing
+        die();
+        
     }
 }
 
 // Customer Workorder Slip Print Routine
 if($VAR['print_content'] == 'customer_workorder_slip') {
+    
+    // Build the PDF filename
+    $pdf_filename = gettext("Customer Workorder Slip").' '.$workorder_id;    
+    
+    // Print HTML
     if ($VAR['print_type'] == 'print_html') {
         $BuildPage .= $smarty->fetch('workorder/printing/print_customer_workorder_slip.tpl');
+    
+    // Print PDF
     } elseif ($VAR['print_type'] == 'print_pdf') {        
+        
+        // Get Print Invoice as HTML into a variable
         $pdf_template = $smarty->fetch('workorder/printing/print_customer_workorder_slip.tpl');
-        // add pdf creation routing here
-    } elseif ($VAR['print_type'] == 'email_pdf') {        
+        
+        // output PDF in brower
+        mpdf_output_in_browser($pdf_filename, $pdf_template);       
+        
+    // Email PDF
+    } elseif ($VAR['print_type'] == 'email_pdf') { 
+        
+        // Get Print Invoice as HTML into a variable
         $pdf_template = $smarty->fetch('workorder/printing/print_customer_workorder_slip.tpl');
-        // add pdf creation routing here
+        
+        // return the PDF in a variable
+        $pdf_as_string = mpdf_output_as_varible($pdf_filename, $pdf_template);
+        
+        // Build the PDF        
+        $attachment['data'] = $pdf_as_string;
+        $attachment['filename'] = $pdf_filename;
+        $attachment['filetype'] = 'application/pdf';
+        
+        // Build the message body
+        $customer_details = get_customer_details($db, get_workorder_details($db, $workorder_id, 'customer_id'));
+        $body = get_email_message_body($db, 'email_msg_workorder', $customer_details);
+                      
+        // Email the PDF
+        send_email($customer_details['email'], gettext("Work Order").' '.$workorder_id, $body, $customer_details['display_name'], $attachment);
+        
+        // End all other processing
+        die();
+        
     }
 }
 
-// Job Sheet Print Routine
-if($VAR['print_content'] == 'job_sheet') {
+// Technician Job Sheet Print Routine
+if($VAR['print_content'] == 'technician_job_sheet') {
+    
+    // Build the PDF filename
+    $pdf_filename = gettext("Technician Job Sheet").' '.$workorder_id;        
+    
+    // Print HTML
     if ($VAR['print_type'] == 'print_html') {
-        $BuildPage .= $smarty->fetch('workorder/printing/print_job_sheet.tpl');
-    } elseif ($VAR['print_type'] == 'print_pdf') {        
-        $pdf_template = $smarty->fetch('workorder/printing/print_job_sheet.tpl');
-        // add pdf creation routing here
-    } elseif ($VAR['print_type'] == 'email_pdf') {        
-        $pdf_template = $smarty->fetch('workorder/printing/print_job_sheet.tpl');
-        // add pdf creation routing here
+        $BuildPage .= $smarty->fetch('workorder/printing/print_technician_job_sheet.tpl');
+        
+    // Print PDF
+    } elseif ($VAR['print_type'] == 'print_pdf') {
+        
+        // Get Print Invoice as HTML into a variable
+        $pdf_template = $smarty->fetch('workorder/printing/print_technician_job_sheet.tpl');
+        
+        // output PDF in brower
+        mpdf_output_in_browser($pdf_filename, $pdf_template);
+        
+    // Print HTML
+    } elseif ($VAR['print_type'] == 'email_pdf') {  
+        
+        // Get Print Invoice as HTML into a variable
+        $pdf_template = $smarty->fetch('workorder/printing/print_technician_job_sheet.tpl');
+        
+        // return the PDF in a variable
+        $pdf_as_string = mpdf_output_as_varible($pdf_filename, $pdf_template);
+        
+        // Build the PDF        
+        $attachment['data'] = $pdf_as_string;
+        $attachment['filename'] = $pdf_filename;
+        $attachment['filetype'] = 'application/pdf';
+        
+        // Build the message body
+        $customer_details = get_customer_details($db, get_workorder_details($db, $workorder_id, 'customer_id'));
+        $body = get_email_message_body($db, 'email_msg_workorder', $customer_details);
+                      
+        // Email the PDF
+        send_email($customer_details['email'], gettext("Work Order").' '.$workorder_id, $body, $customer_details['display_name'], $attachment);
+        
+        // End all other processing
+        die();
+        
     }
 }

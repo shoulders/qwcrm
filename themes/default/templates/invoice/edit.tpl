@@ -445,12 +445,12 @@
                                                         <!-- Print Buttons -->   
                                                         <button type="button" onClick="window.open('index.php?page=invoice:print&invoice_id={$invoice_details.invoice_id}&print_type=print_html&print_content=invoice&theme=print');">{t}Print HTML{/t}</button>
                                                         <button type="button" onClick="window.open('index.php?page=invoice:print&invoice_id={$invoice_details.invoice_id}&print_type=print_pdf&print_content=invoice&theme=print');"><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">{t}Print PDF{/t}</button>
-                                                        <button type="button" onClick="$.ajax( { url:'index.php?page=invoice:print&invoice_id={$invoice_details.invoice_id}&print_type=email_pdf&print_content=invoice&theme=print' } );"><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">{t}Email PDF{/t}</button>
-                                                        <button type="button" name="{t}Print Address Only{/t}" onClick="window.open('index.php?page=invoice:print&invoice_id={$invoice_details.invoice_id}&print_type=print_html&print_content=invoice&theme=print');">{t}Print Address Only{/t}</button>                                            
+                                                        <button type="button" onClick="$.ajax( { url:'index.php?page=invoice:print&invoice_id={$invoice_details.invoice_id}&print_type=email_pdf&print_content=invoice&theme=print', success: function(data) { $('body').append(data); } } );"><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">{t}Email PDF{/t}</button>
+                                                        <button type="button" onClick="window.open('index.php?page=invoice:print&invoice_id={$invoice_details.invoice_id}&print_type=print_html&print_content=customer_envelope&theme=print');">{t}Print Customer Envelope{/t}</button>                                            
 
                                                         {if $invoice_details.balance > 0}
                                                             <!-- Receive Payment Button -->
-                                                            <button type="button" name="{t}Receive Payment{/t}" onClick="location.href='index.php?page=payment:new&invoice_id={$invoice_details.invoice_id}';">{t}Receive Payment{/t}</button>
+                                                            <button type="button" onClick="location.href='index.php?page=payment:new&invoice_id={$invoice_details.invoice_id}';">{t}Receive Payment{/t}</button>
                                                         {/if}
 
                                                     {else}

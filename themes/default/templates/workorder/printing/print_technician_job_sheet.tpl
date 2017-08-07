@@ -1,17 +1,17 @@
-<!-- print_job_sheet.tpl - Job Sheet Print Template -->
+<!-- print_technician_job_sheet.tpl - Job Sheet Print Template -->
 <!DOCTYPE html>
 <html lang="en-GB">
 <head>
     <meta charset="utf-8">
     
     <!-- PDF Title -->
-    <title>{t}Tecnician Job Sheet{/t} - {$workorder_details.workorder_id}</title>   
+    <title>{t}WORKORDER_PRINT_TECHNICIAN_JOB_SHEET_PAGE_TITLE{/t}</title>   
         
     <!-- PDF Subject -->
-    <meta name="description" content="{$meta_description}">
+    <meta name="description" content="{t}WORKORDER_PRINT_TECHNICIAN_JOB_SHEET_META_DESCRIPTION{/t}">
     
     <!-- PDF Keywords -->
-    <meta name="keywords" content="{$meta_keywords}">
+    <meta name="keywords" content="{t}WORKORDER_PRINT_TECHNICIAN_JOB_SHEET_META_KEYWORDS{/t}">
     
     <!-- PDF Author -->
     <meta name="author" content="QWcrm - QuantumWarp.com">       
@@ -29,7 +29,7 @@
             <td width="60%" align="center">                
                 <p><b><font size="+3">{$company_details.name}</font></b><br></p>                
             </td>
-            <td width="20%" valign="middle" align="center">{t}Tecnician Job Sheet{/t}</font></td>
+            <td width="20%" valign="middle" align="center">{t}Technician Job Sheet{/t}</font></td>
         </tr>
     </table>
 

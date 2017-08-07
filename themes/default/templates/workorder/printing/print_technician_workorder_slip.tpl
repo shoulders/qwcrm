@@ -5,13 +5,13 @@
     <meta charset="utf-8">
     
     <!-- PDF Title -->
-    <title>{t}Technician Workorder Slip{/t} - {$workorder_details.workorder_id}</title>   
+    <title>{t}WORKORDER_PRINT_TECHNICIAN_WORKORDER_SLIP_PAGE_TITLE{/t}</title>   
         
     <!-- PDF Subject -->
-    <meta name="description" content="{$meta_description}">
+    <meta name="description" content="{t}WORKORDER_PRINT_TECHNICIAN_WORKORDER_SLIP_META_DESCRIPTION{/t}">
     
     <!-- PDF Keywords -->
-    <meta name="keywords" content="{$meta_keywords}">
+    <meta name="keywords" content="{t}WORKORDER_PRINT_TECHNICIAN_WORKORDER_SLIP_META_KEYWORDS{/t}">
     
     <!-- PDF Author -->
     <meta name="author" content="QWcrm - QuantumWarp.com">       
@@ -27,7 +27,7 @@
         <tr bgcolor="#999999">
             <td width="20%" valign="middle" align="center"><img src="{$company_logo}" alt="" height="50"></td>
             <td valign="top" align="center">            
-                <font size="+3">{t}Technician Workorder Slip{/t}</font><br />
+                <font size="+3">{t}Technician Work Order Slip{/t}</font><br />
                 {t}Workorder ID{/t} {$workorder_details.workorder_id}
             </td>
             <td width="20%" valign="middle" align="center"></td>

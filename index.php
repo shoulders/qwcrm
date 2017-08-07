@@ -70,7 +70,7 @@ $QConfig = new QConfig;
 require('includes/defines.php');
 require(INCLUDES_DIR.'security.php');
 require(INCLUDES_DIR.'include.php');
-require(INCLUDES_DIR.'mpdf.php');
+//require(INCLUDES_DIR.'mpdf.php');
 require(INCLUDES_DIR.'email.php');
 require(INCLUDES_DIR.'adodb.php');
 require(INCLUDES_DIR.'smarty.php');

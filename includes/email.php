@@ -50,13 +50,21 @@ function php_mail_fallback($to, $subject, $body, $attachment = null) {
 
 function send_email($recipient_email, $subject, $body, $recipient_name = null, $attachment = null) {
     
-    global $smarty;
-    
     $config = new QConfig;
     $db = QFactory::getDbo();
     
+    // Clear any onscreen notifications - this allows for mutiple errors to be displayed
+    clear_onscreen_notifications();
+    
     // If email is not enabled, do not send emails
-    if($config->email_online != true) { die(); }
+    if($config->email_online != true) {        
+        $record = gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';        
+        write_record_to_activity_log($record);        
+        output_notifications_onscreen('', $record.'<br>'.gettext("The email system is not enabled, contact the administrators."));
+        die();
+    }
+    
+
     
     /* Create the Transport */
     
@@ -83,7 +91,7 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
         // Standard sendmail
         $transport = new Swift_SendmailTransport($config->email_sendmail_path.' -bs');
         
-        // Exim - The Swift_SendmailTransport supports the use of Exim
+        // Exim - The Swift_SendmailTransport also supports the use of Exim (same ninary wrapper as sendmail)
         //$transport = new Swift_SendmailTransport('/usr/sbin/exim -bs');
                  
     // Use PHP Mail
@@ -101,10 +109,7 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
     // Create the Mailer using your created Transport
     $mailer = new Swift_Mailer($transport);
     
-    /* Logging */                  // PHP Mail does not give logg messages, just success or fail
-    
-    // When Swift Mailer sends messages it will keep a log of all the interactions with the underlying Transport being used.
-    // https://swiftmailer.symfony.com/docs/plugins.html#using-the-logger-plugin
+    /* Logging */                  // PHP Mail does not give log messages, just success or fail
     
     // ArrayLogger - Keeps a collection of log messages inside an array. The array content can be cleared or dumped out to the screen.
     $logger = new Swift_Plugins_Loggers_ArrayLogger();
@@ -124,7 +129,7 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
         $email->setTo([$recipient_email => $recipient_name]);
         $email->setFrom([$config->email_mailfrom => $config->email_fromname]);   
         
-        // Only add 'Reply To' if the reply email address is present. this to prevents email errors
+        // Only add 'Reply To' if the reply email address is present. This prevents errors.
         if($config->email_replyto != '') {
             $email->setReplyTo([$config->email_replyto => $config->email_replytoname]);  
         }
@@ -133,11 +138,12 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
     
     // This will present any email RFC compliance issues
     catch(Swift_RfcComplianceException $RfcCompliance_exception) {
-        //var_dump($RfcCompliance_exception);  // gets everything
+        //var_dump($RfcCompliance_exception);
         $record = gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';        
         write_record_to_activity_log($record);
         write_record_to_email_error_log($RfcCompliance_exception->getMessage());
-        $smarty->assign('warning_msg', $record.'<br>'.$RfcCompliance_exception->getMessage());        
+        output_notifications_onscreen('', $record.'<br>'.$RfcCompliance_exception->getMessage());
+        die();
     }
     
     // Subject - prefix with the QWcrm company name to all emails
@@ -148,8 +154,7 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
     // Add the email signature (if not a reset email)
     if(!check_page_accessed_via_qwcrm('user:reset')) {
         $body .= get_email_signature($db, $email);
-    }
-    
+    }    
     
     // Add Message Body
     $email->setBody($body, 'text/html');
@@ -158,7 +163,7 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
     //$email->addPart('My amazing body in plain text', 'text/plain');    
     
     // Add Optional attachment
-   if($attachment != null) {
+    if($attachment != null) {
         
         // Create the attachment with your data
         $attachment = new Swift_Attachment($attachment['data'], $attachment['filename'], $attachment['filetype']);
@@ -189,38 +194,32 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
             // If the email failed to send
             $record = gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';            
             write_record_to_activity_log($record);
-            $smarty->assign('warning_msg', $record);
+            output_notifications_onscreen('', $record);
 
         } else {
 
             // Successfully sent the email
             $record = gettext("Successfully sent email to").' '.$recipient_email.' ('.$recipient_name.')';            
             write_record_to_activity_log($record);
-            $smarty->assign('information_msg', $record);
+            output_notifications_onscreen($record, '');
 
         }
     }
     
     // This will present any transport errors
     catch(Swift_TransportException $Transport_exception) {
-        //var_dump($transport_exception);  // gets everything
+        //var_dump($RfcCompliance_exception);
         $record = gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';
         write_record_to_activity_log($record);
-        write_record_to_email_error_log($Transport_exception->getMessage());
-        $smarty->assign('warning_msg', $record.'<br>'.$Transport_exception->getMessage());
-    }
-    
-    // This will present any general swiftmailer issues
-    catch(Exception $swift_exception) {
-        //var_dump($swift_exception);  // gets everything
-        $record = gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';
-        write_record_to_activity_log($record);
-        write_record_to_email_error_log($swift_exception->getMessage());
-        $smarty->assign('warning_msg', $record.'<br>'.$swift_exception->getMessage());
+        write_record_to_email_error_log($Transport_exception->getMessage());        
+        preg_match('/^(.*)$/m', $Transport_exception->getMessage(), $matches);
+        output_notifications_onscreen('', $record.'<br>'.$matches[0]);          // output the first line of the error message only
     }
     
     // Write the Email Transport Record to the log
     write_record_to_email_transport_log($logger->dump());
+    
+    return;
    
 }
 
@@ -275,5 +274,25 @@ function write_record_to_email_transport_log($record) {
     fclose($fp);
         
     return;
+    
+}
+
+##############################################
+#  Clear any onscreen notifications           #   // this is needed because emails are requested via ajax
+##############################################
+
+function clear_onscreen_notifications() {
+    
+    echo "<script>clearSystemMessages();</script>";
+    
+}
+
+##############################################
+#  output email notifications onscreen       #   // this is needed because emails are requested via ajax
+##############################################
+
+function output_notifications_onscreen($information_msg = '', $warning_msg = '') {
+   
+    echo "<script>processSystemMessages('".$information_msg."', '".$warning_msg."');</script>";
     
 }
