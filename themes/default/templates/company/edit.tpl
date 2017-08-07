@@ -168,28 +168,38 @@
                                                 <td class="menuhead2" width="80%">&nbsp;{t}Edit Email Messaging functions{/t}</td>
                                             </tr>
                                                                                         
-                                            {*<!-- New Workorder Created Message -->
+                                            <!-- Workorder -->
                                             
                                             <tr>
-                                                <td width="100%" valign="top">                                                    
-                                                    <table cellpadding="5" cellspacing="0">
+                                                <td>
+                                                    <input type="hidden" name="email_msg_workorder" value ="">
+                                                    {*<table cellpadding="5" cellspacing="0">
                                                         <tr>
-                                                            <td class="menuhead">{t}New Work Order Created Message{/t}:</td>
+                                                            <td class="menuhead">{t}Workorder Message{/t}:</td>
                                                         </tr>
                                                         <tr>
-                                                            <td><textarea cols="80" rows="15" class="olotd5" name="email_msg_wo_created" >{$company_details.email_msg_wo_created}</textarea></td>
+                                                            <td>                                                                
+                                                                <strong>Placeholders</strong><br>
+                                                                {literal}{customer_display_name}{/literal} = {t}Customer's name{/t}<br>
+                                                                {literal}{customer_first_name}{/literal} = {t}Customer's contact first name{/t}<br> 
+                                                                {literal}{customer_last_name}{/literal} = {t}Customer's contact last name{/t}<br> 
+                                                                {literal}{customer_credit_terms}{/literal} = {t}Customer's credit terms{/t} 
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><textarea cols="80" rows="15" class="olotd5" name="email_msg_workorder">{$company_details.email_msg_workorder}</textarea></td>
                                                         </tr>
                                                         <tr>
                                                             <td align="left"><b>{t}Enabled{/t}:</b>
-                                                                <select id="email_msg_wo_created_active">
-                                                                    <option value="1" {if $company_details.email_msg_wo_created_active == '1'} selected{/if}>{t}Yes{/t}</option>
-                                                                    <option value="0" {if $company_details.email_msg_wo_created_active == '0'} selected{/if}>{t}No{/t}</option>
+                                                                <select name="email_msg_workorder_active">                                                                    
+                                                                    <option value="1" {if $company_details.email_msg_workorder_active == '1'} selected{/if}>{t}Yes{/t}</option>
+                                                                    <option value="0" {if $company_details.email_msg_workorder_active == '0'} selected{/if}>{t}No{/t}</option>
                                                                 </select>
                                                             </td>
                                                         </tr>
-                                                    </table>
+                                                    </table>*}                                                       
                                                 </td>
-                                            </tr>*}
+                                            </tr>                                            
                                             
                                             <!-- Invoice -->
                                             
@@ -213,7 +223,7 @@
                                                         </tr>
                                                         {*<tr>
                                                             <td align="left"><b>{t}Enabled{/t}:</b>
-                                                                <select name="email_msg_new_invoice_active">                                                                    
+                                                                <select name="email_msg_invoice_active">                                                                    
                                                                     <option value="1" {if $company_details.email_msg_invoice_active == '1'} selected{/if}>{t}Yes{/t}</option>
                                                                     <option value="0" {if $company_details.email_msg_invoice_active == '0'} selected{/if}>{t}No{/t}</option>
                                                                 </select>
@@ -221,7 +231,7 @@
                                                         </tr>*}
                                                     </table>                                                        
                                                 </td>
-                                            </tr>                                            
+                                            </tr>                                             
                                             
                                             <!-- Email Signature -->
                                             

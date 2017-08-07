@@ -103,10 +103,15 @@ function get_email_message_body($db, $message_name, $customer_details = null) {
     $content = get_company_details($db, $message_name);
     
     // Process placeholders
-    $content = replace_placeholder($content, '{customer_display_name}', $customer_details['display_name']);
-    $content = replace_placeholder($content, '{customer_first_name}', $customer_details['first_name']);
-    $content = replace_placeholder($content, '{customer_last_name}', $customer_details['last_name']);
-    $content = replace_placeholder($content, '{customer_credit_terms}', $customer_details['credit_terms']);
+    if($message_name == 'email_msg_invoice') {        
+        $content = replace_placeholder($content, '{customer_display_name}', $customer_details['display_name']);
+        $content = replace_placeholder($content, '{customer_first_name}', $customer_details['first_name']);
+        $content = replace_placeholder($content, '{customer_last_name}', $customer_details['last_name']);
+        $content = replace_placeholder($content, '{customer_credit_terms}', $customer_details['credit_terms']);
+    }
+    if($message_name == 'email_msg_workorder') {
+        // not currently used
+    }
     
     // return the process email
     return $content;
@@ -148,8 +153,8 @@ function update_company_details($db, $VAR) {
             date_format             =". $db->qstr( $VAR['date_format']                     ).",            
             email_signature         =". $db->qstr( $VAR['email_signature']                 ).",
             email_signature_active  =". $db->qstr( $VAR['email_signature_active']          ).",
-            email_msg_invoice       =". $db->qstr( $VAR['email_msg_invoice']               );
-                          
+            email_msg_invoice       =". $db->qstr( $VAR['email_msg_invoice']               ).",
+            email_msg_workorder     =". $db->qstr( $VAR['email_msg_workorder']             );                          
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the company details."));
