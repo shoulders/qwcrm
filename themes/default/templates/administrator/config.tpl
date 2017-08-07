@@ -236,7 +236,21 @@
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}SMTP Password{/t}</strong></div><hr><div>{t escape=tooltip}Enter the password for the SMTP host.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
-
+                    
+                        <!-- Send Test Mail -->
+                        
+                    <tr>
+                        <td colspan="2" width="100%">&nbsp;</td>
+                    </tr>
+                    
+                    <tr>
+                        <td align="right">&nbsp;</td>
+                        <td>                                                                                                                   
+                            <button type="button" onClick="$.ajax( { url:'index.php?page=administrator:config&send_test_mail=true&theme=print', success: function(data) { $('body').append(data); } } );">{t}Send Test Mail{/t}</button>
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Send Test Mail{/t}</strong></div><hr><div>{t escape=tooltip}You must save your changes before using this as the test uses the saved settings not those on the page.<br><br>The email will be sent to the logged in user\'s email address{/t}</div>');" onMouseOut="hideddrivetip();">
+                        </td>
+                    </tr>
+                        
                     <!-- Security -->
                     
                     <tr class="row2">
@@ -594,7 +608,7 @@
                     </tr> 
                     
                     <tr>
-                        <td colspan="2" style="text-align: center;"><button class="olotd5" type="submit" name="submit" value="Update">{t}Update{/t}</td>
+                        <td colspan="2" style="text-align: center;"><button class="olotd5" type="submit" name="submit" value="update">{t}Update{/t}</td>
                     </tr> 
                     
                 </table>

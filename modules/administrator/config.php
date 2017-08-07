@@ -3,9 +3,10 @@
 defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'modules/administrator.php');
+require(INCLUDES_DIR.'modules/user.php');
 
 // Update Company details
-if(isset($VAR['submit'])) {   
+if($VAR['submit'] == 'update') {   
     
     if(update_qwcrm_config($VAR)) {
         
@@ -24,6 +25,14 @@ if(isset($VAR['submit'])) {
     
     // No data submitted so just load the current config settings
     $smarty->assign('qwcrm_config', get_qwcrm_config() );
+    
+}
+
+// Send a test mail
+if($VAR['send_test_mail'] == 'true') {
+    
+    send_test_mail($db);
+    die();
     
 }
 

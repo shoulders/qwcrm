@@ -324,3 +324,17 @@ function prepare_config_data($new_config) {
     return $new_config;
     
 }
+
+############################################
+#      Send test Mail                      #
+############################################
+
+function send_test_mail($db) {
+    
+    $config = new QConfig;
+    
+    $user_details = get_user_details($db, QFactory::getUser()->login_user_id);
+    
+    send_email($user_details['email'], gettext("Test mail from QWcrm"), 'This is a test mail sent using'.' '.$config->email_mailer.'. '.'Your email settings are correct!', $user_details['display_name']);
+    
+}
