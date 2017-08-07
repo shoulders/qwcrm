@@ -25,27 +25,27 @@ if(!isset($VAR['submit']) && !isset($VAR['email']) && !isset($VAR['token']) && !
             /* Allowed to submit */
             
             // make sure user account exists and is not blocked
-            if(validate_reset_email($db, $VAR['email'])) {
-                
-                // get user_id and thene do the following stages
-            
-                // update reset count for the user
-                update_user_reset_count($db, $VAR['email']);
-                
-                // build the email and send it
-                send_reset_email($db, $VAR['email']);
-                
-                // Load the enter_token page            
-                 $stage = 'enter_token';
-
-            // The account is not allowed to be reset or it does not exist
-            } else {
+            if(!$user_id = validate_reset_email($db, $VAR['email'])) {
                 
                 // Display error message
                 $smarty->assign('warning_msg', gettext("You cannot reset the password on this account. It either does not exist or is blocked."));
                                
                 // Reload the enter_email page
                 $stage = 'enter_email';
+
+            // The account is not allowed to be reset or it does not exist
+            } else {
+                
+                // update reset count for the user
+                update_user_reset_count($db, $user_id);
+                
+                // build the email and send it
+                if(send_reset_email($db, $user_id)) {
+                    
+                    // Load the enter_token page            
+                    $stage = 'enter_token';
+                    
+                }                   
                 
             }
             

@@ -257,15 +257,26 @@ function get_user_id_by_username($db, $username){
 # Get User ID by username               # // moved from core
 #########################################
 
-function get_user_id_by_email($db, $email){
+function get_user_id_by_email($db, $email) {
     
-    $sql = "SELECT user_id FROM ".PRFX."user WHERE email =".$db->qstr($email);    
+    $sql = "SELECT user_id FROM ".PRFX."user WHERE email =".$db->qstr($email);
+    
     if(!$rs = $db->execute($sql)){
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the User ID by their email."));
         exit;
     } else {
         
-        return $rs->fields['user_id'];
+        $result_count = $rs->RecordCount();
+                
+        if($result_count != 1) {
+            
+            return false;
+            
+        } else {
+            
+            return $rs->fields['user_id'];
+            
+        }
         
     }
         
@@ -807,7 +818,7 @@ function authenticate_recaptcha($recaptcha_secret_key, $recaptcha_response) {
 }
 
 ######################################################################################
-#    Validate that the email submitted belongs to a  valid account and can be reset  #    
+#    Validate that the email submitted belongs to a valid account and can be reset   #    
 ######################################################################################
 
 function validate_reset_email($db, $email) {
@@ -820,9 +831,9 @@ function validate_reset_email($db, $email) {
     // is the user active
     if(!is_user_active($db, $user_id)) {
         return false;
-    } else {
-        return true;
     }
+    
+    return $user_id;
     
 }
 
@@ -830,13 +841,16 @@ function validate_reset_email($db, $email) {
 #    Build and send a reset email   #    
 #####################################
 
-function send_reset_email($db, $recipient_email) {
+function send_reset_email($db, $user_id) {
     
+    // Get recipient email
+    $recipient_email = get_user_details($db, $user_id, 'email');
+            
     // Set subject  
     $subject = gettext("Your QWcrm password reset request");    
         
     // Create Token
-    $token = create_reset_token($db, get_user_id_by_email($db, $recipient_email));
+    $token = create_reset_token($db, $user_id);
     
     /* Build Email body
     $body .= gettext("Hello").','."\r\n\r\n";
@@ -1075,9 +1089,7 @@ function delete_expired_reset_codes($db) {
 #    Update users reset count       #    
 #####################################
 
- function update_user_reset_count($db, $email) {
-     
-    $user_id = get_user_id_by_email($db, $email);
+ function update_user_reset_count($db, $user_id) {
      
     $sql = "UPDATE ".PRFX."user SET       
             reset_count     = reset_count + 1

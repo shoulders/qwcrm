@@ -50,6 +50,8 @@ function php_mail_fallback($to, $subject, $body, $attachment = null) {
 
 function send_email($recipient_email, $subject, $body, $recipient_name = null, $attachment = null) {
     
+    global $smarty;
+    
     $config = new QConfig;
     $db = QFactory::getDbo();
     
@@ -57,15 +59,21 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
     clear_onscreen_notifications();
     
     // If email is not enabled, do not send emails
-    if($config->email_online != true) {        
+    if($config->email_online != true) {
+        
+        // Log the event
         $record = gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';        
-        write_record_to_activity_log($record);        
-        output_notifications_onscreen('', $record.'<br>'.gettext("The email system is not enabled, contact the administrators."));
-        die();
-    }
-    
-
-    
+        write_record_to_activity_log($record);
+        
+        // Output the system message to the browser
+        $system_message = $record.'<br>'.gettext("The email system is not enabled, contact the administrators.");
+        $smarty->assign('warning_msg', $system_message);
+        output_notifications_onscreen('', $system_message);
+        
+        return false;
+        
+    }    
+   
     /* Create the Transport */
     
     // Use SMTP
@@ -139,11 +147,19 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
     // This will present any email RFC compliance issues
     catch(Swift_RfcComplianceException $RfcCompliance_exception) {
         //var_dump($RfcCompliance_exception);
+        
+        // Log the event
         $record = gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';        
         write_record_to_activity_log($record);
         write_record_to_email_error_log($RfcCompliance_exception->getMessage());
-        output_notifications_onscreen('', $record.'<br>'.$RfcCompliance_exception->getMessage());
-        die();
+        
+        // Output the system message to the browser
+        $system_message = $record.'<br>'.$record.'<br>'.$RfcCompliance_exception->getMessage();
+        $smarty->assign('warning_msg', $system_message);
+        output_notifications_onscreen('', $system_message);
+        
+        return false;
+        
     }
     
     // Subject - prefix with the QWcrm company name to all emails
@@ -178,6 +194,9 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
     try {
         if (!$mailer->send($email))
         {
+            
+            // If the email failed to send
+            
             /* Finding out Rejected Addresses - useful for batch emails
             if (!$mailer->send($email, $failures)) {
                 echo "Failures:";
@@ -189,19 +208,29 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
                 0 => receiver@bad-domain.org,
                 1 => other-receiver@bad-domain.org
                 )
-            */            
+            */          
             
-            // If the email failed to send
+            // Log the event            
             $record = gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';            
             write_record_to_activity_log($record);
-            output_notifications_onscreen('', $record);
+            
+            // Output the system message to the browser
+            $system_message = $record;
+            $smarty->assign('warning_msg', $system_message);
+            output_notifications_onscreen('', $system_message);
 
         } else {
 
             // Successfully sent the email
+            
+            // Log the event
             $record = gettext("Successfully sent email to").' '.$recipient_email.' ('.$recipient_name.')';            
             write_record_to_activity_log($record);
-            output_notifications_onscreen($record, '');
+            
+            // Output the system message to the browser
+            $system_message = $record;
+            $smarty->assign('information_msg', $system_message);
+            output_notifications_onscreen($system_message, '');
 
         }
     }
@@ -209,11 +238,17 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
     // This will present any transport errors
     catch(Swift_TransportException $Transport_exception) {
         //var_dump($RfcCompliance_exception);
+        
+        // Log the event
         $record = gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';
         write_record_to_activity_log($record);
-        write_record_to_email_error_log($Transport_exception->getMessage());        
+        write_record_to_email_error_log($Transport_exception->getMessage());
+
+        // Output the system message to the browser
         preg_match('/^(.*)$/m', $Transport_exception->getMessage(), $matches);
-        output_notifications_onscreen('', $record.'<br>'.$matches[0]);          // output the first line of the error message only
+        $system_message = $record.'<br>'.$matches[0];
+        $smarty->assign('warning_msg', $system_message);
+        output_notifications_onscreen('', $system_message);          // output the first line of the error message only
     }
     
     // Write the Email Transport Record to the log
