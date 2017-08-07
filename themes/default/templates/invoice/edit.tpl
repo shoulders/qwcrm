@@ -456,7 +456,7 @@
                                                     {else}
 
                                                         <!-- Delete Button -->
-                                                        <button type="button" name="{t}Delete{/t}" onClick="location.href='index.php?page=invoice:delete&customer_id={$invoice_details.customer_id}&invoice_id={$invoice_details.invoice_id}';">{t}Delete{/t}</button>
+                                                        <button type="button" name="{t}Delete{/t}" onClick="location.href='index.php?page=invoice:delete&invoice_id={$invoice_details.invoice_id}';">{t}Delete{/t}</button>
 
                                                         {if $workorder_status == '9' && $workorder_id != '0'}
                                                             <!-- Close Button -->

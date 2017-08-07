@@ -1,7 +1,8 @@
 <!-- details_header_block.tpl -->
 <table class="olotable" width="100%" border="0" cellpadding="2" cellspacing="0" >
     <tr>
-        <td class="olohead" align="center">{t}Workorder ID{/t}</td>
+        <td class="olohead" align="center">{t}WO ID{/t}</td>
+        <td class="olohead" align="center">{t}INV ID{/t}</b></td>
         <td class="olohead" align="center">{t}Opened{/t}</td>        
         <td class="olohead" align="center">{t}Scope{/t}</td>                
         <td class="olohead" align="center">{t}Status{/t}</td>
@@ -10,8 +11,11 @@
     </tr>
     <tr>
         
-        <!-- ID -->
+        <!-- WO ID -->
         <td class="olotd4" align="center">{$workorder_details.workorder_id}</td>
+        
+        <!-- INV ID -->
+        <td class="olotd4" align="center"><a href="index.php?page=invoice:details&invoice_id={$workorder_details.invoice_id}">{$workorder_details.invoice_id}</a></td>                                                                
         
         <!-- Opened -->
         <td class="olotd4" align="center">{$workorder_details.open_date|date_format:$date_format}</td>        

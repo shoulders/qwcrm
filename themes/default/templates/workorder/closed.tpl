@@ -70,7 +70,8 @@
                                             <td valign="top" colspan="2">
                                                 <table class="olotable" width="100%" border="0" cellpadding="4" cellspacing="0">
                                                     <tr>
-                                                        <td class="olohead"><b>{t}Workorder ID{/t}</b></td>
+                                                        <td class="olohead"><b>{t}WO ID{/t}</b></td>
+                                                        <td class="olohead"><b>{t}INV ID{/t}</b></td>
                                                         <td class="olohead"><b>{t}Opened{/t}</b></td>
                                                         <td class="olohead"><b>{t}Closed{/t}</b></td>
                                                         <td class="olohead"><b>{t}Customer{/t}</b></td>
@@ -82,8 +83,11 @@
                                                         {if $workorders[i].workorder_id != ''}
                                                             <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=workorder:details&workorder_id={$workorders[i].workorder_id}';" class="row1">
                                                                 
-                                                                <!-- ID -->
-                                                                <td class="olotd4"><a href="index.php?page=workorder:details&workorder_id={$workorders[i].workorder_id}&customer_id={$workorders[i].customer_id}">{$workorders[i].workorder_id}</a></td>
+                                                                <!-- WO ID -->
+                                                                <td class="olotd4"><a href="index.php?page=workorder:details&workorder_id={$workorders[i].workorder_id}">{$workorders[i].workorder_id}</a></td>
+                                                                
+                                                                <!-- INV ID -->
+                                                                <td class="olotd4"><a href="index.php?page=invoice:details&workorder_id={$workorders[i].invoice_id}">{$workorders[i].invoice_id}</a></td>
                                                                 
                                                                 <!-- Opened -->
                                                                 <td class="olotd4"> {$workorders[i].workorder_open_date|date_format:$date_format}</td>

@@ -170,7 +170,7 @@ function insert_invoice($db, $customer_id, $workorder_id, $discount_rate, $tax_r
         
         return $db->insert_id();
         
-    }    
+    }
     
 }
 
@@ -537,12 +537,26 @@ function update_invoice_prefill_item($db, $VAR){
 
 function delete_invoice($db, $invoice_id) {
     
+    // Get workorder_id before deleting
+    $workorder_id = get_invoice_details($db, $invoice_id, 'workorder_id');
+    
+    // make sure the invoice can be deleted 
+    if(!check_invoice_can_be_deleted($db, $invoice_id)) {        
+        return false;
+    }
+    
+    // delete parts and labour - they must be manually deleted first
+    
+    // delete the invoice primary record
     $sql = "DELETE FROM ".PRFX."invoice WHERE invoice_id=".$db->qstr($invoice_id);
 
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete the invoice."));
         exit;
     } else {
+        
+        // Update the workorder to remove the invoice_id
+        update_workorder_invoice_id($db, $workorder_id, '');
         
         return true;
         
@@ -789,7 +803,7 @@ function upload_invoice_prefill_items_csv($db, $VAR) {
 }
 
 ##################################################
-#   Export Invoice Prefill Items as a  CSV file  #
+#   Export Invoice Prefill Items as a CSV file  #
 ##################################################
 
 function export_invoice_prefill_items_csv($db) {
@@ -823,5 +837,50 @@ function export_invoice_prefill_items_csv($db) {
         fclose($output_stream);        
         
     }    
+    
+}
+
+###############################################################
+#   Check to see if the invoice's can be deleted              #
+###############################################################
+function check_invoice_can_be_deleted($db, $invoice_id) {
+    
+    // Get the invoice details
+    $invoice_details = get_invoice_details($db, $invoice_id);
+    
+    // Is paid
+    if($invoice_details['is_paid'] == true) {
+        postEmulationWrite('warning_msg', gettext("This invoice cannot be deleted because it has been paid."));
+        return false;        
+    }    
+
+    // Any payments
+    if($invoice_details['paid_amount'] > 0) {
+        postEmulationWrite('warning_msg', gettext("This invoice cannot be deleted because it has payments."));
+        return false;
+    }
+    
+    // Has an outstanding balance
+    if($invoice_details['balance'] > 0) {
+        postEmulationWrite('warning_msg', gettext("This invoice cannot be deleted because it has an outstanding balance."));
+        return false;
+    }
+    
+    // Has Labour
+    if(!empty(get_invoice_labour_items($db, $invoice_id))) {
+       postEmulationWrite('warning_msg', gettext("This invoice cannot be deleted because it has labour items."));
+       return false;          
+    }    
+    
+    // Has Parts
+    if(!empty(get_invoice_parts_items($db, $invoice_id))) {
+       postEmulationWrite('warning_msg', gettext("This invoice cannot be deleted because it has parts."));
+       return false;          
+    }    
+    
+    // Is closed - this will be added later
+ 
+    // all checks passed
+    return true;
     
 }

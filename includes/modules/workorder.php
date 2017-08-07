@@ -35,7 +35,7 @@ function display_workorders($db, $direction = 'DESC', $use_pages = false, $page_
     /* Filter the Records */
     
     // Default Action
-    $whereTheseRecords = " WHERE ".PRFX."workorder.workorder_id"; 
+    $whereTheseRecords = " WHERE ".PRFX."workorder.workorder_id";
     
     // Restrict results by search category and search term
     if($search_term != null) {$whereTheseRecords .= " AND ".PRFX."user.$search_category LIKE '%$search_term%'";} 
@@ -61,7 +61,7 @@ function display_workorders($db, $direction = 'DESC', $use_pages = false, $page_
             ".PRFX."customer.customer_id,
             ".PRFX."customer.display_name AS customer_display_name,
                 
-            ".PRFX."workorder.workorder_id, employee_id,
+            ".PRFX."workorder.workorder_id, employee_id, invoice_id,
             ".PRFX."workorder.open_date AS workorder_open_date,
             ".PRFX."workorder.close_date AS workorder_close_date,
             ".PRFX."workorder.scope AS workorder_scope,
@@ -128,7 +128,7 @@ function display_workorders($db, $direction = 'DESC', $use_pages = false, $page_
     }
   
     /* Return the records */
-         
+    
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to return the matching Work Orders."));
         exit;
@@ -563,6 +563,24 @@ function update_workorder_last_active($db, $workorder_id){
     
 }
 
+
+####################################
+# Update a Workorder's Invoice ID  #
+####################################
+
+function update_workorder_invoice_id($db, $workorder_id, $invoice_id) {
+    
+    $sql = "UPDATE ".PRFX."workorder SET
+            invoice_id          =". $db->qstr( $invoice_id      )."
+            WHERE workorder_id  =". $db->qstr( $workorder_id    );
+
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update a Work Order Invoice ID."));
+        exit;
+    }    
+    
+}
+
 ##############################
 #    update workorder note   #
 ##############################
@@ -669,7 +687,7 @@ function delete_workorder($db, $workorder_id) {
     }
     
     // Is the workorder in an allowed state to be deleted
-    if(!check_workorder_status_is_allowed_for_deletion($db, $workorder_id)) {        
+    if(!check_workorder_status_allows_for_deletion($db, $workorder_id)) {        
         postEmulationWrite('warning_msg', gettext("This workorder cannot be deleted because its status does not allow it."));
         return false;
     }
@@ -731,7 +749,7 @@ function delete_workorder($db, $workorder_id) {
 # Is the workorder in an allowed state to be deleted #
 ######################################################
 
-function check_workorder_status_is_allowed_for_deletion($db, $workorder_id) {
+function check_workorder_status_allows_for_deletion($db, $workorder_id) {
     
     $sql = "SELECT status FROM ".PRFX."workorder WHERE workorder_id=".$workorder_id;
     

@@ -14,6 +14,9 @@ if($workorder_id && !check_workorder_has_invoice($db, $workorder_id)) {
     
     // Create the invoice and return the new invoice_id
     $invoice_id = insert_invoice($db, $customer_id, $workorder_id, get_customer_details($db, $customer_id, 'discount_rate'), get_company_details($db, 'tax_rate'));
+    
+    // Update the workorder with the new invoice_id
+    update_workorder_invoice_id($db, $workorder_id, $invoice_id);
 
     // Update Work Order Status (to waiting for payment)
     update_workorder_status($db, $workorder_id, 7);

@@ -17,16 +17,17 @@ if($workorder_id == '') {
 }
 
 // Delete the Workorder
-if(delete_workorder($db, $workorder_id)) {
+if(!delete_workorder($db, $workorder_id)) {
     
-    // load the workorder overview page
-    force_page('workorder', 'overview', 'information_msg='.gettext("Work Order has been deleted."));
+    // load the staus page
+    force_page('workorder', 'status', 'workorder_id='.$workorder_id);
     exit;
     
 } else {
     
-    // load the staus page
-    force_page('workorder', 'status', 'workorder_id='.$workorder_id);
+    
+    // load the workorder overview page
+    force_page('workorder', 'overview', 'information_msg='.gettext("Work Order has been deleted."));
     exit;
     
 }

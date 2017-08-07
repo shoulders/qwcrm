@@ -3,6 +3,7 @@
 defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'modules/invoice.php');
+require(INCLUDES_DIR.'modules/workorder.php');
 
 // Prevent direct access to this page
 if(!check_page_accessed_via_qwcrm()) {
@@ -16,14 +17,17 @@ if($invoice_id == '') {
     exit;
 }
 
+
+
 // Delete Invoice
-if(!delete_invoice($db, $invoice_id)) {
+if(!delete_invoice($db, $invoice_id)) {    
     
     // Load the invoice details page with error
     force_page('invoice', 'details&invoice_id='.$invoice_id);
     exit;
     
-} else {
+    
+} else {   
     
     // load the work order invoice page
     force_page('invoice', 'search', 'information_msg='.gettext("The invoice has been deleted successfully."));
