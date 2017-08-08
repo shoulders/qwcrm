@@ -4,11 +4,11 @@
         <td>
             <div id="tabs_container">
                 <ul class="tabs">
-                    <li class="active"><a href="javascript: void(0)" rel="#tab_1_contents" class="tab"><img src="{$theme_images_dir}icons/customers.gif" alt="" border="0" height="14" width="14" />&nbsp;{t}Customer Details{/t}</a></li>
-                    <li><a href="javascript: void(0)" rel="#tab_2_contents" class="tab"><img src="{$theme_images_dir}icons/workorders.gif" alt="" border="0" height="14" width="14" />&nbsp;{t}Works Orders{/t}</a></li>
-                    <li><a href="javascript: void(0)" rel="#tab_3_contents" class="tab"><img src="{$theme_images_dir}icons/invoice.png" alt="" border="0" height="14" width="14" />&nbsp;{t}Invoices{/t}</a></li>
-                    <li><a href="javascript: void(0)" rel="#tab_4_contents" class="tab">{t}Gift Certificates{/t}</a></li>
-                    <li><a href="javascript: void(0)" rel="#tab_5_contents" class="tab">{t}Notes{/t}</a></li>                    
+                    <li class="active"><a href="javascript:void(0)" rel="#tab_1_contents" class="tab"><img src="{$theme_images_dir}icons/customers.gif" alt="" border="0" height="14" width="14" />&nbsp;{t}Customer Details{/t}</a></li>
+                    <li><a href="javascript:void(0)" rel="#tab_2_contents" class="tab"><img src="{$theme_images_dir}icons/workorders.gif" alt="" border="0" height="14" width="14" />&nbsp;{t}Works Orders{/t}</a></li>
+                    <li><a href="javascript:void(0)" rel="#tab_3_contents" class="tab"><img src="{$theme_images_dir}icons/invoice.png" alt="" border="0" height="14" width="14" />&nbsp;{t}Invoices{/t}</a></li>
+                    <li><a href="javascript:void(0)" rel="#tab_4_contents" class="tab">{t}Gift Certificates{/t}</a></li>
+                    <li><a href="javascript:void(0)" rel="#tab_5_contents" class="tab">{t}Notes{/t}</a></li>                    
                 </ul>
 
                 <!-- This is used so the contents don't appear to the right of the tabs -->

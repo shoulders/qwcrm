@@ -65,7 +65,7 @@
                                             } );
                                         } );                                       
                                     </script>                                     
-                                    <a href="javascript: void(0)" id="hidden_stats">{t}Invoice Stats{/t}</a>
+                                    <a href="javascript:void(0)" id="hidden_stats">{t}Invoice Stats{/t}</a>
                                     <div id="hide_stats">
                                         {if $login_usergroup_id == 1 || $login_usergroup_id == 4 }
                                             <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
