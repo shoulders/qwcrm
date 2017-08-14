@@ -23,7 +23,7 @@
 <body>
 
     <!-- Header Section -->
-    <table width="900" border="0" cellpadding="2" cellspacing="0" style="border-collapse: collapse;">
+    <table width="750" border="0" cellpadding="2" cellspacing="0" style="border-collapse: collapse;">
         <tr>
             <td width="20%" valign="middle" align="center"><img src="{$company_logo}" alt="" height="50"></td>
             <td width="60%" align="center">                
@@ -34,7 +34,7 @@
     </table>
 
     <!-- Job Details -->
-    <table width="900" border="0" cellpadding="2" cellspacing="0" style="border-collapse: collapse; border: 3px solid black;" bgcolor="#999999">
+    <table width="750" border="0" cellpadding="2" cellspacing="0" style="border-collapse: collapse; border: 3px solid black;" bgcolor="#999999">
         <tr>
 
             <!-- Left Column -->
@@ -86,12 +86,12 @@
     <br />
 
     <!-- Job Description -->
-    <table width="900" border="0" cellpadding="2" cellspacing="0" style="border-collapse: collapse; border: 3px solid black;" bgcolor="#999999">
+    <table width="750" border="0" cellpadding="2" cellspacing="0" style="border-collapse: collapse; border: 3px solid black;" bgcolor="#999999">
         <tr>
             <td><b>{t}Description{/t}:<b></td>       
         </tr>
         <tr>
-            <td><div style="min-height: 140px;">{$workorder_details.description}</div></td>
+            <td><div style="min-height: 100px;">{$workorder_details.description}</div></td>
         </tr>
         <tr>
             <td><b>{t}Required Passwords{/t}:</b><br /><br /></td>
@@ -100,7 +100,7 @@
     <br />
 
     <!-- Notes -->
-    <table width="900" border="0" cellpadding="2" cellspacing="0" style="border-collapse: collapse;">
+    <table width="750" border="0" cellpadding="2" cellspacing="0" style="border-collapse: collapse;">
         <tr style="border-bottom: 2px solid black;">
             <td style="width: 100px; text-align: center; border-right: 2px solid black;"><b>{t}Date{/t}</b></td>
             <td style="width: 100px; text-align: center; border-right: 2px solid black;"><b>{t}Start Time{/t}</b></td>
@@ -108,16 +108,16 @@
             <td style="text-align: center;"><b>{t}Notes{/t}</b></td>  
         </tr>
         <tr>
-            <td style="width: 100px; text-align: center; border-right: 2px solid black; height: 500px;"></td>
-            <td style="width: 100px; text-align: center; border-right: 2px solid black; height: 500px;"></td>
-            <td style="width: 100px; text-align: center; border-right: 2px solid black; height: 500px;"></td>
-            <td style="text-align: center; height: 500px;"></td>          
+            <td style="width: 100px; text-align: center; border-right: 2px solid black; height: 340px;"></td>
+            <td style="width: 100px; text-align: center; border-right: 2px solid black; height: 340px;"></td>
+            <td style="width: 100px; text-align: center; border-right: 2px solid black; height: 340px;"></td>
+            <td style="text-align: center; height: 300px;"></td>          
         </tr>
     </table>
     <br />
 
     <!-- Parts Used -->
-    <table width="900" border="0" cellpadding="2" cellspacing="0" style="border-collapse: collapse; border: 3px solid black;" bgcolor="#999999">
+    <table width="750" border="0" cellpadding="2" cellspacing="0" style="border-collapse: collapse; border: 3px solid black;" bgcolor="#999999">
         <tr>
             <td><b>{t}Parts Used{/t}:<b></td>       
         </tr>
@@ -127,8 +127,8 @@
     </table>
     <br />
 
-    <!-- Work Carried Out-->
-    <table width="900" border="0" cellpadding="2" cellspacing="0" style="border-collapse: collapse; border: 3px solid black;" bgcolor="#999999">
+    <!-- Resolution -->
+    <table width="750" border="0" cellpadding="2" cellspacing="0" style="border-collapse: collapse; border: 3px solid black;" bgcolor="#999999">
         <tr>
             <td><b>{t}Resolution{/t}:<b></td>       
         </tr>

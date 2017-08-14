@@ -77,7 +77,7 @@
                                                 <td><textarea class="olotd5" name="bank_transaction_message" cols="50" rows="2" >{$payment_settings.bank_transaction_msg}</textarea><br></td>
                                             </tr>
                                             <tr>
-                                                <td><b>{t}Checks payable to{/t}:</b></td>
+                                                <td><b>{t}Cheques payable to{/t}:</b></td>
                                                 <td><textarea class="olotd5" name="cheque_payable_to_msg" cols="50" rows="2" >{$payment_settings.cheque_payable_to_msg}</textarea><br></td>
                                             </tr>
                                             <tr>

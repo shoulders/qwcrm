@@ -23,7 +23,7 @@
 <body>
 
     <!-- Header Section -->
-    <table width="900" border="0" cellpadding="2" cellspacing="0" style="border-collapse: collapse;">
+    <table width="750" border="0" cellpadding="2" cellspacing="0" style="border-collapse: collapse;">
         <tr bgcolor="#999999">
             <td width="20%" valign="middle" align="center"><img src="{$company_logo}" alt="" height="50"></td>
             <td valign="top" align="center">            
@@ -35,7 +35,7 @@
     </table>
 
     <!-- Contact Information -->
-    <table width="900" border="1" cellpadding="2" cellspacing="0" style="border-collapse: collapse;">
+    <table width="750" border="1" cellpadding="2" cellspacing="0" style="border-collapse: collapse;">
         <tr>
             <td width="50%" align="center" valign="middle"><b>{t}Customer Details{/t}</b></td>
             <td width="50%" align="center" valign="middle"><b>{t}Company Details{/t}</b></td>        
@@ -111,7 +111,7 @@
     </table>
 
     <!-- Work Order Details -->
-    <table width="900" border="1" cellpadding="2" cellspacing="0" style="border-collapse: collapse;">
+    <table width="750" border="1" cellpadding="2" cellspacing="0" style="border-collapse: collapse;">
         <tr>        
             <td valign="top" align="center" nowrap><b>{t}Work Order Details{/t}</b></td>        
             <td valign="top" align="center" nowrap><b>{t}Summary{/t}</b></td>
@@ -211,7 +211,7 @@
     </table>
 
     <!-- Equipment Receipt -->
-    <table width="900" border="1" cellpadding="2" cellspacing="0" style="border-collapse: collapse;">   
+    <table width="750" border="1" cellpadding="2" cellspacing="0" style="border-collapse: collapse;">   
         <tr border="0">
             <td border="0" align="center"><b>{t}Equipment Receipt{/t}</b></td>
         </tr>
@@ -251,7 +251,7 @@
     </table>
 
     <!-- Disclaimer -->
-    <table width="900" border="1" cellpadding="2" cellspacing="0" style="border-collapse: collapse;">   
+    <table width="750" border="1" cellpadding="2" cellspacing="0" style="border-collapse: collapse;">   
         <tr border="0">
             <td border="0" align="center"><b>{t}Disclaimer{/t}</b></td>
         </tr>
@@ -261,7 +261,7 @@
     </table>
 
     <!-- Important Notes -->
-    <table width="900" border="1" cellpadding="2" cellspacing="0" style="border-collapse: collapse;">   
+    <table width="750" border="1" cellpadding="2" cellspacing="0" style="border-collapse: collapse;">   
         <tr border="0">
             <td border="0" align="center">
                 <b>{t}Important Notes{/t}</b></td>
@@ -277,7 +277,7 @@
     </table>
 
     <!-- Footer Section -->
-    <table width="900" border="1" cellpadding="2" cellspacing="0" style="border-collapse: collapse;">   
+    <table width="750" border="1" cellpadding="2" cellspacing="0" style="border-collapse: collapse;">   
         <tr border="0">
             <td border="0" align="center">{t}This Work Order is confidential and contains privileged information.{/t}</td>
         </tr>

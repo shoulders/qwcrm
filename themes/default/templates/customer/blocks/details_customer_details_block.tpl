@@ -49,7 +49,7 @@
                                         </tr>
                                         <tr>
                                             <td class="menutd"></td>
-                                            <td class="menutd">{$customer_details.Customer_address|nl2br}<br>{$customer_details.city}<br>{$customer_details.state}<br>{$customer_details.zip}<br>{$customer_details.country}</td>
+                                            <td class="menutd">{$customer_details.address|nl2br}<br>{$customer_details.city}<br>{$customer_details.state}<br>{$customer_details.zip}<br>{$customer_details.country}</td>
                                             <td class="menutd"><b>{t}Mobile Phone{/t}</b></td>
                                             <td class="menutd">{$customer_details.mobile_phone}</td>
                                         </tr>

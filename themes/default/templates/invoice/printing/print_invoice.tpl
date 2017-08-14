@@ -24,7 +24,7 @@
     
     <!-- Header Section -->
     
-    <table  width="800px" height="125" border="0" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
+    <table  width="750" height="125" border="0" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
         <tr>
             
             <!-- COMPANY DETAILS -->
@@ -96,43 +96,25 @@
     </table>
     <br>
     
-    <!-- Workorder and Customer Section -->
-    
-    <!-- Customer Address -->
-    <table width="800" border="0" cellpadding="3" cellspacing="0" >
-        <tr>
-            <td valign="top" width="10%" align="left"></td>
-            <td>
-                <p>{t}Customer Details{/t}:</p>
-                {$customer_details.display_name}<br>
-                {$customer_details.address|nl2br|regex_replace:"/[\r\t\n]/":" "}<br>
-                {$customer_details.city}<br>
-                {$customer_details.state}<br>
-                {$customer_details.zip}<br>
-                {$customer_details.country}
-            </td>
-        </tr>
-    </table>    
-    
     <!-- Workorder Row -->
     {if $workorder_details.description > null}
-        <table  width="800" border="0" cellpadding="3" cellspacing="0" >
+        <table width="750" border="0" cellpadding="3" cellspacing="0">
             <tr>
                 <td><b>{t}Work Order{/t}</b></td>
                 <td><b>{t}Work Order Resolution{/t}</b></td>
             </tr>
             <tr>
-                <td width="50%" valign="top">{$workorder_details.description}</td>
-                <td width="50%" valign="top" style="border-left: 1px solid;">{$workorder_details.resolution}</td>
+                <td width="50%" valign="top"><div style="min-height: 100px;">{$workorder_details.description}</div></td>
+                <td width="50%" valign="top" style="border-left: 1px solid;"><div style="min-height: 100px;">{$workorder_details.resolution}</div></td>
             </tr>
         </table>
     {/if}
     <br>
     
     <!-- Invoice To Box -->
-    <table width="800" border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
+    <table width="750" border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
         <tr>
-            <td align="center" class="olotd5" ><font size="+2">{t}Invoice Details{/t} {$customer_details.display_name}</font></td>
+            <td align="center" class="olotd5" ><font size="+2">{t}Invoice{/t} - {$customer_details.display_name}</font></td>
         </tr>
     </table>
     <br>
@@ -140,7 +122,7 @@
     <!-- Items Table Section -->
 
     <!-- Labour Table -->
-    <table width="800" border="1" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
+    <table width="750" border="1" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
         <tr>
             <td width="40" class="olohead"><b>{t}Qty{/t}</b></td>
             <td class="olohead"><b>{t}Labour Items{/t}</b></td>
@@ -149,10 +131,10 @@
         </tr>
         {section name=l loop=$labour_items}
             <tr>
-                <td class="olotd4" width="40">{$labour_details[l].invoice_labour_unit}</td>
-                <td class="olotd4" >{$labour_details[l].description}</td>
-                <td class="olotd4" width="60" align="right">{$currency_sym}{$labour_details[l].invoice_labour_rate|string_format:"%.2f"}</td>
-                <td class="olotd4" width="80" align="right">{$currency_sym}{$labour_details[l].invoice_labour_subtotal|string_format:"%.2f"}</td>
+                <td class="olotd4" width="40">{$labour_items[l].amount}</td>
+                <td class="olotd4" >{$labour_items[l].description}</td>
+                <td class="olotd4" width="60" align="right">{$currency_sym}{$labour_items[l].qty|string_format:"%.2f"}</td>
+                <td class="olotd4" width="80" align="right">{$currency_sym}{$labour_items[l].sub_total|string_format:"%.2f"}</td>
             </tr>
         {/section}
         <tr>
@@ -163,7 +145,7 @@
     <br>
 
     <!-- Parts Table -->
-    <table width="800" border="1" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
+    <table width="750" border="1" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
         <tr>
             <td width="40" class="olohead"><b>{t}Qty{/t}</b></td>
             <td class="olohead"><b>{t}Parts Items{/t}</b></td>
@@ -172,10 +154,10 @@
         </tr>
         {section name=p loop=$parts_items}        
             <tr class="olotd4">
-                <td width="40" class="olotd4">{$parts_details[p].qty}</td>
-                <td class="olotd4">{$parts_details[p].description}</td>
-                <td width="60" class="olotd4" align="right">{$currency_sym}{$parts_details[p].amount|string_format:"%.2f"}</td>
-                <td width="80" class="olotd4" align="right">{$currency_sym}{$parts_details[p].sub_total|string_format:"%.2f"}</td>
+                <td width="40" class="olotd4">{$parts_items[p].qty}</td>
+                <td class="olotd4">{$parts_items[p].description}</td>
+                <td width="60" class="olotd4" align="right">{$currency_sym}{$parts_items[p].amount|string_format:"%.2f"}</td>
+                <td width="80" class="olotd4" align="right">{$currency_sym}{$parts_items[p].sub_total|string_format:"%.2f"}</td>
             </tr>
         {/section}
         <tr>           
@@ -187,13 +169,13 @@
 
     <!-- Financial Section -->         
     
-    <table width="800" border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
+    <table width="750" border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
         <tr>
             
             <!-- Payments Methods -->            
             
             <td colspan="1" valign="top">
-                <table width="600" border="0" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
+                <table width="550" border="0" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
                     <tr>
                         <td align="left" ><font size="-1"><b>{t}Payment Instructions{/t}</b></font></td>
                     </tr>
@@ -291,14 +273,13 @@
     <br>
     <br>
                         
-    <!-- Footer Section -->
-    {section name=t loop=$payment_details}
-        <table width="800" border="0" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
-            <tr>
-                <td align="center">{$payment_details.invoice_footer_msg}</td>
-            </tr>
-        </table>
-    {/section}  
+    <!-- Footer Section -->    
+    <table width="750" border="0" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
+        <tr>
+            <td align="center">{$payment_details.invoice_footer_msg}</td>
+        </tr>
+    </table>
+    
     
 </body>
 </html>
