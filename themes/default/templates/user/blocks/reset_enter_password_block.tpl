@@ -25,12 +25,12 @@
                                             </tr>
                                             <tr>
                                                 <td align="right"><strong>{t}Password{/t} <span style="color: #ff0000">*</span></strong></td>
-                                                <td><input id="password" name="password" class="olotd5" type="password" maxlength="20" onkeydown="return onlyPassword(event);"></td>
+                                                <td><input id="password" name="password" class="olotd5" type="password" minlength="8" maxlength="20" onkeydown="return onlyPassword(event);"></td>
                                             </tr>
                                             <tr>
                                                 <td align="right"><strong>{t}Confirm Password{/t} <span style="color: #ff0000">*</span></strong></td>
                                                 <td>
-                                                    <input id="confirmPassword" name="confirmPassword" class="olotd5" type="password" maxlength="20" onkeyup="checkPasswordsMatch('{t}Passwords Match!{/t}', '{t}Passwords Do Not Match!{/t}');" onkeydown="onlyPassword(event);">
+                                                    <input id="confirmPassword" name="confirmPassword" class="olotd5" type="password" minlength="8" maxlength="20" onkeyup="checkPasswordsMatch('{t}Passwords Match!{/t}', '{t}Passwords Do Not Match!{/t}');" onkeydown="onlyPassword(event);">
                                                     <div id="passwordMessage" style="min-height: 5px;"></div>
                                                 </td>
                                             </tr>
