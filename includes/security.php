@@ -26,12 +26,12 @@ if($QConfig->force_ssl == 1 && !isset($_SERVER['HTTPS'])) {
 function check_page_accessed_via_qwcrm($qwcrm_page = null) {    
 
     // check if a specific QWcrm page is the referer
-    if($qwcrm_page != null) {
-        return preg_match('/^.*\?page='.$qwcrm_page.'.*/U', getenv('HTTP_REFERER'));
+    if($qwcrm_page != null) {        
+        return preg_match('/^'.preg_quote(QWCRM_PROTOCOL . QWCRM_DOMAIN . QWCRM_PATH, '/').'index\.php\?page='.$qwcrm_page.'.*/U', getenv('HTTP_REFERER'));
         
-    // check if any QWcrm page is the referer   
-    } else {
-        return preg_match('/^.*\?page=(.*)&.*/U', getenv('HTTP_REFERER'));    
+    // Check if any QWcrm page is the referer   
+    } else {        
+        return preg_match('/^'.preg_quote(QWCRM_PROTOCOL . QWCRM_DOMAIN . QWCRM_PATH, '/').'(index\.php\?page=)?.*/U', getenv('HTTP_REFERER')); 
     }
     
 }

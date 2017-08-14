@@ -3,9 +3,9 @@
 defined('_QWEXEC') or die;
 
 // Prevent direct access to this page
-/*if(!check_page_accessed_via_qwcrm()) {
+if(!check_page_accessed_via_qwcrm()) {
     die(gettext("No Direct Access Allowed"));
-}*/
+}
 
 /* Grab and Process Values befor sending to the log and displaying */
 //$error_page         = prepare_error_data('error_page'); // only needed when using referrer
