@@ -22,7 +22,7 @@ if(!$new_invoice_totals = validate_payment_method_totals($db, $invoice_id, $VAR[
     $method_note = gettext("Cheque Number").': '.$VAR['cheque_number'];
 
     // Insert the transaction with the calculated information
-    insert_payment_method_transaction($db, $invoice_id, $VAR['amount'], $method_name, $VAR['type'], $method_note, $VAR['note']);
+    insert_payment_method_transaction($db, $invoice_id, $VAR['date'], $VAR['amount'], $VAR['method_name'], $VAR['type'], $method_note, $VAR['note']);
     
     // Assign Success message
     $smarty->assign('information_msg', gettext("Cheque payment added successfully"));

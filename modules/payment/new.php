@@ -21,32 +21,26 @@ if(isset($VAR['submit'])) {
     switch($VAR['type']) {
 
         case 1:
-        $method_name = gettext("Credit Card");
         require(MODULES_DIR.'payment/methods/method_credit_card.php');
         break;
 
         case 2:
-        $method_name = gettext("Cheque");        
         require(MODULES_DIR.'payment/methods/method_cheque.php');
         break;
 
         case 3:
-        $method_name = gettext("Cash");
         require(MODULES_DIR.'payment/methods/method_cash.php');
         break;
 
         case 4:
-        $method_name = gettext("Gift Certificate");
         require(MODULES_DIR.'payment/methods/method_gift_certificate.php');
         break;
 
         case 5:
-        $method_name = gettext("PayPal");
         require(MODULES_DIR.'payment/methods/method_paypal.php');
         break;
 
         case 6:
-        $method_name = gettext("Direct Deposit");
         require(MODULES_DIR.'payment/methods/method_direct_deposit.php');
         break;    
 

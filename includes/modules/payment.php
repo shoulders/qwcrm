@@ -30,14 +30,14 @@ defined('_QWEXEC') or die;
 #   insert transaction     #
 ############################
 
-function insert_transaction($db, $invoice_id, $workorder_id, $customer_id, $type, $amount, $note) {
+function insert_transaction($db, $invoice_id, $workorder_id, $customer_id, $date, $type, $amount, $note) {
     
     $sql = "INSERT INTO ".PRFX."payment_transactions SET
             invoice_id      = ".$db->qstr( $invoice_id                          ).",
             employee_id     = ".$db->qstr( QFactory::getUser()->login_user_id   ).",
             customer_id     = ".$db->qstr( $customer_id                         ).",
             workorder_id    = ".$db->qstr( $workorder_id                        ).",
-            date            = ".$db->qstr( time()                               ).",
+            date            = ".$db->qstr( $date                                ).",
             type            = ".$db->qstr( $type                                ).",
             amount          = ".$db->qstr( $amount                              ).",
             note            = ".$db->qstr( $note                                );
@@ -53,10 +53,13 @@ function insert_transaction($db, $invoice_id, $workorder_id, $customer_id, $type
 #   Insert transaction created by a payment method  #
 #####################################################
 
-function insert_payment_method_transaction($db, $invoice_id, $amount, $method_name, $type, $method_note, $note) {
+function insert_payment_method_transaction($db, $invoice_id, $date, $amount, $method_name, $type, $method_note, $note) {
     
     // Get invoice details
-    $invoice_details = get_invoice_details($db, $invoice_id);    
+    $invoice_details = get_invoice_details($db, $invoice_id);
+    
+    // Convert date into timestamp
+    $date =  date_to_timestamp($date);
             
     // Make amount into the correct format for the logs
     $formatted_amount = sprintf( "%.2f", $amount);
@@ -75,7 +78,7 @@ function insert_payment_method_transaction($db, $invoice_id, $amount, $method_na
     if($new_invoice_balance != 0 ) {
 
         // Update the invoice        
-        update_invoice_transaction_only($db, $invoice_id, $new_invoice_paid_amount, $new_invoice_balance, 0);
+        update_invoice_transaction_only($db, $invoice_id, $new_invoice_paid_amount, $new_invoice_balance, '0');
 
         // Transaction log        
         $log_msg = gettext("Partial Payment made by")." $method_name ".gettext("for")." $currency_sym$formatted_amount, ".gettext("Balance due").": $currency_sym$new_invoice_balance, $method_note, ".gettext("Note").": $note";
@@ -88,7 +91,7 @@ function insert_payment_method_transaction($db, $invoice_id, $amount, $method_na
         }    
 
         // Insert Transaction into log       
-        insert_transaction($db, $invoice_id, $workorder_id, $customer_id, $type, $amount, $log_msg);
+        insert_transaction($db, $invoice_id, $workorder_id, $customer_id, $date, $type, $amount, $log_msg);
         
         // Now load the invoice to view
         //force_page('invoice', 'details&invoice_id='.$invoice_id, 'information_msg=Partial Payment made successfully');
@@ -102,7 +105,7 @@ function insert_payment_method_transaction($db, $invoice_id, $amount, $method_na
     if($new_invoice_balance == 0 ) {
 
         // Update the invoice
-        update_invoice_transaction_only($db, $invoice_id, $new_invoice_paid_amount, $new_invoice_balance, 1, time());   
+        update_invoice_transaction_only($db, $invoice_id, $new_invoice_paid_amount, $new_invoice_balance, '1', time());   
 
         // log message   
         if($amount < $invoice_details['total']) {
@@ -129,7 +132,7 @@ function insert_payment_method_transaction($db, $invoice_id, $amount, $method_na
         }    
 
         // Insert Transaction into log       
-        insert_transaction($db, $invoice_id, $workorder_id, $customer_id, $type, $amount, $log_msg);
+        insert_transaction($db, $invoice_id, $workorder_id, $customer_id, $date, $type, $amount, $log_msg);
 
         // Now load the invoice to view
         //force_page('invoice', 'details&invoice_id='.$invoice_id, 'information_msg=Full Payment made successfully'); 
@@ -238,6 +241,26 @@ function get_active_credit_cards($db) {
     }  
     
 }
+
+#####################################
+#  Get Credit card name from type   #
+#####################################
+
+function get_credit_card_name_from_type($db, $card_type) {
+    
+    $sql = "SELECT card_name FROM ".PRFX."payment_credit_cards WHERE card_type=".$db->qstr($card_type);
+
+    if(!$rs = $db->execute($sql)){        
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get Credit Card Name by type."));
+        exit;
+    } else {
+        
+        return $rs->fields['card_name'];
+        
+    }    
+    
+}
+
 
 #########################################
 #   Get invoice transactions            #
