@@ -31,6 +31,7 @@
                                                                     <option value="contact"{if $search_category == 'contact'} selected{/if}>{t}Contact{/t}</option>
                                                                     <option value="type"{if $search_category == 'type'} selected{/if}>{t}Type{/t}</option>
                                                                     <option value="zip"{if $search_category == 'zip'} selected{/if}>{t}Zip{/t}</option>
+                                                                    <option value="country"{if $search_category == 'country'} selected{/if}>{t}Country{/t}</option>
                                                                     <option value="notes"{if $search_category == 'notes'} selected{/if}>{t}Notes{/t}</option>
                                                                     <option value="description"{if $search_category == 'description'} selected{/if}>{t}Description{/t}</option>
                                                                 </select>
@@ -101,10 +102,12 @@
                                             <td valign="top" colspan="2">
                                                 <table class="olotable" width="100%" border="0" cellpadding="5" cellspacing="0">                                                    
                                                     <tr>
-                                                        <td class="olohead">{t}Supplier ID{/t}</td>
+                                                        <td class="olohead">{t}ID{/t}</td>
                                                         <td class="olohead">{t}Name{/t}</td>
                                                         <td class="olohead">{t}Contact{/t}</td>
                                                         <td class="olohead">{t}Type{/t}</td>
+                                                        <td class="olohead">{t}Zip{/t}</td>
+                                                        <td class="olohead">{t}Country{/t}</td>
                                                         <td class="olohead">{t}Notes{/t}</td>
                                                         <td class="olohead">{t}Description{/t}</td>
                                                         <td class="olohead">{t}Action{/t}</td>
@@ -128,6 +131,8 @@
                                                                 {if $search_result[i].type == 10}{t}SUPPLIER_TYPE_10{/t}{/if}
                                                                 {if $search_result[i].type == 11}{t}SUPPLIER_TYPE_11{/t}{/if}
                                                             </td>
+                                                            <td class="olotd4" nowrap>{$search_result[i].zip}</td>
+                                                            <td class="olotd4" nowrap>{$search_result[i].country}</td>                                                            
                                                             <td class="olotd4" nowrap>{if !$search_result[i].SUPPLIER_NOTES == ""}
                                                                 <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{t}Notes{/t}</b><hr><p>{$search_result[i].notes|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();">{/if}
                                                             </td>                                                            

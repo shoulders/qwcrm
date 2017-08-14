@@ -60,6 +60,16 @@ function display_workorders($db, $direction = 'DESC', $use_pages = false, $page_
                 
             ".PRFX."customer.customer_id,
             ".PRFX."customer.display_name AS customer_display_name,
+            ".PRFX."customer.first_name AS customer_first_name,
+            ".PRFX."customer.last_name AS customer_last_name,            
+            ".PRFX."customer.address AS customer_address,
+            ".PRFX."customer.city AS customer_city,
+            ".PRFX."customer.state AS customer_state,
+            ".PRFX."customer.zip AS customer_zip,
+            ".PRFX."customer.country AS customer_country,
+            ".PRFX."customer.phone AS customer_phone,
+            ".PRFX."customer.mobile_phone AS customer_mobile_phone,
+            ".PRFX."customer.fax AS customer_fax,
                 
             ".PRFX."workorder.workorder_id, employee_id, invoice_id,
             ".PRFX."workorder.open_date AS workorder_open_date,

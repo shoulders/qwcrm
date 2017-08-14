@@ -393,7 +393,10 @@
                                                             <td valign="top">
                                                                 <a href="index.php?page=customer:details&customer_id={$customer_details.customer_id}">{$customer_details.display_name}</a><br>
                                                                 {$customer_details.address|nl2br}<br>
-                                                                {$customer_details.city}, {$customer_details.state} {$customer_details.zip}<br>
+                                                                {$customer_details.city}<br>
+                                                                {$customer_details.state}<br>
+                                                                {$customer_details.zip}<br>
+                                                                {$customer_details.country}<br>
                                                                 {$customer_details.phone}<br>
                                                                 {$customer_details.email}                                                                        
                                                             </td>
@@ -409,8 +412,12 @@
                                                             <td valign="top">                                                                    
                                                                 {$company_details.name} <br>
                                                                 {$company_details.address}<br>
-                                                                {$company_details.city}, {$company_details.state} {$company_details.zip}<br>
-                                                                {$company_details.phone}<br>                                                                    
+                                                                {$company_details.city}<br>
+                                                                {$company_details.state}<br>
+                                                                {$company_details.zip}<br>
+                                                                {$company_details.country}<br>
+                                                                {$company_details.phone}<br>
+                                                                {$company_details.email}
                                                             </td>
                                                         </tr>
                                                     </table>

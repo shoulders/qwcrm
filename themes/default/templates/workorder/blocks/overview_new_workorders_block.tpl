@@ -21,7 +21,7 @@
 
             <!-- Customer -->
             <td class="olotd4" nowrap>
-                <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<b><center>{t}Conatc Info{/t}</b></center><hr><b>{t}Phone{/t}: </b>{$new_workorders[n].customer_phone}<br> <b>{t}Fax{/t}: </b>{$new_workorders[n].customer_work_phone}<br><b>{t}Mobile{/t}: </b>{$new_workorders[n].customer_mobile_phone}<br><b>{t}Address{/t}:</b><br>{$new_workorders[n].customer_address}<br>{$new_workorders[n].customer_city}, {$new_workorders[n].customer_state}<br>{$new_workorders[n].customer_zip}');" onMouseOut="hideddrivetip();">                         
+                <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<b><center>{t}Customer Info{/t}</b></center><hr><b>{t}Contact{/t}:</b> {$new_workorders[n].customer_first_name} {$new_workorders[n].customer_last_name}<br><b>{t}Phone{/t}: </b>{$new_workorders[n].customer_phone}<br><b>{t}Mobile{/t}: </b>{$new_workorders[n].customer_mobile_phone}<br><b>{t}Fax{/t}: </b>{$new_workorders[n].customer_phone}<br><b>{t}Address{/t}: </b><br>{$new_workorders[n].customer_address}<br>{$new_workorders[n].customer_city}<br>{$new_workorders[n].customer_state}<br>{$new_workorders[n].customer_zip}<br>{$new_workorders[n].customer_country}');" onMouseOut="hideddrivetip();">
                 <a class="link1" href="index.php?page=customer:details&customer_id={$new_workorders[n].customer_id}">{$new_workorders[n].customer_display_name}</a>
             </td>
 
@@ -45,7 +45,7 @@
                 {if $new_workorders[n].employee_display_name == ""}
                     {t}Not Assigned{/t}
                 {else}
-                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<center><b>{t}Contact Info{/t}</b></center><hr><b>{t}Fax{/t}: </b>{$new_workorders[n].employee_work_phone}<br><b>{t}Mobile{/t}: </b>{$new_workorders[n].employee_mobile_phone}<br><b>{t}Home{/t}: </b>{$new_workorders[n].employee_home_phone}');" onMouseOut="hideddrivetip();">                              
+                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<center><b>{t}Technician Info{/t}</b></center><hr><b>{t}Employee{/t}: </b>{$new_workorders[n].employee_display_name}<br><b>{t}Mobile{/t}: </b>{$new_workorders[n].employee_work_mobile_phone}<br><b>{t}Home{/t}: </b>{$new_workorders[n].employee_home_phone}<br><b>{t}Email{/t}: </b>{$new_workorders[n].employee_email}');" onMouseOut="hideddrivetip();">
                     <a class="link1" href="index.php?page=user:details&user_id={$new_workorders[n].employee_id}">{$new_workorders[n].employee_display_name}</a>
                 {/if}
             </td>

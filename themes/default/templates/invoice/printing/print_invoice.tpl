@@ -34,9 +34,10 @@
                         <td valign="top"><b>{t}Address{/t} :&nbsp;</b></td>
                         <td>
                             {$company_details.address|nl2br|regex_replace:"/[\r\t\n]/":" "}<br>
-                            {$company_details.city},<br>
-                            {$company_details.state},<br>
-                            {$company_details.zip}
+                            {$company_details.city}<br>
+                            {$company_details.state}<br>
+                            {$company_details.zip}<br>
+                            {$company_details.country}
                         </td>
                     </tr>
                     <tr>
@@ -105,9 +106,10 @@
                 <p>{t}Customer Details{/t}:</p>
                 {$customer_details.display_name}<br>
                 {$customer_details.address|nl2br|regex_replace:"/[\r\t\n]/":" "}<br>
-                {$customer_details.city},<br>
+                {$customer_details.city}<br>
                 {$customer_details.state}<br>
-                {$customer_details.zip}                
+                {$customer_details.zip}<br>
+                {$customer_details.country}
             </td>
         </tr>
     </table>    

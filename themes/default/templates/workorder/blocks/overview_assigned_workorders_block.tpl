@@ -21,7 +21,7 @@
 
             <!-- Customer -->
             <td class="olotd4" nowrap>
-                <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<b><center>{t}Contact Info{/t}</b></center><hr><b>{t}Phone{/t}: </b>{$assigned_workorders[a].customer_phone}<br> <b>{t}Fax{/t}: </b>{$assigned_workorders[a].customer_work_phone}<br><b>{t}Mobile{/t}: </b>{$assigned_workorders[a].customer_mobile_phone}<br><b>{t}Address{/t}: </b><br>{$assigned_workorders[a].customer_address}<br>{$assigned_workorders[a].customer_city}, {$assigned_workorders[a].customer_state}<br>{$assigned_workorders[a].customer_zip}');" onMouseOut="hideddrivetip();">                                                  
+                <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<b><center>{t}Customer Info{/t}</b></center><hr><b>{t}Contact{/t}:</b> {$assigned_workorders[a].customer_first_name} {$assigned_workorders[a].customer_last_name}<br><b>{t}Phone{/t}: </b>{$assigned_workorders[a].customer_phone}<br><b>{t}Mobile{/t}: </b>{$assigned_workorders[a].customer_mobile_phone}<br><b>{t}Fax{/t}: </b>{$assigned_workorders[a].customer_phone}<br><b>{t}Address{/t}: </b><br>{$assigned_workorders[a].customer_address}<br>{$assigned_workorders[a].customer_city}<br>{$assigned_workorders[a].customer_state}<br>{$assigned_workorders[a].customer_zip}<br>{$assigned_workorders[a].customer_country}');" onMouseOut="hideddrivetip();">                         
                 <a class="link1" href="index.php?page=customer:details&customer_id={$assigned_workorders[a].customer_id}">{$assigned_workorders[a].customer_display_name}</a>
             </td>
 
@@ -42,7 +42,7 @@
 
             <!-- Employee -->
             <td class="olotd4" nowrap>
-                <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<center><b>{t}Contact Info{/t}</b></center><hr><b>{t}Fax{/t}: </b>{$assigned_workorders[a].employee_work_phone}<br><b>{t}Mobile{/t}: </b>{$assigned_workorders[a].employee_mobile_phone}<br><b>{t}Home{/t}: </b>{$assigned_workorders[a].employee_home_phone}');" onMouseOut="hideddrivetip();">                                                  
+                <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<center><b>{t}Technician Info{/t}</b></center><hr><b>{t}Employee{/t}: </b>{$assigned_workorders[a].employee_display_name}<br><b>{t}Mobile{/t}: </b>{$assigned_workorders[a].employee_work_mobile_phone}<br><b>{t}Home{/t}: </b>{$assigned_workorders[a].employee_home_phone}<br><b>{t}Email{/t}: </b>{$assigned_workorders[a].employee_email}');" onMouseOut="hideddrivetip();">
                 <a class="link1" href="index.php?page=user:details&user_id={$assigned_workorders[a].employee_id}">{$assigned_workorders[a].employee_display_name}</a>
             </td>
 

@@ -24,7 +24,10 @@
             <td class="olotd4">{$open_workorders[o].workorder_open_date|date_format:$date_format}</td>
             
             <!-- Customer -->
-            <td class="olotd4">{$open_workorders[o].customer_display_name}</td>
+            <td class="olotd4" nowrap>
+                <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<b><center>{t}Customer Info{/t}</b></center><hr><b>{t}Contact{/t}:</b> {$open_workorders[o].customer_first_name} {$open_workorders[o].customer_last_name}<br><b>{t}Phone{/t}: </b>{$open_workorders[o].customer_phone}<br><b>{t}Mobile{/t}: </b>{$open_workorders[o].customer_mobile_phone}<br><b>{t}Fax{/t}: </b>{$open_workorders[o].customer_phone}<br><b>{t}Address{/t}: </b><br>{$open_workorders[o].customer_address}<br>{$open_workorders[o].customer_city}<br>{$open_workorders[o].customer_state}<br>{$open_workorders[o].customer_zip}<br>{$open_workorders[o].customer_country}');" onMouseOut="hideddrivetip();">                         
+                <a class="link1" href="index.php?page=customer:details&customer_id={$open_workorders[o].customer_id}">{$open_workorders[o].customer_display_name}</a>
+            </td>
             
             <!-- Scope -->
             <td class="olotd4">{$open_workorders[o].workorder_scope}</td>

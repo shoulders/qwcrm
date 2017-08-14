@@ -108,15 +108,19 @@
                                                                     </tr>
                                                                     <tr>
                                                                         <td align="right"><strong>{t}City{/t}</strong></td>
-                                                                        <td><input name="city" class="olotd5" value="{$customer_details.city}" type="text" onkeydown="return onlyAlpha(event);"/></td>
+                                                                        <td><input name="city" class="olotd5" value="{$customer_details.city}" type="text" maxlength="20" onkeydown="return onlyAlpha(event);"/></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td align="right"><strong>{t}State{/t}</strong></td>
-                                                                        <td><input name="state" class="olotd5" value="{$customer_details.state}" type="text" onkeydown="return onlyAlpha(event);"/></td>
+                                                                        <td><input name="state" class="olotd5" value="{$customer_details.state}" type="text" maxlength="20" onkeydown="return onlyAlpha(event);"/></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td align="right"><strong>{t}Zip{/t}</strong></td>
-                                                                        <td colspan="2"><input name="zip" class="olotd5" value="{$customer_details.zip}" type="text" onkeydown="return onlyAlphaNumeric(event);"/></td>
+                                                                        <td colspan="2"><input name="zip" class="olotd5" value="{$customer_details.zip}" type="text" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"/></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td align="right"><strong>{t}Country{/t}</strong></td>
+                                                                        <td><input name="country" class="olotd5" value="{$customer_details.country}" type="text" maxlength="50" onkeydown="return onlyAlpha(event);"/></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td class="menuhead"><b>{t}Notes{/t}</b></td>

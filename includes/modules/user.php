@@ -183,6 +183,7 @@ function insert_user($db, $VAR){
             home_city           =". $db->qstr( $VAR['home_city']                            ).",  
             home_state          =". $db->qstr( $VAR['home_state']                           ).",
             home_zip            =". $db->qstr( $VAR['home_zip']                             ).",
+            home_country        =". $db->qstr( $VAR['home_country']                         ).", 
             based               =". $db->qstr( $VAR['based']                                ).",  
             notes               =". $db->qstr( $VAR['notes']                                );                     
           
@@ -358,6 +359,7 @@ function update_user($db, $user_id, $VAR) {
         home_city           =". $db->qstr( $VAR['home_city']                            ).",  
         home_state          =". $db->qstr( $VAR['home_state']                           ).",
         home_zip            =". $db->qstr( $VAR['home_zip']                             ).",
+        home_country        =". $db->qstr( $VAR['home_country']                         ).",
         based               =". $db->qstr( $VAR['based']                                ).",  
         notes               =". $db->qstr( $VAR['notes']                                )."
         WHERE user_id= ".$db->qstr($user_id);

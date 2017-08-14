@@ -65,13 +65,7 @@
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{t}Country{/t}:</b></td>
-                                                            <td>
-                                                                <select name="country" class="olotd5">
-                                                                    {section name=c loop=$country}
-                                                                        <option value="{$country[c].code}" {if $country[c].code == $company_details.country}selected{/if}>{$country[c].name}</option>
-                                                                    {/section}
-                                                                </select>
-                                                            </td>
+                                                            <td><input name="country" class="olotd5" value="{$company_details.country}" type="text" maxlength="50" required onkeydown="return onlyAlpha(event);"></td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{t}Phone{/t}:</b></td>

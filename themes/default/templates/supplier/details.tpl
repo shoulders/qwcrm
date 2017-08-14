@@ -88,6 +88,11 @@
                                             <td class="menutd">{$supplier_details.zip}</td>
                                             <td class="menutd" colspan="2"></td>
                                         </tr>
+                                        <tr>
+                                            <td class="menutd"><b>{t}Country{/t}</b></td>
+                                            <td class="menutd">{$supplier_details.country}</td>
+                                            <td class="menutd" colspan="2"></td>
+                                        </tr>
                                         <tr class="row2">
                                             <td class="menutd" colspan="4"></td>
                                         </tr>                                       

@@ -134,7 +134,8 @@
             {$user_details.home_address|nl2br}<br>
             {$user_details.home_city}<br>
             {$user_details.home_state}<br>
-            {$user_details.home_zip}
+            {$user_details.home_zip}<br>
+            {$user_details.home_country}
         </td>
     </tr>
     

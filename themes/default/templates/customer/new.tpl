@@ -122,6 +122,10 @@
                                                                             <td colspan="2"><input name="zip" class="olotd5" type="text" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"></td>
                                                                         </tr>
                                                                         <tr>
+                                                                            <td align="right"><b>{t}Country{/t}</b></td>
+                                                                            <td><input name="country" class="olotd5" type="text" maxlength="20" onkeydown="return onlyAlpha(event);"></td>
+                                                                        </tr>
+                                                                        <tr>
                                                                             <td class="menuhead"><b>{t}Notes{/t}</b></td>
                                                                         </tr>
                                                                         <tr>

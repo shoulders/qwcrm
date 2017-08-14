@@ -110,7 +110,7 @@
                                                                 <tr>
                                                                     <td class="menuhead2" width="80%">{t}Customer Details{/t}</td>
                                                                     <td class="menuhead2" width="20%" align="right">
-                                                                        <a href="index.php?page=customer:edit&amp;customer_id={$customer_details.customer_id}"<img src="{$theme_images_dir}icons/16x16/small_edit.gif" border="0" alt="" /></a>
+                                                                        <a href="index.php?page=customer:edit&amp;customer_id={$customer_details.id}"<img src="{$theme_images_dir}icons/16x16/small_edit.gif" border="0" alt="" /></a>
                                                                     </td>
                                                                 </tr>
                                                             </table>
@@ -118,15 +118,15 @@
                                                     </tr>
                                                     <tr>
                                                         <td class="menutd"><b>{t}Contact{/t}</b></td>
-                                                        <td class="menutd"> {$customer_details.customer_first_name} {$customer_details.customer_last_name}</td>
+                                                        <td class="menutd"> {$customer_details.first_name} {$customer_details.last_name}</td>
                                                         <td class="menutd"><b>{t}Email{/t}</b></td>
-                                                        <td class="menutd"> {$customer_details.customer_email}</td>
+                                                        <td class="menutd"> {$customer_details.email}</td>
                                                     </tr>
                                                     <tr>
                                                         <td class="menutd"><b>{t}First Name{/t}</b></td>
-                                                        <td class="menutd">{$customer_details.customer_first_name}</td>
+                                                        <td class="menutd">{$customer_details.first_name}</td>
                                                         <td class="menutd"><b>{t}Last Name{/t}</b>
-                                                        <td class="menutd">{$customer_details.customer_last_name}</td>
+                                                        <td class="menutd">{$customer_details.last_name}</td>
                                                     </tr>
                                                     <tr>
                                                         <td class="row2" colspan="4">&nbsp;</td>
@@ -135,18 +135,24 @@
                                                         <td class="menutd"><b>{t}Address{/t}</b></td>
                                                         <td class="menutd"></td>
                                                         <td class="menutd"><b>{t}Phone{/t}</b></td>
-                                                        <td class="menutd">{$customer_details.customer_phone}</td>
+                                                        <td class="menutd">{$customer_details.phone}</td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="menutd" colspan="2">{$customer_details.customer_address|nl2br}</td>
+                                                        <td class="menutd" colspan="2">
+                                                            {$customer_details.address|nl2br}<br>
+                                                            {$customer_details.city}<br>
+                                                            {$customer_details.state}<br>
+                                                            {$customer_details.zip}<br>
+                                                            {$customer_details.country}
+                                                        </td>
                                                         <td class="menutd"><b>{t}Fax{/t}</b></td>
-                                                        <td class="menutd"> {$customer_details.customer_work_phone}</td>
+                                                        <td class="menutd"> {$customer_details.work_phone}</td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="menutd"> {$customer_details.customer_city},</td>
-                                                        <td class="menutd">{$customer_details.customer_state} {$customer_details.customer_zip}</td>
+                                                        <td class="menutd"></td>
+                                                        <td class="menutd"></td>
                                                         <td class="menutd"><b>{t}Mobile{/t}</b></td>
-                                                        <td class="menutd"> {$customer_details.customer_mobile_phone}</td>
+                                                        <td class="menutd">{$customer_details.mobile_phone}</td>
                                                     </tr>
                                                     <tr>
                                                         <td class="row2" colspan="4">&nbsp;</td>
@@ -154,16 +160,16 @@
                                                     <tr>
                                                         <td class="menutd"><b>{t}Type{/t}</b></td>
                                                         <td class="menutd">
-                                                            {if $customer_details.customer_type =='1'}{t}CUSTOMER_TYPE_1{/t}{/if}
-                                                            {if $customer_details.customer_type =='2'}{t}CUSTOMER_TYPE_2{/t}{/if}
-                                                            {if $customer_details.customer_type =='3'}{t}CUSTOMER_TYPE_3{/t}{/if}
-                                                            {if $customer_details.customer_type =='4'}{t}CUSTOMER_TYPE_4{/t}{/if}
-                                                            {if $customer_details.customer_type =='5'}{t}CUSTOMER_TYPE_5{/t}{/if}
-                                                            {if $customer_details.customer_type =='6'}{t}CUSTOMER_TYPE_6{/t}{/if}
-                                                            {if $customer_details.customer_type =='7'}{t}CUSTOMER_TYPE_7{/t}{/if}
-                                                            {if $customer_details.customer_type =='8'}{t}CUSTOMER_TYPE_8{/t}{/if}
-                                                            {if $customer_details.customer_type =='9'}{t}CUSTOMER_TYPE_9{/t}{/if}
-                                                            {if $customer_details.customer_type =='10'}{t}CUSTOMER_TYPE_10{/t}{/if}
+                                                            {if $customer_details.type =='1'}{t}CUSTOMER_TYPE_1{/t}{/if}
+                                                            {if $customer_details.type =='2'}{t}CUSTOMER_TYPE_2{/t}{/if}
+                                                            {if $customer_details.type =='3'}{t}CUSTOMER_TYPE_3{/t}{/if}
+                                                            {if $customer_details.type =='4'}{t}CUSTOMER_TYPE_4{/t}{/if}
+                                                            {if $customer_details.type =='5'}{t}CUSTOMER_TYPE_5{/t}{/if}
+                                                            {if $customer_details.type =='6'}{t}CUSTOMER_TYPE_6{/t}{/if}
+                                                            {if $customer_details.type =='7'}{t}CUSTOMER_TYPE_7{/t}{/if}
+                                                            {if $customer_details.type =='8'}{t}CUSTOMER_TYPE_8{/t}{/if}
+                                                            {if $customer_details.type =='9'}{t}CUSTOMER_TYPE_9{/t}{/if}
+                                                            {if $customer_details.type =='10'}{t}CUSTOMER_TYPE_10{/t}{/if}
                                                         </td>
                                                         <td class="menutd"></td>
                                                         <td class="menutd"></td>

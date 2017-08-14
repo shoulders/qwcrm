@@ -21,20 +21,23 @@
             <table cellpadding="0" cellspacing="0">
                 <tr>
                     <td valign="top">
-                        {$customer_details.customer_display_name}
+                        {$customer_details.display_name}
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        {$customer_details.customer_address}<br>
-                        {$customer_details.customer_city}, {$customer_details.customer_state} {$customer_details.customer_zip}
+                        {$customer_details.address}<br>
+                        {$customer_details.city}<br>
+                        {$customer_details.state}<br>
+                        {$customer_details.zip}<br>
+                        {$customer_details.country}
                     </td>
                 </tr>
                 <tr>
-                    <td><b>{t}Email{/t}</b> {$customer_details.customer_email}</td>
+                    <td><b>{t}Email{/t}</b> {$customer_details.email}</td>
                 </tr>
                 <tr>
-                    <td><b>{t}Phone{/t}</b> {$customer_details.customer_phone}</td>
+                    <td><b>{t}Phone{/t}</b> {$customer_details.phone}</td>
             </table>
         </td>
     </tr>

@@ -76,6 +76,7 @@
                             {$customer_details.city}<br>
                             {$customer_details.state}<br>
                             {$customer_details.zip}<br>
+                            {$customer_details.country}
                         </td>        
                     </tr>    
                 </table>

@@ -1194,25 +1194,6 @@ function timestamp_to_calendar_format($timestamp) {
 }
 
 ##########################################
-#   Timestamp to calendar date format    #
-##########################################
-
-function get_country_codes($db) {
-
-    $sql = "SELECT * FROM ".PRFX."company_country_list";
-
-    if(!$rs = $db->execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Could not retrieve country codes from the database."));
-        exit;        
-    } else {
-        
-        return $rs->GetArray();
-        
-    }
-    
-}
-
-##########################################
 #          xml2php Gateway               # // this is a legacy function might not be used for long
 # Loads language file up as a PHP array  #
 ##########################################

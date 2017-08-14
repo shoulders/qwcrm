@@ -48,7 +48,8 @@
                         {$customer_details.address|nl2br|regex_replace:"/[\r\t\n]/":" "}<br>
                         {$customer_details.city}<br>
                         {$customer_details.state}<br>
-                        {$customer_details._zip}
+                        {$customer_details.zip}<br>
+                        {$customer_details.country}
                     </td>
                     <td class="menutd"><b>{t}Phone{/t}</b></td>
                     <td class="menutd">{$customer_details.phone}</td>

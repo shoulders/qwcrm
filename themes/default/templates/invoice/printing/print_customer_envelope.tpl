@@ -51,9 +51,10 @@
                             <span style="font-size: 20px;">
                                 {$customer_details.display_name}<br>
                                 {$customer_details.address|nl2br|regex_replace:"/[\r\t\n]/":" "}<br>
-                                {$customer_details.city},<br>
+                                {$customer_details.city}<br>
                                 {$customer_details.state}<br>
-                                {$customer_details.zip}
+                                {$customer_details.zip}<br>
+                                {$customer_details.country}
                             </span>
                         </td>
                     </tr>

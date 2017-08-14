@@ -150,6 +150,7 @@ function insert_customer($db, $VAR) {
             city            =". $db->qstr( $VAR['city']             ).", 
             state           =". $db->qstr( $VAR['state']            ).", 
             zip             =". $db->qstr( $VAR['zip']              ).",
+            country         =". $db->qstr( $VAR['country']          ).",
             notes           =". $db->qstr( $VAR['notes']            ).",
             create_date     =". $db->qstr( time()                   );          
                         
@@ -282,6 +283,7 @@ function update_customer($db, $customer_id, $VAR) {
             city            =". $db->qstr( $VAR['city']             ).", 
             state           =". $db->qstr( $VAR['state']            ).", 
             zip             =". $db->qstr( $VAR['zip']              ).",
+            country         =". $db->qstr( $VAR['country']          ).",
             notes           =". $db->qstr( $VAR['notes']            )."
             WHERE customer_id   =". $db->qstr( $customer_id         );
             

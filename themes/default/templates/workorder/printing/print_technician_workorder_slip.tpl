@@ -51,7 +51,10 @@
                             <p>                            
                                 <b>{t}Address{/t}:</b><br>
                                 {$customer_details.address}<br>
-                                {$customer_details.city}, {$customer_details.state} {$customer_details.zip}
+                                {$customer_details.city}<br>
+                                {$customer_details.state}<br>
+                                {$customer_details.zip}<br>
+                                {$customer_details.country}
                             </p>
                             <p>
                                 <b>{t}Contact{/t}: </b>{$customer_details.first_name} {$customer_details.last_name}<br />
@@ -87,7 +90,10 @@
                             <p>
                                 <b>{t}Address{/t}:</b><br>
                                 {$company_details.address}<br>
-                                {$company_details.city}, {$company_details.state} {$company_details.zip}
+                                {$company_details.city}<br>
+                                {$company_details.state}<br>
+                                {$company_details.zip}<br>
+                                {$company_details.country}
                             </p>
                             <p>
                                 <b>{t}Phone{/t}: </b>{$employee_details.work_phone}<br>                        

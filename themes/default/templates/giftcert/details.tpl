@@ -25,13 +25,14 @@
                                 
                                 <!-- Customer Details -->
                                 <td valign="top" width="50%">
-                                    <p><b>{t}Customer{/t} </b><a href="index.php?page=customer:details&customer_id={$customer_details.customer_id}">{$customer_details.customer_display_name}</a></p>
+                                    <p><b>{t}Customer{/t} </b><a href="index.php?page=customer:details&customer_id={$customer_details.id}">{$customer_details.display_name}</a></p>
                                     <p><strong>{t}Address{/t}</strong></p>
                                     <p>
-                                        {$customer_details.customer_address}<br>
-                                        {$customer_details.customer_city}<br>
-                                        {$customer_details.customer_state}<br>
-                                        {$customer_details.customer_zip}
+                                        {$customer_details.address}<br>
+                                        {$customer_details.city}<br>
+                                        {$customer_details.state}<br>
+                                        {$customer_details.zip}<br>
+                                        {$customer_details.country}
                                     </p>
                                 </td>
                                 

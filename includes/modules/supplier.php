@@ -61,6 +61,10 @@ function display_suppliers($db, $direction = 'DESC', $use_pages = false, $page_n
             case 'zip':          
                 $whereTheseRecords = " WHERE zip";
                 break;
+            
+            case 'country':          
+                $whereTheseRecords = " WHERE country";
+                break;            
 
             case 'notes':          
                 $whereTheseRecords = " WHERE notes";
@@ -186,6 +190,7 @@ function insert_supplier($db, $VAR) {
             city           =". $db->qstr( $VAR['city']          ).",
             state          =". $db->qstr( $VAR['state']         ).",
             zip            =". $db->qstr( $VAR['zip']           ).",
+            country        =". $db->qstr( $VAR['country']       ).",
             description    =". $db->qstr( $VAR['description']   ).", 
             notes          =". $db->qstr( $VAR['notes']         );            
 
@@ -250,6 +255,7 @@ function update_supplier($db, $supplier_id, $VAR) {
             city           =". $db->qstr( $VAR['city']          ).",
             state          =". $db->qstr( $VAR['state']         ).",
             zip            =". $db->qstr( $VAR['zip']           ).",
+            country        =". $db->qstr( $VAR['country']       ).",
             description    =". $db->qstr( $VAR['description']   ).", 
             notes          =". $db->qstr( $VAR['notes']         )."
             WHERE supplier_id = ". $db->qstr( $supplier_id );                        

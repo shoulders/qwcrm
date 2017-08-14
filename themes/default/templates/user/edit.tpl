@@ -208,7 +208,11 @@
                                                                                 <tr>
                                                                                     <td align="right"><strong>{t}Zip{/t}</strong></td>
                                                                                     <td ><input name="home_zip" class="olotd5" value="{$user_details.home_zip}" type="text" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"></td>
-                                                                                </tr>                                                                               
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td align="right"><strong>{t}Country{/t}</strong></td>
+                                                                                    <td><input name="home_country" class="olotd5" value="{$user_details.home_country}" type="text" maxlength="50" onkeydown="return onlyAlpha(event);"></td>
+                                                                                </tr>
                                                                             </table>
                                                                         </td>
                                                                     </tr>
