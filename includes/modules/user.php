@@ -403,8 +403,28 @@ function update_user($db, $user_id, $VAR) {
 #    Delete User                    #
 #####################################
 
-function delete_user($db, $user_id){
+function delete_user($db, $user_id) {
     
+    // User cannot delete their own account
+    if($user_id == QFactory::getUser()->login_user_id) {
+        postEmulationWrite('warning_msg', gettext("You can not delete your own account."));        
+        return false;
+    }
+    
+    // Cannot delete this account if it is the last administrator account
+    if(get_user_details($db, $user_id, 'usergroup') == '7') {
+        
+        $sql = "SELECT count(*) as count FROM ".PRFX."user WHERE usergroup = '7'";    
+        if(!$rs = $db->Execute($sql)) {
+            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count the users in the administrator usergroup."));
+            exit;
+        }  
+        if($rs->fields['count'] <= 1 ) {
+            postEmulationWrite('warning_msg', gettext("You can not delete the last administrator user account."));        
+            return false;
+        }
+    }
+
     // Check if user has created any workorders
     $sql = "SELECT count(*) as count FROM ".PRFX."workorder WHERE created_by=".$db->qstr($user_id);    
     if(!$rs = $db->Execute($sql)) {
