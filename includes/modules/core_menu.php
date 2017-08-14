@@ -45,29 +45,34 @@ function menu_get_single_workorder_status($db, $workorder_id){
 }
 
 #########################################
-# Count Work Orders that are unassigned #
-#########################################
-
-// Open - Assigned
-// This might not be 100% correct
-
-function menu_count_unassigned_workorders($db){
-    
-    return (menu_count_workorders_with_status($db, 10) - menu_count_workorders_with_status($db, 2));
-    
-}
-
-#########################################
 # Count Work Orders for a given status  #
 #########################################
 
-function menu_count_workorders_with_status($db, $workorder_status){
+function menu_count_workorders_with_status($db, $status) {
     
-    global $smarty;
+    // Default Action
+    $whereTheseRecords = " WHERE ".PRFX."workorder.workorder_id";
+    
+    // All Open workorders
+    if($status == 'open') {
+
+        $whereTheseRecords .= " AND ".PRFX."workorder.is_closed != '1'";
+
+    // All Closed workorders
+    } elseif($status == 'closed') {
+
+        $whereTheseRecords .= " AND ".PRFX."workorder.is_closed = '1'";
+
+    // Return Workorders for the given status
+    } else {
+
+        $whereTheseRecords .= " AND ".PRFX."workorder.status =".$db->qstr($status);
+
+    }
     
     $sql = "SELECT COUNT(*) AS workorder_status_count
             FROM ".PRFX."workorder
-            WHERE status=".$db->qstr($workorder_status);
+            ".$whereTheseRecords;
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count workorders with a defined status."));

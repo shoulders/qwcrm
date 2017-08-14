@@ -41,7 +41,26 @@ function display_workorders($db, $direction = 'DESC', $use_pages = false, $page_
     if($search_term != null) {$whereTheseRecords .= " AND ".PRFX."user.$search_category LIKE '%$search_term%'";} 
     
     // Restrict by Status
-    if($status != null) {$whereTheseRecords .= " AND ".PRFX."workorder.status= ".$db->qstr($status);}        
+    if($status != null) {
+        
+        // All Open workorders
+        if($status == 'open') {
+            
+            $whereTheseRecords .= " AND ".PRFX."workorder.is_closed != '1'";
+        
+        // All Closed workorders
+        } elseif($status == 'closed') {
+            
+            $whereTheseRecords .= " AND ".PRFX."workorder.is_closed = '1'";
+        
+        // Return Workorders for the given status
+        } else {
+            
+            $whereTheseRecords .= " AND ".PRFX."workorder.status= ".$db->qstr($status);
+            
+        }
+        
+    }        
 
     // Restrict by Employee
     if($employee_id != null) {$whereTheseRecords .= " AND ".PRFX."user.user_id=".$db->qstr($employee_id);}
@@ -226,7 +245,8 @@ function insert_workorder($db, $customer_id, $employee_id, $scope, $description,
             employee_id     =". $db->qstr( $employee_id    ).",
             customer_id     =". $db->qstr( $customer_id    ).",
             open_date       =". $db->qstr( time()          ).",
-            status          =". $db->qstr( 1               ).",            
+            status          =". $db->qstr( 1               ).",
+            is_closed       =". $db->qstr( 0               ).", 
             created_by      =". $db->qstr( $employee_id    ).",
             scope           =". $db->qstr( $scope          ).",
             description     =". $db->qstr( $description    ).",            
@@ -318,7 +338,7 @@ function insert_workorder_note($db, $workorder_id, $note){
 /** Get Functions **/
 
 ########################################
-#   Get single Workorder record        #
+#   Get a Workorder's details          #
 ########################################
 
 function get_workorder_details($db, $workorder_id, $item = null) {  
@@ -532,7 +552,7 @@ function update_workorder_status($db, $workorder_id, $assign_status){
             
         }
     
-        // for writing message to log file - this needs translating
+        // for writing message to log file
         if($assign_status == '1') {$wo_status = gettext("WORKORDER_STATUS_1");
         } elseif ($assign_status == '2') {$wo_status = gettext("WORKORDER_STATUS_2");   
         } elseif ($assign_status == '3') {$wo_status = gettext("WORKORDER_STATUS_3");
@@ -550,10 +570,36 @@ function update_workorder_status($db, $workorder_id, $assign_status){
         write_record_to_activity_log(gettext("Work Order").' '.$workorder_id.' '.gettext("Status updated to").' '.$wo_status.' '.gettext("by").' '.QFactory::getUser()->login_display_name);
         
         // Update Workorder last activity record
-        update_workorder_last_active($db, $workorder_id);        
+        update_workorder_last_active($db, $workorder_id);
+        
+        // Update Workorder Closed Status
+        if($assign_status == '1' || $assign_status == '2' || $assign_status == '3' || $assign_status == '9' || $assign_status == '10') {
+            update_workorder_closed_status($db, $workorder_id, 'open');                
+        } elseif($assign_status == '6' || $assign_status == '7' || $assign_status == '8') {
+            update_workorder_closed_status($db, $workorder_id, 'closed');
+        }
         
         return true;
         
+    }
+    
+}
+
+###################################
+# Update Workorder Closed Status  #
+###################################
+
+function update_workorder_closed_status($db, $workorder_id, $close_status) {
+    
+    if($close_status == 'open') { $is_closed = '0'; }
+    
+    if($close_status == 'closed') { $is_closed = '1'; }
+    
+    $sql = "UPDATE ".PRFX."workorder SET is_closed=".$is_closed." WHERE workorder_id=".$db->qstr($workorder_id);
+    
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update a Work Order's cloised status."));
+        exit;
     }
     
 }
