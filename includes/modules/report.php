@@ -38,121 +38,436 @@ defined('_QWEXEC') or die;
 
 /** General Section */
 
-###############################################
-#  Count open work orders in selected period  #
-###############################################
+/** Workorders **/
 
-function count_open_workorders_in_seleceted_period($db, $start_date, $end_date) {
+#########################################
+#     Count Work Orders                 #
+#########################################
+
+function count_workorders_with_status($db, $status, $start_date = null, $end_date = null) {
     
-    $sql = "SELECT count(*) AS count FROM ".PRFX."workorder WHERE open_date >= ".$db->qstr($start_date)." AND open_date <= ".$db->qstr($end_date);
+    // Default Action
+    $whereTheseRecords = " WHERE workorder_id >= '1'";
     
+    // Restrict by Status
+    if($status != 'all') {
+        
+        // All Open workorders
+        if($status == 'open') {
+            
+            $whereTheseRecords .= " AND ".PRFX."workorder.is_closed != '1'";
+        
+        // All Closed workorders
+        } elseif($status == 'closed') {
+            
+            $whereTheseRecords .= " AND ".PRFX."workorder.is_closed = '1'";
+        
+        // Return Workorders for the given status
+        } else {
+            
+            $whereTheseRecords .= " AND ".PRFX."workorder.status= ".$db->qstr($status);
+            
+        }
+        
+    }
+    
+    // Filter by Date
+    if($start_date && $end_date) {
+        $whereTheseRecords .= " AND open_date >= ".$db->qstr($start_date)." AND open_date <= ".$db->qstr($end_date);
+    }    
+    
+    $sql = "SELECT COUNT(*) AS workorder_count
+            FROM ".PRFX."workorder
+            ".$whereTheseRecords;          
+            
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count open work orders in the selected period."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Could not count Work Orders for the defined status."));
         exit;
-    } else {
         
-        return $rs->fields['count']; 
+    } else {      
         
-    }   
+        return  $rs->fields['workorder_count'];
+        
+    }
     
 }
 
-################################################
-#  Count closed work orders in selected period #
-################################################
+/** Invoices **/
 
-function count_open_workorders_in_selected_period($db, $start_date, $end_date) {
+####################################################
+#     Count Invoices                               #
+####################################################
+
+function count_invoices($db, $status, $start_date = null, $end_date = null) {    
     
-    $sql = "SELECT count(*) AS count FROM ".PRFX."workorder WHERE close_date >= ".$db->qstr($start_date)." AND close_date <= ".$db->qstr($end_date);
+    // Default Action
+    $whereTheseRecords = " WHERE invoice_id >= '0'";
     
+    // Restrict by Status
+    if($status != 'all') {
+        
+        // Filter by Unpaid Invoices
+        if($status == 'unpaid') {
+            
+            $whereTheseRecords .= " AND ".PRFX."invoice.is_paid != '1'";
+        
+        // Filter by Partially Paid Invoices
+        } elseif($status == 'partially_paid') {
+            
+            $whereTheseRecords .= "AND is_paid=".$db->qstr(0)." AND balance <> total";
+            
+        }
+            
+        // Filter by Paid Invoices
+        } elseif($status == 'paid') {
+            
+            $whereTheseRecords .= " AND ".PRFX."invoice.is_paid = '1'";        
+        
+        // Return Invoices for the given status
+        } else {
+            
+            //$whereTheseRecords .= " AND ".PRFX."invoice.status= ".$db->qstr($status);
+            
+        }
+        
+    // Filter by Date
+    if($start_date && $end_date) {
+        $whereTheseRecords .= " AND date >= ".$db->qstr($start_date)." AND date <= ".$db->qstr($end_date);
+    }
+    
+    $sql = "SELECT COUNT(*) AS invoice_count
+            FROM ".PRFX."invoice
+            ".$whereTheseRecords;                
+
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count closed work orders in the selected period."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Could not count the number of Invoices."));
         exit;
     } else {
         
-        return $rs->fields['count']; 
-        
-    }   
+       return $rs->fields['invoice_count']; 
+       
+    }
     
 }
 
-################################################
-#  Count New Customers in selected period      #
-################################################
+###################################################
+# Sum of Discounts for Invoices of a given status #
+###################################################
 
-function count_new_customers_in_selected_period($db, $start_date, $end_date) {
+function sum_invoices_discounts($db, $status, $start_date = null, $end_date = null) {
+        
+    // Default Action
+    $whereTheseRecords = " WHERE invoice_id >= '0'";
     
-    $sql = "SELECT count(*) AS count FROM ".PRFX."customer WHERE create_date >= ".$db->qstr($start_date)." AND create_date <= ".$db->qstr($end_date);
+    // Restrict by Status
+    if($status != 'all') {
+        
+        // Filter by Unpaid Invoices
+        if($status == 'unpaid') {
+            
+            $whereTheseRecords .= " AND ".PRFX."invoice.is_paid != '1'";
+        
+        // Filter by Partially Paid Invoices
+        } elseif($status == 'partially_paid') {
+            
+            $whereTheseRecords .= "AND is_paid=".$db->qstr(0)." AND balance <> total";
+            
+        }
+            
+        // Filter by Paid Invoices
+        } elseif($status == 'paid') {
+            
+            $whereTheseRecords .= " AND ".PRFX."invoice.is_paid = '1'";        
+        
+        // Return Invoices for the given status
+        } else {
+            
+            //$whereTheseRecords .= " AND ".PRFX."invoice.status= ".$db->qstr($status);
+            
+        }
+        
+    // Filter by Date
+    if($start_date && $end_date) {
+        $whereTheseRecords .= " AND date >= ".$db->qstr($start_date)." AND date <= ".$db->qstr($end_date);
+    }
     
+    $sql = "SELECT SUM(discount_amount) AS discount_amount_sum
+            FROM ".PRFX."invoice
+            ".$whereTheseRecords;                
+
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count new customers in the selected period."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Could not sum the invoice discount amounts."));
         exit;
     } else {
         
-        return $rs->fields['count']; 
-        
-    }   
+       return $rs->fields['discount_amount_sum']; 
+       
+    }
+    
     
 }
 
-################################################
-#  Count Total Customers in QWcrm              #
-################################################
+#############################################
+# Sum of Invoices Balance                   #
+#############################################
 
-function count_total_customers_in_qwcrm($db) {
+function sum_invoices_balance($db, $status, $start_date = null, $end_date = null) {
+        
+    // Default Action
+    $whereTheseRecords = " WHERE invoice_id >= '0'";
     
-    $sql = "SELECT COUNT(*) AS count FROM ".PRFX."customer";
+    // Restrict by Status
+    if($status != 'all') {
+        
+        // Filter by Unpaid Invoices
+        if($status == 'unpaid') {
+            
+            $whereTheseRecords .= " AND ".PRFX."invoice.is_paid != '1'";
+        
+        // Filter by Partially Paid Invoices
+        } elseif($status == 'partially_paid') {
+            
+            $whereTheseRecords .= "AND is_paid=".$db->qstr(0)." AND balance <> total";
+            
+        }
+            
+        // Filter by Paid Invoices
+        } elseif($status == 'paid') {
+            
+            $whereTheseRecords .= " AND ".PRFX."invoice.is_paid = '1'";        
+        
+        // Return Invoices for the given status
+        } else {
+            
+            //$whereTheseRecords .= " AND ".PRFX."invoice.status= ".$db->qstr($status);
+            
+        }
+        
+    // Filter by Date
+    if($start_date && $end_date) {
+        $whereTheseRecords .= " AND date >= ".$db->qstr($start_date)." AND date <= ".$db->qstr($end_date);
+    }
     
+    $sql = "SELECT SUM(balance) AS balance_sum
+            FROM ".PRFX."invoice
+            ".$whereTheseRecords;                
+
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count the total number customers in QWcrm."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Could not sum the invoice balances."));
         exit;
     } else {
         
-        return $rs->fields['count']; 
+       return $rs->fields['balance_sum']; 
+       
+    }
         
-    }   
-    
 }
 
-################################################
-#  Count Created Invoices in selected period   #
-################################################
+#############################################
+# Sum of Invoices Sub_total                  #
+#############################################
 
-function count_created_invoices_in_selected_period($db, $start_date, $end_date) {
+function sum_invoices_sub_total($db, $status, $start_date = null, $end_date = null) {
+        
+    // Default Action
+    $whereTheseRecords = " WHERE invoice_id >= '0'";
     
-    $sql = "SELECT count(*) AS count FROM ".PRFX."invoice WHERE date >= ".$db->qstr($start_date)." AND date <= ".$db->qstr($end_date);
+    // Restrict by Status
+    if($status != 'all') {
+        
+        // Filter by Unpaid Invoices
+        if($status == 'unpaid') {
+            
+            $whereTheseRecords .= " AND ".PRFX."invoice.is_paid != '1'";
+        
+        // Filter by Partially Paid Invoices
+        } elseif($status == 'partially_paid') {
+            
+            $whereTheseRecords .= "AND is_paid=".$db->qstr(0)." AND balance <> total";
+            
+        }
+            
+        // Filter by Paid Invoices
+        } elseif($status == 'paid') {
+            
+            $whereTheseRecords .= " AND ".PRFX."invoice.is_paid = '1'";        
+        
+        // Return Invoices for the given status
+        } else {
+            
+            //$whereTheseRecords .= " AND ".PRFX."invoice.status= ".$db->qstr($status);
+            
+        }
+        
+    // Filter by Date
+    if($start_date && $end_date) {
+        $whereTheseRecords .= " AND date >= ".$db->qstr($start_date)." AND date <= ".$db->qstr($end_date);
+    }
     
+    $sql = "SELECT SUM(sub_total) AS sub_total_sum
+            FROM ".PRFX."invoice
+            ".$whereTheseRecords;                
+
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count created invoices in the selected period."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to return invoice sum of sub totals."));
         exit;
     } else {
         
-        return $rs->fields['count']; 
+       return $rs->fields['sub_total_sum']; 
+       
+    }
         
-    }   
-    
 }
 
-################################################
-#  Count Paid Invoices in selected period      #
-################################################
+#############################################
+#     Sum of Invoices Tax                   #
+#############################################
 
-function count_paid_invoices_in_selected_period($db, $start_date, $end_date) {
+function sum_invoices_tax($db, $status, $start_date = null, $end_date = null) {
+        
+    // Default Action
+    $whereTheseRecords = " WHERE invoice_id >= '0'";
     
-    $sql = "SELECT count(*) AS count FROM ".PRFX."invoice WHERE date >= ".$db->qstr($start_date)." AND date <= ".$db->qstr($end_date)." AND is_paid = 1";
+    // Restrict by Status
+    if($status != 'all') {
+        
+        // Filter by Unpaid Invoices
+        if($status == 'unpaid') {
+            
+            $whereTheseRecords .= " AND ".PRFX."invoice.is_paid != '1'";
+        
+        // Filter by Partially Paid Invoices
+        } elseif($status == 'partially_paid') {
+            
+            $whereTheseRecords .= "AND is_paid=".$db->qstr(0)." AND balance <> total";
+            
+        }
+            
+        // Filter by Paid Invoices
+        } elseif($status == 'paid') {
+            
+            $whereTheseRecords .= " AND ".PRFX."invoice.is_paid = '1'";        
+        
+        // Return Invoices for the given status
+        } else {
+            
+            //$whereTheseRecords .= " AND ".PRFX."invoice.status= ".$db->qstr($status);
+            
+        }
+        
+    // Filter by Date
+    if($start_date && $end_date) {
+        $whereTheseRecords .= " AND date >= ".$db->qstr($start_date)." AND date <= ".$db->qstr($end_date);
+    }
     
+    $sql = "SELECT SUM(tax_amount) AS tax_amount_sum
+            FROM ".PRFX."invoice
+            ".$whereTheseRecords;                
+
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count paid invoices in the selected period."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to return the sum of tax for the selected invoices."));
         exit;
     } else {
         
-        return $rs->fields['count']; 
+       return $rs->fields['tax_amount_sum']; 
+       
+    }
         
-    }   
+}
+
+#############################################
+#     Sum of Invoices Tax                   #
+#############################################
+
+function sum_invoices_total($db, $status, $start_date = null, $end_date = null) {
+        
+    // Default Action
+    $whereTheseRecords = " WHERE invoice_id >= '0'";
+    
+    // Restrict by Status
+    if($status != 'all') {
+        
+        // Filter by Unpaid Invoices
+        if($status == 'unpaid') {
+            
+            $whereTheseRecords .= " AND ".PRFX."invoice.is_paid != '1'";
+        
+        // Filter by Partially Paid Invoices
+        } elseif($status == 'partially_paid') {
+            
+            $whereTheseRecords .= "AND is_paid=".$db->qstr(0)." AND balance <> total";
+            
+        }
+            
+        // Filter by Paid Invoices
+        } elseif($status == 'paid') {
+            
+            $whereTheseRecords .= " AND ".PRFX."invoice.is_paid = '1'";        
+        
+        // Return Invoices for the given status
+        } else {
+            
+            //$whereTheseRecords .= " AND ".PRFX."invoice.status= ".$db->qstr($status);
+            
+        }
+        
+    // Filter by Date
+    if($start_date && $end_date) {
+        $whereTheseRecords .= " AND date >= ".$db->qstr($start_date)." AND date <= ".$db->qstr($end_date);
+    }
+    
+    $sql = "SELECT SUM(total) AS total_sum
+            FROM ".PRFX."invoice
+            ".$whereTheseRecords;                
+
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to return the sum of invoice totals for the selected invoices."));
+        exit;
+    } else {
+        
+       return $rs->fields['total_sum']; 
+       
+    }
+        
+}
+
+/** Customers **/
+
+#############################################
+#    Count Customers                        #
+#############################################
+
+function count_customers($db, $status, $start_date = null, $end_date = null) {    
+    
+    // Default Action
+    $whereTheseRecords = " WHERE customer_id >= '0'";
+    
+    // Restrict by Status
+    if($status != 'all') {        
+        $whereTheseRecords .= " AND ".PRFX."customer.active= ".$db->qstr($status);            
+    }
+        
+    // Filter by Create Data
+    if($start_date && $end_date) {
+        $whereTheseRecords .= " AND create_date >= ".$db->qstr($start_date)." AND create_date <= ".$db->qstr($end_date);
+    }
+    
+    $sql = "SELECT COUNT(*) AS customer_count
+            FROM ".PRFX."customer
+            ".$whereTheseRecords;                
+
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Could not count the number of customers."));
+        exit;
+    } else {
+        
+       return $rs->fields['customer_count']; 
+       
+    }
     
 }
 
-/* Parts Section */
+/** Parts Section (financial.tpl) **/
 
 ###########################################################################
 #  Count Total number of different part items ordered in selected period  #
@@ -211,7 +526,7 @@ function sum_parts_sub_total_in_selected_period($db, $start_date, $end_date) {
     
 }
 
-/** Labour Section **/
+/** Labour Section (financial.tpl) **/
 
 ##########################################################################
 #  Count Total number of different labour items in selected period       #
@@ -269,7 +584,7 @@ function sum_labour_sub_totals_in_selected_period($db, $start_date, $end_date) {
     
 }
 
-/** Expense Section **/
+/** Expense Section (financial.tpl) **/
 
 ##################################################
 #  Sum Expenses Net Amount in selected period    #
@@ -327,7 +642,7 @@ function sum_expenses_gross_amount_in_selected_period($db, $start_date, $end_dat
     
 }
 
-/** Refunds Section **/
+/** Refunds Section (financial.tpl) **/
 
 ###################################################
 #  Sum Refunds Net Amount in selected period      #
@@ -386,93 +701,67 @@ function sum_refunds_gross_amount_in_selected_period($db, $start_date, $end_date
     
 }
 
-/** Invoice Section **/
+/* Users */
 
-########################################################################################
-#  Sum of Invoice Sub totals (before tax and discounts are added) in selected period   #
-########################################################################################
+#################################################
+# Count a User's Work Orders for a given status #
+#################################################
 
-function sum_of_invoice_sub_totals_before_tax_and_discounts_are_added_in_selected_period($db, $start_date, $end_date) {
+function count_user_workorders_with_status($db, $user_id, $workorder_status){
     
-    $sql = "SELECT SUM(sub_total) AS sum FROM ".PRFX."invoice WHERE date >= ".$db->qstr($start_date)." AND date <= ".$db->qstr($end_date);
+    // Default Action
+    $whereTheseRecords = " WHERE employee_id=".$db->qstr($user_id);
+    
+    // All Open workorders
+    if($workorder_status == 'open') {
+
+        $whereTheseRecords .= " AND ".PRFX."workorder.is_closed != '1'";
+
+    // All Closed workorders
+    } elseif($workorder_status == 'closed') {
+
+        $whereTheseRecords .= " AND ".PRFX."workorder.is_closed = '1'";
+
+    // Return Workorders for the given status
+    } else {
+
+        $whereTheseRecords .= " AND ".PRFX."workorder.status =".$db->qstr($workorder_status);
+
+    }
+    
+    $sql = "SELECT COUNT(*) AS workorder_status_count
+            FROM ".PRFX."workorder
+            ".$whereTheseRecords;
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to return invoice sub totals before tax and discounts."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count the number of Work Orders for the user for the defined status."));
         exit;
     } else {
-        
-        return $rs->fields['sum'];
-        
-    }   
-    
+       
+       return  $rs->fields['workorder_status_count']; 
+       
+    }
+   
 }
 
-##################################################
-#  Sum of discount amounts in selected period    #
-##################################################
+###############################################
+# Count Employee Invoices for a given status  #
+###############################################
 
-function sum_of_discount_amounts_in_selected_period($db, $start_date, $end_date) {
+function count_user_invoices_with_status($db, $user_id, $invoice_status){
     
-    $sql = "SELECT SUM(discount) AS sum FROM ".PRFX."invoice WHERE date >= ".$db->qstr($start_date)." AND date <= ".$db->qstr($end_date);
+    $sql = "SELECT COUNT(*) AS user_invoice_count
+            FROM ".PRFX."invoice
+            WHERE is_paid=".$db->qstr($invoice_status)."
+            AND employee_id=".$db->qstr($user_id);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to return the sum of discounts in the selected period."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed count the number of invoices for the user for the defined status."));
         exit;
-    } else {
-        
-        return $rs->fields['sum'];
-        
-    }   
-    
-}
-
-##################################################
-#  Sum of TAX amounts in selected period         #
-##################################################
-
-function sum_of_tax_amounts_in_selected_period($db, $start_date, $end_date) {  
-    
-    $sql = "SELECT SUM(tax) AS sum FROM ".PRFX."invoice WHERE date >= ".$db->qstr($start_date)." AND date <= ".$db->qstr($end_date);
-    
-    if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to return the sum of tax in the selected period."));
-        exit;
-    } else {
-        
-        return $rs->fields['sum'];
-        
-    }   
-    
-}
-
-#############################################################
-#  Sum of Invoice Total Amounts (Gross) in selected period  #
-#############################################################
-
-function sum_of_invoice_total_amounts_gross_in_selected_period($db, $start_date, $end_date) { 
-    
-    $sql = "SELECT SUM(total) AS sum FROM ".PRFX."invoice WHERE date >= ".$db->qstr($start_date)." AND date <= ".$db->qstr($end_date);
-    
-    if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to return the sum of invoice gross amounts in the selected period."));
-        exit;
-    } else {
-        
-        return $rs->fields['sum'];
-        
-    }   
-    
-}
-
-/** Calculations Section **/
-
-###########################
-#  Taxable Profit Amount  # // not used
-###########################
-
-function taxable_profit_amount_for_the_selected_period() {
-    
-    // Taxable Profit = Invoiced - (Expenses - Refunds)
-    
-    
+   } else {
+       
+       return $rs->fields['user_invoice_count'];
+       
+   }
+   
 }

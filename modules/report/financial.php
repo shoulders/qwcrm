@@ -16,46 +16,46 @@ if(isset($VAR['submit'])) {
     
     /* QWcrm Totals Sections */
     
-    $smarty->assign('wo_opened', count_open_workorders_in_seleceted_period($db, $start_date, $end_date));   
-    $smarty->assign('wo_closed', count_open_workorders_in_selected_period($db, $start_date, $end_date));    
-    $smarty->assign('new_customers', count_new_customers_in_selected_period($db, $start_date, $end_date));       
-    $smarty->assign('total_customers', count_total_customers_in_qwcrm($db));      
-    $smarty->assign('new_invoices', count_created_invoices_in_selected_period($db, $start_date, $end_date));    
-    $smarty->assign('paid_invoices' , count_paid_invoices_in_selected_period($db, $start_date, $end_date));
+    $smarty->assign('wo_opened',                    count_workorders_with_status($db, 'open', $start_date, $end_date)                                           );   
+    $smarty->assign('wo_closed',                    count_workorders_with_status($db, 'closed', $start_date, $end_date)                                         );    
+    $smarty->assign('new_customers',                count_customers($db, 'all', $start_date, $end_date)                                                         );       
+    $smarty->assign('total_customers',              count_customers($db, 'all')                                                                                 );      
+    $smarty->assign('new_invoices',                 count_invoices($db, 'all', $start_date, $end_date)                                                          );    
+    $smarty->assign('paid_invoices',                count_invoices($db, 'paid', $start_date, $end_date)                                                         );
 
     /* Parts Section */
     
-    $smarty->assign('parts_different_items_count', count_total_number_of_different_part_items_ordered_in_selected_period($db, $start_date, $end_date));    
-    $smarty->assign('parts_items_sum', sum_total_quantity_of_part_items_ordered_in_selected_period($db, $start_date, $end_date));    
-    $smarty->assign('parts_sub_total_sum', $parts_sub_total_sum);
+    $smarty->assign('parts_different_items_count',  count_total_number_of_different_part_items_ordered_in_selected_period($db, $start_date, $end_date)          );    
+    $smarty->assign('parts_items_sum',              sum_total_quantity_of_part_items_ordered_in_selected_period($db, $start_date, $end_date)                    );    
+    $smarty->assign('parts_sub_total_sum',          $parts_sub_total_sum                                                                                        );
 
     /* Labour Section */
     
-    $smarty->assign('labour_different_items_count', count_total_number_of_different_labour_items_in_selected_period($db, $start_date, $end_date));     
-    $smarty->assign('labour_items_sum', sum_total_quantity_of_labour_items_in_selected_period($db, $start_date, $end_date));     
-    $smarty->assign('labour_sub_total_sum', sum_labour_sub_totals_in_selected_period($db, $start_date, $end_date));
+    $smarty->assign('labour_different_items_count', count_total_number_of_different_labour_items_in_selected_period($db, $start_date, $end_date)                );     
+    $smarty->assign('labour_items_sum',             sum_total_quantity_of_labour_items_in_selected_period($db, $start_date, $end_date)                          );     
+    $smarty->assign('labour_sub_total_sum',         sum_labour_sub_totals_in_selected_period($db, $start_date, $end_date)                                       );
 
     /* Expense Section */
     
-    $smarty->assign('expense_net_amount_sum', sum_expenses_net_amount_in_selected_period($db, $start_date, $end_date));      
-    $smarty->assign('expense_tax_amount_sum', sum_expenses_tax_amount_in_selected_period($db, $start_date, $end_date));     
-    $expense_gross_amount_sum = sum_expenses_gross_amount_in_selected_period($db, $start_date, $end_date);
-    $smarty->assign('expense_gross_amount_sum', $expense_gross_amount_sum);    
+    $smarty->assign('expense_net_amount_sum',       sum_expenses_net_amount_in_selected_period($db, $start_date, $end_date)                                     );      
+    $smarty->assign('expense_tax_amount_sum',       sum_expenses_tax_amount_in_selected_period($db, $start_date, $end_date)                                     );     
+    $expense_gross_amount_sum =                     sum_expenses_gross_amount_in_selected_period($db, $start_date, $end_date)                                   ;
+    $smarty->assign('expense_gross_amount_sum',     $expense_gross_amount_sum);    
 
     /* Refunds section */
      
-    $smarty->assign('refund_net_amount_sum', sum_refunds_net_amount_in_selected_period($db, $start_date, $end_date));     
-    $smarty->assign('refund_tax_amount_sum', sum_refunds_tax_amount_in_selected_period($db, $start_date, $end_date));      
-    $refund_gross_amount_sum = sum_refunds_gross_amount_in_selected_period($db, $start_date, $end_date);
-    $smarty->assign('refund_gross_amount_sum', $refund_gross_amount_sum);
+    $smarty->assign('refund_net_amount_sum',        sum_refunds_net_amount_in_selected_period($db, $start_date, $end_date)                                      );     
+    $smarty->assign('refund_tax_amount_sum',        sum_refunds_tax_amount_in_selected_period($db, $start_date, $end_date)                                      );      
+    $refund_gross_amount_sum =                      sum_refunds_gross_amount_in_selected_period($db, $start_date, $end_date)                                    ;
+    $smarty->assign('refund_gross_amount_sum',      $refund_gross_amount_sum                                                                                    );
 
     /* invoice section */
       
-    $smarty->assign('invoice_sub_total_sum', sum_of_invoice_sub_totals_before_tax_and_discounts_are_added_in_selected_period($db, $start_date, $end_date));       
-    $smarty->assign('invoice_discount_sum', sum_of_discount_amounts_in_selected_period($db, $start_date, $end_date));    
-    $smarty->assign('invoice_tax_sum', sum_of_tax_amounts_in_selected_period($db, $start_date, $end_date));    
-    $invoice_amount_sum = sum_of_invoice_total_amounts_gross_in_selected_period($db, $start_date, $end_date);
-    $smarty->assign('invoice_amount_sum', $invoice_amount_sum);
+    $smarty->assign('invoice_sub_total_sum',    sum_invoices_sub_total($db, 'all', $start_date, $end_date)                                                      );       
+    $smarty->assign('invoice_discount_sum',     sum_invoices_discounts($db, 'all', $start_date, $end_date)                                                      );    
+    $smarty->assign('invoice_tax_sum',          sum_invoices_tax($db, 'all', $start_date, $end_date)                                                            );    
+    $invoice_amount_sum =                       sum_invoices_total($db, 'all', $start_date, $end_date)                                                          ;
+    $smarty->assign('invoice_amount_sum',       $invoice_amount_sum                                                                                             );
 
     /* Calculations Section */
  

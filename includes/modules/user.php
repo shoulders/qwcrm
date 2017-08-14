@@ -484,50 +484,6 @@ function delete_user($db, $user_id) {
 
 /** Other Functions **/
 
-#################################################
-# Count a User's Work Orders for a given status #  // should this be in workorders.php ?
-#################################################
-
-function count_user_workorders_with_status($db, $user_id, $workorder_status){
-    
-    $sql = "SELECT COUNT(*) AS user_workorder_status_count
-            FROM ".PRFX."workorder
-            WHERE employee_id=".$db->qstr($user_id)."
-            AND status=".$db->qstr($workorder_status);
-    
-    if(!$rs = $db->Execute($sql)){
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count the number of Work Orders for the user for the defined status"));
-        exit;
-   } else {
-       
-       return $rs->fields['user_workorder_status_count'];
-       
-   }
-   
-}
-
-###############################################
-# Count Employee Invoices for a given status  #
-###############################################
-
-function count_user_invoices_with_status($db, $user_id, $invoice_status){
-    
-    $sql = "SELECT COUNT(*) AS user_invoice_count
-            FROM ".PRFX."invoice
-            WHERE is_paid=".$db->qstr($invoice_status)."
-            AND employee_id=".$db->qstr($user_id);
-    
-    if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed count the number of invoices for the user for the defined status."));
-        exit;
-   } else {
-       
-       return $rs->fields['user_invoice_count'];
-       
-   }
-   
-}
-
 ##############################################
 #   Build an active employee <option> list   #  // keep for reference
 ##############################################

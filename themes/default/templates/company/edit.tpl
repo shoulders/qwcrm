@@ -1,4 +1,9 @@
 <!-- edit.tpl -->
+<link rel="stylesheet" href="{$theme_js_dir}jscal2/css/jscal2.css" />
+<link rel="stylesheet" href="{$theme_js_dir}jscal2/css/steel/steel.css" />
+<script src="{$theme_js_dir}jscal2/jscal2.js"></script>
+<script src="{$theme_js_dir}jscal2/unicode-letter.js"></script>
+<script>{include file="`$theme_js_dir_finc`jscal2/language.js"}</script>
 <script src="{$theme_js_dir}tinymce/tinymce.min.js"></script>
 <script src="{$theme_js_dir}editor-config.js"></script>
 
@@ -90,6 +95,34 @@
                                                         <tr>
                                                             <td align="right"><b>{t}Tax Rate{/t}:</b></td>
                                                             <td><input name="tax_rate" class="olotd5" size="6" value="{$company_details.tax_rate}" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumbersPeriod(event);"/>%</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td align="right"><b>{t}Financial Year Start{/t}:</b></td>
+                                                            <td>
+                                                                <input id="year_start" name="year_start" class="olotd4" size="10" value="{$company_details.year_start|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
+                                                                <input id="year_start_button" value="+" type="button">                                                    
+                                                                <script>                                                        
+                                                                    Calendar.setup( {
+                                                                        trigger     : "year_start_button",
+                                                                        inputField  : "year_start",
+                                                                        dateFormat  : "{$date_format}"                                                                                            
+                                                                    } );                                                        
+                                                                </script>                                                    
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td align="right"><b>{t}Financial Year End{/t}:</b></td>
+                                                            <td>
+                                                                <input id="year_end" name="year_end" class="olotd4" size="10" value="{$company_details.year_end|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
+                                                                <input id="year_end_button" value="+" type="button">                                                    
+                                                                <script>                                                        
+                                                                    Calendar.setup( {
+                                                                        trigger     : "year_end_button",
+                                                                        inputField  : "year_end",
+                                                                        dateFormat  : "{$date_format}"                                                                                            
+                                                                    } );                                                        
+                                                                </script>                                                    
+                                                            </td>
                                                         </tr>
                                                         <tr>
                                                             <td><b>{t}Company Welcome Message{/t}:</b><br>{t}(Dashboard){/t}</td>

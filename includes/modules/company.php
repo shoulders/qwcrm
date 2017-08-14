@@ -147,6 +147,8 @@ function update_company_details($db, $VAR) {
             email                   =". $db->qstr( $VAR['email']                           ).",    
             website                 =". $db->qstr( $VAR['website']                         ).",  
             tax_rate                =". $db->qstr( $VAR['tax_rate']                        ).",
+            year_start              =". $db->qstr( $VAR['year_start']                      ).",
+            year_end                =". $db->qstr( $VAR['year_end']                        ).",
             welcome_msg             =". $db->qstr( $VAR['welcome_msg']                     ).",
             currency_symbol         =". $db->qstr( htmlentities($VAR['currency_symbol'])   ).",
             currency_code           =". $db->qstr( $VAR['currency_code']                   ).",
