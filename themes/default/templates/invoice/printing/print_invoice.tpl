@@ -29,7 +29,7 @@
             
             <!-- Company Details -->
             <td valign="top" align="left" width="200">                
-                <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse; table-layout:fixed; overflow: wrap;">
+                <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
                     <tr>
                         <td valign="top"><b>{t}Address{/t} :&nbsp;</b></td>
                         <td>
