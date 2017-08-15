@@ -27,9 +27,9 @@
     <table width="750" border="0" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
         <tr>
             
-            <!-- COMPANY DETAILS -->
-            <td valign="top" align="left" width="200px">                
-                <table border="0" cellpadding="0" cellspacing="0">
+            <!-- Company Details -->
+            <td valign="top" align="left" width="200">                
+                <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse; table-layout:fixed; overflow: wrap;">
                     <tr>
                         <td valign="top"><b>{t}Address{/t} :&nbsp;</b></td>
                         <td>
@@ -60,7 +60,7 @@
             </td>
 
             <!-- LOGO and Company Name-->
-            <td valign="top" align="center" width="300px">
+            <td valign="top" align="center" width="300">
                 <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
                     <tr>
                         <td width="100%" align="center"><img src="{$theme_images_dir}logo.png" height="100" alt="" border="0"></td>
@@ -70,11 +70,10 @@
             </td>
 
             <!-- Invoice details -->
-            <td valign="top" align="right" width="200px">
+            <td valign="top" align="right" width="200">
                 <table border="0" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
                     <tr>
-                        <td valign="top" width="90%" align="right"></td>
-                        <td align="top" class="olotd5" width="200" >
+                        <td align="top" class="olotd5">
                             <table width="180" border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
                                 <tr>
                                     <td>
@@ -92,6 +91,7 @@
                     </tr>
                 </table>
             </td>
+            
         </tr>
     </table>
     <br>
@@ -112,9 +112,9 @@
     <br>
     
     <!-- Invoice To Box -->
-    <table width="750" border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
+    <table width="750" border="0" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
         <tr>
-            <td align="center" class="olotd5" ><font size="+2">{t}Invoice{/t} - {$customer_details.display_name}</font></td>
+            <td align="center" class="olotd5" style="font-size: 20px;">{t}Invoice{/t} - {$customer_details.display_name}</td>
         </tr>
     </table>
     <br>
@@ -124,7 +124,7 @@
     <!-- Labour Table -->
     <table width="750" border="1" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
         <tr>
-            <td width="40" class="olohead"><b>{t}Qty{/t}</b></td>
+            <td class="olohead" width="40"><b>{t}Qty{/t}</b></td>
             <td class="olohead"><b>{t}Labour Items{/t}</b></td>
             <td class="olohead" width="60" align="right"><b>{t}Unit Price{/t}</b></td>
             <td class="olohead" width="80" align="right"><b>{t}Sub Total{/t}</b></td>
