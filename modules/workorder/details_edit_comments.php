@@ -14,7 +14,7 @@ if($workorder_id == '') {
 if(isset($VAR['submit'])) {
     
     // update the workorder comments in the database
-    update_workorder_comments($db, $workorder_id, $VAR['workorder_comments']);
+    update_workorder_comments($db, $workorder_id, $VAR['comments']);
     
     // load the workorder details page
     force_page('workorder', 'details', 'workorder_id='.$workorder_id.'information_msg='.gettext("Comments has been updated."));

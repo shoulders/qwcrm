@@ -21,7 +21,7 @@
                                 <td width="100%" valign="top">                                    
                                     <form action="index.php?page=workorder:details_edit_resolution" method="post" name="close_workorder" id="close_workorder">
                                         <b>{t}Edit Work Order Resolution{/t}</b><br>
-                                        <textarea class="olotd4" rows="15" cols="70" name="workorder_resolution">{$workorder_resolution}</textarea>
+                                        <textarea class="olotd4" rows="15" cols="70" name="resolution">{$resolution}</textarea>
                                         <br>                                        
                                         <input name="workorder_id" value="{$workorder_id}" type="hidden">                                        
                                         <input name="submitchangesonly" value="{t}Submit Changes Only{/t}" type="submit">

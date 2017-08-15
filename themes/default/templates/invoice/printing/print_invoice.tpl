@@ -97,10 +97,10 @@
     <br>
     
     <!-- Workorder Row -->
-    {if $workorder_details.description > null}
+    {if $workorder_details.scope != ''}    
         <table width="750" border="0" cellpadding="3" cellspacing="0">
             <tr>
-                <td><b>{t}Work Order{/t}</b></td>
+                <td><b>{t}Work Order Description{/t}</b></td>
                 <td><b>{t}Work Order Resolution{/t}</b></td>
             </tr>
             <tr>

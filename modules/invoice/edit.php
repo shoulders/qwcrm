@@ -35,7 +35,8 @@ if(isset($VAR['submit'])) {
 
 // object details
 $smarty->assign('company_details',          get_company_details($db)                                                                    );
-$smarty->assign('customer_details',         get_customer_details($db, get_invoice_details($db, $invoice_id, 'customer_id'))             );      
+$smarty->assign('customer_details',         get_customer_details($db, get_invoice_details($db, $invoice_id, 'customer_id'))             );
+$smarty->assign('workorder_details',        get_workorder_details($db, get_invoice_details($db, $invoice_id, 'workorder_id'))           ); 
 $smarty->assign('invoice_details',          get_invoice_details($db, $invoice_id)                                                       );
 
 // prefill
@@ -52,7 +53,7 @@ $smarty->assign('parts_sub_total',          parts_sub_total($db, $invoice_id)   
 $smarty->assign('transactions',             get_invoice_transactions($db, $invoice_id)                                                  );
 
 // Misc
-$smarty->assign('workorder_status',         get_workorder_details($db, $workorder_id, 'status')                                         ); 
+
 $smarty->assign('employee_display_name',    get_user_details($db, get_invoice_details($db, $invoice_id, 'employee_id'), 'display_name') );
 
 // these are needed for the record deletion routines - consider making all fields editable

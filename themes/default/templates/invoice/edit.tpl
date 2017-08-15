@@ -333,17 +333,17 @@
 
                                         <!-- Invoice Information -->
                                         <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
-                                        <tr class="olotd4">
-                                            <td class="row2"><b>{t}Invoice ID{/t}</b></td>
-                                            <td class="row2"><b>{t}Work Order{/t}</b></td>
-                                            <td class="row2"><b>{t}Technician{/t}</b></td> 
-                                            <td class="row2"><b>{t}Date{/t}</b></td>
-                                            <td class="row2"><b>{t}Due Date{/t}</b></td>                                                                                                                                 
-                                            <td class="row2"><b>{t}Total{/t}</b></td>
-                                            <td class="row2"><b>{t}Amount Paid{/t}</b></td>
-                                            <td class="row2"><b>{t}Balance{/t}</b></td>
-                                            {*<td class="row2"><b>{t}Date Paid{/t}</b></td>*}
-                                        </tr>
+                                            <tr class="olotd4">
+                                                <td class="row2"><b>{t}Invoice ID{/t}</b></td>
+                                                <td class="row2"><b>{t}Work Order{/t}</b></td>
+                                                <td class="row2"><b>{t}Technician{/t}</b></td> 
+                                                <td class="row2"><b>{t}Date{/t}</b></td>
+                                                <td class="row2"><b>{t}Due Date{/t}</b></td>                                                                                                                                 
+                                                <td class="row2"><b>{t}Total{/t}</b></td>
+                                                <td class="row2"><b>{t}Amount Paid{/t}</b></td>
+                                                <td class="row2"><b>{t}Balance{/t}</b></td>
+                                                {*<td class="row2"><b>{t}Date Paid{/t}</b></td>*}
+                                            </tr>
                                             <tr class="olotd4">
                                                 <td>{$invoice_id}</td>
                                                 <td>
@@ -381,12 +381,17 @@
                                                 <td><font color="#cc0000">{$currency_sym}{$invoice_details.balance|string_format:"%.2f"}</font></td>
                                                 {*<td>{$invoice_details.paid_date|date_format:$date_format}</td>*}
                                             </tr>
-
+                                            
+                                            <!-- Scope -->
+                                            <tr class="olotd4">
+                                                <td colspan="2"><b>{t}Work Order Scope{/t}:</b></td>
+                                                <td>{$workorder_details.scope}</td>
+                                            </tr>
 
                                             <tr>
 
                                                 <!-- Customer Details -->
-                                                <td colspan="3" valign="top" align="left">
+                                                <td colspan="5" valign="top" align="left">
                                                     <b>{t}Bill{/t}</b>                                                        
                                                     <table cellpadding="0" cellspacing="0">
                                                         <tr>
@@ -405,7 +410,7 @@
                                                 </td>
 
                                                 <!-- Company Details -->
-                                                <td colspan="4" valign="top" >
+                                                <td colspan="3" valign="top" >
                                                     <b>{t}Pay{/t}</b>
                                                     <table cellpadding="0" cellspacing="0" width="100%">
                                                         <tr>
@@ -465,7 +470,7 @@
                                                         <!-- Delete Button -->
                                                         <button type="button" name="{t}Delete{/t}" onClick="location.href='index.php?page=invoice:delete&invoice_id={$invoice_details.invoice_id}';">{t}Delete{/t}</button>
 
-                                                        {if $workorder_status == '9' && $workorder_id != '0'}
+                                                        {if $workorder_details.status == '9' && $workorder_id != '0'}
                                                             <!-- Close Button -->
                                                             <button type="button" name="Close Work Order" onClick="location.href='index.php?page=workorder:details_edit_resolution&workorder_id={$invoice_details.workorder_id}';">{t}Close Work Order{/t}</button>
                                                         {/if}

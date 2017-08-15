@@ -3,9 +3,10 @@
 defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'modules/customer.php');
-require(INCLUDES_DIR.'modules/user.php');
 require(INCLUDES_DIR.'modules/invoice.php');
 require(INCLUDES_DIR.'modules/payment.php');
+require(INCLUDES_DIR.'modules/user.php');
+require(INCLUDES_DIR.'modules/workorder.php');
 
 // Check if we have an invoice_id
 if($invoice_id == '') {
@@ -15,6 +16,7 @@ if($invoice_id == '') {
     
 $smarty->assign('company_details',          get_company_details($db)                                                                    );
 $smarty->assign('customer_details',         get_customer_details($db, get_invoice_details($db, $invoice_id, 'customer_id'))             );
+$smarty->assign('workorder_details',        get_workorder_details($db, get_invoice_details($db, $invoice_id, 'workorder_id'))           ); 
 $smarty->assign('invoice_details',          get_invoice_details($db, $invoice_id)                                                       );
 $smarty->assign('workorder_id',             get_invoice_details($db, $invoice_id, 'workorder_id')                                       );
 $smarty->assign('labour_items',             get_invoice_labour_items($db, $invoice_id)                                                  );

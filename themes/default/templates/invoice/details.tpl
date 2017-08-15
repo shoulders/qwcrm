@@ -48,6 +48,12 @@
                                             <td><font color="#cc0000">{$currency_sym}{$invoice_details.balance|string_format:"%.2f"}</font></td>
                                             <td>{$invoice_details.paid_date|date_format:$date_format}</td>
                                         </tr>
+                                        
+                                        <!-- Scope -->
+                                        <tr class="olotd4">
+                                            <td colspan="2"><b>{t}Work Order Scope{/t}:</b></td>
+                                            <td>{$workorder_details.scope}</td>
+                                        </tr>
 
                                         <tr>
 
