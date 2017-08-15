@@ -171,9 +171,9 @@ function insert_customer($db, $VAR) {
 
 function insert_customer_note($db, $customer_id, $note) {
     
-    $sql = "INSERT INTO ".PRFX."customer_notes SET
-            customer_id =". $db->qstr( $customer_id                         ).",
+    $sql = "INSERT INTO ".PRFX."customer_notes SET            
             employee_id =". $db->qstr( QFactory::getUser()->login_user_id   ).",
+            customer_id =". $db->qstr( $customer_id                         ).",
             date        =". $db->qstr( time()                               ).",
             note        =". $db->qstr( $note                                );
 

@@ -30,13 +30,13 @@ defined('_QWEXEC') or die;
 #   insert transaction     #
 ############################
 
-function insert_transaction($db, $invoice_id, $workorder_id, $customer_id, $date, $type, $amount, $note) {
+function insert_transaction($db, $customer_id, $workorder_id, $invoice_id,  $date, $type, $amount, $note) {
     
-    $sql = "INSERT INTO ".PRFX."payment_transactions SET
-            invoice_id      = ".$db->qstr( $invoice_id                          ).",
+    $sql = "INSERT INTO ".PRFX."payment_transactions SET            
             employee_id     = ".$db->qstr( QFactory::getUser()->login_user_id   ).",
             customer_id     = ".$db->qstr( $customer_id                         ).",
             workorder_id    = ".$db->qstr( $workorder_id                        ).",
+            invoice_id      = ".$db->qstr( $invoice_id                          ).",
             date            = ".$db->qstr( $date                                ).",
             type            = ".$db->qstr( $type                                ).",
             amount          = ".$db->qstr( $amount                              ).",
@@ -91,7 +91,7 @@ function insert_payment_method_transaction($db, $invoice_id, $date, $amount, $me
         }    
 
         // Insert Transaction into log       
-        insert_transaction($db, $invoice_id, $workorder_id, $customer_id, $date, $type, $amount, $log_msg);
+        insert_transaction($db, $customer_id, $workorder_id, $invoice_id, $date, $type, $amount, $log_msg);
         
         // Now load the invoice to view
         //force_page('invoice', 'details&invoice_id='.$invoice_id, 'information_msg=Partial Payment made successfully');
@@ -132,7 +132,7 @@ function insert_payment_method_transaction($db, $invoice_id, $date, $amount, $me
         }    
 
         // Insert Transaction into log       
-        insert_transaction($db, $invoice_id, $workorder_id, $customer_id, $date, $type, $amount, $log_msg);
+        insert_transaction($db, $customer_id, $workorder_id, $invoice_id, $date, $type, $amount, $log_msg);
 
         // Now load the invoice to view
         //force_page('invoice', 'details&invoice_id='.$invoice_id, 'information_msg=Full Payment made successfully'); 

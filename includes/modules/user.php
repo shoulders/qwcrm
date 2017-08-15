@@ -160,7 +160,8 @@ function display_users($db, $direction = 'DESC', $use_pages = false, $page_no = 
 
 function insert_user($db, $VAR){
     
-    $sql = "INSERT INTO ".PRFX."user SET           
+    $sql = "INSERT INTO ".PRFX."user SET
+            customer_id         =". $db->qstr( $VAR['customer_id']                          ).", 
             username            =". $db->qstr( $VAR['username']                             ).",
             password            =". $db->qstr( JUserHelper::hashPassword($VAR['password'])  ).",
             email               =". $db->qstr( $VAR['email']                                ).",
@@ -168,8 +169,7 @@ function insert_user($db, $VAR){
             status              =". $db->qstr( $VAR['status']                               ).",
             register_date       =". $db->qstr( time()                                       ).",   
             require_reset       =". $db->qstr( $VAR['require_reset']                        ).",
-            is_employee         =". $db->qstr( $VAR['is_employee']                          ).", 
-            customer_id         =". $db->qstr( $VAR['customer_id']                          ).",   
+            is_employee         =". $db->qstr( $VAR['is_employee']                          ).",              
             display_name        =". $db->qstr( $VAR['display_name']                         ).",
             first_name          =". $db->qstr( $VAR['first_name']                           ).",
             last_name           =". $db->qstr( $VAR['last_name']                            ).",
@@ -339,13 +339,13 @@ function get_active_users($db, $user_type = null) {
 function update_user($db, $user_id, $VAR) {
     
     $sql = "UPDATE ".PRFX."user SET
+        customer_id         =". $db->qstr( $VAR['customer_id']                          ).", 
         username            =". $db->qstr( $VAR['username']                             ).",
         email               =". $db->qstr( $VAR['email']                                ).",
         usergroup           =". $db->qstr( $VAR['usergroup']                            ).",
         status              =". $db->qstr( $VAR['status']                               ).",                    
         require_reset       =". $db->qstr( $VAR['require_reset']                        ).",
-        is_employee         =". $db->qstr( $VAR['is_employee']                          ).", 
-        customer_id         =". $db->qstr( $VAR['customer_id']                          ).",          
+        is_employee         =". $db->qstr( $VAR['is_employee']                          ).",                 
         display_name        =". $db->qstr( $VAR['display_name']                         ).",
         first_name          =". $db->qstr( $VAR['first_name']                           ).",
         last_name           =". $db->qstr( $VAR['last_name']                            ).",

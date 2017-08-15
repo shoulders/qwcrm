@@ -281,9 +281,9 @@ function insert_workorder($db, $customer_id, $employee_id, $scope, $description,
 
 function insert_workorder_history_note($db, $workorder_id, $note) {
     
-    $sql = "INSERT INTO ".PRFX."workorder_history SET
-            workorder_id    =". $db->qstr( $workorder_id                        ).",
+    $sql = "INSERT INTO ".PRFX."workorder_history SET            
             employee_id     =". $db->qstr( QFactory::getUser()->login_user_id   ).",
+            workorder_id    =". $db->qstr( $workorder_id                        ).",
             date            =". $db->qstr( time()                               ).",
             note            =". $db->qstr( $note                                );
     
@@ -305,9 +305,9 @@ function insert_workorder_history_note($db, $workorder_id, $note) {
 
 function insert_workorder_note($db, $workorder_id, $note){
     
-    $sql = "INSERT INTO ".PRFX."workorder_notes SET 
-            workorder_id    =". $db->qstr( $workorder_id                        ).",             
+    $sql = "INSERT INTO ".PRFX."workorder_notes SET                        
             employee_id     =". $db->qstr( QFactory::getUser()->login_user_id   ).",
+            workorder_id    =". $db->qstr( $workorder_id                        ).", 
             date            =". $db->qstr( time()                               ).",
             description     =". $db->qstr( $note                                );
 
