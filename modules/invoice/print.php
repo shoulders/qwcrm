@@ -22,17 +22,17 @@ if($VAR['print_content'] == '' || $VAR['print_type'] == '') {
     exit;
 }
 
-$smarty->assign('company_details',          get_company_details($db)                                                                                    );
-$smarty->assign('employee_details',         get_user_details($db, get_invoice_details($db, $invoice_id, 'employee_id'))                                 );
-$smarty->assign('customer_details',         get_customer_details($db, get_invoice_details($db, $invoice_id, 'customer_id'))                             );
-$smarty->assign('invoice_details',          get_invoice_details($db, $invoice_id)                                                                       );
-$smarty->assign('workorder_details',        get_workorder_details($db, get_invoice_details($db, $invoice_id, 'workorder_id'))                           );
-$smarty->assign('payment_details',          get_payment_details($db)                                                                                    );
-$smarty->assign('active_payment_methods',   get_active_payment_methods($db)                                                                             );
-$smarty->assign('labour_items',             get_invoice_labour_items($db, $invoice_id)                                                                  );
-$smarty->assign('parts_items',              get_invoice_parts_items($db, $invoice_id)                                                                   );
-$smarty->assign('labour_sub_total',         labour_sub_total($db, $invoice_id)                                                                          );
-$smarty->assign('parts_sub_total',          parts_sub_total($db, $invoice_id)                                                                           );
+$smarty->assign('company_details',          get_company_details($db)                                                            );
+$smarty->assign('employee_details',         get_user_details($db, get_invoice_details($db, $invoice_id, 'employee_id'))         );
+$smarty->assign('customer_details',         get_customer_details($db, get_invoice_details($db, $invoice_id, 'customer_id'))     );
+$smarty->assign('invoice_details',          get_invoice_details($db, $invoice_id)                                               );
+$smarty->assign('workorder_details',        get_workorder_details($db, get_invoice_details($db, $invoice_id, 'workorder_id'))   );
+$smarty->assign('payment_details',          get_payment_details($db)                                                            );
+$smarty->assign('active_payment_methods',   get_active_payment_methods($db)                                                     );
+$smarty->assign('labour_items',             get_invoice_labour_items($db, $invoice_id)                                          );
+$smarty->assign('parts_items',              get_invoice_parts_items($db, $invoice_id)                                           );
+$smarty->assign('labour_sub_total',         labour_sub_total($db, $invoice_id)                                                  );
+$smarty->assign('parts_sub_total',          parts_sub_total($db, $invoice_id)                                                   );
 
 
 

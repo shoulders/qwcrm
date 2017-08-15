@@ -53,6 +53,10 @@
                                                             <td><input name="company_number" class="olotd5" value="{$company_details.company_number}" type="text" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"/></td>
                                                         </tr>
                                                         <tr>
+                                                            <td align="right"><b>{t}VAT Number{/t}:</b></td>
+                                                            <td><input name="vat_number" class="olotd5" value="{$company_details.vat_number}" type="text" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"/></td>
+                                                        </tr>
+                                                        <tr>
                                                             <td align="right"><b>{t}Address{/t}:</b></td>
                                                             <td><textarea name="address" class="olotd5 mceNoEditor" cols="30" rows="3" maxlength="100" required onkeydown="return onlyAddress(event);">{$company_details.address}</textarea></td>
                                                         </tr>

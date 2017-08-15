@@ -136,6 +136,7 @@ function update_company_details($db, $VAR) {
     }
     
     $sql .="company_number          =". $db->qstr( $VAR['company_number']                  ).",
+            vat_number              =". $db->qstr( $VAR['vat_number']                      ).",
             address                 =". $db->qstr( $VAR['address']                         ).",
             city                    =". $db->qstr( $VAR['city']                            ).",
             state                   =". $db->qstr( $VAR['state']                           ).",
