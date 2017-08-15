@@ -33,9 +33,9 @@
                 <!-- Work Orders -->
                 <div>
                     <span>{t}Work Orders{/t}</span>                                       
-                    <a href="index.php?page=workorder:overview"><img src="{$theme_images_dir}tick.png" alt="" border="0" height="14" width="14" /> {t}Overview{/t} <b><font color="RED"></font></b></a>                    
-                    <a href="index.php?page=workorder:open"><img src="{$theme_images_dir}tick.png" alt="" border="0" height="14" width="14" /> {t}Open{/t} {if $menu_workorders_closed_count > 0 } <b><font color="RED">({$menu_workorders_closed_count})</font>{/if}</b></a>
-                    <a href="index.php?page=workorder:closed"><img src="{$theme_images_dir}icons/close.gif" alt="" border="0" height="14" width="14" /> {t}Closed{/t} {if $menu_workorders_closed_count > 0 } <b><font color="RED">({$menu_workorders_closed_count})</font>{/if}</b></a>
+                    <a href="index.php?page=workorder:overview"><img src="{$theme_images_dir}tick.png" alt="" border="0" height="14" width="14" /> {t}Overview{/t} <b><font color="red"></font></b></a>                    
+                    <a href="index.php?page=workorder:open"><img src="{$theme_images_dir}tick.png" alt="" border="0" height="14" width="14" /> {t}Open{/t} <b><font color="red">({$menu_workorders_open_count})</font></b></a>
+                    <a href="index.php?page=workorder:closed"><img src="{$theme_images_dir}icons/close.gif" alt="" border="0" height="14" width="14" /> {t}Closed{/t} <b><font color="red">({$menu_workorders_closed_count})</font></b></a>
                     {if $workorder_id >= 1}
                         {if $menu_workorder_status == 10}
                             <a href="index.php?page=workorder:details_edit_resolution&workorder_id={$workorder_id}"><img src="{$theme_images_dir}icons/close.gif" alt="" border="0" height="14" width="14" /> {t}Close{/t}</a>

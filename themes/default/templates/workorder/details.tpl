@@ -56,7 +56,7 @@
                                                                 <tr>
                                                                     <td width="100%" valign="top">
                                                                         <!-- Display Work order -->                                                                
-                                                                        {include file='workorder/blocks/details_header_block.tpl'}
+                                                                        {include file='workorder/blocks/details_workorder_block.tpl'}
                                                                         <br>
                                                                         <!-- Display Description -->
                                                                         {include file='workorder/blocks/details_description_block.tpl'}

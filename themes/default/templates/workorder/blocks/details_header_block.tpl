@@ -1,4 +1,4 @@
-<!-- details_header_block.tpl -->
+<!-- details_workorder_block.tpl -->
 <table class="olotable" width="100%" border="0" cellpadding="2" cellspacing="0" >
     <tr>
         <td class="olohead" align="center">{t}WO ID{/t}</td>
