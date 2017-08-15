@@ -87,6 +87,12 @@
                                             <td class="menutd"><b>{t}Gross Amount{/t}</b></td>
                                             <td class="menutd">{$currency_sym} {$expense_details.gross_amount}</td>
                                         </tr>
+                                        <tr>
+                                            <td class="menutd"><b>{t}Invoice ID{/t}</b></td>
+                                            <td class="menutd"><a href="index.php?page=invoice:details&invoice_id={$expense_details.invoice_id}">{$expense_details.invoice_id}</a></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
                                         <tr class="row2">
                                             <td class="menutd" colspan="4"></td>
                                         </tr>                                      

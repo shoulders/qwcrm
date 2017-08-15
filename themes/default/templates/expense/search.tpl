@@ -31,6 +31,7 @@
                                                                         <option value="id"{if $search_category == 'id'} selected{/if}>{t}Expense ID{/t}</option>
                                                                         <option value="payee"{if $search_category == 'payee'} selected{/if}>{t}Payee{/t}</option>
                                                                         <option value="date"{if $search_category == 'date'} selected{/if}>{t}Date{/t}</option>
+                                                                        <option value="invoice_id"{if $search_category == 'invoice_id'} selected{/if}>{t}Invoice ID{/t}</option>
                                                                         <option value="type"{if $search_category == 'type'} selected{/if}>{t}Type{/t}</option>
                                                                         <option value="payment_method"{if $search_category == 'payment_method'} selected{/if}>{t}Payment Method{/t}</option>
                                                                         <option value="net_amount"{if $search_category == 'net_amount'} selected{/if}>{t}Net Amount{/t}</option>
@@ -111,6 +112,7 @@
                                                         <td class="olohead">{t}Expense ID{/t}</td>
                                                         <td class="olohead">{t}Payee{/t}</td>
                                                         <td class="olohead">{t}Date{/t}</td>
+                                                        <td class="olohead">{t}INV ID{/t}</td>
                                                         <td class="olohead">{t}Type{/t}</td>
                                                         <td class="olohead">{t}Payment Method{/t}</td>
                                                         <td class="olohead">{t}Net Amount{/t}</td>
@@ -126,7 +128,8 @@
                                                         <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=expense:details&expense_id={$search_result[i].expense_id}';" class="row1">
                                                             <td class="olotd4" nowrap><a href="index.php?page=expense:details&expense_id={$search_result[i].expense_id}">{$search_result[i].expense_id}</a></td>
                                                             <td class="olotd4" nowrap>{$search_result[i].payee}</td>
-                                                            <td class="olotd4" nowrap>{$search_result[i].date|date_format:$date_format}</td>                                                                
+                                                            <td class="olotd4" nowrap>{$search_result[i].date|date_format:$date_format}</td>
+                                                            <td class="olotd4" nowrap><a href="index.php?page=invoice:details&invoice_id={$search_result[i].invoice_id}">{$search_result[i].invoice_id}</a></td>
                                                             <td class="olotd4" nowrap>
                                                                 {if $search_result[i].type == 1}{t}EXPENSE_TYPE_1{/t}{/if}
                                                                 {if $search_result[i].type == 2}{t}EXPENSE_TYPE_2{/t}{/if}
@@ -168,7 +171,7 @@
                                                             <td class="olotd4" nowrap>{$currency_sym} {$search_result[i].tax_amount}</td>
                                                             <td class="olotd4" nowrap>{$currency_sym} {$search_result[i].gross_amount}</td>
                                                             <td class="olotd4" nowrap>
-                                                                {if !$search_result[i].EXPENSE_NOTES == ''}
+                                                                {if $search_result[i].notes != ''}
                                                                     <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{t}Notes{/t}</b><hr><p>{$search_result[i].notes|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();">
                                                                 {/if}
                                                             </td>

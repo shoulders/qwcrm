@@ -43,7 +43,7 @@
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{t}Payee{/t}</b><span style="color: #ff0000"> *</span></td>
-                                                                            <td colspan="3"><input id="expensePayee" name="payee" class="olotd5" size="50" type="text" maxlength="50" required onkeydown="return onlyAlphaNumeric(event);"></td>
+                                                                            <td colspan="3"><input id="payee" name="payee" class="olotd5" size="50" type="text" maxlength="50" required onkeydown="return onlyAlphaNumeric(event);"></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{t}Date{/t}</b><span style="color: #ff0000"> *</span></td>
@@ -58,6 +58,10 @@
                                                                                     } );                                                                                
                                                                                 </script>                                                                                
                                                                             </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td align="right"><b>{t}Invoice ID{/t}</b></td>
+                                                                            <td colspan="3"><input id="invoice_id" name="invoice_id" class="olotd5" size="5" type="text" maxlength="10" onkeydown="return onlyNumbers(event);"></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{t}Type{/t}</b><span style="color: #ff0000"> *</span></td>

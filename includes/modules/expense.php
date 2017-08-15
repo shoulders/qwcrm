@@ -55,6 +55,10 @@ function display_expenses($db, $direction = 'DESC', $use_pages = false, $page_no
                 $whereTheseRecords = " WHERE date";
                 break;
             
+            case 'date':          
+                $whereTheseRecords = " WHERE invoice_id";
+                break;
+            
             case 'type':          
                 $whereTheseRecords = " WHERE type";
                 break;
@@ -190,7 +194,8 @@ function display_expenses($db, $direction = 'DESC', $use_pages = false, $page_no
 
 function insert_expense($db, $VAR) {
     
-    $sql = "INSERT INTO ".PRFX."expense SET            
+    $sql = "INSERT INTO ".PRFX."expense SET
+            invoice_id      =". $db->qstr( $VAR['invoice_id']              ).",
             payee           =". $db->qstr( $VAR['payee']                   ).",
             date            =". $db->qstr( date_to_timestamp($VAR['date']) ).",
             type            =". $db->qstr( $VAR['type']                    ).",
@@ -253,6 +258,7 @@ function get_expense_details($db, $expense_id, $item = null){
 function update_expense($db, $expense_id, $VAR) {
     
     $sql = "UPDATE ".PRFX."expense SET
+            invoice_id          =". $db->qstr( $VAR['invoice_id']               ).",
             payee               =". $db->qstr( $VAR['payee']                    ).",
             date                =". $db->qstr( date_to_timestamp($VAR['date'])  ).",
             type                =". $db->qstr( $VAR['type']                     ).",
