@@ -4,7 +4,8 @@ tinymce.init({
     theme: 'modern',
     //content_css: 'css/content.css',           // point this to your template CSS for inline styling
     browser_spellcheck: true,                   // enable browser native spell check
-
+    schema: 'html5',                            // set to use html5
+    
     // Menu Items and Toolbar Buttons
     menubar: false,                             // file/edit menu at the top - enabled by default    
     contextmenu: 'cut copy paste | link',       // Enable these items in the context menu   
