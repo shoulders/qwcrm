@@ -17,16 +17,22 @@ $database_error     = $VAR['database_error'];
 $sql_query          = $VAR['sql_query'];
 $error_msg          = $VAR['error_msg'];
 
-// Prepare the SQL statement for the error log
-$sql_query_for_log = str_replace('<br>', '', $sql_query);
-
+// Is Logging of SQL enabled
+if(QFactory::getConfig()->get('qwcrm_error_logging')) {
+    
+    // Prepare the SQL statement for the error log (already been prepared for output to screen)
+    $sql_query_for_log = str_replace('<br>', '\r\n', $sql_query);
+    
+} else {    
+    $sql_query_for_log = '';    
+}
 
 /* This logs errors to the error log (does not record the SQL Query */
 if($qwcrm_error_log == true){    
     
     // Only log error if it exists and the error page has been loaded through the router
     if(isset($error_type) && $module === 'core' && $page_tpl === 'error'){
-        write_record_to_error_log($login_username, $error_page, $error_type, $error_location, $php_function, $database_error, $error_msg);
+        write_record_to_error_log($login_username, $error_page, $error_type, $error_location, $php_function, $database_error, $sql_query_for_log, $error_msg);
     }
     
 }

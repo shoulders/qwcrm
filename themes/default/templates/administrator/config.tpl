@@ -387,17 +387,7 @@
                     </tr>
                                         
                     <tr>
-                        <td align="right"><b>{t}QWcrm Tracker{/t}</b></td>
-                        <td>
-                            <select class="olotd5" id="qwcrm_tracker" name="qwcrm_tracker">                                                       
-                                <option value="0"{if $qwcrm_config.qwcrm_tracker == '0'} selected{/if}>{t}No{/t}</option>
-                                <option value="1"{if $qwcrm_config.qwcrm_tracker == '1'} selected{/if}>{t}Yes{/t}</option>
-                            </select>
-                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}QWcrm Tracker{/t}</strong></div><hr><div>{t escape=tooltip}Legacy Tracking system. This system is depreceated.{/t}</div>');" onMouseOut="hideddrivetip();">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td align="right"><b>{t}QWcrm Access Log{/t}</b></td>
+                        <td align="right"><b>{t}Access Log{/t}</b></td>
                         <td>
                             <select class="olotd5" id="qwcrm_access_log" name="qwcrm_access_log">                                                       
                                 <option value="0"{if $qwcrm_config.qwcrm_access_log == '0'} selected{/if}>{t}No{/t}</option>
@@ -407,7 +397,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td align="right"><b>{t}QWcrm Activity Log{/t}</b></td>
+                        <td align="right"><b>{t}Activity Log{/t}</b></td>
                         <td>
                             <select class="olotd5" id="qwcrm_activity_log" name="qwcrm_activity_log">                                                       
                                 <option value="0"{if $qwcrm_config.qwcrm_activity_log == '0'} selected{/if}>{t}No{/t}</option>
@@ -417,7 +407,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td align="right"><b>{t}QWcrm Error Log{/t}</b></td>
+                        <td align="right"><b>{t}Error Log{/t}</b></td>
                         <td>
                             <select class="olotd5" id="qwcrm_error_log" name="qwcrm_error_log">                                                       
                                 <option value="0"{if $qwcrm_config.qwcrm_error_log == '0'} selected{/if}>{t}No{/t}</option>
@@ -426,7 +416,17 @@
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}QWcrm Error Log{/t}</strong></div><hr><div>{t escape=tooltip}Enable error logging for QWcrm. This will log all errors and store the data in the Error Log. This log file is in apache log format and can be found in the logs folder.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
-                                        <tr>
+                    <tr>
+                        <td align="right"><b>{t}SQL Logging{/t}</b></td>
+                        <td>
+                            <select class="olotd5" id="qwcrm_sql_logging " name="qwcrm_sql_logging">                                                       
+                                <option value="0"{if $qwcrm_config.qwcrm_sql_logging == '0'} selected{/if}>{t}No{/t}</option>
+                                <option value="1"{if $qwcrm_config.qwcrm_sql_logging == '1'} selected{/if}>{t}Yes{/t}</option>
+                            </select>
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}QWcrm SQL Log{/t}</strong></div><hr><div>{t escape=tooltip}Enable SQL logging for QWcrm. This attach the SQL query when present to the standard QWcrm Error Log. This is deisabled by default because it can cause your logs to get large quickly.{/t}</div>');" onMouseOut="hideddrivetip();">
+                        </td>
+                    </tr>                    
+                    <tr>
                         <td align="right"><b>{t}Email Error Log{/t}</b></td>
                         <td>
                             <select class="olotd5" id="qwcrm_email_error_log" name="qwcrm_email_error_log">                                                       
