@@ -427,11 +427,6 @@ if(check_acl($db, $login_usergroup_id, $module, $page_tpl)){
 
 if(!$skip_logging) {
     
-    // This logs access details to the stats tracker table in the database
-    if($QConfig->qwcrm_tracker == true){
-        write_record_to_tracker_table($db, $page_display_controller, $module, $page_tpl);
-    }
-
     // This logs access details to the access log
     if($QConfig->qwcrm_access_log == true){
         write_record_to_access_log($login_username);

@@ -131,8 +131,6 @@
                         <a href="index.php?page=administrator:acl"><img src="{$theme_images_dir}icons/encrypted.png" alt="" border="0" height="14" width="14" /> {t}Permissions{/t}</a>
                         
                         <!-- Stats -->
-                        <a href="index.php?page=stats:hit_stats"><img src="{$theme_images_dir}icons/reports.png" alt="" border="0" height="14" width="14" /> {t}Hit Stats{/t}</a>
-                        <a href="index.php?page=stats:hit_stats_by_ip"><img src="{$theme_images_dir}icons/reports.png" alt="" border="0" height="14" width="14" /> {t}Hit Stats By IP{/t}</a>
                         
                         <!-- System -->
                         <a href="index.php?page=administrator:phpinfo"><img src="{$theme_images_dir}icons/php.png" alt="" border="0" height="14" width="14" /> {t}PHPInfo{/t}</a>

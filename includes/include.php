@@ -853,30 +853,6 @@ elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
 echo ('My real IP is:'.$ip);
 */
 
-################################################
-#  Write a record to the Tracker Table         #
-################################################
-
-function write_record_to_tracker_table($db, $page_display_controller, $module, $page_tpl) {
-    
-   $sql = "INSERT into ".PRFX."tracker SET
-   date          = ". $db->qstr( time()                     ).",
-   ip            = ". $db->qstr( get_ip_address()           ).",
-   uagent        = ". $db->qstr( getenv('HTTP_USER_AGENT')  ).",
-   full_page     = ". $db->qstr( $page_display_controller   ).",
-   module        = ". $db->qstr( $module                    ).",
-   page          = ". $db->qstr( $page_tpl                  ).",
-   referer       = ". $db->qstr( getenv('HTTP_REFERER')     );
-
-   if(!$rs = $db->Execute($sql)) {
-      force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Error inserting item into tracker database."));
-      exit;      
-   }
-   
-   return;
-    
-}
-
 ############################################
 #  Write a record to the Activity Log      #
 ############################################
