@@ -26,10 +26,11 @@
     <table width="750" border="0" cellpadding="2" cellspacing="0" style="border-collapse: collapse;">
         <tr>
             <td width="20%" valign="middle" align="center"><img src="{$company_logo}" alt="" height="50"></td>
-            <td width="60%" align="center">                
-                <p><b><font size="+3">{$company_details.name}</font></b><br></p>                
+            <td valign="top" align="center">            
+                <font size="+3">{t}Technician Job Sheet{/t}</font><br />
+                {t}Workorder ID{/t} {$workorder_details.workorder_id}
             </td>
-            <td width="20%" valign="middle" align="center">{t}Technician Job Sheet{/t}</font></td>
+            <td width="20%" valign="middle" align="center"></td>
         </tr>
     </table>
 
@@ -51,7 +52,7 @@
                             <b>{t}Email{/t}: <b><br>                        
                         </td>
                         <td>
-                            {$customer_details.first_name} {$customer_details.last_name}<br>
+                            {$customer_details.display_name}<br>
                             {$workorder_details.workorder_id}<br>
                             {$smarty.now|date_format:$date_format}<br>
                             {$workorder_details.open_date|date_format:$date_format}<br>
@@ -68,8 +69,15 @@
                 <table border="0" cellpadding="2" cellspacing="0" style="border-collapse: collapse;">
                     <tr>
                         <td style="width: 150px">
-                            <b>{t}Contact{/t}: <b><br><br>
-                            <b>{t}Address{/t}: <b><br><br>
+                            <b>{t}Contact{/t}:<b>                            
+                        </td>
+                        <td>
+                            {$customer_details.first_name} {$customer_details.last_name}                            
+                        </td>        
+                    </tr>
+                    <tr>
+                        <td style="width: 150px">                            
+                            <b>{t}Address{/t}:<b>
                         </td>
                         <td>
                             {$customer_details.address}<br>
@@ -78,7 +86,7 @@
                             {$customer_details.zip}<br>
                             {$customer_details.country}
                         </td>        
-                    </tr>    
+                    </tr>
                 </table>
             </td>      
         </tr>    

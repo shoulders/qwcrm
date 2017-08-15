@@ -24,7 +24,7 @@
     
     <!-- Header Section -->
     
-    <table  width="750" height="125" border="0" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
+    <table width="750" border="0" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
         <tr>
             
             <!-- COMPANY DETAILS -->
@@ -63,7 +63,7 @@
             <td valign="top" align="center" width="300px">
                 <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
                     <tr>
-                        <td width="100%" align="center"><img src="{$theme_images_dir}logo.png" height="100px" alt="" border="0"></td>
+                        <td width="100%" align="center"><img src="{$theme_images_dir}logo.png" height="100" alt="" border="0"></td>
                     </tr>
                     <tr><td style="text-align:center"><b>{$company_details.name}</b></td></tr>
                 </table>
@@ -83,7 +83,7 @@
                                         <b>{t}Date{/t} - </b>{$invoice_details.date|date_format:$date_format} <br>
                                         <b>{t}Due Date{/t} - </b>{$invoice_details.due_date|date_format:$date_format}<br>
                                         <b>{t}Work Order{/t} - </b>{$invoice_details.workorder_id}<br>
-                                        <b>{t}Technician{/t} - </b>{$employee_display_name}<br>                                        
+                                        <b>{t}Technician{/t} - </b>{$employee_details.display_name}<br>                                        
                                         <b>{t}Credit Terms{/t} - </b>{$customer_details.credit_terms}<br>                                       
                                     </td>
                                 </tr>
@@ -130,10 +130,10 @@
             <td class="olohead" width="80" align="right"><b>{t}Sub Total{/t}</b></td>
         </tr>
         {section name=l loop=$labour_items}
-            <tr>
-                <td class="olotd4" width="40">{$labour_items[l].amount}</td>
-                <td class="olotd4" >{$labour_items[l].description}</td>
-                <td class="olotd4" width="60" align="right">{$currency_sym}{$labour_items[l].qty|string_format:"%.2f"}</td>
+            <tr class="olotd4">
+                <td class="olotd4" width="40">{$labour_items[l].qty}</td>
+                <td class="olotd4">{$labour_items[l].description}</td>
+                <td class="olotd4" width="60" align="right">{$currency_sym}{$labour_items[l].amount|string_format:"%.2f"}</td>
                 <td class="olotd4" width="80" align="right">{$currency_sym}{$labour_items[l].sub_total|string_format:"%.2f"}</td>
             </tr>
         {/section}
@@ -154,10 +154,10 @@
         </tr>
         {section name=p loop=$parts_items}        
             <tr class="olotd4">
-                <td width="40" class="olotd4">{$parts_items[p].qty}</td>
+                <td class="olotd4" width="40">{$parts_items[p].qty}</td>
                 <td class="olotd4">{$parts_items[p].description}</td>
-                <td width="60" class="olotd4" align="right">{$currency_sym}{$parts_items[p].amount|string_format:"%.2f"}</td>
-                <td width="80" class="olotd4" align="right">{$currency_sym}{$parts_items[p].sub_total|string_format:"%.2f"}</td>
+                <td class="olotd4" width="60" align="right">{$currency_sym}{$parts_items[p].amount|string_format:"%.2f"}</td>
+                <td class="olotd4" width="80" align="right">{$currency_sym}{$parts_items[p].sub_total|string_format:"%.2f"}</td>
             </tr>
         {/section}
         <tr>           
@@ -184,9 +184,7 @@
                     {if $active_payment_methods.cheque_active == '1'}
                         <tr>
                             <td>                                    
-                                <img src="{$theme_images_dir}icons/cheque.jpeg" alt="" height="20"><br>
-                                <b>Cheques</b><br>
-                                {t}Please make Cheque payable to{/t}:
+                                <img src="{$theme_images_dir}icons/cheque.jpeg" alt="" height="20"> <b>{t}Cheques{/t}</b><br>                                
                             </td>                                
                         </tr>
                         <tr>
@@ -197,15 +195,22 @@
                     <!-- Direct Deposit -->
                     {if $active_payment_methods.direct_deposit_active == '1'}
                         <tr>
-                            <td>                                    
-                                <img src="{$theme_images_dir}icons/deposit.jpeg" alt="" height="20"><br>
-                                <b>{t}Direct Deposit{/t}</b><br>
+                            <td>
+                                <img src="{$theme_images_dir}icons/deposit.jpeg" alt="" height="20"> <b>{t}Direct Deposit{/t}</b><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>                                
                                 {t}Bank Account Name{/t}: {$payment_details.bank_account_name}<br>
                                 {t}Bank Name{/t}: {$payment_details.bank_name}<br>
                                 {t}Account Number{/t}: {$payment_details.bank_account_number}<br>
                                 {t}Sort Code{/t}: {$payment_details.bank_sort_code}<br>
-                                {t}IBAN{/t}: {$payment_details.bank_iban}<br>
-                                {t}Note{/t}: {$payment_details.bank_transaction_msg}
+                                {t}IBAN{/t}: {$payment_details.bank_iban}                                
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                {$payment_details.bank_transaction_msg}
                             </td>
                         </tr>
                     {/if}
@@ -214,12 +219,7 @@
                     {if $active_payment_methods.paypal_active == '1'}
                     <tr>
                         <td>
-                            <img src="{$theme_images_dir}paypal/pay_now.gif" height="20"  alt="PayPal - The safer, easier way to pay online"><br>
-                            <b>{t}PayPal{/t}</b><br>
-                            <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business={$PP_ID}&item_name=Payment%20for%20invoice%20{$invoice_details.invoice_id}&item_number={$invoice_details.invoice_id}&description=Invoice%20for%20{$invoice_details.invoice_id}&amount={$pamount}&no_note=Thankyou%20for%20your%20buisness.&currency_code={$currency_code}&lc='.$country." target="_blank">
-                               {t}Click here to pay this invoice via PayPal using a valid Credit Card.{/t}
-                             </a><br>
-                            <i><b>* {t} A 3.5% surcharge applies.{/t}</b></i>                               
+                            <img src="{$theme_images_dir}paypal/pay_now.gif" height="20" alt="PayPal - The safer, easier way to pay online"> <b>{t}PayPal{/t}</b><br>
                         </td>
                     </tr>
                     {/if}
@@ -232,8 +232,7 @@
                     {/if}
 
                 </table>
-            </td>
-                  
+            </td>                  
             
            <!-- Totals Box -->
             <td colspan="2" valign="TOP">

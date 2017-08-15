@@ -14,10 +14,10 @@ $smarty->assign('menu_workorders_open_count', menu_count_workorders_with_status(
 $smarty->assign('menu_workorders_closed_count', menu_count_workorders_with_status($db, 'closed'));
 
 // Unpaid Invoices
-$smarty->assign('menu_workorders_unpaid_count', menu_count_invoices_with_status($db, 0));
+$smarty->assign('menu_workorders_unpaid_count', menu_count_invoices_with_status($db, '0'));
 
 // Paid Invoices
-$smarty->assign('menu_workorders_paid_count', menu_count_invoices_with_status($db, 1));
+$smarty->assign('menu_workorders_paid_count', menu_count_invoices_with_status($db, '1'));
 
 // Display menu block
 $BuildPage .= $smarty->fetch('core/blocks/theme_menu_block.tpl');

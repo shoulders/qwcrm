@@ -15,7 +15,7 @@
  */
 
 /* 
- * These are copied from includes/core_home.php but with menu added on the front of the name
+ * These are copied from includes/report.php but with menu added on the front of the name
  * These are only used to show numbers in the menu and could be removed 
  */
 

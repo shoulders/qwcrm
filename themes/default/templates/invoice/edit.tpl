@@ -562,10 +562,10 @@
                                                     <!-- Additional Javascript Labour Table -->
                                                     <table width="100%" cellpadding="3" cellspacing="0" border="0" class="olotable" id="labour_items">
                                                         <tr class="olotd4">
-                                                            <td class="row2"><b>{t}No{/t}</b></td>
-                                                            <td class="row2"><b>{t}Qty{/t}</b></td>
-                                                            <td class="row2"><b>{t}Description{/t}</b></td>
-                                                            <td class="row2"><b>&nbsp;&nbsp;{t}Amount{/t}</b></td>
+                                                            <td class="row2" style="width: 15px;"><b>{t}No{/t}</b></td>
+                                                            <td class="row2" style="width: 66px;"><b>{t}Qty{/t}</b></td>
+                                                            <td class="row2" style="width: 453px;"><b>{t}Description{/t}</b></td>
+                                                            <td class="row2" style="width: 110px;"><b>{t}Amount{/t}</b></td> 
                                                         </tr>
 
                                                         <!-- Additional Rows are added here -->
@@ -619,12 +619,12 @@
                                                     {/if}
                                                     <br>
                                                     <!-- Additional Javascript Parts Table -->
-                                                    <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable" id="parts_items">
+                                                    <table id="parts_items" width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
                                                         <tr class="olotd4">
-                                                            <td class="row2"><b>{t}No{/t}</b></td>
-                                                            <td class="row2"><b>{t}Qty{/t}</b></td>
-                                                            <td class="row2"><b>{t}Description{/t}</b></td>
-                                                            <td class="row2"><b>{t}Amount{/t}</b></td>
+                                                            <td class="row2" style="width: 15px;"><b>{t}No{/t}</b></td>
+                                                            <td class="row2" style="width: 66px;"><b>{t}Qty{/t}</b></td>
+                                                            <td class="row2" style="width: 453px;"><b>{t}Description{/t}</b></td>
+                                                            <td class="row2" style="width: 110px;"><b>{t}Amount{/t}</b></td>                                                            
                                                         </tr>
 
                                                         <!-- Additional Rows are added here -->
