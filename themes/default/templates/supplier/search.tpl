@@ -27,8 +27,7 @@
                                                                 <br />
                                                                 <select class="olotd5" id="search_category" name="search_category">
                                                                     <option value="id"{if $search_category == 'id'} selected{/if}>{t}Supplier ID{/t}</option>
-                                                                    <option value="name"{if $search_category == 'name'} selected{/if}>{t}Name{/t}</option>
-                                                                    <option value="contact"{if $search_category == 'contact'} selected{/if}>{t}Contact{/t}</option>
+                                                                    <option value="name"{if $search_category == 'name'} selected{/if}>{t}Name{/t}</option>                                                                    
                                                                     <option value="type"{if $search_category == 'type'} selected{/if}>{t}Type{/t}</option>
                                                                     <option value="zip"{if $search_category == 'zip'} selected{/if}>{t}Zip{/t}</option>
                                                                     <option value="country"{if $search_category == 'country'} selected{/if}>{t}Country{/t}</option>
@@ -103,8 +102,7 @@
                                                 <table class="olotable" width="100%" border="0" cellpadding="5" cellspacing="0">                                                    
                                                     <tr>
                                                         <td class="olohead">{t}ID{/t}</td>
-                                                        <td class="olohead">{t}Name{/t}</td>
-                                                        <td class="olohead">{t}Contact{/t}</td>
+                                                        <td class="olohead">{t}Name{/t}</td>                                                        
                                                         <td class="olohead">{t}Type{/t}</td>
                                                         <td class="olohead">{t}Zip{/t}</td>
                                                         <td class="olohead">{t}Country{/t}</td>
@@ -116,8 +114,7 @@
                                                         <!-- This allows double clicking on a row and opens the corresponding supplier view details -->
                                                         <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=supplier:details&supplier_id={$search_result[i].supplier_id}';" class="row1">                                                           
                                                             <td class="olotd4" nowrap><a href="index.php?page=supplier:details&supplier_id={$search_result[i].supplier_id}">{$search_result[i].supplier_id}</a></td>                                                            
-                                                            <td class="olotd4" nowrap>{$search_result[i].display_name}</td>                                                            
-                                                            <td class="olotd4" nowrap>{$search_result[i].contact}</td>                                                            
+                                                            <td class="olotd4" nowrap>{$search_result[i].display_name}</td>                                                                                                                      
                                                             <td class="olotd4" nowrap>
                                                                 {if $search_result[i].type == 1}{t}SUPPLIER_TYPE_1{/t}{/if}
                                                                 {if $search_result[i].type == 2}{t}SUPPLIER_TYPE_2{/t}{/if}
@@ -133,7 +130,7 @@
                                                             </td>
                                                             <td class="olotd4" nowrap>{$search_result[i].zip}</td>
                                                             <td class="olotd4" nowrap>{$search_result[i].country}</td>                                                            
-                                                            <td class="olotd4" nowrap>{if !$search_result[i].SUPPLIER_NOTES == ""}
+                                                            <td class="olotd4" nowrap>{if $search_result[i].notes != ''}
                                                                 <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Notes{/t}</strong></div><hr><div>{$search_result[i].notes}</div>');" onMouseOut="hideddrivetip();">{/if}
                                                             </td>                                                            
                                                             <td class="olotd4" nowrap><img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Description{/t}</strong></div><hr><div>{$search_result[i].description}</div>');" onMouseOut="hideddrivetip();"></td>                                                            

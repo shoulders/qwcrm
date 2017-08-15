@@ -50,10 +50,6 @@ function display_suppliers($db, $direction = 'DESC', $use_pages = false, $page_n
                 $whereTheseRecords = " WHERE display_name";
                 break;
 
-            case 'contact':          
-                $whereTheseRecords = " WHERE contact";
-                break;
-            
             case 'type':          
                 $whereTheseRecords = " WHERE type";
                 break;
@@ -179,7 +175,8 @@ function insert_supplier($db, $VAR) {
     
     $sql = "INSERT INTO ".PRFX."supplier SET            
             display_name   =". $db->qstr( $VAR['display_name']  ).",
-            contact        =". $db->qstr( $VAR['contact']       ).",
+            first_name     =". $db->qstr( $VAR['first_name']    ).",
+            last_name      =". $db->qstr( $VAR['last_name']     ).",
             website        =". $db->qstr( $VAR['website']       ).",
             email          =". $db->qstr( $VAR['email']         ).",
             type           =". $db->qstr( $VAR['type']          ).",
@@ -244,7 +241,8 @@ function update_supplier($db, $supplier_id, $VAR) {
     
     $sql = "UPDATE ".PRFX."supplier SET
             display_name   =". $db->qstr( $VAR['display_name']  ).",
-            contact        =". $db->qstr( $VAR['contact']       ).",
+            first_name     =". $db->qstr( $VAR['first_name']    ).",
+            last_name      =". $db->qstr( $VAR['last_name']     ).",
             website        =". $db->qstr( $VAR['website']       ).",
             email          =". $db->qstr( $VAR['email']         ).",
             type           =". $db->qstr( $VAR['type']          ).",

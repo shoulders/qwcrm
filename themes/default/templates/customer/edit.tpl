@@ -33,10 +33,10 @@
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><strong>{t}First Name{/t}</strong></td>
-                                                                            <td><input name="first_name" class="olotd5" value="{$customer_details.first_name}" type="text" maxlength="20" onkeydown="return onlyAlpha(event);"/></td>
+                                                                            <td><input name="first_name" class="olotd5" value="{$customer_details.first_name}" size="20" type="text" maxlength="20" onkeydown="return onlyAlpha(event);"/></td>
                                                                         <tr>
                                                                             <td align="right"><strong>{t}Last Name{/t}</strong></td>
-                                                                            <td><input name="last_name" class="olotd5" value="{$customer_details.last_name}" type="text" maxlength="20" onkeydown="return onlyAlpha(event);"/></td>
+                                                                            <td><input name="last_name" class="olotd5" value="{$customer_details.last_name}" size="20" type="text" maxlength="20" onkeydown="return onlyAlpha(event);"/></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><span style="color: #ff0000"></span><b>{t}Website{/t}</b></td>
