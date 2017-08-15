@@ -277,8 +277,7 @@
         <tr>
             <td align="center">{$payment_details.invoice_footer_msg}</td>
         </tr>
-    </table>
-    
+    </table>    
     
 </body>
 </html>
