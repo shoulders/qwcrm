@@ -65,6 +65,9 @@
                                                 {if $expense_details.type == 19}{t}EXPENSE_TYPE_19{/t}{/if}
                                                 {if $expense_details.type == 20}{t}EXPENSE_TYPE_20{/t}{/if}
                                                 {if $expense_details.type == 21}{t}EXPENSE_TYPE_21{/t}{/if}
+                                                {if $expense_details.type == 22}{t}EXPENSE_TYPE_22{/t}{/if}
+                                                {if $expense_details.type == 23}{t}EXPENSE_TYPE_23{/t}{/if}
+                                                {if $expense_details.type == 24}{t}EXPENSE_TYPE_24{/t}{/if}
                                             </td>
                                             <td class="menutd"><b>{t}Tax Amount{/t}</b></td>
                                             <td class="menutd">{$currency_sym} {$expense_details.tax_amount}</td>

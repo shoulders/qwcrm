@@ -88,6 +88,9 @@
                                                                                     <option value="19">{t}EXPENSE_TYPE_19{/t}</option>
                                                                                     <option value="20">{t}EXPENSE_TYPE_20{/t}</option>
                                                                                     <option value="21">{t}EXPENSE_TYPE_21{/t}</option>
+                                                                                    <option value="22">{t}EXPENSE_TYPE_22{/t}</option>
+                                                                                    <option value="23">{t}EXPENSE_TYPE_23{/t}</option>
+                                                                                    <option value="23">{t}EXPENSE_TYPE_23{/t}</option>
                                                                                 </select>
                                                                             </td>                                                                                
                                                                         </tr>

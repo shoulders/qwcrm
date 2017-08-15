@@ -60,6 +60,9 @@ gettext("EXPENSE_TYPE_18");
 gettext("EXPENSE_TYPE_19");
 gettext("EXPENSE_TYPE_20");
 gettext("EXPENSE_TYPE_21");
+gettext("EXPENSE_TYPE_22");
+gettext("EXPENSE_TYPE_23");
+gettext("EXPENSE_TYPE_24");
 
 gettext("EXPENSE_PAYMENT_METHOD_1");
 gettext("EXPENSE_PAYMENT_METHOD_2");

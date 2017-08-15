@@ -150,6 +150,9 @@
                                                                 {if $search_result[i].EXPENSE_TYPE ==19}{t}EXPENSE_TYPE_19{/t}{/if}
                                                                 {if $search_result[i].EXPENSE_TYPE ==20}{t}EXPENSE_TYPE_20{/t}{/if}
                                                                 {if $search_result[i].EXPENSE_TYPE ==21}{t}EXPENSE_TYPE_21{/t}{/if}
+                                                                {if $search_result[i].EXPENSE_TYPE ==22}{t}EXPENSE_TYPE_22{/t}{/if}
+                                                                {if $search_result[i].EXPENSE_TYPE ==23}{t}EXPENSE_TYPE_23{/t}{/if}
+                                                                {if $search_result[i].EXPENSE_TYPE ==24}{t}EXPENSE_TYPE_24{/t}{/if}
                                                             </td>
                                                             <td class="olotd4" nowrap>
                                                                 {if $search_result[i].EXPENSE_PAYMENT_METHOD ==1}{t}EXPENSE_PAYMENT_METHOD_1{/t}{/if}

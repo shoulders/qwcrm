@@ -79,6 +79,9 @@
                                                                 <option value="19">{t}EXPENSE_TYPE_19{/t}{if $expense_details.type == '19'} selected{/if}</option>
                                                                 <option value="20">{t}EXPENSE_TYPE_20{/t}{if $expense_details.type == '20'} selected{/if}</option>
                                                                 <option value="21">{t}EXPENSE_TYPE_21{/t}{if $expense_details.type == '21'} selected{/if}</option>
+                                                                <option value="22">{t}EXPENSE_TYPE_22{/t}{if $expense_details.type == '22'} selected{/if}</option>
+                                                                <option value="23">{t}EXPENSE_TYPE_23{/t}{if $expense_details.type == '23'} selected{/if}</option>
+                                                                <option value="24">{t}EXPENSE_TYPE_24{/t}{if $expense_details.type == '24'} selected{/if}</option>
                                                             </select>
                                                         </td>                                                            
                                                     </tr>

@@ -382,6 +382,15 @@ function prepare_expense_search_terms($search_category, $search_term) {
 
                 case gettext("EXPENSE_TYPE_21"):
                     return '21';
+                    
+                case gettext("EXPENSE_TYPE_22"):
+                    return '22';
+                    
+                case gettext("EXPENSE_TYPE_23"):
+                    return '23'; 
+
+                case gettext("EXPENSE_TYPE_24"):
+                    return '24';                     
 
                 default:                   
                     return $search_term;
