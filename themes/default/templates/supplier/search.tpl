@@ -134,9 +134,9 @@
                                                             <td class="olotd4" nowrap>{$search_result[i].zip}</td>
                                                             <td class="olotd4" nowrap>{$search_result[i].country}</td>                                                            
                                                             <td class="olotd4" nowrap>{if !$search_result[i].SUPPLIER_NOTES == ""}
-                                                                <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{t}Notes{/t}</b><hr><p>{$search_result[i].notes|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();">{/if}
+                                                                <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Notes{/t}</strong></div><hr><div>{$search_result[i].notes}</div>');" onMouseOut="hideddrivetip();">{/if}
                                                             </td>                                                            
-                                                            <td class="olotd4" nowrap><img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{t}Description{/t}</b><hr><p>{$search_result[i].description|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();"></td>                                                            
+                                                            <td class="olotd4" nowrap><img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Description{/t}</strong></div><hr><div>{$search_result[i].description}</div>');" onMouseOut="hideddrivetip();"></td>                                                            
                                                             <td class="olotd4" nowrap>
                                                                 <a href="index.php?page=supplier:details&supplier_id={$search_result[i].supplier_id}">
                                                                     <img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" onMouseOver="ddrivetip('<b>{t}View Supplier Details{/t}</b>');" onMouseOut="hideddrivetip();">

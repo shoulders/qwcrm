@@ -50,7 +50,7 @@
                             <p><b><font size="+1">{$customer_details.display_name}</font></b></p>
                             <p>                            
                                 <b>{t}Address{/t}:</b><br>
-                                {$customer_details.address}<br>
+                                {$customer_details.address|nl2br|regex_replace:"/[\r\t\n]/":" "}<br>
                                 {$customer_details.city}<br>
                                 {$customer_details.state}<br>
                                 {$customer_details.zip}<br>
@@ -89,7 +89,7 @@
                             <p><b><font size="+1">{$company_details.display_name}</font></b><br></p>
                             <p>
                                 <b>{t}Address{/t}:</b><br>
-                                {$company_details.address}<br>
+                                {$company_details.address|nl2br|regex_replace:"/[\r\t\n]/":" "}<br>
                                 {$company_details.city}<br>
                                 {$company_details.state}<br>
                                 {$company_details.zip}<br>

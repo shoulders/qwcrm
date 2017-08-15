@@ -80,7 +80,7 @@
                             <b>{t}Address{/t}:<b>
                         </td>
                         <td>
-                            {$customer_details.address}<br>
+                            {$customer_details.address|nl2br|regex_replace:"/[\r\t\n]/":" "}<br>
                             {$customer_details.city}<br>
                             {$customer_details.state}<br>
                             {$customer_details.zip}<br>

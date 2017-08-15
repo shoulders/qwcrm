@@ -21,7 +21,7 @@
 
             <!-- Customer -->
             <td class="olotd4" nowrap>
-                <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<b><center>{t}Customer Info{/t}</b></center><hr><b>{t}Contact{/t}:</b> {$new_workorders[n].customer_first_name} {$new_workorders[n].customer_last_name}<br><b>{t}Phone{/t}: </b>{$new_workorders[n].customer_phone}<br><b>{t}Mobile{/t}: </b>{$new_workorders[n].customer_mobile_phone}<br><b>{t}Fax{/t}: </b>{$new_workorders[n].customer_phone}<br><b>{t}Address{/t}: </b><br>{$new_workorders[n].customer_address}<br>{$new_workorders[n].customer_city}<br>{$new_workorders[n].customer_state}<br>{$new_workorders[n].customer_zip}<br>{$new_workorders[n].customer_country}');" onMouseOut="hideddrivetip();">
+                <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<b><center>{t}Customer Info{/t}</b></center><hr><b>{t}Contact{/t}:</b> {$new_workorders[n].customer_first_name} {$new_workorders[n].customer_last_name}<br><b>{t}Phone{/t}: </b>{$new_workorders[n].customer_phone}<br><b>{t}Mobile{/t}: </b>{$new_workorders[n].customer_mobile_phone}<br><b>{t}Fax{/t}: </b>{$new_workorders[n].customer_phone}<br><b>{t}Address{/t}: </b><br>{$new_workorders[n].customer_address|nl2br|regex_replace:"/[\r\t\n]/":" "}<br>{$new_workorders[n].customer_city}<br>{$new_workorders[n].customer_state}<br>{$new_workorders[n].customer_zip}<br>{$new_workorders[n].customer_country}');" onMouseOut="hideddrivetip();">
                 <a class="link1" href="index.php?page=customer:details&customer_id={$new_workorders[n].customer_id}">{$new_workorders[n].customer_display_name}</a>
             </td>
 

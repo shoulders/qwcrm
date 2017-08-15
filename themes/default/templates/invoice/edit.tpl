@@ -416,7 +416,7 @@
                                                         <tr>
                                                             <td valign="top">                                                                    
                                                                 {$company_details.display_name} <br>
-                                                                {$company_details.address}<br>
+                                                                {$company_details.address|nl2br|regex_replace:"/[\r\t\n]/":" "}<br>
                                                                 {$company_details.city}<br>
                                                                 {$company_details.state}<br>
                                                                 {$company_details.zip}<br>

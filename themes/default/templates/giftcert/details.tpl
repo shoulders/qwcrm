@@ -28,7 +28,7 @@
                                     <p><b>{t}Customer{/t} </b><a href="index.php?page=customer:details&customer_id={$customer_details.id}">{$customer_details.display_name}</a></p>
                                     <p><strong>{t}Address{/t}</strong></p>
                                     <p>
-                                        {$customer_details.address}<br>
+                                        {$customer_details.address|nl2br|regex_replace:"/[\r\t\n]/":" "}<br>
                                         {$customer_details.city}<br>
                                         {$customer_details.state}<br>
                                         {$customer_details.zip}<br>

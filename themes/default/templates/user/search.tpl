@@ -6,7 +6,7 @@
                 <tr>
                     <td class="menuhead2" width="80%">&nbsp;{t}User Search{/t}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">                        
-                        <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<strong>{t escape=tooltip}USER_SEARCH_HELP_TITLE{/t}</strong><hr>{t escape=tooltip}USER_SEARCH_HELP_CONTENT{/t}');" onMouseOut="hideddrivetip();">
+                        <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}USER_SEARCH_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}USER_SEARCH_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
                     </td>
                 </tr>
                 <tr>
@@ -125,7 +125,7 @@
                                                         <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=user:details&user_id={$search_result[i].user_id}';" class="row1">
                                                             <td class="olotd4"><a href="index.php?page=user:details&user_id={$search_result[i].user_id}">{$search_result[i].user_id}</a></td>
                                                             <td class="olotd4">
-                                                                <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('{$search_result[i].address}<br>{$search_result[i].city}<br>{$search_result[i].state}<br>{$search_result[i].zip}<br>{$search_result[i].country}');" onMouseOut="hideddrivetip();">
+                                                                <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('{$search_result[i].address|nl2br|regex_replace:"/[\r\t\n]/":" "}}<br>{$search_result[i].city}<br>{$search_result[i].state}<br>{$search_result[i].zip}<br>{$search_result[i].country}');" onMouseOut="hideddrivetip();">
                                                                 {$search_result[i].display_name}
                                                             </td>
                                                             <td class="olotd4">{$search_result[i].first_name}</td>

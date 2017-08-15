@@ -29,8 +29,8 @@
             </td> 
             <td class="olotd4">{$currency_sym} {$active_giftcerts[i].amount}</td>                                                            
             <td class="olotd4" nowrap>
-                {if !$active_giftcerts[i].notes == ''}
-                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{t}Notes{/t}</b><hr><p>{$active_giftcerts[i].notes|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();">
+                {if $active_giftcerts[i].notes != ''}
+                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Notes{/t}{/t}</strong></div><hr><div>{t escape=tooltip}{$active_giftcerts[i].notes}</div>');" onMouseOut="hideddrivetip();">
                 {/if}
             </td>
             <td class="olotd4">
@@ -74,7 +74,7 @@
             <td class="olotd4">{$currency_sym} {$redeemed_giftcerts[i].amount}</td>                                                            
             <td class="olotd4" nowrap>
                 {if !$redeemed_giftcerts[i].notes == ''}
-                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{t}Notes{/t}</b><hr><p>{$redeemed_giftcerts[i].notes|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();">
+                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Notes{/t}</strong></div><hr><div>{$redeemed_giftcerts[i].notes}</div>');" onMouseOut="hideddrivetip();">
                 {/if}
             </td>
             <td class="olotd4">
