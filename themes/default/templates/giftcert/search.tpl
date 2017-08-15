@@ -139,13 +139,16 @@
                                                             </td> 
                                                             <td class="olotd4">{$currency_sym} {$search_result[i].amount}</td>                                                            
                                                             <td class="olotd4" nowrap>
-                                                                {if !$search_result[i].NOTES == ''}
-                                                                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{t}Notes{/t}</b><hr><p>{$search_result[i].notes|nl2br|regex_replace:"/[\r\t\n]/":" "}</p>');" onMouseOut="hideddrivetip();">
+                                                                {if $search_result[i].notes != ''}
+                                                                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Notes{/t}</strong></div><hr><div>{$search_result[i].notes}</div>');" onMouseOut="hideddrivetip();">
                                                                 {/if}
                                                             </td>
                                                             <td class="olotd4">
                                                                 <a href="index.php?page=giftcert:details&giftcert_id={$search_result[i].giftcert_id}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif"  border="0" onMouseOver="ddrivetip('{t}View Details{/t}');" onMouseOut="hideddrivetip();"></a>&nbsp;
                                                                 <a href="index.php?page=giftcert:edit&giftcert_id={$search_result[i].giftcert_id}"><img src="{$theme_images_dir}icons/16x16/small_edit_employee.gif" border="0" onMouseOver="ddrivetip('{t}Edit{/t}');" onMouseOut="hideddrivetip();"></a>&nbsp;
+                                                                <a href="index.php?page=giftcert:print&giftcert_id={$search_result[i].giftcert_id}&print_content=gift_certificate&print_type=print_html&theme=print">
+                                                                    <img src="{$theme_images_dir}icons/16x16/fileprint.gif" border="0" onMouseOver="ddrivetip('{t}Print the Gift Certificate{/t}');" onMouseOut="hideddrivetip();">
+                                                                </a>
                                                                 <a href="index.php?page=giftcert:delete&giftcert_id={$search_result[i].giftcert_id}" onclick="return confirmDelete('{t}Are you Sure you want to delete this Gift Certificate?{/t}');">
                                                                     <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{t}Delete Gift Certificate{/t}</b>');" onMouseOut="hideddrivetip();">
                                                                 </a>

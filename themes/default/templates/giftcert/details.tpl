@@ -1,4 +1,4 @@
-<!-- print_gift.tpl -->
+<!-- details.tpl -->
 <table width="700" cellpadding="4" cellspacing="0" border="0" class="olotable">
     <tr>
         <td class="olotd4">

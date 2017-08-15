@@ -2,7 +2,7 @@
 <b>{t}New{/t}</b>
 <table class="olotable" width="100%" border="0" cellpadding="4" cellspacing="0">
     <tr>
-        <td class="olohead"><b>{t}Workorder ID{/t}</b></td>
+        <td class="olohead"><b>{t}WO ID{/t}</b></td>
         <td class="olohead"><b>{t}Opened{/t}</b></td>
         <td class="olohead"><b>{t}Customer{/t}</b></td>
         <td class="olohead"><b>{t}Scope{/t}</b></td>
@@ -52,8 +52,14 @@
 
             <!-- Action -->
             <td class="olotd4" align="center" nowrap>
-                <a href="index.php?page=workorder:print&workorder_id={$new_workorders[n].workorder_id}&customer_id={$new_workorders[n].customer_id}&theme=print">
-                    <img src="{$theme_images_dir}icons/16x16/fileprint.gif" border="0" onMouseOver="ddrivetip('{t}Print The Work Order{/t}');" onMouseOut="hideddrivetip();">
+                <a href="index.php?page=workorder:print&workorder_id={$new_workorders[n].workorder_id}&print_content=technician_workorder_slip&print_type=print_html&theme=print" target="_blank">                                                    
+                    <img src="{$theme_images_dir}icons/print.gif" alt="Print Works Order" border="0" height="14" width="14" onMouseOver="ddrivetip('{t}Print{/t}<br>{t}Technician Work Order Slip{/t}');" onMouseOut="hideddrivetip();" />
+                </a>
+                <a href="index.php?page=workorder:print&workorder_id={$new_workorders[n].workorder_id}&print_content=technician_job_sheet&print_type=print_html&theme=print" target="_blank">                                                    
+                    <img src="{$theme_images_dir}icons/print.gif" alt="Print Works Order" border="0" height="14" width="14" onMouseOver="ddrivetip('{t}Print{/t}<br>{t}Technician Work Order Job Sheet{/t}');" onMouseOut="hideddrivetip();" />
+                </a>
+                <a href="index.php?page=workorder:print&workorder_id={$new_workorders[n].workorder_id}&print_content=customer_workorder_slip&print_type=print_html&theme=print" target="_blank">                                                    
+                    <img src="{$theme_images_dir}icons/print.gif" alt="Print Works Order" border="0" height="14" width="14" onMouseOver="ddrivetip('{t}Print{/t}<br>{t}Customer Work Order Slip{/t}');" onMouseOut="hideddrivetip();" />                                                        
                 </a>
                 <a href="index.php?page=workorder:details&workorder_id={$new_workorders[n].workorder_id}&customer_id={$new_workorders[n].customer_id}">
                     <img src="{$theme_images_dir}icons/16x16/viewmag.gif" border="0" onMouseOver="ddrivetip('{t}View The Work Order{/t}');" onMouseOut="hideddrivetip();">

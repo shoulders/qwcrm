@@ -14,4 +14,5 @@
     <li>Smarty v3.1.30 | LGPL 2.1 or later</li>
     <li>reCAPTCHA PHP library | BSD-3-Clause | https://github.com/google/recaptcha/blob/1.0.0/php/recaptchalib.php</li>
     <li>Gettext support for Smarty2/Smarty3 (08-06-17) | LGPL-2.1 | https://github.com/smarty-gettext/smarty-gettext</li>
+    <li>PHP Barcode Generator v0.2.1 | LGPL-3.0 | https://github.com/picqer/php-barcode-generator</li>
 </ul>
