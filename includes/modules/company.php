@@ -77,12 +77,12 @@ function get_email_signature($db, $swift_emailer = null) {
     
     // If swiftmailer is going to be used to add image via CID
     if($swift_emailer != null) {         
-        $logo_string = '<img src="'.$swift_emailer->embed(Swift_Image::fromPath(get_company_details($db, 'logo'))).'" alt="'.get_company_details($db, 'name').'" width="150">'; 
+        $logo_string = '<img src="'.$swift_emailer->embed(Swift_Image::fromPath(get_company_details($db, 'logo'))).'" alt="'.get_company_details($db, 'display_name').'" width="150">'; 
         
         
     // Load the logo as a standard base64 string image
     } else {        
-        $logo_string  = '<img src="data:image/jpeg;base64,'.base64_encode(file_get_contents(get_company_details($db, 'logo'))).'" alt="'.get_company_details($db, 'name').'" width="150">'; 
+        $logo_string  = '<img src="data:image/jpeg;base64,'.base64_encode(file_get_contents(get_company_details($db, 'logo'))).'" alt="'.get_company_details($db, 'display_name').'" width="150">'; 
     }    
         
     // Swap the logo placeholders with the new logo string
@@ -129,7 +129,7 @@ function update_company_details($db, $VAR) {
     global $smarty;
     
     $sql .= "UPDATE ".PRFX."company SET
-            name                = ". $db->qstr( $VAR['name']               ).",";
+            display_name            = ". $db->qstr( $VAR['name']               ).",";
                 
     if(!empty($_FILES['logo']['name'])) {
         $sql .="logo                = ". $db->qstr( MEDIA_DIR . $new_logo_filename  ).",";

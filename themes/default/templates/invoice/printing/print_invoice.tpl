@@ -65,7 +65,7 @@
                     <tr>
                         <td width="100%" align="center"><img src="{$theme_images_dir}logo.png" height="100" alt="" border="0"></td>
                     </tr>
-                    <tr><td style="text-align:center"><b>{$company_details.name}</b></td></tr>
+                    <tr><td style="text-align:center"><b>{$company_details.display_name}</b></td></tr>
                 </table>
             </td>
 

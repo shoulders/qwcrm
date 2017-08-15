@@ -415,7 +415,7 @@
                                                     <table cellpadding="0" cellspacing="0" width="100%">
                                                         <tr>
                                                             <td valign="top">                                                                    
-                                                                {$company_details.name} <br>
+                                                                {$company_details.display_name} <br>
                                                                 {$company_details.address}<br>
                                                                 {$company_details.city}<br>
                                                                 {$company_details.state}<br>

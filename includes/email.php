@@ -163,7 +163,7 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
     }
     
     // Subject - prefix with the QWcrm company name to all emails
-    $email->setSubject(get_company_details($db, 'name').' - '.$subject);    
+    $email->setSubject(get_company_details($db, 'display_name').' - '.$subject);    
     
     /* Build the message body */
     

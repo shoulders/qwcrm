@@ -39,7 +39,7 @@
                                                     <table cellpadding="5" cellspacing="0">
                                                         <tr>
                                                             <td align="right"><b>{t}Company Name{/t}:</b></td>
-                                                            <td><input name="name" class="olotd5" value="{$company_details.name}" type="text" maxlength="50" required onkeydown="return onlyAlpha(event);"></td>
+                                                            <td><input name="display_name" class="olotd5" value="{$company_details.display_name}" type="text" maxlength="50" required onkeydown="return onlyAlpha(event);"></td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{t}Logo{/t}:</b></td>

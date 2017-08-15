@@ -86,7 +86,7 @@
                 <table cellpadding="4" cellspacing="0" border="0">                                
                     <tr>
                         <td>
-                            <p><b><font size="+1">{$company_details.name}</font></b><br></p>
+                            <p><b><font size="+1">{$company_details.display_name}</font></b><br></p>
                             <p>
                                 <b>{t}Address{/t}:</b><br>
                                 {$company_details.address}<br>
