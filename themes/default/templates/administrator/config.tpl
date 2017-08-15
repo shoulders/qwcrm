@@ -1,6 +1,6 @@
 <!-- edit.tpl -->
 <script src="{$theme_js_dir}tinymce/tinymce.min.js"></script>
-<script src="{$theme_js_dir}editor-config.js"></script>
+<script>{include file="`$theme_js_dir_finc`editor-config.js"}</script>}
 
 <form method="post" action="index.php?page=administrator:config">                   
     <table width="600" cellpadding="5" cellspacing="0" border="0">

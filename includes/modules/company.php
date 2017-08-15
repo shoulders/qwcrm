@@ -129,7 +129,7 @@ function update_company_details($db, $VAR) {
     global $smarty;
     
     $sql .= "UPDATE ".PRFX."company SET
-            display_name            = ". $db->qstr( $VAR['name']               ).",";
+            display_name            = ". $db->qstr( $VAR['display_name']                   ).",";
                 
     if(!empty($_FILES['logo']['name'])) {
         $sql .="logo                = ". $db->qstr( MEDIA_DIR . $new_logo_filename  ).",";

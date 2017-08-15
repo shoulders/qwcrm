@@ -514,8 +514,8 @@ function set_page_header_and_meta_data($module, $page_tpl, $page_title_from_var 
     }    
     
     // Meta Tags
-    $smarty->assign('meta_description', gettext(strtoupper($module).'_'.strtoupper($page_tpl).'_PAGE_META_DESCRIPTION')   );
-    $smarty->assign('meta_keywords',    gettext(strtoupper($module).'_'.strtoupper($page_tpl).'_PAGE_META_KEYWORDS')      );
+    $smarty->assign('meta_description', gettext(strtoupper($module).'_'.strtoupper($page_tpl).'_META_DESCRIPTION')  );
+    $smarty->assign('meta_keywords',    gettext(strtoupper($module).'_'.strtoupper($page_tpl).'_META_KEYWORDS')     );
     
     return;
     
