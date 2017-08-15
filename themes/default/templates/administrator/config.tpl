@@ -141,7 +141,7 @@
                     <tr>
                         <td align="right"><b>{t}From Email{/t}:</b></td>
                         <td>
-                            <input name="email_mailfrom" class="olotd5" size="55" value="{$qwcrm_config.email_mailfrom}" type="email" maxlength="50" onkeydown="return onlyEmail(event);">
+                            <input name="email_mailfrom" class="olotd5" size="55" value="{$qwcrm_config.email_mailfrom}" type="email" maxlength="50" placeholder="no-reply@quantumwarp.com" onkeydown="return onlyEmail(event);">
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}From Email{/t}</strong></div><hr><div>{t escape=tooltip}The email address that will be used to send site email.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
@@ -155,7 +155,7 @@
                     <tr>
                         <td align="right"><b>{t}Reply To Email{/t}:</b></td>
                         <td>
-                            <input name="email_replyto" class="olotd5" size="55" value="{$qwcrm_config.email_replyto}" type="email" maxlength="50" onkeydown="return onlyEmail(event);">
+                            <input name="email_replyto" class="olotd5" size="55" value="{$qwcrm_config.email_replyto}" type="email" maxlength="50" placeholder="no-reply@quantumwarp.com" onkeydown="return onlyEmail(event);">
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Reply To Email{/t}</strong></div><hr><div>{t escape=tooltip}The email address that will be used to receive end user(s) reply.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>                        
                     </tr>
@@ -176,7 +176,7 @@
                     <tr>
                         <td align="right"><b>{t}Sendmail Path{/t}:</b></td>
                         <td>
-                            <input name="email_sendmail_path" class="olotd5" size="55" value="{$qwcrm_config.email_sendmail_path}" type="text" maxlength="100" onkeydown="return onlyFilePath(event);">
+                            <input name="email_sendmail_path" class="olotd5" size="55" value="{$qwcrm_config.email_sendmail_path}" type="text" maxlength="100" placeholder="/usr/sbin/sendmail" onkeydown="return onlyFilePath(event);">
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Sendmail Path{/t}</strong></div><hr><div>{t escape=tooltip}Enter the path to the sendmail program folder on the host server.<br/>This is only needed when using sendmail and usually does not need to be changed.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
@@ -190,7 +190,7 @@
                     <tr>
                         <td align="right"><b>{t}SMTP Host{/t}:</b></td>
                         <td>
-                            <input name="email_smtp_host" class="olotd5" size="55" value="{$qwcrm_config.email_smtp_host}" type="text" maxlength="50" onkeydown="return onlyURL(event);">
+                            <input name="email_smtp_host" class="olotd5" size="55" value="{$qwcrm_config.email_smtp_host}" type="text" maxlength="50" placeholder="quantumwarp.com" onkeydown="return onlyURL(event);">
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}SMTP Host{/t}</strong></div><hr><div>{t escape=tooltip}Enter the name of the SMTP host.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
@@ -368,14 +368,14 @@
                     <tr>
                         <td align="right"><b>{t}Cookie Domain{/t}</b></td>
                         <td>
-                            <input name="cookie_domain" class="olotd5" size="55" value="{$qwcrm_config.cookie_domain}" type="text" maxlength="50" onkeydown="return onlyURL(event);"/>
+                            <input name="cookie_domain" class="olotd5" size="55" value="{$qwcrm_config.cookie_domain}" type="text" maxlength="50" placeholder="quantumwarp.com" onkeydown="return onlyURL(event);"/>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Cookie Domain{/t}</strong></div><hr><div>{t escape=tooltip}Domain to use when setting session cookies. Precede domain with \'.\' if cookie should be valid for all subdomains.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
                     <tr>
                         <td align="right"><b>{t}Cookie Path{/t}</b></td>
                         <td>
-                            <input name="cookie_path" class="olotd5" size="55" value="{$qwcrm_config.cookie_path}" type="text" maxlength="20" onkeydown="return onlyURL(event);"/>
+                            <input name="cookie_path" class="olotd5" size="55" value="{$qwcrm_config.cookie_path}" type="text" maxlength="20" placeholder="qwcrm/" onkeydown="return onlyURL(event);"/>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Cookie Path{/t}</strong></div><hr><div>{t escape=tooltip}Path the cookie should be valid for.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
