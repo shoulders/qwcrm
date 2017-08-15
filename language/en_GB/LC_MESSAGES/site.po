@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2017-08-15 18:38+0100\n"
-"PO-Revision-Date: 2017-08-15 18:47+0100\n"
+"PO-Revision-Date: 2017-08-15 19:07+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en_GB\n"
@@ -1907,7 +1907,7 @@ msgstr "General"
 #: themes/default/templates/supplier/new.tpl:70
 #: themes/default/templates/supplier/search.tpl:124
 msgid "SUPPLIER_TYPE_6"
-msgstr "Parts"
+msgstr "Online"
 
 #: includes/modules/supplier.php:327
 #: language/_gettext_only/system_varibles.php:107
@@ -1916,7 +1916,7 @@ msgstr "Parts"
 #: themes/default/templates/supplier/new.tpl:71
 #: themes/default/templates/supplier/search.tpl:125
 msgid "SUPPLIER_TYPE_7"
-msgstr "Services"
+msgstr "Parts"
 
 #: includes/modules/supplier.php:330
 #: language/_gettext_only/system_varibles.php:108
@@ -1925,7 +1925,7 @@ msgstr "Services"
 #: themes/default/templates/supplier/new.tpl:72
 #: themes/default/templates/supplier/search.tpl:126
 msgid "SUPPLIER_TYPE_8"
-msgstr "Software"
+msgstr "Services"
 
 #: includes/modules/supplier.php:333
 #: language/_gettext_only/system_varibles.php:109
@@ -1934,7 +1934,7 @@ msgstr "Software"
 #: themes/default/templates/supplier/new.tpl:73
 #: themes/default/templates/supplier/search.tpl:127
 msgid "SUPPLIER_TYPE_9"
-msgstr "Wholesale"
+msgstr "Software"
 
 #: includes/modules/supplier.php:336
 #: language/_gettext_only/system_varibles.php:110
@@ -1943,7 +1943,7 @@ msgstr "Wholesale"
 #: themes/default/templates/supplier/new.tpl:74
 #: themes/default/templates/supplier/search.tpl:128
 msgid "SUPPLIER_TYPE_10"
-msgstr "Web"
+msgstr "Wholesale"
 
 #: includes/modules/supplier.php:339
 #: language/_gettext_only/system_varibles.php:111
@@ -4330,7 +4330,7 @@ msgstr "Educational"
 #: themes/default/templates/workorder/printing/print_customer_workorder_slip.tpl:72
 #: themes/default/templates/workorder/printing/print_technician_workorder_slip.tpl:72
 msgid "CUSTOMER_TYPE_5"
-msgstr "Governmental"
+msgstr "Goverment"
 
 #: language/_gettext_only/system_varibles.php:34
 #: themes/default/templates/customer/blocks/details_customer_details_block.tpl:73
