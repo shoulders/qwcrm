@@ -402,7 +402,7 @@
                                                                 {$customer_details.state}<br>
                                                                 {$customer_details.zip}<br>
                                                                 {$customer_details.country}<br>
-                                                                {$customer_details.phone}<br>
+                                                                {$customer_details.primary_phone}<br>
                                                                 {$customer_details.email}                                                                        
                                                             </td>
                                                         </tr>
@@ -421,7 +421,7 @@
                                                                 {$company_details.state}<br>
                                                                 {$company_details.zip}<br>
                                                                 {$company_details.country}<br>
-                                                                {$company_details.phone}<br>
+                                                                {$company_details.primary_phone}<br>
                                                                 {$company_details.email}
                                                             </td>
                                                         </tr>

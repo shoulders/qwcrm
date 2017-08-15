@@ -118,7 +118,7 @@
                                                                 
                                                                 <!-- Employee -->
                                                                 <td class="olotd4" nowrap>
-                                                                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<center><b>{t}Technician Info{/t}</b></center><hr><b>{t}Employee{/t}: </b>{$workorders[i].employee_display_name}<br><b>{t}Mobile{/t}: </b>{$workorders[i].employee_work_mobile_phone}<br><b>{t}Home{/t}: </b>{$workorders[i].employee_home_phone}<br><b>{t}Email{/t}: </b>{$workorders[i].employee_email}');" onMouseOut="hideddrivetip();">
+                                                                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<center><b>{t}Technician Info{/t}</b></center><hr><b>{t}Employee{/t}: </b>{$workorders[i].employee_display_name}<br><b>{t}Mobile{/t}: </b>{$workorders[i].employee_work_mobile_phone}<br><b>{t}Home{/t}: </b>{$workorders[i].employee_home_primary_phone}<br><b>{t}Email{/t}: </b>{$workorders[i].employee_email}');" onMouseOut="hideddrivetip();">
                                                                     <a class="link1" href="index.php?page=user:details&user_id={$workorders[i].employee_id}">{$workorders[i].employee_display_name}</a>
                                                                 </td>
                                                                 

@@ -74,8 +74,8 @@
                                                             <td class="menuhead" colspan="2">{t}Phone{/t}</td>
                                                         </tr>
                                                         <tr>
-                                                            <td align="right"><b>{t}Phone{/t}</b></td>
-                                                            <td><input class="olotd5" name="phone" size="20" value="{$supplier_details.phone}" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"></td>
+                                                            <td align="right"><b>{t}Primary{/t}</b></td>
+                                                            <td><input class="olotd5" name="primary_phone" size="20" value="{$supplier_details.primary_phone}" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"></td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{t}Mobile{/t}</b></td>

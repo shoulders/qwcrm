@@ -42,7 +42,7 @@
                     </tr>
                     <tr>
                         <td><b>{t}Phone{/t} :&nbsp;</b></td>
-                        <td>{$company_details.phone}</td>
+                        <td>{$company_details.primary_phone}</td>
                     </tr>
                     <tr>
                         <td><b>{t}Website{/t} :&nbsp;</b></td>

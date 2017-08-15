@@ -37,7 +37,7 @@
                     <td><b>{t}Email{/t}</b> {$customer_details.email}</td>
                 </tr>
                 <tr>
-                    <td><b>{t}Phone{/t}</b> {$customer_details.phone}</td>
+                    <td><b>{t}Phone{/t}</b> {$customer_details.primary_phone}</td>
             </table>
         </td>
     </tr>

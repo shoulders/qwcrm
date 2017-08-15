@@ -83,7 +83,7 @@
                                                                 <table>
                                                                     <tr>
                                                                         <td align="right"><strong>{t}Phone{/t}</strong></td>
-                                                                        <td><input name="phone" class="olotd5" value="{$customer_details.phone}" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"/></td>
+                                                                        <td><input name="primary_phone" class="olotd5" value="{$customer_details.primary_phone}" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"/></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td align="right"><strong>{t}Mobile{/t}</strong></td>

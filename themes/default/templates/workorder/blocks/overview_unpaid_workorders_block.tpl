@@ -45,7 +45,7 @@
                 {if $unpaid_workorders[u].employee_display_name == ""}
                     {t}Not Assigned{/t}
                 {else}
-                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<center><b>{t}Technician Info{/t}</b></center><hr><b>{t}Employee{/t}: </b>{$unpaid_workorders[u].employee_display_name}<br><b>{t}Mobile{/t}: </b>{$unpaid_workorders[u].employee_work_mobile_phone}<br><b>{t}Home{/t}: </b>{$unpaid_workorders[u].employee_home_phone}<br><b>{t}Email{/t}: </b>{$unpaid_workorders[u].employee_email}');" onMouseOut="hideddrivetip();">
+                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<center><b>{t}Technician Info{/t}</b></center><hr><b>{t}Employee{/t}: </b>{$unpaid_workorders[u].employee_display_name}<br><b>{t}Mobile{/t}: </b>{$unpaid_workorders[u].employee_work_mobile_phone}<br><b>{t}Home{/t}: </b>{$unpaid_workorders[u].employee_home_primary_phone}<br><b>{t}Email{/t}: </b>{$unpaid_workorders[u].employee_email}');" onMouseOut="hideddrivetip();">
                     <a class="link1" href="index.php?page=user:details&user_id={$unpaid_workorders[u].employee_id}">{$unpaid_workorders[u].employee_display_name}</a>
                 {/if}
             </td>

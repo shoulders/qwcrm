@@ -54,13 +54,13 @@ function display_invoices($db, $direction = 'DESC', $use_pages = false, $page_no
     $sql = "SELECT        
         ".PRFX."invoice.*,           
         ".PRFX."user.display_name AS employee_display_name,
-        ".PRFX."user.work_phone AS employee_work_phone,
+        ".PRFX."user.work_primary_phone AS employee_work_primary_phone,
         ".PRFX."user.work_mobile_phone AS employee_work_mobile_phone,
         ".PRFX."user.home_mobile_phone AS employee_home_mobile_phone,
         ".PRFX."customer.display_name AS customer_display_name,
         ".PRFX."customer.first_name AS customer_first_name,
         ".PRFX."customer.last_name AS customer_last_name,
-        ".PRFX."customer.phone AS customer_phone,
+        ".PRFX."customer.primary_phone AS customer_phone,
         ".PRFX."customer.mobile_phone AS customer_mobile_phone,
         ".PRFX."customer.fax AS customer_fax
         FROM ".PRFX."invoice

@@ -103,7 +103,7 @@
     
     <tr>
         <td class="menutd"><b>{t}Work Phone{/t}</b></td>
-        <td class="menutd">{$user_details.work_phone}</td>
+        <td class="menutd">{$user_details.work_primary_phone}</td>
         <td class="menutd"><b>{t}Work Mobile Phone{/t}</b></td>
         <td class="menutd">{$user_details.work_mobile_phone}</td>
     </tr>
@@ -120,7 +120,7 @@
     
     <tr>
         <td class="menutd"><b>{t}Home Phone{/t}</b></td>
-        <td class="menutd">{$user_details.home_phone}</td>
+        <td class="menutd">{$user_details.home_primary_phone}</td>
         <td class="menutd"><b>{t}Home Mobile Phone{/t}</b></td>
         <td class="menutd">{$user_details.home_mobile_phone}</td>
     </tr>

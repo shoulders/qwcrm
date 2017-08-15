@@ -47,7 +47,7 @@
             <!-- Employee -->
             <td class="olotd4">
                 {if $open_workorders[o].employee_id != ''}
-                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<center><b>{t}Contact{/t}</b></center><hr><b>{t}Work{/t} </b>{$open_workorders[o].employee_work_phone}<br><b>{t}Mobile{/t} </b>{$open_workorders[o].employee_mobile_phone}<br><b>{t}Home{/t}:</b> {$open_workorders[o].employee_home_phone}');" onMouseOut="hideddrivetip();"><a class="link1" href="index.php?page=user:details&user_id={$open_workorders[o].employee_id}">{$open_workorders[o].employee_display_name}</a>
+                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<center><b>{t}Contact{/t}</b></center><hr><b>{t}Work{/t} </b>{$open_workorders[o].employee_work_primary_phone}<br><b>{t}Mobile{/t} </b>{$open_workorders[o].employee_mobile_phone}<br><b>{t}Home{/t}:</b> {$open_workorders[o].employee_home_primary_phone}');" onMouseOut="hideddrivetip();"><a class="link1" href="index.php?page=user:details&user_id={$open_workorders[o].employee_id}">{$open_workorders[o].employee_display_name}</a>
                 {else}
                     {t}Not Assigned{/t}
                 {/if}

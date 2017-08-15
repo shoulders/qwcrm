@@ -56,7 +56,7 @@
                             {$workorder_details.workorder_id}<br>
                             {$smarty.now|date_format:$date_format}<br>
                             {$workorder_details.open_date|date_format:$date_format}<br>
-                            {$customer_details.phone}<br>
+                            {$customer_details.primary_phone}<br>
                             {$customer_details.mobile_phone}<br>
                             {$customer_details.email}<br>
                         </td>        

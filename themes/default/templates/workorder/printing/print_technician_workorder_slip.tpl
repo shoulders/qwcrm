@@ -58,9 +58,9 @@
                             </p>
                             <p>
                                 <b>{t}Contact{/t}: </b>{$customer_details.first_name} {$customer_details.last_name}<br />
-                                <b>{t}Phone{/t}: </b>{$customer_details.phone}<br>
+                                <b>{t}Phone{/t}: </b>{$customer_details.primary_phone}<br>
                                 <b>{t}Mobile{/t}: </b>{$customer_details.mobile_phone}<br>
-                                <b>{t}Fax{/t}: </b>{$customer_details.phone}<br>                                
+                                <b>{t}Fax{/t}: </b>{$customer_details.primary_phone}<br>                                
                                 <b>{t}Email{/t}: </b>{$customer_details.email}<br>                            
                             </p>
                             <p>
@@ -96,7 +96,7 @@
                                 {$company_details.country}
                             </p>
                             <p>
-                                <b>{t}Phone{/t}: </b>{$employee_details.work_phone}<br>                        
+                                <b>{t}Phone{/t}: </b>{$employee_details.work_primary_phone}<br>                        
                                 <b>{t}Mobile{/t}: </b>{$company_details.mobile}<br>
                                 <b>{t}Fax{/t}: </b>{$company_details.fax}<br>
                                 <b>{t}Website{/t}: </b>{$company_details.website}<br>   

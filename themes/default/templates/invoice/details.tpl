@@ -69,7 +69,7 @@
                                                             {$customer_details.state}<br>
                                                             {$customer_details.zip}<br>
                                                             {$customer_details.country}<br>
-                                                            {$customer_details.phone}<br>
+                                                            {$customer_details.primary_phone}<br>
                                                             {$customer_details.email}                                                                        
                                                         </td>
                                                     </tr>

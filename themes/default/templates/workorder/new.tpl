@@ -135,7 +135,7 @@
                                                         <td class="menutd"><b>{t}Address{/t}</b></td>
                                                         <td class="menutd"></td>
                                                         <td class="menutd"><b>{t}Phone{/t}</b></td>
-                                                        <td class="menutd">{$customer_details.phone}</td>
+                                                        <td class="menutd">{$customer_details.primary_phone}</td>
                                                     </tr>
                                                     <tr>
                                                         <td class="menutd" colspan="2">
@@ -146,7 +146,7 @@
                                                             {$customer_details.country}
                                                         </td>
                                                         <td class="menutd"><b>{t}Fax{/t}</b></td>
-                                                        <td class="menutd"> {$customer_details.work_phone}</td>
+                                                        <td class="menutd"> {$customer_details.work_primary_phone}</td>
                                                     </tr>
                                                     <tr>
                                                         <td class="menutd"></td>

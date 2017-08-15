@@ -52,7 +52,7 @@
                         {$customer_details.country}
                     </td>
                     <td class="menutd"><b>{t}Phone{/t}</b></td>
-                    <td class="menutd">{$customer_details.phone}</td>
+                    <td class="menutd">{$customer_details.primary_phone}</td>
                 </tr>
                 <tr>
                     <td class="menutd"></td>

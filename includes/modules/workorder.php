@@ -73,9 +73,9 @@ function display_workorders($db, $direction = 'DESC', $use_pages = false, $page_
     $sql =  "SELECT            
             ".PRFX."user.email AS employee_email,
             ".PRFX."user.display_name AS employee_display_name,
-            ".PRFX."user.work_phone AS employee_work_phone,
+            ".PRFX."user.work_primary_phone AS employee_work_primary_phone,
             ".PRFX."user.work_mobile_phone AS employee_work_mobile_phone,
-            ".PRFX."user.home_phone AS employee_home_phone,
+            ".PRFX."user.home_primary_phone AS employee_home_primary_phone,
                 
             ".PRFX."customer.customer_id,
             ".PRFX."customer.display_name AS customer_display_name,
@@ -86,7 +86,7 @@ function display_workorders($db, $direction = 'DESC', $use_pages = false, $page_
             ".PRFX."customer.state AS customer_state,
             ".PRFX."customer.zip AS customer_zip,
             ".PRFX."customer.country AS customer_country,
-            ".PRFX."customer.phone AS customer_phone,
+            ".PRFX."customer.primary_phone AS customer_phone,
             ".PRFX."customer.mobile_phone AS customer_mobile_phone,
             ".PRFX."customer.fax AS customer_fax,
                 

@@ -158,7 +158,7 @@
                                                                             <table>
                                                                                 <tr>
                                                                                     <td align="right"><strong>{t}Work Phone{/t}</strong></td>
-                                                                                    <td><input name="work_phone" class="olotd5" value="{$user_details.work_phone}" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"></td>
+                                                                                    <td><input name="work_primary_phone" class="olotd5" value="{$user_details.work_primary_phone}" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"></td>
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td align="right"><strong>{t}Work Mobile Phone{/t}</strong></td>
@@ -182,7 +182,7 @@
                                                                             <table>
                                                                                 <tr>
                                                                                     <td align="right"><strong>{t}Home Phone{/t}</strong></td>
-                                                                                    <td><input name="home_phone" class="olotd5" value="{$user_details.home_phone}" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"></td>
+                                                                                    <td><input name="home_primary_phone" class="olotd5" value="{$user_details.home_primary_phone}" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"></td>
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td align="right"><strong>{t}Home Mobile Phone{/t}</strong></td>

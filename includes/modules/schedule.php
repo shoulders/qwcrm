@@ -395,14 +395,14 @@ function build_ics_description($type, $single_schedule, $customer, $workorder) {
                         html_to_textarea($single_schedule['notes']);
 
         // Contact Information
-        $description .= gettext("Contact Information").''.'\n\n'.
-                        gettext("Company")  .': '   .$customer['display_name'].'\n\n'.
-                        gettext("Contact")  .': '   .$customer['first_name'].' '.$customer['last_name'].'\n\n'.
-                        gettext("Phone")    .': '   .$customer['phone'].'\n\n'.
-                        gettext("Mobile")   .': '   .$customer['mobile_phone'].'\n\n'.
-                        gettext("Website")  .': '   .$customer['website'].'\n\n'.
-                        gettext("Email")    .': '   .$customer['email'].'\n\n'.
-                        gettext("Address")  .': '   .build_single_line_address($customer['address'], $customer['city'], $customer['state'], $customer['zip']).'\n\n';                        
+        $description .= gettext("Contact Information")  .''.'\n\n'.
+                        gettext("Company")              .': '   .$customer['display_name'].'\n\n'.
+                        gettext("Contact")              .': '   .$customer['first_name'].' '.$customer['last_name'].'\n\n'.
+                        gettext("Phone")                .': '   .$customer['primary_phone'].'\n\n'.
+                        gettext("Mobile")               .': '   .$customer['mobile_phone'].'\n\n'.
+                        gettext("Website")              .': '   .$customer['website'].'\n\n'.
+                        gettext("Email")                .': '   .$customer['email'].'\n\n'.
+                        gettext("Address")              .': '   .build_single_line_address($customer['address'], $customer['city'], $customer['state'], $customer['zip']).'\n\n';                        
     
     }
     
@@ -430,7 +430,7 @@ function build_ics_description($type, $single_schedule, $customer, $workorder) {
                         '<p>'.
                         '<strong>'.gettext("Company")   .':</strong> '  .$customer['display_name'].'<br>'.
                         '<strong>'.gettext("Contact")   .':</strong> '  .$customer['first_name'].' '.$customer['last_name'].'<br>'.              
-                        '<strong>'.gettext("Phone")     .':</strong> '  .$customer['phone'].'<br>'.
+                        '<strong>'.gettext("Phone")     .':</strong> '  .$customer['primary_phone'].'<br>'.
                         '<strong>'.gettext("Mobile")    .':</strong> '  .$customer['mobile_phone'].'<br>'.
                         '<strong>'.gettext("Website")   .':</strong> '  .$customer['website'].
                         '<strong>'.gettext("Email")     .':</strong> '  .$customer['email'].'<br>'.                        

@@ -84,8 +84,8 @@
                                                             <td colspan="2">
                                                                 <table>
                                                                     <tr>
-                                                                        <td align="right"><b>{t}Phone{/t}</b></td>
-                                                                        <td><input name="phone" class="olotd5" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"></td>
+                                                                        <td align="right"><b>{t}Primary{/t}</b></td>
+                                                                        <td><input name="primary_phone" class="olotd5" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td align="right"><b>{t}Mobile{/t}</b></td>

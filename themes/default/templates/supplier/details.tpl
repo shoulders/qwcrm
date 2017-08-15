@@ -33,7 +33,7 @@
                                             <td class="menutd"><b>{t}Name{/t}</b></td>
                                             <td class="menutd">{$supplier_details.display_name}</td>
                                             <td class="menutd"><b>{t}Phone{/t}</b></td>
-                                            <td class="menutd">{$supplier_details.phone}</td>
+                                            <td class="menutd">{$supplier_details.primary_phone}</td>
                                         </tr>                                        
                                         <tr>
                                             <td class="menutd"><b>{t}Contact{/t}</b></td>

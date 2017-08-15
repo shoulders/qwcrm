@@ -131,8 +131,8 @@
                                                             <td class="olotd4">{$search_result[i].first_name}</td>
                                                             <td class="olotd4">{$search_result[i].last_name}</td>
                                                             <td class="olotd4">
-                                                                <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<b>{t}Home{/t} </b>{$search_result[i].home_phone}<br><b>{t}Mobile{/t} </b>{$search_result[i].work_mobile_phone}');" onMouseOut="hideddrivetip();">
-                                                                {$search_result[i].work_phone}
+                                                                <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<b>{t}Home{/t} </b>{$search_result[i].home_primary_phone}<br><b>{t}Mobile{/t} </b>{$search_result[i].work_mobile_phone}');" onMouseOut="hideddrivetip();">
+                                                                {$search_result[i].work_primary_phone}
                                                             </td>
                                                             <td class="olotd4">
                                                                 {section name=b loop=$usergroups}

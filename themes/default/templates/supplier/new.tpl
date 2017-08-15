@@ -78,7 +78,7 @@
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{t}Phone{/t}</b></td>
-                                                                            <td><input name="phone" class="olotd5" size="20" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"></b></td>
+                                                                            <td><input name="primary_phone" class="olotd5" size="20" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"></b></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{t}Mobile{/t}</b></td>
