@@ -8,11 +8,9 @@ if(isset($VAR['submit'])) {
 
     /* General Section */
 
-    // Change dates to proper timestamps and assign
+    // Change dates to proper timestamps
     $start_date = date_to_timestamp($VAR['start_date']);    
-    $end_date = date_to_timestamp($VAR['end_date']);
-    $smarty->assign('start_date', $start_date);
-    $smarty->assign('end_date', $end_date);
+    $end_date = date_to_timestamp($VAR['end_date']);    
     
     /* QWcrm Totals Sections */
     
@@ -63,7 +61,15 @@ if(isset($VAR['submit'])) {
     $taxable_profit_amount = $invoice_amount_sum - ($expense_gross_amount_sum - $refund_gross_amount_sum);
     $smarty->assign('taxable_profit_amount', $taxable_profit_amount);
     
+} else {
+    
+    // Load company finacial year dates
+    $start_date = get_company_details($db, 'year_start'); 
+    $end_date = get_company_details($db, 'year_end'); 
+    
 }
 
 // Build the page
+$smarty->assign('start_date', $start_date);
+$smarty->assign('end_date', $end_date);
 $BuildPage .= $smarty->fetch('report/financial.tpl');
