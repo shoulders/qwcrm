@@ -14,7 +14,7 @@ defined('_QWEXEC') or die;
 /* -- */
 
 // Set Path for ADODB in the php include path
-set_include_path(get_include_path() . PATH_SEPARATOR . LIBRARIES_DIR.'adodb'.SEP);
+set_include_path(get_include_path() . PATH_SEPARATOR . LIBRARIES_DIR.'adodb/');
 require('adodb.inc.php');
 
 // create adodb database connection

@@ -4,7 +4,7 @@ defined('_QWEXEC') or die;
 
 // Misc
 //define('SEP',                       DIRECTORY_SEPARATOR         );          // on windows = '\'
-define('SEP',                       '/'                         );
+//define('SEP',                       '/'                         );
 
 // Information and Configuration
 define('QWCRM_VERSION' ,            '3.0.0'                     );

@@ -3,7 +3,7 @@
 defined('_QWEXEC') or die;
 
 // Set Path for SMARTY in the php include path
-set_include_path(get_include_path() . PATH_SEPARATOR . LIBRARIES_DIR.'smarty'.SEP);
+set_include_path(get_include_path() . PATH_SEPARATOR . LIBRARIES_DIR.'smarty/');
 require_once('Smarty.class.php');
 
 // Load Smarty template engine - http://www.smarty.net/docs/en/api.variables.tpl

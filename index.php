@@ -310,7 +310,7 @@ if(isset($VAR['warning_msg'])){
 if($QConfig->maintenance == true){
     
     // Set to the maintenance page    
-    $page_display_controller = 'modules'.SEP.'core'.SEP.'maintenance.php'; 
+    $page_display_controller = 'modules/core/maintenance.php'; 
     $module     = 'core';
     $page_tpl   = 'maintenance';
     $VAR['theme'] = 'off';   
@@ -327,15 +327,15 @@ elseif(isset($VAR['page']) && $VAR['page'] != ''){
 
     // Explode the URL so we can get the module and page_tpl
     list($module, $page_tpl)    = explode(':', $VAR['page']);
-    $page_display_controller    = 'modules'.SEP.$module.SEP.$page_tpl.'.php';
+    $page_display_controller    = 'modules/'.$module.'/'.$page_tpl.'.php';
 
     // Check to see if the page exists and set it, otherwise send them to the 404 page
     if (file_exists($page_display_controller)){
-        $page_display_controller = 'modules'.SEP.$module.SEP.$page_tpl.'.php';            
+        $page_display_controller = 'modules/'.$module.'/'.$page_tpl.'.php';            
     } else {
         
         // set to the 404 error page 
-        $page_display_controller = 'modules'.SEP.'core'.SEP.'404.php'; 
+        $page_display_controller = 'modules/core/404.php'; 
         $module     = 'core';
         $page_tpl   = '404';
         
@@ -350,12 +350,12 @@ elseif(isset($VAR['page']) && $VAR['page'] != ''){
 
     if(isset($login_token)){
         // If logged in
-        $page_display_controller    = 'modules'.SEP.'core'.SEP.'dashboard.php';
+        $page_display_controller    = 'modules/core/dashboard.php';
         $module                     = 'core';
         $page_tpl                   = 'dashboard';       
     } else {
         // If NOT logged in
-        $page_display_controller    = 'modules'.SEP.'core'.SEP.'home.php';
+        $page_display_controller    = 'modules/core/home.php';
         $module                     = 'core';
         $page_tpl                   = 'home';            
     }
@@ -384,16 +384,16 @@ if(check_acl($db, $login_usergroup_id, $module, $page_tpl)){
 
     // Fetch Header Block
     if($VAR['theme'] != 'off'){        
-        require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_header_block.php');
+        require('modules/core/blocks/theme_header_block.php');
     } else {
         //echo '<!DOCTYPE html><head></head><body>';
-        require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_header_theme_off_block.php');
+        require('modules/core/blocks/theme_header_theme_off_block.php');
     }
 
     // Fetch Header Legacy Template Code and Menu Block - Customers, Guests and Public users will not see the menu
     if($VAR['theme'] != 'off' && isset($login_token) && $login_usergroup_id != 7 && $login_usergroup_id != 8 && $login_usergroup_id != 9){       
-        $BuildPage .= $smarty->fetch('core'.SEP.'blocks'.SEP.'theme_header_legacy_supplement_block.tpl');
-        require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_menu_block.php');        
+        $BuildPage .= $smarty->fetch('core/blocks/theme_header_legacy_supplement_block.tpl');
+        require('modules/core/blocks/theme_menu_block.php');        
     }    
 
     // Fetch the Page Content
@@ -401,17 +401,17 @@ if(check_acl($db, $login_usergroup_id, $module, $page_tpl)){
 
     // Fetch Footer Legacy Template code Block (closes content table)
     if($VAR['theme'] != 'off' && isset($login_token) && $login_usergroup_id != 7 && $login_usergroup_id != 8 && $login_usergroup_id != 9){
-        $BuildPage .= $smarty->fetch('core'.SEP.'blocks'.SEP.'theme_footer_legacy_supplement_block.tpl');             
+        $BuildPage .= $smarty->fetch('core/blocks/theme_footer_legacy_supplement_block.tpl');             
     }
 
     // Fetch the Footer Block
     if($VAR['theme'] != 'off'){        
-        require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_footer_block.php');        
+        require('modules/core/blocks/theme_footer_block.php');        
     }    
 
     // Fetch the Debug Block
     if($QConfig->qwcrm_debug == true){
-        require('modules'.SEP.'core'.SEP.'blocks'.SEP.'theme_debug_block.php');        
+        require('modules/core/blocks/theme_debug_block.php');        
         $BuildPage .= "\r\n</body>\r\n</html>";
     } else {
         $BuildPage .= "\r\n</body>\r\n</html>";
