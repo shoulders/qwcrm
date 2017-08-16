@@ -8,7 +8,7 @@
         <td class="olohead">{t}Customer{/t}</td>
         <td class="olohead">{t}Scope{/t}</td>
         <td class="olohead">{t}Status{/t}</td>
-        <td class="olohead">{t}Techician{/t}</td>
+        <td class="olohead">{t}Technician{/t}</td>
         <td class="olohead">{t}Action{/t}</td>
     </tr>
     {section name=o loop=$open_workorders}

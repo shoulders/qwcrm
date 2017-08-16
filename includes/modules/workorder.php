@@ -35,7 +35,7 @@ function display_workorders($db, $direction = 'DESC', $use_pages = false, $page_
     /* Filter the Records */
     
     // Default Action
-    $whereTheseRecords = " WHERE ".PRFX."workorder.workorder_id";
+    $whereTheseRecords = "WHERE ".PRFX."workorder.workorder_id";
     
     // Restrict results by search category and search term
     if($search_term != null) {$whereTheseRecords .= " AND ".PRFX."user.$search_category LIKE '%$search_term%'";} 

@@ -7,7 +7,7 @@
         <td class="olohead"><b>{t}Customer{/t}</b></td>
         <td class="olohead"><b>{t}Scope{/t}</b></td>
         <td class="olohead"><b>{t}Status{/t}</b></td>
-        <td class="olohead"><b>{t}Techician{/t}</b></td>
+        <td class="olohead"><b>{t}Technician{/t}</b></td>
         <td class="olohead"><b>{t}Action{/t}</b></td>
     </tr>
     {section name=w loop=$waiting_for_parts_workorders}        
