@@ -1,5 +1,5 @@
-<!-- overview_assigned_workorders_block.tpl -->
-<b>{t}Assigned{/t}</b>
+<!-- overview_workorders_assigned_block.tpl -->
+<b>{t}Assigned{/t} ({$login_display_name})</b>
 <table class="olotable" width="100%" border="0" cellpadding="4" cellspacing="0">
     <tr>
         <td class="olohead" width="6"><b>{t}WO ID{/t}</b></td>
@@ -33,11 +33,10 @@
                 {if $assigned_workorders[a].workorder_status == '1'}{t}WORKORDER_STATUS_1{/t}{/if}
                 {if $assigned_workorders[a].workorder_status == '2'}{t}WORKORDER_STATUS_2{/t}{/if}
                 {if $assigned_workorders[a].workorder_status == '3'}{t}WORKORDER_STATUS_3{/t}{/if}
+                {if $assigned_workorders[a].workorder_status == '4'}{t}WORKORDER_STATUS_4{/t}{/if}
+                {if $assigned_workorders[a].workorder_status == '5'}{t}WORKORDER_STATUS_5{/t}{/if}
                 {if $assigned_workorders[a].workorder_status == '6'}{t}WORKORDER_STATUS_6{/t}{/if}
-                {if $assigned_workorders[a].workorder_status == '7'}{t}WORKORDER_STATUS_7{/t}{/if}
-                {if $assigned_workorders[a].workorder_status == '8'}{t}WORKORDER_STATUS_8{/t}{/if}
-                {if $assigned_workorders[a].workorder_status == '9'}{t}WORKORDER_STATUS_9{/t}{/if}
-                {if $assigned_workorders[a].workorder_status == '10'}{t}WORKORDER_STATUS_10{/t}{/if}
+                {if $assigned_workorders[a].workorder_status == '7'}{t}WORKORDER_STATUS_7{/t}{/if}                
             </td>
 
             <!-- Employee -->

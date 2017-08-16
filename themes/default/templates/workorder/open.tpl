@@ -109,11 +109,10 @@
                                                                     {if $workorders[i].workorder_status == '1'}{t}WORKORDER_STATUS_1{/t}{/if}
                                                                     {if $workorders[i].workorder_status == '2'}{t}WORKORDER_STATUS_2{/t}{/if}
                                                                     {if $workorders[i].workorder_status == '3'}{t}WORKORDER_STATUS_3{/t}{/if}
+                                                                    {if $workorders[i].workorder_status == '4'}{t}WORKORDER_STATUS_4{/t}{/if}
+                                                                    {if $workorders[i].workorder_status == '5'}{t}WORKORDER_STATUS_5{/t}{/if}
                                                                     {if $workorders[i].workorder_status == '6'}{t}WORKORDER_STATUS_6{/t}{/if}
-                                                                    {if $workorders[i].workorder_status == '7'}{t}WORKORDER_STATUS_7{/t}{/if}
-                                                                    {if $workorders[i].workorder_status == '8'}{t}WORKORDER_STATUS_8{/t}{/if}
-                                                                    {if $workorders[i].workorder_status == '9'}{t}WORKORDER_STATUS_9{/t}{/if}
-                                                                    {if $workorders[i].workorder_status == '10'}{t}WORKORDER_STATUS_10{/t}{/if}
+                                                                    {if $workorders[i].workorder_status == '7'}{t}WORKORDER_STATUS_7{/t}{/if}                                                                    
                                                                 </td>
                                                                 
                                                                 <!-- Employee -->

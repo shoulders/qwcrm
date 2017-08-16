@@ -19,26 +19,32 @@
                                     <table width="100%" border="0" cellpadding="10" cellspacing="0">
                                         <tr>
                                             <td>
-                                                <a name="new"></a>                                                
-                                                {include file='workorder/blocks/overview_new_workorders_block.tpl'}
+                                                <a name="unassigned"></a>                                                
+                                                {include file='workorder/blocks/overview_workorders_unassigned_block.tpl'}
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>
                                                 <a name="assigned"></a>
-                                                {include file='workorder/blocks/overview_assigned_workorders_block.tpl'}
+                                                {include file='workorder/blocks/overview_workorders_assigned_block.tpl'}
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>
-                                                <a name="awaiting"></a>
-                                                {include file='workorder/blocks/overview_awaiting_parts_workorders_block.tpl'}
+                                                <a name="waiting_for_parts"></a>
+                                                {include file='workorder/blocks/overview_workorders_waiting_for_parts_block.tpl'}
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>
-                                                <a name="payment"></a>
-                                                {include file='workorder/blocks/overview_unpaid_workorders_block.tpl'}
+                                                <a name="on_hold"></a>
+                                                {include file='workorder/blocks/overview_workorders_on_hold_block.tpl'}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <a name="management"></a>
+                                                {include file='workorder/blocks/overview_workorders_management_block.tpl'}
                                             </td>
                                         </tr>
                                     </table>

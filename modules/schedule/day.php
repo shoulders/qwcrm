@@ -10,7 +10,7 @@ require(INCLUDES_DIR.'modules/workorder.php');
 if(isset($workorder_id)) { 
     
     // If the workorder is closed, remove the workorder_id preventing further schedule creation for this workorder_id
-    if(!check_workorder_is_open($db, $workorder_id)) {        
+    if(get_workorder_details($db, $workorder_id, 'is_closed')) {        
         $smarty->assign('warning_msg', gettext("Can not set a schedule for closed work orders - Work Order ID").' '.$workorder_id);
         unset($workorder_id);
     }

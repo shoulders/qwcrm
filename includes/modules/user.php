@@ -204,7 +204,12 @@ function insert_user($db, $VAR){
 #     Get User Details              #
 #####################################
 
-function get_user_details($db, $user_id, $item = null) {
+function get_user_details($db, $user_id = null, $item = null) {
+    
+    // This allows for workorder:status to work
+    if(!$user_id){
+        return;        
+    }
     
     $sql = "SELECT * FROM ".PRFX."user WHERE user_id =".$user_id;
     
@@ -313,7 +318,7 @@ function get_usergroups($db, $user_type = null) {
     
 function get_active_users($db, $user_type = null) {    
     
-    $sql = "SELECT user_id, display_name FROM ".PRFX."user WHERE active=1";
+    $sql = "SELECT user_id, display_name FROM ".PRFX."user WHERE active='1'";
     
     // Filter the results by user type customer/employee
     if($user_type === 'customers') {$sql .= " AND is_employee='0'";}

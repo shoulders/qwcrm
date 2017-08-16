@@ -27,14 +27,13 @@
                                     <form action="index.php?page=workorder:status" method="post" name="new_workorder_status" id="new_workorder_status">
                                         <b>{t}New Status{/t}: </b>
                                         <select class="olotd4" name="assign_status">
-                                            <option value="1"{if $workorder_status == 1} selected{/if}>{t}WORKORDER_STATUS_1{/t}</option>
-                                            <option value="2"{if $workorder_status == 2} selected{/if}>{t}WORKORDER_STATUS_2{/t}</option>
-                                            <option value="3"{if $workorder_status == 3} selected{/if}>{t}WORKORDER_STATUS_3{/t}</option>                                            
-                                            <option value="6"{if $workorder_status == 6} selected{/if}>{t}WORKORDER_STATUS_6{/t}</option>
-                                            <option value="7"{if $workorder_status == 7} selected{/if}>{t}WORKORDER_STATUS_7{/t}</option>
-                                            <option value="8"{if $workorder_status == 8} selected{/if}>{t}WORKORDER_STATUS_8{/t}</option>
-                                            <option value="9"{if $workorder_status == 9} selected{/if}>{t}WORKORDER_STATUS_9{/t}</option>
-                                            <option value="10"{if $workorder_status == 10} selected{/if}>{t}WORKORDER_STATUS_10{/t}</option>  
+                                            <option value="1"{if $workorder_status == '1'} selected{/if}>{t}WORKORDER_STATUS_1{/t}</option>
+                                            <option value="2"{if $workorder_status == '2'} selected{/if}>{t}WORKORDER_STATUS_2{/t}</option>
+                                            <option value="3"{if $workorder_status == '3'} selected{/if}>{t}WORKORDER_STATUS_3{/t}</option>                                            
+                                            <option value="4"{if $workorder_status == '4'} selected{/if}>{t}WORKORDER_STATUS_4{/t}</option>
+                                            <option value="5"{if $workorder_status == '5'} selected{/if}>{t}WORKORDER_STATUS_5{/t}</option>
+                                            <option value="6"{if $workorder_status == '6'} selected{/if}>{t}WORKORDER_STATUS_6{/t}</option>
+                                            <option value="7"{if $workorder_status == '7'} selected{/if}>{t}WORKORDER_STATUS_7{/t}</option>                                            
                                         </select>                                        
                                         <input type="hidden" name="updated_by" value="{$login_user_id}">
                                         <input type="hidden" name="workorder_id" value="{$workorder_id}">
@@ -67,7 +66,7 @@
                                 <!-- Delete Workorder Button -->                        
                                 <td class="olotd4" align="center" width="33%"> 
                                     <!-- if work order is created and open, you can delete it, otherwise you cannot -->                                        
-                                    {if $workorder_status == 1 || $workorder_status == 10}
+                                    {if $allowed_to_delete}
                                         <form method="post" action="index.php?page=workorder:status">
                                             <input name="delete" value="{t}Delete{/t}" type="submit" onClick="return confirmDelete('{t}Are you sure you want to delete this Workorder?{/t}');">
                                             <input type="hidden" name="workorder_id" value="{$workorder_id}">

@@ -35,6 +35,7 @@ if(isset($VAR['delete'])) {
 }
 
 // Build the page with the current status from the database
+$smarty->assign('allowed_to_delete',            check_workorder_status_allows_for_deletion($db, $workorder_id)  );
 $smarty->assign('active_employees',             get_active_users($db, 'employees')                              );
 $smarty->assign('workorder_status',             get_workorder_details($db, $workorder_id, 'status')             );
 $smarty->assign('assigned_employee_id',         $assigned_employee_id                                           );

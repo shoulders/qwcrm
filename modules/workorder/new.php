@@ -15,7 +15,7 @@ if($customer_id == '') {
 if(isset($VAR['submit'])){
     
     // insert the submitted workorder and return it's id
-    $workorder_id = insert_workorder($db, $customer_id, $VAR['employee_id'], $VAR['scope'], $VAR['description'], $VAR['comments']);      
+    $workorder_id = insert_workorder($db, $customer_id, $VAR['scope'], $VAR['description'], $VAR['comments']);      
     
     // load the workorder details page
     force_page('workorder', 'details&workorder_id='.$workorder_id, 'information_msg='.gettext("New Work Order created."));

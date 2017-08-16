@@ -671,7 +671,7 @@ function build_calendar_matrix($db, $start_year, $start_month, $start_day, $empl
                 // Links for schedule
                 $calendar .= "<b><a href=\"index.php?page=workorder:details&workorder_id=".$scheduleObject[$i]['workorder_id']."\">".gettext("Work Order")."</a> - </b>";
                 $calendar .= "<b><a href=\"index.php?page=schedule:details&schedule_id=".$scheduleObject[$i]['schedule_id']."\">".gettext("Details")."</a></b>";
-                if(check_workorder_is_open($db, $scheduleObject[$i]['workorder_id'])) {                    
+                if(!get_workorder_details($db, $scheduleObject[$i]['workorder_id'], 'is_closed')) {                    
                     $calendar .= " - <b><a href=\"index.php?page=schedule:edit&schedule_id=".$scheduleObject[$i]['schedule_id']."\">".gettext("Edit")."</a></b> - ".
                                     "<b><a href=\"index.php?page=schedule:icalendar&schedule_id=".$scheduleObject[$i]['schedule_id']."&theme=print\">".gettext("iCalendar")."</a></b> - ".
                                     "<b><a href=\"index.php?page=schedule:delete&schedule_id=".$scheduleObject[$i]['schedule_id']."\" onclick=\"return confirmDelete('".gettext("Are you sure you want to delete this schedule?")."');\">".gettext("Delete")."</a></b>\n";                                    

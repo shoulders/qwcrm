@@ -13,16 +13,13 @@
 
 /* Workorder Status */
 
-gettext("WORKORDER_STATUS_1");  // {t}Created{/t}
-gettext("WORKORDER_STATUS_2");  // {t}Assigned{/t}
-gettext("WORKORDER_STATUS_3");  // {t}Waiting For Parts{/t}
-//gettext("WORKORDER_STATUS_4");
-//gettext("WORKORDER_STATUS_5");
-gettext("WORKORDER_STATUS_6");  // {t}Closed{/t}
-gettext("WORKORDER_STATUS_7");  // {t}Waiting For Payment{/t}
-gettext("WORKORDER_STATUS_8");  // {t}Payment Made{/t}
-gettext("WORKORDER_STATUS_9");  // {t}Pending{/t}
-gettext("WORKORDER_STATUS_10"); // {t}Open{/t}
+gettext("WORKORDER_STATUS_1");  // Unassigned
+gettext("WORKORDER_STATUS_2");  // Assigned
+gettext("WORKORDER_STATUS_3");  // Waiting For Parts
+gettext("WORKORDER_STATUS_4");  // On Hold
+gettext("WORKORDER_STATUS_5");  // Management
+gettext("WORKORDER_STATUS_6");  // Closed without Invoice
+gettext("WORKORDER_STATUS_7");  // Closed with Invoice
 
 /* Customer */
 

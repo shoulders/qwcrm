@@ -80,8 +80,7 @@
                                                                     </tr>
                                                                 </table>
                                                                 <br>
-                                                                <input name="customer_id" value="{$customer_id}" type="hidden">                                                    
-                                                                <input name="employee_id" value="{$login_user_id}" type="hidden">
+                                                                <input name="customer_id" value="{$customer_id}" type="hidden">                                                                
                                                                 <button type="submit" name="submit" value="submit">{t}Submit{/t}</button>                                                   
                                                                 <br>
                                                                 <br>
