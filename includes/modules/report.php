@@ -44,7 +44,7 @@ defined('_QWEXEC') or die;
 #     Count Work Orders                 #
 #########################################
 
-function count_workorders_with_status($db, $status, $start_date = null, $end_date = null) {
+function count_workorders($db, $status, $user_id = null, $start_date = null, $end_date = null) {
     
     // Default Action
     $whereTheseRecords = " WHERE workorder_id >= '1'";
@@ -69,6 +69,11 @@ function count_workorders_with_status($db, $status, $start_date = null, $end_dat
             
         }
         
+    }
+    
+    // Filter by user
+    if($user_id) {
+        $whereTheseRecords .= " WHERE employee_id=".$db->qstr($user_id);
     }
     
     // Filter by Date
@@ -98,7 +103,7 @@ function count_workorders_with_status($db, $status, $start_date = null, $end_dat
 #     Count Invoices                               #
 ####################################################
 
-function count_invoices($db, $status, $start_date = null, $end_date = null) {    
+function count_invoices($db, $status, $user_id = null, $start_date = null, $end_date = null) {    
     
     // Default Action
     $whereTheseRecords = " WHERE invoice_id >= '0'";
@@ -129,6 +134,11 @@ function count_invoices($db, $status, $start_date = null, $end_date = null) {
             //$whereTheseRecords .= " AND ".PRFX."invoice.status= ".$db->qstr($status);
             
         }
+        
+    // Filter by user
+    if($user_id) {
+        $whereTheseRecords .= " WHERE employee_id=".$db->qstr($user_id);
+    }
         
     // Filter by Date
     if($start_date && $end_date) {
@@ -699,69 +709,4 @@ function sum_refunds_gross_amount_in_selected_period($db, $start_date, $end_date
         
     }   
     
-}
-
-/* Users */
-
-#################################################
-# Count a User's Work Orders for a given status #
-#################################################
-
-function count_user_workorders_with_status($db, $user_id, $workorder_status){
-    
-    // Default Action
-    $whereTheseRecords = " WHERE employee_id=".$db->qstr($user_id);
-    
-    // All Open workorders
-    if($workorder_status == 'open') {
-
-        $whereTheseRecords .= " AND ".PRFX."workorder.is_closed != '1'";
-
-    // All Closed workorders
-    } elseif($workorder_status == 'closed') {
-
-        $whereTheseRecords .= " AND ".PRFX."workorder.is_closed = '1'";
-
-    // Return Workorders for the given status
-    } else {
-
-        $whereTheseRecords .= " AND ".PRFX."workorder.status =".$db->qstr($workorder_status);
-
-    }
-    
-    $sql = "SELECT COUNT(*) AS workorder_status_count
-            FROM ".PRFX."workorder
-            ".$whereTheseRecords;
-    
-    if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count the number of Work Orders for the user for the defined status."));
-        exit;
-    } else {
-       
-       return  $rs->fields['workorder_status_count']; 
-       
-    }
-   
-}
-
-###############################################
-# Count Employee Invoices for a given status  #
-###############################################
-
-function count_user_invoices_with_status($db, $user_id, $invoice_status){
-    
-    $sql = "SELECT COUNT(*) AS user_invoice_count
-            FROM ".PRFX."invoice
-            WHERE is_paid=".$db->qstr($invoice_status)."
-            AND employee_id=".$db->qstr($user_id);
-    
-    if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed count the number of invoices for the user for the defined status."));
-        exit;
-   } else {
-       
-       return $rs->fields['user_invoice_count'];
-       
-   }
-   
 }

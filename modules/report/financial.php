@@ -14,8 +14,8 @@ if(isset($VAR['submit'])) {
     
     /* QWcrm Totals Sections */
     
-    $smarty->assign('wo_opened',                    count_workorders_with_status($db, 'open', $start_date, $end_date)                                           );   
-    $smarty->assign('wo_closed',                    count_workorders_with_status($db, 'closed', $start_date, $end_date)                                         );    
+    $smarty->assign('wo_opened',                    count_workorders($db, 'open', $start_date, $end_date)                                           );   
+    $smarty->assign('wo_closed',                    count_workorders($db, 'closed', $start_date, $end_date)                                         );    
     $smarty->assign('new_customers',                count_customers($db, 'all', $start_date, $end_date)                                                         );       
     $smarty->assign('total_customers',              count_customers($db, 'all')                                                                                 );      
     $smarty->assign('new_invoices',                 count_invoices($db, 'all', $start_date, $end_date)                                                          );    

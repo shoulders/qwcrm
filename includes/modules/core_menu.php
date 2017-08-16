@@ -48,7 +48,7 @@ function menu_get_single_workorder_status($db, $workorder_id){
 # Count Work Orders for a given status  #
 #########################################
 
-function menu_count_workorders_with_status($db, $status) {
+function menu_count_workorders($db, $status) {
     
     // Default Action
     $whereTheseRecords = " WHERE ".PRFX."workorder.workorder_id";

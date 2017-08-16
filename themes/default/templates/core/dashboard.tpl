@@ -39,7 +39,7 @@
                                             </td>
                                         </tr>
                                         
-                                        <!-- Currently Logged In Employee Stats -->
+                                        <!-- Currently Logged In Employee Workorder Stats -->
                                         <tr>
                                             <td>                          
                                                 <b>{t}Work Order Stats{/t} ({$login_display_name})</b>

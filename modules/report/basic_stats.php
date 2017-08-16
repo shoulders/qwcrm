@@ -7,22 +7,22 @@ require(INCLUDES_DIR.'modules/report.php');
 /** Work Orders **/
 
 // Created/new Work Orders Count
-$smarty->assign('workorders_open_count', count_workorders_with_status($db, '1'));
+$smarty->assign('workorders_open_count', count_workorders($db, '1'));
 
 // Assigned - Work Orders Count
-$smarty->assign('workorders_assigned_count', count_workorders_with_status($db, '2'));
+$smarty->assign('workorders_assigned_count', count_workorders($db, '2'));
 
 // Waiting For Parts - Work Orders count
-$smarty->assign('workorders_waiting_for_parts_count', count_workorders_with_status($db, '3'));
+$smarty->assign('workorders_waiting_for_parts_count', count_workorders($db, '3'));
 
 // Awaiting Payment - Work Orders count
-$smarty->assign('workorders_awaiting_payment_count', count_workorders_with_status($db, '7'));
+$smarty->assign('workorders_awaiting_payment_count', count_workorders($db, '7'));
 
 // Closed - Work Orders count
-$smarty->assign('workorders_closed_count', count_workorders_with_status($db, 'closed'));
+$smarty->assign('workorders_closed_count', count_workorders($db, 'closed'));
 
 // WO total count
-$smarty->assign('wo_total_count', count_workorders_with_status($db, 'all'));
+$smarty->assign('wo_total_count', count_workorders($db, 'all'));
 
 /** Invoices **/
 
@@ -83,19 +83,11 @@ $smarty->assign('customer_total_count', count_customers($db, 'all'));
 /** Employee **/
 
 // Logged in Employee - Open/creted Work Orders count
-$smarty->assign('employee_workorders_open_count', count_user_workorders_with_status($db, $login_user_id, 'open'));
-
-// Logged in Employee - Assigned Work Orders count
-$smarty->assign('employee_workorders_assigned_count', count_user_workorders_with_status($db, $login_user_id, '2'));
-
-// Logged in Employee - Work Orders Waiting For Parts count
-$smarty->assign('employeee_workorders_waiting_for_parts_count', count_user_workorders_with_status($db, $login_user_id, '3'));
-
-// Logged in Employee - Work Orders Awaiting Payment count
-$smarty->assign('employee_workorders_awaiting_payment_count', count_user_workorders_with_status($db, $login_user_id, '7'));
-
-// Logged in Employee - Closed Work Orders total
-$smarty->assign('employee_workorders_total_closed_count', count_user_invoices_with_status($db, $login_user_id, 'closed'));
+$smarty->assign('employee_workorders_open_count',               count_workorders($db, 'open', $login_user_id)       );
+$smarty->assign('employee_workorders_assigned_count',           count_workorders($db, '2', $login_user_id)          );
+$smarty->assign('employeee_workorders_waiting_for_parts_count', count_workorders($db, '3', $login_user_id)          );
+$smarty->assign('employee_workorders_awaiting_payment_count',   count_workorders($db, '7', $login_user_id)          );
+$smarty->assign('employee_workorders_total_closed_count',       count_workorders($db, 'closed', $login_user_id)     );
 
 
 // Build the page

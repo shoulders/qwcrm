@@ -20,6 +20,12 @@
                                         <tr>
                                             <td>
                                                 <a name="unassigned"></a>                                                
+                                                {include file='workorder/blocks/overview_workorders_stats_block.tpl'}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <a name="unassigned"></a>                                                
                                                 {include file='workorder/blocks/overview_workorders_unassigned_block.tpl'}
                                             </td>
                                         </tr>
