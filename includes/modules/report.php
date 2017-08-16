@@ -73,7 +73,7 @@ function count_workorders($db, $status, $user_id = null, $start_date = null, $en
     
     // Filter by user
     if($user_id) {
-        $whereTheseRecords .= " WHERE employee_id=".$db->qstr($user_id);
+        $whereTheseRecords .= " AND employee_id=".$db->qstr($user_id);
     }
     
     // Filter by Date
@@ -137,7 +137,7 @@ function count_invoices($db, $status, $user_id = null, $start_date = null, $end_
         
     // Filter by user
     if($user_id) {
-        $whereTheseRecords .= " WHERE employee_id=".$db->qstr($user_id);
+        $whereTheseRecords .= " AND employee_id=".$db->qstr($user_id);
     }
         
     // Filter by Date
