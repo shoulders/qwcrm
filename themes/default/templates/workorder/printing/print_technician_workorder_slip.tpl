@@ -218,7 +218,7 @@
                         <td valign="top">
                             {if $workorder_details.status == '1'}{t}WORKORDER_STATUS_1{/t}{/if}
                             {if $workorder_details.status == '2'}{t}WORKORDER_STATUS_2{/t}{/if}
-                            {if $workorder_details.status == '3'}{t}Waiting For Parts{/t}{/if}
+                            {if $workorder_details.status == '3'}{t}WORKORDER_STATUS_3{/t}{/if}
                             {if $workorder_details.status == '6'}{t}WORKORDER_STATUS_6{/t}{/if}
                             {if $workorder_details.status == '7'}{t}WORKORDER_STATUS_7{/t}{/if}
                             {if $workorder_details.status == '8'}{t}WORKORDER_STATUS_8{/t}{/if}

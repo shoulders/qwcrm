@@ -51,6 +51,19 @@
                                                                             <td><input name="credit_terms" class="olotd5" value="{$customer_details.credit_terms}" size="50" type="text" maxlength="50" onkeydown="return onlyAlphaNumeric(event);"/></td>
                                                                         </tr>
                                                                         <tr>
+                                                                            <td align="right"><b>{t}Discount{/t}</b><span style="color: #ff0000">*</span></td>
+                                                                            <td><input name="discount_rate" class="olotd5" size="4" value="{$customer_details.discount_rate|string_format:"%.2f"}" type="text" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumbersPeriod(event);"/><b>%</b></td>
+                                                                        </tr>                                                                                  
+                                                                    </table>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="menuhead" colspan="2">{t}Account{/t}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="2">
+                                                                    <table>
+                                                                        <tr>
                                                                             <td align="right"><strong>{t}Type{/t}</strong><span style="color: #ff0000">*</span></td>
                                                                             <td>
                                                                                 <select class="olotd5" name="type">
@@ -68,9 +81,14 @@
                                                                             </td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td align="right"><b>{t}Discount{/t}</b><span style="color: #ff0000">*</span></td>
-                                                                            <td><input name="discount_rate" class="olotd5" size="4" value="{$customer_details.discount_rate|string_format:"%.2f"}" type="text" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumbersPeriod(event);"/><b>%</b></td>
-                                                                        </tr>
+                                                                            <td align="right"><b>{t}Active{/t}</b></td>
+                                                                            <td>
+                                                                                <select class="olotd5" id="active" name="active">                                                       
+                                                                                    <option value="0"{if $customer_details.active == '0'} selected{/if}>{t}No{/t}</option>
+                                                                                    <option value="1"{if $customer_details.active == '1'} selected{/if}>{t}Yes{/t}</option>
+                                                                                </select>                                                                                
+                                                                            </td>                        
+                                                                        </tr>                                                                        
                                                                     </tbody>
                                                                 </table>
                                                             </td>

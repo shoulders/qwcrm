@@ -41,7 +41,7 @@ function display_giftcerts($db, $direction = 'DESC', $use_pages = false, $page_n
     if($search_term != null) {$whereTheseRecords .= " AND ".PRFX."giftcert.$search_category LIKE '%$search_term%'";}
     
     // Restrict by Status
-    if($status != null) {$whereTheseRecords .= " AND ".PRFX."giftcert.status=".$db->qstr($status);} 
+    if($status != null) {$whereTheseRecords .= " AND ".PRFX."giftcert.active=".$db->qstr($status);} 
     
     // Restrict by redmption Status
     if($is_redeemed != null) {$whereTheseRecords .= " AND ".PRFX."giftcert.is_redeemed=".$db->qstr($is_redeemed);}
@@ -149,7 +149,7 @@ function display_giftcerts($db, $direction = 'DESC', $use_pages = false, $page_n
 #   insert Gift Certificate     #
 #################################
 
-function insert_giftcert($db, $customer_id, $date_expires, $amount, $status, $notes) {
+function insert_giftcert($db, $customer_id, $date_expires, $amount, $active, $notes) {
     
     $sql = "INSERT INTO ".PRFX."giftcert SET 
             giftcert_code   =". $db->qstr( generate_giftcert_code()             ).",  
@@ -161,7 +161,7 @@ function insert_giftcert($db, $customer_id, $date_expires, $amount, $status, $no
             date_redeemed   =". $db->qstr( 0                                    ).",
             is_redeemed     =". $db->qstr( 0                                    ).",                          
             amount          =". $db->qstr( $amount                              ).",
-            status          =". $db->qstr( $status                              ).",                
+            active          =". $db->qstr( $active                              ).",                
             notes           =". $db->qstr( $notes                               );
 
     if(!$db->execute($sql)) {
@@ -231,12 +231,12 @@ function get_giftcert_id_by_gifcert_code($db, $giftcert_code) {
 #   update Gift Certificate     #
 #################################
 
-function update_giftcert($db, $giftcert_id, $date_expires, $amount, $status, $notes) {
+function update_giftcert($db, $giftcert_id, $date_expires, $amount, $active, $notes) {
     
     $sql = "UPDATE ".PRFX."giftcert SET            
             date_expires    =". $db->qstr( $date_expires    ).",
             amount          =". $db->qstr( $amount          ).",
-            status          =". $db->qstr( $status          ).",                
+            active          =". $db->qstr( $active          ).",                
             notes           =". $db->qstr( $notes           )."
             WHERE giftcert_id =".$giftcert_id;
 

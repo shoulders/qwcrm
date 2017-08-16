@@ -134,8 +134,8 @@
                                                                 {/if}
                                                             </td>
                                                             <td class="olotd4">
-                                                                {if $search_result[i].status == '1'}{t}Active{/t}{/if}
-                                                                {if $search_result[i].status == '0'}{t}Blocked{/t}{/if}
+                                                                {if $search_result[i].active == '1'}{t}Active{/t}{/if}
+                                                                {if $search_result[i].active == '0'}{t}Blocked{/t}{/if}
                                                             </td> 
                                                             <td class="olotd4">{$currency_sym} {$search_result[i].amount}</td>                                                            
                                                             <td class="olotd4" nowrap>

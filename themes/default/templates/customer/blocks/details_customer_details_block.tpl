@@ -37,6 +37,9 @@
                                         <tr>
                                             <td class="menutd"><b>{t}Credit Terms{/t}</b></td>
                                             <td class="menutd">{$customer_details.credit_terms}</td>
+                                            <td class="menutd"><b>{t}Discount{/t}</b></td>
+                                            <td class="menutd">{$customer_details.discount_rate}%</td>
+                                        </tr>
                                         </tr>
                                         <tr class="row2">
                                             <td class="menutd" colspan="4"></td>
@@ -65,22 +68,22 @@
                                         <tr>
                                             <td class="menutd"><b>{t}Customer Type{/t}</b></td>
                                             <td class="menutd">
-                                                {if $customer_details.type == 1} {t}CUSTOMER_TYPE_1{/t} {/if}
-                                                {if $customer_details.type == 2} {t}CUSTOMER_TYPE_2{/t} {/if}
-                                                {if $customer_details.type == 3} {t}CUSTOMER_TYPE_3{/t} {/if}
-                                                {if $customer_details.type == 4} {t}CUSTOMER_TYPE_4{/t} {/if}
-                                                {if $customer_details.type == 5} {t}CUSTOMER_TYPE_5{/t} {/if}
-                                                {if $customer_details.type == 6} {t}CUSTOMER_TYPE_6{/t} {/if}
-                                                {if $customer_details.type == 7} {t}CUSTOMER_TYPE_7{/t} {/if}
-                                                {if $customer_details.type == 8} {t}CUSTOMER_TYPE_8{/t} {/if}
-                                                {if $customer_details.type == 9} {t}CUSTOMER_TYPE_9{/t} {/if}
-                                                {if $customer_details.type == 10} {t}CUSTOMER_TYPE_10{/t} {/if}                                               
+                                                {if $customer_details.type == 1}{t}CUSTOMER_TYPE_1{/t} {/if}
+                                                {if $customer_details.type == 2}{t}CUSTOMER_TYPE_2{/t} {/if}
+                                                {if $customer_details.type == 3}{t}CUSTOMER_TYPE_3{/t} {/if}
+                                                {if $customer_details.type == 4}{t}CUSTOMER_TYPE_4{/t} {/if}
+                                                {if $customer_details.type == 5}{t}CUSTOMER_TYPE_5{/t} {/if}
+                                                {if $customer_details.type == 6}{t}CUSTOMER_TYPE_6{/t} {/if}
+                                                {if $customer_details.type == 7}{t}CUSTOMER_TYPE_7{/t} {/if}
+                                                {if $customer_details.type == 8}{t}CUSTOMER_TYPE_8{/t} {/if}
+                                                {if $customer_details.type == 9}{t}CUSTOMER_TYPE_9{/t} {/if}
+                                                {if $customer_details.type == 10}{t}CUSTOMER_TYPE_10{/t} {/if}                                               
                                             </td>
-                                            <td class="menutd"><b>{t}Discount{/t}</b></td>
-                                            <td class="menutd">{$customer_details.discount_rate}%</td>
-                                        </tr>
-                                        <tr class="row2">
-                                            <td class="menutd" colspan="4"></td>
+                                            <td class="menutd"><b>{t}Active{/t}</b></td>
+                                            <td class="menutd">
+                                                {if $customer_details.active == 0}{t}Blocked{/t}{/if}
+                                                {if $customer_details.active == 1}{t}Active{/t}{/if}                                                                                               
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td class="menutd"><b>{t}Account Created{/t}</b></td>

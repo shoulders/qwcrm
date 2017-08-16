@@ -50,8 +50,8 @@
                                                 <td><b>{t}Status{/t}</b></td>
                                                 <td>
                                                     <select name="status">
-                                                        <option value="1" {if $giftcert_details.status == '1'}selected{/if}>{t}Active{/t}</option>
-                                                        <option value="0" {if $giftcert_details.status == '0'}selected{/if}>{t}Blocked{/t}</option>
+                                                        <option value="1" {if $giftcert_details.active == '1'}selected{/if}>{t}Active{/t}</option>
+                                                        <option value="0" {if $giftcert_details.active == '0'}selected{/if}>{t}Blocked{/t}</option>
                                                     </select>
                                                 </td>
                                             </tr>

@@ -24,17 +24,17 @@
                 {/if}
             </td>
             <td class="olotd4">
-                {if $active_giftcerts[i].status == '1'}{t}Active{/t}{/if}
-                {if $active_giftcerts[i].status == '0'}{t}Blocked{/t}{/if}
+                {if $active_giftcerts[i].active == '1'}{t}Active{/t}{/if}
+                {if $active_giftcerts[i].active == '0'}{t}Blocked{/t}{/if}
             </td> 
             <td class="olotd4">{$currency_sym} {$active_giftcerts[i].amount}</td>                                                            
             <td class="olotd4" nowrap>
                 {if $active_giftcerts[i].notes != ''}
-                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Notes{/t}{/t}</strong></div><hr><div>{t escape=tooltip}{$active_giftcerts[i].notes}</div>');" onMouseOut="hideddrivetip();">
+                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Notes{/t}</strong></div><hr><div>{$active_giftcerts[i].notes}</div>');" onMouseOut="hideddrivetip();">
                 {/if}
             </td>
             <td class="olotd4">
-                <a href="index.php?page=giftcert:details&giftcert_id={$active_giftcerts[i].giftcert_id}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif"  border="0" onMouseOver="ddrivetip('{t}View Details{/t}');" onMouseOut="hideddrivetip();"></a>&nbsp;
+                <a href="index.php?page=giftcert:details&giftcert_id={$active_giftcerts[i].giftcert_id}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" border="0" onMouseOver="ddrivetip('{t}View Details{/t}');" onMouseOut="hideddrivetip();"></a>&nbsp;
                 <a href="index.php?page=giftcert:edit&giftcert_id={$active_giftcerts[i].giftcert_id}"><img src="{$theme_images_dir}icons/16x16/small_edit_employee.gif" border="0" onMouseOver="ddrivetip('{t}Edit{/t}');" onMouseOut="hideddrivetip();"></a>&nbsp;
                 <a href="index.php?page=giftcert:delete&giftcert_id={$active_giftcerts[i].giftcert_id}" onclick="return confirmDelete('{t}Are you Sure you want to delete this Gift Certificate?{/t}');">
                     <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{t}Delete Gift Certificate{/t}</b>');" onMouseOut="hideddrivetip();">
@@ -68,8 +68,8 @@
                 {/if}
             </td>
             <td class="olotd4">
-                {if $redeemed_giftcerts[i].status == '1'}{t}Active{/t}{/if}
-                {if $redeemed_giftcerts[i].status == '0'}{t}Blocked{/t}{/if}
+                {if $redeemed_giftcerts[i].active == '1'}{t}Active{/t}{/if}
+                {if $redeemed_giftcerts[i].active == '0'}{t}Blocked{/t}{/if}
             </td> 
             <td class="olotd4">{$currency_sym} {$redeemed_giftcerts[i].amount}</td>                                                            
             <td class="olotd4" nowrap>

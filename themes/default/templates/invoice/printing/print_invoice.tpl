@@ -78,7 +78,7 @@
                                 <tr>
                                     <td>
                                         <b>{t}Invoice ID{/t} - </b>{$invoice_details.invoice_id}<br>
-                                        <b>{t}Status{/t} - </b>{$workorder_details.status}<br>
+                                        <b>{t}Status{/t} - </b>{$workorder_details.active}<br>
                                         <b>{t}Date{/t} - </b>{$invoice_details.date|date_format:$date_format} <br>
                                         <b>{t}Due Date{/t} - </b>{$invoice_details.due_date|date_format:$date_format}<br>
                                         <b>{t}Work Order{/t} - </b>{$invoice_details.workorder_id}<br>

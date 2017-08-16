@@ -53,26 +53,44 @@
                                                                             <td><input name="credit_terms" class="olotd5" size="50" type="text" maxlength="50" onkeydown="return onlyAlphaNumeric(event);"></td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td align="right"><b>{t}Type{/t}</b><span style="color: #ff0000">*</span></td>
+                                                                            <td align="right"><b>{t}Discount{/t}</b><span style="color: #ff0000">*</span></td>
+                                                                            <td><a><input name="discount_rate" class="olotd5" value="0.00" type="text" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumbersPeriod(event);"><b>%</b></a></td>
+                                                                        </tr>                                                                                  
+                                                                    </table>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="menuhead" colspan="2">{t}Account{/t}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="2">
+                                                                    <table>
+                                                                        <tr>
+                                                                            <td align="right"><strong>{t}Type{/t}</strong><span style="color: #ff0000">*</span></td>
                                                                             <td>
-                                                                                <select name="type" class="olotd5">
-                                                                                    <option value="1">{t}CUSTOMER_TYPE_1{/t}</option>
-                                                                                    <option value="2">{t}CUSTOMER_TYPE_2{/t}</option>
-                                                                                    <option value="3">{t}CUSTOMER_TYPE_3{/t}</option>
-                                                                                    <option value="4">{t}CUSTOMER_TYPE_4{/t}</option>
-                                                                                    <option value="5">{t}CUSTOMER_TYPE_5{/t}</option>
-                                                                                    <option value="6">{t}CUSTOMER_TYPE_6{/t}</option>
-                                                                                    <option value="7">{t}CUSTOMER_TYPE_7{/t}</option>
-                                                                                    <option value="8">{t}CUSTOMER_TYPE_8{/t}</option>
-                                                                                    <option value="9">{t}CUSTOMER_TYPE_9{/t}</option>
-                                                                                    <option value="10">{t}CUSTOMER_TYPE_10{/t}</option>
-                                                                                </select>                                                                                
+                                                                                <select class="olotd5" name="type">
+                                                                                    <option value="1"{if $customer_details.type == 1} selected{/if}>{t}CUSTOMER_TYPE_1{/t}</option>
+                                                                                    <option value="2"{if $customer_details.type == 2} selected{/if}>{t}CUSTOMER_TYPE_2{/t}</option>
+                                                                                    <option value="3"{if $customer_details.type == 3} selected{/if}>{t}CUSTOMER_TYPE_3{/t}</option>
+                                                                                    <option value="4"{if $customer_details.type == 4} selected{/if}>{t}CUSTOMER_TYPE_4{/t}</option>
+                                                                                    <option value="5"{if $customer_details.type == 5} selected{/if}>{t}CUSTOMER_TYPE_5{/t}</option>
+                                                                                    <option value="6"{if $customer_details.type == 6} selected{/if}>{t}CUSTOMER_TYPE_6{/t}</option>
+                                                                                    <option value="7"{if $customer_details.type == 7} selected{/if}>{t}CUSTOMER_TYPE_7{/t}</option>
+                                                                                    <option value="8"{if $customer_details.type == 8} selected{/if}>{t}CUSTOMER_TYPE_8{/t}</option>
+                                                                                    <option value="9"{if $customer_details.type == 9} selected{/if}>{t}CUSTOMER_TYPE_9{/t}</option>
+                                                                                    <option value="10"{if $customer_details.type == 10} selected{/if}>{t}CUSTOMER_TYPE_10{/t}</option>
+                                                                                </select>                                                                                    
                                                                             </td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td align="right"><b>{t}Discount{/t}</b><span style="color: #ff0000">*</span></td>
-                                                                            <td><a><input name="discount_rate" class="olotd5" value="0.00" type="text" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumbersPeriod(event);"><b>%</b></a></td>
-                                                                        </tr>                                                              
+                                                                            <td align="right"><b>{t}Active{/t}</b></td>
+                                                                            <td>
+                                                                                <select class="olotd5" id="active" name="active">                                                                                    
+                                                                                    <option value="1"{if $customer_details.active == '1'} selected{/if}>{t}Yes{/t}</option>
+                                                                                    <option value="0"{if $customer_details.active == '0'} selected{/if}>{t}No{/t}</option>
+                                                                                </select>                                                                                
+                                                                            </td>                        
+                                                                        </tr>                                                                                                                                     
                                                                     </tbody>
                                                                 </table>
                                                             </td>

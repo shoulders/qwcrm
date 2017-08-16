@@ -50,8 +50,8 @@
                                         <tr>
                                             <td><b>{t}Is Active{/t}</b></td>
                                             <td>
-                                                {if $giftcert_details.status == '0'}Blocked{/if}
-                                                {if $giftcert_details.status == '1'}Active{/if}
+                                                {if $giftcert_details.active == '0'}Blocked{/if}
+                                                {if $giftcert_details.active == '1'}Active{/if}
                                             </td>
                                         </tr>                                        
                                         <tr>

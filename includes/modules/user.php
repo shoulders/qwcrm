@@ -43,7 +43,7 @@ function display_users($db, $direction = 'DESC', $use_pages = false, $page_no = 
     if($search_term != null) {$whereTheseRecords .= " AND ".PRFX."user.$search_category LIKE '%$search_term%'";}    
         
     // Restrict by Status
-    if($status != null) {$whereTheseRecords .= " AND ".PRFX."user.status=".$db->qstr($status);}  
+    if($status != null) {$whereTheseRecords .= " AND ".PRFX."user.active=".$db->qstr($status);}  
     
     // Restrict results by user type
     if($user_type != null) {
@@ -69,14 +69,14 @@ function display_users($db, $direction = 'DESC', $use_pages = false, $page_no = 
     /* The SQL code */    
     
     $sql = "SELECT
-        ".PRFX."user.*,
-        ".PRFX."user_usergroups.usergroup_display_name   
-        FROM ".PRFX."user
-        LEFT JOIN ".PRFX."user_usergroups ON (".PRFX."user.usergroup = ".PRFX."user_usergroups.usergroup_id)
-        ".$whereTheseRecords."
-        GROUP BY ".PRFX."user.user_id
-        ORDER BY ".PRFX."user.user_id
-        ".$direction;  
+            ".PRFX."user.*,
+            ".PRFX."user_usergroups.usergroup_display_name   
+            FROM ".PRFX."user
+            LEFT JOIN ".PRFX."user_usergroups ON (".PRFX."user.usergroup = ".PRFX."user_usergroups.usergroup_id)
+            ".$whereTheseRecords."
+            GROUP BY ".PRFX."user.user_id
+            ORDER BY ".PRFX."user.user_id
+            ".$direction;  
    
     /* Restrict by pages */
         
@@ -155,7 +155,7 @@ function display_users($db, $direction = 'DESC', $use_pages = false, $page_no = 
 /** New/Insert Functions **/
 
 #####################################
-#    insert new Employee            #
+#    insert new user                #
 #####################################
 
 function insert_user($db, $VAR){
@@ -166,7 +166,7 @@ function insert_user($db, $VAR){
             password            =". $db->qstr( JUserHelper::hashPassword($VAR['password'])  ).",
             email               =". $db->qstr( $VAR['email']                                ).",
             usergroup           =". $db->qstr( $VAR['usergroup']                            ).",
-            status              =". $db->qstr( $VAR['status']                               ).",
+            active              =". $db->qstr( $VAR['active']                               ).",
             register_date       =". $db->qstr( time()                                       ).",   
             require_reset       =". $db->qstr( $VAR['require_reset']                        ).",
             is_employee         =". $db->qstr( $VAR['is_employee']                          ).",              
@@ -313,7 +313,7 @@ function get_usergroups($db, $user_type = null) {
     
 function get_active_users($db, $user_type = null) {    
     
-    $sql = "SELECT user_id, display_name FROM ".PRFX."user WHERE status=1";
+    $sql = "SELECT user_id, display_name FROM ".PRFX."user WHERE active=1";
     
     // Filter the results by user type customer/employee
     if($user_type === 'customers') {$sql .= " AND is_employee='0'";}
@@ -343,7 +343,7 @@ function update_user($db, $user_id, $VAR) {
         username            =". $db->qstr( $VAR['username']                             ).",
         email               =". $db->qstr( $VAR['email']                                ).",
         usergroup           =". $db->qstr( $VAR['usergroup']                            ).",
-        status              =". $db->qstr( $VAR['status']                               ).",                    
+        active              =". $db->qstr( $VAR['active']                               ).",                    
         require_reset       =". $db->qstr( $VAR['require_reset']                        ).",
         is_employee         =". $db->qstr( $VAR['is_employee']                          ).",                 
         display_name        =". $db->qstr( $VAR['display_name']                         ).",
@@ -502,7 +502,7 @@ function delete_user($db, $user_id) {
 function build_active_employee_form_option_list($db, $assigned_user_id){
     
     // select all employees and return their display name and ID as an array
-    $sql = "SELECT display_name, user_id FROM ".PRFX."user WHERE status=1 AND is_employee=1";
+    $sql = "SELECT display_name, user_id FROM ".PRFX."user WHERE active=1 AND is_employee=1";
     
     if(!$rs = $db->execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed build and return and User list."));
@@ -644,7 +644,7 @@ function check_customer_already_has_login($db, $customer_id) {
 
 function is_user_active($db, $user_id) {   
         
-    if(get_user_details($db, $user_id, 'status')) {        
+    if(get_user_details($db, $user_id, 'active')) {        
         return true;
     } else {        
         return false;

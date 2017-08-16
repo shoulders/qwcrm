@@ -5,6 +5,7 @@
 <table width="100%" border="0" cellpadding="20" cellspacing="0">
     <tr>
         <td>
+            
             <table width="700" cellpadding="5" cellspacing="0" border="0" >
                 <tr>
                     <td class="menuhead2" width="80%">&nbsp;{t}Workorder ID{/t} {$workorder_id}</td>
@@ -157,3 +158,10 @@
                                 </td>
                             </tr>
                         </table>
+                    </td>
+                </tr>
+            </table>
+
+        </td>
+    </tr>
+</table>                                                 

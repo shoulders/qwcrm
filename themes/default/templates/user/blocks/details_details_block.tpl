@@ -68,8 +68,8 @@
         </td>         
         <td class="menutd"><b>{t}Status{/t}</b></td>
         <td class="menutd">
-            {if $user_details.status == '0'}{t}Blocked{/t}{/if}
-            {if $user_details.status == '1'}{t}Active{/t}{/if}
+            {if $user_details.active == '0'}{t}Blocked{/t}{/if}
+            {if $user_details.active == '1'}{t}Active{/t}{/if}
         </td>
     </tr>
     <tr>

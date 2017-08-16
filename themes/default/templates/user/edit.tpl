@@ -128,8 +128,8 @@
                                                                                         <td colspan="1" align="right"><b>{t}Status{/t}</b></td>
                                                                                         <td>
                                                                                             <select name="status" class="olotd5">
-                                                                                                <option value="0" {if $user_details.status == '0'} selected {/if}>{t}Blocked{/t}</option>
-                                                                                                <option value="1" {if $user_details.status == '1'} selected {/if}>{t}Active{/t}</option>
+                                                                                                <option value="0" {if $user_details.active == '0'} selected {/if}>{t}Blocked{/t}</option>
+                                                                                                <option value="1" {if $user_details.active == '1'} selected {/if}>{t}Active{/t}</option>
                                                                                             </select>
                                                                                         </td>
                                                                                     </tr>
