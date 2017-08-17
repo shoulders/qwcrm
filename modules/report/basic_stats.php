@@ -77,7 +77,6 @@ $smarty->assign('customer_month_count', count_customers($db, $status, $date_mont
 $smarty->assign('customer_year_count', count_customers($db, $status, $date_year_start, $date_year_end));
 $smarty->assign('customer_total_count', count_customers($db, 'all'));
 
-
 /** Build the Page **/
 
 // Build the page
