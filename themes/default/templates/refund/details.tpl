@@ -6,7 +6,7 @@
                 <tr>                    
                     <td class="menuhead2" width="80%">{t}Refund Details {/t}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
-                        <a href="index.php?page=refund:edit&refund_id={$refund_id}" ><img src="{$theme_images_dir}icons/edit.gif"  alt="" height="16" border="0">{t}Edit Refund Details{/t}</a>&nbsp;
+                        <a href="index.php?page=refund:edit&refund_id={$refund_id}" ><img src="{$theme_images_dir}icons/edit.gif"  alt="" height="16" border="0">{t}Edit{/t}</a>&nbsp;
                         <a>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}REFUND_DETAILS_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}REFUND_DETAILS_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
                         </a>
@@ -49,7 +49,7 @@
                                                 {if $refund_details.type == 5}{t}REFUND_TYPE_5{/t}{/if}
                                             </td>
                                             <td class="menutd"><b>{t}Tax Amount{/t}</b></td>
-                                            <td class="menutd">{$currency_sym} {$refund_details.REFUND_TAX_AMOUNT}</td>
+                                            <td class="menutd">{$currency_sym} {$refund_details.tax_amount}</td>
                                         </tr>                                        
                                         <tr>
                                             <td class="menutd"><b>{t}Refund Payment Method{/t}</b></td>

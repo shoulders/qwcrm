@@ -15,6 +15,9 @@ if(isset($VAR['submit'])) {
         
     // Update the refund in the database
     update_refund($db, $refund_id, $VAR);
+    
+    // load details page
+    force_page('refund', 'details&refund_id='.$refund_id);
 }   
 
 // Build the page

@@ -7,12 +7,12 @@ require(INCLUDES_DIR.'modules/report.php');
 /** Work Orders **/
 
 // Overall Workorder Stats
-$smarty->assign('overall_workorders_open_count',               count_workorders($db, 'open')    );
-$smarty->assign('overall_workorders_assigned_count',           count_workorders($db, '2')       );
-$smarty->assign('overall_workorders_waiting_for_parts_count',  count_workorders($db, '3')       );
-$smarty->assign('overall_workorders_on_hold_count',            count_workorders($db, '4')       );
-$smarty->assign('overall_workorders_management_count',         count_workorders($db, '5')       );
-$smarty->assign('overall_workorders_total_closed_count',       count_workorders($db, 'closed')  );
+$smarty->assign('overall_workorders_open_count',               count_workorders($db, 'open')                    );
+$smarty->assign('overall_workorders_assigned_count',           count_workorders($db, '2')                       );
+$smarty->assign('overall_workorders_waiting_for_parts_count',  count_workorders($db, '3')                       );
+$smarty->assign('overall_workorders_on_hold_count',            count_workorders($db, '4')                       );
+$smarty->assign('overall_workorders_management_count',         count_workorders($db, '5')                       );
+$smarty->assign('overall_workorders_total_closed_count',       count_workorders($db, 'closed')                  );
 
 // Employee Workorder Stats
 $smarty->assign('employee_workorders_open_count',               count_workorders($db, 'open', $login_user_id)   );
@@ -25,15 +25,15 @@ $smarty->assign('employee_workorders_total_closed_count',       count_workorders
 /** Invoices **/
 
 // Overall Invoice Counts
-$smarty->assign('overall_invoices_unpaid_count',            count_invoices($db, 'unpaid')           );
-$smarty->assign('overall_invoices_partially_paid_count',    count_invoices($db, 'partially_paid')   );
-$smarty->assign('overall_invoices_paid_count',              count_invoices($db, 'paid')             );
-$smarty->assign('overall_invoices_count',                   count_invoices($db, 'all')              );
+$smarty->assign('overall_invoices_unpaid_count',            count_invoices($db, 'unpaid')                       );
+$smarty->assign('overall_invoices_partially_paid_count',    count_invoices($db, 'partially_paid')               );
+$smarty->assign('overall_invoices_paid_count',              count_invoices($db, 'paid')                         );
+$smarty->assign('overall_invoices_count',                   count_invoices($db, 'all')                          );
 
 // Invoice Totals
-$smarty->assign('overall_invoiced_total',                   sum_invoices_total($db, 'all')          );
-$smarty->assign('overall_received_monies',                  sum_invoices_paid_amount($db, 'all')    );
-$smarty->assign('overall_outstanding_balance',              sum_invoices_balance($db, 'all')        );
+$smarty->assign('overall_invoiced_total',                   sum_invoices_value($db, 'total', 'all') );
+$smarty->assign('overall_received_monies',                  sum_invoices_value($db, 'paid_amount', 'all')       );
+$smarty->assign('overall_outstanding_balance',              sum_invoices_value($db, 'balance', 'all')           );
 
 
 /** Totals **/

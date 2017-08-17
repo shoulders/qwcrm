@@ -24,7 +24,7 @@ if(isset($VAR['submit'])) {
     insert_labour_items($db, $invoice_id, $VAR['labour_description'], $VAR['labour_amount'], $VAR['labour_qty']);
     insert_parts_items($db, $invoice_id, $VAR['parts_description'], $VAR['parts_amount'], $VAR['parts_qty']);
     
-    // update and recalculater the invoice
+    // update and recalculate the invoice
     update_invoice($db, $invoice_id, $VAR['date'], $VAR['due_date'], $VAR['discount_rate']);    
     recalculate_invoice_totals($db, $invoice_id);
 }

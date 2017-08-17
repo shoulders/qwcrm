@@ -43,7 +43,7 @@
                                             <td><a href="index.php?page=user:details&user_id={$invoice_details.employee_id}">{$employee_display_name}</a></td>                                            
                                             <td>{$invoice_details.date|date_format:$date_format}</td>                                            
                                             <td>{$invoice_details.due_date|date_format:$date_format}</td>
-                                            <td>{$currency_sym}{$invoice_details.total|string_format:"%.2f"}</td>
+                                            <td>{$currency_sym}{$invoice_details.gross_amount|string_format:"%.2f"}</td>
                                             <td>{$currency_sym}{$invoice_details.paid_amount|string_format:"%.2f"}</td>
                                             <td><font color="#cc0000">{$currency_sym}{$invoice_details.balance|string_format:"%.2f"}</font></td>
                                             <td>{$invoice_details.paid_date|date_format:$date_format}</td>
@@ -108,7 +108,7 @@
                                     <br>                                            
 
                                     <!-- if invoice has an amount -->
-                                    {if $invoice_details.total > 0 }
+                                    {if $invoice_details.gross_amount > 0 }
 
                                         <!-- Function Buttons -->
                                         <table width="100%" cellpadding="4" cellspacing="0" border="0" id="transaction_log">
@@ -264,14 +264,18 @@
                                                     <tr>
                                                         <td class="olotd4" width="80%" align="right"><b>{t}Discount{/t} (@ {$invoice_details.discount_rate|string_format:"%.2f"}%)</b></td>
                                                         <td class="olotd4" width="20%" align="right">- {$currency_sym}{$invoice_details.discount_amount|string_format:"%.2f"}</td>
-                                                    </tr>                                                        
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="olotd4" width="80%" align="right"><b>{t}Net{/t}</b></td>
+                                                        <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice_details.net_amount|string_format:"%.2f"}</td>
+                                                    </tr>
                                                     <tr>                                                            
                                                         <td class="olotd4" width="80%" align="right"><b>{t}Tax{/t} (@ {$invoice_details.tax_rate}%)</b></td>
                                                         <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice_details.tax_amount|string_format:"%.2f"}</td>                                                            
                                                     </tr>
                                                     <tr>
-                                                        <td class="olotd4" width="80%" align="right"><b>{t}Total{/t}</b></td>
-                                                        <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice_details.total|string_format:"%.2f"}</td>
+                                                        <td class="olotd4" width="80%" align="right"><b>{t}Total{/t} ({t}Gross{/t})</b></td>
+                                                        <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice_details.gross_amount|string_format:"%.2f"}</td>
                                                     </tr>
                                                 </table>
                                             </td>

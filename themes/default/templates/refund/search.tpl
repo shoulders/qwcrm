@@ -122,7 +122,7 @@
                                                     {section name=i loop=$search_result}                                                            
                                                         <!-- This allows double clicking on a row and opens the corresponding refund view details -->
                                                         <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=refund:details&refund_id={$search_result[i].refund_id}';" class="row1">                                                                
-                                                            <td class="olotd4" nowrap><a href="index.php?page=refund:details&refund_id={$search_result[i].REFUND_ID}">{$search_result[i].refund_id}</a></td>                                                                
+                                                            <td class="olotd4" nowrap><a href="index.php?page=refund:details&refund_id={$search_result[i].refund_id}">{$search_result[i].refund_id}</a></td>                                                                
                                                             <td class="olotd4" nowrap>{$search_result[i].payee}</td>                                                                
                                                             <td class="olotd4" nowrap>{$search_result[i].date|date_format:$date_format}</td>                                                                
                                                             <td class="olotd4" nowrap>
