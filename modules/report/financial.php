@@ -63,9 +63,9 @@ if(isset($VAR['submit'])) {
     $smarty->assign('taxable_profit_gross',         sum_invoices_value($db, 'gross_amount', 'all', $start_date, $end_date) - (sum_expenses_value($db, 'gross_amount', $start_date, $end_date) - sum_refunds_value($db, 'gross_amount', $start_date, $end_date)) );
     
     // VAT (Tax)                 
-    $smarty->assign('vat_paid',                     sum_expenses_value($db, 'tax_amount', $start_date, $end_date) - sum_refunds_value($db, 'gross_amount', $start_date, $end_date)                                                                              ); 
+    $smarty->assign('vat_paid',                     sum_expenses_value($db, 'tax_amount', $start_date, $end_date) - sum_refunds_value($db, 'tax_amount', $start_date, $end_date)                                                                              ); 
     $smarty->assign('vat_received',                 sum_invoices_value($db, 'tax_amount', 'all', $start_date, $end_date)  ); 
-    $smarty->assign('vat_balance',                  sum_invoices_value($db, 'tax_amount', 'all', $start_date, $end_date) - (sum_expenses_value($db, 'tax_amount', $start_date, $end_date) - sum_refunds_value($db, 'gross_amount', $start_date, $end_date))     );    
+    $smarty->assign('vat_balance',                  sum_invoices_value($db, 'tax_amount', 'all', $start_date, $end_date) - (sum_expenses_value($db, 'tax_amount', $start_date, $end_date) - sum_refunds_value($db, 'tax_amount', $start_date, $end_date))     );    
     
     
 } else {
