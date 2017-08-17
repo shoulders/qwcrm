@@ -1,4 +1,4 @@
-<!-- overview_workorders_waiting_for_parts_block.tpl -->
+<!-- dashboard_workorders_waiting_for_parts_block.tpl -->
 <b>{t}Waiting For Parts{/t} ({$login_display_name})</b>
 <table class="olotable" width="100%" border="0" cellpadding="4" cellspacing="0">
     <tr>

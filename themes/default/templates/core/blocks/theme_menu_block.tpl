@@ -56,6 +56,9 @@
                     <span>{t}Invoices{/t}</span>
                     <a href="index.php?page=invoice:paid"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {t}Paid Invoices{/t} <b><font color="red">({$menu_invoices_paid_count})</font></b></a>
                     <a href="index.php?page=invoice:unpaid"><img src="{$theme_images_dir}icons/warning.gif" alt="" border="0" height="14" width="14" /> {t}Unpaid Invoices{/t} <b><font color="red">({$menu_invoices_unpaid_count})</font></b></a>
+                    {if $customer_id > 0 }                        
+                        <a href="index.php?page=invoice:new&customer_id={$customer_id}&invoice_type=invoice-only"><img src="{$theme_images_dir}icons/invoice.png" alt="" border="0" height="14" width="14" /> {t}Invoice Only{/t}</a>
+                    {/if}
                 </div>
 
                 <!-- General Ledger -->

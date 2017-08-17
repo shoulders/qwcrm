@@ -5,7 +5,7 @@ defined('_QWEXEC') or die;
 require(INCLUDES_DIR.'modules/report.php');
 require(INCLUDES_DIR.'modules/workorder.php');
 
-// Workorder Stats
+// Overall Workorder Stats
 $smarty->assign('overall_workorders_open_count',               count_workorders($db, 'open')    );
 $smarty->assign('overall_workorders_assigned_count',           count_workorders($db, '2')       );
 $smarty->assign('overall_workorders_waiting_for_parts_count',  count_workorders($db, '3')       );

@@ -1,4 +1,4 @@
-<!-- overview_workorders_on_hold_block.tpl -->
+<!-- dashboard_workorders_on_hold_block.tpl -->
 <b>{t}On Hold{/t} ({$login_display_name})</b>
 <table class="olotable" width="100%" border="0" cellpadding="4" cellspacing="0">
     <tr>

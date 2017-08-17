@@ -6,34 +6,35 @@ require(INCLUDES_DIR.'modules/report.php');
 
 /** Work Orders **/
 
-// Created/new Work Orders Count
-$smarty->assign('workorders_open_count', count_workorders($db, '1'));
+// Overall Workorder Stats
+$smarty->assign('overall_workorders_open_count',               count_workorders($db, 'open')    );
+$smarty->assign('overall_workorders_assigned_count',           count_workorders($db, '2')       );
+$smarty->assign('overall_workorders_waiting_for_parts_count',  count_workorders($db, '3')       );
+$smarty->assign('overall_workorders_on_hold_count',            count_workorders($db, '4')       );
+$smarty->assign('overall_workorders_management_count',         count_workorders($db, '5')       );
+$smarty->assign('overall_workorders_total_closed_count',       count_workorders($db, 'closed')  );
 
-// Assigned - Work Orders Count
-$smarty->assign('workorders_assigned_count', count_workorders($db, '2'));
-
-// Waiting For Parts - Work Orders count
-$smarty->assign('workorders_waiting_for_parts_count', count_workorders($db, '3'));
-
-// Awaiting Payment - Work Orders count
-$smarty->assign('workorders_awaiting_payment_count', count_workorders($db, '7'));
-
-// Closed - Work Orders count
-$smarty->assign('workorders_closed_count', count_workorders($db, 'closed'));
-
-// WO total count
-$smarty->assign('wo_total_count', count_workorders($db, 'all'));
+// Employee Workorder Stats
+$smarty->assign('employee_workorders_open_count',               count_workorders($db, 'open', $login_user_id)   );
+$smarty->assign('employee_workorders_assigned_count',           count_workorders($db, '2', $login_user_id)      );
+$smarty->assign('employee_workorders_waiting_for_parts_count',  count_workorders($db, '3', $login_user_id)      );
+$smarty->assign('employee_workorders_on_hold_count',            count_workorders($db, '4', $login_user_id)      );
+$smarty->assign('employee_workorders_management_count',         count_workorders($db, '5', $login_user_id)      );
+$smarty->assign('employee_workorders_total_closed_count',       count_workorders($db, 'closed', $login_user_id) );
 
 /** Invoices **/
 
-// Unpaid Invoice Count
-$smarty->assign('invoices_unpaid_count', count_invoices($db, '0'));
+// Overall Invoice Counts
+$smarty->assign('overall_invoices_unpaid_count',            count_invoices($db, 'unpaid')           );
+$smarty->assign('overall_invoices_partially_paid_count',    count_invoices($db, 'partially_paid')   );
+$smarty->assign('overall_invoices_paid_count',              count_invoices($db, 'paid')             );
+$smarty->assign('overall_invoices_count',                   count_invoices($db, 'all')              );
 
-// Partial Paid Invoice Count
-$smarty->assign('invoices_partially_paid_count', count_invoices($db, 'partially_paid'));
+// Invoice Totals
+$smarty->assign('overall_invoiced_total',                   sum_invoices_total($db, 'all')          );
+$smarty->assign('overall_received_monies',                  sum_invoices_paid_amount($db, 'all')    );
+$smarty->assign('overall_outstanding_balance',              sum_invoices_balance($db, 'all')        );
 
-// Paid Invoices count
-$smarty->assign('invoices_paid_count', count_invoices($db, '1'));
 
 /** Totals **/
 
@@ -80,15 +81,8 @@ $smarty->assign('customer_year_count', count_customers($db, $status, $date_year_
 // Count All Customers
 $smarty->assign('customer_total_count', count_customers($db, 'all'));
 
-/** Employee **/
 
-// Logged in Employee - Open/creted Work Orders count
-$smarty->assign('employee_workorders_open_count',               count_workorders($db, 'open', $login_user_id)       );
-$smarty->assign('employee_workorders_assigned_count',           count_workorders($db, '2', $login_user_id)          );
-$smarty->assign('employeee_workorders_waiting_for_parts_count', count_workorders($db, '3', $login_user_id)          );
-$smarty->assign('employee_workorders_awaiting_payment_count',   count_workorders($db, '7', $login_user_id)          );
-$smarty->assign('employee_workorders_total_closed_count',       count_workorders($db, 'closed', $login_user_id)     );
-
+/** Build the Page **/
 
 // Build the page
 $BuildPage .= $smarty->fetch('report/basic_stats.tpl');

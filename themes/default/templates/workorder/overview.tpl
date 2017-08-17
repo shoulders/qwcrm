@@ -20,7 +20,7 @@
                                         <tr>
                                             <td>
                                                 <a name="unassigned"></a>                                                
-                                                {include file='workorder/blocks/overview_workorders_stats_block.tpl'}
+                                                {include file='workorder/blocks/overview_workorders_stats_employee_block.tpl'}
                                             </td>
                                         </tr>
                                         <tr>

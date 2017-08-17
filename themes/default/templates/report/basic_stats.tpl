@@ -13,35 +13,63 @@
                 </tr>
                 <tr>
                     <td class="menutd2">
-                        <table class="olotable" width="700" border="0" cellpadding="5" cellspacing="0">
+                        <table class="olotable" width="700" border="0" cellpadding="5" cellspacing="0">                            
+                            
+                            <!-- Work Order Stats -->
                             <tr>
                                 <td>
-                                    
-                                    <!-- Work Order Stats -->
-                                    
-                                    <b>{t}Work Order{/t}</b>
+                                    <b>{t}Overall Work Order Stats{/t}</b>
                                     <br>
                                     <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
                                         <tr class="olotd4">
                                             <td class="row2"><b>{t}Open{/t}</b></td>
-                                            <td class="row2"><b>{t}Assigned{/t}</b></td>
-                                            <td class="row2"><b>{t}Waiting For Parts{/t}</b></td>
-                                            <td class="row2"><b>{t}Waiting for Payment{/t}</b></td>
-                                            <td class="row2"><b>{t}Closed{/t}</b></td>                                            
+                                            <td class="row2"><b>{t}WORKORDER_STATUS_2{/t}</b></td>
+                                            <td class="row2"><b>{t}WORKORDER_STATUS_3{/t}</b></td>
+                                            <td class="row2"><b>{t}WORKORDER_STATUS_4{/t}</b></td>
+                                            <td class="row2"><b>{t}WORKORDER_STATUS_5{/t}</b></td>
+                                            <td class="row2"><b>{t}Closed{/t}</b></td>
                                         </tr>
                                         <tr class="olotd4">
-                                            <td><a href="index.php?page=workorder:overview#new">{$workorders_open_count}</a></td>
-                                            <td><a href="index.php?page=workorder:overview#assigned">{$workorders_assigned_count}</a></td>
-                                            <td><a href="index.php?page=workorder:overview#awaiting">{$workorders_waiting_for_parts_count}</a></td>
-                                            <td><a href="index.php?page=workorder:overview#payment">{$workorders_awaiting_payment_count}</a></td>
-                                            <td><a href="index.php?page=workorder:closed">{$workorders_closed_count}</a></td>
-                                            <td>{$wo_total_count}</td>
+                                            <td>{$overall_workorders_open_count}</td>
+                                            <td>{$overall_workorders_assigned_count}</td>
+                                            <td>{$overall_workorders_waiting_for_parts_count}</td>
+                                            <td>{$overall_workorders_on_hold_count}</td>
+                                            <td>{$overall_workorders_management_count}</td> 
+                                            <td>{$overall_workorders_total_closed_count}</td>                                            
                                         </tr>
-                                    </table>
+                                    </table>                                 
+                                </td>
+                            </tr>
+                                                        
+                            <!-- Currently Logged In Employee Stats -->
+                            <tr>
+                                <td>
+                                    <b>{t}Work Order Stats{/t} ({$login_display_name})</b>
                                     <br>
-                                    
-                                    <!-- Invoice Stats --> 
-                                    
+                                    <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
+                                        <tr class="olotd4">
+                                            <td class="row2"><b>{t}Open{/t}</b></td>
+                                            <td class="row2"><b>{t}WORKORDER_STATUS_2{/t}</b></td>
+                                            <td class="row2"><b>{t}WORKORDER_STATUS_3{/t}</b></td>
+                                             <td class="row2"><b>{t}WORKORDER_STATUS_4{/t}</b></td>
+                                              <td class="row2"><b>{t}WORKORDER_STATUS_5{/t}</b></td>
+                                            <td class="row2"><b>{t}Closed{/t}</b></td>
+                                        </tr>
+                                        <tr class="olotd4">
+                                            <td>{$employee_workorders_open_count}</td>
+                                            <td>{$employee_workorders_assigned_count}</td>
+                                            <td>{$employee_workorders_waiting_for_parts_count}</td>
+                                            <td>{$employee_workorders_on_hold_count}</td>
+                                            <td>{$employee_workorders_management_count}</td> 
+                                            <td>{$employee_workorders_total_closed_count}</td>                                            
+                                        </tr>
+                                    </table>                                     
+                                </td>
+                            </tr>
+                            
+                            <!-- Invoice Stats --> 
+                            <tr>
+                                <td>
                                     <b>{t}Invoices{/t}</b>
                                     <br>
                                     <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
@@ -49,24 +77,27 @@
                                             <td class="row2"><b>{t}Unpaid{/t}</b></td>
                                             <td class="row2"><b>{t}Partially Paid{/t}</b></td>
                                             <td class="row2"><b>{t}Paid{/t}</b></td>
+                                            <td class="row2"><b>{t}Total{/t}</b></td>
                                             <td class="row2"><b>{t}Invoiced Total{/t}</b></td>                                            
                                             <td class="row2"><b>{t}Received Monies Total{/t}</b></td>
-                                            <td class="row2"><b>{t}Outstanding Balance{/t}</b></td>
-                                            
+                                            <td class="row2"><b>{t}Outstanding Balance{/t}</b></td>                                            
                                         </tr>
                                         <tr class="olotd4">
-                                            <td><a href="index.php?page=invoice:unpaid">{$invoices_unpaid_count}</a></td>
-                                            <td><a href="index.php?page=invoice:unpaid">{$invoices_partially_paid_count}</a></td>
-                                            <td><a href="index.php?page=invoice:paid">{$invoices_paid_count}</a></td>
-                                            <td><font color="green">{$currency_sym}{$in_unpaid_bal|string_format:"%.2f"}</font></td>
-                                            <td><font color="green">{$currency_sym}{$in_total_bal|string_format:"%.2f"}</font></td>
-                                            <td><font color="cc0000">{$currency_sym}{$in_total2|string_format:"%.2f"}</font></td>
+                                            <td>{$overall_invoices_unpaid_count}</td>
+                                            <td>{$overall_invoices_partially_paid_count}</td>
+                                            <td>{$overall_invoices_paid_count}</td>
+                                            <td>{$overall_invoices_count}</td>
+                                            <td><font color="green">{$currency_sym}{$overall_invoiced_total|string_format:"%.2f"}</font></td>
+                                            <td><font color="green">{$currency_sym}{$overall_received_monies|string_format:"%.2f"}</font></td>
+                                            <td><font color="cc0000">{$currency_sym}{$overall_outstanding_balance|string_format:"%.2f"}</font></td>
                                         </tr>
                                     </table>
-                                    <br>                                
-                                    
-                                    <!-- Customer Stats -->
-                                    
+                                </td>
+                            </tr>
+                            
+                            <!-- Customer Stats -->
+                            <tr>
+                                <td>
                                     <b>{t}Customers{/t}</b>
                                     <br>
                                     <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
@@ -81,32 +112,9 @@
                                             <td>{$customer_total_count}</td>
                                         </tr>
                                     </table>
-                                    <br />
-                                        
-                                     <!-- Currently Logged In Employee Stats -->
-                                    
-                                    <b>{t}Work Order Stats{/t} ({$login_display_name})</b>
-                                    <br>
-                                    <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
-                                        <tr class="olotd4">
-                                            <td class="row2"><b>{t}Open{/t}</b></td>
-                                            <td class="row2"><b>{t}WORKORDER_STATUS_2{/t}</b></td>
-                                            <td class="row2"><b>{t}WORKORDER_STATUS_3{/t}</b></td>
-                                            <td class="row2"><b>{t}WORKORDER_STATUS_7{/t}</b></td>                                            
-                                            <td class="row2"><b>{t}Closed{/t}</b></td>
-                                        </tr>
-                                        <tr class="olotd4">
-                                            <td><a href="index.php?page=workorder:overview#new">{$employee_workorders_open_count}</a></td>
-                                            <td><a href="index.php?page=workorder:overview#assigned">{$employee_workorders_assigned_count}</a></td>
-                                            <td><a href="index.php?page=workorder:overview#awaiting">{$employeee_workorders_waiting_for_parts_count}</a></td>
-                                            <td><a href="index.php?page=workorder:overview#payment">{$employee_workorders_awaiting_payment_count}</a></td>
-                                            <td><a href="index.php?page=workorder:closed">{$employee_workorders_total_closed_count}</a></td>
-                                        </tr>
-                                    </table>
-                                    <br>
-                                        
                                 </td>
                             </tr>
+                            
                         </table>
                     </td>
                 </tr>

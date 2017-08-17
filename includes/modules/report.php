@@ -119,9 +119,7 @@ function count_invoices($db, $status, $user_id = null, $start_date = null, $end_
         // Filter by Partially Paid Invoices
         } elseif($status == 'partially_paid') {
             
-            $whereTheseRecords .= "AND is_paid=".$db->qstr(0)." AND balance <> total";
-            
-        }
+            $whereTheseRecords .= "AND is_paid != '1' AND paid_amount < total";
             
         // Filter by Paid Invoices
         } elseif($status == 'paid') {
@@ -131,9 +129,11 @@ function count_invoices($db, $status, $user_id = null, $start_date = null, $end_
         // Return Invoices for the given status
         } else {
             
-            //$whereTheseRecords .= " AND ".PRFX."invoice.status= ".$db->qstr($status);
+            //$whereTheseRecords .= " AND ".PRFX."invoice.status = ".$db->qstr($status);
             
         }
+        
+    }
         
     // Filter by user
     if($user_id) {
@@ -161,7 +161,7 @@ function count_invoices($db, $status, $user_id = null, $start_date = null, $end_
 }
 
 ###################################################
-# Sum of Discounts for Invoices of a given status #
+# Sum of Discounts for Invoices                   #
 ###################################################
 
 function sum_invoices_discounts($db, $status, $start_date = null, $end_date = null) {
@@ -180,9 +180,7 @@ function sum_invoices_discounts($db, $status, $start_date = null, $end_date = nu
         // Filter by Partially Paid Invoices
         } elseif($status == 'partially_paid') {
             
-            $whereTheseRecords .= "AND is_paid=".$db->qstr(0)." AND balance <> total";
-            
-        }
+            $whereTheseRecords .= "AND is_paid = '0' AND paid_amount < total";
             
         // Filter by Paid Invoices
         } elseif($status == 'paid') {
@@ -195,6 +193,8 @@ function sum_invoices_discounts($db, $status, $start_date = null, $end_date = nu
             //$whereTheseRecords .= " AND ".PRFX."invoice.status= ".$db->qstr($status);
             
         }
+        
+    }
         
     // Filter by Date
     if($start_date && $end_date) {
@@ -212,8 +212,7 @@ function sum_invoices_discounts($db, $status, $start_date = null, $end_date = nu
         
        return $rs->fields['discount_amount_sum']; 
        
-    }
-    
+    }    
     
 }
 
@@ -237,9 +236,7 @@ function sum_invoices_balance($db, $status, $start_date = null, $end_date = null
         // Filter by Partially Paid Invoices
         } elseif($status == 'partially_paid') {
             
-            $whereTheseRecords .= "AND is_paid=".$db->qstr(0)." AND balance <> total";
-            
-        }
+            $whereTheseRecords .= "AND is_paid = '0' AND paid_amount < total";
             
         // Filter by Paid Invoices
         } elseif($status == 'paid') {
@@ -252,6 +249,8 @@ function sum_invoices_balance($db, $status, $start_date = null, $end_date = null
             //$whereTheseRecords .= " AND ".PRFX."invoice.status= ".$db->qstr($status);
             
         }
+        
+    }
         
     // Filter by Date
     if($start_date && $end_date) {
@@ -274,7 +273,7 @@ function sum_invoices_balance($db, $status, $start_date = null, $end_date = null
 }
 
 #############################################
-# Sum of Invoices Sub_total                  #
+# Sum of Invoices Sub_total                 #
 #############################################
 
 function sum_invoices_sub_total($db, $status, $start_date = null, $end_date = null) {
@@ -293,9 +292,7 @@ function sum_invoices_sub_total($db, $status, $start_date = null, $end_date = nu
         // Filter by Partially Paid Invoices
         } elseif($status == 'partially_paid') {
             
-            $whereTheseRecords .= "AND is_paid=".$db->qstr(0)." AND balance <> total";
-            
-        }
+            $whereTheseRecords .= "AND is_paid = '0' AND paid_amount < total";
             
         // Filter by Paid Invoices
         } elseif($status == 'paid') {
@@ -308,6 +305,8 @@ function sum_invoices_sub_total($db, $status, $start_date = null, $end_date = nu
             //$whereTheseRecords .= " AND ".PRFX."invoice.status= ".$db->qstr($status);
             
         }
+        
+    }
         
     // Filter by Date
     if($start_date && $end_date) {
@@ -349,9 +348,7 @@ function sum_invoices_tax($db, $status, $start_date = null, $end_date = null) {
         // Filter by Partially Paid Invoices
         } elseif($status == 'partially_paid') {
             
-            $whereTheseRecords .= "AND is_paid=".$db->qstr(0)." AND balance <> total";
-            
-        }
+            $whereTheseRecords .= "AND is_paid = '0' AND paid_amount < total";
             
         // Filter by Paid Invoices
         } elseif($status == 'paid') {
@@ -364,6 +361,8 @@ function sum_invoices_tax($db, $status, $start_date = null, $end_date = null) {
             //$whereTheseRecords .= " AND ".PRFX."invoice.status= ".$db->qstr($status);
             
         }
+        
+    }
         
     // Filter by Date
     if($start_date && $end_date) {
@@ -405,9 +404,7 @@ function sum_invoices_total($db, $status, $start_date = null, $end_date = null) 
         // Filter by Partially Paid Invoices
         } elseif($status == 'partially_paid') {
             
-            $whereTheseRecords .= "AND is_paid=".$db->qstr(0)." AND balance <> total";
-            
-        }
+            $whereTheseRecords .= "AND is_paid = '0' AND paid_amount < total";
             
         // Filter by Paid Invoices
         } elseif($status == 'paid') {
@@ -420,6 +417,8 @@ function sum_invoices_total($db, $status, $start_date = null, $end_date = null) 
             //$whereTheseRecords .= " AND ".PRFX."invoice.status= ".$db->qstr($status);
             
         }
+        
+    }
         
     // Filter by Date
     if($start_date && $end_date) {
@@ -436,6 +435,62 @@ function sum_invoices_total($db, $status, $start_date = null, $end_date = null) 
     } else {
         
        return $rs->fields['total_sum']; 
+       
+    }
+        
+}
+
+#############################################
+#     Sum of Invoices Tax                   #
+#############################################
+
+function sum_invoices_paid_amount($db, $status, $start_date = null, $end_date = null) {
+        
+    // Default Action
+    $whereTheseRecords = " WHERE invoice_id >= '0'";
+    
+    // Restrict by Status
+    if($status != 'all') {
+        
+        // Filter by Unpaid Invoices
+        if($status == 'unpaid') {
+            
+            $whereTheseRecords .= " AND ".PRFX."invoice.is_paid != '1'";
+        
+        // Filter by Partially Paid Invoices
+        } elseif($status == 'partially_paid') {
+            
+            $whereTheseRecords .= "AND is_paid = '0' AND paid_amount < total";
+            
+        // Filter by Paid Invoices
+        } elseif($status == 'paid') {
+            
+            $whereTheseRecords .= " AND ".PRFX."invoice.is_paid = '1'";        
+        
+        // Return Invoices for the given status
+        } else {
+            
+            //$whereTheseRecords .= " AND ".PRFX."invoice.status= ".$db->qstr($status);
+            
+        }
+        
+    }
+        
+    // Filter by Date
+    if($start_date && $end_date) {
+        $whereTheseRecords .= " AND date >= ".$db->qstr($start_date)." AND date <= ".$db->qstr($end_date);
+    }
+    
+    $sql = "SELECT SUM(paid_amount) AS paid_amount_sum
+            FROM ".PRFX."invoice
+            ".$whereTheseRecords;                
+
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to return the sum of invoice paid amounts for the selected invoices."));
+        exit;
+    } else {
+        
+       return $rs->fields['paid_amount_sum']; 
        
     }
         
