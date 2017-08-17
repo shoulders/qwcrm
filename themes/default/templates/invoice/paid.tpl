@@ -75,7 +75,7 @@
                                                         <td class="olohead">{t}Work Order{/t}</td>
                                                         <td class="olohead">{t}Employee{/t}</td>
                                                         <td class="olohead">{t}Discount{/t}</td>                                                        
-                                                        <td class="olohead">{t}Tax{/t}</td>
+                                                        <td class="olohead">{t}VAT{/t}</td>
                                                         <td class="olohead">{t}Sub Total{/t}</td>
                                                         <td class="olohead">{t}Amount{/t}</td>
                                                     </tr>

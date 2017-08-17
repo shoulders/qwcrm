@@ -35,8 +35,8 @@
                                                                         <option value="type"{if $search_category == 'type'} selected{/if}>{t}Type{/t}</option>
                                                                         <option value="payment_method"{if $search_category == 'payment_method'} selected{/if}>{t}Payment Method{/t}</option>
                                                                         <option value="net_amount"{if $search_category == 'net_amount'} selected{/if}>{t}Net Amount{/t}</option>
-                                                                        <option value="tax_rate"{if $search_category == 'tax_rate'} selected{/if}>{t}Tax Rate{/t}</option>
-                                                                        <option value="tax"{if $search_category == 'tax'} selected{/if}>{t}Tax Amount{/t}</option>
+                                                                        <option value="tax_rate"{if $search_category == 'tax_rate'} selected{/if}>{t}VAT Rate{/t}</option>
+                                                                        <option value="tax"{if $search_category == 'tax'} selected{/if}>{t}VAT Amount{/t}</option>
                                                                         <option value="total"{if $search_category == 'total'} selected{/if}>{t}Gross Amount{/t}</option>
                                                                         <option value="notes"{if $search_category == 'notes'} selected{/if}>{t}Notes{/t}</option>
                                                                         <option value="items"{if $search_category == 'items'} selected{/if}>{t}Items{/t}</option>
@@ -116,8 +116,8 @@
                                                         <td class="olohead">{t}Type{/t}</td>
                                                         <td class="olohead">{t}Payment Method{/t}</td>
                                                         <td class="olohead">{t}Net Amount{/t}</td>
-                                                        <td class="olohead">{t}Tax Rate{/t}</td>
-                                                        <td class="olohead">{t}Tax Amount{/t}</td>
+                                                        <td class="olohead">{t}VAT Rate{/t}</td>
+                                                        <td class="olohead">{t}VAT Amount{/t}</td>
                                                         <td class="olohead">{t}Gross Amount{/t}</td>
                                                         <td class="olohead">{t}Notes{/t}</td>
                                                         <td class="olohead">{t}Items{/t}</td>

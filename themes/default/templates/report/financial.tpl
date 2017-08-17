@@ -205,7 +205,7 @@
                                                                     <td><font color="red"<b>{$currency_sym}{$expense_net_amount|string_format:"%.2f"}</b></font></td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td><b>{t}Tax{/t}:</b></td>
+                                                                    <td><b>{t}VAT{/t}:</b></td>
                                                                     <td><font color="red"<b>{$currency_sym}{$expense_tax_amount|string_format:"%.2f"}</b></font></td>
                                                                 </tr>
                                                                 <tr>
@@ -223,7 +223,7 @@
                                                                     <td><font color="red"<b>{$currency_sym}{$refund_net_amount|string_format:"%.2f"}</b></font></td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td><b>{t}Tax{/t}:</b></td>
+                                                                    <td><b>{t}VAT{/t}:</b></td>
                                                                     <td><font color="red"<b>{$currency_sym}{$refund_tax_amount|string_format:"%.2f"}</b></font></td>
                                                                 </tr>
                                                                 <tr>
@@ -279,7 +279,7 @@
                                                                     <td><font color="red"<b>{$currency_sym}{$invoice_net_amount|string_format:"%.2f"}</b></font></td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td><b>{t}Tax{/t}:</b></td>
+                                                                    <td><b>{t}VAT{/t}:</b></td>
                                                                     <td><font color="red"<b>{$currency_sym}{$invoice_tax_amount|string_format:"%.2f"}</b></font></td>
                                                                 </tr>
                                                                 <tr>

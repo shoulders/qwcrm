@@ -36,7 +36,7 @@
                                         <tr>
                                             <td class="menutd"><b>{t}Date{/t}</b></td>
                                             <td class="menutd" >{$refund_details.date|date_format:$date_format}</td>
-                                            <td class="menutd" ><b>{t}Tax Rate{/t}</b></td>
+                                            <td class="menutd" ><b>{t}VAT Rate{/t}</b></td>
                                             <td class="menutd">&nbsp;&nbsp;&nbsp;{$refund_details.tax_rate} %</td>
                                         </tr>                                        
                                         <tr>
@@ -48,7 +48,7 @@
                                                 {if $refund_details.type == 4}{t}REFUND_TYPE_4{/t}{/if}
                                                 {if $refund_details.type == 5}{t}REFUND_TYPE_5{/t}{/if}
                                             </td>
-                                            <td class="menutd"><b>{t}Tax Amount{/t}</b></td>
+                                            <td class="menutd"><b>{t}VAT Amount{/t}</b></td>
                                             <td class="menutd">{$currency_sym} {$refund_details.tax_amount}</td>
                                         </tr>                                        
                                         <tr>

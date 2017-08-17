@@ -75,7 +75,7 @@
                                                         <td class="olohead" nowarp>{t}Work Order{/t}</td>
                                                         <td class="olohead" nowarp>{t}Employee{/t}</td>                                                        
                                                         <td class="olohead" nowarp>{t}Discount{/t}</td>                                                        
-                                                        <td class="olohead" nowarp>{t}Tax{/t}</td> 
+                                                        <td class="olohead" nowarp>{t}VAT{/t}</td> 
                                                         <td class="olohead" nowarp>{t}Sub Total{/t}</td>
                                                         <td class="olohead" nowarp>{t}Total{/t}</td>
                                                         <td class="olohead" nowarp>{t}Balance{/t}</td>

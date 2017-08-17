@@ -250,7 +250,7 @@
                         <td class="olotd4" width="80" align="right">{$currency_sym}{$invoice_details.net_amount|string_format:"%.2f"}</td>
                     </tr>                    
                     <tr>
-                        <td class="olotd4"><b>{t}Tax{/t} (@ {$invoice_details.tax_rate}%)</b></td>
+                        <td class="olotd4"><b>{t}VAT{/t} (@ {$invoice_details.tax_rate}%)</b></td>
                         <td class="olotd4" width="80" align="right">{$currency_sym}{$invoice_details.tax_amount|string_format:"%.2f"}</td>
                     </tr>
                     <tr>

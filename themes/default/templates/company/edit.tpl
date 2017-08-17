@@ -97,7 +97,7 @@
                                                             <td><input name="website" class="olotd5" value="{$company_details.website}" size="50" type="url" maxlength="50" placeholder="https://quantumwarp.com/" pattern="^https?://.+" onkeydown="return onlyURL(event);"/></td>
                                                         </tr> 
                                                         <tr>
-                                                            <td align="right"><b>{t}Tax Rate{/t}:</b></td>
+                                                            <td align="right"><b>{t}VAT Rate{/t}:</b></td>
                                                             <td><input name="tax_rate" class="olotd5" size="6" value="{$company_details.tax_rate}" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumbersPeriod(event);"/>%</td>
                                                         </tr>
                                                         <tr>
