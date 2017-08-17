@@ -305,15 +305,15 @@
                                                         <td class="olotd4" valign="top">
                                                             <table>                                                                
                                                                 <tr>
-                                                                    <td><b>{t}VAT Paid{/t}:</b></td>
+                                                                    <td><b>{t}Paid{/t}:</b></td>
                                                                     <td><font color="red"<b>{$currency_sym}{$vat_paid|string_format:"%.2f"}</b></font></td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td><b>{t}VAT Received{/t}:</b></td>
+                                                                    <td><b>{t}Received{/t}:</b></td>
                                                                     <td><font color="red"<b>{$currency_sym}{$vat_received|string_format:"%.2f"}</b></font></td>
                                                                 </tr> 
                                                                 <tr>
-                                                                    <td><b>{t}VAT Balance{/t}:</b></td>
+                                                                    <td><b>{t}Balance{/t}:</b></td>
                                                                     <td><font color="red"<b>{$currency_sym}{$vat_balance|string_format:"%.2f"}</b></font></td>
                                                                 </tr>
                                                             </table>
