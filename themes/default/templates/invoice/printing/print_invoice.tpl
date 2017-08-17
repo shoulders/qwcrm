@@ -257,14 +257,10 @@
                         <td class="olotd4"><b>{t}Total{/t} ({t}Gross{/t})</b></td>
                         <td class="olotd4" width="80" align="right"><b>{$currency_sym}{$invoice_details.gross_amount|string_format:"%.2f"}</b></td>
                     </tr>
-                    <tr>
+                    {*<tr>
                         <td class="olotd4"><b>{t}Balance{/t}</b></td>
-                        {if $invoice_details.balance == 0}
-                            <td class="olotd4" width="80" align="right"><b><font color="#CC0000">{$currency_sym} {$invoice_details.balance|string_format:"%.2f"}</font></b></td>
-                        {else}
-                            <td class="olotd4" width="80" align="right"><b><font color="#CC0000">{$currency_sym} {$invoice_details.balance|string_format:"%.2f"}</font></b></td>
-                        {/if}
-                    </tr>
+                        <td class="olotd4" width="80" align="right"><b><font color="#CC0000">{$currency_sym} {$invoice_details.balance|string_format:"%.2f"}</font></b></td>                        
+                    </tr>*}
                 </table>
             </td>
         </tr>
