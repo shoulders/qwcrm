@@ -21,16 +21,34 @@
                             <tr>
                                 <td width="100%" valign="top" class="menutd">                                    
                                     <form method="post" action="index.php?page=payment:options">
+                                        
                                         <table>
-                                            <caption><b><font color="red">{t}Available Payment Types{/t}</font></b></caption>
-                                            {section name=q loop=$payment_methods_status}
-                                                <tr>
-                                                    <td colspan="2"><b>{$payment_methods_status[q].method}</b></td>
-                                                    <td>{t}Active{/t}: <input type="checkbox" name="{$payment_methods_status[q].smarty_tpl_key}" {if $payment_methods_status[q].active == 1} checked {/if} value=1 class="olotd5"></td>
-                                                </tr>
-                                            {/section}
-                                        </table>
-                                        <table>
+                                            
+                                            <!-- Enable Tax on invoices -->
+                                            <tr>
+                                                <td><b>{t}Enable Tax/VAT{/t}:</b></td>
+                                                <td>
+                                                    <select class="olotd5" id="tax_enabled" name="tax_enabled">                                                       
+                                                        <option value="0"{if $payment_settings.tax_enabled == '0'} selected{/if}>{t}No{/t}</option>
+                                                        <option value="1"{if $payment_settings.tax_enabled == '1'} selected{/if}>{t}Yes{/t}</option>
+                                                    </select>                                                    
+                                                </td> 
+                                            </tr>
+                                            
+                                            <!-- Available Payment Types -->
+                                            <tr>
+                                                <td colspan="2">
+                                                    <table>
+                                                        <caption><b><font color="red">{t}Available Payment Types{/t}</font></b></caption>
+                                                        {section name=q loop=$payment_methods_status}
+                                                            <tr>
+                                                                <td colspan="2"><b>{$payment_methods_status[q].method}</b></td>
+                                                                <td>{t}Active{/t}: <input type="checkbox" name="{$payment_methods_status[q].smarty_tpl_key}" {if $payment_methods_status[q].active == 1} checked {/if} value=1 class="olotd5"></td>
+                                                            </tr>
+                                                        {/section}
+                                                    </table>
+                                                </td>
+                                            </tr>
 
                                             <!-- Bank Details -->  
                                             <tr>
