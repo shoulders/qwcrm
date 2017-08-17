@@ -267,9 +267,12 @@
     </table>
     <br>
     <br>
-                        
+    
     <!-- Footer Section -->    
     <table width="750" border="0" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
+        <tr>
+            <td align="center">{t}VAT Number{/t}: {$company_details.vat_number}</td>
+        </tr>        
         <tr>
             <td align="center">{$payment_details.invoice_footer_msg}</td>
         </tr>
