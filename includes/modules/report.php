@@ -119,7 +119,7 @@ function count_invoices($db, $status, $user_id = null, $start_date = null, $end_
         // Filter by Partially Paid Invoices
         } elseif($status == 'partially_paid') {
             
-            $whereTheseRecords .= "AND is_paid != '1' AND paid_amount < total";
+            $whereTheseRecords .= "AND is_paid != '1' AND paid_amount < gross_amount";
             
         // Filter by Paid Invoices
         } elseif($status == 'paid') {
@@ -180,7 +180,7 @@ function sum_invoices_value($db, $value_name, $status, $start_date = null, $end_
         // Filter by Partially Paid Invoices
         } elseif($status == 'partially_paid') {
             
-            $whereTheseRecords .= "AND is_paid = '0' AND paid_amount < total";
+            $whereTheseRecords .= "AND is_paid = '0' AND paid_amount < gross_amount";
             
         // Filter by Paid Invoices
         } elseif($status == 'paid') {

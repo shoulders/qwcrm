@@ -31,7 +31,7 @@ $smarty->assign('overall_invoices_paid_count',              count_invoices($db, 
 $smarty->assign('overall_invoices_count',                   count_invoices($db, 'all')                          );
 
 // Invoice Totals
-$smarty->assign('overall_invoiced_total',                   sum_invoices_value($db, 'total', 'all') );
+$smarty->assign('overall_invoiced_total',                   sum_invoices_value($db, 'gross_amount', 'all')      );
 $smarty->assign('overall_received_monies',                  sum_invoices_value($db, 'paid_amount', 'all')       );
 $smarty->assign('overall_outstanding_balance',              sum_invoices_value($db, 'balance', 'all')           );
 
