@@ -72,13 +72,9 @@ $date_year_end = get_company_details($db, 'year_end');
 
 /** Customers **/
 
-// new customers this month
+// Customer Counts
 $smarty->assign('customer_month_count', count_customers($db, $status, $date_month_start, $date_month_end));
-
-// new customers this year
 $smarty->assign('customer_year_count', count_customers($db, $status, $date_year_start, $date_year_end));
-
-// Count All Customers
 $smarty->assign('customer_total_count', count_customers($db, 'all'));
 
 

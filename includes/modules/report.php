@@ -38,6 +38,7 @@ defined('_QWEXEC') or die;
 
 /** General Section */
 
+
 /** Workorders **/
 
 #########################################
@@ -252,7 +253,7 @@ function count_customers($db, $status, $start_date = null, $end_date = null) {
     
 }
 
-/** Labour Section **/
+/** Labour **/
 
 #########################
 #  Count labour items   #
@@ -320,7 +321,7 @@ function sum_labour_items($db, $value_name, $start_date, $end_date) {
     
 }
 
-/** Parts Section **/
+/** Parts **/
 
 ########################
 #  Count parts items   #
@@ -388,7 +389,7 @@ function sum_parts_value($db, $value_name, $start_date, $end_date) {
     
 }
 
-/** Expense Section **/
+/** Expense **/
 
 ###################################
 #  Sum selected value of expenses #
@@ -411,7 +412,7 @@ function sum_expenses_value($db, $value_name, $start_date, $end_date) {
     
 }
 
-/** Refunds Section **/
+/** Refunds **/
 
 ###################################
 #  Sum selected value of Refunds  #
