@@ -542,6 +542,7 @@
                         <td class="menuhead" colspan="5" width="100%">&nbsp;{t}Smarty{/t}</td>
                     </tr>                                        
                     
+                    
                     <tr>
                         <td align="right"><b>{t}Force Compile{/t}</b></td>
                         <td>
@@ -552,6 +553,13 @@
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Force Compile{/t}</strong></div><hr><div>{t escape=tooltip}This forces Smarty to (re)compile templates on every invocation. This setting overrides \'compile_check\'. By default this is FALSE. This is handy for development and debugging. It should never be used in a production environment. If \'caching\' is enabled, the cache file(s) will be regenerated every time. Compiling referenced here is the process of converting the Smarty templates into pure PHP code.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
+                    <tr>
+                        <td align="right">&nbsp;</td>
+                        <td>                                                                                                                   
+                            <button type="button" onClick="$.ajax( { url:'index.php?page=administrator:config&clear_smarty_compile=true&theme=print', success: function(data) { $('body').append(data); } } );">{t}Clear Smarty Compile{/t}</button>
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Clear Smarty Compile{/t}</strong></div><hr><div>{t escape=tooltip}This clears all of the Smarty compiled template files.{/t}</div>');" onMouseOut="hideddrivetip();">
+                        </td>
+                    </tr>                    
                     {*<tr>
                         <td align="right"><b>{t}Force Cache{/t}</b></td>
                         <td>
@@ -598,6 +606,13 @@
                                 <option value="1"{if $qwcrm_config.smarty_cache_locking == '1'} selected{/if}>{t}Yes{/t}</option>
                             </select>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Cache Locking{/t}</strong></div><hr><div>{t escape=tooltip}Cache locking avoids concurrent cache generation. This means resource intensive pages can be generated only once, even if they\'ve been requested multiple times in the same moment.{/t}</div>');" onMouseOut="hideddrivetip();">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right">&nbsp;</td>
+                        <td>                                                                                                                   
+                            <button type="button" onClick="$.ajax( { url:'index.php?page=administrator:config&clear_smarty_cache=true&theme=print', success: function(data) { $('body').append(data); } } );">{t}Clear Smarty Cache{/t}</button>
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Clear Smarty Cache{/t}</strong></div><hr><div>{t escape=tooltip}This clears the Smarty cache.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>*}
                     

@@ -324,23 +324,3 @@ function write_record_to_email_transport_log($record) {
     return;
     
 }
-
-##############################################
-#  Clear any onscreen notifications           #   // this is needed because emails are requested via ajax
-##############################################
-
-function clear_onscreen_notifications() {
-    
-    echo "<script>clearSystemMessages();</script>";
-    
-}
-
-##############################################
-#  output email notifications onscreen       #   // this is needed because emails are requested via ajax
-##############################################
-
-function output_notifications_onscreen($information_msg = '', $warning_msg = '') {
-   
-    echo "<script>processSystemMessages('".$information_msg."', '".$warning_msg."');</script>";
-    
-}

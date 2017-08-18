@@ -1293,3 +1293,24 @@ function browserSupportedCompressionEncodings() {
     return array_map('trim', (array) explode(',', $_SERVER['HTTP_ACCEPT_ENCODING']));
 
 }
+
+
+##############################################
+#  Clear any onscreen notifications          #   // this is needed for messages when pages are requested via ajax (emails/config)
+##############################################
+
+function clear_onscreen_notifications() {
+    
+    echo "<script>clearSystemMessages();</script>";
+    
+}
+
+##############################################
+#  output email notifications onscreen       #   // this is needed for messages when pages are requested via ajax (emails/config)
+##############################################
+
+function output_notifications_onscreen($information_msg = '', $warning_msg = '') {
+   
+    echo "<script>processSystemMessages('".$information_msg."', '".$warning_msg."');</script>";
+    
+}

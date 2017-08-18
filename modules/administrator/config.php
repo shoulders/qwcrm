@@ -5,6 +5,24 @@ defined('_QWEXEC') or die;
 require(INCLUDES_DIR.'modules/administrator.php');
 require(INCLUDES_DIR.'modules/user.php');
 
+// Clear Smarty Cache
+if($VAR['clear_smarty_cache'] == 'true') {
+    clear_smarty_cache();    
+    die();
+}
+
+// Clear Smarty Compile
+if($VAR['clear_smarty_compile'] == 'true') {
+    clear_smarty_compile();    
+    die();
+}
+
+// Send a test mail
+if($VAR['send_test_mail'] == 'true') {    
+    send_test_mail($db);
+    die();    
+}
+
 // Update Company details
 if($VAR['submit'] == 'update') {   
     
@@ -25,14 +43,6 @@ if($VAR['submit'] == 'update') {
     
     // No data submitted so just load the current config settings
     $smarty->assign('qwcrm_config', get_qwcrm_config() );
-    
-}
-
-// Send a test mail
-if($VAR['send_test_mail'] == 'true') {
-    
-    send_test_mail($db);
-    die();
     
 }
 

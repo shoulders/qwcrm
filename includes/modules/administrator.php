@@ -338,3 +338,39 @@ function send_test_mail($db) {
     send_email($user_details['email'], gettext("Test mail from QWcrm"), 'This is a test mail sent using'.' '.$config->email_mailer.'. '.'Your email settings are correct!', $user_details['display_name']);
     
 }
+
+function clear_smarty_cache() {
+    
+    global $smarty;
+    
+    // Clear any onscreen notifications - this allows for mutiple errors to be displayed
+    clear_onscreen_notifications();
+    
+    // clear the entire cache
+    $smarty->clearAllCache();
+
+    // clears all files over one hour old
+    //$smarty->clearAllCache(3600);
+    
+    // Output the system message to the browser   
+    output_notifications_onscreen(gettext("The Smarty cache has been emptied successfully."), '');
+    
+}
+
+function clear_smarty_compile() {
+    
+    global $smarty;
+    
+    // Clear any onscreen notifications - this allows for mutiple errors to be displayed
+    clear_onscreen_notifications();
+    
+    // clear a specific template resource
+    //$smarty->clearCompiledTemplate('index.tpl');
+
+    // clear entire compile directory
+    $smarty->clearCompiledTemplate();
+    
+    // Output the system message to the browser   
+    output_notifications_onscreen(gettext("The Smarty compile directory has been emptied successfully."), '');
+    
+}

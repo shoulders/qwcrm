@@ -39,5 +39,6 @@ $smarty->debugging_ctrl         = $QConfig->smarty_debugging_ctrl;
 //$smarty->error_unassigned = true;                 // to enable notices.
 //$smarty->error_reporting = E_ALL | E_STRICT;      // Uses standard PHP error levels.
 //$smarty->compileAllTemplates();                   // this is a really cool feature and useful for translations
-//$smarty->clear_all_cache();                       // clears all of the cache
+//$smarty->clearAllCache();                         // clears all of the cache
 //$smarty->clear_cache()();                         // clear individual cache files (or groups)
+//$smarty->clearCompiledTemplate();                 // Clears the compile dirctory
