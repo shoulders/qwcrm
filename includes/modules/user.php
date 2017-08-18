@@ -757,6 +757,9 @@ function login($credentials, $options = array())
     } else {
 
         /* Login failed */
+        
+        // Log activity       
+        write_record_to_activity_log(gettext("Login unsuccessful for").' '.$credentials['username']);
 
         $smarty->assign('warning_msg', gettext("Login Failed. Check you username and password."));
         return false;
