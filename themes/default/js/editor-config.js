@@ -2,6 +2,7 @@ tinymce.init({
      
     selector : "textarea:not(.mceNoEditor)",                                // Select all textarea excluding the mceNoEditor class    
     theme: 'modern',
+    branding: false,                                                        // remove the 'powered by timymce' branding 
     //content_css: 'css/content.css',                                       // point this to your template CSS for inline styling
     browser_spellcheck: true,                                               // enable browser native spell check
     schema: 'html5',                                                        // set to use html5
