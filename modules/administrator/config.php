@@ -21,7 +21,7 @@ if($VAR['clear_smarty_compile'] == 'true') {
     die();
 }
 
-// Send a test mail
+// Send a Test Mail
 if($VAR['send_test_mail'] == 'true') {
     if(check_page_accessed_via_qwcrm('administrator:config')) {
         send_test_mail($db);
