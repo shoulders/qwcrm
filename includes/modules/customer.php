@@ -181,6 +181,17 @@ function insert_customer_note($db, $customer_id, $note) {
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to insert the customer note into the database."));
         exit;
+        
+    } else {
+        
+        // Log activity        
+        write_record_to_activity_log(gettext("A new customer note was added to the customer").' '.get_customer_details($db, $customer_id, 'display_name').' '.gettext("by").' '.QFactory::getUser()->login_display_name);
+        
+        // Update last active record      
+        update_customer_last_active($db, $customer_id);
+        
+        return true;
+        
     }
     
 }
@@ -294,6 +305,12 @@ function update_customer($db, $customer_id, $VAR) {
         exit;
     } else {
         
+        // Log activity        
+        write_record_to_activity_log(gettext("The customer").' '.get_customer_details($db, $customer_id, 'display_name').' '.gettext("was updated by").' '.QFactory::getUser()->login_display_name);
+        
+        // Update last active record      
+        update_customer_last_active($db, $customer_id);
+        
       return true;
       
     }
@@ -314,8 +331,37 @@ function update_customer_note($db, $customer_note_id, $date, $note) {
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the customer note."));
+        exit;    
+        
+    } else {
+        
+        // get customer_id
+        $customer_id = get_customer_note($db, $customer_note_id, 'customer_id');
+        
+        // Log activity        
+        write_record_to_activity_log(gettext("Customer Note").' '.$customer_note_id.' '.gettext("for").' '.get_customer_details($db, $customer_id, 'display_name').' '.gettext("was updated by").' '.QFactory::getUser()->login_display_name);
+        
+        // Update last active record        
+        update_customer_last_active($db, $customer_id);
+        
+    }
+    
+}
+
+#################################
+#    Update Last Active         #
+#################################
+
+function update_customer_last_active($db, $customer_id) {
+    
+    $sql = "UPDATE ".PRFX."customer SET
+            last_active=".$db->qstr(time())."
+            WHERE customer_id=".$db->qstr($customer_id);
+    
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update a Customer's last active time."));
         exit;
-    }   
+    }
     
 }
 
@@ -373,9 +419,12 @@ function delete_customer($db, $customer_id){
         return false;
     }
     
-    /* we can now delete the customer */
+    /* We can now delete the customer */
     
-    // Delete any Customer use accounts
+    // Get customer details foe loggin before we delete anything
+    $customer_details = get_customer_details($db, $customer_id);
+    
+    // Delete any Customer user accounts
     $sql = "DELETE FROM ".PRFX."user WHERE customer_id=".$db->qstr($customer_id);    
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete the customer's users from the database."));
@@ -389,6 +438,9 @@ function delete_customer($db, $customer_id){
         exit;
     }
     
+    // Write the record to the activity log                    
+    write_record_to_activity_log(gettext("The customer").' '.$customer_details['display_name'].' '.gettext("has been deleted by").' '.QFactory::getUser()->login_display_name);
+    
     return true;
     
 }
@@ -399,11 +451,23 @@ function delete_customer($db, $customer_id){
 
 function delete_customer_note($db, $customer_note_id) {
     
+    // get customer_id before deleting the record
+    $customer_id = get_customer_note($db, $customer_note_id, 'customer_id');
+    
     $sql = "DELETE FROM ".PRFX."customer_notes WHERE customer_note_id=".$db->qstr( $customer_note_id );
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete the customer note."));
         exit;
+        
+    } else {        
+        
+        // Log activity        
+        write_record_to_activity_log(gettext("Customer Note").' '.$customer_note_id.' '.gettext("for Customer").' '.get_customer_details($db, $customer_id, 'display_name').' '.gettext("was deleted by").' '.QFactory::getUser()->login_display_name);
+        
+        // Update last active record        
+        update_customer_last_active($db, $customer_id);
+        
     }
     
 }

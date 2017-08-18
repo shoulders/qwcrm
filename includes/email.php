@@ -48,7 +48,7 @@ function php_mail_fallback($to, $subject, $body, $attachment = null) {
 #   Basic email wrapper function      #
 #######################################
 
-function send_email($recipient_email, $subject, $body, $recipient_name = null, $attachment = null) {
+function send_email($recipient_email, $subject, $body, $recipient_name = null, $attachment = null, $employee_id = null, $customer_id = null, $workorder_id = null, $invoice_id = null) {
     
     global $smarty;
     
@@ -61,7 +61,7 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
     // If email is not enabled, do not send emails
     if($config->email_online != true) {
         
-        // Log the event
+        // Log activity 
         $record = gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';        
         write_record_to_activity_log($record);
         
@@ -148,7 +148,7 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
     catch(Swift_RfcComplianceException $RfcCompliance_exception) {
         //var_dump($RfcCompliance_exception);
         
-        // Log the event
+        // Log activity 
         $record = gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';        
         write_record_to_activity_log($record);
         write_record_to_email_error_log($RfcCompliance_exception->getMessage());
@@ -210,7 +210,7 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
                 )
             */          
             
-            // Log the event            
+            // Log activity             
             $record = gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';            
             write_record_to_activity_log($record);
             
@@ -221,10 +221,22 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
 
         } else {
 
-            // Successfully sent the email
+            // Successfully sent the email            
             
-            // Log the event
-            $record = gettext("Successfully sent email to").' '.$recipient_email.' ('.$recipient_name.')';            
+            // Log activity
+            $record = gettext("Successfully sent email to").' '.$recipient_email.' ('.$recipient_name.')'.' '.gettext("with the subject").' : '.$subject; 
+            
+            if($workorder_id) {
+                
+                // Create a Workorder History Note            
+                insert_workorder_history_note($db, $workorder_id, $record.' : '.gettext("and was sent by").' '.QFactory::getUser()->login_display_name);
+
+                // Update last active record
+                update_workorder_last_active($db, $workorder_id);
+                update_customer_last_active($db, $customer_id);                
+                
+            }
+                                               
             write_record_to_activity_log($record);
             
             // Output the system message to the browser
@@ -233,13 +245,14 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
             output_notifications_onscreen($system_message, '');
 
         }
+        
     }
     
     // This will present any transport errors
     catch(Swift_TransportException $Transport_exception) {
         //var_dump($RfcCompliance_exception);
         
-        // Log the event
+        // Log activity 
         $record = gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';
         write_record_to_activity_log($record);
         write_record_to_email_error_log($Transport_exception->getMessage());

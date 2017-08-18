@@ -2,8 +2,8 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'modules/customer.php');
 require(INCLUDES_DIR.'modules/company.php');
+require(INCLUDES_DIR.'modules/customer.php');
 require(INCLUDES_DIR.'modules/user.php');
 require(INCLUDES_DIR.'modules/invoice.php');
 require(INCLUDES_DIR.'modules/payment.php');
@@ -77,8 +77,9 @@ if($VAR['print_content'] == 'invoice') {
         $body = get_email_message_body($db, 'email_msg_invoice', $customer_details);
                       
         // Email the PDF
-        send_email($customer_details['email'], gettext("Invoice").' '.$invoice_id, $body, $customer_details['display_name'], $attachment);
-        
+        $invoice_details = get_invoice_details($db, $invoice_id);
+        send_email($customer_details['email'], gettext("Invoice").' '.$invoice_id, $body, $customer_details['display_name'], $attachment, $invoice_details['employee_id'], $invoice_details['customer_id'], $invoice_details['workorder_id'], $invoice_id);
+                
         // End all other processing
         die();
         

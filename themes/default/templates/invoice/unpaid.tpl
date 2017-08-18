@@ -91,7 +91,7 @@
                                                             <td class="olotd4" nowrap>{$currency_sym}{$invoices[q].discount_amount}</td>                                                            
                                                             <td class="olotd4" nowrap>{$currency_sym}{$invoices[q].tax_amount}</td>
                                                             <td class="olotd4" nowrap>{$currency_sym}{$invoices[q].sub_total}</td> 
-                                                            <td class="olotd4" nowrap>{$currency_sym}{$invoices[q].total}</td>
+                                                            <td class="olotd4" nowrap>{$currency_sym}{$invoices[q].gross_amount}</td>
                                                             <td class="olotd4" nowrap>{$currency_sym}{$invoices[q].balance}</td>
                                                         </tr>
                                                     {/section}

@@ -45,7 +45,13 @@ function insert_transaction($db, $customer_id, $workorder_id, $invoice_id,  $dat
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to insert transaction into the database."));
         exit;
-    }
+        
+    } else {
+        
+        // Update last active record        
+        update_customer_last_active($db, $customer_id);
+        
+    }    
     
 }
 
@@ -65,9 +71,9 @@ function insert_payment_method_transaction($db, $invoice_id, $date, $amount, $me
     $formatted_amount = sprintf( "%.2f", $amount);
            
     // Other Variables
-    $currency_sym   = get_company_details($db, 'currency_symbol');
-    $workorder_id   = $invoice_details['workorder_id'];
+    $currency_sym   = get_company_details($db, 'currency_symbol');    
     $customer_id    = $invoice_details['customer_id'];
+    $workorder_id   = $invoice_details['workorder_id'];
     
     // Calculate the new balance and paid amount    
     $new_invoice_paid_amount    = $invoice_details['paid_amount'] + $amount;
@@ -84,10 +90,11 @@ function insert_payment_method_transaction($db, $invoice_id, $date, $amount, $me
         $log_msg = gettext("Partial Payment made by")." $method_name ".gettext("for")." $currency_sym$formatted_amount, ".gettext("Balance due").": $currency_sym$new_invoice_balance, $method_note, ".gettext("Note").": $note";
         
         // If the invoice has a workorder update it
-        if(check_invoice_has_workorder($db, $invoice_id)) {
+        if($workorder_id) {
 
             // Creates a History record for the new workorder            
             insert_workorder_history_note($db, $workorder_id, gettext("Created by").' '.QFactory::getUser()->login_display_name.' - '.$log_msg);
+            
         }    
 
         // Insert Transaction into log       
@@ -121,14 +128,9 @@ function insert_payment_method_transaction($db, $invoice_id, $date, $amount, $me
                     
         }
 
-        // If the invoice has a workorder update it
-        if(check_invoice_has_workorder($db, $invoice_id)) {
-
-            // Update workorder status to 'payment made'
-            update_workorder_status($db, $workorder_id, 8);   
-
-            // Creates a History record for the new work order            
-            insert_workorder_history_note($db, $workorder_id, gettext("Created by").' '.QFactory::getUser()->login_display_name.' - '.$log_msg);
+        // Create a Workorder History Note
+        if($workorder_id) {                       
+            insert_workorder_history_note($db, $workorder_id, gettext("Created by").' '.QFactory::getUser()->login_display_name.' - '.$log_msg);            
         }    
 
         // Insert Transaction into log       

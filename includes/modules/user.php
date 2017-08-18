@@ -192,6 +192,11 @@ function insert_user($db, $VAR){
         exit;
     } else {
         
+        // Update last active record
+        if($VAR['customer_id']) {
+            update_customer_last_active($db, $VAR['customer_id']);
+        }
+        
         return $db->insert_id();        
         
     }
@@ -379,6 +384,11 @@ function update_user($db, $user_id, $VAR) {
             reset_user_password($db, $user_id, $VAR['password']);
         }
         
+        // Update last active record
+        if($VAR['customer_id']) {
+            update_customer_last_active($db, $VAR['customer_id']);
+        }
+        
         return true;
         
     }
@@ -410,6 +420,9 @@ function update_user($db, $user_id, $VAR) {
 
 function delete_user($db, $user_id) {
     
+    // get user details before deleting
+    $user_details = get_user_details($db, $user_id);
+    
     // User cannot delete their own account
     if($user_id == QFactory::getUser()->login_user_id) {
         postEmulationWrite('warning_msg', gettext("You can not delete your own account."));        
@@ -417,7 +430,7 @@ function delete_user($db, $user_id) {
     }
     
     // Cannot delete this account if it is the last administrator account
-    if(get_user_details($db, $user_id, 'usergroup') == '7') {
+    if($user_details['usergroup'] == '7') {
         
         $sql = "SELECT count(*) as count FROM ".PRFX."user WHERE usergroup = '7'";    
         if(!$rs = $db->Execute($sql)) {
@@ -481,6 +494,11 @@ function delete_user($db, $user_id) {
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete the user from the database."));
         exit;
+    }
+    
+    // Update last active record
+    if($user_details['customer_id']) {
+        update_customer_last_active($db, $user_details['customer_id']);
     }
         
     return true;
@@ -673,7 +691,13 @@ function reset_user_password($db, $user_id, $password) {
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to add password reset authorization."));
         exit;
-    } else{
+        
+    } else {
+        
+        // Update last active record
+        if(get_user_details($db, $user_id, 'customer_id')) {
+            update_customer_last_active($db, get_user_details($db, $user_id, 'customer_id'));
+        }
         
         return;
         
@@ -709,17 +733,21 @@ function login($credentials, $options = array())
         return false;
         
     } 
-
-    $auth = QFactory::getAuth();
-
-    if($auth->login($credentials, $options)) {
+    
+    if(QFactory::getAuth()->login($credentials, $options)) {
 
         /* Login Successful */
 
         $user = QFactory::getUser();
+        $db = QFactory::getDbo();
 
         // Log activity       
-        write_record_to_activity_log(gettext("Login successful for").' '.$user->login_username); 
+        write_record_to_activity_log(gettext("Login successful for").' '.$user->login_username);
+        
+        // Update last active record
+        if($user->login_customer_id) {            
+            update_customer_last_active($db, $user->login_customer_id);
+        }
 
         // set success message to survice the login event
         postEmulationWrite('information_msg', gettext("Login successful."));
@@ -740,16 +768,24 @@ function login($credentials, $options = array())
 #  Login authentication function   # // could add silent to logout?
 ####################################
 
-function logout($silent = null)
-{                    
+function logout($silent = null)        
+{   
+    $user = QFactory::getUser();
+    $db = QFactory::getDbo();
+    
     // Build logout message while user details exist
-    $record = gettext("Logout successful for").' '.QFactory::getUser()->login_username;
+    $record = gettext("Logout successful for").' '.$user->login_username;
     
     // Logout
     QFactory::getAuth()->logout();    
 
     // Log activity       
-    write_record_to_activity_log($record);        
+    write_record_to_activity_log($record);
+    
+    // Update last active record
+    if($user->login_customer_id) {            
+        update_customer_last_active($db, $user->login_customer_id);
+    }
 
     // Reload Homepage
     if($silent) {

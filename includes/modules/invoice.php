@@ -168,7 +168,21 @@ function insert_invoice($db, $customer_id, $workorder_id, $discount_rate, $tax_r
         exit;
     } else {
         
-        return $db->insert_id();
+        // get invoice_id
+        $invoice_id = $db->insert_id();
+        
+        // Create a Workorder History Note  
+        if($workorder_id) {             
+            insert_workorder_history_note($db, $workorder_id, gettext("Invoice").' '.$invoice_id.' '.gettext("was created for this Work Order").' '.gettext("by").' '.QFactory::getUser()->login_display_name);
+        }
+        
+        // Log activity        
+        write_record_to_activity_log(gettext("Invoice").' '.$invoice_id.' '.gettext("for Work Order").' '.$workorder_id.' '.gettext("was created by").' '.QFactory::getUser()->login_display_name);        
+
+        // Update last active record    
+        update_customer_last_active($db, $customer_id);
+        
+        return $invoice_id;
         
     }
     
@@ -271,6 +285,12 @@ function insert_invoice_prefill_item($db, $VAR){
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to insert an invoice prefill item into the database."));
         exit;
+        
+    } else {
+        
+        // Log activity        
+        write_record_to_activity_log(gettext("An Invoice Prefill Item").gettext("was added by").' '.QFactory::getUser()->login_display_name);        
+
     }
     
 }
@@ -451,7 +471,16 @@ function update_invoice($db, $invoice_id, $date, $due_date, $discount_rate) {
 
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the invoice dates and discount rate."));
-        exit;
+        exit;    
+        
+    } else {
+    
+        // Log activity        
+        write_record_to_activity_log(gettext("Invoice").' '.$invoice_id.' '.gettext("was updated by").' '.QFactory::getUser()->login_display_name);
+
+        // Update last active record    
+        update_customer_last_active($db, get_invoice_details($db, $invoice_id, 'customer_id'));
+        
     }
     
 }
@@ -504,12 +533,21 @@ function update_invoice_full($db, $VAR) {
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the invoice."));
         exit;
-    }    
+        
+    } else {
+    
+        // Log activity        
+        write_record_to_activity_log(gettext("Invoice").' '.$invoice_id.' '.gettext("was updated by").' '.QFactory::getUser()->login_display_name);
+
+        // Update last active record    
+        update_customer_last_active($db, get_invoice_details($db, $invoice_id, 'customer_id'));
+        
+    } 
     
 }
 
 #####################################
-#     update invoice rate item      #
+#   update invoice prefill item     #
 #####################################
 
 function update_invoice_prefill_item($db, $VAR){
@@ -524,6 +562,12 @@ function update_invoice_prefill_item($db, $VAR){
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update an invoice labour rates item."));
         exit;
+        
+    } else {
+        
+        // Log activity        
+        write_record_to_activity_log(gettext("An Invoice Prefill Item").gettext("was updated by").' '.QFactory::getUser()->login_display_name);        
+
     }
     
 }
@@ -538,8 +582,8 @@ function update_invoice_prefill_item($db, $VAR){
 
 function delete_invoice($db, $invoice_id) {
     
-    // Get workorder_id before deleting
-    $workorder_id = get_invoice_details($db, $invoice_id, 'workorder_id');
+    // Get invoice details before deleting
+    $invoice_details = get_invoice_details($db, $invoice_id);
     
     // make sure the invoice can be deleted 
     if(!check_invoice_can_be_deleted($db, $invoice_id)) {        
@@ -557,7 +601,19 @@ function delete_invoice($db, $invoice_id) {
     } else {
         
         // Update the workorder to remove the invoice_id
-        update_workorder_invoice_id($db, $workorder_id, '');
+        update_workorder_invoice_id($db, $invoice_details['workorder_id'], '');
+        
+        // Create a Workorder History Note  
+        if($invoice_details['workorder_id']) {
+            insert_workorder_history_note($db, $invoice_details['workorder_id'], gettext("Invoice").' '.$invoice_id.' '.gettext("was deleted by").' '.QFactory::getUser()->login_display_name);
+        }        
+        
+        // Log activity        
+        write_record_to_activity_log(gettext("Invoice").' '.$invoice_id.' '.gettext("for Work Order").' '.$invoice_details['workorder_id'].' '.gettext("was deleted by").' '.QFactory::getUser()->login_display_name);
+        
+        // Update last active record
+        update_workorder_last_active($db, $invoice_details['workorder_id']);
+        update_customer_last_active($db, $invoice_details['customer_id']);
         
         return true;
         
@@ -578,9 +634,13 @@ function delete_invoice_labour_item($db, $labour_id) {
         exit;
     } else {
         
-        return true;
+        // Log activity        
+        write_record_to_activity_log(gettext("An Invoice Labour Item").gettext("was deleted by").' '.QFactory::getUser()->login_display_name);
         
+        return true;
+
     }
+    
 }
 
 #####################################
@@ -594,12 +654,15 @@ function delete_invoice_parts_item($db, $parts_id) {
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete an invoice parts item."));
         exit;
+        
     } else {
         
-        return true;
+        // Log activity        
+        write_record_to_activity_log(gettext("An Invoice Parts Item").gettext("was deleted by").' '.QFactory::getUser()->login_display_name);
         
-    }
+        return true;
 
+    }
 }
 
 #####################################
@@ -613,6 +676,14 @@ function delete_invoice_prefill_item($db, $invoice_prefill_id){
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete an invoice prefill item."));
         exit;
+        
+    } else {
+        
+        // Log activity        
+        write_record_to_activity_log(gettext("An Invoice Prefill Item").gettext("was deleted by").' '.QFactory::getUser()->login_display_name);
+        
+        return true;
+
     }
     
 }
@@ -689,35 +760,6 @@ function recalculate_invoice_totals($db, $invoice_id) {
     
 }
 
-###################################
-#  Does invoice have a workorder  #
-###################################
-
-function check_invoice_has_workorder($db, $invoice_id) {
-    
-    $sql = "SELECT workorder_id FROM ".PRFX."invoice WHERE invoice_id=".$invoice_id;
-    
-    if(!$rs = $db->Execute($sql)) {        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to check if the invoice has a work order."));
-        exit;
-    } else {        
-        
-        $temp = $rs->Fields('workorder_id');
-        
-        if($temp == 0) {
-            
-            return false;
-            
-        } else {          
-            
-            return true;
-            
-        }
-        
-    }
-    
-}
-
 #####################################
 #   Upload labour rates CSV file    #
 #####################################
@@ -788,6 +830,9 @@ function upload_invoice_prefill_items_csv($db, $VAR) {
 
             // Delete CSV file - not sure this is needed becaus eit is temp
             unlink($_FILES['invoice_prefill_csv']['tmp_name']);
+            
+            // Log activity        
+            write_record_to_activity_log(gettext("Invoice Prefill Items were uploaded via csv by").' '.QFactory::getUser()->login_display_name);   
 
         }
 
@@ -803,8 +848,8 @@ function upload_invoice_prefill_items_csv($db, $VAR) {
          */
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the invoice labour rates because the submitted file was invalid."));
 
-    }
-    
+    }     
+
 }
 
 ##################################################
@@ -839,7 +884,10 @@ function export_invoice_prefill_items_csv($db) {
         }       
         
         // close the csv file
-        fclose($output_stream);        
+        fclose($output_stream);
+        
+        // Log activity        
+        write_record_to_activity_log(gettext("Invoice Prefill Items were exported by").' '.QFactory::getUser()->login_display_name);  
         
     }    
     
@@ -848,6 +896,7 @@ function export_invoice_prefill_items_csv($db) {
 ###############################################################
 #   Check to see if the invoice's can be deleted              #
 ###############################################################
+
 function check_invoice_can_be_deleted($db, $invoice_id) {
     
     // Get the invoice details

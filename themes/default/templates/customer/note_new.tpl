@@ -1,6 +1,6 @@
 <!-- note_new.tpl -->
 <script src="{$theme_js_dir}tinymce/tinymce.min.js"></script>
-<script>{include file="`$theme_js_dir_finc`editor-config.js"}</script>}
+<script>{include file="`$theme_js_dir_finc`editor-config.js"}</script>
 
 <table width="100%" border="0" cellpadding="20" cellspacing="0">
     <tr>
@@ -18,7 +18,7 @@
                             <tr>
                                 <td width="100%" valign="top" >                                  
                                     <form method="post" action="index.php?page=customer:note_new&customer_id={$customer_id}">                                        
-                                        <table class="olotable" width="100%" border="0" >
+                                        <table class="olotable" width="100%" border="0">
                                             <tr>
                                                 <td class="olohead"></td>
                                             </tr>

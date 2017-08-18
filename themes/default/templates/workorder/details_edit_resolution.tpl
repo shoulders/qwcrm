@@ -1,6 +1,6 @@
 <!-- resolution.tpl -->
 <script src="{$theme_js_dir}tinymce/tinymce.min.js"></script>
-<script>{include file="`$theme_js_dir_finc`editor-config.js"}</script>}
+<script>{include file="`$theme_js_dir_finc`editor-config.js"}</script>
 
 <table width="100%" border="0" cellpadding="20" cellspacing="0">
     <tr>
@@ -24,9 +24,9 @@
                                         <textarea class="olotd4" rows="15" cols="70" name="resolution">{$resolution}</textarea>
                                         <br>                                        
                                         <input name="workorder_id" value="{$workorder_id}" type="hidden">                                        
-                                        <input name="submitchangesonly" value="{t}Submit Changes Only{/t}" type="submit">
-                                        <input name="closewithoutinvoice" value="{t}Close Without Invoice{/t}" type="submit">
-                                        <input name="closewithinvoice" value="{t}Close With Invoice{/t}" type="submit">
+                                        <button name="submit" value="submitchangesonly" type="submit">{t}Submit Changes Only{/t}</button>
+                                        <button name="submit" value="closewithoutinvoice" type="submit">{t}Close Without Invoice{/t}</button>
+                                        <button name="submit" value="closewithinvoice" type="submit">{t}Close With Invoice{/t}</button>
                                     </form>
                                     <br>
                                 </td>

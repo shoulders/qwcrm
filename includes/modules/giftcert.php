@@ -154,12 +154,9 @@ function insert_giftcert($db, $customer_id, $date_expires, $amount, $active, $no
     $sql = "INSERT INTO ".PRFX."giftcert SET 
             giftcert_code   =". $db->qstr( generate_giftcert_code()             ).",  
             employee_id     =". $db->qstr( QFactory::getUser()->login_user_id   ).",
-            customer_id     =". $db->qstr( $customer_id                         ).",               
-            invoice_id      =". $db->qstr( 0                                    ).",            
+            customer_id     =". $db->qstr( $customer_id                         ).",                        
             date_created    =". $db->qstr( time()                               ).",
-            date_expires    =". $db->qstr( $date_expires                        ).",
-            date_redeemed   =". $db->qstr( 0                                    ).",
-            is_redeemed     =". $db->qstr( 0                                    ).",                          
+            date_expires    =". $db->qstr( $date_expires                        ).",                                     
             amount          =". $db->qstr( $amount                              ).",
             active          =". $db->qstr( $active                              ).",                
             notes           =". $db->qstr( $notes                               );
@@ -170,7 +167,17 @@ function insert_giftcert($db, $customer_id, $date_expires, $amount, $active, $no
 
     } else {
 
-        return $db->insert_id();
+        // Get giftcert_id
+        $giftcert_id = $db->insert_id();
+        
+        // Log activity        
+        write_record_to_activity_log(gettext("Gift Certificate").' '.$giftcert_id.' '.gettext("was created by").' '.QFactory::getUser()->login_display_name);        
+
+        // Update last active record    
+        update_customer_last_active($db, $customer_id);
+        
+        return $giftcert_id;
+        
     }
     
 }
@@ -245,6 +252,12 @@ function update_giftcert($db, $giftcert_id, $date_expires, $amount, $active, $no
         exit;
 
     } else {
+        
+        // Log activity        
+        write_record_to_activity_log(gettext("Gift Certificate").' '.$giftcert_id.' '.gettext("was updated by").' '.QFactory::getUser()->login_display_name);
+
+        // Update last active record    
+        update_customer_last_active($db, get_giftcert_details($db, $giftcert_id, 'customer_id'));
 
         return;
         
@@ -263,14 +276,21 @@ function update_giftcert($db, $giftcert_id, $date_expires, $amount, $active, $no
 function delete_giftcert($db, $giftcert_id) {     
     
     // update and set non-active as you cannot really delete an issues gift certificate
-
+    
     $sql = "UPDATE ".PRFX."giftcert SET status='0' WHERE giftcert_id=".$db->qstr($giftcert_id);
 
     if(!$db->execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete the Gift Certificate."));
         exit;
+        
     } else {
-
+        
+        // Log activity        
+        write_record_to_activity_log(gettext("Gift Certificate").' '.$giftcert_id.' '.' '.gettext("was deleted by").' '.QFactory::getUser()->login_display_name);
+        
+        // Update last active record        
+        update_customer_last_active($db, get_giftcert_details($db, $giftcert_id, 'customer_id'));
+        
         return;
 
     }            

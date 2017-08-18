@@ -179,7 +179,6 @@ function display_workorders($db, $direction = 'DESC', $use_pages = false, $page_
     
 }
 
-
 #############################
 # Display Work Order Notes  #
 #############################
@@ -260,11 +259,15 @@ function insert_workorder($db, $customer_id, $scope, $description, $comments){
         // Get the new Workorders ID
         $workorder_id = $db->Insert_ID();
 
-        // Creates a History record for the new work order             
+        // Create a Workorder History Note            
         insert_workorder_history_note($db, $workorder_id, gettext("Created by").' '.QFactory::getUser()->login_display_name);
         
         // Log activity        
         write_record_to_activity_log(gettext("Work Order").' '.$workorder_id.' '.gettext("Created by").' '.QFactory::getUser()->login_display_name);
+        
+        // Update last active record
+        update_workorder_last_active($db, $workorder_id);
+        update_customer_last_active($db, get_workorder_details($db, $workorder_id, 'customer_id'));
 
         return $workorder_id;
         
@@ -291,7 +294,6 @@ function insert_workorder_history_note($db, $workorder_id, $note) {
         exit;
     } else {
         
-        update_workorder_last_active($db, $workorder_id);        
         return true;
         
     }  
@@ -317,16 +319,17 @@ function insert_workorder_note($db, $workorder_id, $note){
     } else {
         
         // Get the new Note ID
-        $note_id = $db->Insert_ID();
+        $workorder_note_id = $db->Insert_ID();
         
-        // Creates a History record for the new work order        
-        insert_workorder_history_note($db, $workorder_id, gettext("Work Order Note").' '.$note_id.' '.gettext("added by").' '.QFactory::getUser()->login_display_name);
+        // Create a Workorder History Note       
+        insert_workorder_history_note($db, $workorder_id, gettext("Work Order Note").' '.$workorder_note_id.' '.gettext("added by").' '.QFactory::getUser()->login_display_name);
         
         // Log activity        
-        write_record_to_activity_log(gettext("Work Order Note").' '.$note_id.' '.gettext("added to Work Order").' '.$workorder_id.' '.gettext("by").' '.QFactory::getUser()->login_display_name);
+        write_record_to_activity_log(gettext("Work Order Note").' '.$workorder_note_id.' '.gettext("added to Work Order").' '.$workorder_id.' '.gettext("by").' '.QFactory::getUser()->login_display_name);
         
-        // Update Workorder last activity record
+        // Update last active record
         update_workorder_last_active($db, $workorder_id);
+        update_customer_last_active($db, get_workorder_details($db, $workorder_id, 'customer_id'));
         
         return true;
         
@@ -449,8 +452,9 @@ function update_workorder_scope_and_description($db, $workorder_id, $scope, $des
         // Log activity        
         write_record_to_activity_log(gettext("Work Order").' '.$workorder_id.' '.gettext("Scope and Description updated by").' '.QFactory::getUser()->login_display_name);
         
-        // Update Workorder last activity record
-        update_workorder_last_active($db, $workorder_id);        
+        // Update last active record
+        update_workorder_last_active($db, $workorder_id);
+        update_customer_last_active($db, get_workorder_details($db, $workorder_id, 'customer_id'));
         
         return true;
         
@@ -474,14 +478,15 @@ function update_workorder_comments($db, $workorder_id, $comments){
         exit;
     } else {
         
-        // Create a History record        
+        // Create a Workorder History Note       
         insert_workorder_history_note($db, $workorder_id, gettext("Comments updated by").' '.QFactory::getUser()->login_display_name);
         
         // Log activity        
         write_record_to_activity_log(gettext("Work Order").' '.$workorder_id.' '.gettext("Comments updated by").' '.QFactory::getUser()->login_display_name);
         
-        // Update Workorder last activity record
-        update_workorder_last_active($db, $workorder_id);        
+        // Update last active record
+        update_workorder_last_active($db, $workorder_id);
+        update_customer_last_active($db, get_workorder_details($db, $workorder_id, 'customer_id'));        
         
         return true;
         
@@ -505,14 +510,15 @@ function update_workorder_resolution($db, $workorder_id, $resolution){
         exit;
     } else {
         
-        // Create a History record        
+        // Create a Workorder History Note       
         insert_workorder_history_note($db, $workorder_id, gettext("Resolution updated by").' '.QFactory::getUser()->login_display_name);
         
         // Log activity        
         write_record_to_activity_log(gettext("Work Order").' '.$workorder_id.' '.gettext("Resolution updated by").' '.QFactory::getUser()->login_display_name);
         
-        // Update Workorder last activity record
-        update_workorder_last_active($db, $workorder_id);        
+        // Update last active record
+        update_workorder_last_active($db, $workorder_id);
+        update_customer_last_active($db, get_workorder_details($db, $workorder_id, 'customer_id'));        
         
         return true;
             
@@ -540,7 +546,7 @@ function update_workorder_status($db, $workorder_id, $assign_status){
         
     } else {        
     
-        // for writing message to log file
+        // For writing message to log file
         if($assign_status == '1') {$wo_status = gettext("WORKORDER_STATUS_1");
         } elseif ($assign_status == '2') {$wo_status = gettext("WORKORDER_STATUS_2");   
         } elseif ($assign_status == '3') {$wo_status = gettext("WORKORDER_STATUS_3");
@@ -550,21 +556,24 @@ function update_workorder_status($db, $workorder_id, $assign_status){
         } elseif ($assign_status == '7') {$wo_status = gettext("WORKORDER_STATUS_7");
         }
         
-        // Create a History record        
-        insert_workorder_history_note($db, $workorder_id, gettext("Status updated to").' '.$wo_status.' '.gettext("by").' '.QFactory::getUser()->login_display_name);
-        
-        // Log activity        
-        write_record_to_activity_log(gettext("Work Order").' '.$workorder_id.' '.gettext("Status updated to").' '.$wo_status.' '.gettext("by").' '.QFactory::getUser()->login_display_name);
-        
-        // Update Workorder last activity record
-        update_workorder_last_active($db, $workorder_id);
-        
         // Update Workorder 'is_closed' boolean
         if($assign_status == '6' || $assign_status == '7') {
             update_workorder_closed_status($db, $workorder_id, 'closed');
         } else {
             update_workorder_closed_status($db, $workorder_id, 'open');
         }
+        
+        // Create a Workorder History Note       
+        insert_workorder_history_note($db, $workorder_id, gettext("Status updated to").' '.$wo_status.' '.gettext("by").' '.QFactory::getUser()->login_display_name);
+        
+        // Log activity        
+        write_record_to_activity_log(gettext("Work Order").' '.$workorder_id.' '.gettext("Status updated to").' '.$wo_status.' '.gettext("by").' '.QFactory::getUser()->login_display_name);
+        
+        // Update last active record
+        update_workorder_last_active($db, $workorder_id);
+        update_customer_last_active($db, get_workorder_details($db, $workorder_id, 'customer_id'));
+        
+        
         
         return true;
         
@@ -595,9 +604,11 @@ function update_workorder_closed_status($db, $workorder_id, $close_status) {
 #    Update Last Active         #
 #################################
 
-function update_workorder_last_active($db, $workorder_id){
+function update_workorder_last_active($db, $workorder_id) {
     
-    $sql = "UPDATE ".PRFX."workorder SET last_active=".$db->qstr(time())." WHERE workorder_id=".$db->qstr($workorder_id);
+    $sql = "UPDATE ".PRFX."workorder SET
+            last_active=".$db->qstr(time())."
+            WHERE workorder_id=".$db->qstr($workorder_id);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update a Work Order's last active time."));
@@ -638,7 +649,22 @@ function update_workorder_note($db, $workorder_note_id, $date, $note) {
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update a Work Order note."));
-        exit;
+        exit;    
+        
+    } else {
+        
+        $workorder_id = get_workorder_note($db, $workorder_note_id, 'workorder_id');
+        
+        // Create a Workorder History Note       
+        insert_workorder_history_note($db, $workorder_id, gettext("Work Order Note").' '.$workorder_note_id.' '.gettext("updated by").' '.QFactory::getUser()->login_display_name);
+        
+        // Log activity        
+        write_record_to_activity_log(gettext("Work Order Note").' '.$workorder_note_id.' '.gettext("for Work Order").' '.$workorder_id.' '.gettext("was updated by").' '.QFactory::getUser()->login_display_name);
+        
+        // Update last active record
+        update_workorder_last_active($db, $workorder_id);
+        update_customer_last_active($db, get_workorder_details($db, $workorder_id, 'customer_id'));
+        
     }
     
 }
@@ -666,13 +692,13 @@ function close_workorder_with_invoice($db, $workorder_id, $resolution){
         exit;
     } else {
         
-        // Create a History record        
+        // Create a Workorder History Note       
         insert_workorder_history_note($db, $workorder_id, gettext("Closed with Invoice by").' '.QFactory::getUser()->login_display_name);
         
         // Log activity
         write_record_to_activity_log(gettext("Work Order").' '.$workorder_id.' '.gettext("has been closed with invoice by").' '.QFactory::getUser()->login_display_name);
         
-        // Update Workorder last activity record
+        // Update last active record
         update_workorder_last_active($db, $workorder_id);        
         
         return true;
@@ -708,7 +734,7 @@ function close_workorder_without_invoice($db, $workorder_id, $resolution){
         // Log activity
         write_record_to_activity_log(gettext("Work Order").' '.$workorder_id.' '.gettext("has been closed without invoice by").' '.QFactory::getUser()->login_display_name);
         
-        // Update Workorder last activity record
+        // Update last active record
         update_workorder_last_active($db, $workorder_id);        
         
         return true;
@@ -824,11 +850,27 @@ function check_workorder_status_allows_for_deletion($db, $workorder_id) {
 
 function delete_workorder_note($db, $workorder_note_id) {
     
+    // get workorder_id before any deleting
+    $workorder_id = get_workorder_note($db, $workorder_note_id, 'workorder_id');
+    
     $sql = "DELETE FROM ".PRFX."workorder_notes WHERE workorder_note_id=".$db->qstr( $workorder_note_id );
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete a Work Order note."));
         exit;
+        
+    } else {        
+        
+        // Create a Workorder History Note       
+        insert_workorder_history_note($db, $workorder_id, gettext("Work Order Note").' '.$workorder_note_id.' '.gettext("has been deleted by").' '.QFactory::getUser()->login_display_name);
+        
+        // Log activity        
+        write_record_to_activity_log(gettext("Work Order Note").' '.$workorder_note_id.' '.gettext("for Work Order").' '.$workorder_id.' '.gettext("was deleted by").' '.QFactory::getUser()->login_display_name);
+        
+        // Update last active record
+        update_workorder_last_active($db, $workorder_id);
+        update_customer_last_active($db, get_workorder_details($db, $workorder_id, 'customer_id'));
+        
     }
     
 }
@@ -907,24 +949,24 @@ function assign_workorder_to_employee($db, $workorder_id, $logged_in_employee_id
 # Resolution Edit Status Check #
 ################################
 
-function resolution_edit_status_check($db, $workorder_id) {
+function resolution_edit_status_check($db, $workorder_id) {    
     
-    $wo_status      = get_workorder_details($db, $workorder_id, 'status');
     $wo_is_closed   = get_workorder_details($db, $workorder_id, 'is_closed');
+    $wo_status      = get_workorder_details($db, $workorder_id, 'status');
 
+    // Workorder is Closed
+    if($wo_is_closed == '1') {
+
+        postEmulationWrite('warning_msg', gettext("Cannot edit the resolution because the Work Order is already closed."));
+        return false;
+    }
+    
     // Waiting For Parts
     if ($wo_status == '3') {           
 
         postEmulationWrite('warning_msg', gettext("Can not close a work order if it is Waiting For Parts. Please Adjust the status."));
         return false;
 
-    }
-
-    // Workorder is closed
-    if($wo_is_closed == '1') {
-
-        postEmulationWrite('warning_msg', gettext("Work Order Is already Closed. Please Create an Invoice."));
-        return false;
     }
 
     return true;   

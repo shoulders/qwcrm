@@ -25,7 +25,7 @@
             <table class="olotable" border="0" cellpadding="5" cellspacing="5" width="100%" summary="Customer Contact">
                 <tr>
                     <td class="menutd"><b>{t}Contact{/t}</b></td>
-                    <td class="menutd"><a href="index.php?page=customer:customer_details&customer_id={$workorder_details.customer_id}">{$customer_details.display_name}</a></td>                
+                    <td class="menutd"><a href="index.php?page=customer:details&customer_id={$workorder_details.customer_id}">{$customer_details.display_name}</a></td>                
                     <td class="menutd"><b>{t}Website{/t}</b></td>
                     <td class="menutd">{$customer_details.website}</td>
                 </tr>

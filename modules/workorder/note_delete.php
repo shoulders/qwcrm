@@ -2,6 +2,7 @@
 
 defined('_QWEXEC') or die;
 
+require(INCLUDES_DIR.'modules/customer.php');
 require(INCLUDES_DIR.'modules/workorder.php');
 
 // Prevent direct access to this page
@@ -23,4 +24,4 @@ $workorder_id = get_workorder_note($db, $VAR['workorder_note_id'], 'workorder_id
 delete_workorder_note($db, $VAR['workorder_note_id']);
 
 // Reload the workorder details page
-force_page('workorder', 'details&workorder_id='.$workorder_id);
+force_page('workorder', 'details&workorder_id='.$workorder_id, 'information_msg='.gettext("The note has been deleted."));

@@ -2,6 +2,7 @@
 
 defined('_QWEXEC') or die;
 
+require(INCLUDES_DIR.'modules/customer.php');
 require(INCLUDES_DIR.'modules/workorder.php');
 
 // Check if we have a workorder_id
@@ -16,8 +17,8 @@ if(isset($VAR['submit'])){
     // insert the note into the database
     insert_workorder_note($db, $workorder_id, $VAR['workorder_note']);
     
-    // load the workorder details page
-    force_page('workorder', 'details', 'workorder_id='.$workorder_id.'information_msg='.gettext("The note has been inserted."));
+    // load the workorder details page    
+    force_page('workorder', 'details&workorder_id='.$workorder_id, 'information_msg='.gettext("The note has been inserted."));
     exit;
     
 }

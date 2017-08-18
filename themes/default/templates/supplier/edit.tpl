@@ -1,6 +1,6 @@
 <!-- edit.tpl -->
 <script src="{$theme_js_dir}tinymce/tinymce.min.js"></script>
-<script>{include file="`$theme_js_dir_finc`editor-config.js"}</script>}
+<script>{include file="`$theme_js_dir_finc`editor-config.js"}</script>
 <link rel="stylesheet" href="{$theme_js_dir}jscal2/css/jscal2.css" />
 <link rel="stylesheet" href="{$theme_js_dir}jscal2/css/steel/steel.css" />
 <script src="{$theme_js_dir}jscal2/jscal2.js"></script>

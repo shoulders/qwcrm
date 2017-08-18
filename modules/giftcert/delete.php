@@ -2,6 +2,7 @@
 
 defined('_QWEXEC') or die;
 
+require(INCLUDES_DIR.'modules/customer.php');
 require(INCLUDES_DIR.'modules/giftcert.php');
 
 // Prevent direct access to this page

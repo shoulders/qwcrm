@@ -13,7 +13,7 @@ if($customer_id == '') {
 // Insert the customer note
 if(isset($VAR['submit'])) {   
     
-    insert_customer_note($db, $customer_id, $VAR['customer_note']);    
+    insert_customer_note($db, $customer_id, $VAR['note']);    
     force_page('customer', 'details&customer_id='.$customer_id);    
 
 // Build the page  

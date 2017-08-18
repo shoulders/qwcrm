@@ -99,13 +99,14 @@ function insert_schedule($db, $start_date, $StartTime, $end_date, $EndTime, $not
         update_workorder_status($db, $workorder_id, 2); 
         
         // Insert Work Order History Note
-        insert_workorder_history_note($db, $workorder_id, gettext("Schedule").' '.$schedule_id.' '.gettext("added"));              
+        insert_workorder_history_note($db, $workorder_id, gettext("Schedule").' '.$schedule_id.' '.gettext("was created by").' '.QFactory::getUser()->login_display_name);              
         
         // Log activity 
-        write_record_to_activity_log(gettext("Schedule").' '.$schedule_id.' '.gettext("has been created and added to work order").' '.$workorder_id);        
+        write_record_to_activity_log(gettext("Schedule").' '.$schedule_id.' '.gettext("has been created and added to work order").' '.$workorder_id.' '.gettext("by").' '.QFactory::getUser()->login_display_name);        
         
-        // Update Workorder last activity record
+        // Update last active record
         update_workorder_last_active($db, $workorder_id);
+        update_customer_last_active($db, $customer_id);
     
         return true;
         
@@ -196,7 +197,7 @@ function get_schedule_ids_for_employee_on_date($db, $employee_id, $start_year, $
 /** Update Functions **/
 
 ######################################
-#      Update schedule               #
+#      Update Schedule               #
 ######################################
 
 function update_schedule($db, $start_date, $StartTime, $end_date, $EndTime, $notes, $schedule_id, $employee_id, $customer_id, $workorder_id) {
@@ -230,6 +231,16 @@ function update_schedule($db, $start_date, $StartTime, $end_date, $EndTime, $not
         exit;
     } else {       
          
+        // Insert Work Order History Note
+        insert_workorder_history_note($db, $workorder_id, gettext("Schedule").' '.$schedule_id.' '.gettext("was updated by").' '.QFactory::getUser()->login_display_name);              
+        
+        // Log activity 
+        write_record_to_activity_log(gettext("Schedule").' '.$schedule_id.' '.gettext("was updated by").' '.QFactory::getUser()->login_display_name);        
+        
+        // Update last active record
+        update_workorder_last_active($db, $workorder_id);
+        update_customer_last_active($db, $customer_id);        
+        
         return true;
         
     }        
@@ -246,12 +257,26 @@ function update_schedule($db, $start_date, $StartTime, $end_date, $EndTime, $not
 
 function delete_schedule($db, $schedule_id) {
     
+    // Get schedule details before deleting
+    $schedule_details = schedule_details($db, $schedule_id);
+    
     $sql = "DELETE FROM ".PRFX."schedule WHERE schedule_id =".$db->qstr($schedule_id);
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete a schedule record."));
         exit;
+        
     } else {
+        
+        // Create a Workorder History Note        
+        insert_workorder_history_note($db, $schedule_details['workorder_id'], gettext("Schedule").' '.$schedule_id.' '.gettext("was deleted by").' '.QFactory::getUser()->login_display_name);
+        
+        // Log activity        
+        write_record_to_activity_log(gettext("Schedule").' '.$schedule_id.' '.gettext("for Work Order").' '.$schedule_details['workorder_id'].' '.gettext("was deleted by").' '.QFactory::getUser()->login_display_name);
+        
+        // Update last active record
+        update_workorder_last_active($db, $schedule_details['workorder_id']);
+        update_customer_last_active($db, $schedule_details['customer_id']);
         
         return true;
         

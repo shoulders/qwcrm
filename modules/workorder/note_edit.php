@@ -2,6 +2,7 @@
 
 defined('_QWEXEC') or die;
 
+require(INCLUDES_DIR.'modules/customer.php');
 require(INCLUDES_DIR.'modules/workorder.php');
 
 // Check if we have a workorder_note_id
@@ -17,7 +18,7 @@ if(isset($VAR['submit'])) {
     update_workorder_note($db, $VAR['workorder_note_id'], date_to_timestamp($VAR['date']), $VAR['note']);
     
     // load the workorder details page
-    force_page('workorder', 'details&workorder_id='.$workorder_id);   
+    force_page('workorder', 'details&workorder_id='.$workorder_id, 'information_msg='.gettext("The note has been updated."));
     exit;
     
 }   
