@@ -7,19 +7,25 @@ require(INCLUDES_DIR.'modules/user.php');
 
 // Clear Smarty Cache
 if($VAR['clear_smarty_cache'] == 'true') {
-    clear_smarty_cache();    
+    if(check_page_accessed_via_qwcrm('administrator:config')) {
+        clear_smarty_cache();
+    }
     die();
 }
 
 // Clear Smarty Compile
-if($VAR['clear_smarty_compile'] == 'true') {
-    clear_smarty_compile();    
+if($VAR['clear_smarty_compile'] == 'true') {    
+    if(check_page_accessed_via_qwcrm('administrator:config')) {
+        clear_smarty_compile();        
+    }    
     die();
 }
 
 // Send a test mail
-if($VAR['send_test_mail'] == 'true') {    
-    send_test_mail($db);
+if($VAR['send_test_mail'] == 'true') {
+    if(check_page_accessed_via_qwcrm('administrator:config')) {
+        send_test_mail($db);
+    }
     die();    
 }
 
