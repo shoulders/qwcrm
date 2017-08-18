@@ -27,7 +27,7 @@
                     <td class="menutd"><b>{t}Contact{/t}</b></td>
                     <td class="menutd"><a href="index.php?page=customer:details&customer_id={$workorder_details.customer_id}">{$customer_details.display_name}</a></td>                
                     <td class="menutd"><b>{t}Website{/t}</b></td>
-                    <td class="menutd">{$customer_details.website}</td>
+                    <td class="menutd"><a href="{$customer_details.website}">{$customer_details.website}</a></td>
                 </tr>
                 <tr>
                     <td class="menutd"></td>
