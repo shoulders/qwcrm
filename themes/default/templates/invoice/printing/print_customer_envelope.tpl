@@ -1,4 +1,10 @@
-<!-- print_customer_envelope -->
+<!-- print_customer_envelope.tpl -->
+{*
+ * @package   QWcrm
+ * @author    Jon Brown https://quantumwarp.com/
+ * @copyright Copyright (C) 2016 - 2017 Jon Brown, All rights reserved.
+ * @license   GNU/GPLv3 or later; https://www.gnu.org/licenses/gpl.html
+*}
 <!DOCTYPE html>
 <html lang="en-GB">
 <head>

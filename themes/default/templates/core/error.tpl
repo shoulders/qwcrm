@@ -1,4 +1,10 @@
 <!-- error.tpl -->
+{*
+ * @package   QWcrm
+ * @author    Jon Brown https://quantumwarp.com/
+ * @copyright Copyright (C) 2016 - 2017 Jon Brown, All rights reserved.
+ * @license   GNU/GPLv3 or later; https://www.gnu.org/licenses/gpl.html
+*}
 <div class="">    
     <span style="color: black">{t}Error Page{/t}: </span>{$error_page}<br />
     <span style="color: black">{t}Error Type{/t}: </span>{$error_type}<br /><br />

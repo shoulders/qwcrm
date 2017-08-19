@@ -1,4 +1,10 @@
 <!-- closed.tpl -->
+{*
+ * @package   QWcrm
+ * @author    Jon Brown https://quantumwarp.com/
+ * @copyright Copyright (C) 2016 - 2017 Jon Brown, All rights reserved.
+ * @license   GNU/GPLv3 or later; https://www.gnu.org/licenses/gpl.html
+*}
 <table width="100%" border="0" cellpadding="20" cellspacing="5">
     <tr>
         <td>

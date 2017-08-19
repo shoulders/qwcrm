@@ -1,4 +1,10 @@
-<!-- login_dashboard_block.tpl-->
+<!-- login_dashboard_block.tpl -->
+{*
+ * @package   QWcrm
+ * @author    Jon Brown https://quantumwarp.com/
+ * @copyright Copyright (C) 2016 - 2017 Jon Brown, All rights reserved.
+ * @license   GNU/GPLv3 or later; https://www.gnu.org/licenses/gpl.html
+*}
 <table class="olotable" width="900" border ="1" cellpadding="5" cellspacing="5">
     <tr>
         <td class="olohead" colspan="2">{t}Dashboard{/t}</td>

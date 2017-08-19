@@ -1,6 +1,12 @@
 
 
 <!-- theme_debug_block.tpl -->
+{*
+ * @package   QWcrm
+ * @author    Jon Brown https://quantumwarp.com/
+ * @copyright Copyright (C) 2016 - 2017 Jon Brown, All rights reserved.
+ * @license   GNU/GPLv3 or later; https://www.gnu.org/licenses/gpl.html
+*}
 <div style="width: 900px; margin-bottom: 20px;">
     <table width="300" border="0" cellspacing="0" cellpadding="0" style="margin: auto auto;">
         <tr>

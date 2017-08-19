@@ -1,4 +1,10 @@
-<!-- print_technician_workorder_slip.tpl - Technician Work Order Slip Print Template -->
+<!-- print_technician_workorder_slip.tpl -->
+{*
+ * @package   QWcrm
+ * @author    Jon Brown https://quantumwarp.com/
+ * @copyright Copyright (C) 2016 - 2017 Jon Brown, All rights reserved.
+ * @license   GNU/GPLv3 or later; https://www.gnu.org/licenses/gpl.html
+*}
 <!DOCTYPE html>
 <html lang="en-GB">
 <head>

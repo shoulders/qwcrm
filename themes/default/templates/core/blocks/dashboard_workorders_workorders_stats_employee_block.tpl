@@ -1,4 +1,10 @@
 <!-- dashboard_workorders_workorders_stats_employee__block.tpl -->
+{*
+ * @package   QWcrm
+ * @author    Jon Brown https://quantumwarp.com/
+ * @copyright Copyright (C) 2016 - 2017 Jon Brown, All rights reserved.
+ * @license   GNU/GPLv3 or later; https://www.gnu.org/licenses/gpl.html
+*}
 <b>{t}Work Order Stats{/t} ({$login_display_name})</b>
 <br>
 <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">

@@ -1,4 +1,10 @@
 <!-- theme_menu_block.tpl -->
+{*
+ * @package   QWcrm
+ * @author    Jon Brown https://quantumwarp.com/
+ * @copyright Copyright (C) 2016 - 2017 Jon Brown, All rights reserved.
+ * @license   GNU/GPLv3 or later; https://www.gnu.org/licenses/gpl.html
+*}
 <table width="150" border="2" cellspacing="0" cellpadding="0">
     <tr>
         <td>
@@ -171,6 +177,12 @@
 <td valign="top">
     
 <!-- End theme_menu_block.tpl -->
+{*
+ * @package   QWcrm
+ * @author    Jon Brown https://quantumwarp.com/
+ * @copyright Copyright (C) 2016 - 2017 Jon Brown, All rights reserved.
+ * @license   GNU/GPLv3 or later; https://www.gnu.org/licenses/gpl.html
+*}
     
     <!-- Page Content Goes Here -->
 

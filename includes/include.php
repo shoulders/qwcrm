@@ -6,8 +6,6 @@
  * @license   GNU/GPLv3 or later; https://www.gnu.org/licenses/gpl.html
  */
 
-/** Main Include File **/
-
 /*
  * Mandatory Code - Code that is run upon the file being loaded
  * Display Functions - Code that is used to primarily display records

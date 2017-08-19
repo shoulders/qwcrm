@@ -1,4 +1,10 @@
 <!-- attribution.tpl -->
+{*
+ * @package   QWcrm
+ * @author    Jon Brown https://quantumwarp.com/
+ * @copyright Copyright (C) 2016 - 2017 Jon Brown, All rights reserved.
+ * @license   GNU/GPLv3 or later; https://www.gnu.org/licenses/gpl.html
+*}
 <p>This page will show the used software, their version and where i got them from. This will should cover any attributions that are needed or a particular license.</p>
 <ul>
     <li><strong>Name and version | License | URL | What it does?</strong></li>

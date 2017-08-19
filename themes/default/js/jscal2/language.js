@@ -1,3 +1,9 @@
+/**
+ * @package   QWcrm
+ * @author    Jon Brown https://quantumwarp.com/
+ * @copyright Copyright (C) 2016 - 2017 Jon Brown, All rights reserved.
+ * @license   GNU/GPLv3 or later; https://www.gnu.org/licenses/gpl.html
+ */
 
 Calendar.LANG("{t}JSCAL2_LANGUAGE_SHORTCODE{/t}", "{t}JSCAL2_LANGUAGE_NAME{/t}", {
 

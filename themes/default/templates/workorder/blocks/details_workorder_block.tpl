@@ -1,4 +1,10 @@
 <!-- details_workorder_block.tpl -->
+{*
+ * @package   QWcrm
+ * @author    Jon Brown https://quantumwarp.com/
+ * @copyright Copyright (C) 2016 - 2017 Jon Brown, All rights reserved.
+ * @license   GNU/GPLv3 or later; https://www.gnu.org/licenses/gpl.html
+*}
 <table class="olotable" width="100%" border="0" cellpadding="2" cellspacing="0" >
     <tr>
         <td class="olohead" align="center">{t}WO ID{/t}</td>
