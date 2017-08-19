@@ -3,10 +3,4 @@
 /media/
 /cache/smarty/cache/
 /cache/smarty/compile/
-/logs/access.log
-/logs/activity.log
-/logs/email_error.log
-/logs/email_transport.log
-/logs/error.log
-/logs/setup.log
 /logs/
