@@ -115,6 +115,13 @@
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Autodetect Language{/t}</strong></div><hr><div>{t escape=tooltip}If enabled QWcrm will try to set the language based on your browser. If your language is not available then the default language will be used.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
+                    <tr>
+                        <td align="right"><b>{t}Google Server{/t}</b> <span style="color: #ff0000">*</span></td>                                                          
+                        <td>
+                            <input name="google_server" class="olotd5" value="{$qwcrm_config.google_server}" size="50" type="url" maxlength="50" placeholder="https://www.google.com/" pattern="^https?://.+" required onkeydown="return onlyURL(event);"/>
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Google Server{/t}</strong></div><hr><div>{t escape=tooltip}This is your regionally prefered google website that you use. It is currently used for some Google Maps.{/t}</div>');" onMouseOut="hideddrivetip();">
+                        </td>
+                    </tr> 
                     
                     <!-- Mail Settings -->
                     
@@ -197,7 +204,7 @@
                     <tr>
                         <td align="right"><b>{t}SMTP Host{/t}:</b></td>
                         <td>
-                            <input name="email_smtp_host" class="olotd5" size="55" value="{$qwcrm_config.email_smtp_host}" type="text" maxlength="50" placeholder="quantumwarp.com" onkeydown="return onlyURL(event);">
+                            <input name="email_smtp_host" class="olotd5" size="55" value="{$qwcrm_config.email_smtp_host}" type="text" maxlength="50" placeholder="mail.quantumwarp.com" onkeydown="return onlyURL(event);">
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}SMTP Host{/t}</strong></div><hr><div>{t escape=tooltip}Enter the name of the SMTP host.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>

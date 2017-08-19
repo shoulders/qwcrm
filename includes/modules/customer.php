@@ -511,8 +511,8 @@ function build_googlemap_directions_string($db, $customer_id, $employee_id)  {
     $customer_details   = get_customer_details($db, $customer_id);
     $employee_details   = get_user_details($db, $employee_id);
     
-    // Make the google string country aware - if needed
-    $google_server = "https://maps.google.com";
+    // removes a trailing slash if present
+    $google_server = rtrim(QFactory::getConfig()->get('google_server'), '/');
     
     // Determine the employee's start location (1 = Office, 2 = Home, Onsite = 3)
     if ($employee_details['based'] == 1 || $employee_details['based'] == 3){
@@ -532,9 +532,9 @@ function build_googlemap_directions_string($db, $customer_id, $employee_id)  {
     }
     
     // Get Customer's Address    
-    $customer_address   = preg_replace('/(\r|\n|\r\n){2,}/', ', ', $customer_details['customer_address']);
-    $customer_city      = $customer_details['customer_city'];
-    $customer_zip       = $customer_details['customer_zip'];
+    $customer_address   = preg_replace('/(\r|\n|\r\n){2,}/', ', ', $customer_details['address']);
+    $customer_city      = $customer_details['city'];
+    $customer_zip       = $customer_details['zip'];
     
     // return the built google map string
     return "$google_server/maps?f=d&source=s_d&hl=en&geocode=&saddr=$employee_address,$employee_city,$employee_zip&daddr=$customer_address,$customer_city,$customer_zip";
