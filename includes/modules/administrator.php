@@ -139,7 +139,7 @@ function loadACL($db) {
 #   Update ACL Permissions      #
 #################################
 
-function updateACL($db, $permissions) {
+function update_acl($db, $permissions) {
     
     /* Update ACl with submitted permissions */
     
@@ -185,6 +185,7 @@ function updateACL($db, $permissions) {
                 'core:error'        => array('Administrator' => '1', 'Manager' => '1', 'Supervisor' => '1', 'Technician' =>'1', 'Clerical' => '1', 'Counter' => '1', 'Customer' => '1', 'Guest' => '1', 'Public' => '1'),
                 'core:home'         => array('Administrator' => '1', 'Manager' => '1', 'Supervisor' => '1', 'Technician' =>'1', 'Clerical' => '1', 'Counter' => '1', 'Customer' => '1', 'Guest' => '1', 'Public' => '1'),
                 'core:maintenance'  => array('Administrator' => '1', 'Manager' => '1', 'Supervisor' => '1', 'Technician' =>'1', 'Clerical' => '1', 'Counter' => '1', 'Customer' => '1', 'Guest' => '1', 'Public' => '1'),
+                
                 'administrator:acl' => array('Administrator' => '1', 'Manager' => '0', 'Supervisor' => '0', 'Technician' =>'0', 'Clerical' => '0', 'Counter' => '0', 'Customer' => '0', 'Guest' => '0', 'Public' => '0')                  
             );  
 
@@ -412,5 +413,126 @@ function clear_smarty_compile() {
     
     // Output the system message to the browser   
     output_notifications_onscreen(gettext("The Smarty compile directory has been emptied successfully."), '');
+    
+}
+
+#################################
+#   Reset ACL Permissions       #
+#################################
+
+function reset_acl_permissions($db) {
+ 
+    // Remove current permissions
+    $sql = "TRUNCATE ".PRFX."user_acl";
+    
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed reset default permissions."));
+        exit;
+        
+    } else {
+    
+        // Insert default permissions 
+        $sql = "INSERT INTO `".PRFX."user_acl` (`page`, `Administrator`, `Manager`, `Supervisor`, `Technician`, `Clerical`, `Counter`, `Customer`, `Guest`, `Public`) VALUES
+                ('administrator:acl', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('administrator:config', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('administrator:phpinfo', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('administrator:update', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('company:business_hours', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('company:edit', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('core:404', 1, 1, 1, 1, 1, 1, 1, 1, 1),
+                ('core:dashboard', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('core:error', 1, 1, 1, 1, 1, 1, 1, 1, 1),
+                ('core:home', 1, 1, 1, 1, 1, 1, 1, 1, 1),
+                ('core:maintenance', 1, 1, 1, 1, 1, 1, 1, 1, 1),
+                ('customer:delete', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('customer:details', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('customer:edit', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('customer:new', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('customer:note_delete', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('customer:note_edit', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('customer:note_new', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('customer:search', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('expense:delete', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('expense:details', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('expense:edit', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('expense:new', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('expense:search', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('giftcert:delete', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('giftcert:details', 1, 1, 1, 1, 0, 0, 0, 0, 0),
+                ('giftcert:edit', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('giftcert:new', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('giftcert:print', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('giftcert:search', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('help:about', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('help:attribution', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('help:license', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('invoice:delete', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('invoice:delete_labour', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('invoice:delete_parts', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('invoice:details', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('invoice:edit', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('invoice:new', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('invoice:paid', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('invoice:prefill_items', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('invoice:print', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('invoice:search', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('invoice:unpaid', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('payment:new', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('payment:options', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('refund:delete', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('refund:details', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('refund:edit', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('refund:new', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('refund:search', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('report:basic_stats', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('report:financial', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('schedule:day', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('schedule:delete', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('schedule:details', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('schedule:edit', 1, 1, 1, 1, 0, 0, 0, 0, 0),
+                ('schedule:icalendar', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('schedule:new', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('schedule:search', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('setup:install', 1, 0, 0, 0, 0, 0, 0, 0, 1),
+                ('setup:migrate', 1, 0, 0, 0, 0, 0, 0, 0, 1),
+                ('setup:upgrade', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('supplier:delete', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('supplier:details', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('supplier:edit', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('supplier:new', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('supplier:search', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('user:delete', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('user:details', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('user:edit', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('user:login', 1, 1, 1, 1, 1, 1, 1, 1, 1),
+                ('user:new', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('user:reset', 1, 0, 0, 0, 0, 0, 0, 0, 1),
+                ('user:search', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('workorder:autosuggest_scope', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('workorder:closed', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('workorder:delete', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('workorder:details', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('workorder:details_edit_comments', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('workorder:details_edit_description', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('workorder:details_edit_resolution', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('workorder:new', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('workorder:note_delete', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('workorder:note_edit', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('workorder:note_new', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('workorder:open', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('workorder:overview', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('workorder:print', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('workorder:search', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('workorder:status', 1, 0, 0, 0, 0, 0, 0, 0, 0);";
+
+        if(!$rs = $db->Execute($sql)) {
+            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed reset default permissions."));
+            exit;
+
+        }
+        
+    }
+    
+    return;
     
 }

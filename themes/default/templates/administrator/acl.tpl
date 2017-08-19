@@ -2,19 +2,23 @@
 <table width="100%" border="0" cellpadding="20" cellspacing="5">
     <tr>
         <td>
-            <table width="400" cellpadding="4" cellspacing="0" border="0" >
-                <tr>
-                    <td class="menuhead2" width="80%">&nbsp;{t}Update Permissions for Users{/t}</td>
-                    <td class="menuhead2" width="20%" align="right" valign="middle">
-                        <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}ADMINISTRATOR_ACL_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}ADMINISTRATOR_ACL_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
-                    </td>
-                </tr>
-                <tr>
-                    <td class="menutd2" colspan="2">
-                        <table class="olotable" width="100%" border="0" cellpadding="5" cellspacing="0">
-                            <tr>
-                                <td class="menutd">
-                                    <form method="post" action="index.php?page=administrator:acl">
+            <form method="post" action="index.php?page=administrator:acl">
+                <table width="400" cellpadding="4" cellspacing="0" border="0">
+                    
+                    <!-- Header -->
+                    <tr>
+                        <td class="menuhead2" width="80%">&nbsp;{t}Update Permissions for Users{/t}</td>
+                        <td class="menuhead2" width="20%" align="right" valign="middle">
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}ADMINISTRATOR_ACL_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}ADMINISTRATOR_ACL_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
+                        </td>
+                    </tr>
+
+                    <!-- Matrix -->
+                    <tr>
+                        <td class="menutd2" colspan="2">
+                            <table class="olotable" width="100%" border="0" cellpadding="5" cellspacing="0">
+                                <tr>
+                                    <td class="menutd">                                    
                                         <table class="olotable" cellpadding="5" cellspacing="0" border="0">
                                             <tr>
                                                 <td class="olohead">{t}Module:Page{/t}</td>
@@ -107,15 +111,27 @@
 
                                                 </tr>
                                             {/section}
-                                        </table>
-                                        <button type="submit" name="submit" value="submit">{t}Submit{/t}</button>
-                                    </form>                                    
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-            </table>
+                                        </table>                                                                      
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <!-- Butons -->                
+                    <tr>
+                        <td colspan="2">
+                            <table>
+                                <tr>
+                                    <td width="50%"><button type="submit" name="submit" value="update">{t}Submit{/t}</button></td>
+                                    <td width="50%"><button type="submit" name="submit" value="reset_default" onclick="return confirmDelete('{t}Are you sure you want to reset the permissions to their defaults?{/t}');">{t}Reset to default Permissions{/t}</button></td>    
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                </table>
+            </form>  
         </td>
     </tr>
 </table>
