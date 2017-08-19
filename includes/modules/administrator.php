@@ -7,6 +7,17 @@
  * @license   GNU/GPLv3 or later; https://www.gnu.org/licenses/gpl.html
  */
 
+/*
+ * Mandatory Code - Code that is run upon the file being loaded
+ * Display Functions - Code that is used to primarily display records - linked tables
+ * New/Insert Functions - Creation of new records
+ * Get Functions - Grabs specific records/fields ready for update - no table linking
+ * Update Functions - For updating records/fields
+ * Close Functions - Closing Work Orders code
+ * Delete Functions - Deleting Work Orders
+ * Other Functions - All other functions not covered above
+ */
+
 /**
  * Method to get the PHP info
  *
@@ -18,6 +29,155 @@
  */
 
 defined('_QWEXEC') or die;
+
+/* Get Functions */
+
+############################################
+#   get current config details            #
+############################################
+
+function get_qwcrm_config() {
+    
+    // Return the config values
+    return get_object_vars(new QConfig);
+    
+}
+
+/* Update Functions */
+
+
+#################################
+#   Update ACL Permissions      #
+#################################
+
+function update_acl($db, $permissions) {
+    
+    /* Update ACl with submitted permissions */
+    
+    // Cycle through $_POST and parse the submitted data
+    foreach($permissions as $ACLpage => $ACLrow) {
+        
+        // Compensate for the page and submit variables being sent in $VAR
+        if($ACLpage != 'page' && $ACLpage != 'submit') {            
+                
+            foreach($ACLrow as $ACLgroup => $ACLstatus) {
+                
+                // Enforce Administrators always have access to everything
+                if($ACLgroup == 'Administrator') { $ACLstatus == '1'; }
+                
+                // Build page SQL
+                $page_sql .= $ACLgroup."='".$ACLstatus."',";   
+                
+            }
+            
+            // remove the last comma to prevent sql error
+            $page_sql = rtrim($page_sql, ',');
+            
+            $sql = "UPDATE ".PRFX."user_acl SET ".$page_sql." WHERE page='".$ACLpage."'";
+
+            if(!$rs = $db->execute($sql)) {
+                force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the Page ACL permissions."));
+                exit;    
+            }
+
+            $page_sql = '';
+
+        }
+
+    }
+    
+    /* Restore Mandatory ACL values */
+    
+    // Configured mandatory permission - Adminstrator is setting is 'ignored'
+    $mandatory_permissions =
+            
+            array(
+                
+                // Permission always granted
+                'core:404'          => array('Administrator' => '1', 'Manager' => '1', 'Supervisor' => '1', 'Technician' =>'1', 'Clerical' => '1', 'Counter' => '1', 'Customer' => '1', 'Guest' => '1', 'Public' => '1'),
+                'core:error'        => array('Administrator' => '1', 'Manager' => '1', 'Supervisor' => '1', 'Technician' =>'1', 'Clerical' => '1', 'Counter' => '1', 'Customer' => '1', 'Guest' => '1', 'Public' => '1'),
+                'core:home'         => array('Administrator' => '1', 'Manager' => '1', 'Supervisor' => '1', 'Technician' =>'1', 'Clerical' => '1', 'Counter' => '1', 'Customer' => '1', 'Guest' => '1', 'Public' => '1'),
+                'core:maintenance'  => array('Administrator' => '1', 'Manager' => '1', 'Supervisor' => '1', 'Technician' =>'1', 'Clerical' => '1', 'Counter' => '1', 'Customer' => '1', 'Guest' => '1', 'Public' => '1'),
+                
+                // Administrator Only
+                'administrator:acl' => array('Administrator' => '1', 'Manager' => '0', 'Supervisor' => '0', 'Technician' =>'0', 'Clerical' => '0', 'Counter' => '0', 'Customer' => '0', 'Guest' => '0', 'Public' => '0'),
+                'setup:upgrade'     => array('Administrator' => '1', 'Manager' => '0', 'Supervisor' => '0', 'Technician' =>'0', 'Clerical' => '0', 'Counter' => '0', 'Customer' => '0', 'Guest' => '0', 'Public' => '0'),
+                
+                // All permissions removed
+                'setup:install'     => array('Administrator' => '0', 'Manager' => '0', 'Supervisor' => '0', 'Technician' =>'0', 'Clerical' => '0', 'Counter' => '0', 'Customer' => '0', 'Guest' => '0', 'Public' => '0'),
+                'setup:migrate'     => array('Administrator' => '0', 'Manager' => '0', 'Supervisor' => '0', 'Technician' =>'0', 'Clerical' => '0', 'Counter' => '0', 'Customer' => '0', 'Guest' => '0', 'Public' => '0')                
+                
+            );  
+
+    /*$sql = "UPDATE ".PRFX."user_acl
+            SET `Administrator`= 1, `Manager`=1, `Supervisor`=1,`Technician`=1, `Clerical`=1, `Counter`=1, `Customer`=1, `Guest`=1, `Public`=1
+            WHERE `page`= 'core:error'
+            OR `page`= 'core:404'
+            OR `page`= 'core:home'
+            OR `page`= 'core:maintenance'                      
+            "; 
+    */
+    
+    // Cycle through Mandatory ACL Array and parse the submitted data
+    foreach($mandatory_permissions as $ACLpage => $ACLrow) {
+        
+        // Compensate for the page and submit variables being sent in $VAR
+        if($ACLpage != 'page' && $ACLpage != 'submit') {            
+                
+            foreach($ACLrow as $ACLgroup => $ACLstatus) {
+                
+                // Enforce Administrators always have access to everything
+                if($ACLgroup == 'Administrator') { $ACLstatus == '1'; }
+                
+                // Build page SQL
+                $page_sql .= $ACLgroup."='".$ACLstatus."',";  
+                
+            }
+
+            // remove the last comma to prevent sql error
+            $page_sql = rtrim($page_sql, ',');
+
+            $sql = "UPDATE ".PRFX."user_acl SET ".$page_sql."WHERE page='".$ACLpage."'";
+
+            if(!$rs = $db->execute($sql)) {
+                force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the Mandatory Page ACL permissions."));
+                exit;    
+            }
+
+            $page_sql = '';
+
+        }
+
+    }
+
+}
+
+############################################
+#   Update the QWcrm settings file         #
+############################################
+
+function update_qwcrm_config($new_config) {
+    
+    // Get a fresh copy of the current settings as an array        
+    $current_config = get_qwcrm_config();
+    
+    // Perform miscellaneous options based on configuration settings/changes.
+    $new_config = prepare_config_data($new_config);
+    
+    // Merge the new submitted config and the old one. We do this to preserve values that were not in the submitted form but are in the config.
+    $merged_config = array_merge($current_config, $new_config);
+    
+    // Prepare the config file content
+    $merged_config = build_config_file_content($merged_config);
+
+    // Write the configuration file.
+    write_config_file($merged_config);
+
+    return true;
+    
+}
+
+/* Other Functions */
 
 /**
  * @package     Joomla.Administrator
@@ -104,7 +264,7 @@ function check_for_qwcrm_update() {
 #   Load ACL Permissions        #
 #################################
 
-function loadACL($db) {
+function load_acl($db) {
     
     $sql = "SELECT * FROM ".PRFX."user_acl ORDER BY page";
     
@@ -115,139 +275,6 @@ function loadACL($db) {
     
     return $rs->GetArray(); 
 
-}
-
-#################################
-#   Update ACL Permissions      #
-#################################
-
-function update_acl($db, $permissions) {
-    
-    /* Update ACl with submitted permissions */
-    
-    // Cycle through $_POST and parse the submitted data
-    foreach($permissions as $ACLpage => $ACLrow) {
-        
-        // Compensate for the page and submit variables being sent in $VAR
-        if($ACLpage != 'page' && $ACLpage != 'submit') {            
-                
-            foreach($ACLrow as $ACLgroup => $ACLstatus) {
-                
-                // Enforce Administrators always have access to everything
-                if($ACLgroup == 'Administrator') { $ACLstatus == '1'; }
-                
-                // Build page SQL
-                $page_sql .= $ACLgroup."='".$ACLstatus."',";   
-                
-            }
-            
-            // remove the last comma to prevent sql error
-            $page_sql = rtrim($page_sql, ',');
-            
-            $sql = "UPDATE ".PRFX."user_acl SET ".$page_sql." WHERE page='".$ACLpage."'";
-
-            if(!$rs = $db->execute($sql)) {
-                force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the Page ACL permissions."));
-                exit;    
-            }
-
-            $page_sql = '';
-
-        }
-
-    }
-    
-    /* Restore Mandatory ACL values */
-    
-    // Configured mandatory permission - Adminstrator is setting is 'ignored'
-    $mandatory_permissions =
-            
-            array(
-                'core:404'          => array('Administrator' => '1', 'Manager' => '1', 'Supervisor' => '1', 'Technician' =>'1', 'Clerical' => '1', 'Counter' => '1', 'Customer' => '1', 'Guest' => '1', 'Public' => '1'),
-                'core:error'        => array('Administrator' => '1', 'Manager' => '1', 'Supervisor' => '1', 'Technician' =>'1', 'Clerical' => '1', 'Counter' => '1', 'Customer' => '1', 'Guest' => '1', 'Public' => '1'),
-                'core:home'         => array('Administrator' => '1', 'Manager' => '1', 'Supervisor' => '1', 'Technician' =>'1', 'Clerical' => '1', 'Counter' => '1', 'Customer' => '1', 'Guest' => '1', 'Public' => '1'),
-                'core:maintenance'  => array('Administrator' => '1', 'Manager' => '1', 'Supervisor' => '1', 'Technician' =>'1', 'Clerical' => '1', 'Counter' => '1', 'Customer' => '1', 'Guest' => '1', 'Public' => '1'),
-                
-                'administrator:acl' => array('Administrator' => '1', 'Manager' => '0', 'Supervisor' => '0', 'Technician' =>'0', 'Clerical' => '0', 'Counter' => '0', 'Customer' => '0', 'Guest' => '0', 'Public' => '0')                  
-            );  
-
-    /*$sql = "UPDATE ".PRFX."user_acl
-            SET `Administrator`= 1, `Manager`=1, `Supervisor`=1,`Technician`=1, `Clerical`=1, `Counter`=1, `Customer`=1, `Guest`=1, `Public`=1
-            WHERE `page`= 'core:error'
-            OR `page`= 'core:404'
-            OR `page`= 'core:home'
-            OR `page`= 'core:maintenance'                      
-            "; 
-    */
-    
-    // Cycle through Mandatory ACL Array and parse the submitted data
-    foreach($mandatory_permissions as $ACLpage => $ACLrow) {
-        
-        // Compensate for the page and submit variables being sent in $VAR
-        if($ACLpage != 'page' && $ACLpage != 'submit') {            
-                
-            foreach($ACLrow as $ACLgroup => $ACLstatus) {
-                
-                // Enforce Administrators always have access to everything
-                if($ACLgroup == 'Administrator') { $ACLstatus == '1'; }
-                
-                // Build page SQL
-                $page_sql .= $ACLgroup."='".$ACLstatus."',";  
-                
-            }
-
-            // remove the last comma to prevent sql error
-            $page_sql = rtrim($page_sql, ',');
-
-            $sql = "UPDATE ".PRFX."user_acl SET ".$page_sql."WHERE page='".$ACLpage."'";
-
-            if(!$rs = $db->execute($sql)) {
-                force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the Mandatory Page ACL permissions."));
-                exit;    
-            }
-
-            $page_sql = '';
-
-        }
-
-    }
-
-}
-
-############################################
-#   load current config details            #
-############################################
-
-function get_qwcrm_config() {
-    
-    // Return the config values
-    return get_object_vars(new QConfig);
-    
-}
-
-############################################
-#   Update the QWcrm settings file         #
-############################################
-
-function update_qwcrm_config($new_config) {
-    
-    // Get a fresh copy of the current settings as an array        
-    $current_config = get_qwcrm_config();
-    
-    // Perform miscellaneous options based on configuration settings/changes.
-    $new_config = prepare_config_data($new_config);
-    
-    // Merge the new submitted config and the old one. We do this to preserve values that were not in the submitted form but are in the config.
-    $merged_config = array_merge($current_config, $new_config);
-    
-    // Prepare the config file content
-    $merged_config = build_config_file_content($merged_config);
-
-    // Write the configuration file.
-    write_config_file($merged_config);
-
-    return true;
-    
 }
 
 ############################################
@@ -349,7 +376,7 @@ function prepare_config_data($new_config) {
 }
 
 ############################################
-#      Send test Mail                      #
+#      Send Test Mail                      #
 ############################################
 
 function send_test_mail($db) {
