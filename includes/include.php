@@ -870,7 +870,7 @@ function write_record_to_activity_log($record) {
     if(QFactory::getConfig()->get('qwcrm_activity_log') != true) { return; }
     
     // Build log entry - perhaps use the apache time stamp below
-    $log_entry = $_SERVER['REMOTE_ADDR'].','.QFactory::getUser()->login_username.','.date("[d/M/Y:H:i:s O]", time()).','.$GLOBALS['employee_id'].','.$GLOBALS['customer_id'].','.$GLOBALS['workorder_id'].','.$GLOBALS['invoice_id'].','.$record ."\r\n";
+    $log_entry = $_SERVER['REMOTE_ADDR'].','.QFactory::getUser()->login_username.','.date("[d/M/Y:H:i:s O]", time()).','.QFactory::getUser()->login_user_id.','.$GLOBALS['employee_id'].','.$GLOBALS['customer_id'].','.$GLOBALS['workorder_id'].','.$GLOBALS['invoice_id'].','.$record ."\r\n";
     
     //$employee_id.','.$customer_id.','.$workorder_id.','.$invoice_id
     

@@ -321,13 +321,13 @@ function update_payment_methods_status($db, $VAR) {
     
     // Array of all valid payment methods
     $payment_methods = array(
-                                array('smarty_tpl_key'=>'credit_card_active',       'payment_method_status'=>$VAR['credit_card_active']      ),
-                                array('smarty_tpl_key'=>'cheque_active',            'payment_method_status'=>$VAR['cheque_active']           ),
-                                array('smarty_tpl_key'=>'cash_active',              'payment_method_status'=>$VAR['cash_active']             ),
-                                array('smarty_tpl_key'=>'gift_certificate_active',  'payment_method_status'=>$VAR['gift_certificate_active'] ),
-                                array('smarty_tpl_key'=>'paypal_active',            'payment_method_status'=>$VAR['paypal_active']           ),
-                                array('smarty_tpl_key'=>'direct_deposit_active',    'payment_method_status'=>$VAR['direct_deposit_active']   )    
-                            );
+                            array('smarty_tpl_key'=>'credit_card_active',       'payment_method_status'=>$VAR['credit_card_active']      ),
+                            array('smarty_tpl_key'=>'cheque_active',            'payment_method_status'=>$VAR['cheque_active']           ),
+                            array('smarty_tpl_key'=>'cash_active',              'payment_method_status'=>$VAR['cash_active']             ),
+                            array('smarty_tpl_key'=>'gift_certificate_active',  'payment_method_status'=>$VAR['gift_certificate_active'] ),
+                            array('smarty_tpl_key'=>'paypal_active',            'payment_method_status'=>$VAR['paypal_active']           ),
+                            array('smarty_tpl_key'=>'direct_deposit_active',    'payment_method_status'=>$VAR['direct_deposit_active']   )    
+                        );
    
     // Loop throught the various payment methods and update the database
     foreach($payment_methods as $payment_method) {

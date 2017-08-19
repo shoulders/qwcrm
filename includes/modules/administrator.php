@@ -141,52 +141,92 @@ function loadACL($db) {
 
 function updateACL($db, $permissions) {
     
+    /* Update ACl with submitted permissions */
+    
     // Cycle through $_POST and parse the submitted data
-    foreach($permissions as $ACLpage => $ACLrow){
-        
-        // val is users / 01
+    foreach($permissions as $ACLpage => $ACLrow) {
         
         // Compensate for the page and submit variables being sent in $VAR
         if($ACLpage != 'page' && $ACLpage != 'submit') {            
                 
             foreach($ACLrow as $ACLgroup => $ACLstatus) {
                 
-                $values .= $ACLgroup."='".$ACLstatus."',";                
+                // Enforce Administrators always have access to everything
+                if($ACLgroup == 'Administrator') { $ACLstatus == '1'; }
+                
+                // Build page SQL
+                $page_sql .= $ACLgroup."='".$ACLstatus."',";   
+                
             }
-
-            // Enforce Administrators always have access to everything
-            $values .= "Administrator='1' ";
-
-            $sql = "UPDATE ".PRFX."user_acl SET ".$values."WHERE page='".$ACLpage."'";
+            
+            // remove the last comma to prevent sql error
+            $page_sql = rtrim($page_sql, ',');
+            
+            $sql = "UPDATE ".PRFX."user_acl SET ".$page_sql." WHERE page='".$ACLpage."'";
 
             if(!$rs = $db->execute($sql)) {
-                force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to enforce administrators to always have access to all pages."));
+                force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the Page ACL permissions."));
                 exit;    
             }
 
-            $values = '';
+            $page_sql = '';
 
         }
 
-    }    
-   
-    // Make these pages permissions available to all User Account Types - This prevents systems errors
-    $sql = "UPDATE ".PRFX."user_acl SET `Administrator`= 1, `Manager`=1, `Supervisor`=1,`Technician`=1, `Clerical`=1, `Counter`=1, `Customer`=1, `Guest`=1, `Public`=1
+    }
+    
+    /* Restore Mandatory ACL values */
+    
+    // Configured mandatory permission - Adminstrator is setting is 'ignored'
+    $mandatory_permissions =
+            
+            array(
+                'core:404'          => array('Administrator' => '1', 'Manager' => '1', 'Supervisor' => '1', 'Technician' =>'1', 'Clerical' => '1', 'Counter' => '1', 'Customer' => '1', 'Guest' => '1', 'Public' => '1'),
+                'core:error'        => array('Administrator' => '1', 'Manager' => '1', 'Supervisor' => '1', 'Technician' =>'1', 'Clerical' => '1', 'Counter' => '1', 'Customer' => '1', 'Guest' => '1', 'Public' => '1'),
+                'core:home'         => array('Administrator' => '1', 'Manager' => '1', 'Supervisor' => '1', 'Technician' =>'1', 'Clerical' => '1', 'Counter' => '1', 'Customer' => '1', 'Guest' => '1', 'Public' => '1'),
+                'core:maintenance'  => array('Administrator' => '1', 'Manager' => '1', 'Supervisor' => '1', 'Technician' =>'1', 'Clerical' => '1', 'Counter' => '1', 'Customer' => '1', 'Guest' => '1', 'Public' => '1'),
+                'administrator:acl' => array('Administrator' => '1', 'Manager' => '0', 'Supervisor' => '0', 'Technician' =>'0', 'Clerical' => '0', 'Counter' => '0', 'Customer' => '0', 'Guest' => '0', 'Public' => '0')                  
+            );  
+
+    /*$sql = "UPDATE ".PRFX."user_acl
+            SET `Administrator`= 1, `Manager`=1, `Supervisor`=1,`Technician`=1, `Clerical`=1, `Counter`=1, `Customer`=1, `Guest`=1, `Public`=1
             WHERE `page`= 'core:error'
             OR `page`= 'core:404'
             OR `page`= 'core:home'
             OR `page`= 'core:maintenance'                      
             "; 
+    */
     
-    // make administrator:acl only for administrator becuiase it sets the permissions ? - also make this preset permissions alittle more fluid, i.e. easy to add exceptions - maybe make these ones grey some how
+    // Cycle through Mandatory ACL Array and parse the submitted data
+    foreach($mandatory_permissions as $ACLpage => $ACLrow) {
+        
+        // Compensate for the page and submit variables being sent in $VAR
+        if($ACLpage != 'page' && $ACLpage != 'submit') {            
+                
+            foreach($ACLrow as $ACLgroup => $ACLstatus) {
+                
+                // Enforce Administrators always have access to everything
+                if($ACLgroup == 'Administrator') { $ACLstatus == '1'; }
+                
+                // Build page SQL
+                $page_sql .= $ACLgroup."='".$ACLstatus."',";  
+                
+            }
 
-    if(!$rs = $db->execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update teh Page ACL permissions."));
-        exit;    
-    } else {
-        
-        return;
-        
+            // remove the last comma to prevent sql error
+            $page_sql = rtrim($page_sql, ',');
+
+            $sql = "UPDATE ".PRFX."user_acl SET ".$page_sql."WHERE page='".$ACLpage."'";
+
+            if(!$rs = $db->execute($sql)) {
+                force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the Mandatory Page ACL permissions."));
+                exit;    
+            }
+
+            $page_sql = '';
+
+        }
+
     }
 
 }

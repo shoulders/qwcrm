@@ -315,15 +315,13 @@ if($QConfig->maintenance == true){
     $page_tpl   = 'maintenance';
     $VAR['theme'] = 'off';   
     
-    // If user logged in, then log user off    
+    // If user logged in, then log user off (Hard logout, no logging)
     if(isset($login_token)) {    
-        $app->logout();
-    }
-    
-}
+        QFactory::getAuth()->logout(); 
+    }    
 
 // If there is a page set, verify it 
-elseif(isset($VAR['page']) && $VAR['page'] != ''){ 
+} elseif(isset($VAR['page']) && $VAR['page'] != '') { 
 
     // Explode the URL so we can get the module and page_tpl
     list($module, $page_tpl)    = explode(':', $VAR['page']);
