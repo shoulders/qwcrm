@@ -209,7 +209,7 @@
                                             
                                             <tr>
                                                 <td>
-                                                    <input type="hidden" name="email_msg_workorder" value ="">
+                                                    <input type="hidden" name="email_msg_workorder" value="">
                                                     {*<table cellpadding="5" cellspacing="0">
                                                         <tr>
                                                             <td class="menuhead">{t}Workorder Message{/t}:</td>

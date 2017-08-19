@@ -46,9 +46,12 @@
 
                                                     <!-- Administrator -->
                                                     <td class="olotd4">
-                                                        <select name="{$acl[q].page}[Administrator]">
-                                                            <option value="1" selected>{t}Yes{/t}</option>                                                            
-                                                        </select>
+                                                        {*<select name="{$acl[q].page}[Administrator]">
+                                                            <option value="1" {if $acl[q].Administrator == '1'}selected{/if}>{t}Yes{/t}</option>
+                                                            <option value="0" {if $acl[q].Administrator == '0'}selected{/if}>{t}No{/t}</option>
+                                                        </select>*}
+                                                        <input type="hidden" name="{$acl[q].page}[Administrator]" value="1">
+                                                        {t}Yes{/t}
                                                     </td>
 
                                                     <!-- Manager -->

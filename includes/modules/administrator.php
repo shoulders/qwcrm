@@ -52,102 +52,85 @@ function get_qwcrm_config() {
 
 function update_acl($db, $permissions) {
     
-    /* Update ACl with submitted permissions */
+    /* Process Submitted Permissions */
     
-    // Cycle through $_POST and parse the submitted data
-    foreach($permissions as $ACLpage => $ACLrow) {
+    // Cycle through the submitted permissions and update the database
+    foreach($permissions as $page_name => $page_permission) {
         
-        // Compensate for the page and submit variables being sent in $VAR
-        if($ACLpage != 'page' && $ACLpage != 'submit') {            
+        // Compensate for non 'Page ACL' variables being submitted - skip the record
+        if($page_name == 'page') { continue; }
+        if($page_name == 'submit') { continue; } 
                 
-            foreach($ACLrow as $ACLgroup => $ACLstatus) {
-                
-                // Enforce Administrators always have access to everything
-                if($ACLgroup == 'Administrator') { $ACLstatus == '1'; }
-                
-                // Build page SQL
-                $page_sql .= $ACLgroup."='".$ACLstatus."',";   
-                
-            }
+        // Enforce Administrators always have access to everything
+        $page_permission['Administrator'] = '1';
+
+        $sql = "UPDATE `".PRFX."user_acl` SET
+                `Administrator` ='".$page_permission['Administrator']."',
+                `Manager`       ='".$page_permission['Manager']."',
+                `Supervisor`    ='".$page_permission['Supervisor']."',
+                `Technician`    ='".$page_permission['Technician']."',
+                `Clerical`      ='".$page_permission['Clerical']."',
+                `Counter`       ='".$page_permission['Counter']."',
+                `Customer`      ='".$page_permission['Customer']."',
+                `Guest`         ='".$page_permission['Guest']."',
+                `Public`        ='".$page_permission['Public']."'
+                WHERE `page`    ='".$page_name."';";
             
-            // remove the last comma to prevent sql error
-            $page_sql = rtrim($page_sql, ',');
-            
-            $sql = "UPDATE ".PRFX."user_acl SET ".$page_sql." WHERE page='".$ACLpage."'";
-
-            if(!$rs = $db->execute($sql)) {
-                force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the Page ACL permissions."));
-                exit;    
-            }
-
-            $page_sql = '';
-
+        if(!$rs = $db->execute($sql)) {
+            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the Submitted ACL permissions."));
+            exit;    
         }
+
+        //echo $sql.'<br>';              
 
     }
+
+    /* Restore Mandatory Permissions */
     
-    /* Restore Mandatory ACL values */
-    
-    // Configured mandatory permission - Adminstrator is setting is 'ignored'
+    // Mandatory permission array
     $mandatory_permissions =
             
-            array(
-                
-                // Permission always granted
-                'core:404'          => array('Administrator' => '1', 'Manager' => '1', 'Supervisor' => '1', 'Technician' =>'1', 'Clerical' => '1', 'Counter' => '1', 'Customer' => '1', 'Guest' => '1', 'Public' => '1'),
-                'core:error'        => array('Administrator' => '1', 'Manager' => '1', 'Supervisor' => '1', 'Technician' =>'1', 'Clerical' => '1', 'Counter' => '1', 'Customer' => '1', 'Guest' => '1', 'Public' => '1'),
-                'core:home'         => array('Administrator' => '1', 'Manager' => '1', 'Supervisor' => '1', 'Technician' =>'1', 'Clerical' => '1', 'Counter' => '1', 'Customer' => '1', 'Guest' => '1', 'Public' => '1'),
-                'core:maintenance'  => array('Administrator' => '1', 'Manager' => '1', 'Supervisor' => '1', 'Technician' =>'1', 'Clerical' => '1', 'Counter' => '1', 'Customer' => '1', 'Guest' => '1', 'Public' => '1'),
-                
-                // Administrator Only
-                'administrator:acl' => array('Administrator' => '1', 'Manager' => '0', 'Supervisor' => '0', 'Technician' =>'0', 'Clerical' => '0', 'Counter' => '0', 'Customer' => '0', 'Guest' => '0', 'Public' => '0'),
-                'setup:upgrade'     => array('Administrator' => '1', 'Manager' => '0', 'Supervisor' => '0', 'Technician' =>'0', 'Clerical' => '0', 'Counter' => '0', 'Customer' => '0', 'Guest' => '0', 'Public' => '0'),
-                
-                // All permissions removed
-                'setup:install'     => array('Administrator' => '0', 'Manager' => '0', 'Supervisor' => '0', 'Technician' =>'0', 'Clerical' => '0', 'Counter' => '0', 'Customer' => '0', 'Guest' => '0', 'Public' => '0'),
-                'setup:migrate'     => array('Administrator' => '0', 'Manager' => '0', 'Supervisor' => '0', 'Technician' =>'0', 'Clerical' => '0', 'Counter' => '0', 'Customer' => '0', 'Guest' => '0', 'Public' => '0')                
-                
-            );  
+        array(
 
-    /*$sql = "UPDATE ".PRFX."user_acl
-            SET `Administrator`= 1, `Manager`=1, `Supervisor`=1,`Technician`=1, `Clerical`=1, `Counter`=1, `Customer`=1, `Guest`=1, `Public`=1
-            WHERE `page`= 'core:error'
-            OR `page`= 'core:404'
-            OR `page`= 'core:home'
-            OR `page`= 'core:maintenance'                      
-            "; 
-    */
-    
-    // Cycle through Mandatory ACL Array and parse the submitted data
-    foreach($mandatory_permissions as $ACLpage => $ACLrow) {
+            // Permission always granted
+            'core:404'          => array('Administrator' => '1', 'Manager' => '1', 'Supervisor' => '1', 'Technician' =>'1', 'Clerical' => '1', 'Counter' => '1', 'Customer' => '1', 'Guest' => '1', 'Public' => '1'),
+            'core:error'        => array('Administrator' => '1', 'Manager' => '1', 'Supervisor' => '1', 'Technician' =>'1', 'Clerical' => '1', 'Counter' => '1', 'Customer' => '1', 'Guest' => '1', 'Public' => '1'),
+            'core:home'         => array('Administrator' => '1', 'Manager' => '1', 'Supervisor' => '1', 'Technician' =>'1', 'Clerical' => '1', 'Counter' => '1', 'Customer' => '1', 'Guest' => '1', 'Public' => '1'),
+            'core:maintenance'  => array('Administrator' => '1', 'Manager' => '1', 'Supervisor' => '1', 'Technician' =>'1', 'Clerical' => '1', 'Counter' => '1', 'Customer' => '1', 'Guest' => '1', 'Public' => '1'),
+
+            // Mixed Permissions
+            //'core:dashboard'  => array('Administrator' => '1', 'Manager' => '1', 'Supervisor' => '1', 'Technician' =>'1', 'Clerical' => '1', 'Counter' => '1', 'Customer' => '0', 'Guest' => '0', 'Public' => '0'),
+
+            // Administrator Only
+            'administrator:acl' => array('Administrator' => '1', 'Manager' => '0', 'Supervisor' => '0', 'Technician' =>'0', 'Clerical' => '0', 'Counter' => '0', 'Customer' => '0', 'Guest' => '0', 'Public' => '0'),
+
+            // All permissions removed
+            'setup:install'     => array('Administrator' => '0', 'Manager' => '0', 'Supervisor' => '0', 'Technician' =>'0', 'Clerical' => '0', 'Counter' => '0', 'Customer' => '0', 'Guest' => '0', 'Public' => '0'),
+            'setup:migrate'     => array('Administrator' => '0', 'Manager' => '0', 'Supervisor' => '0', 'Technician' =>'0', 'Clerical' => '0', 'Counter' => '0', 'Customer' => '0', 'Guest' => '0', 'Public' => '0'),                
+            'setup:upgrade'     => array('Administrator' => '0', 'Manager' => '0', 'Supervisor' => '0', 'Technician' =>'0', 'Clerical' => '0', 'Counter' => '0', 'Customer' => '0', 'Guest' => '0', 'Public' => '0')
+
+        ); 
+
+    // Cycle through mandatory permissions and update the database
+    foreach($mandatory_permissions as $page_name => $page_permission) {
+                 
+        $sql = "UPDATE `".PRFX."user_acl` SET
+                `Administrator` ='".$page_permission['Administrator']."',
+                `Manager`       ='".$page_permission['Manager']."',
+                `Supervisor`    ='".$page_permission['Supervisor']."',
+                `Technician`    ='".$page_permission['Technician']."',
+                `Clerical`      ='".$page_permission['Clerical']."',
+                `Counter`       ='".$page_permission['Counter']."',
+                `Customer`      ='".$page_permission['Customer']."',
+                `Guest`         ='".$page_permission['Guest']."',
+                `Public`        ='".$page_permission['Public']."'
+                WHERE `page`    ='".$page_name."';";
+
+         if(!$rs = $db->execute($sql)) {
+             force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the Mandatory ACL permissions."));
+             exit;    
+        }              
         
-        // Compensate for the page and submit variables being sent in $VAR
-        if($ACLpage != 'page' && $ACLpage != 'submit') {            
-                
-            foreach($ACLrow as $ACLgroup => $ACLstatus) {
-                
-                // Enforce Administrators always have access to everything
-                if($ACLgroup == 'Administrator') { $ACLstatus == '1'; }
-                
-                // Build page SQL
-                $page_sql .= $ACLgroup."='".$ACLstatus."',";  
-                
-            }
-
-            // remove the last comma to prevent sql error
-            $page_sql = rtrim($page_sql, ',');
-
-            $sql = "UPDATE ".PRFX."user_acl SET ".$page_sql."WHERE page='".$ACLpage."'";
-
-            if(!$rs = $db->execute($sql)) {
-                force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the Mandatory Page ACL permissions."));
-                exit;    
-            }
-
-            $page_sql = '';
-
-        }
-
     }
 
 }
