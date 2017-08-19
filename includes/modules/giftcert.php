@@ -277,7 +277,7 @@ function delete_giftcert($db, $giftcert_id) {
     
     // update and set non-active as you cannot really delete an issues gift certificate
     
-    $sql = "UPDATE ".PRFX."giftcert SET status='0' WHERE giftcert_id=".$db->qstr($giftcert_id);
+    $sql = "UPDATE ".PRFX."giftcert SET active='0' WHERE giftcert_id=".$db->qstr($giftcert_id);
 
     if(!$db->execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete the Gift Certificate."));
@@ -306,7 +306,7 @@ function delete_giftcert($db, $giftcert_id) {
 function validate_giftcert_for_payment($db, $giftcert_id) {
 
     // check is active
-    if(get_giftcert_details($db, $giftcert_id, 'status') != 1) {
+    if(get_giftcert_details($db, $giftcert_id, 'active') != 1) {
         //force_page('core','error', 'error_msg='.gettext("This gift certificate is not active"));
         //exit;
         return false;
@@ -370,7 +370,7 @@ function update_giftcert_as_redeemed($db, $giftcert_id, $invoice_id) {
             invoice_id          =". $db->qstr( $invoice_id  ).",
             date_redeemed       =". $db->qstr( time()       ).",
             is_redeemed         =". $db->qstr( 1            ).",            
-            status              =". $db->qstr( 0            )."
+            active              =". $db->qstr( 0            )."
             WHERE giftcert_id   =". $db->qstr( $giftcert_id );
     
     if(!$rs = $db->execute($sql)) {
