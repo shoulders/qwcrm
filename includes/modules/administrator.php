@@ -49,70 +49,52 @@ function getPHPInfo()
 #   Check for QWcrm update      #
 #################################
 
-function checkForQWcrmUpdate() {
+function check_for_qwcrm_update() {
     
     global $smarty;
     
     // Get curent version and check against quantumwarp.com
-    $updatePage    = 'https://quantumwarp.com/ext/updates/app=qwcrm&ver='.QWCRM_VERSION;
+    $update_page    = 'https://quantumwarp.com/ext/updates/qwcrm/qwcrm.xml';
+    
     $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, MYITCRM);
-    curl_setopt ($ch, CURLOPT_POST, 1);
-    curl_setopt ($ch, CURLOPT_POSTFIELDS, $updatePage);
-    curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
-    $content = curl_exec ($ch); # This returns HTML
-    curl_close ($ch);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);        // FALSE to stop cURL from verifying the peer's certificate (need unless i bundle certs with my install)
+    curl_setopt($ch, CURLOPT_URL, $update_page);            // The URL to fetch. This can also be set when initializing a session with curl_init(). 
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);            // TRUE to return the transfer as a string of the return value of curl_exec() instead of outputting it out directly. 
+    
+    $curl_response = curl_exec($ch);     
+    $curl_error = curl_errno($ch);  
+    curl_close($ch);
 
-    // If no response return with error message
-    if( $content == '') {
-        $smarty->assign('status','0');
-        $smarty->assign('warning_msg','No response from server');
-        return false;        
-    }
-
-    // Parse the grabbed XML
-    $parser = xml_parser_create();
-    xml_parser_set_option($parser, XML_OPTION_CASE_FOLDING, 0);
-    xml_parser_set_option($parser, XML_OPTION_SKIP_WHITE, 1);
-    xml_parse_into_struct($parser, $content, $values, $tags);
-    xml_parser_free($parser);
-
-    foreach($values as $xml){
-            if($xml['tag'] == "UPDATE_STATUS" && $xml['value'] != ""){
-                $status = $xml['value'];
-            }
-
-            if($xml['tag'] == "UPDATE_FILE" && $xml['value'] != ""){
-                $file= $xml['value'];
-            }
-
-            if($xml['tag'] == "UPDATE_DATE" && $xml['value'] != ""){
-                $date= $xml['value'];
-            }
-
-            if($xml['tag'] == "UPDATE_MESSAGE" && $xml['value'] != ""){
-                $message= $xml['value'];
-            }
-
-            if($xml['tag'] == "LATEST_VERSION" && $xml['value'] != ""){
-                $cur_version = $xml['value'];
-            }
-
+    // If there is a connection error
+    if($curl_error) {         
+        $smarty->assign('warning_msg', gettext("Connection Error - cURL Error Number").': '.$curl_error);
+        return;        
     }
     
-    // Build the update message
-    if (version_compare(QWCRM_VERSION, LATEST_VERSION, '<')){
-        $update_message = 'There is a newer version available';
-    } else {
-        $update_message = 'You have the latest version';
+    // If no response return with error message
+    if($curl_response == '' || $curl_error) {         
+        $smarty->assign('warning_msg', gettext("No response from the QWcrm update server."));
+        return;        
     }
 
-    // Assign Variables
-    $smarty->assign('status',$status);
-    $smarty->assign('file',$file);
-    $smarty->assign('date',$date);
-    $smarty->assign('latest_version',$latest_version);
-    $smarty->assign('update_message',$update_message);
+    // Parse the grabbed XML into an array
+    $update_response = parse_xml_sting_into_array($curl_response);
+    
+    // Build the update message
+    if (version_compare(QWCRM_VERSION, $update_response['version'], '<')) {
+        
+        // An Update is available        
+        $smarty->assign('version_compare', '1');
+        
+    } else {
+        
+        // No Updates available      
+        $smarty->assign('version_compare', '0');
+        
+    }
+
+    // Assign Variables    
+    $smarty->assign('update_response', $update_response);      
 
     return;
 

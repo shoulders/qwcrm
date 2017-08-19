@@ -710,6 +710,67 @@ function check_template_compatible() {
     
 }
 
+
+############################################
+#   Parse XML file into an array           #
+############################################
+
+function parse_xml_sting_into_array($string) {
+    
+    // SimpleXML - Convert an XML file into a SimpleXMLElement object, then output keys and elements of the object:
+    $xml_object = simplexml_load_string($string);
+   
+    // Convert Object into an array
+    $xml_object = get_object_vars($xml_object);
+    
+    // Return the array
+    return $xml_object;
+    
+}
+
+############################################
+#   Parse XML file into an array           #
+############################################
+
+function parse_xml_file_into_array($file) {
+    
+    // SimpleXML - Convert an XML file into a SimpleXMLElement object, then output keys and elements of the object:
+    $xml_object = simplexml_load_file($file);
+   
+    // Convert Object into an array
+    $xml_object = get_object_vars($xml_object);
+    
+    // Return the array
+    return $xml_object;
+    
+    /*
+    ALTERNATIVE Version - reference only
+    
+    // xml_parse_into_struct() old method - keep for reference
+
+    // Load file into memory
+    if (!($fp = fopen($file, 'r'))) {
+       die(gettext("Unable to open XML file.").' : '.$file);
+    }
+    $xmldata = fread($fp, filesize($file));
+    fclose($fp);
+    
+    // Start the XML parser
+    $xmlparser = xml_parser_create();
+    
+    // Convert XML data into an array
+    xml_parse_into_struct($xmlparser, $xmldata, $values, $index);
+    
+    // Frees the given XML parser - I assume to reduce memory usage
+    xml_parser_free($xmlparser);    
+        
+    return $index;
+    */
+    
+}
+
+/* Encryption */
+
 ####################################################################
 #  Encryption Routine using the secret key from configuration.php  #  // not sure this is used anywhere
 ####################################################################
@@ -788,6 +849,8 @@ function decrypt($strString, $secret_key) {
 
 }
 */
+
+/* Logging */
 
 ################################################
 #  Get Real IP address                         #
@@ -962,6 +1025,8 @@ function write_record_to_error_log($login_username, $error_page, $error_type, $e
     
 }
 
+/* Date and Time */
+
 #########################################################
 #   Return Date in correct format from year/month/day   #
 #########################################################
@@ -1115,7 +1180,6 @@ function datetime_to_timestamp($date, $hour, $minute, $second, $clock, $meridian
     
 }
 
-
 ##########################################
 #     Timestamp to dates                 #
 ##########################################
@@ -1152,46 +1216,7 @@ function timestamp_to_calendar_format($timestamp) {
     
 }
 
-############################################
-#   Parse XML file into an array           #
-############################################
-
-function parse_xml_file_into_array($file) {
-    
-    // SimpleXML - Convert an XML file into a SimpleXMLElement object, then output keys and elements of the object:
-    $xml_object = simplexml_load_file($file);
-   
-    // Convert Object into an array
-    $xml_object = get_object_vars($xml_object);
-    
-    // Return the array
-    return $xml_object;
-    
-    /*
-    ALTERNATIVE Version - reference only
-    
-    // xml_parse_into_struct() old method - keep for reference
-
-    // Load file into memory
-    if (!($fp = fopen($file, 'r'))) {
-       die(gettext("Unable to open XML file.").' : '.$file);
-    }
-    $xmldata = fread($fp, filesize($file));
-    fclose($fp);
-    
-    // Start the XML parser
-    $xmlparser = xml_parser_create();
-    
-    // Convert XML data into an array
-    xml_parse_into_struct($xmlparser, $xmldata, $values, $index);
-    
-    // Frees the given XML parser - I assume to reduce memory usage
-    xml_parser_free($xmlparser);    
-        
-    return $index;
-    */
-    
-}
+/* Other */
 
 ###########################################
 #  Compress page output and send headers  #

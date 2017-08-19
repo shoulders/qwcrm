@@ -637,7 +637,7 @@
                     </tr> 
                     
                     <tr>
-                        <td colspan="2" style="text-align: center;"><button class="olotd5" type="submit" name="submit" value="update">{t}Update{/t}</td>
+                        <td colspan="2" style="text-align: center;"><button class="olotd5" type="submit" name="submit" value="update">{t}Update{/t}</button></td>
                     </tr> 
                     
                 </table>
