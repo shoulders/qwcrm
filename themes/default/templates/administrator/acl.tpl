@@ -51,7 +51,8 @@
                                                             <option value="0" {if $acl[q].Administrator == '0'}selected{/if}>{t}No{/t}</option>
                                                         </select>*}
                                                         <input type="hidden" name="{$acl[q].page}[Administrator]" value="1">
-                                                        {t}Yes{/t}
+                                                        {if $acl[q].Administrator == '1'}{t}Yes{/t}{/if}
+                                                        {if $acl[q].Administrator == '0'}{t}No{/t}{/if}
                                                     </td>
 
                                                     <!-- Manager -->

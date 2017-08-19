@@ -65,23 +65,21 @@ function update_acl($db, $permissions) {
         $page_permission['Administrator'] = '1';
 
         $sql = "UPDATE `".PRFX."user_acl` SET
-                `Administrator` ='".$page_permission['Administrator']."',
-                `Manager`       ='".$page_permission['Manager']."',
-                `Supervisor`    ='".$page_permission['Supervisor']."',
-                `Technician`    ='".$page_permission['Technician']."',
-                `Clerical`      ='".$page_permission['Clerical']."',
-                `Counter`       ='".$page_permission['Counter']."',
-                `Customer`      ='".$page_permission['Customer']."',
-                `Guest`         ='".$page_permission['Guest']."',
-                `Public`        ='".$page_permission['Public']."'
-                WHERE `page`    ='".$page_name."';";
+                `Administrator` ='". $page_permission['Administrator']  ."',
+                `Manager`       ='". $page_permission['Manager']        ."',
+                `Supervisor`    ='". $page_permission['Supervisor']     ."',
+                `Technician`    ='". $page_permission['Technician']     ."',
+                `Clerical`      ='". $page_permission['Clerical']       ."',
+                `Counter`       ='". $page_permission['Counter']        ."',
+                `Customer`      ='". $page_permission['Customer']       ."',
+                `Guest`         ='". $page_permission['Guest']          ."',
+                `Public`        ='". $page_permission['Public']         ."'
+                WHERE `page`    ='". $page_name."';";
             
         if(!$rs = $db->execute($sql)) {
             force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the Submitted ACL permissions."));
             exit;    
-        }
-
-        //echo $sql.'<br>';              
+        }                 
 
     }
 
@@ -115,21 +113,21 @@ function update_acl($db, $permissions) {
     foreach($mandatory_permissions as $page_name => $page_permission) {
                  
         $sql = "UPDATE `".PRFX."user_acl` SET
-                `Administrator` ='".$page_permission['Administrator']."',
-                `Manager`       ='".$page_permission['Manager']."',
-                `Supervisor`    ='".$page_permission['Supervisor']."',
-                `Technician`    ='".$page_permission['Technician']."',
-                `Clerical`      ='".$page_permission['Clerical']."',
-                `Counter`       ='".$page_permission['Counter']."',
-                `Customer`      ='".$page_permission['Customer']."',
-                `Guest`         ='".$page_permission['Guest']."',
-                `Public`        ='".$page_permission['Public']."'
-                WHERE `page`    ='".$page_name."';";
+                `Administrator` ='". $page_permission['Administrator']  ."',
+                `Manager`       ='". $page_permission['Manager']        ."',
+                `Supervisor`    ='". $page_permission['Supervisor']     ."',
+                `Technician`    ='". $page_permission['Technician']     ."',
+                `Clerical`      ='". $page_permission['Clerical']       ."',
+                `Counter`       ='". $page_permission['Counter']        ."',
+                `Customer`      ='". $page_permission['Customer']       ."',
+                `Guest`         ='". $page_permission['Guest']          ."',
+                `Public`        ='". $page_permission['Public']         ."'
+                WHERE `page`    ='". $page_name."';";
 
          if(!$rs = $db->execute($sql)) {
              force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the Mandatory ACL permissions."));
              exit;    
-        }              
+        }               
         
     }
 
