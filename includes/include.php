@@ -19,6 +19,78 @@
 
 defined('_QWEXEC') or die;
 
+/* Get Functions */
+
+
+################################################
+#   Get MySQL version                          #
+################################################
+
+function get_mysql_version($db) {
+    
+    // adodb.org prefered method - does not bring back complete string - [server_info] =&gt; 5.5.5-10.1.13-MariaDB - Array ( [description] => 10.1.13-MariaDB [version] => 10.1.13 ) 
+    //$db->ServerInfo();
+    
+    // Extract and return the MySQL version - print_r($db) this and it gives you all of the values - 5.5.5-10.1.13-MariaDB
+    preg_match('/^[vV]?(\d+\.\d+\.\d+)/', $db->_connectionID->server_info, $matches);
+    return $matches[1];    
+    
+}
+
+################################################
+#  Get QWcrm version number from the database  #
+################################################
+
+function get_qwcrm_database_version_number($db) {
+    
+    $sql = "SELECT * FROM ".PRFX."version ORDER BY ".PRFX."version.database_version DESC LIMIT 1";
+    
+    if(!$rs = $db->execute($sql)) {        
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Could not retrieve the QWcrm database version."));
+        exit;        
+    } else {
+        
+        return $rs->fields['database_version'];
+        
+    }
+    
+}
+
+##########################
+#  Get company details   #
+##########################
+
+/*
+ * This combined function allows you to pull any of the company information individually
+ * or return them all as an array
+ * supply the required field name or all to return all of them as an array
+ */
+
+function get_company_details($db, $item = null) {
+    
+    $sql = "SELECT * FROM ".PRFX."company";
+    
+    if(!$rs = $db->execute($sql)) {        
+        //force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get company details."));
+        echo $sql.'<br>';
+        echo $db->ErrorMsg();
+        exit;
+    } else {
+        
+        if($item === null) {
+            
+            return $rs->GetRowAssoc();            
+            
+        } else {
+            
+            return $rs->fields[$item];   
+            
+        } 
+        
+    }
+    
+}
+
 /* Update Functions */
 
 
@@ -209,9 +281,6 @@ function force_error_page($error_page, $error_type, $error_location, $php_functi
     // raw_output mode is very basic, error logging still works, bootloops are prevented, page tracking and compression are skipped
     if($QConfig->error_page_raw_output) {
         
-        // required for some smarty operations in the error page (this is used in the included page)
-        global $smarty;
-
         // make sure the page object is empty
         $BuildPage = '';
 
@@ -424,69 +493,6 @@ function prepare_error_data($type, $data = Null) {
     
 }
 
-############################################
-#  Language Translation Function           #    // this is depreceated
-############################################
-
-function load_language() {
-    
-    global $smarty; 
-     
-    // xml_parse_into_struct() old method - keep for reference
-
-    // Load file into memory
-    $file = LANGUAGE_DIR.THEME_LANGUAGE;   
-    if (!($fp = fopen($file, 'r'))) {
-       die('unable to open XML');
-    }
-    $xmldata = fread($fp, filesize($file));
-    fclose($fp);
-    
-    // Start the XML parser
-    $xmlparser = xml_parser_create();
-    
-    // Convert XML data into an array
-    xml_parse_into_struct($xmlparser, $xmldata, $values);   // $arr_vals is correct here
-    
-    // Frees the given XML parser - I assume to reduce memory usage
-    xml_parser_free($xmlparser);    
-    
-    // Loop through the array key/pairs and make smarty variables
-    foreach($values as $things) {
-        if($things['tag'] != 'TRANSLATE' && $things['value'] != '') {
-            $smarty->assign('translate_'.strtolower($things['tag']),$things['value']);
-        }
-    }    
-
-    return true;
-
-    /*
-    // SimpleXML Method (could be slower but more programmable)
-    
-    $language_xml = simplexml_load_file(LANGUAGE_DIR.THEME_LANGUAGE);
-   
-    // Extract the <language_specific_settings> as an array
-    foreach ($language_xml->language_specific_settings as $language_specific_settings) {
-        // Cycle throught the array and extract
-        foreach ($language_specific_settings as $key => $value) {
-            //$smarty->assign('translate_'.$key, $value);
-            // for use later
-        }
-    }
-    
-    // Extract the <translate> as an array
-    foreach ($language_xml->translate as $translate) {
-        // Cycle throught the array and extract
-        foreach ($translate as $key => $value) {
-            $smarty->assign('translate_'.$key, $value);             
-        }
-    }
-    
-    // Destroy the loaded XML data to save memory
-    unset($language_xml);
-*/
-    
-}
 
 ############################################
 #      Set Page Header and Meta Data       #
@@ -609,7 +615,7 @@ function verify_qwcrm_is_installed_correctly($db) {
         
     /* Compare the QWcrm file system and database versions - if mismatch load upgrade for further instructions? */
     
-    // get the QWcrm database verion number
+    // get the QWcrm database version number
     $qwcrm_database_version = get_qwcrm_database_version_number($db);
         
     // If the versions dont match do further checks
@@ -627,12 +633,12 @@ function verify_qwcrm_is_installed_correctly($db) {
         }
         
         // If the file system is older than the database
-        if(version_compare($qwcrm_database_version, QWCRM_VERSION, '>')) {             
+        if(version_compare(QWCRM_VERSION, $qwcrm_database_version,  '<')) {             
             die('<div style="color: red;">'.gettext("The file system is older than the database. Check the logs and your settings.").'</div>');
         }
         
         // If the file system is newer than the database - run upgrade
-        if(version_compare($qwcrm_database_version, QWCRM_VERSION, '<')) {             
+        if(version_compare(QWCRM_VERSION, $qwcrm_database_version, '>')) {             
             force_page('setup', 'upgrade');
             exit;
         }      
@@ -654,78 +660,55 @@ function verify_qwcrm_is_installed_correctly($db) {
         die('<div style="color: red;">'.gettext("The Upgrade Directory Exists!! Please Rename or remove the upgrade directory.").'</div>');     
     }  */
     
-}
-
-################################################
-#   Get MySQL version                          #
-################################################
-
-function get_mysql_version($db) {
-    
-    // adodb.org prefered method - does not bring back complete string - [server_info] =&gt; 5.5.5-10.1.13-MariaDB - Array ( [description] => 10.1.13-MariaDB [version] => 10.1.13 ) 
-    //$db->ServerInfo();
-    
-    // Extract and return the MySQL version - print_r($db) this and it gives you all of the values - 5.5.5-10.1.13-MariaDB
-    preg_match('/^[vV]?(\d+\.\d+\.\d+)/', $db->_connectionID->server_info, $matches);
-    return $matches[1];    
-    
-}
-
-################################################
-#  Get QWcrm version number from the database  #
-################################################
-
-function get_qwcrm_database_version_number($db) {
-    
-    $sql = "SELECT * FROM ".PRFX."version ORDER BY ".PRFX."version.database_version DESC LIMIT 1";
-    
-    if(!$rs = $db->execute($sql)) {        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Could not retrieve the QWcrm database version."));
-        exit;        
-    } else {
+    // Check configured template is compatible
+    if(!check_template_compatible()) {
         
-        return $rs->fields['database_version'];
+        // Get template details
+        $template_details = parse_xml_file_into_array(THEME_DIR.'templateDetails.xml');
+        
+        echo gettext("The configured template is not supported by this version of QWcrm.").'<br>';
+        echo gettext("Your current version of QWcrm is").' '.QWCRM_VERSION.'<br>';
+        echo gettext("The template supports QWcrm versions in the range").': '.$template_details['qwcrm_min_version'].' -> '.$template_details['qwcrm_max_version'];
+        die();
         
     }
     
 }
 
-##########################
-#  Get company details   #
-##########################
+####################################################################
+#  check the selected template is valid for this version of QWcrm  #
+####################################################################
 
-/*
- * This combined function allows you to pull any of the company information individually
- * or return them all as an array
- * supply the required field name or all to return all of them as an array
- */
-
-function get_company_details($db, $item = null) {
+function check_template_compatible() {
     
-    $sql = "SELECT * FROM ".PRFX."company";
-    
-    if(!$rs = $db->execute($sql)) {        
-        //force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get company details."));
-        echo $sql.'<br>';
-        echo $db->ErrorMsg();
-        exit;
-    } else {
+    // Get template details
+    $template_details = parse_xml_file_into_array(THEME_DIR.'templateDetails.xml');
         
-        if($item === null) {
-            
-            return $rs->GetRowAssoc();            
-            
-        } else {
-            
-            return $rs->fields[$item];   
-            
-        } 
+    // is the QWCRM version too low to run the template
+    if (version_compare(QWCRM_VERSION, $template_details['qwcrm_min_version'], '<')) {
+        
+        return false;
+        /*echo gettext("The current version or QWcrm is too low to use this template.").'<br>';
+        echo gettext("Your current version of QWcrm is").' '.QWCRM_VERSION.'<br>';
+        echo gettext("The template supports QWcrm versions in the range").': '.$template_details['qwcrm_min_version'].' -> '.$template_details['qwcrm_max_version'];
+        die();*/
         
     }
     
+    // is the QWCRM version to high to run the template
+    if (version_compare(QWCRM_VERSION, $template_details['qwcrm_max_version'], '>')) {
+        
+        return false;
+        /*echo gettext("The current version or QWcrm is too high to use this template.").'<br>';
+        echo gettext("Your current version of QWcrm is").' '.QWCRM_VERSION.'<br>';
+        echo gettext("The template supports QWcrm versions in the range").': '.$template_details['qwcrm_min_version'].' -> '.$template_details['qwcrm_max_version'];
+        die();*/
+        
+    }
+    
+    return true;
+    
 }
-
-
 
 ####################################################################
 #  Encryption Routine using the secret key from configuration.php  #  // not sure this is used anywhere
@@ -1169,40 +1152,46 @@ function timestamp_to_calendar_format($timestamp) {
     
 }
 
-##########################################
-#          xml2php Gateway               # // this is a legacy function might not be used for long
-# Loads language file up as a PHP array  #
-##########################################
+############################################
+#   Parse XML file into an array           #
+############################################
 
-function gateway_xml2php($module) {    
+function parse_xml_file_into_array($file) {
+    
+    // SimpleXML - Convert an XML file into a SimpleXMLElement object, then output keys and elements of the object:
+    $xml_object = simplexml_load_file($file);
+   
+    // Convert Object into an array
+    $xml_object = get_object_vars($xml_object);
+    
+    // Return the array
+    return $xml_object;
+    
+    /*
+    ALTERNATIVE Version - reference only
+    
+    // xml_parse_into_struct() old method - keep for reference
 
-    $file = QWCRM_PHYSICAL_PATH.LANGUAGE_DIR.THEME_LANGUAGE;
-
-    $xml_parser = xml_parser_create();
+    // Load file into memory
     if (!($fp = fopen($file, 'r'))) {
-        die('unable to open XML');
+       die(gettext("Unable to open XML file.").' : '.$file);
     }
-    $contents = fread($fp, filesize($file));
+    $xmldata = fread($fp, filesize($file));
     fclose($fp);
-    xml_parse_into_struct($xml_parser, $contents, $arr_vals);
-    xml_parser_free($xml_parser);
-
-    $xmlarray = array();
-
-    foreach ($arr_vals as $things) {
-        if ($things['tag'] != 'TRANSLATE' && $things['value'] != "") {
-
-            $ttag = strtolower($things['tag']);
-            $tvalue = $things['value'];
-            $xmlarray[$ttag] = $tvalue;
-
-        }
-    }
-
-    return $xmlarray;
+    
+    // Start the XML parser
+    $xmlparser = xml_parser_create();
+    
+    // Convert XML data into an array
+    xml_parse_into_struct($xmlparser, $xmldata, $values, $index);
+    
+    // Frees the given XML parser - I assume to reduce memory usage
+    xml_parser_free($xmlparser);    
+        
+    return $index;
+    */
     
 }
-
 
 ###########################################
 #  Compress page output and send headers  #

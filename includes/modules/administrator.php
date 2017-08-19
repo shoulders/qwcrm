@@ -380,6 +380,10 @@ function send_test_mail($db) {
     
 }
 
+############################################
+#      Clear Smarty Cache                  #
+############################################
+
 function clear_smarty_cache() {
     
     global $smarty;
@@ -397,6 +401,10 @@ function clear_smarty_cache() {
     output_notifications_onscreen(gettext("The Smarty cache has been emptied successfully."), '');
     
 }
+
+############################################
+#      Clear Smarty Compile                #
+############################################
 
 function clear_smarty_compile() {
     
