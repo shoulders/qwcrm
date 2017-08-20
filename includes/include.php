@@ -532,12 +532,15 @@ function set_page_header_and_meta_data($module, $page_tpl, $page_title_from_var 
 
 function check_acl($db, $login_usergroup_id, $module, $page_tpl) {
     
-    /* error catching - you cannot use normal error logging as it will cause a loop */
+    // If installing
+    if(QWCRM_SETUP == 'install') { return true; }
+    
+    // error catching - you cannot use normal error logging as it will cause a loop
     if($login_usergroup_id == '') {
         die(gettext("The ACL has been supplied with no account type ID - I will now die."));                
     }
 
-    /* Get user's Group Name by login_usergroup_id */
+    // Get user's Group Name by login_usergroup_id
     $sql = "SELECT ".PRFX."user_usergroups.usergroup_display_name
             FROM ".PRFX."user_usergroups
             WHERE usergroup_id =".$db->qstr($login_usergroup_id);
@@ -553,6 +556,7 @@ function check_acl($db, $login_usergroup_id, $module, $page_tpl) {
     $module_page = $module.':'.$page_tpl;
     
     /* Check Page to see if we have access */
+    
     $sql = "SELECT ".$usergroup_display_name." AS acl FROM ".PRFX."user_acl WHERE page=".$db->qstr($module_page);
 
     if(!$rs = $db->execute($sql)) {        
@@ -566,9 +570,7 @@ function check_acl($db, $login_usergroup_id, $module, $page_tpl) {
         
         if($acl != 1) {
             
-            //force_error_page($_GET['page'], 'authentication', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("You do not have permission to access the page - ").' '.$module.':'.$page_tpl);             
-            force_page('core', 'login', 'warning_msg='.gettext("You do not have permission to access the page").' - '.$module.':'.$page_tpl);            
-            exit;
+            return false;
             
         } else {
             
@@ -593,11 +595,20 @@ function verify_qwcrm_is_installed_correctly($db) {
         die('Gettext is not installed which is required for the translation system.');
     }
     
+    /* Installation */
+    
     // If there is no configuration file - redirect to the installation routine
     if(!is_file('configuration.php')) {        
-        force_page('setup', 'install');
-        exit;
+        $_POST['page'] = 'setup:install';
+        $_POST['theme'] = 'menu_off';        
+        define('QWCRM_SETUP', 'install'); 
+        return;        
     }
+        
+    /* MyITCRM Migration */
+    // add the checking routines here
+    
+    /* QWcrm system checks */
     
     // Test the database connection is valid
     if(!$db->isConnected()) {
@@ -609,10 +620,7 @@ function verify_qwcrm_is_installed_correctly($db) {
     if (version_compare(get_mysql_version($db), QWCRM_MINIMUM_MYSQL, '<')) {
         die(gettext("QWcrm requires MySQL").' '.QWCRM_MINIMUM_MYSQL.' '.'or later to run.'.' '.gettext("Your current version is").' '.get_mysql_version($db));
     }
-    
-    /* MyITCRM Migration */
-    // add the checking routines here
-        
+            
     /* Compare the QWcrm file system and database versions - if mismatch load upgrade for further instructions? */
     
     // get the QWcrm database version number
@@ -621,11 +629,11 @@ function verify_qwcrm_is_installed_correctly($db) {
     // If the versions dont match do further checks
     if(version_compare($qwcrm_database_version, QWCRM_VERSION, '!=')) {
         
-        // Never installed - run install
+        /* Never installed - run install
         if($qwcrm_database_version == '') { 
             force_page('setup', 'install');
             exit;
-        }
+        }*/
         
         // Failed upgrade
         if($qwcrm_database_version == '0.0.0') { 
@@ -639,8 +647,11 @@ function verify_qwcrm_is_installed_correctly($db) {
         
         // If the file system is newer than the database - run upgrade
         if(version_compare(QWCRM_VERSION, $qwcrm_database_version, '>')) {             
-            force_page('setup', 'upgrade');
-            exit;
+            //force_page('setup', 'upgrade');
+            //exit;
+            $GLOBALS['VAR']['page'] = 'setup:upgrade';
+            define('QWCRM_SETUP', 'upgrade'); 
+            return;
         }      
         
     }

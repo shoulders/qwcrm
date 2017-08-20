@@ -20,19 +20,25 @@ define('PRFX',                      $QConfig->db_prefix         );
 // System Folders
 define('CACHE_DIR',                 'cache/'                    );
 define('INCLUDES_DIR',              'includes/'                 );
+define('FRAMEWORK_DIR',             INCLUDES_DIR.'framework/'   );
 define('MEDIA_DIR',                 'media/'                    );
 define('MODULES_DIR',               'modules/'                  );
 define('LANGUAGE_DIR',              'language/'                 );
 define('LIBRARIES_DIR',             'libraries/'                );
 define('LOGS_DIR',                  'logs/'                     );
-define('FRAMEWORK_DIR',             INCLUDES_DIR.'framework/'   );
+define('SQL_DIR',                   INCLUDES_DIR.'sql/'         );
 
 // Smarty
 define('SMARTY_CACHE_DIR',          CACHE_DIR.'smarty/cache/'   );
 define('SMARTY_COMPILE_DIR',        CACHE_DIR.'smarty/compile/' );
 
 // Theme
-define('THEME_NAME',                $QConfig->theme_name        );
+if($QConfig->theme_name) {
+    define('THEME_NAME',            $QConfig->theme_name        );   
+} else {
+    define('THEME_NAME',            'default'                   );      
+}
+
 define('THEME_DIR',                 'themes/'.THEME_NAME.'/'    );
 define('THEME_IMAGES_DIR',          THEME_DIR.'images/'         );
 define('THEME_CSS_DIR',             THEME_DIR.'css/'            );

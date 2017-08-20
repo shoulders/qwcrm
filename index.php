@@ -58,15 +58,17 @@ define('QWCRM_PATH', str_replace('index.php', '', $_SERVER['PHP_SELF']));
 // Constant that is checked in included files to prevent direct access
 define('_QWEXEC', 1);
 
-// load the config file if it exists
+// load the config if the file exists
 if(is_file('configuration.php')) {
-    require('configuration.php');    
+    
+    // load the config file
+    require('configuration.php');
+    
+    // Create config object for global scope / settings
+    $QConfig = new QConfig;
+    
 }
 
-// Create config object for global scope / settings
-$QConfig = new QConfig;
-
-// need to add error control here ie skip straight to
 require('includes/defines.php');
 require(INCLUDES_DIR.'security.php');
 require(INCLUDES_DIR.'include.php');
@@ -75,6 +77,12 @@ require(INCLUDES_DIR.'email.php');
 require(INCLUDES_DIR.'adodb.php');
 require(INCLUDES_DIR.'smarty.php');
 require(FRAMEWORK_DIR.'qwframework.php');
+
+################################################
+#    Verify QWcrm is installed correctly       #
+################################################
+
+verify_qwcrm_is_installed_correctly($db);
 
 ################################################
 #         Error Reporting                      #
@@ -113,7 +121,7 @@ switch ($QConfig->error_reporting)
         break;
 
     default:
-        error_reporting($QConfig->error_reporting);
+        //error_reporting($QConfig->error_reporting);
         ini_set('display_errors', 1);
         break;
 }
@@ -135,15 +143,24 @@ switch ($QConfig->error_reporting)
 #         Load Language                        #
 ################################################
 
-/* new system */
-
 // Autodetect Language - I18N support information here
-if($QConfig->autodetect_language) {
+if($QConfig->autodetect_language === '1') {
+    
     if(!$language = locale_accept_from_http($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
         $language = $QConfig->default_language; 
     }
+    
+} elseif($QConfig->autodetect_language === '0') {
+    
+    $language = $QConfig->default_language;    
+
+// if installing
 } else {
-    $language = $QConfig->default_language; 
+    
+    if(!$language = locale_accept_from_http($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
+        $language = 'en_GB'; 
+    }
+    
 }
 
 // here we define the global system locale given the found language
@@ -168,21 +185,16 @@ textdomain($textdomain);
 #    Verify QWcrm is installed correctly       #
 ################################################
 
-verify_qwcrm_is_installed_correctly($db);
-
-################################################
-#         Framework                            #
-################################################
-
-// Initiate QFramework
-$app = new QFactory;
+//verify_qwcrm_is_installed_correctly($db);
 
 ##########################################################
 #   Assign the User's Variables to PHP and Smarty        #
 ##########################################################
 
-// Load current user object (empty if not logged in)
-$user = QFactory::getUser();
+// Load current user object (empty if not logged in or installing)
+if(QWCRM_SETUP != 'install') {
+    $user = QFactory::getUser();
+}
 
 // Set User PHP variables
 $login_user_id          = $user->login_user_id;         // QFactory::getUser()->login_user_id; - this also works exactly the same
@@ -222,8 +234,12 @@ if($login_user_id) {update_user_last_active($db, $login_user_id);}
 #   Set Global PHP Values      #
 ################################ 
 
-// Merge the $_GET, $_POST and emulated $_POST
-$VAR = array_merge($_GET, $_POST, postEmulationReturnStore());
+// Merge the $_GET, $_POST and emulated $_POST - 1,2,3   1 is overwritten by 2, 2 is overwritten by 3.
+if(QWCRM_SETUP != 'install') {
+    $VAR = array_merge($_POST, $_GET, postEmulationReturnStore());
+} else {
+    $VAR = array_merge($_POST, $_GET);
+}
 
 // These are used globally
 $workorder_id       = $VAR['workorder_id'];
@@ -248,7 +264,9 @@ if(isset($VAR['page_no'])) {$page_no = $VAR['page_no'];} else {$page_no = 1;}
 ##########################################
 
 // Set Date Format
-define('DATE_FORMAT', get_company_details($db, 'date_format'));                 // If there are DATABASE ERRORS, they will present here (white screen) when verify QWcrm function is not on 
+if(QWCRM_SETUP != 'install') {
+    define('DATE_FORMAT', get_company_details($db, 'date_format'));             // If there are DATABASE ERRORS, they will present here (white screen) when verify QWcrm function is not on 
+}
 
 ##########################################################################
 #   Assign variables into smarty for use by all native module templates  #
@@ -283,9 +301,11 @@ $smarty->assign('start_day',                $start_day                  );
 $smarty->assign('user_id',                  $user_id                    );
 
 // Used throughout the site
-$smarty->assign('currency_sym', get_company_details($db,    'currency_symbol')  );
-$smarty->assign('company_logo', get_company_details($db,    'logo')             );
-$smarty->assign('date_format',  DATE_FORMAT                                     );
+if(QWCRM_SETUP != 'install') {
+    $smarty->assign('currency_sym', get_company_details($db,    'currency_symbol')  );
+    $smarty->assign('company_logo', get_company_details($db,    'logo')             );
+    $smarty->assign('date_format',  DATE_FORMAT                                     );
+}
 
 #############################
 #        Messages           #
@@ -307,7 +327,8 @@ if(isset($VAR['warning_msg'])){
 #  the page exists ready for building      #
 ############################################   
 
-if($QConfig->maintenance == true){
+// Maintenance Mode
+if($QConfig->maintenance){
     
     // Set to the maintenance page    
     $page_display_controller = 'modules/core/maintenance.php'; 
@@ -320,8 +341,8 @@ if($QConfig->maintenance == true){
         QFactory::getAuth()->logout(); 
     }    
 
-// If there is a page set, verify it 
-} elseif(isset($VAR['page']) && $VAR['page'] != '') { 
+// If there is a page set, verify it and build the controller
+} elseif($VAR['page'] != '') { 
 
     // Explode the URL so we can get the module and page_tpl
     list($module, $page_tpl)    = explode(':', $VAR['page']);
@@ -369,10 +390,10 @@ if($QConfig->maintenance == true){
 $BuildPage = '';
 
 /* Check the requested page with 'logged in' user against the ACL for authorisation - if allowed, display */
-if(check_acl($db, $login_usergroup_id, $module, $page_tpl)){
+if(check_acl($db, $login_usergroup_id, $module, $page_tpl)) {
     
     // If theme is set to Print mode then fetch the Page Content - Print system will output with its own format without need for headers and footers here
-    if ($VAR['theme'] === 'print'){        
+    if ($VAR['theme'] === 'print') {        
         require($page_display_controller);
         goto page_build_end;
     }
@@ -381,7 +402,7 @@ if(check_acl($db, $login_usergroup_id, $module, $page_tpl)){
     set_page_header_and_meta_data($module, $page_tpl, $VAR['page_title']);    
 
     // Fetch Header Block
-    if($VAR['theme'] != 'off'){        
+    if($VAR['theme'] != 'off') {     
         require('modules/core/blocks/theme_header_block.php');
     } else {
         //echo '<!DOCTYPE html><head></head><body>';
@@ -389,16 +410,21 @@ if(check_acl($db, $login_usergroup_id, $module, $page_tpl)){
     }
 
     // Fetch Header Legacy Template Code and Menu Block - Customers, Guests and Public users will not see the menu
-    if($VAR['theme'] != 'off' && isset($login_token) && $login_usergroup_id != 7 && $login_usergroup_id != 8 && $login_usergroup_id != 9){       
+    if($VAR['theme'] != 'off' && isset($login_token) && $login_usergroup_id != 7 && $login_usergroup_id != 8 && $login_usergroup_id != 9) {       
         $BuildPage .= $smarty->fetch('core/blocks/theme_header_legacy_supplement_block.tpl');
-        require('modules/core/blocks/theme_menu_block.php');        
+        
+        // is the menu disabled
+        if($VAR['theme'] != 'menu_off') {
+            require('modules/core/blocks/theme_menu_block.php');  
+        }
+        
     }    
 
     // Fetch the Page Content
     require($page_display_controller);    
 
     // Fetch Footer Legacy Template code Block (closes content table)
-    if($VAR['theme'] != 'off' && isset($login_token) && $login_usergroup_id != 7 && $login_usergroup_id != 8 && $login_usergroup_id != 9){
+    if($VAR['theme'] != 'off' && isset($login_token) && $login_usergroup_id != 7 && $login_usergroup_id != 8 && $login_usergroup_id != 9) {
         $BuildPage .= $smarty->fetch('core/blocks/theme_footer_legacy_supplement_block.tpl');             
     }
 
@@ -417,13 +443,21 @@ if(check_acl($db, $login_usergroup_id, $module, $page_tpl)){
     
     page_build_end:
     
+} else {
+ 
+    //force_error_page($_GET['page'], 'authentication', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("You do not have permission to access the page - ").' '.$module.':'.$page_tpl);             
+    
+    //force_page('core', 'error', 'warning_msg='.gettext("You do not have permission to access the page").' - '.$module.':'.$page_tpl);            
+    //exit;
+    
+    echo 'Nothing happening here, please fix me, index.php:453';
 }
 
 ################################################
 #        Access Logging                        #
 ################################################
 
-if(!$skip_logging) {
+if(!$skip_logging || QWCRM_SETUP) {
     
     // This logs access details to the access log
     if($QConfig->qwcrm_access_log == true){

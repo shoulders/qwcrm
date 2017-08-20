@@ -281,7 +281,10 @@ function insert_workorder($db, $customer_id, $scope, $description, $comments){
 
 // this might be go in the main include as different modules add work order history notes
 
-function insert_workorder_history_note($db, $workorder_id, $note) {
+function insert_workorder_history_note($db, $workorder_id = null, $note = null) {
+    
+    // This prevents errors from such functions as mail.php where a workorder_id is not always present - not currently used
+    //if($workorder_id == null) { return; }
     
     $sql = "INSERT INTO ".PRFX."workorder_history SET            
             employee_id     =". $db->qstr( QFactory::getUser()->login_user_id   ).",

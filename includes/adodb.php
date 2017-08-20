@@ -8,7 +8,6 @@
 
 defined('_QWEXEC') or die;
 
-
 /* ADODB Options */
 
 // ADODB_ASSOC_CASE - You can control the associative fetch case for certain drivers which behave differently. - native is default since v2.90

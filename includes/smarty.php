@@ -21,7 +21,7 @@ $smarty->cache_dir              = SMARTY_CACHE_DIR;
 $smarty->compile_dir            = SMARTY_COMPILE_DIR;
 $smarty->force_compile          = $QConfig->smarty_force_compile;
 
-// Bnable caching
+// Enable caching
 if($QConfig->smarty_caching == '1') { $smarty->caching = Smarty::CACHING_LIFETIME_CURRENT;}
 if($QConfig->smarty_caching == '2') { $smarty->caching = Smarty::CACHING_LIFETIME_SAVED;}
 
