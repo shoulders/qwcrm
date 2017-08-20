@@ -22,89 +22,98 @@
                     <span>{t}Customers{/t}</span>
                     <a href="index.php?page=customer:new"><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" height="14" width="14" /> {t}New{/t}</a>
                     <a href="index.php?page=customer:search"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {t}Search{/t}</a>
-                    {if $customer_id > 0 }
+                    {if $customer_id}
                         <a href="index.php?page=customer:edit&customer_id={$customer_id}"><img src="{$theme_images_dir}icons/edit_employee.gif" alt="" border="0" height="14" width="14" /> {t}Edit{/t}</a>                        
                         <a href="index.php?page=customer:delete&customer_id={$customer_id}" onclick="return confirmDelete('{t}Are you sure you want to delete this customer?{/t}');"><img src="{$theme_images_dir}icons/delete_employees.gif" alt="" border="0" height="14" width="14" /> {t}Delete{/t}</a>
-                        <a href="index.php?page=customer:email&customer_id={$customer_id}"><img src="{$theme_images_dir}icons/16x16/email.jpg" alt="" border="0" height="14" width="14" /> {t}Email{/t}</a>
                         <a href="index.php?page=user:new&customer_id={$customer_id}"><img src="{$theme_images_dir}icons/16x16/email.jpg" alt="" border="0" height="14" width="14" /> {t}Create Login{/t}</a>
-                        <a href="index.php?page=customer:note_new&customer_id={$customer_id}"><img src="{$theme_images_dir}icons/16x16/email.jpg" alt="" border="0" height="14" width="14" /> {t}New Note{/t}</a>
-                        <a href="index.php?page=giftcert:new&customer_id={$customer_id}"><img src="{$theme_images_dir}icons/gift.png" alt="" border="0" height="14" width="14" /> {t}New Gift Certificate{/t}</a>
-                    {/if}
-                        <a href="index.php?page=giftcert:search"><img src="{$theme_images_dir}icons/gift.png" alt="" border="0" height="14" width="14" /> {t}Search Gift Certificates{/t}</a>
-                    {if $giftcert_id > 0}
-                        <a href="index.php?page=giftcert:edit&giftcert_id={$giftcert_id}"><img src="{$theme_images_dir}icons/gift.png" alt="" border="0" height="14" width="14" /> {t}Edit Gift Certificates{/t}</a>
-                    {/if}
+                        <a href="index.php?page=customer:note_new&customer_id={$customer_id}"><img src="{$theme_images_dir}icons/16x16/email.jpg" alt="" border="0" height="14" width="14" /> {t}New Note{/t}</a>                        
+                    {/if}                    
                 </div>
-
+                
                 <!-- Work Orders -->
                 <div>
-                    <span>{t}Work Orders{/t}</span>                                       
-                    <a href="index.php?page=workorder:overview"><img src="{$theme_images_dir}tick.png" alt="" border="0" height="14" width="14" /> {t}Overview{/t} <b><font color="red"></font></b></a>                    
-                    <a href="index.php?page=workorder:open"><img src="{$theme_images_dir}tick.png" alt="" border="0" height="14" width="14" /> {t}Open{/t} <b><font color="red">({$menu_workorders_open_count})</font></b></a>
-                    <a href="index.php?page=workorder:closed"><img src="{$theme_images_dir}icons/close.gif" alt="" border="0" height="14" width="14" /> {t}Closed{/t} <b><font color="red">({$menu_workorders_closed_count})</font></b></a>
-                    {if $workorder_id >= 1}
-                        {if $menu_workorder_status == 10}
+                    <span>{t}Work Orders{/t}</span>                    
+                    {if $customer_id}
+                        <a href="index.php?page=workorder:new&customer_id={$customer_id}"><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" height="14" width="14" /> {t}New{/t}</a>                        
+                    {/if}
+                    {if $workorder_id}
+                        {if $menu_workorder_status != 6 || $menu_workorder_status != 7}
                             <a href="index.php?page=workorder:details_edit_resolution&workorder_id={$workorder_id}"><img src="{$theme_images_dir}icons/close.gif" alt="" border="0" height="14" width="14" /> {t}Close{/t}</a>
                             <a href="index.php?page=workorder:details_new_note&workorder_id={$workorder_id}"><img src="{$theme_images_dir}icons/note.png" alt="" border="0" height="14" width="14" /> {t}New Note{/t}</a>
                         {/if}
-                        <a href="index.php?page=workorder:print&workorder_id={$workorder_id}&theme=off" target="_blank"><img src="{$theme_images_dir}icons/print.gif" alt="" border="0" height="14" width="14" /> {t}Print WO{/t}</a>
-                        <a href="index.php?page=workorder:status&workorder_id={$workorder_id}"><img src="{$theme_images_dir}icons/status.gif" alt="" border="0" height="14" width="14" /> {t}Status{/t}</a>
-                    {/if}
-                    {if $customer_id > 0 }
-                        <a href="index.php?page=workorder:new&customer_id={$customer_id}"><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" height="14" width="14" /> {t}New{/t}</a>
-                        <a href="index.php?page=invoice:new&customer_id={$customer_id}&invoice_type=invoice-only"><img src="{$theme_images_dir}icons/invoice.png" alt="" border="0" height="14" width="14" /> {t}Invoice Only{/t}</a>
+                        <a href="index.php?page=workorder:print&workorder_id={$workorder_id}&theme=off" target="_blank"><img src="{$theme_images_dir}icons/print.gif" alt="" border="0" height="14" width="14" /> {t}Print WO{/t}</a>                        
                     {/if}
                     <a href="index.php?page=schedule:day"><img src="{$theme_images_dir}icons/16x16/Calendar.gif" alt="" border="0" height="14" width="14" /> {t}Schedules{/t}</a>
+                    {if $login_usergroup_id == 1 || $login_usergroup_id == 2 || $login_usergroup_id == 3}
+                        <a href="index.php?page=workorder:overview"><img src="{$theme_images_dir}tick.png" alt="" border="0" height="14" width="14" /> {t}Overview{/t} <b><font color="red"></font></b></a>                    
+                        <a href="index.php?page=workorder:open"><img src="{$theme_images_dir}tick.png" alt="" border="0" height="14" width="14" /> {t}Open{/t} <b><font color="red">({$menu_workorders_open_count})</font></b></a>
+                        <a href="index.php?page=workorder:closed"><img src="{$theme_images_dir}icons/close.gif" alt="" border="0" height="14" width="14" /> {t}Closed{/t} <b><font color="red">({$menu_workorders_closed_count})</font></b></a>
+                        <a href="index.php?page=workorder:status&workorder_id={$workorder_id}"><img src="{$theme_images_dir}icons/status.gif" alt="" border="0" height="14" width="14" /> {t}Status{/t}</a>
+                    {/if}
                 </div>
 
                 <!-- Invoices -->
                 <div>
                     <span>{t}Invoices{/t}</span>
-                    <a href="index.php?page=invoice:paid"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {t}Paid Invoices{/t} <b><font color="red">({$menu_invoices_paid_count})</font></b></a>
-                    <a href="index.php?page=invoice:unpaid"><img src="{$theme_images_dir}icons/warning.gif" alt="" border="0" height="14" width="14" /> {t}Unpaid Invoices{/t} <b><font color="red">({$menu_invoices_unpaid_count})</font></b></a>
-                    {if $customer_id > 0 }                        
+                    {if $customer_id}                        
                         <a href="index.php?page=invoice:new&customer_id={$customer_id}&invoice_type=invoice-only"><img src="{$theme_images_dir}icons/invoice.png" alt="" border="0" height="14" width="14" /> {t}Invoice Only{/t}</a>
+                    {/if}
+                    <a href="index.php?page=invoice:paid"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {t}Paid Invoices{/t} <b><font color="red">({$menu_invoices_paid_count})</font></b></a>
+                    <a href="index.php?page=invoice:unpaid"><img src="{$theme_images_dir}icons/warning.gif" alt="" border="0" height="14" width="14" /> {t}Unpaid Invoices{/t} <b><font color="red">({$menu_invoices_unpaid_count})</font></b></a>                    
+                </div>
+                
+                <!-- Gift Certificates -->
+                <div>
+                    <span>{t}Gift Certificates{/t}</span>
+                    {if $customer_id > 0}
+                        <a href="index.php?page=giftcert:new&customer_id={$customer_id}"><img src="{$theme_images_dir}icons/gift.png" alt="" border="0" height="14" width="14" /> {t}New{/t}</a>
+                    {/if}
+                    <a href="index.php?page=giftcert:search"><img src="{$theme_images_dir}icons/gift.png" alt="" border="0" height="14" width="14" /> {t}Search{/t}</a>
+                    {if $giftcert_id > 0}
+                        <a href="index.php?page=giftcert:edit&giftcert_id={$giftcert_id}"><img src="{$theme_images_dir}icons/gift.png" alt="" border="0" height="14" width="14" /> {t}Edit{/t}</a>
                     {/if}
                 </div>
 
-                <!-- General Ledger -->
+                <!-- Expenses -->
                 <!-- Menu limited to Administrators and Managers -->
-                {if $login_usergroup_id == 1 || $login_usergroup_id == 2}
+                {if $login_usergroup_id == 1 || $login_usergroup_id == 2 || $login_usergroup_id == 5}
                     <div>
-                        <span>{t}General Ledger{/t}</span>
-                        
-                        <!-- Expenses -->
-                        <a href="index.php?page=expense:new"><img src="{$theme_images_dir}icons/new.gif" alt="" border="0" height="14" width="14" />{t}New Expense{/t}</a>
-                        <a href="index.php?page=expense:search"><img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" />{t}Search Expenses{/t}</a>
+                        <span>{t}Expenses{/t}</span>
+                        <a href="index.php?page=expense:new"><img src="{$theme_images_dir}icons/new.gif" alt="" border="0" height="14" width="14" />{t}New{/t}</a>
+                        <a href="index.php?page=expense:search"><img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" />{t}Search{/t}</a>
                         {if $expense_id > 0 }
-                            <a href="index.php?page=expense:details&expense_id={$expense_id}"><img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" /> {t}Expense Details{/t}</a>
-                            <a href="index.php?page=expense:edit&expense_id={$expense_id}"><img src="{$theme_images_dir}icons/edit.gif" alt="" border="0" height="14" width="14" /> {t}Edit Expense{/t}</a>
+                            <a href="index.php?page=expense:details&expense_id={$expense_id}"><img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" /> {t}Details{/t}</a>
+                            <a href="index.php?page=expense:edit&expense_id={$expense_id}"><img src="{$theme_images_dir}icons/edit.gif" alt="" border="0" height="14" width="14" /> {t}Edit{/t}</a>
                             <a href="index.php?page=expense:delete&expense_id={$expense_id}" onclick="return confirmDelete('{t}Are you sure you want to delete this Expense Record?{/t}');"><img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" /> {t}Delete Expense{/t}</a>
-                        {/if}
-
-                        <!-- Refunds -->
-                        <a href="index.php?page=refund:new"><img src="{$theme_images_dir}icons/new.gif" alt="" border="0" height="14" width="14" />{t}New Refund{/t}</a>
-                        <a href="index.php?page=refund:search"><img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" />{t}Search Refunds{/t}</a>
+                        {/if}                        
+                    </div>
+                {/if}
+                
+                <!-- Refunds -->
+                <!-- Menu limited to Administrators and Managers -->
+                {if $login_usergroup_id == 1 || $login_usergroup_id == 2 || $login_usergroup_id == 5}
+                    <div>
+                        <span>{t}Refunds{/t}</span>                        
+                        <a href="index.php?page=refund:new"><img src="{$theme_images_dir}icons/new.gif" alt="" border="0" height="14" width="14" />{t}New{/t}</a>
+                        <a href="index.php?page=refund:search"><img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" />{t}Search{/t}</a>
                         {if $refund_id > 0 }
-                            <a href="index.php?page=refund:details&refund_id={$refund_id}"><img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" /> {t}Refund Details{/t}</a>
-                            <a href="index.php?page=refund:edit&refund_id={$refund_id}"><img src="{$theme_images_dir}icons/edit.gif" alt="" border="0" height="14" width="14" /> {t}Edit Refund{/t}</a>
+                            <a href="index.php?page=refund:details&refund_id={$refund_id}"><img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" /> {t}Details{/t}</a>
+                            <a href="index.php?page=refund:edit&refund_id={$refund_id}"><img src="{$theme_images_dir}icons/edit.gif" alt="" border="0" height="14" width="14" /> {t}Edit{/t}</a>
                             <a href="index.php?page=refund:delete&refund_id={$refund_id}" onclick="return confirmDelete('{t}Are you sure you want to delete this Refund Record?{/t}');"><img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" /> {t}Delete Refund{/t}</a>
-                        {/if}
-                        
-                        
+                        {/if}                        
                     </div>
                 {/if}
 
                 <!-- Suppliers -->
                 <!-- Menu limited to Administrators and Managers -->
-                {if $login_usergroup_id == 1 || $login_usergroup_id == 2}
+                {if $login_usergroup_id == 1 || $login_usergroup_id == 2 || $login_usergroup_id == 5}
                     <div>
                         <span>{t}Suppliers{/t}</span> 
-                        <a href="index.php?page=supplier:new"><img src="{$theme_images_dir}icons/new.gif" alt="" border="0" height="14" width="14" />{t}New Supplier{/t}</a>
-                        <a href="index.php?page=supplier:search"><img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" />{t}Search Suppliers{/t}</a>
+                        <a href="index.php?page=supplier:new"><img src="{$theme_images_dir}icons/new.gif" alt="" border="0" height="14" width="14" />{t}New{/t}</a>
+                        <a href="index.php?page=supplier:search"><img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" />{t}Search{/t}</a>
                         {if $supplier_id > 0 }
-                            <a href="index.php?page=supplier:details&supplier_id={$supplier_id}"><img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" /> {t}Supplier Details{/t}</a>
-                            <a href="index.php?page=supplier:edit&supplier_id={$supplier_id}"><img src="{$theme_images_dir}icons/edit.gif" alt="" border="0" height="14" width="14" /> {t}Edit Supplier{/t}</a>
+                            <a href="index.php?page=supplier:details&supplier_id={$supplier_id}"><img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" /> {t}Details{/t}</a>
+                            <a href="index.php?page=supplier:edit&supplier_id={$supplier_id}"><img src="{$theme_images_dir}icons/edit.gif" alt="" border="0" height="14" width="14" /> {t}Edit{/t}</a>
                             <a href="index.php?page=supplier:delete&supplier_id={$supplier_id}" onclick="return confirmDelete('{t}Are you Sure you want to delete this Supplier?{/t}');"><img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" /> {t}Delete Supplier{/t}</a>
                         {/if}
                     </div>
@@ -112,7 +121,7 @@
 
                 <!-- Company -->
                 <!-- Menu limited to Administrators -->
-                {if $login_usergroup_id == 1}
+                {if $login_usergroup_id == 1 || $login_usergroup_id == 2}
                     <div>
                         <span>{t}Company{/t}</span>
                         <a href="index.php?page=company:edit"><img src="{$theme_images_dir}icons/key.png" alt="" border="0" height="14" width="14" /> {t}Edit Company{/t}</a>
@@ -126,7 +135,7 @@
 
                 <!-- Administration -->
                 <!-- Menu limited to Administrators and Managers -->
-                {if $login_usergroup_id == 1 || $login_usergroup_id == 4}
+                {if $login_usergroup_id == 1 || $login_usergroup_id == 2}
                     <div>
                         <span>{t}Administration{/t}</span>
                         
@@ -142,9 +151,9 @@
                         <!-- Stats -->
                         
                         <!-- System -->
-                        <a href="index.php?page=administrator:phpinfo"><img src="{$theme_images_dir}icons/php.png" alt="" border="0" height="14" width="14" /> {t}PHPInfo{/t}</a>
+                        <a href="index.php?page=administrator:phpinfo"><img src="{$theme_images_dir}icons/php.png" alt="" border="0" height="14" width="14" /> {t}PHP Info{/t}</a>
                         <a href="index.php?page=administrator:update"><img src="{$theme_images_dir}icons/web.png" alt="" border="0" height="14" width="14" /> {t}Update{/t}</a>
-                        <a href="index.php?page=administrator:config"><img src="{$theme_images_dir}icons/web.png" alt="" border="0" height="14" width="14" /> {t}Config Settings{/t}</a>
+                        <a href="index.php?page=administrator:config"><img src="{$theme_images_dir}icons/web.png" alt="" border="0" height="14" width="14" /> {t}Config{/t}</a>
                         
                     </div>
                 {/if}                
@@ -177,12 +186,6 @@
 <td valign="top">
     
 <!-- End theme_menu_block.tpl -->
-{*
- * @package   QWcrm
- * @author    Jon Brown https://quantumwarp.com/
- * @copyright Copyright (C) 2016 - 2017 Jon Brown, All rights reserved.
- * @license   GNU/GPLv3 or later; https://www.gnu.org/licenses/gpl.html
-*}
     
     <!-- Page Content Goes Here -->
 
