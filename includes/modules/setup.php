@@ -35,3 +35,38 @@ defined('_QWEXEC') or die;
 /** Delete Functions **/
 
 /** Other Functions **/
+
+
+
+/** install **/
+
+############################################
+#  check the database connection works     #
+############################################
+
+function check_database_connection($db_host, $db_user, $db_pass, $db_name) {
+    
+    global $smarty;
+    
+    // create adodb database connection
+    $db = ADONewConnection('mysqli');
+    $db->Connect($db_host, $db_user, $db_pass, $db_name);
+    if(!$db->isConnected()) {
+        $smarty->assign('warning_msg', $db->ErrorMsg().'<br>'.gettext("There is a database connection issue. Check your settings."));
+        
+        return false;
+    } else {    
+        return true;
+    }
+    
+}
+
+/** migrate **/
+function workorders_migrate($myitcrm_db, $qwcrm_db) {
+    
+}
+function migrate_workorders($myitcrm_db, $qwcrm_db) {
+    
+}
+
+/** upgrade **/
