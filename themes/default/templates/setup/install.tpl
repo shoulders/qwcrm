@@ -5,80 +5,86 @@
  * @copyright Copyright (C) 2016 - 2017 Jon Brown, All rights reserved.
  * @license   GNU/GPLv3 or later; https://www.gnu.org/licenses/gpl.html
 *}
-<p>ddddddddddddddddddddddd</p>
-
-
-<!-- Stage 1 - Database connection and test -->
-{if $stage == '1' || !$stage}
-<form method="post" action="index.php?page=setup:install">                   
-    <table width="600" cellpadding="5" cellspacing="0" border="0">
-        <tr>
-            <td class="menuhead2" width="80%">&nbsp;{t}QWcrm Config Settings{/t}</td>
-            <td class="menuhead2" width="20%" align="right" valign="middle">  <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}ADMINISTRATOR_CONFIG_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}ADMINISTRATOR_CONFIG_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();"></td>
-        </tr>
-        <tr>
-            <td class="menutd2">
-                <table width="600" class="olotable" cellpadding="5" cellspacing="0" border="0">
-                    
-                    <!-- Database --> 
-                    
-                    <tr class="row2">
-                        <td class="menuhead" colspan="5" width="100%">&nbsp;{t}Database{/t}</td>
-                    </tr>
-                    
-                    <tr>
-                        <td align="right"><b>{t}Host{/t}</b> <span style="color: #ff0000">*</span></td>
-                        <td>
-                            <input name="db_host" class="olotd5" size="25" value="{$setup_details.db_host}" type="text" maxlength="20" required onkeydown="return onlyAlphaNumeric(event);"/>
-                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Host{/t}</strong></div><hr><div>{t escape=tooltip}The hostname for your database entered during the installation process. Do not edit this field unless absolutely necessary (eg the transfer of the database to a new hosting provider).{/t}</div>');" onMouseOut="hideddrivetip();">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td align="right"><b>{t}Database Name{/t}</b> <span style="color: #ff0000">*</span></td>
-                        <td>
-                            <input name="db_name" class="olotd5" size="25" value="{$setup_details.db_name}" type="text" maxlength="20" required onkeydown="return onlyMysqlDatabaseName(event);"/>
-                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Database Name{/t}</strong></div><hr><div>{t escape=tooltip}The name for your database entered during the installation process. Do not edit this field unless absolutely necessary (eg the transfer of the database to a new hosting provider).{/t}</div>');" onMouseOut="hideddrivetip();">
-                        </td>
-                    </tr>                    
-                    <tr>
-                        <td align="right"><b>{t}Database Username{/t}</b> <span style="color: #ff0000">*</span></td>
-                        <td>
-                            <input name="db_user" class="olotd5" size="25" value="{$setup_details.db_user}" type="text" maxlength="20" required onkeydown="return onlyAlphaNumeric(event);"/>
-                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Database Username{/t}</strong></div><hr><div>{t escape=tooltip}The username for access to your database entered during the installation process. Do not edit this field unless absolutely necessary (eg the transfer of the database to a new hosting provider).{/t}</div>');" onMouseOut="hideddrivetip();">
-                        </td>
-                    </tr>                    
-                    <tr>
-                        <td align="right"><b>{t}Database Password{/t}</b></td>
-                        <td>
-                            <input name="db_pass" class="olotd5" size="25" value="{$setup_details.db_pass}" type="password" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"/>
-                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Database Password{/t}</strong></div><hr><div>{t escape=tooltip}The password for access to your database entered during the installation process. Do not edit this field unless absolutely necessary (eg the transfer of the database to a new hosting provider).{/t}</div>');" onMouseOut="hideddrivetip();">
-                        </td>
-                    </tr>             
-                    <tr>
-                        <td align="right"><b>{t}Database Tables Prefix{/t}</b> <span style="color: #ff0000">*</span></td>
-                        <td>
-                            <input name="db_prefix" class="olotd5" size="6" value="{$setup_details.db_prefix}" type="text" maxlength="6" required onkeydown="return onlyAlphaNumeric(event);"/>
-                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Database Tables Prefix{/t}</strong></div><hr><div>{t escape=tooltip}The prefix used for your database tables, created during the installation process. Do not edit this field unless absolutely necessary (eg the transfer of the database to a new hosting provider).{/t}</div>');" onMouseOut="hideddrivetip();">
-                        </td>
-                    </tr>
-                    
-                    <!-- Submit -->
-                    
-                    <tr class="row2">
-                        <td class="menuhead" colspan="5" width="100%">&nbsp;</td>
-                    </tr> 
-                    
-                    <tr>
-                        <td colspan="2" style="text-align: center;">
-                            <input type="hidden" name="stage" value="1">
-                            <button class="olotd5" type="submit" name="submit" value="stage1">{t}Submit{/t}</button>
-                        </td>
-                    </tr> 
-
-                </table>
-            </td>
-        </tr>
-    </table>                        
-</form>    
-{/if}
-
+<table width="100%" border="0" cellpadding="20" cellspacing="5">
+    <tr>
+        <td>            
+            <table width="700" cellpadding="3" cellspacing="0" border="0">
+                <tr>
+                    <td class="menuhead2" width="80%">&nbsp;{t}QWcrm Installation{/t}</td>
+                    <td class="menuhead2" width="20%" align="right" valign="middle">
+                        <a>
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}SETUP_INSTALL_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}SETUP_INSTALL_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="menutd2" colspan="2">
+                        <table class="olotable" width="100%" border="0" cellpadding="5" cellspacing="0">
+                            <tr>
+                                <td class="menutd">
+                                    <table width="100%" border="0" cellpadding="10" cellspacing="0">                                        
+                                        
+                                        <!-- Stage 1 - Database connection and test -->
+                                        {if $stage == '1' || !$stage}                                        
+                                            <tr>
+                                                <td>                                                                                                  
+                                                    {include file='setup/blocks/install_stage1_block.tpl'}
+                                                </td>
+                                            </tr>
+                                        {/if}
+                                        
+                                        <!-- Stage 2 - Main Config Settings -->
+                                        {if $stage == '2'}                                        
+                                            <tr>
+                                                <td>                                                                                                 
+                                                    {include file='setup/blocks/install_stage2_block.tpl'}
+                                                </td>
+                                            </tr>
+                                        {/if}
+                                        
+                                        <!-- Stage 3 - Install the database -->
+                                        {if $stage == '3'}                                        
+                                            <tr>
+                                                <td>                                                                                                 
+                                                    {include file='setup/blocks/install_stage3_block.tpl'}
+                                                </td>
+                                            </tr>
+                                        {/if}
+                                        
+                                        <!-- Stage 4 - Company Details -->
+                                        {if $stage == '4'}                                        
+                                            <tr>
+                                                <td>                                                                                                   
+                                                    {include file='setup/blocks/install_stage4_block.tpl'}
+                                                </td>
+                                            </tr>
+                                        {/if}
+                                        
+                                        <!-- Stage 5 - Workorder/Invoice Start numbers -->
+                                        {if $stage == '5'}                                        
+                                            <tr>
+                                                <td>
+                                                    {include file='setup/blocks/install_stage5_block.tpl'}
+                                                </td>
+                                            </tr>
+                                        {/if}
+                                        
+                                        <!-- Stage 6 - Create an administrator account -->
+                                        {if $stage == '6'}                                        
+                                            <tr>
+                                                <td>
+                                                    {include file='setup/blocks/install_stage6_block.tpl'}
+                                                </td>
+                                            </tr>
+                                        {/if}
+                                        
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>

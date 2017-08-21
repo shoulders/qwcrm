@@ -24,4 +24,8 @@ require('adodb.inc.php');
 
 // create adodb database connection
 $db = ADONewConnection('mysqli');
-$db->Connect($QConfig->db_host, $QConfig->db_user, $QConfig->db_pass, $QConfig->db_name);
+
+// This is needed to allow install/migration/upgrade
+if($QConfig->db_host != '' && $QConfig->db_user != '' || $QConfig->db_name != '') {
+    $db->Connect($QConfig->db_host, $QConfig->db_user, $QConfig->db_pass, $QConfig->db_name);
+}

@@ -38,9 +38,8 @@ function check_page_accessed_via_qwcrm($qwcrm_page = null, $access_rule = null) 
             // Setup Access Rule - Prevent Specified Direct Page Access but allow direct via index.php (useful for setup:install, setup:migrate, setup:upgrade / system pages)
             if($access_rule == 'setup') {                
                 
-                // No Referer but page loaded via '', '/', 'index.php'
-                $index_referer_url = preg_match('/^'.preg_quote(QWCRM_PATH, '/').'(index\.php)?$/U', getenv('REQUEST_URI'));
-                if(getenv('HTTP_REFERER') == '' && $index_referer_url == true) {
+                // No Referer but page is directly loaded by '', '/', 'index.php'
+                if(getenv('HTTP_REFERER') == '' && preg_match('/^'.preg_quote(QWCRM_PATH, '/').'(index\.php)?$/U', getenv('REQUEST_URI'))) {
                     
                     return true;
                     
@@ -57,7 +56,7 @@ function check_page_accessed_via_qwcrm($qwcrm_page = null, $access_rule = null) 
     
         }
         
-        // refering page does not match and no access rules were triggered to allow access
+        // Referring Page does not match and no access rules were triggered to allow access
         return false;   
           
         

@@ -44,7 +44,7 @@
 
                                                     <table cellpadding="5" cellspacing="0">
                                                         <tr>
-                                                            <td align="right"><b>{t}Company Name{/t}:</b></td>
+                                                            <td align="right"><b>{t}Company Name{/t}:</b> <span style="color: #ff0000">*</span></td>
                                                             <td><input name="display_name" class="olotd5" value="{$company_details.display_name}" type="text" maxlength="50" required onkeydown="return onlyAlpha(event);"></td>
                                                         </tr>
                                                         <tr>
@@ -63,23 +63,23 @@
                                                             <td><input name="vat_number" class="olotd5" value="{$company_details.vat_number}" type="text" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"/></td>
                                                         </tr>
                                                         <tr>
-                                                            <td align="right"><b>{t}Address{/t}:</b></td>
+                                                            <td align="right"><b>{t}Address{/t}:</b> <span style="color: #ff0000">*</span></td>
                                                             <td><textarea name="address" class="olotd5 mceNoEditor" cols="30" rows="3" maxlength="100" required onkeydown="return onlyAddress(event);">{$company_details.address}</textarea></td>
                                                         </tr>
                                                         <tr>
-                                                            <td align="right"><b>{t}City{/t}:</b></td>
+                                                            <td align="right"><b>{t}City{/t}:</b> <span style="color: #ff0000">*</span></td>
                                                             <td><input name="city" class="olotd5" value="{$company_details.city}" type="text" maxlength="20" required onkeydown="return onlyAlpha(event);"></td>
                                                         </tr>
                                                         <tr>
-                                                            <td align="right"><b>{t}State{/t}:</b></td>
+                                                            <td align="right"><b>{t}State{/t}:</b> <span style="color: #ff0000">*</span></td>
                                                             <td><input name="state" class="olotd5" value="{$company_details.state}" type="text" maxlength="20" required onkeydown="return onlyAlpha(event);"></td>
                                                         </tr>
                                                         <tr>
-                                                            <td align="right"><b>{t}Zip{/t}:</b></td>
+                                                            <td align="right"><b>{t}Zip{/t}:</b> <span style="color: #ff0000">*</span></td>
                                                             <td><input name="zip" class="olotd5" value="{$company_details.zip}" type="text" maxlength="20" required onkeydown="return onlyAlphaNumeric(event);"></td>
                                                         </tr>
                                                         <tr>
-                                                            <td align="right"><b>{t}Country{/t}:</b></td>
+                                                            <td align="right"><b>{t}Country{/t}:</b> <span style="color: #ff0000">*</span></td>
                                                             <td><input name="country" class="olotd5" value="{$company_details.country}" type="text" maxlength="50" required onkeydown="return onlyAlpha(event);"></td>
                                                         </tr>
                                                         <tr>
@@ -104,10 +104,10 @@
                                                         </tr> 
                                                         <tr>
                                                             <td align="right"><b>{t}VAT Rate{/t}:</b></td>
-                                                            <td><input name="tax_rate" class="olotd5" size="6" value="{$company_details.tax_rate}" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumbersPeriod(event);"/>%</td>
+                                                            <td><input name="tax_rate" class="olotd5" size="6" value="{$company_details.tax_rate}" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumbersPeriod(event);"/>%</td>
                                                         </tr>
                                                         <tr>
-                                                            <td align="right"><b>{t}Financial Year Start{/t}:</b></td>
+                                                            <td align="right"><b>{t}Financial Year Start{/t}:</b> <span style="color: #ff0000">*</span></td>
                                                             <td>
                                                                 <input id="year_start" name="year_start" class="olotd4" size="10" value="{$company_details.year_start|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
                                                                 <input id="year_start_button" value="+" type="button">                                                    
@@ -121,7 +121,7 @@
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td align="right"><b>{t}Financial Year End{/t}:</b></td>
+                                                            <td align="right"><b>{t}Financial Year End{/t}:</b> <span style="color: #ff0000">*</span></td>
                                                             <td>
                                                                 <input id="year_end" name="year_end" class="olotd4" size="10" value="{$company_details.year_end|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
                                                                 <input id="year_end_button" value="+" type="button">                                                    
@@ -165,11 +165,11 @@
                                                 <td width="100%" valign="top">                                     
                                                     <table cellpadding="5" cellspacing="0">                                                        
                                                         <tr>
-                                                            <td align="right"><b>{t}Currency Symbol{/t}:</b></td>
+                                                            <td align="right"><b>{t}Currency Symbol{/t}:</b> <span style="color: #ff0000">*</span></td>
                                                             <td><input name="currency_symbol" class="olotd5" size="3" value="{$company_details.currency_symbol}" type="text" maxlength="1" required onkeydown="return onlyCurrencySymbol(event);"></td>
                                                         </tr>
                                                         <tr>
-                                                            <td align="right"><b>{t}Currency Code{/t}:</b></td>
+                                                            <td align="right"><b>{t}Currency Code{/t}:</b> <span style="color: #ff0000">*</span></td>
                                                             <td><input name="currency_code" class="olotd5" size="5" value="{$company_details.currency_code}" type="text" maxlength="3" required onkeydown="return onlyAlpha(event);">{t}eg: British Pound = GBP, Euro = EUR, US Dollars = USD, Australian Dollars = AUD{/t}</td>
                                                         </tr>
                                                         <tr>
@@ -302,7 +302,7 @@
                                             <!-- Update Button -->
                                             
                                             <tr>
-                                                <td><input class="olotd5" type="submit" name="submit" value="Update"></td>
+                                                <td><input class="olotd5" type="submit" name="submit" value="submit"></td>
                                             </tr>                                            
                                             
                                         </table>

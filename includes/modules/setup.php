@@ -44,22 +44,84 @@ defined('_QWEXEC') or die;
 #  check the database connection works     #
 ############################################
 
-function check_database_connection($db_host, $db_user, $db_pass, $db_name) {
-    
-    global $smarty;
+function check_database_connection($db, $db_host, $db_user, $db_pass, $db_name) {
     
     // create adodb database connection
-    $db = ADONewConnection('mysqli');
     $db->Connect($db_host, $db_user, $db_pass, $db_name);
-    if(!$db->isConnected()) {
-        $smarty->assign('warning_msg', $db->ErrorMsg().'<br>'.gettext("There is a database connection issue. Check your settings."));
-        
+    if(!$db->isConnected()) {                
         return false;
     } else {    
         return true;
     }
     
 }
+
+############################################
+#         submit config settings           #
+############################################
+
+function submit_qwcrm_config_settings($VAR) {
+    
+    // clear uneeded variables
+    unset($VAR['page']);
+    unset($VAR['submit']);
+    unset($VAR['stage']);
+    unset($VAR['theme']);
+    
+    update_qwcrm_config($VAR);
+    
+}
+
+############################################
+#   set workorder start number             #
+############################################
+
+function set_workorder_start_number($db, $start_number) {
+    
+    $sql = "ALTER TABLE ".PRFX."workorder auto_increment =".$start_number ;
+
+    $db->execute($sql);
+    
+    return;
+    
+}
+
+############################################
+#   set invoice start number               #
+############################################
+
+function set_invoice_start_number($db, $start_number) {
+    
+    $sql = "ALTER TABLE ".PRFX."invoice auto_increment =".$start_number ;
+
+    $db->execute($sql);
+    
+    return;
+    
+}
+
+############################################
+#   install database                       #
+############################################
+
+function install_database($db) {
+    
+    $sql = str_replace(file_get_contents(SQL_DIR.'install/install_qwcrm.sql'), PRFX, '#__');
+    
+    if(!$rs = $db->Execute($sql)) {
+        //force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to insert the QWcrm database."));
+        //exit;
+        //echo force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to insert the QWcrm database."));
+        return false;
+    } else {
+        
+        return;
+        
+    }
+    
+    
+}
+
 
 /** migrate **/
 function workorders_migrate($myitcrm_db, $qwcrm_db) {

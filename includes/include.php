@@ -598,7 +598,7 @@ function verify_qwcrm_is_installed_correctly($db) {
     /* Installation */
     
     // If there is no configuration file - redirect to the installation routine
-    if(!is_file('configuration.php')) {        
+    if(!is_file('configuration.php') || check_page_accessed_via_qwcrm('setup:install')) {        
         $_POST['page'] = 'setup:install';
         $_POST['theme'] = 'menu_off';        
         define('QWCRM_SETUP', 'install'); 

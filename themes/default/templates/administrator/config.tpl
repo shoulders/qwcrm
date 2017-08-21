@@ -56,7 +56,7 @@
                     <tr>
                         <td align="right"><b>{t}Database Tables Prefix{/t}</b> <span style="color: #ff0000">*</span></td>
                         <td>
-                            <input name="db_prefix" class="olotd5" size="6" value="{$qwcrm_config.db_prefix}" type="text" maxlength="6" required onkeydown="return onlyAlphaNumeric(event);"/>
+                            <input name="db_prefix" class="olotd5" size="6" value="{$qwcrm_config.db_prefix}" type="text" maxlength="6" required onkeydown="return onlyMysqlDatabaseName(event);"/>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Database Tables Prefix{/t}</strong></div><hr><div>{t escape=tooltip}The prefix used for your database tables, created during the installation process. Do not edit this field unless absolutely necessary (eg the transfer of the database to a new hosting provider).{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
@@ -162,7 +162,7 @@
                     <tr>
                         <td align="right"><b>{t}From Name{/t}:</b></td>
                         <td>
-                            <input name="email_fromname" class="olotd5" size="25" value="{$qwcrm_config.email_fromname}" type="text" maxlength="20" onkeydown="return onlyAlpha(event);">
+                            <input name="email_fromname" class="olotd5" size="25" value="{$qwcrm_config.email_fromname}" type="text" maxlength="20" placeholder="QuantumWarp" onkeydown="return onlyAlpha(event);">
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}From Name{/t}</strong></div><hr><div>{t escape=tooltip}Text displayed in the header &quot;From:&quot; field when sending a site email. Usually the site name.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>                        
                     </tr>
@@ -176,7 +176,7 @@
                     <tr>
                         <td align="right"><b>{t}Reply To Name{/t}:</b></td>
                         <td>
-                            <input name="email_replytoname" class="olotd5" size="25" value="{$qwcrm_config.email_replytoname}" type="text" maxlength="20" onkeydown="return onlyAlpha(event);">
+                            <input name="email_replytoname" class="olotd5" size="25" value="{$qwcrm_config.email_replytoname}" type="text" maxlength="20" placeholder="QuantumWarp" onkeydown="return onlyAlpha(event);">
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Reply To Name{/t}</strong></div><hr><div>{t escape=tooltip}Text displayed in the header &quot;To:&quot; field when end user(s) replying to received email.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>                                                        
@@ -327,7 +327,7 @@
                     <tr>
                         <td align="right"><b>{t}Session Lifetime{/t}</b> <span style="color: #ff0000">*</span></td>
                         <td>
-                            <input name="session_lifetime" class="olotd5" size="25" value="{$qwcrm_config.session_lifetime}" type="text" maxlength="20" required onkeydown="return onlyNumbers(event);"/>
+                            <input name="session_lifetime" class="olotd5" size="25" value="{$qwcrm_config.session_lifetime}" type="text" maxlength="20" placeholder="15" required onkeydown="return onlyNumbers(event);"/>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Session Lifetime{/t}</strong></div><hr><div>{t escape=tooltip}Auto log out a User after they have been inactive for the entered number of minutes. Do not set too high.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>                    
@@ -361,14 +361,14 @@
                     <tr>
                         <td align="right"><b>{t}Cookie Lifetime{/t}</b> <span style="color: #ff0000">*</span></td>
                         <td>
-                            <input name="cookie_lifetime" class="olotd5" size="25" value="{$qwcrm_config.cookie_lifetime}" type="text" maxlength="20" required onkeydown="return onlyNumbers(event);"/>
+                            <input name="cookie_lifetime" class="olotd5" size="25" value="{$qwcrm_config.cookie_lifetime}" type="text" maxlength="20" placeholder="60" required onkeydown="return onlyNumbers(event);"/>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Cookie Lifetime{/t}</strong></div><hr><div>{t escape=tooltip}The number of days until the authentication cookie will expire. Other factors may cause it to expire before this. Longer lengths are less secure.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
                     <tr>
                         <td align="right"><b>{t}Cookie Token Length{/t}</b> <span style="color: #ff0000">*</span></td>
                         <td>
-                            <input name="cookie_token_length" class="olotd5" size="25" value="{$qwcrm_config.cookie_token_length}" type="text" maxlength="20" required onkeydown="return onlyNumbers(event);"/>
+                            <input name="cookie_token_length" class="olotd5" size="25" value="{$qwcrm_config.cookie_token_length}" type="text" maxlength="20" placeholder="16" required onkeydown="return onlyNumbers(event);"/>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Cookie Token Length{/t}</strong></div><hr><div>{t escape=tooltip}The length of the key to use to encrypt the cookie. Longer lengths are more secure, but they will slow performance.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
