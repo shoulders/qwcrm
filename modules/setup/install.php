@@ -8,6 +8,9 @@
 
 defined('_QWEXEC') or die;
 
+
+// I might nbeed to add a php timeout override for this and migrate
+
 require(INCLUDES_DIR.'modules/administrator.php');
 require(INCLUDES_DIR.'modules/company.php');
 require(INCLUDES_DIR.'modules/setup.php');
@@ -77,6 +80,10 @@ if($VAR['stage'] == '3') {
             $VAR['stage'] = '4';
         } else {
            $smarty->assign('warning_msg', gettext("The primary database failed to install."));
+           
+           // Reload the page (stage 3) - useful for testing varibles
+           $VAR['stage'] = '3';
+           $smarty->assign('stage', '3');
         }
         
     } else {
