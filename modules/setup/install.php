@@ -79,11 +79,11 @@ if($VAR['stage'] == '3') {
             $smarty->assign('information_msg', gettext("The primary database installed successfully."));
             $VAR['stage'] = '4';
         } else {
+            
+           // Reload the page (stage 3) - useful for testing varibles           
            $smarty->assign('warning_msg', gettext("The primary database failed to install."));
-           
-           // Reload the page (stage 3) - useful for testing varibles
-           $VAR['stage'] = '3';
            $smarty->assign('stage', '3');
+           $VAR['stage'] = '3';
         }
         
     } else {
@@ -91,21 +91,36 @@ if($VAR['stage'] == '3') {
     }
 }
 
-// Stage 4 - Company Details
+// Stage 4 - Database Install Results
 if($VAR['stage'] == '4') {    
-    
-    if($VAR['submit'] == 'stage4') {  
-        update_company_details($db, $VAR);
+
+    // after reading the results, click submit
+    if($VAR['submit'] == 'stage4') {
         $VAR['stage'] = '5';
+    
+        
     } else {
         $smarty->assign('stage', '4');
     }
+    
 }
 
-// Stage 5 - Workorder/Invoice Start numbers
+
+// Stage 5 - Company Details
 if($VAR['stage'] == '5') {    
     
-    if($VAR['submit'] == 'stage5') {
+    if($VAR['submit'] == 'stage5') {  
+        update_company_details($db, $VAR);
+        $VAR['stage'] = '6';
+    } else {
+        $smarty->assign('stage', '5');
+    }
+}
+
+// Stage 6 - Workorder/Invoice Start numbers
+if($VAR['stage'] == '6') {    
+    
+    if($VAR['submit'] == 'stage6') {
         
         if($VAR['workorder_start_number'] != '') {
             set_workorder_start_number($db, $VAR['workorder_start_number']);
@@ -115,27 +130,28 @@ if($VAR['stage'] == '5') {
             set_invoice_start_number($db, $VAR['invoice_start_number']);
         }
         
-        $VAR['stage'] = '6';
+        $VAR['stage'] = '7';
         
     } else {
-        $smarty->assign('stage', '5');
+        $smarty->assign('stage', '6');
     }
         
 }
 
-// Stage 6 - Create an administrator account
-if($VAR['stage'] == '6') {
+// Stage 7 - Create an administrator account
+if($VAR['stage'] == '7') {
     
-    // Set mandatory default values
-    $smarty->assign('is_employee', '1');
-    
-    if($VAR['submit'] == 'stage6') {    
+    if($VAR['submit'] == 'stage7') {    
         insert_user($db, $VAR);        
-        //$VAR['stage'] = '7';
-        forge_page ('index.php&information_msg='.gettext("Installation successful. Please login with the administrator account you just created."));
+        //$VAR['stage'] = '8';
+        force_page('user', 'login', 'information_msg='.gettext("Installation successful. Please login with the administrator account you just created."));
+                
     } else {
     
-        $smarty->assign('stage', '6');
+        // Set mandatory default values
+        $smarty->assign('is_employee', '1');    
+        $smarty->assign('usergroups', get_usergroups($db, 'employees'));
+        $smarty->assign('stage', '7');
     }
 }
 

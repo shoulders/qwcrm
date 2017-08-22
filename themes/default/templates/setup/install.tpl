@@ -51,29 +51,38 @@
                                             </tr>
                                         {/if}
                                         
-                                        <!-- Stage 4 - Company Details -->
+                                        <!-- Stage 4 - Database Install Results -->
                                         {if $stage == '4'}                                        
                                             <tr>
-                                                <td>                                                                                                   
+                                                <td>                                                                                                 
                                                     {include file='setup/blocks/install_stage4_block.tpl'}
                                                 </td>
                                             </tr>
                                         {/if}
                                         
-                                        <!-- Stage 5 - Workorder/Invoice Start numbers -->
+                                        <!-- Stage 5 - Company Details -->
                                         {if $stage == '5'}                                        
                                             <tr>
-                                                <td>
+                                                <td>                                                                                                   
                                                     {include file='setup/blocks/install_stage5_block.tpl'}
                                                 </td>
                                             </tr>
                                         {/if}
                                         
-                                        <!-- Stage 6 - Create an administrator account -->
+                                        <!-- Stage 6 - Workorder/Invoice Start numbers -->
                                         {if $stage == '6'}                                        
                                             <tr>
                                                 <td>
                                                     {include file='setup/blocks/install_stage6_block.tpl'}
+                                                </td>
+                                            </tr>
+                                        {/if}
+                                        
+                                        <!-- Stage 7 - Create an administrator account -->
+                                        {if $stage == '7'}                                        
+                                            <tr>
+                                                <td>
+                                                    {include file='setup/blocks/install_stage7_block.tpl'}
                                                 </td>
                                             </tr>
                                         {/if}

@@ -139,10 +139,7 @@
                                                         </tr>
                                                         <tr>
                                                             <td colspan="2"><textarea class="olotd5" cols="80" rows="5" name="welcome_msg">{$company_details.welcome_msg}</textarea></td>
-                                                        </tr>                                                                                                                      
-                                                        <tr>
-                                                            <td colspan="2"><input class="olotd5" type="submit" name="submit" value="Update"></td>
-                                                        </tr>                                                    
+                                                        </tr>                                                                                                           
                                                     </table>
                                                 </td>
                                             </tr>
@@ -182,9 +179,6 @@
                                                                     <option value="%m/%d/%y"{if $company_details.date_format == '%m/%d/%y'} selected{/if}>mm/dd/yy</option>
                                                                 </select>
                                                             </td>
-                                                        </tr>                                                        
-                                                        <tr>
-                                                            <td colspan="2"><input class="olotd5" type="submit" name="submit" value="Update"></td>
                                                         </tr>                                                        
                                                     </table>                                                                                               
                                                 </td>
@@ -298,13 +292,6 @@
                                                     </table>                                                        
                                                 </td>
                                             </tr>                                         
-                                            
-                                            <!-- Update Button -->
-                                            
-                                            <tr>
-                                                <td><input class="olotd5" type="submit" name="submit" value="submit"></td>
-                                            </tr>                                            
-                                            
                                         </table>
                                     </td>
                                 </tr>                                
@@ -314,6 +301,13 @@
                     </div><!-- EOF of tab_contents_container-->
                 </div> <!-- EOF of tabs_container -->            
             </td>
-        </tr>
+        </tr>        
+        
+        <!-- Update Button -->
+                                            
+        <tr>
+            <td><input class="olotd5" type="submit" name="submit" value="submit"></td>
+        </tr>  
+        
     </table>
 </form>
