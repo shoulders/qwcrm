@@ -21,7 +21,7 @@ if(!check_page_accessed_via_qwcrm('setup:install', 'setup') || QWCRM_SETUP != 'i
     die(gettext("No Direct Access Allowed"));
 }
 
-// Stage 1 - Database connection and test -->
+// Stage 1 - Database Connection -->
 if($VAR['stage'] == '1' || !isset($VAR['stage'])) {
     
     $smarty->assign('qwcrm_config', $VAR);
@@ -47,7 +47,7 @@ if($VAR['stage'] == '1' || !isset($VAR['stage'])) {
     
 }
 
-// Stage 2 - Main Config Settings
+// Stage 2 - Config Settings
 if($VAR['stage'] == '2') {    
         
     if($VAR['submit'] == 'stage2') {
@@ -91,7 +91,7 @@ if($VAR['stage'] == '3') {
     }
 }
 
-// Stage 4 - Database Install Results
+// Stage 4 - Database Installation Results
 if($VAR['stage'] == '4') {    
 
     // after reading the results, click submit
@@ -105,7 +105,6 @@ if($VAR['stage'] == '4') {
     
 }
 
-
 // Stage 5 - Company Details
 if($VAR['stage'] == '5') {    
     
@@ -117,7 +116,7 @@ if($VAR['stage'] == '5') {
     }
 }
 
-// Stage 6 - Workorder/Invoice Start numbers
+// Stage 6 - Work Order and Invoice Start Numbers
 if($VAR['stage'] == '6') {    
     
     if($VAR['submit'] == 'stage6') {
@@ -138,13 +137,16 @@ if($VAR['stage'] == '6') {
         
 }
 
-// Stage 7 - Create an administrator account
+// Stage 7 - Create an Administrator
 if($VAR['stage'] == '7') {
     
-    if($VAR['submit'] == 'stage7') {    
+    if($VAR['submit'] == 'stage7') {  
+       
         insert_user($db, $VAR);        
         //$VAR['stage'] = '8';
-        force_page('user', 'login', 'information_msg='.gettext("Installation successful. Please login with the administrator account you just created."));
+        
+        force_page('user', 'login', 'setup=finished&information_msg='.gettext("Installation successful. Please login with the administrator account you just created."), 'get');        
+        exit;
                 
     } else {
     
@@ -156,4 +158,5 @@ if($VAR['stage'] == '7') {
 }
 
 // Build the page
+$smarty->assign('stage', '5');
 $BuildPage .= $smarty->fetch('setup/install.tpl');

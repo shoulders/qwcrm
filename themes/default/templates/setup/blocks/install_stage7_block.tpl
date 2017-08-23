@@ -13,10 +13,10 @@
         <td>
             <table width="900" cellpadding="5" cellspacing="0" border="0">
                 <tr>
-                    <td class="menuhead2" width="80%">&nbsp;{t}New User{/t}</td>
-                    <td class="menuhead2" width="20%" align="right" valign="middle">                        
+                    <td class="menuhead2" width="80%">&nbsp;{t}Stage 7 - Create an Administrator{/t}</td>
+                    {*<td class="menuhead2" width="20%" align="right" valign="middle">                        
                         <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}USER_NEW_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}USER_NEW_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
-                    </td>
+                    </td>*}
                 </tr>
                 <tr>
                     <td class="menutd2">
@@ -249,8 +249,8 @@
                                                                     
                                                                     <tr>                                                                        
                                                                         <td colspan="2">
-                                                                            <input type="hidden" name="stage" value="7">
-                                                                            <button class="olotd5" type="submit" name="submit" value="stage7">{t}Submit{/t}</button>
+                                                                            <input type="hidden" name="stage" value="7">                                                                            
+                                                                            <button class="olotd5" type="submit" name="submit" value="stage7">{t}Finish{/t}</button>
                                                                         </td>
                                                                     </tr>
                                                                     

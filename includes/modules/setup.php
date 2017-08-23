@@ -106,6 +106,8 @@ function set_invoice_start_number($db, $start_number) {
 
 function install_database($db) {
     
+    global $smarty;
+    
     // Load the SQL file into memory as string
     $sql_file = file_get_contents(SQL_DIR.'install/install_qwcrm.sql');
     
@@ -125,7 +127,7 @@ function install_database($db) {
     $error_flag = false;
     
     // open results container
-    echo '<div>';
+    $database_installations_results .= '<div>';
     
     // Loop through each line
     foreach ($sql_statements['0'] as $sql)
@@ -136,29 +138,28 @@ function install_database($db) {
         
        // Perform the query
         if(!$rs = $db->Execute($sql)) {
-            //force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to insert the QWcrm database."));
-            //exit;
-            //echo force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to insert the QWcrm database."));
-            //return false;
-            echo '<span style="color: red">'.gettext("Error performing query").' : '. $query_name['0'].' : '.$db->ErrorMsg().'</span><br />';
+            
+            $database_installations_results .= '<span style="color: red">'.gettext("Error performing query").' : '. $query_name['0'].' : '.$db->ErrorMsg().'</span><br />';
             $error_flag = true;
             
         } else {
             
-            echo '<span style="color: green">'.gettext("Performed query successfully").' : '. $query_name['0']. '</span><br />';
+            $database_installations_results .= '<span style="color: green">'.gettext("Performed query successfully").' : '. $query_name['0']. '</span><br />';
 
         }
 
     }
     
     // close results container
-    echo '</div>';
+    $database_installations_results .= '</div>';
     
     if($error_flag) {
         echo '<div style="color: red;">'.gettext("Database import failed. Check the logs.").'</div>';
+        $smarty->assign('database_installations_results', $database_installations_results);
         return false;
     } else {
         echo '<div style="color: green;">'.gettext("All Tables imported successfully").'</div>';
+        $smarty->assign('database_installations_results', $database_installations_results);
         return true;
     }       
     

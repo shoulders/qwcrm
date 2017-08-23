@@ -445,12 +445,12 @@ if(check_acl($db, $login_usergroup_id, $module, $page_tpl)) {
     
 } else {
  
-    //force_error_page($_GET['page'], 'authentication', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("You do not have permission to access the page - ").' '.$module.':'.$page_tpl);             
-    
-    //force_page('core', 'error', 'warning_msg='.gettext("You do not have permission to access the page").' - '.$module.':'.$page_tpl);            
+    //force_error_page($_GET['page'], 'authentication', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("You do not have permission to access the page - ").' '.$module.':'.$page_tpl);    
+    //force_page('core', 'error', 'warning_msg='.gettext("You do not have permission to access this resource").' - '.$module.':'.$page_tpl);            
     //exit;
     
-    echo 'Nothing happening here, please fix me, index.php:453';
+    $BuildPage .= gettext("You do not have permission to access this resource").' - '.$module.':'.$page_tpl;
+    
 }
 
 ################################################

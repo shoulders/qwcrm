@@ -42,7 +42,7 @@
                                             </tr>
                                         {/if}
                                         
-                                        <!-- Stage 3 - Install the database -->
+                                        <!-- Stage 3 - Install the Database -->
                                         {if $stage == '3'}                                        
                                             <tr>
                                                 <td>                                                                                                 

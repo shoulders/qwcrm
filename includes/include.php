@@ -120,26 +120,26 @@ function update_user_last_active($db, $user_id) {
  * will force a URL redirect exactly how it was supplied 
  */
 
-function force_page($module, $page_tpl = Null, $variables = Null, $method = 'session') {
+function force_page($module, $page_tpl = null, $variables = null, $method = 'post') {
     
     /* Normal URL Redirect */
     
-    if($page_tpl == Null && $variables == Null) {       
+    if($page_tpl == null && $variables == null) {       
 
         // Build the URL and perform the redirect
         perform_redirect($module);        
 
     }
     
-    /* Send Variables via $_GET */
+    /* GET - Send Variables via $_GET */
     
     if($method == 'get') {
         
         // If Login, home or maintenance do not show module:page
-        if($page_tpl == 'login' || $page_tpl == 'home' || $page_tpl == 'maintenance') {                
+        if($page_tpl == 'home' || $page_tpl == 'dashboard' || $page_tpl == 'maintenance') {                
             
             // Page Name Only    
-            if ($page_tpl != Null && $variables == Null) {
+            if ($page_tpl != null && $variables == null) {
 
                 // Build the URL and perform the redirect
                 perform_redirect('index.php');            
@@ -147,7 +147,7 @@ function force_page($module, $page_tpl = Null, $variables = Null, $method = 'ses
             }
 
             // Page Name and Variables (QWcrm Style Redirect)
-            if ($page_tpl != Null && $variables != Null) {   
+            if ($page_tpl != null && $variables != null) {   
 
                 // Build the URL and perform the redirect
                 perform_redirect('index.php?'.$variables);            
@@ -157,7 +157,7 @@ function force_page($module, $page_tpl = Null, $variables = Null, $method = 'ses
         } else {
             
             // Page Name Only    
-            if ($page_tpl != Null && $variables == Null) {
+            if ($page_tpl != null && $variables == null) {
 
                 // Build the URL and perform the redirect
                 perform_redirect('index.php?page='.$module.':'.$page_tpl);            
@@ -165,7 +165,7 @@ function force_page($module, $page_tpl = Null, $variables = Null, $method = 'ses
             }
 
             // Page Name and Variables (QWcrm Style Redirect)
-            if ($page_tpl != Null && $variables != Null) {   
+            if ($page_tpl != null && $variables != null) {   
 
                 // Build the URL and perform the redirect
                 perform_redirect('index.php?page='.$module.':'.$page_tpl.'&'.$variables);            
@@ -176,15 +176,15 @@ function force_page($module, $page_tpl = Null, $variables = Null, $method = 'ses
         
     }
     
-    /* Session - Send Varibles via POST Emulation (was $_SESSION but now using Joomla session store)*/    
+    /* POST - Send Varibles via POST Emulation (was $_SESSION but now using Joomla session store)*/    
     
-    if($method == 'session') {
+    if($method == 'post') {
         
         // If Login, home or maintenance do not show module:page
-        if($page_tpl == 'login' || $page_tpl == 'home' || $page_tpl == 'maintenance') { 
+        if($page_tpl == 'home' || $page_tpl == 'dashboard' || $page_tpl == 'maintenance') { 
             
             // Page Name Only
-            if ($page_tpl != Null && $variables == Null) {                        
+            if ($page_tpl != null && $variables == null) {                        
 
                 // Build the URL and perform the redirect
                 perform_redirect('index.php');            
@@ -192,7 +192,7 @@ function force_page($module, $page_tpl = Null, $variables = Null, $method = 'ses
             }
 
             // Page Name and Variables (QWcrm Style Redirect)
-            if($page_tpl != Null && $variables != Null) {          
+            if($page_tpl != null && $variables != null) {          
 
                 // Parse the URL into an array            
                 $variable_array = array();
@@ -211,7 +211,7 @@ function force_page($module, $page_tpl = Null, $variables = Null, $method = 'ses
         } else {
             
             // Page Name Only
-            if ($page_tpl != Null && $variables == Null) {                        
+            if ($page_tpl != null && $variables == null) {                        
 
                 // Build the URL and perform the redirect
                 perform_redirect('index.php?page='.$module.':'.$page_tpl);            
@@ -219,7 +219,7 @@ function force_page($module, $page_tpl = Null, $variables = Null, $method = 'ses
             }
 
             // Page Name and Variables (QWcrm Style Redirect)
-            if($page_tpl != Null && $variables != Null) {          
+            if($page_tpl != null && $variables != null) {          
 
                 // Parse the URL into an array            
                 $variable_array = array();
@@ -400,7 +400,7 @@ function postEmulationReturnStore($keep_store = false) {
 #  Error Handling - Data preperation       #
 ############################################
 
-function prepare_error_data($type, $data = Null) {
+function prepare_error_data($type, $data = null) {
     
     $user = QFactory::getUser();
 
@@ -502,7 +502,7 @@ function prepare_error_data($type, $data = Null) {
  * This does cause these translations to be loaded/assigned twice but allows me to use 1 file language instead of 2
  */
 
-function set_page_header_and_meta_data($module, $page_tpl, $page_title_from_var = Null) {
+function set_page_header_and_meta_data($module, $page_tpl, $page_title_from_var = null) {
     
     global $smarty;
     
@@ -511,7 +511,7 @@ function set_page_header_and_meta_data($module, $page_tpl, $page_title_from_var 
      * or just use the page title from the language file
      * legacy option will be removed in future
      */
-    if ($page_title_from_var != Null) {
+    if ($page_title_from_var != null) {
         $smarty->assign('page_title', $page_title_from_var); 
     } else {        
         $smarty->assign('page_title', gettext(strtoupper($module).'_'.strtoupper($page_tpl).'_PAGE_TITLE'));
@@ -524,7 +524,6 @@ function set_page_header_and_meta_data($module, $page_tpl, $page_title_from_var 
     return;
     
 }
-
 
 #####################################################################
 #  Verify User's authorization for a specific page / operation      #
@@ -597,14 +596,17 @@ function verify_qwcrm_is_installed_correctly($db) {
     
     /* Installation */
     
-    // If there is no configuration file - redirect to the installation routine
-    if(!is_file('configuration.php') || check_page_accessed_via_qwcrm('setup:install')) {        
+    // If there is no configuration file, referer page is setup:install and is not finished -  redirect to the installation routine
+    if(
+        (!is_file('configuration.php') ||
+        (check_page_accessed_via_qwcrm('setup:install') && ($_GET['setup'] != 'finished' || $_POST['setup'] != 'finished')))
+    ) {        
         $_POST['page'] = 'setup:install';
         $_POST['theme'] = 'menu_off';        
         define('QWCRM_SETUP', 'install'); 
         return;        
     }
-        
+    
     /* MyITCRM Migration */
     // add the checking routines here
     
@@ -950,7 +952,7 @@ function write_record_to_activity_log($record) {
  * This will create an apache compatible access log (Combined Log Format)
  */
 
-function write_record_to_access_log($login_username = Null) {    
+function write_record_to_access_log($login_username = null) {    
     
     // Apache log format
     // https://httpd.apache.org/docs/2.4/logs.html
