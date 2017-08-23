@@ -160,7 +160,7 @@
                                     <div id="tab_2_contents" class="tab_contents">
                                         <table width="100%" cellpadding="5" cellspacing="0" border="0">
                                             <tr>
-                                                <td class="menuhead2" width="80%">&nbsp;{t}Edit your Companies Currency Settings{/t}</td>
+                                                <td class="menuhead2" width="80%">&nbsp;{t}Edit your Company's Currency Settings{/t}</td>
                                             </tr>
                                             <tr>
                                                 <td class="menutd2">

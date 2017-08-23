@@ -112,6 +112,8 @@ if($VAR['stage'] == '5') {
         update_company_details($db, $VAR);
         $VAR['stage'] = '6';
     } else {
+        $smarty->assign('date_format', get_company_details($db, 'date_format'));
+        $smarty->assign('company_details', get_company_details($db));
         $smarty->assign('stage', '5');
     }
 }
@@ -158,5 +160,4 @@ if($VAR['stage'] == '7') {
 }
 
 // Build the page
-$smarty->assign('stage', '5');
 $BuildPage .= $smarty->fetch('setup/install.tpl');

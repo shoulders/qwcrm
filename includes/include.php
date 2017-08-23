@@ -71,9 +71,7 @@ function get_company_details($db, $item = null) {
     $sql = "SELECT * FROM ".PRFX."company";
     
     if(!$rs = $db->execute($sql)) {        
-        //force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get company details."));
-        echo $sql.'<br>';
-        echo $db->ErrorMsg();
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get company details."));        
         exit;
     } else {
         
