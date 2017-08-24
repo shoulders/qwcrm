@@ -35,7 +35,7 @@ if(isset($VAR['submit'])) {
     // Close without invoice
     if($VAR['submit'] == 'closewithoutinvoice') {
         close_workorder_without_invoice($db, $workorder_id, $VAR['resolution']);
-        force_page('workorder', 'detailsworkorder_id='.$workorder_id, 'information_msg='.gettext("Work Order has been closed without an invoice."));
+        force_page('workorder', 'details&workorder_id='.$workorder_id, 'information_msg='.gettext("Work Order has been closed without an invoice."));
         exit; 
     }
 
