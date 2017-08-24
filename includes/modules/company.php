@@ -127,12 +127,27 @@ function get_email_message_body($db, $message_name, $customer_details = null) {
 function update_company_details($db, $VAR) {
     
     global $smarty;
+           
+    // Delete logo if selected and no new logo is presented
+    if($VAR['delete_logo'] && !$_FILES['logo']['name']) {
+        delete_logo($db);        
+    }
+    
+    // A new logo is supplied, delete old one and upload
+    if($_FILES['logo']['name']) {
+        delete_logo($db);
+        $new_logo_filepath = upload_logo($db);
+    }
     
     $sql .= "UPDATE ".PRFX."company SET
             display_name            = ". $db->qstr( $VAR['display_name']                   ).",";
+    
+    if($VAR['delete_logo']) {
+        $sql .="logo                = ''                                                   ,";
+    }
                 
     if(!empty($_FILES['logo']['name'])) {
-        $sql .="logo                = ". $db->qstr( MEDIA_DIR . $new_logo_filename  ).",";
+        $sql .="logo                = ". $db->qstr( $new_logo_filepath  ).",";
     }
     
     $sql .="company_number          =". $db->qstr( $VAR['company_number']                  ).",
@@ -229,45 +244,55 @@ function check_start_end_times($start_time, $end_time) {
 }
 
 ##########################
+#  Delete Company Logo   #
+##########################
+
+function delete_logo($db) {
+    
+    if(get_company_details($db, 'logo')) {            
+        unlink(get_company_details($db, 'logo'));
+    }
+    
+}
+##########################
 #  Upload Company Logo   #
 ##########################
 
-function upload_company_logo($db) {
+function upload_logo($db) {
     
     // Logo - Only process if there is an image uploaded
-    if($_FILES['company_logo']['size'] > 0) {
-        
-        // Delete current logo
-        unlink(get_company_info($db, 'logo'));        
+    if($_FILES['logo']['size'] > 0) {
         
         // Allowed extensions
-        $allowedExts = array('jpg', 'jpeg', 'gif', 'png');
+        $allowedExts = array('png', 'jpg', 'jpeg', 'gif');
         
         // Get file extension
-        $filename_info = pathinfo($_FILES['company_logo']['name']);
+        $filename_info = pathinfo($_FILES['logo']['name']);
         $extension = $filename_info['extension'];
         
         // Rename Logo Filename to logo.xxx (keeps original image extension)
         $new_logo_filename = 'logo.' . $extension;       
         
         // Validate the uploaded file is allowed (extension, mime type, 0 - 2mb)
-        if ((($_FILES['company_logo']['type'] == 'image/gif')
-                || ($_FILES['company_logo']['type'] == 'image/jpeg')
-                || ($_FILES['company_logo']['type'] == 'image/jpg')
-                || ($_FILES['company_logo']['type'] == 'image/pjpeg')
-                || ($_FILES['company_logo']['type'] == 'image/x-png')
-                || ($_FILES['company_logo']['type'] == 'image/png'))
-                && ($_FILES['company_logo']['size'] < 2048000)
+        if ((($_FILES['logo']['type'] == 'image/gif')
+                || ($_FILES['logo']['type'] == 'image/jpeg')
+                || ($_FILES['logo']['type'] == 'image/jpg')
+                || ($_FILES['logo']['type'] == 'image/pjpeg')
+                || ($_FILES['logo']['type'] == 'image/x-png')
+                || ($_FILES['logo']['type'] == 'image/png'))
+                && ($_FILES['logo']['size'] < 2048000)
                 && in_array($extension, $allowedExts)) {
     
             // Check for file submission errors and echo them
-            if ($_FILES['company_logo']['error'] > 0 ) {
-                echo gettext("Return Code").': ' . $_FILES['company_logo']['error'] . '<br />';                
+            if ($_FILES['logo']['error'] > 0 ) {
+                echo gettext("Return Code").': ' . $_FILES['logo']['error'] . '<br />';                
             
             // If no errors then move the file from the PHP temporary storage to the logo location
             } else {
-                move_uploaded_file($_FILES['company_logo']['tmp_name'], MEDIA_DIR . $new_logo_filename);              
+                move_uploaded_file($_FILES['logo']['tmp_name'], MEDIA_DIR . $new_logo_filename);              
             }
+            
+            return MEDIA_DIR.$new_logo_filename;
             
         // If file is invalid then load the error page  
         } else {

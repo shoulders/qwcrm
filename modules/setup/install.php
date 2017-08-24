@@ -119,7 +119,7 @@ if($VAR['stage'] == '5') {
     // submit the company details and load the next page
     if($VAR['submit'] == 'stage5') {
         
-        //upload_company_logo($db);
+        // upload_company_logo($db);
         update_company_details($db, $VAR);
         $VAR['stage'] = '6';
         

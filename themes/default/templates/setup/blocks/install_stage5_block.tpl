@@ -57,8 +57,8 @@
                                                                     <tr>
                                                                         <td align="right"><b>{t}Logo{/t}:</b></td>
                                                                         <td>
-                                                                            <input type="file" name="logo">
-                                                                            <img src="{$company_details.logo}" height="50px" alt="Company Logo"><br>
+                                                                            <input type="file" name="logo" accept=".png, .jpg, .jpeg, .gif">
+                                                                            <img src="{$company_details.logo}" height="50px" alt="{t}Company Logo{/t}">
                                                                         </td>
                                                                     </tr>
                                                                     <tr>

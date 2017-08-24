@@ -12,10 +12,7 @@ require(INCLUDES_DIR.'modules/company.php');
 
 // Update Company details
 if(isset($VAR['submit'])) {
-    
-    // Upload Logo
-    upload_company_logo($db);
-    
+
     // Submit data to the database
     update_company_details($db, $VAR);    
 
