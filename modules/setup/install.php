@@ -8,9 +8,6 @@
 
 defined('_QWEXEC') or die;
 
-
-// I might nbeed to add a php timeout override for this and migrate
-
 require(INCLUDES_DIR.'modules/administrator.php');
 require(INCLUDES_DIR.'modules/company.php');
 require(INCLUDES_DIR.'modules/setup.php');
@@ -26,20 +23,22 @@ if($VAR['stage'] == '1' || !isset($VAR['stage'])) {
     
     if($VAR['submit'] == 'stage1') {
         
+        // test the supplied database connection details
         if(check_database_connection($db, $VAR['db_host'], $VAR['db_user'], $VAR['db_pass'], $VAR['db_name'])) {
             
-            // Record details into the config file (or temp-config-file)
-            $smarty->assign('information_msg', gettext("Database connection successful."));
-            
-            // administrator:config.php function update_qwcrm_config($new_config)            
+            // Record details into the config file and display success message and load the next page       
             submit_qwcrm_config_settings($VAR);            
             $VAR['stage'] = '2';
-            
+            $smarty->assign('information_msg', gettext("Database connection successful."));
+        
+        // load the page
         } else {
-            // reload the page with the details and error message
+            
+            // reload the database connection page with the details and error message
             $smarty->assign('qwcrm_config', $VAR);
             $smarty->assign('warning_msg', gettext("There is a database connection issue. Check your settings."));
             $smarty->assign('stage', '1');
+            
         }
         
     }
@@ -48,11 +47,13 @@ if($VAR['stage'] == '1' || !isset($VAR['stage'])) {
 
 // Stage 2 - Config Settings
 if($VAR['stage'] == '2') {    
-      
+    
+    // submit the config settings and load the next page
     if($VAR['submit'] == 'stage2') {
         submit_qwcrm_config_settings($VAR);
         $VAR['stage'] = '3';
-        
+    
+    // load the page
     } else {
         
         // Set mandatory default values
@@ -76,33 +77,36 @@ if($VAR['stage'] == '3') {
     
     if($VAR['submit'] == 'stage3') {
         
-        // install the primary database file
+        // install the primary database file and load the next page
         if(install_database($db)) {
+            
             $smarty->assign('information_msg', gettext("The primary database installed successfully."));
-            $VAR['stage'] = '4';
-            
-        } else {
-            
-           // Reload the page (stage 3) - useful for testing varibles           
-           $smarty->assign('warning_msg', gettext("The primary database failed to install."));
-           $smarty->assign('stage', '3');
-           $VAR['stage'] = '3';
+            $VAR['stage'] = '4';            
+        
+        // load the page with the error message      
+        } else {            
+              
+           $smarty->assign('warning_msg', gettext("The primary database failed to install."));           
+           $VAR['stage'] = '4';
+           $smarty->assign('failed', true);
            
         }
-        
+    
+    // load the page
     } else {
-        $smarty->assign('stage', '3');
+        $smarty->assign('stage', '3');        
     }
+    
 }
 
 // Stage 4 - Database Installation Results
 if($VAR['stage'] == '4') {    
 
-    // after reading the results, click submit
+    // load the next page
     if($VAR['submit'] == 'stage4') {
-        $VAR['stage'] = '5';
+        $VAR['stage'] = '5';    
     
-        
+    // load the page  
     } else {
         $smarty->assign('stage', '4');
     }
@@ -110,23 +114,29 @@ if($VAR['stage'] == '4') {
 }
 
 // Stage 5 - Company Details
-if($VAR['stage'] == '5') {    
-    
+if($VAR['stage'] == '5') {   
+        
+    // submit the company details and load the next page
     if($VAR['submit'] == 'stage5') {
-        //print_r($_FILES)
-        upload_company_logo($db);die();
+        
+        //upload_company_logo($db);
         update_company_details($db, $VAR);
         $VAR['stage'] = '6';
+        
+    // load the page    
     } else {
+        
         $smarty->assign('date_format', get_company_details($db, 'date_format'));
         $smarty->assign('company_details', get_company_details($db));
         $smarty->assign('stage', '5');
+        
     }
 }
 
 // Stage 6 - Work Order and Invoice Start Numbers
-if($VAR['stage'] == '6') {    
+if($VAR['stage'] == '6') {  
     
+    // submit the workorder and invoice start numbers if supplied, then load the next page
     if($VAR['submit'] == 'stage6') {
         
         if($VAR['workorder_start_number'] != '') {
@@ -138,7 +148,8 @@ if($VAR['stage'] == '6') {
         }
         
         $VAR['stage'] = '7';
-        
+    
+    // load the page
     } else {
         $smarty->assign('stage', '6');
     }
@@ -148,6 +159,7 @@ if($VAR['stage'] == '6') {
 // Stage 7 - Create an Administrator
 if($VAR['stage'] == '7') {
     
+    // create the administrator and load the next page
     if($VAR['submit'] == 'stage7') {  
        
         insert_user($db, $VAR);        
@@ -155,14 +167,17 @@ if($VAR['stage'] == '7') {
         
         force_page('user', 'login', 'setup=finished&information_msg='.gettext("Installation successful. Please login with the administrator account you just created."), 'get');        
         exit;
-                
+    
+    // load thge page
     } else {
     
         // Set mandatory default values
         $smarty->assign('is_employee', '1');    
         $smarty->assign('usergroups', get_usergroups($db, 'employees'));
         $smarty->assign('stage', '7');
+        
     }
+    
 }
 
 // Build the page

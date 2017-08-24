@@ -115,7 +115,8 @@ function update_acl($db, $permissions) {
 
             // All permissions removed
             'setup:install'     => array('Administrator' => '0', 'Manager' => '0', 'Supervisor' => '0', 'Technician' =>'0', 'Clerical' => '0', 'Counter' => '0', 'Customer' => '0', 'Guest' => '0', 'Public' => '0'),
-            'setup:migrate'     => array('Administrator' => '0', 'Manager' => '0', 'Supervisor' => '0', 'Technician' =>'0', 'Clerical' => '0', 'Counter' => '0', 'Customer' => '0', 'Guest' => '0', 'Public' => '0'),                
+            'setup:choice'      => array('Administrator' => '0', 'Manager' => '0', 'Supervisor' => '0', 'Technician' =>'0', 'Clerical' => '0', 'Counter' => '0', 'Customer' => '0', 'Guest' => '0', 'Public' => '0'),
+            'setup:migrate'     => array('Administrator' => '0', 'Manager' => '0', 'Supervisor' => '0', 'Technician' =>'0', 'Clerical' => '0', 'Counter' => '0', 'Customer' => '0', 'Guest' => '0', 'Public' => '0'),   
             'setup:upgrade'     => array('Administrator' => '0', 'Manager' => '0', 'Supervisor' => '0', 'Technician' =>'0', 'Clerical' => '0', 'Counter' => '0', 'Customer' => '0', 'Guest' => '0', 'Public' => '0')
 
         ); 
@@ -502,6 +503,7 @@ function reset_acl_permissions($db) {
                 ('schedule:icalendar', 1, 1, 1, 1, 0, 0, 0, 0, 0),
                 ('schedule:new', 1, 1, 1, 1, 0, 0, 0, 0, 0),
                 ('schedule:search', 1, 1, 1, 1, 0, 0, 0, 0, 0),
+                ('setup:choice', 0, 0, 0, 0, 0, 0, 0, 0, 0),
                 ('setup:install', 0, 0, 0, 0, 0, 0, 0, 0, 0),
                 ('setup:migrate', 0, 0, 0, 0, 0, 0, 0, 0, 0),
                 ('setup:upgrade', 0, 0, 0, 0, 0, 0, 0, 0, 0),

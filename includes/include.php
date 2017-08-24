@@ -530,7 +530,7 @@ function set_page_header_and_meta_data($module, $page_tpl, $page_title_from_var 
 function check_acl($db, $login_usergroup_id, $module, $page_tpl) {
     
     // If installing
-    if(QWCRM_SETUP == 'install') { return true; }
+    if(QWCRM_SETUP == 'install' || QWCRM_SETUP == 'migrate') { return true; }
     
     // error catching - you cannot use normal error logging as it will cause a loop
     if($login_usergroup_id == '') {
@@ -592,23 +592,35 @@ function verify_qwcrm_is_installed_correctly($db) {
         die('Gettext is not installed which is required for the translation system.');
     }
     
-    /* Installation */
+    /* Installation / Migration */
     
-    // If there is no configuration file, referer page is setup:install and is not finished -  redirect to the installation routine
-    if(
-        (!is_file('configuration.php') ||
-        (check_page_accessed_via_qwcrm('setup:install') && ($_GET['setup'] != 'finished' || $_POST['setup'] != 'finished')))
-    ) {        
+    // If there is no configuration file load setup:choice (if not refered from setup:choice)   
+        /*(!is_file('configuration.php') ||
+          (check_page_accessed_via_qwcrm('setup:install') && ($_GET['setup'] != 'finished' || $_POST['setup'] != 'finished')))*/    
+    if(!is_file('configuration.php') && !check_page_accessed_via_qwcrm('setup:choice')) {        
+        $_POST['page'] = 'setup:choice';
+        $_POST['theme'] = 'menu_off';        
+        define('QWCRM_SETUP', 'install');
+        return;        
+    }
+    
+    // if installation is in progress
+    if(check_page_accessed_via_qwcrm('setup:install') && ($_GET['setup'] != 'finished' || $_POST['setup'] != 'finished')) {        
         $_POST['page'] = 'setup:install';
         $_POST['theme'] = 'menu_off';        
         define('QWCRM_SETUP', 'install'); 
         return;        
     }
     
-    /* MyITCRM Migration */
-    // add the checking routines here
+    // if migration is in progress
+    if(check_page_accessed_via_qwcrm('setup:migrate') && ($_GET['setup'] != 'finished' || $_POST['setup'] != 'finished')) {
+        $_POST['page'] = 'setup:migrate';
+        $_POST['theme'] = 'menu_off';        
+        define('QWCRM_SETUP', 'migrate'); 
+        return;        
+    }
     
-    /* QWcrm system checks */
+    /* QWcrm System Checks */
     
     // Test the database connection is valid
     if(!$db->isConnected()) {

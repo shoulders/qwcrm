@@ -154,11 +154,11 @@ function install_database($db) {
     $database_installations_results .= '</div>';
     
     if($error_flag) {
-        echo '<div style="color: red;">'.gettext("Database import failed. Check the logs.").'</div>';
+        $database_installations_results .= '<br><div style="color: red;">'.gettext("Database import failed. Check the logs.").'</div>';
         $smarty->assign('database_installations_results', $database_installations_results);
         return false;
     } else {
-        echo '<div style="color: green;">'.gettext("All Tables imported successfully").'</div>';
+        $database_installations_results .= '<br><div style="color: green;">'.gettext("All Tables imported successfully").'</div>';
         $smarty->assign('database_installations_results', $database_installations_results);
         return true;
     }       
@@ -253,8 +253,6 @@ function upgrade_database($db) {
             $templine = '';
         }
         
-    }
-     echo gettext("All Tables imported successfully");
-    
+    }    
     
 }

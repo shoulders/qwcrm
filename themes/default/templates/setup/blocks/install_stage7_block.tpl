@@ -250,7 +250,7 @@
                                                                     <tr>                                                                        
                                                                         <td colspan="2">
                                                                             <input type="hidden" name="stage" value="7">                                                                            
-                                                                            <button class="olotd5" type="submit" name="submit" value="stage7">{t}Finish{/t}</button>
+                                                                            <button class="olotd5" type="submit" name="submit" value="stage7">{t}Next{/t}</button>
                                                                         </td>
                                                                     </tr>
                                                                     

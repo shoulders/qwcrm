@@ -444,7 +444,7 @@ if(check_acl($db, $login_usergroup_id, $module, $page_tpl)) {
     page_build_end:
     
 } else {
- 
+  
     //force_error_page($_GET['page'], 'authentication', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("You do not have permission to access the page - ").' '.$module.':'.$page_tpl);    
     //force_page('core', 'error', 'warning_msg='.gettext("You do not have permission to access this resource").' - '.$module.':'.$page_tpl);            
     //exit;

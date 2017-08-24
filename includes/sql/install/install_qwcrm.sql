@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 21, 2017 at 08:17 PM
+-- Generation Time: Aug 24, 2017 at 06:05 PM
 -- Server version: 10.1.13-MariaDB
 -- PHP Version: 5.6.21
 
@@ -17,13 +17,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `install_qwcrm`
+-- Database: `data_test`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `qw_company`
+-- Table structure for table `#__company`
 --
 
 CREATE TABLE `#__company` (
@@ -63,7 +63,7 @@ CREATE TABLE `#__company` (
 --
 
 INSERT INTO `#__company` (`display_name`, `logo`, `company_number`, `vat_number`, `address`, `city`, `state`, `zip`, `country`, `primary_phone`, `mobile_phone`, `fax`, `email`, `website`, `tax_rate`, `year_start`, `year_end`, `welcome_msg`, `currency_symbol`, `currency_code`, `date_format`, `opening_hour`, `opening_minute`, `closing_hour`, `closing_minute`, `email_signature`, `email_signature_active`, `email_msg_invoice`, `email_msg_workorder`) VALUES
-('Lancastrian IT', 'media/logo.png', '2222', 'GB122131231232', '5 Keswick Grove,\r\nHeysham', 'Morecambe', 'Lancashire', 'LA3 2TF', 'United Kingdom', '123456', '', '123456', 'test@noreply.com', 'https://quantumwarp.com/', '17.00', '04/01/2017', '19/08/2017', '<p>welcome</p>', '&pound;', 'GBP', '%d/%m/%Y', 10, 0, 17, 0, '<p>{logo}</p>\r\n<p>Lancastrian IT</p>\r\n<p>Address:<br />1 bugle way<br />chicken house<br />London LA12 6WD<br />Tel: 07777 123456</p>', 1, '<p>Hi {customer_first_name} {customer_last_name}</p>\r\n<p>This is an invoice for the recent work at {customer_display_name}.</p>\r\n<p>Thanks for your custom.</p>', '');
+('', '', '', '', '', '', '', '', '', '', '', '', '', '', '0.00', '', '', '<p>QWcrm - The Best Open Source Repairs Business CRM program available!</a><br /><br />Checkout <a href="https://quantumwarp.com/">QuantumWarp.com</a> for updates and information.</p>', '', '', '%d/%m/%Y', 10, 0, 17, 0, '<p>{logo}</p>\r\n<p>QWcrm</p>\r\n<p>Address:<br />1 QuantumWarp Road<br />London<br />LA12 34DD<br />Tel: 07777 123456</p>', 0, '<p>Hi {customer_first_name} {customer_last_name}</p>\r\n<p>This is an invoice for the recent work at {customer_display_name}.</p>\r\n<p>Thanks for your custom.</p>', '');
 
 -- --------------------------------------------------------
 
@@ -95,15 +95,6 @@ CREATE TABLE `#__customer` (
   `last_active` varchar(20) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- Dumping data for table `#__customer`
---
-
-INSERT INTO `#__customer` (`customer_id`, `display_name`, `first_name`, `last_name`, `website`, `email`, `credit_terms`, `discount_rate`, `type`, `active`, `primary_phone`, `mobile_phone`, `fax`, `address`, `city`, `state`, `zip`, `country`, `notes`, `create_date`, `last_active`) VALUES
-(1, 'Photography', 'Mike', 'Brown', 'https://quantumwarp.com/', 'jon@lancastrian-it.co.uk', 'pay when you can', '12.77', '3', 3, '01524850800', '07747684438', '01524833456', '24 Hawthorn Road\r\nBolton Le Sands', 'Carnforth', 'Lancashire', 'LA5 8EH', 'UK', '<p>moment</p>', 1469114377, '1503144994'),
-(3, 'Chicken Chaser', '222', '333', '222', '222', '222', '0.00', '1', 1, '222', '222', '222', '222222', '222', '222', '222', '', '222', 1470143118, '1470143118'),
-(4, 'David Curley', 'David', 'Curley', 'quantumwarp.com', 'davidcurley@outlook.com', 'pay when you can', '1.11', '1', 1, '111111111', '22222222', '33333333', 'my address', 'city', 'state', '2342342', 'brazil', '', 1502047677, '1503322091');
-
 -- --------------------------------------------------------
 
 --
@@ -117,16 +108,6 @@ CREATE TABLE `#__customer_notes` (
   `date` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `note` text COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Dumping data for table `#__customer_notes`
---
-
-INSERT INTO `#__customer_notes` (`customer_note_id`, `employee_id`, `customer_id`, `date`, `note`) VALUES
-(10, '0', '1', '1492549408', '<p>holiday</p>'),
-(11, '1', '1', '1492550009', '<p>sddsfsdfs</p>'),
-(15, '1', '3', '1492764006', '<p>chieckn kanabs are aweful</p>'),
-(16, '1', '1', '1492725600', '<p>terminator is back</p>');
 
 -- --------------------------------------------------------
 
@@ -149,13 +130,6 @@ CREATE TABLE `#__expense` (
   `notes` text COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- Dumping data for table `#__expense`
---
-
-INSERT INTO `#__expense` (`expense_id`, `invoice_id`, `payee`, `date`, `type`, `payment_method`, `net_amount`, `tax_rate`, `tax_amount`, `gross_amount`, `items`, `notes`) VALUES
-(1, '', 'tt', '1502924400', '1', '1', '9.00', '17.00', '3.00', '12.00', '<p>fgd</p>', '<p>rge</p>');
-
 -- --------------------------------------------------------
 
 --
@@ -176,17 +150,6 @@ CREATE TABLE `#__giftcert` (
   `active` int(1) NOT NULL DEFAULT '0',
   `notes` text COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Dumping data for table `#__giftcert`
---
-
-INSERT INTO `#__giftcert` (`giftcert_id`, `giftcert_code`, `employee_id`, `customer_id`, `invoice_id`, `date_created`, `date_expires`, `date_redeemed`, `is_redeemed`, `amount`, `active`, `notes`) VALUES
-(1, 'MV14KOVLLW75NY8O', '0', '1', '0', '1492284013', '1520035200', '0', 0, '51.00', 1, '<p>chicken chaser</p>'),
-(2, '3IGBJXB2K0MLMNBF', '0', '1', '11', '1492359176', '1503442800', '1500392630', 1, '1.00', 0, '<p>these are some notes</p>'),
-(3, '1Y7XKITETTKQNLGN', '0', '1', '7', '1492359580', '1492725600', '1492366037', 1, '15.17', 0, ''),
-(4, 'XFT17CMXJPTQXPJQ', '1', '1', '0', '1492360299', '1493330400', '0', 0, '67.43', 0, ''),
-(5, 'Y4XR9Q939DZLG1YF', '1', '1', '0', '1492863235', '1493420400', '0', 0, '333.00', 0, '<p>aaaaaaaaaaa</p>');
 
 -- --------------------------------------------------------
 
@@ -214,13 +177,6 @@ CREATE TABLE `#__invoice` (
   `paid_date` varchar(20) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- Dumping data for table `#__invoice`
---
-
-INSERT INTO `#__invoice` (`invoice_id`, `employee_id`, `customer_id`, `workorder_id`, `date`, `due_date`, `discount_rate`, `tax_rate`, `sub_total`, `discount_amount`, `net_amount`, `tax_amount`, `gross_amount`, `paid_amount`, `balance`, `is_paid`, `paid_date`) VALUES
-(1, '1', '4', '1', '1502924400', '1502924400', '1.11', '17.00', '28.44', '0.32', '28.12', '4.78', '32.91', '1.33', '31.58', 0, '');
-
 -- --------------------------------------------------------
 
 --
@@ -236,13 +192,6 @@ CREATE TABLE `#__invoice_labour` (
   `sub_total` decimal(10,2) NOT NULL DEFAULT '0.00'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- Dumping data for table `#__invoice_labour`
---
-
-INSERT INTO `#__invoice_labour` (`invoice_labour_id`, `invoice_id`, `description`, `amount`, `qty`, `sub_total`) VALUES
-(1, '1', 'test labour', '11.57', 1, '11.57');
-
 -- --------------------------------------------------------
 
 --
@@ -257,13 +206,6 @@ CREATE TABLE `#__invoice_parts` (
   `qty` int(10) NOT NULL,
   `sub_total` decimal(10,2) NOT NULL DEFAULT '0.00'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Dumping data for table `#__invoice_parts`
---
-
-INSERT INTO `#__invoice_parts` (`invoice_parts_id`, `invoice_id`, `description`, `amount`, `qty`, `sub_total`) VALUES
-(1, '1', 'test part', '16.87', 1, '16.87');
 
 -- --------------------------------------------------------
 
@@ -319,7 +261,7 @@ CREATE TABLE `#__payment` (
 --
 
 INSERT INTO `#__payment` (`tax_enabled`, `bank_account_name`, `bank_name`, `bank_account_number`, `bank_sort_code`, `bank_iban`, `paypal_email`, `bank_transaction_msg`, `cheque_payable_to_msg`, `invoice_footer_msg`) VALUES
-(1, '123', 'cOCONUT', '123', '123', '123', 'test@test.com', '<p>this is a bank transaction messagesssssss</p>', '<p>make cheques payable tosssssss</p>', '<p>This is my footer messagesssssss</p>');
+(0, '', '', '', '', '', '', '<p>This bank transaction message can be changed in the payment options.</p>', '<p>This cheques payable message can be changed in the payment options.</p>', '<p>This footer message can be changed in the payment options.</p>');
 
 -- --------------------------------------------------------
 
@@ -340,16 +282,10 @@ CREATE TABLE `#__payment_credit_cards` (
 
 INSERT INTO `#__payment_credit_cards` (`id`, `card_type`, `card_name`, `active`) VALUES
 (1, 'visa', 'Visa', 1),
-(2, 'mastercard', 'Master Card', 0),
+(2, 'mastercard', 'MasterCard', 1),
 (3, 'amex', 'Amex', 0),
-(4, 'discover', 'Discover', 0),
-(5, 'delta', 'Delta', 0),
-(6, 'solo', 'Solo', 0),
-(7, 'switch', 'Switch', 0),
-(8, 'jcb', 'JCB', 0),
-(9, 'diners', 'Diners', 0),
-(10, 'carteblanche', 'Carta Blanche', 0),
-(11, 'enroute', 'Enroute', 0);
+(4, 'solo', 'Solo', 0),
+(5, 'switch', 'Switch', 0);
 
 -- --------------------------------------------------------
 
@@ -369,12 +305,12 @@ CREATE TABLE `#__payment_methods` (
 --
 
 INSERT INTO `#__payment_methods` (`id`, `smarty_tpl_key`, `method`, `active`) VALUES
-(1, 'credit_card_active', 'Credit Card', 1),
-(2, 'cheque_active', 'Cheque', 1),
-(3, 'cash_active', 'Cash', 1),
-(4, 'gift_certificate_active', 'Gift Certificate', 1),
-(5, 'paypal_active', 'PayPal', 1),
-(6, 'direct_deposit_active', 'Direct Deposit', 1);
+(1, 'credit_card_active', 'Credit Card', 0),
+(2, 'cheque_active', 'Cheque', 0),
+(3, 'cash_active', 'Cash', 0),
+(4, 'gift_certificate_active', 'Gift Certificate', 0),
+(5, 'paypal_active', 'PayPal', 0),
+(6, 'direct_deposit_active', 'Direct Deposit', 0);
 
 -- --------------------------------------------------------
 
@@ -393,13 +329,6 @@ CREATE TABLE `#__payment_transactions` (
   `amount` decimal(10,2) NOT NULL DEFAULT '0.00',
   `note` text COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Dumping data for table `#__payment_transactions`
---
-
-INSERT INTO `#__payment_transactions` (`transaction_id`, `employee_id`, `customer_id`, `workorder_id`, `invoice_id`, `date`, `type`, `amount`, `note`) VALUES
-(1, '1', '4', '1', '1', '1502924400', 3, '1.33', 'Partial Payment made by Cash for &pound;1.33, Balance due: &pound;31.58, , Note: gfhgf');
 
 -- --------------------------------------------------------
 
@@ -421,13 +350,6 @@ CREATE TABLE `#__refund` (
   `notes` text COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- Dumping data for table `#__refund`
---
-
-INSERT INTO `#__refund` (`refund_id`, `payee`, `date`, `type`, `payment_method`, `net_amount`, `tax_rate`, `tax_amount`, `gross_amount`, `items`, `notes`) VALUES
-(1, 'sdsd', '1502924400', '1', '1', '2.77', '17.00', '0.54', '3.31', '<p>dsv</p>', '<p>dsvds</p>');
-
 -- --------------------------------------------------------
 
 --
@@ -444,13 +366,6 @@ CREATE TABLE `#__schedule` (
   `notes` text COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- Dumping data for table `#__schedule`
---
-
-INSERT INTO `#__schedule` (`schedule_id`, `employee_id`, `customer_id`, `workorder_id`, `start_time`, `end_time`, `notes`) VALUES
-(62, '1', '1', '1', 1499954400, 1499960699, '<p>sdfsdfsd</p>');
-
 -- --------------------------------------------------------
 
 --
@@ -466,15 +381,6 @@ CREATE TABLE `#__session` (
   `userid` int(11) DEFAULT '0',
   `username` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Dumping data for table `#__session`
---
-
-INSERT INTO `#__session` (`session_id`, `client_id`, `guest`, `time`, `data`, `userid`, `username`) VALUES
-('5m8n9qmilf6quft43eomhb05d6', 0, 0, '1503247403', 'qwcrm|s:768:"Tzo4OiJSZWdpc3RyeSI6Mzp7czo3OiIAKgBkYXRhIjtPOjg6InN0ZENsYXNzIjoxOntzOjk6Il9fZGVmYXVsdCI7Tzo4OiJzdGRDbGFzcyI6NTp7czo3OiJzZXNzaW9uIjtPOjg6InN0ZENsYXNzIjoyOntzOjc6ImNvdW50ZXIiO2k6MTtzOjU6InRpbWVyIjtPOjg6InN0ZENsYXNzIjozOntzOjU6InN0YXJ0IjtpOjE1MDMyNDc0MDM7czo0OiJsYXN0IjtpOjE1MDMyNDc0MDM7czozOiJub3ciO2k6MTUwMzI0NzQwMzt9fXM6ODoicmVnaXN0cnkiO086ODoiUmVnaXN0cnkiOjM6e3M6NzoiACoAZGF0YSI7Tzo4OiJzdGRDbGFzcyI6MDp7fXM6MTQ6IgAqAGluaXRpYWxpemVkIjtiOjA7czo5OiJzZXBhcmF0b3IiO3M6MToiLiI7fXM6NDoidXNlciI7Tzo1OiJKVXNlciI6MTp7czoyOiJpZCI7czoxOiIxIjt9czoyMDoicG9zdF9lbXVsYXRpb25fdGltZXIiO2k6MTUwMzI0NzQwMztzOjIwOiJwb3N0X2VtdWxhdGlvbl9zdG9yZSI7YToxOntzOjE1OiJpbmZvcm1hdGlvbl9tc2ciO3M6MTc6IkxvZ2luIHN1Y2Nlc3NmdWwuIjt9fX1zOjE0OiIAKgBpbml0aWFsaXplZCI7YjowO3M6OToic2VwYXJhdG9yIjtzOjE6Ii4iO30=";', 1, 'jon.brown'),
-('fhbig6i2ndt4f28pvfsm6bkuc2', 0, 0, '1503243982', 'qwcrm|s:696:"Tzo4OiJSZWdpc3RyeSI6Mzp7czo3OiIAKgBkYXRhIjtPOjg6InN0ZENsYXNzIjoxOntzOjk6Il9fZGVmYXVsdCI7Tzo4OiJzdGRDbGFzcyI6NTp7czo3OiJzZXNzaW9uIjtPOjg6InN0ZENsYXNzIjoyOntzOjc6ImNvdW50ZXIiO2k6MztzOjU6InRpbWVyIjtPOjg6InN0ZENsYXNzIjozOntzOjU6InN0YXJ0IjtpOjE1MDMyNDM4OTI7czo0OiJsYXN0IjtpOjE1MDMyNDM4OTI7czozOiJub3ciO2k6MTUwMzI0Mzk4Mjt9fXM6ODoicmVnaXN0cnkiO086ODoiUmVnaXN0cnkiOjM6e3M6NzoiACoAZGF0YSI7Tzo4OiJzdGRDbGFzcyI6MDp7fXM6MTQ6IgAqAGluaXRpYWxpemVkIjtiOjA7czo5OiJzZXBhcmF0b3IiO3M6MToiLiI7fXM6NDoidXNlciI7Tzo1OiJKVXNlciI6MTp7czoyOiJpZCI7czoxOiIxIjt9czoyMDoicG9zdF9lbXVsYXRpb25fc3RvcmUiO2E6MDp7fXM6MjA6InBvc3RfZW11bGF0aW9uX3RpbWVyIjtzOjE6IjAiO319czoxNDoiACoAaW5pdGlhbGl6ZWQiO2I6MDtzOjk6InNlcGFyYXRvciI7czoxOiIuIjt9";', 1, 'jon.brown'),
-('mh8ktohgg18p8f6gkg4p5qfv95', 0, 0, '1503322124', 'qwcrm|s:700:"Tzo4OiJSZWdpc3RyeSI6Mzp7czo3OiIAKgBkYXRhIjtPOjg6InN0ZENsYXNzIjoxOntzOjk6Il9fZGVmYXVsdCI7Tzo4OiJzdGRDbGFzcyI6NTp7czo3OiJzZXNzaW9uIjtPOjg6InN0ZENsYXNzIjoyOntzOjc6ImNvdW50ZXIiO2k6Mjc7czo1OiJ0aW1lciI7Tzo4OiJzdGRDbGFzcyI6Mzp7czo1OiJzdGFydCI7aToxNTAzMzIwMTQ3O3M6NDoibGFzdCI7aToxNTAzMzIyMTIzO3M6Mzoibm93IjtpOjE1MDMzMjIxMjQ7fX1zOjg6InJlZ2lzdHJ5IjtPOjg6IlJlZ2lzdHJ5IjozOntzOjc6IgAqAGRhdGEiO086ODoic3RkQ2xhc3MiOjA6e31zOjE0OiIAKgBpbml0aWFsaXplZCI7YjowO3M6OToic2VwYXJhdG9yIjtzOjE6Ii4iO31zOjQ6InVzZXIiO086NToiSlVzZXIiOjE6e3M6MjoiaWQiO3M6MToiMSI7fXM6MjA6InBvc3RfZW11bGF0aW9uX3N0b3JlIjthOjA6e31zOjIwOiJwb3N0X2VtdWxhdGlvbl90aW1lciI7czoxOiIwIjt9fXM6MTQ6IgAqAGluaXRpYWxpemVkIjtiOjA7czo5OiJzZXBhcmF0b3IiO3M6MToiLiI7fQ==";', 1, 'jon.brown');
 
 -- --------------------------------------------------------
 
@@ -501,14 +407,6 @@ CREATE TABLE `#__supplier` (
   `description` text COLLATE utf8_unicode_ci NOT NULL,
   `notes` text COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Dumping data for table `#__supplier`
---
-
-INSERT INTO `#__supplier` (`supplier_id`, `display_name`, `first_name`, `last_name`, `website`, `email`, `type`, `primary_phone`, `mobile_phone`, `fax`, `address`, `city`, `state`, `zip`, `country`, `description`, `notes`) VALUES
-(1, 'chocoalte', 'wrewrew', '', 'https://www.chocolate..', 'jon@quantumnwarp.com', '5', '22222', '222', '23423', '2222', 'fgffff', 'ddd', 'ddd', '', '<p>ggg</p>', '<p>rrrrrrr</p>'),
-(2, '1111111111', 'fiiirst', 'aaastr', 'http://google.com', 'jon@jon.com', '10', '33333333', '3333333', '3333333', '333333333', 'aaaaa', 'aaaaaaa', 'aaaaaa', 'united kingbbbbbbbbb', '<p>aaaaaaaa</p>', '<p>aaaaaaaaa</p>');
 
 -- --------------------------------------------------------
 
@@ -547,15 +445,6 @@ CREATE TABLE `#__user` (
   `based` int(1) NOT NULL DEFAULT '1',
   `notes` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `#__user`
---
-
-INSERT INTO `#__user` (`user_id`, `customer_id`, `username`, `password`, `email`, `usergroup`, `active`, `last_active`, `register_date`, `require_reset`, `last_reset_time`, `reset_count`, `is_employee`, `display_name`, `first_name`, `last_name`, `work_primary_phone`, `work_mobile_phone`, `work_fax`, `home_primary_phone`, `home_mobile_phone`, `home_email`, `home_address`, `home_city`, `home_state`, `home_zip`, `home_country`, `based`, `notes`) VALUES
-(1, '', 'jon.brown', '$2y$10$eBObFUhphxmfmkt5cLioFunuJe.4RCIGNebzmhdpziW3QIY6yVm9K', 'jon@lancastrian-it.co.uk', '1', 1, '1503322124', '', 0, '1500575441', 14, 1, 'Jon Brown', 'Jon', 'Brown', '07747684438', '07747684438', '07747684438', '07747684438', '07747684438', 'hosting@lancastrian-it.co.uk', '5 Keswick Grove\r\nHeysham', 'Morecambe', 'Lancashire', 'LA3 2TF', '', 1, '<p>these are jons notes</p>'),
-(2, '', 'test.admin', '$2y$10$wT5tSJkijPALBb5Bw5YnKeZ/7CvJ1YJUmjG3XaX3E9SE6uwoNSxQG', 'hosting@lancastrian-it.co.uk', '1', 1, '1499930858', '', 0, '', 24, 1, 'Test Admin', 'Test', 'User', '07747684438', '07747684438', '07747684438', '07747684438', '07747684438', 'hosting@lancastrian-it.co.uk', '5 Keswick Grove\r\nHeysham', 'Morecambe', 'Lancashire', 'LA3 2TF', '', 1, '<p>these are jons notes</p>'),
-(3, '', 'test.customer', '$2y$10$wT5tSJkijPALBb5Bw5YnKeZ/7CvJ1YJUmjG3XaX3E9SE6uwoNSxQG', 'info@lancastrian-it.co.uk', '7', 1, '1499930858', '', 0, '', 0, 0, 'Test Customer', 'Test', 'User', '07747684438', '07747684438', '07747684438', '07747684438', '07747684438', 'hosting@lancastrian-it.co.uk', '5 Keswick Grove\r\nHeysham', 'Morecambe', 'Lancashire', 'LA3 2TF', '', 1, '<p>these are jons notes</p>');
 
 -- --------------------------------------------------------
 
@@ -641,6 +530,7 @@ INSERT INTO `#__user_acl` (`page`, `Administrator`, `Manager`, `Supervisor`, `Te
 ('schedule:icalendar', 1, 1, 1, 1, 0, 0, 0, 0, 0),
 ('schedule:new', 1, 1, 1, 1, 0, 0, 0, 0, 0),
 ('schedule:search', 1, 1, 1, 1, 0, 0, 0, 0, 0),
+('setup:choice', 0, 0, 0, 0, 0, 0, 0, 0, 0),
 ('setup:install', 0, 0, 0, 0, 0, 0, 0, 0, 0),
 ('setup:migrate', 0, 0, 0, 0, 0, 0, 0, 0, 0),
 ('setup:upgrade', 0, 0, 0, 0, 0, 0, 0, 0, 0),
@@ -688,13 +578,6 @@ CREATE TABLE `#__user_keys` (
   `uastring` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- Dumping data for table `#__user_keys`
---
-
-INSERT INTO `#__user_keys` (`id`, `user_id`, `token`, `series`, `time`, `uastring`) VALUES
-(7, 'jon.brown', '$2y$10$yeOI24IVCqS4MZC8SJ5JrOekOSyR1nMnc//YHkiYn19z/r8WN827C', 'BMrLQLzwfJ4NDDyjlV6h', '1508431403', 'qwcrm_remember_me_7b458569e912c182f68916605c217730');
-
 -- --------------------------------------------------------
 
 --
@@ -708,13 +591,6 @@ CREATE TABLE `#__user_reset` (
   `reset_code` varchar(64) NOT NULL,
   `reset_code_expiry_time` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `#__user_reset`
---
-
-INSERT INTO `#__user_reset` (`user_id`, `expiry_time`, `token`, `reset_code`, `reset_code_expiry_time`) VALUES
-('2', '1502117920', 'XWSRHkXwFK56nitpKzQNiFp7XaTHcbwp1i1ARBA3HHWa0FjLK7pco8tkUjcsLKOs', '', '');
 
 -- --------------------------------------------------------
 
@@ -784,14 +660,6 @@ CREATE TABLE `#__workorder` (
   `resolution` text COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- Dumping data for table `#__workorder`
---
-
-INSERT INTO `#__workorder` (`workorder_id`, `employee_id`, `customer_id`, `invoice_id`, `created_by`, `closed_by`, `open_date`, `close_date`, `last_active`, `status`, `is_closed`, `scope`, `description`, `comments`, `resolution`) VALUES
-(1, '', '4', '1', '1', '1', '1502983436', '1502983444', '1503322091', 4, 0, 'test', '<p>test</p>', '<p>test</p>', '<p>test resolurtion</p>'),
-(2, '', '4', '', '1', '', '1503001599', '', '1503062046', 1, 0, 'vvvv', '<p>vvvddddd</p>', '<p>vvvdddddddd</p>', '<p>ggg</p>');
-
 -- --------------------------------------------------------
 
 --
@@ -806,44 +674,6 @@ CREATE TABLE `#__workorder_history` (
   `note` text COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- Dumping data for table `#__workorder_history`
---
-
-INSERT INTO `#__workorder_history` (`history_id`, `employee_id`, `workorder_id`, `date`, `note`) VALUES
-(1, '1', '1', '1502983436', 'Created by Jon Brown'),
-(2, '1', '1', '1502983444', 'Closed with Invoice by Jon Brown'),
-(3, '1', '1', '1502983444', 'Status updated to Closed with Invoice by Jon Brown'),
-(4, '1', '1', '1502983444', 'Invoice Created ID: 1'),
-(5, '1', '1', '1502987415', 'Created by Jon Brown - Partial Payment made by Cash for &pound;1.33, Balance due: &pound;31.58, , Note: gfhgf'),
-(6, '1', '2', '1503001599', 'Created by Jon Brown'),
-(7, '1', '2', '1503001627', 'Resolution updated by Jon Brown'),
-(8, '1', '2', '1503001643', 'Comments updated by Jon Brown'),
-(9, '1', '2', '1503001655', 'Scope and Description updated by Jon Brown'),
-(10, '1', '2', '1503006434', 'Work Order Note 1 added by Jon Brown'),
-(11, '1', '2', '1503006521', 'Work Order Note 2 added by Jon Brown'),
-(12, '1', '2', '1503006572', 'Work Order Note 3 added by Jon Brown'),
-(13, '1', '2', '1503006898', 'Work Order Note 4 added by Jon Brown'),
-(14, '1', '2', '1503041333', 'Resolution updated by Jon Brown'),
-(15, '1', '2', '1503044483', 'Scope and Description updated by Jon Brown'),
-(16, '1', '2', '1503044547', 'Scope and Description updated by Jon Brown'),
-(17, '1', '2', '1503044561', 'Comments updated by Jon Brown'),
-(18, '1', '2', '1503044570', 'Resolution updated by Jon Brown'),
-(19, '1', '2', '1503044581', 'Work Order Note 4 has been deleted by Jon Brown'),
-(20, '1', '2', '1503044594', 'Work Order Note 3 updated by Jon Brown'),
-(21, '1', '2', '1503044605', 'Work Order Note 5 added by Jon Brown'),
-(22, '1', '1', '1503057168', 'Successfully sent email to davidcurley@outlook.com (David Curley)with the subject: Invoice 1 by Jon Brown'),
-(23, '1', '1', '1503057275', 'Successfully sent email to davidcurley@outlook.com (David Curley) with the subject ''Invoice 1'' by Jon Brown'),
-(24, '1', '1', '1503057324', 'Successfully sent email to davidcurley@outlook.com (David Curley) with the subject ''Invoice 1'' and was sent by Jon Brown'),
-(25, '1', '1', '1503057386', 'Successfully sent email to davidcurley@outlook.com (David Curley) with the subject ''Invoice 1'' and was sent by Jon Brown'),
-(26, '1', '1', '1503057425', 'Successfully sent email to davidcurley@outlook.com (David Curley) with the subject ''Invoice 1'' and was sent by Jon Brown'),
-(27, '1', '1', '1503057543', 'Successfully sent email to davidcurley@outlook.com (David Curley) with the subject : Invoice 1 : and was sent by Jon Brown'),
-(28, '1', '1', '1503057617', 'Successfully sent email to davidcurley@outlook.com (David Curley) with the subject : Invoice 1 : and was sent by Jon Brown'),
-(29, '1', '2', '1503062046', 'Resolution updated by Jon Brown'),
-(30, '1', '1', '1503322050', 'Status updated to Unassigned by Jon Brown'),
-(31, '1', '1', '1503322079', 'Status updated to Unassigned by Jon Brown'),
-(32, '1', '1', '1503322091', 'Status updated to On Hold by Jon Brown');
-
 -- --------------------------------------------------------
 
 --
@@ -857,14 +687,6 @@ CREATE TABLE `#__workorder_notes` (
   `date` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `description` text COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Dumping data for table `#__workorder_notes`
---
-
-INSERT INTO `#__workorder_notes` (`workorder_note_id`, `employee_id`, `workorder_id`, `date`, `description`) VALUES
-(3, '1', '2', '1502924400', '<p>dfvdf</p>'),
-(5, '1', '2', '1503044605', '<p>ddd</p>');
 
 --
 -- Indexes for dumped tables
@@ -1034,37 +856,37 @@ ALTER TABLE `#__workorder_notes`
 -- AUTO_INCREMENT for table `#__customer`
 --
 ALTER TABLE `#__customer`
-  MODIFY `customer_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `customer_id` int(10) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `#__customer_notes`
 --
 ALTER TABLE `#__customer_notes`
-  MODIFY `customer_note_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `customer_note_id` int(10) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `#__expense`
 --
 ALTER TABLE `#__expense`
-  MODIFY `expense_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `expense_id` int(10) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `#__giftcert`
 --
 ALTER TABLE `#__giftcert`
-  MODIFY `giftcert_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `giftcert_id` int(10) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `#__invoice`
 --
 ALTER TABLE `#__invoice`
-  MODIFY `invoice_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `invoice_id` int(10) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `#__invoice_labour`
 --
 ALTER TABLE `#__invoice_labour`
-  MODIFY `invoice_labour_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `invoice_labour_id` int(10) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `#__invoice_parts`
 --
 ALTER TABLE `#__invoice_parts`
-  MODIFY `invoice_parts_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `invoice_parts_id` int(10) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `#__invoice_prefill_items`
 --
@@ -1074,7 +896,7 @@ ALTER TABLE `#__invoice_prefill_items`
 -- AUTO_INCREMENT for table `#__payment_credit_cards`
 --
 ALTER TABLE `#__payment_credit_cards`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `#__payment_methods`
 --
@@ -1084,32 +906,32 @@ ALTER TABLE `#__payment_methods`
 -- AUTO_INCREMENT for table `#__payment_transactions`
 --
 ALTER TABLE `#__payment_transactions`
-  MODIFY `transaction_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `transaction_id` int(10) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `#__refund`
 --
 ALTER TABLE `#__refund`
-  MODIFY `refund_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `refund_id` int(10) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `#__schedule`
 --
 ALTER TABLE `#__schedule`
-  MODIFY `schedule_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
+  MODIFY `schedule_id` int(10) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `#__supplier`
 --
 ALTER TABLE `#__supplier`
-  MODIFY `supplier_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `supplier_id` int(10) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `#__user`
 --
 ALTER TABLE `#__user`
-  MODIFY `user_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `user_id` int(10) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `#__user_keys`
 --
 ALTER TABLE `#__user_keys`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `#__user_usergroups`
 --
@@ -1119,17 +941,17 @@ ALTER TABLE `#__user_usergroups`
 -- AUTO_INCREMENT for table `#__workorder`
 --
 ALTER TABLE `#__workorder`
-  MODIFY `workorder_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `workorder_id` int(10) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `#__workorder_history`
 --
 ALTER TABLE `#__workorder_history`
-  MODIFY `history_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `history_id` int(10) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `#__workorder_notes`
 --
 ALTER TABLE `#__workorder_notes`
-  MODIFY `workorder_note_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `workorder_note_id` int(10) NOT NULL AUTO_INCREMENT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

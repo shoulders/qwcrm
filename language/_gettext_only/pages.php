@@ -353,6 +353,13 @@ gettext("REPORT_FINANCIAL_HELP_CONTENT");
 
 /* Setup */
 
+// setup:choice
+gettext("SETUP_CHOICE_PAGE_TITLE");
+gettext("SETUP_CHOICE_META_DESCRIPTION");
+gettext("SETUP_CHOICE_META_KEYWORDS");
+gettext("SETUP_CHOICE_HELP_TITLE");
+gettext("SETUP_CHOICE_HELP_CONTENT");
+
 // setup:install
 gettext("SETUP_INSTALL_PAGE_TITLE");
 gettext("SETUP_INSTALL_META_DESCRIPTION");
