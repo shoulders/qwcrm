@@ -166,7 +166,27 @@ function install_database($db) {
         
 }
      
+############################################
+#  Generate Random Database prefix         #
+############################################
+
+function generate_database_prefix() {
     
+    // generate a random string for the gift certificate
+    
+    $acceptedChars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $max_offset = strlen($acceptedChars)-1;
+    $prefix = '';
+    
+    for($i=0; $i < 4; $i++) {
+        $prefix .= $acceptedChars{mt_rand(0, $max_offset)};
+    }
+    
+    $prefix .= '_';    
+    
+    return $prefix;
+    
+}
     
 
 

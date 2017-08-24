@@ -24,8 +24,6 @@ if(!check_page_accessed_via_qwcrm('setup:install', 'setup') || QWCRM_SETUP != 'i
 // Stage 1 - Database Connection -->
 if($VAR['stage'] == '1' || !isset($VAR['stage'])) {
     
-    $smarty->assign('qwcrm_config', $VAR);
-    
     if($VAR['submit'] == 'stage1') {
         
         if(check_database_connection($db, $VAR['db_host'], $VAR['db_user'], $VAR['db_pass'], $VAR['db_name'])) {
@@ -38,7 +36,8 @@ if($VAR['stage'] == '1' || !isset($VAR['stage'])) {
             $VAR['stage'] = '2';
             
         } else {
-            // reload the page with the details and error messgae
+            // reload the page with the details and error message
+            $smarty->assign('qwcrm_config', $VAR);
             $smarty->assign('warning_msg', gettext("There is a database connection issue. Check your settings."));
             $smarty->assign('stage', '1');
         }
@@ -49,10 +48,11 @@ if($VAR['stage'] == '1' || !isset($VAR['stage'])) {
 
 // Stage 2 - Config Settings
 if($VAR['stage'] == '2') {    
-        
+      
     if($VAR['submit'] == 'stage2') {
         submit_qwcrm_config_settings($VAR);
         $VAR['stage'] = '3';
+        
     } else {
         
         // Set mandatory default values
@@ -60,9 +60,11 @@ if($VAR['stage'] == '2') {
         if($VAR['session_lifetime'] == '')      { $VAR['session_lifetime'] = '15'; }
         if($VAR['cookie_lifetime'] == '')       { $VAR['cookie_lifetime'] = '60'; }
         if($VAR['cookie_token_length'] == '')   { $VAR['cookie_token_length'] = '16'; }
-    
-        $smarty->assign('qwcrm_config', $VAR);
         
+        // Prefill databse prefix with a random value
+        $VAR['db_prefix'] = generate_database_prefix();
+    
+        $smarty->assign('qwcrm_config', $VAR);        
         $smarty->assign('stage', '2');
         
     }
@@ -78,12 +80,14 @@ if($VAR['stage'] == '3') {
         if(install_database($db)) {
             $smarty->assign('information_msg', gettext("The primary database installed successfully."));
             $VAR['stage'] = '4';
+            
         } else {
             
            // Reload the page (stage 3) - useful for testing varibles           
            $smarty->assign('warning_msg', gettext("The primary database failed to install."));
            $smarty->assign('stage', '3');
            $VAR['stage'] = '3';
+           
         }
         
     } else {
@@ -108,7 +112,9 @@ if($VAR['stage'] == '4') {
 // Stage 5 - Company Details
 if($VAR['stage'] == '5') {    
     
-    if($VAR['submit'] == 'stage5') {  
+    if($VAR['submit'] == 'stage5') {
+        //print_r($_FILES)
+        upload_company_logo($db);die();
         update_company_details($db, $VAR);
         $VAR['stage'] = '6';
     } else {
