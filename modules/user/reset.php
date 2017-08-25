@@ -14,6 +14,8 @@ require(INCLUDES_DIR.'modules/user.php');
 // Delete any expired resets (CRON is better)
 delete_expired_reset_codes($db);
 
+
+
 // STAGE 1 -  Enter email
 if(!isset($VAR['submit']) && !isset($VAR['email']) && !isset($VAR['token']) && !isset($VAR['password']) && !isset($VAR['confirmPassword'])) {
     
@@ -24,6 +26,12 @@ if(!isset($VAR['submit']) && !isset($VAR['email']) && !isset($VAR['token']) && !
 
 // STAGE 2 - Email submitted for account reset
 } elseif(isset($VAR['submit']) && isset($VAR['email']) && $VAR['email'] != '') {
+    
+    // Prevent direct access to this page
+    if(!check_page_accessed_via_qwcrm('user:reset')) {
+        force_page('workorder', 'search', 'warning_msg='.gettext("No Direct Access Allowed"));
+        exit;
+    }    
     
     // if recaptcha is disabled || recaptcha is enabled and passes authentication
     if( !$QConfig->recaptcha || ($QConfig->recaptcha && authenticate_recaptcha($QConfig->recaptcha_secret_key, $VAR['g-recaptcha-response']))) {
@@ -69,6 +77,12 @@ if(!isset($VAR['submit']) && !isset($VAR['email']) && !isset($VAR['token']) && !
 // STAGE 3 - Enter Token
 } elseif(!isset($VAR['submit']) && isset($VAR['token']) && $VAR['token'] != '') {    
     
+    // Prevent direct access to this page
+    if(!check_page_accessed_via_qwcrm('user:reset')) {
+        force_page('workorder', 'search', 'warning_msg='.gettext("No Direct Access Allowed"));
+        exit;
+    }     
+    
     // Load the enter_token page
     $smarty->assign('token', $VAR['token']);
     $stage = 'enter_token';
@@ -77,6 +91,12 @@ if(!isset($VAR['submit']) && !isset($VAR['email']) && !isset($VAR['token']) && !
     
 // STAGE 4 - Token has been submitted
 } elseif(isset($VAR['submit']) && isset($VAR['token']) && $VAR['token'] != '') {
+    
+    // Prevent direct access to this page
+    if(!check_page_accessed_via_qwcrm('user:reset')) {
+        force_page('workorder', 'search', 'warning_msg='.gettext("No Direct Access Allowed"));
+        exit;
+    } 
     
     // if recaptcha is disabled || recaptcha is enabled and passes authentication
     if( !$QConfig->recaptcha || ($QConfig->recaptcha && authenticate_recaptcha($QConfig->recaptcha_secret_key, $VAR['g-recaptcha-response']))) {
@@ -112,8 +132,14 @@ if(!isset($VAR['submit']) && !isset($VAR['email']) && !isset($VAR['token']) && !
     
     
     
-// STAGE 4 - Password has been submitted
+// STAGE 5 - Password has been submitted
 } elseif(isset($VAR['submit']) && isset($VAR['reset_code']) && $VAR['reset_code'] != '' && isset($VAR['password']) && $VAR['password'] != '') {
+    
+    // Prevent direct access to this page
+    if(!check_page_accessed_via_qwcrm('user:reset')) {
+        force_page('workorder', 'search', 'warning_msg='.gettext("No Direct Access Allowed"));
+        exit;
+    } 
     
     // validate the reset code
     if(!validate_reset_code($db, $VAR['reset_code'])) {
