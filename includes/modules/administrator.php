@@ -299,19 +299,19 @@ function write_config_file($content)
     // Set the configuration file path.
     $file = 'configuration.php';
     
-    // if the file does not exist - create and open
+    // if the file does not exist - Create and Open
     if(!is_file($file)) {
         
-        // create and open
+        // Create and Open file
         $fp = fopen($file, 'x');
     
-    // if exists - just open file    
+    // if file exists - Open    
     } else {
         
-        // make file is writable - is this needed?
+        // Make file is writable - is this needed?
         chmod($file, '0644');
     
-        // open file
+        // Open file
         $fp = fopen($file, 'w');
         
     }
