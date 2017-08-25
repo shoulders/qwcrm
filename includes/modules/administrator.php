@@ -300,7 +300,7 @@ function write_config_file($content)
     $file = 'configuration.php';
     
     // if the file does not exist - create and open
-    if(!is_file('configuration.php')) {
+    if(!is_file($file)) {
         
         // create and open
         $fp = fopen($file, 'x');
