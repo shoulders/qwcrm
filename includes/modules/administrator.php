@@ -33,7 +33,7 @@ defined('_QWEXEC') or die;
 /* Get Functions */
 
 ############################################
-#   get current config details            #
+#   get current config details             #
 ############################################
 
 function get_qwcrm_config() {
@@ -298,13 +298,28 @@ function write_config_file($content)
 {
     // Set the configuration file path.
     $file = 'configuration.php';
-
-    // Check file is writable
-    chmod($file, '0644');
-
-    // Write file
-    $fp = fopen($file, 'w');
+    
+    // if the file does not exist - create and open
+    if(!is_file('configuration.php')) {
+        
+        // create and open
+        $fp = fopen($file, 'x');
+    
+    // if exists - just open file    
+    } else {
+        
+        // make file is writable - is this needed?
+        chmod($file, '0644');
+    
+        // open file
+        $fp = fopen($file, 'w');
+        
+    }
+    
+    // Write file    
     fwrite($fp, $content);
+    
+    // Close file
     fclose($fp);
 
     // Make file 444
