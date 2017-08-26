@@ -326,11 +326,12 @@ function write_config_file($content)
     chmod($file, '0444');      
 
     return true;
+    
 }    
 
 
 ############################################
-#   Process config data before saving      #  - // joomla\administrator\components\com_config\model\application.php  -  public function save($data)
+#   Process config data before saving      #  // joomla\administrator\components\com_config\model\application.php  -  public function save($data)
 ############################################
 
 function prepare_config_data($new_config) {

@@ -16,7 +16,7 @@
                 <table width="600" class="olotable" cellpadding="5" cellspacing="0" border="0">
                     <tr>
                         <td style="text-align: center;">
-                            {$database_installations_results}
+                            {$execute_sql_file_results}
                         </td>
                     </tr> 
                     <tr>
