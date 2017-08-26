@@ -12,7 +12,7 @@ require(INCLUDES_DIR.'modules/setup.php');
 
 // Prevent direct access to this page
 if(!check_page_accessed_via_qwcrm('setup:upgrade', 'setup') || QWCRM_SETUP != 'upgrade') {
-    die(gettext("No Direct Access Allowed"));
+    die(gettext("No Direct Access Allowed."));
 }
 
 // Log message to setup log - only when starting the process

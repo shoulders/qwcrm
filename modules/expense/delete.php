@@ -12,7 +12,7 @@ require(INCLUDES_DIR.'modules/expense.php');
 
 // Prevent direct access to this page
 if(!check_page_accessed_via_qwcrm()) {
-    die(gettext("No Direct Access Allowed"));
+    die(gettext("No Direct Access Allowed."));
 }
 
 // Check if we have an expense_id

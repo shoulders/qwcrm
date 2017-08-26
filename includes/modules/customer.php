@@ -185,7 +185,7 @@ function insert_customer_note($db, $customer_id, $note) {
     } else {
         
         // Log activity        
-        write_record_to_activity_log(gettext("A new customer note was added to the customer").' '.get_customer_details($db, $customer_id, 'display_name').' '.gettext("by").' '.QFactory::getUser()->login_display_name);
+        write_record_to_activity_log(gettext("A new customer note was added to the customer").' '.get_customer_details($db, $customer_id, 'display_name').' '.gettext("by").' '.QFactory::getUser()->login_display_name).'.';
         
         // Update last active record      
         update_customer_last_active($db, $customer_id);
@@ -306,7 +306,7 @@ function update_customer($db, $customer_id, $VAR) {
     } else {
         
         // Log activity        
-        write_record_to_activity_log(gettext("The customer").' '.get_customer_details($db, $customer_id, 'display_name').' '.gettext("was updated by").' '.QFactory::getUser()->login_display_name);
+        write_record_to_activity_log(gettext("The customer").' '.get_customer_details($db, $customer_id, 'display_name').' '.gettext("was updated by").' '.QFactory::getUser()->login_display_name).'.';
         
         // Update last active record      
         update_customer_last_active($db, $customer_id);
@@ -339,7 +339,7 @@ function update_customer_note($db, $customer_note_id, $date, $note) {
         $customer_id = get_customer_note($db, $customer_note_id, 'customer_id');
         
         // Log activity        
-        write_record_to_activity_log(gettext("Customer Note").' '.$customer_note_id.' '.gettext("for").' '.get_customer_details($db, $customer_id, 'display_name').' '.gettext("was updated by").' '.QFactory::getUser()->login_display_name);
+        write_record_to_activity_log(gettext("Customer Note").' '.$customer_note_id.' '.gettext("for").' '.get_customer_details($db, $customer_id, 'display_name').' '.gettext("was updated by").' '.QFactory::getUser()->login_display_name).'.';
         
         // Update last active record        
         update_customer_last_active($db, $customer_id);
@@ -439,7 +439,7 @@ function delete_customer($db, $customer_id){
     }
     
     // Write the record to the activity log                    
-    write_record_to_activity_log(gettext("The customer").' '.$customer_details['display_name'].' '.gettext("has been deleted by").' '.QFactory::getUser()->login_display_name);
+    write_record_to_activity_log(gettext("The customer").' '.$customer_details['display_name'].' '.gettext("has been deleted by").' '.QFactory::getUser()->login_display_name).'.';
     
     return true;
     
@@ -463,7 +463,7 @@ function delete_customer_note($db, $customer_note_id) {
     } else {        
         
         // Log activity        
-        write_record_to_activity_log(gettext("Customer Note").' '.$customer_note_id.' '.gettext("for Customer").' '.get_customer_details($db, $customer_id, 'display_name').' '.gettext("was deleted by").' '.QFactory::getUser()->login_display_name);
+        write_record_to_activity_log(gettext("Customer Note").' '.$customer_note_id.' '.gettext("for Customer").' '.get_customer_details($db, $customer_id, 'display_name').' '.gettext("was deleted by").' '.QFactory::getUser()->login_display_name).'.';
         
         // Update last active record        
         update_customer_last_active($db, $customer_id);

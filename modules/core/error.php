@@ -10,7 +10,7 @@ defined('_QWEXEC') or die;
 
 // Prevent direct access to this page
 if(!check_page_accessed_via_qwcrm()) {
-    die(gettext("No Direct Access Allowed"));
+    die(gettext("No Direct Access Allowed."));
 }
 
 /* Grab and Process Values befor sending to the log and displaying */

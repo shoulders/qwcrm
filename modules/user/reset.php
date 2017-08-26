@@ -29,7 +29,7 @@ if(!isset($VAR['submit']) && !isset($VAR['email']) && !isset($VAR['token']) && !
     
     // Prevent direct access to this page
     if(!check_page_accessed_via_qwcrm('user:reset')) {
-        die(gettext("No Direct Access Allowed"));
+        die(gettext("No Direct Access Allowed."));
     }   
 
     // if recaptcha is disabled || recaptcha is enabled and passes authentication
@@ -78,7 +78,7 @@ if(!isset($VAR['submit']) && !isset($VAR['email']) && !isset($VAR['token']) && !
     
     // Prevent direct access to this page
     if(!check_page_accessed_via_qwcrm('user:reset')) {
-        die(gettext("No Direct Access Allowed"));
+        die(gettext("No Direct Access Allowed."));
     }     
     
     // Load the enter_token page
@@ -92,7 +92,7 @@ if(!isset($VAR['submit']) && !isset($VAR['email']) && !isset($VAR['token']) && !
     
     // Prevent direct access to this page
     if(!check_page_accessed_via_qwcrm('user:reset')) {
-        die(gettext("No Direct Access Allowed"));
+        die(gettext("No Direct Access Allowed."));
     }
     
     // if recaptcha is disabled || recaptcha is enabled and passes authentication
@@ -134,7 +134,7 @@ if(!isset($VAR['submit']) && !isset($VAR['email']) && !isset($VAR['token']) && !
     
     // Prevent direct access to this page
     if(!check_page_accessed_via_qwcrm('user:reset')) {
-        die(gettext("No Direct Access Allowed"));
+        die(gettext("No Direct Access Allowed."));
     }
     
     // validate the reset code

@@ -11,7 +11,7 @@ defined('_QWEXEC') or die;
 
 // Prevent direct access to this page - Pexcept from workorder:new or workorder:details_edit_description
 if(!check_page_accessed_via_qwcrm('workorder:new') || !check_page_accessed_via_qwcrm('workorder:details_edit_description')) {
-    die(gettext("No Direct Access Allowed"));    
+    die(gettext("No Direct Access Allowed."));    
 }
     
 // Is there a posted query string and is the string length greater than 0?

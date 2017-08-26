@@ -175,7 +175,7 @@ function get_payment_details($db, $item = null){
 }
 
 #########################################
-#   Get get active payment methods      # // If i dont have METHOD in the select the array is not built corretly
+#   Get get active payment methods      # // If i dont have METHOD in the select the array is not built correctly
 #########################################
 
 function get_active_payment_methods($db) {

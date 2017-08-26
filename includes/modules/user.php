@@ -742,7 +742,7 @@ function login($credentials, $options = array())
         $db = QFactory::getDbo();
 
         // Log activity       
-        write_record_to_activity_log(gettext("Login successful for").' '.$user->login_username);
+        write_record_to_activity_log(gettext("Login successful for").' '.$user->login_username).'.';
         
         // Update last active record
         if($user->login_customer_id) {            
@@ -759,7 +759,7 @@ function login($credentials, $options = array())
         /* Login failed */
         
         // Log activity       
-        write_record_to_activity_log(gettext("Login unsuccessful for").' '.$credentials['username']);
+        write_record_to_activity_log(gettext("Login unsuccessful for").' '.$credentials['username']).'.';
 
         $smarty->assign('warning_msg', gettext("Login Failed. Check you username and password."));
         return false;
@@ -777,7 +777,7 @@ function logout($silent = null)
     $db = QFactory::getDbo();
     
     // Build logout message while user details exist
-    $record = gettext("Logout successful for").' '.$user->login_username;
+    $record = gettext("Logout successful for").' '.$user->login_username.'.';
     
     // Logout
     QFactory::getAuth()->logout();    
