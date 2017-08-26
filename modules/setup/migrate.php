@@ -15,5 +15,10 @@ if(!check_page_accessed_via_qwcrm('setup:migrate', 'setup') || QWCRM_SETUP != 'm
     die(gettext("No Direct Access Allowed"));
 }
 
+// Log message to setup log - only when starting the process
+if(!check_page_accessed_via_qwcrm('setup:migrate') ) {
+    write_record_to_setup_log(gettext("QWcrm migration from MyITCRM has begun."), 'migrate');
+}
+
 // Build the page
 $BuildPage .= $smarty->fetch('setup/migrate.tpl');
