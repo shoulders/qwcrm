@@ -22,7 +22,7 @@
                     <span>{t}Customers{/t}</span>
                     <a href="index.php?page=customer:new"><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" height="14" width="14" /> {t}New{/t}</a>
                     <a href="index.php?page=customer:search"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {t}Search{/t}</a>
-                    {if $customer_id}
+                    {if $customer_id != ''}
                         <a href="index.php?page=customer:edit&customer_id={$customer_id}"><img src="{$theme_images_dir}icons/edit_employee.gif" alt="" border="0" height="14" width="14" /> {t}Edit{/t}</a>                        
                         <a href="index.php?page=customer:delete&customer_id={$customer_id}" onclick="return confirmDelete('{t}Are you sure you want to delete this customer?{/t}');"><img src="{$theme_images_dir}icons/delete_employees.gif" alt="" border="0" height="14" width="14" /> {t}Delete{/t}</a>
                         <a href="index.php?page=user:new&customer_id={$customer_id}"><img src="{$theme_images_dir}icons/16x16/email.jpg" alt="" border="0" height="14" width="14" /> {t}Create Login{/t}</a>
@@ -33,10 +33,10 @@
                 <!-- Work Orders -->
                 <div>
                     <span>{t}Work Orders{/t}</span>                    
-                    {if $customer_id}
+                    {if $customer_id != ''}
                         <a href="index.php?page=workorder:new&customer_id={$customer_id}"><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" height="14" width="14" /> {t}New{/t}</a>                        
                     {/if}
-                    {if $workorder_id}
+                    {if $workorder_id != ''}
                         {if $menu_workorder_status != 6 || $menu_workorder_status != 7}
                             <a href="index.php?page=workorder:details_edit_resolution&workorder_id={$workorder_id}"><img src="{$theme_images_dir}icons/close.gif" alt="" border="0" height="14" width="14" /> {t}Close{/t}</a>
                             <a href="index.php?page=workorder:details_new_note&workorder_id={$workorder_id}"><img src="{$theme_images_dir}icons/note.png" alt="" border="0" height="14" width="14" /> {t}New Note{/t}</a>
@@ -55,7 +55,7 @@
                 <!-- Invoices -->
                 <div>
                     <span>{t}Invoices{/t}</span>
-                    {if $customer_id}                        
+                    {if $customer_id != ''}                        
                         <a href="index.php?page=invoice:new&customer_id={$customer_id}&invoice_type=invoice-only"><img src="{$theme_images_dir}icons/invoice.png" alt="" border="0" height="14" width="14" /> {t}Invoice Only{/t}</a>
                     {/if}
                     <a href="index.php?page=invoice:paid"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {t}Paid Invoices{/t} <b><font color="red">({$menu_invoices_paid_count})</font></b></a>
