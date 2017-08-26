@@ -292,7 +292,7 @@ function write_record_to_setup_log($record, $setup_type) {
     }
     
     // Build log entry - perhaps use the apache time stamp below
-    $log_entry = $_SERVER['REMOTE_ADDR'].','.$username.','.date("[d/M/Y:H:i:s O]", time()).','.QFactory::getUser()->login_user_id.','.$setup_type.','.$record."\r\n";
+    $log_entry = $_SERVER['REMOTE_ADDR'].','.$username.','.date("[d/M/Y:H:i:s O]", time()).','.QFactory::getUser()->login_user_id.','.QWCRM_VERSION.','.$setup_type.','.$record."\r\n";
     
     // Write log entry  
     if(!$fp = fopen(SETUP_LOG, 'a')) {        
