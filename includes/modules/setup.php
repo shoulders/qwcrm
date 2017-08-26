@@ -285,14 +285,14 @@ function execute_sql_file_lines($db, $sql_file) {
 function write_record_to_setup_log($record, $setup_type) {
     
     // Login User - substituting qwcrm user for the traditional apache HTTP Authentication
-    /*if(!QFactory::getUser()->login_username) {
+    if(!QFactory::getUser()->login_username) {
         $username = '-';
     } else {
-        $username = QFactory::getUser()->login_username;  
-    }*/
+        $username = QFactory::getUser()->login_username;
+    }
     
     // Build log entry - perhaps use the apache time stamp below
-    $log_entry = $_SERVER['REMOTE_ADDR'].','.QFactory::getUser()->login_username.','.date("[d/M/Y:H:i:s O]", time()).','.QFactory::getUser()->login_user_id.','.$setup_type.','.$record."\r\n";
+    $log_entry = $_SERVER['REMOTE_ADDR'].','.$username.','.date("[d/M/Y:H:i:s O]", time()).','.QFactory::getUser()->login_user_id.','.$setup_type.','.$record."\r\n";
     
     // Write log entry  
     if(!$fp = fopen(SETUP_LOG, 'a')) {        

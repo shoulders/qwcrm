@@ -461,7 +461,7 @@ if(!$skip_logging || QWCRM_SETUP) {
     
     // This logs access details to the access log
     if($QConfig->qwcrm_access_log == true){
-        write_record_to_access_log($login_username);
+        write_record_to_access_log();
     }
     
 }

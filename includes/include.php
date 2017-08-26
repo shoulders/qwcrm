@@ -928,7 +928,7 @@ echo ('My real IP is:'.$ip);
  * This will create an apache compatible access log (Combined Log Format)
  */
 
-function write_record_to_access_log($login_username = null) {    
+function write_record_to_access_log() {    
     
     // Apache log format
     // https://httpd.apache.org/docs/2.4/logs.html
@@ -940,10 +940,10 @@ function write_record_to_access_log($login_username = null) {
     $logname        = '-';                                                  //  This is the RFC 1413 identity of the client determined by identd on the clients machine. This information is highly unreliable and should almost never be used except on tightly controlled internal networks.
     
     // Login User - substituting qwcrm user for the traditional apache HTTP Authentication
-    if($login_username == '') {
+    if(!QFactory::getUser()->login_username) {
         $username = '-';
     } else {
-        $username = $login_username;  
+        $username = QFactory::getUser()->login_username;
     }  
     
     $time           = date("[d/M/Y:H:i:s O]", $_SERVER['REQUEST_TIME']);    // Time in apache log format
@@ -994,8 +994,15 @@ function write_record_to_activity_log($record) {
     // if activity logging not enabled exit
     if(QFactory::getConfig()->get('qwcrm_activity_log') != true) { return; }
     
+    // Login User - substituting qwcrm user for the traditional apache HTTP Authentication
+    if(!QFactory::getUser()->login_username) {
+        $username = '-';
+    } else {
+        $username = QFactory::getUser()->login_username;
+    } 
+    
     // Build log entry
-    $log_entry = $_SERVER['REMOTE_ADDR'].','.QFactory::getUser()->login_username.','.date("[d/M/Y:H:i:s O]", time()).','.QFactory::getUser()->login_user_id.','.$GLOBALS['employee_id'].','.$GLOBALS['customer_id'].','.$GLOBALS['workorder_id'].','.$GLOBALS['invoice_id'].','.$record ."\r\n";
+    $log_entry = $_SERVER['REMOTE_ADDR'].','.$username.','.date("[d/M/Y:H:i:s O]", time()).','.QFactory::getUser()->login_user_id.','.$GLOBALS['employee_id'].','.$GLOBALS['customer_id'].','.$GLOBALS['workorder_id'].','.$GLOBALS['invoice_id'].','.$record ."\r\n";
     
     // Write log entry  
     if(!$fp = fopen(ACTIVITY_LOG, 'a')) {        
