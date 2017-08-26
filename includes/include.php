@@ -921,40 +921,6 @@ echo ('My real IP is:'.$ip);
 */
 
 ############################################
-#  Write a record to the Activity Log      #
-############################################
-
-/*
- * This writes Specific QWcrm activity note to the activity.log, i.e. login/logout
- * The messages and information is already formed before reaching here
- * 
- * add username and other stuff here? not just the message
- */
-
-function write_record_to_activity_log($record) {
-    
-    // if activity logging not enabled exit
-    if(QFactory::getConfig()->get('qwcrm_activity_log') != true) { return; }
-    
-    // Build log entry - perhaps use the apache time stamp below
-    $log_entry = $_SERVER['REMOTE_ADDR'].','.QFactory::getUser()->login_username.','.date("[d/M/Y:H:i:s O]", time()).','.QFactory::getUser()->login_user_id.','.$GLOBALS['employee_id'].','.$GLOBALS['customer_id'].','.$GLOBALS['workorder_id'].','.$GLOBALS['invoice_id'].','.$record ."\r\n";
-    
-    //$employee_id.','.$customer_id.','.$workorder_id.','.$invoice_id
-    
-    // Write log entry  
-    if(!$fp = fopen(ACTIVITY_LOG, 'a')) {        
-        force_error_page($_GET['page'], 'file', __FILE__, __FUNCTION__, '', '', gettext("Could not open the Activity Log to save the record."));
-        exit;
-    }
-    
-    fwrite($fp, $log_entry);
-    fclose($fp);
-    
-    return;
-    
-}
-
-############################################
 #  Write a record to the Access Log        #
 ############################################
 
@@ -975,9 +941,9 @@ function write_record_to_access_log($login_username = null) {
     
     // Login User - substituting qwcrm user for the traditional apache HTTP Authentication
     if($login_username == '') {
-        $user = '-';
+        $username = '-';
     } else {
-        $user = $login_username;  
+        $username = $login_username;  
     }  
     
     $time           = date("[d/M/Y:H:i:s O]", $_SERVER['REQUEST_TIME']);    // Time in apache log format
@@ -1004,11 +970,36 @@ function write_record_to_access_log($login_username = null) {
         $user_agent = '-';
     } 
    
-    $log_entry = $remote_ip.' '.$logname.' '.$user.' '.$time.' "'.$method.' '.$uri.' '.$protocol.'" '.$status.' '.$bytes.' "'.$referring_url.'" "'.$user_agent.'"'."\r\n";
+    $log_entry = $remote_ip.' '.$logname.' '.$username.' '.$time.' "'.$method.' '.$uri.' '.$protocol.'" '.$status.' '.$bytes.' "'.$referring_url.'" "'.$user_agent.'"'."\r\n";
     
     // Write log entry   
     if(!$fp = fopen(ACCESS_LOG, 'a')) {        
         force_error_page($_GET['page'], 'file', __FILE__, __FUNCTION__, '', '', gettext("Could not open the Access Log to save the record."));
+        exit;
+    }
+    
+    fwrite($fp, $log_entry);
+    fclose($fp);
+    
+    return;
+    
+}
+
+############################################
+#  Write a record to the Activity Log      #
+############################################
+
+function write_record_to_activity_log($record) {
+    
+    // if activity logging not enabled exit
+    if(QFactory::getConfig()->get('qwcrm_activity_log') != true) { return; }
+    
+    // Build log entry
+    $log_entry = $_SERVER['REMOTE_ADDR'].','.QFactory::getUser()->login_username.','.date("[d/M/Y:H:i:s O]", time()).','.QFactory::getUser()->login_user_id.','.$GLOBALS['employee_id'].','.$GLOBALS['customer_id'].','.$GLOBALS['workorder_id'].','.$GLOBALS['invoice_id'].','.$record ."\r\n";
+    
+    // Write log entry  
+    if(!$fp = fopen(ACTIVITY_LOG, 'a')) {        
+        force_error_page($_GET['page'], 'file', __FILE__, __FUNCTION__, '', '', gettext("Could not open the Activity Log to save the record."));
         exit;
     }
     

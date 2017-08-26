@@ -79,12 +79,30 @@ function execute_sql_file($db, $sql_file) {
        // Perform the query
         if(!$rs = $db->Execute($sql)) {
             
-            $execute_sql_file_results .= '<span style="color: red">'.gettext("Error performing query").' : '. $query_name['0'].' : '.$db->ErrorMsg().'</span><br />';
+            // Start result message
+            $execute_sql_file_results .= '<span style="color: red">';
+                        
+            // Log mesage to setup log
+            $record = gettext("Error performing SQL query").' : '. $query_name['0'].' : '.$db->ErrorMsg();
+            write_record_to_setup_log($record, 'install');
+            
+            // Finish result message
+            $execute_sql_file_results .= $record;
+            $execute_sql_file_results .= '</span><br />';
             $error_flag = true;
             
         } else {
             
-            $execute_sql_file_results .= '<span style="color: green">'.gettext("Performed query successfully").' : '. $query_name['0']. '</span><br />';
+            // Start result message
+            $execute_sql_file_results .= '<span style="color: green">';
+            
+            // Log mesage to setup log            
+            $record = gettext("Performed SQL query successfully").' : '. $query_name['0'];
+            write_record_to_setup_log($record, 'install');
+            
+            // Finish result message
+            $execute_sql_file_results .= $record;
+            $execute_sql_file_results .= '</span><br />';
 
         }
 
@@ -95,14 +113,38 @@ function execute_sql_file($db, $sql_file) {
     
     if($error_flag) {
         
-        $execute_sql_file_results .= '<br><div style="color: red;">'.gettext("Database import failed. Check the logs.").'</div>';
+        // Start final message
+        $execute_sql_file_results .= '<br><div style="color: red;">';
+        
+        // Log mesage to setup log
+        $record = gettext("One or more SQL rule has failed. Check the logs.");
+        write_record_to_setup_log($record, 'install');
+        
+        // Finish result message
+        $execute_sql_file_results .= $record;
+        $execute_sql_file_results .= '</div>';
+        
+        // Output message via smarty
         $smarty->assign('execute_sql_file_results', $execute_sql_file_results);
+        
         return false;
         
     } else {
         
-        $execute_sql_file_results .= '<br><div style="color: green;">'.gettext("All Tables imported successfully").'</div>';
+        // Start final message
+        $execute_sql_file_results .= '<br><div style="color: green;">';
+                
+        // Log mesage to setup log
+        $record = gettext("All SQL rules have run successfully.");
+        write_record_to_setup_log($record, 'install');
+        
+        // Finish result message
+        $execute_sql_file_results .= $record;
+        $execute_sql_file_results .= '</div>';
+        
+        // Output message via smarty
         $smarty->assign('execute_sql_file_results', $execute_sql_file_results);
+        
         return true;
         
     }           
@@ -110,7 +152,7 @@ function execute_sql_file($db, $sql_file) {
 }
 
 ############################################
-#   Execute SQL File (line by line)        #  //  file() loads line by line, good for large imports
+#   Execute SQL File (line by line)        #  //  file() loads line by line, good for large imports - not currently used
 ############################################
 
 // https://stackoverflow.com/questions/19751354/how-to-import-sql-file-in-mysql-database-using-php
@@ -159,12 +201,30 @@ function execute_sql_file_lines($db, $sql_file) {
             // Perform the query
             if(!$rs = $db->Execute($sql)) {
 
-                $execute_sql_file_results .= '<span style="color: red">'.gettext("Error performing query").' : '. $query_name['0'].' : '.$db->ErrorMsg().'</span><br />';
+                // Start result message
+                $execute_sql_file_results .= '<span style="color: red">';
+
+                // Log mesage to setup log
+                $record = gettext("Error performing SQL query").' : '. $query_name['0'].' : '.$db->ErrorMsg();
+                write_record_to_setup_log($record, 'install');
+
+                // Finish result message
+                $execute_sql_file_results .= $record;
+                $execute_sql_file_results .= '</span><br />';
                 $error_flag = true;
 
             } else {
 
-                $execute_sql_file_results .= '<span style="color: green">'.gettext("Performed query successfully").' : '. $query_name['0']. '</span><br />';
+                // Start result message
+                $execute_sql_file_results .= '<span style="color: green">';
+
+                // Log mesage to setup log            
+                $record = gettext("Performed SQL query successfully").' : '. $query_name['0'];
+                write_record_to_setup_log($record, 'install');
+
+                // Finish result message
+                $execute_sql_file_results .= $record;
+                $execute_sql_file_results .= '</span><br />';
 
             }            
                         
@@ -180,18 +240,71 @@ function execute_sql_file_lines($db, $sql_file) {
 
     if($error_flag) {
 
-        $execute_sql_file_results .= '<br><div style="color: red;">'.gettext("Database import failed. Check the logs.").'</div>';
+        // Start final message
+        $execute_sql_file_results .= '<br><div style="color: red;">';
+        
+        // Log mesage to setup log
+        $record = gettext("One or more SQL rule has failed. Check the logs.");
+        write_record_to_setup_log($record, 'install');
+        
+        // Finish result message
+        $execute_sql_file_results .= $record;
+        $execute_sql_file_results .= '</div>';
+        
+        // Output message via smarty
         $smarty->assign('execute_sql_file_results', $execute_sql_file_results);
+        
         return false;
 
     } else {
 
-        $execute_sql_file_results .= '<br><div style="color: green;">'.gettext("All Tables imported successfully").'</div>';
+        // Start final message
+        $execute_sql_file_results .= '<br><div style="color: green;">';
+                
+        // Log mesage to setup log
+        $record = gettext("All SQL rules have run successfully.");
+        write_record_to_setup_log($record, 'install');
+        
+        // Finish result message
+        $execute_sql_file_results .= $record;
+        $execute_sql_file_results .= '</div>';
+        
+        // Output message via smarty
         $smarty->assign('execute_sql_file_results', $execute_sql_file_results);
+        
         return true;
 
     }
         
+}
+
+############################################
+#  Write a record to the Setup Log         #    // cannot be turned off - install/migrate/upgrade
+############################################
+
+function write_record_to_setup_log($record, $setup_type) {
+    
+    // Login User - substituting qwcrm user for the traditional apache HTTP Authentication
+    /*if(!QFactory::getUser()->login_username) {
+        $username = '-';
+    } else {
+        $username = QFactory::getUser()->login_username;  
+    }*/
+    
+    // Build log entry - perhaps use the apache time stamp below
+    $log_entry = $_SERVER['REMOTE_ADDR'].','.QFactory::getUser()->login_username.','.date("[d/M/Y:H:i:s O]", time()).','.QFactory::getUser()->login_user_id.','.$setup_type.','.$record."\r\n";
+    
+    // Write log entry  
+    if(!$fp = fopen(SETUP_LOG, 'a')) {        
+        force_error_page($_GET['page'], 'file', __FILE__, __FUNCTION__, '', '', gettext("Could not open the Setup Log to save the record."));
+        exit;
+    }
+    
+    fwrite($fp, $log_entry);
+    fclose($fp);
+    
+    return;
+    
 }
 
 ############################################
@@ -203,10 +316,10 @@ function check_database_connection($db, $db_host, $db_user, $db_pass, $db_name) 
     // create ADOdb database connection
     $db->Connect($db_host, $db_user, $db_pass, $db_name);
     
-    if(!$db->isConnected()) {                
-        return false;
-    } else {    
-        return true;
+    if(!$db->isConnected()) {
+        return false;        
+    } else {  
+        return true;        
     }
     
 }
@@ -259,7 +372,7 @@ function set_workorder_start_number($db, $start_number) {
     
     $sql = "ALTER TABLE ".PRFX."workorder auto_increment =".$start_number ;
 
-    $db->execute($sql);
+    $db->execute($sql);    
     
     return;
     
@@ -273,7 +386,7 @@ function set_invoice_start_number($db, $start_number) {
     
     $sql = "ALTER TABLE ".PRFX."invoice auto_increment =".$start_number ;
 
-    $db->execute($sql);
+    $db->execute($sql);   
     
     return;
     
@@ -283,10 +396,10 @@ function set_invoice_start_number($db, $start_number) {
 #   Install database                       # // this imports a phpMyAdmin .sql exported file (preg_match method)
 ############################################
 
-function install_database($db) {
+function install_database($db) {    
     
     return execute_sql_file($db, SQL_DIR.'install/install_qwcrm.sql');
-    
+   
 }
 
 /** Migrate **/

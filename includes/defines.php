@@ -54,3 +54,4 @@ define('ACTIVITY_LOG',              LOGS_DIR.'activity.log'         );
 define('EMAIL_ERROR_LOG',           LOGS_DIR.'email_error.log'      );
 define('EMAIL_TRANSPORT_LOG',       LOGS_DIR.'email_transport.log'  );
 define('ERROR_LOG',                 LOGS_DIR.'error.log'            );
+define('SETUP_LOG',                 LOGS_DIR.'setup.log'            );
