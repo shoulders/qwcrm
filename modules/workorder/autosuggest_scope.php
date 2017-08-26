@@ -9,16 +9,9 @@
 // Prevent direct Access
 defined('_QWEXEC') or die;
 
-// Prevent direct access to this page except from workorder:new or workorder:details_edit_description
-if(check_page_accessed_via_qwcrm('workorder:new') || check_page_accessed_via_qwcrm('workorder:details_edit_description')) {
-
-    // valid page has referred the autosuggest
-    
-} else {
-    
-    // referer is not in the allowed list
-    die();
-    
+// Prevent direct access to this page - Pexcept from workorder:new or workorder:details_edit_description
+if(!check_page_accessed_via_qwcrm('workorder:new') || !check_page_accessed_via_qwcrm('workorder:details_edit_description')) {
+    die(gettext("No Direct Access Allowed"));    
 }
     
 // Is there a posted query string and is the string length greater than 0?

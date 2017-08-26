@@ -13,8 +13,7 @@ require(INCLUDES_DIR.'modules/workorder.php');
 
 // Prevent direct access to this page
 if(!check_page_accessed_via_qwcrm()) {
-    force_page('workorder', 'search', 'warning_msg='.gettext("No Direct Access Allowed"));
-    exit;
+    die(gettext("No Direct Access Allowed"));
 }
 
 // Check if we have a workorder_id
