@@ -41,7 +41,7 @@
                                             <a href="index.php?page=customer:note_edit&customer_note_id={$customer_notes[n].customer_note_id}">
                                                 <img src="{$theme_images_dir}icons/16x16/small_edit.gif" onMouseOver="ddrivetip('{t}Edit the Note{/t}');" onMouseOut="hideddrivetip();">                                                 
                                             </a>
-                                            <a href="index.php?page=customer:note_delete&customer_note_id={$customer_notes[n].customer_note_id}" oNclick="return confirmDelete('{t}Are you sure you want to delete this customer note?{/t}');">
+                                            <a href="index.php?page=customer:note_delete&customer_note_id={$customer_notes[n].customer_note_id}" oNclick="return confirmChoice('{t}Are you sure you want to delete this customer note?{/t}');">
                                                 <img src="{$theme_images_dir}icons/16x16/small_edit.gif" onMouseOver="ddrivetip('{t}Delete the Note{/t}');" onMouseOut="hideddrivetip();">                                                 
                                             </a>
                                         {/if}

@@ -134,7 +134,7 @@
                             <table>
                                 <tr>
                                     <td width="50%"><button type="submit" name="submit" value="update">{t}Submit{/t}</button></td>
-                                    <td width="50%"><button type="submit" name="submit" value="reset_default" onclick="return confirmDelete('{t}Are you sure you want to reset the permissions to their defaults?{/t}');">{t}Reset to default Permissions{/t}</button></td>    
+                                    <td width="50%"><button type="submit" name="submit" value="reset_default" onclick="return confirmChoice('{t}Are you sure you want to reset the permissions to their defaults?{/t}');">{t}Reset to default Permissions{/t}</button></td>    
                                 </tr>
                             </table>
                         </td>

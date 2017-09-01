@@ -249,8 +249,8 @@ function clearSystemMessages() {
     
 }
 
-// A standard delete confirmation dialogue - return confirmDelete(msg);
-function confirmDelete(msg) {
+// A standard confirmation dialogue - e.g. return confirmChoice(msg);
+function confirmChoice(msg) {
     
     var choice = confirm(msg);
     if (choice)

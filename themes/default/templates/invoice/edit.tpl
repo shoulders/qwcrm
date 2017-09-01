@@ -463,7 +463,7 @@
                                                         <!-- Print Buttons -->   
                                                         <button type="button" onClick="window.open('index.php?page=invoice:print&invoice_id={$invoice_details.invoice_id}&print_type=print_html&print_content=invoice&theme=print');">{t}Print HTML{/t}</button>
                                                         <button type="button" onClick="window.open('index.php?page=invoice:print&invoice_id={$invoice_details.invoice_id}&print_type=print_pdf&print_content=invoice&theme=print');"><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">{t}Print PDF{/t}</button>
-                                                        <button type="button" onClick="$.ajax( { url:'index.php?page=invoice:print&invoice_id={$invoice_details.invoice_id}&print_type=email_pdf&print_content=invoice&theme=print', success: function(data) { $('body').append(data); } } );"><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">{t}Email PDF{/t}</button>
+                                                        <button type="button" onClick="confirmChoice('Are you sure you want to email this invoice to the customer?') && $.ajax( { url:'index.php?page=invoice:print&invoice_id={$invoice_details.invoice_id}&print_type=email_pdf&print_content=invoice&theme=print', success: function(data) { $('body').append(data); } } );"><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">{t}Email PDF{/t}</button>
                                                         <button type="button" onClick="window.open('index.php?page=invoice:print&invoice_id={$invoice_details.invoice_id}&print_type=print_html&print_content=customer_envelope&theme=print');">{t}Print Customer Envelope{/t}</button>                                            
 
                                                         {if $invoice_details.balance > 0}
@@ -557,7 +557,7 @@
                                                                     <td>{$currency_sym}{$labour_items[l].amount|string_format:"%.2f"}</td>
                                                                     <td>{$currency_sym}{$labour_items[l].sub_total|string_format:"%.2f"}</td>
                                                                     <td>
-                                                                        <a href="index.php?page=invoice:delete_labour&labour_id={$labour_items[l].invoice_labour_id}" onclick="return confirmDelete('{t}Are you Sure you want to delete this Labour Record? This will permanently remove the record from the database.{/t}');">
+                                                                        <a href="index.php?page=invoice:delete_labour&labour_id={$labour_items[l].invoice_labour_id}" onclick="return confirmChoice('{t}Are you Sure you want to delete this Labour Record? This will permanently remove the record from the database.{/t}');">
                                                                             <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{t}Delete Labour Record{/t}</b>');" onMouseOut="hideddrivetip();">
                                                                         </a>
                                                                     </td>
@@ -616,7 +616,7 @@
                                                                     <td>{$currency_sym}{$parts_items[p].amount|string_format:"%.2f"}</td>
                                                                     <td>{$currency_sym}{$parts_items[p].sub_total|string_format:"%.2f"}</td>
                                                                     <td>
-                                                                        <a href="index.php?page=invoice:delete_parts&parts_id={$parts_items[p].invoice_parts_id}" onclick="return confirmDelete('{t}Are you Sure you want to delete this Parts Record? This will permanently remove the record from the database.{/t}');">
+                                                                        <a href="index.php?page=invoice:delete_parts&parts_id={$parts_items[p].invoice_parts_id}" onclick="return confirmChoice('{t}Are you Sure you want to delete this Parts Record? This will permanently remove the record from the database.{/t}');">
                                                                             <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{t}Delete Parts Record{/t}</b>');" onMouseOut="hideddrivetip();">
                                                                         </a>
                                                                     </td>
@@ -675,7 +675,7 @@
                                                             <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice_details.tax_amount|string_format:"%.2f"}</td>                                                            
                                                         </tr>
                                                         <tr>
-                                                            <td class="olotd4" width="80%" align="right"><b>{t}Total{/t} ({t}Gross{/t})</b></td>
+                                                            <td class="olotd4" width="80%" align="right"><b>{t}Gross{/t} ({t}Total{/t})</b></td>
                                                             <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice_details.gross_amount|string_format:"%.2f"}</td>
                                                         </tr>
                                                     </table>

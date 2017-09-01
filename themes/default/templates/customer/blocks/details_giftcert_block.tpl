@@ -42,7 +42,7 @@
             <td class="olotd4">
                 <a href="index.php?page=giftcert:details&giftcert_id={$active_giftcerts[i].giftcert_id}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" border="0" onMouseOver="ddrivetip('{t}View Details{/t}');" onMouseOut="hideddrivetip();"></a>&nbsp;
                 <a href="index.php?page=giftcert:edit&giftcert_id={$active_giftcerts[i].giftcert_id}"><img src="{$theme_images_dir}icons/16x16/small_edit_employee.gif" border="0" onMouseOver="ddrivetip('{t}Edit{/t}');" onMouseOut="hideddrivetip();"></a>&nbsp;
-                <a href="index.php?page=giftcert:delete&giftcert_id={$active_giftcerts[i].giftcert_id}" onclick="return confirmDelete('{t}Are you Sure you want to delete this Gift Certificate?{/t}');">
+                <a href="index.php?page=giftcert:delete&giftcert_id={$active_giftcerts[i].giftcert_id}" onclick="return confirmChoice('{t}Are you Sure you want to delete this Gift Certificate?{/t}');">
                     <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{t}Delete Gift Certificate{/t}</b>');" onMouseOut="hideddrivetip();">
                 </a>
             </td>
@@ -86,7 +86,7 @@
             <td class="olotd4">
                 <a href="index.php?page=giftcert:details&giftcert_id={$redeemed_giftcerts[i].giftcert_id}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif"  border="0" onMouseOver="ddrivetip('{t}View Details{/t}');" onMouseOut="hideddrivetip();"></a>&nbsp;
                 <a href="index.php?page=giftcert:edit&giftcert_id={$redeemed_giftcerts[i].giftcert_id}"><img src="{$theme_images_dir}icons/16x16/small_edit_employee.gif" border="0" onMouseOver="ddrivetip('{t}Edit{/t}');" onMouseOut="hideddrivetip();"></a>&nbsp;
-                <a href="index.php?page=giftcert:delete&giftcert_id={$redeemed_giftcerts[i].giftcert_id}" onclick="return confirmDelete('{t}Are you Sure you want to delete this Gift Certificate?{/t}');">
+                <a href="index.php?page=giftcert:delete&giftcert_id={$redeemed_giftcerts[i].giftcert_id}" onclick="return confirmChoice('{t}Are you Sure you want to delete this Gift Certificate?{/t}');">
                     <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{t}Delete Gift Certificate{/t}</b>');" onMouseOut="hideddrivetip();">
                 </a>
             </td>

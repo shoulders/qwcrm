@@ -74,7 +74,7 @@
                                     <!-- if work order is created and open, you can delete it, otherwise you cannot -->                                        
                                     {if $allowed_to_delete}
                                         <form method="post" action="index.php?page=workorder:status">
-                                            <input name="delete" value="{t}Delete{/t}" type="submit" onClick="return confirmDelete('{t}Are you sure you want to delete this Workorder?{/t}');">
+                                            <input name="delete" value="{t}Delete{/t}" type="submit" onClick="return confirmChoice('{t}Are you sure you want to delete this Workorder?{/t}');">
                                             <input type="hidden" name="workorder_id" value="{$workorder_id}">
                                         </form>                                            
                                     {else}
