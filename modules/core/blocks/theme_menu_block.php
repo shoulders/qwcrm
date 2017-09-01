@@ -13,11 +13,5 @@ require_once(INCLUDES_DIR.'modules/core_menu.php');
 // Get Workorder Status
 $smarty->assign('menu_workorder_status', menu_get_single_workorder_status($db, $workorder_id)); 
 
-// Workorder and Invoice counts
-$smarty->assign('menu_workorders_open_count',   menu_count_workorders($db, 'open')          );
-$smarty->assign('menu_workorders_closed_count', menu_count_workorders($db, 'closed')        );
-$smarty->assign('menu_invoices_unpaid_count',   menu_count_invoices_with_status($db, '0')   );
-$smarty->assign('menu_invoices_paid_count',     menu_count_invoices_with_status($db, '1')   );
-
 // Display menu block
 $BuildPage .= $smarty->fetch('core/blocks/theme_menu_block.tpl');

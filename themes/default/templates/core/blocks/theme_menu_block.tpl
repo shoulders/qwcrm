@@ -46,8 +46,8 @@
                     <a href="index.php?page=schedule:day"><img src="{$theme_images_dir}icons/16x16/Calendar.gif" alt="" border="0" height="14" width="14" /> {t}Schedules{/t}</a>
                     {if $login_usergroup_id == 1 || $login_usergroup_id == 2 || $login_usergroup_id == 3}
                         <a href="index.php?page=workorder:overview"><img src="{$theme_images_dir}tick.png" alt="" border="0" height="14" width="14" /> {t}Overview{/t} <b><font color="red"></font></b></a>                    
-                        <a href="index.php?page=workorder:open"><img src="{$theme_images_dir}tick.png" alt="" border="0" height="14" width="14" /> {t}Open{/t} <b><font color="red">({$menu_workorders_open_count})</font></b></a>
-                        <a href="index.php?page=workorder:closed"><img src="{$theme_images_dir}icons/close.gif" alt="" border="0" height="14" width="14" /> {t}Closed{/t} <b><font color="red">({$menu_workorders_closed_count})</font></b></a>
+                        <a href="index.php?page=workorder:open"><img src="{$theme_images_dir}tick.png" alt="" border="0" height="14" width="14" /> {t}Open{/t}</a>
+                        <a href="index.php?page=workorder:closed"><img src="{$theme_images_dir}icons/close.gif" alt="" border="0" height="14" width="14" /> {t}Closed{/t}</a>
                         <a href="index.php?page=workorder:status&workorder_id={$workorder_id}"><img src="{$theme_images_dir}icons/status.gif" alt="" border="0" height="14" width="14" /> {t}Status{/t}</a>
                     {/if}
                 </div>
@@ -58,8 +58,8 @@
                     {if $customer_id != ''}                        
                         <a href="index.php?page=invoice:new&customer_id={$customer_id}&invoice_type=invoice-only"><img src="{$theme_images_dir}icons/invoice.png" alt="" border="0" height="14" width="14" /> {t}Invoice Only{/t}</a>
                     {/if}
-                    <a href="index.php?page=invoice:paid"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {t}Paid Invoices{/t} <b><font color="red">({$menu_invoices_paid_count})</font></b></a>
-                    <a href="index.php?page=invoice:unpaid"><img src="{$theme_images_dir}icons/warning.gif" alt="" border="0" height="14" width="14" /> {t}Unpaid Invoices{/t} <b><font color="red">({$menu_invoices_unpaid_count})</font></b></a>                    
+                    <a href="index.php?page=invoice:paid"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {t}Paid Invoices{/t}</a>
+                    <a href="index.php?page=invoice:unpaid"><img src="{$theme_images_dir}icons/warning.gif" alt="" border="0" height="14" width="14" /></a>                    
                 </div>
                 
                 <!-- Gift Certificates -->
