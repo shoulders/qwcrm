@@ -50,17 +50,9 @@
                                         <tr>
                                             <td class="menutd"><b>{t}Type{/t}</b></td>
                                             <td class="menutd">
-                                                {if $supplier_details.type == 1}{t}SUPPLIER_TYPE_1{/t}{/if}
-                                                {if $supplier_details.type == 2}{t}SUPPLIER_TYPE_2{/t}{/if}
-                                                {if $supplier_details.type == 3}{t}SUPPLIER_TYPE_3{/t}{/if}
-                                                {if $supplier_details.type == 4}{t}SUPPLIER_TYPE_4{/t}{/if}
-                                                {if $supplier_details.type == 5}{t}SUPPLIER_TYPE_5{/t}{/if}
-                                                {if $supplier_details.type == 6}{t}SUPPLIER_TYPE_6{/t}{/if}
-                                                {if $supplier_details.type == 7}{t}SUPPLIER_TYPE_7{/t}{/if}
-                                                {if $supplier_details.type == 8}{t}SUPPLIER_TYPE_8{/t}{/if}
-                                                {if $supplier_details.type == 9}{t}SUPPLIER_TYPE_9{/t}{/if}
-                                                {if $supplier_details.type == 10}{t}SUPPLIER_TYPE_10{/t}{/if}
-                                                {if $supplier_details.type == 11}{t}SUPPLIER_TYPE_11{/t}{/if}
+                                                {section name=s loop=$supplier_types}    
+                                                    {if $supplier_details.type == $supplier_types[s].supplier_type_id}{t}{$supplier_types[s].display_name}{/t}{/if}        
+                                                {/section}    
                                             </td>
                                             <td class="menutd" ><b>{t}Fax{/t}</b></td>
                                             <td class="menutd">{$supplier_details.fax}</td>

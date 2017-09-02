@@ -9,6 +9,7 @@
 defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'modules/expense.php');
+require(INCLUDES_DIR.'modules/payment.php');
 
 // Predict the next expense_id
 $new_record_id = last_expense_id_lookup($db) +1;
@@ -22,13 +23,13 @@ if((isset($VAR['submit'])) || (isset($VAR['submitandnew']))) {
     if (isset($VAR['submitandnew'])){
 
          // Load the new expense page
-         force_page('expense', 'new');
+         force_page('expense', 'new', 'information_msg='.gettext("Expense added successfully."));
          exit;
 
     } else {
 
         // load expense details page
-        force_page('expense', 'details&expense_id='.$expense_id, 'information_msg='.gettext("Expense added successfully."));
+        force_page('expense', 'details', 'expense_id='.$expense_id.'&information_msg='.gettext("Expense added successfully."));
         exit;
 
      }        
@@ -36,6 +37,8 @@ if((isset($VAR['submit'])) || (isset($VAR['submitandnew']))) {
 } else {
     
     // Build the page
+    $smarty->assign('expense_types', get_expense_types($db));
+    $smarty->assign('payment_methods', get_payment_manual_methods($db));
     $smarty->assign('new_record_id', $new_record_id);
     $smarty->assign('tax_rate', get_company_details($db, 'tax_rate'));
     $BuildPage .= $smarty->fetch('expense/new.tpl');

@@ -61,32 +61,22 @@
                                                         <tr>
                                                             <td align="right"><b>{t}Type{/t}</b><span style="color: #ff0000"> *</span></td>
                                                             <td>
-                                                                <select id="refundType" name="type" class="olotd5" col="30" style="width: 150px" value="{$refund_details.type}"/>
-                                                                    <option value="1"{if $refund_details.type== '1'} selected{/if}>{t}REFUND_TYPE_1{/t}</option>
-                                                                    <option value="2"{if $refund_details.type== '2'} selected{/if}>{t}REFUND_TYPE_2{/t}</option>
-                                                                    <option value="3"{if $refund_details.type== '3'} selected{/if}>{t}REFUND_TYPE_3{/t}</option>
-                                                                    <option value="4"{if $refund_details.type== '4'} selected{/if}>{t}REFUND_TYPE_4{/t}</option>
-                                                                    <option value="5"{if $refund_details.type== '5'} selected{/if}>{t}REFUND_TYPE_5{/t}</option>                                                                        
+                                                                <select id="type" name="type" class="olotd5"> 
+                                                                    {section name=s loop=$refund_types}    
+                                                                        <option value="{$refund_types[s].refund_type_id}"{if $refund_details.type == $refund_types[s].refund_type_id} selected{/if}>{t}{$refund_types[s].display_name}{/t}</option>
+                                                                    {/section}    
                                                                 </select>
                                                             </td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{t}Payment Method{/t}</b><span style="color: #ff0000"> *</span></td>
                                                             <td>
-                                                                <select id="refundPaymentMethod" name="payment_method" class="olotd5" style="width: 150px" value="{$refund_details.payment_method}"/>
-                                                                    <option value="1"{if $refund_details.method == '1'} selected{/if}>{t}REFUND_PAYMENT_METHOD_1{/t}</option>
-                                                                    <option value="2"{if $refund_details.method == '2'} selected{/if}>{t}REFUND_PAYMENT_METHOD_2{/t}</option>
-                                                                    <option value="3"{if $refund_details.method == '3'} selected{/if}>{t}REFUND_PAYMENT_METHOD_3{/t}</option>
-                                                                    <option value="4"{if $refund_details.method == '4'} selected{/if}>{t}REFUND_PAYMENT_METHOD_4{/t}</option>
-                                                                    <option value="5"{if $refund_details.method == '5'} selected{/if}>{t}REFUND_PAYMENT_METHOD_5{/t}</option>
-                                                                    <option value="6"{if $refund_details.method == '6'} selected{/if}>{t}REFUND_PAYMENT_METHOD_6{/t}</option>
-                                                                    <option value="7"{if $refund_details.method == '7'} selected{/if}>{t}REFUND_PAYMENT_METHOD_7{/t}</option>
-                                                                    <option value="8"{if $refund_details.method == '8'} selected{/if}>{t}REFUND_PAYMENT_METHOD_8{/t}</option>
-                                                                    <option value="9"{if $refund_details.method == '9'} selected{/if}>{t}REFUND_PAYMENT_METHOD_9{/t}</option>
-                                                                    <option value="10"{if $refund_details.method == '10'} selected{/if}>{t}REFUND_PAYMENT_METHOD_10{/t}</option>
-                                                                    <option value="11"{if $refund_details.method == '11'} selected{/if}>{t}REFUND_PAYMENT_METHOD_11{/t}</option>
-                                                                </select>
-                                                            </td>
+                                                            <select id="payment_method" name="payment_method" class="olotd5">
+                                                                {section name=s loop=$payment_methods}    
+                                                                    <option value="{$payment_methods[s].manual_method_id}"{if $refund_details.payment_method == $payment_methods[s].manual_method_id} selected{/if}>{t}{$payment_methods[s].display_name}{/t}</option>
+                                                                {/section} 
+                                                            </select>
+                                                        </td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{t}Net Amount{/t}</b></td>

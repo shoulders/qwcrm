@@ -22,6 +22,7 @@ if(isset($VAR['submit'])) {
 } else {
     
     // Build the page
+    $smarty->assign('customer_types', get_customer_types($db));
     $BuildPage .= $smarty->fetch('customer/new.tpl');
 
 }

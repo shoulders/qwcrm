@@ -71,16 +71,9 @@
                             </p>
                             <p>
                                 <b>{t}Type{/t}: </b> 
-                                {if $customer_details.type == '1'}{t}CUSTOMER_TYPE_1{/t}{/if} 
-                                {if $customer_details.type == '2'}{t}CUSTOMER_TYPE_2{/t}{/if} 
-                                {if $customer_details.type == '3'}{t}CUSTOMER_TYPE_3{/t}{/if} 
-                                {if $customer_details.type == '4'}{t}CUSTOMER_TYPE_4{/t}{/if} 
-                                {if $customer_details.type == '5'}{t}CUSTOMER_TYPE_5{/t}{/if} 
-                                {if $customer_details.type == '6'}{t}CUSTOMER_TYPE_6{/t}{/if} 
-                                {if $customer_details.type == '7'}{t}CUSTOMER_TYPE_7{/t}{/if}
-                                {if $customer_details.type == '8'}{t}CUSTOMER_TYPE_8{/t}{/if}
-                                {if $customer_details.type == '9'}{t}CUSTOMER_TYPE_9{/t}{/if} 
-                                {if $customer_details.type == '10'}{t}CUSTOMER_TYPE_10{/t}{/if}                            
+                                {section name=s loop=$customer_types}    
+                                    {if $customer_details.type == $customer_types[s].customer_type_id}{t}{$customer_types[s].display_name}{/t}{/if}        
+                                {/section}                             
                             </p>
                         </td>
                     </tr>

@@ -252,6 +252,25 @@ function get_expense_details($db, $expense_id, $item = null){
     
 }
 
+#####################################
+#    Get Expense Types              #
+#####################################
+
+function get_expense_types($db) {
+    
+    $sql = "SELECT * FROM ".PRFX."expense_types";
+
+    if(!$rs = $db->execute($sql)){        
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get expense types."));
+        exit;
+    } else {
+        
+        return $rs->GetArray();
+        
+    }    
+    
+}
+
 /** Update Functions **/
 
 #####################################

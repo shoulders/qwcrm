@@ -9,6 +9,7 @@
 defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'modules/refund.php');
+require(INCLUDES_DIR.'modules/payment.php');
 
 // Check if we have a refund_id
 if($refund_id == '') {
@@ -27,5 +28,7 @@ if(isset($VAR['submit'])) {
 }   
 
 // Build the page
+$smarty->assign('refund_types', get_refund_types($db));
+$smarty->assign('payment_methods', get_payment_manual_methods($db));
 $smarty->assign('refund_details', get_refund_details($db, $refund_id));
 $BuildPage .= $smarty->fetch('refund/edit.tpl');

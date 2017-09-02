@@ -67,18 +67,10 @@
                                                                         <tr>
                                                                             <td align="right"><b>{t}Type{/t}</b><span style="color: #ff0000"> *</span></td>
                                                                             <td>
-                                                                                <select class="olotd5" name="type" col="30" style="width: 150px">
-                                                                                    <option value="1">{t}SUPPLIER_TYPE_1{/t}</option>
-                                                                                    <option value="2">{t}SUPPLIER_TYPE_2{/t}</option>
-                                                                                    <option value="3">{t}SUPPLIER_TYPE_3{/t}</option>
-                                                                                    <option value="4">{t}SUPPLIER_TYPE_4{/t}</option>
-                                                                                    <option value="5">{t}SUPPLIER_TYPE_5{/t}</option>
-                                                                                    <option value="6">{t}SUPPLIER_TYPE_6{/t}</option>
-                                                                                    <option value="7">{t}SUPPLIER_TYPE_7{/t}</option>
-                                                                                    <option value="8">{t}SUPPLIER_TYPE_8{/t}</option>
-                                                                                    <option value="9">{t}SUPPLIER_TYPE_9{/t}</option>
-                                                                                    <option value="10">{t}SUPPLIER_TYPE_10{/t}</option>
-                                                                                    <option value="11">{t}SUPPLIER_TYPE_11{/t}</option>                                                                                  
+                                                                                <select id="type" name="type" class="olotd5">               
+                                                                                    {section name=s loop=$supplier_types}
+                                                                                        <option value="{$supplier_types[s].supplier_type_id}"{if $supplier_details.type == $supplier_types[s].supplier_type_id} selected{/if}>{t}{$supplier_types[s].display_name}{/t}</option>
+                                                                                    {/section}
                                                                                 </select>
                                                                             </td>
                                                                         </tr>

@@ -122,17 +122,9 @@
                                                             <td class="olotd4" nowrap><a href="index.php?page=supplier:details&supplier_id={$search_result[i].supplier_id}">{$search_result[i].supplier_id}</a></td>                                                            
                                                             <td class="olotd4" nowrap>{$search_result[i].display_name}</td>                                                                                                                      
                                                             <td class="olotd4" nowrap>
-                                                                {if $search_result[i].type == 1}{t}SUPPLIER_TYPE_1{/t}{/if}
-                                                                {if $search_result[i].type == 2}{t}SUPPLIER_TYPE_2{/t}{/if}
-                                                                {if $search_result[i].type == 3}{t}SUPPLIER_TYPE_3{/t}{/if}
-                                                                {if $search_result[i].type == 4}{t}SUPPLIER_TYPE_4{/t}{/if}
-                                                                {if $search_result[i].type == 5}{t}SUPPLIER_TYPE_5{/t}{/if}
-                                                                {if $search_result[i].type == 6}{t}SUPPLIER_TYPE_6{/t}{/if}
-                                                                {if $search_result[i].type == 7}{t}SUPPLIER_TYPE_7{/t}{/if}
-                                                                {if $search_result[i].type == 8}{t}SUPPLIER_TYPE_8{/t}{/if}
-                                                                {if $search_result[i].type == 9}{t}SUPPLIER_TYPE_9{/t}{/if}
-                                                                {if $search_result[i].type == 10}{t}SUPPLIER_TYPE_10{/t}{/if}
-                                                                {if $search_result[i].type == 11}{t}SUPPLIER_TYPE_11{/t}{/if}
+                                                                {section name=s loop=$supplier_types}    
+                                                                    {if $search_result[i].type == $supplier_types[s].supplier_type_id}{t}{$supplier_types[s].display_name}{/t}{/if}        
+                                                                {/section}    
                                                             </td>
                                                             <td class="olotd4" nowrap>{$search_result[i].zip}</td>
                                                             <td class="olotd4" nowrap>{$search_result[i].country}</td>                                                            

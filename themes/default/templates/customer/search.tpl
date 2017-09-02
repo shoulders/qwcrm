@@ -125,10 +125,9 @@
                                                             <td class="olotd4" nowrap>{$search_result[i].last_name}</td>
                                                             <td class="olotd4" nowrap><img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{t}Mobile{/t}: </b>{$search_result[i].mobile_phone}<br><b>{t}Fax{/t}:</b>{$search_result[i].fax}');" onMouseOut="hideddrivetip();">{$search_result[i].primary_phone}</td>                                                            
                                                             <td class="olotd4" nowrap>
-                                                                {if $search_result[i].type ==1}{t}CUSTOMER_TYPE_1{/t}{/if}
-                                                                {if $search_result[i].type ==2}{t}CUSTOMER_TYPE_2{/t}{/if}
-                                                                {if $search_result[i].type ==3}{t}CUSTOMER_TYPE_3{/t}{/if}
-                                                                {if $search_result[i].type ==4}{t}CUSTOMER_TYPE_4{/t}{/if}
+                                                                {section name=s loop=$customer_types}    
+                                                                    {if $search_result[i].type == $customer_types[s].customer_type_id}{t}{$customer_types[s].display_name}{/t}{/if}        
+                                                                {/section}   
                                                             </td>
                                                             <td class="olotd4" nowrap><a href="mailto:{$search_result[i].email}"><font class="blueLink">{$search_result[i].email}</font></a></td>                                                            
                                                             <td class="olotd4" nowrap>

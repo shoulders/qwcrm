@@ -46,10 +46,10 @@
                                                 <td colspan="2">
                                                     <table>
                                                         <caption><b><font color="red">{t}Available Payment Types{/t}</font></b></caption>
-                                                        {section name=q loop=$payment_methods_status}
+                                                        {section name=q loop=$payment_system_methods}
                                                             <tr>
-                                                                <td colspan="2"><b>{$payment_methods_status[q].method}</b></td>
-                                                                <td>{t}Active{/t}: <input type="checkbox" name="{$payment_methods_status[q].smarty_tpl_key}" {if $payment_methods_status[q].active == 1} checked {/if} value=1 class="olotd5"></td>
+                                                                <td colspan="2"><b>{t}{$payment_system_methods[q].display_name}{/t}</b></td>
+                                                                <td><input type="checkbox" name="{$payment_system_methods[q].system_method_id}" {if $payment_system_methods[q].active == 1} checked {/if} value=1 class="olotd5"></td>
                                                             </tr>
                                                         {/section}
                                                     </table>

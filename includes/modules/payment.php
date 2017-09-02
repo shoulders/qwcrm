@@ -178,14 +178,14 @@ function get_payment_details($db, $item = null){
 }
 
 #########################################
-#   Get get active payment methods      # // If i dont have METHOD in the select the array is not built correctly
+#   Get get active payment methods      # // If i dont have METHOD in the select, the array is not built correctly
 #########################################
 
-function get_active_payment_methods($db) {
+function get_active_payment_system_methods($db) {
     
     $sql = "SELECT
-            smarty_tpl_key, active
-            FROM ".PRFX."payment_methods
+            system_method_id, active
+            FROM ".PRFX."payment_system_methods
             WHERE active='1'";    
     
     if(!$rs = $db->execute($sql)){        
@@ -200,18 +200,38 @@ function get_active_payment_methods($db) {
 }
 
 #####################################
-#    Get Payment methods status     #
+#    Get Payment system methods     #
 #####################################
 
-function get_payment_methods_status($db) {
+function get_payment_system_methods($db) {
     
-    $sql = "SELECT * FROM ".PRFX."payment_methods";
+    $sql = "SELECT * FROM ".PRFX."payment_system_methods";
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get payment methods status."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get payment system methods."));
         exit;
     } else {
         
+        return $rs->GetArray();
+        
+    }    
+    
+}
+
+#####################################
+#    Get Payment manual methods     #
+#####################################
+
+function get_payment_manual_methods($db) {
+    
+    $sql = "SELECT * FROM ".PRFX."payment_manual_methods";
+
+    if(!$rs = $db->execute($sql)){        
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get payment manual methods."));
+        exit;
+    } else {
+        
+        //return $rs->GetRowAssoc();
         return $rs->GetArray();
         
     }    
@@ -323,28 +343,31 @@ function update_payment_settings($db, $VAR) {
 #   Update Payment Methods status   #
 #####################################
 
-function update_payment_methods_status($db, $VAR) {
+function update_payment_system_methods_status($db, $VAR) {
     
-    // Array of all valid payment methods
-    $payment_methods = array(
-                            array('smarty_tpl_key'=>'credit_card_active',       'payment_method_status'=>$VAR['credit_card_active']      ),
-                            array('smarty_tpl_key'=>'cheque_active',            'payment_method_status'=>$VAR['cheque_active']           ),
-                            array('smarty_tpl_key'=>'cash_active',              'payment_method_status'=>$VAR['cash_active']             ),
-                            array('smarty_tpl_key'=>'gift_certificate_active',  'payment_method_status'=>$VAR['gift_certificate_active'] ),
-                            array('smarty_tpl_key'=>'paypal_active',            'payment_method_status'=>$VAR['paypal_active']           ),
-                            array('smarty_tpl_key'=>'direct_deposit_active',    'payment_method_status'=>$VAR['direct_deposit_active']   )    
-                        );
+    // Array of all valid payment methods (name / active state)
+    $payment_system_methods =
+            array(
+                array('system_method_id'=>'credit_card_active',       'payment_method_active'=>$VAR['credit_card_active']      ),
+                array('system_method_id'=>'cheque_active',            'payment_method_active'=>$VAR['cheque_active']           ),
+                array('system_method_id'=>'cash_active',              'payment_method_active'=>$VAR['cash_active']             ),
+                array('system_method_id'=>'gift_certificate_active',  'payment_method_active'=>$VAR['gift_certificate_active'] ),
+                array('system_method_id'=>'paypal_active',            'payment_method_active'=>$VAR['paypal_active']           ),
+                array('system_method_id'=>'direct_deposit_active',    'payment_method_active'=>$VAR['direct_deposit_active']   )    
+            );
    
-    // Loop throught the various payment methods and update the database
-    foreach($payment_methods as $payment_method) {
+    // Loop throught the various payment system methods and update the database
+    foreach($payment_system_methods as $payment_method) {
         
-        // make empty status = zero (not nessasary but neater)
-        if ($payment_method['payment_method_status'] == ''){$payment_method['payment_method_status'] = '0';}
+        // When not selected no value is sent - this set zero for those
+        if($payment_method['payment_method_active'] == ''){$payment_method['payment_method_active'] = '0';}
         
-        $sql = "UPDATE ".PRFX."payment_methods SET active=". $db->qstr( $payment_method['payment_method_status'] )." WHERE smarty_tpl_key=". $db->qstr( $payment_method['smarty_tpl_key'] ); 
+        $sql = "UPDATE ".PRFX."payment_system_methods
+                SET active=". $db->qstr( $payment_method['payment_method_active'] )."
+                WHERE system_method_id=". $db->qstr( $payment_method['system_method_id'] ); 
         
         if(!$rs = $db->execute($sql)) {
-            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update a payment method status."));
+            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update a payment method active state."));
             exit;
         }
         
@@ -367,7 +390,7 @@ function update_payment_methods_status($db, $VAR) {
 
 function check_payment_method_is_active($db, $method) {
     
-    $sql = "SELECT active FROM ".PRFX."payment_methods WHERE smarty_tpl_key=".$db->qstr($method);   
+    $sql = "SELECT active FROM ".PRFX."payment_system_methods WHERE system_method_id=".$db->qstr($method);   
     
     if(!$rs = $db->execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to check if the payment method is active."));

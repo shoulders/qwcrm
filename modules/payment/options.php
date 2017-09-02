@@ -14,7 +14,7 @@ require(INCLUDES_DIR.'modules/payment.php');
 if(isset($VAR['submit'])) {
     
     // Update enabled payment methods
-    update_payment_methods_status($db, $VAR);
+    update_payment_system_methods_status($db, $VAR);
     
     // Update Payment details
     update_payment_settings($db, $VAR);
@@ -25,6 +25,6 @@ if(isset($VAR['submit'])) {
 }
 
 // Build the page
-$smarty->assign('payment_methods_status',   get_payment_methods_status($db) );
+$smarty->assign('payment_system_methods',   get_payment_system_methods($db) );
 $smarty->assign('payment_settings',         get_payment_details($db)        );
 $BuildPage .= $smarty->fetch('payment/options.tpl');

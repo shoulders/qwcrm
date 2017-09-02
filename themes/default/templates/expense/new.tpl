@@ -72,50 +72,21 @@
                                                                         <tr>
                                                                             <td align="right"><b>{t}Type{/t}</b><span style="color: #ff0000"> *</span></td>
                                                                             <td>
-                                                                                <select name="type" class="olotd5" col="30" style="width: 150px;"/>
-                                                                                    <option value="1">{t}EXPENSE_TYPE_1{/t}</option>
-                                                                                    <option value="2">{t}EXPENSE_TYPE_2{/t}</option>
-                                                                                    <option value="3">{t}EXPENSE_TYPE_3{/t}</option>
-                                                                                    <option value="4">{t}EXPENSE_TYPE_4{/t}</option>
-                                                                                    <option value="5">{t}EXPENSE_TYPE_5{/t}</option>
-                                                                                    <option value="6">{t}EXPENSE_TYPE_6{/t}</option>
-                                                                                    <option value="7">{t}EXPENSE_TYPE_7{/t}</option>
-                                                                                    <option value="8">{t}EXPENSE_TYPE_8{/t}</option>
-                                                                                    <option value="9">{t}EXPENSE_TYPE_9{/t}</option>
-                                                                                    <option value="10">{t}EXPENSE_TYPE_10{/t}</option>
-                                                                                    <option value="11">{t}EXPENSE_TYPE_11{/t}</option>
-                                                                                    <option value="12">{t}EXPENSE_TYPE_12{/t}</option>
-                                                                                    <option value="13">{t}EXPENSE_TYPE_13{/t}</option>
-                                                                                    <option value="14">{t}EXPENSE_TYPE_14{/t}</option>
-                                                                                    <option value="15">{t}EXPENSE_TYPE_15{/t}</option>
-                                                                                    <option value="16">{t}EXPENSE_TYPE_16{/t}</option>
-                                                                                    <option value="17">{t}EXPENSE_TYPE_17{/t}</option>
-                                                                                    <option value="18">{t}EXPENSE_TYPE_18{/t}</option>
-                                                                                    <option value="19">{t}EXPENSE_TYPE_19{/t}</option>
-                                                                                    <option value="20">{t}EXPENSE_TYPE_20{/t}</option>
-                                                                                    <option value="21">{t}EXPENSE_TYPE_21{/t}</option>
-                                                                                    <option value="22">{t}EXPENSE_TYPE_22{/t}</option>
-                                                                                    <option value="23">{t}EXPENSE_TYPE_23{/t}</option>
-                                                                                    <option value="23">{t}EXPENSE_TYPE_23{/t}</option>
+                                                                                <select id="type" name="type" class="olotd5">
+                                                                                    {section name=s loop=$expense_types}    
+                                                                                        <option value="{$expense_types[s].expense_type_id}"{if $expense_details.type == $expense_types[s].expense_type_id} selected{/if}>{t}{$expense_types[s].display_name}{/t}</option>
+                                                                                    {/section} 
                                                                                 </select>
                                                                             </td>                                                                                
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{t}Payment Method{/t}</b><span style="color: #ff0000"> *</span></td>
                                                                             <td>
-                                                                                <select name="payment_method" class="olotd5" style="width: 150px;"/>
-                                                                                    <option value="1">{t}EXPENSE_PAYMENT_METHOD_1{/t}</option>
-                                                                                    <option value="2">{t}EXPENSE_PAYMENT_METHOD_2{/t}</option>
-                                                                                    <option value="3">{t}EXPENSE_PAYMENT_METHOD_3{/t}</option>
-                                                                                    <option value="4">{t}EXPENSE_PAYMENT_METHOD_4{/t}</option>
-                                                                                    <option value="5">{t}EXPENSE_PAYMENT_METHOD_5{/t}</option>
-                                                                                    <option value="6">{t}EXPENSE_PAYMENT_METHOD_6{/t}</option>
-                                                                                    <option value="7">{t}EXPENSE_PAYMENT_METHOD_7{/t}</option>
-                                                                                    <option value="8">{t}EXPENSE_PAYMENT_METHOD_8{/t}</option>
-                                                                                    <option value="9">{t}EXPENSE_PAYMENT_METHOD_9{/t}</option>
-                                                                                    <option value="10">{t}EXPENSE_PAYMENT_METHOD_10{/t}</option>
-                                                                                    <option value="11">{t}EXPENSE_PAYMENT_METHOD_11{/t}</option>
-                                                                                </select>                                                                                
+                                                                                <select id="payment_method" name="payment_method" class="olotd5">
+                                                                                    {section name=s loop=$payment_methods}    
+                                                                                        <option value="{$payment_methods[s].manual_method_id}"{if $expense_details.payment_method == $payment_methods[s].manual_method_id} selected{/if}>{t}{$payment_methods[s].display_name}{/t}</option>
+                                                                                    {/section} 
+                                                                                </select>                                                                            
                                                                             </td>
                                                                         </tr>                                                                                                          
                                                                         <tr>

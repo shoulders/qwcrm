@@ -9,6 +9,7 @@
 defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'modules/expense.php');
+require(INCLUDES_DIR.'modules/payment.php');
 
 // Check if we have an expense_id
 if($expense_id == '') {
@@ -26,6 +27,8 @@ if(isset($VAR['submit'])) {
 } else {
     
     // Build the page
+    $smarty->assign('expense_types', get_expense_types($db));
+    $smarty->assign('payment_methods', get_payment_manual_methods($db));
     $smarty->assign('expense_details', get_expense_details($db, $expense_id));
     $BuildPage .= $smarty->fetch('expense/edit.tpl');
     

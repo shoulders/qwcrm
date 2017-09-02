@@ -132,25 +132,15 @@
                                                             <td class="olotd4" nowrap>{$search_result[i].payee}</td>                                                                
                                                             <td class="olotd4" nowrap>{$search_result[i].date|date_format:$date_format}</td>                                                                
                                                             <td class="olotd4" nowrap>
-                                                                {if $search_result[i].type == 1}{t}REFUND_TYPE_1{/t}{/if}
-                                                                {if $search_result[i].type == 2}{t}REFUND_TYPE_2{/t}{/if}
-                                                                {if $search_result[i].type == 3}{t}REFUND_TYPE_3{/t}{/if}
-                                                                {if $search_result[i].type == 4}{t}REFUND_TYPE_4{/t}{/if}
-                                                                {if $search_result[i].type == 5}{t}REFUND_TYPE_5{/t}{/if}
+                                                                {section name=s loop=$refund_types}    
+                                                                    {if $search_result[i].type == $refund_types[s].refund_type_id}{t}{$refund_types[s].display_name}{/t}{/if}        
+                                                                {/section}   
                                                             </td>                                                                
                                                             <td class="olotd4" nowrap>
-                                                                {if $search_result[i].payment_method == 1}{t}REFUND_PAYMENT_METHOD_1{/t}{/if}
-                                                                {if $search_result[i].payment_method == 2}{t}REFUND_PAYMENT_METHOD_2{/t}{/if}
-                                                                {if $search_result[i].payment_method == 3}{t}REFUND_PAYMENT_METHOD_3{/t}{/if}
-                                                                {if $search_result[i].payment_method == 4}{t}REFUND_PAYMENT_METHOD_4{/t}{/if}
-                                                                {if $search_result[i].payment_method == 5}{t}REFUND_PAYMENT_METHOD_5{/t}{/if}
-                                                                {if $search_result[i].payment_method == 6}{t}REFUND_PAYMENT_METHOD_6{/t}{/if}
-                                                                {if $search_result[i].payment_method == 7}{t}REFUND_PAYMENT_METHOD_7{/t}{/if}
-                                                                {if $search_result[i].payment_method == 8}{t}REFUND_PAYMENT_METHOD_8{/t}{/if}
-                                                                {if $search_result[i].payment_method == 9}{t}REFUND_PAYMENT_METHOD_9{/t}{/if}
-                                                                {if $search_result[i].payment_method == 10}{t}REFUND_PAYMENT_METHOD_10{/t}{/if}
-                                                                {if $search_result[i].payment_method == 11}{t}REFUND_PAYMENT_METHOD_11{/t}{/if}
-                                                            </td>                                                                
+                                                                {section name=s loop=$payment_methods}    
+                                                                    {if $search_result[i].payment_method == $payment_methods[s].manual_method_id}{t}{$payment_methods[s].display_name}{/t}{/if}        
+                                                                {/section} 
+                                                            </td>                                                               
                                                             <td class="olotd4" nowrap>{$currency_sym} {$search_result[i].net_amount}</td>                                                               
                                                             <td class="olotd4" nowrap>{$search_result[i].tax_rate} %</td>                                                                
                                                             <td class="olotd4" nowrap>{$currency_sym} {$search_result[i].tax_amount}</td>                                                            

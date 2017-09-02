@@ -29,5 +29,6 @@ if(isset($VAR['submit'])) {
 }
 
 // Build the page
+$smarty->assign('supplier_types', get_supplier_types($db));
 $smarty->assign('supplier_details', get_supplier_details($db, $supplier_id));
 $BuildPage .= $smarty->fetch('supplier/edit.tpl');

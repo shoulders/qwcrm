@@ -9,10 +9,11 @@
 defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'modules/customer.php');
-require(INCLUDES_DIR.'modules/user.php');
-require(INCLUDES_DIR.'modules/giftcert.php');
 require(INCLUDES_DIR.'modules/invoice.php');
+require(INCLUDES_DIR.'modules/giftcert.php');
+require(INCLUDES_DIR.'modules/user.php');
 require(INCLUDES_DIR.'modules/workorder.php');
+
 
 // Check if we have a customer_id
 if($customer_id == '') {
@@ -21,6 +22,7 @@ if($customer_id == '') {
 }
 
 // Build the page
+$smarty->assign('customer_types',       get_customer_types($db)                                                                             );
 $smarty->assign('customer_details',     get_customer_details($db, $customer_id)                                                             );
 
 $smarty->assign('open_workorders',      display_workorders($db, 'DESC', false, $page_no, '25', null, null, 'open', null, $customer_id)      );

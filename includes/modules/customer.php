@@ -274,6 +274,25 @@ function get_customer_notes($db, $customer_id) {
     
 }
 
+#####################################
+#    Get Customer Types             #
+#####################################
+
+function get_customer_types($db) {
+    
+    $sql = "SELECT * FROM ".PRFX."customer_types";
+
+    if(!$rs = $db->execute($sql)){        
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get customer types."));
+        exit;
+    } else {
+        
+        return $rs->GetArray();
+        
+    }    
+    
+}
+
 /** Update Functions **/
 
 #####################################

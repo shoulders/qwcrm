@@ -14,6 +14,7 @@ require(INCLUDES_DIR.'modules/customer.php');
 $VAR['search_category'] = 'display_name';
 
 // Build the page
+$smarty->assign('customer_types',   get_customer_types($db)                                                                                             );
 $smarty->assign('search_category',  $VAR['search_category']                                                                                             );
 $smarty->assign('search_term',      $VAR['search_term']                                                                                                 );
 $smarty->assign('status',           $VAR['status']                                                                                                      );

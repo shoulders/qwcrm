@@ -72,18 +72,11 @@
                                                                         <tr>
                                                                             <td align="right"><strong>{t}Type{/t}</strong><span style="color: #ff0000">*</span></td>
                                                                             <td>
-                                                                                <select class="olotd5" name="type">
-                                                                                    <option value="1"{if $customer_details.type == 1} selected{/if}>{t}CUSTOMER_TYPE_1{/t}</option>
-                                                                                    <option value="2"{if $customer_details.type == 2} selected{/if}>{t}CUSTOMER_TYPE_2{/t}</option>
-                                                                                    <option value="3"{if $customer_details.type == 3} selected{/if}>{t}CUSTOMER_TYPE_3{/t}</option>
-                                                                                    <option value="4"{if $customer_details.type == 4} selected{/if}>{t}CUSTOMER_TYPE_4{/t}</option>
-                                                                                    <option value="5"{if $customer_details.type == 5} selected{/if}>{t}CUSTOMER_TYPE_5{/t}</option>
-                                                                                    <option value="6"{if $customer_details.type == 6} selected{/if}>{t}CUSTOMER_TYPE_6{/t}</option>
-                                                                                    <option value="7"{if $customer_details.type == 7} selected{/if}>{t}CUSTOMER_TYPE_7{/t}</option>
-                                                                                    <option value="8"{if $customer_details.type == 8} selected{/if}>{t}CUSTOMER_TYPE_8{/t}</option>
-                                                                                    <option value="9"{if $customer_details.type == 9} selected{/if}>{t}CUSTOMER_TYPE_9{/t}</option>
-                                                                                    <option value="10"{if $customer_details.type == 10} selected{/if}>{t}CUSTOMER_TYPE_10{/t}</option>
-                                                                                </select>                                                                                    
+                                                                                <select id="type" name="type" class="olotd5"> 
+                                                                                    {section name=s loop=$customer_types}    
+                                                                                        <option value="{$customer_types[s].customer_type_id}"{if $customer_details.type == $customer_types[s].customer_type_id} selected{/if}>{t}{$customer_types[s].display_name}{/t}</option>
+                                                                                    {/section}    
+                                                                                </select>                                                                                   
                                                                             </td>
                                                                         </tr>
                                                                         <tr>

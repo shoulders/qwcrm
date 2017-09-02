@@ -58,7 +58,7 @@ function display_refunds($db, $direction = 'DESC', $use_pages = false, $page_no 
                 $whereTheseRecords = " WHERE type";
                 break;
 
-            case 'payement_method':          
+            case 'payment_method':          
                 $whereTheseRecords = " WHERE payment_method";
                 break;
 
@@ -241,6 +241,25 @@ function get_refund_details($db, $refund_id, $item = null){
         } 
         
     }
+    
+}
+
+#####################################
+#    Get Refund Types               #
+#####################################
+
+function get_refund_types($db) {
+    
+    $sql = "SELECT * FROM ".PRFX."refund_types";
+
+    if(!$rs = $db->execute($sql)){        
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get refund types."));
+        exit;
+    } else {
+        
+        return $rs->GetArray();
+        
+    }    
     
 }
 

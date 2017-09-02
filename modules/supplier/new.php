@@ -22,20 +22,21 @@ if((isset($VAR['submit'])) || (isset($VAR['submitandnew']))) {
     if (isset($VAR['submitandnew'])) {
 
         // load the new supplier page
-        force_page('supplier', 'new');
+        force_page('supplier', 'new', 'information_msg='.gettext("Supplier added successfully.")); 
         exit;
 
     } else {
 
         // load the supplier details page
-        force_page('supplier', 'details&supplier_id='.$supplier_id);
+        force_page('supplier', 'details', 'supplier_id='.$supplier_id.'&information_msg='.gettext("Supplier added successfully.")); 
         exit;
 
     }
 
 }
 
-// Build the page            
+// Build the page
+$smarty->assign('supplier_types', get_supplier_types($db));
 $smarty->assign('new_record_id', $new_record_id);
 $smarty->assign('tax_rate', get_company_details($db, 'tax_rate'));
 $BuildPage .= $smarty->fetch('supplier/new.tpl');

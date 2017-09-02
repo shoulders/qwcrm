@@ -234,6 +234,25 @@ function get_supplier_details($db, $supplier_id, $item = null){
     
 }
 
+#####################################
+#    Get Supplier Types             #
+#####################################
+
+function get_supplier_types($db) {
+    
+    $sql = "SELECT * FROM ".PRFX."supplier_types";
+
+    if(!$rs = $db->execute($sql)){        
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get supplier types."));
+        exit;
+    } else {
+        
+        return $rs->GetArray();
+        
+    }    
+    
+}
+
 /** Update Functions **/
 
 #####################################

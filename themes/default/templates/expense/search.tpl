@@ -137,43 +137,14 @@
                                                             <td class="olotd4" nowrap>{$search_result[i].date|date_format:$date_format}</td>
                                                             <td class="olotd4" nowrap><a href="index.php?page=invoice:details&invoice_id={$search_result[i].invoice_id}">{$search_result[i].invoice_id}</a></td>
                                                             <td class="olotd4" nowrap>
-                                                                {if $search_result[i].type == 1}{t}EXPENSE_TYPE_1{/t}{/if}
-                                                                {if $search_result[i].type == 2}{t}EXPENSE_TYPE_2{/t}{/if}
-                                                                {if $search_result[i].type == 3}{t}EXPENSE_TYPE_3{/t}{/if}
-                                                                {if $search_result[i].type == 4}{t}EXPENSE_TYPE_4{/t}{/if}
-                                                                {if $search_result[i].type == 5}{t}EXPENSE_TYPE_5{/t}{/if}
-                                                                {if $search_result[i].type == 6}{t}EXPENSE_TYPE_6{/t}{/if}
-                                                                {if $search_result[i].type == 7}{t}EXPENSE_TYPE_7{/t}{/if}
-                                                                {if $search_result[i].type == 8}{t}EXPENSE_TYPE_8{/t}{/if}
-                                                                {if $search_result[i].type == 9}{t}EXPENSE_TYPE_9{/t}{/if}
-                                                                {if $search_result[i].type == 10}{t}EXPENSE_TYPE_10{/t}{/if}
-                                                                {if $search_result[i].type == 11}{t}EXPENSE_TYPE_11{/t}{/if}
-                                                                {if $search_result[i].type == 12}{t}EXPENSE_TYPE_12{/t}{/if}
-                                                                {if $search_result[i].type == 13}{t}EXPENSE_TYPE_13{/t}{/if}
-                                                                {if $search_result[i].type == 14}{t}EXPENSE_TYPE_14{/t}{/if}
-                                                                {if $search_result[i].type == 15}{t}EXPENSE_TYPE_15{/t}{/if}
-                                                                {if $search_result[i].type == 16}{t}EXPENSE_TYPE_16{/t}{/if}
-                                                                {if $search_result[i].type == 17}{t}EXPENSE_TYPE_17{/t}{/if}
-                                                                {if $search_result[i].typE == 18}{t}EXPENSE_TYPE_18{/t}{/if}
-                                                                {if $search_result[i].type == 19}{t}EXPENSE_TYPE_19{/t}{/if}
-                                                                {if $search_result[i].type == 20}{t}EXPENSE_TYPE_20{/t}{/if}
-                                                                {if $search_result[i].type == 21}{t}EXPENSE_TYPE_21{/t}{/if}
-                                                                {if $search_result[i].type == 22}{t}EXPENSE_TYPE_22{/t}{/if}
-                                                                {if $search_result[i].type == 23}{t}EXPENSE_TYPE_23{/t}{/if}
-                                                                {if $search_result[i].type == 24}{t}EXPENSE_TYPE_24{/t}{/if}
+                                                                {section name=s loop=$expense_types}    
+                                                                    {if $search_result[i].type == $expense_types[s].expense_type_id}{t}{$expense_types[s].display_name}{/t}{/if}        
+                                                                {/section} 
                                                             </td>
                                                             <td class="olotd4" nowrap>
-                                                                {if $search_result[i].payment_method == 1}{t}EXPENSE_PAYMENT_METHOD_1{/t}{/if}
-                                                                {if $search_result[i].payment_method == 2}{t}EXPENSE_PAYMENT_METHOD_2{/t}{/if}
-                                                                {if $search_result[i].payment_method == 3}{t}EXPENSE_PAYMENT_METHOD_3{/t}{/if}
-                                                                {if $search_result[i].payment_method == 4}{t}EXPENSE_PAYMENT_METHOD_4{/t}{/if}
-                                                                {if $search_result[i].payment_method == 5}{t}EXPENSE_PAYMENT_METHOD_5{/t}{/if}
-                                                                {if $search_result[i].payment_method == 6}{t}EXPENSE_PAYMENT_METHOD_6{/t}{/if}
-                                                                {if $search_result[i].payment_method == 7}{t}EXPENSE_PAYMENT_METHOD_7{/t}{/if}
-                                                                {if $search_result[i].payment_method == 8}{t}EXPENSE_PAYMENT_METHOD_8{/t}{/if}
-                                                                {if $search_result[i].payment_method == 9}{t}EXPENSE_PAYMENT_METHOD_9{/t}{/if}
-                                                                {if $search_result[i].payment_method == 10}{t}EXPENSE_PAYMENT_METHOD_10{/t}{/if}
-                                                                {if $search_result[i].payment_method == 11}{t}EXPENSE_PAYMENT_METHOD_11{/t}{/if}
+                                                                {section name=s loop=$payment_methods}    
+                                                                    {if $search_result[i].payment_method == $payment_methods[s].manual_method_id}{t}{$payment_methods[s].display_name}{/t}{/if}        
+                                                                {/section} 
                                                             </td>
                                                             <td class="olotd4" nowrap>{$currency_sym} {$search_result[i].net_amount}</td>
                                                             <td class="olotd4" nowrap>{$search_result[i].tax_rate} %</td>
