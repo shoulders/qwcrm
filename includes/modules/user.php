@@ -197,6 +197,9 @@ function insert_user($db, $VAR){
             update_customer_last_active($db, $VAR['customer_id']);
         }
         
+        // Log activity        
+        write_record_to_activity_log(gettext("User Account").' '.$db->Insert_ID().' ('.$VAR['display_name'].') '.gettext("created."));
+                
         return $db->insert_id();        
         
     }
@@ -389,6 +392,9 @@ function update_user($db, $user_id, $VAR) {
             update_customer_last_active($db, $VAR['customer_id']);
         }
         
+        // Log activity        
+        write_record_to_activity_log(gettext("User Account").' '.$user_id.' ('.$VAR['display_name'].') '.gettext("updated."));
+        
         return true;
         
     }
@@ -496,6 +502,9 @@ function delete_user($db, $user_id) {
         exit;
     }
     
+    // Log activity        
+    write_record_to_activity_log(gettext("User Account").' '.$user_id.' ('.$user_details['display_name'].') '.gettext("deleted."));
+        
     // Update last active record
     if($user_details['customer_id']) {
         update_customer_last_active($db, $user_details['customer_id']);
@@ -694,6 +703,9 @@ function reset_user_password($db, $user_id, $password) {
         
     } else {
         
+        // Log activity        
+        write_record_to_activity_log(gettext("User Account").' '.$user_id.' ('.get_user_details($db, $user_id, 'display_name').') '.gettext("password has been reset."));
+        
         // Update last active record
         if(get_user_details($db, $user_id, 'customer_id')) {
             update_customer_last_active($db, get_user_details($db, $user_id, 'customer_id'));
@@ -742,7 +754,7 @@ function login($credentials, $options = array())
         $db = QFactory::getDbo();
 
         // Log activity       
-        write_record_to_activity_log(gettext("Login successful for").' '.$user->login_username).'.';
+        write_record_to_activity_log(gettext("Login successful for").' '.$user->login_username.'.');
         
         // Update last active record
         if($user->login_customer_id) {            
@@ -759,7 +771,7 @@ function login($credentials, $options = array())
         /* Login failed */
         
         // Log activity       
-        write_record_to_activity_log(gettext("Login unsuccessful for").' '.$credentials['username']).'.';
+        write_record_to_activity_log(gettext("Login unsuccessful for").' '.$credentials['username'].'.');
 
         $smarty->assign('warning_msg', gettext("Login Failed. Check you username and password."));
         return false;
@@ -776,7 +788,7 @@ function logout($silent = null)
     $user = QFactory::getUser();
     $db = QFactory::getDbo();
     
-    // Build logout message while user details exist
+    // Build logout message (while user details exist)
     $record = gettext("Logout successful for").' '.$user->login_username.'.';
     
     // Logout
@@ -905,6 +917,10 @@ function send_reset_email($db, $user_id) {
     
     // Send Reset Email    
     send_email($recipient_email, $subject, $body);
+    
+    // Log activity        
+    write_record_to_activity_log(gettext("User Account").' '.$user_id.' ('.get_user_details($db, $user_id, 'display_name').') '.gettext("reset email has been sent."));
+        
     
 }
 

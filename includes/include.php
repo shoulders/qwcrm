@@ -989,10 +989,16 @@ function write_record_to_access_log() {
 #  Write a record to the Activity Log      #
 ############################################
 
-function write_record_to_activity_log($record) {
+function write_record_to_activity_log($record, $employee_id = null, $customer_id = null, $workorder_id = null, $invoice_id = null) {
     
     // if activity logging not enabled exit
     if(QFactory::getConfig()->get('qwcrm_activity_log') != true) { return; }
+    
+    // Use any supplied IDs instead of $GLOBALS[] counterpart
+    if(!$employee_id)   { $employee_id  = $GLOBALS['employee_id'];  }
+    if(!$customer_id)   { $customer_id  = $GLOBALS['customer_id'];  }
+    if(!$workorder_id)  { $workorder_id = $GLOBALS['workorder_id']; }
+    if(!$invoice_id)    { $invoice_id   = $GLOBALS['invoice_id'];   }    
     
     // Login User - substituting qwcrm user for the traditional apache HTTP Authentication
     if(!QFactory::getUser()->login_username) {
@@ -1002,7 +1008,7 @@ function write_record_to_activity_log($record) {
     } 
     
     // Build log entry
-    $log_entry = $_SERVER['REMOTE_ADDR'].','.$username.','.date("[d/M/Y:H:i:s O]", time()).','.QFactory::getUser()->login_user_id.','.$GLOBALS['employee_id'].','.$GLOBALS['customer_id'].','.$GLOBALS['workorder_id'].','.$GLOBALS['invoice_id'].','.$record ."\r\n";
+    $log_entry = $_SERVER['REMOTE_ADDR'].','.$username.','.date("[d/M/Y:H:i:s O]", time()).','.QFactory::getUser()->login_user_id.','.$employee_id.','.$customer_id.','.$workorder_id.','.$invoice_id.','.$record ."\r\n";
     
     // Write log entry  
     if(!$fp = fopen(ACTIVITY_LOG, 'a')) {        

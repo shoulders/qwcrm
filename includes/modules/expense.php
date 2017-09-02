@@ -213,6 +213,9 @@ function insert_expense($db, $VAR) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to insert the expense record into the database."));
         exit;
     } else {
+        
+        // Log activity        
+        write_record_to_activity_log(gettext("Expense Record").' '.$db->Insert_ID().' '.gettext("created."));
     
         return $db->Insert_ID();
         
@@ -275,7 +278,12 @@ function update_expense($db, $expense_id, $VAR) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the expense details."));
         exit;
     } else {
+        
+        // Log activity        
+        write_record_to_activity_log(gettext("Expense Record").' '.$expense_id.' '.gettext("updated."));
+        
         return true;
+        
     }
     
 } 
@@ -296,6 +304,9 @@ function delete_expense($db, $expense_id){
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete the expense record."));
         exit;
     } else {
+        
+        // Log activity        
+        write_record_to_activity_log(gettext("Expense Record").' '.$expense_id.' '.gettext("deleted."));
         
         return true;
         

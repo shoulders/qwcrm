@@ -173,11 +173,11 @@ function insert_invoice($db, $customer_id, $workorder_id, $discount_rate, $tax_r
         
         // Create a Workorder History Note  
         if($workorder_id) {             
-            insert_workorder_history_note($db, $workorder_id, gettext("Invoice").' '.$invoice_id.' '.gettext("was created for this Work Order").' '.gettext("by").' '.QFactory::getUser()->login_display_name).'.';
+            insert_workorder_history_note($db, $workorder_id, gettext("Invoice").' '.$invoice_id.' '.gettext("was created for this Work Order").' '.gettext("by").' '.QFactory::getUser()->login_display_name.'.');
         }
         
         // Log activity        
-        write_record_to_activity_log(gettext("Invoice").' '.$invoice_id.' '.gettext("for Work Order").' '.$workorder_id.' '.gettext("was created by").' '.QFactory::getUser()->login_display_name).'.';
+        write_record_to_activity_log(gettext("Invoice").' '.$invoice_id.' '.gettext("for Work Order").' '.$workorder_id.' '.gettext("was created by").' '.QFactory::getUser()->login_display_name.'.');
 
         // Update last active record    
         update_customer_last_active($db, $customer_id);
@@ -289,7 +289,7 @@ function insert_invoice_prefill_item($db, $VAR){
     } else {
         
         // Log activity        
-        write_record_to_activity_log(gettext("An Invoice Prefill Item").gettext("was added by").' '.QFactory::getUser()->login_display_name).'.';     
+        write_record_to_activity_log(gettext("An Invoice Prefill Item").gettext("was added by").' '.QFactory::getUser()->login_display_name.'.');     
 
     }
     
@@ -350,9 +350,9 @@ function get_invoice_labour_items($db, $invoice_id) {
 #   Get invoice labour item details   #
 #######################################
 
-function get_invoice_labour_item_details($db, $labour_id, $item = null) {
+function get_invoice_labour_item_details($db, $invoice_labour_id, $item = null) {
     
-    $sql = "SELECT * FROM ".PRFX."invoice_labour WHERE invoice_labour_id =".$db->qstr($labour_id);
+    $sql = "SELECT * FROM ".PRFX."invoice_labour WHERE invoice_labour_id =".$db->qstr($invoice_labour_id);
     
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get invoice labour item details."));
@@ -400,9 +400,9 @@ function get_invoice_parts_items($db, $invoice_id) {
 #   Get invoice parts item details    #
 #######################################
 
-function get_invoice_parts_item_details($db, $parts_id, $item = null) {
+function get_invoice_parts_item_details($db, $invoice_parts_id, $item = null) {
     
-    $sql = "SELECT * FROM ".PRFX."invoice_parts WHERE invoice_parts_id =".$db->qstr($parts_id);
+    $sql = "SELECT * FROM ".PRFX."invoice_parts WHERE invoice_parts_id =".$db->qstr($invoice_parts_id);
     
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get invoice parts item details."));
@@ -476,7 +476,7 @@ function update_invoice($db, $invoice_id, $date, $due_date, $discount_rate) {
     } else {
     
         // Log activity        
-        write_record_to_activity_log(gettext("Invoice").' '.$invoice_id.' '.gettext("was updated by").' '.QFactory::getUser()->login_display_name).'.';
+        write_record_to_activity_log(gettext("Invoice").' '.$invoice_id.' '.gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.');
 
         // Update last active record    
         update_customer_last_active($db, get_invoice_details($db, $invoice_id, 'customer_id'));
@@ -537,10 +537,10 @@ function update_invoice_full($db, $VAR) {
     } else {
     
         // Log activity        
-        write_record_to_activity_log(gettext("Invoice").' '.$invoice_id.' '.gettext("was updated by").' '.QFactory::getUser()->login_display_name).'.';
+        write_record_to_activity_log(gettext("Invoice").' '.$VAR['invoice_id'].' '.gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.');
 
         // Update last active record    
-        update_customer_last_active($db, get_invoice_details($db, $invoice_id, 'customer_id'));
+        update_customer_last_active($db, $VAR['customer_id']);
         
     } 
     
@@ -566,7 +566,7 @@ function update_invoice_prefill_item($db, $VAR){
     } else {
         
         // Log activity        
-        write_record_to_activity_log(gettext("An Invoice Prefill Item").gettext("was updated by").' '.QFactory::getUser()->login_display_name).'.';    
+        write_record_to_activity_log(gettext("The Invoice Prefill Item").' '.$VAR['invoice_prefill_id'].' '.gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.');    
 
     }
     
@@ -605,11 +605,11 @@ function delete_invoice($db, $invoice_id) {
         
         // Create a Workorder History Note  
         if($invoice_details['workorder_id']) {
-            insert_workorder_history_note($db, $invoice_details['workorder_id'], gettext("Invoice").' '.$invoice_id.' '.gettext("was deleted by").' '.QFactory::getUser()->login_display_name).'.';
+            insert_workorder_history_note($db, $invoice_details['workorder_id'], gettext("Invoice").' '.$invoice_id.' '.gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.');
         }        
         
         // Log activity        
-        write_record_to_activity_log(gettext("Invoice").' '.$invoice_id.' '.gettext("for Work Order").' '.$invoice_details['workorder_id'].' '.gettext("was deleted by").' '.QFactory::getUser()->login_display_name).'.';
+        write_record_to_activity_log(gettext("Invoice").' '.$invoice_id.' '.gettext("for Work Order").' '.$invoice_details['workorder_id'].' '.gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.');
         
         // Update last active record
         update_workorder_last_active($db, $invoice_details['workorder_id']);
@@ -625,9 +625,11 @@ function delete_invoice($db, $invoice_id) {
 #   Delete Labour Item              #
 #####################################
 
-function delete_invoice_labour_item($db, $labour_id) {
+function delete_invoice_labour_item($db, $invoice_labour_id) {
     
-    $sql = "DELETE FROM ".PRFX."invoice_labour WHERE invoice_labour_id=" . $db->qstr($labour_id);
+    $invoice_id = get_invoice_labour_item_details($db, $invoice_labour_id, 'invoice_id');
+    
+    $sql = "DELETE FROM ".PRFX."invoice_labour WHERE invoice_labour_id=" . $db->qstr($invoice_labour_id);
 
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete an invoice labour item."));
@@ -635,7 +637,7 @@ function delete_invoice_labour_item($db, $labour_id) {
     } else {
         
         // Log activity        
-        write_record_to_activity_log(gettext("An Invoice Labour Item").gettext("was deleted by").' '.QFactory::getUser()->login_display_name).'.';
+        write_record_to_activity_log(gettext("The Invoice Labour Item").' '.$invoice_labour_id.' '.gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.', null, null, null, $invoice_id);
         
         return true;
 
@@ -647,9 +649,11 @@ function delete_invoice_labour_item($db, $labour_id) {
 #   Delete Parts Item               #
 #####################################
 
-function delete_invoice_parts_item($db, $parts_id) {
+function delete_invoice_parts_item($db, $invoice_parts_id) {
     
-    $sql = "DELETE FROM ".PRFX."invoice_parts WHERE invoice_parts_id=" . $db->qstr($parts_id);
+    $invoice_id = get_invoice_parts_item_details($db, $invoice_parts_id, 'invoice_id');
+    
+    $sql = "DELETE FROM ".PRFX."invoice_parts WHERE invoice_parts_id=" . $db->qstr($invoice_parts_id);
 
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete an invoice parts item."));
@@ -658,7 +662,7 @@ function delete_invoice_parts_item($db, $parts_id) {
     } else {
         
         // Log activity        
-        write_record_to_activity_log(gettext("An Invoice Parts Item").gettext("was deleted by").' '.QFactory::getUser()->login_display_name).'.';
+        write_record_to_activity_log(gettext("The Invoice Parts Item").' '.$invoice_parts_id.' '.gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.', null, null, null, $invoice_id);
         
         return true;
 
@@ -680,7 +684,7 @@ function delete_invoice_prefill_item($db, $invoice_prefill_id){
     } else {
         
         // Log activity        
-        write_record_to_activity_log(gettext("An Invoice Prefill Item").gettext("was deleted by").' '.QFactory::getUser()->login_display_name).'.';
+        write_record_to_activity_log(gettext("The Invoice Prefill Item").' '.$invoice_prefill_id.' '.gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.');
         
         return true;
 
@@ -832,7 +836,7 @@ function upload_invoice_prefill_items_csv($db, $VAR) {
             unlink($_FILES['invoice_prefill_csv']['tmp_name']);
             
             // Log activity        
-            write_record_to_activity_log(gettext("Invoice Prefill Items were uploaded via csv by").' '.QFactory::getUser()->login_display_name).'.'; 
+            write_record_to_activity_log(gettext("Invoice Prefill Items were uploaded via csv by").' '.QFactory::getUser()->login_display_name.'.'); 
 
         }
 
@@ -887,7 +891,7 @@ function export_invoice_prefill_items_csv($db) {
         fclose($output_stream);
         
         // Log activity        
-        write_record_to_activity_log(gettext("Invoice Prefill Items were exported by").' '.QFactory::getUser()->login_display_name).'.';
+        write_record_to_activity_log(gettext("Invoice Prefill Items were exported by").' '.QFactory::getUser()->login_display_name.'.');
         
     }    
     

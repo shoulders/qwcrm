@@ -73,6 +73,10 @@ if(isset($VAR['submit'])) {
     $smarty->assign('vat_received',                 sum_invoices_value($db, 'tax_amount', 'all', $start_date, $end_date)  ); 
     $smarty->assign('vat_balance',                  sum_invoices_value($db, 'tax_amount', 'all', $start_date, $end_date) - (sum_expenses_value($db, 'tax_amount', $start_date, $end_date) - sum_refunds_value($db, 'tax_amount', $start_date, $end_date))     );    
     
+    /* Logging */
+    
+    // Log activity        
+    write_record_to_activity_log(gettext("Financial report run for the date range").': '.$VAR['start_date'].' - '.$VAR['end_date']);
     
 } else {
     

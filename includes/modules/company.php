@@ -180,7 +180,11 @@ function update_company_details($db, $VAR) {
     } else {
         
         // Assign success message
-        $smarty->assign('information_msg', 'Company Details updated successfully');        
+        $smarty->assign('information_msg', gettext("Company details updated."));
+        
+        // Log activity        
+        write_record_to_activity_log(gettext("Company details updated."));
+
         return;
         
     }
@@ -206,7 +210,12 @@ function update_company_hours($db, $openingTime, $closingTime) {
         exit;
     } else {
         
+        // Assign success message
         $smarty->assign('information_msg', gettext("Business hours have been updated."));
+        
+        // Log activity        
+        write_record_to_activity_log(gettext("Business hours have been updated."));        
+        
         return true;
         
     }

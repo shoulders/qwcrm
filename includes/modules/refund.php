@@ -206,6 +206,9 @@ function insert_refund($db, $VAR) {
         exit;
     } else {
         
+        // Log activity        
+        write_record_to_activity_log(gettext("Refund Record").' '.$db->Insert_ID().' '.gettext("created."));
+        
         return $db->Insert_ID();
         
     } 
@@ -268,6 +271,9 @@ function update_refund($db, $refund_id, $VAR) {
         exit;
     } else {
         
+        // Log activity        
+        write_record_to_activity_log(gettext("Refund Record").' '.$refund_id.' '.gettext("updated."));   
+        
         return true;
       
     }
@@ -290,6 +296,9 @@ function delete_refund($db, $refund_id) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete the refund records."));
         exit;
     } else {
+        
+        // Log activity        
+        write_record_to_activity_log(gettext("Refund Record").' '.$refund_id.' '.gettext("deleted."));
         
         return true;
         

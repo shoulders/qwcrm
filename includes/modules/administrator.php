@@ -142,6 +142,9 @@ function update_acl($db, $permissions) {
         }               
         
     }
+    
+    // Log activity        
+    write_record_to_activity_log(gettext("ACL permissions updated."));      
 
 }
 
@@ -165,6 +168,9 @@ function update_qwcrm_config($new_config) {
 
     // Write the configuration file.
     write_config_file($merged_config);
+    
+    // Log activity        
+    write_record_to_activity_log(gettext("QWcrm config settings updated."));   
 
     return true;
     
@@ -247,7 +253,10 @@ function check_for_qwcrm_update() {
     }
 
     // Assign Variables    
-    $smarty->assign('update_response', $update_response);      
+    $smarty->assign('update_response', $update_response);
+    
+    // Log activity        
+    write_record_to_activity_log(gettext("QWcrm checked for updates."));
 
     return;
 
@@ -390,11 +399,12 @@ function prepare_config_data($new_config) {
 
 function send_test_mail($db) {
     
-    $config = new QConfig;
-    
     $user_details = get_user_details($db, QFactory::getUser()->login_user_id);
     
-    send_email($user_details['email'], gettext("Test mail from QWcrm"), 'This is a test mail sent using'.' '.$config->email_mailer.'. '.'Your email settings are correct!', $user_details['display_name']);
+    send_email($user_details['email'], gettext("Test mail from QWcrm"), 'This is a test mail sent using'.' '.QFactory::getConfig()->get('email_mailer').'. '.'Your email settings are correct!', $user_details['display_name']);
+    
+    // Log activity        
+    write_record_to_activity_log(gettext("Test email initiated."));
     
 }
 
@@ -418,6 +428,9 @@ function clear_smarty_cache() {
     // Output the system message to the browser   
     output_notifications_onscreen(gettext("The Smarty cache has been emptied successfully."), '');
     
+    // Log activity        
+    write_record_to_activity_log(gettext("Smarty Cache Cleared."));
+    
 }
 
 ############################################
@@ -439,6 +452,9 @@ function clear_smarty_compile() {
     
     // Output the system message to the browser   
     output_notifications_onscreen(gettext("The Smarty compile directory has been emptied successfully."), '');
+    
+    // Log activity        
+    write_record_to_activity_log(gettext("Smarty Compile Cache Cleared."));    
     
 }
 
@@ -559,6 +575,9 @@ function reset_acl_permissions($db) {
         }
         
     }
+    
+    // Log activity        
+    write_record_to_activity_log(gettext("ACL permissions reset to default settings."));    
     
     return;
     

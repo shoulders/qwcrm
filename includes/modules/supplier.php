@@ -196,6 +196,9 @@ function insert_supplier($db, $VAR) {
         exit;
     } else {
         
+        // Log activity        
+        write_record_to_activity_log(gettext("Supplier Record").' '.$db->Insert_ID().' ('.$VAR['display_name'].') '.gettext("created."));
+
         return $db->Insert_ID();
         
     }
@@ -263,6 +266,9 @@ function update_supplier($db, $supplier_id, $VAR) {
         exit;
     } else {
         
+        // Log activity        
+        write_record_to_activity_log(gettext("Supplier Record").' '.$db->Insert_ID().' ('.$VAR['display_name'].') '.gettext("updated."));
+
         return true;
         
     }
@@ -277,7 +283,9 @@ function update_supplier($db, $supplier_id, $VAR) {
 #    Delete Record                  #
 #####################################
 
-function delete_supplier($db, $supplier_id){
+function delete_supplier($db, $supplier_id) {
+    
+    $display_name = get_supplier_details($db, $supplier_id, 'display_name');
     
     $sql = "DELETE FROM ".PRFX."supplier WHERE supplier_id=".$db->qstr($supplier_id);
     
@@ -285,6 +293,9 @@ function delete_supplier($db, $supplier_id){
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete the supplier record."));
         exit;
     } else {
+        
+        // Log activity        
+        write_record_to_activity_log(gettext("Supplier Record").' '.$db->Insert_ID().' ('.$display_name.') '.gettext("deleted."));
         
         return true;
         
@@ -300,11 +311,11 @@ function delete_supplier($db, $supplier_id){
 
 function prepare_supplier_search_terms($search_category, $search_term) {
 
-    switch ($supplier_search_category) {
+    switch ($search_category) {
 
         case 'type': {
             
-            switch ($supplier_search_term) {
+            switch ($search_term) {
 
                 case gettext("SUPPLIER_TYPE_1"):
                     return '1';

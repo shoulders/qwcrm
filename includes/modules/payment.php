@@ -48,6 +48,9 @@ function insert_transaction($db, $customer_id, $workorder_id, $invoice_id,  $dat
         
     } else {
         
+        // Log activity 
+        write_record_to_activity_log(gettext("Inserted transaction").' '.$db->Insert_ID().'.', QFactory::getUser()->login_user_id, $customer_id, $workorder_id, $invoice_id);
+        
         // Update last active record        
         update_customer_last_active($db, $customer_id);
         
@@ -92,8 +95,8 @@ function insert_payment_method_transaction($db, $invoice_id, $date, $amount, $me
         // If the invoice has a workorder update it
         if($workorder_id) {
 
-            // Creates a History record for the new workorder            
-            insert_workorder_history_note($db, $workorder_id, gettext("Created by").' '.QFactory::getUser()->login_display_name.' - '.$log_msg);
+            // Creates a History record for the workorder            
+            insert_workorder_history_note($db, $workorder_id, gettext("Transaction inserted by").' '.QFactory::getUser()->login_display_name.' - '.$log_msg);
             
         }    
 
@@ -130,7 +133,7 @@ function insert_payment_method_transaction($db, $invoice_id, $date, $amount, $me
 
         // Create a Workorder History Note
         if($workorder_id) {                       
-            insert_workorder_history_note($db, $workorder_id, gettext("Created by").' '.QFactory::getUser()->login_display_name.' - '.$log_msg);            
+            insert_workorder_history_note($db, $workorder_id, gettext("Transaction inserted by").' '.QFactory::getUser()->login_display_name.' - '.$log_msg);            
         }    
 
         // Insert Transaction into log       
@@ -307,6 +310,9 @@ function update_payment_settings($db, $VAR) {
         exit;
     } else {
         
+        // Log activity        
+        write_record_to_activity_log(gettext("Payment settings updated."));
+
         return;
         
     }
@@ -343,6 +349,9 @@ function update_payment_methods_status($db, $VAR) {
         }
         
     }
+    
+    // Log activity        
+    write_record_to_activity_log(gettext("Available payment methods updated."));
     
 }
 
