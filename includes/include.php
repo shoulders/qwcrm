@@ -1008,7 +1008,7 @@ function write_record_to_activity_log($record, $employee_id = null, $customer_id
     } 
     
     // Build log entry
-    $log_entry = $_SERVER['REMOTE_ADDR'].','.$username.','.date("[d/M/Y:H:i:s O]", time()).','.QFactory::getUser()->login_user_id.','.$employee_id.','.$customer_id.','.$workorder_id.','.$invoice_id.','.$record ."\r\n";
+    $log_entry = $_SERVER['REMOTE_ADDR'].','.$username.','.date("[d/M/Y:H:i:s O]", time()).','.QFactory::getUser()->login_user_id.','.$employee_id.','.$customer_id.','.$workorder_id.','.$invoice_id.','.'"'.$record.'"'."\r\n";
     
     // Write log entry  
     if(!$fp = fopen(ACTIVITY_LOG, 'a')) {        
