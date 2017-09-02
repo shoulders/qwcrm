@@ -31,7 +31,7 @@
                                 
                                 <!-- Customer Details -->
                                 <td valign="top" width="50%">
-                                    <p><b>{t}Customer{/t} </b><a href="index.php?page=customer:details&customer_id={$customer_details.id}">{$customer_details.display_name}</a></p>
+                                    <p><b>{t}Customer{/t} </b><a href="index.php?page=customer:details&customer_id={$customer_details.customer_id}">{$customer_details.display_name}</a></p>
                                     <p><strong>{t}Address{/t}</strong></p>
                                     <p>
                                         {$customer_details.address|nl2br|regex_replace:"/[\r\t\n]/":" "}<br>

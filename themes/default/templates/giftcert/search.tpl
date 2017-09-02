@@ -123,7 +123,7 @@
                                                         <td class="olohead">{t}Customer{/t}</td>
                                                         <td class="olohead">{t}Expires{/t}</td>
                                                         <td class="olohead">{t}Date Redeemed{/t}</td>
-                                                        <td class="olohead">{t}Status{/t}</td>
+                                                        <td class="olohead">{t}Is Active{/t}</td>
                                                         <td class="olohead">{t}Amount{/t}</td>
                                                         <td class="olohead">{t}Notes{/t}</td> 
                                                         <td class="olohead">{t}Action{/t}</td>

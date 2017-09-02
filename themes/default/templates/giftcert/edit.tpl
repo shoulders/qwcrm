@@ -57,7 +57,7 @@
                                                 <td>{$currency_sym}<input name="amount" class="olotd5" size="10" value="{$giftcert_details.amount|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumbersPeriod(event);"/></td>
                                             </tr>
                                             <tr>
-                                                <td><b>{t}Status{/t}</b></td>
+                                                <td><b>{t}Is Active{/t}</b></td>
                                                 <td>
                                                     <select name="status">
                                                         <option value="1" {if $giftcert_details.active == '1'}selected{/if}>{t}Active{/t}</option>
