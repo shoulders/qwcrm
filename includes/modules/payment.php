@@ -280,7 +280,7 @@ function get_credit_card_name_from_type($db, $card_type) {
         exit;
     } else {
         
-        return $rs->fields['card_name'];
+        return $rs->fields['display_name'];
         
     }    
     

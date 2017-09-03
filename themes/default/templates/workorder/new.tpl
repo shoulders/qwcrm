@@ -48,14 +48,15 @@
                                                 <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0">
                                                     <tr>
                                                         <td valign="top">                                                    
-                                                            <form method="post" action="index.php?page=workorder:new" name="new_workorder" id="new_workorder">                                                                                                                  
+                                                            <form method="post" action="index.php?page=workorder:new" name="new_workorder" id="new_workorder"> 
+                                                                
+                                                                <!-- Header -->
                                                                 <table class="olotable" width="100%" border="0"  cellpadding="4" cellspacing="0" summary="Work order display">
                                                                     <tr>
                                                                         <td class="olohead">{t}Opened{/t}</td>
                                                                         <td class="olohead">{t}Customer{/t}</td>
-                                                                        <td class="olohead">{t}Scope{/t}</td>
-                                                                        <td class="olohead">{t}Status{/t}</td>
-                                                                        <td class="olohead">{t}Entered By{/t}</td>
+                                                                        <td class="olohead">{t}Scope{/t}</td>                                                                        
+                                                                        <td class="olohead">{t}Technician{/t}</td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td class="olotd4">{$smarty.now|date_format:$date_format}</td>
@@ -68,12 +69,12 @@
                                                                                     <div class="suggestionList" id="autoSuggestionsList">&nbsp;</div>
                                                                                 </div>
                                                                             </div>    
-                                                                        </td>
-                                                                        <td class="olotd4">{t}Created{/t}</td>
-                                                                        <td class="olotd4">{$login_username}</td>
+                                                                        </td>                                                                        
+                                                                        <td class="olotd4">{$login_display_name}</td>
                                                                     </tr>
                                                                 </table>
                                                                 <br>
+                                                                
                                                                 <!-- Display Work Order Description -->
                                                                 <table class="olotable" width="100%" border="0" summary="Work order display">
                                                                     <tr>

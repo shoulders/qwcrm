@@ -243,7 +243,7 @@ function insert_workorder($db, $customer_id, $scope, $description, $comments){
     $sql = "INSERT INTO ".PRFX."workorder SET            
             customer_id     =". $db->qstr( $customer_id                         ).",
             open_date       =". $db->qstr( time()                               ).",
-            status          =". $db->qstr( 1                                    ).",
+            status          =". $db->qstr( 'unassigned'                         ).",
             is_closed       =". $db->qstr( 0                                    ).", 
             created_by      =". $db->qstr( QFactory::getUser()->login_user_id   ).",
             scope           =". $db->qstr( $scope                               ).",
@@ -430,6 +430,45 @@ function get_workorder_notes($db, $workorder_id) {
     
 }
 
+
+#####################################
+#    Get Workorder Statuses         #
+#####################################
+
+function get_workorder_statuses($db) {
+    
+    $sql = "SELECT * FROM ".PRFX."workorder_statuses";
+
+    if(!$rs = $db->execute($sql)){        
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get work order statuses."));
+        exit;
+    } else {
+        
+        return $rs->GetArray();
+        
+    }    
+    
+}
+
+######################################
+#  Get Workorder status display name #
+######################################
+
+function get_workorder_status_display_name($db, $status_key) {
+    
+    $sql = "SELECT display_name FROM ".PRFX."workorder_statuses WHERE status_key=".$db->qstr($status_key);
+
+    if(!$rs = $db->execute($sql)){        
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the work order display name."));
+        exit;
+    } else {
+        
+        return $rs->fields['display_name'];
+        
+    }    
+    
+}
+
 /** Update Functions **/
 
 ###########################################
@@ -537,7 +576,7 @@ function update_workorder_status($db, $workorder_id, $assign_status){
     
     $sql = "UPDATE ".PRFX."workorder SET \n";
     
-    if ($assign_status == '1'){ $sql .= "employee_id = '',\n"; }  // when unnasigned there should be no employee
+    if ($assign_status == 'unassigned'){ $sql .= "employee_id = '',\n"; }  // when unnasigned there should be no employee the '\n' makes sql look neater
     
     $sql .="last_active         =". $db->qstr( time()           ).",
             status              =". $db->qstr( $assign_status   )."            
@@ -549,18 +588,11 @@ function update_workorder_status($db, $workorder_id, $assign_status){
         
     } else {        
     
-        // For writing message to log file
-        if($assign_status == '1') {$wo_status = gettext("WORKORDER_STATUS_1");
-        } elseif ($assign_status == '2') {$wo_status = gettext("WORKORDER_STATUS_2");   
-        } elseif ($assign_status == '3') {$wo_status = gettext("WORKORDER_STATUS_3");
-        } elseif ($assign_status == '4') {$wo_status = gettext("WORKORDER_STATUS_4");
-        } elseif ($assign_status == '5') {$wo_status = gettext("WORKORDER_STATUS_5");
-        } elseif ($assign_status == '6') {$wo_status = gettext("WORKORDER_STATUS_6"); 
-        } elseif ($assign_status == '7') {$wo_status = gettext("WORKORDER_STATUS_7");
-        }
+        // For writing message to log file, get work order status display name
+        $wo_status = gettext(get_workorder_status_display_name($db, $assign_status));        
         
         // Update Workorder 'is_closed' boolean
-        if($assign_status == '6' || $assign_status == '7') {
+        if($assign_status == 'closed_without_invoice' || $assign_status == 'closed_with_invoice') {
             update_workorder_closed_status($db, $workorder_id, 'closed');
         } else {
             update_workorder_closed_status($db, $workorder_id, 'open');
@@ -674,42 +706,6 @@ function update_workorder_note($db, $workorder_note_id, $date, $note) {
 
 /** Close Functions **/
 
-#################################
-# Close Workorder with Invoice  #
-#################################
-
-function close_workorder_with_invoice($db, $workorder_id, $resolution){
-    
-    // Insert resolution and close information
-    $sql = "UPDATE ".PRFX."workorder SET
-            closed_by           =". $db->qstr( QFactory::getUser()->login_user_id   ).",
-            close_date          =". $db->qstr( time()                               ).",
-            last_active         =". $db->qstr( time()                               ).",
-            status              =". $db->qstr( 7                                    ).",
-            is_closed           =". $db->qstr( 1                                    ).",
-            resolution          =". $db->qstr( $resolution                          )."
-            WHERE workorder_id  =". $db->qstr( $workorder_id                        );
-    
-    if(!$rs = $db->Execute($sql)){ 
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to close a Work Order with an invoice."));
-        exit;
-    } else {
-        
-        // Create a Workorder History Note       
-        insert_workorder_history_note($db, $workorder_id, gettext("Closed with Invoice by").' '.QFactory::getUser()->login_display_name.'.');
-        
-        // Log activity
-        write_record_to_activity_log(gettext("Work Order").' '.$workorder_id.' '.gettext("has been closed with invoice by").' '.QFactory::getUser()->login_display_name.'.');
-        
-        // Update last active record
-        update_workorder_last_active($db, $workorder_id);        
-        
-        return true;
-        
-    }      
-    
-}
-
 ########################################
 # Close Workorder without invoice      #
 ########################################
@@ -721,7 +717,7 @@ function close_workorder_without_invoice($db, $workorder_id, $resolution){
             closed_by           =". $db->qstr( QFactory::getUser()->login_user_id   ).",
             close_date          =". $db->qstr( time()                               ).",
             last_active         =". $db->qstr( time()                               ).",
-            status              =". $db->qstr( 6                                    ).",
+            status              =". $db->qstr( 'closed_without_invoice'             ).",
             is_closed           =". $db->qstr( 1                                    ).",
             resolution          =". $db->qstr( $resolution                          )."
             WHERE workorder_id  =". $db->qstr( $workorder_id                        );
@@ -743,6 +739,42 @@ function close_workorder_without_invoice($db, $workorder_id, $resolution){
         return true;
         
     }
+    
+}
+
+#################################
+# Close Workorder with Invoice  #
+#################################
+
+function close_workorder_with_invoice($db, $workorder_id, $resolution){
+    
+    // Insert resolution and close information
+    $sql = "UPDATE ".PRFX."workorder SET
+            closed_by           =". $db->qstr( QFactory::getUser()->login_user_id   ).",
+            close_date          =". $db->qstr( time()                               ).",
+            last_active         =". $db->qstr( time()                               ).",
+            status              =". $db->qstr( 'closed_with_invoice'                ).",
+            is_closed           =". $db->qstr( 1                                    ).",
+            resolution          =". $db->qstr( $resolution                          )."
+            WHERE workorder_id  =". $db->qstr( $workorder_id                        );
+    
+    if(!$rs = $db->Execute($sql)){ 
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to close a Work Order with an invoice."));
+        exit;
+    } else {
+        
+        // Create a Workorder History Note       
+        insert_workorder_history_note($db, $workorder_id, gettext("Closed with Invoice by").' '.QFactory::getUser()->login_display_name.'.');
+        
+        // Log activity
+        write_record_to_activity_log(gettext("Work Order").' '.$workorder_id.' '.gettext("has been closed with invoice by").' '.QFactory::getUser()->login_display_name.'.');
+        
+        // Update last active record
+        update_workorder_last_active($db, $workorder_id);        
+        
+        return true;
+        
+    }      
     
 }
 
@@ -833,7 +865,7 @@ function check_workorder_status_allows_for_deletion($db, $workorder_id) {
     } else {        
         
         // Unassigned and Management are allowed status
-        if($rs->fields['status'] == 1 || $rs->fields['status'] == 5) {
+        if($rs->fields['status'] == 'unassigned' || $rs->fields['status'] == 'management') {
             
             return true;
             
@@ -915,7 +947,7 @@ function assign_workorder_to_employee($db, $workorder_id, $logged_in_employee_id
     
     $sql = "UPDATE ".PRFX."workorder SET
             employee_id         =". $db->qstr( $target_employee_id  ).",
-            status              =". $db->qstr( 2                    )."
+            status              =". $db->qstr( 'assigned'           )."
             WHERE workorder_id  =". $db->qstr( $workorder_id        ) ;
     
     if(!$rs = $db->Execute($sql)) {
@@ -965,7 +997,7 @@ function resolution_edit_status_check($db, $workorder_id) {
     }
     
     // Waiting For Parts
-    if ($wo_status == '3') {           
+    if ($wo_status == 'waiting_for_parts') {           
 
         postEmulationWrite('warning_msg', gettext("Can not close a work order if it is Waiting For Parts. Please Adjust the status."));
         return false;

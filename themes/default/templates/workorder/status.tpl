@@ -33,13 +33,9 @@
                                     <form action="index.php?page=workorder:status" method="post" name="new_workorder_status" id="new_workorder_status">
                                         <b>{t}New Status{/t}: </b>
                                         <select class="olotd4" name="assign_status">
-                                            <option value="1"{if $workorder_status == '1'} selected{/if}>{t}WORKORDER_STATUS_1{/t}</option>
-                                            <option value="2"{if $workorder_status == '2'} selected{/if}>{t}WORKORDER_STATUS_2{/t}</option>
-                                            <option value="3"{if $workorder_status == '3'} selected{/if}>{t}WORKORDER_STATUS_3{/t}</option>                                            
-                                            <option value="4"{if $workorder_status == '4'} selected{/if}>{t}WORKORDER_STATUS_4{/t}</option>
-                                            <option value="5"{if $workorder_status == '5'} selected{/if}>{t}WORKORDER_STATUS_5{/t}</option>
-                                            <option value="6"{if $workorder_status == '6'} selected{/if}>{t}WORKORDER_STATUS_6{/t}</option>
-                                            <option value="7"{if $workorder_status == '7'} selected{/if}>{t}WORKORDER_STATUS_7{/t}</option>                                            
+                                            {section name=s loop=$workorder_statuses}    
+                                                <option value="{$workorder_statuses[s].status_key}"{if $workorder_status == $workorder_statuses[s].status_key} selected{/if}>{t}{$workorder_statuses[s].display_name}{/t}</option>
+                                            {/section}                                            
                                         </select>                                        
                                         <input type="hidden" name="updated_by" value="{$login_user_id}">
                                         <input type="hidden" name="workorder_id" value="{$workorder_id}">
@@ -54,7 +50,7 @@
                                     {if ($assigned_employee_id == $login_user_id && $workorder_status != 6) || $assigned_employee_id == '' || $login_usergroup_id <= 3}
                                         <p>&nbsp;</p>  
                                         <form method="post" action="index.php?page=workorder:status">
-                                            <select name="target_employee_id">
+                                            <select class="olotd4" name="target_employee_id">
                                                 {section name=i loop=$active_employees}
                                                     <option value="{$active_employees[i].user_id}" {if $assigned_employee_id == $active_employees[i].user_id} selected {/if}>{$active_employees[i].display_name}</option>
                                                 {/section}

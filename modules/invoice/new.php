@@ -25,7 +25,7 @@ if($workorder_id && !check_workorder_has_invoice($db, $workorder_id)) {
     update_workorder_invoice_id($db, $workorder_id, $invoice_id);
 
     // Update Work Order Status (to waiting for payment)
-    update_workorder_status($db, $workorder_id, 7);
+    update_workorder_status($db, $workorder_id, 'closed_with_invoice');
     
     // Add a workorder history note
     insert_workorder_history_note($db, $workorder_id, gettext("Invoice Created ID").': '.$invoice_id);

@@ -36,13 +36,9 @@
 
             <!-- Status -->
             <td class="olotd4" align="center">
-                {if $management_workorders[m].workorder_status == '1'}{t}WORKORDER_STATUS_1{/t}{/if}
-                {if $management_workorders[m].workorder_status == '2'}{t}WORKORDER_STATUS_2{/t}{/if}
-                {if $management_workorders[m].workorder_status == '3'}{t}WORKORDER_STATUS_3{/t}{/if}
-                {if $management_workorders[m].workorder_status == '4'}{t}WORKORDER_STATUS_4{/t}{/if}
-                {if $management_workorders[m].workorder_status == '5'}{t}WORKORDER_STATUS_5{/t}{/if}
-                {if $management_workorders[m].workorder_status == '6'}{t}WORKORDER_STATUS_6{/t}{/if}
-                {if $management_workorders[m].workorder_status == '7'}{t}WORKORDER_STATUS_7{/t}{/if}                
+                {section name=s loop=$workorder_statuses}    
+                    {if $management_workorders[m].workorder_status == $workorder_statuses[s].status_key}{t}{$workorder_statuses[s].display_name}{/t}{/if}        
+                {/section}               
             </td>
 
             <!-- Employee -->

@@ -22,6 +22,7 @@ if($workorder_id == '') {
 // Build the page with the workorder details from the database
 $smarty->assign('employee_details',     get_user_details($db, get_workorder_details($db, $workorder_id, 'employee_id'))     );
 $smarty->assign('customer_details',     get_customer_details($db, get_workorder_details($db, $workorder_id, 'customer_id')) );
+$smarty->assign('workorder_statuses',   get_workorder_statuses($db)                                                         );
 $smarty->assign('workorder_details',    get_workorder_details($db, $workorder_id)                                           );
 $smarty->assign('workorder_schedules',  display_workorder_schedules($db, $workorder_id)                                     );
 $smarty->assign('workorder_notes',      display_workorder_notes($db, $workorder_id)                                         ); 

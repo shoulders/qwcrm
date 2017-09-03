@@ -215,13 +215,9 @@
                     <tr>
                         <td valign="top"><b>{t}Status{/t}</b></td>
                         <td valign="top">
-                            {if $workorder_details.status == '1'}{t}WORKORDER_STATUS_1{/t}{/if}
-                            {if $workorder_details.status == '2'}{t}WORKORDER_STATUS_2{/t}{/if}
-                            {if $workorder_details.status == '3'}{t}WORKORDER_STATUS_3{/t}{/if}
-                            {if $workorder_details.status == '4'}{t}WORKORDER_STATUS_4{/t}{/if}
-                            {if $workorder_details.status == '5'}{t}WORKORDER_STATUS_5{/t}{/if}
-                            {if $workorder_details.status == '6'}{t}WORKORDER_STATUS_6{/t}{/if}
-                            {if $workorder_details.status == '7'}{t}WORKORDER_STATUS_7{/t}{/if}                            
+                            {section name=s loop=$workorder_statuses}    
+                                {if $workorder_details.status == $workorder_statuses[s].status_key}{t}{$workorder_statuses[s].display_name}{/t}{/if}        
+                            {/section}                             
                         </td>
                     </tr>
                     <tr>

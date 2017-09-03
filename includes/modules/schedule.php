@@ -96,7 +96,7 @@ function insert_schedule($db, $start_date, $StartTime, $end_date, $EndTime, $not
         assign_workorder_to_employee($db, $workorder_id, QFactory::getUser()->login_user_id, get_workorder_details($db, $workorder_id, 'employee_id'), $employee_id);
     
         // Change the Workorders Status
-        update_workorder_status($db, $workorder_id, 2); 
+        update_workorder_status($db, $workorder_id, 'assigned'); 
         
         // Insert Work Order History Note
         insert_workorder_history_note($db, $workorder_id, gettext("Schedule").' '.$schedule_id.' '.gettext("was created by").' '.QFactory::getUser()->login_display_name.'.');             

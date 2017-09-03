@@ -13,13 +13,14 @@
 
 /* Workorder Status */
 
-gettext("WORKORDER_STATUS_1");  // Unassigned
-gettext("WORKORDER_STATUS_2");  // Assigned
-gettext("WORKORDER_STATUS_3");  // Waiting For Parts
-gettext("WORKORDER_STATUS_4");  // On Hold
-gettext("WORKORDER_STATUS_5");  // Management
-gettext("WORKORDER_STATUS_6");  // Closed without Invoice
-gettext("WORKORDER_STATUS_7");  // Closed with Invoice
+gettext("Unassigned");
+gettext("Assigned");
+gettext("Waiting For Parts");
+gettext("On Hold");
+gettext("Management");
+gettext("Closed without Invoice");
+gettext("Closed with Invoice");
+
 
 /* Customer */
 
