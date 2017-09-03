@@ -122,8 +122,9 @@
                                                         <td class="olohead">{t}Display Name{/t}</td>
                                                         <td class="olohead">{t}First Name{/t}</td>
                                                         <td class="olohead">{t}Last Name{/t}</td>
-                                                        <td class="olohead">{t}Work Phone{/t}</td>
+                                                        <td class="olohead">{t}Type{/t}</td>
                                                         <td class="olohead">{t}Usergroup{/t}</td>
+                                                        <td class="olohead">{t}Status{/t}</td>
                                                         <td class="olohead">{t}Email{/t}</td>
                                                         <td class="olohead">{t}Action{/t}</td>
                                                     </tr>
@@ -137,13 +138,17 @@
                                                             <td class="olotd4">{$search_result[i].first_name}</td>
                                                             <td class="olotd4">{$search_result[i].last_name}</td>
                                                             <td class="olotd4">
-                                                                <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<b>{t}Home{/t} </b>{$search_result[i].home_primary_phone}<br><b>{t}Mobile{/t} </b>{$search_result[i].work_mobile_phone}');" onMouseOut="hideddrivetip();">
-                                                                {$search_result[i].work_primary_phone}
+                                                                {if $search_result[i].is_employee == '0'}{t}Customer{/t}{/if}
+                                                                {if $search_result[i].is_employee == '1'}{t}Employee{/t}{/if}                                                            
                                                             </td>
                                                             <td class="olotd4">
                                                                 {section name=b loop=$usergroups}
                                                                     {if $search_result[i].usergroup == $usergroups[b].usergroup_id}{$usergroups[b].usergroup_display_name}{/if}
                                                                 {/section}   
+                                                            </td>
+                                                            <td class="olotd4">
+                                                                {if $search_result[i].active == '0'}{t}Blocked{/t}{/if}
+                                                                {if $search_result[i].active == '1'}{t}Active{/t}{/if}                                                            
                                                             </td>
                                                             <td class="olotd4"><a href="mailto: {$search_result[i].email}"><font class="blueLink">{$search_result[i].email}</font></a></td>
                                                             <td class="olotd4"><a href="index.php?page=user:details&user_id={$search_result[i].user_id}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif"  border="0" onMouseOver="ddrivetip('{t}View Users Details{/t}');" onMouseOut="hideddrivetip();"></a>&nbsp;<a href="index.php?page=user:edit&user_id={$search_result[i].user_id}"><img src="{$theme_images_dir}icons/16x16/small_edit_employee.gif" border="0" onMouseOver="ddrivetip('{t}Edit{/t}');" onMouseOut="hideddrivetip();"></a></td>                                                        
