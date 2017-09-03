@@ -244,7 +244,7 @@ function get_payment_manual_methods($db) {
 
 function get_active_credit_cards($db) {
     
-    $sql = "SELECT card_type, card_name FROM ".PRFX."payment_credit_cards WHERE active='1'";
+    $sql = "SELECT card_type_id, display_name FROM ".PRFX."payment_credit_cards WHERE active='1'";
     
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the active credit cards."));
@@ -273,7 +273,7 @@ function get_active_credit_cards($db) {
 
 function get_credit_card_name_from_type($db, $card_type) {
     
-    $sql = "SELECT card_name FROM ".PRFX."payment_credit_cards WHERE card_type=".$db->qstr($card_type);
+    $sql = "SELECT display_name FROM ".PRFX."payment_credit_cards WHERE card_type_id=".$db->qstr($card_type);
 
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get Credit Card Name by type."));

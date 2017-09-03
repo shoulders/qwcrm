@@ -36,7 +36,7 @@
                         <td>
                             <select name="card_type" class="olotd4">                     
                                 {section name=c loop=$active_credit_cards}
-                                    <option value="{$active_credit_cards[c].card_type}">{$active_credit_cards[c].card_name}</option>
+                                    <option value="{$active_credit_cards[c].card_type_id}">{$active_credit_cards[c].display_name}</option>
                                 {/section}
                             </select>
                         </td>                        
