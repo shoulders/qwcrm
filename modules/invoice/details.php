@@ -19,7 +19,7 @@ if($invoice_id == '') {
     force_page('invoice', 'search', 'warning_msg='.gettext("No Invoice ID supplied."));
     exit;
 }
-    
+    get_invoice_statuses($db);
 $smarty->assign('company_details',          get_company_details($db)                                                                    );
 $smarty->assign('customer_details',         get_customer_details($db, get_invoice_details($db, $invoice_id, 'customer_id'))             );
 $smarty->assign('workorder_details',        get_workorder_details($db, get_invoice_details($db, $invoice_id, 'workorder_id'))           ); 

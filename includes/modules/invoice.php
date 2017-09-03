@@ -456,7 +456,7 @@ function get_invoice_prefill_items($db, $type = null, $status = null) {
 }
 
 #####################################
-#    Get Invoice Statuses            #
+#    Get Invoice Statuses           #
 #####################################
 
 function get_invoice_statuses($db) {
@@ -468,7 +468,13 @@ function get_invoice_statuses($db) {
         exit;
     } else {
         
-        return $rs->GetArray();
+        $statuses = $rs->GetArray();
+        
+        // Remove dormant invoice statuses (for now)      
+        unset($statuses[2]); // 'in_dispute'
+        unset($statuses[3]); // 'cancelled'
+       
+        return $statuses;        
         
     }    
     
