@@ -33,71 +33,16 @@ function display_expenses($db, $direction = 'DESC', $use_pages = false, $page_no
     
     global $smarty;
     
-    // Prepare the search terms where needed
-    $prepared_search_term = prepare_expense_search_terms($search_category, $search_term);
-    
     /* Filter the Records */    
     
     // Restrict by Search Category
     if($search_category != '') {
         
-        switch ($search_category) {
-
-            case 'id':            
-                $whereTheseRecords = " WHERE expense_id";
-                break;
-
-            case 'payee':          
-                $whereTheseRecords = " WHERE payee";
-                break;
-
-            case 'date':          
-                $whereTheseRecords = " WHERE date";
-                break;
-            
-            case 'date':          
-                $whereTheseRecords = " WHERE invoice_id";
-                break;
-            
-            case 'type':          
-                $whereTheseRecords = " WHERE type";
-                break;
-
-            case 'payement_method':          
-                $whereTheseRecords = " WHERE payment_method";
-                break;
-
-            case 'net_amount':          
-                $whereTheseRecords = " WHERE net_amount";
-                break;
-
-            case 'tax_rate':         
-                $whereTheseRecords = " WHERE tax_rate";
-                break;
-                
-            case 'tax':      
-                $whereTheseRecords = " WHERE tax_amount";
-                break;
-                
-            case 'total':           
-                $whereTheseRecords = " WHERE gross_amount";
-                break;
-            
-            case 'notes':        
-                $whereTheseRecords = " WHERE notes";
-                break;
-            
-            case 'items':        
-                $whereTheseRecords = " WHERE items";
-                break;
-            
-            default:           
-                $whereTheseRecords = " WHERE expense_id";
-
-        }
+        // Filter by search category
+        $whereTheseRecords = " WHERE $search_category";    
         
-        // Set the search term restrictor when a category has been set
-        $likeTheseRecords = " LIKE '%".$prepared_search_term."%'";
+        // Filter by search term
+        $likeTheseRecords = " LIKE '%".$search_term."%'";
         
     }
     
@@ -334,155 +279,6 @@ function delete_expense($db, $expense_id){
 }
 
 /** Other Functions **/
-
-################################################################
-#  Prepare Search Terms - compensates for smarty translations  #
-################################################################
-
-function prepare_expense_search_terms($search_category, $search_term) {
-
-    switch ($search_category) {
-
-        case 'date':           
-            return date_to_timestamp($search_term); 
-            
-        case 'type': {
-            
-            switch ($search_term) {
-
-                case gettext("EXPENSE_TYPE_1"):
-                    return '1';                    
-
-                case gettext("EXPENSE_TYPE_2"):
-                    return '2';                   
-
-                case gettext("EXPENSE_TYPE_3"):
-                    return '3';                    
-
-                case gettext("EXPENSE_TYPE_4"):
-                    return '4';
-
-                case gettext("EXPENSE_TYPE_5"):
-                    return '5';
-                    
-                case gettext("EXPENSE_TYPE_6"):
-                    return '6';
-
-                case gettext("EXPENSE_TYPE_7"):
-                    return '7';
-
-                case gettext("EXPENSE_TYPE_8"):
-                    return '8';
-
-                case gettext("EXPENSE_TYPE_9"):
-                    return '9';
-
-                case gettext("EXPENSE_TYPE_10"):
-                    return '10';
-
-                case gettext("EXPENSE_TYPE_11"):
-                    return '11';
-
-                case gettext("EXPENSE_TYPE_12"):
-                    return '12';
-
-                case gettext("EXPENSE_TYPE_13"):
-                    return '13';
-
-                case gettext("EXPENSE_TYPE_14"):
-                    return '14';
-
-                case gettext("EXPENSE_TYPE_15"):
-                    return '15';
-
-                case gettext("EXPENSE_TYPE_16"):
-                    return '16';
-
-                case gettext("EXPENSE_TYPE_17"):
-                    return '17';
-
-                case gettext("EXPENSE_TYPE_18"):
-                    return '18';
-
-                case gettext("EXPENSE_TYPE_19"):
-                    return '19';
-
-                case gettext("EXPENSE_TYPE_20"):
-                    return '20';
-
-                case gettext("EXPENSE_TYPE_21"):
-                    return '21';
-                    
-                case gettext("EXPENSE_TYPE_22"):
-                    return '22';
-                    
-                case gettext("EXPENSE_TYPE_23"):
-                    return '23'; 
-
-                case gettext("EXPENSE_TYPE_24"):
-                    return '24';                     
-
-                default:                   
-                    return $search_term;
-                
-            }
-            
-        }
-
-        case 'payment_method': {
-            
-            switch ($search_term) {
-
-                case gettext("EXPENSE_PAYMENT_METHOD_1"):
-                    return '1';
-
-                case gettext("EXPENSE_PAYMENT_METHOD_2"):
-                    return '2';
-
-                case gettext("EXPENSE_PAYMENT_METHOD_3"):
-                    return '3';
-
-                case gettext("EXPENSE_PAYMENT_METHOD_4"):
-                    return '4';
-
-                case gettext("EXPENSE_PAYMENT_METHOD_5"):
-                    return '5';
-
-                case gettext("EXPENSE_PAYMENT_METHOD_6"):
-                    return '6';
-
-                case gettext("EXPENSE_PAYMENT_METHOD_7"):
-                    return '7';
-
-                case gettext("EXPENSE_PAYMENT_METHOD_8"):
-                    return '8';
-
-                case gettext("EXPENSE_PAYMENT_METHOD_9"):
-                    return '9';
-
-                case gettext("EXPENSE_PAYMENT_METHOD_10"):
-                    return '10';
-
-                case gettext("EXPENSE_PAYMENT_METHOD_11"):
-                    return '11';
-                    
-                default:                   
-                    return $search_term;                    
-
-            }
-                   
-        }
-
-        // If no conversion required just return the search term
-        default:           
-            return $search_term;           
-
-    }
-    
-    // If no category sent return the search term
-    return $search_term;
-    
-}
 
 ##########################################
 #      Last Record Look Up               #

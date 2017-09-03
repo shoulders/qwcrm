@@ -32,67 +32,16 @@ function display_refunds($db, $direction = 'DESC', $use_pages = false, $page_no 
     
     global $smarty;
     
-    // Prepare the search terms where needed
-    $prepared_search_term = prepare_refund_search_terms($search_category, $search_term);
-    
-    /* Filter the Records */  
+    /* Filter the Records */    
     
     // Restrict by Search Category
     if($search_category != '') {
         
-        switch ($search_category) {
-
-            case 'id':            
-                $whereTheseRecords = " WHERE refund_id";
-                break;
-
-            case 'payee':          
-                $whereTheseRecords = " WHERE payee";
-                break;
-
-            case 'date':          
-                $whereTheseRecords = " WHERE date";
-                break;
-            
-            case 'type':          
-                $whereTheseRecords = " WHERE type";
-                break;
-
-            case 'payment_method':          
-                $whereTheseRecords = " WHERE payment_method";
-                break;
-
-            case 'net_amount':          
-                $whereTheseRecords = " WHERE net_amount";
-                break;
-
-            case 'tax_rate':         
-                $whereTheseRecords = " WHERE tax_rate";
-                break;
-                
-            case 'tax':      
-                $whereTheseRecords = " WHERE tax_amount";
-                break;
-                
-            case 'total':           
-                $whereTheseRecords = " WHERE gross_amount";
-                break;
-            
-            case 'notes':        
-                $whereTheseRecords = " WHERE notes";
-                break;
-            
-            case 'items':        
-                $whereTheseRecords = " WHERE items";
-                break;
-            
-            default:           
-                $whereTheseRecords = " WHERE refund_id";
-
-        }
+        // Filter by search category
+        $whereTheseRecords = " WHERE $search_category";    
         
-        // Set the search term restrictor when a category has been set
-        $likeTheseRecords = " LIKE '%".$prepared_search_term."%'";
+        // Filter by search term
+        $likeTheseRecords = " LIKE '%".$search_term."%'";
         
     }
     
@@ -326,99 +275,7 @@ function delete_refund($db, $refund_id) {
 }
 
 /** Other Functions **/
-
-################################################################
-#  Prepare Search Terms - compensates for smarty translations  #
-################################################################
-
-function prepare_refund_search_terms($search_category, $search_term) {
-
-    switch ($search_category) {
-
-        case 'date':           
-            return date_to_timestamp($search_term); 
-            
-        case 'type': {
-            
-            switch ($search_term) {
-
-                case gettext("REFUND_TYPE_1"):
-                    return '1';                    
-
-                case gettext("REFUND_TYPE_2"):
-                    return '2';                   
-
-                case gettext("REFUND_TYPE_3"):
-                    return '3';                    
-
-                case gettext("REFUND_TYPE_4"):
-                    return '4';
-
-                case gettext("REFUND_TYPE_5"):
-                    return '5';
-               
-                default:                   
-                    return $search_term;
-                
-            }
-            
-        }
-
-        case 'payment_method': {
-            
-            switch ($search_term) {
-
-                case gettext("REFUND_PAYMENT_METHOD_1"):
-                    return '1';
-
-                case gettext("REFUND_PAYMENT_METHOD_2"):
-                    return '2';
-
-                case gettext("REFUND_PAYMENT_METHOD_3"):
-                    return '3';
-
-                case gettext("REFUND_PAYMENT_METHOD_4"):
-                    return '4';
-
-                case gettext("REFUND_PAYMENT_METHOD_5"):
-                    return '5';
-
-                case gettext("REFUND_PAYMENT_METHOD_6"):
-                    return '6';
-
-                case gettext("REFUND_PAYMENT_METHOD_7"):
-                    return '7';
-
-                case gettext("REFUND_PAYMENT_METHOD_8"):
-                    return '8';
-
-                case gettext("REFUND_PAYMENT_METHOD_9"):
-                    return '9';
-
-                case gettext("REFUND_PAYMENT_METHOD_10"):
-                    return '10';
-
-                case gettext("REFUND_PAYMENT_METHOD_11"):
-                    return '11';
-                    
-                default:                   
-                    return $search_term;                    
-
-            }
-                   
-        }
-
-        // If no conversion required just return the search term
-        default:           
-            return $search_term;           
-
-    }
-    
-    // If no category sent return the search term
-    return $search_term;
-    
-}
-    
+   
 ##########################################
 #      Last Record Look Up               #
 ##########################################

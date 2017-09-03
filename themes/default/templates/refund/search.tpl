@@ -33,17 +33,17 @@
                                                                 <td align="left" valign="top"><b>{t}Refund Search{/t}</b>
                                                                     <br />
                                                                     <select class="olotd5" id="search_category" name="search_category">
-                                                                        <option value="id"{if $search_category == 'id'} selected{/if}>{t}Refund ID{/t}</option>
+                                                                        <option value="refund_id"{if $search_category == 'refund_id'} selected{/if}>{t}Refund ID{/t}</option>
                                                                         <option value="payee"{if $search_category == 'payee'} selected{/if}>{t}Payee{/t}</option>
                                                                         <option value="date"{if $search_category == 'date'} selected{/if}>{t}Date{/t}</option>
                                                                         <option value="type"{if $search_category == 'type'} selected{/if}>{t}Type{/t}</option>
-                                                                        <option value="payment_amount"{if $search_category == 'payment_amount'} selected{/if}>{t}Payment Method{/t}</option>
+                                                                        <option value="payment_method"{if $search_category == 'payment_method'} selected{/if}>{t}Payment Method{/t}</option>
                                                                         <option value="net_amount"{if $search_category == 'net_amount'} selected{/if}>{t}Net Amount{/t}</option>
                                                                         <option value="tax_rate"{if $search_category == 'tax_rate'} selected{/if}>{t}VAT Rate{/t}</option>
                                                                         <option value="tax_amount"{if $search_category == 'tax_amount'} selected{/if}>{t}VAT Amount{/t}</option>
-                                                                        <option value="gross_amount"{if $search_category == 'gross_amount'} selected{/if}>{t}Gross Amount{/t}</option>
-                                                                        <option value="notes"{if $search_category == 'notes'} selected{/if}>{t}Notes{/t}</option>
+                                                                        <option value="gross_amount"{if $search_category == 'gross_amount'} selected{/if}>{t}Gross{/t} ({t}Total{/t})</option>                                                                      
                                                                         <option value="items"{if $search_category == 'items'} selected{/if}>{t}Items{/t}</option>
+                                                                        <option value="notes"{if $search_category == 'notes'} selected{/if}>{t}Notes{/t}</option>
                                                                     </select>
                                                                    <br />
                                                                    <b>{t}for{/t}</b>

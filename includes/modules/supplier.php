@@ -32,51 +32,16 @@ function display_suppliers($db, $direction = 'DESC', $use_pages = false, $page_n
     
     global $smarty;
     
-    // Prepare the search terms where needed
-    $prepared_search_term = prepare_supplier_search_terms($search_category, $search_term);
-    
-    /* Filter the Records */
+    /* Filter the Records */    
     
     // Restrict by Search Category
     if($search_category != '') {
         
-        switch ($search_category) {
-
-            case 'id':            
-                $whereTheseRecords = " WHERE supplier_id";
-                break;
-
-            case 'name':          
-                $whereTheseRecords = " WHERE display_name";
-                break;
-
-            case 'type':          
-                $whereTheseRecords = " WHERE type";
-                break;
-
-            case 'zip':          
-                $whereTheseRecords = " WHERE zip";
-                break;
-            
-            case 'country':          
-                $whereTheseRecords = " WHERE country";
-                break;            
-
-            case 'notes':          
-                $whereTheseRecords = " WHERE notes";
-                break;
-
-            case 'description':         
-                $whereTheseRecords = " WHERE description";
-                break;
-             
-            default:           
-                $whereTheseRecords = " WHERE supplier_id";
-
-        }
+        // Filter by search category
+        $whereTheseRecords = " WHERE $search_category";    
         
-        // Set the search term restrictor when a category has been set
-        $likeTheseRecords = " LIKE '%".$prepared_search_term."%'";
+        // Filter by search term
+        $likeTheseRecords = " LIKE '%".$search_term."%'";
         
     }
     
@@ -323,62 +288,6 @@ function delete_supplier($db, $supplier_id) {
 }
 
 /** Other Functions **/
-
-################################################################
-#  Prepare Search Terms - compensates for smarty translations  #
-################################################################
-
-function prepare_supplier_search_terms($search_category, $search_term) {
-
-    switch ($search_category) {
-
-        case 'type': {
-            
-            switch ($search_term) {
-
-                case gettext("SUPPLIER_TYPE_1"):
-                    return '1';
-
-                case gettext("SUPPLIER_TYPE_2"):
-                    return '2';
-
-                case gettext("SUPPLIER_TYPE_3"):
-                    return '3';
-
-                case gettext("SUPPLIER_TYPE_4"):
-                    return '4';
-
-                case gettext("SUPPLIER_TYPE_5"):
-                    return '5';
-
-                case gettext("SUPPLIER_TYPE_6"):
-                    return '6';
-
-                case gettext("SUPPLIER_TYPE_7"):
-                    return '7';
-
-                case gettext("SUPPLIER_TYPE_8"):
-                    return '8';
-
-                case gettext("SUPPLIER_TYPE_9"):
-                    return '9';
-
-                case gettext("SUPPLIER_TYPE_10"):
-                    return '10';
-
-                case gettext("SUPPLIER_TYPE_11"):
-                    return'11';
-
-            }
-                 
-        }
-
-       default:
-           return $search_term;          
-
-    }
-    
-}
 
 ############################################
 #      Last supplier Record ID Look Up     #

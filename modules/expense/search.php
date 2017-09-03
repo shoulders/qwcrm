@@ -13,7 +13,7 @@ require(INCLUDES_DIR.'modules/payment.php');
 
 // Build the page
 $smarty->assign('expense_types',    get_expense_types($db)                                                                              );
-$smarty->assign('payment_methods',   get_payment_manual_methods($db)                                                                    );
+$smarty->assign('payment_methods',  get_payment_manual_methods($db)                                                                     );
 $smarty->assign('search_category',  $VAR['search_category']                                                                             );
 $smarty->assign('search_term',      $VAR['search_term']                                                                                 );
 $smarty->assign('search_result',    display_expenses($db, 'DESC', true, $page_no, '25', $VAR['search_term'], $VAR['search_category'])   );

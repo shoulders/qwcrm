@@ -32,13 +32,13 @@
                                                             <td align="left" valign="top"><b>{t}Supplier Search{/t}</b>
                                                                 <br />
                                                                 <select class="olotd5" id="search_category" name="search_category">
-                                                                    <option value="id"{if $search_category == 'id'} selected{/if}>{t}Supplier ID{/t}</option>
-                                                                    <option value="name"{if $search_category == 'name'} selected{/if}>{t}Name{/t}</option>                                                                    
+                                                                    <option value="supplier_id"{if $search_category == 'supplier_id'} selected{/if}>{t}Supplier ID{/t}</option>
+                                                                    <option value="display_name"{if $search_category == 'display_name'} selected{/if}>{t}Display Name{/t}</option>                                                                    
                                                                     <option value="type"{if $search_category == 'type'} selected{/if}>{t}Type{/t}</option>
                                                                     <option value="zip"{if $search_category == 'zip'} selected{/if}>{t}Zip{/t}</option>
-                                                                    <option value="country"{if $search_category == 'country'} selected{/if}>{t}Country{/t}</option>
-                                                                    <option value="notes"{if $search_category == 'notes'} selected{/if}>{t}Notes{/t}</option>
+                                                                    <option value="country"{if $search_category == 'country'} selected{/if}>{t}Country{/t}</option>                                                                    
                                                                     <option value="description"{if $search_category == 'description'} selected{/if}>{t}Description{/t}</option>
+                                                                    <option value="notes"{if $search_category == 'notes'} selected{/if}>{t}Notes{/t}</option>
                                                                 </select>
                                                                 <br />
                                                                 <b>{t}for{/t}</b>

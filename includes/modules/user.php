@@ -61,6 +61,7 @@ function display_users($db, $direction = 'DESC', $use_pages = false, $page_no = 
             $whereTheseRecords .= " OR ".PRFX."user.usergroup =".$db->qstr('6');
             
         }
+        
     }
          
     // Restrict results by usergroup
