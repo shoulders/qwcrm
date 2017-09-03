@@ -455,6 +455,44 @@ function get_invoice_prefill_items($db, $type = null, $status = null) {
     
 }
 
+#####################################
+#    Get Invoice Statuses            #
+#####################################
+
+function get_invoice_statuses($db) {
+    
+    $sql = "SELECT * FROM ".PRFX."invoice_statuses";
+
+    if(!$rs = $db->execute($sql)){        
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get invoice statuses."));
+        exit;
+    } else {
+        
+        return $rs->GetArray();
+        
+    }    
+    
+}
+
+######################################
+#  Get Invoice status display name   #
+######################################
+
+function get_invoice_status_display_name($db, $status_key) {
+    
+    $sql = "SELECT display_name FROM ".PRFX."invoice_statuses WHERE status_key=".$db->qstr($status_key);
+
+    if(!$rs = $db->execute($sql)){        
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the invoice status display name."));
+        exit;
+    } else {
+        
+        return $rs->fields['display_name'];
+        
+    }    
+    
+}
+
 /** Update Functions **/
 
 ######################

@@ -430,7 +430,6 @@ function get_workorder_notes($db, $workorder_id) {
     
 }
 
-
 #####################################
 #    Get Workorder Statuses         #
 #####################################
@@ -459,7 +458,7 @@ function get_workorder_status_display_name($db, $status_key) {
     $sql = "SELECT display_name FROM ".PRFX."workorder_statuses WHERE status_key=".$db->qstr($status_key);
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the work order display name."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the work order status display name."));
         exit;
     } else {
         
