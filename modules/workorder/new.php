@@ -10,6 +10,7 @@ defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'modules/customer.php');
 require(INCLUDES_DIR.'modules/workorder.php');
+require(INCLUDES_DIR.'modules/user.php');
 
 // Check if we have a customer_id
 if($customer_id == '') {
@@ -21,7 +22,12 @@ if($customer_id == '') {
 if(isset($VAR['submit'])){
     
     // insert the submitted workorder and return it's id
-    $workorder_id = insert_workorder($db, $customer_id, $VAR['scope'], $VAR['description'], $VAR['comments']);      
+    $workorder_id = insert_workorder($db, $customer_id, $VAR['scope'], $VAR['description'], $VAR['comments']);
+
+    // If workorder is to be assigned to an employee
+    if($VAR['assign_to_employee'] === '1') {
+        assign_workorder_to_employee($db, $workorder_id, $login_user_id);  
+    }
     
     // load the workorder details page
     force_page('workorder', 'details&workorder_id='.$workorder_id, 'information_msg='.gettext("New Work Order created."));

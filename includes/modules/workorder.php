@@ -238,7 +238,7 @@ function display_workorder_history($db, $workorder_id){
 # Insert New Work Order #
 #########################
 
-function insert_workorder($db, $customer_id, $scope, $description, $comments){
+function insert_workorder($db, $customer_id, $scope, $description, $comments) {
     
     $sql = "INSERT INTO ".PRFX."workorder SET            
             customer_id     =". $db->qstr( $customer_id                         ).",
@@ -969,9 +969,9 @@ function resolution_edit_status_check($db, $workorder_id) {
 # Assign Workorder to another employee  #
 #########################################
 
-function assign_workorder_to_employee($db, $workorder_id, $logged_in_employee_id, $assigned_employee_id, $target_employee_id) {
+function assign_workorder_to_employee($db, $workorder_id, $target_employee_id) {
     
-    // only change workorder status if unnasigned
+    // only change workorder status if unassigned
     if(get_workorder_details($db, $workorder_id, 'status') == 'unassigned') {
         
         $sql = "UPDATE ".PRFX."workorder SET
@@ -995,10 +995,13 @@ function assign_workorder_to_employee($db, $workorder_id, $logged_in_employee_id
     } else {
         
         // Get Logged in Employee's Display Name        
-        $logged_in_employee_display_name = get_user_details($db, $logged_in_employee_id, 'display_name');
+        $logged_in_employee_display_name = QFactory::getUser()->display_name;
+        
+        // Get the currently assigned employee ID
+        $assigned_employee_id = get_workorder_details($db, $workorder_id, 'employee_id');
         
         // Get the Display Name of the currently Assigned Employee
-        if($assigned_employee_id === '0'){
+        if($assigned_employee_id == ''){
             $assigned_employee_display_name = gettext("Unassigned");            
         } else {            
             $assigned_employee_display_name = get_user_details($db, $assigned_employee_id, 'display_name');

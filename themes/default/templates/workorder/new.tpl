@@ -75,8 +75,8 @@
                                                                 </table>
                                                                 <br>
                                                                 
-                                                                <!-- Display Work Order Description -->
-                                                                <table class="olotable" width="100%" border="0" summary="Work order display">
+                                                                <!-- Description -->
+                                                                <table class="olotable" width="100%" border="0">
                                                                     <tr>
                                                                         <td class="olohead">&nbsp;{t}Description{/t}</td>
                                                                     </tr>
@@ -85,13 +85,11 @@
                                                                             <textarea class="olotd4 mceCheckForContent" rows="15" cols="70" name="description"></textarea>
                                                                         </td>
                                                                     </tr>
-                                                                </table>
+                                                                </table>                                                                                                                  
                                                                 <br>
-                                                                <input name="customer_id" value="{$customer_id}" type="hidden">                                                                
-                                                                <button type="submit" name="submit" value="submit">{t}Submit{/t}</button>                                                   
-                                                                <br>
-                                                                <br>
-                                                                <table class="olotable" width="100%" border="0" summary="Work Order display">
+                                                                
+                                                                <!-- Comments -->
+                                                                <table class="olotable" width="100%" border="0">
                                                                     <tr>
                                                                         <td class="olohead">&nbsp;{t}Comments{/t}</td>
                                                                     </tr>
@@ -99,7 +97,24 @@
                                                                         <td class="olotd"><textarea class="olotd4" rows="15" cols="70" name="comments"></textarea></td>
                                                                     </tr>
                                                                 </table>
-                                                                <br>                                                                                                                                                              
+                                                                <br>
+                                                                
+                                                                <!-- Submit Button -->
+                                                                <table width="100%" border="0">
+                                                                    <tr>
+                                                                        <td>                                                                            
+                                                                            <input name="assign_to_employee" type="checkbox" value="1" checked>{t}Assign to the current employee{/t} ({$login_display_name}).
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input name="customer_id" value="{$customer_id}" type="hidden">
+                                                                            <button type="submit" name="submit" value="submit">{t}Submit{/t}</button> 
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                                <br>                                                                
+                                                                
                                                             </form>                                                    
                                                         </td>
                                                     </tr>

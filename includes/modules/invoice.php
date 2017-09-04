@@ -837,7 +837,7 @@ function upload_invoice_prefill_items_csv($db, $VAR) {
         } else {        
 
             // Empty Current Invoice Rates Table (if set)
-            if($VAR['empty_prefill_items_table'] === '1'){
+            if($VAR['empty_prefill_items_table'] === '1') {
                 
                 $sql = "TRUNCATE ".PRFX."invoice_prefill_items";
                 

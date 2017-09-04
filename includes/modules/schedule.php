@@ -93,7 +93,7 @@ function insert_schedule($db, $start_date, $StartTime, $end_date, $EndTime, $not
         $schedule_id = $db->Insert_ID();
         
         // Assign the workorder to the scheduled employee        
-        assign_workorder_to_employee($db, $workorder_id, QFactory::getUser()->login_user_id, get_workorder_details($db, $workorder_id, 'employee_id'), $employee_id);
+        assign_workorder_to_employee($db, $workorder_id, $employee_id);
     
         // Change the Workorders Status
         update_workorder_status($db, $workorder_id, 'assigned'); 

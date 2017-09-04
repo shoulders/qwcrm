@@ -30,7 +30,7 @@ if(isset($VAR['change_status'])){
 
 // Assign Work Order to another employee
 if(isset($VAR['change_employee'])) {
-    assign_workorder_to_employee($db, $workorder_id, $login_user_id, $assigned_employee_id, $VAR['target_employee_id']);    
+    assign_workorder_to_employee($db, $workorder_id, $VAR['target_employee_id']);    
     force_page('workorder', 'status', 'workorder_id='.$workorder_id.'&information_msg='.gettext("Assigned employee updated."));
     exit; 
 }
