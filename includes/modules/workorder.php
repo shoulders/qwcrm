@@ -575,7 +575,7 @@ function update_workorder_status($db, $workorder_id, $assign_status){
     
     $sql = "UPDATE ".PRFX."workorder SET \n";
     
-    if ($assign_status == 'unassigned'){ $sql .= "employee_id = '',\n"; }  // when unnasigned there should be no employee the '\n' makes sql look neater
+    if ($assign_status == 'unassigned') { $sql .= "employee_id = '',\n"; }  // when unnasigned there should be no employee the '\n' makes sql look neater
     
     $sql .="last_active         =". $db->qstr( time()           ).",
             status              =". $db->qstr( $assign_status   )."            
@@ -650,7 +650,6 @@ function update_workorder_last_active($db, $workorder_id) {
     }
     
 }
-
 
 ####################################
 # Update a Workorder's Invoice ID  #
@@ -938,47 +937,6 @@ function check_workorder_has_invoice($db, $workorder_id) {
     
 }
 
-#########################################
-# Assign Workorder to another employee  #
-#########################################
-
-function assign_workorder_to_employee($db, $workorder_id, $logged_in_employee_id, $assigned_employee_id, $target_employee_id) {
-    
-    $sql = "UPDATE ".PRFX."workorder SET
-            employee_id         =". $db->qstr( $target_employee_id  ).",
-            status              =". $db->qstr( 'assigned'           )."
-            WHERE workorder_id  =". $db->qstr( $workorder_id        ) ;
-    
-    if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to assign a Work Order to an employee."));
-        exit;
-    } else {
-        
-        // Get Logged in Employee's Display Name        
-        $logged_in_employee_display_name = get_user_details($db, $logged_in_employee_id, 'display_name');
-        
-        // Get the Display Name of the currently Assigned Employee
-        if($assigned_employee_id === '0'){
-            $assigned_employee_display_name = gettext("Unassigned");            
-        } else {            
-            $assigned_employee_display_name = get_user_details($db, $assigned_employee_id, 'display_name');
-        }
-        
-        // Get the Display Name of the Target Employee        
-        $target_employee_display_name = get_user_details($db, $target_employee_id, 'display_name');
-        
-        // Creates a History record
-        insert_workorder_history_note($db, $workorder_id, gettext("Work Order").' '.gettext("has been assigned to").' '.$target_employee_display_name.' '.gettext("from").' '.$assigned_employee_display_name.' '.gettext("by").' '. $logged_in_employee_display_name.'.');
-
-        // Log activity
-        write_record_to_activity_log(gettext("Work Order").' '.$workorder_id.' '.gettext("has been assigned to").' '.$target_employee_display_name.' '.gettext("from").' '.$assigned_employee_display_name.' '.gettext("by").' '. $logged_in_employee_display_name.'.', $target_employee_id);
-
-        return true;
-        
-    }
-    
- }
-
 ################################
 # Resolution Edit Status Check #
 ################################
@@ -1006,3 +964,57 @@ function resolution_edit_status_check($db, $workorder_id) {
     return true;   
    
 }
+
+#########################################
+# Assign Workorder to another employee  #
+#########################################
+
+function assign_workorder_to_employee($db, $workorder_id, $logged_in_employee_id, $assigned_employee_id, $target_employee_id) {
+    
+    // only change workorder status if unnasigned
+    if(get_workorder_details($db, $workorder_id, 'status') == 'unassigned') {
+        
+        $sql = "UPDATE ".PRFX."workorder SET
+                employee_id         =". $db->qstr( $target_employee_id  ).",
+                status              =". $db->qstr( 'assigned'           )."
+                WHERE workorder_id  =". $db->qstr( $workorder_id        );
+
+    // Keep the same workorder status    
+    } else {    
+        
+        $sql = "UPDATE ".PRFX."workorder SET
+                employee_id         =". $db->qstr( $target_employee_id  )."            
+                WHERE workorder_id  =". $db->qstr( $workorder_id        );
+
+    }
+    
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to assign a Work Order to an employee."));
+        exit;
+        
+    } else {
+        
+        // Get Logged in Employee's Display Name        
+        $logged_in_employee_display_name = get_user_details($db, $logged_in_employee_id, 'display_name');
+        
+        // Get the Display Name of the currently Assigned Employee
+        if($assigned_employee_id === '0'){
+            $assigned_employee_display_name = gettext("Unassigned");            
+        } else {            
+            $assigned_employee_display_name = get_user_details($db, $assigned_employee_id, 'display_name');
+        }
+        
+        // Get the Display Name of the Target Employee        
+        $target_employee_display_name = get_user_details($db, $target_employee_id, 'display_name');
+        
+        // Creates a History record
+        insert_workorder_history_note($db, $workorder_id, gettext("Work Order").' '.gettext("has been assigned to").' '.$target_employee_display_name.' '.gettext("from").' '.$assigned_employee_display_name.' '.gettext("by").' '. $logged_in_employee_display_name.'.');
+
+        // Log activity
+        write_record_to_activity_log(gettext("Work Order").' '.$workorder_id.' '.gettext("has been assigned to").' '.$target_employee_display_name.' '.gettext("from").' '.$assigned_employee_display_name.' '.gettext("by").' '. $logged_in_employee_display_name.'.', $target_employee_id);
+
+        return true;
+        
+    }
+    
+ }
