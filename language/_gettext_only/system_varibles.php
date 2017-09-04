@@ -11,7 +11,7 @@
  * This is just to make editing in Poedit easier. This file is not mandatory.
  */
 
-/* Workorder Status */
+/* Workorder Statuses */
 
 gettext("Unassigned");
 gettext("Assigned");
@@ -21,6 +21,13 @@ gettext("Management");
 gettext("Closed without Invoice");
 gettext("Closed with Invoice");
 
+/* Invoice Statuses */
+
+gettext("Unpaid");
+gettext("Partially Paid");
+gettext("In Dispute");
+gettext("Cancelled");
+gettext("Paid");
 
 /* Customer */
 

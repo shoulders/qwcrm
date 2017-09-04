@@ -85,7 +85,7 @@ class PlgAuthenticationQwcrm
             $response->status        = JAuthentication::STATUS_FAILURE;            
             $response->error_message = gettext("Username and password do not match or you do not have an account yet.");
         }
-
+        
         return;
         
     }
@@ -236,7 +236,7 @@ class PlgAuthenticationQwcrm
      * @since   1.5
      */
     public function onUserLogin($user, $options = array())
-    {
+    {        
         $instance = $this->_getUser($user, $options);
 
         // If _getUser returned an error, then pass it back.
@@ -248,12 +248,11 @@ class PlgAuthenticationQwcrm
         // If the user is blocked, redirect with an error
         if ($instance->block == 1)
         {
-            //$this->app->enqueueMessage(gettext("Login denied! Your account has either been blocked or you have not activated it yet."), 'warning');            
-            gettext("Login denied! Your account has either been blocked or you have not activated it yet.");
-            return false;
+            //$this->app->enqueueMessage(gettext("Login denied! Your account has either been blocked or you have not activated it yet."), 'warning');
+            return false;            
         }
 
-        /* Authorise the user based on the group information
+        /* Authorise the user based on the group information - see authentication.php:351
         if (!isset($options['group']))
         {
             $options['group'] = 'USERS';
@@ -283,8 +282,7 @@ class PlgAuthenticationQwcrm
         $session->set('user', $instance);
 
         // Ensure the new session's metadata is written to the database        
-        $session->checkSession();
-        
+        $session->checkSession();        
 
         // Purge the old session
         $sql = "DELETE FROM ".PFRX."session WHERE session_id = " . $this->db->qstr($oldSessionId);

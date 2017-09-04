@@ -718,41 +718,55 @@ function reset_user_password($db, $user_id, $password) {
     
 }
 
-#################################################
-#    Check if user must change their password   #
-#################################################
-
-function require_password_reset($db, $user_id) {
-    
-    return get_user_details($db, $user_id, 'require_reset');
-    
-}
-
 /* Login */
 
 ####################################
 #  Login authentication function   #
 ####################################
 
-function login($credentials, $options = array())
-{   
-    
+function login($VAR, $credentials, $options = array())
+{       
     global $smarty;
+    
+    $db = QFactory::getDbo();
     
     // If username or password is missing
     if (!isset($credentials['username']) || $credentials['username'] == '' || !isset($credentials['password']) || $credentials['password'] == '') {
         
+        // Set error message
         $smarty->assign('warning_msg', gettext("Username or Password Missing."));
+        
         return false;
         
     } 
+    
+    // Does the account require the password to be reset, if so force it
+    if(get_user_details($db, get_user_id_by_username($db, $VAR['login_username']), 'require_reset')) {
+        
+        // Set error message
+        $smarty->assign('warning_msg', 'warning_msg', gettext("You must reset your password before you are allowed to login."));
+        
+        return false;
+    }
+    
+    // If user is blocked - QFramework returns True for a blocked user, but does blocks it.
+    if(get_user_details($db, get_user_id_by_username($db, $VAR['login_username']), 'active') === '0') {  
+
+        // Set error message
+        $smarty->assign('warning_msg', gettext("Login denied! Your account has either been blocked or you have not activated it yet."));
+
+        // Log activity       
+        write_record_to_activity_log(gettext("Login denied for").' '.$VAR['login_username'].'.');
+
+        return false;
+
+    }
     
     if(QFactory::getAuth()->login($credentials, $options)) {
 
         /* Login Successful */
 
-        $user = QFactory::getUser();
-        $db = QFactory::getDbo();
+        $user = QFactory::getUser();       
 
         // Log activity       
         write_record_to_activity_log(gettext("Login successful for").' '.$user->login_username.'.');
@@ -775,6 +789,7 @@ function login($credentials, $options = array())
         write_record_to_activity_log(gettext("Login unsuccessful for").' '.$credentials['username'].'.');
 
         $smarty->assign('warning_msg', gettext("Login Failed. Check you username and password."));
+        
         return false;
 
     }

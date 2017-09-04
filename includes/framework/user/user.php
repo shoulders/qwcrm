@@ -701,6 +701,9 @@ class JUser
             $this->login_token              = 'login_verified';
             $this->login_is_employee        = $record['is_employee'];
             $this->login_customer_id        = $record['customer_id'];
+            
+            // if not active block the account
+            if($record['active'] != '1') { $this->block = 1; }
 
         }
 

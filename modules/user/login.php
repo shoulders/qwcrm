@@ -26,24 +26,19 @@ if($VAR['action'] === 'login') {
     // recaptcha is disabled || recaptcha is enabled and passes authentication
     if(!$QConfig->recaptcha || ($QConfig->recaptcha && authenticate_recaptcha($QConfig->recaptcha_secret_key, $VAR['g-recaptcha-response']))) {
 
-        /* Allowed to submit */
-        
-        // Does the account require the password to be reset, if so force it
-        if(require_password_reset($db, get_user_id_by_username($db, $VAR['login_username']))) {
-            force_page('user', 'login', 'warning_msg='.gettext("You must reset your password before you are allowed to login."));
-            exit;
-            
+        /* Allowed to submit */        
+
+        // Log the user in
+        if(login($VAR, $credentials, $options)) {
+
+            force_page('index.php');
+            exit;    
+
         } else {
-
-            // Log the user in
-            if(login($credentials, $options)) {
-
-                force_page('index.php');
-                exit;    
-
-            }
-            
+            // do nothing reload login page
         }
+            
+        
 
     } else {
 
