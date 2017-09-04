@@ -1032,7 +1032,7 @@ class JSession implements IteratorAggregate
         $rs     = $db->Execute($sql);        
         
         // If the session record doesn't exist initialise it.
-        if($rs->RecordCount() != 1)        
+        if($rs->RecordCount() != 1)
         {
             $time = $this->isNew() ? time() : $this->get('session.timer.start');            
 
