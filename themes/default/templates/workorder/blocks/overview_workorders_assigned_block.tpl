@@ -23,7 +23,7 @@
             <td class="olotd4"><a href="index.php?page=workorder:details&workorder_id={$assigned_workorders[a].workorder_id}">{$assigned_workorders[a].workorder_id}</a></td>
 
             <!-- Opened -->
-            <td class="olotd4"> {$assigned_workorders[a].workorder_open_date|date_format:$date_format}</td>
+            <td class="olotd4">{$assigned_workorders[a].workorder_open_date|date_format:$date_format}</td>
 
             <!-- Customer -->
             <td class="olotd4" nowrap>

@@ -8,7 +8,9 @@
 
 defined('_QWEXEC') or die;
 
+require(INCLUDES_DIR.'modules/customer.php');
 require(INCLUDES_DIR.'modules/schedule.php');
+require(INCLUDES_DIR.'modules/workorder.php');
 
 // Prevent direct access to this page
 if(!check_page_accessed_via_qwcrm()) {
@@ -17,7 +19,7 @@ if(!check_page_accessed_via_qwcrm()) {
 
 // Check if we have a schedule_id
 if($schedule_id == '') {
-    force_page('schedule', 'search', 'warning_msg='.gettext("No Schedule ID supplied."));
+    force_page('core', 'dashboard', 'warning_msg='.gettext("No Schedule ID supplied."));
     exit;
 }
   
@@ -25,5 +27,5 @@ if($schedule_id == '') {
 delete_schedule($db, $schedule_id);
 
 // load schedule search page
-force_page('schedule', 'search');
+force_page('core', 'dashboard');
 exit;

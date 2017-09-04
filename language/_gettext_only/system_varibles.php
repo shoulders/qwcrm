@@ -16,6 +16,7 @@
 gettext("Unassigned");
 gettext("Assigned");
 gettext("Waiting For Parts");
+gettext("Scheduled");
 gettext("On Hold");
 gettext("Management");
 gettext("Closed without Invoice");

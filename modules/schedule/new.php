@@ -8,8 +8,9 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'modules/user.php');
+require(INCLUDES_DIR.'modules/customer.php');
 require(INCLUDES_DIR.'modules/schedule.php');
+require(INCLUDES_DIR.'modules/user.php');
 require(INCLUDES_DIR.'modules/workorder.php');
 
 // Check if we have an employee_id

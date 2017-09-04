@@ -571,7 +571,7 @@ function update_workorder_resolution($db, $workorder_id, $resolution){
 # Update Workorder Status  #
 ############################
 
-function update_workorder_status($db, $workorder_id, $assign_status){
+function update_workorder_status($db, $workorder_id, $assign_status) {
     
     $sql = "UPDATE ".PRFX."workorder SET \n";
     

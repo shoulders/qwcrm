@@ -71,6 +71,12 @@
                                                     </tr>
                                                     <tr>
                                                         <td>
+                                                            <a name="scheduled"></a>
+                                                            {include file='core/blocks/dashboard_workorders_scheduled_block.tpl'}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
                                                             <a name="on_hold"></a>
                                                             {include file='core/blocks/dashboard_workorders_on_hold_block.tpl'}
                                                         </td>

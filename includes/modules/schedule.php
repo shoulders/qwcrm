@@ -96,7 +96,7 @@ function insert_schedule($db, $start_date, $StartTime, $end_date, $EndTime, $not
         assign_workorder_to_employee($db, $workorder_id, $employee_id);
     
         // Change the Workorders Status
-        update_workorder_status($db, $workorder_id, 'assigned'); 
+        update_workorder_status($db, $workorder_id, 'scheduled'); 
         
         // Insert Work Order History Note
         insert_workorder_history_note($db, $workorder_id, gettext("Schedule").' '.$schedule_id.' '.gettext("was created by").' '.QFactory::getUser()->login_display_name.'.');             
@@ -141,28 +141,6 @@ function get_schedule_details($db, $schedule_id, $item = null){
         
     }
     
-}
-
-###############################################
-#    Get a workorder ID from a schedule ID    #
-###############################################
-
-// this actually loads the whole schedule
-// not currently used - do i need this
-
-function get_workorder_id_from_schedule($db, $schedule_id) {
-    
-    $sql = "SELECT workorder_id FROM ".PRFX."schedule WHERE schedule_id=".$db->qstr($schedule_id);
-    
-    if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the work order ID from a schedule."));
-        exit;
-    } else {
-        
-        return $rs->fields['schedule_id'];
-        
-    }    
-
 }
 
 ##########################################################
@@ -258,7 +236,7 @@ function update_schedule($db, $start_date, $StartTime, $end_date, $EndTime, $not
 function delete_schedule($db, $schedule_id) {
     
     // Get schedule details before deleting
-    $schedule_details = schedule_details($db, $schedule_id);
+    $schedule_details = get_schedule_details($db, $schedule_id);
     
     $sql = "DELETE FROM ".PRFX."schedule WHERE schedule_id =".$db->qstr($schedule_id);
 
@@ -267,6 +245,16 @@ function delete_schedule($db, $schedule_id) {
         exit;
         
     } else {
+        
+        // If there are no schedules left for this workorder
+        if(!count_workorder_schedule_items($db, $schedule_details['workorder_id'])) {
+            
+            // if the workorder status is 'scheduled', change the status to 'assigned'
+            if(get_workorder_details($db, $schedule_details['workorder_id'], 'status') == 'scheduled') {
+                update_workorder_status($db, $schedule_details['workorder_id'], 'assigned');
+            }
+            
+        }
         
         // Create a Workorder History Note        
         insert_workorder_history_note($db, $schedule_details['workorder_id'], gettext("Schedule").' '.$schedule_id.' '.gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.');
@@ -827,5 +815,27 @@ function validate_schedule_times($db, $start_date, $start_timestamp, $end_timest
     }
     
     return true;
+    
+}
+
+############################################
+#   count schedule items for a workorder   #
+############################################
+
+function count_workorder_schedule_items($db, $workorder_id) {
+    
+    $sql = "SELECT COUNT(*) AS count
+            FROM ".PRFX."schedule
+            WHERE workorder_id=".$db->qstr($workorder_id);         
+            
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Could not count schedule items for the specified Work Order."));
+        exit;
+        
+    } else {      
+        
+        return  $rs->fields['count'];
+        
+    }
     
 }
