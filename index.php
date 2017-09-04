@@ -69,6 +69,7 @@ if(is_file('configuration.php')) {
     
 }
 
+// Load the mandatory system includes
 require('includes/defines.php');
 require(INCLUDES_DIR.'security.php');
 require(INCLUDES_DIR.'include.php');
@@ -83,6 +84,13 @@ require(FRAMEWORK_DIR.'qwframework.php');
 ################################################
 
 verify_qwcrm_is_installed_correctly($db);
+
+################################################
+#         Framework                            #
+################################################
+
+// Initiate QFramework
+$app = new QFactory;
 
 ################################################
 #         Error Reporting                      #

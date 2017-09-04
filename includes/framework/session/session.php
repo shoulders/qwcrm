@@ -1029,10 +1029,10 @@ class JSession implements IteratorAggregate
         $config = QFactory::getConfig();
         
         $sql    = "SELECT session_id FROM ".PRFX."session WHERE session_id = " . $db->qstr( $this->getId() );        
-        $rs     = $db->Execute($sql);
+        $rs     = $db->Execute($sql);        
         
         // If the session record doesn't exist initialise it.
-        if (!$rs->RecordCount())        
+        if($rs->RecordCount() != 1)        
         {
             $time = $this->isNew() ? time() : $this->get('session.timer.start');            
 
