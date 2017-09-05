@@ -126,7 +126,7 @@
                                                                         <table width="350" border="0" cellpadding="1" cellspacing="1" class="box">
                                                                             <tr>
                                                                                 <td width="246">                                                                                    
-                                                                                    <input name="invoice_prefill_csv" type="file" id="invoice_prefill_csv">
+                                                                                    <input name="invoice_prefill_csv" type="file" accept=".csv">
                                                                                 </td>
                                                                                 <td width="80"><button id="csv_upload" name="submit" type="submit" class="box" value="csv_upload" onClick="return confirmChoice('{t}Are You sure you want to upload this CSV file with new prefill items.{/t}');">{t}CSV Upload{/t}</button></td>
                                                                             </tr>
