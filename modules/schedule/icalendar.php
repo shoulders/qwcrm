@@ -12,11 +12,11 @@ require(INCLUDES_DIR.'modules/customer.php');
 require(INCLUDES_DIR.'modules/schedule.php');
 require(INCLUDES_DIR.'modules/workorder.php');
 
-// Check if we have a schedule_id
+/* Check if we have a schedule_id
 if($schedule_id == '') {
     force_page('schedule', 'search', 'warning_msg='.gettext("No Schedule ID supplied."));
     exit;
-}
+}*/
 
 // Check if we have a employee_id
 if($employee_id == '') {

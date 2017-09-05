@@ -33,7 +33,7 @@ $smarty->assign('start_day',                $start_day                          
 $smarty->assign('selected_date',            timestamp_to_calendar_format(convert_year_month_day_to_timestamp($start_year, $start_month, $start_day))    );
 $smarty->assign('employees',                get_active_users($db, 'employees')                                                                          );  
 $smarty->assign('current_schedule_date',    convert_year_month_day_to_timestamp($start_year, $start_month, $start_day)                                  );
-$smarty->assign('calendar',                 build_calendar_matrix($db, $start_year, $start_month, $start_day, $employee_id, $workorder_id)              );
+$smarty->assign('calendar_matrix',          build_calendar_matrix($db, $start_year, $start_month, $start_day, $employee_id, $workorder_id)              );
 $smarty->assign('selected_employee',        $employee_id                                                                                                );
 
 // Build the page

@@ -615,9 +615,9 @@ function build_calendar_matrix($db, $start_year, $start_month, $start_day, $empl
             'schedule_id'           => $rs->fields['schedule_id'],
             'customer_display_name' => $rs->fields['customer_display_name'],
             'workorder_id'          => $rs->fields['workorder_id'],
-            'schedule_start'        => $rs->fields['start_time'],
-            'schedule_end'          => $rs->fields['end_time'],
-            'notes'        => $rs->fields['notes']            
+            'start_time'            => $rs->fields['start_time'],
+            'end_time'              => $rs->fields['end_time'],
+            'notes'                 => $rs->fields['notes']            
             ));
         $rs->MoveNext();
     }

@@ -61,7 +61,7 @@
                                         <tr>
                                             <td>
                                                 <button type="submit" name="{t}Print{/t}" OnClick=location.href="index.php?page=schedule:day&start_year={$start_year}&start_month={$start_month}&start_day={$start_day}&theme=off";>{t}Print{/t}</button>
-                                                <button type="submit" name="ics-schedule" OnClick=location.href="index.php?page=schedule:icalendar&start_year={$start_year}&start_month={$start_month}&start_day={$start_day}&employee_id={$employee_id}&theme=print&ics_type=day";>{t}ICS Schedule{/t}</button>
+                                                <button type="submit" name="ics-schedule" OnClick=location.href="index.php?page=schedule:icalendar&start_year={$start_year}&start_month={$start_month}&start_day={$start_day}&employee_id={$employee_id}&ics_type=day&theme=print";>{t}ICS Schedule{/t}</button>
                                             </td>
                                             <td valign="top" align="right" valign="middle">
                                                 {if $login_usergroup_id <= 3 }
@@ -76,7 +76,7 @@
                                             </td>
                                         </tr>
                                     </table>
-                                    {$calendar}
+                                    {$calendar_matrix}
                                     <br>
                                 </td>
                             </tr>
