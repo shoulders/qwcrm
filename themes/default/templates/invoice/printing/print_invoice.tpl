@@ -88,8 +88,7 @@
                                         <b>{t}Date{/t} - </b>{$invoice_details.date|date_format:$date_format} <br>
                                         <b>{t}Due Date{/t} - </b>{$invoice_details.due_date|date_format:$date_format}<br>
                                         <b>{t}Work Order{/t} - </b>{if !$workorder_details}{t}n/a{/t}{else}{$invoice_details.workorder_id}{/if}<br>
-                                        <b>{t}Technician{/t} - </b>{$employee_details.display_name}<br>                                        
-                                        <b>{t}Credit Terms{/t} - </b>{$customer_details.credit_terms}<br>                                       
+                                        <b>{t}Technician{/t} - </b>{$employee_details.display_name}<br>                                                                            
                                     </td>
                                 </tr>
                             </table>
@@ -278,9 +277,16 @@
     
     <!-- Footer Section -->    
     <table width="750" border="0" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
+        {if $customer_details.credit_terms != ''}
+            <tr>
+                <td align="center">
+                    <b>{t}Credit Terms{/t}:</b> {$customer_details.credit_terms}
+                </td>
+            </tr>
+        {/if}
         {if $payment_details.tax_enabled}
             <tr>
-                <td align="center">{t}VAT Number{/t}: {$company_details.vat_number}</td>
+                <td align="center"><b>{t}VAT Number{/t}:</b> {$company_details.vat_number}</td>
             </tr>
         {/if}
         <tr>
