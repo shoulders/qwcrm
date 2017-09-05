@@ -29,16 +29,16 @@ defined('_QWEXEC') or die;
 # Get single Work Order status           #
 ##########################################
 
-function menu_get_single_workorder_status($db, $workorder_id){
+function menu_get_single_workorder_is_closed($db, $workorder_id){
     
-    $sql = "SELECT status FROM ".PRFX."workorder WHERE workorder_id =".$db->qstr($workorder_id);
+    $sql = "SELECT is_closed FROM ".PRFX."workorder WHERE workorder_id=".$db->qstr($workorder_id);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to a get a single workorder status."));
         exit;
     } else {
         
-        return $rs->fields['status'];
+        return $rs->fields['is_closed'];
         
     }
     

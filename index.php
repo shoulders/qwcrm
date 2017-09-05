@@ -423,7 +423,7 @@ if(check_acl($db, $login_usergroup_id, $module, $page_tpl)) {
         
         // is the menu disabled
         if($VAR['theme'] != 'menu_off') {
-            require('modules/core/blocks/theme_menu_block.php');  
+            require('modules/core/blocks/theme_menu_block.php'); 
         }
         
     }    
