@@ -9,8 +9,8 @@
 defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'modules/customer.php');
-require(INCLUDES_DIR.'modules/invoice.php');
 require(INCLUDES_DIR.'modules/giftcert.php');
+require(INCLUDES_DIR.'modules/invoice.php');
 require(INCLUDES_DIR.'modules/payment.php');
 require(INCLUDES_DIR.'modules/workorder.php');
 
@@ -54,9 +54,10 @@ if(isset($VAR['submit'])) {
 
 }
 
-// Build page
+// Build the page
 $smarty->assign('customer_details',                 get_customer_details($db, get_invoice_details($db, $invoice_id , 'customer_id'))    );
 $smarty->assign('invoice_details',                  get_invoice_details($db, $invoice_id)                                               );
+$smarty->assign('invoice_statuses',                 get_invoice_statuses($db)                                                           );
 $smarty->assign('transactions',                     get_invoice_transactions($db, $invoice_id)                                          );  
 $smarty->assign('active_payment_system_methods',    get_active_payment_system_methods($db)                                              );
 $smarty->assign('active_credit_cards',              get_active_credit_cards($db)                                                        );

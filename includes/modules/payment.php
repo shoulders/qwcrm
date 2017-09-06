@@ -62,7 +62,7 @@ function insert_transaction($db, $customer_id, $workorder_id, $invoice_id,  $dat
 #   Insert transaction created by a payment method  #
 #####################################################
 
-function insert_payment_method_transaction($db, $invoice_id, $date, $amount, $method_name, $type, $method_note, $note) {
+function insert_payment_method_transaction($db, $invoice_id, $date, $amount, $method_name, $method_type, $method_note, $note) {
     
     // Get invoice details
     $invoice_details = get_invoice_details($db, $invoice_id);
@@ -96,7 +96,7 @@ function insert_payment_method_transaction($db, $invoice_id, $date, $amount, $me
         $log_msg = gettext("Partial Payment made by")." $method_name ".gettext("for")." $currency_sym$formatted_amount, ".gettext("Balance due").": $currency_sym$new_invoice_balance, $method_note, ".gettext("Note").": $note";
         
         // Insert Transaction into log       
-        insert_transaction($db, $customer_id, $workorder_id, $invoice_id, $date, $type, $amount, $log_msg);
+        insert_transaction($db, $customer_id, $workorder_id, $invoice_id, $date, $method_type, $amount, $log_msg);
         
         // If the invoice has a workorder update it
         if($workorder_id) {
@@ -133,7 +133,7 @@ function insert_payment_method_transaction($db, $invoice_id, $date, $amount, $me
         }
 
         // Insert Transaction into log       
-        insert_transaction($db, $customer_id, $workorder_id, $invoice_id, $date, $type, $amount, $log_msg);
+        insert_transaction($db, $customer_id, $workorder_id, $invoice_id, $date, $method_type, $amount, $log_msg);
         
         // Create a Workorder History Note
         if($workorder_id) {                       
