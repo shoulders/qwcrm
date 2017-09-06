@@ -96,7 +96,10 @@ function get_company_details($db, $item = null) {
 #    Update User's Last Active Date   #
 #######################################
 
-function update_user_last_active($db, $user_id) {
+function update_user_last_active($db, $user_id = null) {
+    
+    // compensate for some operations not having a user_id
+    if(!$user_id) { return; }        
     
     $sql = "UPDATE ".PRFX."user SET last_active=".$db->qstr(time())." WHERE user_id=".$db->qstr($user_id);
     

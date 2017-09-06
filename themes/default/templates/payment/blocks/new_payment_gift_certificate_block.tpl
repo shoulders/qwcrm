@@ -40,7 +40,7 @@
                 </table>
                 <p>
                     <input type="hidden" name="method_name" value="{t}Gift Certificate{/t}">
-                    <input type="hidden" name="type" value="4">                    
+                    <input type="hidden" name="method_type" value="gift_certificate">                 
                     <button type="submit" name="submit" value="submit">{t}Submit Gift Certificate{/t}</button>
                 </p>
             </td>

@@ -42,7 +42,7 @@
                 </table>
                 <p>
                     <input type="hidden" name="method_name" value="{t}Direct Deposit{/t}">
-                    <input type="hidden" name="type" value="6">                    
+                    <input type="hidden" name="method_type" value="direct_deposit">                   
                     <button type="submit" name="submit" value="submit">{t}Submit Direct Deposit Payment{/t}</button>
                 </p>
             </td>

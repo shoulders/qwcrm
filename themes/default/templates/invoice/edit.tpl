@@ -345,7 +345,7 @@
                                                 <td class="row2"><b>{t}Technician{/t}</b></td> 
                                                 <td class="row2"><b>{t}Date{/t}</b></td>
                                                 <td class="row2"><b>{t}Due Date{/t}</b></td>                                                                                                                                 
-                                                <td class="row2"><b>{t}Total{/t}</b></td>
+                                                <td class="row2"><b>{t}Status{/t}</b></td>
                                                 <td class="row2"><b>{t}Amount Paid{/t}</b></td>
                                                 <td class="row2"><b>{t}Balance{/t}</b></td>
                                                 {*<td class="row2"><b>{t}Date Paid{/t}</b></td>*}
@@ -381,8 +381,12 @@
                                                            dateFormat  : "{$date_format}"                                                                                            
                                                        });                                                         
                                                     </script>                                                   
+                                                </td>                                                
+                                                <td>
+                                                    {section name=s loop=$invoice_statuses}    
+                                                        {if $invoice_details.status == $invoice_statuses[s].status_key}{t}{$invoice_statuses[s].display_name}{/t}{/if}        
+                                                    {/section}              
                                                 </td>
-                                                <td>{$currency_sym}{$invoice_details.gross_amount|string_format:"%.2f"}</td>
                                                 <td>{$currency_sym}{$invoice_details.paid_amount|string_format:"%.2f"}</td>
                                                 <td><font color="#cc0000">{$currency_sym}{$invoice_details.balance|string_format:"%.2f"}</font></td>
                                                 {*<td>{$invoice_details.paid_date|date_format:$date_format}</td>*}
@@ -391,7 +395,7 @@
                                             <!-- Scope -->
                                             <tr class="olotd4">
                                                 <td colspan="2"><b>{t}Work Order Scope{/t}:</b></td>
-                                                <td>{$workorder_details.scope}</td>
+                                                <td>{if $workorder_details.scope}{$workorder_details.scope}{else}{t}n/a{/t}{/if}</td>
                                             </tr>
 
                                             <tr>
@@ -503,7 +507,7 @@
                                                             <tr class="olotd4">
                                                                 <td class="row2"><b>{t}Transaction ID{/t}</b></td>
                                                                 <td class="row2"><b>{t}Date{/t}</b></td>
-                                                                <td class="row2"><b>{t}Amount{/t}</b></td>
+                                                                <td class="row2"><b>{t}Price{/t}</b></td>
                                                                 <td class="row2"><b>{t}Type{/t}</b></td>
                                                             </tr>                                                            
                                                             {section name=t loop=$transactions}
@@ -543,9 +547,9 @@
                                                         <table width="100%" cellpadding="3" cellspacing="0" border="0" class="olotable">
                                                             <tr  class="olotd4">
                                                                 <td class="row2"><b>{t}No{/t}</b></td>
-                                                                <td class="row2" width="12"><b>{t}Qty{/t}</b></td>
+                                                                <td class="row2"><b>{t}Qty{/t}</b></td>
                                                                 <td class="row2"><b>{t}Description{/t}</b></td>
-                                                                <td class="row2"><b>{t}Amount{/t}</b></td>
+                                                                <td class="row2"><b>{t}Price{/t}</b></td>
                                                                 <td class="row2"><b>{t}Total{/t}</b></td>
                                                                 <td class="row2"><b>{t}Actions{/t}</b></td>
                                                             </tr>
@@ -573,10 +577,10 @@
                                                     <!-- Additional Javascript Labour Table -->
                                                     <table width="100%" cellpadding="3" cellspacing="0" border="0" class="olotable" id="labour_items">
                                                         <tr class="olotd4">
-                                                            <td class="row2" style="width: 15px;"><b>{t}No{/t}</b></td>
+                                                            <td class="row2" style="width: 50px;"><b>{t}No{/t}</b></td>
                                                             <td class="row2" style="width: 66px;"><b>{t}Qty{/t}</b></td>
                                                             <td class="row2" style="width: 453px;"><b>{t}Description{/t}</b></td>
-                                                            <td class="row2" style="width: 110px;"><b>{t}Amount{/t}</b></td> 
+                                                            <td class="row2" style="width: 110px;"><b>{t}Price{/t}</b></td> 
                                                         </tr>
 
                                                         <!-- Additional Rows are added here -->
@@ -604,7 +608,7 @@
                                                                 <td class="row2"><b>{t}No{/t}</b></td>
                                                                 <td class="row2"><b>{t}Qty{/t}</b></td>
                                                                 <td class="row2"><b>{t}Description{/t}</b></td>
-                                                                <td class="row2"><b>{t}Amount{/t}</b></td>
+                                                                <td class="row2"><b>{t}Price{/t}</b></td>
                                                                 <td class="row2"><b>{t}Total{/t}</b></td>
                                                                 <td class="row2"><b>{t}Actions{/t}</b></td>
                                                             </tr>
@@ -632,10 +636,10 @@
                                                     <!-- Additional Javascript Parts Table -->
                                                     <table id="parts_items" width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
                                                         <tr class="olotd4">
-                                                            <td class="row2" style="width: 15px;"><b>{t}No{/t}</b></td>
+                                                            <td class="row2" style="width: 50px;"><b>{t}No{/t}</b></td>
                                                             <td class="row2" style="width: 66px;"><b>{t}Qty{/t}</b></td>
                                                             <td class="row2" style="width: 453px;"><b>{t}Description{/t}</b></td>
-                                                            <td class="row2" style="width: 110px;"><b>{t}Amount{/t}</b></td>                                                            
+                                                            <td class="row2" style="width: 110px;"><b>{t}Price{/t}</b></td>                                                            
                                                         </tr>
 
                                                         <!-- Additional Rows are added here -->

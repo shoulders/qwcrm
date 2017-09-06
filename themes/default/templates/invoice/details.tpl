@@ -32,7 +32,7 @@
                                             <td class="row2"><b>{t}Technician{/t}</b></td> 
                                             <td class="row2"><b>{t}Date{/t}</b></td>
                                             <td class="row2"><b>{t}Due Date{/t}</b></td>                                                                                                                                 
-                                            <td class="row2"><b>{t}Total{/t}</b></td>
+                                            <td class="row2"><b>{t}Status{/t}</b></td>
                                             <td class="row2"><b>{t}Amount Paid{/t}</b></td>
                                             <td class="row2"><b>{t}Balance{/t}</b></td>
                                             <td class="row2"><b>{t}Date Paid{/t}</b></td>
@@ -49,7 +49,11 @@
                                             <td><a href="index.php?page=user:details&user_id={$invoice_details.employee_id}">{$employee_display_name}</a></td>                                            
                                             <td>{$invoice_details.date|date_format:$date_format}</td>                                            
                                             <td>{$invoice_details.due_date|date_format:$date_format}</td>
-                                            <td>{$currency_sym}{$invoice_details.gross_amount|string_format:"%.2f"}</td>
+                                            <td>
+                                                {section name=s loop=$invoice_statuses}    
+                                                    {if $invoice_details.status == $invoice_statuses[s].status_key}{t}{$invoice_statuses[s].display_name}{/t}{/if}        
+                                                {/section}              
+                                            </td>
                                             <td>{$currency_sym}{$invoice_details.paid_amount|string_format:"%.2f"}</td>
                                             <td><font color="#cc0000">{$currency_sym}{$invoice_details.balance|string_format:"%.2f"}</font></td>
                                             <td>{$invoice_details.paid_date|date_format:$date_format}</td>
@@ -58,7 +62,7 @@
                                         <!-- Scope -->
                                         <tr class="olotd4">
                                             <td colspan="2"><b>{t}Work Order Scope{/t}:</b></td>
-                                            <td>{$workorder_details.scope}</td>
+                                            <td>{if $workorder_details.scope}{$workorder_details.scope}{else}{t}n/a{/t}{/if}</td>
                                         </tr>
 
                                         <tr>
@@ -191,7 +195,7 @@
                                                             <td class="row2"><b>{t}No{/t}</b></td>
                                                             <td class="row2" width="12"><b>{t}Qty{/t}</b></td>
                                                             <td class="row2"><b>{t}Description{/t}</b></td>
-                                                            <td class="row2"><b>{t}Rate{/t}</b></td>
+                                                            <td class="row2"><b>{t}Price{/t}</b></td>
                                                             <td class="row2"><b>{t}Total{/t}</b></td>
                                                             <td class="row2"><b>{t}Actions{/t}</b></td>
                                                         </tr>

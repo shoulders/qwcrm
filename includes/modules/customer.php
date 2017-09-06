@@ -374,7 +374,10 @@ function update_customer_note($db, $customer_note_id, $date, $note) {
 #    Update Last Active         #
 #################################
 
-function update_customer_last_active($db, $customer_id) {
+function update_customer_last_active($db, $customer_id = null) {
+    
+    // compensate for some operations not having a customer_id - i.e. sending some emails
+    if(!$customer_id) { return; }    
     
     $sql = "UPDATE ".PRFX."customer SET
             last_active=".$db->qstr(time())."

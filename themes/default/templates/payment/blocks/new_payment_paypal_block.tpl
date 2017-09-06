@@ -42,7 +42,7 @@
                 </table>
                 <p>
                     <input type="hidden" name="method_name" value="{t}PayPal{/t}">
-                    <input type="hidden" name="type" value="5">                    
+                    <input type="hidden" name="method_type" value="paypal">                   
                     <button type="submit" name="submit" value="submit">{t}Submit Paypal Payment{/t}</button>
                 </p>
             </td>

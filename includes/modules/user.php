@@ -406,7 +406,10 @@ function update_user($db, $user_id, $VAR) {
 #    Update User's Last Active Date   #  // This is in include.php
 #######################################
 
-/*function update_user_last_active($db, $user_id) {
+/*function update_user_last_active($db, $user_id = null) {
+
+    // compensate for some operations not having a user_id
+    if(!$user_id) { return; }
     
     $sql = "UPDATE ".PRFX."user SET LAST_ACTIVE=".$db->qstr(time())." WHERE USER_ID=".$db->qstr($user_id);
     

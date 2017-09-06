@@ -25,7 +25,7 @@ defined('_QWEXEC') or die;
 /** Display Functions **/
 
 #########################################
-#     Display Invoices                  # // Status = IS_PAID  0 = unpaid, 1 = paid
+#     Display Invoices                  # // Status = is_paid  0 = unpaid, 1 = paid
 #########################################
 
 function display_invoices($db, $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $status = null, $employee_id = null, $customer_id = null) {
@@ -41,7 +41,26 @@ function display_invoices($db, $direction = 'DESC', $use_pages = false, $page_no
     if($search_term != null) {$whereTheseRecords .= " AND ".PRFX."invoice.$search_category LIKE '%$search_term%'";} 
     
     // Restrict by Status
-    if($status != null) {$whereTheseRecords = " AND ".PRFX."invoice.is_paid=".$db->qstr($status);} 
+    if($status != null) {
+        
+        // All Open workorders
+        if($status == 'open') {
+            
+            $whereTheseRecords .= " AND ".PRFX."invoice.is_closed != '1'";
+        
+        // All Closed workorders
+        } elseif($status == 'closed') {
+            
+            $whereTheseRecords .= " AND ".PRFX."invoice.is_closed = '1'";
+        
+        // Return Workorders for the given status
+        } else {
+            
+            $whereTheseRecords .= " AND ".PRFX."invoice.status= ".$db->qstr($status);
+            
+        }
+        
+    }
 
     // Restrict by Employee
     if($employee_id != null) {$whereTheseRecords .= " AND ".PRFX."invoice.employee_id=".$db->qstr($employee_id);}        
@@ -52,17 +71,20 @@ function display_invoices($db, $direction = 'DESC', $use_pages = false, $page_no
     /* The SQL code */
     
     $sql = "SELECT        
-        ".PRFX."invoice.*,           
+        ".PRFX."invoice.*,
+            
         ".PRFX."user.display_name AS employee_display_name,
         ".PRFX."user.work_primary_phone AS employee_work_primary_phone,
         ".PRFX."user.work_mobile_phone AS employee_work_mobile_phone,
         ".PRFX."user.home_mobile_phone AS employee_home_mobile_phone,
+            
         ".PRFX."customer.display_name AS customer_display_name,
         ".PRFX."customer.first_name AS customer_first_name,
         ".PRFX."customer.last_name AS customer_last_name,
         ".PRFX."customer.primary_phone AS customer_phone,
         ".PRFX."customer.mobile_phone AS customer_mobile_phone,
         ".PRFX."customer.fax AS customer_fax
+       
         FROM ".PRFX."invoice
         LEFT JOIN ".PRFX."user ON ".PRFX."invoice.employee_id = ".PRFX."user.user_id
         LEFT JOIN ".PRFX."customer ON ".PRFX."invoice.customer_id = ".PRFX."customer.customer_id
@@ -161,7 +183,10 @@ function insert_invoice($db, $customer_id, $workorder_id, $discount_rate, $tax_r
             date            =". $db->qstr( time()                               ).",
             due_date        =". $db->qstr( time()                               ).",            
             discount_rate   =". $db->qstr( $discount_rate                       ).",            
-            tax_rate        =". $db->qstr( $tax_rate                            );            
+            tax_rate        =". $db->qstr( $tax_rate                            ).",
+            open_date       =". $db->qstr( time()                               ).",
+            status          =". $db->qstr( 'pending'                            ).",   
+            is_closed       =". $db->qstr( 0                                    ); 
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to insert the invoice record into the database."));
@@ -325,7 +350,7 @@ function get_invoice_details($db, $invoice_id, $item = null) {
 }
 
 #########################################
-#   Get All invoice labour details      #
+#   Get All invoice labour items        #
 #########################################
 
 function get_invoice_labour_items($db, $invoice_id) {
@@ -346,6 +371,7 @@ function get_invoice_labour_items($db, $invoice_id) {
     }    
     
 }
+
 #######################################
 #   Get invoice labour item details   #
 #######################################
@@ -361,7 +387,7 @@ function get_invoice_labour_item_details($db, $invoice_labour_id, $item = null) 
         
         if($item === null){
             
-            return $rs->GetArray(); 
+            return $rs->GetRowAssoc();
             
         } else {
             
@@ -374,7 +400,7 @@ function get_invoice_labour_item_details($db, $invoice_labour_id, $item = null) 
 }
 
 #####################################
-#   Get All invoice parts details   #
+#   Get All invoice parts items     #
 #####################################
 
 function get_invoice_parts_items($db, $invoice_id) {
@@ -411,7 +437,7 @@ function get_invoice_parts_item_details($db, $invoice_parts_id, $item = null) {
         
         if($item === null){
             
-            return $rs->GetArray(); 
+            return $rs->GetRowAssoc(); 
             
         } else {
             
@@ -471,8 +497,8 @@ function get_invoice_statuses($db) {
         $statuses = $rs->GetArray();
         
         // Remove dormant invoice statuses (for now)      
-        unset($statuses[2]); // 'in_dispute'
-        unset($statuses[3]); // 'cancelled'
+        unset($statuses[3]); // 'in_dispute'
+        unset($statuses[4]); // 'cancelled'
        
         return $statuses;        
         
@@ -502,7 +528,7 @@ function get_invoice_status_display_name($db, $status_key) {
 /** Update Functions **/
 
 ######################
-#   update invoice   #
+#   update invoice   #  // this is used when a user updates an invoice .e. invoice:edit
 ######################
 
 function update_invoice($db, $invoice_id, $date, $due_date, $discount_rate) {
@@ -510,7 +536,7 @@ function update_invoice($db, $invoice_id, $date, $due_date, $discount_rate) {
     $sql = "UPDATE ".PRFX."invoice SET
             date                =". $db->qstr( date_to_timestamp($date)     ).",
             due_date            =". $db->qstr( date_to_timestamp($due_date) ).",
-            discount_rate       =". $db->qstr( $discount_rate               )."
+            discount_rate       =". $db->qstr( $discount_rate               )."               
             WHERE invoice_id    =". $db->qstr( $invoice_id                  );
 
     if(!$rs = $db->execute($sql)){        
@@ -524,6 +550,7 @@ function update_invoice($db, $invoice_id, $date, $due_date, $discount_rate) {
 
         // Update last active record    
         update_customer_last_active($db, get_invoice_details($db, $invoice_id, 'customer_id'));
+        update_invoice_last_active($db, $invoice_id);
         
     }
     
@@ -538,7 +565,7 @@ function update_invoice_transaction_only($db, $invoice_id, $paid_amount, $balanc
     $sql = "UPDATE ".PRFX."invoice SET
             paid_amount         =". $db->qstr( $paid_amount ).",
             balance             =". $db->qstr( $balance     ).",
-            is_paid             =". $db->qstr( $paid_status ).",
+            is_closed           =". $db->qstr( $paid_status ).",
             paid_date           =". $db->qstr( $paid_date   )."                       
             WHERE invoice_id    =". $db->qstr( $invoice_id  );
 
@@ -569,8 +596,12 @@ function update_invoice_full($db, $VAR) {
             tax_amount          =". $db->qstr( $VAR['tax_amount']      ).",             
             gross_amount        =". $db->qstr( $VAR['gross_amount']    ).", 
             paid_amount         =". $db->qstr( $VAR['paid_amount']     ).",
-            balance             =". $db->qstr( $VAR['balance']         ).",      
-            is_paid             =". $db->qstr( $VAR['is_paid']         ).",
+            balance             =". $db->qstr( $VAR['balance']         ).",
+            open_date           =". $db->qstr( $VAR['open_date']       ).",
+            close_date          =". $db->qstr( $VAR['close_date']      ).",
+            last_active         =". $db->qstr( $VAR['last_Active']     ).",
+            status              =". $db->qstr( $VAR['status ']         ).",
+            is_closed           =". $db->qstr( $VAR['is_paid']         ).",
             paid_date           =". $db->qstr( $VAR['paid_date']       )."
             WHERE invoice_id    =". $db->qstr( $VAR['invoice_id']      );
 
@@ -616,6 +647,91 @@ function update_invoice_prefill_item($db, $VAR){
     
 }
 
+############################
+# Update Invoice Status    #
+############################
+
+function update_invoice_status($db, $invoice_id, $new_status) {
+    
+    $sql = "UPDATE ".PRFX."invoice SET \n";
+    
+    if ($new_status == 'unassigned') { $sql .= "employee_id = '',\n"; }  // when unnasigned there should be no employee the '\n' makes sql look neater
+    
+    $sql .="last_active         =". $db->qstr( time()       ).",
+            status              =". $db->qstr( $new_status  )."            
+            WHERE invoice_id    =". $db->qstr( $invoice_id  );
+
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update a Work Order Status."));
+        exit;
+        
+    } else {    
+    
+        // Update invoice 'is_closed' boolean
+        if($new_status == 'cancelled' || $new_status == 'paid') {
+            update_invoice_closed_status($db, $invoice_id, 'closed');
+        } else {
+            update_invoice_closed_status($db, $invoice_id, 'open');
+        }
+        
+        // For writing message to log file, get work order status display name
+        $inv_status_diplay_name = gettext(get_invoice_status_display_name($db, $new_status));
+        
+        // Create a Workorder History Note       
+        insert_workorder_history_note($db, $invoice_id, gettext("Invoice Status updated to").' '.$inv_status_diplay_name.' '.gettext("by").' '.QFactory::getUser()->login_display_name.'.');
+        
+        // Log activity        
+        write_record_to_activity_log(gettext("Invoice").' '.$invoice_id.' '.gettext("Status updated to").' '.$inv_status_diplay_name.' '.gettext("by").' '.QFactory::getUser()->login_display_name.'.');
+        
+        // Update last active record
+        update_invoice_last_active($db, $invoice_id);
+        update_customer_last_active($db, get_invoice_details($db, $invoice_id, 'customer_id'));        
+        
+        return true;
+        
+    }
+    
+}
+
+###################################
+# Update invoice Closed Status    #
+###################################
+
+function update_invoice_closed_status($db, $invoice_id, $close_status) {
+    
+    if($close_status == 'open') { $is_closed = '0'; }
+    
+    if($close_status == 'closed') { $is_closed = '1'; }
+    
+    $sql = "UPDATE ".PRFX."invoice SET is_closed=".$is_closed." WHERE invoice_id=".$db->qstr($invoice_id);
+    
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update an invoice Closed status."));
+        exit;
+    }
+    
+}
+
+#################################
+#    Update Last Active         #
+#################################
+
+function update_invoice_last_active($db, $invoice_id = null) {
+    
+    // compensate for some workorders not having invoices
+    if(!$invoice_id) { return; }
+    
+    $sql = "UPDATE ".PRFX."invoice SET
+            last_active=".$db->qstr(time())."
+            WHERE invoice_id=".$db->qstr($invoice_id);
+    
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update an invoice last active time."));
+        exit;
+    }
+    
+}
+
 /** Close Functions **/
 
 /** Delete Functions **/
@@ -644,19 +760,19 @@ function delete_invoice($db, $invoice_id) {
         exit;
     } else {
         
-        // Update the workorder to remove the invoice_id
-        update_workorder_invoice_id($db, $invoice_details['workorder_id'], '');
+        // Update the invoice to remove the invoice_id
+        update_invoice_invoice_id($db, $invoice_details['invoice_id'], '');
         
         // Create a Workorder History Note  
-        if($invoice_details['workorder_id']) {
-            insert_workorder_history_note($db, $invoice_details['workorder_id'], gettext("Invoice").' '.$invoice_id.' '.gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.');
+        if($invoice_details['invoice_id']) {
+            insert_invoice_history_note($db, $invoice_details['invoice_id'], gettext("Invoice").' '.$invoice_id.' '.gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.');
         }        
         
         // Log activity        
-        write_record_to_activity_log(gettext("Invoice").' '.$invoice_id.' '.gettext("for Work Order").' '.$invoice_details['workorder_id'].' '.gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.');
+        write_record_to_activity_log(gettext("Invoice").' '.$invoice_id.' '.gettext("for Work Order").' '.$invoice_details['invoice_id'].' '.gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.');
         
         // Update last active record
-        update_workorder_last_active($db, $invoice_details['workorder_id']);
+        update_invoice_last_active($db, $invoice_details['invoice_id']);
         update_customer_last_active($db, $invoice_details['customer_id']);
         
         return true;
@@ -901,7 +1017,7 @@ function upload_invoice_prefill_items_csv($db, $VAR) {
 }
 
 ##################################################
-#   Export Invoice Prefill Items as a CSV file  #
+#   Export Invoice Prefill Items as a CSV file   #
 ##################################################
 
 function export_invoice_prefill_items_csv($db) {

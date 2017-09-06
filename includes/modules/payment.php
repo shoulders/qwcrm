@@ -74,9 +74,9 @@ function insert_payment_method_transaction($db, $invoice_id, $date, $amount, $me
     $formatted_amount = sprintf( "%.2f", $amount);
            
     // Other Variables
-    $currency_sym   = get_company_details($db, 'currency_symbol');    
-    $customer_id    = $invoice_details['customer_id'];
-    $workorder_id   = $invoice_details['workorder_id'];
+    $currency_sym           = get_company_details($db, 'currency_symbol');    
+    $customer_id            = $invoice_details['customer_id'];
+    $workorder_id           = $invoice_details['workorder_id'];
     
     // Calculate the new balance and paid amount    
     $new_invoice_paid_amount    = $invoice_details['paid_amount'] + $amount;
@@ -85,12 +85,18 @@ function insert_payment_method_transaction($db, $invoice_id, $date, $amount, $me
     /* Partial Payment Transaction */
     
     if($new_invoice_balance != 0 ) {
+        
+        // Set the new invoice status
+        $new_status = 'partially_paid';
 
         // Update the invoice        
         update_invoice_transaction_only($db, $invoice_id, $new_invoice_paid_amount, $new_invoice_balance, '0');
 
         // Transaction log        
         $log_msg = gettext("Partial Payment made by")." $method_name ".gettext("for")." $currency_sym$formatted_amount, ".gettext("Balance due").": $currency_sym$new_invoice_balance, $method_note, ".gettext("Note").": $note";
+        
+        // Insert Transaction into log       
+        insert_transaction($db, $customer_id, $workorder_id, $invoice_id, $date, $type, $amount, $log_msg);
         
         // If the invoice has a workorder update it
         if($workorder_id) {
@@ -100,19 +106,14 @@ function insert_payment_method_transaction($db, $invoice_id, $date, $amount, $me
             
         }    
 
-        // Insert Transaction into log       
-        insert_transaction($db, $customer_id, $workorder_id, $invoice_id, $date, $type, $amount, $log_msg);
-        
-        // Now load the invoice to view
-        //force_page('invoice', 'details&invoice_id='.$invoice_id, 'information_msg=Partial Payment made successfully');
-        
-        return true;
-
     }
 
     /* Full payment or the new Balance is 0.00 */
     
     if($new_invoice_balance == 0 ) {
+        
+        // Set the new invoice status
+        $new_status = 'paid';   
 
         // Update the invoice
         update_invoice_transaction_only($db, $invoice_id, $new_invoice_paid_amount, $new_invoice_balance, '1', time());   
@@ -131,21 +132,28 @@ function insert_payment_method_transaction($db, $invoice_id, $date, $amount, $me
                     
         }
 
+        // Insert Transaction into log       
+        insert_transaction($db, $customer_id, $workorder_id, $invoice_id, $date, $type, $amount, $log_msg);
+        
         // Create a Workorder History Note
         if($workorder_id) {                       
             insert_workorder_history_note($db, $workorder_id, gettext("Transaction inserted by").' '.QFactory::getUser()->login_display_name.' - '.$log_msg);            
         }    
 
-        // Insert Transaction into log       
-        insert_transaction($db, $customer_id, $workorder_id, $invoice_id, $date, $type, $amount, $log_msg);
-
-        // Now load the invoice to view
-        //force_page('invoice', 'details&invoice_id='.$invoice_id, 'information_msg=Full Payment made successfully'); 
-        
-        return true;
-
     }
     
+    // Update invoice status only if it is different from the current status
+    if($invoice_details['status'] != $new_status) {
+        update_invoice_status($db, $invoice_id, $new_status);        
+    }
+    
+    // Update last active record    
+    update_customer_last_active($db, $invoice_details['customer_id']);
+    update_workorder_last_active($db, $invoice_details['workorder_id']);
+    update_invoice_last_active($db, $invoice_id);
+    
+    return;
+        
 }
 
 /** Get Functions **/
@@ -419,20 +427,20 @@ function validate_payment_method_totals($db, $invoice_id, $amount) {
 
     // Has a zero amount been submitted, this is not allowed
     if($amount == 0){
-        //force_page('payment', 'new&invoice_id='.$invoice_id, 'warning_msg=You can not enter a transaction with a zero (0.00) amount');
-        //exit;
+        
         $smarty->assign('warning_msg', gettext("You can not enter a transaction with a zero (0.00) amount."));
-        //postEmulationWrite('warning_msg', 'You can not enter a transaction with a zero (0.00) amount');
+        
         return false;
+        
     }
 
     // Is the transaction larger than the outstanding invoice balance, this is not allowed
     if($amount > get_invoice_details($db, $invoice_id, 'balance')){
-        //force_page('payment', 'new&invoice_id='.$invoice_id, 'warning_msg=You can not enter more than the outstanding balance of the invoice.');
-        //exit;
+        
         $smarty->assign('warning_msg', gettext("You can not enter more than the outstanding balance of the invoice."));
-        //postEmulationWrite('warning_msg', 'You can not enter more than the outstanding balance of the invoice');
+        
         return false;
+        
     }
     
     return true;

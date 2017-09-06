@@ -39,7 +39,7 @@
                                 </td>
                             </tr>                            
                                 
-                            {if $invoice_details.IS_PAID == 0 && $invoice_details.balance > 0 }
+                            {if $invoice_details.is_closed == 0 && $invoice_details.balance > 0 }
                                 
                                 <!-- Cash -->
                                 {if $active_payment_system_methods.cash_active == '1'}

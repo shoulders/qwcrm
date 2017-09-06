@@ -24,6 +24,7 @@ gettext("Closed with Invoice");
 
 /* Invoice Statuses */
 
+gettext("Pending");
 gettext("Unpaid");
 gettext("Partially Paid");
 gettext("In Dispute");

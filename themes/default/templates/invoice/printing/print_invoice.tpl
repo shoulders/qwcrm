@@ -84,8 +84,12 @@
                                 <tr>
                                     <td>
                                         <b>{t}Invoice ID{/t} - </b>{$invoice_details.invoice_id}<br>
-                                        <b>{t}Status{/t} - </b>{$workorder_details.active}<br>
-                                        <b>{t}Date{/t} - </b>{$invoice_details.date|date_format:$date_format} <br>
+                                        <b>{t}Status{/t} - </b>
+                                        {section name=s loop=$invoice_statuses}    
+                                            {if $invoice_details.status == $invoice_statuses[s].status_key}{t}{$invoice_statuses[s].display_name}{/t}{/if}        
+                                        {/section} 
+                                        {$workorder_details.active}<br>
+                                        <b>{t}Date{/t} - </b>{$invoice_details.date|date_format:$date_format}<br>
                                         <b>{t}Due Date{/t} - </b>{$invoice_details.due_date|date_format:$date_format}<br>
                                         <b>{t}Work Order{/t} - </b>{if !$workorder_details}{t}n/a{/t}{else}{$invoice_details.workorder_id}{/if}<br>
                                         <b>{t}Technician{/t} - </b>{$employee_details.display_name}<br>                                                                            

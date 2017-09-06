@@ -80,6 +80,7 @@
                                                         <td class="olohead">{t}Customer{/t}</td>
                                                         <td class="olohead">{t}Work Order{/t}</td>
                                                         <td class="olohead">{t}Employee{/t}</td>
+                                                        <td class="olohead">{t}Status{/t}</td>
                                                         <td class="olohead">{t}Sub Total{/t}</td>
                                                         <td class="olohead">{t}Discount{/t}</td>
                                                         <td class="olohead">{t}Net{/t}</td>
@@ -94,6 +95,11 @@
                                                             <td class="olotd4" nowrap><img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<b><center>{t}Contact Info{/t}</b></center><hr><b>{t}Contact{/t}: </b>{$invoices[q].customer_first_name} {$invoices[q].customer_last_name}<br><b>{t}Phone{/t}: </b>{$invoices[q].customer_phone}<br><b>{t}Mobile{/t}: </b>{$invoices[q].customer_mobile_phone}<br><b>{t}Fax{/t}: </b>{$invoices[q].customer_fax}');" onMouseOut="hideddrivetip();"><a href="index.php?page=customer:details&customer_id={$invoices[q].customer_id}"> {$invoices[q].customer_display_name}</a></td>
                                                             <td class="olotd4" nowrap><a href="index.php?page=workorder:details&workorder_id={$invoices[q].workorder_id}">{$invoices[q].workorder_id}</a></td>
                                                             <td class="olotd4" nowrap><img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<center><b>{t}Contact{/t}</b></center><hr><b>{t}Phone{/t}: </b>{$invoices[q].employee_work_primary_phone}<br><b>{t}Mobile{/t}: </b>{$invoices[q].employee_work_mobile_phone}<br><b>{t}Personal{/t}: </b>{$invoices[q].employee_home_mobile_phone}');" onMouseOut="hideddrivetip();"><a  href="index.php?page=user:details&user_id={$invoices[q].employee_id}"> {$invoices[q].employee_display_name}</td>
+                                                            <td class="olotd4" nowrap>
+                                                                {section name=s loop=$invoice_statuses}    
+                                                                    {if $invoices[q].status == $invoice_statuses[s].status_key}{t}{$invoice_statuses[s].display_name}{/t}{/if}                                                                    
+                                                                {/section} 
+                                                            </td>
                                                             <td class="olotd4" nowrap>{$currency_sym}{$invoices[q].sub_total}</td>
                                                             <td class="olotd4" nowrap>{$currency_sym}{$invoices[q].discount_amount}</td>
                                                             <td class="olotd4" nowrap>{$currency_sym}{$invoices[q].net_amount}</td>

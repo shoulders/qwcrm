@@ -24,29 +24,29 @@ if($invoice_id == '') {
 if(isset($VAR['submit'])) { 
     
     // Load the method specific processor
-    switch($VAR['type']) {
+    switch($VAR['method_type']) {
 
-        case 1:
+        case 'credit_card':
         require(MODULES_DIR.'payment/methods/method_credit_card.php');
         break;
 
-        case 2:
+        case 'cheque':
         require(MODULES_DIR.'payment/methods/method_cheque.php');
         break;
 
-        case 3:
+        case 'cash':
         require(MODULES_DIR.'payment/methods/method_cash.php');
         break;
 
-        case 4:
+        case 'gift_certificate':
         require(MODULES_DIR.'payment/methods/method_gift_certificate.php');
         break;
 
-        case 5:
+        case 'paypal':
         require(MODULES_DIR.'payment/methods/method_paypal.php');
         break;
 
-        case 6:
+        case 'direct_deposit':
         require(MODULES_DIR.'payment/methods/method_direct_deposit.php');
         break;    
 

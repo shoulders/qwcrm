@@ -12,15 +12,9 @@ require(INCLUDES_DIR.'modules/customer.php');
 require(INCLUDES_DIR.'modules/schedule.php');
 require(INCLUDES_DIR.'modules/workorder.php');
 
-/* Check if we have a schedule_id
-if($schedule_id == '') {
-    force_page('schedule', 'search', 'warning_msg='.gettext("No Schedule ID supplied."));
-    exit;
-}*/
-
-// Check if we have a employee_id
-if($employee_id == '') {
-    force_page('user', 'search', 'warning_msg='.gettext("No Employee ID supplied."));
+// Check if we have a schedule_id or output is set to day
+if($schedule_id == '' && !$VAR['ics_type'] == 'day') {    
+    force_page('schedule', 'search', 'warning_msg='.gettext("Output type or Schedule ID is missing."));
     exit;
 }
 

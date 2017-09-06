@@ -221,7 +221,12 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
 
         } else {
 
-            // Successfully sent the email            
+            // Successfully sent the email 
+            
+            // Output the system message to the browser
+            $system_message = $record;
+            $smarty->assign('information_msg', $system_message);
+            output_notifications_onscreen($system_message, '');
             
             // Log activity
             $record = gettext("Successfully sent email to").' '.$recipient_email.' ('.$recipient_name.')'.' '.gettext("with the subject").' : '.$subject; 
@@ -230,19 +235,16 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
                 
                 // Create a Workorder History Note            
                 insert_workorder_history_note($db, $workorder_id, $record.' : '.gettext("and was sent by").' '.QFactory::getUser()->login_display_name);
-
-                // Update last active record
-                update_workorder_last_active($db, $workorder_id);
-                update_customer_last_active($db, $customer_id);                
-                
+            
             }
-                                               
+            
             write_record_to_activity_log($record);
             
-            // Output the system message to the browser
-            $system_message = $record;
-            $smarty->assign('information_msg', $system_message);
-            output_notifications_onscreen($system_message, '');
+            // Update last active record
+            update_user_last_active($db, $employee_id);         // will not error if no customer_id sent 
+            update_customer_last_active($db, $customer_id);     // will not error if no customer_id sent    
+            update_workorder_last_active($db, $workorder_id);   // will not error if no workorder_id sent
+            update_invoice_last_active($db, $invoice_id);       // will not error if no invoice_id sent 
 
         }
         

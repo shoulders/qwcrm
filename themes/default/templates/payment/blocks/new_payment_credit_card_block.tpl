@@ -50,7 +50,7 @@
                 </table>
                 <p>
                     <input type="hidden" name="method_name" value="{t}Credit Card{/t}">
-                    <input type="hidden" name="type" value="1">                    
+                    <input type="hidden" name="method_type" value="credt_card">               
                     <button type="submit" name="submit" value="submit">{t}Submit Credit Card Payment{/t}</button>
                 </p>
             </td>

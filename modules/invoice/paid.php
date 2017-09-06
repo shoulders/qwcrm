@@ -9,6 +9,8 @@
 defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'modules/invoice.php');
-        
-$smarty->assign('invoices', display_invoices($db, 'DESC', true, $page_no, '25', null, null, 'paid'));
+
+// Build the page
+$smarty->assign('invoices', display_invoices($db, 'DESC', true, $page_no, '25', null, null, 'closed'));
+$smarty->assign('invoice_statuses', get_invoice_statuses($db));
 $BuildPage .= $smarty->fetch('invoice/paid.tpl');

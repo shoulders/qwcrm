@@ -40,7 +40,7 @@
                 </table>
                 <p>
                     <input type="hidden" name="method_name" value="{t}Cash{/t}">
-                    <input type="hidden" name="type" value="3">                     
+                    <input type="hidden" name="method_type" value="cash">
                     <button type="submit" name="submit" value="submit">{t}Submit Cash Payment{/t}</button>
                 </p>
             </td>
