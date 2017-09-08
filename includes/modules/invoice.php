@@ -197,15 +197,14 @@ function insert_invoice($db, $customer_id, $workorder_id, $discount_rate, $tax_r
         $invoice_id = $db->insert_id();
         
         // Create a Workorder History Note  
-        if($workorder_id) {             
-            insert_workorder_history_note($db, $workorder_id, gettext("Invoice").' '.$invoice_id.' '.gettext("was created for this Work Order").' '.gettext("by").' '.QFactory::getUser()->login_display_name.'.');
-        }
-        
+        insert_workorder_history_note($db, $workorder_id, gettext("Invoice").' '.$invoice_id.' '.gettext("was created for this Work Order").' '.gettext("by").' '.QFactory::getUser()->login_display_name.'.');
+                
         // Log activity        
         write_record_to_activity_log(gettext("Invoice").' '.$invoice_id.' '.gettext("for Work Order").' '.$workorder_id.' '.gettext("was created by").' '.QFactory::getUser()->login_display_name.'.');
 
         // Update last active record    
         update_customer_last_active($db, $customer_id);
+        update_workorder_last_active($db, $workorder_id);        
         
         return $invoice_id;
         
@@ -494,13 +493,7 @@ function get_invoice_statuses($db) {
         exit;
     } else {
         
-        $statuses = $rs->GetArray();
-        
-        // Remove dormant invoice statuses (for now)      
-        unset($statuses[3]); // 'in_dispute'
-        unset($statuses[4]); // 'cancelled'
-       
-        return $statuses;        
+        return $rs->GetArray();      
         
     }    
     
@@ -544,12 +537,13 @@ function update_invoice($db, $invoice_id, $date, $due_date, $discount_rate) {
         exit;    
         
     } else {
-    
+        
         // Log activity        
         write_record_to_activity_log(gettext("Invoice").' '.$invoice_id.' '.gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.');
 
         // Update last active record    
         update_customer_last_active($db, get_invoice_details($db, $invoice_id, 'customer_id'));
+        update_workorder_last_active($db, get_invoice_details($db, $invoice_id, 'workorder_id'));
         update_invoice_last_active($db, $invoice_id);
         
     }
@@ -616,6 +610,8 @@ function update_invoice_full($db, $VAR) {
 
         // Update last active record    
         update_customer_last_active($db, $VAR['customer_id']);
+        update_workorder_last_active($db, $VAR['workorder_id']);
+        update_invoice_last_active($db, $VAR['invoice_id']);
         
     } 
     
@@ -653,9 +649,14 @@ function update_invoice_prefill_item($db, $VAR){
 
 function update_invoice_status($db, $invoice_id, $new_status) {
     
+    $invoice_details = get_invoice_details($db, $invoice_id);
+    
+    // If new_status is the same as current status, do nothing
+    if($invoice_details['status'] == $new_status) { return; }    
+    
     $sql = "UPDATE ".PRFX."invoice SET \n";
     
-    if ($new_status == 'unassigned') { $sql .= "employee_id = '',\n"; }  // when unnasigned there should be no employee the '\n' makes sql look neater
+    if ($new_status == 'unassigned') { $sql .= "employee_id = '',\n"; }  // when unassigned there should be no employee the '\n' makes sql look neater
     
     $sql .="last_active         =". $db->qstr( time()       ).",
             status              =". $db->qstr( $new_status  )."            
@@ -684,8 +685,9 @@ function update_invoice_status($db, $invoice_id, $new_status) {
         write_record_to_activity_log(gettext("Invoice").' '.$invoice_id.' '.gettext("Status updated to").' '.$inv_status_diplay_name.' '.gettext("by").' '.QFactory::getUser()->login_display_name.'.');
         
         // Update last active record
-        update_invoice_last_active($db, $invoice_id);
-        update_customer_last_active($db, get_invoice_details($db, $invoice_id, 'customer_id'));        
+        update_customer_last_active($db, $invoice_details['customer_id']);
+        update_workorder_last_active($db, $invoice_details['workorder_id']);
+        update_invoice_last_active($db, $invoice_id);                
         
         return true;
         
@@ -750,7 +752,9 @@ function delete_invoice($db, $invoice_id) {
         return false;
     }
     
-    // delete parts and labour - they must be manually deleted first
+    // Delete parts and labour
+    delete_invoice_labour_items($db, $invoice_id);
+    delete_invoice_parts_items($db, $invoice_id);
     
     // delete the invoice primary record
     $sql = "DELETE FROM ".PRFX."invoice WHERE invoice_id=".$db->qstr($invoice_id);
@@ -765,15 +769,16 @@ function delete_invoice($db, $invoice_id) {
         
         // Create a Workorder History Note  
         if($invoice_details['invoice_id']) {
-            insert_invoice_history_note($db, $invoice_details['invoice_id'], gettext("Invoice").' '.$invoice_id.' '.gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.');
+            insert_workorder_history_note($db, $invoice_details['invoice_id'], gettext("Invoice").' '.$invoice_id.' '.gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.');
         }        
         
         // Log activity        
         write_record_to_activity_log(gettext("Invoice").' '.$invoice_id.' '.gettext("for Work Order").' '.$invoice_details['invoice_id'].' '.gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.');
         
         // Update last active record
-        update_invoice_last_active($db, $invoice_details['invoice_id']);
         update_customer_last_active($db, $invoice_details['customer_id']);
+        update_workorder_last_active($db, $invoice_details['workorder_id']);
+        update_invoice_last_active($db, $invoice_details['invoice_id']);        
         
         return true;
         
@@ -787,7 +792,7 @@ function delete_invoice($db, $invoice_id) {
 
 function delete_invoice_labour_item($db, $invoice_labour_id) {
     
-    $invoice_id = get_invoice_labour_item_details($db, $invoice_labour_id, 'invoice_id');
+    $invoice_details = get_invoice_labour_item_details($db, $invoice_labour_id);
     
     $sql = "DELETE FROM ".PRFX."invoice_labour WHERE invoice_labour_id=" . $db->qstr($invoice_labour_id);
 
@@ -797,7 +802,31 @@ function delete_invoice_labour_item($db, $invoice_labour_id) {
     } else {
         
         // Log activity        
-        write_record_to_activity_log(gettext("The Invoice Labour Item").' '.$invoice_labour_id.' '.gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.', null, null, null, $invoice_id);
+        write_record_to_activity_log(gettext("The Invoice Labour Item").' '.$invoice_labour_id.' '.gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.', null, null, null, $invoice_details['invoice_id']);
+        
+        // Update last active record
+        update_customer_last_active($db, $invoice_details['customer_id']);
+        update_workorder_last_active($db, $invoice_details['workorder_id']);
+        update_invoice_last_active($db, $invoice_details['invoice_id']);  
+        
+        return true;
+
+    }
+    
+}
+
+#############################################
+#   Delete an invoice's Labour Items (ALL)  #
+#############################################
+
+function delete_invoice_labour_items($db, $invoice_id) {
+    
+    $sql = "DELETE FROM ".PRFX."invoice_labour WHERE invoice_id=" . $db->qstr($invoice_id);
+
+    if(!$rs = $db->execute($sql)){        
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete all of an invoice's labour items."));
+        exit;
+    } else {
         
         return true;
 
@@ -811,7 +840,7 @@ function delete_invoice_labour_item($db, $invoice_labour_id) {
 
 function delete_invoice_parts_item($db, $invoice_parts_id) {
     
-    $invoice_id = get_invoice_parts_item_details($db, $invoice_parts_id, 'invoice_id');
+    $invoice_details = get_invoice_parts_item_details($db, $invoice_parts_id);
     
     $sql = "DELETE FROM ".PRFX."invoice_parts WHERE invoice_parts_id=" . $db->qstr($invoice_parts_id);
 
@@ -822,11 +851,36 @@ function delete_invoice_parts_item($db, $invoice_parts_id) {
     } else {
         
         // Log activity        
-        write_record_to_activity_log(gettext("The Invoice Parts Item").' '.$invoice_parts_id.' '.gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.', null, null, null, $invoice_id);
+        write_record_to_activity_log(gettext("The Invoice Parts Item").' '.$invoice_parts_id.' '.gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.', null, null, null, $invoice_details['invoice_id']);
+        
+        // Update last active record
+        update_customer_last_active($db, $invoice_details['customer_id']);
+        update_workorder_last_active($db, $invoice_details['workorder_id']);
+        update_invoice_last_active($db, $invoice_details['invoice_id']);  
         
         return true;
 
     }
+    
+}
+
+#############################################
+#   Delete an invoice's Parts Items (ALL)   #
+#############################################
+
+function delete_invoice_parts_items($db, $invoice_id) {
+    
+    $sql = "DELETE FROM ".PRFX."invoice_parts WHERE invoice_id=" . $db->qstr($invoice_id);
+
+    if(!$rs = $db->execute($sql)){        
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete all of an invoice's parts items."));
+        exit;
+    } else {
+        
+        return true;
+
+    }
+    
 }
 
 #####################################
@@ -898,15 +952,15 @@ function parts_sub_total($db, $invoice_id) {
 
 function recalculate_invoice_totals($db, $invoice_id) {
     
-    $discount_rate = get_invoice_details($db, $invoice_id, 'discount_rate');
+    $invoice_details = get_invoice_details($db, $invoice_id);
     
-    $sub_total = labour_sub_total($db, $invoice_id) + parts_sub_total($db, $invoice_id);    
-    $discount_amount = $sub_total * ($discount_rate / 100); // divide by 100; turns 17.5 in to 0.17575
-    $net_amount = $sub_total - $discount_amount;
-    $tax_amount = $net_amount * (get_invoice_details($db, $invoice_id, 'tax_rate') / 100); // divide by 100; turns 17.5 in to 0.175  
-    $gross_amount = $net_amount + $tax_amount;
+    $sub_total          = labour_sub_total($db, $invoice_id) + parts_sub_total($db, $invoice_id);    
+    $discount_amount    = $sub_total  * ($invoice_details['discount_rate'] / 100); // divide by 100; turns 17.5 in to 0.17575
+    $net_amount         = $sub_total  - $discount_amount;
+    $tax_amount         = $net_amount * ($invoice_details['tax_rate'] / 100); // divide by 100; turns 17.5 in to 0.175  
+    $gross_amount       = $net_amount + $tax_amount;
     
-    $balance = $gross_amount - get_invoice_details($db, $invoice_id, 'paid_amount');
+    $balance = $gross_amount - $invoice_details['paid_amount'];
 
     $sql = "UPDATE ".PRFX."invoice SET
             sub_total           =". $db->qstr( $sub_total       ).",
@@ -920,6 +974,22 @@ function recalculate_invoice_totals($db, $invoice_id) {
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed update the invoice totals."));
         exit;
+    } else {
+     
+        /* update invoice status */
+        
+        // if no invoiceable amount, set to pending
+        if($gross_amount == 0) {
+            update_invoice_status($db, $invoice_id, 'pending');
+        }
+        
+        // if there is an invoiceable amount, and status is pending, set to unpaid
+        if($gross_amount > 0 && $invoice_details['status'] == 'pending') {
+            update_invoice_status($db, $invoice_id, 'unpaid');            
+        }
+
+        return;        
+        
     }
     
 }
@@ -1065,40 +1135,111 @@ function check_invoice_can_be_deleted($db, $invoice_id) {
     
     // Get the invoice details
     $invoice_details = get_invoice_details($db, $invoice_id);
+
+    // Is partially paid
+    if($invoice_details['status'] == 'partially_paid') {
+        //postEmulationWrite('warning_msg', gettext("This invoice cannot be deleted because it has transactions and is partially paid."));
+        return false;        
+    }
     
     // Is paid
-    if($invoice_details['is_paid'] == true) {
-        postEmulationWrite('warning_msg', gettext("This invoice cannot be deleted because it has been paid."));
+    if($invoice_details['status'] == 'paid') {
+        //postEmulationWrite('warning_msg', gettext("This invoice cannot be deleted because it has transactions and is paid."));
+        return false;        
+    }
+    
+    // Is closed
+    if($invoice_details['is_closed'] == true) {
+        //postEmulationWrite('warning_msg', gettext("This invoice cannot be deleted because it is closed."));
         return false;        
     }    
 
-    // Any payments
-    if($invoice_details['paid_amount'] > 0) {
-        postEmulationWrite('warning_msg', gettext("This invoice cannot be deleted because it has payments."));
-        return false;
-    }
-    
-    // Has an outstanding balance
+    /* Has an outstanding balance
     if($invoice_details['balance'] > 0) {
-        postEmulationWrite('warning_msg', gettext("This invoice cannot be deleted because it has an outstanding balance."));
+        //postEmulationWrite('warning_msg', gettext("This invoice cannot be deleted because it has an outstanding balance."));
         return false;
     }
     
     // Has Labour
     if(!empty(get_invoice_labour_items($db, $invoice_id))) {
-       postEmulationWrite('warning_msg', gettext("This invoice cannot be deleted because it has labour items."));
+       //postEmulationWrite('warning_msg', gettext("This invoice cannot be deleted because it has labour items."));
        return false;          
     }    
     
     // Has Parts
     if(!empty(get_invoice_parts_items($db, $invoice_id))) {
-       postEmulationWrite('warning_msg', gettext("This invoice cannot be deleted because it has parts."));
+       //postEmulationWrite('warning_msg', gettext("This invoice cannot be deleted because it has parts."));
        return false;          
-    }    
-    
-    // Is closed - this will be added later
+    }*/
  
     // all checks passed
     return true;
     
 }
+
+#########################################
+# Assign Workorder to another employee  #
+#########################################
+
+function assign_invoice_to_employee($db, $invoice_id, $target_employee_id) {
+    
+    // get the invoice details
+    $invoice_details = get_invoice_details($db, $invoice_id);
+    
+    // only change invoice status if unassigned
+    if($invoice_details['status'] == 'unassigned') {
+        
+        $sql = "UPDATE ".PRFX."invoice SET
+                employee_id         =". $db->qstr( $target_employee_id  ).",
+                status              =". $db->qstr( 'assigned'           )."
+                WHERE invoice_id  =". $db->qstr( $invoice_id        );
+
+    // Keep the same invoice status    
+    } else {    
+        
+        $sql = "UPDATE ".PRFX."invoice SET
+                employee_id         =". $db->qstr( $target_employee_id  )."            
+                WHERE invoice_id  =". $db->qstr( $invoice_id        );
+
+    }
+    
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to assign a Work Order to an employee."));
+        exit;
+        
+    } else {
+        
+        // Get Logged in Employee's Display Name        
+        $logged_in_employee_display_name = QFactory::getUser()->display_name;
+        
+        // Get the currently assigned employee ID
+        $assigned_employee_id = $invoice_details['employee_id'];
+        
+        // Get the Display Name of the currently Assigned Employee
+        if($assigned_employee_id == ''){
+            $assigned_employee_display_name = gettext("Unassigned");            
+        } else {            
+            $assigned_employee_display_name = get_user_details($db, $assigned_employee_id, 'display_name');
+        }
+        
+        // Get the Display Name of the Target Employee        
+        $target_employee_display_name = get_user_details($db, $target_employee_id, 'display_name');
+        
+        // Creates a History record
+        insert_workorder_history_note($db, $invoice_id, gettext("Invoice").' '.$invoice_id.' '.gettext("has been assigned to").' '.$target_employee_display_name.' '.gettext("from").' '.$assigned_employee_display_name.' '.gettext("by").' '. $logged_in_employee_display_name.'.');
+
+        // Log activity
+        write_record_to_activity_log(gettext("Invoice").' '.$invoice_id.' '.gettext("has been assigned to").' '.$target_employee_display_name.' '.gettext("from").' '.$assigned_employee_display_name.' '.gettext("by").' '. $logged_in_employee_display_name.'.', $target_employee_id);
+
+        // Update last active record
+        update_user_last_active($db, $invoice_details['employee_id']);
+        update_user_last_active($db, $target_employee_id);
+        update_customer_last_active($db, $invoice_details['customer_id']);
+        update_workorder_last_active($db, $invoice_details['workorder_id']);
+        update_invoice_last_active($db, $invoice_id);
+        
+        return true;
+        
+    }
+    
+ }

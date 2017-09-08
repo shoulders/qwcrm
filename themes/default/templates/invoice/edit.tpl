@@ -361,26 +361,34 @@
                                                 </td>
                                                 <td><a href="index.php?page=user:details&user_id={$invoice_details.employee_id}">{$employee_display_name}</a></td> 
                                                 <td>
-                                                    <input id="date" name="date" class="olotd4" size="10" value="{$invoice_details.date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
-                                                    <input id="date_button" value="+" type="button">                                                    
-                                                    <script>                                                        
-                                                        Calendar.setup( {
-                                                            trigger     : "date_button",
-                                                            inputField  : "date",
-                                                            dateFormat  : "{$date_format}"                                                                                            
-                                                        } );                                                        
-                                                    </script>                                                    
+                                                    {if !$transactions}
+                                                        <input id="date" name="date" class="olotd4" size="10" value="{$invoice_details.date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
+                                                        <input id="date_button" value="+" type="button">                                                    
+                                                        <script>                                                        
+                                                            Calendar.setup( {
+                                                                trigger     : "date_button",
+                                                                inputField  : "date",
+                                                                dateFormat  : "{$date_format}"                                                                                            
+                                                            } );                                                        
+                                                        </script>
+                                                    {else}
+                                                        {$invoice_details.date|date_format:$date_format}
+                                                    {/if}
                                                 </td>
                                                 <td>
-                                                    <input id="due_date" name="due_date" class="olotd4" size="10"  value="{$invoice_details.due_date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
-                                                    <input id="due_date_button" value="+" type="button">                                                    
-                                                    <script>                                                        
-                                                       Calendar.setup({
-                                                           trigger     : "due_date_button",
-                                                           inputField  : "due_date",
-                                                           dateFormat  : "{$date_format}"                                                                                            
-                                                       });                                                         
-                                                    </script>                                                   
+                                                    {if !$transactions}
+                                                        <input id="due_date" name="due_date" class="olotd4" size="10"  value="{$invoice_details.due_date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
+                                                        <input id="due_date_button" value="+" type="button">                                                    
+                                                        <script>                                                        
+                                                           Calendar.setup({
+                                                               trigger     : "due_date_button",
+                                                               inputField  : "due_date",
+                                                               dateFormat  : "{$date_format}"                                                                                            
+                                                           });                                                         
+                                                        </script>
+                                                    {else}
+                                                        {$invoice_details.due_date|date_format:$date_format}
+                                                    {/if}
                                                 </td>                                                
                                                 <td>
                                                     {section name=s loop=$invoice_statuses}    
@@ -443,10 +451,14 @@
                                             <!-- Terms and Discount -->
                                             <tr>
                                                 <td colspan="7" valign="top" align="left">                                                        
-                                                    {t}TERMS{/t}: <font color="red" size="+1">{$customer_details.credit_terms}</font><br>
-                                                    {t}Current customer discount rate is{/t}: 
-                                                    <input type="text" class="olotd4" size="4" name="discount_rate" value="{$invoice_details.discount_rate|string_format:"%.2f"}"> %<br>
-                                                    <b>** {t}Change this if you want to temporarily override the discount rate for this invoice ONLY{/t} **</b>                                                       
+                                                    <b>{t}TERMS{/t}:</b> {$customer_details.credit_terms}<br>
+                                                    <b>{t}Customer Discount Rate{/t}:</b>
+                                                    {if !$transactions}
+                                                        <input type="text" class="olotd4" size="4" name="discount_rate" value="{$invoice_details.discount_rate|string_format:"%.2f"}"> %<br>
+                                                        <b>** {t}Change this if you want to temporarily override the discount rate for this invoice ONLY{/t} **</b>
+                                                    {else}                                                        
+                                                        {$invoice_details.discount_rate|string_format:"%.2f"} % 
+                                                    {/if}                                           
                                                 </td>
                                             </tr>
 
@@ -475,20 +487,7 @@
                                                             <button type="button" onClick="location.href='index.php?page=payment:new&invoice_id={$invoice_details.invoice_id}';">{t}Receive Payment{/t}</button>
                                                         {/if}
 
-                                                    {else}
-
-                                                        <!-- Delete Button -->
-                                                        <button type="button" name="{t}Delete{/t}" onClick="location.href='index.php?page=invoice:delete&invoice_id={$invoice_details.invoice_id}';">{t}Delete{/t}</button>
-
-                                                        {if $workorder_details.status == '9' && $workorder_id != '0'}
-                                                            <!-- Close Button -->
-                                                            <button type="button" name="Close Work Order" onClick="location.href='index.php?page=workorder:details_edit_resolution&workorder_id={$invoice_details.workorder_id}';">{t}Close Work Order{/t}</button>
-                                                        {/if}
-
-                                                        <!-- Work Order must be closed before payment can be received. -->
-                                                        {t}You can only delete an invoice when there is no transactions or amounts on the invoice.{/t}
-
-                                                    {/if} 
+                                                    {/if}
 
                                                 </td>
                                             </tr>
@@ -543,6 +542,7 @@
                                             </tr>
                                             <tr>
                                                 <td class="menutd2">
+                                                    
                                                     {if $labour_items != '0'}
                                                         <table width="100%" cellpadding="3" cellspacing="0" border="0" class="olotable">
                                                             <tr  class="olotd4">
@@ -561,9 +561,13 @@
                                                                     <td>{$currency_sym}{$labour_items[l].amount|string_format:"%.2f"}</td>
                                                                     <td>{$currency_sym}{$labour_items[l].sub_total|string_format:"%.2f"}</td>
                                                                     <td>
-                                                                        <a href="index.php?page=invoice:delete_labour&labour_id={$labour_items[l].invoice_labour_id}" onclick="return confirmChoice('{t}Are you Sure you want to delete this Labour Record? This will permanently remove the record from the database.{/t}');">
-                                                                            <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{t}Delete Labour Record{/t}</b>');" onMouseOut="hideddrivetip();">
-                                                                        </a>
+                                                                        {if !$transactions}
+                                                                            <a href="index.php?page=invoice:delete_labour&labour_id={$labour_items[l].invoice_labour_id}" onclick="return confirmChoice('{t}Are you Sure you want to delete this Labour Record? This will permanently remove the record from the database.{/t}');">
+                                                                                <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{t}Delete Labour Record{/t}</b>');" onMouseOut="hideddrivetip();">
+                                                                            </a>
+                                                                        {else}
+                                                                            -
+                                                                        {/if}
                                                                     </td>
                                                                 </tr>
                                                             {/section}
@@ -574,22 +578,26 @@
                                                         </table>
                                                     {/if}
                                                     <br>
-                                                    <!-- Additional Javascript Labour Table -->
-                                                    <table width="100%" cellpadding="3" cellspacing="0" border="0" class="olotable" id="labour_items">
-                                                        <tr class="olotd4">
-                                                            <td class="row2" style="width: 50px;"><b>{t}No{/t}</b></td>
-                                                            <td class="row2" style="width: 66px;"><b>{t}Qty{/t}</b></td>
-                                                            <td class="row2" style="width: 453px;"><b>{t}Description{/t}</b></td>
-                                                            <td class="row2" style="width: 110px;"><b>{t}Price{/t}</b></td> 
-                                                        </tr>
+                                                    
+                                                    {if !$transactions}
+                                                        <!-- Additional Javascript Labour Table -->
+                                                        <table width="100%" cellpadding="3" cellspacing="0" border="0" class="olotable" id="labour_items">
+                                                            <tr class="olotd4">
+                                                                <td class="row2" style="width: 50px;"><b>{t}No{/t}</b></td>
+                                                                <td class="row2" style="width: 66px;"><b>{t}Qty{/t}</b></td>
+                                                                <td class="row2" style="width: 453px;"><b>{t}Description{/t}</b></td>
+                                                                <td class="row2" style="width: 110px;"><b>{t}Price{/t}</b></td> 
+                                                            </tr>
 
-                                                        <!-- Additional Rows are added here -->
+                                                            <!-- Additional Rows are added here -->
 
-                                                    </table>
-                                                    <p>
-                                                        <input type="button" value="{t}Add{/t}" onclick="addRowToTableLabour();" />
-                                                        <input type="button" value="{t}Remove{/t}" onclick="removeRowFromTableLabour();" />
-                                                    </p>
+                                                        </table>
+                                                        <p>
+                                                            <input type="button" value="{t}Add{/t}" onclick="addRowToTableLabour();" />
+                                                            <input type="button" value="{t}Remove{/t}" onclick="removeRowFromTableLabour();" />
+                                                        </p>
+                                                    {/if}
+                                                    
                                                 </td>
                                             </tr>
                                         </table>
@@ -602,6 +610,7 @@
                                             </tr>
                                             <tr>
                                                 <td class="menutd2">
+                                                    
                                                     {if $parts_items != '0'}
                                                         <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
                                                             <tr class="olotd4">
@@ -620,9 +629,13 @@
                                                                     <td>{$currency_sym}{$parts_items[p].amount|string_format:"%.2f"}</td>
                                                                     <td>{$currency_sym}{$parts_items[p].sub_total|string_format:"%.2f"}</td>
                                                                     <td>
-                                                                        <a href="index.php?page=invoice:delete_parts&parts_id={$parts_items[p].invoice_parts_id}" onclick="return confirmChoice('{t}Are you Sure you want to delete this Parts Record? This will permanently remove the record from the database.{/t}');">
-                                                                            <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{t}Delete Parts Record{/t}</b>');" onMouseOut="hideddrivetip();">
-                                                                        </a>
+                                                                        {if !$transactions}
+                                                                            <a href="index.php?page=invoice:delete_parts&parts_id={$parts_items[p].invoice_parts_id}" onclick="return confirmChoice('{t}Are you Sure you want to delete this Parts Record? This will permanently remove the record from the database.{/t}');">
+                                                                                <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{t}Delete Parts Record{/t}</b>');" onMouseOut="hideddrivetip();">
+                                                                            </a>
+                                                                        {else}
+                                                                            -
+                                                                        {/if}
                                                                     </td>
                                                                 </tr>
                                                              {/section}
@@ -633,22 +646,25 @@
                                                         </table>
                                                     {/if}
                                                     <br>
-                                                    <!-- Additional Javascript Parts Table -->
-                                                    <table id="parts_items" width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
-                                                        <tr class="olotd4">
-                                                            <td class="row2" style="width: 50px;"><b>{t}No{/t}</b></td>
-                                                            <td class="row2" style="width: 66px;"><b>{t}Qty{/t}</b></td>
-                                                            <td class="row2" style="width: 453px;"><b>{t}Description{/t}</b></td>
-                                                            <td class="row2" style="width: 110px;"><b>{t}Price{/t}</b></td>                                                            
-                                                        </tr>
+                                                    
+                                                    {if !$transactions}
+                                                        <!-- Additional Javascript Parts Table -->
+                                                        <table id="parts_items" width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
+                                                            <tr class="olotd4">
+                                                                <td class="row2" style="width: 50px;"><b>{t}No{/t}</b></td>
+                                                                <td class="row2" style="width: 66px;"><b>{t}Qty{/t}</b></td>
+                                                                <td class="row2" style="width: 453px;"><b>{t}Description{/t}</b></td>
+                                                                <td class="row2" style="width: 110px;"><b>{t}Price{/t}</b></td>                                                            
+                                                            </tr>
 
-                                                        <!-- Additional Rows are added here -->
+                                                            <!-- Additional Rows are added here -->
 
-                                                    </table>
-                                                    <p>
-                                                        <input type="button" value="{t}Add{/t}" onclick="addRowToTableParts();" />
-                                                        <input type="button" value="{t}Remove{/t}" onclick="removeRowFromTableParts();" />
-                                                    </p>
+                                                        </table>
+                                                        <p>
+                                                            <input type="button" value="{t}Add{/t}" onclick="addRowToTableParts();" />
+                                                            <input type="button" value="{t}Remove{/t}" onclick="removeRowFromTableParts();" />
+                                                        </p>
+                                                    {/if}
                                                 </td>
                                             </tr>
                                         </table>
@@ -694,7 +710,9 @@
                                                 <td align="left" valign="top" width="25%">                                                        
                                                     <input type="hidden" name="invoice_id" value="{$invoice_details.invoice_id}">
                                                     <input type="hidden" name="sub_total" value="{$invoice_details.sub_total|string_format:"%.2f"}">
-                                                    <button type="submit" name="submit" value="submit">{t}Submit{/t}</button>
+                                                    {if !$transactions}
+                                                        <button type="submit" name="submit" value="submit">{t}Submit{/t}</button>
+                                                    {/if}
                                                 </td>
                                                 <td align="right" width="75%"></td>
                                             </tr>

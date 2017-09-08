@@ -108,8 +108,8 @@
                                         <!-- Terms and Discount -->
                                         <tr>
                                             <td colspan="9" valign="top" align="left">                                                        
-                                                {t}TERMS{/t}: <font color="red">{$customer_details.credit_terms}</font><br>
-                                                {t}Customer discount rate for this invoice is{/t}: 
+                                                <b>{t}TERMS{/t}:</b> {$customer_details.credit_terms}<br>
+                                                <b>{t}Customer Discount Rate{/t}:</b>
                                                 {$invoice_details.discount_rate|string_format:"%.2f"} %                                                                                                     
                                             </td>
                                         </tr>

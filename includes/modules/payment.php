@@ -50,10 +50,7 @@ function insert_transaction($db, $customer_id, $workorder_id, $invoice_id,  $dat
         
         // Log activity 
         write_record_to_activity_log(gettext("Inserted transaction").' '.$db->Insert_ID().'.', QFactory::getUser()->login_user_id, $customer_id, $workorder_id, $invoice_id);
-        
-        // Update last active record        
-        update_customer_last_active($db, $customer_id);
-        
+                
     }    
     
 }
@@ -74,9 +71,9 @@ function insert_payment_method_transaction($db, $invoice_id, $date, $amount, $me
     $formatted_amount = sprintf( "%.2f", $amount);
            
     // Other Variables
-    $currency_sym           = get_company_details($db, 'currency_symbol');    
-    $customer_id            = $invoice_details['customer_id'];
-    $workorder_id           = $invoice_details['workorder_id'];
+    $currency_sym               = get_company_details($db, 'currency_symbol');    
+    $customer_id                = $invoice_details['customer_id'];
+    $workorder_id               = $invoice_details['workorder_id'];
     
     // Calculate the new balance and paid amount    
     $new_invoice_paid_amount    = $invoice_details['paid_amount'] + $amount;
@@ -98,13 +95,8 @@ function insert_payment_method_transaction($db, $invoice_id, $date, $amount, $me
         // Insert Transaction into log       
         insert_transaction($db, $customer_id, $workorder_id, $invoice_id, $date, $method_type, $amount, $log_msg);
         
-        // If the invoice has a workorder update it
-        if($workorder_id) {
-
-            // Creates a History record for the workorder            
-            insert_workorder_history_note($db, $workorder_id, gettext("Transaction inserted by").' '.QFactory::getUser()->login_display_name.' - '.$log_msg);
-            
-        }    
+        // Create a Workorder History Note       
+        insert_workorder_history_note($db, $workorder_id, gettext("Transaction inserted by").' '.QFactory::getUser()->login_display_name.' - '.$log_msg);           
 
     }
 
@@ -136,9 +128,7 @@ function insert_payment_method_transaction($db, $invoice_id, $date, $amount, $me
         insert_transaction($db, $customer_id, $workorder_id, $invoice_id, $date, $method_type, $amount, $log_msg);
         
         // Create a Workorder History Note
-        if($workorder_id) {                       
-            insert_workorder_history_note($db, $workorder_id, gettext("Transaction inserted by").' '.QFactory::getUser()->login_display_name.' - '.$log_msg);            
-        }    
+        insert_workorder_history_note($db, $workorder_id, gettext("Transaction inserted by").' '.QFactory::getUser()->login_display_name.' - '.$log_msg);            
 
     }
     

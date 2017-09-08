@@ -22,7 +22,7 @@
                     <tr class="olotd4">
                         <td>{$transactions[r].transaction_id}</td>
                         <td>{$transactions[r].date|date_format:$date_format}</td>
-                        <td><b>{$currency_sym}</b>{$transactions[r].AMOUNT|string_format:"%.2f"}</td>
+                        <td>{$currency_sym}{$transactions[r].AMOUNT|string_format:"%.2f"}</td>
                         <td>
                             {if $transactions[r].type == 1}{t}Credit Card{/t}
                             {elseif $transactions[r].type == 2}{t}Cheque{/t}
@@ -35,7 +35,10 @@
                     <tr class="olotd4">
                         <td><b>{t}Note{/t}</b></td>
                         <td colspan="3">{$transactions[r].note}</td>
-                    </tr>                                                
+                    </tr>
+                    <tr>
+                        <td class="row2" colspan="4">&nbsp;</td>
+                    </tr>
                 {/section}                                            
             </table>
         </td>

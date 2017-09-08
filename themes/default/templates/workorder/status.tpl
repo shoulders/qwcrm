@@ -57,7 +57,7 @@
                                             </select>
                                             <p>&nbsp;</p>
                                             <input type="hidden" name="workorder_id" value="{$workorder_id}">
-                                            <input name="change_employee" value="{t}Update{/t}" type="submit">
+                                            <input class="olotd4" name="change_employee" value="{t}Update{/t}" type="submit">
                                         </form>                                       
                                     {else}    
                                         <img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" onMouseOver="ddrivetip('<center><b>{t}Contact{/t}</b></center><hr><b>{t}Fax{/t}: </b>{$assigned_employee_details.employee_work_primary_phone}<br><b>{t}Mobile{/t}: </b>{$assigned_employee_details.employee_mobile_phone}<br><b>{t}Home{/t}: </b>{$assigned_employee_details.employee_home_primary_phone}');" onMouseOut="hideddrivetip();">                                                 

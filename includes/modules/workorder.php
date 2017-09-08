@@ -280,10 +280,10 @@ function insert_workorder($db, $customer_id, $scope, $description, $comments) {
 
 // this might be go in the main include as different modules add work order history notes
 
-function insert_workorder_history_note($db, $workorder_id, $note) {
+function insert_workorder_history_note($db, $workorder_id = null, $note = '') {
     
     // This prevents errors from such functions as mail.php where a workorder_id is not always present - not currently used
-    //if($workorder_id == null) { return; }
+    if($workorder_id == null) { return; }
     
     $sql = "INSERT INTO ".PRFX."workorder_history SET            
             employee_id     =". $db->qstr( QFactory::getUser()->login_user_id   ).",
@@ -1018,7 +1018,7 @@ function assign_workorder_to_employee($db, $workorder_id, $target_employee_id) {
         $target_employee_display_name = get_user_details($db, $target_employee_id, 'display_name');
         
         // Creates a History record
-        insert_workorder_history_note($db, $workorder_id, gettext("Work Order").' '.gettext("has been assigned to").' '.$target_employee_display_name.' '.gettext("from").' '.$assigned_employee_display_name.' '.gettext("by").' '. $logged_in_employee_display_name.'.');
+        insert_workorder_history_note($db, $workorder_id, gettext("Work Order").' '.$workorder_id.' '.gettext("has been assigned to").' '.$target_employee_display_name.' '.gettext("from").' '.$assigned_employee_display_name.' '.gettext("by").' '. $logged_in_employee_display_name.'.');
 
         // Log activity
         write_record_to_activity_log(gettext("Work Order").' '.$workorder_id.' '.gettext("has been assigned to").' '.$target_employee_display_name.' '.gettext("from").' '.$assigned_employee_display_name.' '.gettext("by").' '. $logged_in_employee_display_name.'.', $target_employee_id);

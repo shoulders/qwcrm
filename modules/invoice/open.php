@@ -13,4 +13,4 @@ require(INCLUDES_DIR.'modules/invoice.php');
 // Build the page
 $smarty->assign('invoices', display_invoices($db, 'DESC', true, $page_no, '25', null, null, 'open'));
 $smarty->assign('invoice_statuses', get_invoice_statuses($db));
-$BuildPage .= $smarty->fetch('invoice/unpaid.tpl');
+$BuildPage .= $smarty->fetch('invoice/open.tpl');

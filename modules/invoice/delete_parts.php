@@ -10,6 +10,7 @@ defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'modules/customer.php');
 require(INCLUDES_DIR.'modules/invoice.php');
+require(INCLUDES_DIR.'modules/workorder.php');
 
 // Prevent direct access to this page
 if(!check_page_accessed_via_qwcrm()) {
