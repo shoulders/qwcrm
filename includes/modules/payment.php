@@ -30,7 +30,7 @@ defined('_QWEXEC') or die;
 #   insert transaction     #
 ############################
 
-function insert_transaction($db, $customer_id, $workorder_id, $invoice_id,  $date, $type, $amount, $note) {
+function insert_transaction($db, $customer_id, $workorder_id, $invoice_id,  $date, $method, $amount, $note) {
     
     $sql = "INSERT INTO ".PRFX."payment_transactions SET            
             employee_id     = ".$db->qstr( QFactory::getUser()->login_user_id   ).",
@@ -38,7 +38,7 @@ function insert_transaction($db, $customer_id, $workorder_id, $invoice_id,  $dat
             workorder_id    = ".$db->qstr( $workorder_id                        ).",
             invoice_id      = ".$db->qstr( $invoice_id                          ).",
             date            = ".$db->qstr( $date                                ).",
-            type            = ".$db->qstr( $type                                ).",
+            method          = ".$db->qstr( $method                              ).",
             amount          = ".$db->qstr( $amount                              ).",
             note            = ".$db->qstr( $note                                );
 
@@ -149,7 +149,7 @@ function insert_payment_method_transaction($db, $invoice_id, $date, $amount, $me
 /** Get Functions **/
 
 ##########################
-#  Get payment details   # // this gets payment details like bank details, not transactions
+#  Get payment details   # // this gets payment details like bank details (not transactions)
 ##########################
 
 function get_payment_details($db, $item = null){
@@ -175,9 +175,9 @@ function get_payment_details($db, $item = null){
     
 }
 
-#########################################
-#   Get get active payment methods      # // If i dont have METHOD in the select, the array is not built correctly
-#########################################
+################################################
+#   Get get active system payment methods      # // If i dont have METHOD in the select, the array is not built correctly
+################################################
 
 function get_active_payment_system_methods($db) {
     
@@ -198,7 +198,7 @@ function get_active_payment_system_methods($db) {
 }
 
 #####################################
-#    Get Payment system methods     #
+#    Get system Payment methods     #
 #####################################
 
 function get_payment_system_methods($db) {
@@ -217,7 +217,7 @@ function get_payment_system_methods($db) {
 }
 
 #####################################
-#    Get Payment manual methods     #
+#    Get manual Payment methods     #
 #####################################
 
 function get_payment_manual_methods($db) {
@@ -341,27 +341,27 @@ function update_payment_settings($db, $VAR) {
 #   Update Payment Methods status   #
 #####################################
 
-function update_payment_system_methods_status($db, $VAR) {
+function update_active_payment_system_methods($db, $VAR) {
     
     // Array of all valid payment methods (name / active state)
     $payment_system_methods =
             array(
-                array('system_method_id'=>'credit_card_active',       'payment_method_active'=>$VAR['credit_card_active']      ),
-                array('system_method_id'=>'cheque_active',            'payment_method_active'=>$VAR['cheque_active']           ),
-                array('system_method_id'=>'cash_active',              'payment_method_active'=>$VAR['cash_active']             ),
-                array('system_method_id'=>'gift_certificate_active',  'payment_method_active'=>$VAR['gift_certificate_active'] ),
-                array('system_method_id'=>'paypal_active',            'payment_method_active'=>$VAR['paypal_active']           ),
-                array('system_method_id'=>'direct_deposit_active',    'payment_method_active'=>$VAR['direct_deposit_active']   )    
+                array('system_method_id'=>'credit_card',       'active'=>$VAR['credit_card']      ),
+                array('system_method_id'=>'cheque',            'active'=>$VAR['cheque']           ),
+                array('system_method_id'=>'cash',              'active'=>$VAR['cash']             ),
+                array('system_method_id'=>'gift_certificate',  'active'=>$VAR['gift_certificate'] ),
+                array('system_method_id'=>'paypal',            'active'=>$VAR['paypal']           ),
+                array('system_method_id'=>'direct_deposit',    'active'=>$VAR['direct_deposit']   )    
             );
    
     // Loop throught the various payment system methods and update the database
     foreach($payment_system_methods as $payment_method) {
         
         // When not selected no value is sent - this set zero for those
-        if($payment_method['payment_method_active'] == ''){$payment_method['payment_method_active'] = '0';}
+        if($payment_method['active'] == ''){$payment_method['active'] = '0';}
         
         $sql = "UPDATE ".PRFX."payment_system_methods
-                SET active=". $db->qstr( $payment_method['payment_method_active'] )."
+                SET active=". $db->qstr( $payment_method['active'] )."
                 WHERE system_method_id=". $db->qstr( $payment_method['system_method_id'] ); 
         
         if(!$rs = $db->execute($sql)) {

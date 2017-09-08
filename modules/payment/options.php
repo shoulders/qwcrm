@@ -13,8 +13,8 @@ require(INCLUDES_DIR.'modules/payment.php');
 // If changes submited
 if(isset($VAR['submit'])) {
     
-    // Update enabled payment methods
-    update_payment_system_methods_status($db, $VAR);
+    // Update enabled payment methods (checkboxes)
+    update_active_payment_system_methods($db, $VAR);
     
     // Update Payment details
     update_payment_settings($db, $VAR);

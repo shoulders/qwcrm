@@ -154,7 +154,7 @@
                                                             <td class="row2"><b>{t}Transaction ID{/t}</b></td>
                                                             <td class="row2"><b>{t}Date{/t}</b></td>
                                                             <td class="row2"><b>{t}Amount{/t}</b></td>
-                                                            <td class="row2"><b>{t}Type{/t}</b></td>
+                                                            <td class="row2"><b>{t}Method{/t}</b></td>
                                                         </tr>                                                            
                                                         {section name=t loop=$transactions}
                                                             <tr class="olotd4">
@@ -162,17 +162,17 @@
                                                                 <td>{$transactions[t].date|date_format:$date_format}</td>
                                                                 <td><b>{$currency_symbol}</b>{$transactions[t].amount|string_format:"%.2f"}</td>
                                                                 <td>
-                                                                    {if $transactions[t].type == 1}{t}Credit Card{/t}
-                                                                    {elseif $transactions[t].type == 2}{t}Cheque{/t}
-                                                                    {elseif $transactions[t].type == 3}{t}Cash{/t}
-                                                                    {elseif $transactions[t].type == 4}{t}Gift Certificate{/t}
-                                                                    {elseif $transactions[t].type == 5}{t}PayPal{/t}
-                                                                    {/if}
-                                                                </td>
+                                                                    {section name=s loop=$invoice_statuses}
+                                                                        {if $invoice_details.status == $invoice_statuses[s].status_key}{t}{$invoice_statuses[s].display_name}{/t}{/if}        
+                                                                    {/section} 
+                                                                </td> 
                                                             </tr>
                                                             <tr class="olotd4">
                                                                 <td><b>{t}Note{/t}</b></td>
                                                                 <td colspan="3">{$transactions[t].note}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="row2" colspan="4">&nbsp;</td>
                                                             </tr>
                                                         {/section}
                                                     </table>

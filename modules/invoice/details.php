@@ -29,6 +29,7 @@ $smarty->assign('invoice_statuses',         get_invoice_statuses($db)           
 $smarty->assign('labour_items',             get_invoice_labour_items($db, $invoice_id)                                                  );
 $smarty->assign('parts_items',              get_invoice_parts_items($db, $invoice_id)                                                   );
 $smarty->assign('transactions',             get_invoice_transactions($db, $invoice_id)                                                  );
+$smarty->assign('transaction_statuses',     get_payment_system_methods($db)                                                             );
 $smarty->assign('labour_sub_total',         labour_sub_total($db, $invoice_id)                                                          );
 $smarty->assign('parts_sub_total',          parts_sub_total($db, $invoice_id)                                                           );
 $smarty->assign('employee_display_name',    get_user_details($db, get_invoice_details($db, $invoice_id, 'employee_id'),'display_name')  );

@@ -16,7 +16,7 @@
                     <td class="row2"><b>{t}Transaction ID{/t}</b></td>
                     <td class="row2"><b>{t}Date{/t}</b></td>
                     <td class="row2"><b>{t}Amount{/t}</b></td>
-                    <td class="row2"><b>{t}Type{/t}</b></td>
+                    <td class="row2"><b>{t}Method{/t}</b></td>
                 </tr>                                            
                 {section name=r loop=$transactions}                                                
                     <tr class="olotd4">
@@ -24,13 +24,10 @@
                         <td>{$transactions[r].date|date_format:$date_format}</td>
                         <td>{$currency_sym}{$transactions[r].AMOUNT|string_format:"%.2f"}</td>
                         <td>
-                            {if $transactions[r].type == 1}{t}Credit Card{/t}
-                            {elseif $transactions[r].type == 2}{t}Cheque{/t}
-                            {elseif $transactions[r].type == 3}{t}Cash{/t}
-                            {elseif $transactions[r].type == 4}{t}Gift Certificate{/t}
-                            {elseif $transactions[r].type == 5}{t}PayPal{/t}
-                            {/if}
-                        </td>
+                            {section name=s loop=$transaction_statuses}
+                                {if $transactions[r].method == $transaction_statuses[s].system_method_id}{t}{$transaction_statuses[s].display_name}{/t}{/if}                                
+                            {/section} 
+                        </td> 
                     </tr>
                     <tr class="olotd4">
                         <td><b>{t}Note{/t}</b></td>
