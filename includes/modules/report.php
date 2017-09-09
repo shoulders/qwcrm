@@ -113,24 +113,18 @@ function count_invoices($db, $status, $user_id = null, $start_date = null, $end_
     if($status != 'all') {
         
         // Filter by Unpaid Invoices
-        if($status == 'unpaid') {
+        if($status == 'open') {
             
-            $whereTheseRecords .= " AND ".PRFX."invoice.is_paid != '1'";
+            $whereTheseRecords .= " AND ".PRFX."invoice.is_closed != '1'";
         
-        // Filter by Partially Paid Invoices
-        } elseif($status == 'partially_paid') {
+        } elseif($status == 'closed') {
             
-            $whereTheseRecords .= "AND is_paid != '1' AND paid_amount < gross_amount";
-            
-        // Filter by Paid Invoices
-        } elseif($status == 'paid') {
-            
-            $whereTheseRecords .= " AND ".PRFX."invoice.is_paid = '1'";        
+            $whereTheseRecords .= " AND ".PRFX."invoice.is_closed = '1'";        
         
         // Return Invoices for the given status
         } else {
             
-            //$whereTheseRecords .= " AND ".PRFX."invoice.status = ".$db->qstr($status);
+            $whereTheseRecords .= " AND ".PRFX."invoice.status = ".$db->qstr($status);
             
         }
         
@@ -165,7 +159,7 @@ function count_invoices($db, $status, $user_id = null, $start_date = null, $end_
 #  Sum selected value of invoices       #
 #########################################
 
-function sum_invoices_value($db, $value_name, $status, $start_date = null, $end_date = null) {
+function sum_invoices_value($db, $status, $value_name, $start_date = null, $end_date = null) {
         
     // Default Action
     $whereTheseRecords = " WHERE invoice_id >= '0'";
@@ -174,24 +168,18 @@ function sum_invoices_value($db, $value_name, $status, $start_date = null, $end_
     if($status != 'all') {
         
         // Filter by Unpaid Invoices
-        if($status == 'unpaid') {
+        if($status == 'open') {
             
-            $whereTheseRecords .= " AND ".PRFX."invoice.is_paid != '1'";
+            $whereTheseRecords .= " AND ".PRFX."invoice.is_closed != '1'";
         
-        // Filter by Partially Paid Invoices
-        } elseif($status == 'partially_paid') {
+        } elseif($status == 'closed') {
             
-            $whereTheseRecords .= "AND is_paid = '0' AND paid_amount < gross_amount";
-            
-        // Filter by Paid Invoices
-        } elseif($status == 'paid') {
-            
-            $whereTheseRecords .= " AND ".PRFX."invoice.is_paid = '1'";        
+            $whereTheseRecords .= " AND ".PRFX."invoice.is_closed = '1'";        
         
         // Return Invoices for the given status
         } else {
             
-            //$whereTheseRecords .= " AND ".PRFX."invoice.status= ".$db->qstr($status);
+            $whereTheseRecords .= " AND ".PRFX."invoice.status= ".$db->qstr($status);
             
         }
         

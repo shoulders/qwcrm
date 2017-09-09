@@ -25,7 +25,7 @@ defined('_QWEXEC') or die;
 /** Display Functions **/
 
 #########################################
-#     Display Invoices                  # // Status = is_paid  0 = unpaid, 1 = paid
+#     Display Invoices                  #
 #########################################
 
 function display_invoices($db, $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $status = null, $employee_id = null, $customer_id = null) {
@@ -595,7 +595,7 @@ function update_invoice_full($db, $VAR) {
             close_date          =". $db->qstr( $VAR['close_date']      ).",
             last_active         =". $db->qstr( $VAR['last_Active']     ).",
             status              =". $db->qstr( $VAR['status ']         ).",
-            is_closed           =". $db->qstr( $VAR['is_paid']         ).",
+            is_closed           =". $db->qstr( $VAR['is_closed']       ).",
             paid_date           =". $db->qstr( $VAR['paid_date']       )."
             WHERE invoice_id    =". $db->qstr( $VAR['invoice_id']      );
 

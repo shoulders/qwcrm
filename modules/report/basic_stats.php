@@ -36,10 +36,10 @@ $smarty->assign('overall_invoices_partially_paid_count',    count_invoices($db, 
 $smarty->assign('overall_invoices_paid_count',              count_invoices($db, 'paid')                         );
 $smarty->assign('overall_invoices_count',                   count_invoices($db, 'all')                          );
 
-// Invoice Totals
-$smarty->assign('overall_invoiced_total',                   sum_invoices_value($db, 'gross_amount', 'all')      );
-$smarty->assign('overall_received_monies',                  sum_invoices_value($db, 'paid_amount', 'all')       );
-$smarty->assign('overall_outstanding_balance',              sum_invoices_value($db, 'balance', 'all')           );
+// Invoice All Time Totals
+$smarty->assign('overall_invoiced_total',                   sum_invoices_value($db, 'all', 'gross_amount')      );
+$smarty->assign('overall_received_monies',                  sum_invoices_value($db, 'all', 'paid_amount')       );
+$smarty->assign('overall_outstanding_balance',              sum_invoices_value($db, 'all', 'balance')           );
 
 
 /** Totals **/
@@ -79,8 +79,8 @@ $date_year_end = get_company_details($db, 'year_end');
 /** Customers **/
 
 // Customer Counts
-$smarty->assign('customer_month_count', count_customers($db, $status, $date_month_start, $date_month_end));
-$smarty->assign('customer_year_count', count_customers($db, $status, $date_year_start, $date_year_end));
+$smarty->assign('customer_month_count', count_customers($db, 'all', $date_month_start, $date_month_end));
+$smarty->assign('customer_year_count', count_customers($db, 'all', $date_year_start, $date_year_end));
 $smarty->assign('customer_total_count', count_customers($db, 'all'));
 
 /** Build the Page **/
