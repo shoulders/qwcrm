@@ -533,7 +533,7 @@ function set_page_header_and_meta_data($module, $page_tpl, $page_title_from_var 
 function check_acl($db, $login_usergroup_id, $module, $page_tpl) {
     
     // If installing
-    if(QWCRM_SETUP == 'install' || QWCRM_SETUP == 'migrate') { return true; }
+    if(QWCRM_SETUP) { return true; }
     
     // error catching - you cannot use normal error logging as it will cause a loop
     if($login_usergroup_id == '') {
@@ -662,9 +662,7 @@ function verify_qwcrm_is_installed_correctly($db) {
         
         // If the file system is newer than the database - run upgrade
         if(version_compare(QWCRM_VERSION, $qwcrm_database_version, '>')) {             
-            //force_page('setup', 'upgrade');
-            //exit;
-            $GLOBALS['VAR']['page'] = 'setup:upgrade';
+            $_POST['page'] = 'setup:upgrade';
             define('QWCRM_SETUP', 'upgrade'); 
             return;
         }      
