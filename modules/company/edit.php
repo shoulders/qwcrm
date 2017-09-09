@@ -15,7 +15,7 @@ if(isset($VAR['submit'])) {
 
     // Submit data to the database
     update_company_details($db, $VAR);    
-
+    
 }
      
 // Fetch page

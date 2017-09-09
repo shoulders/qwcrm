@@ -68,11 +68,10 @@
                     <a href="index.php?page=invoice:closed"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {t}Closed{/t}</a>                                       
                     
                     <!-- invoice admin -->
-                    {if $login_usergroup_id == 1 || $login_usergroup_id == 2 || $login_usergroup_id == 3}
+                    {if $login_usergroup_id == 1 || $login_usergroup_id == 2}
                        {if $invoice_id != ''}
                             <a href="index.php?page=invoice:status&invoice_id={$invoice_id}"><img src="{$theme_images_dir}icons/status.gif" alt="" border="0" height="14" width="14" /> {t}Status{/t}</a>
-                        {/if}
-                        <a href="index.php?page=invoice:prefill_items"><img src="{$theme_images_dir}icons/money.png" alt="" border="0" height="14" width="14" /> {t}Invoice Prefill{/t}</a>
+                        {/if}                        
                     {/if}
                 
                 </div>
@@ -135,15 +134,17 @@
                 {/if}
 
                 <!-- Company -->
-                <!-- Menu limited to Administrators -->
+                <!-- Menu limited to Administrators and Manager -->
                 {if $login_usergroup_id == 1 || $login_usergroup_id == 2}
                     <div>
                         <span>{t}Company{/t}</span>
                         
-                        <a href="index.php?page=company:edit"><img src="{$theme_images_dir}icons/key.png" alt="" border="0" height="14" width="14" /> {t}Edit Company{/t}</a>
+                        <a href="index.php?page=company:edit"><img src="{$theme_images_dir}icons/key.png" alt="" border="0" height="14" width="14" /> {t}Settings{/t}</a>
                         
                         <a href="index.php?page=company:business_hours"><img src="{$theme_images_dir}icons/clock.gif" alt="" border="0" height="14" width="14" /> {t}Business Hours{/t}</a>                        
                         <a href="index.php?page=payment:options"><img src="{$theme_images_dir}icons/money.png" alt="" border="0" height="14" width="14" /> {t}Payment Options{/t}</a>
+                        
+                        <a href="index.php?page=invoice:prefill_items"><img src="{$theme_images_dir}icons/money.png" alt="" border="0" height="14" width="14" /> {t}Invoice Prefill{/t}</a>
                         
                         <!-- Stats -->                        
                         <a href="index.php?page=report:financial"><img src="{$theme_images_dir}icons/reports.png" alt="" border="0" height="14" width="14" /> {t}Financial Report{/t}</a>
