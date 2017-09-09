@@ -398,7 +398,7 @@ function set_invoice_start_number($db, $start_number) {
 
 function install_database($db) {    
     
-    return execute_sql_file($db, SQL_DIR.'install/install_qwcrm.sql');
+    return execute_sql_file($db, SQL_DIR.'install/install.sql');
    
 }
 
