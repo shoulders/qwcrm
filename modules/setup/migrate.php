@@ -11,7 +11,7 @@ defined('_QWEXEC') or die;
 require(INCLUDES_DIR.'modules/setup.php');
 
 // Prevent direct access to this page
-if(!check_page_accessed_via_qwcrm('setup:migrate', 'setup') || QWCRM_SETUP != 'migrate') {
+if(!check_page_accessed_via_qwcrm('setup:migrate', 'setup') || QWCRM_SETUP != 'install') {
     die(gettext("No Direct Access Allowed."));
 }
 

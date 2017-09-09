@@ -80,19 +80,6 @@ require(INCLUDES_DIR.'smarty.php');
 require(FRAMEWORK_DIR.'qwframework.php');
 
 ################################################
-#    Verify QWcrm is installed correctly       #
-################################################
-
-verify_qwcrm_is_installed_correctly($db);
-
-################################################
-#         Framework                            #
-################################################
-
-// Initiate QFramework
-$app = new QFactory;
-
-################################################
 #         Error Reporting                      #
 ################################################
 
@@ -193,7 +180,16 @@ textdomain($textdomain);
 #    Verify QWcrm is installed correctly       #
 ################################################
 
-//verify_qwcrm_is_installed_correctly($db);
+verify_qwcrm_is_installed_correctly($db);
+
+################################################
+#     Initiate QFramework                      #
+################################################
+
+// this starts the framework
+if(QWCRM_SETUP != 'install') {
+    $app = new QFactory;
+}
 
 ##########################################################
 #   Assign the User's Variables to PHP and Smarty        #

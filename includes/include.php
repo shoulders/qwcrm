@@ -533,7 +533,7 @@ function set_page_header_and_meta_data($module, $page_tpl, $page_title_from_var 
 function check_acl($db, $login_usergroup_id, $module, $page_tpl) {
     
     // If installing
-    if(QWCRM_SETUP) { return true; }
+    if(QWCRM_SETUP == 'install' || QWCRM_SETUP == 'upgrade') { return true; }
     
     // error catching - you cannot use normal error logging as it will cause a loop
     if($login_usergroup_id == '') {
@@ -619,7 +619,7 @@ function verify_qwcrm_is_installed_correctly($db) {
     if(check_page_accessed_via_qwcrm('setup:migrate') && ($_GET['setup'] != 'finished' || $_POST['setup'] != 'finished')) {
         $_POST['page'] = 'setup:migrate';
         $_POST['theme'] = 'menu_off';        
-        define('QWCRM_SETUP', 'migrate'); 
+        define('QWCRM_SETUP', 'install'); 
         return;        
     }
     
