@@ -149,7 +149,7 @@ if($QConfig->autodetect_language === '1') {
     
     $language = $QConfig->default_language;    
 
-// if installing
+// if installing - use the locale language if detected or default to english
 } else {
     
     if(!$language = locale_accept_from_http($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
