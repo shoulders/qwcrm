@@ -187,7 +187,7 @@ if($VAR['stage'] == '7') {
         force_page('user', 'login', 'setup=finished&information_msg='.gettext("Installation successful. Please login with the administrator account you just created."), 'get');        
         exit;
     
-    // load thge page
+    // load the page
     } else {
     
         // Set mandatory default values

@@ -39,6 +39,25 @@ defined('_QWEXEC') or die;
 /** Common **/
 
 ############################################
+#   update values to new version           #
+############################################
+
+function update_values($db, $table, $column, $current_value, $new_value) {
+    
+    $sql = "UPDATE ".PRFX."$table SET
+            $column         =". $db->qstr( $new_value )."                      
+            WHERE $column   =". $db->qstr( $current_value  );
+
+    if(!$rs = $db->execute($sql)){        
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update column values."));
+        exit;
+    }
+    
+    return;
+    
+}
+
+############################################
 #   Execute SQL File (preg_match method)   # // this imports a phpMyAdmin .sql exported file
 ############################################
 
@@ -344,7 +363,7 @@ function submit_qwcrm_config_settings($VAR) {
 #  Generate Random Database prefix         #
 ############################################
 
-function generate_database_prefix() {
+function generate_database_prefix($not_this_prefix = null) {
     
     // generate a random string for the gift certificate
     
@@ -357,6 +376,13 @@ function generate_database_prefix() {
     }
     
     $prefix .= '_';    
+    
+    // this is to prevent using the MyITCRM prefix
+    if($not_this_prefix) {
+        if($prefix == $not_this_prefix) {
+            $prefix = generate_database_prefix($not_this_prefix);
+        }
+    }
     
     return $prefix;
     
@@ -404,8 +430,226 @@ function install_database($db) {
 
 /** Migrate **/
 
-function migrate_myitcrm_to_qwcrm() {
+
+
+############################################
+#   Migrate myitcrm database               #
+############################################
+
+function migrate_database($db) {
+    
+    $config = new QConfig;  // i.e. $config->myitcrm_prefix
+        
+    // Customer
+    
+    // Expense
+    
+    // Gifcert ?
+    
+    // Invoice
+    
+    // Payment / transactions
+    
+    // Refund
+    
+    // Schedule ?
+    
+    // Supplier
+    
+    // user / Employee
+    
+    // Workorder
+    
+    
 }
+
+
+##################################
+#  Get MyITCRM company details   #
+##################################
+
+/*
+ * This combined function allows you to pull any of the company information individually
+ * or return them all as an array
+ * supply the required field name or all to return all of them as an array
+ */
+
+function get_myitcrm_company_details($db, $item = null) {
+    
+    $config = new QConfig;
+    
+    $sql = "SELECT * FROM ".$config->myitcrm_prefix."table_company";
+    
+    if(!$rs = $db->execute($sql)) {        
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get MyITCRM company details."));        
+        exit;
+    } else {
+        
+        if($item === null) {
+            
+            return $rs->GetRowAssoc();            
+            
+        } else {
+            
+            return $rs->fields[$item];   
+            
+        } 
+        
+    }
+    
+}
+
+################################################
+#   migrate data from myitcrm (insert method)  #    // build 1 SQL statement and then execute
+################################################
+
+function migrate_table_insert($db, $qwcrm_prefix, $qwcrm_table, $myitcrm_prefix, $myitcrm_table, $column_mappings) {
+    
+     //         qwcrm         myitcrm
+     // array('username' => 'username')            
+    
+    /* load the records from MyITCRM */
+    
+    $sql = "SELECT * FROM $myitcrm_prefix$myitcrm_table";
+    
+    if(!$rs = $db->execute($sql)){        
+        //force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to migrate a table."));
+        //exit;   
+        
+        // output error, could not load table so all of this table was skipped
+        return false;
+    
+    } else {
+        
+        /* Load each single records and insert into QWcrm */        
+        
+        while($record = $rs->fetchRow()) {            
+              
+            /* Build the 'INSERT' part of the SQL statement */
+            
+            $insert_sql = "INSERT INTO `$qwcrm_prefix$qwcrm_table` (";
+            foreach($column_mappings as $qwcrm_column) {
+                $insert_sql .= "`$qwcrm_column`, ";            
+            }
+            rtrim($insert_sql, ', ');           // remove the last ', '        
+            $insert_sql .= ") VALUES" . "\n";
+            
+            /* Build 'VALUES' part of the SQL statement by mapping the MyITCRM record data to the QWcrm values */
+            
+            $values_sql = '(';
+            foreach($column_mappings as $qwcrm_column => $myitcrm_column) {
+                
+                // Skip looking for data in MyITCRM record if there is no corresponding field
+                if($myitcrm_column == '') { continue; }
+                
+                foreach($record as $record_myitcrm_column => $record_myitcrm_val) {
+                    
+                    if($myitcrm_column == $record_myitcrm_column) {
+                        $values_sql .= "'$record_myitcrm_val', ";
+                        break;
+                    }    
+                
+                }
+
+                // Close the 'VALUES' SQL statement
+                rtrim($values_sql, ', ');
+                $values_sql .= ");";            
+            
+            }
+            
+            /* Build and execute statement */
+        
+            // combine the 'INSERT' and 'VALUES' sections
+            $sql = $insert_sql.$values_sql;
+
+            // insert the migrated record into qwcrm
+            if(!$rs = $db->execute($sql)){        
+                //force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to migrate a table."));
+                //exit;
+                
+                // output error to screen
+                
+            } else {
+             
+                // output success to screen
+            }
+        
+        }// EOF While Loop
+    
+        return;    
+    
+    }
+
+}
+
+#########################################################
+#   check myitcrm database is accessible and is 2.9.3   #
+#########################################################
+// 
+function check_myitcrm_database_connection($db, $myitcrm_prefix) {
+    
+    $sql = "SELECT VERSION_ID FROM ".$myitcrm_prefix."VERSION WHERE VERSION_ID = '293'";
+    
+    if(!$rs = $db->execute($sql)){        
+        
+        // output message failed to connect to the myitcrm database
+        return false;
+    
+    } else {
+        
+        if($rs->RecordCount() != 1) {
+            
+            //output error message database is not 293
+            
+        } else {
+         
+            // myitcrm database is sutiable for migration
+        }
+            
+    }
+    
+}
+
+
+##############################################
+#  merge QWcrm and MyITCRM compnay details   #
+##############################################
+
+function get_merged_company_details($db) {
+    
+    $qwcrm_company_details              = get_company_details($db);
+    $myitcrm_company_details            = get_myitcrm_company_details($db);
+    
+    $merged['display_name']             = $myitcrm_company_details['COMPANY_NAME'];
+    $merged['logo']                     = '';
+    $merged['company_number']           = $myitcrm_company_details['COMPANY_ABN'];
+    $merged['vat_number']               = '';
+    $merged['address']                  = $myitcrm_company_details['COMPANY_ADDRESS'];
+    $merged['city']                     = $myitcrm_company_details['COMPANY_CITY'];
+    $merged['state']                    = $myitcrm_company_details['COMPANY_STATE'];
+    $merged['zip']                      = $myitcrm_company_details['COMPANY_ZIP'];
+    $merged['country']                  = $myitcrm_company_details['COMPANY_COUNTRY'];
+    $merged['primary_phone']            = $myitcrm_company_details['COMPANY_PHONE'];
+    $merged['mobile_phone']             = $myitcrm_company_details['COMPANY_MOBILE'];
+    $merged['fax']                      = $myitcrm_company_details['COMPANY_FAX'];
+    $merged['email']                    = $myitcrm_company_details['COMPANY_EMAIL'];
+    $merged['website']                  = '';
+    $merged['tax_rate']                 = '';
+    $merged['year_start']               = '';
+    $merged['year_end']                 = '';
+    $merged['welcome_msg']              = $qwcrm_company_details['welcome_msg'];
+    $merged['currency_symbol']          = $myitcrm_company_details['COMPANY_CURRENCY_SYMBOL'];
+    $merged['currency_code']            = $myitcrm_company_details['COMPANY_CURRENCY_CODE'];
+    $merged['date_format']              = $myitcrm_company_details['COMPANY_DATE_FORMAT'];
+    $merged['email_signature']          = $qwcrm_company_details['email_signature'];
+    $merged['email_signature_active']   = $qwcrm_company_details['email_signature_active'];
+    $merged['email_msg_invoice']        = $qwcrm_company_details['email_msg_invoice'];
+    $merged['email_msg_workorder']      = $qwcrm_company_details['email_msg_workorder'];
+    
+    return $merged;
+    
+}
+
 
 function workorders_migrate($myitcrm_db, $qwcrm_db) {
     
@@ -413,6 +657,36 @@ function workorders_migrate($myitcrm_db, $qwcrm_db) {
 function migrate_workorders($myitcrm_db, $qwcrm_db) {
     
 }
+
+
+
+################################################
+#   remove myitcrm database prefix             #
+################################################
+
+function remove_myitcrm_prefix_config() {
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /** upgrade **/
 

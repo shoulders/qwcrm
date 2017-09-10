@@ -1,4 +1,4 @@
-<!-- install_stage1_block.tpl -->
+<!-- migrate_stage1_block.tpl -->
 {*
  * @package   QWcrm
  * @author    Jon Brown https://quantumwarp.com/
