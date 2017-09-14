@@ -24,7 +24,7 @@ if(!check_page_accessed_via_qwcrm('setup:migrate') ) {
 }
 
 // Stage 1 - Database Connection -->
-if($VAR['stage'] == '1' || !isset($VAR['stage'])) {
+if($VAR['stage'] == '1') {
     
     if($VAR['submit'] == 'stage1') {
         
@@ -37,7 +37,7 @@ if($VAR['stage'] == '1' || !isset($VAR['stage'])) {
             $VAR['stage'] = '1a';
             $smarty->assign('information_msg', gettext("Database connection successful."));
         
-        // load the page
+        // load the page with error
         } else {
             
             // reload the database connection page with the details and error message
@@ -48,6 +48,9 @@ if($VAR['stage'] == '1' || !isset($VAR['stage'])) {
             
         }
         
+    // load the page    
+    } else {
+        $smarty->assign('stage', '1');
     }
     
 }
@@ -62,23 +65,26 @@ if($VAR['stage'] == '1a') {
             
             // Record details into the config file and display success message and load the next page       
             submit_qwcrm_config_settings($VAR);            
-            write_record_to_setup_log(gettext("Connected successfully to the MyITCRM database with the supplied credentials and added them to the config file."), 'migrate');  
+            write_record_to_setup_log(gettext("Connected successfully to the MyITCRM database with the supplied prefix and added it to the config file."), 'migrate');  
             $VAR['stage'] = '2';
             $smarty->assign('information_msg', gettext("MyITCRM Database connection successful."));
         
-        // load the page
+        // load the page with error
         } else {
             
             // reload the database connection page with the details and error message
             $smarty->assign('qwcrm_config', $VAR);
-            $smarty->assign('warning_msg', gettext("There is a database connection issue. Check your settings."));
-            write_record_to_setup_log(gettext("Failed to connect to the MyITCRM database with the supplied credentials."), 'migrate'); 
+            $smarty->assign('warning_msg', gettext("The MyITCRM databse is either missing or the prefix is wrong."));
+            write_record_to_setup_log(gettext("Failed to connect to the MyITCRM database with the supplied prefix."), 'migrate'); 
             $smarty->assign('stage', '1a');
             
-        }
+        }        
+
+    // load the page
+    } else {
         
+        $smarty->assign('stage', '1a');
     }
-    
 }
 
 // Stage 2 - Config Settings
@@ -185,8 +191,10 @@ if($VAR['stage'] == '6') {
         
         write_record_to_setup_log(gettext("Starting MyITCRM Database Migration."), 'migrate');
         
+        $config = new QConfig;
+        
         // install the database file and load the next page
-        if(migrate_database($db)) {
+        if(migrate_database($db, $config->db_prefix, $config->myitcrm_prefix)) {
             
             $record = gettext("The MyITCRM database migrated successfully.");
             write_record_to_setup_log($record, 'migrate');
@@ -245,9 +253,6 @@ if($VAR['stage'] == '8') {
     }
     
 }
-
-
-
 
 // Build the page
 $BuildPage .= $smarty->fetch('setup/migrate.tpl');

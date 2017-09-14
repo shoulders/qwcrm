@@ -24,7 +24,7 @@ if(!check_page_accessed_via_qwcrm('setup:install') ) {
 }
 
 // Stage 1 - Database Connection -->
-if($VAR['stage'] == '1' || !isset($VAR['stage'])) {
+if($VAR['stage'] == '1') {
     
     if($VAR['submit'] == 'stage1') {
         

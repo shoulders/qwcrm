@@ -608,7 +608,7 @@ function verify_qwcrm_is_installed_correctly($db) {
     }
     
     // if installation is in progress
-    if(check_page_accessed_via_qwcrm('setup:install') && ($_GET['setup'] != 'finished' || $_POST['setup'] != 'finished')) {        
+    if(check_page_accessed_via_qwcrm('setup:install') && $_GET['setup'] != 'finished' && $_POST['setup'] != 'finished') {        
         $_POST['page'] = 'setup:install';
         $_POST['theme'] = 'menu_off';        
         define('QWCRM_SETUP', 'install'); 
@@ -616,7 +616,7 @@ function verify_qwcrm_is_installed_correctly($db) {
     }
     
     // if migration is in progress
-    if(check_page_accessed_via_qwcrm('setup:migrate') && ($_GET['setup'] != 'finished' || $_POST['setup'] != 'finished')) {
+    if(check_page_accessed_via_qwcrm('setup:migrate') && $_GET['setup'] != 'finished' && $_POST['setup'] != 'finished') {
         $_POST['page'] = 'setup:migrate';
         $_POST['theme'] = 'menu_off';        
         define('QWCRM_SETUP', 'install'); 

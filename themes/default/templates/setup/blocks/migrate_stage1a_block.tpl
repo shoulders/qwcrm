@@ -5,7 +5,7 @@
  * @copyright Copyright (C) 2016 - 2017 Jon Brown, All rights reserved.
  * @license   GNU/GPLv3 or later; https://www.gnu.org/licenses/gpl.html
 *}
-<form method="post" action="index.php?page=setup:install">                   
+<form method="post" action="index.php?page=setup:migrate">                   
     <table width="600" cellpadding="5" cellspacing="0" border="0">
         <tr>
             <td class="menuhead2" width="80%">&nbsp;{t}Stage 1a - MyITCRM Database Connection{/t}</td>
@@ -20,17 +20,17 @@
                     <tr>
                         <td align="right"><b>{t}MyITCRM Database Tables Prefix{/t}</b> <span style="color: #ff0000">*</span></td>
                         <td>
-                            <input name="db_prefix" class="olotd5" size="6" value="{$qwcrm_config.db_prefix}" type="text" maxlength="6" required onkeydown="return onlyMysqlDatabaseName(event);"/>                            
+                            <input name="myitcrm_prefix" class="olotd5" size="6" value="{$qwcrm_config.myitcrm_prefix}" type="text" maxlength="6" required onkeydown="return onlyMysqlDatabaseName(event);"/>                            
                         </td>
                     </tr>
                     <tr>
-                        <td>{t}Enter The prefix used for your MyITCRM database tables.{/t}</td>
+                        <td colspan="2" style="text-align: center;">{t}Enter The prefix used for your MyITCRM database tables.{/t}</td>
                     </tr>
 
                     <!-- Submit -->
 
                     <tr class="row2">
-                        <td class="menuhead" colspan="5" width="100%">&nbsp;</td>
+                        <td class="menuhead" colspan="2" width="100%">&nbsp;</td>
                     </tr>
 
                     <tr>
