@@ -470,7 +470,7 @@ function prepare_error_data($type, $data = null) {
     if($type === 'php_function') {
 
         // add () to the end of the php function name
-        if($data != '') {$data.= '()';}        
+        if($data != '') { $data.= '()'; }        
         return $data;
     }
     
@@ -478,19 +478,36 @@ function prepare_error_data($type, $data = null) {
     if($type === 'database_error') {
 
         // remove newlines from the database string
-        if($data != '') {$data = str_replace("\n", '', $data);}
+        if($data != '') {
+            $data = str_replace("\r", '', $data);
+            $data = str_replace("\n", '', $data);            
+        }
         return $data;
         
     }
     
-    /* SQL Query */
+    /* SQL Query - for display */
     if($type === 'sql_query') {
 
         // change newlines to <br>
-        if($data != '') {$data = str_replace("\n", '<br>', $data);}        
+        if($data != '') { $data = str_replace("\n", '<br>', $data); }        
         return $data;
         
-    }    
+    }
+    
+    /* SQL Query - for log */
+    if($type === 'sql_query_for_log') {
+        
+        // done seperate because used in MyITCRM migration with dirty data
+
+        // change newlines to text \r\n
+        if($data != '') {
+            $data = str_replace("\r", '\r', $data);
+            $data = str_replace("\n", '\n', $data);            
+        }   
+        return $data;
+        
+    }     
     
 }
 

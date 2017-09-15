@@ -27,7 +27,7 @@
                         </td>
                         {else}
                         <td colspan="2" style="text-align: center;">
-                            {t}You cannot continue because there was a fault with the database installation.{/t}
+                            <strong><span style="color: red">{t}You cannot continue because there was a fault with the database installation.{/t}</span></strong>
                         </td>
                         {/if}
                     </tr>

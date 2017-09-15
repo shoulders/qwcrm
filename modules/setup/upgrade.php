@@ -17,7 +17,7 @@ if(!check_page_accessed_via_qwcrm('setup:upgrade', 'setup') || QWCRM_SETUP != 'u
 
 // Log message to setup log - only when starting the process
 if(!check_page_accessed_via_qwcrm('setup:upgrade') ) {
-    write_record_to_setup_log(gettext("QWcrm upgrade has begun."), 'upgrade');
+    write_record_to_setup_log('upgrade', gettext("QWcrm upgrade has begun."));
 }
 
 // Build the page

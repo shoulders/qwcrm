@@ -44,39 +44,33 @@ defined('_QWEXEC') or die;
 
 function update_values($db, $table, $column, $current_value, $new_value) {
     
-    global $smarty;
     global $executed_sql_results; 
     
-    $sql = "UPDATE ".PRFX."$table SET
+    $sql = "UPDATE $table SET
             $column         =". $db->qstr( $new_value )."                      
             WHERE $column   =". $db->qstr( $current_value  );
 
     if(!$rs = $db->execute($sql)) { 
         
-        //force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update column values."));
-        //exit;
-        
-        $record = gettext("Failed to update the column values of").' `'.$current_value.'` '.gettext("to").' `'.$new_value.'` '.gettext("in the columm").' `'.$column.'` '.gettext("from the the table").' `'.$table.'` ';
+        $record = gettext("Failed to update the value").' `'.$current_value.'` '.gettext("to").' `'.$new_value.'` '.gettext("in the columm").' `'.$column.'` '.gettext("from the table").' `'.$table.'` ';
 
         // Result message
-        $executed_sql_results .= '<div><span style="color: red">'.$record.'</span></div>';
-        //$smarty->assign('executed_sql_results' ,$executed_sql_results);
+        $executed_sql_results .= '<div><span style="color: red">'.$record.'</span></div>';        
         
         // Log mesage to setup log        
-        write_record_to_setup_log($record, 'install');
+        write_record_to_setup_log('migrate', $record, $db->ErrorMsg(), $sql);
         
         return false;
         
     } else {
         
-        $record = gettext("Successfully updated the column values of").' `'.$current_value.'` '.gettext("to").' `'.$new_value.'` '.gettext("in the columm").' `'.$column.'` '.gettext("from the the table").' `'.$table.'` ';
+        $record = gettext("Successfully updated the value").' `'.$current_value.'` '.gettext("to").' `'.$new_value.'` '.gettext("in the columm").' `'.$column.'` '.gettext("from the the table").' `'.$table.'` ';
 
         // Result message
-        $executed_sql_results .= '<span style="color: green">'.$record.'</span></div>';
-        //$smarty->assign('executed_sql_results' ,$executed_sql_results);
-        
+        $executed_sql_results .= '<div><span style="color: green">'.$record.'</span></div>';
+               
         // Log mesage to setup log        
-        write_record_to_setup_log($record, 'install');
+        write_record_to_setup_log('install', $record);
         
         return true;
         
@@ -132,8 +126,8 @@ function execute_sql_file($db, $sql_file) {
             $executed_sql_results .= '<span style="color: red">';
                         
             // Log mesage to setup log
-            $record = gettext("Error performing SQL query").' : '. $query_name['0'].' : '.$db->ErrorMsg();
-            write_record_to_setup_log($record, 'install');
+            $record = gettext("Error performing SQL query").' : '. $query_name['0'];
+            write_record_to_setup_log('install', $record, $db->ErrorMsg(), $sql);
             
             // Finish result message
             $executed_sql_results .= $record;
@@ -147,7 +141,7 @@ function execute_sql_file($db, $sql_file) {
             
             // Log mesage to setup log            
             $record = gettext("Performed SQL query successfully").' : '. $query_name['0'];
-            write_record_to_setup_log($record, 'install');
+            write_record_to_setup_log('install', $record);
             
             // Finish result message
             $executed_sql_results .= $record;
@@ -167,7 +161,7 @@ function execute_sql_file($db, $sql_file) {
         
         // Log mesage to setup log
         $record = gettext("One or more SQL rule has failed. Check the logs.");
-        write_record_to_setup_log($record, 'install');
+        write_record_to_setup_log('install', $record);
         
         // Finish result message
         $executed_sql_results .= $record;
@@ -185,7 +179,7 @@ function execute_sql_file($db, $sql_file) {
                 
         // Log mesage to setup log
         $record = gettext("All SQL rules have run successfully.");
-        write_record_to_setup_log($record, 'install');
+        write_record_to_setup_log('install', $record);
         
         // Finish result message
         $executed_sql_results .= $record;
@@ -254,8 +248,8 @@ function execute_sql_file_lines($db, $sql_file) {
                 $executed_sql_results .= '<span style="color: red">';
 
                 // Log mesage to setup log
-                $record = gettext("Error performing SQL query").' : '. $query_name['0'].' : '.$db->ErrorMsg();
-                write_record_to_setup_log($record, 'upgrade');
+                $record = gettext("Error performing SQL query").' : '. $query_name['0'];
+                write_record_to_setup_log('upgrade', $record, $db->ErrorMsg(), $sql);
 
                 // Finish result message
                 $executed_sql_results .= $record;
@@ -269,7 +263,7 @@ function execute_sql_file_lines($db, $sql_file) {
 
                 // Log mesage to setup log            
                 $record = gettext("Performed SQL query successfully").' : '. $query_name['0'];
-                write_record_to_setup_log($record, 'upgrade');
+                write_record_to_setup_log('upgrade', $record);
 
                 // Finish result message
                 $executed_sql_results .= $record;
@@ -294,7 +288,7 @@ function execute_sql_file_lines($db, $sql_file) {
         
         // Log mesage to setup log
         $record = gettext("One or more SQL rule has failed. Check the logs.");
-        write_record_to_setup_log($record, 'upgrade');
+        write_record_to_setup_log('upgrade', $record);
         
         // Finish result message
         $executed_sql_results .= $record;
@@ -312,7 +306,7 @@ function execute_sql_file_lines($db, $sql_file) {
                 
         // Log mesage to setup log
         $record = gettext("All SQL rules have run successfully.");
-        write_record_to_setup_log($record, 'upgrade');
+        write_record_to_setup_log('upgrade', $record);
         
         // Finish result message
         $executed_sql_results .= $record;
@@ -331,7 +325,7 @@ function execute_sql_file_lines($db, $sql_file) {
 #  Write a record to the Setup Log         #    // cannot be turned off - install/migrate/upgrade
 ############################################
 
-function write_record_to_setup_log($record, $setup_type) {
+function write_record_to_setup_log($setup_type, $record, $database_error = null, $sql_query = null) {
     
     // Install and migrate does not have username or login_user_id available
     if(QWCRM_SETUP == 'install') {
@@ -341,9 +335,15 @@ function write_record_to_setup_log($record, $setup_type) {
         $username = QFactory::getUser()->login_username;
         $login_user_id = QFactory::getUser()->login_user_id;
     }
-        
+    
+    // prepare database error for the log
+    $database_error = prepare_error_data('database_error', $database_error);   
+    
+    // prepare SQL statement for the log
+    $sql_query = prepare_error_data('sql_query_for_log', $sql_query);    
+    
     // Build log entry - perhaps use the apache time stamp below
-    $log_entry = $_SERVER['REMOTE_ADDR'].','.$username.','.date("[d/M/Y:H:i:s O]", time()).','.$login_user_id.','.QWCRM_VERSION.','.$setup_type.','.$record."\r\n";
+    $log_entry = $_SERVER['REMOTE_ADDR'].','.$username.','.date("[d/M/Y:H:i:s O]", time()).','.$login_user_id.','.QWCRM_VERSION.','.$setup_type.',"'.$record.'","'.$database_error.'","'.$sql_query.'"'."\r\n";
     
     // Write log entry  
     if(!$fp = fopen(SETUP_LOG, 'a')) {        
@@ -352,7 +352,7 @@ function write_record_to_setup_log($record, $setup_type) {
     }
     
     fwrite($fp, $log_entry);
-    fclose($fp);
+    fclose($fp);    
     
     return;
     
@@ -399,7 +399,7 @@ function generate_database_prefix($not_this_prefix = null) {
     
     // generate a random string for the gift certificate
     
-    $acceptedChars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $acceptedChars = 'abcdefghijklmnopqrstuvwxyz';
     $max_offset = strlen($acceptedChars)-1;
     $prefix = '';
     
@@ -473,7 +473,7 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
     global $smarty;
     global $executed_sql_results;   
     
-    //migrate_table_insert($db, $qwcrm_prefix, $qwcrm_table, $myitcrm_prefix, $myitcrm_table, $column_mappings)
+    //migrate_table($db, $qwcrm_prefix, $qwcrm_table, $myitcrm_prefix, $myitcrm_table, $column_mappings)
     // array('username' => 'username')   
         
     /* Customer */
@@ -489,7 +489,7 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
         'credit_terms'      => 'CREDIT_TERMS',
         'discount_rate'     => 'DISCOUNT',
         'type'              => 'CUSTOMER_TYPE',
-        'active'            => '1',
+        'active'            => '',
         'primary_phone'     => 'CUSTOMER_PHONE',
         'mobile_phone'      => 'CUSTOMER_MOBILE_PHONE',
         'fax'               => 'CUSTOMER_WORK_PHONE',
@@ -502,7 +502,7 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
         'create_date'       => 'CREATE_DATE',
         'last_active'       => 'LAST_ACTIVE'
         );
-    migrate_table_insert($db, $qwcrm_prefix.'customer', $myitcrm_prefix.'TABLE_CUSTOMER', $column_mappings);
+    migrate_table($db, $qwcrm_prefix.'customer', $myitcrm_prefix.'TABLE_CUSTOMER', $column_mappings);
     
     // update customer types
     update_values($db, $qwcrm_prefix.'customer', 'type', '1', 'residential');
@@ -510,6 +510,9 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
     update_values($db, $qwcrm_prefix.'customer', 'type', '3', 'charity');
     update_values($db, $qwcrm_prefix.'customer', 'type', '4', 'educational');
     update_values($db, $qwcrm_prefix.'customer', 'type', '5', 'goverment');
+    
+    // update active status (all enabled)
+    update_values($db, $qwcrm_prefix.'customer', 'active', '*', '1');
     
     // customer_notes
     $column_mappings = array(
@@ -519,7 +522,7 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
         'date'              => 'DATE',
         'note'              => 'NOTE'
         );    
-    migrate_table_insert($db, $qwcrm_prefix.'customer_notes', $myitcrm_prefix.'CUSTOMER_NOTES', $column_mappings);    
+    migrate_table($db, $qwcrm_prefix.'customer_notes', $myitcrm_prefix.'CUSTOMER_NOTES', $column_mappings);    
             
     /* Expense */
     
@@ -538,7 +541,7 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
         'items'             => 'EXPENSE_ITEMS',
         'notes'             => 'EXPENSE_NOTES'        
         );
-    migrate_table_insert($db, $qwcrm_prefix.'expense', $myitcrm_prefix.'TABLE_EXPENSE', $column_mappings);
+    migrate_table($db, $qwcrm_prefix.'expense', $myitcrm_prefix.'TABLE_EXPENSE', $column_mappings);
     
     // update expense types
     update_values($db, $qwcrm_prefix.'expense', 'type', '1', 'advertising');
@@ -593,7 +596,7 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
         'active'            => 'ACTIVE',
         'notes'             => 'MEMO'        
         );
-    migrate_table_insert($db, $qwcrm_prefix.'giftcert', $myitcrm_prefix.'GIFT_CERT', $column_mappings);
+    migrate_table($db, $qwcrm_prefix.'giftcert', $myitcrm_prefix.'GIFT_CERT', $column_mappings);
     
     /* Invoice */
     
@@ -621,7 +624,7 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
         'is_closed'         => 'INVOICE_PAID',
         'paid_date'         => 'PAID_DATE'     
         );
-    migrate_table_insert($db, $qwcrm_prefix.'invoice', $myitcrm_prefix.'TABLE_INVOICE', $column_mappings);
+    migrate_table($db, $qwcrm_prefix.'invoice', $myitcrm_prefix.'TABLE_INVOICE', $column_mappings);
     
     // invoice_labour
     $column_mappings = array(
@@ -632,7 +635,7 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
         'qty'               => 'INVOICE_LABOR_UNIT',
         'sub_total'         => 'INVOICE_LABOR_SUBTOTAL'    
         );
-    migrate_table_insert($db, $qwcrm_prefix.'invoice_labour', $myitcrm_prefix.'TABLE_INVOICE_LABOR', $column_mappings);
+    migrate_table($db, $qwcrm_prefix.'invoice_labour', $myitcrm_prefix.'TABLE_INVOICE_LABOR', $column_mappings);
     
     // invoice_parts
     $column_mappings = array(
@@ -643,7 +646,7 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
         'qty'               => 'INVOICE_PARTS_COUNT',
         'sub_total'         => 'INVOICE_PARTS_SUBTOTAL'    
         );
-    migrate_table_insert($db, $qwcrm_prefix.'invoice_parts', $myitcrm_prefix.'TABLE_INVOICE_PARTS', $column_mappings);        
+    migrate_table($db, $qwcrm_prefix.'invoice_parts', $myitcrm_prefix.'TABLE_INVOICE_PARTS', $column_mappings);        
     
     /* Payment / transactions */
     
@@ -659,7 +662,7 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
         'amount'            => 'AMOUNT',
         'note'              => 'MEMO'  
         );
-    migrate_table_insert($db, $qwcrm_prefix.'invoice_parts', $myitcrm_prefix.'TABLE_INVOICE_PARTS', $column_mappings);
+    migrate_table($db, $qwcrm_prefix.'payment_transactions', $myitcrm_prefix.'TABLE_TRANSACTION', $column_mappings);
     
     // update payment types
     update_values($db, $qwcrm_prefix.'payment_transactions', 'method', '1', 'credit_card');
@@ -684,7 +687,7 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
         'items'             => 'REFUND_ITEMS',
         'notes'             => 'REFUND_NOTES'        
         );
-    migrate_table_insert($db, $qwcrm_prefix.'refund', $myitcrm_prefix.'TABLE_REFUND', $column_mappings);
+    migrate_table($db, $qwcrm_prefix.'refund', $myitcrm_prefix.'TABLE_REFUND', $column_mappings);
     
     // update refund types
     update_values($db, $qwcrm_prefix.'refund', 'type', '1', 'credit_note');
@@ -718,7 +721,7 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
         'end_time'          => 'SCHEDULE_END',
         'notes'             => 'SCHEDULE_NOTES'    
         );
-    migrate_table_insert($db, $qwcrm_prefix.'schedule', $myitcrm_prefix.'TABLE_SCHEDULE', $column_mappings);
+    migrate_table($db, $qwcrm_prefix.'schedule', $myitcrm_prefix.'TABLE_SCHEDULE', $column_mappings);
     
     /* Supplier */
     
@@ -742,7 +745,7 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
         'description'       => 'SUPPLIER_DESCRIPTION',
         'notes'             => 'SUPPLIER_NOTES'           
         );
-    migrate_table_insert($db, $qwcrm_prefix.'supplier', $myitcrm_prefix.'TABLE_SUPPLIER', $column_mappings);
+    migrate_table($db, $qwcrm_prefix.'supplier', $myitcrm_prefix.'TABLE_SUPPLIER', $column_mappings);
     
     // update supplier types
     update_values($db, $qwcrm_prefix.'supplier', 'type', '1', 'affiliate_marketing');
@@ -770,10 +773,10 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
         'active'            => 'EMPLOYEE_STATUS',
         'last_active'       => '',
         'register_date'     => '',
-        'require_reset'     => '1',
+        'require_reset'     => '',
         'last_reset_time'   => '',
         'reset_count'       => '',
-        'is_employee'       => '1',
+        'is_employee'       => '',
         'display_name'      => 'EMPLOYEE_DISPLAY_NAME',
         'first_name'        => 'EMPLOYEE_FIRST_NAME',
         'last_name'         => 'EMPLOYEE_LAST_NAME',
@@ -791,10 +794,15 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
         'based'             => 'EMPLOYEE_BASED',
         'notes'             => ''
         );
-    migrate_table_insert($db, $qwcrm_prefix.'user', $myitcrm_prefix.'TABLE_EMPLOYEE', $column_mappings);
+    migrate_table($db, $qwcrm_prefix.'user', $myitcrm_prefix.'TABLE_EMPLOYEE', $column_mappings);
     
+    // update require_reset - enabled for all
+    update_values($db, $qwcrm_prefix.'user', 'require_reset', '*', '1');
     
-    reset_all_passwords($db);  // or enable require reset code - is this not done already
+    // update is_employee - set all import users to employees
+    update_values($db, $qwcrm_prefix.'user', 'is_employee', '*', '1');
+    
+    //reset_all_passwords($db);  // or enable require reset code - is this not done already
     
     /* Workorder */
     
@@ -816,19 +824,19 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
         'comments'          => 'WORK_ORDER_COMMENT',
         'resolution'        => 'WORK_ORDER_RESOLUTION'           
         );   // WORK_ORDER_CURRENT_STATUS - WORK_ORDER_STATUS    
-    migrate_table_insert($db, $qwcrm_prefix.'workorder', $myitcrm_prefix.'TABLE_SUPPLIER', $column_mappings);
+    migrate_table($db, $qwcrm_prefix.'workorder', $myitcrm_prefix.'TABLE_WORK_ORDER', $column_mappings);
     
     // update status types
-    update_values($db, $qwcrm_prefix.'supplier', 'status', '1', 'unassigned');          // created
-    update_values($db, $qwcrm_prefix.'supplier', 'status', '2', 'assigned');            // assinged
-    update_values($db, $qwcrm_prefix.'supplier', 'status', '3', 'waiting_for_parts');   // waiting for parts
-    // update_values($db, $qwcrm_prefix.'supplier', 'status', '4', '');                 // n/a
-    // update_values($db, $qwcrm_prefix.'supplier', 'status', '5', '');                 // n/a
-    // update_values($db, $qwcrm_prefix.'supplier', 'status', '6', '');                 // closed
-    // update_values($db, $qwcrm_prefix.'supplier', 'status', '7', '');                 // awaiting payment
-    // update_values($db, $qwcrm_prefix.'supplier', 'status', '8', '');                 // payment made
-    update_values($db, $qwcrm_prefix.'supplier', 'status', '9', 'on_hold');             // pending
-    update_values($db, $qwcrm_prefix.'supplier', 'status', '10', 'unassigned');         // open
+    update_values($db, $qwcrm_prefix.'workorder', 'status', '1', 'unassigned');          // created
+    update_values($db, $qwcrm_prefix.'workorder', 'status', '2', 'assigned');            // assinged
+    update_values($db, $qwcrm_prefix.'workorder', 'status', '3', 'waiting_for_parts');   // waiting for parts
+    // update_values($db, $qwcrm_prefix.'workorder', 'status', '4', '');                 // n/a
+    // update_values($db, $qwcrm_prefix.'workorder', 'status', '5', '');                 // n/a
+    // update_values($db, $qwcrm_prefix.'workorder', 'status', '6', '');                 // closed
+    // update_values($db, $qwcrm_prefix.'workorder', 'status', '7', '');                 // awaiting payment
+    // update_values($db, $qwcrm_prefix.'workorder', 'status', '8', '');                 // payment made
+    update_values($db, $qwcrm_prefix.'workorder', 'status', '9', 'on_hold');             // pending
+    update_values($db, $qwcrm_prefix.'workorder', 'status', '10', 'unassigned');         // open
     
     // workorder_history
     $column_mappings = array(
@@ -838,7 +846,7 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
         'date'              => 'WORK_ORDER_STATUS_DATE',
         'note'              => 'WORK_ORDER_STATUS_NOTES'         
         ); 
-    migrate_table_insert($db, $qwcrm_prefix.'workorder_history', $myitcrm_prefix.'TABLE_WORK_ORDER_STATUS', $column_mappings);    
+    migrate_table($db, $qwcrm_prefix.'workorder_history', $myitcrm_prefix.'TABLE_WORK_ORDER_STATUS', $column_mappings);    
     
     // workorder_notes
     $column_mappings = array(
@@ -848,7 +856,7 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
         'date'              => 'WORK_ORDER_NOTES_DATE',
         'description'       => 'WORK_ORDER_NOTES_DESCRIPTION'         
         ); 
-    migrate_table_insert($db, $qwcrm_prefix.'workorder_notes', $myitcrm_prefix.'TABLE_WORK_ORDER_NOTES', $column_mappings); 
+    migrate_table($db, $qwcrm_prefix.'workorder_notes', $myitcrm_prefix.'TABLE_WORK_ORDER_NOTES', $column_mappings); 
 
     /* Final stuff */
 
@@ -900,31 +908,34 @@ function get_myitcrm_company_details($db, $item = null) {
 #   migrate data from myitcrm (insert method)  #    // build 1 SQL statement and then execute
 ################################################
 
-function migrate_table_insert($db, $qwcrm_table, $myitcrm_table, $column_mappings) {
+function migrate_table($db, $qwcrm_table, $myitcrm_table, $column_mappings) {
     
-    global $smarty;
-    global $executed_sql_results; 
+    global $executed_sql_results;
     
-    //         qwcrm         myitcrm
-    // array('username' => 'username')            
+    // Add division to seperate table migration function results
+    $executed_sql_results .= '<div>&nbsp;</div>';
     
-    /* load the records from MyITCRM */
+    $record = gettext("Beginning the migration of MyITCRM data into the QWcrm table").': `'.$qwcrm_table.'`';       
+                
+    // Result message
+    $executed_sql_results .= '<div><strong><span style="color: green">'.$record.'</span></strong></div>';
+    
+    // Log mesage to setup log                
+    write_record_to_setup_log('migrate', $record);        
+    
+   /* load the records from MyITCRM */
     
     $sql = "SELECT * FROM $myitcrm_table";
     
     if(!$rs = $db->execute($sql)) {
         
-        //force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to migrate a table."));
-        //exit;   
-        
-        $record = gettext("Error reading the MyITCRM table").' `'.$myitcrm_table.'` - '.$db->ErrorMsg();
+        $record = gettext("Error reading the MyITCRM table").' `'.$myitcrm_table.'` - SQL: '.$sql.' - SQL Error: '.$db->ErrorMsg();        
                 
         // Result message
         $executed_sql_results .= '<div><span style="color: red">'.$record.'</span></div>';
-        //$smarty->assign('executed_sql_results' ,$executed_sql_results);
-
+        
         // Log mesage to setup log                
-        write_record_to_setup_log($record, 'migrate');
+        write_record_to_setup_log('migrate', $record);
 
         // set error flag
         $error_flag = true; 
@@ -939,15 +950,18 @@ function migrate_table_insert($db, $qwcrm_table, $myitcrm_table, $column_mapping
         // Error Flag
         $error_flag = false;
         
-        while($record = $rs->fetchRow()) {            
-              
+        // Loop through the MyITCRM records (single record, single insert)
+        while(!$rs->EOF) {               
+                    
+            $myitcrm_record = $rs->GetRowAssoc();
+                    
             /* Build the 'INSERT' part of the SQL statement */
             
             $insert_sql = "INSERT INTO `$qwcrm_table` (";
-            foreach($column_mappings as $qwcrm_column) {
+            foreach($column_mappings as $qwcrm_column => $myitcrm_column) {
                 $insert_sql .= "`$qwcrm_column`, ";            
             }
-            rtrim($insert_sql, ', ');           // remove the last ', '        
+            $insert_sql = rtrim($insert_sql, ', ');           // remove the last ', '        
             $insert_sql .= ") VALUES" . "\n";
             
             /* Build 'VALUES' part of the SQL statement by mapping the MyITCRM record data to the QWcrm values */
@@ -956,77 +970,105 @@ function migrate_table_insert($db, $qwcrm_table, $myitcrm_table, $column_mapping
             foreach($column_mappings as $qwcrm_column => $myitcrm_column) {
                 
                 // Skip looking for data in MyITCRM record if there is no corresponding field
-                if($myitcrm_column == '') { continue; }
+                if($myitcrm_column == '') {
+                    $values_sql .= "'', ";
+                    continue;                    
+                }
                 
-                foreach($record as $record_myitcrm_column => $record_myitcrm_val) {
+                foreach($myitcrm_record as $myitcrm_record_column => $myitcrm_record_val) {
                     
-                    if($myitcrm_column == $record_myitcrm_column) {
-                        $values_sql .= "'$record_myitcrm_val', ";
+                    if($myitcrm_column == $myitcrm_record_column) {
+                        
+                        // if the value is null set it to '' - This is a fix specific to MyITCRM database becvause it is dirty
+                        if($myitcrm_record_val === null) { $myitcrm_record_val = ''; }
+                        
+                        //$values_sql .= "'$myitcrm_record_val', ";
+                        $values_sql .= $db->qstr($myitcrm_record_val).', ';
                         break;
+                        
                     }    
                 
-                }
-
-                // Close the 'VALUES' SQL statement
-                rtrim($values_sql, ', ');
-                $values_sql .= ");";            
+                }                         
             
             }
             
+            // Close the 'VALUES' SQL statement
+            $values_sql = rtrim($values_sql, ', ');
+            $values_sql .= ");";                
+                
             /* Build and execute statement */
         
             // combine the 'INSERT' and 'VALUES' sections
             $sql = $insert_sql.$values_sql;
 
             // insert the migrated record into qwcrm
-            if(!$rs = $db->execute($sql)) {  
+            if(!$db->execute($sql)) {  
                 
-                $record = gettext("Error migrating a MyITCRM record into QWcrm").' - '.$db->ErrorMsg();
+                /* Fail */
+                
+                $record = gettext("Error migrating a MyITCRM record into QWcrm");
                 
                 // Result message
-                $executed_sql_results .= '<div><span style="color: red">'.$record.'</span></div>';
-                //$smarty->assign('executed_sql_results' ,$executed_sql_results);
+                $executed_sql_results .= '<div><span style="color: red">'.$record.' - SQL Error: '.$db->ErrorMsg().'</span></div>';                
                 
                 // Log mesage to setup log                
-                write_record_to_setup_log($record, 'migrate');
+                write_record_to_setup_log('migrate', $record, $db->ErrorMsg(), $sql);
                 
                 // set error flag
                 $error_flag = true;            
                 
             } else {
+                
+                // if a successfull INSERT, NO LOGGINBG, otherwise log would be huge
+                
+                /* success  
              
-                // if successfully insert, do nothing otherwise log would be huge
-                continue;
+                $record = gettext("Successfully migrated a MyITCRM record into QWcrm");
+                
+                // Result message
+                $executed_sql_results .= '<div><span style="color: green">'.$record.'</span></div>';
+                                
+                // Log mesage to setup log                
+                write_record_to_setup_log('migrate', $record);
+               
+                */             
                 
             }
+            
+            // Advance the INSERT loop to the next record
+            $rs->MoveNext();
         
         }// EOF While Loop
         
         // if there has been an error
         if($error_flag) {
             
-            $record = gettext("Error migrating some records into QWcrm. See the logs.");
+            $record = gettext("Error migrating some records into QWcrm table").': `'.$qwcrm_table.'`';
                 
             // Result message
-            $executed_sql_results .= '<div><span style="color: red">'.$record.'</span></div>';
-            //$smarty->assign('executed_sql_results' ,$executed_sql_results);
+            $executed_sql_results .= '<div><strong><span style="color: red">'.$record.'</span></strong></div>';
+            
+            // Add division to seperate table migration function results
+            $executed_sql_results .= '<div>&nbsp;</div>';
 
             // Log mesage to setup log                
-            write_record_to_setup_log($record, 'migrate');
+            write_record_to_setup_log('migrate', $record);
                 
             return false;
         
         // if all ran successfully
         } else {
             
-            $record = gettext("Successfully migrated records into QWcrm.");
+            $record = gettext("Successfully migrated all records into QWcrm table").': `'.$qwcrm_table.'`';
                 
             // Result message
-            $executed_sql_results .= '<div><span style="color: green">'.$record.'</span></div>';
-            //$smarty->assign('executed_sql_results' ,$executed_sql_results);
+            $executed_sql_results .= '<div><strong><span style="color: green">'.$record.'</span></strong></div>';
+            
+            // Add division to seperate table migration function results
+            $executed_sql_results .= '<div>&nbsp;</div>';
 
             // Log mesage to setup log                
-            write_record_to_setup_log($record, 'migrate');
+            write_record_to_setup_log('migrate', $record);
             
             return true;
             
