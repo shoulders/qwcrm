@@ -20,7 +20,7 @@
                         </td>
                     </tr> 
                     <tr>
-                        {if !$failed}
+                        {if !$setup_error_flag}
                         <td colspan="2" style="text-align: center;">
                             <input type="hidden" name="stage" value="4">
                             <button class="olotd5" type="submit" name="submit" value="stage4">{t}Next{/t}</button>

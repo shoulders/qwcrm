@@ -44,7 +44,8 @@ defined('_QWEXEC') or die;
 
 function update_values($db, $table, $column, $current_value, $new_value) {
     
-    global $executed_sql_results; 
+    global $executed_sql_results;
+    global $setup_error_flag;
     
     $sql = "UPDATE $table SET
             $column         =". $db->qstr( $new_value )."                      
@@ -52,10 +53,14 @@ function update_values($db, $table, $column, $current_value, $new_value) {
 
     if(!$rs = $db->execute($sql)) { 
         
+        // Set the setup global error flag
+        $setup_error_flag = true;
+        
+        // Log message
         $record = gettext("Failed to update the value").' `'.$current_value.'` '.gettext("to").' `'.$new_value.'` '.gettext("in the columm").' `'.$column.'` '.gettext("from the table").' `'.$table.'` ';
 
-        // Result message
-        $executed_sql_results .= '<div><span style="color: red">'.$record.'</span></div>';        
+        // Output message via smarty
+        $executed_sql_results .= '<div style="color: red">'.$record.'</div>';        
         
         // Log mesage to setup log        
         write_record_to_setup_log('migrate', $record, $db->ErrorMsg(), $sql);
@@ -64,11 +69,12 @@ function update_values($db, $table, $column, $current_value, $new_value) {
         
     } else {
         
+        // Log message
         $record = gettext("Successfully updated the value").' `'.$current_value.'` '.gettext("to").' `'.$new_value.'` '.gettext("in the columm").' `'.$column.'` '.gettext("from the the table").' `'.$table.'` ';
-
-        // Result message
-        $executed_sql_results .= '<div><span style="color: green">'.$record.'</span></div>';
-               
+                
+        // Output message via smarty
+        $executed_sql_results .= '<div style="color: green">'.$record.'</div>';
+        
         // Log mesage to setup log        
         write_record_to_setup_log('install', $record);
         
@@ -89,7 +95,8 @@ function update_values($db, $table, $column, $current_value, $new_value) {
 
 function execute_sql_file($db, $sql_file) {
     
-    global $smarty;
+    global $executed_sql_results;
+    global $setup_error_flag;    
     
     // Load the SQL file into memory as string
     $sql_file = file_get_contents($sql_file);
@@ -109,12 +116,8 @@ function execute_sql_file($db, $sql_file) {
     // Error Flag
     $error_flag = false;
     
-    // Open results container
-    $executed_sql_results .= '<div>';
-    
     // Loop through preg_match() result
-    foreach ($sql_statements['0'] as $sql)
-    {
+    foreach ($sql_statements['0'] as $sql) {       
         
         // Get rule name for output
         preg_match('/(^SET.*$|^.*`.*`)/U', $sql, $query_name);
@@ -122,71 +125,61 @@ function execute_sql_file($db, $sql_file) {
        // Perform the query
         if(!$rs = $db->Execute($sql)) {
             
-            // Start result message
-            $executed_sql_results .= '<span style="color: red">';
-                        
-            // Log mesage to setup log
+            // Set the setup global error flag
+            $setup_error_flag = true;
+            
+            // Set the local error flag
+            $error_flag = true;
+            
+            // Log message
             $record = gettext("Error performing SQL query").' : '. $query_name['0'];
+            
+            // Output message via smarty
+            $executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+            
+            // Log mesage to setup log            
             write_record_to_setup_log('install', $record, $db->ErrorMsg(), $sql);
             
-            // Finish result message
-            $executed_sql_results .= $record;
-            $executed_sql_results .= '</span><br />';
-            $error_flag = true;
             
         } else {
             
-            // Start result message
-            $executed_sql_results .= '<span style="color: green">';
+            // Log message
+            $record = gettext("Performed SQL query successfully").' : '. $query_name['0'];
+            
+            // Output message via smarty
+            $executed_sql_results .= '<div style="color: green">'.$record.'</div>';
             
             // Log mesage to setup log            
-            $record = gettext("Performed SQL query successfully").' : '. $query_name['0'];
             write_record_to_setup_log('install', $record);
-            
-            // Finish result message
-            $executed_sql_results .= $record;
-            $executed_sql_results .= '</span><br />';
 
         }
 
     }
-    
-    // Close results container
-    $executed_sql_results .= '</div>';
-    
+
+    // Closing result statement
     if($error_flag) {
         
-        // Start final message
-        $executed_sql_results .= '<br><div style="color: red;">';
-        
-        // Log mesage to setup log
+        // Log message
         $record = gettext("One or more SQL rule has failed. Check the logs.");
-        write_record_to_setup_log('install', $record);
-        
-        // Finish result message
-        $executed_sql_results .= $record;
-        $executed_sql_results .= '</div>';
         
         // Output message via smarty
-        $smarty->assign('executed_sql_results', $executed_sql_results);
+        $executed_sql_results .= '<div style="color: red;"><strong>'.$record.'</strong></div>';
+        
+        // Log mesage to setup log        
+        write_record_to_setup_log('install', $record);
         
         return false;
         
     } else {
         
-        // Start final message
-        $executed_sql_results .= '<br><div style="color: green;">';
-                
-        // Log mesage to setup log
+        // Log message
         $record = gettext("All SQL rules have run successfully.");
-        write_record_to_setup_log('install', $record);
-        
-        // Finish result message
-        $executed_sql_results .= $record;
-        $executed_sql_results .= '</div>';
         
         // Output message via smarty
-        $smarty->assign('executed_sql_results', $executed_sql_results);
+        $executed_sql_results .= '<div style="color: green;"><strong>'.$record.'</strong></div>';
+        
+        // Log mesage to setup log        
+        write_record_to_setup_log('install', $record);
         
         return true;
         
@@ -202,7 +195,7 @@ function execute_sql_file($db, $sql_file) {
 
 function execute_sql_file_lines($db, $sql_file) {
     
-    global $smarty;
+    global $setup_error_flag;    
     
     // Temporary variable, used to store current query
     $sql = '';
@@ -212,9 +205,6 @@ function execute_sql_file_lines($db, $sql_file) {
     
     // Error Flag
     $error_flag = false;
-    
-    // Open results container
-    $executed_sql_results .= '<div>';    
     
     // Loop through each line  - file() loads each line in one by one
     foreach ($lines as $line)
@@ -244,30 +234,31 @@ function execute_sql_file_lines($db, $sql_file) {
             // Perform the query
             if(!$rs = $db->Execute($sql)) {
 
-                // Start result message
-                $executed_sql_results .= '<span style="color: red">';
-
-                // Log mesage to setup log
-                $record = gettext("Error performing SQL query").' : '. $query_name['0'];
-                write_record_to_setup_log('upgrade', $record, $db->ErrorMsg(), $sql);
-
-                // Finish result message
-                $executed_sql_results .= $record;
-                $executed_sql_results .= '</span><br />';
+                // Set the setup global error flag
+                $setup_error_flag = true;
+            
+                // Set the local error flag
                 $error_flag = true;
+
+                // Log message
+                $record = gettext("Error performing SQL query").' : '. $query_name['0'];
+                
+                // Output message via smarty
+                $executed_sql_results .= '<div style="color: red">'.$record.'</div>'; 
+
+                // Log mesage to setup log                
+                write_record_to_setup_log('upgrade', $record, $db->ErrorMsg(), $sql);                              
 
             } else {
 
-                // Start result message
-                $executed_sql_results .= '<span style="color: green">';
-
-                // Log mesage to setup log            
+                // Log message
                 $record = gettext("Performed SQL query successfully").' : '. $query_name['0'];
-                write_record_to_setup_log('upgrade', $record);
 
-                // Finish result message
-                $executed_sql_results .= $record;
-                $executed_sql_results .= '</span><br />';
+                // Output message via smarty
+                $executed_sql_results .= '<div style="color: green">'.$record.'</div>';
+                
+                // Log mesage to setup log                
+                write_record_to_setup_log('upgrade', $record);
 
             }            
                         
@@ -278,42 +269,30 @@ function execute_sql_file_lines($db, $sql_file) {
         
     } 
     
-    // Close results container
-    $executed_sql_results .= '</div>';
-
+    // Closing result statement
     if($error_flag) {
 
-        // Start final message
-        $executed_sql_results .= '<br><div style="color: red;">';
-        
-        // Log mesage to setup log
+        // Log message
         $record = gettext("One or more SQL rule has failed. Check the logs.");
-        write_record_to_setup_log('upgrade', $record);
-        
-        // Finish result message
-        $executed_sql_results .= $record;
-        $executed_sql_results .= '</div>';
-        
+                
         // Output message via smarty
-        $smarty->assign('executed_sql_results', $executed_sql_results);
+        $executed_sql_results .= '<div style="color: red;">'.$record.'</div>';
+        
+        // Log mesage to setup log        
+        write_record_to_setup_log('upgrade', $record);
         
         return false;
 
     } else {
 
-        // Start final message
-        $executed_sql_results .= '<br><div style="color: green;">';
-                
-        // Log mesage to setup log
+        // Log message
         $record = gettext("All SQL rules have run successfully.");
-        write_record_to_setup_log('upgrade', $record);
-        
-        // Finish result message
-        $executed_sql_results .= $record;
-        $executed_sql_results .= '</div>';
-        
+                
         // Output message via smarty
-        $smarty->assign('executed_sql_results', $executed_sql_results);
+        $executed_sql_results .= '<div style="color: green;">'.$record.'</div>';
+        
+        // Log mesage to setup log        
+        write_record_to_setup_log('upgrade', $record);
         
         return true;
 
@@ -454,9 +433,61 @@ function set_invoice_start_number($db, $start_number) {
 #   Install database                       # // this imports a phpMyAdmin .sql exported file (preg_match method)
 ############################################
 
-function install_database($db) {    
+function install_database($db) {
     
-    return execute_sql_file($db, SETUP_DIR.'install/install.sql');
+    global $executed_sql_results;
+    global $setup_error_flag;
+    global $smarty;
+    
+    execute_sql_file($db, SETUP_DIR.'install/install.sql');
+    
+    /* Final stuff */
+    
+    // Final statement
+    if($setup_error_flag) {
+        
+        // Setup error flag uses in smarty templates
+        $smarty->assign('setup_error_flag', true);
+        
+        // Log message
+        $record = gettext("The database installation process failed, check the logs.");
+        
+        // Output message via smarty
+        $executed_sql_results .= '<div>&nbsp;</div>';
+        $executed_sql_results .= '<div style="color: red;"><strong>'.$record.'</strong></div>';
+        
+        // Log mesage to setup log        
+        write_record_to_setup_log('install', $record);
+        
+    } else {
+        
+        // Log message
+        $record = gettext("The database installation process was successful. You can now use QWcrm.");
+        
+        // Output message via smarty
+        $executed_sql_results .= '<div>&nbsp;</div>';
+        $executed_sql_results .= '<div style="color: green;"><strong>'.$record.'</strong></div>';
+        
+        // Log mesage to setup log        
+        write_record_to_setup_log('install', $record);
+        
+    } 
+    
+    // Output Execution results to the screen
+    $smarty->assign('executed_sql_results' ,$executed_sql_results);
+
+    // return reflecting the installation status
+    if($setup_error_flag) {
+        
+        // installation failed
+        return false;
+        
+    } else {
+        
+        // installation successful
+        return true;
+        
+    }
    
 }
 
@@ -470,12 +501,10 @@ function install_database($db) {
 
 function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
     
+    global $executed_sql_results;
+    global $setup_error_flag;
     global $smarty;
-    global $executed_sql_results;   
     
-    //migrate_table($db, $qwcrm_prefix, $qwcrm_table, $myitcrm_prefix, $myitcrm_table, $column_mappings)
-    // array('username' => 'username')   
-        
     /* Customer */
     
     // customer
@@ -860,9 +889,51 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
 
     /* Final stuff */
 
+    // Final statement
+    if($setup_error_flag) {
+        
+        // Setup error flag uses in smarty templates
+        $smarty->assign('setup_error_flag', true);
+        
+        // Log message
+        $record = gettext("The database migration process failed, check the logs.");
+        
+        // Output message via smarty
+        $executed_sql_results .= '<div>&nbsp;</div>';
+        $executed_sql_results .= '<div style="color: red;"><strong>'.$record.'</strong></div>';
+        
+        // Log mesage to setup log        
+        write_record_to_setup_log('migrate', $record);
+        
+    } else {
+        
+        // Log message
+        $record = gettext("The database migration process was successful. You can now use QWcrm.");
+        
+        // Output message via smarty
+        $executed_sql_results .= '<div>&nbsp;</div>';
+        $executed_sql_results .= '<div style="color: green;"><strong>'.$record.'</strong></div>';
+        
+        // Log mesage to setup log        
+        write_record_to_setup_log('migrate', $record);
+        
+    } 
+    
+    // Output Execution results to the screen
     $smarty->assign('executed_sql_results' ,$executed_sql_results);
 
-    return;
+    // return reflecting the installation status
+    if($setup_error_flag) {
+        
+        // Migration Failed
+        return false;
+        
+    } else {
+        
+        // migration Successful
+        return true;
+        
+    }
     
 }
 
@@ -915,6 +986,7 @@ function migrate_table($db, $qwcrm_table, $myitcrm_table, $column_mappings) {
     // Add division to seperate table migration function results
     $executed_sql_results .= '<div>&nbsp;</div>';
     
+    // Log message
     $record = gettext("Beginning the migration of MyITCRM data into the QWcrm table").': `'.$qwcrm_table.'`';       
                 
     // Result message
@@ -929,16 +1001,17 @@ function migrate_table($db, $qwcrm_table, $myitcrm_table, $column_mappings) {
     
     if(!$rs = $db->execute($sql)) {
         
+        // set error flag
+        $error_flag = true; 
+        
+        // Log message
         $record = gettext("Error reading the MyITCRM table").' `'.$myitcrm_table.'` - SQL: '.$sql.' - SQL Error: '.$db->ErrorMsg();        
                 
         // Result message
         $executed_sql_results .= '<div><span style="color: red">'.$record.'</span></div>';
         
         // Log mesage to setup log                
-        write_record_to_setup_log('migrate', $record);
-
-        // set error flag
-        $error_flag = true; 
+        write_record_to_setup_log('migrate', $record);        
                 
         // output error, could not load table so all of this table was skipped
         return false;
@@ -946,6 +1019,11 @@ function migrate_table($db, $qwcrm_table, $myitcrm_table, $column_mappings) {
     } else {
         
         /* Load each single records and insert into QWcrm */ 
+        
+        // Record counters
+        $records_processed  = 0;
+        $records_failed     = 0;
+        $records_successful = 0;
         
         // Error Flag
         $error_flag = false;
@@ -1006,23 +1084,33 @@ function migrate_table($db, $qwcrm_table, $myitcrm_table, $column_mappings) {
                 
                 /* Fail */
                 
+                // set error flag
+                $error_flag = true;
+                
+                // Advance the records_failed counter
+                ++$records_failed;
+                
+                // Log message
                 $record = gettext("Error migrating a MyITCRM record into QWcrm");
                 
                 // Result message
                 $executed_sql_results .= '<div><span style="color: red">'.$record.' - SQL Error: '.$db->ErrorMsg().'</span></div>';                
                 
                 // Log mesage to setup log                
-                write_record_to_setup_log('migrate', $record, $db->ErrorMsg(), $sql);
+                write_record_to_setup_log('migrate', $record, $db->ErrorMsg(), $sql);                
                 
-                // set error flag
-                $error_flag = true;            
+                
                 
             } else {
+                 
+                // Advance the records_successful counter
+                ++$records_successful;
                 
-                // if a successfull INSERT, NO LOGGINBG, otherwise log would be huge
+                // NO logging, otherwise log file would be huge
                 
                 /* success  
              
+                // Log message
                 $record = gettext("Successfully migrated a MyITCRM record into QWcrm");
                 
                 // Result message
@@ -1031,18 +1119,27 @@ function migrate_table($db, $qwcrm_table, $myitcrm_table, $column_mappings) {
                 // Log mesage to setup log                
                 write_record_to_setup_log('migrate', $record);
                
-                */             
+                */                
                 
             }
             
-            // Advance the INSERT loop to the next record
+            // Advance the records_processed counter
+            ++$records_processed;
+            
+            // Advance the INSERT loop to the next record            
             $rs->MoveNext();
         
         }// EOF While Loop
         
+        // Output Record counters        
+        $executed_sql_results .= '<div><strong><span style="color: blue">'.gettext("MyITCRM Records Processed").': '.'</span></strong></div>';
+        $executed_sql_results .= '<div><strong><span style="color: red">'.gettext("Records Failed To Migrate").': '.'</span></strong></div>';
+        $executed_sql_results .= '<div><strong><span style="color: green">'.gettext("Records Successfuly Migrated").': '.'</span></strong></div>';        
+        
         // if there has been an error
         if($error_flag) {
             
+            // Log message
             $record = gettext("Error migrating some records into QWcrm table").': `'.$qwcrm_table.'`';
                 
             // Result message
@@ -1059,6 +1156,7 @@ function migrate_table($db, $qwcrm_table, $myitcrm_table, $column_mappings) {
         // if all ran successfully
         } else {
             
+            // Log message
             $record = gettext("Successfully migrated all records into QWcrm table").': `'.$qwcrm_table.'`';
                 
             // Result message

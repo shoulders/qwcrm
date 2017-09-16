@@ -126,7 +126,7 @@ if($VAR['stage'] == '3') {
         if(install_database($db)) {
             
             $record = gettext("The database installed successfully.");
-            write_record_to_setup_log('migrate', $record);
+            //write_record_to_setup_log('migrate', $record);
             $smarty->assign('information_msg', $record);            
             $VAR['stage'] = '4';            
         
@@ -134,9 +134,9 @@ if($VAR['stage'] == '3') {
         } else {            
               
            $record = gettext("The database failed to install.");           
-           write_record_to_setup_log('migrate', $record);           
+           //write_record_to_setup_log('migrate', $record);           
            $smarty->assign('warning_msg', $record);
-           $smarty->assign('failed', true);
+           //$smarty->assign('failed', true);
            $VAR['stage'] = '4';
            
         }
@@ -206,8 +206,7 @@ if($VAR['stage'] == '6') {
               
            $record = gettext("The MyITCRM database failed to migrate successfully.");           
            write_record_to_setup_log('migrate', $record);           
-           $smarty->assign('warning_msg', $record);
-           $smarty->assign('failed', true);
+           $smarty->assign('warning_msg', $record);           
            $VAR['stage'] = '7';
            
         }

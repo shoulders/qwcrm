@@ -92,16 +92,16 @@ if($VAR['stage'] == '3') {
             
             $record = gettext("The database installed successfully.");
             write_record_to_setup_log('install', $record);
-            $smarty->assign('information_msg', $record);            
+            //$smarty->assign('information_msg', $record);            
             $VAR['stage'] = '4';            
         
         // load the page with the error message      
         } else {            
               
            $record = gettext("The database failed to install.");           
-           write_record_to_setup_log('install', $record);           
+           //write_record_to_setup_log('install', $record);           
            $smarty->assign('warning_msg', $record);
-           $smarty->assign('failed', true);
+           //$smarty->assign('failed', true);
            $VAR['stage'] = '4';
            
         }
