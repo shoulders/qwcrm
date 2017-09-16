@@ -228,6 +228,9 @@
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Send Test Mail{/t}</strong></div><hr><div>{t escape=tooltip}You must save your changes before using this as the test uses the saved settings not those on the page.<br><br>The email will be sent to the logged in user\'s email address{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
+                    
+                    <!-- Secret Key (Generated at the server) -->                    
+                    <input type="hidden" name="secret_key" value="">                                         
 
                     <!-- Security -->
 
@@ -288,6 +291,10 @@
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Session Handler{/t}</strong></div><hr><div>{t escape=tooltip}The mechanism by which QWcrm identifies a User once they are connected to the website using non-persistent cookies. None/PHP is susceptible to garbage collection usually every 1440 seconds which means that inactive users after 1440 will be logged out and can loose data. The PHP garbage collection time is set by the server in php.ini by several settings, but the main one is \'session.gc_maxlifetime = 1440\'. {/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
+                    
+                    <!-- Session Name (Generated at the server) -->
+                    <input type="hidden" name="session_name" value="">
+                    
                     <tr>
                         <td align="right"><b>{t}Session Lifetime{/t}</b> <span style="color: #ff0000">*</span></td>
                         <td>
@@ -564,7 +571,7 @@
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Caching{/t}</strong></div><hr><div>{t escape=tooltip}This tells Smarty whether or not to cache the output of the templates to the Cache Directory. This is untested with QWcrm.<hr>A value of Smarty::CACHING_LIFETIME_CURRENT tells Smarty to use the current $cache_lifetime variable to determine if the cache has expired.<br><br>A value of Smarty::CACHING_LIFETIME_SAVED tells Smarty to use the $cache_lifetime value at the time the cache was generated. This way you can set the $cache_lifetime just before fetching the template to have granular control over when that particular cache expires.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>*}                    
-                    <input type="hidden" name="smarty_cache_lifetime" value="0">
+                    <input type="hidden" name="smarty_cache_lifetime" value="3600">
                     {*<tr>
                         <td align="right"><b>{t}Cache Lifetime{/t}</b> <span style="color: #ff0000">*</span></td>
                         <td>

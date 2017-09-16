@@ -92,6 +92,11 @@ if($VAR['stage'] == '2') {
     
     // submit the config settings and load the next page
     if($VAR['submit'] == 'stage2') {
+        
+        // correct missing secret varibles
+        $VAR['session_name']        = JUserHelper::genRandomPassword(16);
+        $VAR['secret_key']          = JUserHelper::genRandomPassword(32);
+        
         submit_qwcrm_config_settings($VAR);
         write_record_to_setup_log('migrate', gettext("Config settings have been added to the config file."));
         $VAR['stage'] = '3';
@@ -100,10 +105,12 @@ if($VAR['stage'] == '2') {
     } else {
         
         // Set mandatory default values
-        if($VAR['google_server'] == '')         { $VAR['google_server'] = 'https://www.google.com/'; }
-        if($VAR['session_lifetime'] == '')      { $VAR['session_lifetime'] = '15'; }
-        if($VAR['cookie_lifetime'] == '')       { $VAR['cookie_lifetime'] = '60'; }
-        if($VAR['cookie_token_length'] == '')   { $VAR['cookie_token_length'] = '16'; }
+        $VAR['theme_name']          = 'default';
+        $VAR['google_server']       = 'https://www.google.com/';
+        $VAR['session_lifetime']    = '15';
+        $VAR['cookie_lifetime']     = '60';
+        $VAR['cookie_token_length'] = '16';
+        $VAR['db_prefix']           = generate_database_prefix();
         
         // Prefill databse prefix with a random value
         $VAR['db_prefix'] = generate_database_prefix($VAR['myitcrm_prefix']);
@@ -157,6 +164,10 @@ if($VAR['stage'] == '4') {
     
     // load the page  
     } else {
+        
+        // Output Execution results to the screen
+        global $executed_sql_results;
+        $smarty->assign('executed_sql_results' ,$executed_sql_results);        
         $smarty->assign('stage', '4');
     }
     
@@ -223,10 +234,19 @@ if($VAR['stage'] == '7') {
 
     // load the next page
     if($VAR['submit'] == 'stage7') {
-        $VAR['stage'] = '8';    
+        
+        //$VAR['stage'] = '8';
+        
+        force_page('user', 'login', 'setup=finished&information_msg='.gettext("Migration successful. Please login with your administrator account."), 'get');        
+        exit;
+          
     
     // load the page  
     } else {
+        
+        // Output Execution results to the screen
+        global $executed_sql_results;
+        $smarty->assign('executed_sql_results' ,$executed_sql_results);        
         $smarty->assign('stage', '7');
     }
     

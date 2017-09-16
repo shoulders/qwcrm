@@ -57,6 +57,11 @@ if($VAR['stage'] == '2') {
     
     // submit the config settings and load the next page
     if($VAR['submit'] == 'stage2') {
+                 
+        // correct missing secret varibles
+        $VAR['session_name']        = JUserHelper::genRandomPassword(16);
+        $VAR['secret_key']          = JUserHelper::genRandomPassword(32);
+        
         submit_qwcrm_config_settings($VAR);
         write_record_to_setup_log('install', gettext("Config settings have been added to the config file."));
         $VAR['stage'] = '3';
@@ -64,14 +69,13 @@ if($VAR['stage'] == '2') {
     // load the page
     } else {
         
-        // Set mandatory default values
-        if($VAR['google_server'] == '')         { $VAR['google_server'] = 'https://www.google.com/'; }
-        if($VAR['session_lifetime'] == '')      { $VAR['session_lifetime'] = '15'; }
-        if($VAR['cookie_lifetime'] == '')       { $VAR['cookie_lifetime'] = '60'; }
-        if($VAR['cookie_token_length'] == '')   { $VAR['cookie_token_length'] = '16'; }
-        
-        // Prefill databse prefix with a random value
-        $VAR['db_prefix'] = generate_database_prefix();
+        // Set mandatory default values               
+        $VAR['theme_name']          = 'default';
+        $VAR['google_server']       = 'https://www.google.com/';
+        $VAR['session_lifetime']    = '15';
+        $VAR['cookie_lifetime']     = '60';
+        $VAR['cookie_token_length'] = '16';
+        $VAR['db_prefix']           = generate_database_prefix();
     
         $smarty->assign('qwcrm_config', $VAR);        
         $smarty->assign('stage', '2');
@@ -84,7 +88,7 @@ if($VAR['stage'] == '2') {
 if($VAR['stage'] == '3') {    
     
     if($VAR['submit'] == 'stage3') {
-        
+       
         write_record_to_setup_log('install', gettext("Starting Database installation."));
         
         // install the database file and load the next page
@@ -92,19 +96,18 @@ if($VAR['stage'] == '3') {
             
             $record = gettext("The database installed successfully.");
             write_record_to_setup_log('install', $record);
-            //$smarty->assign('information_msg', $record);            
+            $smarty->assign('information_msg', $record);            
             $VAR['stage'] = '4';            
         
         // load the page with the error message      
         } else {            
               
            $record = gettext("The database failed to install.");           
-           //write_record_to_setup_log('install', $record);           
-           $smarty->assign('warning_msg', $record);
-           //$smarty->assign('failed', true);
+           write_record_to_setup_log('install', $record);           
+           $smarty->assign('warning_msg', $record);           
            $VAR['stage'] = '4';
            
-        }
+        }        
     
     // load the page
     } else {
@@ -114,7 +117,7 @@ if($VAR['stage'] == '3') {
 }
 
 // Stage 4 - Database Installation Results
-if($VAR['stage'] == '4') {    
+if($VAR['stage'] == '4') { 
 
     // load the next page
     if($VAR['submit'] == 'stage4') {
@@ -122,6 +125,10 @@ if($VAR['stage'] == '4') {
     
     // load the page  
     } else {
+        
+        // Output Execution results to the screen
+        global $executed_sql_results;
+        $smarty->assign('executed_sql_results' ,$executed_sql_results);        
         $smarty->assign('stage', '4');
     }
     

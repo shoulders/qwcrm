@@ -553,7 +553,6 @@ class QFactory {
      */
     public static function getHash($seed)
     {        
-        //return md5($this->config->get('secret_key') . $seed);
         return md5(self::getConfig()->get('secret_key') . $seed);
     }      
       

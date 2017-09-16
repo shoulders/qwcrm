@@ -113,9 +113,6 @@ function execute_sql_file($db, $sql_file) {
     // Psrse the SQL commands
     preg_match_all('/^[A-Z].*;\n/msU', $sql_file, $sql_statements);
     
-    // Error Flag
-    $error_flag = false;
-    
     // Loop through preg_match() result
     foreach ($sql_statements['0'] as $sql) {       
         
@@ -195,6 +192,7 @@ function execute_sql_file($db, $sql_file) {
 
 function execute_sql_file_lines($db, $sql_file) {
     
+    global $executed_sql_results;
     global $setup_error_flag;    
     
     // Temporary variable, used to store current query
@@ -202,9 +200,6 @@ function execute_sql_file_lines($db, $sql_file) {
     
     // Read in entire file (will be line by because of below)
     $lines = file($sql_file);
-    
-    // Error Flag
-    $error_flag = false;
     
     // Loop through each line  - file() loads each line in one by one
     foreach ($lines as $line)
@@ -439,15 +434,13 @@ function install_database($db) {
     global $setup_error_flag;
     global $smarty;
     
+    // Run the install.sql
     execute_sql_file($db, SETUP_DIR.'install/install.sql');
     
     /* Final stuff */
     
     // Final statement
     if($setup_error_flag) {
-        
-        // Setup error flag uses in smarty templates
-        $smarty->assign('setup_error_flag', true);
         
         // Log message
         $record = gettext("The database installation process failed, check the logs.");
@@ -462,7 +455,7 @@ function install_database($db) {
     } else {
         
         // Log message
-        $record = gettext("The database installation process was successful. You can now use QWcrm.");
+        $record = gettext("The database installation process was successful.");
         
         // Output message via smarty
         $executed_sql_results .= '<div>&nbsp;</div>';
@@ -471,20 +464,23 @@ function install_database($db) {
         // Log mesage to setup log        
         write_record_to_setup_log('install', $record);
         
-    } 
-    
-    // Output Execution results to the screen
-    $smarty->assign('executed_sql_results' ,$executed_sql_results);
+    }    
 
-    // return reflecting the installation status
+    // Return reflecting the installation status
     if($setup_error_flag) {
         
-        // installation failed
+        /* installation failed */
+        
+        // Set setup_error_flag used in smarty templates
+        $smarty->assign('setup_error_flag', true);
+        
+        
         return false;
         
     } else {
         
-        // installation successful
+        /* installation successful */
+        
         return true;
         
     }
@@ -919,18 +915,20 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
         
     } 
     
-    // Output Execution results to the screen
-    $smarty->assign('executed_sql_results' ,$executed_sql_results);
-
     // return reflecting the installation status
     if($setup_error_flag) {
         
-        // Migration Failed
+        /* Migration Failed */
+        
+        // Set setup_error_flag used in smarty templates
+        $smarty->assign('setup_error_flag', true);        
+        
         return false;
         
     } else {
         
-        // migration Successful
+        /* migration Successful */
+        
         return true;
         
     }
@@ -1132,9 +1130,9 @@ function migrate_table($db, $qwcrm_table, $myitcrm_table, $column_mappings) {
         }// EOF While Loop
         
         // Output Record counters        
-        $executed_sql_results .= '<div><strong><span style="color: blue">'.gettext("MyITCRM Records Processed").': '.'</span></strong></div>';
-        $executed_sql_results .= '<div><strong><span style="color: red">'.gettext("Records Failed To Migrate").': '.'</span></strong></div>';
-        $executed_sql_results .= '<div><strong><span style="color: green">'.gettext("Records Successfuly Migrated").': '.'</span></strong></div>';        
+        $executed_sql_results .= '<div><strong><span style="color: blue">'.gettext("MyITCRM Records Processed").': '.$records_processed.'</span></strong></div>';
+        $executed_sql_results .= '<div><strong><span style="color: red">'.gettext("Records Failed To Migrate").': '.$records_failed.'</span></strong></div>';
+        $executed_sql_results .= '<div><strong><span style="color: green">'.gettext("Records Successfuly Migrated").': '.$records_successful.'</span></strong></div>';        
         
         // if there has been an error
         if($error_flag) {
