@@ -18,19 +18,21 @@
                         <td style="text-align: center;">
                             {$executed_sql_results}
                         </td>
-                    </tr> 
-                    <tr>
-                        {if !$setup_error_flag}
-                        <td colspan="2" style="text-align: center;">
-                            <input type="hidden" name="stage" value="4">
-                            <button class="olotd5" type="submit" name="submit" value="stage4">{t}Next{/t}</button>
-                        </td>
-                        {else}
-                        <td colspan="2" style="text-align: center;">
-                            <strong><span style="color: red">{t}You cannot continue because there was a fault with the database installation.{/t}</span></strong>
-                        </td>
-                        {/if}
-                    </tr>
+                    </tr>                    
+                    {if !$setup_error_flag}
+                        <tr>
+                            <td colspan="2" style="text-align: center;">
+                                <input type="hidden" name="stage" value="4">
+                                <button class="olotd5" type="submit" name="submit" value="stage4">{t}Next{/t}</button>
+                            </td>
+                        </tr>
+                    {else}
+                        <tr>
+                            <td colspan="2" style="text-align: center;">
+                                <strong><span style="color: red">{t}You cannot continue because there was a fault with the database installation.{/t}</span></strong>
+                            </td>
+                        </tr>
+                    {/if}                    
                 </table>
             </td>
         </tr>

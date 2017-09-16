@@ -9,7 +9,9 @@
 defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'modules/customer.php');
+require(INCLUDES_DIR.'modules/invoice.php'); // require to stop email sub-system error
 require(INCLUDES_DIR.'modules/user.php');
+require(INCLUDES_DIR.'modules/workorder.php');
 
 // Delete any expired resets (CRON is better)
 delete_expired_reset_codes($db);
@@ -75,11 +77,6 @@ if(!isset($VAR['submit']) && !isset($VAR['email']) && !isset($VAR['token']) && !
         
 // STAGE 3 - Enter Token
 } elseif(!isset($VAR['submit']) && isset($VAR['token']) && $VAR['token'] != '') {    
-    
-    // Prevent direct access to this page
-    if(!check_page_accessed_via_qwcrm('user:reset')) {
-        die(gettext("No Direct Access Allowed."));
-    }     
     
     // Load the enter_token page
     $smarty->assign('token', $VAR['token']);
@@ -154,17 +151,18 @@ if(!isset($VAR['submit']) && !isset($VAR['email']) && !isset($VAR['token']) && !
         // Get the user_id by the reset_code
         $user_id = get_user_id_by_reset_code($db, $VAR['reset_code']);
 
-        // Reset the password
-        reset_user_password($db, $user_id, $VAR['password']);
-
         // Delete reset_code for this user
         delete_user_reset_code($db, $user_id);
         
-        // Log the user out silently
+        // Reset the password
+        reset_user_password($db, $user_id, $VAR['password']);
+
+        // Logout the user out silently (if logged in)
         logout(true);
 
         // Redirect to login page with success or failed mess
         force_page('user', 'login', 'information_msg='.gettext("Password reset successfully."));
+        exit;
         
     }
     

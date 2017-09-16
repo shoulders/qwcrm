@@ -692,7 +692,10 @@ function is_user_active($db, $user_id) {
 #    reset a user's password        #    
 #####################################
 
-function reset_user_password($db, $user_id, $password) { 
+function reset_user_password($db, $user_id, $password = null) { 
+    
+    // if no password supplied generate a random one
+    if($password == null) { $password = JUserHelper::genRandomPassword(16); }
     
     $sql = "UPDATE ".PRFX."user SET
             password        =". $db->qstr( JUserHelper::hashPassword($password) ).",
@@ -714,6 +717,40 @@ function reset_user_password($db, $user_id, $password) {
         if(get_user_details($db, $user_id, 'customer_id')) {
             update_customer_last_active($db, get_user_details($db, $user_id, 'customer_id'));
         }
+        
+        return;
+        
+    }      
+    
+}
+
+#####################################
+#    reset all user's passwords     #   // used for migrations or security
+#####################################
+
+function reset_all_user_passwords($db) { 
+    
+    $sql = "SELECT user_id FROM ".PRFX."user";
+    
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to read all users from the database."));
+        exit;
+        
+    } else {
+        
+        // Loop through all users
+        while(!$rs->EOF) { 
+            
+            // Reset User's password
+            reset_user_password($db, $rs->fields['user_id']);
+            
+            // Advance the INSERT loop to the next record            
+            $rs->MoveNext();            
+            
+        }
+        
+        // Log activity        
+        write_record_to_activity_log(gettext("All User Account passwords have been reset."));
         
         return;
         
@@ -747,9 +784,10 @@ function login($VAR, $credentials, $options = array())
     if(get_user_details($db, get_user_id_by_username($db, $VAR['login_username']), 'require_reset')) {
         
         // Set error message
-        $smarty->assign('warning_msg', 'warning_msg', gettext("You must reset your password before you are allowed to login."));
+        $smarty->assign('warning_msg', gettext("You must reset your password before you are allowed to login."));
         
         return false;
+        
     }
     
     // If user is blocked - QFramework returns True for a blocked user, but does blocks it.
@@ -821,20 +859,22 @@ function logout($silent = null)
         update_customer_last_active($db, $user->login_customer_id);
     }
 
-    // Reload Homepage
+    // Action after logout
     if($silent) {
         
-        // Without message
-        force_page('index.php');
-        exit;
+        // No message or redirect
         
+        return;        
+   
     } else {
         
-        // With message - only $_GET will work because the session store is destroyed (this is good behaviour)
+        // Reload Homepage with message (default)
+        
+        // only $_GET will work because the session store is destroyed (this is good behaviour)
         force_page('index.php?information_msg='.gettext("Logout successful."));
         exit;
         
-    }    
+    }
 
 } 
 
@@ -1049,19 +1089,19 @@ function validate_reset_token($db, $token) {
         
         // Check there is only 1 record
         if($rs->RecordCount() != 1) {
-            $smarty->assign('warning_msg', 'The reset token does not exist.');
+            $smarty->assign('warning_msg', gettext("The reset token does not exist."));
             return false;
         }
         
         // check if user is block
         if(!is_user_active($db, $rs->fields['user_id'])){
-            $smarty->assign('warning_msg', 'The user is blocked.');
+            $smarty->assign('warning_msg', gettext("The user is blocked."));
             return false;
         }
         
         // Check not expired
         if($rs->fields['expiry_time'] < time()){
-            $smarty->assign('warning_msg', 'The reset token has expired.');
+            $smarty->assign('warning_msg', gettext("The reset token has expired."));
             return false;
         }
         
@@ -1075,7 +1115,7 @@ function validate_reset_token($db, $token) {
 }
 
 #########################################################
-#    validate reset code - submitted with password form #
+#   validate reset code - submitted with password form  #
 #########################################################
 
 function validate_reset_code($db, $reset_code) {

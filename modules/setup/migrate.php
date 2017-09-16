@@ -11,7 +11,7 @@ defined('_QWEXEC') or die;
 require(INCLUDES_DIR.'modules/administrator.php');
 require(INCLUDES_DIR.'modules/company.php');
 require(INCLUDES_DIR.'modules/setup.php');
-//require(INCLUDES_DIR.'modules/user.php');
+require(INCLUDES_DIR.'modules/user.php');
 
 // Prevent direct access to this page
 if(!check_page_accessed_via_qwcrm('setup:migrate', 'setup') || QWCRM_SETUP != 'install') {
@@ -235,11 +235,7 @@ if($VAR['stage'] == '7') {
     // load the next page
     if($VAR['submit'] == 'stage7') {
         
-        //$VAR['stage'] = '8';
-        
-        force_page('user', 'login', 'setup=finished&information_msg='.gettext("Migration successful. Please login with your administrator account."), 'get');        
-        exit;
-          
+        $VAR['stage'] = '8';        
     
     // load the page  
     } else {
@@ -252,22 +248,27 @@ if($VAR['stage'] == '7') {
     
 }
 
-// Stage 8 - Final page
+// Stage 8 - Create an Administrator
 if($VAR['stage'] == '8') {
     
     // create the administrator and load the next page
     if($VAR['submit'] == 'stage8') {  
        
+        insert_user($db, $VAR);
+        write_record_to_setup_log('install', gettext("The administrator account has been created."));
         write_record_to_setup_log('migrate', gettext("The MyITCRM migration and QWcrm installation process has completed successfully."));
-        //$VAR['stage'] = '9';
+        //$VAR['stage'] = '9';        
         
-        force_page('user', 'login', 'setup=finished&information_msg='.gettext("MyITCRM migration successful. Please login with your old administrator. All users will need to reset their passwords in order to login."), 'get');        
+        force_page('user', 'login', 'setup=finished&information_msg='.gettext("Installation successful. Please login with the administrator account you just created."), 'get');        
         exit;
     
-    // load the page (not required)
+    // load the page
     } else {
     
-        //$smarty->assign('stage', '8');
+        // Set mandatory default values
+        $smarty->assign('is_employee', '1');    
+        $smarty->assign('usergroups', get_usergroups($db, 'employees'));
+        $smarty->assign('stage', '8');
         
     }
     

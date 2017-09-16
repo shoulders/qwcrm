@@ -217,7 +217,7 @@
 
                         <!-- Send Test Mail -->
 
-                    <tr>
+                    {*<tr>
                         <td colspan="2" width="100%">&nbsp;</td>
                     </tr>
 
@@ -227,7 +227,7 @@
                             <button type="button" onClick="$.ajax( { url:'index.php?page=administrator:config&send_test_mail=true&theme=print', success: function(data) { $('body').append(data); } } );">{t}Send Test Mail{/t}</button>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Send Test Mail{/t}</strong></div><hr><div>{t escape=tooltip}You must save your changes before using this as the test uses the saved settings not those on the page.<br><br>The email will be sent to the logged in user\'s email address{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
-                    </tr>
+                    </tr>*}
                     
                     <!-- Secret Key (Generated at the server) -->                    
                     <input type="hidden" name="secret_key" value="">                                         

@@ -820,14 +820,18 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
         'notes'             => ''
         );
     migrate_table($db, $qwcrm_prefix.'user', $myitcrm_prefix.'TABLE_EMPLOYEE', $column_mappings);
-    
-    // update require_reset - enabled for all
-    update_values($db, $qwcrm_prefix.'user', 'require_reset', '*', '1');
-    
-    // update is_employee - set all import users to employees
+        
+    // set all users to employees
     update_values($db, $qwcrm_prefix.'user', 'is_employee', '*', '1');
     
-    //reset_all_passwords($db);  // or enable require reset code - is this not done already
+    // set all users to technicians
+    update_values($db, $qwcrm_prefix.'user', 'usergroup', '*', '4');
+    
+    // set password reset required for all users
+    update_values($db, $qwcrm_prefix.'user', 'require_reset', '*', '1');
+    
+    // Reset all user passwords (passwords will all be random and unknown)
+    reset_all_user_passwords($db);
     
     /* Workorder */
     
