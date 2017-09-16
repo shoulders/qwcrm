@@ -904,7 +904,7 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
     } else {
         
         // Log message
-        $record = gettext("The database migration process was successful. You can now use QWcrm.");
+        $record = gettext("The database migration process was successful.");
         
         // Output message via smarty
         $executed_sql_results .= '<div>&nbsp;</div>';
