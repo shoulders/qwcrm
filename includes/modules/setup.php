@@ -1308,7 +1308,7 @@ function migate_database_correction_schedule($db, $qwcrm_prefix, $myitcrm_prefix
     write_record_to_setup_log('migrate', $record);
     
     $sql =  "SELECT            
-            ".$qwcrm_prefix."schedule.schedule_id AS qw_workorder_id,
+            ".$qwcrm_prefix."schedule.schedule_id AS qw_schedule_id,
 
             ".$myitcrm_prefix."TABLE_SCHEDULE.SCHEDULE_ID AS my_schedule_id,
             ".$myitcrm_prefix."TABLE_SCHEDULE.WORK_ORDER_ID AS my_work_order_id,
@@ -1332,8 +1332,8 @@ function migate_database_correction_schedule($db, $qwcrm_prefix, $myitcrm_prefix
             $myitcrm_record = $rs->GetRowAssoc(); 
 
             /* customer_id */
-            update_record_value($db, $qwcrm_prefix.'schedule', 'schedule_id', $myitcrm_record['qw_schedule_id'], 'customer_id', $myitcrm_record['my_customer_id']);                
-
+            update_record_value($db, $qwcrm_prefix.'schedule', 'schedule_id', $myitcrm_record['qw_schedule_id'], 'customer_id', $myitcrm_record['my_customer_id']);
+            
             // Advance the INSERT loop to the next record
             $rs->MoveNext();           
 
