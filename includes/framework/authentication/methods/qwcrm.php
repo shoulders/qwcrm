@@ -51,17 +51,22 @@ class PlgAuthenticationQwcrm
         // Load the relevant user record form the database
         $sql = "SELECT user_id, password FROM ".PRFX."user WHERE username = ".$this->db->qstr($credentials['username']);        
         $rs = $this->db->Execute($sql);
-        $result = $rs->GetRowAssoc();   // If I call this twice for this search, no results are shown on the TPL
+        //$result = $rs->GetRowAssoc();
+        
+        // if there is a record, set it
+        if($rs->RecordCount() == 1) {
+            $result = $rs->GetRowAssoc();            
+        }
               
         // if there is a match, verify it
-        if ($result)
+        if($result)
         {
             $match = JUserHelper::verifyPassword($credentials['password'], $result['password'], $result['user_id']);
 
             if ($match === true)
             {
                 // Bring this in line with the rest of the system
-                $user                    = JUser::getInstance($result['user_id']);               
+                $user                    = JUser::getInstance($result['user_id']);
                 
                 $response->email         = $user->email;
                 $response->fullname      = $user->name;

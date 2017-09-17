@@ -282,7 +282,7 @@ class PlgAuthenticationCookie //extends QFramework //class PlgSystemRemember //e
                 try
                 {
                     $rs = $this->db->Execute($sql);
-                    $results = $rs->RecordCount();                   
+                    $results = $rs->RecordCount();             
 
                     if ($results === 0)
                     {
