@@ -185,7 +185,7 @@ if($VAR['stage'] == '5') {
         
     // load the page    
     } else {
-        //$smarty->assign('date_format', get_myitcrm_company_details($db, 'COMPANY_DATE_FORMAT'));
+        
         $smarty->assign('date_format', get_company_details($db, 'date_format'));
         $smarty->assign('company_details', get_merged_company_details($db));
         $smarty->assign('stage', '5');
