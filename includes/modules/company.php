@@ -127,6 +127,11 @@ function get_email_message_body($db, $message_name, $customer_details = null) {
 function update_company_details($db, $VAR) {
 
     global $smarty;
+    
+    // compensate for installation and migration
+    if(!defined(DATE_FORMAT)) {
+        define('DATE_FORMAT', get_company_details($db, 'date_format'));
+    } 
            
     // Delete logo if selected and no new logo is presented
     if($VAR['delete_logo'] && !$_FILES['logo']['name']) {
@@ -163,8 +168,8 @@ function update_company_details($db, $VAR) {
             email                   =". $db->qstr( $VAR['email']                           ).",    
             website                 =". $db->qstr( $VAR['website']                         ).",  
             tax_rate                =". $db->qstr( $VAR['tax_rate']                        ).",
-            year_start              =". $db->qstr( date_to_timestamp($VAR['year_start'])   ).",
-            year_end                =". $db->qstr( date_to_timestamp($VAR['year_end'])     ).",
+            year_start              =". date_to_timestamp($VAR['year_start'])               .",
+            year_end                =". date_to_timestamp($VAR['year_end'])                 .",
             welcome_msg             =". $db->qstr( $VAR['welcome_msg']                     ).",
             currency_symbol         =". $db->qstr( htmlentities($VAR['currency_symbol'])   ).",
             currency_code           =". $db->qstr( $VAR['currency_code']                   ).",
@@ -174,6 +179,7 @@ function update_company_details($db, $VAR) {
             email_msg_invoice       =". $db->qstr( $VAR['email_msg_invoice']               ).",
             email_msg_workorder     =". $db->qstr( $VAR['email_msg_workorder']             );                          
 
+    
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the company details."));
         exit;

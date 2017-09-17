@@ -1170,6 +1170,8 @@ function date_to_timestamp($date_to_convert) {
             $datef2 = $timestamp2;
         }     
      */
+    
+    return;
       
 }
 
