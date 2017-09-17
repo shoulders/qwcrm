@@ -109,10 +109,9 @@ if($VAR['stage'] == '2') {
         $VAR['google_server']       = 'https://www.google.com/';
         $VAR['session_lifetime']    = '15';
         $VAR['cookie_lifetime']     = '60';
-        $VAR['cookie_token_length'] = '16';
-        $VAR['db_prefix']           = generate_database_prefix();
+        $VAR['cookie_token_length'] = '16';        
         
-        // Prefill databse prefix with a random value
+        // Prefill database prefix with a random value, but not the smae as the MyITCRM preix
         $VAR['db_prefix'] = generate_database_prefix($VAR['myitcrm_prefix']);
     
         $smarty->assign('qwcrm_config', $VAR);        
@@ -252,22 +251,42 @@ if($VAR['stage'] == '7') {
 if($VAR['stage'] == '8') {
     
     // create the administrator and load the next page
-    if($VAR['submit'] == 'stage8') {  
-       
-        insert_user($db, $VAR);
-        write_record_to_setup_log('install', gettext("The administrator account has been created."));
-        write_record_to_setup_log('migrate', gettext("The MyITCRM migration and QWcrm installation process has completed successfully."));
-        //$VAR['stage'] = '9';        
+    if($VAR['submit'] == 'stage8') {
+                
+        // Insert the record - if the username or email have not been used
+        if (check_user_username_exists($db, $VAR['username'], get_user_details($db, $user_id, 'username')) ||
+            check_user_email_exists($db, $VAR['email'], get_user_details($db, $user_id, 'email'))) {     
+
+            // send the posted data back to smarty
+            $user_details = $VAR;
+
+            // Reload the page with the POST'ed data
+            $smarty->assign('user_details', $user_details);        
+            
+            // Set mandatory default values
+            $smarty->assign('is_employee', '1');       
+            $smarty->assign('stage', '8');          // this reloads the admin create page
+
+        } else {    
+
+            // Insert user record (and return the new ID)
+            insert_user($db, $VAR);
+
+            write_record_to_setup_log('migrate', gettext("The administrator account has been created."));
+            write_record_to_setup_log('migrate', gettext("The QWcrm installation and MyITCRM migration process has completed successfully."));
+            //$VAR['stage'] = '9';        
+
+            // The migration is now finished, load an appropriate page
+            force_page('user', 'login', 'setup=finished&information_msg='.gettext("The QWcrm installation and MyITCRM migration process has completed successfully.").' '.gettext("Please login with the administrator account you have just created."), 'get');        
+            exit;
+
+        }
         
-        force_page('user', 'login', 'setup=finished&information_msg='.gettext("Installation successful. Please login with the administrator account you just created."), 'get');        
-        exit;
-    
     // load the page
     } else {
     
         // Set mandatory default values
-        $smarty->assign('is_employee', '1');    
-        $smarty->assign('usergroups', get_usergroups($db, 'employees'));
+        $smarty->assign('is_employee', '1');        
         $smarty->assign('stage', '8');
         
     }

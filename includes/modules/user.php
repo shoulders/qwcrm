@@ -383,7 +383,7 @@ function update_user($db, $user_id, $VAR) {
         exit;
     } else{
         
-        // reset user password if required
+        // Reset user password if required
         if($VAR['password'] != '') {
             reset_user_password($db, $user_id, $VAR['password']);
         }

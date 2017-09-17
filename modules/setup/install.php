@@ -191,7 +191,7 @@ if($VAR['stage'] == '7') {
         write_record_to_setup_log('install', gettext("The QWcrm installation process has completed successfully."));
         //$VAR['stage'] = '8';
         
-        force_page('user', 'login', 'setup=finished&information_msg='.gettext("Installation successful. Please login with the administrator account you just created."), 'get');        
+        force_page('user', 'login', 'setup=finished&information_msg='.gettext("The QWcrm installation process has completed successfully.").' '.gettext("Please login with the administrator account you have just created."), 'get');        
         exit;
     
     // load the page
@@ -199,7 +199,6 @@ if($VAR['stage'] == '7') {
     
         // Set mandatory default values
         $smarty->assign('is_employee', '1');    
-        $smarty->assign('usergroups', get_usergroups($db, 'employees'));
         $smarty->assign('stage', '7');
         
     }
