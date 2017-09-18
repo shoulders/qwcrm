@@ -154,7 +154,7 @@ function execute_sql_file($db, $sql_file) {
     $sql_file = file_get_contents($sql_file);
     
     // Replace database prefix placeholder with required prefix
-    $sql_file = str_replace('#__', PRFX, $sql_file);
+    $sql_file = str_replace('#__', PRFX, $sql_file);    
     
     // Remove comment lines starting with /*
     $sql_file = preg_replace('/^\/\*.*\n/m', '', $sql_file);
