@@ -67,7 +67,7 @@ if($VAR['stage'] == '1a') {
             submit_qwcrm_config_settings($VAR);            
             write_record_to_setup_log('migrate', gettext("Connected successfully to the MyITCRM database with the supplied prefix and added it to the config file."));  
             $VAR['stage'] = '2';
-            $smarty->assign('information_msg', gettext("MyITCRM Database connection successful."));
+            $smarty->assign('information_msg', gettext("MyITCRM database connection successful."));
         
         // load the page with error
         } else {
@@ -205,6 +205,9 @@ if($VAR['stage'] == '6') {
         
         // install the database file and load the next page
         if(migrate_database($db, $config->db_prefix, $config->myitcrm_prefix)) {
+            
+            // remove MyITCRM prefix from the config file - migth use direct delete key
+            //delete_config_value();
             
             $record = gettext("The MyITCRM database migrated successfully.");
             write_record_to_setup_log('migrate', $record);

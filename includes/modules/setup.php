@@ -60,7 +60,8 @@ function update_record_value($db, $select_table, $select_column, $record_identif
         $record = gettext("Failed to update the value").' '.gettext("for the record").' `'.$record_identifier.'` '.gettext("to").' `'.$record_new_value.'` '.gettext("in the columm").' `'.$record_column.'` '.gettext("from the table").' `'.$select_table.'` ';
 
         // Output message via smarty
-        $executed_sql_results .= '<div style="color: red">'.$record.'</div>';        
+        $executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+        $executed_sql_results .= '<div>&nbsp;</div>';
         
         // Log mesage to setup log        
         write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
@@ -72,8 +73,9 @@ function update_record_value($db, $select_table, $select_column, $record_identif
         // Log message
         $record = gettext("Successfully updated the value").' '.gettext("for the record").' `'.$record_identifier.'` '.gettext("to").' `'.$record_new_value.'` '.gettext("in the columm").' `'.$record_column.'` '.gettext("from the table").' `'.$select_table.'` ';
                 
-        // Output message via smarty
-        $executed_sql_results .= '<div style="color: green">'.$record.'</div>';
+        // Output message via smarty - to reduce onscreen output i have disabled success output, it is still logged
+        //$executed_sql_results .= '<div style="color: green">'.$record.'</div>';
+        //$executed_sql_results .= '<div>&nbsp;</div>';
         
         // Log mesage to setup log        
         write_record_to_setup_log('correction', $record);
@@ -107,20 +109,25 @@ function update_column_values($db, $table, $column, $current_value, $new_value) 
         $record = gettext("Failed to update the values").' `'.$current_value.'` '.gettext("to").' `'.$new_value.'` '.gettext("in the columm").' `'.$column.'` '.gettext("from the table").' `'.$table.'` ';
 
         // Output message via smarty
-        $executed_sql_results .= '<div style="color: red">'.$record.'</div>';        
+        $executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+        $executed_sql_results .= '<div>&nbsp;</div>';        
         
         // Log mesage to setup log        
         write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
         
         return false;
         
-    } else {
+    } else {        
+                
+        // Affected Rows
+        if(!$affected_rows = $db->affected_rows()) { $affected_rows = '0'; }
         
         // Log message
-        $record = gettext("Successfully updated the values").' `'.$current_value.'` '.gettext("to").' `'.$new_value.'` '.gettext("in the columm").' `'.$column.'` '.gettext("from the the table").' `'.$table.'` ';
+        $record = gettext("Successfully updated the values").' `'.$current_value.'` '.gettext("to").' `'.$new_value.'` '.gettext("in the columm").' `'.$column.'` '.gettext("from the the table").' `'.$table.'` - '.gettext("Records Processed").': '.$affected_rows;
                 
         // Output message via smarty
         $executed_sql_results .= '<div style="color: green">'.$record.'</div>';
+        $executed_sql_results .= '<div>&nbsp;</div>';
         
         // Log mesage to setup log        
         write_record_to_setup_log('correction', $record);
@@ -1017,19 +1024,18 @@ function migate_database_correction_workorder($db, $qwcrm_prefix, $myitcrm_prefi
     // Log mesage to setup log                
     write_record_to_setup_log('migrate', $record);
     
-    /* update status types
-    update_column_values($db, $qwcrm_prefix.'workorder', 'status', '1', 'unassigned');          // created
-    update_column_values($db, $qwcrm_prefix.'workorder', 'status', '2', 'assigned');            // assigned
-    update_column_values($db, $qwcrm_prefix.'workorder', 'status', '3', 'waiting_for_parts');   // waiting for parts
-    // update_column_values($db, $qwcrm_prefix.'workorder', 'status', '4', '');                 // n/a
-    // update_column_values($db, $qwcrm_prefix.'workorder', 'status', '5', '');                 // n/a
-    // update_column_values($db, $qwcrm_prefix.'workorder', 'status', '6', '');                 // closed
-    // update_column_values($db, $qwcrm_prefix.'workorder', 'status', '7', '');                 // awaiting payment
-    // update_column_values($db, $qwcrm_prefix.'workorder', 'status', '8', '');                 // payment made
-    update_column_values($db, $qwcrm_prefix.'workorder', 'status', '9', 'on_hold');             // pending
-    update_column_values($db, $qwcrm_prefix.'workorder', 'status', '10', 'unassigned');         // open
-    */    
-
+    // old workorder status
+    // 1 - created
+    // 2 - assigned
+    // 3 - waiting for parts
+    // n/a
+    // n/a
+    // 6 - closed
+    // 7 - awaiting payment
+    // 8 - payment made
+    // 9 - pending
+    // 10 - open
+   
     $sql =  "SELECT            
             ".$qwcrm_prefix."workorder.workorder_id AS qw_workorder_id,
 
@@ -1096,7 +1102,7 @@ function migate_database_correction_workorder($db, $qwcrm_prefix, $myitcrm_prefi
             /* invoice_id */
 
             if($myitcrm_record['my_invoice_id'] != '') {
-                update_record_value($db, $qwcrm_prefix.'workorder', 'invoice_id', $myitcrm_record['qw_workorder_id'], 'invoice_id', $myitcrm_record['my_invoice_id']);
+                update_record_value($db, $qwcrm_prefix.'workorder', 'workorder_id', $myitcrm_record['qw_workorder_id'], 'invoice_id', $myitcrm_record['my_invoice_id']);                
             }
 
             // Advance the INSERT loop to the next record
@@ -1401,6 +1407,7 @@ function get_myitcrm_company_details($db, $item = null) {
 function migrate_table($db, $qwcrm_table, $myitcrm_table, $column_mappings) {
     
     global $executed_sql_results;
+    global $setup_error_flag;
     
     // Add division to seperate table migration function results
     $executed_sql_results .= '<div>&nbsp;</div>';
@@ -1443,9 +1450,6 @@ function migrate_table($db, $qwcrm_table, $myitcrm_table, $column_mappings) {
         $records_processed  = 0;
         $records_failed     = 0;
         $records_successful = 0;
-        
-        // Error Flag
-        $error_flag = false;
         
         // Loop through the MyITCRM records (single record, single insert)
         while(!$rs->EOF) {               
@@ -1551,15 +1555,18 @@ function migrate_table($db, $qwcrm_table, $myitcrm_table, $column_mappings) {
         }// EOF While Loop
         
         // Output Record counters        
-        $executed_sql_results .= '<div><strong><span style="color: blue">'.gettext("MyITCRM Records Processed").': '.$records_processed.'</span></strong></div>';
-        $executed_sql_results .= '<div><strong><span style="color: red">'.gettext("Records Failed To Migrate").': '.$records_failed.'</span></strong></div>';
-        $executed_sql_results .= '<div><strong><span style="color: green">'.gettext("Records Successfuly Migrated").': '.$records_successful.'</span></strong></div>';        
+        $executed_sql_results .= '<div><span style="color: blue">'.gettext("MyITCRM Records Processed").': '.$records_processed.'</span></div>';
+        $executed_sql_results .= '<div><span style="color: red">'.gettext("Records Failed To Migrate").': '.$records_failed.'</span></div>';
+        $executed_sql_results .= '<div><span style="color: green">'.gettext("Records Successfuly Migrated").': '.$records_successful.'</span></div>';        
         
         // if there has been an error
         if($error_flag) {
             
+            // Set the setup global error flag
+            $setup_error_flag = true;
+            
             // Log message
-            $record = gettext("Error migrating some records into QWcrm table").': `'.$qwcrm_table.'`';
+            $record = gettext("Error migrating some records into QWcrm table").': `'.$qwcrm_table.'` - '.gettext("MyITCRM Records Processed").': '.$records_processed.' - '.gettext("Records Failed To Migrate").': '.$records_failed.' - '.gettext("Records Successfuly Migrated").': '.$records_successful;
                 
             // Result message
             $executed_sql_results .= '<div><strong><span style="color: red">'.$record.'</span></strong></div>';
@@ -1576,7 +1583,7 @@ function migrate_table($db, $qwcrm_table, $myitcrm_table, $column_mappings) {
         } else {
             
             // Log message
-            $record = gettext("Successfully migrated all records into QWcrm table").': `'.$qwcrm_table.'`';
+            $record = gettext("Successfully migrated all records into QWcrm table").': `'.$qwcrm_table.'` - '.gettext("MyITCRM Records Processed").': '.$records_processed.' - '.gettext("Records Failed To Migrate").': '.$records_failed.' - '.gettext("Records Successfuly Migrated").': '.$records_successful;
                 
             // Result message
             $executed_sql_results .= '<div><strong><span style="color: green">'.$record.'</span></strong></div>';
@@ -1665,19 +1672,6 @@ function get_merged_company_details($db) {
     return $merged;
     
 }
-
-
-
-
-
-
-################################################
-#   remove myitcrm database prefix             #
-################################################
-
-function remove_myitcrm_prefix_config() {
-}
-
 
 
 

@@ -39,7 +39,13 @@
 
                     <tr class="row2">
                         <td class="menuhead" colspan="2" width="100%">&nbsp;</td>
-                    </tr> 
+                    </tr>
+                    
+                    <tr>
+                        <td colspan="2" style="text-align: center;">
+                            {t}These start numbers are optional and can be skipped by just clicking next.{/t}                            
+                        </td>
+                    </tr>
 
                     <tr>
                         <td colspan="2" style="text-align: center;">

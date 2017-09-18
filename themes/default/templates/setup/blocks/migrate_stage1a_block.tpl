@@ -32,6 +32,12 @@
                     <tr class="row2">
                         <td class="menuhead" colspan="2" width="100%">&nbsp;</td>
                     </tr>
+                    
+                    <tr>
+                        <td colspan="2" style="text-align: center;">
+                            {t}The MyITCRM tables should be in the same database you are installing QWcrm into.{/t}                            
+                        </td>
+                    </tr>
 
                     <tr>
                         <td colspan="2" style="text-align: center;">
