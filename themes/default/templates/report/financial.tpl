@@ -128,8 +128,12 @@
                                                         <td class="olotd4" valign="top">
                                                             <table>
                                                                 <tr>
-                                                                    <td><b>{t}New{/t}:</b></td>
-                                                                    <td><font color="red"<b> {$new_invoices}</b></font></td>
+                                                                    <td><b>{t}Opened{/t}:</b></td>
+                                                                    <td><font color="red"<b> {$opened_invoices}</b></font></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><b>{t}Partially Paid{/t}:</b></td>
+                                                                    <td><font color="red"<b> {$partially_paid_invoices}</b></font></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td><b>{t}Paid{/t}:</b></td>

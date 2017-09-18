@@ -22,11 +22,12 @@ if(isset($VAR['submit'])) {
     $smarty->assign('new_customers',                count_customers($db, 'all', $start_date, $end_date)                         );      
     
     // Workorders   
-    $smarty->assign('wo_opened',                    count_workorders($db, 'open', null, $start_date, $end_date)                 );   
+    $smarty->assign('wo_opened',                    count_workorders($db, 'opened', null, $start_date, $end_date)               );   
     $smarty->assign('wo_closed',                    count_workorders($db, 'closed', null, $start_date, $end_date)               );    
          
     // Invoices
-    $smarty->assign('new_invoices',                 count_invoices($db, 'all', null, $start_date, $end_date)                    );    
+    $smarty->assign('opened_invoices',              count_invoices($db, 'opened', null, $start_date, $end_date)                 );
+    $smarty->assign('partially_paid_invoices',      count_invoices($db, 'partially_paid', null, $start_date, $end_date)         );
     $smarty->assign('paid_invoices',                count_invoices($db, 'paid', null, $start_date, $end_date)                   );
     
     // Labour

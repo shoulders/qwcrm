@@ -1566,8 +1566,9 @@ function migrate_table($db, $qwcrm_table, $myitcrm_table, $column_mappings) {
             $setup_error_flag = true;
             
             // Log message
-            $record = gettext("Error migrating some records into QWcrm table").': `'.$qwcrm_table.'` - '.gettext("MyITCRM Records Processed").': '.$records_processed.' - '.gettext("Records Failed To Migrate").': '.$records_failed.' - '.gettext("Records Successfuly Migrated").': '.$records_successful;
-                
+            $record = gettext("Error migrating some records into QWcrm table").': `'.$qwcrm_table.'`';
+            $record_additional = ' - '.gettext("MyITCRM Records Processed").': '.$records_processed.' - '.gettext("Records Failed To Migrate").': '.$records_failed.' - '.gettext("Records Successfuly Migrated").': '.$records_successful;
+            
             // Result message
             $executed_sql_results .= '<div><strong><span style="color: red">'.$record.'</span></strong></div>';
             
@@ -1575,7 +1576,7 @@ function migrate_table($db, $qwcrm_table, $myitcrm_table, $column_mappings) {
             $executed_sql_results .= '<div>&nbsp;</div>';
 
             // Log mesage to setup log                
-            write_record_to_setup_log('migrate', $record);
+            write_record_to_setup_log('migrate', $record.$record_additional);
                 
             return false;
         
@@ -1583,8 +1584,9 @@ function migrate_table($db, $qwcrm_table, $myitcrm_table, $column_mappings) {
         } else {
             
             // Log message
-            $record = gettext("Successfully migrated all records into QWcrm table").': `'.$qwcrm_table.'` - '.gettext("MyITCRM Records Processed").': '.$records_processed.' - '.gettext("Records Failed To Migrate").': '.$records_failed.' - '.gettext("Records Successfuly Migrated").': '.$records_successful;
-                
+            $record = gettext("Successfully migrated all records into QWcrm table").': `'.$qwcrm_table.'`';
+            $record_additional = ' - '.gettext("MyITCRM Records Processed").': '.$records_processed.' - '.gettext("Records Failed To Migrate").': '.$records_failed.' - '.gettext("Records Successfuly Migrated").': '.$records_successful;
+            
             // Result message
             $executed_sql_results .= '<div><strong><span style="color: green">'.$record.'</span></strong></div>';
             
@@ -1592,7 +1594,7 @@ function migrate_table($db, $qwcrm_table, $myitcrm_table, $column_mappings) {
             $executed_sql_results .= '<div>&nbsp;</div>';
 
             // Log mesage to setup log                
-            write_record_to_setup_log('migrate', $record);
+            write_record_to_setup_log('migrate', $record.$record_additional);
             
             return true;
             
