@@ -960,7 +960,7 @@ function resolution_edit_status_check($db, $workorder_id) {
     // Waiting For Parts
     if ($wo_status == 'waiting_for_parts') {           
 
-        postEmulationWrite('warning_msg', gettext("Can not close a work order if it is Waiting For Parts. Please Adjust the status."));
+        postEmulationWrite('warning_msg', gettext("Can not close a work order if it is Waiting for Parts. Please Adjust the status."));
         return false;
 
     }

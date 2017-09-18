@@ -5,7 +5,7 @@
  * @copyright Copyright (C) 2016 - 2017 Jon Brown, All rights reserved.
  * @license   GNU/GPLv3 or later; https://www.gnu.org/licenses/gpl.html
 *}
-<b>{t}Waiting For Parts{/t} ({$login_display_name})</b>
+<b>{t}Waiting for Parts{/t} ({$login_display_name})</b>
 <table class="olotable" width="100%" border="0" cellpadding="4" cellspacing="0">
     <tr>
         <td class="olohead" width="6"><b>{t}WO ID{/t}</b></td>

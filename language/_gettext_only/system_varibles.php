@@ -15,8 +15,9 @@
 
 gettext("Unassigned");
 gettext("Assigned");
-gettext("Waiting For Parts");
+gettext("Waiting for Parts");
 gettext("Scheduled");
+gettext("With Client");
 gettext("On Hold");
 gettext("Management");
 gettext("Closed without Invoice");
@@ -27,9 +28,12 @@ gettext("Closed with Invoice");
 gettext("Pending");
 gettext("Unpaid");
 gettext("Partially Paid");
-gettext("In Dispute");
-gettext("Cancelled");
 gettext("Paid");
+gettext("In Dispute");
+gettext("Overdue");
+gettext("Cancelled");
+gettext("Refunded");
+gettext("Collections");
 
 /* Customer */
 

@@ -52,6 +52,13 @@
                                                 <a name="scheduled"></a>
                                                 {include file='workorder/blocks/overview_workorders_scheduled_block.tpl'}
                                             </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <a name="with_client"></a>
+                                                {include file='workorder/blocks/overview_workorders_with_client_block.tpl'}
+                                            </td>
+                                        </tr>
                                         <tr>
                                             <td>
                                                 <a name="on_hold"></a>
