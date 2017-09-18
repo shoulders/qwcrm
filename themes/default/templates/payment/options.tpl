@@ -8,21 +8,18 @@
 <script src="{$theme_js_dir}tinymce/tinymce.min.js"></script>
 <script>{include file="`$theme_js_dir_finc`editor-config.js"}</script>
 
-<table width="100%" border="0" cellpadding="20" cellspacing="0">
-    <tr>
-        <td class="menuhead2" width="80%">&nbsp;{t}Employee Search{/t}</td>
-        <td class="menuhead2" width="20%" align="right" valign="middle">                        
-            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}PAYMENT_OPTIONS_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}PAYMENT_OPTIONS_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
-        </td>
-    </tr>    
+<table width="100%" border="0" cellpadding="0" cellspacing="0">    
     <tr>
         <td>
             <table width="700" cellpadding="5" cellspacing="0" border="0" >
                 <tr>
                     <td class="menuhead2" width="80%">&nbsp;{t}Payment Options{/t}</td>
+                    <td class="menuhead2" width="20%" align="right" valign="middle">                        
+                        <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}PAYMENT_OPTIONS_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}PAYMENT_OPTIONS_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
+                    </td>
                 </tr>
                 <tr>
-                    <td class="menutd2">                    
+                    <td class="menutd2" colspan="2">                    
                         <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0" >
                             <tr>
                                 <td width="100%" valign="top" class="menutd">                                    

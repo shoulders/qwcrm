@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 09, 2017 at 10:26 AM
+-- Generation Time: Sep 18, 2017 at 04:42 PM
 -- Server version: 10.1.13-MariaDB
 -- PHP Version: 5.6.21
 
@@ -63,7 +63,7 @@ CREATE TABLE `#__company` (
 --
 
 INSERT INTO `#__company` (`display_name`, `logo`, `company_number`, `vat_number`, `address`, `city`, `state`, `zip`, `country`, `primary_phone`, `mobile_phone`, `fax`, `email`, `website`, `tax_rate`, `year_start`, `year_end`, `welcome_msg`, `currency_symbol`, `currency_code`, `date_format`, `opening_hour`, `opening_minute`, `closing_hour`, `closing_minute`, `email_signature`, `email_signature_active`, `email_msg_invoice`, `email_msg_workorder`) VALUES
-('', '', '', '', '', '', '', '', '', '', '', '', '', '', '0.00', '', '', '<p>Welcome to QWcrm - The Best Open Source Repairs Business CRM program available!</p>\r\n<p>CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment Processing, Simple to use.</p>\r\n<p>This message is shown to everyone when they log in and can be changed in the company settings.</p>', '&pound;', 'GBP', '%d/%m/%Y', 10, 0, 17, 0, '<p>{logo}</p>\r\n<p>QuantumWarp</p>\r\n<p><strong>Address:</strong><br />QWcrm House<br />Easy Street<br />London<br />SW1A 1AA</p>\r\n<p><strong>Tel:</strong> 07777 123456<br /><strong>Web:</strong> <a href="https://quantumwarp.com/">quantumwarp.com</a></p>', 1, '<p>Hi {customer_first_name} {customer_last_name}</p>\r\n<p>This is an invoice for the recent work at {customer_display_name}.</p>\r\n<p>Thanks for your custom.</p>', '');
+('', 'media/logo.png', '', '', 'QWcrm House\r\nEasy Street\r\n\r\n\r\nTel: 07777 123456\r\nWeb: quantumwarp.com', 'London', 'London', 'SW1A 1AA', 'United Kingdom', '', '', '', 'noreply@quantumwarp.com', 'https://quantumwarp.com/', '0.00', '', '', '<p>Welcome to QWcrm - The Best Open Source Repairs Business CRM program available!</p>\r\n<p>CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment Processing, Simple to use.</p>\r\n<p>This message is shown to everyone when they log in and can be changed in the company settings.</p>', '', '', '%d/%m/%Y', 10, 0, 17, 0, '<p>{logo}</p>\r\n<p>QuantumWarp</p>\r\n<p><strong>Address:</strong><br />QWcrm House<br />Easy Street<br />London<br />SW1A 1AA</p>\r\n<p><strong>Tel:</strong> 07777 123456<br /><strong>Web:</strong> <a href="https://quantumwarp.com/">quantumwarp.com</a></p>', 1, '<p>Hi {customer_first_name} {customer_last_name}</p>\r\n<p>This is an invoice for the recent work at {customer_display_name}.</p>\r\n<p>Thanks for your custom.</p>', '');
 
 -- --------------------------------------------------------
 
@@ -323,9 +323,12 @@ INSERT INTO `#__invoice_statuses` (`id`, `status_key`, `display_name`) VALUES
 (1, 'pending', 'Pending'),
 (2, 'unpaid', 'Unpaid'),
 (3, 'partially_paid', 'Partially Paid'),
-(4, 'in_dispute', 'In Dispute'),
-(5, 'cancelled', 'Cancelled'),
-(6, 'paid', 'Paid');
+(4, 'paid', 'Paid'),
+(5, 'in_dispute', 'In Dispute'),
+(6, 'overdue', 'Overdue'),
+(7, 'cancelled', 'Cancelled'),
+(8, 'refunded', 'Refunded'),
+(9, 'collections', 'Collections');
 
 -- --------------------------------------------------------
 
@@ -880,12 +883,13 @@ CREATE TABLE `#__workorder_statuses` (
 INSERT INTO `#__workorder_statuses` (`id`, `status_key`, `display_name`) VALUES
 (1, 'unassigned', 'Unassigned'),
 (2, 'assigned', 'Assigned'),
-(3, 'waiting_for_parts', 'Waiting for parts'),
+(3, 'waiting_for_parts', 'Waiting for Parts'),
 (4, 'scheduled', 'Scheduled'),
-(5, 'on_hold', 'On Hold'),
-(6, 'management', 'Management'),
-(7, 'closed_without_invoice', 'Closed without Invoice'),
-(8, 'closed_with_invoice', 'Closed with Invoice');
+(5, 'with_client', 'With Client'),
+(6, 'on_hold', 'On Hold'),
+(7, 'management', 'Management'),
+(8, 'closed_without_invoice', 'Closed without Invoice'),
+(9, 'closed_with_invoice', 'Closed with Invoice');
 
 --
 -- Indexes for dumped tables

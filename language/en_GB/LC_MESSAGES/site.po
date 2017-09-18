@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2017-09-09 11:15+0100\n"
-"PO-Revision-Date: 2017-09-09 11:16+0100\n"
+"POT-Creation-Date: 2017-09-18 16:49+0100\n"
+"PO-Revision-Date: 2017-09-18 16:49+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en_GB\n"
@@ -65,8 +65,8 @@ msgid "Login Denied"
 msgstr ""
 
 #: includes/framework/authentication/authentication.php:450
-#: includes/framework/authentication/methods/qwcrm.php:75
-#: includes/framework/authentication/methods/qwcrm.php:86
+#: includes/framework/authentication/methods/qwcrm.php:80
+#: includes/framework/authentication/methods/qwcrm.php:91
 #: includes/framework/authentication/methods/remember.php:227
 msgid "Username and password do not match or you do not have an account yet."
 msgstr ""
@@ -115,66 +115,66 @@ msgstr ""
 msgid "Failed to update a User's last active time."
 msgstr ""
 
-#: includes/include.php:518 includes/include.php:522 includes/include.php:523
+#: includes/include.php:535 includes/include.php:539 includes/include.php:540
 msgid "_"
 msgstr ""
 
-#: includes/include.php:540
+#: includes/include.php:557
 msgid "The ACL has been supplied with no account type ID - I will now die."
 msgstr ""
 
-#: includes/include.php:549
+#: includes/include.php:566
 msgid "Could not get the user's Group Name by Login Account Type ID."
 msgstr ""
 
-#: includes/include.php:563
+#: includes/include.php:580
 msgid "Could not get the Page's ACL."
 msgstr ""
 
-#: includes/include.php:631
+#: includes/include.php:648
 msgid ""
 "There is a database connection issue. Check your settings in the config file."
 msgstr ""
 
-#: includes/include.php:636
+#: includes/include.php:653
 msgid "QWcrm requires MySQL"
 msgstr ""
 
-#: includes/include.php:636 index.php:18
+#: includes/include.php:653 index.php:18
 msgid "Your current version is"
 msgstr ""
 
-#: includes/include.php:655
+#: includes/include.php:672
 msgid ""
 "The upgrade never completed successfully. Check the upgrade and error logs."
 msgstr ""
 
-#: includes/include.php:660
+#: includes/include.php:677
 msgid ""
 "The file system is older than the database. Check the logs and your settings."
 msgstr ""
 
-#: includes/include.php:695
+#: includes/include.php:710
 msgid "The configured template is not supported by this version of QWcrm."
 msgstr ""
 
-#: includes/include.php:696
+#: includes/include.php:711
 msgid "Your current version of QWcrm is"
 msgstr ""
 
-#: includes/include.php:697
+#: includes/include.php:712
 msgid "The template supports QWcrm versions in the range"
 msgstr ""
 
-#: includes/include.php:980
+#: includes/include.php:995
 msgid "Could not open the Access Log to save the record."
 msgstr ""
 
-#: includes/include.php:1018
+#: includes/include.php:1033
 msgid "Could not open the Activity Log to save the record."
 msgstr ""
 
-#: includes/include.php:1047
+#: includes/include.php:1062
 msgid "Could not open the Error Log to save the record."
 msgstr ""
 
@@ -251,35 +251,35 @@ msgstr ""
 msgid "Failed to get the company start and end times."
 msgstr ""
 
-#: includes/modules/company.php:178
+#: includes/modules/company.php:184
 msgid "Failed to update the company details."
 msgstr ""
 
-#: includes/modules/company.php:183 includes/modules/company.php:186
+#: includes/modules/company.php:189 includes/modules/company.php:192
 msgid "Company details updated."
 msgstr ""
 
-#: includes/modules/company.php:209
+#: includes/modules/company.php:215
 msgid "Failed to update the company hours."
 msgstr ""
 
-#: includes/modules/company.php:214 includes/modules/company.php:217
+#: includes/modules/company.php:220 includes/modules/company.php:223
 msgid "Business hours have been updated."
 msgstr ""
 
-#: includes/modules/company.php:241
+#: includes/modules/company.php:247
 msgid "Start Time is after End Time."
 msgstr ""
 
-#: includes/modules/company.php:247
+#: includes/modules/company.php:253
 msgid "Start Time is the same as End Time."
 msgstr ""
 
-#: includes/modules/company.php:297 includes/modules/invoice.php:1020
+#: includes/modules/company.php:303 includes/modules/invoice.php:1020
 msgid "Return Code"
 msgstr ""
 
-#: includes/modules/company.php:317
+#: includes/modules/company.php:323
 msgid "Failed to update logo because the submitted file was invalid."
 msgstr ""
 
@@ -521,8 +521,8 @@ msgstr ""
 
 #: includes/modules/giftcert.php:171 includes/modules/giftcert.php:254
 #: includes/modules/giftcert.php:286 includes/modules/giftcert.php:381
-#: language/_gettext_only/system_varibles.php:50
-#: language/_gettext_only/system_varibles.php:65 modules/giftcert/print.php:48
+#: language/_gettext_only/system_varibles.php:54
+#: language/_gettext_only/system_varibles.php:69 modules/giftcert/print.php:48
 #: modules/giftcert/print.php:82
 #: themes/default/templates/giftcert/details.tpl:13
 #: themes/default/templates/giftcert/details.tpl:23
@@ -856,9 +856,11 @@ msgstr ""
 #: themes/default/templates/invoice/prefill_items.tpl:72
 #: themes/default/templates/setup/blocks/install_stage7_block.tpl:140
 #: themes/default/templates/setup/blocks/install_stage7_block.tpl:143
+#: themes/default/templates/setup/blocks/migrate_stage8_block.tpl:146
+#: themes/default/templates/setup/blocks/migrate_stage8_block.tpl:149
 #: themes/default/templates/user/blocks/details_details_block.tpl:78
 #: themes/default/templates/user/edit.tpl:138
-#: themes/default/templates/user/new.tpl:138
+#: themes/default/templates/user/new.tpl:137
 #: themes/default/templates/user/search.tpl:59
 #: themes/default/templates/user/search.tpl:151
 msgid "Active"
@@ -1025,47 +1027,47 @@ msgstr ""
 msgid "Failed to lookup the last refund record ID."
 msgstr ""
 
-#: includes/modules/report.php:90
-msgid "Could not count Work Orders for the defined status."
-msgstr ""
-
-#: includes/modules/report.php:148
-msgid "Could not count the number of Invoices."
-msgstr ""
-
-#: includes/modules/report.php:198
-msgid "Could not sum the invoice discount amounts."
-msgstr ""
-
-#: includes/modules/report.php:234
+#: includes/modules/report.php:68
 msgid "Could not count the number of customers."
 msgstr ""
 
-#: includes/modules/report.php:258 includes/modules/report.php:280
+#: includes/modules/report.php:145
+msgid "Could not count Work Orders for the defined status."
+msgstr ""
+
+#: includes/modules/report.php:223
+msgid "Could not count the number of Invoices."
+msgstr ""
+
+#: includes/modules/report.php:273
+msgid "Could not sum the invoice discount amounts."
+msgstr ""
+
+#: includes/modules/report.php:297 includes/modules/report.php:319
 msgid "Failed to count the total number of labour items ordered."
 msgstr ""
 
-#: includes/modules/report.php:302
+#: includes/modules/report.php:341
 msgid "Failed to return the sum of labour items ordered."
 msgstr ""
 
-#: includes/modules/report.php:326
+#: includes/modules/report.php:365
 msgid "Failed to count the total number of different parts items ordered."
 msgstr ""
 
-#: includes/modules/report.php:348
+#: includes/modules/report.php:387
 msgid "Failed to count the total number of parts items ordered."
 msgstr ""
 
-#: includes/modules/report.php:370
+#: includes/modules/report.php:409
 msgid "Failed to return the total number of parts items ordered."
 msgstr ""
 
-#: includes/modules/report.php:393
+#: includes/modules/report.php:432
 msgid "Failed to return the sum value for the selected expenses."
 msgstr ""
 
-#: includes/modules/report.php:416
+#: includes/modules/report.php:455
 msgid "Failed to return the sum value for the selected refunds."
 msgstr ""
 
@@ -1113,6 +1115,7 @@ msgstr ""
 #: themes/default/templates/core/blocks/dashboard_workorders_on_hold_block.tpl:14
 #: themes/default/templates/core/blocks/dashboard_workorders_scheduled_block.tpl:14
 #: themes/default/templates/core/blocks/dashboard_workorders_waiting_for_parts_block.tpl:14
+#: themes/default/templates/core/blocks/dashboard_workorders_with_client_block.tpl:14
 #: themes/default/templates/customer/blocks/details_workorder_block.tpl:15
 #: themes/default/templates/customer/blocks/details_workorder_block.tpl:75
 #: themes/default/templates/user/blocks/details_open_workorders_block.tpl:15
@@ -1123,6 +1126,7 @@ msgstr ""
 #: themes/default/templates/workorder/blocks/overview_workorders_scheduled_block.tpl:14
 #: themes/default/templates/workorder/blocks/overview_workorders_unassigned_block.tpl:14
 #: themes/default/templates/workorder/blocks/overview_workorders_waiting_for_parts_block.tpl:14
+#: themes/default/templates/workorder/blocks/overview_workorders_with_client_block.tpl:14
 #: themes/default/templates/workorder/closed.tpl:84
 #: themes/default/templates/workorder/details_edit_description.tpl:30
 #: themes/default/templates/workorder/new.tpl:58
@@ -1153,6 +1157,7 @@ msgstr ""
 #: themes/default/templates/core/blocks/dashboard_workorders_on_hold_block.tpl:30
 #: themes/default/templates/core/blocks/dashboard_workorders_scheduled_block.tpl:30
 #: themes/default/templates/core/blocks/dashboard_workorders_waiting_for_parts_block.tpl:30
+#: themes/default/templates/core/blocks/dashboard_workorders_with_client_block.tpl:30
 #: themes/default/templates/customer/blocks/details_customer_details_block.tpl:32
 #: themes/default/templates/invoice/closed.tpl:95
 #: themes/default/templates/invoice/closed.tpl:97
@@ -1172,6 +1177,7 @@ msgstr ""
 #: themes/default/templates/workorder/blocks/overview_workorders_scheduled_block.tpl:30
 #: themes/default/templates/workorder/blocks/overview_workorders_unassigned_block.tpl:30
 #: themes/default/templates/workorder/blocks/overview_workorders_waiting_for_parts_block.tpl:30
+#: themes/default/templates/workorder/blocks/overview_workorders_with_client_block.tpl:30
 #: themes/default/templates/workorder/closed.tpl:106
 #: themes/default/templates/workorder/new.tpl:141
 #: themes/default/templates/workorder/open.tpl:106
@@ -1188,6 +1194,7 @@ msgstr ""
 #: themes/default/templates/core/blocks/dashboard_workorders_on_hold_block.tpl:30
 #: themes/default/templates/core/blocks/dashboard_workorders_scheduled_block.tpl:30
 #: themes/default/templates/core/blocks/dashboard_workorders_waiting_for_parts_block.tpl:30
+#: themes/default/templates/core/blocks/dashboard_workorders_with_client_block.tpl:30
 #: themes/default/templates/customer/blocks/details_customer_details_block.tpl:56
 #: themes/default/templates/customer/edit.tpl:96
 #: themes/default/templates/customer/edit.tpl:102
@@ -1211,6 +1218,7 @@ msgstr ""
 #: themes/default/templates/workorder/blocks/overview_workorders_scheduled_block.tpl:30
 #: themes/default/templates/workorder/blocks/overview_workorders_unassigned_block.tpl:30
 #: themes/default/templates/workorder/blocks/overview_workorders_waiting_for_parts_block.tpl:30
+#: themes/default/templates/workorder/blocks/overview_workorders_with_client_block.tpl:30
 #: themes/default/templates/workorder/closed.tpl:106
 #: themes/default/templates/workorder/new.tpl:158
 #: themes/default/templates/workorder/open.tpl:106
@@ -1234,6 +1242,8 @@ msgstr ""
 #: themes/default/templates/core/blocks/dashboard_workorders_scheduled_block.tpl:46
 #: themes/default/templates/core/blocks/dashboard_workorders_waiting_for_parts_block.tpl:30
 #: themes/default/templates/core/blocks/dashboard_workorders_waiting_for_parts_block.tpl:49
+#: themes/default/templates/core/blocks/dashboard_workorders_with_client_block.tpl:30
+#: themes/default/templates/core/blocks/dashboard_workorders_with_client_block.tpl:46
 #: themes/default/templates/customer/blocks/details_workorder_block.tpl:48
 #: themes/default/templates/customer/blocks/details_workorder_block.tpl:108
 #: themes/default/templates/customer/edit.tpl:106
@@ -1245,6 +1255,7 @@ msgstr ""
 #: themes/default/templates/invoice/open.tpl:97
 #: themes/default/templates/invoice/status.tpl:63
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:97
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:97
 #: themes/default/templates/supplier/details.tpl:47
 #: themes/default/templates/supplier/edit.tpl:82
 #: themes/default/templates/supplier/new.tpl:85
@@ -1264,6 +1275,8 @@ msgstr ""
 #: themes/default/templates/workorder/blocks/overview_workorders_unassigned_block.tpl:49
 #: themes/default/templates/workorder/blocks/overview_workorders_waiting_for_parts_block.tpl:30
 #: themes/default/templates/workorder/blocks/overview_workorders_waiting_for_parts_block.tpl:49
+#: themes/default/templates/workorder/blocks/overview_workorders_with_client_block.tpl:30
+#: themes/default/templates/workorder/blocks/overview_workorders_with_client_block.tpl:46
 #: themes/default/templates/workorder/closed.tpl:106
 #: themes/default/templates/workorder/closed.tpl:122
 #: themes/default/templates/workorder/new.tpl:175
@@ -1286,6 +1299,7 @@ msgstr ""
 #: themes/default/templates/customer/new.tpl:50
 #: themes/default/templates/invoice/printing/print_invoice.tpl:54
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:109
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:109
 #: themes/default/templates/supplier/details.tpl:61
 #: themes/default/templates/supplier/edit.tpl:57
 #: themes/default/templates/supplier/new.tpl:60
@@ -1302,6 +1316,7 @@ msgstr ""
 #: themes/default/templates/core/blocks/dashboard_workorders_on_hold_block.tpl:49
 #: themes/default/templates/core/blocks/dashboard_workorders_scheduled_block.tpl:46
 #: themes/default/templates/core/blocks/dashboard_workorders_waiting_for_parts_block.tpl:49
+#: themes/default/templates/core/blocks/dashboard_workorders_with_client_block.tpl:46
 #: themes/default/templates/customer/blocks/details_customer_details_block.tpl:40
 #: themes/default/templates/customer/blocks/details_workorder_block.tpl:48
 #: themes/default/templates/customer/blocks/details_workorder_block.tpl:108
@@ -1312,6 +1327,8 @@ msgstr ""
 #: themes/default/templates/payment/blocks/new_invoice_details_block.tpl:49
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:105
 #: themes/default/templates/setup/blocks/install_stage7_block.tpl:105
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:105
+#: themes/default/templates/setup/blocks/migrate_stage8_block.tpl:111
 #: themes/default/templates/supplier/details.tpl:63
 #: themes/default/templates/supplier/edit.tpl:61
 #: themes/default/templates/supplier/new.tpl:64
@@ -1326,6 +1343,7 @@ msgstr ""
 #: themes/default/templates/workorder/blocks/overview_workorders_scheduled_block.tpl:46
 #: themes/default/templates/workorder/blocks/overview_workorders_unassigned_block.tpl:49
 #: themes/default/templates/workorder/blocks/overview_workorders_waiting_for_parts_block.tpl:49
+#: themes/default/templates/workorder/blocks/overview_workorders_with_client_block.tpl:46
 #: themes/default/templates/workorder/closed.tpl:122
 #: themes/default/templates/workorder/new.tpl:143
 #: themes/default/templates/workorder/open.tpl:122
@@ -1344,6 +1362,7 @@ msgstr ""
 #: themes/default/templates/core/blocks/dashboard_workorders_on_hold_block.tpl:30
 #: themes/default/templates/core/blocks/dashboard_workorders_scheduled_block.tpl:30
 #: themes/default/templates/core/blocks/dashboard_workorders_waiting_for_parts_block.tpl:30
+#: themes/default/templates/core/blocks/dashboard_workorders_with_client_block.tpl:30
 #: themes/default/templates/customer/blocks/details_customer_details_block.tpl:54
 #: themes/default/templates/customer/edit.tpl:117
 #: themes/default/templates/customer/edit.tpl:123
@@ -1353,6 +1372,8 @@ msgstr ""
 #: themes/default/templates/invoice/printing/print_invoice.tpl:40
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:73
 #: themes/default/templates/setup/blocks/install_stage7_block.tpl:209
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:73
+#: themes/default/templates/setup/blocks/migrate_stage8_block.tpl:215
 #: themes/default/templates/supplier/details.tpl:70
 #: themes/default/templates/supplier/edit.tpl:90
 #: themes/default/templates/supplier/edit.tpl:93
@@ -1369,6 +1390,7 @@ msgstr ""
 #: themes/default/templates/workorder/blocks/overview_workorders_scheduled_block.tpl:30
 #: themes/default/templates/workorder/blocks/overview_workorders_unassigned_block.tpl:30
 #: themes/default/templates/workorder/blocks/overview_workorders_waiting_for_parts_block.tpl:30
+#: themes/default/templates/workorder/blocks/overview_workorders_with_client_block.tpl:30
 #: themes/default/templates/workorder/closed.tpl:106
 #: themes/default/templates/workorder/new.tpl:156
 #: themes/default/templates/workorder/open.tpl:106
@@ -1440,6 +1462,8 @@ msgstr ""
 #: themes/default/templates/schedule/search.tpl:182
 #: themes/default/templates/setup/blocks/install_stage7_block.tpl:235
 #: themes/default/templates/setup/blocks/install_stage7_block.tpl:241
+#: themes/default/templates/setup/blocks/migrate_stage8_block.tpl:241
+#: themes/default/templates/setup/blocks/migrate_stage8_block.tpl:247
 #: themes/default/templates/supplier/details.tpl:98
 #: themes/default/templates/supplier/edit.tpl:120
 #: themes/default/templates/supplier/new.tpl:123
@@ -1543,24 +1567,170 @@ msgstr ""
 msgid "Could not count schedule items for the specified Work Order."
 msgstr ""
 
-#: includes/modules/setup.php:86 includes/modules/setup.php:208
+#: includes/modules/setup.php:60
+msgid "Failed to update the value"
+msgstr ""
+
+#: includes/modules/setup.php:60 includes/modules/setup.php:74
+msgid "for the record"
+msgstr ""
+
+#: includes/modules/setup.php:60 includes/modules/setup.php:74
+#: includes/modules/setup.php:109 includes/modules/setup.php:126
+msgid "to"
+msgstr ""
+
+#: includes/modules/setup.php:60 includes/modules/setup.php:74
+#: includes/modules/setup.php:109 includes/modules/setup.php:126
+msgid "in the columm"
+msgstr ""
+
+#: includes/modules/setup.php:60 includes/modules/setup.php:74
+#: includes/modules/setup.php:109
+msgid "from the table"
+msgstr ""
+
+#: includes/modules/setup.php:74
+msgid "Successfully updated the value"
+msgstr ""
+
+#: includes/modules/setup.php:109
+msgid "Failed to update the values"
+msgstr ""
+
+#: includes/modules/setup.php:126
+msgid "Successfully updated the values"
+msgstr ""
+
+#: includes/modules/setup.php:126
+msgid "from the the table"
+msgstr ""
+
+#: includes/modules/setup.php:126
+msgid "Records Processed"
+msgstr ""
+
+#: includes/modules/setup.php:184 includes/modules/setup.php:291
 msgid "Error performing SQL query"
 msgstr ""
 
-#: includes/modules/setup.php:100 includes/modules/setup.php:222
+#: includes/modules/setup.php:196 includes/modules/setup.php:302
 msgid "Performed SQL query successfully"
 msgstr ""
 
-#: includes/modules/setup.php:120 includes/modules/setup.php:247
+#: includes/modules/setup.php:212 includes/modules/setup.php:323
 msgid "One or more SQL rule has failed. Check the logs."
 msgstr ""
 
-#: includes/modules/setup.php:138 includes/modules/setup.php:265
+#: includes/modules/setup.php:225 includes/modules/setup.php:336
 msgid "All SQL rules have run successfully."
 msgstr ""
 
-#: includes/modules/setup.php:299
+#: includes/modules/setup.php:376
 msgid "Could not open the Setup Log to save the record."
+msgstr ""
+
+#: includes/modules/setup.php:498
+msgid "The database installation process failed, check the logs."
+msgstr ""
+
+#: includes/modules/setup.php:510
+msgid "The database installation process was successful."
+msgstr ""
+
+#: includes/modules/setup.php:962
+msgid "The database migration process failed, check the logs."
+msgstr ""
+
+#: includes/modules/setup.php:974
+msgid "The database migration process was successful."
+msgstr ""
+
+#: includes/modules/setup.php:1019
+msgid "Starting the correction of the migrated `workorder` data in QWcrm."
+msgstr ""
+
+#: includes/modules/setup.php:1055 includes/modules/workorder.php:162
+msgid "Failed to return the matching Work Orders."
+msgstr ""
+
+#: includes/modules/setup.php:1118
+msgid "Finished the correction of the migrated `workorder` data in QWcrm."
+msgstr ""
+
+#: includes/modules/setup.php:1145
+msgid "Starting the correction of the migrated `invoice` data in QWcrm."
+msgstr ""
+
+#: includes/modules/setup.php:1158
+msgid "Failed to return the matching Invoices."
+msgstr ""
+
+#: includes/modules/setup.php:1213
+msgid "Finished the correction of the migrated `invoice` data in QWcrm."
+msgstr ""
+
+#: includes/modules/setup.php:1240
+msgid "Starting the correction of the migrated `giftcert` data in QWcrm."
+msgstr ""
+
+#: includes/modules/setup.php:1253
+msgid "Failed to return the matching Gift Certificates."
+msgstr ""
+
+#: includes/modules/setup.php:1281
+msgid "Finished the correction of the migrated `giftcert` data in QWcrm."
+msgstr ""
+
+#: includes/modules/setup.php:1308
+msgid "Starting the correction of the migrated `schedule` data in QWcrm."
+msgstr ""
+
+#: includes/modules/setup.php:1331
+msgid "Failed to return the matching Schedules."
+msgstr ""
+
+#: includes/modules/setup.php:1353
+msgid "Finished the correction of the migrated `schedule` data in QWcrm."
+msgstr ""
+
+#: includes/modules/setup.php:1385
+msgid "Failed to get MyITCRM company details."
+msgstr ""
+
+#: includes/modules/setup.php:1416
+msgid "Beginning the migration of MyITCRM data into the QWcrm table"
+msgstr ""
+
+#: includes/modules/setup.php:1434
+msgid "Error reading the MyITCRM table"
+msgstr ""
+
+#: includes/modules/setup.php:1517
+msgid "Error migrating a MyITCRM record into QWcrm"
+msgstr ""
+
+#: includes/modules/setup.php:1558 includes/modules/setup.php:1570
+#: includes/modules/setup.php:1588
+msgid "MyITCRM Records Processed"
+msgstr ""
+
+#: includes/modules/setup.php:1559 includes/modules/setup.php:1570
+#: includes/modules/setup.php:1588
+msgid "Records Failed To Migrate"
+msgstr ""
+
+#: includes/modules/setup.php:1560 includes/modules/setup.php:1570
+#: includes/modules/setup.php:1588
+msgid "Records Successfuly Migrated"
+msgstr ""
+
+#: includes/modules/setup.php:1569
+msgid "Error migrating some records into QWcrm table"
+msgstr ""
+
+#: includes/modules/setup.php:1587
+msgid "Successfully migrated all records into QWcrm table"
 msgstr ""
 
 #: includes/modules/supplier.php:67
@@ -1613,8 +1783,8 @@ msgid "Failed to insert the user record into the database."
 msgstr ""
 
 #: includes/modules/user.php:202 includes/modules/user.php:397
-#: includes/modules/user.php:510 includes/modules/user.php:711
-#: includes/modules/user.php:941
+#: includes/modules/user.php:510 includes/modules/user.php:714
+#: includes/modules/user.php:981
 msgid "User Account"
 msgstr ""
 
@@ -1718,129 +1888,145 @@ msgstr ""
 msgid "The customer already has a login."
 msgstr ""
 
-#: includes/modules/user.php:705 includes/modules/user.php:963
-#: includes/modules/user.php:1156
+#: includes/modules/user.php:708 includes/modules/user.php:1003
+#: includes/modules/user.php:1196
 msgid "Failed to add password reset authorization."
 msgstr ""
 
-#: includes/modules/user.php:711
+#: includes/modules/user.php:714
 msgid "password has been reset."
 msgstr ""
 
-#: includes/modules/user.php:740
+#: includes/modules/user.php:736
+msgid "Failed to read all users from the database."
+msgstr ""
+
+#: includes/modules/user.php:753
+msgid "All User Account passwords have been reset."
+msgstr ""
+
+#: includes/modules/user.php:777
 msgid "Username or Password Missing."
 msgstr ""
 
-#: includes/modules/user.php:750
+#: includes/modules/user.php:787
 msgid "You must reset your password before you are allowed to login."
 msgstr ""
 
-#: includes/modules/user.php:759
+#: includes/modules/user.php:797
 msgid ""
 "Login denied! Your account has either been blocked or you have not activated "
 "it yet."
 msgstr ""
 
-#: includes/modules/user.php:762
+#: includes/modules/user.php:800
 msgid "Login denied for"
 msgstr ""
 
-#: includes/modules/user.php:775
+#: includes/modules/user.php:813
 msgid "Login successful for"
 msgstr ""
 
-#: includes/modules/user.php:783
+#: includes/modules/user.php:821
 msgid "Login successful."
 msgstr ""
 
-#: includes/modules/user.php:792
+#: includes/modules/user.php:830
 msgid "Login unsuccessful for"
 msgstr ""
 
-#: includes/modules/user.php:794
+#: includes/modules/user.php:832
 msgid "Login Failed. Check you username and password."
 msgstr ""
 
-#: includes/modules/user.php:811
+#: includes/modules/user.php:849
 msgid "Logout successful for"
 msgstr ""
 
-#: includes/modules/user.php:834
+#: includes/modules/user.php:874
 msgid "Logout successful."
 msgstr ""
 
-#: includes/modules/user.php:866
+#: includes/modules/user.php:906
 msgid "Google reCAPTCHA Verification Failed."
 msgstr ""
 
-#: includes/modules/user.php:903
+#: includes/modules/user.php:943
 msgid "Your QWcrm password reset request"
 msgstr ""
 
-#: includes/modules/user.php:924
+#: includes/modules/user.php:964
 msgid "Hello"
 msgstr ""
 
-#: includes/modules/user.php:926
+#: includes/modules/user.php:966
 msgid "A request has been made to reset your QWcrm account password."
 msgstr ""
 
-#: includes/modules/user.php:927
+#: includes/modules/user.php:967
 msgid ""
 "To reset your password, you will need to submit this verification code in "
 "order to verify that the request was legitimate."
 msgstr ""
 
-#: includes/modules/user.php:929
+#: includes/modules/user.php:969
 msgid "The verification code is"
 msgstr ""
 
-#: includes/modules/user.php:931
+#: includes/modules/user.php:971
 msgid "Select the URL below and proceed with resetting your password."
 msgstr ""
 
-#: includes/modules/user.php:935
+#: includes/modules/user.php:975
 msgid "Thank you."
 msgstr ""
 
-#: includes/modules/user.php:941
+#: includes/modules/user.php:981
 msgid "reset email has been sent."
 msgstr ""
 
-#: includes/modules/user.php:983 includes/modules/user.php:1046
+#: includes/modules/user.php:1023 includes/modules/user.php:1086
 msgid "Failed to check for existing tokens for the submitted user."
 msgstr ""
 
-#: includes/modules/user.php:1006
+#: includes/modules/user.php:1046
 msgid "Failed to insert the user reset token into the database."
 msgstr ""
 
-#: includes/modules/user.php:1024
+#: includes/modules/user.php:1064
 msgid "Failed to get the User ID by secret code."
 msgstr ""
 
-#: includes/modules/user.php:1069
+#: includes/modules/user.php:1092
+msgid "The reset token does not exist."
+msgstr ""
+
+#: includes/modules/user.php:1098
+msgid "The user is blocked."
+msgstr ""
+
+#: includes/modules/user.php:1104
+msgid "The reset token has expired."
+msgstr ""
+
+#: includes/modules/user.php:1109
 msgid "Token Accepted."
 msgstr ""
 
-#: includes/modules/user.php:1089
+#: includes/modules/user.php:1129
 msgid "Failed to check for the submitted reset code."
 msgstr ""
 
-#: includes/modules/user.php:1106
+#: includes/modules/user.php:1146
 msgid "Reset code accepted."
 msgstr ""
 
-#: includes/modules/user.php:1123 includes/modules/user.php:1138
+#: includes/modules/user.php:1163 includes/modules/user.php:1178
 msgid "Failed to delete existing tokens for the submitted user."
 msgstr ""
 
 #: includes/modules/workorder.php:116
 msgid "Failed to count the matching Work Orders."
-msgstr ""
-
-#: includes/modules/workorder.php:162
-msgid "Failed to return the matching Work Orders."
 msgstr ""
 
 #: includes/modules/workorder.php:198
@@ -2012,7 +2198,7 @@ msgstr ""
 
 #: includes/modules/workorder.php:963
 msgid ""
-"Can not close a work order if it is Waiting For Parts. Please Adjust the "
+"Can not close a work order if it is Waiting for Parts. Please Adjust the "
 "status."
 msgstr ""
 
@@ -2020,7 +2206,7 @@ msgstr ""
 msgid "QWcrm requires PHP"
 msgstr ""
 
-#: index.php:460
+#: index.php:456
 msgid "You do not have permission to access this resource"
 msgstr ""
 
@@ -2066,6 +2252,14 @@ msgstr "-"
 #: themes/default/templates/setup/blocks/install_stage4_block.tpl:12
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:20
 #: themes/default/templates/setup/blocks/install_stage6_block.tpl:12
+#: themes/default/templates/setup/blocks/migrate_stage1_block.tpl:12
+#: themes/default/templates/setup/blocks/migrate_stage1a_block.tpl:12
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:12
+#: themes/default/templates/setup/blocks/migrate_stage3_block.tpl:12
+#: themes/default/templates/setup/blocks/migrate_stage4_block.tpl:12
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:20
+#: themes/default/templates/setup/blocks/migrate_stage6_block.tpl:12
+#: themes/default/templates/setup/blocks/migrate_stage7_block.tpl:12
 msgid "ADMINISTRATOR_CONFIG_HELP_TITLE"
 msgstr "Help"
 
@@ -2077,6 +2271,14 @@ msgstr "Help"
 #: themes/default/templates/setup/blocks/install_stage4_block.tpl:12
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:20
 #: themes/default/templates/setup/blocks/install_stage6_block.tpl:12
+#: themes/default/templates/setup/blocks/migrate_stage1_block.tpl:12
+#: themes/default/templates/setup/blocks/migrate_stage1a_block.tpl:12
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:12
+#: themes/default/templates/setup/blocks/migrate_stage3_block.tpl:12
+#: themes/default/templates/setup/blocks/migrate_stage4_block.tpl:12
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:20
+#: themes/default/templates/setup/blocks/migrate_stage6_block.tpl:12
+#: themes/default/templates/setup/blocks/migrate_stage7_block.tpl:12
 msgid "ADMINISTRATOR_CONFIG_HELP_CONTENT"
 msgstr ""
 "On this page you can set most of QWcrm system settings. If you break "
@@ -2939,12 +3141,12 @@ msgid "PAYMENT_OPTIONS_META_KEYWORDS"
 msgstr "-"
 
 #: language/_gettext_only/pages.php:312
-#: themes/default/templates/payment/options.tpl:15
+#: themes/default/templates/payment/options.tpl:18
 msgid "PAYMENT_OPTIONS_HELP_TITLE"
 msgstr "Help"
 
 #: language/_gettext_only/pages.php:313
-#: themes/default/templates/payment/options.tpl:15
+#: themes/default/templates/payment/options.tpl:18
 msgid "PAYMENT_OPTIONS_HELP_CONTENT"
 msgstr ""
 "On this page you can enable or disable your required payment options. Some "
@@ -3266,11 +3468,13 @@ msgstr "-"
 
 #: language/_gettext_only/pages.php:411
 #: themes/default/templates/setup/install.tpl:16
+#: themes/default/templates/setup/migrate.tpl:16
 msgid "SETUP_INSTALL_HELP_TITLE"
 msgstr "Hrlp"
 
 #: language/_gettext_only/pages.php:412
 #: themes/default/templates/setup/install.tpl:16
+#: themes/default/templates/setup/migrate.tpl:16
 msgid "SETUP_INSTALL_HELP_CONTENT"
 msgstr "Follow these easy steps to install QWcrm."
 
@@ -3515,12 +3719,14 @@ msgstr "-"
 
 #: language/_gettext_only/pages.php:485
 #: themes/default/templates/setup/blocks/install_stage7_block.tpl:18
+#: themes/default/templates/setup/blocks/migrate_stage8_block.tpl:24
 #: themes/default/templates/user/new.tpl:18
 msgid "USER_NEW_HELP_TITLE"
 msgstr "Help"
 
 #: language/_gettext_only/pages.php:486
 #: themes/default/templates/setup/blocks/install_stage7_block.tpl:18
+#: themes/default/templates/setup/blocks/migrate_stage8_block.tpl:24
 #: themes/default/templates/user/new.tpl:18
 msgid "USER_NEW_HELP_CONTENT"
 msgstr ""
@@ -3931,7 +4137,7 @@ msgstr ""
 #: themes/default/templates/report/basic_stats.tpl:59
 #: themes/default/templates/workorder/blocks/overview_workorders_stats_employee_block.tpl:14
 #: themes/default/templates/workorder/blocks/overview_workorders_waiting_for_parts_block.tpl:8
-msgid "Waiting For Parts"
+msgid "Waiting for Parts"
 msgstr ""
 
 #: language/_gettext_only/system_varibles.php:19
@@ -3943,6 +4149,12 @@ msgid "Scheduled"
 msgstr ""
 
 #: language/_gettext_only/system_varibles.php:20
+#: themes/default/templates/core/blocks/dashboard_workorders_with_client_block.tpl:8
+#: themes/default/templates/workorder/blocks/overview_workorders_with_client_block.tpl:8
+msgid "With Client"
+msgstr ""
+
+#: language/_gettext_only/system_varibles.php:21
 #: themes/default/templates/core/blocks/dashboard_workorders_on_hold_block.tpl:8
 #: themes/default/templates/core/blocks/dashboard_workorders_workorders_stats_employee_block.tpl:16
 #: themes/default/templates/report/basic_stats.tpl:60
@@ -3951,7 +4163,7 @@ msgstr ""
 msgid "On Hold"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:21
+#: language/_gettext_only/system_varibles.php:22
 #: themes/default/templates/core/blocks/dashboard_workorders_management_block.tpl:8
 #: themes/default/templates/core/blocks/dashboard_workorders_workorders_stats_employee_block.tpl:17
 #: themes/default/templates/report/basic_stats.tpl:61
@@ -3960,238 +4172,253 @@ msgstr ""
 msgid "Management"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:22
+#: language/_gettext_only/system_varibles.php:23
 msgid "Closed without Invoice"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:23
+#: language/_gettext_only/system_varibles.php:24
 msgid "Closed with Invoice"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:27
+#: language/_gettext_only/system_varibles.php:28
 msgid "Pending"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:28
+#: language/_gettext_only/system_varibles.php:29
 #: themes/default/templates/report/basic_stats.tpl:83
 msgid "Unpaid"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:29
+#: language/_gettext_only/system_varibles.php:30
 #: themes/default/templates/report/basic_stats.tpl:84
+#: themes/default/templates/report/financial.tpl:135
 msgid "Partially Paid"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:30
-msgid "In Dispute"
-msgstr ""
-
 #: language/_gettext_only/system_varibles.php:31
-msgid "Cancelled"
-msgstr ""
-
-#: language/_gettext_only/system_varibles.php:32
 #: themes/default/templates/customer/blocks/details_invoice_block.tpl:15
 #: themes/default/templates/customer/blocks/details_invoice_block.tpl:49
 #: themes/default/templates/report/basic_stats.tpl:85
-#: themes/default/templates/report/financial.tpl:135
-#: themes/default/templates/report/financial.tpl:314
+#: themes/default/templates/report/financial.tpl:139
+#: themes/default/templates/report/financial.tpl:318
 msgid "Paid"
 msgstr ""
 
+#: language/_gettext_only/system_varibles.php:32
+msgid "In Dispute"
+msgstr ""
+
+#: language/_gettext_only/system_varibles.php:33
+msgid "Overdue"
+msgstr ""
+
+#: language/_gettext_only/system_varibles.php:34
+msgid "Cancelled"
+msgstr ""
+
+#: language/_gettext_only/system_varibles.php:35
+msgid "Refunded"
+msgstr ""
+
 #: language/_gettext_only/system_varibles.php:36
-msgid "Residential"
-msgstr ""
-
-#: language/_gettext_only/system_varibles.php:37
-msgid "Commercial"
-msgstr ""
-
-#: language/_gettext_only/system_varibles.php:38
-msgid "Charity"
-msgstr ""
-
-#: language/_gettext_only/system_varibles.php:39
-msgid "Educational"
+msgid "Collections"
 msgstr ""
 
 #: language/_gettext_only/system_varibles.php:40
-msgid "Goverment"
+msgid "Residential"
+msgstr ""
+
+#: language/_gettext_only/system_varibles.php:41
+msgid "Commercial"
+msgstr ""
+
+#: language/_gettext_only/system_varibles.php:42
+msgid "Charity"
+msgstr ""
+
+#: language/_gettext_only/system_varibles.php:43
+msgid "Educational"
 msgstr ""
 
 #: language/_gettext_only/system_varibles.php:44
+msgid "Goverment"
+msgstr ""
+
+#: language/_gettext_only/system_varibles.php:48
 msgid "Bank Transfer"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:45
+#: language/_gettext_only/system_varibles.php:49
 msgid "Card"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:46
+#: language/_gettext_only/system_varibles.php:50
 #: themes/default/templates/payment/blocks/new_payment_cash_block.tpl:11
 #: themes/default/templates/payment/blocks/new_payment_cash_block.tpl:42
 msgid "Cash"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:47
+#: language/_gettext_only/system_varibles.php:51
 #: themes/default/templates/payment/blocks/new_payment_cheque_block.tpl:11
 #: themes/default/templates/payment/blocks/new_payment_cheque_block.tpl:44
 msgid "Cheque"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:48
-#: language/_gettext_only/system_varibles.php:61
+#: language/_gettext_only/system_varibles.php:52
+#: language/_gettext_only/system_varibles.php:65
 msgid "Credit"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:49
+#: language/_gettext_only/system_varibles.php:53
 msgid "Direct Debit"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:51
+#: language/_gettext_only/system_varibles.php:55
 msgid "Google Checkout"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:52
-#: language/_gettext_only/system_varibles.php:70
-#: language/_gettext_only/system_varibles.php:85
-#: language/_gettext_only/system_varibles.php:98
+#: language/_gettext_only/system_varibles.php:56
+#: language/_gettext_only/system_varibles.php:74
+#: language/_gettext_only/system_varibles.php:89
+#: language/_gettext_only/system_varibles.php:102
 #: themes/default/templates/administrator/config.tpl:68
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:31
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:31
 msgid "Other"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:53
+#: language/_gettext_only/system_varibles.php:57
 #: themes/default/templates/invoice/printing/print_invoice.tpl:231
 #: themes/default/templates/payment/blocks/new_payment_paypal_block.tpl:44
 msgid "PayPal"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:54
-#: language/_gettext_only/system_varibles.php:79
+#: language/_gettext_only/system_varibles.php:58
+#: language/_gettext_only/system_varibles.php:83
 msgid "Voucher"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:58
-#: language/_gettext_only/system_varibles.php:92
+#: language/_gettext_only/system_varibles.php:62
+#: language/_gettext_only/system_varibles.php:96
 msgid "Advertising"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:59
+#: language/_gettext_only/system_varibles.php:63
 msgid "Bank Charges"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:60
+#: language/_gettext_only/system_varibles.php:64
 msgid "Broadband"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:62
+#: language/_gettext_only/system_varibles.php:66
 msgid "Customer Refund"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:63
+#: language/_gettext_only/system_varibles.php:67
 msgid "Equipment"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:64
+#: language/_gettext_only/system_varibles.php:68
 msgid "Fuel"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:66
+#: language/_gettext_only/system_varibles.php:70
 msgid "Landline"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:67
+#: language/_gettext_only/system_varibles.php:71
 #: themes/default/templates/customer/blocks/details_customer_details_block.tpl:62
 msgid "Mobile Phone"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:68
+#: language/_gettext_only/system_varibles.php:72
 msgid "Office Supplies"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:69
-#: language/_gettext_only/system_varibles.php:97
+#: language/_gettext_only/system_varibles.php:73
+#: language/_gettext_only/system_varibles.php:101
 msgid "Online"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:71
-#: language/_gettext_only/system_varibles.php:99
+#: language/_gettext_only/system_varibles.php:75
+#: language/_gettext_only/system_varibles.php:103
 #: themes/default/templates/invoice/details.tpl:227
 #: themes/default/templates/invoice/edit.tpl:609
 #: themes/default/templates/invoice/prefill_items.tpl:45
 #: themes/default/templates/invoice/prefill_items.tpl:80
-#: themes/default/templates/report/financial.tpl:164
+#: themes/default/templates/report/financial.tpl:168
 msgid "Parts"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:72
+#: language/_gettext_only/system_varibles.php:76
 msgid "Postage"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:73
+#: language/_gettext_only/system_varibles.php:77
 msgid "Rent"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:74
-#: language/_gettext_only/system_varibles.php:100
+#: language/_gettext_only/system_varibles.php:78
+#: language/_gettext_only/system_varibles.php:104
 msgid "Services"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:75
-#: language/_gettext_only/system_varibles.php:101
+#: language/_gettext_only/system_varibles.php:79
+#: language/_gettext_only/system_varibles.php:105
 msgid "Software"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:76
+#: language/_gettext_only/system_varibles.php:80
+#: themes/default/templates/invoice/printing/print_invoice.tpl:263
 msgid "Tax"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:77
+#: language/_gettext_only/system_varibles.php:81
 msgid "Transport"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:78
+#: language/_gettext_only/system_varibles.php:82
 msgid "Utilities"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:80
+#: language/_gettext_only/system_varibles.php:84
 msgid "Wages"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:84
+#: language/_gettext_only/system_varibles.php:88
 msgid "Credit Note"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:86
+#: language/_gettext_only/system_varibles.php:90
 msgid "Proxy Invoice"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:87
+#: language/_gettext_only/system_varibles.php:91
 msgid "Returned Goods"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:88
+#: language/_gettext_only/system_varibles.php:92
 msgid "Returned Services"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:93
+#: language/_gettext_only/system_varibles.php:97
 msgid "Affiliate Marketing"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:94
+#: language/_gettext_only/system_varibles.php:98
 msgid "Courier"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:95
+#: language/_gettext_only/system_varibles.php:99
 msgid "Drop Shipping"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:96
+#: language/_gettext_only/system_varibles.php:100
 msgid "General"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:102
+#: language/_gettext_only/system_varibles.php:106
 msgid "Wholesale"
 msgstr ""
 
@@ -4236,12 +4463,12 @@ msgstr ""
 #: modules/invoice/delete.php:17 modules/invoice/delete_labour.php:17
 #: modules/invoice/delete_parts.php:17 modules/refund/delete.php:15
 #: modules/schedule/delete.php:17 modules/setup/choice.php:15
-#: modules/setup/install.php:18 modules/setup/migrate.php:15
+#: modules/setup/install.php:18 modules/setup/migrate.php:18
 #: modules/setup/upgrade.php:15 modules/supplier/delete.php:15
-#: modules/user/delete.php:16 modules/user/reset.php:32
-#: modules/user/reset.php:81 modules/user/reset.php:95
-#: modules/user/reset.php:137 modules/workorder/autosuggest_scope.php:14
-#: modules/workorder/delete.php:16 modules/workorder/note_delete.php:16
+#: modules/user/delete.php:16 modules/user/reset.php:34
+#: modules/user/reset.php:92 modules/user/reset.php:134
+#: modules/workorder/autosuggest_scope.php:14 modules/workorder/delete.php:16
+#: modules/workorder/note_delete.php:16
 msgid "No Direct Access Allowed."
 msgstr ""
 
@@ -4429,7 +4656,7 @@ msgstr ""
 msgid "Refund added successfully."
 msgstr ""
 
-#: modules/report/financial.php:79
+#: modules/report/financial.php:80
 msgid "Financial report run for the date range"
 msgstr ""
 
@@ -4465,68 +4692,102 @@ msgstr ""
 msgid "QWcrm installation has begun."
 msgstr ""
 
-#: modules/setup/install.php:36
+#: modules/setup/install.php:36 modules/setup/migrate.php:36
 msgid ""
 "Connected successfully to the database with the supplied credentials and "
 "added them to the config file."
 msgstr ""
 
-#: modules/setup/install.php:38
+#: modules/setup/install.php:38 modules/setup/migrate.php:38
 msgid "Database connection successful."
 msgstr ""
 
-#: modules/setup/install.php:45
+#: modules/setup/install.php:45 modules/setup/migrate.php:45
 msgid "There is a database connection issue. Check your settings."
 msgstr ""
 
-#: modules/setup/install.php:46
+#: modules/setup/install.php:46 modules/setup/migrate.php:46
 msgid "Failed to connect to the database with the supplied credentials."
 msgstr ""
 
-#: modules/setup/install.php:61
+#: modules/setup/install.php:66 modules/setup/migrate.php:101
 msgid "Config settings have been added to the config file."
 msgstr ""
 
-#: modules/setup/install.php:88
+#: modules/setup/install.php:92 modules/setup/migrate.php:129
 msgid "Starting Database installation."
 msgstr ""
 
-#: modules/setup/install.php:93
+#: modules/setup/install.php:97 modules/setup/migrate.php:134
 msgid "The database installed successfully."
 msgstr ""
 
-#: modules/setup/install.php:101
+#: modules/setup/install.php:105 modules/setup/migrate.php:142
 msgid "The database failed to install."
 msgstr ""
 
-#: modules/setup/install.php:138
+#: modules/setup/install.php:145 modules/setup/migrate.php:183
 msgid "Company details inserted."
 msgstr ""
 
-#: modules/setup/install.php:159
+#: modules/setup/install.php:166
 msgid "Starting Work Order number has been set."
 msgstr ""
 
-#: modules/setup/install.php:164
+#: modules/setup/install.php:171
 msgid "Starting Invoice number has been set."
 msgstr ""
 
-#: modules/setup/install.php:183
+#: modules/setup/install.php:190 modules/setup/migrate.php:278
 msgid "The administrator account has been created."
 msgstr ""
 
-#: modules/setup/install.php:184
+#: modules/setup/install.php:191 modules/setup/install.php:194
 msgid "The QWcrm installation process has completed successfully."
 msgstr ""
 
-#: modules/setup/install.php:187
-msgid ""
-"Installation successful. Please login with the administrator account you "
-"just created."
+#: modules/setup/install.php:194 modules/setup/migrate.php:283
+msgid "Please login with the administrator account you have just created."
 msgstr ""
 
-#: modules/setup/migrate.php:20
+#: modules/setup/migrate.php:23
 msgid "QWcrm migration from MyITCRM has begun."
+msgstr ""
+
+#: modules/setup/migrate.php:68
+msgid ""
+"Connected successfully to the MyITCRM database with the supplied prefix and "
+"added it to the config file."
+msgstr ""
+
+#: modules/setup/migrate.php:70
+msgid "MyITCRM database connection successful."
+msgstr ""
+
+#: modules/setup/migrate.php:77
+msgid "The MyITCRM databse is either missing or the prefix is wrong."
+msgstr ""
+
+#: modules/setup/migrate.php:78
+msgid "Failed to connect to the MyITCRM database with the supplied prefix."
+msgstr ""
+
+#: modules/setup/migrate.php:202
+msgid "Starting MyITCRM Database Migration."
+msgstr ""
+
+#: modules/setup/migrate.php:212
+msgid "The MyITCRM database migrated successfully."
+msgstr ""
+
+#: modules/setup/migrate.php:220
+msgid "The MyITCRM database failed to migrate successfully."
+msgstr ""
+
+#: modules/setup/migrate.php:279 modules/setup/migrate.php:283
+msgid ""
+"The QWcrm installation and MyITCRM migration process has completed "
+"successfully."
 msgstr ""
 
 #: modules/setup/upgrade.php:20
@@ -4551,17 +4812,17 @@ msgstr ""
 msgid "No User ID supplied."
 msgstr ""
 
-#: modules/user/reset.php:44
+#: modules/user/reset.php:46
 msgid ""
 "You cannot reset the password on this account. It either does not exist or "
 "is blocked."
 msgstr ""
 
-#: modules/user/reset.php:147
+#: modules/user/reset.php:144
 msgid "The submitted reset code was invalid."
 msgstr ""
 
-#: modules/user/reset.php:167
+#: modules/user/reset.php:164
 msgid "Password reset successfully."
 msgstr ""
 
@@ -4636,6 +4897,7 @@ msgstr ""
 
 #: themes/default/templates/administrator/acl.tpl:31
 #: themes/default/templates/setup/blocks/install_stage7_block.tpl:132
+#: themes/default/templates/setup/blocks/migrate_stage8_block.tpl:138
 msgid "Administrator"
 msgstr ""
 
@@ -4653,6 +4915,7 @@ msgstr ""
 #: themes/default/templates/core/blocks/dashboard_workorders_on_hold_block.tpl:16
 #: themes/default/templates/core/blocks/dashboard_workorders_scheduled_block.tpl:16
 #: themes/default/templates/core/blocks/dashboard_workorders_waiting_for_parts_block.tpl:16
+#: themes/default/templates/core/blocks/dashboard_workorders_with_client_block.tpl:16
 #: themes/default/templates/customer/blocks/details_workorder_block.tpl:17
 #: themes/default/templates/customer/blocks/details_workorder_block.tpl:77
 #: themes/default/templates/invoice/details.tpl:32
@@ -4665,6 +4928,7 @@ msgstr ""
 #: themes/default/templates/workorder/blocks/overview_workorders_scheduled_block.tpl:16
 #: themes/default/templates/workorder/blocks/overview_workorders_unassigned_block.tpl:16
 #: themes/default/templates/workorder/blocks/overview_workorders_waiting_for_parts_block.tpl:16
+#: themes/default/templates/workorder/blocks/overview_workorders_with_client_block.tpl:16
 #: themes/default/templates/workorder/closed.tpl:86
 #: themes/default/templates/workorder/new.tpl:59
 #: themes/default/templates/workorder/open.tpl:86
@@ -4690,6 +4954,7 @@ msgstr ""
 #: themes/default/templates/core/blocks/dashboard_workorders_on_hold_block.tpl:13
 #: themes/default/templates/core/blocks/dashboard_workorders_scheduled_block.tpl:13
 #: themes/default/templates/core/blocks/dashboard_workorders_waiting_for_parts_block.tpl:13
+#: themes/default/templates/core/blocks/dashboard_workorders_with_client_block.tpl:13
 #: themes/default/templates/customer/blocks/details_giftcert_block.tpl:13
 #: themes/default/templates/customer/blocks/details_giftcert_block.tpl:57
 #: themes/default/templates/customer/blocks/details_workorder_block.tpl:14
@@ -4702,6 +4967,8 @@ msgstr ""
 #: themes/default/templates/invoice/open.tpl:80
 #: themes/default/templates/setup/blocks/install_stage7_block.tpl:60
 #: themes/default/templates/setup/blocks/install_stage7_block.tpl:70
+#: themes/default/templates/setup/blocks/migrate_stage8_block.tpl:66
+#: themes/default/templates/setup/blocks/migrate_stage8_block.tpl:76
 #: themes/default/templates/user/blocks/details_details_block.tpl:56
 #: themes/default/templates/user/blocks/details_details_block.tpl:59
 #: themes/default/templates/user/blocks/details_open_workorders_block.tpl:14
@@ -4716,6 +4983,7 @@ msgstr ""
 #: themes/default/templates/workorder/blocks/overview_workorders_scheduled_block.tpl:13
 #: themes/default/templates/workorder/blocks/overview_workorders_unassigned_block.tpl:13
 #: themes/default/templates/workorder/blocks/overview_workorders_waiting_for_parts_block.tpl:13
+#: themes/default/templates/workorder/blocks/overview_workorders_with_client_block.tpl:13
 #: themes/default/templates/workorder/closed.tpl:83
 #: themes/default/templates/workorder/details.tpl:45
 #: themes/default/templates/workorder/new.tpl:57
@@ -4763,39 +5031,64 @@ msgstr ""
 #: themes/default/templates/administrator/config.tpl:582
 #: themes/default/templates/administrator/config.tpl:610
 #: themes/default/templates/administrator/config.tpl:620
-#: themes/default/templates/company/edit.tpl:232
-#: themes/default/templates/company/edit.tpl:264
+#: themes/default/templates/company/edit.tpl:228
+#: themes/default/templates/company/edit.tpl:261
 #: themes/default/templates/company/edit.tpl:293
 #: themes/default/templates/customer/edit.tpl:87
 #: themes/default/templates/customer/new.tpl:88
 #: themes/default/templates/invoice/prefill_items.tpl:52
 #: themes/default/templates/invoice/prefill_items.tpl:87
-#: themes/default/templates/payment/options.tpl:39
+#: themes/default/templates/payment/options.tpl:36
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:39
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:50
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:77
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:254
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:304
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:321
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:373
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:383
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:393
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:403
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:413
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:423
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:454
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:471
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:481
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:491
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:502
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:532
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:550
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:581
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:592
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:257
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:311
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:328
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:380
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:390
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:400
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:410
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:420
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:430
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:461
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:478
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:488
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:498
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:509
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:539
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:557
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:588
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:599
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:233
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:265
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:294
 #: themes/default/templates/setup/blocks/install_stage7_block.tpl:151
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:39
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:50
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:77
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:257
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:309
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:326
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:378
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:388
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:398
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:408
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:418
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:428
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:459
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:476
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:486
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:496
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:507
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:537
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:555
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:586
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:597
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:233
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:265
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:294
+#: themes/default/templates/setup/blocks/migrate_stage8_block.tpl:157
 #: themes/default/templates/user/blocks/details_details_block.tpl:91
 #: themes/default/templates/user/edit.tpl:147
 #: themes/default/templates/user/new.tpl:147
@@ -4833,8 +5126,8 @@ msgstr ""
 #: themes/default/templates/administrator/config.tpl:581
 #: themes/default/templates/administrator/config.tpl:609
 #: themes/default/templates/administrator/config.tpl:619
-#: themes/default/templates/company/edit.tpl:233
-#: themes/default/templates/company/edit.tpl:265
+#: themes/default/templates/company/edit.tpl:229
+#: themes/default/templates/company/edit.tpl:262
 #: themes/default/templates/company/edit.tpl:294
 #: themes/default/templates/customer/edit.tpl:86
 #: themes/default/templates/customer/new.tpl:89
@@ -4846,33 +5139,59 @@ msgstr ""
 #: themes/default/templates/invoice/edit.tpl:654
 #: themes/default/templates/invoice/prefill_items.tpl:51
 #: themes/default/templates/invoice/prefill_items.tpl:86
-#: themes/default/templates/payment/options.tpl:38
+#: themes/default/templates/payment/options.tpl:35
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:38
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:49
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:76
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:253
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:303
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:320
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:372
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:382
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:392
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:402
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:412
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:422
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:453
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:470
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:480
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:490
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:501
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:531
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:549
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:580
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:591
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:256
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:310
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:327
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:379
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:389
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:399
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:409
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:419
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:429
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:460
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:477
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:487
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:497
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:508
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:538
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:556
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:587
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:598
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:234
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:266
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:295
 #: themes/default/templates/setup/blocks/install_stage7_block.tpl:150
 #: themes/default/templates/setup/blocks/install_stage7_block.tpl:154
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:38
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:49
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:76
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:256
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:308
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:325
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:377
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:387
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:397
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:407
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:417
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:427
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:458
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:475
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:485
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:495
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:506
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:536
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:554
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:585
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:596
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:234
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:266
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:295
+#: themes/default/templates/setup/blocks/migrate_stage8_block.tpl:156
+#: themes/default/templates/setup/blocks/migrate_stage8_block.tpl:160
 #: themes/default/templates/user/blocks/details_details_block.tpl:90
 #: themes/default/templates/user/edit.tpl:146
 #: themes/default/templates/user/new.tpl:146
@@ -4916,7 +5235,9 @@ msgstr ""
 #: themes/default/templates/administrator/config.tpl:25
 #: themes/default/templates/administrator/config.tpl:322
 #: themes/default/templates/setup/blocks/install_stage1_block.tpl:21
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:286
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:289
+#: themes/default/templates/setup/blocks/migrate_stage1_block.tpl:21
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:289
 msgid "Database"
 msgstr ""
 
@@ -4924,11 +5245,14 @@ msgstr ""
 #: themes/default/templates/administrator/config.tpl:32
 #: themes/default/templates/setup/blocks/install_stage1_block.tpl:25
 #: themes/default/templates/setup/blocks/install_stage1_block.tpl:28
+#: themes/default/templates/setup/blocks/migrate_stage1_block.tpl:25
+#: themes/default/templates/setup/blocks/migrate_stage1_block.tpl:28
 msgid "Host"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:32
 #: themes/default/templates/setup/blocks/install_stage1_block.tpl:28
+#: themes/default/templates/setup/blocks/migrate_stage1_block.tpl:28
 msgid ""
 "The hostname for your database entered during the installation process. Do "
 "not edit this field unless absolutely necessary (eg the transfer of the "
@@ -4939,11 +5263,14 @@ msgstr ""
 #: themes/default/templates/administrator/config.tpl:39
 #: themes/default/templates/setup/blocks/install_stage1_block.tpl:32
 #: themes/default/templates/setup/blocks/install_stage1_block.tpl:35
+#: themes/default/templates/setup/blocks/migrate_stage1_block.tpl:32
+#: themes/default/templates/setup/blocks/migrate_stage1_block.tpl:35
 msgid "Database Name"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:39
 #: themes/default/templates/setup/blocks/install_stage1_block.tpl:35
+#: themes/default/templates/setup/blocks/migrate_stage1_block.tpl:35
 msgid ""
 "The name for your database entered during the installation process. Do not "
 "edit this field unless absolutely necessary (eg the transfer of the database "
@@ -4954,11 +5281,14 @@ msgstr ""
 #: themes/default/templates/administrator/config.tpl:46
 #: themes/default/templates/setup/blocks/install_stage1_block.tpl:39
 #: themes/default/templates/setup/blocks/install_stage1_block.tpl:42
+#: themes/default/templates/setup/blocks/migrate_stage1_block.tpl:39
+#: themes/default/templates/setup/blocks/migrate_stage1_block.tpl:42
 msgid "Database Username"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:46
 #: themes/default/templates/setup/blocks/install_stage1_block.tpl:42
+#: themes/default/templates/setup/blocks/migrate_stage1_block.tpl:42
 msgid ""
 "The username for access to your database entered during the installation "
 "process. Do not edit this field unless absolutely necessary (eg the transfer "
@@ -4969,11 +5299,14 @@ msgstr ""
 #: themes/default/templates/administrator/config.tpl:53
 #: themes/default/templates/setup/blocks/install_stage1_block.tpl:46
 #: themes/default/templates/setup/blocks/install_stage1_block.tpl:49
+#: themes/default/templates/setup/blocks/migrate_stage1_block.tpl:46
+#: themes/default/templates/setup/blocks/migrate_stage1_block.tpl:49
 msgid "Database Password"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:53
 #: themes/default/templates/setup/blocks/install_stage1_block.tpl:49
+#: themes/default/templates/setup/blocks/migrate_stage1_block.tpl:49
 msgid ""
 "The password for access to your database entered during the installation "
 "process. Do not edit this field unless absolutely necessary (eg the transfer "
@@ -4984,11 +5317,12 @@ msgstr ""
 #: themes/default/templates/administrator/config.tpl:60
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:21
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:24
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:21
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:24
 msgid "Database Tables Prefix"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:60
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:24
 msgid ""
 "The prefix used for your database tables, created during the installation "
 "process. Do not edit this field unless absolutely necessary (eg the transfer "
@@ -4999,11 +5333,14 @@ msgstr ""
 #: themes/default/templates/administrator/config.tpl:78
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:35
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:41
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:35
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:41
 msgid "Gzip Page Compression"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:78
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:41
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:41
 msgid "Compress buffered output if supported."
 msgstr ""
 
@@ -5011,11 +5348,14 @@ msgstr ""
 #: themes/default/templates/administrator/config.tpl:88
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:46
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:52
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:46
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:52
 msgid "Site Maintenance"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:88
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:52
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:52
 msgid ""
 "Select if access to the Site Frontend is available. If Yes, the Frontend "
 "will display a message via the maintenance page."
@@ -5025,11 +5365,14 @@ msgstr ""
 #: themes/default/templates/administrator/config.tpl:96
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:56
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:60
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:56
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:60
 msgid "Theme Name"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:96
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:60
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:60
 msgid ""
 "This is the theme QWcrm is using. The ability to change the theme is not "
 "currently available, although the templating code is all present."
@@ -5039,16 +5382,20 @@ msgstr ""
 #: themes/default/templates/administrator/config.tpl:105
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:64
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:69
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:64
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:69
 msgid "Default Language"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:103
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:67
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:67
 msgid "English"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:105
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:69
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:69
 msgid ""
 "This is the default language QWcrm uses. If 'Autodetect Language' is "
 "disabled or the user's language is not availabe then this language will be "
@@ -5060,11 +5407,14 @@ msgstr ""
 #: themes/default/templates/administrator/config.tpl:115
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:73
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:79
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:73
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:79
 msgid "Autodetect Language"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:115
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:79
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:79
 msgid ""
 "If enabled QWcrm will try to set the language based on your browser. If your "
 "language is not available then the default language will be used."
@@ -5074,11 +5424,14 @@ msgstr ""
 #: themes/default/templates/administrator/config.tpl:122
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:83
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:86
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:83
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:86
 msgid "Google Server"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:122
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:86
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:86
 msgid ""
 "This is your regionally prefered google website that you use. It is "
 "currently used for some Google Maps."
@@ -5086,6 +5439,7 @@ msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:129
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:93
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:93
 msgid "Mail Settings"
 msgstr ""
 
@@ -5093,11 +5447,14 @@ msgstr ""
 #: themes/default/templates/administrator/config.tpl:141
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:99
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:105
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:99
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:105
 msgid "Send Mail"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:141
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:105
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:105
 msgid ""
 "Select Yes to turn on mail sending, select No to turn off mail sending. "
 "Warning: It is advised to put the site offline when disabling the mail "
@@ -5108,16 +5465,20 @@ msgstr ""
 #: themes/default/templates/administrator/config.tpl:152
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:109
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:116
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:109
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:116
 msgid "Mailer"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:148
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:112
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:112
 msgid "PHP Mail"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:152
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:116
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:116
 msgid ""
 "Select which mailer for the delivery of site email. Sendmail only works on "
 "Linux/UNIX."
@@ -5127,11 +5488,14 @@ msgstr ""
 #: themes/default/templates/administrator/config.tpl:159
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:120
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:123
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:120
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:123
 msgid "From Email"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:159
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:123
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:123
 msgid "The email address that will be used to send site email."
 msgstr ""
 
@@ -5139,11 +5503,14 @@ msgstr ""
 #: themes/default/templates/administrator/config.tpl:166
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:127
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:130
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:127
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:130
 msgid "From Name"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:166
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:130
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:130
 msgid ""
 "Text displayed in the header &quot;From:&quot; field when sending a site "
 "email. Usually the site name."
@@ -5153,11 +5520,14 @@ msgstr ""
 #: themes/default/templates/administrator/config.tpl:173
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:134
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:137
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:134
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:137
 msgid "Reply To Email"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:173
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:137
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:137
 msgid "The email address that will be used to receive end user(s) reply."
 msgstr ""
 
@@ -5165,11 +5535,14 @@ msgstr ""
 #: themes/default/templates/administrator/config.tpl:180
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:141
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:144
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:141
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:144
 msgid "Reply To Name"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:180
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:144
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:144
 msgid ""
 "Text displayed in the header &quot;To:&quot; field when end user(s) replying "
 "to received email."
@@ -5179,11 +5552,14 @@ msgstr ""
 #: themes/default/templates/administrator/config.tpl:194
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:155
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:158
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:155
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:158
 msgid "Sendmail Path"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:194
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:158
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:158
 msgid ""
 "Enter the path to the sendmail program folder on the host server.<br/>This "
 "is only needed when using sendmail and usually does not need to be changed."
@@ -5193,11 +5569,14 @@ msgstr ""
 #: themes/default/templates/administrator/config.tpl:208
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:169
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:172
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:169
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:172
 msgid "SMTP Host"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:208
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:172
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:172
 msgid "Enter the name of the SMTP host."
 msgstr ""
 
@@ -5205,11 +5584,14 @@ msgstr ""
 #: themes/default/templates/administrator/config.tpl:215
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:176
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:179
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:176
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:179
 msgid "SMTP Port"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:215
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:179
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:179
 msgid ""
 "Enter the port number of the SMTP server QWcrm will use to send emails. "
 "Usually:<br />- 25 when using an unsecure mail server<br />- 465 when using "
@@ -5221,6 +5603,8 @@ msgstr ""
 #: themes/default/templates/administrator/config.tpl:226
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:183
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:190
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:183
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:190
 msgid "SMTP Security"
 msgstr ""
 
@@ -5234,11 +5618,17 @@ msgstr ""
 #: themes/default/templates/giftcert/search.tpl:47
 #: themes/default/templates/giftcert/search.tpl:57
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:186
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:242
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:285
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:440
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:513
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:560
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:245
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:288
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:447
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:520
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:567
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:186
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:245
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:288
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:445
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:518
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:565
 #: themes/default/templates/user/search.tpl:47
 #: themes/default/templates/user/search.tpl:57
 msgid "None"
@@ -5246,6 +5636,7 @@ msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:226
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:190
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:190
 msgid ""
 "Select the security model of the SMTP server Joomla will use to send emails."
 "<br />- None for no encryption<br />- SSL/TLS for SMTPS (usually on port "
@@ -5257,11 +5648,14 @@ msgstr ""
 #: themes/default/templates/administrator/config.tpl:236
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:194
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:200
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:194
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:200
 msgid "SMTP Authentication"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:236
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:200
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:200
 msgid "Select Yes if your SMTP Host requires SMTP Authentication."
 msgstr ""
 
@@ -5269,11 +5663,14 @@ msgstr ""
 #: themes/default/templates/administrator/config.tpl:243
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:204
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:207
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:204
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:207
 msgid "SMTP Username"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:243
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:207
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:207
 msgid "Enter the username for access to the SMTP host."
 msgstr ""
 
@@ -5281,11 +5678,14 @@ msgstr ""
 #: themes/default/templates/administrator/config.tpl:250
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:211
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:214
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:211
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:214
 msgid "SMTP Password"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:250
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:214
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:214
 msgid "Enter the password for the SMTP host."
 msgstr ""
 
@@ -5293,11 +5693,14 @@ msgstr ""
 #: themes/default/templates/administrator/config.tpl:264
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:227
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:228
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:227
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:228
 msgid "Send Test Mail"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:264
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:228
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:228
 msgid ""
 "You must save your changes before using this as the test uses the saved "
 "settings not those on the page.<br><br>The email will be sent to the logged "
@@ -5305,29 +5708,35 @@ msgid ""
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:271
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:235
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:238
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:238
 msgid "Security"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:275
 #: themes/default/templates/administrator/config.tpl:282
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:239
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:246
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:242
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:249
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:242
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:249
 msgid "Force SSL/HTTPS"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:279
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:243
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:246
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:246
 msgid "Administrator Only"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:280
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:244
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:247
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:247
 msgid "Entire Site"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:282
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:246
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:249
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:249
 msgid ""
 "Force site access in the selected areas to occur only with HTTPS (encrypted "
 "HTTP connections with the https:// protocol prefix) and also force the use "
@@ -5337,13 +5746,16 @@ msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:286
 #: themes/default/templates/administrator/config.tpl:292
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:250
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:256
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:253
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:259
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:253
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:259
 msgid "reCAPTCHA"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:292
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:256
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:259
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:259
 msgid ""
 "Protect the login procedure with Google reCAPTCHA. reCAPTCHA is a free "
 "service that protects your website from spam and abuse. reCAPTCHA uses an "
@@ -5353,19 +5765,23 @@ msgid ""
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:293
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:257
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:260
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:260
 msgid "Get Keys"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:297
 #: themes/default/templates/administrator/config.tpl:300
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:261
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:264
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:267
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:264
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:267
 msgid "reCAPTCHA Site Key"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:300
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:264
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:267
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:267
 msgid ""
 " The site key is used to invoke reCAPTCHA service on your site or mobile "
 "application."
@@ -5373,13 +5789,16 @@ msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:304
 #: themes/default/templates/administrator/config.tpl:307
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:268
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:271
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:274
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:271
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:274
 msgid "reCAPTCHA Secret Key"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:307
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:271
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:274
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:274
 msgid ""
 "The secret key authorizes communication between your application backend and "
 "the reCAPTCHA server to verify the user's response. The secret key needs to "
@@ -5387,19 +5806,23 @@ msgid ""
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:314
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:278
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:281
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:281
 msgid "Session"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:318
 #: themes/default/templates/administrator/config.tpl:324
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:282
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:288
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:285
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:291
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:285
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:291
 msgid "Session Handler"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:324
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:288
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:291
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:291
 msgid ""
 "The mechanism by which QWcrm identifies a User once they are connected to "
 "the website using non-persistent cookies. None/PHP is susceptible to garbage "
@@ -5411,13 +5834,16 @@ msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:328
 #: themes/default/templates/administrator/config.tpl:331
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:292
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:295
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:299
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:302
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:297
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:300
 msgid "Session Lifetime"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:331
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:295
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:302
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:300
 msgid ""
 "Auto log out a User after they have been inactive for the entered number of "
 "minutes. Do not set too high."
@@ -5425,13 +5851,16 @@ msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:335
 #: themes/default/templates/administrator/config.tpl:341
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:300
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:306
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:307
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:313
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:305
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:311
 msgid "Shared Session"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:341
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:306
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:313
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:311
 msgid ""
 "When enabled, a user's session is shared between the frontend and "
 "administrator sections of the site. Note that changing this value will "
@@ -5442,14 +5871,18 @@ msgstr ""
 #: themes/default/templates/administrator/config.tpl:348
 #: themes/default/templates/administrator/config.tpl:352
 #: themes/default/templates/administrator/config.tpl:358
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:313
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:317
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:323
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:320
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:324
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:330
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:318
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:322
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:328
 msgid "Remember Me"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:358
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:323
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:330
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:328
 msgid ""
 "Provides remember me functionality so when a user logs in to QWcrm they can "
 "stay logged in even if they close the browser. This works by generatating an "
@@ -5458,13 +5891,16 @@ msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:362
 #: themes/default/templates/administrator/config.tpl:365
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:327
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:330
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:334
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:337
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:332
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:335
 msgid "Cookie Lifetime"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:365
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:330
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:337
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:335
 msgid ""
 "The number of days until the authentication cookie will expire. Other "
 "factors may cause it to expire before this. Longer lengths are less secure."
@@ -5472,32 +5908,39 @@ msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:369
 #: themes/default/templates/administrator/config.tpl:372
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:334
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:337
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:341
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:344
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:339
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:342
 msgid "Cookie Token Length"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:372
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:337
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:344
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:342
 msgid ""
 "The length of the key to use to encrypt the cookie. Longer lengths are more "
 "secure, but they will slow performance."
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:379
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:344
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:351
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:349
 msgid "Cookies"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:383
 #: themes/default/templates/administrator/config.tpl:386
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:348
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:351
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:355
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:358
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:353
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:356
 msgid "Cookie Domain"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:386
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:351
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:358
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:356
 msgid ""
 "Domain to use when setting session cookies. Precede domain with '.' if "
 "cookie should be valid for all subdomains."
@@ -5505,33 +5948,40 @@ msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:390
 #: themes/default/templates/administrator/config.tpl:393
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:355
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:358
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:362
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:365
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:360
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:363
 msgid "Cookie Path"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:393
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:358
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:365
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:363
 msgid "Path the cookie should be valid for."
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:400
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:365
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:372
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:370
 msgid "Logging"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:404
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:369
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:376
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:374
 msgid "Access Log"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:410
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:375
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:382
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:380
 msgid "QWcrm Access Log"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:410
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:375
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:382
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:380
 msgid ""
 "Enable access logging for QWcrm. This will log all page accesses and store "
 "the data in the Access Log. This log file is in apache log format and can be "
@@ -5539,17 +5989,20 @@ msgid ""
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:414
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:379
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:386
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:384
 msgid "Activity Log"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:420
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:385
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:392
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:390
 msgid "QWcrm Activity Log"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:420
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:385
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:392
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:390
 msgid ""
 "Enable activity logging for QWcrm. This will log all user activity from "
 "within QWcrm and store the data in the Activity Log. This log file is in "
@@ -5557,17 +6010,20 @@ msgid ""
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:424
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:389
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:396
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:394
 msgid "Error Log"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:430
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:395
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:402
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:400
 msgid "QWcrm Error Log"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:430
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:395
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:402
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:400
 msgid ""
 "Enable error logging for QWcrm. This will log all errors and store the data "
 "in the Error Log. This log file is in apache log format and can be found in "
@@ -5575,17 +6031,20 @@ msgid ""
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:434
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:399
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:406
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:404
 msgid "SQL Logging"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:440
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:405
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:412
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:410
 msgid "QWcrm SQL Log"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:440
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:405
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:412
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:410
 msgid ""
 "Enable SQL logging for QWcrm. This attach the SQL query when present to the "
 "standard QWcrm Error Log. This is deisabled by default because it can cause "
@@ -5593,17 +6052,20 @@ msgid ""
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:444
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:409
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:416
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:414
 msgid "Email Error Log"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:450
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:415
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:422
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:420
 msgid "QWcrm Email Error Log"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:450
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:415
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:422
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:420
 msgid ""
 "Enable email error logging for QWcrm. This will log all email system errors "
 "from within QWcrm and store the data in the Activity Log. This log file can "
@@ -5612,17 +6074,20 @@ msgid ""
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:454
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:419
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:426
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:424
 msgid "Email Transport Log"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:460
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:425
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:432
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:430
 msgid "QWcrm Email Transport Log"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:460
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:425
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:432
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:430
 msgid ""
 "Enable email transport logging for QWcrm. This will log all email trasnsport "
 "transactions from within QWcrm and store the data in the Email Transport "
@@ -5634,39 +6099,48 @@ msgstr ""
 #: themes/default/templates/administrator/config.tpl:467
 #: themes/default/templates/administrator/config.tpl:471
 #: themes/default/templates/administrator/config.tpl:481
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:432
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:436
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:446
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:439
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:443
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:453
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:437
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:441
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:451
 msgid "Error Reporting"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:474
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:439
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:446
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:444
 msgid "System Default"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:476
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:441
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:448
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:446
 msgid "Very Simple"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:477
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:442
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:449
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:447
 msgid "Simple"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:478
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:443
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:450
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:448
 msgid "Maximum"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:479
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:444
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:451
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:449
 msgid "Development"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:481
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:446
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:453
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:451
 msgid ""
 "Select the level of PHP reporting for your needs. Do not leave error "
 "reporting on for live sites as this can be a security risk."
@@ -5674,13 +6148,16 @@ msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:485
 #: themes/default/templates/administrator/config.tpl:491
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:450
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:456
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:457
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:463
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:455
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:461
 msgid "Error Page Raw Output"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:491
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:456
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:463
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:461
 msgid ""
 "Normally when an error occurs the error page is display with the relevant "
 "information, however sometimes looping or white screens can occur and this "
@@ -5690,19 +6167,23 @@ msgid ""
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:498
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:463
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:470
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:468
 msgid "Debugging"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:502
 #: themes/default/templates/administrator/config.tpl:508
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:467
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:473
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:474
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:480
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:472
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:478
 msgid "QWcrm Debug"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:508
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:473
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:480
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:478
 msgid ""
 "This on it's own gives basic infomration such as the page and module names "
 "aswell as their load time. QWcrm Debug needs to be enabled to access the "
@@ -5711,13 +6192,16 @@ msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:512
 #: themes/default/templates/administrator/config.tpl:518
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:477
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:483
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:484
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:490
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:482
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:488
 msgid "QWcrm Advanced Debug"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:518
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:483
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:490
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:488
 msgid ""
 "This does a full varible and class dump from PHP. This is a security risk "
 "and should only be used for QWcrm development."
@@ -5725,13 +6209,16 @@ msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:522
 #: themes/default/templates/administrator/config.tpl:528
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:487
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:493
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:494
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:500
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:492
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:498
 msgid "Smarty Debugging (QWcrm)"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:528
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:493
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:500
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:498
 msgid ""
 "Because of the way QWcrm is structured I needed to implement a custom method "
 "to call the Smarty Debugging template."
@@ -5739,30 +6226,37 @@ msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:532
 #: themes/default/templates/administrator/config.tpl:538
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:498
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:504
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:505
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:511
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:503
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:509
 msgid "Smarty Debugging"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:542
 #: themes/default/templates/administrator/config.tpl:549
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:509
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:516
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:523
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:514
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:521
 msgid "Smarty Debugging Control"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:545
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:512
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:519
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:517
 msgid "No Control"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:547
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:514
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:521
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:519
 msgid "URL"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:549
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:516
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:523
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:521
 msgid ""
 "This allows alternate ways to enable debugging. NONE means no alternate "
 "methods are allowed. URL means when the keyword SMARTY_DEBUG is found in the "
@@ -5771,19 +6265,23 @@ msgid ""
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:556
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:523
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:530
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:528
 msgid "Smarty"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:561
 #: themes/default/templates/administrator/config.tpl:567
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:528
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:534
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:535
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:541
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:533
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:539
 msgid "Force Compile"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:567
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:534
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:541
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:539
 msgid ""
 "This forces Smarty to (re)compile templates on every invocation. This "
 "setting overrides 'compile_check'. By default this is FALSE. This is handy "
@@ -5795,25 +6293,31 @@ msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:573
 #: themes/default/templates/administrator/config.tpl:574
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:540
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:541
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:547
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:548
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:545
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:546
 msgid "Clear Smarty Compile"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:574
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:541
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:548
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:546
 msgid "This clears all of the Smarty compiled template files."
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:578
 #: themes/default/templates/administrator/config.tpl:584
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:546
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:552
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:553
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:559
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:551
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:557
 msgid "Force Cache"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:584
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:552
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:559
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:557
 msgid ""
 "This forces Smarty to (re)cache templates on every invocation. It does not "
 "override the $caching level, but merely pretends the template has never been "
@@ -5822,23 +6326,28 @@ msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:588
 #: themes/default/templates/administrator/config.tpl:595
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:557
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:564
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:571
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:562
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:569
 msgid "Caching"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:592
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:561
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:568
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:566
 msgid "Current"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:593
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:562
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:569
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:567
 msgid "Saved"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:595
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:564
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:571
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:569
 msgid ""
 "This tells Smarty whether or not to cache the output of the templates to the "
 "Cache Directory. This is untested with QWcrm.<hr>A value of Smarty::"
@@ -5852,13 +6361,16 @@ msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:599
 #: themes/default/templates/administrator/config.tpl:602
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:569
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:572
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:576
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:579
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:574
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:577
 msgid "Cache Lifetime"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:602
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:572
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:579
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:577
 msgid ""
 "This is the length of time in seconds that a template cache is valid. Once "
 "this time has expired, the cache will be regenerated."
@@ -5866,20 +6378,25 @@ msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:606
 #: themes/default/templates/administrator/config.tpl:612
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:577
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:583
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:584
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:590
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:582
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:588
 msgid "Cache Modified Check"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:616
 #: themes/default/templates/administrator/config.tpl:622
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:588
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:594
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:595
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:601
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:593
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:599
 msgid "Cache Locking"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:622
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:594
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:601
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:599
 msgid ""
 "Cache locking avoids concurrent cache generation. This means resource "
 "intensive pages can be generated only once, even if they've been requested "
@@ -5888,13 +6405,16 @@ msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:628
 #: themes/default/templates/administrator/config.tpl:629
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:600
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:601
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:607
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:608
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:605
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:606
 msgid "Clear Smarty Cache"
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:629
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:601
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:608
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:606
 msgid "This clears the Smarty cache."
 msgstr ""
 
@@ -5974,6 +6494,7 @@ msgstr ""
 
 #: themes/default/templates/company/edit.tpl:22
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:29
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:29
 #: themes/default/templates/workorder/printing/print_customer_workorder_slip.tpl:47
 #: themes/default/templates/workorder/printing/print_technician_workorder_slip.tpl:47
 msgid "Company Details"
@@ -5981,31 +6502,37 @@ msgstr ""
 
 #: themes/default/templates/company/edit.tpl:23
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:30
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:30
 msgid "Localisation Setup"
 msgstr ""
 
 #: themes/default/templates/company/edit.tpl:24
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:31
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:31
 msgid "Email Messages"
 msgstr ""
 
 #: themes/default/templates/company/edit.tpl:37
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:44
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:44
 msgid "Edit The Company Information"
 msgstr ""
 
 #: themes/default/templates/company/edit.tpl:47
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:54
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:54
 msgid "Company Name"
 msgstr ""
 
 #: themes/default/templates/company/edit.tpl:51
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:58
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:58
 msgid "Logo"
 msgstr ""
 
 #: themes/default/templates/company/edit.tpl:54
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:61
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:61
 msgid "Company Logo"
 msgstr ""
 
@@ -6016,12 +6543,14 @@ msgstr ""
 #: themes/default/templates/company/edit.tpl:64
 #: themes/default/templates/invoice/printing/print_invoice.tpl:62
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:65
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:65
 msgid "Company Number"
 msgstr ""
 
 #: themes/default/templates/company/edit.tpl:68
 #: themes/default/templates/invoice/printing/print_invoice.tpl:293
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:69
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:69
 msgid "VAT Number"
 msgstr ""
 
@@ -6030,6 +6559,8 @@ msgstr ""
 #: themes/default/templates/customer/new.tpl:130
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:77
 #: themes/default/templates/setup/blocks/install_stage7_block.tpl:213
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:77
+#: themes/default/templates/setup/blocks/migrate_stage8_block.tpl:219
 #: themes/default/templates/supplier/details.tpl:75
 #: themes/default/templates/supplier/edit.tpl:97
 #: themes/default/templates/supplier/new.tpl:100
@@ -6043,6 +6574,8 @@ msgstr ""
 #: themes/default/templates/customer/new.tpl:134
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:81
 #: themes/default/templates/setup/blocks/install_stage7_block.tpl:217
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:81
+#: themes/default/templates/setup/blocks/migrate_stage8_block.tpl:223
 #: themes/default/templates/supplier/details.tpl:80
 #: themes/default/templates/supplier/edit.tpl:101
 #: themes/default/templates/supplier/new.tpl:104
@@ -6056,6 +6589,8 @@ msgstr ""
 #: themes/default/templates/customer/new.tpl:138
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:85
 #: themes/default/templates/setup/blocks/install_stage7_block.tpl:221
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:85
+#: themes/default/templates/setup/blocks/migrate_stage8_block.tpl:227
 #: themes/default/templates/supplier/details.tpl:85
 #: themes/default/templates/supplier/edit.tpl:105
 #: themes/default/templates/supplier/new.tpl:108
@@ -6071,6 +6606,8 @@ msgstr ""
 #: themes/default/templates/customer/new.tpl:142
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:89
 #: themes/default/templates/setup/blocks/install_stage7_block.tpl:225
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:89
+#: themes/default/templates/setup/blocks/migrate_stage8_block.tpl:231
 #: themes/default/templates/supplier/details.tpl:90
 #: themes/default/templates/supplier/edit.tpl:109
 #: themes/default/templates/supplier/new.tpl:112
@@ -6084,6 +6621,7 @@ msgstr ""
 #: themes/default/templates/company/edit.tpl:92
 #: themes/default/templates/customer/new.tpl:104
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:93
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:93
 #: themes/default/templates/supplier/edit.tpl:78
 msgid "Primary"
 msgstr ""
@@ -6094,6 +6632,7 @@ msgstr ""
 #: themes/default/templates/core/blocks/dashboard_workorders_on_hold_block.tpl:30
 #: themes/default/templates/core/blocks/dashboard_workorders_scheduled_block.tpl:30
 #: themes/default/templates/core/blocks/dashboard_workorders_waiting_for_parts_block.tpl:30
+#: themes/default/templates/core/blocks/dashboard_workorders_with_client_block.tpl:30
 #: themes/default/templates/customer/blocks/details_customer_details_block.tpl:68
 #: themes/default/templates/customer/edit.tpl:110
 #: themes/default/templates/customer/new.tpl:112
@@ -6102,6 +6641,7 @@ msgstr ""
 #: themes/default/templates/invoice/open.tpl:95
 #: themes/default/templates/invoice/status.tpl:63
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:101
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:101
 #: themes/default/templates/supplier/details.tpl:57
 #: themes/default/templates/supplier/edit.tpl:86
 #: themes/default/templates/supplier/new.tpl:89
@@ -6114,6 +6654,7 @@ msgstr ""
 #: themes/default/templates/workorder/blocks/overview_workorders_scheduled_block.tpl:30
 #: themes/default/templates/workorder/blocks/overview_workorders_unassigned_block.tpl:30
 #: themes/default/templates/workorder/blocks/overview_workorders_waiting_for_parts_block.tpl:30
+#: themes/default/templates/workorder/blocks/overview_workorders_with_client_block.tpl:30
 #: themes/default/templates/workorder/closed.tpl:106
 #: themes/default/templates/workorder/new.tpl:169
 #: themes/default/templates/workorder/open.tpl:106
@@ -6140,6 +6681,7 @@ msgstr ""
 #: themes/default/templates/schedule/search.tpl:44
 #: themes/default/templates/schedule/search.tpl:124
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:113
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:113
 #: themes/default/templates/workorder/search.tpl:44
 #: themes/default/templates/workorder/search.tpl:124
 msgid "VAT Rate"
@@ -6147,22 +6689,26 @@ msgstr ""
 
 #: themes/default/templates/company/edit.tpl:116
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:117
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:117
 msgid "Financial Year Start"
 msgstr ""
 
 #: themes/default/templates/company/edit.tpl:130
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:131
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:131
 msgid "Financial Year End"
 msgstr ""
 
 #: themes/default/templates/company/edit.tpl:144
 #: themes/default/templates/core/dashboard.tpl:38
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:145
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:145
 msgid "Company Welcome Message"
 msgstr ""
 
 #: themes/default/templates/company/edit.tpl:144
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:145
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:145
 msgid "(Dashboard)"
 msgstr ""
 
@@ -6172,16 +6718,19 @@ msgstr ""
 
 #: themes/default/templates/company/edit.tpl:171
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:172
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:172
 msgid "Currency Symbol"
 msgstr ""
 
 #: themes/default/templates/company/edit.tpl:175
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:176
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:176
 msgid "Currency Code"
 msgstr ""
 
 #: themes/default/templates/company/edit.tpl:176
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:177
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:177
 msgid ""
 "eg: British Pound = GBP, Euro = EUR, US Dollars = USD, Australian Dollars = "
 "AUD"
@@ -6189,69 +6738,86 @@ msgstr ""
 
 #: themes/default/templates/company/edit.tpl:179
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:180
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:180
 msgid "Date Format"
 msgstr ""
 
 #: themes/default/templates/company/edit.tpl:205
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:206
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:206
 msgid "Edit Email Messaging functions"
 msgstr ""
 
-#: themes/default/templates/company/edit.tpl:215
-#: themes/default/templates/setup/blocks/install_stage5_block.tpl:216
-msgid "Workorder Message"
+#: themes/default/templates/company/edit.tpl:214
+#: themes/default/templates/setup/blocks/install_stage5_block.tpl:280
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:280
+msgid "Email Signature"
 msgstr ""
 
-#: themes/default/templates/company/edit.tpl:220
-#: themes/default/templates/company/edit.tpl:252
-#: themes/default/templates/setup/blocks/install_stage5_block.tpl:221
-#: themes/default/templates/setup/blocks/install_stage5_block.tpl:253
-msgid "Customer's name"
+#: themes/default/templates/company/edit.tpl:219
+#: themes/default/templates/setup/blocks/install_stage5_block.tpl:285
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:285
+msgid "Use this to place your logo in the message"
 msgstr ""
 
-#: themes/default/templates/company/edit.tpl:221
-#: themes/default/templates/company/edit.tpl:253
-#: themes/default/templates/setup/blocks/install_stage5_block.tpl:222
-#: themes/default/templates/setup/blocks/install_stage5_block.tpl:254
-msgid "Customer's contact first name"
-msgstr ""
-
-#: themes/default/templates/company/edit.tpl:222
-#: themes/default/templates/company/edit.tpl:254
-#: themes/default/templates/setup/blocks/install_stage5_block.tpl:223
-#: themes/default/templates/setup/blocks/install_stage5_block.tpl:255
-msgid "Customer's contact last name"
-msgstr ""
-
-#: themes/default/templates/company/edit.tpl:223
-#: themes/default/templates/company/edit.tpl:255
-#: themes/default/templates/setup/blocks/install_stage5_block.tpl:224
-#: themes/default/templates/setup/blocks/install_stage5_block.tpl:256
-msgid "Customer's credit terms"
-msgstr ""
-
-#: themes/default/templates/company/edit.tpl:230
-#: themes/default/templates/company/edit.tpl:262
+#: themes/default/templates/company/edit.tpl:226
+#: themes/default/templates/company/edit.tpl:259
 #: themes/default/templates/company/edit.tpl:291
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:231
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:263
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:292
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:231
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:263
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:292
 msgid "Enabled"
 msgstr ""
 
-#: themes/default/templates/company/edit.tpl:247
-#: themes/default/templates/setup/blocks/install_stage5_block.tpl:248
-msgid "Invoice Message"
+#: themes/default/templates/company/edit.tpl:244
+#: themes/default/templates/setup/blocks/install_stage5_block.tpl:216
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:216
+msgid "Workorder Message"
 msgstr ""
 
-#: themes/default/templates/company/edit.tpl:279
-#: themes/default/templates/setup/blocks/install_stage5_block.tpl:280
-msgid "Email Signature"
+#: themes/default/templates/company/edit.tpl:249
+#: themes/default/templates/company/edit.tpl:281
+#: themes/default/templates/setup/blocks/install_stage5_block.tpl:221
+#: themes/default/templates/setup/blocks/install_stage5_block.tpl:253
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:221
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:253
+msgid "Customer's name"
 msgstr ""
 
+#: themes/default/templates/company/edit.tpl:250
+#: themes/default/templates/company/edit.tpl:282
+#: themes/default/templates/setup/blocks/install_stage5_block.tpl:222
+#: themes/default/templates/setup/blocks/install_stage5_block.tpl:254
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:222
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:254
+msgid "Customer's contact first name"
+msgstr ""
+
+#: themes/default/templates/company/edit.tpl:251
+#: themes/default/templates/company/edit.tpl:283
+#: themes/default/templates/setup/blocks/install_stage5_block.tpl:223
+#: themes/default/templates/setup/blocks/install_stage5_block.tpl:255
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:223
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:255
+msgid "Customer's contact last name"
+msgstr ""
+
+#: themes/default/templates/company/edit.tpl:252
 #: themes/default/templates/company/edit.tpl:284
-#: themes/default/templates/setup/blocks/install_stage5_block.tpl:285
-msgid "Use this to place your logo in the message"
+#: themes/default/templates/setup/blocks/install_stage5_block.tpl:224
+#: themes/default/templates/setup/blocks/install_stage5_block.tpl:256
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:224
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:256
+msgid "Customer's credit terms"
+msgstr ""
+
+#: themes/default/templates/company/edit.tpl:276
+#: themes/default/templates/setup/blocks/install_stage5_block.tpl:248
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:248
+msgid "Invoice Message"
 msgstr ""
 
 #: themes/default/templates/core/404.tpl:13
@@ -6263,6 +6829,7 @@ msgstr ""
 #: themes/default/templates/core/blocks/dashboard_workorders_on_hold_block.tpl:11
 #: themes/default/templates/core/blocks/dashboard_workorders_scheduled_block.tpl:11
 #: themes/default/templates/core/blocks/dashboard_workorders_waiting_for_parts_block.tpl:11
+#: themes/default/templates/core/blocks/dashboard_workorders_with_client_block.tpl:11
 #: themes/default/templates/customer/blocks/details_invoice_block.tpl:12
 #: themes/default/templates/customer/blocks/details_invoice_block.tpl:46
 #: themes/default/templates/customer/blocks/details_workorder_block.tpl:11
@@ -6276,6 +6843,7 @@ msgstr ""
 #: themes/default/templates/workorder/blocks/overview_workorders_scheduled_block.tpl:11
 #: themes/default/templates/workorder/blocks/overview_workorders_unassigned_block.tpl:11
 #: themes/default/templates/workorder/blocks/overview_workorders_waiting_for_parts_block.tpl:11
+#: themes/default/templates/workorder/blocks/overview_workorders_with_client_block.tpl:11
 #: themes/default/templates/workorder/closed.tpl:79
 #: themes/default/templates/workorder/open.tpl:79
 msgid "WO ID"
@@ -6286,7 +6854,9 @@ msgstr ""
 #: themes/default/templates/core/blocks/dashboard_workorders_on_hold_block.tpl:12
 #: themes/default/templates/core/blocks/dashboard_workorders_scheduled_block.tpl:12
 #: themes/default/templates/core/blocks/dashboard_workorders_waiting_for_parts_block.tpl:12
+#: themes/default/templates/core/blocks/dashboard_workorders_with_client_block.tpl:12
 #: themes/default/templates/report/financial.tpl:117
+#: themes/default/templates/report/financial.tpl:131
 #: themes/default/templates/workorder/blocks/details_workorder_block.tpl:12
 #: themes/default/templates/workorder/blocks/overview_workorders_assigned_block.tpl:12
 #: themes/default/templates/workorder/blocks/overview_workorders_management_block.tpl:12
@@ -6294,6 +6864,7 @@ msgstr ""
 #: themes/default/templates/workorder/blocks/overview_workorders_scheduled_block.tpl:12
 #: themes/default/templates/workorder/blocks/overview_workorders_unassigned_block.tpl:12
 #: themes/default/templates/workorder/blocks/overview_workorders_waiting_for_parts_block.tpl:12
+#: themes/default/templates/workorder/blocks/overview_workorders_with_client_block.tpl:12
 #: themes/default/templates/workorder/closed.tpl:81
 #: themes/default/templates/workorder/new.tpl:56
 #: themes/default/templates/workorder/open.tpl:81
@@ -6308,6 +6879,7 @@ msgstr ""
 #: themes/default/templates/core/blocks/dashboard_workorders_on_hold_block.tpl:15
 #: themes/default/templates/core/blocks/dashboard_workorders_scheduled_block.tpl:15
 #: themes/default/templates/core/blocks/dashboard_workorders_waiting_for_parts_block.tpl:15
+#: themes/default/templates/core/blocks/dashboard_workorders_with_client_block.tpl:15
 #: themes/default/templates/core/blocks/theme_menu_block.tpl:56
 #: themes/default/templates/core/blocks/theme_menu_block.tpl:73
 #: themes/default/templates/customer/blocks/details_workorder_block.tpl:16
@@ -6320,6 +6892,7 @@ msgstr ""
 #: themes/default/templates/invoice/status.tpl:24
 #: themes/default/templates/payment/blocks/new_invoice_details_block.tpl:12
 #: themes/default/templates/setup/blocks/install_stage7_block.tpl:136
+#: themes/default/templates/setup/blocks/migrate_stage8_block.tpl:142
 #: themes/default/templates/user/blocks/details_details_block.tpl:75
 #: themes/default/templates/user/blocks/details_open_workorders_block.tpl:16
 #: themes/default/templates/user/edit.tpl:134
@@ -6332,6 +6905,7 @@ msgstr ""
 #: themes/default/templates/workorder/blocks/overview_workorders_scheduled_block.tpl:15
 #: themes/default/templates/workorder/blocks/overview_workorders_unassigned_block.tpl:15
 #: themes/default/templates/workorder/blocks/overview_workorders_waiting_for_parts_block.tpl:15
+#: themes/default/templates/workorder/blocks/overview_workorders_with_client_block.tpl:15
 #: themes/default/templates/workorder/closed.tpl:85
 #: themes/default/templates/workorder/open.tpl:85
 #: themes/default/templates/workorder/printing/print_technician_workorder_slip.tpl:216
@@ -6344,6 +6918,7 @@ msgstr ""
 #: themes/default/templates/core/blocks/dashboard_workorders_on_hold_block.tpl:17
 #: themes/default/templates/core/blocks/dashboard_workorders_scheduled_block.tpl:17
 #: themes/default/templates/core/blocks/dashboard_workorders_waiting_for_parts_block.tpl:17
+#: themes/default/templates/core/blocks/dashboard_workorders_with_client_block.tpl:17
 #: themes/default/templates/customer/blocks/details_giftcert_block.tpl:19
 #: themes/default/templates/customer/blocks/details_giftcert_block.tpl:63
 #: themes/default/templates/customer/blocks/details_invoice_block.tpl:19
@@ -6367,6 +6942,7 @@ msgstr ""
 #: themes/default/templates/workorder/blocks/overview_workorders_scheduled_block.tpl:17
 #: themes/default/templates/workorder/blocks/overview_workorders_unassigned_block.tpl:17
 #: themes/default/templates/workorder/blocks/overview_workorders_waiting_for_parts_block.tpl:17
+#: themes/default/templates/workorder/blocks/overview_workorders_with_client_block.tpl:17
 #: themes/default/templates/workorder/search.tpl:129
 msgid "Action"
 msgstr ""
@@ -6376,6 +6952,7 @@ msgstr ""
 #: themes/default/templates/core/blocks/dashboard_workorders_on_hold_block.tpl:30
 #: themes/default/templates/core/blocks/dashboard_workorders_scheduled_block.tpl:30
 #: themes/default/templates/core/blocks/dashboard_workorders_waiting_for_parts_block.tpl:30
+#: themes/default/templates/core/blocks/dashboard_workorders_with_client_block.tpl:30
 #: themes/default/templates/user/blocks/details_open_workorders_block.tpl:34
 #: themes/default/templates/workorder/blocks/overview_workorders_assigned_block.tpl:30
 #: themes/default/templates/workorder/blocks/overview_workorders_management_block.tpl:30
@@ -6383,6 +6960,7 @@ msgstr ""
 #: themes/default/templates/workorder/blocks/overview_workorders_scheduled_block.tpl:30
 #: themes/default/templates/workorder/blocks/overview_workorders_unassigned_block.tpl:30
 #: themes/default/templates/workorder/blocks/overview_workorders_waiting_for_parts_block.tpl:30
+#: themes/default/templates/workorder/blocks/overview_workorders_with_client_block.tpl:30
 #: themes/default/templates/workorder/closed.tpl:106
 #: themes/default/templates/workorder/open.tpl:106
 msgid "Customer Info"
@@ -6393,6 +6971,7 @@ msgstr ""
 #: themes/default/templates/core/blocks/dashboard_workorders_on_hold_block.tpl:49
 #: themes/default/templates/core/blocks/dashboard_workorders_scheduled_block.tpl:46
 #: themes/default/templates/core/blocks/dashboard_workorders_waiting_for_parts_block.tpl:49
+#: themes/default/templates/core/blocks/dashboard_workorders_with_client_block.tpl:46
 #: themes/default/templates/customer/blocks/details_workorder_block.tpl:48
 #: themes/default/templates/customer/blocks/details_workorder_block.tpl:108
 #: themes/default/templates/workorder/blocks/overview_workorders_assigned_block.tpl:46
@@ -6401,6 +6980,7 @@ msgstr ""
 #: themes/default/templates/workorder/blocks/overview_workorders_scheduled_block.tpl:46
 #: themes/default/templates/workorder/blocks/overview_workorders_unassigned_block.tpl:49
 #: themes/default/templates/workorder/blocks/overview_workorders_waiting_for_parts_block.tpl:49
+#: themes/default/templates/workorder/blocks/overview_workorders_with_client_block.tpl:46
 #: themes/default/templates/workorder/closed.tpl:122
 #: themes/default/templates/workorder/open.tpl:122
 msgid "Technician Info"
@@ -6411,6 +6991,7 @@ msgstr ""
 #: themes/default/templates/core/blocks/dashboard_workorders_on_hold_block.tpl:49
 #: themes/default/templates/core/blocks/dashboard_workorders_scheduled_block.tpl:46
 #: themes/default/templates/core/blocks/dashboard_workorders_waiting_for_parts_block.tpl:49
+#: themes/default/templates/core/blocks/dashboard_workorders_with_client_block.tpl:46
 #: themes/default/templates/customer/blocks/details_invoice_block.tpl:18
 #: themes/default/templates/customer/blocks/details_invoice_block.tpl:52
 #: themes/default/templates/customer/blocks/details_note_block.tpl:55
@@ -6420,6 +7001,7 @@ msgstr ""
 #: themes/default/templates/invoice/open.tpl:82
 #: themes/default/templates/schedule/details.tpl:34
 #: themes/default/templates/setup/blocks/install_stage7_block.tpl:63
+#: themes/default/templates/setup/blocks/migrate_stage8_block.tpl:69
 #: themes/default/templates/user/blocks/details_details_block.tpl:57
 #: themes/default/templates/user/edit.tpl:63
 #: themes/default/templates/user/new.tpl:63
@@ -6432,6 +7014,7 @@ msgstr ""
 #: themes/default/templates/workorder/blocks/overview_workorders_scheduled_block.tpl:46
 #: themes/default/templates/workorder/blocks/overview_workorders_unassigned_block.tpl:49
 #: themes/default/templates/workorder/blocks/overview_workorders_waiting_for_parts_block.tpl:49
+#: themes/default/templates/workorder/blocks/overview_workorders_with_client_block.tpl:46
 #: themes/default/templates/workorder/closed.tpl:122
 #: themes/default/templates/workorder/open.tpl:122
 msgid "Employee"
@@ -6442,12 +7025,15 @@ msgstr ""
 #: themes/default/templates/core/blocks/dashboard_workorders_on_hold_block.tpl:49
 #: themes/default/templates/core/blocks/dashboard_workorders_scheduled_block.tpl:46
 #: themes/default/templates/core/blocks/dashboard_workorders_waiting_for_parts_block.tpl:49
+#: themes/default/templates/core/blocks/dashboard_workorders_with_client_block.tpl:46
 #: themes/default/templates/core/blocks/theme_menu_block.tpl:16
 #: themes/default/templates/customer/blocks/details_workorder_block.tpl:48
 #: themes/default/templates/customer/blocks/details_workorder_block.tpl:108
 #: themes/default/templates/invoice/status.tpl:63
 #: themes/default/templates/setup/blocks/install_stage7_block.tpl:85
 #: themes/default/templates/setup/blocks/install_stage7_block.tpl:190
+#: themes/default/templates/setup/blocks/migrate_stage8_block.tpl:91
+#: themes/default/templates/setup/blocks/migrate_stage8_block.tpl:196
 #: themes/default/templates/user/blocks/details_details_block.tpl:49
 #: themes/default/templates/user/blocks/details_open_workorders_block.tpl:51
 #: themes/default/templates/user/edit.tpl:85
@@ -6461,6 +7047,7 @@ msgstr ""
 #: themes/default/templates/workorder/blocks/overview_workorders_scheduled_block.tpl:46
 #: themes/default/templates/workorder/blocks/overview_workorders_unassigned_block.tpl:49
 #: themes/default/templates/workorder/blocks/overview_workorders_waiting_for_parts_block.tpl:49
+#: themes/default/templates/workorder/blocks/overview_workorders_with_client_block.tpl:46
 #: themes/default/templates/workorder/closed.tpl:122
 #: themes/default/templates/workorder/open.tpl:122
 #: themes/default/templates/workorder/status.tpl:63
@@ -6482,6 +7069,9 @@ msgstr ""
 #: themes/default/templates/core/blocks/dashboard_workorders_waiting_for_parts_block.tpl:57
 #: themes/default/templates/core/blocks/dashboard_workorders_waiting_for_parts_block.tpl:60
 #: themes/default/templates/core/blocks/dashboard_workorders_waiting_for_parts_block.tpl:63
+#: themes/default/templates/core/blocks/dashboard_workorders_with_client_block.tpl:53
+#: themes/default/templates/core/blocks/dashboard_workorders_with_client_block.tpl:56
+#: themes/default/templates/core/blocks/dashboard_workorders_with_client_block.tpl:59
 #: themes/default/templates/customer/blocks/details_workorder_block.tpl:57
 #: themes/default/templates/customer/blocks/details_workorder_block.tpl:118
 #: themes/default/templates/schedule/day.tpl:63
@@ -6504,6 +7094,9 @@ msgstr ""
 #: themes/default/templates/workorder/blocks/overview_workorders_waiting_for_parts_block.tpl:57
 #: themes/default/templates/workorder/blocks/overview_workorders_waiting_for_parts_block.tpl:60
 #: themes/default/templates/workorder/blocks/overview_workorders_waiting_for_parts_block.tpl:63
+#: themes/default/templates/workorder/blocks/overview_workorders_with_client_block.tpl:53
+#: themes/default/templates/workorder/blocks/overview_workorders_with_client_block.tpl:56
+#: themes/default/templates/workorder/blocks/overview_workorders_with_client_block.tpl:59
 #: themes/default/templates/workorder/details.tpl:20
 #: themes/default/templates/workorder/details.tpl:23
 #: themes/default/templates/workorder/details.tpl:26
@@ -6515,12 +7108,14 @@ msgstr ""
 #: themes/default/templates/core/blocks/dashboard_workorders_on_hold_block.tpl:57
 #: themes/default/templates/core/blocks/dashboard_workorders_scheduled_block.tpl:53
 #: themes/default/templates/core/blocks/dashboard_workorders_waiting_for_parts_block.tpl:57
+#: themes/default/templates/core/blocks/dashboard_workorders_with_client_block.tpl:53
 #: themes/default/templates/workorder/blocks/overview_workorders_assigned_block.tpl:53
 #: themes/default/templates/workorder/blocks/overview_workorders_management_block.tpl:57
 #: themes/default/templates/workorder/blocks/overview_workorders_on_hold_block.tpl:57
 #: themes/default/templates/workorder/blocks/overview_workorders_scheduled_block.tpl:53
 #: themes/default/templates/workorder/blocks/overview_workorders_unassigned_block.tpl:57
 #: themes/default/templates/workorder/blocks/overview_workorders_waiting_for_parts_block.tpl:57
+#: themes/default/templates/workorder/blocks/overview_workorders_with_client_block.tpl:53
 #: themes/default/templates/workorder/details.tpl:20
 #: themes/default/templates/workorder/printing/print_technician_workorder_slip.tpl:36
 msgid "Technician Work Order Slip"
@@ -6531,12 +7126,14 @@ msgstr ""
 #: themes/default/templates/core/blocks/dashboard_workorders_on_hold_block.tpl:60
 #: themes/default/templates/core/blocks/dashboard_workorders_scheduled_block.tpl:56
 #: themes/default/templates/core/blocks/dashboard_workorders_waiting_for_parts_block.tpl:60
+#: themes/default/templates/core/blocks/dashboard_workorders_with_client_block.tpl:56
 #: themes/default/templates/workorder/blocks/overview_workorders_assigned_block.tpl:56
 #: themes/default/templates/workorder/blocks/overview_workorders_management_block.tpl:60
 #: themes/default/templates/workorder/blocks/overview_workorders_on_hold_block.tpl:60
 #: themes/default/templates/workorder/blocks/overview_workorders_scheduled_block.tpl:56
 #: themes/default/templates/workorder/blocks/overview_workorders_unassigned_block.tpl:60
 #: themes/default/templates/workorder/blocks/overview_workorders_waiting_for_parts_block.tpl:60
+#: themes/default/templates/workorder/blocks/overview_workorders_with_client_block.tpl:56
 #: themes/default/templates/workorder/details.tpl:23
 msgid "Technician Work Order Job Sheet"
 msgstr ""
@@ -6546,12 +7143,14 @@ msgstr ""
 #: themes/default/templates/core/blocks/dashboard_workorders_on_hold_block.tpl:63
 #: themes/default/templates/core/blocks/dashboard_workorders_scheduled_block.tpl:59
 #: themes/default/templates/core/blocks/dashboard_workorders_waiting_for_parts_block.tpl:63
+#: themes/default/templates/core/blocks/dashboard_workorders_with_client_block.tpl:59
 #: themes/default/templates/workorder/blocks/overview_workorders_assigned_block.tpl:59
 #: themes/default/templates/workorder/blocks/overview_workorders_management_block.tpl:63
 #: themes/default/templates/workorder/blocks/overview_workorders_on_hold_block.tpl:63
 #: themes/default/templates/workorder/blocks/overview_workorders_scheduled_block.tpl:59
 #: themes/default/templates/workorder/blocks/overview_workorders_unassigned_block.tpl:63
 #: themes/default/templates/workorder/blocks/overview_workorders_waiting_for_parts_block.tpl:63
+#: themes/default/templates/workorder/blocks/overview_workorders_with_client_block.tpl:59
 #: themes/default/templates/workorder/details.tpl:26
 #: themes/default/templates/workorder/printing/print_customer_workorder_slip.tpl:36
 msgid "Customer Work Order Slip"
@@ -6562,12 +7161,14 @@ msgstr ""
 #: themes/default/templates/core/blocks/dashboard_workorders_on_hold_block.tpl:66
 #: themes/default/templates/core/blocks/dashboard_workorders_scheduled_block.tpl:62
 #: themes/default/templates/core/blocks/dashboard_workorders_waiting_for_parts_block.tpl:66
+#: themes/default/templates/core/blocks/dashboard_workorders_with_client_block.tpl:62
 #: themes/default/templates/workorder/blocks/overview_workorders_assigned_block.tpl:62
 #: themes/default/templates/workorder/blocks/overview_workorders_management_block.tpl:66
 #: themes/default/templates/workorder/blocks/overview_workorders_on_hold_block.tpl:66
 #: themes/default/templates/workorder/blocks/overview_workorders_scheduled_block.tpl:62
 #: themes/default/templates/workorder/blocks/overview_workorders_unassigned_block.tpl:66
 #: themes/default/templates/workorder/blocks/overview_workorders_waiting_for_parts_block.tpl:66
+#: themes/default/templates/workorder/blocks/overview_workorders_with_client_block.tpl:62
 msgid "View The Work Order"
 msgstr ""
 
@@ -6597,7 +7198,9 @@ msgid "There are No Unpaid Work Orders"
 msgstr ""
 
 #: themes/default/templates/core/blocks/dashboard_workorders_scheduled_block.tpl:69
+#: themes/default/templates/core/blocks/dashboard_workorders_with_client_block.tpl:69
 #: themes/default/templates/workorder/blocks/overview_workorders_scheduled_block.tpl:69
+#: themes/default/templates/workorder/blocks/overview_workorders_with_client_block.tpl:69
 msgid "There are No Scheduled Work Orders"
 msgstr ""
 
@@ -6756,7 +7359,6 @@ msgstr ""
 #: themes/default/templates/core/blocks/theme_menu_block.tpl:126
 #: themes/default/templates/invoice/prefill_items.tpl:90
 #: themes/default/templates/report/financial.tpl:107
-#: themes/default/templates/report/financial.tpl:131
 msgid "New"
 msgstr ""
 
@@ -6833,7 +7435,7 @@ msgid "Gift Certificates"
 msgstr ""
 
 #: themes/default/templates/core/blocks/theme_menu_block.tpl:95
-#: themes/default/templates/report/financial.tpl:165
+#: themes/default/templates/report/financial.tpl:169
 msgid "Expenses"
 msgstr ""
 
@@ -6846,7 +7448,7 @@ msgid "Delete Expense"
 msgstr ""
 
 #: themes/default/templates/core/blocks/theme_menu_block.tpl:110
-#: themes/default/templates/report/financial.tpl:166
+#: themes/default/templates/report/financial.tpl:170
 msgid "Refunds"
 msgstr ""
 
@@ -6875,7 +7477,7 @@ msgid "Settings"
 msgstr ""
 
 #: themes/default/templates/core/blocks/theme_menu_block.tpl:145
-#: themes/default/templates/payment/options.tpl:22
+#: themes/default/templates/payment/options.tpl:16
 msgid "Payment Options"
 msgstr ""
 
@@ -7024,7 +7626,7 @@ msgstr ""
 #: themes/default/templates/invoice/edit.tpl:686
 #: themes/default/templates/invoice/open.tpl:85
 #: themes/default/templates/invoice/printing/print_invoice.tpl:254
-#: themes/default/templates/report/financial.tpl:280
+#: themes/default/templates/report/financial.tpl:284
 #: themes/default/templates/workorder/blocks/details_customer_details_block.tpl:85
 msgid "Discount"
 msgstr ""
@@ -7046,9 +7648,10 @@ msgstr ""
 #: themes/default/templates/giftcert/search.tpl:49
 #: themes/default/templates/giftcert/search.tpl:144
 #: themes/default/templates/setup/blocks/install_stage7_block.tpl:139
+#: themes/default/templates/setup/blocks/migrate_stage8_block.tpl:145
 #: themes/default/templates/user/blocks/details_details_block.tpl:77
 #: themes/default/templates/user/edit.tpl:137
-#: themes/default/templates/user/new.tpl:137
+#: themes/default/templates/user/new.tpl:138
 #: themes/default/templates/user/search.tpl:58
 #: themes/default/templates/user/search.tpl:150
 msgid "Blocked"
@@ -7199,7 +7802,7 @@ msgstr ""
 #: themes/default/templates/invoice/edit.tpl:350
 #: themes/default/templates/invoice/printing/print_invoice.tpl:272
 #: themes/default/templates/payment/blocks/new_invoice_details_block.tpl:16
-#: themes/default/templates/report/financial.tpl:322
+#: themes/default/templates/report/financial.tpl:326
 msgid "Balance"
 msgstr ""
 
@@ -7296,6 +7899,7 @@ msgstr ""
 #: themes/default/templates/customer/search.tpl:35
 #: themes/default/templates/customer/search.tpl:112
 #: themes/default/templates/setup/blocks/install_stage7_block.tpl:45
+#: themes/default/templates/setup/blocks/migrate_stage8_block.tpl:51
 #: themes/default/templates/supplier/edit.tpl:46
 #: themes/default/templates/supplier/new.tpl:49
 #: themes/default/templates/supplier/search.tpl:36
@@ -7311,6 +7915,7 @@ msgstr ""
 #: themes/default/templates/customer/new.tpl:42
 #: themes/default/templates/customer/search.tpl:113
 #: themes/default/templates/setup/blocks/install_stage7_block.tpl:49
+#: themes/default/templates/setup/blocks/migrate_stage8_block.tpl:55
 #: themes/default/templates/supplier/edit.tpl:50
 #: themes/default/templates/supplier/new.tpl:53
 #: themes/default/templates/user/blocks/details_details_block.tpl:25
@@ -7325,6 +7930,7 @@ msgstr ""
 #: themes/default/templates/customer/new.tpl:46
 #: themes/default/templates/customer/search.tpl:114
 #: themes/default/templates/setup/blocks/install_stage7_block.tpl:53
+#: themes/default/templates/setup/blocks/migrate_stage8_block.tpl:59
 #: themes/default/templates/supplier/edit.tpl:53
 #: themes/default/templates/supplier/new.tpl:56
 #: themes/default/templates/user/blocks/details_details_block.tpl:27
@@ -7338,6 +7944,7 @@ msgstr ""
 #: themes/default/templates/customer/edit.tpl:67
 #: themes/default/templates/customer/new.tpl:69
 #: themes/default/templates/setup/blocks/install_stage7_block.tpl:98
+#: themes/default/templates/setup/blocks/migrate_stage8_block.tpl:104
 #: themes/default/templates/user/edit.tpl:98
 #: themes/default/templates/user/new.tpl:98
 msgid "Account"
@@ -7584,8 +8191,8 @@ msgstr ""
 #: themes/default/templates/refund/search.tpl:45
 #: themes/default/templates/refund/search.tpl:125
 #: themes/default/templates/refund/search.tpl:149
-#: themes/default/templates/report/financial.tpl:174
-#: themes/default/templates/report/financial.tpl:192
+#: themes/default/templates/report/financial.tpl:178
+#: themes/default/templates/report/financial.tpl:196
 #: themes/default/templates/schedule/search.tpl:48
 #: themes/default/templates/schedule/search.tpl:128
 #: themes/default/templates/schedule/search.tpl:185
@@ -7633,8 +8240,8 @@ msgstr ""
 #: themes/default/templates/invoice/open.tpl:88
 #: themes/default/templates/invoice/printing/print_invoice.tpl:268
 #: themes/default/templates/refund/search.tpl:44
-#: themes/default/templates/report/financial.tpl:218
-#: themes/default/templates/report/financial.tpl:236
+#: themes/default/templates/report/financial.tpl:222
+#: themes/default/templates/report/financial.tpl:240
 msgid "Gross"
 msgstr ""
 
@@ -7795,7 +8402,7 @@ msgstr ""
 #: themes/default/templates/invoice/printing/print_invoice.tpl:139
 #: themes/default/templates/invoice/printing/print_invoice.tpl:162
 #: themes/default/templates/invoice/printing/print_invoice.tpl:250
-#: themes/default/templates/report/financial.tpl:276
+#: themes/default/templates/report/financial.tpl:280
 msgid "Sub Total"
 msgstr ""
 
@@ -7804,9 +8411,9 @@ msgstr ""
 #: themes/default/templates/invoice/edit.tpl:690
 #: themes/default/templates/invoice/open.tpl:86
 #: themes/default/templates/invoice/printing/print_invoice.tpl:259
-#: themes/default/templates/report/financial.tpl:210
-#: themes/default/templates/report/financial.tpl:228
-#: themes/default/templates/report/financial.tpl:284
+#: themes/default/templates/report/financial.tpl:214
+#: themes/default/templates/report/financial.tpl:232
+#: themes/default/templates/report/financial.tpl:288
 msgid "Net"
 msgstr ""
 
@@ -7815,9 +8422,9 @@ msgstr ""
 #: themes/default/templates/invoice/edit.tpl:694
 #: themes/default/templates/invoice/open.tpl:87
 #: themes/default/templates/invoice/printing/print_invoice.tpl:263
-#: themes/default/templates/report/financial.tpl:214
-#: themes/default/templates/report/financial.tpl:232
-#: themes/default/templates/report/financial.tpl:288
+#: themes/default/templates/report/financial.tpl:218
+#: themes/default/templates/report/financial.tpl:236
+#: themes/default/templates/report/financial.tpl:292
 msgid "VAT"
 msgstr ""
 
@@ -7907,7 +8514,7 @@ msgstr ""
 #: themes/default/templates/invoice/edit.tpl:541
 #: themes/default/templates/invoice/prefill_items.tpl:44
 #: themes/default/templates/invoice/prefill_items.tpl:79
-#: themes/default/templates/report/financial.tpl:163
+#: themes/default/templates/report/financial.tpl:167
 msgid "Labour"
 msgstr ""
 
@@ -7918,8 +8525,8 @@ msgstr ""
 #: themes/default/templates/invoice/edit.tpl:655
 #: themes/default/templates/invoice/printing/print_invoice.tpl:136
 #: themes/default/templates/invoice/printing/print_invoice.tpl:159
-#: themes/default/templates/report/financial.tpl:178
-#: themes/default/templates/report/financial.tpl:196
+#: themes/default/templates/report/financial.tpl:182
+#: themes/default/templates/report/financial.tpl:200
 #: themes/default/templates/workorder/printing/print_customer_workorder_slip.tpl:235
 #: themes/default/templates/workorder/printing/print_customer_workorder_slip.tpl:236
 #: themes/default/templates/workorder/printing/print_customer_workorder_slip.tpl:237
@@ -8103,12 +8710,12 @@ msgid "Direct Deposit"
 msgstr ""
 
 #: themes/default/templates/invoice/printing/print_invoice.tpl:213
-#: themes/default/templates/payment/options.tpl:64
+#: themes/default/templates/payment/options.tpl:61
 msgid "Bank Account Name"
 msgstr ""
 
 #: themes/default/templates/invoice/printing/print_invoice.tpl:214
-#: themes/default/templates/payment/options.tpl:68
+#: themes/default/templates/payment/options.tpl:65
 msgid "Bank Name"
 msgstr ""
 
@@ -8417,61 +9024,57 @@ msgstr ""
 msgid "Payments for"
 msgstr ""
 
-#: themes/default/templates/payment/options.tpl:13
-msgid "Employee Search"
-msgstr ""
-
-#: themes/default/templates/payment/options.tpl:35
+#: themes/default/templates/payment/options.tpl:32
 msgid "Enable Tax/VAT"
 msgstr ""
 
-#: themes/default/templates/payment/options.tpl:48
+#: themes/default/templates/payment/options.tpl:45
 msgid "Available Payment Types"
 msgstr ""
 
-#: themes/default/templates/payment/options.tpl:61
+#: themes/default/templates/payment/options.tpl:58
 msgid "Bank Details"
 msgstr ""
 
-#: themes/default/templates/payment/options.tpl:72
+#: themes/default/templates/payment/options.tpl:69
 msgid "Bank Account Number"
 msgstr ""
 
-#: themes/default/templates/payment/options.tpl:76
+#: themes/default/templates/payment/options.tpl:73
 msgid "Bank Sort Code"
 msgstr ""
 
-#: themes/default/templates/payment/options.tpl:80
+#: themes/default/templates/payment/options.tpl:77
 msgid "Bank IBAN"
 msgstr ""
 
-#: themes/default/templates/payment/options.tpl:86
+#: themes/default/templates/payment/options.tpl:83
 msgid "Paypal Information"
 msgstr ""
 
-#: themes/default/templates/payment/options.tpl:89
+#: themes/default/templates/payment/options.tpl:86
 msgid ""
 "You must have a PayPal Merchant account set and working. Please see https://"
 "www.paypal.com/ for more information."
 msgstr ""
 
-#: themes/default/templates/payment/options.tpl:92
+#: themes/default/templates/payment/options.tpl:89
 msgid "Paypal Email"
 msgstr ""
 
-#: themes/default/templates/payment/options.tpl:97
+#: themes/default/templates/payment/options.tpl:94
 msgid "Invoice Messages"
 msgstr ""
 
-#: themes/default/templates/payment/options.tpl:100
+#: themes/default/templates/payment/options.tpl:97
 msgid "Bank Transaction Message"
 msgstr ""
 
-#: themes/default/templates/payment/options.tpl:104
+#: themes/default/templates/payment/options.tpl:101
 msgid "Cheques payable to"
 msgstr ""
 
-#: themes/default/templates/payment/options.tpl:108
+#: themes/default/templates/payment/options.tpl:105
 msgid "Invoice Footer Message"
 msgstr ""
 
@@ -8567,7 +9170,7 @@ msgid "Received Monies Total"
 msgstr ""
 
 #: themes/default/templates/report/basic_stats.tpl:89
-#: themes/default/templates/report/financial.tpl:304
+#: themes/default/templates/report/financial.tpl:308
 msgid "Outstanding Balance"
 msgstr ""
 
@@ -8595,44 +9198,44 @@ msgstr ""
 msgid "Basic Statisitics"
 msgstr ""
 
-#: themes/default/templates/report/financial.tpl:157
+#: themes/default/templates/report/financial.tpl:161
 msgid "Advanced Statistics"
 msgstr ""
 
-#: themes/default/templates/report/financial.tpl:182
-#: themes/default/templates/report/financial.tpl:200
+#: themes/default/templates/report/financial.tpl:186
+#: themes/default/templates/report/financial.tpl:204
 msgid "Sub"
 msgstr ""
 
-#: themes/default/templates/report/financial.tpl:258
+#: themes/default/templates/report/financial.tpl:262
 msgid "Revenue Calculations"
 msgstr ""
 
-#: themes/default/templates/report/financial.tpl:265
+#: themes/default/templates/report/financial.tpl:269
 msgid "Revenue"
 msgstr ""
 
-#: themes/default/templates/report/financial.tpl:266
+#: themes/default/templates/report/financial.tpl:270
 msgid "VAT (Tax)"
 msgstr ""
 
-#: themes/default/templates/report/financial.tpl:267
+#: themes/default/templates/report/financial.tpl:271
 msgid "Calculations"
 msgstr ""
 
-#: themes/default/templates/report/financial.tpl:292
+#: themes/default/templates/report/financial.tpl:296
 msgid "Gross (Invoiced)"
 msgstr ""
 
-#: themes/default/templates/report/financial.tpl:300
+#: themes/default/templates/report/financial.tpl:304
 msgid "Received Monies"
 msgstr ""
 
-#: themes/default/templates/report/financial.tpl:318
+#: themes/default/templates/report/financial.tpl:322
 msgid "Received"
 msgstr ""
 
-#: themes/default/templates/report/financial.tpl:332
+#: themes/default/templates/report/financial.tpl:336
 msgid "Taxable Profit = Invoiced - (Expenses - Refunds)"
 msgstr ""
 
@@ -8707,45 +9310,80 @@ msgid "New Schedule"
 msgstr ""
 
 #: themes/default/templates/setup/blocks/install_stage1_block.tpl:11
+#: themes/default/templates/setup/blocks/migrate_stage1_block.tpl:11
 msgid "Stage 1 - Database Connection"
 msgstr ""
 
+#: themes/default/templates/setup/blocks/install_stage1_block.tpl:61
+#: themes/default/templates/setup/blocks/migrate_stage1_block.tpl:61
+msgid "You should set your default database collation to"
+msgstr ""
+
 #: themes/default/templates/setup/blocks/install_stage1_block.tpl:62
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:614
+#: themes/default/templates/setup/blocks/migrate_stage1_block.tpl:62
+msgid "This can usually be done via phpMyAdmin."
+msgstr ""
+
+#: themes/default/templates/setup/blocks/install_stage1_block.tpl:69
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:621
 #: themes/default/templates/setup/blocks/install_stage3_block.tpl:25
 #: themes/default/templates/setup/blocks/install_stage4_block.tpl:26
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:318
-#: themes/default/templates/setup/blocks/install_stage6_block.tpl:47
+#: themes/default/templates/setup/blocks/install_stage6_block.tpl:53
 #: themes/default/templates/setup/blocks/install_stage7_block.tpl:253
+#: themes/default/templates/setup/blocks/migrate_stage1_block.tpl:69
+#: themes/default/templates/setup/blocks/migrate_stage1a_block.tpl:45
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:619
+#: themes/default/templates/setup/blocks/migrate_stage3_block.tpl:25
+#: themes/default/templates/setup/blocks/migrate_stage4_block.tpl:26
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:318
+#: themes/default/templates/setup/blocks/migrate_stage6_block.tpl:25
+#: themes/default/templates/setup/blocks/migrate_stage7_block.tpl:32
+#: themes/default/templates/setup/blocks/migrate_stage8_block.tpl:259
 msgid "Next"
 msgstr ""
 
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:11
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:11
 msgid "Stage 2 - Config Settings"
 msgstr ""
 
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:24
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:24
+msgid ""
+"The prefix to for your database tables that are created during the "
+"installation process. Do not edit this field unless absolutely necessary (eg "
+"the transfer of the database to a new hosting provider)."
+msgstr ""
+
 #: themes/default/templates/setup/blocks/install_stage3_block.tpl:11
+#: themes/default/templates/setup/blocks/migrate_stage3_block.tpl:11
 msgid "Stage 3 - Install the Database"
 msgstr ""
 
 #: themes/default/templates/setup/blocks/install_stage3_block.tpl:19
+#: themes/default/templates/setup/blocks/migrate_stage3_block.tpl:19
 msgid "Click next to start the database installation"
 msgstr ""
 
 #: themes/default/templates/setup/blocks/install_stage4_block.tpl:11
+#: themes/default/templates/setup/blocks/migrate_stage4_block.tpl:11
 msgid "Stage 4 - Database Installation Results"
 msgstr ""
 
-#: themes/default/templates/setup/blocks/install_stage4_block.tpl:30
+#: themes/default/templates/setup/blocks/install_stage4_block.tpl:32
+#: themes/default/templates/setup/blocks/migrate_stage4_block.tpl:30
 msgid ""
 "You cannot continue because there was a fault with the database installation."
 msgstr ""
 
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:19
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:19
 msgid "Stage 5 - Company Details"
 msgstr ""
 
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:163
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:163
 msgid "Edit your Company's Currency Settings"
 msgstr ""
 
@@ -8775,29 +9413,38 @@ msgid ""
 "number."
 msgstr ""
 
+#: themes/default/templates/setup/blocks/install_stage6_block.tpl:46
+msgid ""
+"These start numbers are optional and can be skipped by just clicking next."
+msgstr ""
+
 #: themes/default/templates/setup/blocks/install_stage7_block.tpl:16
 msgid "Stage 7 - Create an Administrator"
 msgstr ""
 
 #: themes/default/templates/setup/blocks/install_stage7_block.tpl:38
+#: themes/default/templates/setup/blocks/migrate_stage8_block.tpl:44
 #: themes/default/templates/user/edit.tpl:38
 #: themes/default/templates/user/new.tpl:38
 msgid "Common"
 msgstr ""
 
 #: themes/default/templates/setup/blocks/install_stage7_block.tpl:57
+#: themes/default/templates/setup/blocks/migrate_stage8_block.tpl:63
 #: themes/default/templates/user/edit.tpl:57
 #: themes/default/templates/user/new.tpl:57
 msgid "User Type"
 msgstr ""
 
 #: themes/default/templates/setup/blocks/install_stage7_block.tpl:66
+#: themes/default/templates/setup/blocks/migrate_stage8_block.tpl:72
 #: themes/default/templates/user/edit.tpl:66
 #: themes/default/templates/user/new.tpl:66
 msgid "The user type cannot be changed."
 msgstr ""
 
 #: themes/default/templates/setup/blocks/install_stage7_block.tpl:81
+#: themes/default/templates/setup/blocks/migrate_stage8_block.tpl:87
 #: themes/default/templates/user/blocks/details_details_block.tpl:46
 #: themes/default/templates/user/edit.tpl:81
 #: themes/default/templates/user/new.tpl:81
@@ -8805,6 +9452,7 @@ msgid "Based"
 msgstr ""
 
 #: themes/default/templates/setup/blocks/install_stage7_block.tpl:84
+#: themes/default/templates/setup/blocks/migrate_stage8_block.tpl:90
 #: themes/default/templates/user/blocks/details_details_block.tpl:48
 #: themes/default/templates/user/edit.tpl:84
 #: themes/default/templates/user/new.tpl:84
@@ -8812,6 +9460,7 @@ msgid "Office"
 msgstr ""
 
 #: themes/default/templates/setup/blocks/install_stage7_block.tpl:86
+#: themes/default/templates/setup/blocks/migrate_stage8_block.tpl:92
 #: themes/default/templates/user/blocks/details_details_block.tpl:50
 #: themes/default/templates/user/edit.tpl:86
 #: themes/default/templates/user/new.tpl:86
@@ -8819,6 +9468,7 @@ msgid "OnSite"
 msgstr ""
 
 #: themes/default/templates/setup/blocks/install_stage7_block.tpl:109
+#: themes/default/templates/setup/blocks/migrate_stage8_block.tpl:115
 #: themes/default/templates/user/blocks/details_details_block.tpl:38
 #: themes/default/templates/user/edit.tpl:109
 #: themes/default/templates/user/new.tpl:109
@@ -8826,6 +9476,7 @@ msgid "Username"
 msgstr ""
 
 #: themes/default/templates/setup/blocks/install_stage7_block.tpl:113
+#: themes/default/templates/setup/blocks/migrate_stage8_block.tpl:119
 #: themes/default/templates/user/blocks/reset_enter_password_block.tpl:33
 #: themes/default/templates/user/edit.tpl:113
 #: themes/default/templates/user/login.tpl:35
@@ -8834,6 +9485,7 @@ msgid "Password"
 msgstr ""
 
 #: themes/default/templates/setup/blocks/install_stage7_block.tpl:117
+#: themes/default/templates/setup/blocks/migrate_stage8_block.tpl:123
 #: themes/default/templates/user/blocks/reset_enter_password_block.tpl:37
 #: themes/default/templates/user/edit.tpl:117
 #: themes/default/templates/user/new.tpl:117
@@ -8841,6 +9493,7 @@ msgid "Confirm Password"
 msgstr ""
 
 #: themes/default/templates/setup/blocks/install_stage7_block.tpl:119
+#: themes/default/templates/setup/blocks/migrate_stage8_block.tpl:125
 #: themes/default/templates/user/blocks/reset_enter_password_block.tpl:39
 #: themes/default/templates/user/edit.tpl:119
 #: themes/default/templates/user/new.tpl:119
@@ -8848,6 +9501,7 @@ msgid "Passwords Match!"
 msgstr ""
 
 #: themes/default/templates/setup/blocks/install_stage7_block.tpl:119
+#: themes/default/templates/setup/blocks/migrate_stage8_block.tpl:125
 #: themes/default/templates/user/blocks/reset_enter_password_block.tpl:39
 #: themes/default/templates/user/edit.tpl:119
 #: themes/default/templates/user/new.tpl:119
@@ -8855,6 +9509,7 @@ msgid "Passwords Do Not Match!"
 msgstr ""
 
 #: themes/default/templates/setup/blocks/install_stage7_block.tpl:124
+#: themes/default/templates/setup/blocks/migrate_stage8_block.tpl:130
 #: themes/default/templates/user/blocks/details_details_block.tpl:69
 #: themes/default/templates/user/edit.tpl:124
 #: themes/default/templates/user/new.tpl:124
@@ -8863,6 +9518,7 @@ msgid "Usergroup"
 msgstr ""
 
 #: themes/default/templates/setup/blocks/install_stage7_block.tpl:147
+#: themes/default/templates/setup/blocks/migrate_stage8_block.tpl:153
 #: themes/default/templates/user/blocks/details_details_block.tpl:88
 #: themes/default/templates/user/edit.tpl:143
 #: themes/default/templates/user/new.tpl:143
@@ -8870,6 +9526,7 @@ msgid "Require Reset"
 msgstr ""
 
 #: themes/default/templates/setup/blocks/install_stage7_block.tpl:166
+#: themes/default/templates/setup/blocks/migrate_stage8_block.tpl:172
 #: themes/default/templates/user/blocks/details_open_workorders_block.tpl:51
 #: themes/default/templates/user/edit.tpl:160
 #: themes/default/templates/user/new.tpl:160
@@ -8878,6 +9535,7 @@ msgid "Work"
 msgstr ""
 
 #: themes/default/templates/setup/blocks/install_stage7_block.tpl:172
+#: themes/default/templates/setup/blocks/migrate_stage8_block.tpl:178
 #: themes/default/templates/user/blocks/details_details_block.tpl:111
 #: themes/default/templates/user/edit.tpl:166
 #: themes/default/templates/user/new.tpl:166
@@ -8885,6 +9543,7 @@ msgid "Work Phone"
 msgstr ""
 
 #: themes/default/templates/setup/blocks/install_stage7_block.tpl:176
+#: themes/default/templates/setup/blocks/migrate_stage8_block.tpl:182
 #: themes/default/templates/user/blocks/details_details_block.tpl:113
 #: themes/default/templates/user/edit.tpl:170
 #: themes/default/templates/user/new.tpl:170
@@ -8892,6 +9551,7 @@ msgid "Work Mobile Phone"
 msgstr ""
 
 #: themes/default/templates/setup/blocks/install_stage7_block.tpl:180
+#: themes/default/templates/setup/blocks/migrate_stage8_block.tpl:186
 #: themes/default/templates/user/blocks/details_details_block.tpl:117
 #: themes/default/templates/user/edit.tpl:174
 #: themes/default/templates/user/new.tpl:174
@@ -8899,6 +9559,7 @@ msgid "Work Fax"
 msgstr ""
 
 #: themes/default/templates/setup/blocks/install_stage7_block.tpl:196
+#: themes/default/templates/setup/blocks/migrate_stage8_block.tpl:202
 #: themes/default/templates/user/blocks/details_details_block.tpl:128
 #: themes/default/templates/user/edit.tpl:190
 #: themes/default/templates/user/new.tpl:190
@@ -8906,6 +9567,7 @@ msgid "Home Phone"
 msgstr ""
 
 #: themes/default/templates/setup/blocks/install_stage7_block.tpl:200
+#: themes/default/templates/setup/blocks/migrate_stage8_block.tpl:206
 #: themes/default/templates/user/blocks/details_details_block.tpl:130
 #: themes/default/templates/user/edit.tpl:194
 #: themes/default/templates/user/new.tpl:194
@@ -8913,10 +9575,50 @@ msgid "Home Mobile Phone"
 msgstr ""
 
 #: themes/default/templates/setup/blocks/install_stage7_block.tpl:204
+#: themes/default/templates/setup/blocks/migrate_stage8_block.tpl:210
 #: themes/default/templates/user/blocks/details_details_block.tpl:134
 #: themes/default/templates/user/edit.tpl:198
 #: themes/default/templates/user/new.tpl:198
 msgid "Home Email"
+msgstr ""
+
+#: themes/default/templates/setup/blocks/migrate_stage1a_block.tpl:11
+msgid "Stage 1a - MyITCRM Database Connection"
+msgstr ""
+
+#: themes/default/templates/setup/blocks/migrate_stage1a_block.tpl:21
+msgid "MyITCRM Database Tables Prefix"
+msgstr ""
+
+#: themes/default/templates/setup/blocks/migrate_stage1a_block.tpl:27
+msgid "Enter The prefix used for your MyITCRM database tables."
+msgstr ""
+
+#: themes/default/templates/setup/blocks/migrate_stage1a_block.tpl:38
+msgid ""
+"The MyITCRM tables should be in the same database you are installing QWcrm "
+"into."
+msgstr ""
+
+#: themes/default/templates/setup/blocks/migrate_stage6_block.tpl:11
+msgid "Stage 6 - Migrate the Database"
+msgstr ""
+
+#: themes/default/templates/setup/blocks/migrate_stage6_block.tpl:19
+msgid "Click next to start the database migration."
+msgstr ""
+
+#: themes/default/templates/setup/blocks/migrate_stage7_block.tpl:11
+msgid "Stage 7 - MyITCRM Database Migration Results"
+msgstr ""
+
+#: themes/default/templates/setup/blocks/migrate_stage7_block.tpl:25
+msgid ""
+"There was a fault with the database migration. The data might be compromised."
+msgstr ""
+
+#: themes/default/templates/setup/blocks/migrate_stage8_block.tpl:22
+msgid "Stage 8 - Create an Administrator"
 msgstr ""
 
 #: themes/default/templates/setup/choice.tpl:13
@@ -8938,6 +9640,7 @@ msgid "Migrate from MyITCRM"
 msgstr ""
 
 #: themes/default/templates/setup/install.tpl:13
+#: themes/default/templates/setup/migrate.tpl:13
 msgid "QWcrm Installation"
 msgstr ""
 
@@ -9070,8 +9773,8 @@ msgstr ""
 msgid "New User"
 msgstr ""
 
-#: themes/default/templates/user/reset.tpl:19
-msgid "There has been an error"
+#: themes/default/templates/user/reset.tpl:23
+msgid "There has been an error."
 msgstr ""
 
 #: themes/default/templates/user/search.tpl:45

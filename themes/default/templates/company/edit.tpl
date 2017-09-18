@@ -205,6 +205,35 @@
                                                 <td class="menuhead2" width="80%">&nbsp;{t}Edit Email Messaging functions{/t}</td>
                                             </tr>
                                                                                         
+                                            <!-- Email Signature -->
+                                            
+                                            <tr>
+                                                <td>
+                                                    <table cellpadding="5" cellspacing="0">
+                                                        <tr>
+                                                            <td class="menuhead">{t}Email Signature{/t}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>                                                                
+                                                                <strong>Placeholders</strong><br>
+                                                                {literal}{logo}{/literal} = {t}Use this to place your logo in the message{/t}                                                               
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><textarea cols="80" rows="15" class="olotd5" name="email_signature">{$company_details.email_signature}</textarea></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td align="left"><b>{t}Enabled{/t}:</b>
+                                                                <select name="email_signature_active">                                                                    
+                                                                    <option value="1" {if $company_details.email_signature_active == '1'} selected{/if}>{t}Yes{/t}</option>
+                                                                    <option value="0" {if $company_details.email_signature_active == '0'} selected{/if}>{t}No{/t}</option>
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                    </table>                                                        
+                                                </td>
+                                            </tr>  
+                                                                                        
                                             <!-- Workorder -->
                                             
                                             <tr>
@@ -268,36 +297,8 @@
                                                         </tr>*}
                                                     </table>                                                        
                                                 </td>
-                                            </tr>                                             
+                                            </tr>                                                                                
                                             
-                                            <!-- Email Signature -->
-                                            
-                                            <tr>
-                                                <td>
-                                                    <table cellpadding="5" cellspacing="0">
-                                                        <tr>
-                                                            <td class="menuhead">{t}Email Signature{/t}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>                                                                
-                                                                <strong>Placeholders</strong><br>
-                                                                {literal}{logo}{/literal} = {t}Use this to place your logo in the message{/t}                                                               
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td><textarea cols="80" rows="15" class="olotd5" name="email_signature">{$company_details.email_signature}</textarea></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td align="left"><b>{t}Enabled{/t}:</b>
-                                                                <select name="email_signature_active">                                                                    
-                                                                    <option value="1" {if $company_details.email_signature_active == '1'} selected{/if}>{t}Yes{/t}</option>
-                                                                    <option value="0" {if $company_details.email_signature_active == '0'} selected{/if}>{t}No{/t}</option>
-                                                                </select>
-                                                            </td>
-                                                        </tr>
-                                                    </table>                                                        
-                                                </td>
-                                            </tr>                                         
                                         </table>
                                     </td>
                                 </tr>                                
