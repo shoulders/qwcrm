@@ -1024,7 +1024,7 @@ function migate_database_correction_workorder($db, $qwcrm_prefix, $myitcrm_prefi
     // Log mesage to setup log                
     write_record_to_setup_log('migrate', $record);
     
-    // old workorder status
+    // old MyITCRM workorder status
     // 1 - created
     // 2 - assigned
     // 3 - waiting for parts
@@ -1675,26 +1675,6 @@ function get_merged_company_details($db) {
     
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /** upgrade **/
 
 ############################################
@@ -1703,5 +1683,6 @@ function get_merged_company_details($db) {
 
 function upgrade_database($db) {
     
+    // to follow
        
 }
