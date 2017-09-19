@@ -33,7 +33,7 @@
                                                            <tr>
                                                                 <td>
                                                                     <b>{t}Display Name{/t}</b><br>
-                                                                    <input name="search_term" class="olotd4" value="{$search_term}" type="text" maxlength="50" required onkeydown="return onlyAlphaNumeric(event);">
+                                                                    <input name="search_term" class="olotd4" value="{$search_term}" type="text" maxlength="50" onkeydown="return onlyAlphaNumeric(event);">
                                                                     <input name="search_category" value="{$search_category}" type="hidden" />
                                                                     <input name="submit" class="olotd4" value="{t}Search{/t}" type="submit" />
                                                                     <input type="button" class="olotd4" value="{t}Reset{/t}" onclick="window.location.href='index.php?page=customer:search';">

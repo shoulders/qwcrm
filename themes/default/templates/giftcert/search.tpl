@@ -31,7 +31,7 @@
                                                             <tr>
                                                                 <td>
                                                                     <b>{t}Gift Certificate Code{/t}</b><br>
-                                                                    <input name="search_term" value="{$search_term}" class="olotd4" size="20" type="text" maxlength="20" required onkeydown="return onlyAlphaNumeric(event);">                                                            
+                                                                    <input name="search_term" value="{$search_term}" class="olotd4" size="20" type="text" maxlength="20" onkeydown="return onlyAlphaNumeric(event);">                                                            
                                                                     <input name="search_category" value="{$search_category}" type="hidden" />
                                                                     <input name="submit" class="olotd4" value="{t}Search{/t}" type="submit" />
                                                                     <input type="button" class="olotd4" value="{t}Reset{/t}" onclick="window.location.href='index.php?page=giftcert:search';">
@@ -152,7 +152,7 @@
                                                             <td class="olotd4">
                                                                 <a href="index.php?page=giftcert:details&giftcert_id={$search_result[i].giftcert_id}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif"  border="0" onMouseOver="ddrivetip('{t}View Details{/t}');" onMouseOut="hideddrivetip();"></a>&nbsp;
                                                                 <a href="index.php?page=giftcert:edit&giftcert_id={$search_result[i].giftcert_id}"><img src="{$theme_images_dir}icons/16x16/small_edit_employee.gif" border="0" onMouseOver="ddrivetip('{t}Edit{/t}');" onMouseOut="hideddrivetip();"></a>&nbsp;
-                                                                <a href="index.php?page=giftcert:print&giftcert_id={$search_result[i].giftcert_id}&print_content=gift_certificate&print_type=print_html&theme=print">
+                                                                <a href="index.php?page=giftcert:print&giftcert_id={$search_result[i].giftcert_id}&print_content=gift_certificate&print_type=print_html&theme=print" target="_blank"> 
                                                                     <img src="{$theme_images_dir}icons/16x16/fileprint.gif" border="0" onMouseOver="ddrivetip('{t}Print the Gift Certificate{/t}');" onMouseOut="hideddrivetip();">
                                                                 </a>
                                                                 <a href="index.php?page=giftcert:delete&giftcert_id={$search_result[i].giftcert_id}" onclick="return confirmChoice('{t}Are you Sure you want to delete this Gift Certificate?{/t}');">

@@ -46,7 +46,7 @@
         <!-- Gift Certificate Details -->
         <tr>                        
             <td style="text-align:center">
-                {t}Gift Certificate for{/t}<br>
+                {t}Purchased by{/t}<br>
                 <span style="font-size: 20px;">
                     {$customer_details.display_name}<br>                                     
                 </span>                

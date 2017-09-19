@@ -16,7 +16,7 @@
                     </td>
                 </tr>                
                 <tr>
-                    <td class="menutd2">
+                    <td class="menutd2" colspan="2">
                         <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0" >
                             <tr>
                                 <td width="100%" valign="top" class="menutd">

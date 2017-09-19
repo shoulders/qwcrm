@@ -53,7 +53,7 @@ function display_workorder_schedules($db, $workorder_id){
     
 }
 
-/** New/Insert Functions **/
+/** Insert Functions **/
 
 ######################################
 #  Insert schedule                   #

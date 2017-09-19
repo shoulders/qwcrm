@@ -5,6 +5,40 @@
  * @copyright Copyright (C) 2016 - 2017 Jon Brown, All rights reserved.
  * @license   GNU/GPLv3 or later; https://www.gnu.org/licenses/gpl.html
 *}
+<b>{t}Pending Invoices{/t}</b>
+<table class="olotable" width="100%" border="0" cellpadding="1" cellspacing="0">
+    <tr>
+        <td class="olohead">{t}INV ID{/t}</td>
+        <td class="olohead">{t}WO ID{/t}</td>
+        <td class="olohead">{t}Date{/t}</td>
+        <td class="olohead">{t}Amount{/t}</td>
+        <td class="olohead">{t}Paid{/t}</td>
+        <td class="olohead">{t}Balance{/t}</td>
+        <td class="olohead">{t}Date Paid{/t}</td>
+        <td class="olohead">{t}Employee{/t}</td>
+        <td class="olohead">{t}Action{/t}</td>
+    </tr>
+    {section name=w loop=$pending_invoices}
+        <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=invoice:edit&invoice_id={$pending_invoices[w].invoice_id}&workorder_id={$pending_invoices[w].workorder_id}&customer_id={$pending_invoices[w].customer_id}';">
+            <td class="olotd4"><a href="index.php?page=invoice:edit&invoice_id={$pending_invoices[w].invoice_id}&workorder_id={$pending_invoices[w].workorder_id}&customer_id={$pending_invoices[w].customer_id}">{$pending_invoices[w].invoice_id}</a></td>
+            <td class="olotd4"><a href="index.php?page=workorder:details&workorder_id={$pending_invoices[w].workorder_id}">{$pending_invoices[w].workorder_id}</a></td>
+            <td class="olotd4">{$pending_invoices[w].date|date_format:$date_format}</td>
+            <td class="olotd4">{$currency_sym}{$pending_invoices[w].invoice_amount|string_format:"%.2f"}</td>
+            <td class="olotd4">{$currency_sym}{$pending_invoices[w].paid_amount|string_format:"%.2f"}</td>
+            <td class="olotd4">{$currency_sym}{$pending_invoices[w].balance|string_format:"%.2f"}</td>
+            <td class="olotd4">{$pending_invoices[w].paid_date|date_format:$date_format}</td>
+            <td class="olotd4">{$pending_invoices[w].employee_display_name}</td>
+            <td class="olotd4" align="center">
+                <a href="index.php?page=invoice:print&invoice_id={$pending_invoices[w].invoice_id}&print_type=print_html&print_content=invoice&theme=print" target="new" ><img src="{$theme_images_dir}icons/16x16/fileprint.gif" alt="" border="0" onMouseOver="ddrivetip('{t}Print HTML{/t}');" onMouseOut="hideddrivetip();"></a>
+                <a href="index.php?page=invoice:print&invoice_id={$pending_invoices[w].invoice_id}&print_type=print_pdf&print_content=invoice&theme=print" target="new" ><img src="{$theme_images_dir}icons/16x16/pdf_small.gif" alt="" border="0" onMouseOver="ddrivetip('{t}Print PDF{/t}');" onMouseOut="hideddrivetip();"></a>
+                <img src="{$theme_images_dir}icons/16x16/pdf_small.gif" alt="" border="0" style="cursor: pointer !important;" onClick="$.ajax( { url:'index.php?page=invoice:print&invoice_id={$pending_invoices[w].invoice_id}&print_type=email_pdf&print_content=invoice&theme=print', success: function(data) { $('body').append(data); } } );" onMouseOver="ddrivetip('{t}Email PDF{/t}');" onMouseOut="hideddrivetip();">
+                <a href="index.php?page=invoice:details&invoice_id={$pending_invoices[w].invoice_id}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" onMouseOver="ddrivetip('{t}Details{/t}');" onMouseOut="hideddrivetip();"></a>
+            </td>
+        </tr>
+    {/section}
+</table>
+<br>
+<br>
 <b>{t}Unpaid Invoices{/t}</b>
 <table class="olotable" width="100%" border="0" cellpadding="1" cellspacing="0">
     <tr>
@@ -22,7 +56,7 @@
         <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=invoice:edit&invoice_id={$unpaid_invoices[w].invoice_id}&workorder_id={$unpaid_invoices[w].workorder_id}&customer_id={$unpaid_invoices[w].customer_id}';">
             <td class="olotd4"><a href="index.php?page=invoice:edit&invoice_id={$unpaid_invoices[w].invoice_id}&workorder_id={$unpaid_invoices[w].workorder_id}&customer_id={$unpaid_invoices[w].customer_id}">{$unpaid_invoices[w].invoice_id}</a></td>
             <td class="olotd4"><a href="index.php?page=workorder:details&workorder_id={$unpaid_invoices[w].workorder_id}">{$unpaid_invoices[w].workorder_id}</a></td>
-            <td class="olotd4">{$unpaid_invoices[w].invoice_date|date_format:$date_format}</td>
+            <td class="olotd4">{$unpaid_invoices[w].date|date_format:$date_format}</td>
             <td class="olotd4">{$currency_sym}{$unpaid_invoices[w].invoice_amount|string_format:"%.2f"}</td>
             <td class="olotd4">{$currency_sym}{$unpaid_invoices[w].paid_amount|string_format:"%.2f"}</td>
             <td class="olotd4">{$currency_sym}{$unpaid_invoices[w].balance|string_format:"%.2f"}</td>
@@ -56,7 +90,7 @@
         <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=invoice:details&invoice_id={$paid_invoices[w].invoice_id}&customer_id={$paid_invoices[w].customer_id}';">
             <td class="olotd4"><a href="index.php?page=invoice:details&invoice_id={$paid_invoices[w].invoice_id}&customer_id={$paid_invoices[w].customer_id}">{$paid_invoices[w].invoice_id}</a></td>
             <td class="olotd4"><a href="index.php?page=workorder:details&workorder_id={$paid_invoices[w].workorder_id}">{$paid_invoices[w].workorder_id}</a></td>
-            <td class="olotd4">{$paid_invoices[w].invoice_date|date_format:$date_format}</td>
+            <td class="olotd4">{$paid_invoices[w].date|date_format:$date_format}</td>
             <td class="olotd4">{$currency_sym}{$paid_invoices[w].invoice_amount|string_format:"%.2f"}</td>
             <td class="olotd4">{$currency_sym}{$paid_invoices[w].paid_amount|string_format:"%.2f"}</td>
             <td class="olotd4">{$currency_sym}{$paid_invoices[w].balance|string_format:"%.2f"}</td>

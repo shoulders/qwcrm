@@ -232,7 +232,7 @@ function display_workorder_history($db, $workorder_id){
     
 }
 
-/** New/Insert Functions **/
+/** Insert Functions **/
 
 #########################
 # Insert New Work Order #
@@ -654,6 +654,9 @@ function update_workorder_last_active($db, $workorder_id = null) {
 ####################################
 
 function update_workorder_invoice_id($db, $workorder_id, $invoice_id) {
+    
+    // This prevents invoices with no workorders causing issues
+    if($workorder_id == null) { return; }
     
     $sql = "UPDATE ".PRFX."workorder SET
             invoice_id          =". $db->qstr( $invoice_id      )."

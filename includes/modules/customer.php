@@ -126,7 +126,7 @@ function display_customers($db, $direction = 'DESC', $use_pages = false, $page_n
     
 }
 
-/** New/Insert Functions **/
+/** Insert Functions **/
 
 #####################################
 #    insert new customer            #

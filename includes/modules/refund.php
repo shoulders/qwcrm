@@ -130,7 +130,7 @@ function display_refunds($db, $direction = 'DESC', $use_pages = false, $page_no 
     
 }
 
-/** New/Insert Functions **/
+/** Insert Functions **/
 
 ##########################################
 #      Insert New Record                 #

@@ -19,8 +19,8 @@ if($customer_id == '') {
 }
 
 // Check if giftcert payment method is enabled
-if(!check_payment_method_is_active($db, 'gift_certificate_active')) {
-    force_page('core', 'dashboard', 'warning_msg='.gettext("Gift Certificate payment method is not enabled. To enable Gift Certificates go to the Help menu and select Control Center. Then under the menu Billing Options select Payment Methods and check Gift Certificate."));
+if(!check_payment_method_is_active($db, 'gift_certificate')) {
+    force_page('core', 'dashboard', 'warning_msg='.gettext("Gift Certificate payment method is not enabled. Goto Payment Options and enable Gift Certificates there."));
     exit;
 }
 

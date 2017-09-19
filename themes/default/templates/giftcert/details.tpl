@@ -17,7 +17,7 @@
                     </td>
                 </tr>                
                 <tr>
-                    <td class="olotd4" valign="top">
+                    <td class="olotd4" valign="top" colspan="2">
                         <table cellpadding="3" cellspacing="0" border="0" width="100%">
                             <tr>
                                 <td><h2>{t}Gift Certificate{/t}</h2></td>

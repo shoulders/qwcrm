@@ -131,7 +131,7 @@ function display_expenses($db, $direction = 'DESC', $use_pages = false, $page_no
     
 }
 
-/** New/Insert Functions **/
+/** Insert Functions **/
 
 ##########################################
 #      Insert Expense                    #

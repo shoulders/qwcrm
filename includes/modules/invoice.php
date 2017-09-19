@@ -168,7 +168,7 @@ function display_invoices($db, $direction = 'DESC', $use_pages = false, $page_no
     
 }
 
-/** New/Insert Functions **/
+/** Insert Functions **/
 
 #####################################
 #     insert invoice                #
@@ -194,7 +194,7 @@ function insert_invoice($db, $customer_id, $workorder_id, $discount_rate, $tax_r
     } else {
         
         // get invoice_id
-        $invoice_id = $db->insert_id();
+        $invoice_id = $db->Insert_ID();;
         
         // Create a Workorder History Note  
         insert_workorder_history_note($db, $workorder_id, gettext("Invoice").' '.$invoice_id.' '.gettext("was created for this Work Order").' '.gettext("by").' '.QFactory::getUser()->login_display_name.'.');
@@ -763,15 +763,13 @@ function delete_invoice($db, $invoice_id) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete the invoice."));
         exit;
     } else {
-        
-        // Update the invoice to remove the invoice_id
-        update_invoice_invoice_id($db, $invoice_details['invoice_id'], '');
+                
+        // Update the workorder to remove the invoice_id
+        update_workorder_invoice_id($db, $invoice_details['workorder_id'], '');        
         
         // Create a Workorder History Note  
-        if($invoice_details['invoice_id']) {
-            insert_workorder_history_note($db, $invoice_details['invoice_id'], gettext("Invoice").' '.$invoice_id.' '.gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.');
-        }        
-        
+        insert_workorder_history_note($db, $invoice_details['invoice_id'], gettext("Invoice").' '.$invoice_id.' '.gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.');
+                
         // Log activity        
         write_record_to_activity_log(gettext("Invoice").' '.$invoice_id.' '.gettext("for Work Order").' '.$invoice_details['invoice_id'].' '.gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.');
         

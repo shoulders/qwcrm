@@ -7,7 +7,7 @@
 *}
 <table class="olotable" width="900" border ="1" cellpadding="5" cellspacing="5">
     <tr>
-        <td class="olohead" colspan="2">{t}Dashboard{/t}</td>
+        <td class="olohead" colspan="2">{t}Welcome to QWcrm{/t}</td>
     </tr>
     <tr>
         <td class="olotd">

@@ -8,5 +8,6 @@
 
 defined('_QWEXEC') or die;
 
+// Build the page
 $BuildPage .= $smarty->fetch('help/attribution.tpl');
 

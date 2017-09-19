@@ -24,7 +24,7 @@ defined('_QWEXEC') or die;
 
 /** Display Functions **/
 
-/** New/Insert Functions **/
+/** Insert Functions **/
 
 ############################
 #   insert transaction     #

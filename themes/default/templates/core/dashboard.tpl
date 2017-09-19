@@ -24,7 +24,7 @@
 
                 <!-- Content -->
                 <tr>
-                    <td class="menutd2">
+                    <td class="menutd2" colspan="2">
                         <table class="olotable" width="700" border="0" cellpadding="5" cellspacing="0">
                             <tr>
                                 <td>                                    

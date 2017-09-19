@@ -143,7 +143,7 @@ function display_giftcerts($db, $direction = 'DESC', $use_pages = false, $page_n
     
 }
 
-/** New/Insert Functions **/
+/** Insert Functions **/
 
 #################################
 #   insert Gift Certificate     #
@@ -166,14 +166,16 @@ function insert_giftcert($db, $customer_id, $date_expires, $amount, $active, $no
         exit;
 
     } else {
+        
+        $giftcert_id = $db->Insert_ID();
 
         // Log activity        
-        write_record_to_activity_log(gettext("Gift Certificate").' '.$db->insert_id().' '.gettext("was created by").' '.QFactory::getUser()->login_display_name.'.');      
+        write_record_to_activity_log(gettext("Gift Certificate").' '.$giftcert_id.' '.gettext("was created by").' '.QFactory::getUser()->login_display_name.'.');      
 
         // Update last active record    
         update_customer_last_active($db, $customer_id);
         
-        return $db->insert_id();
+        return $giftcert_id ;
         
     }
     

@@ -153,7 +153,7 @@ function display_users($db, $direction = 'DESC', $use_pages = false, $page_no = 
     
 }
 
-/** New/Insert Functions **/
+/** Insert Functions **/
 
 #####################################
 #    insert new user                #
@@ -201,7 +201,7 @@ function insert_user($db, $VAR){
         // Log activity        
         write_record_to_activity_log(gettext("User Account").' '.$db->Insert_ID().' ('.$VAR['display_name'].') '.gettext("created."));
                 
-        return $db->insert_id();        
+        return $db->Insert_ID();;        
         
     }
     

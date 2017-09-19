@@ -130,7 +130,7 @@ function display_suppliers($db, $direction = 'DESC', $use_pages = false, $page_n
     
 }
 
-/** New/Insert Functions **/
+/** Insert Functions **/
 
 ##########################################
 #      Insert New Record                 #

@@ -8,8 +8,10 @@
 
 defined('_QWEXEC') or die;
 
+require(INCLUDES_DIR.'modules/customer.php');
 require(INCLUDES_DIR.'modules/schedule.php');
 require(INCLUDES_DIR.'modules/user.php');
+require(INCLUDES_DIR.'modules/workorder.php');
 
 // Check if we have a schedule_id
 if($schedule_id == '') {
@@ -50,15 +52,14 @@ if(isset($VAR['submit'])) {
     $schedule_item = get_schedule_details($db, $schedule_id);
     
     // Corrects the extra time segment issue    
-    $end_time = $schedule_item['schedule_end'] + 1;
+    $end_time = $schedule_item['end_time'] + 1;
     
-    //$smarty->assign('schedule_id',      $schedule_item['schedule_id']                           );
     $smarty->assign('employee_id',      $schedule_item['employee_id']                           );    
     $smarty->assign('customer_id',      $schedule_item['customer_id']                           );
     $smarty->assign('workorder_id',     $schedule_item['workorder_id']                          );
-    $smarty->assign('start_date',       timestamp_to_date($schedule_item['schedule_start'])     );       
-    $smarty->assign('start_time',       date('H:i', $schedule_item['schedule_start'])           );         
-    $smarty->assign('end_date',         timestamp_to_date($schedule_item['schedule_end'])       );         
+    $smarty->assign('start_date',       timestamp_to_date($schedule_item['start_time'])         );       
+    $smarty->assign('start_time',       date('H:i', $schedule_item['start_time'])               );         
+    $smarty->assign('end_date',         timestamp_to_date($schedule_item['end_time'])           );         
     $smarty->assign('end_time',         date('H:i', $end_time)                                  );   
     $smarty->assign('notes',            $schedule_item['notes']                                 );
     $smarty->assign('active_employees', get_active_users($db, 'employees')                      );
