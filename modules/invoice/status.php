@@ -50,7 +50,7 @@ $statuses = get_invoice_statuses($db);
 // Unset unwanted status
 //unset($statuses[0]);  // 'pending'  
 //unset($statuses[1]);  // 'unpaid'  
-unset($statuses[2]);    // 'partially_paid' 
+//unset($statuses[2]);    // 'partially_paid' 
 //unset($statuses[3]);    // 'paid'//    
 unset($statuses[4]);  // 'in_dispute'
 unset($statuses[5]);    // 'overdue'
