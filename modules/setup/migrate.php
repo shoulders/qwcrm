@@ -206,8 +206,8 @@ if($VAR['stage'] == '6') {
         // install the database file and load the next page
         if(migrate_database($db, $config->db_prefix, $config->myitcrm_prefix)) {
             
-            // remove MyITCRM prefix from the config file - migth use direct delete key
-            //delete_config_value();
+            // remove MyITCRM prefix from the config file
+            delete_qwcrm_config_value('myitcrm_prefix');
             
             $record = gettext("The MyITCRM database migrated successfully.");
             write_record_to_setup_log('migrate', $record);

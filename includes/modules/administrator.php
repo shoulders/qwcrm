@@ -175,6 +175,33 @@ function update_qwcrm_config($new_config) {
     
 }
 
+/* Delete Functions */
+
+############################################
+#   Update the QWcrm settings file         #
+############################################
+
+function delete_qwcrm_config_setting($key) {
+    
+    // Get a fresh copy of the current settings as an array        
+    $qwcrm_config = get_qwcrm_config();
+    
+    // Remove the key from the object
+    unset($qwcrm_config[$key]);
+    
+    // Prepare the config file content
+    $qwcrm_config = build_config_file_content($qwcrm_config);
+    
+    // Write the configuration file.
+    write_config_file($qwcrm_config);
+    
+    // Log activity        
+    write_record_to_activity_log(gettext("The QWcrm config setting").' `'.$key.'` '.gettext("was deleted."));   
+
+    return true;
+    
+}
+
 /* Other Functions */
 
 /**
