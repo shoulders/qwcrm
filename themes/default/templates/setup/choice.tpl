@@ -48,10 +48,10 @@
                                     <table class="olotable" width="100%" border="0" cellpadding="5" cellspacing="0">
                                         <tr>
                                             <td>
-                                                {t}QWcrm software is released under the GNU General Public License V3 (GPL-3.0).<br>
-                                                The license can be found in the root directory of QWcrm. <a href="LICENSE.txt" target="_blank">({t}Click here to read{/t})</a><br>
-                                                Not all assets are covered by the GPL-3.0 and further notes can be found on the license and attribution pages once QWcrm is install.<br>
-                                                You must confirm you understand and accept the license before continuing.{/t}                                                
+                                                {t}QWcrm software is released under the GNU General Public License V3 (GPL-3.0).{/t}<br>
+                                                {t}The license can be found in the root directory of QWcrm.{/t} <a href="LICENSE.txt" target="_blank">({t}Click here to read{/t})</a><br>
+                                                {t}Not all assets are covered by the GPL-3.0 and further notes can be found on the license and attribution pages once QWcrm is installed.{/t}<br>
+                                                {t}You must confirm you understand and accept the license before continuing.{/t}                                                
                                             </td>                                            
                                         </tr>
                                         <tr>
