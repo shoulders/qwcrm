@@ -25,7 +25,13 @@
                                 <strong><span style="color: red">{t}There was a fault with the database migration. The data might be compromised.{/t}</span></strong>
                             </td>
                         </tr>
-                    {/if} 
+                    {else}
+                        <tr>
+                            <td colspan="2" style="text-align: center;">
+                                <strong>{t}The database migration was successful. You need to manually delete your old MyITCRM tables once you have completed this process.{/t}</strong>
+                            </td>
+                        </tr>                        
+                    {/if}    
                     <tr>
                         <td colspan="2" style="text-align: center;">
                             <input type="hidden" name="stage" value="7">
