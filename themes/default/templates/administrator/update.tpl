@@ -30,52 +30,66 @@
                             {if !$update_response}                                
                                 <tr>
                                     <td colspan="2">
-                                        <p>{t}This page will show you updates for QWcrm{/t}</p>
+                                        <p>{t}This page will allow you to check for updates to QWcrm.{/t}</p>
                                         <p><b>{t}Current Version{/t}:</b> {$current_version}</p>
                                     </td>                                    
                                 </tr>                                
                             {/if}
                             
-                            <!-- Page with a response -->                            
-                            {if $update_response}
+                            <!-- Update Response --> 
+                            
+                            {if $update_response}                                 
+                            
+                                {if $update_response == 'no_response'}
+                                    <tr>
+                                        <td colspan="2">
+                                            <p>{t}There has been no response from the QWcrm update server. You can manually check for updates at{/t}: <a href="https://quantumwarp.com" target="_blank">QuantumWarp.com</a></p>
+                                        </td>
+                                    </tr>                                    
+                                {else}
+                                    <tr>
+                                        <td colspan="2">
+                                            <div>{$update_response.message}</div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="%50" align="left">
+                                            <b>{t}Current Version{/t}:</b> {$current_version}<br>
+                                        </td>
+                                        <td width="%50" align="left">
+                                            <b>{t}Latest Version{/t}:</b> {$update_response.version}<br>
+                                            <b>{t}Release Date{/t}:</b> {$update_response.release_date}<br>
+                                            {if $version_compare == 1}
+                                                <b>{t}Download Link{/t}:</b> <a href="{$update_response.downloadurl}">{$update_response.downloadurl}</a>
+                                            {/if}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td valign="top" colspan="2">                                        
+                                            {if $version_compare == 1}                                                
+                                                <span style="color: red;"><strong>{t}An update is available.{/t}</strong></span><br>                                           
+                                                {t}Please download and once you unpack the file read the README for further instructions.{/t}                                                
+                                            {else}
+                                                <span style="color: green;"><strong>{t}No Updates Available, you have the latest version.{/t}</strong></span>
+                                            {/if}                                    
+                                            <br>
+                                        </td>
+                                    </tr>
+                                {/if}
+                                
+                            {/if}
+                            
+                            <!-- Submit Button -->
+                            
+                            {if !$update_response}  
                                 <tr>
-                                    <td colspan="2">
-                                        <div>{$update_response.message}</div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td width="%50" align="left">
-                                        <b>{t}Current Version{/t}:</b> {$current_version}<br>
-                                    </td>
-                                    <td width="%50" align="left">
-                                        <b>{t}Latest Version{/t}:</b> {$update_response.version}<br>
-                                        <b>{t}Release Date{/t}:</b> {$update_response.release_date}<br>
-                                        {if $version_compare == 1}
-                                            <b>{t}Download Link{/t}:</b> <a href="{$update_response.downloadurl}">{$update_response.downloadurl}</a>
-                                        {/if}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td valign="top" colspan="2">                                        
-                                        {if $version_compare == 1}
-                                            {t}An update is available.{/t}<br>                                           
-                                            {t}Please download and once you unpack the file read the README for further instructions.{/t}                                            
-                                        {else}
-                                            {t}No Updates Available, you have the latest version.{/t}
-                                        {/if}                                    
-                                        <br>
+                                    <td>
+                                        <form method="post" action="index.php?page=administrator:update"> 
+                                            <button class="olotd5" type="submit" name="submit" value="check_for_update">{t}Check for Update{/t}</button>
+                                        </form>
                                     </td>
                                 </tr>
                             {/if}
-                            
-                            <!-- Submit Button -->                                                            
-                            <tr>
-                                <td>
-                                    <form method="post" action="index.php?page=administrator:update"> 
-                                        <button class="olotd5" type="submit" name="submit" value="check_for_update">{t}Check for Update{/t}</button>
-                                    </form>
-                                </td>
-                            </tr>                            
                             
                         </table>
                     </td>

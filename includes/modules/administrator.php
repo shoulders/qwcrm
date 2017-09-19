@@ -232,11 +232,20 @@ function check_for_qwcrm_update() {
     // If no response return with error message
     if($curl_response == '' || $curl_error) {         
         $smarty->assign('warning_msg', gettext("No response from the QWcrm update server."));
+        $smarty->assign('update_response', 'no_response');
         return;        
     }
 
     // Parse the grabbed XML into an array
     $update_response = parse_xml_sting_into_array($curl_response);
+    
+    // Verify there is a real response and flag error if not
+    if(!$update_response['name']) {
+        $smarty->assign('warning_msg', gettext("No response from the QWcrm update server."));
+        $smarty->assign('update_response', 'no_response');
+        return;       
+    }
+    
     
     // Build the update message
     if (version_compare(QWCRM_VERSION, $update_response['version'], '<')) {
