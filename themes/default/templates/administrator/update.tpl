@@ -60,7 +60,7 @@
                                             <b>{t}Latest Version{/t}:</b> {$update_response.version}<br>
                                             <b>{t}Release Date{/t}:</b> {$update_response.release_date}<br>
                                             {if $version_compare == 1}
-                                                <b>{t}Download Link{/t}:</b> <a href="{$update_response.downloadurl}">{$update_response.downloadurl}</a>
+                                                <b>{t}Download Link{/t}:</b> <a href="{$update_response.downloadurl}" target="_blank">{$update_response.downloadurl}</a>
                                             {/if}
                                         </td>
                                     </tr>
