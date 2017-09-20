@@ -152,10 +152,10 @@
                                                             <td class="olotd4" nowrap>{$currency_sym} {$search_result[i].gross_amount}</td>
                                                             <td class="olotd4" nowrap>
                                                                 {if $search_result[i].notes != ''}
-                                                                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Notes{/t}</strong></div><hr><div>{$search_result[i].notes}</div>');" onMouseOut="hideddrivetip();">
+                                                                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Notes{/t}</strong></div><hr><div>{$search_result[i].notes|nl2br|regex_replace:"/(\t|')/":" "}</div>');" onMouseOut="hideddrivetip();">
                                                                 {/if}
                                                             </td>
-                                                            <td class="olotd4" nowrap><img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Items{/t}</strong></div><hr><div>{$search_result[i].items}</div>');" onMouseOut="hideddrivetip();"></td>
+                                                            <td class="olotd4" nowrap><img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Items{/t}</strong></div><hr><div>{$search_result[i].items|nl2br|regex_replace:"/(\t|')/":" "}</div>');" onMouseOut="hideddrivetip();"></td>
                                                             <td class="olotd4" nowrap>
                                                                 <a href="index.php?page=expense:details&expense_id={$search_result[i].expense_id}">
                                                                     <img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" onMouseOver="ddrivetip('<b>{t}View Expense Details{/t}</b>');" onMouseOut="hideddrivetip();">
