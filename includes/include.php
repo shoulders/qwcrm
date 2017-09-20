@@ -403,7 +403,10 @@ function postEmulationReturnStore($keep_store = false) {
 
 function prepare_error_data($type, $data = null) {
     
-    $user = QFactory::getUser();
+    // Allows errors from install/migrate to be processed
+    if(QWCRM_SETUP == 'install') {
+        $user = QFactory::getUser();
+    }
 
     /* Error Page (by referring page) - only needed when using referrer - not currently used 
     if($type === 'error_page') {
@@ -430,14 +433,14 @@ function prepare_error_data($type, $data = null) {
     /* Error Page (by using $_GET['page'] */    
     if($type === 'error_page') {
         
-        // compensate for home and login pages
+        // compensate for home and dashboard
         if($data == '') {
             
             // Must be Login or Home
             if(isset($user->login_token)) {
-                $error_page = 'home';
+                $error_page = 'dashboard';
             } else {
-                $error_page = 'login';
+                $error_page = 'home';
             }    
         } else {
             $error_page = $data;            
@@ -481,6 +484,19 @@ function prepare_error_data($type, $data = null) {
         if($data != '') {
             $data = str_replace("\r", '', $data);
             $data = str_replace("\n", '', $data);            
+        }
+        return $data;
+        
+    }
+    
+    /* Database Connection Error */
+    if($type === 'database_connection_error') {
+
+        // remove newlines from the database string
+        if($data != '') {
+            $data = str_replace("\r", '', $data);
+            $data = str_replace("\n", '', $data);
+            $data = str_replace("'", "\\'", $data); 
         }
         return $data;
         
@@ -549,7 +565,7 @@ function set_page_header_and_meta_data($module, $page_tpl, $page_title_from_var 
 
 function check_acl($db, $login_usergroup_id, $module, $page_tpl) {
     
-    // If installing
+    // If installingif(QWCRM_SETUP == 'install' || QWCRM_SETUP == 'upgrade')
     if(QWCRM_SETUP == 'install' || QWCRM_SETUP == 'upgrade') { return true; }
     
     // error catching - you cannot use normal error logging as it will cause a loop

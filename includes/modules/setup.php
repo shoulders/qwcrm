@@ -390,13 +390,37 @@ function write_record_to_setup_log($setup_type, $record, $database_error = null,
 
 function check_database_connection($db, $db_host, $db_user, $db_pass, $db_name) {
     
-    // create ADOdb database connection
-    $db->Connect($db_host, $db_user, $db_pass, $db_name);
+    global $smarty;
     
-    if(!$db->isConnected()) {
-        return false;        
+    // Disable php error reporting for this function
+    error_reporting(0);
+    
+    // create ADOdb database connection - and collection exceptions
+    try {        
+        $db->Connect($db_host, $db_user, $db_pass, $db_name);
+    }    
+    
+    catch (exception $e) {
+        
+        //echo $e->msg;
+        //var_dump($e);
+        //adodb_backtrace($e->gettrace());
+        
+        $smarty->assign('warning_msg', $e->msg);
+        return false;
+              
+    }
+    
+    // Return the connection status
+    if(!$db->isConnected()) {             
+        
+        $smarty->assign('warning_msg', prepare_error_data('database_connection_error', $db->ErrorMsg()));
+        return false;     
+        
     } else {  
-        return true;        
+        
+        return true;  
+        
     }
     
 }

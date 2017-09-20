@@ -42,7 +42,7 @@ if($VAR['stage'] == '1') {
             
             // reload the database connection page with the details and error message
             $smarty->assign('qwcrm_config', $VAR);
-            $smarty->assign('warning_msg', gettext("There is a database connection issue. Check your settings."));
+            //$smarty->assign('warning_msg', gettext("There is a database connection issue. Check your settings."));
             write_record_to_setup_log('install', gettext("Failed to connect to the database with the supplied credentials.")); 
             $smarty->assign('stage', '1');
             

@@ -22,6 +22,9 @@ defined('_QWEXEC') or die;
 set_include_path(get_include_path() . PATH_SEPARATOR . LIBRARIES_DIR.'adodb/');
 require('adodb.inc.php');
 
+// Enable error trapping - http://adodb.org/dokuwiki/doku.php?id=v5:userguide:error_handling / used for check_database_connection()
+require('adodb-exceptions.inc.php');
+
 // create adodb database connection
 $db = ADONewConnection('mysqli');
 
