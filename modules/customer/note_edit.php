@@ -19,7 +19,7 @@ if($VAR['customer_note_id'] == '') {
 // If record submitted for updating
 if(isset($VAR['submit'])) {
                
-    update_customer_note($db, $VAR['customer_note_id'], date_to_timestamp($VAR['date']), $VAR['note']);
+    update_customer_note($db, $VAR['customer_note_id'], $VAR['note']);
     force_page('customer', 'details&customer_id='.$customer_id);   
     exit;
     

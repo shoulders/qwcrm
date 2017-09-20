@@ -343,11 +343,10 @@ function update_customer($db, $customer_id, $VAR) {
 #    update customer note   #
 #############################
 
-function update_customer_note($db, $customer_note_id, $date, $note) {
+function update_customer_note($db, $customer_note_id, $note) {
     
     $sql = "UPDATE ".PRFX."customer_notes SET
-            employee_id             =". $db->qstr( QFactory::getUser()->login_user_id   ).",
-            date                    =". $db->qstr( $date                                ).",
+            employee_id             =". $db->qstr( QFactory::getUser()->login_user_id   ).",            
             note                    =". $db->qstr( $note                                )."
             WHERE customer_note_id  =". $db->qstr( $customer_note_id                    );
 

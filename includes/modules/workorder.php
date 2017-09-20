@@ -673,11 +673,10 @@ function update_workorder_invoice_id($db, $workorder_id, $invoice_id) {
 #    update workorder note   #
 ##############################
 
-function update_workorder_note($db, $workorder_note_id, $date, $note) {
+function update_workorder_note($db, $workorder_note_id, $note) {
     
     $sql = "UPDATE ".PRFX."workorder_notes SET
-            employee_id             =". $db->qstr( QFactory::getUser()->login_user_id   ).",
-            date                    =". $db->qstr( $date                                ).",
+            employee_id             =". $db->qstr( QFactory::getUser()->login_user_id   ).",            
             description             =". $db->qstr( $note                                )."
             WHERE workorder_note_id =". $db->qstr( $workorder_note_id                   );
 

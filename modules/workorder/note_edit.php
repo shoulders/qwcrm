@@ -21,7 +21,7 @@ if($VAR['workorder_note_id'] == '') {
 if(isset($VAR['submit'])) {
     
     // update the workorder note
-    update_workorder_note($db, $VAR['workorder_note_id'], date_to_timestamp($VAR['date']), $VAR['note']);
+    update_workorder_note($db, $VAR['workorder_note_id'], $VAR['note']);
     
     // load the workorder details page
     force_page('workorder', 'details&workorder_id='.$workorder_id, 'information_msg='.gettext("The note has been updated."));

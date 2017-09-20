@@ -31,8 +31,8 @@
                             <tr>
                                 <td width="100%" valign="top">                                    
                                     <form method="post" action="index.php?page=customer:note_edit&customer_note_id={$customer_note.customer_note_id}">
-                                        <b>{t}Edit Customer Note{/t}</b><br>                                        
-                                        <div>
+                                        <p><b>{t}Edit Customer Note{/t}</b></p>                                        
+                                        {*<div>
                                             <b>{t}Date{/t}:<b><br>
                                             <input id="date" name="date" class="olotd4" size="10" value="{$customer_note.date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
                                             <input id="date_button" value="+" type="button">                                                    
@@ -43,8 +43,8 @@
                                                     dateFormat  : "{$date_format}"                                                             
                                                 } );                                            
                                             </script>                                                    
-                                        </div>
-                                        <b>{t}Note{/t}:</b><br>
+                                        </div>*}
+                                        <p><b>{t}Note{/t}:</b></p>
                                         <textarea class="olotd4" rows="15" cols="70" name="note">{$customer_note.note}</textarea>
                                         <br>
                                         <input type="hidden" name="customer_id" value="{$customer_note.customer_id}">
