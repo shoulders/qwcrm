@@ -1,11 +1,6 @@
 /nbproject/
-/configuration.php
-/media/
 /cache/smarty/cache/
 /cache/smarty/compile/
 /logs/
-/cconfiguration.php
-/install - configuration.php
 /qwcrm configuration.php
-/migrate configuration.php
-/qwcrm - configuration.php
+/configuration.php
