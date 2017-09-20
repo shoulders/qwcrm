@@ -13,7 +13,7 @@ defined('_QWEXEC') or die;
 //define('SEP',                       '/'                             );
 
 // Information and Configuration
-define('QWCRM_VERSION' ,            '3.0.0'                         );
+define('QWCRM_VERSION' ,            '3.0.1'                         );
 define('QWCRM_MINIMUM_MYSQL',       '5.0.0'                         );
 define('PRFX',                      $QConfig->db_prefix             );
 
