@@ -36,7 +36,7 @@
                         <td>
                             <select name="card_type" class="olotd4">                     
                                 {section name=c loop=$active_credit_cards}
-                                    <option value="{$active_credit_cards[c].card_type_id}">{$active_credit_cards[c].display_name}</option>
+                                    <option value="{$active_credit_cards[c].card_key}">{$active_credit_cards[c].display_name}</option>
                                 {/section}
                             </select>
                         </td>                        
@@ -50,7 +50,7 @@
                 </table>
                 <p>
                     <input type="hidden" name="method_name" value="{t}Credit Card{/t}">
-                    <input type="hidden" name="method_type" value="credt_card">               
+                    <input type="hidden" name="method_type" value="credit_card">               
                     <button type="submit" name="submit" value="submit">{t}Submit Credit Card Payment{/t}</button>
                 </p>
             </td>

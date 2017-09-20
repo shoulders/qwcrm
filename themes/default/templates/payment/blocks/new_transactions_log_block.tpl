@@ -22,7 +22,7 @@
                     <tr class="olotd4">
                         <td>{$transactions[r].transaction_id}</td>
                         <td>{$transactions[r].date|date_format:$date_format}</td>
-                        <td>{$currency_sym}{$transactions[r].AMOUNT|string_format:"%.2f"}</td>
+                        <td>{$currency_sym}{$transactions[r].amount|string_format:"%.2f"}</td>
                         <td>
                             {section name=s loop=$transaction_statuses}
                                 {if $transactions[r].method == $transaction_statuses[s].system_method_id}{t}{$transaction_statuses[s].display_name}{/t}{/if}                                

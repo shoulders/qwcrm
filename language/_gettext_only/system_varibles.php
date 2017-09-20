@@ -57,6 +57,23 @@ gettext("Other");
 gettext("PayPal");
 gettext("Voucher");
 
+/* System Payment Methods */
+
+gettext("Cash");
+gettext("Cheque");
+gettext("Credit Card");
+gettext("Direct Debit");
+gettext("Gift Certificate");
+gettext("PayPal");
+
+/* Credit Cards */
+
+gettext("Visa");
+gettext("MasterCard");
+gettext("American Express");
+gettext("Debit Card");
+gettext("Other");
+
 /* Expense */
 
 gettext("Advertising");

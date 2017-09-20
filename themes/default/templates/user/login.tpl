@@ -27,6 +27,8 @@
                                     <td>
                                         <form action="index.php?page=user:login" method="post">
                                             <table width="25%" cellspacing="0" border="0" cellpadding="5" align="center">
+                                                
+                                                <!-- Login Form -->
                                                 <tr>
                                                     <td>{t}Login{/t}</td>
                                                     <td><input name="login_username" class="olotd5" size="25" alt="login" type="text" required onkeydown="return onlyUsername(event);"></td>
@@ -45,24 +47,11 @@
                                                     <td colspan="2"><button id="login_button" type="submit" name="action" value="login"><img src="{$theme_images_dir}tick.png" alt=""> {t}Login{/t}</button></td>
                                                 </tr>                            
 
-                                                <!-- Information Message -->
-                                                {if $information_msg != '' }
-                                                    <tr align="center">
-                                                        <td colspan="2" class="information_msg" style="text-align: center;">{$information_msg}</td>
-                                                    </tr>
-                                                {/if}
-
-                                                <!-- Warning Message -->
-                                                {if $warning_msg != '' }
-                                                    <tr align="center">
-                                                        <td colspan="2" class="warning_msg">{$warning_msg}</td>
-                                                    </tr>
-                                                {/if}                            
-
                                                 <!-- Forgotten Password -->
                                                 <tr align="center">
                                                     <td colspan="2"><a href="index.php?page=user:reset">{t}Forgot your password?{/t}</a></td>
                                                 </tr>
+                                                
                                             </table>
 
                                             {if $recaptcha}

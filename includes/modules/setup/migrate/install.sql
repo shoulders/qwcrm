@@ -363,7 +363,8 @@ INSERT INTO `#__payment` (`tax_enabled`, `bank_account_name`, `bank_name`, `bank
 --
 
 CREATE TABLE `#__payment_credit_cards` (
-  `card_type_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `id` int(10) NOT NULL COMMENT 'only for display order',
+  `card_key` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `display_name` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `active` int(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -372,18 +373,12 @@ CREATE TABLE `#__payment_credit_cards` (
 -- Dumping data for table `#__payment_credit_cards`
 --
 
-INSERT INTO `#__payment_credit_cards` (`card_type_id`, `display_name`, `active`) VALUES
-('amex', 'Amex', 0),
-('carteblanche', 'Carta Blanche', 0),
-('delta', 'Delta', 0),
-('diners', 'Diners', 0),
-('discover', 'Discover', 0),
-('enroute', 'Enroute', 0),
-('jcb', 'JCB', 0),
-('mastercard', 'Master Card', 0),
-('solo', 'Solo', 0),
-('switch', 'Switch', 1),
-('visa', 'Visa', 1);
+INSERT INTO `#__payment_credit_cards` (`id`, `card_key`, `display_name`, `active`) VALUES
+(1, 'visa', 'Visa', 1),
+(2, 'mastercard', 'MasterCard', 1),
+(3, 'american_express', 'American Express', 1),
+(4, 'debit_card', 'Debit Card', 1),
+(5, 'other', 'Other', 1);
 
 -- --------------------------------------------------------
 
@@ -971,7 +966,7 @@ ALTER TABLE `#__invoice_statuses`
 -- Indexes for table `#__payment_credit_cards`
 --
 ALTER TABLE `#__payment_credit_cards`
-  ADD PRIMARY KEY (`card_type_id`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `#__payment_manual_methods`
