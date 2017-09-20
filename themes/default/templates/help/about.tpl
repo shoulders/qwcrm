@@ -23,5 +23,6 @@
     <p>QWcrm was based on the software MyITCRM but there is none of the MyITCRM code left, everything has been rewritten or replaced.</p>
     <p>Throughout the development I wanted to keep QWcrm easy to use just as it's predecessor for the end user, but I modernised the codebase to be modular and easy to understand. This means future development of QWcrm is very easy for such things as fixing security holes or adding new features.</p>
     <p>QWcrm will always be easy to use, this is it's strength. I designed this not only for me but for small business who cannot afford accounts and do not need to pay for complicated accountancy packages.</p>
-    <p>&nbsp;</p>
+    <h2>Support</h2>
+    <p>Use the support links in the menu to get help and news about QWcrm.</p>    
 </div>
