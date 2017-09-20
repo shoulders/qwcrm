@@ -979,7 +979,8 @@ function send_reset_email($db, $user_id) {
     
     // Log activity        
     write_record_to_activity_log(gettext("User Account").' '.$user_id.' ('.get_user_details($db, $user_id, 'display_name').') '.gettext("reset email has been sent."));
-        
+    
+    return;
     
 }
 

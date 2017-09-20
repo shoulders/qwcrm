@@ -155,7 +155,7 @@
                     <tr>
                         <td align="right"><b>{t}From Email{/t}:</b></td>
                         <td>
-                            <input name="email_mailfrom" class="olotd5" size="55" value="{$qwcrm_config.email_mailfrom}" type="email" maxlength="50" placeholder="no-reply@quantumwarp.com" onkeydown="return onlyEmail(event);">
+                            <input name="email_mailfrom" class="olotd5" size="55" value="{$qwcrm_config.email_mailfrom}" type="email" maxlength="50" placeholder="no-reply@quantumwarp.com" required onkeydown="return onlyEmail(event);">
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}From Email{/t}</strong></div><hr><div>{t escape=tooltip}The email address that will be used to send site email.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>

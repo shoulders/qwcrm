@@ -48,19 +48,17 @@ if(!isset($VAR['submit']) && !isset($VAR['email']) && !isset($VAR['token']) && !
                 // Reload the enter_email page
                 $stage = 'enter_email';
 
-            // The account is not allowed to be reset or it does not exist
+            // The account is valid and allowed to be reset
             } else {
                 
                 // update reset count for the user
                 update_user_reset_count($db, $user_id);
                 
                 // build the email and send it
-                if(send_reset_email($db, $user_id)) {
+                send_reset_email($db, $user_id);
                     
-                    // Load the enter_token page            
-                    $stage = 'enter_token';
-                    
-                }                   
+                // Load the enter_token page            
+                $stage = 'enter_token';                
                 
             }
             
