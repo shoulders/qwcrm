@@ -2,5 +2,6 @@
 /cache/smarty/cache/
 /cache/smarty/compile/
 /logs/
+/media/
 /qwcrm configuration.php
 /configuration.php
