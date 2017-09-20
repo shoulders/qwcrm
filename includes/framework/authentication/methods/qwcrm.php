@@ -290,7 +290,7 @@ class PlgAuthenticationQwcrm
         $session->checkSession();        
 
         // Purge the old session
-        $sql = "DELETE FROM ".PFRX."session WHERE session_id = " . $this->db->qstr($oldSessionId);
+        $sql = "DELETE FROM ".PRFX."session WHERE session_id = " . $this->db->qstr($oldSessionId);
 
         try
         {            
