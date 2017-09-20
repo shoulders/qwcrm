@@ -41,8 +41,8 @@
                                                                         <option value="type"{if $search_category == 'type'} selected{/if}>{t}Type{/t}</option>
                                                                         <option value="payment_method"{if $search_category == 'payment_method'} selected{/if}>{t}Payment Method{/t}</option>
                                                                         <option value="net_amount"{if $search_category == 'net_amount'} selected{/if}>{t}Net Amount{/t}</option>
-                                                                        <option value="tax_rate"{if $search_category == 'tax_rate'} selected{/if}>{t}VAT Rate{/t}</option>
-                                                                        <option value="tax"{if $search_category == 'tax'} selected{/if}>{t}VAT Amount{/t}</option>
+                                                                        <option value="tax_rate"{if $search_category == 'tax_rate'} selected{/if}>{t}VAT/Tax{/t} {t}Rate{/t}</option>
+                                                                        <option value="tax"{if $search_category == 'tax'} selected{/if}>{t}VAT/Tax{/t} {t}Amount{/t}</option>
                                                                         <option value="total"{if $search_category == 'total'} selected{/if}>{t}Gross Amount{/t}</option>
                                                                         <option value="notes"{if $search_category == 'notes'} selected{/if}>{t}Notes{/t}</option>
                                                                         <option value="items"{if $search_category == 'items'} selected{/if}>{t}Items{/t}</option>

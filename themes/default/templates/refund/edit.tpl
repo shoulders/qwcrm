@@ -83,11 +83,11 @@
                                                             <td><input name="net_amount" class="olotd5" size="10" value="{$refund_details.net_amount}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,7}(.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumbersPeriod(event);"></b></a></td>
                                                         </tr>
                                                         <tr>
-                                                            <td align="right"><span style="color: #ff0000"></span><b>{t}VAT Rate{/t}</b></td>
+                                                            <td align="right"><span style="color: #ff0000"></span><b>{t}VAT/Tax{/t} {t}Rate{/t}</b></td>
                                                             <td><input name="tax_rate" class="olotd5" size="5" value="{$refund_details.tax_rate}" type="text" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumbersPeriod(event);"/><b>%</b></td>
                                                         </tr>
                                                         <tr>
-                                                            <td align="right"><b>{t}VAT Amount{/t}</b></td>
+                                                            <td align="right"><b>{t}VAT/Tax{/t} {t}Amount{/t}</b></td>
                                                             <td><input name="tax_amount" class="olotd5" size="10" value="{$refund_details.tax_amount}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,7}(.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumbersPeriod(event);"/></td>
                                                         </tr>
                                                         <tr>

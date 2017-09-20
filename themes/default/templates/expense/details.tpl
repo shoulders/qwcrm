@@ -40,7 +40,7 @@
                                         <tr>
                                             <td class="menutd"><b>{t}Date{/t}</b></td>
                                             <td class="menutd" >{$expense_details.date|date_format:$date_format}</td>
-                                            <td class="menutd" ><b>{t}VAT Rate{/t}</b></td>
+                                            <td class="menutd" ><b>{t}VAT/Tax{/t} {t}Rate{/t}</b></td>
                                             <td class="menutd">&nbsp;&nbsp;&nbsp;{$expense_details.tax_rate} %</td>
                                         </tr>
                                         <tr>
@@ -50,7 +50,7 @@
                                                     {if $expense_details.type == $expense_types[s].expense_type_id}{t}{$expense_types[s].display_name}{/t}{/if}        
                                                 {/section}   
                                             </td>
-                                            <td class="menutd"><b>{t}VAT Amount{/t}</b></td>
+                                            <td class="menutd"><b>{t}VAT/Tax{/t} {t}Amount{/t}</b></td>
                                             <td class="menutd">{$currency_sym} {$expense_details.tax_amount}</td>
                                         </tr>                                        
                                         <tr>

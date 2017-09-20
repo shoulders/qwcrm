@@ -215,7 +215,7 @@
                                                                     <td><font color="red"<b>{$currency_sym}{$expense_net_amount|string_format:"%.2f"}</b></font></td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td><b>{t}VAT{/t}:</b></td>
+                                                                    <td><b>{t}VAT/Tax{/t}:</b></td>
                                                                     <td><font color="red"<b>{$currency_sym}{$expense_tax_amount|string_format:"%.2f"}</b></font></td>
                                                                 </tr>
                                                                 <tr>
@@ -233,7 +233,7 @@
                                                                     <td><font color="red"<b>{$currency_sym}{$refund_net_amount|string_format:"%.2f"}</b></font></td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td><b>{t}VAT{/t}:</b></td>
+                                                                    <td><b>{t}VAT/Tax{/t}:</b></td>
                                                                     <td><font color="red"<b>{$currency_sym}{$refund_tax_amount|string_format:"%.2f"}</b></font></td>
                                                                 </tr>
                                                                 <tr>
@@ -289,7 +289,7 @@
                                                                     <td><font color="red"<b>{$currency_sym}{$invoice_net_amount|string_format:"%.2f"}</b></font></td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td><b>{t}VAT{/t}:</b></td>
+                                                                    <td><b>{t}VAT/Tax{/t}:</b></td>
                                                                     <td><font color="red"<b>{$currency_sym}{$invoice_tax_amount|string_format:"%.2f"}</b></font></td>
                                                                 </tr>
                                                                 <tr>
@@ -337,13 +337,13 @@
                                                                 </tr>
                                                                 <tr>
                                                                     <td style="text-align: center;">
-                                                                        <strong>Net (No Taxes Applied)</strong><br>
+                                                                        <strong>{t}Net{/t} ({t}No{/t} {t}VAT/Tax{/t} {t}Applied{/t})</strong><br>
                                                                         {$currency_sym}{$taxable_profit_net} = {$currency_sym}{$invoice_net_amount|string_format:"%.2f"} - ({$currency_sym}{$expense_net_amount|string_format:"%.2f"} - {$currency_sym}{$refund_net_amount|string_format:"%.2f"})
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td style="text-align: center;">
-                                                                        <strong>Gross (Taxes Applied)</strong><br>
+                                                                        <strong>{t}Gross{/t} ({t}VAT/Tax{/t} {t}Applied{/t})</strong><br>
                                                                         {$currency_sym}{$taxable_profit_gross} = {$currency_sym}{$invoice_gross_amount|string_format:"%.2f"} - ({$currency_sym}{$expense_gross_amount|string_format:"%.2f"} - {$currency_sym}{$refund_gross_amount|string_format:"%.2f"})
                                                                     </td>
                                                                 </tr>

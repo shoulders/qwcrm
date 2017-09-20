@@ -29,7 +29,7 @@
                                             
                                             <!-- Enable Tax on invoices -->
                                             <tr>
-                                                <td><b>{t}Enable Tax/VAT{/t}:</b></td>
+                                                <td><b>{t}Enable{/t} {t}VAT/Tax{/t}:</b></td>
                                                 <td>
                                                     <select class="olotd5" id="tax_enabled" name="tax_enabled">                                                       
                                                         <option value="0"{if $payment_settings.tax_enabled == '0'} selected{/if}>{t}No{/t}</option>
