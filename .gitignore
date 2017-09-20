@@ -3,5 +3,7 @@
 /cache/smarty/compile/
 /logs/
 /media/
+/install configuration.php
+/migrate configuration.php
 /qwcrm configuration.php
 /configuration.php

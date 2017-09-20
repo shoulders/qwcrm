@@ -763,6 +763,9 @@ function delete_invoice($db, $invoice_id) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete the invoice."));
         exit;
     } else {
+        
+        // update workorder status
+        update_workorder_status($db, $invoice_details['workorder_id'], 'closed_without_invoice');
                 
         // Update the workorder to remove the invoice_id
         update_workorder_invoice_id($db, $invoice_details['workorder_id'], '');        
@@ -772,7 +775,7 @@ function delete_invoice($db, $invoice_id) {
                 
         // Log activity        
         write_record_to_activity_log(gettext("Invoice").' '.$invoice_id.' '.gettext("for Work Order").' '.$invoice_details['invoice_id'].' '.gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.');
-        
+                
         // Update last active record
         update_customer_last_active($db, $invoice_details['customer_id']);
         update_workorder_last_active($db, $invoice_details['workorder_id']);
@@ -1150,7 +1153,13 @@ function check_invoice_can_be_deleted($db, $invoice_id) {
     if($invoice_details['is_closed'] == true) {
         //postEmulationWrite('warning_msg', gettext("This invoice cannot be deleted because it is closed."));
         return false;        
-    }    
+    }
+    
+    // Has transactions
+    if(!empty(get_invoice_transactions($db, $invoice_id))) {
+        //postEmulationWrite('warning_msg', gettext("This invoice cannot be deleted because it has transactions."));
+        return false;        
+    }
 
     /* Has an outstanding balance
     if($invoice_details['balance'] > 0) {
