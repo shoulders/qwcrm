@@ -195,8 +195,8 @@ function delete_qwcrm_config_setting($key) {
     // Write the configuration file.
     write_config_file($qwcrm_config);
     
-    // Log activity        
-    write_record_to_activity_log(gettext("The QWcrm config setting").' `'.$key.'` '.gettext("was deleted."));   
+    // Log activity
+    write_record_to_activity_log(gettext("The QWcrm config setting").' `'.$key.'` '.gettext("was deleted."));    
 
     return true;
     

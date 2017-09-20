@@ -72,9 +72,9 @@
                     <tr>
                         <td align="right"><b>{t}Autodetect Language{/t}</b></td>
                         <td>
-                            <select class="olotd5" id="autodetect_language" name="autodetect_language">                                                       
-                                <option value="0"{if $qwcrm_config.autodetect_language == '0'} selected{/if}>{t}No{/t}</option>
+                            <select class="olotd5" id="autodetect_language" name="autodetect_language">                                
                                 <option value="1"{if $qwcrm_config.autodetect_language == '1'} selected{/if}>{t}Yes{/t}</option>
+                                <option value="0"{if $qwcrm_config.autodetect_language == '0'} selected{/if}>{t}No{/t}</option>
                             </select>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Autodetect Language{/t}</strong></div><hr><div>{t escape=tooltip}If enabled QWcrm will try to set the language based on your browser. If your language is not available then the default language will be used.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
@@ -98,9 +98,9 @@
                     <tr>
                         <td align="right"><b>{t}Send Mail{/t}:</b></td>
                         <td>
-                            <select class="olotd5" name="email_online">                                                                    
+                            <select class="olotd5" name="email_online">                                
+                                <option value="1" {if $qwcrm_config.email_online == '1' } selected{/if}>Yes</option>
                                 <option value="0" {if $qwcrm_config.email_online == '0' } selected{/if}>No</option>
-                                <option value="1" {if $qwcrm_config.email_online == '1' } selected{/if}>Yes</option>                                                                    
                             </select>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Send Mail{/t}</strong></div><hr><div>{t escape=tooltip}Select Yes to turn on mail sending, select No to turn off mail sending. Warning: It is advised to put the site offline when disabling the mail function!{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>

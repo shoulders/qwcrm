@@ -8,5 +8,8 @@
 
 defined('_QWEXEC') or die;
 
+require(INCLUDES_DIR.'modules/administrator.php');
+delete_qwcrm_config_setting('myitcrm_prefix');
+
 // Build the page
 $BuildPage .= $smarty->fetch('help/about.tpl');
