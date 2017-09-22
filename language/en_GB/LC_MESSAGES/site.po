@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2017-09-20 11:57+0100\n"
-"PO-Revision-Date: 2017-09-20 11:57+0100\n"
+"POT-Creation-Date: 2017-09-22 10:14+0100\n"
+"PO-Revision-Date: 2017-09-22 10:14+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en_GB\n"
@@ -115,66 +115,66 @@ msgstr ""
 msgid "Failed to update a User's last active time."
 msgstr ""
 
-#: includes/include.php:535 includes/include.php:539 includes/include.php:540
+#: includes/include.php:551 includes/include.php:555 includes/include.php:556
 msgid "_"
 msgstr ""
 
-#: includes/include.php:557
+#: includes/include.php:573
 msgid "The ACL has been supplied with no account type ID - I will now die."
 msgstr ""
 
-#: includes/include.php:566
+#: includes/include.php:582
 msgid "Could not get the user's Group Name by Login Account Type ID."
 msgstr ""
 
-#: includes/include.php:580
+#: includes/include.php:596
 msgid "Could not get the Page's ACL."
 msgstr ""
 
-#: includes/include.php:648
+#: includes/include.php:664
 msgid ""
 "There is a database connection issue. Check your settings in the config file."
 msgstr ""
 
-#: includes/include.php:653
+#: includes/include.php:669
 msgid "QWcrm requires MySQL"
 msgstr ""
 
-#: includes/include.php:653 index.php:18
+#: includes/include.php:669 index.php:18
 msgid "Your current version is"
 msgstr ""
 
-#: includes/include.php:672
+#: includes/include.php:688
 msgid ""
 "The upgrade never completed successfully. Check the upgrade and error logs."
 msgstr ""
 
-#: includes/include.php:677
+#: includes/include.php:693
 msgid ""
 "The file system is older than the database. Check the logs and your settings."
 msgstr ""
 
-#: includes/include.php:710
+#: includes/include.php:726
 msgid "The configured template is not supported by this version of QWcrm."
 msgstr ""
 
-#: includes/include.php:711
+#: includes/include.php:727
 msgid "Your current version of QWcrm is"
 msgstr ""
 
-#: includes/include.php:712
+#: includes/include.php:728
 msgid "The template supports QWcrm versions in the range"
 msgstr ""
 
-#: includes/include.php:995
+#: includes/include.php:1011
 msgid "Could not open the Access Log to save the record."
 msgstr ""
 
-#: includes/include.php:1033
+#: includes/include.php:1049
 msgid "Could not open the Activity Log to save the record."
 msgstr ""
 
-#: includes/include.php:1062
+#: includes/include.php:1078
 msgid "Could not open the Error Log to save the record."
 msgstr ""
 
@@ -284,7 +284,7 @@ msgstr ""
 msgid "Start Time is the same as End Time."
 msgstr ""
 
-#: includes/modules/company.php:303 includes/modules/invoice.php:1018
+#: includes/modules/company.php:303 includes/modules/invoice.php:1021
 msgid "Return Code"
 msgstr ""
 
@@ -350,7 +350,7 @@ msgstr ""
 
 #: includes/modules/customer.php:191 includes/modules/invoice.php:200
 #: includes/modules/invoice.php:682 includes/modules/invoice.php:685
-#: includes/modules/invoice.php:1227 includes/modules/invoice.php:1230
+#: includes/modules/invoice.php:1236 includes/modules/invoice.php:1239
 #: includes/modules/schedule.php:105 includes/modules/workorder.php:330
 #: includes/modules/workorder.php:596 includes/modules/workorder.php:599
 #: includes/modules/workorder.php:1023 includes/modules/workorder.php:1026
@@ -452,9 +452,9 @@ msgid "for Customer"
 msgstr ""
 
 #: includes/modules/customer.php:490 includes/modules/giftcert.php:288
-#: includes/modules/invoice.php:771 includes/modules/invoice.php:774
-#: includes/modules/invoice.php:803 includes/modules/invoice.php:852
-#: includes/modules/invoice.php:899 includes/modules/schedule.php:260
+#: includes/modules/invoice.php:774 includes/modules/invoice.php:777
+#: includes/modules/invoice.php:806 includes/modules/invoice.php:855
+#: includes/modules/invoice.php:902 includes/modules/schedule.php:260
 #: includes/modules/schedule.php:263 includes/modules/workorder.php:907
 msgid "was deleted by"
 msgstr ""
@@ -584,9 +584,9 @@ msgstr ""
 
 #: includes/modules/invoice.php:200 includes/modules/invoice.php:203
 #: includes/modules/invoice.php:542 includes/modules/invoice.php:609
-#: includes/modules/invoice.php:685 includes/modules/invoice.php:771
-#: includes/modules/invoice.php:774 includes/modules/invoice.php:1227
-#: includes/modules/invoice.php:1230 modules/invoice/print.php:50
+#: includes/modules/invoice.php:685 includes/modules/invoice.php:774
+#: includes/modules/invoice.php:777 includes/modules/invoice.php:1236
+#: includes/modules/invoice.php:1239 modules/invoice/print.php:50
 #: modules/invoice/print.php:88
 #: themes/default/templates/invoice/printing/print_invoice.tpl:14
 #: themes/default/templates/invoice/printing/print_invoice.tpl:126
@@ -598,7 +598,7 @@ msgstr ""
 msgid "was created for this Work Order"
 msgstr ""
 
-#: includes/modules/invoice.php:203 includes/modules/invoice.php:774
+#: includes/modules/invoice.php:203 includes/modules/invoice.php:777
 #: includes/modules/schedule.php:263 includes/modules/workorder.php:695
 #: includes/modules/workorder.php:907
 msgid "for Work Order"
@@ -672,7 +672,7 @@ msgstr ""
 msgid "Failed to update an invoice labour rates item."
 msgstr ""
 
-#: includes/modules/invoice.php:640 includes/modules/invoice.php:899
+#: includes/modules/invoice.php:640 includes/modules/invoice.php:902
 msgid "The Invoice Prefill Item"
 msgstr ""
 
@@ -701,69 +701,69 @@ msgstr ""
 msgid "Failed to delete the invoice."
 msgstr ""
 
-#: includes/modules/invoice.php:798
+#: includes/modules/invoice.php:801
 msgid "Failed to delete an invoice labour item."
 msgstr ""
 
-#: includes/modules/invoice.php:803
+#: includes/modules/invoice.php:806
 msgid "The Invoice Labour Item"
 msgstr ""
 
-#: includes/modules/invoice.php:825
+#: includes/modules/invoice.php:828
 msgid "Failed to delete all of an invoice's labour items."
 msgstr ""
 
-#: includes/modules/invoice.php:846
+#: includes/modules/invoice.php:849
 msgid "Failed to delete an invoice parts item."
 msgstr ""
 
-#: includes/modules/invoice.php:852
+#: includes/modules/invoice.php:855
 msgid "The Invoice Parts Item"
 msgstr ""
 
-#: includes/modules/invoice.php:874
+#: includes/modules/invoice.php:877
 msgid "Failed to delete all of an invoice's parts items."
 msgstr ""
 
-#: includes/modules/invoice.php:893
+#: includes/modules/invoice.php:896
 msgid "Failed to delete an invoice prefill item."
 msgstr ""
 
-#: includes/modules/invoice.php:918
+#: includes/modules/invoice.php:921
 msgid "Failed to calculate the invoice labour sub total."
 msgstr ""
 
-#: includes/modules/invoice.php:937
+#: includes/modules/invoice.php:940
 msgid "Failed to calculate the invoice parts sub total."
 msgstr ""
 
-#: includes/modules/invoice.php:973
+#: includes/modules/invoice.php:976
 msgid "Failed update the invoice totals."
 msgstr ""
 
-#: includes/modules/invoice.php:1029
+#: includes/modules/invoice.php:1032
 msgid "Failed to empty the prefill items table."
 msgstr ""
 
-#: includes/modules/invoice.php:1052
+#: includes/modules/invoice.php:1055
 msgid "Failed to insert the new prefill items into the database."
 msgstr ""
 
-#: includes/modules/invoice.php:1067
+#: includes/modules/invoice.php:1070
 msgid "Invoice Prefill Items were uploaded via csv by"
 msgstr ""
 
-#: includes/modules/invoice.php:1081
+#: includes/modules/invoice.php:1084
 msgid ""
 "Failed to update the invoice labour rates because the submitted file was "
 "invalid."
 msgstr ""
 
-#: includes/modules/invoice.php:1096
+#: includes/modules/invoice.php:1099
 msgid "Failed to get invoice prefill items from the database."
 msgstr ""
 
-#: includes/modules/invoice.php:1110 includes/modules/schedule.php:405
+#: includes/modules/invoice.php:1113 includes/modules/schedule.php:405
 #: includes/modules/schedule.php:436
 #: themes/default/templates/invoice/details.tpl:197
 #: themes/default/templates/invoice/details.tpl:236
@@ -793,7 +793,7 @@ msgstr ""
 msgid "Description"
 msgstr ""
 
-#: includes/modules/invoice.php:1110
+#: includes/modules/invoice.php:1113
 #: themes/default/templates/customer/edit.tpl:73
 #: themes/default/templates/customer/new.tpl:75
 #: themes/default/templates/customer/search.tpl:116
@@ -828,7 +828,7 @@ msgstr ""
 msgid "Type"
 msgstr ""
 
-#: includes/modules/invoice.php:1110
+#: includes/modules/invoice.php:1113
 #: themes/default/templates/customer/blocks/details_giftcert_block.tpl:17
 #: themes/default/templates/customer/blocks/details_giftcert_block.tpl:61
 #: themes/default/templates/customer/blocks/details_invoice_block.tpl:14
@@ -862,7 +862,7 @@ msgstr ""
 msgid "Amount"
 msgstr ""
 
-#: includes/modules/invoice.php:1110
+#: includes/modules/invoice.php:1113
 #: themes/default/templates/customer/blocks/details_customer_details_block.tpl:81
 #: themes/default/templates/customer/blocks/details_customer_details_block.tpl:84
 #: themes/default/templates/customer/blocks/details_giftcert_block.tpl:33
@@ -888,26 +888,26 @@ msgstr ""
 msgid "Active"
 msgstr ""
 
-#: includes/modules/invoice.php:1122
+#: includes/modules/invoice.php:1125
 msgid "Invoice Prefill Items were exported by"
 msgstr ""
 
-#: includes/modules/invoice.php:1205 includes/modules/workorder.php:1001
+#: includes/modules/invoice.php:1214 includes/modules/workorder.php:1001
 msgid "Failed to assign a Work Order to an employee."
 msgstr ""
 
-#: includes/modules/invoice.php:1218 includes/modules/workorder.php:1014
+#: includes/modules/invoice.php:1227 includes/modules/workorder.php:1014
 #: language/_gettext_only/system_varibles.php:16
 #: themes/default/templates/workorder/blocks/overview_workorders_unassigned_block.tpl:8
 msgid "Unassigned"
 msgstr ""
 
-#: includes/modules/invoice.php:1227 includes/modules/invoice.php:1230
+#: includes/modules/invoice.php:1236 includes/modules/invoice.php:1239
 #: includes/modules/workorder.php:1023 includes/modules/workorder.php:1026
 msgid "has been assigned to"
 msgstr ""
 
-#: includes/modules/invoice.php:1227 includes/modules/invoice.php:1230
+#: includes/modules/invoice.php:1236 includes/modules/invoice.php:1239
 #: includes/modules/workorder.php:1023 includes/modules/workorder.php:1026
 msgid "from"
 msgstr ""
@@ -1654,106 +1654,106 @@ msgstr ""
 msgid "Could not open the Setup Log to save the record."
 msgstr ""
 
-#: includes/modules/setup.php:498
+#: includes/modules/setup.php:522
 msgid "The database installation process failed, check the logs."
 msgstr ""
 
-#: includes/modules/setup.php:510
+#: includes/modules/setup.php:534
 msgid "The database installation process was successful."
 msgstr ""
 
-#: includes/modules/setup.php:962
+#: includes/modules/setup.php:986
 msgid "The database migration process failed, check the logs."
 msgstr ""
 
-#: includes/modules/setup.php:974
+#: includes/modules/setup.php:998
 msgid "The database migration process was successful."
 msgstr ""
 
-#: includes/modules/setup.php:1019
+#: includes/modules/setup.php:1043
 msgid "Starting the correction of the migrated `workorder` data in QWcrm."
 msgstr ""
 
-#: includes/modules/setup.php:1055 includes/modules/workorder.php:162
+#: includes/modules/setup.php:1079 includes/modules/workorder.php:162
 msgid "Failed to return the matching Work Orders."
 msgstr ""
 
-#: includes/modules/setup.php:1118
+#: includes/modules/setup.php:1142
 msgid "Finished the correction of the migrated `workorder` data in QWcrm."
 msgstr ""
 
-#: includes/modules/setup.php:1145
+#: includes/modules/setup.php:1169
 msgid "Starting the correction of the migrated `invoice` data in QWcrm."
 msgstr ""
 
-#: includes/modules/setup.php:1158
+#: includes/modules/setup.php:1182
 msgid "Failed to return the matching Invoices."
 msgstr ""
 
-#: includes/modules/setup.php:1213
+#: includes/modules/setup.php:1237
 msgid "Finished the correction of the migrated `invoice` data in QWcrm."
 msgstr ""
 
-#: includes/modules/setup.php:1240
+#: includes/modules/setup.php:1264
 msgid "Starting the correction of the migrated `giftcert` data in QWcrm."
 msgstr ""
 
-#: includes/modules/setup.php:1253
+#: includes/modules/setup.php:1277
 msgid "Failed to return the matching Gift Certificates."
 msgstr ""
 
-#: includes/modules/setup.php:1281
+#: includes/modules/setup.php:1305
 msgid "Finished the correction of the migrated `giftcert` data in QWcrm."
 msgstr ""
 
-#: includes/modules/setup.php:1308
+#: includes/modules/setup.php:1332
 msgid "Starting the correction of the migrated `schedule` data in QWcrm."
 msgstr ""
 
-#: includes/modules/setup.php:1331
+#: includes/modules/setup.php:1355
 msgid "Failed to return the matching Schedules."
 msgstr ""
 
-#: includes/modules/setup.php:1353
+#: includes/modules/setup.php:1377
 msgid "Finished the correction of the migrated `schedule` data in QWcrm."
 msgstr ""
 
-#: includes/modules/setup.php:1385
+#: includes/modules/setup.php:1409
 msgid "Failed to get MyITCRM company details."
 msgstr ""
 
-#: includes/modules/setup.php:1416
+#: includes/modules/setup.php:1440
 msgid "Beginning the migration of MyITCRM data into the QWcrm table"
 msgstr ""
 
-#: includes/modules/setup.php:1434
+#: includes/modules/setup.php:1458
 msgid "Error reading the MyITCRM table"
 msgstr ""
 
-#: includes/modules/setup.php:1517
+#: includes/modules/setup.php:1541
 msgid "Error migrating a MyITCRM record into QWcrm"
 msgstr ""
 
-#: includes/modules/setup.php:1558 includes/modules/setup.php:1570
-#: includes/modules/setup.php:1588
+#: includes/modules/setup.php:1582 includes/modules/setup.php:1594
+#: includes/modules/setup.php:1612
 msgid "MyITCRM Records Processed"
 msgstr ""
 
-#: includes/modules/setup.php:1559 includes/modules/setup.php:1570
-#: includes/modules/setup.php:1588
+#: includes/modules/setup.php:1583 includes/modules/setup.php:1594
+#: includes/modules/setup.php:1612
 msgid "Records Failed To Migrate"
 msgstr ""
 
-#: includes/modules/setup.php:1560 includes/modules/setup.php:1570
-#: includes/modules/setup.php:1588
+#: includes/modules/setup.php:1584 includes/modules/setup.php:1594
+#: includes/modules/setup.php:1612
 msgid "Records Successfuly Migrated"
 msgstr ""
 
-#: includes/modules/setup.php:1569
+#: includes/modules/setup.php:1593
 msgid "Error migrating some records into QWcrm table"
 msgstr ""
 
-#: includes/modules/setup.php:1587
+#: includes/modules/setup.php:1611
 msgid "Successfully migrated all records into QWcrm table"
 msgstr ""
 
@@ -1912,8 +1912,8 @@ msgstr ""
 msgid "The customer already has a login."
 msgstr ""
 
-#: includes/modules/user.php:708 includes/modules/user.php:1003
-#: includes/modules/user.php:1196
+#: includes/modules/user.php:708 includes/modules/user.php:1004
+#: includes/modules/user.php:1197
 msgid "Failed to add password reset authorization."
 msgstr ""
 
@@ -2009,43 +2009,43 @@ msgstr ""
 msgid "reset email has been sent."
 msgstr ""
 
-#: includes/modules/user.php:1023 includes/modules/user.php:1086
+#: includes/modules/user.php:1024 includes/modules/user.php:1087
 msgid "Failed to check for existing tokens for the submitted user."
 msgstr ""
 
-#: includes/modules/user.php:1046
+#: includes/modules/user.php:1047
 msgid "Failed to insert the user reset token into the database."
 msgstr ""
 
-#: includes/modules/user.php:1064
+#: includes/modules/user.php:1065
 msgid "Failed to get the User ID by secret code."
 msgstr ""
 
-#: includes/modules/user.php:1092
+#: includes/modules/user.php:1093
 msgid "The reset token does not exist."
 msgstr ""
 
-#: includes/modules/user.php:1098
+#: includes/modules/user.php:1099
 msgid "The user is blocked."
 msgstr ""
 
-#: includes/modules/user.php:1104
+#: includes/modules/user.php:1105
 msgid "The reset token has expired."
 msgstr ""
 
-#: includes/modules/user.php:1109
+#: includes/modules/user.php:1110
 msgid "Token Accepted."
 msgstr ""
 
-#: includes/modules/user.php:1129
+#: includes/modules/user.php:1130
 msgid "Failed to check for the submitted reset code."
 msgstr ""
 
-#: includes/modules/user.php:1146
+#: includes/modules/user.php:1147
 msgid "Reset code accepted."
 msgstr ""
 
-#: includes/modules/user.php:1163 includes/modules/user.php:1178
+#: includes/modules/user.php:1164 includes/modules/user.php:1179
 msgid "Failed to delete existing tokens for the submitted user."
 msgstr ""
 
@@ -4514,13 +4514,13 @@ msgstr ""
 
 #: modules/core/error.php:13 modules/customer/delete.php:15
 #: modules/expense/delete.php:15 modules/giftcert/delete.php:16
-#: modules/invoice/delete.php:17 modules/invoice/delete_labour.php:17
+#: modules/invoice/delete.php:18 modules/invoice/delete_labour.php:17
 #: modules/invoice/delete_parts.php:17 modules/refund/delete.php:15
 #: modules/schedule/delete.php:17 modules/setup/choice.php:15
 #: modules/setup/install.php:18 modules/setup/migrate.php:18
 #: modules/setup/upgrade.php:15 modules/supplier/delete.php:15
 #: modules/user/delete.php:16 modules/user/reset.php:34
-#: modules/user/reset.php:92 modules/user/reset.php:134
+#: modules/user/reset.php:90 modules/user/reset.php:132
 #: modules/workorder/autosuggest_scope.php:14 modules/workorder/delete.php:16
 #: modules/workorder/note_delete.php:16
 msgid "No Direct Access Allowed."
@@ -4587,13 +4587,13 @@ msgstr ""
 msgid "Some or all of the Printing Options are not set."
 msgstr ""
 
-#: modules/invoice/delete.php:22 modules/invoice/details.php:19
+#: modules/invoice/delete.php:23 modules/invoice/details.php:19
 #: modules/invoice/edit.php:19 modules/invoice/print.php:21
-#: modules/payment/new.php:19
+#: modules/invoice/status.php:19 modules/payment/new.php:19
 msgid "No Invoice ID supplied."
 msgstr ""
 
-#: modules/invoice/delete.php:39
+#: modules/invoice/delete.php:40
 msgid "The invoice has been deleted successfully."
 msgstr ""
 
@@ -4614,21 +4614,11 @@ msgid ""
 "You cannot create an invoice by the method you just tried, report to admins."
 msgstr ""
 
-#: modules/invoice/status.php:18 modules/schedule/new.php:24
-#: modules/workorder/delete.php:21 modules/workorder/details.php:18
-#: modules/workorder/details_edit_comments.php:16
-#: modules/workorder/details_edit_description.php:16
-#: modules/workorder/details_edit_resolution.php:16
-#: modules/workorder/note_new.php:16 modules/workorder/print.php:19
-#: modules/workorder/status.php:17
-msgid "No Workorder ID supplied."
-msgstr ""
-
-#: modules/invoice/status.php:28
+#: modules/invoice/status.php:29
 msgid "Invoice status updated."
 msgstr ""
 
-#: modules/invoice/status.php:35 modules/workorder/status.php:34
+#: modules/invoice/status.php:36 modules/workorder/status.php:34
 msgid "Assigned employee updated."
 msgstr ""
 
@@ -4737,6 +4727,16 @@ msgstr ""
 msgid "No Employee ID supplied."
 msgstr ""
 
+#: modules/schedule/new.php:24 modules/workorder/delete.php:21
+#: modules/workorder/details.php:18
+#: modules/workorder/details_edit_comments.php:16
+#: modules/workorder/details_edit_description.php:16
+#: modules/workorder/details_edit_resolution.php:16
+#: modules/workorder/note_new.php:16 modules/workorder/print.php:19
+#: modules/workorder/status.php:17
+msgid "No Workorder ID supplied."
+msgstr ""
+
 #: modules/schedule/new.php:51
 msgid "Schedule Successfully Created"
 msgstr ""
@@ -4753,10 +4753,6 @@ msgstr ""
 
 #: modules/setup/install.php:38 modules/setup/migrate.php:38
 msgid "Database connection successful."
-msgstr ""
-
-#: modules/setup/install.php:45 modules/setup/migrate.php:45
-msgid "There is a database connection issue. Check your settings."
 msgstr ""
 
 #: modules/setup/install.php:46 modules/setup/migrate.php:46
@@ -4805,6 +4801,10 @@ msgstr ""
 
 #: modules/setup/migrate.php:23
 msgid "QWcrm migration from MyITCRM has begun."
+msgstr ""
+
+#: modules/setup/migrate.php:45
+msgid "There is a database connection issue. Check your settings."
 msgstr ""
 
 #: modules/setup/migrate.php:68
@@ -4871,11 +4871,11 @@ msgid ""
 "is blocked."
 msgstr ""
 
-#: modules/user/reset.php:144
+#: modules/user/reset.php:142
 msgid "The submitted reset code was invalid."
 msgstr ""
 
-#: modules/user/reset.php:164
+#: modules/user/reset.php:162
 msgid "Password reset successfully."
 msgstr ""
 
@@ -10214,184 +10214,308 @@ msgstr "en"
 msgid "JSCAL2_LANGUAGE_NAME"
 msgstr "English"
 
-#: themes/default/js/jscal2/language.js:10
-msgid "JSCAL2_FDOW"
-msgstr "1"
-
 #: themes/default/js/jscal2/language.js:12
-msgid "JSCAL2_GOTODAY"
-msgstr "Go Today"
+msgid "Go Today"
+msgstr ""
 
 #: themes/default/js/jscal2/language.js:14
-msgid "JSCAL2_TODAY"
-msgstr "Today"
+msgid "Today"
+msgstr ""
 
 #: themes/default/js/jscal2/language.js:16
-msgid "JSCAL2_WK"
-msgstr "wk"
-
-#: themes/default/js/jscal2/language.js:18
-msgid "JSCAL2_WEEKEND"
-msgstr "0,6"
+msgid "wk"
+msgstr ""
 
 #: themes/default/js/jscal2/language.js:20
-msgid "JSCAL2_AM"
-msgstr "AM"
+msgid "AM"
+msgstr ""
 
 #: themes/default/js/jscal2/language.js:22
-msgid "JSCAL2_PM"
-msgstr "PM"
+msgid "PM"
+msgstr ""
 
 #: themes/default/js/jscal2/language.js:24
-msgid "JSCAL2_JANUARY"
-msgstr "January"
+msgid "January"
+msgstr ""
 
 #: themes/default/js/jscal2/language.js:25
-msgid "JSCAL2_FEBRUARY"
-msgstr "February"
+msgid "February"
+msgstr ""
 
 #: themes/default/js/jscal2/language.js:26
-msgid "JSCAL2_MARCH"
-msgstr "March"
+msgid "March"
+msgstr ""
 
 #: themes/default/js/jscal2/language.js:27
-msgid "JSCAL2_APRIL"
-msgstr "April"
+msgid "April"
+msgstr ""
 
 #: themes/default/js/jscal2/language.js:28
 #: themes/default/js/jscal2/language.js:41
-msgid "JSCAL2_MAY"
-msgstr "May"
+msgid "May"
+msgstr ""
 
 #: themes/default/js/jscal2/language.js:29
-msgid "JSCAL2_JUNE"
-msgstr "June"
+msgid "June"
+msgstr ""
 
 #: themes/default/js/jscal2/language.js:30
-msgid "JSCAL2_JULY"
-msgstr "July"
+msgid "July"
+msgstr ""
 
 #: themes/default/js/jscal2/language.js:31
-msgid "JSCAL2_AUGUST"
-msgstr "August"
+msgid "August"
+msgstr ""
 
 #: themes/default/js/jscal2/language.js:32
-msgid "JSCAL2_SEPTEMBER"
-msgstr "September"
+msgid "September"
+msgstr ""
 
 #: themes/default/js/jscal2/language.js:33
-msgid "JSCAL2_OCTOBER"
-msgstr "October"
+msgid "October"
+msgstr ""
 
 #: themes/default/js/jscal2/language.js:34
-msgid "JSCAL2_NOVEMBER"
-msgstr "November"
+msgid "November"
+msgstr ""
 
 #: themes/default/js/jscal2/language.js:35
-msgid "JSCAL2_DECEMBER"
-msgstr "December"
+msgid "December"
+msgstr ""
 
 #: themes/default/js/jscal2/language.js:37
-msgid "JSCAL2_JAN"
-msgstr "Jan"
+msgid "Jan"
+msgstr ""
 
 #: themes/default/js/jscal2/language.js:38
-msgid "JSCAL2_FEB"
-msgstr "Feb"
+msgid "Feb"
+msgstr ""
 
 #: themes/default/js/jscal2/language.js:39
-msgid "JSCAL2_MAR"
-msgstr "Mar"
+msgid "Mar"
+msgstr ""
 
 #: themes/default/js/jscal2/language.js:40
-msgid "JSCAL2_APR"
-msgstr "Apr"
+msgid "Apr"
+msgstr ""
 
 #: themes/default/js/jscal2/language.js:42
-msgid "JSCAL2_JUN"
-msgstr "Jun"
+msgid "Jun"
+msgstr ""
 
 #: themes/default/js/jscal2/language.js:43
-msgid "JSCAL2_JUL"
-msgstr "Jul"
+msgid "Jul"
+msgstr ""
 
 #: themes/default/js/jscal2/language.js:44
-msgid "JSCAL2_AUG"
-msgstr "Aug"
+msgid "Aug"
+msgstr ""
 
 #: themes/default/js/jscal2/language.js:45
-msgid "JSCAL2_SEP"
-msgstr "Sep"
+msgid "Sep"
+msgstr ""
 
 #: themes/default/js/jscal2/language.js:46
-msgid "JSCAL2_OCT"
-msgstr "Oct"
+msgid "Oct"
+msgstr ""
 
 #: themes/default/js/jscal2/language.js:47
-msgid "JSCAL2_NOV"
-msgstr "Nov"
+msgid "Nov"
+msgstr ""
 
 #: themes/default/js/jscal2/language.js:48
-msgid "JSCAL2_DEC"
-msgstr "Dec"
+msgid "Dec"
+msgstr ""
 
 #: themes/default/js/jscal2/language.js:50
 #: themes/default/js/jscal2/language.js:57
-msgid "JSCAL2_SUNDAY"
-msgstr "Sunday"
+msgid "Sunday"
+msgstr ""
 
 #: themes/default/js/jscal2/language.js:51
-msgid "JSCAL2_MONDAY"
-msgstr "Monday"
+msgid "Monday"
+msgstr ""
 
 #: themes/default/js/jscal2/language.js:52
-msgid "JSCAL2_TUESDAY"
-msgstr "Tuesdy"
+msgid "Tuesdy"
+msgstr ""
 
 #: themes/default/js/jscal2/language.js:53
-msgid "JSCAL2_WEDNESDAY"
-msgstr "Wednesday"
+msgid "Wednesday"
+msgstr ""
 
 #: themes/default/js/jscal2/language.js:54
-msgid "JSCAL2_THURSDAY"
-msgstr "Thursday"
+msgid "Thursday"
+msgstr ""
 
 #: themes/default/js/jscal2/language.js:55
-msgid "JSCAL2_FRIDAY"
-msgstr "Friday"
+msgid "Friday"
+msgstr ""
 
 #: themes/default/js/jscal2/language.js:56
-msgid "JSCAL2_SATURDAY"
-msgstr "Saturday"
+msgid "Saturday"
+msgstr ""
 
 #: themes/default/js/jscal2/language.js:59
 #: themes/default/js/jscal2/language.js:66
-msgid "JSCAL2_SU"
-msgstr "Su"
+msgid "Su"
+msgstr ""
 
 #: themes/default/js/jscal2/language.js:60
-msgid "JSCAL2_MO"
-msgstr "Mo"
+msgid "Mo"
+msgstr ""
 
 #: themes/default/js/jscal2/language.js:61
-msgid "JSCAL2_TU"
-msgstr "Tu"
+msgid "Tu"
+msgstr ""
 
 #: themes/default/js/jscal2/language.js:62
-msgid "JSCAL2_WE"
-msgstr "We"
+msgid "We"
+msgstr ""
 
 #: themes/default/js/jscal2/language.js:63
-msgid "JSCAL2_TH"
-msgstr "Th"
+msgid "Th"
+msgstr ""
 
 #: themes/default/js/jscal2/language.js:64
-msgid "JSCAL2_FR"
-msgstr "Fr"
+msgid "Fr"
+msgstr ""
 
 #: themes/default/js/jscal2/language.js:65
-msgid "JSCAL2_SA"
-msgstr "Sa"
+msgid "Sa"
+msgstr ""
+
+#~ msgid "JSCAL2_FDOW"
+#~ msgstr "1"
+
+#~ msgid "JSCAL2_GOTODAY"
+#~ msgstr "Go Today"
+
+#~ msgid "JSCAL2_TODAY"
+#~ msgstr "Today"
+
+#~ msgid "JSCAL2_WK"
+#~ msgstr "wk"
+
+#~ msgid "JSCAL2_WEEKEND"
+#~ msgstr "0,6"
+
+#~ msgid "JSCAL2_AM"
+#~ msgstr "AM"
+
+#~ msgid "JSCAL2_PM"
+#~ msgstr "PM"
+
+#~ msgid "JSCAL2_JANUARY"
+#~ msgstr "January"
+
+#~ msgid "JSCAL2_FEBRUARY"
+#~ msgstr "February"
+
+#~ msgid "JSCAL2_MARCH"
+#~ msgstr "March"
+
+#~ msgid "JSCAL2_APRIL"
+#~ msgstr "April"
+
+#~ msgid "JSCAL2_MAY"
+#~ msgstr "May"
+
+#~ msgid "JSCAL2_JUNE"
+#~ msgstr "June"
+
+#~ msgid "JSCAL2_JULY"
+#~ msgstr "July"
+
+#~ msgid "JSCAL2_AUGUST"
+#~ msgstr "August"
+
+#~ msgid "JSCAL2_SEPTEMBER"
+#~ msgstr "September"
+
+#~ msgid "JSCAL2_OCTOBER"
+#~ msgstr "October"
+
+#~ msgid "JSCAL2_NOVEMBER"
+#~ msgstr "November"
+
+#~ msgid "JSCAL2_DECEMBER"
+#~ msgstr "December"
+
+#~ msgid "JSCAL2_JAN"
+#~ msgstr "Jan"
+
+#~ msgid "JSCAL2_FEB"
+#~ msgstr "Feb"
+
+#~ msgid "JSCAL2_MAR"
+#~ msgstr "Mar"
+
+#~ msgid "JSCAL2_APR"
+#~ msgstr "Apr"
+
+#~ msgid "JSCAL2_JUN"
+#~ msgstr "Jun"
+
+#~ msgid "JSCAL2_JUL"
+#~ msgstr "Jul"
+
+#~ msgid "JSCAL2_AUG"
+#~ msgstr "Aug"
+
+#~ msgid "JSCAL2_SEP"
+#~ msgstr "Sep"
+
+#~ msgid "JSCAL2_OCT"
+#~ msgstr "Oct"
+
+#~ msgid "JSCAL2_NOV"
+#~ msgstr "Nov"
+
+#~ msgid "JSCAL2_DEC"
+#~ msgstr "Dec"
+
+#~ msgid "JSCAL2_SUNDAY"
+#~ msgstr "Sunday"
+
+#~ msgid "JSCAL2_MONDAY"
+#~ msgstr "Monday"
+
+#~ msgid "JSCAL2_TUESDAY"
+#~ msgstr "Tuesdy"
+
+#~ msgid "JSCAL2_WEDNESDAY"
+#~ msgstr "Wednesday"
+
+#~ msgid "JSCAL2_THURSDAY"
+#~ msgstr "Thursday"
+
+#~ msgid "JSCAL2_FRIDAY"
+#~ msgstr "Friday"
+
+#~ msgid "JSCAL2_SATURDAY"
+#~ msgstr "Saturday"
+
+#~ msgid "JSCAL2_SU"
+#~ msgstr "Su"
+
+#~ msgid "JSCAL2_MO"
+#~ msgstr "Mo"
+
+#~ msgid "JSCAL2_TU"
+#~ msgstr "Tu"
+
+#~ msgid "JSCAL2_WE"
+#~ msgstr "We"
+
+#~ msgid "JSCAL2_TH"
+#~ msgstr "Th"
+
+#~ msgid "JSCAL2_FR"
+#~ msgstr "Fr"
+
+#~ msgid "JSCAL2_SA"
+#~ msgstr "Sa"
 
 #~ msgid "INVOICE_PAID_PAGE_TITLE"
 #~ msgstr "Paid Invoices"

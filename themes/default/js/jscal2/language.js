@@ -7,62 +7,62 @@
 
 Calendar.LANG("{t}JSCAL2_LANGUAGE_SHORTCODE{/t}", "{t}JSCAL2_LANGUAGE_NAME{/t}", {
 
-        fdow: "{t}JSCAL2_FDOW{/t}",                  // first day of week for this locale; 0 = Sunday, 1 = Monday, etc.
+        fdow: "JSCAL2_FDOW",            // first day of week for this locale; 0 = Sunday, 1 = Monday, etc.
 
-        goToday: "{t}JSCAL2_GOTODAY{/t}",
+        goToday: "{t}Go Today{/t}",
 
-        today: "{t}JSCAL2_TODAY{/t}",              // appears in bottom bar
+        today: "{t}Today{/t}",          // appears in bottom bar
 
-        wk: "{t}JSCAL2_WK{/t}",
+        wk: "{t}wk{/t}",
 
-        weekend: "{t}JSCAL2_WEEKEND{/t}",          // 0 = Sunday, 1 = Monday, etc.
+        weekend: "JSCAL2_WEEKEND",      // 0 = Sunday, 1 = Monday, etc.
 
-        AM: "{t}JSCAL2_AM{/t}",
+        AM: "{t}AM{/t}",
 
-        PM: "{t}JSCAL2_PM{/t}",
+        PM: "{t}PM{/t}",
 
-        mn : [ "{t}JSCAL2_JANUARY{/t}",
-               "{t}JSCAL2_FEBRUARY{/t}",
-               "{t}JSCAL2_MARCH{/t}",
-               "{t}JSCAL2_APRIL{/t}",
-               "{t}JSCAL2_MAY{/t}",
-               "{t}JSCAL2_JUNE{/t}",
-               "{t}JSCAL2_JULY{/t}",
-               "{t}JSCAL2_AUGUST{/t}",
-               "{t}JSCAL2_SEPTEMBER{/t}",
-               "{t}JSCAL2_OCTOBER{/t}",
-               "{t}JSCAL2_NOVEMBER{/t}",
-               "{t}JSCAL2_DECEMBER{/t}" ],
+        mn : [ "{t}January{/t}",
+               "{t}February{/t}",
+               "{t}March{/t}",
+               "{t}April{/t}",
+               "{t}May{/t}",
+               "{t}June{/t}",
+               "{t}July{/t}",
+               "{t}August{/t}",
+               "{t}September{/t}",
+               "{t}October{/t}",
+               "{t}November{/t}",
+               "{t}December{/t}" ],
 
-        smn : [ "{t}JSCAL2_JAN{/t}",
-                "{t}JSCAL2_FEB{/t}",
-                "{t}JSCAL2_MAR{/t}",
-                "{t}JSCAL2_APR{/t}",
-                "{t}JSCAL2_MAY{/t}",
-                "{t}JSCAL2_JUN{/t}",
-                "{t}JSCAL2_JUL{/t}",
-                "{t}JSCAL2_AUG{/t}",
-                "{t}JSCAL2_SEP{/t}",
-                "{t}JSCAL2_OCT{/t}",
-                "{t}JSCAL2_NOV{/t}",
-                "{t}JSCAL2_DEC{/t}" ],
+        smn : [ "{t}Jan{/t}",
+                "{t}Feb{/t}",
+                "{t}Mar{/t}",
+                "{t}Apr{/t}",
+                "{t}May{/t}",
+                "{t}Jun{/t}",
+                "{t}Jul{/t}",
+                "{t}Aug{/t}",
+                "{t}Sep{/t}",
+                "{t}Oct{/t}",
+                "{t}Nov{/t}",
+                "{t}Dec{/t}" ],
 
-        dn : [ "{t}JSCAL2_SUNDAY{/t}",
-               "{t}JSCAL2_MONDAY{/t}",
-               "{t}JSCAL2_TUESDAY{/t}",
-               "{t}JSCAL2_WEDNESDAY{/t}",
-               "{t}JSCAL2_THURSDAY{/t}",
-               "{t}JSCAL2_FRIDAY{/t}",
-               "{t}JSCAL2_SATURDAY{/t}",
-               "{t}JSCAL2_SUNDAY{/t}" ],
+        dn : [ "{t}Sunday{/t}",
+               "{t}Monday{/t}",
+               "{t}Tuesdy{/t}",
+               "{t}Wednesday{/t}",
+               "{t}Thursday{/t}",
+               "{t}Friday{/t}",
+               "{t}Saturday{/t}",
+               "{t}Sunday{/t}" ],
 
-        sdn : [ "{t}JSCAL2_SU{/t}",
-                "{t}JSCAL2_MO{/t}",
-                "{t}JSCAL2_TU{/t}",
-                "{t}JSCAL2_WE{/t}",
-                "{t}JSCAL2_TH{/t}",
-                "{t}JSCAL2_FR{/t}",
-                "{t}JSCAL2_SA{/t}",
-                "{t}JSCAL2_SU{/t}" ]
+        sdn : [ "{t}Su{/t}",
+                "{t}Mo{/t}",
+                "{t}Tu{/t}",
+                "{t}We{/t}",
+                "{t}Th{/t}",
+                "{t}Fr{/t}",
+                "{t}Sa{/t}",
+                "{t}Su{/t}" ]
 
 } );
