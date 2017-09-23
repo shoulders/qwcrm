@@ -13,17 +13,17 @@
         <td class="row2"><b>{t}Assigned{/t}</b></td>
         <td class="row2"><b>{t}Waiting for Parts{/t}</b></td>
         <td class="row2"><b>{t}Scheduled{/t}</b></td>
+        <td class="row2"><b>{t}With Client{/t}</b></td>
         <td class="row2"><b>{t}On Hold{/t}</b></td>
-        <td class="row2"><b>{t}Management{/t}</b></td>
-        <td class="row2"><b>{t}Closed{/t}</b></td>
+        <td class="row2"><b>{t}Management{/t}</b></td>        
     </tr>
     <tr class="olotd4">
         <td>{$employee_workorders_open_count}</td>
         <td>{$employee_workorders_assigned_count}</td>
         <td>{$employee_workorders_waiting_for_parts_count}</td>
         <td>{$employee_workorders_scheduled_count}</td>
+        <td>{$employee_workorders_with_client_count}</td> 
         <td>{$employee_workorders_on_hold_count}</td>
-        <td>{$employee_workorders_management_count}</td> 
-        <td>{$employee_workorders_total_closed_count}</td>                                            
+        <td>{$employee_workorders_management_count}</td>                                                   
     </tr>
 </table>

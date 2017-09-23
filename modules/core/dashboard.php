@@ -20,9 +20,9 @@ $smarty->assign('employee_workorders_open_count',               count_workorders
 $smarty->assign('employee_workorders_assigned_count',           count_workorders($db, 'assigned', $login_user_id)           );
 $smarty->assign('employee_workorders_waiting_for_parts_count',  count_workorders($db, 'waiting_for_parts', $login_user_id)  );
 $smarty->assign('employee_workorders_scheduled_count',          count_workorders($db, 'scheduled', $login_user_id)          );
+$smarty->assign('employee_workorders_with_client_count',        count_workorders($db, 'with_client', $login_user_id)        );
 $smarty->assign('employee_workorders_on_hold_count',            count_workorders($db, 'on_hold', $login_user_id)            );
 $smarty->assign('employee_workorders_management_count',         count_workorders($db, 'management', $login_user_id)         );
-$smarty->assign('employee_workorders_total_closed_count',       count_workorders($db, 'closed', $login_user_id)             );
 
 // Employee Workorders
 $smarty->assign('assigned_workorders',          display_workorders($db, 'DESC', false, $page_no, '25', null, null, 'assigned', $login_user_id)          );

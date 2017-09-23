@@ -12,13 +12,13 @@ require(INCLUDES_DIR.'modules/report.php');
 require(INCLUDES_DIR.'modules/workorder.php');
 
 // Overall Workorder Stats
-$smarty->assign('overall_workorders_open_count',               count_workorders($db, 'open')                );
-$smarty->assign('overall_workorders_assigned_count',           count_workorders($db, 'assigned')            );
-$smarty->assign('overall_workorders_waiting_for_parts_count',  count_workorders($db, 'waiting_for_parts')   );
-$smarty->assign('overall_workorders_scheduled_count',          count_workorders($db, 'scheduled')           );
-$smarty->assign('overall_workorders_on_hold_count',            count_workorders($db, 'on_hold')             );
-$smarty->assign('overall_workorders_management_count',         count_workorders($db, 'management')          );
-$smarty->assign('overall_workorders_total_closed_count',       count_workorders($db, 'closed')              );
+$smarty->assign('overview_workorders_open_count',               count_workorders($db, 'open')                );
+$smarty->assign('overview_workorders_assigned_count',           count_workorders($db, 'assigned')            );
+$smarty->assign('overview_workorders_waiting_for_parts_count',  count_workorders($db, 'waiting_for_parts')   );
+$smarty->assign('overview_workorders_scheduled_count',          count_workorders($db, 'scheduled')           );
+$smarty->assign('overview_workorders_with_client_count',        count_workorders($db, 'with_client')         );
+$smarty->assign('overview_workorders_on_hold_count',            count_workorders($db, 'on_hold')             );
+$smarty->assign('overview_workorders_management_count',         count_workorders($db, 'management')          );
 
 // Workorders
 $smarty->assign('unassigned_workorders',        display_workorders($db, 'DESC', false, $page_no, '25', null, null, 'unassigned')        );
