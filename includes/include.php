@@ -123,9 +123,9 @@ function update_user_last_active($db, $user_id = null) {
 
 function force_page($module, $page_tpl = null, $variables = null, $method = 'post') {
     
-    /* Normal URL Redirect */
+    /* Standard URL Redirect */
     
-    if($page_tpl == null && $variables == null) {       
+    if($module != 'index.php' && $page_tpl == null) {       
 
         // Build the URL and perform the redirect
         perform_redirect($module);        
@@ -137,41 +137,22 @@ function force_page($module, $page_tpl = null, $variables = null, $method = 'pos
     if($method == 'get') {
         
         // If home, dashboard or maintenance do not show module:page
-        if($page_tpl == 'home' || $page_tpl == 'dashboard' || $page_tpl == 'maintenance') {                
+        if($module == 'index.php' || $page_tpl == 'home' || $page_tpl == 'dashboard' || $page_tpl == 'maintenance') { 
             
-            // Page Name Only    
-            if ($page_tpl != null && $variables == null) {
-
-                // Build the URL and perform the redirect
-                perform_redirect('index.php');            
-
-            }
-
-            // Page Name and Variables (QWcrm Style Redirect)
-            if ($page_tpl != null && $variables != null) {   
-
-                // Build the URL and perform the redirect
-                perform_redirect('index.php?'.$variables);            
-
-            }
+            // If there are variables, prepare them
+            if($variables) {$varibles = '?'.$varibles; }
             
+            // Build the URL and perform the redirect, with/without varibles
+            perform_redirect('index.php'.$varibles);            
+
+        // Page Name and Variables (QWcrm Style Redirect)  
         } else {
             
-            // Page Name Only    
-            if ($page_tpl != null && $variables == null) {
+            // If there are variables, prepare them
+            if($variables) { $varibles = '&'.$varibles; }
 
-                // Build the URL and perform the redirect
-                perform_redirect('index.php?page='.$module.':'.$page_tpl);            
-
-            }
-
-            // Page Name and Variables (QWcrm Style Redirect)
-            if ($page_tpl != null && $variables != null) {   
-
-                // Build the URL and perform the redirect
-                perform_redirect('index.php?page='.$module.':'.$page_tpl.'&'.$variables);            
-
-            }
+            // Build the URL and perform the redirect, with/without varibles
+            perform_redirect('index.php?page='.$module.':'.$page_tpl.$variables);            
             
         }
         
@@ -181,60 +162,31 @@ function force_page($module, $page_tpl = null, $variables = null, $method = 'pos
     
     if($method == 'post') {
         
+        // If there are variables, prepare them
+        if($variables) {          
+
+            // Parse the URL into an array            
+            $variable_array = array();
+            parse_str($variables, $variable_array);
+
+            // Set the page varible in the session - it does not matter page varible is set twice 1 in $_SESSION and 1 in $_GET the array merge will fix that
+            foreach($variable_array as $key => $value) {                    
+                postEmulationWrite($key, $value);
+            }               
+
+        }
+        
         // If home, dashboard or maintenance do not show module:page
-        if($page_tpl == 'home' || $page_tpl == 'dashboard' || $page_tpl == 'maintenance') { 
+        if($module == 'index.php' || $page_tpl == 'home' || $page_tpl == 'dashboard' || $page_tpl == 'maintenance') { 
             
-            // Page Name Only
-            if ($page_tpl != null && $variables == null) {                        
-
-                // Build the URL and perform the redirect
-                perform_redirect('index.php');            
-
-            }
-
-            // Page Name and Variables (QWcrm Style Redirect)
-            if($page_tpl != null && $variables != null) {          
-
-                // Parse the URL into an array            
-                $variable_array = array();
-                parse_str($variables, $variable_array);
-
-                // Set the page varible in the session - it does not matter page varible is set twice 1 in $_SESSION and 1 in $_GET the array merge will fix that
-                foreach($variable_array as $key => $value) {                    
-                    postEmulationWrite($key, $value);
-                }               
-
-                // Build the URL and perform the redirect
-                perform_redirect('index.php');
-
-            }
-            
+            // Build the URL and perform the redirect
+            perform_redirect('index.php');
+       
+        // Page Name and Variables (QWcrm Style Redirect)     
         } else {
             
-            // Page Name Only
-            if ($page_tpl != null && $variables == null) {                        
-
-                // Build the URL and perform the redirect
-                perform_redirect('index.php?page='.$module.':'.$page_tpl);            
-
-            }
-
-            // Page Name and Variables (QWcrm Style Redirect)
-            if($page_tpl != null && $variables != null) {          
-
-                // Parse the URL into an array            
-                $variable_array = array();
-                parse_str($variables, $variable_array);
-
-                // Set the page varible in the session - it does not matter page varible is set twice 1 in $_SESSION and 1 in $_GET the array merge will fix that
-                foreach($variable_array as $key => $value) {                    
-                    postEmulationWrite($key, $value);
-                }
-
-                // Build the URL and perform the redirect
-                perform_redirect('index.php?page='.$module.':'.$page_tpl);                
-
-            }
+            // Build the URL and perform the redirect
+            perform_redirect('index.php?page='.$module.':'.$page_tpl);            
                 
         }
         

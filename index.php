@@ -447,15 +447,16 @@ if(check_acl($db, $login_usergroup_id, $module, $page_tpl)) {
     
     page_build_end:
     
-} else {
+} else {    
   
-    //force_error_page($_GET['page'], 'authentication', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("You do not have permission to access the page - ").' '.$module.':'.$page_tpl);    
-    //force_page('core', 'error', 'warning_msg='.gettext("You do not have permission to access this resource").' - '.$module.':'.$page_tpl);            
-    //exit;
+    // Log activity        
+    write_record_to_activity_log(gettext("A user tried to access the following resource without the correct pemissions.").' ('.$module.':'.$page_tpl.')');  
     
-    $BuildPage .= gettext("You do not have permission to access this resource").' - '.$module.':'.$page_tpl;
+    //force_error_page($_GET['page'], 'authentication', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("You do not have permission to access the resource - ").' '.$module.':'.$page_tpl);
     
-    // Your session might of expired
+    force_page('index.php', null, 'warning_msg='.gettext("You do not have permission to access this resource or your session has expired.").' ('.$module.':'.$page_tpl.')');
+    exit;
+
 }
 
 ################################################
