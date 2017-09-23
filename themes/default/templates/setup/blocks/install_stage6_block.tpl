@@ -20,7 +20,7 @@
                     <tr>
                         <td align="right"><b>{t}Work Order Start Number{/t}</b></td>
                         <td>
-                            <input name="workorder_start_number" class="olotd5" size="6" type="text" maxlength="6" onkeydown="return onlyNumbers(event);"/>
+                            <input name="workorder_start_number" class="olotd5" size="6" type="text" maxlength="6" onkeydown="return onlyNumber(event);"/>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Work Order Start Number{/t}</strong></div><hr><div>{t escape=tooltip}Only enter a number if you want to start your work orders from a specified number.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
@@ -30,7 +30,7 @@
                     <tr>
                         <td align="right"><b>{t}Invoice Start Number{/t}</b></td>
                         <td>
-                            <input name="invoice_start_number" class="olotd5" size="6" type="text" maxlength="6" onkeydown="return onlyNumbers(event);"/>
+                            <input name="invoice_start_number" class="olotd5" size="6" type="text" maxlength="6" onkeydown="return onlyNumber(event);"/>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Invoice Start Number{/t}</strong></div><hr><div>{t escape=tooltip}Only enter a number if you want to start your invoices from a specified number.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>                       
                     </tr>

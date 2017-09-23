@@ -45,7 +45,7 @@
                                                                             <option value="Parts" {if $invoice_prefill_items[q].type == 'Parts'} selected{/if}>{t}Parts{/t}</option>
                                                                         </select>
                                                                     </td>
-                                                                    <td class="olotd4" nowrap>{$currency_sym}<input name="amount" class="olotd5" size="10" value="{$invoice_prefill_items[q].amount}" type="text" maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumbersPeriod(event);"></td>
+                                                                    <td class="olotd4" nowrap>{$currency_sym}<input name="amount" class="olotd5" size="10" value="{$invoice_prefill_items[q].amount}" type="text" maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);"></td>
                                                                     <td class="olotd4" nowrap>
                                                                         <select class="olotd5" name="active">
                                                                             <option value="0" {if $invoice_prefill_items[q].active == 0} selected{/if}>{t}No{/t}</option>
@@ -80,7 +80,7 @@
                                                                     <option value="Parts">{t}Parts{/t}</option>
                                                                 </select>
                                                             </td>
-                                                            <td class="olotd4">{$currency_sym}<input name="amount" class="olotd5" size="10" type="text" maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumbersPeriod(event);"></td>
+                                                            <td class="olotd4">{$currency_sym}<input name="amount" class="olotd5" size="10" type="text" maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);"></td>
                                                             <td class="olotd4" nowrap>
                                                                 <select class="olotd5" name="active">
                                                                     <option value="0" selected>{t}No{/t}</option>

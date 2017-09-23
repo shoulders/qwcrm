@@ -44,14 +44,14 @@
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{t}Display Name{/t}</b><span style="color: #ff0000"> *</span></td>
-                                                            <td><input name="display_name" class="olotd5" size="50" value="{$supplier_details.display_name}" type="text" maxlength="50" required onkeydown="return onlyAlphaNumeric(event);"></td>
+                                                            <td><input name="display_name" class="olotd5" size="50" value="{$supplier_details.display_name}" type="text" maxlength="50" required onkeydown="return onlyName(event);"></td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><strong>{t}First Name{/t}</strong></td>
-                                                            <td><input name="first_name" class="olotd5" size="20" value="{$supplier_details.first_name}" type="text" maxlength="20" onkeydown="return onlyAlpha(event);"/></td>
+                                                            <td><input name="first_name" class="olotd5" size="20" value="{$supplier_details.first_name}" type="text" maxlength="20" onkeydown="return onlyName(event);"/></td>
                                                         <tr>
                                                             <td align="right"><strong>{t}Last Name{/t}</strong></td>
-                                                            <td><input name="last_name" class="olotd5" size="20" value="{$supplier_details.last_name}" type="text" maxlength="20" onkeydown="return onlyAlpha(event);"/></td>
+                                                            <td><input name="last_name" class="olotd5" size="20" value="{$supplier_details.last_name}" type="text" maxlength="20" onkeydown="return onlyName(event);"/></td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{t}Website{/t}</b></td>

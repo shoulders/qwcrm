@@ -455,6 +455,7 @@ if(check_acl($db, $login_usergroup_id, $module, $page_tpl)) {
     
     $BuildPage .= gettext("You do not have permission to access this resource").' - '.$module.':'.$page_tpl;
     
+    // Your session might of expired
 }
 
 ################################################

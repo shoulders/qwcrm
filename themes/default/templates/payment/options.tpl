@@ -67,11 +67,11 @@
                                             </tr>
                                             <tr>
                                                 <td><b>{t}Bank Account Number{/t}:</b></td>
-                                                <td><input name="bank_account_number" class="olotd5" value="{$payment_settings.bank_account_number}" type="text" maxlength="15" onkeydown="return onlyNumbers(event);"></td>
+                                                <td><input name="bank_account_number" class="olotd5" value="{$payment_settings.bank_account_number}" type="text" maxlength="15" onkeydown="return onlyNumber(event);"></td>
                                             </tr>
                                             <tr>
                                                 <td><b>{t}Bank Sort Code{/t}</b></td>
-                                                <td><input name="bank_sort_code" class="olotd5" value="{$payment_settings.bank_sort_code}" type="text" maxlength="10" onkeydown="return onlyNumbers(event);"></td>
+                                                <td><input name="bank_sort_code" class="olotd5" value="{$payment_settings.bank_sort_code}" type="text" maxlength="10" onkeydown="return onlyNumber(event);"></td>
                                             </tr>
                                             <tr>
                                                 <td><b>{t}Bank IBAN{/t}</b></td>

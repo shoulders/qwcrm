@@ -52,7 +52,7 @@
                                                                 <table cellpadding="5" cellspacing="0">
                                                                     <tr>
                                                                         <td align="right"><b>{t}Company Name{/t}:</b> <span style="color: #ff0000">*</span></td>
-                                                                        <td><input name="display_name" class="olotd5" value="{$company_details.display_name}" type="text" maxlength="50" required onkeydown="return onlyAlpha(event);"></td>
+                                                                        <td><input name="display_name" class="olotd5" value="{$company_details.display_name}" type="text" maxlength="50" required onkeydown="return onlyName(event);"></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td align="right"><b>{t}Logo{/t}:</b></td>
@@ -111,7 +111,7 @@
                                                                     </tr> 
                                                                     <tr>
                                                                         <td align="right"><b>{t}VAT/Tax{/t} {t}Rate{/t}:</b></td>
-                                                                        <td><input name="tax_rate" class="olotd5" size="6" value="{$company_details.tax_rate}" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumbersPeriod(event);"/>%</td>
+                                                                        <td><input name="tax_rate" class="olotd5" size="6" value="{$company_details.tax_rate}" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumberPeriod(event);"/>%</td>
                                                                     </tr>
                                                                     <tr>
                                                                     <td align="right"><b>{t}Financial Year Start{/t}:</b> <span style="color: #ff0000">*</span></td>

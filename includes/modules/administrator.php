@@ -162,6 +162,11 @@ function update_qwcrm_config($new_config) {
     // Merge the new submitted config and the old one. We do this to preserve values that were not in the submitted form but are in the config.
     $merged_config = array_merge($current_config, $new_config);
     
+    // Walk through the merged_config array and escape all apostophes (anonymous function)
+    array_walk($merged_config, function(&$value) {
+        $value = str_replace("'", "\\'", $value);
+    });
+    
     // Prepare the config file content
     $merged_config = build_config_file_content($merged_config);
 

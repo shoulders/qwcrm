@@ -65,13 +65,18 @@ function onlyAlphaNumericAndDate(e) {
 }
 
 // Numbers Only
-function onlyNumbers(e) {
+function onlyNumber(e) {
     return keyRestriction(e, "0123456789", false);
 }
 
 // Numbers and Period
-function onlyNumbersPeriod(e) {
+function onlyNumberPeriod(e) {
     return keyRestriction(e, "0123456789.", false);
+}
+
+// Number, Letters, period(.) and apostophe (')
+function onlyName(e) {
+    return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.'", true);
 }
 
 // Phone Numbers
@@ -95,7 +100,7 @@ function onlyAddress(e) {
 }
 
 // Currency Symbols
-function onlyCurrencySymbols(e) {
+function onlyCurrencySymbol(e) {
     return; 
     //return keyRestriction(e, "", false);
 }

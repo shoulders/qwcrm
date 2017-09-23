@@ -48,7 +48,7 @@
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{t}Payee{/t}</b><span style="color: #ff0000"> *</span></td>
-                                                                            <td colspan="3"><input name="payee" class="olotd5" size="50" type="text" maxlength="50" required onkeydown="return onlyAlphaNumeric(event);"></td>
+                                                                            <td colspan="3"><input name="payee" class="olotd5" size="50" type="text" maxlength="50" required onkeydown="return onlyName(event);"></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{t}Date{/t}</b><span style="color: #ff0000"> *</span></td>
@@ -86,19 +86,19 @@
                                                                         </tr>                                                                                                          
                                                                         <tr>
                                                                             <td align="right"><b>{t}Net Amount{/t}</b></td>
-                                                                            <td><input name="net_amount" class="olotd5" size="10" type="text" maxlength="10" pattern="{literal}^[0-9]{1,7}(.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumbersPeriod(event);"></b></a></td>
+                                                                            <td><input name="net_amount" class="olotd5" size="10" type="text" maxlength="10" pattern="{literal}^[0-9]{1,7}(.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumberPeriod(event);"></b></a></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><span style="color: #ff0000"></span><b>{t}VAT/Tax{/t} {t}Rate{/t}</td>
-                                                                            <td><input name="tax_rate" class="olotd5" size="5" value="{$tax_rate}" type="text" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumbersPeriod(event);"/><b>%</b></td>
+                                                                            <td><input name="tax_rate" class="olotd5" size="5" value="{$tax_rate}" type="text" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumberPeriod(event);"/><b>%</b></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{t}VAT/Tax{/t} {t}Amount{/t}</b></td>
-                                                                            <td><input name="tax_amount" class="olotd5" size="10" type="text" maxlength="10" pattern="{literal}^[0-9]{1,7}(.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumbersPeriod(event);"/></td>
+                                                                            <td><input name="tax_amount" class="olotd5" size="10" type="text" maxlength="10" pattern="{literal}^[0-9]{1,7}(.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumberPeriod(event);"/></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{t}Gross Amount{/t}</b><span style="color: #ff0000"> *</span></td>
-                                                                            <td><input name="gross_amount" class="olotd5" size="10" type="text" maxlength="10" pattern="{literal}^[0-9]{1,7}(.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumbersPeriod(event);"/></td>
+                                                                            <td><input name="gross_amount" class="olotd5" size="10" type="text" maxlength="10" pattern="{literal}^[0-9]{1,7}(.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumberPeriod(event);"/></td>
                                                                         </tr>
                                                                     </tbody>
                                                                 </table>

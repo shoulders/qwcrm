@@ -36,15 +36,15 @@
                                                                     <tbody align="left">
                                                                         <tr>
                                                                             <td align="right"><b>{t}Display Name{/t}</b><span style="color: #ff0000">*</span></td>
-                                                                            <td colspan="3"><input name="display_name" class="olotd5" size="60" type="text" maxlength="50" required onkeydown="return onlyAlpha(event);"></td>
+                                                                            <td colspan="3"><input name="display_name" class="olotd5" size="60" type="text" maxlength="50" required onkeydown="return onlyName(event);"></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{t}First Name{/t}</b></td>
-                                                                            <td><input name="first_name" class="olotd5" type="text" maxlength="20" onkeydown="return onlyAlpha(event);"></td>
+                                                                            <td><input name="first_name" class="olotd5" type="text" maxlength="20" onkeydown="return onlyName(event);"></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{t}Last Name{/t}</b></td>
-                                                                            <td><input name="last_name" class="olotd5" type="text" maxlength="20" onkeydown="return onlyAlpha(event);"></td>
+                                                                            <td><input name="last_name" class="olotd5" type="text" maxlength="20" onkeydown="return onlyName(event);"></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><span style="color: #ff0000"></span><b>{t}Website{/t}</b></td>
@@ -60,7 +60,7 @@
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{t}Discount{/t}</b><span style="color: #ff0000">*</span></td>
-                                                                            <td><a><input name="discount_rate" class="olotd5" value="0.00" type="text" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumbersPeriod(event);"><b>%</b></a></td>
+                                                                            <td><a><input name="discount_rate" class="olotd5" value="0.00" type="text" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumberPeriod(event);"><b>%</b></a></td>
                                                                         </tr>                                                                                  
                                                                     </table>
                                                                 </td>

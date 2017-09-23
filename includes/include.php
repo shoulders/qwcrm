@@ -136,7 +136,7 @@ function force_page($module, $page_tpl = null, $variables = null, $method = 'pos
     
     if($method == 'get') {
         
-        // If Login, home or maintenance do not show module:page
+        // If home, dashboard or maintenance do not show module:page
         if($page_tpl == 'home' || $page_tpl == 'dashboard' || $page_tpl == 'maintenance') {                
             
             // Page Name Only    
@@ -181,7 +181,7 @@ function force_page($module, $page_tpl = null, $variables = null, $method = 'pos
     
     if($method == 'post') {
         
-        // If Login, home or maintenance do not show module:page
+        // If home, dashboard or maintenance do not show module:page
         if($page_tpl == 'home' || $page_tpl == 'dashboard' || $page_tpl == 'maintenance') { 
             
             // Page Name Only

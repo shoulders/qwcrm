@@ -54,7 +54,7 @@
         el.setAttribute('type', 'text');
         el.setAttribute('maxlength', '6');
         el.required = true;
-        el.setAttribute('onkeydown', 'return onlyNumbers(event)');
+        el.setAttribute('onkeydown', 'return onlyNumber(event)');
         buildRow.appendChild(el);
 
 
@@ -126,7 +126,7 @@
         //el.setAttribute('type', 'text');  // only required of 'input'
         //el.setAttribute('maxlength', '6');
         //el.required = true;
-        //el.setAttribute('onkeydown', 'return onlyNumbersPeriod(event)');
+        //el.setAttribute('onkeydown', 'return onlyNumberPeriod(event)');
         buildRow.appendChild(el);
 
 
@@ -152,7 +152,7 @@
         // Amount Cell - Apply Key restriction to the virtual combobox
         dhtmlxEvent(combo.DOMelem_input, "keypress", function(e) {
 
-            if(onlyNumbersPeriod(e)) { return true; }
+            if(onlyNumberPeriod(e)) { return true; }
 
             e.cancelBubble=true;
             if (e.preventDefault) e.preventDefault();
@@ -208,7 +208,7 @@
         el.setAttribute('type', 'text');
         el.setAttribute('maxlength', '6');
         el.required = true;
-        el.setAttribute('onkeydown', 'return onlyNumbers(event)');
+        el.setAttribute('onkeydown', 'return onlyNumber(event)');
         buildRow.appendChild(el);
 
 
@@ -274,7 +274,7 @@
         //el.setAttribute('maxlength', '10');    
         //el.setAttribute('pattern', '{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}');        
         //el.required = true;
-        //el.setAttribute('onkeydown', 'return onlyNumbersPeriod(event)');
+        //el.setAttribute('onkeydown', 'return onlyNumberPeriod(event)');
         buildRow.appendChild(el);
         
         
@@ -299,7 +299,7 @@
         // Amount Cell - Apply Key restriction to the virtual combobox
         dhtmlxEvent(combo.DOMelem_input, "keypress", function(e) {
 
-            if(onlyNumbersPeriod(e)) { return true; }
+            if(onlyNumberPeriod(e)) { return true; }
 
             e.cancelBubble=true;
             if (e.preventDefault) e.preventDefault();
