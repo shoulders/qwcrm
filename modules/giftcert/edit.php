@@ -20,7 +20,7 @@ if($giftcert_id == '') {
 
 // Check if giftcert payment method is enabled
 if(!check_payment_method_is_active($db, 'gift_certificate')) {
-    force_page('core', 'dashboard','warning_msg='.gettext("Gift Certificate payment method is not enabled. Goto Payment Options and enable Gift Certificates there."));
+    force_page('index.php', null,'warning_msg='.gettext("Gift Certificate payment method is not enabled. Goto Payment Options and enable Gift Certificates there."));
     exit;
 }
 

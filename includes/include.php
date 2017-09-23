@@ -137,7 +137,7 @@ function force_page($module, $page_tpl = null, $variables = null, $method = 'pos
     if($method == 'get') {
         
         // If home, dashboard or maintenance do not show module:page
-        if($module == 'index.php' || $page_tpl == 'home' || $page_tpl == 'dashboard' || $page_tpl == 'maintenance') { 
+        if($module == 'index.php') { 
             
             // If there are variables, prepare them
             if($variables) {$varibles = '?'.$varibles; }
@@ -177,7 +177,7 @@ function force_page($module, $page_tpl = null, $variables = null, $method = 'pos
         }
         
         // If home, dashboard or maintenance do not show module:page
-        if($module == 'index.php' || $page_tpl == 'home' || $page_tpl == 'dashboard' || $page_tpl == 'maintenance') { 
+        if($module == 'index.php') { 
             
             // Build the URL and perform the redirect
             perform_redirect('index.php');
