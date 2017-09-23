@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2017-09-22 10:14+0100\n"
-"PO-Revision-Date: 2017-09-22 10:14+0100\n"
+"POT-Creation-Date: 2017-09-23 13:07+0100\n"
+"PO-Revision-Date: 2017-09-23 13:08+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en_GB\n"
@@ -115,66 +115,66 @@ msgstr ""
 msgid "Failed to update a User's last active time."
 msgstr ""
 
-#: includes/include.php:551 includes/include.php:555 includes/include.php:556
+#: includes/include.php:503 includes/include.php:507 includes/include.php:508
 msgid "_"
 msgstr ""
 
-#: includes/include.php:573
+#: includes/include.php:525
 msgid "The ACL has been supplied with no account type ID - I will now die."
 msgstr ""
 
-#: includes/include.php:582
+#: includes/include.php:534
 msgid "Could not get the user's Group Name by Login Account Type ID."
 msgstr ""
 
-#: includes/include.php:596
+#: includes/include.php:548
 msgid "Could not get the Page's ACL."
 msgstr ""
 
-#: includes/include.php:664
+#: includes/include.php:616
 msgid ""
 "There is a database connection issue. Check your settings in the config file."
 msgstr ""
 
-#: includes/include.php:669
+#: includes/include.php:621
 msgid "QWcrm requires MySQL"
 msgstr ""
 
-#: includes/include.php:669 index.php:18
+#: includes/include.php:621 index.php:18
 msgid "Your current version is"
 msgstr ""
 
-#: includes/include.php:688
+#: includes/include.php:640
 msgid ""
 "The upgrade never completed successfully. Check the upgrade and error logs."
 msgstr ""
 
-#: includes/include.php:693
+#: includes/include.php:645
 msgid ""
 "The file system is older than the database. Check the logs and your settings."
 msgstr ""
 
-#: includes/include.php:726
+#: includes/include.php:678
 msgid "The configured template is not supported by this version of QWcrm."
 msgstr ""
 
-#: includes/include.php:727
+#: includes/include.php:679
 msgid "Your current version of QWcrm is"
 msgstr ""
 
-#: includes/include.php:728
+#: includes/include.php:680
 msgid "The template supports QWcrm versions in the range"
 msgstr ""
 
-#: includes/include.php:1011
+#: includes/include.php:963
 msgid "Could not open the Access Log to save the record."
 msgstr ""
 
-#: includes/include.php:1049
+#: includes/include.php:1001
 msgid "Could not open the Activity Log to save the record."
 msgstr ""
 
-#: includes/include.php:1078
+#: includes/include.php:1030
 msgid "Could not open the Error Log to save the record."
 msgstr ""
 
@@ -190,69 +190,69 @@ msgstr ""
 msgid "ACL permissions updated."
 msgstr ""
 
-#: includes/modules/administrator.php:172
+#: includes/modules/administrator.php:177
 msgid "QWcrm config settings updated."
 msgstr ""
 
-#: includes/modules/administrator.php:199
+#: includes/modules/administrator.php:204
 msgid "The QWcrm config setting"
 msgstr ""
 
-#: includes/modules/administrator.php:199
+#: includes/modules/administrator.php:204
 msgid "was deleted."
 msgstr ""
 
-#: includes/modules/administrator.php:255
+#: includes/modules/administrator.php:260
 msgid "Connection Error - cURL Error Number"
 msgstr ""
 
-#: includes/modules/administrator.php:261
-#: includes/modules/administrator.php:271
+#: includes/modules/administrator.php:266
+#: includes/modules/administrator.php:276
 msgid "No response from the QWcrm update server."
 msgstr ""
 
-#: includes/modules/administrator.php:294
+#: includes/modules/administrator.php:299
 msgid "QWcrm checked for updates."
 msgstr ""
 
-#: includes/modules/administrator.php:309
+#: includes/modules/administrator.php:314
 msgid "Failed to load the Page ACL permissions from the database."
 msgstr ""
 
-#: includes/modules/administrator.php:399
+#: includes/modules/administrator.php:404
 msgid "Failed to empty the database session table."
 msgstr ""
 
-#: includes/modules/administrator.php:439
+#: includes/modules/administrator.php:444
 msgid "Test mail from QWcrm"
 msgstr ""
 
-#: includes/modules/administrator.php:442
+#: includes/modules/administrator.php:447
 msgid "Test email initiated."
 msgstr ""
 
-#: includes/modules/administrator.php:464
+#: includes/modules/administrator.php:469
 msgid "The Smarty cache has been emptied successfully."
 msgstr ""
 
-#: includes/modules/administrator.php:467
+#: includes/modules/administrator.php:472
 msgid "Smarty Cache Cleared."
 msgstr ""
 
-#: includes/modules/administrator.php:489
+#: includes/modules/administrator.php:494
 msgid "The Smarty compile directory has been emptied successfully."
 msgstr ""
 
-#: includes/modules/administrator.php:492
+#: includes/modules/administrator.php:497
 msgid "Smarty Compile Cache Cleared."
 msgstr ""
 
-#: includes/modules/administrator.php:506
-#: includes/modules/administrator.php:608
+#: includes/modules/administrator.php:511
+#: includes/modules/administrator.php:613
 msgid "Failed reset default permissions."
 msgstr ""
 
-#: includes/modules/administrator.php:616
+#: includes/modules/administrator.php:621
 msgid "ACL permissions reset to default settings."
 msgstr ""
 
@@ -1053,43 +1053,43 @@ msgstr ""
 msgid "Could not count the number of customers."
 msgstr ""
 
-#: includes/modules/report.php:145
+#: includes/modules/report.php:148
 msgid "Could not count Work Orders for the defined status."
 msgstr ""
 
-#: includes/modules/report.php:223
+#: includes/modules/report.php:229
 msgid "Could not count the number of Invoices."
 msgstr ""
 
-#: includes/modules/report.php:273
+#: includes/modules/report.php:279
 msgid "Could not sum the invoice discount amounts."
 msgstr ""
 
-#: includes/modules/report.php:297 includes/modules/report.php:319
+#: includes/modules/report.php:303 includes/modules/report.php:325
 msgid "Failed to count the total number of labour items ordered."
 msgstr ""
 
-#: includes/modules/report.php:341
+#: includes/modules/report.php:347
 msgid "Failed to return the sum of labour items ordered."
 msgstr ""
 
-#: includes/modules/report.php:365
+#: includes/modules/report.php:371
 msgid "Failed to count the total number of different parts items ordered."
 msgstr ""
 
-#: includes/modules/report.php:387
+#: includes/modules/report.php:393
 msgid "Failed to count the total number of parts items ordered."
 msgstr ""
 
-#: includes/modules/report.php:409
+#: includes/modules/report.php:415
 msgid "Failed to return the total number of parts items ordered."
 msgstr ""
 
-#: includes/modules/report.php:432
+#: includes/modules/report.php:438
 msgid "Failed to return the sum value for the selected expenses."
 msgstr ""
 
-#: includes/modules/report.php:455
+#: includes/modules/report.php:461
 msgid "Failed to return the sum value for the selected refunds."
 msgstr ""
 
@@ -1169,7 +1169,7 @@ msgid "Contact Information"
 msgstr ""
 
 #: includes/modules/schedule.php:412 includes/modules/schedule.php:444
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:140
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:139
 msgid "Company"
 msgstr ""
 
@@ -1315,7 +1315,7 @@ msgstr ""
 
 #: includes/modules/schedule.php:416 includes/modules/schedule.php:448
 #: themes/default/templates/company/edit.tpl:108
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:185
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:184
 #: themes/default/templates/customer/blocks/details_customer_details_block.tpl:34
 #: themes/default/templates/customer/edit.tpl:48
 #: themes/default/templates/customer/new.tpl:50
@@ -1512,9 +1512,9 @@ msgid "Notes"
 msgstr ""
 
 #: includes/modules/schedule.php:686
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:99
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:114
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:129
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:98
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:113
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:128
 #: themes/default/templates/customer/blocks/details_invoice_block.tpl:35
 #: themes/default/templates/customer/blocks/details_invoice_block.tpl:69
 #: themes/default/templates/customer/blocks/details_invoice_block.tpl:103
@@ -1523,10 +1523,10 @@ msgstr ""
 
 #: includes/modules/schedule.php:688
 #: themes/default/templates/core/blocks/theme_menu_block.tpl:26
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:87
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:100
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:115
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:130
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:86
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:99
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:114
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:129
 #: themes/default/templates/customer/blocks/details_customer_details_block.tpl:14
 #: themes/default/templates/customer/blocks/details_giftcert_block.tpl:44
 #: themes/default/templates/customer/blocks/details_giftcert_block.tpl:88
@@ -1552,8 +1552,8 @@ msgstr ""
 
 #: includes/modules/schedule.php:690
 #: themes/default/templates/core/blocks/theme_menu_block.tpl:27
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:101
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:116
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:100
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:115
 #: themes/default/templates/invoice/prefill_items.tpl:57
 #: themes/default/templates/invoice/status.tpl:26
 #: themes/default/templates/invoice/status.tpl:73
@@ -2230,8 +2230,15 @@ msgstr ""
 msgid "QWcrm requires PHP"
 msgstr ""
 
-#: index.php:456
-msgid "You do not have permission to access this resource"
+#: index.php:453
+msgid ""
+"A user tried to access the following resource without the correct pemissions."
+msgstr ""
+
+#: index.php:457
+msgid ""
+"You do not have permission to access this resource or your session has "
+"expired."
 msgstr ""
 
 #: language/_gettext_only/pages.php:19
@@ -4151,6 +4158,7 @@ msgstr ""
 #: language/_gettext_only/system_varibles.php:17
 #: themes/default/templates/core/blocks/dashboard_workorders_assigned_block.tpl:8
 #: themes/default/templates/core/blocks/dashboard_workorders_workorders_stats_employee_block.tpl:13
+#: themes/default/templates/report/basic_stats.tpl:32
 #: themes/default/templates/report/basic_stats.tpl:58
 #: themes/default/templates/workorder/blocks/overview_workorders_assigned_block.tpl:8
 #: themes/default/templates/workorder/blocks/overview_workorders_stats_employee_block.tpl:13
@@ -4160,6 +4168,7 @@ msgstr ""
 #: language/_gettext_only/system_varibles.php:18
 #: themes/default/templates/core/blocks/dashboard_workorders_waiting_for_parts_block.tpl:8
 #: themes/default/templates/core/blocks/dashboard_workorders_workorders_stats_employee_block.tpl:14
+#: themes/default/templates/report/basic_stats.tpl:33
 #: themes/default/templates/report/basic_stats.tpl:59
 #: themes/default/templates/workorder/blocks/overview_workorders_stats_employee_block.tpl:14
 #: themes/default/templates/workorder/blocks/overview_workorders_waiting_for_parts_block.tpl:8
@@ -4176,25 +4185,29 @@ msgstr ""
 
 #: language/_gettext_only/system_varibles.php:20
 #: themes/default/templates/core/blocks/dashboard_workorders_with_client_block.tpl:8
+#: themes/default/templates/core/blocks/dashboard_workorders_workorders_stats_employee_block.tpl:16
+#: themes/default/templates/workorder/blocks/overview_workorders_stats_employee_block.tpl:16
 #: themes/default/templates/workorder/blocks/overview_workorders_with_client_block.tpl:8
 msgid "With Client"
 msgstr ""
 
 #: language/_gettext_only/system_varibles.php:21
 #: themes/default/templates/core/blocks/dashboard_workorders_on_hold_block.tpl:8
-#: themes/default/templates/core/blocks/dashboard_workorders_workorders_stats_employee_block.tpl:16
+#: themes/default/templates/core/blocks/dashboard_workorders_workorders_stats_employee_block.tpl:17
+#: themes/default/templates/report/basic_stats.tpl:34
 #: themes/default/templates/report/basic_stats.tpl:60
 #: themes/default/templates/workorder/blocks/overview_workorders_on_hold_block.tpl:8
-#: themes/default/templates/workorder/blocks/overview_workorders_stats_employee_block.tpl:16
+#: themes/default/templates/workorder/blocks/overview_workorders_stats_employee_block.tpl:17
 msgid "On Hold"
 msgstr ""
 
 #: language/_gettext_only/system_varibles.php:22
 #: themes/default/templates/core/blocks/dashboard_workorders_management_block.tpl:8
-#: themes/default/templates/core/blocks/dashboard_workorders_workorders_stats_employee_block.tpl:17
+#: themes/default/templates/core/blocks/dashboard_workorders_workorders_stats_employee_block.tpl:18
+#: themes/default/templates/report/basic_stats.tpl:35
 #: themes/default/templates/report/basic_stats.tpl:61
 #: themes/default/templates/workorder/blocks/overview_workorders_management_block.tpl:8
-#: themes/default/templates/workorder/blocks/overview_workorders_stats_employee_block.tpl:17
+#: themes/default/templates/workorder/blocks/overview_workorders_stats_employee_block.tpl:18
 msgid "Management"
 msgstr ""
 
@@ -6474,7 +6487,7 @@ msgid "This clears the Smarty cache."
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:641
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:173
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:172
 #: themes/default/templates/expense/edit.tpl:109
 #: themes/default/templates/invoice/prefill_items.tpl:58
 #: themes/default/templates/invoice/status.tpl:43
@@ -6536,7 +6549,7 @@ msgid "Check for Update"
 msgstr ""
 
 #: themes/default/templates/company/business_hours.tpl:13
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:144
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:143
 msgid "Business Hours"
 msgstr ""
 
@@ -6735,8 +6748,10 @@ msgstr ""
 #: themes/default/templates/expense/new.tpl:101
 #: themes/default/templates/expense/search.tpl:44
 #: themes/default/templates/expense/search.tpl:45
+#: themes/default/templates/invoice/closed.tpl:87
 #: themes/default/templates/invoice/details.tpl:283
 #: themes/default/templates/invoice/edit.tpl:694
+#: themes/default/templates/invoice/open.tpl:87
 #: themes/default/templates/invoice/search.tpl:44
 #: themes/default/templates/invoice/search.tpl:45
 #: themes/default/templates/payment/options.tpl:32
@@ -6973,8 +6988,8 @@ msgstr ""
 #: themes/default/templates/core/blocks/dashboard_workorders_scheduled_block.tpl:15
 #: themes/default/templates/core/blocks/dashboard_workorders_waiting_for_parts_block.tpl:15
 #: themes/default/templates/core/blocks/dashboard_workorders_with_client_block.tpl:15
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:56
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:73
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:55
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:72
 #: themes/default/templates/customer/blocks/details_workorder_block.tpl:16
 #: themes/default/templates/customer/blocks/details_workorder_block.tpl:76
 #: themes/default/templates/invoice/closed.tpl:83
@@ -7310,25 +7325,12 @@ msgid "Work Order Stats"
 msgstr ""
 
 #: themes/default/templates/core/blocks/dashboard_workorders_workorders_stats_employee_block.tpl:12
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:53
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:67
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:52
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:66
 #: themes/default/templates/report/basic_stats.tpl:31
 #: themes/default/templates/report/basic_stats.tpl:57
 #: themes/default/templates/workorder/blocks/overview_workorders_stats_employee_block.tpl:12
 msgid "Open"
-msgstr ""
-
-#: themes/default/templates/core/blocks/dashboard_workorders_workorders_stats_employee_block.tpl:18
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:54
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:68
-#: themes/default/templates/report/basic_stats.tpl:36
-#: themes/default/templates/report/basic_stats.tpl:62
-#: themes/default/templates/report/financial.tpl:121
-#: themes/default/templates/workorder/blocks/overview_workorders_stats_employee_block.tpl:18
-#: themes/default/templates/workorder/closed.tpl:82
-#: themes/default/templates/workorder/open.tpl:82
-#: themes/default/templates/workorder/printing/print_technician_job_sheet.tpl:153
-msgid "Closed"
 msgstr ""
 
 #: themes/default/templates/core/blocks/home_dashboard_block.tpl:10
@@ -7451,20 +7453,20 @@ msgstr ""
 
 #: themes/default/templates/core/blocks/theme_menu_block.tpl:23
 #: themes/default/templates/core/blocks/theme_menu_block.tpl:39
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:83
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:96
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:111
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:126
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:82
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:95
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:110
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:125
 #: themes/default/templates/invoice/prefill_items.tpl:90
 #: themes/default/templates/report/financial.tpl:107
 msgid "New"
 msgstr ""
 
 #: themes/default/templates/core/blocks/theme_menu_block.tpl:24
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:85
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:97
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:112
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:127
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:84
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:96
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:111
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:126
 #: themes/default/templates/customer/search.tpl:38
 #: themes/default/templates/expense/search.tpl:34
 #: themes/default/templates/expense/search.tpl:54
@@ -7504,156 +7506,163 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:46
-msgid "Print WO"
-msgstr ""
-
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:48
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:47
 msgid "Schedules"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:52
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:51
 msgid "Overview"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:63
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:53
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:67
+#: themes/default/templates/report/basic_stats.tpl:36
+#: themes/default/templates/report/basic_stats.tpl:62
+#: themes/default/templates/report/financial.tpl:121
+#: themes/default/templates/workorder/closed.tpl:82
+#: themes/default/templates/workorder/open.tpl:82
+#: themes/default/templates/workorder/printing/print_technician_job_sheet.tpl:153
+msgid "Closed"
+msgstr ""
+
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:62
 #: themes/default/templates/customer/details.tpl:28
 #: themes/default/templates/report/basic_stats.tpl:79
 #: themes/default/templates/report/financial.tpl:98
 msgid "Invoices"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:65
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:64
 msgid "Invoice Only"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:81
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:80
 #: themes/default/templates/customer/details.tpl:29
 msgid "Gift Certificates"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:95
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:94
 #: themes/default/templates/report/financial.tpl:169
 msgid "Expenses"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:101
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:100
 msgid "Are you sure you want to delete this Expense Record?"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:110
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:109
 #: themes/default/templates/report/financial.tpl:170
 msgid "Refunds"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:116
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:115
 msgid "Are you sure you want to delete this Refund Record?"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:125
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:124
 msgid "Suppliers"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:131
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:130
 msgid "Are you Sure you want to delete this Supplier?"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:131
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:130
 msgid "Delete Supplier"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:142
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:141
 msgid "Settings"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:145
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:144
 #: themes/default/templates/payment/options.tpl:16
 msgid "Payment Options"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:147
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:146
 msgid "Invoice Prefill"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:150
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:149
 #: themes/default/templates/report/financial.tpl:19
 msgid "Financial Report"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:151
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:150
 msgid "Basic Stats"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:160
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:159
 msgid "Administration"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:163
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:162
 msgid "Search Users"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:164
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:163
 msgid "New Employee"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:166
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:165
 #: themes/default/templates/user/edit.tpl:16
 msgid "Edit User"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:167
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:166
 msgid "Are you sure you want to delete this user?"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:167
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:166
 msgid "Delete User"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:169
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:168
 msgid "Permissions"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:172
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:171
 msgid "PHP Info"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:174
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:173
 msgid "Config"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:181
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:180
 msgid "Help"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:182
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:181
 msgid "About"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:183
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:182
 msgid "Attribution"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:184
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:183
 msgid "License"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:186
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:185
 msgid "Documentation"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:187
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:186
 msgid "Bug Tracker"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:188
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:187
 msgid "Forum"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:189
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:188
 msgid "Support this Software!"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:193
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:192
 msgid "PayPal - The safer, easier way to pay online."
 msgstr ""
 
@@ -8506,12 +8515,6 @@ msgstr ""
 msgid "Net"
 msgstr ""
 
-#: themes/default/templates/invoice/closed.tpl:87
-#: themes/default/templates/invoice/open.tpl:87
-#: themes/default/templates/invoice/printing/print_invoice.tpl:263
-msgid "VAT"
-msgstr ""
-
 #: themes/default/templates/invoice/closed.tpl:95
 #: themes/default/templates/invoice/open.tpl:95
 msgid "Contact Info"
@@ -8817,6 +8820,10 @@ msgstr ""
 
 #: themes/default/templates/invoice/printing/print_invoice.tpl:239
 msgid "Please call us to discuss payment options."
+msgstr ""
+
+#: themes/default/templates/invoice/printing/print_invoice.tpl:263
+msgid "VAT"
 msgstr ""
 
 #: themes/default/templates/invoice/search.tpl:8
@@ -9223,22 +9230,6 @@ msgstr ""
 #: themes/default/templates/workorder/blocks/overview_workorders_stats_employee_block.tpl:8
 msgid "Overall Work Order Stats"
 msgstr ""
-
-#: themes/default/templates/report/basic_stats.tpl:32
-msgid "WORKORDER_STATUS_2"
-msgstr "Assigned"
-
-#: themes/default/templates/report/basic_stats.tpl:33
-msgid "WORKORDER_STATUS_3"
-msgstr "Waiting For Parts"
-
-#: themes/default/templates/report/basic_stats.tpl:34
-msgid "WORKORDER_STATUS_4"
-msgstr "On Hold"
-
-#: themes/default/templates/report/basic_stats.tpl:35
-msgid "WORKORDER_STATUS_5"
-msgstr "Management"
 
 #: themes/default/templates/report/basic_stats.tpl:87
 msgid "Invoiced Total"
@@ -10214,6 +10205,10 @@ msgstr "en"
 msgid "JSCAL2_LANGUAGE_NAME"
 msgstr "English"
 
+#: themes/default/js/jscal2/language.js:10
+msgid "JSCAL2_FDOW"
+msgstr "1"
+
 #: themes/default/js/jscal2/language.js:12
 msgid "Go Today"
 msgstr ""
@@ -10225,6 +10220,10 @@ msgstr ""
 #: themes/default/js/jscal2/language.js:16
 msgid "wk"
 msgstr ""
+
+#: themes/default/js/jscal2/language.js:18
+msgid "JSCAL2_WEEKEND"
+msgstr "0,6"
 
 #: themes/default/js/jscal2/language.js:20
 msgid "AM"
@@ -10385,8 +10384,17 @@ msgstr ""
 msgid "Sa"
 msgstr ""
 
-#~ msgid "JSCAL2_FDOW"
-#~ msgstr "1"
+#~ msgid "WORKORDER_STATUS_2"
+#~ msgstr "Assigned"
+
+#~ msgid "WORKORDER_STATUS_3"
+#~ msgstr "Waiting For Parts"
+
+#~ msgid "WORKORDER_STATUS_4"
+#~ msgstr "On Hold"
+
+#~ msgid "WORKORDER_STATUS_5"
+#~ msgstr "Management"
 
 #~ msgid "JSCAL2_GOTODAY"
 #~ msgstr "Go Today"
@@ -10396,9 +10404,6 @@ msgstr ""
 
 #~ msgid "JSCAL2_WK"
 #~ msgstr "wk"
-
-#~ msgid "JSCAL2_WEEKEND"
-#~ msgstr "0,6"
 
 #~ msgid "JSCAL2_AM"
 #~ msgstr "AM"

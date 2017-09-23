@@ -7,7 +7,7 @@
 
 Calendar.LANG("{t}JSCAL2_LANGUAGE_SHORTCODE{/t}", "{t}JSCAL2_LANGUAGE_NAME{/t}", {
 
-        fdow: "JSCAL2_FDOW",            // first day of week for this locale; 0 = Sunday, 1 = Monday, etc.
+        fdow: "{t}JSCAL2_FDOW{/t}",            // first day of week for this locale; 0 = Sunday, 1 = Monday, etc.
 
         goToday: "{t}Go Today{/t}",
 
@@ -15,7 +15,7 @@ Calendar.LANG("{t}JSCAL2_LANGUAGE_SHORTCODE{/t}", "{t}JSCAL2_LANGUAGE_NAME{/t}",
 
         wk: "{t}wk{/t}",
 
-        weekend: "JSCAL2_WEEKEND",      // 0 = Sunday, 1 = Monday, etc.
+        weekend: "{t}JSCAL2_WEEKEND{/t}",      // 0 = Sunday, 1 = Monday, etc.
 
         AM: "{t}AM{/t}",
 
