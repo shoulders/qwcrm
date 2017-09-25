@@ -584,7 +584,7 @@ function update_workorder_status($db, $workorder_id, $new_status) {
     
         // Update Workorder 'is_closed' boolean
         if($new_status == 'closed_without_invoice' || $new_status == 'closed_with_invoice') {
-            update_workorder_closed_status($db, $workorder_id, 'closed');
+            update_workorder_closed_status($db, $workorder_id, 'close');
         } else {
             update_workorder_closed_status($db, $workorder_id, 'open');
         }
@@ -600,9 +600,7 @@ function update_workorder_status($db, $workorder_id, $new_status) {
         
         // Update last active record        
         update_customer_last_active($db, get_workorder_details($db, $workorder_id, 'customer_id'));
-        update_workorder_last_active($db, $workorder_id);
-        
-        
+        update_workorder_last_active($db, $workorder_id);        
         
         return true;
         
@@ -614,16 +612,28 @@ function update_workorder_status($db, $workorder_id, $new_status) {
 # Update Workorder Closed Status  #
 ###################################
 
-function update_workorder_closed_status($db, $workorder_id, $close_status) {
+function update_workorder_closed_status($db, $workorder_id, $new_closed_status) {
     
-    if($close_status == 'open') { $is_closed = '0'; }
+    if($new_closed_status == 'open') {
+        
+        $sql = "UPDATE ".PRFX."workorder SET
+        close_date          = '',
+        is_closed           = '0'
+        WHERE workorder_id  = ".$db->qstr($workorder_id);
+        
+    }
     
-    if($close_status == 'closed') { $is_closed = '1'; }
-    
-    $sql = "UPDATE ".PRFX."workorder SET is_closed=".$is_closed." WHERE workorder_id=".$db->qstr($workorder_id);
+    if($new_closed_status == 'close') {
+        
+        $sql = "UPDATE ".PRFX."workorder SET
+        close_date          = ".time().",
+        is_closed           = '1'
+        WHERE workorder_id  = ".$db->qstr($workorder_id);
+        
+    }
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update a Work Order's Close status."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update a Work Order's Closed status."));
         exit;
     }
     
@@ -785,7 +795,7 @@ function close_workorder_with_invoice($db, $workorder_id, $resolution){
 function delete_workorder($db, $workorder_id) {
     
     // Does the workorder have an invoice
-    if(check_workorder_has_invoice($db, $workorder_id)) {        
+    if(get_workorder_details($db, $workorder_id, 'invoice_id')) {        
         postEmulationWrite('warning_msg', gettext("This workorder cannot be deleted because it has an invoice."));
         return false;
     }
@@ -915,33 +925,6 @@ function delete_workorder_note($db, $workorder_note_id) {
 }
 
 /** Other Functions **/
-
-##################################
-# Does workorder have an invoice #
-##################################
-
-function check_workorder_has_invoice($db, $workorder_id) {
-    
-    $sql = "SELECT * FROM ".PRFX."invoice WHERE workorder_id=".$workorder_id;
-    
-    if(!$rs = $db->Execute($sql)) {        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to check if a Work Order has an invoice."));
-        exit;
-    } else {        
-        
-        if($rs->RecordCount() != 0) {
-            
-            return true;
-            
-        } else {          
-            
-            return false;
-            
-        }
-        
-    }
-    
-}
 
 ################################
 # Resolution Edit Status Check #

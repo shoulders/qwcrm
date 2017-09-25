@@ -13,7 +13,7 @@ require(INCLUDES_DIR.'modules/invoice.php');
 require(INCLUDES_DIR.'modules/workorder.php');
 
 // Create an invoice for the supplied workorder
-if($workorder_id && !check_workorder_has_invoice($db, $workorder_id)) {
+if($workorder_id && !get_workorder_details($db, $workorder_id, 'invoice_id')) {
 
     // Get Customer_id from the workorder    
     $customer_id = get_workorder_details($db, $workorder_id, 'customer_id');

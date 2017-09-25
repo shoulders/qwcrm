@@ -28,20 +28,24 @@
                             <tr>
                             
                                 <!-- Assign Status Update -->
-                                <td class="olotd4" align="center" width="33%"> 
-                                    <p>&nbsp;</p>                                    
-                                    <form action="index.php?page=workorder:status" method="post" name="new_workorder_status" id="new_workorder_status">
-                                        <b>{t}New Status{/t}: </b>
-                                        <select class="olotd4" name="assign_status">
-                                            {section name=s loop=$workorder_statuses}    
-                                                <option value="{$workorder_statuses[s].status_key}"{if $workorder_status == $workorder_statuses[s].status_key} selected{/if}>{t}{$workorder_statuses[s].display_name}{/t}</option>
-                                            {/section}                                            
-                                        </select>                                        
-                                        <input type="hidden" name="updated_by" value="{$login_user_id}">
-                                        <input type="hidden" name="workorder_id" value="{$workorder_id}">
-                                        <p>&nbsp;</p>                                        
-                                        <input class="olotd4" name="change_status" value="{t}Update{/t}" type="submit" />                                                                      
-                                    </form>
+                                <td class="olotd4" align="center" width="33%">                                    
+                                    {if $allowed_to_change_status}
+                                        <p>&nbsp;</p>
+                                        <form action="index.php?page=workorder:status" method="post" name="new_workorder_status" id="new_workorder_status">
+                                            <b>{t}New Status{/t}: </b>
+                                            <select class="olotd4" name="assign_status">
+                                                {section name=s loop=$workorder_statuses}    
+                                                    <option value="{$workorder_statuses[s].status_key}"{if $workorder_status == $workorder_statuses[s].status_key} selected{/if}>{t}{$workorder_statuses[s].display_name}{/t}</option>
+                                                {/section}                                            
+                                            </select>                                        
+                                            <input type="hidden" name="updated_by" value="{$login_user_id}">
+                                            <input type="hidden" name="workorder_id" value="{$workorder_id}">
+                                            <p>&nbsp;</p>                                        
+                                            <input class="olotd4" name="change_status" value="{t}Update{/t}" type="submit" />                                                                      
+                                        </form>
+                                    {else}
+                                        {t}This work order cannot have it's status changed because it has an invoice.{/t}
+                                    {/if}
                                 </td>
 
                                 <!-- Update Assigned Employee -->
