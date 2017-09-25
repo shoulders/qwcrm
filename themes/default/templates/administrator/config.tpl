@@ -16,7 +16,7 @@
             <td class="menuhead2" width="20%" align="right" valign="middle">  <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}ADMINISTRATOR_CONFIG_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}ADMINISTRATOR_CONFIG_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();"></td>
         </tr>
         <tr>
-            <td class="menutd2">
+            <td class="menutd2" colspan="2">
                 <table width="600" class="olotable" cellpadding="5" cellspacing="0" border="0">
                     
                     <!-- Database --> 

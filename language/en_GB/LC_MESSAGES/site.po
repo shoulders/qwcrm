@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2017-09-25 11:50+0100\n"
-"PO-Revision-Date: 2017-09-25 11:50+0100\n"
+"POT-Creation-Date: 2017-09-25 16:16+0100\n"
+"PO-Revision-Date: 2017-09-25 16:22+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en_GB\n"
@@ -367,9 +367,9 @@ msgstr ""
 #: themes/default/templates/administrator/config.tpl:582
 #: themes/default/templates/administrator/config.tpl:610
 #: themes/default/templates/administrator/config.tpl:620
-#: themes/default/templates/company/edit.tpl:228
-#: themes/default/templates/company/edit.tpl:261
-#: themes/default/templates/company/edit.tpl:293
+#: themes/default/templates/company/edit.tpl:240
+#: themes/default/templates/company/edit.tpl:273
+#: themes/default/templates/company/edit.tpl:305
 #: themes/default/templates/customer/edit.tpl:87
 #: themes/default/templates/customer/new.tpl:88
 #: themes/default/templates/invoice/prefill_items.tpl:52
@@ -462,9 +462,9 @@ msgstr ""
 #: themes/default/templates/administrator/config.tpl:581
 #: themes/default/templates/administrator/config.tpl:609
 #: themes/default/templates/administrator/config.tpl:619
-#: themes/default/templates/company/edit.tpl:229
-#: themes/default/templates/company/edit.tpl:262
-#: themes/default/templates/company/edit.tpl:294
+#: themes/default/templates/company/edit.tpl:241
+#: themes/default/templates/company/edit.tpl:274
+#: themes/default/templates/company/edit.tpl:306
 #: themes/default/templates/customer/edit.tpl:86
 #: themes/default/templates/customer/new.tpl:89
 #: themes/default/templates/invoice/details.tpl:195
@@ -711,11 +711,11 @@ msgstr ""
 #: themes/default/templates/administrator/config.tpl:68
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:31
 #: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:31
-#: language/_gettext_only/system_varibles.php:56
-#: language/_gettext_only/system_varibles.php:75
-#: language/_gettext_only/system_varibles.php:91
-#: language/_gettext_only/system_varibles.php:106
-#: language/_gettext_only/system_varibles.php:119
+#: language/_gettext_only/system_variables.php:56
+#: language/_gettext_only/system_variables.php:75
+#: language/_gettext_only/system_variables.php:91
+#: language/_gettext_only/system_variables.php:106
+#: language/_gettext_only/system_variables.php:119
 msgid "Other"
 msgstr ""
 
@@ -1910,7 +1910,24 @@ msgid ""
 "These settings are used to display the start and stop times of the schedule."
 msgstr ""
 
-#: themes/default/templates/company/edit.tpl:22
+#: themes/default/templates/company/edit.tpl:21
+#: themes/default/templates/company/edit.tpl:49
+#: themes/default/templates/setup/blocks/install_stage5_block.tpl:44
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:44
+msgid "Edit The Company Information"
+msgstr ""
+
+#: themes/default/templates/company/edit.tpl:23
+#: language/_gettext_only/pages.php:60
+msgid "COMPANY_EDIT_HELP_TITLE"
+msgstr "Help"
+
+#: themes/default/templates/company/edit.tpl:23
+#: language/_gettext_only/pages.php:61
+msgid "COMPANY_EDIT_HELP_CONTENT"
+msgstr "Configure your company information."
+
+#: themes/default/templates/company/edit.tpl:34
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:29
 #: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:29
 #: themes/default/templates/workorder/printing/print_customer_workorder_slip.tpl:47
@@ -1918,63 +1935,57 @@ msgstr ""
 msgid "Company Details"
 msgstr ""
 
-#: themes/default/templates/company/edit.tpl:23
+#: themes/default/templates/company/edit.tpl:35
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:30
 #: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:30
 msgid "Localisation Setup"
 msgstr ""
 
-#: themes/default/templates/company/edit.tpl:24
+#: themes/default/templates/company/edit.tpl:36
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:31
 #: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:31
 msgid "Email Messages"
 msgstr ""
 
-#: themes/default/templates/company/edit.tpl:37
-#: themes/default/templates/setup/blocks/install_stage5_block.tpl:44
-#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:44
-msgid "Edit The Company Information"
-msgstr ""
-
-#: themes/default/templates/company/edit.tpl:47
+#: themes/default/templates/company/edit.tpl:59
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:54
 #: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:54
 msgid "Company Name"
 msgstr ""
 
-#: themes/default/templates/company/edit.tpl:51
+#: themes/default/templates/company/edit.tpl:63
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:58
 #: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:58
 msgid "Logo"
 msgstr ""
 
-#: themes/default/templates/company/edit.tpl:54
+#: themes/default/templates/company/edit.tpl:66
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:61
 #: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:61
 msgid "Company Logo"
 msgstr ""
 
-#: themes/default/templates/company/edit.tpl:60
+#: themes/default/templates/company/edit.tpl:72
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:67
 #: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:67
 msgid "Delete Logo"
 msgstr ""
 
-#: themes/default/templates/company/edit.tpl:64
+#: themes/default/templates/company/edit.tpl:76
 #: themes/default/templates/invoice/printing/print_invoice.tpl:62
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:71
 #: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:71
 msgid "Company Number"
 msgstr ""
 
-#: themes/default/templates/company/edit.tpl:68
+#: themes/default/templates/company/edit.tpl:80
 #: themes/default/templates/invoice/printing/print_invoice.tpl:293
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:75
 #: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:75
 msgid "VAT Number"
 msgstr ""
 
-#: themes/default/templates/company/edit.tpl:72
+#: themes/default/templates/company/edit.tpl:84
 #: themes/default/templates/core/blocks/dashboard_workorders_assigned_block.tpl:30
 #: themes/default/templates/core/blocks/dashboard_workorders_management_block.tpl:30
 #: themes/default/templates/core/blocks/dashboard_workorders_on_hold_block.tpl:30
@@ -2021,7 +2032,7 @@ msgstr ""
 msgid "Address"
 msgstr ""
 
-#: themes/default/templates/company/edit.tpl:76
+#: themes/default/templates/company/edit.tpl:88
 #: themes/default/templates/customer/edit.tpl:127
 #: themes/default/templates/customer/new.tpl:130
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:83
@@ -2036,7 +2047,7 @@ msgstr ""
 msgid "City"
 msgstr ""
 
-#: themes/default/templates/company/edit.tpl:80
+#: themes/default/templates/company/edit.tpl:92
 #: themes/default/templates/customer/edit.tpl:131
 #: themes/default/templates/customer/new.tpl:134
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:87
@@ -2051,7 +2062,7 @@ msgstr ""
 msgid "State"
 msgstr ""
 
-#: themes/default/templates/company/edit.tpl:84
+#: themes/default/templates/company/edit.tpl:96
 #: themes/default/templates/customer/edit.tpl:135
 #: themes/default/templates/customer/new.tpl:138
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:91
@@ -2068,7 +2079,7 @@ msgstr ""
 msgid "Zip"
 msgstr ""
 
-#: themes/default/templates/company/edit.tpl:88
+#: themes/default/templates/company/edit.tpl:100
 #: themes/default/templates/customer/edit.tpl:139
 #: themes/default/templates/customer/new.tpl:142
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:95
@@ -2085,7 +2096,7 @@ msgstr ""
 msgid "Country"
 msgstr ""
 
-#: themes/default/templates/company/edit.tpl:92
+#: themes/default/templates/company/edit.tpl:104
 #: themes/default/templates/customer/new.tpl:104
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:99
 #: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:99
@@ -2093,7 +2104,7 @@ msgstr ""
 msgid "Primary"
 msgstr ""
 
-#: themes/default/templates/company/edit.tpl:96
+#: themes/default/templates/company/edit.tpl:108
 #: themes/default/templates/core/blocks/dashboard_workorders_assigned_block.tpl:30
 #: themes/default/templates/core/blocks/dashboard_workorders_assigned_block.tpl:46
 #: themes/default/templates/core/blocks/dashboard_workorders_management_block.tpl:30
@@ -2154,7 +2165,7 @@ msgstr ""
 msgid "Mobile"
 msgstr ""
 
-#: themes/default/templates/company/edit.tpl:100
+#: themes/default/templates/company/edit.tpl:112
 #: themes/default/templates/core/blocks/dashboard_workorders_assigned_block.tpl:30
 #: themes/default/templates/core/blocks/dashboard_workorders_management_block.tpl:30
 #: themes/default/templates/core/blocks/dashboard_workorders_on_hold_block.tpl:30
@@ -2193,7 +2204,7 @@ msgstr ""
 msgid "Fax"
 msgstr ""
 
-#: themes/default/templates/company/edit.tpl:104
+#: themes/default/templates/company/edit.tpl:116
 #: themes/default/templates/core/blocks/dashboard_workorders_assigned_block.tpl:46
 #: themes/default/templates/core/blocks/dashboard_workorders_management_block.tpl:49
 #: themes/default/templates/core/blocks/dashboard_workorders_on_hold_block.tpl:49
@@ -2239,7 +2250,7 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
-#: themes/default/templates/company/edit.tpl:108
+#: themes/default/templates/company/edit.tpl:120
 #: themes/default/templates/core/blocks/theme_menu_block.tpl:184
 #: themes/default/templates/customer/blocks/details_customer_details_block.tpl:34
 #: themes/default/templates/customer/edit.tpl:48
@@ -2257,7 +2268,7 @@ msgstr ""
 msgid "Website"
 msgstr ""
 
-#: themes/default/templates/company/edit.tpl:112
+#: themes/default/templates/company/edit.tpl:124
 #: themes/default/templates/expense/details.tpl:43
 #: themes/default/templates/expense/details.tpl:53
 #: themes/default/templates/expense/edit.tpl:88
@@ -2295,7 +2306,7 @@ msgstr ""
 msgid "VAT/Tax"
 msgstr ""
 
-#: themes/default/templates/company/edit.tpl:112
+#: themes/default/templates/company/edit.tpl:124
 #: themes/default/templates/expense/details.tpl:43
 #: themes/default/templates/expense/edit.tpl:88
 #: themes/default/templates/expense/new.tpl:97
@@ -2312,48 +2323,48 @@ msgstr ""
 msgid "Rate"
 msgstr ""
 
-#: themes/default/templates/company/edit.tpl:116
+#: themes/default/templates/company/edit.tpl:128
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:123
 #: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:123
 msgid "Financial Year Start"
 msgstr ""
 
-#: themes/default/templates/company/edit.tpl:130
+#: themes/default/templates/company/edit.tpl:142
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:137
 #: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:137
 msgid "Financial Year End"
 msgstr ""
 
-#: themes/default/templates/company/edit.tpl:144
+#: themes/default/templates/company/edit.tpl:156
 #: themes/default/templates/core/dashboard.tpl:38
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:151
 #: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:151
 msgid "Company Welcome Message"
 msgstr ""
 
-#: themes/default/templates/company/edit.tpl:144
+#: themes/default/templates/company/edit.tpl:156
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:151
 #: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:151
 msgid "(Dashboard)"
 msgstr ""
 
-#: themes/default/templates/company/edit.tpl:162
+#: themes/default/templates/company/edit.tpl:174
 msgid "Edit your Companies Currency Settings"
 msgstr ""
 
-#: themes/default/templates/company/edit.tpl:171
+#: themes/default/templates/company/edit.tpl:183
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:178
 #: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:178
 msgid "Currency Symbol"
 msgstr ""
 
-#: themes/default/templates/company/edit.tpl:175
+#: themes/default/templates/company/edit.tpl:187
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:182
 #: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:182
 msgid "Currency Code"
 msgstr ""
 
-#: themes/default/templates/company/edit.tpl:176
+#: themes/default/templates/company/edit.tpl:188
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:183
 #: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:183
 msgid ""
@@ -2361,33 +2372,33 @@ msgid ""
 "AUD"
 msgstr ""
 
-#: themes/default/templates/company/edit.tpl:179
+#: themes/default/templates/company/edit.tpl:191
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:186
 #: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:186
 msgid "Date Format"
 msgstr ""
 
-#: themes/default/templates/company/edit.tpl:205
+#: themes/default/templates/company/edit.tpl:217
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:212
 #: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:212
 msgid "Edit Email Messaging functions"
 msgstr ""
 
-#: themes/default/templates/company/edit.tpl:214
+#: themes/default/templates/company/edit.tpl:226
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:286
 #: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:286
 msgid "Email Signature"
 msgstr ""
 
-#: themes/default/templates/company/edit.tpl:219
+#: themes/default/templates/company/edit.tpl:231
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:291
 #: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:291
 msgid "Use this to place your logo in the message"
 msgstr ""
 
-#: themes/default/templates/company/edit.tpl:226
-#: themes/default/templates/company/edit.tpl:259
-#: themes/default/templates/company/edit.tpl:291
+#: themes/default/templates/company/edit.tpl:238
+#: themes/default/templates/company/edit.tpl:271
+#: themes/default/templates/company/edit.tpl:303
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:237
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:269
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:298
@@ -2397,14 +2408,14 @@ msgstr ""
 msgid "Enabled"
 msgstr ""
 
-#: themes/default/templates/company/edit.tpl:244
+#: themes/default/templates/company/edit.tpl:256
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:222
 #: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:222
 msgid "Workorder Message"
 msgstr ""
 
-#: themes/default/templates/company/edit.tpl:249
-#: themes/default/templates/company/edit.tpl:281
+#: themes/default/templates/company/edit.tpl:261
+#: themes/default/templates/company/edit.tpl:293
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:227
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:259
 #: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:227
@@ -2412,8 +2423,8 @@ msgstr ""
 msgid "Customer's name"
 msgstr ""
 
-#: themes/default/templates/company/edit.tpl:250
-#: themes/default/templates/company/edit.tpl:282
+#: themes/default/templates/company/edit.tpl:262
+#: themes/default/templates/company/edit.tpl:294
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:228
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:260
 #: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:228
@@ -2421,8 +2432,8 @@ msgstr ""
 msgid "Customer's contact first name"
 msgstr ""
 
-#: themes/default/templates/company/edit.tpl:251
-#: themes/default/templates/company/edit.tpl:283
+#: themes/default/templates/company/edit.tpl:263
+#: themes/default/templates/company/edit.tpl:295
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:229
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:261
 #: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:229
@@ -2430,8 +2441,8 @@ msgstr ""
 msgid "Customer's contact last name"
 msgstr ""
 
-#: themes/default/templates/company/edit.tpl:252
-#: themes/default/templates/company/edit.tpl:284
+#: themes/default/templates/company/edit.tpl:264
+#: themes/default/templates/company/edit.tpl:296
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:230
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:262
 #: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:230
@@ -2439,7 +2450,7 @@ msgstr ""
 msgid "Customer's credit terms"
 msgstr ""
 
-#: themes/default/templates/company/edit.tpl:276
+#: themes/default/templates/company/edit.tpl:288
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:254
 #: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:254
 msgid "Invoice Message"
@@ -2455,7 +2466,7 @@ msgstr ""
 #: themes/default/templates/report/basic_stats.tpl:58
 #: themes/default/templates/workorder/blocks/overview_workorders_assigned_block.tpl:8
 #: themes/default/templates/workorder/blocks/overview_workorders_stats_employee_block.tpl:13
-#: language/_gettext_only/system_varibles.php:17
+#: language/_gettext_only/system_variables.php:17
 msgid "Assigned"
 msgstr ""
 
@@ -2927,7 +2938,7 @@ msgstr ""
 #: themes/default/templates/report/basic_stats.tpl:61
 #: themes/default/templates/workorder/blocks/overview_workorders_management_block.tpl:8
 #: themes/default/templates/workorder/blocks/overview_workorders_stats_employee_block.tpl:18
-#: language/_gettext_only/system_varibles.php:22
+#: language/_gettext_only/system_variables.php:22
 msgid "Management"
 msgstr ""
 
@@ -2957,7 +2968,7 @@ msgstr ""
 #: themes/default/templates/report/basic_stats.tpl:60
 #: themes/default/templates/workorder/blocks/overview_workorders_on_hold_block.tpl:8
 #: themes/default/templates/workorder/blocks/overview_workorders_stats_employee_block.tpl:17
-#: language/_gettext_only/system_varibles.php:21
+#: language/_gettext_only/system_variables.php:21
 msgid "On Hold"
 msgstr ""
 
@@ -2965,7 +2976,7 @@ msgstr ""
 #: themes/default/templates/core/blocks/dashboard_workorders_workorders_stats_employee_block.tpl:15
 #: themes/default/templates/workorder/blocks/overview_workorders_scheduled_block.tpl:8
 #: themes/default/templates/workorder/blocks/overview_workorders_stats_employee_block.tpl:15
-#: language/_gettext_only/system_varibles.php:19
+#: language/_gettext_only/system_variables.php:19
 msgid "Scheduled"
 msgstr ""
 
@@ -2982,7 +2993,7 @@ msgstr ""
 #: themes/default/templates/report/basic_stats.tpl:59
 #: themes/default/templates/workorder/blocks/overview_workorders_stats_employee_block.tpl:14
 #: themes/default/templates/workorder/blocks/overview_workorders_waiting_for_parts_block.tpl:8
-#: language/_gettext_only/system_varibles.php:18
+#: language/_gettext_only/system_variables.php:18
 msgid "Waiting for Parts"
 msgstr ""
 
@@ -2995,7 +3006,7 @@ msgstr ""
 #: themes/default/templates/core/blocks/dashboard_workorders_workorders_stats_employee_block.tpl:16
 #: themes/default/templates/workorder/blocks/overview_workorders_stats_employee_block.tpl:16
 #: themes/default/templates/workorder/blocks/overview_workorders_with_client_block.tpl:8
-#: language/_gettext_only/system_varibles.php:20
+#: language/_gettext_only/system_variables.php:20
 msgid "With Client"
 msgstr ""
 
@@ -3490,7 +3501,7 @@ msgid "Get Directions"
 msgstr ""
 
 #: themes/default/templates/customer/blocks/details_customer_details_block.tpl:62
-#: language/_gettext_only/system_varibles.php:88
+#: language/_gettext_only/system_variables.php:88
 msgid "Mobile Phone"
 msgstr ""
 
@@ -3792,7 +3803,7 @@ msgstr ""
 #: themes/default/templates/report/basic_stats.tpl:85
 #: themes/default/templates/report/financial.tpl:139
 #: themes/default/templates/report/financial.tpl:318
-#: language/_gettext_only/system_varibles.php:31
+#: language/_gettext_only/system_variables.php:31
 msgid "Paid"
 msgstr ""
 
@@ -4510,9 +4521,9 @@ msgstr ""
 #: themes/default/templates/payment/blocks/new_payment_gift_certificate_block.tpl:42
 #: includes/modules/giftcert.php:173 includes/modules/giftcert.php:256
 #: includes/modules/giftcert.php:288 includes/modules/giftcert.php:383
-#: language/_gettext_only/system_varibles.php:54
-#: language/_gettext_only/system_varibles.php:66
-#: language/_gettext_only/system_varibles.php:86 modules/giftcert/print.php:48
+#: language/_gettext_only/system_variables.php:54
+#: language/_gettext_only/system_variables.php:66
+#: language/_gettext_only/system_variables.php:86 modules/giftcert/print.php:48
 #: modules/giftcert/print.php:82
 msgid "Gift Certificate"
 msgstr ""
@@ -4587,16 +4598,21 @@ msgstr ""
 "results using the navigation arrows."
 
 #: themes/default/templates/giftcert/printing/print_gift_certificate.tpl:14
+#: language/_gettext_only/pages.php:198
 msgid "GIFTCERT_PRINT_GIFT_CERTIFICATE_PAGE_TITLE"
-msgstr ""
+msgstr "QWcrm - Gift Certificate"
 
 #: themes/default/templates/giftcert/printing/print_gift_certificate.tpl:17
+#: language/_gettext_only/pages.php:199
 msgid "GIFTCERT_PRINT_GIFT_CERTIFICATE_META_DESCRIPTION"
-msgstr ""
+msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
 
 #: themes/default/templates/giftcert/printing/print_gift_certificate.tpl:20
+#: language/_gettext_only/pages.php:200
 msgid "GIFTCERT_PRINT_GIFT_CERTIFICATE_META_KEYWORDS"
 msgstr ""
+"CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment "
+"Processing, Simple to use"
 
 #: themes/default/templates/giftcert/printing/print_gift_certificate.tpl:49
 msgid "Purchased by"
@@ -4882,8 +4898,8 @@ msgstr ""
 #: themes/default/templates/invoice/prefill_items.tpl:45
 #: themes/default/templates/invoice/prefill_items.tpl:80
 #: themes/default/templates/report/financial.tpl:168
-#: language/_gettext_only/system_varibles.php:92
-#: language/_gettext_only/system_varibles.php:120
+#: language/_gettext_only/system_variables.php:92
+#: language/_gettext_only/system_variables.php:120
 msgid "Parts"
 msgstr ""
 
@@ -5132,8 +5148,8 @@ msgstr ""
 
 #: themes/default/templates/invoice/printing/print_invoice.tpl:231
 #: themes/default/templates/payment/blocks/new_payment_paypal_block.tpl:44
-#: language/_gettext_only/system_varibles.php:57
-#: language/_gettext_only/system_varibles.php:67
+#: language/_gettext_only/system_variables.php:57
+#: language/_gettext_only/system_variables.php:67
 msgid "PayPal"
 msgstr ""
 
@@ -5146,7 +5162,7 @@ msgid "VAT"
 msgstr ""
 
 #: themes/default/templates/invoice/printing/print_invoice.tpl:263
-#: language/_gettext_only/system_varibles.php:97
+#: language/_gettext_only/system_variables.php:97
 msgid "Tax"
 msgstr ""
 
@@ -5195,8 +5211,8 @@ msgstr ""
 
 #: themes/default/templates/payment/blocks/new_payment_cash_block.tpl:11
 #: themes/default/templates/payment/blocks/new_payment_cash_block.tpl:42
-#: language/_gettext_only/system_varibles.php:50
-#: language/_gettext_only/system_varibles.php:62
+#: language/_gettext_only/system_variables.php:50
+#: language/_gettext_only/system_variables.php:62
 msgid "Cash"
 msgstr ""
 
@@ -5206,8 +5222,8 @@ msgstr ""
 
 #: themes/default/templates/payment/blocks/new_payment_cheque_block.tpl:11
 #: themes/default/templates/payment/blocks/new_payment_cheque_block.tpl:44
-#: language/_gettext_only/system_varibles.php:51
-#: language/_gettext_only/system_varibles.php:63
+#: language/_gettext_only/system_variables.php:51
+#: language/_gettext_only/system_variables.php:63
 msgid "Cheque"
 msgstr ""
 
@@ -5222,7 +5238,7 @@ msgstr ""
 
 #: themes/default/templates/payment/blocks/new_payment_credit_card_block.tpl:11
 #: themes/default/templates/payment/blocks/new_payment_credit_card_block.tpl:52
-#: language/_gettext_only/system_varibles.php:64
+#: language/_gettext_only/system_variables.php:64
 msgid "Credit Card"
 msgstr ""
 
@@ -5465,12 +5481,16 @@ msgid "Basic QWcrm Statistics"
 msgstr ""
 
 #: themes/default/templates/report/basic_stats.tpl:16
-msgid "CORE_BASIC_STATS_HELP_TITLE"
-msgstr ""
+#: language/_gettext_only/pages.php:351
+msgid "REPORT_BASIC_STATS_HELP_TITLE"
+msgstr "Help"
 
 #: themes/default/templates/report/basic_stats.tpl:16
-msgid "CORE_BASIC_STATS_HELP_CONTENT"
+#: language/_gettext_only/pages.php:352
+msgid "REPORT_BASIC_STATS_HELP_CONTENT"
 msgstr ""
+"Get basic information about work orders, invoices and your employees "
+"throughput."
 
 #: themes/default/templates/report/basic_stats.tpl:27
 #: themes/default/templates/workorder/blocks/overview_workorders_stats_employee_block.tpl:8
@@ -5478,13 +5498,13 @@ msgid "Overall Work Order Stats"
 msgstr ""
 
 #: themes/default/templates/report/basic_stats.tpl:83
-#: language/_gettext_only/system_varibles.php:29
+#: language/_gettext_only/system_variables.php:29
 msgid "Unpaid"
 msgstr ""
 
 #: themes/default/templates/report/basic_stats.tpl:84
 #: themes/default/templates/report/financial.tpl:135
-#: language/_gettext_only/system_varibles.php:30
+#: language/_gettext_only/system_variables.php:30
 msgid "Partially Paid"
 msgstr ""
 
@@ -6098,7 +6118,7 @@ msgstr ""
 #: themes/default/templates/setup/migrate.tpl:16
 #: language/_gettext_only/pages.php:411
 msgid "SETUP_INSTALL_HELP_TITLE"
-msgstr "Hrlp"
+msgstr "Help"
 
 #: themes/default/templates/setup/install.tpl:16
 #: themes/default/templates/setup/migrate.tpl:16
@@ -6159,7 +6179,7 @@ msgstr ""
 #: themes/default/templates/supplier/new.tpl:24
 #: language/_gettext_only/pages.php:448
 msgid "SUPPLIER_NEW_HELP_TITLE"
-msgstr "New Supplier"
+msgstr "Help"
 
 #: themes/default/templates/supplier/new.tpl:24
 #: language/_gettext_only/pages.php:449
@@ -6441,7 +6461,7 @@ msgstr ""
 
 #: themes/default/templates/workorder/blocks/overview_workorders_unassigned_block.tpl:8
 #: includes/modules/invoice.php:1227 includes/modules/workorder.php:1014
-#: language/_gettext_only/system_varibles.php:16
+#: language/_gettext_only/system_variables.php:16
 msgid "Unassigned"
 msgstr ""
 
@@ -6585,7 +6605,7 @@ msgstr ""
 #: themes/default/templates/workorder/note_new.tpl:18
 #: language/_gettext_only/pages.php:557
 msgid "WORKORDER_NOTE_NEW_HELP_TITLE"
-msgstr "New Work Order Note"
+msgstr "Help"
 
 #: themes/default/templates/workorder/note_new.tpl:18
 #: language/_gettext_only/pages.php:558
@@ -6918,78 +6938,80 @@ msgstr ""
 msgid "Unable to bind array to user object."
 msgstr ""
 
-#: includes/include.php:49
-msgid "Could not retrieve the QWcrm database version."
-msgstr ""
-
-#: includes/include.php:74
+#: includes/include.php:94
 msgid "Failed to get company details."
 msgstr ""
 
-#: includes/include.php:107
+#: includes/include.php:127
 msgid "Failed to update a User's last active time."
 msgstr ""
 
-#: includes/include.php:503 includes/include.php:507 includes/include.php:508
+#: includes/include.php:523 includes/include.php:527 includes/include.php:528
 msgid "_"
 msgstr ""
 
-#: includes/include.php:525
+#: includes/include.php:545
 msgid "The ACL has been supplied with no account type ID - I will now die."
 msgstr ""
 
-#: includes/include.php:534
+#: includes/include.php:554
 msgid "Could not get the user's Group Name by Login Account Type ID."
 msgstr ""
 
-#: includes/include.php:548
+#: includes/include.php:568
 msgid "Could not get the Page's ACL."
 msgstr ""
 
-#: includes/include.php:616
+#: includes/include.php:636
 msgid ""
 "There is a database connection issue. Check your settings in the config file."
 msgstr ""
 
-#: includes/include.php:621
+#: includes/include.php:641
 msgid "QWcrm requires MySQL"
 msgstr ""
 
-#: includes/include.php:621 index.php:18
+#: includes/include.php:641 index.php:18
 msgid "Your current version is"
 msgstr ""
 
-#: includes/include.php:640
+#: includes/include.php:660
+msgid ""
+"A previous setup attempt never completed succesfully and there is an invalid "
+"configuration.php file present."
+msgstr ""
+
+#: includes/include.php:665
 msgid ""
 "The upgrade never completed successfully. Check the upgrade and error logs."
 msgstr ""
 
-#: includes/include.php:645
+#: includes/include.php:670
 msgid ""
 "The file system is older than the database. Check the logs and your settings."
 msgstr ""
 
-#: includes/include.php:678
+#: includes/include.php:703
 msgid "The configured template is not supported by this version of QWcrm."
 msgstr ""
 
-#: includes/include.php:679
+#: includes/include.php:704
 msgid "Your current version of QWcrm is"
 msgstr ""
 
-#: includes/include.php:680
+#: includes/include.php:705
 msgid "The template supports QWcrm versions in the range"
 msgstr ""
 
-#: includes/include.php:963
+#: includes/include.php:988
 msgid "Could not open the Access Log to save the record."
 msgstr ""
 
-#: includes/include.php:1001
+#: includes/include.php:1026
 msgid "Could not open the Activity Log to save the record."
 msgstr ""
 
-#: includes/include.php:1030
+#: includes/include.php:1055
 msgid "Could not open the Error Log to save the record."
 msgstr ""
 
@@ -7857,106 +7879,106 @@ msgstr ""
 msgid "Could not open the Setup Log to save the record."
 msgstr ""
 
-#: includes/modules/setup.php:522
+#: includes/modules/setup.php:524
 msgid "The database installation process failed, check the logs."
 msgstr ""
 
-#: includes/modules/setup.php:534
+#: includes/modules/setup.php:536
 msgid "The database installation process was successful."
 msgstr ""
 
-#: includes/modules/setup.php:986
+#: includes/modules/setup.php:988
 msgid "The database migration process failed, check the logs."
 msgstr ""
 
-#: includes/modules/setup.php:998
+#: includes/modules/setup.php:1000
 msgid "The database migration process was successful."
 msgstr ""
 
-#: includes/modules/setup.php:1043
+#: includes/modules/setup.php:1045
 msgid "Starting the correction of the migrated `workorder` data in QWcrm."
 msgstr ""
 
-#: includes/modules/setup.php:1079 includes/modules/workorder.php:162
+#: includes/modules/setup.php:1081 includes/modules/workorder.php:162
 msgid "Failed to return the matching Work Orders."
 msgstr ""
 
-#: includes/modules/setup.php:1142
+#: includes/modules/setup.php:1144
 msgid "Finished the correction of the migrated `workorder` data in QWcrm."
 msgstr ""
 
-#: includes/modules/setup.php:1169
+#: includes/modules/setup.php:1171
 msgid "Starting the correction of the migrated `invoice` data in QWcrm."
 msgstr ""
 
-#: includes/modules/setup.php:1182
+#: includes/modules/setup.php:1184
 msgid "Failed to return the matching Invoices."
 msgstr ""
 
-#: includes/modules/setup.php:1237
+#: includes/modules/setup.php:1239
 msgid "Finished the correction of the migrated `invoice` data in QWcrm."
 msgstr ""
 
-#: includes/modules/setup.php:1264
+#: includes/modules/setup.php:1266
 msgid "Starting the correction of the migrated `giftcert` data in QWcrm."
 msgstr ""
 
-#: includes/modules/setup.php:1277
+#: includes/modules/setup.php:1279
 msgid "Failed to return the matching Gift Certificates."
 msgstr ""
 
-#: includes/modules/setup.php:1305
+#: includes/modules/setup.php:1307
 msgid "Finished the correction of the migrated `giftcert` data in QWcrm."
 msgstr ""
 
-#: includes/modules/setup.php:1332
+#: includes/modules/setup.php:1334
 msgid "Starting the correction of the migrated `schedule` data in QWcrm."
 msgstr ""
 
-#: includes/modules/setup.php:1355
+#: includes/modules/setup.php:1357
 msgid "Failed to return the matching Schedules."
 msgstr ""
 
-#: includes/modules/setup.php:1377
+#: includes/modules/setup.php:1379
 msgid "Finished the correction of the migrated `schedule` data in QWcrm."
 msgstr ""
 
-#: includes/modules/setup.php:1409
+#: includes/modules/setup.php:1411
 msgid "Failed to get MyITCRM company details."
 msgstr ""
 
-#: includes/modules/setup.php:1440
+#: includes/modules/setup.php:1442
 msgid "Beginning the migration of MyITCRM data into the QWcrm table"
 msgstr ""
 
-#: includes/modules/setup.php:1458
+#: includes/modules/setup.php:1460
 msgid "Error reading the MyITCRM table"
 msgstr ""
 
-#: includes/modules/setup.php:1541
+#: includes/modules/setup.php:1543
 msgid "Error migrating a MyITCRM record into QWcrm"
 msgstr ""
 
-#: includes/modules/setup.php:1582 includes/modules/setup.php:1594
-#: includes/modules/setup.php:1612
+#: includes/modules/setup.php:1584 includes/modules/setup.php:1596
+#: includes/modules/setup.php:1614
 msgid "MyITCRM Records Processed"
 msgstr ""
 
-#: includes/modules/setup.php:1583 includes/modules/setup.php:1594
-#: includes/modules/setup.php:1612
+#: includes/modules/setup.php:1585 includes/modules/setup.php:1596
+#: includes/modules/setup.php:1614
 msgid "Records Failed To Migrate"
 msgstr ""
 
-#: includes/modules/setup.php:1584 includes/modules/setup.php:1594
-#: includes/modules/setup.php:1612
+#: includes/modules/setup.php:1586 includes/modules/setup.php:1596
+#: includes/modules/setup.php:1614
 msgid "Records Successfuly Migrated"
 msgstr ""
 
-#: includes/modules/setup.php:1593
+#: includes/modules/setup.php:1595
 msgid "Error migrating some records into QWcrm table"
 msgstr ""
 
-#: includes/modules/setup.php:1611
+#: includes/modules/setup.php:1613
 msgid "Successfully migrated all records into QWcrm table"
 msgstr ""
 
@@ -8011,7 +8033,7 @@ msgstr ""
 
 #: includes/modules/user.php:202 includes/modules/user.php:397
 #: includes/modules/user.php:510 includes/modules/user.php:714
-#: includes/modules/user.php:981
+#: includes/modules/user.php:982
 msgid "User Account"
 msgstr ""
 
@@ -8115,8 +8137,8 @@ msgstr ""
 msgid "The customer already has a login."
 msgstr ""
 
-#: includes/modules/user.php:708 includes/modules/user.php:1004
-#: includes/modules/user.php:1197
+#: includes/modules/user.php:708 includes/modules/user.php:1005
+#: includes/modules/user.php:1198
 msgid "Failed to add password reset authorization."
 msgstr ""
 
@@ -8174,81 +8196,81 @@ msgstr ""
 msgid "Logout successful."
 msgstr ""
 
-#: includes/modules/user.php:906
+#: includes/modules/user.php:907
 msgid "Google reCAPTCHA Verification Failed."
 msgstr ""
 
-#: includes/modules/user.php:943
+#: includes/modules/user.php:944
 msgid "Your QWcrm password reset request"
 msgstr ""
 
-#: includes/modules/user.php:964
+#: includes/modules/user.php:965
 msgid "Hello"
 msgstr ""
 
-#: includes/modules/user.php:966
+#: includes/modules/user.php:967
 msgid "A request has been made to reset your QWcrm account password."
 msgstr ""
 
-#: includes/modules/user.php:967
+#: includes/modules/user.php:968
 msgid ""
 "To reset your password, you will need to submit this verification code in "
 "order to verify that the request was legitimate."
 msgstr ""
 
-#: includes/modules/user.php:969
+#: includes/modules/user.php:970
 msgid "The verification code is"
 msgstr ""
 
-#: includes/modules/user.php:971
+#: includes/modules/user.php:972
 msgid "Select the URL below and proceed with resetting your password."
 msgstr ""
 
-#: includes/modules/user.php:975
+#: includes/modules/user.php:976
 msgid "Thank you."
 msgstr ""
 
-#: includes/modules/user.php:981
+#: includes/modules/user.php:982
 msgid "reset email has been sent."
 msgstr ""
 
-#: includes/modules/user.php:1024 includes/modules/user.php:1087
+#: includes/modules/user.php:1025 includes/modules/user.php:1088
 msgid "Failed to check for existing tokens for the submitted user."
 msgstr ""
 
-#: includes/modules/user.php:1047
+#: includes/modules/user.php:1048
 msgid "Failed to insert the user reset token into the database."
 msgstr ""
 
-#: includes/modules/user.php:1065
+#: includes/modules/user.php:1066
 msgid "Failed to get the User ID by secret code."
 msgstr ""
 
-#: includes/modules/user.php:1093
+#: includes/modules/user.php:1094
 msgid "The reset token does not exist."
 msgstr ""
 
-#: includes/modules/user.php:1099
+#: includes/modules/user.php:1100
 msgid "The user is blocked."
 msgstr ""
 
-#: includes/modules/user.php:1105
+#: includes/modules/user.php:1106
 msgid "The reset token has expired."
 msgstr ""
 
-#: includes/modules/user.php:1110
+#: includes/modules/user.php:1111
 msgid "Token Accepted."
 msgstr ""
 
-#: includes/modules/user.php:1130
+#: includes/modules/user.php:1131
 msgid "Failed to check for the submitted reset code."
 msgstr ""
 
-#: includes/modules/user.php:1147
+#: includes/modules/user.php:1148
 msgid "Reset code accepted."
 msgstr ""
 
-#: includes/modules/user.php:1164 includes/modules/user.php:1179
+#: includes/modules/user.php:1165 includes/modules/user.php:1180
 msgid "Failed to delete existing tokens for the submitted user."
 msgstr ""
 
@@ -8518,14 +8540,6 @@ msgstr "-"
 #: language/_gettext_only/pages.php:59
 msgid "COMPANY_EDIT_META_KEYWORDS"
 msgstr "-"
-
-#: language/_gettext_only/pages.php:60
-msgid "COMPANY_EDIT_HELP_TITLE"
-msgstr "Help"
-
-#: language/_gettext_only/pages.php:61
-msgid "COMPANY_EDIT_HELP_CONTENT"
-msgstr "Configure your company information."
 
 #: language/_gettext_only/pages.php:66
 msgid "CORE_404_PAGE_TITLE"
@@ -8801,20 +8815,6 @@ msgstr "Help"
 msgid "GIFTCERT_NEW_HELP_CONTENT"
 msgstr "Create a new Gift Certificate."
 
-#: language/_gettext_only/pages.php:198
-msgid "GIFTCERT_PRINT_GIFTCERT_PAGE_TITLE"
-msgstr "QWcrm - Gift Certificate"
-
-#: language/_gettext_only/pages.php:199
-msgid "GIFTCERT_PRINT_GIFTCERT_META_DESCRIPTION"
-msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
-
-#: language/_gettext_only/pages.php:200
-msgid "GIFTCERT_PRINT_GIFTCERT_META_KEYWORDS"
-msgstr ""
-"CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment "
-"Processing, Simple to use"
-
 #: language/_gettext_only/pages.php:205
 msgid "GIFTCERT_SEARCH_PAGE_TITLE"
 msgstr "Search Gift Certificates"
@@ -8861,14 +8861,11 @@ msgstr "-"
 
 #: language/_gettext_only/pages.php:224
 msgid "HELP_ATTRIBUTION_DETAILS_HELP_TITLE"
-msgstr "Help"
+msgstr "-"
 
 #: language/_gettext_only/pages.php:225
 msgid "HELP_ATTRIBUTION_DETAILS_HELP_CONTENT"
-msgstr ""
-"This page list all attributions for software I have used to make QWcrm a "
-"great piece of software. I have also included where possible version number, "
-"author and website where you can get the latest version."
+msgstr "-"
 
 #: language/_gettext_only/pages.php:228
 msgid "HELP_LICENSE_PAGE_TITLE"
@@ -8884,11 +8881,11 @@ msgstr "-"
 
 #: language/_gettext_only/pages.php:231
 msgid "HELP_LICENSE_DETAILS_HELP_TITLE"
-msgstr "Help"
+msgstr "-"
 
 #: language/_gettext_only/pages.php:232
 msgid "HELP_LICENSE_DETAILS_HELP_CONTENT"
-msgstr "This is the license that QWcrm is released under."
+msgstr "-"
 
 #: language/_gettext_only/pages.php:237
 msgid "INVOICE_CLOSED_PAGE_TITLE"
@@ -9079,16 +9076,6 @@ msgstr "-"
 #: language/_gettext_only/pages.php:350
 msgid "REPORT_BASIC_STATS_META_KEYWORDS"
 msgstr "-"
-
-#: language/_gettext_only/pages.php:351
-msgid "REPORT_BASIC_STATS_HELP_TITLE"
-msgstr "Help"
-
-#: language/_gettext_only/pages.php:352
-msgid "REPORT_BASIC_STATS_HELP_CONTENT"
-msgstr ""
-"Get basic information about work orders, invoices and your employees "
-"throughput."
 
 #: language/_gettext_only/pages.php:355
 msgid "REPORT_FINANCIAL_PAGE_TITLE"
@@ -9540,202 +9527,202 @@ msgstr "-"
 msgid "WORKORDER_STATUS_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/system_varibles.php:23
+#: language/_gettext_only/system_variables.php:23
 msgid "Closed without Invoice"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:24
+#: language/_gettext_only/system_variables.php:24
 msgid "Closed with Invoice"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:28
+#: language/_gettext_only/system_variables.php:28
 msgid "Pending"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:32
+#: language/_gettext_only/system_variables.php:32
 msgid "In Dispute"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:33
+#: language/_gettext_only/system_variables.php:33
 msgid "Overdue"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:34
+#: language/_gettext_only/system_variables.php:34
 msgid "Cancelled"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:35
+#: language/_gettext_only/system_variables.php:35
 msgid "Refunded"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:36
+#: language/_gettext_only/system_variables.php:36
 msgid "Collections"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:40
+#: language/_gettext_only/system_variables.php:40
 msgid "Residential"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:41
+#: language/_gettext_only/system_variables.php:41
 msgid "Commercial"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:42
+#: language/_gettext_only/system_variables.php:42
 msgid "Charity"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:43
+#: language/_gettext_only/system_variables.php:43
 msgid "Educational"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:44
+#: language/_gettext_only/system_variables.php:44
 msgid "Goverment"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:48
+#: language/_gettext_only/system_variables.php:48
 msgid "Bank Transfer"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:49
+#: language/_gettext_only/system_variables.php:49
 msgid "Card"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:52
-#: language/_gettext_only/system_varibles.php:82
+#: language/_gettext_only/system_variables.php:52
+#: language/_gettext_only/system_variables.php:82
 msgid "Credit"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:53
-#: language/_gettext_only/system_varibles.php:65
+#: language/_gettext_only/system_variables.php:53
+#: language/_gettext_only/system_variables.php:65
 msgid "Direct Debit"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:55
+#: language/_gettext_only/system_variables.php:55
 msgid "Google Checkout"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:58
-#: language/_gettext_only/system_varibles.php:100
+#: language/_gettext_only/system_variables.php:58
+#: language/_gettext_only/system_variables.php:100
 msgid "Voucher"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:71
+#: language/_gettext_only/system_variables.php:71
 msgid "Visa"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:72
+#: language/_gettext_only/system_variables.php:72
 msgid "MasterCard"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:73
+#: language/_gettext_only/system_variables.php:73
 msgid "American Express"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:74
+#: language/_gettext_only/system_variables.php:74
 msgid "Debit Card"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:79
-#: language/_gettext_only/system_varibles.php:113
+#: language/_gettext_only/system_variables.php:79
+#: language/_gettext_only/system_variables.php:113
 msgid "Advertising"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:80
+#: language/_gettext_only/system_variables.php:80
 msgid "Bank Charges"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:81
+#: language/_gettext_only/system_variables.php:81
 msgid "Broadband"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:83
+#: language/_gettext_only/system_variables.php:83
 msgid "Customer Refund"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:84
+#: language/_gettext_only/system_variables.php:84
 msgid "Equipment"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:85
+#: language/_gettext_only/system_variables.php:85
 msgid "Fuel"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:87
+#: language/_gettext_only/system_variables.php:87
 msgid "Landline"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:89
+#: language/_gettext_only/system_variables.php:89
 msgid "Office Supplies"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:90
-#: language/_gettext_only/system_varibles.php:118
+#: language/_gettext_only/system_variables.php:90
+#: language/_gettext_only/system_variables.php:118
 msgid "Online"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:93
+#: language/_gettext_only/system_variables.php:93
 msgid "Postage"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:94
+#: language/_gettext_only/system_variables.php:94
 msgid "Rent"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:95
-#: language/_gettext_only/system_varibles.php:121
+#: language/_gettext_only/system_variables.php:95
+#: language/_gettext_only/system_variables.php:121
 msgid "Services"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:96
-#: language/_gettext_only/system_varibles.php:122
+#: language/_gettext_only/system_variables.php:96
+#: language/_gettext_only/system_variables.php:122
 msgid "Software"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:98
+#: language/_gettext_only/system_variables.php:98
 msgid "Transport"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:99
+#: language/_gettext_only/system_variables.php:99
 msgid "Utilities"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:101
+#: language/_gettext_only/system_variables.php:101
 msgid "Wages"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:105
+#: language/_gettext_only/system_variables.php:105
 msgid "Credit Note"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:107
+#: language/_gettext_only/system_variables.php:107
 msgid "Proxy Invoice"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:108
+#: language/_gettext_only/system_variables.php:108
 msgid "Returned Goods"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:109
+#: language/_gettext_only/system_variables.php:109
 msgid "Returned Services"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:114
+#: language/_gettext_only/system_variables.php:114
 msgid "Affiliate Marketing"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:115
+#: language/_gettext_only/system_variables.php:115
 msgid "Courier"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:116
+#: language/_gettext_only/system_variables.php:116
 msgid "Drop Shipping"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:117
+#: language/_gettext_only/system_variables.php:117
 msgid "General"
 msgstr ""
 
-#: language/_gettext_only/system_varibles.php:123
+#: language/_gettext_only/system_variables.php:123
 msgid "Wholesale"
 msgstr ""
 
@@ -10131,7 +10118,7 @@ msgid "Work Order has been deleted."
 msgstr ""
 
 #: modules/workorder/details_edit_comments.php:27
-msgid "Comments has been updated."
+msgid "Comments have been updated."
 msgstr ""
 
 #: modules/workorder/details_edit_description.php:27
@@ -10181,6 +10168,18 @@ msgstr ""
 #: modules/workorder/status.php:27
 msgid "Work Order status updated."
 msgstr ""
+
+#~ msgid "GIFTCERT_PRINT_GIFTCERT_PAGE_TITLE"
+#~ msgstr "QWcrm - Gift Certificate"
+
+#~ msgid "GIFTCERT_PRINT_GIFTCERT_META_DESCRIPTION"
+#~ msgstr ""
+#~ "QWcrm - The Best Open Source Repairs Business CRM program available!"
+
+#~ msgid "GIFTCERT_PRINT_GIFTCERT_META_KEYWORDS"
+#~ msgstr ""
+#~ "CRM, Customer Relations Management, Work Orders, Invoicing, Billing, "
+#~ "Payment Processing, Simple to use"
 
 #~ msgid "EXPENSE_TYPE_1"
 #~ msgstr "Advertising"

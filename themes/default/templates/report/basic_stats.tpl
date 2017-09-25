@@ -13,12 +13,12 @@
                     <td class="menuhead2" width="80%">&nbsp;{t}Basic QWcrm Statistics{/t}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
                         <a>
-                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}CORE_BASIC_STATS_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}CORE_BASIC_STATS_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}REPORT_BASIC_STATS_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}REPORT_BASIC_STATS_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
                         </a>
                     </td>
                 </tr>
                 <tr>
-                    <td class="menutd2">
+                    <td class="menutd2" colspan="2">
                         <table class="olotable" width="700" border="0" cellpadding="5" cellspacing="0">                            
                             
                             <!-- Work Order Stats -->

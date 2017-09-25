@@ -16,7 +16,7 @@ defined('_QWEXEC') or die;
 require_once(LIBRARIES_DIR.'mpdf/vendor/autoload.php');
 
 // Output a PDF in the browser
-function mpdf_output_in_browser($filename, $pdf_template) {
+function mpdf_output_in_browser($pdf_filename, $pdf_template) {
     
     // Initialize mPDF
     $mpdf = new mPDF('c');  // c = only use core fonts - https://mpdf.github.io/fonts-languages/fonts-in-mpdf-6-x.html
@@ -28,7 +28,7 @@ function mpdf_output_in_browser($filename, $pdf_template) {
     $mpdf->WriteHTML($pdf_template);
     
     // Output the PDF to the browser
-    $mpdf->Output($filename, 'I');
+    $mpdf->Output($pdf_filename, 'I');
 
     // I think this exit prevents issues
     exit;
@@ -36,7 +36,7 @@ function mpdf_output_in_browser($filename, $pdf_template) {
 }
 
 // Return a PDF in a variable
-function mpdf_output_as_varible($filename, $pdf_template) {
+function mpdf_output_as_varible($pdf_filename, $pdf_template) {
     
     // Initialize mPDF
     $mpdf = new mPDF('c');  // c = only use core fonts - https://mpdf.github.io/fonts-languages/fonts-in-mpdf-6-x.html
@@ -48,6 +48,6 @@ function mpdf_output_as_varible($filename, $pdf_template) {
     $mpdf->WriteHTML($pdf_template);
     
     // Return the PDF as a string
-    return $mpdf->Output($filename, 'S');
+    return $mpdf->Output($pdf_filename, 'S');
     
 }

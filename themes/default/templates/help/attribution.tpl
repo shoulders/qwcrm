@@ -6,8 +6,9 @@
  * @license   GNU/GPLv3 or later; https://www.gnu.org/licenses/gpl.html
 *}
 <div style="padding: 20px;">
-    <h1>Attribution</h1>
-    <p>This page shows the used software packages, their version and where i got them from. This should cover any attributions that are needed for use of a particular license or software.</p>
+    <h1>Attribution</h1>    
+    <p>This page lists attributions for software packages I have used to make QWcrm a great piece of software. I have also included where possible version number, author and website where you can get the latest version.</p>
+    <p>This should cover any required attributions that are needed for use of a particular license or software.</p>
     <ul>
         <li><strong>Name and version | License | URL | What it does?</strong></li>
         <li>TinyMCE - Version 4.5.0 (2016-11-23) | LGPL v2.1 (or later)</li>

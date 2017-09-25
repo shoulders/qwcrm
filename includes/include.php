@@ -376,7 +376,7 @@ function postEmulationReturnStore($keep_store = false) {
 function prepare_error_data($type, $data = null) {
     
     // Allows errors from install/migrate to be processed
-    if(QWCRM_SETUP == 'install') {
+    if(QWCRM_SETUP != 'install') {
         $user = QFactory::getUser();
     }
 
