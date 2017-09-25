@@ -24,14 +24,14 @@ $assigned_employee_id = get_workorder_details($db, $workorder_id, 'employee_id')
 // Update Work Order Status
 if(isset($VAR['change_status'])){
     update_workorder_status($db, $workorder_id, $VAR['assign_status']);    
-    force_page('workorder', 'status', 'workorder_id='.$workorder_id.'&information_msg='.gettext("Work Order status updated."));
+    force_page('workorder', 'status&workorder_id='.$workorder_id);
     exit; 
 }
 
 // Assign Work Order to another employee
 if(isset($VAR['change_employee'])) {
     assign_workorder_to_employee($db, $workorder_id, $VAR['target_employee_id']);    
-    force_page('workorder', 'status', 'workorder_id='.$workorder_id.'&information_msg='.gettext("Assigned employee updated."));
+    force_page('workorder', 'status&workorder_id='.$workorder_id);
     exit; 
 }
 

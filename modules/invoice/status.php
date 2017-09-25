@@ -26,14 +26,14 @@ $assigned_employee_id = get_invoice_details($db, $invoice_id, 'employee_id');
 // Update invoice Status
 if(isset($VAR['change_status'])){
     update_invoice_status($db, $invoice_id, $VAR['assign_status']);    
-    force_page('invoice', 'status', 'invoice_id='.$invoice_id.'&information_msg='.gettext("Invoice status updated."));
+    force_page('invoice', 'status&invoice_id='.$invoice_id);
     exit; 
 }
 
 // Assign Work Order to another employee
 if(isset($VAR['change_employee'])) {
     assign_invoice_to_employee($db, $invoice_id, $VAR['target_employee_id']);    
-    force_page('invoice', 'status', 'invoice_id='.$invoice_id.'&information_msg='.gettext("Assigned employee updated."));
+    force_page('invoice', 'status&invoice_id='.$invoice_id);
     exit; 
 }
 

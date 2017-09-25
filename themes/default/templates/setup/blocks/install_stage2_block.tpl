@@ -373,6 +373,16 @@
                     </tr>
 
                     <tr>
+                        <td align="right"><b>{t}Work Order History Notes{/t}</b></td>
+                        <td>
+                            <select class="olotd5" id="workorder_history_notes" name="workorder_history_notes">                                
+                                <option value="1"{if $qwcrm_config.workorder_history_notes == '1'} selected{/if}>{t}Yes{/t}</option>
+                                <option value="0"{if $qwcrm_config.workorder_history_notes == '0'} selected{/if}>{t}No{/t}</option>
+                            </select>
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Work Order History Notes{/t}</strong></div><hr><div>{t escape=tooltip}Enable work order history notes. This will log all activity related to a work order and display them in the work order details. This feature is useful for tracking how jobs are progressing.{/t}</div>');" onMouseOut="hideddrivetip();">
+                        </td>
+                    </tr>
+                    <tr>
                         <td align="right"><b>{t}Access Log{/t}</b></td>
                         <td>
                             <select class="olotd5" id="qwcrm_access_log" name="qwcrm_access_log">                                                       

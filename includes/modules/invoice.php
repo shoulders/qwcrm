@@ -651,8 +651,11 @@ function update_invoice_status($db, $invoice_id, $new_status) {
     
     $invoice_details = get_invoice_details($db, $invoice_id);
     
-    // If new_status is the same as current status, do nothing
-    if($invoice_details['status'] == $new_status) { return; }    
+    // if the new status is the same as the current one, exit
+    if($new_status == $invoice_details['status']) {        
+        postEmulationWrite('warning_msg', gettext("Nothing done. The new status is the same as the current status."));
+        return false;
+    }    
     
     $sql = "UPDATE ".PRFX."invoice SET \n";
     
@@ -674,6 +677,9 @@ function update_invoice_status($db, $invoice_id, $new_status) {
         } else {
             update_invoice_closed_status($db, $invoice_id, 'open');
         }
+        
+        // Status updated message
+        postEmulationWrite('information_msg', gettext("Invoice status updated."));  
         
         // For writing message to log file, get work order status display name
         $inv_status_diplay_name = gettext(get_invoice_status_display_name($db, $new_status));
@@ -1193,20 +1199,26 @@ function assign_invoice_to_employee($db, $invoice_id, $target_employee_id) {
     // get the invoice details
     $invoice_details = get_invoice_details($db, $invoice_id);
     
+    // if the new employee is the same as the current one, exit
+    if($target_employee_id == $invoice_details['employee_id']) {         
+        postEmulationWrite('warning_msg', gettext("Nothing done. The new employee is the same as the current employee."));
+        return false;
+    }     
+    
     // only change invoice status if unassigned
     if($invoice_details['status'] == 'unassigned') {
         
         $sql = "UPDATE ".PRFX."invoice SET
                 employee_id         =". $db->qstr( $target_employee_id  ).",
                 status              =". $db->qstr( 'assigned'           )."
-                WHERE invoice_id  =". $db->qstr( $invoice_id        );
+                WHERE invoice_id    =". $db->qstr( $invoice_id          );
 
     // Keep the same invoice status    
     } else {    
         
         $sql = "UPDATE ".PRFX."invoice SET
                 employee_id         =". $db->qstr( $target_employee_id  )."            
-                WHERE invoice_id  =". $db->qstr( $invoice_id        );
+                WHERE invoice_id    =". $db->qstr( $invoice_id          );
 
     }
     
@@ -1215,6 +1227,9 @@ function assign_invoice_to_employee($db, $invoice_id, $target_employee_id) {
         exit;
         
     } else {
+        
+        // Assigned employee success message
+        postEmulationWrite('information_msg', gettext("Assigned employee updated."));        
         
         // Get Logged in Employee's Display Name        
         $logged_in_employee_display_name = QFactory::getUser()->display_name;

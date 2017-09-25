@@ -282,6 +282,9 @@ function insert_workorder($db, $customer_id, $scope, $description, $comments) {
 
 function insert_workorder_history_note($db, $workorder_id = null, $note = '') {
     
+    // If Work Order History Notes are not enabled, exit
+    if(QFactory::getConfig()->get('workorder_history_notes') != true) { return; }    
+    
     // This prevents errors from such functions as mail.php where a workorder_id is not always present - not currently used
     if($workorder_id == null) { return; }
     
@@ -569,6 +572,12 @@ function update_workorder_resolution($db, $workorder_id, $resolution){
 
 function update_workorder_status($db, $workorder_id, $new_status) {
     
+    // if the new status is the same as the current one, exit
+    if($new_status == get_workorder_details($db, $workorder_id, 'status')) {        
+        postEmulationWrite('warning_msg', gettext("Nothing done. The new status is the same as the current status."));
+        return false;
+    }
+    
     $sql = "UPDATE ".PRFX."workorder SET \n";
     
     if ($new_status == 'unassigned') { $sql .= "employee_id = '',\n"; }  // when unnasigned there should be no employee the '\n' makes sql look neater
@@ -589,14 +598,17 @@ function update_workorder_status($db, $workorder_id, $new_status) {
             update_workorder_closed_status($db, $workorder_id, 'open');
         }
         
+        // Status updated message
+        postEmulationWrite('information_msg', gettext("Work Order status updated."));        
+        
         // For writing message to log file, get work order status display name
-        $wo_status_diplay_name = gettext(get_workorder_status_display_name($db, $new_status));
+        $wo_status_display_name = gettext(get_workorder_status_display_name($db, $new_status));
         
         // Create a Workorder History Note       
-        insert_workorder_history_note($db, $workorder_id, gettext("Status updated to").' '.$wo_status_diplay_name.' '.gettext("by").' '.QFactory::getUser()->login_display_name.'.');
+        insert_workorder_history_note($db, $workorder_id, gettext("Status updated to").' '.$wo_status_display_name.' '.gettext("by").' '.QFactory::getUser()->login_display_name.'.');
         
         // Log activity        
-        write_record_to_activity_log(gettext("Work Order").' '.$workorder_id.' '.gettext("Status updated to").' '.$wo_status_diplay_name.' '.gettext("by").' '.QFactory::getUser()->login_display_name.'.');
+        write_record_to_activity_log(gettext("Work Order").' '.$workorder_id.' '.gettext("Status updated to").' '.$wo_status_display_name.' '.gettext("by").' '.QFactory::getUser()->login_display_name.'.');
         
         // Update last active record        
         update_customer_last_active($db, get_workorder_details($db, $workorder_id, 'customer_id'));
@@ -617,18 +629,17 @@ function update_workorder_closed_status($db, $workorder_id, $new_closed_status) 
     if($new_closed_status == 'open') {
         
         $sql = "UPDATE ".PRFX."workorder SET
-        close_date          = '',
-        is_closed           = '0'
-        WHERE workorder_id  = ".$db->qstr($workorder_id);
+                close_date          ='',
+                is_closed           =". $db->qstr( 0                )."
+                WHERE workorder_id  =". $db->qstr( $workorder_id    );
         
     }
     
-    if($new_closed_status == 'close') {
-        
+    if($new_closed_status == 'close') {        
         $sql = "UPDATE ".PRFX."workorder SET
-        close_date          = ".time().",
-        is_closed           = '1'
-        WHERE workorder_id  = ".$db->qstr($workorder_id);
+                close_date          =". $db->qstr( time()           ).",
+                is_closed           =". $db->qstr( 1                )."
+                WHERE workorder_id  =". $db->qstr( $workorder_id    );
         
     }
     
@@ -878,7 +889,7 @@ function check_workorder_status_allows_for_deletion($db, $workorder_id) {
         exit;
     } else {        
         
-        // Unassigned and Management are allowed status
+        // Unassigned and Management are allowed status for deleteion
         if($rs->fields['status'] == 'unassigned' || $rs->fields['status'] == 'management') {
             
             return true;
@@ -963,6 +974,12 @@ function assign_workorder_to_employee($db, $workorder_id, $target_employee_id) {
     // get the workorder details
     $workorder_details = get_workorder_details($db, $workorder_id);
     
+    // if the new employee is the same as the current one, exit
+    if($target_employee_id == $workorder_details['employee_id']) {        
+        postEmulationWrite('warning_msg', gettext("Nothing done. The new employee is the same as the current employee."));
+        return false;
+    }    
+    
     // only change workorder status if unassigned
     if($workorder_details['status'] == 'unassigned') {
         
@@ -985,6 +1002,9 @@ function assign_workorder_to_employee($db, $workorder_id, $target_employee_id) {
         exit;
         
     } else {
+        
+        // Assigned employee success message
+        postEmulationWrite('information_msg', gettext("Assigned employee updated.")); 
         
         // Get Logged in Employee's Display Name        
         $logged_in_employee_display_name = QFactory::getUser()->display_name;

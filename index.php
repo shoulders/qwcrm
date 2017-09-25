@@ -135,7 +135,7 @@ switch ($QConfig->error_reporting)
 // url checking, dont forget htaccess single point, post get varible sanitisation
 
 ################################################
-#         Load Language                        #  // check autodetect settinss uis ther 0,1,2 etc... force language?
+#         Load Language                        #
 ################################################
 
 // Autodetect Language - I18N support information here
@@ -157,8 +157,6 @@ if($QConfig->autodetect_language === '1' || QWCRM_SETUP == 'install') {
     }
     
 }
-
-//////////////////
 
 // Autodetect Language - I18N support information here
 if($QConfig->autodetect_language === '1' || QWCRM_SETUP == 'install') {
@@ -185,12 +183,7 @@ if($QConfig->autodetect_language === '1' || QWCRM_SETUP == 'install') {
     
 }
 
-
-
-///////////////
-
-
-// here we define the global system locale given the found language
+// Here we define the global system locale given the found language
 putenv("LANG=$language");
 
 // this might be useful for date functions (LC_TIME) or money formatting (LC_MONETARY), for instance
