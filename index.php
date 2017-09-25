@@ -135,11 +135,11 @@ switch ($QConfig->error_reporting)
 // url checking, dont forget htaccess single point, post get varible sanitisation
 
 ################################################
-#         Load Language                        #
+#         Load Language                        #  // check autodetect settinss uis ther 0,1,2 etc... force language?
 ################################################
 
 // Autodetect Language - I18N support information here
-if($QConfig->autodetect_language === '1') {
+if($QConfig->autodetect_language === '1' || QWCRM_SETUP == 'install') {
     
     if(!$language = locale_accept_from_http($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
         $language = $QConfig->default_language; 
@@ -158,6 +158,38 @@ if($QConfig->autodetect_language === '1') {
     
 }
 
+//////////////////
+
+// Autodetect Language - I18N support information here
+if($QConfig->autodetect_language === '1' || QWCRM_SETUP == 'install') {
+    
+    // Use the locale language if detected or default language or british english
+    if(!$language = locale_accept_from_http($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
+        
+        // set default language as the chosen language or fallback to british english
+        if(!$language = $QConfig->default_language) {
+            $language = 'en_GB';
+        }
+        
+    }
+        
+    // if there is no language file for the locale, set language to british english - This allows me to use CONSTANTS in translations but bypasses normal fallback mechanism for gettext()
+    if(!is_file(LANGUAGE_DIR.$language.'/LC_MESSAGES/site.po')) {
+        $language = 'en_GB';        
+    }
+    
+} else {
+    
+    // Use the default language
+    $language = $QConfig->default_language;
+    
+}
+
+
+
+///////////////
+
+
 // here we define the global system locale given the found language
 putenv("LANG=$language");
 
@@ -167,7 +199,7 @@ setlocale(LC_ALL, $language);
 // Set the text domain
 $textdomain = 'site';
 
-// this will make Gettext look for ../language/<lang>/LC_MESSAGES/site.mo
+// this will make gettext look for ../language/<lang>/LC_MESSAGES/site.mo
 bindtextdomain($textdomain, 'language');
 
 // indicates in what encoding the file should be read
