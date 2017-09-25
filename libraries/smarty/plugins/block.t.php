@@ -156,7 +156,7 @@ function smarty_block_t($params, $text) {
                                
                         // gives single line html, replaces newlines \n to <br>, removes newline and tab entities
                         $text = nl2br($text);
-                        $text = strtr($text, array("\r" => '', "\n" => '', "\t" => ' '));
+                        $text = strtr($text, array("\r" => '', "\n" => '', "\t" => ' ', "'" => "\\'"));
                         
                         break;
 
