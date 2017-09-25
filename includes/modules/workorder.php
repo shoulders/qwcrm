@@ -580,7 +580,7 @@ function update_workorder_status($db, $workorder_id, $new_status) {
     
     $sql = "UPDATE ".PRFX."workorder SET \n";
     
-    if ($new_status == 'unassigned') { $sql .= "employee_id = '',\n"; }  // when unnasigned there should be no employee the '\n' makes sql look neater
+    if ($new_status == 'unassigned') { $sql .= "employee_id = '',\n"; }  // when unassigned there should be no employee the '\n' makes sql look neater
     
     $sql .="status              =". $db->qstr( $new_status      )."            
             WHERE workorder_id  =". $db->qstr( $workorder_id    );

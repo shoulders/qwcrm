@@ -51,8 +51,8 @@ $statuses = get_invoice_statuses($db);
 // Unset unwanted status
 //unset($statuses[0]);  // 'pending'  
 //unset($statuses[1]);  // 'unpaid'  
-//unset($statuses[2]);  // 'partially_paid' 
-//unset($statuses[3]);  // 'paid'    
+unset($statuses[2]);    // 'partially_paid' 
+unset($statuses[3]);    // 'paid'    
 unset($statuses[4]);    // 'in_dispute'
 unset($statuses[5]);    // 'overdue'
 unset($statuses[6]);    // 'cancelled'
@@ -67,6 +67,9 @@ foreach($statuses as $status) {
 /* -- */
 
 // Build the page with the current status from the database
+
+$smarty->assign('allowed_to_change_status',     check_invoice_status_can_be_changed($db, $invoice_id)       );
+$smarty->assign('allowed_to_change_employee',   !get_invoice_details($db, $invoice_id, 'is_closed')         );
 $smarty->assign('allowed_to_delete',            check_invoice_can_be_deleted($db, $invoice_id)              );
 $smarty->assign('active_employees',             get_active_users($db, 'employees')                          );
 $smarty->assign('invoice_statuses',             $edited_statuses                                            );

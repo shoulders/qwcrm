@@ -109,8 +109,8 @@ function count_workorders($db, $status, $user_id = null, $start_date = null, $en
             
             // these give slightly different results because of the ability to manually change status
             
-            //$whereTheseRecords .= " AND ".PRFX."workorder.is_closed = '1'";
-            $whereTheseRecords .= " AND ".PRFX."workorder.close_date != ''";   
+            $whereTheseRecords .= " AND ".PRFX."workorder.is_closed = '1'";
+            //$whereTheseRecords .= " AND ".PRFX."workorder.close_date != ''";   
         
         } else {
             
@@ -185,13 +185,13 @@ function count_invoices($db, $status = null, $user_id = null, $start_date = null
             
             // do nothing here           
 
-        // All Closed workorders
+        // All Closed invoices
         } elseif($status == 'closed') {
             
             // these give slightly different results because of the ability to manually change status
             
-            //$whereTheseRecords .= " AND ".PRFX."invoice.is_closed = '1'";
-            $whereTheseRecords .= " AND ".PRFX."invoice.close_date != ''";            
+            $whereTheseRecords .= " AND ".PRFX."invoice.is_closed = '1'";
+            //$whereTheseRecords .= " AND ".PRFX."invoice.close_date != ''";            
         
         } else {
             

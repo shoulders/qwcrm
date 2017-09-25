@@ -673,7 +673,7 @@ function update_invoice_status($db, $invoice_id, $new_status) {
     
         // Update invoice 'is_closed' boolean
         if($new_status == 'cancelled' || $new_status == 'paid') {
-            update_invoice_closed_status($db, $invoice_id, 'closed');
+            update_invoice_closed_status($db, $invoice_id, 'close');
         } else {
             update_invoice_closed_status($db, $invoice_id, 'open');
         }
@@ -705,13 +705,24 @@ function update_invoice_status($db, $invoice_id, $new_status) {
 # Update invoice Closed Status    #
 ###################################
 
-function update_invoice_closed_status($db, $invoice_id, $close_status) {
+function update_invoice_closed_status($db, $invoice_id, $new_closed_status) {
     
-    if($close_status == 'open') { $is_closed = '0'; }
+    if($new_closed_status == 'open') {
+        
+        $sql = "UPDATE ".PRFX."invoice SET
+                close_date          ='',
+                is_closed           =". $db->qstr( 0                )."
+                WHERE invoice_id    =". $db->qstr( $invoice_id      );
+                
+    }
     
-    if($close_status == 'closed') { $is_closed = '1'; }
-    
-    $sql = "UPDATE ".PRFX."invoice SET is_closed=".$is_closed." WHERE invoice_id=".$db->qstr($invoice_id);
+    if($new_closed_status == 'close') {
+        
+        $sql = "UPDATE ".PRFX."invoice SET
+                close_date          =". $db->qstr( time()           ).",
+                is_closed           =". $db->qstr( 1                )."
+                WHERE invoice_id    =". $db->qstr( $invoice_id      );
+    }    
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update an invoice Closed status."));
@@ -1134,6 +1145,63 @@ function export_invoice_prefill_items_csv($db) {
     
 }
 
+ 
+##########################################################
+#  Check if the invoice status is allowed to be changed  #
+##########################################################
+
+ function check_invoice_status_can_be_changed($db, $invoice_id) {
+ 
+    // Get the invoice details
+    $invoice_details = get_invoice_details($db, $invoice_id);
+
+    // Is partially paid
+    if($invoice_details['status'] == 'partially_paid') {
+        //postEmulationWrite('warning_msg', gettext("This invoice cannot be deleted because it has transactions and is partially paid."));
+        return false;        
+    }
+    
+    // Is paid
+    if($invoice_details['status'] == 'paid') {
+        //postEmulationWrite('warning_msg', gettext("This invoice cannot be deleted because it has transactions and is paid."));
+        return false;        
+    }
+    
+    /* Is closed
+    if($invoice_details['is_closed'] == true) {
+        //postEmulationWrite('warning_msg', gettext("This invoice cannot be deleted because it is closed."));
+        return false;        
+    }*/
+    
+    // Has transactions
+    if(!empty(get_invoice_transactions($db, $invoice_id))) {
+        //postEmulationWrite('warning_msg', gettext("This invoice cannot be deleted because it has transactions."));
+        return false;        
+    }
+
+    /* Has an outstanding balance
+    if($invoice_details['balance'] > 0) {
+        //postEmulationWrite('warning_msg', gettext("This invoice cannot be deleted because it has an outstanding balance."));
+        return false;
+    }
+    
+    // Has Labour
+    if(!empty(get_invoice_labour_items($db, $invoice_id))) {
+       //postEmulationWrite('warning_msg', gettext("This invoice cannot be deleted because it has labour items."));
+       return false;          
+    }    
+    
+    // Has Parts
+    if(!empty(get_invoice_parts_items($db, $invoice_id))) {
+       //postEmulationWrite('warning_msg', gettext("This invoice cannot be deleted because it has parts."));
+       return false;          
+    }*/
+ 
+    // all checks passed
+    return true;     
+     
+ }
+ 
 ###############################################################
 #   Check to see if the invoice's can be deleted              #
 ###############################################################

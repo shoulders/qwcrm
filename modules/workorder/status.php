@@ -65,8 +65,9 @@ foreach($statuses as $status) {
 /* -- */
 
 // Build the page with the current status from the database
-$smarty->assign('allowed_to_delete',            check_workorder_status_allows_for_deletion($db, $workorder_id)  );
 $smarty->assign('allowed_to_change_status',     !get_workorder_details($db, $workorder_id, 'invoice_id')        );
+$smarty->assign('allowed_to_change_employee',   !get_workorder_details($db, $workorder_id, 'is_closed')         );
+$smarty->assign('allowed_to_delete',            check_workorder_status_allows_for_deletion($db, $workorder_id)  );
 $smarty->assign('active_employees',             get_active_users($db, 'employees')                              );
 $smarty->assign('workorder_statuses',           $edited_statuses                                                );
 $smarty->assign('workorder_status',             get_workorder_details($db, $workorder_id, 'status')             );

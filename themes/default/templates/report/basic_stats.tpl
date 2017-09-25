@@ -21,85 +21,140 @@
                     <td class="menutd2" colspan="2">
                         <table class="olotable" width="700" border="0" cellpadding="5" cellspacing="0">                            
                             
-                            <!-- Work Order Stats -->
+                            <!-- Global - Current Work Order Stats -->
                             <tr>
                                 <td>
-                                    <b>{t}Overall Work Order Stats{/t}</b>
+                                    <b>{t}Global{/t} - {t}Current Work Order Stats{/t}</b>
                                     <br>
                                     <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
                                         <tr class="olotd4">
                                             <td class="row2"><b>{t}Open{/t}</b></td>
                                             <td class="row2"><b>{t}Assigned{/t}</b></td>
                                             <td class="row2"><b>{t}Waiting for Parts{/t}</b></td>
+                                            <td class="row2"><b>{t}Scheduled{/t}</b></td>
+                                            <td class="row2"><b>{t}With Client{/t}</b></td>
                                             <td class="row2"><b>{t}On Hold{/t}</b></td>
-                                            <td class="row2"><b>{t}Management{/t}</b></td>
+                                            <td class="row2"><b>{t}Management{/t}</b></td>                                            
+                                        </tr>
+                                        <tr class="olotd4">
+                                            <td>{$global_workorders_open_count}</td>
+                                            <td>{$global_workorders_assigned_count}</td>
+                                            <td>{$global_workorders_waiting_for_parts_count}</td>
+                                            <td>{$global_workorders_scheduled_count}</td>
+                                            <td>{$global_workorders_with_client_count}</td>
+                                            <td>{$global_workorders_on_hold_count}</td>
+                                            <td>{$global_workorders_management_count}</td>                                                                                     
+                                        </tr>
+                                    </table>                                 
+                                </td>
+                            </tr>
+                            
+                            <!-- Global - Overall Work Order Stats -->
+                            <tr>
+                                <td>
+                                    <b>{t}Global{/t} - {t}Overall Work Order Stats{/t}</b>
+                                    <br>
+                                    <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
+                                        <tr class="olotd4">
+                                            <td class="row2"><b>{t}Opened{/t}</b></td>                                            
                                             <td class="row2"><b>{t}Closed{/t}</b></td>
                                         </tr>
                                         <tr class="olotd4">
-                                            <td>{$overall_workorders_open_count}</td>
-                                            <td>{$overall_workorders_assigned_count}</td>
-                                            <td>{$overall_workorders_waiting_for_parts_count}</td>
-                                            <td>{$overall_workorders_on_hold_count}</td>
-                                            <td>{$overall_workorders_management_count}</td> 
-                                            <td>{$overall_workorders_total_closed_count}</td>                                            
+                                            <td>{$global_workorders_opened_count}</td>                                             
+                                            <td>{$global_workorders_closed_count}</td>                                            
                                         </tr>
                                     </table>                                 
                                 </td>
                             </tr>
                                                         
-                            <!-- Currently Logged In Employee Stats -->
+                            <!-- Logged In Employee - Current Work Order Stats -->
                             <tr>
                                 <td>
-                                    <b>{t}Work Order Stats{/t} ({$login_display_name})</b>
+                                    <b>{t}Employee{/t} ({$login_display_name}) - {t}Current Work Order Stats{/t}</b>
                                     <br>
                                     <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
                                         <tr class="olotd4">
                                             <td class="row2"><b>{t}Open{/t}</b></td>
                                             <td class="row2"><b>{t}Assigned{/t}</b></td>
                                             <td class="row2"><b>{t}Waiting for Parts{/t}</b></td>
+                                            <td class="row2"><b>{t}Scheduled{/t}</b></td>
+                                            <td class="row2"><b>{t}With Client{/t}</b></td>
                                             <td class="row2"><b>{t}On Hold{/t}</b></td>
-                                            <td class="row2"><b>{t}Management{/t}</b></td>
-                                            <td class="row2"><b>{t}Closed{/t}</b></td>
+                                            <td class="row2"><b>{t}Management{/t}</b></td>  
                                         </tr>
                                         <tr class="olotd4">
                                             <td>{$employee_workorders_open_count}</td>
                                             <td>{$employee_workorders_assigned_count}</td>
                                             <td>{$employee_workorders_waiting_for_parts_count}</td>
+                                            <td>{$employee_workorders_scheduled_count}</td>
+                                            <td>{$employee_workorders_with_client_count}</td> 
                                             <td>{$employee_workorders_on_hold_count}</td>
-                                            <td>{$employee_workorders_management_count}</td> 
-                                            <td>{$employee_workorders_total_closed_count}</td>                                            
+                                            <td>{$employee_workorders_management_count}</td>                                            
                                         </tr>
                                     </table>                                     
                                 </td>
                             </tr>
                             
+                            <!-- Logged In Employee - Overall Work Order Stats -->
+                            <tr>
+                                <td>
+                                    <b>{t}Employee{/t} ({$login_display_name}) - {t}Overall Work Order Stats{/t}</b>
+                                    <br>
+                                    <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
+                                        <tr class="olotd4">
+                                            <td class="row2"><b>{t}Opened{/t}</b></td>                                            
+                                            <td class="row2"><b>{t}Closed{/t}</b></td>
+                                        </tr>
+                                        <tr class="olotd4">
+                                            <td>{$employee_workorders_opened_count}</td>                                             
+                                            <td>{$employee_workorders_closed_count}</td>                                            
+                                        </tr>
+                                    </table>                                 
+                                </td>
+                            </tr>                            
+                            
                             <!-- Invoice Stats --> 
                             <tr>
                                 <td>
-                                    <b>{t}Invoices{/t}</b>
+                                    <b>{t}Global{/t} - {t}Current Invoice Stats{/t}</b>
                                     <br>
                                     <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
                                         <tr class="olotd4">
                                             <td class="row2"><b>{t}Unpaid{/t}</b></td>
                                             <td class="row2"><b>{t}Partially Paid{/t}</b></td>
                                             <td class="row2"><b>{t}Paid{/t}</b></td>
-                                            <td class="row2"><b>{t}Total{/t}</b></td>
-                                            <td class="row2"><b>{t}Invoiced Total{/t}</b></td>                                            
+                                            <td class="row2"><b>{t}Total{/t}</b></td>                                                                                      
                                             <td class="row2"><b>{t}Received Monies Total{/t}</b></td>
                                             <td class="row2"><b>{t}Outstanding Balance{/t}</b></td>                                            
                                         </tr>
                                         <tr class="olotd4">
-                                            <td>{$overall_invoices_unpaid_count}</td>
-                                            <td>{$overall_invoices_partially_paid_count}</td>
-                                            <td>{$overall_invoices_paid_count}</td>
-                                            <td>{$overall_invoices_count}</td>
-                                            <td><font color="green">{$currency_sym}{$overall_invoiced_total|string_format:"%.2f"}</font></td>
-                                            <td><font color="green">{$currency_sym}{$overall_received_monies|string_format:"%.2f"}</font></td>
-                                            <td><font color="cc0000">{$currency_sym}{$overall_outstanding_balance|string_format:"%.2f"}</font></td>
+                                            <td>{$global_invoices_unpaid_count}</td>
+                                            <td>{$global_invoices_partially_paid_count}</td>
+                                            <td>{$global_invoices_paid_count}</td>                                            
+                                            <td><font color="green">{$currency_sym}{$global_invoiced_total|string_format:"%.2f"}</font></td>
+                                            <td><font color="green">{$currency_sym}{$global_received_monies|string_format:"%.2f"}</font></td>
+                                            <td><font color="cc0000">{$currency_sym}{$global_outstanding_balance|string_format:"%.2f"}</font></td>
                                         </tr>
                                     </table>
                                 </td>
                             </tr>
+                            
+                            <tr>
+                                <td>
+                                    <b>{t}Global{/t} - {t}Overall Invoice Stats{/t}</b>
+                                    <br>
+                                    <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
+                                        <tr class="olotd4">
+                                            <td class="row2"><b>{t}Opened{/t}</b></td>
+                                            <td class="row2"><b>{t}Closed{/t}</b></td>                                                                                        
+                                        </tr>
+                                        <tr class="olotd4">
+                                            <td>{$global_invoices_opened_count}</td>
+                                            <td>{$global_invoices_closed_count}</td>                                            
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>                            
                             
                             <!-- Customer Stats -->
                             <tr>

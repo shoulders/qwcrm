@@ -49,23 +49,27 @@
                                 </td>
 
                                 <!-- Update Assigned Employee -->
-                                <td class="olotd4" align="center" width="33%"> 
-                                    <!-- If the employee is assigned to this workorder and it is not closed, or no one is assigned, or the user is an admin - show a dropdown list and update button, else show the assigned employee details instead -->
-                                    {if ($assigned_employee_id == $login_user_id && $workorder_status != 6) || $assigned_employee_id == '' || $login_usergroup_id <= 3}
-                                        <p>&nbsp;</p>  
-                                        <form method="post" action="index.php?page=workorder:status">
-                                            <select class="olotd4" name="target_employee_id">
-                                                {section name=i loop=$active_employees}
-                                                    <option value="{$active_employees[i].user_id}" {if $assigned_employee_id == $active_employees[i].user_id} selected {/if}>{$active_employees[i].display_name}</option>
-                                                {/section}
-                                            </select>
-                                            <p>&nbsp;</p>
-                                            <input type="hidden" name="workorder_id" value="{$workorder_id}">
-                                            <input class="olotd4" name="change_employee" value="{t}Update{/t}" type="submit">
-                                        </form>                                       
-                                    {else}    
-                                        <img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" onMouseOver="ddrivetip('<center><b>{t}Contact{/t}</b></center><hr><b>{t}Fax{/t}: </b>{$assigned_employee_details.employee_work_primary_phone}<br><b>{t}Mobile{/t}: </b>{$assigned_employee_details.employee_mobile_phone}<br><b>{t}Home{/t}: </b>{$assigned_employee_details.employee_home_primary_phone}');" onMouseOut="hideddrivetip();">                                                 
-                                        <a class="link1" href="index.php?page=user:details&user_id={$assigned_employee_id}">{$assigned_employee_details.employee_display_name}</a>
+                                <td class="olotd4" align="center" width="33%">
+                                    {if $allowed_to_change_employee}
+                                        <!-- If the employee is assigned to this workorder and it is not closed, or no one is assigned, or the user is an admin - show a dropdown list and update button, else show the assigned employee details instead -->
+                                        {if ($assigned_employee_id == $login_user_id && $workorder_status != 6) || $assigned_employee_id == '' || $login_usergroup_id <= 3}
+                                            <p>&nbsp;</p>  
+                                            <form method="post" action="index.php?page=workorder:status">
+                                                <select class="olotd4" name="target_employee_id">
+                                                    {section name=i loop=$active_employees}
+                                                        <option value="{$active_employees[i].user_id}" {if $assigned_employee_id == $active_employees[i].user_id} selected {/if}>{$active_employees[i].display_name}</option>
+                                                    {/section}
+                                                </select>
+                                                <p>&nbsp;</p>
+                                                <input type="hidden" name="workorder_id" value="{$workorder_id}">
+                                                <input class="olotd4" name="change_employee" value="{t}Update{/t}" type="submit">
+                                            </form>                                       
+                                        {else}    
+                                            <img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" onMouseOver="ddrivetip('<center><b>{t}Contact{/t}</b></center><hr><b>{t}Fax{/t}: </b>{$assigned_employee_details.employee_work_primary_phone}<br><b>{t}Mobile{/t}: </b>{$assigned_employee_details.employee_mobile_phone}<br><b>{t}Home{/t}: </b>{$assigned_employee_details.employee_home_primary_phone}');" onMouseOut="hideddrivetip();">                                                 
+                                            <a class="link1" href="index.php?page=user:details&user_id={$assigned_employee_id}">{$assigned_employee_details.employee_display_name}</a>
+                                        {/if}
+                                    {else}
+                                        {t}This work order cannot have it's assigned employee changed because it is closed.{/t}
                                     {/if}
                                 </td>
 
