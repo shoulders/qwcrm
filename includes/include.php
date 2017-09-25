@@ -43,15 +43,35 @@ function get_mysql_version($db) {
 
 function get_qwcrm_database_version_number($db) {
     
+    //global $smarty;
+    
+    // Disable php error reporting for this function
+    error_reporting(0);
+    
     $sql = "SELECT * FROM ".PRFX."version ORDER BY ".PRFX."version.database_version DESC LIMIT 1";
     
-    if(!$rs = $db->execute($sql)) {        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Could not retrieve the QWcrm database version."));
-        exit;        
-    } else {
+    try
+    {        
+        if(!$rs = $db->execute($sql)) {        
+            //force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Could not retrieve the QWcrm database version."));
+            //exit;        
+        } else {
+
+            return $rs->fields['database_version'];
+
+        }        
+    }
+    
+    catch (exception $e)
+    {
         
-        return $rs->fields['database_version'];
+        //echo $e->msg;
+        //var_dump($e);
+        //adodb_backtrace($e->gettrace());
         
+        //$smarty->assign('warning_msg', $e->msg);        
+        return 'setup_failed';
+              
     }
     
 }
@@ -140,17 +160,17 @@ function force_page($module, $page_tpl = null, $variables = null, $method = 'pos
         if($module == 'index.php') { 
             
             // If there are variables, prepare them
-            if($variables) {$varibles = '?'.$varibles; }
+            if($variables) {$variables = '?'.$variables; }
             
             // Build the URL and perform the redirect, with/without varibles
-            perform_redirect('index.php'.$varibles);            
+            perform_redirect('index.php'.$variables);            
 
         // Page Name and Variables (QWcrm Style Redirect)  
         } else {
             
             // If there are variables, prepare them
-            if($variables) { $varibles = '&'.$varibles; }
-
+            if($variables) { $variables = '&'.$variables; }
+            
             // Build the URL and perform the redirect, with/without varibles
             perform_redirect('index.php?page='.$module.':'.$page_tpl.$variables);            
             
@@ -634,6 +654,11 @@ function verify_qwcrm_is_installed_correctly($db) {
             force_page('setup', 'install');
             exit;
         }*/
+        
+        // Setup failes
+        if($qwcrm_database_version == 'setup_failed') { 
+            die('<div style="color: red;">'.gettext("A previous setup attempt never completed succesfully and there is an invalid configuration.php file present.").'</div>');            
+        }
         
         // Failed upgrade
         if($qwcrm_database_version == '0.0.0') { 

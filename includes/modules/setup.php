@@ -396,11 +396,13 @@ function check_database_connection($db, $db_host, $db_user, $db_pass, $db_name) 
     error_reporting(0);
     
     // create ADOdb database connection - and collection exceptions
-    try {        
+    try
+    {        
         $db->Connect($db_host, $db_user, $db_pass, $db_name);
     }    
     
-    catch (exception $e) {
+    catch (exception $e)
+    {
         
         //echo $e->msg;
         //var_dump($e);
