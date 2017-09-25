@@ -35,17 +35,18 @@
                                                                 <td align="left" valign="top"><b>{t}Search{/t}</b>
                                                                    <br />
                                                                     <select class="olotd5" id="search_category" name="search_category">
-                                                                        <option value="id"{if $search_category == 'id'} selected{/if}>{t}Expense ID{/t}</option>
+                                                                        <option value="expense_id"{if $search_category == 'expense_id'} selected{/if}>{t}Expense ID{/t}</option>
+                                                                        <option value="invoice_id"{if $search_category == 'invoice_id'} selected{/if}>{t}Invoice ID{/t}</option>
                                                                         <option value="payee"{if $search_category == 'payee'} selected{/if}>{t}Payee{/t}</option>
-                                                                        <option value="date"{if $search_category == 'date'} selected{/if}>{t}Date{/t}</option>
+                                                                        <option value="date"{if $search_category == 'date'} selected{/if}>{t}Date{/t}</option>                                                                        
                                                                         <option value="type"{if $search_category == 'type'} selected{/if}>{t}Type{/t}</option>
                                                                         <option value="payment_method"{if $search_category == 'payment_method'} selected{/if}>{t}Payment Method{/t}</option>
                                                                         <option value="net_amount"{if $search_category == 'net_amount'} selected{/if}>{t}Net Amount{/t}</option>
                                                                         <option value="tax_rate"{if $search_category == 'tax_rate'} selected{/if}>{t}VAT/Tax{/t} {t}Rate{/t}</option>
-                                                                        <option value="tax"{if $search_category == 'tax'} selected{/if}>{t}VAT/Tax{/t} {t}Amount{/t}</option>
-                                                                        <option value="total"{if $search_category == 'total'} selected{/if}>{t}Gross Amount{/t}</option>
-                                                                        <option value="notes"{if $search_category == 'notes'} selected{/if}>{t}Notes{/t}</option>
+                                                                        <option value="tax_amount"{if $search_category == 'tax'} selected{/if}>{t}VAT/Tax{/t} {t}Amount{/t}</option>
+                                                                        <option value="gross_amount"{if $search_category == 'total'} selected{/if}>{t}Gross{/t} ({t}Total{/t})</option>
                                                                         <option value="items"{if $search_category == 'items'} selected{/if}>{t}Items{/t}</option>
+                                                                        <option value="notes"{if $search_category == 'notes'} selected{/if}>{t}Notes{/t}</option>                                                                        
                                                                     </select>
                                                                    <br />
                                                                    <b>{t}for{/t}</b>
@@ -118,6 +119,7 @@
                                                         <td class="olohead">{t}Expense ID{/t}</td>
                                                         <td class="olohead">{t}Payee{/t}</td>
                                                         <td class="olohead">{t}Date{/t}</td>
+                                                        <td class="olohead">{t}INV ID{/t}</td>
                                                         <td class="olohead">{t}Type{/t}</td>
                                                         <td class="olohead">{t}Payment Method{/t}</td>
                                                         <td class="olohead">{t}Net Amount{/t}</td>
@@ -130,67 +132,39 @@
                                                     </tr>
                                                     {section name=i loop=$search_result}
                                                         <!-- This allows double clicking on a row and opens the corresponding expense view details -->
-                                                        <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=expense:details&expense_id={$search_result[i].EXPENSE_ID}';" class="row1">
-                                                            <td class="olotd4" nowrap><a href="index.php?page=expense:details&expense_id={$search_result[i].EXPENSE_ID}">{$search_result[i].EXPENSE_ID}</a></td>
-                                                            <td class="olotd4" nowrap>{$search_result[i].EXPENSE_PAYEE}</td>
-                                                            <td class="olotd4" nowrap>{$search_result[i].EXPENSE_DATE|date_format:$date_format}</td>                                                                
+                                                        <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=expense:details&expense_id={$search_result[i].expense_id}';" class="row1">
+                                                            <td class="olotd4" nowrap><a href="index.php?page=expense:details&expense_id={$search_result[i].expense_id}">{$search_result[i].expense_id}</a></td>
+                                                            <td class="olotd4" nowrap>{$search_result[i].payee}</td>
+                                                            <td class="olotd4" nowrap>{$search_result[i].date|date_format:$date_format}</td>
+                                                            <td class="olotd4" nowrap><a href="index.php?page=invoice:details&invoice_id={$search_result[i].invoice_id}">{$search_result[i].invoice_id}</a></td>
                                                             <td class="olotd4" nowrap>
-                                                                {if $search_result[i].EXPENSE_TYPE ==1}{t}EXPENSE_TYPE_1{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_TYPE ==2}{t}EXPENSE_TYPE_2{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_TYPE ==3}{t}EXPENSE_TYPE_3{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_TYPE ==4}{t}EXPENSE_TYPE_4{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_TYPE ==5}{t}EXPENSE_TYPE_5{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_TYPE ==6}{t}EXPENSE_TYPE_6{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_TYPE ==7}{t}EXPENSE_TYPE_7{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_TYPE ==8}{t}EXPENSE_TYPE_8{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_TYPE ==9}{t}EXPENSE_TYPE_9{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_TYPE ==10}{t}EXPENSE_TYPE_10{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_TYPE ==11}{t}EXPENSE_TYPE_11{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_TYPE ==12}{t}EXPENSE_TYPE_12{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_TYPE ==13}{t}EXPENSE_TYPE_13{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_TYPE ==14}{t}EXPENSE_TYPE_14{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_TYPE ==15}{t}EXPENSE_TYPE_15{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_TYPE ==16}{t}EXPENSE_TYPE_16{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_TYPE ==17}{t}EXPENSE_TYPE_17{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_TYPE ==18}{t}EXPENSE_TYPE_18{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_TYPE ==19}{t}EXPENSE_TYPE_19{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_TYPE ==20}{t}EXPENSE_TYPE_20{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_TYPE ==21}{t}EXPENSE_TYPE_21{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_TYPE ==22}{t}EXPENSE_TYPE_22{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_TYPE ==23}{t}EXPENSE_TYPE_23{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_TYPE ==24}{t}EXPENSE_TYPE_24{/t}{/if}
+                                                                {section name=s loop=$expense_types}    
+                                                                    {if $search_result[i].type == $expense_types[s].expense_type_id}{t}{$expense_types[s].display_name}{/t}{/if}        
+                                                                {/section} 
                                                             </td>
                                                             <td class="olotd4" nowrap>
-                                                                {if $search_result[i].EXPENSE_PAYMENT_METHOD ==1}{t}EXPENSE_PAYMENT_METHOD_1{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_PAYMENT_METHOD ==2}{t}EXPENSE_PAYMENT_METHOD_2{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_PAYMENT_METHOD ==3}{t}EXPENSE_PAYMENT_METHOD_3{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_PAYMENT_METHOD ==4}{t}EXPENSE_PAYMENT_METHOD_4{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_PAYMENT_METHOD ==5}{t}EXPENSE_PAYMENT_METHOD_5{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_PAYMENT_METHOD ==6}{t}EXPENSE_PAYMENT_METHOD_6{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_PAYMENT_METHOD ==7}{t}EXPENSE_PAYMENT_METHOD_7{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_PAYMENT_METHOD ==8}{t}EXPENSE_PAYMENT_METHOD_8{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_PAYMENT_METHOD ==9}{t}EXPENSE_PAYMENT_METHOD_9{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_PAYMENT_METHOD ==10}{t}EXPENSE_PAYMENT_METHOD_10{/t}{/if}
-                                                                {if $search_result[i].EXPENSE_PAYMENT_METHOD ==11}{t}EXPENSE_PAYMENT_METHOD_11{/t}{/if}
+                                                                {section name=s loop=$payment_methods}    
+                                                                    {if $search_result[i].payment_method == $payment_methods[s].manual_method_id}{t}{$payment_methods[s].display_name}{/t}{/if}        
+                                                                {/section} 
                                                             </td>
-                                                            <td class="olotd4" nowrap>{$currency_sym} {$search_result[i].EXPENSE_NET_AMOUNT}</td>
-                                                            <td class="olotd4" nowrap>{$search_result[i].EXPENSE_TAX_RATE} %</td>
-                                                            <td class="olotd4" nowrap>{$currency_sym} {$search_result[i].EXPENSE_TAX_AMOUNT}</td>
-                                                            <td class="olotd4" nowrap>{$currency_sym} {$search_result[i].EXPENSE_GROSS_AMOUNT}</td>
+                                                            <td class="olotd4" nowrap>{$currency_sym} {$search_result[i].net_amount}</td>
+                                                            <td class="olotd4" nowrap>{$search_result[i].tax_rate} %</td>
+                                                            <td class="olotd4" nowrap>{$currency_sym} {$search_result[i].tax_amount}</td>
+                                                            <td class="olotd4" nowrap>{$currency_sym} {$search_result[i].gross_amount}</td>
                                                             <td class="olotd4" nowrap>
-                                                                {if !$search_result[i].EXPENSE_NOTES == ''}
-                                                                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Notes{/t}</strong></div><hr><div>{$search_result[i].notes}</div>');" onMouseOut="hideddrivetip();">
+                                                                {if $search_result[i].notes != ''}
+                                                                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Notes{/t}</strong></div><hr><div>{$search_result[i].notes|nl2br|regex_replace:"/(\t|')/":" "}</div>');" onMouseOut="hideddrivetip();">
                                                                 {/if}
                                                             </td>
-                                                            <td class="olotd4" nowrap><img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Items{/t}</strong></div><hr><div>{$search_result[i].items}</div>');" onMouseOut="hideddrivetip();"></td>
+                                                            <td class="olotd4" nowrap><img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Items{/t}</strong></div><hr><div>{$search_result[i].items|nl2br|regex_replace:"/(\t|')/":" "}</div>');" onMouseOut="hideddrivetip();"></td>
                                                             <td class="olotd4" nowrap>
-                                                                <a href="index.php?page=expense:details&expense_id={$search_result[i].EXPENSE_ID}">
+                                                                <a href="index.php?page=expense:details&expense_id={$search_result[i].expense_id}">
                                                                     <img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" onMouseOver="ddrivetip('<b>{t}View Expense Details{/t}</b>');" onMouseOut="hideddrivetip();">
                                                                 </a>
-                                                                <a href="index.php?page=expense:edit&expense_id={$search_result[i].EXPENSE_ID}">
+                                                                <a href="index.php?page=expense:edit&expense_id={$search_result[i].expense_id}">
                                                                     <img src="{$theme_images_dir}icons/16x16/small_edit.gif" alt=""  border="0" onMouseOver="ddrivetip('<b>{t}Edit Expense Details{/t}</b>');" onMouseOut="hideddrivetip();">
                                                                 </a>
-                                                                <a href="index.php?page=expense:delete&expense_id={$search_result[i].EXPENSE_ID}" onclick="return confirmChoice('{t}Are you Sure you want to delete this Expense Record? This will permanently remove the record from the database.{/t}');">
+                                                                <a href="index.php?page=expense:delete&expense_id={$search_result[i].expense_id}" onclick="return confirmChoice('{t}Are you Sure you want to delete this Expense Record? This will permanently remove the record from the database.{/t}');">
                                                                     <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{t}Delete Expense Record{/t}</b>');" onMouseOut="hideddrivetip();">
                                                                 </a>
                                                             </td>
