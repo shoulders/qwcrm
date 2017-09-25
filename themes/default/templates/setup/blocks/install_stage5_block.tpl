@@ -62,6 +62,12 @@
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
+                                                                        <td align="right"></td>
+                                                                        <td>
+                                                                            <input type="checkbox" name="delete_logo" value="1">{t}Delete Logo{/t}
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
                                                                         <td align="right"><b>{t}Company Number{/t}:</b></td>
                                                                         <td><input name="company_number" class="olotd5" value="{$company_details.company_number}" type="text" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"/></td>
                                                                     </tr>
