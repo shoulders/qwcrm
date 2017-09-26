@@ -874,7 +874,7 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
     
     /* user / Employee */
     
-    // supplier
+    // user
     $column_mappings = array(
         'user_id'           => 'EMPLOYEE_ID',
         'customer_id'       => '',
