@@ -42,12 +42,9 @@ $smarty->assign('global_invoices_partially_paid_count',         count_invoices($
 $smarty->assign('global_invoices_paid_count',                   count_invoices($db, 'paid')                                 );
 $smarty->assign('global_invoices_opened_count',                 count_invoices($db, 'opened')                               );
 $smarty->assign('global_invoices_closed_count',                 count_invoices($db, 'closed')                               );
-
-// Invoice All Time Totals
-$smarty->assign('global_invoiced_total',                        sum_invoices_value($db, 'all', 'gross_amount')      );
-$smarty->assign('global_received_monies',                       sum_invoices_value($db, 'all', 'paid_amount')       );
-$smarty->assign('global_outstanding_balance',                   sum_invoices_value($db, 'all', 'balance')           );
-
+$smarty->assign('global_invoiced_total',                        sum_invoices_value($db, 'all', 'gross_amount')              );
+$smarty->assign('global_received_monies',                       sum_invoices_value($db, 'all', 'paid_amount')               );
+$smarty->assign('global_outstanding_balance',                   sum_invoices_value($db, 'all', 'balance')                   );
 
 /** Dates **/
 
@@ -74,7 +71,7 @@ $date_year_end      = get_company_details($db, 'year_end');
 
 /** Customers **/
 
-// Customer Counts
+// Global Customer Stats
 $smarty->assign('customer_month_count', count_customers($db, 'all', $date_month_start, $date_month_end)     );
 $smarty->assign('customer_year_count',  count_customers($db, 'all', $date_year_start, $date_year_end)       );
 $smarty->assign('customer_total_count', count_customers($db, 'all')                                         );

@@ -113,7 +113,7 @@
                                 </td>
                             </tr>                            
                             
-                            <!-- Invoice Stats --> 
+                            <!-- Global - Current Invoice Stats -->
                             <tr>
                                 <td>
                                     <b>{t}Global{/t} - {t}Current Invoice Stats{/t}</b>
@@ -122,23 +122,18 @@
                                         <tr class="olotd4">
                                             <td class="row2"><b>{t}Unpaid{/t}</b></td>
                                             <td class="row2"><b>{t}Partially Paid{/t}</b></td>
-                                            <td class="row2"><b>{t}Paid{/t}</b></td>
-                                            <td class="row2"><b>{t}Total{/t}</b></td>                                                                                      
-                                            <td class="row2"><b>{t}Received Monies Total{/t}</b></td>
-                                            <td class="row2"><b>{t}Outstanding Balance{/t}</b></td>                                            
+                                            <td class="row2"><b>{t}Paid{/t}</b></td>                                                                                        
                                         </tr>
                                         <tr class="olotd4">
                                             <td>{$global_invoices_unpaid_count}</td>
                                             <td>{$global_invoices_partially_paid_count}</td>
                                             <td>{$global_invoices_paid_count}</td>                                            
-                                            <td><font color="green">{$currency_sym}{$global_invoiced_total|string_format:"%.2f"}</font></td>
-                                            <td><font color="green">{$currency_sym}{$global_received_monies|string_format:"%.2f"}</font></td>
-                                            <td><font color="cc0000">{$currency_sym}{$global_outstanding_balance|string_format:"%.2f"}</font></td>
                                         </tr>
                                     </table>
                                 </td>
                             </tr>
                             
+                            <!-- Global - Overall Invoice Stats -->
                             <tr>
                                 <td>
                                     <b>{t}Global{/t} - {t}Overall Invoice Stats{/t}</b>
@@ -146,20 +141,26 @@
                                     <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
                                         <tr class="olotd4">
                                             <td class="row2"><b>{t}Opened{/t}</b></td>
-                                            <td class="row2"><b>{t}Closed{/t}</b></td>                                                                                        
+                                            <td class="row2"><b>{t}Closed{/t}</b></td>
+                                            <td class="row2"><b>{t}Invoiced Total{/t}</b></td>                                                                                      
+                                            <td class="row2"><b>{t}Received Monies{/t}</b></td>
+                                            <td class="row2"><b>{t}Outstanding Balance{/t}</b></td>
                                         </tr>
                                         <tr class="olotd4">
                                             <td>{$global_invoices_opened_count}</td>
-                                            <td>{$global_invoices_closed_count}</td>                                            
+                                            <td>{$global_invoices_closed_count}</td>
+                                            <td><font color="green">{$currency_sym}{$global_invoiced_total|string_format:"%.2f"}</font></td>
+                                            <td><font color="green">{$currency_sym}{$global_received_monies|string_format:"%.2f"}</font></td>
+                                            <td><font color="cc0000">{$currency_sym}{$global_outstanding_balance|string_format:"%.2f"}</font></td>
                                         </tr>
                                     </table>
                                 </td>
                             </tr>                            
                             
-                            <!-- Customer Stats -->
+                            <!-- Global - Customer Stats -->
                             <tr>
                                 <td>
-                                    <b>{t}Customers{/t}</b>
+                                    <b>{t}Global - Customer Stats{/t}</b>
                                     <br>
                                     <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
                                         <tr class="olotd4">

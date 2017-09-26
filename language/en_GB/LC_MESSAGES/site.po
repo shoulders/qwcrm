@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2017-09-25 23:07+0100\n"
-"PO-Revision-Date: 2017-09-25 23:07+0100\n"
+"POT-Creation-Date: 2017-09-26 09:11+0100\n"
+"PO-Revision-Date: 2017-09-26 09:11+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en_GB\n"
@@ -2528,7 +2528,7 @@ msgstr ""
 #: themes/default/templates/core/blocks/dashboard_workorders_with_client_block.tpl:12
 #: themes/default/templates/report/basic_stats.tpl:59
 #: themes/default/templates/report/basic_stats.tpl:105
-#: themes/default/templates/report/basic_stats.tpl:148
+#: themes/default/templates/report/basic_stats.tpl:143
 #: themes/default/templates/report/financial.tpl:117
 #: themes/default/templates/report/financial.tpl:131
 #: themes/default/templates/workorder/blocks/details_workorder_block.tpl:12
@@ -3168,7 +3168,6 @@ msgid "Logout"
 msgstr ""
 
 #: themes/default/templates/core/blocks/theme_menu_block.tpl:22
-#: themes/default/templates/report/basic_stats.tpl:162
 #: themes/default/templates/report/financial.tpl:96
 #: themes/default/templates/user/search.tpl:49
 msgid "Customers"
@@ -3276,7 +3275,7 @@ msgstr ""
 #: themes/default/templates/core/blocks/theme_menu_block.tpl:67
 #: themes/default/templates/report/basic_stats.tpl:60
 #: themes/default/templates/report/basic_stats.tpl:106
-#: themes/default/templates/report/basic_stats.tpl:149
+#: themes/default/templates/report/basic_stats.tpl:144
 #: themes/default/templates/report/financial.tpl:121
 #: themes/default/templates/workorder/closed.tpl:82
 #: themes/default/templates/workorder/open.tpl:82
@@ -4487,8 +4486,7 @@ msgstr ""
 #: themes/default/templates/invoice/printing/print_invoice.tpl:268
 #: themes/default/templates/invoice/search.tpl:47
 #: themes/default/templates/refund/search.tpl:44
-#: themes/default/templates/report/basic_stats.tpl:126
-#: themes/default/templates/report/basic_stats.tpl:168
+#: themes/default/templates/report/basic_stats.tpl:169
 #: themes/default/templates/schedule/search.tpl:47
 #: themes/default/templates/workorder/search.tpl:47
 msgid "Total"
@@ -5538,7 +5536,7 @@ msgstr ""
 #: themes/default/templates/report/basic_stats.tpl:27
 #: themes/default/templates/report/basic_stats.tpl:55
 #: themes/default/templates/report/basic_stats.tpl:119
-#: themes/default/templates/report/basic_stats.tpl:144
+#: themes/default/templates/report/basic_stats.tpl:139
 msgid "Global"
 msgstr ""
 
@@ -5568,24 +5566,33 @@ msgstr ""
 msgid "Partially Paid"
 msgstr ""
 
-#: themes/default/templates/report/basic_stats.tpl:127
-msgid "Received Monies Total"
+#: themes/default/templates/report/basic_stats.tpl:139
+msgid "Overall Invoice Stats"
 msgstr ""
 
-#: themes/default/templates/report/basic_stats.tpl:128
+#: themes/default/templates/report/basic_stats.tpl:145
+msgid "Invoiced Total"
+msgstr ""
+
+#: themes/default/templates/report/basic_stats.tpl:146
+#: themes/default/templates/report/financial.tpl:304
+msgid "Received Monies"
+msgstr ""
+
+#: themes/default/templates/report/basic_stats.tpl:147
 #: themes/default/templates/report/financial.tpl:308
 msgid "Outstanding Balance"
 msgstr ""
 
-#: themes/default/templates/report/basic_stats.tpl:144
-msgid "Overall Invoice Stats"
-msgstr ""
-
-#: themes/default/templates/report/basic_stats.tpl:166
-msgid "New This Month"
+#: themes/default/templates/report/basic_stats.tpl:163
+msgid "Global - Customer Stats"
 msgstr ""
 
 #: themes/default/templates/report/basic_stats.tpl:167
+msgid "New This Month"
+msgstr ""
+
+#: themes/default/templates/report/basic_stats.tpl:168
 msgid "New This Year"
 msgstr ""
 
@@ -5645,10 +5652,6 @@ msgstr ""
 
 #: themes/default/templates/report/financial.tpl:296
 msgid "Gross (Invoiced)"
-msgstr ""
-
-#: themes/default/templates/report/financial.tpl:304
-msgid "Received Monies"
 msgstr ""
 
 #: themes/default/templates/report/financial.tpl:322
