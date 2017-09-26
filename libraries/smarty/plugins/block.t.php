@@ -138,15 +138,18 @@ function smarty_block_t($params, $text) {
                 case 'html':
                         $text = nl2br(htmlspecialchars($text));
                         break;
+                    
                 case 'javascript':
                 case 'js':
                         // javascript escape
                         $text = strtr($text, array('\\' => '\\\\', "'" => "\\'", '"' => '\\"', "\r" => '\\r', "\n" => '\\n', '</' => '<\/'));
                         break;
+                    
                 case 'url':
                         // url escape
                         $text = urlencode($text);
-                        break;	
+                        break;
+                    
                 case 'tooltip' :
                         // for tooltips - JS does not like new lines - tooltip does not like apostrophes
 
@@ -156,11 +159,16 @@ function smarty_block_t($params, $text) {
                                
                         // gives single line html, replaces newlines \n to <br>, removes newline and tab entities
                         $text = nl2br($text);
-                        $text = strtr($text, array("\r" => '', "\n" => '', "\t" => ' ', "'" => "\\'"));
+                        $text = strtr($text, array("\r" => '', "\n" => '', "\t" => '    ', "'" => "\\'"));
                         
+                        break;
+                    
+                case 'raw_html' :
+                        // display html - no escaping - case 'html' is default mode                        
                         break;
 
                 }
 
 	return $text;
+        
 }

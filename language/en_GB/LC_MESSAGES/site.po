@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2017-09-26 09:11+0100\n"
-"PO-Revision-Date: 2017-09-26 09:11+0100\n"
+"POT-Creation-Date: 2017-09-26 13:51+0100\n"
+"PO-Revision-Date: 2017-09-26 13:58+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en_GB\n"
@@ -1833,7 +1833,7 @@ msgid "This clears the Smarty cache."
 msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:651
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:172
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:170
 #: themes/default/templates/expense/edit.tpl:109
 #: themes/default/templates/invoice/prefill_items.tpl:58
 #: themes/default/templates/invoice/status.tpl:44
@@ -1907,7 +1907,7 @@ msgid "Check for Update"
 msgstr ""
 
 #: themes/default/templates/company/business_hours.tpl:13
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:143
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:141
 msgid "Business Hours"
 msgstr ""
 
@@ -2275,7 +2275,7 @@ msgid "Email"
 msgstr ""
 
 #: themes/default/templates/company/edit.tpl:120
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:184
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:182
 #: themes/default/templates/customer/blocks/details_customer_details_block.tpl:34
 #: themes/default/templates/customer/edit.tpl:48
 #: themes/default/templates/customer/new.tpl:50
@@ -2581,8 +2581,8 @@ msgstr ""
 #: themes/default/templates/core/blocks/dashboard_workorders_scheduled_block.tpl:15
 #: themes/default/templates/core/blocks/dashboard_workorders_waiting_for_parts_block.tpl:15
 #: themes/default/templates/core/blocks/dashboard_workorders_with_client_block.tpl:15
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:55
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:72
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:53
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:70
 #: themes/default/templates/customer/blocks/details_workorder_block.tpl:16
 #: themes/default/templates/customer/blocks/details_workorder_block.tpl:76
 #: themes/default/templates/invoice/closed.tpl:83
@@ -3048,8 +3048,8 @@ msgid "Work Order Stats"
 msgstr ""
 
 #: themes/default/templates/core/blocks/dashboard_workorders_workorders_stats_employee_block.tpl:12
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:52
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:66
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:50
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:64
 #: themes/default/templates/report/basic_stats.tpl:31
 #: themes/default/templates/report/basic_stats.tpl:77
 #: themes/default/templates/workorder/blocks/overview_workorders_stats_employee_block.tpl:12
@@ -3174,21 +3174,21 @@ msgid "Customers"
 msgstr ""
 
 #: themes/default/templates/core/blocks/theme_menu_block.tpl:23
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:39
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:82
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:95
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:110
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:125
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:38
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:80
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:93
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:108
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:123
 #: themes/default/templates/invoice/prefill_items.tpl:90
 #: themes/default/templates/report/financial.tpl:107
 msgid "New"
 msgstr ""
 
 #: themes/default/templates/core/blocks/theme_menu_block.tpl:24
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:84
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:96
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:111
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:126
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:82
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:94
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:109
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:124
 #: themes/default/templates/customer/search.tpl:38
 #: themes/default/templates/expense/search.tpl:34
 #: themes/default/templates/expense/search.tpl:54
@@ -3206,10 +3206,10 @@ msgid "Search"
 msgstr ""
 
 #: themes/default/templates/core/blocks/theme_menu_block.tpl:26
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:86
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:99
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:114
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:129
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:84
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:97
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:112
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:127
 #: themes/default/templates/customer/blocks/details_customer_details_block.tpl:14
 #: themes/default/templates/customer/blocks/details_giftcert_block.tpl:44
 #: themes/default/templates/customer/blocks/details_giftcert_block.tpl:88
@@ -3231,8 +3231,8 @@ msgid "Are you sure you want to delete this customer?"
 msgstr ""
 
 #: themes/default/templates/core/blocks/theme_menu_block.tpl:27
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:100
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:115
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:98
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:113
 #: themes/default/templates/invoice/prefill_items.tpl:57
 #: themes/default/templates/invoice/status.tpl:26
 #: themes/default/templates/invoice/status.tpl:81
@@ -3248,31 +3248,25 @@ msgstr ""
 msgid "Create Login"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:29
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:45
-#: themes/default/templates/customer/note_new.tpl:16
-msgid "New Note"
-msgstr ""
-
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:35
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:34
 #: themes/default/templates/report/financial.tpl:97
 msgid "Work Orders"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:43
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:42
 msgid "Close"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:47
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:45
 msgid "Schedules"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:51
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:49
 msgid "Overview"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:53
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:67
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:51
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:65
 #: themes/default/templates/report/basic_stats.tpl:60
 #: themes/default/templates/report/basic_stats.tpl:106
 #: themes/default/templates/report/basic_stats.tpl:144
@@ -3283,29 +3277,29 @@ msgstr ""
 msgid "Closed"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:62
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:60
 #: themes/default/templates/customer/details.tpl:28
 #: themes/default/templates/report/financial.tpl:98
 msgid "Invoices"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:64
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:62
 msgid "Invoice Only"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:80
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:78
 #: themes/default/templates/customer/details.tpl:29
 msgid "Gift Certificates"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:94
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:92
 #: themes/default/templates/report/financial.tpl:169
 msgid "Expenses"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:98
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:113
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:128
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:96
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:111
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:126
 #: themes/default/templates/customer/blocks/details_invoice_block.tpl:35
 #: themes/default/templates/customer/blocks/details_invoice_block.tpl:69
 #: themes/default/templates/customer/blocks/details_invoice_block.tpl:103
@@ -3313,128 +3307,128 @@ msgstr ""
 msgid "Details"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:100
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:98
 msgid "Are you sure you want to delete this Expense Record?"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:109
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:107
 #: themes/default/templates/report/financial.tpl:170
 msgid "Refunds"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:115
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:113
 msgid "Are you sure you want to delete this Refund Record?"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:124
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:122
 msgid "Suppliers"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:130
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:128
 msgid "Are you Sure you want to delete this Supplier?"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:130
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:128
 msgid "Delete Supplier"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:139
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:137
 #: includes/modules/schedule.php:412 includes/modules/schedule.php:444
 msgid "Company"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:141
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:139
 msgid "Settings"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:144
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:142
 #: themes/default/templates/payment/options.tpl:16
 msgid "Payment Options"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:146
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:144
 msgid "Invoice Prefill"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:149
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:147
 #: themes/default/templates/report/financial.tpl:19
 msgid "Financial Report"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:150
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:148
 msgid "Basic Stats"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:159
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:157
 msgid "Administration"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:162
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:160
 msgid "Search Users"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:163
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:161
 msgid "New Employee"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:165
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:163
 #: themes/default/templates/user/edit.tpl:16
 msgid "Edit User"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:166
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:164
 msgid "Are you sure you want to delete this user?"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:166
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:164
 msgid "Delete User"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:168
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:166
 msgid "Permissions"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:171
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:169
 msgid "PHP Info"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:173
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:171
 msgid "Config"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:180
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:178
 msgid "Help"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:181
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:179
 msgid "About"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:182
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:180
 msgid "Attribution"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:183
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:181
 msgid "License"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:185
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:183
 msgid "Documentation"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:186
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:184
 msgid "Bug Tracker"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:187
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:185
 msgid "Forum"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:188
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:186
 msgid "Support this Software!"
 msgstr ""
 
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:192
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:190
 msgid "PayPal - The safer, easier way to pay online."
 msgstr ""
 
@@ -4115,6 +4109,10 @@ msgstr ""
 #: includes/modules/payment.php:93 includes/modules/payment.php:117
 #: includes/modules/payment.php:123
 msgid "Note"
+msgstr ""
+
+#: themes/default/templates/customer/note_new.tpl:16
+msgid "New Note"
 msgstr ""
 
 #: themes/default/templates/customer/note_new.tpl:18
@@ -5808,6 +5806,9 @@ msgstr ""
 #: themes/default/templates/setup/blocks/migrate_stage6_block.tpl:25
 #: themes/default/templates/setup/blocks/migrate_stage7_block.tpl:38
 #: themes/default/templates/setup/blocks/migrate_stage8_block.tpl:259
+#: themes/default/templates/setup/choice.tpl:157
+#: themes/default/templates/setup/choice.tpl:165
+#: themes/default/templates/setup/choice.tpl:173
 msgid "Next"
 msgstr ""
 
@@ -6110,67 +6111,83 @@ msgstr ""
 msgid "Stage 8 - Create an Administrator"
 msgstr ""
 
-#: themes/default/templates/setup/choice.tpl:33
+#: themes/default/templates/setup/choice.tpl:76
 msgid "QWcrm Installation / MyITCRM Migration / QWcrm Upgrade"
 msgstr ""
 
-#: themes/default/templates/setup/choice.tpl:36
+#: themes/default/templates/setup/choice.tpl:79
 #: language/_gettext_only/pages.php:404
 msgid "SETUP_CHOICE_HELP_TITLE"
 msgstr "Help"
 
-#: themes/default/templates/setup/choice.tpl:36
+#: themes/default/templates/setup/choice.tpl:79
 #: language/_gettext_only/pages.php:405
 msgid "SETUP_CHOICE_HELP_CONTENT"
 msgstr ""
 "Decide if you want to do a fresh installation of QWcrm or migrate from "
 "MyITCRM."
 
-#: themes/default/templates/setup/choice.tpl:51
+#: themes/default/templates/setup/choice.tpl:94
 msgid ""
 "QWcrm software is released under the GNU General Public License V3 (GPL-3.0)."
 msgstr ""
 
-#: themes/default/templates/setup/choice.tpl:52
+#: themes/default/templates/setup/choice.tpl:95
 msgid "The license can be found in the root directory of QWcrm."
 msgstr ""
 
-#: themes/default/templates/setup/choice.tpl:52
+#: themes/default/templates/setup/choice.tpl:95
 msgid "Click here to read"
 msgstr ""
 
-#: themes/default/templates/setup/choice.tpl:53
+#: themes/default/templates/setup/choice.tpl:96
 msgid ""
 "Not all assets are covered by the GPL-3.0 and further notes can be found on "
 "the license and attribution pages once QWcrm is installed."
 msgstr ""
 
-#: themes/default/templates/setup/choice.tpl:54
+#: themes/default/templates/setup/choice.tpl:97
 msgid ""
 "You must confirm you understand and accept the license before continuing."
 msgstr ""
 
-#: themes/default/templates/setup/choice.tpl:59
+#: themes/default/templates/setup/choice.tpl:102
 msgid "I have read and understood the license."
 msgstr ""
 
-#: themes/default/templates/setup/choice.tpl:76
+#: themes/default/templates/setup/choice.tpl:103
+msgid "Accept License"
+msgstr ""
+
+#: themes/default/templates/setup/choice.tpl:118
 msgid ""
 "Choose choose whether you want to install a fresh copy of QWcrm or migrate "
 "from MyITCRM"
 msgstr ""
 
-#: themes/default/templates/setup/choice.tpl:83
+#: themes/default/templates/setup/choice.tpl:125
 msgid "Install QWcrm"
 msgstr ""
 
-#: themes/default/templates/setup/choice.tpl:90
+#: themes/default/templates/setup/choice.tpl:132
 msgid "Migrate from MyITCRM"
 msgstr ""
 
-#: themes/default/templates/setup/choice.tpl:97
+#: themes/default/templates/setup/choice.tpl:139
 msgid "Upgrade QWcrm"
 msgstr ""
+
+#: themes/default/templates/setup/choice.tpl:156
+msgid "SETUP_INSTALL_MESSAGE"
+msgstr "lets install some stuff"
+
+#: themes/default/templates/setup/choice.tpl:164
+msgid "SETUP_MIGRATE_MESSAGE"
+msgstr "<p>lets migrate som'e stuff</p>"
+
+#: themes/default/templates/setup/choice.tpl:172
+msgid "SETUP_UPGRADE_MESSAGE"
+msgstr "<p>The upgrade mechanism is currently not enabled</p>"
 
 #: themes/default/templates/setup/install.tpl:13
 #: themes/default/templates/setup/migrate.tpl:13

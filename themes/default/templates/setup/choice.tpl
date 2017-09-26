@@ -8,7 +8,9 @@
 <script>
     $(function() {
 
-        // Unhide setup buttons - registered onclick event
+        // Accept License
+
+        // Accept License - Hide license agreement and unhide setup buttons when license is accepted
         $("#accept_license_button").click(function(event) {
             
             // not sure what this does
@@ -17,10 +19,51 @@
             // if the checkbox is ticked
             if($("#accept_license_checkbox").is(':checked')) {
                 $("#accept_license").hide();
-                $("#license_accepted").show();
+                $("#setup_buttons").show();
             }
         
         } );
+        
+        // Setup Selection Buttons
+        
+        // Install QWcrm - When clicked show install message and hide the setup buttons
+        $("#install_button").click(function(event) {
+            
+            // not sure what this does
+            event.preventDefault();
+            
+            // Hide the setup buttons and show the install message
+            $("#setup_buttons").hide();
+            $("#setup_messages").show();
+            $("#install_next").show();            
+        
+        } );
+        
+        // Migrate from MyITCRM - When clicked show migrate message and hide the setup buttons
+        $("#migrate_button").click(function(event) {
+            
+            // not sure what this does
+            event.preventDefault();
+            
+            // Hide the setup buttons and show the migrate message
+            $("#setup_buttons").hide();
+            $("#setup_messages").show();
+            $("#migrate_next").show();            
+        
+        } );        
+        
+    {*// Upgrade QWcrm- When clicked show upgrade message and hide the setup buttons
+        $("#upgrade_button").click(function(event) {
+            
+            // not sure what this does
+            event.preventDefault();
+            
+            // Hide the setup buttons and show the upgrade message
+            $("#setup_buttons").hide();
+            $("#setup_messages").show();
+            $("#upgrade_next").show();            
+        
+        } );*}         
 
     } );
 </script>
@@ -57,20 +100,19 @@
                                         <tr>
                                             <td>
                                                 <p><input type="checkbox" id="accept_license_checkbox">{t}I have read and understood the license.{/t}</p>
-                                                <button href="javascript:void(0)" id="accept_license_button">Accept License</button>
+                                                <button id="accept_license_button" href="javascript:void(0)">{t}Accept License{/t}</button>
                                             </td>
                                         </tr>
                                     </table>                                    
                                 </td>                                
                             </tr>
                                         
-                            <!-- License Accepted -->
+                            <!-- Setup Selection Buttons -->
                             
-                            <tr id="license_accepted" style="display: none;">
+                            <tr id="setup_buttons" style="display: none;">
                                 <td class="menutd">
                                     <table width="100%" border="0" cellpadding="10" cellspacing="0">
                                         
-                                        <!-- Installation Message-->   
                                         <tr>
                                             <td>                                                                                                  
                                                 {t}Choose choose whether you want to install a fresh copy of QWcrm or migrate from MyITCRM{/t}
@@ -79,24 +121,58 @@
                                         
                                         <!-- Install QWcrm -->   
                                         <tr>
-                                            <td>                                                                                                  
-                                                <a href="index.php?page=setup:install"><button type="submit" name="submit" value="update">{t}Install QWcrm{/t}</button></a>
+                                            <td>                                                
+                                                <button id="install_button" href="javascript:void(0)">{t}Install QWcrm{/t}</button>                                                
+                                            </td>
+                                        </tr>                                   
+                                        
+                                        <!-- Migrate from MyITCRM -->  
+                                        <tr id="">
+                                            <td>                                                                                                 
+                                                <button id="migrate_button" href="javascript:void(0)">{t}Migrate from MyITCRM{/t}</button> 
+                                            </td>
+                                        </tr>                                          
+                                        
+                                        {*<!-- Upgrade QWcrm -->                                         
+                                        <tr>
+                                            <td>                                                                                                 
+                                                <button id="upgrade_button" href="javascript:void(0)">{t}Upgrade QWcrm{/t}</button> 
+                                            </td>
+                                        </tr>*}                             
+                                        
+                                    </table>
+                                </td>
+                            </tr>
+                            
+                            <!-- Setup Messages -->
+                            
+                            <tr id="setup_messages" style="display: none;">
+                                <td class="menutd">
+                                    <table width="100%" border="0" cellpadding="10" cellspacing="0">
+                                        
+                                        <!-- Install QWcrm -->   
+                                        <tr id="install_next" style="display: none;">
+                                            <td>
+                                                <div>{t escape=raw_html}SETUP_INSTALL_MESSAGE{/t}</div>
+                                                <p><a href="index.php?page=setup:install"><button type="submit" name="submit" value="update">{t}Next{/t}</button></a></p>
                                             </td>
                                         </tr>                                        
                                         
                                         <!-- Migrate from MyITCRM -->  
-                                        <tr>
-                                            <td>                                                                                                 
-                                                <a href="index.php?page=setup:migrate"><button type="submit" name="submit" value="update">{t}Migrate from MyITCRM{/t}</button></a>
+                                        <tr id="migrate_next" style="display: none;">
+                                            <td>
+                                                <div>{t escape=raw_html}SETUP_MIGRATE_MESSAGE{/t}</div>
+                                                <p><a href="index.php?page=setup:migrate"><button type="submit" name="submit" value="update">{t}Next{/t}</button></a></p>
                                             </td>
-                                        </tr>                                                                          
+                                        </tr>                                         
                                         
-                                        <!-- Upgrade QWcrm -->  
-                                        {*<tr>
-                                            <td>                                                                                                 
-                                                <a href="index.php?page=setup:upgrade"><button type="submit" name="submit" value="update">{t}Upgrade QWcrm{/t}</button></a>
+                                        {*<!-- Upgrade QWcrm -->                                         
+                                        <tr id="upgrade_next" style="display: none;">
+                                            <td>
+                                                <div>{t escape=raw_html}SETUP_UPGRADE_MESSAGE{/t}</div>
+                                                <p><a href="index.php?page=setup:upgrade"><button type="submit" name="submit" value="update">{t}Next{/t}</button></a></p>
                                             </td>
-                                        </tr>*}
+                                        </tr>*}                                                                            
                                         
                                     </table>
                                 </td>
